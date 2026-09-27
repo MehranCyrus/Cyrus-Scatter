@@ -1,0 +1,77 @@
+# ============================================
+# Cyrus Scatter - Git Ignore
+# ============================================
+
+# Windows
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Temporary / backup files
+*.tmp
+*.temp
+*.bak
+*.backup
+*.log
+*~
+~$*
+
+# 3ds Max temporary / backup files
+autoback/
+Autoback/
+*.max.bak
+
+# Visual Studio
+.vs/
+bin/
+obj/
+Debug/
+Release/
+x64/
+x86/
+
+# Visual Studio user-specific
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build artifacts
+*.pdb
+*.ilk
+*.iobj
+*.ipdb
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Build / distribution output
+build/
+dist/
+artifacts/
+out/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Licensing secrets
+secrets/
+private/
+*.pem
+*.pfx
+*.p12
+*.key
+
+# Code signing
+certificates/
+signing/
+
+# Local configuration
+*.local.json
+config.local.*
+settings.local.*
