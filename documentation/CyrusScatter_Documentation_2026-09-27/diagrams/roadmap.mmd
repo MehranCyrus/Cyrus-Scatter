@@ -1,0 +1,11 @@
+flowchart LR
+    A["Baseline + tests"] --> B["Version metadata"]
+    B --> C["LicenseCore + Fake Provider"]
+    C --> D["Native capability gates"]
+    D --> E["Generated licensing UI"]
+    E --> F["Cryptlex / Keygen POCs"]
+    F --> G["Render-farm validation"]
+    G --> H["Autodesk package + Max 2027"]
+    H --> I["Code signing + release CI"]
+    I --> J["Commercial beta"]
+    J --> K["Selective hardening if needed"]

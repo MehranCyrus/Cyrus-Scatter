@@ -1,0 +1,11 @@
+sequenceDiagram
+    participant O as Offline Workstation
+    participant B as Connected Device
+    participant P as Licensing Provider
+    O->>O: Generate machine-bound request
+    O-->>B: Transfer request file
+    B->>P: Upload request
+    P-->>B: Signed response file
+    B-->>O: Transfer response
+    O->>O: Verify signature + machine binding
+    O->>O: Cache until offline expiry

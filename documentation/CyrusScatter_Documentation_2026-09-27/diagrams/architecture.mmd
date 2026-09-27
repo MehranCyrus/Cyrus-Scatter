@@ -1,0 +1,14 @@
+flowchart TD
+    Commerce["Commerce / Merchant of Record"] --> Provision["Cyrus Provisioning API"]
+    Provision --> Provider["Licensing Provider"]
+    Provider --> Adapter["ILicenseProvider"]
+    Adapter --> Core["Native LicenseCore"]
+    Core --> Bridge["AminScatter Max Bridge"]
+    Core --> Edit["CS Edit mutation gates"]
+    Core --> ABridge["Surface Analyzer Bridge"]
+    Bridge --> Scatter["amin_scatter C++ core"]
+    ABridge --> Analyzer["Analyzer C++ core"]
+    Scatter --> MXS["Generated MAXScript UI / scene orchestration"]
+    Analyzer --> MXS
+    MXS --> Preview["Native preview cache"]
+    MXS --> PFlow["PFlow / final-render orchestration"]

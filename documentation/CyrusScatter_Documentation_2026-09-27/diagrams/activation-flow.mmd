@@ -1,0 +1,12 @@
+sequenceDiagram
+    participant U as User
+    participant UI as MAXScript License UI
+    participant LC as Native LicenseCore
+    participant P as Licensing Provider
+    U->>UI: Enter license key
+    UI->>LC: Activate
+    LC->>P: Client-safe activation request
+    P-->>LC: Signed activation/entitlement
+    LC->>LC: Verify and cache
+    LC-->>UI: Status + capabilities
+    UI-->>U: Activated
