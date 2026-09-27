@@ -1,0 +1,11 @@
+sequenceDiagram
+  participant U as User
+  participant UI as MAXScript UI
+  participant L as LicenseCore
+  participant P as Provider
+  U->>UI: enter key
+  UI->>L: activate
+  L->>P: validate + activate machine/seat
+  P-->>L: signed/provider state
+  L->>L: verify + normalize + cache
+  L-->>UI: status/reason

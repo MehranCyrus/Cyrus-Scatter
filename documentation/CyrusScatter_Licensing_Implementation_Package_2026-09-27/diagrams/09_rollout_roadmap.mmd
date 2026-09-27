@@ -1,0 +1,10 @@
+flowchart LR
+  B["Baseline"] --> V["Version metadata"]
+  V --> LC["LicenseCore + Fake"]
+  LC --> G["Native gates"]
+  G --> UI["Generated UI"]
+  UI --> POC["Cryptlex + Keygen POCs"]
+  POC --> Pick["Provider decision"]
+  Pick --> Comm["Commerce/provisioning"]
+  Comm --> Render["Render/offline/studio validation"]
+  Render --> Ship["Signing/package/beta"]

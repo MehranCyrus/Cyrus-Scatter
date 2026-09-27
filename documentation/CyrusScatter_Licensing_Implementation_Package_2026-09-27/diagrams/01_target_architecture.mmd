@@ -1,0 +1,12 @@
+flowchart TD
+  C["MoR / Commerce"] --> P["Cyrus Provisioning Service"]
+  P --> V["Licensing Provider Management API"]
+  V --> A["Provider client/SDK"]
+  A --> L["CyrusLicenseCore.dll"]
+  L --> S["AminScatter.dlx"]
+  L --> E["CS Edit mutation/evaluation"]
+  L --> N["CyrusSurfaceAnalyzer.dlx"]
+  L --> R["RuntimeContext / render policy"]
+  S --> Core["amin_scatter core"]
+  N --> ACore["Analyzer core"]
+  R --> PF["PFlow render path"]

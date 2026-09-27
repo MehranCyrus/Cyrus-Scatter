@@ -1,0 +1,8 @@
+flowchart LR
+  Op["Requested operation"] --> Ctx["RuntimeContext"]
+  Ctx --> Auth["LicenseCore.authorize(capability)"]
+  Ent["Verified entitlement snapshot"] --> Auth
+  Rel["Release metadata"] --> Auth
+  Time["Trusted time"] --> Auth
+  Auth -->|allow| Run["Run existing operation"]
+  Auth -->|deny| Safe["Block mutation; preserve scene state"]

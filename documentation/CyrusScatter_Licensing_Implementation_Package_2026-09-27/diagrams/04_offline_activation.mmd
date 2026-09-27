@@ -1,0 +1,10 @@
+sequenceDiagram
+  participant O as Offline Max machine
+  participant X as Transfer media
+  participant Portal as Connected portal/admin
+  O->>O: generate machine-bound request
+  O->>X: request file
+  X->>Portal: upload request
+  Portal-->>X: signed response
+  X-->>O: response file
+  O->>O: verify/import entitlement
