@@ -1,0 +1,12 @@
+flowchart LR
+ Dirty["dirty layer"] --> Inputs["surfaces/sources/count/density/areas"]
+ Inputs --> Native["aminScatterTransforms or aminScatterAdvanced"]
+ Native --> Scale["whole scale"]
+ Scale --> AArea["Analyzer Area"]
+ AArea --> Fall["falloff"]
+ Fall --> Src["source Z/scale"]
+ Src --> Overlap["cross-layer overlap"]
+ Overlap --> Final["final cleanup/relax"]
+ Final --> Orient["boundary/edge orientation"]
+ Orient --> Edit["CS Edit stack"]
+ Edit --> Output["preview/render rows"]

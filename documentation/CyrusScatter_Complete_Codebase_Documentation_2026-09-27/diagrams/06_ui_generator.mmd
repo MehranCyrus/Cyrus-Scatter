@@ -1,0 +1,7 @@
+flowchart LR
+ Before["before.ms"] --> Gen["generate.cjs"]
+ Strokes["strokes/stroke-ui templates"] --> Gen
+ Host["host/storage/containers"] --> Gen
+ PFlow["pflow.ms"] --> Gen
+ Gen --> Stages["25 ordered .cjs stages"]
+ Stages --> Output["scripts/AminScatterObject.ms v44"]

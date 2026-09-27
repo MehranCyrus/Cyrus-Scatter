@@ -1,0 +1,11 @@
+sequenceDiagram
+ participant M as 3ds Max
+ participant S as Cyrus MAXScript
+ participant P as PFlow
+ M->>S: preRender
+ S->>S: compute current placements
+ S->>P: build transient PF sources/events/operators
+ P-->>S: verify particle counts
+ M->>P: render
+ M->>S: postRender
+ S->>S: restore baked flags / transient lifecycle

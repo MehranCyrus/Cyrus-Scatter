@@ -1,0 +1,11 @@
+flowchart TD
+ Max["3ds Max"] --> ScatterObj["AminScatterObject / Cyrus Scatter MAXScript"]
+ Max --> AnalyzerObj["CyrusSurfaceAnalyzer MAXScript"]
+ ScatterObj --> Bridge["AminScatter.dlx Max Bridge"]
+ Bridge --> Core["amin_scatter C++ core"]
+ Bridge --> Preview["native preview cache"]
+ ScatterObj --> Edit["CS Edit native stack"]
+ ScatterObj --> PFlow["Transient PFlow render bridge"]
+ AnalyzerObj --> ABridge["CyrusSurfaceAnalyzer.dlx"]
+ ABridge --> ACore["analyzer C++ core"]
+ AnalyzerObj --> ScatterObj

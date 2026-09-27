@@ -1,0 +1,7 @@
+flowchart LR
+ MZP["MZP install"] --> UserScripts["userScripts/AminScatter"]
+ MZP --> Bin["bin55 native modules"]
+ MZP --> INI["Plugin.UserSettings.ini"]
+ MZP --> Startup["AminScatterStartup.ms"]
+ Startup --> FileIn["fileIn AminScatterObject.ms"]
+ FileIn --> Class["Cyrus Scatter class registered before scenes open"]
