@@ -1,0 +1,10 @@
+flowchart LR
+ UI["Analyzer UI"] --> Sig["input signature / liveDirty"]
+ Sig --> B["cyrusAnalyzeSurface"]
+ B --> E["split connected elements"]
+ E --> P["planar basis + boundaries"]
+ P --> Mode["auto/forced mode"]
+ Mode --> Paths["ring / rectangle center / skeleton"]
+ Paths --> Points["global spacing + fit/minimum"]
+ Points --> Store["scripted boundaries/paths/points"]
+ Store --> Scatter["Scatter integration"]

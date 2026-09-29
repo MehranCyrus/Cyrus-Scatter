@@ -1,0 +1,117 @@
+{
+  "date": "2026-09-29",
+  "scope": "Main docs index and all strategy Markdown files. Local link targets and fence balance only; external URLs reviewed separately in source register. Filesystem hashes compared with the initial review inventory.",
+  "strategy_markdown_count": 19,
+  "local_link_targets_checked": 102,
+  "documentation_issues": [],
+  "input_file_count": 198,
+  "unchanged_input_count": 197,
+  "intentionally_updated_inputs": [
+    "docs/README.md"
+  ],
+  "unexpectedly_changed_inputs": [],
+  "missing_inputs": [],
+  "documents": [
+    {
+      "path": "docs/README.md",
+      "bytes": 4153,
+      "sha256": "95b31f4531cf33d7f0be823fb62c2eef74c8c30d349d1c27e50da1777a21c20e"
+    },
+    {
+      "path": "docs/Product_Strategy_2026-09-29/00_Review_TODO.md",
+      "bytes": 3670,
+      "sha256": "b4e79f6dde2898f79a9ea97a161e038d937fe73d16a227fffa4f9cc6a9004c0d"
+    },
+    {
+      "path": "docs/Product_Strategy_2026-09-29/01_Executive_Assessment.md",
+      "bytes": 6867,
+      "sha256": "8cbadf08c8313811b5a8eedc30913e2db5203f87434ff207b3a0dbf862ceb4b5"
+    },
+    {
+      "path": "docs/Product_Strategy_2026-09-29/02_Current_System_and_Evidence.md",
+      "bytes": 8095,
+      "sha256": "2bffad77a364ef16f1a0b339e9a4f4e26b8511650f644896262dfa6fa996241d"
+    },
+    {
+      "path": "docs/Product_Strategy_2026-09-29/03_Product_Positioning_and_Workflows.md",
+      "bytes": 6410,
+      "sha256": "c5ed2cac8088331e290cab2c08f640e2acdad0cc84bf8ba8975785c2874b97bf"
+    },
+    {
+      "path": "docs/Product_Strategy_2026-09-29/04_Artist_Experience_and_Feature_Priorities.md",
+      "bytes": 8262,
+      "sha256": "c5173412e5adfdbe976cba1f4ca3819fd5983636711cdb374bc60dd6b90958dd"
+    },
+    {
+      "path": "docs/Product_Strategy_2026-09-29/05_Architecture_and_Scene_Contracts.md",
+      "bytes": 7993,
+      "sha256": "07ea02b17863f73378a61307f17445ab712f699e9e57139b6bb26cbb62cb0a13"
+    },
+    {
+      "path": "docs/Product_Strategy_2026-09-29/06_Max_2024_2027_and_Autodesk_Opportunities.md",
+      "bytes": 7837,
+      "sha256": "bd75480eec4482cb84c56c1b516536c37ee6cbdec4c32f4ea77ca7b7c1dd131a"
+    },
+    {
+      "path": "docs/Product_Strategy_2026-09-29/07_Performance_and_Resource_Strategy.md",
+      "bytes": 7727,
+      "sha256": "b30debe850adfb23fd62bd759c371e209a77595cecaaa0dfa65519a7309015e4"
+    },
+    {
+      "path": "docs/Product_Strategy_2026-09-29/08_Renderers_Assets_and_Studio_Pipelines.md",
+      "bytes": 7823,
+      "sha256": "75de34357492db14c5a7109226c92090deba11cdcaa30390c38e58c31108e83a"
+    },
+    {
+      "path": "docs/Product_Strategy_2026-09-29/09_Licensing_and_Commercial_Strategy.md",
+      "bytes": 7295,
+      "sha256": "9f86f0251e248cfd66603109c82ce6334b30b33e9d9fa87d2a22c16ffc47960f"
+    },
+    {
+      "path": "docs/Product_Strategy_2026-09-29/10_Quality_Qualification_and_Release.md",
+      "bytes": 7381,
+      "sha256": "ce9979ebd156e5d9dce63a77127ea8d6547880693b12bb8d6b4e88061af64fe4"
+    },
+    {
+      "path": "docs/Product_Strategy_2026-09-29/11_Master_Roadmap_and_Backlog.md",
+      "bytes": 8655,
+      "sha256": "56113ef874d5100e81066752960bdf7699f327d1c856be15e92c8edaea87c048"
+    },
+    {
+      "path": "docs/Product_Strategy_2026-09-29/12_First_Implementation_Milestone.md",
+      "bytes": 6346,
+      "sha256": "681cdbb72fba1a03dfd133a084f0769301324f96e6b2af349846c96cf4ffaa9b"
+    },
+    {
+      "path": "docs/Product_Strategy_2026-09-29/13_Decisions_Risks_and_Open_Questions.md",
+      "bytes": 7589,
+      "sha256": "a4f19f088160917046de4f6497808b11189fae449a3af6eac5b2d22a0b0997d3"
+    },
+    {
+      "path": "docs/Product_Strategy_2026-09-29/14_Documentation_Governance.md",
+      "bytes": 5751,
+      "sha256": "a662c28240ca1680ecaf13c0b3421cd44cbb42c36ed9be4fceb516b13e5ebf1c"
+    },
+    {
+      "path": "docs/Product_Strategy_2026-09-29/15_Research_Sources.md",
+      "bytes": 9878,
+      "sha256": "fec096ce9203b2087cd5e7decba94abc6aa62230aade3001752e1ba0debfdf78"
+    },
+    {
+      "path": "docs/Product_Strategy_2026-09-29/16_Beta_and_Product_Validation.md",
+      "bytes": 5271,
+      "sha256": "20ac3a47d73bb5d36a295383d541994ecbbed266a3c822c5a211e08ddcb58297"
+    },
+    {
+      "path": "docs/Product_Strategy_2026-09-29/17_Experiment_Briefs.md",
+      "bytes": 6676,
+      "sha256": "179d11b845cf635564558a421a6d2d9c01709dca64beaba1652f4b98abf39186"
+    },
+    {
+      "path": "docs/Product_Strategy_2026-09-29/README.md",
+      "bytes": 5747,
+      "sha256": "9b6a9a1920806fc1a2a6d799c3a89e231691fbdc66cdf402993235c6c7322ab0"
+    }
+  ],
+  "status": "PASS"
+}

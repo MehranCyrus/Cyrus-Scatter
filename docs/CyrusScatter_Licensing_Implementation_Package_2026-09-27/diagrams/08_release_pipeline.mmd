@@ -1,0 +1,10 @@
+flowchart LR
+  Tag["Git tag"] --> Gen["Regenerate MAXScript"]
+  Gen --> Test["Core tests"]
+  Test --> B26["Build Max 2026"]
+  Test --> B27["Build Max 2027"]
+  B26 --> Pack["Bundle/package"]
+  B27 --> Pack
+  Pack --> Sign["Protected Authenticode signing"]
+  Sign --> Verify["Verify signatures + hashes"]
+  Verify --> Pub["Publish immutable release metadata/artifacts"]

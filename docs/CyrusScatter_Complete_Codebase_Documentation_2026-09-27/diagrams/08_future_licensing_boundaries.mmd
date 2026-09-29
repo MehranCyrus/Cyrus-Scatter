@@ -1,0 +1,10 @@
+flowchart TD
+ Provider["Licensing Provider"] --> Adapter["ILicenseProvider"]
+ Adapter --> LC["Native LicenseCore"]
+ LC --> Bridge["Scatter bridge gate"]
+ LC --> Edit["CS Edit mutation gate"]
+ LC --> Analyzer["Analyzer bridge gate"]
+ LC --> Runtime["RenderExistingScene policy"]
+ Bridge --> Core["existing scatter core"]
+ Analyzer --> ACore["existing analyzer core"]
+ Runtime --> PFlow["existing render path"]

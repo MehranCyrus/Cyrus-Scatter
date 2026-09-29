@@ -1,0 +1,27 @@
+{
+  "date": "2026-09-29",
+  "packages": [
+    {
+      "path": "dist/CyrusScatter-0.59-Max2027.mzp",
+      "bytes": 310003,
+      "sha256": "6075477049bbaf7b7cd2cd1b0e9d10bffc98cde3e19d7e34585ec532dd91615a",
+      "zip_integrity_ok": true,
+      "manifest_ok": true,
+      "product": "Cyrus Scatter",
+      "version": "0.59",
+      "native_id": "15aa02e078d4",
+      "max_year": 2027
+    },
+    {
+      "path": "dist/CyrusSurfaceAnalyzer-0.14-Max2027.mzp",
+      "bytes": 50152,
+      "sha256": "3d3a455da049c34a30e2a2ea3105ba365d0816e910409dc5182d53aecbb2431b",
+      "zip_integrity_ok": true,
+      "manifest_ok": true,
+      "product": "Cyrus Surface Analyzer",
+      "version": "0.14",
+      "native_id": "e2318bd967cf",
+      "max_year": 2027
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "date": "2026-09-29",
+  "method": "Two generator runs in a filesystem copy under build; production output untouched",
+  "node": "v22.14.0",
+  "original_raw_sha256": "3f764c104fc809e2442b351dd1ade0204ff29dc3e4e11f12132b9cf6d99be3cd",
+  "original_lf_sha256": "668a152a82a8deb0901cb1bcfebd3b927d6f0cc26b3d4cfd00c1af7ce9ad91c0",
+  "runs": [
+    {
+      "run": 1,
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "bytes": 964011,
+      "raw_sha256": "3f764c104fc809e2442b351dd1ade0204ff29dc3e4e11f12132b9cf6d99be3cd",
+      "lf_sha256": "668a152a82a8deb0901cb1bcfebd3b927d6f0cc26b3d4cfd00c1af7ce9ad91c0",
+      "lf_matches_original": true
+    },
+    {
+      "run": 2,
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "bytes": 964011,
+      "raw_sha256": "3f764c104fc809e2442b351dd1ade0204ff29dc3e4e11f12132b9cf6d99be3cd",
+      "lf_sha256": "668a152a82a8deb0901cb1bcfebd3b927d6f0cc26b3d4cfd00c1af7ce9ad91c0",
+      "lf_matches_original": true
+    }
+  ],
+  "production_unchanged": true
+}

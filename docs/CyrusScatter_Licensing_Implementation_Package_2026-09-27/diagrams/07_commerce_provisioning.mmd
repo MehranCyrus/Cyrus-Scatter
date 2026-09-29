@@ -1,0 +1,11 @@
+sequenceDiagram
+  participant C as Customer
+  participant M as MoR
+  participant S as Cyrus Provisioning
+  participant L as Licensing Provider
+  C->>M: purchase/renew/refund
+  M->>S: signed webhook
+  S->>S: verify + idempotency + SKU mapping
+  S->>L: create/update/suspend/renew
+  L-->>S: result
+  S-->>M: acknowledge

@@ -1,0 +1,69 @@
+{
+  "date": "2026-09-29",
+  "method": "Existing Release test executables; no rebuild and no Max process launched. Timing lines are incidental, not comparative benchmarks.",
+  "tests": [
+    {
+      "test": "scatter_tests",
+      "executable": "build\\max2027-release\\AminScatter\\scatter_tests.exe",
+      "sha256": "20a4d365e34085876b9d86c4723f1155b5b80f3f7e04bad03191f6e6313849f8",
+      "exit_code": 0,
+      "stdout": "PASS: existing scatter tests plus Analyzer bilateral bands, radius, single anchors and border sides\nPASS: straight Street rectangle, round extension and rotated plane\nPASS: final cleanup and count-preserving constrained boundary movement\n",
+      "stderr": "",
+      "status": "PASS"
+    },
+    {
+      "test": "spacing_tests",
+      "executable": "build\\max2027-release\\AminScatter\\spacing_tests.exe",
+      "sha256": "0d173f558ea189dbeccd3250b6a0922aa9d0984bc0d6d2d5510b422f61c67108",
+      "exit_code": 0,
+      "stdout": "overlap_energy 91.445 -> 4.16357; collision 775; combined 1433\ncount=10000 kept=10000 ms=86.5764\ncount=100000 kept=98548 ms=1980.77\nPASS spacing, determinism, masks, strokes, tilted surface, disabled compatibility\n",
+      "stderr": "",
+      "status": "PASS"
+    },
+    {
+      "test": "weight_tests",
+      "executable": "build\\max2027-release\\AminScatter\\weight_tests.exe",
+      "sha256": "228b8ec25be6a948623ee1d3279e308972cf539051a3585f635436bdcbbe234e",
+      "exit_code": 0,
+      "stdout": "random box=69.95%\ncluster box=70.19%\nPASS weights, groups, zero, strokes, fixed positions and transforms\n",
+      "stderr": "",
+      "status": "PASS"
+    },
+    {
+      "test": "orientation_tests",
+      "executable": "build\\max2027-release\\AminScatter\\orientation_tests.exe",
+      "sha256": "1baaf22a1f0a40704104a63bd4814fd276f21d02be90bf274d7e9b55eebdba68",
+      "exit_code": 0,
+      "stdout": "PASS axes, scales, convex/concave/45deg, masked corners, holes, winding, tilted plane, offsets, disabled\n",
+      "stderr": "",
+      "status": "PASS"
+    },
+    {
+      "test": "edge_border_tests",
+      "executable": "build\\max2027-release\\AminScatter\\edge_border_tests.exe",
+      "sha256": "87b5c1bba3f7e0491a91b0bbd846b93c6e7a537b41f7949e4b67b95e8d2ef129",
+      "exit_code": 0,
+      "stdout": "PASS spacing, offset, deterministic jitter, masks, count independence, relax pins, collisions, thin regions, elements, limit\n",
+      "stderr": "",
+      "status": "PASS"
+    },
+    {
+      "test": "boundary_falloff_tests",
+      "executable": "build\\max2027-release\\AminScatter\\boundary_falloff_tests.exe",
+      "sha256": "59e0009c3b1bbde9840067358971197691aaaf6c11403aff502caa7d346ede6a",
+      "exit_code": 0,
+      "stdout": "PASS boundary, 100k points, Area Include/Exclude directions and XY projection, dense curves, side-limited scale/density\n",
+      "stderr": "",
+      "status": "PASS"
+    },
+    {
+      "test": "analyzer_tests",
+      "executable": "build\\max2027-release\\CyrusSurfaceAnalyzer\\analyzer_tests.exe",
+      "sha256": "598e2480ce64fb01148809a2bacfa70ef5da313cb235e969d34814592a6fe2bc",
+      "exit_code": 0,
+      "stdout": "PASS attached mixed elements at different heights; automatic radius counts; star four points; global spacing; tiny-radius guard\nPASS per-element minimum overrides radius; zero disables override; no points outside eligible paths\nPASS hard disk clearance on all shapes after Relax and minimum override; near-rectangular straight axis; impossible footprint returns no points\nPASS supplied shapes: Auto modes, points inside triangles, tilted/rotated equivalents\nPASS rectangle, rotated plane, area, width rejection, star ring, hole boundary/containment, nonplanar rejection\n",
+      "stderr": "",
+      "status": "PASS"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+flowchart TD
+  Start["Scatter evaluation requested"] --> C["Native RuntimeContext"]
+  C --> I{"Trusted interactive authoring?"}
+  I -->|yes| A["Require AuthorScatter"]
+  I -->|no| R{"Trusted restricted render?"}
+  R -->|yes| RR["Require RenderExistingScene"]
+  R -->|no| D["Deny authoring / ambiguous context"]
+  RR --> Eval["Evaluate saved scene only"]
+  A --> Eval2["Normal authoring/evaluation"]

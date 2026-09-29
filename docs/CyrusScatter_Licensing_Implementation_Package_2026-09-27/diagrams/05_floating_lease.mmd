@@ -1,0 +1,12 @@
+stateDiagram-v2
+  [*] --> NoLease
+  NoLease --> Acquiring: authoring requested
+  Acquiring --> Leased: seat available
+  Acquiring --> Denied: no seat
+  Leased --> Renewing
+  Renewing --> Leased: success
+  Renewing --> Grace: temporary failure
+  Grace --> Leased: recovered
+  Grace --> Lost: grace/lease ends
+  Leased --> Releasing: Max exit / no longer needed
+  Releasing --> NoLease

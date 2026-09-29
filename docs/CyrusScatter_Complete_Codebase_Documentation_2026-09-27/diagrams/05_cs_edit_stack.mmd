@@ -1,0 +1,6 @@
+flowchart LR
+ Base["base placement rows b:0..n"] --> L1["lower CS Edit"]
+ L1 --> IDs["stable input/output IDs"]
+ IDs --> L2["upper CS Edit"]
+ L2 --> Suspend["missing inputs suspended, not lost"]
+ Suspend --> Rows["transform + source rows to Scatter/PFlow"]
