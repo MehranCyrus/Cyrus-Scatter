@@ -1,0 +1,291 @@
+{
+  "review_date": "2026-09-30",
+  "review_type": "Targeted subsystem/source tracing and read-only artifact verification; not a formal certification or security audit.",
+  "restrictions": {
+    "git_used": false,
+    "subagents_used": false,
+    "production_edits": false,
+    "new_max_session": false,
+    "new_render": false,
+    "new_build": false,
+    "new_native_test_run": false,
+    "new_benchmark": false,
+    "provider_selected": false,
+    "licensing_implemented": false
+  },
+  "freshly_observed_records": [
+    {
+      "prior_product_inputs_checked": 100,
+      "changed_since_2026_09_29": []
+    },
+    {
+      "artifact": "dist/CyrusScatter-0.59-Max2027.mzp",
+      "bytes": 310003,
+      "sha256": "6075477049bbaf7b7cd2cd1b0e9d10bffc98cde3e19d7e34585ec532dd91615a"
+    },
+    {
+      "manifest": {
+        "product": "Cyrus Scatter",
+        "version": "0.59",
+        "max_year": 2027,
+        "toolset": "14.38.33130",
+        "windows_sdk": "10.0.19041.0",
+        "configuration": "Release",
+        "native_id": "15aa02e078d4",
+        "files": {
+          "AminScatter.dlx": "d22daae4222ebb0cc6a43ded91ab524b202ff884d59ef9d19d15d8aaa242f27d",
+          "AminScatter.mcr": "b2e5a533951096cbe41241d5ab75dc0afec4d31bef3d4a2e713d1670fbb2933a",
+          "AminScatterObject.ms": "3f764c104fc809e2442b351dd1ade0204ff29dc3e4e11f12132b9cf6d99be3cd",
+          "AminScatterStartup.ms": "5a9bce169dad56446e535ff5d6c04e21487f49dbd217d74e8cce749939a61faf",
+          "CyrusScatterEdit.dlm": "323a07218e3e39d25ce9d768a3a09233c2ad31152b8b1304c36c05717ab5f0a9",
+          "INSTALL.txt": "d53b8a428393752f33d34e5e0a026338cb4497a800d6b6e2ae17a28feea8e01a",
+          "Uninstall.ms": "405dbe413fa6d7b52c1d320c41fd16c32fea018fb0d4bec649bdefaded9c0e9e",
+          "install.ms": "a154213ef7c80c1002d6fd2b5b514c67e342566ef10076f24e8f35b8a1cf8346",
+          "mzp.run": "a39fc760ef84370cf83c49addc93dcc5e17e0dec9e738344ee2c262db209592c"
+        }
+      },
+      "zip_integrity": null,
+      "all_payload_hashes_match": true,
+      "ui_source_matches_package": "3f764c104fc809e2442b351dd1ade0204ff29dc3e4e11f12132b9cf6d99be3cd"
+    },
+    {
+      "artifact": "dist/CyrusScatter-0.59-Max2027.sha256",
+      "bytes": 97,
+      "sha256": "714313bc4715ea6028edcf2513fa1bd29e45c69e7b4bdf2921ffb2909a258226"
+    },
+    {
+      "artifact": "dist/CyrusSurfaceAnalyzer-0.14-Max2027.mzp",
+      "bytes": 50152,
+      "sha256": "3d3a455da049c34a30e2a2ea3105ba365d0816e910409dc5182d53aecbb2431b"
+    },
+    {
+      "manifest": {
+        "product": "Cyrus Surface Analyzer",
+        "version": "0.14",
+        "max_year": 2027,
+        "toolset": "14.38.33130",
+        "windows_sdk": "10.0.19041.0",
+        "configuration": "Release",
+        "native_id": "e2318bd967cf",
+        "files": {
+          "CyrusSurfaceAnalyzer.dlx": "e2318bd967cf8b17ce1b1208e156c61a9f6361a80b8160c34c54bd2eb2a886de",
+          "CyrusSurfaceAnalyzer.ms": "bcc3162975e5edf3a9efa4ae3bea11c8aef97d0393d430d9f971cb0c355997aa",
+          "CyrusSurfaceAnalyzerStartup.ms": "fdef46e54790c5c6d893479a17c6c885e4ff39897d00f1eac6b8567f86c18425",
+          "INSTALL.txt": "e6a09d45ead77da5f05b238e6e382c1181534725c56e8ca966eb2b6049307bec",
+          "install.ms": "6735d0a0f3246ea25071e652214d7e70ffc07e32fc8fbe6b65f8e0cdd15fc206",
+          "mzp.run": "9a5e8deb72702b1be5214f4f9e99f3e4a12b04fd47d63ceb865f1f5ea28b2660"
+        }
+      },
+      "zip_integrity": null,
+      "all_payload_hashes_match": true,
+      "ui_source_matches_package": "bcc3162975e5edf3a9efa4ae3bea11c8aef97d0393d430d9f971cb0c355997aa"
+    },
+    {
+      "artifact": "dist/CyrusSurfaceAnalyzer-0.14-Max2027.sha256",
+      "bytes": 105,
+      "sha256": "9b39d260177728f9ac96d79b25712d637c7a454160edcb4f2227845732084213"
+    },
+    {
+      "scenes": [
+        "build/max2027-smoke.max"
+      ]
+    },
+    {
+      "file": "native_test_rerun.json",
+      "date": "2026-09-29",
+      "tests": [
+        {
+          "name": "scatter_tests",
+          "prior_exit": 0,
+          "exe_exists": true,
+          "same_executable": true
+        },
+        {
+          "name": "spacing_tests",
+          "prior_exit": 0,
+          "exe_exists": true,
+          "same_executable": true
+        },
+        {
+          "name": "weight_tests",
+          "prior_exit": 0,
+          "exe_exists": true,
+          "same_executable": true
+        },
+        {
+          "name": "orientation_tests",
+          "prior_exit": 0,
+          "exe_exists": true,
+          "same_executable": true
+        },
+        {
+          "name": "edge_border_tests",
+          "prior_exit": 0,
+          "exe_exists": true,
+          "same_executable": true
+        },
+        {
+          "name": "boundary_falloff_tests",
+          "prior_exit": 0,
+          "exe_exists": true,
+          "same_executable": true
+        },
+        {
+          "name": "analyzer_tests",
+          "prior_exit": 0,
+          "exe_exists": true,
+          "same_executable": true
+        }
+      ]
+    },
+    {
+      "file": "generator_check.json",
+      "record": {
+        "date": "2026-09-29",
+        "method": "Two generator runs in a filesystem copy under build; production output untouched",
+        "node": "v22.14.0",
+        "original_raw_sha256": "3f764c104fc809e2442b351dd1ade0204ff29dc3e4e11f12132b9cf6d99be3cd",
+        "original_lf_sha256": "668a152a82a8deb0901cb1bcfebd3b927d6f0cc26b3d4cfd00c1af7ce9ad91c0",
+        "runs": [
+          {
+            "run": 1,
+            "exit_code": 0,
+            "stdout": "",
+            "stderr": "",
+            "bytes": 964011,
+            "raw_sha256": "3f764c104fc809e2442b351dd1ade0204ff29dc3e4e11f12132b9cf6d99be3cd",
+            "lf_sha256": "668a152a82a8deb0901cb1bcfebd3b927d6f0cc26b3d4cfd00c1af7ce9ad91c0",
+            "lf_matches_original": true
+          },
+          {
+            "run": 2,
+            "exit_code": 0,
+            "stdout": "",
+            "stderr": "",
+            "bytes": 964011,
+            "raw_sha256": "3f764c104fc809e2442b351dd1ade0204ff29dc3e4e11f12132b9cf6d99be3cd",
+            "lf_sha256": "668a152a82a8deb0901cb1bcfebd3b927d6f0cc26b3d4cfd00c1af7ce9ad91c0",
+            "lf_matches_original": true
+          }
+        ],
+        "production_unchanged": true
+      }
+    },
+    {
+      "file": "package_check.json",
+      "record": {
+        "date": "2026-09-29",
+        "packages": [
+          {
+            "path": "dist/CyrusScatter-0.59-Max2027.mzp",
+            "bytes": 310003,
+            "sha256": "6075477049bbaf7b7cd2cd1b0e9d10bffc98cde3e19d7e34585ec532dd91615a",
+            "zip_integrity_ok": true,
+            "manifest_ok": true,
+            "product": "Cyrus Scatter",
+            "version": "0.59",
+            "native_id": "15aa02e078d4",
+            "max_year": 2027
+          },
+          {
+            "path": "dist/CyrusSurfaceAnalyzer-0.14-Max2027.mzp",
+            "bytes": 50152,
+            "sha256": "3d3a455da049c34a30e2a2ea3105ba365d0816e910409dc5182d53aecbb2431b",
+            "zip_integrity_ok": true,
+            "manifest_ok": true,
+            "product": "Cyrus Surface Analyzer",
+            "version": "0.14",
+            "native_id": "e2318bd967cf",
+            "max_year": 2027
+          }
+        ]
+      }
+    }
+  ],
+  "documentation_archive": {
+    "path": "docs/Cyrus Scatter Documents.zip",
+    "file_count": 123,
+    "top_entries": [
+      "Performance_Roadmap_2026-09-28/01_Current_Code_Audit.md",
+      "Performance_Roadmap_2026-09-28/02_Baseline_and_Benchmarks.md",
+      "Performance_Roadmap_2026-09-28/03_Compatibility_and_Regression.md",
+      "Performance_Roadmap_2026-09-28/04_CPU_Optimization_Plan.md",
+      "Performance_Roadmap_2026-09-28/05_Multithreading_Architecture.md",
+      "Performance_Roadmap_2026-09-28/06_GPU_OpenCL_Feasibility.md"
+    ],
+    "integrity_ok": true
+  },
+  "retained_test_evidence": {
+    "native_result_date": "2026-09-29",
+    "source": "../Product_Strategy_2026-09-29/evidence/native_test_rerun.json",
+    "result_reused": true,
+    "qualification_limit": "Matching retained executable hashes do not constitute a new run or complete manual feature coverage.",
+    "max_smoke_date": "2026-09-28",
+    "source_max": "../Product_Strategy_2026-09-29/evidence/prior_runtime_evidence.json",
+    "max_smoke_limit": "Isolated Max 2027.1 generation/cache/empty-CS-Edit/Analyzer execution/save-reopen smoke; no actual renderer or nonempty editing qualification."
+  },
+  "subsystem_coverage": [
+    "repository structure",
+    "Scatter native core",
+    "Max bridge",
+    "generated MAXScript UI and generator",
+    "CS Edit stack and storage",
+    "Surface Analyzer core/bridge/UI",
+    "preview",
+    "PFlow rendering and Corona handling",
+    "install/packaging",
+    "build and version metadata",
+    "tests and scenes",
+    "targeted Max versions",
+    "performance architecture",
+    "licensing code absence in inspected paths",
+    "documentation hierarchy"
+  ],
+  "source_findings": {
+    "licensing": "No licensing authority/provider integration found in inspected product paths.",
+    "compute": "No CPU executor or OpenCL backend found in inspected product paths.",
+    "host_build_configuration": [
+      2026,
+      2027
+    ],
+    "required_host_targets": [
+      2024,
+      2025,
+      2026,
+      2027
+    ],
+    "requested_memory_target_gib": 32,
+    "memory_qualification": "Pending",
+    "bake": "Helper exists; Bake creation button absent in generated preview rollout.",
+    "analyzer_uninstall": "Dedicated Analyzer uninstaller absent.",
+    "risk_treatment": "Source ownership/edit identity/cache publication/Analyzer transaction/loader observations are hypotheses or gaps, not silently fixed."
+  },
+  "external_research": [
+    {
+      "url": "https://support.chaos.com/hc/en-us/articles/4953359913617-How-to-use-Chaos-Scatter-with-Corona-for-3ds-Max-Advanced-Features",
+      "retrieved": "2026-09-30",
+      "kind": "Primary vendor guidance",
+      "use": "Narrow competitor feature facts; not Cyrus qualification."
+    },
+    {
+      "url": "https://www.itoosoft.com/forestpack",
+      "retrieved": "2026-09-30",
+      "kind": "Primary vendor page",
+      "use": "Documented product workflows; vendor performance language not independently tested."
+    },
+    {
+      "url": "https://docs.tyflow.com/",
+      "retrieved": "2026-09-30",
+      "kind": "Primary documentation",
+      "use": "Operator workflow facts; no hands-on parity test."
+    }
+  ],
+  "external_limitations": "No current licensing-provider pricing, payment availability, contractual or legal conclusions renewed. Earlier Autodesk/Chaos facts retain the strategy source-register dates; release claims require current checks.",
+  "associated_documents": [
+    "98_Repository_Review_and_Deliverables.md",
+    "04_Problems_and_Missing_Pieces.md",
+    "07_Product_Support_Matrix.md",
+    "Landing_Page_Claims_Matrix.md"
+  ]
+}
+

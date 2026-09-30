@@ -1,0 +1,340 @@
+{
+  "review_date": "2026-09-30",
+  "validation_status": "PASS",
+  "markdown_files": 21,
+  "json_evidence_files": 3,
+  "numbered_stages": 16,
+  "stage_sequence": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16
+  ],
+  "stage_structure": [
+    {
+      "file": "01_Understand_the_Current_Product.md",
+      "required_sections_present": true,
+      "checkboxes": 9,
+      "words": 890
+    },
+    {
+      "file": "02_Manual_Product_Walkthrough.md",
+      "required_sections_present": true,
+      "checkboxes": 10,
+      "words": 2848
+    },
+    {
+      "file": "03_Product_Feature_Inventory.md",
+      "required_sections_present": true,
+      "checkboxes": 8,
+      "words": 2484
+    },
+    {
+      "file": "04_Problems_and_Missing_Pieces.md",
+      "required_sections_present": true,
+      "checkboxes": 10,
+      "words": 1199
+    },
+    {
+      "file": "05_Define_the_Product.md",
+      "required_sections_present": true,
+      "checkboxes": 8,
+      "words": 825
+    },
+    {
+      "file": "06_Competitor_and_Positioning_Review.md",
+      "required_sections_present": true,
+      "checkboxes": 17,
+      "words": 944
+    },
+    {
+      "file": "07_Product_Support_Matrix.md",
+      "required_sections_present": true,
+      "checkboxes": 10,
+      "words": 1391
+    },
+    {
+      "file": "08_Demo_and_Benchmark_Scenes.md",
+      "required_sections_present": true,
+      "checkboxes": 9,
+      "words": 1165
+    },
+    {
+      "file": "09_Commercial_and_Licensing_Decisions.md",
+      "required_sections_present": true,
+      "checkboxes": 5,
+      "words": 1607
+    },
+    {
+      "file": "10_Licensing_Technical_Preparation.md",
+      "required_sections_present": true,
+      "checkboxes": 5,
+      "words": 1392
+    },
+    {
+      "file": "11_Licensing_Provider_Evaluation.md",
+      "required_sections_present": true,
+      "checkboxes": 5,
+      "words": 1276
+    },
+    {
+      "file": "12_Beta_Readiness.md",
+      "required_sections_present": true,
+      "checkboxes": 6,
+      "words": 1261
+    },
+    {
+      "file": "13_Presentation_Asset_Production.md",
+      "required_sections_present": true,
+      "checkboxes": 6,
+      "words": 1434
+    },
+    {
+      "file": "14_Landing_Page_Content_Plan.md",
+      "required_sections_present": true,
+      "checkboxes": 6,
+      "words": 1406
+    },
+    {
+      "file": "15_Pricing_and_Offer_Preparation.md",
+      "required_sections_present": true,
+      "checkboxes": 6,
+      "words": 1195
+    },
+    {
+      "file": "16_Commercial_Launch_Readiness.md",
+      "required_sections_present": true,
+      "checkboxes": 6,
+      "words": 1489
+    }
+  ],
+  "local_link_count": 169,
+  "broken_links_or_structure_issues": [],
+  "external_link_count": 6,
+  "external_source_urls": [
+    "https://docs.tyflow.com/",
+    "https://support.chaos.com/hc/en-us/articles/4953359913617-How-to-use-Chaos-Scatter-with-Corona-for-3ds-Max-Advanced-Features",
+    "https://www.itoosoft.com/forestpack"
+  ],
+  "external_link_verification": "All distinct external URLs used for new competitor facts were retrieved through web tools on 2026-09-30. Older source facts retain their recorded dates; provider/commercial facts require later research.",
+  "production_root_files_checked": 101,
+  "production_root_changes": [],
+  "original_docs_checked": 124,
+  "original_docs_changes": [
+    {
+      "path": "docs/README.md",
+      "before": "95b31f4531cf33d7f0be823fb62c2eef74c8c30d349d1c27e50da1777a21c20e",
+      "after": "30a7f3fe2d7451d9609a2897b14486414fcae4a5cb839bbac85bf65050cf84e8"
+    }
+  ],
+  "historical_files_unchanged": 123,
+  "allowed_existing_document_change": "docs/README.md navigation only",
+  "artifact_identity_checks": [
+    {
+      "path": "dist/CyrusScatter-0.59-Max2027.mzp",
+      "same_as_initial_review": true,
+      "sha256": "6075477049bbaf7b7cd2cd1b0e9d10bffc98cde3e19d7e34585ec532dd91615a"
+    },
+    {
+      "path": "dist/CyrusScatter-0.59-Max2027.sha256",
+      "same_as_initial_review": true,
+      "sha256": "714313bc4715ea6028edcf2513fa1bd29e45c69e7b4bdf2921ffb2909a258226"
+    },
+    {
+      "path": "dist/CyrusSurfaceAnalyzer-0.14-Max2027.mzp",
+      "same_as_initial_review": true,
+      "sha256": "3d3a455da049c34a30e2a2ea3105ba365d0816e910409dc5182d53aecbb2431b"
+    },
+    {
+      "path": "dist/CyrusSurfaceAnalyzer-0.14-Max2027.sha256",
+      "same_as_initial_review": true,
+      "sha256": "9b39d260177728f9ac96d79b25712d637c7a454160edcb4f2227845732084213"
+    }
+  ],
+  "manual_test_result_rows": 36,
+  "feature_inventory_rows": 45,
+  "demo_scene_briefs": 7,
+  "claim_rows": 24,
+  "deliverable_manifest_matches_files": true,
+  "created_files_in_user_manifest_order": [
+    "README.md",
+    "00_Master_Checklist.md",
+    "01_Understand_the_Current_Product.md",
+    "02_Manual_Product_Walkthrough.md",
+    "03_Product_Feature_Inventory.md",
+    "04_Problems_and_Missing_Pieces.md",
+    "05_Define_the_Product.md",
+    "06_Competitor_and_Positioning_Review.md",
+    "07_Product_Support_Matrix.md",
+    "08_Demo_and_Benchmark_Scenes.md",
+    "09_Commercial_and_Licensing_Decisions.md",
+    "10_Licensing_Technical_Preparation.md",
+    "11_Licensing_Provider_Evaluation.md",
+    "12_Beta_Readiness.md",
+    "13_Presentation_Asset_Production.md",
+    "14_Landing_Page_Content_Plan.md",
+    "15_Pricing_and_Offer_Preparation.md",
+    "16_Commercial_Launch_Readiness.md",
+    "Landing_Page_Claims_Matrix.md",
+    "98_Repository_Review_and_Deliverables.md",
+    "99_Progress_Log.md",
+    "evidence/input_snapshot.json",
+    "evidence/repository_checks.json",
+    "evidence/final_validation.json"
+  ],
+  "updated_existing_files": [
+    "docs/README.md"
+  ],
+  "attachment": {
+    "lines": 885,
+    "sha256": "7035ac2f56bd646a00e2dfd9a6105ca657af85b6353bc4d73505d90bc496c980"
+  },
+  "source_claim_review": "Manual targeted source tracing using anchors S1-S12 and the recorded subsystem review. No line-by-line certification of all generated factories; no new Max UI/render/native build/test/benchmark. Proposals and retained test dates remain labelled.",
+  "restrictions": {
+    "git_used": false,
+    "subagents_used": false,
+    "production_edits": false,
+    "new_max_session": false,
+    "new_render": false,
+    "new_build": false,
+    "new_native_test_run": false,
+    "new_benchmark": false,
+    "provider_selected": false,
+    "licensing_implemented": false
+  },
+  "document_hashes": [
+    {
+      "path": "docs/Product_Commercialization_Playbook_2026-09-30/00_Master_Checklist.md",
+      "bytes": 3728,
+      "sha256": "1980d2a728c931bdeda59478133081f088c771bbf1541bd6df46d4399a004c3d"
+    },
+    {
+      "path": "docs/Product_Commercialization_Playbook_2026-09-30/01_Understand_the_Current_Product.md",
+      "bytes": 5802,
+      "sha256": "5e787b0e7330186a6a86a7a670851cf299c57b337314b24946f2fc2b9aae1a4c"
+    },
+    {
+      "path": "docs/Product_Commercialization_Playbook_2026-09-30/02_Manual_Product_Walkthrough.md",
+      "bytes": 18557,
+      "sha256": "61eceaff2fbe796ba489a9512809ee263ef4c18c2660c4bc553c7bbcae8a2ba0"
+    },
+    {
+      "path": "docs/Product_Commercialization_Playbook_2026-09-30/03_Product_Feature_Inventory.md",
+      "bytes": 15606,
+      "sha256": "8009b908dd33e1db3fd2c687d08a36d91e496d40ed5ef63bb528bb9a3f4226fe"
+    },
+    {
+      "path": "docs/Product_Commercialization_Playbook_2026-09-30/04_Problems_and_Missing_Pieces.md",
+      "bytes": 8043,
+      "sha256": "1e9f568f0bed681fc4866e0216a2086f9dd668954807573af60e789d996113ec"
+    },
+    {
+      "path": "docs/Product_Commercialization_Playbook_2026-09-30/05_Define_the_Product.md",
+      "bytes": 5387,
+      "sha256": "c0f091b8e4a584ea6510b15cac655a9b5a8d96f9d922af678285ba5569010956"
+    },
+    {
+      "path": "docs/Product_Commercialization_Playbook_2026-09-30/06_Competitor_and_Positioning_Review.md",
+      "bytes": 6522,
+      "sha256": "6f1a3a5192ce3ca678f10c75666cddc4e66644fc4faec0f5c5b6afe8906a6140"
+    },
+    {
+      "path": "docs/Product_Commercialization_Playbook_2026-09-30/07_Product_Support_Matrix.md",
+      "bytes": 9237,
+      "sha256": "04520a77eb35e2055107c6a65908ba95f4cc60029c3ae3db277c179a31149ee4"
+    },
+    {
+      "path": "docs/Product_Commercialization_Playbook_2026-09-30/08_Demo_and_Benchmark_Scenes.md",
+      "bytes": 8216,
+      "sha256": "d3b6fc7f9b722e2ce95b1b02de8267d300121cf81a40e28d258629068bdef718"
+    },
+    {
+      "path": "docs/Product_Commercialization_Playbook_2026-09-30/09_Commercial_and_Licensing_Decisions.md",
+      "bytes": 11322,
+      "sha256": "aecd91c7513d923ac0314d4da4c32a1b32b550ebdeef899fafc9069a9a1fb866"
+    },
+    {
+      "path": "docs/Product_Commercialization_Playbook_2026-09-30/10_Licensing_Technical_Preparation.md",
+      "bytes": 11195,
+      "sha256": "738d3680bae98817f3b96d19af064b2c644e09998a1a2375a56321b90d000a4e"
+    },
+    {
+      "path": "docs/Product_Commercialization_Playbook_2026-09-30/11_Licensing_Provider_Evaluation.md",
+      "bytes": 9169,
+      "sha256": "d152377f650d03d0b9c2e1186c94554ad8eda77109e706ddadc9a474fdfd1df9"
+    },
+    {
+      "path": "docs/Product_Commercialization_Playbook_2026-09-30/12_Beta_Readiness.md",
+      "bytes": 8736,
+      "sha256": "79c1e3ee99a27404aea1125595b02d3054cd75a148610d39da0bceedc50028d3"
+    },
+    {
+      "path": "docs/Product_Commercialization_Playbook_2026-09-30/13_Presentation_Asset_Production.md",
+      "bytes": 9280,
+      "sha256": "0286d9521c72bd0178db500ccff5006b4296e1ad3a3aeb4c40492fc5638b615f"
+    },
+    {
+      "path": "docs/Product_Commercialization_Playbook_2026-09-30/14_Landing_Page_Content_Plan.md",
+      "bytes": 9361,
+      "sha256": "096b1b76f723e91bb0abe35d12e04b716777b7a132621394efb2eb92f1f59020"
+    },
+    {
+      "path": "docs/Product_Commercialization_Playbook_2026-09-30/15_Pricing_and_Offer_Preparation.md",
+      "bytes": 8453,
+      "sha256": "7ee23d6b98b9a58e50801dff5764934f89d981ed94b856bdd8f33b4d3740a084"
+    },
+    {
+      "path": "docs/Product_Commercialization_Playbook_2026-09-30/16_Commercial_Launch_Readiness.md",
+      "bytes": 10755,
+      "sha256": "73526a9c17cacb7627f53ceb9760c82fad0a8a41683e2c17b278147c3210f7aa"
+    },
+    {
+      "path": "docs/Product_Commercialization_Playbook_2026-09-30/98_Repository_Review_and_Deliverables.md",
+      "bytes": 10149,
+      "sha256": "d1d038f61546de379b1a1b1dee5b5a9caa2a5de4e312937b8755954239a06011"
+    },
+    {
+      "path": "docs/Product_Commercialization_Playbook_2026-09-30/99_Progress_Log.md",
+      "bytes": 4098,
+      "sha256": "b8dab694785a3831f5f64a583dda370a8eae237b9548daaeb75aab6c243f29fc"
+    },
+    {
+      "path": "docs/Product_Commercialization_Playbook_2026-09-30/Landing_Page_Claims_Matrix.md",
+      "bytes": 8520,
+      "sha256": "01a171a0df1194fafb7707dabfa490187903adcb79777b18cd8614d70863ee47"
+    },
+    {
+      "path": "docs/Product_Commercialization_Playbook_2026-09-30/README.md",
+      "bytes": 7655,
+      "sha256": "b069d6d62e3e2a1e3bf00ecf6e42a08b6338cf6075c43e63b46f41bffdab9142"
+    },
+    {
+      "path": "docs/Product_Commercialization_Playbook_2026-09-30/evidence/input_snapshot.json",
+      "bytes": 47176,
+      "sha256": "50e005fb8a229f1a0dab254edf723f4c80ba17ba209d44575674a7882039dce5"
+    },
+    {
+      "path": "docs/Product_Commercialization_Playbook_2026-09-30/evidence/repository_checks.json",
+      "bytes": 10857,
+      "sha256": "2b85e37368d9055f59e8d7e4b5b6e10fabca813983e9fffaba8290d797c0983c"
+    },
+    {
+      "path": "docs/README.md",
+      "bytes": 5226,
+      "sha256": "30a7f3fe2d7451d9609a2897b14486414fcae4a5cb839bbac85bf65050cf84e8"
+    }
+  ],
+  "self_hash_note": "This final validation file excludes its own hash to avoid a circular manifest."
+}

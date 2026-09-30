@@ -8,6 +8,12 @@ Read the [executive assessment](Product_Strategy_2026-09-29/01_Executive_Assessm
 
 The strategy package distinguishes source findings, completed tests, vendor capabilities, and proposed work. Its [evidence ledger](Product_Strategy_2026-09-29/02_Current_System_and_Evidence.md) records the current limits; its [documentation governance](Product_Strategy_2026-09-29/14_Documentation_Governance.md) reconciles older statements without rewriting historical reference packages.
 
+## Personal product commercialization playbook
+
+[Commercialization playbook — 2026-09-30](Product_Commercialization_Playbook_2026-09-30/README.md) provides 16 practical stages for understanding the installed build, recording manual results, choosing product scope, preparing licensing, qualifying support, producing demos/media, and preparing beta, pricing and launch. Start with [Stage 01](Product_Commercialization_Playbook_2026-09-30/01_Understand_the_Current_Product.md) and use its [master checklist](Product_Commercialization_Playbook_2026-09-30/00_Master_Checklist.md) and [progress log](Product_Commercialization_Playbook_2026-09-30/99_Progress_Log.md).
+
+This is an operational layer under the governing product strategy above. Its [repository review and exact deliverables](Product_Commercialization_Playbook_2026-09-30/98_Repository_Review_and_Deliverables.md) distinguish current source, retained tests, fresh package checks and proposed work. Creating the playbook does not qualify the product or approve a licensing provider, price, public claim or launch.
+
 ## Install the Max 2027 test build
 
 See [Max 2027 installation and quick start](Max_2027_Installation.md) for the compiled MZP installers, usage steps, build commands and exact verification status. This subsequent compatibility build passed native tests and a Max 2027.1 batch smoke test. The dated documentation packages below preserve their original audit/planning status; performance optimizations remain planned work.
