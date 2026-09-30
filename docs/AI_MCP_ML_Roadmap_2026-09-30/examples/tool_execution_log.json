@@ -1,0 +1,55 @@
+{
+  "schema_version": "0.1.0",
+  "example_only": true,
+  "evidence_status": "PROPOSED",
+  "provenance": "Synthetic contract illustration; no Max operation, model inference, measurement, artist session or training occurred.",
+  "record_type": "tool_execution_log",
+  "record_id": "execution-fixture-001",
+  "session_id": "fixture-session-001",
+  "project_group": "fixture-project-001",
+  "scene_epoch": "fixture-scene-001",
+  "operation_id": "operation-fixture-001",
+  "tool": "scatter.apply_plan",
+  "request": {
+    "plan_id": "plan-fixture-001",
+    "validation_id": "validation-fixture-001",
+    "approval_receipt_id": "approval-fixture-001",
+    "idempotency_key": "idempotency-fixture-001",
+    "canonical_plan_sha256": null,
+    "expected_scene_revision": 12
+  },
+  "started_at": null,
+  "finished_at": null,
+  "duration_ms": null,
+  "model_usage": null,
+  "result": {
+    "status": "succeeded",
+    "scene_revision_before": 12,
+    "scene_revision_after": 13,
+    "controller_id": "controller-fixture-001",
+    "generation_id": "generation-fixture-001",
+    "requested_count": 3,
+    "emitted_count": 3,
+    "displayed_instance_count": 3,
+    "cap_applied": false,
+    "stale": false,
+    "affected_owned_ids": [
+      "controller-fixture-001",
+      "mask-fixture-trees",
+      "mask-fixture-shrubs",
+      "mask-fixture-low"
+    ],
+    "error": null,
+    "recovery": {
+      "attempted": false,
+      "outcome": "not_needed_in_synthetic_example"
+    }
+  },
+  "privacy": {
+    "store": "local_only",
+    "contains_credentials": false,
+    "upload_allowed": false,
+    "training_allowed": false
+  }
+}
+

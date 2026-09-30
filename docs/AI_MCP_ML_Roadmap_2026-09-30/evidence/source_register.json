@@ -1,0 +1,176 @@
+{
+  "review_date": "2026-09-30",
+  "method": "Official OpenAI documentation search/fetch and primary-source web research; no model execution.",
+  "sources": [
+    {
+      "id": "OAI-01",
+      "title": "GPT-6 Astra model",
+      "url": "https://developers.openai.com/api/docs/models/gpt-6-astra",
+      "retrieved": "2026-09-30",
+      "source_type": "primary",
+      "scope": "Documented candidate input/output and tool capabilities; no Cyrus evaluation.",
+      "local_model_test": false
+    },
+    {
+      "id": "OAI-02",
+      "title": "Images and vision",
+      "url": "https://developers.openai.com/api/docs/guides/images-vision",
+      "retrieved": "2026-09-30",
+      "source_type": "primary",
+      "scope": "Documented vision limitations, including spatial localization and approximate counts.",
+      "local_model_test": false
+    },
+    {
+      "id": "OAI-03",
+      "title": "Structured outputs",
+      "url": "https://developers.openai.com/api/docs/guides/structured-outputs",
+      "retrieved": "2026-09-30",
+      "source_type": "primary",
+      "scope": "Schema-constrained generation; semantic validation remains an application responsibility.",
+      "local_model_test": false
+    },
+    {
+      "id": "OAI-04",
+      "title": "Grounded spatial reasoning layouts",
+      "url": "https://developers.openai.com/cookbook/examples/multimodal/grounded_spatial_reasoning_layouts",
+      "retrieved": "2026-09-30",
+      "source_type": "primary",
+      "scope": "Relevant structured-layout experiment, not outdoor/Cyrus product evidence.",
+      "local_model_test": false
+    },
+    {
+      "id": "OAI-05",
+      "title": "API data controls",
+      "url": "https://developers.openai.com/api/docs/guides/your-data",
+      "retrieved": "2026-09-30",
+      "source_type": "primary",
+      "scope": "Training use, retention and endpoint/feature controls differ.",
+      "local_model_test": false
+    },
+    {
+      "id": "ADS-01",
+      "title": "Max 2027 Python threading",
+      "url": "https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-Python/files/MAXDEV_Python_threading_html.html",
+      "retrieved": "2026-09-30",
+      "source_type": "primary",
+      "scope": "Worker-thread pymxs interaction unsupported; mxstoken deprecated.",
+      "local_model_test": false
+    },
+    {
+      "id": "ADS-02",
+      "title": "Max 2027 viewport drawing",
+      "url": "https://help.autodesk.com/cloudhelp/2027/ENU/MAXScript-Help/files/MAXScript-Tools-and-Interaction/Interacting-with-the-3ds-Max/Viewports/GUID-1B088FF0-6A36-420E-9F37-F0DBE9FB2676.html",
+      "retrieved": "2026-09-30",
+      "source_type": "primary",
+      "scope": "Viewport bitmap API; no Cyrus capture wrapper.",
+      "local_model_test": false
+    },
+    {
+      "id": "ADS-03",
+      "title": "Max 2027 viewport information",
+      "url": "https://help.autodesk.com/cloudhelp/2027/ENU/MAXScript-Help/files/MAXScript-Tools-and-Interaction/Interacting-with-the-3ds-Max/Viewports/GUID-8AA71F9E-F4F0-4437-A44E-9683619E89DE.html",
+      "retrieved": "2026-09-30",
+      "source_type": "primary",
+      "scope": "Viewport/camera information and capture APIs.",
+      "local_model_test": false
+    },
+    {
+      "id": "MCP-01",
+      "title": "MCP transport overview",
+      "url": "https://modelcontextprotocol.io/specification/2026-07-28/basic/transports",
+      "retrieved": "2026-09-30",
+      "source_type": "primary",
+      "scope": "Latest redirect resolved to 2026-07-28; stdio and Streamable HTTP bindings.",
+      "local_model_test": false
+    },
+    {
+      "id": "MCP-02",
+      "title": "MCP tools",
+      "url": "https://modelcontextprotocol.io/specification/2026-07-28/server/tools",
+      "retrieved": "2026-09-30",
+      "source_type": "primary",
+      "scope": "Tool schemas, structured results and annotation trust.",
+      "local_model_test": false
+    },
+    {
+      "id": "MCP-03",
+      "title": "MCP Streamable HTTP",
+      "url": "https://modelcontextprotocol.io/specification/2026-07-28/basic/transports/streamable-http",
+      "retrieved": "2026-09-30",
+      "source_type": "primary",
+      "scope": "HTTP transport requirements, subject to chosen protocol/client qualification.",
+      "local_model_test": false
+    },
+    {
+      "id": "MCP-04",
+      "title": "MCP security best practices",
+      "url": "https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/security_best_practices",
+      "retrieved": "2026-09-30",
+      "source_type": "primary",
+      "scope": "Authentication, network and scope threats; not a Cyrus security certification.",
+      "local_model_test": false
+    },
+    {
+      "id": "ML-01",
+      "title": "SAM 3",
+      "url": "https://github.com/facebookresearch/sam3",
+      "retrieved": "2026-09-30",
+      "source_type": "primary",
+      "scope": "Promptable segmentation; checkpoint/license/domain review required.",
+      "local_model_test": false
+    },
+    {
+      "id": "ML-02",
+      "title": "Depth Anything 3",
+      "url": "https://github.com/ByteDance-Seed/Depth-Anything-3",
+      "retrieved": "2026-09-30",
+      "source_type": "primary",
+      "scope": "Depth/pose variants; licenses vary by checkpoint; no arbitrary-image metric guarantee.",
+      "local_model_test": false
+    },
+    {
+      "id": "ML-03",
+      "title": "DINOv3 model card",
+      "url": "https://github.com/facebookresearch/dinov3/blob/main/MODEL_CARD.md",
+      "retrieved": "2026-09-30",
+      "source_type": "primary",
+      "scope": "Frozen features, retrieval and simple downstream heads.",
+      "local_model_test": false
+    },
+    {
+      "id": "ML-04",
+      "title": "DINOv3 license",
+      "url": "https://github.com/facebookresearch/dinov3/blob/main/LICENSE.md",
+      "retrieved": "2026-09-30",
+      "source_type": "primary",
+      "scope": "Separate model/material license; no commercial compatibility approval made.",
+      "local_model_test": false
+    },
+    {
+      "id": "ML-05",
+      "title": "LoRA",
+      "url": "https://arxiv.org/abs/2106.09685",
+      "retrieved": "2026-09-30",
+      "source_type": "primary",
+      "scope": "Parameter-efficient adaptation; no automatic dataset-size guarantee.",
+      "local_model_test": false
+    },
+    {
+      "id": "ML-06",
+      "title": "ATISS",
+      "url": "https://arxiv.org/abs/2110.03675",
+      "retrieved": "2026-09-30",
+      "source_type": "primary",
+      "scope": "Indoor structured-layout research; planting transfer not established.",
+      "local_model_test": false
+    }
+  ],
+  "failed_or_unused": [
+    {
+      "url": "https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-Developer/files/best_practices/thread_safety.html",
+      "reason": "Not accessible through browser tool; not used as verified evidence."
+    }
+  ],
+  "limits": "External documented capabilities are not Cyrus test results. Dynamic facts and licenses require recheck before implementation."
+}
+

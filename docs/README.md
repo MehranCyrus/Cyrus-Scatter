@@ -14,6 +14,12 @@ The strategy package distinguishes source findings, completed tests, vendor capa
 
 This is an operational layer under the governing product strategy above. Its [repository review and exact deliverables](Product_Commercialization_Playbook_2026-09-30/98_Repository_Review_and_Deliverables.md) distinguish current source, retained tests, fresh package checks and proposed work. Creating the playbook does not qualify the product or approve a licensing provider, price, public claim or launch.
 
+## Future AI-assisted design research
+
+[AI, MCP and ML roadmap — 2026-09-30](AI_MCP_ML_Roadmap_2026-09-30/README.md) evaluates reference-assisted scatter design against the current codebase and current primary sources. It defines a provider-neutral automation API, five proposed MCP tools, a bounded general-model prototype, versioned data examples, ten experiments and a phased implementation backlog.
+
+This is a future product/technology research track under the governing strategy. No AI/MCP system, custom model, telemetry or production change is implemented by this package. Start with its [executive judgment](AI_MCP_ML_Roadmap_2026-09-30/00_Executive_Summary.md) and [current automation audit](AI_MCP_ML_Roadmap_2026-09-30/01_Current_Cyrus_Automation_Audit.md); the existing Baseline and Trust milestone, commercialization playbook and performance roadmap retain their roles.
+
 ## Install the Max 2027 test build
 
 See [Max 2027 installation and quick start](Max_2027_Installation.md) for the compiled MZP installers, usage steps, build commands and exact verification status. This subsequent compatibility build passed native tests and a Max 2027.1 batch smoke test. The dated documentation packages below preserve their original audit/planning status; performance optimizations remain planned work.

@@ -1,0 +1,71 @@
+{
+  "schema_version": "0.1.0",
+  "example_only": true,
+  "evidence_status": "PROPOSED",
+  "provenance": "Synthetic contract illustration; no Max operation, model inference, measurement, artist session or training occurred.",
+  "record_type": "training_sample",
+  "record_id": "training-fixture-001",
+  "session_id": "fixture-session-001",
+  "project_group": "fixture-project-001",
+  "scene_epoch": "fixture-scene-001",
+  "task": "pairwise_candidate_preference",
+  "task_version": "0.1.0",
+  "training_eligible": false,
+  "exclusion_reason": "Synthetic documentation fixture with no collected consent or observed artist preference.",
+  "lineage": {
+    "context_record_id": "context-fixture-001",
+    "plan_record_id": "plan-fixture-001",
+    "layout_record_id": "layout-fixture-001",
+    "correction_record_id": "correction-fixture-001",
+    "dataset_manifest_id": null,
+    "feature_version": "fixture-feature-v1",
+    "candidate_generator_version": "fixture-manual-candidates-v1"
+  },
+  "split": {
+    "group_key": "fixture-project-001",
+    "studio_group": "fixture-studio-001",
+    "partition": "unassigned_do_not_train",
+    "group_all_cameras_edits_candidates": true
+  },
+  "input": {
+    "scene_revision": 13,
+    "site_id": "site-fixture-001",
+    "zone_id": "zone-trees",
+    "source_id": "source-tree",
+    "candidate_positions_m": [
+      [
+        4,
+        10,
+        0
+      ],
+      [
+        5,
+        10,
+        0
+      ]
+    ],
+    "source_footprint_radius_m": 1,
+    "brief": "Position one tree within the confirmed belt.",
+    "feature_availability": "pre_edit_only",
+    "reference_embedding": null
+  },
+  "label": {
+    "type": "pairwise",
+    "preferred_candidate_index": 1,
+    "rejected_candidate_index": 0,
+    "label_method": "synthetic_explicit_move_reason",
+    "ambiguity": "illustrative_not_observed",
+    "not_a_probability": true
+  },
+  "sampling": {
+    "selection_propensity": null,
+    "randomized": false,
+    "independent_project_example": false
+  },
+  "permissions": {
+    "external_upload": false,
+    "studio_training": false,
+    "global_training": false
+  }
+}
+

@@ -1,0 +1,271 @@
+{
+  "schema_version": "0.1.0",
+  "example_only": true,
+  "evidence_status": "PROPOSED",
+  "provenance": "Synthetic contract illustration; no Max operation, model inference, measurement, artist session or training occurred.",
+  "record_type": "design_plan",
+  "record_id": "plan-fixture-001",
+  "session_id": "fixture-session-001",
+  "project_group": "fixture-project-001",
+  "scene_epoch": "fixture-scene-001",
+  "plan_id": "plan-fixture-001",
+  "based_on": {
+    "context_id": "context-fixture-001",
+    "scope_id": "scope-fixture-001",
+    "scene_epoch": "fixture-scene-001",
+    "scene_revision": 12
+  },
+  "intent": "Illustrate a three-layer proposal with a protected central lawn. Counts are deliberately tiny for a complete readable fixture.",
+  "required_capabilities": [
+    "owned_controller_create",
+    "count",
+    "seed",
+    "source_weights",
+    "uniform_scale_yaw",
+    "confirmed_regions",
+    "footprint_validation"
+  ],
+  "target": {
+    "mode": "create_owned_controller",
+    "proposed_name": "Fixture landscape",
+    "existing_controller_id": null
+  },
+  "assets": [
+    {
+      "source_id": "source-tree",
+      "category": "tree"
+    },
+    {
+      "source_id": "source-shrub",
+      "category": "shrub"
+    },
+    {
+      "source_id": "source-low",
+      "category": "ground_cover"
+    }
+  ],
+  "zones": [
+    {
+      "zone_id": "zone-trees",
+      "geometry_source": "confirmed_context_region"
+    },
+    {
+      "zone_id": "zone-shrubs",
+      "geometry_source": "confirmed_context_region"
+    },
+    {
+      "zone_id": "zone-low",
+      "geometry_source": "confirmed_context_region"
+    }
+  ],
+  "layers": [
+    {
+      "id": "layer-trees",
+      "role": "tree",
+      "zone_ids": [
+        "zone-trees"
+      ],
+      "sources": [
+        {
+          "source_id": "source-tree",
+          "weight": 1
+        }
+      ],
+      "population": {
+        "mode": "count",
+        "count": 1,
+        "underfill_policy": "reject"
+      },
+      "seed": 42,
+      "transforms": {
+        "uniform_scale": [
+          1,
+          1
+        ],
+        "yaw_degrees": [
+          0,
+          0
+        ],
+        "align_to_normal": true,
+        "movement_m": [
+          0,
+          0,
+          0
+        ],
+        "project_to_surface": true
+      },
+      "source_assignment": {
+        "mode": "random",
+        "spatial_grouping_enabled": false,
+        "group_size_m": null
+      },
+      "edge_placement": {
+        "enabled": false
+      },
+      "falloff": {
+        "enabled": false
+      },
+      "collision": {
+        "enabled": false
+      },
+      "relax": {
+        "enabled": false
+      }
+    },
+    {
+      "id": "layer-shrubs",
+      "role": "shrub",
+      "zone_ids": [
+        "zone-shrubs"
+      ],
+      "sources": [
+        {
+          "source_id": "source-shrub",
+          "weight": 1
+        }
+      ],
+      "population": {
+        "mode": "count",
+        "count": 1,
+        "underfill_policy": "reject"
+      },
+      "seed": 143,
+      "transforms": {
+        "uniform_scale": [
+          1,
+          1
+        ],
+        "yaw_degrees": [
+          0,
+          0
+        ],
+        "align_to_normal": true,
+        "movement_m": [
+          0,
+          0,
+          0
+        ],
+        "project_to_surface": true
+      },
+      "source_assignment": {
+        "mode": "random",
+        "spatial_grouping_enabled": false,
+        "group_size_m": null
+      },
+      "edge_placement": {
+        "enabled": false
+      },
+      "falloff": {
+        "enabled": false
+      },
+      "collision": {
+        "enabled": false
+      },
+      "relax": {
+        "enabled": false
+      }
+    },
+    {
+      "id": "layer-low",
+      "role": "ground_cover",
+      "zone_ids": [
+        "zone-low"
+      ],
+      "sources": [
+        {
+          "source_id": "source-low",
+          "weight": 1
+        }
+      ],
+      "population": {
+        "mode": "count",
+        "count": 1,
+        "underfill_policy": "reject"
+      },
+      "seed": 244,
+      "transforms": {
+        "uniform_scale": [
+          1,
+          1
+        ],
+        "yaw_degrees": [
+          0,
+          0
+        ],
+        "align_to_normal": true,
+        "movement_m": [
+          0,
+          0,
+          0
+        ],
+        "project_to_surface": true
+      },
+      "source_assignment": {
+        "mode": "random",
+        "spatial_grouping_enabled": false,
+        "group_size_m": null
+      },
+      "edge_placement": {
+        "enabled": false
+      },
+      "falloff": {
+        "enabled": false
+      },
+      "collision": {
+        "enabled": false
+      },
+      "relax": {
+        "enabled": false
+      }
+    }
+  ],
+  "relationships": [],
+  "constraints": {
+    "locked_zone_ids": [
+      "zone-lawn"
+    ],
+    "excluded_zone_ids": [
+      "zone-path"
+    ],
+    "preserve_manual_objects": true,
+    "keep_footprints_inside_planting_zones": true,
+    "minimum_footprint_clearance_m": 0.1,
+    "hard_constraints_may_be_relaxed": false
+  },
+  "hero_placements": [],
+  "unknowns": [
+    "Reference-image interpretation is omitted from this tiny schema fixture.",
+    "No real asset, camera capture or host state was inspected for these synthetic records."
+  ],
+  "assumptions": [
+    "All regions and dimensions are synthetic and horizontal.",
+    "Footprint circles are conservative for the synthetic assets."
+  ],
+  "confidence": {
+    "level": "medium",
+    "calibrated": false,
+    "basis": "Illustrative field only; no model assessment occurred."
+  },
+  "budgets": {
+    "max_total_requested_instances": 2000,
+    "max_applied_candidates": 2,
+    "max_tool_calls": 24,
+    "max_captures": 2,
+    "max_reasoning_responses": 3,
+    "max_created_scene_nodes": 4
+  },
+  "refinement_policy": {
+    "max_additional_applications": 1,
+    "requires_local_approval": true,
+    "allowed_layer_fields": [
+      "population.count"
+    ],
+    "count_range_per_layer": [
+      1,
+      2
+    ],
+    "may_change_seed": false,
+    "may_add_sources_or_regions": false
+  }
+}
+

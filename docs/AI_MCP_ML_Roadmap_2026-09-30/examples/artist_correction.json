@@ -1,0 +1,58 @@
+{
+  "schema_version": "0.1.0",
+  "example_only": true,
+  "evidence_status": "PROPOSED",
+  "provenance": "Synthetic contract illustration; no Max operation, model inference, measurement, artist session or training occurred.",
+  "record_type": "artist_correction",
+  "record_id": "correction-fixture-001",
+  "session_id": "fixture-session-001",
+  "project_group": "fixture-project-001",
+  "scene_epoch": "fixture-scene-001",
+  "controller_id": "controller-fixture-001",
+  "plan_id": "plan-fixture-001",
+  "before": {
+    "layout_record_id": "layout-fixture-001",
+    "generation_id": "generation-fixture-001",
+    "scene_revision": 13
+  },
+  "after": {
+    "generation_id": "generation-fixture-001-edit-001",
+    "scene_revision": 14,
+    "complete_state_artifact_id": null
+  },
+  "event": {
+    "type": "move",
+    "instance_id": "instance-tree-001",
+    "layer_id": "layer-trees",
+    "source_id": "source-tree",
+    "identity_mapping": "explicit_fixture_correspondence",
+    "from_position_m": [
+      4,
+      10,
+      0
+    ],
+    "to_position_m": [
+      5,
+      10,
+      0
+    ],
+    "delta_m": [
+      1,
+      0,
+      0
+    ],
+    "reason_code": "composition",
+    "reason_text": "Synthetic example: prefer the tree slightly farther into the belt.",
+    "reason_source": "synthetic_explicit_label",
+    "preference": "after_preferred",
+    "scope_of_preference": "this_brief_and_site_only"
+  },
+  "accepted_at": null,
+  "consent": {
+    "local_operational_record": false,
+    "studio_training": false,
+    "global_training": false,
+    "external_upload": false
+  }
+}
+

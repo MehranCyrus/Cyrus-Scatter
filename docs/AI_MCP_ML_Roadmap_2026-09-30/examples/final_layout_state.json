@@ -1,0 +1,508 @@
+{
+  "schema_version": "0.1.0",
+  "example_only": true,
+  "evidence_status": "PROPOSED",
+  "provenance": "Synthetic contract illustration; no Max operation, model inference, measurement, artist session or training occurred.",
+  "record_type": "final_layout_state",
+  "record_id": "layout-fixture-001",
+  "session_id": "fixture-session-001",
+  "project_group": "fixture-project-001",
+  "scene_epoch": "fixture-scene-001",
+  "plan_id": "plan-fixture-001",
+  "operation_id": "operation-fixture-001",
+  "controller_id": "controller-fixture-001",
+  "generation_id": "generation-fixture-001",
+  "scene_revision": 13,
+  "build": {
+    "cyrus_manifest_sha256": null,
+    "host_year": 2027,
+    "host_full_version": null,
+    "automation_capability_version": "prototype-proposal-0.1",
+    "note": "No running build was queried for this example."
+  },
+  "units": {
+    "length": "m",
+    "area": "m2",
+    "angles": "degrees",
+    "meters_per_system_unit": 0.01,
+    "world_frame": "right_handed_Z_up"
+  },
+  "complete": true,
+  "output_sha256": null,
+  "counts": {
+    "requested": 3,
+    "emitted": 3,
+    "displayed_instances": 3,
+    "sampled_preview_points": null,
+    "cap_applied": false
+  },
+  "effective_configuration": {
+    "site_id": "site-fixture-001",
+    "layers": [
+      {
+        "id": "layer-trees",
+        "role": "tree",
+        "zone_ids": [
+          "zone-trees"
+        ],
+        "sources": [
+          {
+            "source_id": "source-tree",
+            "weight": 1
+          }
+        ],
+        "population": {
+          "mode": "count",
+          "count": 1,
+          "underfill_policy": "reject"
+        },
+        "seed": 42,
+        "transforms": {
+          "uniform_scale": [
+            1,
+            1
+          ],
+          "yaw_degrees": [
+            0,
+            0
+          ],
+          "align_to_normal": true,
+          "movement_m": [
+            0,
+            0,
+            0
+          ],
+          "project_to_surface": true
+        },
+        "source_assignment": {
+          "mode": "random",
+          "spatial_grouping_enabled": false,
+          "group_size_m": null
+        },
+        "edge_placement": {
+          "enabled": false
+        },
+        "falloff": {
+          "enabled": false
+        },
+        "collision": {
+          "enabled": false
+        },
+        "relax": {
+          "enabled": false
+        }
+      },
+      {
+        "id": "layer-shrubs",
+        "role": "shrub",
+        "zone_ids": [
+          "zone-shrubs"
+        ],
+        "sources": [
+          {
+            "source_id": "source-shrub",
+            "weight": 1
+          }
+        ],
+        "population": {
+          "mode": "count",
+          "count": 1,
+          "underfill_policy": "reject"
+        },
+        "seed": 143,
+        "transforms": {
+          "uniform_scale": [
+            1,
+            1
+          ],
+          "yaw_degrees": [
+            0,
+            0
+          ],
+          "align_to_normal": true,
+          "movement_m": [
+            0,
+            0,
+            0
+          ],
+          "project_to_surface": true
+        },
+        "source_assignment": {
+          "mode": "random",
+          "spatial_grouping_enabled": false,
+          "group_size_m": null
+        },
+        "edge_placement": {
+          "enabled": false
+        },
+        "falloff": {
+          "enabled": false
+        },
+        "collision": {
+          "enabled": false
+        },
+        "relax": {
+          "enabled": false
+        }
+      },
+      {
+        "id": "layer-low",
+        "role": "ground_cover",
+        "zone_ids": [
+          "zone-low"
+        ],
+        "sources": [
+          {
+            "source_id": "source-low",
+            "weight": 1
+          }
+        ],
+        "population": {
+          "mode": "count",
+          "count": 1,
+          "underfill_policy": "reject"
+        },
+        "seed": 244,
+        "transforms": {
+          "uniform_scale": [
+            1,
+            1
+          ],
+          "yaw_degrees": [
+            0,
+            0
+          ],
+          "align_to_normal": true,
+          "movement_m": [
+            0,
+            0,
+            0
+          ],
+          "project_to_surface": true
+        },
+        "source_assignment": {
+          "mode": "random",
+          "spatial_grouping_enabled": false,
+          "group_size_m": null
+        },
+        "edge_placement": {
+          "enabled": false
+        },
+        "falloff": {
+          "enabled": false
+        },
+        "collision": {
+          "enabled": false
+        },
+        "relax": {
+          "enabled": false
+        }
+      }
+    ],
+    "relationships": [],
+    "constraints": {
+      "locked_zone_ids": [
+        "zone-lawn"
+      ],
+      "excluded_zone_ids": [
+        "zone-path"
+      ],
+      "preserve_manual_objects": true,
+      "keep_footprints_inside_planting_zones": true,
+      "minimum_footprint_clearance_m": 0.1,
+      "hard_constraints_may_be_relaxed": false
+    },
+    "hero_placements": [],
+    "compiled_regions": [
+      {
+        "id": "mask-fixture-trees",
+        "layer_id": "layer-trees",
+        "source_region_id": "zone-trees",
+        "inset_m": 1.1,
+        "polygon_m": [
+          [
+            3.1,
+            8.1,
+            0
+          ],
+          [
+            6.9,
+            8.1,
+            0
+          ],
+          [
+            6.9,
+            16.9,
+            0
+          ],
+          [
+            3.1,
+            16.9,
+            0
+          ]
+        ],
+        "owner_controller_id": "controller-fixture-001",
+        "rule": "convex_inset_by_max_scaled_footprint_plus_clearance",
+        "storage": "owned_closed_shape_bound_to_existing_include_area_reference"
+      },
+      {
+        "id": "mask-fixture-shrubs",
+        "layer_id": "layer-shrubs",
+        "source_region_id": "zone-shrubs",
+        "inset_m": 0.6,
+        "polygon_m": [
+          [
+            10.6,
+            3.6,
+            0
+          ],
+          [
+            19.4,
+            3.6,
+            0
+          ],
+          [
+            19.4,
+            5.4,
+            0
+          ],
+          [
+            10.6,
+            5.4,
+            0
+          ]
+        ],
+        "owner_controller_id": "controller-fixture-001",
+        "rule": "convex_inset_by_max_scaled_footprint_plus_clearance",
+        "storage": "owned_closed_shape_bound_to_existing_include_area_reference"
+      },
+      {
+        "id": "mask-fixture-low",
+        "layer_id": "layer-low",
+        "source_region_id": "zone-low",
+        "inset_m": 0.3,
+        "polygon_m": [
+          [
+            22.3,
+            14.3,
+            0
+          ],
+          [
+            27.7,
+            14.3,
+            0
+          ],
+          [
+            27.7,
+            17.7,
+            0
+          ],
+          [
+            22.3,
+            17.7,
+            0
+          ]
+        ],
+        "owner_controller_id": "controller-fixture-001",
+        "rule": "convex_inset_by_max_scaled_footprint_plus_clearance",
+        "storage": "owned_closed_shape_bound_to_existing_include_area_reference"
+      }
+    ]
+  },
+  "instances": [
+    {
+      "id": "instance-tree-001",
+      "layer_id": "layer-trees",
+      "source_id": "source-tree",
+      "position_m": [
+        4,
+        10,
+        0
+      ],
+      "rotation_degrees": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "world_from_source_4x4_rows": [
+        [
+          1,
+          0,
+          0,
+          4
+        ],
+        [
+          0,
+          1,
+          0,
+          10
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "assignment_cluster_id": null,
+      "identity_scope": "session_and_generation"
+    },
+    {
+      "id": "instance-shrub-001",
+      "layer_id": "layer-shrubs",
+      "source_id": "source-shrub",
+      "position_m": [
+        15,
+        4,
+        0
+      ],
+      "rotation_degrees": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "world_from_source_4x4_rows": [
+        [
+          1,
+          0,
+          0,
+          15
+        ],
+        [
+          0,
+          1,
+          0,
+          4
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "assignment_cluster_id": null,
+      "identity_scope": "session_and_generation"
+    },
+    {
+      "id": "instance-low-001",
+      "layer_id": "layer-low",
+      "source_id": "source-low",
+      "position_m": [
+        25,
+        16,
+        0
+      ],
+      "rotation_degrees": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "world_from_source_4x4_rows": [
+        [
+          1,
+          0,
+          0,
+          25
+        ],
+        [
+          0,
+          1,
+          0,
+          16
+        ],
+        [
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "assignment_cluster_id": null,
+      "identity_scope": "session_and_generation"
+    }
+  ],
+  "observation": {
+    "image_artifact_id": null,
+    "camera": {
+      "viewport_id": "viewport-fixture-top",
+      "projection": "orthographic",
+      "world_from_camera_4x4_rows": [
+        [
+          1,
+          0,
+          0,
+          15
+        ],
+        [
+          0,
+          1,
+          0,
+          10
+        ],
+        [
+          0,
+          0,
+          1,
+          30
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "matrix_convention": "column_vector_translation_last_column",
+      "camera_looks_along_local_axis": "-Z",
+      "orthographic_width_m": 40,
+      "image_width_px": 1536,
+      "image_height_px": 1024,
+      "frame": 0,
+      "color_pipeline": "fixture_unspecified_not_a_capture",
+      "display_mode": "proxy"
+    },
+    "captured_scene_revision": null,
+    "capture_status": "not_captured"
+  },
+  "artist_outcome": {
+    "accepted": null,
+    "rating": null,
+    "notes": "No artist evaluation occurred."
+  },
+  "warnings": []
+}
+

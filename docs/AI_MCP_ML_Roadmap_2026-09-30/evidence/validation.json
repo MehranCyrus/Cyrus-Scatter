@@ -1,0 +1,249 @@
+{
+  "checked_at": "2026-09-30T20:10:26+03:30",
+  "status": "PASS",
+  "scope": "Documentation structure, JSON fixture consistency and filesystem preservation. Not production/model/runtime qualification.",
+  "method": "Python standard library; no dependency installation, builds, Max/native tests, model calls or Git.",
+  "counts": {
+    "new_files": 27,
+    "markdown_files": 18,
+    "json_files": 9,
+    "synthetic_examples": 6,
+    "primary_sources": 18,
+    "local_links_checked": 140,
+    "mermaid_diagrams": 5,
+    "experiment_briefs": 10,
+    "backlog_items": 38,
+    "roadmap_phases": 9,
+    "requested_core_questions_mapped": 21
+  },
+  "preservation": {
+    "baseline_files": 249,
+    "outside_docs_unchanged": 101,
+    "existing_docs_unchanged": 147,
+    "changed_existing_files": [
+      "docs/README.md"
+    ],
+    "missing_existing_files": [],
+    "new_files_outside_package": []
+  },
+  "checks": {
+    "local_links": "PASS",
+    "markdown_fences": "PASS",
+    "unique_section_headings": "PASS",
+    "json_parse_and_synthetic_provenance": "PASS",
+    "record_ids_revisions_capabilities_counts": "PASS",
+    "matrix_translation_convention": "PASS",
+    "fixture_region_insets_and_circular_footprint_clearance": "PASS",
+    "owned_mask_node_ledger_and_budget": "PASS",
+    "correction_delta_and_training_lineage": "PASS",
+    "experiment_required_fields": "PASS",
+    "manifest_and_source_register": "PASS"
+  },
+  "limitations": [
+    "No executable JSON Schema validator or runtime API implemented.",
+    "Footprint checks validate only these simple synthetic fixtures, not Cyrus geometry correctness.",
+    "Mermaid fenced blocks and structure checked; diagrams were not rendered.",
+    "Historical native/Max test evidence was inspected, not rerun.",
+    "Build, distribution and dependency-cache directories are outside the baseline hash scope.",
+    "Validation file excludes its own hash to avoid a self-reference."
+  ],
+  "errors": [],
+  "broken_links": [],
+  "mermaid": [
+    {
+      "file": "01_Current_Cyrus_Automation_Audit.md",
+      "line": 8,
+      "type": "flowchart",
+      "rendered": false
+    },
+    {
+      "file": "04_MCP_and_Automation_Architecture.md",
+      "line": 9,
+      "type": "flowchart",
+      "rendered": false
+    },
+    {
+      "file": "07_Agent_Execution_and_Feedback_Loop.md",
+      "line": 22,
+      "type": "flowchart",
+      "rendered": false
+    },
+    {
+      "file": "08_Data_and_Training_Strategy.md",
+      "line": 44,
+      "type": "flowchart",
+      "rendered": false
+    },
+    {
+      "file": "13_Performance_and_Infrastructure.md",
+      "line": 48,
+      "type": "flowchart",
+      "rendered": false
+    }
+  ],
+  "created_files": [
+    "docs/AI_MCP_ML_Roadmap_2026-09-30/00_Executive_Summary.md",
+    "docs/AI_MCP_ML_Roadmap_2026-09-30/01_Current_Cyrus_Automation_Audit.md",
+    "docs/AI_MCP_ML_Roadmap_2026-09-30/02_AI_Product_Vision_and_Boundaries.md",
+    "docs/AI_MCP_ML_Roadmap_2026-09-30/03_GPT_Astra_vs_Specialized_ML.md",
+    "docs/AI_MCP_ML_Roadmap_2026-09-30/04_MCP_and_Automation_Architecture.md",
+    "docs/AI_MCP_ML_Roadmap_2026-09-30/05_MCP_Tool_Design.md",
+    "docs/AI_MCP_ML_Roadmap_2026-09-30/06_Structured_Design_Plan_Schema.md",
+    "docs/AI_MCP_ML_Roadmap_2026-09-30/07_Agent_Execution_and_Feedback_Loop.md",
+    "docs/AI_MCP_ML_Roadmap_2026-09-30/08_Data_and_Training_Strategy.md",
+    "docs/AI_MCP_ML_Roadmap_2026-09-30/09_Artist_Corrections_and_Learning.md",
+    "docs/AI_MCP_ML_Roadmap_2026-09-30/10_ML_Options_and_Experiments.md",
+    "docs/AI_MCP_ML_Roadmap_2026-09-30/11_Evaluation_and_Benchmarks.md",
+    "docs/AI_MCP_ML_Roadmap_2026-09-30/12_Security_Privacy_and_Studio_Constraints.md",
+    "docs/AI_MCP_ML_Roadmap_2026-09-30/13_Performance_and_Infrastructure.md",
+    "docs/AI_MCP_ML_Roadmap_2026-09-30/14_Product_UX_and_Workflow.md",
+    "docs/AI_MCP_ML_Roadmap_2026-09-30/15_Phased_Implementation_Roadmap.md",
+    "docs/AI_MCP_ML_Roadmap_2026-09-30/16_Risks_Decisions_and_Open_Questions.md",
+    "docs/AI_MCP_ML_Roadmap_2026-09-30/README.md",
+    "docs/AI_MCP_ML_Roadmap_2026-09-30/evidence/input_snapshot.json",
+    "docs/AI_MCP_ML_Roadmap_2026-09-30/evidence/source_register.json",
+    "docs/AI_MCP_ML_Roadmap_2026-09-30/evidence/validation.json",
+    "docs/AI_MCP_ML_Roadmap_2026-09-30/examples/artist_correction.json",
+    "docs/AI_MCP_ML_Roadmap_2026-09-30/examples/design_plan.json",
+    "docs/AI_MCP_ML_Roadmap_2026-09-30/examples/final_layout_state.json",
+    "docs/AI_MCP_ML_Roadmap_2026-09-30/examples/scene_context.json",
+    "docs/AI_MCP_ML_Roadmap_2026-09-30/examples/tool_execution_log.json",
+    "docs/AI_MCP_ML_Roadmap_2026-09-30/examples/training_sample.json"
+  ],
+  "artifact_hashes": [
+    {
+      "path": "docs/AI_MCP_ML_Roadmap_2026-09-30/00_Executive_Summary.md",
+      "bytes": 7749,
+      "sha256": "4f1ee39d1446010c46c2ac386f3ef550b2a5cd7fc6cf6bba6eb54c476e3849e9"
+    },
+    {
+      "path": "docs/AI_MCP_ML_Roadmap_2026-09-30/01_Current_Cyrus_Automation_Audit.md",
+      "bytes": 14081,
+      "sha256": "c3edf1b6ac32a56581fcc52468cf868118f6db28c5bf5313dc79df56375cc9e6"
+    },
+    {
+      "path": "docs/AI_MCP_ML_Roadmap_2026-09-30/02_AI_Product_Vision_and_Boundaries.md",
+      "bytes": 7224,
+      "sha256": "f9e1deee1e37ed806c85986b99c6ff1e264c301cc67b77733f720cd6bfed85b3"
+    },
+    {
+      "path": "docs/AI_MCP_ML_Roadmap_2026-09-30/03_GPT_Astra_vs_Specialized_ML.md",
+      "bytes": 10233,
+      "sha256": "69b006687257373fdff0acdbd183fb10fbf7aa42239c8cf7c660403ad0775adb"
+    },
+    {
+      "path": "docs/AI_MCP_ML_Roadmap_2026-09-30/04_MCP_and_Automation_Architecture.md",
+      "bytes": 10027,
+      "sha256": "42952edd6babdf9766a82018601ecd620049b3159b2eb442f41894a5f0b4af27"
+    },
+    {
+      "path": "docs/AI_MCP_ML_Roadmap_2026-09-30/05_MCP_Tool_Design.md",
+      "bytes": 9411,
+      "sha256": "16582ee9237100fce007d9f3e4497daf84e18ae8e8e9a9efdaba947c5ac0adf5"
+    },
+    {
+      "path": "docs/AI_MCP_ML_Roadmap_2026-09-30/06_Structured_Design_Plan_Schema.md",
+      "bytes": 10694,
+      "sha256": "77c40e531aa6319f9c20bb99d861eb9d4a9676df02f6f9d06dbe33e79ff65164"
+    },
+    {
+      "path": "docs/AI_MCP_ML_Roadmap_2026-09-30/07_Agent_Execution_and_Feedback_Loop.md",
+      "bytes": 7476,
+      "sha256": "afc687c473487e5bb401a6c8e729bec0d32fd6050fe8d23b4f6f6512ac6d4ca3"
+    },
+    {
+      "path": "docs/AI_MCP_ML_Roadmap_2026-09-30/08_Data_and_Training_Strategy.md",
+      "bytes": 8766,
+      "sha256": "6c26a62b89ea4a527f16d879e15fc6fcfe8451edfdfa2830a6a1f3df702e9ddc"
+    },
+    {
+      "path": "docs/AI_MCP_ML_Roadmap_2026-09-30/09_Artist_Corrections_and_Learning.md",
+      "bytes": 6501,
+      "sha256": "5936a428c2ef66c07104d1a1c7585f330f536c7c5b3dc74bacf6e30cfc972905"
+    },
+    {
+      "path": "docs/AI_MCP_ML_Roadmap_2026-09-30/10_ML_Options_and_Experiments.md",
+      "bytes": 12160,
+      "sha256": "20a68e40844355c617d844c02e1995e8acdab9ba3696396b44df2c76063e9e29"
+    },
+    {
+      "path": "docs/AI_MCP_ML_Roadmap_2026-09-30/11_Evaluation_and_Benchmarks.md",
+      "bytes": 14399,
+      "sha256": "1a255e8f251bc8f44deddaff8bdc2dbcd56977c5ba511bbc831947f42e41b435"
+    },
+    {
+      "path": "docs/AI_MCP_ML_Roadmap_2026-09-30/12_Security_Privacy_and_Studio_Constraints.md",
+      "bytes": 7020,
+      "sha256": "b5a1380195ddea64034bb13bcef9ef02ca7a54deb88b70e0e53f71b87385b6f9"
+    },
+    {
+      "path": "docs/AI_MCP_ML_Roadmap_2026-09-30/13_Performance_and_Infrastructure.md",
+      "bytes": 8479,
+      "sha256": "744923d081deebf4813b71e63817a2be988a00bda16c6a8e07c821248daa9203"
+    },
+    {
+      "path": "docs/AI_MCP_ML_Roadmap_2026-09-30/14_Product_UX_and_Workflow.md",
+      "bytes": 5449,
+      "sha256": "caf79922350be14f2696ad8c3f1f7938d568f6aae0ff61c6f2bfdd922e1c51ee"
+    },
+    {
+      "path": "docs/AI_MCP_ML_Roadmap_2026-09-30/15_Phased_Implementation_Roadmap.md",
+      "bytes": 14170,
+      "sha256": "3351d6c1f401b6db1fecfbfc8b37e717c8864f2934706a3351cdd874b75f961e"
+    },
+    {
+      "path": "docs/AI_MCP_ML_Roadmap_2026-09-30/16_Risks_Decisions_and_Open_Questions.md",
+      "bytes": 12745,
+      "sha256": "be2f9f4036ad250799098c31ed84118ffbcad8ee67e86f39cb773fa56a212a59"
+    },
+    {
+      "path": "docs/AI_MCP_ML_Roadmap_2026-09-30/evidence/input_snapshot.json",
+      "bytes": 49803,
+      "sha256": "07b6fe796f3b50c49dd24e6be28d0e95dd388263b53924e3fce5a5d1ee278490"
+    },
+    {
+      "path": "docs/AI_MCP_ML_Roadmap_2026-09-30/evidence/source_register.json",
+      "bytes": 6874,
+      "sha256": "af9c21b3dab3177577dee89ffcc184f8435e57addb333b4a4c1e438a07b17085"
+    },
+    {
+      "path": "docs/AI_MCP_ML_Roadmap_2026-09-30/examples/artist_correction.json",
+      "bytes": 1579,
+      "sha256": "e5a5664c20729d5869390735a214cfc1d076aa7c4a8e4a41c666233cd5425828"
+    },
+    {
+      "path": "docs/AI_MCP_ML_Roadmap_2026-09-30/examples/design_plan.json",
+      "bytes": 5996,
+      "sha256": "8bf1dac1c331e94b72f82e91799494b70fa67f29ed07eec458c276313ca422b9"
+    },
+    {
+      "path": "docs/AI_MCP_ML_Roadmap_2026-09-30/examples/final_layout_state.json",
+      "bytes": 10314,
+      "sha256": "0889ac2671655ba8599ee469caca7dea5a7461890919f153beb901fd15218596"
+    },
+    {
+      "path": "docs/AI_MCP_ML_Roadmap_2026-09-30/examples/scene_context.json",
+      "bytes": 5603,
+      "sha256": "be59ad668a5244229c40bf9bc82f657435792aa94eb2e796c46c641eb3ee8f42"
+    },
+    {
+      "path": "docs/AI_MCP_ML_Roadmap_2026-09-30/examples/tool_execution_log.json",
+      "bytes": 1609,
+      "sha256": "bf632ad9d08a20727ab0c33e7b5532cc230816c97796859bc28215d12f5fd6f7"
+    },
+    {
+      "path": "docs/AI_MCP_ML_Roadmap_2026-09-30/examples/training_sample.json",
+      "bytes": 2108,
+      "sha256": "577a8c4d1d7059d15c6761b4fffa6d13f3ece590c6cb1ca723db2e9d9a1ccab6"
+    },
+    {
+      "path": "docs/AI_MCP_ML_Roadmap_2026-09-30/README.md",
+      "bytes": 6489,
+      "sha256": "76e4d9476ddc47a5cf6a2037a47d320ce2800a2f92e311e8d0ac81ffe78dbfce"
+    }
+  ],
+  "updated_index": {
+    "path": "docs/README.md",
+    "sha256": "2dc14cf2fa8db430c3c1c105c883f011ebfa4d7dae1bf1cd22ffcf2ef3d389e7"
+  }
+}
