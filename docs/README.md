@@ -26,6 +26,12 @@ See [Max 2027 installation and quick start](Max_2027_Installation.md) for the co
 
 ## Detailed performance specification
 
+For controllers that cannot be reselected, see the [selection investigation and diagnostic selector](Selection_Diagnosis_2026-10-01.md). Disabling the viewport filter restored selection in the artist's scene; the document separates that confirmed result from the remaining icon-geometry concern.
+
+Start measuring the current plugin with the [standalone performance baseline recorder](Performance_Baseline_Tool.md). It supplies a Max panel, explicit preview rebuild trials, independent process CPU/memory sampling, raw exports and guarded comparison reports. The first target is Max 2027 with the artist's Corona 15 scene; measuring that scene and qualifying renderer behavior remain required.
+
+For shape-edit responsiveness, use [Detailed edit tracing](Performance_Edit_Tracing.md), including its one-time installer and named-edit workflow. The [detailed surface-edit reviews](Spline_Edit_Trace_2026-10-01.md) validate tracing, recover an earlier recorder marker-ID defect and identify expensive nested clover calculations and repeated rebuild activity. The latest saved-scene run captures direct Editable Poly boundary-edge changes; its case label does not affect tracing, and its exact edit recipe remains unspecified. Read the [first preview trial](Performance_Baseline_2026-10-01.md) and [passive spline-edit trial](Spline_Edit_Trial_2026-10-01.md) for the earlier artist-scene evidence. Full renderer qualification remains pending.
+
 [Performance roadmap — 2026-09-28](Performance_Roadmap_2026-09-28/README.md) supplies detailed performance contracts and experiments under the current master roadmap. It covers scatter/editing, viewport, Surface Analyzer, render preparation, CPU algorithms, multithreading, optional OpenCL, Max 2024–2027 qualification, and the requested 32 GB RAM minimum.
 
 Use its [backlog and gates](Performance_Roadmap_2026-09-28/07_Implementation_Backlog_and_Gates.md) for technical detail and the [manual test runbook](Performance_Roadmap_2026-09-28/08_Manual_Test_Runbook.md) for future test builds. Current progress and implementation order are reconciled in the new master roadmap. [Results and decisions](Performance_Roadmap_2026-09-28/09_Results_and_Decisions.md) currently contains no comparative performance results.

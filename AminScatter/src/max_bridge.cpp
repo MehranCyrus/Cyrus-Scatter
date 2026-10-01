@@ -21,7 +21,7 @@ extern "C" __declspec(dllexport) ClassDesc* CyrusEditDesc();
 extern "C" __declspec(dllexport) int LibNumberClasses(){return 1;}
 extern "C" __declspec(dllexport) ClassDesc* LibClassDesc(int i){return i==0?CyrusEditDesc():nullptr;}
 BOOL WINAPI DllMain(HINSTANCE instance, DWORD reason, LPVOID) { if(reason==DLL_PROCESS_ATTACH)CyrusEditInstance=instance;return TRUE; }
-static_assert(MAX_PRODUCT_YEAR_NUMBER == 2026, "Requires the 2026 SDK");
+static_assert(MAX_PRODUCT_YEAR_NUMBER == CYRUS_MAX_YEAR, "SDK year must match the configured host year");
 
 // Final, stable removal only: retain the original MAXScript rows and transforms.
 def_visible_primitive(cyrusRemoveOverlaps, "cyrusRemoveOverlaps");

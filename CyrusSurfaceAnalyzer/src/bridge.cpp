@@ -1,4 +1,5 @@
 #include <max.h>
+static_assert(MAX_PRODUCT_YEAR_NUMBER == CYRUS_MAX_YEAR, "SDK year must match the configured host year");
 #include <triobj.h>
 #include <maxscript/maxscript.h>
 #include <maxscript/foundation/arrays.h>

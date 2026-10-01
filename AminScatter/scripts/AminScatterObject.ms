@@ -1,3 +1,4 @@
+global CyrusPerfTraceBegin,CyrusPerfTraceEnd,CyrusPerfTraceInput
 global CyrusUISize,CyrusUIBuildView
 fn CyrusUISize n depth view:CyrusUIBuildView = (local w=if view==undefined then 162 else amax 140 (view.width-16-depth*16);floor(n*w/162.0+0.5))
 global CyrusInteractionHeld,CyrusWasDragging=false,CyrusReleaseTimer,CyrusReleaseTick
@@ -10757,7 +10758,7 @@ version:44
         dirty=true
     )
     fn assignRestGroup key = (patternRestGroup=key;dirty=true)
-    fn externalChanged changedNodes = (
+    fn cspImpl_externalChanged changedNodes = (
         if updateMode!=2 then false else (
             local affected=false
             local inputs=validSurfaces()
@@ -10775,6 +10776,18 @@ version:44
             )
             if affected do dirty=true
             affected
+        )
+    )
+    fn externalChanged changedNodes = (
+        local token=undefined
+        if CyrusPerfTraceBegin!=undefined do try(token=CyrusPerfTraceBegin this "external_invalidation")catch()
+        try (
+            local answer=cspImpl_externalChanged changedNodes
+            if token!=undefined and CyrusPerfTraceEnd!=undefined do try(CyrusPerfTraceEnd token ("changed="+(answer as string)))catch()
+            answer
+        )catch(
+            if token!=undefined and CyrusPerfTraceEnd!=undefined do try(CyrusPerfTraceEnd token ("EXCEPTION: "+getCurrentException()))catch()
+            throw()
         )
     )
     fn invalidateLive = (if updateMode==2 do dirty=true)
@@ -11056,7 +11069,7 @@ version:44
         blockerCacheRows
     )
     fn blockerCacheStats = (#(blockerCacheBuilds,blockerCacheHits))
-    fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
+    fn cspImpl_placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         if not cyrusEnabled or disabledAnalyzerInput() do return #()
         local targets=validSurfaces()
         if targets.count==0 do throw "Add at least one scatter surface."
@@ -11148,7 +11161,19 @@ version:44
         if not previewOnly and not rawOnly and plants.count>0 do result=for row in result where not (isPointSource (sourceRow plants[row[2]])) collect row
         result
     )
-    fn refreshPreview = (
+    fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
+        local token=undefined
+        if CyrusPerfTraceBegin!=undefined do try(token=CyrusPerfTraceBegin this "placements")catch()
+        try (
+            local answer=cspImpl_placements plants previewOnly:previewOnly rawOnly:rawOnly finalPass:finalPass
+            if token!=undefined and CyrusPerfTraceEnd!=undefined do try(CyrusPerfTraceEnd token "")catch()
+            answer
+        )catch(
+            if token!=undefined and CyrusPerfTraceEnd!=undefined do try(CyrusPerfTraceEnd token ("EXCEPTION: "+getCurrentException()))catch()
+            throw()
+        )
+    )
+    fn cspImpl_refreshPreview = (
         local buildStarted=timeStamp()
         previewBuildCount+=1
         radiusPreview=#();cachedPoints=undefined;cachedPointCount=0;previewError="";generatedCount=0
@@ -11167,6 +11192,18 @@ version:44
         cachedAnalyzerRun=if diversityMode==4 and isValidNode analyzerNode then analyzerNode.getAnalysisRuns() else -1
         previewBuildMs=timeStamp()-buildStarted
         cachedPointCount
+    )
+    fn refreshPreview = (
+        local token=undefined
+        if CyrusPerfTraceBegin!=undefined do try(token=CyrusPerfTraceBegin this "preview_rebuild")catch()
+        try (
+            local answer=cspImpl_refreshPreview()
+            if token!=undefined and CyrusPerfTraceEnd!=undefined do try(CyrusPerfTraceEnd token #(previewError,generatedCount,cachedPointCount,previewBuildCount))catch()
+            answer
+        )catch(
+            if token!=undefined and CyrusPerfTraceEnd!=undefined do try(CyrusPerfTraceEnd token ("EXCEPTION: "+getCurrentException()))catch()
+            throw()
+        )
     )
     fn checkAnalyzerRevision = (
         if updateMode==2 and isValidNode areaAnalyzer and (areaUseLine or areaUsePoints) do if cachedAreaAnalyzerRun!=areaAnalyzer.getAnalysisRuns() do dirty=true
@@ -11202,6 +11239,7 @@ version:44
         activeLayer type:#integer default:1
     )
     fn setLayerTransfer state = (layerTransfer=state)
+    fn performanceTraceVersion = 1
     fn cacheSnapshot = (#(cachedPoints,cachedPointCount,dirty,previewError,generatedCount,previewBuildCount,previewBuildMs,requestedCount,densityCapped))
     fn restoreCache state = (
         cachedPoints=state[1];cachedPointCount=state[2];dirty=state[3];previewError=state[4]
@@ -11676,6 +11714,7 @@ global AminScatterLiveTime
 try(AminScatterNodeEvents.enabled=false)catch()
 try(unRegisterTimeCallback AminScatterLiveTime)catch()
 fn AminScatterLiveChanged event handles = (
+    if CyrusPerfTraceInput!=undefined do try(CyrusPerfTraceInput "scatter_input_received" event handles)catch()
     if event==#deleted do (handles=for h in handles where findItem CyrusPFDeletedHandles h==0 collect h;if handles.count==0 do return false)
     if AminScatterRenderRedrawHeld!=true do (
         local nodes=for h in handles collect (getAnimByHandle h)

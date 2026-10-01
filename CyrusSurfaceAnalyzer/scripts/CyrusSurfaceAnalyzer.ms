@@ -1,4 +1,5 @@
 global CyrusSurfaceAnalyzerDraw
+global CyrusPerfTraceBegin,CyrusPerfTraceEnd,CyrusPerfTraceInput
 global CyrusStreetEdges,CyrusStreetShapeFilter
 fn CyrusStreetShapeFilter n = (isValidNode n and superClassOf n==Shape)
 -- Boundary classification in each loop's plane; output retains original world edges.
@@ -198,7 +199,7 @@ version:13
   if isValidNode streetLine then sig+="|"+((getHandleByAnim streetLine) as string)+"|"+(streetLine.transform as string) else sig+="|no-street"
   sig
  )
- fn runAnalysis = (
+ fn cspImpl_runAnalysis = (
   if not cyrusEnabled do return false
   if not isValidNode surface do throw "Pick a surface first."
   if pointRadius<=0 do pointRadius=units.decodeValue "1m";if fitRadius<0 do fitRadius=minimumWidth*.5
@@ -224,6 +225,19 @@ version:13
   liveSignature=inputSignature();liveDirty=false
   redrawViews()
   result
+ )
+ fn performanceTraceVersion = 1
+ fn runAnalysis = (
+  local token=undefined
+  if CyrusPerfTraceBegin!=undefined do try(token=CyrusPerfTraceBegin this "analyzer_run")catch()
+  try (
+   local answer=cspImpl_runAnalysis()
+   if token!=undefined and CyrusPerfTraceEnd!=undefined do try(CyrusPerfTraceEnd token #("",analysisRuns,samplePoints.count))catch()
+   answer
+  )catch(
+   if token!=undefined and CyrusPerfTraceEnd!=undefined do try(CyrusPerfTraceEnd token ("EXCEPTION: "+getCurrentException()))catch()
+   throw()
+  )
  )
  fn exportCurves which = (
   local lines=if which==1 then boundaryOutput() else if which==3 then packedLines streetVertices streetCounts else packedLines pathVertices pathCounts
@@ -387,6 +401,7 @@ global CyrusAnalyzerEvents,CyrusAnalyzerChanged,CyrusAnalyzerTimer,CyrusAnalyzer
 try(CyrusAnalyzerEvents.enabled=false)catch()
 try(CyrusAnalyzerTimer.Stop())catch()
 fn CyrusAnalyzerChanged event handles = (
+ if CyrusPerfTraceInput!=undefined do try(CyrusPerfTraceInput "analyzer_input_received" event handles)catch()
  global CyrusPFDeletedHandles
  if event==#deleted and CyrusPFDeletedHandles!=undefined do (handles=for h in handles where findItem CyrusPFDeletedHandles h==0 collect h;if handles.count==0 do return false)
  local changed=for h in handles collect (getAnimByHandle h)
