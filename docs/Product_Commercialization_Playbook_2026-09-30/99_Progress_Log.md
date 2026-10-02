@@ -47,6 +47,7 @@ Follow-up / review trigger:
 | Date | Stage / work | Completed | Result | Blocker / decision | Evidence | Next action |
 |---|---|---|---|---|---|---|
 | 2026-09-30 | Documentation task / repository review | Targeted subsystem/source tracing; retained test identity and fresh package checks; 16-stage playbook | WORKS for documentation checks only; manual product tests NOT TESTED | No provider/price/terms selected or product changes | [98 — Scope/deliverables](98_Repository_Review_and_Deliverables.md), [final checks](evidence/final_validation.json) | You begin Stage 01 |
+| 2026-10-02 | Licensing document consolidation | Current owned-service architecture, decisions, roadmap and audit; active licensing stages reconciled | Documentation updated; licensing experiments NOT RUN | Business terms remain open; implementation next starts with L0/L1 | [Licensing audit](../licensing/DOCUMENT_AUDIT.md) | Prove native boundary, then policy/signature harness |
 | — | — | — | NOT TESTED | — | — | — |
 
 ### Initial entry — 2026-09-30
@@ -66,7 +67,6 @@ Follow-up / review trigger:
 
 ## Questions for the boss later
 
-After the first product/scope evidence: primary customer and lead workflows; initial qualified beta/release scope; perpetual/subscription and maintenance; Solo/Studio/activation/transfer; trial; offline/perpetual continuity and local/worker rendering; refund/support; price; provider/commerce selection; external beta and eventual launch approval.
+After the first product/scope evidence: primary customer and lead workflows; initial qualified beta/release scope; perpetual/subscription and maintenance; Solo/Studio/activation/transfer; trial; offline/perpetual continuity and local/worker rendering; refund/support; price; owned-service operations and commerce arrangements; external beta and eventual launch approval.
 
 Those decisions do not block opening the installed development build and performing internal Stage 01/02 tests.
-

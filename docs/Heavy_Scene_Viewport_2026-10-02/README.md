@@ -1,5 +1,7 @@
 # Smooth navigation in heavy scatter scenes
 
+**Next-loop update:** [candidate 0.64 adds retained GPU instancing for Mesh](../Retained_Mesh_Preview_2026-10-02/README.md), building on [0.63 Point Cloud retention](../Retained_Point_Preview_2026-10-02/README.md). The existing Point Cloud / Proxy / Mesh choices provide the mode switch. This directory's first-loop measurements remain historical; the current roadmap still tracks the same-scene point-cloud close-up quality gap.
+
 **First engineering loop completed 2 October 2026.** The product goal is an explicit **Fast Preview / Full Detail switch**, with exact placement and final-render output preserved. A private native experiment successfully tested retained point buffers through Autodesk's Nitrous API. This directory extends the existing performance roadmap and preserves the improvements in Scatter 0.62.
 
 At one million displayed preview points, median synchronous camera-step time was **73.194 ms with current drawing, 3.813 ms retained, and 3.305 ms with drawing disabled**. Across 11,880 accepted camera steps, unchanged navigation caused no extra explicit buffer initialization/realization requests. These are redraw timings, not completed-frame FPS. The new points have a finer pixel footprint; appearance and production integration remain open. Read the [results and limits](RESULTS.md) before using these numbers.

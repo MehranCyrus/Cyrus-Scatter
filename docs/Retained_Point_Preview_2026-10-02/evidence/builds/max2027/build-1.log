@@ -1,0 +1,15 @@
+[ 10%] Built target amin_scatter
+[ 13%] Building CXX object CMakeFiles/preview_sampling_tests.dir/tests/preview_sampling_tests.cpp.obj
+preview_sampling_tests.cpp
+[ 17%] Linking CXX executable preview_sampling_tests.exe
+[ 17%] Built target preview_sampling_tests
+[ 24%] Built target threading_tests
+[ 31%] Built target prepared_band_tests
+[ 37%] Built target scatter_tests
+[ 44%] Built target spacing_tests
+[ 51%] Built target weight_tests
+[ 58%] Built target orientation_tests
+[ 65%] Built target edge_border_tests
+[ 72%] Built target boundary_falloff_tests
+[ 93%] Built target AminScatter
+[100%] Built target CyrusScatterEdit

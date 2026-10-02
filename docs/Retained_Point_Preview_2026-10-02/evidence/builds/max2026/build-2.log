@@ -1,0 +1,24 @@
+Internal ctest changing into directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/retained-integration-2026-10-02/max2026
+Test project F:/Cursor/_Cyrus_Apps/CyrusScatter/build/retained-integration-2026-10-02/max2026
+    Start 1: scatter_preview_sampling
+1/9 Test #1: scatter_preview_sampling .........   Passed    0.25 sec
+    Start 2: scatter_threading
+2/9 Test #2: scatter_threading ................   Passed    0.11 sec
+    Start 3: scatter_prepared_bands
+3/9 Test #3: scatter_prepared_bands ...........   Passed    0.06 sec
+    Start 4: scatter_core
+4/9 Test #4: scatter_core .....................   Passed    0.17 sec
+    Start 5: scatter_spacing
+5/9 Test #5: scatter_spacing ..................   Passed    3.55 sec
+    Start 6: scatter_weights
+6/9 Test #6: scatter_weights ..................   Passed    0.35 sec
+    Start 7: scatter_orientation
+7/9 Test #7: scatter_orientation ..............   Passed    0.02 sec
+    Start 8: scatter_edge_border
+8/9 Test #8: scatter_edge_border ..............   Passed    0.02 sec
+    Start 9: scatter_boundary_falloff
+9/9 Test #9: scatter_boundary_falloff .........   Passed    0.06 sec
+
+100% tests passed, 0 tests failed out of 9
+
+Total Test time (real) =   4.61 sec

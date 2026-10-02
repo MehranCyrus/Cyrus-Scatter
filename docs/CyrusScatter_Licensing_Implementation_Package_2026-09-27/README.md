@@ -1,4 +1,11 @@
-# Cyrus Scatter — Licensing Implementation Package
+# Cyrus Scatter — historical licensing package
+
+**Superseded for implementation on 2026-10-02.** Use the [current licensing home](../licensing/README.md), [roadmap](../licensing/ROADMAP.md) and [decisions](../licensing/DECISIONS.md). The selected direction is our own service. Provider recommendations, example commercial terms, worker-detection assumptions and estimates below are historical proposals.
+
+The [document audit](../licensing/DOCUMENT_AUDIT.md) maps all 33 chapters and nine diagrams to their current treatment. Those files remain byte-for-byte preserved; this entry page and its manifest record the routing update.
+
+## Original September 27 entry
+
 
 **Date:** 2026-09-27  
 **Codebase baseline:** `b9a9e909b469456a6193337363b7c50b2397e549`  

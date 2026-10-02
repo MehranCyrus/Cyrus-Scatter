@@ -8,7 +8,7 @@
 | What actually exists and has been verified? | [Current evidence](02_Current_System_and_Evidence.md), source and referenced artifacts |
 | How should a performance experiment preserve behavior? | [Performance compatibility contract](../Performance_Roadmap_2026-09-28/03_Compatibility_and_Regression.md) |
 | How do we measure and compare it? | [Benchmark design](../Performance_Roadmap_2026-09-28/02_Baseline_and_Benchmarks.md) |
-| How might licensing be implemented? | Existing [licensing package](../CyrusScatter_Licensing_Implementation_Package_2026-09-27/README.md), corrected by [current policy decisions](09_Licensing_and_Commercial_Strategy.md) |
+| How should licensing be implemented? | [Current licensing roadmap](../licensing/ROADMAP.md), [architecture](../licensing/ARCHITECTURE.md) and [decisions](../licensing/DECISIONS.md) |
 | How was the original system organized? | Dated [codebase reference](../CyrusScatter_Complete_Codebase_Documentation_2026-09-27/README.md) |
 | How do I install today's test package? | [Max 2027 installation guide](../Max_2027_Installation.md) |
 | Is a vendor feature available, and what does that prove? | [Research source register](15_Research_Sources.md), followed by local integration tests |
@@ -26,7 +26,7 @@ Current source/test evidence outranks descriptive prose. A newer proposal does n
 | Generator not executed | Two isolated byte-identical runs now observed | Continuous automated check still needed |
 | Analyzer has no Scatter integration | Current generated controller consumes its data | Analyzer standalone README is historical on this point |
 | Test packages use stale MZP metadata | Staging build generates corrected package version/host values | Source metadata still needs consolidation |
-| A license provider is the clear first choice | Previous recommendation has no fresh contract-test result here | Retain as historical shortlist; no selection implied |
+| A commercial licensing provider is the first implementation step | User selected an owned Cyrus service on October 2 | Provider-first plan retired; [audit](../licensing/DOCUMENT_AUDIT.md) records retained tests and corrections |
 | Perpetual offline semantics settled | Renewal/continuity conflict remains | Resolve before enforcement/sale |
 | Repository visibility/public exposure is known today | Only an old audit reports it | No Git/remote inspection in this review; current status unknown |
 | Report speedups and week estimates are actionable forecasts | No representative comparative campaign exists | Treat as hypotheses; estimate after spikes/baseline |
@@ -34,7 +34,7 @@ Current source/test evidence outranks descriptive prose. A newer proposal does n
 
 ## Preserve useful references without multiplying plans
 
-The earlier codebase/licensing manifests describe dated packages. Do not casually edit every historical file and invalidate those manifests. The main docs index routes readers to this reconciliation and the current master plan. If an active specification must change, add a dated change record and update the appropriate manifest deliberately.
+The earlier codebase/licensing manifests describe dated packages. Preserve numbered historical chapters and route readers to current specifications. The October 2 licensing cleanup updates that package's README notice and its manifest entry deliberately; all 33 chapters and nine diagrams remain byte-identical. The [licensing audit](../licensing/DOCUMENT_AUDIT.md) records scope and validation.
 
 The original research report remains background material. Its inaccessible exported citation tokens/ZIP references do not establish local artifacts or current evidence. It is not the coding authority where the performance audit corrects its assumptions.
 

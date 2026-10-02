@@ -1,0 +1,117 @@
+{
+  "metric": "synchronous camera update + completeRedraw + message processing (ms), not presented FPS",
+  "timings": {
+    "artist-mesh-200k-frames": {
+      "gw": {
+        "count": 60,
+        "median_ms": 278.0714000016451,
+        "p95_ms": 296.6504300042987,
+        "max_ms": 303.1870000064373
+      },
+      "off": {
+        "count": 60,
+        "median_ms": 14.73004999756813,
+        "p95_ms": 28.82196998745202,
+        "max_ms": 32.13109999895096
+      },
+      "retained": {
+        "count": 60,
+        "median_ms": 15.343950003385544,
+        "p95_ms": 24.527090004086492,
+        "max_ms": 33.43939998745918
+      }
+    },
+    "artist-mesh-20m-frames": {
+      "retained": {
+        "count": 90,
+        "median_ms": 34.067550003528595,
+        "p95_ms": 51.02808500081301,
+        "max_ms": 82.90620002150536
+      }
+    },
+    "artist-mesh-2m-frames": {
+      "gw": {
+        "count": 45,
+        "median_ms": 3163.389600008726,
+        "p95_ms": 3446.7782000005245,
+        "max_ms": 3470.2631999850273
+      },
+      "off": {
+        "count": 45,
+        "median_ms": 15.451900005340576,
+        "p95_ms": 27.290480017662045,
+        "max_ms": 48.42540001869202
+      },
+      "retained": {
+        "count": 45,
+        "median_ms": 16.940500020980835,
+        "p95_ms": 25.486239999532696,
+        "max_ms": 44.005400002002716
+      }
+    },
+    "synthetic-200-dense-frames": {
+      "gw": {
+        "count": 90,
+        "median_ms": 220.03329998254776,
+        "p95_ms": 237.67376000881194,
+        "max_ms": 247.19309997558594
+      },
+      "native": {
+        "count": 90,
+        "median_ms": 10.184499993920326,
+        "p95_ms": 17.30340500175953,
+        "max_ms": 27.744199991226196
+      },
+      "off": {
+        "count": 90,
+        "median_ms": 7.761550009250641,
+        "p95_ms": 12.717989993095397,
+        "max_ms": 20.73870000243187
+      },
+      "retained": {
+        "count": 90,
+        "median_ms": 7.468650013208389,
+        "p95_ms": 14.57718001306057,
+        "max_ms": 32.446700006723404
+      }
+    }
+  },
+  "image_pairs": {
+    "artist-mesh-200k-retained": {
+      "pixels": 976500,
+      "mean_channel_difference_255": 0.023033282130056322,
+      "pixels_changed_percent": 1.5075268817204301,
+      "pixels_difference_above_8_percent": 0.05663082437275986
+    },
+    "artist-mesh-2m-retained": {
+      "pixels": 976500,
+      "mean_channel_difference_255": 0.10410855094726063,
+      "pixels_changed_percent": 7.6719918074756785,
+      "pixels_difference_above_8_percent": 0.5482846902201741
+    },
+    "mesh-smoke-retained": {
+      "pixels": 976500,
+      "mean_channel_difference_255": 0.4061798941798942,
+      "pixels_changed_percent": 28.768561187916024,
+      "pixels_difference_above_8_percent": 1.609626216077829
+    },
+    "parity-smoothhighlights-retained": {
+      "pixels": 976500,
+      "mean_channel_difference_255": 0.0039935142515787675,
+      "pixels_changed_percent": 0.5251408090117767,
+      "pixels_difference_above_8_percent": 0.008806963645673323
+    },
+    "parity-wireFrame-retained": {
+      "pixels": 976500,
+      "mean_channel_difference_255": 0.008863969960744154,
+      "pixels_changed_percent": 1.856426011264721,
+      "pixels_difference_above_8_percent": 0.010240655401945725
+    },
+    "synthetic-200-dense-retained": {
+      "pixels": 976500,
+      "mean_channel_difference_255": 0.027239802013995562,
+      "pixels_changed_percent": 1.9859703020993342,
+      "pixels_difference_above_8_percent": 0.10066564260112648
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "base_commit": "1bfb400abc19b7472b4c20621970d435ac214c33",
+  "scope": "Uncommitted retained-point candidate source, plus exact tested generated script. Other concurrent work is excluded.",
+  "source_hashes": {
+    "AminScatter/CMakeLists.txt": "e9155e1faf0d57603201b06c785826cd93a7e8047b588311a5863feab67a47ad",
+    "AminScatter/include/point_preview.h": "1f5af5ae2b4332be6f44142ed02034ea725c3973c74a1072385cc20adb1c2579",
+    "AminScatter/include/preview_sampling.h": "14e389d96653e861896a133c6efa9a6d42f96e2cc8d3e5e6ee665221b9a4645f",
+    "AminScatter/src/point_display.cpp": "092d58ed84a7c89ef16d5dfcefd80197797bff89610342e2fad0c06748b73b68",
+    "AminScatter/src/preview.cpp": "b5c30c965a636fc4f0597d72bee801defab7ce3d4463272791fab7141d87b03f",
+    "AminScatter/src/edit_plugin.cpp": "81df34e45b3a7635d5b7ebead5950cbaf7bf45a0f5a569385ba52c7e4901091f",
+    "AminScatter/src/max_bridge.cpp": "7fecb26bc4c785a947689fdb07d7ce487d503049f232089162279af30c243aa9",
+    "AminScatter/tests/preview_sampling_tests.cpp": "e2eac5bd2ef640e5dc11f8778bb55749033baea4714d5fe2fccbd764f80be819",
+    "AminScatter/tools/ui/generate.cjs": "3b67f7bb5d61c84ccaab44e31cc54fea5f69d879e13ba23239760bd1e7042a54",
+    "AminScatter/tools/ui/retained-points.cjs": "3d41a9bd577d3e21983386101d8bc1eba338a651ae09bf9cad7340da9898dc95",
+    "tools/build_max.py": "134b650d4040a517e9b261efea89721181bab00c524f688864535b371b016425"
+  },
+  "binary_script_package_chain_verified": true
+}

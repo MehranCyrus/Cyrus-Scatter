@@ -1,0 +1,35 @@
+{
+  "ui_revision": "2026-10-02.5",
+  "product_release": "0.64",
+  "max_year": 2027,
+  "native_id": "390d3798f210",
+  "package": "dist\\ui-layer-0.64-r5\\CyrusScatter-0.64-Max2027.mzp",
+  "package_sha256": "a61df0782f3aaf614c5b970d9e9be6afb7cfa69fb6834ba8cafa1d3b47222b77",
+  "script_sha256": "ea6e70b40509536c9c7538e9b01bd43ba7d1f0a856e5dc46aad3d1938e4a4c09",
+  "generated_lines": 12324,
+  "generation_reproducible": true,
+  "native_bytes_identical_to_064": true,
+  "renderer_tail_identical_to_064": true,
+  "regression_assertions": 76,
+  "reopen_cycles": 30,
+  "real_mouse_reopen_observed": true,
+  "artist_scene_sha256": "42d3bd0835aba91ef7c29925669fda61e9bc7dda3479287b9e1775cc09696e6c",
+  "limitations": [
+    "Settled screenshots do not establish zero transient flicker",
+    "First-time layer construction cost is unchanged",
+    "Max 2026 and other DPI settings untested"
+  ],
+  "artifacts": {
+    "main-reopen-baseline.json": "49a0b69620f1ab3ea3405dd85cff19f227a545b20b7f0778234224e3d00f168e",
+    "main-reopen-repair-false.json": "7958736714a2e7009fa5c19ccb00a7a08a210f004f0815e1f512a72a49c739f5",
+    "main-reopen-repair-true.json": "01461ecdfca0c2630a5b912b09d8052786283f523629c0a8f530a6933c14cdd6",
+    "main-reopen-trace.json": "32ee2c123c791a48ec5736acb7c6716d261275c8cab7b6055052be1fdb3c8992",
+    "main-reopen-candidate.json": "63de4c8823a39340e299ba4966fe0e256a2f6cf7a8d96b2763d48ecd2bd953ab",
+    "main-reopen-deferred-immediate.json": "010c3255cf2c4ad137bbdd0142ae305e2bb6af15749c89daeacf598bfef09e7e",
+    "main-reopen-deferred-settled.json": "c2d01e025d35125909c173528d4935a20a231abc3d3a7d727199bdc5176f5006",
+    "main-rollout-reopen.json": "1bacd708243799fa0d50f71f01387a1cbd907c86235fa64a6f01fae2d15d6ed2",
+    "ui-regression.json": "3ead8c423f4ffb1dbcef5eead55832b9ed7da2ac99c7f0079daf5e5ad5f95a18",
+    "main-reopen-regression-reused-fixture-error.txt": "a9de7019d104a0be8410cbbe1e79d036170113790a43f00506bae0fd786139f2",
+    "main-rollout-reopen-harness-array-comparison-error.json": "f50094c9dbb00875b0db44d84fecc3c2d588bce972f6b3e60422b3594a599233"
+  }
+}

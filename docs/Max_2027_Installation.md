@@ -1,14 +1,14 @@
 # Cyrus Scatter — install and use in 3ds Max 2027
 
-**Current candidate:** 0.62, built 2026-10-01. **Tested host:** 3ds Max 2027.1, version 29.1.0.11426. The earlier 0.61 viewport, 0.60 CPU and 0.59 compatibility packages are preserved.
+**Current candidate:** 0.64, built 2026-10-02. **Tested host:** 3ds Max 2027.1, version 29.1.0.11426. The earlier packages are preserved. Read the [retained Mesh guide](Retained_Mesh_Preview_2026-10-02/README.md) and its [integration results](Retained_Mesh_Preview_2026-10-02/RESULTS.md).
 
-This viewport candidate defers layer synchronization during held input, then uses the complete synchronization path on redraw after release. Its [second-round report](Viewport_Performance_Round2_2026-10-01.md) records 33.1% less scatter callback time and 9.1% less total step wall time in the controlled held-input comparison. It includes the [0.61 native proxy batches](Viewport_Performance_Implementation_2026-10-01.md) and the earlier native source filtering/transforms, prepared closed boundary queries, bounded multicore cluster calculations and batched edit redraw requests documented in the [0.60 CPU report](Performance_Implementation_2026-10-01.md) and [upgrade test](Performance_Upgrade_Test_2026-10-01.md). Retained GPU display/instancing, GPU compute and asynchronous editing remain future work.
+The 0.64 candidate adds retained GPU instancing to Mesh, preserving its geometry limits and preview colors. It includes the [0.63 retained Point Cloud work](Retained_Point_Preview_2026-10-02/README.md), the [held-input synchronization improvements](Viewport_Performance_Round2_2026-10-01.md), [native proxy batches](Viewport_Performance_Implementation_2026-10-01.md), and the [CPU improvements](Performance_Implementation_2026-10-01.md). Automatic camera-dependent point detail, GPU computation of placements and asynchronous editing remain future work.
 
 ## Install
 
 1. Save your current scene.
 2. In Max 2027 choose **Scripting > Run Script**.
-3. Run [CyrusScatter-0.62-Max2027.mzp](../dist/CyrusScatter-0.62-Max2027.mzp).
+3. Run [CyrusScatter-0.64-Max2027.mzp](../dist/retained-mesh-0.64/CyrusScatter-0.64-Max2027.mzp).
 4. For Surface Analyzer features, install [CyrusSurfaceAnalyzer-0.14-Max2027.mzp](../dist/CyrusSurfaceAnalyzer-0.14-Max2027.mzp) if it is not already installed; its version is unchanged.
 5. Close and **restart Max**. Native modules become available at startup.
 6. Open **Create > Geometry**, choose the **Cyrus** category, then **Cyrus Scatter** or **Surface Analyzer**.
@@ -39,7 +39,7 @@ Create **Cyrus > Surface Analyzer**, select it and use Modify to pick an open pl
 
 To use the result as a scatter area, open a scatter layer's **Area > Surface Analyzer Area**, pick the Analyzer, and enable Center Line and/or Points. This filters placements; it does not automatically refill the requested count.
 
-## Verification performed
+## Earlier 0.62 verification (retained as history)
 
 - Built all three native modules against the genuine Max 2027 SDK with MSVC 14.38.33130 / compiler 19.38.33145, C++20, Windows SDK 10.0.19041.0, Release x64.
 - All eight scatter CTest suites and the Analyzer CTest suite passed, including threading and prepared-boundary regressions.

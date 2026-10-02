@@ -1,0 +1,4 @@
+PASS: script load, UI revision, layer creation, 10 unmounted layer factories, unchanged cache, diagnostic compilation and empty-selection guard
+Native: F:\Cursor\_Cyrus_Apps\CyrusScatter\build\ui-layer-r4-batch\bin\CyrusScatterEdit.dlm
+Native: F:\Cursor\_Cyrus_Apps\CyrusScatter\build\ui-layer-r4-batch\bin\AminScatter.dlx
+No interactive UI or artist scene was loaded.

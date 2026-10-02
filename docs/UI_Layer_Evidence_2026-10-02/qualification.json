@@ -1,0 +1,41 @@
+{
+  "ui_revision": "2026-10-02.2",
+  "engine_release": "0.64",
+  "host": "3ds Max 2027.1",
+  "package": "dist\\ui-layer-0.64-r2\\CyrusScatter-0.64-Max2027.mzp",
+  "package_sha256": "f3387556244aa9b1d23ee0f07bf59bdf4a5e8152f02b8bdd1b6d148bf1e7f89d",
+  "script_sha256": "f4321c8de0d15372672fa3cff8475cb9f5a5fa600ebf9448d0b2df45a2021b0d",
+  "native_id": "390d3798f210",
+  "native_files": {
+    "AminScatter.dlx": "a3760a31a4f49488423ee8673e261d5ee4c4a70cfb65a16158fc156575b0e3df",
+    "CyrusScatterEdit.dlm": "4456c96fd04f6eaecdea01efa2fc72b5c48dab8e9372854b9c95b2739aac513b"
+  },
+  "original_package": "dist\\retained-mesh-0.64\\CyrusScatter-0.64-Max2027.mzp",
+  "native_bytes_identical_to_original": true,
+  "renderer_script_tail_identical_to_original": true,
+  "test_process": 31708,
+  "tests": [
+    "ui-regression.json",
+    "ui-mesh-064.json",
+    "ui-resize-064.json"
+  ],
+  "trace_provenance": {
+    "ui-layout-baseline.json": {
+      "raw_sha256": "2c83e55c6b75b57518022cd54536ee228b5e0ece17aad0480583ed1413060a84",
+      "normalization": "Removed MAXScript integer64 L suffixes only",
+      "scope": "Instrumented layout comparison before final contentWidth bookkeeping edit"
+    },
+    "ui-layout-candidate.json": {
+      "raw_sha256": "67d042930add4d288c7444c4c230132b9d3048d466a5284c07a9a9dae8b9ddc6",
+      "normalization": "Removed MAXScript integer64 L suffixes only",
+      "scope": "Instrumented layout comparison before final contentWidth bookkeeping edit"
+    }
+  },
+  "limitations": [
+    "Max 2026 runtime not tested",
+    "150% and 200% DPI not tested",
+    "No new viewport FPS benchmark",
+    "No normal-profile install performed",
+    "Remaining native rollout paint transients are not ruled out"
+  ]
+}

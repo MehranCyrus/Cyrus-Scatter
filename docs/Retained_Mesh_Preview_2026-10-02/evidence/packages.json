@@ -1,0 +1,16 @@
+[
+  {
+    "year": 2026,
+    "package": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\retained-mesh-0.64\\CyrusScatter-0.64-Max2026.mzp",
+    "sha256": "7ef2255bb3d4b785685db26413760eb3eb7e27ad029ccde96eb4c10b2f475c75",
+    "script_sha256": "2d1218a5e3bc89ec60947299314000b0cc698973d4f3ee7947bf7f454072464d",
+    "runtime_tested": false
+  },
+  {
+    "year": 2027,
+    "package": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\retained-mesh-0.64\\CyrusScatter-0.64-Max2027.mzp",
+    "sha256": "44139c3a779e3b684baecbd6c8ca931a4d0c84962bdbce5103f7e38f5576e3d8",
+    "script_sha256": "2d1218a5e3bc89ec60947299314000b0cc698973d4f3ee7947bf7f454072464d",
+    "runtime_tested": true
+  }
+]

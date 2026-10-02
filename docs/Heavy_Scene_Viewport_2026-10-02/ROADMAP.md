@@ -2,6 +2,8 @@
 
 Date: 2 October 2026. This backlog implements the owner's choice of a fast preview and a full-detail switch. Completion means the stated evidence exists, not that a report suggested the idea. This is a sequence of bounded engineering loops, not a promised delivery calendar.
 
+**Mesh loop completed:** [0.64 uses retained GPU instancing](../Retained_Mesh_Preview_2026-10-02/README.md) at unchanged geometry limits. [Accepted measurements](../Retained_Mesh_Preview_2026-10-02/RESULTS.md) include visible artist foliage, a native Max control, 61.7M-triangle stress navigation, transform/appearance checks, lifecycle and allocation limits. Max 2026 runtime, a second GPU, device recovery and wider studio qualification remain open. Point-cloud automatic detail selection below is still future work.
+
 ## Loop 1 — prove an inexpensive retained point preview
 
 - [x] Reconcile the supplied reports with current source and previous experiments.
@@ -20,22 +22,26 @@ Date: 2 October 2026. This backlog implements the owner's choice of a fast previ
 
 **Outcome:** completed. [Results](RESULTS.md) document 11,880 accepted camera steps, a separately aligned presentation trace and preserved inputs. At one million preview points the retained camera-step median was 3.813 ms versus 73.194 ms for current drawing. Equal point data is verified; equal pixel footprint is not. The result authorizes the next engineering step, not a release claim.
 
-## Loop 2 — integrate the switch and ownership
+## Loop 2 — integrate existing Point Cloud mode and ownership
 
-- [ ] Introduce a native display owner per controller; share an immutable snapshot with the GC cache using explicit lifetime management.
-- [ ] Publish only complete generations on the host thread. Camera movement consumes a completed generation; it does not run placement, source conversion or sampling.
-- [ ] Make Fast Preview / Full Detail a generator-owned UI control. Preserve existing artist settings when switching, including budgets, color mode and enabled layers.
+**Implemented as candidate 0.63:** see [integration and measurements](../Retained_Point_Preview_2026-10-02/README.md). The owner clarified that Point Cloud / Proxy / Mesh already provide the mode choice. Full release qualification below remains separate.
+
+- [x] Introduce a native display owner per controller; share an immutable snapshot with the GC cache using explicit lifetime management.
+- [x] Publish only complete generations on the host thread. Camera movement consumes a completed generation; it does not run placement, source conversion or sampling.
+- [x] Preserve the existing generator-owned Point Cloud / Proxy / Mesh controls and their artist settings, including budgets, color mode and enabled layers.
 - [ ] State the actual visible instance/point/triangle count and active limits. Full Detail must not imply an unlimited or complete render population when a cap is active.
-- [ ] Keep the current native marker/proxy implementation as fallback for an unavailable retained path; make failures observable without repeated modal messages.
-- [ ] Set renderable/exclusion behavior correctly for the native owner. Keep it out of render/bake/export geometry.
-- [ ] Define persistent state versus disposable buffers; rebuild on open and release on controller deletion/reset. Do not serialize GPU resources or raw pointers.
-- [ ] Add meaningful host regression coverage for mode switches, source edits/removal, colors, transforms, empty data, manual/automatic mode, undo/redo, clone and save/open.
-- [ ] Verify source ordering and stable edit IDs independently of render-item grouping.
+- [x] Keep the current native marker/proxy implementation as fallback for an unavailable retained path; make failures observable without repeated modal messages.
+- [x] Set the native owner nonrenderable and nonconvertible; strip disposable nodes before save. Broader exporter/merge qualification remains below.
+- [x] Define persistent state versus disposable buffers; rebuild on open and release on controller deletion/reset. Do not serialize GPU resources or raw pointers.
+- [x] Add host checks for mode switches, source geometry edits, source failure/recovery, colors, empty data, manual/automatic mode, undo/redo, clone and save/open. Broader animated/transform cases remain below.
+- [x] Verify exact final-placement fingerprints across display modes; unchanged computation suites pass.
 - [ ] Measure cold edit-to-first-correct-preview latency and peak memory with the integrated owner; the prototype's already-warmed mode-switch timing is insufficient.
 
 **Exit:** correct integrated behavior in the original copied scene plus supported synthetic fixtures, with no regression to render data or existing modes. Package only after this gate.
 
 ## Loop 3 — make heavy preview quality predictable
+
+**Small correction already included:** exact budget selection replaces the rounded stride that could halve density just beyond a limit. All 43 original-scene sources currently sample, including Corona proxies; the earlier BushesCenter failure was not reproduced, so its original cause is not claimed fixed. The fixed-budget close-up gap remains the next acceptance target.
 
 - [ ] Define supported mesh and renderer-proxy source extraction. Reproduce the BushesCenter sampling failure and implement a tested diagnostic/fallback policy.
 - [ ] Compare fixed budgets at bird's-eye and close inspection distances. Include rare source types, boundaries, uneven densities and multiple controllers.
@@ -81,7 +87,7 @@ This is a separate bottleneck queue, not a reason to delay the display experimen
 ## Release qualification
 
 - [ ] Max 2026 application runtime, not just SDK compilation.
-- [ ] Max 2027 interactive navigation and editing, with loaded binary/script identities.
+- [x] Max 2027 interactive navigation and editing for the named 0.63 fixtures, with loaded binary/script identities; broader cases below remain open.
 - [ ] Original scene and a substantially heavier foliage scene with complete supported sources.
 - [ ] Renderer and IPR startup/stop, cancellation, scene reset and shutdown.
 - [ ] Repeated switching/editing without stale resources or monotonic memory growth.

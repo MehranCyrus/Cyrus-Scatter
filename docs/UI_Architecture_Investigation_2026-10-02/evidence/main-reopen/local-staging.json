@@ -1,0 +1,12 @@
+{
+  "status": "Staged on disk; running artist Max was not reloaded or restarted",
+  "ui_revision": "2026-10-02.5",
+  "installed": "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\AminScatter\\AminScatterObject.ms",
+  "installed_sha256": "ea6e70b40509536c9c7538e9b01bd43ba7d1f0a856e5dc46aad3d1938e4a4c09",
+  "backup": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\_local\\maintenance\\ui-main-reopen-2026-10-02\\before\\installed-max2027-ui-r2.ms",
+  "backup_sha256": "f4321c8de0d15372672fa3cff8475cb9f5a5fa600ebf9448d0b2df45a2021b0d",
+  "native_unchanged": {
+    "AminScatter.dlx": "a3760a31a4f49488423ee8673e261d5ee4c4a70cfb65a16158fc156575b0e3df",
+    "CyrusScatterEdit.dlm": "4456c96fd04f6eaecdea01efa2fc72b5c48dab8e9372854b9c95b2739aac513b"
+  }
+}

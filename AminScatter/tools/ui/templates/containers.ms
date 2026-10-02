@@ -1,9 +1,14 @@
 global CyrusUIBuildTarget,CyrusUIBuildView,CyrusUIBuildIndex,CyrusMount
 fn CyrusMount host r collapsed = (
+    local oldTarget=CyrusUIBuildTarget,oldView=CyrusUIBuildView,oldIndex=CyrusUIBuildIndex
     CyrusUIBuildTarget=r.obj;CyrusUIBuildView=r.parentView
     CyrusUIBuildIndex=try(r.layerIndex)catch(0)
-    addSubRollout host r rolledUp:collapsed
-    CyrusUIBuildTarget=undefined;CyrusUIBuildView=undefined
+    try(addSubRollout host r rolledUp:collapsed)
+    catch(
+        CyrusUIBuildTarget=oldTarget;CyrusUIBuildView=oldView;CyrusUIBuildIndex=oldIndex
+        throw()
+    )
+    CyrusUIBuildTarget=oldTarget;CyrusUIBuildView=oldView;CyrusUIBuildIndex=oldIndex
 )
 fn CyrusMakeManager target view = (
     rollout manager "Layer Manager" width:162 (
@@ -60,13 +65,15 @@ fn CyrusMakeManager target view = (
 fn CyrusMakeLayer target view index = (
     rollout layerPanel "Layer" width:162 (
         local obj=CyrusUIBuildTarget,parentView=CyrusUIBuildView,layerIndex=CyrusUIBuildIndex,children=#()
-        subrollout sections "" pos:[2,2] width:158 height:180
+        subrollout sections "" pos:[2,2] width:158 height:180 scrollBar:#off
         fn fitHeight = (
             local h=0
             local dpi=parentView.dpiScale
             local header=floor(23.333*dpi+0.5)
             for r in children do h+=(if r.open then r.height+header else header)
-            sections.pos=[2,0];sections.height=h;layerPanel.height=h
+            if sections.pos!=[2,0] do sections.pos=[2,0]
+            if sections.height!=h do sections.height=h
+            if layerPanel.height!=h do layerPanel.height=h
         )
         on layerPanel open do (
             children=#(CyrusMake_sourceUI obj parentView,CyrusMake_distributionUI obj parentView,CyrusMake_areaUI obj parentView,CyrusMake_diversityUI obj parentView,CyrusMake_randomUI obj parentView)

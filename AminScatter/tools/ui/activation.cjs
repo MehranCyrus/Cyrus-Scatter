@@ -25,7 +25,8 @@ module.exports=s=>{
  s=s.replace('        subrollout panels "" pos:[0,0]',`        checkbox enableCyrus "Enable Cyrus Scatter" checked:true pos:[8,4] width:220
         on enableCyrus changed v do undo "Enable Cyrus Scatter" on cyrusEnabled=v
         subrollout panels "" pos:[0,28]`);
- s=s.replace('panels.pos=[0,0];panels.height=h;mainUI.height=h','panels.pos=[0,28];panels.height=h;mainUI.height=h+28');
+ s=s.replace('if panels.pos!=[0,0] do panels.pos=[0,0]','if panels.pos!=[0,28] do panels.pos=[0,28]');
+ s=s.replace('if mainUI.height!=h do mainUI.height=h','if mainUI.height!=h+28 do mainUI.height=h+28');
  s=s.replace('            controller=this','            controller=this\n            enableCyrus.checked=cyrusEnabled');
  return s;
 };

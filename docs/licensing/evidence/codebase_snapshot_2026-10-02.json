@@ -1,0 +1,463 @@
+{
+  "date": "2026-10-02",
+  "captured_utc": "2026-10-02T10:42:42.244037+00:00",
+  "head": "1bfb400abc19b7472b4c20621970d435ac214c33",
+  "working_tree": "dirty; includes concurrent retained-preview work; HEAD alone does not reproduce inspected files",
+  "scope": "Static licensing integration audit. No native edits, builds or licensing runtime tests. Fingerprints identify source, not publisher authenticity.",
+  "selected_files": [
+    {
+      "path": "AminScatter/CMakeLists.txt",
+      "bytes": 3505,
+      "sha256": "e9155e1faf0d57603201b06c785826cd93a7e8047b588311a5863feab67a47ad",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "CyrusSurfaceAnalyzer/CMakeLists.txt",
+      "bytes": 895,
+      "sha256": "7c7992a66dbadd729e3f7112f6c713b866f0bf0a91840fdd789f879357b823d7",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "AminScatter/src/max_bridge.cpp",
+      "bytes": 26214,
+      "sha256": "7fecb26bc4c785a947689fdb07d7ce487d503049f232089162279af30c243aa9",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "AminScatter/src/cyrus_edit.cpp",
+      "bytes": 15189,
+      "sha256": "0348b8396f42f3eefc83daa9646d8bda223e9d12742595f2eb1fac120c21ad28",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "AminScatter/src/cyrus_edit_stack.inc",
+      "bytes": 4412,
+      "sha256": "53d689602439f0f956a643b0f0ccc561247b82d6b162d6a067073abe1e23a6ab",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "AminScatter/src/cyrus_edit_storage.inc",
+      "bytes": 2403,
+      "sha256": "561ef94b0fa26e16eb4058398cbff0e0f7c3c84ec74fc181d0c674be9fbf036b",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "AminScatter/src/edit_plugin.cpp",
+      "bytes": 691,
+      "sha256": "81df34e45b3a7635d5b7ebead5950cbaf7bf45a0f5a569385ba52c7e4901091f",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "AminScatter/src/preview.cpp",
+      "bytes": 15491,
+      "sha256": "b5c30c965a636fc4f0597d72bee801defab7ce3d4463272791fab7141d87b03f",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "AminScatter/src/point_display.cpp",
+      "bytes": 15096,
+      "sha256": "092d58ed84a7c89ef16d5dfcefd80197797bff89610342e2fad0c06748b73b68",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "AminScatter/src/geometry_preview.inc",
+      "bytes": 4418,
+      "sha256": "0d0b5bf09e73d589683dbd54c0db052d398434592148f5c6992d1137a78e411d",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "AminScatter/src/analyzer_area_bridge.inc",
+      "bytes": 2118,
+      "sha256": "849e9ed30e3b5cdd11685a5150b03d50859b3577f5d49edae8325afa186fd02b",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "AminScatter/src/boundary_falloff_bridge.inc",
+      "bytes": 3316,
+      "sha256": "4ada13b8921470ac6d336332fbd500b41cceb2a9171ab4b2c1396ce813dae95a",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "AminScatter/src/orientation_bridge.inc",
+      "bytes": 3234,
+      "sha256": "c01e1146c6b3b04f03ff288f9e87d0c0d87de6b4adf22d6c69fe6965d9a41dde",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "AminScatter/src/whole_scale_bridge.inc",
+      "bytes": 1278,
+      "sha256": "446b36ddd6dec15fe4f2920b416157e33d503d7913905efb03f3967f7c5736d6",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "AminScatter/src/execution.cpp",
+      "bytes": 819,
+      "sha256": "b54963d69441d473ed52f76b125c4eb3d0a38c564900f28abd76efa7bcbf1136",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "AminScatter/include/execution.h",
+      "bytes": 2975,
+      "sha256": "e9f2cfdf677366f491dc01cea83301ce53111c5073633333a4adf1db2ad509d2",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "AminScatter/include/point_preview.h",
+      "bytes": 941,
+      "sha256": "1f5af5ae2b4332be6f44142ed02034ea725c3973c74a1072385cc20adb1c2579",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "CyrusSurfaceAnalyzer/src/bridge.cpp",
+      "bytes": 3304,
+      "sha256": "5096d5dcfcd2a22846752b356de943dca5360c4c576f89bf3cb8ffe97fc1c605",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "CyrusSurfaceAnalyzer/scripts/CyrusSurfaceAnalyzer.ms",
+      "bytes": 22579,
+      "sha256": "b9a1f1aa2ba7847566eb8f36bee711f9c64753572955ed4549f2f68669e5f923",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "AminScatter/tools/ui/generate.cjs",
+      "bytes": 11121,
+      "sha256": "3b67f7bb5d61c84ccaab44e31cc54fea5f69d879e13ba23239760bd1e7042a54",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "AminScatter/tools/ui/activation.cjs",
+      "bytes": 2368,
+      "sha256": "4c98473965882e4df4e488ac158be530962efffa5f8df65585006286794e7beb",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "AminScatter/tools/ui/edit.cjs",
+      "bytes": 2156,
+      "sha256": "e53a198c479027f39506d59f324f44226b570cb461e7a7e5e135df00da97c68b",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "AminScatter/tools/ui/viewport-performance.cjs",
+      "bytes": 3594,
+      "sha256": "01c8f3cbae5f3587b509ffa3d7d68abf601a6b5f4960c35532142938eca01f53",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "AminScatter/tools/ui/retained-points.cjs",
+      "bytes": 8950,
+      "sha256": "3d41a9bd577d3e21983386101d8bc1eba338a651ae09bf9cad7340da9898dc95",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "AminScatter/tools/ui/analyzer-area.cjs",
+      "bytes": 2640,
+      "sha256": "bc1d472ef08351b7bf5112b1fca0552fa6610747edaa5d880050e80933c89adf",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/before.ms",
+      "bytes": 59863,
+      "sha256": "4ffe3f7698b0df6d6653364189fcf3d2563d90186ce266072e5e39cea1ed3bfa",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/pflow.ms",
+      "bytes": 8300,
+      "sha256": "a613a919abdead513504ae6d275fe90a7d8c6090403572cc6cf482a0437b9e7a",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "AminScatter/scripts/AminScatterObject.ms",
+      "bytes": 985481,
+      "sha256": "5ea52529aea520f0450c2542f69924901ec95da7b9f3dc3fde5d4a1362bb098b",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "AminScatter/installer/install.ms",
+      "bytes": 2885,
+      "sha256": "687a2a6d0cd4ea5d8bc3c3eef6c5c4105b81ad532ea4b5878f46945bbc81776a",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "AminScatter/installer/Uninstall.ms",
+      "bytes": 1091,
+      "sha256": "2ebc8400c71bdcc31e3ce96256e484a38fadc73cccdec3a9fc8902fb360cc30e",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "AminScatter/installer/AminScatterStartup.ms",
+      "bytes": 148,
+      "sha256": "5a9bce169dad56446e535ff5d6c04e21487f49dbd217d74e8cce749939a61faf",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "AminScatter/installer/mzp.run",
+      "bytes": 104,
+      "sha256": "05d26fb3f6fde3a6bee6f219f884a8936be97aa07a3042d332bd198274dba90e",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "CyrusSurfaceAnalyzer/installer/install.ms",
+      "bytes": 1358,
+      "sha256": "c4bd3034a8abee0574fe6634864dbe99a9a134e18fbdbc49be281cdf7bde469f",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "CyrusSurfaceAnalyzer/installer/CyrusSurfaceAnalyzerStartup.ms",
+      "bytes": 82,
+      "sha256": "19f14d940e163a5ee6c5b8fe8e2f4c57593f174a2db48eb66f875e0c9cb2ae6c",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "CyrusSurfaceAnalyzer/installer/mzp.run",
+      "bytes": 72,
+      "sha256": "5bbfb28c90961f17060e99aa8aa27933a5f659b9f1cf9f929f56b0f7c6dcdd75",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "tools/build_max.py",
+      "bytes": 7399,
+      "sha256": "134b650d4040a517e9b261efea89721181bab00c524f688864535b371b016425",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    },
+    {
+      "path": "cmake/CyrusMaxSDK.cmake",
+      "bytes": 1548,
+      "sha256": "53cf91db75742990b80d1f0a8dc8094d45a2a964094b3785b2f6eb1c8b55248e",
+      "review_scope": "targeted call paths, declarations or packaging; not a full line-by-line security audit"
+    }
+  ],
+  "declared_maxscript_primitives": [
+    {
+      "symbol": "cyrusAnalyzerArea",
+      "script_name": "cyrusAnalyzerArea",
+      "path": "AminScatter/src/analyzer_area_bridge.inc",
+      "line_at_snapshot": 2
+    },
+    {
+      "symbol": "cyrusBoundaryFalloff",
+      "script_name": "cyrusBoundaryFalloff",
+      "path": "AminScatter/src/boundary_falloff_bridge.inc",
+      "line_at_snapshot": 1
+    },
+    {
+      "symbol": "cyrusAreaFalloff",
+      "script_name": "cyrusAreaFalloff",
+      "path": "AminScatter/src/boundary_falloff_bridge.inc",
+      "line_at_snapshot": 2
+    },
+    {
+      "symbol": "cyrusEditRevision",
+      "script_name": "cyrusEditRevision",
+      "path": "AminScatter/src/cyrus_edit.cpp",
+      "line_at_snapshot": 102
+    },
+    {
+      "symbol": "cyrusEditFingerprint",
+      "script_name": "cyrusEditFingerprint",
+      "path": "AminScatter/src/cyrus_edit.cpp",
+      "line_at_snapshot": 103
+    },
+    {
+      "symbol": "cyrusEditCommand",
+      "script_name": "cyrusEditCommand",
+      "path": "AminScatter/src/cyrus_edit.cpp",
+      "line_at_snapshot": 105
+    },
+    {
+      "symbol": "cyrusEditTopology",
+      "script_name": "cyrusEditTopology",
+      "path": "AminScatter/src/cyrus_edit.cpp",
+      "line_at_snapshot": 107
+    },
+    {
+      "symbol": "cyrusEditActiveLayers",
+      "script_name": "cyrusEditActiveLayers",
+      "path": "AminScatter/src/cyrus_edit.cpp",
+      "line_at_snapshot": 109
+    },
+    {
+      "symbol": "cyrusEditSelect",
+      "script_name": "cyrusEditSelect",
+      "path": "AminScatter/src/cyrus_edit.cpp",
+      "line_at_snapshot": 111
+    },
+    {
+      "symbol": "cyrusEditTransform",
+      "script_name": "cyrusEditTransform",
+      "path": "AminScatter/src/cyrus_edit.cpp",
+      "line_at_snapshot": 113
+    },
+    {
+      "symbol": "cyrusEditStack",
+      "script_name": "cyrusEditStack",
+      "path": "AminScatter/src/cyrus_edit_stack.inc",
+      "line_at_snapshot": 52
+    },
+    {
+      "symbol": "cyrusBuildGeometryPreview",
+      "script_name": "cyrusBuildGeometryPreview",
+      "path": "AminScatter/src/geometry_preview.inc",
+      "line_at_snapshot": 2
+    },
+    {
+      "symbol": "cyrusPreviewFaces",
+      "script_name": "cyrusPreviewFaces",
+      "path": "AminScatter/src/geometry_preview.inc",
+      "line_at_snapshot": 45
+    },
+    {
+      "symbol": "cyrusScatterCPUThreads",
+      "script_name": "cyrusScatterCPUThreads",
+      "path": "AminScatter/src/max_bridge.cpp",
+      "line_at_snapshot": 29
+    },
+    {
+      "symbol": "cyrusScatterComputeStats",
+      "script_name": "cyrusScatterComputeStats",
+      "path": "AminScatter/src/max_bridge.cpp",
+      "line_at_snapshot": 39
+    },
+    {
+      "symbol": "cyrusFilterSourceRows",
+      "script_name": "cyrusFilterSourceRows",
+      "path": "AminScatter/src/max_bridge.cpp",
+      "line_at_snapshot": 52
+    },
+    {
+      "symbol": "cyrusApplySourceTransforms",
+      "script_name": "cyrusApplySourceTransforms",
+      "path": "AminScatter/src/max_bridge.cpp",
+      "line_at_snapshot": 72
+    },
+    {
+      "symbol": "cyrusRemoveOverlaps",
+      "script_name": "cyrusRemoveOverlaps",
+      "path": "AminScatter/src/max_bridge.cpp",
+      "line_at_snapshot": 101
+    },
+    {
+      "symbol": "aminScatterAdvanced",
+      "script_name": "aminScatterAdvanced",
+      "path": "AminScatter/src/max_bridge.cpp",
+      "line_at_snapshot": 181
+    },
+    {
+      "symbol": "aminScatterTransforms",
+      "script_name": "aminScatterTransforms",
+      "path": "AminScatter/src/max_bridge.cpp",
+      "line_at_snapshot": 349
+    },
+    {
+      "symbol": "aminScatterSourcePoints",
+      "script_name": "aminScatterSourcePoints",
+      "path": "AminScatter/src/max_bridge.cpp",
+      "line_at_snapshot": 372
+    },
+    {
+      "symbol": "aminScatterValidArea",
+      "script_name": "aminScatterValidArea",
+      "path": "AminScatter/src/max_bridge.cpp",
+      "line_at_snapshot": 385
+    },
+    {
+      "symbol": "aminScatterSurfaceArea",
+      "script_name": "aminScatterSurfaceArea",
+      "path": "AminScatter/src/max_bridge.cpp",
+      "line_at_snapshot": 399
+    },
+    {
+      "symbol": "cyrusOrientRows",
+      "script_name": "cyrusOrientRows",
+      "path": "AminScatter/src/orientation_bridge.inc",
+      "line_at_snapshot": 1
+    },
+    {
+      "symbol": "cyrusRetainedCreate",
+      "script_name": "cyrusRetainedCreate",
+      "path": "AminScatter/src/point_display.cpp",
+      "line_at_snapshot": 255
+    },
+    {
+      "symbol": "cyrusRetainedAvailable",
+      "script_name": "cyrusRetainedAvailable",
+      "path": "AminScatter/src/point_display.cpp",
+      "line_at_snapshot": 266
+    },
+    {
+      "symbol": "cyrusRetainedStats",
+      "script_name": "cyrusRetainedStats",
+      "path": "AminScatter/src/point_display.cpp",
+      "line_at_snapshot": 271
+    },
+    {
+      "symbol": "aminScatterBuildPreview",
+      "script_name": "aminScatterBuildPreview",
+      "path": "AminScatter/src/preview.cpp",
+      "line_at_snapshot": 82
+    },
+    {
+      "symbol": "aminScatterPreviewCount",
+      "script_name": "aminScatterPreviewCount",
+      "path": "AminScatter/src/preview.cpp",
+      "line_at_snapshot": 132
+    },
+    {
+      "symbol": "aminScatterDrawPreview",
+      "script_name": "aminScatterDrawPreview",
+      "path": "AminScatter/src/preview.cpp",
+      "line_at_snapshot": 139
+    },
+    {
+      "symbol": "aminScatterPreviewPoints",
+      "script_name": "aminScatterPreviewPoints",
+      "path": "AminScatter/src/preview.cpp",
+      "line_at_snapshot": 196
+    },
+    {
+      "symbol": "cyrusRetainedPublish",
+      "script_name": "cyrusRetainedPublish",
+      "path": "AminScatter/src/preview.cpp",
+      "line_at_snapshot": 230
+    },
+    {
+      "symbol": "cyrusRetainedMatches",
+      "script_name": "cyrusRetainedMatches",
+      "path": "AminScatter/src/preview.cpp",
+      "line_at_snapshot": 236
+    },
+    {
+      "symbol": "cyrusPreviewDrawStats",
+      "script_name": "cyrusPreviewDrawStats",
+      "path": "AminScatter/src/preview.cpp",
+      "line_at_snapshot": 244
+    },
+    {
+      "symbol": "cyrusPreviewBatchDrawing",
+      "script_name": "cyrusPreviewBatchDrawing",
+      "path": "AminScatter/src/preview.cpp",
+      "line_at_snapshot": 260
+    },
+    {
+      "symbol": "cyrusPreviewTriangles",
+      "script_name": "cyrusPreviewTriangles",
+      "path": "AminScatter/src/preview.cpp",
+      "line_at_snapshot": 269
+    },
+    {
+      "symbol": "cyrusWholeScale",
+      "script_name": "cyrusWholeScale",
+      "path": "AminScatter/src/whole_scale_bridge.inc",
+      "line_at_snapshot": 2
+    },
+    {
+      "symbol": "cyrusAnalyzeSurface",
+      "script_name": "cyrusAnalyzeSurface",
+      "path": "CyrusSurfaceAnalyzer/src/bridge.cpp",
+      "line_at_snapshot": 18
+    }
+  ],
+  "declaration_scan_scope": "def_visible_primitive declarations in both native src trees; excludes SDK callbacks, script functions and dynamic registration",
+  "local_source_copy": "_local/maintenance/2026-10-02-licensing-code-audit/source/"
+}

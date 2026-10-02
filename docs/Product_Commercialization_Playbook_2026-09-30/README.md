@@ -28,7 +28,7 @@ No business decision is needed to begin these actions.
 | 08 | [Demo and benchmark scenes](08_Demo_and_Benchmark_Scenes.md) | Seven reusable scene briefs and build records |
 | 09 | [Commercial decisions](09_Commercial_and_Licensing_Decisions.md) | Owner decision sheet with unresolved items visible |
 | 10 | [Licensing technical preparation](10_Licensing_Technical_Preparation.md) | Scoped engineering brief and capability policy |
-| 11 | [Provider evaluation](11_Licensing_Provider_Evaluation.md) | A later experiment plan and evidence-based selection record |
+| 11 | [Owned service validation](11_Licensing_Provider_Evaluation.md) | Licensing experiments, results and operating costs |
 | 12 | [Beta readiness](12_Beta_Readiness.md) | Go/no-go decision and a small pilot plan |
 | 13 | [Presentation asset production](13_Presentation_Asset_Production.md) | A practical shot list and approved media |
 | 14 | [Landing page content](14_Landing_Page_Content_Plan.md) | Section briefs, proof links and draft copy |
@@ -75,10 +75,10 @@ For each observation keep: test ID, date, operator, host/renderer/build, scene, 
 Follow this precedence:
 
 1. Current source and observed tests, with exact evidence limits.
-2. [Product Strategy 2026-09-29](../Product_Strategy_2026-09-29/README.md).
+2. [Product Strategy 2026-09-29](../Product_Strategy_2026-09-29/README.md), with the [current licensing plan](../licensing/README.md) governing licensing decisions and implementation.
 3. This dated operational playbook.
 4. [Performance roadmap](../Performance_Roadmap_2026-09-28/README.md).
-5. [Licensing implementation package](../CyrusScatter_Licensing_Implementation_Package_2026-09-27/README.md).
+5. [Historical licensing package](../CyrusScatter_Licensing_Implementation_Package_2026-09-27/README.md), superseded for implementation by the current licensing roadmap.
 6. [Complete codebase documentation](../CyrusScatter_Complete_Codebase_Documentation_2026-09-27/README.md).
 7. Older historical research.
 
@@ -91,4 +91,3 @@ When documents disagree, record both statements and the deciding evidence in [98
 Do 01–04 first, using several short Max sessions. Draft 05–08 while engineering addresses confirmed problems. Prepare decisions in 09–11, then use 12 to choose a controlled feature beta or a later licensing beta. Raw screenshots can be collected early; polished presentation follows qualified workflows. Stage 14 prepares content only; pricing from 15 and all release gates from 16 are required before public purchase/download promises.
 
 The governing engineering assignment remains [Baseline and Trust](../Product_Strategy_2026-09-29/12_First_Implementation_Milestone.md). This review created documentation and checked existing artifacts. Product source, algorithms, UI, Class IDs, schemas, licensing and website implementation were not changed.
-

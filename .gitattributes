@@ -8,6 +8,9 @@
 /docs/Viewport_Performance_*/** -text whitespace=cr-at-eol
 /docs/Research_Briefs_2026-10-01/** -text whitespace=cr-at-eol
 /docs/Research_Inputs_2026-10-01/** -text whitespace=cr-at-eol
+/docs/Retained_Point_Preview_2026-10-02/evidence/** -text whitespace=cr-at-eol
+/docs/Retained_Mesh_Preview_2026-10-02/evidence/** -text whitespace=cr-at-eol
+/docs/UI_Architecture_Investigation_2026-10-02/evidence/** -text whitespace=cr-at-eol
 
 # Exact logs, captured recipes and supplied reports retain original whitespace.
 # Active source and authored guides still use the normal whitespace checks.

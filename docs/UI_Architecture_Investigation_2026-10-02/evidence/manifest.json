@@ -1,0 +1,191 @@
+{
+  "recorded_utc": "2026-10-02T19:01:45.923582+00:00",
+  "fixture": "build\\mesh-integration-2026-10-02\\ui-layer-status-layout-lab2",
+  "pid": 32592,
+  "source_unchanged": {
+    "path": "AminScatter\\scripts\\AminScatterObject.ms",
+    "sha256": "89c6f102012c81d5fb46e7ef24e1f087af2b6a6a3f4d06d548a3d8dc0974eadc",
+    "bytes": 1005353
+  },
+  "artist_scene_unchanged": {
+    "path": "Test Scene\\SaveSelect 2.max",
+    "sha256": "42d3bd0835aba91ef7c29925669fda61e9bc7dda3479287b9e1775cc09696e6c",
+    "bytes": 185274104
+  },
+  "installed_script_observed": {
+    "path": "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\AminScatter\\AminScatterObject.ms",
+    "sha256": "f4321c8de0d15372672fa3cff8475cb9f5a5fa600ebf9448d0b2df45a2021b0d",
+    "bytes": 1006180
+  },
+  "private_harness": [
+    {
+      "path": "_local\\maintenance\\ui-layout-lab-2026-10-02\\baseline.ms",
+      "sha256": "848467f22af7d64d406a87190dbce695f4b937ae2b1a02b3487ad47bfe2eb9a1",
+      "bytes": 879
+    },
+    {
+      "path": "_local\\maintenance\\ui-layout-lab-2026-10-02\\check-real-edit.ms",
+      "sha256": "6e18e635a8c1737bd4ce3fbf9399416057b623402fab134575ada31f5638524b",
+      "bytes": 856
+    },
+    {
+      "path": "_local\\maintenance\\ui-layout-lab-2026-10-02\\compare-hosts.ms",
+      "sha256": "661fe9ecfcd283bfc040411d6dda6e3d03eac58698f650b88c9c74e9aa59fd7a",
+      "bytes": 4407
+    },
+    {
+      "path": "_local\\maintenance\\ui-layout-lab-2026-10-02\\flat-native.ms",
+      "sha256": "0e181f74beab4d6ad90be524fd325bdd72b1efff9cdd6ebd18d88fb330f3ceae",
+      "bytes": 60326
+    },
+    {
+      "path": "_local\\maintenance\\ui-layout-lab-2026-10-02\\launch.py",
+      "sha256": "b7a7219fcb7b4787859717c88adedad844a7fc2dcdb15ad31891a2c4ac2cddbb",
+      "bytes": 3790
+    },
+    {
+      "path": "_local\\maintenance\\ui-layout-lab-2026-10-02\\make-prototypes.py",
+      "sha256": "36e06c79e6a98ca5f6dd8708720c2741d21b3eca3cdf6d05cc78d8764d776cc5",
+      "bytes": 2525
+    },
+    {
+      "path": "_local\\maintenance\\ui-layout-lab-2026-10-02\\native-flat-test.ms",
+      "sha256": "bd28a62ee3956a682078980223b50c3b3d28b061575286391ba3a6e0222bbf15",
+      "bytes": 1727
+    },
+    {
+      "path": "_local\\maintenance\\ui-layout-lab-2026-10-02\\qt-layout-check.ms",
+      "sha256": "2177831c5fd47449d93f3c269500b659610a4457ac149a476a428dd2f7db1fb8",
+      "bytes": 188
+    },
+    {
+      "path": "_local\\maintenance\\ui-layout-lab-2026-10-02\\qt-layout-check.py",
+      "sha256": "6ee672373e8c9a765c09e8275903f46d1dbe9305f997e7f2d08aaa58d458435b",
+      "bytes": 1303
+    },
+    {
+      "path": "_local\\maintenance\\ui-layout-lab-2026-10-02\\qt-pilot.ms",
+      "sha256": "8c43e4ee21be38780908b763d70af1c601f396462e312fbd8e72cbb7bef331db",
+      "bytes": 181
+    },
+    {
+      "path": "_local\\maintenance\\ui-layout-lab-2026-10-02\\qt-pilot.py",
+      "sha256": "7f4edf29ba2f551f516eb73412934242ea58b753ea8dc7b4e438bc161a39d1af",
+      "bytes": 5645
+    },
+    {
+      "path": "_local\\maintenance\\ui-layout-lab-2026-10-02\\qt-reference.ms",
+      "sha256": "49fa25c9cff596e68017994733b29a14eb45c99ab6f40323db65df167de4c81b",
+      "bytes": 1246
+    },
+    {
+      "path": "_local\\maintenance\\ui-layout-lab-2026-10-02\\read-trace.ms",
+      "sha256": "51e23f90e8fdf2aea07c246ac3eec72bc40a460d36005fbef1a51c00db1be237",
+      "bytes": 441
+    },
+    {
+      "path": "_local\\maintenance\\ui-layout-lab-2026-10-02\\shared-editor.ms",
+      "sha256": "b8916faf38ecaf44e7b8fe8c2da2653a20b92ba5285c55fdede5ce0fefdd0c81",
+      "bytes": 4688
+    },
+    {
+      "path": "_local\\maintenance\\ui-layout-lab-2026-10-02\\shared-factories.ms",
+      "sha256": "62e5fce0473fca184d621082132538330df14beeceb791ab96aad2a0a755f645",
+      "bytes": 60843
+    }
+  ],
+  "evidence": [
+    {
+      "path": "docs\\UI_Architecture_Investigation_2026-10-02\\evidence\\baseline-controls.json",
+      "sha256": "bd6e69c04690854e1d298cc2af7feb5ee4b999a58d052596c7754ffb0a969768",
+      "bytes": 221
+    },
+    {
+      "path": "docs\\UI_Architecture_Investigation_2026-10-02\\evidence\\baseline-layout-trace.json",
+      "sha256": "d5d025cd33d156203fdbc0fb3f5814adc2364e081946a04707517aea7f25bf4d",
+      "bytes": 5070
+    },
+    {
+      "path": "docs\\UI_Architecture_Investigation_2026-10-02\\evidence\\diagnose-selected.txt",
+      "sha256": "0ce6712bf2efa8a6b4a82ddbbf79cd175f6b8b2cd21d68509cf492503ed91df9",
+      "bytes": 432
+    },
+    {
+      "path": "docs\\UI_Architecture_Investigation_2026-10-02\\evidence\\host-comparison-integrity.json",
+      "sha256": "85b9792443a74bf61229a8364ba973572c985397a7a5389b5cdeed093ffc4031",
+      "bytes": 239
+    },
+    {
+      "path": "docs\\UI_Architecture_Investigation_2026-10-02\\evidence\\host-comparison.json",
+      "sha256": "911fe772801cc2a761396e375d2c113d2ddf412b102f547db991ea556f5041c6",
+      "bytes": 6170
+    },
+    {
+      "path": "docs\\UI_Architecture_Investigation_2026-10-02\\evidence\\identity.json",
+      "sha256": "e5fefc8be0d16989fa35a3ed9d0c2cbdeed45ce77bb0faa86384b052712e46ad",
+      "bytes": 1624
+    },
+    {
+      "path": "docs\\UI_Architecture_Investigation_2026-10-02\\evidence\\interaction-layout-trace.json",
+      "sha256": "c305ccb363c51b05f6be6081eb528df13fcddd21d52a081897132d2cdbc9108d",
+      "bytes": 119
+    },
+    {
+      "path": "docs\\UI_Architecture_Investigation_2026-10-02\\evidence\\interaction-state.json",
+      "sha256": "e38d429f9decdeb7eb9116092bc5c605cd43f046e2e3c776da133cbefc4a8414",
+      "bytes": 120
+    },
+    {
+      "path": "docs\\UI_Architecture_Investigation_2026-10-02\\evidence\\native-flat-comparison.json",
+      "sha256": "6af2158646522d2f59ab07d5de6113ac84b9142d9288eecfb7ed98f72fc23eb7",
+      "bytes": 2816
+    },
+    {
+      "path": "docs\\UI_Architecture_Investigation_2026-10-02\\evidence\\qt-pilot-layout.json",
+      "sha256": "fa65cbe62808ff9ccd7e77d49edecc197958a3324ed9030ad90ff0d39cc17ff9",
+      "bytes": 586
+    },
+    {
+      "path": "docs\\UI_Architecture_Investigation_2026-10-02\\evidence\\qt-pilot.json",
+      "sha256": "1370e992e566e7555a31d9a57da7038a6d623954943fead3bdf3c22185d8fdc3",
+      "bytes": 3170
+    },
+    {
+      "path": "docs\\UI_Architecture_Investigation_2026-10-02\\evidence\\qt-reference.json",
+      "sha256": "2cfbeaa38e265a2b8e8d07d58eb98c76ceeb8f168b2a5131986d3818e71cac4c",
+      "bytes": 540
+    },
+    {
+      "path": "docs\\UI_Architecture_Investigation_2026-10-02\\evidence\\ready.json",
+      "sha256": "9e8a101710982afe0f34894f01805d8c5a63d83e4b21403bfc12261e11adb462",
+      "bytes": 650
+    },
+    {
+      "path": "docs\\UI_Architecture_Investigation_2026-10-02\\evidence\\shared-editor-integrity.json",
+      "sha256": "bf80b6c25afb4e9d8d8376546c1a3248e1aa7fb6d04ee253e30fec85ba5ad8be",
+      "bytes": 369
+    },
+    {
+      "path": "docs\\UI_Architecture_Investigation_2026-10-02\\evidence\\shared-editor-real-edit.json",
+      "sha256": "9b08f190b01ebfcbccb61ae833e0f8010bdc1b2b906290130b79e55d04f49f88",
+      "bytes": 121
+    },
+    {
+      "path": "docs\\UI_Architecture_Investigation_2026-10-02\\evidence\\shared-editor-timing.json",
+      "sha256": "35c0ef5901396b4151fd486d4ee693668b04b5cb63118b06cb72da1c503ce141",
+      "bytes": 8052
+    },
+    {
+      "path": "docs\\UI_Architecture_Investigation_2026-10-02\\evidence\\summary.json",
+      "sha256": "b7483a48a7cc43ebe24cd44fc0e738e621d4a3ba919357accce40837ce0ab04c",
+      "bytes": 2252
+    },
+    {
+      "path": "docs\\UI_Architecture_Investigation_2026-10-02\\evidence\\ui-open-timing.json",
+      "sha256": "e8fbf17a296f2f77a339bf6d4275b62a33365cbd33d0236f4a4d42db17edb57a",
+      "bytes": 3441
+    }
+  ],
+  "sdk_root": "build/tooling/max2027-sdk/Program Files/Autodesk/3ds Max 2027 SDK/maxsdk",
+  "note": "New documentation is not yet committed. Harness/binaries/scenes remain local and ignored."
+}

@@ -1,0 +1,16 @@
+[
+  {
+    "year": 2026,
+    "package": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\retained-point-0.63\\CyrusScatter-0.63-Max2026.mzp",
+    "sha256": "4b570c14a6726e67f53bdc6dfbf91cb879189694da78c3454c7f4b29a78f0b36",
+    "interactive_runtime": false,
+    "script_sha256": "5ea52529aea520f0450c2542f69924901ec95da7b9f3dc3fde5d4a1362bb098b"
+  },
+  {
+    "year": 2027,
+    "package": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\retained-point-0.63\\CyrusScatter-0.63-Max2027.mzp",
+    "sha256": "602f8db4aab5982f13823feb89602cd85ba50287e2487ac8b9e033c6fd56c183",
+    "interactive_runtime": true,
+    "script_sha256": "5ea52529aea520f0450c2542f69924901ec95da7b9f3dc3fde5d4a1362bb098b"
+  }
+]

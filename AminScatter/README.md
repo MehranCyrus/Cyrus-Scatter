@@ -1,8 +1,8 @@
 # Cyrus Scatter
 
-**Current local candidate: 0.62.** The current code includes bounded CPU computation, prepared proxy batches and deferred layer synchronization during held viewport input. Start with the [repository guide](../README.md) and [build/install status](../docs/Max_2027_Installation.md) for Max 2026/2027 requirements and qualification limits.
+**Current local candidate: 0.64.** Mesh now shares source geometry and exact instance transforms with retained Nitrous GPU buffers. Point Cloud retention, bounded CPU computation, prepared proxy batches and deferred synchronization remain. Start with the [candidate guide](../docs/Retained_Mesh_Preview_2026-10-02/README.md) for installation, measurements and Max 2026/2027 qualification limits.
 
-The [retained-point experiment](../docs/Heavy_Scene_Viewport_2026-10-02/RESULTS.md) is a separate prototype. It has not been integrated into this plugin or its installers; the [next implementation plan](../docs/Heavy_Scene_Viewport_2026-10-02/IMPLEMENTATION_PLAN.md) defines that work.
+The [retained-point experiment](../docs/Heavy_Scene_Viewport_2026-10-02/RESULTS.md) preceded the current [production-code integration](../docs/Retained_Point_Preview_2026-10-02/RESULTS.md). Point Cloud / Proxy / Mesh remain the display modes; automatic camera-dependent detail is still future work.
 
 ## Historical changes: 0.59 and earlier
 

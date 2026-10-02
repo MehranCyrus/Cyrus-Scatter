@@ -28,7 +28,7 @@ A paid product must remain usable after purchase, updates, failures and handoff.
 
 - Qualify final binaries/host/renderer scope and close release-blocking issues.
 - Verify signed artifacts, final package identity and clean installation/removal.
-- Exercise licensing/provider/commerce failures and recovery.
+- Exercise owned licensing service, signer, database, credential and commerce failures and recovery.
 - Preserve eligible old installers, backup/restore and rollback.
 - Supply diagnostics and issue handling for the actual released build.
 - Retest affected paths after any last-minute binary/package change.
@@ -58,7 +58,7 @@ A checkbox passes only for the declared offer/scope. Excluded optional offers re
 | [ ] | Stability and scene safety | No unresolved critical/high scene-loss, unrelated deletion, corruption or broken offered workflow; failure/cancellation recovery tested | Engineering |
 | [ ] | Host/renderer/resource scope | Every advertised Max update, renderer/mode, OS and workload passes required tests; missing 2024/2025/2026 or 32 GB work remains visible | Engineering + QA/you |
 | [ ] | Licensing policy and enforcement | Approved capabilities, entitlement states, direct/native mutation paths and faithful evaluation/render outcomes | Engineering + owner |
-| [ ] | Provider | Selected provider/edition/contract, current terms and must-have experiments; named outage/recovery owner | Owner + engineering |
+| [ ] | Owned licensing service | Applicable [L0–L6/E01–E17 evidence](../licensing/ROADMAP.md), protected production trust, operating costs and named outage/recovery owners | Owner + engineering |
 | [ ] | Commerce | Approved seller/payment arrangement; authenticated provisioning, duplicate/retry handling, reconciliation and refund/revocation recovery tested | Owner + engineering/operations |
 | [ ] | Installer / upgrade / uninstall | Final package, dependencies, clean profile, both included products, deliberate license-state retention and tested rollback | Engineering + you |
 | [ ] | Code signing / release trust | Signed native binaries, timestamp/verification evidence and trusted final download identity; checksums alone are not publisher authentication | Engineering/release owner |
@@ -125,14 +125,14 @@ First post-launch review date and metrics:
 
 ## Evidence to collect
 
-Final release manifest, signed artifact verification, QA matrix, licensing/provider/commerce results, approved offer/policies, download/customer-journey records, beta summary, recovery/restore exercise and owner decision.
+Final release manifest, signed artifact verification, QA matrix, licensing service/commerce results, approved offer/policies, download/customer-journey records, beta summary, recovery/restore exercise and owner decision.
 
 ## Status table
 
 | Item | Status | Notes |
 |---|---|---|
 | Product and support gates | NOT TESTED | Development evidence is insufficient |
-| Licensing/provider/commerce gates | NOT TESTED | Not implemented/selected here |
+| Licensing service/commerce gates | NOT TESTED | Owned direction selected; implementation and qualification pending |
 | Signed installer/recovery/delivery | NOT TESTED | Future final release |
 | Copy/terms/support approvals | NOT TESTED | Owner and reviewers |
 | Final launch decision | NOT TESTED | No launch authorized by this task |
@@ -152,4 +152,3 @@ See the NICE TO HAVE and FUTURE lists. New promises require new evidence and sup
 ## Next stage
 
 Use [99 — Progress log](99_Progress_Log.md) for release and post-launch follow-up, and keep the [master checklist](00_Master_Checklist.md) current.
-

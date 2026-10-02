@@ -4,6 +4,10 @@ Date: 2 October 2026. Starting product: Scatter 0.62 / Analyzer 0.14, including 
 
 ## Product contract
 
+**Integration update:** the owner clarified that the existing Point Cloud / Proxy / Mesh modes supply the desired choice. [Candidate 0.63](../Retained_Point_Preview_2026-10-02/README.md) integrates retention into Point Cloud; no redundant binary toggle was added. The dated experiment and its evidence below remain unchanged in scope. The remaining target is useful detail when zooming into the same dense landscape.
+
+**Subsequent Mesh decision:** [candidate 0.64](../Retained_Mesh_Preview_2026-10-02/README.md) implements step 7 using shared source buffers and GPU instancing directly. The existing cache already stores source triangles plus matrices, and Autodesk's shipped GPU-particle sample supplies the supported contract. Expanded world geometry was therefore unnecessary for this implementation; preserving the existing shader appearance and bounding payload were the deciding constraints. Its measured results supersede the proposal status of Mesh retention below.
+
 The owner wants **both a fast preview and full detail, with an explicit switch**. Placement, stable edit IDs, source choice, transforms and render output must stay exact. Preview density is a display choice. Full detail must identify any existing instance/face limit; it must not silently claim to show the entire render population.
 
 The first target is a static heavy bird's-eye scene in Max 2027, followed by Max 2026 runtime qualification. Repeated navigation should reuse completed display data. A relevant edit may require calculation and publication; moving the camera should not rerun placement or resample source meshes.

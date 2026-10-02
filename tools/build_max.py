@@ -66,7 +66,8 @@ def package(project, name, version, native_names, script_name, args, build_dir):
     payload['INSTALL.txt'] = (
         f'{name} {version} - 3ds Max {args.max_year} x64\n'
         'Run this MZP through Scripting > Run Script, then restart Max.\n'
-        + ('Viewport performance candidate: bounded proxy batches and deferred layer synchronization during held input.\n'
+        + ('Viewport performance candidate: retained Nitrous point-cloud buffers, GPU-instanced Mesh preview, bounded proxy batches and deferred synchronization during held input.\n'
+           'Point Cloud and Mesh reuse GPU buffers during navigation. Existing preview limits still apply; no automatic camera LOD.\n'
            'Includes native source filtering/transforms, batched edit notifications, and bounded clustered queries.\n'
            'Automatic clustered calculations use at most 4 total CPU participants. GPU compute is not enabled.\n'
            if project == 'AminScatter' else 'The Analyzer algorithm is unchanged in this performance iteration.\n') +
@@ -120,7 +121,7 @@ def main():
              f'-DMAXSDK_ROOT={args.sdk_root.resolve()}'], env)
         run(['cmake', '--build', dest], env)
         run(['ctest', '--test-dir', dest, '--output-on-failure'], env)
-    package('AminScatter', 'Cyrus Scatter', '0.62', ['AminScatter.dlx', 'CyrusScatterEdit.dlm'],
+    package('AminScatter', 'Cyrus Scatter', '0.64', ['AminScatter.dlx', 'CyrusScatterEdit.dlm'],
             'AminScatterObject.ms', args, base)
     package('CyrusSurfaceAnalyzer', 'Cyrus Surface Analyzer', '0.14', ['CyrusSurfaceAnalyzer.dlx'],
             'CyrusSurfaceAnalyzer.ms', args, base)

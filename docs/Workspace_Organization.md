@@ -1,8 +1,8 @@
 # Workspace organization and Git backup scope
 
-Updated 2 October 2026, Asia/Tehran.
+Updated 3 October 2026, Asia/Tehran.
 
-Git contains the two plugin source trees, shared CMake configuration, build and test tools, documentation, research briefs, supplied research reports and the selected evidence used by those reports. The retained-point probe remains a clearly identified private experiment under `tools/performance/native_point_probe`; it is not a product release.
+Git contains the two plugin source trees, shared CMake configuration, build and test tools, documentation, research briefs, supplied research reports and the selected evidence used by those reports. The original retained-point probe remains a clearly identified private experiment under `tools/performance/native_point_probe`; the subsequent retained Point Cloud and Mesh integrations are now part of the Scatter 0.64 source.
 
 ## Local-only data
 
@@ -43,3 +43,13 @@ All 138 pre-cleanup code-file hashes remained unchanged; the comparison helper w
 The existing Max 2026 and Max 2027 build directories each passed eight Scatter native suites and one Analyzer suite. Fourteen Python report tests passed. The generator reproduced the current script exactly in scratch and again from a clean checkout of the staged Git files. All 475 entries in the five dated evidence manifests matched the staged Git blobs, including archived logs that were previously covered by the general log ignore rule. The retained-point evidence verifier also passed from the clean checkout.
 
 These are backup and regression checks using the existing native builds. This cleanup did not build or install a new product release, run another Max viewport experiment, or integrate the retained-display prototype.
+
+## Backup verification — 3 October 2026
+
+This checkpoint includes Scatter 0.64 / Analyzer 0.14, the current UI revision **2026-10-02.5**, retained Point Cloud and Mesh source, integration/test tools, and the updated engineering documents. Licensing, Brush and MCP documents remain proposals; those features are not implemented. The [remaining layer/settings width-reset investigation](UI_Architecture_Investigation_2026-10-02/LAYER_RESIZE_TRACE_2026-10-03.md) is preserved with its unresolved visual correction.
+
+All **702 selected evidence entries across nine manifests** matched the staged Git blobs. Evidence attributes preserve archived bytes during checkout. A fresh export of the staged source reproduced the generated UI script byte for byte, passed all fourteen Python report tests, and passed the original point-probe and integrated-point evidence verifiers.
+
+Both existing 0.64 native builds matched their archived module hashes and passed all nine Scatter suites for each SDK, Max 2026 and Max 2027. These checks used existing binaries; they do not constitute a new compilation or interactive runtime qualification. No plugin was installed and no artist session was modified during this backup.
+
+The staged file audit includes only source, tools, documents and selected documentary evidence. SDKs, compiled plugins, installers, artist scenes/assets and raw local runs remain excluded by `.gitignore`. The local backup journal and clean-checkout verification files are under `_local/maintenance/2026-10-03-git-backup/`.

@@ -5,9 +5,11 @@ Generated: 2026-09-27
 Codebase baseline: `b9a9e909b469456a6193337363b7c50b2397e549`
 Parent documentation commit: `513e0385845964c79572c2827dcd4d9b5abb19a3`
 
+Routing update: 2026-10-02. Only `README.md` was revised to mark this package historical and point to the current owned-service plan. Its previous entry was 2371 bytes / CRC32 `255329bc`. All numbered chapters and diagrams retain their original bytes and checksums. See the [document audit](../licensing/DOCUMENT_AUDIT.md).
+
 | File | Bytes | CRC32 |
 |---|---:|---|
-| `README.md` | 2371 | `255329bc` |
+| `README.md` | 2982 | `12c5bd73` |
 | `00_Executive_Plan.md` | 2470 | `d550646e` |
 | `01_Licensing_Requirements_and_Principles.md` | 1911 | `2a07e558` |
 | `02_Product_SKUs_Capabilities_and_Entitlements.md` | 1897 | `b9592dd3` |

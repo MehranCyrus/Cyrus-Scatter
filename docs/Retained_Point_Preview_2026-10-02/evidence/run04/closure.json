@@ -1,0 +1,18 @@
+{
+  "captured_utc": "2026-10-02T09:39:17.7187466Z",
+  "private_pid": 33636,
+  "private_process_exited": true,
+  "original_scene_sha256": "8a40f6a1a5c47eacbbee92920e131f4cae04cfb0de6be1991b4719ea2860bd2c",
+  "original_scene_unchanged": true,
+  "cpu": {
+    "Name": "AMD Ryzen 5 5600X 6-Core Processor             ",
+    "NumberOfCores": 6,
+    "NumberOfLogicalProcessors": 12
+  },
+  "os": {
+    "Caption": "Microsoft Windows 11 Pro",
+    "Version": "10.0.26300",
+    "TotalVisibleMemorySize": 100572476
+  },
+  "gpu": "NVIDIA GeForce RTX 3090, 610.47, 24576 MiB"
+}

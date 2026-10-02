@@ -1,0 +1,26 @@
+{
+  "checked_utc": "2026-10-02T12:50:02.9102700Z",
+  "processor": {
+    "Name": "AMD Ryzen 5 5600X 6-Core Processor             ",
+    "NumberOfCores": 6,
+    "NumberOfLogicalProcessors": 12
+  },
+  "graphics": {
+    "Name": "NVIDIA GeForce RTX 3090",
+    "DriverVersion": "32.0.16.1047"
+  },
+  "physical_memory_bytes": 102986215424,
+  "operating_system": {
+    "Caption": "Microsoft Windows 11 Pro",
+    "Version": "10.0.26300",
+    "BuildNumber": "26300"
+  },
+  "max_executable": "29.1.0.11426",
+  "viewport_pixels": [
+    1302,
+    750
+  ],
+  "visual_studio_toolset": "14.38.33130",
+  "windows_sdk": "10.0.19041.0",
+  "artist_session_left_open": true
+}

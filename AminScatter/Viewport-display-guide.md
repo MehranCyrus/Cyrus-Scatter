@@ -1,5 +1,7 @@
 # Cyrus Scatter 0.43 — Viewport display
 
+**Current 0.64 update:** Mesh now uses retained source geometry and GPU instancing, with its existing face/instance selection and shading. Point Cloud retains its 0.63 improvements. Both modes keep their original drawing paths as fallback; camera-dependent detail remains future work. See the [candidate guide](../docs/Retained_Mesh_Preview_2026-10-02/README.md). The mode/geometry descriptions below are retained from 0.43; its validation is historical.
+
 Open **Viewport and Render → Display mode**:
 
 - **Point Cloud** keeps the existing point preview and its point limits.

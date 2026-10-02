@@ -1,0 +1,302 @@
+{
+  "scope": "Completion-time fingerprints of implementation/generator inputs; not a clean-commit claim",
+  "git_head": "1bfb400abc19b7472b4c20621970d435ac214c33",
+  "files": {
+    "AminScatter/CMakeLists.txt": {
+      "sha256": "e9155e1faf0d57603201b06c785826cd93a7e8047b588311a5863feab67a47ad",
+      "bytes": 3505
+    },
+    "AminScatter/include/execution.h": {
+      "sha256": "e9f2cfdf677366f491dc01cea83301ce53111c5073633333a4adf1db2ad509d2",
+      "bytes": 2975
+    },
+    "AminScatter/include/point_preview.h": {
+      "sha256": "5dec4890f38338f99baf1d0e163274aa515b455b34d3a8acc51f4e917017edb6",
+      "bytes": 1610
+    },
+    "AminScatter/include/preview_sampling.h": {
+      "sha256": "14e389d96653e861896a133c6efa9a6d42f96e2cc8d3e5e6ee665221b9a4645f",
+      "bytes": 436
+    },
+    "AminScatter/include/scatter.h": {
+      "sha256": "949bad97f4c13aa119b43da5e5c73b02760c45d9779a14f3eaf7baa4d94b1265",
+      "bytes": 4874
+    },
+    "AminScatter/scripts/AminScatterObject.ms": {
+      "sha256": "2d1218a5e3bc89ec60947299314000b0cc698973d4f3ee7947bf7f454072464d",
+      "bytes": 985960
+    },
+    "AminScatter/src/analyzer_area_bridge.inc": {
+      "sha256": "849e9ed30e3b5cdd11685a5150b03d50859b3577f5d49edae8325afa186fd02b",
+      "bytes": 2118
+    },
+    "AminScatter/src/boundary_falloff.inc": {
+      "sha256": "75c50dcde1c0d2339b526e7bb2019c4644ebd9512369fc09238ec62bbb749cec",
+      "bytes": 4022
+    },
+    "AminScatter/src/boundary_falloff_bridge.inc": {
+      "sha256": "4ada13b8921470ac6d336332fbd500b41cceb2a9171ab4b2c1396ce813dae95a",
+      "bytes": 3316
+    },
+    "AminScatter/src/cluster.inc": {
+      "sha256": "e3f7eddd8133e34f91c1e50d5c4d1ac4ca2f4a6dc611728a0848c16f9f3e3680",
+      "bytes": 3491
+    },
+    "AminScatter/src/cyrus_edit.cpp": {
+      "sha256": "0348b8396f42f3eefc83daa9646d8bda223e9d12742595f2eb1fac120c21ad28",
+      "bytes": 15189
+    },
+    "AminScatter/src/cyrus_edit.rc": {
+      "sha256": "2ed905b328e04f092f89a4e1e800d9fba724a0c33f9ea3262fe886040f53fb33",
+      "bytes": 301
+    },
+    "AminScatter/src/cyrus_edit_stack.inc": {
+      "sha256": "53d689602439f0f956a643b0f0ccc561247b82d6b162d6a067073abe1e23a6ab",
+      "bytes": 4412
+    },
+    "AminScatter/src/cyrus_edit_storage.inc": {
+      "sha256": "561ef94b0fa26e16eb4058398cbff0e0f7c3c84ec74fc181d0c674be9fbf036b",
+      "bytes": 2403
+    },
+    "AminScatter/src/edge_border.inc": {
+      "sha256": "df5f43d5614d1d44a274b9a67c70c659d24964b1ffad665e1956232581951f8c",
+      "bytes": 5068
+    },
+    "AminScatter/src/edit_plugin.cpp": {
+      "sha256": "81df34e45b3a7635d5b7ebead5950cbaf7bf45a0f5a569385ba52c7e4901091f",
+      "bytes": 691
+    },
+    "AminScatter/src/execution.cpp": {
+      "sha256": "b54963d69441d473ed52f76b125c4eb3d0a38c564900f28abd76efa7bcbf1136",
+      "bytes": 819
+    },
+    "AminScatter/src/final.inc": {
+      "sha256": "eb77d2cfcbc74c87b02a047d67f3623984dcbe3bd8f6e818d8d4c2698fdc7272",
+      "bytes": 5627
+    },
+    "AminScatter/src/geometry_preview.inc": {
+      "sha256": "341a3f7b6a939c8feb9037eda1580b7bbd657ea28167e9c5b1ce6ee6b3d27219",
+      "bytes": 4632
+    },
+    "AminScatter/src/max_bridge.cpp": {
+      "sha256": "4975241677c358ec0d9a24deb6afd5205ef3dc2a7e53c35ff2c70020ceab76a0",
+      "bytes": 26223
+    },
+    "AminScatter/src/mesh_display.inc": {
+      "sha256": "91b694e319d1d5864f1ae6a6dd67c8bb033d44420f770ed0645c4cc4547d8c39",
+      "bytes": 6597
+    },
+    "AminScatter/src/orientation.inc": {
+      "sha256": "d485e2b8ea5c3abf3fc00a7e7b7139ae4b5d3995ee17f3aad7afff8cc4bfcea8",
+      "bytes": 7983
+    },
+    "AminScatter/src/orientation_bridge.inc": {
+      "sha256": "c01e1146c6b3b04f03ff288f9e87d0c0d87de6b4adf22d6c69fe6965d9a41dde",
+      "bytes": 3234
+    },
+    "AminScatter/src/point_display.cpp": {
+      "sha256": "fffbba8c231ee937e749116dd4a0184f4d0c8ff4c366d85c60495c463d1eb620",
+      "bytes": 18964
+    },
+    "AminScatter/src/prepared_band.inc": {
+      "sha256": "5d01452faed01a630428506cc7ce099ee909ce64204edef5448a03c1a1000cf0",
+      "bytes": 2633
+    },
+    "AminScatter/src/preview.cpp": {
+      "sha256": "32ef6fc1c2de68c07fbd50e8183cf864da95e73bccff1e0e8f7a75fa6a2e9d54",
+      "bytes": 15700
+    },
+    "AminScatter/src/preview_batches.inc": {
+      "sha256": "a2a7df3d65a6278d49aad80361bffe8db15fae1419feb44e993354f5c31c7acd",
+      "bytes": 1890
+    },
+    "AminScatter/src/scatter.cpp": {
+      "sha256": "16e56f583cf608b23a29e2d07608e5b68bfec36de7f3035ebe510ed59987fe7f",
+      "bytes": 25830
+    },
+    "AminScatter/src/spacing.inc": {
+      "sha256": "96ef2d89f07cf9e6c67a93f4c91e990da98016f58c6278fce543a7b09e289c77",
+      "bytes": 7577
+    },
+    "AminScatter/src/whole_scale_bridge.inc": {
+      "sha256": "446b36ddd6dec15fe4f2920b416157e33d503d7913905efb03f3967f7c5736d6",
+      "bytes": 1278
+    },
+    "AminScatter/tools/ui/activation.cjs": {
+      "sha256": "4c98473965882e4df4e488ac158be530962efffa5f8df65585006286794e7beb",
+      "bytes": 2368
+    },
+    "AminScatter/tools/ui/analyzer-area.cjs": {
+      "sha256": "bc1d472ef08351b7bf5112b1fca0552fa6610747edaa5d880050e80933c89adf",
+      "bytes": 2640
+    },
+    "AminScatter/tools/ui/area-falloff.cjs": {
+      "sha256": "153a1e93b0edd78bb941e03470d03e7fcc20c84596323d8421b3626c2c0b5a8b",
+      "bytes": 2236
+    },
+    "AminScatter/tools/ui/boundary-falloff.cjs": {
+      "sha256": "baefdb6ec38d63048358b00d599c2225278e9737300eb155ecd3403992e6e9ed",
+      "bytes": 8348
+    },
+    "AminScatter/tools/ui/centers.cjs": {
+      "sha256": "4579065bdd222e1714f70765840ff7998ff0b3e26e33eb780f8d20a7f01c84f0",
+      "bytes": 2900
+    },
+    "AminScatter/tools/ui/compute-performance.cjs": {
+      "sha256": "65792c2c1f117796cf45daf14c28633ec6490688c6f26283972d951aae51b371",
+      "bytes": 3638
+    },
+    "AminScatter/tools/ui/display-modes.cjs": {
+      "sha256": "d5b722fbb83d102e5173ee9c618e91e0af470427ddf9e3aca36941ea803442db",
+      "bytes": 4386
+    },
+    "AminScatter/tools/ui/edge-border.cjs": {
+      "sha256": "3401f9542166922dfffb0316f380420dd625e3bf5c4389ce171750d4616b1f83",
+      "bytes": 7208
+    },
+    "AminScatter/tools/ui/edge-corners.cjs": {
+      "sha256": "22f9c61b8117313ad1a5a2f042350713111ee236175c80594b375403a8a079a2",
+      "bytes": 2301
+    },
+    "AminScatter/tools/ui/edge-rotation.cjs": {
+      "sha256": "f1896d3c7be1ce047695ef84fd4251139eeecf3e2d372f5a09201f25f8e93564",
+      "bytes": 1945
+    },
+    "AminScatter/tools/ui/edit.cjs": {
+      "sha256": "e53a198c479027f39506d59f324f44226b570cb461e7a7e5e135df00da97c68b",
+      "bytes": 2156
+    },
+    "AminScatter/tools/ui/empty.cjs": {
+      "sha256": "c9f7c8ec3922d655157f4a8f793e075e3fa3babfa0225e0a2411059ddd64a8d7",
+      "bytes": 3439
+    },
+    "AminScatter/tools/ui/final.cjs": {
+      "sha256": "ac33e2ba4d660c1fb8673e8628afe91037152cfcc03cb8c970072a6863ed51d1",
+      "bytes": 4743
+    },
+    "AminScatter/tools/ui/generate.cjs": {
+      "sha256": "3b67f7bb5d61c84ccaab44e31cc54fea5f69d879e13ba23239760bd1e7042a54",
+      "bytes": 11121
+    },
+    "AminScatter/tools/ui/orientation.cjs": {
+      "sha256": "f0d584965c6a28e46858e12b3e59047d104eaceac672a64d4ddc42d57ef6ae87",
+      "bytes": 4992
+    },
+    "AminScatter/tools/ui/overlaps.cjs": {
+      "sha256": "5f65847967b567c6c72fc095b2e7cc4a2a94a8be2d0597ed05192c954301195d",
+      "bytes": 7084
+    },
+    "AminScatter/tools/ui/performance.cjs": {
+      "sha256": "daaba06ac7fc1b61241a12dabd4a733495c7f4d0d4f5c2f94259362488dffa75",
+      "bytes": 6885
+    },
+    "AminScatter/tools/ui/point-source.cjs": {
+      "sha256": "fb9fb4d351173526e01396d0a74a1cb1a7321151dc47bec47d10b1c6d22dbdb4",
+      "bytes": 3328
+    },
+    "AminScatter/tools/ui/radius-display.cjs": {
+      "sha256": "edf47968303b7c4bb202a5f74877e150de9376c519e35abd25a85bc821aa2694",
+      "bytes": 2512
+    },
+    "AminScatter/tools/ui/radius.cjs": {
+      "sha256": "a021915901b3b4d985f79e76e47d0a398ddc523578f19f0004f836eac46ff3b5",
+      "bytes": 7163
+    },
+    "AminScatter/tools/ui/responsive.cjs": {
+      "sha256": "19f512543f8fd872c6d899615c5a1733f94857c71c37061a5f7d50355cb4f12f",
+      "bytes": 1681
+    },
+    "AminScatter/tools/ui/retained-points.cjs": {
+      "sha256": "593e7bfafd425692911b602ceb3b041ca4cfef63e6d53b8886281860b284de55",
+      "bytes": 9426
+    },
+    "AminScatter/tools/ui/source-refresh.cjs": {
+      "sha256": "4a64cc142d1db0bce03e2c63bc6e43251b0f190ecbc1472f327c5ff2fe9d32aa",
+      "bytes": 885
+    },
+    "AminScatter/tools/ui/source-transforms.cjs": {
+      "sha256": "1206435ac0f37d953b897aebc61996295b880c091bee8dab7d69ae9dbd88237d",
+      "bytes": 3977
+    },
+    "AminScatter/tools/ui/spacing.cjs": {
+      "sha256": "a045813ef642b2f7577562ff944cb9cf2f8c6a2c99cf17942adcce5eddcbdf65",
+      "bytes": 3841
+    },
+    "AminScatter/tools/ui/street-layout.cjs": {
+      "sha256": "f5c77fc5e6902e44caa5702d882d54e98016dd2652b6170250b9a6f2d4176ac2",
+      "bytes": 3331
+    },
+    "AminScatter/tools/ui/templates/analyzer-area-ui.ms": {
+      "sha256": "70812259761ce88b4adc5b939b236cdd8ea68fe1d9d77a66e13497b65b997ea5",
+      "bytes": 2104
+    },
+    "AminScatter/tools/ui/templates/area-falloff-methods.ms": {
+      "sha256": "10f6ebb739663e8c8f4318b4d8900e167665fa3cd0928a76718880ff95f8a8e2",
+      "bytes": 3724
+    },
+    "AminScatter/tools/ui/templates/area-falloff-ui.ms": {
+      "sha256": "a4fe059f68418cccf52861c8426c779e5a3579f3715f4bae8147e1b232e9ecfd",
+      "bytes": 3715
+    },
+    "AminScatter/tools/ui/templates/before.ms": {
+      "sha256": "4ffe3f7698b0df6d6653364189fcf3d2563d90186ce266072e5e39cea1ed3bfa",
+      "bytes": 59863
+    },
+    "AminScatter/tools/ui/templates/containers.ms": {
+      "sha256": "18e9682aa214d5ee636e3f7ea9b2781fcab69d1d96ed6f52a4549d5bf80e4a77",
+      "bytes": 4277
+    },
+    "AminScatter/tools/ui/templates/falloff-graph.ms": {
+      "sha256": "73ff8983484f282b29e5b2d559e54658f9465520dc26a0cdd9b5507a729d568b",
+      "bytes": 3780
+    },
+    "AminScatter/tools/ui/templates/host.ms": {
+      "sha256": "31806e87ac6f4b4f2bd2212b418f2197852b5ebadd5fd2970039a2fcc58d7fa2",
+      "bytes": 3993
+    },
+    "AminScatter/tools/ui/templates/pflow.ms": {
+      "sha256": "a613a919abdead513504ae6d275fe90a7d8c6090403572cc6cf482a0437b9e7a",
+      "bytes": 8300
+    },
+    "AminScatter/tools/ui/templates/storage.ms": {
+      "sha256": "e0abd4988dcc117ace4931ee3d3c7a5238be0262aab0b85aa4f8ffb342eb0e52",
+      "bytes": 3635
+    },
+    "AminScatter/tools/ui/templates/street-layout-methods.ms": {
+      "sha256": "62f4c02911d277e535da74aff6f1ecde8a8e5abc32614498b76f8c599f113e58",
+      "bytes": 3275
+    },
+    "AminScatter/tools/ui/templates/stroke-ui.ms": {
+      "sha256": "c022ab57919d180a72d274705f86b22b5236538d06f84911a7b06a5b283bcacf",
+      "bytes": 10063
+    },
+    "AminScatter/tools/ui/templates/strokes.ms": {
+      "sha256": "949e338cb27ee5c59e94cb1979d85557ca15e062b7ed1d823fde9f086174a1f9",
+      "bytes": 6286
+    },
+    "AminScatter/tools/ui/trace.cjs": {
+      "sha256": "0d674e3602e4cba29a40246855c2acf8fdb46c1ae5440bf50d710619869b0800",
+      "bytes": 1985
+    },
+    "AminScatter/tools/ui/viewport-performance.cjs": {
+      "sha256": "01c8f3cbae5f3587b509ffa3d7d68abf601a6b5f4960c35532142938eca01f53",
+      "bytes": 3594
+    },
+    "AminScatter/tools/ui/weights.cjs": {
+      "sha256": "e9eac9bf22f6ecef3fe34e00ae36484179782cb037919fc450ba78596cb14814",
+      "bytes": 3340
+    },
+    "AminScatter/tools/ui/whole-scale.cjs": {
+      "sha256": "24dfcfb11ba91748a26d09cc3825f79f244d46e2ba922c077f12af83a090df39",
+      "bytes": 1731
+    },
+    "CyrusSurfaceAnalyzer/scripts/CyrusSurfaceAnalyzer.ms": {
+      "sha256": "b9a1f1aa2ba7847566eb8f36bee711f9c64753572955ed4549f2f68669e5f923",
+      "bytes": 22579
+    },
+    "tools/build_max.py": {
+      "sha256": "70e86f3ff541ec9bc0c581ef3040deded691cbbd3714d5b6eee2da05aed4c87b",
+      "bytes": 7436
+    }
+  }
+}

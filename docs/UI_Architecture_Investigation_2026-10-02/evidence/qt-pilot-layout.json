@@ -1,0 +1,26 @@
+{
+  "sizes": [
+    {
+      "requested_width": 300,
+      "actual_width": 300,
+      "body_width": 280,
+      "field_width": 171
+    },
+    {
+      "requested_width": 480,
+      "actual_width": 480,
+      "body_width": 460,
+      "field_width": 351
+    },
+    {
+      "requested_width": 350,
+      "actual_width": 350,
+      "body_width": 330,
+      "field_width": 221
+    }
+  ],
+  "collapse_reuses_widgets": true,
+  "fields_fit": true,
+  "layer_2_loaded": true,
+  "limitation": "Layout geometry and screenshots checked; no high-speed video or mixed-DPI test."
+}

@@ -14,6 +14,8 @@
 #include <memory>
 #include <atomic>
 #include <new>
+#include "point_preview.h"
+#include "preview_sampling.h"
 #include <maxscript/macros/define_instantiation_functions.h>
 #undef ScripterExport
 #define ScripterExport __declspec(dllexport)
@@ -24,10 +26,14 @@
 visible_class_debug_ok(AminPointCache)
 class AminPointCache : public Value {
 public:
-    struct Group { Point3 color; std::vector<Point3> points; };
+    using Group = cyrus::PointGroup;
     std::vector<Group> groups;
-    struct Geometry { std::vector<std::array<Point3,3>> faces;std::vector<Matrix3> instances;Point3 color;bool placeholder=false; };
+    std::shared_ptr<const cyrus::PointSnapshot> pointSnapshot;
+    const std::vector<Group>& pointGroups() const { return pointSnapshot ? pointSnapshot->groups : groups; }
+    using Geometry=cyrus::PreviewGeometry;
     std::vector<Geometry> geometry;
+    std::shared_ptr<const cyrus::MeshSnapshot> meshSnapshot;
+    const std::vector<Geometry>& geometryGroups() const { return meshSnapshot?meshSnapshot->groups:geometry; }
     int faceCount=0;
     int size=0;
     int geometryMode=0;
@@ -111,15 +117,17 @@ Value* aminScatterBuildPreview_cf(Value** args,int count) {
     std::vector<AminPointCache::Group> groups;
     for(auto c:rgb) groups.push_back({c,{}});
     const std::uint64_t total=static_cast<std::uint64_t>(data->size)*pointsPerPlant;
-    const auto stride=std::max<std::uint64_t>(1,(total+budget-1)/budget);
+    const auto shown=std::min<std::uint64_t>(total,static_cast<std::uint64_t>(budget));
     int size=0;
-    for(std::uint64_t flat=0;flat<total;flat+=stride) {
+    for(std::uint64_t sample=0;sample<shown;++sample) {
+        const auto flat=amin::previewPointIndex(sample,total,shown);
         const auto plant=static_cast<std::size_t>(flat/pointsPerPlant);
         const auto source=indices[plant];
         groups[source].points.push_back(samples[source][flat%pointsPerPlant]*transforms[plant]);
         ++size;
     }
-    auto* result=new AminPointCache();result->groups=std::move(groups);result->size=size;
+    auto snapshot=std::make_shared<cyrus::PointSnapshot>(std::move(groups));
+    auto* result=new AminPointCache();result->pointSnapshot=std::move(snapshot);result->size=size;
     return result;
 }
 
@@ -145,7 +153,7 @@ Value* aminScatterDrawPreview_cf(Value** args,int count) {
     const auto limits=gw->getRndLimits();
     gw->setRndLimits(limits & ~GW_Z_BUFFER);
     gw->setTransform(Matrix3(1));
-    if(!cache->geometry.empty()) {
+    if(!cache->geometryGroups().empty()) {
         Material previous=*gw->getMaterial(),preview;
         preview.Ka=preview.Kd=Point3(1,1,1);preview.Ks=Point3(0,0,0);preview.selfIllum=1;preview.opacity=1;preview.dblSided=1;
         gw->setMaterial(preview);
@@ -163,23 +171,23 @@ Value* aminScatterDrawPreview_cf(Value** args,int count) {
                 }
                 gw->endTriangles();
             }
-        } else for(auto& group:cache->geometry)for(auto& tm:group.instances){
+        } else for(const auto& group:cache->geometryGroups())for(const auto& tm:group.instances){
             gw->setTransform(tm);gw->startTriangles();
-            for(auto& face:group.faces){
+            for(const auto& face:group.faces){
                 auto a=VectorTransform(tm,face[1]-face[0]),b=VectorTransform(tm,face[2]-face[0]);auto normal=Normalize(CrossProd(a,b));
                 float shade=.35f+.65f*std::abs(DotProd(normal,Normalize(Point3(.3f,-.5f,.8f))));
-                Point3 rgb=(solid?color:group.color)*shade;Point3 colors[3]={rgb,rgb,rgb};gw->triangle(face.data(),colors);
+                Point3 rgb=(solid?color:group.color)*shade;Point3 colors[3]={rgb,rgb,rgb};gw->triangle(const_cast<Point3*>(face.data()),colors);
             }
             gw->endTriangles();
         }
         gw->setTransform(Matrix3(1));
         gw->setMaterial(previous);
     }
-    for(auto& group:cache->groups) {
+    for(const auto& group:cache->pointGroups()) {
         if(group.points.empty()) continue;
         gw->setColor(LINE_COLOR,solid?color:group.color);
         gw->startMarkers();
-        for(auto& p:group.points) gw->marker(&p,POINT_MRKR);
+        for(const auto& p:group.points) { auto marker=p;gw->marker(&marker,POINT_MRKR); }
         gw->endMarkers();
     }
     gw->setRndLimits(limits);
@@ -194,12 +202,43 @@ Value* aminScatterPreviewPoints_cf(Value** args,int count) {
     auto* cache=static_cast<AminPointCache*>(args[0]);
     two_typed_value_locals(Array* result,Array* row);
     vl.result=new Array(cache->size);
-    for(const auto& group:cache->groups) for(const auto& p:group.points) {
+    for(const auto& group:cache->pointGroups()) for(const auto& p:group.points) {
         vl.row=new Array(2);vl.result->append(vl.row);
         vl.row->append(new Point3Value(p));
         vl.row->append(new ColorValue(AColor(group.color.x,group.color.y,group.color.z)));
     }
     return_value(vl.result);
+}
+
+namespace {
+std::vector<cyrus::PointLayer> retainedLayers(Value* cachesValue,Value* stylesValue) {
+    type_check(cachesValue,Array,_T("preview caches"));
+    type_check(stylesValue,Array,_T("preview styles"));
+    auto* caches=static_cast<Array*>(cachesValue);auto* styles=static_cast<Array*>(stylesValue);
+    if(caches->size!=styles->size || caches->size>10) throw RuntimeError(_T("Invalid retained preview layers"));
+    std::vector<cyrus::PointLayer> layers;layers.reserve(caches->size);
+    for(int i=0;i<caches->size;++i) {
+        type_check(caches->data[i],AminPointCache,_T("point cache"));
+        type_check(styles->data[i],Array,_T("preview style"));
+        const auto* cache=static_cast<AminPointCache*>(caches->data[i]);
+        auto* style=static_cast<Array*>(styles->data[i]);
+        if((cache->geometryMode!=0 && cache->geometryMode!=4) || !cache->pointSnapshot || style->size!=2)
+            throw RuntimeError(_T("Retained drawing requires a point-cloud or mesh cache"));
+        layers.push_back({cache->pointSnapshot,style->data[0]->to_bool()!=FALSE,style->data[1]->to_point3()/255.f,cache->meshSnapshot});
+    }
+    return layers;
+}
+}
+def_visible_primitive(cyrusRetainedPublish,"cyrusRetainedPublish");
+Value* cyrusRetainedPublish_cf(Value** args,int count) {
+    check_arg_count(cyrusRetainedPublish,4,count);
+    auto layers=retainedLayers(args[2],args[3]);
+    return cyrus::publishPoints(args[0]->to_node(),args[1]->to_node(),std::move(layers)) ? &true_value : &false_value;
+}
+def_visible_primitive(cyrusRetainedMatches,"cyrusRetainedMatches");
+Value* cyrusRetainedMatches_cf(Value** args,int count) {
+    check_arg_count(cyrusRetainedMatches,3,count);
+    return cyrus::pointsMatch(args[0]->to_node(),retainedLayers(args[1],args[2])) ? &true_value : &false_value;
 }
 
 // Read-only cache accounting. Array: mode, old batches, prepared batches,
@@ -210,7 +249,7 @@ Value* cyrusPreviewDrawStats_cf(Value** args,int count) {
     type_check(args[0],AminPointCache,_T("preview cache"));
     auto* cache=static_cast<AminPointCache*>(args[0]);
     std::size_t oldBatches=0;
-    for(const auto& group:cache->geometry) oldBatches+=group.instances.size();
+    for(const auto& group:cache->geometryGroups()) oldBatches+=group.instances.size();
     one_typed_value_local(Array* result);vl.result=new Array(8);
     for(auto n:{std::size_t(cache->geometryMode),oldBatches,cache->batchCount,
         cache->batchCount?std::size_t(cache->faceCount):0,cache->batchReservation.bytes,
@@ -251,7 +290,7 @@ Value* cyrusPreviewTriangles_cf(Value** args,int count) {
                 append(cache->batchTriangles[j].vertices,cache->batchTriangles[j].shade,batch.color);
         }
     } else {
-        for(const auto& group:cache->geometry) for(const auto& tm:group.instances) for(const auto& face:group.faces) {
+        for(const auto& group:cache->geometryGroups()) for(const auto& tm:group.instances) for(const auto& face:group.faces) {
             if(vl.result->size>=limit) goto complete;
             // Re-evaluate the previous draw formula independently of preparation.
             auto a=VectorTransform(tm,face[1]-face[0]),b=VectorTransform(tm,face[2]-face[0]);

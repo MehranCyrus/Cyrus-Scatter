@@ -40,7 +40,12 @@ Value* cyrusBuildGeometryPreview_cf(Value** args,int count){
   if(group.faces.size()>static_cast<std::size_t>(budget-faces))continue;
   group.instances.push_back(tm);faces+=static_cast<int>(group.faces.size());++shown;
  }
- auto* out=new AminPointCache();out->geometry=std::move(geometry);out->groups=std::move(markers);out->size=shown;out->faceCount=faces;out->geometryMode=mode;out->prepareProxyBatches();return out;
+ auto out=std::make_unique<AminPointCache>();
+ if(mode==4) {
+  out->meshSnapshot=std::make_shared<cyrus::MeshSnapshot>(std::move(geometry));
+  out->pointSnapshot=std::make_shared<cyrus::PointSnapshot>(std::move(markers));
+ } else { out->geometry=std::move(geometry);out->groups=std::move(markers); }
+ out->size=shown;out->faceCount=faces;out->geometryMode=mode;out->prepareProxyBatches();return out.release();
 }
 def_visible_primitive(cyrusPreviewFaces,"cyrusPreviewFaces");
 Value* cyrusPreviewFaces_cf(Value** args,int count){check_arg_count(cyrusPreviewFaces,1,count);type_check(args[0],AminPointCache,_T("cache"));return Integer::intern(static_cast<AminPointCache*>(args[0])->faceCount);}

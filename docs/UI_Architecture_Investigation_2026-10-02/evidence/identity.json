@@ -1,0 +1,30 @@
+{
+  "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\AminScatter\\scripts\\AminScatterObject.ms": {
+    "sha256": "89c6f102012c81d5fb46e7ef24e1f087af2b6a6a3f4d06d548a3d8dc0974eadc",
+    "bytes": 1005353
+  },
+  "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mesh-integration-2026-10-02\\ui-layer-status-layout-lab2\\AminScatterObject.ms": {
+    "sha256": "53a735ea145238748bd1a12c7d89c974cbc33b38ff71f4df29ed6de5d8623460",
+    "bytes": 1018084
+  },
+  "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mesh-integration-2026-10-02\\ui-layer-status-layout-lab2\\bin\\AminScatter.dlx": {
+    "sha256": "a3760a31a4f49488423ee8673e261d5ee4c4a70cfb65a16158fc156575b0e3df",
+    "bytes": 526848
+  },
+  "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mesh-integration-2026-10-02\\ui-layer-status-layout-lab2\\bin\\CyrusScatterEdit.dlm": {
+    "sha256": "4456c96fd04f6eaecdea01efa2fc72b5c48dab8e9372854b9c95b2739aac513b",
+    "bytes": 10240
+  },
+  "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mesh-integration-2026-10-02\\ui-layer-status-layout-lab2\\bin\\QtObjectDemo.dlo": {
+    "sha256": "2957ace028b9447fb473f79d0f162a0d3e24e3b0762eb904554d1b69be40c59f",
+    "bytes": 127320
+  },
+  "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mesh-integration-2026-10-02\\ui-layer-status-layout-lab2\\bin\\en-US\\QtObjectDemo.dlo.mui": {
+    "sha256": "5ac3ad0e8c64ff9092722f1bac9146297922b87c27ff80cb0923bf229bb06428",
+    "bytes": 1536
+  },
+  "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\Test Scene\\SaveSelect 2.max": {
+    "sha256": "42d3bd0835aba91ef7c29925669fda61e9bc7dda3479287b9e1775cc09696e6c",
+    "bytes": 185274104
+  }
+}

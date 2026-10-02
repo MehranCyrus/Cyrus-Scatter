@@ -44,7 +44,7 @@ fn CyrusMake_${name} target view = (
         on strengthSpin changed v do if ready do (obj.relaxStrength=v/100.0;redrawViews())
         on ${name} open do syncControls()
         on ${name} close do ready=false
-        on ${name} rolledUp state do (parentView.layoutPanels();for c in ${name}.controls do c.visible=false;for c in ${name}.controls do c.visible=true)
+        on ${name} rolledUp state do parentView.layoutPanels()
     )
     ${name}.obj=target;${name}.parentView=view;${name}
 )

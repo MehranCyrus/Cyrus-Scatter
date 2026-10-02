@@ -1,0 +1,12 @@
+UI revision: 2026-10-02.4
+Max: #(29000, 70, 0, 29, 1, 0, 11426, 2027, ".1")
+Layer: Grass [active]
+Already constructed: true
+Panel width: 240; timer active: true
+Open pass 1: 20.6302d0 ms (synchronous handler only)
+Open pass 2: 45.9235d0 ms (synchronous handler only)
+Ten unchanged layout calls: 3.5116d0 ms
+Statistics refresh: 1.9616d0 ms
+Root controls remounted: false
+Build/dirty state changed: false
+Error: undefined

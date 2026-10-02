@@ -1,0 +1,19 @@
+{
+  "pid": 13396,
+  "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mesh-integration-2026-10-02\\ui-layer-status-flash-lab",
+  "command": [
+    "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+    "-q",
+    "-i",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mesh-integration-2026-10-02\\ui-layer-status-flash-lab\\desktop.ini",
+    "-p",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mesh-integration-2026-10-02\\ui-layer-status-flash-lab\\plugins.ini",
+    "-U",
+    "MAXScript",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mesh-integration-2026-10-02\\ui-layer-status-flash-lab\\start.ms",
+    "-listenerlog",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mesh-integration-2026-10-02\\ui-layer-status-flash-lab\\listener.log"
+  ],
+  "source_sha256": "ea6e70b40509536c9c7538e9b01bd43ba7d1f0a856e5dc46aad3d1938e4a4c09",
+  "trace_script_sha256": "46f3e043926807ff96645fa830ecb3f9365b07a811890decec678f6a9129a229"
+}

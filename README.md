@@ -4,9 +4,9 @@ Native C++ and MAXScript sources for Cyrus Scatter and Cyrus Surface Analyzer fo
 
 ## Current state
 
-- **Scatter 0.62 / Analyzer 0.14:** current local test candidate, including the CPU and proxy-display improvements. See the [installation and verification guide](docs/Max_2027_Installation.md).
-- **Retained point display:** successful private prototype, not integrated into the product or installers. The [October 2 results](docs/Heavy_Scene_Viewport_2026-10-02/RESULTS.md) distinguish measured redraw time, visual differences and remaining gates.
-- **Next implementation:** integrate retained preview ownership and the requested Preview / Full Detail switch, then qualify appearance, source support and lifecycle. Follow the [working roadmap](docs/Heavy_Scene_Viewport_2026-10-02/ROADMAP.md) and [implementation plan](docs/Heavy_Scene_Viewport_2026-10-02/IMPLEMENTATION_PLAN.md).
+- **Scatter 0.64 / Analyzer 0.14:** current local candidate. Mesh now uses retained GPU instancing with the same geometry and limits. Point Cloud, CPU and Proxy improvements remain. Read the [candidate guide and qualification](docs/Retained_Mesh_Preview_2026-10-02/README.md).
+- **Measured integration:** the [Mesh results](docs/Retained_Mesh_Preview_2026-10-02/RESULTS.md) cover visible foliage, an equivalent native Max control, lifecycle and bounded memory fallback. Timings distinguish camera/redraw steps from presented FPS. The [0.63 Point Cloud results](docs/Retained_Point_Preview_2026-10-02/RESULTS.md) remain historical evidence.
+- **Next implementation:** improve wide-to-close point-cloud detail in the same heavy scene, using the existing Point Cloud / Proxy / Mesh modes. Follow the [working roadmap](docs/Heavy_Scene_Viewport_2026-10-02/ROADMAP.md).
 
 Max 2026 and 2027 SDK builds exist; the recorded interactive retained-display experiment ran in Max 2027. SDK compilation is not Max 2026 runtime qualification.
 

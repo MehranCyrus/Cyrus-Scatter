@@ -4,6 +4,8 @@
 
 **Recommendation:** give reference-assisted design a gated place in Cyrus's roadmap. Build reliable automation first; test a general multimodal model and curated examples before considering custom ML. No AI capability was implemented or qualified by this documentation task.
 
+**2026-10-02 addendum:** [ChatGPT connection and diagnostics-first implementation](17_ChatGPT_Connection_and_Diagnostics_First_2026-10-02.md) verifies the current subscription integration options and proposes a smaller first delivery: read-only tools for the existing Codex session, followed by scene creation and reference-assisted design. Commercial Sign in with ChatGPT eligibility remains unverified; no MCP implementation is claimed.
+
 The [Product Strategy](../Product_Strategy_2026-09-29/README.md) remains the governing strategy. Its [Baseline and Trust milestone](../Product_Strategy_2026-09-29/12_First_Implementation_Milestone.md), the [commercialization playbook](../Product_Commercialization_Playbook_2026-09-30/README.md), and the [performance roadmap](../Performance_Roadmap_2026-09-28/README.md) retain their existing roles. AI research does not establish launch readiness, licensing policy, performance gains, or support for additional Max versions.
 
 ## Read by decision
@@ -28,6 +30,7 @@ The [Product Strategy](../Product_Strategy_2026-09-29/README.md) remains the gov
 | [14 — Product UX](14_Product_UX_and_Workflow.md) | A practical artist workflow and visible controls |
 | [15 — Phased implementation roadmap](15_Phased_Implementation_Roadmap.md) | Ordered backlog, owners, dependencies and acceptance |
 | [16 — Decisions, risks and sources](16_Risks_Decisions_and_Open_Questions.md) | Open decisions, research provenance, requirement coverage |
+| [17 — ChatGPT connection and diagnostics first](17_ChatGPT_Connection_and_Diagnostics_First_2026-10-02.md) | 2026-10-02 update: subscription routes, current code reuse and the next coding milestone |
 
 ## Evidence language
 
@@ -56,9 +59,9 @@ External documentation establishes vendor or research capabilities, not Cyrus be
 
 Documentation checks and preservation checks are recorded separately in [validation.json](evidence/validation.json). They do not make any unchecked implementation item complete.
 
-## Exact package manifest
+## Original package manifest and dated addendum
 
-The navigation table lists all **18 Markdown files**, including this README. The additional **nine JSON files** are:
+The original 2026-09-30 package contained **18 Markdown files**, including this README. The 2026-10-02 addendum, document 17, brings the navigation table to **19 Markdown files**. The original **nine JSON files** are:
 
 - [examples/scene_context.json](examples/scene_context.json)
 - [examples/design_plan.json](examples/design_plan.json)
@@ -72,5 +75,5 @@ The navigation table lists all **18 Markdown files**, including this README. The
 
 The examples are **PROPOSED, synthetic, example-only fixtures**. Their successful-looking states illustrate a contract; they are not executions, measurements or training data collected from users. The baseline hashes cover 249 existing files: 101 files outside `docs/` and 148 files inside it. Build/distribution/cache directories were excluded.
 
-Only [docs/README.md](../README.md) is updated outside this package. Historical packages, production source, generated scripts, scene schemas and ClassIDs remain unchanged. This task used no Git, subagents, production builds, Max sessions, model inference, training, telemetry or dependency installation.
+For the original 2026-09-30 documentation task, only [docs/README.md](../README.md) was updated outside this package. Historical packages, production source, generated scripts, scene schemas and ClassIDs remained unchanged. That original task used no Git, subagents, production builds, Max sessions, model inference, training, telemetry or dependency installation. The 2026-10-02 addendum records its own scope and verification status; the original JSON evidence is historical, not a validation record for the addendum.
 

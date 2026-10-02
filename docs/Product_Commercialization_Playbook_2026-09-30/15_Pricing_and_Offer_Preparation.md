@@ -11,7 +11,7 @@ The sustainable price depends on product value, support burden and promised comp
 ## What we currently know
 
 - **PROPOSED:** one complete authoring feature set with a simple Solo offer and a separately qualified Studio model.
-- **UNKNOWN:** willingness to pay, actual support cost, provider/commerce fees, accepted seller arrangements and final refund/upgrade rules.
+- **UNKNOWN:** willingness to pay, actual support cost, owned-service operating costs and commerce fees, accepted seller arrangements and final refund/upgrade rules.
 - **DOCUMENTED BUT NOT VERIFIED:** historical provider prices and commercial assumptions are reference material only.
 - **REQUIRES MANUAL 3DS MAX TEST:** maturity and supported workload must be established before pricing claims. Beta enthusiasm alone does not prove value or willingness to pay.
 
@@ -58,8 +58,8 @@ Choose model, Solo/Studio seat rules, price/currency, maintenance, trial, discou
 | Perpetual vs annual | Rights after expiry, included update period, renewal/major upgrade rule | Owner + Stage 09 | UNAPPROVED |
 | Maintenance | Eligible build cutoff, installer retention, qualification/update obligations | Owner + engineering | UNAPPROVED |
 | Support burden | Minutes per user/month, escalation cases, responder cost and coverage | You + support owner | UNKNOWN |
-| Offline/floating | Provider add-ons, server/lease operations, recovery labour, deployment support | Engineering + Stage 11 | UNKNOWN |
-| Licensing provider | Fixed and usage/seat charges, minimums, quote limits, integration/hosting cost | Stage 11 evidence | UNKNOWN |
+| Offline/floating | Lease operations, reserved offline capacity, recovery labour and deployment support | Engineering + Stage 11 | UNKNOWN |
+| Owned licensing service | Hosting, database, authentication, protected signing, backups, monitoring, security updates and support | Stage 11 evidence and [current roadmap](../licensing/ROADMAP.md) | UNKNOWN |
 | Commerce / Merchant of Record or payment route | Current fees, fixed charges, payout/currency conditions, refund/chargeback/provisioning effort | Owner + verified provider terms | UNKNOWN; no service selected |
 | Upgrade policy | Major/minor definition, eligibility and transition cost | Owner + engineering | UNAPPROVED |
 | Delivery and operations | Download hosting, signing, backups, release maintenance, support tooling | Engineering/operations | UNKNOWN |
@@ -81,7 +81,7 @@ Support and recovery commitment:
 Proposed price and currency: [owner input]
 Refund/discount conditions: [owner input]
 Dated competitor comparisons:
-Provider/commerce quote and validity:
+Owned-service cost assumptions and dated commerce quote:
 Actual beta/support evidence:
 Estimated costs / missing inputs:
 Owner decision and date:
@@ -100,14 +100,14 @@ Period contribution = sum of contributions across offers/customers
 Cash after fixed operating costs = period contribution - fixed operating costs
 
 Record initial engineering/signing/release costs separately.
-Do not count a provider fee both as fixed and per-customer.
+Do not count the same infrastructure or payment cost both as fixed and per-customer.
 For Studio, distinguish authoring seats, activations, concurrent leases and paying customers.
 For perpetual offers, record new sales and maintenance renewals separately.
 ~~~
 
 This is a planning calculation, not a profit forecast or accounting/tax conclusion. Use verified terms and appropriate reviewers for those questions.
 
-Run conservative, expected and higher-volume scenarios. Vary support minutes, renewal uptake, provider fees, refund volume and supported host/renderer scope. A missing input is a range/UNKNOWN, not zero.
+Run conservative, expected and higher-volume scenarios. Vary support minutes, renewal uptake, service operating costs, payment fees, refund volume and supported host/renderer scope. A missing input is a range/UNKNOWN, not zero.
 
 ### Keep the first offer understandable
 
@@ -142,4 +142,3 @@ Regional/currency variants, reseller arrangements, educational offers and enterp
 ## Next stage
 
 [Stage 16 — Commercial launch readiness](16_Commercial_Launch_Readiness.md).
-

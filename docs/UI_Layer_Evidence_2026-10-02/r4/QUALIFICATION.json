@@ -1,0 +1,36 @@
+{
+  "product_release": "0.64",
+  "native_library_version": "0.25",
+  "ui_revision": "2026-10-02.4",
+  "status": "Simplified diagnostic candidate; interactive visual behavior unverified",
+  "package": "dist\\ui-layer-0.64-r4\\CyrusScatter-0.64-Max2027.mzp",
+  "package_sha256": "75d26b3a140d3ed919bdd76dee3c9051bd7bca6e425525a78af1a8a6d781e0cb",
+  "script_sha256": "89c6f102012c81d5fb46e7ef24e1f087af2b6a6a3f4d06d548a3d8dc0974eadc",
+  "native_id": "390d3798f210",
+  "native_bytes_identical_to_064": true,
+  "renderer_tail_identical_to_064": true,
+  "handwritten_source_changes": [
+    "layer-status.cjs",
+    "spacing.cjs",
+    "templates/containers.ms",
+    "templates/host.ms"
+  ],
+  "generated_lines_before": 12969,
+  "generated_lines_after": 12319,
+  "generation_reproducible": true,
+  "batch_result": [
+    "PASS: script load, UI revision, layer creation, 10 unmounted layer factories, unchanged cache, diagnostic compilation and empty-selection guard",
+    "Native: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\ui-layer-r4-batch\\bin\\CyrusScatterEdit.dlm",
+    "Native: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\ui-layer-r4-batch\\bin\\AminScatter.dlx",
+    "No interactive UI or artist scene was loaded."
+  ],
+  "batch_exit_code": 0,
+  "diagnostic_source_sha256": "237cdb138a306857f061b9e297abc42d7ea5c56c9daf68fff990e274c2f184f9",
+  "limitations": [
+    "No interactive UI validation for revision 4",
+    "No flicker or responsiveness improvement claimed",
+    "Max 2026 and other DPI settings untested",
+    "Normal Max profile not modified"
+  ],
+  "artist_scene_sha256": "42d3bd0835aba91ef7c29925669fda61e9bc7dda3479287b9e1775cc09696e6c"
+}

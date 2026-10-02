@@ -1,0 +1,161 @@
+{
+  "construction_ms": 236.35639998246916,
+  "bind_median_ms": 2.997150004375726,
+  "rows": [
+    {
+      "repeat": 1,
+      "layer": 1,
+      "bind_ms": 0.5088000034447759
+    },
+    {
+      "repeat": 1,
+      "layer": 2,
+      "bind_ms": 2.6461000088602304
+    },
+    {
+      "repeat": 1,
+      "layer": 3,
+      "bind_ms": 2.2634000051766634
+    },
+    {
+      "repeat": 1,
+      "layer": 4,
+      "bind_ms": 2.8088999970350415
+    },
+    {
+      "repeat": 1,
+      "layer": 5,
+      "bind_ms": 3.914700006134808
+    },
+    {
+      "repeat": 1,
+      "layer": 6,
+      "bind_ms": 3.1891999824438244
+    },
+    {
+      "repeat": 1,
+      "layer": 7,
+      "bind_ms": 2.7587999938987195
+    },
+    {
+      "repeat": 1,
+      "layer": 8,
+      "bind_ms": 2.906599984271452
+    },
+    {
+      "repeat": 1,
+      "layer": 9,
+      "bind_ms": 2.9257000132929534
+    },
+    {
+      "repeat": 1,
+      "layer": 10,
+      "bind_ms": 3.116400010185316
+    },
+    {
+      "repeat": 2,
+      "layer": 1,
+      "bind_ms": 3.0644999933429062
+    },
+    {
+      "repeat": 2,
+      "layer": 2,
+      "bind_ms": 3.027299972018227
+    },
+    {
+      "repeat": 2,
+      "layer": 3,
+      "bind_ms": 2.7148999797645956
+    },
+    {
+      "repeat": 2,
+      "layer": 4,
+      "bind_ms": 2.98099999781698
+    },
+    {
+      "repeat": 2,
+      "layer": 5,
+      "bind_ms": 2.8815999976359308
+    },
+    {
+      "repeat": 2,
+      "layer": 6,
+      "bind_ms": 2.8085999947506934
+    },
+    {
+      "repeat": 2,
+      "layer": 7,
+      "bind_ms": 3.0205000075511634
+    },
+    {
+      "repeat": 2,
+      "layer": 8,
+      "bind_ms": 2.841399982571602
+    },
+    {
+      "repeat": 2,
+      "layer": 9,
+      "bind_ms": 3.0805999995209277
+    },
+    {
+      "repeat": 2,
+      "layer": 10,
+      "bind_ms": 3.013300010934472
+    },
+    {
+      "repeat": 3,
+      "layer": 1,
+      "bind_ms": 3.3100999717134982
+    },
+    {
+      "repeat": 3,
+      "layer": 2,
+      "bind_ms": 2.8531000134535134
+    },
+    {
+      "repeat": 3,
+      "layer": 3,
+      "bind_ms": 3.059899987420067
+    },
+    {
+      "repeat": 3,
+      "layer": 4,
+      "bind_ms": 3.10700002592057
+    },
+    {
+      "repeat": 3,
+      "layer": 5,
+      "bind_ms": 2.9627000039909035
+    },
+    {
+      "repeat": 3,
+      "layer": 6,
+      "bind_ms": 2.828099997714162
+    },
+    {
+      "repeat": 3,
+      "layer": 7,
+      "bind_ms": 3.108900011284277
+    },
+    {
+      "repeat": 3,
+      "layer": 8,
+      "bind_ms": 3.04030001279898
+    },
+    {
+      "repeat": 3,
+      "layer": 9,
+      "bind_ms": 3.1519000185653567
+    },
+    {
+      "repeat": 3,
+      "layer": 10,
+      "bind_ms": 3.3124999899882823
+    }
+  ],
+  "cache_unchanged_by_browsing": true,
+  "same_widgets": true,
+  "edit_routes_to_owner": true,
+  "undo_restores_data": true,
+  "limitation": "One section, floating Python Qt prototype. Scene units only. External undo refresh is explicit; no production selection, deletion or command-panel adapter. Timings exclude paint and Python/Qt import."
+}

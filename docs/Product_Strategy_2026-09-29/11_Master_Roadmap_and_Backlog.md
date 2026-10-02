@@ -79,15 +79,16 @@ CPU tasks map to C01–C04/A01/V01/V02/E01/R01 in the performance package. Choos
 
 | ID | Deliverable | Depends on | Acceptance |
 |---|---|---|---|
-| LC-01 | Owner-approved capability/continuity policy | Scene/render contracts | Offline/perpetual/render ambiguities resolved in one table |
-| LC-02 | Fake-provider core and policy tests | BT-01, LC-01 | Exhaustive relevant state/capability outcomes; no host requirement for unit tests |
-| LC-03 | Native enforcement + UI in isolated builds | LC-02, RX-01 | Saved scenes/worker evaluation preserved; mutations correctly gated |
-| LC-04 | Provider proof of concept and selection | LC-03 | Existing contract matrix passes; current terms/costs accepted |
-| CO-01 | Provisioning, recovery and support operations | LC-04 | Duplicate/out-of-order/retry/refund/renewal events reconcile safely |
-| RL-01 | Signed, immutable release and rollback | DP-01, qualified scope | Final signatures/hashes/evidence verified; prior installers retained |
-| RL-02 | Paid launch decision | All advertised gates | Product, licensing, operations and support ready for stated scope |
+| LC-01 | Native boundary and capability/continuity contract (L0) | Current source and scene/render fixtures | Authoring versus saved evaluation proved or limits recorded; relevant policy fixed before enforcement |
+| LC-02 | Standalone policy/signature core and fake backend (L1) | BT-01, LC-01 experiment contract | Fact combinations, negative verification and feature-extension tests outside Max |
+| LC-04 | Owned licensing service (L2) | LC-02, pilot policy | Individual/assigned studio flows, tenant isolation, issuance and recovery pass; replaces provider selection |
+| LC-03 | Native enforcement + UI in isolated builds (L3) | LC-02, LC-04, RX-01 for promised render paths | Saved scenes preserved; direct mutations gated; multi-process and performance evidence |
+| LC-05 | Optional floating/borrowing (L4) | LC-03, approved studio policy | Capacity, offline overlap, crash/partition and restore tests pass |
+| CO-01 | Provisioning, recovery and support operations (L5) | Qualified offered seat models and commercial rules | Duplicate/out-of-order/retry/refund/renewal events reconcile safely |
+| RL-01 | Signed, immutable release and rollback (L6) | DP-01, qualified scope | Final signatures/hashes/evidence verified; prior installers retained |
+| RL-02 | Paid launch decision (L6) | All advertised gates | Product, licensing, operations and support ready for stated scope |
 
-License policy/core tests may be developed earlier; enforcement and launch remain gated. On-premises floating is conditional on a real studio need and operational capacity.
+The [current licensing roadmap](../licensing/ROADMAP.md) supplies the detailed L0–L6 sequence and E01–E17 tests. Pure policy tests can use explicit synthetic terms before business choices are final. Enforcement and launch require the applicable fixed policy and evidence. Floating is optional for an assigned-seat launch; customer-hosted servers require demonstrated need.
 
 ## M5 — Expansion only after evidence
 

@@ -1,0 +1,154 @@
+Start testing: Oct 02 15:49 Iran Standard Time
+----------------------------------------------------------
+1/9 Testing: scatter_preview_sampling
+1/9 Test: scatter_preview_sampling
+Command: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mesh-integration-2026-10-02/max2026/preview_sampling_tests.exe"
+Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mesh-integration-2026-10-02/max2026
+"scatter_preview_sampling" start time: Oct 02 15:49 Iran Standard Time
+Output:
+----------------------------------------------------------
+PASS exact budget, unique ordered coverage, boundary continuity, uint64 bounds
+<end of output>
+Test time =   0.24 sec
+----------------------------------------------------------
+Test Passed.
+"scatter_preview_sampling" end time: Oct 02 15:49 Iran Standard Time
+"scatter_preview_sampling" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/9 Testing: scatter_threading
+2/9 Test: scatter_threading
+Command: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mesh-integration-2026-10-02/max2026/threading_tests.exe"
+Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mesh-integration-2026-10-02/max2026
+"scatter_threading" start time: Oct 02 15:49 Iran Standard Time
+Output:
+----------------------------------------------------------
+PASS ordered placements, worker limits, fallback pipeline, numeric environment and exception joins
+<end of output>
+Test time =   0.12 sec
+----------------------------------------------------------
+Test Passed.
+"scatter_threading" end time: Oct 02 15:49 Iran Standard Time
+"scatter_threading" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/9 Testing: scatter_prepared_bands
+3/9 Test: scatter_prepared_bands
+Command: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mesh-integration-2026-10-02/max2026/prepared_band_tests.exe"
+Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mesh-integration-2026-10-02/max2026
+"scatter_prepared_bands" start time: Oct 02 15:49 Iran Standard Time
+Output:
+----------------------------------------------------------
+PASS 160000 differential boundary queries, masks, holes, tilted/stacked paths, duplicate vertices and thresholds
+<end of output>
+Test time =   0.07 sec
+----------------------------------------------------------
+Test Passed.
+"scatter_prepared_bands" end time: Oct 02 15:49 Iran Standard Time
+"scatter_prepared_bands" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/9 Testing: scatter_core
+4/9 Test: scatter_core
+Command: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mesh-integration-2026-10-02/max2026/scatter_tests.exe"
+Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mesh-integration-2026-10-02/max2026
+"scatter_core" start time: Oct 02 15:49 Iran Standard Time
+Output:
+----------------------------------------------------------
+PASS: existing scatter tests plus Analyzer bilateral bands, radius, single anchors and border sides
+PASS: straight Street rectangle, round extension and rotated plane
+PASS: final cleanup and count-preserving constrained boundary movement
+<end of output>
+Test time =   0.17 sec
+----------------------------------------------------------
+Test Passed.
+"scatter_core" end time: Oct 02 15:49 Iran Standard Time
+"scatter_core" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/9 Testing: scatter_spacing
+5/9 Test: scatter_spacing
+Command: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mesh-integration-2026-10-02/max2026/spacing_tests.exe"
+Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mesh-integration-2026-10-02/max2026
+"scatter_spacing" start time: Oct 02 15:49 Iran Standard Time
+Output:
+----------------------------------------------------------
+overlap_energy 91.445 -> 4.16357; collision 775; combined 1433
+count=10000 kept=10000 ms=101.659
+count=100000 kept=98548 ms=2295.54
+PASS spacing, determinism, masks, strokes, tilted surface, disabled compatibility
+<end of output>
+Test time =   2.62 sec
+----------------------------------------------------------
+Test Passed.
+"scatter_spacing" end time: Oct 02 15:49 Iran Standard Time
+"scatter_spacing" time elapsed: 00:00:02
+----------------------------------------------------------
+
+6/9 Testing: scatter_weights
+6/9 Test: scatter_weights
+Command: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mesh-integration-2026-10-02/max2026/weight_tests.exe"
+Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mesh-integration-2026-10-02/max2026
+"scatter_weights" start time: Oct 02 15:49 Iran Standard Time
+Output:
+----------------------------------------------------------
+random box=69.95%
+cluster box=70.19%
+PASS weights, groups, zero, strokes, fixed positions and transforms
+<end of output>
+Test time =   0.33 sec
+----------------------------------------------------------
+Test Passed.
+"scatter_weights" end time: Oct 02 15:49 Iran Standard Time
+"scatter_weights" time elapsed: 00:00:00
+----------------------------------------------------------
+
+7/9 Testing: scatter_orientation
+7/9 Test: scatter_orientation
+Command: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mesh-integration-2026-10-02/max2026/orientation_tests.exe"
+Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mesh-integration-2026-10-02/max2026
+"scatter_orientation" start time: Oct 02 15:49 Iran Standard Time
+Output:
+----------------------------------------------------------
+PASS axes, scales, convex/concave/45deg, masked corners, holes, winding, tilted plane, offsets, disabled
+<end of output>
+Test time =   0.03 sec
+----------------------------------------------------------
+Test Passed.
+"scatter_orientation" end time: Oct 02 15:49 Iran Standard Time
+"scatter_orientation" time elapsed: 00:00:00
+----------------------------------------------------------
+
+8/9 Testing: scatter_edge_border
+8/9 Test: scatter_edge_border
+Command: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mesh-integration-2026-10-02/max2026/edge_border_tests.exe"
+Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mesh-integration-2026-10-02/max2026
+"scatter_edge_border" start time: Oct 02 15:49 Iran Standard Time
+Output:
+----------------------------------------------------------
+PASS spacing, offset, deterministic jitter, masks, count independence, relax pins, collisions, thin regions, elements, limit
+<end of output>
+Test time =   0.03 sec
+----------------------------------------------------------
+Test Passed.
+"scatter_edge_border" end time: Oct 02 15:49 Iran Standard Time
+"scatter_edge_border" time elapsed: 00:00:00
+----------------------------------------------------------
+
+9/9 Testing: scatter_boundary_falloff
+9/9 Test: scatter_boundary_falloff
+Command: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mesh-integration-2026-10-02/max2026/boundary_falloff_tests.exe"
+Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mesh-integration-2026-10-02/max2026
+"scatter_boundary_falloff" start time: Oct 02 15:49 Iran Standard Time
+Output:
+----------------------------------------------------------
+PASS boundary, 100k points, Area Include/Exclude directions and XY projection, dense curves, side-limited scale/density
+<end of output>
+Test time =   0.07 sec
+----------------------------------------------------------
+Test Passed.
+"scatter_boundary_falloff" end time: Oct 02 15:49 Iran Standard Time
+"scatter_boundary_falloff" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Oct 02 15:49 Iran Standard Time

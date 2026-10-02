@@ -14,7 +14,7 @@
 #include <cmath>
 #include <maxscript/macros/define_instantiation_functions.h>
 
-extern "C" __declspec(dllexport) const TCHAR* LibDescription() { return _T("Cyrus Scatter native engine 0.23 - bounded proxy draw batches"); }
+extern "C" __declspec(dllexport) const TCHAR* LibDescription() { return _T("Cyrus Scatter native engine 0.25 - retained instanced mesh preview"); }
 extern "C" __declspec(dllexport) ULONG LibVersion() { return VERSION_3DSMAX; }
 extern "C" __declspec(dllexport) void LibInit() {}
 HINSTANCE CyrusEditInstance=nullptr;

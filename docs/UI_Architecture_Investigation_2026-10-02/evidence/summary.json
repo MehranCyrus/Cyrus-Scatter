@@ -1,0 +1,76 @@
+{
+  "host": "3ds Max 2027.1, 29.1.0.11426",
+  "scope": "Synchronous UI work; not painted-frame or full input latency",
+  "current_cold": {
+    "n": 10,
+    "min_ms": 648.3861000239849,
+    "median_ms": 831.8165000081062,
+    "p95_ms": 1280.8363999724388,
+    "max_ms": 1280.8363999724388
+  },
+  "current_warm": {
+    "n": 10,
+    "min_ms": 11.752999991178513,
+    "median_ms": 20.251149997115135,
+    "p95_ms": 65.69290000200272,
+    "max_ms": 65.69290000200272
+  },
+  "flat_floater_build": {
+    "n": 5,
+    "min_ms": 798.2117999792099,
+    "median_ms": 822.5933000445366,
+    "p95_ms": 966.3286000192165,
+    "max_ms": 966.3286000192165
+  },
+  "nested_floater_build": {
+    "n": 5,
+    "min_ms": 742.1836000084877,
+    "median_ms": 808.301499992609,
+    "p95_ms": 912.2495999634266,
+    "max_ms": 912.2495999634266
+  },
+  "native_flat_build": {
+    "n": 5,
+    "min_ms": 616.1910000145435,
+    "median_ms": 619.530799984932,
+    "p95_ms": 651.9086999893188,
+    "max_ms": 651.9086999893188
+  },
+  "native_flat_expand": {
+    "n": 30,
+    "min_ms": 0.020899981260299683,
+    "median_ms": 4.31139999628067,
+    "p95_ms": 9.12270000576973,
+    "max_ms": 13.806500017642975
+  },
+  "shared_editor_bind": {
+    "n": 30,
+    "min_ms": 14.388200014829636,
+    "median_ms": 49.534950003027916,
+    "p95_ms": 116.33340001106262,
+    "max_ms": 118.97249999642372
+  },
+  "qt_sdk_reference_select": {
+    "n": 5,
+    "min_ms": 47.98829999566078,
+    "median_ms": 50.431500017642975,
+    "p95_ms": 56.418099999427795,
+    "max_ms": 56.418099999427795
+  },
+  "qt_pilot_bind": {
+    "n": 30,
+    "min_ms": 0.5088000034447759,
+    "median_ms": 2.997150004375726,
+    "p95_ms": 3.3124999899882823,
+    "max_ms": 3.914700006134808
+  },
+  "product_changes_in_this_investigation": false,
+  "private_trace_only_derivative_of_ui": "2026-10-02.4",
+  "normal_installed_ui": "2026-10-02.2",
+  "limits": [
+    "Different hosts and allocated widths; not an exact pixel-matched benchmark.",
+    "Cold mount and reusable binding are different operations.",
+    "Qt pilot is one section, not a complete editor.",
+    "No Max 2026, mixed-DPI, memory, full lifecycle or high-speed paint qualification."
+  ]
+}

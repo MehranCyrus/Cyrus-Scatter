@@ -1,0 +1,17 @@
+{
+  "pid": 32228,
+  "command": [
+    "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+    "-q",
+    "-i",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mesh-integration-2026-10-02\\run02\\desktop.ini",
+    "-p",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mesh-integration-2026-10-02\\run02\\plugins.ini",
+    "-U",
+    "MAXScript",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mesh-integration-2026-10-02\\run02\\start.ms",
+    "-listenerlog",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mesh-integration-2026-10-02\\run02\\listener.log"
+  ],
+  "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mesh-integration-2026-10-02\\run02"
+}

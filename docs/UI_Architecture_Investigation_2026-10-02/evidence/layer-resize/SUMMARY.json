@@ -1,0 +1,43 @@
+{
+  "source_ui_revision": "2026-10-02.5",
+  "source_sha256": "ea6e70b40509536c9c7538e9b01bd43ba7d1f0a856e5dc46aad3d1938e4a4c09",
+  "cache_unchanged": true,
+  "reports": {
+    "layer-layout-sequence.json": {
+      "events": {
+        "case-layer-close": 1,
+        "layout": 5,
+        "host-height-before": 4,
+        "host-height-after": 4,
+        "root-height-before": 4,
+        "root-height-after": 4,
+        "width-check": 5,
+        "width-write": 4,
+        "case-layer-open": 1,
+        "stats-read": 1,
+        "case-settings-open": 1,
+        "sections-height": 2,
+        "layer-height": 2,
+        "case-settings-close": 1,
+        "case-unchanged-layout": 1
+      }
+    },
+    "idle-manager-closed.json": {
+      "events": {
+        "width-check": 236
+      },
+      "raw_elapsed_ms": 95995,
+      "elapsed_ms_mod_day": 95995
+    },
+    "idle-manager-open.json": {
+      "events": {
+        "width-check": 221,
+        "stats-read": 111
+      },
+      "raw_elapsed_ms": -86330937,
+      "elapsed_ms_mod_day": 69063
+    }
+  },
+  "timestamp_note": "The idle interval crossed midnight. Raw timeStamp delta is preserved; negative elapsed values are also shown modulo one day. Counts, rather than timings, support the idle conclusions.",
+  "scope": "Private trace-only derivative; no further production edit or installation. Artist loaded revision was not verified because that window was in active use."
+}

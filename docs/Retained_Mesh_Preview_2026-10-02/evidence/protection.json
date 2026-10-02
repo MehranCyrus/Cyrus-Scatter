@@ -1,0 +1,17 @@
+{
+  "checked_utc": "2026-10-02T12:50:01.3784700Z",
+  "scene_path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\Test Scene\\SaveSelect 2.max",
+  "scene_bytes": 185442040,
+  "scene_sha256": "c131c90b88abd7aad16a944170a4740f1c7e7f5f2f5412276627eb54d230c38c",
+  "expected_scene_sha256": "c131c90b88abd7aad16a944170a4740f1c7e7f5f2f5412276627eb54d230c38c",
+  "scene_hash_unchanged": true,
+  "artist_pid": 20144,
+  "artist_process_running": true,
+  "artist_start_time": "2026-10-02T11:31:15.2434410Z",
+  "artist_window": "SaveSelect 2.max - Autodesk 3ds Max 2027 ",
+  "private_pids": [
+    32228,
+    39908
+  ],
+  "private_processes_exited": true
+}

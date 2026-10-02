@@ -1,0 +1,62 @@
+[  3%] Building CXX object CMakeFiles/amin_scatter.dir/src/scatter.cpp.obj
+scatter.cpp
+[  6%] Building CXX object CMakeFiles/amin_scatter.dir/src/execution.cpp.obj
+execution.cpp
+[ 10%] Linking CXX static library amin_scatter.lib
+[ 10%] Built target amin_scatter
+[ 13%] Building CXX object CMakeFiles/preview_sampling_tests.dir/tests/preview_sampling_tests.cpp.obj
+preview_sampling_tests.cpp
+[ 17%] Linking CXX executable preview_sampling_tests.exe
+[ 17%] Built target preview_sampling_tests
+[ 20%] Building CXX object CMakeFiles/threading_tests.dir/tests/threading_tests.cpp.obj
+threading_tests.cpp
+[ 24%] Linking CXX executable threading_tests.exe
+[ 24%] Built target threading_tests
+[ 27%] Building CXX object CMakeFiles/prepared_band_tests.dir/tests/prepared_band_tests.cpp.obj
+prepared_band_tests.cpp
+[ 31%] Linking CXX executable prepared_band_tests.exe
+[ 31%] Built target prepared_band_tests
+[ 34%] Building CXX object CMakeFiles/scatter_tests.dir/tests/scatter_tests.cpp.obj
+scatter_tests.cpp
+[ 37%] Linking CXX executable scatter_tests.exe
+[ 37%] Built target scatter_tests
+[ 41%] Building CXX object CMakeFiles/spacing_tests.dir/tests/spacing_tests.cpp.obj
+spacing_tests.cpp
+[ 44%] Linking CXX executable spacing_tests.exe
+[ 44%] Built target spacing_tests
+[ 48%] Building CXX object CMakeFiles/weight_tests.dir/tests/weight_tests.cpp.obj
+weight_tests.cpp
+[ 51%] Linking CXX executable weight_tests.exe
+[ 51%] Built target weight_tests
+[ 55%] Building CXX object CMakeFiles/orientation_tests.dir/tests/orientation_tests.cpp.obj
+orientation_tests.cpp
+[ 58%] Linking CXX executable orientation_tests.exe
+[ 58%] Built target orientation_tests
+[ 62%] Building CXX object CMakeFiles/edge_border_tests.dir/tests/edge_border_tests.cpp.obj
+edge_border_tests.cpp
+[ 65%] Linking CXX executable edge_border_tests.exe
+[ 65%] Built target edge_border_tests
+[ 68%] Building CXX object CMakeFiles/boundary_falloff_tests.dir/tests/boundary_falloff_tests.cpp.obj
+boundary_falloff_tests.cpp
+[ 72%] Linking CXX executable boundary_falloff_tests.exe
+[ 72%] Built target boundary_falloff_tests
+[ 75%] Building CXX object CMakeFiles/AminScatter.dir/src/max_bridge.cpp.obj
+max_bridge.cpp
+[ 79%] Building CXX object CMakeFiles/AminScatter.dir/src/preview.cpp.obj
+preview.cpp
+[ 82%] Building CXX object CMakeFiles/AminScatter.dir/src/point_display.cpp.obj
+point_display.cpp
+[ 86%] Building CXX object CMakeFiles/AminScatter.dir/src/cyrus_edit.cpp.obj
+cyrus_edit.cpp
+[ 89%] Building RC object CMakeFiles/AminScatter.dir/src/cyrus_edit.rc.res
+Microsoft (R) Windows (R) Resource Compiler Version 10.0.10011.16384
+
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+
+[ 93%] Linking CXX shared module AminScatter.dlx
+[ 93%] Built target AminScatter
+[ 96%] Building CXX object CMakeFiles/CyrusScatterEdit.dir/src/edit_plugin.cpp.obj
+edit_plugin.cpp
+[100%] Linking CXX shared module CyrusScatterEdit.dlm
+[100%] Built target CyrusScatterEdit

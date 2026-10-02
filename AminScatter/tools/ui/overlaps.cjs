@@ -94,7 +94,7 @@ module.exports=function(s){
             refreshing=true;layerList.BeginUpdate()`);
  s=s.replace('            nameEdit.text=if valid then obj.layerNames[obj.activeLayer] else ""','            nameEdit.text=if valid then obj.layerNames[obj.activeLayer] else ""\n            refreshOverlap()');
  s=s.replace('nameEdit.text=obj.layerNames[obj.activeLayer]\n','nameEdit.text=obj.layerNames[obj.activeLayer]\n                refreshOverlap()\n');
- s=s.replace('on manager rolledUp state do parentView.layoutPanels()','on manager rolledUp state do (if not state do refreshOverlap();parentView.layoutPanels())');
+ s=s.replace('on manager rolledUp state do parentView.layoutPanels()','on manager rolledUp expanded do (if expanded do refreshOverlap();parentView.layoutPanels())');
  return s;
 };
 

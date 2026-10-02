@@ -21,7 +21,9 @@ module.exports=function(s){
  });
  s=s.slice(0,start)+factories+s.slice(end);
  s=s.replace('version:37','version:38');
- const helper='global CyrusUISize,CyrusUIBuildView\nfn CyrusUISize n depth view:CyrusUIBuildView = (local w=if view==undefined then 162 else amax 140 (view.width-16-depth*16);floor(n*w/162.0+0.5))\n';
+ // fitWidth assigns the subrollout width before creating child rollouts. The
+ // host rollout's native width can still report its old size during open.
+ const helper='global CyrusUISize,CyrusUIBuildView\nfn CyrusUISize n depth view:CyrusUIBuildView = (local w=if view==undefined then 162 else amax 140 (view.panels.width-16-depth*16);floor(n*w/162.0+0.5))\n';
  return helper+s;
 };
 

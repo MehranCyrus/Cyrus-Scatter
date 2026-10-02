@@ -14,18 +14,18 @@
 | [ ] | [08 — Scenes](08_Demo_and_Benchmark_Scenes.md) | 05, 07 | Reusable fixtures + qualified demo shortlist |
 | [ ] | [09 — Commercial decisions](09_Commercial_and_Licensing_Decisions.md) | Product scope from 05–08 | Owner worksheet approved or explicitly deferred |
 | [ ] | [10 — Licensing preparation](10_Licensing_Technical_Preparation.md) | 09 for final policy; inspection can start earlier | Engineering brief + capability/fidelity rules |
-| [ ] | [11 — Provider evaluation](11_Licensing_Provider_Evaluation.md) | Approved policy + later fake-provider harness | Experiments recorded; selection only when warranted |
+| [ ] | [11 — Owned service validation](11_Licensing_Provider_Evaluation.md) | L0/L1 contract and harness; policy fixed for tested offer | Required licensing experiments and recovery evidence recorded |
 | [ ] | [12 — Beta readiness](12_Beta_Readiness.md) | Core workflow/support gates; licensing gates depend on beta type | Written go/no-go + test kit |
 | [ ] | [13 — Presentation assets](13_Presentation_Asset_Production.md) | Qualified 07–08; beta feedback | Approved media with proof/rights |
 | [ ] | [14 — Landing page content](14_Landing_Page_Content_Plan.md) | 05–08, 13 | Copy/section brief + claims matrix |
-| [ ] | [15 — Pricing/offer](15_Pricing_and_Offer_Preparation.md) | 09, provider cost evidence, beta feedback | Owner-approved offer and cost assumptions |
+| [ ] | [15 — Pricing/offer](15_Pricing_and_Offer_Preparation.md) | 09, owned-service/commerce cost evidence, beta feedback | Owner-approved offer and cost assumptions |
 | [ ] | [16 — Paid launch readiness](16_Commercial_Launch_Readiness.md) | All advertised capabilities and commercial gates | Release record + owner launch decision |
 
 ## Dependencies in plain language
 
 Understand → use and record → classify problems → focus the product → qualify support and scenes → decide commercial rules → prepare/test licensing → run the appropriate beta → produce presentation → prepare truthful website content and pricing → approve launch.
 
-A feature beta can precede completed licensing under an explicit owner decision. A licensing beta requires tested activation/recovery. Stage 11's plan can be drafted now; actual vendor selection is later. Stage 14's draft can precede final pricing; public purchase/trial copy depends on approved terms.
+A feature beta can precede completed licensing under an explicit owner decision. A licensing beta requires tested activation/recovery. Stage 11 validates our owned service; no licensing-vendor selection is required. Stage 14's draft can precede final pricing; public purchase/trial copy depends on approved terms.
 
 ## Your weekly check
 
@@ -37,4 +37,3 @@ A feature beta can precede completed licensing under an explicit owner decision.
 - [ ] Choose one next action you can actually finish.
 
 Open [Stage 01](01_Understand_the_Current_Product.md) first. Use [98](98_Repository_Review_and_Deliverables.md) for the review scope and created-file list.
-

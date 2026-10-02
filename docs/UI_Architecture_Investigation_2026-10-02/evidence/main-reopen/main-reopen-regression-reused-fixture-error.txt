@@ -1,0 +1,66 @@
+ERROR F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mesh-integration-2026-10-02/ui-layer-status-layout-lab2/recipe-main-reopen-final-validation-62d97d10.ms
+-- Runtime error: Manual edit keeps the cached count and marks it stale
+--	thread data: threadID:14096
+--	------------------------------------------------------
+--	[stack level: 0]
+--	In UIAssert(); filename: F:\Cursor\_Cyrus_Apps\CyrusScatter\tools\ui-tests\setup.ms; position: 296; line: 4
+--	member of: anonymous codeblock
+--		Parameters:
+--			value: false
+--			message: "Manual edit keeps the cached count and marks it stale"
+--		Locals:
+--			message: "Manual edit keeps the cached count and marks it stale"
+--			value: false
+--		Externals:
+--			owner: <CodeBlock:anonymous>
+--			UIChecks: Global:UIChecks : #("Modify UI is mounted", "Initial controls use the fitted panel width", "Slot 1: first expansion mounts six sections", "Slot 1: header selects its own layer", "Slot 1: reopen reuses controls", "Slot 2: first expansion mounts six sections", "Slot 2: header selects its own layer", "Slot 2: reopen reuses controls", "Slot 3: first expansion mounts six sections", "Slot 3: header selects its own layer", "Slot 3: reopen reuses controls", "Slot 4: first expansion mounts six sections", "Slot 4: header selects its own layer", "Slot 4: reopen reuses controls", "Slot 5: first expansion mounts six sections", "Slot 5: header selects its own layer", "Slot 5: reopen reuses controls", "Slot 6: first expansion mounts six sections", "Slot 6: header selects its own layer", "Slot 6: reopen reuses controls", ...)
+--	------------------------------------------------------
+--	[stack level: 1]
+--	called from anonymous codeblock; filename: F:\Cursor\_Cyrus_Apps\CyrusScatter\tools\ui-tests\regression.ms; position: 3510; line: 52
+--		Locals:
+--			selected: 2
+--			manager: Rollout:manager
+--			timings: #(1.7301d0, 1.732d0, 1.7333d0, 1.7338d0, 1.7346d0, 1.7354d0, 1.736d0, 1.7371d0, 1.7374d0, 1.7376d0, 1.7385d0, 1.7386d0, 1.7388d0, 1.74d0, 1.7426d0, 1.7428d0, 1.7431d0, 1.7448d0, 1.745d0, 1.746d0, ...)
+--			unbuilt: undefined
+--			ui: Rollout:mainUI
+--			baseline: #(#(6, 2, 1000), #(6, 2, 1000), #(6, 2, 0), #(6, 2, 0), #(6, 2, 1000), #(6, 4, 1000), #(6, 2, 0), #(6, 2, 0), #(6, 2, 1000), #(6, 5, 1000))
+--			oldAmount: 300
+--			layer: Cyrus Scatter
+--			emptyLayer: undefined
+--		Externals:
+--			RIAssert: Global:RIAssert : RIAssert()
+--			RIDir: Global:RIDir : "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mesh-integration-2026-10-02/ui-layer-status-layout-lab2/"
+--			UILayerNode: Global:UILayerNode : $Cyrus_Scatter:Cyrus_UI_Test @ [104.375183,13.305511,0.000000]
+--			CyrusUICount: Global:CyrusUICount : CyrusUICount()
+--			CyrusUILayerState: Global:CyrusUILayerState : CyrusUILayerState()
+--			AminScatterObject: Global:AminScatterObject : AminScatterObject
+--			UIChecks: Global:UIChecks : #("Modify UI is mounted", "Initial controls use the fitted panel width", "Slot 1: first expansion mounts six sections", "Slot 1: header selects its own layer", "Slot 1: reopen reuses controls", "Slot 2: first expansion mounts six sections", "Slot 2: header selects its own layer", "Slot 2: reopen reuses controls", "Slot 3: first expansion mounts six sections", "Slot 3: header selects its own layer", "Slot 3: reopen reuses controls", "Slot 4: first expansion mounts six sections", "Slot 4: header selects its own layer", "Slot 4: reopen reuses controls", "Slot 5: first expansion mounts six sections", "Slot 5: header selects its own layer", "Slot 5: reopen reuses controls", "Slot 6: first expansion mounts six sections", "Slot 6: header selects its own layer", "Slot 6: reopen reuses controls", ...)
+--			UIAssert: Global:UIAssert : UIAssert()
+--			CSPWriteText: Global:CSPWriteText : CSPWriteText()
+--			CSPObject: Global:CSPObject : CSPObject()
+--	------------------------------------------------------
+--	[stack level: 2]
+--	called from anonymous codeblock; filename: F:\Cursor\_Cyrus_Apps\CyrusScatter\tools\ui-tests\regression.ms; position: 83; line: 2
+--		Locals:
+--		Externals:
+--			RIRoot: Global:RIRoot : "F:/Cursor/_Cyrus_Apps/CyrusScatter/"
+--	------------------------------------------------------
+--	[stack level: 3]
+--	called from RICommandTick(); filename: F:\Cursor\_Cyrus_Apps\CyrusScatter\build\mesh-integration-2026-10-02\ui-layer-status-layout-lab2\recipe-main-reopen-final-validation-62d97d10.ms; position: 2; line: 1
+--		Parameters:
+--			sender: dotNetObject:System.Windows.Forms.Timer
+--			args: dotNetObject:System.EventArgs
+--		Locals:
+--			command: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mesh-integration-2026-10-02/ui-layer-status-layout-lab2/recipe-main-reopen-final-validation-62d97d10.ms"
+--			request: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mesh-integration-2026-10-02/ui-layer-status-layout-lab2/request.txt"
+--			sender: dotNetObject:System.Windows.Forms.Timer
+--			args: dotNetObject:System.EventArgs
+--		Externals:
+--			RIDir: Global:RIDir : "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mesh-integration-2026-10-02/ui-layer-status-layout-lab2/"
+--			RICommandTimer: Global:RICommandTimer : dotNetObject:System.Windows.Forms.Timer
+--			owner: undefined
+--			RILastRequest: Global:RILastRequest : "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mesh-integration-2026-10-02/ui-layer-status-layout-lab2/recipe-main-reopen-final-validation-62d97d10.ms"
+--			CSPWriteText: Global:CSPWriteText : CSPWriteText()
+--	------------------------------------------------------
+--	[stack level: 4]
+--	called from top-level

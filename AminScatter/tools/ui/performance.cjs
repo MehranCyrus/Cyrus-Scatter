@@ -2,9 +2,40 @@ module.exports=s=>{
  const replace=(a,b)=>{if(!s.includes(a))throw Error('Performance anchor missing: '+a.slice(0,90));s=s.replace(a,b)};
  replace('version:42','version:44');
  // Keep layer contents unmounted until the user opens that layer.
- s=s.replace(/on (layerPanel_\d+) open do \(\n( +children=#[^]*?)\n        \)\n        on \1 close do \(children=#\(\)\)\n        on \1 rolledUp state do parentView.layoutPanels\(\)/g,(_,name,body)=>
- `fn ensureContents = (\n            if children.count==0 do (\n${body}\n            )\n        )\n        on ${name} open do (children=#();${name}.height=24)\n        on ${name} close do (children=#())\n        on ${name} rolledUp state do (if not state and not parentView.building do ensureContents();parentView.layoutPanels())`);
- replace('if previous!=undefined do for k=1 to r.children.count do r.children[k].open=previous[3][k]', 'if previous!=undefined and previous[2] do (r.ensureContents();for k=1 to (amin r.children.count previous[3].count) do r.children[k].open=previous[3][k])');
+ let lazyLayers=0;
+ s=s.replace(/on (layerPanel_\d+) open do \(\n( +children=#[^]*?)\n        \)\n        on \1 close do \(children=#\(\)\)\n        on \1 rolledUp state do parentView.layoutPanels\(\)/g,(_,name,body)=>{
+  lazyLayers++;
+  return `local pendingSections=#()
+        fn sectionStates = (if children.count==0 then pendingSections else (for r in children collect r.open))
+        fn ensureContents = (
+            if children.count==0 do (
+                local wasBuilding=parentView.building
+                parentView.building=true
+                try (
+${body.replace(/\n\s+fitHeight\(\)\s*$/,'')}
+                    for k=1 to (amin children.count pendingSections.count) do children[k].open=pendingSections[k]
+                    pendingSections=#()
+                    fitHeight()
+                )catch(
+                    for r in children where r.isDisplayed do try(removeSubRollout sections r)catch()
+                    children=#();parentView.building=wasBuilding
+                    throw()
+                )
+                parentView.building=wasBuilding
+            )
+        )
+        on ${name} open do (children=#();pendingSections=#();${name}.height=24)
+        on ${name} close do (children=#();pendingSections=#())
+        on ${name} rolledUp expanded do (
+            if expanded and not parentView.building do (
+                ensureContents()
+                parentView.selectLayerView obj
+            )
+            parentView.layoutPanels()
+        )`;
+ });
+ if(lazyLayers!==10)throw Error('Expected ten lazy layer handlers, got '+lazyLayers);
+ replace('if previous!=undefined do for k=1 to r.children.count do r.children[k].open=previous[3][k]', 'if previous!=undefined do (r.pendingSections=previous[3];if previous[2] do r.ensureContents())');
  // Mouse polling also covers spinners and native sub-object transforms.
  s=`global CyrusInteractionHeld,CyrusWasDragging=false,CyrusReleaseTimer,CyrusReleaseTick\nfn CyrusInteractionHeld = (try((dotNetClass "System.Windows.Forms.Control").MouseButtons != (dotNetClass "System.Windows.Forms.MouseButtons").None)catch(false))\n`+s;
  replace('    fn previewCache = (','    fn previewCache = (\n        if CyrusInteractionHeld() do (CyrusWasDragging=true;return cachedPoints)');

@@ -39,7 +39,7 @@ The opportunity is **precise environment layout that survives revisions and prod
 
 ## How this relates to the existing documents
 
-This package governs **priorities, product scope, and current status**. The [performance package](../Performance_Roadmap_2026-09-28/README.md) remains the detailed algorithm/benchmark specification. The [licensing package](../CyrusScatter_Licensing_Implementation_Package_2026-09-27/README.md) remains a proposed implementation reference, subject to the policy corrections here. The [codebase package](../CyrusScatter_Complete_Codebase_Documentation_2026-09-27/README.md) is a dated architecture reference. The [installation guide](../Max_2027_Installation.md) describes the delivered test build.
+This package governs **priorities, product scope, and current status**. The [performance package](../Performance_Roadmap_2026-09-28/README.md) remains the detailed algorithm/benchmark specification. The [current licensing plan](../licensing/README.md) governs licensing architecture, policy decisions and implementation; the September package is historical reference. The [codebase package](../CyrusScatter_Complete_Codebase_Documentation_2026-09-27/README.md) is a dated architecture reference. The [installation guide](../Max_2027_Installation.md) describes the delivered test build.
 
 Do not implement every idea in these documents. Complete the current milestone, collect evidence, and use the next gate to select work. Existing documents were preserved; this review does not silently rewrite their historical manifests.
 

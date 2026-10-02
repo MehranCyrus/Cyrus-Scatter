@@ -1,0 +1,39 @@
+--- UI-2026-10-02.4
++++ UI-2026-10-02.5
+@@ -11530,7 +11530,7 @@
+     fn uiLayerStats = (
+         CyrusLayerStatusData hasResult:(cachedPoints!=undefined and previewError=="") placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
+     )
+-    fn uiVersion = "2026-10-02.4"
++    fn uiVersion = "2026-10-02.5"
+     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
+         local token=undefined
+         if CyrusPerfTraceBegin!=undefined do try(token=CyrusPerfTraceBegin this "placements")catch()
+@@ -11784,7 +11784,8 @@
+             -- Max can reset the HWND width during a height change. Repair that
+             -- without treating it as a new command-panel width or remounting UI.
+             local desired=amax 160 (pb.w-8),changed=abs(contentWidth-desired)>1
+-            if abs(b.w-desired)>1 or abs(b.x-pb.x-4)>1 do windows.setWindowPos h 4 (b.y-pb.y) desired b.h false
++            -- Repaint the correction; otherwise stale narrow pixels persist until hover.
++            if abs(b.w-desired)>1 or abs(b.x-pb.x-4)>1 do windows.setWindowPos h 4 (b.y-pb.y) desired b.h true
+             if panels.width!=desired do panels.width=desired
+             changed
+         )
+@@ -11867,6 +11868,7 @@
+             mainUI.scrollPos=scroll
+         )
+         on widthTimer tick do if controlsReady and mainUI.open and not building do (
++            if widthTimer.interval!=300 do widthTimer.interval=300
+             if fitWidth() and not CyrusInteractionHeld() do rebuildWidth()
+             if roots.count>=4 and roots[4].open and abs(timeStamp()-lastStatusAt)>=500 do (
+                 lastStatusAt=timeStamp();roots[4].refreshStats()
+@@ -11883,6 +11885,9 @@
+             contentWidth=panels.width
+             controlsReady=true;building=false;rebuildLayers()
+         )
++        -- Max resets the width after rolledUp returns. Use the existing timer
++        -- for the next UI turn, then restore its normal polling interval.
++        on mainUI rolledUp expanded do widthTimer.interval=if expanded then 1 else 300
+         on mainUI close do (controlsReady=false;widthTimer.active=false;roots=#();layerPanels=#())
+     )
+ 

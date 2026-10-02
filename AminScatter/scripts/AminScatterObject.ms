@@ -1,6 +1,37 @@
 global CyrusPerfTraceBegin,CyrusPerfTraceEnd,CyrusPerfTraceInput
 global CyrusUISize,CyrusUIBuildView
-fn CyrusUISize n depth view:CyrusUIBuildView = (local w=if view==undefined then 162 else amax 140 (view.width-16-depth*16);floor(n*w/162.0+0.5))
+fn CyrusUISize n depth view:CyrusUIBuildView = (local w=if view==undefined then 162 else amax 140 (view.panels.width-16-depth*16);floor(n*w/162.0+0.5))
+global CyrusLayerStatusData,CyrusUICount,CyrusUILayerState
+struct CyrusLayerStatusData (
+    hasResult=false,placements=0,previewCount=0,mode=0,buildMs=0,
+    needsUpdate=true,errorText="",densityCapped=false,inputOff=false
+)
+fn CyrusUICount value compact:false = (
+    if compact and value>=1000000 do return ((formattedPrint (value/1000000.0) format:".1f")+"m")
+    if compact and value>=1000 do return ((formattedPrint (value/1000.0) format:".1f")+"k")
+    local digits=value as string,result=""
+    for i=1 to digits.count do (
+        result+=substring digits i 1
+        if i<digits.count and mod (digits.count-i) 3==0 do result+=","
+    )
+    result
+)
+fn CyrusUILayerState stats enabled controllerEnabled previewVisible = (
+    if not controllerEnabled do return #("Off","Controller disabled")
+    if not enabled do return #("Off","Layer disabled")
+    if stats.inputOff do return #("Off","Analyzer input disabled")
+    if stats.errorText!="" do return #("Error","Preview error")
+    if not stats.hasResult do return #("--","Not built")
+    if stats.needsUpdate do return #("Stale","Needs update")
+    if not previewVisible do return #("Hidden","Preview hidden")
+    if stats.placements==0 do return #("Empty","Empty")
+    #("OK","Cached")
+)
+
+global CyrusPointOwner,CyrusPointSync,CyrusViewportRedraw,CyrusPointClear,CyrusPointAfterSave
+global CyrusPointOwners,CyrusPointEnabled=true,CyrusMeshEnabled=true,CyrusPointAvailable=false,CyrusPointBusy=false,CyrusPointPending=false,CyrusPointSuspended=false,CyrusPointLastError="",CyrusPointDeletedHandles=#()
+try(CyrusPointClear())catch()
+CyrusPointOwners=#()
 global cyrusFilterSourceRows,cyrusApplySourceTransforms
 global CyrusInteractionHeld,CyrusWasDragging=false,CyrusReleaseTimer,CyrusReleaseTick
 fn CyrusInteractionHeld = (try((dotNetClass "System.Windows.Forms.Control").MouseButtons != (dotNetClass "System.Windows.Forms.MouseButtons").None)catch(false))
@@ -32,7 +63,7 @@ fn CyrusOpenFalloffGraph target areaNode density = (
                 cfg[if isDensity then 8 else 5]=values
                 obj.setFallConfig area cfg
                 obj.setFallGraph area isDensity (CyrusFallPack packed)
-                redrawViews()
+                CyrusViewportRedraw()
             )
             true
         )
@@ -126,9 +157,9 @@ fn CyrusMake_updateUI target view = (
         button updateNow "Update now" pos:[(CyrusUISize 8 0),78] width:(CyrusUISize 146 0)
         label updateHint "Updates after a brief pause." pos:[(CyrusUISize 8 0),110] width:(CyrusUISize 146 0)
         fn syncControls = (updateRadio.state=obj.updateMode;)
-        on updateNow pressed do (obj.refreshAll();redrawViews())
+        on updateNow pressed do (obj.refreshAll();CyrusViewportRedraw())
 
-        on updateRadio changed v do (obj.updateMode=v;obj.dirty=true;syncControls();redrawViews())
+        on updateRadio changed v do (obj.updateMode=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on updateUI rolledUp state do parentView.layoutPanels()
         on updateUI open do (updateRadio.state=obj.updateMode;controlsReady=true;)
     )
@@ -156,16 +187,16 @@ fn CyrusMake_surfaceUI target view = (
             )
         )
 
-        on pickSurface picked n do (addSurface n;updateSurfaces();redrawViews())
+        on pickSurface picked n do (addSurface n;updateSurfaces();CyrusViewportRedraw())
         on addSurfaceScene pressed do (
             local nodes=selectByName title:"Cyrus Scatter - Surfaces" buttonText:"Add" filter:AminScatterSourceFilter single:false
             if nodes!=undefined do for n in nodes do addSurface n
-            updateSurfaces();redrawViews()
+            updateSurfaces();CyrusViewportRedraw()
         )
         on removeSurface pressed do (
             local rows=surfaceList.selection as array
             undo "Cyrus Scatter remove surfaces" on (for i=rows.count to 1 by -1 do deleteItem obj.surfaceNodes rows[i])
-            obj.surface=undefined;surfaceList.selection=#{};obj.dirty=true;updateSurfaces();redrawViews()
+            obj.surface=undefined;surfaceList.selection=#{};obj.dirty=true;updateSurfaces();CyrusViewportRedraw()
         )
 
         on surfaceUI rolledUp state do parentView.layoutPanels()
@@ -206,22 +237,22 @@ fn CyrusMake_previewUI target view = (
             budgetSpin.enabled=obj.viewportMode==1;pointsSpin.enabled=obj.viewportMode==1
         )
         fn syncControls = (syncDisplay();radiusLimitSpin.value=obj.radiusDisplayLimit;radiusAllCheck.checked=obj.radiusDisplayAll;radiusLimitSpin.enabled=not obj.radiusDisplayAll;autoRenderCheck.checked=obj.autoRender;budgetSpin.value=obj.previewBudget;pointColorRadio.state=obj.pointColorMode;solidColorPicker.color=obj.solidPointColor;)
-        on radiusLimitSpin changed v do (obj.radiusDisplayLimit=v;obj.refreshAll();syncControls();redrawViews())
-        on radiusAllCheck changed v do (obj.radiusDisplayAll=v;obj.refreshAll();syncControls();redrawViews())
-        on displayModeDrop selected v do (obj.viewportMode=v;obj.refreshDisplay();syncControls();status.text=obj.allStatus();redrawViews())
-        on proxyShapeDrop selected v do (obj.proxyShape=v;obj.refreshDisplay();syncControls();status.text=obj.allStatus();redrawViews())
-        on instancesLimitSpin changed v do (obj.viewportInstances=v;obj.refreshDisplay();syncControls();status.text=obj.allStatus();redrawViews())
-        on faceLimitSpin changed v do (obj.viewportFaces=v;obj.refreshDisplay();syncControls();status.text=obj.allStatus();redrawViews())
-        on previewCheck changed v do (obj.showPoints=v;redrawViews())
-        on pointsSpin changed v do (obj.pointsPerPlant=v;obj.dirty=true;syncControls();redrawViews())
+        on radiusLimitSpin changed v do (obj.radiusDisplayLimit=v;obj.refreshAll();syncControls();CyrusViewportRedraw())
+        on radiusAllCheck changed v do (obj.radiusDisplayAll=v;obj.refreshAll();syncControls();CyrusViewportRedraw())
+        on displayModeDrop selected v do (obj.viewportMode=v;obj.refreshDisplay();syncControls();status.text=obj.allStatus();CyrusViewportRedraw())
+        on proxyShapeDrop selected v do (obj.proxyShape=v;obj.refreshDisplay();syncControls();status.text=obj.allStatus();CyrusViewportRedraw())
+        on instancesLimitSpin changed v do (obj.viewportInstances=v;obj.refreshDisplay();syncControls();status.text=obj.allStatus();CyrusViewportRedraw())
+        on faceLimitSpin changed v do (obj.viewportFaces=v;obj.refreshDisplay();syncControls();status.text=obj.allStatus();CyrusViewportRedraw())
+        on previewCheck changed v do (obj.showPoints=v;CyrusViewportRedraw())
+        on pointsSpin changed v do (obj.pointsPerPlant=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on iconSpin changed v do obj.iconSize=v
-        on refreshButton pressed do (obj.refreshAll();status.text=obj.allStatus();redrawViews())
+        on refreshButton pressed do (obj.refreshAll();status.text=obj.allStatus();CyrusViewportRedraw())
         on clearBakedButton pressed do obj.clearAllBaked()
 
-        on autoRenderCheck changed v do (obj.autoRender=v;obj.dirty=true;syncControls();redrawViews())
-        on budgetSpin changed v do (obj.previewBudget=v;obj.dirty=true;syncControls();redrawViews())
-        on pointColorRadio changed v do (obj.pointColorMode=v;obj.dirty=true;syncControls();redrawViews())
-        on solidColorPicker changed v do (obj.solidPointColor=v;obj.dirty=true;syncControls();redrawViews())
+        on autoRenderCheck changed v do (obj.autoRender=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on budgetSpin changed v do (obj.previewBudget=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on pointColorRadio changed v do (obj.pointColorMode=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on solidColorPicker changed v do (obj.solidPointColor=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on previewUI rolledUp state do parentView.layoutPanels()
         on previewUI open do (syncDisplay();radiusLimitSpin.value=obj.radiusDisplayLimit;radiusAllCheck.checked=obj.radiusDisplayAll;radiusLimitSpin.enabled=not obj.radiusDisplayAll;autoRenderCheck.checked=obj.autoRender;budgetSpin.value=obj.previewBudget;pointColorRadio.state=obj.pointColorMode;solidColorPicker.color=obj.solidPointColor;controlsReady=true;(previewCheck.checked=obj.showPoints;pointsSpin.value=obj.pointsPerPlant;iconSpin.value=obj.iconSize))
     )
@@ -307,27 +338,27 @@ fn CyrusMake_sourceUI target view = (
                 for i=before+1 to obj.sources.count do rows[i]=true
                 plantList.selection=rows;focusedRow=before+1
             )
-            showSelectedColor();redrawViews()
+            showSelectedColor();CyrusViewportRedraw()
         )
         on addPoint pressed do (
-            local i=obj.addPointSource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();redrawViews()
+            local i=obj.addPointSource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();CyrusViewportRedraw()
         )
         on replacePoint picked n do (
             local rows=plantList.selection as array
             if rows.count!=1 then messageBox "Select one Point row to replace." title:"Cyrus Scatter"
             else if not (obj.replacePointSource rows[1] n) do messageBox "Select a Point row and an object that is not already in this source list." title:"Cyrus Scatter"
-            replacePoint.text="Replace Point: pick object";updateList();showSelectedColor();redrawViews()
+            replacePoint.text="Replace Point: pick object";updateList();showSelectedColor();CyrusViewportRedraw()
         )
         on addEmpty pressed do (
-            local i=obj.addEmptySource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();redrawViews()
+            local i=obj.addEmptySource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();CyrusViewportRedraw()
         )
-        on radiusSourceSpin changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v;redrawViews())
-        on followRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:2;redrawViews())
-        on showRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:3;redrawViews())
-        on forwardAxis selected v do if not loadingColor do (obj.assignSourceForward plantList.selection v;redrawViews())
-        on sourceZSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v;redrawViews())
-        on sourceScaleSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v scaling:true;redrawViews())
-        on weightSpin changed v do if not loadingColor do (obj.assignWeight plantList.selection v;updateList();redrawViews())
+        on radiusSourceSpin changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v;CyrusViewportRedraw())
+        on followRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:2;CyrusViewportRedraw())
+        on showRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:3;CyrusViewportRedraw())
+        on forwardAxis selected v do if not loadingColor do (obj.assignSourceForward plantList.selection v;CyrusViewportRedraw())
+        on sourceZSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v;CyrusViewportRedraw())
+        on sourceScaleSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v scaling:true;CyrusViewportRedraw())
+        on weightSpin changed v do if not loadingColor do (obj.assignWeight plantList.selection v;updateList();CyrusViewportRedraw())
         on plantList selected i do (
             if i>0 and plantList.selection[i] do focusedRow=i
         )
@@ -336,18 +367,18 @@ fn CyrusMake_sourceUI target view = (
             if i>0 and i<=groupPalette.count do (
                 local c=groupPalette[i]
                 loadingColor=true;groupColor.color=c;loadingColor=false
-                obj.assignGroup plantList.selection c;updateList();redrawViews()
+                obj.assignGroup plantList.selection c;updateList();CyrusViewportRedraw()
             )
         )
         on groupColor changed c do (
             if not loadingColor and plantList.selection.numberSet>0 do (
                 obj.assignGroup plantList.selection c
-                updateList();redrawViews()
+                updateList();CyrusViewportRedraw()
             )
         )
         on applyColor pressed do (
             obj.assignGroup plantList.selection groupColor.color
-            updateList();redrawViews()
+            updateList();CyrusViewportRedraw()
         )
         on selectFromScene pressed do (
             local picked=selectByName title:"Cyrus Scatter - Select From Scene" buttonText:"Add" filter:AminScatterSourceFilter single:false
@@ -370,7 +401,7 @@ fn CyrusMake_sourceUI target view = (
                     deleteItem obj.sources rows[k];deleteItem obj.sourceColors rows[k]
                 )
             )
-            plantList.selection=#{};obj.dirty=true;updateList();redrawViews()
+            plantList.selection=#{};obj.dirty=true;updateList();CyrusViewportRedraw()
         )
         on selectPlant pressed do (
             local nodes=for i in plantList.selection where i<=obj.sources.count and isValidNode obj.sources[i] collect obj.sources[i]
@@ -392,7 +423,7 @@ fn CyrusMake_distributionUI target view = (
         radiobuttons modeRadio "Method" labels:#("Random","Texture Density") columns:1 pos:[(CyrusUISize 8 1),8] width:(CyrusUISize 146 1)
         radiobuttons populationRadio "Population" labels:#("Count","Plants per m2") columns:1 pos:[(CyrusUISize 8 1),78] width:(CyrusUISize 146 1)
         checkbox showCenterCheck "Show Point" pos:[(CyrusUISize 8 1),148] width:(CyrusUISize 146 1)
-        on showCenterCheck changed v do (obj.showCenters=v;redrawViews())
+        on showCenterCheck changed v do (obj.showCenters=v;CyrusViewportRedraw())
         spinner countSpin "Count: " range:[1,100000,200] type:#integer fieldWidth:(CyrusUISize 64 1) width:(CyrusUISize 146 1) pos:[(CyrusUISize 8 1),174]
         spinner densitySpin "Per m2: " range:[0,1000000,100] fieldWidth:(CyrusUISize 64 1) width:(CyrusUISize 146 1) pos:[(CyrusUISize 8 1),200]
         spinner seedSpin "Seed: " range:[0,2147483647,42] type:#integer fieldWidth:(CyrusUISize 64 1) width:(CyrusUISize 146 1) pos:[(CyrusUISize 8 1),226]
@@ -403,14 +434,14 @@ fn CyrusMake_distributionUI target view = (
         label mapHint "White: dense / Black: empty" pos:[(CyrusUISize 8 1),360] width:(CyrusUISize 146 1)
 
         fn syncControls = (populationRadio.state=obj.populationMode;densitySpin.value=obj.plantsPerM2;densityButton.map=obj.densityMap;invertCheck.checked=obj.invertDensity;)
-        on modeRadio changed v do (obj.distributionMode=if v==2 then 3 else 1;obj.dirty=true;syncControls();redrawViews())
-        on countSpin changed v do (obj.amount=v;obj.dirty=true;syncControls();redrawViews())
-        on seedSpin changed v do (obj.randomSeed=v;obj.dirty=true;syncControls();redrawViews())
+        on modeRadio changed v do (obj.distributionMode=if v==2 then 3 else 1;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on countSpin changed v do (obj.amount=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on seedSpin changed v do (obj.randomSeed=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
 
-        on populationRadio changed v do (obj.populationMode=v;obj.dirty=true;syncControls();redrawViews())
-        on densitySpin changed v do (obj.plantsPerM2=v;obj.dirty=true;syncControls();redrawViews())
-        on densityButton picked v do (obj.densityMap=v;obj.dirty=true;syncControls();redrawViews())
-        on invertCheck changed v do (obj.invertDensity=v;obj.dirty=true;syncControls();redrawViews())
+        on populationRadio changed v do (obj.populationMode=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on densitySpin changed v do (obj.plantsPerM2=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on densityButton picked v do (obj.densityMap=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on invertCheck changed v do (obj.invertDensity=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on distributionUI rolledUp state do parentView.layoutPanels()
         on distributionUI open do (showCenterCheck.checked=obj.showCenters;populationRadio.state=obj.populationMode;densitySpin.value=obj.plantsPerM2;densityButton.map=obj.densityMap;invertCheck.checked=obj.invertDensity;controlsReady=true;(countSpin.value=obj.amount;seedSpin.value=obj.randomSeed;modeRadio.state=if obj.distributionMode==3 then 2 else 1))
     )
@@ -451,14 +482,14 @@ fn CyrusMake_areaUI target view = (
             aaWidth.enabled=obj.areaUseLine;aaCaps.enabled=obj.areaUseLine;aaRadius.enabled=obj.areaUsePoints
             loadingAnalyzerArea=false
         )
-        on aaPick picked n do (obj.areaAnalyzer=n;syncAnalyzerArea();redrawViews())
-        on aaRemove pressed do (obj.areaUseLine=false;obj.areaUsePoints=false;obj.areaAnalyzer=undefined;syncAnalyzerArea();redrawViews())
-        on aaLine changed v do if not loadingAnalyzerArea do (obj.areaUseLine=v;syncAnalyzerArea();redrawViews())
-        on aaPoints changed v do if not loadingAnalyzerArea do (obj.areaUsePoints=v;syncAnalyzerArea();redrawViews())
-        on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;redrawViews())
-        on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;redrawViews())
-        on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;redrawViews())
-        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
+        on aaPick picked n do (obj.areaAnalyzer=n;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaRemove pressed do (obj.areaUseLine=false;obj.areaUsePoints=false;obj.areaAnalyzer=undefined;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaLine changed v do if not loadingAnalyzerArea do (obj.areaUseLine=v;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaPoints changed v do if not loadingAnalyzerArea do (obj.areaUsePoints=v;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;CyrusViewportRedraw())
+        on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;CyrusViewportRedraw())
+        on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;CyrusViewportRedraw())
+        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;CyrusViewportRedraw())
 
         local loadingFall=false
         dropdownlist fallTarget "Edge falloff target" items:#("Analyzer Boundary","Selected Area line") selection:1 pos:[(CyrusUISize 8 1),704] width:(CyrusUISize 146 1)
@@ -495,12 +526,12 @@ fn CyrusMake_areaUI target view = (
         fn setFallValue index value = (
             if not loadingFall do (
                 local n=fallNode()
-                if fallTarget.selection==1 or isValidNode n do (local cfg=obj.getFallConfig n;cfg[index]=value;obj.setFallConfig n cfg;redrawViews())
+                if fallTarget.selection==1 or isValidNode n do (local cfg=obj.getFallConfig n;cfg[index]=value;obj.setFallConfig n cfg;CyrusViewportRedraw())
             )
         )
         on fallTarget selected v do syncFalloff()
-        on fallPick picked n do (if CyrusAnalyzerFilter n do obj.fallAnalyzer=n;syncFalloff();redrawViews())
-        on fallRemove pressed do (obj.fallAnalyzer=undefined;obj.fallDelete=false;obj.fallScale=false;obj.fallDensity=false;syncFalloff();redrawViews())
+        on fallPick picked n do (if CyrusAnalyzerFilter n do obj.fallAnalyzer=n;syncFalloff();CyrusViewportRedraw())
+        on fallRemove pressed do (obj.fallAnalyzer=undefined;obj.fallDelete=false;obj.fallScale=false;obj.fallDensity=false;syncFalloff();CyrusViewportRedraw())
         on fallDeleteCheck changed v do setFallValue 1 v
         on fallDeleteSpin changed v do setFallValue 2 v
         on fallScaleCheck changed v do setFallValue 3 v
@@ -525,11 +556,11 @@ fn CyrusMake_areaUI target view = (
             )
         )
 
-        on pickArea picked n do (addArea n;updateAreas();redrawViews())
+        on pickArea picked n do (addArea n;updateAreas();CyrusViewportRedraw())
         on addAreaScene pressed do (
             local nodes=selectByName title:"Cyrus Scatter - Closed Areas" buttonText:"Add" filter:AminScatterAreaFilter single:false
             if nodes!=undefined do for n in nodes do addArea n
-            updateAreas();redrawViews()
+            updateAreas();CyrusViewportRedraw()
         )
         on areaList selectionEnd do (
             if areaList.selection.numberSet==1 do fallTarget.selection=2
@@ -538,7 +569,7 @@ fn CyrusMake_areaUI target view = (
         )
         on areaMode changed mode do (
             undo "Cyrus Scatter area mode" on (for i in areaList.selection do obj.areaModes[i]=mode)
-            obj.dirty=true;updateAreas();redrawViews()
+            obj.dirty=true;updateAreas();CyrusViewportRedraw()
         )
         on removeArea pressed do (
             if CyrusFalloffGraph!=undefined do try(destroyDialog CyrusFalloffGraph)catch()
@@ -547,9 +578,9 @@ fn CyrusMake_areaUI target view = (
                 obj.ensureAreaFalloffs()
                 for i=rows.count to 1 by -1 do (deleteItem obj.areaNodes rows[i];deleteItem obj.areaModes rows[i];deleteItem obj.areaFallConfigs rows[i];deleteItem obj.areaFallScaleGraphs rows[i];deleteItem obj.areaFallDensityGraphs rows[i])
             )
-            areaList.selection=#{};obj.dirty=true;updateAreas();redrawViews()
+            areaList.selection=#{};obj.dirty=true;updateAreas();CyrusViewportRedraw()
         )
-        on refreshAreas pressed do (obj.dirty=true;obj.refreshPreview();redrawViews())
+        on refreshAreas pressed do (obj.dirty=true;obj.refreshPreview();CyrusViewportRedraw())
 
         on areaUI rolledUp state do parentView.layoutPanels()
         on areaUI open do (syncAnalyzerArea();syncFalloff();controlsReady=true;updateAreas())
@@ -614,16 +645,16 @@ fn CyrusMake_diversityUI target view = (
         fn syncControls = (diversityRadio.state=obj.diversityMode;sizeSpin.value=obj.diversitySize;divSeedSpin.value=obj.diversitySeed;roughSpin.value=obj.roughness;blurSpin.value=obj.blurryEdge;noiseSpin.value=obj.diversityNoise;)
         on faceOutCheck changed v do (
             if analyzerChannel.selection==5 then obj.edgeFaceOut=v else if analyzerChannel.selection==4 then obj.streetFaceOut=v else obj.borderFaceOut=v
-            cornerRadiusSpin.enabled=v;obj.dirty=true;redrawViews()
+            cornerRadiusSpin.enabled=v;obj.dirty=true;CyrusViewportRedraw()
         )
         on cornerRadiusSpin changed v do (
             if analyzerChannel.selection==5 then obj.edgeCornerRadius=v else if analyzerChannel.selection==4 then obj.streetCornerRadius=v else obj.borderCornerRadius=v
-            obj.dirty=true;redrawViews()
+            obj.dirty=true;CyrusViewportRedraw()
         )
-        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;redrawViews())
-        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;redrawViews())
-        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;redrawViews())
-        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;syncControls();redrawViews())
+        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;CyrusViewportRedraw())
+        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;CyrusViewportRedraw())
+        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;CyrusViewportRedraw())
+        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         fn selectedStroke = (if strokesList.selection>0 and strokesList.selection<=strokeRows.count then strokeRows[strokesList.selection] else 0)
         fn showStroke = (
             loadingStroke=true
@@ -721,7 +752,7 @@ fn CyrusMake_diversityUI target view = (
         on pathsDrop selected i do showPath()
         on analyzerChannel selected i do updatePattern()
         on pickAnalyzer picked n do (
-            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();redrawViews())
+            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();CyrusViewportRedraw())
         )
         on strokesList selected i do showStroke()
         on pickPath picked n do (
@@ -733,39 +764,39 @@ fn CyrusMake_diversityUI target view = (
             for i=obj.patternLines.count to 1 by -1 where obj.patternLines[i]==path do obj.removeStroke i
             local k=findItem obj.patternPaths path;if k>0 do deleteItem obj.patternPaths k
             if obj.diversityMode==4 do obj.analyzerNode=undefined
-            updatePattern();obj.dirty=true;syncControls();redrawViews()
+            updatePattern();obj.dirty=true;syncControls();CyrusViewportRedraw()
         )
         on addOutside pressed do (
             if obj.diversityMode==4 and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5) do return false
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local types=#(1,3,4)
             local side=if obj.diversityMode==4 then types[analyzerChannel.selection] else 1
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
         on addInside pressed do (
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local side=if obj.diversityMode==4 and analyzerChannel.selection==5 then 7 else if obj.diversityMode==4 and analyzerChannel.selection==4 then 6 else if obj.diversityMode==4 and analyzerChannel.selection==3 then 5 else 2
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
-        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();redrawViews())
-        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;redrawViews())
-        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;redrawViews())
-        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;redrawViews())
-        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;redrawViews())
-        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;redrawViews())
-        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;redrawViews())
-        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;redrawViews())
-        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;redrawViews())
-        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;redrawViews())
-        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();redrawViews())
-        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;syncControls();redrawViews())
+        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();CyrusViewportRedraw())
+        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;CyrusViewportRedraw())
+        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;CyrusViewportRedraw())
+        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;CyrusViewportRedraw())
+        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;CyrusViewportRedraw())
+        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;CyrusViewportRedraw())
+        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;CyrusViewportRedraw())
+        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;CyrusViewportRedraw())
+        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;CyrusViewportRedraw())
+        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;CyrusViewportRedraw())
+        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();CyrusViewportRedraw())
+        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
         on strokeChoices selectionEnd do if not loadingStroke do (
             local row=selectedStroke()
             if row>0 do obj.setStrokeSelection row obj.strokeModes[row] (for i in strokeChoices.selection collect choiceValues[i])
-            redrawViews()
+            CyrusViewportRedraw()
         )
-        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;syncControls();redrawViews())
-        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;syncControls();redrawViews())
+        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
         on refreshGroups pressed do updatePattern()
                 fn updateControls = (
             for c in #(sizeSpin,divSeedSpin,roughSpin,blurSpin,noiseSpin,groupHint,fixedHint) do c.visible=obj.diversityMode==2
@@ -773,14 +804,14 @@ fn CyrusMake_diversityUI target view = (
             if strokeExpandedHeight>0 do diversityUI.height=if obj.diversityMode>=3 then strokeExpandedHeight else (if obj.diversityMode==2 then 310 else 124)*parentView.dpiScale
             parentView.layoutPanels()
         )
-        on diversityRadio changed v do (obj.diversityMode=v;updateControls();updatePattern();obj.dirty=true;syncControls();redrawViews())
+        on diversityRadio changed v do (obj.diversityMode=v;updateControls();updatePattern();obj.dirty=true;syncControls();CyrusViewportRedraw())
 
 
-        on sizeSpin changed v do (obj.diversitySize=v;obj.dirty=true;syncControls();redrawViews())
-        on divSeedSpin changed v do (obj.diversitySeed=v;obj.dirty=true;syncControls();redrawViews())
-        on roughSpin changed v do (obj.roughness=v;obj.dirty=true;syncControls();redrawViews())
-        on blurSpin changed v do (obj.blurryEdge=v;obj.dirty=true;syncControls();redrawViews())
-        on noiseSpin changed v do (obj.diversityNoise=v;obj.dirty=true;syncControls();redrawViews())
+        on sizeSpin changed v do (obj.diversitySize=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on divSeedSpin changed v do (obj.diversitySeed=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on roughSpin changed v do (obj.roughness=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on blurSpin changed v do (obj.blurryEdge=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on noiseSpin changed v do (obj.diversityNoise=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on diversityUI rolledUp state do parentView.layoutPanels()
         on diversityUI open do (diversityRadio.state=obj.diversityMode;sizeSpin.value=obj.diversitySize;divSeedSpin.value=obj.diversitySeed;roughSpin.value=obj.roughness;blurSpin.value=obj.blurryEdge;noiseSpin.value=obj.diversityNoise;controlsReady=true;strokeExpandedHeight=diversityUI.height;updateControls();updatePattern())
     )
@@ -829,16 +860,16 @@ fn CyrusMake_lineUI target view = (
         checkbox straightStreet "Straight ends (Street Side)" pos:[(CyrusUISize 8 1),620] width:(CyrusUISize 146 1)
         on faceOutCheck changed v do (
             if analyzerChannel.selection==5 then obj.edgeFaceOut=v else if analyzerChannel.selection==4 then obj.streetFaceOut=v else obj.borderFaceOut=v
-            cornerRadiusSpin.enabled=v;obj.dirty=true;redrawViews()
+            cornerRadiusSpin.enabled=v;obj.dirty=true;CyrusViewportRedraw()
         )
         on cornerRadiusSpin changed v do (
             if analyzerChannel.selection==5 then obj.edgeCornerRadius=v else if analyzerChannel.selection==4 then obj.streetCornerRadius=v else obj.borderCornerRadius=v
-            obj.dirty=true;redrawViews()
+            obj.dirty=true;CyrusViewportRedraw()
         )
-        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;redrawViews())
-        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;redrawViews())
-        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;redrawViews())
-        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;redrawViews())
+        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;CyrusViewportRedraw())
+        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;CyrusViewportRedraw())
+        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;CyrusViewportRedraw())
+        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;CyrusViewportRedraw())
         fn selectedStroke = (if strokesList.selection>0 and strokesList.selection<=strokeRows.count then strokeRows[strokesList.selection] else 0)
         fn showStroke = (
             loadingStroke=true
@@ -936,7 +967,7 @@ fn CyrusMake_lineUI target view = (
         on pathsDrop selected i do showPath()
         on analyzerChannel selected i do updatePattern()
         on pickAnalyzer picked n do (
-            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();redrawViews())
+            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();CyrusViewportRedraw())
         )
         on strokesList selected i do showStroke()
         on pickPath picked n do (
@@ -948,39 +979,39 @@ fn CyrusMake_lineUI target view = (
             for i=obj.patternLines.count to 1 by -1 where obj.patternLines[i]==path do obj.removeStroke i
             local k=findItem obj.patternPaths path;if k>0 do deleteItem obj.patternPaths k
             if obj.diversityMode==4 do obj.analyzerNode=undefined
-            updatePattern();obj.dirty=true;redrawViews()
+            updatePattern();obj.dirty=true;CyrusViewportRedraw()
         )
         on addOutside pressed do (
             if obj.diversityMode==4 and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5) do return false
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local types=#(1,3,4)
             local side=if obj.diversityMode==4 then types[analyzerChannel.selection] else 1
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
         on addInside pressed do (
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local side=if obj.diversityMode==4 and analyzerChannel.selection==5 then 7 else if obj.diversityMode==4 and analyzerChannel.selection==4 then 6 else if obj.diversityMode==4 and analyzerChannel.selection==3 then 5 else 2
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
-        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();redrawViews())
-        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;redrawViews())
-        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;redrawViews())
-        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;redrawViews())
-        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;redrawViews())
-        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;redrawViews())
-        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;redrawViews())
-        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;redrawViews())
-        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;redrawViews())
-        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;redrawViews())
-        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();redrawViews())
-        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;redrawViews())
+        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();CyrusViewportRedraw())
+        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;CyrusViewportRedraw())
+        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;CyrusViewportRedraw())
+        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;CyrusViewportRedraw())
+        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;CyrusViewportRedraw())
+        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;CyrusViewportRedraw())
+        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;CyrusViewportRedraw())
+        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;CyrusViewportRedraw())
+        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;CyrusViewportRedraw())
+        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;CyrusViewportRedraw())
+        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();CyrusViewportRedraw())
+        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;CyrusViewportRedraw())
         on strokeChoices selectionEnd do if not loadingStroke do (
             local row=selectedStroke()
             if row>0 do obj.setStrokeSelection row obj.strokeModes[row] (for i in strokeChoices.selection collect choiceValues[i])
-            redrawViews()
+            CyrusViewportRedraw()
         )
-        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;redrawViews())
-        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;redrawViews())
+        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;CyrusViewportRedraw())
+        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;CyrusViewportRedraw())
         on refreshGroups pressed do updatePattern()
 
         on lineUI rolledUp state do parentView.layoutPanels()
@@ -1024,8 +1055,8 @@ fn CyrusMake_randomUI target view = (
         label wholeMaxTitle "Max" pos:[(CyrusUISize 94 1),274] width:(CyrusUISize 58 1)
         spinner wholeMinSpin "" range:[0.001,1000,1] scale:0.01 pos:[(CyrusUISize 24 1),296] fieldWidth:(CyrusUISize 46 1) width:(CyrusUISize 58 1)
         spinner wholeMaxSpin "" range:[0.001,1000,1] scale:0.01 pos:[(CyrusUISize 94 1),296] fieldWidth:(CyrusUISize 46 1) width:(CyrusUISize 58 1)
-        on wholeMinSpin changed v do (obj.wholeScaleMin=v;if v>obj.wholeScaleMax do (obj.wholeScaleMax=v;wholeMaxSpin.value=v);redrawViews())
-        on wholeMaxSpin changed v do (obj.wholeScaleMax=v;if v<obj.wholeScaleMin do (obj.wholeScaleMin=v;wholeMinSpin.value=v);redrawViews())
+        on wholeMinSpin changed v do (obj.wholeScaleMin=v;if v>obj.wholeScaleMax do (obj.wholeScaleMax=v;wholeMaxSpin.value=v);CyrusViewportRedraw())
+        on wholeMaxSpin changed v do (obj.wholeScaleMax=v;if v<obj.wholeScaleMin do (obj.wholeScaleMin=v;wholeMinSpin.value=v);CyrusViewportRedraw())
         label movTitle "Movement (world units)" pos:[(CyrusUISize 8 1),332] width:(CyrusUISize 146 1)
         label movMinTitle "Min" pos:[(CyrusUISize 24 1),354] width:(CyrusUISize 58 1)
         label movMaxTitle "Max" pos:[(CyrusUISize 94 1),354] width:(CyrusUISize 58 1)
@@ -1042,27 +1073,27 @@ fn CyrusMake_randomUI target view = (
         checkbox alignCheck "Align to normal" pos:[(CyrusUISize 8 1),480] width:(CyrusUISize 146 1)
 
         fn syncControls = (projectCheck.checked=obj.projectMove;rotXMinSpin.value=obj.rotXMin;rotXMaxSpin.value=obj.rotXMax;rotYMinSpin.value=obj.rotYMin;rotYMaxSpin.value=obj.rotYMax;rotZMinSpin.value=obj.rotZMin;rotZMaxSpin.value=obj.rotZMax;sclXMinSpin.value=obj.sclXMin;sclXMaxSpin.value=obj.sclXMax;sclYMinSpin.value=obj.sclYMin;sclYMaxSpin.value=obj.sclYMax;sclZMinSpin.value=obj.sclZMin;sclZMaxSpin.value=obj.sclZMax;movXMinSpin.value=obj.movXMin;movXMaxSpin.value=obj.movXMax;movYMinSpin.value=obj.movYMin;movYMaxSpin.value=obj.movYMax;movZMinSpin.value=obj.movZMin;movZMaxSpin.value=obj.movZMax;)
-        on alignCheck changed v do (obj.alignNormal=v;obj.dirty=true;syncControls();redrawViews())
+        on alignCheck changed v do (obj.alignNormal=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
 
-        on projectCheck changed v do (obj.projectMove=v;obj.dirty=true;syncControls();redrawViews())
-        on rotXMinSpin changed v do (obj.rotXMin=v;obj.dirty=true;syncControls();redrawViews())
-        on rotXMaxSpin changed v do (obj.rotXMax=v;obj.dirty=true;syncControls();redrawViews())
-        on rotYMinSpin changed v do (obj.rotYMin=v;obj.dirty=true;syncControls();redrawViews())
-        on rotYMaxSpin changed v do (obj.rotYMax=v;obj.dirty=true;syncControls();redrawViews())
-        on rotZMinSpin changed v do (obj.rotZMin=v;obj.dirty=true;syncControls();redrawViews())
-        on rotZMaxSpin changed v do (obj.rotZMax=v;obj.dirty=true;syncControls();redrawViews())
-        on sclXMinSpin changed v do (obj.sclXMin=v;obj.dirty=true;syncControls();redrawViews())
-        on sclXMaxSpin changed v do (obj.sclXMax=v;obj.dirty=true;syncControls();redrawViews())
-        on sclYMinSpin changed v do (obj.sclYMin=v;obj.dirty=true;syncControls();redrawViews())
-        on sclYMaxSpin changed v do (obj.sclYMax=v;obj.dirty=true;syncControls();redrawViews())
-        on sclZMinSpin changed v do (obj.sclZMin=v;obj.dirty=true;syncControls();redrawViews())
-        on sclZMaxSpin changed v do (obj.sclZMax=v;obj.dirty=true;syncControls();redrawViews())
-        on movXMinSpin changed v do (obj.movXMin=v;obj.dirty=true;syncControls();redrawViews())
-        on movXMaxSpin changed v do (obj.movXMax=v;obj.dirty=true;syncControls();redrawViews())
-        on movYMinSpin changed v do (obj.movYMin=v;obj.dirty=true;syncControls();redrawViews())
-        on movYMaxSpin changed v do (obj.movYMax=v;obj.dirty=true;syncControls();redrawViews())
-        on movZMinSpin changed v do (obj.movZMin=v;obj.dirty=true;syncControls();redrawViews())
-        on movZMaxSpin changed v do (obj.movZMax=v;obj.dirty=true;syncControls();redrawViews())
+        on projectCheck changed v do (obj.projectMove=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotXMinSpin changed v do (obj.rotXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotXMaxSpin changed v do (obj.rotXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotYMinSpin changed v do (obj.rotYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotYMaxSpin changed v do (obj.rotYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotZMinSpin changed v do (obj.rotZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotZMaxSpin changed v do (obj.rotZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclXMinSpin changed v do (obj.sclXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclXMaxSpin changed v do (obj.sclXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclYMinSpin changed v do (obj.sclYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclYMaxSpin changed v do (obj.sclYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclZMinSpin changed v do (obj.sclZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclZMaxSpin changed v do (obj.sclZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movXMinSpin changed v do (obj.movXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movXMaxSpin changed v do (obj.movXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movYMinSpin changed v do (obj.movYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movYMaxSpin changed v do (obj.movYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movZMinSpin changed v do (obj.movZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movZMaxSpin changed v do (obj.movZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on randomUI rolledUp state do parentView.layoutPanels()
         on randomUI open do (wholeMinSpin.value=obj.wholeScaleMin;wholeMaxSpin.value=obj.wholeScaleMax;projectCheck.checked=obj.projectMove;rotXMinSpin.value=obj.rotXMin;rotXMaxSpin.value=obj.rotXMax;rotYMinSpin.value=obj.rotYMin;rotYMaxSpin.value=obj.rotYMax;rotZMinSpin.value=obj.rotZMin;rotZMaxSpin.value=obj.rotZMax;sclXMinSpin.value=obj.sclXMin;sclXMaxSpin.value=obj.sclXMax;sclYMinSpin.value=obj.sclYMin;sclYMaxSpin.value=obj.sclYMax;sclZMinSpin.value=obj.sclZMin;sclZMaxSpin.value=obj.sclZMax;movXMinSpin.value=obj.movXMin;movXMaxSpin.value=obj.movXMax;movYMinSpin.value=obj.movYMin;movYMaxSpin.value=obj.movYMax;movZMinSpin.value=obj.movZMin;movZMaxSpin.value=obj.movZMax;controlsReady=true;alignCheck.checked=obj.alignNormal)
     )
@@ -1148,27 +1179,27 @@ fn CyrusMake_sourceUI_1 target view = (
                 for i=before+1 to obj.sources.count do rows[i]=true
                 plantList.selection=rows;focusedRow=before+1
             )
-            showSelectedColor();redrawViews()
+            showSelectedColor();CyrusViewportRedraw()
         )
         on addPoint pressed do (
-            local i=obj.addPointSource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();redrawViews()
+            local i=obj.addPointSource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();CyrusViewportRedraw()
         )
         on replacePoint picked n do (
             local rows=plantList.selection as array
             if rows.count!=1 then messageBox "Select one Point row to replace." title:"Cyrus Scatter"
             else if not (obj.replacePointSource rows[1] n) do messageBox "Select a Point row and an object that is not already in this source list." title:"Cyrus Scatter"
-            replacePoint.text="Replace Point: pick object";updateList();showSelectedColor();redrawViews()
+            replacePoint.text="Replace Point: pick object";updateList();showSelectedColor();CyrusViewportRedraw()
         )
         on addEmpty pressed do (
-            local i=obj.addEmptySource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();redrawViews()
+            local i=obj.addEmptySource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();CyrusViewportRedraw()
         )
-        on radiusSourceSpin changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v;redrawViews())
-        on followRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:2;redrawViews())
-        on showRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:3;redrawViews())
-        on forwardAxis selected v do if not loadingColor do (obj.assignSourceForward plantList.selection v;redrawViews())
-        on sourceZSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v;redrawViews())
-        on sourceScaleSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v scaling:true;redrawViews())
-        on weightSpin changed v do if not loadingColor do (obj.assignWeight plantList.selection v;updateList();redrawViews())
+        on radiusSourceSpin changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v;CyrusViewportRedraw())
+        on followRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:2;CyrusViewportRedraw())
+        on showRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:3;CyrusViewportRedraw())
+        on forwardAxis selected v do if not loadingColor do (obj.assignSourceForward plantList.selection v;CyrusViewportRedraw())
+        on sourceZSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v;CyrusViewportRedraw())
+        on sourceScaleSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v scaling:true;CyrusViewportRedraw())
+        on weightSpin changed v do if not loadingColor do (obj.assignWeight plantList.selection v;updateList();CyrusViewportRedraw())
         on plantList selected i do (
             if i>0 and plantList.selection[i] do focusedRow=i
         )
@@ -1177,18 +1208,18 @@ fn CyrusMake_sourceUI_1 target view = (
             if i>0 and i<=groupPalette.count do (
                 local c=groupPalette[i]
                 loadingColor=true;groupColor.color=c;loadingColor=false
-                obj.assignGroup plantList.selection c;updateList();redrawViews()
+                obj.assignGroup plantList.selection c;updateList();CyrusViewportRedraw()
             )
         )
         on groupColor changed c do (
             if not loadingColor and plantList.selection.numberSet>0 do (
                 obj.assignGroup plantList.selection c
-                updateList();redrawViews()
+                updateList();CyrusViewportRedraw()
             )
         )
         on applyColor pressed do (
             obj.assignGroup plantList.selection groupColor.color
-            updateList();redrawViews()
+            updateList();CyrusViewportRedraw()
         )
         on selectFromScene pressed do (
             local picked=selectByName title:"Cyrus Scatter - Select From Scene" buttonText:"Add" filter:AminScatterSourceFilter single:false
@@ -1211,7 +1242,7 @@ fn CyrusMake_sourceUI_1 target view = (
                     deleteItem obj.sources rows[k];deleteItem obj.sourceColors rows[k]
                 )
             )
-            plantList.selection=#{};obj.dirty=true;updateList();redrawViews()
+            plantList.selection=#{};obj.dirty=true;updateList();CyrusViewportRedraw()
         )
         on selectPlant pressed do (
             local nodes=for i in plantList.selection where i<=obj.sources.count and isValidNode obj.sources[i] collect obj.sources[i]
@@ -1233,7 +1264,7 @@ fn CyrusMake_distributionUI_1 target view = (
         radiobuttons modeRadio "Method" labels:#("Random","Texture Density") columns:1 pos:[(CyrusUISize 8 1),8] width:(CyrusUISize 146 1)
         radiobuttons populationRadio "Population" labels:#("Count","Plants per m2") columns:1 pos:[(CyrusUISize 8 1),78] width:(CyrusUISize 146 1)
         checkbox showCenterCheck "Show Point" pos:[(CyrusUISize 8 1),148] width:(CyrusUISize 146 1)
-        on showCenterCheck changed v do (obj.showCenters=v;redrawViews())
+        on showCenterCheck changed v do (obj.showCenters=v;CyrusViewportRedraw())
         spinner countSpin "Count: " range:[1,100000,200] type:#integer fieldWidth:(CyrusUISize 64 1) width:(CyrusUISize 146 1) pos:[(CyrusUISize 8 1),174]
         spinner densitySpin "Per m2: " range:[0,1000000,100] fieldWidth:(CyrusUISize 64 1) width:(CyrusUISize 146 1) pos:[(CyrusUISize 8 1),200]
         spinner seedSpin "Seed: " range:[0,2147483647,42] type:#integer fieldWidth:(CyrusUISize 64 1) width:(CyrusUISize 146 1) pos:[(CyrusUISize 8 1),226]
@@ -1244,14 +1275,14 @@ fn CyrusMake_distributionUI_1 target view = (
         label mapHint "White: dense / Black: empty" pos:[(CyrusUISize 8 1),360] width:(CyrusUISize 146 1)
 
         fn syncControls = (populationRadio.state=obj.populationMode;densitySpin.value=obj.plantsPerM2;densityButton.map=obj.densityMap;invertCheck.checked=obj.invertDensity;)
-        on modeRadio changed v do (obj.distributionMode=if v==2 then 3 else 1;obj.dirty=true;syncControls();redrawViews())
-        on countSpin changed v do (obj.amount=v;obj.dirty=true;syncControls();redrawViews())
-        on seedSpin changed v do (obj.randomSeed=v;obj.dirty=true;syncControls();redrawViews())
+        on modeRadio changed v do (obj.distributionMode=if v==2 then 3 else 1;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on countSpin changed v do (obj.amount=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on seedSpin changed v do (obj.randomSeed=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
 
-        on populationRadio changed v do (obj.populationMode=v;obj.dirty=true;syncControls();redrawViews())
-        on densitySpin changed v do (obj.plantsPerM2=v;obj.dirty=true;syncControls();redrawViews())
-        on densityButton picked v do (obj.densityMap=v;obj.dirty=true;syncControls();redrawViews())
-        on invertCheck changed v do (obj.invertDensity=v;obj.dirty=true;syncControls();redrawViews())
+        on populationRadio changed v do (obj.populationMode=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on densitySpin changed v do (obj.plantsPerM2=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on densityButton picked v do (obj.densityMap=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on invertCheck changed v do (obj.invertDensity=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on distributionUI_1 rolledUp state do parentView.layoutPanels()
         on distributionUI_1 open do (showCenterCheck.checked=obj.showCenters;populationRadio.state=obj.populationMode;densitySpin.value=obj.plantsPerM2;densityButton.map=obj.densityMap;invertCheck.checked=obj.invertDensity;controlsReady=true;(countSpin.value=obj.amount;seedSpin.value=obj.randomSeed;modeRadio.state=if obj.distributionMode==3 then 2 else 1))
     )
@@ -1292,14 +1323,14 @@ fn CyrusMake_areaUI_1 target view = (
             aaWidth.enabled=obj.areaUseLine;aaCaps.enabled=obj.areaUseLine;aaRadius.enabled=obj.areaUsePoints
             loadingAnalyzerArea=false
         )
-        on aaPick picked n do (obj.areaAnalyzer=n;syncAnalyzerArea();redrawViews())
-        on aaRemove pressed do (obj.areaUseLine=false;obj.areaUsePoints=false;obj.areaAnalyzer=undefined;syncAnalyzerArea();redrawViews())
-        on aaLine changed v do if not loadingAnalyzerArea do (obj.areaUseLine=v;syncAnalyzerArea();redrawViews())
-        on aaPoints changed v do if not loadingAnalyzerArea do (obj.areaUsePoints=v;syncAnalyzerArea();redrawViews())
-        on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;redrawViews())
-        on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;redrawViews())
-        on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;redrawViews())
-        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
+        on aaPick picked n do (obj.areaAnalyzer=n;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaRemove pressed do (obj.areaUseLine=false;obj.areaUsePoints=false;obj.areaAnalyzer=undefined;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaLine changed v do if not loadingAnalyzerArea do (obj.areaUseLine=v;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaPoints changed v do if not loadingAnalyzerArea do (obj.areaUsePoints=v;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;CyrusViewportRedraw())
+        on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;CyrusViewportRedraw())
+        on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;CyrusViewportRedraw())
+        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;CyrusViewportRedraw())
 
         local loadingFall=false
         dropdownlist fallTarget "Edge falloff target" items:#("Analyzer Boundary","Selected Area line") selection:1 pos:[(CyrusUISize 8 1),704] width:(CyrusUISize 146 1)
@@ -1336,12 +1367,12 @@ fn CyrusMake_areaUI_1 target view = (
         fn setFallValue index value = (
             if not loadingFall do (
                 local n=fallNode()
-                if fallTarget.selection==1 or isValidNode n do (local cfg=obj.getFallConfig n;cfg[index]=value;obj.setFallConfig n cfg;redrawViews())
+                if fallTarget.selection==1 or isValidNode n do (local cfg=obj.getFallConfig n;cfg[index]=value;obj.setFallConfig n cfg;CyrusViewportRedraw())
             )
         )
         on fallTarget selected v do syncFalloff()
-        on fallPick picked n do (if CyrusAnalyzerFilter n do obj.fallAnalyzer=n;syncFalloff();redrawViews())
-        on fallRemove pressed do (obj.fallAnalyzer=undefined;obj.fallDelete=false;obj.fallScale=false;obj.fallDensity=false;syncFalloff();redrawViews())
+        on fallPick picked n do (if CyrusAnalyzerFilter n do obj.fallAnalyzer=n;syncFalloff();CyrusViewportRedraw())
+        on fallRemove pressed do (obj.fallAnalyzer=undefined;obj.fallDelete=false;obj.fallScale=false;obj.fallDensity=false;syncFalloff();CyrusViewportRedraw())
         on fallDeleteCheck changed v do setFallValue 1 v
         on fallDeleteSpin changed v do setFallValue 2 v
         on fallScaleCheck changed v do setFallValue 3 v
@@ -1366,11 +1397,11 @@ fn CyrusMake_areaUI_1 target view = (
             )
         )
 
-        on pickArea picked n do (addArea n;updateAreas();redrawViews())
+        on pickArea picked n do (addArea n;updateAreas();CyrusViewportRedraw())
         on addAreaScene pressed do (
             local nodes=selectByName title:"Cyrus Scatter - Closed Areas" buttonText:"Add" filter:AminScatterAreaFilter single:false
             if nodes!=undefined do for n in nodes do addArea n
-            updateAreas();redrawViews()
+            updateAreas();CyrusViewportRedraw()
         )
         on areaList selectionEnd do (
             if areaList.selection.numberSet==1 do fallTarget.selection=2
@@ -1379,7 +1410,7 @@ fn CyrusMake_areaUI_1 target view = (
         )
         on areaMode changed mode do (
             undo "Cyrus Scatter area mode" on (for i in areaList.selection do obj.areaModes[i]=mode)
-            obj.dirty=true;updateAreas();redrawViews()
+            obj.dirty=true;updateAreas();CyrusViewportRedraw()
         )
         on removeArea pressed do (
             if CyrusFalloffGraph!=undefined do try(destroyDialog CyrusFalloffGraph)catch()
@@ -1388,9 +1419,9 @@ fn CyrusMake_areaUI_1 target view = (
                 obj.ensureAreaFalloffs()
                 for i=rows.count to 1 by -1 do (deleteItem obj.areaNodes rows[i];deleteItem obj.areaModes rows[i];deleteItem obj.areaFallConfigs rows[i];deleteItem obj.areaFallScaleGraphs rows[i];deleteItem obj.areaFallDensityGraphs rows[i])
             )
-            areaList.selection=#{};obj.dirty=true;updateAreas();redrawViews()
+            areaList.selection=#{};obj.dirty=true;updateAreas();CyrusViewportRedraw()
         )
-        on refreshAreas pressed do (obj.dirty=true;obj.refreshPreview();redrawViews())
+        on refreshAreas pressed do (obj.dirty=true;obj.refreshPreview();CyrusViewportRedraw())
 
         on areaUI_1 rolledUp state do parentView.layoutPanels()
         on areaUI_1 open do (syncAnalyzerArea();syncFalloff();controlsReady=true;updateAreas())
@@ -1455,16 +1486,16 @@ fn CyrusMake_diversityUI_1 target view = (
         fn syncControls = (diversityRadio.state=obj.diversityMode;sizeSpin.value=obj.diversitySize;divSeedSpin.value=obj.diversitySeed;roughSpin.value=obj.roughness;blurSpin.value=obj.blurryEdge;noiseSpin.value=obj.diversityNoise;)
         on faceOutCheck changed v do (
             if analyzerChannel.selection==5 then obj.edgeFaceOut=v else if analyzerChannel.selection==4 then obj.streetFaceOut=v else obj.borderFaceOut=v
-            cornerRadiusSpin.enabled=v;obj.dirty=true;redrawViews()
+            cornerRadiusSpin.enabled=v;obj.dirty=true;CyrusViewportRedraw()
         )
         on cornerRadiusSpin changed v do (
             if analyzerChannel.selection==5 then obj.edgeCornerRadius=v else if analyzerChannel.selection==4 then obj.streetCornerRadius=v else obj.borderCornerRadius=v
-            obj.dirty=true;redrawViews()
+            obj.dirty=true;CyrusViewportRedraw()
         )
-        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;redrawViews())
-        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;redrawViews())
-        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;redrawViews())
-        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;syncControls();redrawViews())
+        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;CyrusViewportRedraw())
+        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;CyrusViewportRedraw())
+        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;CyrusViewportRedraw())
+        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         fn selectedStroke = (if strokesList.selection>0 and strokesList.selection<=strokeRows.count then strokeRows[strokesList.selection] else 0)
         fn showStroke = (
             loadingStroke=true
@@ -1562,7 +1593,7 @@ fn CyrusMake_diversityUI_1 target view = (
         on pathsDrop selected i do showPath()
         on analyzerChannel selected i do updatePattern()
         on pickAnalyzer picked n do (
-            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();redrawViews())
+            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();CyrusViewportRedraw())
         )
         on strokesList selected i do showStroke()
         on pickPath picked n do (
@@ -1574,39 +1605,39 @@ fn CyrusMake_diversityUI_1 target view = (
             for i=obj.patternLines.count to 1 by -1 where obj.patternLines[i]==path do obj.removeStroke i
             local k=findItem obj.patternPaths path;if k>0 do deleteItem obj.patternPaths k
             if obj.diversityMode==4 do obj.analyzerNode=undefined
-            updatePattern();obj.dirty=true;syncControls();redrawViews()
+            updatePattern();obj.dirty=true;syncControls();CyrusViewportRedraw()
         )
         on addOutside pressed do (
             if obj.diversityMode==4 and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5) do return false
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local types=#(1,3,4)
             local side=if obj.diversityMode==4 then types[analyzerChannel.selection] else 1
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
         on addInside pressed do (
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local side=if obj.diversityMode==4 and analyzerChannel.selection==5 then 7 else if obj.diversityMode==4 and analyzerChannel.selection==4 then 6 else if obj.diversityMode==4 and analyzerChannel.selection==3 then 5 else 2
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
-        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();redrawViews())
-        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;redrawViews())
-        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;redrawViews())
-        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;redrawViews())
-        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;redrawViews())
-        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;redrawViews())
-        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;redrawViews())
-        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;redrawViews())
-        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;redrawViews())
-        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;redrawViews())
-        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();redrawViews())
-        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;syncControls();redrawViews())
+        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();CyrusViewportRedraw())
+        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;CyrusViewportRedraw())
+        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;CyrusViewportRedraw())
+        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;CyrusViewportRedraw())
+        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;CyrusViewportRedraw())
+        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;CyrusViewportRedraw())
+        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;CyrusViewportRedraw())
+        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;CyrusViewportRedraw())
+        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;CyrusViewportRedraw())
+        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;CyrusViewportRedraw())
+        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();CyrusViewportRedraw())
+        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
         on strokeChoices selectionEnd do if not loadingStroke do (
             local row=selectedStroke()
             if row>0 do obj.setStrokeSelection row obj.strokeModes[row] (for i in strokeChoices.selection collect choiceValues[i])
-            redrawViews()
+            CyrusViewportRedraw()
         )
-        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;syncControls();redrawViews())
-        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;syncControls();redrawViews())
+        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
         on refreshGroups pressed do updatePattern()
                 fn updateControls = (
             for c in #(sizeSpin,divSeedSpin,roughSpin,blurSpin,noiseSpin,groupHint,fixedHint) do c.visible=obj.diversityMode==2
@@ -1614,14 +1645,14 @@ fn CyrusMake_diversityUI_1 target view = (
             if strokeExpandedHeight>0 do diversityUI_1.height=if obj.diversityMode>=3 then strokeExpandedHeight else (if obj.diversityMode==2 then 310 else 124)*parentView.dpiScale
             parentView.layoutPanels()
         )
-        on diversityRadio changed v do (obj.diversityMode=v;updateControls();updatePattern();obj.dirty=true;syncControls();redrawViews())
+        on diversityRadio changed v do (obj.diversityMode=v;updateControls();updatePattern();obj.dirty=true;syncControls();CyrusViewportRedraw())
 
 
-        on sizeSpin changed v do (obj.diversitySize=v;obj.dirty=true;syncControls();redrawViews())
-        on divSeedSpin changed v do (obj.diversitySeed=v;obj.dirty=true;syncControls();redrawViews())
-        on roughSpin changed v do (obj.roughness=v;obj.dirty=true;syncControls();redrawViews())
-        on blurSpin changed v do (obj.blurryEdge=v;obj.dirty=true;syncControls();redrawViews())
-        on noiseSpin changed v do (obj.diversityNoise=v;obj.dirty=true;syncControls();redrawViews())
+        on sizeSpin changed v do (obj.diversitySize=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on divSeedSpin changed v do (obj.diversitySeed=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on roughSpin changed v do (obj.roughness=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on blurSpin changed v do (obj.blurryEdge=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on noiseSpin changed v do (obj.diversityNoise=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on diversityUI_1 rolledUp state do parentView.layoutPanels()
         on diversityUI_1 open do (diversityRadio.state=obj.diversityMode;sizeSpin.value=obj.diversitySize;divSeedSpin.value=obj.diversitySeed;roughSpin.value=obj.roughness;blurSpin.value=obj.blurryEdge;noiseSpin.value=obj.diversityNoise;controlsReady=true;strokeExpandedHeight=diversityUI_1.height;updateControls();updatePattern())
     )
@@ -1670,16 +1701,16 @@ fn CyrusMake_lineUI_1 target view = (
         checkbox straightStreet "Straight ends (Street Side)" pos:[(CyrusUISize 8 1),620] width:(CyrusUISize 146 1)
         on faceOutCheck changed v do (
             if analyzerChannel.selection==5 then obj.edgeFaceOut=v else if analyzerChannel.selection==4 then obj.streetFaceOut=v else obj.borderFaceOut=v
-            cornerRadiusSpin.enabled=v;obj.dirty=true;redrawViews()
+            cornerRadiusSpin.enabled=v;obj.dirty=true;CyrusViewportRedraw()
         )
         on cornerRadiusSpin changed v do (
             if analyzerChannel.selection==5 then obj.edgeCornerRadius=v else if analyzerChannel.selection==4 then obj.streetCornerRadius=v else obj.borderCornerRadius=v
-            obj.dirty=true;redrawViews()
+            obj.dirty=true;CyrusViewportRedraw()
         )
-        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;redrawViews())
-        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;redrawViews())
-        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;redrawViews())
-        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;redrawViews())
+        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;CyrusViewportRedraw())
+        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;CyrusViewportRedraw())
+        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;CyrusViewportRedraw())
+        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;CyrusViewportRedraw())
         fn selectedStroke = (if strokesList.selection>0 and strokesList.selection<=strokeRows.count then strokeRows[strokesList.selection] else 0)
         fn showStroke = (
             loadingStroke=true
@@ -1777,7 +1808,7 @@ fn CyrusMake_lineUI_1 target view = (
         on pathsDrop selected i do showPath()
         on analyzerChannel selected i do updatePattern()
         on pickAnalyzer picked n do (
-            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();redrawViews())
+            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();CyrusViewportRedraw())
         )
         on strokesList selected i do showStroke()
         on pickPath picked n do (
@@ -1789,39 +1820,39 @@ fn CyrusMake_lineUI_1 target view = (
             for i=obj.patternLines.count to 1 by -1 where obj.patternLines[i]==path do obj.removeStroke i
             local k=findItem obj.patternPaths path;if k>0 do deleteItem obj.patternPaths k
             if obj.diversityMode==4 do obj.analyzerNode=undefined
-            updatePattern();obj.dirty=true;redrawViews()
+            updatePattern();obj.dirty=true;CyrusViewportRedraw()
         )
         on addOutside pressed do (
             if obj.diversityMode==4 and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5) do return false
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local types=#(1,3,4)
             local side=if obj.diversityMode==4 then types[analyzerChannel.selection] else 1
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
         on addInside pressed do (
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local side=if obj.diversityMode==4 and analyzerChannel.selection==5 then 7 else if obj.diversityMode==4 and analyzerChannel.selection==4 then 6 else if obj.diversityMode==4 and analyzerChannel.selection==3 then 5 else 2
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
-        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();redrawViews())
-        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;redrawViews())
-        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;redrawViews())
-        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;redrawViews())
-        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;redrawViews())
-        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;redrawViews())
-        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;redrawViews())
-        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;redrawViews())
-        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;redrawViews())
-        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;redrawViews())
-        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();redrawViews())
-        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;redrawViews())
+        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();CyrusViewportRedraw())
+        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;CyrusViewportRedraw())
+        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;CyrusViewportRedraw())
+        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;CyrusViewportRedraw())
+        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;CyrusViewportRedraw())
+        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;CyrusViewportRedraw())
+        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;CyrusViewportRedraw())
+        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;CyrusViewportRedraw())
+        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;CyrusViewportRedraw())
+        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;CyrusViewportRedraw())
+        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();CyrusViewportRedraw())
+        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;CyrusViewportRedraw())
         on strokeChoices selectionEnd do if not loadingStroke do (
             local row=selectedStroke()
             if row>0 do obj.setStrokeSelection row obj.strokeModes[row] (for i in strokeChoices.selection collect choiceValues[i])
-            redrawViews()
+            CyrusViewportRedraw()
         )
-        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;redrawViews())
-        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;redrawViews())
+        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;CyrusViewportRedraw())
+        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;CyrusViewportRedraw())
         on refreshGroups pressed do updatePattern()
 
         on lineUI_1 rolledUp state do parentView.layoutPanels()
@@ -1865,8 +1896,8 @@ fn CyrusMake_randomUI_1 target view = (
         label wholeMaxTitle "Max" pos:[(CyrusUISize 94 1),274] width:(CyrusUISize 58 1)
         spinner wholeMinSpin "" range:[0.001,1000,1] scale:0.01 pos:[(CyrusUISize 24 1),296] fieldWidth:(CyrusUISize 46 1) width:(CyrusUISize 58 1)
         spinner wholeMaxSpin "" range:[0.001,1000,1] scale:0.01 pos:[(CyrusUISize 94 1),296] fieldWidth:(CyrusUISize 46 1) width:(CyrusUISize 58 1)
-        on wholeMinSpin changed v do (obj.wholeScaleMin=v;if v>obj.wholeScaleMax do (obj.wholeScaleMax=v;wholeMaxSpin.value=v);redrawViews())
-        on wholeMaxSpin changed v do (obj.wholeScaleMax=v;if v<obj.wholeScaleMin do (obj.wholeScaleMin=v;wholeMinSpin.value=v);redrawViews())
+        on wholeMinSpin changed v do (obj.wholeScaleMin=v;if v>obj.wholeScaleMax do (obj.wholeScaleMax=v;wholeMaxSpin.value=v);CyrusViewportRedraw())
+        on wholeMaxSpin changed v do (obj.wholeScaleMax=v;if v<obj.wholeScaleMin do (obj.wholeScaleMin=v;wholeMinSpin.value=v);CyrusViewportRedraw())
         label movTitle "Movement (world units)" pos:[(CyrusUISize 8 1),332] width:(CyrusUISize 146 1)
         label movMinTitle "Min" pos:[(CyrusUISize 24 1),354] width:(CyrusUISize 58 1)
         label movMaxTitle "Max" pos:[(CyrusUISize 94 1),354] width:(CyrusUISize 58 1)
@@ -1883,27 +1914,27 @@ fn CyrusMake_randomUI_1 target view = (
         checkbox alignCheck "Align to normal" pos:[(CyrusUISize 8 1),480] width:(CyrusUISize 146 1)
 
         fn syncControls = (projectCheck.checked=obj.projectMove;rotXMinSpin.value=obj.rotXMin;rotXMaxSpin.value=obj.rotXMax;rotYMinSpin.value=obj.rotYMin;rotYMaxSpin.value=obj.rotYMax;rotZMinSpin.value=obj.rotZMin;rotZMaxSpin.value=obj.rotZMax;sclXMinSpin.value=obj.sclXMin;sclXMaxSpin.value=obj.sclXMax;sclYMinSpin.value=obj.sclYMin;sclYMaxSpin.value=obj.sclYMax;sclZMinSpin.value=obj.sclZMin;sclZMaxSpin.value=obj.sclZMax;movXMinSpin.value=obj.movXMin;movXMaxSpin.value=obj.movXMax;movYMinSpin.value=obj.movYMin;movYMaxSpin.value=obj.movYMax;movZMinSpin.value=obj.movZMin;movZMaxSpin.value=obj.movZMax;)
-        on alignCheck changed v do (obj.alignNormal=v;obj.dirty=true;syncControls();redrawViews())
+        on alignCheck changed v do (obj.alignNormal=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
 
-        on projectCheck changed v do (obj.projectMove=v;obj.dirty=true;syncControls();redrawViews())
-        on rotXMinSpin changed v do (obj.rotXMin=v;obj.dirty=true;syncControls();redrawViews())
-        on rotXMaxSpin changed v do (obj.rotXMax=v;obj.dirty=true;syncControls();redrawViews())
-        on rotYMinSpin changed v do (obj.rotYMin=v;obj.dirty=true;syncControls();redrawViews())
-        on rotYMaxSpin changed v do (obj.rotYMax=v;obj.dirty=true;syncControls();redrawViews())
-        on rotZMinSpin changed v do (obj.rotZMin=v;obj.dirty=true;syncControls();redrawViews())
-        on rotZMaxSpin changed v do (obj.rotZMax=v;obj.dirty=true;syncControls();redrawViews())
-        on sclXMinSpin changed v do (obj.sclXMin=v;obj.dirty=true;syncControls();redrawViews())
-        on sclXMaxSpin changed v do (obj.sclXMax=v;obj.dirty=true;syncControls();redrawViews())
-        on sclYMinSpin changed v do (obj.sclYMin=v;obj.dirty=true;syncControls();redrawViews())
-        on sclYMaxSpin changed v do (obj.sclYMax=v;obj.dirty=true;syncControls();redrawViews())
-        on sclZMinSpin changed v do (obj.sclZMin=v;obj.dirty=true;syncControls();redrawViews())
-        on sclZMaxSpin changed v do (obj.sclZMax=v;obj.dirty=true;syncControls();redrawViews())
-        on movXMinSpin changed v do (obj.movXMin=v;obj.dirty=true;syncControls();redrawViews())
-        on movXMaxSpin changed v do (obj.movXMax=v;obj.dirty=true;syncControls();redrawViews())
-        on movYMinSpin changed v do (obj.movYMin=v;obj.dirty=true;syncControls();redrawViews())
-        on movYMaxSpin changed v do (obj.movYMax=v;obj.dirty=true;syncControls();redrawViews())
-        on movZMinSpin changed v do (obj.movZMin=v;obj.dirty=true;syncControls();redrawViews())
-        on movZMaxSpin changed v do (obj.movZMax=v;obj.dirty=true;syncControls();redrawViews())
+        on projectCheck changed v do (obj.projectMove=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotXMinSpin changed v do (obj.rotXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotXMaxSpin changed v do (obj.rotXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotYMinSpin changed v do (obj.rotYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotYMaxSpin changed v do (obj.rotYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotZMinSpin changed v do (obj.rotZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotZMaxSpin changed v do (obj.rotZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclXMinSpin changed v do (obj.sclXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclXMaxSpin changed v do (obj.sclXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclYMinSpin changed v do (obj.sclYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclYMaxSpin changed v do (obj.sclYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclZMinSpin changed v do (obj.sclZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclZMaxSpin changed v do (obj.sclZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movXMinSpin changed v do (obj.movXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movXMaxSpin changed v do (obj.movXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movYMinSpin changed v do (obj.movYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movYMaxSpin changed v do (obj.movYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movZMinSpin changed v do (obj.movZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movZMaxSpin changed v do (obj.movZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on randomUI_1 rolledUp state do parentView.layoutPanels()
         on randomUI_1 open do (wholeMinSpin.value=obj.wholeScaleMin;wholeMaxSpin.value=obj.wholeScaleMax;projectCheck.checked=obj.projectMove;rotXMinSpin.value=obj.rotXMin;rotXMaxSpin.value=obj.rotXMax;rotYMinSpin.value=obj.rotYMin;rotYMaxSpin.value=obj.rotYMax;rotZMinSpin.value=obj.rotZMin;rotZMaxSpin.value=obj.rotZMax;sclXMinSpin.value=obj.sclXMin;sclXMaxSpin.value=obj.sclXMax;sclYMinSpin.value=obj.sclYMin;sclYMaxSpin.value=obj.sclYMax;sclZMinSpin.value=obj.sclZMin;sclZMaxSpin.value=obj.sclZMax;movXMinSpin.value=obj.movXMin;movXMaxSpin.value=obj.movXMax;movYMinSpin.value=obj.movYMin;movYMaxSpin.value=obj.movYMax;movZMinSpin.value=obj.movZMin;movZMaxSpin.value=obj.movZMax;controlsReady=true;alignCheck.checked=obj.alignNormal)
     )
@@ -1989,27 +2020,27 @@ fn CyrusMake_sourceUI_2 target view = (
                 for i=before+1 to obj.sources.count do rows[i]=true
                 plantList.selection=rows;focusedRow=before+1
             )
-            showSelectedColor();redrawViews()
+            showSelectedColor();CyrusViewportRedraw()
         )
         on addPoint pressed do (
-            local i=obj.addPointSource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();redrawViews()
+            local i=obj.addPointSource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();CyrusViewportRedraw()
         )
         on replacePoint picked n do (
             local rows=plantList.selection as array
             if rows.count!=1 then messageBox "Select one Point row to replace." title:"Cyrus Scatter"
             else if not (obj.replacePointSource rows[1] n) do messageBox "Select a Point row and an object that is not already in this source list." title:"Cyrus Scatter"
-            replacePoint.text="Replace Point: pick object";updateList();showSelectedColor();redrawViews()
+            replacePoint.text="Replace Point: pick object";updateList();showSelectedColor();CyrusViewportRedraw()
         )
         on addEmpty pressed do (
-            local i=obj.addEmptySource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();redrawViews()
+            local i=obj.addEmptySource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();CyrusViewportRedraw()
         )
-        on radiusSourceSpin changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v;redrawViews())
-        on followRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:2;redrawViews())
-        on showRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:3;redrawViews())
-        on forwardAxis selected v do if not loadingColor do (obj.assignSourceForward plantList.selection v;redrawViews())
-        on sourceZSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v;redrawViews())
-        on sourceScaleSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v scaling:true;redrawViews())
-        on weightSpin changed v do if not loadingColor do (obj.assignWeight plantList.selection v;updateList();redrawViews())
+        on radiusSourceSpin changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v;CyrusViewportRedraw())
+        on followRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:2;CyrusViewportRedraw())
+        on showRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:3;CyrusViewportRedraw())
+        on forwardAxis selected v do if not loadingColor do (obj.assignSourceForward plantList.selection v;CyrusViewportRedraw())
+        on sourceZSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v;CyrusViewportRedraw())
+        on sourceScaleSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v scaling:true;CyrusViewportRedraw())
+        on weightSpin changed v do if not loadingColor do (obj.assignWeight plantList.selection v;updateList();CyrusViewportRedraw())
         on plantList selected i do (
             if i>0 and plantList.selection[i] do focusedRow=i
         )
@@ -2018,18 +2049,18 @@ fn CyrusMake_sourceUI_2 target view = (
             if i>0 and i<=groupPalette.count do (
                 local c=groupPalette[i]
                 loadingColor=true;groupColor.color=c;loadingColor=false
-                obj.assignGroup plantList.selection c;updateList();redrawViews()
+                obj.assignGroup plantList.selection c;updateList();CyrusViewportRedraw()
             )
         )
         on groupColor changed c do (
             if not loadingColor and plantList.selection.numberSet>0 do (
                 obj.assignGroup plantList.selection c
-                updateList();redrawViews()
+                updateList();CyrusViewportRedraw()
             )
         )
         on applyColor pressed do (
             obj.assignGroup plantList.selection groupColor.color
-            updateList();redrawViews()
+            updateList();CyrusViewportRedraw()
         )
         on selectFromScene pressed do (
             local picked=selectByName title:"Cyrus Scatter - Select From Scene" buttonText:"Add" filter:AminScatterSourceFilter single:false
@@ -2052,7 +2083,7 @@ fn CyrusMake_sourceUI_2 target view = (
                     deleteItem obj.sources rows[k];deleteItem obj.sourceColors rows[k]
                 )
             )
-            plantList.selection=#{};obj.dirty=true;updateList();redrawViews()
+            plantList.selection=#{};obj.dirty=true;updateList();CyrusViewportRedraw()
         )
         on selectPlant pressed do (
             local nodes=for i in plantList.selection where i<=obj.sources.count and isValidNode obj.sources[i] collect obj.sources[i]
@@ -2074,7 +2105,7 @@ fn CyrusMake_distributionUI_2 target view = (
         radiobuttons modeRadio "Method" labels:#("Random","Texture Density") columns:1 pos:[(CyrusUISize 8 1),8] width:(CyrusUISize 146 1)
         radiobuttons populationRadio "Population" labels:#("Count","Plants per m2") columns:1 pos:[(CyrusUISize 8 1),78] width:(CyrusUISize 146 1)
         checkbox showCenterCheck "Show Point" pos:[(CyrusUISize 8 1),148] width:(CyrusUISize 146 1)
-        on showCenterCheck changed v do (obj.showCenters=v;redrawViews())
+        on showCenterCheck changed v do (obj.showCenters=v;CyrusViewportRedraw())
         spinner countSpin "Count: " range:[1,100000,200] type:#integer fieldWidth:(CyrusUISize 64 1) width:(CyrusUISize 146 1) pos:[(CyrusUISize 8 1),174]
         spinner densitySpin "Per m2: " range:[0,1000000,100] fieldWidth:(CyrusUISize 64 1) width:(CyrusUISize 146 1) pos:[(CyrusUISize 8 1),200]
         spinner seedSpin "Seed: " range:[0,2147483647,42] type:#integer fieldWidth:(CyrusUISize 64 1) width:(CyrusUISize 146 1) pos:[(CyrusUISize 8 1),226]
@@ -2085,14 +2116,14 @@ fn CyrusMake_distributionUI_2 target view = (
         label mapHint "White: dense / Black: empty" pos:[(CyrusUISize 8 1),360] width:(CyrusUISize 146 1)
 
         fn syncControls = (populationRadio.state=obj.populationMode;densitySpin.value=obj.plantsPerM2;densityButton.map=obj.densityMap;invertCheck.checked=obj.invertDensity;)
-        on modeRadio changed v do (obj.distributionMode=if v==2 then 3 else 1;obj.dirty=true;syncControls();redrawViews())
-        on countSpin changed v do (obj.amount=v;obj.dirty=true;syncControls();redrawViews())
-        on seedSpin changed v do (obj.randomSeed=v;obj.dirty=true;syncControls();redrawViews())
+        on modeRadio changed v do (obj.distributionMode=if v==2 then 3 else 1;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on countSpin changed v do (obj.amount=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on seedSpin changed v do (obj.randomSeed=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
 
-        on populationRadio changed v do (obj.populationMode=v;obj.dirty=true;syncControls();redrawViews())
-        on densitySpin changed v do (obj.plantsPerM2=v;obj.dirty=true;syncControls();redrawViews())
-        on densityButton picked v do (obj.densityMap=v;obj.dirty=true;syncControls();redrawViews())
-        on invertCheck changed v do (obj.invertDensity=v;obj.dirty=true;syncControls();redrawViews())
+        on populationRadio changed v do (obj.populationMode=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on densitySpin changed v do (obj.plantsPerM2=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on densityButton picked v do (obj.densityMap=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on invertCheck changed v do (obj.invertDensity=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on distributionUI_2 rolledUp state do parentView.layoutPanels()
         on distributionUI_2 open do (showCenterCheck.checked=obj.showCenters;populationRadio.state=obj.populationMode;densitySpin.value=obj.plantsPerM2;densityButton.map=obj.densityMap;invertCheck.checked=obj.invertDensity;controlsReady=true;(countSpin.value=obj.amount;seedSpin.value=obj.randomSeed;modeRadio.state=if obj.distributionMode==3 then 2 else 1))
     )
@@ -2133,14 +2164,14 @@ fn CyrusMake_areaUI_2 target view = (
             aaWidth.enabled=obj.areaUseLine;aaCaps.enabled=obj.areaUseLine;aaRadius.enabled=obj.areaUsePoints
             loadingAnalyzerArea=false
         )
-        on aaPick picked n do (obj.areaAnalyzer=n;syncAnalyzerArea();redrawViews())
-        on aaRemove pressed do (obj.areaUseLine=false;obj.areaUsePoints=false;obj.areaAnalyzer=undefined;syncAnalyzerArea();redrawViews())
-        on aaLine changed v do if not loadingAnalyzerArea do (obj.areaUseLine=v;syncAnalyzerArea();redrawViews())
-        on aaPoints changed v do if not loadingAnalyzerArea do (obj.areaUsePoints=v;syncAnalyzerArea();redrawViews())
-        on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;redrawViews())
-        on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;redrawViews())
-        on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;redrawViews())
-        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
+        on aaPick picked n do (obj.areaAnalyzer=n;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaRemove pressed do (obj.areaUseLine=false;obj.areaUsePoints=false;obj.areaAnalyzer=undefined;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaLine changed v do if not loadingAnalyzerArea do (obj.areaUseLine=v;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaPoints changed v do if not loadingAnalyzerArea do (obj.areaUsePoints=v;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;CyrusViewportRedraw())
+        on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;CyrusViewportRedraw())
+        on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;CyrusViewportRedraw())
+        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;CyrusViewportRedraw())
 
         local loadingFall=false
         dropdownlist fallTarget "Edge falloff target" items:#("Analyzer Boundary","Selected Area line") selection:1 pos:[(CyrusUISize 8 1),704] width:(CyrusUISize 146 1)
@@ -2177,12 +2208,12 @@ fn CyrusMake_areaUI_2 target view = (
         fn setFallValue index value = (
             if not loadingFall do (
                 local n=fallNode()
-                if fallTarget.selection==1 or isValidNode n do (local cfg=obj.getFallConfig n;cfg[index]=value;obj.setFallConfig n cfg;redrawViews())
+                if fallTarget.selection==1 or isValidNode n do (local cfg=obj.getFallConfig n;cfg[index]=value;obj.setFallConfig n cfg;CyrusViewportRedraw())
             )
         )
         on fallTarget selected v do syncFalloff()
-        on fallPick picked n do (if CyrusAnalyzerFilter n do obj.fallAnalyzer=n;syncFalloff();redrawViews())
-        on fallRemove pressed do (obj.fallAnalyzer=undefined;obj.fallDelete=false;obj.fallScale=false;obj.fallDensity=false;syncFalloff();redrawViews())
+        on fallPick picked n do (if CyrusAnalyzerFilter n do obj.fallAnalyzer=n;syncFalloff();CyrusViewportRedraw())
+        on fallRemove pressed do (obj.fallAnalyzer=undefined;obj.fallDelete=false;obj.fallScale=false;obj.fallDensity=false;syncFalloff();CyrusViewportRedraw())
         on fallDeleteCheck changed v do setFallValue 1 v
         on fallDeleteSpin changed v do setFallValue 2 v
         on fallScaleCheck changed v do setFallValue 3 v
@@ -2207,11 +2238,11 @@ fn CyrusMake_areaUI_2 target view = (
             )
         )
 
-        on pickArea picked n do (addArea n;updateAreas();redrawViews())
+        on pickArea picked n do (addArea n;updateAreas();CyrusViewportRedraw())
         on addAreaScene pressed do (
             local nodes=selectByName title:"Cyrus Scatter - Closed Areas" buttonText:"Add" filter:AminScatterAreaFilter single:false
             if nodes!=undefined do for n in nodes do addArea n
-            updateAreas();redrawViews()
+            updateAreas();CyrusViewportRedraw()
         )
         on areaList selectionEnd do (
             if areaList.selection.numberSet==1 do fallTarget.selection=2
@@ -2220,7 +2251,7 @@ fn CyrusMake_areaUI_2 target view = (
         )
         on areaMode changed mode do (
             undo "Cyrus Scatter area mode" on (for i in areaList.selection do obj.areaModes[i]=mode)
-            obj.dirty=true;updateAreas();redrawViews()
+            obj.dirty=true;updateAreas();CyrusViewportRedraw()
         )
         on removeArea pressed do (
             if CyrusFalloffGraph!=undefined do try(destroyDialog CyrusFalloffGraph)catch()
@@ -2229,9 +2260,9 @@ fn CyrusMake_areaUI_2 target view = (
                 obj.ensureAreaFalloffs()
                 for i=rows.count to 1 by -1 do (deleteItem obj.areaNodes rows[i];deleteItem obj.areaModes rows[i];deleteItem obj.areaFallConfigs rows[i];deleteItem obj.areaFallScaleGraphs rows[i];deleteItem obj.areaFallDensityGraphs rows[i])
             )
-            areaList.selection=#{};obj.dirty=true;updateAreas();redrawViews()
+            areaList.selection=#{};obj.dirty=true;updateAreas();CyrusViewportRedraw()
         )
-        on refreshAreas pressed do (obj.dirty=true;obj.refreshPreview();redrawViews())
+        on refreshAreas pressed do (obj.dirty=true;obj.refreshPreview();CyrusViewportRedraw())
 
         on areaUI_2 rolledUp state do parentView.layoutPanels()
         on areaUI_2 open do (syncAnalyzerArea();syncFalloff();controlsReady=true;updateAreas())
@@ -2296,16 +2327,16 @@ fn CyrusMake_diversityUI_2 target view = (
         fn syncControls = (diversityRadio.state=obj.diversityMode;sizeSpin.value=obj.diversitySize;divSeedSpin.value=obj.diversitySeed;roughSpin.value=obj.roughness;blurSpin.value=obj.blurryEdge;noiseSpin.value=obj.diversityNoise;)
         on faceOutCheck changed v do (
             if analyzerChannel.selection==5 then obj.edgeFaceOut=v else if analyzerChannel.selection==4 then obj.streetFaceOut=v else obj.borderFaceOut=v
-            cornerRadiusSpin.enabled=v;obj.dirty=true;redrawViews()
+            cornerRadiusSpin.enabled=v;obj.dirty=true;CyrusViewportRedraw()
         )
         on cornerRadiusSpin changed v do (
             if analyzerChannel.selection==5 then obj.edgeCornerRadius=v else if analyzerChannel.selection==4 then obj.streetCornerRadius=v else obj.borderCornerRadius=v
-            obj.dirty=true;redrawViews()
+            obj.dirty=true;CyrusViewportRedraw()
         )
-        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;redrawViews())
-        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;redrawViews())
-        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;redrawViews())
-        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;syncControls();redrawViews())
+        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;CyrusViewportRedraw())
+        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;CyrusViewportRedraw())
+        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;CyrusViewportRedraw())
+        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         fn selectedStroke = (if strokesList.selection>0 and strokesList.selection<=strokeRows.count then strokeRows[strokesList.selection] else 0)
         fn showStroke = (
             loadingStroke=true
@@ -2403,7 +2434,7 @@ fn CyrusMake_diversityUI_2 target view = (
         on pathsDrop selected i do showPath()
         on analyzerChannel selected i do updatePattern()
         on pickAnalyzer picked n do (
-            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();redrawViews())
+            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();CyrusViewportRedraw())
         )
         on strokesList selected i do showStroke()
         on pickPath picked n do (
@@ -2415,39 +2446,39 @@ fn CyrusMake_diversityUI_2 target view = (
             for i=obj.patternLines.count to 1 by -1 where obj.patternLines[i]==path do obj.removeStroke i
             local k=findItem obj.patternPaths path;if k>0 do deleteItem obj.patternPaths k
             if obj.diversityMode==4 do obj.analyzerNode=undefined
-            updatePattern();obj.dirty=true;syncControls();redrawViews()
+            updatePattern();obj.dirty=true;syncControls();CyrusViewportRedraw()
         )
         on addOutside pressed do (
             if obj.diversityMode==4 and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5) do return false
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local types=#(1,3,4)
             local side=if obj.diversityMode==4 then types[analyzerChannel.selection] else 1
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
         on addInside pressed do (
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local side=if obj.diversityMode==4 and analyzerChannel.selection==5 then 7 else if obj.diversityMode==4 and analyzerChannel.selection==4 then 6 else if obj.diversityMode==4 and analyzerChannel.selection==3 then 5 else 2
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
-        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();redrawViews())
-        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;redrawViews())
-        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;redrawViews())
-        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;redrawViews())
-        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;redrawViews())
-        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;redrawViews())
-        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;redrawViews())
-        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;redrawViews())
-        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;redrawViews())
-        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;redrawViews())
-        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();redrawViews())
-        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;syncControls();redrawViews())
+        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();CyrusViewportRedraw())
+        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;CyrusViewportRedraw())
+        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;CyrusViewportRedraw())
+        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;CyrusViewportRedraw())
+        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;CyrusViewportRedraw())
+        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;CyrusViewportRedraw())
+        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;CyrusViewportRedraw())
+        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;CyrusViewportRedraw())
+        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;CyrusViewportRedraw())
+        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;CyrusViewportRedraw())
+        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();CyrusViewportRedraw())
+        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
         on strokeChoices selectionEnd do if not loadingStroke do (
             local row=selectedStroke()
             if row>0 do obj.setStrokeSelection row obj.strokeModes[row] (for i in strokeChoices.selection collect choiceValues[i])
-            redrawViews()
+            CyrusViewportRedraw()
         )
-        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;syncControls();redrawViews())
-        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;syncControls();redrawViews())
+        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
         on refreshGroups pressed do updatePattern()
                 fn updateControls = (
             for c in #(sizeSpin,divSeedSpin,roughSpin,blurSpin,noiseSpin,groupHint,fixedHint) do c.visible=obj.diversityMode==2
@@ -2455,14 +2486,14 @@ fn CyrusMake_diversityUI_2 target view = (
             if strokeExpandedHeight>0 do diversityUI_2.height=if obj.diversityMode>=3 then strokeExpandedHeight else (if obj.diversityMode==2 then 310 else 124)*parentView.dpiScale
             parentView.layoutPanels()
         )
-        on diversityRadio changed v do (obj.diversityMode=v;updateControls();updatePattern();obj.dirty=true;syncControls();redrawViews())
+        on diversityRadio changed v do (obj.diversityMode=v;updateControls();updatePattern();obj.dirty=true;syncControls();CyrusViewportRedraw())
 
 
-        on sizeSpin changed v do (obj.diversitySize=v;obj.dirty=true;syncControls();redrawViews())
-        on divSeedSpin changed v do (obj.diversitySeed=v;obj.dirty=true;syncControls();redrawViews())
-        on roughSpin changed v do (obj.roughness=v;obj.dirty=true;syncControls();redrawViews())
-        on blurSpin changed v do (obj.blurryEdge=v;obj.dirty=true;syncControls();redrawViews())
-        on noiseSpin changed v do (obj.diversityNoise=v;obj.dirty=true;syncControls();redrawViews())
+        on sizeSpin changed v do (obj.diversitySize=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on divSeedSpin changed v do (obj.diversitySeed=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on roughSpin changed v do (obj.roughness=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on blurSpin changed v do (obj.blurryEdge=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on noiseSpin changed v do (obj.diversityNoise=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on diversityUI_2 rolledUp state do parentView.layoutPanels()
         on diversityUI_2 open do (diversityRadio.state=obj.diversityMode;sizeSpin.value=obj.diversitySize;divSeedSpin.value=obj.diversitySeed;roughSpin.value=obj.roughness;blurSpin.value=obj.blurryEdge;noiseSpin.value=obj.diversityNoise;controlsReady=true;strokeExpandedHeight=diversityUI_2.height;updateControls();updatePattern())
     )
@@ -2511,16 +2542,16 @@ fn CyrusMake_lineUI_2 target view = (
         checkbox straightStreet "Straight ends (Street Side)" pos:[(CyrusUISize 8 1),620] width:(CyrusUISize 146 1)
         on faceOutCheck changed v do (
             if analyzerChannel.selection==5 then obj.edgeFaceOut=v else if analyzerChannel.selection==4 then obj.streetFaceOut=v else obj.borderFaceOut=v
-            cornerRadiusSpin.enabled=v;obj.dirty=true;redrawViews()
+            cornerRadiusSpin.enabled=v;obj.dirty=true;CyrusViewportRedraw()
         )
         on cornerRadiusSpin changed v do (
             if analyzerChannel.selection==5 then obj.edgeCornerRadius=v else if analyzerChannel.selection==4 then obj.streetCornerRadius=v else obj.borderCornerRadius=v
-            obj.dirty=true;redrawViews()
+            obj.dirty=true;CyrusViewportRedraw()
         )
-        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;redrawViews())
-        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;redrawViews())
-        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;redrawViews())
-        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;redrawViews())
+        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;CyrusViewportRedraw())
+        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;CyrusViewportRedraw())
+        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;CyrusViewportRedraw())
+        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;CyrusViewportRedraw())
         fn selectedStroke = (if strokesList.selection>0 and strokesList.selection<=strokeRows.count then strokeRows[strokesList.selection] else 0)
         fn showStroke = (
             loadingStroke=true
@@ -2618,7 +2649,7 @@ fn CyrusMake_lineUI_2 target view = (
         on pathsDrop selected i do showPath()
         on analyzerChannel selected i do updatePattern()
         on pickAnalyzer picked n do (
-            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();redrawViews())
+            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();CyrusViewportRedraw())
         )
         on strokesList selected i do showStroke()
         on pickPath picked n do (
@@ -2630,39 +2661,39 @@ fn CyrusMake_lineUI_2 target view = (
             for i=obj.patternLines.count to 1 by -1 where obj.patternLines[i]==path do obj.removeStroke i
             local k=findItem obj.patternPaths path;if k>0 do deleteItem obj.patternPaths k
             if obj.diversityMode==4 do obj.analyzerNode=undefined
-            updatePattern();obj.dirty=true;redrawViews()
+            updatePattern();obj.dirty=true;CyrusViewportRedraw()
         )
         on addOutside pressed do (
             if obj.diversityMode==4 and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5) do return false
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local types=#(1,3,4)
             local side=if obj.diversityMode==4 then types[analyzerChannel.selection] else 1
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
         on addInside pressed do (
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local side=if obj.diversityMode==4 and analyzerChannel.selection==5 then 7 else if obj.diversityMode==4 and analyzerChannel.selection==4 then 6 else if obj.diversityMode==4 and analyzerChannel.selection==3 then 5 else 2
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
-        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();redrawViews())
-        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;redrawViews())
-        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;redrawViews())
-        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;redrawViews())
-        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;redrawViews())
-        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;redrawViews())
-        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;redrawViews())
-        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;redrawViews())
-        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;redrawViews())
-        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;redrawViews())
-        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();redrawViews())
-        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;redrawViews())
+        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();CyrusViewportRedraw())
+        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;CyrusViewportRedraw())
+        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;CyrusViewportRedraw())
+        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;CyrusViewportRedraw())
+        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;CyrusViewportRedraw())
+        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;CyrusViewportRedraw())
+        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;CyrusViewportRedraw())
+        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;CyrusViewportRedraw())
+        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;CyrusViewportRedraw())
+        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;CyrusViewportRedraw())
+        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();CyrusViewportRedraw())
+        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;CyrusViewportRedraw())
         on strokeChoices selectionEnd do if not loadingStroke do (
             local row=selectedStroke()
             if row>0 do obj.setStrokeSelection row obj.strokeModes[row] (for i in strokeChoices.selection collect choiceValues[i])
-            redrawViews()
+            CyrusViewportRedraw()
         )
-        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;redrawViews())
-        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;redrawViews())
+        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;CyrusViewportRedraw())
+        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;CyrusViewportRedraw())
         on refreshGroups pressed do updatePattern()
 
         on lineUI_2 rolledUp state do parentView.layoutPanels()
@@ -2706,8 +2737,8 @@ fn CyrusMake_randomUI_2 target view = (
         label wholeMaxTitle "Max" pos:[(CyrusUISize 94 1),274] width:(CyrusUISize 58 1)
         spinner wholeMinSpin "" range:[0.001,1000,1] scale:0.01 pos:[(CyrusUISize 24 1),296] fieldWidth:(CyrusUISize 46 1) width:(CyrusUISize 58 1)
         spinner wholeMaxSpin "" range:[0.001,1000,1] scale:0.01 pos:[(CyrusUISize 94 1),296] fieldWidth:(CyrusUISize 46 1) width:(CyrusUISize 58 1)
-        on wholeMinSpin changed v do (obj.wholeScaleMin=v;if v>obj.wholeScaleMax do (obj.wholeScaleMax=v;wholeMaxSpin.value=v);redrawViews())
-        on wholeMaxSpin changed v do (obj.wholeScaleMax=v;if v<obj.wholeScaleMin do (obj.wholeScaleMin=v;wholeMinSpin.value=v);redrawViews())
+        on wholeMinSpin changed v do (obj.wholeScaleMin=v;if v>obj.wholeScaleMax do (obj.wholeScaleMax=v;wholeMaxSpin.value=v);CyrusViewportRedraw())
+        on wholeMaxSpin changed v do (obj.wholeScaleMax=v;if v<obj.wholeScaleMin do (obj.wholeScaleMin=v;wholeMinSpin.value=v);CyrusViewportRedraw())
         label movTitle "Movement (world units)" pos:[(CyrusUISize 8 1),332] width:(CyrusUISize 146 1)
         label movMinTitle "Min" pos:[(CyrusUISize 24 1),354] width:(CyrusUISize 58 1)
         label movMaxTitle "Max" pos:[(CyrusUISize 94 1),354] width:(CyrusUISize 58 1)
@@ -2724,27 +2755,27 @@ fn CyrusMake_randomUI_2 target view = (
         checkbox alignCheck "Align to normal" pos:[(CyrusUISize 8 1),480] width:(CyrusUISize 146 1)
 
         fn syncControls = (projectCheck.checked=obj.projectMove;rotXMinSpin.value=obj.rotXMin;rotXMaxSpin.value=obj.rotXMax;rotYMinSpin.value=obj.rotYMin;rotYMaxSpin.value=obj.rotYMax;rotZMinSpin.value=obj.rotZMin;rotZMaxSpin.value=obj.rotZMax;sclXMinSpin.value=obj.sclXMin;sclXMaxSpin.value=obj.sclXMax;sclYMinSpin.value=obj.sclYMin;sclYMaxSpin.value=obj.sclYMax;sclZMinSpin.value=obj.sclZMin;sclZMaxSpin.value=obj.sclZMax;movXMinSpin.value=obj.movXMin;movXMaxSpin.value=obj.movXMax;movYMinSpin.value=obj.movYMin;movYMaxSpin.value=obj.movYMax;movZMinSpin.value=obj.movZMin;movZMaxSpin.value=obj.movZMax;)
-        on alignCheck changed v do (obj.alignNormal=v;obj.dirty=true;syncControls();redrawViews())
+        on alignCheck changed v do (obj.alignNormal=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
 
-        on projectCheck changed v do (obj.projectMove=v;obj.dirty=true;syncControls();redrawViews())
-        on rotXMinSpin changed v do (obj.rotXMin=v;obj.dirty=true;syncControls();redrawViews())
-        on rotXMaxSpin changed v do (obj.rotXMax=v;obj.dirty=true;syncControls();redrawViews())
-        on rotYMinSpin changed v do (obj.rotYMin=v;obj.dirty=true;syncControls();redrawViews())
-        on rotYMaxSpin changed v do (obj.rotYMax=v;obj.dirty=true;syncControls();redrawViews())
-        on rotZMinSpin changed v do (obj.rotZMin=v;obj.dirty=true;syncControls();redrawViews())
-        on rotZMaxSpin changed v do (obj.rotZMax=v;obj.dirty=true;syncControls();redrawViews())
-        on sclXMinSpin changed v do (obj.sclXMin=v;obj.dirty=true;syncControls();redrawViews())
-        on sclXMaxSpin changed v do (obj.sclXMax=v;obj.dirty=true;syncControls();redrawViews())
-        on sclYMinSpin changed v do (obj.sclYMin=v;obj.dirty=true;syncControls();redrawViews())
-        on sclYMaxSpin changed v do (obj.sclYMax=v;obj.dirty=true;syncControls();redrawViews())
-        on sclZMinSpin changed v do (obj.sclZMin=v;obj.dirty=true;syncControls();redrawViews())
-        on sclZMaxSpin changed v do (obj.sclZMax=v;obj.dirty=true;syncControls();redrawViews())
-        on movXMinSpin changed v do (obj.movXMin=v;obj.dirty=true;syncControls();redrawViews())
-        on movXMaxSpin changed v do (obj.movXMax=v;obj.dirty=true;syncControls();redrawViews())
-        on movYMinSpin changed v do (obj.movYMin=v;obj.dirty=true;syncControls();redrawViews())
-        on movYMaxSpin changed v do (obj.movYMax=v;obj.dirty=true;syncControls();redrawViews())
-        on movZMinSpin changed v do (obj.movZMin=v;obj.dirty=true;syncControls();redrawViews())
-        on movZMaxSpin changed v do (obj.movZMax=v;obj.dirty=true;syncControls();redrawViews())
+        on projectCheck changed v do (obj.projectMove=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotXMinSpin changed v do (obj.rotXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotXMaxSpin changed v do (obj.rotXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotYMinSpin changed v do (obj.rotYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotYMaxSpin changed v do (obj.rotYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotZMinSpin changed v do (obj.rotZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotZMaxSpin changed v do (obj.rotZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclXMinSpin changed v do (obj.sclXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclXMaxSpin changed v do (obj.sclXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclYMinSpin changed v do (obj.sclYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclYMaxSpin changed v do (obj.sclYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclZMinSpin changed v do (obj.sclZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclZMaxSpin changed v do (obj.sclZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movXMinSpin changed v do (obj.movXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movXMaxSpin changed v do (obj.movXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movYMinSpin changed v do (obj.movYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movYMaxSpin changed v do (obj.movYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movZMinSpin changed v do (obj.movZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movZMaxSpin changed v do (obj.movZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on randomUI_2 rolledUp state do parentView.layoutPanels()
         on randomUI_2 open do (wholeMinSpin.value=obj.wholeScaleMin;wholeMaxSpin.value=obj.wholeScaleMax;projectCheck.checked=obj.projectMove;rotXMinSpin.value=obj.rotXMin;rotXMaxSpin.value=obj.rotXMax;rotYMinSpin.value=obj.rotYMin;rotYMaxSpin.value=obj.rotYMax;rotZMinSpin.value=obj.rotZMin;rotZMaxSpin.value=obj.rotZMax;sclXMinSpin.value=obj.sclXMin;sclXMaxSpin.value=obj.sclXMax;sclYMinSpin.value=obj.sclYMin;sclYMaxSpin.value=obj.sclYMax;sclZMinSpin.value=obj.sclZMin;sclZMaxSpin.value=obj.sclZMax;movXMinSpin.value=obj.movXMin;movXMaxSpin.value=obj.movXMax;movYMinSpin.value=obj.movYMin;movYMaxSpin.value=obj.movYMax;movZMinSpin.value=obj.movZMin;movZMaxSpin.value=obj.movZMax;controlsReady=true;alignCheck.checked=obj.alignNormal)
     )
@@ -2830,27 +2861,27 @@ fn CyrusMake_sourceUI_3 target view = (
                 for i=before+1 to obj.sources.count do rows[i]=true
                 plantList.selection=rows;focusedRow=before+1
             )
-            showSelectedColor();redrawViews()
+            showSelectedColor();CyrusViewportRedraw()
         )
         on addPoint pressed do (
-            local i=obj.addPointSource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();redrawViews()
+            local i=obj.addPointSource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();CyrusViewportRedraw()
         )
         on replacePoint picked n do (
             local rows=plantList.selection as array
             if rows.count!=1 then messageBox "Select one Point row to replace." title:"Cyrus Scatter"
             else if not (obj.replacePointSource rows[1] n) do messageBox "Select a Point row and an object that is not already in this source list." title:"Cyrus Scatter"
-            replacePoint.text="Replace Point: pick object";updateList();showSelectedColor();redrawViews()
+            replacePoint.text="Replace Point: pick object";updateList();showSelectedColor();CyrusViewportRedraw()
         )
         on addEmpty pressed do (
-            local i=obj.addEmptySource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();redrawViews()
+            local i=obj.addEmptySource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();CyrusViewportRedraw()
         )
-        on radiusSourceSpin changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v;redrawViews())
-        on followRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:2;redrawViews())
-        on showRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:3;redrawViews())
-        on forwardAxis selected v do if not loadingColor do (obj.assignSourceForward plantList.selection v;redrawViews())
-        on sourceZSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v;redrawViews())
-        on sourceScaleSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v scaling:true;redrawViews())
-        on weightSpin changed v do if not loadingColor do (obj.assignWeight plantList.selection v;updateList();redrawViews())
+        on radiusSourceSpin changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v;CyrusViewportRedraw())
+        on followRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:2;CyrusViewportRedraw())
+        on showRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:3;CyrusViewportRedraw())
+        on forwardAxis selected v do if not loadingColor do (obj.assignSourceForward plantList.selection v;CyrusViewportRedraw())
+        on sourceZSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v;CyrusViewportRedraw())
+        on sourceScaleSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v scaling:true;CyrusViewportRedraw())
+        on weightSpin changed v do if not loadingColor do (obj.assignWeight plantList.selection v;updateList();CyrusViewportRedraw())
         on plantList selected i do (
             if i>0 and plantList.selection[i] do focusedRow=i
         )
@@ -2859,18 +2890,18 @@ fn CyrusMake_sourceUI_3 target view = (
             if i>0 and i<=groupPalette.count do (
                 local c=groupPalette[i]
                 loadingColor=true;groupColor.color=c;loadingColor=false
-                obj.assignGroup plantList.selection c;updateList();redrawViews()
+                obj.assignGroup plantList.selection c;updateList();CyrusViewportRedraw()
             )
         )
         on groupColor changed c do (
             if not loadingColor and plantList.selection.numberSet>0 do (
                 obj.assignGroup plantList.selection c
-                updateList();redrawViews()
+                updateList();CyrusViewportRedraw()
             )
         )
         on applyColor pressed do (
             obj.assignGroup plantList.selection groupColor.color
-            updateList();redrawViews()
+            updateList();CyrusViewportRedraw()
         )
         on selectFromScene pressed do (
             local picked=selectByName title:"Cyrus Scatter - Select From Scene" buttonText:"Add" filter:AminScatterSourceFilter single:false
@@ -2893,7 +2924,7 @@ fn CyrusMake_sourceUI_3 target view = (
                     deleteItem obj.sources rows[k];deleteItem obj.sourceColors rows[k]
                 )
             )
-            plantList.selection=#{};obj.dirty=true;updateList();redrawViews()
+            plantList.selection=#{};obj.dirty=true;updateList();CyrusViewportRedraw()
         )
         on selectPlant pressed do (
             local nodes=for i in plantList.selection where i<=obj.sources.count and isValidNode obj.sources[i] collect obj.sources[i]
@@ -2915,7 +2946,7 @@ fn CyrusMake_distributionUI_3 target view = (
         radiobuttons modeRadio "Method" labels:#("Random","Texture Density") columns:1 pos:[(CyrusUISize 8 1),8] width:(CyrusUISize 146 1)
         radiobuttons populationRadio "Population" labels:#("Count","Plants per m2") columns:1 pos:[(CyrusUISize 8 1),78] width:(CyrusUISize 146 1)
         checkbox showCenterCheck "Show Point" pos:[(CyrusUISize 8 1),148] width:(CyrusUISize 146 1)
-        on showCenterCheck changed v do (obj.showCenters=v;redrawViews())
+        on showCenterCheck changed v do (obj.showCenters=v;CyrusViewportRedraw())
         spinner countSpin "Count: " range:[1,100000,200] type:#integer fieldWidth:(CyrusUISize 64 1) width:(CyrusUISize 146 1) pos:[(CyrusUISize 8 1),174]
         spinner densitySpin "Per m2: " range:[0,1000000,100] fieldWidth:(CyrusUISize 64 1) width:(CyrusUISize 146 1) pos:[(CyrusUISize 8 1),200]
         spinner seedSpin "Seed: " range:[0,2147483647,42] type:#integer fieldWidth:(CyrusUISize 64 1) width:(CyrusUISize 146 1) pos:[(CyrusUISize 8 1),226]
@@ -2926,14 +2957,14 @@ fn CyrusMake_distributionUI_3 target view = (
         label mapHint "White: dense / Black: empty" pos:[(CyrusUISize 8 1),360] width:(CyrusUISize 146 1)
 
         fn syncControls = (populationRadio.state=obj.populationMode;densitySpin.value=obj.plantsPerM2;densityButton.map=obj.densityMap;invertCheck.checked=obj.invertDensity;)
-        on modeRadio changed v do (obj.distributionMode=if v==2 then 3 else 1;obj.dirty=true;syncControls();redrawViews())
-        on countSpin changed v do (obj.amount=v;obj.dirty=true;syncControls();redrawViews())
-        on seedSpin changed v do (obj.randomSeed=v;obj.dirty=true;syncControls();redrawViews())
+        on modeRadio changed v do (obj.distributionMode=if v==2 then 3 else 1;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on countSpin changed v do (obj.amount=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on seedSpin changed v do (obj.randomSeed=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
 
-        on populationRadio changed v do (obj.populationMode=v;obj.dirty=true;syncControls();redrawViews())
-        on densitySpin changed v do (obj.plantsPerM2=v;obj.dirty=true;syncControls();redrawViews())
-        on densityButton picked v do (obj.densityMap=v;obj.dirty=true;syncControls();redrawViews())
-        on invertCheck changed v do (obj.invertDensity=v;obj.dirty=true;syncControls();redrawViews())
+        on populationRadio changed v do (obj.populationMode=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on densitySpin changed v do (obj.plantsPerM2=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on densityButton picked v do (obj.densityMap=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on invertCheck changed v do (obj.invertDensity=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on distributionUI_3 rolledUp state do parentView.layoutPanels()
         on distributionUI_3 open do (showCenterCheck.checked=obj.showCenters;populationRadio.state=obj.populationMode;densitySpin.value=obj.plantsPerM2;densityButton.map=obj.densityMap;invertCheck.checked=obj.invertDensity;controlsReady=true;(countSpin.value=obj.amount;seedSpin.value=obj.randomSeed;modeRadio.state=if obj.distributionMode==3 then 2 else 1))
     )
@@ -2974,14 +3005,14 @@ fn CyrusMake_areaUI_3 target view = (
             aaWidth.enabled=obj.areaUseLine;aaCaps.enabled=obj.areaUseLine;aaRadius.enabled=obj.areaUsePoints
             loadingAnalyzerArea=false
         )
-        on aaPick picked n do (obj.areaAnalyzer=n;syncAnalyzerArea();redrawViews())
-        on aaRemove pressed do (obj.areaUseLine=false;obj.areaUsePoints=false;obj.areaAnalyzer=undefined;syncAnalyzerArea();redrawViews())
-        on aaLine changed v do if not loadingAnalyzerArea do (obj.areaUseLine=v;syncAnalyzerArea();redrawViews())
-        on aaPoints changed v do if not loadingAnalyzerArea do (obj.areaUsePoints=v;syncAnalyzerArea();redrawViews())
-        on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;redrawViews())
-        on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;redrawViews())
-        on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;redrawViews())
-        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
+        on aaPick picked n do (obj.areaAnalyzer=n;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaRemove pressed do (obj.areaUseLine=false;obj.areaUsePoints=false;obj.areaAnalyzer=undefined;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaLine changed v do if not loadingAnalyzerArea do (obj.areaUseLine=v;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaPoints changed v do if not loadingAnalyzerArea do (obj.areaUsePoints=v;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;CyrusViewportRedraw())
+        on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;CyrusViewportRedraw())
+        on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;CyrusViewportRedraw())
+        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;CyrusViewportRedraw())
 
         local loadingFall=false
         dropdownlist fallTarget "Edge falloff target" items:#("Analyzer Boundary","Selected Area line") selection:1 pos:[(CyrusUISize 8 1),704] width:(CyrusUISize 146 1)
@@ -3018,12 +3049,12 @@ fn CyrusMake_areaUI_3 target view = (
         fn setFallValue index value = (
             if not loadingFall do (
                 local n=fallNode()
-                if fallTarget.selection==1 or isValidNode n do (local cfg=obj.getFallConfig n;cfg[index]=value;obj.setFallConfig n cfg;redrawViews())
+                if fallTarget.selection==1 or isValidNode n do (local cfg=obj.getFallConfig n;cfg[index]=value;obj.setFallConfig n cfg;CyrusViewportRedraw())
             )
         )
         on fallTarget selected v do syncFalloff()
-        on fallPick picked n do (if CyrusAnalyzerFilter n do obj.fallAnalyzer=n;syncFalloff();redrawViews())
-        on fallRemove pressed do (obj.fallAnalyzer=undefined;obj.fallDelete=false;obj.fallScale=false;obj.fallDensity=false;syncFalloff();redrawViews())
+        on fallPick picked n do (if CyrusAnalyzerFilter n do obj.fallAnalyzer=n;syncFalloff();CyrusViewportRedraw())
+        on fallRemove pressed do (obj.fallAnalyzer=undefined;obj.fallDelete=false;obj.fallScale=false;obj.fallDensity=false;syncFalloff();CyrusViewportRedraw())
         on fallDeleteCheck changed v do setFallValue 1 v
         on fallDeleteSpin changed v do setFallValue 2 v
         on fallScaleCheck changed v do setFallValue 3 v
@@ -3048,11 +3079,11 @@ fn CyrusMake_areaUI_3 target view = (
             )
         )
 
-        on pickArea picked n do (addArea n;updateAreas();redrawViews())
+        on pickArea picked n do (addArea n;updateAreas();CyrusViewportRedraw())
         on addAreaScene pressed do (
             local nodes=selectByName title:"Cyrus Scatter - Closed Areas" buttonText:"Add" filter:AminScatterAreaFilter single:false
             if nodes!=undefined do for n in nodes do addArea n
-            updateAreas();redrawViews()
+            updateAreas();CyrusViewportRedraw()
         )
         on areaList selectionEnd do (
             if areaList.selection.numberSet==1 do fallTarget.selection=2
@@ -3061,7 +3092,7 @@ fn CyrusMake_areaUI_3 target view = (
         )
         on areaMode changed mode do (
             undo "Cyrus Scatter area mode" on (for i in areaList.selection do obj.areaModes[i]=mode)
-            obj.dirty=true;updateAreas();redrawViews()
+            obj.dirty=true;updateAreas();CyrusViewportRedraw()
         )
         on removeArea pressed do (
             if CyrusFalloffGraph!=undefined do try(destroyDialog CyrusFalloffGraph)catch()
@@ -3070,9 +3101,9 @@ fn CyrusMake_areaUI_3 target view = (
                 obj.ensureAreaFalloffs()
                 for i=rows.count to 1 by -1 do (deleteItem obj.areaNodes rows[i];deleteItem obj.areaModes rows[i];deleteItem obj.areaFallConfigs rows[i];deleteItem obj.areaFallScaleGraphs rows[i];deleteItem obj.areaFallDensityGraphs rows[i])
             )
-            areaList.selection=#{};obj.dirty=true;updateAreas();redrawViews()
+            areaList.selection=#{};obj.dirty=true;updateAreas();CyrusViewportRedraw()
         )
-        on refreshAreas pressed do (obj.dirty=true;obj.refreshPreview();redrawViews())
+        on refreshAreas pressed do (obj.dirty=true;obj.refreshPreview();CyrusViewportRedraw())
 
         on areaUI_3 rolledUp state do parentView.layoutPanels()
         on areaUI_3 open do (syncAnalyzerArea();syncFalloff();controlsReady=true;updateAreas())
@@ -3137,16 +3168,16 @@ fn CyrusMake_diversityUI_3 target view = (
         fn syncControls = (diversityRadio.state=obj.diversityMode;sizeSpin.value=obj.diversitySize;divSeedSpin.value=obj.diversitySeed;roughSpin.value=obj.roughness;blurSpin.value=obj.blurryEdge;noiseSpin.value=obj.diversityNoise;)
         on faceOutCheck changed v do (
             if analyzerChannel.selection==5 then obj.edgeFaceOut=v else if analyzerChannel.selection==4 then obj.streetFaceOut=v else obj.borderFaceOut=v
-            cornerRadiusSpin.enabled=v;obj.dirty=true;redrawViews()
+            cornerRadiusSpin.enabled=v;obj.dirty=true;CyrusViewportRedraw()
         )
         on cornerRadiusSpin changed v do (
             if analyzerChannel.selection==5 then obj.edgeCornerRadius=v else if analyzerChannel.selection==4 then obj.streetCornerRadius=v else obj.borderCornerRadius=v
-            obj.dirty=true;redrawViews()
+            obj.dirty=true;CyrusViewportRedraw()
         )
-        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;redrawViews())
-        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;redrawViews())
-        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;redrawViews())
-        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;syncControls();redrawViews())
+        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;CyrusViewportRedraw())
+        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;CyrusViewportRedraw())
+        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;CyrusViewportRedraw())
+        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         fn selectedStroke = (if strokesList.selection>0 and strokesList.selection<=strokeRows.count then strokeRows[strokesList.selection] else 0)
         fn showStroke = (
             loadingStroke=true
@@ -3244,7 +3275,7 @@ fn CyrusMake_diversityUI_3 target view = (
         on pathsDrop selected i do showPath()
         on analyzerChannel selected i do updatePattern()
         on pickAnalyzer picked n do (
-            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();redrawViews())
+            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();CyrusViewportRedraw())
         )
         on strokesList selected i do showStroke()
         on pickPath picked n do (
@@ -3256,39 +3287,39 @@ fn CyrusMake_diversityUI_3 target view = (
             for i=obj.patternLines.count to 1 by -1 where obj.patternLines[i]==path do obj.removeStroke i
             local k=findItem obj.patternPaths path;if k>0 do deleteItem obj.patternPaths k
             if obj.diversityMode==4 do obj.analyzerNode=undefined
-            updatePattern();obj.dirty=true;syncControls();redrawViews()
+            updatePattern();obj.dirty=true;syncControls();CyrusViewportRedraw()
         )
         on addOutside pressed do (
             if obj.diversityMode==4 and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5) do return false
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local types=#(1,3,4)
             local side=if obj.diversityMode==4 then types[analyzerChannel.selection] else 1
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
         on addInside pressed do (
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local side=if obj.diversityMode==4 and analyzerChannel.selection==5 then 7 else if obj.diversityMode==4 and analyzerChannel.selection==4 then 6 else if obj.diversityMode==4 and analyzerChannel.selection==3 then 5 else 2
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
-        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();redrawViews())
-        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;redrawViews())
-        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;redrawViews())
-        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;redrawViews())
-        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;redrawViews())
-        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;redrawViews())
-        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;redrawViews())
-        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;redrawViews())
-        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;redrawViews())
-        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;redrawViews())
-        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();redrawViews())
-        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;syncControls();redrawViews())
+        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();CyrusViewportRedraw())
+        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;CyrusViewportRedraw())
+        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;CyrusViewportRedraw())
+        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;CyrusViewportRedraw())
+        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;CyrusViewportRedraw())
+        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;CyrusViewportRedraw())
+        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;CyrusViewportRedraw())
+        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;CyrusViewportRedraw())
+        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;CyrusViewportRedraw())
+        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;CyrusViewportRedraw())
+        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();CyrusViewportRedraw())
+        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
         on strokeChoices selectionEnd do if not loadingStroke do (
             local row=selectedStroke()
             if row>0 do obj.setStrokeSelection row obj.strokeModes[row] (for i in strokeChoices.selection collect choiceValues[i])
-            redrawViews()
+            CyrusViewportRedraw()
         )
-        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;syncControls();redrawViews())
-        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;syncControls();redrawViews())
+        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
         on refreshGroups pressed do updatePattern()
                 fn updateControls = (
             for c in #(sizeSpin,divSeedSpin,roughSpin,blurSpin,noiseSpin,groupHint,fixedHint) do c.visible=obj.diversityMode==2
@@ -3296,14 +3327,14 @@ fn CyrusMake_diversityUI_3 target view = (
             if strokeExpandedHeight>0 do diversityUI_3.height=if obj.diversityMode>=3 then strokeExpandedHeight else (if obj.diversityMode==2 then 310 else 124)*parentView.dpiScale
             parentView.layoutPanels()
         )
-        on diversityRadio changed v do (obj.diversityMode=v;updateControls();updatePattern();obj.dirty=true;syncControls();redrawViews())
+        on diversityRadio changed v do (obj.diversityMode=v;updateControls();updatePattern();obj.dirty=true;syncControls();CyrusViewportRedraw())
 
 
-        on sizeSpin changed v do (obj.diversitySize=v;obj.dirty=true;syncControls();redrawViews())
-        on divSeedSpin changed v do (obj.diversitySeed=v;obj.dirty=true;syncControls();redrawViews())
-        on roughSpin changed v do (obj.roughness=v;obj.dirty=true;syncControls();redrawViews())
-        on blurSpin changed v do (obj.blurryEdge=v;obj.dirty=true;syncControls();redrawViews())
-        on noiseSpin changed v do (obj.diversityNoise=v;obj.dirty=true;syncControls();redrawViews())
+        on sizeSpin changed v do (obj.diversitySize=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on divSeedSpin changed v do (obj.diversitySeed=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on roughSpin changed v do (obj.roughness=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on blurSpin changed v do (obj.blurryEdge=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on noiseSpin changed v do (obj.diversityNoise=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on diversityUI_3 rolledUp state do parentView.layoutPanels()
         on diversityUI_3 open do (diversityRadio.state=obj.diversityMode;sizeSpin.value=obj.diversitySize;divSeedSpin.value=obj.diversitySeed;roughSpin.value=obj.roughness;blurSpin.value=obj.blurryEdge;noiseSpin.value=obj.diversityNoise;controlsReady=true;strokeExpandedHeight=diversityUI_3.height;updateControls();updatePattern())
     )
@@ -3352,16 +3383,16 @@ fn CyrusMake_lineUI_3 target view = (
         checkbox straightStreet "Straight ends (Street Side)" pos:[(CyrusUISize 8 1),620] width:(CyrusUISize 146 1)
         on faceOutCheck changed v do (
             if analyzerChannel.selection==5 then obj.edgeFaceOut=v else if analyzerChannel.selection==4 then obj.streetFaceOut=v else obj.borderFaceOut=v
-            cornerRadiusSpin.enabled=v;obj.dirty=true;redrawViews()
+            cornerRadiusSpin.enabled=v;obj.dirty=true;CyrusViewportRedraw()
         )
         on cornerRadiusSpin changed v do (
             if analyzerChannel.selection==5 then obj.edgeCornerRadius=v else if analyzerChannel.selection==4 then obj.streetCornerRadius=v else obj.borderCornerRadius=v
-            obj.dirty=true;redrawViews()
+            obj.dirty=true;CyrusViewportRedraw()
         )
-        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;redrawViews())
-        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;redrawViews())
-        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;redrawViews())
-        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;redrawViews())
+        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;CyrusViewportRedraw())
+        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;CyrusViewportRedraw())
+        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;CyrusViewportRedraw())
+        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;CyrusViewportRedraw())
         fn selectedStroke = (if strokesList.selection>0 and strokesList.selection<=strokeRows.count then strokeRows[strokesList.selection] else 0)
         fn showStroke = (
             loadingStroke=true
@@ -3459,7 +3490,7 @@ fn CyrusMake_lineUI_3 target view = (
         on pathsDrop selected i do showPath()
         on analyzerChannel selected i do updatePattern()
         on pickAnalyzer picked n do (
-            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();redrawViews())
+            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();CyrusViewportRedraw())
         )
         on strokesList selected i do showStroke()
         on pickPath picked n do (
@@ -3471,39 +3502,39 @@ fn CyrusMake_lineUI_3 target view = (
             for i=obj.patternLines.count to 1 by -1 where obj.patternLines[i]==path do obj.removeStroke i
             local k=findItem obj.patternPaths path;if k>0 do deleteItem obj.patternPaths k
             if obj.diversityMode==4 do obj.analyzerNode=undefined
-            updatePattern();obj.dirty=true;redrawViews()
+            updatePattern();obj.dirty=true;CyrusViewportRedraw()
         )
         on addOutside pressed do (
             if obj.diversityMode==4 and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5) do return false
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local types=#(1,3,4)
             local side=if obj.diversityMode==4 then types[analyzerChannel.selection] else 1
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
         on addInside pressed do (
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local side=if obj.diversityMode==4 and analyzerChannel.selection==5 then 7 else if obj.diversityMode==4 and analyzerChannel.selection==4 then 6 else if obj.diversityMode==4 and analyzerChannel.selection==3 then 5 else 2
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
-        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();redrawViews())
-        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;redrawViews())
-        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;redrawViews())
-        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;redrawViews())
-        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;redrawViews())
-        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;redrawViews())
-        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;redrawViews())
-        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;redrawViews())
-        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;redrawViews())
-        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;redrawViews())
-        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();redrawViews())
-        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;redrawViews())
+        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();CyrusViewportRedraw())
+        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;CyrusViewportRedraw())
+        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;CyrusViewportRedraw())
+        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;CyrusViewportRedraw())
+        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;CyrusViewportRedraw())
+        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;CyrusViewportRedraw())
+        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;CyrusViewportRedraw())
+        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;CyrusViewportRedraw())
+        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;CyrusViewportRedraw())
+        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;CyrusViewportRedraw())
+        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();CyrusViewportRedraw())
+        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;CyrusViewportRedraw())
         on strokeChoices selectionEnd do if not loadingStroke do (
             local row=selectedStroke()
             if row>0 do obj.setStrokeSelection row obj.strokeModes[row] (for i in strokeChoices.selection collect choiceValues[i])
-            redrawViews()
+            CyrusViewportRedraw()
         )
-        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;redrawViews())
-        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;redrawViews())
+        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;CyrusViewportRedraw())
+        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;CyrusViewportRedraw())
         on refreshGroups pressed do updatePattern()
 
         on lineUI_3 rolledUp state do parentView.layoutPanels()
@@ -3547,8 +3578,8 @@ fn CyrusMake_randomUI_3 target view = (
         label wholeMaxTitle "Max" pos:[(CyrusUISize 94 1),274] width:(CyrusUISize 58 1)
         spinner wholeMinSpin "" range:[0.001,1000,1] scale:0.01 pos:[(CyrusUISize 24 1),296] fieldWidth:(CyrusUISize 46 1) width:(CyrusUISize 58 1)
         spinner wholeMaxSpin "" range:[0.001,1000,1] scale:0.01 pos:[(CyrusUISize 94 1),296] fieldWidth:(CyrusUISize 46 1) width:(CyrusUISize 58 1)
-        on wholeMinSpin changed v do (obj.wholeScaleMin=v;if v>obj.wholeScaleMax do (obj.wholeScaleMax=v;wholeMaxSpin.value=v);redrawViews())
-        on wholeMaxSpin changed v do (obj.wholeScaleMax=v;if v<obj.wholeScaleMin do (obj.wholeScaleMin=v;wholeMinSpin.value=v);redrawViews())
+        on wholeMinSpin changed v do (obj.wholeScaleMin=v;if v>obj.wholeScaleMax do (obj.wholeScaleMax=v;wholeMaxSpin.value=v);CyrusViewportRedraw())
+        on wholeMaxSpin changed v do (obj.wholeScaleMax=v;if v<obj.wholeScaleMin do (obj.wholeScaleMin=v;wholeMinSpin.value=v);CyrusViewportRedraw())
         label movTitle "Movement (world units)" pos:[(CyrusUISize 8 1),332] width:(CyrusUISize 146 1)
         label movMinTitle "Min" pos:[(CyrusUISize 24 1),354] width:(CyrusUISize 58 1)
         label movMaxTitle "Max" pos:[(CyrusUISize 94 1),354] width:(CyrusUISize 58 1)
@@ -3565,27 +3596,27 @@ fn CyrusMake_randomUI_3 target view = (
         checkbox alignCheck "Align to normal" pos:[(CyrusUISize 8 1),480] width:(CyrusUISize 146 1)
 
         fn syncControls = (projectCheck.checked=obj.projectMove;rotXMinSpin.value=obj.rotXMin;rotXMaxSpin.value=obj.rotXMax;rotYMinSpin.value=obj.rotYMin;rotYMaxSpin.value=obj.rotYMax;rotZMinSpin.value=obj.rotZMin;rotZMaxSpin.value=obj.rotZMax;sclXMinSpin.value=obj.sclXMin;sclXMaxSpin.value=obj.sclXMax;sclYMinSpin.value=obj.sclYMin;sclYMaxSpin.value=obj.sclYMax;sclZMinSpin.value=obj.sclZMin;sclZMaxSpin.value=obj.sclZMax;movXMinSpin.value=obj.movXMin;movXMaxSpin.value=obj.movXMax;movYMinSpin.value=obj.movYMin;movYMaxSpin.value=obj.movYMax;movZMinSpin.value=obj.movZMin;movZMaxSpin.value=obj.movZMax;)
-        on alignCheck changed v do (obj.alignNormal=v;obj.dirty=true;syncControls();redrawViews())
+        on alignCheck changed v do (obj.alignNormal=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
 
-        on projectCheck changed v do (obj.projectMove=v;obj.dirty=true;syncControls();redrawViews())
-        on rotXMinSpin changed v do (obj.rotXMin=v;obj.dirty=true;syncControls();redrawViews())
-        on rotXMaxSpin changed v do (obj.rotXMax=v;obj.dirty=true;syncControls();redrawViews())
-        on rotYMinSpin changed v do (obj.rotYMin=v;obj.dirty=true;syncControls();redrawViews())
-        on rotYMaxSpin changed v do (obj.rotYMax=v;obj.dirty=true;syncControls();redrawViews())
-        on rotZMinSpin changed v do (obj.rotZMin=v;obj.dirty=true;syncControls();redrawViews())
-        on rotZMaxSpin changed v do (obj.rotZMax=v;obj.dirty=true;syncControls();redrawViews())
-        on sclXMinSpin changed v do (obj.sclXMin=v;obj.dirty=true;syncControls();redrawViews())
-        on sclXMaxSpin changed v do (obj.sclXMax=v;obj.dirty=true;syncControls();redrawViews())
-        on sclYMinSpin changed v do (obj.sclYMin=v;obj.dirty=true;syncControls();redrawViews())
-        on sclYMaxSpin changed v do (obj.sclYMax=v;obj.dirty=true;syncControls();redrawViews())
-        on sclZMinSpin changed v do (obj.sclZMin=v;obj.dirty=true;syncControls();redrawViews())
-        on sclZMaxSpin changed v do (obj.sclZMax=v;obj.dirty=true;syncControls();redrawViews())
-        on movXMinSpin changed v do (obj.movXMin=v;obj.dirty=true;syncControls();redrawViews())
-        on movXMaxSpin changed v do (obj.movXMax=v;obj.dirty=true;syncControls();redrawViews())
-        on movYMinSpin changed v do (obj.movYMin=v;obj.dirty=true;syncControls();redrawViews())
-        on movYMaxSpin changed v do (obj.movYMax=v;obj.dirty=true;syncControls();redrawViews())
-        on movZMinSpin changed v do (obj.movZMin=v;obj.dirty=true;syncControls();redrawViews())
-        on movZMaxSpin changed v do (obj.movZMax=v;obj.dirty=true;syncControls();redrawViews())
+        on projectCheck changed v do (obj.projectMove=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotXMinSpin changed v do (obj.rotXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotXMaxSpin changed v do (obj.rotXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotYMinSpin changed v do (obj.rotYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotYMaxSpin changed v do (obj.rotYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotZMinSpin changed v do (obj.rotZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotZMaxSpin changed v do (obj.rotZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclXMinSpin changed v do (obj.sclXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclXMaxSpin changed v do (obj.sclXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclYMinSpin changed v do (obj.sclYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclYMaxSpin changed v do (obj.sclYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclZMinSpin changed v do (obj.sclZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclZMaxSpin changed v do (obj.sclZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movXMinSpin changed v do (obj.movXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movXMaxSpin changed v do (obj.movXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movYMinSpin changed v do (obj.movYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movYMaxSpin changed v do (obj.movYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movZMinSpin changed v do (obj.movZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movZMaxSpin changed v do (obj.movZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on randomUI_3 rolledUp state do parentView.layoutPanels()
         on randomUI_3 open do (wholeMinSpin.value=obj.wholeScaleMin;wholeMaxSpin.value=obj.wholeScaleMax;projectCheck.checked=obj.projectMove;rotXMinSpin.value=obj.rotXMin;rotXMaxSpin.value=obj.rotXMax;rotYMinSpin.value=obj.rotYMin;rotYMaxSpin.value=obj.rotYMax;rotZMinSpin.value=obj.rotZMin;rotZMaxSpin.value=obj.rotZMax;sclXMinSpin.value=obj.sclXMin;sclXMaxSpin.value=obj.sclXMax;sclYMinSpin.value=obj.sclYMin;sclYMaxSpin.value=obj.sclYMax;sclZMinSpin.value=obj.sclZMin;sclZMaxSpin.value=obj.sclZMax;movXMinSpin.value=obj.movXMin;movXMaxSpin.value=obj.movXMax;movYMinSpin.value=obj.movYMin;movYMaxSpin.value=obj.movYMax;movZMinSpin.value=obj.movZMin;movZMaxSpin.value=obj.movZMax;controlsReady=true;alignCheck.checked=obj.alignNormal)
     )
@@ -3671,27 +3702,27 @@ fn CyrusMake_sourceUI_4 target view = (
                 for i=before+1 to obj.sources.count do rows[i]=true
                 plantList.selection=rows;focusedRow=before+1
             )
-            showSelectedColor();redrawViews()
+            showSelectedColor();CyrusViewportRedraw()
         )
         on addPoint pressed do (
-            local i=obj.addPointSource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();redrawViews()
+            local i=obj.addPointSource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();CyrusViewportRedraw()
         )
         on replacePoint picked n do (
             local rows=plantList.selection as array
             if rows.count!=1 then messageBox "Select one Point row to replace." title:"Cyrus Scatter"
             else if not (obj.replacePointSource rows[1] n) do messageBox "Select a Point row and an object that is not already in this source list." title:"Cyrus Scatter"
-            replacePoint.text="Replace Point: pick object";updateList();showSelectedColor();redrawViews()
+            replacePoint.text="Replace Point: pick object";updateList();showSelectedColor();CyrusViewportRedraw()
         )
         on addEmpty pressed do (
-            local i=obj.addEmptySource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();redrawViews()
+            local i=obj.addEmptySource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();CyrusViewportRedraw()
         )
-        on radiusSourceSpin changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v;redrawViews())
-        on followRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:2;redrawViews())
-        on showRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:3;redrawViews())
-        on forwardAxis selected v do if not loadingColor do (obj.assignSourceForward plantList.selection v;redrawViews())
-        on sourceZSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v;redrawViews())
-        on sourceScaleSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v scaling:true;redrawViews())
-        on weightSpin changed v do if not loadingColor do (obj.assignWeight plantList.selection v;updateList();redrawViews())
+        on radiusSourceSpin changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v;CyrusViewportRedraw())
+        on followRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:2;CyrusViewportRedraw())
+        on showRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:3;CyrusViewportRedraw())
+        on forwardAxis selected v do if not loadingColor do (obj.assignSourceForward plantList.selection v;CyrusViewportRedraw())
+        on sourceZSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v;CyrusViewportRedraw())
+        on sourceScaleSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v scaling:true;CyrusViewportRedraw())
+        on weightSpin changed v do if not loadingColor do (obj.assignWeight plantList.selection v;updateList();CyrusViewportRedraw())
         on plantList selected i do (
             if i>0 and plantList.selection[i] do focusedRow=i
         )
@@ -3700,18 +3731,18 @@ fn CyrusMake_sourceUI_4 target view = (
             if i>0 and i<=groupPalette.count do (
                 local c=groupPalette[i]
                 loadingColor=true;groupColor.color=c;loadingColor=false
-                obj.assignGroup plantList.selection c;updateList();redrawViews()
+                obj.assignGroup plantList.selection c;updateList();CyrusViewportRedraw()
             )
         )
         on groupColor changed c do (
             if not loadingColor and plantList.selection.numberSet>0 do (
                 obj.assignGroup plantList.selection c
-                updateList();redrawViews()
+                updateList();CyrusViewportRedraw()
             )
         )
         on applyColor pressed do (
             obj.assignGroup plantList.selection groupColor.color
-            updateList();redrawViews()
+            updateList();CyrusViewportRedraw()
         )
         on selectFromScene pressed do (
             local picked=selectByName title:"Cyrus Scatter - Select From Scene" buttonText:"Add" filter:AminScatterSourceFilter single:false
@@ -3734,7 +3765,7 @@ fn CyrusMake_sourceUI_4 target view = (
                     deleteItem obj.sources rows[k];deleteItem obj.sourceColors rows[k]
                 )
             )
-            plantList.selection=#{};obj.dirty=true;updateList();redrawViews()
+            plantList.selection=#{};obj.dirty=true;updateList();CyrusViewportRedraw()
         )
         on selectPlant pressed do (
             local nodes=for i in plantList.selection where i<=obj.sources.count and isValidNode obj.sources[i] collect obj.sources[i]
@@ -3756,7 +3787,7 @@ fn CyrusMake_distributionUI_4 target view = (
         radiobuttons modeRadio "Method" labels:#("Random","Texture Density") columns:1 pos:[(CyrusUISize 8 1),8] width:(CyrusUISize 146 1)
         radiobuttons populationRadio "Population" labels:#("Count","Plants per m2") columns:1 pos:[(CyrusUISize 8 1),78] width:(CyrusUISize 146 1)
         checkbox showCenterCheck "Show Point" pos:[(CyrusUISize 8 1),148] width:(CyrusUISize 146 1)
-        on showCenterCheck changed v do (obj.showCenters=v;redrawViews())
+        on showCenterCheck changed v do (obj.showCenters=v;CyrusViewportRedraw())
         spinner countSpin "Count: " range:[1,100000,200] type:#integer fieldWidth:(CyrusUISize 64 1) width:(CyrusUISize 146 1) pos:[(CyrusUISize 8 1),174]
         spinner densitySpin "Per m2: " range:[0,1000000,100] fieldWidth:(CyrusUISize 64 1) width:(CyrusUISize 146 1) pos:[(CyrusUISize 8 1),200]
         spinner seedSpin "Seed: " range:[0,2147483647,42] type:#integer fieldWidth:(CyrusUISize 64 1) width:(CyrusUISize 146 1) pos:[(CyrusUISize 8 1),226]
@@ -3767,14 +3798,14 @@ fn CyrusMake_distributionUI_4 target view = (
         label mapHint "White: dense / Black: empty" pos:[(CyrusUISize 8 1),360] width:(CyrusUISize 146 1)
 
         fn syncControls = (populationRadio.state=obj.populationMode;densitySpin.value=obj.plantsPerM2;densityButton.map=obj.densityMap;invertCheck.checked=obj.invertDensity;)
-        on modeRadio changed v do (obj.distributionMode=if v==2 then 3 else 1;obj.dirty=true;syncControls();redrawViews())
-        on countSpin changed v do (obj.amount=v;obj.dirty=true;syncControls();redrawViews())
-        on seedSpin changed v do (obj.randomSeed=v;obj.dirty=true;syncControls();redrawViews())
+        on modeRadio changed v do (obj.distributionMode=if v==2 then 3 else 1;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on countSpin changed v do (obj.amount=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on seedSpin changed v do (obj.randomSeed=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
 
-        on populationRadio changed v do (obj.populationMode=v;obj.dirty=true;syncControls();redrawViews())
-        on densitySpin changed v do (obj.plantsPerM2=v;obj.dirty=true;syncControls();redrawViews())
-        on densityButton picked v do (obj.densityMap=v;obj.dirty=true;syncControls();redrawViews())
-        on invertCheck changed v do (obj.invertDensity=v;obj.dirty=true;syncControls();redrawViews())
+        on populationRadio changed v do (obj.populationMode=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on densitySpin changed v do (obj.plantsPerM2=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on densityButton picked v do (obj.densityMap=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on invertCheck changed v do (obj.invertDensity=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on distributionUI_4 rolledUp state do parentView.layoutPanels()
         on distributionUI_4 open do (showCenterCheck.checked=obj.showCenters;populationRadio.state=obj.populationMode;densitySpin.value=obj.plantsPerM2;densityButton.map=obj.densityMap;invertCheck.checked=obj.invertDensity;controlsReady=true;(countSpin.value=obj.amount;seedSpin.value=obj.randomSeed;modeRadio.state=if obj.distributionMode==3 then 2 else 1))
     )
@@ -3815,14 +3846,14 @@ fn CyrusMake_areaUI_4 target view = (
             aaWidth.enabled=obj.areaUseLine;aaCaps.enabled=obj.areaUseLine;aaRadius.enabled=obj.areaUsePoints
             loadingAnalyzerArea=false
         )
-        on aaPick picked n do (obj.areaAnalyzer=n;syncAnalyzerArea();redrawViews())
-        on aaRemove pressed do (obj.areaUseLine=false;obj.areaUsePoints=false;obj.areaAnalyzer=undefined;syncAnalyzerArea();redrawViews())
-        on aaLine changed v do if not loadingAnalyzerArea do (obj.areaUseLine=v;syncAnalyzerArea();redrawViews())
-        on aaPoints changed v do if not loadingAnalyzerArea do (obj.areaUsePoints=v;syncAnalyzerArea();redrawViews())
-        on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;redrawViews())
-        on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;redrawViews())
-        on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;redrawViews())
-        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
+        on aaPick picked n do (obj.areaAnalyzer=n;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaRemove pressed do (obj.areaUseLine=false;obj.areaUsePoints=false;obj.areaAnalyzer=undefined;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaLine changed v do if not loadingAnalyzerArea do (obj.areaUseLine=v;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaPoints changed v do if not loadingAnalyzerArea do (obj.areaUsePoints=v;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;CyrusViewportRedraw())
+        on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;CyrusViewportRedraw())
+        on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;CyrusViewportRedraw())
+        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;CyrusViewportRedraw())
 
         local loadingFall=false
         dropdownlist fallTarget "Edge falloff target" items:#("Analyzer Boundary","Selected Area line") selection:1 pos:[(CyrusUISize 8 1),704] width:(CyrusUISize 146 1)
@@ -3859,12 +3890,12 @@ fn CyrusMake_areaUI_4 target view = (
         fn setFallValue index value = (
             if not loadingFall do (
                 local n=fallNode()
-                if fallTarget.selection==1 or isValidNode n do (local cfg=obj.getFallConfig n;cfg[index]=value;obj.setFallConfig n cfg;redrawViews())
+                if fallTarget.selection==1 or isValidNode n do (local cfg=obj.getFallConfig n;cfg[index]=value;obj.setFallConfig n cfg;CyrusViewportRedraw())
             )
         )
         on fallTarget selected v do syncFalloff()
-        on fallPick picked n do (if CyrusAnalyzerFilter n do obj.fallAnalyzer=n;syncFalloff();redrawViews())
-        on fallRemove pressed do (obj.fallAnalyzer=undefined;obj.fallDelete=false;obj.fallScale=false;obj.fallDensity=false;syncFalloff();redrawViews())
+        on fallPick picked n do (if CyrusAnalyzerFilter n do obj.fallAnalyzer=n;syncFalloff();CyrusViewportRedraw())
+        on fallRemove pressed do (obj.fallAnalyzer=undefined;obj.fallDelete=false;obj.fallScale=false;obj.fallDensity=false;syncFalloff();CyrusViewportRedraw())
         on fallDeleteCheck changed v do setFallValue 1 v
         on fallDeleteSpin changed v do setFallValue 2 v
         on fallScaleCheck changed v do setFallValue 3 v
@@ -3889,11 +3920,11 @@ fn CyrusMake_areaUI_4 target view = (
             )
         )
 
-        on pickArea picked n do (addArea n;updateAreas();redrawViews())
+        on pickArea picked n do (addArea n;updateAreas();CyrusViewportRedraw())
         on addAreaScene pressed do (
             local nodes=selectByName title:"Cyrus Scatter - Closed Areas" buttonText:"Add" filter:AminScatterAreaFilter single:false
             if nodes!=undefined do for n in nodes do addArea n
-            updateAreas();redrawViews()
+            updateAreas();CyrusViewportRedraw()
         )
         on areaList selectionEnd do (
             if areaList.selection.numberSet==1 do fallTarget.selection=2
@@ -3902,7 +3933,7 @@ fn CyrusMake_areaUI_4 target view = (
         )
         on areaMode changed mode do (
             undo "Cyrus Scatter area mode" on (for i in areaList.selection do obj.areaModes[i]=mode)
-            obj.dirty=true;updateAreas();redrawViews()
+            obj.dirty=true;updateAreas();CyrusViewportRedraw()
         )
         on removeArea pressed do (
             if CyrusFalloffGraph!=undefined do try(destroyDialog CyrusFalloffGraph)catch()
@@ -3911,9 +3942,9 @@ fn CyrusMake_areaUI_4 target view = (
                 obj.ensureAreaFalloffs()
                 for i=rows.count to 1 by -1 do (deleteItem obj.areaNodes rows[i];deleteItem obj.areaModes rows[i];deleteItem obj.areaFallConfigs rows[i];deleteItem obj.areaFallScaleGraphs rows[i];deleteItem obj.areaFallDensityGraphs rows[i])
             )
-            areaList.selection=#{};obj.dirty=true;updateAreas();redrawViews()
+            areaList.selection=#{};obj.dirty=true;updateAreas();CyrusViewportRedraw()
         )
-        on refreshAreas pressed do (obj.dirty=true;obj.refreshPreview();redrawViews())
+        on refreshAreas pressed do (obj.dirty=true;obj.refreshPreview();CyrusViewportRedraw())
 
         on areaUI_4 rolledUp state do parentView.layoutPanels()
         on areaUI_4 open do (syncAnalyzerArea();syncFalloff();controlsReady=true;updateAreas())
@@ -3978,16 +4009,16 @@ fn CyrusMake_diversityUI_4 target view = (
         fn syncControls = (diversityRadio.state=obj.diversityMode;sizeSpin.value=obj.diversitySize;divSeedSpin.value=obj.diversitySeed;roughSpin.value=obj.roughness;blurSpin.value=obj.blurryEdge;noiseSpin.value=obj.diversityNoise;)
         on faceOutCheck changed v do (
             if analyzerChannel.selection==5 then obj.edgeFaceOut=v else if analyzerChannel.selection==4 then obj.streetFaceOut=v else obj.borderFaceOut=v
-            cornerRadiusSpin.enabled=v;obj.dirty=true;redrawViews()
+            cornerRadiusSpin.enabled=v;obj.dirty=true;CyrusViewportRedraw()
         )
         on cornerRadiusSpin changed v do (
             if analyzerChannel.selection==5 then obj.edgeCornerRadius=v else if analyzerChannel.selection==4 then obj.streetCornerRadius=v else obj.borderCornerRadius=v
-            obj.dirty=true;redrawViews()
+            obj.dirty=true;CyrusViewportRedraw()
         )
-        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;redrawViews())
-        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;redrawViews())
-        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;redrawViews())
-        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;syncControls();redrawViews())
+        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;CyrusViewportRedraw())
+        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;CyrusViewportRedraw())
+        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;CyrusViewportRedraw())
+        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         fn selectedStroke = (if strokesList.selection>0 and strokesList.selection<=strokeRows.count then strokeRows[strokesList.selection] else 0)
         fn showStroke = (
             loadingStroke=true
@@ -4085,7 +4116,7 @@ fn CyrusMake_diversityUI_4 target view = (
         on pathsDrop selected i do showPath()
         on analyzerChannel selected i do updatePattern()
         on pickAnalyzer picked n do (
-            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();redrawViews())
+            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();CyrusViewportRedraw())
         )
         on strokesList selected i do showStroke()
         on pickPath picked n do (
@@ -4097,39 +4128,39 @@ fn CyrusMake_diversityUI_4 target view = (
             for i=obj.patternLines.count to 1 by -1 where obj.patternLines[i]==path do obj.removeStroke i
             local k=findItem obj.patternPaths path;if k>0 do deleteItem obj.patternPaths k
             if obj.diversityMode==4 do obj.analyzerNode=undefined
-            updatePattern();obj.dirty=true;syncControls();redrawViews()
+            updatePattern();obj.dirty=true;syncControls();CyrusViewportRedraw()
         )
         on addOutside pressed do (
             if obj.diversityMode==4 and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5) do return false
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local types=#(1,3,4)
             local side=if obj.diversityMode==4 then types[analyzerChannel.selection] else 1
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
         on addInside pressed do (
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local side=if obj.diversityMode==4 and analyzerChannel.selection==5 then 7 else if obj.diversityMode==4 and analyzerChannel.selection==4 then 6 else if obj.diversityMode==4 and analyzerChannel.selection==3 then 5 else 2
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
-        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();redrawViews())
-        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;redrawViews())
-        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;redrawViews())
-        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;redrawViews())
-        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;redrawViews())
-        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;redrawViews())
-        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;redrawViews())
-        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;redrawViews())
-        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;redrawViews())
-        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;redrawViews())
-        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();redrawViews())
-        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;syncControls();redrawViews())
+        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();CyrusViewportRedraw())
+        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;CyrusViewportRedraw())
+        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;CyrusViewportRedraw())
+        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;CyrusViewportRedraw())
+        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;CyrusViewportRedraw())
+        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;CyrusViewportRedraw())
+        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;CyrusViewportRedraw())
+        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;CyrusViewportRedraw())
+        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;CyrusViewportRedraw())
+        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;CyrusViewportRedraw())
+        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();CyrusViewportRedraw())
+        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
         on strokeChoices selectionEnd do if not loadingStroke do (
             local row=selectedStroke()
             if row>0 do obj.setStrokeSelection row obj.strokeModes[row] (for i in strokeChoices.selection collect choiceValues[i])
-            redrawViews()
+            CyrusViewportRedraw()
         )
-        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;syncControls();redrawViews())
-        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;syncControls();redrawViews())
+        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
         on refreshGroups pressed do updatePattern()
                 fn updateControls = (
             for c in #(sizeSpin,divSeedSpin,roughSpin,blurSpin,noiseSpin,groupHint,fixedHint) do c.visible=obj.diversityMode==2
@@ -4137,14 +4168,14 @@ fn CyrusMake_diversityUI_4 target view = (
             if strokeExpandedHeight>0 do diversityUI_4.height=if obj.diversityMode>=3 then strokeExpandedHeight else (if obj.diversityMode==2 then 310 else 124)*parentView.dpiScale
             parentView.layoutPanels()
         )
-        on diversityRadio changed v do (obj.diversityMode=v;updateControls();updatePattern();obj.dirty=true;syncControls();redrawViews())
+        on diversityRadio changed v do (obj.diversityMode=v;updateControls();updatePattern();obj.dirty=true;syncControls();CyrusViewportRedraw())
 
 
-        on sizeSpin changed v do (obj.diversitySize=v;obj.dirty=true;syncControls();redrawViews())
-        on divSeedSpin changed v do (obj.diversitySeed=v;obj.dirty=true;syncControls();redrawViews())
-        on roughSpin changed v do (obj.roughness=v;obj.dirty=true;syncControls();redrawViews())
-        on blurSpin changed v do (obj.blurryEdge=v;obj.dirty=true;syncControls();redrawViews())
-        on noiseSpin changed v do (obj.diversityNoise=v;obj.dirty=true;syncControls();redrawViews())
+        on sizeSpin changed v do (obj.diversitySize=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on divSeedSpin changed v do (obj.diversitySeed=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on roughSpin changed v do (obj.roughness=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on blurSpin changed v do (obj.blurryEdge=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on noiseSpin changed v do (obj.diversityNoise=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on diversityUI_4 rolledUp state do parentView.layoutPanels()
         on diversityUI_4 open do (diversityRadio.state=obj.diversityMode;sizeSpin.value=obj.diversitySize;divSeedSpin.value=obj.diversitySeed;roughSpin.value=obj.roughness;blurSpin.value=obj.blurryEdge;noiseSpin.value=obj.diversityNoise;controlsReady=true;strokeExpandedHeight=diversityUI_4.height;updateControls();updatePattern())
     )
@@ -4193,16 +4224,16 @@ fn CyrusMake_lineUI_4 target view = (
         checkbox straightStreet "Straight ends (Street Side)" pos:[(CyrusUISize 8 1),620] width:(CyrusUISize 146 1)
         on faceOutCheck changed v do (
             if analyzerChannel.selection==5 then obj.edgeFaceOut=v else if analyzerChannel.selection==4 then obj.streetFaceOut=v else obj.borderFaceOut=v
-            cornerRadiusSpin.enabled=v;obj.dirty=true;redrawViews()
+            cornerRadiusSpin.enabled=v;obj.dirty=true;CyrusViewportRedraw()
         )
         on cornerRadiusSpin changed v do (
             if analyzerChannel.selection==5 then obj.edgeCornerRadius=v else if analyzerChannel.selection==4 then obj.streetCornerRadius=v else obj.borderCornerRadius=v
-            obj.dirty=true;redrawViews()
+            obj.dirty=true;CyrusViewportRedraw()
         )
-        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;redrawViews())
-        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;redrawViews())
-        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;redrawViews())
-        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;redrawViews())
+        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;CyrusViewportRedraw())
+        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;CyrusViewportRedraw())
+        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;CyrusViewportRedraw())
+        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;CyrusViewportRedraw())
         fn selectedStroke = (if strokesList.selection>0 and strokesList.selection<=strokeRows.count then strokeRows[strokesList.selection] else 0)
         fn showStroke = (
             loadingStroke=true
@@ -4300,7 +4331,7 @@ fn CyrusMake_lineUI_4 target view = (
         on pathsDrop selected i do showPath()
         on analyzerChannel selected i do updatePattern()
         on pickAnalyzer picked n do (
-            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();redrawViews())
+            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();CyrusViewportRedraw())
         )
         on strokesList selected i do showStroke()
         on pickPath picked n do (
@@ -4312,39 +4343,39 @@ fn CyrusMake_lineUI_4 target view = (
             for i=obj.patternLines.count to 1 by -1 where obj.patternLines[i]==path do obj.removeStroke i
             local k=findItem obj.patternPaths path;if k>0 do deleteItem obj.patternPaths k
             if obj.diversityMode==4 do obj.analyzerNode=undefined
-            updatePattern();obj.dirty=true;redrawViews()
+            updatePattern();obj.dirty=true;CyrusViewportRedraw()
         )
         on addOutside pressed do (
             if obj.diversityMode==4 and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5) do return false
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local types=#(1,3,4)
             local side=if obj.diversityMode==4 then types[analyzerChannel.selection] else 1
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
         on addInside pressed do (
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local side=if obj.diversityMode==4 and analyzerChannel.selection==5 then 7 else if obj.diversityMode==4 and analyzerChannel.selection==4 then 6 else if obj.diversityMode==4 and analyzerChannel.selection==3 then 5 else 2
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
-        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();redrawViews())
-        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;redrawViews())
-        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;redrawViews())
-        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;redrawViews())
-        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;redrawViews())
-        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;redrawViews())
-        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;redrawViews())
-        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;redrawViews())
-        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;redrawViews())
-        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;redrawViews())
-        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();redrawViews())
-        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;redrawViews())
+        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();CyrusViewportRedraw())
+        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;CyrusViewportRedraw())
+        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;CyrusViewportRedraw())
+        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;CyrusViewportRedraw())
+        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;CyrusViewportRedraw())
+        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;CyrusViewportRedraw())
+        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;CyrusViewportRedraw())
+        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;CyrusViewportRedraw())
+        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;CyrusViewportRedraw())
+        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;CyrusViewportRedraw())
+        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();CyrusViewportRedraw())
+        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;CyrusViewportRedraw())
         on strokeChoices selectionEnd do if not loadingStroke do (
             local row=selectedStroke()
             if row>0 do obj.setStrokeSelection row obj.strokeModes[row] (for i in strokeChoices.selection collect choiceValues[i])
-            redrawViews()
+            CyrusViewportRedraw()
         )
-        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;redrawViews())
-        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;redrawViews())
+        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;CyrusViewportRedraw())
+        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;CyrusViewportRedraw())
         on refreshGroups pressed do updatePattern()
 
         on lineUI_4 rolledUp state do parentView.layoutPanels()
@@ -4388,8 +4419,8 @@ fn CyrusMake_randomUI_4 target view = (
         label wholeMaxTitle "Max" pos:[(CyrusUISize 94 1),274] width:(CyrusUISize 58 1)
         spinner wholeMinSpin "" range:[0.001,1000,1] scale:0.01 pos:[(CyrusUISize 24 1),296] fieldWidth:(CyrusUISize 46 1) width:(CyrusUISize 58 1)
         spinner wholeMaxSpin "" range:[0.001,1000,1] scale:0.01 pos:[(CyrusUISize 94 1),296] fieldWidth:(CyrusUISize 46 1) width:(CyrusUISize 58 1)
-        on wholeMinSpin changed v do (obj.wholeScaleMin=v;if v>obj.wholeScaleMax do (obj.wholeScaleMax=v;wholeMaxSpin.value=v);redrawViews())
-        on wholeMaxSpin changed v do (obj.wholeScaleMax=v;if v<obj.wholeScaleMin do (obj.wholeScaleMin=v;wholeMinSpin.value=v);redrawViews())
+        on wholeMinSpin changed v do (obj.wholeScaleMin=v;if v>obj.wholeScaleMax do (obj.wholeScaleMax=v;wholeMaxSpin.value=v);CyrusViewportRedraw())
+        on wholeMaxSpin changed v do (obj.wholeScaleMax=v;if v<obj.wholeScaleMin do (obj.wholeScaleMin=v;wholeMinSpin.value=v);CyrusViewportRedraw())
         label movTitle "Movement (world units)" pos:[(CyrusUISize 8 1),332] width:(CyrusUISize 146 1)
         label movMinTitle "Min" pos:[(CyrusUISize 24 1),354] width:(CyrusUISize 58 1)
         label movMaxTitle "Max" pos:[(CyrusUISize 94 1),354] width:(CyrusUISize 58 1)
@@ -4406,27 +4437,27 @@ fn CyrusMake_randomUI_4 target view = (
         checkbox alignCheck "Align to normal" pos:[(CyrusUISize 8 1),480] width:(CyrusUISize 146 1)
 
         fn syncControls = (projectCheck.checked=obj.projectMove;rotXMinSpin.value=obj.rotXMin;rotXMaxSpin.value=obj.rotXMax;rotYMinSpin.value=obj.rotYMin;rotYMaxSpin.value=obj.rotYMax;rotZMinSpin.value=obj.rotZMin;rotZMaxSpin.value=obj.rotZMax;sclXMinSpin.value=obj.sclXMin;sclXMaxSpin.value=obj.sclXMax;sclYMinSpin.value=obj.sclYMin;sclYMaxSpin.value=obj.sclYMax;sclZMinSpin.value=obj.sclZMin;sclZMaxSpin.value=obj.sclZMax;movXMinSpin.value=obj.movXMin;movXMaxSpin.value=obj.movXMax;movYMinSpin.value=obj.movYMin;movYMaxSpin.value=obj.movYMax;movZMinSpin.value=obj.movZMin;movZMaxSpin.value=obj.movZMax;)
-        on alignCheck changed v do (obj.alignNormal=v;obj.dirty=true;syncControls();redrawViews())
+        on alignCheck changed v do (obj.alignNormal=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
 
-        on projectCheck changed v do (obj.projectMove=v;obj.dirty=true;syncControls();redrawViews())
-        on rotXMinSpin changed v do (obj.rotXMin=v;obj.dirty=true;syncControls();redrawViews())
-        on rotXMaxSpin changed v do (obj.rotXMax=v;obj.dirty=true;syncControls();redrawViews())
-        on rotYMinSpin changed v do (obj.rotYMin=v;obj.dirty=true;syncControls();redrawViews())
-        on rotYMaxSpin changed v do (obj.rotYMax=v;obj.dirty=true;syncControls();redrawViews())
-        on rotZMinSpin changed v do (obj.rotZMin=v;obj.dirty=true;syncControls();redrawViews())
-        on rotZMaxSpin changed v do (obj.rotZMax=v;obj.dirty=true;syncControls();redrawViews())
-        on sclXMinSpin changed v do (obj.sclXMin=v;obj.dirty=true;syncControls();redrawViews())
-        on sclXMaxSpin changed v do (obj.sclXMax=v;obj.dirty=true;syncControls();redrawViews())
-        on sclYMinSpin changed v do (obj.sclYMin=v;obj.dirty=true;syncControls();redrawViews())
-        on sclYMaxSpin changed v do (obj.sclYMax=v;obj.dirty=true;syncControls();redrawViews())
-        on sclZMinSpin changed v do (obj.sclZMin=v;obj.dirty=true;syncControls();redrawViews())
-        on sclZMaxSpin changed v do (obj.sclZMax=v;obj.dirty=true;syncControls();redrawViews())
-        on movXMinSpin changed v do (obj.movXMin=v;obj.dirty=true;syncControls();redrawViews())
-        on movXMaxSpin changed v do (obj.movXMax=v;obj.dirty=true;syncControls();redrawViews())
-        on movYMinSpin changed v do (obj.movYMin=v;obj.dirty=true;syncControls();redrawViews())
-        on movYMaxSpin changed v do (obj.movYMax=v;obj.dirty=true;syncControls();redrawViews())
-        on movZMinSpin changed v do (obj.movZMin=v;obj.dirty=true;syncControls();redrawViews())
-        on movZMaxSpin changed v do (obj.movZMax=v;obj.dirty=true;syncControls();redrawViews())
+        on projectCheck changed v do (obj.projectMove=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotXMinSpin changed v do (obj.rotXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotXMaxSpin changed v do (obj.rotXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotYMinSpin changed v do (obj.rotYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotYMaxSpin changed v do (obj.rotYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotZMinSpin changed v do (obj.rotZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotZMaxSpin changed v do (obj.rotZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclXMinSpin changed v do (obj.sclXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclXMaxSpin changed v do (obj.sclXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclYMinSpin changed v do (obj.sclYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclYMaxSpin changed v do (obj.sclYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclZMinSpin changed v do (obj.sclZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclZMaxSpin changed v do (obj.sclZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movXMinSpin changed v do (obj.movXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movXMaxSpin changed v do (obj.movXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movYMinSpin changed v do (obj.movYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movYMaxSpin changed v do (obj.movYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movZMinSpin changed v do (obj.movZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movZMaxSpin changed v do (obj.movZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on randomUI_4 rolledUp state do parentView.layoutPanels()
         on randomUI_4 open do (wholeMinSpin.value=obj.wholeScaleMin;wholeMaxSpin.value=obj.wholeScaleMax;projectCheck.checked=obj.projectMove;rotXMinSpin.value=obj.rotXMin;rotXMaxSpin.value=obj.rotXMax;rotYMinSpin.value=obj.rotYMin;rotYMaxSpin.value=obj.rotYMax;rotZMinSpin.value=obj.rotZMin;rotZMaxSpin.value=obj.rotZMax;sclXMinSpin.value=obj.sclXMin;sclXMaxSpin.value=obj.sclXMax;sclYMinSpin.value=obj.sclYMin;sclYMaxSpin.value=obj.sclYMax;sclZMinSpin.value=obj.sclZMin;sclZMaxSpin.value=obj.sclZMax;movXMinSpin.value=obj.movXMin;movXMaxSpin.value=obj.movXMax;movYMinSpin.value=obj.movYMin;movYMaxSpin.value=obj.movYMax;movZMinSpin.value=obj.movZMin;movZMaxSpin.value=obj.movZMax;controlsReady=true;alignCheck.checked=obj.alignNormal)
     )
@@ -4512,27 +4543,27 @@ fn CyrusMake_sourceUI_5 target view = (
                 for i=before+1 to obj.sources.count do rows[i]=true
                 plantList.selection=rows;focusedRow=before+1
             )
-            showSelectedColor();redrawViews()
+            showSelectedColor();CyrusViewportRedraw()
         )
         on addPoint pressed do (
-            local i=obj.addPointSource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();redrawViews()
+            local i=obj.addPointSource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();CyrusViewportRedraw()
         )
         on replacePoint picked n do (
             local rows=plantList.selection as array
             if rows.count!=1 then messageBox "Select one Point row to replace." title:"Cyrus Scatter"
             else if not (obj.replacePointSource rows[1] n) do messageBox "Select a Point row and an object that is not already in this source list." title:"Cyrus Scatter"
-            replacePoint.text="Replace Point: pick object";updateList();showSelectedColor();redrawViews()
+            replacePoint.text="Replace Point: pick object";updateList();showSelectedColor();CyrusViewportRedraw()
         )
         on addEmpty pressed do (
-            local i=obj.addEmptySource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();redrawViews()
+            local i=obj.addEmptySource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();CyrusViewportRedraw()
         )
-        on radiusSourceSpin changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v;redrawViews())
-        on followRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:2;redrawViews())
-        on showRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:3;redrawViews())
-        on forwardAxis selected v do if not loadingColor do (obj.assignSourceForward plantList.selection v;redrawViews())
-        on sourceZSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v;redrawViews())
-        on sourceScaleSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v scaling:true;redrawViews())
-        on weightSpin changed v do if not loadingColor do (obj.assignWeight plantList.selection v;updateList();redrawViews())
+        on radiusSourceSpin changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v;CyrusViewportRedraw())
+        on followRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:2;CyrusViewportRedraw())
+        on showRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:3;CyrusViewportRedraw())
+        on forwardAxis selected v do if not loadingColor do (obj.assignSourceForward plantList.selection v;CyrusViewportRedraw())
+        on sourceZSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v;CyrusViewportRedraw())
+        on sourceScaleSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v scaling:true;CyrusViewportRedraw())
+        on weightSpin changed v do if not loadingColor do (obj.assignWeight plantList.selection v;updateList();CyrusViewportRedraw())
         on plantList selected i do (
             if i>0 and plantList.selection[i] do focusedRow=i
         )
@@ -4541,18 +4572,18 @@ fn CyrusMake_sourceUI_5 target view = (
             if i>0 and i<=groupPalette.count do (
                 local c=groupPalette[i]
                 loadingColor=true;groupColor.color=c;loadingColor=false
-                obj.assignGroup plantList.selection c;updateList();redrawViews()
+                obj.assignGroup plantList.selection c;updateList();CyrusViewportRedraw()
             )
         )
         on groupColor changed c do (
             if not loadingColor and plantList.selection.numberSet>0 do (
                 obj.assignGroup plantList.selection c
-                updateList();redrawViews()
+                updateList();CyrusViewportRedraw()
             )
         )
         on applyColor pressed do (
             obj.assignGroup plantList.selection groupColor.color
-            updateList();redrawViews()
+            updateList();CyrusViewportRedraw()
         )
         on selectFromScene pressed do (
             local picked=selectByName title:"Cyrus Scatter - Select From Scene" buttonText:"Add" filter:AminScatterSourceFilter single:false
@@ -4575,7 +4606,7 @@ fn CyrusMake_sourceUI_5 target view = (
                     deleteItem obj.sources rows[k];deleteItem obj.sourceColors rows[k]
                 )
             )
-            plantList.selection=#{};obj.dirty=true;updateList();redrawViews()
+            plantList.selection=#{};obj.dirty=true;updateList();CyrusViewportRedraw()
         )
         on selectPlant pressed do (
             local nodes=for i in plantList.selection where i<=obj.sources.count and isValidNode obj.sources[i] collect obj.sources[i]
@@ -4597,7 +4628,7 @@ fn CyrusMake_distributionUI_5 target view = (
         radiobuttons modeRadio "Method" labels:#("Random","Texture Density") columns:1 pos:[(CyrusUISize 8 1),8] width:(CyrusUISize 146 1)
         radiobuttons populationRadio "Population" labels:#("Count","Plants per m2") columns:1 pos:[(CyrusUISize 8 1),78] width:(CyrusUISize 146 1)
         checkbox showCenterCheck "Show Point" pos:[(CyrusUISize 8 1),148] width:(CyrusUISize 146 1)
-        on showCenterCheck changed v do (obj.showCenters=v;redrawViews())
+        on showCenterCheck changed v do (obj.showCenters=v;CyrusViewportRedraw())
         spinner countSpin "Count: " range:[1,100000,200] type:#integer fieldWidth:(CyrusUISize 64 1) width:(CyrusUISize 146 1) pos:[(CyrusUISize 8 1),174]
         spinner densitySpin "Per m2: " range:[0,1000000,100] fieldWidth:(CyrusUISize 64 1) width:(CyrusUISize 146 1) pos:[(CyrusUISize 8 1),200]
         spinner seedSpin "Seed: " range:[0,2147483647,42] type:#integer fieldWidth:(CyrusUISize 64 1) width:(CyrusUISize 146 1) pos:[(CyrusUISize 8 1),226]
@@ -4608,14 +4639,14 @@ fn CyrusMake_distributionUI_5 target view = (
         label mapHint "White: dense / Black: empty" pos:[(CyrusUISize 8 1),360] width:(CyrusUISize 146 1)
 
         fn syncControls = (populationRadio.state=obj.populationMode;densitySpin.value=obj.plantsPerM2;densityButton.map=obj.densityMap;invertCheck.checked=obj.invertDensity;)
-        on modeRadio changed v do (obj.distributionMode=if v==2 then 3 else 1;obj.dirty=true;syncControls();redrawViews())
-        on countSpin changed v do (obj.amount=v;obj.dirty=true;syncControls();redrawViews())
-        on seedSpin changed v do (obj.randomSeed=v;obj.dirty=true;syncControls();redrawViews())
+        on modeRadio changed v do (obj.distributionMode=if v==2 then 3 else 1;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on countSpin changed v do (obj.amount=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on seedSpin changed v do (obj.randomSeed=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
 
-        on populationRadio changed v do (obj.populationMode=v;obj.dirty=true;syncControls();redrawViews())
-        on densitySpin changed v do (obj.plantsPerM2=v;obj.dirty=true;syncControls();redrawViews())
-        on densityButton picked v do (obj.densityMap=v;obj.dirty=true;syncControls();redrawViews())
-        on invertCheck changed v do (obj.invertDensity=v;obj.dirty=true;syncControls();redrawViews())
+        on populationRadio changed v do (obj.populationMode=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on densitySpin changed v do (obj.plantsPerM2=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on densityButton picked v do (obj.densityMap=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on invertCheck changed v do (obj.invertDensity=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on distributionUI_5 rolledUp state do parentView.layoutPanels()
         on distributionUI_5 open do (showCenterCheck.checked=obj.showCenters;populationRadio.state=obj.populationMode;densitySpin.value=obj.plantsPerM2;densityButton.map=obj.densityMap;invertCheck.checked=obj.invertDensity;controlsReady=true;(countSpin.value=obj.amount;seedSpin.value=obj.randomSeed;modeRadio.state=if obj.distributionMode==3 then 2 else 1))
     )
@@ -4656,14 +4687,14 @@ fn CyrusMake_areaUI_5 target view = (
             aaWidth.enabled=obj.areaUseLine;aaCaps.enabled=obj.areaUseLine;aaRadius.enabled=obj.areaUsePoints
             loadingAnalyzerArea=false
         )
-        on aaPick picked n do (obj.areaAnalyzer=n;syncAnalyzerArea();redrawViews())
-        on aaRemove pressed do (obj.areaUseLine=false;obj.areaUsePoints=false;obj.areaAnalyzer=undefined;syncAnalyzerArea();redrawViews())
-        on aaLine changed v do if not loadingAnalyzerArea do (obj.areaUseLine=v;syncAnalyzerArea();redrawViews())
-        on aaPoints changed v do if not loadingAnalyzerArea do (obj.areaUsePoints=v;syncAnalyzerArea();redrawViews())
-        on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;redrawViews())
-        on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;redrawViews())
-        on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;redrawViews())
-        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
+        on aaPick picked n do (obj.areaAnalyzer=n;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaRemove pressed do (obj.areaUseLine=false;obj.areaUsePoints=false;obj.areaAnalyzer=undefined;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaLine changed v do if not loadingAnalyzerArea do (obj.areaUseLine=v;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaPoints changed v do if not loadingAnalyzerArea do (obj.areaUsePoints=v;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;CyrusViewportRedraw())
+        on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;CyrusViewportRedraw())
+        on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;CyrusViewportRedraw())
+        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;CyrusViewportRedraw())
 
         local loadingFall=false
         dropdownlist fallTarget "Edge falloff target" items:#("Analyzer Boundary","Selected Area line") selection:1 pos:[(CyrusUISize 8 1),704] width:(CyrusUISize 146 1)
@@ -4700,12 +4731,12 @@ fn CyrusMake_areaUI_5 target view = (
         fn setFallValue index value = (
             if not loadingFall do (
                 local n=fallNode()
-                if fallTarget.selection==1 or isValidNode n do (local cfg=obj.getFallConfig n;cfg[index]=value;obj.setFallConfig n cfg;redrawViews())
+                if fallTarget.selection==1 or isValidNode n do (local cfg=obj.getFallConfig n;cfg[index]=value;obj.setFallConfig n cfg;CyrusViewportRedraw())
             )
         )
         on fallTarget selected v do syncFalloff()
-        on fallPick picked n do (if CyrusAnalyzerFilter n do obj.fallAnalyzer=n;syncFalloff();redrawViews())
-        on fallRemove pressed do (obj.fallAnalyzer=undefined;obj.fallDelete=false;obj.fallScale=false;obj.fallDensity=false;syncFalloff();redrawViews())
+        on fallPick picked n do (if CyrusAnalyzerFilter n do obj.fallAnalyzer=n;syncFalloff();CyrusViewportRedraw())
+        on fallRemove pressed do (obj.fallAnalyzer=undefined;obj.fallDelete=false;obj.fallScale=false;obj.fallDensity=false;syncFalloff();CyrusViewportRedraw())
         on fallDeleteCheck changed v do setFallValue 1 v
         on fallDeleteSpin changed v do setFallValue 2 v
         on fallScaleCheck changed v do setFallValue 3 v
@@ -4730,11 +4761,11 @@ fn CyrusMake_areaUI_5 target view = (
             )
         )
 
-        on pickArea picked n do (addArea n;updateAreas();redrawViews())
+        on pickArea picked n do (addArea n;updateAreas();CyrusViewportRedraw())
         on addAreaScene pressed do (
             local nodes=selectByName title:"Cyrus Scatter - Closed Areas" buttonText:"Add" filter:AminScatterAreaFilter single:false
             if nodes!=undefined do for n in nodes do addArea n
-            updateAreas();redrawViews()
+            updateAreas();CyrusViewportRedraw()
         )
         on areaList selectionEnd do (
             if areaList.selection.numberSet==1 do fallTarget.selection=2
@@ -4743,7 +4774,7 @@ fn CyrusMake_areaUI_5 target view = (
         )
         on areaMode changed mode do (
             undo "Cyrus Scatter area mode" on (for i in areaList.selection do obj.areaModes[i]=mode)
-            obj.dirty=true;updateAreas();redrawViews()
+            obj.dirty=true;updateAreas();CyrusViewportRedraw()
         )
         on removeArea pressed do (
             if CyrusFalloffGraph!=undefined do try(destroyDialog CyrusFalloffGraph)catch()
@@ -4752,9 +4783,9 @@ fn CyrusMake_areaUI_5 target view = (
                 obj.ensureAreaFalloffs()
                 for i=rows.count to 1 by -1 do (deleteItem obj.areaNodes rows[i];deleteItem obj.areaModes rows[i];deleteItem obj.areaFallConfigs rows[i];deleteItem obj.areaFallScaleGraphs rows[i];deleteItem obj.areaFallDensityGraphs rows[i])
             )
-            areaList.selection=#{};obj.dirty=true;updateAreas();redrawViews()
+            areaList.selection=#{};obj.dirty=true;updateAreas();CyrusViewportRedraw()
         )
-        on refreshAreas pressed do (obj.dirty=true;obj.refreshPreview();redrawViews())
+        on refreshAreas pressed do (obj.dirty=true;obj.refreshPreview();CyrusViewportRedraw())
 
         on areaUI_5 rolledUp state do parentView.layoutPanels()
         on areaUI_5 open do (syncAnalyzerArea();syncFalloff();controlsReady=true;updateAreas())
@@ -4819,16 +4850,16 @@ fn CyrusMake_diversityUI_5 target view = (
         fn syncControls = (diversityRadio.state=obj.diversityMode;sizeSpin.value=obj.diversitySize;divSeedSpin.value=obj.diversitySeed;roughSpin.value=obj.roughness;blurSpin.value=obj.blurryEdge;noiseSpin.value=obj.diversityNoise;)
         on faceOutCheck changed v do (
             if analyzerChannel.selection==5 then obj.edgeFaceOut=v else if analyzerChannel.selection==4 then obj.streetFaceOut=v else obj.borderFaceOut=v
-            cornerRadiusSpin.enabled=v;obj.dirty=true;redrawViews()
+            cornerRadiusSpin.enabled=v;obj.dirty=true;CyrusViewportRedraw()
         )
         on cornerRadiusSpin changed v do (
             if analyzerChannel.selection==5 then obj.edgeCornerRadius=v else if analyzerChannel.selection==4 then obj.streetCornerRadius=v else obj.borderCornerRadius=v
-            obj.dirty=true;redrawViews()
+            obj.dirty=true;CyrusViewportRedraw()
         )
-        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;redrawViews())
-        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;redrawViews())
-        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;redrawViews())
-        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;syncControls();redrawViews())
+        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;CyrusViewportRedraw())
+        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;CyrusViewportRedraw())
+        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;CyrusViewportRedraw())
+        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         fn selectedStroke = (if strokesList.selection>0 and strokesList.selection<=strokeRows.count then strokeRows[strokesList.selection] else 0)
         fn showStroke = (
             loadingStroke=true
@@ -4926,7 +4957,7 @@ fn CyrusMake_diversityUI_5 target view = (
         on pathsDrop selected i do showPath()
         on analyzerChannel selected i do updatePattern()
         on pickAnalyzer picked n do (
-            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();redrawViews())
+            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();CyrusViewportRedraw())
         )
         on strokesList selected i do showStroke()
         on pickPath picked n do (
@@ -4938,39 +4969,39 @@ fn CyrusMake_diversityUI_5 target view = (
             for i=obj.patternLines.count to 1 by -1 where obj.patternLines[i]==path do obj.removeStroke i
             local k=findItem obj.patternPaths path;if k>0 do deleteItem obj.patternPaths k
             if obj.diversityMode==4 do obj.analyzerNode=undefined
-            updatePattern();obj.dirty=true;syncControls();redrawViews()
+            updatePattern();obj.dirty=true;syncControls();CyrusViewportRedraw()
         )
         on addOutside pressed do (
             if obj.diversityMode==4 and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5) do return false
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local types=#(1,3,4)
             local side=if obj.diversityMode==4 then types[analyzerChannel.selection] else 1
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
         on addInside pressed do (
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local side=if obj.diversityMode==4 and analyzerChannel.selection==5 then 7 else if obj.diversityMode==4 and analyzerChannel.selection==4 then 6 else if obj.diversityMode==4 and analyzerChannel.selection==3 then 5 else 2
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
-        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();redrawViews())
-        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;redrawViews())
-        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;redrawViews())
-        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;redrawViews())
-        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;redrawViews())
-        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;redrawViews())
-        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;redrawViews())
-        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;redrawViews())
-        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;redrawViews())
-        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;redrawViews())
-        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();redrawViews())
-        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;syncControls();redrawViews())
+        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();CyrusViewportRedraw())
+        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;CyrusViewportRedraw())
+        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;CyrusViewportRedraw())
+        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;CyrusViewportRedraw())
+        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;CyrusViewportRedraw())
+        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;CyrusViewportRedraw())
+        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;CyrusViewportRedraw())
+        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;CyrusViewportRedraw())
+        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;CyrusViewportRedraw())
+        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;CyrusViewportRedraw())
+        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();CyrusViewportRedraw())
+        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
         on strokeChoices selectionEnd do if not loadingStroke do (
             local row=selectedStroke()
             if row>0 do obj.setStrokeSelection row obj.strokeModes[row] (for i in strokeChoices.selection collect choiceValues[i])
-            redrawViews()
+            CyrusViewportRedraw()
         )
-        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;syncControls();redrawViews())
-        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;syncControls();redrawViews())
+        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
         on refreshGroups pressed do updatePattern()
                 fn updateControls = (
             for c in #(sizeSpin,divSeedSpin,roughSpin,blurSpin,noiseSpin,groupHint,fixedHint) do c.visible=obj.diversityMode==2
@@ -4978,14 +5009,14 @@ fn CyrusMake_diversityUI_5 target view = (
             if strokeExpandedHeight>0 do diversityUI_5.height=if obj.diversityMode>=3 then strokeExpandedHeight else (if obj.diversityMode==2 then 310 else 124)*parentView.dpiScale
             parentView.layoutPanels()
         )
-        on diversityRadio changed v do (obj.diversityMode=v;updateControls();updatePattern();obj.dirty=true;syncControls();redrawViews())
+        on diversityRadio changed v do (obj.diversityMode=v;updateControls();updatePattern();obj.dirty=true;syncControls();CyrusViewportRedraw())
 
 
-        on sizeSpin changed v do (obj.diversitySize=v;obj.dirty=true;syncControls();redrawViews())
-        on divSeedSpin changed v do (obj.diversitySeed=v;obj.dirty=true;syncControls();redrawViews())
-        on roughSpin changed v do (obj.roughness=v;obj.dirty=true;syncControls();redrawViews())
-        on blurSpin changed v do (obj.blurryEdge=v;obj.dirty=true;syncControls();redrawViews())
-        on noiseSpin changed v do (obj.diversityNoise=v;obj.dirty=true;syncControls();redrawViews())
+        on sizeSpin changed v do (obj.diversitySize=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on divSeedSpin changed v do (obj.diversitySeed=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on roughSpin changed v do (obj.roughness=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on blurSpin changed v do (obj.blurryEdge=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on noiseSpin changed v do (obj.diversityNoise=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on diversityUI_5 rolledUp state do parentView.layoutPanels()
         on diversityUI_5 open do (diversityRadio.state=obj.diversityMode;sizeSpin.value=obj.diversitySize;divSeedSpin.value=obj.diversitySeed;roughSpin.value=obj.roughness;blurSpin.value=obj.blurryEdge;noiseSpin.value=obj.diversityNoise;controlsReady=true;strokeExpandedHeight=diversityUI_5.height;updateControls();updatePattern())
     )
@@ -5034,16 +5065,16 @@ fn CyrusMake_lineUI_5 target view = (
         checkbox straightStreet "Straight ends (Street Side)" pos:[(CyrusUISize 8 1),620] width:(CyrusUISize 146 1)
         on faceOutCheck changed v do (
             if analyzerChannel.selection==5 then obj.edgeFaceOut=v else if analyzerChannel.selection==4 then obj.streetFaceOut=v else obj.borderFaceOut=v
-            cornerRadiusSpin.enabled=v;obj.dirty=true;redrawViews()
+            cornerRadiusSpin.enabled=v;obj.dirty=true;CyrusViewportRedraw()
         )
         on cornerRadiusSpin changed v do (
             if analyzerChannel.selection==5 then obj.edgeCornerRadius=v else if analyzerChannel.selection==4 then obj.streetCornerRadius=v else obj.borderCornerRadius=v
-            obj.dirty=true;redrawViews()
+            obj.dirty=true;CyrusViewportRedraw()
         )
-        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;redrawViews())
-        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;redrawViews())
-        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;redrawViews())
-        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;redrawViews())
+        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;CyrusViewportRedraw())
+        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;CyrusViewportRedraw())
+        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;CyrusViewportRedraw())
+        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;CyrusViewportRedraw())
         fn selectedStroke = (if strokesList.selection>0 and strokesList.selection<=strokeRows.count then strokeRows[strokesList.selection] else 0)
         fn showStroke = (
             loadingStroke=true
@@ -5141,7 +5172,7 @@ fn CyrusMake_lineUI_5 target view = (
         on pathsDrop selected i do showPath()
         on analyzerChannel selected i do updatePattern()
         on pickAnalyzer picked n do (
-            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();redrawViews())
+            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();CyrusViewportRedraw())
         )
         on strokesList selected i do showStroke()
         on pickPath picked n do (
@@ -5153,39 +5184,39 @@ fn CyrusMake_lineUI_5 target view = (
             for i=obj.patternLines.count to 1 by -1 where obj.patternLines[i]==path do obj.removeStroke i
             local k=findItem obj.patternPaths path;if k>0 do deleteItem obj.patternPaths k
             if obj.diversityMode==4 do obj.analyzerNode=undefined
-            updatePattern();obj.dirty=true;redrawViews()
+            updatePattern();obj.dirty=true;CyrusViewportRedraw()
         )
         on addOutside pressed do (
             if obj.diversityMode==4 and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5) do return false
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local types=#(1,3,4)
             local side=if obj.diversityMode==4 then types[analyzerChannel.selection] else 1
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
         on addInside pressed do (
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local side=if obj.diversityMode==4 and analyzerChannel.selection==5 then 7 else if obj.diversityMode==4 and analyzerChannel.selection==4 then 6 else if obj.diversityMode==4 and analyzerChannel.selection==3 then 5 else 2
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
-        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();redrawViews())
-        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;redrawViews())
-        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;redrawViews())
-        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;redrawViews())
-        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;redrawViews())
-        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;redrawViews())
-        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;redrawViews())
-        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;redrawViews())
-        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;redrawViews())
-        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;redrawViews())
-        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();redrawViews())
-        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;redrawViews())
+        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();CyrusViewportRedraw())
+        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;CyrusViewportRedraw())
+        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;CyrusViewportRedraw())
+        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;CyrusViewportRedraw())
+        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;CyrusViewportRedraw())
+        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;CyrusViewportRedraw())
+        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;CyrusViewportRedraw())
+        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;CyrusViewportRedraw())
+        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;CyrusViewportRedraw())
+        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;CyrusViewportRedraw())
+        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();CyrusViewportRedraw())
+        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;CyrusViewportRedraw())
         on strokeChoices selectionEnd do if not loadingStroke do (
             local row=selectedStroke()
             if row>0 do obj.setStrokeSelection row obj.strokeModes[row] (for i in strokeChoices.selection collect choiceValues[i])
-            redrawViews()
+            CyrusViewportRedraw()
         )
-        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;redrawViews())
-        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;redrawViews())
+        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;CyrusViewportRedraw())
+        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;CyrusViewportRedraw())
         on refreshGroups pressed do updatePattern()
 
         on lineUI_5 rolledUp state do parentView.layoutPanels()
@@ -5229,8 +5260,8 @@ fn CyrusMake_randomUI_5 target view = (
         label wholeMaxTitle "Max" pos:[(CyrusUISize 94 1),274] width:(CyrusUISize 58 1)
         spinner wholeMinSpin "" range:[0.001,1000,1] scale:0.01 pos:[(CyrusUISize 24 1),296] fieldWidth:(CyrusUISize 46 1) width:(CyrusUISize 58 1)
         spinner wholeMaxSpin "" range:[0.001,1000,1] scale:0.01 pos:[(CyrusUISize 94 1),296] fieldWidth:(CyrusUISize 46 1) width:(CyrusUISize 58 1)
-        on wholeMinSpin changed v do (obj.wholeScaleMin=v;if v>obj.wholeScaleMax do (obj.wholeScaleMax=v;wholeMaxSpin.value=v);redrawViews())
-        on wholeMaxSpin changed v do (obj.wholeScaleMax=v;if v<obj.wholeScaleMin do (obj.wholeScaleMin=v;wholeMinSpin.value=v);redrawViews())
+        on wholeMinSpin changed v do (obj.wholeScaleMin=v;if v>obj.wholeScaleMax do (obj.wholeScaleMax=v;wholeMaxSpin.value=v);CyrusViewportRedraw())
+        on wholeMaxSpin changed v do (obj.wholeScaleMax=v;if v<obj.wholeScaleMin do (obj.wholeScaleMin=v;wholeMinSpin.value=v);CyrusViewportRedraw())
         label movTitle "Movement (world units)" pos:[(CyrusUISize 8 1),332] width:(CyrusUISize 146 1)
         label movMinTitle "Min" pos:[(CyrusUISize 24 1),354] width:(CyrusUISize 58 1)
         label movMaxTitle "Max" pos:[(CyrusUISize 94 1),354] width:(CyrusUISize 58 1)
@@ -5247,27 +5278,27 @@ fn CyrusMake_randomUI_5 target view = (
         checkbox alignCheck "Align to normal" pos:[(CyrusUISize 8 1),480] width:(CyrusUISize 146 1)
 
         fn syncControls = (projectCheck.checked=obj.projectMove;rotXMinSpin.value=obj.rotXMin;rotXMaxSpin.value=obj.rotXMax;rotYMinSpin.value=obj.rotYMin;rotYMaxSpin.value=obj.rotYMax;rotZMinSpin.value=obj.rotZMin;rotZMaxSpin.value=obj.rotZMax;sclXMinSpin.value=obj.sclXMin;sclXMaxSpin.value=obj.sclXMax;sclYMinSpin.value=obj.sclYMin;sclYMaxSpin.value=obj.sclYMax;sclZMinSpin.value=obj.sclZMin;sclZMaxSpin.value=obj.sclZMax;movXMinSpin.value=obj.movXMin;movXMaxSpin.value=obj.movXMax;movYMinSpin.value=obj.movYMin;movYMaxSpin.value=obj.movYMax;movZMinSpin.value=obj.movZMin;movZMaxSpin.value=obj.movZMax;)
-        on alignCheck changed v do (obj.alignNormal=v;obj.dirty=true;syncControls();redrawViews())
+        on alignCheck changed v do (obj.alignNormal=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
 
-        on projectCheck changed v do (obj.projectMove=v;obj.dirty=true;syncControls();redrawViews())
-        on rotXMinSpin changed v do (obj.rotXMin=v;obj.dirty=true;syncControls();redrawViews())
-        on rotXMaxSpin changed v do (obj.rotXMax=v;obj.dirty=true;syncControls();redrawViews())
-        on rotYMinSpin changed v do (obj.rotYMin=v;obj.dirty=true;syncControls();redrawViews())
-        on rotYMaxSpin changed v do (obj.rotYMax=v;obj.dirty=true;syncControls();redrawViews())
-        on rotZMinSpin changed v do (obj.rotZMin=v;obj.dirty=true;syncControls();redrawViews())
-        on rotZMaxSpin changed v do (obj.rotZMax=v;obj.dirty=true;syncControls();redrawViews())
-        on sclXMinSpin changed v do (obj.sclXMin=v;obj.dirty=true;syncControls();redrawViews())
-        on sclXMaxSpin changed v do (obj.sclXMax=v;obj.dirty=true;syncControls();redrawViews())
-        on sclYMinSpin changed v do (obj.sclYMin=v;obj.dirty=true;syncControls();redrawViews())
-        on sclYMaxSpin changed v do (obj.sclYMax=v;obj.dirty=true;syncControls();redrawViews())
-        on sclZMinSpin changed v do (obj.sclZMin=v;obj.dirty=true;syncControls();redrawViews())
-        on sclZMaxSpin changed v do (obj.sclZMax=v;obj.dirty=true;syncControls();redrawViews())
-        on movXMinSpin changed v do (obj.movXMin=v;obj.dirty=true;syncControls();redrawViews())
-        on movXMaxSpin changed v do (obj.movXMax=v;obj.dirty=true;syncControls();redrawViews())
-        on movYMinSpin changed v do (obj.movYMin=v;obj.dirty=true;syncControls();redrawViews())
-        on movYMaxSpin changed v do (obj.movYMax=v;obj.dirty=true;syncControls();redrawViews())
-        on movZMinSpin changed v do (obj.movZMin=v;obj.dirty=true;syncControls();redrawViews())
-        on movZMaxSpin changed v do (obj.movZMax=v;obj.dirty=true;syncControls();redrawViews())
+        on projectCheck changed v do (obj.projectMove=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotXMinSpin changed v do (obj.rotXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotXMaxSpin changed v do (obj.rotXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotYMinSpin changed v do (obj.rotYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotYMaxSpin changed v do (obj.rotYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotZMinSpin changed v do (obj.rotZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotZMaxSpin changed v do (obj.rotZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclXMinSpin changed v do (obj.sclXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclXMaxSpin changed v do (obj.sclXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclYMinSpin changed v do (obj.sclYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclYMaxSpin changed v do (obj.sclYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclZMinSpin changed v do (obj.sclZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclZMaxSpin changed v do (obj.sclZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movXMinSpin changed v do (obj.movXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movXMaxSpin changed v do (obj.movXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movYMinSpin changed v do (obj.movYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movYMaxSpin changed v do (obj.movYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movZMinSpin changed v do (obj.movZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movZMaxSpin changed v do (obj.movZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on randomUI_5 rolledUp state do parentView.layoutPanels()
         on randomUI_5 open do (wholeMinSpin.value=obj.wholeScaleMin;wholeMaxSpin.value=obj.wholeScaleMax;projectCheck.checked=obj.projectMove;rotXMinSpin.value=obj.rotXMin;rotXMaxSpin.value=obj.rotXMax;rotYMinSpin.value=obj.rotYMin;rotYMaxSpin.value=obj.rotYMax;rotZMinSpin.value=obj.rotZMin;rotZMaxSpin.value=obj.rotZMax;sclXMinSpin.value=obj.sclXMin;sclXMaxSpin.value=obj.sclXMax;sclYMinSpin.value=obj.sclYMin;sclYMaxSpin.value=obj.sclYMax;sclZMinSpin.value=obj.sclZMin;sclZMaxSpin.value=obj.sclZMax;movXMinSpin.value=obj.movXMin;movXMaxSpin.value=obj.movXMax;movYMinSpin.value=obj.movYMin;movYMaxSpin.value=obj.movYMax;movZMinSpin.value=obj.movZMin;movZMaxSpin.value=obj.movZMax;controlsReady=true;alignCheck.checked=obj.alignNormal)
     )
@@ -5353,27 +5384,27 @@ fn CyrusMake_sourceUI_6 target view = (
                 for i=before+1 to obj.sources.count do rows[i]=true
                 plantList.selection=rows;focusedRow=before+1
             )
-            showSelectedColor();redrawViews()
+            showSelectedColor();CyrusViewportRedraw()
         )
         on addPoint pressed do (
-            local i=obj.addPointSource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();redrawViews()
+            local i=obj.addPointSource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();CyrusViewportRedraw()
         )
         on replacePoint picked n do (
             local rows=plantList.selection as array
             if rows.count!=1 then messageBox "Select one Point row to replace." title:"Cyrus Scatter"
             else if not (obj.replacePointSource rows[1] n) do messageBox "Select a Point row and an object that is not already in this source list." title:"Cyrus Scatter"
-            replacePoint.text="Replace Point: pick object";updateList();showSelectedColor();redrawViews()
+            replacePoint.text="Replace Point: pick object";updateList();showSelectedColor();CyrusViewportRedraw()
         )
         on addEmpty pressed do (
-            local i=obj.addEmptySource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();redrawViews()
+            local i=obj.addEmptySource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();CyrusViewportRedraw()
         )
-        on radiusSourceSpin changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v;redrawViews())
-        on followRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:2;redrawViews())
-        on showRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:3;redrawViews())
-        on forwardAxis selected v do if not loadingColor do (obj.assignSourceForward plantList.selection v;redrawViews())
-        on sourceZSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v;redrawViews())
-        on sourceScaleSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v scaling:true;redrawViews())
-        on weightSpin changed v do if not loadingColor do (obj.assignWeight plantList.selection v;updateList();redrawViews())
+        on radiusSourceSpin changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v;CyrusViewportRedraw())
+        on followRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:2;CyrusViewportRedraw())
+        on showRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:3;CyrusViewportRedraw())
+        on forwardAxis selected v do if not loadingColor do (obj.assignSourceForward plantList.selection v;CyrusViewportRedraw())
+        on sourceZSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v;CyrusViewportRedraw())
+        on sourceScaleSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v scaling:true;CyrusViewportRedraw())
+        on weightSpin changed v do if not loadingColor do (obj.assignWeight plantList.selection v;updateList();CyrusViewportRedraw())
         on plantList selected i do (
             if i>0 and plantList.selection[i] do focusedRow=i
         )
@@ -5382,18 +5413,18 @@ fn CyrusMake_sourceUI_6 target view = (
             if i>0 and i<=groupPalette.count do (
                 local c=groupPalette[i]
                 loadingColor=true;groupColor.color=c;loadingColor=false
-                obj.assignGroup plantList.selection c;updateList();redrawViews()
+                obj.assignGroup plantList.selection c;updateList();CyrusViewportRedraw()
             )
         )
         on groupColor changed c do (
             if not loadingColor and plantList.selection.numberSet>0 do (
                 obj.assignGroup plantList.selection c
-                updateList();redrawViews()
+                updateList();CyrusViewportRedraw()
             )
         )
         on applyColor pressed do (
             obj.assignGroup plantList.selection groupColor.color
-            updateList();redrawViews()
+            updateList();CyrusViewportRedraw()
         )
         on selectFromScene pressed do (
             local picked=selectByName title:"Cyrus Scatter - Select From Scene" buttonText:"Add" filter:AminScatterSourceFilter single:false
@@ -5416,7 +5447,7 @@ fn CyrusMake_sourceUI_6 target view = (
                     deleteItem obj.sources rows[k];deleteItem obj.sourceColors rows[k]
                 )
             )
-            plantList.selection=#{};obj.dirty=true;updateList();redrawViews()
+            plantList.selection=#{};obj.dirty=true;updateList();CyrusViewportRedraw()
         )
         on selectPlant pressed do (
             local nodes=for i in plantList.selection where i<=obj.sources.count and isValidNode obj.sources[i] collect obj.sources[i]
@@ -5438,7 +5469,7 @@ fn CyrusMake_distributionUI_6 target view = (
         radiobuttons modeRadio "Method" labels:#("Random","Texture Density") columns:1 pos:[(CyrusUISize 8 1),8] width:(CyrusUISize 146 1)
         radiobuttons populationRadio "Population" labels:#("Count","Plants per m2") columns:1 pos:[(CyrusUISize 8 1),78] width:(CyrusUISize 146 1)
         checkbox showCenterCheck "Show Point" pos:[(CyrusUISize 8 1),148] width:(CyrusUISize 146 1)
-        on showCenterCheck changed v do (obj.showCenters=v;redrawViews())
+        on showCenterCheck changed v do (obj.showCenters=v;CyrusViewportRedraw())
         spinner countSpin "Count: " range:[1,100000,200] type:#integer fieldWidth:(CyrusUISize 64 1) width:(CyrusUISize 146 1) pos:[(CyrusUISize 8 1),174]
         spinner densitySpin "Per m2: " range:[0,1000000,100] fieldWidth:(CyrusUISize 64 1) width:(CyrusUISize 146 1) pos:[(CyrusUISize 8 1),200]
         spinner seedSpin "Seed: " range:[0,2147483647,42] type:#integer fieldWidth:(CyrusUISize 64 1) width:(CyrusUISize 146 1) pos:[(CyrusUISize 8 1),226]
@@ -5449,14 +5480,14 @@ fn CyrusMake_distributionUI_6 target view = (
         label mapHint "White: dense / Black: empty" pos:[(CyrusUISize 8 1),360] width:(CyrusUISize 146 1)
 
         fn syncControls = (populationRadio.state=obj.populationMode;densitySpin.value=obj.plantsPerM2;densityButton.map=obj.densityMap;invertCheck.checked=obj.invertDensity;)
-        on modeRadio changed v do (obj.distributionMode=if v==2 then 3 else 1;obj.dirty=true;syncControls();redrawViews())
-        on countSpin changed v do (obj.amount=v;obj.dirty=true;syncControls();redrawViews())
-        on seedSpin changed v do (obj.randomSeed=v;obj.dirty=true;syncControls();redrawViews())
+        on modeRadio changed v do (obj.distributionMode=if v==2 then 3 else 1;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on countSpin changed v do (obj.amount=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on seedSpin changed v do (obj.randomSeed=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
 
-        on populationRadio changed v do (obj.populationMode=v;obj.dirty=true;syncControls();redrawViews())
-        on densitySpin changed v do (obj.plantsPerM2=v;obj.dirty=true;syncControls();redrawViews())
-        on densityButton picked v do (obj.densityMap=v;obj.dirty=true;syncControls();redrawViews())
-        on invertCheck changed v do (obj.invertDensity=v;obj.dirty=true;syncControls();redrawViews())
+        on populationRadio changed v do (obj.populationMode=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on densitySpin changed v do (obj.plantsPerM2=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on densityButton picked v do (obj.densityMap=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on invertCheck changed v do (obj.invertDensity=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on distributionUI_6 rolledUp state do parentView.layoutPanels()
         on distributionUI_6 open do (showCenterCheck.checked=obj.showCenters;populationRadio.state=obj.populationMode;densitySpin.value=obj.plantsPerM2;densityButton.map=obj.densityMap;invertCheck.checked=obj.invertDensity;controlsReady=true;(countSpin.value=obj.amount;seedSpin.value=obj.randomSeed;modeRadio.state=if obj.distributionMode==3 then 2 else 1))
     )
@@ -5497,14 +5528,14 @@ fn CyrusMake_areaUI_6 target view = (
             aaWidth.enabled=obj.areaUseLine;aaCaps.enabled=obj.areaUseLine;aaRadius.enabled=obj.areaUsePoints
             loadingAnalyzerArea=false
         )
-        on aaPick picked n do (obj.areaAnalyzer=n;syncAnalyzerArea();redrawViews())
-        on aaRemove pressed do (obj.areaUseLine=false;obj.areaUsePoints=false;obj.areaAnalyzer=undefined;syncAnalyzerArea();redrawViews())
-        on aaLine changed v do if not loadingAnalyzerArea do (obj.areaUseLine=v;syncAnalyzerArea();redrawViews())
-        on aaPoints changed v do if not loadingAnalyzerArea do (obj.areaUsePoints=v;syncAnalyzerArea();redrawViews())
-        on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;redrawViews())
-        on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;redrawViews())
-        on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;redrawViews())
-        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
+        on aaPick picked n do (obj.areaAnalyzer=n;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaRemove pressed do (obj.areaUseLine=false;obj.areaUsePoints=false;obj.areaAnalyzer=undefined;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaLine changed v do if not loadingAnalyzerArea do (obj.areaUseLine=v;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaPoints changed v do if not loadingAnalyzerArea do (obj.areaUsePoints=v;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;CyrusViewportRedraw())
+        on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;CyrusViewportRedraw())
+        on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;CyrusViewportRedraw())
+        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;CyrusViewportRedraw())
 
         local loadingFall=false
         dropdownlist fallTarget "Edge falloff target" items:#("Analyzer Boundary","Selected Area line") selection:1 pos:[(CyrusUISize 8 1),704] width:(CyrusUISize 146 1)
@@ -5541,12 +5572,12 @@ fn CyrusMake_areaUI_6 target view = (
         fn setFallValue index value = (
             if not loadingFall do (
                 local n=fallNode()
-                if fallTarget.selection==1 or isValidNode n do (local cfg=obj.getFallConfig n;cfg[index]=value;obj.setFallConfig n cfg;redrawViews())
+                if fallTarget.selection==1 or isValidNode n do (local cfg=obj.getFallConfig n;cfg[index]=value;obj.setFallConfig n cfg;CyrusViewportRedraw())
             )
         )
         on fallTarget selected v do syncFalloff()
-        on fallPick picked n do (if CyrusAnalyzerFilter n do obj.fallAnalyzer=n;syncFalloff();redrawViews())
-        on fallRemove pressed do (obj.fallAnalyzer=undefined;obj.fallDelete=false;obj.fallScale=false;obj.fallDensity=false;syncFalloff();redrawViews())
+        on fallPick picked n do (if CyrusAnalyzerFilter n do obj.fallAnalyzer=n;syncFalloff();CyrusViewportRedraw())
+        on fallRemove pressed do (obj.fallAnalyzer=undefined;obj.fallDelete=false;obj.fallScale=false;obj.fallDensity=false;syncFalloff();CyrusViewportRedraw())
         on fallDeleteCheck changed v do setFallValue 1 v
         on fallDeleteSpin changed v do setFallValue 2 v
         on fallScaleCheck changed v do setFallValue 3 v
@@ -5571,11 +5602,11 @@ fn CyrusMake_areaUI_6 target view = (
             )
         )
 
-        on pickArea picked n do (addArea n;updateAreas();redrawViews())
+        on pickArea picked n do (addArea n;updateAreas();CyrusViewportRedraw())
         on addAreaScene pressed do (
             local nodes=selectByName title:"Cyrus Scatter - Closed Areas" buttonText:"Add" filter:AminScatterAreaFilter single:false
             if nodes!=undefined do for n in nodes do addArea n
-            updateAreas();redrawViews()
+            updateAreas();CyrusViewportRedraw()
         )
         on areaList selectionEnd do (
             if areaList.selection.numberSet==1 do fallTarget.selection=2
@@ -5584,7 +5615,7 @@ fn CyrusMake_areaUI_6 target view = (
         )
         on areaMode changed mode do (
             undo "Cyrus Scatter area mode" on (for i in areaList.selection do obj.areaModes[i]=mode)
-            obj.dirty=true;updateAreas();redrawViews()
+            obj.dirty=true;updateAreas();CyrusViewportRedraw()
         )
         on removeArea pressed do (
             if CyrusFalloffGraph!=undefined do try(destroyDialog CyrusFalloffGraph)catch()
@@ -5593,9 +5624,9 @@ fn CyrusMake_areaUI_6 target view = (
                 obj.ensureAreaFalloffs()
                 for i=rows.count to 1 by -1 do (deleteItem obj.areaNodes rows[i];deleteItem obj.areaModes rows[i];deleteItem obj.areaFallConfigs rows[i];deleteItem obj.areaFallScaleGraphs rows[i];deleteItem obj.areaFallDensityGraphs rows[i])
             )
-            areaList.selection=#{};obj.dirty=true;updateAreas();redrawViews()
+            areaList.selection=#{};obj.dirty=true;updateAreas();CyrusViewportRedraw()
         )
-        on refreshAreas pressed do (obj.dirty=true;obj.refreshPreview();redrawViews())
+        on refreshAreas pressed do (obj.dirty=true;obj.refreshPreview();CyrusViewportRedraw())
 
         on areaUI_6 rolledUp state do parentView.layoutPanels()
         on areaUI_6 open do (syncAnalyzerArea();syncFalloff();controlsReady=true;updateAreas())
@@ -5660,16 +5691,16 @@ fn CyrusMake_diversityUI_6 target view = (
         fn syncControls = (diversityRadio.state=obj.diversityMode;sizeSpin.value=obj.diversitySize;divSeedSpin.value=obj.diversitySeed;roughSpin.value=obj.roughness;blurSpin.value=obj.blurryEdge;noiseSpin.value=obj.diversityNoise;)
         on faceOutCheck changed v do (
             if analyzerChannel.selection==5 then obj.edgeFaceOut=v else if analyzerChannel.selection==4 then obj.streetFaceOut=v else obj.borderFaceOut=v
-            cornerRadiusSpin.enabled=v;obj.dirty=true;redrawViews()
+            cornerRadiusSpin.enabled=v;obj.dirty=true;CyrusViewportRedraw()
         )
         on cornerRadiusSpin changed v do (
             if analyzerChannel.selection==5 then obj.edgeCornerRadius=v else if analyzerChannel.selection==4 then obj.streetCornerRadius=v else obj.borderCornerRadius=v
-            obj.dirty=true;redrawViews()
+            obj.dirty=true;CyrusViewportRedraw()
         )
-        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;redrawViews())
-        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;redrawViews())
-        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;redrawViews())
-        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;syncControls();redrawViews())
+        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;CyrusViewportRedraw())
+        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;CyrusViewportRedraw())
+        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;CyrusViewportRedraw())
+        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         fn selectedStroke = (if strokesList.selection>0 and strokesList.selection<=strokeRows.count then strokeRows[strokesList.selection] else 0)
         fn showStroke = (
             loadingStroke=true
@@ -5767,7 +5798,7 @@ fn CyrusMake_diversityUI_6 target view = (
         on pathsDrop selected i do showPath()
         on analyzerChannel selected i do updatePattern()
         on pickAnalyzer picked n do (
-            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();redrawViews())
+            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();CyrusViewportRedraw())
         )
         on strokesList selected i do showStroke()
         on pickPath picked n do (
@@ -5779,39 +5810,39 @@ fn CyrusMake_diversityUI_6 target view = (
             for i=obj.patternLines.count to 1 by -1 where obj.patternLines[i]==path do obj.removeStroke i
             local k=findItem obj.patternPaths path;if k>0 do deleteItem obj.patternPaths k
             if obj.diversityMode==4 do obj.analyzerNode=undefined
-            updatePattern();obj.dirty=true;syncControls();redrawViews()
+            updatePattern();obj.dirty=true;syncControls();CyrusViewportRedraw()
         )
         on addOutside pressed do (
             if obj.diversityMode==4 and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5) do return false
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local types=#(1,3,4)
             local side=if obj.diversityMode==4 then types[analyzerChannel.selection] else 1
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
         on addInside pressed do (
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local side=if obj.diversityMode==4 and analyzerChannel.selection==5 then 7 else if obj.diversityMode==4 and analyzerChannel.selection==4 then 6 else if obj.diversityMode==4 and analyzerChannel.selection==3 then 5 else 2
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
-        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();redrawViews())
-        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;redrawViews())
-        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;redrawViews())
-        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;redrawViews())
-        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;redrawViews())
-        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;redrawViews())
-        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;redrawViews())
-        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;redrawViews())
-        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;redrawViews())
-        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;redrawViews())
-        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();redrawViews())
-        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;syncControls();redrawViews())
+        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();CyrusViewportRedraw())
+        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;CyrusViewportRedraw())
+        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;CyrusViewportRedraw())
+        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;CyrusViewportRedraw())
+        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;CyrusViewportRedraw())
+        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;CyrusViewportRedraw())
+        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;CyrusViewportRedraw())
+        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;CyrusViewportRedraw())
+        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;CyrusViewportRedraw())
+        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;CyrusViewportRedraw())
+        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();CyrusViewportRedraw())
+        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
         on strokeChoices selectionEnd do if not loadingStroke do (
             local row=selectedStroke()
             if row>0 do obj.setStrokeSelection row obj.strokeModes[row] (for i in strokeChoices.selection collect choiceValues[i])
-            redrawViews()
+            CyrusViewportRedraw()
         )
-        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;syncControls();redrawViews())
-        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;syncControls();redrawViews())
+        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
         on refreshGroups pressed do updatePattern()
                 fn updateControls = (
             for c in #(sizeSpin,divSeedSpin,roughSpin,blurSpin,noiseSpin,groupHint,fixedHint) do c.visible=obj.diversityMode==2
@@ -5819,14 +5850,14 @@ fn CyrusMake_diversityUI_6 target view = (
             if strokeExpandedHeight>0 do diversityUI_6.height=if obj.diversityMode>=3 then strokeExpandedHeight else (if obj.diversityMode==2 then 310 else 124)*parentView.dpiScale
             parentView.layoutPanels()
         )
-        on diversityRadio changed v do (obj.diversityMode=v;updateControls();updatePattern();obj.dirty=true;syncControls();redrawViews())
+        on diversityRadio changed v do (obj.diversityMode=v;updateControls();updatePattern();obj.dirty=true;syncControls();CyrusViewportRedraw())
 
 
-        on sizeSpin changed v do (obj.diversitySize=v;obj.dirty=true;syncControls();redrawViews())
-        on divSeedSpin changed v do (obj.diversitySeed=v;obj.dirty=true;syncControls();redrawViews())
-        on roughSpin changed v do (obj.roughness=v;obj.dirty=true;syncControls();redrawViews())
-        on blurSpin changed v do (obj.blurryEdge=v;obj.dirty=true;syncControls();redrawViews())
-        on noiseSpin changed v do (obj.diversityNoise=v;obj.dirty=true;syncControls();redrawViews())
+        on sizeSpin changed v do (obj.diversitySize=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on divSeedSpin changed v do (obj.diversitySeed=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on roughSpin changed v do (obj.roughness=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on blurSpin changed v do (obj.blurryEdge=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on noiseSpin changed v do (obj.diversityNoise=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on diversityUI_6 rolledUp state do parentView.layoutPanels()
         on diversityUI_6 open do (diversityRadio.state=obj.diversityMode;sizeSpin.value=obj.diversitySize;divSeedSpin.value=obj.diversitySeed;roughSpin.value=obj.roughness;blurSpin.value=obj.blurryEdge;noiseSpin.value=obj.diversityNoise;controlsReady=true;strokeExpandedHeight=diversityUI_6.height;updateControls();updatePattern())
     )
@@ -5875,16 +5906,16 @@ fn CyrusMake_lineUI_6 target view = (
         checkbox straightStreet "Straight ends (Street Side)" pos:[(CyrusUISize 8 1),620] width:(CyrusUISize 146 1)
         on faceOutCheck changed v do (
             if analyzerChannel.selection==5 then obj.edgeFaceOut=v else if analyzerChannel.selection==4 then obj.streetFaceOut=v else obj.borderFaceOut=v
-            cornerRadiusSpin.enabled=v;obj.dirty=true;redrawViews()
+            cornerRadiusSpin.enabled=v;obj.dirty=true;CyrusViewportRedraw()
         )
         on cornerRadiusSpin changed v do (
             if analyzerChannel.selection==5 then obj.edgeCornerRadius=v else if analyzerChannel.selection==4 then obj.streetCornerRadius=v else obj.borderCornerRadius=v
-            obj.dirty=true;redrawViews()
+            obj.dirty=true;CyrusViewportRedraw()
         )
-        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;redrawViews())
-        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;redrawViews())
-        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;redrawViews())
-        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;redrawViews())
+        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;CyrusViewportRedraw())
+        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;CyrusViewportRedraw())
+        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;CyrusViewportRedraw())
+        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;CyrusViewportRedraw())
         fn selectedStroke = (if strokesList.selection>0 and strokesList.selection<=strokeRows.count then strokeRows[strokesList.selection] else 0)
         fn showStroke = (
             loadingStroke=true
@@ -5982,7 +6013,7 @@ fn CyrusMake_lineUI_6 target view = (
         on pathsDrop selected i do showPath()
         on analyzerChannel selected i do updatePattern()
         on pickAnalyzer picked n do (
-            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();redrawViews())
+            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();CyrusViewportRedraw())
         )
         on strokesList selected i do showStroke()
         on pickPath picked n do (
@@ -5994,39 +6025,39 @@ fn CyrusMake_lineUI_6 target view = (
             for i=obj.patternLines.count to 1 by -1 where obj.patternLines[i]==path do obj.removeStroke i
             local k=findItem obj.patternPaths path;if k>0 do deleteItem obj.patternPaths k
             if obj.diversityMode==4 do obj.analyzerNode=undefined
-            updatePattern();obj.dirty=true;redrawViews()
+            updatePattern();obj.dirty=true;CyrusViewportRedraw()
         )
         on addOutside pressed do (
             if obj.diversityMode==4 and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5) do return false
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local types=#(1,3,4)
             local side=if obj.diversityMode==4 then types[analyzerChannel.selection] else 1
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
         on addInside pressed do (
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local side=if obj.diversityMode==4 and analyzerChannel.selection==5 then 7 else if obj.diversityMode==4 and analyzerChannel.selection==4 then 6 else if obj.diversityMode==4 and analyzerChannel.selection==3 then 5 else 2
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
-        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();redrawViews())
-        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;redrawViews())
-        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;redrawViews())
-        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;redrawViews())
-        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;redrawViews())
-        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;redrawViews())
-        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;redrawViews())
-        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;redrawViews())
-        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;redrawViews())
-        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;redrawViews())
-        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();redrawViews())
-        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;redrawViews())
+        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();CyrusViewportRedraw())
+        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;CyrusViewportRedraw())
+        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;CyrusViewportRedraw())
+        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;CyrusViewportRedraw())
+        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;CyrusViewportRedraw())
+        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;CyrusViewportRedraw())
+        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;CyrusViewportRedraw())
+        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;CyrusViewportRedraw())
+        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;CyrusViewportRedraw())
+        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;CyrusViewportRedraw())
+        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();CyrusViewportRedraw())
+        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;CyrusViewportRedraw())
         on strokeChoices selectionEnd do if not loadingStroke do (
             local row=selectedStroke()
             if row>0 do obj.setStrokeSelection row obj.strokeModes[row] (for i in strokeChoices.selection collect choiceValues[i])
-            redrawViews()
+            CyrusViewportRedraw()
         )
-        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;redrawViews())
-        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;redrawViews())
+        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;CyrusViewportRedraw())
+        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;CyrusViewportRedraw())
         on refreshGroups pressed do updatePattern()
 
         on lineUI_6 rolledUp state do parentView.layoutPanels()
@@ -6070,8 +6101,8 @@ fn CyrusMake_randomUI_6 target view = (
         label wholeMaxTitle "Max" pos:[(CyrusUISize 94 1),274] width:(CyrusUISize 58 1)
         spinner wholeMinSpin "" range:[0.001,1000,1] scale:0.01 pos:[(CyrusUISize 24 1),296] fieldWidth:(CyrusUISize 46 1) width:(CyrusUISize 58 1)
         spinner wholeMaxSpin "" range:[0.001,1000,1] scale:0.01 pos:[(CyrusUISize 94 1),296] fieldWidth:(CyrusUISize 46 1) width:(CyrusUISize 58 1)
-        on wholeMinSpin changed v do (obj.wholeScaleMin=v;if v>obj.wholeScaleMax do (obj.wholeScaleMax=v;wholeMaxSpin.value=v);redrawViews())
-        on wholeMaxSpin changed v do (obj.wholeScaleMax=v;if v<obj.wholeScaleMin do (obj.wholeScaleMin=v;wholeMinSpin.value=v);redrawViews())
+        on wholeMinSpin changed v do (obj.wholeScaleMin=v;if v>obj.wholeScaleMax do (obj.wholeScaleMax=v;wholeMaxSpin.value=v);CyrusViewportRedraw())
+        on wholeMaxSpin changed v do (obj.wholeScaleMax=v;if v<obj.wholeScaleMin do (obj.wholeScaleMin=v;wholeMinSpin.value=v);CyrusViewportRedraw())
         label movTitle "Movement (world units)" pos:[(CyrusUISize 8 1),332] width:(CyrusUISize 146 1)
         label movMinTitle "Min" pos:[(CyrusUISize 24 1),354] width:(CyrusUISize 58 1)
         label movMaxTitle "Max" pos:[(CyrusUISize 94 1),354] width:(CyrusUISize 58 1)
@@ -6088,27 +6119,27 @@ fn CyrusMake_randomUI_6 target view = (
         checkbox alignCheck "Align to normal" pos:[(CyrusUISize 8 1),480] width:(CyrusUISize 146 1)
 
         fn syncControls = (projectCheck.checked=obj.projectMove;rotXMinSpin.value=obj.rotXMin;rotXMaxSpin.value=obj.rotXMax;rotYMinSpin.value=obj.rotYMin;rotYMaxSpin.value=obj.rotYMax;rotZMinSpin.value=obj.rotZMin;rotZMaxSpin.value=obj.rotZMax;sclXMinSpin.value=obj.sclXMin;sclXMaxSpin.value=obj.sclXMax;sclYMinSpin.value=obj.sclYMin;sclYMaxSpin.value=obj.sclYMax;sclZMinSpin.value=obj.sclZMin;sclZMaxSpin.value=obj.sclZMax;movXMinSpin.value=obj.movXMin;movXMaxSpin.value=obj.movXMax;movYMinSpin.value=obj.movYMin;movYMaxSpin.value=obj.movYMax;movZMinSpin.value=obj.movZMin;movZMaxSpin.value=obj.movZMax;)
-        on alignCheck changed v do (obj.alignNormal=v;obj.dirty=true;syncControls();redrawViews())
+        on alignCheck changed v do (obj.alignNormal=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
 
-        on projectCheck changed v do (obj.projectMove=v;obj.dirty=true;syncControls();redrawViews())
-        on rotXMinSpin changed v do (obj.rotXMin=v;obj.dirty=true;syncControls();redrawViews())
-        on rotXMaxSpin changed v do (obj.rotXMax=v;obj.dirty=true;syncControls();redrawViews())
-        on rotYMinSpin changed v do (obj.rotYMin=v;obj.dirty=true;syncControls();redrawViews())
-        on rotYMaxSpin changed v do (obj.rotYMax=v;obj.dirty=true;syncControls();redrawViews())
-        on rotZMinSpin changed v do (obj.rotZMin=v;obj.dirty=true;syncControls();redrawViews())
-        on rotZMaxSpin changed v do (obj.rotZMax=v;obj.dirty=true;syncControls();redrawViews())
-        on sclXMinSpin changed v do (obj.sclXMin=v;obj.dirty=true;syncControls();redrawViews())
-        on sclXMaxSpin changed v do (obj.sclXMax=v;obj.dirty=true;syncControls();redrawViews())
-        on sclYMinSpin changed v do (obj.sclYMin=v;obj.dirty=true;syncControls();redrawViews())
-        on sclYMaxSpin changed v do (obj.sclYMax=v;obj.dirty=true;syncControls();redrawViews())
-        on sclZMinSpin changed v do (obj.sclZMin=v;obj.dirty=true;syncControls();redrawViews())
-        on sclZMaxSpin changed v do (obj.sclZMax=v;obj.dirty=true;syncControls();redrawViews())
-        on movXMinSpin changed v do (obj.movXMin=v;obj.dirty=true;syncControls();redrawViews())
-        on movXMaxSpin changed v do (obj.movXMax=v;obj.dirty=true;syncControls();redrawViews())
-        on movYMinSpin changed v do (obj.movYMin=v;obj.dirty=true;syncControls();redrawViews())
-        on movYMaxSpin changed v do (obj.movYMax=v;obj.dirty=true;syncControls();redrawViews())
-        on movZMinSpin changed v do (obj.movZMin=v;obj.dirty=true;syncControls();redrawViews())
-        on movZMaxSpin changed v do (obj.movZMax=v;obj.dirty=true;syncControls();redrawViews())
+        on projectCheck changed v do (obj.projectMove=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotXMinSpin changed v do (obj.rotXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotXMaxSpin changed v do (obj.rotXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotYMinSpin changed v do (obj.rotYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotYMaxSpin changed v do (obj.rotYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotZMinSpin changed v do (obj.rotZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotZMaxSpin changed v do (obj.rotZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclXMinSpin changed v do (obj.sclXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclXMaxSpin changed v do (obj.sclXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclYMinSpin changed v do (obj.sclYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclYMaxSpin changed v do (obj.sclYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclZMinSpin changed v do (obj.sclZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclZMaxSpin changed v do (obj.sclZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movXMinSpin changed v do (obj.movXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movXMaxSpin changed v do (obj.movXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movYMinSpin changed v do (obj.movYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movYMaxSpin changed v do (obj.movYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movZMinSpin changed v do (obj.movZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movZMaxSpin changed v do (obj.movZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on randomUI_6 rolledUp state do parentView.layoutPanels()
         on randomUI_6 open do (wholeMinSpin.value=obj.wholeScaleMin;wholeMaxSpin.value=obj.wholeScaleMax;projectCheck.checked=obj.projectMove;rotXMinSpin.value=obj.rotXMin;rotXMaxSpin.value=obj.rotXMax;rotYMinSpin.value=obj.rotYMin;rotYMaxSpin.value=obj.rotYMax;rotZMinSpin.value=obj.rotZMin;rotZMaxSpin.value=obj.rotZMax;sclXMinSpin.value=obj.sclXMin;sclXMaxSpin.value=obj.sclXMax;sclYMinSpin.value=obj.sclYMin;sclYMaxSpin.value=obj.sclYMax;sclZMinSpin.value=obj.sclZMin;sclZMaxSpin.value=obj.sclZMax;movXMinSpin.value=obj.movXMin;movXMaxSpin.value=obj.movXMax;movYMinSpin.value=obj.movYMin;movYMaxSpin.value=obj.movYMax;movZMinSpin.value=obj.movZMin;movZMaxSpin.value=obj.movZMax;controlsReady=true;alignCheck.checked=obj.alignNormal)
     )
@@ -6194,27 +6225,27 @@ fn CyrusMake_sourceUI_7 target view = (
                 for i=before+1 to obj.sources.count do rows[i]=true
                 plantList.selection=rows;focusedRow=before+1
             )
-            showSelectedColor();redrawViews()
+            showSelectedColor();CyrusViewportRedraw()
         )
         on addPoint pressed do (
-            local i=obj.addPointSource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();redrawViews()
+            local i=obj.addPointSource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();CyrusViewportRedraw()
         )
         on replacePoint picked n do (
             local rows=plantList.selection as array
             if rows.count!=1 then messageBox "Select one Point row to replace." title:"Cyrus Scatter"
             else if not (obj.replacePointSource rows[1] n) do messageBox "Select a Point row and an object that is not already in this source list." title:"Cyrus Scatter"
-            replacePoint.text="Replace Point: pick object";updateList();showSelectedColor();redrawViews()
+            replacePoint.text="Replace Point: pick object";updateList();showSelectedColor();CyrusViewportRedraw()
         )
         on addEmpty pressed do (
-            local i=obj.addEmptySource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();redrawViews()
+            local i=obj.addEmptySource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();CyrusViewportRedraw()
         )
-        on radiusSourceSpin changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v;redrawViews())
-        on followRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:2;redrawViews())
-        on showRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:3;redrawViews())
-        on forwardAxis selected v do if not loadingColor do (obj.assignSourceForward plantList.selection v;redrawViews())
-        on sourceZSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v;redrawViews())
-        on sourceScaleSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v scaling:true;redrawViews())
-        on weightSpin changed v do if not loadingColor do (obj.assignWeight plantList.selection v;updateList();redrawViews())
+        on radiusSourceSpin changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v;CyrusViewportRedraw())
+        on followRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:2;CyrusViewportRedraw())
+        on showRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:3;CyrusViewportRedraw())
+        on forwardAxis selected v do if not loadingColor do (obj.assignSourceForward plantList.selection v;CyrusViewportRedraw())
+        on sourceZSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v;CyrusViewportRedraw())
+        on sourceScaleSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v scaling:true;CyrusViewportRedraw())
+        on weightSpin changed v do if not loadingColor do (obj.assignWeight plantList.selection v;updateList();CyrusViewportRedraw())
         on plantList selected i do (
             if i>0 and plantList.selection[i] do focusedRow=i
         )
@@ -6223,18 +6254,18 @@ fn CyrusMake_sourceUI_7 target view = (
             if i>0 and i<=groupPalette.count do (
                 local c=groupPalette[i]
                 loadingColor=true;groupColor.color=c;loadingColor=false
-                obj.assignGroup plantList.selection c;updateList();redrawViews()
+                obj.assignGroup plantList.selection c;updateList();CyrusViewportRedraw()
             )
         )
         on groupColor changed c do (
             if not loadingColor and plantList.selection.numberSet>0 do (
                 obj.assignGroup plantList.selection c
-                updateList();redrawViews()
+                updateList();CyrusViewportRedraw()
             )
         )
         on applyColor pressed do (
             obj.assignGroup plantList.selection groupColor.color
-            updateList();redrawViews()
+            updateList();CyrusViewportRedraw()
         )
         on selectFromScene pressed do (
             local picked=selectByName title:"Cyrus Scatter - Select From Scene" buttonText:"Add" filter:AminScatterSourceFilter single:false
@@ -6257,7 +6288,7 @@ fn CyrusMake_sourceUI_7 target view = (
                     deleteItem obj.sources rows[k];deleteItem obj.sourceColors rows[k]
                 )
             )
-            plantList.selection=#{};obj.dirty=true;updateList();redrawViews()
+            plantList.selection=#{};obj.dirty=true;updateList();CyrusViewportRedraw()
         )
         on selectPlant pressed do (
             local nodes=for i in plantList.selection where i<=obj.sources.count and isValidNode obj.sources[i] collect obj.sources[i]
@@ -6279,7 +6310,7 @@ fn CyrusMake_distributionUI_7 target view = (
         radiobuttons modeRadio "Method" labels:#("Random","Texture Density") columns:1 pos:[(CyrusUISize 8 1),8] width:(CyrusUISize 146 1)
         radiobuttons populationRadio "Population" labels:#("Count","Plants per m2") columns:1 pos:[(CyrusUISize 8 1),78] width:(CyrusUISize 146 1)
         checkbox showCenterCheck "Show Point" pos:[(CyrusUISize 8 1),148] width:(CyrusUISize 146 1)
-        on showCenterCheck changed v do (obj.showCenters=v;redrawViews())
+        on showCenterCheck changed v do (obj.showCenters=v;CyrusViewportRedraw())
         spinner countSpin "Count: " range:[1,100000,200] type:#integer fieldWidth:(CyrusUISize 64 1) width:(CyrusUISize 146 1) pos:[(CyrusUISize 8 1),174]
         spinner densitySpin "Per m2: " range:[0,1000000,100] fieldWidth:(CyrusUISize 64 1) width:(CyrusUISize 146 1) pos:[(CyrusUISize 8 1),200]
         spinner seedSpin "Seed: " range:[0,2147483647,42] type:#integer fieldWidth:(CyrusUISize 64 1) width:(CyrusUISize 146 1) pos:[(CyrusUISize 8 1),226]
@@ -6290,14 +6321,14 @@ fn CyrusMake_distributionUI_7 target view = (
         label mapHint "White: dense / Black: empty" pos:[(CyrusUISize 8 1),360] width:(CyrusUISize 146 1)
 
         fn syncControls = (populationRadio.state=obj.populationMode;densitySpin.value=obj.plantsPerM2;densityButton.map=obj.densityMap;invertCheck.checked=obj.invertDensity;)
-        on modeRadio changed v do (obj.distributionMode=if v==2 then 3 else 1;obj.dirty=true;syncControls();redrawViews())
-        on countSpin changed v do (obj.amount=v;obj.dirty=true;syncControls();redrawViews())
-        on seedSpin changed v do (obj.randomSeed=v;obj.dirty=true;syncControls();redrawViews())
+        on modeRadio changed v do (obj.distributionMode=if v==2 then 3 else 1;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on countSpin changed v do (obj.amount=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on seedSpin changed v do (obj.randomSeed=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
 
-        on populationRadio changed v do (obj.populationMode=v;obj.dirty=true;syncControls();redrawViews())
-        on densitySpin changed v do (obj.plantsPerM2=v;obj.dirty=true;syncControls();redrawViews())
-        on densityButton picked v do (obj.densityMap=v;obj.dirty=true;syncControls();redrawViews())
-        on invertCheck changed v do (obj.invertDensity=v;obj.dirty=true;syncControls();redrawViews())
+        on populationRadio changed v do (obj.populationMode=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on densitySpin changed v do (obj.plantsPerM2=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on densityButton picked v do (obj.densityMap=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on invertCheck changed v do (obj.invertDensity=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on distributionUI_7 rolledUp state do parentView.layoutPanels()
         on distributionUI_7 open do (showCenterCheck.checked=obj.showCenters;populationRadio.state=obj.populationMode;densitySpin.value=obj.plantsPerM2;densityButton.map=obj.densityMap;invertCheck.checked=obj.invertDensity;controlsReady=true;(countSpin.value=obj.amount;seedSpin.value=obj.randomSeed;modeRadio.state=if obj.distributionMode==3 then 2 else 1))
     )
@@ -6338,14 +6369,14 @@ fn CyrusMake_areaUI_7 target view = (
             aaWidth.enabled=obj.areaUseLine;aaCaps.enabled=obj.areaUseLine;aaRadius.enabled=obj.areaUsePoints
             loadingAnalyzerArea=false
         )
-        on aaPick picked n do (obj.areaAnalyzer=n;syncAnalyzerArea();redrawViews())
-        on aaRemove pressed do (obj.areaUseLine=false;obj.areaUsePoints=false;obj.areaAnalyzer=undefined;syncAnalyzerArea();redrawViews())
-        on aaLine changed v do if not loadingAnalyzerArea do (obj.areaUseLine=v;syncAnalyzerArea();redrawViews())
-        on aaPoints changed v do if not loadingAnalyzerArea do (obj.areaUsePoints=v;syncAnalyzerArea();redrawViews())
-        on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;redrawViews())
-        on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;redrawViews())
-        on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;redrawViews())
-        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
+        on aaPick picked n do (obj.areaAnalyzer=n;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaRemove pressed do (obj.areaUseLine=false;obj.areaUsePoints=false;obj.areaAnalyzer=undefined;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaLine changed v do if not loadingAnalyzerArea do (obj.areaUseLine=v;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaPoints changed v do if not loadingAnalyzerArea do (obj.areaUsePoints=v;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;CyrusViewportRedraw())
+        on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;CyrusViewportRedraw())
+        on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;CyrusViewportRedraw())
+        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;CyrusViewportRedraw())
 
         local loadingFall=false
         dropdownlist fallTarget "Edge falloff target" items:#("Analyzer Boundary","Selected Area line") selection:1 pos:[(CyrusUISize 8 1),704] width:(CyrusUISize 146 1)
@@ -6382,12 +6413,12 @@ fn CyrusMake_areaUI_7 target view = (
         fn setFallValue index value = (
             if not loadingFall do (
                 local n=fallNode()
-                if fallTarget.selection==1 or isValidNode n do (local cfg=obj.getFallConfig n;cfg[index]=value;obj.setFallConfig n cfg;redrawViews())
+                if fallTarget.selection==1 or isValidNode n do (local cfg=obj.getFallConfig n;cfg[index]=value;obj.setFallConfig n cfg;CyrusViewportRedraw())
             )
         )
         on fallTarget selected v do syncFalloff()
-        on fallPick picked n do (if CyrusAnalyzerFilter n do obj.fallAnalyzer=n;syncFalloff();redrawViews())
-        on fallRemove pressed do (obj.fallAnalyzer=undefined;obj.fallDelete=false;obj.fallScale=false;obj.fallDensity=false;syncFalloff();redrawViews())
+        on fallPick picked n do (if CyrusAnalyzerFilter n do obj.fallAnalyzer=n;syncFalloff();CyrusViewportRedraw())
+        on fallRemove pressed do (obj.fallAnalyzer=undefined;obj.fallDelete=false;obj.fallScale=false;obj.fallDensity=false;syncFalloff();CyrusViewportRedraw())
         on fallDeleteCheck changed v do setFallValue 1 v
         on fallDeleteSpin changed v do setFallValue 2 v
         on fallScaleCheck changed v do setFallValue 3 v
@@ -6412,11 +6443,11 @@ fn CyrusMake_areaUI_7 target view = (
             )
         )
 
-        on pickArea picked n do (addArea n;updateAreas();redrawViews())
+        on pickArea picked n do (addArea n;updateAreas();CyrusViewportRedraw())
         on addAreaScene pressed do (
             local nodes=selectByName title:"Cyrus Scatter - Closed Areas" buttonText:"Add" filter:AminScatterAreaFilter single:false
             if nodes!=undefined do for n in nodes do addArea n
-            updateAreas();redrawViews()
+            updateAreas();CyrusViewportRedraw()
         )
         on areaList selectionEnd do (
             if areaList.selection.numberSet==1 do fallTarget.selection=2
@@ -6425,7 +6456,7 @@ fn CyrusMake_areaUI_7 target view = (
         )
         on areaMode changed mode do (
             undo "Cyrus Scatter area mode" on (for i in areaList.selection do obj.areaModes[i]=mode)
-            obj.dirty=true;updateAreas();redrawViews()
+            obj.dirty=true;updateAreas();CyrusViewportRedraw()
         )
         on removeArea pressed do (
             if CyrusFalloffGraph!=undefined do try(destroyDialog CyrusFalloffGraph)catch()
@@ -6434,9 +6465,9 @@ fn CyrusMake_areaUI_7 target view = (
                 obj.ensureAreaFalloffs()
                 for i=rows.count to 1 by -1 do (deleteItem obj.areaNodes rows[i];deleteItem obj.areaModes rows[i];deleteItem obj.areaFallConfigs rows[i];deleteItem obj.areaFallScaleGraphs rows[i];deleteItem obj.areaFallDensityGraphs rows[i])
             )
-            areaList.selection=#{};obj.dirty=true;updateAreas();redrawViews()
+            areaList.selection=#{};obj.dirty=true;updateAreas();CyrusViewportRedraw()
         )
-        on refreshAreas pressed do (obj.dirty=true;obj.refreshPreview();redrawViews())
+        on refreshAreas pressed do (obj.dirty=true;obj.refreshPreview();CyrusViewportRedraw())
 
         on areaUI_7 rolledUp state do parentView.layoutPanels()
         on areaUI_7 open do (syncAnalyzerArea();syncFalloff();controlsReady=true;updateAreas())
@@ -6501,16 +6532,16 @@ fn CyrusMake_diversityUI_7 target view = (
         fn syncControls = (diversityRadio.state=obj.diversityMode;sizeSpin.value=obj.diversitySize;divSeedSpin.value=obj.diversitySeed;roughSpin.value=obj.roughness;blurSpin.value=obj.blurryEdge;noiseSpin.value=obj.diversityNoise;)
         on faceOutCheck changed v do (
             if analyzerChannel.selection==5 then obj.edgeFaceOut=v else if analyzerChannel.selection==4 then obj.streetFaceOut=v else obj.borderFaceOut=v
-            cornerRadiusSpin.enabled=v;obj.dirty=true;redrawViews()
+            cornerRadiusSpin.enabled=v;obj.dirty=true;CyrusViewportRedraw()
         )
         on cornerRadiusSpin changed v do (
             if analyzerChannel.selection==5 then obj.edgeCornerRadius=v else if analyzerChannel.selection==4 then obj.streetCornerRadius=v else obj.borderCornerRadius=v
-            obj.dirty=true;redrawViews()
+            obj.dirty=true;CyrusViewportRedraw()
         )
-        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;redrawViews())
-        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;redrawViews())
-        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;redrawViews())
-        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;syncControls();redrawViews())
+        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;CyrusViewportRedraw())
+        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;CyrusViewportRedraw())
+        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;CyrusViewportRedraw())
+        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         fn selectedStroke = (if strokesList.selection>0 and strokesList.selection<=strokeRows.count then strokeRows[strokesList.selection] else 0)
         fn showStroke = (
             loadingStroke=true
@@ -6608,7 +6639,7 @@ fn CyrusMake_diversityUI_7 target view = (
         on pathsDrop selected i do showPath()
         on analyzerChannel selected i do updatePattern()
         on pickAnalyzer picked n do (
-            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();redrawViews())
+            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();CyrusViewportRedraw())
         )
         on strokesList selected i do showStroke()
         on pickPath picked n do (
@@ -6620,39 +6651,39 @@ fn CyrusMake_diversityUI_7 target view = (
             for i=obj.patternLines.count to 1 by -1 where obj.patternLines[i]==path do obj.removeStroke i
             local k=findItem obj.patternPaths path;if k>0 do deleteItem obj.patternPaths k
             if obj.diversityMode==4 do obj.analyzerNode=undefined
-            updatePattern();obj.dirty=true;syncControls();redrawViews()
+            updatePattern();obj.dirty=true;syncControls();CyrusViewportRedraw()
         )
         on addOutside pressed do (
             if obj.diversityMode==4 and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5) do return false
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local types=#(1,3,4)
             local side=if obj.diversityMode==4 then types[analyzerChannel.selection] else 1
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
         on addInside pressed do (
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local side=if obj.diversityMode==4 and analyzerChannel.selection==5 then 7 else if obj.diversityMode==4 and analyzerChannel.selection==4 then 6 else if obj.diversityMode==4 and analyzerChannel.selection==3 then 5 else 2
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
-        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();redrawViews())
-        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;redrawViews())
-        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;redrawViews())
-        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;redrawViews())
-        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;redrawViews())
-        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;redrawViews())
-        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;redrawViews())
-        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;redrawViews())
-        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;redrawViews())
-        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;redrawViews())
-        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();redrawViews())
-        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;syncControls();redrawViews())
+        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();CyrusViewportRedraw())
+        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;CyrusViewportRedraw())
+        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;CyrusViewportRedraw())
+        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;CyrusViewportRedraw())
+        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;CyrusViewportRedraw())
+        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;CyrusViewportRedraw())
+        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;CyrusViewportRedraw())
+        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;CyrusViewportRedraw())
+        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;CyrusViewportRedraw())
+        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;CyrusViewportRedraw())
+        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();CyrusViewportRedraw())
+        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
         on strokeChoices selectionEnd do if not loadingStroke do (
             local row=selectedStroke()
             if row>0 do obj.setStrokeSelection row obj.strokeModes[row] (for i in strokeChoices.selection collect choiceValues[i])
-            redrawViews()
+            CyrusViewportRedraw()
         )
-        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;syncControls();redrawViews())
-        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;syncControls();redrawViews())
+        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
         on refreshGroups pressed do updatePattern()
                 fn updateControls = (
             for c in #(sizeSpin,divSeedSpin,roughSpin,blurSpin,noiseSpin,groupHint,fixedHint) do c.visible=obj.diversityMode==2
@@ -6660,14 +6691,14 @@ fn CyrusMake_diversityUI_7 target view = (
             if strokeExpandedHeight>0 do diversityUI_7.height=if obj.diversityMode>=3 then strokeExpandedHeight else (if obj.diversityMode==2 then 310 else 124)*parentView.dpiScale
             parentView.layoutPanels()
         )
-        on diversityRadio changed v do (obj.diversityMode=v;updateControls();updatePattern();obj.dirty=true;syncControls();redrawViews())
+        on diversityRadio changed v do (obj.diversityMode=v;updateControls();updatePattern();obj.dirty=true;syncControls();CyrusViewportRedraw())
 
 
-        on sizeSpin changed v do (obj.diversitySize=v;obj.dirty=true;syncControls();redrawViews())
-        on divSeedSpin changed v do (obj.diversitySeed=v;obj.dirty=true;syncControls();redrawViews())
-        on roughSpin changed v do (obj.roughness=v;obj.dirty=true;syncControls();redrawViews())
-        on blurSpin changed v do (obj.blurryEdge=v;obj.dirty=true;syncControls();redrawViews())
-        on noiseSpin changed v do (obj.diversityNoise=v;obj.dirty=true;syncControls();redrawViews())
+        on sizeSpin changed v do (obj.diversitySize=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on divSeedSpin changed v do (obj.diversitySeed=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on roughSpin changed v do (obj.roughness=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on blurSpin changed v do (obj.blurryEdge=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on noiseSpin changed v do (obj.diversityNoise=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on diversityUI_7 rolledUp state do parentView.layoutPanels()
         on diversityUI_7 open do (diversityRadio.state=obj.diversityMode;sizeSpin.value=obj.diversitySize;divSeedSpin.value=obj.diversitySeed;roughSpin.value=obj.roughness;blurSpin.value=obj.blurryEdge;noiseSpin.value=obj.diversityNoise;controlsReady=true;strokeExpandedHeight=diversityUI_7.height;updateControls();updatePattern())
     )
@@ -6716,16 +6747,16 @@ fn CyrusMake_lineUI_7 target view = (
         checkbox straightStreet "Straight ends (Street Side)" pos:[(CyrusUISize 8 1),620] width:(CyrusUISize 146 1)
         on faceOutCheck changed v do (
             if analyzerChannel.selection==5 then obj.edgeFaceOut=v else if analyzerChannel.selection==4 then obj.streetFaceOut=v else obj.borderFaceOut=v
-            cornerRadiusSpin.enabled=v;obj.dirty=true;redrawViews()
+            cornerRadiusSpin.enabled=v;obj.dirty=true;CyrusViewportRedraw()
         )
         on cornerRadiusSpin changed v do (
             if analyzerChannel.selection==5 then obj.edgeCornerRadius=v else if analyzerChannel.selection==4 then obj.streetCornerRadius=v else obj.borderCornerRadius=v
-            obj.dirty=true;redrawViews()
+            obj.dirty=true;CyrusViewportRedraw()
         )
-        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;redrawViews())
-        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;redrawViews())
-        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;redrawViews())
-        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;redrawViews())
+        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;CyrusViewportRedraw())
+        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;CyrusViewportRedraw())
+        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;CyrusViewportRedraw())
+        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;CyrusViewportRedraw())
         fn selectedStroke = (if strokesList.selection>0 and strokesList.selection<=strokeRows.count then strokeRows[strokesList.selection] else 0)
         fn showStroke = (
             loadingStroke=true
@@ -6823,7 +6854,7 @@ fn CyrusMake_lineUI_7 target view = (
         on pathsDrop selected i do showPath()
         on analyzerChannel selected i do updatePattern()
         on pickAnalyzer picked n do (
-            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();redrawViews())
+            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();CyrusViewportRedraw())
         )
         on strokesList selected i do showStroke()
         on pickPath picked n do (
@@ -6835,39 +6866,39 @@ fn CyrusMake_lineUI_7 target view = (
             for i=obj.patternLines.count to 1 by -1 where obj.patternLines[i]==path do obj.removeStroke i
             local k=findItem obj.patternPaths path;if k>0 do deleteItem obj.patternPaths k
             if obj.diversityMode==4 do obj.analyzerNode=undefined
-            updatePattern();obj.dirty=true;redrawViews()
+            updatePattern();obj.dirty=true;CyrusViewportRedraw()
         )
         on addOutside pressed do (
             if obj.diversityMode==4 and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5) do return false
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local types=#(1,3,4)
             local side=if obj.diversityMode==4 then types[analyzerChannel.selection] else 1
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
         on addInside pressed do (
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local side=if obj.diversityMode==4 and analyzerChannel.selection==5 then 7 else if obj.diversityMode==4 and analyzerChannel.selection==4 then 6 else if obj.diversityMode==4 and analyzerChannel.selection==3 then 5 else 2
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
-        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();redrawViews())
-        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;redrawViews())
-        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;redrawViews())
-        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;redrawViews())
-        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;redrawViews())
-        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;redrawViews())
-        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;redrawViews())
-        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;redrawViews())
-        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;redrawViews())
-        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;redrawViews())
-        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();redrawViews())
-        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;redrawViews())
+        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();CyrusViewportRedraw())
+        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;CyrusViewportRedraw())
+        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;CyrusViewportRedraw())
+        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;CyrusViewportRedraw())
+        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;CyrusViewportRedraw())
+        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;CyrusViewportRedraw())
+        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;CyrusViewportRedraw())
+        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;CyrusViewportRedraw())
+        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;CyrusViewportRedraw())
+        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;CyrusViewportRedraw())
+        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();CyrusViewportRedraw())
+        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;CyrusViewportRedraw())
         on strokeChoices selectionEnd do if not loadingStroke do (
             local row=selectedStroke()
             if row>0 do obj.setStrokeSelection row obj.strokeModes[row] (for i in strokeChoices.selection collect choiceValues[i])
-            redrawViews()
+            CyrusViewportRedraw()
         )
-        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;redrawViews())
-        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;redrawViews())
+        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;CyrusViewportRedraw())
+        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;CyrusViewportRedraw())
         on refreshGroups pressed do updatePattern()
 
         on lineUI_7 rolledUp state do parentView.layoutPanels()
@@ -6911,8 +6942,8 @@ fn CyrusMake_randomUI_7 target view = (
         label wholeMaxTitle "Max" pos:[(CyrusUISize 94 1),274] width:(CyrusUISize 58 1)
         spinner wholeMinSpin "" range:[0.001,1000,1] scale:0.01 pos:[(CyrusUISize 24 1),296] fieldWidth:(CyrusUISize 46 1) width:(CyrusUISize 58 1)
         spinner wholeMaxSpin "" range:[0.001,1000,1] scale:0.01 pos:[(CyrusUISize 94 1),296] fieldWidth:(CyrusUISize 46 1) width:(CyrusUISize 58 1)
-        on wholeMinSpin changed v do (obj.wholeScaleMin=v;if v>obj.wholeScaleMax do (obj.wholeScaleMax=v;wholeMaxSpin.value=v);redrawViews())
-        on wholeMaxSpin changed v do (obj.wholeScaleMax=v;if v<obj.wholeScaleMin do (obj.wholeScaleMin=v;wholeMinSpin.value=v);redrawViews())
+        on wholeMinSpin changed v do (obj.wholeScaleMin=v;if v>obj.wholeScaleMax do (obj.wholeScaleMax=v;wholeMaxSpin.value=v);CyrusViewportRedraw())
+        on wholeMaxSpin changed v do (obj.wholeScaleMax=v;if v<obj.wholeScaleMin do (obj.wholeScaleMin=v;wholeMinSpin.value=v);CyrusViewportRedraw())
         label movTitle "Movement (world units)" pos:[(CyrusUISize 8 1),332] width:(CyrusUISize 146 1)
         label movMinTitle "Min" pos:[(CyrusUISize 24 1),354] width:(CyrusUISize 58 1)
         label movMaxTitle "Max" pos:[(CyrusUISize 94 1),354] width:(CyrusUISize 58 1)
@@ -6929,27 +6960,27 @@ fn CyrusMake_randomUI_7 target view = (
         checkbox alignCheck "Align to normal" pos:[(CyrusUISize 8 1),480] width:(CyrusUISize 146 1)
 
         fn syncControls = (projectCheck.checked=obj.projectMove;rotXMinSpin.value=obj.rotXMin;rotXMaxSpin.value=obj.rotXMax;rotYMinSpin.value=obj.rotYMin;rotYMaxSpin.value=obj.rotYMax;rotZMinSpin.value=obj.rotZMin;rotZMaxSpin.value=obj.rotZMax;sclXMinSpin.value=obj.sclXMin;sclXMaxSpin.value=obj.sclXMax;sclYMinSpin.value=obj.sclYMin;sclYMaxSpin.value=obj.sclYMax;sclZMinSpin.value=obj.sclZMin;sclZMaxSpin.value=obj.sclZMax;movXMinSpin.value=obj.movXMin;movXMaxSpin.value=obj.movXMax;movYMinSpin.value=obj.movYMin;movYMaxSpin.value=obj.movYMax;movZMinSpin.value=obj.movZMin;movZMaxSpin.value=obj.movZMax;)
-        on alignCheck changed v do (obj.alignNormal=v;obj.dirty=true;syncControls();redrawViews())
+        on alignCheck changed v do (obj.alignNormal=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
 
-        on projectCheck changed v do (obj.projectMove=v;obj.dirty=true;syncControls();redrawViews())
-        on rotXMinSpin changed v do (obj.rotXMin=v;obj.dirty=true;syncControls();redrawViews())
-        on rotXMaxSpin changed v do (obj.rotXMax=v;obj.dirty=true;syncControls();redrawViews())
-        on rotYMinSpin changed v do (obj.rotYMin=v;obj.dirty=true;syncControls();redrawViews())
-        on rotYMaxSpin changed v do (obj.rotYMax=v;obj.dirty=true;syncControls();redrawViews())
-        on rotZMinSpin changed v do (obj.rotZMin=v;obj.dirty=true;syncControls();redrawViews())
-        on rotZMaxSpin changed v do (obj.rotZMax=v;obj.dirty=true;syncControls();redrawViews())
-        on sclXMinSpin changed v do (obj.sclXMin=v;obj.dirty=true;syncControls();redrawViews())
-        on sclXMaxSpin changed v do (obj.sclXMax=v;obj.dirty=true;syncControls();redrawViews())
-        on sclYMinSpin changed v do (obj.sclYMin=v;obj.dirty=true;syncControls();redrawViews())
-        on sclYMaxSpin changed v do (obj.sclYMax=v;obj.dirty=true;syncControls();redrawViews())
-        on sclZMinSpin changed v do (obj.sclZMin=v;obj.dirty=true;syncControls();redrawViews())
-        on sclZMaxSpin changed v do (obj.sclZMax=v;obj.dirty=true;syncControls();redrawViews())
-        on movXMinSpin changed v do (obj.movXMin=v;obj.dirty=true;syncControls();redrawViews())
-        on movXMaxSpin changed v do (obj.movXMax=v;obj.dirty=true;syncControls();redrawViews())
-        on movYMinSpin changed v do (obj.movYMin=v;obj.dirty=true;syncControls();redrawViews())
-        on movYMaxSpin changed v do (obj.movYMax=v;obj.dirty=true;syncControls();redrawViews())
-        on movZMinSpin changed v do (obj.movZMin=v;obj.dirty=true;syncControls();redrawViews())
-        on movZMaxSpin changed v do (obj.movZMax=v;obj.dirty=true;syncControls();redrawViews())
+        on projectCheck changed v do (obj.projectMove=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotXMinSpin changed v do (obj.rotXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotXMaxSpin changed v do (obj.rotXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotYMinSpin changed v do (obj.rotYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotYMaxSpin changed v do (obj.rotYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotZMinSpin changed v do (obj.rotZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotZMaxSpin changed v do (obj.rotZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclXMinSpin changed v do (obj.sclXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclXMaxSpin changed v do (obj.sclXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclYMinSpin changed v do (obj.sclYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclYMaxSpin changed v do (obj.sclYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclZMinSpin changed v do (obj.sclZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclZMaxSpin changed v do (obj.sclZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movXMinSpin changed v do (obj.movXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movXMaxSpin changed v do (obj.movXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movYMinSpin changed v do (obj.movYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movYMaxSpin changed v do (obj.movYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movZMinSpin changed v do (obj.movZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movZMaxSpin changed v do (obj.movZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on randomUI_7 rolledUp state do parentView.layoutPanels()
         on randomUI_7 open do (wholeMinSpin.value=obj.wholeScaleMin;wholeMaxSpin.value=obj.wholeScaleMax;projectCheck.checked=obj.projectMove;rotXMinSpin.value=obj.rotXMin;rotXMaxSpin.value=obj.rotXMax;rotYMinSpin.value=obj.rotYMin;rotYMaxSpin.value=obj.rotYMax;rotZMinSpin.value=obj.rotZMin;rotZMaxSpin.value=obj.rotZMax;sclXMinSpin.value=obj.sclXMin;sclXMaxSpin.value=obj.sclXMax;sclYMinSpin.value=obj.sclYMin;sclYMaxSpin.value=obj.sclYMax;sclZMinSpin.value=obj.sclZMin;sclZMaxSpin.value=obj.sclZMax;movXMinSpin.value=obj.movXMin;movXMaxSpin.value=obj.movXMax;movYMinSpin.value=obj.movYMin;movYMaxSpin.value=obj.movYMax;movZMinSpin.value=obj.movZMin;movZMaxSpin.value=obj.movZMax;controlsReady=true;alignCheck.checked=obj.alignNormal)
     )
@@ -7035,27 +7066,27 @@ fn CyrusMake_sourceUI_8 target view = (
                 for i=before+1 to obj.sources.count do rows[i]=true
                 plantList.selection=rows;focusedRow=before+1
             )
-            showSelectedColor();redrawViews()
+            showSelectedColor();CyrusViewportRedraw()
         )
         on addPoint pressed do (
-            local i=obj.addPointSource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();redrawViews()
+            local i=obj.addPointSource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();CyrusViewportRedraw()
         )
         on replacePoint picked n do (
             local rows=plantList.selection as array
             if rows.count!=1 then messageBox "Select one Point row to replace." title:"Cyrus Scatter"
             else if not (obj.replacePointSource rows[1] n) do messageBox "Select a Point row and an object that is not already in this source list." title:"Cyrus Scatter"
-            replacePoint.text="Replace Point: pick object";updateList();showSelectedColor();redrawViews()
+            replacePoint.text="Replace Point: pick object";updateList();showSelectedColor();CyrusViewportRedraw()
         )
         on addEmpty pressed do (
-            local i=obj.addEmptySource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();redrawViews()
+            local i=obj.addEmptySource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();CyrusViewportRedraw()
         )
-        on radiusSourceSpin changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v;redrawViews())
-        on followRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:2;redrawViews())
-        on showRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:3;redrawViews())
-        on forwardAxis selected v do if not loadingColor do (obj.assignSourceForward plantList.selection v;redrawViews())
-        on sourceZSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v;redrawViews())
-        on sourceScaleSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v scaling:true;redrawViews())
-        on weightSpin changed v do if not loadingColor do (obj.assignWeight plantList.selection v;updateList();redrawViews())
+        on radiusSourceSpin changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v;CyrusViewportRedraw())
+        on followRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:2;CyrusViewportRedraw())
+        on showRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:3;CyrusViewportRedraw())
+        on forwardAxis selected v do if not loadingColor do (obj.assignSourceForward plantList.selection v;CyrusViewportRedraw())
+        on sourceZSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v;CyrusViewportRedraw())
+        on sourceScaleSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v scaling:true;CyrusViewportRedraw())
+        on weightSpin changed v do if not loadingColor do (obj.assignWeight plantList.selection v;updateList();CyrusViewportRedraw())
         on plantList selected i do (
             if i>0 and plantList.selection[i] do focusedRow=i
         )
@@ -7064,18 +7095,18 @@ fn CyrusMake_sourceUI_8 target view = (
             if i>0 and i<=groupPalette.count do (
                 local c=groupPalette[i]
                 loadingColor=true;groupColor.color=c;loadingColor=false
-                obj.assignGroup plantList.selection c;updateList();redrawViews()
+                obj.assignGroup plantList.selection c;updateList();CyrusViewportRedraw()
             )
         )
         on groupColor changed c do (
             if not loadingColor and plantList.selection.numberSet>0 do (
                 obj.assignGroup plantList.selection c
-                updateList();redrawViews()
+                updateList();CyrusViewportRedraw()
             )
         )
         on applyColor pressed do (
             obj.assignGroup plantList.selection groupColor.color
-            updateList();redrawViews()
+            updateList();CyrusViewportRedraw()
         )
         on selectFromScene pressed do (
             local picked=selectByName title:"Cyrus Scatter - Select From Scene" buttonText:"Add" filter:AminScatterSourceFilter single:false
@@ -7098,7 +7129,7 @@ fn CyrusMake_sourceUI_8 target view = (
                     deleteItem obj.sources rows[k];deleteItem obj.sourceColors rows[k]
                 )
             )
-            plantList.selection=#{};obj.dirty=true;updateList();redrawViews()
+            plantList.selection=#{};obj.dirty=true;updateList();CyrusViewportRedraw()
         )
         on selectPlant pressed do (
             local nodes=for i in plantList.selection where i<=obj.sources.count and isValidNode obj.sources[i] collect obj.sources[i]
@@ -7120,7 +7151,7 @@ fn CyrusMake_distributionUI_8 target view = (
         radiobuttons modeRadio "Method" labels:#("Random","Texture Density") columns:1 pos:[(CyrusUISize 8 1),8] width:(CyrusUISize 146 1)
         radiobuttons populationRadio "Population" labels:#("Count","Plants per m2") columns:1 pos:[(CyrusUISize 8 1),78] width:(CyrusUISize 146 1)
         checkbox showCenterCheck "Show Point" pos:[(CyrusUISize 8 1),148] width:(CyrusUISize 146 1)
-        on showCenterCheck changed v do (obj.showCenters=v;redrawViews())
+        on showCenterCheck changed v do (obj.showCenters=v;CyrusViewportRedraw())
         spinner countSpin "Count: " range:[1,100000,200] type:#integer fieldWidth:(CyrusUISize 64 1) width:(CyrusUISize 146 1) pos:[(CyrusUISize 8 1),174]
         spinner densitySpin "Per m2: " range:[0,1000000,100] fieldWidth:(CyrusUISize 64 1) width:(CyrusUISize 146 1) pos:[(CyrusUISize 8 1),200]
         spinner seedSpin "Seed: " range:[0,2147483647,42] type:#integer fieldWidth:(CyrusUISize 64 1) width:(CyrusUISize 146 1) pos:[(CyrusUISize 8 1),226]
@@ -7131,14 +7162,14 @@ fn CyrusMake_distributionUI_8 target view = (
         label mapHint "White: dense / Black: empty" pos:[(CyrusUISize 8 1),360] width:(CyrusUISize 146 1)
 
         fn syncControls = (populationRadio.state=obj.populationMode;densitySpin.value=obj.plantsPerM2;densityButton.map=obj.densityMap;invertCheck.checked=obj.invertDensity;)
-        on modeRadio changed v do (obj.distributionMode=if v==2 then 3 else 1;obj.dirty=true;syncControls();redrawViews())
-        on countSpin changed v do (obj.amount=v;obj.dirty=true;syncControls();redrawViews())
-        on seedSpin changed v do (obj.randomSeed=v;obj.dirty=true;syncControls();redrawViews())
+        on modeRadio changed v do (obj.distributionMode=if v==2 then 3 else 1;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on countSpin changed v do (obj.amount=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on seedSpin changed v do (obj.randomSeed=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
 
-        on populationRadio changed v do (obj.populationMode=v;obj.dirty=true;syncControls();redrawViews())
-        on densitySpin changed v do (obj.plantsPerM2=v;obj.dirty=true;syncControls();redrawViews())
-        on densityButton picked v do (obj.densityMap=v;obj.dirty=true;syncControls();redrawViews())
-        on invertCheck changed v do (obj.invertDensity=v;obj.dirty=true;syncControls();redrawViews())
+        on populationRadio changed v do (obj.populationMode=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on densitySpin changed v do (obj.plantsPerM2=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on densityButton picked v do (obj.densityMap=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on invertCheck changed v do (obj.invertDensity=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on distributionUI_8 rolledUp state do parentView.layoutPanels()
         on distributionUI_8 open do (showCenterCheck.checked=obj.showCenters;populationRadio.state=obj.populationMode;densitySpin.value=obj.plantsPerM2;densityButton.map=obj.densityMap;invertCheck.checked=obj.invertDensity;controlsReady=true;(countSpin.value=obj.amount;seedSpin.value=obj.randomSeed;modeRadio.state=if obj.distributionMode==3 then 2 else 1))
     )
@@ -7179,14 +7210,14 @@ fn CyrusMake_areaUI_8 target view = (
             aaWidth.enabled=obj.areaUseLine;aaCaps.enabled=obj.areaUseLine;aaRadius.enabled=obj.areaUsePoints
             loadingAnalyzerArea=false
         )
-        on aaPick picked n do (obj.areaAnalyzer=n;syncAnalyzerArea();redrawViews())
-        on aaRemove pressed do (obj.areaUseLine=false;obj.areaUsePoints=false;obj.areaAnalyzer=undefined;syncAnalyzerArea();redrawViews())
-        on aaLine changed v do if not loadingAnalyzerArea do (obj.areaUseLine=v;syncAnalyzerArea();redrawViews())
-        on aaPoints changed v do if not loadingAnalyzerArea do (obj.areaUsePoints=v;syncAnalyzerArea();redrawViews())
-        on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;redrawViews())
-        on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;redrawViews())
-        on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;redrawViews())
-        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
+        on aaPick picked n do (obj.areaAnalyzer=n;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaRemove pressed do (obj.areaUseLine=false;obj.areaUsePoints=false;obj.areaAnalyzer=undefined;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaLine changed v do if not loadingAnalyzerArea do (obj.areaUseLine=v;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaPoints changed v do if not loadingAnalyzerArea do (obj.areaUsePoints=v;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;CyrusViewportRedraw())
+        on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;CyrusViewportRedraw())
+        on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;CyrusViewportRedraw())
+        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;CyrusViewportRedraw())
 
         local loadingFall=false
         dropdownlist fallTarget "Edge falloff target" items:#("Analyzer Boundary","Selected Area line") selection:1 pos:[(CyrusUISize 8 1),704] width:(CyrusUISize 146 1)
@@ -7223,12 +7254,12 @@ fn CyrusMake_areaUI_8 target view = (
         fn setFallValue index value = (
             if not loadingFall do (
                 local n=fallNode()
-                if fallTarget.selection==1 or isValidNode n do (local cfg=obj.getFallConfig n;cfg[index]=value;obj.setFallConfig n cfg;redrawViews())
+                if fallTarget.selection==1 or isValidNode n do (local cfg=obj.getFallConfig n;cfg[index]=value;obj.setFallConfig n cfg;CyrusViewportRedraw())
             )
         )
         on fallTarget selected v do syncFalloff()
-        on fallPick picked n do (if CyrusAnalyzerFilter n do obj.fallAnalyzer=n;syncFalloff();redrawViews())
-        on fallRemove pressed do (obj.fallAnalyzer=undefined;obj.fallDelete=false;obj.fallScale=false;obj.fallDensity=false;syncFalloff();redrawViews())
+        on fallPick picked n do (if CyrusAnalyzerFilter n do obj.fallAnalyzer=n;syncFalloff();CyrusViewportRedraw())
+        on fallRemove pressed do (obj.fallAnalyzer=undefined;obj.fallDelete=false;obj.fallScale=false;obj.fallDensity=false;syncFalloff();CyrusViewportRedraw())
         on fallDeleteCheck changed v do setFallValue 1 v
         on fallDeleteSpin changed v do setFallValue 2 v
         on fallScaleCheck changed v do setFallValue 3 v
@@ -7253,11 +7284,11 @@ fn CyrusMake_areaUI_8 target view = (
             )
         )
 
-        on pickArea picked n do (addArea n;updateAreas();redrawViews())
+        on pickArea picked n do (addArea n;updateAreas();CyrusViewportRedraw())
         on addAreaScene pressed do (
             local nodes=selectByName title:"Cyrus Scatter - Closed Areas" buttonText:"Add" filter:AminScatterAreaFilter single:false
             if nodes!=undefined do for n in nodes do addArea n
-            updateAreas();redrawViews()
+            updateAreas();CyrusViewportRedraw()
         )
         on areaList selectionEnd do (
             if areaList.selection.numberSet==1 do fallTarget.selection=2
@@ -7266,7 +7297,7 @@ fn CyrusMake_areaUI_8 target view = (
         )
         on areaMode changed mode do (
             undo "Cyrus Scatter area mode" on (for i in areaList.selection do obj.areaModes[i]=mode)
-            obj.dirty=true;updateAreas();redrawViews()
+            obj.dirty=true;updateAreas();CyrusViewportRedraw()
         )
         on removeArea pressed do (
             if CyrusFalloffGraph!=undefined do try(destroyDialog CyrusFalloffGraph)catch()
@@ -7275,9 +7306,9 @@ fn CyrusMake_areaUI_8 target view = (
                 obj.ensureAreaFalloffs()
                 for i=rows.count to 1 by -1 do (deleteItem obj.areaNodes rows[i];deleteItem obj.areaModes rows[i];deleteItem obj.areaFallConfigs rows[i];deleteItem obj.areaFallScaleGraphs rows[i];deleteItem obj.areaFallDensityGraphs rows[i])
             )
-            areaList.selection=#{};obj.dirty=true;updateAreas();redrawViews()
+            areaList.selection=#{};obj.dirty=true;updateAreas();CyrusViewportRedraw()
         )
-        on refreshAreas pressed do (obj.dirty=true;obj.refreshPreview();redrawViews())
+        on refreshAreas pressed do (obj.dirty=true;obj.refreshPreview();CyrusViewportRedraw())
 
         on areaUI_8 rolledUp state do parentView.layoutPanels()
         on areaUI_8 open do (syncAnalyzerArea();syncFalloff();controlsReady=true;updateAreas())
@@ -7342,16 +7373,16 @@ fn CyrusMake_diversityUI_8 target view = (
         fn syncControls = (diversityRadio.state=obj.diversityMode;sizeSpin.value=obj.diversitySize;divSeedSpin.value=obj.diversitySeed;roughSpin.value=obj.roughness;blurSpin.value=obj.blurryEdge;noiseSpin.value=obj.diversityNoise;)
         on faceOutCheck changed v do (
             if analyzerChannel.selection==5 then obj.edgeFaceOut=v else if analyzerChannel.selection==4 then obj.streetFaceOut=v else obj.borderFaceOut=v
-            cornerRadiusSpin.enabled=v;obj.dirty=true;redrawViews()
+            cornerRadiusSpin.enabled=v;obj.dirty=true;CyrusViewportRedraw()
         )
         on cornerRadiusSpin changed v do (
             if analyzerChannel.selection==5 then obj.edgeCornerRadius=v else if analyzerChannel.selection==4 then obj.streetCornerRadius=v else obj.borderCornerRadius=v
-            obj.dirty=true;redrawViews()
+            obj.dirty=true;CyrusViewportRedraw()
         )
-        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;redrawViews())
-        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;redrawViews())
-        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;redrawViews())
-        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;syncControls();redrawViews())
+        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;CyrusViewportRedraw())
+        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;CyrusViewportRedraw())
+        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;CyrusViewportRedraw())
+        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         fn selectedStroke = (if strokesList.selection>0 and strokesList.selection<=strokeRows.count then strokeRows[strokesList.selection] else 0)
         fn showStroke = (
             loadingStroke=true
@@ -7449,7 +7480,7 @@ fn CyrusMake_diversityUI_8 target view = (
         on pathsDrop selected i do showPath()
         on analyzerChannel selected i do updatePattern()
         on pickAnalyzer picked n do (
-            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();redrawViews())
+            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();CyrusViewportRedraw())
         )
         on strokesList selected i do showStroke()
         on pickPath picked n do (
@@ -7461,39 +7492,39 @@ fn CyrusMake_diversityUI_8 target view = (
             for i=obj.patternLines.count to 1 by -1 where obj.patternLines[i]==path do obj.removeStroke i
             local k=findItem obj.patternPaths path;if k>0 do deleteItem obj.patternPaths k
             if obj.diversityMode==4 do obj.analyzerNode=undefined
-            updatePattern();obj.dirty=true;syncControls();redrawViews()
+            updatePattern();obj.dirty=true;syncControls();CyrusViewportRedraw()
         )
         on addOutside pressed do (
             if obj.diversityMode==4 and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5) do return false
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local types=#(1,3,4)
             local side=if obj.diversityMode==4 then types[analyzerChannel.selection] else 1
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
         on addInside pressed do (
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local side=if obj.diversityMode==4 and analyzerChannel.selection==5 then 7 else if obj.diversityMode==4 and analyzerChannel.selection==4 then 6 else if obj.diversityMode==4 and analyzerChannel.selection==3 then 5 else 2
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
-        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();redrawViews())
-        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;redrawViews())
-        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;redrawViews())
-        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;redrawViews())
-        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;redrawViews())
-        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;redrawViews())
-        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;redrawViews())
-        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;redrawViews())
-        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;redrawViews())
-        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;redrawViews())
-        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();redrawViews())
-        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;syncControls();redrawViews())
+        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();CyrusViewportRedraw())
+        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;CyrusViewportRedraw())
+        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;CyrusViewportRedraw())
+        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;CyrusViewportRedraw())
+        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;CyrusViewportRedraw())
+        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;CyrusViewportRedraw())
+        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;CyrusViewportRedraw())
+        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;CyrusViewportRedraw())
+        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;CyrusViewportRedraw())
+        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;CyrusViewportRedraw())
+        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();CyrusViewportRedraw())
+        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
         on strokeChoices selectionEnd do if not loadingStroke do (
             local row=selectedStroke()
             if row>0 do obj.setStrokeSelection row obj.strokeModes[row] (for i in strokeChoices.selection collect choiceValues[i])
-            redrawViews()
+            CyrusViewportRedraw()
         )
-        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;syncControls();redrawViews())
-        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;syncControls();redrawViews())
+        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
         on refreshGroups pressed do updatePattern()
                 fn updateControls = (
             for c in #(sizeSpin,divSeedSpin,roughSpin,blurSpin,noiseSpin,groupHint,fixedHint) do c.visible=obj.diversityMode==2
@@ -7501,14 +7532,14 @@ fn CyrusMake_diversityUI_8 target view = (
             if strokeExpandedHeight>0 do diversityUI_8.height=if obj.diversityMode>=3 then strokeExpandedHeight else (if obj.diversityMode==2 then 310 else 124)*parentView.dpiScale
             parentView.layoutPanels()
         )
-        on diversityRadio changed v do (obj.diversityMode=v;updateControls();updatePattern();obj.dirty=true;syncControls();redrawViews())
+        on diversityRadio changed v do (obj.diversityMode=v;updateControls();updatePattern();obj.dirty=true;syncControls();CyrusViewportRedraw())
 
 
-        on sizeSpin changed v do (obj.diversitySize=v;obj.dirty=true;syncControls();redrawViews())
-        on divSeedSpin changed v do (obj.diversitySeed=v;obj.dirty=true;syncControls();redrawViews())
-        on roughSpin changed v do (obj.roughness=v;obj.dirty=true;syncControls();redrawViews())
-        on blurSpin changed v do (obj.blurryEdge=v;obj.dirty=true;syncControls();redrawViews())
-        on noiseSpin changed v do (obj.diversityNoise=v;obj.dirty=true;syncControls();redrawViews())
+        on sizeSpin changed v do (obj.diversitySize=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on divSeedSpin changed v do (obj.diversitySeed=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on roughSpin changed v do (obj.roughness=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on blurSpin changed v do (obj.blurryEdge=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on noiseSpin changed v do (obj.diversityNoise=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on diversityUI_8 rolledUp state do parentView.layoutPanels()
         on diversityUI_8 open do (diversityRadio.state=obj.diversityMode;sizeSpin.value=obj.diversitySize;divSeedSpin.value=obj.diversitySeed;roughSpin.value=obj.roughness;blurSpin.value=obj.blurryEdge;noiseSpin.value=obj.diversityNoise;controlsReady=true;strokeExpandedHeight=diversityUI_8.height;updateControls();updatePattern())
     )
@@ -7557,16 +7588,16 @@ fn CyrusMake_lineUI_8 target view = (
         checkbox straightStreet "Straight ends (Street Side)" pos:[(CyrusUISize 8 1),620] width:(CyrusUISize 146 1)
         on faceOutCheck changed v do (
             if analyzerChannel.selection==5 then obj.edgeFaceOut=v else if analyzerChannel.selection==4 then obj.streetFaceOut=v else obj.borderFaceOut=v
-            cornerRadiusSpin.enabled=v;obj.dirty=true;redrawViews()
+            cornerRadiusSpin.enabled=v;obj.dirty=true;CyrusViewportRedraw()
         )
         on cornerRadiusSpin changed v do (
             if analyzerChannel.selection==5 then obj.edgeCornerRadius=v else if analyzerChannel.selection==4 then obj.streetCornerRadius=v else obj.borderCornerRadius=v
-            obj.dirty=true;redrawViews()
+            obj.dirty=true;CyrusViewportRedraw()
         )
-        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;redrawViews())
-        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;redrawViews())
-        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;redrawViews())
-        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;redrawViews())
+        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;CyrusViewportRedraw())
+        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;CyrusViewportRedraw())
+        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;CyrusViewportRedraw())
+        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;CyrusViewportRedraw())
         fn selectedStroke = (if strokesList.selection>0 and strokesList.selection<=strokeRows.count then strokeRows[strokesList.selection] else 0)
         fn showStroke = (
             loadingStroke=true
@@ -7664,7 +7695,7 @@ fn CyrusMake_lineUI_8 target view = (
         on pathsDrop selected i do showPath()
         on analyzerChannel selected i do updatePattern()
         on pickAnalyzer picked n do (
-            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();redrawViews())
+            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();CyrusViewportRedraw())
         )
         on strokesList selected i do showStroke()
         on pickPath picked n do (
@@ -7676,39 +7707,39 @@ fn CyrusMake_lineUI_8 target view = (
             for i=obj.patternLines.count to 1 by -1 where obj.patternLines[i]==path do obj.removeStroke i
             local k=findItem obj.patternPaths path;if k>0 do deleteItem obj.patternPaths k
             if obj.diversityMode==4 do obj.analyzerNode=undefined
-            updatePattern();obj.dirty=true;redrawViews()
+            updatePattern();obj.dirty=true;CyrusViewportRedraw()
         )
         on addOutside pressed do (
             if obj.diversityMode==4 and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5) do return false
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local types=#(1,3,4)
             local side=if obj.diversityMode==4 then types[analyzerChannel.selection] else 1
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
         on addInside pressed do (
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local side=if obj.diversityMode==4 and analyzerChannel.selection==5 then 7 else if obj.diversityMode==4 and analyzerChannel.selection==4 then 6 else if obj.diversityMode==4 and analyzerChannel.selection==3 then 5 else 2
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
-        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();redrawViews())
-        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;redrawViews())
-        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;redrawViews())
-        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;redrawViews())
-        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;redrawViews())
-        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;redrawViews())
-        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;redrawViews())
-        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;redrawViews())
-        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;redrawViews())
-        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;redrawViews())
-        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();redrawViews())
-        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;redrawViews())
+        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();CyrusViewportRedraw())
+        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;CyrusViewportRedraw())
+        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;CyrusViewportRedraw())
+        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;CyrusViewportRedraw())
+        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;CyrusViewportRedraw())
+        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;CyrusViewportRedraw())
+        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;CyrusViewportRedraw())
+        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;CyrusViewportRedraw())
+        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;CyrusViewportRedraw())
+        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;CyrusViewportRedraw())
+        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();CyrusViewportRedraw())
+        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;CyrusViewportRedraw())
         on strokeChoices selectionEnd do if not loadingStroke do (
             local row=selectedStroke()
             if row>0 do obj.setStrokeSelection row obj.strokeModes[row] (for i in strokeChoices.selection collect choiceValues[i])
-            redrawViews()
+            CyrusViewportRedraw()
         )
-        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;redrawViews())
-        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;redrawViews())
+        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;CyrusViewportRedraw())
+        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;CyrusViewportRedraw())
         on refreshGroups pressed do updatePattern()
 
         on lineUI_8 rolledUp state do parentView.layoutPanels()
@@ -7752,8 +7783,8 @@ fn CyrusMake_randomUI_8 target view = (
         label wholeMaxTitle "Max" pos:[(CyrusUISize 94 1),274] width:(CyrusUISize 58 1)
         spinner wholeMinSpin "" range:[0.001,1000,1] scale:0.01 pos:[(CyrusUISize 24 1),296] fieldWidth:(CyrusUISize 46 1) width:(CyrusUISize 58 1)
         spinner wholeMaxSpin "" range:[0.001,1000,1] scale:0.01 pos:[(CyrusUISize 94 1),296] fieldWidth:(CyrusUISize 46 1) width:(CyrusUISize 58 1)
-        on wholeMinSpin changed v do (obj.wholeScaleMin=v;if v>obj.wholeScaleMax do (obj.wholeScaleMax=v;wholeMaxSpin.value=v);redrawViews())
-        on wholeMaxSpin changed v do (obj.wholeScaleMax=v;if v<obj.wholeScaleMin do (obj.wholeScaleMin=v;wholeMinSpin.value=v);redrawViews())
+        on wholeMinSpin changed v do (obj.wholeScaleMin=v;if v>obj.wholeScaleMax do (obj.wholeScaleMax=v;wholeMaxSpin.value=v);CyrusViewportRedraw())
+        on wholeMaxSpin changed v do (obj.wholeScaleMax=v;if v<obj.wholeScaleMin do (obj.wholeScaleMin=v;wholeMinSpin.value=v);CyrusViewportRedraw())
         label movTitle "Movement (world units)" pos:[(CyrusUISize 8 1),332] width:(CyrusUISize 146 1)
         label movMinTitle "Min" pos:[(CyrusUISize 24 1),354] width:(CyrusUISize 58 1)
         label movMaxTitle "Max" pos:[(CyrusUISize 94 1),354] width:(CyrusUISize 58 1)
@@ -7770,27 +7801,27 @@ fn CyrusMake_randomUI_8 target view = (
         checkbox alignCheck "Align to normal" pos:[(CyrusUISize 8 1),480] width:(CyrusUISize 146 1)
 
         fn syncControls = (projectCheck.checked=obj.projectMove;rotXMinSpin.value=obj.rotXMin;rotXMaxSpin.value=obj.rotXMax;rotYMinSpin.value=obj.rotYMin;rotYMaxSpin.value=obj.rotYMax;rotZMinSpin.value=obj.rotZMin;rotZMaxSpin.value=obj.rotZMax;sclXMinSpin.value=obj.sclXMin;sclXMaxSpin.value=obj.sclXMax;sclYMinSpin.value=obj.sclYMin;sclYMaxSpin.value=obj.sclYMax;sclZMinSpin.value=obj.sclZMin;sclZMaxSpin.value=obj.sclZMax;movXMinSpin.value=obj.movXMin;movXMaxSpin.value=obj.movXMax;movYMinSpin.value=obj.movYMin;movYMaxSpin.value=obj.movYMax;movZMinSpin.value=obj.movZMin;movZMaxSpin.value=obj.movZMax;)
-        on alignCheck changed v do (obj.alignNormal=v;obj.dirty=true;syncControls();redrawViews())
+        on alignCheck changed v do (obj.alignNormal=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
 
-        on projectCheck changed v do (obj.projectMove=v;obj.dirty=true;syncControls();redrawViews())
-        on rotXMinSpin changed v do (obj.rotXMin=v;obj.dirty=true;syncControls();redrawViews())
-        on rotXMaxSpin changed v do (obj.rotXMax=v;obj.dirty=true;syncControls();redrawViews())
-        on rotYMinSpin changed v do (obj.rotYMin=v;obj.dirty=true;syncControls();redrawViews())
-        on rotYMaxSpin changed v do (obj.rotYMax=v;obj.dirty=true;syncControls();redrawViews())
-        on rotZMinSpin changed v do (obj.rotZMin=v;obj.dirty=true;syncControls();redrawViews())
-        on rotZMaxSpin changed v do (obj.rotZMax=v;obj.dirty=true;syncControls();redrawViews())
-        on sclXMinSpin changed v do (obj.sclXMin=v;obj.dirty=true;syncControls();redrawViews())
-        on sclXMaxSpin changed v do (obj.sclXMax=v;obj.dirty=true;syncControls();redrawViews())
-        on sclYMinSpin changed v do (obj.sclYMin=v;obj.dirty=true;syncControls();redrawViews())
-        on sclYMaxSpin changed v do (obj.sclYMax=v;obj.dirty=true;syncControls();redrawViews())
-        on sclZMinSpin changed v do (obj.sclZMin=v;obj.dirty=true;syncControls();redrawViews())
-        on sclZMaxSpin changed v do (obj.sclZMax=v;obj.dirty=true;syncControls();redrawViews())
-        on movXMinSpin changed v do (obj.movXMin=v;obj.dirty=true;syncControls();redrawViews())
-        on movXMaxSpin changed v do (obj.movXMax=v;obj.dirty=true;syncControls();redrawViews())
-        on movYMinSpin changed v do (obj.movYMin=v;obj.dirty=true;syncControls();redrawViews())
-        on movYMaxSpin changed v do (obj.movYMax=v;obj.dirty=true;syncControls();redrawViews())
-        on movZMinSpin changed v do (obj.movZMin=v;obj.dirty=true;syncControls();redrawViews())
-        on movZMaxSpin changed v do (obj.movZMax=v;obj.dirty=true;syncControls();redrawViews())
+        on projectCheck changed v do (obj.projectMove=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotXMinSpin changed v do (obj.rotXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotXMaxSpin changed v do (obj.rotXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotYMinSpin changed v do (obj.rotYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotYMaxSpin changed v do (obj.rotYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotZMinSpin changed v do (obj.rotZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotZMaxSpin changed v do (obj.rotZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclXMinSpin changed v do (obj.sclXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclXMaxSpin changed v do (obj.sclXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclYMinSpin changed v do (obj.sclYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclYMaxSpin changed v do (obj.sclYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclZMinSpin changed v do (obj.sclZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclZMaxSpin changed v do (obj.sclZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movXMinSpin changed v do (obj.movXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movXMaxSpin changed v do (obj.movXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movYMinSpin changed v do (obj.movYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movYMaxSpin changed v do (obj.movYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movZMinSpin changed v do (obj.movZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movZMaxSpin changed v do (obj.movZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on randomUI_8 rolledUp state do parentView.layoutPanels()
         on randomUI_8 open do (wholeMinSpin.value=obj.wholeScaleMin;wholeMaxSpin.value=obj.wholeScaleMax;projectCheck.checked=obj.projectMove;rotXMinSpin.value=obj.rotXMin;rotXMaxSpin.value=obj.rotXMax;rotYMinSpin.value=obj.rotYMin;rotYMaxSpin.value=obj.rotYMax;rotZMinSpin.value=obj.rotZMin;rotZMaxSpin.value=obj.rotZMax;sclXMinSpin.value=obj.sclXMin;sclXMaxSpin.value=obj.sclXMax;sclYMinSpin.value=obj.sclYMin;sclYMaxSpin.value=obj.sclYMax;sclZMinSpin.value=obj.sclZMin;sclZMaxSpin.value=obj.sclZMax;movXMinSpin.value=obj.movXMin;movXMaxSpin.value=obj.movXMax;movYMinSpin.value=obj.movYMin;movYMaxSpin.value=obj.movYMax;movZMinSpin.value=obj.movZMin;movZMaxSpin.value=obj.movZMax;controlsReady=true;alignCheck.checked=obj.alignNormal)
     )
@@ -7876,27 +7907,27 @@ fn CyrusMake_sourceUI_9 target view = (
                 for i=before+1 to obj.sources.count do rows[i]=true
                 plantList.selection=rows;focusedRow=before+1
             )
-            showSelectedColor();redrawViews()
+            showSelectedColor();CyrusViewportRedraw()
         )
         on addPoint pressed do (
-            local i=obj.addPointSource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();redrawViews()
+            local i=obj.addPointSource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();CyrusViewportRedraw()
         )
         on replacePoint picked n do (
             local rows=plantList.selection as array
             if rows.count!=1 then messageBox "Select one Point row to replace." title:"Cyrus Scatter"
             else if not (obj.replacePointSource rows[1] n) do messageBox "Select a Point row and an object that is not already in this source list." title:"Cyrus Scatter"
-            replacePoint.text="Replace Point: pick object";updateList();showSelectedColor();redrawViews()
+            replacePoint.text="Replace Point: pick object";updateList();showSelectedColor();CyrusViewportRedraw()
         )
         on addEmpty pressed do (
-            local i=obj.addEmptySource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();redrawViews()
+            local i=obj.addEmptySource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();CyrusViewportRedraw()
         )
-        on radiusSourceSpin changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v;redrawViews())
-        on followRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:2;redrawViews())
-        on showRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:3;redrawViews())
-        on forwardAxis selected v do if not loadingColor do (obj.assignSourceForward plantList.selection v;redrawViews())
-        on sourceZSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v;redrawViews())
-        on sourceScaleSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v scaling:true;redrawViews())
-        on weightSpin changed v do if not loadingColor do (obj.assignWeight plantList.selection v;updateList();redrawViews())
+        on radiusSourceSpin changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v;CyrusViewportRedraw())
+        on followRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:2;CyrusViewportRedraw())
+        on showRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:3;CyrusViewportRedraw())
+        on forwardAxis selected v do if not loadingColor do (obj.assignSourceForward plantList.selection v;CyrusViewportRedraw())
+        on sourceZSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v;CyrusViewportRedraw())
+        on sourceScaleSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v scaling:true;CyrusViewportRedraw())
+        on weightSpin changed v do if not loadingColor do (obj.assignWeight plantList.selection v;updateList();CyrusViewportRedraw())
         on plantList selected i do (
             if i>0 and plantList.selection[i] do focusedRow=i
         )
@@ -7905,18 +7936,18 @@ fn CyrusMake_sourceUI_9 target view = (
             if i>0 and i<=groupPalette.count do (
                 local c=groupPalette[i]
                 loadingColor=true;groupColor.color=c;loadingColor=false
-                obj.assignGroup plantList.selection c;updateList();redrawViews()
+                obj.assignGroup plantList.selection c;updateList();CyrusViewportRedraw()
             )
         )
         on groupColor changed c do (
             if not loadingColor and plantList.selection.numberSet>0 do (
                 obj.assignGroup plantList.selection c
-                updateList();redrawViews()
+                updateList();CyrusViewportRedraw()
             )
         )
         on applyColor pressed do (
             obj.assignGroup plantList.selection groupColor.color
-            updateList();redrawViews()
+            updateList();CyrusViewportRedraw()
         )
         on selectFromScene pressed do (
             local picked=selectByName title:"Cyrus Scatter - Select From Scene" buttonText:"Add" filter:AminScatterSourceFilter single:false
@@ -7939,7 +7970,7 @@ fn CyrusMake_sourceUI_9 target view = (
                     deleteItem obj.sources rows[k];deleteItem obj.sourceColors rows[k]
                 )
             )
-            plantList.selection=#{};obj.dirty=true;updateList();redrawViews()
+            plantList.selection=#{};obj.dirty=true;updateList();CyrusViewportRedraw()
         )
         on selectPlant pressed do (
             local nodes=for i in plantList.selection where i<=obj.sources.count and isValidNode obj.sources[i] collect obj.sources[i]
@@ -7961,7 +7992,7 @@ fn CyrusMake_distributionUI_9 target view = (
         radiobuttons modeRadio "Method" labels:#("Random","Texture Density") columns:1 pos:[(CyrusUISize 8 1),8] width:(CyrusUISize 146 1)
         radiobuttons populationRadio "Population" labels:#("Count","Plants per m2") columns:1 pos:[(CyrusUISize 8 1),78] width:(CyrusUISize 146 1)
         checkbox showCenterCheck "Show Point" pos:[(CyrusUISize 8 1),148] width:(CyrusUISize 146 1)
-        on showCenterCheck changed v do (obj.showCenters=v;redrawViews())
+        on showCenterCheck changed v do (obj.showCenters=v;CyrusViewportRedraw())
         spinner countSpin "Count: " range:[1,100000,200] type:#integer fieldWidth:(CyrusUISize 64 1) width:(CyrusUISize 146 1) pos:[(CyrusUISize 8 1),174]
         spinner densitySpin "Per m2: " range:[0,1000000,100] fieldWidth:(CyrusUISize 64 1) width:(CyrusUISize 146 1) pos:[(CyrusUISize 8 1),200]
         spinner seedSpin "Seed: " range:[0,2147483647,42] type:#integer fieldWidth:(CyrusUISize 64 1) width:(CyrusUISize 146 1) pos:[(CyrusUISize 8 1),226]
@@ -7972,14 +8003,14 @@ fn CyrusMake_distributionUI_9 target view = (
         label mapHint "White: dense / Black: empty" pos:[(CyrusUISize 8 1),360] width:(CyrusUISize 146 1)
 
         fn syncControls = (populationRadio.state=obj.populationMode;densitySpin.value=obj.plantsPerM2;densityButton.map=obj.densityMap;invertCheck.checked=obj.invertDensity;)
-        on modeRadio changed v do (obj.distributionMode=if v==2 then 3 else 1;obj.dirty=true;syncControls();redrawViews())
-        on countSpin changed v do (obj.amount=v;obj.dirty=true;syncControls();redrawViews())
-        on seedSpin changed v do (obj.randomSeed=v;obj.dirty=true;syncControls();redrawViews())
+        on modeRadio changed v do (obj.distributionMode=if v==2 then 3 else 1;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on countSpin changed v do (obj.amount=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on seedSpin changed v do (obj.randomSeed=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
 
-        on populationRadio changed v do (obj.populationMode=v;obj.dirty=true;syncControls();redrawViews())
-        on densitySpin changed v do (obj.plantsPerM2=v;obj.dirty=true;syncControls();redrawViews())
-        on densityButton picked v do (obj.densityMap=v;obj.dirty=true;syncControls();redrawViews())
-        on invertCheck changed v do (obj.invertDensity=v;obj.dirty=true;syncControls();redrawViews())
+        on populationRadio changed v do (obj.populationMode=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on densitySpin changed v do (obj.plantsPerM2=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on densityButton picked v do (obj.densityMap=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on invertCheck changed v do (obj.invertDensity=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on distributionUI_9 rolledUp state do parentView.layoutPanels()
         on distributionUI_9 open do (showCenterCheck.checked=obj.showCenters;populationRadio.state=obj.populationMode;densitySpin.value=obj.plantsPerM2;densityButton.map=obj.densityMap;invertCheck.checked=obj.invertDensity;controlsReady=true;(countSpin.value=obj.amount;seedSpin.value=obj.randomSeed;modeRadio.state=if obj.distributionMode==3 then 2 else 1))
     )
@@ -8020,14 +8051,14 @@ fn CyrusMake_areaUI_9 target view = (
             aaWidth.enabled=obj.areaUseLine;aaCaps.enabled=obj.areaUseLine;aaRadius.enabled=obj.areaUsePoints
             loadingAnalyzerArea=false
         )
-        on aaPick picked n do (obj.areaAnalyzer=n;syncAnalyzerArea();redrawViews())
-        on aaRemove pressed do (obj.areaUseLine=false;obj.areaUsePoints=false;obj.areaAnalyzer=undefined;syncAnalyzerArea();redrawViews())
-        on aaLine changed v do if not loadingAnalyzerArea do (obj.areaUseLine=v;syncAnalyzerArea();redrawViews())
-        on aaPoints changed v do if not loadingAnalyzerArea do (obj.areaUsePoints=v;syncAnalyzerArea();redrawViews())
-        on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;redrawViews())
-        on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;redrawViews())
-        on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;redrawViews())
-        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
+        on aaPick picked n do (obj.areaAnalyzer=n;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaRemove pressed do (obj.areaUseLine=false;obj.areaUsePoints=false;obj.areaAnalyzer=undefined;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaLine changed v do if not loadingAnalyzerArea do (obj.areaUseLine=v;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaPoints changed v do if not loadingAnalyzerArea do (obj.areaUsePoints=v;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;CyrusViewportRedraw())
+        on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;CyrusViewportRedraw())
+        on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;CyrusViewportRedraw())
+        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;CyrusViewportRedraw())
 
         local loadingFall=false
         dropdownlist fallTarget "Edge falloff target" items:#("Analyzer Boundary","Selected Area line") selection:1 pos:[(CyrusUISize 8 1),704] width:(CyrusUISize 146 1)
@@ -8064,12 +8095,12 @@ fn CyrusMake_areaUI_9 target view = (
         fn setFallValue index value = (
             if not loadingFall do (
                 local n=fallNode()
-                if fallTarget.selection==1 or isValidNode n do (local cfg=obj.getFallConfig n;cfg[index]=value;obj.setFallConfig n cfg;redrawViews())
+                if fallTarget.selection==1 or isValidNode n do (local cfg=obj.getFallConfig n;cfg[index]=value;obj.setFallConfig n cfg;CyrusViewportRedraw())
             )
         )
         on fallTarget selected v do syncFalloff()
-        on fallPick picked n do (if CyrusAnalyzerFilter n do obj.fallAnalyzer=n;syncFalloff();redrawViews())
-        on fallRemove pressed do (obj.fallAnalyzer=undefined;obj.fallDelete=false;obj.fallScale=false;obj.fallDensity=false;syncFalloff();redrawViews())
+        on fallPick picked n do (if CyrusAnalyzerFilter n do obj.fallAnalyzer=n;syncFalloff();CyrusViewportRedraw())
+        on fallRemove pressed do (obj.fallAnalyzer=undefined;obj.fallDelete=false;obj.fallScale=false;obj.fallDensity=false;syncFalloff();CyrusViewportRedraw())
         on fallDeleteCheck changed v do setFallValue 1 v
         on fallDeleteSpin changed v do setFallValue 2 v
         on fallScaleCheck changed v do setFallValue 3 v
@@ -8094,11 +8125,11 @@ fn CyrusMake_areaUI_9 target view = (
             )
         )
 
-        on pickArea picked n do (addArea n;updateAreas();redrawViews())
+        on pickArea picked n do (addArea n;updateAreas();CyrusViewportRedraw())
         on addAreaScene pressed do (
             local nodes=selectByName title:"Cyrus Scatter - Closed Areas" buttonText:"Add" filter:AminScatterAreaFilter single:false
             if nodes!=undefined do for n in nodes do addArea n
-            updateAreas();redrawViews()
+            updateAreas();CyrusViewportRedraw()
         )
         on areaList selectionEnd do (
             if areaList.selection.numberSet==1 do fallTarget.selection=2
@@ -8107,7 +8138,7 @@ fn CyrusMake_areaUI_9 target view = (
         )
         on areaMode changed mode do (
             undo "Cyrus Scatter area mode" on (for i in areaList.selection do obj.areaModes[i]=mode)
-            obj.dirty=true;updateAreas();redrawViews()
+            obj.dirty=true;updateAreas();CyrusViewportRedraw()
         )
         on removeArea pressed do (
             if CyrusFalloffGraph!=undefined do try(destroyDialog CyrusFalloffGraph)catch()
@@ -8116,9 +8147,9 @@ fn CyrusMake_areaUI_9 target view = (
                 obj.ensureAreaFalloffs()
                 for i=rows.count to 1 by -1 do (deleteItem obj.areaNodes rows[i];deleteItem obj.areaModes rows[i];deleteItem obj.areaFallConfigs rows[i];deleteItem obj.areaFallScaleGraphs rows[i];deleteItem obj.areaFallDensityGraphs rows[i])
             )
-            areaList.selection=#{};obj.dirty=true;updateAreas();redrawViews()
+            areaList.selection=#{};obj.dirty=true;updateAreas();CyrusViewportRedraw()
         )
-        on refreshAreas pressed do (obj.dirty=true;obj.refreshPreview();redrawViews())
+        on refreshAreas pressed do (obj.dirty=true;obj.refreshPreview();CyrusViewportRedraw())
 
         on areaUI_9 rolledUp state do parentView.layoutPanels()
         on areaUI_9 open do (syncAnalyzerArea();syncFalloff();controlsReady=true;updateAreas())
@@ -8183,16 +8214,16 @@ fn CyrusMake_diversityUI_9 target view = (
         fn syncControls = (diversityRadio.state=obj.diversityMode;sizeSpin.value=obj.diversitySize;divSeedSpin.value=obj.diversitySeed;roughSpin.value=obj.roughness;blurSpin.value=obj.blurryEdge;noiseSpin.value=obj.diversityNoise;)
         on faceOutCheck changed v do (
             if analyzerChannel.selection==5 then obj.edgeFaceOut=v else if analyzerChannel.selection==4 then obj.streetFaceOut=v else obj.borderFaceOut=v
-            cornerRadiusSpin.enabled=v;obj.dirty=true;redrawViews()
+            cornerRadiusSpin.enabled=v;obj.dirty=true;CyrusViewportRedraw()
         )
         on cornerRadiusSpin changed v do (
             if analyzerChannel.selection==5 then obj.edgeCornerRadius=v else if analyzerChannel.selection==4 then obj.streetCornerRadius=v else obj.borderCornerRadius=v
-            obj.dirty=true;redrawViews()
+            obj.dirty=true;CyrusViewportRedraw()
         )
-        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;redrawViews())
-        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;redrawViews())
-        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;redrawViews())
-        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;syncControls();redrawViews())
+        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;CyrusViewportRedraw())
+        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;CyrusViewportRedraw())
+        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;CyrusViewportRedraw())
+        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         fn selectedStroke = (if strokesList.selection>0 and strokesList.selection<=strokeRows.count then strokeRows[strokesList.selection] else 0)
         fn showStroke = (
             loadingStroke=true
@@ -8290,7 +8321,7 @@ fn CyrusMake_diversityUI_9 target view = (
         on pathsDrop selected i do showPath()
         on analyzerChannel selected i do updatePattern()
         on pickAnalyzer picked n do (
-            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();redrawViews())
+            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();CyrusViewportRedraw())
         )
         on strokesList selected i do showStroke()
         on pickPath picked n do (
@@ -8302,39 +8333,39 @@ fn CyrusMake_diversityUI_9 target view = (
             for i=obj.patternLines.count to 1 by -1 where obj.patternLines[i]==path do obj.removeStroke i
             local k=findItem obj.patternPaths path;if k>0 do deleteItem obj.patternPaths k
             if obj.diversityMode==4 do obj.analyzerNode=undefined
-            updatePattern();obj.dirty=true;syncControls();redrawViews()
+            updatePattern();obj.dirty=true;syncControls();CyrusViewportRedraw()
         )
         on addOutside pressed do (
             if obj.diversityMode==4 and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5) do return false
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local types=#(1,3,4)
             local side=if obj.diversityMode==4 then types[analyzerChannel.selection] else 1
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
         on addInside pressed do (
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local side=if obj.diversityMode==4 and analyzerChannel.selection==5 then 7 else if obj.diversityMode==4 and analyzerChannel.selection==4 then 6 else if obj.diversityMode==4 and analyzerChannel.selection==3 then 5 else 2
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
-        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();redrawViews())
-        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;redrawViews())
-        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;redrawViews())
-        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;redrawViews())
-        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;redrawViews())
-        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;redrawViews())
-        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;redrawViews())
-        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;redrawViews())
-        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;redrawViews())
-        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;redrawViews())
-        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();redrawViews())
-        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;syncControls();redrawViews())
+        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();CyrusViewportRedraw())
+        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;CyrusViewportRedraw())
+        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;CyrusViewportRedraw())
+        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;CyrusViewportRedraw())
+        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;CyrusViewportRedraw())
+        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;CyrusViewportRedraw())
+        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;CyrusViewportRedraw())
+        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;CyrusViewportRedraw())
+        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;CyrusViewportRedraw())
+        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;CyrusViewportRedraw())
+        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();CyrusViewportRedraw())
+        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
         on strokeChoices selectionEnd do if not loadingStroke do (
             local row=selectedStroke()
             if row>0 do obj.setStrokeSelection row obj.strokeModes[row] (for i in strokeChoices.selection collect choiceValues[i])
-            redrawViews()
+            CyrusViewportRedraw()
         )
-        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;syncControls();redrawViews())
-        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;syncControls();redrawViews())
+        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
         on refreshGroups pressed do updatePattern()
                 fn updateControls = (
             for c in #(sizeSpin,divSeedSpin,roughSpin,blurSpin,noiseSpin,groupHint,fixedHint) do c.visible=obj.diversityMode==2
@@ -8342,14 +8373,14 @@ fn CyrusMake_diversityUI_9 target view = (
             if strokeExpandedHeight>0 do diversityUI_9.height=if obj.diversityMode>=3 then strokeExpandedHeight else (if obj.diversityMode==2 then 310 else 124)*parentView.dpiScale
             parentView.layoutPanels()
         )
-        on diversityRadio changed v do (obj.diversityMode=v;updateControls();updatePattern();obj.dirty=true;syncControls();redrawViews())
+        on diversityRadio changed v do (obj.diversityMode=v;updateControls();updatePattern();obj.dirty=true;syncControls();CyrusViewportRedraw())
 
 
-        on sizeSpin changed v do (obj.diversitySize=v;obj.dirty=true;syncControls();redrawViews())
-        on divSeedSpin changed v do (obj.diversitySeed=v;obj.dirty=true;syncControls();redrawViews())
-        on roughSpin changed v do (obj.roughness=v;obj.dirty=true;syncControls();redrawViews())
-        on blurSpin changed v do (obj.blurryEdge=v;obj.dirty=true;syncControls();redrawViews())
-        on noiseSpin changed v do (obj.diversityNoise=v;obj.dirty=true;syncControls();redrawViews())
+        on sizeSpin changed v do (obj.diversitySize=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on divSeedSpin changed v do (obj.diversitySeed=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on roughSpin changed v do (obj.roughness=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on blurSpin changed v do (obj.blurryEdge=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on noiseSpin changed v do (obj.diversityNoise=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on diversityUI_9 rolledUp state do parentView.layoutPanels()
         on diversityUI_9 open do (diversityRadio.state=obj.diversityMode;sizeSpin.value=obj.diversitySize;divSeedSpin.value=obj.diversitySeed;roughSpin.value=obj.roughness;blurSpin.value=obj.blurryEdge;noiseSpin.value=obj.diversityNoise;controlsReady=true;strokeExpandedHeight=diversityUI_9.height;updateControls();updatePattern())
     )
@@ -8398,16 +8429,16 @@ fn CyrusMake_lineUI_9 target view = (
         checkbox straightStreet "Straight ends (Street Side)" pos:[(CyrusUISize 8 1),620] width:(CyrusUISize 146 1)
         on faceOutCheck changed v do (
             if analyzerChannel.selection==5 then obj.edgeFaceOut=v else if analyzerChannel.selection==4 then obj.streetFaceOut=v else obj.borderFaceOut=v
-            cornerRadiusSpin.enabled=v;obj.dirty=true;redrawViews()
+            cornerRadiusSpin.enabled=v;obj.dirty=true;CyrusViewportRedraw()
         )
         on cornerRadiusSpin changed v do (
             if analyzerChannel.selection==5 then obj.edgeCornerRadius=v else if analyzerChannel.selection==4 then obj.streetCornerRadius=v else obj.borderCornerRadius=v
-            obj.dirty=true;redrawViews()
+            obj.dirty=true;CyrusViewportRedraw()
         )
-        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;redrawViews())
-        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;redrawViews())
-        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;redrawViews())
-        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;redrawViews())
+        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;CyrusViewportRedraw())
+        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;CyrusViewportRedraw())
+        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;CyrusViewportRedraw())
+        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;CyrusViewportRedraw())
         fn selectedStroke = (if strokesList.selection>0 and strokesList.selection<=strokeRows.count then strokeRows[strokesList.selection] else 0)
         fn showStroke = (
             loadingStroke=true
@@ -8505,7 +8536,7 @@ fn CyrusMake_lineUI_9 target view = (
         on pathsDrop selected i do showPath()
         on analyzerChannel selected i do updatePattern()
         on pickAnalyzer picked n do (
-            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();redrawViews())
+            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();CyrusViewportRedraw())
         )
         on strokesList selected i do showStroke()
         on pickPath picked n do (
@@ -8517,39 +8548,39 @@ fn CyrusMake_lineUI_9 target view = (
             for i=obj.patternLines.count to 1 by -1 where obj.patternLines[i]==path do obj.removeStroke i
             local k=findItem obj.patternPaths path;if k>0 do deleteItem obj.patternPaths k
             if obj.diversityMode==4 do obj.analyzerNode=undefined
-            updatePattern();obj.dirty=true;redrawViews()
+            updatePattern();obj.dirty=true;CyrusViewportRedraw()
         )
         on addOutside pressed do (
             if obj.diversityMode==4 and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5) do return false
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local types=#(1,3,4)
             local side=if obj.diversityMode==4 then types[analyzerChannel.selection] else 1
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
         on addInside pressed do (
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local side=if obj.diversityMode==4 and analyzerChannel.selection==5 then 7 else if obj.diversityMode==4 and analyzerChannel.selection==4 then 6 else if obj.diversityMode==4 and analyzerChannel.selection==3 then 5 else 2
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
-        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();redrawViews())
-        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;redrawViews())
-        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;redrawViews())
-        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;redrawViews())
-        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;redrawViews())
-        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;redrawViews())
-        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;redrawViews())
-        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;redrawViews())
-        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;redrawViews())
-        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;redrawViews())
-        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();redrawViews())
-        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;redrawViews())
+        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();CyrusViewportRedraw())
+        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;CyrusViewportRedraw())
+        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;CyrusViewportRedraw())
+        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;CyrusViewportRedraw())
+        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;CyrusViewportRedraw())
+        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;CyrusViewportRedraw())
+        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;CyrusViewportRedraw())
+        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;CyrusViewportRedraw())
+        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;CyrusViewportRedraw())
+        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;CyrusViewportRedraw())
+        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();CyrusViewportRedraw())
+        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;CyrusViewportRedraw())
         on strokeChoices selectionEnd do if not loadingStroke do (
             local row=selectedStroke()
             if row>0 do obj.setStrokeSelection row obj.strokeModes[row] (for i in strokeChoices.selection collect choiceValues[i])
-            redrawViews()
+            CyrusViewportRedraw()
         )
-        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;redrawViews())
-        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;redrawViews())
+        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;CyrusViewportRedraw())
+        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;CyrusViewportRedraw())
         on refreshGroups pressed do updatePattern()
 
         on lineUI_9 rolledUp state do parentView.layoutPanels()
@@ -8593,8 +8624,8 @@ fn CyrusMake_randomUI_9 target view = (
         label wholeMaxTitle "Max" pos:[(CyrusUISize 94 1),274] width:(CyrusUISize 58 1)
         spinner wholeMinSpin "" range:[0.001,1000,1] scale:0.01 pos:[(CyrusUISize 24 1),296] fieldWidth:(CyrusUISize 46 1) width:(CyrusUISize 58 1)
         spinner wholeMaxSpin "" range:[0.001,1000,1] scale:0.01 pos:[(CyrusUISize 94 1),296] fieldWidth:(CyrusUISize 46 1) width:(CyrusUISize 58 1)
-        on wholeMinSpin changed v do (obj.wholeScaleMin=v;if v>obj.wholeScaleMax do (obj.wholeScaleMax=v;wholeMaxSpin.value=v);redrawViews())
-        on wholeMaxSpin changed v do (obj.wholeScaleMax=v;if v<obj.wholeScaleMin do (obj.wholeScaleMin=v;wholeMinSpin.value=v);redrawViews())
+        on wholeMinSpin changed v do (obj.wholeScaleMin=v;if v>obj.wholeScaleMax do (obj.wholeScaleMax=v;wholeMaxSpin.value=v);CyrusViewportRedraw())
+        on wholeMaxSpin changed v do (obj.wholeScaleMax=v;if v<obj.wholeScaleMin do (obj.wholeScaleMin=v;wholeMinSpin.value=v);CyrusViewportRedraw())
         label movTitle "Movement (world units)" pos:[(CyrusUISize 8 1),332] width:(CyrusUISize 146 1)
         label movMinTitle "Min" pos:[(CyrusUISize 24 1),354] width:(CyrusUISize 58 1)
         label movMaxTitle "Max" pos:[(CyrusUISize 94 1),354] width:(CyrusUISize 58 1)
@@ -8611,27 +8642,27 @@ fn CyrusMake_randomUI_9 target view = (
         checkbox alignCheck "Align to normal" pos:[(CyrusUISize 8 1),480] width:(CyrusUISize 146 1)
 
         fn syncControls = (projectCheck.checked=obj.projectMove;rotXMinSpin.value=obj.rotXMin;rotXMaxSpin.value=obj.rotXMax;rotYMinSpin.value=obj.rotYMin;rotYMaxSpin.value=obj.rotYMax;rotZMinSpin.value=obj.rotZMin;rotZMaxSpin.value=obj.rotZMax;sclXMinSpin.value=obj.sclXMin;sclXMaxSpin.value=obj.sclXMax;sclYMinSpin.value=obj.sclYMin;sclYMaxSpin.value=obj.sclYMax;sclZMinSpin.value=obj.sclZMin;sclZMaxSpin.value=obj.sclZMax;movXMinSpin.value=obj.movXMin;movXMaxSpin.value=obj.movXMax;movYMinSpin.value=obj.movYMin;movYMaxSpin.value=obj.movYMax;movZMinSpin.value=obj.movZMin;movZMaxSpin.value=obj.movZMax;)
-        on alignCheck changed v do (obj.alignNormal=v;obj.dirty=true;syncControls();redrawViews())
+        on alignCheck changed v do (obj.alignNormal=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
 
-        on projectCheck changed v do (obj.projectMove=v;obj.dirty=true;syncControls();redrawViews())
-        on rotXMinSpin changed v do (obj.rotXMin=v;obj.dirty=true;syncControls();redrawViews())
-        on rotXMaxSpin changed v do (obj.rotXMax=v;obj.dirty=true;syncControls();redrawViews())
-        on rotYMinSpin changed v do (obj.rotYMin=v;obj.dirty=true;syncControls();redrawViews())
-        on rotYMaxSpin changed v do (obj.rotYMax=v;obj.dirty=true;syncControls();redrawViews())
-        on rotZMinSpin changed v do (obj.rotZMin=v;obj.dirty=true;syncControls();redrawViews())
-        on rotZMaxSpin changed v do (obj.rotZMax=v;obj.dirty=true;syncControls();redrawViews())
-        on sclXMinSpin changed v do (obj.sclXMin=v;obj.dirty=true;syncControls();redrawViews())
-        on sclXMaxSpin changed v do (obj.sclXMax=v;obj.dirty=true;syncControls();redrawViews())
-        on sclYMinSpin changed v do (obj.sclYMin=v;obj.dirty=true;syncControls();redrawViews())
-        on sclYMaxSpin changed v do (obj.sclYMax=v;obj.dirty=true;syncControls();redrawViews())
-        on sclZMinSpin changed v do (obj.sclZMin=v;obj.dirty=true;syncControls();redrawViews())
-        on sclZMaxSpin changed v do (obj.sclZMax=v;obj.dirty=true;syncControls();redrawViews())
-        on movXMinSpin changed v do (obj.movXMin=v;obj.dirty=true;syncControls();redrawViews())
-        on movXMaxSpin changed v do (obj.movXMax=v;obj.dirty=true;syncControls();redrawViews())
-        on movYMinSpin changed v do (obj.movYMin=v;obj.dirty=true;syncControls();redrawViews())
-        on movYMaxSpin changed v do (obj.movYMax=v;obj.dirty=true;syncControls();redrawViews())
-        on movZMinSpin changed v do (obj.movZMin=v;obj.dirty=true;syncControls();redrawViews())
-        on movZMaxSpin changed v do (obj.movZMax=v;obj.dirty=true;syncControls();redrawViews())
+        on projectCheck changed v do (obj.projectMove=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotXMinSpin changed v do (obj.rotXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotXMaxSpin changed v do (obj.rotXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotYMinSpin changed v do (obj.rotYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotYMaxSpin changed v do (obj.rotYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotZMinSpin changed v do (obj.rotZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotZMaxSpin changed v do (obj.rotZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclXMinSpin changed v do (obj.sclXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclXMaxSpin changed v do (obj.sclXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclYMinSpin changed v do (obj.sclYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclYMaxSpin changed v do (obj.sclYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclZMinSpin changed v do (obj.sclZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclZMaxSpin changed v do (obj.sclZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movXMinSpin changed v do (obj.movXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movXMaxSpin changed v do (obj.movXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movYMinSpin changed v do (obj.movYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movYMaxSpin changed v do (obj.movYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movZMinSpin changed v do (obj.movZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movZMaxSpin changed v do (obj.movZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on randomUI_9 rolledUp state do parentView.layoutPanels()
         on randomUI_9 open do (wholeMinSpin.value=obj.wholeScaleMin;wholeMaxSpin.value=obj.wholeScaleMax;projectCheck.checked=obj.projectMove;rotXMinSpin.value=obj.rotXMin;rotXMaxSpin.value=obj.rotXMax;rotYMinSpin.value=obj.rotYMin;rotYMaxSpin.value=obj.rotYMax;rotZMinSpin.value=obj.rotZMin;rotZMaxSpin.value=obj.rotZMax;sclXMinSpin.value=obj.sclXMin;sclXMaxSpin.value=obj.sclXMax;sclYMinSpin.value=obj.sclYMin;sclYMaxSpin.value=obj.sclYMax;sclZMinSpin.value=obj.sclZMin;sclZMaxSpin.value=obj.sclZMax;movXMinSpin.value=obj.movXMin;movXMaxSpin.value=obj.movXMax;movYMinSpin.value=obj.movYMin;movYMaxSpin.value=obj.movYMax;movZMinSpin.value=obj.movZMin;movZMaxSpin.value=obj.movZMax;controlsReady=true;alignCheck.checked=obj.alignNormal)
     )
@@ -8717,27 +8748,27 @@ fn CyrusMake_sourceUI_10 target view = (
                 for i=before+1 to obj.sources.count do rows[i]=true
                 plantList.selection=rows;focusedRow=before+1
             )
-            showSelectedColor();redrawViews()
+            showSelectedColor();CyrusViewportRedraw()
         )
         on addPoint pressed do (
-            local i=obj.addPointSource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();redrawViews()
+            local i=obj.addPointSource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();CyrusViewportRedraw()
         )
         on replacePoint picked n do (
             local rows=plantList.selection as array
             if rows.count!=1 then messageBox "Select one Point row to replace." title:"Cyrus Scatter"
             else if not (obj.replacePointSource rows[1] n) do messageBox "Select a Point row and an object that is not already in this source list." title:"Cyrus Scatter"
-            replacePoint.text="Replace Point: pick object";updateList();showSelectedColor();redrawViews()
+            replacePoint.text="Replace Point: pick object";updateList();showSelectedColor();CyrusViewportRedraw()
         )
         on addEmpty pressed do (
-            local i=obj.addEmptySource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();redrawViews()
+            local i=obj.addEmptySource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();CyrusViewportRedraw()
         )
-        on radiusSourceSpin changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v;redrawViews())
-        on followRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:2;redrawViews())
-        on showRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:3;redrawViews())
-        on forwardAxis selected v do if not loadingColor do (obj.assignSourceForward plantList.selection v;redrawViews())
-        on sourceZSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v;redrawViews())
-        on sourceScaleSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v scaling:true;redrawViews())
-        on weightSpin changed v do if not loadingColor do (obj.assignWeight plantList.selection v;updateList();redrawViews())
+        on radiusSourceSpin changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v;CyrusViewportRedraw())
+        on followRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:2;CyrusViewportRedraw())
+        on showRadiusCheck changed v do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:3;CyrusViewportRedraw())
+        on forwardAxis selected v do if not loadingColor do (obj.assignSourceForward plantList.selection v;CyrusViewportRedraw())
+        on sourceZSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v;CyrusViewportRedraw())
+        on sourceScaleSpin changed v do if not loadingColor do (obj.assignSourceTransform plantList.selection v scaling:true;CyrusViewportRedraw())
+        on weightSpin changed v do if not loadingColor do (obj.assignWeight plantList.selection v;updateList();CyrusViewportRedraw())
         on plantList selected i do (
             if i>0 and plantList.selection[i] do focusedRow=i
         )
@@ -8746,18 +8777,18 @@ fn CyrusMake_sourceUI_10 target view = (
             if i>0 and i<=groupPalette.count do (
                 local c=groupPalette[i]
                 loadingColor=true;groupColor.color=c;loadingColor=false
-                obj.assignGroup plantList.selection c;updateList();redrawViews()
+                obj.assignGroup plantList.selection c;updateList();CyrusViewportRedraw()
             )
         )
         on groupColor changed c do (
             if not loadingColor and plantList.selection.numberSet>0 do (
                 obj.assignGroup plantList.selection c
-                updateList();redrawViews()
+                updateList();CyrusViewportRedraw()
             )
         )
         on applyColor pressed do (
             obj.assignGroup plantList.selection groupColor.color
-            updateList();redrawViews()
+            updateList();CyrusViewportRedraw()
         )
         on selectFromScene pressed do (
             local picked=selectByName title:"Cyrus Scatter - Select From Scene" buttonText:"Add" filter:AminScatterSourceFilter single:false
@@ -8780,7 +8811,7 @@ fn CyrusMake_sourceUI_10 target view = (
                     deleteItem obj.sources rows[k];deleteItem obj.sourceColors rows[k]
                 )
             )
-            plantList.selection=#{};obj.dirty=true;updateList();redrawViews()
+            plantList.selection=#{};obj.dirty=true;updateList();CyrusViewportRedraw()
         )
         on selectPlant pressed do (
             local nodes=for i in plantList.selection where i<=obj.sources.count and isValidNode obj.sources[i] collect obj.sources[i]
@@ -8802,7 +8833,7 @@ fn CyrusMake_distributionUI_10 target view = (
         radiobuttons modeRadio "Method" labels:#("Random","Texture Density") columns:1 pos:[(CyrusUISize 8 1),8] width:(CyrusUISize 146 1)
         radiobuttons populationRadio "Population" labels:#("Count","Plants per m2") columns:1 pos:[(CyrusUISize 8 1),78] width:(CyrusUISize 146 1)
         checkbox showCenterCheck "Show Point" pos:[(CyrusUISize 8 1),148] width:(CyrusUISize 146 1)
-        on showCenterCheck changed v do (obj.showCenters=v;redrawViews())
+        on showCenterCheck changed v do (obj.showCenters=v;CyrusViewportRedraw())
         spinner countSpin "Count: " range:[1,100000,200] type:#integer fieldWidth:(CyrusUISize 64 1) width:(CyrusUISize 146 1) pos:[(CyrusUISize 8 1),174]
         spinner densitySpin "Per m2: " range:[0,1000000,100] fieldWidth:(CyrusUISize 64 1) width:(CyrusUISize 146 1) pos:[(CyrusUISize 8 1),200]
         spinner seedSpin "Seed: " range:[0,2147483647,42] type:#integer fieldWidth:(CyrusUISize 64 1) width:(CyrusUISize 146 1) pos:[(CyrusUISize 8 1),226]
@@ -8813,14 +8844,14 @@ fn CyrusMake_distributionUI_10 target view = (
         label mapHint "White: dense / Black: empty" pos:[(CyrusUISize 8 1),360] width:(CyrusUISize 146 1)
 
         fn syncControls = (populationRadio.state=obj.populationMode;densitySpin.value=obj.plantsPerM2;densityButton.map=obj.densityMap;invertCheck.checked=obj.invertDensity;)
-        on modeRadio changed v do (obj.distributionMode=if v==2 then 3 else 1;obj.dirty=true;syncControls();redrawViews())
-        on countSpin changed v do (obj.amount=v;obj.dirty=true;syncControls();redrawViews())
-        on seedSpin changed v do (obj.randomSeed=v;obj.dirty=true;syncControls();redrawViews())
+        on modeRadio changed v do (obj.distributionMode=if v==2 then 3 else 1;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on countSpin changed v do (obj.amount=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on seedSpin changed v do (obj.randomSeed=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
 
-        on populationRadio changed v do (obj.populationMode=v;obj.dirty=true;syncControls();redrawViews())
-        on densitySpin changed v do (obj.plantsPerM2=v;obj.dirty=true;syncControls();redrawViews())
-        on densityButton picked v do (obj.densityMap=v;obj.dirty=true;syncControls();redrawViews())
-        on invertCheck changed v do (obj.invertDensity=v;obj.dirty=true;syncControls();redrawViews())
+        on populationRadio changed v do (obj.populationMode=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on densitySpin changed v do (obj.plantsPerM2=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on densityButton picked v do (obj.densityMap=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on invertCheck changed v do (obj.invertDensity=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on distributionUI_10 rolledUp state do parentView.layoutPanels()
         on distributionUI_10 open do (showCenterCheck.checked=obj.showCenters;populationRadio.state=obj.populationMode;densitySpin.value=obj.plantsPerM2;densityButton.map=obj.densityMap;invertCheck.checked=obj.invertDensity;controlsReady=true;(countSpin.value=obj.amount;seedSpin.value=obj.randomSeed;modeRadio.state=if obj.distributionMode==3 then 2 else 1))
     )
@@ -8861,14 +8892,14 @@ fn CyrusMake_areaUI_10 target view = (
             aaWidth.enabled=obj.areaUseLine;aaCaps.enabled=obj.areaUseLine;aaRadius.enabled=obj.areaUsePoints
             loadingAnalyzerArea=false
         )
-        on aaPick picked n do (obj.areaAnalyzer=n;syncAnalyzerArea();redrawViews())
-        on aaRemove pressed do (obj.areaUseLine=false;obj.areaUsePoints=false;obj.areaAnalyzer=undefined;syncAnalyzerArea();redrawViews())
-        on aaLine changed v do if not loadingAnalyzerArea do (obj.areaUseLine=v;syncAnalyzerArea();redrawViews())
-        on aaPoints changed v do if not loadingAnalyzerArea do (obj.areaUsePoints=v;syncAnalyzerArea();redrawViews())
-        on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;redrawViews())
-        on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;redrawViews())
-        on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;redrawViews())
-        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
+        on aaPick picked n do (obj.areaAnalyzer=n;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaRemove pressed do (obj.areaUseLine=false;obj.areaUsePoints=false;obj.areaAnalyzer=undefined;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaLine changed v do if not loadingAnalyzerArea do (obj.areaUseLine=v;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaPoints changed v do if not loadingAnalyzerArea do (obj.areaUsePoints=v;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;CyrusViewportRedraw())
+        on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;CyrusViewportRedraw())
+        on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;CyrusViewportRedraw())
+        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;CyrusViewportRedraw())
 
         local loadingFall=false
         dropdownlist fallTarget "Edge falloff target" items:#("Analyzer Boundary","Selected Area line") selection:1 pos:[(CyrusUISize 8 1),704] width:(CyrusUISize 146 1)
@@ -8905,12 +8936,12 @@ fn CyrusMake_areaUI_10 target view = (
         fn setFallValue index value = (
             if not loadingFall do (
                 local n=fallNode()
-                if fallTarget.selection==1 or isValidNode n do (local cfg=obj.getFallConfig n;cfg[index]=value;obj.setFallConfig n cfg;redrawViews())
+                if fallTarget.selection==1 or isValidNode n do (local cfg=obj.getFallConfig n;cfg[index]=value;obj.setFallConfig n cfg;CyrusViewportRedraw())
             )
         )
         on fallTarget selected v do syncFalloff()
-        on fallPick picked n do (if CyrusAnalyzerFilter n do obj.fallAnalyzer=n;syncFalloff();redrawViews())
-        on fallRemove pressed do (obj.fallAnalyzer=undefined;obj.fallDelete=false;obj.fallScale=false;obj.fallDensity=false;syncFalloff();redrawViews())
+        on fallPick picked n do (if CyrusAnalyzerFilter n do obj.fallAnalyzer=n;syncFalloff();CyrusViewportRedraw())
+        on fallRemove pressed do (obj.fallAnalyzer=undefined;obj.fallDelete=false;obj.fallScale=false;obj.fallDensity=false;syncFalloff();CyrusViewportRedraw())
         on fallDeleteCheck changed v do setFallValue 1 v
         on fallDeleteSpin changed v do setFallValue 2 v
         on fallScaleCheck changed v do setFallValue 3 v
@@ -8935,11 +8966,11 @@ fn CyrusMake_areaUI_10 target view = (
             )
         )
 
-        on pickArea picked n do (addArea n;updateAreas();redrawViews())
+        on pickArea picked n do (addArea n;updateAreas();CyrusViewportRedraw())
         on addAreaScene pressed do (
             local nodes=selectByName title:"Cyrus Scatter - Closed Areas" buttonText:"Add" filter:AminScatterAreaFilter single:false
             if nodes!=undefined do for n in nodes do addArea n
-            updateAreas();redrawViews()
+            updateAreas();CyrusViewportRedraw()
         )
         on areaList selectionEnd do (
             if areaList.selection.numberSet==1 do fallTarget.selection=2
@@ -8948,7 +8979,7 @@ fn CyrusMake_areaUI_10 target view = (
         )
         on areaMode changed mode do (
             undo "Cyrus Scatter area mode" on (for i in areaList.selection do obj.areaModes[i]=mode)
-            obj.dirty=true;updateAreas();redrawViews()
+            obj.dirty=true;updateAreas();CyrusViewportRedraw()
         )
         on removeArea pressed do (
             if CyrusFalloffGraph!=undefined do try(destroyDialog CyrusFalloffGraph)catch()
@@ -8957,9 +8988,9 @@ fn CyrusMake_areaUI_10 target view = (
                 obj.ensureAreaFalloffs()
                 for i=rows.count to 1 by -1 do (deleteItem obj.areaNodes rows[i];deleteItem obj.areaModes rows[i];deleteItem obj.areaFallConfigs rows[i];deleteItem obj.areaFallScaleGraphs rows[i];deleteItem obj.areaFallDensityGraphs rows[i])
             )
-            areaList.selection=#{};obj.dirty=true;updateAreas();redrawViews()
+            areaList.selection=#{};obj.dirty=true;updateAreas();CyrusViewportRedraw()
         )
-        on refreshAreas pressed do (obj.dirty=true;obj.refreshPreview();redrawViews())
+        on refreshAreas pressed do (obj.dirty=true;obj.refreshPreview();CyrusViewportRedraw())
 
         on areaUI_10 rolledUp state do parentView.layoutPanels()
         on areaUI_10 open do (syncAnalyzerArea();syncFalloff();controlsReady=true;updateAreas())
@@ -9024,16 +9055,16 @@ fn CyrusMake_diversityUI_10 target view = (
         fn syncControls = (diversityRadio.state=obj.diversityMode;sizeSpin.value=obj.diversitySize;divSeedSpin.value=obj.diversitySeed;roughSpin.value=obj.roughness;blurSpin.value=obj.blurryEdge;noiseSpin.value=obj.diversityNoise;)
         on faceOutCheck changed v do (
             if analyzerChannel.selection==5 then obj.edgeFaceOut=v else if analyzerChannel.selection==4 then obj.streetFaceOut=v else obj.borderFaceOut=v
-            cornerRadiusSpin.enabled=v;obj.dirty=true;redrawViews()
+            cornerRadiusSpin.enabled=v;obj.dirty=true;CyrusViewportRedraw()
         )
         on cornerRadiusSpin changed v do (
             if analyzerChannel.selection==5 then obj.edgeCornerRadius=v else if analyzerChannel.selection==4 then obj.streetCornerRadius=v else obj.borderCornerRadius=v
-            obj.dirty=true;redrawViews()
+            obj.dirty=true;CyrusViewportRedraw()
         )
-        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;redrawViews())
-        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;redrawViews())
-        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;redrawViews())
-        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;syncControls();redrawViews())
+        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;CyrusViewportRedraw())
+        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;CyrusViewportRedraw())
+        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;CyrusViewportRedraw())
+        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         fn selectedStroke = (if strokesList.selection>0 and strokesList.selection<=strokeRows.count then strokeRows[strokesList.selection] else 0)
         fn showStroke = (
             loadingStroke=true
@@ -9131,7 +9162,7 @@ fn CyrusMake_diversityUI_10 target view = (
         on pathsDrop selected i do showPath()
         on analyzerChannel selected i do updatePattern()
         on pickAnalyzer picked n do (
-            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();redrawViews())
+            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();CyrusViewportRedraw())
         )
         on strokesList selected i do showStroke()
         on pickPath picked n do (
@@ -9143,39 +9174,39 @@ fn CyrusMake_diversityUI_10 target view = (
             for i=obj.patternLines.count to 1 by -1 where obj.patternLines[i]==path do obj.removeStroke i
             local k=findItem obj.patternPaths path;if k>0 do deleteItem obj.patternPaths k
             if obj.diversityMode==4 do obj.analyzerNode=undefined
-            updatePattern();obj.dirty=true;syncControls();redrawViews()
+            updatePattern();obj.dirty=true;syncControls();CyrusViewportRedraw()
         )
         on addOutside pressed do (
             if obj.diversityMode==4 and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5) do return false
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local types=#(1,3,4)
             local side=if obj.diversityMode==4 then types[analyzerChannel.selection] else 1
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
         on addInside pressed do (
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local side=if obj.diversityMode==4 and analyzerChannel.selection==5 then 7 else if obj.diversityMode==4 and analyzerChannel.selection==4 then 6 else if obj.diversityMode==4 and analyzerChannel.selection==3 then 5 else 2
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
-        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();redrawViews())
-        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;redrawViews())
-        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;redrawViews())
-        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;redrawViews())
-        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;redrawViews())
-        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;redrawViews())
-        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;redrawViews())
-        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;redrawViews())
-        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;redrawViews())
-        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;redrawViews())
-        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();redrawViews())
-        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;syncControls();redrawViews())
+        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();CyrusViewportRedraw())
+        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;CyrusViewportRedraw())
+        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;CyrusViewportRedraw())
+        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;CyrusViewportRedraw())
+        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;CyrusViewportRedraw())
+        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;CyrusViewportRedraw())
+        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;CyrusViewportRedraw())
+        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;CyrusViewportRedraw())
+        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;CyrusViewportRedraw())
+        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;CyrusViewportRedraw())
+        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();CyrusViewportRedraw())
+        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
         on strokeChoices selectionEnd do if not loadingStroke do (
             local row=selectedStroke()
             if row>0 do obj.setStrokeSelection row obj.strokeModes[row] (for i in strokeChoices.selection collect choiceValues[i])
-            redrawViews()
+            CyrusViewportRedraw()
         )
-        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;syncControls();redrawViews())
-        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;syncControls();redrawViews())
+        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
         on refreshGroups pressed do updatePattern()
                 fn updateControls = (
             for c in #(sizeSpin,divSeedSpin,roughSpin,blurSpin,noiseSpin,groupHint,fixedHint) do c.visible=obj.diversityMode==2
@@ -9183,14 +9214,14 @@ fn CyrusMake_diversityUI_10 target view = (
             if strokeExpandedHeight>0 do diversityUI_10.height=if obj.diversityMode>=3 then strokeExpandedHeight else (if obj.diversityMode==2 then 310 else 124)*parentView.dpiScale
             parentView.layoutPanels()
         )
-        on diversityRadio changed v do (obj.diversityMode=v;updateControls();updatePattern();obj.dirty=true;syncControls();redrawViews())
+        on diversityRadio changed v do (obj.diversityMode=v;updateControls();updatePattern();obj.dirty=true;syncControls();CyrusViewportRedraw())
 
 
-        on sizeSpin changed v do (obj.diversitySize=v;obj.dirty=true;syncControls();redrawViews())
-        on divSeedSpin changed v do (obj.diversitySeed=v;obj.dirty=true;syncControls();redrawViews())
-        on roughSpin changed v do (obj.roughness=v;obj.dirty=true;syncControls();redrawViews())
-        on blurSpin changed v do (obj.blurryEdge=v;obj.dirty=true;syncControls();redrawViews())
-        on noiseSpin changed v do (obj.diversityNoise=v;obj.dirty=true;syncControls();redrawViews())
+        on sizeSpin changed v do (obj.diversitySize=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on divSeedSpin changed v do (obj.diversitySeed=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on roughSpin changed v do (obj.roughness=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on blurSpin changed v do (obj.blurryEdge=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on noiseSpin changed v do (obj.diversityNoise=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on diversityUI_10 rolledUp state do parentView.layoutPanels()
         on diversityUI_10 open do (diversityRadio.state=obj.diversityMode;sizeSpin.value=obj.diversitySize;divSeedSpin.value=obj.diversitySeed;roughSpin.value=obj.roughness;blurSpin.value=obj.blurryEdge;noiseSpin.value=obj.diversityNoise;controlsReady=true;strokeExpandedHeight=diversityUI_10.height;updateControls();updatePattern())
     )
@@ -9239,16 +9270,16 @@ fn CyrusMake_lineUI_10 target view = (
         checkbox straightStreet "Straight ends (Street Side)" pos:[(CyrusUISize 8 1),620] width:(CyrusUISize 146 1)
         on faceOutCheck changed v do (
             if analyzerChannel.selection==5 then obj.edgeFaceOut=v else if analyzerChannel.selection==4 then obj.streetFaceOut=v else obj.borderFaceOut=v
-            cornerRadiusSpin.enabled=v;obj.dirty=true;redrawViews()
+            cornerRadiusSpin.enabled=v;obj.dirty=true;CyrusViewportRedraw()
         )
         on cornerRadiusSpin changed v do (
             if analyzerChannel.selection==5 then obj.edgeCornerRadius=v else if analyzerChannel.selection==4 then obj.streetCornerRadius=v else obj.borderCornerRadius=v
-            obj.dirty=true;redrawViews()
+            obj.dirty=true;CyrusViewportRedraw()
         )
-        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;redrawViews())
-        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;redrawViews())
-        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;redrawViews())
-        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;redrawViews())
+        on streetStartSpin changed v do if not loadingStroke do (obj.streetTrimStart=v;CyrusViewportRedraw())
+        on streetEndSpin changed v do if not loadingStroke do (obj.streetTrimEnd=v;CyrusViewportRedraw())
+        on centerStreetSpin changed v do if not loadingStroke do (obj.centerStreetOffset=v;CyrusViewportRedraw())
+        on straightStreet changed v do (obj.streetStraight=v;obj.dirty=true;CyrusViewportRedraw())
         fn selectedStroke = (if strokesList.selection>0 and strokesList.selection<=strokeRows.count then strokeRows[strokesList.selection] else 0)
         fn showStroke = (
             loadingStroke=true
@@ -9346,7 +9377,7 @@ fn CyrusMake_lineUI_10 target view = (
         on pathsDrop selected i do showPath()
         on analyzerChannel selected i do updatePattern()
         on pickAnalyzer picked n do (
-            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();redrawViews())
+            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();CyrusViewportRedraw())
         )
         on strokesList selected i do showStroke()
         on pickPath picked n do (
@@ -9358,39 +9389,39 @@ fn CyrusMake_lineUI_10 target view = (
             for i=obj.patternLines.count to 1 by -1 where obj.patternLines[i]==path do obj.removeStroke i
             local k=findItem obj.patternPaths path;if k>0 do deleteItem obj.patternPaths k
             if obj.diversityMode==4 do obj.analyzerNode=undefined
-            updatePattern();obj.dirty=true;redrawViews()
+            updatePattern();obj.dirty=true;CyrusViewportRedraw()
         )
         on addOutside pressed do (
             if obj.diversityMode==4 and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5) do return false
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local types=#(1,3,4)
             local side=if obj.diversityMode==4 then types[analyzerChannel.selection] else 1
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
         on addInside pressed do (
             local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
             local side=if obj.diversityMode==4 and analyzerChannel.selection==5 then 7 else if obj.diversityMode==4 and analyzerChannel.selection==4 then 6 else if obj.diversityMode==4 and analyzerChannel.selection==3 then 5 else 2
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();redrawViews()
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
         )
-        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();redrawViews())
-        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;redrawViews())
-        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;redrawViews())
-        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;redrawViews())
-        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;redrawViews())
-        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;redrawViews())
-        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;redrawViews())
-        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;redrawViews())
-        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;redrawViews())
-        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;redrawViews())
-        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();redrawViews())
-        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;redrawViews())
+        on removeStrokeButton pressed do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();CyrusViewportRedraw())
+        on edgeOffsetSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;CyrusViewportRedraw())
+        on edgeAlongSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;CyrusViewportRedraw())
+        on edgeAcrossSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;CyrusViewportRedraw())
+        on keepCornerCheck changed v do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;CyrusViewportRedraw())
+        on cornerAngleSpin changed v do if not loadingStroke do (obj.edgeCornerAngle=v;CyrusViewportRedraw())
+        on cornerCountSpin changed v do if not loadingStroke do (obj.edgeCornerCount=v;CyrusViewportRedraw())
+        on edgeRotXSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;CyrusViewportRedraw())
+        on edgeRotYSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;CyrusViewportRedraw())
+        on edgeRotZSpin changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;CyrusViewportRedraw())
+        on strokeWidth changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();CyrusViewportRedraw())
+        on strokeMode changed v do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;CyrusViewportRedraw())
         on strokeChoices selectionEnd do if not loadingStroke do (
             local row=selectedStroke()
             if row>0 do obj.setStrokeSelection row obj.strokeModes[row] (for i in strokeChoices.selection collect choiceValues[i])
-            redrawViews()
+            CyrusViewportRedraw()
         )
-        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;redrawViews())
-        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;redrawViews())
+        on strokeScaleMin changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;CyrusViewportRedraw())
+        on strokeScaleMax changed v do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;CyrusViewportRedraw())
         on refreshGroups pressed do updatePattern()
 
         on lineUI_10 rolledUp state do parentView.layoutPanels()
@@ -9434,8 +9465,8 @@ fn CyrusMake_randomUI_10 target view = (
         label wholeMaxTitle "Max" pos:[(CyrusUISize 94 1),274] width:(CyrusUISize 58 1)
         spinner wholeMinSpin "" range:[0.001,1000,1] scale:0.01 pos:[(CyrusUISize 24 1),296] fieldWidth:(CyrusUISize 46 1) width:(CyrusUISize 58 1)
         spinner wholeMaxSpin "" range:[0.001,1000,1] scale:0.01 pos:[(CyrusUISize 94 1),296] fieldWidth:(CyrusUISize 46 1) width:(CyrusUISize 58 1)
-        on wholeMinSpin changed v do (obj.wholeScaleMin=v;if v>obj.wholeScaleMax do (obj.wholeScaleMax=v;wholeMaxSpin.value=v);redrawViews())
-        on wholeMaxSpin changed v do (obj.wholeScaleMax=v;if v<obj.wholeScaleMin do (obj.wholeScaleMin=v;wholeMinSpin.value=v);redrawViews())
+        on wholeMinSpin changed v do (obj.wholeScaleMin=v;if v>obj.wholeScaleMax do (obj.wholeScaleMax=v;wholeMaxSpin.value=v);CyrusViewportRedraw())
+        on wholeMaxSpin changed v do (obj.wholeScaleMax=v;if v<obj.wholeScaleMin do (obj.wholeScaleMin=v;wholeMinSpin.value=v);CyrusViewportRedraw())
         label movTitle "Movement (world units)" pos:[(CyrusUISize 8 1),332] width:(CyrusUISize 146 1)
         label movMinTitle "Min" pos:[(CyrusUISize 24 1),354] width:(CyrusUISize 58 1)
         label movMaxTitle "Max" pos:[(CyrusUISize 94 1),354] width:(CyrusUISize 58 1)
@@ -9452,27 +9483,27 @@ fn CyrusMake_randomUI_10 target view = (
         checkbox alignCheck "Align to normal" pos:[(CyrusUISize 8 1),480] width:(CyrusUISize 146 1)
 
         fn syncControls = (projectCheck.checked=obj.projectMove;rotXMinSpin.value=obj.rotXMin;rotXMaxSpin.value=obj.rotXMax;rotYMinSpin.value=obj.rotYMin;rotYMaxSpin.value=obj.rotYMax;rotZMinSpin.value=obj.rotZMin;rotZMaxSpin.value=obj.rotZMax;sclXMinSpin.value=obj.sclXMin;sclXMaxSpin.value=obj.sclXMax;sclYMinSpin.value=obj.sclYMin;sclYMaxSpin.value=obj.sclYMax;sclZMinSpin.value=obj.sclZMin;sclZMaxSpin.value=obj.sclZMax;movXMinSpin.value=obj.movXMin;movXMaxSpin.value=obj.movXMax;movYMinSpin.value=obj.movYMin;movYMaxSpin.value=obj.movYMax;movZMinSpin.value=obj.movZMin;movZMaxSpin.value=obj.movZMax;)
-        on alignCheck changed v do (obj.alignNormal=v;obj.dirty=true;syncControls();redrawViews())
+        on alignCheck changed v do (obj.alignNormal=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
 
-        on projectCheck changed v do (obj.projectMove=v;obj.dirty=true;syncControls();redrawViews())
-        on rotXMinSpin changed v do (obj.rotXMin=v;obj.dirty=true;syncControls();redrawViews())
-        on rotXMaxSpin changed v do (obj.rotXMax=v;obj.dirty=true;syncControls();redrawViews())
-        on rotYMinSpin changed v do (obj.rotYMin=v;obj.dirty=true;syncControls();redrawViews())
-        on rotYMaxSpin changed v do (obj.rotYMax=v;obj.dirty=true;syncControls();redrawViews())
-        on rotZMinSpin changed v do (obj.rotZMin=v;obj.dirty=true;syncControls();redrawViews())
-        on rotZMaxSpin changed v do (obj.rotZMax=v;obj.dirty=true;syncControls();redrawViews())
-        on sclXMinSpin changed v do (obj.sclXMin=v;obj.dirty=true;syncControls();redrawViews())
-        on sclXMaxSpin changed v do (obj.sclXMax=v;obj.dirty=true;syncControls();redrawViews())
-        on sclYMinSpin changed v do (obj.sclYMin=v;obj.dirty=true;syncControls();redrawViews())
-        on sclYMaxSpin changed v do (obj.sclYMax=v;obj.dirty=true;syncControls();redrawViews())
-        on sclZMinSpin changed v do (obj.sclZMin=v;obj.dirty=true;syncControls();redrawViews())
-        on sclZMaxSpin changed v do (obj.sclZMax=v;obj.dirty=true;syncControls();redrawViews())
-        on movXMinSpin changed v do (obj.movXMin=v;obj.dirty=true;syncControls();redrawViews())
-        on movXMaxSpin changed v do (obj.movXMax=v;obj.dirty=true;syncControls();redrawViews())
-        on movYMinSpin changed v do (obj.movYMin=v;obj.dirty=true;syncControls();redrawViews())
-        on movYMaxSpin changed v do (obj.movYMax=v;obj.dirty=true;syncControls();redrawViews())
-        on movZMinSpin changed v do (obj.movZMin=v;obj.dirty=true;syncControls();redrawViews())
-        on movZMaxSpin changed v do (obj.movZMax=v;obj.dirty=true;syncControls();redrawViews())
+        on projectCheck changed v do (obj.projectMove=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotXMinSpin changed v do (obj.rotXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotXMaxSpin changed v do (obj.rotXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotYMinSpin changed v do (obj.rotYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotYMaxSpin changed v do (obj.rotYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotZMinSpin changed v do (obj.rotZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on rotZMaxSpin changed v do (obj.rotZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclXMinSpin changed v do (obj.sclXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclXMaxSpin changed v do (obj.sclXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclYMinSpin changed v do (obj.sclYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclYMaxSpin changed v do (obj.sclYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclZMinSpin changed v do (obj.sclZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sclZMaxSpin changed v do (obj.sclZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movXMinSpin changed v do (obj.movXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movXMaxSpin changed v do (obj.movXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movYMinSpin changed v do (obj.movYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movYMaxSpin changed v do (obj.movYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movZMinSpin changed v do (obj.movZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on movZMaxSpin changed v do (obj.movZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
         on randomUI_10 rolledUp state do parentView.layoutPanels()
         on randomUI_10 open do (wholeMinSpin.value=obj.wholeScaleMin;wholeMaxSpin.value=obj.wholeScaleMax;projectCheck.checked=obj.projectMove;rotXMinSpin.value=obj.rotXMin;rotXMaxSpin.value=obj.rotXMax;rotYMinSpin.value=obj.rotYMin;rotYMaxSpin.value=obj.rotYMax;rotZMinSpin.value=obj.rotZMin;rotZMaxSpin.value=obj.rotZMax;sclXMinSpin.value=obj.sclXMin;sclXMaxSpin.value=obj.sclXMax;sclYMinSpin.value=obj.sclYMin;sclYMaxSpin.value=obj.sclYMax;sclZMinSpin.value=obj.sclZMin;sclZMaxSpin.value=obj.sclZMax;movXMinSpin.value=obj.movXMin;movXMaxSpin.value=obj.movXMax;movYMinSpin.value=obj.movYMin;movYMaxSpin.value=obj.movYMax;movZMinSpin.value=obj.movZMin;movZMaxSpin.value=obj.movZMax;controlsReady=true;alignCheck.checked=obj.alignNormal)
     )
@@ -9480,39 +9511,46 @@ randomUI_10.obj=target;randomUI_10.parentView=view;randomUI_10
 )
 global CyrusUIBuildTarget,CyrusUIBuildView,CyrusUIBuildIndex,CyrusMount
 fn CyrusMount host r collapsed = (
+    local oldTarget=CyrusUIBuildTarget,oldView=CyrusUIBuildView,oldIndex=CyrusUIBuildIndex
     CyrusUIBuildTarget=r.obj;CyrusUIBuildView=r.parentView
     CyrusUIBuildIndex=try(r.layerIndex)catch(0)
-    addSubRollout host r rolledUp:collapsed
-    CyrusUIBuildTarget=undefined;CyrusUIBuildView=undefined
+    try(addSubRollout host r rolledUp:collapsed)
+    catch(
+        CyrusUIBuildTarget=oldTarget;CyrusUIBuildView=oldView;CyrusUIBuildIndex=oldIndex
+        throw()
+    )
+    CyrusUIBuildTarget=oldTarget;CyrusUIBuildView=oldView;CyrusUIBuildIndex=oldIndex
 )
 fn CyrusMakeManager target view = (
     CyrusUIBuildView=view
     rollout manager "Layer Manager" width:(CyrusUISize 162 0) (
-        local obj=CyrusUIBuildTarget,parentView=CyrusUIBuildView,refreshing=false
-        dotNetControl layerList "System.Windows.Forms.ListView" pos:[(CyrusUISize 8 0),8] width:(CyrusUISize 146 0) height:120
-        button addButton "Add Layer" pos:[(CyrusUISize 8 0),136] width:(CyrusUISize 146 0)
-        button removeButton "Remove Layer" pos:[(CyrusUISize 8 0),162] width:(CyrusUISize 146 0)
-        edittext nameEdit "Name:" pos:[(CyrusUISize 8 0),196] width:(CyrusUISize 146 0)
+        local obj=CyrusUIBuildTarget,parentView=CyrusUIBuildView,refreshing=false,rowOwners=#(),rowSignatures=#(),rowDetails=#(),selectedOwner=undefined
+        dotNetControl layerList "System.Windows.Forms.ListView" pos:[(CyrusUISize 8 0),8] width:(CyrusUISize 146 0) height:144
+        button addButton "Add Layer" pos:[(CyrusUISize 8 0),196] width:(CyrusUISize 70 0)
+        button removeButton "Remove" pos:[(CyrusUISize 82 0),196] width:(CyrusUISize 70 0)
+        edittext nameEdit "Layer:" pos:[(CyrusUISize 8 0),226] width:(CyrusUISize 146 0)
+        label statsTotal "" pos:[(CyrusUISize 8 0),158] width:(CyrusUISize 146 0) height:32
+        label statsDetail "" pos:[(CyrusUISize 8 0),256] width:(CyrusUISize 146 0) height:58
         local blockerRows=#()
-        label overlapTitle "Remove Overlaps" pos:[(CyrusUISize 8 0),226] width:(CyrusUISize 146 0)
-        checkbox overlapCheck "Enable" pos:[(CyrusUISize 8 0),249] width:(CyrusUISize 146 0)
-        multiListBox blockerList "Blocking layers (Ctrl/Shift)" pos:[(CyrusUISize 8 0),273] width:(CyrusUISize 146 0) height:5
-        spinner radiusSpin "Radius: " type:#worldunits range:[0,1000000,10] pos:[(CyrusUISize 8 0),383] width:(CyrusUISize 146 0) fieldWidth:(CyrusUISize 62 0)
-        spinner gapSpin "Extra gap: " type:#worldunits range:[0,1000000,0] pos:[(CyrusUISize 8 0),409] width:(CyrusUISize 146 0) fieldWidth:(CyrusUISize 62 0)
-        checkbox planarCheck "Plan XY (ignore height)" checked:true pos:[(CyrusUISize 8 0),435] width:(CyrusUISize 146 0)
-        label overlapInfo "Before / Removed / Left" pos:[(CyrusUISize 8 0),461] width:(CyrusUISize 146 0)
-        label overlapCounts "-- / -- / --" pos:[(CyrusUISize 8 0),481] width:(CyrusUISize 146 0)
-        button statsButton "Refresh counts" pos:[(CyrusUISize 8 0),505] width:(CyrusUISize 146 0)
-        dropdownlist radiusMode "Collision radius" items:#("Fixed Radius","Source Radius") pos:[(CyrusUISize 8 0),535] width:(CyrusUISize 146 0)
-        label finalTitle "Final Cleanup / Boundary Relax" pos:[(CyrusUISize 8 0),590] width:(CyrusUISize 146 0)
-        checkbox cleanCheck "Remove isolated points" pos:[(CyrusUISize 8 0),615] width:(CyrusUISize 146 0)
-        spinner neighborSpin "Neighbor radius:" type:#worldunits range:[0.001,1e9,100] pos:[(CyrusUISize 8 0),642] width:(CyrusUISize 146 0) fieldWidth:(CyrusUISize 55 0)
-        spinner minNeighborSpin "Min neighbors:" type:#integer range:[0,10000,2] pos:[(CyrusUISize 8 0),669] width:(CyrusUISize 146 0) fieldWidth:(CyrusUISize 55 0)
-        spinner minIslandSpin "Min island size:" type:#integer range:[0,100000,5] pos:[(CyrusUISize 8 0),696] width:(CyrusUISize 146 0) fieldWidth:(CyrusUISize 55 0)
-        checkbox boundaryRelaxCheck "Boundary Relax (move only)" pos:[(CyrusUISize 8 0),724] width:(CyrusUISize 146 0)
-        spinner finalStrengthSpin "Strength:" range:[0,1,.3] pos:[(CyrusUISize 8 0),751] width:(CyrusUISize 146 0) fieldWidth:(CyrusUISize 55 0)
-        spinner finalIterSpin "Iterations:" type:#integer range:[0,100,5] pos:[(CyrusUISize 8 0),778] width:(CyrusUISize 146 0) fieldWidth:(CyrusUISize 55 0)
-        spinner finalMoveSpin "Max movement:" type:#worldunits range:[0,1e9,10] pos:[(CyrusUISize 8 0),805] width:(CyrusUISize 146 0) fieldWidth:(CyrusUISize 55 0)
+        label overlapTitle "Remove Overlaps" pos:[(CyrusUISize 8 0),322] width:(CyrusUISize 146 0)
+        checkbox overlapCheck "Enable" pos:[(CyrusUISize 8 0),345] width:(CyrusUISize 146 0)
+        multiListBox blockerList "Blocking layers (Ctrl/Shift)" pos:[(CyrusUISize 8 0),369] width:(CyrusUISize 146 0) height:5
+        spinner radiusSpin "Radius: " type:#worldunits range:[0,1000000,10] pos:[(CyrusUISize 8 0),479] width:(CyrusUISize 146 0) fieldWidth:(CyrusUISize 62 0)
+        spinner gapSpin "Extra gap: " type:#worldunits range:[0,1000000,0] pos:[(CyrusUISize 8 0),505] width:(CyrusUISize 146 0) fieldWidth:(CyrusUISize 62 0)
+        checkbox planarCheck "Plan XY (ignore height)" checked:true pos:[(CyrusUISize 8 0),531] width:(CyrusUISize 146 0)
+        label overlapInfo "Before / Removed / Left" pos:[(CyrusUISize 8 0),557] width:(CyrusUISize 146 0)
+        label overlapCounts "-- / -- / --" pos:[(CyrusUISize 8 0),577] width:(CyrusUISize 146 0)
+        button statsButton "Update scatter + counts" pos:[(CyrusUISize 8 0),601] width:(CyrusUISize 146 0)
+        dropdownlist radiusMode "Collision radius" items:#("Fixed Radius","Source Radius") pos:[(CyrusUISize 8 0),631] width:(CyrusUISize 146 0)
+        label finalTitle "Final Cleanup / Boundary Relax" pos:[(CyrusUISize 8 0),686] width:(CyrusUISize 146 0)
+        checkbox cleanCheck "Remove isolated points" pos:[(CyrusUISize 8 0),711] width:(CyrusUISize 146 0)
+        spinner neighborSpin "Neighbor radius:" type:#worldunits range:[0.001,1e9,100] pos:[(CyrusUISize 8 0),738] width:(CyrusUISize 146 0) fieldWidth:(CyrusUISize 55 0)
+        spinner minNeighborSpin "Min neighbors:" type:#integer range:[0,10000,2] pos:[(CyrusUISize 8 0),765] width:(CyrusUISize 146 0) fieldWidth:(CyrusUISize 55 0)
+        spinner minIslandSpin "Min island size:" type:#integer range:[0,100000,5] pos:[(CyrusUISize 8 0),792] width:(CyrusUISize 146 0) fieldWidth:(CyrusUISize 55 0)
+        checkbox boundaryRelaxCheck "Boundary Relax (move only)" pos:[(CyrusUISize 8 0),820] width:(CyrusUISize 146 0)
+        spinner finalStrengthSpin "Strength:" range:[0,1,.3] pos:[(CyrusUISize 8 0),847] width:(CyrusUISize 146 0) fieldWidth:(CyrusUISize 55 0)
+        spinner finalIterSpin "Iterations:" type:#integer range:[0,100,5] pos:[(CyrusUISize 8 0),874] width:(CyrusUISize 146 0) fieldWidth:(CyrusUISize 55 0)
+        spinner finalMoveSpin "Max movement:" type:#worldunits range:[0,1e9,10] pos:[(CyrusUISize 8 0),901] width:(CyrusUISize 146 0) fieldWidth:(CyrusUISize 55 0)
         fn currentLayer = (if obj.activeLayer>0 and obj.activeLayer<=obj.layerObjects.count then obj.layerObjects[obj.activeLayer] else undefined)
         fn refreshOverlap = (
             refreshing=true
@@ -9532,7 +9570,7 @@ fn CyrusMakeManager target view = (
             blockerList.items=labels;blockerList.selection=chosen
             refreshing=false
         )
-        fn changedOverlap = (for layer in obj.layerObjects do layer.dirty=true;redrawViews())
+        fn changedOverlap = (for layer in obj.layerObjects do layer.dirty=true;CyrusViewportRedraw())
         on overlapCheck changed v do if not refreshing do (undo "Remove overlaps" on (currentLayer()).overlapEnabled=v;changedOverlap())
         on radiusMode selected i do if not refreshing do ((currentLayer()).overlapSourceRadius=i==2;changedOverlap())
         on cleanCheck changed v do if not refreshing and currentLayer()!=undefined do (undo "Final cleanup setting" on (currentLayer()).finalCleanup=v;changedOverlap())
@@ -9551,10 +9589,92 @@ fn CyrusMakeManager target view = (
             changedOverlap()
         )
         on statsButton pressed do (obj.refreshAll();refreshOverlap())
+        fn resizeColumns = (
+            if layerList.Columns.Count==3 do (
+                local w=layerList.ClientSize.Width-4
+                local countWidth=amax 42 (layerList.Font.Height*4)
+                local stateWidth=amax 34 (layerList.Font.Height*3)
+                layerList.Columns.Item[0].Width=amax 40 (w-countWidth-stateWidth)
+                layerList.Columns.Item[1].Width=countWidth
+                layerList.Columns.Item[2].Width=stateWidth
+            )
+        )
+        fn refreshStats = (
+            -- Read scalar cache metadata only. Never synchronize, generate,
+            -- enumerate preview points or redraw the viewport from this path.
+            local same=rowOwners.count==obj.layerObjects.count and layerList.Items.Count==obj.layerObjects.count
+            if same do for i=1 to rowOwners.count where rowOwners[i]!=obj.layerObjects[i] do same=false
+            if not same do (manager.refresh();return true)
+            local total=0,enabled=0,incomplete=false,detail="Select a layer to see its cached statistics."
+            local colorClass=dotNetClass "System.Drawing.Color"
+            for i=1 to rowOwners.count do (
+                local layer=rowOwners[i],stats=layer.uiLayerStats()
+                local active=obj.cyrusEnabled and obj.layerEnabled[i] and not stats.inputOff
+                local state=CyrusUILayerState stats obj.layerEnabled[i] obj.cyrusEnabled (layer.showPoints or layer.showCenters)
+                -- Cross the .NET boundary only when a displayed value changes.
+                -- The signature contains scalar metadata, never point arrays.
+                local signature=#(stats.hasResult,stats.placements,stats.previewCount,stats.mode,stats.buildMs,stats.needsUpdate,stats.errorText,stats.densityCapped,state,obj.layerNames[i]) as string
+                if i>rowSignatures.count or rowSignatures[i]!=signature do (
+                local item=layerList.Items.Item[i-1]
+                local countText=if stats.hasResult then CyrusUICount stats.placements compact:true else "--"
+                local exact=if stats.hasResult then CyrusUICount stats.placements else "--"
+                local preview=if not stats.hasResult then "Preview: --" else (
+                    case stats.mode of (
+                        1: ("Preview dots: "+CyrusUICount stats.previewCount)
+                        2: ("Proxy shown: "+CyrusUICount stats.previewCount)
+                        3: ("Mesh shown: "+CyrusUICount stats.previewCount)
+                        default: ("Preview count: "+CyrusUICount stats.previewCount+" (mode unknown)")
+                    )
+                )
+                local timing=if stats.hasResult then "Last build: "+(stats.buildMs as string)+" ms" else if stats.errorText!="" then "Last attempt: "+(stats.buildMs as string)+" ms" else "Last build: --"
+                local tip=obj.layerNames[i]+"\n"+state[2]+"\nPlacements: "+exact+"\n"+preview+"\n"+timing+"\nCounts are from the last preview build."
+                if stats.densityCapped do tip+="\nGeneration density limit reached."
+                if stats.errorText!="" do tip+="\n"+stats.errorText
+                if item.Text!=obj.layerNames[i] do item.Text=obj.layerNames[i]
+                if item.SubItems.Item[1].Text!=countText do item.SubItems.Item[1].Text=countText
+                if item.SubItems.Item[2].Text!=state[1] do item.SubItems.Item[2].Text=state[1]
+                if item.ToolTipText!=tip do item.ToolTipText=tip
+                local ink=if state[1]=="Off" then colorClass.FromArgb 160 160 160 else if state[1]=="Error" then colorClass.FromArgb 255 150 135 else if state[1]=="Stale" then colorClass.FromArgb 240 205 125 else colorClass.WhiteSmoke
+                if not item.ForeColor.Equals ink do item.ForeColor=ink
+                rowDetails[i]=state[2]+" | "+exact+" placed\n"+preview+"\n"+timing
+                rowSignatures[i]=signature
+                )
+                if active do (
+                    enabled+=1
+                    if stats.hasResult then total+=stats.placements else incomplete=true
+                    if stats.needsUpdate or stats.errorText!="" do incomplete=true
+                )
+                if i==obj.activeLayer do detail=rowDetails[i]
+            )
+            local summary=(enabled as string)+" enabled | "+(CyrusUICount total compact:true)+" placed\n"+(if incomplete then "Last counts: stale or incomplete" else "Counts from last preview build")
+            if statsTotal.text!=summary do statsTotal.text=summary
+            if statsDetail.text!=detail do statsDetail.text=detail
+            true
+        )
+        fn syncSelection force:false = (
+            refreshing=true
+            try (
+                for i=0 to layerList.Items.Count-1 do (
+                    local item=layerList.Items.Item[i],chosen=i+1==obj.activeLayer
+                    if item.Selected!=chosen do item.Selected=chosen
+                )
+                local valid=obj.activeLayer>0 and obj.activeLayer<=obj.layerNames.count
+                if nameEdit.enabled!=valid do nameEdit.enabled=valid
+                if removeButton.enabled!=valid do removeButton.enabled=valid
+                local label=if valid then obj.layerNames[obj.activeLayer] else ""
+                if nameEdit.text!=label do nameEdit.text=label
+            )catch(refreshing=false;throw())
+            refreshing=false
+            local layer=currentLayer()
+            if force or selectedOwner!=layer do (refreshOverlap();selectedOwner=layer)
+            refreshStats()
+        )
+
         fn refresh = (
-            refreshing=true;layerList.BeginUpdate();layerList.Items.Clear()
+            refreshing=true;layerList.BeginUpdate();layerList.Items.Clear();rowOwners=obj.layerObjects as array;rowSignatures=#();rowDetails=#()
             for i=1 to obj.layerNames.count do (
                 local item=layerList.Items.Add obj.layerNames[i]
+                item.SubItems.Add "--";item.SubItems.Add "--"
                 item.Checked=obj.layerEnabled[i]
                 item.Selected=i==obj.activeLayer
             )
@@ -9563,34 +9683,49 @@ fn CyrusMakeManager target view = (
             nameEdit.enabled=valid;removeButton.enabled=valid
             addButton.enabled=obj.layerNames.count<10
             nameEdit.text=if valid then obj.layerNames[obj.activeLayer] else ""
-            refreshOverlap()
+            refreshOverlap();resizeColumns();refreshStats()
         )
         on manager open do (
             layerList.View=(dotNetClass "System.Windows.Forms.View").Details
-            layerList.HeaderStyle=(dotNetClass "System.Windows.Forms.ColumnHeaderStyle").None
+            layerList.HeaderStyle=(dotNetClass "System.Windows.Forms.ColumnHeaderStyle").Nonclickable
+            layerList.ShowItemToolTips=true
             layerList.CheckBoxes=true;layerList.MultiSelect=false;layerList.FullRowSelect=true;layerList.HideSelection=false
             layerList.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 80 80 80
             layerList.ForeColor=(dotNetClass "System.Drawing.Color").WhiteSmoke
-            layerList.Columns.Add "Layer" (layerList.ClientSize.Width-4)
+            layerList.Columns.Add "Layer" 80
+            layerList.Columns.Add "Count" 54
+            layerList.Columns.Add "State" 42
+            layerList.Columns.Item[1].TextAlign=(dotNetClass "System.Windows.Forms.HorizontalAlignment").Right
             refresh()
         )
-        on manager rolledUp state do (if not state do refreshOverlap();parentView.layoutPanels())
+        on manager rolledUp expanded do (if expanded do syncSelection force:true;parentView.layoutPanels())
+        on manager close do (rowOwners=#();rowSignatures=#();rowDetails=#();selectedOwner=undefined)
         on layerList SelectedIndexChanged sender args do (
             if not refreshing and layerList.SelectedIndices.Count>0 do (
-                obj.selectLayer (layerList.SelectedIndices.Item[0]+1)
-                nameEdit.text=obj.layerNames[obj.activeLayer]
-                refreshOverlap()
+                local i=layerList.SelectedIndices.Item[0]+1
+                if i<=rowOwners.count do parentView.selectLayerView rowOwners[i]
             )
+        )
+        on layerList MouseClick sender args do (
+            local hit=layerList.HitTest args.X args.Y
+            if hit.Item!=undefined and hit.Location!=(dotNetClass "System.Windows.Forms.ListViewHitTestLocations").StateImage do (
+                local i=hit.Item.Index+1
+                if i<=rowOwners.count do parentView.selectLayerView rowOwners[i] expand:true
+            )
+        )
+        on layerList KeyUp sender args do (
+            if args.KeyCode==(dotNetClass "System.Windows.Forms.Keys").Enter and currentLayer()!=undefined do parentView.selectLayerView (currentLayer()) expand:true
         )
         on layerList ItemChecked sender args do (
             if not refreshing do (
-                local i=args.Item.Index+1
+                local row=args.Item.Index+1
+                local i=if row<=rowOwners.count then findItem obj.layerObjects rowOwners[row] else 0
                 if i>0 and i<=obj.layerEnabled.count do undo "Cyrus Scatter enable layer" on obj.layerEnabled[i]=args.Item.Checked
-                redrawViews()
+                CyrusViewportRedraw()
             )
         )
-        on addButton pressed do (obj.newLayer();parentView.rebuildLayers();refresh();redrawViews())
-        on removeButton pressed do (obj.removeLayer();parentView.rebuildLayers();refresh();redrawViews())
+        on addButton pressed do (obj.newLayer();parentView.rebuildLayers();refresh();parentView.selectLayerView (currentLayer()) expand:true;CyrusViewportRedraw())
+        on removeButton pressed do (obj.removeLayer();parentView.rebuildLayers();refresh();CyrusViewportRedraw())
         on nameEdit entered value do (
             if obj.activeLayer>0 and value!="" do undo "Cyrus Scatter rename layer" on obj.layerNames[obj.activeLayer]=value
             parentView.refreshTitles();refresh()
@@ -9619,15 +9754,15 @@ fn CyrusMake_spacingUI_1 target view = (
             spacingSpin.enabled=obj.relaxEnabled;iterationsSpin.enabled=obj.relaxEnabled;strengthSpin.enabled=obj.relaxEnabled
             ready=true
         )
-        on collisionCheck changed v do if ready do (obj.collisionEnabled=v;syncControls();redrawViews())
-        on radiusSpin changed v do if ready do (obj.collisionRadius=v;redrawViews())
-        on relaxCheck changed v do if ready do (obj.relaxEnabled=v;syncControls();redrawViews())
-        on spacingSpin changed v do if ready do (obj.relaxSpacing=v;redrawViews())
-        on iterationsSpin changed v do if ready do (obj.relaxIterations=v;redrawViews())
-        on strengthSpin changed v do if ready do (obj.relaxStrength=v/100.0;redrawViews())
+        on collisionCheck changed v do if ready do (obj.collisionEnabled=v;syncControls();CyrusViewportRedraw())
+        on radiusSpin changed v do if ready do (obj.collisionRadius=v;CyrusViewportRedraw())
+        on relaxCheck changed v do if ready do (obj.relaxEnabled=v;syncControls();CyrusViewportRedraw())
+        on spacingSpin changed v do if ready do (obj.relaxSpacing=v;CyrusViewportRedraw())
+        on iterationsSpin changed v do if ready do (obj.relaxIterations=v;CyrusViewportRedraw())
+        on strengthSpin changed v do if ready do (obj.relaxStrength=v/100.0;CyrusViewportRedraw())
         on spacingUI_1 open do syncControls()
         on spacingUI_1 close do ready=false
-        on spacingUI_1 rolledUp state do (parentView.layoutPanels();for c in spacingUI_1.controls do c.visible=false;for c in spacingUI_1.controls do c.visible=true)
+        on spacingUI_1 rolledUp state do parentView.layoutPanels()
     )
     spacingUI_1.obj=target;spacingUI_1.parentView=view;spacingUI_1
 )
@@ -9637,24 +9772,45 @@ fn CyrusMakeLayer_1 target view index = (
     CyrusUIBuildView=view
     rollout layerPanel_1 "Layer" width:(CyrusUISize 162 0) (
         local obj=CyrusUIBuildTarget,parentView=CyrusUIBuildView,layerIndex=CyrusUIBuildIndex,children=#()
-        subrollout sections "" pos:[(CyrusUISize 8 0),2] width:(CyrusUISize 158 0) height:180
+        subrollout sections "" pos:[(CyrusUISize 8 0),2] width:(CyrusUISize 158 0) height:180 scrollBar:#off
         fn fitHeight = (
             local h=0
             local dpi=parentView.dpiScale
             local header=floor(23.333*dpi+0.5)
             for r in children do h+=(if r.open then r.height+header else header)
-            sections.pos=[2,0];sections.height=h;layerPanel_1.height=h
+            if sections.pos!=[2,0] do sections.pos=[2,0]
+            if sections.height!=h do sections.height=h
+            if layerPanel_1.height!=h do layerPanel_1.height=h
         )
+        local pendingSections=#()
+        fn sectionStates = (if children.count==0 then pendingSections else (for r in children collect r.open))
         fn ensureContents = (
             if children.count==0 do (
+                local wasBuilding=parentView.building
+                parentView.building=true
+                try (
             children=#(CyrusMake_sourceUI_1 obj parentView,CyrusMake_distributionUI_1 obj parentView,CyrusMake_spacingUI_1 obj parentView,CyrusMake_areaUI_1 obj parentView,CyrusMake_diversityUI_1 obj parentView,CyrusMake_randomUI_1 obj parentView)
             for r in children do CyrusMount sections r true
-            fitHeight()
+                    for k=1 to (amin children.count pendingSections.count) do children[k].open=pendingSections[k]
+                    pendingSections=#()
+                    fitHeight()
+                )catch(
+                    for r in children where r.isDisplayed do try(removeSubRollout sections r)catch()
+                    children=#();parentView.building=wasBuilding
+                    throw()
+                )
+                parentView.building=wasBuilding
             )
         )
-        on layerPanel_1 open do (children=#();layerPanel_1.height=24)
-        on layerPanel_1 close do (children=#())
-        on layerPanel_1 rolledUp state do (if not state and not parentView.building do ensureContents();parentView.layoutPanels())
+        on layerPanel_1 open do (children=#();pendingSections=#();layerPanel_1.height=24)
+        on layerPanel_1 close do (children=#();pendingSections=#())
+        on layerPanel_1 rolledUp expanded do (
+            if expanded and not parentView.building do (
+                ensureContents()
+                parentView.selectLayerView obj
+            )
+            parentView.layoutPanels()
+        )
     )
     layerPanel_1.obj=target;layerPanel_1.parentView=view;layerPanel_1.layerIndex=index;layerPanel_1
 )
@@ -9685,15 +9841,15 @@ fn CyrusMake_spacingUI_2 target view = (
             spacingSpin.enabled=obj.relaxEnabled;iterationsSpin.enabled=obj.relaxEnabled;strengthSpin.enabled=obj.relaxEnabled
             ready=true
         )
-        on collisionCheck changed v do if ready do (obj.collisionEnabled=v;syncControls();redrawViews())
-        on radiusSpin changed v do if ready do (obj.collisionRadius=v;redrawViews())
-        on relaxCheck changed v do if ready do (obj.relaxEnabled=v;syncControls();redrawViews())
-        on spacingSpin changed v do if ready do (obj.relaxSpacing=v;redrawViews())
-        on iterationsSpin changed v do if ready do (obj.relaxIterations=v;redrawViews())
-        on strengthSpin changed v do if ready do (obj.relaxStrength=v/100.0;redrawViews())
+        on collisionCheck changed v do if ready do (obj.collisionEnabled=v;syncControls();CyrusViewportRedraw())
+        on radiusSpin changed v do if ready do (obj.collisionRadius=v;CyrusViewportRedraw())
+        on relaxCheck changed v do if ready do (obj.relaxEnabled=v;syncControls();CyrusViewportRedraw())
+        on spacingSpin changed v do if ready do (obj.relaxSpacing=v;CyrusViewportRedraw())
+        on iterationsSpin changed v do if ready do (obj.relaxIterations=v;CyrusViewportRedraw())
+        on strengthSpin changed v do if ready do (obj.relaxStrength=v/100.0;CyrusViewportRedraw())
         on spacingUI_2 open do syncControls()
         on spacingUI_2 close do ready=false
-        on spacingUI_2 rolledUp state do (parentView.layoutPanels();for c in spacingUI_2.controls do c.visible=false;for c in spacingUI_2.controls do c.visible=true)
+        on spacingUI_2 rolledUp state do parentView.layoutPanels()
     )
     spacingUI_2.obj=target;spacingUI_2.parentView=view;spacingUI_2
 )
@@ -9703,24 +9859,45 @@ fn CyrusMakeLayer_2 target view index = (
     CyrusUIBuildView=view
     rollout layerPanel_2 "Layer" width:(CyrusUISize 162 0) (
         local obj=CyrusUIBuildTarget,parentView=CyrusUIBuildView,layerIndex=CyrusUIBuildIndex,children=#()
-        subrollout sections "" pos:[(CyrusUISize 8 0),2] width:(CyrusUISize 158 0) height:180
+        subrollout sections "" pos:[(CyrusUISize 8 0),2] width:(CyrusUISize 158 0) height:180 scrollBar:#off
         fn fitHeight = (
             local h=0
             local dpi=parentView.dpiScale
             local header=floor(23.333*dpi+0.5)
             for r in children do h+=(if r.open then r.height+header else header)
-            sections.pos=[2,0];sections.height=h;layerPanel_2.height=h
+            if sections.pos!=[2,0] do sections.pos=[2,0]
+            if sections.height!=h do sections.height=h
+            if layerPanel_2.height!=h do layerPanel_2.height=h
         )
+        local pendingSections=#()
+        fn sectionStates = (if children.count==0 then pendingSections else (for r in children collect r.open))
         fn ensureContents = (
             if children.count==0 do (
+                local wasBuilding=parentView.building
+                parentView.building=true
+                try (
             children=#(CyrusMake_sourceUI_2 obj parentView,CyrusMake_distributionUI_2 obj parentView,CyrusMake_spacingUI_2 obj parentView,CyrusMake_areaUI_2 obj parentView,CyrusMake_diversityUI_2 obj parentView,CyrusMake_randomUI_2 obj parentView)
             for r in children do CyrusMount sections r true
-            fitHeight()
+                    for k=1 to (amin children.count pendingSections.count) do children[k].open=pendingSections[k]
+                    pendingSections=#()
+                    fitHeight()
+                )catch(
+                    for r in children where r.isDisplayed do try(removeSubRollout sections r)catch()
+                    children=#();parentView.building=wasBuilding
+                    throw()
+                )
+                parentView.building=wasBuilding
             )
         )
-        on layerPanel_2 open do (children=#();layerPanel_2.height=24)
-        on layerPanel_2 close do (children=#())
-        on layerPanel_2 rolledUp state do (if not state and not parentView.building do ensureContents();parentView.layoutPanels())
+        on layerPanel_2 open do (children=#();pendingSections=#();layerPanel_2.height=24)
+        on layerPanel_2 close do (children=#();pendingSections=#())
+        on layerPanel_2 rolledUp expanded do (
+            if expanded and not parentView.building do (
+                ensureContents()
+                parentView.selectLayerView obj
+            )
+            parentView.layoutPanels()
+        )
     )
     layerPanel_2.obj=target;layerPanel_2.parentView=view;layerPanel_2.layerIndex=index;layerPanel_2
 )
@@ -9751,15 +9928,15 @@ fn CyrusMake_spacingUI_3 target view = (
             spacingSpin.enabled=obj.relaxEnabled;iterationsSpin.enabled=obj.relaxEnabled;strengthSpin.enabled=obj.relaxEnabled
             ready=true
         )
-        on collisionCheck changed v do if ready do (obj.collisionEnabled=v;syncControls();redrawViews())
-        on radiusSpin changed v do if ready do (obj.collisionRadius=v;redrawViews())
-        on relaxCheck changed v do if ready do (obj.relaxEnabled=v;syncControls();redrawViews())
-        on spacingSpin changed v do if ready do (obj.relaxSpacing=v;redrawViews())
-        on iterationsSpin changed v do if ready do (obj.relaxIterations=v;redrawViews())
-        on strengthSpin changed v do if ready do (obj.relaxStrength=v/100.0;redrawViews())
+        on collisionCheck changed v do if ready do (obj.collisionEnabled=v;syncControls();CyrusViewportRedraw())
+        on radiusSpin changed v do if ready do (obj.collisionRadius=v;CyrusViewportRedraw())
+        on relaxCheck changed v do if ready do (obj.relaxEnabled=v;syncControls();CyrusViewportRedraw())
+        on spacingSpin changed v do if ready do (obj.relaxSpacing=v;CyrusViewportRedraw())
+        on iterationsSpin changed v do if ready do (obj.relaxIterations=v;CyrusViewportRedraw())
+        on strengthSpin changed v do if ready do (obj.relaxStrength=v/100.0;CyrusViewportRedraw())
         on spacingUI_3 open do syncControls()
         on spacingUI_3 close do ready=false
-        on spacingUI_3 rolledUp state do (parentView.layoutPanels();for c in spacingUI_3.controls do c.visible=false;for c in spacingUI_3.controls do c.visible=true)
+        on spacingUI_3 rolledUp state do parentView.layoutPanels()
     )
     spacingUI_3.obj=target;spacingUI_3.parentView=view;spacingUI_3
 )
@@ -9769,24 +9946,45 @@ fn CyrusMakeLayer_3 target view index = (
     CyrusUIBuildView=view
     rollout layerPanel_3 "Layer" width:(CyrusUISize 162 0) (
         local obj=CyrusUIBuildTarget,parentView=CyrusUIBuildView,layerIndex=CyrusUIBuildIndex,children=#()
-        subrollout sections "" pos:[(CyrusUISize 8 0),2] width:(CyrusUISize 158 0) height:180
+        subrollout sections "" pos:[(CyrusUISize 8 0),2] width:(CyrusUISize 158 0) height:180 scrollBar:#off
         fn fitHeight = (
             local h=0
             local dpi=parentView.dpiScale
             local header=floor(23.333*dpi+0.5)
             for r in children do h+=(if r.open then r.height+header else header)
-            sections.pos=[2,0];sections.height=h;layerPanel_3.height=h
+            if sections.pos!=[2,0] do sections.pos=[2,0]
+            if sections.height!=h do sections.height=h
+            if layerPanel_3.height!=h do layerPanel_3.height=h
         )
+        local pendingSections=#()
+        fn sectionStates = (if children.count==0 then pendingSections else (for r in children collect r.open))
         fn ensureContents = (
             if children.count==0 do (
+                local wasBuilding=parentView.building
+                parentView.building=true
+                try (
             children=#(CyrusMake_sourceUI_3 obj parentView,CyrusMake_distributionUI_3 obj parentView,CyrusMake_spacingUI_3 obj parentView,CyrusMake_areaUI_3 obj parentView,CyrusMake_diversityUI_3 obj parentView,CyrusMake_randomUI_3 obj parentView)
             for r in children do CyrusMount sections r true
-            fitHeight()
+                    for k=1 to (amin children.count pendingSections.count) do children[k].open=pendingSections[k]
+                    pendingSections=#()
+                    fitHeight()
+                )catch(
+                    for r in children where r.isDisplayed do try(removeSubRollout sections r)catch()
+                    children=#();parentView.building=wasBuilding
+                    throw()
+                )
+                parentView.building=wasBuilding
             )
         )
-        on layerPanel_3 open do (children=#();layerPanel_3.height=24)
-        on layerPanel_3 close do (children=#())
-        on layerPanel_3 rolledUp state do (if not state and not parentView.building do ensureContents();parentView.layoutPanels())
+        on layerPanel_3 open do (children=#();pendingSections=#();layerPanel_3.height=24)
+        on layerPanel_3 close do (children=#();pendingSections=#())
+        on layerPanel_3 rolledUp expanded do (
+            if expanded and not parentView.building do (
+                ensureContents()
+                parentView.selectLayerView obj
+            )
+            parentView.layoutPanels()
+        )
     )
     layerPanel_3.obj=target;layerPanel_3.parentView=view;layerPanel_3.layerIndex=index;layerPanel_3
 )
@@ -9817,15 +10015,15 @@ fn CyrusMake_spacingUI_4 target view = (
             spacingSpin.enabled=obj.relaxEnabled;iterationsSpin.enabled=obj.relaxEnabled;strengthSpin.enabled=obj.relaxEnabled
             ready=true
         )
-        on collisionCheck changed v do if ready do (obj.collisionEnabled=v;syncControls();redrawViews())
-        on radiusSpin changed v do if ready do (obj.collisionRadius=v;redrawViews())
-        on relaxCheck changed v do if ready do (obj.relaxEnabled=v;syncControls();redrawViews())
-        on spacingSpin changed v do if ready do (obj.relaxSpacing=v;redrawViews())
-        on iterationsSpin changed v do if ready do (obj.relaxIterations=v;redrawViews())
-        on strengthSpin changed v do if ready do (obj.relaxStrength=v/100.0;redrawViews())
+        on collisionCheck changed v do if ready do (obj.collisionEnabled=v;syncControls();CyrusViewportRedraw())
+        on radiusSpin changed v do if ready do (obj.collisionRadius=v;CyrusViewportRedraw())
+        on relaxCheck changed v do if ready do (obj.relaxEnabled=v;syncControls();CyrusViewportRedraw())
+        on spacingSpin changed v do if ready do (obj.relaxSpacing=v;CyrusViewportRedraw())
+        on iterationsSpin changed v do if ready do (obj.relaxIterations=v;CyrusViewportRedraw())
+        on strengthSpin changed v do if ready do (obj.relaxStrength=v/100.0;CyrusViewportRedraw())
         on spacingUI_4 open do syncControls()
         on spacingUI_4 close do ready=false
-        on spacingUI_4 rolledUp state do (parentView.layoutPanels();for c in spacingUI_4.controls do c.visible=false;for c in spacingUI_4.controls do c.visible=true)
+        on spacingUI_4 rolledUp state do parentView.layoutPanels()
     )
     spacingUI_4.obj=target;spacingUI_4.parentView=view;spacingUI_4
 )
@@ -9835,24 +10033,45 @@ fn CyrusMakeLayer_4 target view index = (
     CyrusUIBuildView=view
     rollout layerPanel_4 "Layer" width:(CyrusUISize 162 0) (
         local obj=CyrusUIBuildTarget,parentView=CyrusUIBuildView,layerIndex=CyrusUIBuildIndex,children=#()
-        subrollout sections "" pos:[(CyrusUISize 8 0),2] width:(CyrusUISize 158 0) height:180
+        subrollout sections "" pos:[(CyrusUISize 8 0),2] width:(CyrusUISize 158 0) height:180 scrollBar:#off
         fn fitHeight = (
             local h=0
             local dpi=parentView.dpiScale
             local header=floor(23.333*dpi+0.5)
             for r in children do h+=(if r.open then r.height+header else header)
-            sections.pos=[2,0];sections.height=h;layerPanel_4.height=h
+            if sections.pos!=[2,0] do sections.pos=[2,0]
+            if sections.height!=h do sections.height=h
+            if layerPanel_4.height!=h do layerPanel_4.height=h
         )
+        local pendingSections=#()
+        fn sectionStates = (if children.count==0 then pendingSections else (for r in children collect r.open))
         fn ensureContents = (
             if children.count==0 do (
+                local wasBuilding=parentView.building
+                parentView.building=true
+                try (
             children=#(CyrusMake_sourceUI_4 obj parentView,CyrusMake_distributionUI_4 obj parentView,CyrusMake_spacingUI_4 obj parentView,CyrusMake_areaUI_4 obj parentView,CyrusMake_diversityUI_4 obj parentView,CyrusMake_randomUI_4 obj parentView)
             for r in children do CyrusMount sections r true
-            fitHeight()
+                    for k=1 to (amin children.count pendingSections.count) do children[k].open=pendingSections[k]
+                    pendingSections=#()
+                    fitHeight()
+                )catch(
+                    for r in children where r.isDisplayed do try(removeSubRollout sections r)catch()
+                    children=#();parentView.building=wasBuilding
+                    throw()
+                )
+                parentView.building=wasBuilding
             )
         )
-        on layerPanel_4 open do (children=#();layerPanel_4.height=24)
-        on layerPanel_4 close do (children=#())
-        on layerPanel_4 rolledUp state do (if not state and not parentView.building do ensureContents();parentView.layoutPanels())
+        on layerPanel_4 open do (children=#();pendingSections=#();layerPanel_4.height=24)
+        on layerPanel_4 close do (children=#();pendingSections=#())
+        on layerPanel_4 rolledUp expanded do (
+            if expanded and not parentView.building do (
+                ensureContents()
+                parentView.selectLayerView obj
+            )
+            parentView.layoutPanels()
+        )
     )
     layerPanel_4.obj=target;layerPanel_4.parentView=view;layerPanel_4.layerIndex=index;layerPanel_4
 )
@@ -9883,15 +10102,15 @@ fn CyrusMake_spacingUI_5 target view = (
             spacingSpin.enabled=obj.relaxEnabled;iterationsSpin.enabled=obj.relaxEnabled;strengthSpin.enabled=obj.relaxEnabled
             ready=true
         )
-        on collisionCheck changed v do if ready do (obj.collisionEnabled=v;syncControls();redrawViews())
-        on radiusSpin changed v do if ready do (obj.collisionRadius=v;redrawViews())
-        on relaxCheck changed v do if ready do (obj.relaxEnabled=v;syncControls();redrawViews())
-        on spacingSpin changed v do if ready do (obj.relaxSpacing=v;redrawViews())
-        on iterationsSpin changed v do if ready do (obj.relaxIterations=v;redrawViews())
-        on strengthSpin changed v do if ready do (obj.relaxStrength=v/100.0;redrawViews())
+        on collisionCheck changed v do if ready do (obj.collisionEnabled=v;syncControls();CyrusViewportRedraw())
+        on radiusSpin changed v do if ready do (obj.collisionRadius=v;CyrusViewportRedraw())
+        on relaxCheck changed v do if ready do (obj.relaxEnabled=v;syncControls();CyrusViewportRedraw())
+        on spacingSpin changed v do if ready do (obj.relaxSpacing=v;CyrusViewportRedraw())
+        on iterationsSpin changed v do if ready do (obj.relaxIterations=v;CyrusViewportRedraw())
+        on strengthSpin changed v do if ready do (obj.relaxStrength=v/100.0;CyrusViewportRedraw())
         on spacingUI_5 open do syncControls()
         on spacingUI_5 close do ready=false
-        on spacingUI_5 rolledUp state do (parentView.layoutPanels();for c in spacingUI_5.controls do c.visible=false;for c in spacingUI_5.controls do c.visible=true)
+        on spacingUI_5 rolledUp state do parentView.layoutPanels()
     )
     spacingUI_5.obj=target;spacingUI_5.parentView=view;spacingUI_5
 )
@@ -9901,24 +10120,45 @@ fn CyrusMakeLayer_5 target view index = (
     CyrusUIBuildView=view
     rollout layerPanel_5 "Layer" width:(CyrusUISize 162 0) (
         local obj=CyrusUIBuildTarget,parentView=CyrusUIBuildView,layerIndex=CyrusUIBuildIndex,children=#()
-        subrollout sections "" pos:[(CyrusUISize 8 0),2] width:(CyrusUISize 158 0) height:180
+        subrollout sections "" pos:[(CyrusUISize 8 0),2] width:(CyrusUISize 158 0) height:180 scrollBar:#off
         fn fitHeight = (
             local h=0
             local dpi=parentView.dpiScale
             local header=floor(23.333*dpi+0.5)
             for r in children do h+=(if r.open then r.height+header else header)
-            sections.pos=[2,0];sections.height=h;layerPanel_5.height=h
+            if sections.pos!=[2,0] do sections.pos=[2,0]
+            if sections.height!=h do sections.height=h
+            if layerPanel_5.height!=h do layerPanel_5.height=h
         )
+        local pendingSections=#()
+        fn sectionStates = (if children.count==0 then pendingSections else (for r in children collect r.open))
         fn ensureContents = (
             if children.count==0 do (
+                local wasBuilding=parentView.building
+                parentView.building=true
+                try (
             children=#(CyrusMake_sourceUI_5 obj parentView,CyrusMake_distributionUI_5 obj parentView,CyrusMake_spacingUI_5 obj parentView,CyrusMake_areaUI_5 obj parentView,CyrusMake_diversityUI_5 obj parentView,CyrusMake_randomUI_5 obj parentView)
             for r in children do CyrusMount sections r true
-            fitHeight()
+                    for k=1 to (amin children.count pendingSections.count) do children[k].open=pendingSections[k]
+                    pendingSections=#()
+                    fitHeight()
+                )catch(
+                    for r in children where r.isDisplayed do try(removeSubRollout sections r)catch()
+                    children=#();parentView.building=wasBuilding
+                    throw()
+                )
+                parentView.building=wasBuilding
             )
         )
-        on layerPanel_5 open do (children=#();layerPanel_5.height=24)
-        on layerPanel_5 close do (children=#())
-        on layerPanel_5 rolledUp state do (if not state and not parentView.building do ensureContents();parentView.layoutPanels())
+        on layerPanel_5 open do (children=#();pendingSections=#();layerPanel_5.height=24)
+        on layerPanel_5 close do (children=#();pendingSections=#())
+        on layerPanel_5 rolledUp expanded do (
+            if expanded and not parentView.building do (
+                ensureContents()
+                parentView.selectLayerView obj
+            )
+            parentView.layoutPanels()
+        )
     )
     layerPanel_5.obj=target;layerPanel_5.parentView=view;layerPanel_5.layerIndex=index;layerPanel_5
 )
@@ -9949,15 +10189,15 @@ fn CyrusMake_spacingUI_6 target view = (
             spacingSpin.enabled=obj.relaxEnabled;iterationsSpin.enabled=obj.relaxEnabled;strengthSpin.enabled=obj.relaxEnabled
             ready=true
         )
-        on collisionCheck changed v do if ready do (obj.collisionEnabled=v;syncControls();redrawViews())
-        on radiusSpin changed v do if ready do (obj.collisionRadius=v;redrawViews())
-        on relaxCheck changed v do if ready do (obj.relaxEnabled=v;syncControls();redrawViews())
-        on spacingSpin changed v do if ready do (obj.relaxSpacing=v;redrawViews())
-        on iterationsSpin changed v do if ready do (obj.relaxIterations=v;redrawViews())
-        on strengthSpin changed v do if ready do (obj.relaxStrength=v/100.0;redrawViews())
+        on collisionCheck changed v do if ready do (obj.collisionEnabled=v;syncControls();CyrusViewportRedraw())
+        on radiusSpin changed v do if ready do (obj.collisionRadius=v;CyrusViewportRedraw())
+        on relaxCheck changed v do if ready do (obj.relaxEnabled=v;syncControls();CyrusViewportRedraw())
+        on spacingSpin changed v do if ready do (obj.relaxSpacing=v;CyrusViewportRedraw())
+        on iterationsSpin changed v do if ready do (obj.relaxIterations=v;CyrusViewportRedraw())
+        on strengthSpin changed v do if ready do (obj.relaxStrength=v/100.0;CyrusViewportRedraw())
         on spacingUI_6 open do syncControls()
         on spacingUI_6 close do ready=false
-        on spacingUI_6 rolledUp state do (parentView.layoutPanels();for c in spacingUI_6.controls do c.visible=false;for c in spacingUI_6.controls do c.visible=true)
+        on spacingUI_6 rolledUp state do parentView.layoutPanels()
     )
     spacingUI_6.obj=target;spacingUI_6.parentView=view;spacingUI_6
 )
@@ -9967,24 +10207,45 @@ fn CyrusMakeLayer_6 target view index = (
     CyrusUIBuildView=view
     rollout layerPanel_6 "Layer" width:(CyrusUISize 162 0) (
         local obj=CyrusUIBuildTarget,parentView=CyrusUIBuildView,layerIndex=CyrusUIBuildIndex,children=#()
-        subrollout sections "" pos:[(CyrusUISize 8 0),2] width:(CyrusUISize 158 0) height:180
+        subrollout sections "" pos:[(CyrusUISize 8 0),2] width:(CyrusUISize 158 0) height:180 scrollBar:#off
         fn fitHeight = (
             local h=0
             local dpi=parentView.dpiScale
             local header=floor(23.333*dpi+0.5)
             for r in children do h+=(if r.open then r.height+header else header)
-            sections.pos=[2,0];sections.height=h;layerPanel_6.height=h
+            if sections.pos!=[2,0] do sections.pos=[2,0]
+            if sections.height!=h do sections.height=h
+            if layerPanel_6.height!=h do layerPanel_6.height=h
         )
+        local pendingSections=#()
+        fn sectionStates = (if children.count==0 then pendingSections else (for r in children collect r.open))
         fn ensureContents = (
             if children.count==0 do (
+                local wasBuilding=parentView.building
+                parentView.building=true
+                try (
             children=#(CyrusMake_sourceUI_6 obj parentView,CyrusMake_distributionUI_6 obj parentView,CyrusMake_spacingUI_6 obj parentView,CyrusMake_areaUI_6 obj parentView,CyrusMake_diversityUI_6 obj parentView,CyrusMake_randomUI_6 obj parentView)
             for r in children do CyrusMount sections r true
-            fitHeight()
+                    for k=1 to (amin children.count pendingSections.count) do children[k].open=pendingSections[k]
+                    pendingSections=#()
+                    fitHeight()
+                )catch(
+                    for r in children where r.isDisplayed do try(removeSubRollout sections r)catch()
+                    children=#();parentView.building=wasBuilding
+                    throw()
+                )
+                parentView.building=wasBuilding
             )
         )
-        on layerPanel_6 open do (children=#();layerPanel_6.height=24)
-        on layerPanel_6 close do (children=#())
-        on layerPanel_6 rolledUp state do (if not state and not parentView.building do ensureContents();parentView.layoutPanels())
+        on layerPanel_6 open do (children=#();pendingSections=#();layerPanel_6.height=24)
+        on layerPanel_6 close do (children=#();pendingSections=#())
+        on layerPanel_6 rolledUp expanded do (
+            if expanded and not parentView.building do (
+                ensureContents()
+                parentView.selectLayerView obj
+            )
+            parentView.layoutPanels()
+        )
     )
     layerPanel_6.obj=target;layerPanel_6.parentView=view;layerPanel_6.layerIndex=index;layerPanel_6
 )
@@ -10015,15 +10276,15 @@ fn CyrusMake_spacingUI_7 target view = (
             spacingSpin.enabled=obj.relaxEnabled;iterationsSpin.enabled=obj.relaxEnabled;strengthSpin.enabled=obj.relaxEnabled
             ready=true
         )
-        on collisionCheck changed v do if ready do (obj.collisionEnabled=v;syncControls();redrawViews())
-        on radiusSpin changed v do if ready do (obj.collisionRadius=v;redrawViews())
-        on relaxCheck changed v do if ready do (obj.relaxEnabled=v;syncControls();redrawViews())
-        on spacingSpin changed v do if ready do (obj.relaxSpacing=v;redrawViews())
-        on iterationsSpin changed v do if ready do (obj.relaxIterations=v;redrawViews())
-        on strengthSpin changed v do if ready do (obj.relaxStrength=v/100.0;redrawViews())
+        on collisionCheck changed v do if ready do (obj.collisionEnabled=v;syncControls();CyrusViewportRedraw())
+        on radiusSpin changed v do if ready do (obj.collisionRadius=v;CyrusViewportRedraw())
+        on relaxCheck changed v do if ready do (obj.relaxEnabled=v;syncControls();CyrusViewportRedraw())
+        on spacingSpin changed v do if ready do (obj.relaxSpacing=v;CyrusViewportRedraw())
+        on iterationsSpin changed v do if ready do (obj.relaxIterations=v;CyrusViewportRedraw())
+        on strengthSpin changed v do if ready do (obj.relaxStrength=v/100.0;CyrusViewportRedraw())
         on spacingUI_7 open do syncControls()
         on spacingUI_7 close do ready=false
-        on spacingUI_7 rolledUp state do (parentView.layoutPanels();for c in spacingUI_7.controls do c.visible=false;for c in spacingUI_7.controls do c.visible=true)
+        on spacingUI_7 rolledUp state do parentView.layoutPanels()
     )
     spacingUI_7.obj=target;spacingUI_7.parentView=view;spacingUI_7
 )
@@ -10033,24 +10294,45 @@ fn CyrusMakeLayer_7 target view index = (
     CyrusUIBuildView=view
     rollout layerPanel_7 "Layer" width:(CyrusUISize 162 0) (
         local obj=CyrusUIBuildTarget,parentView=CyrusUIBuildView,layerIndex=CyrusUIBuildIndex,children=#()
-        subrollout sections "" pos:[(CyrusUISize 8 0),2] width:(CyrusUISize 158 0) height:180
+        subrollout sections "" pos:[(CyrusUISize 8 0),2] width:(CyrusUISize 158 0) height:180 scrollBar:#off
         fn fitHeight = (
             local h=0
             local dpi=parentView.dpiScale
             local header=floor(23.333*dpi+0.5)
             for r in children do h+=(if r.open then r.height+header else header)
-            sections.pos=[2,0];sections.height=h;layerPanel_7.height=h
+            if sections.pos!=[2,0] do sections.pos=[2,0]
+            if sections.height!=h do sections.height=h
+            if layerPanel_7.height!=h do layerPanel_7.height=h
         )
+        local pendingSections=#()
+        fn sectionStates = (if children.count==0 then pendingSections else (for r in children collect r.open))
         fn ensureContents = (
             if children.count==0 do (
+                local wasBuilding=parentView.building
+                parentView.building=true
+                try (
             children=#(CyrusMake_sourceUI_7 obj parentView,CyrusMake_distributionUI_7 obj parentView,CyrusMake_spacingUI_7 obj parentView,CyrusMake_areaUI_7 obj parentView,CyrusMake_diversityUI_7 obj parentView,CyrusMake_randomUI_7 obj parentView)
             for r in children do CyrusMount sections r true
-            fitHeight()
+                    for k=1 to (amin children.count pendingSections.count) do children[k].open=pendingSections[k]
+                    pendingSections=#()
+                    fitHeight()
+                )catch(
+                    for r in children where r.isDisplayed do try(removeSubRollout sections r)catch()
+                    children=#();parentView.building=wasBuilding
+                    throw()
+                )
+                parentView.building=wasBuilding
             )
         )
-        on layerPanel_7 open do (children=#();layerPanel_7.height=24)
-        on layerPanel_7 close do (children=#())
-        on layerPanel_7 rolledUp state do (if not state and not parentView.building do ensureContents();parentView.layoutPanels())
+        on layerPanel_7 open do (children=#();pendingSections=#();layerPanel_7.height=24)
+        on layerPanel_7 close do (children=#();pendingSections=#())
+        on layerPanel_7 rolledUp expanded do (
+            if expanded and not parentView.building do (
+                ensureContents()
+                parentView.selectLayerView obj
+            )
+            parentView.layoutPanels()
+        )
     )
     layerPanel_7.obj=target;layerPanel_7.parentView=view;layerPanel_7.layerIndex=index;layerPanel_7
 )
@@ -10081,15 +10363,15 @@ fn CyrusMake_spacingUI_8 target view = (
             spacingSpin.enabled=obj.relaxEnabled;iterationsSpin.enabled=obj.relaxEnabled;strengthSpin.enabled=obj.relaxEnabled
             ready=true
         )
-        on collisionCheck changed v do if ready do (obj.collisionEnabled=v;syncControls();redrawViews())
-        on radiusSpin changed v do if ready do (obj.collisionRadius=v;redrawViews())
-        on relaxCheck changed v do if ready do (obj.relaxEnabled=v;syncControls();redrawViews())
-        on spacingSpin changed v do if ready do (obj.relaxSpacing=v;redrawViews())
-        on iterationsSpin changed v do if ready do (obj.relaxIterations=v;redrawViews())
-        on strengthSpin changed v do if ready do (obj.relaxStrength=v/100.0;redrawViews())
+        on collisionCheck changed v do if ready do (obj.collisionEnabled=v;syncControls();CyrusViewportRedraw())
+        on radiusSpin changed v do if ready do (obj.collisionRadius=v;CyrusViewportRedraw())
+        on relaxCheck changed v do if ready do (obj.relaxEnabled=v;syncControls();CyrusViewportRedraw())
+        on spacingSpin changed v do if ready do (obj.relaxSpacing=v;CyrusViewportRedraw())
+        on iterationsSpin changed v do if ready do (obj.relaxIterations=v;CyrusViewportRedraw())
+        on strengthSpin changed v do if ready do (obj.relaxStrength=v/100.0;CyrusViewportRedraw())
         on spacingUI_8 open do syncControls()
         on spacingUI_8 close do ready=false
-        on spacingUI_8 rolledUp state do (parentView.layoutPanels();for c in spacingUI_8.controls do c.visible=false;for c in spacingUI_8.controls do c.visible=true)
+        on spacingUI_8 rolledUp state do parentView.layoutPanels()
     )
     spacingUI_8.obj=target;spacingUI_8.parentView=view;spacingUI_8
 )
@@ -10099,24 +10381,45 @@ fn CyrusMakeLayer_8 target view index = (
     CyrusUIBuildView=view
     rollout layerPanel_8 "Layer" width:(CyrusUISize 162 0) (
         local obj=CyrusUIBuildTarget,parentView=CyrusUIBuildView,layerIndex=CyrusUIBuildIndex,children=#()
-        subrollout sections "" pos:[(CyrusUISize 8 0),2] width:(CyrusUISize 158 0) height:180
+        subrollout sections "" pos:[(CyrusUISize 8 0),2] width:(CyrusUISize 158 0) height:180 scrollBar:#off
         fn fitHeight = (
             local h=0
             local dpi=parentView.dpiScale
             local header=floor(23.333*dpi+0.5)
             for r in children do h+=(if r.open then r.height+header else header)
-            sections.pos=[2,0];sections.height=h;layerPanel_8.height=h
+            if sections.pos!=[2,0] do sections.pos=[2,0]
+            if sections.height!=h do sections.height=h
+            if layerPanel_8.height!=h do layerPanel_8.height=h
         )
+        local pendingSections=#()
+        fn sectionStates = (if children.count==0 then pendingSections else (for r in children collect r.open))
         fn ensureContents = (
             if children.count==0 do (
+                local wasBuilding=parentView.building
+                parentView.building=true
+                try (
             children=#(CyrusMake_sourceUI_8 obj parentView,CyrusMake_distributionUI_8 obj parentView,CyrusMake_spacingUI_8 obj parentView,CyrusMake_areaUI_8 obj parentView,CyrusMake_diversityUI_8 obj parentView,CyrusMake_randomUI_8 obj parentView)
             for r in children do CyrusMount sections r true
-            fitHeight()
+                    for k=1 to (amin children.count pendingSections.count) do children[k].open=pendingSections[k]
+                    pendingSections=#()
+                    fitHeight()
+                )catch(
+                    for r in children where r.isDisplayed do try(removeSubRollout sections r)catch()
+                    children=#();parentView.building=wasBuilding
+                    throw()
+                )
+                parentView.building=wasBuilding
             )
         )
-        on layerPanel_8 open do (children=#();layerPanel_8.height=24)
-        on layerPanel_8 close do (children=#())
-        on layerPanel_8 rolledUp state do (if not state and not parentView.building do ensureContents();parentView.layoutPanels())
+        on layerPanel_8 open do (children=#();pendingSections=#();layerPanel_8.height=24)
+        on layerPanel_8 close do (children=#();pendingSections=#())
+        on layerPanel_8 rolledUp expanded do (
+            if expanded and not parentView.building do (
+                ensureContents()
+                parentView.selectLayerView obj
+            )
+            parentView.layoutPanels()
+        )
     )
     layerPanel_8.obj=target;layerPanel_8.parentView=view;layerPanel_8.layerIndex=index;layerPanel_8
 )
@@ -10147,15 +10450,15 @@ fn CyrusMake_spacingUI_9 target view = (
             spacingSpin.enabled=obj.relaxEnabled;iterationsSpin.enabled=obj.relaxEnabled;strengthSpin.enabled=obj.relaxEnabled
             ready=true
         )
-        on collisionCheck changed v do if ready do (obj.collisionEnabled=v;syncControls();redrawViews())
-        on radiusSpin changed v do if ready do (obj.collisionRadius=v;redrawViews())
-        on relaxCheck changed v do if ready do (obj.relaxEnabled=v;syncControls();redrawViews())
-        on spacingSpin changed v do if ready do (obj.relaxSpacing=v;redrawViews())
-        on iterationsSpin changed v do if ready do (obj.relaxIterations=v;redrawViews())
-        on strengthSpin changed v do if ready do (obj.relaxStrength=v/100.0;redrawViews())
+        on collisionCheck changed v do if ready do (obj.collisionEnabled=v;syncControls();CyrusViewportRedraw())
+        on radiusSpin changed v do if ready do (obj.collisionRadius=v;CyrusViewportRedraw())
+        on relaxCheck changed v do if ready do (obj.relaxEnabled=v;syncControls();CyrusViewportRedraw())
+        on spacingSpin changed v do if ready do (obj.relaxSpacing=v;CyrusViewportRedraw())
+        on iterationsSpin changed v do if ready do (obj.relaxIterations=v;CyrusViewportRedraw())
+        on strengthSpin changed v do if ready do (obj.relaxStrength=v/100.0;CyrusViewportRedraw())
         on spacingUI_9 open do syncControls()
         on spacingUI_9 close do ready=false
-        on spacingUI_9 rolledUp state do (parentView.layoutPanels();for c in spacingUI_9.controls do c.visible=false;for c in spacingUI_9.controls do c.visible=true)
+        on spacingUI_9 rolledUp state do parentView.layoutPanels()
     )
     spacingUI_9.obj=target;spacingUI_9.parentView=view;spacingUI_9
 )
@@ -10165,24 +10468,45 @@ fn CyrusMakeLayer_9 target view index = (
     CyrusUIBuildView=view
     rollout layerPanel_9 "Layer" width:(CyrusUISize 162 0) (
         local obj=CyrusUIBuildTarget,parentView=CyrusUIBuildView,layerIndex=CyrusUIBuildIndex,children=#()
-        subrollout sections "" pos:[(CyrusUISize 8 0),2] width:(CyrusUISize 158 0) height:180
+        subrollout sections "" pos:[(CyrusUISize 8 0),2] width:(CyrusUISize 158 0) height:180 scrollBar:#off
         fn fitHeight = (
             local h=0
             local dpi=parentView.dpiScale
             local header=floor(23.333*dpi+0.5)
             for r in children do h+=(if r.open then r.height+header else header)
-            sections.pos=[2,0];sections.height=h;layerPanel_9.height=h
+            if sections.pos!=[2,0] do sections.pos=[2,0]
+            if sections.height!=h do sections.height=h
+            if layerPanel_9.height!=h do layerPanel_9.height=h
         )
+        local pendingSections=#()
+        fn sectionStates = (if children.count==0 then pendingSections else (for r in children collect r.open))
         fn ensureContents = (
             if children.count==0 do (
+                local wasBuilding=parentView.building
+                parentView.building=true
+                try (
             children=#(CyrusMake_sourceUI_9 obj parentView,CyrusMake_distributionUI_9 obj parentView,CyrusMake_spacingUI_9 obj parentView,CyrusMake_areaUI_9 obj parentView,CyrusMake_diversityUI_9 obj parentView,CyrusMake_randomUI_9 obj parentView)
             for r in children do CyrusMount sections r true
-            fitHeight()
+                    for k=1 to (amin children.count pendingSections.count) do children[k].open=pendingSections[k]
+                    pendingSections=#()
+                    fitHeight()
+                )catch(
+                    for r in children where r.isDisplayed do try(removeSubRollout sections r)catch()
+                    children=#();parentView.building=wasBuilding
+                    throw()
+                )
+                parentView.building=wasBuilding
             )
         )
-        on layerPanel_9 open do (children=#();layerPanel_9.height=24)
-        on layerPanel_9 close do (children=#())
-        on layerPanel_9 rolledUp state do (if not state and not parentView.building do ensureContents();parentView.layoutPanels())
+        on layerPanel_9 open do (children=#();pendingSections=#();layerPanel_9.height=24)
+        on layerPanel_9 close do (children=#();pendingSections=#())
+        on layerPanel_9 rolledUp expanded do (
+            if expanded and not parentView.building do (
+                ensureContents()
+                parentView.selectLayerView obj
+            )
+            parentView.layoutPanels()
+        )
     )
     layerPanel_9.obj=target;layerPanel_9.parentView=view;layerPanel_9.layerIndex=index;layerPanel_9
 )
@@ -10213,15 +10537,15 @@ fn CyrusMake_spacingUI_10 target view = (
             spacingSpin.enabled=obj.relaxEnabled;iterationsSpin.enabled=obj.relaxEnabled;strengthSpin.enabled=obj.relaxEnabled
             ready=true
         )
-        on collisionCheck changed v do if ready do (obj.collisionEnabled=v;syncControls();redrawViews())
-        on radiusSpin changed v do if ready do (obj.collisionRadius=v;redrawViews())
-        on relaxCheck changed v do if ready do (obj.relaxEnabled=v;syncControls();redrawViews())
-        on spacingSpin changed v do if ready do (obj.relaxSpacing=v;redrawViews())
-        on iterationsSpin changed v do if ready do (obj.relaxIterations=v;redrawViews())
-        on strengthSpin changed v do if ready do (obj.relaxStrength=v/100.0;redrawViews())
+        on collisionCheck changed v do if ready do (obj.collisionEnabled=v;syncControls();CyrusViewportRedraw())
+        on radiusSpin changed v do if ready do (obj.collisionRadius=v;CyrusViewportRedraw())
+        on relaxCheck changed v do if ready do (obj.relaxEnabled=v;syncControls();CyrusViewportRedraw())
+        on spacingSpin changed v do if ready do (obj.relaxSpacing=v;CyrusViewportRedraw())
+        on iterationsSpin changed v do if ready do (obj.relaxIterations=v;CyrusViewportRedraw())
+        on strengthSpin changed v do if ready do (obj.relaxStrength=v/100.0;CyrusViewportRedraw())
         on spacingUI_10 open do syncControls()
         on spacingUI_10 close do ready=false
-        on spacingUI_10 rolledUp state do (parentView.layoutPanels();for c in spacingUI_10.controls do c.visible=false;for c in spacingUI_10.controls do c.visible=true)
+        on spacingUI_10 rolledUp state do parentView.layoutPanels()
     )
     spacingUI_10.obj=target;spacingUI_10.parentView=view;spacingUI_10
 )
@@ -10231,24 +10555,45 @@ fn CyrusMakeLayer_10 target view index = (
     CyrusUIBuildView=view
     rollout layerPanel_10 "Layer" width:(CyrusUISize 162 0) (
         local obj=CyrusUIBuildTarget,parentView=CyrusUIBuildView,layerIndex=CyrusUIBuildIndex,children=#()
-        subrollout sections "" pos:[(CyrusUISize 8 0),2] width:(CyrusUISize 158 0) height:180
+        subrollout sections "" pos:[(CyrusUISize 8 0),2] width:(CyrusUISize 158 0) height:180 scrollBar:#off
         fn fitHeight = (
             local h=0
             local dpi=parentView.dpiScale
             local header=floor(23.333*dpi+0.5)
             for r in children do h+=(if r.open then r.height+header else header)
-            sections.pos=[2,0];sections.height=h;layerPanel_10.height=h
+            if sections.pos!=[2,0] do sections.pos=[2,0]
+            if sections.height!=h do sections.height=h
+            if layerPanel_10.height!=h do layerPanel_10.height=h
         )
+        local pendingSections=#()
+        fn sectionStates = (if children.count==0 then pendingSections else (for r in children collect r.open))
         fn ensureContents = (
             if children.count==0 do (
+                local wasBuilding=parentView.building
+                parentView.building=true
+                try (
             children=#(CyrusMake_sourceUI_10 obj parentView,CyrusMake_distributionUI_10 obj parentView,CyrusMake_spacingUI_10 obj parentView,CyrusMake_areaUI_10 obj parentView,CyrusMake_diversityUI_10 obj parentView,CyrusMake_randomUI_10 obj parentView)
             for r in children do CyrusMount sections r true
-            fitHeight()
+                    for k=1 to (amin children.count pendingSections.count) do children[k].open=pendingSections[k]
+                    pendingSections=#()
+                    fitHeight()
+                )catch(
+                    for r in children where r.isDisplayed do try(removeSubRollout sections r)catch()
+                    children=#();parentView.building=wasBuilding
+                    throw()
+                )
+                parentView.building=wasBuilding
             )
         )
-        on layerPanel_10 open do (children=#();layerPanel_10.height=24)
-        on layerPanel_10 close do (children=#())
-        on layerPanel_10 rolledUp state do (if not state and not parentView.building do ensureContents();parentView.layoutPanels())
+        on layerPanel_10 open do (children=#();pendingSections=#();layerPanel_10.height=24)
+        on layerPanel_10 close do (children=#();pendingSections=#())
+        on layerPanel_10 rolledUp expanded do (
+            if expanded and not parentView.building do (
+                ensureContents()
+                parentView.selectLayerView obj
+            )
+            parentView.layoutPanels()
+        )
     )
     layerPanel_10.obj=target;layerPanel_10.parentView=view;layerPanel_10.layerIndex=index;layerPanel_10
 )
@@ -10297,7 +10642,7 @@ plugin simpleObject AminScatterObject
 name:"Cyrus Scatter"
 classID:#(0x617d43a1,0x395c2e17)
 category:"Cyrus"
-version:47
+version:48
 (
     local layerTransfer=false
     local cachedPoints=undefined
@@ -10345,7 +10690,7 @@ version:47
     )
     parameters updateSettings (
         updateMode type:#integer default:2
-        on updateMode set v do (dirty=true;if not layerTransfer do redrawViews())
+        on updateMode set v do (dirty=true;if not layerTransfer do CyrusViewportRedraw())
     )
     parameters populationSettings (
         populationMode type:#integer default:1
@@ -10722,8 +11067,8 @@ version:47
         on previewBudget set v do dirty=true
         pointColorMode type:#integer default:2
         solidPointColor type:#color default:(color 100 220 120)
-        on pointColorMode set v do if not layerTransfer do redrawViews()
-        on solidPointColor set v do if not layerTransfer do redrawViews()
+        on pointColorMode set v do if not layerTransfer do CyrusViewportRedraw()
+        on solidPointColor set v do if not layerTransfer do CyrusViewportRedraw()
     )
     fn displayPointColor groupColor = (if pointColorMode==1 then solidPointColor else groupColor)
     parameters areaSettings (
@@ -10937,7 +11282,7 @@ version:47
     )
     parameters activationSettings (
         cyrusEnabled type:#boolean default:true
-        on cyrusEnabled set v do (dirty=true;redrawViews())
+        on cyrusEnabled set v do (dirty=true;CyrusViewportRedraw())
     )
     fn analyzerOff n = (isValidNode n and isProperty n #cyrusEnabled and not n.cyrusEnabled)
     fn disabledAnalyzerInput = (
@@ -11175,6 +11520,17 @@ version:47
         )
         result
     )
+    fn pointSourceSamples n = (
+        local result=undefined,reason=""
+        try(result=aminScatterSourcePoints n pointsPerPlant randomSeed)catch(reason=getCurrentException())
+        if reason!="" do throw ("Point Cloud source "+n.name+": "+reason)
+        result
+    )
+    local uiPreviewMode=0
+    fn uiLayerStats = (
+        CyrusLayerStatusData hasResult:(cachedPoints!=undefined and previewError=="") placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
+    )
+    fn uiVersion = "2026-10-02.5"
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
         if CyrusPerfTraceBegin!=undefined do try(token=CyrusPerfTraceBegin this "placements")catch()
@@ -11195,10 +11551,11 @@ version:47
             local plants=validSources()
             local data=placements plants previewOnly:true
             generatedCount=data.count;cacheRadii data plants
-            local samples=if viewportMode!=1 then #() else if showCenters then (for i=1 to (amax 1 plants.count) collect #([0,0,0])) else (for n in plants collect (if classof n==Integer then (for p=1 to pointsPerPlant collect [0,0,0]) else aminScatterSourcePoints n pointsPerPlant randomSeed))
+            local samples=if viewportMode!=1 then #() else if showCenters then (for i=1 to (amax 1 plants.count) collect #([0,0,0])) else (for n in plants collect (if classof n==Integer then (for p=1 to pointsPerPlant collect [0,0,0]) else pointSourceSamples n))
             local colors=if plants.count==0 then #(solidPointColor) else (for n in plants collect (sourceColor (sourceRow n)))
             cachedPoints=if viewportMode==1 then aminScatterBuildPreview data samples colors (if showCenters then 500000 else previewBudget) else cyrusBuildGeometryPreview data (if plants.count==0 then #(-1) else plants) colors (if viewportMode==2 then proxyShape else 4) viewportInstances viewportFaces
             cachedPointCount=aminScatterPreviewCount cachedPoints
+            uiPreviewMode=viewportMode
         ) catch (previewError=getCurrentException();cachedPoints=undefined;cachedPointCount=0)
         dirty=false
         cachedAreaAnalyzerRun=if isValidNode areaAnalyzer then areaAnalyzer.getAnalysisRuns() else -1
@@ -11227,13 +11584,16 @@ version:47
             if revision!=cachedAnalyzerRun do dirty=true
         )
     )
-    local cachedDisabledInput=false
+    local cachedDisabledInput=false,cachedDisabledPreview=undefined
     fn previewCache interactionHeld:undefined = (
         local held=if interactionHeld==undefined then CyrusInteractionHeld() else interactionHeld
         if held do (CyrusWasDragging=true;return cachedPoints)
         local inputOff=disabledAnalyzerInput()
         if inputOff!=cachedDisabledInput do (dirty=true;cachedDisabledInput=inputOff)
-        if inputOff do return (aminScatterBuildPreview #() #() #() 1)
+        if inputOff do (
+            if cachedDisabledPreview==undefined do cachedDisabledPreview=aminScatterBuildPreview #() #() #() 1
+            return cachedDisabledPreview
+        )
         checkAnalyzerRevision()
         if dirty and (updateMode==2 or previewBuildCount==0) do refreshPreview()
         cachedPoints
@@ -11257,6 +11617,7 @@ version:47
     fn performanceTraceVersion = 1
     fn cacheSnapshot = (#(cachedPoints,cachedPointCount,dirty,previewError,generatedCount,previewBuildCount,previewBuildMs,requestedCount,densityCapped))
     fn restoreCache state = (
+        uiPreviewMode=0
         cachedPoints=state[1];cachedPointCount=state[2];dirty=state[3];previewError=state[4]
         generatedCount=state[5];previewBuildCount=state[6];previewBuildMs=state[7]
         requestedCount=state[8];densityCapped=state[9]
@@ -11349,25 +11710,25 @@ version:47
     )
     fn refreshDisplay = (
         for entry in (layerEntries()) do entry[2].refreshPreview()
-        redrawViews()
+        CyrusViewportRedraw()
     )
     fn refreshAll = (
         global CyrusPFManualRevision; if CyrusPFManualRevision!=undefined do CyrusPFManualRevision+=1
         for entry in (layerEntries()) do entry[2].refreshPreview()
-        redrawViews()
+        CyrusViewportRedraw()
     )
     fn allStatus = (
-        local plants=0;local points=0
+        local plants=0;local points=0;local errors=0
         for entry in (layerEntries()) do (
             local state=entry[2].cacheSnapshot()
-            plants+=state[5];points+=state[2]
+            plants+=state[5];points+=state[2];if state[4]!="" do errors+=1
         )
-        (layerObjects.count as string)+" layers; "+(plants as string)+" plants; "+(points as string)+(if viewportMode==1 then " points" else " shown instances (display limits apply)")
+        (layerObjects.count as string)+" layers; "+(plants as string)+" plants; "+(points as string)+(if viewportMode==1 then " points" else " shown instances (display limits apply)")+(if errors>0 then "; "+(errors as string)+" layer(s) have a preview error" else "")+(if CyrusPointLastError!="" then "; native preview fallback" else "")
     )
     fn clearAllBaked = (
         local owners=refs.dependentNodes this
         if owners.count==1 do for entry in (layerEntries includeDisabled:true) do entry[2].clearBaked owners[1]
-        autoRender=true;showPoints=true;redrawViews()
+        autoRender=true;showPoints=true;CyrusViewportRedraw()
     )
 
     fn clearBaked ownerNode = (
@@ -11410,43 +11771,70 @@ version:47
         fresh.count
     )
     rollout mainUI "Cyrus Scatter" width:#cmdPanel (
-        local controlsReady=false,building=false,controller
-        local roots=#(),layerPanels=#(),dpiScale=1.0
+        local controlsReady=false,building=false,layingOut=false,selecting=false,controller,lastStatusAt=0
+        local roots=#(),layerPanels=#(),dpiScale=1.0,contentWidth=0
         checkbox enableCyrus "Enable Cyrus Scatter" checked:true pos:[8,4] width:220
         on enableCyrus changed v do undo "Enable Cyrus Scatter" on cyrusEnabled=v
-        subrollout panels "" pos:[0,28] width:162 height:200
+        subrollout panels "" pos:[0,28] width:162 height:200 scrollBar:#off
         timer widthTimer interval:300 active:true
         fn fitWidth = (
             local h=mainUI.hwnd,p=windows.getParentHWND h
             if h==0 or p==0 do return false
             local b=windows.getWindowPos h,pb=windows.getWindowPos p
-            local desired=amax 160 (pb.w-8),changed=abs(b.w-desired)>1
-            if changed or abs(b.x-pb.x-4)>1 do windows.setWindowPos h 4 (b.y-pb.y) desired b.h true
+            -- Max can reset the HWND width during a height change. Repair that
+            -- without treating it as a new command-panel width or remounting UI.
+            local desired=amax 160 (pb.w-8),changed=abs(contentWidth-desired)>1
+            -- Repaint the correction; otherwise stale narrow pixels persist until hover.
+            if abs(b.w-desired)>1 or abs(b.x-pb.x-4)>1 do windows.setWindowPos h 4 (b.y-pb.y) desired b.h true
             if panels.width!=desired do panels.width=desired
             changed
         )
         fn layoutPanels = (
-            if controlsReady and not building do (
+            if controlsReady and not building and not layingOut and not selecting do (
+                layingOut=true
+                try (
                 local h=0
                 dpiScale=mainUI.height as float / (amax 1 (windows.getWindowPos mainUI.hwnd).h)
                 local header=floor(23.333*dpiScale+0.5)
                 for r in layerPanels do r.fitHeight()
                 for r in roots do h+=(if r.open then r.height+header else header)
                 for r in layerPanels do h+=(if r.open then r.height+header else header)
-                panels.pos=[0,28];panels.height=h;mainUI.height=h+28;fitWidth()
-                -- Nested rollout resizing can leave stale child paint regions in Max.
-                for panel in layerPanels where panel.open do for section in panel.children where section.open and section.title=="Collision / Relax" do (
-                    for c in section.controls do c.visible=false
-                    for c in section.controls do c.visible=true
-                )
+                if panels.pos!=[0,28] do panels.pos=[0,28]
+                if panels.height!=h do panels.height=h
+                if mainUI.height!=h+28 do mainUI.height=h+28
+                fitWidth()
+                )catch(layingOut=false;throw())
+                layingOut=false
             )
         )
         fn refreshTitles = (
-            for i=1 to layerPanels.count do layerPanels[i].title=controller.layerNames[i]
+            for i=1 to layerPanels.count do (
+                local label=controller.layerNames[i]+(if i==controller.activeLayer then " [active]" else "")
+                if layerPanels[i].title!=label do layerPanels[i].title=label
+            )
+        )
+        fn selectLayerView layer expand:false = (
+            if selecting or building or not controlsReady do return false
+            local i=findItem controller.layerObjects layer
+            if i==0 do return false
+            selecting=true
+            try (
+                if controller.activeLayer!=i do controller.selectLayer i
+                if expand and i<=layerPanels.count do (
+                    local r=layerPanels[i]
+                    r.ensureContents();r.open=true
+                )
+                refreshTitles()
+                if roots.count>=4 do roots[4].syncSelection()
+            )catch(selecting=false;throw())
+            selecting=false
+            if expand do layoutPanels()
+            true
         )
         fn rebuildLayers = (
             building=true
-            local states=for r in layerPanels collect #(r.obj,r.open,(for c in r.children collect c.open))
+            local states=for r in layerPanels collect #(r.obj,r.open,r.sectionStates())
+            try (
             for r in layerPanels do removeSubRollout panels r
             layerPanels=#()
             for i=1 to controller.layerObjects.count do (
@@ -11458,32 +11846,49 @@ version:47
                 for state in states where state[1]==controller.layerObjects[i] do previous=state
                 CyrusMount panels r (if previous==undefined then true else not previous[2])
                 r.title=controller.layerNames[i]
-                if previous!=undefined and previous[2] do (r.ensureContents();for k=1 to (amin r.children.count previous[3].count) do r.children[k].open=previous[3][k])
+                if previous!=undefined do (r.pendingSections=previous[3];if previous[2] do r.ensureContents())
             )
-            building=false;layoutPanels()
+            )catch(building=false;throw())
+            building=false;refreshTitles();layoutPanels()
         )
         fn rebuild = (
             if controlsReady do (rebuildLayers();roots[4].refresh())
         )
         fn rebuildWidth = (
+            local scroll=mainUI.scrollPos
             local states=for r in roots collect r.open
             building=true
+            try (
             for r in roots do removeSubRollout panels r
             roots=#(CyrusMake_updateUI controller mainUI,CyrusMake_surfaceUI controller mainUI,CyrusMake_previewUI controller mainUI,CyrusMakeManager controller mainUI)
             for i=1 to roots.count do CyrusMount panels roots[i] (not states[i])
+            contentWidth=panels.width
+            )catch(building=false;throw())
             building=false;rebuildLayers()
+            mainUI.scrollPos=scroll
         )
-        on widthTimer tick do if controlsReady and not building do (if fitWidth() do rebuildWidth())
+        on widthTimer tick do if controlsReady and mainUI.open and not building do (
+            if widthTimer.interval!=300 do widthTimer.interval=300
+            if fitWidth() and not CyrusInteractionHeld() do rebuildWidth()
+            if roots.count>=4 and roots[4].open and abs(timeStamp()-lastStatusAt)>=500 do (
+                lastStatusAt=timeStamp();roots[4].refreshStats()
+            )
+        )
         on mainUI open do (
+            widthTimer.active=true
             controller=this
             enableCyrus.checked=cyrusEnabled
             building=true
             fitWidth()
             roots=#(CyrusMake_updateUI controller mainUI,CyrusMake_surfaceUI controller mainUI,CyrusMake_previewUI controller mainUI,CyrusMakeManager controller mainUI)
             for r in roots do CyrusMount panels r true
+            contentWidth=panels.width
             controlsReady=true;building=false;rebuildLayers()
         )
-        on mainUI close do (controlsReady=false;roots=#();layerPanels=#())
+        -- Max resets the width after rolledUp returns. Use the existing timer
+        -- for the next UI turn, then restore its normal polling interval.
+        on mainUI rolledUp expanded do widthTimer.interval=if expanded then 1 else 300
+        on mainUI close do (controlsReady=false;widthTimer.active=false;roots=#();layerPanels=#())
     )
 
 
@@ -11552,12 +11957,25 @@ fn AminScatterObjectDraw = (
         gw.setTransform n.objectTransform;gw.setColor #line red
         for path in n.baseObject.iconLines() do gw.polyline path false
         gw.setTransform (matrix3 1)
+        local caches=#(),styles=#()
         for entry in n.baseObject.viewportLayerEntries held do (
             local obj=entry[2]
             local cache=obj.previewCache interactionHeld:held
             obj.drawRadii()
-            if obj.showPoints or obj.showCenters do (
-                if cache!=undefined do aminScatterDrawPreview cache (obj.pointColorMode==1) obj.solidPointColor
+            if (obj.showPoints or obj.showCenters) and cache!=undefined do (
+                if (obj.viewportMode==1 and CyrusPointEnabled) or (obj.viewportMode==3 and CyrusMeshEnabled) then (append caches cache;append styles #(obj.pointColorMode==1,obj.solidPointColor))
+                else aminScatterDrawPreview cache (obj.pointColorMode==1) obj.solidPointColor
+            )
+        )
+        local ready=false,owner=CyrusPointOwner n
+        if (CyrusPointEnabled or CyrusMeshEnabled) and isValidNode owner do try(ready=cyrusRetainedMatches owner caches styles)catch(CyrusPointLastError=getCurrentException())
+        if not ready do (
+            for i=1 to caches.count do aminScatterDrawPreview caches[i] styles[i][1] styles[i][2]
+            if caches.count>0 and CyrusPointAvailable and not CyrusPointSuspended do (
+                local failed=false
+                if isValidNode owner do try(failed=(cyrusRetainedStats owner)[12]==2)catch()
+                if failed do CyrusPointLastError="Retained preview unavailable; using legacy preview. Refresh preview to retry."
+                if not failed do CyrusPointPending=true
             )
         )
     )
@@ -11753,13 +12171,13 @@ fn CyrusScatterLiveBatchEnd event handles = (
         CyrusLiveBatchCount+=1
         local wanted=CyrusLiveBatchRedraw
         CyrusLiveBatchRedraw=false
-        if wanted and AminScatterRenderRedrawHeld!=true do (CyrusLiveRedrawRequests+=1;redrawViews())
+        if wanted and AminScatterRenderRedrawHeld!=true do (CyrusLiveRedrawRequests+=1;CyrusViewportRedraw())
     )
 )
 fn AminScatterLiveChanged event handles = (
     if CyrusPerfTraceInput!=undefined do try(CyrusPerfTraceInput "scatter_input_received" event handles)catch()
     CyrusLiveChangeCalls+=1
-    if event==#deleted do (handles=for h in handles where findItem CyrusPFDeletedHandles h==0 collect h;if handles.count==0 do return false)
+    if event==#deleted do (handles=for h in handles where findItem CyrusPFDeletedHandles h==0 and findItem CyrusPointDeletedHandles h==0 collect h;if handles.count==0 do return false)
     if AminScatterRenderRedrawHeld!=true do (
         local nodes=for h in handles collect (getAnimByHandle h)
         -- Analyzer helper geometry invalidates on selection too. Its data revision
@@ -11775,14 +12193,14 @@ fn AminScatterLiveChanged event handles = (
         )
         if redraw do (
             if CyrusLiveBatchDepth>0 then CyrusLiveBatchRedraw=true
-            else (CyrusLiveRedrawRequests+=1;redrawViews())
+            else (CyrusLiveRedrawRequests+=1;CyrusViewportRedraw())
         )
     )
 )
 fn AminScatterLiveTime = (
     if AminScatterRenderRedrawHeld!=true do (
         for n in objects where classof n.baseObject==AminScatterObject do (for entry in (n.baseObject.layerEntries includeDisabled:true) do entry[2].invalidateLive())
-        redrawViews()
+        CyrusViewportRedraw()
     )
 )
 AminScatterNodeEvents=NodeEventCallback mouseUp:true delay:150 callbackBegin:CyrusScatterLiveBatchBegin callbackEnd:CyrusScatterLiveBatchEnd deleted:AminScatterLiveChanged geometryChanged:AminScatterLiveChanged topologyChanged:AminScatterLiveChanged mappingChanged:AminScatterLiveChanged modelStructured:AminScatterLiveChanged controllerOtherEvent:AminScatterLiveChanged controllerStructured:AminScatterLiveChanged linkChanged:AminScatterLiveChanged
@@ -11797,7 +12215,7 @@ fn AminScatterLayerUndo = (
         for entry in (n.baseObject.layerEntries includeDisabled:true) do entry[2].forcePreviewUpdate()
         if (modPanel.getCurrentObject())==n.baseObject do AminScatterRefreshLayerPanels n.baseObject
     )
-    redrawViews()
+    CyrusViewportRedraw()
 )
 callbacks.removeScripts id:#AminScatterLayers
 callbacks.addScript #sceneUndo "AminScatterLayerUndo()" id:#AminScatterLayers persistent:false
@@ -11812,9 +12230,95 @@ CyrusScatterRedIcons()
 try(CyrusReleaseTimer.Stop())catch()
 fn CyrusReleaseTick sender args = (
  if CyrusInteractionHeld() then CyrusWasDragging=true
- else if CyrusWasDragging do (CyrusWasDragging=false;redrawViews())
+ else if CyrusWasDragging or CyrusPointPending do (CyrusWasDragging=false;CyrusPointPending=false;CyrusViewportRedraw())
 )
 CyrusReleaseTimer=dotNetObject "System.Windows.Forms.Timer"
 CyrusReleaseTimer.Interval=200
 dotNet.addEventHandler CyrusReleaseTimer "Tick" CyrusReleaseTick
 CyrusReleaseTimer.Start()
+
+fn CyrusPointOwner controller = (
+    for pair in CyrusPointOwners where pair[1]==controller and isValidNode pair[2] do return pair[2]
+    undefined
+)
+fn CyrusPointDelete nodes = (
+    local live=for n in nodes where isValidNode n collect n
+    for n in live do appendIfUnique CyrusPointDeletedHandles (getHandleByAnim n)
+    if live.count>0 do (
+        local wasDirty=getSaveRequired()
+        undo off delete live
+        if not wasDirty do setSaveRequired false
+    )
+)
+fn CyrusPointClear = (
+    CyrusPointPending=false
+    local old=CyrusPointOwners;CyrusPointOwners=#()
+    if old!=undefined do CyrusPointDelete (for pair in old collect pair[2])
+)
+fn CyrusPointSync = (
+    if CyrusPointBusy or CyrusPointSuspended or AminScatterRenderRedrawHeld==true or CyrusInteractionHeld() do return false
+    CyrusPointBusy=true
+    try (
+        local publishError=""
+        local surviving=#()
+        for pair in CyrusPointOwners do (
+            if isValidNode pair[1] and classof pair[1].baseObject==AminScatterObject and isValidNode pair[2] then append surviving pair
+            else CyrusPointDelete #(pair[2])
+        )
+        CyrusPointOwners=surviving
+        for n in (for node in objects where classof node.baseObject==AminScatterObject collect node) do (
+            local caches=#(),styles=#()
+            if CyrusPointAvailable and not n.isHidden do for entry in n.baseObject.layerEntries() do (
+                local obj=entry[2],cache=obj.previewCache interactionHeld:false
+                if ((obj.viewportMode==1 and CyrusPointEnabled) or (obj.viewportMode==3 and CyrusMeshEnabled)) and (obj.showPoints or obj.showCenters) and cache!=undefined do (
+                    append caches cache;append styles #(obj.pointColorMode==1,obj.solidPointColor)
+                )
+            )
+            local owner=CyrusPointOwner n
+            if caches.count>0 and not isValidNode owner and cyrusRetainedCreate!=undefined do (
+                local wasDirty=getSaveRequired()
+                undo off owner=cyrusRetainedCreate()
+                if isValidNode owner do (setTransformLockFlags owner #all;append CyrusPointOwners #(n,owner))
+                if not wasDirty do setSaveRequired false
+            )
+            if isValidNode owner do (
+                if not cyrusRetainedPublish owner n caches styles do publishError="Retained preview unavailable; using legacy preview. Refresh preview to retry."
+            )
+        )
+        CyrusPointLastError=publishError
+    )catch(CyrusPointLastError=getCurrentException())
+    CyrusPointBusy=false
+    true
+)
+fn CyrusViewportRedraw = (
+    if not CyrusPointBusy do CyrusPointSync()
+    redrawViews()
+)
+fn CyrusPointBeforeSave = (CyrusPointSuspended=true;CyrusPointClear())
+fn CyrusPointAfterSave = (CyrusPointSuspended=false;CyrusPointPending=true)
+fn CyrusPointBeforeScene = (CyrusPointSuspended=true;CyrusPointClear())
+fn CyrusPointAfterScene = (CyrusPointSuspended=false;CyrusPointDeletedHandles=#();CyrusPointPending=true)
+-- Session-only A/B switch. Scene data and placement caches are unchanged.
+fn CyrusRetainedPointDrawing enabled = (
+    CyrusPointEnabled=enabled;CyrusPointLastError=""
+    CyrusPointAvailable=try(cyrusRetainedAvailable())catch(false)
+    CyrusViewportRedraw()
+    CyrusPointEnabled
+)
+fn CyrusRetainedMeshDrawing enabled = (
+    CyrusMeshEnabled=enabled;CyrusPointLastError=""
+    CyrusPointAvailable=try(cyrusRetainedAvailable())catch(false)
+    CyrusViewportRedraw()
+    CyrusMeshEnabled
+)
+callbacks.removeScripts id:#CyrusRetainedPoints
+callbacks.addScript #filePreSaveProcess "CyrusPointBeforeSave()" id:#CyrusRetainedPoints
+callbacks.addScript #filePostSaveProcess "CyrusPointAfterSave()" id:#CyrusRetainedPoints
+callbacks.addScript #filePreOpenProcess "CyrusPointBeforeScene()" id:#CyrusRetainedPoints
+callbacks.addScript #systemPreReset "CyrusPointBeforeScene()" id:#CyrusRetainedPoints
+callbacks.addScript #systemPreNew "CyrusPointBeforeScene()" id:#CyrusRetainedPoints
+callbacks.addScript #filePostOpenProcess "CyrusPointAfterScene()" id:#CyrusRetainedPoints
+callbacks.addScript #systemPostReset "CyrusPointAfterScene()" id:#CyrusRetainedPoints
+callbacks.addScript #systemPostNew "CyrusPointAfterScene()" id:#CyrusRetainedPoints
+CyrusPointAvailable=try(cyrusRetainedAvailable())catch(false)
+CyrusPointPending=true
