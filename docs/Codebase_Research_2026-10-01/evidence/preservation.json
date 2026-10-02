@@ -1,0 +1,10 @@
+{
+  "verified_utc": "2026-10-01T18:35:15.865886+00:00",
+  "fingerprinted_files": 113,
+  "changed": [],
+  "tracked_diff_byte_identical": true,
+  "unrelated_status_identical": true,
+  "installed_script_path": "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\AminScatter\\AminScatterObject.ms",
+  "installed_script_sha256": "8116ab4aad662a9a62e15667e4b53507aaf3f8a989faee3856845a28a1f99c17",
+  "installed_script_matches_source": true
+}

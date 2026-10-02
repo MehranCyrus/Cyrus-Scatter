@@ -1,0 +1,2 @@
+function:"AminScatterObjectDraw", sourceFile:"C:\Users\Mehran\AppData\Local\Autodesk\3dsMax\2027 - 64bit\ENU\scripts\AminScatter\AminScatterObject.ms (line: 11534)"
+function:"CyrusSurfaceAnalyzerDraw", sourceFile:"C:\Users\Mehran\AppData\Local\Autodesk\3dsMax\2027 - 64bit\ENU\scripts\CyrusSurfaceAnalyzer\CyrusSurfaceAnalyzer.ms (line: 370)"

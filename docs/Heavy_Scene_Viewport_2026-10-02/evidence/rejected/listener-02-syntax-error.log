@@ -1,0 +1,7 @@
+Welcome to MAXScript.
+
+
+-- Error occurred in anonymous codeblock; filename: F:\Cursor\_Cyrus_Apps\CyrusScatter\tools\performance\native_point_probe\bootstrap.ms; position: 6056; line: 126
+-- MAXScript Auto-load Script Error Exception:
+-- Syntax error: at ., expected <factor>
+--  In line:     NitrousGraphicsManager.GetActiveViewportSetting().A

@@ -1,0 +1,570 @@
+{
+  "captured_utc": "2026-10-01T17:52:05.628189+00:00",
+  "files": [
+    {
+      "path": "AminScatter/CMakeLists.txt",
+      "size": 3231,
+      "sha256": "e63887a69bc34ccb4fa54323151e8ff8d538295bec8324e4901eb8eba2f81462"
+    },
+    {
+      "path": "AminScatter/include/execution.h",
+      "size": 2975,
+      "sha256": "e9f2cfdf677366f491dc01cea83301ce53111c5073633333a4adf1db2ad509d2"
+    },
+    {
+      "path": "AminScatter/include/scatter.h",
+      "size": 4874,
+      "sha256": "949bad97f4c13aa119b43da5e5c73b02760c45d9779a14f3eaf7baa4d94b1265"
+    },
+    {
+      "path": "AminScatter/scripts/AminScatter.ms",
+      "size": 5741,
+      "sha256": "404723402cd4fd076465f965a8328d98b53d2573f94b46d21b19747548dacd21"
+    },
+    {
+      "path": "AminScatter/scripts/AminScatterObject.ms",
+      "size": 968536,
+      "sha256": "8116ab4aad662a9a62e15667e4b53507aaf3f8a989faee3856845a28a1f99c17"
+    },
+    {
+      "path": "AminScatter/src/analyzer_area_bridge.inc",
+      "size": 2118,
+      "sha256": "849e9ed30e3b5cdd11685a5150b03d50859b3577f5d49edae8325afa186fd02b"
+    },
+    {
+      "path": "AminScatter/src/boundary_falloff.inc",
+      "size": 4022,
+      "sha256": "75c50dcde1c0d2339b526e7bb2019c4644ebd9512369fc09238ec62bbb749cec"
+    },
+    {
+      "path": "AminScatter/src/boundary_falloff_bridge.inc",
+      "size": 3316,
+      "sha256": "4ada13b8921470ac6d336332fbd500b41cceb2a9171ab4b2c1396ce813dae95a"
+    },
+    {
+      "path": "AminScatter/src/cluster.inc",
+      "size": 3491,
+      "sha256": "e3f7eddd8133e34f91c1e50d5c4d1ac4ca2f4a6dc611728a0848c16f9f3e3680"
+    },
+    {
+      "path": "AminScatter/src/cyrus_edit.cpp",
+      "size": 15189,
+      "sha256": "0348b8396f42f3eefc83daa9646d8bda223e9d12742595f2eb1fac120c21ad28"
+    },
+    {
+      "path": "AminScatter/src/cyrus_edit.rc",
+      "size": 301,
+      "sha256": "2ed905b328e04f092f89a4e1e800d9fba724a0c33f9ea3262fe886040f53fb33"
+    },
+    {
+      "path": "AminScatter/src/cyrus_edit_stack.inc",
+      "size": 4412,
+      "sha256": "53d689602439f0f956a643b0f0ccc561247b82d6b162d6a067073abe1e23a6ab"
+    },
+    {
+      "path": "AminScatter/src/cyrus_edit_storage.inc",
+      "size": 2403,
+      "sha256": "561ef94b0fa26e16eb4058398cbff0e0f7c3c84ec74fc181d0c674be9fbf036b"
+    },
+    {
+      "path": "AminScatter/src/edge_border.inc",
+      "size": 5068,
+      "sha256": "df5f43d5614d1d44a274b9a67c70c659d24964b1ffad665e1956232581951f8c"
+    },
+    {
+      "path": "AminScatter/src/edit_plugin.cpp",
+      "size": 591,
+      "sha256": "2eaec15f4539ff09b7d312e8f2c2b9cb301955bd5ba7336609a3fb45314cefa6"
+    },
+    {
+      "path": "AminScatter/src/execution.cpp",
+      "size": 819,
+      "sha256": "b54963d69441d473ed52f76b125c4eb3d0a38c564900f28abd76efa7bcbf1136"
+    },
+    {
+      "path": "AminScatter/src/final.inc",
+      "size": 5627,
+      "sha256": "eb77d2cfcbc74c87b02a047d67f3623984dcbe3bd8f6e818d8d4c2698fdc7272"
+    },
+    {
+      "path": "AminScatter/src/geometry_preview.inc",
+      "size": 4418,
+      "sha256": "0d0b5bf09e73d589683dbd54c0db052d398434592148f5c6992d1137a78e411d"
+    },
+    {
+      "path": "AminScatter/src/max_bridge.cpp",
+      "size": 26218,
+      "sha256": "5dcf12cceee2f48d079e499ef20069c3f6ce4c51864e4daa1ca24adc120b07f6"
+    },
+    {
+      "path": "AminScatter/src/orientation.inc",
+      "size": 7983,
+      "sha256": "d485e2b8ea5c3abf3fc00a7e7b7139ae4b5d3995ee17f3aad7afff8cc4bfcea8"
+    },
+    {
+      "path": "AminScatter/src/orientation_bridge.inc",
+      "size": 3234,
+      "sha256": "c01e1146c6b3b04f03ff288f9e87d0c0d87de6b4adf22d6c69fe6965d9a41dde"
+    },
+    {
+      "path": "AminScatter/src/prepared_band.inc",
+      "size": 2633,
+      "sha256": "5d01452faed01a630428506cc7ce099ee909ce64204edef5448a03c1a1000cf0"
+    },
+    {
+      "path": "AminScatter/src/preview.cpp",
+      "size": 13330,
+      "sha256": "96c3099d032b202df21334f5390a946109920890b042a3b1fb69badad9be50af"
+    },
+    {
+      "path": "AminScatter/src/preview_batches.inc",
+      "size": 1890,
+      "sha256": "a2a7df3d65a6278d49aad80361bffe8db15fae1419feb44e993354f5c31c7acd"
+    },
+    {
+      "path": "AminScatter/src/scatter.cpp",
+      "size": 25830,
+      "sha256": "16e56f583cf608b23a29e2d07608e5b68bfec36de7f3035ebe510ed59987fe7f"
+    },
+    {
+      "path": "AminScatter/src/spacing.inc",
+      "size": 7577,
+      "sha256": "96ef2d89f07cf9e6c67a93f4c91e990da98016f58c6278fce543a7b09e289c77"
+    },
+    {
+      "path": "AminScatter/src/whole_scale_bridge.inc",
+      "size": 1278,
+      "sha256": "446b36ddd6dec15fe4f2920b416157e33d503d7913905efb03f3967f7c5736d6"
+    },
+    {
+      "path": "AminScatter/tests/boundary_falloff_tests.cpp",
+      "size": 3158,
+      "sha256": "ab48b370731b7f667fc39156654d532a0693b3e0a7836a06c759ed478bf3c06a"
+    },
+    {
+      "path": "AminScatter/tests/compute_benchmark.cpp",
+      "size": 6343,
+      "sha256": "9f59cf70e0511c761d59c1c1b19335bbef0a3d9ddce30b3df93ce94f3adcc4c5"
+    },
+    {
+      "path": "AminScatter/tests/edge_border_tests.cpp",
+      "size": 3709,
+      "sha256": "f85b1c429fc080e94ea7bdc5771286cef066d7979acfe4065caf5bc30f3c49b1"
+    },
+    {
+      "path": "AminScatter/tests/orientation_tests.cpp",
+      "size": 4343,
+      "sha256": "3a49477ce55d03cd342beec23123b581a50a7d8f13626834207661c2f4fa8076"
+    },
+    {
+      "path": "AminScatter/tests/prepared_band_tests.cpp",
+      "size": 2379,
+      "sha256": "ce1622cbe460eaba14c09a34ed669fcc74bdb08b018c17c754d12b0ddf33769d"
+    },
+    {
+      "path": "AminScatter/tests/scatter_tests.cpp",
+      "size": 18194,
+      "sha256": "c0e0eb48287e008d6f88c4baadd013d183bf49125f607c8c716315237600c402"
+    },
+    {
+      "path": "AminScatter/tests/spacing_tests.cpp",
+      "size": 3508,
+      "sha256": "9fc18b3e4629b9e9a1b79b67ceb75f21ae671211396a5cfd909239040fc5a2e7"
+    },
+    {
+      "path": "AminScatter/tests/threading_tests.cpp",
+      "size": 3642,
+      "sha256": "f3336cfd3ffe0c642fd839cf7eb4b6002fd697a04072010f963bf1d020f87507"
+    },
+    {
+      "path": "AminScatter/tests/weight_tests.cpp",
+      "size": 2209,
+      "sha256": "792203629d369f7476d097c97f3dc8082811a5e5deb8fbc62ff74ab1a7b65df9"
+    },
+    {
+      "path": "AminScatter/tools/ui/activation.cjs",
+      "size": 2368,
+      "sha256": "4c98473965882e4df4e488ac158be530962efffa5f8df65585006286794e7beb"
+    },
+    {
+      "path": "AminScatter/tools/ui/analyzer-area.cjs",
+      "size": 2640,
+      "sha256": "bc1d472ef08351b7bf5112b1fca0552fa6610747edaa5d880050e80933c89adf"
+    },
+    {
+      "path": "AminScatter/tools/ui/area-falloff.cjs",
+      "size": 2236,
+      "sha256": "153a1e93b0edd78bb941e03470d03e7fcc20c84596323d8421b3626c2c0b5a8b"
+    },
+    {
+      "path": "AminScatter/tools/ui/boundary-falloff.cjs",
+      "size": 8348,
+      "sha256": "baefdb6ec38d63048358b00d599c2225278e9737300eb155ecd3403992e6e9ed"
+    },
+    {
+      "path": "AminScatter/tools/ui/centers.cjs",
+      "size": 2900,
+      "sha256": "4579065bdd222e1714f70765840ff7998ff0b3e26e33eb780f8d20a7f01c84f0"
+    },
+    {
+      "path": "AminScatter/tools/ui/compute-performance.cjs",
+      "size": 3638,
+      "sha256": "65792c2c1f117796cf45daf14c28633ec6490688c6f26283972d951aae51b371"
+    },
+    {
+      "path": "AminScatter/tools/ui/display-modes.cjs",
+      "size": 4386,
+      "sha256": "d5b722fbb83d102e5173ee9c618e91e0af470427ddf9e3aca36941ea803442db"
+    },
+    {
+      "path": "AminScatter/tools/ui/edge-border.cjs",
+      "size": 7208,
+      "sha256": "3401f9542166922dfffb0316f380420dd625e3bf5c4389ce171750d4616b1f83"
+    },
+    {
+      "path": "AminScatter/tools/ui/edge-corners.cjs",
+      "size": 2301,
+      "sha256": "22f9c61b8117313ad1a5a2f042350713111ee236175c80594b375403a8a079a2"
+    },
+    {
+      "path": "AminScatter/tools/ui/edge-rotation.cjs",
+      "size": 1945,
+      "sha256": "f1896d3c7be1ce047695ef84fd4251139eeecf3e2d372f5a09201f25f8e93564"
+    },
+    {
+      "path": "AminScatter/tools/ui/edit.cjs",
+      "size": 2156,
+      "sha256": "e53a198c479027f39506d59f324f44226b570cb461e7a7e5e135df00da97c68b"
+    },
+    {
+      "path": "AminScatter/tools/ui/empty.cjs",
+      "size": 3439,
+      "sha256": "c9f7c8ec3922d655157f4a8f793e075e3fa3babfa0225e0a2411059ddd64a8d7"
+    },
+    {
+      "path": "AminScatter/tools/ui/final.cjs",
+      "size": 4743,
+      "sha256": "ac33e2ba4d660c1fb8673e8628afe91037152cfcc03cb8c970072a6863ed51d1"
+    },
+    {
+      "path": "AminScatter/tools/ui/generate.cjs",
+      "size": 11075,
+      "sha256": "270fcf60e623352a0954184704b48ce883b0e477b21d01ada5bea9878d237d18"
+    },
+    {
+      "path": "AminScatter/tools/ui/orientation.cjs",
+      "size": 4992,
+      "sha256": "f0d584965c6a28e46858e12b3e59047d104eaceac672a64d4ddc42d57ef6ae87"
+    },
+    {
+      "path": "AminScatter/tools/ui/overlaps.cjs",
+      "size": 7084,
+      "sha256": "5f65847967b567c6c72fc095b2e7cc4a2a94a8be2d0597ed05192c954301195d"
+    },
+    {
+      "path": "AminScatter/tools/ui/performance.cjs",
+      "size": 6885,
+      "sha256": "daaba06ac7fc1b61241a12dabd4a733495c7f4d0d4f5c2f94259362488dffa75"
+    },
+    {
+      "path": "AminScatter/tools/ui/point-source.cjs",
+      "size": 3328,
+      "sha256": "fb9fb4d351173526e01396d0a74a1cb1a7321151dc47bec47d10b1c6d22dbdb4"
+    },
+    {
+      "path": "AminScatter/tools/ui/radius-display.cjs",
+      "size": 2512,
+      "sha256": "edf47968303b7c4bb202a5f74877e150de9376c519e35abd25a85bc821aa2694"
+    },
+    {
+      "path": "AminScatter/tools/ui/radius.cjs",
+      "size": 7163,
+      "sha256": "a021915901b3b4d985f79e76e47d0a398ddc523578f19f0004f836eac46ff3b5"
+    },
+    {
+      "path": "AminScatter/tools/ui/responsive.cjs",
+      "size": 1681,
+      "sha256": "19f512543f8fd872c6d899615c5a1733f94857c71c37061a5f7d50355cb4f12f"
+    },
+    {
+      "path": "AminScatter/tools/ui/source-refresh.cjs",
+      "size": 885,
+      "sha256": "4a64cc142d1db0bce03e2c63bc6e43251b0f190ecbc1472f327c5ff2fe9d32aa"
+    },
+    {
+      "path": "AminScatter/tools/ui/source-transforms.cjs",
+      "size": 3977,
+      "sha256": "1206435ac0f37d953b897aebc61996295b880c091bee8dab7d69ae9dbd88237d"
+    },
+    {
+      "path": "AminScatter/tools/ui/spacing.cjs",
+      "size": 3841,
+      "sha256": "a045813ef642b2f7577562ff944cb9cf2f8c6a2c99cf17942adcce5eddcbdf65"
+    },
+    {
+      "path": "AminScatter/tools/ui/street-layout.cjs",
+      "size": 3331,
+      "sha256": "f5c77fc5e6902e44caa5702d882d54e98016dd2652b6170250b9a6f2d4176ac2"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/analyzer-area-ui.ms",
+      "size": 2104,
+      "sha256": "70812259761ce88b4adc5b939b236cdd8ea68fe1d9d77a66e13497b65b997ea5"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/area-falloff-methods.ms",
+      "size": 3724,
+      "sha256": "10f6ebb739663e8c8f4318b4d8900e167665fa3cd0928a76718880ff95f8a8e2"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/area-falloff-ui.ms",
+      "size": 3715,
+      "sha256": "a4fe059f68418cccf52861c8426c779e5a3579f3715f4bae8147e1b232e9ecfd"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/before.ms",
+      "size": 59863,
+      "sha256": "4ffe3f7698b0df6d6653364189fcf3d2563d90186ce266072e5e39cea1ed3bfa"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/containers.ms",
+      "size": 4277,
+      "sha256": "18e9682aa214d5ee636e3f7ea9b2781fcab69d1d96ed6f52a4549d5bf80e4a77"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/falloff-graph.ms",
+      "size": 3780,
+      "sha256": "73ff8983484f282b29e5b2d559e54658f9465520dc26a0cdd9b5507a729d568b"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/host.ms",
+      "size": 3993,
+      "sha256": "31806e87ac6f4b4f2bd2212b418f2197852b5ebadd5fd2970039a2fcc58d7fa2"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/pflow.ms",
+      "size": 8300,
+      "sha256": "a613a919abdead513504ae6d275fe90a7d8c6090403572cc6cf482a0437b9e7a"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/storage.ms",
+      "size": 3635,
+      "sha256": "e0abd4988dcc117ace4931ee3d3c7a5238be0262aab0b85aa4f8ffb342eb0e52"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/street-layout-methods.ms",
+      "size": 3275,
+      "sha256": "62f4c02911d277e535da74aff6f1ecde8a8e5abc32614498b76f8c599f113e58"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/stroke-ui.ms",
+      "size": 10063,
+      "sha256": "c022ab57919d180a72d274705f86b22b5236538d06f84911a7b06a5b283bcacf"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/strokes.ms",
+      "size": 6286,
+      "sha256": "949e338cb27ee5c59e94cb1979d85557ca15e062b7ed1d823fde9f086174a1f9"
+    },
+    {
+      "path": "AminScatter/tools/ui/trace.cjs",
+      "size": 1985,
+      "sha256": "0d674e3602e4cba29a40246855c2acf8fdb46c1ae5440bf50d710619869b0800"
+    },
+    {
+      "path": "AminScatter/tools/ui/viewport-performance.cjs",
+      "size": 3594,
+      "sha256": "01c8f3cbae5f3587b509ffa3d7d68abf601a6b5f4960c35532142938eca01f53"
+    },
+    {
+      "path": "AminScatter/tools/ui/weights.cjs",
+      "size": 3340,
+      "sha256": "e9eac9bf22f6ecef3fe34e00ae36484179782cb037919fc450ba78596cb14814"
+    },
+    {
+      "path": "AminScatter/tools/ui/whole-scale.cjs",
+      "size": 1731,
+      "sha256": "24dfcfb11ba91748a26d09cc3825f79f244d46e2ba922c077f12af83a090df39"
+    },
+    {
+      "path": "cmake/CyrusMaxSDK.cmake",
+      "size": 1548,
+      "sha256": "53cf91db75742990b80d1f0a8dc8094d45a2a964094b3785b2f6eb1c8b55248e"
+    },
+    {
+      "path": "CyrusSurfaceAnalyzer/CMakeLists.txt",
+      "size": 895,
+      "sha256": "7c7992a66dbadd729e3f7112f6c713b866f0bf0a91840fdd789f879357b823d7"
+    },
+    {
+      "path": "CyrusSurfaceAnalyzer/scripts/CyrusSurfaceAnalyzer.ms",
+      "size": 22579,
+      "sha256": "b9a1f1aa2ba7847566eb8f36bee711f9c64753572955ed4549f2f68669e5f923"
+    },
+    {
+      "path": "CyrusSurfaceAnalyzer/src/analyzer.cpp",
+      "size": 10067,
+      "sha256": "61a64e15a0521e9f1a62788d8c09272a8754f50c35e89af5cbd05876a02c6f95"
+    },
+    {
+      "path": "CyrusSurfaceAnalyzer/src/analyzer.h",
+      "size": 779,
+      "sha256": "2433b91a725528ed5792a04f114cbd0206f2fe07664ca52acb7158e2ca16610c"
+    },
+    {
+      "path": "CyrusSurfaceAnalyzer/src/bridge.cpp",
+      "size": 3304,
+      "sha256": "5096d5dcfcd2a22846752b356de943dca5360c4c576f89bf3cb8ffe97fc1c605"
+    },
+    {
+      "path": "CyrusSurfaceAnalyzer/src/elements.cpp",
+      "size": 7555,
+      "sha256": "762ce99b9c74376b857ecf2db1472ff2f908459cd7f369b489538fd8a5e5b9e2"
+    },
+    {
+      "path": "CyrusSurfaceAnalyzer/tests/samples.h",
+      "size": 2956,
+      "sha256": "ae49447f4d9f04ae7a15a1f8d2af4aff5ccea232af902581c2b7e3e8ad010e37"
+    },
+    {
+      "path": "CyrusSurfaceAnalyzer/tests/test.cpp",
+      "size": 6828,
+      "sha256": "a8ac19818075c7a8811c78f1e09d0e19c66edd224850ffdae118b32d32fc80f5"
+    },
+    {
+      "path": "tools/build_max.py",
+      "size": 7241,
+      "sha256": "1c7a158e0b89223c963f4f167497d8ec74a870d26c3c1e15f9b4da2d54326297"
+    },
+    {
+      "path": "tools/CyrusIconPickingTest.ms",
+      "size": 5539,
+      "sha256": "c709e4d51107166da39d87b2cfa3ff170d3e48f5293d8012f4a1231fd55911c7"
+    },
+    {
+      "path": "tools/CyrusSelectionDiagnostic.ms",
+      "size": 10481,
+      "sha256": "8498c0646ae827eb0e8288b97a4c3d7ff303ef75dac0c70181fa2dcf46b4a0f1"
+    },
+    {
+      "path": "tools/performance/benchmark_compute.py",
+      "size": 5846,
+      "sha256": "59aad45689c48adc343d2c7e15b0c7cc13fbac527ef8e5b13dc3c4159a8ef9cf"
+    },
+    {
+      "path": "tools/performance/benchmark_scene.py",
+      "size": 9905,
+      "sha256": "5f4e35b9ae790e5e7d31de950a1ebd3ea843ad2e0fc196de5174bd611bedf92c"
+    },
+    {
+      "path": "tools/performance/compare_runs.py",
+      "size": 14607,
+      "sha256": "06b4e5d410bc8160fdc997801442952c3f850a059a03b773a0b2f5acfac106b6"
+    },
+    {
+      "path": "tools/performance/CyrusEditTrace.ms",
+      "size": 6961,
+      "sha256": "ae3efa9aa473cd980eff6d984d78770882bd77e30954ffc466db222eb87e1c23"
+    },
+    {
+      "path": "tools/performance/CyrusPerformanceMonitor.ms",
+      "size": 24124,
+      "sha256": "2e02d59209e3673cdd2ea9c6180955f917309819261976208157ac70cce7153d"
+    },
+    {
+      "path": "tools/performance/CyrusViewportBenchmark.ms",
+      "size": 4019,
+      "sha256": "939cf536188b665a530dac03d0bb8dba1519a6724cbf0225a6aa7361307f1abe"
+    },
+    {
+      "path": "tools/performance/Install-CyrusPerformanceTracing.ms",
+      "size": 3452,
+      "sha256": "e6809c9a453268a22dade73be944f34eacbad9ea0479c64647fd770382940338"
+    },
+    {
+      "path": "tools/performance/Measure-CyrusProcess.ps1",
+      "size": 6538,
+      "sha256": "48821e902ccac2611d8d795aaa058bf2ecc695130e6ff399e243292fd6e370a5"
+    },
+    {
+      "path": "tools/performance/package_reference.py",
+      "size": 3952,
+      "sha256": "18f36bca1c6e41d012321d19160041d530cbb99ac4f0634e54ca6035d2beac2f"
+    },
+    {
+      "path": "tools/performance/summarize_edit_trace.py",
+      "size": 11238,
+      "sha256": "2430536e2842de21389404247131a42307a6f039f60610a764da2616cee87cc5"
+    },
+    {
+      "path": "tools/performance/summarize_viewport.py",
+      "size": 3783,
+      "sha256": "34db859e89860707bf44809a1e9a1cac6b99dec982187730c2a0186f7b1f8715"
+    },
+    {
+      "path": "tools/test_compute_performance.py",
+      "size": 1599,
+      "sha256": "2a394ef638d5766a5c7b6ba0af1b94a88aba044379e6c733ad42e7a0c44fd03b"
+    },
+    {
+      "path": "tools/test_max2027.py",
+      "size": 2248,
+      "sha256": "3ccebed34d07e3befc325ffac554594de31c7cb03d473be9069ffcabdfe990df"
+    },
+    {
+      "path": "tools/test_performance_monitor.py",
+      "size": 4472,
+      "sha256": "806771e948112f41a1ba54ba48200a562c684233e31e1df4c9362fe8bf22981b"
+    },
+    {
+      "path": "tools/test_selection_diagnostic.py",
+      "size": 1585,
+      "sha256": "4284a72ec84052c6c14008fed2ae90cfe63b18c1d572b0d64694775b58aced1e"
+    },
+    {
+      "path": "tools/test_viewport_performance.py",
+      "size": 1617,
+      "sha256": "38757b7e3a3f6ab9d205b492c12903e3b7e02bbac8e29bf423226ab2c88341e4"
+    },
+    {
+      "path": "tools/tests/compute_performance_smoke.ms",
+      "size": 6231,
+      "sha256": "9a5005f3b3fc5b281549f98685c41aac6247ae44b79e779288b931a794ac99eb"
+    },
+    {
+      "path": "tools/tests/max2027_smoke.ms",
+      "size": 4296,
+      "sha256": "075c37e605535782cbc0faed6d1abe23d93fd786cca46f7b63818e11ba3ebb0e"
+    },
+    {
+      "path": "tools/tests/performance_monitor_smoke.ms",
+      "size": 9793,
+      "sha256": "8c6c19fd4ce0d5cfa12967ae3081c72388ab93a67168c7714ae9f2667d9521a6"
+    },
+    {
+      "path": "tools/tests/scene_compute_benchmark.ms",
+      "size": 6666,
+      "sha256": "907cc75923f8e48770a2b5f5515fa10bfdfbf43b89da8acc726b37b0244595c5"
+    },
+    {
+      "path": "tools/tests/selection_diagnostic_smoke.ms",
+      "size": 6143,
+      "sha256": "56e9312c6efd61718e49da79b3f335d942a5825fbaa89942d25ee1c668d318f8"
+    },
+    {
+      "path": "tools/tests/test_edit_trace_reports.py",
+      "size": 6939,
+      "sha256": "68d3278bb60d3cca4ad62d29f360181eed4c0b0c6a613dd1c45efaf96b089b46"
+    },
+    {
+      "path": "tools/tests/test_performance_reports.py",
+      "size": 6093,
+      "sha256": "666a1a1f119eac77dc5018e2274442be31b1fb1523d37a317c5cb42b663af730"
+    },
+    {
+      "path": "tools/tests/viewport_performance_smoke.ms",
+      "size": 9395,
+      "sha256": "94b1c75679455462fd892f25299c780105817bcca86bfd38c7a0d7edf54682b8"
+    }
+  ]
+}

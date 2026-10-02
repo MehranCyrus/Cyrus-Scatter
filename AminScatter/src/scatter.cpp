@@ -1,4 +1,5 @@
 #include "scatter.h"
+#include "execution.h"
 #include <algorithm>
 #include <cmath>
 #include <limits>
@@ -124,13 +125,14 @@ struct AreaMask {
         return false;
     }
 };
-bool analyzerBand(Vec3 p,const LineBand& band,double tolerance=0) {
-    if(band.kind==5) return false;
+bool analyzerBand(Vec3 p,const LineBand& band,double tolerance=0,int kindOverride=-1) {
+    const int kind=kindOverride<0?band.kind:kindOverride;
+    if(kind==5) return false;
     double nearest=INFINITY; bool inside=false;std::size_t edgeIndex=0;
     for(const auto& path:band.boundary.loops) {
         if(path.empty()) continue;
-        if(band.kind==4) {for(auto q:path) nearest=std::min(nearest,length(p-q));continue;}
-        const bool closed=band.kind<=2;
+        if(kind==4) {for(auto q:path) nearest=std::min(nearest,length(p-q));continue;}
+        const bool closed=kind<=2;
         Vec3 normal{},x{},y{};
         if(closed) {
             for(std::size_t i=0;i<path.size();++i) normal=normal+cross(path[i]-path[0],path[(i+1)%path.size()]-path[0]);
@@ -151,8 +153,9 @@ bool analyzerBand(Vec3 p,const LineBand& band,double tolerance=0) {
             }
         }
     }
-    return nearest>=std::max(0.0,band.start-tolerance) && nearest<=band.width+tolerance && (band.kind>2 || inside==(band.kind==2));
+    return nearest>=std::max(0.0,band.start-tolerance) && nearest<=band.width+tolerance && (kind>2 || inside==(kind==2));
 }
+#include "prepared_band.inc"
 double valueNoise(Vec3 p,std::uint32_t seed) {
     const int x=static_cast<int>(std::floor(p.x)),y=static_cast<int>(std::floor(p.y)),z=static_cast<int>(std::floor(p.z));
     auto smooth=[](double t){return t*t*(3-2*t);};
@@ -166,27 +169,7 @@ std::size_t weightedIndex(const std::vector<double>& cumulative,double u) {
     const auto it=std::upper_bound(cumulative.begin(),cumulative.end(),u*cumulative.back());
     return std::min(static_cast<std::size_t>(it-cumulative.begin()),cumulative.size()-1);
 }
-std::size_t diversityGroup(Vec3 p,const Settings& s,std::size_t groups,Random& rng,const std::vector<double>& groupCDF) {
-    p=p*(1.0/(s.distribution==1?s.clusterRadius:s.clusterSize));
-    // Bound lattice coordinates before integer conversion, including huge scenes.
-    if(!finite(p)||std::abs(p.x)>1e8||std::abs(p.y)>1e8||std::abs(p.z)>1e8) throw std::invalid_argument("Cluster size too small for world coordinates");
-    const Vec3 q=p*2;
-    p=p+Vec3{valueNoise(q,s.clusterSeed)-0.5,valueNoise(q,s.clusterSeed+1)-0.5,valueNoise(q,s.clusterSeed+2)-0.5}*(s.clusterRoughness*1.5);
-    const int x=static_cast<int>(std::floor(p.x)),y=static_cast<int>(std::floor(p.y)),z=static_cast<int>(std::floor(p.z));
-    double first=std::numeric_limits<double>::infinity(),second=first;
-    std::size_t a=0,b=0;
-    for(int dz=-1;dz<=1;++dz) for(int dy=-1;dy<=1;++dy) for(int dx=-1;dx<=1;++dx) {
-        const auto h=cellHash(x+dx,y+dy,z+dz,s.clusterSeed);
-        const Vec3 site{ x+dx+0.25+0.5*hashUnit(h),y+dy+0.25+0.5*hashUnit(h+1),z+dz+0.25+0.5*hashUnit(h+2)};
-        const double d=length(p-site);const auto group=groupCDF.empty()?mix(h+3)%groups:weightedIndex(groupCDF,hashUnit(h+3));
-        if(d<first) {second=first;b=a;first=d;a=group;}
-        else if(d<second) {second=d;b=group;}
-    }
-    const double edgeChance=s.clusterBlur>0?0.5*std::max(0.0,1-(second-first)/s.clusterBlur):0;
-    if(rng.next()<edgeChance) a=b;
-    if(rng.next()<s.clusterNoise) {const double u=rng.next();a=groupCDF.empty()?static_cast<std::size_t>(u*groups):weightedIndex(groupCDF,u);}
-    return a;
-}
+#include "cluster.inc"
 }
 #include "spacing.inc"
 #include "orientation.inc"
@@ -194,6 +177,7 @@ std::size_t diversityGroup(Vec3 p,const Settings& s,std::size_t groups,Random& r
 #include "edge_border.inc"
 Vec3 Instance::transformPoint(Vec3 p) const { return position+(xAxis*p.x+yAxis*p.y+zAxis*p.z)*scale; }
 std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settings& s) {
+    detail::recordComputeStats({});
     if(s.linePattern&&std::any_of(s.lineBands.begin(),s.lineBands.end(),[](const LineBand& b){return b.kind==6;}))return scatter(surface,prepareEdgeRows(s));
     if((s.collisionEnabled&&(!std::isfinite(s.collisionRadius)||s.collisionRadius<=0)) ||
        (s.relaxEnabled&&(!std::isfinite(s.relaxSpacing)||s.relaxSpacing<=0||!std::isfinite(s.relaxStrength)||s.relaxStrength<0||s.relaxStrength>1||s.relaxIterations>100)))
@@ -275,11 +259,51 @@ std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settin
     std::vector<std::pair<Vec3,std::size_t>> anchors;
     for(std::size_t j=0;j<s.lineBands.size();++j) if(s.lineBands[j].kind==5)
         for(const auto& path:s.lineBands[j].boundary.loops) for(auto p:path) anchors.emplace_back(p,j);
+    // Lazy and evaluation-owned: an unused band is never additionally prepared.
+    std::vector<std::unique_ptr<PreparedAnalyzerBand>> preparedBands(bands.size());
+    const auto inBand=[&](Vec3 p,std::size_t j) {
+        const auto& band=s.lineBands[j];
+        if(band.kind!=1 && band.kind!=2) return analyzerBand(p,band);
+        if(!preparedBands[j]) preparedBands[j]=std::make_unique<PreparedAnalyzerBand>(band);
+        return preparedBands[j]->contains(p);
+    };
+    // The common clustered population has one immutable query per sampled point.
+    // Keep sampling, source RNG and every transform draw in their original order.
+    // Density rejection, masks, projected movement and anchors retain the general
+    // ordered pipeline below. A tested cell-cache prototype was slower in serial
+    // mode; keep the original query math and use workers only for large batches.
+    struct ClusterCandidate { Vec3 position; std::uint32_t triangle; ClusterField field; };
+    std::vector<ClusterCandidate> clusterCandidates;
+    ComputeStats computeStats;
+    constexpr std::size_t parallelThreshold=4096;
+    const bool batchClusters=clustered && !moved && masks.empty() && s.distribution!=2 &&
+        anchors.empty() && s.count>=parallelThreshold && computeParticipants()>1;
+    ClusterQueries serialClusters(s,groupMembers.size(),groupCDF);
+    if(batchClusters) {
+        clusterCandidates.resize(s.count);
+        for(auto& candidate:clusterCandidates) {
+            const auto sampled=sampler.sample(placement);
+            candidate.position=sampled.first; candidate.triangle=sampled.second;
+        }
+        std::array<ComputeStats,64> rangeStats{};
+        const auto execution=detail::forRanges(clusterCandidates.size(),parallelThreshold,
+            [&](unsigned slot,std::size_t begin,std::size_t end) {
+                ClusterQueries queries(s,groupMembers.size(),groupCDF);
+                for(auto i=begin;i<end;++i) clusterCandidates[i].field=queries.field(clusterCandidates[i].position);
+                rangeStats[slot]={1,queries.queries,false};
+            });
+        computeStats.participants=execution.participants;
+        computeStats.threadLaunchFallback=execution.threadLaunchFallback;
+        for(unsigned slot=0;slot<execution.participants;++slot) {
+            computeStats.clusterQueries+=rangeStats[slot].clusterQueries;
+        }
+    }
     std::uint32_t accepted=0;
     for(std::uint64_t i=0;i<limit+anchors.size();++i) {
         const bool single=i>=limit;
         if(!single&&accepted>=s.count) {i=limit-1;continue;}
-        auto [p,id]=sampler.sample(placement);
+        auto [p,id]=batchClusters ? std::make_pair(clusterCandidates[static_cast<std::size_t>(i)].position,
+                                                 clusterCandidates[static_cast<std::size_t>(i)].triangle) : sampler.sample(placement);
         if(single) {
             const auto target=anchors[static_cast<std::size_t>(i-limit)].first;
             double best=INFINITY;
@@ -315,7 +339,7 @@ std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settin
         if(s.linePattern) {
             const std::vector<std::uint32_t>* members=nullptr;
             for(std::size_t j=0;j<bands.size();++j) if(single ? j==anchors[static_cast<std::size_t>(i-limit)].second :
-                (bands[j]?bands[j]->strokeBand(p,s.lineBands[j].width,s.lineBands[j].inside):analyzerBand(p,s.lineBands[j]))) {
+                (bands[j]?bands[j]->strokeBand(p,s.lineBands[j].width,s.lineBands[j].inside):inBand(p,j))) {
                 members=&bandMembers[j];
                 // Separate RNG: stroke sizing never shifts placements or the XYZ random stream.
                 Random strokeRandom(s.seed ^ static_cast<std::uint32_t>(i*2654435761u) ^ 0x9e3779b9u);
@@ -325,7 +349,8 @@ std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settin
             if(members) emit=choose(*members,sourceRandom,source);
             else emit=false;
         } else if(clustered) {
-            const auto group=diversityGroup(p,s,groupMembers.size(),diversity,groupCDF);
+            const auto group=batchClusters ? diversityGroup(clusterCandidates[static_cast<std::size_t>(i)].field,s,groupMembers.size(),diversity,groupCDF) :
+                serialClusters.group(p,diversity);
             const auto& members=groupMembers[group];
             emit=choose(members,sources.next(),source);
         } else emit=choose(allSources,sources.next(),source);
@@ -345,7 +370,7 @@ std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settin
                 if(s.lineBands[j].kind==5) {
                     for(const auto& path:s.lineBands[j].boundary.loops) for(auto anchor:path)
                         if(length(p-anchor)<1e-7) return static_cast<int>(j);
-                } else if(bands[j]?bands[j]->strokeBand(p,s.lineBands[j].width,s.lineBands[j].inside):analyzerBand(p,s.lineBands[j])) return static_cast<int>(j);
+                } else if(bands[j]?bands[j]->strokeBand(p,s.lineBands[j].width,s.lineBands[j].inside):inBand(p,j)) return static_cast<int>(j);
             }
             return -1;
         };
@@ -368,6 +393,10 @@ std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settin
         };
         spacePoints(result,surface,s,allowed);
     }
+    if(!batchClusters) {
+        computeStats.clusterQueries=serialClusters.queries;
+    }
+    detail::recordComputeStats(computeStats);
     return result;
 }
 #include "final.inc"

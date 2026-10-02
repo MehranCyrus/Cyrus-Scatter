@@ -1,15 +1,15 @@
 # Cyrus Scatter — install and use in 3ds Max 2027
 
-**Build date:** 2026-09-28. **Tested host:** 3ds Max 2027.1, version 29.1.0.11426.
+**Current candidate:** 0.62, built 2026-10-01. **Tested host:** 3ds Max 2027.1, version 29.1.0.11426. The earlier 0.61 viewport, 0.60 CPU and 0.59 compatibility packages are preserved.
 
-This is a Max 2027 compatibility build of the current CPU implementation. The performance roadmap's multithreading and GPU work is still future work.
+This viewport candidate defers layer synchronization during held input, then uses the complete synchronization path on redraw after release. Its [second-round report](Viewport_Performance_Round2_2026-10-01.md) records 33.1% less scatter callback time and 9.1% less total step wall time in the controlled held-input comparison. It includes the [0.61 native proxy batches](Viewport_Performance_Implementation_2026-10-01.md) and the earlier native source filtering/transforms, prepared closed boundary queries, bounded multicore cluster calculations and batched edit redraw requests documented in the [0.60 CPU report](Performance_Implementation_2026-10-01.md) and [upgrade test](Performance_Upgrade_Test_2026-10-01.md). Retained GPU display/instancing, GPU compute and asynchronous editing remain future work.
 
 ## Install
 
 1. Save your current scene.
 2. In Max 2027 choose **Scripting > Run Script**.
-3. Run [CyrusScatter-0.59-Max2027.mzp](../dist/CyrusScatter-0.59-Max2027.mzp).
-4. For Surface Analyzer features, also run [CyrusSurfaceAnalyzer-0.14-Max2027.mzp](../dist/CyrusSurfaceAnalyzer-0.14-Max2027.mzp).
+3. Run [CyrusScatter-0.62-Max2027.mzp](../dist/CyrusScatter-0.62-Max2027.mzp).
+4. For Surface Analyzer features, install [CyrusSurfaceAnalyzer-0.14-Max2027.mzp](../dist/CyrusSurfaceAnalyzer-0.14-Max2027.mzp) if it is not already installed; its version is unchanged.
 5. Close and **restart Max**. Native modules become available at startup.
 6. Open **Create > Geometry**, choose the **Cyrus** category, then **Cyrus Scatter** or **Surface Analyzer**.
 
@@ -42,12 +42,17 @@ To use the result as a scatter area, open a scatter layer's **Area > Surface Ana
 ## Verification performed
 
 - Built all three native modules against the genuine Max 2027 SDK with MSVC 14.38.33130 / compiler 19.38.33145, C++20, Windows SDK 10.0.19041.0, Release x64.
-- All six scatter CTest suites and the Analyzer CTest suite passed.
+- All eight scatter CTest suites and the Analyzer CTest suite passed, including threading and prepared-boundary regressions.
 - A separate Max 2027.1 batch process loaded extensions through a private plugin configuration and registered both scripts.
 - Checked repeatable 200-instance native sampling, controller/layer placement, 400 point-preview samples, a 1,200-face box-proxy cache, CS Edit stack application, Analyzer execution, and scene save/reopen.
 - MZP contents have SHA-256 manifests and ZIP integrity checks. Adjacent `.sha256` files fingerprint each package.
+- The CPU differential harness compares every ordered numeric field against frozen pre-performance sources. The saved artist-scene harness compares preview/render transforms and source IDs for both fixed edge moves and their single-Undo states. See the implementation report for exact results and measurement scope.
+- Separate Max fixtures check native filtering/transforms, serial/worker parity, actual queued SDK callbacks with preserved invalidation and one redraw request per batch, plus recorder 0.2.2 and trace/report exports.
+- The viewport fixture checks all three proxy shapes, exact position/shading/color parity, chunk boundaries, memory caps and fallback, cache collection, Manual refresh, mouse-held deferral, clone and save/reopen. In the supplied scene, all 37,704 triangles match the previous draw data exactly.
+- An isolated desktop comparison records 900 navigation steps with zero measured rebuilds and unchanged display counts. Median step time falls from 88.10 ms with the preserved native loop to 30.16 ms with batching. See the viewport report for Manual results, raw samples, visual differences and measurement boundaries.
+- The 0.62 script change passed fresh viewport, general Max and compute fixtures, including held/released surface changes and Undo/Redo. A separate 720-step comparison records the additional held-input gain with unchanged counts and zero measured rebuilds. Eight real mouse pan strokes provide supporting smoke evidence. Native binaries match 0.61 exactly; no experimental retained-mesh renderer is packaged.
 
-Not yet verified: visual inspection of the interactive Modify panel/viewport, the installer dialogs in the normal user profile, final renderer/IR behavior, other Max 2027 updates, performance comparisons, or other host years. The test loaded the same binaries/scripts via isolated startup paths; it did not install into or manipulate the already-open Max session.
+Still pending for 0.62: the artist's full interactive Modify/CS Edit/Undo retest beyond the scoped fixtures, installer dialogs in the normal user profile, Corona 15 production/IR behavior, other Max updates/host years and 32 GB hardware qualification. Desktop navigation and mouse-held callbacks have been tested; neither calculation nor synchronous redraw measurements establish completed GPU frames. Tests load the binaries/scripts via isolated startup paths and leave the normal installed profile and original open Max session unchanged.
 
 The synthetic saved scene is [build/max2027-smoke.max](../build/max2027-smoke.max); it is a smoke-test artifact, not a production scene. Native and batch logs are under `build/`.
 
@@ -59,6 +64,8 @@ If Cyrus is missing after restart, check that the 2027 MZP was run, review the i
 
 Scatter includes an installed `Uninstall.ms` under its userScripts folder. It removes its 2027 registration/startup entries and describes the restart procedure. Do not delete your original scene files or unrelated plugin folders.
 
+For the previous viewport candidate, use [CyrusScatter-0.61-Max2027.mzp](../dist/CyrusScatter-0.61-Max2027.mzp). For the pre-viewport build, install [CyrusScatter-0.60-Max2027.mzp](../dist/CyrusScatter-0.60-Max2027.mzp), restart and reopen the original saved test copy. For an exact pre-CPU-performance comparison, use [CyrusScatter-0.59-PrePerformance-Max2027.mzp](../dist/CyrusScatter-0.59-PrePerformance-Max2027.mzp); it restores the frozen native engine and tracing script. The ordinary [0.59 package](../dist/CyrusScatter-0.59-Max2027.mzp) remains available but predates some tracing script changes. Backward reopening of candidate-saved scenes has not been qualified.
+
 ## Rebuild for developers
 
 The SDK is a build dependency and is not redistributed in the MZP. The extracted SDK used here is under `build/tooling/max2027-sdk/Program Files/Autodesk/3ds Max 2027 SDK/maxsdk`. Its MSI was obtained from the official Autodesk APS page and verified with a valid Autodesk digital signature.
@@ -68,8 +75,10 @@ From the repository root:
 ```powershell
 python tools/build_max.py --max-year 2027 --sdk-root "F:\Cursor\_Cyrus_Apps\CyrusScatter\build\tooling\max2027-sdk\Program Files\Autodesk\3ds Max 2027 SDK\maxsdk"
 python tools/test_max2027.py
+python tools/test_compute_performance.py
+python tools/test_viewport_performance.py
 ```
 
-The build script supports explicit compiler/SDK paths via `--help`, runs native tests before packaging, and uses a pinned NMake environment because CMake's Visual Studio instance discovery failed on this machine. The shared CMake module rejects a mismatched SDK year. Max 2026 configuration is retained but was not rebuilt or runtime-tested during this 2027 task; 2024/2025 ports remain future work.
+The build script regenerates the owned Scatter script using Node.js before compiling and packaging, preventing a stale/missing generated script from entering a fresh build. Developers need Node.js on PATH or can pass `--node` with its executable path; MZP users do not need it. The script supports explicit compiler/SDK paths via `--help`, runs native tests before packaging, and uses a pinned NMake environment because CMake's Visual Studio instance discovery failed on this machine. The shared CMake module rejects a mismatched SDK year. The separate [Max 2026 handoff](handoffs/max2026/README.md) was subsequently built against Autodesk's Max 2026 SDK, with all nine native suites passing. Its installers and interactive behavior still require testing in Max 2026, which is not installed here; 2024/2025 ports remain future work.
 
-A pre-change source backup is stored at `build/baseline-before-max2027.zip`. No Git commands or subagents were used.
+A source backup from the earlier host-compatibility work is stored at `build/baseline-before-max2027.zip`. The viewport change also preserves its starting workspace files in `build/viewport-optimization-2026-10-01/before-viewport-changes.zip`.

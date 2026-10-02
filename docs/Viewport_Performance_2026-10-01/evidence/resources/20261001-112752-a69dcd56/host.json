@@ -1,0 +1,143 @@
+{
+    "schema_version":  1,
+    "machine":  "DESKTOP-E7HLFGV",
+    "cpu":  [
+                {
+                    "Name":  "AMD Ryzen 5 5600X 6-Core Processor             ",
+                    "NumberOfCores":  6,
+                    "NumberOfLogicalProcessors":  12
+                }
+            ],
+    "gpu":  [
+                {
+                    "Name":  "NVIDIA GeForce RTX 3090",
+                    "DriverVersion":  "32.0.16.1047"
+                }
+            ],
+    "logical_processors":  12,
+    "physical_ram_bytes":  102986215424,
+    "os":  "Microsoft Windows 11 Pro",
+    "os_version":  "10.0.26300",
+    "power_scheme":  "Power Scheme GUID: 400e0d87-b71e-4fd7-97d9-119fdb14dc1b  (Xilisoft Corporation Power Scheme)",
+    "scene":  {
+                  "role":  "saved_scene_not_unsaved_memory",
+                  "path":  "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\viewport-investigation-2026-10-01\\SaveSelect 2 - viewport test.max",
+                  "bytes":  185442040,
+                  "sha256":  "8a40f6a1a5c47eacbbee92920e131f4cae04cfb0de6be1991b4719ea2860bd2c",
+                  "version":  null
+              },
+    "files":  [
+                  {
+                      "role":  "loaded_module_file_on_disk",
+                      "path":  "C:\\Program Files\\Chaos\\Corona\\Corona Renderer for 3ds Max\\2027\\CoronaMaxUtils_Release-2027.dll",
+                      "bytes":  5925376,
+                      "sha256":  "29007e9c214b4bf5532463c672f83c4fee2ea161435c7a7a145b20d6e44b1f83",
+                      "version":  "15.0.671720"
+                  },
+                  {
+                      "role":  "loaded_module_file_on_disk",
+                      "path":  "C:\\Program Files\\Chaos\\Corona\\Corona Renderer for 3ds Max\\2027\\CoronaUi_Release.dll",
+                      "bytes":  4267008,
+                      "sha256":  "2be94eaad1c5d9096dd86a7cf408af47d432747f55d77a9b31328873faa3d157",
+                      "version":  "15.0.671720"
+                  },
+                  {
+                      "role":  "loaded_module_file_on_disk",
+                      "path":  "C:\\Program Files\\Chaos\\Corona\\Corona Renderer for 3ds Max\\2027\\Corona_Release.dll",
+                      "bytes":  33166336,
+                      "sha256":  "d3f2d9f0b22afa04bc3d96dd69a316471984a890615a9065e11691f0b59bd3e8",
+                      "version":  "15.0.671720"
+                  },
+                  {
+                      "role":  "loaded_module_file_on_disk",
+                      "path":  "C:\\Program Files\\Chaos\\Corona\\Corona Renderer for 3ds Max\\2027\\CoronaMax_Release-2027.dll",
+                      "bytes":  6114304,
+                      "sha256":  "5c4531ff38363a69534a9934f9bcacfc624dc2d5d3b67de0778439fef9be3f64",
+                      "version":  "15.0.671720"
+                  },
+                  {
+                      "role":  "loaded_module_file_on_disk",
+                      "path":  "C:\\Program Files\\Chaos\\Corona\\Corona Renderer for 3ds Max\\2027\\CoronaMaxPowerTools_Release-2027.dll",
+                      "bytes":  733184,
+                      "sha256":  "cd3ffcb4157c50d9fe611266b43abe0624f3188bfab210d72b810a7c849e97db",
+                      "version":  "15.0.671720"
+                  },
+                  {
+                      "role":  "loaded_module_file_on_disk",
+                      "path":  "C:\\Program Files\\Chaos\\Corona\\Corona Renderer for 3ds Max\\2027\\Corona_maxHairFur.dll",
+                      "bytes":  816128,
+                      "sha256":  "ced450775042a33495eed87e98eb2389ea136d19c844af04697980080e0bb0d3",
+                      "version":  null
+                  },
+                  {
+                      "role":  "loaded_module_file_on_disk",
+                      "path":  "C:\\Program Files\\Chaos\\Corona\\Corona Renderer for 3ds Max\\2027\\CoronaMaxPowerToolsToolbar_Release-2027.dll",
+                      "bytes":  56832,
+                      "sha256":  "8f13dce3992720371a99fe3d7751dac465bb389971bf468379588b044d0ed698",
+                      "version":  "15.0.671720"
+                  },
+                  {
+                      "role":  "loaded_module_file_on_disk",
+                      "path":  "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\AminScatter\\bin-max2027-8e008627cd38\\CyrusScatterEdit.dlm",
+                      "bytes":  10240,
+                      "sha256":  "323a07218e3e39d25ce9d768a3a09233c2ad31152b8b1304c36c05717ab5f0a9",
+                      "version":  null
+                  },
+                  {
+                      "role":  "loaded_module_file_on_disk",
+                      "path":  "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\AminScatter\\bin-max2027-8e008627cd38\\AminScatter.dlx",
+                      "bytes":  466432,
+                      "sha256":  "c3656015ff349e0e9a8382eb694cc24ce39620da6d0758424abcb9d2750609fc",
+                      "version":  null
+                  },
+                  {
+                      "role":  "loaded_module_file_on_disk",
+                      "path":  "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusSurfaceAnalyzer\\bin-max2027-e2318bd967cf\\CyrusSurfaceAnalyzer.dlx",
+                      "bytes":  85504,
+                      "sha256":  "e2318bd967cf8b17ce1b1208e156c61a9f6361a80b8160c34c54bd2eb2a886de",
+                      "version":  null
+                  },
+                  {
+                      "role":  "script_candidate_on_disk_not_proof_of_loaded_script",
+                      "path":  "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\AminScatter\\AminScatterObject.ms",
+                      "bytes":  967673,
+                      "sha256":  "34062594ce2006833ba3f281eae8fabc4d2184c95955c9dfc092c7a597376391",
+                      "version":  null
+                  },
+                  {
+                      "role":  "script_candidate_on_disk_not_proof_of_loaded_script",
+                      "path":  "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusSurfaceAnalyzer\\CyrusSurfaceAnalyzer.ms",
+                      "bytes":  22579,
+                      "sha256":  "b9a1f1aa2ba7847566eb8f36bee711f9c64753572955ed4549f2f68669e5f923",
+                      "version":  null
+                  },
+                  {
+                      "role":  "measurement_tool",
+                      "path":  "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\performance\\CyrusPerformanceMonitor.ms",
+                      "bytes":  24124,
+                      "sha256":  "2e02d59209e3673cdd2ea9c6180955f917309819261976208157ac70cce7153d",
+                      "version":  null
+                  },
+                  {
+                      "role":  "measurement_tool",
+                      "path":  "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\performance\\CyrusEditTrace.ms",
+                      "bytes":  6961,
+                      "sha256":  "ae3efa9aa473cd980eff6d984d78770882bd77e30954ffc466db222eb87e1c23",
+                      "version":  null
+                  },
+                  {
+                      "role":  "resource_sampler",
+                      "path":  "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\performance\\Measure-CyrusProcess.ps1",
+                      "bytes":  6538,
+                      "sha256":  "48821e902ccac2611d8d795aaa058bf2ecc695130e6ff399e243292fd6e370a5",
+                      "version":  null
+                  }
+              ],
+    "gpu_utilization":  null,
+    "interval_ms":  500,
+    "limitations":  [
+                        "File hashes describe files on disk, not in-memory script provenance.",
+                        "Memory and CPU include all work in this Max process.",
+                        "Sampled memory peaks can miss shorter allocation spikes; CPU is normalized across logical processors."
+                    ]
+}

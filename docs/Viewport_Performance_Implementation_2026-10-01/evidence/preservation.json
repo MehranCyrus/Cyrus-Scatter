@@ -1,0 +1,15 @@
+{
+  "original_scene": {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\Test Scene\\SaveSelect 2.max",
+    "sha256": "8a40f6a1a5c47eacbbee92920e131f4cae04cfb0de6be1991b4719ea2860bd2c",
+    "unchanged": true
+  },
+  "installed_script": {
+    "path": "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\AminScatter\\AminScatterObject.ms",
+    "sha256": "34062594ce2006833ba3f281eae8fabc4d2184c95955c9dfc092c7a597376391",
+    "unchanged": true
+  },
+  "installed_native_unchanged": true,
+  "preserved_060_package_sha256": "5babb2ac0f86c237e4db117fa51a9d4dad0e111646847e117332bf41ee810539",
+  "baseline_source_backup_sha256": "ebee64da4238b3591db8353379ef81093c7ed545ae292c58db71965765e51630"
+}

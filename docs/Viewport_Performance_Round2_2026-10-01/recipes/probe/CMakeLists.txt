@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.24)
+project(CyrusViewportProbe LANGUAGES CXX)
+include("${CMAKE_CURRENT_LIST_DIR}/../../../cmake/CyrusMaxSDK.cmake")
+add_library(CyrusViewportProbe MODULE probe.cpp)
+target_link_libraries(CyrusViewportProbe PRIVATE core geom mesh gfx maxutil Maxscrpt)
+cyrus_max_target(CyrusViewportProbe)
+set_target_properties(CyrusViewportProbe PROPERTIES SUFFIX ".dlx")

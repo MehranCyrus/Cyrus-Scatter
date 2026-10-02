@@ -1,0 +1,253 @@
+{
+  "scope": "Synchronous camera change, redraw and message-pump wall time; no GPU completion fence",
+  "directory": "build\\viewport-investigation-2026-10-01\\analyzer-flush",
+  "frame_count": 360,
+  "cases": {
+    "original_callbacks": {
+      "samples": 120,
+      "metrics": {
+        "wall_ms": {
+          "median": 91.85965,
+          "p95": 145.5236,
+          "mean": 102.34120583333333,
+          "min": 83.0694,
+          "max": 351.7965
+        },
+        "scatter_callback_ms": {
+          "median": 74.6562,
+          "p95": 113.0226,
+          "mean": 80.54482583333333,
+          "min": 68.8286,
+          "max": 135.18869999999998
+        },
+        "analyzer_callback_ms": {
+          "median": 2.4951499999999998,
+          "p95": 4.0221,
+          "mean": 4.786685833333333,
+          "min": 2.2880000000000003,
+          "max": 246.96380000000002
+        },
+        "scatter_calls": {
+          "median": 2.0,
+          "p95": 3.0,
+          "mean": 2.1333333333333333,
+          "min": 2.0,
+          "max": 3.0
+        },
+        "analyzer_calls": {
+          "median": 2.0,
+          "p95": 3.0,
+          "mean": 2.1333333333333333,
+          "min": 2.0,
+          "max": 3.0
+        }
+      },
+      "repeat_median_wall_ms": {
+        "1": 97.80265,
+        "2": 90.0257,
+        "3": 90.26605
+      },
+      "preview_rebuild_deltas": [
+        0,
+        0,
+        0
+      ],
+      "analyzer_run_deltas": [
+        0,
+        0,
+        0
+      ],
+      "pflow_build_deltas": [
+        0,
+        0,
+        0
+      ],
+      "populations": [
+        {
+          "generated": 52143,
+          "cache_display_count": 6284,
+          "cache_triangles": 37704,
+          "stable_during_measurement": true
+        },
+        {
+          "generated": 52143,
+          "cache_display_count": 6284,
+          "cache_triangles": 37704,
+          "stable_during_measurement": true
+        },
+        {
+          "generated": 52143,
+          "cache_display_count": 6284,
+          "cache_triangles": 37704,
+          "stable_during_measurement": true
+        }
+      ],
+      "errors": [],
+      "reciprocal_median_wall_rate_not_presented_fps": 10.886172546923486
+    },
+    "analyzer_without_updateScreen": {
+      "samples": 120,
+      "metrics": {
+        "wall_ms": {
+          "median": 90.93705,
+          "p95": 138.8841,
+          "mean": 97.495485,
+          "min": 83.0667,
+          "max": 155.2746
+        },
+        "scatter_callback_ms": {
+          "median": 73.6136,
+          "p95": 111.0641,
+          "mean": 79.34397083333333,
+          "min": 69.1206,
+          "max": 128.99540000000002
+        },
+        "analyzer_callback_ms": {
+          "median": 2.44355,
+          "p95": 3.8773,
+          "mean": 2.663225,
+          "min": 2.2699,
+          "max": 4.2566999999999995
+        },
+        "scatter_calls": {
+          "median": 2.0,
+          "p95": 3.0,
+          "mean": 2.125,
+          "min": 2.0,
+          "max": 3.0
+        },
+        "analyzer_calls": {
+          "median": 2.0,
+          "p95": 3.0,
+          "mean": 2.125,
+          "min": 2.0,
+          "max": 3.0
+        }
+      },
+      "repeat_median_wall_ms": {
+        "1": 90.08840000000001,
+        "2": 90.43119999999999,
+        "3": 95.11515
+      },
+      "preview_rebuild_deltas": [
+        0,
+        0,
+        0
+      ],
+      "analyzer_run_deltas": [
+        0,
+        0,
+        0
+      ],
+      "pflow_build_deltas": [
+        0,
+        0,
+        0
+      ],
+      "populations": [
+        {
+          "generated": 52143,
+          "cache_display_count": 6284,
+          "cache_triangles": 37704,
+          "stable_during_measurement": true
+        },
+        {
+          "generated": 52143,
+          "cache_display_count": 6284,
+          "cache_triangles": 37704,
+          "stable_during_measurement": true
+        },
+        {
+          "generated": 52143,
+          "cache_display_count": 6284,
+          "cache_triangles": 37704,
+          "stable_during_measurement": true
+        }
+      ],
+      "errors": [],
+      "reciprocal_median_wall_rate_not_presented_fps": 10.996617990137134
+    },
+    "analyzer_without_updateScreen_scatter_off": {
+      "samples": 120,
+      "metrics": {
+        "wall_ms": {
+          "median": 10.68995,
+          "p95": 17.6471,
+          "mean": 11.889655,
+          "min": 8.6434,
+          "max": 23.8946
+        },
+        "scatter_callback_ms": {
+          "median": 0.0,
+          "p95": 0.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "analyzer_callback_ms": {
+          "median": 2.37355,
+          "p95": 3.1013,
+          "mean": 2.4699583333333335,
+          "min": 2.1136999999999997,
+          "max": 3.9280999999999997
+        },
+        "scatter_calls": {
+          "median": 0.0,
+          "p95": 0.0,
+          "mean": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "analyzer_calls": {
+          "median": 2.0,
+          "p95": 2.0,
+          "mean": 2.025,
+          "min": 2.0,
+          "max": 3.0
+        }
+      },
+      "repeat_median_wall_ms": {
+        "1": 10.29945,
+        "2": 10.3758,
+        "3": 12.180050000000001
+      },
+      "preview_rebuild_deltas": [
+        0,
+        0,
+        0
+      ],
+      "analyzer_run_deltas": [
+        0,
+        0,
+        0
+      ],
+      "pflow_build_deltas": [
+        0,
+        0,
+        0
+      ],
+      "populations": [
+        {
+          "generated": 52143,
+          "cache_display_count": 6284,
+          "cache_triangles": 37704,
+          "stable_during_measurement": true
+        },
+        {
+          "generated": 52143,
+          "cache_display_count": 6284,
+          "cache_triangles": 37704,
+          "stable_during_measurement": true
+        },
+        {
+          "generated": 52143,
+          "cache_display_count": 6284,
+          "cache_triangles": 37704,
+          "stable_during_measurement": true
+        }
+      ],
+      "errors": [],
+      "reciprocal_median_wall_rate_not_presented_fps": 93.54580704306382
+    }
+  }
+}

@@ -1,0 +1,26 @@
+Internal ctest changing into directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/codebase-research-2026-10-01/max2027/CyrusSurfaceAnalyzer
+UpdateCTestConfiguration  from :F:/Cursor/_Cyrus_Apps/CyrusScatter/build/codebase-research-2026-10-01/max2027/CyrusSurfaceAnalyzer/DartConfiguration.tcl
+UpdateCTestConfiguration  from :F:/Cursor/_Cyrus_Apps/CyrusScatter/build/codebase-research-2026-10-01/max2027/CyrusSurfaceAnalyzer/DartConfiguration.tcl
+Test project F:/Cursor/_Cyrus_Apps/CyrusScatter/build/codebase-research-2026-10-01/max2027/CyrusSurfaceAnalyzer
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start 1: analyzer_core
+
+1: Test command: F:\Cursor\_Cyrus_Apps\CyrusScatter\build\codebase-research-2026-10-01\max2027\CyrusSurfaceAnalyzer\analyzer_tests.exe
+1: Working Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/codebase-research-2026-10-01/max2027/CyrusSurfaceAnalyzer
+1: Test timeout computed to be: 10000000
+1: PASS attached mixed elements at different heights; automatic radius counts; star four points; global spacing; tiny-radius guard
+1: PASS per-element minimum overrides radius; zero disables override; no points outside eligible paths
+1: PASS hard disk clearance on all shapes after Relax and minimum override; near-rectangular straight axis; impossible footprint returns no points
+1: PASS supplied shapes: Auto modes, points inside triangles, tilted/rotated equivalents
+1: PASS rectangle, rotated plane, area, width rejection, star ring, hole boundary/containment, nonplanar rejection
+1/1 Test #1: analyzer_core ....................   Passed    0.19 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.20 sec

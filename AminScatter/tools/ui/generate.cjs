@@ -138,6 +138,8 @@ fs.writeFileSync('scripts/AminScatterObject.ms',(header+helper+factories+contain
  text=require('./street-layout.cjs')(text);
  text=require('./activation.cjs')(text);
  text=require('./performance.cjs')(text);
+ text=require('./compute-performance.cjs')(text);
+ text=require('./viewport-performance.cjs')(text);
  text=require('./responsive.cjs')(text);
  text=require('./trace.cjs')(text);
  fs.writeFileSync('scripts/AminScatterObject.ms',text);

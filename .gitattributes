@@ -1,0 +1,18 @@
+# Use stable LF source text across Windows checkouts and UI generation.
+* text=auto eol=lf
+
+# These dated packages contain byte-level evidence manifests. Preserve their
+# original bytes on Windows checkouts instead of applying core.autocrlf.
+/docs/Codebase_Research_2026-10-01/** -text whitespace=cr-at-eol
+/docs/Heavy_Scene_Viewport_2026-10-02/** -text whitespace=cr-at-eol
+/docs/Viewport_Performance_*/** -text whitespace=cr-at-eol
+/docs/Research_Briefs_2026-10-01/** -text whitespace=cr-at-eol
+/docs/Research_Inputs_2026-10-01/** -text whitespace=cr-at-eol
+
+# Exact logs, captured recipes and supplied reports retain original whitespace.
+# Active source and authored guides still use the normal whitespace checks.
+/docs/**/evidence/** -whitespace
+/docs/**/recipes/** -whitespace
+/docs/Research_Inputs_2026-10-01/** -whitespace
+
+*.pdf binary

@@ -1,0 +1,7 @@
+Registered callbacks:
+function:"AminScatterObjectDraw", sourceFile:"C:\Users\Mehran\AppData\Local\Autodesk\3dsMax\2027 - 64bit\ENU\scripts\AminScatter\AminScatterObject.ms (line: 11534)"
+function:"CyrusSurfaceAnalyzerDraw", sourceFile:"C:\Users\Mehran\AppData\Local\Autodesk\3dsMax\2027 - 64bit\ENU\scripts\CyrusSurfaceAnalyzer\CyrusSurfaceAnalyzer.ms (line: 370)"
+
+SCATTER Cyrus Scatter001 handle 828 modifiers #() hidden false
+Layer 1 Grass enabled=true mode=2 proxy=3 generated=0 shown=0 faces=-1 builds=0 last_ms=0 dirty=true error= radii=0 sources=#("grass_small", "grass_bush") centers=false
+Layer 2 Leaves enabled=true mode=2 proxy=3 generated=0 shown=0 faces=-1 builds=0 last_ms=0 dirty=true error= radii=0 sources=#("Ahorn_01", "Ahorn_02", "leafs_bend_00", "leafs_bend_01", "leafs_bend_02", "leafs_bend_03", "leafs_bend_04", "leafs_bend_05", "leafs_bend_06", "leafs_bend_07", "leafs_bend_08", "leafs_bend_09", "leafs_bend_10", "leafs_bend_11", "leafs_bend_12", "leafs_bend_13", "leafs_bend_14", "leafs_bend_15", "leafs_bend_16", "leafs_bend_17", ...) centers=false

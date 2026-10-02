@@ -1,0 +1,17 @@
+{
+  "pid": 5008,
+  "command": [
+    "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+    "-q",
+    "-i",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\heavy-viewport-2026-10-02\\desktop.ini",
+    "-p",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\heavy-viewport-2026-10-02\\plugins.ini",
+    "-U",
+    "MAXScript",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\heavy-viewport-2026-10-02\\desktop-start.ms",
+    "-listenerlog",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\heavy-viewport-2026-10-02\\listener.log"
+  ],
+  "config_source": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\viewport-round2-2026-10-01\\desktop.ini"
+}

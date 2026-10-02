@@ -1,0 +1,34 @@
+{
+  "AminScatter\\src\\preview.cpp": {
+    "sha256": "96c3099d032b202df21334f5390a946109920890b042a3b1fb69badad9be50af",
+    "bytes": 13330
+  },
+  "AminScatter\\scripts\\AminScatterObject.ms": {
+    "sha256": "8116ab4aad662a9a62e15667e4b53507aaf3f8a989faee3856845a28a1f99c17",
+    "bytes": 968536
+  },
+  "Test Scene\\SaveSelect 2.max": {
+    "sha256": "8a40f6a1a5c47eacbbee92920e131f4cae04cfb0de6be1991b4719ea2860bd2c",
+    "bytes": 185442040
+  },
+  "build\\max2027-release\\AminScatter\\AminScatter.dlx": {
+    "sha256": "1bc17abe30ddda30ce3d46070ea6d487ada29b7f281b7f97d094822bca7e89ef",
+    "bytes": 472576
+  },
+  "build\\max2027-release\\AminScatter\\CyrusScatterEdit.dlm": {
+    "sha256": "323a07218e3e39d25ce9d768a3a09233c2ad31152b8b1304c36c05717ab5f0a9",
+    "bytes": 10240
+  },
+  "build\\max2027-release\\CyrusSurfaceAnalyzer\\CyrusSurfaceAnalyzer.dlx": {
+    "sha256": "e2318bd967cf8b17ce1b1208e156c61a9f6361a80b8160c34c54bd2eb2a886de",
+    "bytes": 85504
+  },
+  "build\\heavy-viewport-2026-10-02\\probe-2027\\CyrusRetainedPointObject.dlh": {
+    "sha256": "5f465f95f9cf1707db09323450c497cfd1aa304ba6f19a471b21e4602e54b1e7",
+    "bytes": 10240
+  },
+  "build\\heavy-viewport-2026-10-02\\probe-2027\\CyrusRetainedPointProbe.dlx": {
+    "sha256": "02ae7a5bff449fa484f5c52ea152e768be3757fed37766479306de776fc5bc9a",
+    "bytes": 57344
+  }
+}

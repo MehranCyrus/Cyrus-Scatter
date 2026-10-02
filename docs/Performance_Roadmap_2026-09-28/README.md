@@ -1,6 +1,6 @@
 # Cyrus Scatter performance roadmap
 
-**Date:** 2026-09-28 · **Status:** implementation plan; application code unchanged; no performance results yet.
+**Date:** 2026-09-28 · **Original status:** implementation plan, application code unchanged. **October 1 update:** the first measured Max 2027 CPU candidate is implemented. Read the [implementation report](../Performance_Implementation_2026-10-01.md), [upgrade test](../Performance_Upgrade_Test_2026-10-01.md) and [results ledger](09_Results_and_Decisions.md). Remaining task descriptions retain their planning role.
 
 ## What we are building toward
 

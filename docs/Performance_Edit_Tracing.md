@@ -1,8 +1,10 @@
-# Detailed spline-edit tracing — recorder 0.2.1
+# Detailed surface/spline-edit tracing — recorder 0.2.2
 
-This adds optional synchronous timing hooks to the Scatter and Surface Analyzer scripts, plus a local recorder and report. Calculation algorithms, class IDs, saved parameters and native binaries are unchanged. Hooks are inactive when the recorder is stopped. The generator owns the Scatter changes through `tools/ui/trace.cjs`; do not edit its generated script alone.
+This adds optional synchronous timing hooks to the Scatter and Surface Analyzer scripts, plus a local recorder and report. The original tracing-only change preserved algorithms and binaries. The current Scatter 0.60 package also includes the [CPU performance implementation](Performance_Implementation_2026-10-01.md). Hooks are inactive when the recorder is stopped. The generator owns Scatter timing through `tools/ui/trace.cjs`; do not edit its generated script alone.
 
 ## Install once, then restart Max
+
+**For the current performance test, install the complete 0.60 MZP and restart as described in the [upgrade test](Performance_Upgrade_Test_2026-10-01.md). Its Scatter script already includes tracing.** The script-only installer below cannot upgrade the native engine; it rejects unknown installed script hashes, including some intermediate tracing builds. Use the complete package for this comparison.
 
 1. Save your work. Run [Install-CyrusPerformanceTracing.ms](../tools/performance/Install-CyrusPerformanceTracing.ms) using **Scripting > Run Script**.
 2. Click **Install tracing scripts for next Max start**. It preflights both installed scripts against the tested originals/current files, backs them up, copies the tracing scripts and verifies their hashes. An unknown installed version is rejected before either file is changed.
@@ -23,6 +25,8 @@ The installer targets the current Max version's user scripts directory. It insta
 For multiple repetitions, use descriptive edit names and start from the same saved state. Timing comparisons need the same instrumentation mode and file versions; do not compare recorder 0.1 timings directly against 0.2 as evidence of plugin speedup.
 
 **0.2.1 recorder correction:** successive edits now receive IDs 1, 2, 3, etc. Recorder 0.2.0 accidentally reset the ID after Result visible. The report recovers older recordings by matching marker occurrences, labels and timestamps, preserving their raw IDs. After stopping and closing the recorder, run `CyrusPerformanceMonitor.ms` again to load this correction. Existing tracing installations need no reinstall or Max restart for this recorder-only update. The [first detailed heavy-scene review](Spline_Edit_Trace_2026-10-01.md) documents the recovered three-edit recording.
+
+**0.2.2 context:** the manifest adds `cpu_thread_request`, `native_source_filter`, `native_source_transforms`, and `callback_batch_stats_at_start` where available. A request of 0 means automatic (up to four total CPU participants in 0.60); it does not mean zero workers. Callback counters describe batches and requested redraws, not completed viewport frames. Placement end metadata now includes the result count and preview/raw/final-pass flags. Native compute diagnostics describe the latest call on the calling thread and must not be attributed to a layer when a dependency ran afterwards.
 
 ## What the new data means
 

@@ -1,0 +1,21 @@
+{
+  "started_utc": "2026-10-01T17:57:09.627949+00:00",
+  "finished_utc": "2026-10-01T17:57:39.852933+00:00",
+  "argv": [
+    "C:/Program Files/Autodesk/3ds Max 2027/3dsmaxbatch.exe",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\codebase-research-2026-10-01\\host\\tools\\tests\\compute_performance_smoke.ms",
+    "-i",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\codebase-research-2026-10-01\\host\\max.ini",
+    "-p",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\codebase-research-2026-10-01\\host\\plugins.ini",
+    "-listenerlog",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\docs\\Codebase_Research_2026-10-01\\evidence\\compute_performance_smoke-listener.txt",
+    "-log",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\docs\\Codebase_Research_2026-10-01\\evidence\\compute_performance_smoke-session.txt"
+  ],
+  "returncode": 0,
+  "fixture_sha256": "9a5005f3b3fc5b281549f98685c41aac6247ae44b79e779288b931a794ac99eb",
+  "copy_sha256": "9a5005f3b3fc5b281549f98685c41aac6247ae44b79e779288b931a794ac99eb",
+  "result": "PASS stable source filtering and errors\nPASS native source transforms and atomic validation\nPASS actual layer preview/render, empty/point sources, scale/offset and serial/worker parity\nPASS real callback dispatch: one redraw per batch and preserved invalidation\nSUCCESS\n",
+  "scope": "Separate hidden Max batch; synthetic disposable scene; no renderer test"
+}

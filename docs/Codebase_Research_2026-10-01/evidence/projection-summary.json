@@ -1,0 +1,127 @@
+{
+  "executable_sha256": "0b8cba9cd15ccb7b8c0d552a42da71d0d51581db6399c1b214524077ed922663",
+  "scope": "Standalone queries on planar synthetic grids; not complete scatter or Max benchmark; no replacement shipped",
+  "warmups": 2,
+  "tie": {
+    "type": "tie",
+    "scan_triangle": 0,
+    "tree_triangle": 1,
+    "position_equal": true,
+    "drop_in_identity_equivalent": false
+  },
+  "cases": [
+    {
+      "triangles": 2,
+      "queries": 2048,
+      "trials": 9,
+      "scan_ms": {
+        "median": 0.0962,
+        "min": 0.096,
+        "max": 0.0974
+      },
+      "tree_build_ms": {
+        "median": 0.0002,
+        "min": 0.0001,
+        "max": 0.0002
+      },
+      "tree_query_ms": {
+        "median": 0.1211,
+        "min": 0.121,
+        "max": 0.1283
+      },
+      "tree_build_query_ms": {
+        "median": 0.1214,
+        "min": 0.1211,
+        "max": 0.1285
+      },
+      "position_mismatches": 0,
+      "triangle_mismatches": 0
+    },
+    {
+      "triangles": 128,
+      "queries": 2048,
+      "trials": 9,
+      "scan_ms": {
+        "median": 2.5694,
+        "min": 2.5367,
+        "max": 2.6983
+      },
+      "tree_build_ms": {
+        "median": 0.0137,
+        "min": 0.0127,
+        "max": 0.0178
+      },
+      "tree_query_ms": {
+        "median": 0.4964,
+        "min": 0.4911,
+        "max": 0.5056
+      },
+      "tree_build_query_ms": {
+        "median": 0.5105,
+        "min": 0.5042,
+        "max": 0.5223
+      },
+      "position_mismatches": 0,
+      "triangle_mismatches": 0
+    },
+    {
+      "triangles": 2048,
+      "queries": 2048,
+      "trials": 9,
+      "scan_ms": {
+        "median": 36.7018,
+        "min": 35.7647,
+        "max": 38.0843
+      },
+      "tree_build_ms": {
+        "median": 0.4876,
+        "min": 0.4418,
+        "max": 0.5724
+      },
+      "tree_query_ms": {
+        "median": 0.6926,
+        "min": 0.6818,
+        "max": 0.9261
+      },
+      "tree_build_query_ms": {
+        "median": 1.1802,
+        "min": 1.1303,
+        "max": 1.4987
+      },
+      "position_mismatches": 0,
+      "triangle_mismatches": 0
+    },
+    {
+      "triangles": 8192,
+      "queries": 2048,
+      "trials": 9,
+      "scan_ms": {
+        "median": 146.6726,
+        "min": 141.1928,
+        "max": 160.2498
+      },
+      "tree_build_ms": {
+        "median": 2.36,
+        "min": 2.2425,
+        "max": 2.5533
+      },
+      "tree_query_ms": {
+        "median": 0.8375,
+        "min": 0.8299,
+        "max": 0.9477
+      },
+      "tree_build_query_ms": {
+        "median": 3.1978,
+        "min": 3.08,
+        "max": 3.4098
+      },
+      "position_mismatches": 0,
+      "triangle_mismatches": 0
+    }
+  ],
+  "sizes": {
+    "type": "sizes",
+    "Triangle_bytes": 144,
+    "Instance_bytes": 112
+  }
+}

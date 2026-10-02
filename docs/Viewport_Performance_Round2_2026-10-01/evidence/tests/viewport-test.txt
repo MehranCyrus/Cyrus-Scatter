@@ -1,0 +1,13 @@
+PASS proxy mode 1: 48 triangles, exact positions/shades/colors
+PASS proxy mode 2: 672 triangles, exact positions/shades/colors
+PASS proxy mode 3: 24 triangles, exact positions/shades/colors
+PASS selected row ordering: 12 triangles, exact positions/shades/colors
+PASS mixed proxy/placeholder: 6 triangles, exact positions/shades/colors
+PASS empty source skip: 6 triangles, exact positions/shades/colors
+PASS chunk boundaries: 9000 triangles, exact positions/shades/colors
+PASS empty, mesh, missing-source and point-placeholder policies
+PASS 16 MiB/cache and 64 MiB/process caps; 3 global fallbacks preserve counts
+PASS batch payload released by cache GC
+PASS held/released surface changes, Undo/Redo, and live controller visibility
+PASS unchanged redraw, icon resize, Manual, drag deferral, layer enable, clone, placement parity and save/reopen
+SUCCESS

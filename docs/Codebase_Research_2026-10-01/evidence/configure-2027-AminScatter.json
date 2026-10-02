@@ -1,0 +1,20 @@
+{
+  "started_utc": "2026-10-01T17:55:09.801318+00:00",
+  "finished_utc": "2026-10-01T17:55:13.476815+00:00",
+  "cwd": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+  "argv": [
+    "cmake",
+    "-S",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\AminScatter",
+    "-B",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\codebase-research-2026-10-01\\max2027\\AminScatter",
+    "-G",
+    "NMake Makefiles",
+    "-DCMAKE_BUILD_TYPE=Release",
+    "-DCYRUS_MAX_YEAR=2027",
+    "-DMAXSDK_ROOT=F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\tooling\\max2027-sdk\\Program Files\\Autodesk\\3ds Max 2027 SDK\\maxsdk",
+    "-DAMIN_BUILD_BENCHMARKS=ON"
+  ],
+  "returncode": 0,
+  "output": "configure-2027-AminScatter.txt"
+}

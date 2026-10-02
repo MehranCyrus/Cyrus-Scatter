@@ -1,0 +1,7 @@
+SHA-256 integrity checksums (optional; no installation step required)
+
+1f07150297bc92af311b75deda5b81d4a6e19681eb1b7c60bc6932c85351bcb0  Compare Viewport.ms
+eeef1216c6dfec1513b75df41c293bedc2f2864ef8180b8ca9a21a3d79828ec6  CyrusScatter-0.62-Max2026.mzp
+f6c5429c5660822cbc72893f4978104976e109b8b2c467dcaa3d17f5a956c02f  CyrusScatter-Viewport-Demo-Max2026.max
+9f2c273821ad37ac81c2a8c1863c124c3f738790601fd810f1cfc37bd05c7257  CyrusSurfaceAnalyzer-0.14-Max2026.mzp
+87648b9d52eb55a0ae6f0933d3835fa34a4ccebfe3c2a195a6bf8366e9c7ce8c  START HERE.txt

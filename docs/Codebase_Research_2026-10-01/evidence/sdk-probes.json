@@ -1,0 +1,14 @@
+[
+  {
+    "year": 2026,
+    "status": "compiled and linked; never loaded or called",
+    "sha256": "70c84f3fe40f6f0fd4fe2cf7ef7186f3e766fb57a24f1726bc0723c6c696e7ba",
+    "sample_present": false
+  },
+  {
+    "year": 2027,
+    "status": "compiled and linked; never loaded or called",
+    "sha256": "6e7e4c8c53b39eeeac4bd443e29d790aec1a8c83df34e1d86d70322315f1402b",
+    "sample_present": false
+  }
+]

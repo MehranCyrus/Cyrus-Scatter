@@ -1,0 +1,30 @@
+-- Type error: Call needs function or class, got: undefined
+--	thread data: threadID:7888
+--	------------------------------------------------------
+--	[stack level: 0]
+--	In anonymous codeblock; filename: F:\Cursor\_Cyrus_Apps\CyrusScatter\tools\performance\native_point_probe\bootstrap.ms; position: 5655; line: 118
+--		Locals:
+--			viewportSettings: undefined
+--			process: undefined
+--			CyrusRetainedPointProbe: undefined
+--			camera: undefined
+--			modules: undefined
+--		Externals:
+--			HVPBuild: Global:HVPBuild : HVPBuild()
+--			HVPDir: Global:HVPDir : "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/heavy-viewport-2026-10-02/"
+--			HVPCapture: Global:HVPCapture : HVPCapture()
+--			HVPBaseTM: Global:HVPBaseTM : undefined
+--			HVPMode: Global:HVPMode : HVPMode()
+--			HVPStats: Global:HVPStats : HVPStats()
+--			CSPWriteText: Global:CSPWriteText : CSPWriteText()
+--			CSPObject: Global:CSPObject : CSPObject()
+--			HVPNode: Global:HVPNode : undefined
+--	------------------------------------------------------
+--	[stack level: 1]
+--	called from anonymous codeblock; filename: F:\Cursor\_Cyrus_Apps\CyrusScatter\tools\performance\native_point_probe\bootstrap.ms; position: 5366; line: 115
+--		Locals:
+--		Externals:
+--			HVPRoot: Global:HVPRoot : "F:/Cursor/_Cyrus_Apps/CyrusScatter/"
+--	------------------------------------------------------
+--	[stack level: 2]
+--	called from top-level

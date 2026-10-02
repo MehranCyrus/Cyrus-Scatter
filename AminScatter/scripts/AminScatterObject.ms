@@ -1,6 +1,7 @@
 global CyrusPerfTraceBegin,CyrusPerfTraceEnd,CyrusPerfTraceInput
 global CyrusUISize,CyrusUIBuildView
 fn CyrusUISize n depth view:CyrusUIBuildView = (local w=if view==undefined then 162 else amax 140 (view.width-16-depth*16);floor(n*w/162.0+0.5))
+global cyrusFilterSourceRows,cyrusApplySourceTransforms
 global CyrusInteractionHeld,CyrusWasDragging=false,CyrusReleaseTimer,CyrusReleaseTick
 fn CyrusInteractionHeld = (try((dotNetClass "System.Windows.Forms.Control").MouseButtons != (dotNetClass "System.Windows.Forms.MouseButtons").None)catch(false))
 global CyrusFallPack,CyrusFallUnpack,CyrusOpenFalloffGraph
@@ -10296,7 +10297,7 @@ plugin simpleObject AminScatterObject
 name:"Cyrus Scatter"
 classID:#(0x617d43a1,0x395c2e17)
 category:"Cyrus"
-version:44
+version:47
 (
     local layerTransfer=false
     local cachedPoints=undefined
@@ -11069,6 +11070,10 @@ version:44
         blockerCacheRows
     )
     fn blockerCacheStats = (#(blockerCacheBuilds,blockerCacheHits))
+    fn filterSourceRowsByPolicy rows keep = (
+        if cyrusFilterSourceRows!=undefined then cyrusFilterSourceRows rows keep
+        else (for row in rows where keep[row[2]] collect row)
+    )
     fn cspImpl_placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         if not cyrusEnabled or disabledAnalyzerInput() do return #()
         local targets=validSurfaces()
@@ -11110,15 +11115,21 @@ version:44
         if wholeScaleMin!=1.0 or wholeScaleMax!=1.0 do result=cyrusWholeScale result wholeScaleMin wholeScaleMax randomSeed
         result=applyAnalyzerArea result
         result=applyFalloff result
-        if plants.count>0 and sourceEmpty.count>0 do result=for row in result where (not (isEmptySource (sourceRow plants[row[2]])) or (isPointSource (sourceRow plants[row[2]]))) collect row
+        if plants.count>0 and sourceEmpty.count>0 do (
+            local keep=for n in plants collect (not (isEmptySource (sourceRow n)) or isPointSource (sourceRow n))
+            result=filterSourceRowsByPolicy result keep
+        )
         if plants.count>0 and (sourceZOffsets.count>0 or sourceScales.count>0) do (
             local offsets=for n in plants collect sourceZOffset (sourceRow n)
             local scales=for n in plants collect sourceScale (sourceRow n)
+            if cyrusApplySourceTransforms!=undefined then result=cyrusApplySourceTransforms result offsets scales
+            else (
             for row in result do (
                 local tm=row[1], k=row[2], factor=scales[k]
                 tm.row1=tm.row1*factor;tm.row2=tm.row2*factor;tm.row3=tm.row3*factor
                 tm.row4=tm.row4+[0,0,offsets[k]]
                 row[1]=tm
+            )
             )
         )
         if not rawOnly do (
@@ -11158,7 +11169,10 @@ version:44
             result=cyrusOrientRows result (lineInputs plants previewOnly:true) forward offsets
         )
         if not rawOnly do result=CyrusEditApplyLayer overlapOwner this result
-        if not previewOnly and not rawOnly and plants.count>0 do result=for row in result where not (isPointSource (sourceRow plants[row[2]])) collect row
+        if not previewOnly and not rawOnly and plants.count>0 do (
+            local keep=for n in plants collect (not (isPointSource (sourceRow n)))
+            result=filterSourceRowsByPolicy result keep
+        )
         result
     )
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
@@ -11166,7 +11180,7 @@ version:44
         if CyrusPerfTraceBegin!=undefined do try(token=CyrusPerfTraceBegin this "placements")catch()
         try (
             local answer=cspImpl_placements plants previewOnly:previewOnly rawOnly:rawOnly finalPass:finalPass
-            if token!=undefined and CyrusPerfTraceEnd!=undefined do try(CyrusPerfTraceEnd token "")catch()
+            if token!=undefined and CyrusPerfTraceEnd!=undefined do try(CyrusPerfTraceEnd token #("",answer.count,previewOnly,rawOnly,finalPass!=undefined))catch()
             answer
         )catch(
             if token!=undefined and CyrusPerfTraceEnd!=undefined do try(CyrusPerfTraceEnd token ("EXCEPTION: "+getCurrentException()))catch()
@@ -11214,8 +11228,9 @@ version:44
         )
     )
     local cachedDisabledInput=false
-    fn previewCache = (
-        if CyrusInteractionHeld() do (CyrusWasDragging=true;return cachedPoints)
+    fn previewCache interactionHeld:undefined = (
+        local held=if interactionHeld==undefined then CyrusInteractionHeld() else interactionHeld
+        if held do (CyrusWasDragging=true;return cachedPoints)
         local inputOff=disabledAnalyzerInput()
         if inputOff!=cachedDisabledInput do (dirty=true;cachedDisabledInput=inputOff)
         if inputOff do return (aminScatterBuildPreview #() #() #() 1)
@@ -11248,14 +11263,16 @@ version:44
     )
     fn forcePreviewUpdate = (dirty=true;previewBuildCount=0)
     fn ensureLayers = layerObjects.count
-    fn syncLayerSurface obj = (
+    fn syncLayerSurface obj targets:undefined layerBudget:undefined = (
         obj.setOverlapOwner this
-        local targets=validSurfaces()
+        if targets==undefined do targets=validSurfaces()
         local equal=obj.surfaceNodes.count==targets.count
         if equal do for i=1 to targets.count where obj.surfaceNodes[i]!=targets[i] do equal=false
         if not equal do undo off (obj.surfaceNodes=targets;obj.surface=undefined)
-        local enabledCount=(for flag in layerEnabled where flag collect flag).count
-        local layerBudget=amax 1 (floor(previewBudget/(amax 1 enabledCount)))
+        if layerBudget==undefined do (
+            local enabledCount=(for flag in layerEnabled where flag collect flag).count
+            layerBudget=amax 1 (floor(previewBudget/(amax 1 enabledCount)))
+        )
         if obj.previewBudget!=layerBudget do undo off obj.previewBudget=layerBudget
         -- These settings belong to the controller, not an individual layer.
         undo off for key in #(#viewportMode,#proxyShape,#viewportInstances,#viewportFaces,#radiusDisplayLimit,#radiusDisplayAll,#updateMode,#showPoints,#pointsPerPlant,#pointColorMode,#solidPointColor,#autoRender) do (
@@ -11269,16 +11286,22 @@ version:44
             editCacheKey=key
             for layer in layerObjects do layer.forcePreviewUpdate()
         )
-        local entries=#()
+        local entries=#(),targets=validSurfaces()
+        local enabledCount=(for flag in layerEnabled where flag collect flag).count
+        local layerBudget=amax 1 (floor(previewBudget/(amax 1 enabledCount)))
         for i=1 to layerObjects.count where includeDisabled or (cyrusEnabled and layerEnabled[i]) do (
             local obj=layerObjects[i]
-            syncLayerSurface obj
+            syncLayerSurface obj targets:targets layerBudget:layerBudget
             obj.checkAnalyzerRevision()
             append entries #(i,obj)
         )
         if (for e in entries where layerEnabled[e[1]] and e[2].dirty collect e).count>0 do
             for e in entries where layerEnabled[e[1]] and e[2].overlapEnabled do e[2].dirty=true
         entries
+    )
+    fn viewportLayerEntries held = (
+        if not held do return layerEntries()
+        for i=1 to layerObjects.count where cyrusEnabled and layerEnabled[i] collect #(i,layerObjects[i])
     )
     fn migrateLayers = (
         if layerObjects.count==0 then (
@@ -11487,7 +11510,9 @@ version:44
         dirty=true
     )
     on attachedToNode n do (n.renderable=false;n.wirecolor=red)
+    local iconCacheSize=undefined,iconCachePaths=#()
     fn iconLines = (
+        if iconCacheSize==iconSize do return iconCachePaths
         local paths=#()
         local ring=for i=0 to 64 collect [cos(i*360.0/64),sin(i*360.0/64),0]
         append paths ring
@@ -11498,7 +11523,9 @@ version:44
         append paths letterS
         append paths (for i=0 to 48 collect [0.35+0.25*cos(45+i*270.0/48),0.46*sin(45+i*270.0/48),0])
 
-        for path in paths collect (for p in path collect p*iconSize)
+        iconCachePaths=for path in paths collect (for p in path collect p*iconSize)
+        iconCacheSize=iconSize
+        iconCachePaths
  )
  on buildMesh do (
         -- Zero-area edges supply picking bounds; visible icon is drawn as lines.
@@ -11519,16 +11546,17 @@ version:44
     )
 )
 fn AminScatterObjectDraw = (
+    local held=CyrusInteractionHeld()
     gw.setTransform (matrix3 1)
     for n in objects where (classof n.baseObject==AminScatterObject and not n.isHidden) do (
         gw.setTransform n.objectTransform;gw.setColor #line red
         for path in n.baseObject.iconLines() do gw.polyline path false
         gw.setTransform (matrix3 1)
-        for entry in n.baseObject.layerEntries() do (
+        for entry in n.baseObject.viewportLayerEntries held do (
             local obj=entry[2]
-            obj.previewCache();obj.drawRadii()
+            local cache=obj.previewCache interactionHeld:held
+            obj.drawRadii()
             if obj.showPoints or obj.showCenters do (
-                local cache=obj.previewCache()
                 if cache!=undefined do aminScatterDrawPreview cache (obj.pointColorMode==1) obj.solidPointColor
             )
         )
@@ -11713,8 +11741,24 @@ global AminScatterLiveChanged
 global AminScatterLiveTime
 try(AminScatterNodeEvents.enabled=false)catch()
 try(unRegisterTimeCallback AminScatterLiveTime)catch()
+global CyrusLiveBatchDepth=0,CyrusLiveBatchRedraw=false,CyrusLiveBatchCount=0,CyrusLiveRedrawRequests=0,CyrusLiveChangeCalls=0
+fn CyrusScatterLiveBatchStats = (#(CyrusLiveBatchCount,CyrusLiveRedrawRequests,CyrusLiveBatchDepth,CyrusLiveBatchRedraw,CyrusLiveChangeCalls))
+fn CyrusScatterLiveBatchBegin event handles = (
+    if CyrusLiveBatchDepth==0 do CyrusLiveBatchRedraw=false
+    CyrusLiveBatchDepth+=1
+)
+fn CyrusScatterLiveBatchEnd event handles = (
+    CyrusLiveBatchDepth=amax 0 (CyrusLiveBatchDepth-1)
+    if CyrusLiveBatchDepth==0 do (
+        CyrusLiveBatchCount+=1
+        local wanted=CyrusLiveBatchRedraw
+        CyrusLiveBatchRedraw=false
+        if wanted and AminScatterRenderRedrawHeld!=true do (CyrusLiveRedrawRequests+=1;redrawViews())
+    )
+)
 fn AminScatterLiveChanged event handles = (
     if CyrusPerfTraceInput!=undefined do try(CyrusPerfTraceInput "scatter_input_received" event handles)catch()
+    CyrusLiveChangeCalls+=1
     if event==#deleted do (handles=for h in handles where findItem CyrusPFDeletedHandles h==0 collect h;if handles.count==0 do return false)
     if AminScatterRenderRedrawHeld!=true do (
         local nodes=for h in handles collect (getAnimByHandle h)
@@ -11729,7 +11773,10 @@ fn AminScatterLiveChanged event handles = (
                 else if entry[2].externalChanged nodes do (redraw=true;CyrusPFRevision+=1)
             )
         )
-        if redraw do redrawViews()
+        if redraw do (
+            if CyrusLiveBatchDepth>0 then CyrusLiveBatchRedraw=true
+            else (CyrusLiveRedrawRequests+=1;redrawViews())
+        )
     )
 )
 fn AminScatterLiveTime = (
@@ -11738,7 +11785,7 @@ fn AminScatterLiveTime = (
         redrawViews()
     )
 )
-AminScatterNodeEvents=NodeEventCallback mouseUp:true delay:150 deleted:AminScatterLiveChanged geometryChanged:AminScatterLiveChanged topologyChanged:AminScatterLiveChanged mappingChanged:AminScatterLiveChanged modelStructured:AminScatterLiveChanged controllerOtherEvent:AminScatterLiveChanged controllerStructured:AminScatterLiveChanged linkChanged:AminScatterLiveChanged
+AminScatterNodeEvents=NodeEventCallback mouseUp:true delay:150 callbackBegin:CyrusScatterLiveBatchBegin callbackEnd:CyrusScatterLiveBatchEnd deleted:AminScatterLiveChanged geometryChanged:AminScatterLiveChanged topologyChanged:AminScatterLiveChanged mappingChanged:AminScatterLiveChanged modelStructured:AminScatterLiveChanged controllerOtherEvent:AminScatterLiveChanged controllerStructured:AminScatterLiveChanged linkChanged:AminScatterLiveChanged
 registerTimeCallback AminScatterLiveTime
 
 

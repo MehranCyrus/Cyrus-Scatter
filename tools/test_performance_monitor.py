@@ -46,6 +46,11 @@ def main():
     sys.path.insert(0, str(ROOT / "tools/performance"))
     import compare_runs
     data = compare_runs.load_run(run)
+    assert data["manifest"]["tool_version"] == "0.2.2"
+    assert data["manifest"]["cpu_thread_request"] == 0
+    assert data["manifest"]["native_source_filter"] is True
+    assert data["manifest"]["native_source_transforms"] is True
+    assert len(data["manifest"]["callback_batch_stats_at_start"]) == 5
     assert data["statistics"]["n"] == 3 and data["failed"] == 0, data["statistics"]
     assert data["sampler"]["status"] == "stopped" and data["resource_samples"] >= 2, data["sampler"]
     assert data["observed_counter_resets"] >= 1

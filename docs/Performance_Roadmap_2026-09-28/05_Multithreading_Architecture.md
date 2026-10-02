@@ -2,6 +2,8 @@
 
 **Proposed design:** a bounded executor for independent native work, with a serial implementation for reference/fallback. Begin with synchronous parallel calls. Multithreading can shorten an operation while the UI still waits; asynchronous UI work is a separate milestone.
 
+**October 1 implementation:** 0.60 uses a small private synchronous `std::thread` executor for eligible clustered field queries. Automatic mode uses at most four total participants; serial mode and unsupported-pipeline fallback remain available. Sampling and RNG consumption retain their original order. No oneTBB runtime is added. The [implementation report](../Performance_Implementation_2026-10-01.md) records the measured crossover, byte comparisons and remaining contention/host qualification. The oneTBB section below is a retained alternative proposal.
+
 ## Host boundary
 
 Autodesk documents single-threaded reference/node evaluation and broader SDK thread-safety limits. This roadmap conservatively confines scene and runtime access to the host thread. [Autodesk thread safety](https://help.autodesk.com/cloudhelp/2026/ENU/MAXDEV-Developer/files/best_practices/thread_safety.html)

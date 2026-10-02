@@ -1,0 +1,5 @@
+PASS stable source filtering and errors
+PASS native source transforms and atomic validation
+PASS actual layer preview/render, empty/point sources, scale/offset and serial/worker parity
+PASS real callback dispatch: one redraw per batch and preserved invalidation
+SUCCESS

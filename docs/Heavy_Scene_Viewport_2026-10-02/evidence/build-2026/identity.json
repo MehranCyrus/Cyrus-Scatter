@@ -1,0 +1,24 @@
+{
+  "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\heavy-viewport-2026-10-02\\probe-2026\\CyrusRetainedPointProbe.dlx",
+  "sha256": "6ae746d03e74c24042ab893fa267ecbec3e8d53f308e2b66d56565cce6ab2ef6",
+  "sdk": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\tooling\\max2026-sdk\\Program Files\\Autodesk\\3ds Max 2026 SDK\\maxsdk",
+  "commands": [
+    [
+      "cmake",
+      "-S",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\performance\\native_point_probe",
+      "-B",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\heavy-viewport-2026-10-02\\probe-2026",
+      "-G",
+      "NMake Makefiles",
+      "-DCMAKE_BUILD_TYPE=Release",
+      "-DCYRUS_MAX_YEAR=2026",
+      "-DMAXSDK_ROOT=F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\tooling\\max2026-sdk\\Program Files\\Autodesk\\3ds Max 2026 SDK\\maxsdk"
+    ],
+    [
+      "cmake",
+      "--build",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\heavy-viewport-2026-10-02\\probe-2026"
+    ]
+  ]
+}

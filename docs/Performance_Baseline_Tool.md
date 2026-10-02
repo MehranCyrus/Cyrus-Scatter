@@ -1,10 +1,10 @@
 # Cyrus performance baseline recorder
 
-**October 1 update:** Recorder 0.2 adds opt-in per-build and Analyzer tracing for spline edits. Recorder 0.2.1 corrects successive edit IDs and the report recovers existing 0.2.0 recordings. See [Detailed edit tracing and installation](Performance_Edit_Tracing.md) and the [first detailed heavy-scene review](Spline_Edit_Trace_2026-10-01.md). The original 0.1 measurements below remain scoped to their historical verification; initial tracing installation requires the updated plugin scripts and a Max restart. Updating an existing tracing recorder to 0.2.1 only requires stopping/closing the recorder and running its script again.
+**October 1 update:** Recorder **0.2.2** retains the 0.2 tracing and 0.2.1 edit-ID correction, and records optional CPU thread policy, native source-helper availability and callback batch counters in the manifest. Older native engines remain usable. See [Detailed edit tracing](Performance_Edit_Tracing.md), the [heavy-scene review](Spline_Edit_Trace_2026-10-01.md), and the [0.60 upgrade test](Performance_Upgrade_Test_2026-10-01.md). Updating only the recorder requires stopping/closing it and running its script again. Installing the new native performance build requires its MZP and a Max restart.
 
-**Started:** 2026-09-30. **First target:** 3ds Max 2027, with the artist's Corona 15 scene. **Status:** implemented; synthetic Max 2027.1 smoke test and eight report checks passed. Heavy-scene and Corona measurements are pending.
+**Started:** 2026-09-30. **First target:** 3ds Max 2027, with the artist's Corona 15 scene. **Current status:** recorder 0.2.2, synthetic Max 2027.1 fixtures and 14 report checks passed. Heavy-scene edit traces and isolated CPU comparisons exist; the 0.60 candidate's interactive and Corona retests are pending. The original 0.1 verification below is historical.
 
-This standalone tool records the current implementation before optimization. Run it with the existing Cyrus installation. The production plugin and its generated scripts are not replaced by this tool.
+This standalone tool records the selected installed build for baseline/candidate comparisons. The recorder itself does not replace the production plugin or its generated scripts.
 
 ## Start here — a short trial on your scene
 
@@ -34,7 +34,7 @@ Default result location: [build/performance-runs](../build/performance-runs). Ev
 | Optional Corona VFB values | Manually enter parsing, geometry and rendering seconds, passes and noise. Blank means unavailable. These are whole-scene renderer values and are retained separately. |
 | Identity/context | Saved-scene SHA-256, loaded module files, measurement tool files, installed script candidate, Max version, available Corona version, CPU/GPU model/driver, RAM, OS, active power scheme, scene units/frame, viewport and Cyrus settings. |
 
-GPU utilization, kernel timings, exact first-visible-frame latency, exact Cyrus render-preparation duration, automatic camera-path playback and native stage profiling remain future additions. This version does not implement threading or GPU computation.
+GPU utilization, kernel timings, exact first-visible-frame latency, exact Cyrus render-preparation duration, automatic camera-path playback and native stage profiling remain future additions. The recorder itself does not implement threading or GPU computation; the installed 0.60 plugin can use bounded CPU cluster workers.
 
 The file fingerprints describe disk content. An installed script file is a candidate, not proof of which script version was loaded into memory. Start Max fresh with the intended installation for trustworthy build identity. A saved scene fingerprint also cannot describe unsaved edits or changing external assets.
 

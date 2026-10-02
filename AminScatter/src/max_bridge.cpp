@@ -6,6 +6,7 @@
 #include <maxscript/foundation/3dmath.h>
 #include <maxscript/maxwrapper/mxsobjects.h>
 #include "scatter.h"
+#include "execution.h"
 #include <memory>
 #include <stdexcept>
 #include <map>
@@ -13,7 +14,7 @@
 #include <cmath>
 #include <maxscript/macros/define_instantiation_functions.h>
 
-extern "C" __declspec(dllexport) const TCHAR* LibDescription() { return _T("Cyrus Scatter native engine 0.21"); }
+extern "C" __declspec(dllexport) const TCHAR* LibDescription() { return _T("Cyrus Scatter native engine 0.23 - bounded proxy draw batches"); }
 extern "C" __declspec(dllexport) ULONG LibVersion() { return VERSION_3DSMAX; }
 extern "C" __declspec(dllexport) void LibInit() {}
 HINSTANCE CyrusEditInstance=nullptr;
@@ -22,6 +23,79 @@ extern "C" __declspec(dllexport) int LibNumberClasses(){return 1;}
 extern "C" __declspec(dllexport) ClassDesc* LibClassDesc(int i){return i==0?CyrusEditDesc():nullptr;}
 BOOL WINAPI DllMain(HINSTANCE instance, DWORD reason, LPVOID) { if(reason==DLL_PROCESS_ATTACH)CyrusEditInstance=instance;return TRUE; }
 static_assert(MAX_PRODUCT_YEAR_NUMBER == CYRUS_MAX_YEAR, "SDK year must match the configured host year");
+
+// Diagnostic/session controls. Scene evaluation and MAXScript values stay on
+// this calling thread; native workers receive plain owned geometry only.
+def_visible_primitive(cyrusScatterCPUThreads, "cyrusScatterCPUThreads");
+Value* cyrusScatterCPUThreads_cf(Value** args,int count) {
+    if(count!=0 && count!=1) throw RuntimeError(_T("Expected zero or one CPU thread limit"));
+    if(count==1) {
+        const int limit=args[0]->to_int();
+        if(limit<0 || limit>64) throw RuntimeError(_T("CPU thread limit must be 0..64"));
+        amin::setComputeThreads(static_cast<unsigned>(limit));
+    }
+    return Integer::intern(static_cast<int>(amin::computeThreads()));
+}
+def_visible_primitive(cyrusScatterComputeStats, "cyrusScatterComputeStats");
+Value* cyrusScatterComputeStats_cf(Value**,int count) {
+    check_arg_count(cyrusScatterComputeStats,0,count);
+    const auto stats=amin::lastComputeStats();
+    one_typed_value_local(Array* result);vl.result=new Array(3);
+    vl.result->append(Integer::intern(static_cast<int>(stats.participants)));
+    vl.result->append(Integer64::intern(static_cast<INT64>(stats.clusterQueries)));
+    vl.result->append(stats.threadLaunchFallback ? &true_value : &false_value);
+    return_value(vl.result);
+}
+
+// Stable source filtering after area/falloff processing. Keep the exact existing
+// rows (including CS Edit data); avoid a MAXScript function lookup per placement.
+def_visible_primitive(cyrusFilterSourceRows, "cyrusFilterSourceRows");
+Value* cyrusFilterSourceRows_cf(Value** args,int count) {
+    check_arg_count(cyrusFilterSourceRows,2,count);
+    type_check(args[0],Array,_T("placement rows"));
+    type_check(args[1],Array,_T("source visibility"));
+    auto* rows=static_cast<Array*>(args[0]);auto* flags=static_cast<Array*>(args[1]);
+    std::vector<bool> keep;keep.reserve(flags->size);
+    for(int i=0;i<flags->size;++i) keep.push_back(flags->data[i]->to_bool()!=FALSE);
+    one_typed_value_local(Array* result);vl.result=new Array(rows->size);
+    for(int i=0;i<rows->size;++i) {
+        type_check(rows->data[i],Array,_T("placement row"));
+        auto* row=static_cast<Array*>(rows->data[i]);
+        if(row->size!=2) throw RuntimeError(_T("Invalid placement row"));
+        const int source=row->data[1]->to_int()-1;
+        if(source<0 || static_cast<std::size_t>(source)>=keep.size()) throw RuntimeError(_T("Invalid source index"));
+        if(keep[source]) vl.result->append(rows->data[i]);
+    }
+    return_value(vl.result);
+}
+
+def_visible_primitive(cyrusApplySourceTransforms, "cyrusApplySourceTransforms");
+Value* cyrusApplySourceTransforms_cf(Value** args,int count) {
+    check_arg_count(cyrusApplySourceTransforms,3,count);
+    for(int i=0;i<3;++i) type_check(args[i],Array,_T("source transform inputs"));
+    auto* rows=static_cast<Array*>(args[0]);auto* offsets=static_cast<Array*>(args[1]);auto* scales=static_cast<Array*>(args[2]);
+    if(offsets->size!=scales->size) throw RuntimeError(_T("Source transform count mismatch"));
+    std::vector<float> z,factors;z.reserve(scales->size);factors.reserve(scales->size);
+    for(int i=0;i<scales->size;++i) {z.push_back(offsets->data[i]->to_float());factors.push_back(scales->data[i]->to_float());}
+    // Validate all rows before modifying any. These are transient placement
+    // values, never scene transforms; preserve MAXScript's in-place alias rules.
+    for(int i=0;i<rows->size;++i) {
+        type_check(rows->data[i],Array,_T("placement row"));auto* row=static_cast<Array*>(rows->data[i]);
+        if(row->size!=2) throw RuntimeError(_T("Invalid placement row"));
+        type_check(row->data[0],Matrix3Value,_T("placement transform"));
+        const int source=row->data[1]->to_int()-1;
+        if(source<0 || source>=scales->size) throw RuntimeError(_T("Invalid source index"));
+    }
+    for(int i=0;i<rows->size;++i) {
+        auto* row=static_cast<Array*>(rows->data[i]);const int source=row->data[1]->to_int()-1;
+        Matrix3& tm=row->data[0]->to_matrix3();
+        for(int axis=0;axis<3;++axis) tm.SetRow(axis,tm.GetRow(axis)*factors[source]);
+        // Do not skip identity values: +0 can change a signed zero just as the
+        // original script does, and full byte parity is part of the gate.
+        tm.SetRow(3,tm.GetRow(3)+Point3(0.0f,0.0f,z[source]));
+    }
+    return args[0];
+}
 
 // Final, stable removal only: retain the original MAXScript rows and transforms.
 def_visible_primitive(cyrusRemoveOverlaps, "cyrusRemoveOverlaps");

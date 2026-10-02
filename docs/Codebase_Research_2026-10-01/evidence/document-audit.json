@@ -1,0 +1,17 @@
+{
+  "audited_utc": "2026-10-01T18:35:15.613359+00:00",
+  "scope": "Self-audit; mechanical checks supplement source/claim review",
+  "local_links": 52,
+  "missing_links": [],
+  "bad_line_links": [],
+  "claims": 29,
+  "decisions": 7,
+  "verified_host_fixtures": [
+    "max2027_smoke",
+    "compute_performance_smoke",
+    "viewport_performance_smoke"
+  ],
+  "native_timing_cases": 17,
+  "projection_random_mismatches": 0,
+  "projection_adversarial_tie_equivalent": false
+}

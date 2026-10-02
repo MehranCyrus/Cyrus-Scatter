@@ -1,6 +1,6 @@
 # 07 — Implementation backlog and release gates
 
-**All tasks below are NOT STARTED.** The documents and source snapshot are the completed planning deliverable. Task IDs describe future work; no listed feature switch, benchmark command, or export API should be assumed to exist.
+**Original status, 2026-09-28:** all tasks were NOT STARTED. **October 1 update:** the first Max 2027 CPU candidate implements parts of C01/C04 and T01/T02, plus redraw batching. Reproducible native and saved-scene comparisons now exist. See the [implementation report](../Performance_Implementation_2026-10-01.md) and [results ledger](09_Results_and_Decisions.md) for exact evidence and remaining gates. The task definitions below remain the broader plan; partial implementation does not complete full support or release qualification.
 
 ## M0 — Reproducible builds and host support
 

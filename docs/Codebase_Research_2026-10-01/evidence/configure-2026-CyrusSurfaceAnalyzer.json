@@ -1,0 +1,19 @@
+{
+  "started_utc": "2026-10-01T18:07:47.745644+00:00",
+  "finished_utc": "2026-10-01T18:07:49.442000+00:00",
+  "cwd": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+  "argv": [
+    "cmake",
+    "-S",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusSurfaceAnalyzer",
+    "-B",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\codebase-research-2026-10-01\\max2026\\CyrusSurfaceAnalyzer",
+    "-G",
+    "NMake Makefiles",
+    "-DCMAKE_BUILD_TYPE=Release",
+    "-DCYRUS_MAX_YEAR=2026",
+    "-DMAXSDK_ROOT=F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\tooling\\max2026-sdk\\Program Files\\Autodesk\\3ds Max 2026 SDK\\maxsdk"
+  ],
+  "returncode": 0,
+  "output": "configure-2026-CyrusSurfaceAnalyzer.txt"
+}

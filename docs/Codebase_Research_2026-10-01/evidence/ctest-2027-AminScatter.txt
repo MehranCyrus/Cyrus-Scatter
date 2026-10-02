@@ -1,0 +1,85 @@
+Internal ctest changing into directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/codebase-research-2026-10-01/max2027/AminScatter
+UpdateCTestConfiguration  from :F:/Cursor/_Cyrus_Apps/CyrusScatter/build/codebase-research-2026-10-01/max2027/AminScatter/DartConfiguration.tcl
+UpdateCTestConfiguration  from :F:/Cursor/_Cyrus_Apps/CyrusScatter/build/codebase-research-2026-10-01/max2027/AminScatter/DartConfiguration.tcl
+Test project F:/Cursor/_Cyrus_Apps/CyrusScatter/build/codebase-research-2026-10-01/max2027/AminScatter
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start 1: scatter_threading
+
+1: Test command: F:\Cursor\_Cyrus_Apps\CyrusScatter\build\codebase-research-2026-10-01\max2027\AminScatter\threading_tests.exe
+1: Working Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/codebase-research-2026-10-01/max2027/AminScatter
+1: Test timeout computed to be: 10000000
+1: PASS ordered placements, worker limits, fallback pipeline, numeric environment and exception joins
+1/8 Test #1: scatter_threading ................   Passed    0.12 sec
+test 2
+    Start 2: scatter_prepared_bands
+
+2: Test command: F:\Cursor\_Cyrus_Apps\CyrusScatter\build\codebase-research-2026-10-01\max2027\AminScatter\prepared_band_tests.exe
+2: Working Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/codebase-research-2026-10-01/max2027/AminScatter
+2: Test timeout computed to be: 10000000
+2: PASS 160000 differential boundary queries, masks, holes, tilted/stacked paths, duplicate vertices and thresholds
+2/8 Test #2: scatter_prepared_bands ...........   Passed    0.07 sec
+test 3
+    Start 3: scatter_core
+
+3: Test command: F:\Cursor\_Cyrus_Apps\CyrusScatter\build\codebase-research-2026-10-01\max2027\AminScatter\scatter_tests.exe
+3: Working Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/codebase-research-2026-10-01/max2027/AminScatter
+3: Test timeout computed to be: 10000000
+3: PASS: existing scatter tests plus Analyzer bilateral bands, radius, single anchors and border sides
+3: PASS: straight Street rectangle, round extension and rotated plane
+3: PASS: final cleanup and count-preserving constrained boundary movement
+3/8 Test #3: scatter_core .....................   Passed    0.18 sec
+test 4
+    Start 4: scatter_spacing
+
+4: Test command: F:\Cursor\_Cyrus_Apps\CyrusScatter\build\codebase-research-2026-10-01\max2027\AminScatter\spacing_tests.exe
+4: Working Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/codebase-research-2026-10-01/max2027/AminScatter
+4: Test timeout computed to be: 10000000
+4: overlap_energy 91.445 -> 4.16357; collision 775; combined 1433
+4: count=10000 kept=10000 ms=101.025
+4: count=100000 kept=98548 ms=3336.61
+4: PASS spacing, determinism, masks, strokes, tilted surface, disabled compatibility
+4/8 Test #4: scatter_spacing ..................   Passed    3.67 sec
+test 5
+    Start 5: scatter_weights
+
+5: Test command: F:\Cursor\_Cyrus_Apps\CyrusScatter\build\codebase-research-2026-10-01\max2027\AminScatter\weight_tests.exe
+5: Working Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/codebase-research-2026-10-01/max2027/AminScatter
+5: Test timeout computed to be: 10000000
+5: random box=69.95%
+5: cluster box=70.19%
+5: PASS weights, groups, zero, strokes, fixed positions and transforms
+5/8 Test #5: scatter_weights ..................   Passed    0.35 sec
+test 6
+    Start 6: scatter_orientation
+
+6: Test command: F:\Cursor\_Cyrus_Apps\CyrusScatter\build\codebase-research-2026-10-01\max2027\AminScatter\orientation_tests.exe
+6: Working Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/codebase-research-2026-10-01/max2027/AminScatter
+6: Test timeout computed to be: 10000000
+6: PASS axes, scales, convex/concave/45deg, masked corners, holes, winding, tilted plane, offsets, disabled
+6/8 Test #6: scatter_orientation ..............   Passed    0.03 sec
+test 7
+    Start 7: scatter_edge_border
+
+7: Test command: F:\Cursor\_Cyrus_Apps\CyrusScatter\build\codebase-research-2026-10-01\max2027\AminScatter\edge_border_tests.exe
+7: Working Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/codebase-research-2026-10-01/max2027/AminScatter
+7: Test timeout computed to be: 10000000
+7: PASS spacing, offset, deterministic jitter, masks, count independence, relax pins, collisions, thin regions, elements, limit
+7/8 Test #7: scatter_edge_border ..............   Passed    0.03 sec
+test 8
+    Start 8: scatter_boundary_falloff
+
+8: Test command: F:\Cursor\_Cyrus_Apps\CyrusScatter\build\codebase-research-2026-10-01\max2027\AminScatter\boundary_falloff_tests.exe
+8: Working Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/codebase-research-2026-10-01/max2027/AminScatter
+8: Test timeout computed to be: 10000000
+8: PASS boundary, 100k points, Area Include/Exclude directions and XY projection, dense curves, side-limited scale/density
+8/8 Test #8: scatter_boundary_falloff .........   Passed    0.08 sec
+
+100% tests passed, 0 tests failed out of 8
+
+Total Test time (real) =   4.55 sec

@@ -1,0 +1,23 @@
+Start testing: Oct 01 19:01 Iran Standard Time
+----------------------------------------------------------
+1/1 Testing: analyzer_core
+1/1 Test: analyzer_core
+Command: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/max2027-release/CyrusSurfaceAnalyzer/analyzer_tests.exe"
+Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/max2027-release/CyrusSurfaceAnalyzer
+"analyzer_core" start time: Oct 01 19:01 Iran Standard Time
+Output:
+----------------------------------------------------------
+PASS attached mixed elements at different heights; automatic radius counts; star four points; global spacing; tiny-radius guard
+PASS per-element minimum overrides radius; zero disables override; no points outside eligible paths
+PASS hard disk clearance on all shapes after Relax and minimum override; near-rectangular straight axis; impossible footprint returns no points
+PASS supplied shapes: Auto modes, points inside triangles, tilted/rotated equivalents
+PASS rectangle, rotated plane, area, width rejection, star ring, hole boundary/containment, nonplanar rejection
+<end of output>
+Test time =   0.18 sec
+----------------------------------------------------------
+Test Passed.
+"analyzer_core" end time: Oct 01 19:01 Iran Standard Time
+"analyzer_core" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Oct 01 19:01 Iran Standard Time

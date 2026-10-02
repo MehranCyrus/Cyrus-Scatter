@@ -1,0 +1,54 @@
+
+crp_Lavander_01
+  .filename : filename
+  .cacheInRam : boolean
+  .pointcloudDensity : float
+  .viewportIconSize : float
+  .animationEnabled : boolean
+  .animationMode : integer
+  .animationOffset : float
+  .animationSpeedMultiplier : float
+  .subMeshesVisibility : boolean array
+  .forceFileUnits : integer
+  .cosmosAssetId : string
+  .previzType : integer
+  .animationOriginalFpsEnabled : boolean
+#filename = E:\00-work\00_YUCONVR\452-21 Tender 't Hag Almelo\04_TEMP\PROXY\Lavander_01.cgeo exists=false
+#forceFileUnits = -1 exists=undefined
+polygon count #(0, 8)
+
+crp_Lavander_05
+  .filename : filename
+  .cacheInRam : boolean
+  .pointcloudDensity : float
+  .viewportIconSize : float
+  .animationEnabled : boolean
+  .animationMode : integer
+  .animationOffset : float
+  .animationSpeedMultiplier : float
+  .subMeshesVisibility : boolean array
+  .forceFileUnits : integer
+  .cosmosAssetId : string
+  .previzType : integer
+  .animationOriginalFpsEnabled : boolean
+#filename = E:\00-work\00_YUCONVR\452-21 Tender 't Hag Almelo\04_TEMP\PROXY\Lavander_05.cgeo exists=false
+#forceFileUnits = -1 exists=undefined
+polygon count #(0, 8)
+
+crp_MT_PM_V33_Glossy_abelia_01_006
+  .filename : filename
+  .cacheInRam : boolean
+  .pointcloudDensity : float
+  .viewportIconSize : float
+  .animationEnabled : boolean
+  .animationMode : integer
+  .animationOffset : float
+  .animationSpeedMultiplier : float
+  .subMeshesVisibility : boolean array
+  .forceFileUnits : integer
+  .cosmosAssetId : string
+  .previzType : integer
+  .animationOriginalFpsEnabled : boolean
+#filename = E:\00-work\00_YUCONVR\452-21 Tender 't Hag Almelo\04_TEMP\PROXY\MT_PM_V33_Glossy_abelia_01_03.cgeo exists=false
+#forceFileUnits = -1 exists=undefined
+polygon count #(0, 8)

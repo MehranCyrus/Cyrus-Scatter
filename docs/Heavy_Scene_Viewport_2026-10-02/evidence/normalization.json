@@ -1,0 +1,5 @@
+{
+  "source": "cleanup-raw-maxscript.txt",
+  "output": "cleanup.json",
+  "change": "Remove MAXScript Integer64 L suffixes on array numbers for strict JSON. Cleanup assertions and process exit passed. The checked-in cleanup.ms now casts these bounded counters before serialization; see the as-executed recipe for the measured version."
+}

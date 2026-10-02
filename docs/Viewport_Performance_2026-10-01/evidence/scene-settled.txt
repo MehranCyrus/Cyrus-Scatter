@@ -1,0 +1,91 @@
+SCATTER Cyrus Scatter001 handle 828 modifiers #() hidden false
+Layer 1 Grass enabled=true mode=2 proxy=3 generated=44958 shown=2000 faces=12000 builds=2 last_ms=404 dirty=false error= radii=0 sources=#("grass_small", "grass_bush") centers=false
+Layer 2 Leaves enabled=true mode=2 proxy=3 generated=200 shown=200 faces=1200 builds=1 last_ms=5 dirty=false error= radii=0 sources=#("Ahorn_01", "Ahorn_02", "leafs_bend_00", "leafs_bend_01", "leafs_bend_02", "leafs_bend_03", "leafs_bend_04", "leafs_bend_05", "leafs_bend_06", "leafs_bend_07", "leafs_bend_08", "leafs_bend_09", "leafs_bend_10", "leafs_bend_11", "leafs_bend_12", "leafs_bend_13", "leafs_bend_14", "leafs_bend_15", "leafs_bend_16", "leafs_bend_17", ...) centers=false
+Layer 3 clover enabled=true mode=2 proxy=3 generated=3529 shown=2000 faces=12000 builds=2 last_ms=294 dirty=false error= radii=0 sources=#("clover_pack_004", "empty") centers=false
+Layer 4 BushesCenter enabled=true mode=2 proxy=3 generated=70 shown=40 faces=240 builds=2 last_ms=29 dirty=false error= radii=0 sources=#("crp_MT_PM_Sambucus_nigra_02_01", "crp_MT_PM_Rosa_rugosa_01_02", "crp_MT_PM_Rosa_rugosa_01_03", "crp_Lavander_05", "crp_Lavander_01", "crp_MT_PM_V33_Myrtle_01_003", "crp_MT_PM_V33_Glossy_abelia_01_006") centers=false
+Layer 5 Bourder enabled=true mode=2 proxy=3 generated=3342 shown=2000 faces=12000 builds=2 last_ms=226 dirty=false error= radii=0 sources=#("MT_PM_V41_Viola_sororia_01_04", "MT_PM_V41_Viola_sororia_01_05", "MT_PM_V41_Phlox_stolonifera_01_02", "MT_PM_V41_Phlox_stolonifera_01_01", "MT_PM_V41_Geranium_robertianum_01_04", "MT_PM_V41_Lamium_maculatum_01_04") centers=false
+Layer 6 Street_Plant enabled=true mode=2 proxy=3 generated=44 shown=44 faces=264 builds=2 last_ms=18 dirty=false error= radii=0 sources=#("MT_PM_V41_Arthropodium_01_05", "MT_PM_V41_Arthropodium_01_04", "empty", "MT_PM_V41_Arthropodium_01_03", "MT_PM_V41_Arthropodium_01_01") centers=false
+ANALYZER Surface Analyzer001 runs=3 enabled=true boundary=true paths=true street=true points=true point_count=9
+
+Viewport interfaces:
+  Interface: NitrousGraphicsManager
+   Properties:
+    .MakePreviewQuality : integer : Read|Write
+    .MultiThreadedShaderCompileMode : boolean : Read|Write
+    .ChangeCursorOnMouseMove : boolean : Read|Write
+    .BackfaceCullWireframeEnabled : boolean : Read|Write
+    .ShadowmapSizeLimit : integer : Read|Write|Validated by Range: 1 to 10000
+    .NormalBumpMode : integer : Read|Write
+    .BackgroundProgressiveRenderingEnabled : boolean : Read|Write
+    .OverrideShadingMtl : material : Read|Write
+    .OverrideRenderSettingMtl : material : Read|Write
+    .HardwareHitTestEnabled : boolean : Read|Write
+    .GesturaEnabled : boolean : Read|Write
+    .AntialiasingQuality : enum : Read|Write
+       AntialiasingQuality enums: {#None|#2X|#4X|#8X}
+    .DarkerEdgeOption : enum : Read|Write
+       DarkerEdgeOption enums: {#Off|#SubLevelOnly|#Always}
+    .ViewportColorPipelineOCIOBased : boolean : Read
+    .ColorPipelineTargetFormat : enum : Read|Write
+       ColorPipelineTargetFormat enums: {#F32|#F16}
+   Methods:
+    <boolean>IsEnabled()
+       IsEnabled - no automatic redraw after invoked
+    <integer>API()
+       API - no automatic redraw after invoked
+    <boolean>IsProgressiveRenderingFinished()
+       IsProgressiveRenderingFinished - no automatic redraw after invoked
+    <boolean>ProgressiveRendering()
+       ProgressiveRendering - no automatic redraw after invoked
+    <boolean>SetAppWindowSize <integer>width <integer>height
+    <boolean>SetAppWindowPos <integer>x <integer>y
+    <boolean>PinViewPanelSize <integer>width <integer>height
+    <boolean>UnpinViewPanelSize()
+    <boolean>RunMessageLoop()
+    <boolean>DumpMemoryInfo()
+       DumpMemoryInfo - no automatic redraw after invoked
+    <integer64>GetSystemMemoryUsed()
+       GetSystemMemoryUsed - no automatic redraw after invoked
+    <boolean>BeginPerformanceProfiling()
+       BeginPerformanceProfiling - no automatic redraw after invoked
+    <boolean>EndPerformanceProfiling()
+       EndPerformanceProfiling - no automatic redraw after invoked
+    <boolean>DumpMemoryInfoToFile <string>maxFileName <string>logFileName
+       DumpMemoryInfoToFile - no automatic redraw after invoked
+    <boolean>CreateDummyObjects <string>className <integer>numberOfObjects
+    <void>SetProceduralTextureSizeLimit <integer>sizeLimit
+    <void>ForceDisableMipMapGeneration <boolean>bDisable
+    <boolean>SetTextureSizeLimit <integer>sizeLimit <boolean>enabled
+    <boolean>SetBackgroundTextureSizeLimit <integer>sizeLimit <boolean>enabled
+    <IObject>GetActiveViewportSetting()
+       GetActiveViewportSetting - no automatic redraw after invoked
+    <IObject>GetViewportSetting <index>index
+       GetViewportSetting - no automatic redraw after invoked
+    <IObject>GetViewportSettingFromViewportID <index>viewportID
+       GetViewportSettingFromViewportID - no automatic redraw after invoked
+    <IObject>GetWorldSetting()
+       GetWorldSetting - no automatic redraw after invoked
+    <IObject>GetSelectionSetting()
+       GetSelectionSetting - no automatic redraw after invoked
+    <boolean>ApplyViewportViewSettingToLegacyView <index>index
+    <void>BeginPartialUpdateCompareTest()
+    <void>EndPartialUpdateCompareTest()
+    <boolean>GetPartialUpdateCompareTestResult()
+       GetPartialUpdateCompareTestResult - no automatic redraw after invoked
+    <boolean>SaveViewGraph <integer>viewIndex <string>viewGraphName
+    <boolean>LoadViewGraph <integer>viewIndex <string>viewGraphName
+    <boolean>UnloadViewGraph <integer>viewIndex
+    <boolean>SetViewShadeFragment <integer>viewIndex <integer>classIDPartA <integer>classIDPartB
+    <boolean>ResetViewShadeFragment <integer>viewIndex
+    <boolean>SetDefaultViewShadeFragment <integer>classIDPartA <integer>classIDPartB <boolean>bUseSameFragmentForWireframe
+    <void>ResetDefaultViewShadeFragment()
+    <boolean>SetRenderRegion <integer>viewIndex <boolean>scaleBeforeClip <point2>scale <point2>clippingLeftTop <point2>clippingRightBottom <point2>offset
+    <IObject>GetFixedViewportPipeline <index>index
+       GetFixedViewportPipeline - no automatic redraw after invoked
+    <boolean>ShowShaderDebugger()
+    <boolean>HideShaderDebugger()
+   Actions:
+-- No ""showProperties"" function for <IObject:ViewportViewSettingImpl>
+
+Degradation global undefined
+Stats 1.36089

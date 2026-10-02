@@ -1,0 +1,920 @@
+ M AminScatter/CMakeLists.txt
+ M AminScatter/scripts/AminScatterObject.ms
+ M AminScatter/src/geometry_preview.inc
+ M AminScatter/src/max_bridge.cpp
+ M AminScatter/src/orientation.inc
+ M AminScatter/src/preview.cpp
+ M AminScatter/src/scatter.cpp
+ M AminScatter/tools/ui/generate.cjs
+ M AminScatter/tools/ui/trace.cjs
+ M docs/Max_2027_Installation.md
+ M docs/Performance_Baseline_Tool.md
+ M docs/Performance_Edit_Tracing.md
+ M docs/Performance_Roadmap_2026-09-28/04_CPU_Optimization_Plan.md
+ M docs/Performance_Roadmap_2026-09-28/05_Multithreading_Architecture.md
+ M docs/Performance_Roadmap_2026-09-28/06_GPU_OpenCL_Feasibility.md
+ M docs/Performance_Roadmap_2026-09-28/07_Implementation_Backlog_and_Gates.md
+ M docs/Performance_Roadmap_2026-09-28/09_Results_and_Decisions.md
+ M docs/Performance_Roadmap_2026-09-28/12_Viewport_Implementation_Plan.md
+ M docs/Performance_Roadmap_2026-09-28/README.md
+ M docs/README.md
+ M docs/Spline_Edit_Trace_2026-10-01.md
+ M tools/build_max.py
+ M tools/performance/CyrusPerformanceMonitor.ms
+ M tools/test_max2027.py
+ M tools/test_performance_monitor.py
+?? AminScatter/include/execution.h
+?? AminScatter/src/cluster.inc
+?? AminScatter/src/execution.cpp
+?? AminScatter/src/prepared_band.inc
+?? AminScatter/src/preview_batches.inc
+?? AminScatter/tests/compute_benchmark.cpp
+?? AminScatter/tests/prepared_band_tests.cpp
+?? AminScatter/tests/threading_tests.cpp
+?? AminScatter/tools/ui/compute-performance.cjs
+?? AminScatter/tools/ui/viewport-performance.cjs
+?? "Boss Handoff - Max 2026/CHECKSUMS.txt"
+?? "Boss Handoff - Max 2026/Compare Viewport.ms"
+?? "Boss Handoff - Max 2026/CyrusScatter-0.62-Max2026.mzp"
+?? "Boss Handoff - Max 2026/CyrusScatter-Viewport-Demo-Max2026.max"
+?? "Boss Handoff - Max 2026/CyrusSurfaceAnalyzer-0.14-Max2026.mzp"
+?? "Boss Handoff - Max 2026/Handoff - Max 2026.rar"
+?? "Boss Handoff - Max 2026/START HERE.txt"
+?? "Cyrus Scatter.zip"
+?? "GPT 6 Pro Research Brief/01 - Codex GPT 6 Astra - Codebase Research.txt"
+?? "GPT 6 Pro Research Brief/02 - Web GPT 6 Pro - Independent Research.txt"
+?? "GPT 6 Pro Research Brief/REFERENCE - Project Context.txt"
+?? "GPT 6 Pro Research Brief/START HERE.txt"
+?? "Test Scene/SaveSelect 2.max"
+?? "Test Scene/SaveSelect.7z"
+?? "Test Scene/SaveSelect.max"
+?? "Test Scene/maps/01_tige_nt01_satu.jpg"
+?? "Test Scene/maps/BARK_nt01_Diffuse4.jpg"
+?? "Test Scene/maps/BARK_nt01_Normal.jpg"
+?? "Test Scene/maps/Blätter1__back.jpg"
+?? "Test Scene/maps/Blätter1__front.jpg"
+?? "Test Scene/maps/Blätter1__front_NRM.jpg"
+?? "Test Scene/maps/Blätter1__front_SPEC_2.jpg"
+?? "Test Scene/maps/Blätter_1_alpha.jpg"
+?? "Test Scene/maps/Blätter_2_alpha.jpg"
+?? "Test Scene/maps/Blätter_2_back.jpg"
+?? "Test Scene/maps/Blätter_2_front.jpg"
+?? "Test Scene/maps/Blätter_2_front_NRM.jpg"
+?? "Test Scene/maps/Blätter_2_front_SPEC_2.jpg"
+?? "Test Scene/maps/Blätter_3_alpha.jpg"
+?? "Test Scene/maps/Blätter_3_back.jpg"
+?? "Test Scene/maps/Blätter_3_front.jpg"
+?? "Test Scene/maps/Blätter_3_front_SPEC_2.jpg"
+?? "Test Scene/maps/Blätter_4_alpha.jpg"
+?? "Test Scene/maps/Blätter_4_back.jpg"
+?? "Test Scene/maps/Blätter_4_front.jpg"
+?? "Test Scene/maps/Blätter_4_front_NRM.jpg"
+?? "Test Scene/maps/Blätter_4_front_SPEC_2.jpg"
+?? "Test Scene/maps/Blätter_5_alpha.jpg"
+?? "Test Scene/maps/Blätter_5_back.jpg"
+?? "Test Scene/maps/Blätter_5_front.jpg"
+?? "Test Scene/maps/Blätter_5_front_NRM.jpg"
+?? "Test Scene/maps/Blätter_5_front_SPEC_2.jpg"
+?? "Test Scene/maps/Feuille_07A_Allong_01_4k__BaseColor.jpg"
+?? "Test Scene/maps/Feuille_07A_Allong_01_4k__Normal.jpg"
+?? "Test Scene/maps/Feuille_07A_Allong_01_4k__Roughness.jpg"
+?? "Test Scene/maps/Halm_1.jpg"
+?? "Test Scene/maps/Halm_1_GLOSS.jpg"
+?? "Test Scene/maps/Halm_1_TRANS.jpg"
+?? "Test Scene/maps/Halm_1b.jpg"
+?? "Test Scene/maps/Lavander_01.cgeo"
+?? "Test Scene/maps/Lavander_05.cgeo"
+?? "Test Scene/maps/Leaves.jpg"
+?? "Test Scene/maps/MT_PM_V33_Euonymus_japonicus_Limb_01_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V33_Euonymus_japonicus_Limb_02_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V33_Euonymus_japonicus_Limb_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V33_Euonymus_japonicus_Limb_normal.jpg"
+?? "Test Scene/maps/MT_PM_V33_Glossy_abelia_01_03.cgeo"
+?? "Test Scene/maps/MT_PM_V33_Glossy_abelia_Flower_01_albedo_01.jpg"
+?? "Test Scene/maps/MT_PM_V33_Glossy_abelia_Flower_01_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V33_Glossy_abelia_Flower_01_normal.jpg"
+?? "Test Scene/maps/MT_PM_V33_Glossy_abelia_Flower_01_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V33_Glossy_abelia_Flower_01_specular.jpg"
+?? "Test Scene/maps/MT_PM_V33_Glossy_abelia_Flower_02_albedo_01.jpg"
+?? "Test Scene/maps/MT_PM_V33_Glossy_abelia_Flower_02_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V33_Glossy_abelia_Flower_02_normal.jpg"
+?? "Test Scene/maps/MT_PM_V33_Glossy_abelia_Flower_02_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V33_Glossy_abelia_Flower_02_specular.jpg"
+?? "Test Scene/maps/MT_PM_V33_Glossy_abelia_Flower_03_albedo_01.jpg"
+?? "Test Scene/maps/MT_PM_V33_Glossy_abelia_Flower_03_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V33_Glossy_abelia_Flower_03_normal.jpg"
+?? "Test Scene/maps/MT_PM_V33_Glossy_abelia_Flower_03_specular.jpg"
+?? "Test Scene/maps/MT_PM_V33_Glossy_abelia_Flower_03_translucency_01.jpg"
+?? "Test Scene/maps/MT_PM_V33_Glossy_abelia_Leaf_01_albedo_01.jpg"
+?? "Test Scene/maps/MT_PM_V33_Glossy_abelia_Leaf_01_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V33_Glossy_abelia_Leaf_01_normal.jpg"
+?? "Test Scene/maps/MT_PM_V33_Glossy_abelia_Leaf_01_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V33_Glossy_abelia_Leaf_01_specular.jpg"
+?? "Test Scene/maps/MT_PM_V33_Glossy_abelia_Leaf_01_translucency.jpg"
+?? "Test Scene/maps/MT_PM_V33_Glossy_abelia_Leaf_02_albedo_01.jpg"
+?? "Test Scene/maps/MT_PM_V33_Glossy_abelia_Leaf_02_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V33_Glossy_abelia_Leaf_02_normal.jpg"
+?? "Test Scene/maps/MT_PM_V33_Glossy_abelia_Leaf_02_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V33_Glossy_abelia_Leaf_02_specular.jpg"
+?? "Test Scene/maps/MT_PM_V33_Glossy_abelia_Trunk_albedo_01.jpg"
+?? "Test Scene/maps/MT_PM_V33_Glossy_abelia_Trunk_normal_01.jpg"
+?? "Test Scene/maps/MT_PM_V33_Myrtle_Bud_01_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V33_Myrtle_Bud_01_normal.jpg"
+?? "Test Scene/maps/MT_PM_V33_Myrtle_Bud_01_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V33_Myrtle_Bud_01_roughness.jpg"
+?? "Test Scene/maps/MT_PM_V33_Myrtle_Bud_01_specular.jpg"
+?? "Test Scene/maps/MT_PM_V33_Myrtle_Flower_01_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V33_Myrtle_Flower_01_normal.jpg"
+?? "Test Scene/maps/MT_PM_V33_Myrtle_Flower_01_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V33_Myrtle_Flower_01_roughness.jpg"
+?? "Test Scene/maps/MT_PM_V33_Myrtle_Flower_01_specular.jpg"
+?? "Test Scene/maps/MT_PM_V33_Myrtle_Flower_01_translucency.jpg"
+?? "Test Scene/maps/MT_PM_V33_Myrtle_Leaf_01_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V33_Myrtle_Leaf_01_albedo_b.jpg"
+?? "Test Scene/maps/MT_PM_V33_Myrtle_Leaf_01_normal.jpg"
+?? "Test Scene/maps/MT_PM_V33_Myrtle_Leaf_01_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V33_Myrtle_Leaf_01_roughness.jpg"
+?? "Test Scene/maps/MT_PM_V33_Myrtle_Leaf_01_specular.jpg"
+?? "Test Scene/maps/MT_PM_V33_Myrtle_Leaf_01_translucency.jpg"
+?? "Test Scene/maps/MT_PM_V33_Myrtle_Leaf_02_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V33_Myrtle_Leaf_02_albedo_b.jpg"
+?? "Test Scene/maps/MT_PM_V33_Myrtle_Leaf_02_normal.jpg"
+?? "Test Scene/maps/MT_PM_V33_Myrtle_Leaf_02_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V33_Myrtle_Leaf_02_roughness.jpg"
+?? "Test Scene/maps/MT_PM_V33_Myrtle_Leaf_02_specular.jpg"
+?? "Test Scene/maps/MT_PM_V33_Myrtle_Leaf_02_translucency.jpg"
+?? "Test Scene/maps/MT_PM_V33_Myrtle_Leaf_03_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V33_Myrtle_Leaf_03_normal.jpg"
+?? "Test Scene/maps/MT_PM_V33_Myrtle_Leaf_03_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V33_Myrtle_Leaf_03_roughness.jpg"
+?? "Test Scene/maps/MT_PM_V33_Myrtle_Leaf_03_specular.jpg"
+?? "Test Scene/maps/MT_PM_V33_Myrtle_Trunk_01_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V33_Myrtle_Trunk_01_normal.jpg"
+?? "Test Scene/maps/MT_PM_V33_Petiole_01_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Arthropodium_Flower_01_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Arthropodium_Flower_01_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Arthropodium_Flower_01_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V41_Arthropodium_Flower_01_roughness.jpg"
+?? "Test Scene/maps/MT_PM_V41_Arthropodium_Flower_01_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Arthropodium_Flower_02_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Arthropodium_Flower_02_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Arthropodium_Flower_02_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V41_Arthropodium_Flower_02_roughness.jpg"
+?? "Test Scene/maps/MT_PM_V41_Arthropodium_Flower_02_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Arthropodium_Flower_03_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Arthropodium_Flower_03_albedo_01.jpg"
+?? "Test Scene/maps/MT_PM_V41_Arthropodium_Flower_03_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Arthropodium_Leaf_01_B_albedo_01.jpg"
+?? "Test Scene/maps/MT_PM_V41_Arthropodium_Leaf_01_F_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Arthropodium_Leaf_01_F_albedo_01.jpg"
+?? "Test Scene/maps/MT_PM_V41_Arthropodium_Leaf_01_F_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Arthropodium_Leaf_01_F_roughness.jpg"
+?? "Test Scene/maps/MT_PM_V41_Arthropodium_Leaf_01_F_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Arthropodium_Leaf_01_b_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Arthropodium_Leaf_01_translucency.jpg"
+?? "Test Scene/maps/MT_PM_V41_Arthropodium_Leaf_01_translucency_01.jpg"
+?? "Test Scene/maps/MT_PM_V41_Arthropodium_Leaf_02_B_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Arthropodium_Leaf_02_F_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Arthropodium_Leaf_02_F_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Arthropodium_Leaf_02_F_roughness.jpg"
+?? "Test Scene/maps/MT_PM_V41_Arthropodium_Leaf_02_F_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Arthropodium_Leaf_02_translucency.jpg"
+?? "Test Scene/maps/MT_PM_V41_Arthropodium_Stamen_01_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Arthropodium_Stamen_01_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V41_Arthropodium_Stem_albedo_1.jpg"
+?? "Test Scene/maps/MT_PM_V41_Arthropodium_Stem_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Arthropodium_Stem_roughness.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Flower_01_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Flower_01_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Flower_01_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Flower_01_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Flower_01_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Flower_02_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Flower_02_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Flower_02_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Flower_02_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Flower_02_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Flower_03_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Flower_03_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Flower_03_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Flower_03_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Flower_03_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Flower_04_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Flower_04_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Flower_04_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Flower_04_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Flower_04_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Flower_05_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Flower_05_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Flower_05_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Flower_05_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Flower_06_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Flower_06_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Leaf_01_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Leaf_01_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Leaf_01_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Leaf_01_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Leaf_01_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Leaf_01_translucency.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Leaf_02_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Leaf_02_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Leaf_02_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Leaf_02_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Leaf_02_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Leaf_02_translucency.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Leaf_03_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Leaf_03_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Leaf_03_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Leaf_03_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Leaf_03_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Leaf_03_translucency.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Leaf_04_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Leaf_04_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Leaf_04_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Leaf_04_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Leaf_04_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Stem_01_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Geranium_robertianum_Stem_01_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Flower_01_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Flower_01_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Flower_01_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Flower_01_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Flower_01_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Flower_02_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Flower_02_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Flower_02_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Flower_02_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Flower_03_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Flower_03_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Flower_03_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Flower_03_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Leaf_01_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Leaf_01_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Leaf_01_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Leaf_01_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Leaf_01_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Leaf_01_translucency.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Leaf_02_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Leaf_02_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Leaf_02_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Leaf_02_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Leaf_02_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Leaf_02_translucency.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Leaf_03_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Leaf_03_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Leaf_03_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Leaf_03_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Leaf_03_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Leaf_03_translucency.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Leaf_04_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Leaf_04_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Leaf_04_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Leaf_04_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Petiole_01_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Petiole_01_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Petiole_01_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Petiole_01_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Petiole_02_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Petiole_02_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Petiole_02_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Petiole_02_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Stem_01_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Stem_01_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Stem_01_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Lamium_maculatum_Stem_01_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Flower_01_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Flower_01_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Flower_01_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Flower_01_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Flower_01_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Flower_02_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Flower_02_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Flower_02_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Flower_02_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Flower_02_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Flower_03_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Flower_03_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Flower_03_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Flower_03_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Flower_03_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Flower_04_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Flower_04_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Flower_04_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Flower_04_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Flower_04_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Flower_05_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Flower_05_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Flower_05_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Flower_05_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Leaf_01_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Leaf_01_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Leaf_01_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Leaf_01_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Leaf_01_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Leaf_01_translucency.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Leaf_02_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Leaf_02_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Leaf_02_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Leaf_02_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Leaf_02_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Leaf_02_translucency.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Leaf_03_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Leaf_03_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Leaf_03_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Leaf_03_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Leaf_03_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Leaf_03_translucency.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Leaf_04_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Leaf_04_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Leaf_04_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Leaf_04_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Stem_01_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Phlox_stolonifera_Stem_01_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Flower_01_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Flower_01_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Flower_01_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Flower_01_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Flower_01_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Flower_02_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Flower_02_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Flower_02_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Flower_02_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Flower_02_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Flower_03_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Flower_03_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Flower_03_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Flower_03_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Flower_03_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Leaf_01_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Leaf_01_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Leaf_01_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Leaf_01_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Leaf_01_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Leaf_01_translucency.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Leaf_02_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Leaf_02_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Leaf_02_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Leaf_02_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Leaf_02_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Leaf_02_translucency.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Leaf_03_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Leaf_03_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Leaf_03_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Leaf_03_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Leaf_03_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Leaf_03_translucency.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Leaf_04_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Leaf_04_gloss.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Leaf_04_normal.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Leaf_04_opacity.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Leaf_04_specular.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Stem_01_albedo.jpg"
+?? "Test Scene/maps/MT_PM_V41_Viola_sororia_Stem_01_normal.jpg"
+?? "Test Scene/maps/MT_Plant_Rose_Branches_albedo.jpg"
+?? "Test Scene/maps/MT_Plant_Rose_Branches_gloss.jpg"
+?? "Test Scene/maps/MT_Plant_Rose_Branches_normal.jpg"
+?? "Test Scene/maps/MT_Plant_Rose_Branches_specular.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Calyx_01_albedo.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Calyx_01_gloss.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Calyx_01_normal.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Calyx_01_opacity.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Calyx_01_specular.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Calyx_01_translucency.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Leaf_01_albedo_01.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Leaf_01_albedo_02.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Leaf_01_gloss.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Leaf_01_normal.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Leaf_01_opacity.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Leaf_01_specular.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Leaf_01_translucency_01.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Leaf_01_translucency_02.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Leaf_02_albedo_01.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Leaf_02_albedo_02.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Leaf_02_albedo_03.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Leaf_02_gloss.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Leaf_02_normal.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Leaf_02_opacity.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Leaf_02_specular.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Leaf_02_translucency_01.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Leaf_02_translucency_02.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Leaf_02_translucency_03.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Leaf_03_albedo_01.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Leaf_03_albedo_02.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Leaf_03_albedo_03.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Leaf_03_gloss.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Leaf_03_normal.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Leaf_03_opacity.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Leaf_03_specular.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Leaf_03_translucency_01.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Leaf_03_translucency_02.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Leaf_03_translucency_03.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Petal_03_albedo.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Petal_03_albedo_01.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Petal_03_gloss.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Petal_03_normal.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Petal_03_opacity.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Petal_03_specular.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Petal_03_translucency.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Petal_03_translucency_01.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Stamen_01_albedo.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Stamen_01_gloss.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Stamen_01_normal.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Stamen_01_opacity.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Stamen_01_specular.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Stamen_01_translucency.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Stamen_02_albedo.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Stamen_02_gloss.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Stamen_02_normal.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Stamen_02_opacity.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Stamen_02_specular.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Stamen_02_translucency.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Trunk_albedo.jpg"
+?? "Test Scene/maps/MT_Rosa_rugosa_Trunk_normal.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Leaf_01_albedo.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Leaf_01_albedo_01.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Leaf_01_albedo_03.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Leaf_01_gloss.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Leaf_01_normal.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Leaf_01_opacity.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Leaf_01_specular.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Leaf_01_translucency.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Leaf_01_translucency_03.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Leaf_02_albedo.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Leaf_02_albedo_01.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Leaf_02_albedo_03.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Leaf_02_gloss.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Leaf_02_normal.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Leaf_02_opacity.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Leaf_02_specular.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Leaf_02_translucency.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Leaf_02_translucency_03.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Leaf_03_albedo_01.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Leaf_03_gloss.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Leaf_03_normal.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Leaf_03_opacity.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Leaf_03_specular.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Leaf_03_translucency_01.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Leaf_04_albedo_01.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Leaf_04_gloss.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Leaf_04_normal.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Leaf_04_opacity.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Leaf_04_specular.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Leaf_04_translucency_01.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Limb_albedo.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Petal_albedo.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Petal_albedo_01.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Petal_gloss.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Petal_normal.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Petal_opacity.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Petal_specualr.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Petal_translucency.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Petal_translucency_01.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Stamen_albedo.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Stamen_albedo_01.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Stamen_gloss.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Stamen_opacity.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Stamen_specular.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Stamen_translucency.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Trunk_albedo.jpg"
+?? "Test Scene/maps/MT_Sambucus_nigra_Trunk_normal.jpg"
+?? "Test Scene/maps/MT_dirt_008.jpg"
+?? "Test Scene/maps/clover_leaf_01_ALPHA.jpg"
+?? "Test Scene/maps/clover_leaf_01_DIFF.jpg"
+?? "Test Scene/maps/clover_leaf_01_GLOSS.jpg"
+?? "Test Scene/maps/clover_leaf_01_TRANS.jpg"
+?? "Test Scene/maps/flower_lavande_01_normal.jpg"
+?? "Test Scene/maps/for_substance_sampler_2k_perfect(opacity).jpg"
+?? "Test Scene/maps/lavande_flower_texture10.jpg"
+?? "Test Scene/maps/meadow_forest.jpg"
+?? docs/Codebase_Research_2026-10-01/COVERAGE.md
+?? docs/Codebase_Research_2026-10-01/REPORT.md
+?? docs/Codebase_Research_2026-10-01/audit_documents.py
+?? docs/Codebase_Research_2026-10-01/audit_evidence.py
+?? docs/Codebase_Research_2026-10-01/claims.csv
+?? docs/Codebase_Research_2026-10-01/decisions.csv
+?? docs/Codebase_Research_2026-10-01/evidence/artifact-manifest.json
+?? docs/Codebase_Research_2026-10-01/evidence/artist-process-after.json
+?? docs/Codebase_Research_2026-10-01/evidence/build-2026-AminScatter.json
+?? docs/Codebase_Research_2026-10-01/evidence/build-2026-AminScatter.txt
+?? docs/Codebase_Research_2026-10-01/evidence/build-2026-CyrusSurfaceAnalyzer.json
+?? docs/Codebase_Research_2026-10-01/evidence/build-2026-CyrusSurfaceAnalyzer.txt
+?? docs/Codebase_Research_2026-10-01/evidence/build-2026-identity.json
+?? docs/Codebase_Research_2026-10-01/evidence/build-2027-AminScatter.json
+?? docs/Codebase_Research_2026-10-01/evidence/build-2027-AminScatter.txt
+?? docs/Codebase_Research_2026-10-01/evidence/build-2027-CyrusSurfaceAnalyzer.json
+?? docs/Codebase_Research_2026-10-01/evidence/build-2027-CyrusSurfaceAnalyzer.txt
+?? docs/Codebase_Research_2026-10-01/evidence/build-2027-identity.json
+?? docs/Codebase_Research_2026-10-01/evidence/compute_performance_smoke-listener.txt
+?? docs/Codebase_Research_2026-10-01/evidence/compute_performance_smoke-result.txt
+?? docs/Codebase_Research_2026-10-01/evidence/compute_performance_smoke-run.json
+?? docs/Codebase_Research_2026-10-01/evidence/compute_performance_smoke-session.txt
+?? docs/Codebase_Research_2026-10-01/evidence/compute_performance_smoke-stderr.txt
+?? docs/Codebase_Research_2026-10-01/evidence/compute_performance_smoke-stdout.txt
+?? docs/Codebase_Research_2026-10-01/evidence/configure-2026-AminScatter.json
+?? docs/Codebase_Research_2026-10-01/evidence/configure-2026-AminScatter.txt
+?? docs/Codebase_Research_2026-10-01/evidence/configure-2026-CyrusSurfaceAnalyzer.json
+?? docs/Codebase_Research_2026-10-01/evidence/configure-2026-CyrusSurfaceAnalyzer.txt
+?? docs/Codebase_Research_2026-10-01/evidence/configure-2027-AminScatter.json
+?? docs/Codebase_Research_2026-10-01/evidence/configure-2027-AminScatter.txt
+?? docs/Codebase_Research_2026-10-01/evidence/configure-2027-CyrusSurfaceAnalyzer.json
+?? docs/Codebase_Research_2026-10-01/evidence/configure-2027-CyrusSurfaceAnalyzer.txt
+?? docs/Codebase_Research_2026-10-01/evidence/ctest-2026-AminScatter.json
+?? docs/Codebase_Research_2026-10-01/evidence/ctest-2026-AminScatter.txt
+?? docs/Codebase_Research_2026-10-01/evidence/ctest-2026-CyrusSurfaceAnalyzer.json
+?? docs/Codebase_Research_2026-10-01/evidence/ctest-2026-CyrusSurfaceAnalyzer.txt
+?? docs/Codebase_Research_2026-10-01/evidence/ctest-2027-AminScatter.json
+?? docs/Codebase_Research_2026-10-01/evidence/ctest-2027-AminScatter.txt
+?? docs/Codebase_Research_2026-10-01/evidence/ctest-2027-CyrusSurfaceAnalyzer.json
+?? docs/Codebase_Research_2026-10-01/evidence/ctest-2027-CyrusSurfaceAnalyzer.txt
+?? docs/Codebase_Research_2026-10-01/evidence/document-audit.json
+?? docs/Codebase_Research_2026-10-01/evidence/generator-parity.json
+?? docs/Codebase_Research_2026-10-01/evidence/generator.json
+?? docs/Codebase_Research_2026-10-01/evidence/generator.txt
+?? docs/Codebase_Research_2026-10-01/evidence/git-head.json
+?? docs/Codebase_Research_2026-10-01/evidence/git-head.txt
+?? docs/Codebase_Research_2026-10-01/evidence/git-status-after.json
+?? docs/Codebase_Research_2026-10-01/evidence/git-status-after.txt
+?? docs/Codebase_Research_2026-10-01/evidence/git-status-before.json
+?? docs/Codebase_Research_2026-10-01/evidence/git-status-before.txt
+?? docs/Codebase_Research_2026-10-01/evidence/historical-audit.json
+?? docs/Codebase_Research_2026-10-01/evidence/loaded-modules.json
+?? docs/Codebase_Research_2026-10-01/evidence/machine.json
+?? docs/Codebase_Research_2026-10-01/evidence/max2027_smoke-listener.txt
+?? docs/Codebase_Research_2026-10-01/evidence/max2027_smoke-result.txt
+?? docs/Codebase_Research_2026-10-01/evidence/max2027_smoke-run.json
+?? docs/Codebase_Research_2026-10-01/evidence/max2027_smoke-session.txt
+?? docs/Codebase_Research_2026-10-01/evidence/max2027_smoke-stderr.txt
+?? docs/Codebase_Research_2026-10-01/evidence/max2027_smoke-stdout.txt
+?? docs/Codebase_Research_2026-10-01/evidence/nvidia-smi.txt
+?? docs/Codebase_Research_2026-10-01/evidence/package-identity.json
+?? docs/Codebase_Research_2026-10-01/evidence/preservation.json
+?? docs/Codebase_Research_2026-10-01/evidence/projection-compile.json
+?? docs/Codebase_Research_2026-10-01/evidence/projection-compile.txt
+?? docs/Codebase_Research_2026-10-01/evidence/projection-raw.json
+?? docs/Codebase_Research_2026-10-01/evidence/projection-raw.txt
+?? docs/Codebase_Research_2026-10-01/evidence/projection-summary.json
+?? docs/Codebase_Research_2026-10-01/evidence/read-coverage.csv
+?? docs/Codebase_Research_2026-10-01/evidence/read-coverage.jsonl
+?? docs/Codebase_Research_2026-10-01/evidence/recomputed-Viewport_Performance_Implementation_2026-10-01-matrix.json
+?? docs/Codebase_Research_2026-10-01/evidence/recomputed-Viewport_Performance_Round2_2026-10-01-candidate-matrix.json
+?? docs/Codebase_Research_2026-10-01/evidence/recomputed-Viewport_Performance_Round2_2026-10-01-matrix.json
+?? docs/Codebase_Research_2026-10-01/evidence/sdk-probe-2026.json
+?? docs/Codebase_Research_2026-10-01/evidence/sdk-probe-2026.txt
+?? docs/Codebase_Research_2026-10-01/evidence/sdk-probe-2027.json
+?? docs/Codebase_Research_2026-10-01/evidence/sdk-probe-2027.txt
+?? docs/Codebase_Research_2026-10-01/evidence/sdk-probes.json
+?? docs/Codebase_Research_2026-10-01/evidence/source-fingerprint.json
+?? docs/Codebase_Research_2026-10-01/evidence/threads-0-0.json
+?? docs/Codebase_Research_2026-10-01/evidence/threads-0-0.txt
+?? docs/Codebase_Research_2026-10-01/evidence/threads-0-1.json
+?? docs/Codebase_Research_2026-10-01/evidence/threads-0-1.txt
+?? docs/Codebase_Research_2026-10-01/evidence/threads-1-0.json
+?? docs/Codebase_Research_2026-10-01/evidence/threads-1-0.txt
+?? docs/Codebase_Research_2026-10-01/evidence/threads-1-1.json
+?? docs/Codebase_Research_2026-10-01/evidence/threads-1-1.txt
+?? docs/Codebase_Research_2026-10-01/evidence/threads-2-0.json
+?? docs/Codebase_Research_2026-10-01/evidence/threads-2-0.txt
+?? docs/Codebase_Research_2026-10-01/evidence/threads-2-1.json
+?? docs/Codebase_Research_2026-10-01/evidence/threads-2-1.txt
+?? docs/Codebase_Research_2026-10-01/evidence/threads-summary.json
+?? docs/Codebase_Research_2026-10-01/evidence/verified-max2027_smoke-listener.txt
+?? docs/Codebase_Research_2026-10-01/evidence/verified-max2027_smoke-result.txt
+?? docs/Codebase_Research_2026-10-01/evidence/verified-max2027_smoke-run.json
+?? docs/Codebase_Research_2026-10-01/evidence/verified-max2027_smoke-session.txt
+?? docs/Codebase_Research_2026-10-01/evidence/verified-max2027_smoke-stderr.txt
+?? docs/Codebase_Research_2026-10-01/evidence/verified-max2027_smoke-stdout.txt
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v2-max2027_smoke-listener.txt
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v2-max2027_smoke-result.txt
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v2-max2027_smoke-run.json
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v2-max2027_smoke-session.txt
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v2-max2027_smoke-stderr.txt
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v2-max2027_smoke-stdout.txt
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v3-max2027_smoke-listener.txt
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v3-max2027_smoke-modules.txt
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v3-max2027_smoke-result.txt
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v3-max2027_smoke-run.json
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v3-max2027_smoke-session.txt
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v3-max2027_smoke-stderr.txt
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v3-max2027_smoke-stdout.txt
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v4-compute_performance_smoke-identity.json
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v4-compute_performance_smoke-listener.txt
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v4-compute_performance_smoke-modules.txt
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v4-compute_performance_smoke-result.txt
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v4-compute_performance_smoke-run.json
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v4-compute_performance_smoke-session.txt
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v4-compute_performance_smoke-stderr.txt
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v4-compute_performance_smoke-stdout.txt
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v4-max2027_smoke-identity.json
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v4-max2027_smoke-listener.txt
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v4-max2027_smoke-modules.txt
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v4-max2027_smoke-result.txt
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v4-max2027_smoke-run.json
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v4-max2027_smoke-session.txt
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v4-max2027_smoke-stderr.txt
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v4-max2027_smoke-stdout.txt
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v4-viewport_performance_smoke-identity.json
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v4-viewport_performance_smoke-listener.txt
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v4-viewport_performance_smoke-modules.txt
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v4-viewport_performance_smoke-result.txt
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v4-viewport_performance_smoke-run.json
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v4-viewport_performance_smoke-session.txt
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v4-viewport_performance_smoke-stderr.txt
+?? docs/Codebase_Research_2026-10-01/evidence/verified-v4-viewport_performance_smoke-stdout.txt
+?? docs/Codebase_Research_2026-10-01/evidence/viewport_performance_smoke-listener.txt
+?? docs/Codebase_Research_2026-10-01/evidence/viewport_performance_smoke-result.txt
+?? docs/Codebase_Research_2026-10-01/evidence/viewport_performance_smoke-run.json
+?? docs/Codebase_Research_2026-10-01/evidence/viewport_performance_smoke-session.txt
+?? docs/Codebase_Research_2026-10-01/evidence/viewport_performance_smoke-stderr.txt
+?? docs/Codebase_Research_2026-10-01/evidence/viewport_performance_smoke-stdout.txt
+?? docs/Codebase_Research_2026-10-01/evidence/working-tree-diff.json
+?? docs/Codebase_Research_2026-10-01/evidence/working-tree-diff.txt
+?? docs/Codebase_Research_2026-10-01/experiments.py
+?? docs/Codebase_Research_2026-10-01/make_ledgers.py
+?? docs/Codebase_Research_2026-10-01/projection_probe.cpp
+?? docs/Codebase_Research_2026-10-01/research_tools.py
+?? docs/Codebase_Research_2026-10-01/sdk_probe.cpp
+?? docs/Codebase_Research_2026-10-01/validate.py
+?? docs/Performance_Artist_Retest_2026-10-01.md
+?? docs/Performance_Evidence_2026-10-01.json
+?? docs/Performance_Implementation_2026-10-01.md
+?? docs/Performance_Upgrade_Test_2026-10-01.md
+?? docs/Viewport_Performance_2026-10-01/evidence/analyzer-flush/cases.json
+?? docs/Viewport_Performance_2026-10-01/evidence/analyzer-flush/frames.csv
+?? docs/Viewport_Performance_2026-10-01/evidence/analyzer-flush/summary.json
+?? docs/Viewport_Performance_2026-10-01/evidence/cleanup-complete.txt
+?? docs/Viewport_Performance_2026-10-01/evidence/display-matrix/cases.json
+?? docs/Viewport_Performance_2026-10-01/evidence/display-matrix/frames.csv
+?? docs/Viewport_Performance_2026-10-01/evidence/display-matrix/summary.json
+?? docs/Viewport_Performance_2026-10-01/evidence/frame-phases.csv
+?? docs/Viewport_Performance_2026-10-01/evidence/images/initial-viewport.png
+?? docs/Viewport_Performance_2026-10-01/evidence/images/native-world-batched.png
+?? docs/Viewport_Performance_2026-10-01/evidence/images/retained-mesh.png
+?? docs/Viewport_Performance_2026-10-01/evidence/index.json
+?? docs/Viewport_Performance_2026-10-01/evidence/layer-profile/cases.json
+?? docs/Viewport_Performance_2026-10-01/evidence/layer-profile/frames.csv
+?? docs/Viewport_Performance_2026-10-01/evidence/layer-profile/stages.csv
+?? docs/Viewport_Performance_2026-10-01/evidence/layer-profile/summary.json
+?? docs/Viewport_Performance_2026-10-01/evidence/layout-success.txt
+?? docs/Viewport_Performance_2026-10-01/evidence/layout/cases.json
+?? docs/Viewport_Performance_2026-10-01/evidence/layout/frames.csv
+?? docs/Viewport_Performance_2026-10-01/evidence/layout/summary.json
+?? docs/Viewport_Performance_2026-10-01/evidence/loaded-modules.json
+?? docs/Viewport_Performance_2026-10-01/evidence/matrix/cases.json
+?? docs/Viewport_Performance_2026-10-01/evidence/matrix/frames.csv
+?? docs/Viewport_Performance_2026-10-01/evidence/matrix/summary.json
+?? docs/Viewport_Performance_2026-10-01/evidence/mouse-drag-counts.json
+?? docs/Viewport_Performance_2026-10-01/evidence/mouse-drags.csv
+?? docs/Viewport_Performance_2026-10-01/evidence/pre-reload-state.json
+?? docs/Viewport_Performance_2026-10-01/evidence/resources/20261001-112752-a69dcd56/corona.csv
+?? docs/Viewport_Performance_2026-10-01/evidence/resources/20261001-112752-a69dcd56/events.csv
+?? docs/Viewport_Performance_2026-10-01/evidence/resources/20261001-112752-a69dcd56/host.json
+?? docs/Viewport_Performance_2026-10-01/evidence/resources/20261001-112752-a69dcd56/manifest.json
+?? docs/Viewport_Performance_2026-10-01/evidence/resources/20261001-112752-a69dcd56/observations.csv
+?? docs/Viewport_Performance_2026-10-01/evidence/resources/20261001-112752-a69dcd56/operations.csv
+?? docs/Viewport_Performance_2026-10-01/evidence/resources/20261001-112752-a69dcd56/resources.csv
+?? docs/Viewport_Performance_2026-10-01/evidence/resources/20261001-112752-a69dcd56/sampler-summary.json
+?? docs/Viewport_Performance_2026-10-01/evidence/resources/20261001-112752-a69dcd56/summary.json
+?? docs/Viewport_Performance_2026-10-01/evidence/restored-callbacks.txt
+?? docs/Viewport_Performance_2026-10-01/evidence/restored-scene.json
+?? docs/Viewport_Performance_2026-10-01/evidence/retained-mesh-build.json
+?? docs/Viewport_Performance_2026-10-01/evidence/retained-mesh-v2/cases.json
+?? docs/Viewport_Performance_2026-10-01/evidence/retained-mesh-v2/frames.csv
+?? docs/Viewport_Performance_2026-10-01/evidence/retained-mesh-v2/summary.json
+?? docs/Viewport_Performance_2026-10-01/evidence/retained-success-v2.txt
+?? docs/Viewport_Performance_2026-10-01/evidence/scene-details.txt
+?? docs/Viewport_Performance_2026-10-01/evidence/scene-settled.txt
+?? docs/Viewport_Performance_2026-10-01/evidence/scene.json
+?? docs/Viewport_Performance_2026-10-01/evidence/settings-828.json
+?? docs/Viewport_Performance_2026-10-01/evidence/settings-restored-828.json
+?? docs/Viewport_Performance_2026-10-01/evidence/settings-settled-828.json
+?? docs/Viewport_Performance_2026-10-01/evidence/source-assets.txt
+?? docs/Viewport_Performance_2026-10-01/evidence/source-snapshot.json
+?? docs/Viewport_Performance_2026-10-01/evidence/stationary/cases.json
+?? docs/Viewport_Performance_2026-10-01/evidence/stationary/frames.csv
+?? docs/Viewport_Performance_2026-10-01/evidence/stationary/summary.json
+?? docs/Viewport_Performance_2026-10-01/evidence/validation.json
+?? docs/Viewport_Performance_2026-10-01/evidence/viewport-conditions.json
+?? docs/Viewport_Performance_2026-10-01/recipes/01-load.ms
+?? docs/Viewport_Performance_2026-10-01/recipes/02-inspect.ms
+?? docs/Viewport_Performance_2026-10-01/recipes/03-api.ms
+?? docs/Viewport_Performance_2026-10-01/recipes/04-discover.ms
+?? docs/Viewport_Performance_2026-10-01/recipes/05-pilot.ms
+?? docs/Viewport_Performance_2026-10-01/recipes/06-pilot-retry.ms
+?? docs/Viewport_Performance_2026-10-01/recipes/07-pilot-retry.ms
+?? docs/Viewport_Performance_2026-10-01/recipes/08-measure.ms
+?? docs/Viewport_Performance_2026-10-01/recipes/09-layer-profile.ms
+?? docs/Viewport_Performance_2026-10-01/recipes/10-display-matrix.ms
+?? docs/Viewport_Performance_2026-10-01/recipes/11-retained-mesh.ms
+?? docs/Viewport_Performance_2026-10-01/recipes/12-retained-retry.ms
+?? docs/Viewport_Performance_2026-10-01/recipes/13-layout-and-assets.ms
+?? docs/Viewport_Performance_2026-10-01/recipes/14-retained-controlled.ms
+?? docs/Viewport_Performance_2026-10-01/recipes/15-frame-phases.ms
+?? docs/Viewport_Performance_2026-10-01/recipes/16-gesture-start.ms
+?? docs/Viewport_Performance_2026-10-01/recipes/17-gesture-off.ms
+?? docs/Viewport_Performance_2026-10-01/recipes/18-gesture-finish.ms
+?? docs/Viewport_Performance_2026-10-01/recipes/19-analyzer-no-flush.ms
+?? docs/Viewport_Performance_2026-10-01/recipes/20-restore.ms
+?? docs/Viewport_Performance_2026-10-01/recipes/CyrusViewportBenchmark.ms
+?? docs/Viewport_Performance_2026-10-01/recipes/README.md
+?? docs/Viewport_Performance_2026-10-01/recipes/bootstrap.ms
+?? docs/Viewport_Performance_2026-10-01/recipes/summarize_viewport.py
+?? docs/Viewport_Performance_Implementation_2026-10-01.md
+?? docs/Viewport_Performance_Implementation_2026-10-01/evidence/cleanup-complete.txt
+?? docs/Viewport_Performance_Implementation_2026-10-01/evidence/compute-tests.txt
+?? docs/Viewport_Performance_Implementation_2026-10-01/evidence/conditions.json
+?? docs/Viewport_Performance_Implementation_2026-10-01/evidence/final-display.json
+?? docs/Viewport_Performance_Implementation_2026-10-01/evidence/gesture-counts.json
+?? docs/Viewport_Performance_Implementation_2026-10-01/evidence/gesture-summary.json
+?? docs/Viewport_Performance_Implementation_2026-10-01/evidence/gestures.csv
+?? docs/Viewport_Performance_Implementation_2026-10-01/evidence/images/shape1-color1-batch.png
+?? docs/Viewport_Performance_Implementation_2026-10-01/evidence/images/shape1-color1-legacy.png
+?? docs/Viewport_Performance_Implementation_2026-10-01/evidence/images/shape1-color2-batch.png
+?? docs/Viewport_Performance_Implementation_2026-10-01/evidence/images/shape1-color2-legacy.png
+?? docs/Viewport_Performance_Implementation_2026-10-01/evidence/images/shape2-color1-batch.png
+?? docs/Viewport_Performance_Implementation_2026-10-01/evidence/images/shape2-color1-legacy.png
+?? docs/Viewport_Performance_Implementation_2026-10-01/evidence/images/shape2-color2-batch.png
+?? docs/Viewport_Performance_Implementation_2026-10-01/evidence/images/shape2-color2-legacy.png
+?? docs/Viewport_Performance_Implementation_2026-10-01/evidence/images/shape3-color1-batch.png
+?? docs/Viewport_Performance_Implementation_2026-10-01/evidence/images/shape3-color1-legacy.png
+?? docs/Viewport_Performance_Implementation_2026-10-01/evidence/images/shape3-color2-batch.png
+?? docs/Viewport_Performance_Implementation_2026-10-01/evidence/images/shape3-color2-legacy.png
+?? docs/Viewport_Performance_Implementation_2026-10-01/evidence/index.json
+?? docs/Viewport_Performance_Implementation_2026-10-01/evidence/loaded-modules.json
+?? docs/Viewport_Performance_Implementation_2026-10-01/evidence/matrix/cases.json
+?? docs/Viewport_Performance_Implementation_2026-10-01/evidence/matrix/frames.csv
+?? docs/Viewport_Performance_Implementation_2026-10-01/evidence/matrix/summary.json
+?? docs/Viewport_Performance_Implementation_2026-10-01/evidence/max-smoke.txt
+?? docs/Viewport_Performance_Implementation_2026-10-01/evidence/package-verification.json
+?? docs/Viewport_Performance_Implementation_2026-10-01/evidence/preservation.json
+?? docs/Viewport_Performance_Implementation_2026-10-01/evidence/restored-callbacks.txt
+?? docs/Viewport_Performance_Implementation_2026-10-01/evidence/scene-parity.json
+?? docs/Viewport_Performance_Implementation_2026-10-01/evidence/session-final.json
+?? docs/Viewport_Performance_Implementation_2026-10-01/evidence/source-snapshot.json
+?? docs/Viewport_Performance_Implementation_2026-10-01/evidence/viewport-change.diff
+?? docs/Viewport_Performance_Implementation_2026-10-01/evidence/viewport-tests.txt
+?? docs/Viewport_Performance_Implementation_2026-10-01/evidence/visual-comparison.json
+?? docs/Viewport_Performance_Implementation_2026-10-01/recipes/01-benchmark.ms
+?? docs/Viewport_Performance_Implementation_2026-10-01/recipes/02-visual-and-parity.ms
+?? docs/Viewport_Performance_Implementation_2026-10-01/recipes/03-gesture-start.ms
+?? docs/Viewport_Performance_Implementation_2026-10-01/recipes/04-gesture-batch.ms
+?? docs/Viewport_Performance_Implementation_2026-10-01/recipes/05-gesture-end.ms
+?? docs/Viewport_Performance_Implementation_2026-10-01/recipes/06-cleanup.ms
+?? docs/Viewport_Performance_Implementation_2026-10-01/recipes/CyrusViewportBenchmark.ms
+?? docs/Viewport_Performance_Implementation_2026-10-01/recipes/README.md
+?? docs/Viewport_Performance_Implementation_2026-10-01/recipes/desktop-start.ms
+?? docs/Viewport_Performance_Implementation_2026-10-01/recipes/summarize_viewport.py
+?? docs/Viewport_Performance_Implementation_2026-10-01/recipes/viewport_performance_smoke.ms
+?? docs/Viewport_Performance_Investigation_2026-10-01.md
+?? docs/Viewport_Performance_Round2_2026-10-01.md
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/baseline-identity.json
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/before-062.zip
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/candidate-complete.json
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/candidate-matrix/cases.json
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/candidate-matrix/frames.csv
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/candidate-matrix/summary.json
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/change-from-061.diff
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/cleanup-complete.txt
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/desktop-ready.json
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/gesture-counts.json
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/gesture-summary.json
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/gestures.csv
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/image-comparison.json
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/images/candidate_061.png
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/images/candidate_061_retained_hidden.png
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/images/flat_triangles.png
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/images/hardware_buffer.png
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/images/held-061.png
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/images/held-062.png
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/images/mesh_render.png
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/images/retained_exact_mesh_plumbing.png
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/index.json
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/matrix/cases.json
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/matrix/frames.csv
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/matrix/summary.json
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/package-verification.json
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/pilot/cases.json
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/pilot/frames.csv
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/preservation.json
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/probe-stats.json
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/profile/cases.json
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/profile/frames.csv
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/profile/stage-summary.json
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/profile/stages.json
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/restored-callbacks.txt
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/retained-geometry.json
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/retained-pilot/cases.json
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/retained-pilot/frames.csv
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/session-final.json
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/source-snapshot.json
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/tests/compute-test.txt
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/tests/max2027-smoke-test.txt
+?? docs/Viewport_Performance_Round2_2026-10-01/evidence/tests/viewport-test.txt
+?? docs/Viewport_Performance_Round2_2026-10-01/recipes/01-probe-pilot.ms
+?? docs/Viewport_Performance_Round2_2026-10-01/recipes/02-retained-pilot.ms
+?? docs/Viewport_Performance_Round2_2026-10-01/recipes/03-profile-and-matrix.ms
+?? docs/Viewport_Performance_Round2_2026-10-01/recipes/04-candidate-comparison.ms
+?? docs/Viewport_Performance_Round2_2026-10-01/recipes/05-gesture-start.ms
+?? docs/Viewport_Performance_Round2_2026-10-01/recipes/06-gesture-candidate.ms
+?? docs/Viewport_Performance_Round2_2026-10-01/recipes/07-gesture-end.ms
+?? docs/Viewport_Performance_Round2_2026-10-01/recipes/08-cleanup.ms
+?? docs/Viewport_Performance_Round2_2026-10-01/recipes/README.md
+?? docs/Viewport_Performance_Round2_2026-10-01/recipes/analyze-round2.py
+?? docs/Viewport_Performance_Round2_2026-10-01/recipes/archive-evidence.py
+?? docs/Viewport_Performance_Round2_2026-10-01/recipes/baseline-061.ms
+?? docs/Viewport_Performance_Round2_2026-10-01/recipes/build-probe.py
+?? docs/Viewport_Performance_Round2_2026-10-01/recipes/desktop-start.ms
+?? docs/Viewport_Performance_Round2_2026-10-01/recipes/package-062.py
+?? docs/Viewport_Performance_Round2_2026-10-01/recipes/plugins.ini
+?? docs/Viewport_Performance_Round2_2026-10-01/recipes/probe/CMakeLists.txt
+?? docs/Viewport_Performance_Round2_2026-10-01/recipes/probe/probe.cpp
+?? docs/Viewport_Performance_Round2_2026-10-01/recipes/source/AminScatter/scripts/AminScatterObject.ms
+?? docs/Viewport_Performance_Round2_2026-10-01/recipes/source/AminScatter/tools/ui/viewport-performance.cjs
+?? docs/Viewport_Performance_Round2_2026-10-01/recipes/source/CyrusSurfaceAnalyzer/scripts/CyrusSurfaceAnalyzer.ms
+?? docs/Viewport_Performance_Round2_2026-10-01/recipes/source/cmake/CyrusMaxSDK.cmake
+?? docs/Viewport_Performance_Round2_2026-10-01/recipes/source/tools/build_max.py
+?? docs/Viewport_Performance_Round2_2026-10-01/recipes/source/tools/performance/CyrusPerformanceMonitor.ms
+?? docs/Viewport_Performance_Round2_2026-10-01/recipes/source/tools/performance/CyrusViewportBenchmark.ms
+?? docs/Viewport_Performance_Round2_2026-10-01/recipes/source/tools/performance/summarize_viewport.py
+?? docs/Viewport_Performance_Round2_2026-10-01/recipes/source/tools/test_compute_performance.py
+?? docs/Viewport_Performance_Round2_2026-10-01/recipes/source/tools/test_max2027.py
+?? docs/Viewport_Performance_Round2_2026-10-01/recipes/source/tools/test_viewport_performance.py
+?? docs/Viewport_Performance_Round2_2026-10-01/recipes/source/tools/tests/compute_performance_smoke.ms
+?? docs/Viewport_Performance_Round2_2026-10-01/recipes/source/tools/tests/viewport_performance_smoke.ms
+?? output/pdf/CyrusScatter_Viewport_Performance_Guideline_2026-10-01.pdf
+?? tmp/pdfs/viewport-2026-10-01/approved-01.png
+?? tmp/pdfs/viewport-2026-10-01/approved-02.png
+?? tmp/pdfs/viewport-2026-10-01/approved-03.png
+?? tmp/pdfs/viewport-2026-10-01/approved-04.png
+?? tmp/pdfs/viewport-2026-10-01/approved-05.png
+?? tmp/pdfs/viewport-2026-10-01/approved-06.png
+?? tmp/pdfs/viewport-2026-10-01/approved-07.png
+?? tmp/pdfs/viewport-2026-10-01/approved-08.png
+?? tmp/pdfs/viewport-2026-10-01/approved-09.png
+?? tmp/pdfs/viewport-2026-10-01/approved-10.png
+?? tmp/pdfs/viewport-2026-10-01/approved-11.png
+?? tmp/pdfs/viewport-2026-10-01/approved-12.png
+?? tmp/pdfs/viewport-2026-10-01/approved-13.png
+?? tmp/pdfs/viewport-2026-10-01/contact-1.png
+?? tmp/pdfs/viewport-2026-10-01/contact-2.png
+?? tmp/pdfs/viewport-2026-10-01/contact-3.png
+?? tmp/pdfs/viewport-2026-10-01/contact-4.png
+?? tmp/pdfs/viewport-2026-10-01/final-01.png
+?? tmp/pdfs/viewport-2026-10-01/final-02.png
+?? tmp/pdfs/viewport-2026-10-01/final-03.png
+?? tmp/pdfs/viewport-2026-10-01/final-04.png
+?? tmp/pdfs/viewport-2026-10-01/final-05.png
+?? tmp/pdfs/viewport-2026-10-01/final-06.png
+?? tmp/pdfs/viewport-2026-10-01/final-07.png
+?? tmp/pdfs/viewport-2026-10-01/final-08.png
+?? tmp/pdfs/viewport-2026-10-01/final-09.png
+?? tmp/pdfs/viewport-2026-10-01/final-10.png
+?? tmp/pdfs/viewport-2026-10-01/final-11.png
+?? tmp/pdfs/viewport-2026-10-01/final-12.png
+?? tmp/pdfs/viewport-2026-10-01/final-13.png
+?? tmp/pdfs/viewport-2026-10-01/final-contact-1.png
+?? tmp/pdfs/viewport-2026-10-01/final-contact-2.png
+?? tmp/pdfs/viewport-2026-10-01/final-contact-3.png
+?? tmp/pdfs/viewport-2026-10-01/final-contact-4.png
+?? tmp/pdfs/viewport-2026-10-01/page-01.png
+?? tmp/pdfs/viewport-2026-10-01/page-02.png
+?? tmp/pdfs/viewport-2026-10-01/page-03.png
+?? tmp/pdfs/viewport-2026-10-01/page-04.png
+?? tmp/pdfs/viewport-2026-10-01/page-05.png
+?? tmp/pdfs/viewport-2026-10-01/page-06.png
+?? tmp/pdfs/viewport-2026-10-01/page-07.png
+?? tmp/pdfs/viewport-2026-10-01/page-08.png
+?? tmp/pdfs/viewport-2026-10-01/page-09.png
+?? tmp/pdfs/viewport-2026-10-01/page-10.png
+?? tmp/pdfs/viewport-2026-10-01/page-11.png
+?? tmp/pdfs/viewport-2026-10-01/page-12.png
+?? tmp/pdfs/viewport-2026-10-01/page-13.png
+?? tmp/pdfs/viewport-2026-10-01/page-14.png
+?? tmp/pdfs/viewport-2026-10-01/page-15.png
+?? tmp/pdfs/viewport-2026-10-01/page-16.png
+?? tmp/pdfs/viewport-2026-10-01/reviewed-01.png
+?? tmp/pdfs/viewport-2026-10-01/reviewed-02.png
+?? tmp/pdfs/viewport-2026-10-01/reviewed-03.png
+?? tmp/pdfs/viewport-2026-10-01/reviewed-04.png
+?? tmp/pdfs/viewport-2026-10-01/reviewed-05.png
+?? tmp/pdfs/viewport-2026-10-01/reviewed-06.png
+?? tmp/pdfs/viewport-2026-10-01/reviewed-07.png
+?? tmp/pdfs/viewport-2026-10-01/reviewed-08.png
+?? tmp/pdfs/viewport-2026-10-01/reviewed-09.png
+?? tmp/pdfs/viewport-2026-10-01/reviewed-10.png
+?? tmp/pdfs/viewport-2026-10-01/reviewed-11.png
+?? tmp/pdfs/viewport-2026-10-01/reviewed-12.png
+?? tmp/pdfs/viewport-2026-10-01/reviewed-13.png
+?? tmp/pdfs/viewport-2026-10-01/reviewed-contact-1.png
+?? tmp/pdfs/viewport-2026-10-01/reviewed-contact-2.png
+?? tmp/pdfs/viewport-2026-10-01/reviewed-contact-3.png
+?? tmp/pdfs/viewport-2026-10-01/reviewed-contact-4.png
+?? tools/performance/CyrusViewportBenchmark.ms
+?? tools/performance/benchmark_compute.py
+?? tools/performance/benchmark_scene.py
+?? tools/performance/package_reference.py
+?? tools/performance/summarize_viewport.py
+?? tools/test_compute_performance.py
+?? tools/test_viewport_performance.py
+?? tools/tests/compute_performance_smoke.ms
+?? tools/tests/scene_compute_benchmark.ms
+?? tools/tests/viewport_performance_smoke.ms

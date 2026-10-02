@@ -1,0 +1,13 @@
+{
+  "started_utc": "2026-10-01T17:52:05.706128+00:00",
+  "finished_utc": "2026-10-01T17:52:05.755047+00:00",
+  "cwd": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+  "argv": [
+    "git",
+    "log",
+    "-1",
+    "--format=%H%n%cI%n%s"
+  ],
+  "returncode": 0,
+  "output": "git-head.txt"
+}

@@ -1,0 +1,1602 @@
+diff --git a/AminScatter/CMakeLists.txt b/AminScatter/CMakeLists.txt
+index e91e178..38e7814 100644
+--- a/AminScatter/CMakeLists.txt
++++ b/AminScatter/CMakeLists.txt
+@@ -4,13 +4,27 @@ option(AMIN_BUILD_MAX "Build the 3ds Max extension" ON)
+ if(AMIN_BUILD_MAX)
+   include("${CMAKE_CURRENT_LIST_DIR}/../cmake/CyrusMaxSDK.cmake")
+ endif()
+-add_library(amin_scatter STATIC src/scatter.cpp)
++find_package(Threads REQUIRED)
++add_library(amin_scatter STATIC src/scatter.cpp src/execution.cpp)
++target_link_libraries(amin_scatter PUBLIC Threads::Threads)
+ target_include_directories(amin_scatter PUBLIC include)
+ target_compile_features(amin_scatter PUBLIC cxx_std_17)
+ if(MSVC)
+   target_compile_options(amin_scatter PRIVATE /W4 /WX /permissive-)
+ endif()
+ enable_testing()
++add_executable(threading_tests tests/threading_tests.cpp)
++target_link_libraries(threading_tests PRIVATE amin_scatter)
++add_test(NAME scatter_threading COMMAND threading_tests)
++add_executable(prepared_band_tests tests/prepared_band_tests.cpp)
++target_link_libraries(prepared_band_tests PRIVATE amin_scatter)
++add_test(NAME scatter_prepared_bands COMMAND prepared_band_tests)
++option(AMIN_BUILD_BENCHMARKS "Build the controlled CPU benchmark" OFF)
++if(AMIN_BUILD_BENCHMARKS)
++  add_executable(scatter_benchmark tests/compute_benchmark.cpp)
++  target_compile_definitions(scatter_benchmark PRIVATE CYRUS_BENCH_EXECUTION=1)
++  target_link_libraries(scatter_benchmark PRIVATE amin_scatter)
++endif()
+ add_executable(scatter_tests tests/scatter_tests.cpp)
+ target_link_libraries(scatter_tests PRIVATE amin_scatter)
+ add_test(NAME scatter_core COMMAND scatter_tests)
+@@ -43,4 +57,4 @@ if(AMIN_BUILD_MAX)
+   cyrus_max_target(CyrusScatterEdit)
+   set_target_properties(CyrusScatterEdit PROPERTIES SUFFIX ".dlm")
+ endif()
+-
++
+diff --git a/AminScatter/scripts/AminScatterObject.ms b/AminScatter/scripts/AminScatterObject.ms
+index 0d56754..83b9abe 100644
+--- a/AminScatter/scripts/AminScatterObject.ms
++++ b/AminScatter/scripts/AminScatterObject.ms
+@@ -1,6 +1,7 @@
+ global CyrusPerfTraceBegin,CyrusPerfTraceEnd,CyrusPerfTraceInput
+ global CyrusUISize,CyrusUIBuildView
+ fn CyrusUISize n depth view:CyrusUIBuildView = (local w=if view==undefined then 162 else amax 140 (view.width-16-depth*16);floor(n*w/162.0+0.5))
++global cyrusFilterSourceRows,cyrusApplySourceTransforms
+ global CyrusInteractionHeld,CyrusWasDragging=false,CyrusReleaseTimer,CyrusReleaseTick
+ fn CyrusInteractionHeld = (try((dotNetClass "System.Windows.Forms.Control").MouseButtons != (dotNetClass "System.Windows.Forms.MouseButtons").None)catch(false))
+ global CyrusFallPack,CyrusFallUnpack,CyrusOpenFalloffGraph
+@@ -72,7 +73,7 @@ fn CyrusOpenFalloffGraph target areaNode density = (
+     CyrusFalloffGraph=editor
+     createDialog editor style:#(#style_titlebar,#style_sysmenu,#style_minimizebox) pos:[200,160]
+     editor
+-)
++)
+ 
+ /* Scene object UI for the native AminScatter C++ engine. */
+ global AminScatterObject
+@@ -457,7 +458,7 @@ fn CyrusMake_areaUI target view = (
+         on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;redrawViews())
+         on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;redrawViews())
+         on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;redrawViews())
+-        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
++        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
+ 
+         local loadingFall=false
+         dropdownlist fallTarget "Edge falloff target" items:#("Analyzer Boundary","Selected Area line") selection:1 pos:[(CyrusUISize 8 1),704] width:(CyrusUISize 146 1)
+@@ -1298,7 +1299,7 @@ fn CyrusMake_areaUI_1 target view = (
+         on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;redrawViews())
+         on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;redrawViews())
+         on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;redrawViews())
+-        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
++        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
+ 
+         local loadingFall=false
+         dropdownlist fallTarget "Edge falloff target" items:#("Analyzer Boundary","Selected Area line") selection:1 pos:[(CyrusUISize 8 1),704] width:(CyrusUISize 146 1)
+@@ -2139,7 +2140,7 @@ fn CyrusMake_areaUI_2 target view = (
+         on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;redrawViews())
+         on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;redrawViews())
+         on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;redrawViews())
+-        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
++        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
+ 
+         local loadingFall=false
+         dropdownlist fallTarget "Edge falloff target" items:#("Analyzer Boundary","Selected Area line") selection:1 pos:[(CyrusUISize 8 1),704] width:(CyrusUISize 146 1)
+@@ -2980,7 +2981,7 @@ fn CyrusMake_areaUI_3 target view = (
+         on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;redrawViews())
+         on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;redrawViews())
+         on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;redrawViews())
+-        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
++        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
+ 
+         local loadingFall=false
+         dropdownlist fallTarget "Edge falloff target" items:#("Analyzer Boundary","Selected Area line") selection:1 pos:[(CyrusUISize 8 1),704] width:(CyrusUISize 146 1)
+@@ -3821,7 +3822,7 @@ fn CyrusMake_areaUI_4 target view = (
+         on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;redrawViews())
+         on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;redrawViews())
+         on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;redrawViews())
+-        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
++        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
+ 
+         local loadingFall=false
+         dropdownlist fallTarget "Edge falloff target" items:#("Analyzer Boundary","Selected Area line") selection:1 pos:[(CyrusUISize 8 1),704] width:(CyrusUISize 146 1)
+@@ -4662,7 +4663,7 @@ fn CyrusMake_areaUI_5 target view = (
+         on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;redrawViews())
+         on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;redrawViews())
+         on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;redrawViews())
+-        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
++        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
+ 
+         local loadingFall=false
+         dropdownlist fallTarget "Edge falloff target" items:#("Analyzer Boundary","Selected Area line") selection:1 pos:[(CyrusUISize 8 1),704] width:(CyrusUISize 146 1)
+@@ -5503,7 +5504,7 @@ fn CyrusMake_areaUI_6 target view = (
+         on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;redrawViews())
+         on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;redrawViews())
+         on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;redrawViews())
+-        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
++        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
+ 
+         local loadingFall=false
+         dropdownlist fallTarget "Edge falloff target" items:#("Analyzer Boundary","Selected Area line") selection:1 pos:[(CyrusUISize 8 1),704] width:(CyrusUISize 146 1)
+@@ -6344,7 +6345,7 @@ fn CyrusMake_areaUI_7 target view = (
+         on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;redrawViews())
+         on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;redrawViews())
+         on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;redrawViews())
+-        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
++        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
+ 
+         local loadingFall=false
+         dropdownlist fallTarget "Edge falloff target" items:#("Analyzer Boundary","Selected Area line") selection:1 pos:[(CyrusUISize 8 1),704] width:(CyrusUISize 146 1)
+@@ -7185,7 +7186,7 @@ fn CyrusMake_areaUI_8 target view = (
+         on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;redrawViews())
+         on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;redrawViews())
+         on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;redrawViews())
+-        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
++        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
+ 
+         local loadingFall=false
+         dropdownlist fallTarget "Edge falloff target" items:#("Analyzer Boundary","Selected Area line") selection:1 pos:[(CyrusUISize 8 1),704] width:(CyrusUISize 146 1)
+@@ -8026,7 +8027,7 @@ fn CyrusMake_areaUI_9 target view = (
+         on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;redrawViews())
+         on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;redrawViews())
+         on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;redrawViews())
+-        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
++        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
+ 
+         local loadingFall=false
+         dropdownlist fallTarget "Edge falloff target" items:#("Analyzer Boundary","Selected Area line") selection:1 pos:[(CyrusUISize 8 1),704] width:(CyrusUISize 146 1)
+@@ -8867,7 +8868,7 @@ fn CyrusMake_areaUI_10 target view = (
+         on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;redrawViews())
+         on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;redrawViews())
+         on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;redrawViews())
+-        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
++        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
+ 
+         local loadingFall=false
+         dropdownlist fallTarget "Edge falloff target" items:#("Analyzer Boundary","Selected Area line") selection:1 pos:[(CyrusUISize 8 1),704] width:(CyrusUISize 146 1)
+@@ -9656,12 +9657,12 @@ fn CyrusMakeLayer_1 target view index = (
+         on layerPanel_1 rolledUp state do (if not state and not parentView.building do ensureContents();parentView.layoutPanels())
+     )
+     layerPanel_1.obj=target;layerPanel_1.parentView=view;layerPanel_1.layerIndex=index;layerPanel_1
+-)
+-
+-
+-
+-
+-
++)
++
++
++
++
++
+ 
+ global CyrusMake_spacingUI_2
+ fn CyrusMake_spacingUI_2 target view = (
+@@ -9722,12 +9723,12 @@ fn CyrusMakeLayer_2 target view index = (
+         on layerPanel_2 rolledUp state do (if not state and not parentView.building do ensureContents();parentView.layoutPanels())
+     )
+     layerPanel_2.obj=target;layerPanel_2.parentView=view;layerPanel_2.layerIndex=index;layerPanel_2
+-)
+-
+-
+-
+-
+-
++)
++
++
++
++
++
+ 
+ global CyrusMake_spacingUI_3
+ fn CyrusMake_spacingUI_3 target view = (
+@@ -9788,12 +9789,12 @@ fn CyrusMakeLayer_3 target view index = (
+         on layerPanel_3 rolledUp state do (if not state and not parentView.building do ensureContents();parentView.layoutPanels())
+     )
+     layerPanel_3.obj=target;layerPanel_3.parentView=view;layerPanel_3.layerIndex=index;layerPanel_3
+-)
+-
+-
+-
+-
+-
++)
++
++
++
++
++
+ 
+ global CyrusMake_spacingUI_4
+ fn CyrusMake_spacingUI_4 target view = (
+@@ -9854,12 +9855,12 @@ fn CyrusMakeLayer_4 target view index = (
+         on layerPanel_4 rolledUp state do (if not state and not parentView.building do ensureContents();parentView.layoutPanels())
+     )
+     layerPanel_4.obj=target;layerPanel_4.parentView=view;layerPanel_4.layerIndex=index;layerPanel_4
+-)
+-
+-
+-
+-
+-
++)
++
++
++
++
++
+ 
+ global CyrusMake_spacingUI_5
+ fn CyrusMake_spacingUI_5 target view = (
+@@ -9920,12 +9921,12 @@ fn CyrusMakeLayer_5 target view index = (
+         on layerPanel_5 rolledUp state do (if not state and not parentView.building do ensureContents();parentView.layoutPanels())
+     )
+     layerPanel_5.obj=target;layerPanel_5.parentView=view;layerPanel_5.layerIndex=index;layerPanel_5
+-)
+-
+-
+-
+-
+-
++)
++
++
++
++
++
+ 
+ global CyrusMake_spacingUI_6
+ fn CyrusMake_spacingUI_6 target view = (
+@@ -9986,12 +9987,12 @@ fn CyrusMakeLayer_6 target view index = (
+         on layerPanel_6 rolledUp state do (if not state and not parentView.building do ensureContents();parentView.layoutPanels())
+     )
+     layerPanel_6.obj=target;layerPanel_6.parentView=view;layerPanel_6.layerIndex=index;layerPanel_6
+-)
+-
+-
+-
+-
+-
++)
++
++
++
++
++
+ 
+ global CyrusMake_spacingUI_7
+ fn CyrusMake_spacingUI_7 target view = (
+@@ -10052,12 +10053,12 @@ fn CyrusMakeLayer_7 target view index = (
+         on layerPanel_7 rolledUp state do (if not state and not parentView.building do ensureContents();parentView.layoutPanels())
+     )
+     layerPanel_7.obj=target;layerPanel_7.parentView=view;layerPanel_7.layerIndex=index;layerPanel_7
+-)
+-
+-
+-
+-
+-
++)
++
++
++
++
++
+ 
+ global CyrusMake_spacingUI_8
+ fn CyrusMake_spacingUI_8 target view = (
+@@ -10118,12 +10119,12 @@ fn CyrusMakeLayer_8 target view index = (
+         on layerPanel_8 rolledUp state do (if not state and not parentView.building do ensureContents();parentView.layoutPanels())
+     )
+     layerPanel_8.obj=target;layerPanel_8.parentView=view;layerPanel_8.layerIndex=index;layerPanel_8
+-)
+-
+-
+-
+-
+-
++)
++
++
++
++
++
+ 
+ global CyrusMake_spacingUI_9
+ fn CyrusMake_spacingUI_9 target view = (
+@@ -10184,12 +10185,12 @@ fn CyrusMakeLayer_9 target view index = (
+         on layerPanel_9 rolledUp state do (if not state and not parentView.building do ensureContents();parentView.layoutPanels())
+     )
+     layerPanel_9.obj=target;layerPanel_9.parentView=view;layerPanel_9.layerIndex=index;layerPanel_9
+-)
+-
+-
+-
+-
+-
++)
++
++
++
++
++
+ 
+ global CyrusMake_spacingUI_10
+ fn CyrusMake_spacingUI_10 target view = (
+@@ -10250,12 +10251,12 @@ fn CyrusMakeLayer_10 target view index = (
+         on layerPanel_10 rolledUp state do (if not state and not parentView.building do ensureContents();parentView.layoutPanels())
+     )
+     layerPanel_10.obj=target;layerPanel_10.parentView=view;layerPanel_10.layerIndex=index;layerPanel_10
+-)
+-
+-
+-
+-
+-
++)
++
++
++
++
++
+ 
+ fn CyrusMakeLayer target view index = (
+ if index==1 then (CyrusMakeLayer_1 target view index) else 
+@@ -10296,7 +10297,7 @@ plugin simpleObject AminScatterObject
+ name:"Cyrus Scatter"
+ classID:#(0x617d43a1,0x395c2e17)
+ category:"Cyrus"
+-version:44
++version:47
+ (
+     local layerTransfer=false
+     local cachedPoints=undefined
+@@ -10552,7 +10553,7 @@ version:44
+         )
+         rows
+     )
+-
++
+ 
+     parameters edgeRowSettings (
+         edgeRotX type:#floatTab tabSize:0 tabSizeVariable:true
+@@ -11003,7 +11004,7 @@ version:44
+             )
+             #(output,mask)
+         )
+-    )
++    )
+ 
+     fn lineInputs plants previewOnly:false = (
+         if diversityMode!=3 and diversityMode!=4 then #(false,0,#()) else (
+@@ -11047,8 +11048,8 @@ version:44
+             )
+             #(true,rest,bands)
+         )
+-    )
+-
++    )
++
+ 
+     local blockerCacheKey="",blockerCacheRows=#(),blockerCacheBuilds=0,blockerCacheHits=0
+     fn cachedBlockerRows plants = (
+@@ -11069,6 +11070,10 @@ version:44
+         blockerCacheRows
+     )
+     fn blockerCacheStats = (#(blockerCacheBuilds,blockerCacheHits))
++    fn filterSourceRowsByPolicy rows keep = (
++        if cyrusFilterSourceRows!=undefined then cyrusFilterSourceRows rows keep
++        else (for row in rows where keep[row[2]] collect row)
++    )
+     fn cspImpl_placements plants previewOnly:false rawOnly:false finalPass:undefined = (
+         if not cyrusEnabled or disabledAnalyzerInput() do return #()
+         local targets=validSurfaces()
+@@ -11110,16 +11115,22 @@ version:44
+         if wholeScaleMin!=1.0 or wholeScaleMax!=1.0 do result=cyrusWholeScale result wholeScaleMin wholeScaleMax randomSeed
+         result=applyAnalyzerArea result
+         result=applyFalloff result
+-        if plants.count>0 and sourceEmpty.count>0 do result=for row in result where (not (isEmptySource (sourceRow plants[row[2]])) or (isPointSource (sourceRow plants[row[2]]))) collect row
++        if plants.count>0 and sourceEmpty.count>0 do (
++            local keep=for n in plants collect (not (isEmptySource (sourceRow n)) or isPointSource (sourceRow n))
++            result=filterSourceRowsByPolicy result keep
++        )
+         if plants.count>0 and (sourceZOffsets.count>0 or sourceScales.count>0) do (
+             local offsets=for n in plants collect sourceZOffset (sourceRow n)
+             local scales=for n in plants collect sourceScale (sourceRow n)
++            if cyrusApplySourceTransforms!=undefined then result=cyrusApplySourceTransforms result offsets scales
++            else (
+             for row in result do (
+                 local tm=row[1], k=row[2], factor=scales[k]
+                 tm.row1=tm.row1*factor;tm.row2=tm.row2*factor;tm.row3=tm.row3*factor
+                 tm.row4=tm.row4+[0,0,offsets[k]]
+                 row[1]=tm
+             )
++            )
+         )
+         if not rawOnly do (
+             local obstacles=#(),obstacleRadii=#()
+@@ -11158,7 +11169,10 @@ version:44
+             result=cyrusOrientRows result (lineInputs plants previewOnly:true) forward offsets
+         )
+         if not rawOnly do result=CyrusEditApplyLayer overlapOwner this result
+-        if not previewOnly and not rawOnly and plants.count>0 do result=for row in result where not (isPointSource (sourceRow plants[row[2]])) collect row
++        if not previewOnly and not rawOnly and plants.count>0 do (
++            local keep=for n in plants collect (not (isPointSource (sourceRow n)))
++            result=filterSourceRowsByPolicy result keep
++        )
+         result
+     )
+     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
+@@ -11166,7 +11180,7 @@ version:44
+         if CyrusPerfTraceBegin!=undefined do try(token=CyrusPerfTraceBegin this "placements")catch()
+         try (
+             local answer=cspImpl_placements plants previewOnly:previewOnly rawOnly:rawOnly finalPass:finalPass
+-            if token!=undefined and CyrusPerfTraceEnd!=undefined do try(CyrusPerfTraceEnd token "")catch()
++            if token!=undefined and CyrusPerfTraceEnd!=undefined do try(CyrusPerfTraceEnd token #("",answer.count,previewOnly,rawOnly,finalPass!=undefined))catch()
+             answer
+         )catch(
+             if token!=undefined and CyrusPerfTraceEnd!=undefined do try(CyrusPerfTraceEnd token ("EXCEPTION: "+getCurrentException()))catch()
+@@ -11214,8 +11228,9 @@ version:44
+         )
+     )
+     local cachedDisabledInput=false
+-    fn previewCache = (
+-        if CyrusInteractionHeld() do (CyrusWasDragging=true;return cachedPoints)
++    fn previewCache interactionHeld:undefined = (
++        local held=if interactionHeld==undefined then CyrusInteractionHeld() else interactionHeld
++        if held do (CyrusWasDragging=true;return cachedPoints)
+         local inputOff=disabledAnalyzerInput()
+         if inputOff!=cachedDisabledInput do (dirty=true;cachedDisabledInput=inputOff)
+         if inputOff do return (aminScatterBuildPreview #() #() #() 1)
+@@ -11248,14 +11263,16 @@ version:44
+     )
+     fn forcePreviewUpdate = (dirty=true;previewBuildCount=0)
+     fn ensureLayers = layerObjects.count
+-    fn syncLayerSurface obj = (
++    fn syncLayerSurface obj targets:undefined layerBudget:undefined = (
+         obj.setOverlapOwner this
+-        local targets=validSurfaces()
++        if targets==undefined do targets=validSurfaces()
+         local equal=obj.surfaceNodes.count==targets.count
+         if equal do for i=1 to targets.count where obj.surfaceNodes[i]!=targets[i] do equal=false
+         if not equal do undo off (obj.surfaceNodes=targets;obj.surface=undefined)
+-        local enabledCount=(for flag in layerEnabled where flag collect flag).count
+-        local layerBudget=amax 1 (floor(previewBudget/(amax 1 enabledCount)))
++        if layerBudget==undefined do (
++            local enabledCount=(for flag in layerEnabled where flag collect flag).count
++            layerBudget=amax 1 (floor(previewBudget/(amax 1 enabledCount)))
++        )
+         if obj.previewBudget!=layerBudget do undo off obj.previewBudget=layerBudget
+         -- These settings belong to the controller, not an individual layer.
+         undo off for key in #(#viewportMode,#proxyShape,#viewportInstances,#viewportFaces,#radiusDisplayLimit,#radiusDisplayAll,#updateMode,#showPoints,#pointsPerPlant,#pointColorMode,#solidPointColor,#autoRender) do (
+@@ -11269,10 +11286,12 @@ version:44
+             editCacheKey=key
+             for layer in layerObjects do layer.forcePreviewUpdate()
+         )
+-        local entries=#()
++        local entries=#(),targets=validSurfaces()
++        local enabledCount=(for flag in layerEnabled where flag collect flag).count
++        local layerBudget=amax 1 (floor(previewBudget/(amax 1 enabledCount)))
+         for i=1 to layerObjects.count where includeDisabled or (cyrusEnabled and layerEnabled[i]) do (
+             local obj=layerObjects[i]
+-            syncLayerSurface obj
++            syncLayerSurface obj targets:targets layerBudget:layerBudget
+             obj.checkAnalyzerRevision()
+             append entries #(i,obj)
+         )
+@@ -11280,6 +11299,10 @@ version:44
+             for e in entries where layerEnabled[e[1]] and e[2].overlapEnabled do e[2].dirty=true
+         entries
+     )
++    fn viewportLayerEntries held = (
++        if not held do return layerEntries()
++        for i=1 to layerObjects.count where cyrusEnabled and layerEnabled[i] collect #(i,layerObjects[i])
++    )
+     fn migrateLayers = (
+         if layerObjects.count==0 then (
+             if sources.count>0 or (validSurfaces()).count>0 do (
+@@ -11345,8 +11368,8 @@ version:44
+         local owners=refs.dependentNodes this
+         if owners.count==1 do for entry in (layerEntries includeDisabled:true) do entry[2].clearBaked owners[1]
+         autoRender=true;showPoints=true;redrawViews()
+-    )
+-
++    )
++
+     fn clearBaked ownerNode = (
+         local key=ownerNode.handle as string
+         undo "Cyrus Scatter remove baked output" on (
+@@ -11461,14 +11484,14 @@ version:44
+             controlsReady=true;building=false;rebuildLayers()
+         )
+         on mainUI close do (controlsReady=false;roots=#();layerPanels=#())
+-    )
+-
+-
+-
+-
+-
+-
+-
++    )
++
++
++
++
++
++
++
+     on update do (
+         if version<13 do migrateLayers()
+         if version<15 do syncStrokes()
+@@ -11487,7 +11510,9 @@ version:44
+         dirty=true
+     )
+     on attachedToNode n do (n.renderable=false;n.wirecolor=red)
++    local iconCacheSize=undefined,iconCachePaths=#()
+     fn iconLines = (
++        if iconCacheSize==iconSize do return iconCachePaths
+         local paths=#()
+         local ring=for i=0 to 64 collect [cos(i*360.0/64),sin(i*360.0/64),0]
+         append paths ring
+@@ -11498,7 +11523,9 @@ version:44
+         append paths letterS
+         append paths (for i=0 to 48 collect [0.35+0.25*cos(45+i*270.0/48),0.46*sin(45+i*270.0/48),0])
+ 
+-        for path in paths collect (for p in path collect p*iconSize)
++        iconCachePaths=for path in paths collect (for p in path collect p*iconSize)
++        iconCacheSize=iconSize
++        iconCachePaths
+  )
+  on buildMesh do (
+         -- Zero-area edges supply picking bounds; visible icon is drawn as lines.
+@@ -11519,16 +11546,17 @@ version:44
+     )
+ )
+ fn AminScatterObjectDraw = (
++    local held=CyrusInteractionHeld()
+     gw.setTransform (matrix3 1)
+     for n in objects where (classof n.baseObject==AminScatterObject and not n.isHidden) do (
+         gw.setTransform n.objectTransform;gw.setColor #line red
+         for path in n.baseObject.iconLines() do gw.polyline path false
+         gw.setTransform (matrix3 1)
+-        for entry in n.baseObject.layerEntries() do (
++        for entry in n.baseObject.viewportLayerEntries held do (
+             local obj=entry[2]
+-            obj.previewCache();obj.drawRadii()
++            local cache=obj.previewCache interactionHeld:held
++            obj.drawRadii()
+             if obj.showPoints or obj.showCenters do (
+-                local cache=obj.previewCache()
+                 if cache!=undefined do aminScatterDrawPreview cache (obj.pointColorMode==1) obj.solidPointColor
+             )
+         )
+@@ -11706,15 +11734,31 @@ callbacks.addScript #filePreOpen "CyrusPFBeforeSceneChange()" id:#CyrusPFBridge
+ callbacks.addScript #filePreSave "CyrusPFBeforeSave()" id:#CyrusPFBridge
+ CyrusPFTimer=dotNetObject "System.Windows.Forms.Timer";CyrusPFTimer.Interval=750
+ dotNet.addEventHandler CyrusPFTimer "Tick" CyrusPFTick;CyrusPFTimer.Start()
+-
++
+ -- Events mark only controllers whose inputs changed. No geometry polling loop.
+ global AminScatterNodeEvents
+ global AminScatterLiveChanged
+ global AminScatterLiveTime
+ try(AminScatterNodeEvents.enabled=false)catch()
+ try(unRegisterTimeCallback AminScatterLiveTime)catch()
++global CyrusLiveBatchDepth=0,CyrusLiveBatchRedraw=false,CyrusLiveBatchCount=0,CyrusLiveRedrawRequests=0,CyrusLiveChangeCalls=0
++fn CyrusScatterLiveBatchStats = (#(CyrusLiveBatchCount,CyrusLiveRedrawRequests,CyrusLiveBatchDepth,CyrusLiveBatchRedraw,CyrusLiveChangeCalls))
++fn CyrusScatterLiveBatchBegin event handles = (
++    if CyrusLiveBatchDepth==0 do CyrusLiveBatchRedraw=false
++    CyrusLiveBatchDepth+=1
++)
++fn CyrusScatterLiveBatchEnd event handles = (
++    CyrusLiveBatchDepth=amax 0 (CyrusLiveBatchDepth-1)
++    if CyrusLiveBatchDepth==0 do (
++        CyrusLiveBatchCount+=1
++        local wanted=CyrusLiveBatchRedraw
++        CyrusLiveBatchRedraw=false
++        if wanted and AminScatterRenderRedrawHeld!=true do (CyrusLiveRedrawRequests+=1;redrawViews())
++    )
++)
+ fn AminScatterLiveChanged event handles = (
+     if CyrusPerfTraceInput!=undefined do try(CyrusPerfTraceInput "scatter_input_received" event handles)catch()
++    CyrusLiveChangeCalls+=1
+     if event==#deleted do (handles=for h in handles where findItem CyrusPFDeletedHandles h==0 collect h;if handles.count==0 do return false)
+     if AminScatterRenderRedrawHeld!=true do (
+         local nodes=for h in handles collect (getAnimByHandle h)
+@@ -11729,7 +11773,10 @@ fn AminScatterLiveChanged event handles = (
+                 else if entry[2].externalChanged nodes do (redraw=true;CyrusPFRevision+=1)
+             )
+         )
+-        if redraw do redrawViews()
++        if redraw do (
++            if CyrusLiveBatchDepth>0 then CyrusLiveBatchRedraw=true
++            else (CyrusLiveRedrawRequests+=1;redrawViews())
++        )
+     )
+ )
+ fn AminScatterLiveTime = (
+@@ -11738,7 +11785,7 @@ fn AminScatterLiveTime = (
+         redrawViews()
+     )
+ )
+-AminScatterNodeEvents=NodeEventCallback mouseUp:true delay:150 deleted:AminScatterLiveChanged geometryChanged:AminScatterLiveChanged topologyChanged:AminScatterLiveChanged mappingChanged:AminScatterLiveChanged modelStructured:AminScatterLiveChanged controllerOtherEvent:AminScatterLiveChanged controllerStructured:AminScatterLiveChanged linkChanged:AminScatterLiveChanged
++AminScatterNodeEvents=NodeEventCallback mouseUp:true delay:150 callbackBegin:CyrusScatterLiveBatchBegin callbackEnd:CyrusScatterLiveBatchEnd deleted:AminScatterLiveChanged geometryChanged:AminScatterLiveChanged topologyChanged:AminScatterLiveChanged mappingChanged:AminScatterLiveChanged modelStructured:AminScatterLiveChanged controllerOtherEvent:AminScatterLiveChanged controllerStructured:AminScatterLiveChanged linkChanged:AminScatterLiveChanged
+ registerTimeCallback AminScatterLiveTime
+ 
+ 
+diff --git a/AminScatter/src/geometry_preview.inc b/AminScatter/src/geometry_preview.inc
+index 0515f73..716c7e6 100644
+--- a/AminScatter/src/geometry_preview.inc
++++ b/AminScatter/src/geometry_preview.inc
+@@ -40,8 +40,8 @@ Value* cyrusBuildGeometryPreview_cf(Value** args,int count){
+   if(group.faces.size()>static_cast<std::size_t>(budget-faces))continue;
+   group.instances.push_back(tm);faces+=static_cast<int>(group.faces.size());++shown;
+  }
+- auto* out=new AminPointCache();out->geometry=std::move(geometry);out->groups=std::move(markers);out->size=shown;out->faceCount=faces;return out;
++ auto* out=new AminPointCache();out->geometry=std::move(geometry);out->groups=std::move(markers);out->size=shown;out->faceCount=faces;out->geometryMode=mode;out->prepareProxyBatches();return out;
+ }
+ def_visible_primitive(cyrusPreviewFaces,"cyrusPreviewFaces");
+ Value* cyrusPreviewFaces_cf(Value** args,int count){check_arg_count(cyrusPreviewFaces,1,count);type_check(args[0],AminPointCache,_T("cache"));return Integer::intern(static_cast<AminPointCache*>(args[0])->faceCount);}
+-
++
+diff --git a/AminScatter/src/max_bridge.cpp b/AminScatter/src/max_bridge.cpp
+index f9e8934..03850c9 100644
+--- a/AminScatter/src/max_bridge.cpp
++++ b/AminScatter/src/max_bridge.cpp
+@@ -6,6 +6,7 @@
+ #include <maxscript/foundation/3dmath.h>
+ #include <maxscript/maxwrapper/mxsobjects.h>
+ #include "scatter.h"
++#include "execution.h"
+ #include <memory>
+ #include <stdexcept>
+ #include <map>
+@@ -13,7 +14,7 @@
+ #include <cmath>
+ #include <maxscript/macros/define_instantiation_functions.h>
+ 
+-extern "C" __declspec(dllexport) const TCHAR* LibDescription() { return _T("Cyrus Scatter native engine 0.21"); }
++extern "C" __declspec(dllexport) const TCHAR* LibDescription() { return _T("Cyrus Scatter native engine 0.23 - bounded proxy draw batches"); }
+ extern "C" __declspec(dllexport) ULONG LibVersion() { return VERSION_3DSMAX; }
+ extern "C" __declspec(dllexport) void LibInit() {}
+ HINSTANCE CyrusEditInstance=nullptr;
+@@ -23,6 +24,79 @@ extern "C" __declspec(dllexport) ClassDesc* LibClassDesc(int i){return i==0?Cyru
+ BOOL WINAPI DllMain(HINSTANCE instance, DWORD reason, LPVOID) { if(reason==DLL_PROCESS_ATTACH)CyrusEditInstance=instance;return TRUE; }
+ static_assert(MAX_PRODUCT_YEAR_NUMBER == CYRUS_MAX_YEAR, "SDK year must match the configured host year");
+ 
++// Diagnostic/session controls. Scene evaluation and MAXScript values stay on
++// this calling thread; native workers receive plain owned geometry only.
++def_visible_primitive(cyrusScatterCPUThreads, "cyrusScatterCPUThreads");
++Value* cyrusScatterCPUThreads_cf(Value** args,int count) {
++    if(count!=0 && count!=1) throw RuntimeError(_T("Expected zero or one CPU thread limit"));
++    if(count==1) {
++        const int limit=args[0]->to_int();
++        if(limit<0 || limit>64) throw RuntimeError(_T("CPU thread limit must be 0..64"));
++        amin::setComputeThreads(static_cast<unsigned>(limit));
++    }
++    return Integer::intern(static_cast<int>(amin::computeThreads()));
++}
++def_visible_primitive(cyrusScatterComputeStats, "cyrusScatterComputeStats");
++Value* cyrusScatterComputeStats_cf(Value**,int count) {
++    check_arg_count(cyrusScatterComputeStats,0,count);
++    const auto stats=amin::lastComputeStats();
++    one_typed_value_local(Array* result);vl.result=new Array(3);
++    vl.result->append(Integer::intern(static_cast<int>(stats.participants)));
++    vl.result->append(Integer64::intern(static_cast<INT64>(stats.clusterQueries)));
++    vl.result->append(stats.threadLaunchFallback ? &true_value : &false_value);
++    return_value(vl.result);
++}
++
++// Stable source filtering after area/falloff processing. Keep the exact existing
++// rows (including CS Edit data); avoid a MAXScript function lookup per placement.
++def_visible_primitive(cyrusFilterSourceRows, "cyrusFilterSourceRows");
++Value* cyrusFilterSourceRows_cf(Value** args,int count) {
++    check_arg_count(cyrusFilterSourceRows,2,count);
++    type_check(args[0],Array,_T("placement rows"));
++    type_check(args[1],Array,_T("source visibility"));
++    auto* rows=static_cast<Array*>(args[0]);auto* flags=static_cast<Array*>(args[1]);
++    std::vector<bool> keep;keep.reserve(flags->size);
++    for(int i=0;i<flags->size;++i) keep.push_back(flags->data[i]->to_bool()!=FALSE);
++    one_typed_value_local(Array* result);vl.result=new Array(rows->size);
++    for(int i=0;i<rows->size;++i) {
++        type_check(rows->data[i],Array,_T("placement row"));
++        auto* row=static_cast<Array*>(rows->data[i]);
++        if(row->size!=2) throw RuntimeError(_T("Invalid placement row"));
++        const int source=row->data[1]->to_int()-1;
++        if(source<0 || static_cast<std::size_t>(source)>=keep.size()) throw RuntimeError(_T("Invalid source index"));
++        if(keep[source]) vl.result->append(rows->data[i]);
++    }
++    return_value(vl.result);
++}
++
++def_visible_primitive(cyrusApplySourceTransforms, "cyrusApplySourceTransforms");
++Value* cyrusApplySourceTransforms_cf(Value** args,int count) {
++    check_arg_count(cyrusApplySourceTransforms,3,count);
++    for(int i=0;i<3;++i) type_check(args[i],Array,_T("source transform inputs"));
++    auto* rows=static_cast<Array*>(args[0]);auto* offsets=static_cast<Array*>(args[1]);auto* scales=static_cast<Array*>(args[2]);
++    if(offsets->size!=scales->size) throw RuntimeError(_T("Source transform count mismatch"));
++    std::vector<float> z,factors;z.reserve(scales->size);factors.reserve(scales->size);
++    for(int i=0;i<scales->size;++i) {z.push_back(offsets->data[i]->to_float());factors.push_back(scales->data[i]->to_float());}
++    // Validate all rows before modifying any. These are transient placement
++    // values, never scene transforms; preserve MAXScript's in-place alias rules.
++    for(int i=0;i<rows->size;++i) {
++        type_check(rows->data[i],Array,_T("placement row"));auto* row=static_cast<Array*>(rows->data[i]);
++        if(row->size!=2) throw RuntimeError(_T("Invalid placement row"));
++        type_check(row->data[0],Matrix3Value,_T("placement transform"));
++        const int source=row->data[1]->to_int()-1;
++        if(source<0 || source>=scales->size) throw RuntimeError(_T("Invalid source index"));
++    }
++    for(int i=0;i<rows->size;++i) {
++        auto* row=static_cast<Array*>(rows->data[i]);const int source=row->data[1]->to_int()-1;
++        Matrix3& tm=row->data[0]->to_matrix3();
++        for(int axis=0;axis<3;++axis) tm.SetRow(axis,tm.GetRow(axis)*factors[source]);
++        // Do not skip identity values: +0 can change a signed zero just as the
++        // original script does, and full byte parity is part of the gate.
++        tm.SetRow(3,tm.GetRow(3)+Point3(0.0f,0.0f,z[source]));
++    }
++    return args[0];
++}
++
+ // Final, stable removal only: retain the original MAXScript rows and transforms.
+ def_visible_primitive(cyrusRemoveOverlaps, "cyrusRemoveOverlaps");
+ Value* cyrusRemoveOverlaps_cf(Value** args,int count) {
+@@ -306,7 +380,7 @@ Value* aminScatterSourcePoints_cf(Value** args,int count) {
+     for(const auto& p:points) vl.result->append(new Point3Value(point(p)));
+     return_value(vl.result);
+ }
+-
++
+ 
+ def_visible_primitive(aminScatterValidArea, "aminScatterValidArea");
+ Value* aminScatterValidArea_cf(Value** args,int count) {
+@@ -320,7 +394,7 @@ Value* aminScatterValidArea_cf(Value** args,int count) {
+     if(shape->NumberOfCurves(time)<1) return &false_value;
+     for(int i=0;i<shape->NumberOfCurves(time);++i) if(!shape->CurveClosed(time,i)) return &false_value;
+     return &true_value;
+-}
++}
+ 
+ def_visible_primitive(aminScatterSurfaceArea, "aminScatterSurfaceArea");
+ Value* aminScatterSurfaceArea_cf(Value** args,int count) {
+@@ -333,8 +407,8 @@ Value* aminScatterSurfaceArea_cf(Value** args,int count) {
+         }
+     } catch(const std::exception&) {throw RuntimeError(_T("Cannot evaluate scatter surface area."));}
+     return Double::intern(area);
+-}
+-
+-
+-
+-
++}
++
++
++
++
+diff --git a/AminScatter/src/orientation.inc b/AminScatter/src/orientation.inc
+index c25ba3e..7d8a1b5 100644
+--- a/AminScatter/src/orientation.inc
++++ b/AminScatter/src/orientation.inc
+@@ -54,8 +54,7 @@ bool outwardAt(Vec3 p,const LineBand& band,const std::vector<FacingLoop>& loops,
+     // MAXScript matrices use floats; points snapped to a boundary may round just
+     // outside it during transport. Permit only the scale-relative float error.
+     double tolerance=1e-6*std::max({1.0,std::abs(p.x),std::abs(p.y),std::abs(p.z)});
+-    auto testBand=band;if(testBand.kind==6)testBand.kind=2;
+-    if(!analyzerBand(projected,testBand,tolerance)&&!(band.start==0&&distance<=tolerance))return false;
++    if(!analyzerBand(projected,band,tolerance,band.kind==6?2:-1)&&!(band.start==0&&distance<=tolerance))return false;
+     direction=nearest->out[edge];up=nearest->up;
+     std::size_t corner=length(projected-v[edge])<=length(projected-v[(edge+1)%n])?edge:(edge+1)%n;
+     double r=length(projected-v[corner]);
+diff --git a/AminScatter/src/preview.cpp b/AminScatter/src/preview.cpp
+index 4c97649..21ef924 100644
+--- a/AminScatter/src/preview.cpp
++++ b/AminScatter/src/preview.cpp
+@@ -12,9 +12,12 @@
+ #include <array>
+ #include <cmath>
+ #include <memory>
+-#include <maxscript/macros/define_instantiation_functions.h>
++#include <atomic>
++#include <new>
++#include <maxscript/macros/define_instantiation_functions.h>
+ #undef ScripterExport
+ #define ScripterExport __declspec(dllexport)
++#include "preview_batches.inc"
+ 
+ // Immutable transient MAXScript value: ownership follows the controller's local
+ // cache through GC. No global handles, stale node pointers or per-frame conversion.
+@@ -27,11 +30,47 @@ public:
+     std::vector<Geometry> geometry;
+     int faceCount=0;
+     int size=0;
++    int geometryMode=0;
++    // One allocation for triangles and one for source-preserving chunks. Their
++    // exact payload sizes are reserved before allocation and released with GC.
++    ProxyBatchReservation batchReservation;
++    std::unique_ptr<ProxyTriangle[]> batchTriangles;
++    std::unique_ptr<ProxyBatch[]> batches;
++    std::size_t batchCount=0;
+     AminPointCache() { tag=class_tag(AminPointCache); }
+     classof_methods(AminPointCache,Value);
+     void collect() override { delete this; }
+     void sprin1(CharStream* s) override { s->printf(_T("<AminPointCache:%d>"),size); }
+     Value* deep_copy(HashTable*) override { return this; }
++    void prepareProxyBatches() {
++        if (geometryMode < 1 || geometryMode > 3 || faceCount == 0) return;
++        std::size_t chunks=0;
++        for (const auto& group:geometry) {
++            const auto count=group.faces.size()*group.instances.size();
++            chunks+=(count+proxyBatchFaceLimit-1)/proxyBatchFaceLimit;
++        }
++        const auto bytes=std::size_t(faceCount)*sizeof(ProxyTriangle)+chunks*sizeof(ProxyBatch);
++        if (!batchReservation.acquire(bytes)) return;
++        try {
++            auto triangles=std::make_unique<ProxyTriangle[]>(faceCount);
++            auto prepared=std::make_unique<ProxyBatch[]>(chunks);
++            std::size_t faceIndex=0,chunkIndex=0;
++            for (const auto& group:geometry) {
++                const auto first=faceIndex;
++                for (const auto& tm:group.instances) for (const auto& face:group.faces) {
++                    auto& out=triangles[faceIndex++];
++                    out.vertices={face[0]*tm,face[1]*tm,face[2]*tm};
++                    out.shade=proxyFaceShade(face,tm);
++                }
++                for (auto offset=first;offset<faceIndex;offset+=proxyBatchFaceLimit)
++                    prepared[chunkIndex++]={offset,std::min(proxyBatchFaceLimit,faceIndex-offset),group.color};
++            }
++            batchTriangles=std::move(triangles);batches=std::move(prepared);batchCount=chunks;
++        } catch (const std::bad_alloc&) {
++            // An optimization allocation failure must not hide a valid preview.
++            batchReservation.release();
++        }
++    }
+ };
+ visible_class_instance(AminPointCache,"AminPointCache");
+ #include "geometry_preview.inc"
+@@ -111,7 +150,20 @@ Value* aminScatterDrawPreview_cf(Value** args,int count) {
+         preview.Ka=preview.Kd=Point3(1,1,1);preview.Ks=Point3(0,0,0);preview.selfIllum=1;preview.opacity=1;preview.dblSided=1;
+         gw->setMaterial(preview);
+         gw->setRndLimits((limits|GW_Z_BUFFER|GW_COLOR_VERTS)&~(GW_ILLUM|GW_WIREFRAME|GW_BACKCULL|GW_TEXTURE|GW_SHADE_CVERTS));
+-        for(auto& group:cache->geometry)for(auto& tm:group.instances){
++        if(proxyBatchDrawing && cache->batchCount) {
++            // GraphicsWindow stays in identity/world space for the entire cache.
++            for(std::size_t i=0;i<cache->batchCount;++i) {
++                const auto& batch=cache->batches[i];
++                const auto baseColor=solid?color:batch.color;
++                gw->startTriangles();
++                for(std::size_t j=batch.first;j<batch.first+batch.count;++j) {
++                    auto& face=cache->batchTriangles[j];
++                    Point3 rgb=baseColor*face.shade,colors[3]={rgb,rgb,rgb};
++                    gw->triangle(face.vertices.data(),colors);
++                }
++                gw->endTriangles();
++            }
++        } else for(auto& group:cache->geometry)for(auto& tm:group.instances){
+             gw->setTransform(tm);gw->startTriangles();
+             for(auto& face:group.faces){
+                 auto a=VectorTransform(tm,face[1]-face[0]),b=VectorTransform(tm,face[2]-face[0]);auto normal=Normalize(CrossProd(a,b));
+@@ -149,3 +201,64 @@ Value* aminScatterPreviewPoints_cf(Value** args,int count) {
+     }
+     return_value(vl.result);
+ }
++
++// Read-only cache accounting. Array: mode, old batches, prepared batches,
++// prepared faces, cache payload bytes, process bytes, cache/process byte caps.
++def_visible_primitive(cyrusPreviewDrawStats,"cyrusPreviewDrawStats");
++Value* cyrusPreviewDrawStats_cf(Value** args,int count) {
++    check_arg_count(cyrusPreviewDrawStats,1,count);
++    type_check(args[0],AminPointCache,_T("preview cache"));
++    auto* cache=static_cast<AminPointCache*>(args[0]);
++    std::size_t oldBatches=0;
++    for(const auto& group:cache->geometry) oldBatches+=group.instances.size();
++    one_typed_value_local(Array* result);vl.result=new Array(8);
++    for(auto n:{std::size_t(cache->geometryMode),oldBatches,cache->batchCount,
++        cache->batchCount?std::size_t(cache->faceCount):0,cache->batchReservation.bytes,
++        proxyReservedBytes.load(std::memory_order_relaxed),proxyCacheByteLimit,proxyProcessByteLimit})
++        vl.result->append(Integer64::intern(static_cast<INT64>(n)));
++    return_value(vl.result);
++}
++
++// A/B diagnosis only: optional Boolean changes drawing, never cache/output data.
++def_visible_primitive(cyrusPreviewBatchDrawing,"cyrusPreviewBatchDrawing");
++Value* cyrusPreviewBatchDrawing_cf(Value** args,int count) {
++    if(count>1) throw RuntimeError(_T("Expected zero or one batch-drawing Boolean"));
++    if(count==1) proxyBatchDrawing=args[0]->to_bool()!=FALSE;
++    return proxyBatchDrawing?&true_value:&false_value;
++}
++
++// Bounded diagnostic export for transform, shading and source-color parity.
++// Each row is #(vertex1, vertex2, vertex3, scalarShade, sourceColor01).
++def_visible_primitive(cyrusPreviewTriangles,"cyrusPreviewTriangles");
++Value* cyrusPreviewTriangles_cf(Value** args,int count) {
++    check_arg_count(cyrusPreviewTriangles,3,count);
++    type_check(args[0],AminPointCache,_T("preview cache"));
++    auto* cache=static_cast<AminPointCache*>(args[0]);
++    const bool prepared=args[1]->to_bool()!=FALSE;
++    const int limit=args[2]->to_int();
++    if(limit<0 || limit>100000) throw RuntimeError(_T("Diagnostic triangle limit must be 0..100000"));
++    two_typed_value_locals(Array* result,Array* row);
++    vl.result=new Array(std::min(limit,cache->faceCount));
++    auto append=[&](const std::array<Point3,3>& face,float shade,Point3 color) {
++        vl.row=new Array(5);vl.result->append(vl.row);
++        for(auto p:face) vl.row->append(new Point3Value(p));
++        vl.row->append(Float::intern(shade));vl.row->append(new Point3Value(color));
++    };
++    if(prepared) {
++        for(std::size_t i=0;i<cache->batchCount && vl.result->size<limit;++i) {
++            const auto& batch=cache->batches[i];
++            for(std::size_t j=batch.first;j<batch.first+batch.count && vl.result->size<limit;++j)
++                append(cache->batchTriangles[j].vertices,cache->batchTriangles[j].shade,batch.color);
++        }
++    } else {
++        for(const auto& group:cache->geometry) for(const auto& tm:group.instances) for(const auto& face:group.faces) {
++            if(vl.result->size>=limit) goto complete;
++            // Re-evaluate the previous draw formula independently of preparation.
++            auto a=VectorTransform(tm,face[1]-face[0]),b=VectorTransform(tm,face[2]-face[0]);
++            const auto shade=.35f+.65f*std::abs(DotProd(Normalize(CrossProd(a,b)),Normalize(Point3(.3f,-.5f,.8f))));
++            append({face[0]*tm,face[1]*tm,face[2]*tm},shade,group.color);
++        }
++    }
++complete:
++    return_value(vl.result);
++}
+diff --git a/AminScatter/src/scatter.cpp b/AminScatter/src/scatter.cpp
+index e6a7a60..88c2e8b 100644
+--- a/AminScatter/src/scatter.cpp
++++ b/AminScatter/src/scatter.cpp
+@@ -1,4 +1,5 @@
+ #include "scatter.h"
++#include "execution.h"
+ #include <algorithm>
+ #include <cmath>
+ #include <limits>
+@@ -124,13 +125,14 @@ struct AreaMask {
+         return false;
+     }
+ };
+-bool analyzerBand(Vec3 p,const LineBand& band,double tolerance=0) {
+-    if(band.kind==5) return false;
++bool analyzerBand(Vec3 p,const LineBand& band,double tolerance=0,int kindOverride=-1) {
++    const int kind=kindOverride<0?band.kind:kindOverride;
++    if(kind==5) return false;
+     double nearest=INFINITY; bool inside=false;std::size_t edgeIndex=0;
+     for(const auto& path:band.boundary.loops) {
+         if(path.empty()) continue;
+-        if(band.kind==4) {for(auto q:path) nearest=std::min(nearest,length(p-q));continue;}
+-        const bool closed=band.kind<=2;
++        if(kind==4) {for(auto q:path) nearest=std::min(nearest,length(p-q));continue;}
++        const bool closed=kind<=2;
+         Vec3 normal{},x{},y{};
+         if(closed) {
+             for(std::size_t i=0;i<path.size();++i) normal=normal+cross(path[i]-path[0],path[(i+1)%path.size()]-path[0]);
+@@ -151,8 +153,9 @@ bool analyzerBand(Vec3 p,const LineBand& band,double tolerance=0) {
+             }
+         }
+     }
+-    return nearest>=std::max(0.0,band.start-tolerance) && nearest<=band.width+tolerance && (band.kind>2 || inside==(band.kind==2));
++    return nearest>=std::max(0.0,band.start-tolerance) && nearest<=band.width+tolerance && (kind>2 || inside==(kind==2));
+ }
++#include "prepared_band.inc"
+ double valueNoise(Vec3 p,std::uint32_t seed) {
+     const int x=static_cast<int>(std::floor(p.x)),y=static_cast<int>(std::floor(p.y)),z=static_cast<int>(std::floor(p.z));
+     auto smooth=[](double t){return t*t*(3-2*t);};
+@@ -166,27 +169,7 @@ std::size_t weightedIndex(const std::vector<double>& cumulative,double u) {
+     const auto it=std::upper_bound(cumulative.begin(),cumulative.end(),u*cumulative.back());
+     return std::min(static_cast<std::size_t>(it-cumulative.begin()),cumulative.size()-1);
+ }
+-std::size_t diversityGroup(Vec3 p,const Settings& s,std::size_t groups,Random& rng,const std::vector<double>& groupCDF) {
+-    p=p*(1.0/(s.distribution==1?s.clusterRadius:s.clusterSize));
+-    // Bound lattice coordinates before integer conversion, including huge scenes.
+-    if(!finite(p)||std::abs(p.x)>1e8||std::abs(p.y)>1e8||std::abs(p.z)>1e8) throw std::invalid_argument("Cluster size too small for world coordinates");
+-    const Vec3 q=p*2;
+-    p=p+Vec3{valueNoise(q,s.clusterSeed)-0.5,valueNoise(q,s.clusterSeed+1)-0.5,valueNoise(q,s.clusterSeed+2)-0.5}*(s.clusterRoughness*1.5);
+-    const int x=static_cast<int>(std::floor(p.x)),y=static_cast<int>(std::floor(p.y)),z=static_cast<int>(std::floor(p.z));
+-    double first=std::numeric_limits<double>::infinity(),second=first;
+-    std::size_t a=0,b=0;
+-    for(int dz=-1;dz<=1;++dz) for(int dy=-1;dy<=1;++dy) for(int dx=-1;dx<=1;++dx) {
+-        const auto h=cellHash(x+dx,y+dy,z+dz,s.clusterSeed);
+-        const Vec3 site{ x+dx+0.25+0.5*hashUnit(h),y+dy+0.25+0.5*hashUnit(h+1),z+dz+0.25+0.5*hashUnit(h+2)};
+-        const double d=length(p-site);const auto group=groupCDF.empty()?mix(h+3)%groups:weightedIndex(groupCDF,hashUnit(h+3));
+-        if(d<first) {second=first;b=a;first=d;a=group;}
+-        else if(d<second) {second=d;b=group;}
+-    }
+-    const double edgeChance=s.clusterBlur>0?0.5*std::max(0.0,1-(second-first)/s.clusterBlur):0;
+-    if(rng.next()<edgeChance) a=b;
+-    if(rng.next()<s.clusterNoise) {const double u=rng.next();a=groupCDF.empty()?static_cast<std::size_t>(u*groups):weightedIndex(groupCDF,u);}
+-    return a;
+-}
++#include "cluster.inc"
+ }
+ #include "spacing.inc"
+ #include "orientation.inc"
+@@ -194,6 +177,7 @@ std::size_t diversityGroup(Vec3 p,const Settings& s,std::size_t groups,Random& r
+ #include "edge_border.inc"
+ Vec3 Instance::transformPoint(Vec3 p) const { return position+(xAxis*p.x+yAxis*p.y+zAxis*p.z)*scale; }
+ std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settings& s) {
++    detail::recordComputeStats({});
+     if(s.linePattern&&std::any_of(s.lineBands.begin(),s.lineBands.end(),[](const LineBand& b){return b.kind==6;}))return scatter(surface,prepareEdgeRows(s));
+     if((s.collisionEnabled&&(!std::isfinite(s.collisionRadius)||s.collisionRadius<=0)) ||
+        (s.relaxEnabled&&(!std::isfinite(s.relaxSpacing)||s.relaxSpacing<=0||!std::isfinite(s.relaxStrength)||s.relaxStrength<0||s.relaxStrength>1||s.relaxIterations>100)))
+@@ -275,11 +259,51 @@ std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settin
+     std::vector<std::pair<Vec3,std::size_t>> anchors;
+     for(std::size_t j=0;j<s.lineBands.size();++j) if(s.lineBands[j].kind==5)
+         for(const auto& path:s.lineBands[j].boundary.loops) for(auto p:path) anchors.emplace_back(p,j);
++    // Lazy and evaluation-owned: an unused band is never additionally prepared.
++    std::vector<std::unique_ptr<PreparedAnalyzerBand>> preparedBands(bands.size());
++    const auto inBand=[&](Vec3 p,std::size_t j) {
++        const auto& band=s.lineBands[j];
++        if(band.kind!=1 && band.kind!=2) return analyzerBand(p,band);
++        if(!preparedBands[j]) preparedBands[j]=std::make_unique<PreparedAnalyzerBand>(band);
++        return preparedBands[j]->contains(p);
++    };
++    // The common clustered population has one immutable query per sampled point.
++    // Keep sampling, source RNG and every transform draw in their original order.
++    // Density rejection, masks, projected movement and anchors retain the general
++    // ordered pipeline below. A tested cell-cache prototype was slower in serial
++    // mode; keep the original query math and use workers only for large batches.
++    struct ClusterCandidate { Vec3 position; std::uint32_t triangle; ClusterField field; };
++    std::vector<ClusterCandidate> clusterCandidates;
++    ComputeStats computeStats;
++    constexpr std::size_t parallelThreshold=4096;
++    const bool batchClusters=clustered && !moved && masks.empty() && s.distribution!=2 &&
++        anchors.empty() && s.count>=parallelThreshold && computeParticipants()>1;
++    ClusterQueries serialClusters(s,groupMembers.size(),groupCDF);
++    if(batchClusters) {
++        clusterCandidates.resize(s.count);
++        for(auto& candidate:clusterCandidates) {
++            const auto sampled=sampler.sample(placement);
++            candidate.position=sampled.first; candidate.triangle=sampled.second;
++        }
++        std::array<ComputeStats,64> rangeStats{};
++        const auto execution=detail::forRanges(clusterCandidates.size(),parallelThreshold,
++            [&](unsigned slot,std::size_t begin,std::size_t end) {
++                ClusterQueries queries(s,groupMembers.size(),groupCDF);
++                for(auto i=begin;i<end;++i) clusterCandidates[i].field=queries.field(clusterCandidates[i].position);
++                rangeStats[slot]={1,queries.queries,false};
++            });
++        computeStats.participants=execution.participants;
++        computeStats.threadLaunchFallback=execution.threadLaunchFallback;
++        for(unsigned slot=0;slot<execution.participants;++slot) {
++            computeStats.clusterQueries+=rangeStats[slot].clusterQueries;
++        }
++    }
+     std::uint32_t accepted=0;
+     for(std::uint64_t i=0;i<limit+anchors.size();++i) {
+         const bool single=i>=limit;
+         if(!single&&accepted>=s.count) {i=limit-1;continue;}
+-        auto [p,id]=sampler.sample(placement);
++        auto [p,id]=batchClusters ? std::make_pair(clusterCandidates[static_cast<std::size_t>(i)].position,
++                                                 clusterCandidates[static_cast<std::size_t>(i)].triangle) : sampler.sample(placement);
+         if(single) {
+             const auto target=anchors[static_cast<std::size_t>(i-limit)].first;
+             double best=INFINITY;
+@@ -315,7 +339,7 @@ std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settin
+         if(s.linePattern) {
+             const std::vector<std::uint32_t>* members=nullptr;
+             for(std::size_t j=0;j<bands.size();++j) if(single ? j==anchors[static_cast<std::size_t>(i-limit)].second :
+-                (bands[j]?bands[j]->strokeBand(p,s.lineBands[j].width,s.lineBands[j].inside):analyzerBand(p,s.lineBands[j]))) {
++                (bands[j]?bands[j]->strokeBand(p,s.lineBands[j].width,s.lineBands[j].inside):inBand(p,j))) {
+                 members=&bandMembers[j];
+                 // Separate RNG: stroke sizing never shifts placements or the XYZ random stream.
+                 Random strokeRandom(s.seed ^ static_cast<std::uint32_t>(i*2654435761u) ^ 0x9e3779b9u);
+@@ -325,7 +349,8 @@ std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settin
+             if(members) emit=choose(*members,sourceRandom,source);
+             else emit=false;
+         } else if(clustered) {
+-            const auto group=diversityGroup(p,s,groupMembers.size(),diversity,groupCDF);
++            const auto group=batchClusters ? diversityGroup(clusterCandidates[static_cast<std::size_t>(i)].field,s,groupMembers.size(),diversity,groupCDF) :
++                serialClusters.group(p,diversity);
+             const auto& members=groupMembers[group];
+             emit=choose(members,sources.next(),source);
+         } else emit=choose(allSources,sources.next(),source);
+@@ -345,7 +370,7 @@ std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settin
+                 if(s.lineBands[j].kind==5) {
+                     for(const auto& path:s.lineBands[j].boundary.loops) for(auto anchor:path)
+                         if(length(p-anchor)<1e-7) return static_cast<int>(j);
+-                } else if(bands[j]?bands[j]->strokeBand(p,s.lineBands[j].width,s.lineBands[j].inside):analyzerBand(p,s.lineBands[j])) return static_cast<int>(j);
++                } else if(bands[j]?bands[j]->strokeBand(p,s.lineBands[j].width,s.lineBands[j].inside):inBand(p,j)) return static_cast<int>(j);
+             }
+             return -1;
+         };
+@@ -368,6 +393,10 @@ std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settin
+         };
+         spacePoints(result,surface,s,allowed);
+     }
++    if(!batchClusters) {
++        computeStats.clusterQueries=serialClusters.queries;
++    }
++    detail::recordComputeStats(computeStats);
+     return result;
+ }
+ #include "final.inc"
+@@ -394,4 +423,4 @@ std::vector<PreviewPoint> pointCloud(const std::vector<Instance>& instances,
+     return result;
+ }
+ }
+-
++
+diff --git a/AminScatter/tools/ui/generate.cjs b/AminScatter/tools/ui/generate.cjs
+index a3bc5af..d4b4ad8 100644
+--- a/AminScatter/tools/ui/generate.cjs
++++ b/AminScatter/tools/ui/generate.cjs
+@@ -138,17 +138,19 @@ fs.writeFileSync('scripts/AminScatterObject.ms',(header+helper+factories+contain
+  text=require('./street-layout.cjs')(text);
+  text=require('./activation.cjs')(text);
+  text=require('./performance.cjs')(text);
++ text=require('./compute-performance.cjs')(text);
++ text=require('./viewport-performance.cjs')(text);
+  text=require('./responsive.cjs')(text);
+  text=require('./trace.cjs')(text);
+  fs.writeFileSync('scripts/AminScatterObject.ms',text);
+ }
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
++
++
++
++
++
++
++
++
++
++
+diff --git a/AminScatter/tools/ui/trace.cjs b/AminScatter/tools/ui/trace.cjs
+index 580a51c..62a7ad5 100644
+--- a/AminScatter/tools/ui/trace.cjs
++++ b/AminScatter/tools/ui/trace.cjs
+@@ -20,7 +20,7 @@ module.exports = function trace(s) {
+     replace(next,wrapper+next);
+   }
+   wrap('externalChanged',' changedNodes','    fn invalidateLive', 'cspImpl_externalChanged changedNodes','external_invalidation','("changed="+(answer as string))');
+-  wrap('placements',' plants previewOnly:false rawOnly:false finalPass:undefined','    fn refreshPreview = (','cspImpl_placements plants previewOnly:previewOnly rawOnly:rawOnly finalPass:finalPass','placements','""');
++  wrap('placements',' plants previewOnly:false rawOnly:false finalPass:undefined','    fn refreshPreview = (','cspImpl_placements plants previewOnly:previewOnly rawOnly:rawOnly finalPass:finalPass','placements','#("",answer.count,previewOnly,rawOnly,finalPass!=undefined)');
+   wrap('refreshPreview','','    fn checkAnalyzerRevision = (','cspImpl_refreshPreview()','preview_rebuild','#(previewError,generatedCount,cachedPointCount,previewBuildCount)');
+   replace('    fn cacheSnapshot = (','    fn performanceTraceVersion = 1\n    fn cacheSnapshot = (');
+   replace('fn AminScatterLiveChanged event handles = (','fn AminScatterLiveChanged event handles = (\n    if CyrusPerfTraceInput!=undefined do try(CyrusPerfTraceInput "scatter_input_received" event handles)catch()');
+diff --git a/docs/Max_2027_Installation.md b/docs/Max_2027_Installation.md
+index 2c512e4..345a866 100644
+--- a/docs/Max_2027_Installation.md
++++ b/docs/Max_2027_Installation.md
+@@ -1,15 +1,15 @@
+ # Cyrus Scatter — install and use in 3ds Max 2027
+ 
+-**Build date:** 2026-09-28. **Tested host:** 3ds Max 2027.1, version 29.1.0.11426.
++**Current candidate:** 0.62, built 2026-10-01. **Tested host:** 3ds Max 2027.1, version 29.1.0.11426. The earlier 0.61 viewport, 0.60 CPU and 0.59 compatibility packages are preserved.
+ 
+-This is a Max 2027 compatibility build of the current CPU implementation. The performance roadmap's multithreading and GPU work is still future work.
++This viewport candidate defers layer synchronization during held input, then uses the complete synchronization path on redraw after release. Its [second-round report](Viewport_Performance_Round2_2026-10-01.md) records 33.1% less scatter callback time and 9.1% less total step wall time in the controlled held-input comparison. It includes the [0.61 native proxy batches](Viewport_Performance_Implementation_2026-10-01.md) and the earlier native source filtering/transforms, prepared closed boundary queries, bounded multicore cluster calculations and batched edit redraw requests documented in the [0.60 CPU report](Performance_Implementation_2026-10-01.md) and [upgrade test](Performance_Upgrade_Test_2026-10-01.md). Retained GPU display/instancing, GPU compute and asynchronous editing remain future work.
+ 
+ ## Install
+ 
+ 1. Save your current scene.
+ 2. In Max 2027 choose **Scripting > Run Script**.
+-3. Run [CyrusScatter-0.59-Max2027.mzp](../dist/CyrusScatter-0.59-Max2027.mzp).
+-4. For Surface Analyzer features, also run [CyrusSurfaceAnalyzer-0.14-Max2027.mzp](../dist/CyrusSurfaceAnalyzer-0.14-Max2027.mzp).
++3. Run [CyrusScatter-0.62-Max2027.mzp](../dist/CyrusScatter-0.62-Max2027.mzp).
++4. For Surface Analyzer features, install [CyrusSurfaceAnalyzer-0.14-Max2027.mzp](../dist/CyrusSurfaceAnalyzer-0.14-Max2027.mzp) if it is not already installed; its version is unchanged.
+ 5. Close and **restart Max**. Native modules become available at startup.
+ 6. Open **Create > Geometry**, choose the **Cyrus** category, then **Cyrus Scatter** or **Surface Analyzer**.
+ 
+@@ -42,12 +42,17 @@ To use the result as a scatter area, open a scatter layer's **Area > Surface Ana
+ ## Verification performed
+ 
+ - Built all three native modules against the genuine Max 2027 SDK with MSVC 14.38.33130 / compiler 19.38.33145, C++20, Windows SDK 10.0.19041.0, Release x64.
+-- All six scatter CTest suites and the Analyzer CTest suite passed.
++- All eight scatter CTest suites and the Analyzer CTest suite passed, including threading and prepared-boundary regressions.
+ - A separate Max 2027.1 batch process loaded extensions through a private plugin configuration and registered both scripts.
+ - Checked repeatable 200-instance native sampling, controller/layer placement, 400 point-preview samples, a 1,200-face box-proxy cache, CS Edit stack application, Analyzer execution, and scene save/reopen.
+ - MZP contents have SHA-256 manifests and ZIP integrity checks. Adjacent `.sha256` files fingerprint each package.
++- The CPU differential harness compares every ordered numeric field against frozen pre-performance sources. The saved artist-scene harness compares preview/render transforms and source IDs for both fixed edge moves and their single-Undo states. See the implementation report for exact results and measurement scope.
++- Separate Max fixtures check native filtering/transforms, serial/worker parity, actual queued SDK callbacks with preserved invalidation and one redraw request per batch, plus recorder 0.2.2 and trace/report exports.
++- The viewport fixture checks all three proxy shapes, exact position/shading/color parity, chunk boundaries, memory caps and fallback, cache collection, Manual refresh, mouse-held deferral, clone and save/reopen. In the supplied scene, all 37,704 triangles match the previous draw data exactly.
++- An isolated desktop comparison records 900 navigation steps with zero measured rebuilds and unchanged display counts. Median step time falls from 88.10 ms with the preserved native loop to 30.16 ms with batching. See the viewport report for Manual results, raw samples, visual differences and measurement boundaries.
++- The 0.62 script change passed fresh viewport, general Max and compute fixtures, including held/released surface changes and Undo/Redo. A separate 720-step comparison records the additional held-input gain with unchanged counts and zero measured rebuilds. Eight real mouse pan strokes provide supporting smoke evidence. Native binaries match 0.61 exactly; no experimental retained-mesh renderer is packaged.
+ 
+-Not yet verified: visual inspection of the interactive Modify panel/viewport, the installer dialogs in the normal user profile, final renderer/IR behavior, other Max 2027 updates, performance comparisons, or other host years. The test loaded the same binaries/scripts via isolated startup paths; it did not install into or manipulate the already-open Max session.
++Still pending for 0.62: the artist's full interactive Modify/CS Edit/Undo retest beyond the scoped fixtures, installer dialogs in the normal user profile, Corona 15 production/IR behavior, other Max updates/host years and 32 GB hardware qualification. Desktop navigation and mouse-held callbacks have been tested; neither calculation nor synchronous redraw measurements establish completed GPU frames. Tests load the binaries/scripts via isolated startup paths and leave the normal installed profile and original open Max session unchanged.
+ 
+ The synthetic saved scene is [build/max2027-smoke.max](../build/max2027-smoke.max); it is a smoke-test artifact, not a production scene. Native and batch logs are under `build/`.
+ 
+@@ -59,6 +64,8 @@ If Cyrus is missing after restart, check that the 2027 MZP was run, review the i
+ 
+ Scatter includes an installed `Uninstall.ms` under its userScripts folder. It removes its 2027 registration/startup entries and describes the restart procedure. Do not delete your original scene files or unrelated plugin folders.
+ 
++For the previous viewport candidate, use [CyrusScatter-0.61-Max2027.mzp](../dist/CyrusScatter-0.61-Max2027.mzp). For the pre-viewport build, install [CyrusScatter-0.60-Max2027.mzp](../dist/CyrusScatter-0.60-Max2027.mzp), restart and reopen the original saved test copy. For an exact pre-CPU-performance comparison, use [CyrusScatter-0.59-PrePerformance-Max2027.mzp](../dist/CyrusScatter-0.59-PrePerformance-Max2027.mzp); it restores the frozen native engine and tracing script. The ordinary [0.59 package](../dist/CyrusScatter-0.59-Max2027.mzp) remains available but predates some tracing script changes. Backward reopening of candidate-saved scenes has not been qualified.
++
+ ## Rebuild for developers
+ 
+ The SDK is a build dependency and is not redistributed in the MZP. The extracted SDK used here is under `build/tooling/max2027-sdk/Program Files/Autodesk/3ds Max 2027 SDK/maxsdk`. Its MSI was obtained from the official Autodesk APS page and verified with a valid Autodesk digital signature.
+@@ -68,8 +75,10 @@ From the repository root:
+ ```powershell
+ python tools/build_max.py --max-year 2027 --sdk-root "F:\Cursor\_Cyrus_Apps\CyrusScatter\build\tooling\max2027-sdk\Program Files\Autodesk\3ds Max 2027 SDK\maxsdk"
+ python tools/test_max2027.py
++python tools/test_compute_performance.py
++python tools/test_viewport_performance.py
+ ```
+ 
+-The build script supports explicit compiler/SDK paths via `--help`, runs native tests before packaging, and uses a pinned NMake environment because CMake's Visual Studio instance discovery failed on this machine. The shared CMake module rejects a mismatched SDK year. Max 2026 configuration is retained but was not rebuilt or runtime-tested during this 2027 task; 2024/2025 ports remain future work.
++The build script regenerates the owned Scatter script using Node.js before compiling and packaging, preventing a stale/missing generated script from entering a fresh build. Developers need Node.js on PATH or can pass `--node` with its executable path; MZP users do not need it. The script supports explicit compiler/SDK paths via `--help`, runs native tests before packaging, and uses a pinned NMake environment because CMake's Visual Studio instance discovery failed on this machine. The shared CMake module rejects a mismatched SDK year. The separate [Max 2026 handoff](../Boss%20Handoff%20-%20Max%202026/START%20HERE.txt) was subsequently built against Autodesk's Max 2026 SDK, with all nine native suites passing. Its installers and interactive behavior still require testing in Max 2026, which is not installed here; 2024/2025 ports remain future work.
+ 
+-A pre-change source backup is stored at `build/baseline-before-max2027.zip`. No Git commands or subagents were used.
++A source backup from the earlier host-compatibility work is stored at `build/baseline-before-max2027.zip`. The viewport change also preserves its starting workspace files in `build/viewport-optimization-2026-10-01/before-viewport-changes.zip`.
+diff --git a/docs/Performance_Baseline_Tool.md b/docs/Performance_Baseline_Tool.md
+index 468fe9f..cb24f61 100644
+--- a/docs/Performance_Baseline_Tool.md
++++ b/docs/Performance_Baseline_Tool.md
+@@ -1,10 +1,10 @@
+ # Cyrus performance baseline recorder
+ 
+-**October 1 update:** Recorder 0.2 adds opt-in per-build and Analyzer tracing for spline edits. Recorder 0.2.1 corrects successive edit IDs and the report recovers existing 0.2.0 recordings. See [Detailed edit tracing and installation](Performance_Edit_Tracing.md) and the [first detailed heavy-scene review](Spline_Edit_Trace_2026-10-01.md). The original 0.1 measurements below remain scoped to their historical verification; initial tracing installation requires the updated plugin scripts and a Max restart. Updating an existing tracing recorder to 0.2.1 only requires stopping/closing the recorder and running its script again.
++**October 1 update:** Recorder **0.2.2** retains the 0.2 tracing and 0.2.1 edit-ID correction, and records optional CPU thread policy, native source-helper availability and callback batch counters in the manifest. Older native engines remain usable. See [Detailed edit tracing](Performance_Edit_Tracing.md), the [heavy-scene review](Spline_Edit_Trace_2026-10-01.md), and the [0.60 upgrade test](Performance_Upgrade_Test_2026-10-01.md). Updating only the recorder requires stopping/closing it and running its script again. Installing the new native performance build requires its MZP and a Max restart.
+ 
+-**Started:** 2026-09-30. **First target:** 3ds Max 2027, with the artist's Corona 15 scene. **Status:** implemented; synthetic Max 2027.1 smoke test and eight report checks passed. Heavy-scene and Corona measurements are pending.
++**Started:** 2026-09-30. **First target:** 3ds Max 2027, with the artist's Corona 15 scene. **Current status:** recorder 0.2.2, synthetic Max 2027.1 fixtures and 14 report checks passed. Heavy-scene edit traces and isolated CPU comparisons exist; the 0.60 candidate's interactive and Corona retests are pending. The original 0.1 verification below is historical.
+ 
+-This standalone tool records the current implementation before optimization. Run it with the existing Cyrus installation. The production plugin and its generated scripts are not replaced by this tool.
++This standalone tool records the selected installed build for baseline/candidate comparisons. The recorder itself does not replace the production plugin or its generated scripts.
+ 
+ ## Start here — a short trial on your scene
+ 
+@@ -34,7 +34,7 @@ Default result location: [build/performance-runs](../build/performance-runs). Ev
+ | Optional Corona VFB values | Manually enter parsing, geometry and rendering seconds, passes and noise. Blank means unavailable. These are whole-scene renderer values and are retained separately. |
+ | Identity/context | Saved-scene SHA-256, loaded module files, measurement tool files, installed script candidate, Max version, available Corona version, CPU/GPU model/driver, RAM, OS, active power scheme, scene units/frame, viewport and Cyrus settings. |
+ 
+-GPU utilization, kernel timings, exact first-visible-frame latency, exact Cyrus render-preparation duration, automatic camera-path playback and native stage profiling remain future additions. This version does not implement threading or GPU computation.
++GPU utilization, kernel timings, exact first-visible-frame latency, exact Cyrus render-preparation duration, automatic camera-path playback and native stage profiling remain future additions. The recorder itself does not implement threading or GPU computation; the installed 0.60 plugin can use bounded CPU cluster workers.
+ 
+ The file fingerprints describe disk content. An installed script file is a candidate, not proof of which script version was loaded into memory. Start Max fresh with the intended installation for trustworthy build identity. A saved scene fingerprint also cannot describe unsaved edits or changing external assets.
+ 
+diff --git a/docs/Performance_Edit_Tracing.md b/docs/Performance_Edit_Tracing.md
+index 0ccc1cd..6bab407 100644
+--- a/docs/Performance_Edit_Tracing.md
++++ b/docs/Performance_Edit_Tracing.md
+@@ -1,9 +1,11 @@
+-# Detailed spline-edit tracing — recorder 0.2.1
++# Detailed surface/spline-edit tracing — recorder 0.2.2
+ 
+-This adds optional synchronous timing hooks to the Scatter and Surface Analyzer scripts, plus a local recorder and report. Calculation algorithms, class IDs, saved parameters and native binaries are unchanged. Hooks are inactive when the recorder is stopped. The generator owns the Scatter changes through `tools/ui/trace.cjs`; do not edit its generated script alone.
++This adds optional synchronous timing hooks to the Scatter and Surface Analyzer scripts, plus a local recorder and report. The original tracing-only change preserved algorithms and binaries. The current Scatter 0.60 package also includes the [CPU performance implementation](Performance_Implementation_2026-10-01.md). Hooks are inactive when the recorder is stopped. The generator owns Scatter timing through `tools/ui/trace.cjs`; do not edit its generated script alone.
+ 
+ ## Install once, then restart Max
+ 
++**For the current performance test, install the complete 0.60 MZP and restart as described in the [upgrade test](Performance_Upgrade_Test_2026-10-01.md). Its Scatter script already includes tracing.** The script-only installer below cannot upgrade the native engine; it rejects unknown installed script hashes, including some intermediate tracing builds. Use the complete package for this comparison.
++
+ 1. Save your work. Run [Install-CyrusPerformanceTracing.ms](../tools/performance/Install-CyrusPerformanceTracing.ms) using **Scripting > Run Script**.
+ 2. Click **Install tracing scripts for next Max start**. It preflights both installed scripts against the tested originals/current files, backs them up, copies the tracing scripts and verifies their hashes. An unknown installed version is rejected before either file is changed.
+ 3. Save and close Max, then reopen Max and your saved test scene. The installer deliberately does not redefine classes in your open scene. Installing without restarting is insufficient.
+@@ -24,6 +26,8 @@ For multiple repetitions, use descriptive edit names and start from the same sav
+ 
+ **0.2.1 recorder correction:** successive edits now receive IDs 1, 2, 3, etc. Recorder 0.2.0 accidentally reset the ID after Result visible. The report recovers older recordings by matching marker occurrences, labels and timestamps, preserving their raw IDs. After stopping and closing the recorder, run `CyrusPerformanceMonitor.ms` again to load this correction. Existing tracing installations need no reinstall or Max restart for this recorder-only update. The [first detailed heavy-scene review](Spline_Edit_Trace_2026-10-01.md) documents the recovered three-edit recording.
+ 
++**0.2.2 context:** the manifest adds `cpu_thread_request`, `native_source_filter`, `native_source_transforms`, and `callback_batch_stats_at_start` where available. A request of 0 means automatic (up to four total CPU participants in 0.60); it does not mean zero workers. Callback counters describe batches and requested redraws, not completed viewport frames. Placement end metadata now includes the result count and preview/raw/final-pass flags. Native compute diagnostics describe the latest call on the calling thread and must not be attributed to a layer when a dependency ran afterwards.
++
+ ## What the new data means
+ 
+ | Data | What is measured | Limit |
+diff --git a/docs/Performance_Roadmap_2026-09-28/04_CPU_Optimization_Plan.md b/docs/Performance_Roadmap_2026-09-28/04_CPU_Optimization_Plan.md
+index f94d3f5..7c41827 100644
+--- a/docs/Performance_Roadmap_2026-09-28/04_CPU_Optimization_Plan.md
++++ b/docs/Performance_Roadmap_2026-09-28/04_CPU_Optimization_Plan.md
+@@ -4,6 +4,8 @@
+ 
+ ## C01 — Prepare boundary queries once
+ 
++**October 1 implementation:** evaluation-owned preparation now covers closed Analyzer band kinds 1/2; boundary orientation no longer copies an entire band for each row. Native source policy filtering and source transforms also moved out of per-row MAXScript calls. See the [implementation report](../Performance_Implementation_2026-10-01.md) for measured scope. General segment indexing and projected movement acceleration remain future tasks.
++
+ **Files:** [scatter.cpp](../../AminScatter/src/scatter.cpp), [final.inc](../../AminScatter/src/final.inc), [orientation.inc](../../AminScatter/src/orientation.inc), [edge_border.inc](../../AminScatter/src/edge_border.inc), [boundary_falloff.inc](../../AminScatter/src/boundary_falloff.inc).
+ 
+ Introduce immutable prepared metadata owned by the current evaluation: validated loop ranges, bounds, projected coordinates, normals, edge masks and original segment IDs. First remove `outwardAt`'s full `LineBand` copy using a kind override that does not mutate the caller. Cache `AreaMask` preparation where predicates repeatedly reconstruct it; the present object references its area rather than copying it.
+diff --git a/docs/Performance_Roadmap_2026-09-28/05_Multithreading_Architecture.md b/docs/Performance_Roadmap_2026-09-28/05_Multithreading_Architecture.md
+index 54b7475..ffa6afd 100644
+--- a/docs/Performance_Roadmap_2026-09-28/05_Multithreading_Architecture.md
++++ b/docs/Performance_Roadmap_2026-09-28/05_Multithreading_Architecture.md
+@@ -2,6 +2,8 @@
+ 
+ **Proposed design:** a bounded executor for independent native work, with a serial implementation for reference/fallback. Begin with synchronous parallel calls. Multithreading can shorten an operation while the UI still waits; asynchronous UI work is a separate milestone.
+ 
++**October 1 implementation:** 0.60 uses a small private synchronous `std::thread` executor for eligible clustered field queries. Automatic mode uses at most four total participants; serial mode and unsupported-pipeline fallback remain available. Sampling and RNG consumption retain their original order. No oneTBB runtime is added. The [implementation report](../Performance_Implementation_2026-10-01.md) records the measured crossover, byte comparisons and remaining contention/host qualification. The oneTBB section below is a retained alternative proposal.
++
+ ## Host boundary
+ 
+ Autodesk documents single-threaded reference/node evaluation and broader SDK thread-safety limits. This roadmap conservatively confines scene and runtime access to the host thread. [Autodesk thread safety](https://help.autodesk.com/cloudhelp/2026/ENU/MAXDEV-Developer/files/best_practices/thread_safety.html)
+diff --git a/docs/Performance_Roadmap_2026-09-28/06_GPU_OpenCL_Feasibility.md b/docs/Performance_Roadmap_2026-09-28/06_GPU_OpenCL_Feasibility.md
+index 4f507df..17f28b4 100644
+--- a/docs/Performance_Roadmap_2026-09-28/06_GPU_OpenCL_Feasibility.md
++++ b/docs/Performance_Roadmap_2026-09-28/06_GPU_OpenCL_Feasibility.md
+@@ -2,6 +2,8 @@
+ 
+ **Decision:** include a real OpenCL experiment after a measured CPU baseline and improvement pass. No GPU speedup or device compatibility is currently demonstrated. CPU operation remains available without a compute runtime.
+ 
++**October 1 decision:** the first measured improvements are native source processing, boundary preparation, bounded CPU queries and redraw batching. OpenCL/CUDA compute is not enabled in 0.60. Measure the remaining interactive delay before choosing a kernel: supported Max 2027 viewport instancing is now a concrete next investigation, while GPU compute must still earn its transfer-inclusive benefit. See the [implementation report](../Performance_Implementation_2026-10-01.md).
++
+ ## Why GPU details matter
+ 
+ A GPU path needs supported device features, adequate available memory, and a driver/runtime that can execute the chosen kernel. Kernel execution can be fast while data conversion, transfers, synchronization, and host drawing still make the complete operation slower. A GPU also shares resources with Max's viewport and possibly the renderer.
+diff --git a/docs/Performance_Roadmap_2026-09-28/07_Implementation_Backlog_and_Gates.md b/docs/Performance_Roadmap_2026-09-28/07_Implementation_Backlog_and_Gates.md
+index 183fafc..30bece2 100644
+--- a/docs/Performance_Roadmap_2026-09-28/07_Implementation_Backlog_and_Gates.md
++++ b/docs/Performance_Roadmap_2026-09-28/07_Implementation_Backlog_and_Gates.md
+@@ -1,6 +1,6 @@
+ # 07 — Implementation backlog and release gates
+ 
+-**All tasks below are NOT STARTED.** The documents and source snapshot are the completed planning deliverable. Task IDs describe future work; no listed feature switch, benchmark command, or export API should be assumed to exist.
++**Original status, 2026-09-28:** all tasks were NOT STARTED. **October 1 update:** the first Max 2027 CPU candidate implements parts of C01/C04 and T01/T02, plus redraw batching. Reproducible native and saved-scene comparisons now exist. See the [implementation report](../Performance_Implementation_2026-10-01.md) and [results ledger](09_Results_and_Decisions.md) for exact evidence and remaining gates. The task definitions below remain the broader plan; partial implementation does not complete full support or release qualification.
+ 
+ ## M0 — Reproducible builds and host support
+ 
+diff --git a/docs/Performance_Roadmap_2026-09-28/09_Results_and_Decisions.md b/docs/Performance_Roadmap_2026-09-28/09_Results_and_Decisions.md
+index 43ad11d..172b07d 100644
+--- a/docs/Performance_Roadmap_2026-09-28/09_Results_and_Decisions.md
++++ b/docs/Performance_Roadmap_2026-09-28/09_Results_and_Decisions.md
+@@ -2,6 +2,47 @@
+ 
+ **Status on 2026-09-28: NOT RUN.** No measured speedups, validated device support, or performance-qualified Max versions exist from this documentation pass. Replace empty fields only with actual evidence.
+ 
++**October 1 update:** a measured Max 2027 CPU candidate is implemented. The [implementation report](../Performance_Implementation_2026-10-01.md), [persistent evidence](../Performance_Evidence_2026-10-01.json) and [upgrade test](../Performance_Upgrade_Test_2026-10-01.md) are the current engineering record. The original requirements, broad case table and design decisions below retain their historical context.
++
++## Measured local candidate — 2026-10-01
++
++**Scope:** synchronous CPU calculation and preview preparation in a saved heavy scene. Five warm measured full refreshes per state. This excludes automatic event scheduling, Analyzer duration, GPU frame completion and Corona rendering. Reference measurements are preserved from `build/scene-benchmark-v2-final`; the final binary is measured in `build/scene-benchmark-v4-final` after verifying the identical scene/recipe, trial count and frozen engine/script identities.
++
++| Operation / state | Original median ms | 0.60 median ms | Time reduction | Ordered preview/render parity | Decision |
++|---|---:|---:|---:|---|---|
++| Controller refresh / base | 4,053.01 | 1,060.39 | 73.8% | Exact | Local test candidate |
++| Controller refresh / right +150 cm | 4,022.92 | 1,095.00 | 72.8% | Exact | Local test candidate |
++| Controller refresh / one Undo right | 4,020.33 | 1,169.07 | 70.9% | Exact | Local test candidate |
++| Controller refresh / left −150 cm | 3,975.95 | 1,030.58 | 74.1% | Exact | Local test candidate |
++| Controller refresh / one Undo left | 4,025.55 | 1,007.98 | 75.0% | Exact | Local test candidate |
++| Clover placement / base | 1,605.39 | 131.76 | 91.8% | Exact | Retain source processing/CPU changes |
++| Native 64k cluster / automatic | 38.54 | 19.70 | 48.9% | Exact double fields | Retain bounded parallel query |
++
++All 60 saved-scene preview/render outputs match, including their row order, transforms and source indices. Every timed native output in the 17-case sweep matches the frozen reference at limits 1/2/4/8/12/0. Eight Scatter native suites, one Analyzer suite, Max source/worker/batch and save/reopen fixtures, recorder exports and 14 Python report regressions pass. Full refresh maxima across the five states are 1.04–1.22 seconds for the candidate; process peak memory was not captured by this harness. See the implementation report for raw sample paths, hashes and limits.
++
++| ID | Measured decision | Remaining gate / reopening condition |
++|---|---|---|
++| D07 | Accept stable native source policy filtering and source transforms for 0.60 local testing | Artist appearance/point-policy/Corona retest; other hosts |
++| D08 | Accept prepared closed-band constants and remove per-point LineBand copies | Larger boundaries, full orientation/CS Edit/lifecycle matrix |
++| D09 | Use a private synchronous executor, automatic maximum four total participants | Corona contention and other CPU configurations; higher limits remain testable |
++| D10 | Reject cluster cell caching and intermediate serial-return regressions | Only reopen with a demonstrated complete-operation benefit |
++| D11 | Coalesce redraw within each Scatter node-event batch | Verify actual preview counts per edit; Analyzer batches can still trigger extra work |
++| D12 | Defer OpenCL/CUDA compute; investigate remaining host/display costs and supported viewport instancing | New trace identifies a sufficiently large independent stage; GPU transfer-inclusive gate |
++
++This completes useful parts of C01/C04/T01/T02 and the local benchmark infrastructure. It does not complete the entire M0–M4 host, renderer, memory or lifecycle qualification. Near-real-time interactive editing remains the next measured target.
++
++## First artist retest of 0.60 — 2026-10-01
++
++Recording `20261001-104244-f41dc684` uses the intended native module, recorder 0.2.2 and automatic CPU mode. Its saved scene hash, starting settings and initial counts match the earlier saved-scene recording. All 654 stages pair correctly with zero trace errors/loss; four named edit windows and 292 resource samples finish normally. See the [artist retest review](../Performance_Artist_Retest_2026-10-01.md) for the raw report and limits.
++
++Clover preview median is **304.74 ms versus 1,496.30 ms** in the earlier manual session. Analyzer inclusive median is **1,108.31 ms versus 3,589.39 ms**, while child-excluded medians remain approximately 70 ms. These are observations from different movements/output populations, not an identical-edit speedup qualification. The artist reports an immediately noticeable improvement.
++
++There are 111 layer previews across nine Analyzer calls, with additional repeated passes during revert. Final generated counts are 62,646 versus 52,143 at start; the unspecified Undo sequence does not verify return to original geometry. **Retain this useful exploratory recording and investigate dependency/rebuild ordering next.** Fixed three-repeat interactive edge/Undo, renderer contention and longer lifecycle/memory qualification remain open. Sampled peak private memory is 6.60 GiB; it is not a 32 GB qualification result.
++
++## Subsequent viewport investigation - 2026-10-01
++
++The [viewport guideline and evidence](../Viewport_Performance_Investigation_2026-10-01.md) records 3,900 measured steps across main, display-budget, profiling, prototype and control suites: 3,540 have no preview error; 360 Point Cloud steps retain a known BushesCenter sampling failure and incomplete display. In the main matrix, original Real-time and Manual modes measured 90.52 ms and 88.98 ms median per navigation step, with zero preview, Analyzer or PFlow rebuilds. Disabling only Scatter drawing measured 11.23 ms. A matched-count world-space batch prototype retaining original script plumbing measured 31.56 ms. Prioritize bounded proxy batching and a prepared redraw snapshot before GPU placement compute. These measurements include message processing and are not GPU-completed FPS; no production viewport fix was installed. Renderer and broader lifecycle qualification remain open.
++
+ ## Requirements recorded from the user
+ 
+ | Requirement | Decision |
+@@ -26,7 +67,7 @@ Earlier inspection found CMake 3.31.6, Python 3.11.13 and Node 22.14.0. A core C
+ | 2024 | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | Pending |
+ | 2025 | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | Pending |
+ | 2026 | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | Source target only |
+-| 2027 | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | Pending |
++| 2027 | Frozen reference | 0.60 local candidate | Scatter 8 / Analyzer 1 passed | Max 2027.1 batch passed | NOT RUN | Artist retest / broader qualification pending |
+ 
+ ## Experiment card — copy for each task
+ 
+@@ -59,7 +100,7 @@ Reason / next action / person making decision:
+ Actual engineering effort:
+ ```
+ 
+-## Comparison table — no values entered yet
++## Broader qualification case table — still pending
+ 
+ | Case / operation | Baseline ms median / p95 | Candidate ms median / p95 | Total-time reduction | Peak memory before / after | Output parity | Decision |
+ |---|---|---|---|---|---|---|
+diff --git a/docs/Performance_Roadmap_2026-09-28/12_Viewport_Implementation_Plan.md b/docs/Performance_Roadmap_2026-09-28/12_Viewport_Implementation_Plan.md
+index 7e016ce..2a2ac4f 100644
+--- a/docs/Performance_Roadmap_2026-09-28/12_Viewport_Implementation_Plan.md
++++ b/docs/Performance_Roadmap_2026-09-28/12_Viewport_Implementation_Plan.md
+@@ -20,6 +20,8 @@ The native point budget currently allows 1–500,000 points. Geometry accepts up
+ 
+ ## V02 — Geometry draw cost
+ 
++**Measured priority update, 2026-10-01:** the [saved-scene navigation investigation](../Viewport_Performance_Investigation_2026-10-01.md) found zero redraw-induced rebuilds and 6,284 per-instance triangle batches per callback. A world-space batching prototype retaining the original script plumbing reduced median navigation-step wall time from 90.52 ms to 31.56 ms, while still executing the existing face-shading loop. Prioritize bounded proxy batching, then repeated script work and retained display integration. The shade-cache proposal below remains a supporting experiment. Prototype visual parity and production integration are not yet qualified; do not apply expanded geometry without a memory budget, especially in Mesh mode.
++
+ The current draw loop recomputes transformed normals and a fixed-light shading value per face and instance on every redraw, then submits triangles through GraphicsWindow. Measure CPU shading and host submission separately.
+ 
+ First candidate: cache the scalar shading factor per selected instance/face when source geometry or instance transforms change. Colors can be applied separately so selection/solid-color changes do not rebuild geometry. Account for negative and nonuniform scale; a simple normal transform may not reproduce the current cross-product result.
+diff --git a/docs/Performance_Roadmap_2026-09-28/README.md b/docs/Performance_Roadmap_2026-09-28/README.md
+index 36aa3df..faec767 100644
+--- a/docs/Performance_Roadmap_2026-09-28/README.md
++++ b/docs/Performance_Roadmap_2026-09-28/README.md
+@@ -1,6 +1,6 @@
+ # Cyrus Scatter performance roadmap
+ 
+-**Date:** 2026-09-28 · **Status:** implementation plan; application code unchanged; no performance results yet.
++**Date:** 2026-09-28 · **Original status:** implementation plan, application code unchanged. **October 1 update:** the first measured Max 2027 CPU candidate is implemented. Read the [implementation report](../Performance_Implementation_2026-10-01.md), [upgrade test](../Performance_Upgrade_Test_2026-10-01.md) and [results ledger](09_Results_and_Decisions.md). Remaining task descriptions retain their planning role.
+ 
+ ## What we are building toward
+ 
+diff --git a/docs/README.md b/docs/README.md
+index 40d244e..dbf5603 100644
+--- a/docs/README.md
++++ b/docs/README.md
+@@ -4,7 +4,7 @@
+ 
+ [Product strategy — 2026-09-29](Product_Strategy_2026-09-29/README.md) is the current guide for priorities, product direction, and verification status. It brings together the codebase review, performance work, licensing policy, artist workflows, renderer/studio requirements, and current Autodesk/Chaos research.
+ 
+-Read the [executive assessment](Product_Strategy_2026-09-29/01_Executive_Assessment.md), then the [master roadmap](Product_Strategy_2026-09-29/11_Master_Roadmap_and_Backlog.md). The next coding assignment is [Baseline and Trust](Product_Strategy_2026-09-29/12_First_Implementation_Milestone.md): reproducible scenes, diagnostics, investigation of concrete source risks, and an initial measured host/renderer baseline.
++Read the [executive assessment](Product_Strategy_2026-09-29/01_Executive_Assessment.md), then the [master roadmap](Product_Strategy_2026-09-29/11_Master_Roadmap_and_Backlog.md). [Baseline and Trust](Product_Strategy_2026-09-29/12_First_Implementation_Milestone.md) defines reproducible scenes, diagnostics, source-risk investigation and host/renderer qualification. Subsequent measured implementation work is recorded below; the dated strategy remains its planning reference.
+ 
+ The strategy package distinguishes source findings, completed tests, vendor capabilities, and proposed work. Its [evidence ledger](Product_Strategy_2026-09-29/02_Current_System_and_Evidence.md) records the current limits; its [documentation governance](Product_Strategy_2026-09-29/14_Documentation_Governance.md) reconciles older statements without rewriting historical reference packages.
+ 
+@@ -22,19 +22,23 @@ This is a future product/technology research track under the governing strategy.
+ 
+ ## Install the Max 2027 test build
+ 
+-See [Max 2027 installation and quick start](Max_2027_Installation.md) for the compiled MZP installers, usage steps, build commands and exact verification status. This subsequent compatibility build passed native tests and a Max 2027.1 batch smoke test. The dated documentation packages below preserve their original audit/planning status; performance optimizations remain planned work.
++See [Max 2027 installation and quick start](Max_2027_Installation.md) for the compiled MZP installers, usage steps, build commands and exact verification status. The current **0.62 viewport performance candidate** defers layer synchronization during held input. Its [second-round results and next renderer plan](Viewport_Performance_Round2_2026-10-01.md) record 33.1% less scatter callback time and 9.1% less total step wall time in a controlled held-input comparison. It includes the [0.61 proxy batching improvement](Viewport_Performance_Implementation_2026-10-01.md) and [0.60 CPU implementation](Performance_Implementation_2026-10-01.md); the CPU build's [upgrade test](Performance_Upgrade_Test_2026-10-01.md) and [artist editing retest](Performance_Artist_Retest_2026-10-01.md) remain historical evidence. Broader interactive editing, Undo and Corona qualification remain open.
++
++The separate [Max 2026 review folder](../Boss%20Handoff%20-%20Max%202026/START%20HERE.txt) contains version-specific Scatter 0.62 and Analyzer 0.14 installers, a self-contained demo saved in Max 2026 format, and a drawing comparison helper. Its SDK build and nine native suites passed. The demo and helper were checked in Max 2027; Max 2026 installation and runtime confirmation remain pending.
+ 
+ ## Detailed performance specification
+ 
++For slow camera navigation, start with the [0.62 follow-up investigation](Viewport_Performance_Round2_2026-10-01.md), then the [0.61 implementation report](Viewport_Performance_Implementation_2026-10-01.md) and [original measured investigation](Viewport_Performance_Investigation_2026-10-01.md). Testing `SaveSelect 2.max` isolated per-instance drawing overhead with zero navigation rebuilds; batching reduces submission batches from 6,284 to 44 while preserving 37,704 proxy triangles. The follow-up removes repeated synchronization while dragging and evaluates retained display as future work. Reports retain raw evidence and qualification limits. Their wall-time measurements are not completed-frame FPS claims; 0.62 is a packaged local test candidate, not a fully qualified release.
++
+ For controllers that cannot be reselected, see the [selection investigation and diagnostic selector](Selection_Diagnosis_2026-10-01.md). Disabling the viewport filter restored selection in the artist's scene; the document separates that confirmed result from the remaining icon-geometry concern.
+ 
+-Start measuring the current plugin with the [standalone performance baseline recorder](Performance_Baseline_Tool.md). It supplies a Max panel, explicit preview rebuild trials, independent process CPU/memory sampling, raw exports and guarded comparison reports. The first target is Max 2027 with the artist's Corona 15 scene; measuring that scene and qualifying renderer behavior remain required.
++Measure installed builds with the [standalone performance baseline recorder](Performance_Baseline_Tool.md). It supplies a Max panel, explicit preview rebuild trials, independent process CPU/memory sampling, raw exports and guarded comparison reports. The first target is Max 2027 with the artist's Corona 15 scene; calculation comparisons and an exploratory candidate editing retest now exist, while repeatable interactive edge/Undo and renderer qualification remain required.
+ 
+-For shape-edit responsiveness, use [Detailed edit tracing](Performance_Edit_Tracing.md), including its one-time installer and named-edit workflow. The [detailed surface-edit reviews](Spline_Edit_Trace_2026-10-01.md) validate tracing, recover an earlier recorder marker-ID defect and identify expensive nested clover calculations and repeated rebuild activity. The latest saved-scene run captures direct Editable Poly boundary-edge changes; its case label does not affect tracing, and its exact edit recipe remains unspecified. Read the [first preview trial](Performance_Baseline_2026-10-01.md) and [passive spline-edit trial](Spline_Edit_Trial_2026-10-01.md) for the earlier artist-scene evidence. Full renderer qualification remains pending.
++For shape-edit responsiveness, use [Detailed edit tracing](Performance_Edit_Tracing.md), including its one-time installer and named-edit workflow. The [detailed surface-edit reviews](Spline_Edit_Trace_2026-10-01.md) validate tracing, recover an earlier recorder marker-ID defect and identify expensive nested clover calculations and repeated rebuild activity. The [0.60 artist retest](Performance_Artist_Retest_2026-10-01.md) compares observed layer timings and identifies remaining repeated passes. These recordings capture direct Editable Poly boundary-edge changes; case labels do not affect tracing, and their exact manual edit recipes remain unspecified. Read the [first preview trial](Performance_Baseline_2026-10-01.md) and [passive spline-edit trial](Spline_Edit_Trial_2026-10-01.md) for the earlier artist-scene evidence. Full renderer qualification remains pending.
+ 
+ [Performance roadmap — 2026-09-28](Performance_Roadmap_2026-09-28/README.md) supplies detailed performance contracts and experiments under the current master roadmap. It covers scatter/editing, viewport, Surface Analyzer, render preparation, CPU algorithms, multithreading, optional OpenCL, Max 2024–2027 qualification, and the requested 32 GB RAM minimum.
+ 
+-Use its [backlog and gates](Performance_Roadmap_2026-09-28/07_Implementation_Backlog_and_Gates.md) for technical detail and the [manual test runbook](Performance_Roadmap_2026-09-28/08_Manual_Test_Runbook.md) for future test builds. Current progress and implementation order are reconciled in the new master roadmap. [Results and decisions](Performance_Roadmap_2026-09-28/09_Results_and_Decisions.md) currently contains no comparative performance results.
++Use its [backlog and gates](Performance_Roadmap_2026-09-28/07_Implementation_Backlog_and_Gates.md) for technical detail and the [manual test runbook](Performance_Roadmap_2026-09-28/08_Manual_Test_Runbook.md) for broader qualification. [Results and decisions](Performance_Roadmap_2026-09-28/09_Results_and_Decisions.md) links the October 1 comparisons and records which work is accepted for a local test build.
+ 
+ ## Reference packages
+ 
+@@ -42,6 +46,6 @@ Use its [backlog and gates](Performance_Roadmap_2026-09-28/07_Implementation_Bac
+ 2. [Licensing implementation package](CyrusScatter_Licensing_Implementation_Package_2026-09-27/README.md) — proposed licensing policy, integration, provider experiments and release work. Apply the newer [licensing policy reconciliation](Product_Strategy_2026-09-29/09_Licensing_and_Commercial_Strategy.md) before implementation. Keep enforcement changes separate from performance comparisons.
+ 3. [Original performance engineering research](Cyrus%20Scatter%20Performance%20Engineering%20Report.md) — preserved background research. Use the performance roadmap for coding guidance; its audit explains corrections, and its sources document replaces reliance on exported chat citation tokens or unavailable sandbox attachments.
+ 
+-The roadmap and licensing package describe proposed work, not completed features. The original documentation pass did not build or run the project. The subsequent Max 2027 compatibility work is recorded in the installation guide above. Other host ports, speedups, CPU threading and GPU support still require implementation and qualification.
++The dated roadmap and licensing package describe their original proposed work. The original documentation pass did not build or run the project. Subsequent Max 2027 compatibility, performance measurements and the first bounded CPU implementation are recorded in the installation and implementation guides above. Max 2024–2026 runtime qualification, the 32 GB test floor, renderer qualification, asynchronous editing and GPU compute remain pending.
+ 
+ The two older reference packages have their own `MANIFEST.md` and `diagrams/` directories. The performance package has a navigation table, an inline dependency diagram and `source_snapshot.json` with SHA-256 fingerprints for its local source baseline.
+diff --git a/docs/Spline_Edit_Trace_2026-10-01.md b/docs/Spline_Edit_Trace_2026-10-01.md
+index 55d1923..f902f36 100644
+--- a/docs/Spline_Edit_Trace_2026-10-01.md
++++ b/docs/Spline_Edit_Trace_2026-10-01.md
+@@ -105,3 +105,7 @@ Undo restored the corner-move output counts, not the initial counts. Counts alon
+ The artist identified the edited boundaries as the left and right edges. Screenshots show `Plane001` in Editable Poly Edge mode, with `Edge 10 Selected` visible in one view. This is direct polygon-surface editing; the suggested `heavy_spline_edit` name was only a descriptive label. The movement distances, coordinate axes, identity of both edges and number of Undo commands are not known. The trace contains multiple update cycles in the extension and Undo windows, but callback counts cannot establish how many artist actions caused them.
+ 
+ **Retain this as usable saved-scene diagnostic evidence and begin the focused code audit.** There is no need to repeat arbitrary dragging just to rename the case or tick a checkbox. Its consistent hotspots support inspecting clover dependency/cache reuse and rebuild scheduling. Exact movement details are needed for a reproducible before/after claim, so the first optimization experiment should specify or automate fixed edge IDs, offsets, coordinate space and one defined Undo transaction, recording that recipe along with starting geometry/output checks. Capture the reference with the current implementation and repeat the same procedure with the candidate. No numerical speedup is established by comparing this run to the earlier recordings, which used different starting geometry, edit sequences and recorder versions.
++
++## Subsequent 0.60 artist retest
++
++The [review of recording `20261001-104244-f41dc684`](Performance_Artist_Retest_2026-10-01.md) checks the upgraded engine, matching saved starting state and complete interactive trace. It records faster observed Clover stages and remaining rebuild activity, with the limits of comparing different manual edits. The sections above preserve the pre-upgrade diagnostic evidence.
+diff --git a/tools/build_max.py b/tools/build_max.py
+index 7954b3c..636ce34 100644
+--- a/tools/build_max.py
++++ b/tools/build_max.py
+@@ -8,6 +8,7 @@ import argparse
+ import hashlib
+ import json
+ import os
++import shutil
+ import subprocess
+ import zipfile
+ 
+@@ -54,6 +55,8 @@ def package(project, name, version, native_names, script_name, args, build_dir):
+             if path.name == 'install.ms' and ('28000' not in text or '2026' not in text):
+                 raise RuntimeError('Installer template changed: review host-year substitutions')
+             text = text.replace('2026', str(args.max_year)).replace('28000', str((args.max_year - 1998) * 1000))
++            if project == 'AminScatter':
++                text = text.replace('0.59', version)
+             text = text.replace('bin55', f'bin-max{args.max_year}-{native_id}')
+             text = text.replace('bin05', f'bin-max{args.max_year}-{native_id}')
+             if path.name == 'mzp.run':
+@@ -63,9 +66,12 @@ def package(project, name, version, native_names, script_name, args, build_dir):
+     payload['INSTALL.txt'] = (
+         f'{name} {version} - 3ds Max {args.max_year} x64\n'
+         'Run this MZP through Scripting > Run Script, then restart Max.\n'
+-        'This package contains the current CPU implementation, without the planned performance upgrades.\n'
++        + ('Viewport performance candidate: bounded proxy batches and deferred layer synchronization during held input.\n'
++           'Includes native source filtering/transforms, batched edit notifications, and bounded clustered queries.\n'
++           'Automatic clustered calculations use at most 4 total CPU participants. GPU compute is not enabled.\n'
++           if project == 'AminScatter' else 'The Analyzer algorithm is unchanged in this performance iteration.\n') +
+         'Create > Geometry > Cyrus, then select the tool and use Modify.\n'
+-        'Use scene copies for this initial compatibility build.\n'
++        'Use saved test scene copies to compare performance and verify output.\n'
+     ).encode('utf-8')
+     manifest = dict(product=name, version=version, max_year=args.max_year,
+                     toolset=args.tools_version, windows_sdk=args.windows_sdk,
+@@ -98,8 +104,14 @@ def main():
+     parser.add_argument('--tools-version', default='14.38.33130')
+     parser.add_argument('--windows-sdk', default='10.0.19041.0')
+     parser.add_argument('--output', type=Path, default=ROOT / 'dist')
++    parser.add_argument('--node', default='node', help='Node.js executable for regenerating the owned Scatter script')
+     args = parser.parse_args()
+     env = compiler_environment(args.vs_root, args.tools_version, args.windows_sdk)
++    node = shutil.which(args.node, path=env['PATH'])
++    if node is None:
++        raise SystemExit('Node.js is required to generate the Scatter script; install it or pass --node with its executable path')
++    print('Regenerating the Scatter script from its UI source...', flush=True)
++    subprocess.run([node, 'tools/ui/generate.cjs'], cwd=ROOT / 'AminScatter', env=env, check=True)
+     base = ROOT / 'build' / f'max{args.max_year}-release'
+     for project in ('AminScatter', 'CyrusSurfaceAnalyzer'):
+         dest = base / project
+@@ -108,7 +120,7 @@ def main():
+              f'-DMAXSDK_ROOT={args.sdk_root.resolve()}'], env)
+         run(['cmake', '--build', dest], env)
+         run(['ctest', '--test-dir', dest, '--output-on-failure'], env)
+-    package('AminScatter', 'Cyrus Scatter', '0.59', ['AminScatter.dlx', 'CyrusScatterEdit.dlm'],
++    package('AminScatter', 'Cyrus Scatter', '0.62', ['AminScatter.dlx', 'CyrusScatterEdit.dlm'],
+             'AminScatterObject.ms', args, base)
+     package('CyrusSurfaceAnalyzer', 'Cyrus Surface Analyzer', '0.14', ['CyrusSurfaceAnalyzer.dlx'],
+             'CyrusSurfaceAnalyzer.ms', args, base)
+diff --git a/tools/performance/CyrusPerformanceMonitor.ms b/tools/performance/CyrusPerformanceMonitor.ms
+index 27b5728..3210553 100644
+--- a/tools/performance/CyrusPerformanceMonitor.ms
++++ b/tools/performance/CyrusPerformanceMonitor.ms
+@@ -160,7 +160,11 @@ fn CSPStart target outputRoot label rendererNote caseId context frozenCopy start
+     local viewportInfo=#(try(viewport.getType() as string)catch("unknown"),try(viewport.GetRenderLevel() as string)catch("unknown"),
+         try(gw.getWinSizeX())catch(0),try(gw.getWinSizeY())catch(0),try(viewport.getTM() as string)catch("unknown"))
+     local manifest=CSPObject #(
+-        #("schema_version",1),#("tool_version","0.2.1"),#("tool_path",CSPToolPath),#("edit_trace_requested",traceEdits),
++        #("schema_version",1),#("tool_version","0.2.2"),#("tool_path",CSPToolPath),#("edit_trace_requested",traceEdits),
++        #("cpu_thread_request",try(cyrusScatterCPUThreads())catch(undefined)),
++        #("native_source_filter",try(cyrusFilterSourceRows!=undefined)catch(false)),
++        #("native_source_transforms",try(cyrusApplySourceTransforms!=undefined)catch(false)),
++        #("callback_batch_stats_at_start",try(CyrusScatterLiveBatchStats())catch(undefined)),
+         #("started_utc",CSPUtc()),#("pid",proc.Id),#("process_start_utc",(proc.StartTime.ToUniversalTime()).ToString "o"),
+         #("build_label",label),#("case_id",caseId),#("context",context),#("renderer_build_note",rendererNote),
+         #("scene_path",scene),#("scene_dirty",getSaveRequired()),#("frozen_copy_attested",frozenCopy),
+diff --git a/tools/test_max2027.py b/tools/test_max2027.py
+index 7b4bff6..88d7109 100644
+--- a/tools/test_max2027.py
++++ b/tools/test_max2027.py
+@@ -34,7 +34,7 @@ def main():
+                '-listenerlog', str(build / 'max2027-listener.log'),
+                '-log', str(build / 'max2027-session.log')]
+     with (build / 'max2027-batch-stdout.log').open('wb') as out, (build / 'max2027-batch-stderr.log').open('wb') as err:
+-        completed = subprocess.run(command, cwd=ROOT, stdout=out, stderr=err, startupinfo=startup)
++        completed = subprocess.run(command, cwd=ROOT, stdout=out, stderr=err, startupinfo=startup, timeout=240)
+     (build / 'max2027-batch-exit.txt').write_text(str(completed.returncode) + '\n')
+     report = result.read_text(encoding='utf-8-sig')
+     print(report)
+diff --git a/tools/test_performance_monitor.py b/tools/test_performance_monitor.py
+index e4c6ec8..28ddaa8 100644
+--- a/tools/test_performance_monitor.py
++++ b/tools/test_performance_monitor.py
+@@ -46,6 +46,11 @@ def main():
+     sys.path.insert(0, str(ROOT / "tools/performance"))
+     import compare_runs
+     data = compare_runs.load_run(run)
++    assert data["manifest"]["tool_version"] == "0.2.2"
++    assert data["manifest"]["cpu_thread_request"] == 0
++    assert data["manifest"]["native_source_filter"] is True
++    assert data["manifest"]["native_source_transforms"] is True
++    assert len(data["manifest"]["callback_batch_stats_at_start"]) == 5
+     assert data["statistics"]["n"] == 3 and data["failed"] == 0, data["statistics"]
+     assert data["sampler"]["status"] == "stopped" and data["resource_samples"] >= 2, data["sampler"]
+     assert data["observed_counter_resets"] >= 1

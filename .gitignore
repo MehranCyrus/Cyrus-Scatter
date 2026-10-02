@@ -13,6 +13,8 @@ $RECYCLE.BIN/
 *.bak
 *.backup
 *.log
+# Keep deliberately archived build logs needed to verify research manifests.
+!docs/**/evidence/**/*.log
 *~
 ~$*
 
@@ -53,6 +55,29 @@ build/
 dist/
 artifacts/
 out/
+
+# Local scenes, handoffs, exports and one-off scratch work are not source backups.
+/_local/
+/Test Scene/
+/output/
+/tmp/
+/Boss Handoff - Max 2026/
+/*.zip
+
+# Compiled plugins, SDK binaries, installers and scene assets belong in local output.
+*.dlx
+*.dlm
+*.dlo
+*.dlh
+*.dll
+*.exe
+*.lib
+*.obj
+*.mzp
+*.max
+*.cgeo
+*.7z
+*.rar
 
 # Environment / secrets
 .env

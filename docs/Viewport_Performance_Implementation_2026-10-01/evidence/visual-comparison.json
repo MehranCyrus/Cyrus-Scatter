@@ -1,0 +1,54 @@
+{
+  "excluded_top_rows": 140,
+  "reason": "Viewport menu and changing FPS/statistics labels",
+  "pairs": [
+    {
+      "case": "shape1-color1",
+      "pixels": 581330,
+      "changed_pixels": 1854,
+      "over_16": 585,
+      "mean_absolute_channel_difference": 0.03348700393924277,
+      "max_difference": 53
+    },
+    {
+      "case": "shape1-color2",
+      "pixels": 581330,
+      "changed_pixels": 1961,
+      "over_16": 898,
+      "mean_absolute_channel_difference": 0.044630989856593216,
+      "max_difference": 197
+    },
+    {
+      "case": "shape2-color1",
+      "pixels": 581330,
+      "changed_pixels": 755,
+      "over_16": 219,
+      "mean_absolute_channel_difference": 0.012271285959208482,
+      "max_difference": 55
+    },
+    {
+      "case": "shape2-color2",
+      "pixels": 581330,
+      "changed_pixels": 754,
+      "over_16": 237,
+      "mean_absolute_channel_difference": 0.008139381533150993,
+      "max_difference": 54
+    },
+    {
+      "case": "shape3-color1",
+      "pixels": 581330,
+      "changed_pixels": 5863,
+      "over_16": 1364,
+      "mean_absolute_channel_difference": 0.0847114949053607,
+      "max_difference": 66
+    },
+    {
+      "case": "shape3-color2",
+      "pixels": 581330,
+      "changed_pixels": 5876,
+      "over_16": 2330,
+      "mean_absolute_channel_difference": 0.11213768427571259,
+      "max_difference": 192
+    }
+  ]
+}

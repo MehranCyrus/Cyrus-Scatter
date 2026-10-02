@@ -1,0 +1,10 @@
+{
+  "started_utc": "2026-10-01T18:00:37.355677+00:00",
+  "finished_utc": "2026-10-01T18:00:39.508189+00:00",
+  "cwd": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\codebase-research-2026-10-01\\projection",
+  "argv": [
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\codebase-research-2026-10-01\\projection\\projection-probe.exe"
+  ],
+  "returncode": 0,
+  "output": "projection-raw.txt"
+}

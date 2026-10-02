@@ -1,0 +1,33 @@
+{
+  "started_utc": "2026-10-01T18:00:19.848100+00:00",
+  "finished_utc": "2026-10-01T18:00:21.403467+00:00",
+  "cwd": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\codebase-research-2026-10-01\\sdk-probe-2027",
+  "argv": [
+    "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+    "/nologo",
+    "/O2",
+    "/MD",
+    "/EHsc",
+    "/LD",
+    "/DUNICODE",
+    "/D_UNICODE",
+    "/DNOMINMAX",
+    "/std:c++20",
+    "/IF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\tooling\\max2027-sdk\\Program Files\\Autodesk\\3ds Max 2027 SDK\\maxsdk\\include",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\docs\\Codebase_Research_2026-10-01\\sdk_probe.cpp",
+    "/FoF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\codebase-research-2026-10-01\\sdk-probe-2027/",
+    "/FeF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\codebase-research-2026-10-01\\sdk-probe-2027\\sdk-probe.dll",
+    "/link",
+    "/LIBPATH:F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\tooling\\max2027-sdk\\Program Files\\Autodesk\\3ds Max 2027 SDK\\maxsdk\\lib\\x64\\Release",
+    "core.lib",
+    "geom.lib",
+    "mesh.lib",
+    "gfx.lib",
+    "maxutil.lib",
+    "GraphicsDriver.lib",
+    "GraphicsUtility.lib",
+    "optimesh.lib"
+  ],
+  "returncode": 0,
+  "output": "sdk-probe-2027.txt"
+}

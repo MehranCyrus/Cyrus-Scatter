@@ -1,0 +1,33 @@
+{
+  "scope": "Same-camera saved viewport DIBs from the controlled held-input comparison.",
+  "size": [
+    953,
+    750
+  ],
+  "whole_viewport": {
+    "pixels": 714750,
+    "changed_pixels": 537,
+    "changed_pct": 0.0751311647429171,
+    "mean_abs_channel_difference": 0.008067156348373556,
+    "max_channel_difference": 190,
+    "changed_bounds_xyxy": [
+      64,
+      104,
+      699,
+      643
+    ]
+  },
+  "below_statistics_overlay_y140": {
+    "pixels": 581330,
+    "changed_pixels": 485,
+    "changed_pct": 0.08342937746202674,
+    "mean_abs_channel_difference": 0.0009375053756042179,
+    "max_channel_difference": 6,
+    "changed_bounds_xyxy": [
+      117,
+      57,
+      699,
+      503
+    ]
+  }
+}

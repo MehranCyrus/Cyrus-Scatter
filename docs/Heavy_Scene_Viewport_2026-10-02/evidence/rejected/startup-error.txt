@@ -1,0 +1,41 @@
+-- No "map" function for dotNetObject:System.Diagnostics.ProcessModuleCollection
+--	thread data: threadID:34276
+--	------------------------------------------------------
+--	[stack level: 0]
+--	In anonymous codeblock; filename: F:\Cursor\_Cyrus_Apps\CyrusScatter\tools\performance\native_point_probe\bootstrap.ms; position: 6569; line: 134
+--		Locals:
+--			process: dotNetObject:System.Diagnostics.Process
+--			cameraTarget: <Deleted scene node>
+--			viewportSettings: <IObject:ViewportViewSettingImpl>
+--			modules: undefined
+--			camera: <Deleted scene node>
+--		Externals:
+--			HVPBaseTM: Global:HVPBaseTM : (matrix3 [0.77193,-0.407594,0.487843] [0.635707,0.494935,-0.592381] [0,0.767403,0.641166] [-0.000274181,0,-14348.9])
+--			HVPMode: Global:HVPMode : HVPMode()
+--			HVPStats: Global:HVPStats : HVPStats()
+--			CSPWriteText: Global:CSPWriteText : CSPWriteText()
+--			CSPObject: Global:CSPObject : CSPObject()
+--			HVPNode: Global:HVPNode : $Cyrus_Retained_Point_Probe:Cyrus Retained Point Experiment @ [0.000000,0.000000,0.000000]
+--			HVPBuild: Global:HVPBuild : HVPBuild()
+--			HVPDir: Global:HVPDir : "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/heavy-viewport-2026-10-02/"
+--			HVPCapture: Global:HVPCapture : HVPCapture()
+--	------------------------------------------------------
+--	[stack level: 1]
+--	called from HVPCommandTick(); filename: F:\Cursor\_Cyrus_Apps\CyrusScatter\tools\performance\native_point_probe\bootstrap.ms; position: 5366; line: 115
+--		Parameters:
+--			sender: dotNetObject:System.Windows.Forms.Timer
+--			args: dotNetObject:System.EventArgs
+--		Locals:
+--			sender: dotNetObject:System.Windows.Forms.Timer
+--			args: dotNetObject:System.EventArgs
+--			command: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/heavy-viewport-2026-10-02/recipe-recover-start-f460d475.ms"
+--			request: "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/heavy-viewport-2026-10-02/request.txt"
+--		Externals:
+--			CSPWriteText: Global:CSPWriteText : CSPWriteText()
+--			HVPDir: Global:HVPDir : "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/heavy-viewport-2026-10-02/"
+--			HVPCommandTimer: Global:HVPCommandTimer : dotNetObject:System.Windows.Forms.Timer
+--			owner: undefined
+--			HVPLastRequest: Global:HVPLastRequest : ""
+--	------------------------------------------------------
+--	[stack level: 2]
+--	called from top-level

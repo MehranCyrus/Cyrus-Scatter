@@ -1,0 +1,606 @@
+2026/10/01 21:41:09 INF: [42332] [20128] Application started with secure mode state 'OFF'
+2026/10/01 21:41:09 INF: [42332] [20128] Application started with safe scene state 'ON' 
+2026/10/01 21:41:09 INF: [42332] [20128] Product version: 3ds Max 2027.1 (29.1.0.11426)
+2026/10/01 21:41:10 INF: [42332] [20128] Data collection and use is 'ON'. Change your participation anytime in the Help menu of 3ds Max.
+2026/10/01 21:41:10 DBG: [42332] [20128] Could not find the specified file in DefaultSettingsParser::parse()
+2026/10/01 21:41:11 INF: [42332] [20128] Successfully loaded plugin package - Name: Alembic - Company: Autodesk - Version: 1.0.0 - Location: c:\program files\autodesk\3ds max 2027\applicationplugins\alembic\
+2026/10/01 21:41:11 INF: [42332] [20128] Successfully loaded plugin package - Name: capholes - Company: Autodesk - Version: 1.0.0 - Location: c:\program files\autodesk\3ds max 2027\applicationplugins\capholes\
+2026/10/01 21:41:11 INF: [42332] [20128] Successfully loaded plugin package - Name: Retopology Tools for 3ds Max 2027 - Company: Autodesk, Inc. - Version: 1.10.0.1 - Location: c:\programdata\autodesk\applicationplugins\retopology3dsmax2027\
+2026/10/01 21:41:11 INF: [42332] [20128] Successfully loaded plugin package - Name: PlyIO for 3ds Max - Company: guruware - Version: 1.4.2 - Location: c:\programdata\autodesk\applicationplugins\gw_plyio\
+2026/10/01 21:41:11 INF: [42332] [20128] Successfully loaded plugin package - Name: 3ds Max Scene Security Tools - Company: Autodesk, Inc. - Version: 2.1.9 - Location: c:\program files\autodesk\3ds max 2027\applicationplugins\scenesecuritytools\
+2026/10/01 21:41:11 INF: [42332] [20128] Successfully loaded plugin package - Name: USD for 3ds Max 2027 - Company: Autodesk, Inc. - Version: 0.15.0.14 - Location: c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\
+2026/10/01 21:41:11 INF: [42332] [20128] Successfully loaded plugin package - Name: Flow Retopology for 3ds Max 2027 - Company: Autodesk, Inc. - Version: 1.7.0.1 - Location: c:\programdata\autodesk\applicationplugins\flowretopologyfor3dsmax2027\
+2026/10/01 21:41:11 INF: [42332] [20128] Successfully loaded plugin package - Name: Advanced Modeling Tools for 3ds Max 2027 - Company: Autodesk - Version: 1.13.0.5 - Location: c:\programdata\autodesk\applicationplugins\advancedmodeling3dsmax2027\
+2026/10/01 21:41:11 INF: [42332] [20128] Successfully loaded plugin package - Name: RevitImporter - Company: Autodesk - Version: 1.0.0 - Location: c:\program files\autodesk\3ds max 2027\applicationplugins\revitimporter\
+2026/10/01 21:41:11 INF: [42332] [20128] Successfully loaded plugin package - Name: Substance in 3ds Max - Company: Adobe - Version: 3.0.6 - Location: c:\programdata\autodesk\applicationplugins\substancein3dsmax2027\
+2026/10/01 21:41:11 INF: [42332] [20128] Successfully loaded plugin package - Name: BooleanObject - Company: Autodesk - Version: 1.0.0 - Location: c:\program files\autodesk\3ds max 2027\applicationplugins\booleanobject\
+2026/10/01 21:41:11 INF: [42332] [20128] Successfully loaded plugin package - Name: Autodesk 3ds Max 2027 CivilView - Company: Autodesk - Version: 1.2.7.0 - Location: c:\programdata\autodesk\applicationplugins\3dsmax-civilview-2027-1.2.7.0\
+2026/10/01 21:41:11 INF: [42332] [20128] Successfully loaded plugin package - Name: Chaos Scatter for 3ds Max - Company: Chaos Software - Version: 9.0.671707 - Location: c:\programdata\autodesk\applicationplugins\chaosscatter3dsmax2027\
+2026/10/01 21:41:11 INF: [42332] [20128] Successfully loaded plugin package - Name: Autodesk 3ds Max 2027 CivilView - Company: Autodesk - Version: 1.0.2.0 - Location: c:\program files\autodesk\3ds max 2027\applicationplugins\civilviewio\
+2026/10/01 21:41:11 INF: [42332] [20128] Successfully loaded plugin package - Name: MAXtoA for 3ds Max 2027 - Company: Autodesk, Inc. - Version: 5.9.2.0 - Location: c:\programdata\autodesk\applicationplugins\maxtoa_2027\
+2026/10/01 21:41:11 INF: [42332] [20128] Successfully loaded plugin package - Name: MaxFluids - Company: Autodesk - Version: 0.0.1 - Location: c:\program files\autodesk\3ds max 2027\applicationplugins\maxfluid\
+2026/10/01 21:41:15 DBG: [42332] [20128] Is GPU present : Yes
+2026/10/01 21:41:15 DBG: [42332] [20128] Graphics driver requested by the user : Nitrous Software
+2026/10/01 21:41:15 DBG: [42332] [20128] Graphics driver actually created in the viewports : Nitrous Software
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_AdvancedLighting.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_AdvancedQuadOptions.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_Animation.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_AssetTrackingSystem.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_BakeTextures.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_BodyObjects.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_BoneAdjustmentsTools.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_Bones.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_BrushPresets.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_CAT.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_Characters.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_Constraints.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_Containers.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_ContentBrowser.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_CoordinateSys.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_CreaseExplorer.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_CreateDefaultProject.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_CreateEmptyProject.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_CreateProjectFromCurrent.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_CrowdAreaDraw.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_CustomAttributes.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_DXDisplay.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_EditableMesh.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_EditablePatch.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_EditablePolygon.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_EditablePolygon2.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_EditableSpline.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_FreezeTransform.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_GeometryChecker.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_GrabViewport.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_Hair.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_Help.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_IKSolvers.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_IsoSel.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_Layer.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_LightInclude.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_LightList.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_Luminaires.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_MassFX.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_MaterialExplorer.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_MCG.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_MeasureDistance.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_MeditUtilities.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_MergeAnimation.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_MeshValidator.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_MissingPlugInEntitiesExplorer.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_Mixer.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_Modifiers.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_ModifierStackTools.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_NamedSelSets.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_Notes.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_ObjectsAEC.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_ObjectsCameras.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_ObjectsCompounds.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_ObjectsDynamics.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_ObjectsFluids.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_ObjectsHelpers.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_ObjectsLights.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_ObjectsNURBS.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_ObjectsParticles.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_ObjectsPrimitives.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_ObjectsShapes.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_ObjectsSpaceWarps.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_ObjectsSystems.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_ParameterCollector.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_ParamWire.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_PolyTools.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_ProSound.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_RenameObjects.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_RenderActionItems.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_RenderButtonActionItems.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_RenderToPrint.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_Ribbon-Modeling.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_SceneConverter.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_SceneExplorer.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_SchematicView.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_SelectFromTarget.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_SelectInstances.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_Separator.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_SetProjectFolder.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_ShapesCompounds.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_SkinTools.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_SubObjectLevels.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_TrackView.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_Trajectories.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_Transforms.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_UIOptions.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_UIScheme.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_UnwrapUI.mcr
+2026/10/01 21:41:16 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_Utilities.mcr
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_VertexPaint.mcr
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_ViewportShadingMgr.mcr
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_WalkAssist.mcr
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded macroscript: C:\Program Files\Autodesk\3ds Max 2027\MacroScripts\Macro_WalkThrough.mcr
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded macroscript: C:\Users\Mehran\AppData\Local\Autodesk\3dsMax\2027 - 64bit\ENU\usermacros\AminScatter.mcr
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded macroscript: C:\Users\Mehran\AppData\Local\Autodesk\3dsMax\2027 - 64bit\ENU\usermacros\ColinScripts-RelinkBitmaps.mcr
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded macroscript: C:\Users\Mehran\AppData\Local\Autodesk\3dsMax\2027 - 64bit\ENU\usermacros\Xiruim-Collect_asset_2.mcr
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded macroscript: c:\program files\autodesk\3ds max 2027\applicationplugins\civilviewio\macroscripts\Macro_CivilView_Initialize.mcr
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded macroscript: c:\programdata\autodesk\applicationplugins\3dsmax-civilview-2027-1.2.7.0\contents\macroscripts\Macro_CivilView.mcr
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded macroscript: c:\programdata\autodesk\applicationplugins\advancedmodeling3dsmax2027\contents\macroscripts\BooleanModifier.mcr
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded macroscript: c:\programdata\autodesk\applicationplugins\advancedmodeling3dsmax2027\contents\macroscripts\ArrayModifier.mcr
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded macroscript: c:\programdata\autodesk\applicationplugins\advancedmodeling3dsmax2027\contents\macroscripts\BevelCutbackModifier.mcr
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded macroscript: c:\programdata\autodesk\applicationplugins\advancedmodeling3dsmax2027\contents\macroscripts\VolumeObject.mcr
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded macroscript: c:\programdata\autodesk\applicationplugins\flowretopologyfor3dsmax2027\contents\macroscripts\FlowTools.mcr
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded macroscript: c:\programdata\autodesk\applicationplugins\maxtoa_2027\maxscript\Macro_MAXtoA.mcr
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded macroscript: c:\programdata\autodesk\applicationplugins\retopology3dsmax2027\contents\macroscripts\RetopologyTools.mcr
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded macroscript: c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\scripts\registerMenu.mcr
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded macroscript: c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\scripts\materials\UsdMaterialAttributeMacro.mcr
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\addmodfunc.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\AutoProjectSwitcher.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\CamTrakr.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\CharacterPluginObject.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\controllerfunctions.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\CreateCameraFromView.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\CrowdAreaDraw.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\custattribstructs.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\customUIschemes_functions.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\DaylightSimulationScripts.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\editfunctions.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\filterfunctions.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\functions_snaps.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\IdleAreaObject.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\lightTool.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\Main-Ribbon.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\manipulator_lights_roll_angle.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\MCG_functions.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\meditfunctions.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\MergeAnimation.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\Modifier-AttributeHolder.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\modifier_camera_perspective_correction.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\modifier_uvwunwrap_dialog.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\NET_ListViewWrapper.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\NET_TreeViewWrapper.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\PathConfigHelper.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\(MassFX)\en-US\px_localStrings.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\(MassFX)\px_localization.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\(MassFX)\px_common.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\(MassFX)\px_nodekeys.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\(MassFX)\px_unitchanges.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\(MassFX)\px_mouse.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\(MassFX)\px_globals.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\(MassFX)\px_ragdoll.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\(MassFX)\px_modifierRB.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\(MassFX)\px_bake.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\(MassFX)\px_visualizer.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\(MassFX)\px_modifierClothing.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\(MassFX)\px_guiMenuToolbar.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\(MassFX)\px_modifierCloth.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\(MassFX)\px_mesh.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\(MassFX)\px_guiRagdoll.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\(MassFX)\px_panelD6.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\(MassFX)\px_panelMultiEditor_Constraints.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\(MassFX)\px_panelMultiEditor.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\(MassFX)\px_PhysXPanel.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\(MassFX)\px_d6joint.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\(MassFX)\px_compatibility.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\(MassFX)\px_watcher.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\(MassFX)\px_exporterRollout.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\(MassFX)\px_loader.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\physx_startup.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\pointCloudMtlGenerationShader.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\PolyTools.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\ProjectionMod.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\quadcolor_startup.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\radiusmanip.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\Ribbon-Modeling.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\RTT_methods.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\SceneConverter.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\scripttools.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\selection_display_filters.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\slidermanip.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\TrackViewUtility.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\uvwmanip.ms
+2026/10/01 21:41:17 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\VFB_methods.ms
+2026/10/01 21:41:18 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\baseLib\rolloutCreator.ms
+2026/10/01 21:41:18 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\baseLib\xmlIO.ms
+2026/10/01 21:41:18 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\CATScripts\CATMacroUtilFunctions.ms
+2026/10/01 21:41:18 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\CATScripts\ApplyIKChain.ms
+2026/10/01 21:41:18 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\CATScripts\CATMacroUtilFunctions.ms
+2026/10/01 21:41:18 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\CATScripts\CaptureAnimation.ms
+2026/10/01 21:41:18 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\CATScripts\CATMacroUtilFunctions.ms
+2026/10/01 21:41:18 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\CATScripts\CATRiggingRCM.ms
+2026/10/01 21:41:18 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\CATScripts\CollapseLayers.ms
+2026/10/01 21:41:18 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\CATScripts\ImportBip.ms
+2026/10/01 21:41:18 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\CATScripts\ImportBVH.ms
+2026/10/01 21:41:18 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\CATScripts\ImportHTR.ms
+2026/10/01 21:41:18 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\CATScripts\CATMacroUtilFunctions.ms
+2026/10/01 21:41:18 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\CATScripts\PoseMixer.ms
+2026/10/01 21:41:18 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\CATScripts\ResetXForms.ms
+2026/10/01 21:41:18 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\CATScripts\CATMacroUtilFunctions.ms
+2026/10/01 21:41:18 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\stdplugs\stdscripts\CATScripts\SaveLoadClipsPoses.ms
+2026/10/01 21:41:18 INF: [42332] [20128] Loaded script: c:\program files\autodesk\3ds max 2027\applicationplugins\civilviewio\scripts\CivilView.Plugins.ms
+2026/10/01 21:41:18 INF: [42332] [20128] Initializing Python version: 3.13.9
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "pymxs". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "_io". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "_pymxs". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "maxlistener". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "contextlib". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "abc". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "os". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "sys". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "_collections_abc". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "collections". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "itertools". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "keyword". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "operator". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "builtins". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "_operator". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "reprlib". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "_thread". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "_weakref". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "_collections". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "functools". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "_functools". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "types". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "inspect". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "ast". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "re". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "enum". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "_sre". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "_constants". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "_casefix". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "copyreg". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "_ast". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "dis". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "io". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "opcode". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "_opcode". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "_opcode_metadata". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "collections.abc". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "importlib.machinery". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "_imp". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "_frozen_importlib". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "_frozen_importlib_external". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "_bootstrap". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "_bootstrap_external". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "linecache". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "tokenize". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "codecs". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "token". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "_tokenize". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "weakref". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "_weakrefset". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "importlib". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "nt". 
+2026/10/01 21:41:18 INF: [42332] [20128] Loaded script: c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\scripts\register-usd-python-runtime.ms
+2026/10/01 21:41:18 INF: [42332] [20128] Loaded script: c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\scripts\usd-python-scripts.ms
+2026/10/01 21:41:18 INF: [42332] [20128] Loaded script: c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\scripts\materials\USDMaterialAttributeHolder.ms
+2026/10/01 21:41:18 INF: [42332] [20128] Loaded script: c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\scripts\materials\UsdPreviewSurface.ms
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "pxr". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "platform". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "_wmi". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "socket". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "_socket". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "selectors". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "math". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "select". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "errno". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "pxr.Tf". 
+2026/10/01 21:41:18 INF: [42332] [20128] Importing python module "pxr.Trace". 
+2026/10/01 21:41:19 INF: [42332] [20128] Importing python module "pxr.Work". 
+2026/10/01 21:41:19 INF: [42332] [20128] Loaded script: c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\scripts\register-usd-plugin-paths.ms
+2026/10/01 21:41:20 INF: [42332] [20128] SYSTEM: Production renderer is changed to Arnold. Previous messages are cleared.
+2026/10/01 21:41:20 DBG: [42332] [20128] At Nitrous init, the OGS graphics device requested is : Nitrous DX11 SW
+2026/10/01 21:41:20 DBG: [42332] [20128] At Nitrous init, the OGS graphic device actually created is : Nitrous Software (= Direct3D 11 WARP )- 
+2026/10/01 21:41:23 DBG: [42332] [20128] Starting network
+2026/10/01 21:41:23 INF: [42332] [20128] Starting GUP: PaintboxStartup
+2026/10/01 21:41:23 INF: [42332] [20128] Started GUP: PaintboxStartup with return code 0
+2026/10/01 21:41:23 INF: [42332] [20128] Starting GUP: Particle Flow Global Actions
+2026/10/01 21:41:23 INF: [42332] [20128] Started GUP: Particle Flow Global Actions with return code 0
+2026/10/01 21:41:23 INF: [42332] [20128] Starting GUP: Box#2 Global Utility
+2026/10/01 21:41:23 INF: [42332] [20128] Started GUP: Box#2 Global Utility with return code 0
+2026/10/01 21:41:23 INF: [42332] [20128] Starting GUP: MassFX Loader Linkage
+2026/10/01 21:41:23 INF: [42332] [20128] Started GUP: MassFX Loader Linkage with return code 0
+2026/10/01 21:41:23 INF: [42332] [20128] Starting GUP: Particle Flow Tools Global Utility
+2026/10/01 21:41:23 INF: [42332] [20128] Started GUP: Particle Flow Tools Global Utility with return code 0
+2026/10/01 21:41:23 INF: [42332] [20128] Starting GUP: Particle View Global Actions
+2026/10/01 21:41:23 INF: [42332] [20128] Started GUP: Particle View Global Actions with return code 0
+2026/10/01 21:41:23 INF: [42332] [20128] Starting GUP: OffsetManagerGUP
+2026/10/01 21:41:23 INF: [42332] [20128] Started GUP: OffsetManagerGUP with return code 1
+2026/10/01 21:41:23 INF: [42332] [20128] Starting GUP: PhysicalMaterialManager
+2026/10/01 21:41:23 INF: [42332] [20128] Started GUP: PhysicalMaterialManager with return code 0
+2026/10/01 21:41:23 INF: [42332] [20128] Starting GUP: PhysXPanelGUP
+2026/10/01 21:41:23 INF: [42332] [20128] Started GUP: PhysXPanelGUP with return code 0
+2026/10/01 21:41:23 INF: [42332] [20128] Starting GUP: ATSMax
+2026/10/01 21:41:23 INF: [42332] [20128] Started GUP: ATSMax with return code 0
+2026/10/01 21:41:23 INF: [42332] [20128] Starting GUP: AutoCam
+2026/10/01 21:41:23 INF: [42332] [20128] Started GUP: AutoCam with return code 0
+2026/10/01 21:41:23 INF: [42332] [20128] Starting GUP: GripManager
+2026/10/01 21:41:23 INF: [42332] [20128] Started GUP: GripManager with return code 0
+2026/10/01 21:41:23 INF: [42332] [20128] Starting GUP: MaxRenderer COM Server
+2026/10/01 21:41:23 INF: [42332] [20128] Started GUP: MaxRenderer COM Server with return code 1
+2026/10/01 21:41:23 INF: [42332] [20128] Starting GUP: DialogMonitor
+2026/10/01 21:41:23 INF: [42332] [20128] Started GUP: DialogMonitor with return code 0
+2026/10/01 21:41:23 INF: [42332] [20128] Starting GUP: FltGUP
+2026/10/01 21:41:23 INF: [42332] [20128] Started GUP: FltGUP with return code 0
+2026/10/01 21:41:23 INF: [42332] [20128] Starting GUP: GeometryCheckerManager
+2026/10/01 21:41:23 INF: [42332] [20128] Started GUP: GeometryCheckerManager with return code 0
+2026/10/01 21:41:23 INF: [42332] [20128] Starting GUP: FlippedFacesClass
+2026/10/01 21:41:23 INF: [42332] [20128] Started GUP: FlippedFacesClass with return code 0
+2026/10/01 21:41:23 INF: [42332] [20128] Starting GUP: FlippedUVWFacesClass
+2026/10/01 21:41:23 INF: [42332] [20128] Started GUP: FlippedUVWFacesClass with return code 0
+2026/10/01 21:41:23 INF: [42332] [20128] Starting GUP: IsolatedVertexClass
+2026/10/01 21:41:23 INF: [42332] [20128] Started GUP: IsolatedVertexClass with return code 0
+2026/10/01 21:41:23 INF: [42332] [20128] Starting GUP: MissingUVCoordinatesClass
+2026/10/01 21:41:23 INF: [42332] [20128] Started GUP: MissingUVCoordinatesClass with return code 0
+2026/10/01 21:41:23 INF: [42332] [20128] Starting GUP: MultipleEdgeClass
+2026/10/01 21:41:23 INF: [42332] [20128] Started GUP: MultipleEdgeClass with return code 0
+2026/10/01 21:41:23 INF: [42332] [20128] Starting GUP: OpenEdgesClass
+2026/10/01 21:41:23 INF: [42332] [20128] Started GUP: OpenEdgesClass with return code 0
+2026/10/01 21:41:23 INF: [42332] [20128] Starting GUP: OverlappedUVWFacesClass
+2026/10/01 21:41:23 INF: [42332] [20128] Started GUP: OverlappedUVWFacesClass with return code 0
+2026/10/01 21:41:23 INF: [42332] [20128] Starting GUP: OverlappingFacesClass
+2026/10/01 21:41:23 INF: [42332] [20128] Started GUP: OverlappingFacesClass with return code 0
+2026/10/01 21:41:23 INF: [42332] [20128] Starting GUP: OverlappingVerticesClass
+2026/10/01 21:41:23 INF: [42332] [20128] Started GUP: OverlappingVerticesClass with return code 0
+2026/10/01 21:41:23 INF: [42332] [20128] Starting GUP: MapMtlClipboard
+2026/10/01 21:41:23 INF: [42332] [20128] Started GUP: MapMtlClipboard with return code 0
+2026/10/01 21:41:23 INF: [42332] [20128] Starting GUP: MaterialPreviewerGUP
+2026/10/01 21:41:23 INF: [42332] [20128] Started GUP: MaterialPreviewerGUP with return code 0
+2026/10/01 21:41:23 INF: [42332] [20128] Starting GUP: OneClick
+2026/10/01 21:41:23 INF: [42332] [20128] Started GUP: OneClick with return code 0
+2026/10/01 21:41:23 INF: [42332] [20128] Starting GUP: ParameterCollectorCA
+2026/10/01 21:41:23 INF: [42332] [20128] Started GUP: ParameterCollectorCA with return code 0
+2026/10/01 21:41:23 INF: [42332] [20128] Starting GUP: Plug-in Manager
+2026/10/01 21:41:23 INF: [42332] [20128] Started GUP: Plug-in Manager with return code 0
+2026/10/01 21:41:24 INF: [42332] [20128] Starting GUP: PolyToolsSelect
+2026/10/01 21:41:24 INF: [42332] [20128] Started GUP: PolyToolsSelect with return code 0
+2026/10/01 21:41:24 INF: [42332] [20128] Starting GUP: PolyToolsModeling
+2026/10/01 21:41:24 INF: [42332] [20128] Started GUP: PolyToolsModeling with return code 0
+2026/10/01 21:41:24 INF: [42332] [20128] Starting GUP: PolyToolsTopology
+2026/10/01 21:41:24 INF: [42332] [20128] Started GUP: PolyToolsTopology with return code 0
+2026/10/01 21:41:24 INF: [42332] [20128] Starting GUP: PolyToolsPolyDraw
+2026/10/01 21:41:24 INF: [42332] [20128] Started GUP: PolyToolsPolyDraw with return code 0
+2026/10/01 21:41:24 INF: [42332] [20128] Starting GUP: PolyToolsPaintDeform
+2026/10/01 21:41:24 INF: [42332] [20128] Started GUP: PolyToolsPaintDeform with return code 0
+2026/10/01 21:41:24 INF: [42332] [20128] Starting GUP: PolyToolsShift
+2026/10/01 21:41:24 INF: [42332] [20128] Started GUP: PolyToolsShift with return code 0
+2026/10/01 21:41:24 INF: [42332] [20128] Starting GUP: PolyToolsUVWTweak
+2026/10/01 21:41:24 INF: [42332] [20128] Started GUP: PolyToolsUVWTweak with return code 0
+2026/10/01 21:41:24 INF: [42332] [20128] Starting GUP: Save Verification
+2026/10/01 21:41:24 INF: [42332] [20128] Started GUP: Save Verification with return code 0
+2026/10/01 21:41:24 INF: [42332] [20128] Starting GUP: Scene_Converter
+2026/10/01 21:41:24 INF: [42332] [20128] Started GUP: Scene_Converter with return code 0
+2026/10/01 21:41:24 INF: [42332] [20128] Starting GUP: SMEGUP
+2026/10/01 21:41:24 INF: [42332] [20128] Started GUP: SMEGUP with return code 0
+2026/10/01 21:41:24 INF: [42332] [20128] Starting GUP: SnapWorkingPivot
+2026/10/01 21:41:24 INF: [42332] [20128] Started GUP: SnapWorkingPivot with return code 0
+2026/10/01 21:41:24 INF: [42332] [20128] Starting GUP: tprofiler
+2026/10/01 21:41:24 INF: [42332] [20128] Started GUP: tprofiler with return code 0
+2026/10/01 21:41:24 INF: [42332] [20128] Starting GUP: GameNavGup
+2026/10/01 21:41:24 INF: [42332] [20128] Started GUP: GameNavGup with return code 0
+2026/10/01 21:41:24 INF: [42332] [20128] Starting GUP: SecurityToolsUtility
+2026/10/01 21:41:24 INF: [42332] [20128] ALC Security Tool 1.3 enabled.
+2026/10/01 21:41:24 INF: [42332] [20128] ALC2 Security Tool 1.3 enabled.
+2026/10/01 21:41:24 INF: [42332] [20128] PhysXPluginMfx Security Tool 1.3 enabled.
+2026/10/01 21:41:24 INF: [42332] [20128] PhysXPluginMfx2 Security Tool 1.1 enabled.
+2026/10/01 21:41:24 INF: [42332] [20128] CRP Security Tool 1.1 enabled.
+2026/10/01 21:41:24 INF: [42332] [20128] ADSL Security Tool 1.1 enabled.
+2026/10/01 21:41:24 INF: [42332] [20128] MSCPROP Security Tool 1.0 enabled.
+2026/10/01 21:41:24 INF: [42332] [20128] Started GUP: SecurityToolsUtility with return code 0
+2026/10/01 21:41:24 INF: [42332] [20128] Starting GUP: Substance2MenuManager
+2026/10/01 21:41:24 INF: [42332] [20128] Started GUP: Substance2MenuManager with return code 0
+2026/10/01 21:41:24 INF: [42332] [20128] Starting GUP: MAXtoA_Menu
+2026/10/01 21:41:24 INF: [42332] [20128] Started GUP: MAXtoA_Menu with return code 0
+2026/10/01 21:41:24 INF: [42332] [20128] Starting GUP: ArnoldShadersLoader
+2026/10/01 21:41:26 INF: [42332] [20128] Started GUP: ArnoldShadersLoader with return code 0
+2026/10/01 21:41:27 INF: [42332] [20128] Importing python module "ar_project_tokens". 
+2026/10/01 21:41:27 INF: [42332] [20128] Importing python module "pxr.Plug". 
+2026/10/01 21:41:27 INF: [42332] [20128] Importing python module "pxr.Vt". 
+2026/10/01 21:41:27 INF: [42332] [20128] Importing python module "pxr.Gf". 
+2026/10/01 21:41:27 INF: [42332] [20128] Importing python module "AdskAssetResolver". 
+2026/10/01 21:41:27 INF: [42332] [20128] Importing python module "AssetResolverPreferences". 
+2026/10/01 21:41:31 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\scripts\startup\CivilView.ms
+2026/10/01 21:41:31 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\scripts\startup\CustomAttributes.ms
+2026/10/01 21:41:31 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\scripts\startup\holdSysMon_stub.ms
+2026/10/01 21:41:31 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\scripts\startup\Material_glTF.ms
+2026/10/01 21:41:31 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\scripts\startup\Material_PBR_MetalRough.ms
+2026/10/01 21:41:31 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\scripts\startup\Material_PBR_SpecGloss.ms
+2026/10/01 21:41:31 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\scripts\startup\OSLHelpers.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\scripts\startup\ProceduralContent.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\scripts\startup\uvchecker_override_material.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\scripts\startup\ValidateSceneRefHierarchy_stub.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\scripts\startup\BTT\AmbientOcclusionMap.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\scripts\startup\BTT\BeautyMap.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\scripts\startup\BTT\ColorMap.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\scripts\startup\BTT\EmissiveMap.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\scripts\startup\BTT\MaterialIDMap.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\scripts\startup\BTT\MaterialInputMap.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\scripts\startup\BTT\MetalnessMap.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\scripts\startup\BTT\NormalMap.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\scripts\startup\BTT\OpacityMap.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\scripts\startup\BTT\RoughnessMap.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\scripts\startup\BTT\RoundedCornersMap.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: C:\Program Files\Autodesk\3ds Max 2027\scripts\startup\BTT\VertexColorMap.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: C:\Users\Mehran\AppData\Local\Autodesk\3dsMax\2027 - 64bit\ENU\scripts\AminScatter\AminScatterObject.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: C:\Users\Mehran\AppData\Local\Autodesk\3dsMax\2027 - 64bit\ENU\scripts\startup\AminScatterStartup.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: C:\Users\Mehran\AppData\Local\Autodesk\3dsMax\2027 - 64bit\ENU\scripts\startup\collect_asset_startup.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: C:\Users\Mehran\AppData\Local\Autodesk\3dsMax\2027 - 64bit\ENU\scripts\CyrusSurfaceAnalyzer\CyrusSurfaceAnalyzer.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: C:\Users\Mehran\AppData\Local\Autodesk\3dsMax\2027 - 64bit\ENU\scripts\startup\CyrusSurfaceAnalyzerStartup.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: c:\programdata\autodesk\applicationplugins\3dsmax-civilview-2027-1.2.7.0\contents\scripts\CivilViewStartup.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: c:\programdata\autodesk\applicationplugins\maxtoa_2027\maxscript\MAXtoA_Helpers.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: c:\programdata\autodesk\applicationplugins\maxtoa_2027\maxscript\arnoldcamera_vr.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: c:\programdata\autodesk\applicationplugins\maxtoa_2027\maxscript\arnold_fisheye_camera.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: c:\programdata\autodesk\applicationplugins\maxtoa_2027\maxscript\arnold_spherical_camera.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: c:\programdata\autodesk\applicationplugins\maxtoa_2027\maxscript\arnold_cyl_camera.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: c:\programdata\autodesk\applicationplugins\maxtoa_2027\maxscript\arnoldlight_barndoorfilter.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: c:\programdata\autodesk\applicationplugins\maxtoa_2027\maxscript\arnoldlight_cylindermanip.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: c:\programdata\autodesk\applicationplugins\maxtoa_2027\maxscript\arnoldlight_decayfilter.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: c:\programdata\autodesk\applicationplugins\maxtoa_2027\maxscript\arnoldlight_gobofilter.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: c:\programdata\autodesk\applicationplugins\maxtoa_2027\maxscript\arnoldlight_quadmanip.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: c:\programdata\autodesk\applicationplugins\maxtoa_2027\maxscript\arnoldlight_radiusmanip.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: c:\programdata\autodesk\applicationplugins\maxtoa_2027\maxscript\arnoldlight_spotmanip.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: c:\programdata\autodesk\applicationplugins\maxtoa_2027\maxscript\MAXtoA_OpenPBR_CustomAttribute.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: c:\programdata\autodesk\applicationplugins\maxtoa_2027\maxscript\MAXtoA_PhysicalMaterial_CustomAttribute.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: c:\programdata\autodesk\applicationplugins\maxtoa_2027\maxscript\MAXtoA_MaxUSD_Stage_CustomAttribute.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Loaded script: c:\programdata\autodesk\applicationplugins\maxtoa_2027\maxscript\MAXtoA_tyFlow_CustomAttribute.ms
+2026/10/01 21:41:32 INF: [42332] [20128] Executing python file: "c:\programdata\autodesk\applicationplugins\maxtoa_2027\usdtools\MAXtoAUSDTools.py".
+2026/10/01 21:41:32 INF: [42332] [20128] Importing python module "maxUsd". 
+2026/10/01 21:41:32 INF: [42332] [20128] Importing python module "ufe". 
+2026/10/01 21:41:32 INF: [42332] [20128] Importing python module "PyUfe". 
+2026/10/01 21:41:32 INF: [42332] [20128] Importing python module "shiboken6". 
+2026/10/01 21:41:32 INF: [42332] [20128] Importing python module "zipfile". 
+2026/10/01 21:41:32 INF: [42332] [20128] Importing python module "binascii". 
+2026/10/01 21:41:32 INF: [42332] [20128] Importing python module "importlib.util". 
+2026/10/01 21:41:32 INF: [42332] [20128] Importing python module "_abc". 
+2026/10/01 21:41:32 INF: [42332] [20128] Importing python module "shutil". 
+2026/10/01 21:41:32 INF: [42332] [20128] Importing python module "stat". 
+2026/10/01 21:41:32 INF: [42332] [20128] Importing python module "fnmatch". 
+2026/10/01 21:41:32 INF: [42332] [20128] Importing python module "posixpath". 
+2026/10/01 21:41:32 INF: [42332] [20128] Importing python module "genericpath". 
+2026/10/01 21:41:32 INF: [42332] [20128] Importing python module "posix". 
+2026/10/01 21:41:32 INF: [42332] [20128] Importing python module "zlib". 
+2026/10/01 21:41:32 INF: [42332] [20128] Importing python module "bz2". 
+2026/10/01 21:41:32 INF: [42332] [20128] Importing python module "_compression". 
+2026/10/01 21:41:32 INF: [42332] [20128] Importing python module "_bz2". 
+2026/10/01 21:41:32 INF: [42332] [20128] Importing python module "lzma". 
+2026/10/01 21:41:32 INF: [42332] [20128] Importing python module "_lzma". 
+2026/10/01 21:41:32 INF: [42332] [20128] Importing python module "_winapi". 
+2026/10/01 21:41:32 INF: [42332] [20128] Importing python module "struct". 
+2026/10/01 21:41:32 INF: [42332] [20128] Importing python module "_struct". 
+2026/10/01 21:41:32 INF: [42332] [20128] Importing python module "threading". 
+2026/10/01 21:41:32 INF: [42332] [20128] Importing python module "warnings". 
+2026/10/01 21:41:32 INF: [42332] [20128] Importing python module "_warnings". 
+2026/10/01 21:41:32 INF: [42332] [20128] Importing python module "time". 
+2026/10/01 21:41:32 INF: [42332] [20128] Importing python module "_path". 
+2026/10/01 21:41:32 INF: [42332] [20128] Importing python module "pathlib". 
+2026/10/01 21:41:32 INF: [42332] [20128] Importing python module "glob". 
+2026/10/01 21:41:32 INF: [42332] [20128] Importing python module "_local". 
+2026/10/01 21:41:32 INF: [42332] [20128] Importing python module "ntpath". 
+2026/10/01 21:41:32 INF: [42332] [20128] Importing python module "pwd". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "grp". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "base64". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "marshal". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "textwrap". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "traceback". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "_colorize". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "__future__". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "tempfile". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "random". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "bisect". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "_bisect". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "_random". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "typing". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "_typing". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "shiboken6.Shiboken". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "encodings.cp437". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "shibokensupport". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "shibokensupport.signature". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "signature_bootstrap". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "shibokensupport.signature.mapping". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "shibokensupport.signature.parser". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "shibokensupport.signature.lib.tool". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "PySide6.support". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "shibokensupport.signature.lib". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "shibokensupport.signature.layout". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "argparse". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "gettext". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "logging". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "string". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "_string". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "atexit". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "shibokensupport.signature.lib.enum_sig". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "PySide6". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "PySide6.support.feature". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "pxr.Ar". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "pxr.Kind". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "pxr.Sdf". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "pxr.Ts". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "TsTest_Baseliner". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "TsTest_MayapyEvaluator". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "pxr.Usd". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "pxr.Pcp". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "pxr.UsdGeom". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "pxr.UsdImagingGL". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "pxr.Glf". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "pxr.PxOsd". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "pxr.Sdr". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "pxr.UsdHydra". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "pxr.UsdShade". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "pxr.UsdLux". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "pxr.UsdRi". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "pxr.UsdSkel". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "pxr.UsdUtils". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "pxr.UsdUI". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "complianceChecker". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "pxr.UsdUtils.constantsGroup". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "updateSchemaWithSdrNode". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "fixBrokenPixarSchemas". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "usdzUtils". 
+2026/10/01 21:41:33 INF: [42332] [20128] Loaded script: c:\programdata\autodesk\applicationplugins\maxtoa_2027\usdtools\MAXtoAUSDTools.ms
+2026/10/01 21:41:33 INF: [42332] [20128] Executing python file: "c:\programdata\autodesk\applicationplugins\substancein3dsmax2027\scripts\post-startup\..\python\substance\SubstanceRendererCompatibility.py".
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "copy". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "gc". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "SubstanceDialog". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "PySide6.QtGui". 
+2026/10/01 21:41:33 INF: [42332] [20128] Importing python module "SubstanceRendererCompatibility". 
+2026/10/01 21:41:33 INF: [42332] [20128] Loaded script: c:\programdata\autodesk\applicationplugins\substancein3dsmax2027\scripts\post-startup\SubstanceStartup.ms
+2026/10/01 21:41:33 INF: [42332] [20128] Loaded script: c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\materialx_plugin\contents\scripts\MtlXMaterial.ms
+2026/10/01 21:41:34 INF: [42332] [20128] Loaded script: c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\scripts\materialx\register-materialx-target.ms
+2026/10/01 21:41:34 INF: [42332] [20128] Loaded script: c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\scripts\materialx\registerPlugin.ms
+2026/10/01 21:41:34 INF: [42332] [20128] Loaded script: c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\materialx_plugin\contents\scripts\MtlXMaterial2.ms
+2026/10/01 21:41:34 WRN: [42332] [20128] Failed to load script: F:\Cursor\_Cyrus_Apps\CyrusScatter\build\codebase-research-2026-10-01\host-verified\tools\tests\identity-max2027_smoke.ms
+2026/10/01 21:41:34 ERR: [42332] [20128] MAXScript ExecuteMAXScriptScript Exception: -- Compile error: no local declarations at top level:  identityLog --  In line: local identityLog=; Error occurred in anonymous codeblock; filename: F:\Cursor\_Cyrus_Apps\CyrusScatter\build\codebase-research-2026-10-01\host-verified\tools\tests\identity-max2027_smoke.ms; position: 17; line: 0 
+2026/10/01 21:41:34 ERR: [42332] [20128] MAXScript -mxs Switch Exception: -- Compile error: no local declarations at top level:  identityLog --  In line: local identityLog=
+2026/10/01 21:41:34 INF: [42332] [20128] StartupTemplate factoryTemplateFolder: C:\Program Files\Autodesk\3ds Max 2027\en-US\StartupTemplates
+2026/10/01 21:41:34 INF: [42332] [20128] StartupTemplate userTemplateFolder: C:\Users\Mehran\Documents\3ds Max 2027\startuptemplates
+2026/10/01 21:41:34 INF: [42332] [20128] StartupTemplate appdataTemplateFolder: C:\Users\Mehran\AppData\Local\Autodesk\3dsMax\2027 - 64bit\ENU\en-US\StartupTemplates
+2026/10/01 21:41:35 DBG: [42332] [20128] Stop network
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: PaintboxStartup
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: Particle Flow Global Actions
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: Box#2 Global Utility
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: MassFX Loader Linkage
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: Particle Flow Tools Global Utility
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: Particle View Global Actions
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: PhysicalMaterialManager
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: PhysXPanelGUP
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: ATSMax
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: AutoCam
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: GripManager
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: DialogMonitor
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: FltGUP
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: GeometryCheckerManager
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: FlippedFacesClass
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: FlippedUVWFacesClass
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: IsolatedVertexClass
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: MissingUVCoordinatesClass
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: MultipleEdgeClass
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: OpenEdgesClass
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: OverlappedUVWFacesClass
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: OverlappingFacesClass
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: OverlappingVerticesClass
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: MapMtlClipboard
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: MaterialPreviewerGUP
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: OneClick
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: ParameterCollectorCA
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: Plug-in Manager
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: PolyToolsSelect
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: PolyToolsModeling
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: PolyToolsTopology
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: PolyToolsPolyDraw
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: PolyToolsPaintDeform
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: PolyToolsShift
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: PolyToolsUVWTweak
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: Save Verification
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: Scene_Converter
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: SMEGUP
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: SnapWorkingPivot
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: tprofiler
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: GameNavGup
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: SecurityToolsUtility
+2026/10/01 21:41:36 INF: [42332] [20128] ALC Security Tool 1.3 disabled.
+2026/10/01 21:41:36 INF: [42332] [20128] ALC2 Security Tool 1.3 disabled.
+2026/10/01 21:41:36 INF: [42332] [20128] PhysXPluginMfx Security Tool 1.3 disabled.
+2026/10/01 21:41:36 INF: [42332] [20128] CRP Security Tool 1.1 disabled.
+2026/10/01 21:41:36 INF: [42332] [20128] ADSL Security Tool 1.1 disabled.
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: Substance2MenuManager
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: MAXtoA_Menu
+2026/10/01 21:41:36 INF: [42332] [20128] Stopping GUP: ArnoldShadersLoader
+2026/10/01 21:41:37 INF: [42332] [20128] PhysXPluginMfx2 Security Tool 1.1 disabled.
+2026/10/01 21:41:37 INF: [42332] [20128] MSCPROP Security Tool 1.0 disabled.

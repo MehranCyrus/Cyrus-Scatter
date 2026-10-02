@@ -1,4 +1,10 @@
-# Cyrus Scatter 0.59 — 3ds Max 2026
+# Cyrus Scatter
+
+**Current local candidate: 0.62.** The current code includes bounded CPU computation, prepared proxy batches and deferred layer synchronization during held viewport input. Start with the [repository guide](../README.md) and [build/install status](../docs/Max_2027_Installation.md) for Max 2026/2027 requirements and qualification limits.
+
+The [retained-point experiment](../docs/Heavy_Scene_Viewport_2026-10-02/RESULTS.md) is a separate prototype. It has not been integrated into this plugin or its installers; the [next implementation plan](../docs/Heavy_Scene_Viewport_2026-10-02/IMPLEMENTATION_PLAN.md) defines that work.
+
+## Historical changes: 0.59 and earlier
 
 0.59: sub-object selection and Modify display changes no longer invalidate geometry. Analyzer output revisions are checked before overlap dependency propagation. See [Selection-0.59-fix.md](Selection-0.59-fix.md).
 

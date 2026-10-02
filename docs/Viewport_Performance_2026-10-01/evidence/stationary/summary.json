@@ -1,0 +1,89 @@
+{
+  "scope": "Synchronous camera change, redraw and message-pump wall time; no GPU completion fence",
+  "directory": "build\\viewport-investigation-2026-10-01\\stationary",
+  "frame_count": 120,
+  "cases": {
+    "stationary_redraw": {
+      "samples": 120,
+      "metrics": {
+        "wall_ms": {
+          "median": 92.7836,
+          "p95": 149.2335,
+          "mean": 100.82288166666666,
+          "min": 82.8507,
+          "max": 164.7732
+        },
+        "scatter_callback_ms": {
+          "median": 75.3666,
+          "p95": 112.389,
+          "mean": 80.71573416666666,
+          "min": 69.7019,
+          "max": 123.8815
+        },
+        "analyzer_callback_ms": {
+          "median": 2.419,
+          "p95": 3.6641,
+          "mean": 2.6601608333333333,
+          "min": 2.223,
+          "max": 4.5159
+        },
+        "scatter_calls": {
+          "median": 2.0,
+          "p95": 3.0,
+          "mean": 2.1333333333333333,
+          "min": 2.0,
+          "max": 3.0
+        },
+        "analyzer_calls": {
+          "median": 2.0,
+          "p95": 3.0,
+          "mean": 2.1333333333333333,
+          "min": 2.0,
+          "max": 3.0
+        }
+      },
+      "repeat_median_wall_ms": {
+        "1": 91.82589999999999,
+        "2": 93.9683,
+        "3": 91.88149999999999
+      },
+      "preview_rebuild_deltas": [
+        0,
+        0,
+        0
+      ],
+      "analyzer_run_deltas": [
+        0,
+        0,
+        0
+      ],
+      "pflow_build_deltas": [
+        0,
+        0,
+        0
+      ],
+      "populations": [
+        {
+          "generated": 52143,
+          "cache_display_count": 6284,
+          "cache_triangles": 37704,
+          "stable_during_measurement": true
+        },
+        {
+          "generated": 52143,
+          "cache_display_count": 6284,
+          "cache_triangles": 37704,
+          "stable_during_measurement": true
+        },
+        {
+          "generated": 52143,
+          "cache_display_count": 6284,
+          "cache_triangles": 37704,
+          "stable_during_measurement": true
+        }
+      ],
+      "errors": [],
+      "reciprocal_median_wall_rate_not_presented_fps": 10.777766760505088
+    }
+  }
+}

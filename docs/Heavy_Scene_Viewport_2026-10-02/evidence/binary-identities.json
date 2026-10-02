@@ -1,0 +1,27 @@
+[
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\heavy-viewport-2026-10-02\\probe-2026\\CyrusRetainedPointObject.dlh",
+    "bytes": 10240,
+    "sha256": "a72d88cd0af0c81ab2d86c2853cfefab806a6df6883483fbd0b678c98d2c9ceb"
+  },
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\heavy-viewport-2026-10-02\\probe-2026\\CyrusRetainedPointProbe.dlx",
+    "bytes": 56832,
+    "sha256": "6ae746d03e74c24042ab893fa267ecbec3e8d53f308e2b66d56565cce6ab2ef6"
+  },
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\heavy-viewport-2026-10-02\\probe-2027\\CyrusRetainedPointObject.dlh",
+    "bytes": 10240,
+    "sha256": "5f465f95f9cf1707db09323450c497cfd1aa304ba6f19a471b21e4602e54b1e7"
+  },
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\heavy-viewport-2026-10-02\\probe-2027\\CyrusRetainedPointProbe.dlx",
+    "bytes": 57344,
+    "sha256": "02ae7a5bff449fa484f5c52ea152e768be3757fed37766479306de776fc5bc9a"
+  },
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\heavy-viewport-2026-10-02\\PresentMon-2.6.0-x64.exe",
+    "bytes": 980320,
+    "sha256": "b2a706bc6ad475749e3b7e3409263aa1e6906d45bdcf993f6dbc0f660188f1af"
+  }
+]

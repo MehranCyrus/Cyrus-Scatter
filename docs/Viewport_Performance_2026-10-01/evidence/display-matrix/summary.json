@@ -1,0 +1,839 @@
+{
+  "scope": "Synchronous camera change, redraw and message-pump wall time; no GPU completion fence",
+  "directory": "build\\viewport-investigation-2026-10-01\\display-matrix",
+  "frame_count": 1200,
+  "cases": {
+    "pyramid_2000": {
+      "samples": 120,
+      "metrics": {
+        "wall_ms": {
+          "median": 89.1027,
+          "p95": 136.4626,
+          "mean": 95.5396575,
+          "min": 82.0049,
+          "max": 157.3826
+        },
+        "scatter_callback_ms": {
+          "median": 72.0767,
+          "p95": 107.80079999999998,
+          "mean": 76.96597166666666,
+          "min": 67.0628,
+          "max": 115.59719999999999
+        },
+        "analyzer_callback_ms": {
+          "median": 2.4022,
+          "p95": 3.8347999999999995,
+          "mean": 2.6516783333333334,
+          "min": 2.2458,
+          "max": 4.4906
+        },
+        "scatter_calls": {
+          "median": 2.0,
+          "p95": 3.0,
+          "mean": 2.125,
+          "min": 2.0,
+          "max": 3.0
+        },
+        "analyzer_calls": {
+          "median": 2.0,
+          "p95": 3.0,
+          "mean": 2.125,
+          "min": 2.0,
+          "max": 3.0
+        }
+      },
+      "repeat_median_wall_ms": {
+        "1": 89.35595,
+        "2": 87.82374999999999,
+        "3": 90.71799999999999
+      },
+      "preview_rebuild_deltas": [
+        0,
+        0,
+        0
+      ],
+      "analyzer_run_deltas": [
+        0,
+        0,
+        0
+      ],
+      "pflow_build_deltas": [
+        0,
+        0,
+        0
+      ],
+      "populations": [
+        {
+          "generated": 52143,
+          "cache_display_count": 6284,
+          "cache_triangles": 37704,
+          "stable_during_measurement": true
+        },
+        {
+          "generated": 52143,
+          "cache_display_count": 6284,
+          "cache_triangles": 37704,
+          "stable_during_measurement": true
+        },
+        {
+          "generated": 52143,
+          "cache_display_count": 6284,
+          "cache_triangles": 37704,
+          "stable_during_measurement": true
+        }
+      ],
+      "errors": [],
+      "reciprocal_median_wall_rate_not_presented_fps": 11.223004465633476
+    },
+    "pyramid_1000": {
+      "samples": 120,
+      "metrics": {
+        "wall_ms": {
+          "median": 59.60615,
+          "p95": 88.7691,
+          "mean": 63.26114583333333,
+          "min": 52.8278,
+          "max": 114.0947
+        },
+        "scatter_callback_ms": {
+          "median": 43.394,
+          "p95": 64.2213,
+          "mean": 46.1548575,
+          "min": 40.0752,
+          "max": 72.1557
+        },
+        "analyzer_callback_ms": {
+          "median": 2.4458,
+          "p95": 3.6449000000000003,
+          "mean": 2.629715,
+          "min": 2.2426,
+          "max": 4.4024
+        },
+        "scatter_calls": {
+          "median": 2.0,
+          "p95": 3.0,
+          "mean": 2.075,
+          "min": 2.0,
+          "max": 3.0
+        },
+        "analyzer_calls": {
+          "median": 2.0,
+          "p95": 3.0,
+          "mean": 2.075,
+          "min": 2.0,
+          "max": 3.0
+        }
+      },
+      "repeat_median_wall_ms": {
+        "1": 62.0168,
+        "2": 58.650999999999996,
+        "3": 59.69435
+      },
+      "preview_rebuild_deltas": [
+        0,
+        0,
+        0
+      ],
+      "analyzer_run_deltas": [
+        0,
+        0,
+        0
+      ],
+      "pflow_build_deltas": [
+        0,
+        0,
+        0
+      ],
+      "populations": [
+        {
+          "generated": 52143,
+          "cache_display_count": 3284,
+          "cache_triangles": 19704,
+          "stable_during_measurement": true
+        },
+        {
+          "generated": 52143,
+          "cache_display_count": 3284,
+          "cache_triangles": 19704,
+          "stable_during_measurement": true
+        },
+        {
+          "generated": 52143,
+          "cache_display_count": 3284,
+          "cache_triangles": 19704,
+          "stable_during_measurement": true
+        }
+      ],
+      "errors": [],
+      "reciprocal_median_wall_rate_not_presented_fps": 16.776792327637335
+    },
+    "pyramid_500": {
+      "samples": 120,
+      "metrics": {
+        "wall_ms": {
+          "median": 43.44495,
+          "p95": 66.9737,
+          "mean": 47.90376833333333,
+          "min": 38.5045,
+          "max": 312.7982
+        },
+        "scatter_callback_ms": {
+          "median": 28.66855,
+          "p95": 42.7905,
+          "mean": 32.06377416666667,
+          "min": 26.4806,
+          "max": 282.9144
+        },
+        "analyzer_callback_ms": {
+          "median": 2.33785,
+          "p95": 3.5357,
+          "mean": 2.4794491666666665,
+          "min": 2.096,
+          "max": 4.529
+        },
+        "scatter_calls": {
+          "median": 2.0,
+          "p95": 3.0,
+          "mean": 2.058333333333333,
+          "min": 2.0,
+          "max": 3.0
+        },
+        "analyzer_calls": {
+          "median": 2.0,
+          "p95": 3.0,
+          "mean": 2.058333333333333,
+          "min": 2.0,
+          "max": 3.0
+        }
+      },
+      "repeat_median_wall_ms": {
+        "1": 43.3563,
+        "2": 43.44495,
+        "3": 43.463049999999996
+      },
+      "preview_rebuild_deltas": [
+        0,
+        0,
+        0
+      ],
+      "analyzer_run_deltas": [
+        0,
+        0,
+        0
+      ],
+      "pflow_build_deltas": [
+        0,
+        0,
+        0
+      ],
+      "populations": [
+        {
+          "generated": 52143,
+          "cache_display_count": 1784,
+          "cache_triangles": 10704,
+          "stable_during_measurement": true
+        },
+        {
+          "generated": 52143,
+          "cache_display_count": 1784,
+          "cache_triangles": 10704,
+          "stable_during_measurement": true
+        },
+        {
+          "generated": 52143,
+          "cache_display_count": 1784,
+          "cache_triangles": 10704,
+          "stable_during_measurement": true
+        }
+      ],
+      "errors": [],
+      "reciprocal_median_wall_rate_not_presented_fps": 23.01763496102539
+    },
+    "pyramid_250": {
+      "samples": 120,
+      "metrics": {
+        "wall_ms": {
+          "median": 34.845,
+          "p95": 52.0943,
+          "mean": 37.37112833333333,
+          "min": 31.0437,
+          "max": 62.3773
+        },
+        "scatter_callback_ms": {
+          "median": 21.23855,
+          "p95": 29.4989,
+          "mean": 22.109633333333335,
+          "min": 19.485300000000002,
+          "max": 33.2852
+        },
+        "analyzer_callback_ms": {
+          "median": 2.2923,
+          "p95": 3.3139000000000003,
+          "mean": 2.4404391666666667,
+          "min": 2.1007,
+          "max": 4.206300000000001
+        },
+        "scatter_calls": {
+          "median": 2.0,
+          "p95": 2.0,
+          "mean": 2.05,
+          "min": 2.0,
+          "max": 3.0
+        },
+        "analyzer_calls": {
+          "median": 2.0,
+          "p95": 2.0,
+          "mean": 2.05,
+          "min": 2.0,
+          "max": 3.0
+        }
+      },
+      "repeat_median_wall_ms": {
+        "1": 35.230999999999995,
+        "2": 34.3489,
+        "3": 35.2564
+      },
+      "preview_rebuild_deltas": [
+        0,
+        0,
+        0
+      ],
+      "analyzer_run_deltas": [
+        0,
+        0,
+        0
+      ],
+      "pflow_build_deltas": [
+        0,
+        0,
+        0
+      ],
+      "populations": [
+        {
+          "generated": 52143,
+          "cache_display_count": 1034,
+          "cache_triangles": 6204,
+          "stable_during_measurement": true
+        },
+        {
+          "generated": 52143,
+          "cache_display_count": 1034,
+          "cache_triangles": 6204,
+          "stable_during_measurement": true
+        },
+        {
+          "generated": 52143,
+          "cache_display_count": 1034,
+          "cache_triangles": 6204,
+          "stable_during_measurement": true
+        }
+      ],
+      "errors": [],
+      "reciprocal_median_wall_rate_not_presented_fps": 28.698522026115658
+    },
+    "pyramid_100": {
+      "samples": 120,
+      "metrics": {
+        "wall_ms": {
+          "median": 28.900599999999997,
+          "p95": 38.7339,
+          "mean": 32.468895833333335,
+          "min": 25.0017,
+          "max": 295.577
+        },
+        "scatter_callback_ms": {
+          "median": 15.60035,
+          "p95": 20.458399999999997,
+          "mean": 18.227148333333332,
+          "min": 14.5506,
+          "max": 260.7682
+        },
+        "analyzer_callback_ms": {
+          "median": 2.2099,
+          "p95": 2.9981,
+          "mean": 2.37177,
+          "min": 1.9634999999999998,
+          "max": 4.4528
+        },
+        "scatter_calls": {
+          "median": 2.0,
+          "p95": 2.0,
+          "mean": 2.033333333333333,
+          "min": 2.0,
+          "max": 3.0
+        },
+        "analyzer_calls": {
+          "median": 2.0,
+          "p95": 2.0,
+          "mean": 2.033333333333333,
+          "min": 2.0,
+          "max": 3.0
+        }
+      },
+      "repeat_median_wall_ms": {
+        "1": 28.93975,
+        "2": 29.02105,
+        "3": 28.4007
+      },
+      "preview_rebuild_deltas": [
+        0,
+        0,
+        0
+      ],
+      "analyzer_run_deltas": [
+        0,
+        0,
+        0
+      ],
+      "pflow_build_deltas": [
+        0,
+        0,
+        0
+      ],
+      "populations": [
+        {
+          "generated": 52143,
+          "cache_display_count": 484,
+          "cache_triangles": 2904,
+          "stable_during_measurement": true
+        },
+        {
+          "generated": 52143,
+          "cache_display_count": 484,
+          "cache_triangles": 2904,
+          "stable_during_measurement": true
+        },
+        {
+          "generated": 52143,
+          "cache_display_count": 484,
+          "cache_triangles": 2904,
+          "stable_during_measurement": true
+        }
+      ],
+      "errors": [],
+      "reciprocal_median_wall_rate_not_presented_fps": 34.6013577572784
+    },
+    "box_2000": {
+      "samples": 120,
+      "metrics": {
+        "wall_ms": {
+          "median": 93.52515,
+          "p95": 143.3389,
+          "mean": 100.8667,
+          "min": 86.7102,
+          "max": 164.4154
+        },
+        "scatter_callback_ms": {
+          "median": 76.81905,
+          "p95": 116.0419,
+          "mean": 82.54591416666666,
+          "min": 72.305,
+          "max": 125.6199
+        },
+        "analyzer_callback_ms": {
+          "median": 2.46355,
+          "p95": 3.6611000000000002,
+          "mean": 2.649684166666667,
+          "min": 2.2444,
+          "max": 4.2263
+        },
+        "scatter_calls": {
+          "median": 2.0,
+          "p95": 3.0,
+          "mean": 2.125,
+          "min": 2.0,
+          "max": 3.0
+        },
+        "analyzer_calls": {
+          "median": 2.0,
+          "p95": 3.0,
+          "mean": 2.125,
+          "min": 2.0,
+          "max": 3.0
+        }
+      },
+      "repeat_median_wall_ms": {
+        "1": 93.22935,
+        "2": 94.3868,
+        "3": 92.7358
+      },
+      "preview_rebuild_deltas": [
+        0,
+        0,
+        0
+      ],
+      "analyzer_run_deltas": [
+        0,
+        0,
+        0
+      ],
+      "pflow_build_deltas": [
+        0,
+        0,
+        0
+      ],
+      "populations": [
+        {
+          "generated": 52143,
+          "cache_display_count": 6284,
+          "cache_triangles": 75408,
+          "stable_during_measurement": true
+        },
+        {
+          "generated": 52143,
+          "cache_display_count": 6284,
+          "cache_triangles": 75408,
+          "stable_during_measurement": true
+        },
+        {
+          "generated": 52143,
+          "cache_display_count": 6284,
+          "cache_triangles": 75408,
+          "stable_during_measurement": true
+        }
+      ],
+      "errors": [],
+      "reciprocal_median_wall_rate_not_presented_fps": 10.692311105622391
+    },
+    "pointcloud_500k": {
+      "samples": 120,
+      "metrics": {
+        "wall_ms": {
+          "median": 54.89475,
+          "p95": 82.8286,
+          "mean": 58.27258666666667,
+          "min": 50.8061,
+          "max": 104.9245
+        },
+        "scatter_callback_ms": {
+          "median": 39.21245,
+          "p95": 57.959999999999994,
+          "mean": 41.098018333333336,
+          "min": 37.3982,
+          "max": 62.015299999999996
+        },
+        "analyzer_callback_ms": {
+          "median": 2.4619,
+          "p95": 3.6997999999999998,
+          "mean": 2.6347325,
+          "min": 2.2609,
+          "max": 5.0008
+        },
+        "scatter_calls": {
+          "median": 2.0,
+          "p95": 3.0,
+          "mean": 2.075,
+          "min": 2.0,
+          "max": 3.0
+        },
+        "analyzer_calls": {
+          "median": 2.0,
+          "p95": 3.0,
+          "mean": 2.075,
+          "min": 2.0,
+          "max": 3.0
+        }
+      },
+      "repeat_median_wall_ms": {
+        "1": 55.560249999999996,
+        "2": 54.10485,
+        "3": 54.6323
+      },
+      "preview_rebuild_deltas": [
+        0,
+        0,
+        0
+      ],
+      "analyzer_run_deltas": [
+        0,
+        0,
+        0
+      ],
+      "pflow_build_deltas": [
+        0,
+        0,
+        0
+      ],
+      "populations": [
+        {
+          "generated": 52143,
+          "cache_display_count": 357506,
+          "cache_triangles": 0,
+          "stable_during_measurement": true
+        },
+        {
+          "generated": 52143,
+          "cache_display_count": 357506,
+          "cache_triangles": 0,
+          "stable_during_measurement": true
+        },
+        {
+          "generated": 52143,
+          "cache_display_count": 357506,
+          "cache_triangles": 0,
+          "stable_during_measurement": true
+        }
+      ],
+      "errors": [
+        "-- Runtime error: Cannot sample source geometry. Use a nonempty mesh; Proxy support is not verified.",
+        "-- Runtime error: Cannot sample source geometry. Use a nonempty mesh; Proxy support is not verified.",
+        "-- Runtime error: Cannot sample source geometry. Use a nonempty mesh; Proxy support is not verified."
+      ],
+      "reciprocal_median_wall_rate_not_presented_fps": 18.21667827979907
+    },
+    "pointcloud_50k": {
+      "samples": 120,
+      "metrics": {
+        "wall_ms": {
+          "median": 26.885,
+          "p95": 39.3489,
+          "mean": 28.957563333333333,
+          "min": 22.8089,
+          "max": 73.0867
+        },
+        "scatter_callback_ms": {
+          "median": 13.8651,
+          "p95": 18.0349,
+          "mean": 14.492587499999999,
+          "min": 12.965800000000002,
+          "max": 28.5929
+        },
+        "analyzer_callback_ms": {
+          "median": 2.2029,
+          "p95": 2.8885,
+          "mean": 2.3345666666666665,
+          "min": 1.979,
+          "max": 4.2229
+        },
+        "scatter_calls": {
+          "median": 2.0,
+          "p95": 2.0,
+          "mean": 2.033333333333333,
+          "min": 2.0,
+          "max": 3.0
+        },
+        "analyzer_calls": {
+          "median": 2.0,
+          "p95": 2.0,
+          "mean": 2.033333333333333,
+          "min": 2.0,
+          "max": 3.0
+        }
+      },
+      "repeat_median_wall_ms": {
+        "1": 27.08835,
+        "2": 26.66075,
+        "3": 26.66285
+      },
+      "preview_rebuild_deltas": [
+        0,
+        0,
+        0
+      ],
+      "analyzer_run_deltas": [
+        0,
+        0,
+        0
+      ],
+      "pflow_build_deltas": [
+        0,
+        0,
+        0
+      ],
+      "populations": [
+        {
+          "generated": 52143,
+          "cache_display_count": 40304,
+          "cache_triangles": 0,
+          "stable_during_measurement": true
+        },
+        {
+          "generated": 52143,
+          "cache_display_count": 40304,
+          "cache_triangles": 0,
+          "stable_during_measurement": true
+        },
+        {
+          "generated": 52143,
+          "cache_display_count": 40304,
+          "cache_triangles": 0,
+          "stable_during_measurement": true
+        }
+      ],
+      "errors": [
+        "-- Runtime error: Cannot sample source geometry. Use a nonempty mesh; Proxy support is not verified.",
+        "-- Runtime error: Cannot sample source geometry. Use a nonempty mesh; Proxy support is not verified.",
+        "-- Runtime error: Cannot sample source geometry. Use a nonempty mesh; Proxy support is not verified."
+      ],
+      "reciprocal_median_wall_rate_not_presented_fps": 37.19546215361726
+    },
+    "pointcloud_10k": {
+      "samples": 120,
+      "metrics": {
+        "wall_ms": {
+          "median": 23.850499999999997,
+          "p95": 38.8313,
+          "mean": 26.0136175,
+          "min": 20.1307,
+          "max": 45.9162
+        },
+        "scatter_callback_ms": {
+          "median": 11.32,
+          "p95": 16.665,
+          "mean": 11.908860833333334,
+          "min": 10.4542,
+          "max": 19.1348
+        },
+        "analyzer_callback_ms": {
+          "median": 2.1501,
+          "p95": 3.0614999999999997,
+          "mean": 2.2639858333333334,
+          "min": 1.9597,
+          "max": 3.4996
+        },
+        "scatter_calls": {
+          "median": 2.0,
+          "p95": 2.0,
+          "mean": 2.033333333333333,
+          "min": 2.0,
+          "max": 3.0
+        },
+        "analyzer_calls": {
+          "median": 2.0,
+          "p95": 2.0,
+          "mean": 2.033333333333333,
+          "min": 2.0,
+          "max": 3.0
+        }
+      },
+      "repeat_median_wall_ms": {
+        "1": 25.128749999999997,
+        "2": 23.1689,
+        "3": 23.81945
+      },
+      "preview_rebuild_deltas": [
+        0,
+        0,
+        0
+      ],
+      "analyzer_run_deltas": [
+        0,
+        0,
+        0
+      ],
+      "pflow_build_deltas": [
+        0,
+        0,
+        0
+      ],
+      "populations": [
+        {
+          "generated": 52143,
+          "cache_display_count": 8281,
+          "cache_triangles": 0,
+          "stable_during_measurement": true
+        },
+        {
+          "generated": 52143,
+          "cache_display_count": 8281,
+          "cache_triangles": 0,
+          "stable_during_measurement": true
+        },
+        {
+          "generated": 52143,
+          "cache_display_count": 8281,
+          "cache_triangles": 0,
+          "stable_during_measurement": true
+        }
+      ],
+      "errors": [
+        "-- Runtime error: Cannot sample source geometry. Use a nonempty mesh; Proxy support is not verified.",
+        "-- Runtime error: Cannot sample source geometry. Use a nonempty mesh; Proxy support is not verified.",
+        "-- Runtime error: Cannot sample source geometry. Use a nonempty mesh; Proxy support is not verified."
+      ],
+      "reciprocal_median_wall_rate_not_presented_fps": 41.927842183602024
+    },
+    "centers_all": {
+      "samples": 120,
+      "metrics": {
+        "wall_ms": {
+          "median": 28.814,
+          "p95": 42.2294,
+          "mean": 30.393334166666666,
+          "min": 24.3942,
+          "max": 48.8851
+        },
+        "scatter_callback_ms": {
+          "median": 15.08095,
+          "p95": 18.891,
+          "mean": 15.667790833333333,
+          "min": 13.8565,
+          "max": 21.8471
+        },
+        "analyzer_callback_ms": {
+          "median": 2.23245,
+          "p95": 3.1052999999999997,
+          "mean": 2.3515941666666667,
+          "min": 1.9849,
+          "max": 4.1996
+        },
+        "scatter_calls": {
+          "median": 2.0,
+          "p95": 2.0,
+          "mean": 2.033333333333333,
+          "min": 2.0,
+          "max": 3.0
+        },
+        "analyzer_calls": {
+          "median": 2.0,
+          "p95": 2.0,
+          "mean": 2.033333333333333,
+          "min": 2.0,
+          "max": 3.0
+        }
+      },
+      "repeat_median_wall_ms": {
+        "1": 28.911450000000002,
+        "2": 29.86645,
+        "3": 28.13475
+      },
+      "preview_rebuild_deltas": [
+        0,
+        0,
+        0
+      ],
+      "analyzer_run_deltas": [
+        0,
+        0,
+        0
+      ],
+      "pflow_build_deltas": [
+        0,
+        0,
+        0
+      ],
+      "populations": [
+        {
+          "generated": 52143,
+          "cache_display_count": 52143,
+          "cache_triangles": 0,
+          "stable_during_measurement": true
+        },
+        {
+          "generated": 52143,
+          "cache_display_count": 52143,
+          "cache_triangles": 0,
+          "stable_during_measurement": true
+        },
+        {
+          "generated": 52143,
+          "cache_display_count": 52143,
+          "cache_triangles": 0,
+          "stable_during_measurement": true
+        }
+      ],
+      "errors": [],
+      "reciprocal_median_wall_rate_not_presented_fps": 34.70535156521136
+    }
+  }
+}

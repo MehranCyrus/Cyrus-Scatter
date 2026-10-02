@@ -1,0 +1,78 @@
+{
+  "AminScatter/tools/ui/viewport-performance.cjs": {
+    "sha256": "01c8f3cbae5f3587b509ffa3d7d68abf601a6b5f4960c35532142938eca01f53",
+    "bytes": 3594
+  },
+  "AminScatter/scripts/AminScatterObject.ms": {
+    "sha256": "8116ab4aad662a9a62e15667e4b53507aaf3f8a989faee3856845a28a1f99c17",
+    "bytes": 968536
+  },
+  "tools/build_max.py": {
+    "sha256": "1c7a158e0b89223c963f4f167497d8ec74a870d26c3c1e15f9b4da2d54326297",
+    "bytes": 7241
+  },
+  "tools/test_viewport_performance.py": {
+    "sha256": "38757b7e3a3f6ab9d205b492c12903e3b7e02bbac8e29bf423226ab2c88341e4",
+    "bytes": 1617
+  },
+  "tools/tests/viewport_performance_smoke.ms": {
+    "sha256": "94b1c75679455462fd892f25299c780105817bcca86bfd38c7a0d7edf54682b8",
+    "bytes": 9395
+  },
+  "tools/test_max2027.py": {
+    "sha256": "3ccebed34d07e3befc325ffac554594de31c7cb03d473be9069ffcabdfe990df",
+    "bytes": 2248
+  },
+  "tools/test_compute_performance.py": {
+    "sha256": "2a394ef638d5766a5c7b6ba0af1b94a88aba044379e6c733ad42e7a0c44fd03b",
+    "bytes": 1599
+  },
+  "tools/tests/compute_performance_smoke.ms": {
+    "sha256": "9a5005f3b3fc5b281549f98685c41aac6247ae44b79e779288b931a794ac99eb",
+    "bytes": 6231
+  },
+  "tools/performance/CyrusViewportBenchmark.ms": {
+    "sha256": "939cf536188b665a530dac03d0bb8dba1519a6724cbf0225a6aa7361307f1abe",
+    "bytes": 4019
+  },
+  "tools/performance/CyrusPerformanceMonitor.ms": {
+    "sha256": "2e02d59209e3673cdd2ea9c6180955f917309819261976208157ac70cce7153d",
+    "bytes": 24124
+  },
+  "tools/performance/summarize_viewport.py": {
+    "sha256": "34db859e89860707bf44809a1e9a1cac6b99dec982187730c2a0186f7b1f8715",
+    "bytes": 3783
+  },
+  "cmake/CyrusMaxSDK.cmake": {
+    "sha256": "53cf91db75742990b80d1f0a8dc8094d45a2a964094b3785b2f6eb1c8b55248e",
+    "bytes": 1548
+  },
+  "CyrusSurfaceAnalyzer/scripts/CyrusSurfaceAnalyzer.ms": {
+    "sha256": "b9a1f1aa2ba7847566eb8f36bee711f9c64753572955ed4549f2f68669e5f923",
+    "bytes": 22579
+  },
+  "build/max2027-release/AminScatter/AminScatter.dlx": {
+    "sha256": "1bc17abe30ddda30ce3d46070ea6d487ada29b7f281b7f97d094822bca7e89ef",
+    "bytes": 472576
+  },
+  "build/max2027-release/AminScatter/CyrusScatterEdit.dlm": {
+    "sha256": "323a07218e3e39d25ce9d768a3a09233c2ad31152b8b1304c36c05717ab5f0a9",
+    "bytes": 10240
+  },
+  "build/max2027-release/CyrusSurfaceAnalyzer/CyrusSurfaceAnalyzer.dlx": {
+    "sha256": "e2318bd967cf8b17ce1b1208e156c61a9f6361a80b8160c34c54bd2eb2a886de",
+    "bytes": 85504
+  },
+  "dist/CyrusScatter-0.61-Max2027.mzp": {
+    "sha256": "82167da439a60b2b9d08112cbd0732ae891252d76a6cc4ae38cc61cb9cd4e9de",
+    "bytes": 327457
+  },
+  "dist/CyrusScatter-0.62-Max2027.mzp": {
+    "sha256": "5f0f7a99ac88ca118345fb79a67539213f0d64ea8d137ed3820cd757cbbcff49",
+    "bytes": 327501
+  },
+  "Test Scene/SaveSelect 2.max": {
+    "sha256": "8a40f6a1a5c47eacbbee92920e131f4cae04cfb0de6be1991b4719ea2860bd2c",
+    "bytes": 185442040
+  }
+}

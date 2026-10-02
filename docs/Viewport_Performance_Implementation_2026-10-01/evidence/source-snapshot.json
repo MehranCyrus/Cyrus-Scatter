@@ -1,0 +1,52 @@
+[
+  {
+    "path": "AminScatter/src/preview.cpp",
+    "sha256": "96c3099d032b202df21334f5390a946109920890b042a3b1fb69badad9be50af",
+    "bytes": 13330
+  },
+  {
+    "path": "AminScatter/src/preview_batches.inc",
+    "sha256": "a2a7df3d65a6278d49aad80361bffe8db15fae1419feb44e993354f5c31c7acd",
+    "bytes": 1890
+  },
+  {
+    "path": "AminScatter/src/geometry_preview.inc",
+    "sha256": "0d0b5bf09e73d589683dbd54c0db052d398434592148f5c6992d1137a78e411d",
+    "bytes": 4418
+  },
+  {
+    "path": "AminScatter/src/max_bridge.cpp",
+    "sha256": "5dcf12cceee2f48d079e499ef20069c3f6ce4c51864e4daa1ca24adc120b07f6",
+    "bytes": 26218
+  },
+  {
+    "path": "AminScatter/tools/ui/generate.cjs",
+    "sha256": "270fcf60e623352a0954184704b48ce883b0e477b21d01ada5bea9878d237d18",
+    "bytes": 11075
+  },
+  {
+    "path": "AminScatter/tools/ui/viewport-performance.cjs",
+    "sha256": "8522d8a7d3fd8916fd33db00bc474e64069d4468867b6e4ffe4199d356e150a9",
+    "bytes": 2954
+  },
+  {
+    "path": "AminScatter/scripts/AminScatterObject.ms",
+    "sha256": "c8612501cc3ab164c82af5f8ad6a96e185ce8a47f80727e8e895ee2282ffe4a8",
+    "bytes": 968331
+  },
+  {
+    "path": "tools/build_max.py",
+    "sha256": "6282697e92bcac5dae71bcfd936beb639a5fcf8f383abfa5b321478b7f432c24",
+    "bytes": 7228
+  },
+  {
+    "path": "tools/test_viewport_performance.py",
+    "sha256": "38757b7e3a3f6ab9d205b492c12903e3b7e02bbac8e29bf423226ab2c88341e4",
+    "bytes": 1617
+  },
+  {
+    "path": "tools/tests/viewport_performance_smoke.ms",
+    "sha256": "06db6a47520983e2c3772ce7e675cfb3ebbc031ceb996c2b1429144bfb4bedc5",
+    "bytes": 7615
+  }
+]

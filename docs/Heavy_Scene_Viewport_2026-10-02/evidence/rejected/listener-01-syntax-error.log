@@ -1,0 +1,7 @@
+Welcome to MAXScript.
+
+
+-- Error occurred in anonymous codeblock; filename: F:\Cursor\_Cyrus_Apps\CyrusScatter\tools\performance\native_point_probe\bootstrap.ms; position: 5280; line: 110
+-- MAXScript Auto-load Script Error Exception:
+-- Compile error: only throws without arguments are permitted in catch expressions 
+--  In line:     ) catch (writer.Close(); throw (getCurrentException()))

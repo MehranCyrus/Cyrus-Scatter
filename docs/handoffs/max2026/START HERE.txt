@@ -1,0 +1,52 @@
+CYRUS SCATTER 0.62 - MAX 2026 TEST PACKAGE
+
+INSTALL
+1. Extract the whole folder to your computer.
+2. Save your work and open 3ds Max 2026.
+3. Choose Scripting > Run Script and run CyrusScatter-0.62-Max2026.mzp.
+4. Run CyrusSurfaceAnalyzer-0.14-Max2026.mzp the same way.
+5. Close all Max 2026 windows, then restart Max.
+6. Open CyrusScatter-Viewport-Demo-Max2026.max.
+
+The installers include the compiled plugins and CS Edit modifier. No compiler,
+SDK or other developer software is needed. These installers are for Max 2026.
+
+TRY THE PERFORMANCE CHANGE
+Pan, orbit and zoom around the demo. It has six layers and 6,284 pyramid previews.
+It uses simple built-in geometry; no Corona, plant library or textures are needed.
+It is a synthetic demo, not the original project used for performance measurements.
+The demo is configured for viewport testing; automatic render preparation is off.
+
+For a direct drawing comparison:
+1. Run Compare Viewport.ms through Scripting > Run Script.
+2. Choose Previous drawing, then move around the viewport.
+3. Choose Optimized drawing and repeat the same movement.
+4. Close the comparison panel when finished; it restores optimized drawing.
+
+This compares the preserved previous triangle-drawing loop with the new batching
+inside the same current plugin. It does not simulate every behavior of an older
+release. The scene contents and preview count stay the same. FPS depends on the
+computer, viewport size and display settings; no fixed FPS increase is promised.
+Use Proxy previews for this comparison, as in the demo. The drawing switch affects
+box, sphere and pyramid proxies; Point Cloud and Mesh use different drawing paths.
+
+You can also try a COPY of your own scene. The tools appear under:
+Create > Geometry > Cyrus > Cyrus Scatter / Surface Analyzer.
+
+WHAT CHANGED
+- Cached proxy geometry and larger drawing batches reduce viewport overhead.
+- Layer synchronization is deferred while dragging and resumes after release.
+- Earlier CPU calculation and edit-notification improvements are included.
+
+TEST STATUS
+Built with Autodesk's Max 2026 SDK; all nine native test suites passed.
+The same feature code was tested in Max 2027.1. Max 2026 is not installed on the
+build computer, so loading, installation and interactive behavior in Max 2026
+still need confirmation on your machine. Treat this as a review/test build.
+The demo was saved to Max 2026 format from Max 2027 and reopened there for checks.
+
+FEEDBACK
+Please note your Max version/update, CPU, GPU and RAM; whether installation and
+the demo worked; FPS while navigating in each comparison mode; and any errors.
+If an error appears, send its text or a screenshot with the action that caused it.
+If installation fails or Max reports a missing plugin, stop there and report it.

@@ -4,6 +4,8 @@
 
 ## C01 — Prepare boundary queries once
 
+**October 1 implementation:** evaluation-owned preparation now covers closed Analyzer band kinds 1/2; boundary orientation no longer copies an entire band for each row. Native source policy filtering and source transforms also moved out of per-row MAXScript calls. See the [implementation report](../Performance_Implementation_2026-10-01.md) for measured scope. General segment indexing and projected movement acceleration remain future tasks.
+
 **Files:** [scatter.cpp](../../AminScatter/src/scatter.cpp), [final.inc](../../AminScatter/src/final.inc), [orientation.inc](../../AminScatter/src/orientation.inc), [edge_border.inc](../../AminScatter/src/edge_border.inc), [boundary_falloff.inc](../../AminScatter/src/boundary_falloff.inc).
 
 Introduce immutable prepared metadata owned by the current evaluation: validated loop ranges, bounds, projected coordinates, normals, edge masks and original segment IDs. First remove `outwardAt`'s full `LineBand` copy using a kind override that does not mutate the caller. Cache `AreaMask` preparation where predicates repeatedly reconstruct it; the present object references its area rather than copying it.

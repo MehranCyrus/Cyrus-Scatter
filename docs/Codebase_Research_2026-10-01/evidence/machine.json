@@ -1,0 +1,79 @@
+{
+  "cpu": [
+    {
+      "Name": "AMD Ryzen 5 5600X 6-Core Processor             ",
+      "NumberOfCores": 6,
+      "NumberOfLogicalProcessors": 12
+    }
+  ],
+  "memory": [
+    {
+      "TotalPhysicalMemory": 102986215424
+    }
+  ],
+  "os": [
+    {
+      "Caption": "Microsoft Windows 11 Pro",
+      "Version": "10.0.26300",
+      "BuildNumber": "26300"
+    }
+  ],
+  "gpu": [
+    {
+      "Name": "NVIDIA GeForce RTX 3090",
+      "DriverVersion": "32.0.16.1047",
+      "AdapterRAM": 4293918720
+    }
+  ],
+  "tools": [
+    {
+      "Name": "python.exe",
+      "Source": "C:\\ProgramData\\miniconda3\\python.exe"
+    },
+    {
+      "Name": "cmake.exe",
+      "Source": "C:\\Users\\Mehran\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\cmake.exe"
+    },
+    {
+      "Name": "ctest.exe",
+      "Source": "C:\\Users\\Mehran\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\ctest.exe"
+    },
+    {
+      "Name": "node.exe",
+      "Source": "C:\\Program Files\\nodejs\\node.exe"
+    },
+    {
+      "Name": "git.exe",
+      "Source": "C:\\Program Files\\Git\\cmd\\git.exe"
+    },
+    {
+      "Name": "rg.exe",
+      "Source": "C:\\Users\\Mehran\\AppData\\Local\\OpenAI\\Codex\\bin\\5cb96978b0b525f8\\rg.exe"
+    }
+  ],
+  "autodesk": [
+    {
+      "FullName": "C:\\Program Files\\Autodesk\\3ds Max 2024"
+    },
+    {
+      "FullName": "C:\\Program Files\\Autodesk\\3ds Max 2027"
+    },
+    {
+      "FullName": "C:\\Program Files\\Autodesk\\AdODIS"
+    },
+    {
+      "FullName": "C:\\Program Files\\Autodesk\\Autodesk CER"
+    },
+    {
+      "FullName": "C:\\Program Files\\Autodesk\\Genuine Service"
+    }
+  ],
+  "processes": [
+    {
+      "Id": 34464,
+      "Path": "C:\\Program Files\\Autodesk\\3ds Max 2027\\3dsmax.exe",
+      "StartTime": "2026-10-01T20:55:33.7870672+03:30",
+      "MainWindowTitle": "CyrusScatter-Viewport-Demo-Max2026.max - Autodesk 3ds Max 2027 "
+    }
+  ]
+}

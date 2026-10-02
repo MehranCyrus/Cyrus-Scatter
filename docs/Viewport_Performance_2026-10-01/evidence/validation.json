@@ -1,0 +1,98 @@
+{
+  "retained_suite_count": 7,
+  "measured_steps": 3900,
+  "error_free_steps": 3540,
+  "degraded_display_steps": 360,
+  "trials": 82,
+  "suites": {
+    "matrix": {
+      "steps": 900,
+      "cases": 5,
+      "all_measured_counters_zero": true,
+      "all_populations_stable": true
+    },
+    "display-matrix": {
+      "steps": 1200,
+      "cases": 10,
+      "all_measured_counters_zero": true,
+      "all_populations_stable": true
+    },
+    "layer-profile": {
+      "steps": 60,
+      "cases": 1,
+      "all_measured_counters_zero": true,
+      "all_populations_stable": true
+    },
+    "retained-mesh-v2": {
+      "steps": 900,
+      "cases": 5,
+      "all_measured_counters_zero": true,
+      "all_populations_stable": true
+    },
+    "layout": {
+      "steps": 360,
+      "cases": 3,
+      "all_measured_counters_zero": true,
+      "all_populations_stable": true
+    },
+    "stationary": {
+      "steps": 120,
+      "cases": 1,
+      "all_measured_counters_zero": true,
+      "all_populations_stable": true
+    },
+    "analyzer-flush": {
+      "steps": 360,
+      "cases": 3,
+      "all_measured_counters_zero": true,
+      "all_populations_stable": true
+    }
+  },
+  "known_preview_errors": [
+    {
+      "suite": "display-matrix",
+      "case": "pointcloud_500k",
+      "layer": "BushesCenter",
+      "errors": [
+        "-- Runtime error: Cannot sample source geometry. Use a nonempty mesh; Proxy support is not verified.",
+        "-- Runtime error: Cannot sample source geometry. Use a nonempty mesh; Proxy support is not verified.",
+        "-- Runtime error: Cannot sample source geometry. Use a nonempty mesh; Proxy support is not verified."
+      ],
+      "steps": 120,
+      "classification": "degraded incomplete display"
+    },
+    {
+      "suite": "display-matrix",
+      "case": "pointcloud_50k",
+      "layer": "BushesCenter",
+      "errors": [
+        "-- Runtime error: Cannot sample source geometry. Use a nonempty mesh; Proxy support is not verified.",
+        "-- Runtime error: Cannot sample source geometry. Use a nonempty mesh; Proxy support is not verified.",
+        "-- Runtime error: Cannot sample source geometry. Use a nonempty mesh; Proxy support is not verified."
+      ],
+      "steps": 120,
+      "classification": "degraded incomplete display"
+    },
+    {
+      "suite": "display-matrix",
+      "case": "pointcloud_10k",
+      "layer": "BushesCenter",
+      "errors": [
+        "-- Runtime error: Cannot sample source geometry. Use a nonempty mesh; Proxy support is not verified.",
+        "-- Runtime error: Cannot sample source geometry. Use a nonempty mesh; Proxy support is not verified.",
+        "-- Runtime error: Cannot sample source geometry. Use a nonempty mesh; Proxy support is not verified."
+      ],
+      "steps": 120,
+      "classification": "degraded incomplete display"
+    }
+  ],
+  "restoration": {
+    "original_scene_sha256_unchanged": "8a40f6a1a5c47eacbbee92920e131f4cae04cfb0de6be1991b4719ea2860bd2c",
+    "controller_settings_equal": true,
+    "original_scene_reopened_unsaved": true,
+    "temporary_nodes_removed": true,
+    "command_timer_disposed": true,
+    "installed_native_modules_unchanged": true,
+    "installed_and_repo_script_unchanged": "34062594ce2006833ba3f281eae8fabc4d2184c95955c9dfc092c7a597376391"
+  }
+}

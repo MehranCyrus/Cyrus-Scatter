@@ -1,0 +1,76 @@
+[
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.62-Max2026.mzp",
+    "sha256": "eeef1216c6dfec1513b75df41c293bedc2f2864ef8180b8ca9a21a3d79828ec6",
+    "zip_ok": true,
+    "manifest": {
+      "product": "Cyrus Scatter",
+      "version": "0.62",
+      "max_year": 2026,
+      "toolset": "14.38.33130",
+      "windows_sdk": "10.0.19041.0",
+      "configuration": "Release",
+      "native_id": "cf62cbb3e11c",
+      "files": {
+        "AminScatter.dlx": "a42642ad9a5a0c5681c637c1fd2fba304066d207cbe8bdbb6024e4471e78c181",
+        "AminScatter.mcr": "a2129c3f43f5ba73690fa32d7a0dfb56acb61fe58f27566e8bfa7dccbce8f8c6",
+        "AminScatterObject.ms": "8116ab4aad662a9a62e15667e4b53507aaf3f8a989faee3856845a28a1f99c17",
+        "AminScatterStartup.ms": "5a9bce169dad56446e535ff5d6c04e21487f49dbd217d74e8cce749939a61faf",
+        "CyrusScatterEdit.dlm": "57bdbfcef1e017f2f9dc6c772734cef9cfc9a24be7307427c46829e8f0d4c21e",
+        "INSTALL.txt": "58a202bfea62cfe2f5a873141f7ea0451d38b8141537c91f97635ed3909cedea",
+        "Uninstall.ms": "d0aa4966d307dc9a82a3d67999ac5d5e4c9f31bc608ab75d97544d46679b42b3",
+        "install.ms": "80d39323da1398029e879be95c9b8e6ff1d0b668e0f6e6ec734966ff5a204e9e",
+        "mzp.run": "13b3f7f998707810ea8aab96167e66fa0c123463960eb2b078a439a6b48821b2"
+      }
+    },
+    "checks": {
+      "AminScatter.dlx": true,
+      "AminScatter.mcr": true,
+      "AminScatterObject.ms": true,
+      "AminScatterStartup.ms": true,
+      "CyrusScatterEdit.dlm": true,
+      "INSTALL.txt": true,
+      "Uninstall.ms": true,
+      "install.ms": true,
+      "mzp.run": true
+    },
+    "script_matches": true
+  },
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.62-Max2027.mzp",
+    "sha256": "5f0f7a99ac88ca118345fb79a67539213f0d64ea8d137ed3820cd757cbbcff49",
+    "zip_ok": true,
+    "manifest": {
+      "product": "Cyrus Scatter",
+      "version": "0.62",
+      "max_year": 2027,
+      "toolset": "14.38.33130",
+      "windows_sdk": "10.0.19041.0",
+      "configuration": "Release",
+      "native_id": "a273c3615001",
+      "files": {
+        "AminScatter.dlx": "1bc17abe30ddda30ce3d46070ea6d487ada29b7f281b7f97d094822bca7e89ef",
+        "AminScatter.mcr": "b2e5a533951096cbe41241d5ab75dc0afec4d31bef3d4a2e713d1670fbb2933a",
+        "AminScatterObject.ms": "8116ab4aad662a9a62e15667e4b53507aaf3f8a989faee3856845a28a1f99c17",
+        "AminScatterStartup.ms": "5a9bce169dad56446e535ff5d6c04e21487f49dbd217d74e8cce749939a61faf",
+        "CyrusScatterEdit.dlm": "323a07218e3e39d25ce9d768a3a09233c2ad31152b8b1304c36c05717ab5f0a9",
+        "INSTALL.txt": "8a4d7d0f85445cc488e3036b4d8de322409c492dbbd8a38c6803631cbe026c53",
+        "Uninstall.ms": "405dbe413fa6d7b52c1d320c41fd16c32fea018fb0d4bec649bdefaded9c0e9e",
+        "install.ms": "eb71c72d985289bb8fa760162c1f913264595c70409cecac2d3607e0180a1281",
+        "mzp.run": "0345b4dcfc797a40ede91ca46ac7776b015f0984b7da0c3e0b1cb5f08f445592"
+      }
+    },
+    "checks": {
+      "AminScatter.dlx": true,
+      "AminScatter.mcr": true,
+      "AminScatterObject.ms": true,
+      "AminScatterStartup.ms": true,
+      "CyrusScatterEdit.dlm": true,
+      "INSTALL.txt": true,
+      "Uninstall.ms": true,
+      "install.ms": true,
+      "mzp.run": true
+    },
+    "script_matches": true
+  }
+]

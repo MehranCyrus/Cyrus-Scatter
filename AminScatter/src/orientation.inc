@@ -54,8 +54,7 @@ bool outwardAt(Vec3 p,const LineBand& band,const std::vector<FacingLoop>& loops,
     // MAXScript matrices use floats; points snapped to a boundary may round just
     // outside it during transport. Permit only the scale-relative float error.
     double tolerance=1e-6*std::max({1.0,std::abs(p.x),std::abs(p.y),std::abs(p.z)});
-    auto testBand=band;if(testBand.kind==6)testBand.kind=2;
-    if(!analyzerBand(projected,testBand,tolerance)&&!(band.start==0&&distance<=tolerance))return false;
+    if(!analyzerBand(projected,band,tolerance,band.kind==6?2:-1)&&!(band.start==0&&distance<=tolerance))return false;
     direction=nearest->out[edge];up=nearest->up;
     std::size_t corner=length(projected-v[edge])<=length(projected-v[(edge+1)%n])?edge:(edge+1)%n;
     double r=length(projected-v[corner]);

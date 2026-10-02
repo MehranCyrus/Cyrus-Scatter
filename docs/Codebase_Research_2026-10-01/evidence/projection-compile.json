@@ -1,0 +1,22 @@
+{
+  "started_utc": "2026-10-01T18:00:33.542485+00:00",
+  "finished_utc": "2026-10-01T18:00:37.354678+00:00",
+  "cwd": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\codebase-research-2026-10-01\\projection",
+  "argv": [
+    "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+    "/nologo",
+    "/O2",
+    "/Ob2",
+    "/DNDEBUG",
+    "/MD",
+    "/EHsc",
+    "/std:c++20",
+    "/IF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\AminScatter\\include",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\docs\\Codebase_Research_2026-10-01\\projection_probe.cpp",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\AminScatter\\src\\execution.cpp",
+    "/FoF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\codebase-research-2026-10-01\\projection/",
+    "/FeF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\codebase-research-2026-10-01\\projection\\projection-probe.exe"
+  ],
+  "returncode": 0,
+  "output": "projection-compile.txt"
+}

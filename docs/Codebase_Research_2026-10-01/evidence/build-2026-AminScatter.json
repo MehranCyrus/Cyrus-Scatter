@@ -1,0 +1,12 @@
+{
+  "started_utc": "2026-10-01T18:07:14.766101+00:00",
+  "finished_utc": "2026-10-01T18:07:43.092086+00:00",
+  "cwd": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+  "argv": [
+    "cmake",
+    "--build",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\codebase-research-2026-10-01\\max2026\\AminScatter"
+  ],
+  "returncode": 0,
+  "output": "build-2026-AminScatter.txt"
+}

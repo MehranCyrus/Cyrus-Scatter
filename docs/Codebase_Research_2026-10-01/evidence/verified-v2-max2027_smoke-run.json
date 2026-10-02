@@ -1,0 +1,21 @@
+{
+  "started_utc": "2026-10-01T18:18:04.755230+00:00",
+  "finished_utc": "2026-10-01T18:18:34.322552+00:00",
+  "argv": [
+    "C:/Program Files/Autodesk/3ds Max 2027/3dsmaxbatch.exe",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\codebase-research-2026-10-01\\host-verified-v2\\tools\\tests\\identity-max2027_smoke.ms",
+    "-i",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\codebase-research-2026-10-01\\host-verified-v2\\max.ini",
+    "-p",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\codebase-research-2026-10-01\\host-verified-v2\\plugins.ini",
+    "-listenerlog",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\docs\\Codebase_Research_2026-10-01\\evidence\\verified-v2-max2027_smoke-listener.txt",
+    "-log",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\docs\\Codebase_Research_2026-10-01\\evidence\\verified-v2-max2027_smoke-session.txt"
+  ],
+  "returncode": 4294967166,
+  "fixture_sha256": "075c37e605535782cbc0faed6d1abe23d93fd786cca46f7b63818e11ba3ebb0e",
+  "copy_sha256": "075c37e605535782cbc0faed6d1abe23d93fd786cca46f7b63818e11ba3ebb0e",
+  "result": "PENDING\n",
+  "scope": "Separate hidden Max batch; synthetic disposable scene; no renderer test"
+}

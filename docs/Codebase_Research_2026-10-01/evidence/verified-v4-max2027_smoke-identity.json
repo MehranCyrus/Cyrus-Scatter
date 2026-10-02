@@ -1,0 +1,21 @@
+{
+  "modules": [
+    {
+      "path": "C:\\Program Files\\Autodesk\\3ds Max 2027\\3dsmax.exe",
+      "sha256": "c0ef89f9602ecf9874e8c50344e6ae98994e7c34c2cf498feb0168f2df6f78fc"
+    },
+    {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\codebase-research-2026-10-01\\max2027\\AminScatter\\CyrusScatterEdit.dlm",
+      "sha256": "85f206a209311dfef07c3425f28b732393066ddbc97429b86871fd176144a716"
+    },
+    {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\codebase-research-2026-10-01\\max2027\\AminScatter\\AminScatter.dlx",
+      "sha256": "6e2eb2bb6565420d578b3c7137194b6b2f70df7a891a96ea091a411b9f6ef799"
+    },
+    {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\codebase-research-2026-10-01\\max2027\\CyrusSurfaceAnalyzer\\CyrusSurfaceAnalyzer.dlx",
+      "sha256": "b607557a9e1899e51db20d67acc816bd18deca42a192d542465f63305e6e9f36"
+    }
+  ],
+  "expected_modules_present": true
+}

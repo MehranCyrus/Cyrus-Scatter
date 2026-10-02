@@ -1,0 +1,254 @@
+{
+  "date": "2026-10-01",
+  "product": "Cyrus Scatter 0.61, Max 2027 local candidate",
+  "measured_steps": 900,
+  "repeats_per_condition": 3,
+  "warmup_steps_per_repeat": 8,
+  "measurement": "Synchronous camera change, redraw and message-pump wall time; no GPU completion fence",
+  "package": {
+    "path": "dist/CyrusScatter-0.61-Max2027.mzp",
+    "sha256": "82167da439a60b2b9d08112cbd0732ae891252d76a6cc4ae38cc61cb9cd4e9de"
+  },
+  "notes": [
+    "Main baseline uses the preserved native loop and the candidate script; it is not a complete 0.60 build.",
+    "All main trials preserve population and have zero measured rebuilds. P95 includes all samples.",
+    "Integer64 draw stats are cast to integer for valid monitor JSON; the initial invalid desktop-ready export is excluded.",
+    "Final successful fixture logs are retained; early harness setup/compile retries remain under build.",
+    "Visual image comparisons exclude the top 140 rows containing menus/statistics. Images are not pixel-identical.",
+    "Mouse input recorded two held callbacks per condition. The final reverse-pan screenshot capture failed, so use these as corroboration only.",
+    "Private startup session only. Original scene, normal installed script and native module remain unchanged.",
+    "Recipes use local paths. The retained bootstrap includes a JSON-format correction made after measurement; no runtime/plugin code changed afterward."
+  ],
+  "files": [
+    {
+      "path": "evidence/analyzer-ctest.log",
+      "sha256": "fc4622a607d76319f87736addf36ddcf7eaaf4391b8c3e319c6b50b934d9a220",
+      "bytes": 1387
+    },
+    {
+      "path": "evidence/cleanup-complete.txt",
+      "sha256": "de31f4b95de831b18af07455ab15e357fa8a04f538da5ccb4297e9ff55c34451",
+      "bytes": 226
+    },
+    {
+      "path": "evidence/compute-tests.txt",
+      "sha256": "bccfaa5e3ff3839403b3e6d31f5bc3f65eea0e1598e309f019ab15d21cb428f4",
+      "bytes": 275
+    },
+    {
+      "path": "evidence/conditions.json",
+      "sha256": "f56d4cdc740684a1bc722e5199d20d8c5230a2df2c3aa31b6269cfc4cb4a4b94",
+      "bytes": 290
+    },
+    {
+      "path": "evidence/final-display.json",
+      "sha256": "85d2a65ad44738f7e0b04048146a34a2547bda62bae772703badaefd975256d1",
+      "bytes": 671
+    },
+    {
+      "path": "evidence/gesture-counts.json",
+      "sha256": "9d6182c293f0cdae7e9ac8095d562c1eecef1385fc10de5014273d7a1445802b",
+      "bytes": 666
+    },
+    {
+      "path": "evidence/gesture-summary.json",
+      "sha256": "a95e36cee63c7598c909b90c1f4fad03a8d6d7a791ebd1710df5f65e8a6b3c8e",
+      "bytes": 271
+    },
+    {
+      "path": "evidence/gestures.csv",
+      "sha256": "701302a53dae1877220551464c545b9229d9fb33868f8caa3f044ecb8e505212",
+      "bytes": 157
+    },
+    {
+      "path": "evidence/images/shape1-color1-batch.png",
+      "sha256": "bc6bb23008d2e200d44e2fb78b3e581b27c0f3ab99fa815a95bdf47b2b4c3991",
+      "bytes": 244222
+    },
+    {
+      "path": "evidence/images/shape1-color1-legacy.png",
+      "sha256": "ac3a8a07b792546fd22bbb3dfaff9c5d41f0d5e157548b08799b63f30bf4e3be",
+      "bytes": 244277
+    },
+    {
+      "path": "evidence/images/shape1-color2-batch.png",
+      "sha256": "a389fcfcf3cd6ba6dcac2fb0964d8650295a09d351e5f0a3569d5b3831724783",
+      "bytes": 264753
+    },
+    {
+      "path": "evidence/images/shape1-color2-legacy.png",
+      "sha256": "a6c1a3e3cb44728ffdf9cc46f204989800b89a4f1a471ab43965ec28ed4cc121",
+      "bytes": 263789
+    },
+    {
+      "path": "evidence/images/shape2-color1-batch.png",
+      "sha256": "777d0c2577bca5177e7d77b9c2babefbca7fea4053f534582536f4de3f6cb59e",
+      "bytes": 246887
+    },
+    {
+      "path": "evidence/images/shape2-color1-legacy.png",
+      "sha256": "e1c1f4d749dbe582403a1a3bdf52d60498d0f09477d0823e22afc120fdfef7fb",
+      "bytes": 246744
+    },
+    {
+      "path": "evidence/images/shape2-color2-batch.png",
+      "sha256": "7fc6810a97471494abe496590060973966dda5438d0f2d1ab54af3cf7b7baaa1",
+      "bytes": 230934
+    },
+    {
+      "path": "evidence/images/shape2-color2-legacy.png",
+      "sha256": "4603c4e74b4f6b1655f6ab3e9358db3f6bb244ed41776833aa9a056d534b1606",
+      "bytes": 230762
+    },
+    {
+      "path": "evidence/images/shape3-color1-batch.png",
+      "sha256": "e2f0b6be7a75f5ba75191c3bae5864de774761f1b226f402d55480fe219bc97c",
+      "bytes": 403148
+    },
+    {
+      "path": "evidence/images/shape3-color1-legacy.png",
+      "sha256": "d0d050262155c6e85624d5337c34627fb284bcd4db81e30bb779ad1409a75c76",
+      "bytes": 403067
+    },
+    {
+      "path": "evidence/images/shape3-color2-batch.png",
+      "sha256": "9fb1231f979f62f1eddf91f9aa2e1c632d1c9cafe3997203c8609d81a599278c",
+      "bytes": 403596
+    },
+    {
+      "path": "evidence/images/shape3-color2-legacy.png",
+      "sha256": "a242380959b59fe77b76c163287f5ab23c6569230ef797baae8d25c7bc6d4fc8",
+      "bytes": 403472
+    },
+    {
+      "path": "evidence/loaded-modules.json",
+      "sha256": "e1cb3c799e80450a05e6e21fda6b7149e8214a0f2048d0a03d193dc182b43730",
+      "bytes": 709
+    },
+    {
+      "path": "evidence/matrix/cases.json",
+      "sha256": "d93e634dc7a3a253a6baea799659ceefca1afa11c51c174ba2d21c7f9517e987",
+      "bytes": 18589
+    },
+    {
+      "path": "evidence/matrix/frames.csv",
+      "sha256": "0ae41085be0ebd248b4b975511ab40a17a22259cf2becc4ab82b670b147cef6e",
+      "bytes": 104118
+    },
+    {
+      "path": "evidence/matrix/summary.json",
+      "sha256": "0fcab6213f7496d0ca777ba249d569bc8ea1aa3a4c370ba834adb3215d0181c0",
+      "bytes": 10333
+    },
+    {
+      "path": "evidence/max-smoke.txt",
+      "sha256": "a0d7d0a0097dc1b1d1c2b8f2c739722939f41a5ff7087a31d8ca632cda4fe40a",
+      "bytes": 156
+    },
+    {
+      "path": "evidence/package-verification.json",
+      "sha256": "6affa32e95f615b0ddbc573a53fe62d48af8a1e452d1a11704edd9c59b01dfe1",
+      "bytes": 1316
+    },
+    {
+      "path": "evidence/preservation.json",
+      "sha256": "62513910cf6ddd9d46b2a96e4a3dcfd33381d418281f09fc0333c92804a768a2",
+      "bytes": 738
+    },
+    {
+      "path": "evidence/restored-callbacks.txt",
+      "sha256": "5727b40c848b87465b0f745ee3d6aba43912139aa76b704fa9f81a95b9a56fe7",
+      "bytes": 289
+    },
+    {
+      "path": "evidence/scatter-ctest.log",
+      "sha256": "24aada4543dc73d279915c908ead515781f0723ed7698b3519ba91b7466b11df",
+      "bytes": 6619
+    },
+    {
+      "path": "evidence/scene-parity.json",
+      "sha256": "c9002e56ae8b2ce38520ec6dcc619311af3ac221463a67ef48d71be23a9d3f19",
+      "bytes": 452
+    },
+    {
+      "path": "evidence/session-final.json",
+      "sha256": "cf2b62ace63f39116b3844af72cb4b64514c57a22c5f48936ae72d3852b14e48",
+      "bytes": 640
+    },
+    {
+      "path": "evidence/source-snapshot.json",
+      "sha256": "aea9c74a008078382fb90a0686c18c5eb2239314fbf74375a1c28b844ae94d34",
+      "bytes": 1649
+    },
+    {
+      "path": "evidence/viewport-change.diff",
+      "sha256": "5b135509a50268c8949fd02be7a14d7c1d2e03147554a8242ec3fc7cde02cd48",
+      "bytes": 46653
+    },
+    {
+      "path": "evidence/viewport-tests.txt",
+      "sha256": "f03db985338486ade88a09a2db1ba69afc3fc11196b74e8b763ad585e5e46328",
+      "bytes": 786
+    },
+    {
+      "path": "evidence/visual-comparison.json",
+      "sha256": "7f5bdc2223e315d91b05c29cf4e52a2e991894886d1f9d221eef6b0020a22818",
+      "bytes": 1430
+    },
+    {
+      "path": "recipes/01-benchmark.ms",
+      "sha256": "d560611a5322f6602af4aa2c86e9d67c8420ab58b177c1dd525f9f779fc0c403",
+      "bytes": 2706
+    },
+    {
+      "path": "recipes/02-visual-and-parity.ms",
+      "sha256": "1d88f6c71185c6922e01625b73f4c5a79a55988638e0663476c0175e3a30ce8c",
+      "bytes": 2501
+    },
+    {
+      "path": "recipes/03-gesture-start.ms",
+      "sha256": "5eb9d04f7edb58258fdb8d70b57aa6929c17fd118e14e0478836774cfaec7c63",
+      "bytes": 619
+    },
+    {
+      "path": "recipes/04-gesture-batch.ms",
+      "sha256": "f4af3d80e71cb0f46bea5802a5bfd363d42b8eea75fff71a43b855c37b67c9d9",
+      "bytes": 187
+    },
+    {
+      "path": "recipes/05-gesture-end.ms",
+      "sha256": "8d4b7cab5cec784b44cdbb64a3a217e768b004726fc6279e22144dfc13e27f3d",
+      "bytes": 401
+    },
+    {
+      "path": "recipes/06-cleanup.ms",
+      "sha256": "a645f711bcb35f74ea54efb270e2a19f362f0c29d396c1cbbaa4e3b75a3a82b4",
+      "bytes": 1679
+    },
+    {
+      "path": "recipes/CyrusViewportBenchmark.ms",
+      "sha256": "939cf536188b665a530dac03d0bb8dba1519a6724cbf0225a6aa7361307f1abe",
+      "bytes": 4019
+    },
+    {
+      "path": "recipes/desktop-start.ms",
+      "sha256": "2807e93cbdf0b3a0527c55ed64664740884a3566aa83eecd31e3df04a7a4c96b",
+      "bytes": 3005
+    },
+    {
+      "path": "recipes/README.md",
+      "sha256": "344d5c2d53460504485a91e00eb2fb8ab480896bce20dc48c9e3dd11c1bbaeaa",
+      "bytes": 3180
+    },
+    {
+      "path": "recipes/summarize_viewport.py",
+      "sha256": "34db859e89860707bf44809a1e9a1cac6b99dec982187730c2a0186f7b1f8715",
+      "bytes": 3783
+    },
+    {
+      "path": "recipes/viewport_performance_smoke.ms",
+      "sha256": "06db6a47520983e2c3772ce7e675cfb3ebbc031ceb996c2b1429144bfb4bedc5",
+      "bytes": 7615
+    }
+  ]
+}

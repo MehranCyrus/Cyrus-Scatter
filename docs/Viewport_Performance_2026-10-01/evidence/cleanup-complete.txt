@@ -1,0 +1,1 @@
+Original scene reopened, temporary callbacks removed, local command timers disposed. No save performed.

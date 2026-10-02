@@ -1,0 +1,18 @@
+{"case":"clover_200","requested":200,"rows":200,"median_ms":0.1285,"participants":1,"queries":200,"thread_fallback":false,"samples_ms":[0.1268,0.1278,0.1284,0.1285,0.1347,0.1661,0.191]}
+{"case":"clover_4095","requested":4095,"rows":4095,"median_ms":2.3404,"participants":1,"queries":4095,"thread_fallback":false,"samples_ms":[2.3138,2.3282,2.3386,2.3404,2.3405,2.4848,2.5172]}
+{"case":"clover_4096","requested":4096,"rows":4096,"median_ms":2.5127,"participants":1,"queries":4096,"thread_fallback":false,"samples_ms":[2.3277,2.3332,2.335,2.5127,2.5594,2.5959,2.8101]}
+{"case":"clover_32000","requested":32000,"rows":32000,"median_ms":19.1794,"participants":1,"queries":32000,"thread_fallback":false,"samples_ms":[18.9036,18.9954,19.0861,19.1794,19.3409,20.0076,21.2449]}
+{"case":"clover_64000","requested":64000,"rows":64000,"median_ms":38.9306,"participants":1,"queries":64000,"thread_fallback":false,"samples_ms":[37.7526,37.8214,38.514,38.9306,39.0332,39.0389,39.0593]}
+{"case":"clover_100000","requested":100000,"rows":100000,"median_ms":63.4408,"participants":1,"queries":100000,"thread_fallback":false,"samples_ms":[59.4905,60.1928,60.2851,63.4408,63.6113,65.4397,65.5099]}
+{"case":"blur_noise_weights","requested":12000,"rows":12000,"median_ms":9.24,"participants":1,"queries":12000,"thread_fallback":false,"samples_ms":[8.5007,8.5303,8.749,9.24,9.3207,9.6688,10.2654]}
+{"case":"uniform_groups","requested":12000,"rows":12000,"median_ms":6.8703,"participants":1,"queries":12000,"thread_fallback":false,"samples_ms":[6.6999,6.7248,6.8377,6.8703,7.0568,7.1187,7.4627]}
+{"case":"legacy_cluster","requested":12000,"rows":12000,"median_ms":7.8802,"participants":1,"queries":12000,"thread_fallback":false,"samples_ms":[6.9756,7.5346,7.6564,7.8802,8.1507,8.1645,8.2003]}
+{"case":"projected_movement","requested":12000,"rows":12000,"median_ms":8.1877,"participants":1,"queries":12000,"thread_fallback":false,"samples_ms":[7.2256,7.5158,7.8006,8.1877,8.5565,8.8858,9.3715]}
+{"case":"area_thinning","requested":12000,"rows":4479,"median_ms":3.6245,"participants":1,"queries":4479,"thread_fallback":false,"samples_ms":[2.9513,3.1232,3.5473,3.6245,3.7199,4.0521,4.3015]}
+{"case":"area_refill","requested":12000,"rows":12000,"median_ms":8.7749,"participants":1,"queries":12000,"thread_fallback":false,"samples_ms":[8.3357,8.3682,8.396,8.7749,8.871,9.3642,9.8355]}
+{"case":"density_rejection","requested":12000,"rows":12000,"median_ms":8.5125,"participants":1,"queries":12000,"thread_fallback":false,"samples_ms":[8.1842,8.26,8.3348,8.5125,8.5181,9.6415,9.7956]}
+{"case":"ordered_collision","requested":8000,"rows":6554,"median_ms":10.7191,"participants":1,"queries":8000,"thread_fallback":false,"samples_ms":[9.5096,10.0953,10.2055,10.7191,10.9159,11.875,18.1271]}
+{"case":"ordered_relax","requested":2000,"rows":2000,"median_ms":11.1298,"participants":1,"queries":2000,"thread_fallback":false,"samples_ms":[10.3438,10.5485,10.7064,11.1298,11.7985,12.7787,12.8306]}
+{"case":"analyzer_inner_border","requested":64000,"rows":12498,"median_ms":33.8807,"participants":1,"queries":0,"thread_fallback":false,"samples_ms":[32.309,32.8188,33.0328,33.8807,35.0024,35.4985,38.8802]}
+{"case":"analyzer_masked_hole","requested":64000,"rows":9834,"median_ms":31.6878,"participants":1,"queries":0,"thread_fallback":false,"samples_ms":[31.0539,31.6327,31.6329,31.6878,32.6165,32.8837,33.3051]}
+{"error_case":"tiny_cluster","message":"Cluster size too small for world coordinates"}

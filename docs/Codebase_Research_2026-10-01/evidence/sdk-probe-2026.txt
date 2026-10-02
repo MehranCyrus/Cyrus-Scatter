@@ -1,0 +1,2 @@
+sdk_probe.cpp
+   Creating library F:\Cursor\_Cyrus_Apps\CyrusScatter\build\codebase-research-2026-10-01\sdk-probe-2026\sdk-probe.lib and object F:\Cursor\_Cyrus_Apps\CyrusScatter\build\codebase-research-2026-10-01\sdk-probe-2026\sdk-probe.exp

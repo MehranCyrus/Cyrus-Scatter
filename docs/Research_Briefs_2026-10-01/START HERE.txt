@@ -1,0 +1,45 @@
+TWO INDEPENDENT RESEARCH PROMPTS
+Prepared 1 October 2026.
+
+PROMPT 1 - CODEBASE INVESTIGATION
+File: 01 - Codex GPT 6 Astra - Codebase Research.txt
+Use GPT-6 Astra in Codex, in the CyrusScatter project. Paste the entire file as
+the task. This researcher reads the real source, checks current build/runtime
+identity, studies the existing reports, researches applicable APIs, and runs
+targeted safe validation where useful. It saves a report and evidence ledgers.
+REFERENCE - Project Context.txt provides dated orientation; current verified
+source and runtime evidence take precedence.
+
+PROMPT 2 - INDEPENDENT EXTERNAL RESEARCH
+File: 02 - Web GPT 6 Pro - Independent Research.txt
+Use GPT-6 Pro in a separate web conversation with browsing/research enabled if
+available. Paste the entire file. It is self-contained and assumes no access
+to the codebase. It investigates current documented practice, mathematical
+and CPU/GPU options, tradeoffs, testing and conditional recommendations.
+It does not need a repository upload for its first pass.
+
+RUN ORDER
+The two investigations can run independently, including in parallel. Do not
+give either researcher the other's conclusions until both initial reports
+are complete. This reduces shared assumptions; it does not guarantee correctness.
+
+AFTER BOTH REPORTS
+Bring the web report and its source/decision ledgers into the Codex project.
+Compare claims against sources, actual code and local measurements. Agreement
+between two models is not proof. Resolve disagreements with a specific test
+or stronger evidence, then select one small implementation experiment.
+
+Both prompts require evidence labels, an explicit simpler alternative,
+tests capable of rejecting a proposal, and stop conditions. Both distinguish
+GPU viewport drawing from GPU computation and kernel timing from full workflow
+latency. Neither authorizes a speculative production rewrite.
+
+This folder is separate from the boss's Max 2026 installer package. It contains
+research instructions, not a new plugin release. Nothing is uploaded or sent,
+and no additional model task is started automatically.
+
+Prompt structure reference
+The briefs supply explicit objectives, context and expected outputs, consistent
+with OpenAI's prompt engineering guidance:
+https://developers.openai.com/api/docs/guides/prompt-engineering
+They do not assume an API model slug, subscription entitlement or automatic tools.

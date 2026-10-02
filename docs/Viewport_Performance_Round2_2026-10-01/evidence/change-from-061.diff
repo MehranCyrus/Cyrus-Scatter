@@ -1,0 +1,113 @@
+--- before-062/AminScatter/tools/ui/viewport-performance.cjs
++++ after-062/AminScatter/tools/ui/viewport-performance.cjs
+@@ -1,7 +1,7 @@
+ // Preserve dependency synchronization while removing redundant redraw work.
+ module.exports=function(s){
+  const replace=(a,b)=>{if(s.split(a).length!==2)throw Error('Viewport performance anchor must be unique: '+a.slice(0,90));s=s.replace(a,b);};
+- replace('version:45','version:46');
++ replace('version:45','version:47');
+  replace('    fn previewCache = (\n        if CyrusInteractionHeld() do',
+  `    fn previewCache interactionHeld:undefined = (
+         local held=if interactionHeld==undefined then CyrusInteractionHeld() else interactionHeld
+@@ -42,5 +42,16 @@
+         for i=1 to layerObjects.count where includeDisabled`);
+  replace('            syncLayerSurface obj\n            obj.checkAnalyzerRevision()',
+          '            syncLayerSurface obj targets:targets layerBudget:layerBudget\n            obj.checkAnalyzerRevision()');
++ // Held input already displays the last completed preview. Defer dependency
++ // synchronization with it; live layer membership/visibility still apply. The
++ // first redraw after release goes through the complete synchronization path.
++ replace('    fn migrateLayers = (',
++ `    fn viewportLayerEntries held = (
++        if not held do return layerEntries()
++        for i=1 to layerObjects.count where cyrusEnabled and layerEnabled[i] collect #(i,layerObjects[i])
++    )
++    fn migrateLayers = (`);
++ replace('        for entry in n.baseObject.layerEntries() do (',
++         '        for entry in n.baseObject.viewportLayerEntries held do (');
+  return s;
+ };
+--- before-062/AminScatter/scripts/AminScatterObject.ms
++++ after-062/AminScatter/scripts/AminScatterObject.ms
+@@ -10297,7 +10297,7 @@
+ name:"Cyrus Scatter"
+ classID:#(0x617d43a1,0x395c2e17)
+ category:"Cyrus"
+-version:46
++version:47
+ (
+     local layerTransfer=false
+     local cachedPoints=undefined
+@@ -11299,6 +11299,10 @@
+             for e in entries where layerEnabled[e[1]] and e[2].overlapEnabled do e[2].dirty=true
+         entries
+     )
++    fn viewportLayerEntries held = (
++        if not held do return layerEntries()
++        for i=1 to layerObjects.count where cyrusEnabled and layerEnabled[i] collect #(i,layerObjects[i])
++    )
+     fn migrateLayers = (
+         if layerObjects.count==0 then (
+             if sources.count>0 or (validSurfaces()).count>0 do (
+@@ -11548,7 +11552,7 @@
+         gw.setTransform n.objectTransform;gw.setColor #line red
+         for path in n.baseObject.iconLines() do gw.polyline path false
+         gw.setTransform (matrix3 1)
+-        for entry in n.baseObject.layerEntries() do (
++        for entry in n.baseObject.viewportLayerEntries held do (
+             local obj=entry[2]
+             local cache=obj.previewCache interactionHeld:held
+             obj.drawRadii()
+--- before-062/tools/build_max.py
++++ after-062/tools/build_max.py
+@@ -66,7 +66,7 @@
+     payload['INSTALL.txt'] = (
+         f'{name} {version} - 3ds Max {args.max_year} x64\n'
+         'Run this MZP through Scripting > Run Script, then restart Max.\n'
+-        + ('Viewport performance candidate: bounded proxy draw batches and reduced redraw script overhead.\n'
++        + ('Viewport performance candidate: bounded proxy batches and deferred layer synchronization during held input.\n'
+            'Includes native source filtering/transforms, batched edit notifications, and bounded clustered queries.\n'
+            'Automatic clustered calculations use at most 4 total CPU participants. GPU compute is not enabled.\n'
+            if project == 'AminScatter' else 'The Analyzer algorithm is unchanged in this performance iteration.\n') +
+@@ -120,7 +120,7 @@
+              f'-DMAXSDK_ROOT={args.sdk_root.resolve()}'], env)
+         run(['cmake', '--build', dest], env)
+         run(['ctest', '--test-dir', dest, '--output-on-failure'], env)
+-    package('AminScatter', 'Cyrus Scatter', '0.61', ['AminScatter.dlx', 'CyrusScatterEdit.dlm'],
++    package('AminScatter', 'Cyrus Scatter', '0.62', ['AminScatter.dlx', 'CyrusScatterEdit.dlm'],
+             'AminScatterObject.ms', args, base)
+     package('CyrusSurfaceAnalyzer', 'Cyrus Surface Analyzer', '0.14', ['CyrusSurfaceAnalyzer.dlx'],
+             'CyrusSurfaceAnalyzer.ms', args, base)
+--- before-062/tools/tests/viewport_performance_smoke.ms
++++ after-062/tools/tests/viewport_performance_smoke.ms
+@@ -102,8 +102,31 @@
+  root.updateMode=2;root.layerEntries();l.amount=47
+  VPRequire ((aminScatterPreviewCount(l.previewCache interactionHeld:true))==43) "Mouse-held deferral"
+  VPRequire ((aminScatterPreviewCount(l.previewCache interactionHeld:false))==47) "Post-drag rebuild"
++ -- Navigation defers synchronization, then consumes the latest live inputs.
++ local oldSurface=root.surfaceNodes[1],movedSurface=plane length:1000 width:1000 lengthsegs:1 widthsegs:1 pos:[5000,0,0]
++ local oldTriangle=(cyrusPreviewTriangles (l.previewCache interactionHeld:false) true 1)[1][1]
++ undo "Viewport surface change" on (root.surfaceNodes=#(movedSurface))
++ root.viewportLayerEntries true
++ VPRequire (l.surfaceNodes[1]==oldSurface) "Held navigation synchronized a new surface"
++ VPRequire ((cyrusPreviewTriangles (l.previewCache interactionHeld:true) true 1)[1][1]==oldTriangle) "Held navigation lost the completed preview"
++ root.viewportLayerEntries false
++ local movedTriangle=(cyrusPreviewTriangles (l.previewCache interactionHeld:false) true 1)[1][1]
++ VPRequire (l.surfaceNodes[1]==movedSurface and (distance movedTriangle oldTriangle)>1000) "Released navigation failed to consume changed surface"
++ max undo
++ root.viewportLayerEntries false
++ VPRequire ((cyrusPreviewTriangles (l.previewCache interactionHeld:false) true 1)[1][1]==oldTriangle) "Undo after navigation retained a stale preview"
++ max redo
++ root.viewportLayerEntries false
++ VPRequire ((cyrusPreviewTriangles (l.previewCache interactionHeld:false) true 1)[1][1]==movedTriangle) "Redo after navigation retained a stale preview"
++ undo off root.surfaceNodes=#(oldSurface)
++ root.viewportLayerEntries false;l.previewCache interactionHeld:false
++ root.cyrusEnabled=false
++ VPRequire ((root.viewportLayerEntries true).count==0) "Disabled controller visible during held navigation"
++ root.cyrusEnabled=true
++ format "PASS held/released surface changes, Undo/Redo, and live controller visibility\n" to:VPLog;flush VPLog
+  root.layerEnabled[2]=false
+  VPRequire ((root.layerEntries()).count==1) "Layer enable invalidation"
++ VPRequire ((root.viewportLayerEntries true).count==1) "Disabled layer visible during held navigation"
+  local clone=copy root
+  VPRequire ((clone.layerEntries()).count==1) "Clone layer state"
+  l.amount=40;root.layerEntries();l.refreshPreview()

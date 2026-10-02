@@ -1,0 +1,12 @@
+{
+  "recorded_at": "2026-10-02T09:17:10.4087238+03:30",
+  "os": "Microsoft Windows 11 Pro",
+  "os_version": "10.0.26300",
+  "total_physical_memory_bytes": 102986215424,
+  "cpu": {
+    "Name": "AMD Ryzen 5 5600X 6-Core Processor             ",
+    "NumberOfCores": 6,
+    "NumberOfLogicalProcessors": 12
+  },
+  "gpu": "NVIDIA GeForce RTX 3090, 610.47, 24576 MiB"
+}

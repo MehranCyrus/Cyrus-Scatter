@@ -1,0 +1,18 @@
+{
+  "scope": "Real mouse input, four pan strokes per version, one held callback per stroke; smoke evidence only, not FPS or a statistically powered benchmark.",
+  "method": "Pan tool, two outward/return pairs from (1100,650) to (1280,650); 0.61 first, camera restored before 0.62. Same isolated scene/session.",
+  "061": {
+    "samples": 4,
+    "median_ms": 5.91785,
+    "min_ms": 5.259,
+    "max_ms": 8.1424
+  },
+  "062": {
+    "samples": 4,
+    "median_ms": 4.125500000000001,
+    "min_ms": 3.1775,
+    "max_ms": 5.4739
+  },
+  "callback_median_reduction_pct": 30.28718200021966,
+  "populations_and_counters_unchanged": true
+}

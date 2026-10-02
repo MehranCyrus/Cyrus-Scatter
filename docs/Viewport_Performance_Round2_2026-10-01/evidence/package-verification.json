@@ -1,0 +1,30 @@
+{
+  "package": "dist\\CyrusScatter-0.62-Max2027.mzp",
+  "sha256": "5f0f7a99ac88ca118345fb79a67539213f0d64ea8d137ed3820cd757cbbcff49",
+  "zip_integrity": "PASS",
+  "all_manifest_hashes": "PASS",
+  "generator_idempotence": "PASS",
+  "script_matches_tested_source": "PASS",
+  "native_payload_matches_061": "PASS",
+  "experimental_probe_excluded": "PASS",
+  "manifest": {
+    "product": "Cyrus Scatter",
+    "version": "0.62",
+    "max_year": 2027,
+    "toolset": "14.38.33130",
+    "windows_sdk": "10.0.19041.0",
+    "configuration": "Release",
+    "native_id": "a273c3615001",
+    "files": {
+      "AminScatter.dlx": "1bc17abe30ddda30ce3d46070ea6d487ada29b7f281b7f97d094822bca7e89ef",
+      "AminScatter.mcr": "b2e5a533951096cbe41241d5ab75dc0afec4d31bef3d4a2e713d1670fbb2933a",
+      "AminScatterObject.ms": "8116ab4aad662a9a62e15667e4b53507aaf3f8a989faee3856845a28a1f99c17",
+      "AminScatterStartup.ms": "5a9bce169dad56446e535ff5d6c04e21487f49dbd217d74e8cce749939a61faf",
+      "CyrusScatterEdit.dlm": "323a07218e3e39d25ce9d768a3a09233c2ad31152b8b1304c36c05717ab5f0a9",
+      "INSTALL.txt": "8a4d7d0f85445cc488e3036b4d8de322409c492dbbd8a38c6803631cbe026c53",
+      "Uninstall.ms": "405dbe413fa6d7b52c1d320c41fd16c32fea018fb0d4bec649bdefaded9c0e9e",
+      "install.ms": "eb71c72d985289bb8fa760162c1f913264595c70409cecac2d3607e0180a1281",
+      "mzp.run": "0345b4dcfc797a40ede91ca46ac7776b015f0984b7da0c3e0b1cb5f08f445592"
+    }
+  }
+}

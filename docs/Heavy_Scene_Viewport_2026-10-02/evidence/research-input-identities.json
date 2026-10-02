@@ -1,0 +1,67 @@
+[
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\docs\\Codebase_Research_2026-10-01\\REPORT.md",
+    "bytes": 79307,
+    "sha256": "935fd95789eec18b8d3dde46356e16cb304fdd2ba11ba57b1eccd1ff7e73ba6a"
+  },
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\docs\\Codebase_Research_2026-10-01\\claims.csv",
+    "bytes": 15983,
+    "sha256": "842fa2284ab3dcbfa0c6d282912fc220f64f5a070eb95d51d017c540057519f1"
+  },
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\docs\\Codebase_Research_2026-10-01\\decisions.csv",
+    "bytes": 5837,
+    "sha256": "92f2b3c8f5c24b3558af7a37f76db407c2c5cbbf4e61058940aec1128bd8ad86"
+  },
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\docs\\Codebase_Research_2026-10-01\\COVERAGE.md",
+    "bytes": 14250,
+    "sha256": "02e05dd00bb398e01258c1ccf1e9b5b5379cab499cd3092503790f242deead1b"
+  },
+  {
+    "path": "C:\\Users\\Mehran\\Downloads\\claim_source_ledger.csv",
+    "bytes": 61197,
+    "sha256": "2dfe50f703dfbff2498fb8f3b1bf09d160aff5573509392f669d681430f2b928"
+  },
+  {
+    "path": "C:\\Users\\Mehran\\Downloads\\decision_experiment_ledger.csv",
+    "bytes": 30241,
+    "sha256": "83346adec6d7e902182086bc87ef4fb52e65ab7961d35f4d2562ff10fb9ca196"
+  },
+  {
+    "path": "C:\\Users\\Mehran\\Downloads\\deep-research-report.md",
+    "bytes": 71897,
+    "sha256": "17e874d107f09083eaf4985de8a678ec4a87be5150bc73309f1c099a1ee44e7d"
+  },
+  {
+    "path": "C:\\Users\\Mehran\\Downloads\\deep-research-report (1).md",
+    "bytes": 47312,
+    "sha256": "474a4a5e2f617682a6bf658186f8f538a268c63ca3e181f00da074fd4db719e7"
+  },
+  {
+    "path": "C:\\Users\\Mehran\\Downloads\\Research_Report.html",
+    "bytes": 109743,
+    "sha256": "0c5a86622c73437a9805e721435294107db857f22b06cb022ae2b9e9f3299e8c"
+  },
+  {
+    "path": "C:\\Users\\Mehran\\Downloads\\Cyrus_External_Engineering_Research.md",
+    "bytes": 82205,
+    "sha256": "a94056d929ff7cb5b977ba97f202cac3da5408fea882046e3dfe62ca24c8a976"
+  },
+  {
+    "path": "C:\\Users\\Mehran\\Downloads\\Three_Experiments.md",
+    "bytes": 10674,
+    "sha256": "f897837b80c3bc4ef2476919d3ab00231e823889af5ffc0fabf9a95997118cfc"
+  },
+  {
+    "path": "C:\\Users\\Mehran\\.codex\\attachments\\46d1d376-61f9-4289-9047-2e901077cbae\\Pasted text.txt",
+    "bytes": 32437,
+    "sha256": "beae2748d12bbb811a2b8ac6abd957e201d7cf7a7cd785b764f1eaee6b4f1877"
+  },
+  {
+    "path": "C:\\Users\\Mehran\\.codex\\attachments\\c9e80891-abea-44ce-98a1-c3555e43f9ae\\Pasted text.txt",
+    "bytes": 25792,
+    "sha256": "67a42a77b45449a0560451d7ee8bc9e834659e7c933bb16a011f3aecb4623fcc"
+  }
+]

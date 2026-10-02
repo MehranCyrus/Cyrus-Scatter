@@ -1,0 +1,125 @@
+{
+  "source": "PresentMon 2.6.0 signed Intel release",
+  "clock_column": "CPUStartQPCTimeInMs",
+  "chain_counts": {
+    "0x29176ACAB60": 4311
+  },
+  "selected_chain": "0x29176ACAB60",
+  "arms": {
+    "off": {
+      "presents": 1437,
+      "presentation_modes": {
+        "Composed: Copy with GPU GDI": 1437
+      },
+      "metrics_ms": {
+        "MsBetweenPresents": {
+          "n": 1437,
+          "median": 1.8344,
+          "p95": 2.94484
+        },
+        "MsBetweenDisplayChange": {
+          "n": 169,
+          "median": 16.6704,
+          "p95": 20.00068
+        },
+        "MsCPUBusy": {
+          "n": 1437,
+          "median": 1.7979,
+          "p95": 2.9042600000000003
+        },
+        "MsGPUBusy": {
+          "n": 1437,
+          "median": 0.6881,
+          "p95": 1.2944200000000003
+        },
+        "MsGPUTime": {
+          "n": 1437,
+          "median": 1.848,
+          "p95": 3.1402600000000005
+        },
+        "MsUntilDisplayed": {
+          "n": 169,
+          "median": 17.5822,
+          "p95": 19.09
+        }
+      }
+    },
+    "gw": {
+      "presents": 1437,
+      "presentation_modes": {
+        "Composed: Copy with GPU GDI": 1437
+      },
+      "metrics_ms": {
+        "MsBetweenPresents": {
+          "n": 1437,
+          "median": 9.858,
+          "p95": 11.161900000000001
+        },
+        "MsBetweenDisplayChange": {
+          "n": 850,
+          "median": 16.6685,
+          "p95": 20.003855
+        },
+        "MsCPUBusy": {
+          "n": 1437,
+          "median": 9.8095,
+          "p95": 11.11206
+        },
+        "MsGPUBusy": {
+          "n": 1437,
+          "median": 1.5787,
+          "p95": 3.1237400000000006
+        },
+        "MsGPUTime": {
+          "n": 1437,
+          "median": 9.7558,
+          "p95": 12.011720000000004
+        },
+        "MsUntilDisplayed": {
+          "n": 850,
+          "median": 21.4825,
+          "p95": 27.418215
+        }
+      }
+    },
+    "retained": {
+      "presents": 1437,
+      "presentation_modes": {
+        "Composed: Copy with GPU GDI": 1437
+      },
+      "metrics_ms": {
+        "MsBetweenPresents": {
+          "n": 1437,
+          "median": 1.9046,
+          "p95": 3.02574
+        },
+        "MsBetweenDisplayChange": {
+          "n": 174,
+          "median": 16.6697,
+          "p95": 20.00845
+        },
+        "MsCPUBusy": {
+          "n": 1437,
+          "median": 1.8672,
+          "p95": 2.9869600000000003
+        },
+        "MsGPUBusy": {
+          "n": 1437,
+          "median": 0.748,
+          "p95": 1.4818600000000002
+        },
+        "MsGPUTime": {
+          "n": 1437,
+          "median": 1.8973,
+          "p95": 3.29526
+        },
+        "MsUntilDisplayed": {
+          "n": 174,
+          "median": 17.75365,
+          "p95": 19.4116
+        }
+      }
+    }
+  },
+  "limits": "Scripted completeRedraw throughput. Present interval is not guaranteed screen FPS; composed presentation and unavailable display intervals remain explicit. No calibrated input-to-photon measurement. GPU busy is process/frame work, not isolated plugin GPU timing."
+}

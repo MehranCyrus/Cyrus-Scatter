@@ -1,0 +1,13 @@
+{
+  "started_utc": "2026-10-01T18:35:15.867388+00:00",
+  "finished_utc": "2026-10-01T18:35:15.924607+00:00",
+  "cwd": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+  "argv": [
+    "git",
+    "status",
+    "--porcelain=v1",
+    "-uall"
+  ],
+  "returncode": 0,
+  "output": "git-status-after.txt"
+}

@@ -1,0 +1,50 @@
+[
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\AminScatter\\src\\preview.cpp",
+    "bytes": 13330,
+    "sha256": "96c3099d032b202df21334f5390a946109920890b042a3b1fb69badad9be50af",
+    "matches_pre_launch": true
+  },
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\AminScatter\\scripts\\AminScatterObject.ms",
+    "bytes": 968536,
+    "sha256": "8116ab4aad662a9a62e15667e4b53507aaf3f8a989faee3856845a28a1f99c17",
+    "matches_pre_launch": true
+  },
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\Test Scene\\SaveSelect 2.max",
+    "bytes": 185442040,
+    "sha256": "8a40f6a1a5c47eacbbee92920e131f4cae04cfb0de6be1991b4719ea2860bd2c",
+    "matches_pre_launch": true
+  },
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\max2027-release\\AminScatter\\AminScatter.dlx",
+    "bytes": 472576,
+    "sha256": "1bc17abe30ddda30ce3d46070ea6d487ada29b7f281b7f97d094822bca7e89ef",
+    "matches_pre_launch": true
+  },
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\max2027-release\\AminScatter\\CyrusScatterEdit.dlm",
+    "bytes": 10240,
+    "sha256": "323a07218e3e39d25ce9d768a3a09233c2ad31152b8b1304c36c05717ab5f0a9",
+    "matches_pre_launch": true
+  },
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\max2027-release\\CyrusSurfaceAnalyzer\\CyrusSurfaceAnalyzer.dlx",
+    "bytes": 85504,
+    "sha256": "e2318bd967cf8b17ce1b1208e156c61a9f6361a80b8160c34c54bd2eb2a886de",
+    "matches_pre_launch": true
+  },
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\heavy-viewport-2026-10-02\\probe-2027\\CyrusRetainedPointObject.dlh",
+    "bytes": 10240,
+    "sha256": "5f465f95f9cf1707db09323450c497cfd1aa304ba6f19a471b21e4602e54b1e7",
+    "matches_pre_launch": true
+  },
+  {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\heavy-viewport-2026-10-02\\probe-2027\\CyrusRetainedPointProbe.dlx",
+    "bytes": 57344,
+    "sha256": "02ae7a5bff449fa484f5c52ea152e768be3757fed37766479306de776fc5bc9a",
+    "matches_pre_launch": true
+  }
+]

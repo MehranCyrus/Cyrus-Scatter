@@ -1,0 +1,13 @@
+{
+  "started_utc": "2026-10-01T18:01:11.342203+00:00",
+  "finished_utc": "2026-10-01T18:01:17.879789+00:00",
+  "cwd": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+  "argv": [
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\codebase-research-2026-10-01\\max2027\\AminScatter\\scatter_benchmark.exe",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\codebase-research-2026-10-01\\threads-0-1",
+    "1",
+    "7"
+  ],
+  "returncode": 0,
+  "output": "threads-0-1.txt"
+}

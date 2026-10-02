@@ -1,0 +1,13 @@
+{
+  "scope": "Held-mouse callback duration, two samples per condition; not frame time",
+  "cases": {
+    "legacy": {
+      "samples": 2,
+      "median_ms": 37.232
+    },
+    "candidate": {
+      "samples": 2,
+      "median_ms": 5.066599999999999
+    }
+  }
+}

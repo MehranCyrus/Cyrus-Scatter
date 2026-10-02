@@ -1,0 +1,76 @@
+CYRUS SCATTER - CONTEXT SNAPSHOT
+Prepared: 1 October 2026. This file records the local state at preparation time.
+
+Purpose
+Dated orientation for GPT-6 Astra in Codex, which can inspect the actual repository. Research practical performance and reliability improvements. Do not implement a production rewrite as part of the research. Keep this detailed internal context out of the first external research pass so that pass develops its own assessment.
+
+Product and environment
+- Windows / Autodesk 3ds Max plugin, originally named AminScatter internally.
+- Components: generated MAXScript controller/UI; native C++ placement and preview bridge; CS Edit native modifier; Cyrus Surface Analyzer.
+- Root on the developer's computer: F:\Cursor\_Cyrus_Apps\CyrusScatter. A remote model cannot access that path unless a real connection is provided.
+- Candidate installer: CyrusScatter 0.62. Surface Analyzer: 0.14.
+- Main tested runtime: Max 2027.1 (29.1.0.11426).
+- Developer measurement machine: Ryzen 5 5600X, RTX 3090, approximately 96 GiB RAM, as recorded in the viewport investigation. It is not the proposed minimum machine.
+- Native Max 2026 and Max 2027 builds use matching Autodesk SDKs. Max 2026 application is not installed locally; build/native test success is not runtime support qualification. Wider 2024-2027 and 32 GB coverage are goals in older planning material, not completed support claims.
+- Corona 15 artist workflows are relevant. Full production/interactive renderer qualification remains incomplete.
+
+Current CPU architecture
+- Native source policy filtering preserves ordered rows and existing density/falloff semantics.
+- Source scale and Z-offset application moved to native code but still operates on Max/Matrix3 values on the calling thread.
+- Prepared closed-boundary calculations remove repeated preparation; boundary orientation avoids copying a full band for each point.
+- Parallel cluster evaluation is deliberately narrow: at least 4,096 candidates, eligible clustering configuration, no movement, area masks, UV-density rejection or anchors in that path. Verify exact predicates in scatter.cpp.
+- Automatic policy uses up to four total participants including the caller. Serial mode remains available. Sampling/random draws and ordered result handling remain on the caller; workers process owned numeric ranges.
+- Workers do not evaluate Max nodes, access MAXScript/GC objects or draw viewports. Work is joined before return; there is no persistent pool or asynchronous result publication.
+- Event callbacks retain invalidation while coalescing redraw requests within a callback batch. Other callbacks/timers can still cause additional work.
+
+Current viewport architecture
+- Preview placements/source data already had a cache. The viewport optimization adds prepared world-space proxy triangles and face shading to that cache.
+- Applies to box, sphere and pyramid previews. Full Mesh retains the prior source geometry/instance-transform path. Point Cloud and other overlays have their own paths.
+- Triangles are submitted through GraphicsWindow on each redraw; source-preserving batches contain at most 4,096 triangles.
+- Additional prepared batch payload is capped at 16 MiB per cache and 64 MiB process-wide. These are not limits on all plugin/process memory. Oversized caches or allocation/cap failures preserve the old drawing path and displayed population; fallback may therefore become slower.
+- Cache lifetime follows MAXScript GC. Old generations can coexist before collection.
+- Script 0.62 bypasses full layer synchronization during held input, uses last completed previews, and returns to the full path afterward. This must remain correct for edits, live flags and Manual mode.
+- No retained Nitrous render-item renderer, GPU viewport instancing, OpenCL/CUDA compute or asynchronous editing implementation has been shipped. Exploratory retained-mesh experiments in the reports were not packaged.
+
+Evidence, with boundaries
+1. Controlled CPU records (project report, not rerun for this prompt): full controller refresh around 3.98-4.05 seconds before vs 1.01-1.17 seconds after, across five defined geometry states; all 60 ordered preview/render outputs matched. These measurements exclude several scheduling/render/appearance concerns described in the report.
+2. Original artist scene: 52,143 generated placements; 6,284 displayed pyramid proxies; 37,704 displayed proxy triangles. Do not confuse generated count, display count, point-cloud samples, scene statistics and render count.
+3. Original viewport comparison: GraphicsWindow batch boundaries reduced from 6,284 to 44, with unchanged prepared triangle positions/shading/colors. Median scripted navigation-step wall time fell 88.10 to 30.16 ms in that specific comparison. A measured step can trigger multiple callbacks. These are not completed-frame FPS measurements.
+4. Script 0.62 held-input comparison: 33.1% less scatter callback time and 9.1% less full step wall time in its controlled matrix. Small real-gesture samples support that the intended path is exercised, but do not establish a general FPS multiplier.
+5. User observation in original scene: roughly 20 FPS before and 80 FPS after; removing scatter gave roughly 150-160 FPS. Uncontrolled, not interchangeable with the synthetic demo.
+6. User observation in synthetic demo: roughly 23 FPS when opened with the normal profile's older 0.60 DLL/script; roughly 150 FPS after updating to 0.62. Loaded-module paths and hashes exposed the version mismatch. The 150 FPS report is the user's observation; there is no controlled capture attached for it.
+7. Demo: six layers, 6,284 simple pyramid proxies / 37,704 triangles, built-in sources/materials, no external assets; automatic render preparation disabled. Counts match the original displayed population but source grouping, scene complexity and workload differ. Do not assign the original scene's 44-batch count to the demo without measuring it.
+8. Max 2026 build passed eight Scatter native suites and one Analyzer suite. The demo was saved to Max 2026 format using Max 2027 and reopened in Max 2027. None of this is a Max 2026 application test.
+9. Existing fixtures exercise geometry/color/shading parity, mirrored/nonuniform transforms, batch boundaries, memory limits/fallback/GC, Manual refresh, held/released changes and some Undo/Redo/save/reopen cases. This is scoped evidence, not exhaustive product qualification. Visual captures were close but not pixel-identical even where geometric data matched.
+
+Current package identity
+- Max 2027 Scatter 0.62 MZP SHA-256: 5f0f7a99ac88ca118345fb79a67539213f0d64ea8d137ed3820cd757cbbcff49
+- Generated AminScatterObject.ms SHA-256: 8116ab4aad662a9a62e15667e4b53507aaf3f8a989faee3856845a28a1f99c17
+- Max 2027 AminScatter.dlx SHA-256: 1bc17abe30ddda30ce3d46070ea6d487ada29b7f281b7f97d094822bca7e89ef
+- Older Max 2027 0.60 AminScatter.dlx SHA-256: c3656015ff349e0e9a8382eb694cc24ce39620da6d0758424abcb9d2750609fc
+- Max 2026 AminScatter.dlx SHA-256: a42642ad9a5a0c5681c637c1fd2fba304066d207cbe8bdbb6024e4471e78c181
+
+Local evidence entry points
+- docs/README.md and docs/Max_2027_Installation.md identify the current candidate and tests.
+- docs/Performance_Implementation_2026-10-01.md records the CPU implementation and comparison limits.
+- docs/Viewport_Performance_Implementation_2026-10-01.md records batching, parity and measured navigation steps.
+- docs/Viewport_Performance_Round2_2026-10-01.md records held-input work and the unshipped renderer investigation.
+- docs/Performance_Evidence_2026-10-01.json and the linked evidence directories preserve historical results; check what is actually available.
+- build/max2026-handoff/build.log, demo-verify-result.txt and package-verification.json record the 2026 package build and demo verification in Max 2027.
+- AminScatter/src, AminScatter/include, AminScatter/tools/ui, AminScatter/scripts, CyrusSurfaceAnalyzer/src and tools contain the actual implementation and tests. Read these directly; this context is not a source snapshot.
+- Generated script changes belong in AminScatter/tools/ui/, not only the output .ms file.
+- The external web researcher receives its own self-contained prompt and does not need this codebase, build artifacts or internal reports for its first pass.
+
+Primary-source starting points (verify live; these are not an exhaustive bibliography)
+Autodesk Nitrous display data / caching:
+https://help.autodesk.com/cloudhelp/2026/ENU/MAXDEV-Developer/files/3ds_max_sdk_features/viewports_and_graphics_windows/nitrous/about_renderitem.html
+Autodesk viewport GPU instancing:
+https://help.autodesk.com/cloudhelp/2026/ENU/MAXDEV-CPP-API-REF/namespace_max_s_d_k_1_1_graphics_1_1_viewport_instancing.html
+Autodesk SDK thread safety:
+https://help.autodesk.com/cloudhelp/2026/ENU/MAXDEV-Developer/files/best_practices/thread_safety.html
+tyFlow Display / instancing:
+https://docs.tyflow.com/tyflow_particles/operators/display/
+Chaos Scatter performance guidance:
+https://support.chaos.com/hc/en-us/articles/4953457092625-How-to-use-Chaos-Scatter-with-Corona-for-3ds-Max-Performance-and-Troubleshooting
+
+These sources describe public mechanisms and constraints. They do not give access to Chaos or tyFlow's private implementation. Research current host-specific documentation and contrary evidence independently.

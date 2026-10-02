@@ -1,0 +1,15 @@
+{
+  "started_utc": "2026-10-01T17:52:05.757048+00:00",
+  "finished_utc": "2026-10-01T17:52:05.846773+00:00",
+  "cwd": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+  "argv": [
+    "git",
+    "-c",
+    "core.autocrlf=false",
+    "diff",
+    "--no-ext-diff",
+    "--binary"
+  ],
+  "returncode": 0,
+  "output": "working-tree-diff.txt"
+}

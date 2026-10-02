@@ -1,0 +1,29 @@
+{
+  "scope": "Instrumented per-callback stage timings; held uses a forced true predicate.",
+  "normal": {
+    "samples": 49,
+    "median_ms": {
+      "interaction": 0.3599,
+      "discover": 0.5204,
+      "icons": 0.21489999999999998,
+      "layer_entries": 2.4809,
+      "preview_cache": 0.7077,
+      "radii": 0.10210000000000008,
+      "native_draw": 2.4118000000000004,
+      "update_rect": 0.032099999999999795
+    }
+  },
+  "simulated_held": {
+    "samples": 54,
+    "median_ms": {
+      "interaction": 0.008,
+      "discover": 0.41759999999999997,
+      "icons": 0.18275000000000005,
+      "layer_entries": 2.2950500000000003,
+      "preview_cache": 0.3336000000000001,
+      "radii": 0.10264999999999991,
+      "native_draw": 2.24665,
+      "update_rect": 0.027800000000000047
+    }
+  }
+}

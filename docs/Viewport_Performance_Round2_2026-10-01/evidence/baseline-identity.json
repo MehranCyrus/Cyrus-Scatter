@@ -1,0 +1,18 @@
+[
+  {
+    "path": "AminScatter/scripts/AminScatterObject.ms",
+    "sha256": "c8612501cc3ab164c82af5f8ad6a96e185ce8a47f80727e8e895ee2282ffe4a8"
+  },
+  {
+    "path": "build/max2027-release/AminScatter/AminScatter.dlx",
+    "sha256": "1bc17abe30ddda30ce3d46070ea6d487ada29b7f281b7f97d094822bca7e89ef"
+  },
+  {
+    "path": "build/viewport-round2-2026-10-01/probe-build/CyrusViewportProbe.dlx",
+    "sha256": "1f82859cb4dfcbf5ef5904a42725a44392a0ba054fed7c6e03e8d96ebf44a4bb"
+  },
+  {
+    "path": "Test Scene/SaveSelect 2.max",
+    "sha256": "8a40f6a1a5c47eacbbee92920e131f4cae04cfb0de6be1991b4719ea2860bd2c"
+  }
+]

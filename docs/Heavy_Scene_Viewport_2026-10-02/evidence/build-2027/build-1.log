@@ -1,0 +1,8 @@
+[ 25%] Building CXX object CMakeFiles/CyrusRetainedPointProbe.dir/point_probe.cpp.obj
+point_probe.cpp
+[ 50%] Linking CXX shared module CyrusRetainedPointProbe.dlx
+[ 50%] Built target CyrusRetainedPointProbe
+[ 75%] Building CXX object CMakeFiles/CyrusRetainedPointObject.dir/point_entry.cpp.obj
+point_entry.cpp
+[100%] Linking CXX shared module CyrusRetainedPointObject.dlh
+[100%] Built target CyrusRetainedPointObject

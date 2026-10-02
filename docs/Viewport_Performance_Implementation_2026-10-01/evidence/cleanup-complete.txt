@@ -1,0 +1,1 @@
+Candidate production callbacks and camera restored; adaptive degradation restored; command timers disposed. Disposable scene remains open in the isolated candidate session. No scene save or user-profile installation performed.

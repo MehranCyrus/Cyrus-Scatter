@@ -1,0 +1,2 @@
+function:"AminScatterObjectDraw", sourceFile:"F:\Cursor\_Cyrus_Apps\CyrusScatter\AminScatter\scripts\AminScatterObject.ms (line: 11547)"
+function:"CyrusSurfaceAnalyzerDraw", sourceFile:"F:\Cursor\_Cyrus_Apps\CyrusScatter\CyrusSurfaceAnalyzer\scripts\CyrusSurfaceAnalyzer.ms (line: 370)"

@@ -1,0 +1,21 @@
+{
+  "started_utc": "2026-10-01T18:28:41.662083+00:00",
+  "finished_utc": "2026-10-01T18:29:12.708466+00:00",
+  "argv": [
+    "C:/Program Files/Autodesk/3ds Max 2027/3dsmaxbatch.exe",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\codebase-research-2026-10-01\\host-verified-v4\\tools\\tests\\identity-viewport_performance_smoke.ms",
+    "-i",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\codebase-research-2026-10-01\\host-verified-v4\\max.ini",
+    "-p",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\codebase-research-2026-10-01\\host-verified-v4\\plugins.ini",
+    "-listenerlog",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\docs\\Codebase_Research_2026-10-01\\evidence\\verified-v4-viewport_performance_smoke-listener.txt",
+    "-log",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\docs\\Codebase_Research_2026-10-01\\evidence\\verified-v4-viewport_performance_smoke-session.txt"
+  ],
+  "returncode": 0,
+  "fixture_sha256": "94b1c75679455462fd892f25299c780105817bcca86bfd38c7a0d7edf54682b8",
+  "copy_sha256": "94b1c75679455462fd892f25299c780105817bcca86bfd38c7a0d7edf54682b8",
+  "result": "PASS proxy mode 1: 48 triangles, exact positions/shades/colors\nPASS proxy mode 2: 672 triangles, exact positions/shades/colors\nPASS proxy mode 3: 24 triangles, exact positions/shades/colors\nPASS selected row ordering: 12 triangles, exact positions/shades/colors\nPASS mixed proxy/placeholder: 6 triangles, exact positions/shades/colors\nPASS empty source skip: 6 triangles, exact positions/shades/colors\nPASS chunk boundaries: 9000 triangles, exact positions/shades/colors\nPASS empty, mesh, missing-source and point-placeholder policies\nPASS 16 MiB/cache and 64 MiB/process caps; 3 global fallbacks preserve counts\nPASS batch payload released by cache GC\nPASS held/released surface changes, Undo/Redo, and live controller visibility\nPASS unchanged redraw, icon resize, Manual, drag deferral, layer enable, clone, placement parity and save/reopen\nSUCCESS\n",
+  "scope": "Separate hidden Max batch; synthetic disposable scene; no renderer test"
+}

@@ -1,0 +1,93 @@
+[
+  {
+    "pid": 34464,
+    "module": "3dsmax.exe",
+    "path": "C:\\Program Files\\Autodesk\\3ds Max 2027\\3dsmax.exe",
+    "version": "29.1.0.11426",
+    "sha256": "C0EF89F9602ECF9874E8C50344E6AE98994E7C34C2CF498FEB0168F2DF6F78FC"
+  },
+  {
+    "pid": 34464,
+    "module": "CoronaMaxUtils2027.dlt",
+    "path": "C:\\Program Files\\Autodesk\\3ds Max 2027\\PlugIns\\CoronaMaxUtils2027.dlt",
+    "version": "15.0.671720",
+    "sha256": "3D431E2F9E61F11383527B23BF010E4FB29862BA68C58E24F8C5C3C18FA4DC28"
+  },
+  {
+    "pid": 34464,
+    "module": "CoronaMaxUtils_Release-2027.dll",
+    "path": "C:\\Program Files\\Chaos\\Corona\\Corona Renderer for 3ds Max\\2027\\CoronaMaxUtils_Release-2027.dll",
+    "version": "15.0.671720",
+    "sha256": "29007E9C214B4BF5532463C672F83C4FEE2EA161435C7A7A145B20D6E44B1F83"
+  },
+  {
+    "pid": 34464,
+    "module": "CoronaUi_Release.dll",
+    "path": "C:\\Program Files\\Chaos\\Corona\\Corona Renderer for 3ds Max\\2027\\CoronaUi_Release.dll",
+    "version": "15.0.671720",
+    "sha256": "2BE94EAAD1C5D9096DD86A7CF408AF47D432747F55D77A9B31328873FAA3D157"
+  },
+  {
+    "pid": 34464,
+    "module": "Corona_Release.dll",
+    "path": "C:\\Program Files\\Chaos\\Corona\\Corona Renderer for 3ds Max\\2027\\Corona_Release.dll",
+    "version": "15.0.671720",
+    "sha256": "D3F2D9F0B22AFA04BC3D96DD69A316471984A890615A9065E11691F0B59BD3E8"
+  },
+  {
+    "pid": 34464,
+    "module": "CoronaMax2027.dlr",
+    "path": "C:\\Program Files\\Autodesk\\3ds Max 2027\\PlugIns\\CoronaMax2027.dlr",
+    "version": "15.0.671720",
+    "sha256": "95C0A9D6B4974BECD0DFFD8C8272977EE49735E07CB3066792F7282706920239"
+  },
+  {
+    "pid": 34464,
+    "module": "CoronaMax_Release-2027.dll",
+    "path": "C:\\Program Files\\Chaos\\Corona\\Corona Renderer for 3ds Max\\2027\\CoronaMax_Release-2027.dll",
+    "version": "15.0.671720",
+    "sha256": "5C4531FF38363A69534A9934F9BCACFC624DC2D5D3B67DE0778439FEF9BE3F64"
+  },
+  {
+    "pid": 34464,
+    "module": "Corona_maxHairFur.dll",
+    "path": "C:\\Program Files\\Chaos\\Corona\\Corona Renderer for 3ds Max\\2027\\Corona_maxHairFur.dll",
+    "version": null,
+    "sha256": "CED450775042A33495EED87E98EB2389EA136D19C844AF04697980080E0BB0D3"
+  },
+  {
+    "pid": 34464,
+    "module": "CoronaMaxPowerTools_Release-2027.dll",
+    "path": "C:\\Program Files\\Chaos\\Corona\\Corona Renderer for 3ds Max\\2027\\CoronaMaxPowerTools_Release-2027.dll",
+    "version": "15.0.671720",
+    "sha256": "CD3FFCB4157C50D9FE611266B43ABE0624F3188BFAB210D72B810A7C849E97DB"
+  },
+  {
+    "pid": 34464,
+    "module": "CoronaMaxPowerToolsToolbar_Release-2027.dll",
+    "path": "C:\\Program Files\\Chaos\\Corona\\Corona Renderer for 3ds Max\\2027\\CoronaMaxPowerToolsToolbar_Release-2027.dll",
+    "version": "15.0.671720",
+    "sha256": "8F13DCE3992720371A99FE3D7751DAC465BB389971BF468379588B044D0ED698"
+  },
+  {
+    "pid": 34464,
+    "module": "CyrusScatterEdit.dlm",
+    "path": "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\AminScatter\\bin-max2027-a273c3615001\\CyrusScatterEdit.dlm",
+    "version": null,
+    "sha256": "323A07218E3E39D25CE9D768A3A09233C2AD31152B8B1304C36C05717AB5F0A9"
+  },
+  {
+    "pid": 34464,
+    "module": "AminScatter.dlx",
+    "path": "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\AminScatter\\bin-max2027-a273c3615001\\AminScatter.dlx",
+    "version": null,
+    "sha256": "1BC17ABE30DDDA30CE3D46070EA6D487ADA29B7F281B7F97D094822BCA7E89EF"
+  },
+  {
+    "pid": 34464,
+    "module": "CyrusSurfaceAnalyzer.dlx",
+    "path": "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusSurfaceAnalyzer\\bin-max2027-e2318bd967cf\\CyrusSurfaceAnalyzer.dlx",
+    "version": null,
+    "sha256": "E2318BD967CF8B17CE1B1208E156C61A9F6361A80B8160C34C54BD2EB2A886DE"
+  }
+]

@@ -1,0 +1,661 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Cyrus Scatter — External Engineering Research — 1 October 2026</title>
+<style>
+:root{color-scheme:light;--ink:#172b3a;--muted:#526573;--line:#dce3e8;--accent:#12686f;--paper:#fff;--canvas:#eef2f4}
+*{box-sizing:border-box}body{margin:0;background:var(--canvas);color:var(--ink);font:16px/1.65 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.wrap{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:270px minmax(0,1fr);gap:28px;padding:30px 24px}
+aside{position:sticky;top:24px;align-self:start;max-height:calc(100vh - 48px);overflow:auto;padding:18px;background:var(--paper);border:1px solid var(--line);border-radius:8px}
+aside strong{display:block;color:var(--accent);font-size:13px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}aside a{display:block;font-size:13px;line-height:1.45;margin:0 0 10px;text-decoration:none;color:var(--muted)}aside a:hover{color:var(--accent)}
+main{min-width:0;background:var(--paper);padding:38px 44px;border:1px solid var(--line);border-radius:8px}h1{font-size:33px;line-height:1.2;margin:0 0 22px;letter-spacing:-.025em}h2{font-size:25px;line-height:1.3;border-top:1px solid var(--line);padding-top:25px;margin-top:38px;scroll-margin-top:24px}h3{font-size:19px;line-height:1.4;margin:28px 0 12px;scroll-margin-top:24px}p{margin:0 0 16px}a{color:var(--accent);text-decoration-thickness:1px;text-underline-offset:2px}strong{font-weight:650}
+table{display:block;overflow:auto;border-collapse:collapse;width:100%;font-size:14px;line-height:1.5;margin:20px 0 24px}th,td{border:1px solid var(--line);padding:11px 13px;text-align:left;vertical-align:top;min-width:130px}th{background:#edf4f5;font-weight:650}tr:nth-child(even){background:#f8fafb}
+code{font-family:ui-monospace,"Cascadia Code",Consolas,monospace;font-size:.89em;background:#f0f3f5;padding:2px 4px;border-radius:3px;overflow-wrap:anywhere}pre{background:#f0f3f5;padding:18px;overflow:auto;line-height:1.5;border-left:3px solid var(--accent)}pre code{padding:0;overflow-wrap:normal}li{margin:8px 0}hr{border:0;border-top:1px solid var(--line);margin:30px 0}.footer{font-size:12px;color:var(--muted);margin-top:36px;padding-top:18px;border-top:1px solid var(--line)}
+@media(max-width:1000px){.wrap{display:block;max-width:950px}aside{position:static;max-height:none;margin-bottom:20px}aside a{display:inline-block;margin:5px 15px 5px 0}main{padding:28px}}
+@media(max-width:600px){body{font-size:15px}.wrap{padding:12px}main{padding:22px 18px}h1{font-size:27px}h2{font-size:22px}}
+@media print{body{background:#fff;font-size:10pt}.wrap{display:block;padding:0}aside{display:none}main{border:0;padding:0}h2,h3{break-after:avoid}table{display:table;font-size:9pt}tr{break-inside:avoid}a{color:inherit}pre{white-space:pre-wrap}}
+</style></head><body><div class="wrap"><aside><strong>Research contents</strong><a href="#1-decision-brief-the-five-most-consequential-findings">1. Decision brief: the five most consequential findings</a><a href="#2-scope-evidence-and-limits">2. Scope, evidence and limits</a><a href="#3-verified-host-capabilities-and-where-verification-stops">3. Verified host capabilities—and where verification stops</a><a href="#4-measurement-find-the-work-artists-are-actually-waiting-for">4. Measurement: find the work artists are actually waiting for</a><a href="#5-mathematics-and-cpu-algorithms-choose-by-workload-and-contract">5. Mathematics and CPU algorithms: choose by workload and contract</a><a href="#6-safe-concurrency-and-interaction">6. Safe concurrency and interaction</a><a href="#7-viewport-architecture-retain-the-right-work-not-the-wrong-representation">7. Viewport architecture: retain the right work, not the wrong representation</a><a href="#8-renderer-interfaces-and-documented-production-case-studies">8. Renderer interfaces and documented production case studies</a><a href="#9-gpu-computation-conditional-defer-with-a-cheap-way-to-disprove-it">9. GPU computation: conditional defer, with a cheap way to disprove it</a><a href="#10-ranked-shortlist-and-explicit-stop-conditions">10. Ranked shortlist and explicit stop conditions</a><a href="#11-the-three-most-informative-local-experiments">11. The three most informative local experiments</a><a href="#12-staged-production-qualification">12. Staged production qualification</a><a href="#13-focused-codex-handoff-and-unresolved-questions">13. Focused Codex handoff and unresolved questions</a><a href="#14-final-recommendation-and-audit">14. Final recommendation and audit</a><a href="#primary-source-reference-index">Primary-source reference index</a></aside><main><h1 id="cyrus-scatter-independent-external-engineering-research">Cyrus Scatter — Independent External Engineering Research</h1>
+<p><strong>Research date:</strong> 1 October 2026<br />
+<strong>Scope:</strong> Windows / 3ds Max 2026 and 2027; CPU scattering, host interaction, viewport graphics, optional GPU computation and production qualification.<br />
+<strong>Decision:</strong> Improve and measure the existing CPU/host workflow first. Investigate retained viewport rendering selectively. Do not authorize a GPU-compute backend, persistent executor or asynchronous rewrite without the gates below.</p>
+<h2 id="1-decision-brief-the-five-most-consequential-findings">1. Decision brief: the five most consequential findings</h2>
+<p><strong>1. “Faster scatter” is at least five different outcomes.</strong> Navigation without edits, edit-to-visible-result latency, a full rebuild, animation throughput and render preparation need separate baselines. A faster numeric loop may leave navigation unchanged; a faster redraw may leave edits unchanged. The most broadly applicable action is to identify which work repeats without any relevant data changing, and then remove or coalesce that work without losing invalidation. This is an engineering recommendation, not a diagnosis of the supplied project.</p>
+<p><strong>2. Retained viewport geometry and GPU instancing are credible, documented options—not a reason to rewrite everything.</strong> Autodesk exposes viewport instancing in both target SDKs. That is separate from render-time instancing. Shared source geometry is attractive when many placements truly share it; prepared CPU batches can remain the better long-term choice for small proxies, small populations or highly heterogeneous geometry. Select through experiment E02, not comparison with another product’s advertised FPS. <a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/namespace_max_s_d_k_1_1_graphics_1_1_viewport_instancing.html" title="Autodesk: ViewportInstancing (2027)">S07</a><a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/namespace_max_s_d_k_1_1_render_time_instancing.html" title="Autodesk: RenderTimeInstancing (2027)">S11</a></p>
+<p><strong>3. Preserve the placement contract before parallelizing or changing mathematics.</strong> Same density distribution is not the same seeded point set; same point set is not the same ordered source assignment. Prepared geometry and exact broad-phase rejection can preserve behavior, whereas a different sampler, relaxation schedule or random-stream scheme generally needs a versioned behavior change. Parallelize owned numeric work only after identifying the host-only boundary. Autodesk’s node/reference restrictions and explicit callback exceptions require a narrower design than “run the plugin on workers.” <a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/namespace_max_s_d_k_1_1_threading_debugging_tools.html" title="Autodesk: ThreadingDebuggingTools">S01</a><a href="https://www.thesalmons.org/john/random123/papers/random123sc11.pdf" title="Salmon et al.: Parallel Random Numbers: As Easy as 1, 2, 3">S25</a><a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_deformer.html" title="Autodesk: Deformer">S50</a></p>
+<p><strong>4. GPU calculation has not earned a place in the production architecture yet.</strong> The first gate is an end-to-end cost model; the second is an extraction/copy/publication experiment that can reject offload without writing a real kernel. A useful graphics-instancing implementation does not prove GPU placement computation is useful, and an interoperability extension does not establish access to Max-owned resources. Actual benefit is <strong>unknown until measured</strong>. <a href="https://registry.khronos.org/OpenCL/specs/unified/html/OpenCL_API.html" title="Khronos OpenCL Specification">S38</a></p>
+<p><strong>5. Qualification and dependency discipline can matter more than the next speedup.</strong> Max 2027’s final SDK is explicitly incompatible with Max 2026. A compiling 2026 binary is not a tested 2026 product. Autodesk’s public USD integration also illustrates why dependency versions and loader paths need deliberate control. Require real target-host runs, loaded-module identity and physical 32 GB testing before expanding support claims. <a href="https://github.com/Autodesk/3dsmax-usd/blob/dev/doc/build.md" title="Autodesk 3dsmax-usd: build documentation">S13</a></p>
+<p><strong>Largest unknowns:</strong> the actual critical path; existing cache/invalidation quality; precise seeded-output contract; the native/scripted ownership boundary; current renderer adapters and their lifetime rules; peak memory across overlapping generations; source repetition/material partitioning; and performance under renderer contention. None can be established from external documentation.</p>
+<h2 id="2-scope-evidence-and-limits">2. Scope, evidence and limits</h2>
+<p>The three supplied files were read. <code>START HERE.txt</code> assigns this conversation the independent external-research role; the full repository investigation belongs to the separate local Codex task. No repository, 3ds Max process, Windows profiler session or renderer instance was accessible here. No project tests were run, no production implementation was changed, and nothing was sent to another model or service.</p>
+<p>The internal context snapshot was supplied in this conversation, so this was <strong>not a genuinely blinded investigation</strong>. Its implementation descriptions and historical numbers are not used here as verified source observations or to establish bottlenecks. The self-contained external brief is the basis of the recommendations. The approximately 23-to-150 FPS example remains a <strong>user observation</strong>, not controlled performance evidence.</p>
+<p>The shared evidence labels are: <strong>direct project-source observation; local measured run; historical project-test report; primary external documentation; user observation; inference; unknown</strong>. This report supplies primary external documentation, engineering inference and explicitly identified unknowns. It does not create new evidence in the first three categories. The accompanying mathematical script is an illustration, not a host or scatter benchmark.</p>
+<p>References <code>[Sxx]</code> identify opened primary sources; their exact sections, versions, publication dates where available, access dates and limits are in <code>source_ledger.csv</code>. Claims and decisions have stable IDs in the other ledgers. A current crawl date is not treated as a publication date. Unversioned product pages and moving repository branches are explicitly identified; they must be pinned or archived before implementation relies on them.</p>
+<p>This report makes no claim about Chaos or tyFlow private renderers, schedulers, memory structures or algorithms. Documented behavior is distinguished from mechanisms inferred to be suitable for Cyrus.</p>
+<h2 id="3-verified-host-capabilities-and-where-verification-stops">3. Verified host capabilities—and where verification stops</h2>
+<table>
+<thead>
+<tr>
+<th>Topic</th>
+<th>What the opened primary sources establish</th>
+<th>Consequence for this project</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Native compatibility</td>
+<td>The 2027 version reference identifies final API number 70 and incompatibility with 2026. <a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/group___version_macros.html" title="Autodesk: Version Macros">S13</a></td>
+<td>Build and qualify separate target packages. Record SDK update identity, not only year.</td>
+</tr>
+<tr>
+<td>General thread safety</td>
+<td>The 2026 guide says Max is not generally thread-safe and node/reference evaluation is single-threaded. The 2027 debugging reference restricts many operations to the main thread, with a controlled exclusive-worker exception. <a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/namespace_max_s_d_k_1_1_threading_debugging_tools.html" title="Autodesk: ThreadingDebuggingTools">S01</a></td>
+<td>Keep scene evaluation and ownership changes on the permitted thread unless a particular API explicitly documents otherwise.</td>
+</tr>
+<tr>
+<td>Script execution</td>
+<td>The 2027 <code>ExecuteMAXScriptScript</code> documentation requires the main thread and warns about returned <code>Value*</code> GC protection. <a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/maxscript_8h.html" title="Autodesk: maxscript.h">S03</a></td>
+<td>Copy validated numeric data out of host/script-owned storage; do not hand live script values to background work.</td>
+</tr>
+<tr>
+<td>Retained display</td>
+<td>The 2026 Nitrous guide describes render items and buffers. The 2027 API confirms <code>IMeshDisplay2</code> and <code>IObjectDisplay2</code>. <a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_max_s_d_k_1_1_graphics_1_1_i_mesh_display2.html" title="Autodesk: IMeshDisplay2">S04</a><a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_max_s_d_k_1_1_graphics_1_1_i_object_display2.html" title="Autodesk: IObjectDisplay2">S06</a></td>
+<td>Native integration is plausible; the actual hybrid object must be inspected before choosing an adapter.</td>
+</tr>
+<tr>
+<td>Viewport instancing</td>
+<td>Both years document <code>MaxSDK::Graphics::ViewportInstancing</code>. <a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/namespace_max_s_d_k_1_1_graphics_1_1_viewport_instancing.html" title="Autodesk: ViewportInstancing (2027)">S07</a></td>
+<td>The capability is verified; Cyrus integration and hardware behavior are not.</td>
+</tr>
+<tr>
+<td>Render instances</td>
+<td>Both years document <code>MaxSDK::RenderTimeInstancing</code>; renderer consumption is conditional. <a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/namespace_max_s_d_k_1_1_render_time_instancing.html" title="Autodesk: RenderTimeInstancing (2027)">S11</a></td>
+<td>Verify each renderer adapter separately; viewport success provides no renderer guarantee.</td>
+</tr>
+<tr>
+<td>Supported OS</td>
+<td>The Max 2027 system-requirements article lists Windows 11. <a href="https://help.autodesk.com/view/ACADWEB/ENU/?caas=caas/sfdcarticles/sfdcarticles/System-requirements-for-Autodesk-3ds-Max-2027.html" title="Autodesk: System requirements for 3ds Max 2027">S14</a></td>
+<td>Do not infer Max 2027 Windows 10 support from a development blog or from successful installation.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="toolchain-verification-is-incomplete-not-guessed">Toolchain verification is incomplete, not guessed</h3>
+<p>An Autodesk-authored July 2026 blog lists v143/v14.38, C++20, Windows SDK 10.0.19041.0 and Qt 6.8.3 for Max 2027. However, the same table includes Windows 10 and says .NET 8 was already end-of-life. Those statements conflict respectively with Max’s system-requirements article and Microsoft’s .NET 8 date of 10 November 2026. Its linked official SDK requirements page could not be retrieved. Therefore the precise compiler/CRT/Qt/.NET matrix is <strong>provisional</strong>, not an approved build prescription. <a href="https://help.autodesk.com/view/ACADWEB/ENU/?caas=caas/sfdcarticles/sfdcarticles/System-requirements-for-Autodesk-3ds-Max-2027.html" title="Autodesk: System requirements for 3ds Max 2027">S15</a><a href="https://learn.microsoft.com/en-us/lifecycle/end-of-support/end-of-support-2026" title="Microsoft: Ending Support in 2026">S16</a></p>
+<p>The local engineer must inspect each installed SDK’s requirements, property sheets, headers and sample projects; capture the compiler’s complete version; and reconcile any discrepancy with Autodesk. IDE branding is not compiler identity. Do not upgrade the compiler, language standard, Qt or CRT to match a web article while the actual SDK requirements remain unresolved. This limitation applies particularly to the precise 2026 toolchain table, which was not independently established here.</p>
+<p>The 2027 general thread-safety guide URL was also unavailable. The report does not silently substitute the 2026 page as a reverified 2027 guarantee: it pairs that older general guidance with narrower 2027 API statements.</p>
+<h2 id="4-measurement-find-the-work-artists-are-actually-waiting-for">4. Measurement: find the work artists are actually waiting for</h2>
+<h3 id="4-1-define-operations-before-collecting-numbers">4.1 Define operations before collecting numbers</h3>
+<p>Use a request/generation identifier to connect an artist action to the output eventually published and displayed. The following is a proposed instrumentation contract, not a claim about current project structure.</p>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Start and finish</th>
+<th>What to keep separate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Navigation, no edits</td>
+<td>A recorded camera gesture or controlled camera sequence to its displayed frames</td>
+<td>No placement rebuild should be presumed necessary; record any evaluation that nevertheless occurs.</td>
+</tr>
+<tr>
+<td>Edit latency</td>
+<td>A parameter/source/mask change to first visible valid result for that generation</td>
+<td>Also record final-quality completion when a preview is intentionally different.</td>
+</tr>
+<tr>
+<td>Full rebuild</td>
+<td>Explicit refresh request to completed placement result and publication</td>
+<td>CPU result-ready, host commit and GPU/display completion are distinct timestamps.</td>
+</tr>
+<tr>
+<td>Animation</td>
+<td>Time change to usable state; sustained sequence throughput</td>
+<td>Source deformation, topology changes, controller evaluation and per-frame cache reuse.</td>
+</tr>
+<tr>
+<td>Render preparation</td>
+<td>Render request to renderer-ready geometry/instances and first useful output</td>
+<td>Final rendering time and interactive restart/update time are separate.</td>
+</tr>
+</tbody>
+</table>
+<p>Mark CPU spans for event scheduling, host evaluation, script/native conversion, geometry preparation, candidate generation, predicates/queries, transform construction, result compaction, publication and draw submission. Add counters for calls, candidates, accepted placements, displayed instances, unique source geometries, material partitions, actual triangles/points, uploaded bytes, allocations, cache hits/misses and invalidation reasons.</p>
+<p>Do not turn every point into a logging event. Coarse spans plus aggregate counters usually answer the first question with less disturbance. Measure instrumented versus uninstrumented runs, and retain that overhead estimate. Use a monotonic clock and record units and timer origin. Thread IDs and generation IDs are essential for distinguishing duplicated callbacks from one long operation.</p>
+<h3 id="4-2-amdahl-s-law-a-useful-rejection-test">4.2 Amdahl’s law: a useful rejection test</h3>
+<p>For a serial critical-path operation, let fraction <code>f</code> be the part a proposal accelerates, <code>s</code> its speedup, and <code>o</code> its added overhead as a fraction of the original whole operation:</p>
+<p><code>whole-operation speedup = 1 / [(1 − f) + f/s + o]</code>.</p>
+<p>For <code>f &lt; 1</code>, even infinite kernel speed cannot exceed <code>1/(1−f)</code> when overhead is zero. If a kernel occupies 10% of an edit, accelerating it tenfold gives only about <strong>1.10×</strong> overall. If it occupies 80%, a fourfold kernel gain gives <strong>2.5×</strong>, before overhead. These are arithmetic examples, not measurements. A proposal that cannot beat the practical target even under an optimistic bound should stop before implementation.</p>
+<p>For concurrent pipelines, use the measured dependency graph instead. CPU and GPU spans can overlap; adding all worker CPU time to all GPU time invents elapsed latency. In a simple two-stage steady pipeline, the slower occupied stage bounds throughput; queues, synchronization and dependencies can make actual latency substantially longer. Moving work off the main thread can improve responsiveness without shortening completion, while a deeper queue can improve throughput and worsen edit-to-visible latency. These are model deductions to test against traces.</p>
+<p>A lower median is not sufficient for “buttery smooth.” Report median, p95, p99 only when the sample supports estimating it, and the raw distribution of hitch durations. Do not derive a stable p99 from a handful of actions. Separate shader/resource creation and initial extraction from warm navigation. Repeated frames within one gesture are correlated; use the gesture or trial as the resampling unit for uncertainty, not every frame as an independent experiment.</p>
+<h3 id="4-3-practical-profiler-choices-and-attachment-limits">4.3 Practical profiler choices and attachment limits</h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Appropriate use / attachment</th>
+<th>What it does not prove</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Visual Studio CPU Usage</td>
+<td>Profile a Release build with symbols; the documented workflow can attach to a running process. Use native call stacks to locate hot CPU work. <a href="https://learn.microsoft.com/en-us/visualstudio/profiling/cpu-usage?view=visualstudio" title="Microsoft: CPU Usage profiler">S33</a></td>
+<td>Samples are not exact native call counts, waiting time or GPU-completed frames. Host symbols may be incomplete.</td>
+</tr>
+<tr>
+<td>WPR/WPA plus GPUView</td>
+<td>Record Windows ETW traces around a known gesture; correlate CPU scheduling, graphics queues and competing processes. <a href="https://learn.microsoft.com/en-us/windows/win32/direct2d/profiling-directx-applications" title="Microsoft: Profiling DirectX Applications">S34</a></td>
+<td>OS queue activity does not label individual Cyrus layers without project markers.</td>
+</tr>
+<tr>
+<td>PresentMon</td>
+<td>Capture the intended Max process and relevant swapchain; retain the installed tool version and original CSV schema. It reports CPU/GPU/display-related timing fields. <a href="https://github.com/GameTechDev/PresentMon/blob/main/README-ConsoleApplication.md" title="PresentMon: console application README">S35</a></td>
+<td>A process may have multiple viewports/windows. A present or reported display latency does not by itself identify the edit generation or prove input-to-photon time.</td>
+</tr>
+<tr>
+<td>Nsight Graphics</td>
+<td>Candidate for supported NVIDIA graphics analysis. D3D11 is listed, but available activities must be checked. Launch Max through the supported interception workflow; arbitrary late attachment to an ordinarily launched process is not supported. <a href="https://docs.nvidia.com/nsight-graphics/index.html" title="NVIDIA Nsight Graphics: overview">S36</a></td>
+<td>No evidence that every Max build, driver or activity is compatible. Instrumentation/capture may perturb timings or fail.</td>
+</tr>
+<tr>
+<td>Local stage counters</td>
+<td>Small owned scopes and counters inside actual code</td>
+<td>Redraw-return duration measures the call boundary, not necessarily completed GPU execution.</td>
+</tr>
+</tbody>
+</table>
+<p>Start with CPU sampling plus coarse markers. Add ETW when waiting, queueing or contention is ambiguous; use a graphics debugger only when the draw path is the question. Do not require all tools for every test. Preserve profiler failures as evidence about tool compatibility, not about plugin correctness. Do not disable system security as a blanket performance recommendation.</p>
+<h2 id="5-mathematics-and-cpu-algorithms-choose-by-workload-and-contract">5. Mathematics and CPU algorithms: choose by workload and contract</h2>
+<p><strong>Engineering assessment.</strong> The cost comparisons below are deductions about candidate designs, supported by the cited algorithms. They are not findings about current Cyrus code. The selection rule is always <strong>build/update cost plus queries over the actual reuse interval</strong>, not query time alone.</p>
+<h3 id="5-1-freeze-the-behavioral-contract">5.1 Freeze the behavioral contract</h3>
+<p>Before optimizing, establish what must match: ordered placement count and positions; source identity; random draws; transforms; layer ordering; rejection rules; boundary inclusion; density/falloff; and preview versus render populations. Record whether floating fields require exact bits or an already-approved tolerance. Distinguish four possible contracts: exact implementation replay, identical discrete decisions with bounded numeric error, statistically equivalent sampling, and deliberately approximate preview. This research does not grant permission to move between them.</p>
+<p>A useful serial oracle should emit stable IDs and canonical numeric fields, not merely an image or hash of object memory containing padding. Sorting output before comparison can hide an order regression. A histogram can validate a distribution change but cannot validate seeded replay. Keep both the existing serial result and small analytically checkable fixtures; the existing result may contain bugs, but bug fixes must be separately approved rather than concealed as optimizations.</p>
+<h3 id="5-2-sampling-and-density">5.2 Sampling and density</h3>
+<p>For uniform world-surface sampling, select a triangle in proportion to its <strong>world-space area</strong>, then sample uniformly within it. With linear transform <code>M</code> and triangle edges <code>e1,e2</code>, that area is <code>0.5 × |(M e1) × (M e2)|</code>. Nonuniform scaling does not generally multiply every triangle area by one common scalar. Exclude or handle zero-area/nonfinite triangles according to the established contract. Prepared weights must be invalidated by changes that alter their measure. PBRT provides the CDF and triangle-sampling foundations. <a href="https://www.pbr-book.org/4ed/Sampling_Algorithms/Sampling_Multidimensional_Functions" title="PBRT: Sampling Multidimensional Functions">S22</a></p>
+<p>A linear weighted scan is a reasonable baseline for a few source types. A prepared cumulative distribution has linear storage/build and logarithmic binary-search selection. An alias table offers constant-time selection after linear preparation, but the extra structure is justified only with enough reuse. Switching methods can map the same random variate to a different source; zero weights, cumulative rounding and tie rules matter. Rebuilding a table for every point is worse than retaining a short scan. Measure total table maintenance plus selections. <a href="https://pbr-book.org/4ed/Sampling_Algorithms/The_Alias_Method" title="PBRT: The Alias Method">S23</a></p>
+<p>For rejection sampling with acceptance probability <code>a</code>, obtaining <code>N</code> accepted candidates takes <code>N/a</code> proposals in expectation under the stated independent-trial assumptions. Low-density masks can therefore make proposal generation the actual cost. Record proposal-to-acceptance ratio and expensive mask evaluations. A spatially prepared density envelope or cell-weighted sampler is worth considering only when it preserves the intended measure and amortizes preparation. A discretized texture, signed-distance field or changed proposal process can alter positions and count. Treat those as explicit approximation/new-sampler options, not equivalent acceleration.</p>
+<p>Moving an early rejection ahead of another stage is safe only if it does not change subsequent RNG consumption, errors or side effects. Keep existing random draws in their established order until the contract is known. Counter-based generators can derive keyed random values from stable candidate/channel counters without one shared evolving state; Random123 demonstrates that mechanism. It is useful for a newly versioned sampler, not an automatic replacement for current seeds. <a href="https://www.thesalmons.org/john/random123/papers/random123sc11.pdf" title="Salmon et al.: Parallel Random Numbers: As Easy as 1, 2, 3">S29</a></p>
+<h3 id="5-3-spatial-algorithms-and-decision-rules">5.3 Spatial algorithms and decision rules</h3>
+<table>
+<thead>
+<tr>
+<th>Technique</th>
+<th>Concrete scatter use</th>
+<th>Cost / when it loses</th>
+<th>Selection measurement and correctness condition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tight serial loops</td>
+<td>Few boundaries, few colliders or small candidate sets</td>
+<td>Low setup and contiguous access; repeated all-pairs work can grow quadratically</td>
+<td>Full operation timing over small and large inputs; preserve exact predicate order and early exits.</td>
+</tr>
+<tr>
+<td>Prepared polygon predicates</td>
+<td>Thousands of candidate tests against a stable garden boundary</td>
+<td>Preparation and extra storage only pay across repeated queries; invalidation on edits is mandatory</td>
+<td>Record preparation time, number of queries per boundary generation and exact edge/vertex classification. GEOS illustrates cached prepared 2D predicates. <a href="https://libgeos.org/doxygen/classgeos_1_1geom_1_1prep_1_1PreparedPolygon.html" title="GEOS: PreparedPolygon">S28</a></td>
+</tr>
+<tr>
+<td>Uniform grid / spatial hash</td>
+<td>Fixed-radius spacing among many accepted positions</td>
+<td>Local-neighbor queries can avoid global scans; dense buckets, very unequal radii or huge dense-grid extents can erase the gain</td>
+<td>Bucket occupancy distribution, candidates examined, build/update cost, bytes and unchanged accepted-order output.</td>
+</tr>
+<tr>
+<td>BVH over triangles or segments</td>
+<td>Ray projection, closest surface, detailed obstacle/boundary distance</td>
+<td>Traversal prunes by bounds; construction/refit may dominate frequent topology changes. Overlapping/degenerate bounds can approach linear work</td>
+<td>Build/refit plus queries; visits and exact primitive tests; compare to brute force, including nearest-hit tie rules. <a href="https://www.pbr-book.org/4ed/Primitives_and_Intersection_Acceleration/Bounding_Volume_Hierarchies" title="PBRT: Bounding Volume Hierarchies">S27</a></td>
+</tr>
+<tr>
+<td>k-d tree over points</td>
+<td>Repeated nearest-anchor or neighborhood queries on mostly static points</td>
+<td>Point-query structure, not a substitute for a triangle surface query; small sets and frequent rebuilds may favor a scan/grid</td>
+<td>Build plus query time, leaf occupancy and RAM. nanoflann explicitly calls for workload-specific leaf and build-thread benchmarking. <a href="https://github.com/jlblancoc/nanoflann" title="nanoflann: project README">S31</a></td>
+</tr>
+<tr>
+<td>Poisson-disk generation</td>
+<td>An explicitly chosen natural-looking minimum-distance distribution</td>
+<td>Different generation/order/count behavior; not a drop-in optimization of existing ordered rejection</td>
+<td>Validate radius, count policy and spectral/distribution quality as a new feature, separately from performance. <a href="https://www.cs.ubc.ca/~rbridson/docs/bridson-siggraph07-poissondisk.pdf" title="Bridson: Fast Poisson Disk Sampling in Arbitrary Dimensions">S25</a></td>
+</tr>
+<tr>
+<td>Relaxation</td>
+<td>An artist-approved redistribution after initial placement</td>
+<td>Iterative neighbor work and dependencies; changes positions and possibly membership/source relationships</td>
+<td>Compare iteration count, convergence/energy, constraint violations, deterministic update order and total edit latency.</td>
+</tr>
+</tbody>
+</table>
+<p>The grid rule deserves precision. For radius <code>r</code> and cell width <code>h</code>, enumerate every cell intersecting the query’s conservative radius box, then use the original exact distance test. Do not assume “27 neighboring cells” for arbitrary radii or widths. Hash buckets must retain their full cell key so hash collisions cannot create false identity. Store occupied cells rather than allocating a dense array across enormous empty extents. Preserve candidate acceptance order: concurrently accepting mutually close candidates changes the result even with a perfect index. These are implementation requirements derived from the geometry, not guarantees from an API.</p>
+<p>A prepared predicate has a simple break-even rule: if setup costs <code>B</code>, the old query costs <code>q0</code>, the new costs <code>q1</code>, and <code>Q</code> queries occur before invalidation, it helps only when <code>B &lt; Q(q0−q1)</code>, ignoring secondary costs. Apply the same rule to a BVH or source table. A threshold in candidate count alone is unreliable when complexity per candidate varies dramatically.</p>
+<p>Bridson’s method uses an active list and a background grid; its linear-time argument assumes fixed dimension and candidate budget. The grid cell bound is tied to minimum spacing. Surface constraints, holes, strongly variable radii, geodesic distance and prescribed counts require additional decisions. Its usual candidate budget is not a quality guarantee for this product. A safer first optimization for an existing ordered dart-rejection method is an exact neighborhood accelerator around that same method. <a href="https://www.cs.ubc.ca/~rbridson/docs/bridson-siggraph07-poissondisk.pdf" title="Bridson: Fast Poisson Disk Sampling in Arbitrary Dimensions">S25</a></p>
+<h3 id="5-4-geometry-traps-that-can-invalidate-an-apparent-speedup">5.4 Geometry traps that can invalidate an apparent speedup</h3>
+<p>A tree whose broad phase misses even one possible conflict is incorrect. Bounds must be conservative after transforms, including source extents—not just placement centers. For proximity, spheres or boxes are <strong>broad-phase</strong> tests unless that is the artist’s actual collision contract. Mesh intersection, minimum distance and non-overlap of proxy bounds are different questions.</p>
+<p>For boundary containment, explicitly record whether holes use even-odd or winding rules, whether boundary points count as inside, what happens with self-intersection/open loops, and how zero-length segments are treated. GEOS distinguishes <code>contains</code> and <code>covers</code>; borrowing an index does not decide which semantics are correct for Cyrus. Adaptive exact orientation predicates can resolve near-collinear sign decisions, but do not establish a user-facing distance tolerance or repair invalid contours. <a href="https://www.cs.cmu.edu/~quake/robust.html" title="Shewchuk: Adaptive Precision Floating-Point Arithmetic and Fast Robust Predicates">S28</a></p>
+<p>Extreme coordinates can lose low-order detail, overflow squared distances or overflow integer grid coordinates. Consider computing owned geometry in a local frame and using wider intermediates where needed, while checking whether this changes the accepted numeric contract. Compare points exactly on an edge, just inside/outside, coincident points and nearly zero-length features. An arbitrary larger epsilon is not an optimization.</p>
+<p>For closest-point queries, transforming the query into a nonuniformly scaled source and minimizing ordinary local Euclidean distance can select the wrong <strong>world-space</strong> nearest point. Either evaluate distances in world space or use the correctly transformed metric. Ray direction normalization similarly changes the parameter’s distance interpretation. Establish these conventions before sharing a query cache between differently transformed sources.</p>
+<p>For a nonsingular linear transform and column-vector notation, a normal transforms by <code>M⁻ᵀ</code>, followed by normalization. A reflection reverses handedness; transformed edge cross-products additionally carry the determinant sign. Apply the host’s winding/front-face convention deliberately rather than blindly applying both flips. Singular transforms need an explicit error/fallback policy. Port the mathematics to Max’s actual matrix convention, not by copying this notation literally. <a href="https://www.pbr-book.org/4ed/Geometry_and_Transformations/Applying_Transformations" title="PBRT: Applying Transformations">S30</a></p>
+<h3 id="5-5-layout-allocation-simd-and-floating-point-behavior">5.5 Layout, allocation, SIMD and floating-point behavior</h3>
+<p>First remove repeated conversion, unnecessary geometry copies and temporary allocation. Use owned contiguous numeric arrays for measured hot loops; reserve output capacity when a safe estimate exists; reuse scratch space within a bounded lifetime. Structure-of-arrays can help a loop reading only positions, but converting the whole pipeline to it may cost more than it saves when each placement needs all fields. Compare bytes moved and total conversion-plus-kernel time. Avoid a second permanent representation simply because it is vectorizable.</p>
+<p>Keep compiler vectorization as the first SIMD candidate; inspect generated code or vectorization diagnostics for the measured loop. Explicit SIMD is justified only after demonstrating a remaining hot arithmetic path, and needs a supported instruction baseline or dispatch. No AVX2-only baseline is established by this report.</p>
+<p>MSVC’s <code>/fp:fast</code> allows transformations that change rounding and special-value behavior; contraction defaults also depend on compiler/settings. Consequently, changing flags, reassociating reductions or introducing fused operations can flip decisions near spacing/mask thresholds. Keep stable reduction order and existing flags while validating a performance-only change. Cross-device bitwise equality for an entire geometry pipeline is not a credible default promise without narrowly controlled operations; it may require retaining a CPU authoritative path. An alternative contract—identical integer IDs and discrete decisions, explicitly bounded floating error, and serial rechecking of ambiguous decisions—requires owner approval and measurement of fallback frequency. <a href="https://learn.microsoft.com/en-us/cpp/build/reference/fp-specify-floating-point-behavior?view=msvc-170" title="Microsoft: /fp floating-point behavior">S32</a></p>
+<h2 id="6-safe-concurrency-and-interaction">6. Safe concurrency and interaction</h2>
+<h3 id="6-1-the-boundary-is-more-important-than-the-scheduler">6.1 The boundary is more important than the scheduler</h3>
+<p>The safe default is permitted-thread host evaluation, owned immutable numeric computation, and permitted-thread publication. A lock around a node-evaluation call does not establish that the call may occur on that worker. A raw pointer to a mesh owned by a node or MAXScript object is not an owned snapshot. Node/reference operations, notifications, graphics resources, UI and renderer access must each have their own API/lifetime justification. <a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/namespace_max_s_d_k_1_1_threading_debugging_tools.html" title="Autodesk: ThreadingDebuggingTools">S01</a><a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/maxscript_8h.html" title="Autodesk: maxscript.h">S03</a></p>
+<p>Do not overstate this as “Max has no threaded callbacks.” The 2027 <code>Deformer::Map</code> const and <code>MapNormal</code> const methods explicitly require thread safety. The general guide also identifies threaded rendering callbacks. These exceptions make the rule <strong>follow the specific interface contract</strong>, not “all Max APIs are forbidden” or “all geometry APIs are safe.” <a href="https://help.autodesk.com/cloudhelp/2026/ENU/MAXDEV-Developer/files/best_practices/thread_safety.html" title="Autodesk: Thread Safety">S50</a></p>
+<h3 id="6-2-serial-versus-bounded-synchronous-ranges-versus-a-persistent-executor">6.2 Serial versus bounded synchronous ranges versus a persistent executor</h3>
+<table>
+<thead>
+<tr>
+<th>Choice</th>
+<th>Simplest credible use</th>
+<th>Main loss conditions / adoption gate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Optimized serial</td>
+<td>Small inputs; host-dominated work; strict ordered stages</td>
+<td>Retain unless a measured independent numeric region dominates. No startup or inter-worker merge cost.</td>
+</tr>
+<tr>
+<td>Bounded synchronous ranges</td>
+<td>A substantial owned array with independent outputs; join before returning</td>
+<td>Snapshot/start/join/merge costs, load imbalance, cache contention and renderer competition can exceed saved work. Sweep task size and participant count.</td>
+</tr>
+<tr>
+<td>Persistent executor</td>
+<td>Repeated sufficiently expensive numeric tasks where startup is a measured cost</td>
+<td>Adds teardown, reentrancy and scheduling policy; persistent does not automatically mean asynchronous. Stop if startup is immaterial.</td>
+</tr>
+<tr>
+<td>Asynchronous editing</td>
+<td>Long computations that remain long after coalescing/optimization and demonstrably block useful interaction</td>
+<td>Adds stale-result handling, multi-generation memory, cancellation and Undo/scene lifecycle complexity. Requires a separate acceptance case.</td>
+</tr>
+</tbody>
+</table>
+<p>Use the calling thread as a participant when appropriate rather than leaving it blocked while creating another worker. Preallocate disjoint output slots and compact in original candidate order. Retain serial random generation or another verified replay mechanism. An order-dependent spacing pass should not be parallelized merely by locking its output vector; that can alter accepted order while serializing much of the cost anyway.</p>
+<p>Choose grain size using total useful work per chunk, not a magical point count. Compare a small range of bounded participation levels, including one, on the target machine and under render load. Higher CPU utilization can accompany worse latency when additional threads contend for memory, oversubscribe the renderer or delay the UI. For heterogeneous cores and NUMA systems, first use reasonable OS scheduling and measure outliers/locality. oneTBB exposes arena concurrency/core/NUMA controls but explicitly warns about composability; such controls are options, not mandatory architecture. <a href="https://uxlfoundation.github.io/oneTBB/main/tbb_userguide/Guiding_Task_Scheduler_Execution.html" title="oneTBB: Guiding Task Scheduler Execution">S43</a></p>
+<p>Standard execution-policy algorithms are not a turnkey host-aware scheduler: the draft specifies termination when an element-access function escapes by exception under standard policies. Do not assume ordinary catch-and-report semantics around a parallel call. With explicit ranges, catch worker failures, request cancellation, join every worker, and publish nothing partial. oneTBB provides exception/cancellation propagation, but canceled work can still leave incomplete output. The application retains responsibility for the commit boundary. <a href="https://uxlfoundation.github.io/oneTBB/main/tbb_userguide/Cancellation_and_Nested_Parallelism.html" title="oneTBB: Cancellation and Nested Parallelism">S45</a></p>
+<h3 id="6-3-prefer-coalescing-before-asynchronous-publication">6.3 Prefer coalescing before asynchronous publication</h3>
+<p>The simplest interaction change is often to retain all dirty flags while coalescing duplicate requests into one refresh at a known safe boundary. A camera movement should not invalidate source topology. Conversely, a held-input optimization must not forget an edit that needs a final refresh after release. Manual mode needs its own state transition: do not turn a deferred redraw into an unauthorized rebuild.</p>
+<p>A proposed cache contract records the value’s inputs, invalidation events, owner, readers, memory cap and destruction thread. Useful separate generations might include source geometry, source transforms, masks, placement parameters, display representation and view state. These are conceptual domains, not a demand to create six caches. Keep a single simpler cache if profiling and invalidation requirements do not justify splitting it.</p>
+<p>Only if asynchronous computation earns its complexity should the following model be tried. This is <strong>pseudocode</strong>, not an Autodesk API recipe:</p>
+<pre><code class="language-text">on relevant change, on the permitted host thread:
+    advance request generation; retain all dirty reasons
+    invalidate any result that would no longer be valid
+    coalesce pending requests; enforce bounded queue/memory
+    copy a validated, owned snapshot with scene epoch and stable identities
+
+in numeric computation:
+    read only the snapshot; write only owned result memory
+    periodically check cancellation; never publish partial arrays
+    capture errors; complete or cancel through one completion path
+
+on a verified permitted-thread completion path:
+    reject if shutting down, canceled, or scene epoch/generation differs
+    revalidate target existence, time and relevant identity/version tokens
+    atomically replace the completed result; request appropriate display update
+    release old resources only after every permitted reader has finished
+</code></pre>
+<p>A generation counter alone is insufficient if a scene reset reuses IDs, source data changes without invalidation or a completed result contains dangling resources. Undo/Redo must either restore a valid matching generation or request recomputation. Node deletion, scene load/reset/merge, clone and shutdown must cancel or invalidate pending work. Cancellation must be cooperative inside the numeric work, not an unsafe forced thread stop. Workers must not outlive plugin code during unload; do not detach them as a shutdown shortcut.</p>
+<p>Budget active snapshot + pending snapshot + result + old visible result + temporary indices + GPU resources, including allocator high-water marks. A bounded “one active, one latest pending” policy is a possible first design, not a proven optimal queue. If snapshot extraction or publication remains the dominant main-thread stall, asynchronous kernels alone have failed the premise.</p>
+<h2 id="7-viewport-architecture-retain-the-right-work-not-the-wrong-representation">7. Viewport architecture: retain the right work, not the wrong representation</h2>
+<h3 id="7-1-three-architectures-worth-distinguishing">7.1 Three architectures worth distinguishing</h3>
+<p><strong>Engineering model.</strong> Immediate submission, retained expanded geometry and retained instanced geometry answer different questions. A retained implementation can reduce repeated upload/submission preparation without using instancing. Instancing can additionally avoid expanding each copy’s vertices. Test those effects separately; otherwise a faster prototype does not tell you which mechanism paid for itself.</p>
+<p>For <code>N</code> copies of a source containing <code>V</code> vertices, expanded geometry has storage/work terms proportional to <code>N×V</code>; shared-source instancing instead has terms proportional to source geometry plus <code>N</code> instance records. This does <strong>not</strong> eliminate GPU vertex/shading work for visible copies. With many unique sources, incompatible materials or instance-specific topology, sharing shrinks. Source extraction, grouping and additional draw partitions can dominate small populations.</p>
+<p>An illustration: assume, purely for arithmetic, one source with 10,000 vertices, 10,000 copies, a 32-byte vertex payload and a 64-byte instance payload. Expanded vertex payload alone is 3.2 GB; source vertices plus instance records are 960,000 bytes. These omit indices, materials, textures, bounds, renderer data, staging and duplicate CPU/GPU copies. They are not Max allocation sizes or a prediction of total memory. At the opposite extreme, expanding a handful of tiny pyramid proxies may be acceptably small and simpler than a new renderer.</p>
+<p><strong>Default recommendation:</strong> preserve the current correct display path as a fallback. Investigate retained resources when traces show repeat geometry preparation/upload/submission. Investigate instancing when repetition makes expanded geometry expensive. Do not count a reduced displayed population, lower resolution or changed shading as a like-for-like architecture speedup.</p>
+<h3 id="7-2-documented-apis-and-integration-constraints">7.2 Documented APIs and integration constraints</h3>
+<p>The relevant class is <code>MaxSDK::Graphics::ViewportInstancing::InstanceDisplayGeometry</code>. The namespace documentation requires creation before update; updates cannot change instance count, introduce absent instance-data fields or change source vertex count. Recreate the relevant representation when those constraints are crossed. High Quality mode requires the documented position/normal/map/tangent/bitangent streams, including four mapping-stream entries; the module links <code>optimesh.lib</code>. These statements were checked in both 2026 and 2027 documentation. <a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/namespace_max_s_d_k_1_1_graphics_1_1_viewport_instancing.html" title="Autodesk: ViewportInstancing (2027)">S07</a></p>
+<p>Use the matching installed SDK’s class and samples to establish exact ownership and lifetime; do not assume input arrays remain borrowed or become copied without checking. The instance-data structure distinguishes world-space transformations from node-relative interpretation. It also permits specific per-instance UVW values, but these are constant across source vertices for the given channel, not arbitrary per-vertex remapping. <a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/struct_max_s_d_k_1_1_graphics_1_1_viewport_instancing_1_1_instance_data.html" title="Autodesk: InstanceData">S09</a></p>
+<p>For retained mesh display, the documented preparation/get-items order matters. Returned <code>IMeshDisplay2</code> geometry handles may be cached and shared: modifying them directly can affect other nodes, so follow the documented clone/decorator approach. Custom render items must be self-contained because Nitrous may realize/display them separately from object evaluation; an item reaching back into a mutable script object is not an acceptable shortcut. <code>IObjectDisplay2</code> has per-node and per-view paths; per-view work must not silently multiply expensive preparation across all viewports. <a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_max_s_d_k_1_1_graphics_1_1_i_mesh_display2.html" title="Autodesk: IMeshDisplay2">S04</a><a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_max_s_d_k_1_1_graphics_1_1_i_object_display2.html" title="Autodesk: IObjectDisplay2">S06</a></p>
+<p>Whether the current hybrid plugin has an appropriate native object that can expose these interfaces is <strong>unknown</strong>. Do not assume the bridge can acquire retained rendering through a MAXScript switch. A minimal native display adapter may be enough; replacing UI, placement generation and scene persistence is not justified by display work alone.</p>
+<h3 id="7-3-required-integration-checks-before-calling-a-prototype-usable">7.3 Required integration checks before calling a prototype usable</h3>
+<p>The following are proposed qualification requirements, not claims that the SDK automatically handles them for a custom implementation.</p>
+<table>
+<thead>
+<tr>
+<th>Change or feature</th>
+<th>Required behavior / likely failure exposed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bounds and visibility</td>
+<td>Aggregate bounds include transformed source extents. Hidden/frozen states and offscreen transitions work; no disappearing object due to center-only bounds.</td>
+</tr>
+<tr>
+<td>Selection and hit testing</td>
+<td>Object and any supported instance/subobject selection map to stable identities. Test picked instances after filtering, regrouping and count changes. Measure pick latency separately.</td>
+</tr>
+<tr>
+<td>Multiple viewports</td>
+<td>Camera-dependent culling/LOD does not overwrite another view’s result. Include one versus four viewports and mixed styles.</td>
+</tr>
+<tr>
+<td>Standard and High Quality</td>
+<td>Correct required streams, normals, material/UV/color behavior and shading. Unsupported features have an explicit fallback rather than silently altered appearance.</td>
+</tr>
+<tr>
+<td>Colors, materials and UV overrides</td>
+<td>Partition only when compatible; document which overrides can remain per-instance and which require unique geometry/material groups.</td>
+</tr>
+<tr>
+<td>Source deformation</td>
+<td>Update position/normal data at the right time. Topology, mapping or material-ID changes update all dependent buffers even when vertex count happens to stay constant.</td>
+</tr>
+<tr>
+<td>Changed placement count</td>
+<td>Exercise zero, one, growth, shrink and oscillation around allocation boundaries. Test recreation and old-resource disposal, not only transform-only updates.</td>
+</tr>
+<tr>
+<td>Mirrored/nonuniform transforms</td>
+<td>Positions, normals, front-face/culling and picking match the chosen contract. No double application of the owner node transform.</td>
+</tr>
+<tr>
+<td>Device/resource lifecycle</td>
+<td>Recreate after supported device/resource invalidation; release only when no consumer still reads. Test allocation failure and unsupported capability fallback.</td>
+</tr>
+<tr>
+<td>Render start/stop</td>
+<td>Viewport population and state recover correctly after switching to render representation. Do not reuse render-time data after its lifetime ends.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="7-4-proxy-point-full-mesh-and-sprite-tradeoffs">7.4 Proxy, point, full-mesh and sprite tradeoffs</h3>
+<p>Tiny geometric proxies preserve approximate orientation and extent at low source complexity. Points minimize shape information and are useful for distribution editing, but they do not validate source overlap or silhouettes. Full meshes preserve more appearance but increase source processing and GPU work. Camera-facing sprites trade geometry for textured screen coverage and can suffer overdraw; they are not an equivalent substitute for tree silhouettes, occlusion or close inspection. tyFlow’s grain documentation describes sprites as a display alternative when large grain populations remain expensive. <a href="https://docs.tyflow.com/faq/grains/" title="tyFlow: Grains FAQ">S20</a></p>
+<p>A display budget should specify its unit: instance count, triangle count, screen coverage or another explicit measure. A stable ID-based subset is a proposed way to reduce popping compared with a new random subset every redraw. LOD transitions and culling are quality policies and need visual approval. Keep render population independent from viewport population. Camera-only clipping cannot be assumed safe for final reflections, shadows or indirect visibility. <a href="https://support.chaos.com/hc/en-us/articles/4953457092625-How-to-use-Chaos-Scatter-with-Corona-for-3ds-Max-Performance-and-Troubleshooting" title="Chaos: Scatter performance and troubleshooting">S21</a></p>
+<p>CPU preparation/batching can remain the final solution when it meets the artist’s latency target, has bounded memory and behaves correctly under updates. Keeping it is not an interim failure. Conversely, an attractive static instancing demo is insufficient if count changes or deforming sources continually force expensive recreation.</p>
+<h2 id="8-renderer-interfaces-and-documented-production-case-studies">8. Renderer interfaces and documented production case studies</h2>
+<h3 id="8-1-renderer-integration-is-a-separate-contract">8.1 Renderer integration is a separate contract</h3>
+<p>Autodesk’s render-time interface groups shared <code>RenderInstanceSource</code> data and per-instance <code>RenderInstanceTarget</code> data under <code>RenderTimeInstancingInterface</code>; the documentation names the <code>RenderTimeInstancedObject</code> sample. Its benefit explicitly depends on a renderer consuming the interface. Neither those names nor Nitrous support establish Corona/V-Ray compatibility for final rendering, interactive rendering, motion blur, proxies or every override. <a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/namespace_max_s_d_k_1_1_render_time_instancing.html" title="Autodesk: RenderTimeInstancing (2027)">S11</a></p>
+<p>For the actual renderer adapter, inspect whether it supplies shared geometry or an expanded mesh, when it evaluates sources, how it exposes transforms across shutter times, who owns returned data, and when it becomes safe to release that data. A render-start preparation timer must include any expansion, conversion and synchronization. Releasing resources immediately after requesting renderer stop is unsafe as a general assumption: the 2027 <code>Renderer::StopRendering</code> contract is main-thread, asynchronous and nonblocking. <a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_renderer.html" title="Autodesk: Renderer">S49</a></p>
+<p><strong>Verification limit:</strong> this pass did not establish current, complete Corona/V-Ray third-party SDK contracts or a tested host/version/mode matrix. Some Chaos documentation pages returned no readable body. The local engineer must obtain the applicable installed SDK/vendor documentation and confirm actual interface consumption. Do not substitute V-Ray AppSDK documentation for the 3ds Max plugin adapter API.</p>
+<h3 id="8-2-case-study-tycache-separates-representations-and-exposes-costs">8.2 Case study: tyCache separates representations—and exposes costs</h3>
+<p>The tyCache manual documents Nitrous GPU instancing without generating/combining per-particle display meshes. A consequence is that mesh modifiers on the tyCache object do not affect that instanced viewport representation. It also warns that particle UVW overrides can force an expanded mesh; ignoring them improves sharing but changes displayed mapping. Its render controls separately describe instances, an <code>I_VRAYGEOMETRY</code> option and pre/post-render refresh. These are documented product behaviors, not evidence of proprietary implementation details or a Cyrus performance multiplier. <a href="https://docs.tyflow.com/tyflow_objects/tyCache/" title="tyFlow: tyCache">S19</a></p>
+<p><strong>Transfer:</strong> use a feature compatibility table rather than forcing every appearance through one path. A fallback that preserves mapping is more honest than silently ignoring it. The tyFlow Display operator’s warning is useful corroboration within the same vendor, not independent confirmation. Autodesk’s limited constant-per-instance UVW data means the broad statement “Nitrous supports no UVW overrides” should not be adopted as a universal SDK fact. <a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/struct_max_s_d_k_1_1_graphics_1_1_viewport_instancing_1_1_instance_data.html" title="Autodesk: InstanceData">S18</a></p>
+<h3 id="8-3-case-study-chaos-scatter-warns-against-simplistic-memory-assumptions">8.3 Case study: Chaos Scatter warns against simplistic memory assumptions</h3>
+<p>Chaos’s November 2025 troubleshooting guidance explains that instances still have overhead, that retaining LOD variants can increase memory, and that grass clumps reduce instance count compared with individual blades. Its camera-clipping warning includes missing reflections or shadows. Those are useful workload and correctness lessons. Its examples do not establish like-for-like performance because representations/populations change. <a href="https://support.chaos.com/hc/en-us/articles/4953457092625-How-to-use-Chaos-Scatter-with-Corona-for-3ds-Max-Performance-and-Troubleshooting" title="Chaos: Scatter performance and troubleshooting">S21</a></p>
+<p><strong>Transfer:</strong> log unique geometry, instance records and all resident variants separately. Asset-design changes may be worthwhile artist options, but must not be presented as an implementation speedup with unchanged content. A lower viewport triangle count can coexist with higher total RAM.</p>
+<h3 id="8-4-case-study-autodesk-s-usd-plugin-demonstrates-dependency-discipline">8.4 Case study: Autodesk’s USD plugin demonstrates dependency discipline</h3>
+<p>Autodesk’s public build document maps Max 2026 to USD 24.11 and Max 2027 to USD 25.11, with <code>tbb2020.3</code> in both corresponding dependency columns. It warns about stale library locations in <code>PATH</code>/<code>PYTHONPATH</code>. The moving branch is not a pinned source snapshot, but the mechanism is clear: dependencies are selected deliberately for an integration, not casually replaced with the latest runtime. <a href="https://github.com/Autodesk/3dsmax-usd/blob/dev/doc/build.md" title="Autodesk 3dsmax-usd: build documentation">S17</a></p>
+<p><strong>Transfer:</strong> enumerate what Max and installed renderers actually load before adding a scheduler. This does not mean Cyrus should link the USD plugin’s TBB or copy its entire dependency stack. It means a new runtime needs a coexistence and packaging case.</p>
+<h2 id="9-gpu-computation-conditional-defer-with-a-cheap-way-to-disprove-it">9. GPU computation: conditional defer, with a cheap way to disprove it</h2>
+<h3 id="9-1-which-kernels-are-plausible">9.1 Which kernels are plausible?</h3>
+<p><strong>Engineering assessment.</strong> Independent transform construction and simple mask arithmetic are regular but may be too cheap per byte to justify offload. Large batches of read-only ray/closest-point queries may have more work per result, but traversal divergence, data layout and acceleration-structure updates matter. A dense sampled distance field can make queries regular but adds resolution error and memory. Order-dependent spacing, sequential acceptance and iterative relaxation are poor first candidates when exact replay is required. Host node evaluation and arbitrary material/controller sampling are not made GPU-ready merely by choosing a compute API.</p>
+<p>Rank candidates by measured share of the full artist operation, input/output bytes, update rate, numerical requirements and how long prepared data can remain valid. A CPU bottleneck does not automatically imply a GPU-suitable bottleneck.</p>
+<h3 id="9-2-transfer-inclusive-model">9.2 Transfer-inclusive model</h3>
+<p>For a one-off operation with no demonstrated overlap, model:</p>
+<p><code>T_offload = extraction + marshalling + allocation + upload + dispatch + kernel + synchronization + readback + publication</code>.</p>
+<p>Compare that with the <strong>best verified CPU baseline for the same work</strong>, including its preparation and publication. Persistent device data can amortize allocation/upload across repeated operations only when it is valid across those operations. For repeated valid input, divide one-time costs over the measured reuse count; when masks/topology change, charge the rebuild again.</p>
+<p>If the CPU costs <code>A_cpu + N×c</code> and the offload path costs <code>A_gpu + N×g</code>, a large-population GPU crossover from a CPU advantage requires <code>c &gt; g</code>; then the simplified threshold is <code>(A_gpu−A_cpu)/(c−g)</code>. If the fixed GPU cost is already lower, it may win from the start; if its per-item cost is higher, it can instead lose as population grows. Real geometry queries need not be linear, so fit only within a regime the observations support. Here <code>A</code>, <code>c</code>, <code>g</code> and the useful population range are <strong>unknown</strong>. There is no evidence-based universal “GPU wins above X points” number.</p>
+<p>NVIDIA’s guide emphasizes minimizing host/device transfers, limited pinned-memory use and the conditions for overlap. Copy and compute times may overlap only when the actual dependencies, queues and memory support it; do not subtract both from a one-off latency total because the API is asynchronous. GPU event timing measures a device interval, not extraction or host publication. <a href="https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html" title="NVIDIA CUDA C++ Best Practices Guide">S38</a></p>
+<p>A theoretical bus bandwidth is not achieved transfer bandwidth. Measure the actual payload, pinned/pageable choice, copy direction and contention on the qualification machine. Record CPU staging memory, device allocations and transient duplication. Shared integrated memory is not proof that synchronization or copies disappear.</p>
+<h3 id="9-3-backend-shortlist-not-a-multi-backend-proposal">9.3 Backend shortlist—not a multi-backend proposal</h3>
+<table>
+<thead>
+<tr>
+<th>Backend</th>
+<th>When it deserves an experiment</th>
+<th>Main reason not to adopt now</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CPU serial / bounded CPU</td>
+<td>Default for all qualified machines; minimal data movement</td>
+<td>Can still lose on a demonstrated large numeric workload; measure rather than assume.</td>
+</tr>
+<tr>
+<td>CUDA</td>
+<td>Optional NVIDIA-specific experiment when the workload and user fleet justify it; Windows guide 13.4 lists supported MSVC families</td>
+<td>NVIDIA-only deployment, driver/runtime/compiler qualification, GPU contention and transfer costs. No reason to require it for a CPU fallback user. <a href="https://docs.nvidia.com/cuda/cuda-installation-guide-microsoft-windows/index.html" title="NVIDIA CUDA Installation Guide for Windows">S39</a></td>
+</tr>
+<tr>
+<td>DirectCompute / D3D11 compute</td>
+<td>A plausible Windows graphics-oriented experiment with suitable feature support and owned resources</td>
+<td>Double precision is capability-dependent; an available compute API does not expose Nitrous-owned buffers/device. <a href="https://learn.microsoft.com/en-us/windows/win32/direct3d11/direct3d-11-advanced-stages-compute-shader" title="Microsoft: Compute Shader Overview">S41</a></td>
+</tr>
+<tr>
+<td>OpenCL</td>
+<td>A cross-vendor experiment only after enumerating actual target devices, drivers and needed features</td>
+<td>Optional features and implementation/compiler variability; a version string is insufficient. The retrieved unified spec is v3.1.2, not the old 3.0 URL label. <a href="https://registry.khronos.org/OpenCL/specs/unified/html/OpenCL_API.html" title="Khronos OpenCL Specification">S40</a></td>
+</tr>
+<tr>
+<td>SYCL</td>
+<td>Reconsider only when a chosen, supported Windows toolchain/backend solves a concrete maintenance need</td>
+<td>Adds compiler/backend/deployment questions before a workload is proven; specification portability is not deployment qualification. <a href="https://registry.khronos.org/SYCL/specs/sycl-2020/html/sycl-2020.html" title="Khronos SYCL specification">S42</a></td>
+</tr>
+</tbody>
+</table>
+<p>For AMD and Intel machines, the initial supported calculation path should remain CPU unless a specific compute implementation is qualified. AMD’s retrieved Windows HIP SDK page is explicitly marked <strong>legacy</strong>, despite its <code>latest</code> URL and July 2026 date, and distinguishes support by GPU. It is not evidence that every Radeon supports the desired OpenCL/HIP configuration. Current cross-vendor driver/runtime coverage remains a named verification gap. <a href="https://rocm.docs.amd.com/projects/install-on-windows/en/latest/reference/system-requirements.html" title="AMD HIP SDK for Windows system requirements">S48</a></p>
+<p>Khronos documents Direct3D sharing mechanisms, but this establishes an API mechanism—not Max permission, compatible buffer ownership or lifetime. Zero-copy Nitrous/renderer interoperability remains <strong>unverified</strong>. A standalone compute device with ordinary copies is the honest initial cost baseline. <a href="https://registry.khronos.org/OpenCL/specs/unified/html/OpenCL_API.html" title="Khronos OpenCL Specification">S40</a></p>
+<h3 id="9-4-explicit-decision">9.4 Explicit decision</h3>
+<p><strong>Defer a production GPU-compute subsystem.</strong> Run E03 only after E01 identifies a sufficiently large eligible numeric component. First time extraction, allocation/reuse, transfers and publication with a copy-only payload of the real size. If unavoidable overhead already consumes the maximum allowable offload budget, reject that design before writing the kernel. This rejects the tested transfer/lifetime architecture, not every conceivable persistent-GPU redesign.</p>
+<p>The recommendation reverses if a small prototype meets the full-operation threshold under real update rates, 32 GB constraints, numerical parity and viewport/renderer contention, while retaining a usable CPU path. A fast kernel that stalls navigation, changes placements or doubles peak memory without budget is a failed proposal.</p>
+<h2 id="10-ranked-shortlist-and-explicit-stop-conditions">10. Ranked shortlist and explicit stop conditions</h2>
+<p>These are <strong>proposed decision gates</strong>, not measured facts. The full decision fields—including use case, evidence, simplest alternative, failure modes, experiment, confidence and reversal—are in <code>decision_experiment_ledger.csv</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Rank / ID</th>
+<th>Status</th>
+<th>Recommendation</th>
+<th>Main falsifier</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 / D01</td>
+<td>Broadly applicable now</td>
+<td>Instrument whole operations; identify redundant work; coalesce requests while preserving dirty state and Manual semantics</td>
+<td>No meaningful repeated work, or any lost update/stale display. Keep measurement even if optimization is rejected.</td>
+</tr>
+<tr>
+<td>2 / D02</td>
+<td>Investigate after local profiling</td>
+<td>Prepare/reuse predicates or add a small exact spatial accelerator around the existing serial algorithm</td>
+<td>Setup/invalidation cost, memory or small-scene regressions exceed savings; ordered output differs.</td>
+</tr>
+<tr>
+<td>3 / D03</td>
+<td>Investigate after local profiling</td>
+<td>Use bounded, joined numeric ranges only where independence and workload size are established</td>
+<td>Snapshot/start/join/merge cost dominates; host access leaks into workers; contention worsens artist latency.</td>
+</tr>
+<tr>
+<td>4 / D04</td>
+<td>Investigate after local profiling</td>
+<td>Compare retained expanded geometry and retained instancing with the best current CPU display path</td>
+<td>No submission/upload bottleneck; sharing too low; update recreation or feature incompatibility defeats gains.</td>
+</tr>
+<tr>
+<td>5 / D05</td>
+<td>Defer</td>
+<td>Add a persistent executor or asynchronous editing only when startup or long blocking work remains measurable after simpler changes</td>
+<td>Coalescing/serial optimization meets the need; snapshot/publication still dominates; lifecycle complexity is disproportionate.</td>
+</tr>
+<tr>
+<td>6 / D06</td>
+<td>Defer</td>
+<td>GPU compute, one backend only, only after E03 clears transfer and whole-operation gates</td>
+<td>Transfer-inclusive benefit or fidelity fails; unsupported deployment or unacceptable contention.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Do not build yet:</strong> a generic game-engine job system; multiple GPU backends; a universal geometry cache; a wholesale MAXScript/native rewrite; a GPU distance-field approximation presented as exact queries; a new random generator presented as seeded parity; an always-all-cores policy; and a dependency bundle justified only by popularity.</p>
+<p><strong>Reject as engineering claims:</strong> arbitrary Max scene evaluation on workers; GPU kernel timing presented as edit latency; fewer displayed objects presented as an equal-workload speedup; one high-memory workstation presented as 32 GB qualification; and broad host/renderer support asserted from a compiling DLL.</p>
+<h3 id="proposed-performance-gates">Proposed performance gates</h3>
+<p>Choose product budgets with the owner before measuring. For an initial decision, the following explicit defaults make the experiments falsifiable:</p>
+<ul>
+<li>For a low-complexity CPU change, seek at least <strong>15% lower median complete-operation latency</strong>, with a paired uncertainty interval excluding no improvement. A navigation architecture should instead target at least <strong>20% lower p95 frame interval</strong>, or meet an agreed absolute frame budget. The reciprocal <strong>16.67 ms corresponds to 60 FPS</strong>, but this is an example target, not a universal requirement or a guarantee of responsiveness.</li>
+<li>Flag any representative small-workload median or p95 regression exceeding <strong>the larger of 5% or 1 ms</strong>. Such a guard deliberately tolerates timer-scale changes but prevents large-case averages from hiding noticeable regressions. Tighten it for workflows already close to a strict budget.</li>
+<li>For a new GPU subsystem, require <strong>at least 25% lower median end-to-end latency</strong> in the intended eligible workload and a paired uncertainty interval excluding no improvement, with no unacceptable tail/interaction regression. This higher gate reflects larger support cost, not a law of GPU performance.</li>
+</ul>
+<p>Any correctness mismatch, unauthorized host-thread call, use-after-free, unbounded growth, corrupt scene or broken fallback is a stop condition regardless of speed. These gates do not mean a 14% simple win must always be discarded: a changed acceptance decision must be written down before selecting favorable measurements. If confidence intervals straddle the practical margin, report “inconclusive,” not “faster.”</p>
+<h2 id="11-the-three-most-informative-local-experiments">11. The three most informative local experiments</h2>
+<h3 id="e01-where-is-the-real-edit-rebuild-cost-and-does-cpu-parallelism-deserve-expansion">E01 — Where is the real edit/rebuild cost, and does CPU parallelism deserve expansion?</h3>
+<p><strong>Decision distinguished:</strong> redundant host work versus numeric algorithm waste versus genuinely parallel compute. This is the first experiment; it can reject both a thread-pool proposal and GPU work without implementing either.</p>
+<p><strong>Input.</strong> Use one representative artist scene plus controlled fixtures: few simple sources; many repeated detailed sources; many unique sources/controllers; a complex closed boundary with holes; and a sparse density mask. Sweep from small to the largest memory-safe case. Candidate counts such as 1k/10k/100k/1m are possible pilot points, not mandatory product limits; select counts that bracket the observed crossover and record both generated and displayed populations.</p>
+<p><strong>Baseline.</strong> A verified current production/candidate build with exact loaded DLL/script hashes. Capture no-edit navigation, a representative mask/source/parameter edit, explicit rebuild, a short time sequence and render preparation separately. Record the seed, scene hash, unit scale, time and camera. Preserve the actual legacy/random contract.</p>
+<p><strong>Arms.</strong> First instrumentation only. Then choose <strong>one</strong> dominant numeric stage and compare existing serial code with either prepared/indexed serial code or bounded synchronous ranges. When both are plausible, compare optimized serial against the parallel version of that same optimized work. Do not compare an optimized threaded algorithm against an unnecessarily wasteful serial straw man. A safe no-op event-coalescing experiment can instead be the chosen change if duplicate evaluation dominates.</p>
+<p><strong>Controls.</strong> Identical output populations/representation; cold and warm regimes; explicit participant count; renderer idle versus controlled contention; matching caches; fixed instrumentation; randomized or reversed paired order. Disable adaptive degradation for the controlled viewport comparison, then test the real artist setting separately. Do not clear every cache between “warm” trials.</p>
+<p><strong>Measurements.</strong> Full-operation wall time, stage spans, per-thread CPU time, ready/wait intervals, call counts, proposals/acceptances, queries/primitive tests, allocations/bytes and peak private commit. Separately record first visible generation and final completion. Test scene reset and an exception/cancellation injection before accepting any worker change.</p>
+<p><strong>Correctness oracle.</strong> Exact ordered IDs, source assignments, counts and flags; existing numeric equivalence contract; brute-force checks on small adversarial geometry; no stale generation publication. A mismatch emits the first divergent row and its inputs, not only “hash failed.”</p>
+<p><strong>Raw output.</strong> One manifest; event timeline; one trial summary row per operation; canonical baseline/candidate output dumps or hashes plus first-difference records; profiler trace filenames; memory snapshots. See <code>trace_schema.json</code> for proposed fields.</p>
+<p><strong>Gate / stop.</strong> Apply D01/D02/D03 thresholds to the whole operation. Stop expanding concurrency when additional participants fail to improve the paired result or worsen tail/renderer contention. If extraction/publication dominates, do not conclude that a faster numeric framework will fix the edit. A flat or tiny numeric share also stops E03.</p>
+<h3 id="e02-is-the-next-viewport-gain-batching-retained-resources-instancing-or-simply-less-work">E02 — Is the next viewport gain batching, retained resources, instancing—or simply less work?</h3>
+<p><strong>Decision distinguished:</strong> keep the current CPU path versus retained expanded geometry versus shared-source instancing. This is a controlled display adapter experiment, not a production rewrite.</p>
+<p><strong>Input.</strong> Feed the same immutable placement/source dataset into every arm. Include tiny proxies, one heavily repeated detailed mesh, a many-unique-source case, and material/color/UVW variation. Include static navigation and separate update cases: transform-only changes; count changes; source deformation; source topology/mapping changes. Test one and four viewports and Standard/High Quality styles. Begin with modest scenes that make correctness inspectable, then scale to the measured stress range.</p>
+<p><strong>Baseline and arms.</strong> A: best existing correct path, including its existing preparation/batching. B: retained expanded geometry. C: retained instancing for compatible groups with an explicit fallback. If A lacks straightforward CPU batching and that dominates, try that simpler control before B/C. B versus C separates residency from source sharing. Do not silently drop unsupported overrides in C.</p>
+<p><strong>Controls.</strong> Identical placements, displayed count, source topology, shading/materials, colors, viewport resolution, camera path and adaptive-degradation state. Record actual draw groups and uploaded bytes rather than assuming one draw per source. Disable random automatic display-percentage changes. Use fixed renderer-idle conditions first, then controlled interactive-render contention.</p>
+<p><strong>Measurements.</strong> CPU callback/preparation/submission spans; GPU/present timing where tooling is valid; actual displayed-frame intervals; cold creation and warm navigation; transform-update/count-recreation cost; hit-test latency; CPU private commit and device/staging allocation peaks. A faster synchronous redraw return alone is not the success metric. Isolate unrelated UI/renderer swapchains in presentation traces.</p>
+<p><strong>Correctness oracle.</strong> Compare prepared geometry/transforms/IDs and required attributes, conservative bounds and picking results. Use fixed-view image differences plus visual review for normal/material/UV/color fidelity. Pixel differences can arise between legitimate raster paths; they require explanation, not automatic dismissal. A population or appearance change invalidates an equal-workload claim. Run allocation failure, scene reset, node deletion and device/resource re-creation tests while old data could still be in use.</p>
+<p><strong>Raw output.</strong> Manifest; per-arm source/instance/triangle/group counts; camera sequence; trace and presentation CSV; per-update spans; images/difference images; picking assertions; peak/live resource log and disposal events.</p>
+<p><strong>Gate / stop.</strong> Require the navigation target without unacceptable edit/recreation regressions. Reject C for incompatible groups rather than weakening appearance. If B performs essentially as well as C within uncertainty and is materially simpler, keep B. If A already meets the target or both alternatives lose in realistic updates, keep A. Instancing is not compulsory because the API exists.</p>
+<h3 id="e03-can-transfer-inclusive-gpu-offload-beat-a-good-cpu-implementation">E03 — Can transfer-inclusive GPU offload beat a good CPU implementation?</h3>
+<p><strong>Entry gate.</strong> E01 must identify a large independent numeric workload and enough potential whole-operation benefit. No eligible workload is a valid outcome: close D06 as deferred and do not write GPU code.</p>
+<p><strong>Decision distinguished:</strong> CPU retention versus a narrowly scoped GPU kernel, and one-shot data movement versus justified persistent data. This is not a requirement to implement every backend.</p>
+<p><strong>Input.</strong> Export a real owned snapshot from that hot stage, including input/output bytes and update frequency. Include small/large sets and difficult geometry/branching, not only a regular synthetic grid. Preserve precise flags, seeds and tolerance rules. The copied payload must represent the result actually needed by Max or the renderer.</p>
+<p><strong>Baseline.</strong> Best verified serial CPU and, where it wins, bounded CPU. Include the same extraction/publication costs in each full-operation total. Use the same accepted/queried population.</p>
+<p><strong>Phase 1: copy-only rejector.</strong> For one justified backend, allocate or reuse buffers under the intended lifetime; upload actual input-size data; execute a minimal dispatch; transfer the expected result-size data back; perform the real publication scaffolding. Record extraction, staging, each transfer, synchronization and total wall time. This is a lower-bound screen, not a simulation of a production kernel. Use a disposable fixture and known-valid placeholder output; never publish uncomputed values into an artist scene. Model persistent input only when the measured edit pattern permits it.</p>
+<p><strong>Phase 2: kernel, only after Phase 1 passes.</strong> Implement the single eligible numeric operation. Measure both device interval and end-to-end operation, with actual acceleration-structure preparation. Validate the result before publication. No renderer/Nitrous zero-copy credit is permitted without a documented ownership-compatible integration and a measured working prototype.</p>
+<p><strong>Controls.</strong> Warm/cold resources; ordinary artist edit rates; GPU idle, viewport-active and renderer-contention states; actual 32 GB system; device memory pressure; supported and unsupported-device CPU fallback. For a CUDA proof, NVIDIA-only scope is explicit. Other vendors need a later separate qualification, not an untested promise.</p>
+<p><strong>Correctness oracle.</strong> Ordered discrete decisions, source identity and declared numeric parity. Include near-boundary/radius cases, mirrored/nonuniform transforms and degenerate geometry. Record ambiguous-case CPU rechecks separately; frequent rechecks can erase the benefit. Fault/cancellation tests must leave the prior valid result or a clear error, not partial output.</p>
+<p><strong>Raw output.</strong> CPU baseline samples, bytes per stage, device/driver/compiler identity, allocations, copy/kernel/sync/publication timestamps, result differences, fallback outcomes, visible-latency/presentation trace during contention, peak CPU/VRAM memory.</p>
+<p><strong>Gate / stop.</strong> With target speedup <code>R</code>, reject a one-shot design when unavoidable offload overhead already exceeds <code>T_CPU/R</code> for that same operation, even with an ideal zero-time kernel. The proposed 25% latency reduction corresponds to <code>R = 4/3</code>, so that budget is <code>0.75 × T_CPU</code>, not <code>T_CPU/1.25</code>. After Phase 2, use the higher D06 whole-operation threshold. Stop at the first failed correctness/deployment/lifetime gate. A kernel-only speedup is insufficient. A copy-only failure does not authorize an unplanned multi-backend/persistent-data rewrite to rescue the proposal.</p>
+<h3 id="shared-trial-protocol">Shared trial protocol</h3>
+<p>Run a short pilot to estimate variability and timer overhead. Choose repetitions based on the practical effect and uncertainty required, not an arbitrary “100 runs.” Use paired, reversed or randomized order and retain every raw sample, including outliers, failures and canceled trials. Report cold and warm results separately. For long gesture traces, use block/trial-level intervals rather than treating correlated frames as independent. Publish per-scene results; a pooled average must not hide small-scene regressions. When instrumentation cannot reliably identify a completed frame, label the timing boundary honestly and narrow the claim.</p>
+<h2 id="12-staged-production-qualification">12. Staged production qualification</h2>
+<p>All rows are proposed tests. They have <strong>not</strong> been executed in this session. <code>qualification_matrix.csv</code> gives stable Q IDs and failure criteria.</p>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Required coverage</th>
+<th>Evidence needed to advance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Q0 — Identity and build</td>
+<td>Exact source/scene/package hashes; loaded native and generated-script identities; SDK/toolset/CRT/dependency identities; clean install and upgrade</td>
+<td>Proof of what ran. A package on disk is not proof of what Max loaded.</td>
+</tr>
+<tr>
+<td>Q1 — Standalone numerical correctness</td>
+<td>Serial/parallel parity; empty/single/large inputs; holes; degenerate/near-boundary/extreme-coordinate geometry; ties; mirrored/nonuniform/singular transforms</td>
+<td>Canonical outputs and independent small-case oracles; explicit accepted tolerance. Native-test success is not host qualification.</td>
+</tr>
+<tr>
+<td>Q2 — Basic target-host integration</td>
+<td>Actual Max 2026 and 2027 runs; supported display styles; selection/bounds; Manual/live modes; source/mask changes; animation</td>
+<td>No lost invalidation or incorrect publication; correct supported feature matrix and error reporting.</td>
+</tr>
+<tr>
+<td>Q3 — Lifetime and persistence</td>
+<td>Save/load/reset/merge/clone; Undo/Redo; node/source deletion; plugin/window teardown; interrupted work and repeated generations</td>
+<td>No stale result, dangling references, corrupt persistence or work surviving unload.</td>
+</tr>
+<tr>
+<td>Q4 — Memory and adverse conditions</td>
+<td>Physical 32 GB workstation; long editing sessions; many unique sources/controllers; allocation-cap failures; device/resource failure and fallback</td>
+<td>Peak total process commit, live/high-water plugin memory and VRAM logged; bounded growth and responsive recovery.</td>
+</tr>
+<tr>
+<td>Q5 — Renderer coexistence</td>
+<td>Each explicitly supported Corona/V-Ray build and mode; final/interactive updates; start/stop/restart; motion blur and count changes; material/UV overrides; offscreen reflection/shadow fixture</td>
+<td>Correct adapter consumption, ownership/lifetime and appearance; no viewport-state contamination or unacceptable contention.</td>
+</tr>
+<tr>
+<td>Q6 — Performance release gate</td>
+<td>Small/large, proxy/full mesh/points, static/animated, warm/cold, idle/contended; paired trials and version-verified baselines</td>
+<td>Declared budgets met, no concealed small-case regressions, raw data and uncertainty retained.</td>
+</tr>
+</tbody>
+</table>
+<p>32 GB qualification concerns the whole working process and OS pressure, not merely a plugin cache counter. Record physical RAM and pagefile policy, process private commit/working set, hard-fault or paging evidence, renderer consumption and available memory. A 96 GB machine with a nominal cache cap does not recreate all pressure effects of the target workstation. Do not force dangerous system-wide exhaustion; inject recoverable allocation failures and scale workloads within a predeclared safety budget.</p>
+<p>Peak memory needs more than a final snapshot. Count old/new generations, scratch arrays, host meshes, GPU staging, source variants, render-time conversion and retained device buffers. Allocation fallback that draws the same population more slowly may be correct; it must be visible in diagnostics so its latency is not mistaken for an unexplained regression. A fallback that silently drops instances requires an explicit artist-facing quality policy.</p>
+<h3 id="packaging-and-dependencies">Packaging and dependencies</h3>
+<p>Keep SDK-facing types and allocation ownership within a documented ABI boundary. Verify allocator/CRT pairings; do not free memory through a different module’s allocator unless that interface explicitly permits it. Record import dependencies and loaded paths. Never replace Max’s or a renderer’s runtime DLLs globally to satisfy the plugin.</p>
+<p>Adding oneTBB is optional. Its opened license is Apache 2.0; the precise distribution still requires bundled license/notice and component review. The CUDA agreement limits redistribution to specified portions under its terms; it is not permission to ship the entire SDK. These checks belong to release engineering before dependency adoption, alongside driver and compiler support. <a href="https://docs.nvidia.com/cuda/eula/index.html" title="NVIDIA CUDA EULA">S46</a></p>
+<p>Prefer an existing safe small-range implementation when it meets the need. A persistent scheduler needs an identified maintainer and coexistence tests, not just a package-manager entry. A new geometry library needs the same evaluation; the GEOS/nanoflann examples here establish mechanisms, not a decision to bundle them.</p>
+<h3 id="what-a-beta-can-honestly-claim">What a beta can honestly claim</h3>
+<p>A beta may state the exact hosts, builds, renderer modes, hardware classes and workflows actually tested, together with known limitations. It may report a controlled per-scene measured improvement with its populations and timing boundaries. It may not claim universal real-time behavior, general cross-vendor GPU support, Max 2026 runtime compatibility from a 2027 run, renderer support from viewport images, bitwise cross-device determinism without tests, or crash-free production reliability from short synthetic demos.</p>
+<h2 id="13-focused-codex-handoff-and-unresolved-questions">13. Focused Codex handoff and unresolved questions</h2>
+<p>The separate <code>Codex_Handoff.md</code> is ready to bring into the local project. It instructs the engineer to find real structures rather than inventing project paths or assuming this report describes the implementation.</p>
+<p><strong>Inspect first:</strong> all event/callback entry points and their invalidation chains; script/native conversions; source/mesh ownership; prepared query structures and their keys; RNG/acceptance ordering; parallel regions and error paths; display preparation/submission; per-view caches and picking; renderer adapters; generation/GC/resource teardown; installer/build identities and existing test evidence.</p>
+<p><strong>Do not adopt without evidence:</strong> a thread-count threshold, a spatial-index crossover, the assumption that current display expands geometry, the assumption that a native display adapter is already available, a renderer-interface ownership rule, a zero-copy GPU integration, or a changed floating/RNG contract. Reconcile each conclusion against current code and measured runs. Agreement between external and local reports is not proof.</p>
+<h3 id="exact-unresolved-research-list">Exact unresolved-research list</h3>
+<p><strong>U01 — SDK build matrix:</strong> obtain authoritative, accessible 2026/2027 SDK requirements and installed property/header evidence; resolve the blog conflicts. Precise toolset/CRT/Qt/.NET support remains provisional.</p>
+<p><strong>U02 — 2027 general thread guide:</strong> the corresponding guide URL was inaccessible. Verify general restrictions against installed 2027 documentation and confirm every proposed host call’s specific thread/lifetime contract; current report has narrower 2027 API evidence.</p>
+<p><strong>U03 — Renderer contracts:</strong> obtain the actual supported Corona/V-Ray Max integration documentation/headers and vendor build compatibility. Verify final versus interactive consumption, transforms across shutter times, source ownership and render-stop completion. Opened Autodesk/tyFlow documentation does not settle those vendor-specific contracts.</p>
+<p><strong>U04 — Device/resource integration:</strong> prove how the chosen native hybrid object supplies retained items, participates in hit testing, and handles device/resource reset. No Max process was available to run the prototype.</p>
+<p><strong>U05 — GPU interoperability and fleet coverage:</strong> verify any access to Nitrous/renderer resources; enumerate actual GPU/runtime/compiler capabilities on target NVIDIA/AMD/Intel machines. The AMD <code>latest</code> page opened here is explicitly legacy. No universal non-NVIDIA compute support claim is supported.</p>
+<p><strong>U06 — Project contracts and costs:</strong> establish current source-level behavior, eligible hot regions, real population distributions, warm/cold update rates, raw performance data and peak memory. Supplied context observations are not a substitute for this verification.</p>
+<p><strong>U07 — Reference pinning:</strong> pin public-project revisions and preserve exact adopted SDK/API/license documents before implementation. Several live documentation titles identify versions but do not provide an explicit publication date; these are recorded as unknown rather than inferred from crawl time.</p>
+<h2 id="14-final-recommendation-and-audit">14. Final recommendation and audit</h2>
+<p>The best next action is <strong>E01</strong>, followed by <strong>one small implementation selected by its result</strong>. E02 is the next architectural discriminator when viewport preparation/submission or expanded geometry is actually expensive. E03 remains gated; deciding not to add GPU computation is a successful outcome.</p>
+<p>The second-pass audit narrowed several tempting conclusions: tyFlow’s UVW limitation is not a universal ban on all SDK per-instance UV data; instancing does not establish final-render compatibility; a new IDE does not settle the SDK toolchain; an OpenCL URL labelled 3.0 did not contain the retrieved spec version; an AMD URL labelled <code>latest</code> was marked legacy; and a copy-only model receives no unverified zero-copy credit. The audit also retained CPU batching as a legitimate endpoint and kept every numerical/quality change separate from strict-equivalence optimization.</p>
+<p>This was a researcher’s self-audit, <strong>not independent verification</strong>. The deliverable is a decision and validation package—not a finding that the current plugin has any particular bottleneck, and not a certificate of production readiness.</p>
+<hr />
+<h2 id="primary-source-reference-index">Primary-source reference index</h2>
+<p>The following links resolve the <code>[Sxx]</code> references. Exact supporting sections and all qualification metadata are in <code>source_ledger.csv</code> and <code>claim_source_ledger.csv</code>.</p>
+<ul>
+<li><strong><a href="https://help.autodesk.com/cloudhelp/2026/ENU/MAXDEV-Developer/files/best_practices/thread_safety.html" title="Autodesk: Thread Safety">S01</a></strong> — Autodesk: Thread Safety. 3ds Max SDK 2026. Accessed 2026-10-01.</li>
+<li><strong><a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/namespace_max_s_d_k_1_1_threading_debugging_tools.html" title="Autodesk: ThreadingDebuggingTools">S02</a></strong> — Autodesk: ThreadingDebuggingTools. 3ds Max SDK 2027. Accessed 2026-10-01.</li>
+<li><strong><a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/maxscript_8h.html" title="Autodesk: maxscript.h">S03</a></strong> — Autodesk: maxscript.h. 3ds Max SDK 2027. Accessed 2026-10-01.</li>
+<li><strong><a href="https://help.autodesk.com/cloudhelp/2026/ENU/MAXDEV-Developer/files/3ds_max_sdk_features/viewports_and_graphics_windows/nitrous/about_renderitem.html" title="Autodesk: Nitrous Display Data / Render Items">S04</a></strong> — Autodesk: Nitrous Display Data / Render Items. 3ds Max SDK 2026. Accessed 2026-10-01.</li>
+<li><strong><a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_max_s_d_k_1_1_graphics_1_1_i_mesh_display2.html" title="Autodesk: IMeshDisplay2">S05</a></strong> — Autodesk: IMeshDisplay2. 3ds Max SDK 2027. Accessed 2026-10-01.</li>
+<li><strong><a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_max_s_d_k_1_1_graphics_1_1_i_object_display2.html" title="Autodesk: IObjectDisplay2">S06</a></strong> — Autodesk: IObjectDisplay2. 3ds Max SDK 2027. Accessed 2026-10-01.</li>
+<li><strong><a href="https://help.autodesk.com/cloudhelp/2026/ENU/MAXDEV-CPP-API-REF/namespace_max_s_d_k_1_1_graphics_1_1_viewport_instancing.html" title="Autodesk: ViewportInstancing (2026)">S07</a></strong> — Autodesk: ViewportInstancing (2026). 3ds Max SDK 2026. Accessed 2026-10-01.</li>
+<li><strong><a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/namespace_max_s_d_k_1_1_graphics_1_1_viewport_instancing.html" title="Autodesk: ViewportInstancing (2027)">S08</a></strong> — Autodesk: ViewportInstancing (2027). 3ds Max SDK 2027. Accessed 2026-10-01.</li>
+<li><strong><a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_max_s_d_k_1_1_graphics_1_1_viewport_instancing_1_1_instance_display_geometry.html" title="Autodesk: InstanceDisplayGeometry">S09</a></strong> — Autodesk: InstanceDisplayGeometry. 3ds Max SDK 2027. Accessed 2026-10-01.</li>
+<li><strong><a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/struct_max_s_d_k_1_1_graphics_1_1_viewport_instancing_1_1_instance_data.html" title="Autodesk: InstanceData">S10</a></strong> — Autodesk: InstanceData. 3ds Max SDK 2027. Accessed 2026-10-01.</li>
+<li><strong><a href="https://help.autodesk.com/cloudhelp/2026/ENU/MAXDEV-CPP-API-REF/namespace_max_s_d_k_1_1_render_time_instancing.html" title="Autodesk: RenderTimeInstancing (2026)">S11</a></strong> — Autodesk: RenderTimeInstancing (2026). 3ds Max SDK 2026. Accessed 2026-10-01.</li>
+<li><strong><a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/namespace_max_s_d_k_1_1_render_time_instancing.html" title="Autodesk: RenderTimeInstancing (2027)">S12</a></strong> — Autodesk: RenderTimeInstancing (2027). 3ds Max SDK 2027. Accessed 2026-10-01.</li>
+<li><strong><a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/group___version_macros.html" title="Autodesk: Version Macros">S13</a></strong> — Autodesk: Version Macros. 3ds Max SDK 2027, final API number 70. Accessed 2026-10-01.</li>
+<li><strong><a href="https://help.autodesk.com/view/ACADWEB/ENU/?caas=caas/sfdcarticles/sfdcarticles/System-requirements-for-Autodesk-3ds-Max-2027.html" title="Autodesk: System requirements for 3ds Max 2027">S14</a></strong> — Autodesk: System requirements for 3ds Max 2027. 3ds Max 2027. Accessed 2026-10-01.</li>
+<li><strong><a href="https://blog.autodesk.io/setting-up-3ds-max-2027-sdk-development-with-visual-studio-2026/" title="Autodesk Developer Blog: Setting Up 3ds Max 2027 SDK Development with Visual Studio 2026">S15</a></strong> — Autodesk Developer Blog: Setting Up 3ds Max 2027 SDK Development with Visual Studio 2026. 3ds Max 2027; claimed v14.38 / C++20 / Qt 6.8.3. Accessed 2026-10-01.</li>
+<li><strong><a href="https://learn.microsoft.com/en-us/lifecycle/end-of-support/end-of-support-2026" title="Microsoft: Ending Support in 2026">S16</a></strong> — Microsoft: Ending Support in 2026. Microsoft .NET 8 lifecycle. Accessed 2026-10-01.</li>
+<li><strong><a href="https://github.com/Autodesk/3dsmax-usd/blob/dev/doc/build.md" title="Autodesk 3dsmax-usd: build documentation">S17</a></strong> — Autodesk 3dsmax-usd: build documentation. Moving dev branch; table includes Max 2026/2027, tbb2020.3. Accessed 2026-10-01.</li>
+<li><strong><a href="https://docs.tyflow.com/tyflow_operators/particles/display/" title="tyFlow: Display operator">S18</a></strong> — tyFlow: Display operator. Unversioned live product documentation. Accessed 2026-10-01.</li>
+<li><strong><a href="https://docs.tyflow.com/tyflow_objects/tyCache/" title="tyFlow: tyCache">S19</a></strong> — tyFlow: tyCache. Unversioned live product documentation. Accessed 2026-10-01.</li>
+<li><strong><a href="https://docs.tyflow.com/faq/grains/" title="tyFlow: Grains FAQ">S20</a></strong> — tyFlow: Grains FAQ. Unversioned live product documentation. Accessed 2026-10-01.</li>
+<li><strong><a href="https://support.chaos.com/hc/en-us/articles/4953457092625-How-to-use-Chaos-Scatter-with-Corona-for-3ds-Max-Performance-and-Troubleshooting" title="Chaos: Scatter performance and troubleshooting">S21</a></strong> — Chaos: Scatter performance and troubleshooting. Chaos Scatter / Corona for 3ds Max. Accessed 2026-10-01.</li>
+<li><strong><a href="https://www.pbr-book.org/4ed/Sampling_Algorithms/Sampling_1D_Functions" title="PBRT: Sampling 1D Functions">S22</a></strong> — PBRT: Sampling 1D Functions. Physically Based Rendering, fourth edition. Accessed 2026-10-01.</li>
+<li><strong><a href="https://pbr-book.org/4ed/Sampling_Algorithms/The_Alias_Method" title="PBRT: The Alias Method">S23</a></strong> — PBRT: The Alias Method. Physically Based Rendering, fourth edition. Accessed 2026-10-01.</li>
+<li><strong><a href="https://www.pbr-book.org/4ed/Sampling_Algorithms/Sampling_Multidimensional_Functions" title="PBRT: Sampling Multidimensional Functions">S24</a></strong> — PBRT: Sampling Multidimensional Functions. Physically Based Rendering, fourth edition. Accessed 2026-10-01.</li>
+<li><strong><a href="https://www.cs.ubc.ca/~rbridson/docs/bridson-siggraph07-poissondisk.pdf" title="Bridson: Fast Poisson Disk Sampling in Arbitrary Dimensions">S25</a></strong> — Bridson: Fast Poisson Disk Sampling in Arbitrary Dimensions. SIGGRAPH 2007 sketch. Accessed 2026-10-01.</li>
+<li><strong><a href="https://www.cs.cmu.edu/~quake/robust.html" title="Shewchuk: Adaptive Precision Floating-Point Arithmetic and Fast Robust Predicates">S26</a></strong> — Shewchuk: Adaptive Precision Floating-Point Arithmetic and Fast Robust Predicates. Foundational 1996/1997 research and author code page. Accessed 2026-10-01.</li>
+<li><strong><a href="https://www.pbr-book.org/4ed/Primitives_and_Intersection_Acceleration/Bounding_Volume_Hierarchies" title="PBRT: Bounding Volume Hierarchies">S27</a></strong> — PBRT: Bounding Volume Hierarchies. Physically Based Rendering, fourth edition. Accessed 2026-10-01.</li>
+<li><strong><a href="https://libgeos.org/doxygen/classgeos_1_1geom_1_1prep_1_1PreparedPolygon.html" title="GEOS: PreparedPolygon">S28</a></strong> — GEOS: PreparedPolygon. Unversioned live GEOS C++ API. Accessed 2026-10-01.</li>
+<li><strong><a href="https://www.thesalmons.org/john/random123/papers/random123sc11.pdf" title="Salmon et al.: Parallel Random Numbers: As Easy as 1, 2, 3">S29</a></strong> — Salmon et al.: Parallel Random Numbers: As Easy as 1, 2, 3. SC11 Random123 research. Accessed 2026-10-01.</li>
+<li><strong><a href="https://www.pbr-book.org/4ed/Geometry_and_Transformations/Applying_Transformations" title="PBRT: Applying Transformations">S30</a></strong> — PBRT: Applying Transformations. Physically Based Rendering, fourth edition. Accessed 2026-10-01.</li>
+<li><strong><a href="https://github.com/jlblancoc/nanoflann" title="nanoflann: project README">S31</a></strong> — nanoflann: project README. Moving public repository branch; version not pinned. Accessed 2026-10-01.</li>
+<li><strong><a href="https://learn.microsoft.com/en-us/cpp/build/reference/fp-specify-floating-point-behavior?view=msvc-170" title="Microsoft: /fp floating-point behavior">S32</a></strong> — Microsoft: /fp floating-point behavior. MSVC documentation, msvc-170 view. Accessed 2026-10-01.</li>
+<li><strong><a href="https://learn.microsoft.com/en-us/visualstudio/profiling/cpu-usage?view=visualstudio" title="Microsoft: CPU Usage profiler">S33</a></strong> — Microsoft: CPU Usage profiler. Live Visual Studio documentation. Accessed 2026-10-01.</li>
+<li><strong><a href="https://learn.microsoft.com/en-us/windows/win32/direct2d/profiling-directx-applications" title="Microsoft: Profiling DirectX Applications">S34</a></strong> — Microsoft: Profiling DirectX Applications. Windows ETW / DirectX guide. Accessed 2026-10-01.</li>
+<li><strong><a href="https://github.com/GameTechDev/PresentMon/blob/main/README-ConsoleApplication.md" title="PresentMon: console application README">S35</a></strong> — PresentMon: console application README. Moving main branch; installed release must be pinned. Accessed 2026-10-01.</li>
+<li><strong><a href="https://docs.nvidia.com/nsight-graphics/UserGuide/troubleshooting.html" title="NVIDIA Nsight Graphics: Troubleshooting">S36</a></strong> — NVIDIA Nsight Graphics: Troubleshooting. Live Nsight Graphics documentation. Accessed 2026-10-01.</li>
+<li><strong><a href="https://docs.nvidia.com/nsight-graphics/index.html" title="NVIDIA Nsight Graphics: overview">S37</a></strong> — NVIDIA Nsight Graphics: overview. Live Nsight Graphics documentation. Accessed 2026-10-01.</li>
+<li><strong><a href="https://docs.nvidia.com/cuda/cuda-c-best-practices-guide/index.html" title="NVIDIA CUDA C++ Best Practices Guide">S38</a></strong> — NVIDIA CUDA C++ Best Practices Guide. 13.4 as retrieved. Accessed 2026-10-01.</li>
+<li><strong><a href="https://docs.nvidia.com/cuda/cuda-installation-guide-microsoft-windows/index.html" title="NVIDIA CUDA Installation Guide for Windows">S39</a></strong> — NVIDIA CUDA Installation Guide for Windows. 13.4 as retrieved. Accessed 2026-10-01.</li>
+<li><strong><a href="https://registry.khronos.org/OpenCL/specs/unified/html/OpenCL_API.html" title="Khronos OpenCL Specification">S40</a></strong> — Khronos OpenCL Specification. v3.1.2; git 219be24fc8947c68ee45b4d25b55a92b8f799f29. Accessed 2026-10-01.</li>
+<li><strong><a href="https://learn.microsoft.com/en-us/windows/win32/direct3d11/direct3d-11-advanced-stages-compute-shader" title="Microsoft: Compute Shader Overview">S41</a></strong> — Microsoft: Compute Shader Overview. DirectCompute 4.x/5.0; D3D11. Accessed 2026-10-01.</li>
+<li><strong><a href="https://registry.khronos.org/SYCL/specs/sycl-2020/html/sycl-2020.html" title="Khronos SYCL specification">S42</a></strong> — Khronos SYCL specification. SYCL 2020 revision 12 as retrieved. Accessed 2026-10-01.</li>
+<li><strong><a href="https://uxlfoundation.github.io/oneTBB/main/tbb_userguide/Guiding_Task_Scheduler_Execution.html" title="oneTBB: Guiding Task Scheduler Execution">S43</a></strong> — oneTBB: Guiding Task Scheduler Execution. Main documentation labelled 2023.2.0 as retrieved. Accessed 2026-10-01.</li>
+<li><strong><a href="https://uxlfoundation.github.io/oneTBB/main/tbb_userguide/Cancellation_and_Nested_Parallelism.html" title="oneTBB: Cancellation and Nested Parallelism">S44</a></strong> — oneTBB: Cancellation and Nested Parallelism. Main documentation labelled 2023.2.0 as retrieved. Accessed 2026-10-01.</li>
+<li><strong><a href="https://eel.is/c++draft/execpol" title="C++ working draft: execution policies">S45</a></strong> — C++ working draft: execution policies. Live C++ working draft; installed STL must be checked. Accessed 2026-10-01.</li>
+<li><strong><a href="https://github.com/uxlfoundation/oneTBB/blob/master/LICENSE.txt" title="oneTBB license">S46</a></strong> — oneTBB license. Moving master branch license text. Accessed 2026-10-01.</li>
+<li><strong><a href="https://docs.nvidia.com/cuda/eula/index.html" title="NVIDIA CUDA EULA">S47</a></strong> — NVIDIA CUDA EULA. Live CUDA license text. Accessed 2026-10-01.</li>
+<li><strong><a href="https://rocm.docs.amd.com/projects/install-on-windows/en/latest/reference/system-requirements.html" title="AMD HIP SDK for Windows system requirements">S48</a></strong> — AMD HIP SDK for Windows system requirements. Page labelled HIP SDK 7.2.0 and legacy. Accessed 2026-10-01.</li>
+<li><strong><a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_renderer.html" title="Autodesk: Renderer">S49</a></strong> — Autodesk: Renderer. 3ds Max SDK 2027. Accessed 2026-10-01.</li>
+<li><strong><a href="https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_deformer.html" title="Autodesk: Deformer">S50</a></strong> — Autodesk: Deformer. 3ds Max SDK 2027. Accessed 2026-10-01.</li>
+</ul>
+<div class="footer">External research dated 1 October 2026. No private-source inspection or 3ds Max/renderer measurements were performed. Proposed tests and thresholds are not measured results. The companion CSV ledgers preserve source and decision metadata.</div></main></div></body></html>

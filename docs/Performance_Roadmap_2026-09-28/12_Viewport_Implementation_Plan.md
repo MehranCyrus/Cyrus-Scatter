@@ -20,6 +20,8 @@ The native point budget currently allows 1–500,000 points. Geometry accepts up
 
 ## V02 — Geometry draw cost
 
+**Measured priority update, 2026-10-01:** the [saved-scene navigation investigation](../Viewport_Performance_Investigation_2026-10-01.md) found zero redraw-induced rebuilds and 6,284 per-instance triangle batches per callback. A world-space batching prototype retaining the original script plumbing reduced median navigation-step wall time from 90.52 ms to 31.56 ms, while still executing the existing face-shading loop. Prioritize bounded proxy batching, then repeated script work and retained display integration. The shade-cache proposal below remains a supporting experiment. Prototype visual parity and production integration are not yet qualified; do not apply expanded geometry without a memory budget, especially in Mesh mode.
+
 The current draw loop recomputes transformed normals and a fixed-light shading value per face and instance on every redraw, then submits triangles through GraphicsWindow. Measure CPU shading and host submission separately.
 
 First candidate: cache the scalar shading factor per selected instance/face when source geometry or instance transforms change. Colors can be applied separately so selection/solid-color changes do not rebuild geometry. Account for negative and nonuniform scale; a simple normal transform may not reproduce the current cross-product result.

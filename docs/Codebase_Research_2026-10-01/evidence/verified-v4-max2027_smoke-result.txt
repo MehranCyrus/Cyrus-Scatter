@@ -1,0 +1,7 @@
+PASS native loading
+PASS script registration
+PASS scatter repeatability, controller and previews
+PASS CS Edit
+PASS Analyzer
+PASS save/reopen
+SUCCESS

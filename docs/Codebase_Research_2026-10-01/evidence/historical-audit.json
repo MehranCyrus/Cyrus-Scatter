@@ -1,0 +1,913 @@
+{
+  "audited_utc": "2026-10-01T18:09:11.534170+00:00",
+  "scope": "Hash verification and arithmetic reanalysis only; historical performance remains class C",
+  "indexes": [
+    {
+      "folder": "Viewport_Performance_Implementation_2026-10-01",
+      "index_sha256": "56abd9fdc4d6327a0f0cea8dbe1d1223405baf2b6744636709fed820640a9799",
+      "matched": 46,
+      "missing": [],
+      "mismatched": []
+    },
+    {
+      "folder": "Viewport_Performance_Round2_2026-10-01",
+      "index_sha256": "56d6b03669ca5ee15f8285d58b2e21320ecc3107fb165ce06fe1f69a90c7af29",
+      "matched": 73,
+      "missing": [],
+      "mismatched": []
+    }
+  ],
+  "cpu_artifacts": [
+    {
+      "kind": "native_benchmark",
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\cpu-benchmark-v4-final\\results.json",
+      "exists": true,
+      "hash_matches": true
+    },
+    {
+      "kind": "saved_scene_benchmark",
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\scene-benchmark-v4-final\\results.json",
+      "exists": true,
+      "hash_matches": true
+    }
+  ],
+  "scene": {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\Test Scene\\SaveSelect 2.max",
+    "exists": true,
+    "sha256": "8a40f6a1a5c47eacbbee92920e131f4cae04cfb0de6be1991b4719ea2860bd2c",
+    "historical_sha256": "8a40f6a1a5c47eacbbee92920e131f4cae04cfb0de6be1991b4719ea2860bd2c"
+  },
+  "recorded_cpu_output_pairs_equal": true,
+  "recorded_cpu_output_pairs": 60,
+  "viewport": [
+    {
+      "folder": "Viewport_Performance_Implementation_2026-10-01",
+      "sub": "matrix",
+      "frames": 900,
+      "cases": {
+        "legacy_native_061_script": {
+          "n": 180,
+          "wall": {
+            "median": 88.10405,
+            "p95": 139.9739,
+            "mean": 95.31651444444445,
+            "min": 79.0777,
+            "max": 321.8079
+          },
+          "callback": {
+            "median": 68.88415,
+            "p95": 103.14160000000001,
+            "mean": 73.53359055555556,
+            "min": 64.7019,
+            "max": 110.638
+          },
+          "rebuilds": [
+            0,
+            0,
+            0
+          ],
+          "analyzer": [
+            0,
+            0,
+            0
+          ],
+          "pflow": [
+            0,
+            0,
+            0
+          ],
+          "populations": [
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            },
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            },
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            }
+          ],
+          "errors": []
+        },
+        "candidate_realtime": {
+          "n": 180,
+          "wall": {
+            "median": 30.16225,
+            "p95": 49.2762,
+            "mean": 34.03812888888889,
+            "min": 21.646,
+            "max": 84.844
+          },
+          "callback": {
+            "median": 11.343900000000001,
+            "p95": 15.7773,
+            "mean": 11.894813888888889,
+            "min": 10.2336,
+            "max": 21.6072
+          },
+          "rebuilds": [
+            0,
+            0,
+            0
+          ],
+          "analyzer": [
+            0,
+            0,
+            0
+          ],
+          "pflow": [
+            0,
+            0,
+            0
+          ],
+          "populations": [
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            },
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            },
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            }
+          ],
+          "errors": []
+        },
+        "candidate_duplicate_cache_control": {
+          "n": 180,
+          "wall": {
+            "median": 30.897,
+            "p95": 49.4335,
+            "mean": 34.216433888888886,
+            "min": 25.9094,
+            "max": 306.2825
+          },
+          "callback": {
+            "median": 15.1477,
+            "p95": 19.6067,
+            "mean": 15.748425,
+            "min": 14.0429,
+            "max": 27.3386
+          },
+          "rebuilds": [
+            0,
+            0,
+            0
+          ],
+          "analyzer": [
+            0,
+            0,
+            0
+          ],
+          "pflow": [
+            0,
+            0,
+            0
+          ],
+          "populations": [
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            },
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            },
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            }
+          ],
+          "errors": []
+        },
+        "candidate_manual": {
+          "n": 180,
+          "wall": {
+            "median": 37.3795,
+            "p95": 53.4211,
+            "mean": 36.72748555555555,
+            "min": 21.2739,
+            "max": 70.2024
+          },
+          "callback": {
+            "median": 10.0306,
+            "p95": 13.4348,
+            "mean": 10.451282222222222,
+            "min": 9.1678,
+            "max": 17.2243
+          },
+          "rebuilds": [
+            0,
+            0,
+            0
+          ],
+          "analyzer": [
+            0,
+            0,
+            0
+          ],
+          "pflow": [
+            0,
+            0,
+            0
+          ],
+          "populations": [
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            },
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            },
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            }
+          ],
+          "errors": []
+        },
+        "scatter_callback_off": {
+          "n": 180,
+          "wall": {
+            "median": 12.1007,
+            "p95": 18.9123,
+            "mean": 13.214556666666667,
+            "min": 8.8727,
+            "max": 59.5389
+          },
+          "callback": {
+            "median": 0.0,
+            "p95": 0.0,
+            "mean": 0.0,
+            "min": 0.0,
+            "max": 0.0
+          },
+          "rebuilds": [
+            0,
+            0,
+            0
+          ],
+          "analyzer": [
+            0,
+            0,
+            0
+          ],
+          "pflow": [
+            0,
+            0,
+            0
+          ],
+          "populations": [
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            },
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            },
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            }
+          ],
+          "errors": []
+        }
+      }
+    },
+    {
+      "folder": "Viewport_Performance_Round2_2026-10-01",
+      "sub": "candidate-matrix",
+      "frames": 720,
+      "cases": {
+        "061_normal": {
+          "n": 180,
+          "wall": {
+            "median": 34.99065,
+            "p95": 77.2712,
+            "mean": 41.52854333333333,
+            "min": 25.4104,
+            "max": 360.1907
+          },
+          "callback": {
+            "median": 13.6106,
+            "p95": 19.7602,
+            "mean": 14.240279444444445,
+            "min": 11.1934,
+            "max": 25.907600000000002
+          },
+          "rebuilds": [
+            0,
+            0,
+            0
+          ],
+          "analyzer": [
+            0,
+            0,
+            0
+          ],
+          "pflow": [
+            0,
+            0,
+            0
+          ],
+          "populations": [
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            },
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            },
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            }
+          ],
+          "errors": []
+        },
+        "062_normal": {
+          "n": 180,
+          "wall": {
+            "median": 34.64985,
+            "p95": 68.2642,
+            "mean": 39.245689444444444,
+            "min": 25.2641,
+            "max": 111.2215
+          },
+          "callback": {
+            "median": 13.529800000000002,
+            "p95": 20.5105,
+            "mean": 14.47075,
+            "min": 11.3506,
+            "max": 26.375799999999998
+          },
+          "rebuilds": [
+            0,
+            0,
+            0
+          ],
+          "analyzer": [
+            0,
+            0,
+            0
+          ],
+          "pflow": [
+            0,
+            0,
+            0
+          ],
+          "populations": [
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            },
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            },
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            }
+          ],
+          "errors": []
+        },
+        "061_simulated_held": {
+          "n": 180,
+          "wall": {
+            "median": 34.489850000000004,
+            "p95": 63.9323,
+            "mean": 37.87211666666666,
+            "min": 23.8621,
+            "max": 82.6891
+          },
+          "callback": {
+            "median": 11.7631,
+            "p95": 15.673000000000002,
+            "mean": 12.261001111111112,
+            "min": 10.1709,
+            "max": 19.0608
+          },
+          "rebuilds": [
+            0,
+            0,
+            0
+          ],
+          "analyzer": [
+            0,
+            0,
+            0
+          ],
+          "pflow": [
+            0,
+            0,
+            0
+          ],
+          "populations": [
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            },
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            },
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            }
+          ],
+          "errors": []
+        },
+        "062_simulated_held": {
+          "n": 180,
+          "wall": {
+            "median": 31.33575,
+            "p95": 54.0537,
+            "mean": 35.44101388888889,
+            "min": 18.9174,
+            "max": 332.2178
+          },
+          "callback": {
+            "median": 7.8747,
+            "p95": 10.562100000000001,
+            "mean": 8.16530388888889,
+            "min": 6.3363,
+            "max": 14.681799999999999
+          },
+          "rebuilds": [
+            0,
+            0,
+            0
+          ],
+          "analyzer": [
+            0,
+            0,
+            0
+          ],
+          "pflow": [
+            0,
+            0,
+            0
+          ],
+          "populations": [
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            },
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            },
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            }
+          ],
+          "errors": []
+        }
+      }
+    },
+    {
+      "folder": "Viewport_Performance_Round2_2026-10-01",
+      "sub": "matrix",
+      "frames": 1260,
+      "cases": {
+        "candidate_061": {
+          "n": 180,
+          "wall": {
+            "median": 39.2053,
+            "p95": 70.8026,
+            "mean": 43.51104055555555,
+            "min": 25.4486,
+            "max": 98.2998
+          },
+          "callback": {
+            "median": 15.29575,
+            "p95": 22.281100000000002,
+            "mean": 16.085446666666666,
+            "min": 11.328800000000001,
+            "max": 30.986199999999997
+          },
+          "rebuilds": [
+            0,
+            0,
+            0
+          ],
+          "analyzer": [
+            0,
+            0,
+            0
+          ],
+          "pflow": [
+            0,
+            0,
+            0
+          ],
+          "populations": [
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            },
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            },
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            }
+          ],
+          "errors": []
+        },
+        "script_without_triangles": {
+          "n": 180,
+          "wall": {
+            "median": 30.845750000000002,
+            "p95": 63.5687,
+            "mean": 37.49644833333333,
+            "min": 18.9298,
+            "max": 452.7526
+          },
+          "callback": {
+            "median": 8.6537,
+            "p95": 11.8559,
+            "mean": 9.023847777777778,
+            "min": 7.1049,
+            "max": 16.3208
+          },
+          "rebuilds": [
+            0,
+            0,
+            0
+          ],
+          "analyzer": [
+            0,
+            0,
+            0
+          ],
+          "pflow": [
+            0,
+            0,
+            0
+          ],
+          "populations": [
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            },
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            },
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            }
+          ],
+          "errors": []
+        },
+        "fast_simulated_held": {
+          "n": 180,
+          "wall": {
+            "median": 31.8632,
+            "p95": 79.8555,
+            "mean": 39.628769444444444,
+            "min": 18.5726,
+            "max": 380.5739
+          },
+          "callback": {
+            "median": 8.62245,
+            "p95": 15.4705,
+            "mean": 9.544644444444444,
+            "min": 6.4165,
+            "max": 22.1015
+          },
+          "rebuilds": [
+            0,
+            0,
+            0
+          ],
+          "analyzer": [
+            0,
+            0,
+            0
+          ],
+          "pflow": [
+            0,
+            0,
+            0
+          ],
+          "populations": [
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            },
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            },
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            }
+          ],
+          "errors": []
+        },
+        "retained_with_plumbing": {
+          "n": 180,
+          "wall": {
+            "median": 30.77325,
+            "p95": 61.5788,
+            "mean": 34.925199444444445,
+            "min": 17.5615,
+            "max": 107.9457
+          },
+          "callback": {
+            "median": 8.616449999999999,
+            "p95": 12.5625,
+            "mean": 9.021782222222223,
+            "min": 7.0384,
+            "max": 17.3627
+          },
+          "rebuilds": [
+            0,
+            0,
+            0
+          ],
+          "analyzer": [
+            0,
+            0,
+            0
+          ],
+          "pflow": [
+            0,
+            0,
+            0
+          ],
+          "populations": [
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            },
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            },
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            }
+          ],
+          "errors": []
+        },
+        "retained_fast_simulated_held": {
+          "n": 180,
+          "wall": {
+            "median": 23.692050000000002,
+            "p95": 53.3862,
+            "mean": 27.677698333333332,
+            "min": 13.5361,
+            "max": 77.9312
+          },
+          "callback": {
+            "median": 2.9777,
+            "p95": 4.8041,
+            "mean": 3.242942222222222,
+            "min": 2.2008,
+            "max": 6.4093
+          },
+          "rebuilds": [
+            0,
+            0,
+            0
+          ],
+          "analyzer": [
+            0,
+            0,
+            0
+          ],
+          "pflow": [
+            0,
+            0,
+            0
+          ],
+          "populations": [
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            },
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            },
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            }
+          ],
+          "errors": []
+        },
+        "scatter_callback_off": {
+          "n": 180,
+          "wall": {
+            "median": 18.761650000000003,
+            "p95": 39.6889,
+            "mean": 21.298241666666666,
+            "min": 10.9395,
+            "max": 89.2886
+          },
+          "callback": {
+            "median": 0.0,
+            "p95": 0.0,
+            "mean": 0.0,
+            "min": 0.0,
+            "max": 0.0
+          },
+          "rebuilds": [
+            0,
+            0,
+            0
+          ],
+          "analyzer": [
+            0,
+            0,
+            0
+          ],
+          "pflow": [
+            0,
+            0,
+            0
+          ],
+          "populations": [
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            },
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            },
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            }
+          ],
+          "errors": []
+        },
+        "legacy_traversal_simulated_held": {
+          "n": 180,
+          "wall": {
+            "median": 34.305350000000004,
+            "p95": 69.4765,
+            "mean": 39.60319833333333,
+            "min": 25.1487,
+            "max": 125.8519
+          },
+          "callback": {
+            "median": 12.844449999999998,
+            "p95": 20.299500000000002,
+            "mean": 13.989118888888889,
+            "min": 10.147300000000001,
+            "max": 28.840400000000002
+          },
+          "rebuilds": [
+            0,
+            0,
+            0
+          ],
+          "analyzer": [
+            0,
+            0,
+            0
+          ],
+          "pflow": [
+            0,
+            0,
+            0
+          ],
+          "populations": [
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            },
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            },
+            {
+              "generated": 52143,
+              "cache_display_count": 6284,
+              "cache_triangles": 37704,
+              "stable_during_measurement": true
+            }
+          ],
+          "errors": []
+        }
+      }
+    }
+  ]
+}

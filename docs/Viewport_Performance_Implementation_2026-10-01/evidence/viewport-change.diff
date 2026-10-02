@@ -1,0 +1,990 @@
+--- before/AminScatter/src/preview.cpp
++++ after/AminScatter/src/preview.cpp
+@@ -12,9 +12,12 @@
+ #include <array>
+ #include <cmath>
+ #include <memory>
+-#include <maxscript/macros/define_instantiation_functions.h>
++#include <atomic>
++#include <new>
++#include <maxscript/macros/define_instantiation_functions.h>
+ #undef ScripterExport
+ #define ScripterExport __declspec(dllexport)
++#include "preview_batches.inc"
+ 
+ // Immutable transient MAXScript value: ownership follows the controller's local
+ // cache through GC. No global handles, stale node pointers or per-frame conversion.
+@@ -27,11 +30,47 @@
+     std::vector<Geometry> geometry;
+     int faceCount=0;
+     int size=0;
++    int geometryMode=0;
++    // One allocation for triangles and one for source-preserving chunks. Their
++    // exact payload sizes are reserved before allocation and released with GC.
++    ProxyBatchReservation batchReservation;
++    std::unique_ptr<ProxyTriangle[]> batchTriangles;
++    std::unique_ptr<ProxyBatch[]> batches;
++    std::size_t batchCount=0;
+     AminPointCache() { tag=class_tag(AminPointCache); }
+     classof_methods(AminPointCache,Value);
+     void collect() override { delete this; }
+     void sprin1(CharStream* s) override { s->printf(_T("<AminPointCache:%d>"),size); }
+     Value* deep_copy(HashTable*) override { return this; }
++    void prepareProxyBatches() {
++        if (geometryMode < 1 || geometryMode > 3 || faceCount == 0) return;
++        std::size_t chunks=0;
++        for (const auto& group:geometry) {
++            const auto count=group.faces.size()*group.instances.size();
++            chunks+=(count+proxyBatchFaceLimit-1)/proxyBatchFaceLimit;
++        }
++        const auto bytes=std::size_t(faceCount)*sizeof(ProxyTriangle)+chunks*sizeof(ProxyBatch);
++        if (!batchReservation.acquire(bytes)) return;
++        try {
++            auto triangles=std::make_unique<ProxyTriangle[]>(faceCount);
++            auto prepared=std::make_unique<ProxyBatch[]>(chunks);
++            std::size_t faceIndex=0,chunkIndex=0;
++            for (const auto& group:geometry) {
++                const auto first=faceIndex;
++                for (const auto& tm:group.instances) for (const auto& face:group.faces) {
++                    auto& out=triangles[faceIndex++];
++                    out.vertices={face[0]*tm,face[1]*tm,face[2]*tm};
++                    out.shade=proxyFaceShade(face,tm);
++                }
++                for (auto offset=first;offset<faceIndex;offset+=proxyBatchFaceLimit)
++                    prepared[chunkIndex++]={offset,std::min(proxyBatchFaceLimit,faceIndex-offset),group.color};
++            }
++            batchTriangles=std::move(triangles);batches=std::move(prepared);batchCount=chunks;
++        } catch (const std::bad_alloc&) {
++            // An optimization allocation failure must not hide a valid preview.
++            batchReservation.release();
++        }
++    }
+ };
+ visible_class_instance(AminPointCache,"AminPointCache");
+ #include "geometry_preview.inc"
+@@ -111,7 +150,20 @@
+         preview.Ka=preview.Kd=Point3(1,1,1);preview.Ks=Point3(0,0,0);preview.selfIllum=1;preview.opacity=1;preview.dblSided=1;
+         gw->setMaterial(preview);
+         gw->setRndLimits((limits|GW_Z_BUFFER|GW_COLOR_VERTS)&~(GW_ILLUM|GW_WIREFRAME|GW_BACKCULL|GW_TEXTURE|GW_SHADE_CVERTS));
+-        for(auto& group:cache->geometry)for(auto& tm:group.instances){
++        if(proxyBatchDrawing && cache->batchCount) {
++            // GraphicsWindow stays in identity/world space for the entire cache.
++            for(std::size_t i=0;i<cache->batchCount;++i) {
++                const auto& batch=cache->batches[i];
++                const auto baseColor=solid?color:batch.color;
++                gw->startTriangles();
++                for(std::size_t j=batch.first;j<batch.first+batch.count;++j) {
++                    auto& face=cache->batchTriangles[j];
++                    Point3 rgb=baseColor*face.shade,colors[3]={rgb,rgb,rgb};
++                    gw->triangle(face.vertices.data(),colors);
++                }
++                gw->endTriangles();
++            }
++        } else for(auto& group:cache->geometry)for(auto& tm:group.instances){
+             gw->setTransform(tm);gw->startTriangles();
+             for(auto& face:group.faces){
+                 auto a=VectorTransform(tm,face[1]-face[0]),b=VectorTransform(tm,face[2]-face[0]);auto normal=Normalize(CrossProd(a,b));
+@@ -149,3 +201,64 @@
+     }
+     return_value(vl.result);
+ }
++
++// Read-only cache accounting. Array: mode, old batches, prepared batches,
++// prepared faces, cache payload bytes, process bytes, cache/process byte caps.
++def_visible_primitive(cyrusPreviewDrawStats,"cyrusPreviewDrawStats");
++Value* cyrusPreviewDrawStats_cf(Value** args,int count) {
++    check_arg_count(cyrusPreviewDrawStats,1,count);
++    type_check(args[0],AminPointCache,_T("preview cache"));
++    auto* cache=static_cast<AminPointCache*>(args[0]);
++    std::size_t oldBatches=0;
++    for(const auto& group:cache->geometry) oldBatches+=group.instances.size();
++    one_typed_value_local(Array* result);vl.result=new Array(8);
++    for(auto n:{std::size_t(cache->geometryMode),oldBatches,cache->batchCount,
++        cache->batchCount?std::size_t(cache->faceCount):0,cache->batchReservation.bytes,
++        proxyReservedBytes.load(std::memory_order_relaxed),proxyCacheByteLimit,proxyProcessByteLimit})
++        vl.result->append(Integer64::intern(static_cast<INT64>(n)));
++    return_value(vl.result);
++}
++
++// A/B diagnosis only: optional Boolean changes drawing, never cache/output data.
++def_visible_primitive(cyrusPreviewBatchDrawing,"cyrusPreviewBatchDrawing");
++Value* cyrusPreviewBatchDrawing_cf(Value** args,int count) {
++    if(count>1) throw RuntimeError(_T("Expected zero or one batch-drawing Boolean"));
++    if(count==1) proxyBatchDrawing=args[0]->to_bool()!=FALSE;
++    return proxyBatchDrawing?&true_value:&false_value;
++}
++
++// Bounded diagnostic export for transform, shading and source-color parity.
++// Each row is #(vertex1, vertex2, vertex3, scalarShade, sourceColor01).
++def_visible_primitive(cyrusPreviewTriangles,"cyrusPreviewTriangles");
++Value* cyrusPreviewTriangles_cf(Value** args,int count) {
++    check_arg_count(cyrusPreviewTriangles,3,count);
++    type_check(args[0],AminPointCache,_T("preview cache"));
++    auto* cache=static_cast<AminPointCache*>(args[0]);
++    const bool prepared=args[1]->to_bool()!=FALSE;
++    const int limit=args[2]->to_int();
++    if(limit<0 || limit>100000) throw RuntimeError(_T("Diagnostic triangle limit must be 0..100000"));
++    two_typed_value_locals(Array* result,Array* row);
++    vl.result=new Array(std::min(limit,cache->faceCount));
++    auto append=[&](const std::array<Point3,3>& face,float shade,Point3 color) {
++        vl.row=new Array(5);vl.result->append(vl.row);
++        for(auto p:face) vl.row->append(new Point3Value(p));
++        vl.row->append(Float::intern(shade));vl.row->append(new Point3Value(color));
++    };
++    if(prepared) {
++        for(std::size_t i=0;i<cache->batchCount && vl.result->size<limit;++i) {
++            const auto& batch=cache->batches[i];
++            for(std::size_t j=batch.first;j<batch.first+batch.count && vl.result->size<limit;++j)
++                append(cache->batchTriangles[j].vertices,cache->batchTriangles[j].shade,batch.color);
++        }
++    } else {
++        for(const auto& group:cache->geometry) for(const auto& tm:group.instances) for(const auto& face:group.faces) {
++            if(vl.result->size>=limit) goto complete;
++            // Re-evaluate the previous draw formula independently of preparation.
++            auto a=VectorTransform(tm,face[1]-face[0]),b=VectorTransform(tm,face[2]-face[0]);
++            const auto shade=.35f+.65f*std::abs(DotProd(Normalize(CrossProd(a,b)),Normalize(Point3(.3f,-.5f,.8f))));
++            append({face[0]*tm,face[1]*tm,face[2]*tm},shade,group.color);
++        }
++    }
++complete:
++    return_value(vl.result);
++}
+--- before/AminScatter/src/preview_batches.inc
++++ after/AminScatter/src/preview_batches.inc
+@@ -0,0 +1,47 @@
++// Proxy-only world-space display data. The placement/source cache remains the
++// authority; oversized previews and Mesh mode retain the instanced CPU path.
++namespace {
++constexpr std::size_t proxyCacheByteLimit = 16u * 1024u * 1024u;
++constexpr std::size_t proxyProcessByteLimit = 64u * 1024u * 1024u;
++constexpr std::size_t proxyBatchFaceLimit = 4096;
++std::atomic<std::size_t> proxyReservedBytes{0};
++bool proxyBatchDrawing = true; // Session-only diagnostic switch; never serialized.
++
++struct ProxyBatchReservation {
++    std::size_t bytes = 0;
++    ProxyBatchReservation() = default;
++    ProxyBatchReservation(const ProxyBatchReservation&) = delete;
++    ProxyBatchReservation& operator=(const ProxyBatchReservation&) = delete;
++    ~ProxyBatchReservation() { release(); }
++    void release() {
++        if (bytes) proxyReservedBytes.fetch_sub(bytes, std::memory_order_relaxed);
++        bytes = 0;
++    }
++    bool acquire(std::size_t wanted) {
++        if (!wanted || wanted > proxyCacheByteLimit) return false;
++        auto used = proxyReservedBytes.load(std::memory_order_relaxed);
++        do {
++            if (wanted > proxyProcessByteLimit - used) return false;
++        } while (!proxyReservedBytes.compare_exchange_weak(used, used + wanted, std::memory_order_relaxed));
++        bytes = wanted;
++        return true;
++    }
++};
++
++struct ProxyTriangle {
++    std::array<Point3, 3> vertices;
++    float shade;
++};
++struct ProxyBatch {
++    std::size_t first, count;
++    Point3 color;
++};
++
++float proxyFaceShade(const std::array<Point3, 3>& face, const Matrix3& tm) {
++    // Preserve the old cross-product semantics for nonuniform/mirrored scales.
++    const auto a = VectorTransform(tm, face[1] - face[0]);
++    const auto b = VectorTransform(tm, face[2] - face[0]);
++    const auto normal = Normalize(CrossProd(a, b));
++    return .35f + .65f * std::abs(DotProd(normal, Normalize(Point3(.3f, -.5f, .8f))));
++}
++}
+--- before/AminScatter/src/geometry_preview.inc
++++ after/AminScatter/src/geometry_preview.inc
+@@ -40,8 +40,8 @@
+   if(group.faces.size()>static_cast<std::size_t>(budget-faces))continue;
+   group.instances.push_back(tm);faces+=static_cast<int>(group.faces.size());++shown;
+  }
+- auto* out=new AminPointCache();out->geometry=std::move(geometry);out->groups=std::move(markers);out->size=shown;out->faceCount=faces;return out;
++ auto* out=new AminPointCache();out->geometry=std::move(geometry);out->groups=std::move(markers);out->size=shown;out->faceCount=faces;out->geometryMode=mode;out->prepareProxyBatches();return out;
+ }
+ def_visible_primitive(cyrusPreviewFaces,"cyrusPreviewFaces");
+ Value* cyrusPreviewFaces_cf(Value** args,int count){check_arg_count(cyrusPreviewFaces,1,count);type_check(args[0],AminPointCache,_T("cache"));return Integer::intern(static_cast<AminPointCache*>(args[0])->faceCount);}
+-
++
+--- before/AminScatter/src/max_bridge.cpp
++++ after/AminScatter/src/max_bridge.cpp
+@@ -14,7 +14,7 @@
+ #include <cmath>
+ #include <maxscript/macros/define_instantiation_functions.h>
+ 
+-extern "C" __declspec(dllexport) const TCHAR* LibDescription() { return _T("Cyrus Scatter native engine 0.22 - bounded CPU cluster queries"); }
++extern "C" __declspec(dllexport) const TCHAR* LibDescription() { return _T("Cyrus Scatter native engine 0.23 - bounded proxy draw batches"); }
+ extern "C" __declspec(dllexport) ULONG LibVersion() { return VERSION_3DSMAX; }
+ extern "C" __declspec(dllexport) void LibInit() {}
+ HINSTANCE CyrusEditInstance=nullptr;
+@@ -380,7 +380,7 @@
+     for(const auto& p:points) vl.result->append(new Point3Value(point(p)));
+     return_value(vl.result);
+ }
+-
++
+ 
+ def_visible_primitive(aminScatterValidArea, "aminScatterValidArea");
+ Value* aminScatterValidArea_cf(Value** args,int count) {
+@@ -394,7 +394,7 @@
+     if(shape->NumberOfCurves(time)<1) return &false_value;
+     for(int i=0;i<shape->NumberOfCurves(time);++i) if(!shape->CurveClosed(time,i)) return &false_value;
+     return &true_value;
+-}
++}
+ 
+ def_visible_primitive(aminScatterSurfaceArea, "aminScatterSurfaceArea");
+ Value* aminScatterSurfaceArea_cf(Value** args,int count) {
+@@ -407,8 +407,8 @@
+         }
+     } catch(const std::exception&) {throw RuntimeError(_T("Cannot evaluate scatter surface area."));}
+     return Double::intern(area);
+-}
+-
+-
+-
+-
++}
++
++
++
++
+--- before/AminScatter/tools/ui/generate.cjs
++++ after/AminScatter/tools/ui/generate.cjs
+@@ -139,17 +139,18 @@
+  text=require('./activation.cjs')(text);
+  text=require('./performance.cjs')(text);
+  text=require('./compute-performance.cjs')(text);
++ text=require('./viewport-performance.cjs')(text);
+  text=require('./responsive.cjs')(text);
+  text=require('./trace.cjs')(text);
+  fs.writeFileSync('scripts/AminScatterObject.ms',text);
+ }
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
++
++
++
++
++
++
++
++
++
++
+--- before/AminScatter/tools/ui/viewport-performance.cjs
++++ after/AminScatter/tools/ui/viewport-performance.cjs
+@@ -0,0 +1,46 @@
++// Preserve dependency synchronization while removing redundant redraw work.
++module.exports=function(s){
++ const replace=(a,b)=>{if(s.split(a).length!==2)throw Error('Viewport performance anchor must be unique: '+a.slice(0,90));s=s.replace(a,b);};
++ replace('version:45','version:46');
++ replace('    fn previewCache = (\n        if CyrusInteractionHeld() do',
++ `    fn previewCache interactionHeld:undefined = (
++        local held=if interactionHeld==undefined then CyrusInteractionHeld() else interactionHeld
++        if held do`);
++ replace('fn AminScatterObjectDraw = (\n    gw.setTransform',
++ `fn AminScatterObjectDraw = (
++    local held=CyrusInteractionHeld()
++    gw.setTransform`);
++ replace('            obj.previewCache();obj.drawRadii()\n            if obj.showPoints or obj.showCenters do (\n                local cache=obj.previewCache()',
++ `            local cache=obj.previewCache interactionHeld:held
++            obj.drawRadii()
++            if obj.showPoints or obj.showCenters do (`);
++ // Icon geometry depends on only one local scalar. Object transforms remain live.
++ replace('    fn iconLines = (\n        local paths=#()',
++ `    local iconCacheSize=undefined,iconCachePaths=#()
++    fn iconLines = (
++        if iconCacheSize==iconSize do return iconCachePaths
++        local paths=#()`);
++ replace('        for path in paths collect (for p in path collect p*iconSize)',
++ `        iconCachePaths=for path in paths collect (for p in path collect p*iconSize)
++        iconCacheSize=iconSize
++        iconCachePaths`);
++ // Compute controller-owned surface/budget inputs once per layer traversal.
++ // Standalone callers keep the same behavior through optional arguments.
++ replace('    fn syncLayerSurface obj = (\n        obj.setOverlapOwner this\n        local targets=validSurfaces()',
++ `    fn syncLayerSurface obj targets:undefined layerBudget:undefined = (
++        obj.setOverlapOwner this
++        if targets==undefined do targets=validSurfaces()`);
++ replace('        local enabledCount=(for flag in layerEnabled where flag collect flag).count\n        local layerBudget=amax 1 (floor(previewBudget/(amax 1 enabledCount)))',
++ `        if layerBudget==undefined do (
++            local enabledCount=(for flag in layerEnabled where flag collect flag).count
++            layerBudget=amax 1 (floor(previewBudget/(amax 1 enabledCount)))
++        )`);
++ replace('        local entries=#()\n        for i=1 to layerObjects.count where includeDisabled',
++ `        local entries=#(),targets=validSurfaces()
++        local enabledCount=(for flag in layerEnabled where flag collect flag).count
++        local layerBudget=amax 1 (floor(previewBudget/(amax 1 enabledCount)))
++        for i=1 to layerObjects.count where includeDisabled`);
++ replace('            syncLayerSurface obj\n            obj.checkAnalyzerRevision()',
++         '            syncLayerSurface obj targets:targets layerBudget:layerBudget\n            obj.checkAnalyzerRevision()');
++ return s;
++};
+--- before/AminScatter/scripts/AminScatterObject.ms
++++ after/AminScatter/scripts/AminScatterObject.ms
+@@ -73,7 +73,7 @@
+     CyrusFalloffGraph=editor
+     createDialog editor style:#(#style_titlebar,#style_sysmenu,#style_minimizebox) pos:[200,160]
+     editor
+-)
++)
+ 
+ /* Scene object UI for the native AminScatter C++ engine. */
+ global AminScatterObject
+@@ -458,7 +458,7 @@
+         on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;redrawViews())
+         on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;redrawViews())
+         on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;redrawViews())
+-        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
++        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
+ 
+         local loadingFall=false
+         dropdownlist fallTarget "Edge falloff target" items:#("Analyzer Boundary","Selected Area line") selection:1 pos:[(CyrusUISize 8 1),704] width:(CyrusUISize 146 1)
+@@ -1299,7 +1299,7 @@
+         on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;redrawViews())
+         on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;redrawViews())
+         on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;redrawViews())
+-        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
++        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
+ 
+         local loadingFall=false
+         dropdownlist fallTarget "Edge falloff target" items:#("Analyzer Boundary","Selected Area line") selection:1 pos:[(CyrusUISize 8 1),704] width:(CyrusUISize 146 1)
+@@ -2140,7 +2140,7 @@
+         on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;redrawViews())
+         on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;redrawViews())
+         on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;redrawViews())
+-        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
++        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
+ 
+         local loadingFall=false
+         dropdownlist fallTarget "Edge falloff target" items:#("Analyzer Boundary","Selected Area line") selection:1 pos:[(CyrusUISize 8 1),704] width:(CyrusUISize 146 1)
+@@ -2981,7 +2981,7 @@
+         on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;redrawViews())
+         on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;redrawViews())
+         on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;redrawViews())
+-        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
++        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
+ 
+         local loadingFall=false
+         dropdownlist fallTarget "Edge falloff target" items:#("Analyzer Boundary","Selected Area line") selection:1 pos:[(CyrusUISize 8 1),704] width:(CyrusUISize 146 1)
+@@ -3822,7 +3822,7 @@
+         on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;redrawViews())
+         on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;redrawViews())
+         on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;redrawViews())
+-        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
++        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
+ 
+         local loadingFall=false
+         dropdownlist fallTarget "Edge falloff target" items:#("Analyzer Boundary","Selected Area line") selection:1 pos:[(CyrusUISize 8 1),704] width:(CyrusUISize 146 1)
+@@ -4663,7 +4663,7 @@
+         on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;redrawViews())
+         on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;redrawViews())
+         on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;redrawViews())
+-        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
++        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
+ 
+         local loadingFall=false
+         dropdownlist fallTarget "Edge falloff target" items:#("Analyzer Boundary","Selected Area line") selection:1 pos:[(CyrusUISize 8 1),704] width:(CyrusUISize 146 1)
+@@ -5504,7 +5504,7 @@
+         on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;redrawViews())
+         on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;redrawViews())
+         on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;redrawViews())
+-        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
++        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
+ 
+         local loadingFall=false
+         dropdownlist fallTarget "Edge falloff target" items:#("Analyzer Boundary","Selected Area line") selection:1 pos:[(CyrusUISize 8 1),704] width:(CyrusUISize 146 1)
+@@ -6345,7 +6345,7 @@
+         on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;redrawViews())
+         on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;redrawViews())
+         on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;redrawViews())
+-        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
++        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
+ 
+         local loadingFall=false
+         dropdownlist fallTarget "Edge falloff target" items:#("Analyzer Boundary","Selected Area line") selection:1 pos:[(CyrusUISize 8 1),704] width:(CyrusUISize 146 1)
+@@ -7186,7 +7186,7 @@
+         on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;redrawViews())
+         on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;redrawViews())
+         on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;redrawViews())
+-        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
++        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
+ 
+         local loadingFall=false
+         dropdownlist fallTarget "Edge falloff target" items:#("Analyzer Boundary","Selected Area line") selection:1 pos:[(CyrusUISize 8 1),704] width:(CyrusUISize 146 1)
+@@ -8027,7 +8027,7 @@
+         on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;redrawViews())
+         on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;redrawViews())
+         on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;redrawViews())
+-        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
++        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
+ 
+         local loadingFall=false
+         dropdownlist fallTarget "Edge falloff target" items:#("Analyzer Boundary","Selected Area line") selection:1 pos:[(CyrusUISize 8 1),704] width:(CyrusUISize 146 1)
+@@ -8868,7 +8868,7 @@
+         on aaStreetOffset changed v do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;redrawViews())
+         on aaWidth changed v do if not loadingAnalyzerArea do (obj.areaLineWidth=v;redrawViews())
+         on aaRadius changed v do if not loadingAnalyzerArea do (obj.areaPointRadius=v;redrawViews())
+-        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
++        on aaCaps selected v do if not loadingAnalyzerArea do (obj.areaLineCaps=v;redrawViews())
+ 
+         local loadingFall=false
+         dropdownlist fallTarget "Edge falloff target" items:#("Analyzer Boundary","Selected Area line") selection:1 pos:[(CyrusUISize 8 1),704] width:(CyrusUISize 146 1)
+@@ -9657,12 +9657,12 @@
+         on layerPanel_1 rolledUp state do (if not state and not parentView.building do ensureContents();parentView.layoutPanels())
+     )
+     layerPanel_1.obj=target;layerPanel_1.parentView=view;layerPanel_1.layerIndex=index;layerPanel_1
+-)
+-
+-
+-
+-
+-
++)
++
++
++
++
++
+ 
+ global CyrusMake_spacingUI_2
+ fn CyrusMake_spacingUI_2 target view = (
+@@ -9723,12 +9723,12 @@
+         on layerPanel_2 rolledUp state do (if not state and not parentView.building do ensureContents();parentView.layoutPanels())
+     )
+     layerPanel_2.obj=target;layerPanel_2.parentView=view;layerPanel_2.layerIndex=index;layerPanel_2
+-)
+-
+-
+-
+-
+-
++)
++
++
++
++
++
+ 
+ global CyrusMake_spacingUI_3
+ fn CyrusMake_spacingUI_3 target view = (
+@@ -9789,12 +9789,12 @@
+         on layerPanel_3 rolledUp state do (if not state and not parentView.building do ensureContents();parentView.layoutPanels())
+     )
+     layerPanel_3.obj=target;layerPanel_3.parentView=view;layerPanel_3.layerIndex=index;layerPanel_3
+-)
+-
+-
+-
+-
+-
++)
++
++
++
++
++
+ 
+ global CyrusMake_spacingUI_4
+ fn CyrusMake_spacingUI_4 target view = (
+@@ -9855,12 +9855,12 @@
+         on layerPanel_4 rolledUp state do (if not state and not parentView.building do ensureContents();parentView.layoutPanels())
+     )
+     layerPanel_4.obj=target;layerPanel_4.parentView=view;layerPanel_4.layerIndex=index;layerPanel_4
+-)
+-
+-
+-
+-
+-
++)
++
++
++
++
++
+ 
+ global CyrusMake_spacingUI_5
+ fn CyrusMake_spacingUI_5 target view = (
+@@ -9921,12 +9921,12 @@
+         on layerPanel_5 rolledUp state do (if not state and not parentView.building do ensureContents();parentView.layoutPanels())
+     )
+     layerPanel_5.obj=target;layerPanel_5.parentView=view;layerPanel_5.layerIndex=index;layerPanel_5
+-)
+-
+-
+-
+-
+-
++)
++
++
++
++
++
+ 
+ global CyrusMake_spacingUI_6
+ fn CyrusMake_spacingUI_6 target view = (
+@@ -9987,12 +9987,12 @@
+         on layerPanel_6 rolledUp state do (if not state and not parentView.building do ensureContents();parentView.layoutPanels())
+     )
+     layerPanel_6.obj=target;layerPanel_6.parentView=view;layerPanel_6.layerIndex=index;layerPanel_6
+-)
+-
+-
+-
+-
+-
++)
++
++
++
++
++
+ 
+ global CyrusMake_spacingUI_7
+ fn CyrusMake_spacingUI_7 target view = (
+@@ -10053,12 +10053,12 @@
+         on layerPanel_7 rolledUp state do (if not state and not parentView.building do ensureContents();parentView.layoutPanels())
+     )
+     layerPanel_7.obj=target;layerPanel_7.parentView=view;layerPanel_7.layerIndex=index;layerPanel_7
+-)
+-
+-
+-
+-
+-
++)
++
++
++
++
++
+ 
+ global CyrusMake_spacingUI_8
+ fn CyrusMake_spacingUI_8 target view = (
+@@ -10119,12 +10119,12 @@
+         on layerPanel_8 rolledUp state do (if not state and not parentView.building do ensureContents();parentView.layoutPanels())
+     )
+     layerPanel_8.obj=target;layerPanel_8.parentView=view;layerPanel_8.layerIndex=index;layerPanel_8
+-)
+-
+-
+-
+-
+-
++)
++
++
++
++
++
+ 
+ global CyrusMake_spacingUI_9
+ fn CyrusMake_spacingUI_9 target view = (
+@@ -10185,12 +10185,12 @@
+         on layerPanel_9 rolledUp state do (if not state and not parentView.building do ensureContents();parentView.layoutPanels())
+     )
+     layerPanel_9.obj=target;layerPanel_9.parentView=view;layerPanel_9.layerIndex=index;layerPanel_9
+-)
+-
+-
+-
+-
+-
++)
++
++
++
++
++
+ 
+ global CyrusMake_spacingUI_10
+ fn CyrusMake_spacingUI_10 target view = (
+@@ -10251,12 +10251,12 @@
+         on layerPanel_10 rolledUp state do (if not state and not parentView.building do ensureContents();parentView.layoutPanels())
+     )
+     layerPanel_10.obj=target;layerPanel_10.parentView=view;layerPanel_10.layerIndex=index;layerPanel_10
+-)
+-
+-
+-
+-
+-
++)
++
++
++
++
++
+ 
+ fn CyrusMakeLayer target view index = (
+ if index==1 then (CyrusMakeLayer_1 target view index) else 
+@@ -10297,7 +10297,7 @@
+ name:"Cyrus Scatter"
+ classID:#(0x617d43a1,0x395c2e17)
+ category:"Cyrus"
+-version:45
++version:46
+ (
+     local layerTransfer=false
+     local cachedPoints=undefined
+@@ -10553,7 +10553,7 @@
+         )
+         rows
+     )
+-
++
+ 
+     parameters edgeRowSettings (
+         edgeRotX type:#floatTab tabSize:0 tabSizeVariable:true
+@@ -11004,7 +11004,7 @@
+             )
+             #(output,mask)
+         )
+-    )
++    )
+ 
+     fn lineInputs plants previewOnly:false = (
+         if diversityMode!=3 and diversityMode!=4 then #(false,0,#()) else (
+@@ -11048,8 +11048,8 @@
+             )
+             #(true,rest,bands)
+         )
+-    )
+-
++    )
++
+ 
+     local blockerCacheKey="",blockerCacheRows=#(),blockerCacheBuilds=0,blockerCacheHits=0
+     fn cachedBlockerRows plants = (
+@@ -11228,8 +11228,9 @@
+         )
+     )
+     local cachedDisabledInput=false
+-    fn previewCache = (
+-        if CyrusInteractionHeld() do (CyrusWasDragging=true;return cachedPoints)
++    fn previewCache interactionHeld:undefined = (
++        local held=if interactionHeld==undefined then CyrusInteractionHeld() else interactionHeld
++        if held do (CyrusWasDragging=true;return cachedPoints)
+         local inputOff=disabledAnalyzerInput()
+         if inputOff!=cachedDisabledInput do (dirty=true;cachedDisabledInput=inputOff)
+         if inputOff do return (aminScatterBuildPreview #() #() #() 1)
+@@ -11262,14 +11263,16 @@
+     )
+     fn forcePreviewUpdate = (dirty=true;previewBuildCount=0)
+     fn ensureLayers = layerObjects.count
+-    fn syncLayerSurface obj = (
++    fn syncLayerSurface obj targets:undefined layerBudget:undefined = (
+         obj.setOverlapOwner this
+-        local targets=validSurfaces()
++        if targets==undefined do targets=validSurfaces()
+         local equal=obj.surfaceNodes.count==targets.count
+         if equal do for i=1 to targets.count where obj.surfaceNodes[i]!=targets[i] do equal=false
+         if not equal do undo off (obj.surfaceNodes=targets;obj.surface=undefined)
+-        local enabledCount=(for flag in layerEnabled where flag collect flag).count
+-        local layerBudget=amax 1 (floor(previewBudget/(amax 1 enabledCount)))
++        if layerBudget==undefined do (
++            local enabledCount=(for flag in layerEnabled where flag collect flag).count
++            layerBudget=amax 1 (floor(previewBudget/(amax 1 enabledCount)))
++        )
+         if obj.previewBudget!=layerBudget do undo off obj.previewBudget=layerBudget
+         -- These settings belong to the controller, not an individual layer.
+         undo off for key in #(#viewportMode,#proxyShape,#viewportInstances,#viewportFaces,#radiusDisplayLimit,#radiusDisplayAll,#updateMode,#showPoints,#pointsPerPlant,#pointColorMode,#solidPointColor,#autoRender) do (
+@@ -11283,10 +11286,12 @@
+             editCacheKey=key
+             for layer in layerObjects do layer.forcePreviewUpdate()
+         )
+-        local entries=#()
++        local entries=#(),targets=validSurfaces()
++        local enabledCount=(for flag in layerEnabled where flag collect flag).count
++        local layerBudget=amax 1 (floor(previewBudget/(amax 1 enabledCount)))
+         for i=1 to layerObjects.count where includeDisabled or (cyrusEnabled and layerEnabled[i]) do (
+             local obj=layerObjects[i]
+-            syncLayerSurface obj
++            syncLayerSurface obj targets:targets layerBudget:layerBudget
+             obj.checkAnalyzerRevision()
+             append entries #(i,obj)
+         )
+@@ -11359,8 +11364,8 @@
+         local owners=refs.dependentNodes this
+         if owners.count==1 do for entry in (layerEntries includeDisabled:true) do entry[2].clearBaked owners[1]
+         autoRender=true;showPoints=true;redrawViews()
+-    )
+-
++    )
++
+     fn clearBaked ownerNode = (
+         local key=ownerNode.handle as string
+         undo "Cyrus Scatter remove baked output" on (
+@@ -11475,14 +11480,14 @@
+             controlsReady=true;building=false;rebuildLayers()
+         )
+         on mainUI close do (controlsReady=false;roots=#();layerPanels=#())
+-    )
+-
+-
+-
+-
+-
+-
+-
++    )
++
++
++
++
++
++
++
+     on update do (
+         if version<13 do migrateLayers()
+         if version<15 do syncStrokes()
+@@ -11501,7 +11506,9 @@
+         dirty=true
+     )
+     on attachedToNode n do (n.renderable=false;n.wirecolor=red)
++    local iconCacheSize=undefined,iconCachePaths=#()
+     fn iconLines = (
++        if iconCacheSize==iconSize do return iconCachePaths
+         local paths=#()
+         local ring=for i=0 to 64 collect [cos(i*360.0/64),sin(i*360.0/64),0]
+         append paths ring
+@@ -11512,7 +11519,9 @@
+         append paths letterS
+         append paths (for i=0 to 48 collect [0.35+0.25*cos(45+i*270.0/48),0.46*sin(45+i*270.0/48),0])
+ 
+-        for path in paths collect (for p in path collect p*iconSize)
++        iconCachePaths=for path in paths collect (for p in path collect p*iconSize)
++        iconCacheSize=iconSize
++        iconCachePaths
+  )
+  on buildMesh do (
+         -- Zero-area edges supply picking bounds; visible icon is drawn as lines.
+@@ -11533,6 +11542,7 @@
+     )
+ )
+ fn AminScatterObjectDraw = (
++    local held=CyrusInteractionHeld()
+     gw.setTransform (matrix3 1)
+     for n in objects where (classof n.baseObject==AminScatterObject and not n.isHidden) do (
+         gw.setTransform n.objectTransform;gw.setColor #line red
+@@ -11540,9 +11550,9 @@
+         gw.setTransform (matrix3 1)
+         for entry in n.baseObject.layerEntries() do (
+             local obj=entry[2]
+-            obj.previewCache();obj.drawRadii()
++            local cache=obj.previewCache interactionHeld:held
++            obj.drawRadii()
+             if obj.showPoints or obj.showCenters do (
+-                local cache=obj.previewCache()
+                 if cache!=undefined do aminScatterDrawPreview cache (obj.pointColorMode==1) obj.solidPointColor
+             )
+         )
+@@ -11720,7 +11730,7 @@
+ callbacks.addScript #filePreSave "CyrusPFBeforeSave()" id:#CyrusPFBridge
+ CyrusPFTimer=dotNetObject "System.Windows.Forms.Timer";CyrusPFTimer.Interval=750
+ dotNet.addEventHandler CyrusPFTimer "Tick" CyrusPFTick;CyrusPFTimer.Start()
+-
++
+ -- Events mark only controllers whose inputs changed. No geometry polling loop.
+ global AminScatterNodeEvents
+ global AminScatterLiveChanged
+--- before/tools/build_max.py
++++ after/tools/build_max.py
+@@ -66,7 +66,8 @@
+     payload['INSTALL.txt'] = (
+         f'{name} {version} - 3ds Max {args.max_year} x64\n'
+         'Run this MZP through Scripting > Run Script, then restart Max.\n'
+-        + ('CPU performance candidate: native source filtering/transforms, batched edit notifications, and bounded clustered queries.\n'
++        + ('Viewport performance candidate: bounded proxy draw batches and reduced redraw script overhead.\n'
++           'Includes native source filtering/transforms, batched edit notifications, and bounded clustered queries.\n'
+            'Automatic clustered calculations use at most 4 total CPU participants. GPU compute is not enabled.\n'
+            if project == 'AminScatter' else 'The Analyzer algorithm is unchanged in this performance iteration.\n') +
+         'Create > Geometry > Cyrus, then select the tool and use Modify.\n'
+@@ -119,7 +120,7 @@
+              f'-DMAXSDK_ROOT={args.sdk_root.resolve()}'], env)
+         run(['cmake', '--build', dest], env)
+         run(['ctest', '--test-dir', dest, '--output-on-failure'], env)
+-    package('AminScatter', 'Cyrus Scatter', '0.60', ['AminScatter.dlx', 'CyrusScatterEdit.dlm'],
++    package('AminScatter', 'Cyrus Scatter', '0.61', ['AminScatter.dlx', 'CyrusScatterEdit.dlm'],
+             'AminScatterObject.ms', args, base)
+     package('CyrusSurfaceAnalyzer', 'Cyrus Surface Analyzer', '0.14', ['CyrusSurfaceAnalyzer.dlx'],
+             'CyrusSurfaceAnalyzer.ms', args, base)
+--- before/tools/test_viewport_performance.py
++++ after/tools/test_viewport_performance.py
+@@ -0,0 +1,34 @@
++"""Verify proxy batching and display lifecycle in an isolated Max 2027 process."""
++from pathlib import Path
++import subprocess
++
++ROOT = Path(__file__).resolve().parents[1]
++
++
++def main():
++    destination = ROOT / "build/viewport-performance-test"
++    destination.mkdir(parents=True, exist_ok=True)
++    plugins = destination / "plugins.ini"
++    plugins.write_text("[Directories]\nCyrusScatterTest=" + str(ROOT / "build/max2027-release/AminScatter") +
++                       "\nCyrusAnalyzerTest=" + str(ROOT / "build/max2027-release/CyrusSurfaceAnalyzer") + "\n")
++    config = destination / "max.ini"
++    if not config.exists():
++        config.write_text("[Directories]\n")
++    report = destination / "result.txt"
++    report.write_text("PENDING\n")
++    startup = subprocess.STARTUPINFO()
++    startup.dwFlags |= subprocess.STARTF_USESHOWWINDOW
++    startup.wShowWindow = 0
++    command = ["C:/Program Files/Autodesk/3ds Max 2027/3dsmaxbatch.exe",
++               str(ROOT / "tools/tests/viewport_performance_smoke.ms"), "-i", str(config), "-p", str(plugins),
++               "-listenerlog", str(destination / "listener.log"), "-log", str(destination / "session.log")]
++    with (destination / "stdout.log").open("wb") as out, (destination / "stderr.log").open("wb") as err:
++        completed = subprocess.run(command, cwd=ROOT, stdout=out, stderr=err, startupinfo=startup, timeout=300)
++    text = report.read_text(encoding="utf-8-sig")
++    print(text)
++    if completed.returncode or "SUCCESS" not in text:
++        raise SystemExit(f"Viewport qualification failed; inspect {destination}")
++
++
++if __name__ == "__main__":
++    main()
+--- before/tools/tests/viewport_performance_smoke.ms
++++ after/tools/tests/viewport_performance_smoke.ms
+@@ -0,0 +1,122 @@
++-- Isolated Max process: proxy output parity, memory fallback and script lifecycle.
++global VPRoot,VPLog,VPRequire,VPParity,VPGeometryTests,VPMemoryTests
++VPRoot=(dotNetClass "System.IO.Path").GetFullPath ((getFilenamePath (getSourceFileName()))+"../../")
++VPLog=createFile (VPRoot+"build/viewport-performance-test/result.txt")
++fn VPRequire condition reason = (if not condition do throw reason)
++fn VPParity cache expectedFaces label = (
++ local old=cyrusPreviewTriangles cache false 100000
++ local prepared=cyrusPreviewTriangles cache true 100000
++ VPRequire (old.count==expectedFaces and prepared.count==old.count) (label+": face count")
++ for i=1 to old.count do (
++  for j=1 to 3 do VPRequire (old[i][j]==prepared[i][j]) (label+": position/order mismatch")
++  VPRequire (old[i][4]==prepared[i][4]) (label+": shade mismatch")
++  VPRequire (old[i][5]==prepared[i][5]) (label+": source color mismatch")
++ )
++ format "PASS %: % triangles, exact positions/shades/colors\n" label old.count to:VPLog;flush VPLog
++)
++fn VPGeometryTests = (
++ local sourceA=box length:13 width:27 height:42,sourceB=box length:7 width:9 height:2
++ sourceA.objectOffsetPos=[1,3,-2]
++ local mirrored=scaleMatrix [-2,0.5,3]
++ mirrored.row4=[10000,-12000,3200]
++ local sheared=matrix3 [1,0.3,0] [0.2,2,0.1] [0,0.2,1] [-30,55,20]
++ local rows=#(#(matrix3 1,1),#(mirrored,2),#(sheared,1),#((rotateXMatrix 37)*(transMatrix [20,30,40]),2))
++ for mode=1 to 3 do (
++  local facesPer=(#(12,168,6))[mode]
++  local cache=cyrusBuildGeometryPreview rows #(sourceA,sourceB) #(red,blue) mode 100 2000000
++  VPRequire ((aminScatterPreviewCount cache)==4) "Displayed count"
++  VPParity cache (facesPer*4) ("proxy mode "+(mode as string))
++  local stats=cyrusPreviewDrawStats cache
++  VPRequire (stats[2]==4 and stats[3]==2 and stats[4]==facesPer*4) "Source group batching"
++ )
++ local budgeted=cyrusBuildGeometryPreview rows #(sourceA,sourceB) #(red,blue) 3 2 12
++ VPRequire ((aminScatterPreviewCount budgeted)==2) "Instance selection budget"
++ VPParity budgeted 12 "selected row ordering"
++ local placeholder=cyrusBuildGeometryPreview #(#(matrix3 1,1),#(mirrored,2)) #(sourceA,-1) #(red,green) 3 20 100
++ VPRequire ((aminScatterPreviewCount placeholder)==2 and (cyrusPreviewFaces placeholder)==6) "Placeholder count"
++ VPRequire ((aminScatterPreviewPoints placeholder).count==1) "Placeholder marker lost"
++ VPParity placeholder 6 "mixed proxy/placeholder"
++ local emptySource=mesh vertices:#() faces:#()
++ local missing=cyrusBuildGeometryPreview #(#(matrix3 1,1),#(mirrored,2)) #(sourceA,emptySource) #(red,green) 3 20 100
++ VPRequire ((aminScatterPreviewCount missing)==1 and (cyrusPreviewFaces missing)==6) "Empty source skip changed"
++ VPParity missing 6 "empty source skip"
++ local empty=cyrusBuildGeometryPreview #() #(sourceA) #(red) 3 20 100
++ VPRequire ((cyrusPreviewDrawStats empty)[3]==0) "Empty cache allocated batches"
++ local fullMesh=cyrusBuildGeometryPreview rows #(sourceA,sourceB) #(red,blue) 4 100 2000000
++ VPRequire ((cyrusPreviewDrawStats fullMesh)[3]==0 and (cyrusPreviewFaces fullMesh)==48) "Mesh fallback"
++ local many=for i=1 to 1500 collect #((transMatrix [i*2,0,0]),1)
++ local chunked=cyrusBuildGeometryPreview many #(sourceA) #(red) 3 2000 2000000
++ VPRequire ((cyrusPreviewDrawStats chunked)[3]==3) "4096-face chunk bound"
++ VPParity chunked 9000 "chunk boundaries"
++ format "PASS empty, mesh, missing-source and point-placeholder policies\n" to:VPLog;flush VPLog
++)
++fn VPMemoryTests = (
++ local source=box length:1 width:1 height:1
++ local rows=for i=1 to 1000 collect #((transMatrix [i,0,0]),1)
++ local held=#(),fallbacks=0
++ for i=1 to 12 do (
++  local cache=cyrusBuildGeometryPreview rows #(source) #(red) 2 1000 2000000
++  append held cache
++  local s=cyrusPreviewDrawStats cache
++  VPRequire (s[5]<=s[7] and s[6]<=s[8]) "Memory cap exceeded"
++  VPRequire ((aminScatterPreviewCount cache)==1000 and (cyrusPreviewFaces cache)==168000) "Global fallback changed output"
++  if s[3]==0 do fallbacks+=1
++ )
++ VPRequire (fallbacks>0) "Global cap did not select fallback"
++ local largeRows=for i=1 to 3000 collect #((transMatrix [i,0,0]),1)
++ local oversized=cyrusBuildGeometryPreview largeRows #(source) #(red) 2 3000 2000000
++ VPRequire ((cyrusPreviewDrawStats oversized)[3]==0 and (cyrusPreviewFaces oversized)==504000) "Per-cache fallback"
++ format "PASS 16 MiB/cache and 64 MiB/process caps; % global fallbacks preserve counts\n" fallbacks to:VPLog;flush VPLog
++)
++try (
++ fileIn (VPRoot+"CyrusSurfaceAnalyzer/scripts/CyrusSurfaceAnalyzer.ms")
++ fileIn (VPRoot+"AminScatter/scripts/AminScatterObject.ms")
++ VPGeometryTests();gc()
++ VPMemoryTests();gc()
++ local probe=cyrusBuildGeometryPreview #() #() #() 3 1 12
++ VPRequire ((cyrusPreviewDrawStats probe)[6]==0) "Batch memory retained after cache collection"
++ format "PASS batch payload released by cache GC\n" to:VPLog;flush VPLog
++ local surface=plane length:1000 width:1000 lengthsegs:1 widthsegs:1
++ local plant=box length:8 width:12 height:25 pos:[2000,0,0]
++ local root=AminScatterObject name:"VP_Controller"
++ root.surfaceNodes=#(surface);root.newLayer();root.newLayer();root.viewportMode=2;root.proxyShape=3;root.updateMode=2
++ for l in root.layerObjects do (l.sources=#(plant);l.amount=40)
++ local entries=root.layerEntries()
++ VPRequire (entries.count==2) "Layer traversal"
++ root.refreshDisplay()
++ for e in entries do VPRequire ((cyrusPreviewDrawStats ((e[2].cacheSnapshot())[1]))[3]>0) "Layer not batched"
++ local before=for e in entries collect e[2].cacheSnapshot()
++ for i=1 to 5 do AminScatterObjectDraw()
++ for i=1 to entries.count do VPRequire ((entries[i][2].cacheSnapshot())[6]==before[i][6]) "Unchanged redraw rebuilt"
++ local iconA=root.iconLines(),iconB=root.iconLines()
++ VPRequire (iconA==iconB) "Icon changed on unchanged redraw"
++ root.iconSize*=2
++ VPRequire ((root.iconLines())[1][1]==iconA[1][1]*2) "Icon-size invalidation"
++ local l=entries[1][2],rows=l.placements(l.validSources())
++ local signature=cyrusEditFingerprint rows "viewport"
++ root.updateMode=1;root.layerEntries();l.amount=43
++ local manual=l.previewCache interactionHeld:false
++ VPRequire ((aminScatterPreviewCount manual)==40) "Manual mode lost old cache"
++ l.refreshPreview()
++ VPRequire ((aminScatterPreviewCount(l.previewCache interactionHeld:false))==43) "Explicit manual refresh"
++ root.updateMode=2;root.layerEntries();l.amount=47
++ VPRequire ((aminScatterPreviewCount(l.previewCache interactionHeld:true))==43) "Mouse-held deferral"
++ VPRequire ((aminScatterPreviewCount(l.previewCache interactionHeld:false))==47) "Post-drag rebuild"
++ root.layerEnabled[2]=false
++ VPRequire ((root.layerEntries()).count==1) "Layer enable invalidation"
++ local clone=copy root
++ VPRequire ((clone.layerEntries()).count==1) "Clone layer state"
++ l.amount=40;root.layerEntries();l.refreshPreview()
++ VPRequire ((cyrusEditFingerprint (l.placements(l.validSources())) "viewport")==signature) "Placement parity after settings round trip"
++ local savePath=VPRoot+"build/viewport-performance-test/lifecycle.max"
++ VPRequire (saveMaxFile savePath quiet:true) "Save candidate scene"
++ VPRequire (loadMaxFile savePath quiet:true) "Reopen candidate scene"
++ root=getNodeByName "VP_Controller";root.refreshDisplay()
++ VPRequire ((aminScatterPreviewCount ((root.layerObjects[1].cacheSnapshot())[1]))==40) "Reopen population"
++ VPRequire ((cyrusPreviewDrawStats ((root.layerObjects[1].cacheSnapshot())[1]))[3]>0) "Reopen batch cache"
++ format "PASS unchanged redraw, icon resize, Manual, drag deferral, layer enable, clone, placement parity and save/reopen\nSUCCESS\n" to:VPLog
++ close VPLog
++)catch(
++ format "FAILED: %\n%\n" (getCurrentException()) (getCurrentExceptionStackTrace()) to:VPLog;close VPLog
++ throw()
++)

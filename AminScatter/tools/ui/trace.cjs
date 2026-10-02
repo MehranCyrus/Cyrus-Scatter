@@ -20,7 +20,7 @@ module.exports = function trace(s) {
     replace(next,wrapper+next);
   }
   wrap('externalChanged',' changedNodes','    fn invalidateLive', 'cspImpl_externalChanged changedNodes','external_invalidation','("changed="+(answer as string))');
-  wrap('placements',' plants previewOnly:false rawOnly:false finalPass:undefined','    fn refreshPreview = (','cspImpl_placements plants previewOnly:previewOnly rawOnly:rawOnly finalPass:finalPass','placements','""');
+  wrap('placements',' plants previewOnly:false rawOnly:false finalPass:undefined','    fn refreshPreview = (','cspImpl_placements plants previewOnly:previewOnly rawOnly:rawOnly finalPass:finalPass','placements','#("",answer.count,previewOnly,rawOnly,finalPass!=undefined)');
   wrap('refreshPreview','','    fn checkAnalyzerRevision = (','cspImpl_refreshPreview()','preview_rebuild','#(previewError,generatedCount,cachedPointCount,previewBuildCount)');
   replace('    fn cacheSnapshot = (','    fn performanceTraceVersion = 1\n    fn cacheSnapshot = (');
   replace('fn AminScatterLiveChanged event handles = (','fn AminScatterLiveChanged event handles = (\n    if CyrusPerfTraceInput!=undefined do try(CyrusPerfTraceInput "scatter_input_received" event handles)catch()');

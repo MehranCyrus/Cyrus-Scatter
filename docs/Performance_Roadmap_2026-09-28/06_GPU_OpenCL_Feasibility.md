@@ -2,6 +2,8 @@
 
 **Decision:** include a real OpenCL experiment after a measured CPU baseline and improvement pass. No GPU speedup or device compatibility is currently demonstrated. CPU operation remains available without a compute runtime.
 
+**October 1 decision:** the first measured improvements are native source processing, boundary preparation, bounded CPU queries and redraw batching. OpenCL/CUDA compute is not enabled in 0.60. Measure the remaining interactive delay before choosing a kernel: supported Max 2027 viewport instancing is now a concrete next investigation, while GPU compute must still earn its transfer-inclusive benefit. See the [implementation report](../Performance_Implementation_2026-10-01.md).
+
 ## Why GPU details matter
 
 A GPU path needs supported device features, adequate available memory, and a driver/runtime that can execute the chosen kernel. Kernel execution can be fast while data conversion, transfers, synchronization, and host drawing still make the complete operation slower. A GPU also shares resources with Max's viewport and possibly the renderer.
