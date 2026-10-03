@@ -2,7 +2,7 @@
 
 3 October 2026. **Research and implementation proposal; no product code or Max scene was changed by this review.**
 
-**Later follow-up:** Brush ownership, stable identities and native UI were subsequently integrated in [Scatter v1](../Cyrus_Scatter_V1_2026-10-03/README.md). The [plant-group diagnosis](PLANTING_GROUPS_REVIEW.md) now tests artist feedback against installed 1.0.1 and provides the [next implementation plan](PLANTING_GROUPS_IMPLEMENTATION.md). Read those for current behavior. The starting-state inventory below remains historical; its zone/map proposals remain open.
+**Later follow-up:** Brush ownership and native UI were integrated in [Scatter v1](../Cyrus_Scatter_V1_2026-10-03/README.md). [Scatter 1.1](../Planting_Groups_2026-10-03/REPORT.md) now implements shared receiving surfaces, independent painted plant groups, colored coverage feedback and priority-based final-placement spacing. The [1.0.1 diagnosis](PLANTING_GROUPS_REVIEW.md) and [updated tracker](PLANTING_GROUPS_IMPLEMENTATION.md) retain the problem evidence and remaining gates. The inventory below is historical; semantic zone records and image-map exchange remain open.
 
 ## Recommendation
 

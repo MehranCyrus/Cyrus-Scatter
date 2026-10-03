@@ -26,6 +26,17 @@ int main(int argc,char** argv){
     require(close(one.evaluate(at(surface,{0,0,0})),.5),"Small paint on four-vertex plane failed");
     require(close(one.evaluate(at(surface,{1,0,0})),.5),"New candidate did not recover field");
     require(close(one.evaluate(at(surface,{3,0,0})),0),"Radius leaked");
+    // The continuous overlay must find a tiny dab even on a two-triangle mesh.
+    auto tint=coverage(surface,one);
+    require(!tint.limited&&!tint.triangles.empty(),"Coverage missed coarse-mesh dab");
+    for(const auto& t:tint.triangles){
+        const auto centre=(t.vertices[0]+t.vertices[1]+t.vertices[2])*(1./3);
+        require(close(t.weight,one.evaluateReference(at(surface,centre))),"Tint differs from the saved field");
+    }
+    auto tiny=doc;tiny.strokes[0].radius=.05;
+    require(!coverage(surface,Field(surface,tiny)).triangles.empty(),"Tiny coverage disappeared");
+    require(coverage(surface,one,2).limited,"Coverage budget was not reported");
+    require(coverage(surface,Field(surface,{surface.fingerprint(),{},1})).triangles.size()==2,"Filled coverage should reuse the coarse mesh");
     for(int i=0;i<100;++i)doc.strokes[0].samples.push_back(sample);
     require(close(Field(surface,doc).evaluate(sample.anchor),.5),"Callbacks accumulated opacity");
     stroke.id=2;doc.strokes.push_back(stroke);
@@ -85,6 +96,8 @@ int main(int argc,char** argv){
     Document history{terrain.fingerprint(),{}};
     for(unsigned i=0;i<40;++i){Hit h;terrain.hit({{uniform(rng),uniform(rng),100},{0,0,-1}},h);Stroke s;s.id=i+1;s.radius=1+(i%5);s.strength=.3;s.erase=i%4==0;s.samples={Sample{h.anchor,{{{1,0,0},{0,1,0},{0,0,1}}},sample.view}};history.strokes.push_back(s);}
     Field field(terrain,history);
+    auto terrainTint=coverage(terrain,field,4096);
+    require(!terrainTint.triangles.empty()&&terrainTint.triangles.size()<=4096,"Curved coverage preview exceeded budget");
     for(unsigned i=0;i<600;++i){Ray ray{{uniform(rng),uniform(rng),100},{0,0,-1}};Hit fast,slow;
         require(terrain.hit(ray,fast,INFINITY,&stats)==terrain.hitReference(ray,slow),"BVH/reference hit mismatch");
         require(close(fast.distance,slow.distance),"BVH/reference distance mismatch");

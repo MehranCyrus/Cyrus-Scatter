@@ -1,0 +1,1 @@
+{"instances":20000,"camera_steps":45,"step_ms":[4,3,3,9,5,3,3,6,3,2,4,9,4,3,5,3,3,3,3,6,5,5,6,4,3,3,5,3,3,3,3,3,3,3,3,3,4,4,3,6,3,3,3,2,4],"zero_generation":true,"zero_brush_queries":true,"zero_retained_uploads":true,"hide_cached":true,"native_thread_limit":0,"timing_semantics":"Synchronous viewport camera/redraw steps; not presented FPS"}

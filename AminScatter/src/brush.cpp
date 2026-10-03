@@ -178,6 +178,49 @@ struct Field::Impl {
     }
 };
 Field::Field(const Surface& s,const Document& d):impl(std::make_shared<Impl>(s,d)){}
+
+double Field::previewStep(std::uint32_t face,const std::array<Vec3,3>& bary)const{
+    double step=std::numeric_limits<double>::infinity();
+    for(auto link:impl->byFace.at(face)){
+        const auto& stroke=impl->document.strokes[link.stroke];const auto& sample=stroke.samples[link.sample];
+        Vec3 lo{INFINITY,INFINITY,INFINITY},hi{-INFINITY,-INFINITY,-INFINITY};
+        for(auto b:bary){auto p=mapped(impl->surface.position({face,b})-impl->centers[link.stroke][link.sample],sample.basis);lo={std::min(lo.x,p.x),std::min(lo.y,p.y),std::min(lo.z,p.z)};hi={std::max(hi.x,p.x),std::max(hi.y,p.y),std::max(hi.z,p.z)};}
+        const Vec3 nearest{std::clamp(0.,lo.x,hi.x),std::clamp(0.,lo.y,hi.y),std::clamp(0.,lo.z,hi.z)};
+        if(amin::dot(nearest,nearest)>stroke.radius*stroke.radius)continue;
+        double norm=0;for(auto basis:sample.basis)norm+=amin::dot(basis,basis);
+        if(norm>0)step=std::min(step,stroke.radius*.4/std::sqrt(norm));
+    }
+    return step;
+}
+Coverage coverage(const Surface& surface,const Field& field,std::size_t budget){
+    Coverage result;if(budget==0){result.limited=true;return result;}
+    struct Part {std::uint32_t face;std::array<Vec3,3> bary;unsigned depth;};
+    std::vector<Part> stack;std::size_t visited=0;
+    const auto count=surface.mesh().faces.size();
+    const auto stride=std::max<std::size_t>(1,(count+budget-1)/budget);
+    result.limited=stride>1;
+    for(std::size_t face=0;face<count;face+=stride){
+        stack.push_back({static_cast<std::uint32_t>(face),{{{1,0,0},{0,1,0},{0,0,1}}},0});
+        while(!stack.empty()){
+            if(visited++>=budget*12||result.triangles.size()>=budget){result.limited=true;return result;}
+            auto part=stack.back();stack.pop_back();std::array<Vec3,3> vertices;
+            for(int i=0;i<3;++i)vertices[i]=surface.position({part.face,part.bary[i]});
+            const auto step=field.previewStep(part.face,part.bary);
+            const auto longest=std::max({amin::length(vertices[0]-vertices[1]),amin::length(vertices[1]-vertices[2]),amin::length(vertices[2]-vertices[0])});
+            if(std::isfinite(step)&&longest>step&&part.depth<16){
+                const auto a=(part.bary[0]+part.bary[1])*.5,b=(part.bary[1]+part.bary[2])*.5,c=(part.bary[2]+part.bary[0])*.5;
+                stack.push_back({part.face,{{a,b,c}},part.depth+1});
+                stack.push_back({part.face,{{c,b,part.bary[2]}},part.depth+1});
+                stack.push_back({part.face,{{a,part.bary[1],b}},part.depth+1});
+                stack.push_back({part.face,{{part.bary[0],a,c}},part.depth+1});continue;
+            }
+            if(std::isfinite(step)&&longest>step)result.limited=true;
+            const auto weight=field.evaluate({part.face,(part.bary[0]+part.bary[1]+part.bary[2])*(1./3)});
+            if(weight>0)result.triangles.push_back({vertices,weight});
+        }
+    }
+    return result;
+}
 double Field::evaluate(Anchor a,QueryStats* stats)const{
     const auto position=impl->surface.position(a);if(stats)++stats->fieldQueries;double value=impl->document.base,q=0;std::uint32_t previous=UINT32_MAX;
     for(auto link:impl->byFace[a.face]){

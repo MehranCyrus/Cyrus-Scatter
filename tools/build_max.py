@@ -83,11 +83,13 @@ def package(project, name, version, native_names, script_name, args, build_dir):
     payload['INSTALL.txt'] = (
         f'{name} {version} - 3ds Max {args.max_year} x64\n'
         'Run this MZP through Scripting > Run Script, then restart Max.\n'
-        + ('Native Max layer editor with passive placement/preview/build statistics and separate viewport visibility.\n'
-           'Integrated procedural Brush: pick one receiving mesh, Paint/Erase, edit stroke history, Fill/Empty and Undo.\n'
+        + ('Native Max plant-group editor with a shared receiver, placement/display statistics and separate viewport visibility.\n'
+           'Coverage / Brush: Paint/Erase the selected group, edit stroke history, Fill/Empty and Undo.\n'
+           'Group spacing uses accepted final plants, pair gaps and priority; conflicting manual overrides are preserved and reported.\n'
            'Flat and curved static surfaces are supported. Topology changes require target validation; strokes are preserved.\n'
            'Manual mode updates the mask immediately and publishes plants when Update is pressed.\n'
-           'Painted density pauses Relax/Boundary Relax, preserving their saved settings. Disable painted density to use Relax.\n'
+           'Painted coverage pauses point Relax. Shared groups pause Boundary Relax. Stored settings are preserved.\n'
+           'Existing scenes retain legacy spacing. Explicit conversion is undoable; setups with CS Edit remain legacy.\n'
            'Randomize XYZ has separate Undoable rotation, scale, whole-scale and movement resets.\n'
            'Brush with unprojected random movement remains outside this release.\n'
            'Retained Nitrous point-cloud buffers, GPU-instanced Mesh preview, bounded proxy batches and deferred synchronization during held input.\n'
@@ -97,7 +99,7 @@ def package(project, name, version, native_names, script_name, args, build_dir):
            if project == 'AminScatter' else 'The Analyzer algorithm is unchanged in this performance iteration.\n') +
         'Create > Geometry > Cyrus, then select the tool and use Modify.\n'
         'Use saved test scene copies to compare performance and verify output.\n'
-        + ('Max 2027 runtime qualification is recorded in the v1 report. Max 2026 is SDK-built/tested and still needs host testing.\n'
+        + ('Max 2027 runtime qualification is recorded in the planting-groups report. Max 2026 is SDK-built/tested and still needs host testing.\n'
            'Cyrus Automation/MCP is a separate optional installation; Brush is not exposed as an MCP tool in schema 1.0.\n'
            if project == 'AminScatter' else '')
     ).encode('utf-8')

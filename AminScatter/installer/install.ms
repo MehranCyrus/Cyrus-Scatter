@@ -1,7 +1,7 @@
 -- Build placeholders are expanded by tools/build_max.py; run the packaged MZP.
 (
     if (maxVersion())[1]!=__MAX_VERSION__ then (
-        messageBox "This Cyrus Scatter 1.0 build requires 3ds Max __MAX_YEAR__." title:"Cyrus Scatter"
+        messageBox "This Cyrus Scatter __VERSION__ build requires 3ds Max __MAX_YEAR__." title:"Cyrus Scatter"
     ) else (
         local packageDir=getFilenamePath (getSourceFileName())
         local destination=pathConfig.appendPath (getDir #userScripts) "CyrusScatter"
@@ -27,7 +27,7 @@
             for key in #("AminScatter2026","AminScatter2027") do delINISetting pluginIni "Directories" key
             deleteFile (pathConfig.appendPath (getDir #userStartupScripts) "AminScatterStartup.ms")
             for name in #("AminScatter.mcr","Cyrus-AminScatterOpen.mcr") do deleteFile (pathConfig.appendPath (getDir #userMacros) name)
-            messageBox "Cyrus Scatter __VERSION__ is installed. Restart 3ds Max __MAX_YEAR__ to load the matching native engine.\n\nCreate > Geometry > Cyrus > Cyrus Scatter, then use Modify.\nThe Layers panel contains visibility, final-output enablement and cached statistics.\nSelect a layer and open Procedural Brush to paint on a flat or curved receiving surface.\n\nTest with a saved copy of your scene first." title:"Cyrus Scatter __VERSION__"
+            messageBox "Cyrus Scatter __VERSION__ is installed. Restart 3ds Max __MAX_YEAR__ to load the matching native engine.\n\nCreate > Geometry > Cyrus > Cyrus Scatter, then use Modify.\nPlant groups share one receiving surface and keep independent assets, coverage and statistics.\nSelect a group and open Coverage / Brush to paint. Group spacing controls pair gaps and priority.\n\nTest with a saved copy of your scene first." title:"Cyrus Scatter __VERSION__"
         ) catch (messageBox (getCurrentException()) title:"Cyrus Scatter installation")
     )
 )

@@ -64,7 +64,7 @@ public:
     double radius=20,strength=1,softness=.5,density=1;
     bool erase=false;
     std::uint64_t revision=1,fieldRevision=0,picks=0,baseBuilds=0,fieldBuilds=0,queries=0;
-    std::uint64_t repairedHits=0;
+    std::uint64_t repairedHits=0,overlayDraws=0;
     TimeValue snapshotTime=0;
     double maxHitError=0,lastEvaluationMs=0;
     // An independent bounded surface overlay, unrelated to surviving plants.
@@ -73,6 +73,11 @@ public:
     std::vector<b::Anchor> anchors;
     std::vector<double> weights;
     std::vector<std::pair<Point3,float>> overlay;
+    int displayMode=2;
+    Point3 displayColor{1.f,.65f,.2f};
+    std::array<std::vector<std::array<Point3,3>>,16> tint;
+    bool tintLimited=false;
+    std::size_t tintFaces=0;
     std::string error;
     struct Options {
         BOOL gather,normalData,mirror,update,pressure,preSize,preStr,ring,normal,trace,spline;
@@ -169,6 +174,18 @@ public:
         std::vector<std::pair<Point3,float>> nextOverlay;
         for(std::size_t i=0;i<anchors.size();++i){const auto w=indexed.evaluate(anchors[i],&stats);next.push_back(w);if(w>0)nextOverlay.push_back({point(candidates[i].position)*objectTM,float(w)});}
         weights=std::move(next);overlay=std::move(nextOverlay);queries+=stats.fieldQueries;fieldRevision=revision;
+        for(auto& batch:tint)batch.clear();tintFaces=0;tintLimited=false;
+        if(displayMode==2){
+            const auto coverage=b::coverage(*surface,indexed);tintLimited=coverage.limited;tintFaces=coverage.triangles.size();
+            for(const auto& triangle:coverage.triangles){
+                std::array<Point3,3> vertices;
+                for(int i=0;i<3;++i)vertices[i]=point(triangle.vertices[i])*objectTM;
+                const auto normal=Normalize(CrossProd(vertices[1]-vertices[0],vertices[2]-vertices[0]));
+                const float offset=std::max(1e-5f,Length(vertices[1]-vertices[0])*1e-4f);
+                for(auto& vertex:vertices)vertex+=normal*offset;
+                const auto bucket=std::clamp(int(std::ceil(triangle.weight*16))-1,0,15);tint[bucket].push_back(vertices);
+            }
+        }
         lastEvaluationMs=std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-start).count();
     }
     void restoreOptions(){if(!painter)return;
@@ -239,11 +256,23 @@ public:
     }
     BOOL CancelStroke()override{if(gesture){gesture=false;pending={};++revision;}return TRUE;}
     BOOL SystemEndPaintSession()override{CancelStroke();if(!ending){restoreOptions();painting=false;if(active==this)active=nullptr;}return TRUE;}
-    void PainterDisplay(TimeValue,ViewExp* view,int)override{
+    void PainterDisplay(TimeValue,ViewExp*,int)override{}
+    void drawOverlay(ViewExp* view){
         // Display consumes completed numeric overlay only; no mesh evaluation,
         // field queries, scene creation, or buffer publication belongs here.
-        if(invalid||!painting||!view)return;auto* gw=view->getGW();if(!gw)return;const auto limits=gw->getRndLimits();gw->setTransform(Matrix3(1));gw->setRndLimits(limits|GW_Z_BUFFER);
-        for(auto v:overlay){gw->setColor(LINE_COLOR,Point3(v.second,v.second,v.second));gw->marker(&v.first,POINT_MRKR);}gw->setRndLimits(limits);
+        if(invalid||!painting||!view||displayMode==0)return;++overlayDraws;auto* gw=view->getGW();if(!gw)return;const auto limits=gw->getRndLimits();gw->setTransform(Matrix3(1));gw->setRndLimits(limits|GW_Z_BUFFER);
+        if(displayMode==1){
+            gw->startMarkers();for(auto v:overlay){gw->setColor(LINE_COLOR,displayColor*(.3f+.7f*v.second));gw->marker(&v.first,HOLLOW_BOX_MRKR);}gw->endMarkers();
+        }else{
+            const Material previous=*gw->getMaterial();Material material;material.Ka=material.Kd=Point3(1,1,1);material.Ks=Point3(0,0,0);material.selfIllum=1;material.dblSided=1;material.opacity=1;
+            gw->setRndLimits((limits|GW_Z_BUFFER|GW_COLOR_VERTS)&~(GW_ILLUM|GW_WIREFRAME|GW_BACKCULL|GW_TEXTURE|GW_SHADE_CVERTS|GW_TRANSPARENCY|GW_TRANSPARENT_PASS));
+            for(int i=0;i<16;++i)if(!tint[i].empty()){
+                gw->setMaterial(material);gw->startTriangles();
+                for(auto& face:tint[i]){const Point3 shade=displayColor*(.2f+.8f*float(i+1)/16);Point3 colors[3]={shade,shade,shade};gw->triangle(face.data(),colors);}gw->endTriangles();
+            }
+            gw->setMaterial(previous);
+        }
+        gw->setRndLimits(limits);
     }
     IOResult Save(ISave* save)override{
         try{auto bytes=b::encode(document);save->BeginChunk(0x7301);ULONG done=0;auto result=save->Write(bytes.data(),static_cast<ULONG>(bytes.size()),&done);save->EndChunk();if(result!=IO_OK||done!=bytes.size())return IO_ERROR;
@@ -299,8 +328,18 @@ def_visible_primitive(cyrusBrushStop,"cyrusBrushStop");
 Value* cyrusBrushStop_cf(Value**,int n){check_arg_count(cyrusBrushStop,0,n);if(active)active->stop();return &ok;}
 def_visible_primitive(cyrusBrushSettings,"cyrusBrushSettings");
 Value* cyrusBrushSettings_cf(Value** a,int n){check_arg_count(cyrusBrushSettings,6,n);return api([&]()->Value*{auto* p=doc(a[0]);if(p->gesture)throw std::runtime_error("Finish the stroke before changing settings");b::Stroke check;check.radius=a[1]->to_float();check.strength=a[2]->to_float();check.softness=a[3]->to_float();b::validate(check);const auto density=a[5]->to_float();if(!std::isfinite(density)||density<0||density>1)throw std::runtime_error("Density must be 0..1");p->radius=check.radius;p->strength=check.strength;p->softness=check.softness;p->erase=a[4]->to_bool()!=FALSE;p->density=density;if(p->painting){p->painter->SetMinSize(float(2*p->radius));p->painter->SetMaxSize(float(2*p->radius));}p->NotifyDependents(FOREVER,PART_DISPLAY,REFMSG_CHANGE);return &ok;});}
+// Display settings never alter the stored field or its candidate membership.
+def_visible_primitive(cyrusBrushDisplay,"cyrusBrushDisplay");
+Value* cyrusBrushDisplay_cf(Value** a,int n){check_arg_count(cyrusBrushDisplay,3,n);return api([&]()->Value*{
+    auto* p=doc(a[0]);const int mode=a[1]->to_int();const auto color=a[2]->to_point3();
+    if(mode<0||mode>2)throw std::runtime_error("Invalid Brush display mode");
+    if(!std::isfinite(color.x)||!std::isfinite(color.y)||!std::isfinite(color.z))throw std::runtime_error("Invalid Brush display color");
+    if(p->displayMode!=mode){p->displayMode=mode;p->fieldRevision=0;}
+    p->displayColor=color/255.f;
+    if(p->painting)p->evaluate();return &ok;
+});}
 def_visible_primitive(cyrusBrushStats,"cyrusBrushStats");
-Value* cyrusBrushStats_cf(Value** a,int n){check_arg_count(cyrusBrushStats,1,n);auto* p=doc(a[0]);p->pollTarget();if(p->painting&&(p->invalid||!p->target||p->target->IsHidden()||p->target->IsFrozen()))p->stop();one_typed_value_local(Array* result);vl.result=new Array(14);std::size_t samples=0;for(const auto& s:p->document.strokes)samples+=s.samples.size();for(auto v:{p->revision,std::uint64_t(p->document.strokes.size()),std::uint64_t(samples),std::uint64_t(!p->invalid),std::uint64_t(p->painting),std::uint64_t(p->gesture),p->picks,p->baseBuilds,p->fieldBuilds,p->queries})vl.result->append(Integer64::intern(v));vl.result->append(new String(std::wstring(p->error.begin(),p->error.end()).c_str()));vl.result->append(Float::intern(float(p->maxHitError)));vl.result->append(Float::intern(float(p->lastEvaluationMs)));vl.result->append(Integer64::intern(p->repairedHits));vl.result->append(Integer64::intern(p->maskApplications));vl.result->append(Integer::intern(int(p->overlay.size())));vl.result->append(Float::intern(float(p->document.base)));return_value(vl.result);}
+Value* cyrusBrushStats_cf(Value** a,int n){check_arg_count(cyrusBrushStats,1,n);auto* p=doc(a[0]);p->pollTarget();if(p->painting&&(p->invalid||!p->target||p->target->IsHidden()||p->target->IsFrozen()))p->stop();one_typed_value_local(Array* result);vl.result=new Array(20);std::size_t samples=0;for(const auto& s:p->document.strokes)samples+=s.samples.size();for(auto v:{p->revision,std::uint64_t(p->document.strokes.size()),std::uint64_t(samples),std::uint64_t(!p->invalid),std::uint64_t(p->painting),std::uint64_t(p->gesture),p->picks,p->baseBuilds,p->fieldBuilds,p->queries})vl.result->append(Integer64::intern(v));vl.result->append(new String(std::wstring(p->error.begin(),p->error.end()).c_str()));vl.result->append(Float::intern(float(p->maxHitError)));vl.result->append(Float::intern(float(p->lastEvaluationMs)));vl.result->append(Integer64::intern(p->repairedHits));vl.result->append(Integer64::intern(p->maskApplications));vl.result->append(Integer::intern(int(p->overlay.size())));vl.result->append(Float::intern(float(p->document.base)));vl.result->append(Integer::intern(p->tintLimited?1:0));vl.result->append(Integer::intern(int(p->tintFaces)));vl.result->append(Integer64::intern(p->overlayDraws));return_value(vl.result);}
 def_visible_primitive(cyrusBrushRows,"cyrusBrushRows");
 Value* cyrusBrushRows_cf(Value** a,int n){check_arg_count(cyrusBrushRows,1,n);return api([&]()->Value*{auto* p=doc(a[0]);p->evaluate();two_typed_value_locals(Array* result,Array* row);vl.result=new Array(0);
     const auto population=p->document.surface^p->seed^p->capacity;
@@ -379,3 +418,8 @@ Value* cyrusClonePlacementRows_cf(Value** a,int n){check_arg_count(cyrusClonePla
     for(int i=0;i<rows->size;++i){type_check(rows->data[i],Array,_T("placement row"));auto* input=static_cast<Array*>(rows->data[i]);if(input->size<2)throw RuntimeError(_T("Invalid placement row"));vl.row=new Array(input->size);vl.result->append(vl.row);vl.row->append(new Matrix3Value(input->data[0]->to_matrix3()));for(int k=1;k<input->size;++k)vl.row->append(input->data[k]);}
     return_value(vl.result);
 }
+
+// Nitrous overlay submission uses the normal redraw callback. Painter owns
+// picking/strokes, but its legacy display callback is not invoked consistently.
+def_visible_primitive(cyrusBrushDrawCurrent,"cyrusBrushDrawCurrent");
+Value* cyrusBrushDrawCurrent_cf(Value**,int n){check_arg_count(cyrusBrushDrawCurrent,0,n);if(active){auto& view=GetCOREInterface()->GetActiveViewExp();if(view.IsAlive())active->drawOverlay(&view);}return &ok;}

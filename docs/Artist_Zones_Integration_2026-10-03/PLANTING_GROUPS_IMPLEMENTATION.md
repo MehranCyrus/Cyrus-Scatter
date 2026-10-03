@@ -1,6 +1,6 @@
 # Implementation plan for shared planting groups
 
-This plan addresses the [reproduced Brush preview and collision problems](PLANTING_GROUPS_REVIEW.md). Status: **diagnosis complete; product implementation pending**. It takes priority over new zone types, image-mask exchange and adaptive point detail for the next artist-facing iteration. Existing retained display and the 1.0.1 foundation remain the baseline.
+This plan addresses the [reproduced Brush preview and collision problems](PLANTING_GROUPS_REVIEW.md). Status: **core workflow and removal-only solver implemented in Scatter 1.1.0**. See the [implementation/qualification report](../Planting_Groups_2026-10-03/REPORT.md) and [artist guide](../Planting_Groups_2026-10-03/ARTIST_GUIDE.md). Existing retained display remains the baseline. Artist/renderer and actual Max 2026 qualification, selective dependency scheduling and constrained Relax remain separate gates.
 
 ## Product contract
 
@@ -75,6 +75,8 @@ Before implementation, pin this policy down in fixtures for movement, scale, del
 
 Cache receiver geometry, the base population, evaluated coverage and accepted placements separately. Invalidation follows their inputs. A changed red mask should reevaluate red and the lower-priority groups whose rules depend on it; it should not reseed blue or rebuild the receiving mesh. Groups higher in priority or unrelated by rules remain reusable.
 
+**1.1 implementation boundary:** prepared group candidates and completed setup placements are cached. A committed input change may rerun the setup's bounded priority resolver; selective dependency scheduling above is still a target, not a completed optimization. Display changes and camera-only navigation reuse the accepted snapshot. Density-map replacement identity is keyed; edits within a texture are refreshed with Update, without a general texture dependency watcher.
+
 Blocker cache keys must include accepted-placement revision, relevant source footprint/scale data, pair rule and Edit revision. Do not cache blockers solely from pre-edit procedural settings. Hidden-in-viewport groups remain part of final placement rules. Disabling a group from output removes its plants and blocking influence.
 
 Publish group changes coherently. In Manual mode, keep the previous completed placement snapshot until Update; allow separately labeled coverage feedback while painting. In Real-time mode, coalesce committed revisions and discard obsolete work before publication. Never publish red from one revision and dependent grass from another as if they were consistent.
@@ -95,14 +97,19 @@ The old 0.64 installer remains a comparison build; it cannot be assumed to read 
 - [x] Reproduce independent mask-dot counts, Point Cloud counts, Mesh limits and Manual publication.
 - [x] Prove four independently painted groups can share a target using existing records.
 - [x] Reproduce pre-mask spacing, removed blockers, mutually empty blockers and edited blocker positions.
-- [ ] Add fixtures for the desired policy alongside the diagnostic characterization; do not turn current failures into new-policy acceptance expectations.
-- [ ] Separate stable candidate preparation from mask membership, collision resolution and Edit binding. Preserve the legacy route.
-- [ ] Implement removal-only spacing after eligibility and a stable priority evaluator using accepted final blockers.
-- [ ] Introduce shared target binding and the native plant-group workflow over existing records.
-- [ ] Correct preview labels, centre identity, displayed limits and pending-update feedback.
-- [ ] Prototype and qualify the optional continuous coverage overlay after population correctness is established.
-- [ ] Qualify persistence, Undo/Redo, Copy, reorder/remove, output visibility, renderer output and both version-specific builds. Test Max 2026 in an actual host before claiming support is runtime-qualified.
-- [ ] Package a versioned candidate with its exact evidence and a short artist exercise: grass plus three overlapping painted flower groups on a plane and a sphere.
+- [x] Add new-policy fixtures beside the unchanged 1.0.1 diagnostic.
+- [x] Separate stable candidate preparation, masks, spacing and Edit binding; preserve the legacy route.
+- [x] Implement removal-only spacing after eligibility using priority and accepted final blockers.
+- [x] Introduce shared target binding and native selected-group controls over existing records.
+- [x] Correct preview labels, centre identity, limits and Manual pending feedback.
+- [x] Implement bounded continuous coverage; test its numeric field and visible Nitrous submission.
+- [x] Qualify save/reopen, Undo/Redo, Copy/Remove, stacked Edit, viewport/output membership and Scanline output in Max 2027; build/test both SDK targets.
+- [x] Package 1.1.0 with a grass/three-flower plane demo and curved-surface fixtures; see its separate evidence.
+- [ ] Test actual Max 2026 installation, UI, Brush and rendering.
+- [ ] Complete production foliage/renderer and artist acceptance on plane and curved receivers.
+- [ ] Add an artist-facing group reorder interaction if needed; no new reorder control ships in 1.1. Pair identity already uses GUIDs and tie order uses stable Edit keys.
+- [ ] Profile and implement selective dependency scheduling only where it pays for its complexity.
+- [ ] Qualify constrained Brush/Boundary Relax before enabling it.
 
 Required solver cases include empty/full/soft/overlapping masks, erase, masks changing near spacing boundaries, explicit pair gaps, conflicting priorities, a removed higher-priority plant, moved/deleted/scaled/cloned Edit output, hidden versus disabled groups, multiple sources, nonuniform target transforms, and repeated deterministic evaluation.
 

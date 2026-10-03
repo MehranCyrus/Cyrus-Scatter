@@ -1,0 +1,292 @@
+{
+  "version": "1.1.0",
+  "recorded_date": "2026-10-03",
+  "source_base_commit": "8d6b37e3376585eaec18b9dfb5e1b3470ed6258a",
+  "source_files_sha256": {
+    "AminScatter/Analyzer-Area-guide.md": "04f4a5cbff0bcb2280ddb018e6bf80c96cc686d7af33b4f25f51e7305b798dbd",
+    "AminScatter/Area-Falloff-Graph-guide.md": "cfbae79598e8f52597f419d39fca7e5fb2e04df73704e1e05d48d263f39bc4b6",
+    "AminScatter/Boundary-Falloff-guide.md": "1fbc9cd3cc27f091f271f318d06356d86726129e604a20185fbf35b39056f55d",
+    "AminScatter/Boundary-facing-guide.md": "80b81b28677a3e7a106cb4a17a365079ca906e406bbcbd096e995e4a91cb4bc8",
+    "AminScatter/CMakeLists.txt": "ff46e9dd3f0db106bcb97fd4397b0312e97f73cb80f5c83d20cede75f2536da4",
+    "AminScatter/CS-Edit-guide.md": "b228523b37bbe12575bdc5c28d7eb3bcd40980f542675b336193d15dbb6c3778",
+    "AminScatter/Edge-Border-0.44-fix.md": "32b35f12770938ea1125a9231d62431c3f1c6de894cdc562a16246bac9006ae1",
+    "AminScatter/Edge-Border-guide.md": "7d1cd7ea044da38791b2286ec4479231fd1286a7845f1eef467dce9346bcb7cd",
+    "AminScatter/Performance-0.58-guide.md": "f1411a17539a2f1fa251c72b63a0aad68270d2ca8dbe7428fd2efbc7718cd7de",
+    "AminScatter/README.md": "b2fb3ac40c0ee9b2f42e84c480d64477537a72f0c4f5862f3d1449ad1fe89451",
+    "AminScatter/Selection-0.59-fix.md": "4305e04db9fcf1e6612544ee6f3ea577da6786e79394a46eab4941bc79ea4f87",
+    "AminScatter/Street-layout-guide.md": "b0b07deff441a6167ac2151fcf3ca15b257e7314f33d0fe778bda32af75155bb",
+    "AminScatter/UI-0.49-guide.md": "a5b2deab72441fd6caf2da16d83b6dcf4cb533e6a60f4ecfd9cbe1fbd9c2fd1c",
+    "AminScatter/Viewport-display-guide.md": "b94b51b9c778d7783ced95230d29305dec9c95561ae39867654ab75c080faafc",
+    "AminScatter/include/brush.h": "c3859f67d437bf45eff2930d54c0e3652e390eecd341e3cb584d86ec1717ea56",
+    "AminScatter/include/execution.h": "e9f2cfdf677366f491dc01cea83301ce53111c5073633333a4adf1db2ad509d2",
+    "AminScatter/include/group_spacing.h": "01598640b4619e11334d663a85a3a2c83a692a94f6b8dc35de5612d9fb55f92d",
+    "AminScatter/include/point_preview.h": "5dec4890f38338f99baf1d0e163274aa515b455b34d3a8acc51f4e917017edb6",
+    "AminScatter/include/preview_sampling.h": "14e389d96653e861896a133c6efa9a6d42f96e2cc8d3e5e6ee665221b9a4645f",
+    "AminScatter/include/scatter.h": "4decbc6deed39b30f403b5f174ae0bc7735323f8bd6f7058f4c7d31f2a9f2739",
+    "AminScatter/installer/CyrusScatter.mcr": "74a3c13a1c3f3a5dc721cdce18bd690e28e36940601755442bcb7075a9d0eb34",
+    "AminScatter/installer/CyrusScatterStartup.ms": "fdf38b3bc83187eecb34b833bfff2751e78626e9e3dba41aa20a0ff7ff9e8405",
+    "AminScatter/installer/Uninstall.ms": "59e2b84901fcefaae1dab59886cd2f4079df4f764c789238947e19c514b4ed49",
+    "AminScatter/installer/install.ms": "e1b1eba190f63ff63801980900f747a9434ff95611273eda82d1bca488c05f5e",
+    "AminScatter/installer/mzp.run": "ba97caafe9959ac5d665f843ba898361545fcae93042e3b25b44f71a0dc200f5",
+    "AminScatter/scripts/AminScatter.ms": "404723402cd4fd076465f965a8328d98b53d2573f94b46d21b19747548dacd21",
+    "AminScatter/scripts/AminScatterObject.ms": "70405d4bac0e68e6f4af99363460f1035d5f1f6ae7680553d978a3a30fae97b6",
+    "AminScatter/src/analyzer_area_bridge.inc": "90c08d2650c8bea809900fd23f2abc8d3e26272c95d49a315552711aa6ad48bc",
+    "AminScatter/src/boundary_falloff.inc": "75c50dcde1c0d2339b526e7bb2019c4644ebd9512369fc09238ec62bbb749cec",
+    "AminScatter/src/boundary_falloff_bridge.inc": "0166986d3b7c1f3ff6f3694a7268814843e155474ba24b1b7e0d89c71164cf8a",
+    "AminScatter/src/brush.cpp": "9e8f8a05fb9989b032a7a04de797323635a8bbbd71ab8bcf245fd22c84ccd317",
+    "AminScatter/src/brush_host.cpp": "b3b8a78618c3a9efbef4af85cd4eeba5de9af21843d1fe59e7ec0d6025f4231d",
+    "AminScatter/src/brush_storage_plugin.cpp": "681b53bce87b832fd4464b5c50dcd163b08650600135115ef1a6a39b4750e1da",
+    "AminScatter/src/cluster.inc": "e3f7eddd8133e34f91c1e50d5c4d1ac4ca2f4a6dc611728a0848c16f9f3e3680",
+    "AminScatter/src/cyrus_edit.cpp": "1a2a2658cdfc40f411d433e06952824538d3f5fd275896d0b314eb32e35a54f8",
+    "AminScatter/src/cyrus_edit.rc": "2ed905b328e04f092f89a4e1e800d9fba724a0c33f9ea3262fe886040f53fb33",
+    "AminScatter/src/cyrus_edit_stack.inc": "331ceaed679fffb82ebabdabcf892a420ca4da27cb534c911d96c5f179b5b875",
+    "AminScatter/src/cyrus_edit_storage.inc": "561ef94b0fa26e16eb4058398cbff0e0f7c3c84ec74fc181d0c674be9fbf036b",
+    "AminScatter/src/edge_border.inc": "df5f43d5614d1d44a274b9a67c70c659d24964b1ffad665e1956232581951f8c",
+    "AminScatter/src/edit_plugin.cpp": "81df34e45b3a7635d5b7ebead5950cbaf7bf45a0f5a569385ba52c7e4901091f",
+    "AminScatter/src/execution.cpp": "b54963d69441d473ed52f76b125c4eb3d0a38c564900f28abd76efa7bcbf1136",
+    "AminScatter/src/final.inc": "eb77d2cfcbc74c87b02a047d67f3623984dcbe3bd8f6e818d8d4c2698fdc7272",
+    "AminScatter/src/geometry_preview.inc": "3a72c3064fb23f72e042554ad9d2e4ded7b4efaa1b481550f38753b357b8ad65",
+    "AminScatter/src/group_spacing.cpp": "8eaca642fe14293e1d6a7b3152853618d2c62391ff397b59632dc69fde579c0b",
+    "AminScatter/src/group_spacing_bridge.inc": "84514cdc7a7d4d9690d5ae179af1d9864897f4a1e56edacf2f4bacd158db77a7",
+    "AminScatter/src/max_bridge.cpp": "baa0cab3edefe9668578897d354a28a585415a1f4b1927d6bea2e448640a9aa9",
+    "AminScatter/src/mesh_display.inc": "91b694e319d1d5864f1ae6a6dd67c8bb033d44420f770ed0645c4cc4547d8c39",
+    "AminScatter/src/orientation.inc": "d485e2b8ea5c3abf3fc00a7e7b7139ae4b5d3995ee17f3aad7afff8cc4bfcea8",
+    "AminScatter/src/orientation_bridge.inc": "c967d950dfd1308bd989dc3e819b959ae64eb69acdaf728b4c6ba2dd694c639e",
+    "AminScatter/src/placement_identity.inc": "a33f6d19e8bff75b90e2cbbc2f969d00c5982c5301918efddf1108a86ca0a2aa",
+    "AminScatter/src/point_display.cpp": "fffbba8c231ee937e749116dd4a0184f4d0c8ff4c366d85c60495c463d1eb620",
+    "AminScatter/src/prepared_band.inc": "5d01452faed01a630428506cc7ce099ee909ce64204edef5448a03c1a1000cf0",
+    "AminScatter/src/preview.cpp": "6465bf8dcbaaf213ab24f6362c6f92156333008d4585a645f539ba60bd4d8d6c",
+    "AminScatter/src/preview_batches.inc": "a2a7df3d65a6278d49aad80361bffe8db15fae1419feb44e993354f5c31c7acd",
+    "AminScatter/src/scatter.cpp": "9ff51391dd3f5c9071ded61109b77eaaa8dcc37fed3ac092a55b85b2524ef8fb",
+    "AminScatter/src/spacing.inc": "96ef2d89f07cf9e6c67a93f4c91e990da98016f58c6278fce543a7b09e289c77",
+    "AminScatter/src/whole_scale_bridge.inc": "26496de7f5958219c4acbe66bffd2cd99b04120e89197d55d73e1e205f964f14",
+    "AminScatter/tests/boundary_falloff_tests.cpp": "ab48b370731b7f667fc39156654d532a0693b3e0a7836a06c759ed478bf3c06a",
+    "AminScatter/tests/brush_tests.cpp": "b2d62ac7e95d7678342f962f9dec7a977bb01d7272f7686c7cea242ffbf17a89",
+    "AminScatter/tests/compute_benchmark.cpp": "9f59cf70e0511c761d59c1c1b19335bbef0a3d9ddce30b3df93ce94f3adcc4c5",
+    "AminScatter/tests/data/brush_sphere_pole.txt": "3e2bf0a248e2e0539ff4eadce7af0e1f8f12850636aa5d1293c03a5ea78ee819",
+    "AminScatter/tests/edge_border_tests.cpp": "f85b1c429fc080e94ea7bdc5771286cef066d7979acfe4065caf5bc30f3c49b1",
+    "AminScatter/tests/group_spacing_tests.cpp": "67300e62c679ea27b95784216441af79119668cc3008a3a71dab04b493f75046",
+    "AminScatter/tests/orientation_tests.cpp": "3a49477ce55d03cd342beec23123b581a50a7d8f13626834207661c2f4fa8076",
+    "AminScatter/tests/prepared_band_tests.cpp": "ce1622cbe460eaba14c09a34ed669fcc74bdb08b018c17c754d12b0ddf33769d",
+    "AminScatter/tests/preview_sampling_tests.cpp": "e2eac5bd2ef640e5dc11f8778bb55749033baea4714d5fe2fccbd764f80be819",
+    "AminScatter/tests/scatter_tests.cpp": "c0e0eb48287e008d6f88c4baadd013d183bf49125f607c8c716315237600c402",
+    "AminScatter/tests/spacing_tests.cpp": "9fc18b3e4629b9e9a1b79b67ceb75f21ae671211396a5cfd909239040fc5a2e7",
+    "AminScatter/tests/threading_tests.cpp": "f3336cfd3ffe0c642fd839cf7eb4b6002fd697a04072010f963bf1d020f87507",
+    "AminScatter/tests/weight_tests.cpp": "792203629d369f7476d097c97f3dc8082811a5e5deb8fbc62ff74ab1a7b65df9",
+    "AminScatter/tools/ui/activation.cjs": "565cc12bcd904e8e6b9875e35bc48109b42ff032cb2fe8af576f4ec05184f0ba",
+    "AminScatter/tools/ui/analyzer-area.cjs": "bc1d472ef08351b7bf5112b1fca0552fa6610747edaa5d880050e80933c89adf",
+    "AminScatter/tools/ui/area-falloff.cjs": "153a1e93b0edd78bb941e03470d03e7fcc20c84596323d8421b3626c2c0b5a8b",
+    "AminScatter/tools/ui/boundary-falloff.cjs": "baefdb6ec38d63048358b00d599c2225278e9737300eb155ecd3403992e6e9ed",
+    "AminScatter/tools/ui/centers.cjs": "4579065bdd222e1714f70765840ff7998ff0b3e26e33eb780f8d20a7f01c84f0",
+    "AminScatter/tools/ui/compute-performance.cjs": "65792c2c1f117796cf45daf14c28633ec6490688c6f26283972d951aae51b371",
+    "AminScatter/tools/ui/display-modes.cjs": "d5b722fbb83d102e5173ee9c618e91e0af470427ddf9e3aca36941ea803442db",
+    "AminScatter/tools/ui/edge-border.cjs": "3401f9542166922dfffb0316f380420dd625e3bf5c4389ce171750d4616b1f83",
+    "AminScatter/tools/ui/edge-corners.cjs": "22f9c61b8117313ad1a5a2f042350713111ee236175c80594b375403a8a079a2",
+    "AminScatter/tools/ui/edge-rotation.cjs": "f1896d3c7be1ce047695ef84fd4251139eeecf3e2d372f5a09201f25f8e93564",
+    "AminScatter/tools/ui/edit.cjs": "e53a198c479027f39506d59f324f44226b570cb461e7a7e5e135df00da97c68b",
+    "AminScatter/tools/ui/empty.cjs": "c9f7c8ec3922d655157f4a8f793e075e3fa3babfa0225e0a2411059ddd64a8d7",
+    "AminScatter/tools/ui/final.cjs": "ac33e2ba4d660c1fb8673e8628afe91037152cfcc03cb8c970072a6863ed51d1",
+    "AminScatter/tools/ui/generate.cjs": "f98fcae90672aff93b663d59889fc948cb5383e389fd827e9cd14fe9c6834c56",
+    "AminScatter/tools/ui/layer-status.cjs": "82be9a58ca799299f80845d9e2d0be344ef2aa924d55b84df827f0bcdb34e970",
+    "AminScatter/tools/ui/native-v1.cjs": "ebc98ff0ecb36608dc1fa6e601ec7ff2df3c8cdb1b48629e9028f3c720dc5585",
+    "AminScatter/tools/ui/orientation.cjs": "f0d584965c6a28e46858e12b3e59047d104eaceac672a64d4ddc42d57ef6ae87",
+    "AminScatter/tools/ui/overlaps.cjs": "7c949fd674255f9ca26535aa89084907f74014ddd70906feb8fdacdb808c3f43",
+    "AminScatter/tools/ui/performance.cjs": "507799812df3f13e2499fd9c803d44c1a6356f631387edd52fedc3e9f1b10ef2",
+    "AminScatter/tools/ui/planting-groups.cjs": "ea07852bca03b1f8d140715276e8734c2573ade5cf31def88be4f35248339794",
+    "AminScatter/tools/ui/point-source.cjs": "fb9fb4d351173526e01396d0a74a1cb1a7321151dc47bec47d10b1c6d22dbdb4",
+    "AminScatter/tools/ui/procedural-brush.cjs": "c2697195142454c5879f092e438231bf8096263c79be32ae239fb134e745a748",
+    "AminScatter/tools/ui/radius-display.cjs": "edf47968303b7c4bb202a5f74877e150de9376c519e35abd25a85bc821aa2694",
+    "AminScatter/tools/ui/radius.cjs": "a021915901b3b4d985f79e76e47d0a398ddc523578f19f0004f836eac46ff3b5",
+    "AminScatter/tools/ui/random-reset.cjs": "34640722dda2262e7f1bf8e8eb048b27bfece133f5c0bf213a46ff9d07e775d6",
+    "AminScatter/tools/ui/responsive.cjs": "ef4d9939aae08f40a0593ad5bcdd1ad78950a5d7f9d110e03582fb3c3b57c81a",
+    "AminScatter/tools/ui/retained-points.cjs": "593e7bfafd425692911b602ceb3b041ca4cfef63e6d53b8886281860b284de55",
+    "AminScatter/tools/ui/source-refresh.cjs": "4a64cc142d1db0bce03e2c63bc6e43251b0f190ecbc1472f327c5ff2fe9d32aa",
+    "AminScatter/tools/ui/source-transforms.cjs": "1206435ac0f37d953b897aebc61996295b880c091bee8dab7d69ae9dbd88237d",
+    "AminScatter/tools/ui/spacing.cjs": "eaca66a90fb6bd72de4e45b3720478ef242c8c4ac10525bcdebb8a4d8f652179",
+    "AminScatter/tools/ui/street-layout.cjs": "f5c77fc5e6902e44caa5702d882d54e98016dd2652b6170250b9a6f2d4176ac2",
+    "AminScatter/tools/ui/templates/analyzer-area-ui.ms": "70812259761ce88b4adc5b939b236cdd8ea68fe1d9d77a66e13497b65b997ea5",
+    "AminScatter/tools/ui/templates/area-falloff-methods.ms": "10f6ebb739663e8c8f4318b4d8900e167665fa3cd0928a76718880ff95f8a8e2",
+    "AminScatter/tools/ui/templates/area-falloff-ui.ms": "a4fe059f68418cccf52861c8426c779e5a3579f3715f4bae8147e1b232e9ecfd",
+    "AminScatter/tools/ui/templates/before.ms": "4ffe3f7698b0df6d6653364189fcf3d2563d90186ce266072e5e39cea1ed3bfa",
+    "AminScatter/tools/ui/templates/brush-integration.ms": "d5c41da040e7cf3cbf8963912c872ed0665f083d39911e04526b6fb60bac1e9b",
+    "AminScatter/tools/ui/templates/brush-session.ms": "5c2f0e72d2253649df3db989a6cf5429eb4276a67483b022161a30ebd7ca5015",
+    "AminScatter/tools/ui/templates/containers.ms": "6d96dde606ce89a395c193070799cf0dc694eff3d8d48591d603cda83c7444a4",
+    "AminScatter/tools/ui/templates/falloff-graph.ms": "73ff8983484f282b29e5b2d559e54658f9465520dc26a0cdd9b5507a729d568b",
+    "AminScatter/tools/ui/templates/host.ms": "a0fcf1cfc1d293fdf483e7808478da497c19075088b76953462d35f080f40fc3",
+    "AminScatter/tools/ui/templates/layer-status-helpers.ms": "6eef1a52ad2023501de8181941b41c728193cddff34be215c80c0eca2fec1405",
+    "AminScatter/tools/ui/templates/layer-status-manager.ms": "d14ac61aee62825db57d87513215036d0dfa866383f57a60c998175fdc0b517d",
+    "AminScatter/tools/ui/templates/native-layers.ms": "22aff7346b7672621c20f57224c79d40245c3b9b11015fb85d4d3b4b00698951",
+    "AminScatter/tools/ui/templates/pflow.ms": "a613a919abdead513504ae6d275fe90a7d8c6090403572cc6cf482a0437b9e7a",
+    "AminScatter/tools/ui/templates/planting-brush.ms": "7e54feb587e509b0fea306739d4e49bb08ed31396f68563ecfbcb6fb229a1bbc",
+    "AminScatter/tools/ui/templates/planting-manager.ms": "04344354ae1b5ab227611d321b37dde469bf9aa4d6fd34e85fcffe408d5867fa",
+    "AminScatter/tools/ui/templates/planting-model.ms": "f21aba3af533ce84c1991fbcfbfa0d45308aa9ef1e40898ae2fe4fc3714e9edc",
+    "AminScatter/tools/ui/templates/planting-separation.ms": "e61bb100f70b4e433e6931c26fb36cb620ec7cfcdd69f9430a29e1c05c28a020",
+    "AminScatter/tools/ui/templates/storage.ms": "e0abd4988dcc117ace4931ee3d3c7a5238be0262aab0b85aa4f8ffb342eb0e52",
+    "AminScatter/tools/ui/templates/street-layout-methods.ms": "62f4c02911d277e535da74aff6f1ecde8a8e5abc32614498b76f8c599f113e58",
+    "AminScatter/tools/ui/templates/stroke-ui.ms": "c022ab57919d180a72d274705f86b22b5236538d06f84911a7b06a5b283bcacf",
+    "AminScatter/tools/ui/templates/strokes.ms": "949e338cb27ee5c59e94cb1979d85557ca15e062b7ed1d823fde9f086174a1f9",
+    "AminScatter/tools/ui/trace.cjs": "0d674e3602e4cba29a40246855c2acf8fdb46c1ae5440bf50d710619869b0800",
+    "AminScatter/tools/ui/viewport-performance.cjs": "01c8f3cbae5f3587b509ffa3d7d68abf601a6b5f4960c35532142938eca01f53",
+    "AminScatter/tools/ui/weights.cjs": "e9eac9bf22f6ecef3fe34e00ae36484179782cb037919fc450ba78596cb14814",
+    "AminScatter/tools/ui/whole-scale.cjs": "24dfcfb11ba91748a26d09cc3825f79f244d46e2ba922c077f12af83a090df39",
+    "tools/build_max.py": "9770e8ce12ae59ab95b495dbc1af26f0d6919c74b6bc3e5b35a44e8e33e499a2",
+    "tools/v1/README.md": "990bd2f5f317419d064c2bb0939c4294e0905c3a5a009ad0fba557421f34b0a3",
+    "tools/v1/brush_fixture.ms": "74a7db7817a25a69debd1b30fe1ea1b70a9b74e0338ffc5517a68465344664f7",
+    "tools/v1/brush_relax_reopen_fixture.ms": "470683ebcad7811211076849b257beb0039bfedb524c7d5343c8a8c669b29deb",
+    "tools/v1/brush_relax_reset_fixture.ms": "7398c1ec05215dc72e3925a87b7f358847ae95ba6d1e24de08830e76af57072d",
+    "tools/v1/brush_relax_save_fixture.ms": "41cfed24d65cc3cd622ec0b71366b0b10ab871a308baf3e5e52149f09d85e1d9",
+    "tools/v1/build.py": "aef30bdf2ec6eb40206fb499af2573397f20124aa96802280b9ad00082e50d98",
+    "tools/v1/cache_and_copy_fixture.ms": "f31c882fa4585e5681869da1ff199d0312dd8a6e4e62ab1b148b8b0245e56dae",
+    "tools/v1/collect_evidence.py": "3fe17bd3ba038113888d2b45233a98f0cb0fbb174a02944a98c2f4e63e3afebf",
+    "tools/v1/collect_patch_evidence.py": "afebc25d18df1997f5ae9782086eaa36505a89fcb2e4481cbfdc66708352e089",
+    "tools/v1/collect_planting_evidence.py": "8923181f293e8e8122609d7f8bb5c35e42ac97439fe419097928e8309b0007fc",
+    "tools/v1/curved_and_edit_fixture.ms": "4210b8b86eb7e442b11c35bfda21c59f0203424a64d9d376a3b9ca40ada6126f",
+    "tools/v1/demo.ms": "5804b27dc2cf197bde54b805caf454baa8b495470c748252ffa7d8f358dee0f2",
+    "tools/v1/group_mask_diagnostic.ms": "dbf633b8566c7efca286f8e3c0a4c867cbc75e307eeb54ab10516c96e9219f43",
+    "tools/v1/identity_fixture.ms": "67686ddbc563410c4998cd9e6aa05a3a092c50c348a02fa8f462263d63528d99",
+    "tools/v1/installer_fixture.ms": "20835128eda7b9749b245884edbd1c8b6c5129ce6405cc80b3c4c37f0d632534",
+    "tools/v1/launch.py": "3d359718fa466f71df8df30097345585ad2b66e1ec59ef6174b238c9385f4814",
+    "tools/v1/legacy_fixture.ms": "150bc27c0c6e6d43ea74aa76062784b9151b7507ba50c9de9ce5ec3dae952fe8",
+    "tools/v1/native_panel_fixture.ms": "b50d18711792aa9110d61bc57b2419cc36bc47c7f5984b050e63cc9ce6f91fba",
+    "tools/v1/native_panel_probe.ms": "97e8255a219d2cc8c5493ad30a19854799edb6b521eda3b65332f32e275a274d",
+    "tools/v1/navigation_fixture.ms": "db242b473fa48eb8d89d91940facc33a7ff6aa60ad882034f75498500f072eff",
+    "tools/v1/output_and_restore_fixture.ms": "528624e31f5ccf7e641297faa5d532549b4437cf770e1a4d21dbc2aad55849f4",
+    "tools/v1/package.py": "d038dd802d2c0f691356dcfbd05090a7d240ed87c54ee9c12e4f2d2476704a6b",
+    "tools/v1/planting_advanced_fixture.ms": "e3add0fa9d7c3182d10c749f70a97cb3f7d7ef54d8e6291e0695f3184ccf117a",
+    "tools/v1/planting_demo.ms": "b4cd446959c7dca5fb64c3189d9156156dc1146929b125a12cdb8827577e4854",
+    "tools/v1/planting_gesture_fixture.ms": "95a50542afb8add08831b8eb34e95b85be887c408f32a7905f4b069cc73cd454",
+    "tools/v1/planting_groups_fixture.ms": "720c5fdffea0be32ee4d54812adb0c4fd274eec6f734db696d374656f4ef5644",
+    "tools/v1/planting_legacy_fixture.ms": "c5ed9d4139f6ef6a1d9b732a27e2b597eff9c0894181ce8313271c6891506849",
+    "tools/v1/planting_output_fixture.ms": "3f51decdf2d6c4219e40f2fc920416f6201656b4fbd7f031e16b1ddf6e5fc119",
+    "tools/v1/planting_qualification.ms": "d0c7c04a5aec0e127ba8156f4e823a9785d5f5abcf2c1f426ff8fa46ea104a8d",
+    "tools/v1/planting_release_fixture.ms": "64e5b0bb3f41ee9aef8814b9ad126ce17923bac31ca14b3f40b1fc13d6b6e287",
+    "tools/v1/planting_reopen_fixture.ms": "9fde1a0fa200466133b32ba395530378e88330aac7678372dd09fc86c55461cb",
+    "tools/v1/qualification.ms": "da2411455b8adea3d98788f0dca9f76183136feb03f616c409ba386a888247cb",
+    "tools/v1/random_reset_ui_fixture.ms": "e5ca51a8db7c4aaadafee7ebe56127c42cfc615d5419f528e2d12b3ef03ab132",
+    "tools/v1/reload_product.ms": "7bde63133ce900b22daa72cd21284edbcc6d9c237ffd938c680b0fe27e123a2a",
+    "tools/v1/render_fixture.ms": "22306c53377d1a5fb2de63eb02a1d002aa21e9b3de9b9ab8bacbdb080a4660ec",
+    "tools/v1/reopen_fixture.ms": "46516fb306e224b02eb9c09439f076bd138ec6506db79c75e1aac9c14ba849fc",
+    "tools/v1/request.py": "16df21625ad864568d96c1b83685744933f57ea85d0e3092a98cbc614997a391",
+    "tools/v1/status_verify.ms": "8f1563fdee7cfd8e08dcf6d13c43aee766492e0aad81ff3b549d9016fd27d914",
+    "tools/v1/transport.ms": "5034ff82826d54e62ee80345f9597a22586ab9b7f9d0f42882b78bd79a96b309",
+    "tools/v1/ui_gesture_fixture.ms": "16805a980ff3d1ab90c0f782abb9f8ade385be63cd9e1ba8f5dbf55d5cbd18ec",
+    "tools/v1/ui_update_fixture.ms": "37df5b5df94ab863d52eaa078f0a2651358d2f0f818a1656fc054842c56a4e1e",
+    "tools/v1/uninstall_fixture.ms": "22ac17a523bfde0c7c5c08a804a55c949e3f6132dff02252adf3811809fd9e6c",
+    "tools/v1/verify_install.py": "611069f9d35ccb670341adcedfe117c215093b37a5e6a5533d9541e5d42cb188"
+  },
+  "results": {
+    "planting-groups-acceptance.json": {
+      "source": "build/cyrus-v1/hosts/groups-110-qualified/planting-groups-acceptance.json",
+      "sha256": "2811502429fdd9ea2f9303ae5300f0f61a89e25d03d572bbdb13bce828d6baf0"
+    },
+    "planting-output-acceptance.json": {
+      "source": "build/cyrus-v1/hosts/groups-110-qualified/planting-output-acceptance.json",
+      "sha256": "4defe14f0350a6b352ede5482286b19413eed3769545364bb354be2629cabf70"
+    },
+    "planting-advanced-acceptance.json": {
+      "source": "build/cyrus-v1/hosts/groups-110-qualified/planting-advanced-acceptance.json",
+      "sha256": "c4ac161b4aa5c1877c122ce28adb15571870fc563acd5dce8c44bdc944dc41d7"
+    },
+    "groups-reopen-acceptance.json": {
+      "source": "build/cyrus-v1/hosts/groups-110-qualified/groups-reopen-acceptance.json",
+      "sha256": "e51b357d0f53cf77cb6509449a0bf49e53ae0dc09b828aa2c96c0565473a4a6c"
+    },
+    "native-v1-fixture.json": {
+      "source": "build/cyrus-v1/hosts/groups-110-qualified/native-v1-fixture.json",
+      "sha256": "2229571eb623b95647dbd7ea1b551390d6f7411305ad8315e477d289b6d76130"
+    },
+    "navigation-acceptance.json": {
+      "source": "build/cyrus-v1/hosts/groups-110-qualified/navigation-acceptance.json",
+      "sha256": "511487330cb6a127ac2d1fa2064063127f2c319f51829a72ee87e22880ae0f2a"
+    },
+    "render-acceptance.json": {
+      "source": "build/cyrus-v1/hosts/groups-110-qualified/render-acceptance.json",
+      "sha256": "6ae86f561cf909438dbdad4b381ac27bc899a18b05e8a09be8783291fade42fc"
+    },
+    "groups-ui-gesture.json": {
+      "source": "build/cyrus-v1/hosts/groups-110-qualified/groups-ui-gesture.json",
+      "sha256": "7fd4bcc83e2e0961fb5ac176a4b945becaafbda9d5dc69b44d88165c94bd1c76"
+    },
+    "groups-demo.json": {
+      "source": "build/cyrus-v1/hosts/groups-110-qualified/groups-demo.json",
+      "sha256": "d7d661a42237363a47e085778795996c25d58c8974602c1d1f788820b756ea42"
+    },
+    "loaded-identity.json": {
+      "source": "build/cyrus-v1/hosts/groups-110-qualified/loaded-identity.json",
+      "sha256": "02c680bfa4f6b332a558a6018ff2285d8e91f20c6d8f79d83622ae424f801ffb"
+    },
+    "installation-verified.json": {
+      "source": "build/cyrus-v1/hosts/groups-installed-release/installation-verified.json",
+      "sha256": "de506f3b53e046364448e3e98e9746bbfdd3b059505a068bfeb1868b69885e7e"
+    },
+    "uninstall-acceptance.json": {
+      "source": "build/cyrus-v1/hosts/groups-installed-release/uninstall-acceptance.json",
+      "sha256": "8b8985811e19674dbef5b1c6039592a40c66878af91f0175ff2aefd0d68c907c"
+    },
+    "planting-legacy-acceptance.json": {
+      "source": "build/cyrus-v1/hosts/groups-110-qualified/planting-legacy-acceptance.json",
+      "sha256": "e5158503ba8a6687633c5b13cc2ac10e828abb126494f7c26b2fe50e048f1683"
+    },
+    "screenshots/group-manager.png": {
+      "source": "build/cyrus-v1/hosts/groups-110-qualified/screenshots/group-manager.png",
+      "sha256": "5dcc1f0e9e8a31047c55894a339e64744a36909a338c54c36d973657bda4f36f"
+    },
+    "screenshots/paint-coverage.png": {
+      "source": "build/cyrus-v1/hosts/groups-110-qualified/screenshots/paint-coverage.png",
+      "sha256": "4cb1c4072907395f126091aa8ee567ca39d2b1b7a5992ecf8ccd38f3fa2bcaf9"
+    },
+    "python-tests.xml": {
+      "source": "build/cyrus-v1/groups-python-tests.xml",
+      "sha256": "fb34b33060e6f2777b3d3a8b644f0aef73928f39a23a8f2b58d1928aed8c2cd0"
+    },
+    "max2026/build-0.log": {
+      "source": "build/cyrus-v1/max2026/build-0.log",
+      "sha256": "eaf6d2d21eebb5d6d9e9cdece4461b605ab1e5a4f4dad85dc215f5e47c966da6"
+    },
+    "max2026/build-1.log": {
+      "source": "build/cyrus-v1/max2026/build-1.log",
+      "sha256": "d950b83d1e82bab17f79de822a5cf380a2141649038754d85f0c4e9bb47c9cc0"
+    },
+    "max2026/build-2.log": {
+      "source": "build/cyrus-v1/max2026/build-2.log",
+      "sha256": "510cc16930ee96e9c5c7b65a27dfb78f12eb18ed3fdb57523536db68113adc9a"
+    },
+    "max2026/identity.json": {
+      "source": "build/cyrus-v1/max2026/identity.json",
+      "sha256": "7b85d2b0b26daad30894b53678b41b3c1a90efb1a69dda1ad931b1c6b5a655c6"
+    },
+    "max2027/build-0.log": {
+      "source": "build/cyrus-v1/max2027/build-0.log",
+      "sha256": "5897bf7baad95d569245531a2e0fbcbf6c97a9ef6c502d853cf9d008fcebce37"
+    },
+    "max2027/build-1.log": {
+      "source": "build/cyrus-v1/max2027/build-1.log",
+      "sha256": "d950b83d1e82bab17f79de822a5cf380a2141649038754d85f0c4e9bb47c9cc0"
+    },
+    "max2027/build-2.log": {
+      "source": "build/cyrus-v1/max2027/build-2.log",
+      "sha256": "10b4930d937faf856e7201b55566134c35f1b059f7261cecc09e5c14d8dfafb0"
+    },
+    "max2027/identity.json": {
+      "source": "build/cyrus-v1/max2027/identity.json",
+      "sha256": "4a8fe10656ca09d91fd62812dd5e9aa2c81331c0572cf59b10f0694687f627b7"
+    }
+  },
+  "packages": {
+    "2026": {
+      "sha256": "9badabef5ac13bb905ee4def466f6ea1bdb712f404f1bbecdaae51bc482e73c3",
+      "native_id": "6ca00eddb0b4"
+    },
+    "2027": {
+      "sha256": "559529f302c66b72d8d8ae974ab2bed64a0ff4d9bc281808a31eceb715ae59b7",
+      "native_id": "2588792a0745"
+    }
+  },
+  "demo_sha256": "274d7a957b895bdc7c7501a7136abdf8690551326b9a4f609d30c0316382592f",
+  "demo_format": "Max 2027",
+  "limits": [
+    "Max 2026 SDK/native only",
+    "Navigation steps are not presented FPS",
+    "Scanline synthetic render only; other renderers need qualification"
+  ]
+}

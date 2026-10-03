@@ -1,0 +1,22 @@
+{
+  "product": "Cyrus Scatter",
+  "version": "1.1.0",
+  "max_year": 2027,
+  "toolset": "14.38.33130",
+  "windows_sdk": "10.0.19041.0",
+  "configuration": "Release",
+  "native_id": "2588792a0745",
+  "files": {
+    "AminScatter.dlx": "c8bddf3b9c75c9f4169e846ce88b5e1ba553946338fa4f55b6acde3943673a2e",
+    "CyrusBrush.dlx": "9c055b143e0b7baf3fdde5b930b94362fd5f7d82a896b28cb81ee2c53419f393",
+    "CyrusBrushStorage.dlh": "78dcf68d8a9fc4dcbd6945d2bc3ac7f6d526a618371b9c5eb36278d9e3dd9812",
+    "CyrusScatter.mcr": "74a3c13a1c3f3a5dc721cdce18bd690e28e36940601755442bcb7075a9d0eb34",
+    "CyrusScatter.ms": "70405d4bac0e68e6f4af99363460f1035d5f1f6ae7680553d978a3a30fae97b6",
+    "CyrusScatterEdit.dlm": "828c82d8a0762698013761e1cab6365119c5627e41f0ab215703a59dd34e8e6f",
+    "CyrusScatterStartup.ms": "fdf38b3bc83187eecb34b833bfff2751e78626e9e3dba41aa20a0ff7ff9e8405",
+    "INSTALL.txt": "34a7eac96b0d97c8496a4b56122e05b5e3cbbca3f6e38aa4468ade111c57aad4",
+    "Uninstall.ms": "59e2b84901fcefaae1dab59886cd2f4079df4f764c789238947e19c514b4ed49",
+    "install.ms": "8aad64c9492f5812bf264c9d524e9c36b0ad6cdadf6a34f7736c8df434e17afe",
+    "mzp.run": "5d44ebfedb518bd79b87d937cba1a54c7362c4b2f7a7c7abe514bf055359f871"
+  }
+}

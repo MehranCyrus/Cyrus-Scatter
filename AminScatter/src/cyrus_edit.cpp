@@ -23,7 +23,7 @@
 static unsigned editRevision=0;
 static std::wstring pointId(){GUID id{};if(FAILED(CoCreateGuid(&id)))throw RuntimeError(_T("Cannot allocate instance identity"));wchar_t text[40];StringFromGUID2(id,text,40);return text;}
 struct EditRow { std::wstring inputId,outputId;unsigned source=0; Matrix3 delta{1}; bool deleted=false,selected=false; };
-struct EditLayer { std::wstring signature; bool invalid=false,active=true,legacy=false,pending=false;std::vector<EditRow> rows;std::vector<Matrix3> input;std::vector<int> sources; };
+struct EditLayer { std::wstring signature; bool invalid=false,active=true,legacy=false,pending=false;std::vector<EditRow> rows;std::vector<Matrix3> input;std::vector<int> sources;bool published=false,viewportVisible=true;std::unordered_set<std::wstring> publishedIDs;bool shown(const EditRow& r)const{return viewportVisible&&!r.deleted&&r.source<input.size()&&(!published||publishedIDs.count(r.outputId)>0);} };
 class CSEdit;
 class EditRestore:public RestoreObj { CSEdit* mod;std::map<int,EditLayer> before,after;public:EditRestore(CSEdit*);void Restore(int)override;void Redo()override;void EndHold()override;MSTR Description()override{return _T("CS Edit");}};
 class CSEdit:public Modifier,public EventUser {
@@ -49,7 +49,7 @@ public:
  void status(){
   if(!panel)return;bool invalid=false,pending=false;unsigned selected=0,total=0,suspended=0;
   for(auto& [k,l]:layers){if(!l.active)continue;invalid|=l.invalid;pending|=l.pending;
-   for(auto& r:l.rows)if(!r.deleted){if(r.source>=l.input.size()){++suspended;continue;}++total;if(r.selected)++selected;}}
+   for(auto& r:l.rows)if(!r.deleted){if(r.source>=l.input.size()){++suspended;continue;}if(l.shown(r)){++total;if(r.selected)++selected;}}}
   std::wstring text=pending?L"Legacy edits: restore lower modifier states to recover.":invalid?L"Layout / Seed changed. Reset Edits required.":std::to_wstring(selected)+L" selected / "+std::to_wstring(total)+L" instances; "+std::to_wstring(suspended)+L" suspended";
   if(text!=lastStatus){lastStatus=text;SetDlgItemText(panel,1001,text.c_str());}
  }
@@ -57,13 +57,13 @@ public:
  bool valid(){for(auto& [k,l]:layers)if(l.active&&l.invalid)return false;return true;}
  void hold(){if(theHold.Holding()&&!holding){theHold.Put(new EditRestore(this));holding=true;}}
  void reset(){theHold.Begin();hold();layers.clear();changed();theHold.Accept(_T("Reset CS Edit"));holding=false;}
- void Notify()override{if(level==0)return;theHold.Begin();hold();for(auto& [k,l]:layers)if(l.active&&!l.invalid)for(auto& r:l.rows)if(r.selected&&r.source<l.input.size())r.deleted=true;changed();theHold.Accept(_T("Delete scatter instances"));holding=false;}
+ void Notify()override{if(level==0)return;theHold.Begin();hold();for(auto& [k,l]:layers)if(l.active&&!l.invalid)for(auto& r:l.rows)if(r.selected&&l.shown(r))r.deleted=true;changed();theHold.Accept(_T("Delete scatter instances"));holding=false;}
  static INT_PTR CALLBACK dlg(HWND h,UINT msg,WPARAM w,LPARAM l){auto* m=reinterpret_cast<CSEdit*>(GetWindowLongPtr(h,GWLP_USERDATA));if(msg==WM_INITDIALOG){m=reinterpret_cast<CSEdit*>(l);SetWindowLongPtr(h,GWLP_USERDATA,(LONG_PTR)m);m->panel=h;m->lastStatus.clear();m->status();return TRUE;}if(msg==WM_COMMAND&&m){if(LOWORD(w)==1002)m->reset();if(LOWORD(w)==1003)m->Notify();if(LOWORD(w)==1004&&m->ip)m->ip->SetSubObjectLevel(1);return TRUE;}return FALSE;}
  void BeginEditParams(IObjParam* p,ULONG,Animatable*)override;
  void EndEditParams(IObjParam*,ULONG,Animatable*)override;
  void ActivateSubobjSel(int l,XFormModes& modes)override{if(ip){if(l&&!level)ip->RegisterDeleteUser(this);if(!l&&level)ip->UnRegisterDeleteUser(this);}level=l;if(l)modes=XFormModes(move,rotate,nscale,scale,nullptr,select);changed(false);}
  struct Visible {int layer;unsigned row;Point3 p;};
- std::vector<Visible> visible(){std::vector<Visible> out;for(auto& [k,l]:layers)if(l.active&&!l.invalid)for(unsigned i=0;i<l.rows.size();++i){auto& r=l.rows[i];if(!r.deleted&&r.source<l.input.size())out.push_back({k,i,(l.input[r.source]*r.delta).GetTrans()});}return out;}
+ std::vector<Visible> visible(){std::vector<Visible> out;for(auto& [k,l]:layers)if(l.active&&!l.invalid)for(unsigned i=0;i<l.rows.size();++i){auto& r=l.rows[i];if(l.shown(r))out.push_back({k,i,(l.input[r.source]*r.delta).GetTrans()});}return out;}
  int Display(TimeValue,INode*,ViewExp* v,int,ModContext*)override{if(!level)return 0;auto* g=v->getGW();g->setTransform(Matrix3(1));for(auto item:visible()){g->setColor(LINE_COLOR,layers[item.layer].rows[item.row].selected?Point3(1,1,1):Point3(1.f,.55f,0.f));g->marker(&item.p,HOLLOW_BOX_MRKR);}return 1;}
  void GetWorldBoundBox(TimeValue,INode*,ViewExp*,Box3& box,ModContext*)override{box.Init();for(auto v:visible())box+=v.p;}
  int HitTest(TimeValue,INode* node,int type,int crossing,int flags,IPoint2* p,ViewExp* v,ModContext* mc)override{
@@ -73,16 +73,16 @@ public:
  }
  void SelectSubComponent(HitRecord* h,BOOL selected,BOOL all,BOOL invert=FALSE)override{hold();auto items=visible();for(;h;h=h->Next()){if(h->hitInfo<items.size()){auto v=items[h->hitInfo];auto& r=layers[v.layer].rows[v.row];r.selected=invert?!r.selected:!!selected;}if(!all)break;}holding=false;changed(false);}
  void ClearSelection(int)override{hold();for(auto& [k,l]:layers)for(auto& r:l.rows)r.selected=false;holding=false;changed(false);}
- void SelectAll(int)override{hold();for(auto& [k,l]:layers)for(auto& r:l.rows)r.selected=!r.deleted&&r.source<l.input.size();holding=false;changed(false);}
- void InvertSelection(int)override{hold();for(auto& [k,l]:layers)for(auto& r:l.rows)if(!r.deleted&&r.source<l.input.size())r.selected=!r.selected;holding=false;changed(false);}
- void transform(const Matrix3& tm,bool localOrigin=false){if(!valid())return;hold();for(auto& [k,l]:layers)if(l.active)for(auto& r:l.rows)if(r.selected&&!r.deleted&&r.source<l.input.size()){Point3 original=(l.input[r.source]*r.delta).GetTrans();r.delta=r.delta*tm;if(localOrigin)r.delta.SetTrans(r.delta.GetTrans()+original-(l.input[r.source]*r.delta).GetTrans());}changed();}
+ void SelectAll(int)override{hold();for(auto& [k,l]:layers)for(auto& r:l.rows)r.selected=l.active&&!l.invalid&&l.shown(r);holding=false;changed(false);}
+ void InvertSelection(int)override{hold();for(auto& [k,l]:layers)for(auto& r:l.rows)if(l.shown(r))r.selected=!r.selected;holding=false;changed(false);}
+ void transform(const Matrix3& tm,bool localOrigin=false){if(!valid())return;hold();for(auto& [k,l]:layers)if(l.active)for(auto& r:l.rows)if(r.selected&&l.shown(r)){Point3 original=(l.input[r.source]*r.delta).GetTrans();r.delta=r.delta*tm;if(localOrigin)r.delta.SetTrans(r.delta.GetTrans()+original-(l.input[r.source]*r.delta).GetTrans());}changed();}
  void Move(TimeValue,Matrix3&,Matrix3& axis,Point3& v,BOOL)override{transform(TransMatrix(VectorTransform(axis,v)));}
  void Rotate(TimeValue,Matrix3&,Matrix3& axis,Quat& v,BOOL localOrigin)override{Matrix3 r;v.MakeMatrix(r);transform(Inverse(axis)*r*axis,!!localOrigin);}
  void Scale(TimeValue,Matrix3&,Matrix3& axis,Point3& v,BOOL localOrigin)override{transform(Inverse(axis)*ScaleMatrix(v)*axis,!!localOrigin);}
  void TransformStart(TimeValue)override{holding=false;if(ip)ip->LockAxisTripods(TRUE);}
  void TransformFinish(TimeValue)override{holding=false;if(ip)ip->LockAxisTripods(FALSE);}
  void TransformCancel(TimeValue)override{holding=false;if(ip)ip->LockAxisTripods(FALSE);}
- void CloneSelSubComponents(TimeValue)override{if(!valid())return;theHold.Begin();holding=false;hold();for(auto& [k,l]:layers)if(l.active){auto n=l.rows.size();for(std::size_t i=0;i<n;++i)if(l.rows[i].selected&&!l.rows[i].deleted&&l.rows[i].source<l.input.size()){auto copy=l.rows[i];copy.outputId=pointId();l.rows[i].selected=false;l.rows.push_back(copy);}}changed();theHold.Accept(_T("Copy scatter instances"));holding=false;}
+ void CloneSelSubComponents(TimeValue)override{if(!valid())return;theHold.Begin();holding=false;hold();for(auto& [k,l]:layers)if(l.active){auto n=l.rows.size();for(std::size_t i=0;i<n;++i)if(l.rows[i].selected&&l.shown(l.rows[i])){auto copy=l.rows[i];copy.outputId=pointId();l.rows[i].selected=false;l.rows.push_back(copy);}}changed();theHold.Accept(_T("Copy scatter instances"));holding=false;}
  void GetSubObjectCenters(SubObjAxisCallback* cb,TimeValue,INode*,ModContext*)override{Point3 p(0,0,0);int n=0;for(auto item:visible())if(layers[item.layer].rows[item.row].selected){p+=item.p;++n;}if(n)cb->Center(p/float(n),0);}
  void GetSubObjectTMs(SubObjAxisCallback* cb,TimeValue,INode*,ModContext*)override{Matrix3 tm(1);Point3 p(0,0,0);int n=0;for(auto item:visible())if(layers[item.layer].rows[item.row].selected){p+=item.p;++n;}if(n)tm.SetTrans(p/float(n));cb->TM(tm,0);}
  IOResult Save(ISave* save)override;

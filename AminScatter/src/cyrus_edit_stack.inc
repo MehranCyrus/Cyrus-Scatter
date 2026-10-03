@@ -1,4 +1,9 @@
-struct EditInput { Matrix3 tm;int source;std::wstring id; };
+struct EditInput { Matrix3 tm;int source;std::wstring id;bool protectedEdit=false; };
+static bool hasEditTransform(const Matrix3& m){
+    const Matrix3 identity(1);
+    for(int i=0;i<4;++i)if(m.GetRow(i)!=identity.GetRow(i))return true;
+    return false;
+}
 static std::wstring legacyTopology(const EditLayer& l) {
     std::uint64_t h=1469598103934665603ULL;
     for(unsigned i=0;i<l.rows.size();++i)if(!l.rows[i].deleted){h=(h^i)*1099511628211ULL;h=(h^l.rows[i].source)*1099511628211ULL;}
@@ -44,15 +49,16 @@ static std::vector<EditInput> applyStable(CSEdit* m,int key,const std::vector<Ed
         EditRow r;r.source=i;r.inputId=r.outputId=input[i].id;l.rows.push_back(std::move(r));
     }
     std::vector<EditInput> output;output.reserve(l.rows.size());
-    for(auto& r:l.rows)if(!r.deleted&&r.source<input.size())output.push_back({input[r.source].tm*r.delta,input[r.source].source,r.outputId});
+    for(auto& r:l.rows)if(!r.deleted&&r.source<input.size())output.push_back({input[r.source].tm*r.delta,input[r.source].source,r.outputId,input[r.source].protectedEdit||r.inputId!=r.outputId||hasEditTransform(r.delta)});
     m->status();return output;
 }
 // Legacy rows retain index binding. Keyed rows use immutable candidate IDs and
 // a full base-population signature, independent of current Brush membership.
 def_visible_primitive(cyrusEditStack,"cyrusEditStack");
 Value* cyrusEditStack_cf(Value** a,int count) {
-    if(count!=4&&count!=5)throw RuntimeError(_T("Expected 4 or 5 CS Edit stack arguments"));
-    const bool keyed=count==5&&a[4]->to_bool()!=FALSE;
+    if(count!=4&&count!=5&&count!=6)throw RuntimeError(_T("Expected 4, 5 or 6 CS Edit stack arguments"));
+    const bool keyed=count>=5&&a[4]->to_bool()!=FALSE;
+    const bool annotated=count==6&&a[5]->to_bool()!=FALSE;
     type_check(a[0],Array,_T("modifiers"));type_check(a[1],Array,_T("rows"));
     auto* mods=static_cast<Array*>(a[0]);auto* rows=static_cast<Array*>(a[1]);
     const int key=a[2]->to_int();const std::wstring signature=a[3]->to_string();
@@ -70,10 +76,28 @@ Value* cyrusEditStack_cf(Value** a,int count) {
         auto it=m->layers.find(key);
         std::wstring topology=it==m->layers.end()?L"pass":legacyTopology(it->second);
         input=applyStable(m,key,input,signature,legacy,unsigned(rows->size));
+        if(annotated&&m->layers[key].invalid)throw RuntimeError(_T("CS Edit base changed. Restore the generation settings or explicitly Reset Edits before updating this planting setup."));
+        if(!annotated){m->layers[key].published=false;m->layers[key].publishedIDs.clear();}
         legacy+=L"|"+std::to_wstring(mods->size-i)+L":"+topology;
     }
     two_typed_value_locals(Array* result,Array* row);
     vl.result=new Array(0);
-    for(auto& r:input){vl.row=new Array(2);vl.row->append(new Matrix3Value(r.tm));vl.row->append(Integer::intern(r.source));if(keyed)vl.row->append(new String(r.id.c_str()));vl.result->append(vl.row);}
+    for(auto& r:input){vl.row=new Array(2);vl.row->append(new Matrix3Value(r.tm));vl.row->append(Integer::intern(r.source));if(keyed)vl.row->append(new String(r.id.c_str()));if(annotated)vl.row->append(r.protectedEdit?&true_value:&false_value);vl.result->append(vl.row);}
     return_value(vl.result);
 }
+
+// Transient selection/display publication, separate from immutable Edit binding.
+def_visible_primitive(cyrusEditPublish,"cyrusEditPublish");
+Value* cyrusEditPublish_cf(Value** a,int count){
+    check_arg_count(cyrusEditPublish,3,count);type_check(a[0],Array,_T("modifiers"));type_check(a[2],Array,_T("final rows"));
+    auto* mods=static_cast<Array*>(a[0]);auto* rows=static_cast<Array*>(a[2]);const int key=a[1]->to_int();
+    std::unordered_set<std::wstring> ids;
+    for(int i=0;i<rows->size;++i){type_check(rows->data[i],Array,_T("final row"));auto* row=static_cast<Array*>(rows->data[i]);if(row->size<3)throw RuntimeError(_T("Expected keyed final rows"));ids.insert(row->data[2]->to_string());}
+    for(int i=0;i<mods->size;++i){auto* m=edit(mods->data[i]);auto found=m->layers.find(key);if(found==m->layers.end())continue;auto& l=found->second;l.published=true;l.publishedIDs=ids;m->status();}
+    return &ok;
+}
+def_visible_primitive(cyrusEditVisibleCount,"cyrusEditVisibleCount");
+Value* cyrusEditVisibleCount_cf(Value** a,int count){check_arg_count(cyrusEditVisibleCount,1,count);return Integer64::intern(edit(a[0])->visible().size());}
+
+def_visible_primitive(cyrusEditGroupVisibility,"cyrusEditGroupVisibility");
+Value* cyrusEditGroupVisibility_cf(Value** a,int count){check_arg_count(cyrusEditGroupVisibility,3,count);auto* m=edit(a[0]);const auto found=m->layers.find(a[1]->to_int());if(found!=m->layers.end()){found->second.viewportVisible=a[2]->to_bool()!=FALSE;m->status();}return &ok;}

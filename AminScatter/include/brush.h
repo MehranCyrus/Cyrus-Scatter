@@ -48,7 +48,13 @@ public:
     Field(const Surface&,const Document&);
     double evaluate(Anchor,QueryStats* stats=nullptr) const;
     double evaluateReference(Anchor,QueryStats* stats=nullptr) const;
+    // Conservative local refinement step for a subtriangle. Infinity means
+    // no stroke footprint intersects it; the base field is constant there.
+    double previewStep(std::uint32_t face,const std::array<Vec3,3>& bary) const;
 };
+struct CoverageTriangle { std::array<Vec3,3> vertices;double weight{}; };
+struct Coverage { std::vector<CoverageTriangle> triangles;bool limited=false; };
+Coverage coverage(const Surface&,const Field&,std::size_t budget=32768);
 double influence(const Surface&,const Sample&,const Stroke&,Anchor,QueryStats* stats=nullptr);
 double apply(double before,double influence,bool erase);
 double threshold(std::uint64_t population,std::uint64_t candidate);

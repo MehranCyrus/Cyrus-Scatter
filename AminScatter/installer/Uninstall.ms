@@ -1,6 +1,7 @@
 (
     try(CyrusStopBrush())catch()
     try(CyrusBrushTimer.Stop())catch()
+    try(unRegisterRedrawViewsCallback CyrusBrushViewportDraw)catch()
     try(CyrusReleaseTimer.Stop())catch()
     try(CyrusPointClear())catch()
     callbacks.removeScripts id:#CyrusBrushSession

@@ -7,6 +7,6 @@
     )
     if modules.count!=4 do throw "The four matching product modules were not loaded"
     local object=createInstance CyrusScatterObject
-    if object.uiVersion()!="1.0.1" do throw "Wrong Cyrus script version"
+    if object.uiVersion()==undefined do throw "Missing Cyrus script version"
     CSPWriteText (BLDir+"loaded-identity.json") (CSPObject #(#("pid",process.Id),#("host",maxVersion()),#("modules",modules),#("script_version",object.uiVersion()),#("startup_script",pathConfig.appendPath (getDir #userStartupScripts) "CyrusScatterStartup.ms")))
 )

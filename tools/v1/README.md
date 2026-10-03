@@ -1,6 +1,24 @@
-# Cyrus Scatter 1.0 developer qualification
+# Cyrus Scatter 1.x developer qualification
 
 These tools build and qualify the main product in disposable Max profiles. They are privileged local fixtures, are not shipped in the MZP and must never run through the artist's live scene/session. The original foundation result is in [the v1 report](../../docs/Cyrus_Scatter_V1_2026-10-03/REPORT.md); current script/UI changes are in [the 1.0.1 follow-up](../../docs/Brush_Relax_Reset_2026-10-03/REPORT.md).
+
+## Current 1.1 planting campaign
+
+The [1.1 report](../../docs/Planting_Groups_2026-10-03/REPORT.md) is the current qualification. After generating/building below, launch a new private profile and run:
+
+```powershell
+python tools/v1/launch.py --run my-groups
+python tools/v1/request.py --run my-groups --timeout 60 tools/v1/planting_qualification.ms
+python tools/v1/request.py --run my-groups --timeout 45 tools/v1/navigation_fixture.ms
+python tools/v1/launch.py --run my-groups-reopen --scene build/cyrus-v1/hosts/my-groups/groups-qualified.max --reopen-expected build/cyrus-v1/hosts/my-groups/groups-reopen-expected.ms
+python tools/v1/request.py --run my-groups-reopen --timeout 45 tools/v1/planting_reopen_fixture.ms
+```
+
+`planting_qualification.ms` resets only the disposable scene, runs group, output/overlay and advanced Edit/curved fixtures, and saves exact reopen expectations. `planting_reopen_fixture.ms` loads its companion expectations itself. For a real 1.0.1 saved fixture, pass its `v1-qualified.max` and original `reopen-expected.ms` to a fresh launch, then use `planting_legacy_fixture.ms`. The historical `qualification.ms` includes pre-1.1 row/cache assumptions and is not the new-policy campaign.
+
+Run `planting_demo.ms` for the four-group artist exercise; run `render_fixture.ms` against that clean demo. Open Coverage / Brush for Red flowers, record the demo's initial globals, use Start Brush, drag a new patch, right-click, then `planting_gesture_fixture.ms`. It checks the real gesture, actual overlay submissions and Manual publication before issuing Update. It cannot substitute for inspecting the visible tint. A sphere and exact Edit cases are supplied by the advanced fixture.
+
+Package and install through the same private MZP workflow below, restart with `--installed-from`, verify loaded identity and repeat qualification against the installed bytes. `planting_release_fixture.ms` chains identity, fresh reopen, group qualification, native UI, navigation, the clean demo and Scanline render; allow up to 120 seconds while the asynchronous request runs, and inspect its result before another request. Copy only the clean demo into `dist/v1/`; do not ship the qualification scene or private transport. `collect_planting_evidence.py` curates this campaign separately from the frozen 1.0 evidence.
 
 ## Build and package
 

@@ -7,6 +7,7 @@
 #include <maxscript/maxwrapper/mxsobjects.h>
 #include "scatter.h"
 #include "execution.h"
+#include "group_spacing.h"
 #include <memory>
 #include <stdexcept>
 #include <map>
@@ -14,7 +15,7 @@
 #include <cmath>
 #include <maxscript/macros/define_instantiation_functions.h>
 
-extern "C" __declspec(dllexport) const TCHAR* LibDescription() { return _T("Cyrus Scatter 1.0 native engine"); }
+extern "C" __declspec(dllexport) const TCHAR* LibDescription() { return _T("Cyrus Scatter 1.1 native engine"); }
 extern "C" __declspec(dllexport) ULONG LibVersion() { return VERSION_3DSMAX; }
 extern "C" __declspec(dllexport) void LibInit() {}
 HINSTANCE CyrusEditInstance=nullptr;
@@ -23,6 +24,7 @@ extern "C" __declspec(dllexport) int LibNumberClasses(){return 1;}
 extern "C" __declspec(dllexport) ClassDesc* LibClassDesc(int i){return i==0?CyrusEditDesc():nullptr;}
 BOOL WINAPI DllMain(HINSTANCE instance, DWORD reason, LPVOID) { if(reason==DLL_PROCESS_ATTACH)CyrusEditInstance=instance;return TRUE; }
 static_assert(MAX_PRODUCT_YEAR_NUMBER == CYRUS_MAX_YEAR, "SDK year must match the configured host year");
+#include "group_spacing_bridge.inc"
 
 // Diagnostic/session controls. Scene evaluation and MAXScript values stay on
 // this calling thread; native workers receive plain owned geometry only.
