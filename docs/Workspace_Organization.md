@@ -53,3 +53,9 @@ All **702 selected evidence entries across nine manifests** matched the staged G
 Both existing 0.64 native builds matched their archived module hashes and passed all nine Scatter suites for each SDK, Max 2026 and Max 2027. These checks used existing binaries; they do not constitute a new compilation or interactive runtime qualification. No plugin was installed and no artist session was modified during this backup.
 
 The staged file audit includes only source, tools, documents and selected documentary evidence. SDKs, compiled plugins, installers, artist scenes/assets and raw local runs remain excluded by `.gitignore`. The local backup journal and clean-checkout verification files are under `_local/maintenance/2026-10-03-git-backup/`.
+
+## Brush/MCP source checkpoint — 3 October 2026
+
+The subsequent checkpoint adds the isolated native Brush implementation and its private fixtures, the local MCP 1.0 source/test/package tools, and the artist-zone integration research. The older checkpoint's statement that Brush and MCP were proposals describes its original scope: Brush now has an isolated prototype, and MCP has the bounded delivered workflow documented in its implementation report. Production Brush integration and the Cyrus Scatter v1 UI remain subsequent work.
+
+Byte-preserving attributes were extended to the two new evidence folders and the exported sphere regression fixture. Captured evidence stays distinct from active source, which uses LF. The checkpoint contains source, tests, documentation and selected evidence only; it contains no installed MCP environment, connection credentials, native binaries or scene assets.

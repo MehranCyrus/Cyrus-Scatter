@@ -1,0 +1,7 @@
+case,strokes,candidates,build_ms,query_ms,append_full_rebuild_ms,serialized_bytes,reference_queries,max_reference_error
+distributed,10,10000,0.0201,3.0791,3.6965,2616,65,0
+distributed,100,10000,0.1776,41.903,29.5972,26016,65,0
+distributed,1000,10000,1.9511,333.4557,314.4973,260016,65,0
+overlapping,10,10000,0.0168,7.5727,9.5156,2616,65,0
+overlapping,100,10000,0.1161,70.8845,74.9283,26016,65,0
+overlapping,1000,10000,1.275,657.4396,797.1099,260016,65,0

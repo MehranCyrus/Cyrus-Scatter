@@ -1,0 +1,92 @@
+{
+  "checks": [
+    [
+      "gesture_undo_redo",
+      true
+    ],
+    [
+      "radius_replay_undo",
+      85
+    ],
+    [
+      "disable_stroke_undo",
+      true
+    ],
+    [
+      "density_subset",
+      96
+    ],
+    [
+      "cancel",
+      true
+    ],
+    [
+      "stable_base",
+      true
+    ],
+    [
+      "inactive_field_builds",
+      0
+    ],
+    [
+      "inactive_uploads",
+      0
+    ],
+    [
+      "retained_before",
+      [
+        4704,
+        196,
+        24,
+        12000,
+        12000,
+        536870912,
+        1073741824
+      ]
+    ],
+    [
+      "retained_after",
+      [
+        4704,
+        196,
+        24,
+        12000,
+        12000,
+        536870912,
+        1073741824
+      ]
+    ],
+    [
+      "clone_isolation",
+      true
+    ],
+    [
+      "transform_follow",
+      true
+    ],
+    [
+      "topology_suspend_recover",
+      true
+    ]
+  ],
+  "flat_rows": 545,
+  "curved_rows": 196,
+  "flat_signature": "1340083497986915226",
+  "curved_signature": "486486688587458573",
+  "curved_stats": [
+    23,
+    1,
+    2,
+    1,
+    0,
+    0,
+    2,
+    8,
+    15,
+    150000,
+    "",
+    0.00013922338257543743,
+    6.395899772644043,
+    0
+  ]
+}

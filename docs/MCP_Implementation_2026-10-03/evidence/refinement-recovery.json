@@ -1,0 +1,56 @@
+{
+  "before": {
+    "fingerprint": "a02384d085dab3dad383dd1bab630ca465ea0b0839de47d3ddd866efaa6bce3d",
+    "nodes": 6,
+    "selected": [
+      197355
+    ],
+    "dirty": true,
+    "undo": [
+      "Cyrus Automation 6cc56cb8",
+      "MAXScript "
+    ],
+    "diagnostics": [
+      {
+        "controller_id": "controller_a7c004e937c146df8beaad32b87180ed",
+        "layer": 0,
+        "builds": 1,
+        "last_build_ms": 3.0,
+        "requested_cached": 200,
+        "generated": 200,
+        "displayed": 200,
+        "dirty": false,
+        "error": ""
+      }
+    ],
+    "redraw_disabled": false,
+    "auto_key": false
+  },
+  "after": {
+    "fingerprint": "a02384d085dab3dad383dd1bab630ca465ea0b0839de47d3ddd866efaa6bce3d",
+    "nodes": 6,
+    "selected": [
+      197355
+    ],
+    "dirty": true,
+    "undo": [
+      "Cyrus Automation 6cc56cb8",
+      "MAXScript "
+    ],
+    "diagnostics": [
+      {
+        "controller_id": "controller_a7c004e937c146df8beaad32b87180ed",
+        "layer": 0,
+        "builds": 1,
+        "last_build_ms": 2.0,
+        "requested_cached": 200,
+        "generated": 200,
+        "displayed": 200,
+        "dirty": false,
+        "error": ""
+      }
+    ],
+    "redraw_disabled": false,
+    "auto_key": false
+  }
+}

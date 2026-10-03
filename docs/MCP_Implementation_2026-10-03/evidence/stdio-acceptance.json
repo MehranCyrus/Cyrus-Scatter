@@ -1,0 +1,97 @@
+{
+  "stdio_handshake": true,
+  "tool_count": 7,
+  "advertised_plan_schema": true,
+  "zero_count_valid": true,
+  "mixed_sources_three_layers": {
+    "constraint_check": "all emitted footprint circles inside approved regions",
+    "controller_id": "controller_e586dc449055484a8911337fb24b644c",
+    "display_mode": "proxy_boxes",
+    "emitted": 1800,
+    "generation_id": "generation_6bdc1d14d48f4200950973b12d6c2c16",
+    "layers": [
+      {
+        "displayed_instances": 600,
+        "emitted": 600,
+        "name": "Trees 1",
+        "requested": 600,
+        "underfilled": false
+      },
+      {
+        "displayed_instances": 600,
+        "emitted": 600,
+        "name": "Trees 2",
+        "requested": 600,
+        "underfilled": false
+      },
+      {
+        "displayed_instances": 600,
+        "emitted": 600,
+        "name": "Trees 3",
+        "requested": 600,
+        "underfilled": false
+      }
+    ],
+    "requested": 1800,
+    "transform_digest": "7aa9a3cc9be3f03d82595bc98c617bf4b25782e15f81f17eea4dbb13676fe4ed",
+    "undo_label": "Cyrus Automation 2d6c2c16"
+  },
+  "retry_exactly_once": true,
+  "image_content_block": true,
+  "image_bytes": 406791,
+  "diagnostics": {
+    "applications": 2,
+    "calls": 11,
+    "captures": 1,
+    "counters": [
+      {
+        "builds": 1,
+        "controller_id": "controller_e586dc449055484a8911337fb24b644c",
+        "dirty": false,
+        "displayed": 600,
+        "error": "",
+        "generated": 600,
+        "last_build_ms": 4.0,
+        "layer": 0,
+        "requested_cached": 600
+      },
+      {
+        "builds": 1,
+        "controller_id": "controller_e586dc449055484a8911337fb24b644c",
+        "dirty": false,
+        "displayed": 600,
+        "error": "",
+        "generated": 600,
+        "last_build_ms": 5.0,
+        "layer": 1,
+        "requested_cached": 600
+      },
+      {
+        "builds": 1,
+        "controller_id": "controller_e586dc449055484a8911337fb24b644c",
+        "dirty": false,
+        "displayed": 600,
+        "error": "",
+        "generated": 600,
+        "last_build_ms": 4.0,
+        "layer": 2,
+        "requested_cached": 600
+      }
+    ],
+    "ok": true,
+    "pending_operation": null,
+    "retained": {
+      "owners": [
+        {
+          "available": false,
+          "controller_id": "controller_e586dc449055484a8911337fb24b644c",
+          "reason": "No retained Point Cloud or Mesh owner; proxy preview uses its own path"
+        }
+      ],
+      "process_totals": null,
+      "semantics": "Owner counters and shared process totals; draw callbacks are not presented frames, reservations are not measured VRAM"
+    },
+    "scene_revision": 45,
+    "timing_semantics": "cached host counters; no regeneration or FPS measurement"
+  }
+}

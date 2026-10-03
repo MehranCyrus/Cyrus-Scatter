@@ -1,0 +1,133 @@
+{
+  "three_existing_layers": {
+    "controller_id": "observed_14d5102050a5404bb18b028e2290c45b",
+    "freshness": "cached preview only; inspection does not certify current source geometry or rebuild Manual layers",
+    "generation_id": "inspection_cc7bf61db21246a18c0e787be636a478",
+    "layers": [
+      {
+        "amount_setting": 200,
+        "dirty": false,
+        "displayed_cached": 200,
+        "enabled": true,
+        "error": "",
+        "generated_cached": 200,
+        "index": 0,
+        "name": "Trees 1",
+        "requested_cached": 200,
+        "seed": 42,
+        "source_count": 1,
+        "update_mode": 1,
+        "viewport_mode": 2
+      },
+      {
+        "amount_setting": 200,
+        "dirty": false,
+        "displayed_cached": 200,
+        "enabled": true,
+        "error": "",
+        "generated_cached": 200,
+        "index": 1,
+        "name": "Trees 2",
+        "requested_cached": 200,
+        "seed": 143,
+        "source_count": 1,
+        "update_mode": 1,
+        "viewport_mode": 2
+      },
+      {
+        "amount_setting": 200,
+        "dirty": false,
+        "displayed_cached": 200,
+        "enabled": true,
+        "error": "",
+        "generated_cached": 200,
+        "index": 2,
+        "name": "Trees 3",
+        "requested_cached": 200,
+        "seed": 244,
+        "source_count": 1,
+        "update_mode": 1,
+        "viewport_mode": 2
+      }
+    ],
+    "name": "MCP Qualified Layout",
+    "ui_version": "2026-10-02.5"
+  },
+  "inspection_is_pure": true,
+  "mutation_rejected": true,
+  "capture": {
+    "camera_world_to_view": [
+      [
+        0.8000000715255737,
+        0.6000000238418579,
+        1.4901161193847656e-08,
+        -2.428889274597168e-06
+      ],
+      [
+        -0.3440774083137512,
+        0.45876988768577576,
+        0.8192319273948669,
+        1.9073486328125e-06
+      ],
+      [
+        0.4915391206741333,
+        -0.6553855538368225,
+        0.5734623670578003,
+        -61.03277587890625
+      ],
+      [
+        0,
+        0,
+        0,
+        1
+      ]
+    ],
+    "color": "viewport display RGB; no radiometric comparison implied",
+    "display": "smoothhighlights",
+    "fov_degrees": 45.0,
+    "freshness": "cached preview; source geometry not regenerated or certified",
+    "generation_id": "inspection_cc7bf61db21246a18c0e787be636a478",
+    "height": 750,
+    "mime_type": "image/png",
+    "ok": true,
+    "scene_epoch": "scene_3226857b12a748df8d59e17dc066ab5a",
+    "scene_revision": 50,
+    "view_type": "view_persp_user",
+    "viewport_id": "viewport_1",
+    "width": 1302
+  },
+  "verified_build_identity": {
+    "automation_version": "1.0.0",
+    "identity_semantics": "SHA-256 of loaded module files, cached when connected; no memory-image attestation",
+    "loaded_modules": [
+      {
+        "loaded": true,
+        "loaded_file_sha256": "c8d49f04ce12a69febbeb9faf0f1f88b9ef311190c8b35b46e7fd835fb9b07e5",
+        "module": "AminScatter.dlx"
+      },
+      {
+        "loaded": true,
+        "loaded_file_sha256": "323c725a4078ad38ff0533fc8618255a7ed4e7c10d183d1b3629a9e6f5698a7a",
+        "module": "CyrusScatterEdit.dlm"
+      },
+      {
+        "loaded": true,
+        "loaded_file_sha256": "b607557a9e1899e51db20d67acc816bd18deca42a192d542465f63305e6e9f36",
+        "module": "CyrusSurfaceAnalyzer.dlx"
+      }
+    ],
+    "max_version": [
+      29000,
+      70,
+      0,
+      29,
+      1,
+      0,
+      11426,
+      2027,
+      ".1"
+    ],
+    "pid": 41996,
+    "python_thread": 28588
+  }
+}

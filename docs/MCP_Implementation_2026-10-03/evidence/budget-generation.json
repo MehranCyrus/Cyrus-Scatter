@@ -1,0 +1,26 @@
+{
+  "source_triangles": 9000,
+  "requested": 2000,
+  "result": {
+    "constraint_check": "all emitted footprint circles inside approved regions",
+    "controller_id": "controller_97bd21be9845462da9199ec1c59e0ca7",
+    "display_mode": "proxy_boxes",
+    "emitted": 2000,
+    "generation_id": "generation_510a55b624a042c7b85c2fe43e3b5f94",
+    "layers": [
+      {
+        "displayed_instances": 2000,
+        "emitted": 2000,
+        "name": "Trees 1",
+        "requested": 2000,
+        "underfilled": false
+      }
+    ],
+    "requested": 2000,
+    "transform_digest": "1ad4af43cc2bb8217803ac757959d99feb426595bb962552cbb4fd1431a90610",
+    "undo_label": "Cyrus Automation 3e3b5f94"
+  },
+  "publication_ms": 2594.944200012833,
+  "idempotent_retry": true,
+  "undo_restored": true
+}

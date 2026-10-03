@@ -7,6 +7,9 @@ Native C++ and MAXScript sources for Cyrus Scatter and Cyrus Surface Analyzer fo
 - **Scatter 0.64 / Analyzer 0.14:** current local candidate. Mesh now uses retained GPU instancing with the same geometry and limits. Point Cloud, CPU and Proxy improvements remain. Read the [candidate guide and qualification](docs/Retained_Mesh_Preview_2026-10-02/README.md).
 - **Measured integration:** the [Mesh results](docs/Retained_Mesh_Preview_2026-10-02/RESULTS.md) cover visible foliage, an equivalent native Max control, lifecycle and bounded memory fallback. Timings distinguish camera/redraw steps from presented FPS. The [0.63 Point Cloud results](docs/Retained_Point_Preview_2026-10-02/RESULTS.md) remain historical evidence.
 - **Next implementation:** improve wide-to-close point-cloud detail in the same heavy scene, using the existing Point Cloud / Proxy / Mesh modes. Follow the [working roadmap](docs/Heavy_Scene_Viewport_2026-10-02/ROADMAP.md).
+- **Brush prototype:** native editable paint/erase, saved surface strokes and isolated Max 2027 fixtures are in the [implementation report](docs/Brush_Tool_2026-10-02/IMPLEMENTATION_2026-10-03.md). Product layer/UI integration remains pending.
+- **Local MCP 1.0:** source, offline installer and seven automation tools are in [CyrusMCP](CyrusMCP/README.md), with bounded Max 2027 qualification in the [report](docs/MCP_Implementation_2026-10-03/REPORT.md).
+- **Next product foundation:** integrate artist zones and Brush with persistent identities and a standard Max layer editor. The [integration proposal](docs/Artist_Zones_Integration_2026-10-03/README.md) records the source audit, contracts and acceptance gates. Adaptive point detail remains a separate performance track.
 
 Max 2026 and 2027 SDK builds exist; the recorded interactive retained-display experiment ran in Max 2027. SDK compilation is not Max 2026 runtime qualification.
 

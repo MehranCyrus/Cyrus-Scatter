@@ -1,0 +1,11 @@
+{
+  "build_id": "1.0.0-d654c4a224df",
+  "manifest_sha256": "946bba0d7a113c2028c6934263f3b77e2c3c135660f19d82e5a09ed8f5c9a288",
+  "package_files_verified": 44,
+  "package_bytes": 15444314,
+  "source_host_server_wheel_parity": true,
+  "private_test_controls_absent": true,
+  "codex_registration_matches": true,
+  "offline_install_pip_check_import": true,
+  "runtime_tests": "Fresh installed Max; actual local UI approval; 1200 emitted; retry; image; Escape; dialog deletion; startup reopen"
+}

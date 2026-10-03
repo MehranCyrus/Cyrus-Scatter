@@ -6,6 +6,10 @@
 
 **2026-10-02 addendum:** [ChatGPT connection and diagnostics-first implementation](17_ChatGPT_Connection_and_Diagnostics_First_2026-10-02.md) verifies the current subscription integration options and proposes a smaller first delivery: read-only tools for the existing Codex session, followed by scene creation and reference-assisted design. Commercial Sign in with ChatGPT eligibility remains unverified; no MCP implementation is claimed.
 
+**2026-10-03 implementation update:** the subsequent [MCP 1.0 report](../MCP_Implementation_2026-10-03/REPORT.md) records the implemented local service, seven tools, artist review panel, generation/recovery tests and installer. Use its [roadmap status](../MCP_Implementation_2026-10-03/ROADMAP_STATUS.md) for current delivery status. Statements and checkboxes below describe this original research task; its synthetic schema 0.1 examples remain illustrative, while the executable implementation uses schema 1.0. Custom ML and automatic dataset collection remain future work.
+
+**2026-10-03 artist-authoring update:** the [zones, Brush and spacing integration proposal](../Artist_Zones_Integration_2026-10-03/README.md) defines how artist-authored areas can become explicit spatial input for future AI plans. It reuses the existing scatter engine and separates persistent zone/layer identities, density masks and placement constraints. Its proposed MCP expansion is not part of the current schema or qualification.
+
 The [Product Strategy](../Product_Strategy_2026-09-29/README.md) remains the governing strategy. Its [Baseline and Trust milestone](../Product_Strategy_2026-09-29/12_First_Implementation_Milestone.md), the [commercialization playbook](../Product_Commercialization_Playbook_2026-09-30/README.md), and the [performance roadmap](../Performance_Roadmap_2026-09-28/README.md) retain their existing roles. AI research does not establish launch readiness, licensing policy, performance gains, or support for additional Max versions.
 
 ## Read by decision

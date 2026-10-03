@@ -1,6 +1,8 @@
 # Procedural Brush: recommended approach
 
-2 October 2026 — revision 3.1, final design review with a codebase integration audit. **Research and implementation proposal; Brush has not been implemented or benchmarked in Max.**
+3 October 2026 — design revision 3.1 with an implementation update. **An isolated M0/M1 prototype now exists and has Max 2027 fixture results. Production Brush integration and the full acceptance matrix remain open.** Read the [implementation report](IMPLEMENTATION_2026-10-03.md) and [lab instructions](../../tools/brush_lab/README.md) for the implemented scope, evidence and current limits. The product behavior below remains the integration specification.
+
+**Artist-zone integration addendum, 3 October:** the [unified planting proposal](../Artist_Zones_Integration_2026-10-03/README.md) extends this specification with named spline/mesh zones, layer roles, separate boundary and plant-spacing rules, a black/white mask overlay, optional map reuse and MCP context. Editable surface strokes remain the first authoritative Brush input. The new [source audit](../Artist_Zones_Integration_2026-10-03/CODEBASE_AUDIT.md) confirms that existing area, density-map and Analyzer features can be reused, while stable candidate identities and real layer ownership remain prerequisites. The proposed final-placement priority mode is additional work; existing raw-blocker behavior is preserved for legacy scenes.
 
 Build an editable **density mask attached to a scatter layer's surfaces**. Keep the strokes as saved user input, evaluate affected areas in C++, and filter a reusable population of identified candidates. Use Max's Painter Interface for interaction and the existing Mesh, Proxy and Point Cloud paths for display.
 
@@ -12,6 +14,7 @@ This is the best-supported next implementation, not a claim that one algorithm i
 | [Implementation plan](IMPLEMENTATION_PLAN.md) | Technical contracts, integration order, milestones and acceptance tests |
 | [Evidence and research](PROCEDURAL_RESEARCH.md) | Primary sources, code findings, corrections and limits |
 | [Codebase integration audit](CODEBASE_INTEGRATION.md) | Nine concrete source findings, required changes and reusable infrastructure |
+| [First implementation and evidence](IMPLEMENTATION_2026-10-03.md) | Native prototype, real painting/persistence tests, measured history costs and remaining gates |
 
 ## What the artist gets
 
@@ -93,7 +96,7 @@ Defer animated deformation, automatic retopology transfer, smoothing, tablet tun
 
 ## What to implement next
 
-Complete **M0 and M1** in the [implementation plan](IMPLEMENTATION_PLAN.md): native picking on an agreed mesh snapshot, then an editable mask with persistence, Undo and deterministic candidate filtering.
+Finish qualification of **M0 and M1** in the [implementation plan](IMPLEMENTATION_PLAN.md). The first implementation covers shared-snapshot picking, editable mask replay, persistence, Undo and deterministic filtering in an isolated lab. Its [report](IMPLEMENTATION_2026-10-03.md) identifies long-history replay and remaining host lifecycle/geometry cases as the next work.
 
 The first demonstration should prove: paint a patch, adjust its recorded strength, erase part of it, change plant density, undo/redo, save/reopen, and leave unrelated plants unchanged. Only then integrate the full layer pipeline and heavy-scene preview scheduling.
 

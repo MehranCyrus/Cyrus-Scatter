@@ -1,6 +1,14 @@
 # Brush implementation contracts and milestones
 
-2 October 2026 — revision 3.1. Proposed work only. Read the [decision guide](README.md) first; source IDs below resolve in the [evidence register](PROCEDURAL_RESEARCH.md). The [codebase integration audit](CODEBASE_INTEGRATION.md) maps concrete cache, bridge, lifecycle and render changes to these milestones.
+3 October 2026 — revision 3.1 contracts with implementation progress. Read the [decision guide](README.md) first; source IDs below resolve in the [evidence register](PROCEDURAL_RESEARCH.md). The [codebase integration audit](CODEBASE_INTEGRATION.md) maps concrete cache, bridge, lifecycle and render changes to these milestones. The [first implementation report](IMPLEMENTATION_2026-10-03.md) records the isolated prototype's actual results and limits; M0/M1 are partially complete, M2/M3 remain open.
+
+## Artist-zone integration extension — 3 October
+
+The [combined implementation order Z0–Z5](../Artist_Zones_Integration_2026-10-03/README.md#implementation-order-and-acceptance) adds artist-authored zones and overlapping vegetation recipes to these Brush contracts. Z0's persistent identities/keyed CS Edit and Z1's target-bound zone records support M2; Z2 completes product painting/overlay ownership and long-history work; Z3 adds optional final-placement priority blockers and pair gaps; Z4 qualifies shared output consumers. Map reuse and richer MCP access remain separate Z5 deliveries.
+
+The pipeline below retains Brush-filtered **raw blockers** for compatibility. The added priority mode evaluates accepted edited blockers from higher-priority layers and rejects cycles; it must not silently change the legacy path. Brush membership remains attached to its declared procedural root, with downstream manual offsets preserved. Report final-position constraint conflicts instead of treating CS Edit offsets as newly painted anchors. See the [new audit and interaction cases](../Artist_Zones_Integration_2026-10-03/CODEBASE_AUDIT.md).
+
+Black/white visualization is required to show the evaluated field independently of current candidate density. It does not require a bitmap to become the authoritative paint source. Add an explicit undoable Fill allowed zone operation with versioned saved initialization; existing empty enabled masks still start at zero. These are proposed additions, not completed prototype behavior.
 
 ## 1. Own the data and its lifetime
 
@@ -165,7 +173,7 @@ Outside Brush, navigation must perform zero Brush work. Inside Brush, view-depen
 
 ## 6. Deliver in four reviewable milestones
 
-All boxes below are outstanding implementation work.
+Unchecked boxes include partially implemented items whose full acceptance scope has not passed. The isolated prototype currently demonstrates real plane/sphere painting, saved native documents, Undo/Redo, stable filtering, clone/reference lifetime and Manual preview behavior in Max 2027. Both SDK builds pass native suites. Remaining host coverage and production integration are not implied by those results.
 
 ### M0 — native interaction and geometry proof
 
@@ -178,9 +186,9 @@ Exit: correct surface/face identity and no false through-surface coverage in the
 
 ### M1 — editable mask and stable candidate proof
 
-- [ ] Pure C++ evaluator, indexed affected-region queries and full-replay oracle.
+- [x] Pure C++ evaluator, face-indexed affected-region queries and full-replay oracle in the isolated prototype. Finer spatial/incremental evaluation remains a measured follow-up.
 - [ ] Registered native document holder, versioned save/load, isolated clone, whole-stroke Undo/Redo and cancellation; qualify the existing global callback and migration/copy paths.
-- [ ] Cached identified population; mask-only changes preserve unaffected attributes.
+- [x] Cached identified population in the isolated 10,000-candidate fixture; mask-only changes preserve surviving transforms. Real pipeline identity integration remains M2.
 - [ ] Four-vertex-plane overlay; new candidate queries recover paint; test earlier-stroke disable/strength/radius edits through the native harness.
 - [ ] Freeze preview cohort; measure 10/100/1000 separate and overlapping strokes.
 
@@ -207,7 +215,7 @@ Do not increase every production limit to run a Brush benchmark. Current UI dens
 
 ## 7. Acceptance and measurement matrix
 
-These are planned experiments, not completed tests.
+These remain the acceptance contracts. Partial results, host/core distinctions and unresolved cases are listed in the [implementation report](IMPLEMENTATION_2026-10-03.md); do not treat a partial fixture as completion of its whole row.
 
 | ID | Fixture / action | Required evidence |
 | --- | --- | --- |

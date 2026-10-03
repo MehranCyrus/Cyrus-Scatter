@@ -1,0 +1,68 @@
+[
+  {
+    "mode": 3,
+    "pure_inspection": true,
+    "statistics": {
+      "owners": [
+        {
+          "available": true,
+          "controller_id": "observed_25d9e1022cf647c5b2140b61b90bb72d",
+          "fingerprints_digest": "efae709a9a7707c7925a1488075e155f3018d37196f284917a329f0184448ba1",
+          "groups": 2,
+          "mesh_faces_reported": 12800,
+          "mesh_instances": 400,
+          "mesh_reserved_bytes": 26112,
+          "node_updates": 1,
+          "prepares": 1,
+          "preview_entries": 0,
+          "revision": 1,
+          "source_faces": 64,
+          "state": "ready"
+        }
+      ],
+      "process_totals": {
+        "draw_callbacks": 1308,
+        "failures": 0,
+        "live_items": 2,
+        "mesh_reserved_bytes": 26112,
+        "reserved_bytes": 0,
+        "upload_bytes": 52224,
+        "uploads": 16
+      },
+      "semantics": "Owner counters and shared process totals; draw callbacks are not presented frames, reservations are not measured VRAM"
+    }
+  },
+  {
+    "mode": 1,
+    "pure_inspection": true,
+    "statistics": {
+      "owners": [
+        {
+          "available": true,
+          "controller_id": "observed_602791c96cec4982999350ea6f3a573e",
+          "fingerprints_digest": "f0f14b90abedaba57bccf62926e851f6823d5de85eb0b1b7bc4ce236b4a775be",
+          "groups": 2,
+          "mesh_faces_reported": 0,
+          "mesh_instances": 0,
+          "mesh_reserved_bytes": 0,
+          "node_updates": 2,
+          "prepares": 2,
+          "preview_entries": 20000,
+          "revision": 2,
+          "source_faces": 0,
+          "state": "ready"
+        }
+      ],
+      "process_totals": {
+        "draw_callbacks": 1340,
+        "failures": 0,
+        "live_items": 2,
+        "mesh_reserved_bytes": 0,
+        "reserved_bytes": 240000,
+        "upload_bytes": 292224,
+        "uploads": 18
+      },
+      "semantics": "Owner counters and shared process totals; draw callbacks are not presented frames, reservations are not measured VRAM"
+    }
+  }
+]

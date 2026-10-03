@@ -29,7 +29,7 @@ Surface area is the sum of world-space triangle areas. Overlapping faces are not
 
 ## Output and persistence
 
-Boundary/path/point toggles draw cached results. Explicit spline/helper exports create independent snapshots, not live links. Source meshes are not modified. Cached results, update mode and settings persist in MAX files. Nodes and guides are schematic and non-rendering; no scatter integration is included yet.
+Boundary/path/point toggles draw cached results. Explicit spline/helper exports create independent snapshots, not live links. Source meshes are not modified. Cached results, update mode and settings persist in MAX files. Nodes and guides are schematic and non-rendering. Cyrus Scatter can reference Analyzer paths and sample points through its Area controls; that Scatter adapter evaluates path bands and point-radius masks in world XY, even though Analyzer itself supports separately oriented planar elements. See the [artist-zone integration audit](../docs/Artist_Zones_Integration_2026-10-03/CODEBASE_AUDIT.md#a03--analyzer-integration-exists-but-its-geometry-scope-differs) for the current source scope and proposed extensions.
 
 Keep versions' binary folders separate and restart Max after installation. Source scene files are never overwritten by installation. Extremely small Point radius values exceeding the candidate budget are rejected explicitly. C++ analysis remains single-threaded and synchronous; large meshes/many elements/high resolution can still pause the UI.
 

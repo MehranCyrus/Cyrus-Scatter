@@ -1,0 +1,48 @@
+{
+  "pid": 31708,
+  "host": [
+    29000,
+    70,
+    0,
+    29,
+    1,
+    0,
+    11426,
+    2027,
+    ".1"
+  ],
+  "modules": [
+    [
+      "CyrusScatterEdit.dlm",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\brush-lab-2026-10-03\\acceptance-i\\bin\\CyrusScatterEdit.dlm"
+    ],
+    [
+      "AminScatter.dlx",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\brush-lab-2026-10-03\\acceptance-i\\bin\\AminScatter.dlx"
+    ],
+    [
+      "CyrusBrushStorage.dlh",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\brush-lab-2026-10-03\\acceptance-i\\bin\\CyrusBrushStorage.dlh"
+    ],
+    [
+      "CyrusBrushLab.dlx",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\brush-lab-2026-10-03\\acceptance-i\\bin\\CyrusBrushLab.dlx"
+    ]
+  ],
+  "stats": [
+    4,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    3,
+    2,
+    20000,
+    "",
+    0,
+    0.8009999990463257,
+    0
+  ]
+}

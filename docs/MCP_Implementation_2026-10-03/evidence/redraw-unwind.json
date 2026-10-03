@@ -1,0 +1,7 @@
+{
+  "cleared_levels": 20,
+  "baseline_disabled": false,
+  "normal_exit_disabled": false,
+  "exception_exit_disabled": true,
+  "recovered_disabled": false
+}

@@ -1,0 +1,20 @@
+{
+  "checks": [
+    [
+      "pair_clone_remaps_target",
+      true
+    ],
+    [
+      "hidden_target_stops_session",
+      true
+    ],
+    [
+      "deleted_target_stops_and_rejects",
+      true
+    ],
+    [
+      "stop_cancels_pending_input",
+      true
+    ]
+  ]
+}

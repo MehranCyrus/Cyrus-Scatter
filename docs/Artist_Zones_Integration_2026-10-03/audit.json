@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-10-03",
+  "captured_utc": "2026-10-03T08:10:37.4176302Z",
+  "git_head": "b757b0f995e0f77f7faa3e7d6c71eb52fa4ccb76",
+  "scope": "Source inspection and official documentation research for artist-authored zones, layer spacing, mask storage, Brush/CS Edit/Analyzer integration and MCP context.",
+  "source_state": "Working tree including existing uncommitted Brush and MCP work; HEAD alone is not a source identity.",
+  "new_runtime_tests": [],
+  "earlier_test_evidence": "../Brush_Tool_2026-10-02/IMPLEMENTATION_2026-10-03.md and ../MCP_Implementation_2026-10-03/REPORT.md; historical only.",
+  "files": [
+    {
+      "path": "AminScatter/include/scatter.h",
+      "sha256": "949bad97f4c13aa119b43da5e5c73b02760c45d9779a14f3eaf7baa4d94b1265"
+    },
+    {
+      "path": "AminScatter/src/scatter.cpp",
+      "sha256": "16e56f583cf608b23a29e2d07608e5b68bfec36de7f3035ebe510ed59987fe7f"
+    },
+    {
+      "path": "AminScatter/src/max_bridge.cpp",
+      "sha256": "4975241677c358ec0d9a24deb6afd5205ef3dc2a7e53c35ff2c70020ceab76a0"
+    },
+    {
+      "path": "AminScatter/src/analyzer_area_bridge.inc",
+      "sha256": "849e9ed30e3b5cdd11685a5150b03d50859b3577f5d49edae8325afa186fd02b"
+    },
+    {
+      "path": "AminScatter/src/cyrus_edit.cpp",
+      "sha256": "0348b8396f42f3eefc83daa9646d8bda223e9d12742595f2eb1fac120c21ad28"
+    },
+    {
+      "path": "AminScatter/src/cyrus_edit_stack.inc",
+      "sha256": "53d689602439f0f956a643b0f0ccc561247b82d6b162d6a067073abe1e23a6ab"
+    },
+    {
+      "path": "AminScatter/include/brush.h",
+      "sha256": "18b6594e2b6008621c3d5964b5b908a1291e1f6da59fffa9ddb0a3b6b49985bd"
+    },
+    {
+      "path": "AminScatter/src/brush.cpp",
+      "sha256": "70394ebba2b5444e90164220fbcdb7c18b72a42c1db6413cdfb9e02cf6f893ce"
+    },
+    {
+      "path": "AminScatter/src/brush_lab.cpp",
+      "sha256": "5e9295d87aa2a7acab01a618878b365531def87f22162a7d4b4cf86a4de965db"
+    },
+    {
+      "path": "AminScatter/src/brush_storage_plugin.cpp",
+      "sha256": "4bdf5def6555165d241b1820388ffa3ba4765d0fe883f185da66723274acadff"
+    },
+    {
+      "path": "AminScatter/scripts/AminScatterObject.ms",
+      "sha256": "ea6e70b40509536c9c7538e9b01bd43ba7d1f0a856e5dc46aad3d1938e4a4c09"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/before.ms",
+      "sha256": "4ffe3f7698b0df6d6653364189fcf3d2563d90186ce266072e5e39cea1ed3bfa"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/storage.ms",
+      "sha256": "e0abd4988dcc117ace4931ee3d3c7a5238be0262aab0b85aa4f8ffb342eb0e52"
+    },
+    {
+      "path": "AminScatter/tools/ui/generate.cjs",
+      "sha256": "cef9b72fcac8a36fc18c07ea1611bf32ecfa84b55c9ce9ae9e4c507967b92bcf"
+    },
+    {
+      "path": "AminScatter/tools/ui/overlaps.cjs",
+      "sha256": "7c949fd674255f9ca26535aa89084907f74014ddd70906feb8fdacdb808c3f43"
+    },
+    {
+      "path": "AminScatter/tools/ui/radius.cjs",
+      "sha256": "a021915901b3b4d985f79e76e47d0a398ddc523578f19f0004f836eac46ff3b5"
+    },
+    {
+      "path": "AminScatter/tools/ui/edit.cjs",
+      "sha256": "e53a198c479027f39506d59f324f44226b570cb461e7a7e5e135df00da97c68b"
+    },
+    {
+      "path": "AminScatter/tools/ui/analyzer-area.cjs",
+      "sha256": "bc1d472ef08351b7bf5112b1fca0552fa6610747edaa5d880050e80933c89adf"
+    },
+    {
+      "path": "AminScatter/tools/ui/performance.cjs",
+      "sha256": "507799812df3f13e2499fd9c803d44c1a6356f631387edd52fedc3e9f1b10ef2"
+    },
+    {
+      "path": "AminScatter/tools/ui/retained-points.cjs",
+      "sha256": "593e7bfafd425692911b602ceb3b041ca4cfef63e6d53b8886281860b284de55"
+    },
+    {
+      "path": "AminScatter/CMakeLists.txt",
+      "sha256": "8518c95dc162371560365969e80e893aee6898d063a9f1a04a21e77aedb0ccb6"
+    },
+    {
+      "path": "CyrusMCP/cyrus_mcp/models.py",
+      "sha256": "63f349ec88bcde750de76072c3a9c03d403dacc0846d7947da37a7ab784d0ee8"
+    },
+    {
+      "path": "CyrusMCP/cyrus_mcp/plan.schema.json",
+      "sha256": "4e4252feee79951d9dd19a2c0cf9f08404db5a60505bac4a3a306b5d1773a13c"
+    },
+    {
+      "path": "CyrusMCP/cyrus_mcp/max_host.py",
+      "sha256": "73f604e84332969621412ec21602a4bd370388663d5c51fafc142c1b701b2f8d"
+    },
+    {
+      "path": "CyrusMCP/cyrus_mcp/contracts.py",
+      "sha256": "47ddf4f08d6c1bdd44634bbd26925f6b4f2d973e2c88f8477f4c49e0959d95ac"
+    },
+    {
+      "path": "CyrusMCP/cyrus_mcp/geometry.py",
+      "sha256": "e285729a9308006abb15dd23bf2238e8e40c66332c9f6279c4852434686fa018"
+    },
+    {
+      "path": "CyrusMCP/cyrus_mcp/panel.py",
+      "sha256": "bb4a3fc3b8960327c5d487e130fb39ee57e94872504d2f9a14c9229d51c03e4e"
+    }
+  ],
+  "baseline_git_status": [
+    " M .gitignore",
+    " M AminScatter/CMakeLists.txt",
+    " M docs/AI_MCP_ML_Roadmap_2026-09-30/README.md",
+    " M docs/Brush_Tool_2026-10-02/IMPLEMENTATION_PLAN.md",
+    " M docs/Brush_Tool_2026-10-02/README.md",
+    " M docs/README.md",
+    "?? AminScatter/include/brush.h",
+    "?? AminScatter/src/brush.cpp",
+    "?? AminScatter/src/brush_lab.cpp",
+    "?? AminScatter/src/brush_storage_plugin.cpp",
+    "?? AminScatter/tests/brush_tests.cpp",
+    "?? AminScatter/tests/data/",
+    "?? CyrusMCP/",
+    "?? docs/Brush_Tool_2026-10-02/IMPLEMENTATION_2026-10-03.md",
+    "?? docs/Brush_Tool_2026-10-02/evidence/",
+    "?? docs/MCP_Implementation_2026-10-03/",
+    "?? tools/brush_lab/",
+    "?? tools/mcp/"
+  ],
+  "external_sources": [
+    "https://www.sidefx.com/docs/houdini/nodes/sop/attribpaint.html",
+    "https://www.sidefx.com/docs/houdini/nodes/sop/texturemaskpaint.html",
+    "https://www.sidefx.com/docs/houdini/nodes/sop/scatter.html",
+    "https://docs.itoosoft.com/forestpack/forest-plugin/areas",
+    "https://docs.itoosoft.com/forestpack/forest-plugin/distribution/image-mode"
+  ],
+  "documentation_validation": {
+    "local_links_checked": 178,
+    "new_heading_anchors_checked": 2,
+    "missing_local_links_or_checked_anchors": 0,
+    "git_diff_check_exit_code": 0,
+    "inspected_source_hashes_rechecked_unchanged": 27,
+    "note": "Documentation checks only; no native or Max runtime tests were run for this review."
+  }
+}

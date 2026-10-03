@@ -1,0 +1,7 @@
+{
+  "native_playback_admission_rejected": true,
+  "playback_stop_restores_admission": true,
+  "host_adapter_sha256": "73f604e84332969621412ec21602a4bd370388663d5c51fafc142c1b701b2f8d",
+  "service_sha256": "b009adcca0249db8bcbfeb79a8c66faea2c0c87d4a27d0da2441f1d969438e19",
+  "fixture": "acceptance-e"
+}
