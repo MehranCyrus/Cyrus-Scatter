@@ -15,6 +15,7 @@ def main():
     parser=argparse.ArgumentParser()
     parser.add_argument("--run",required=True)
     parser.add_argument("--installed-host",type=Path,help="Test the installed startup script and default connection in a fresh private Max")
+    parser.add_argument("--native-build",type=Path,default=ROOT/"build/cyrus-v1/max2027",help="Matching v1 native engine, CS Edit and Brush storage build")
     args=parser.parse_args()
     if not re.fullmatch(r"[a-z0-9-]+",args.run):
         raise SystemExit("Use a lowercase run name")
@@ -22,8 +23,8 @@ def main():
     output.mkdir(parents=True,exist_ok=False)
     for folder in ("startup","plugcfg","temp","bin","autoback"):
         (output/folder).mkdir()
-    for name in ("AminScatter.dlx","CyrusScatterEdit.dlm"):
-        shutil.copy2(ROOT/"build/brush-lab-2026-10-03/max2027"/name,output/"bin"/name)
+    for name in ("AminScatter.dlx","CyrusScatterEdit.dlm","CyrusBrush.dlx","CyrusBrushStorage.dlh"):
+        shutil.copy2(args.native_build/name,output/"bin"/name)
     shutil.copy2(ROOT/"build/codebase-research-2026-10-01/max2027/CyrusSurfaceAnalyzer/CyrusSurfaceAnalyzer.dlx",output/"bin/CyrusSurfaceAnalyzer.dlx")
     source=Path(os.environ["LOCALAPPDATA"])/"Autodesk/3dsMax/2027 - 64bit/ENU/3dsMax.ini"
     config=source.read_text(encoding="utf-16")

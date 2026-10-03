@@ -22,7 +22,7 @@ def main():
     output.mkdir(parents=True,exist_ok=True)
     env=compiler_environment(Path('C:/Program Files/Microsoft Visual Studio/2022/Community'),'14.38.33130','10.0.19041.0')
     sdk=ROOT/f'build/tooling/max{args.year}-sdk/Program Files/Autodesk/3ds Max {args.year} SDK/maxsdk'
-    configure=['cmake','-S',str(ROOT/'AminScatter'),'-B',str(output),'-G','NMake Makefiles','-DCMAKE_BUILD_TYPE=Release',f'-DAMIN_BUILD_MAX={"OFF" if args.core_only else "ON"}',f'-DAMIN_BUILD_BRUSH_LAB={"OFF" if args.core_only else "ON"}',f'-DCYRUS_MAX_YEAR={args.year}',f'-DMAXSDK_ROOT={sdk}']
+    configure=['cmake','-S',str(ROOT/'AminScatter'),'-B',str(output),'-G','NMake Makefiles','-DCMAKE_BUILD_TYPE=Release',f'-DAMIN_BUILD_MAX={"OFF" if args.core_only else "ON"}',f'-DAMIN_BUILD_BRUSH={"OFF" if args.core_only else "ON"}',f'-DCYRUS_MAX_YEAR={args.year}',f'-DMAXSDK_ROOT={sdk}']
     configure.append(f'-DAMIN_BUILD_BRUSH_BENCHMARK={"ON" if args.history_benchmark else "OFF"}')
     commands=[configure,['cmake','--build',str(output)]]
     if not args.skip_tests:

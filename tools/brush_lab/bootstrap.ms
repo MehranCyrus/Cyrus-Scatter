@@ -32,6 +32,6 @@ for index=0 to process.Modules.Count-1 do (
     local loaded=process.Modules.Item[index]
     if matchPattern loaded.ModuleName pattern:"*Cyrus*" or matchPattern loaded.ModuleName pattern:"AminScatter*" do append modules #(loaded.ModuleName,loaded.FileName)
 )
-CSPWriteText (BLDir+"ready.json") (CSPObject #(#("pid",process.Id),#("host",maxVersion()),#("modules",modules),#("stats",cyrusBrushLabStats (BLDocument()))))
+CSPWriteText (BLDir+"ready.json") (CSPObject #(#("pid",process.Id),#("host",maxVersion()),#("modules",modules),#("stats",cyrusBrushStats (BLDocument()))))
 BLCapture "initial"
 )

@@ -1,6 +1,6 @@
 (
 BLPanel.refresh.active=false
-cyrusBrushLabStop()
+cyrusBrushStop()
 local results=#()
 local previousTM=viewport.getTM()
 for spec in #(#(BLFlat,BLFlatLayer),#(BLCurved,BLCurvedLayer)) do (
@@ -8,11 +8,11 @@ for spec in #(#(BLFlat,BLFlatLayer),#(BLCurved,BLCurvedLayer)) do (
     for viewType in #(#view_top,#view_persp_user) do (
         viewport.setType viewType
         select node;max zoomext sel all
-        cyrusBrushLabBegin d
+        cyrusBrushBegin d
         completeRedraw()
         local size=getViewSize(),hits=0,maxReconstruction=0.0,maxRayDifference=0.0,repaired=0
         for y=2 to 8 do for x=2 to 8 do (
-            local hit=cyrusBrushLabProbe d [size.x*x/10.0,size.y*y/10.0]
+            local hit=cyrusBrushProbe d [size.x*x/10.0,size.y*y/10.0]
             if hit!=undefined do (
                 hits+=1
                 maxReconstruction=amax maxReconstruction hit[2]
@@ -22,7 +22,7 @@ for spec in #(#(BLFlat,BLFlatLayer),#(BLCurved,BLCurvedLayer)) do (
                 BLAssert hit[6] "BVH must match exhaustive snapshot query"
             )
         )
-        cyrusBrushLabStop()
+        cyrusBrushStop()
         BLAssert (hits>=5) "Picking fixture had too few hits"
         BLAssert (maxReconstruction<.005) "Painter face reconstruction disagreed with supplied snapshot"
         -- Native screen-space face choice is diagnostic, not the hit oracle:

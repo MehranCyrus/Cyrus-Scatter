@@ -40,6 +40,16 @@ int main(int argc,char** argv){
     damaged=encoded;damaged.resize(damaged.size()-1);rejects([&]{decode(damaged);});
     damaged=encoded;damaged.push_back(0);rejects([&]{decode(damaged);});
     auto invalid=doc;invalid.strokes[0].radius=0;rejects([&]{encode(invalid);});
+    Document full{surface.fingerprint(),{},1};
+    require(Field(surface,full).evaluate(sample.anchor)==1,"Filled base was not preserved");
+    auto erased=stroke;erased.erase=true;erased.strength=.25;erased.softness=0;
+    full.strokes={erased};
+    require(close(Field(surface,full).evaluate(sample.anchor),.75),"Erase from filled base failed");
+    require(decode(encode(full)).base==1,"Saved filled base was lost");
+    auto legacyBytes=encode(doc);legacyBytes[0]=2;
+    legacyBytes.erase(legacyBytes.begin()+12,legacyBytes.begin()+20);
+    require(decode(legacyBytes).base==0,"Legacy Brush v2 base was not recovered");
+    full.base=2;rejects([&]{encode(full);});
     invalid=doc;invalid.surface++;rejects([&]{Field f(surface,invalid);});
     invalid=doc;invalid.strokes[0].samples[0].basis[0]={0,0,0};rejects([&]{encode(invalid);});
     // Persist the cursor path, then shrink its radius: midpoint coverage must

@@ -1,6 +1,8 @@
 # Cyrus Scatter — install and use in 3ds Max 2027
 
-**Current candidate:** 0.64, built 2026-10-02. **Tested host:** 3ds Max 2027.1, version 29.1.0.11426. The earlier packages are preserved. Read the [retained Mesh guide](Retained_Mesh_Preview_2026-10-02/README.md) and its [integration results](Retained_Mesh_Preview_2026-10-02/RESULTS.md).
+**Current source is Cyrus Scatter 1.0.0.** Follow the [v1 artist/installation guide](Cyrus_Scatter_V1_2026-10-03/ARTIST_GUIDE.md) and [qualification report](Cyrus_Scatter_V1_2026-10-03/REPORT.md) for the native layer editor and integrated Brush. This page preserves the older 0.64 installation workflow and the pinned developer toolchain below.
+
+**Historical candidate:** 0.64, built 2026-10-02. **Tested host:** 3ds Max 2027.1, version 29.1.0.11426. The earlier packages are preserved. Read the [retained Mesh guide](Retained_Mesh_Preview_2026-10-02/README.md) and its [integration results](Retained_Mesh_Preview_2026-10-02/RESULTS.md).
 
 The 0.64 candidate adds retained GPU instancing to Mesh, preserving its geometry limits and preview colors. It includes the [0.63 retained Point Cloud work](Retained_Point_Preview_2026-10-02/README.md), the [held-input synchronization improvements](Viewport_Performance_Round2_2026-10-01.md), [native proxy batches](Viewport_Performance_Implementation_2026-10-01.md), and the [CPU improvements](Performance_Implementation_2026-10-01.md). Automatic camera-dependent point detail, GPU computation of placements and asynchronous editing remain future work.
 

@@ -4,12 +4,12 @@ Native C++ and MAXScript sources for Cyrus Scatter and Cyrus Surface Analyzer fo
 
 ## Current state
 
-- **Scatter 0.64 / Analyzer 0.14:** current local candidate. Mesh now uses retained GPU instancing with the same geometry and limits. Point Cloud, CPU and Proxy improvements remain. Read the [candidate guide and qualification](docs/Retained_Mesh_Preview_2026-10-02/README.md).
+- **Scatter 1.0.0 / Analyzer 0.14:** current foundation. Standard native Max rollouts replace the nested layer UI; layers have cached statistics, separate viewport visibility and integrated editable procedural Brush. Start with the [v1 guide and qualification](docs/Cyrus_Scatter_V1_2026-10-03/README.md). Retained Mesh, Point Cloud, CPU and Proxy improvements remain.
 - **Measured integration:** the [Mesh results](docs/Retained_Mesh_Preview_2026-10-02/RESULTS.md) cover visible foliage, an equivalent native Max control, lifecycle and bounded memory fallback. Timings distinguish camera/redraw steps from presented FPS. The [0.63 Point Cloud results](docs/Retained_Point_Preview_2026-10-02/RESULTS.md) remain historical evidence.
 - **Next implementation:** improve wide-to-close point-cloud detail in the same heavy scene, using the existing Point Cloud / Proxy / Mesh modes. Follow the [working roadmap](docs/Heavy_Scene_Viewport_2026-10-02/ROADMAP.md).
-- **Brush prototype:** native editable paint/erase, saved surface strokes and isolated Max 2027 fixtures are in the [implementation report](docs/Brush_Tool_2026-10-02/IMPLEMENTATION_2026-10-03.md). Product layer/UI integration remains pending.
+- **Procedural Brush:** saved per-layer Paint/Erase histories, curved receiving meshes, Fill/Empty, Undo, stable candidates and CS Edit integration are in the [v1 report](docs/Cyrus_Scatter_V1_2026-10-03/REPORT.md). The earlier [prototype report](docs/Brush_Tool_2026-10-02/IMPLEMENTATION_2026-10-03.md) remains historical evidence.
 - **Local MCP 1.0:** source, offline installer and seven automation tools are in [CyrusMCP](CyrusMCP/README.md), with bounded Max 2027 qualification in the [report](docs/MCP_Implementation_2026-10-03/REPORT.md).
-- **Next product foundation:** integrate artist zones and Brush with persistent identities and a standard Max layer editor. The [integration proposal](docs/Artist_Zones_Integration_2026-10-03/README.md) records the source audit, contracts and acceptance gates. Adaptive point detail remains a separate performance track.
+- **Next work:** artist/renderer/Max 2026 testing, unified semantic zones, density-map exchange and bounded MCP access to the new inputs. Follow the [v1 roadmap](docs/Cyrus_Scatter_V1_2026-10-03/ROADMAP.md) and the [artist-zone contracts](docs/Artist_Zones_Integration_2026-10-03/README.md). Adaptive point detail remains a separate measured performance track.
 
 Max 2026 and 2027 SDK builds exist; the recorded interactive retained-display experiment ran in Max 2027. SDK compilation is not Max 2026 runtime qualification.
 
@@ -23,7 +23,7 @@ Max 2026 and 2027 SDK builds exist; the recorded interactive retained-display ex
 | `tools/` | Build/package tools, regression fixtures, diagnostics and performance experiments |
 | `docs/` | [Documentation index](docs/README.md), current findings, plans and dated evidence |
 
-The `AminScatter` internal name is retained for existing scene and installation compatibility. Generate `AminScatter/scripts/AminScatterObject.ms` from `AminScatter/tools/ui/generate.cjs`; do not treat the generated file as the only source.
+The `AminScatter` internal class/native filename is retained for existing scene and Edit linkage compatibility. Public creation and installation use Cyrus names. Generate `AminScatter/scripts/AminScatterObject.ms` from `AminScatter/tools/ui/generate.cjs` with `AminScatter` as the working directory; do not treat the generated file as the only source. See [v1 developer qualification](tools/v1/README.md).
 
 ## Build and verification
 

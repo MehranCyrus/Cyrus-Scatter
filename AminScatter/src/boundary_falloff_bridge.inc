@@ -7,7 +7,7 @@ static Value* falloffBridge(Value** args,int count,bool area){
  amin::BoundaryFalloff f;f.remove=cfg->data[0]->to_bool()!=FALSE;f.removeWidth=cfg->data[1]->to_float();f.scale=cfg->data[2]->to_bool()!=FALSE;f.scaleWidth=cfg->data[3]->to_float();f.density=cfg->data[5]->to_bool()!=FALSE;f.densityWidth=cfg->data[6]->to_float();
  auto curve=[&](Value* v){auto* a=arr(v);std::vector<double> out;for(int i=0;i<a->size;++i)out.push_back(a->data[i]->to_float());return out;};f.scaleCurve=curve(cfg->data[4]);f.densityCurve=curve(cfg->data[7]);
  std::vector<amin::Instance> rows;std::vector<std::vector<amin::Vec3>> loops;
- for(int i=0;i<input->size;++i){auto* r=arr(input->data[i]);if(r->size!=2)throw RuntimeError(_T("Invalid falloff row"));auto tm=r->data[0]->to_matrix3();rows.push_back({vec(tm.GetTrans()),vec(tm.GetRow(0)),vec(tm.GetRow(1)),vec(tm.GetRow(2)),1.0,static_cast<unsigned>(r->data[1]->to_int()-1),0});}
+ for(int i=0;i<input->size;++i)rows.push_back(placementInstance(arr(input->data[i])));
  if(!area)for(int i=0;i<paths->size;++i){auto* p=arr(paths->data[i]);std::vector<amin::Vec3> path;for(int j=0;j<p->size;++j)path.push_back(vec(p->data[j]->to_point3()));loops.push_back(std::move(path));}
  if(area){
   f.areaSide=args[4]->to_int();if(f.areaSide!=1&&f.areaSide!=2)throw RuntimeError(_T("Invalid Area mode"));
@@ -23,7 +23,7 @@ static Value* falloffBridge(Value** args,int count,bool area){
  }
  try{rows=amin::boundaryFalloff(rows,loops,f,args[3]->to_int());}catch(const std::exception& e){throw RuntimeError(_T("Boundary falloff failed. Check Analyzer data and curve settings."));}
  two_typed_value_locals(Array* result,Array* row);vl.result=new Array(static_cast<int>(rows.size()));
- for(const auto& r:rows){Matrix3 tm(TRUE);tm.SetRow(0,point(r.xAxis));tm.SetRow(1,point(r.yAxis));tm.SetRow(2,point(r.zAxis));tm.SetTrans(point(r.position));vl.row=new Array(2);vl.row->append(new Matrix3Value(tm));vl.row->append(Integer::intern(r.source+1));vl.result->append(vl.row);}return_value(vl.result);
+ for(const auto& r:rows){Matrix3 tm(TRUE);tm.SetRow(0,point(r.xAxis));tm.SetRow(1,point(r.yAxis));tm.SetRow(2,point(r.zAxis));tm.SetTrans(point(r.position));vl.row=new Array(2);vl.row->append(new Matrix3Value(tm));vl.row->append(Integer::intern(r.source+1));appendIdentity(vl.row,r);vl.result->append(vl.row);}return_value(vl.result);
 }
 
 Value* cyrusBoundaryFalloff_cf(Value** args,int count){return falloffBridge(args,count,false);}

@@ -13,7 +13,7 @@ Value* cyrusAnalyzerArea_cf(Value** args,int count){
  }
  for(int i=0;i<points->size;++i)centers.push_back(points->data[i]->to_point3());
  one_typed_value_local(Array* result);vl.result=new Array(rows->size);
- for(int i=0;i<rows->size;++i){auto* row=arr(rows->data[i]);if(row->size!=2)throw RuntimeError(_T("Invalid Analyzer Area row"));auto p=row->data[0]->to_matrix3().GetTrans();bool keep=false;
+ for(int i=0;i<rows->size;++i){auto* row=arr(rows->data[i]);if(row->size<2)throw RuntimeError(_T("Invalid Analyzer Area row"));auto p=row->data[0]->to_matrix3().GetTrans();bool keep=false;
   for(const auto& s:segments){
    if(p.x<std::min(s.a.x,s.b.x)-w||p.x>std::max(s.a.x,s.b.x)+w||p.y<std::min(s.a.y,s.b.y)-w||p.y>std::max(s.a.y,s.b.y)+w)continue;
    double dx=s.b.x-s.a.x,dy=s.b.y-s.a.y,t=((p.x-s.a.x)*dx+(p.y-s.a.y)*dy)/(dx*dx+dy*dy);

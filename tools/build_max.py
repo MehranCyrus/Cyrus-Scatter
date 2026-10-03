@@ -43,6 +43,8 @@ def sha(data):
 
 
 def package(project, name, version, native_names, script_name, args, build_dir):
+    if project == 'AminScatter' and version != '1.0.0':
+        raise ValueError('Current Scatter source is 1.0.0. Use a frozen checkout to package historical versions.')
     payload = {}
     for filename in native_names:
         payload[filename] = (build_dir / project / filename).read_bytes()
@@ -50,29 +52,43 @@ def package(project, name, version, native_names, script_name, args, build_dir):
     for path in sorted((ROOT / project / 'installer').iterdir()):
         if path.is_file():
             text = path.read_text(encoding='utf-8-sig')
-            # These are host-specific staging substitutions; source installers
-            # remain the legacy 2026 installers. Guard against template drift.
-            if path.name == 'install.ms' and ('28000' not in text or '2026' not in text):
-                raise RuntimeError('Installer template changed: review host-year substitutions')
-            text = text.replace('2026', str(args.max_year)).replace('28000', str((args.max_year - 1998) * 1000))
             if project == 'AminScatter':
-                text = text.replace('0.59', version)
-            text = text.replace('bin55', f'bin-max{args.max_year}-{native_id}')
-            text = text.replace('bin05', f'bin-max{args.max_year}-{native_id}')
+                if path.name == 'install.ms' and '__MAX_VERSION__' not in text:
+                    raise RuntimeError('Missing Scatter installer host guard')
+                for token, value in {'__MAX_YEAR__': args.max_year,
+                                     '__MAX_VERSION__': (args.max_year - 1998) * 1000,
+                                     '__NATIVE_ID__': native_id, '__VERSION__': version}.items():
+                    text = text.replace(token, str(value))
+            else:
+                if path.name == 'install.ms' and ('28000' not in text or '2026' not in text):
+                    raise RuntimeError('Analyzer installer host guard changed')
+                text = text.replace('2026', str(args.max_year)).replace('28000', str((args.max_year - 1998) * 1000))
+                text = text.replace('bin05', f'bin-max{args.max_year}-{native_id}')
             if path.name == 'mzp.run':
-                text = f'name "{name} {version} for 3ds Max {args.max_year}"\nversion {version}\nrun "install.ms"\n'
+                # MZP uses a numeric version; retain full SemVer in its name,
+                # filename and manifest, rather than emitting 1.0.0 syntax.
+                mzp_version='.'.join(version.split('.')[:2])
+                text = f'name "{name} {version} for 3ds Max {args.max_year}"\nversion {mzp_version}\nrun "install.ms"\n'
             payload[path.name] = text.encode('utf-8')
-    payload[script_name] = (ROOT / project / 'scripts' / script_name).read_bytes()
+    payload['CyrusScatter.ms' if project == 'AminScatter' else script_name] = (ROOT / project / 'scripts' / script_name).read_bytes()
     payload['INSTALL.txt'] = (
         f'{name} {version} - 3ds Max {args.max_year} x64\n'
         'Run this MZP through Scripting > Run Script, then restart Max.\n'
-        + ('Viewport performance candidate: retained Nitrous point-cloud buffers, GPU-instanced Mesh preview, bounded proxy batches and deferred synchronization during held input.\n'
+        + ('Native Max layer editor with passive placement/preview/build statistics and separate viewport visibility.\n'
+           'Integrated procedural Brush: pick one receiving mesh, Paint/Erase, edit stroke history, Fill/Empty and Undo.\n'
+           'Flat and curved static surfaces are supported. Topology changes require target validation; strokes are preserved.\n'
+           'Manual mode updates the mask immediately and publishes plants when Update is pressed.\n'
+           'Brush relaxation and unprojected random movement are outside this release.\n'
+           'Retained Nitrous point-cloud buffers, GPU-instanced Mesh preview, bounded proxy batches and deferred synchronization during held input.\n'
            'Point Cloud and Mesh reuse GPU buffers during navigation. Existing preview limits still apply; no automatic camera LOD.\n'
            'Includes native source filtering/transforms, batched edit notifications, and bounded clustered queries.\n'
            'Automatic clustered calculations use at most 4 total CPU participants. GPU compute is not enabled.\n'
            if project == 'AminScatter' else 'The Analyzer algorithm is unchanged in this performance iteration.\n') +
         'Create > Geometry > Cyrus, then select the tool and use Modify.\n'
         'Use saved test scene copies to compare performance and verify output.\n'
+        + ('Max 2027 runtime qualification is recorded in the v1 report. Max 2026 is SDK-built/tested and still needs host testing.\n'
+           'Cyrus Automation/MCP is a separate optional installation; Brush is not exposed as an MCP tool in schema 1.0.\n'
+           if project == 'AminScatter' else '')
     ).encode('utf-8')
     manifest = dict(product=name, version=version, max_year=args.max_year,
                     toolset=args.tools_version, windows_sdk=args.windows_sdk,
@@ -121,7 +137,7 @@ def main():
              f'-DMAXSDK_ROOT={args.sdk_root.resolve()}'], env)
         run(['cmake', '--build', dest], env)
         run(['ctest', '--test-dir', dest, '--output-on-failure'], env)
-    package('AminScatter', 'Cyrus Scatter', '0.64', ['AminScatter.dlx', 'CyrusScatterEdit.dlm'],
+    package('AminScatter', 'Cyrus Scatter', '1.0.0', ['AminScatter.dlx', 'CyrusScatterEdit.dlm', 'CyrusBrush.dlx', 'CyrusBrushStorage.dlh'],
             'AminScatterObject.ms', args, base)
     package('CyrusSurfaceAnalyzer', 'Cyrus Surface Analyzer', '0.14', ['CyrusSurfaceAnalyzer.dlx'],
             'CyrusSurfaceAnalyzer.ms', args, base)

@@ -1,7 +1,7 @@
 -- Disposable clones only; retain the two demonstration layers.
 (
 BLPanel.refresh.active=false
-cyrusBrushLabStop()
+cyrusBrushStop()
 local checks=#()
 local originals=#(BLCurvedLayer,BLCurved)
 local clones=#()
@@ -13,38 +13,38 @@ for node in clones do (
 )
 BLAssert (isValidNode layer and isValidNode surface) "Pair clone did not return both nodes"
 local d=layer.CyrusBrushLabData.paintDocument
-cyrusBrushLabBind d
-local before=cyrusBrushLabRows d
+cyrusBrushBind d
+local before=cyrusBrushRows d
 surface.pos+=[0,0,25]
-cyrusBrushLabBind d
-local moved=cyrusBrushLabRows d
+cyrusBrushBind d
+local moved=cyrusBrushRows d
 BLAssert (before.count==moved.count) "Pair clone changed membership"
 for i=1 to moved.count do BLAssert (distance moved[i][1].row4 (before[i][1].row4+[0,0,25])<.001) "Pair clone retained original target"
 append checks #("pair_clone_remaps_target",true)
-cyrusBrushLabBegin d
+cyrusBrushBegin d
 hide surface
-local hidden=cyrusBrushLabStats d
+local hidden=cyrusBrushStats d
 BLAssert (hidden[4]==0 and hidden[5]==0) "Hidden target did not suspend session"
-unhide surface;cyrusBrushLabBind d
+unhide surface;cyrusBrushBind d
 append checks #("hidden_target_stops_session",true)
-cyrusBrushLabBegin d
+cyrusBrushBegin d
 delete surface
-local deleted=cyrusBrushLabStats d
+local deleted=cyrusBrushStats d
 BLAssert (deleted[4]==0 and deleted[5]==0) "Deleted target did not release session"
 local rejected=false
-try(cyrusBrushLabRows d)catch(rejected=true)
+try(cyrusBrushRows d)catch(rejected=true)
 BLAssert rejected "Deleted target produced fresh placements"
 append checks #("deleted_target_stops_and_rejects",true)
 delete layer
 clearUndoBuffer()
 -- Explicitly canceled pending input cannot change committed paint.
 local main=BLDocument()
-local signature=cyrusEditFingerprint (cyrusBrushLabRows main) "brush"
-cyrusBrushLabBegin main
-cyrusBrushLabDab main [0,-400,0] [0,1,0] false
-cyrusBrushLabStop()
-BLAssert ((cyrusBrushLabStats main)[6]==0) "Stop retained a pending gesture"
-BLAssert ((cyrusEditFingerprint (cyrusBrushLabRows main) "brush")==signature) "Stop committed canceled input"
+local signature=cyrusEditFingerprint (cyrusBrushRows main) "brush"
+cyrusBrushBegin main
+cyrusBrushDab main [0,-400,0] [0,1,0] false
+cyrusBrushStop()
+BLAssert ((cyrusBrushStats main)[6]==0) "Stop retained a pending gesture"
+BLAssert ((cyrusEditFingerprint (cyrusBrushRows main) "brush")==signature) "Stop committed canceled input"
 append checks #("stop_cancels_pending_input",true)
 BLPublish()
 BLPanel.refresh.active=true

@@ -1,0 +1,51 @@
+{
+  "package_sha256": "1f7ebfe357ed81ef7c3954569cb0959de7b536a382e12520026526c0bba8de8b",
+  "installed_file_hashes": {
+    "CyrusScatter.ms": "c0f79d86722113ce10a5a77f94a33b3c8195681fc27e55a48cb97f27bc889f68",
+    "Uninstall.ms": "84aba776545ea824b3dc1850cd945ec097de92f0ab793c5c2e7910ea694f64b7",
+    "INSTALL.txt": "50aa135e06f4831f58b4a89307ca0eaf902fae33503d66233de207666becee16",
+    "CyrusScatter.mcr": "74a3c13a1c3f3a5dc721cdce18bd690e28e36940601755442bcb7075a9d0eb34",
+    "CyrusScatterStartup.ms": "fdf38b3bc83187eecb34b833bfff2751e78626e9e3dba41aa20a0ff7ff9e8405",
+    "AminScatter.dlx": "7b5a133d8df7d762274efe8261c5644f15e4b90150092949ecd72f87a8b7a3e5",
+    "CyrusScatterEdit.dlm": "828c82d8a0762698013761e1cab6365119c5627e41f0ab215703a59dd34e8e6f",
+    "CyrusBrush.dlx": "1d916aae2c651db4da2807327a2206cfb6315aec186ce99899633508b5e15418",
+    "CyrusBrushStorage.dlh": "5061c0b2fb85fc46566edeab086f134b3ae3a2537c1952e63330a7ca9d4a3ea7"
+  },
+  "actual_mzp_install": true,
+  "max_year": 2027,
+  "version": "1.0.0",
+  "clean_startup": {
+    "pid": 52536,
+    "host": [
+      29000,
+      70,
+      0,
+      29,
+      1,
+      0,
+      11426,
+      2027,
+      ".1"
+    ],
+    "modules": [
+      [
+        "CyrusScatterEdit.dlm",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\cyrus-v1\\hosts\\v1-shipped\\scripts\\CyrusScatter\\bin-max2027-b54e1d9bb026\\CyrusScatterEdit.dlm"
+      ],
+      [
+        "AminScatter.dlx",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\cyrus-v1\\hosts\\v1-shipped\\scripts\\CyrusScatter\\bin-max2027-b54e1d9bb026\\AminScatter.dlx"
+      ],
+      [
+        "CyrusBrushStorage.dlh",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\cyrus-v1\\hosts\\v1-shipped\\scripts\\CyrusScatter\\bin-max2027-b54e1d9bb026\\CyrusBrushStorage.dlh"
+      ],
+      [
+        "CyrusBrush.dlx",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\cyrus-v1\\hosts\\v1-shipped\\scripts\\CyrusScatter\\bin-max2027-b54e1d9bb026\\CyrusBrush.dlx"
+      ]
+    ],
+    "script_version": "1.0.0",
+    "startup_script": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\cyrus-v1\\hosts\\v1-shipped\\startup\\CyrusScatterStartup.ms"
+  }
+}

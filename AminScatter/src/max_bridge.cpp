@@ -14,7 +14,7 @@
 #include <cmath>
 #include <maxscript/macros/define_instantiation_functions.h>
 
-extern "C" __declspec(dllexport) const TCHAR* LibDescription() { return _T("Cyrus Scatter native engine 0.25 - retained instanced mesh preview"); }
+extern "C" __declspec(dllexport) const TCHAR* LibDescription() { return _T("Cyrus Scatter 1.0 native engine"); }
 extern "C" __declspec(dllexport) ULONG LibVersion() { return VERSION_3DSMAX; }
 extern "C" __declspec(dllexport) void LibInit() {}
 HINSTANCE CyrusEditInstance=nullptr;
@@ -61,7 +61,7 @@ Value* cyrusFilterSourceRows_cf(Value** args,int count) {
     for(int i=0;i<rows->size;++i) {
         type_check(rows->data[i],Array,_T("placement row"));
         auto* row=static_cast<Array*>(rows->data[i]);
-        if(row->size!=2) throw RuntimeError(_T("Invalid placement row"));
+        if(row->size<2) throw RuntimeError(_T("Invalid placement row"));
         const int source=row->data[1]->to_int()-1;
         if(source<0 || static_cast<std::size_t>(source)>=keep.size()) throw RuntimeError(_T("Invalid source index"));
         if(keep[source]) vl.result->append(rows->data[i]);
@@ -81,7 +81,7 @@ Value* cyrusApplySourceTransforms_cf(Value** args,int count) {
     // values, never scene transforms; preserve MAXScript's in-place alias rules.
     for(int i=0;i<rows->size;++i) {
         type_check(rows->data[i],Array,_T("placement row"));auto* row=static_cast<Array*>(rows->data[i]);
-        if(row->size!=2) throw RuntimeError(_T("Invalid placement row"));
+        if(row->size<2) throw RuntimeError(_T("Invalid placement row"));
         type_check(row->data[0],Matrix3Value,_T("placement transform"));
         const int source=row->data[1]->to_int()-1;
         if(source<0 || source>=scales->size) throw RuntimeError(_T("Invalid source index"));
@@ -122,7 +122,7 @@ Value* cyrusRemoveOverlaps_cf(Value** args,int count) {
     auto cell=[&](Point3 p){return Cell{std::floor(p.x/cellSize),std::floor(p.y/cellSize),planar?0:std::floor(p.z/cellSize)};};
     auto position=[](Value* value){
         type_check(value,Array,_T("placement row"));auto* row=static_cast<Array*>(value);
-        if(row->size!=2) throw RuntimeError(_T("Invalid placement row"));
+        if(row->size<2) throw RuntimeError(_T("Invalid placement row"));
         return row->data[0]->to_matrix3().GetTrans();
     };
     std::map<Cell,std::vector<std::pair<Point3,double>>> grid;
@@ -144,6 +144,7 @@ Value* cyrusRemoveOverlaps_cf(Value** args,int count) {
 namespace {
 amin::Vec3 vec(Point3 p) { return {p.x,p.y,p.z}; }
 Point3 point(amin::Vec3 p) { return {static_cast<float>(p.x),static_cast<float>(p.y),static_cast<float>(p.z)}; }
+#include "placement_identity.inc"
 std::vector<amin::Triangle> meshOf(INode* node, bool world, bool requireUv=false) {
     if(!node) throw std::invalid_argument("Missing node");
     const auto t=GetCOREInterface()->GetTime();
@@ -180,7 +181,11 @@ std::vector<amin::Triangle> surfaceMeshes(Value* input,bool requireUv=false) {
 }
 def_visible_primitive(aminScatterAdvanced, "aminScatterAdvanced");
 Value* aminScatterAdvanced_cf(Value** args,int count) {
-    if(count!=17&&count!=18&&count!=24&&count!=26&&count!=27&&count!=28&&count!=29&&count!=30&&count!=31) throw RuntimeError(_T("aminScatterAdvanced requires 17, 18, 24, 26, 27, 28, 29 or 30 arguments."));
+    if(count!=17&&count!=18&&count!=24&&count!=26&&count!=27&&count!=28&&count!=29&&count!=30&&count!=31&&count!=32) throw RuntimeError(_T("Invalid Cyrus Scatter generation argument count."));
+    const bool options=count==32&&args[31]->is_kind_of(class_tag(Array));
+    auto* v1=options?static_cast<Array*>(args[31]):nullptr;
+    if(v1&&v1->size!=8)throw RuntimeError(_T("Invalid v1 generation options"));
+    const bool keyed=count==32&&(v1?v1->data[0]:args[31])->to_bool()!=FALSE;
     amin::Settings s;
     if(count>=29) {
         type_check(args[28],Array,_T("spacing controls"));
@@ -317,20 +322,30 @@ Value* aminScatterAdvanced_cf(Value** args,int count) {
         s.densityWidth=s.densityHeight=width;s.density.reserve(pixels->size);
         for(int i=0;i<pixels->size;++i) s.density.push_back(pixels->data[i]->to_float());
     }
+    // Preserve the existing non-advanced randomization when adding a Brush to
+    // a layer. The general path must not quietly substitute XYZ defaults.
+    if(v1&&v1->data[1]->to_bool()){
+        s.axisScale={{{1,1},{1,1},{1,1}}};s.uniformScale={v1->data[2]->to_float(),v1->data[3]->to_float()};
+        const auto tilt=v1->data[4]->to_float(),lo=v1->data[5]->to_float(),hi=v1->data[6]->to_float(),move=v1->data[7]->to_float();
+        s.rotationDegrees={{{-tilt,tilt},{-tilt,tilt},{lo,hi}}};s.movement={{{-move,move},{-move,move},{-move,move}}};
+    }
     std::vector<amin::Instance> instances;
     try {
         const auto mesh=surfaceMeshes(args[0],s.distribution==2);
-        if(count==31 && args[30]!=&undefined) {
+        if(count>=31 && args[30]!=&undefined) {
             type_check(args[30],Array,_T("final pass"));auto* f=static_cast<Array*>(args[30]);
             if(f->size!=14)throw RuntimeError(_T("Invalid final pass payload"));
             auto rows=[](Value* v){type_check(v,Array,_T("final rows"));auto* a=static_cast<Array*>(v);std::vector<amin::Instance> out;
-                for(int i=0;i<a->size;++i){type_check(a->data[i],Array,_T("placement"));auto* r=static_cast<Array*>(a->data[i]);if(r->size!=2)throw RuntimeError(_T("Invalid placement"));auto tm=r->data[0]->to_matrix3();out.push_back({vec(tm.GetTrans()),vec(tm.GetRow(0)),vec(tm.GetRow(1)),vec(tm.GetRow(2)),1.0,static_cast<unsigned>(r->data[1]->to_int()-1),0});}return out;};
+                for(int i=0;i<a->size;++i){type_check(a->data[i],Array,_T("placement"));out.push_back(placementInstance(static_cast<Array*>(a->data[i])));}return out;};
             auto radii=[](Value* v){type_check(v,Array,_T("radii"));auto* a=static_cast<Array*>(v);std::vector<double> out;for(int i=0;i<a->size;++i){double r=a->data[i]->to_float();if(!std::isfinite(r)||r<0)throw RuntimeError(_T("Invalid radius"));out.push_back(r);}return out;};
             amin::FinalSettings cfg;cfg.cleanup=f->data[4]->to_bool()!=FALSE;cfg.radius=f->data[5]->to_float();
             cfg.minNeighbors=f->data[6]->to_int();cfg.minIsland=f->data[7]->to_int();cfg.relax=f->data[8]->to_bool()!=FALSE;
             cfg.strength=f->data[9]->to_float();cfg.iterations=f->data[10]->to_int();cfg.maxMove=f->data[11]->to_float();cfg.gap=f->data[12]->to_float();cfg.planar=f->data[13]->to_bool()!=FALSE;
             instances=amin::finalize(mesh,amin::prepareEdgeRows(s),rows(f->data[0]),rows(f->data[1]),radii(f->data[2]),radii(f->data[3]),cfg);
-        } else instances=amin::scatter(mesh,s);
+        } else {
+            instances=amin::scatter(mesh,s);
+            if(keyed)for(auto& p:instances)anchorInstance(p,mesh);
+        }
     }
     catch(const std::exception&) {throw RuntimeError(_T("Invalid scatter settings or surface. Check UV channel 1, min/max ranges, and line pattern width, closed XY shapes and source color groups."));}
     two_typed_value_locals(Array* result,Array* row);vl.result=new Array(static_cast<int>(instances.size()));
@@ -338,10 +353,13 @@ Value* aminScatterAdvanced_cf(Value** args,int count) {
         vl.row=new Array(2);vl.result->append(vl.row);
         vl.row->append(new Matrix3Value(Matrix3(point(v.xAxis*v.scale),point(v.yAxis*v.scale),point(v.zAxis*v.scale),point(v.position))));
         vl.row->append(Integer::intern(v.source+1));
+        appendIdentity(vl.row,v);
     }
     return_value(vl.result);
 }
 }
+def_visible_primitive(cyrusScatterAdvanced, "cyrusScatterAdvanced");
+Value* cyrusScatterAdvanced_cf(Value** args,int count){return aminScatterAdvanced_cf(args,count);}
 #include "orientation_bridge.inc"
 #include "boundary_falloff_bridge.inc"
 #include "whole_scale_bridge.inc"

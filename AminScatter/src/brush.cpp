@@ -169,6 +169,7 @@ struct Field::Impl {
     std::vector<std::vector<Vec3>> centers;
     Impl(const Surface& s,const Document& d):surface(s),document(d),byFace(s.mesh().faces.size()){
         if(d.surface!=s.fingerprint())throw std::invalid_argument("Brush surface changed; rebind required");
+        if(!std::isfinite(d.base)||d.base<0||d.base>1)throw std::invalid_argument("Invalid Brush base density");
         if(d.strokes.size()>10000)throw std::invalid_argument("Too many Brush strokes");
         patches.resize(d.strokes.size());centers.resize(d.strokes.size());
         for(std::uint32_t i=0;i<d.strokes.size();++i){document.strokes[i]=resample(s,d.strokes[i]);const auto& stroke=document.strokes[i];patches[i].resize(stroke.samples.size());if(!stroke.enabled)continue;
@@ -178,7 +179,7 @@ struct Field::Impl {
 };
 Field::Field(const Surface& s,const Document& d):impl(std::make_shared<Impl>(s,d)){}
 double Field::evaluate(Anchor a,QueryStats* stats)const{
-    const auto position=impl->surface.position(a);if(stats)++stats->fieldQueries;double value=0,q=0;std::uint32_t previous=UINT32_MAX;
+    const auto position=impl->surface.position(a);if(stats)++stats->fieldQueries;double value=impl->document.base,q=0;std::uint32_t previous=UINT32_MAX;
     for(auto link:impl->byFace[a.face]){
         if(previous!=link.stroke){if(previous!=UINT32_MAX)value=apply(value,q,impl->document.strokes[previous].erase);q=0;previous=link.stroke;}
         const auto& stroke=impl->document.strokes[link.stroke];if(q>=stroke.strength)continue;
@@ -189,10 +190,10 @@ double Field::evaluate(Anchor a,QueryStats* stats)const{
         // Only a stronger dab can change this stroke's maximum. Avoid repeating
         // visibility queries for its overlapping interior samples.
         if(candidate>q&&impl->surface.visible(a,dab.view,stats))q=candidate;
-    }return previous==UINT32_MAX?0:apply(value,q,impl->document.strokes[previous].erase);
+    }return previous==UINT32_MAX?value:apply(value,q,impl->document.strokes[previous].erase);
 }
 double Field::evaluateReference(Anchor a,QueryStats* stats)const{
-    impl->surface.position(a);double value=0;
+    impl->surface.position(a);double value=impl->document.base;
     for(std::size_t i=0;i<impl->document.strokes.size();++i){const auto& stroke=impl->document.strokes[i];if(!stroke.enabled)continue;double q=0;
         for(std::size_t j=0;j<stroke.samples.size();++j){const auto& patch=impl->patches[i][j];if(std::binary_search(patch.begin(),patch.end(),a.face))q=std::max(q,influence(impl->surface,stroke.samples[j],stroke,a,stats));}
         value=apply(value,q,stroke.erase);
@@ -205,7 +206,8 @@ bool accepted(std::uint64_t population,std::uint64_t candidate,double mask,doubl
 std::vector<std::uint8_t> encode(const Document& d){
     if(d.strokes.size()>10000)throw std::invalid_argument("Too many Brush strokes");
     std::vector<std::uint8_t> out;auto write=[&](const auto& v){const auto* p=reinterpret_cast<const std::uint8_t*>(&v);out.insert(out.end(),p,p+sizeof(v));};
-    const std::uint32_t version=2,n=static_cast<std::uint32_t>(d.strokes.size());write(version);write(d.surface);write(n);
+    if(!std::isfinite(d.base)||d.base<0||d.base>1)throw std::invalid_argument("Invalid Brush base density");
+    const std::uint32_t version=3,n=static_cast<std::uint32_t>(d.strokes.size());write(version);write(d.surface);write(d.base);write(n);
     std::size_t total=0;
     for(const auto& s:d.strokes){validate(s);total+=s.samples.size();if(total>1000000)throw std::invalid_argument("Brush document sample limit");write(s.id);const std::uint32_t flags=(s.enabled?1u:0u)|(s.erase?2u:0u),count=static_cast<std::uint32_t>(s.samples.size());write(flags);write(s.radius);write(s.strength);write(s.softness);write(count);
         for(const auto& p:s.samples){write(p.anchor.face);write(p.anchor.bary);for(auto b:p.basis)write(b);write(p.view.eye);write(p.view.direction);const std::uint32_t perspective=p.view.perspective?1u:0u;write(perspective);write(p.ray.origin);write(p.ray.direction);for(auto v:p.screen)write(v);const std::uint32_t pathFlags=(p.hasPath?1u:0u)|(p.connected?2u:0u);write(pathFlags);}
@@ -213,7 +215,7 @@ std::vector<std::uint8_t> encode(const Document& d){
 }
 Document decode(const std::vector<std::uint8_t>& bytes){
     std::size_t pos=0;auto read=[&](auto& v){if(sizeof(v)>bytes.size()-pos)throw std::invalid_argument("Truncated Brush document");std::memcpy(&v,bytes.data()+pos,sizeof(v));pos+=sizeof(v);};
-    std::uint32_t version=0,count=0;Document d;read(version);if(version!=2)throw std::invalid_argument("Unsupported Brush document version");read(d.surface);read(count);if(count>10000)throw std::invalid_argument("Brush stroke count limit");
+    std::uint32_t version=0,count=0;Document d;read(version);if(version!=2&&version!=3)throw std::invalid_argument("Unsupported Brush document version");read(d.surface);if(version>=3)read(d.base);if(!std::isfinite(d.base)||d.base<0||d.base>1)throw std::invalid_argument("Invalid Brush base density");read(count);if(count>10000)throw std::invalid_argument("Brush stroke count limit");
     std::size_t total=0;
     for(std::uint32_t i=0;i<count;++i){Stroke s;std::uint32_t flags=0,n=0;read(s.id);read(flags);if(flags>3)throw std::invalid_argument("Invalid Brush flags");s.enabled=(flags&1)!=0;s.erase=(flags&2)!=0;read(s.radius);read(s.strength);read(s.softness);read(n);total+=n;if(total>1000000||n>(bytes.size()-pos)/220)throw std::invalid_argument("Brush sample count limit");
         for(std::uint32_t j=0;j<n;++j){Sample p;read(p.anchor.face);read(p.anchor.bary);for(auto& b:p.basis)read(b);read(p.view.eye);read(p.view.direction);std::uint32_t perspective=0;read(perspective);if(perspective>1)throw std::invalid_argument("Invalid Brush view");p.view.perspective=perspective!=0;read(p.ray.origin);read(p.ray.direction);for(auto& v:p.screen)read(v);std::uint32_t pathFlags=0;read(pathFlags);if(pathFlags>3)throw std::invalid_argument("Invalid Brush path flags");p.hasPath=(pathFlags&1)!=0;p.connected=(pathFlags&2)!=0;s.samples.push_back(p);}validate(s);d.strokes.push_back(std::move(s));

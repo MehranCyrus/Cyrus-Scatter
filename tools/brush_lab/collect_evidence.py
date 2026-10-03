@@ -46,7 +46,7 @@ def main():
     raw=(BASE/'history.csv').read_bytes()
     history=raw.decode('utf-16' if raw.startswith(b'\xff\xfe') else 'utf-8-sig')
     (output/'history.csv').write_text(history,encoding='utf-8')
-    paths=[ROOT/'AminScatter/CMakeLists.txt',ROOT/'AminScatter/include/brush.h',ROOT/'AminScatter/src/brush.cpp',ROOT/'AminScatter/src/brush_lab.cpp',ROOT/'AminScatter/src/brush_storage_plugin.cpp',ROOT/'AminScatter/tests/brush_tests.cpp',ROOT/'AminScatter/tests/data/brush_sphere_pole.txt']
+    paths=[ROOT/'AminScatter/CMakeLists.txt',ROOT/'AminScatter/include/brush.h',ROOT/'AminScatter/src/brush.cpp',ROOT/'AminScatter/src/brush_host.cpp',ROOT/'AminScatter/src/brush_storage_plugin.cpp',ROOT/'AminScatter/tests/brush_tests.cpp',ROOT/'AminScatter/tests/data/brush_sphere_pole.txt']
     paths.extend(p for p in (ROOT/'tools/brush_lab').iterdir() if p.is_file())
     manifest={str(p.relative_to(ROOT)).replace('\\','/'):hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(paths)}
     record={'base_commit':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),'primary_run':args.primary,'final_run':args.final,'fresh_process_signatures_match':True,'source_sha256':manifest,'scope':'Primary behavioral suite precedes the host-only right-click handler. Final run verifies the handler, lifecycle and fresh-process reconstruction. Native core source is identical.'}

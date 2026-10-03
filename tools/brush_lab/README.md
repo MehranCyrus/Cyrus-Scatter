@@ -1,6 +1,6 @@
 # Procedural Brush laboratory
 
-An optional M0/M1 prototype for static mesh targets. It is separate from Cyrus Scatter 0.64's production layer manager, render pipeline, installers and UI. The [implementation report](../../docs/Brush_Tool_2026-10-02/IMPLEMENTATION_2026-10-03.md) records what passed and what remains unqualified.
+This preserves the historical M0/M1 interaction harness for static mesh targets. Its source now calls the product's `cyrusBrush*` API and builds `CyrusBrush.dlx`; its separate dialog is not the product UI. Use [the v1 fixtures](../v1/README.md) for current product qualification. The [original implementation report](../../docs/Brush_Tool_2026-10-02/IMPLEMENTATION_2026-10-03.md) retains the prototype's measured scope and limits.
 
 ## Build and launch
 
@@ -16,7 +16,7 @@ Use a new lowercase run name each time. The launcher refuses to overwrite a run.
 
 Prerequisites match this workspace: Python, CMake, Visual Studio 2022 Community, MSVC 14.38.33130, Windows SDK 10.0.19041.0, and extracted Max SDKs under `build/tooling/max<year>-sdk/Program Files/Autodesk/3ds Max <year> SDK/maxsdk`. The launcher currently targets Max 2027; a successful 2026 build does **not** qualify the feature in the Max 2026 application. Use `--core-only` to build/test without Max SDKs.
 
-Four matching binaries are copied into each run: `AminScatter.dlx`, `CyrusScatterEdit.dlm`, `CyrusBrushLab.dlx`, and **`CyrusBrushStorage.dlh`**. The last DLL registers the saved scene class and is essential for loading paint documents. Do not copy only the Brush DLX into a production install.
+Four matching binaries are copied into each run: `AminScatter.dlx`, `CyrusScatterEdit.dlm`, `CyrusBrush.dlx`, and **`CyrusBrushStorage.dlh`**. The last DLL registers the saved scene class and is essential for loading paint documents. Do not copy only the Brush DLX into a production install.
 
 ## Try the prototype
 

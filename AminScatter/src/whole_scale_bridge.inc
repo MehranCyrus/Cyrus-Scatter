@@ -8,9 +8,9 @@ Value* cyrusWholeScale_cf(Value** args,int count){
  const unsigned seed=static_cast<unsigned>(args[3]->to_int());
  two_typed_value_locals(Array* result,Array* row);vl.result=new Array(rows->size);
  for(int i=0;i<rows->size;++i){type_check(rows->data[i],Array,_T("Whole Scale row"));auto* r=static_cast<Array*>(rows->data[i]);
-  if(r->size!=2)throw RuntimeError(_T("Invalid Whole Scale row"));auto tm=r->data[0]->to_matrix3();
+  if(r->size<2)throw RuntimeError(_T("Invalid Whole Scale row"));auto tm=r->data[0]->to_matrix3();
   float f=static_cast<float>(lo+(hi-lo)*(hash(seed^hash(static_cast<unsigned>(i)))/4294967296.0));
   for(int axis=0;axis<3;++axis)tm.SetRow(axis,tm.GetRow(axis)*f);
-  vl.row=new Array(2);vl.row->append(new Matrix3Value(tm));vl.row->append(r->data[1]);vl.result->append(vl.row);
+  vl.row=new Array(r->size);vl.row->append(new Matrix3Value(tm));for(int j=1;j<r->size;++j)vl.row->append(r->data[j]);vl.result->append(vl.row);
  }return_value(vl.result);
 }

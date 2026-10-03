@@ -109,7 +109,7 @@ Value* aminScatterBuildPreview_cf(Value** args,int count) {
     for(int i=0;i<data->size;++i) {
         type_check(data->data[i],Array,_T("placement"));
         auto* row=static_cast<Array*>(data->data[i]);
-        if(row->size!=2) throw RuntimeError(_T("Invalid placement."));
+        if(row->size<2) throw RuntimeError(_T("Invalid placement."));
         const int index=row->data[1]->to_int()-1;
         if(index<0||index>=sources->size) throw RuntimeError(_T("Invalid source index."));
         transforms.push_back(row->data[0]->to_matrix3());indices.push_back(index);

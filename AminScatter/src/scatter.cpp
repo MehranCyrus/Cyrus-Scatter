@@ -361,7 +361,8 @@ std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settin
         constexpr double toRadians=3.14159265358979323846/180.0;
         const Vec3 angles{transforms.range(s.rotationDegrees[0])*toRadians,transforms.range(s.rotationDegrees[1])*toRadians,transforms.range(s.rotationDegrees[2])*toRadians};
         const auto basis=[&](Vec3 axis) { const auto v=rotate(axis,angles); return x*v.x+y*v.y+normal*v.z; };
-        const Instance instance{p,basis({1,0,0})*scales.range(s.axisScale[0]),basis({0,1,0})*scales.range(s.axisScale[1]),basis({0,0,1})*scales.range(s.axisScale[2]),transforms.range(s.uniformScale)*strokeScale,source,id};
+        Instance instance{p,basis({1,0,0})*scales.range(s.axisScale[0]),basis({0,1,0})*scales.range(s.axisScale[1]),basis({0,0,1})*scales.range(s.axisScale[2]),transforms.range(s.uniformScale)*strokeScale,source,id};
+        instance.candidateKey=i;
         if(emit) result.push_back(instance);
     }
     if(s.collisionEnabled||s.relaxEnabled) {

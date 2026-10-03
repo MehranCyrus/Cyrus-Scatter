@@ -26,7 +26,7 @@ struct Stroke {
     double radius=10,strength=1,softness=.5;
     std::vector<Sample> samples;
 };
-struct Document { std::uint64_t surface{}; std::vector<Stroke> strokes; };
+struct Document { std::uint64_t surface{}; std::vector<Stroke> strokes; double base=0; };
 struct QueryStats { std::uint64_t triangles=0,fieldQueries=0; };
 class Surface {
     struct Impl; std::shared_ptr<const Impl> impl;

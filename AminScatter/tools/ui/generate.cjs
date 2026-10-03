@@ -142,8 +142,10 @@ fs.writeFileSync('scripts/AminScatterObject.ms',(header+helper+factories+contain
  text=require('./viewport-performance.cjs')(text);
  text=require('./retained-points.cjs')(text);
  text=require('./layer-status.cjs')(text);
- text=require('./responsive.cjs')(text);
+ text=require('./native-v1.cjs')(text);
+ text=require('./procedural-brush.cjs')(text);
  text=require('./trace.cjs')(text);
+ text=text.replace(/\r\n/g,'\n').replace(/^[ \t]+$/gm,'');
  fs.writeFileSync('scripts/AminScatterObject.ms',text);
 }
 

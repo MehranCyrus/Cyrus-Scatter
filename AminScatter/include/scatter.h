@@ -59,6 +59,12 @@ struct Instance {
     Vec3 position, xAxis, yAxis, zAxis;
     double scale{};
     std::uint32_t source{}, triangle{};
+    // Candidate ordinal is assigned before rejection or compaction. A Brush
+    // edit never changes it. Host bridges may attach an immutable base anchor.
+    std::uint64_t candidateKey{};
+    bool keyed=false;
+    std::uint32_t anchorFace{};
+    Vec3 anchorBary{1,0,0};
     Vec3 transformPoint(Vec3 local) const;
 };
 struct BoundaryFalloff { bool remove=false,scale=false,density=false; int areaSide=0; double removeWidth=0,scaleWidth=100,densityWidth=100; std::vector<double> scaleCurve{0,.25,.5,.75,1},densityCurve{0,.25,.5,.75,1}; };

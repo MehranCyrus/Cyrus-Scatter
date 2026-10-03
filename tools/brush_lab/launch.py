@@ -21,7 +21,7 @@ def main():
     output.mkdir(parents=True,exist_ok=False)
     for name in ('startup','plugcfg','temp','bin','autoback'):
         (output/name).mkdir()
-    for name in ('AminScatter.dlx','CyrusScatterEdit.dlm','CyrusBrushLab.dlx','CyrusBrushStorage.dlh'):
+    for name in ('AminScatter.dlx','CyrusScatterEdit.dlm','CyrusBrush.dlx','CyrusBrushStorage.dlh'):
         shutil.copy2(BASE/'max2027'/name,output/'bin'/name)
     config=args.config.read_text(encoding='utf-16')
     for key,target in {'Additional Startup Scripts':output/'startup','PlugCFG':output/'plugcfg','Temp':output/'temp','Page File':output/'temp','AutoBackup':output/'autoback'}.items():

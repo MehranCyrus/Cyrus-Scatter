@@ -2,7 +2,11 @@
 
 ## Current engineering work and navigation
 
-Start with the [0.64 retained Mesh integration](Retained_Mesh_Preview_2026-10-02/README.md) and [measured results](Retained_Mesh_Preview_2026-10-02/RESULTS.md). The current candidate is Scatter 0.64 / Analyzer 0.14. Mesh now uses retained GPU instancing; the [0.63 Point Cloud integration](Retained_Point_Preview_2026-10-02/README.md) remains included. Automatic wide-to-close point detail is still future work. The [root guide](../README.md) maps the codebase, while [workspace organization](Workspace_Organization.md) explains the Git/local backup boundary.
+Start with the [Cyrus Scatter 1.0 foundation](Cyrus_Scatter_V1_2026-10-03/README.md), [artist guide](Cyrus_Scatter_V1_2026-10-03/ARTIST_GUIDE.md) and [implementation/qualification report](Cyrus_Scatter_V1_2026-10-03/REPORT.md). Standard native selected-layer rollouts replace the nested UI; procedural Brush, stable identities, cached statistics and separate viewport visibility are integrated. Analyzer remains 0.14 and MCP remains its separately installed 1.0 service. The [next roadmap](Cyrus_Scatter_V1_2026-10-03/ROADMAP.md) records remaining work.
+
+The [0.64 retained Mesh integration](Retained_Mesh_Preview_2026-10-02/README.md) and [measured results](Retained_Mesh_Preview_2026-10-02/RESULTS.md) remain the display baseline retained by v1. The [0.63 Point Cloud integration](Retained_Point_Preview_2026-10-02/README.md) is also preserved. Automatic wide-to-close point detail is future work. The [root guide](../README.md) maps the codebase, while [workspace organization](Workspace_Organization.md) explains the Git/local backup boundary.
+
+The Brush, zone and UI investigations below describe their dated starting states and prototypes. Their statements that product Brush integration or native layout replacement is pending are superseded by the v1 report; other proposed capabilities remain open. No historical measurement has been rewritten as a v1 result.
 
 The [original research briefs](Research_Briefs_2026-10-01/README.md), [local codebase report](Codebase_Research_2026-10-01/REPORT.md) and [supplied external reports](Research_Inputs_2026-10-01/README.md) are preserved together with their provenance. Their consolidated conclusions are in [knowledge and decisions](Heavy_Scene_Viewport_2026-10-02/KNOWLEDGE.md). Earlier dated strategy and measurement packages below remain historical references, with their original scope and limits.
 

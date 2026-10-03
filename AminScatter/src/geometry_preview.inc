@@ -35,7 +35,7 @@ Value* cyrusBuildGeometryPreview_cf(Value** args,int count){
   }
  }
  int shown=0,faces=0;const int wanted=std::min(limit,int(rows->size));
- for(int k=0;k<wanted;++k){int i=static_cast<int>(static_cast<std::int64_t>(k)*rows->size/wanted);type_check(rows->data[i],Array,_T("placement"));auto* row=static_cast<Array*>(rows->data[i]);if(row->size!=2)throw RuntimeError(_T("Invalid placement"));int src=row->data[1]->to_int()-1;if(src<0||src>=sources->size)throw RuntimeError(_T("Invalid preview source"));auto tm=row->data[0]->to_matrix3();auto& group=geometry[src];
+ for(int k=0;k<wanted;++k){int i=static_cast<int>(static_cast<std::int64_t>(k)*rows->size/wanted);type_check(rows->data[i],Array,_T("placement"));auto* row=static_cast<Array*>(rows->data[i]);if(row->size<2)throw RuntimeError(_T("Invalid placement"));int src=row->data[1]->to_int()-1;if(src<0||src>=sources->size)throw RuntimeError(_T("Invalid preview source"));auto tm=row->data[0]->to_matrix3();auto& group=geometry[src];
   if(group.faces.empty()){if(group.placeholder){markers[src].points.push_back(tm.GetTrans());++shown;}continue;}
   if(group.faces.size()>static_cast<std::size_t>(budget-faces))continue;
   group.instances.push_back(tm);faces+=static_cast<int>(group.faces.size());++shown;

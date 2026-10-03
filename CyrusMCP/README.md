@@ -1,6 +1,6 @@
 # Cyrus Automation and MCP 1.0
 
-Local automation for **Cyrus Scatter 0.64 and 3ds Max 2027.1**, with a separate MCP server for Codex or another stdio MCP client. The native scatter and viewport engine stays in place. The Max component uses its bundled Python; the external server uses an isolated **64-bit Python 3.11** environment and the official MCP Python SDK 2.3.0.
+Local automation for **Cyrus Scatter and 3ds Max 2027.1**, with a separate MCP server for Codex or another stdio MCP client. The initial qualification used Scatter 0.64; generation, recovery, retained diagnostics, capture and all seven stdio tools were regression-tested against the Scatter 1.0 foundation. See the [v1 qualification](../docs/Cyrus_Scatter_V1_2026-10-03/REPORT.md). The Max component uses its bundled Python; the external server uses an isolated **64-bit Python 3.11** environment and the official MCP Python SDK 2.3.0.
 
 ## Install the built package
 
