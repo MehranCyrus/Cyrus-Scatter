@@ -2,6 +2,8 @@
 
 3 October 2026. **Research and implementation proposal; no product code or Max scene was changed by this review.**
 
+**Later follow-up:** Brush ownership, stable identities and native UI were subsequently integrated in [Scatter v1](../Cyrus_Scatter_V1_2026-10-03/README.md). The [plant-group diagnosis](PLANTING_GROUPS_REVIEW.md) now tests artist feedback against installed 1.0.1 and provides the [next implementation plan](PLANTING_GROUPS_IMPLEMENTATION.md). Read those for current behavior. The starting-state inventory below remains historical; its zone/map proposals remain open.
+
 ## Recommendation
 
 Build artist-authored zones into the existing layer system. A zone defines **where** planting is allowed; a layer defines **what and how much** to plant; Brush adjusts a continuous density mask; spacing rules resolve conflicts; CS Edit preserves individual corrections. Surface Analyzer supplies optional geometric guides. MCP reads these explicit inputs and proposes changes through the same evaluated system.

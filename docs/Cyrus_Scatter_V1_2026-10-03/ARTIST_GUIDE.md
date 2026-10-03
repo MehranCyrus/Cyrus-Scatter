@@ -50,6 +50,12 @@ Keep the target visible and unfrozen while painting. It may be hidden for final 
 
 In 1.0.1, painted density **pauses** Relax and Boundary Relax while keeping their stored settings. The controls and Layers details explain the pause. Turn off **Use painted density** to use Relax; your strokes remain saved. This prevents the v1.0.0 runtime error without moving plants out of the painted field. Collision removal and final cleanup remain available. A solver that relaxes points inside the painted field is future work. Unprojected random movement with Brush remains unsupported.
 
+### Known preview and spacing limitations
+
+Brush's coverage dots are independent surface samples, so they can greatly outnumber actual plants. Point Cloud also draws multiple points per plant. To compare with Mesh, use placement centres and the cached **Placed** versus **Preview instances** counts after Update. Check Mesh instance/face limits if the latter is smaller. The [current diagnosis](../Artist_Zones_Integration_2026-10-03/PLANTING_GROUPS_REVIEW.md) reproduces these differences on a plane and sphere.
+
+Within-layer collision currently runs before painted membership. Cross-layer blocking uses intermediate placements before the blocker's own cross-layer removal, final cleanup and CS Edit. Consequently, a removed or moved plant can still reserve its old space, and mutually blocking layers can both lose plants. These are known limitations of the current policy. The planned shared plant-group workflow and accepted-placement spacing are not in 1.0.1 yet.
+
 ## First artist checks
 
 Try layer switching and native rollout opening first, then visibility and preview modes in a copy of your original scene. Paint and erase on a small plane and curved object, edit an old stroke, Undo/Redo, and save/reopen. Check a render with your actual renderer. Record the package, source complexity, placed/displayed counts and any failing steps; a new UI is not a qualification of every renderer or asset type.
