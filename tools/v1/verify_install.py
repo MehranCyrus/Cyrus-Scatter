@@ -21,7 +21,7 @@ def main():
         raise SystemExit('Expected an actual private installer result')
     product = profile / 'scripts/CyrusScatter'
     manifest = json.loads((product / 'manifest.json').read_text())
-    package = ROOT / f'dist/v1/CyrusScatter-1.0.0-Max{manifest["max_year"]}.mzp'
+    package = ROOT / f'dist/v1/CyrusScatter-{manifest["version"]}-Max{manifest["max_year"]}.mzp'
     with zipfile.ZipFile(package) as archive:
         if archive.testzip() is not None:
             raise SystemExit('Corrupt MZP')

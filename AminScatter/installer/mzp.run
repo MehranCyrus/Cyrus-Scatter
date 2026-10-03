@@ -1,4 +1,4 @@
-name "Cyrus Scatter 1.0.0"
+name "Cyrus Scatter __VERSION__"
 version 1.0
 run "install.ms"
 

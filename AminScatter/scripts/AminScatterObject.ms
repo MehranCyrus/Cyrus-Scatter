@@ -968,8 +968,9 @@ initialRollupState:0xffe
     )
     fn cspImpl_placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         if not cyrusEnabled or disabledAnalyzerInput() do return #()
-        if paintEnabled and (finalRelax or relaxEnabled) do throw "Brush density with point relaxation requires a mask-constrained solver. Disable Relax for this layer. Collision and final cleanup are supported."
-        if paintEnabled and not projectMove and (movXMin!=0 or movXMax!=0 or movYMin!=0 or movYMax!=0 or movZMin!=0 or movZMax!=0 or movementRange!=0) do throw "Brush requires projected movement."
+        -- Keep saved Relax settings, but pause movement while a Brush mask is active.
+        local pointRelax=relaxEnabled and not this.brushMaskActive(),boundaryRelax=finalRelax and not this.brushMaskActive()
+        if this.brushMaskActive() and not projectMove and (movXMin!=0 or movXMax!=0 or movYMin!=0 or movYMax!=0 or movZMin!=0 or movZMax!=0 or movementRange!=0) do throw "Brush requires projected movement."
         local targets=validSurfaces()
         if targets.count==0 do throw "Add at least one scatter surface."
         if plants.count==0 and not previewOnly do throw "Add a plant mesh."
@@ -1004,13 +1005,13 @@ initialRollupState:0xffe
         if baseKey!=undefined and baseKey==paintBaseKey and paintBaseRows!=undefined then (
             result=paintBaseRows;paintBaseHits+=1
         ) else (
-        result=if not paintIdentity and distributionMode!=3 and finalPass==undefined and sourceWeights.count==0 and not collisionEnabled and not relaxEnabled and not advancedAxes and areas[1].count==0 and targets.count==1 and populationMode==1 and diversityMode<3 then (
+        result=if not paintIdentity and distributionMode!=3 and finalPass==undefined and sourceWeights.count==0 and not collisionEnabled and not pointRelax and not advancedAxes and areas[1].count==0 and targets.count==1 and populationMode==1 and diversityMode<3 then (
             aminScatterTransforms targets[1] requestedCount randomSeed sourceCount scaleMinimum scaleMaximum [-tiltDegrees,-tiltDegrees,yawMinimum] [tiltDegrees,tiltDegrees,yawMaximum] [movementRange,movementRange,movementRange] alignNormal
         ) else (
             local groups=if plants.count==0 then #(0) else (for n in plants collect (colorKey (sourceColor (sourceRow n))))
             local generate=if paintIdentity then cyrusScatterAdvanced else aminScatterAdvanced
             local nativeOptions=if paintIdentity then #(paintIdentity,not advancedAxes,scaleMinimum,scaleMaximum,tiltDegrees,yawMinimum,yawMaximum,movementRange) else undefined
-            if paintIdentity then (generate targets requestedCount randomSeed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMin,movYMin,movZMin] [movXMax,movYMax,movZMax] alignNormal projectMove (distributionMode-1) clusterCount clusterRadius weights 128 groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] (populationMode==2) (lineInputs plants previewOnly:previewOnly) #(collisionEnabled,collisionRadius,relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) (if sourceWeights.count==0 or plants.count==0 then #() else (for n in plants collect sourceWeight (sourceRow n))) finalPass nativeOptions) else (generate targets requestedCount randomSeed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMin,movYMin,movZMin] [movXMax,movYMax,movZMax] alignNormal projectMove (distributionMode-1) clusterCount clusterRadius weights 128 groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] (populationMode==2) (lineInputs plants previewOnly:previewOnly) #(collisionEnabled,collisionRadius,relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) (if sourceWeights.count==0 or plants.count==0 then #() else (for n in plants collect sourceWeight (sourceRow n))) finalPass)
+            if paintIdentity then (generate targets requestedCount randomSeed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMin,movYMin,movZMin] [movXMax,movYMax,movZMax] alignNormal projectMove (distributionMode-1) clusterCount clusterRadius weights 128 groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] (populationMode==2) (lineInputs plants previewOnly:previewOnly) #(collisionEnabled,collisionRadius,pointRelax,relaxSpacing,relaxIterations,relaxStrength) (if sourceWeights.count==0 or plants.count==0 then #() else (for n in plants collect sourceWeight (sourceRow n))) finalPass nativeOptions) else (generate targets requestedCount randomSeed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMin,movYMin,movZMin] [movXMax,movYMax,movZMax] alignNormal projectMove (distributionMode-1) clusterCount clusterRadius weights 128 groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] (populationMode==2) (lineInputs plants previewOnly:previewOnly) #(collisionEnabled,collisionRadius,pointRelax,relaxSpacing,relaxIterations,relaxStrength) (if sourceWeights.count==0 or plants.count==0 then #() else (for n in plants collect sourceWeight (sourceRow n))) finalPass)
         )
         if finalPass!=undefined do return result
         if wholeScaleMin!=1.0 or wholeScaleMax!=1.0 do result=cyrusWholeScale result wholeScaleMin wholeScaleMax randomSeed
@@ -1060,11 +1061,11 @@ initialRollupState:0xffe
                 ) else cyrusRemoveOverlaps result obstacles (overlapRadius+overlapGap) overlapPlanar
             )
             overlapAfter=result.count
-            if (finalCleanup or finalRelax) and result.count>0 do (
+            if (finalCleanup or boundaryRelax) and result.count>0 do (
                 local own=if overlapSourceRadius and plants.count>0 then placementRadii result plants else (for row in result collect 0.0)
                 if not overlapSourceRadius do obstacleRadii=for row in obstacles collect 0.0
                 local gap=if overlapEnabled then (if overlapSourceRadius then overlapGap else overlapRadius+overlapGap) else 0.0
-                result=this.placements plants previewOnly:previewOnly finalPass:#(result,obstacles,own,obstacleRadii,finalCleanup,finalNeighborRadius,finalMinNeighbors,finalMinIsland,finalRelax,finalStrength,finalIterations,finalMaxMove,gap,overlapPlanar)
+                result=this.placements plants previewOnly:previewOnly finalPass:#(result,obstacles,own,obstacleRadii,finalCleanup,finalNeighborRadius,finalMinNeighbors,finalMinIsland,boundaryRelax,finalStrength,finalIterations,finalMaxMove,gap,overlapPlanar)
             )
             overlapAfter=result.count
         )
@@ -1090,7 +1091,7 @@ initialRollupState:0xffe
     fn uiLayerStats = (
         CyrusLayerStatusData hasResult:(cachedPoints!=undefined and previewError=="") placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
     )
-    fn uiVersion = "1.0.0"
+    fn uiVersion = "1.0.1"
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
         if CyrusPerfTraceBegin!=undefined do try(token=CyrusPerfTraceBegin this "placements")catch()
@@ -1341,6 +1342,8 @@ initialRollupState:0xffe
     )
     -- Native rollups: one editor per controller, bound to the selected layer.
     -- UI browsing never rebuilds a rollout or a placement cache.
+    fn brushMaskActive = (paintIdentity and paintEnabled and paintDocument!=undefined)
+    fn brushRelaxPaused = (this.brushMaskActive() and (relaxEnabled or finalRelax))
     fn checkPaintRevision = (
         if paintDocument!=undefined do (
             local state=cyrusBrushStats paintDocument
@@ -1366,6 +1369,7 @@ initialRollupState:0xffe
         local stream=stringStream ""
         with printAllElements on (
             format "%|%|%|%|%|" currentTime CyrusPFRevision CyrusPFManualRevision plants previewOnly to:stream
+            format "EffectiveRelax:%|" (relaxEnabled and not this.brushMaskActive()) to:stream
             for key in AminScatterLayerFields where findItem #(#paintDocument,#paintEnabled,#paintIdentity,#paintDensity,#bakedNodes,#showPoints,#pointsPerPlant,#updateMode,#autoRender,#previewBudget,#pointColorMode,#solidPointColor) key==0 do format "%:%|" key (getProperty this key) to:stream
             for n in (this.validSurfaces()+(sources as array)+(areaNodes as array)+(patternLines as array)+#(analyzerNode,areaAnalyzer,fallAnalyzer)) where isValidNode n do format "%:%|" (getHandleByAnim n) n.objectTransform to:stream
             for n in #(analyzerNode,areaAnalyzer,fallAnalyzer) where isValidNode n do format "%|" (n.getAnalysisRuns()) to:stream
@@ -1380,6 +1384,30 @@ initialRollupState:0xffe
         CyrusViewportRedraw()
     )
 
+    fn resetRandomization group = (
+        local values=case group of (
+            #rotation: #(#(#rotXMin,0.0),#(#rotXMax,0.0),#(#rotYMin,0.0),#(#rotYMax,0.0),#(#rotZMin,0.0),#(#rotZMax,0.0),#(#tiltDegrees,0.0),#(#yawMinimum,0.0),#(#yawMaximum,0.0))
+            #scale: #(#(#sclXMin,1.0),#(#sclXMax,1.0),#(#sclYMin,1.0),#(#sclYMax,1.0),#(#sclZMin,1.0),#(#sclZMax,1.0),#(#scaleMinimum,1.0),#(#scaleMaximum,1.0))
+            #wholeScale: #(#(#wholeScaleMin,1.0),#(#wholeScaleMax,1.0))
+            #movement: #(#(#movXMin,0.0),#(#movXMax,0.0),#(#movYMin,0.0),#(#movYMax,0.0),#(#movZMin,0.0),#(#movZMax,0.0),#(#movementRange,0.0))
+            default: undefined
+        )
+        if values==undefined do return false
+        local priorTransfer=layerTransfer
+        layerTransfer=true
+        try (for row in values do setProperty this row[1] row[2]) catch(layerTransfer=priorTransfer;throw())
+        layerTransfer=priorTransfer;dirty=true;true
+    )
+    fn resetSelectedRandomization group = (
+        local layer=this.selectedLayer()
+        if layer==undefined do return false
+        local caption=case group of (#rotation:"Cyrus reset rotation";#scale:"Cyrus reset XYZ scale";#wholeScale:"Cyrus reset whole scale";#movement:"Cyrus reset movement";default:undefined)
+        if caption==undefined do return false
+        undo caption on layer.resetRandomization group
+        if this.randomUI.controlsReady do this.randomUI.bind layer
+        if this.mainUI.controlsReady do this.mainUI.refreshStats()
+        CyrusViewportRedraw();true
+    )
     fn selectedLayer = (
         if activeLayer>0 and activeLayer<=layerObjects.count then layerObjects[activeLayer] else undefined
     )
@@ -1415,6 +1443,10 @@ initialRollupState:0xffe
         for r in this.nativeEditors() where r.controlsReady do r.bind layer
         true
     )
+    fn syncBrushCompatibility = (
+        if this.spacingUI.controlsReady do this.spacingUI.syncRelaxAvailability()
+        if this.separationUI.controlsReady do this.separationUI.syncFinalRelaxAvailability()
+    )
     rollout mainUI "Cyrus Scatter 1.0 | Layers" width:#cmdPanel (
         local controlsReady=false,binding=false,dpiScale=1.0,lastRows=#()
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,8] width:146
@@ -1442,6 +1474,7 @@ initialRollupState:0xffe
                     detail=status[2]+"\nPlaced: "+(if state.hasResult then CyrusUICount state.placements else "--")
                     detail+="\n"+(if state.mode==1 then "Preview points: " else "Preview instances: ")+(if state.hasResult then CyrusUICount state.previewCount else "--")
                     detail+="\nBuild: "+(if state.hasResult then (state.buildMs as string)+" ms" else "--")
+                    if layer.brushRelaxPaused() do detail+="\nRelax paused by Brush."
                     if state.errorText!="" do detail+="\n"+state.errorText
                 )
             )
@@ -1451,6 +1484,7 @@ initialRollupState:0xffe
                 binding=true;layerList.items=rows;layerList.selection=activeLayer;lastRows=rows;binding=false
             )
             if countInfo.text!=detail do countInfo.text=detail
+            this.syncBrushCompatibility()
             true
         )
         fn bind = (
@@ -1494,7 +1528,7 @@ initialRollupState:0xffe
         on copyButton pressed do copySelectedLayer()
         on removeButton pressed do (removeLayer();bindNativeUI();CyrusViewportRedraw())
         on helpButton pressed do (
-            local layer=selectedLayer(),message="Select a layer to edit its sources and settings.\nNative rollout headers open with one click.\n\nVisible in viewport hides only the cached preview.\nEnabled in final output controls generation, rendering and blockers.\nPlaced is the last generated count; Preview counts visible points or instances within the current display budget.\nLimited means the geometry preview displays a subset; check its instance/face budget.\nBuild is preview preparation time, not FPS.\nStale means settings changed and Update is needed.\n\nBrush: choose one static receiving mesh, then Paint or Erase. Count/density and randomization remain procedural. Manual mode publishes plants on Update."
+            local layer=selectedLayer(),message="Select a layer to edit its sources and settings.\nNative rollout headers open with one click.\n\nVisible in viewport hides only the cached preview.\nEnabled in final output controls generation, rendering and blockers.\nPlaced is the last generated count; Preview counts visible points or instances within the current display budget.\nLimited means the geometry preview displays a subset; check its instance/face budget.\nBuild is preview preparation time, not FPS.\nStale means settings changed and Update is needed.\n\nBrush: choose one static receiving mesh, then Paint or Erase. Count/density and randomization remain procedural. Manual mode publishes plants on Update.\nPainted density pauses Relax and Boundary Relax without changing their saved settings. Turn off Use painted density to use Relax. Collision and final cleanup remain available."
             if layer!=undefined do (message="Layer: "+layerNames[activeLayer]+"\n"+countInfo.text+"\n\n"+message;if layer.previewError!="" do message+="\n\nFull error:\n"+layer.previewError)
             messageBox message title:"Cyrus Scatter 1.0"
         )
@@ -1919,9 +1953,9 @@ initialRollupState:0xffe
         on targetPick picked node do if obj!=undefined do (
             CyrusStopBrush()
             undo "Cyrus Brush target" on (obj.paintDocument=cyrusBrushCreate node;obj.paintIdentity=true;obj.paintEnabled=true)
-            obj.publishPaint();bind obj
+            obj.publishPaint();bind obj;this.syncBrushCompatibility()
         )
-        on maskCheck changed value do if not binding do (undo "Cyrus Brush enabled" on obj.paintEnabled=value;obj.publishPaint())
+        on maskCheck changed value do if not binding do (undo "Cyrus Brush enabled" on obj.paintEnabled=value;obj.publishPaint();this.syncBrushCompatibility())
         on modeRadio changed value do saveOptions()
         on radiusSpin changed value do saveOptions()
         on strengthSpin changed value do saveOptions()
@@ -2343,40 +2377,48 @@ initialRollupState:0xffe
         label rotZLabel "Z" pos:[8,100] width:12
         spinner rotZMinSpin "" range:[-360,360,0]  pos:[24,98] fieldWidth:46 width:58
         spinner rotZMaxSpin "" range:[-360,360,360]  pos:[94,98] fieldWidth:46 width:58
-        label sclTitle "Scale (multiplier)" pos:[8,132] width:146
-        label sclMinTitle "Min" pos:[24,154] width:58
-        label sclMaxTitle "Max" pos:[94,154] width:58
-        label sclXLabel "X" pos:[8,176] width:12
-        spinner sclXMinSpin "" range:[0.001,100,1]  pos:[24,174] fieldWidth:46 width:58
-        spinner sclXMaxSpin "" range:[0.001,100,1]  pos:[94,174] fieldWidth:46 width:58
-        label sclYLabel "Y" pos:[8,200] width:12
-        spinner sclYMinSpin "" range:[0.001,100,1]  pos:[24,198] fieldWidth:46 width:58
-        spinner sclYMaxSpin "" range:[0.001,100,1]  pos:[94,198] fieldWidth:46 width:58
-        label sclZLabel "Z" pos:[8,224] width:12
-        spinner sclZMinSpin "" range:[0.001,100,1]  pos:[24,222] fieldWidth:46 width:58
-        spinner sclZMaxSpin "" range:[0.001,100,1]  pos:[94,222] fieldWidth:46 width:58
-        label wholeTitle "Whole Scale (uniform)" pos:[8,252] width:146
-        label wholeMinTitle "Min" pos:[24,274] width:58
-        label wholeMaxTitle "Max" pos:[94,274] width:58
-        spinner wholeMinSpin "" range:[0.001,1000,1] scale:0.01 pos:[24,296] fieldWidth:46 width:58
-        spinner wholeMaxSpin "" range:[0.001,1000,1] scale:0.01 pos:[94,296] fieldWidth:46 width:58
+        label sclTitle "Scale (multiplier)" pos:[8,162] width:146
+        label sclMinTitle "Min" pos:[24,184] width:58
+        label sclMaxTitle "Max" pos:[94,184] width:58
+        label sclXLabel "X" pos:[8,206] width:12
+        spinner sclXMinSpin "" range:[0.001,100,1]  pos:[24,204] fieldWidth:46 width:58
+        spinner sclXMaxSpin "" range:[0.001,100,1]  pos:[94,204] fieldWidth:46 width:58
+        label sclYLabel "Y" pos:[8,230] width:12
+        spinner sclYMinSpin "" range:[0.001,100,1]  pos:[24,228] fieldWidth:46 width:58
+        spinner sclYMaxSpin "" range:[0.001,100,1]  pos:[94,228] fieldWidth:46 width:58
+        label sclZLabel "Z" pos:[8,254] width:12
+        spinner sclZMinSpin "" range:[0.001,100,1]  pos:[24,252] fieldWidth:46 width:58
+        spinner sclZMaxSpin "" range:[0.001,100,1]  pos:[94,252] fieldWidth:46 width:58
+        label wholeTitle "Whole Scale (uniform)" pos:[8,312] width:146
+        label wholeMinTitle "Min" pos:[24,334] width:58
+        label wholeMaxTitle "Max" pos:[94,334] width:58
+        spinner wholeMinSpin "" range:[0.001,1000,1] scale:0.01 pos:[24,356] fieldWidth:46 width:58
+        spinner wholeMaxSpin "" range:[0.001,1000,1] scale:0.01 pos:[94,356] fieldWidth:46 width:58
         on wholeMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.wholeScaleMin=v;if v>obj.wholeScaleMax do (obj.wholeScaleMax=v;wholeMaxSpin.value=v);CyrusViewportRedraw())
         on wholeMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.wholeScaleMax=v;if v<obj.wholeScaleMin do (obj.wholeScaleMin=v;wholeMinSpin.value=v);CyrusViewportRedraw())
-        label movTitle "Movement (world units)" pos:[8,332] width:146
-        label movMinTitle "Min" pos:[24,354] width:58
-        label movMaxTitle "Max" pos:[94,354] width:58
-        label movXLabel "X" pos:[8,376] width:12
-        spinner movXMinSpin "" range:[-100000,100000,0] type:#worldUnits pos:[24,374] fieldWidth:46 width:58
-        spinner movXMaxSpin "" range:[-100000,100000,0] type:#worldUnits pos:[94,374] fieldWidth:46 width:58
-        label movYLabel "Y" pos:[8,400] width:12
-        spinner movYMinSpin "" range:[-100000,100000,0] type:#worldUnits pos:[24,398] fieldWidth:46 width:58
-        spinner movYMaxSpin "" range:[-100000,100000,0] type:#worldUnits pos:[94,398] fieldWidth:46 width:58
-        label movZLabel "Z" pos:[8,424] width:12
-        spinner movZMinSpin "" range:[-100000,100000,0] type:#worldUnits pos:[24,422] fieldWidth:46 width:58
-        spinner movZMaxSpin "" range:[-100000,100000,0] type:#worldUnits pos:[94,422] fieldWidth:46 width:58
-        checkbox projectCheck "Keep on surface" pos:[8,456] width:146
-        checkbox alignCheck "Align to normal" pos:[8,480] width:146
+        label movTitle "Movement (world units)" pos:[8,422] width:146
+        label movMinTitle "Min" pos:[24,444] width:58
+        label movMaxTitle "Max" pos:[94,444] width:58
+        label movXLabel "X" pos:[8,466] width:12
+        spinner movXMinSpin "" range:[-100000,100000,0] type:#worldUnits pos:[24,464] fieldWidth:46 width:58
+        spinner movXMaxSpin "" range:[-100000,100000,0] type:#worldUnits pos:[94,464] fieldWidth:46 width:58
+        label movYLabel "Y" pos:[8,490] width:12
+        spinner movYMinSpin "" range:[-100000,100000,0] type:#worldUnits pos:[24,488] fieldWidth:46 width:58
+        spinner movYMaxSpin "" range:[-100000,100000,0] type:#worldUnits pos:[94,488] fieldWidth:46 width:58
+        label movZLabel "Z" pos:[8,514] width:12
+        spinner movZMinSpin "" range:[-100000,100000,0] type:#worldUnits pos:[24,512] fieldWidth:46 width:58
+        spinner movZMaxSpin "" range:[-100000,100000,0] type:#worldUnits pos:[94,512] fieldWidth:46 width:58
+        checkbox projectCheck "Keep on surface" pos:[8,576] width:146
+        checkbox alignCheck "Align to normal" pos:[8,600] width:146
 
+        button resetRotation "Reset rotation" pos:[8,124] width:146 height:20
+        button resetScale "Reset XYZ scale" pos:[8,278] width:146 height:20
+        button resetWholeScale "Reset whole scale" pos:[8,382] width:146 height:20
+        button resetMovement "Reset movement" pos:[8,536] width:146 height:20
+        on resetRotation pressed do this.resetSelectedRandomization #rotation
+        on resetScale pressed do this.resetSelectedRandomization #scale
+        on resetWholeScale pressed do this.resetSelectedRandomization #wholeScale
+        on resetMovement pressed do this.resetSelectedRandomization #movement
         fn syncControls = (projectCheck.checked=obj.projectMove;rotXMinSpin.value=obj.rotXMin;rotXMaxSpin.value=obj.rotXMax;rotYMinSpin.value=obj.rotYMin;rotYMaxSpin.value=obj.rotYMax;rotZMinSpin.value=obj.rotZMin;rotZMaxSpin.value=obj.rotZMax;sclXMinSpin.value=obj.sclXMin;sclXMaxSpin.value=obj.sclXMax;sclYMinSpin.value=obj.sclYMin;sclYMaxSpin.value=obj.sclYMax;sclZMinSpin.value=obj.sclZMin;sclZMaxSpin.value=obj.sclZMax;movXMinSpin.value=obj.movXMin;movXMaxSpin.value=obj.movXMax;movYMinSpin.value=obj.movYMin;movYMaxSpin.value=obj.movYMax;movZMinSpin.value=obj.movZMin;movZMaxSpin.value=obj.movZMax;)
         on alignCheck changed v do if controlsReady and not binding and obj!=undefined do (obj.alignNormal=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
 
@@ -2425,17 +2467,30 @@ initialRollupState:0xffe
         spinner iterationsSpin "Iterations: " pos:[8,146] width:120 fieldWidth:45 type:#integer range:[1,100,10]
         spinner strengthSpin "Strength %: " pos:[8,172] width:120 fieldWidth:45 range:[0,100,50]
         label orderHint "Relax, then collision" pos:[8,202] width:120
-        label layerHint "Within this layer only" pos:[8,224] width:120
+        label layerHint "Within this layer only" pos:[8,224] width:146 height:48
+        fn syncRelaxAvailability = (
+            local wasReady=ready;ready=false
+            local layer=this.selectedLayer(),valid=layer!=undefined and obj==layer
+            local masked=valid and obj.brushMaskActive(),active=valid and obj.relaxEnabled and not masked
+            relaxCheck.checked=valid and obj.relaxEnabled
+            -- An already saved paused setting can still be unchecked.
+            relaxCheck.enabled=valid and (not masked or obj.relaxEnabled)
+            relaxCheck.tooltip="Painted density pauses Relax. Turn off Use painted density to use Relax. Saved settings are preserved."
+            spacingSpin.enabled=active;iterationsSpin.enabled=active;strengthSpin.enabled=active
+            local message=if masked then "Brush mask active.\nRelax is paused.\nCollision remains available." else "Within this layer only"
+            if layerHint.text!=message do layerHint.text=message
+            ready=wasReady
+        )
         fn syncControls = (
             ready=false
             collisionCheck.checked=obj.collisionEnabled;radiusSpin.value=obj.collisionRadius;radiusSpin.enabled=obj.collisionEnabled
             relaxCheck.checked=obj.relaxEnabled;spacingSpin.value=obj.relaxSpacing;iterationsSpin.value=obj.relaxIterations;strengthSpin.value=obj.relaxStrength*100
-            spacingSpin.enabled=obj.relaxEnabled;iterationsSpin.enabled=obj.relaxEnabled;strengthSpin.enabled=obj.relaxEnabled
+            syncRelaxAvailability()
             ready=true
         )
         on collisionCheck changed v do if controlsReady and not binding and obj!=undefined do if ready do (obj.collisionEnabled=v;syncControls();CyrusViewportRedraw())
         on radiusSpin changed v do if controlsReady and not binding and obj!=undefined do if ready do (obj.collisionRadius=v;CyrusViewportRedraw())
-        on relaxCheck changed v do if controlsReady and not binding and obj!=undefined do if ready do (obj.relaxEnabled=v;syncControls();CyrusViewportRedraw())
+        on relaxCheck changed v do if controlsReady and not binding and obj!=undefined do if ready do (undo "Cyrus Relax" on obj.relaxEnabled=(v and not obj.brushMaskActive());syncControls();CyrusViewportRedraw())
         on spacingSpin changed v do if controlsReady and not binding and obj!=undefined do if ready do (obj.relaxSpacing=v;CyrusViewportRedraw())
         on iterationsSpin changed v do if controlsReady and not binding and obj!=undefined do if ready do (obj.relaxIterations=v;CyrusViewportRedraw())
         on strengthSpin changed v do if controlsReady and not binding and obj!=undefined do if ready do (obj.relaxStrength=v/100.0;CyrusViewportRedraw())
@@ -2477,7 +2532,20 @@ initialRollupState:0xffe
         spinner finalStrengthSpin "Strength:" range:[0,1,.3] pos:[6,533] width:146 fieldWidth:55
         spinner finalIterSpin "Iterations:" type:#integer range:[0,100,5] pos:[6,560] width:146 fieldWidth:55
         spinner finalMoveSpin "Max movement:" type:#worldunits range:[0,1e9,10] pos:[6,587] width:146 fieldWidth:55
+        label relaxHint "" pos:[6,614] width:146 height:48
         fn currentLayer = (if obj.activeLayer>0 and obj.activeLayer<=obj.layerObjects.count then obj.layerObjects[obj.activeLayer] else undefined)
+        fn syncFinalRelaxAvailability = (
+            local wasRefreshing=refreshing;refreshing=true
+            local layer=currentLayer(),valid=layer!=undefined
+            local masked=valid and layer.brushMaskActive(),active=valid and layer.finalRelax and not masked
+            boundaryRelaxCheck.checked=valid and layer.finalRelax
+            boundaryRelaxCheck.enabled=valid and (not masked or layer.finalRelax)
+            boundaryRelaxCheck.tooltip="Painted density pauses Boundary Relax. Turn off Use painted density to use it. Final cleanup remains available."
+            finalStrengthSpin.enabled=active;finalIterSpin.enabled=active;finalMoveSpin.enabled=active
+            local message=if masked then "Brush mask active.\nBoundary Relax is paused.\nFinal cleanup is available." else ""
+            if relaxHint.text!=message do relaxHint.text=message
+            refreshing=wasRefreshing
+        )
         fn refreshOverlap = (
             refreshing=true
             local layer=currentLayer()
@@ -2494,7 +2562,7 @@ initialRollupState:0xffe
                 local stats=layer.overlapStats();overlapCounts.text=(stats[1] as string)+" / "+(stats[2] as string)+" / "+(stats[3] as string)
             )
             blockerList.items=labels;blockerList.selection=chosen
-            refreshing=false
+            syncFinalRelaxAvailability();refreshing=false
         )
         fn changedOverlap = (for layer in obj.layerObjects do layer.dirty=true;CyrusViewportRedraw())
         on overlapCheck changed v do if not refreshing do (undo "Remove overlaps" on (currentLayer()).overlapEnabled=v;changedOverlap())
@@ -2503,7 +2571,7 @@ initialRollupState:0xffe
         on neighborSpin changed v do if not refreshing and currentLayer()!=undefined do (undo "Final cleanup setting" on (currentLayer()).finalNeighborRadius=v;changedOverlap())
         on minNeighborSpin changed v do if not refreshing and currentLayer()!=undefined do (undo "Final cleanup setting" on (currentLayer()).finalMinNeighbors=v;changedOverlap())
         on minIslandSpin changed v do if not refreshing and currentLayer()!=undefined do (undo "Final cleanup setting" on (currentLayer()).finalMinIsland=v;changedOverlap())
-        on boundaryRelaxCheck changed v do if not refreshing and currentLayer()!=undefined do (undo "Final cleanup setting" on (currentLayer()).finalRelax=v;changedOverlap())
+        on boundaryRelaxCheck changed v do if not refreshing and currentLayer()!=undefined do (undo "Final cleanup setting" on (currentLayer()).finalRelax=(v and not (currentLayer()).brushMaskActive());changedOverlap())
         on finalStrengthSpin changed v do if not refreshing and currentLayer()!=undefined do (undo "Final cleanup setting" on (currentLayer()).finalStrength=v;changedOverlap())
         on finalIterSpin changed v do if not refreshing and currentLayer()!=undefined do (undo "Final cleanup setting" on (currentLayer()).finalIterations=v;changedOverlap())
         on finalMoveSpin changed v do if not refreshing and currentLayer()!=undefined do (undo "Final cleanup setting" on (currentLayer()).finalMaxMove=v;changedOverlap())

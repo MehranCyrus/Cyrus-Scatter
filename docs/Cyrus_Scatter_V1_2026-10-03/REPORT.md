@@ -1,5 +1,7 @@
 # Cyrus Scatter 1.0: implementation and qualification
 
+This records the v1.0.0 baseline. The subsequent [1.0.1 Brush/Relax and Randomize reset patch](../Brush_Relax_Reset_2026-10-03/REPORT.md) supersedes its runtime-error behavior for Relax with painted density; baseline evidence below remains unchanged.
+
 3 October 2026. Starting source/docs checkpoint: `9aca3683f3ec62aaf2fff0e27a7b57301f51b95e`, pushed to main before implementation. The underlying starting performance engine was Scatter 0.64; the previous Brush was an isolated prototype. This round integrates the features into one scene-owned product and replaces the nested layer UI. It does **not** promise that unlimited full-detail geometry has no drawing cost.
 
 ## Result and architecture

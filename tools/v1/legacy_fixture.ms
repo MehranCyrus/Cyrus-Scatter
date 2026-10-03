@@ -7,7 +7,7 @@
         local root=node.baseObject
         root.syncLayerIdentity();root.viewportMode=3;root.autoRender=false;root.refreshAll()
         select node;max modify mode;root.bindNativeUI()
-        if root.uiVersion()!="1.0.0" do throw "Legacy scene retained the old script definition"
+        if root.uiVersion()!="1.0.1" do throw "Legacy scene retained the old script definition"
         for entry in root.layerEntries() do (
             local layer=entry[2],state=layer.cacheSnapshot()
             if layer.paintIdentity do throw "Legacy scene was silently converted to Brush identities"

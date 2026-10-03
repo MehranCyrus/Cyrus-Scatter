@@ -3,7 +3,7 @@ module.exports=function(s){
  const replace=(a,b)=>{if(s.split(a).length!==2)throw Error('Brush anchor must be unique: '+a.slice(0,100));s=s.replace(a,b);};
  s='global CyrusStartBrush,CyrusStopBrush,CyrusBrushSessionRoot,CyrusBrushSessionLayer\n'+s;
  const integration=fs.readFileSync('tools/ui/templates/brush-integration.ms','utf8');
- const methods=integration.indexOf('    fn checkPaintRevision = (');
+ const methods=integration.indexOf('    fn brushMaskActive = (');
  const brushUI=integration.indexOf('    rollout brushUI ');
  replace('    parameters settings (',integration.slice(0,methods)+'\n    parameters settings (');
  replace('    fn selectedLayer = (',integration.slice(methods,brushUI)+'\n    fn selectedLayer = (');
@@ -18,8 +18,13 @@ module.exports=function(s){
  replace('obj.checkAnalyzerRevision()','obj.checkAnalyzerRevision();obj.checkPaintRevision()');
  replace('        activeLayer=i\n    )','        if CyrusBrushSessionLayer!=undefined do CyrusStopBrush()\n        activeLayer=i\n    )');
  replace('        if not cyrusEnabled or disabledAnalyzerInput() do return #()',`        if not cyrusEnabled or disabledAnalyzerInput() do return #()
-        if paintEnabled and (finalRelax or relaxEnabled) do throw "Brush density with point relaxation requires a mask-constrained solver. Disable Relax for this layer. Collision and final cleanup are supported."
-        if paintEnabled and not projectMove and (movXMin!=0 or movXMax!=0 or movYMin!=0 or movYMax!=0 or movZMin!=0 or movZMax!=0 or movementRange!=0) do throw "Brush requires projected movement."`);
+        -- Keep saved Relax settings, but pause movement while a Brush mask is active.
+        local pointRelax=relaxEnabled and not this.brushMaskActive(),boundaryRelax=finalRelax and not this.brushMaskActive()
+        if this.brushMaskActive() and not projectMove and (movXMin!=0 or movXMax!=0 or movYMin!=0 or movYMax!=0 or movZMin!=0 or movZMax!=0 or movementRange!=0) do throw "Brush requires projected movement."`);
+ replace('and not collisionEnabled and not relaxEnabled and not advancedAxes','and not collisionEnabled and not pointRelax and not advancedAxes');
+ replace('#(collisionEnabled,collisionRadius,relaxEnabled,relaxSpacing,relaxIterations,relaxStrength)','#(collisionEnabled,collisionRadius,pointRelax,relaxSpacing,relaxIterations,relaxStrength)');
+ replace('if (finalCleanup or finalRelax) and result.count>0','if (finalCleanup or boundaryRelax) and result.count>0');
+ replace('finalMinNeighbors,finalMinIsland,finalRelax,finalStrength,finalIterations','finalMinNeighbors,finalMinIsland,boundaryRelax,finalStrength,finalIterations');
  replace('local result=if finalPass==undefined and sourceWeights.count==0','local result=if not paintIdentity and distributionMode!=3 and finalPass==undefined and sourceWeights.count==0');
  replace('            aminScatterAdvanced targets requestedCount', '            local generate=if paintIdentity then cyrusScatterAdvanced else aminScatterAdvanced\n            local nativeOptions=if paintIdentity then #(paintIdentity,not advancedAxes,scaleMinimum,scaleMaximum,tiltDegrees,yawMinimum,yawMaximum,movementRange) else undefined\n            generate targets requestedCount');
  // Dispatch with optional keyed transport while leaving the legacy call's

@@ -2,7 +2,7 @@
 
 ## Installation
 
-1. Save your work. Use the package matching your Max year: `dist/v1/CyrusScatter-1.0.0-Max2027.mzp` or the Max 2026 counterpart.
+1. Save your work. Use the current package matching your Max year: `dist/v1/CyrusScatter-1.0.1-Max2027.mzp` or the Max 2026 counterpart.
 2. In Max, use **Scripting > Run Script**, choose the MZP, and wait for the Cyrus installation message.
 3. Restart Max. The script and four matching native modules must load together. Running only the source `.ms` over an older engine is insufficient for Brush.
 4. Open a copy of your scene, or create **Geometry > Cyrus > Cyrus Scatter** and use **Modify**. The included local synthetic demo is useful for learning; it does not require downloaded assets.
@@ -32,6 +32,8 @@ Rows show the layer name, its last placed count and state. The selected-layer de
 
 Build milliseconds measure generation/publication work, not viewport FPS. Point Cloud's displayed count is **points**, whereas Mesh/Proxy counts are **instances**. A heavily detailed source may reach the Mesh face budget after only a few instances. Increasing the base Count does not automatically increase the preview budget.
 
+In **Randomize XYZ**, each group has a Reset button. Rotation and movement reset to zero; XYZ scale and Whole Scale reset to 1 independently. The older tilt/yaw, scale and movement ranges are reset with their corresponding group. Each click affects only the selected layer and supports one Undo/Redo action. Align to normal and Keep on surface are preserved.
+
 ## Procedural Brush
 
 1. Add/select a layer and assign source plants in **Source Object**. Choose the base count/density and randomization in **Point Generation** and the other layer rollouts.
@@ -46,7 +48,7 @@ Surviving candidates retain their transforms when density or strokes thin the la
 
 Keep the target visible and unfrozen while painting. It may be hidden for final evaluation. Saved strokes use surface anchors and captured stroke paths rather than a UV image. A changed shape/topology is rejected with history preserved: restore the original target or intentionally create a fresh Brush document. This release does not automatically transfer strokes onto a remeshed or animated surface.
 
-Brush currently rejects intra-layer Relax/Final Relax and unprojected random movement. Collision removal, final cleanup, layer separation, source variation, bake and the existing render bridge have integration checks. A mask-constrained relaxation solver and reusable image-map exchange are future work.
+In 1.0.1, painted density **pauses** Relax and Boundary Relax while keeping their stored settings. The controls and Layers details explain the pause. Turn off **Use painted density** to use Relax; your strokes remain saved. This prevents the v1.0.0 runtime error without moving plants out of the painted field. Collision removal and final cleanup remain available. A solver that relaxes points inside the painted field is future work. Unprojected random movement with Brush remains unsupported.
 
 ## First artist checks
 

@@ -25,6 +25,25 @@ module.exports=function(s){
   // No Win32 resizing, polling or height correction belongs to a native rollup.
   r=r.replaceAll('parentView.layoutPanels()','true').replaceAll('parentView.dpiScale','1.0');
   r=r.replace('            obj.syncColors()\n','');
+  if(name==='spacingUI'){
+   r=r.replace('label layerHint "Within this layer only" pos:[8,224] width:120','label layerHint "Within this layer only" pos:[8,224] width:146 height:48');
+   r=r.replace('        fn syncControls = (',`        fn syncRelaxAvailability = (
+            local wasReady=ready;ready=false
+            local layer=this.selectedLayer(),valid=layer!=undefined and obj==layer
+            local masked=valid and obj.brushMaskActive(),active=valid and obj.relaxEnabled and not masked
+            relaxCheck.checked=valid and obj.relaxEnabled
+            -- An already saved paused setting can still be unchecked.
+            relaxCheck.enabled=valid and (not masked or obj.relaxEnabled)
+            relaxCheck.tooltip="Painted density pauses Relax. Turn off Use painted density to use Relax. Saved settings are preserved."
+            spacingSpin.enabled=active;iterationsSpin.enabled=active;strengthSpin.enabled=active
+            local message=if masked then "Brush mask active.\\nRelax is paused.\\nCollision remains available." else "Within this layer only"
+            if layerHint.text!=message do layerHint.text=message
+            ready=wasReady
+        )
+        fn syncControls = (`);
+   r=r.replace('spacingSpin.enabled=obj.relaxEnabled;iterationsSpin.enabled=obj.relaxEnabled;strengthSpin.enabled=obj.relaxEnabled','syncRelaxAvailability()');
+   r=r.replace('obj.relaxEnabled=v;syncControls()','undo "Cyrus Relax" on obj.relaxEnabled=(v and not obj.brushMaskActive());syncControls()');
+  }
   r=r.replace(/(        on (?!\w+ open\b|\w+ close\b)[^\n]+? do )/g,'$1if controlsReady and not binding and obj!=undefined do ');
   // Do not retain source/area selection indices from the previous layer.
   const controls=[...r.matchAll(/^        (?:multiListBox|listbox) (\w+)/gm)].map(m=>m[1]);
@@ -54,6 +73,23 @@ module.exports=function(s){
  const start=manager.indexOf('        local blockerRows=#()'),end=manager.indexOf('        fn resizeColumns',start);
  if(start<0||end<0)throw Error('Missing native separation definition');
  manager=manager.slice(start,end).replace(/pos:\[(\d+),(\d+)\]/g,(_,x,y)=>`pos:[${x},${Number(y)-314}]`);
+ manager=manager.replace('        fn currentLayer = (',`        label relaxHint "" pos:[6,614] width:146 height:48
+        fn currentLayer = (`);
+ manager=manager.replace('        fn refreshOverlap = (',`        fn syncFinalRelaxAvailability = (
+            local wasRefreshing=refreshing;refreshing=true
+            local layer=currentLayer(),valid=layer!=undefined
+            local masked=valid and layer.brushMaskActive(),active=valid and layer.finalRelax and not masked
+            boundaryRelaxCheck.checked=valid and layer.finalRelax
+            boundaryRelaxCheck.enabled=valid and (not masked or layer.finalRelax)
+            boundaryRelaxCheck.tooltip="Painted density pauses Boundary Relax. Turn off Use painted density to use it. Final cleanup remains available."
+            finalStrengthSpin.enabled=active;finalIterSpin.enabled=active;finalMoveSpin.enabled=active
+            local message=if masked then "Brush mask active.\\nBoundary Relax is paused.\\nFinal cleanup is available." else ""
+            if relaxHint.text!=message do relaxHint.text=message
+            refreshing=wasRefreshing
+        )
+        fn refreshOverlap = (`);
+ manager=manager.replace('            refreshing=false','            syncFinalRelaxAvailability();refreshing=false');
+ manager=manager.replace('(currentLayer()).finalRelax=v','(currentLayer()).finalRelax=(v and not (currentLayer()).brushMaskActive())');
  const sep=`    rollout separationUI "Separation / Final cleanup" width:#cmdPanel (
         local obj=undefined,parentView=undefined,controlsReady=false,refreshing=true
 ${manager}
@@ -76,7 +112,7 @@ ${manager}
  s=s.slice(0,fa)+s.slice(fb);
  unique('fn AminScatterRefreshLayerPanels obj reopen:true = (if obj.mainUI.controlsReady do obj.mainUI.rebuild())','fn AminScatterRefreshLayerPanels obj reopen:true = (obj.bindNativeUI())');
  unique('version:48','version:49');
- unique('    fn uiVersion = "2026-10-02.5"','    fn uiVersion = "1.0.0"');
+ unique('    fn uiVersion = "2026-10-02.5"','    fn uiVersion = "1.0.1"');
  unique('        layerObjects type:#maxObjectTab tabSize:0 tabSizeVariable:true',`        layerID type:#string default:""
         layerVisible type:#boolTab tabSize:0 tabSizeVariable:true
         on layerVisible set value index do (global CyrusPointPending;CyrusPointPending=true)

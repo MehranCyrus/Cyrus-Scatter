@@ -30,6 +30,10 @@
         for r in this.nativeEditors() where r.controlsReady do r.bind layer
         true
     )
+    fn syncBrushCompatibility = (
+        if this.spacingUI.controlsReady do this.spacingUI.syncRelaxAvailability()
+        if this.separationUI.controlsReady do this.separationUI.syncFinalRelaxAvailability()
+    )
     rollout mainUI "Cyrus Scatter 1.0 | Layers" width:#cmdPanel (
         local controlsReady=false,binding=false,dpiScale=1.0,lastRows=#()
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,8] width:146
@@ -57,6 +61,7 @@
                     detail=status[2]+"\nPlaced: "+(if state.hasResult then CyrusUICount state.placements else "--")
                     detail+="\n"+(if state.mode==1 then "Preview points: " else "Preview instances: ")+(if state.hasResult then CyrusUICount state.previewCount else "--")
                     detail+="\nBuild: "+(if state.hasResult then (state.buildMs as string)+" ms" else "--")
+                    if layer.brushRelaxPaused() do detail+="\nRelax paused by Brush."
                     if state.errorText!="" do detail+="\n"+state.errorText
                 )
             )
@@ -66,6 +71,7 @@
                 binding=true;layerList.items=rows;layerList.selection=activeLayer;lastRows=rows;binding=false
             )
             if countInfo.text!=detail do countInfo.text=detail
+            this.syncBrushCompatibility()
             true
         )
         fn bind = (
@@ -109,7 +115,7 @@
         on copyButton pressed do copySelectedLayer()
         on removeButton pressed do (removeLayer();bindNativeUI();CyrusViewportRedraw())
         on helpButton pressed do (
-            local layer=selectedLayer(),message="Select a layer to edit its sources and settings.\nNative rollout headers open with one click.\n\nVisible in viewport hides only the cached preview.\nEnabled in final output controls generation, rendering and blockers.\nPlaced is the last generated count; Preview counts visible points or instances within the current display budget.\nLimited means the geometry preview displays a subset; check its instance/face budget.\nBuild is preview preparation time, not FPS.\nStale means settings changed and Update is needed.\n\nBrush: choose one static receiving mesh, then Paint or Erase. Count/density and randomization remain procedural. Manual mode publishes plants on Update."
+            local layer=selectedLayer(),message="Select a layer to edit its sources and settings.\nNative rollout headers open with one click.\n\nVisible in viewport hides only the cached preview.\nEnabled in final output controls generation, rendering and blockers.\nPlaced is the last generated count; Preview counts visible points or instances within the current display budget.\nLimited means the geometry preview displays a subset; check its instance/face budget.\nBuild is preview preparation time, not FPS.\nStale means settings changed and Update is needed.\n\nBrush: choose one static receiving mesh, then Paint or Erase. Count/density and randomization remain procedural. Manual mode publishes plants on Update.\nPainted density pauses Relax and Boundary Relax without changing their saved settings. Turn off Use painted density to use Relax. Collision and final cleanup remain available."
             if layer!=undefined do (message="Layer: "+layerNames[activeLayer]+"\n"+countInfo.text+"\n\n"+message;if layer.previewError!="" do message+="\n\nFull error:\n"+layer.previewError)
             messageBox message title:"Cyrus Scatter 1.0"
         )

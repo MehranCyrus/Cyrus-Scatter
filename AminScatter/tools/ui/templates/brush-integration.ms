@@ -10,6 +10,8 @@
         on paintEnabled set value do dirty=true
         on paintDensity set value do dirty=true
     )
+    fn brushMaskActive = (paintIdentity and paintEnabled and paintDocument!=undefined)
+    fn brushRelaxPaused = (this.brushMaskActive() and (relaxEnabled or finalRelax))
     fn checkPaintRevision = (
         if paintDocument!=undefined do (
             local state=cyrusBrushStats paintDocument
@@ -35,6 +37,7 @@
         local stream=stringStream ""
         with printAllElements on (
             format "%|%|%|%|%|" currentTime CyrusPFRevision CyrusPFManualRevision plants previewOnly to:stream
+            format "EffectiveRelax:%|" (relaxEnabled and not this.brushMaskActive()) to:stream
             for key in AminScatterLayerFields where findItem #(#paintDocument,#paintEnabled,#paintIdentity,#paintDensity,#bakedNodes,#showPoints,#pointsPerPlant,#updateMode,#autoRender,#previewBudget,#pointColorMode,#solidPointColor) key==0 do format "%:%|" key (getProperty this key) to:stream
             for n in (this.validSurfaces()+(sources as array)+(areaNodes as array)+(patternLines as array)+#(analyzerNode,areaAnalyzer,fallAnalyzer)) where isValidNode n do format "%:%|" (getHandleByAnim n) n.objectTransform to:stream
             for n in #(analyzerNode,areaAnalyzer,fallAnalyzer) where isValidNode n do format "%|" (n.getAnalysisRuns()) to:stream
@@ -125,9 +128,9 @@
         on targetPick picked node do if obj!=undefined do (
             CyrusStopBrush()
             undo "Cyrus Brush target" on (obj.paintDocument=cyrusBrushCreate node;obj.paintIdentity=true;obj.paintEnabled=true)
-            obj.publishPaint();bind obj
+            obj.publishPaint();bind obj;this.syncBrushCompatibility()
         )
-        on maskCheck changed value do if not binding do (undo "Cyrus Brush enabled" on obj.paintEnabled=value;obj.publishPaint())
+        on maskCheck changed value do if not binding do (undo "Cyrus Brush enabled" on obj.paintEnabled=value;obj.publishPaint();this.syncBrushCompatibility())
         on modeRadio changed value do saveOptions()
         on radiusSpin changed value do saveOptions()
         on strengthSpin changed value do saveOptions()

@@ -14,6 +14,7 @@
 /docs/Brush_Tool_2026-10-02/evidence/** -text whitespace=cr-at-eol
 /docs/MCP_Implementation_2026-10-03/evidence/** -text whitespace=cr-at-eol
 /docs/Cyrus_Scatter_V1_2026-10-03/evidence/** -text whitespace=cr-at-eol
+/docs/Brush_Relax_Reset_2026-10-03/evidence/** -text whitespace=cr-at-eol
 /AminScatter/tests/data/brush_sphere_pole.txt -text whitespace=cr-at-eol
 
 # Exact logs, captured recipes and supplied reports retain original whitespace.

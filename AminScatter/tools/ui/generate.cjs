@@ -144,6 +144,7 @@ fs.writeFileSync('scripts/AminScatterObject.ms',(header+helper+factories+contain
  text=require('./layer-status.cjs')(text);
  text=require('./native-v1.cjs')(text);
  text=require('./procedural-brush.cjs')(text);
+ text=require('./random-reset.cjs')(text);
  text=require('./trace.cjs')(text);
  text=text.replace(/\r\n/g,'\n').replace(/^[ \t]+$/gm,'');
  fs.writeFileSync('scripts/AminScatterObject.ms',text);

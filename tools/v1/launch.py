@@ -49,8 +49,8 @@ def main():
     if scene and (not scene.is_file() or scene.suffix.lower()!='.max' or '"' in str(scene)):raise SystemExit('Expected an existing .max fixture')
     if args.reopen_expected:
         expected=args.reopen_expected.resolve()
-        if not expected.is_relative_to(BASE/'hosts') or expected.name!='reopen-expected.ms' or not scene:raise SystemExit('Expected a private saved-scene fixture and its expectation file')
-        shutil.copy2(expected,output/'reopen-expected.ms')
+        if not expected.is_relative_to(BASE/'hosts') or expected.name not in {'reopen-expected.ms','patch-reopen-expected.ms'} or not scene:raise SystemExit('Expected a private saved-scene fixture and its expectation file')
+        shutil.copy2(expected,output/expected.name)
     start=output/'start.ms'
     text=f'global BLRoot="{ROOT.as_posix()}/",BLDir="{output.as_posix()}/"\n'
     text+='fileIn (BLRoot+"tools/v1/transport.ms")\n'

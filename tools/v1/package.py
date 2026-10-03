@@ -5,9 +5,10 @@ import shutil
 import sys
 from build import ROOT,BASE
 sys.path.insert(0,str(ROOT/'tools'))
-from build_max import package
+from build_max import package,scatter_version
 
 def main():
+    version=scatter_version()
     for year in (2026,2027):
         staging=BASE/f'package-max{year}'
         native=staging/'AminScatter'
@@ -15,10 +16,10 @@ def main():
         names=['AminScatter.dlx','CyrusScatterEdit.dlm','CyrusBrush.dlx','CyrusBrushStorage.dlh']
         for name in names:shutil.copy2(BASE/f'max{year}'/name,native/name)
         args=SimpleNamespace(max_year=year,tools_version='14.38.33130',windows_sdk='10.0.19041.0',output=ROOT/'dist/v1')
-        package('AminScatter','Cyrus Scatter','1.0.0',names,'AminScatterObject.ms',args,staging)
+        package('AminScatter','Cyrus Scatter',version,names,'AminScatterObject.ms',args,staging)
     shutil.copy2(ROOT/'docs/Cyrus_Scatter_V1_2026-10-03/ARTIST_GUIDE.md',ROOT/'dist/v1/ARTIST_GUIDE.md')
     (ROOT/'dist/v1/START_HERE.txt').write_text(
-        'Cyrus Scatter 1.0.0 trial\n\n'
+        f'Cyrus Scatter {version} trial\n\n'
         'Choose the MZP for your Max year. Scripting > Run Script, choose it, then restart Max.\n'
         'Create > Geometry > Cyrus > Cyrus Scatter, then Modify.\n'
         'Select a layer; Procedural Brush is part of its normal native rollouts.\n'

@@ -5,7 +5,8 @@
         if findString (toLower directory) (toLower BLDir)!=1 do throw "Installer test directory escaped its private profile"
     )
     -- Exercise Max's MZP reader and mzp.run, as the artist will use them.
-    fileIn (BLRoot+"dist/v1/CyrusScatter-1.0.0-Max2027.mzp")
+    local object=createInstance CyrusScatterObject
+    fileIn (BLRoot+"dist/v1/CyrusScatter-"+object.uiVersion()+"-Max2027.mzp")
     local destination=pathConfig.appendPath (getDir #userScripts) "CyrusScatter"
     for name in #("CyrusScatter.ms","Uninstall.ms","manifest.json","INSTALL.txt") where not doesFileExist (pathConfig.appendPath destination name) do throw ("Installer omitted "+name)
     local ini=pathConfig.appendPath (getFilenamePath (getMAXIniFile())) "Plugin.UserSettings.ini"

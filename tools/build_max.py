@@ -8,6 +8,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import shutil
 import subprocess
 import zipfile
@@ -42,9 +43,17 @@ def sha(data):
     return hashlib.sha256(data).hexdigest()
 
 
+def scatter_version():
+    script = (ROOT / 'AminScatter/scripts/AminScatterObject.ms').read_text(encoding='utf-8')
+    versions = re.findall(r'fn uiVersion\s*=\s*"(\d+\.\d+\.\d+)"', script)
+    if len(versions) != 1:
+        raise ValueError('Generate one SemVer-versioned Scatter script before packaging.')
+    return versions[0]
+
+
 def package(project, name, version, native_names, script_name, args, build_dir):
-    if project == 'AminScatter' and version != '1.0.0':
-        raise ValueError('Current Scatter source is 1.0.0. Use a frozen checkout to package historical versions.')
+    if project == 'AminScatter' and version != scatter_version():
+        raise ValueError('Requested Scatter version differs from generated source. Use a frozen checkout for historical versions.')
     payload = {}
     for filename in native_names:
         payload[filename] = (build_dir / project / filename).read_bytes()
@@ -78,7 +87,9 @@ def package(project, name, version, native_names, script_name, args, build_dir):
            'Integrated procedural Brush: pick one receiving mesh, Paint/Erase, edit stroke history, Fill/Empty and Undo.\n'
            'Flat and curved static surfaces are supported. Topology changes require target validation; strokes are preserved.\n'
            'Manual mode updates the mask immediately and publishes plants when Update is pressed.\n'
-           'Brush relaxation and unprojected random movement are outside this release.\n'
+           'Painted density pauses Relax/Boundary Relax, preserving their saved settings. Disable painted density to use Relax.\n'
+           'Randomize XYZ has separate Undoable rotation, scale, whole-scale and movement resets.\n'
+           'Brush with unprojected random movement remains outside this release.\n'
            'Retained Nitrous point-cloud buffers, GPU-instanced Mesh preview, bounded proxy batches and deferred synchronization during held input.\n'
            'Point Cloud and Mesh reuse GPU buffers during navigation. Existing preview limits still apply; no automatic camera LOD.\n'
            'Includes native source filtering/transforms, batched edit notifications, and bounded clustered queries.\n'
@@ -137,7 +148,7 @@ def main():
              f'-DMAXSDK_ROOT={args.sdk_root.resolve()}'], env)
         run(['cmake', '--build', dest], env)
         run(['ctest', '--test-dir', dest, '--output-on-failure'], env)
-    package('AminScatter', 'Cyrus Scatter', '1.0.0', ['AminScatter.dlx', 'CyrusScatterEdit.dlm', 'CyrusBrush.dlx', 'CyrusBrushStorage.dlh'],
+    package('AminScatter', 'Cyrus Scatter', scatter_version(), ['AminScatter.dlx', 'CyrusScatterEdit.dlm', 'CyrusBrush.dlx', 'CyrusBrushStorage.dlh'],
             'AminScatterObject.ms', args, base)
     package('CyrusSurfaceAnalyzer', 'Cyrus Surface Analyzer', '0.14', ['CyrusSurfaceAnalyzer.dlx'],
             'CyrusSurfaceAnalyzer.ms', args, base)
