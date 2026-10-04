@@ -1,0 +1,36 @@
+{
+  "schema": "cyrus.style-profile.proposal/0.1",
+  "example_only": true,
+  "profile_id": "style_demo_lush",
+  "revision": 1,
+  "name": "Lush planting with open architectural views",
+  "owner_scope": "personal",
+  "description": "Prefer dense shrubs and a smaller canopy population while respecting explicit protected views and paths.",
+  "references": [],
+  "roles": [
+    {"role_id": "canopy_tree", "description": "Tall foliage with a confirmed ground pivot and measured footprint"},
+    {"role_id": "shrub", "description": "Lower planting with a confirmed footprint"}
+  ],
+  "soft_preferences": {
+    "spatial_organization": "irregular_clumps",
+    "height_variation": "moderate",
+    "open_space": "preserve_confirmed_paths_and_views",
+    "relative_population": "more_shrubs_than_canopy_trees"
+  },
+  "constraint_precedence": "project_constraints_and_artist_overrides_before_profile_preferences",
+  "approved_recipe_ids": [],
+  "approved_patch_ids": [],
+  "learning": {
+    "mode": "references_and_explicit_preferences",
+    "fitted_pattern": null,
+    "preference_model": null,
+    "planner_adapter": null,
+    "base_model": null,
+    "evaluation_report": null
+  },
+  "provenance": {
+    "kind": "hand_authored_synthetic_documentation_example",
+    "training_eligible": false,
+    "consent_record_id": null
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "schema": "cyrus.design-recipe.proposal/0.1",
+  "example_only": true,
+  "recipe_id": "recipe_demo_current_mcp",
+  "profile_id": "style_demo_lush",
+  "profile_revision": 1,
+  "title": "Bounded two-role pilot",
+  "units": {"length": "metres", "angles": "degrees"},
+  "requested_pattern": "uniform_random_with_role_and_scale_variation",
+  "expressibility": {
+    "target": "current_mcp_plan_2.0",
+    "unexpressed_soft_preferences": ["irregular_spatial_clumps"],
+    "artist_acceptance_of_simplification_required": true,
+    "artist_acceptance_record": null,
+    "apply_ready": false
+  },
+  "example_binding": {
+    "context_id": "context_demo",
+    "zones": {"garden": "region_demo_garden"},
+    "roles": {"canopy_tree": "source_demo_tree", "shrub": "source_demo_shrub"}
+  },
+  "layers": [
+    {
+      "name": "Canopy",
+      "role": "canopy_tree",
+      "zone": "garden",
+      "population": {"mode": "candidates_over_receiver_before_masks", "count": 40},
+      "seed": 1101,
+      "scale": [0.9, 1.1],
+      "yaw_degrees": [0.0, 360.0],
+      "priority": 10,
+      "collision_radius_m": 1.5,
+      "source_radius_m": 1.5,
+      "underfill": "allow"
+    },
+    {
+      "name": "Shrubs",
+      "role": "shrub",
+      "zone": "garden",
+      "population": {"mode": "candidates_over_receiver_before_masks", "count": 600},
+      "seed": 1102,
+      "scale": [0.85, 1.15],
+      "yaw_degrees": [0.0, 360.0],
+      "priority": 0,
+      "collision_radius_m": 0.25,
+      "source_radius_m": 0.25,
+      "underfill": "allow"
+    }
+  ],
+  "spacing": [{"roles": ["canopy_tree", "shrub"], "gap_m": 0.2, "footprints": true, "planar": true}],
+  "clearance_m": 0.2,
+  "display": {"mode": "proxy", "update_mode": "manual"}
+}

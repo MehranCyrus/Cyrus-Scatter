@@ -2,6 +2,10 @@
 
 ## Current engineering work and navigation
 
+**Versioning:** [Cyrus Scatter 0.7 pre-release](Release_Versioning.md) is the next product/build label; reserve 1.0 for publication readiness. Existing 1.x names below identify historical development builds and evidence. The current script still reports 1.2.3 until the next implementation/build applies the labeling change.
+
+**Next procedural engine plan:** [Procedural evaluation implementation guide](Procedural_Evaluation_2026-10-04/README.md) consolidates the current source audit, three independent collision scopes, adjustable instance radii, background fill and bounded replenishment, cache dependencies, native UI/MCP contracts and implementation/test gates. This is a proposal for the next policy, not a shipped feature or a new performance result. Existing policies and retained display paths are the preservation baseline.
+
 **Visual guide:** [interactive system map](../mockups/system-map/index.html) — explore feature ownership, control effects, placement dependencies, viewport performance and MCP boundaries. The [coverage and maintenance guide](System_Map_2026-10-04/README.md) records the source snapshot and what the map covers.
 
 **Latest patch: [Scatter 1.2.3 — wheel and drag scrolling](Classic_Layout_2026-10-04/SCROLLING_1.2.3.md).** The nested native sections now route navigation to the command panel: use the wheel over section backgrounds/headers or left-drag blank grey space. It retains the [1.2.2 classic flowing layout](Classic_Layout_2026-10-04/README.md), current Brush/paint sets and retained engine. Use the [updated artist guide](Classic_Layout_2026-10-04/ARTIST_GUIDE.md). Earlier measurements remain frozen in their dated reports.
@@ -45,6 +49,8 @@ The strategy package distinguishes source findings, completed tests, vendor capa
 This is an operational layer under the governing product strategy above. Its [repository review and exact deliverables](Product_Commercialization_Playbook_2026-09-30/98_Repository_Review_and_Deliverables.md) distinguish current source, retained tests, fresh package checks and proposed work. Creating the playbook does not qualify the product or approve a licensing provider, price, public claim or launch.
 
 ## Local MCP implementation and future AI-assisted design
+
+**Current learning proposal:** [Artist Style ML — 4 October](Artist_Style_ML_2026-10-04/README.md) evaluates a separate companion for each artist's references, approved recipes and planting examples. It specifies portable style profiles, optional personal ranking/LoRA, procedural output contracts, data collection, evaluation and a phased [implementation checklist](Artist_Style_ML_2026-10-04/ROADMAP.md). The [source audit](Artist_Style_ML_2026-10-04/CODEBASE_AUDIT.md) uses Scatter 1.2.3 / MCP 1.1: nine tools and plans 1.0/2.0 exist; learned models, profile storage and automatic dataset collection do not. This is a research update, not a plugin release.
 
 The [MCP 1.0 implementation report](MCP_Implementation_2026-10-03/REPORT.md) records the local Max 2027 automation service, seven MCP tools, existing-layout diagnostics, controlled creation/refinement, artist approval/recovery panel and offline installer. Start with its [user guide](../CyrusMCP/README.md), [architecture](MCP_Implementation_2026-10-03/ARCHITECTURE.md) and [roadmap reconciliation](MCP_Implementation_2026-10-03/ROADMAP_STATUS.md). The release is bounded to the documented host and input scope; it does not claim artist-quality AI design, other Max versions or custom ML.
 

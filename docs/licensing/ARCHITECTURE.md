@@ -1,6 +1,6 @@
 # Licensing architecture
 
-**Reconciled:** 2026-10-02. **Status:** current engineering design; implementation and security qualification are pending. Start with the [roadmap](ROADMAP.md); commercial choices and continuity outcomes are tracked in [decisions](DECISIONS.md).
+**Reconciled:** 2026-10-02; rendering, offline and device policy clarified 2026-10-04. **Status:** current engineering design; implementation and security qualification are pending. Start with the [roadmap](ROADMAP.md); commercial choices and continuity outcomes are tracked in [decisions](DECISIONS.md).
 
 Cyrus should own its licensing service, customer and studio records, entitlement policy, and native integration. The user selected that direction in this discussion. Established cryptographic, authentication, database and hosting components remain appropriate building blocks; operating our own licensing does not require inventing those primitives.
 
@@ -69,6 +69,8 @@ Separate product permissions, native operation categories and development featur
 
 Centralization cannot protect a function that never calls the authority. New mutation entry points need registration and tests. Unknown operations deny new mutation by default. A native command may reuse a category, but caller-supplied strings or `evaluation=true` must not confer authority.
 
+Keep policy variation explicit and bounded. Supported term/device/seat rules belong in validated authority and versioned policy inputs, while signature verification and scene-preservation invariants remain enforced. Customer-editable configuration cannot grant rights. Test changing supported policy values without editing scatter algorithms or distributing checks throughout the UI. New operation meanings or incompatible security semantics can still require a versioned client change.
+
 Version the service API, signed schema, native ABI, policy semantics and product releases independently. Allow explicitly optional additive fields, reject unsupported critical semantics, and let unknown permission strings grant nothing. Keep rollout flags separate from commercial grants. [OWASP authorization guidance](https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html) supports explicit mapping and tests; this product contract is our proposal.
 
 ## Individual and studio models
@@ -82,7 +84,7 @@ Represent an individual as an account with one member and a studio as an organiz
 | Studio floating seats | N concurrent reservations shared among authorized members | After concurrency and outage qualification |
 | Studio offline server | Studio service receives a bounded allocation | Later, after demand and deployment/support qualification |
 
-Ten assigned seats mean ten assigned people. Ten floating seats can serve a larger organization with at most ten valid reservations at once. Membership consumes no authoring seat. Number of assigned people, activation allowance and simultaneous-use limit are different fields.
+Ten assigned seats mean ten assigned people under the proposed assigned-user offer. Ten floating seats can serve a larger organization with at most ten valid reservations at once. Membership consumes no authoring seat. Number of assigned people, activation allowance and simultaneous-use limit are different fields. D13 now requests one authorized device per purchased seat; keep that activation limit separate from person assignment and Max process count.
 
 Use separate accounting rules:
 
@@ -90,7 +92,7 @@ Use separate accounting rules:
 - **Floating offers:** propose one `user + registered installation + product pool` as one reservation unit. Multiple Max processes register as child sessions; closing one must not release authority still usable by another. A second installation is another reservation, subject to the approved policy.
 - **Offline authority:** record which assignment or reservation backs it. Reassignment, release and lost-device recovery cannot erase an already issued disconnected copy.
 
-The floating counting rule and individual device/simultaneous-use limits are proposed, not implemented or approved customer terms.
+The floating counting rule and simultaneous-use details remain proposed. The one-device preference is recorded in D13, but Windows-account/reinstall identity and effective transfer remain B02/B08 decisions; none is implemented or ready as customer terms.
 
 A shared DLL coordinates modules within one process, not different Max processes or machines. Start with server grouping and native session registration. Test atomic credential/cache writes, refresh-token rotation and process crashes; server grouping alone does not coordinate local refresh credentials. Use a minimal OS synchronization mechanism or separate authenticated sessions where appropriate. Add a per-user broker only if those experiments justify it. Device identifiers and local keys provide practical binding, not proof against an administrator cloning a machine.
 
@@ -163,7 +165,7 @@ Serialize pool changes in database transactions. Lock the pool row, resolve expi
 
 Signing and database commit are not automatically atomic. Persist the reservation and exact claims before returning a signed artifact. Retried issuance must not accidentally extend validity. If signing fails, retain a recoverable reservation. After an ambiguous HTTP outcome, do not free capacity merely because a client timed out: it may already hold the token.
 
-Renewal cadence and allowed-use duration are different. If offline/grace policy permits authoring until T, reserve capacity until at least T plus the maximum accepted clock uncertainty and any allowed operation-completion window. A missed heartbeat cannot instantly make that seat available elsewhere. Durations remain policy/experiment decisions.
+Renewal cadence and allowed-use duration are different. If offline/grace policy permits authoring until T, reserve capacity until at least T plus the maximum accepted clock uncertainty and any allowed operation-completion window. A missed heartbeat cannot instantly make that seat available elsewhere. D12 requests T at the subscription end for normal offline use; this does not introduce a shorter refresh deadline or an extra grace period. Actual term lengths and clock/recovery tolerances still need policy and experiments.
 
 Reserve explicit offline borrowing for the entire signed period. A server cannot instantly revoke a token on a disconnected machine. Initially, do not reclaim a long reservation merely because a client reports deleting the file. A later convenient early-return policy must acknowledge and test replay risk.
 
@@ -183,6 +185,24 @@ For login, use a maintained authentication component operated as part of our sys
 
 Later offline request/response needs explicit device/product binding, nonce, validity and reservation rules. Local encryption does not establish entitlement authenticity. Offline clock rollback detection is best effort: combine bounded signed time, monotonic elapsed time during a run, tolerances and a recovery path without claiming perfect protection.
 
+## Offline deadline and device activation
+
+The following is the engineering proposal for D12/D13, not a delivered security guarantee. Initial activation obtains a server-signed grant bound to the account/product, activation identity and purchased calendar deadline. For the requested full-term mode, normal offline authoring lasts until that deadline. Renewal requires newly verified authority. Closing Max, reinstalling, deleting cache files or turning the computer off must not restart or pause the subscription term. A local countdown or file creation date is never entitlement authority.
+
+Store signed grants, protected credentials and time observations outside plugin installation folders; `%LOCALAPPDATA%\Cyrus\Licensing\` is a candidate per-user location, not a secret boundary. Windows [DPAPI](https://learn.microsoft.com/en-us/windows/win32/api/dpapi/nf-dpapi-cryptprotectdata) can protect local secrets under an appropriate user/machine scope. Its roaming-profile and machine-scope behavior must be considered; encryption does not prove current time, prevent restoring an older valid blob, or make client administration impossible. Coordinate writes across Max processes and provide recovery for reinstall/profile changes.
+
+Use an authenticated server-time anchor, elapsed-time observation within its valid boot/session scope, UTC calendar comparison and a protected last-observed time record. Choose and qualify the actual clock API, suspend/hibernate behavior and reboot handling; [GetTickCount64](https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-gettickcount64) measures time since system start, not a permanent trusted calendar. A persisted timestamp adds evidence but does not turn an offline machine into a trusted time source. Significant rollback, forward jumps or missing history need a distinct recovery state and tested tolerance. A proposed response is to pause new authoring and request online time recovery while preserving work and the selected rendering path. This exception must be disclosed before promising full-term offline use. [Offline clock limitations](https://keygen.sh/docs/api/security/#clock-tampering).
+
+Re-evaluate the local deadline when starting meaningful authoring operations and on relevant lifecycle/timer events so leaving Max open does not extend access. Check the verified snapshot and current time; no disk/network/signature work belongs in viewport or per-point loops. Reach a bounded safe boundary for operations already in progress. Expiry changes authoring permission, not scene data or plugin class availability.
+
+Prefer a server activation ID plus a locally generated, protected device key, with selected stable device signals for matching and recovery. Bind issuance to possession of that registered key; this remains a practical client binding rather than proof against a patched client or copied software key. The issuer's signing private key stays only on the server. Qualify the simplest Windows storage/profile model first; hardware-backed keys are an optional later experiment, not an assumed dependency.
+
+Do not use IP as device identity: addresses can be reassigned by [DHCP](https://learn.microsoft.com/en-us/windows-server/networking/technologies/dhcp/dhcp-top), and [NAT](https://www.rfc-editor.org/rfc/rfc3022) can expose many devices through one public address. The [SMBIOS UUID exposed through WMI](https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-computersystemproduct) can be unavailable/all-zero and is an identifier, not a secret or purchase proof. Minimize collected identifiers, document their use and provide hardware/profile recovery; a hash does not automatically make persistent device data anonymous.
+
+The portal transfers an activation, retaining the purchase and issuance audit history. For example, if device A holds a grant with six months remaining and stays offline, removing A on the website cannot inform that client; immediately granting B may leave both usable for those six months. This follows from the disconnected design, not a server API omission. A server-side generation number also cannot notify an offline client. An honest online deactivation can disable its current copy but cannot prove an older backup unusable.
+
+Choose B08 before shipping transfers: preserve full-term offline use and delay capacity reuse; preserve it and explicitly accept controlled transfer overlap; or revise the offer to shorter offline grants with periodic refresh. The latter bounds the old grant's remaining exposure but does not provide instant offline revocation. Refunds, lost machines and employee removal have the same outstanding-authority consequence. No option is silently selected, and D12 must not be copied into a floating offer without separate capacity qualification.
+
 ## Native integration and continuity
 
 Keep LicenseCore independent of Max SDK headers, with a narrow stable ABI and one intended runtime identity per process. Authoring operations consume decisions from an immutable verified snapshot. Network calls, signature refresh, file I/O and seat transitions stay outside placement loops and viewport callbacks.
@@ -201,11 +221,13 @@ Keep `cyrusEnabled` as an artist control; it intentionally changes scene output 
 
 Preserve saving, parameters, stable IDs, stored edits and approved historical scene behavior. If authorization changes during an operation, finish at a defined boundary and apply the new decision to subsequent mutation. Continuation beyond a seat deadline needs a bounded reservation or tested checkpoint/cancellation; an indefinite permit would undermine accounting.
 
-Unlicensed local rendering, worker rights and perpetual/offline continuity still need explicit policy. A process filename or script flag cannot prove legitimate farm use. Locally exposed transforms may serve authoring, evaluation and export; this proposal does not claim an unbypassable free-worker boundary.
+Rendering existing work after subscription expiry is selected in D11. Worker deployment, changed-dependency scope, bake/export and perpetual continuity still need explicit policy. A process filename or script flag cannot prove legitimate farm use. Locally exposed transforms may serve authoring, evaluation and export; this proposal does not claim an unbypassable free-worker boundary.
 
 The first experiment must follow a parameter change through the script-owned controller and native computation. Merely labeling the call “evaluation” can let arbitrary new inputs reach a nominally free path. Demonstrate the intended restriction in the unmodified plugin before committing to the service contract. If it requires substantial native ownership of saved state, compare that cost with a narrower worker policy or explicitly accepted limits. Do not change scene IDs/schemas or build a second render engine to conceal an unresolved policy conflict.
 
 A preview cache is not evidence of complete, durable render state. Scene continuity must be verified with regeneration, animation, missing caches, Undo/Redo and qualified renderer paths.
+
+Decisions D09/D11 select preservation and rendering of existing work, a lock on new authoring after subscription authority ends, and editing recovery after verified renewal. The permission design must not treat authoring-token expiry as a blanket ban on renderer evaluation. B07 must define what "unchanged work" means for procedural dependencies: moving a source or surface, changing an animation frame, or reopening without caches can require computation. Preserve state first; do not equate an authoring lock with a proven immutable geometry snapshot. Include offline expiry, rendering and the expired-to-renewed transition in the boundary experiment.
 
 Runtime initialization and bounded shutdown belong outside `DllMain`. Qualify one intended per-process identity across Scatter and Analyzer, deliberate dependency paths, and account/cache storage outside replaceable program folders. Source-audit C08–C10 records the current generator, loader and packaging evidence; no installer or core-algorithm rewrite is needed merely to start the prototype.
 

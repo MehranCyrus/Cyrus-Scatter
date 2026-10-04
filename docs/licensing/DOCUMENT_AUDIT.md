@@ -88,6 +88,14 @@ The user's follow-up requested source-grounded improvements to the licensing pla
 
 The highest-priority additions are separate artist enable and license state; operation admission before clearing caches or transient render nodes; shared CS Edit mutation coverage; preservation of identity-recovery and history paths; explicit runtime/credential ownership; and final-artifact release identity/signing. No production source or scene was changed by this audit. These findings refine the existing L0/L1/L3 milestones and E01–E17 tests without creating another roadmap. All licensing runtime experiments remain NOT RUN.
 
+## Policy clarification on 2026-10-04
+
+The user confirmed an adaptable foundation and preservation of work with editing locked after subscription expiry, then explicitly selected rendering existing work after expiry. The user also requested offline use through the purchased term and one authorized device per seat with website transfers. Decisions D09–D13 record these choices and requests. The roadmap now requires expiry/save/reopen/render/verified-renewal tests, supported policy variation, clock/restart/storage recovery, device binding and a two-device offline-transfer demonstration.
+
+B07 remains open for the precise procedural dependency, animation, worker-deployment and bake/export boundary. B05/B08 must reconcile full-term offline use with time-confidence recovery and still-usable old grants. Website deletion cannot prove offline revocation; strict delayed reuse, explicitly accepted transfer overlap and shorter offline authority are unresolved alternatives. No subscription length, shorter refresh window or overlap exception was silently selected.
+
+The architecture now explains signed calendar deadlines, local protected storage, server-time/elapsed-time evidence, activation identity and recovery. It rejects local file timers as entitlement authority and IP/bare UUID as sufficient device proof. The source register records fresh Windows/network references and a clock-limit recheck. These updates affect six current licensing documents; the dated source audit and historical packages remain unchanged. No plugin behavior was changed or licensing runtime result claimed.
+
 ## Preservation and validation
 
 Before editing, all **43 files** listed by the old licensing manifest matched its byte counts and CRC32 values. The 33 numbered chapters and nine diagrams are retained byte-for-byte. Only that package's README gains a supersession notice; its manifest records the intentional README revision. Local before-copies and the baseline hash record are in `_local/maintenance/2026-10-02-licensing-docs/`, excluded from Git.

@@ -1,0 +1,95 @@
+{
+  "status": "passed documentation and source-preservation checks",
+  "date": "2026-10-04",
+  "source_baseline": "e3518f8f87f3144d531f20afbb6790ce243f2cfc",
+  "head_at_final_check": "e3518f8f87f3144d531f20afbb6790ce243f2cfc",
+  "scope": "Documentation and research only; all implementation/runtime acceptance items remain pending.",
+  "new_markdown_documents": 10,
+  "total_words": 13122,
+  "internal_file_links_checked": 56,
+  "primary_external_sources": 9,
+  "missing_links": [],
+  "unbalanced_fences": [],
+  "trailing_whitespace": [],
+  "source_fingerprints_checked": 26,
+  "source_fingerprint_mismatches": [],
+  "source_anchor_mismatches": [],
+  "tracked_non_documentation_files_compared": 386,
+  "production_changes": [],
+  "preexisting_documents_preserved_except_explicit_index_addition": true,
+  "index_original_bytes_preserved": true,
+  "owned_changes": [
+    "docs/Procedural_Evaluation_2026-10-04/",
+    "docs/README.md: one navigation paragraph"
+  ],
+  "not_performed": [
+    "Production implementation",
+    "Native builds/tests",
+    "Max launch or scene edits",
+    "Runtime or FPS measurement",
+    "MCP application",
+    "ML training",
+    "Git commit or push"
+  ],
+  "additional_modified_paths_observed_outside_task_scope": [
+    "docs/licensing/ARCHITECTURE.md",
+    "docs/licensing/DECISIONS.md",
+    "docs/licensing/DOCUMENT_AUDIT.md",
+    "docs/licensing/README.md",
+    "docs/licensing/ROADMAP.md",
+    "docs/licensing/SOURCES.md"
+  ],
+  "note": "Additional licensing documentation changes appeared during this pass. This task did not write, inspect, revert or include them in its preservation claims for preexisting edited documents.",
+  "documents": [
+    {
+      "path": "docs/Procedural_Evaluation_2026-10-04/01_CURRENT_CODE_AND_GAPS.md",
+      "words": 1403,
+      "sha256": "43595dc0944dd9cabff522ba1229b65db69d82f4ecc973537db30f3f4b8ad60b"
+    },
+    {
+      "path": "docs/Procedural_Evaluation_2026-10-04/02_PROCEDURAL_PIPELINE.md",
+      "words": 1578,
+      "sha256": "a3024e691ce251a4fe7b317b4659c8cdf75df72c047e6b08b3326bed4b37d8d5"
+    },
+    {
+      "path": "docs/Procedural_Evaluation_2026-10-04/03_COLLISION_AND_RADIUS.md",
+      "words": 1298,
+      "sha256": "2e487ad12b090604592ff175552fa41afd3e542393f4e14ad6a9732d3a021e28"
+    },
+    {
+      "path": "docs/Procedural_Evaluation_2026-10-04/04_COVERAGE_POPULATION_AND_FILL.md",
+      "words": 1444,
+      "sha256": "870e2108d2dc2f7576dd7229739050bd4c3d4ca883eba44a9d39c8aea8c88af6"
+    },
+    {
+      "path": "docs/Procedural_Evaluation_2026-10-04/05_CACHE_AND_VIEWPORT.md",
+      "words": 1299,
+      "sha256": "a922cf44ec3e5e7191e4dcc496c79a3a9fc7e0c6a8a9096c5ec144983ae7b9f2"
+    },
+    {
+      "path": "docs/Procedural_Evaluation_2026-10-04/06_DATA_UI_MCP_AND_ML.md",
+      "words": 1444,
+      "sha256": "51bc0e9bb37497a1bcb99efe604dbc68c9c6fd2f009645bcd02773f7f0b2b237"
+    },
+    {
+      "path": "docs/Procedural_Evaluation_2026-10-04/07_IMPLEMENTATION_ROADMAP.md",
+      "words": 1169,
+      "sha256": "8647ad87c5666648cce01b8311e275cfcc43874634402019d0bc110719153c4f"
+    },
+    {
+      "path": "docs/Procedural_Evaluation_2026-10-04/08_VALIDATION_AND_EXPERIMENTS.md",
+      "words": 1459,
+      "sha256": "3cad45c8d46e5502d4e1a73a49214b201e856b20b46e39a9ada2218bca61b12a"
+    },
+    {
+      "path": "docs/Procedural_Evaluation_2026-10-04/09_RESEARCH_AND_DECISIONS.md",
+      "words": 1073,
+      "sha256": "96e3f2250d1f8ca23425feaaa2542976c555961f01f563cda0db14cf906fbf35"
+    },
+    {
+      "path": "docs/Procedural_Evaluation_2026-10-04/README.md",
+      "words": 955,
+      "sha256": "c6d5b34f2bf37ed05589452593d9efebcc5e94c4a46b560c2c0763b93df7b3aa"
+    }
+  ]
+}

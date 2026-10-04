@@ -1,0 +1,43 @@
+{
+  "schema_version": "2.0",
+  "context_id": "context_demo",
+  "name": "Cyrus style pilot",
+  "clearance_m": 0.2,
+  "layers": [
+    {
+      "name": "Canopy",
+      "region_id": "region_demo_garden",
+      "count": 40,
+      "seed": 1101,
+      "sources": [{"source_id": "source_demo_tree", "weight": 1.0, "settings": {"collision_radius_m": 1.5, "radius_follows_scale": true}}],
+      "scale": [0.9, 1.1],
+      "yaw_degrees": [0.0, 360.0],
+      "underfill": "allow",
+      "settings": {"priority": 10, "collision_enabled": true, "collision_radius_m": 1.5},
+      "exclude_region_ids": []
+    },
+    {
+      "name": "Shrubs",
+      "region_id": "region_demo_garden",
+      "count": 600,
+      "seed": 1102,
+      "sources": [{"source_id": "source_demo_shrub", "weight": 1.0, "settings": {"collision_radius_m": 0.25, "radius_follows_scale": true}}],
+      "scale": [0.85, 1.15],
+      "yaw_degrees": [0.0, 360.0],
+      "underfill": "allow",
+      "settings": {"priority": 0, "collision_enabled": true, "collision_radius_m": 0.25},
+      "exclude_region_ids": []
+    }
+  ],
+  "pair_rules": [{"a": 0, "b": 1, "gap_m": 0.2, "footprints": true, "planar": true}],
+  "display": {
+    "mode": "proxy",
+    "proxy_shape": "box",
+    "instances_per_population": 2000,
+    "faces_per_population": 2000000,
+    "point_budget": 20000,
+    "points_per_plant": 80,
+    "show_preview": true,
+    "update_mode": "manual"
+  }
+}

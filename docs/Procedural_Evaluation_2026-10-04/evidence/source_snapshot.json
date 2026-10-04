@@ -1,0 +1,63 @@
+{
+  "date": "2026-10-04",
+  "task": "Procedural evaluation architecture: source audit and documentation only",
+  "workspace": "F:/Cursor/_Cyrus_Apps/CyrusScatter",
+  "head": "e3518f8f87f3144d531f20afbb6790ce243f2cfc",
+  "branch": "codex/planting-groups",
+  "versions": {
+    "scatter": "1.2.3",
+    "mcp": "1.1.0"
+  },
+  "generated_artifact": "AminScatter/scripts/AminScatterObject.ms",
+  "late_transformer": "AminScatter/tools/ui/layers-first.cjs",
+  "source_sha256": {
+    "AminScatter/tools/ui/generate.cjs": "7f46d6decbdf29d8144fd4a62bfecb77e65a850e15407454e628352ae071515a",
+    "AminScatter/tools/ui/layers-first.cjs": "967351f87d67e590bd48f3abae9ff2cf5022457325df1714ddb8a3776800b277",
+    "AminScatter/tools/ui/templates/logical-layers.ms": "07adc80ccab59e8ad5fccf8cb956d74396662f8a84c5670d0ce3acd0c00de689",
+    "AminScatter/tools/ui/templates/planting-model.ms": "f21aba3af533ce84c1991fbcfbfa0d45308aa9ef1e40898ae2fe4fc3714e9edc",
+    "AminScatter/tools/ui/templates/layers-first-details.ms": "887599ed207a1ec79c64544dc93a4a443df12fc30e2902e15ab20da3dbab51ba",
+    "AminScatter/tools/ui/retained-points.cjs": "593e7bfafd425692911b602ceb3b041ca4cfef63e6d53b8886281860b284de55",
+    "AminScatter/scripts/AminScatterObject.ms": "64729c189dd631d04bf70f12aee6a6dde31d81e5265b3ac22df656932237069b",
+    "AminScatter/include/group_spacing.h": "01598640b4619e11334d663a85a3a2c83a692a94f6b8dc35de5612d9fb55f92d",
+    "AminScatter/src/group_spacing.cpp": "8eaca642fe14293e1d6a7b3152853618d2c62391ff397b59632dc69fde579c0b",
+    "AminScatter/src/group_spacing_bridge.inc": "84514cdc7a7d4d9690d5ae179af1d9864897f4a1e56edacf2f4bacd158db77a7",
+    "AminScatter/tests/group_spacing_tests.cpp": "67300e62c679ea27b95784216441af79119668cc3008a3a71dab04b493f75046",
+    "AminScatter/include/scatter.h": "4decbc6deed39b30f403b5f174ae0bc7735323f8bd6f7058f4c7d31f2a9f2739",
+    "AminScatter/src/scatter.cpp": "9ff51391dd3f5c9071ded61109b77eaaa8dcc37fed3ac092a55b85b2524ef8fb",
+    "AminScatter/src/final.inc": "eb77d2cfcbc74c87b02a047d67f3623984dcbe3bd8f6e818d8d4c2698fdc7272",
+    "AminScatter/include/brush.h": "c3859f67d437bf45eff2930d54c0e3652e390eecd341e3cb584d86ec1717ea56",
+    "AminScatter/src/brush_host.cpp": "b3b8a78618c3a9efbef4af85cd4eeba5de9af21843d1fe59e7ec0d6025f4231d",
+    "AminScatter/src/point_display.cpp": "fffbba8c231ee937e749116dd4a0184f4d0c8ff4c366d85c60495c463d1eb620",
+    "AminScatter/src/mesh_display.inc": "91b694e319d1d5864f1ae6a6dd67c8bb033d44420f770ed0645c4cc4547d8c39",
+    "AminScatter/src/preview.cpp": "6465bf8dcbaaf213ab24f6362c6f92156333008d4585a645f539ba60bd4d8d6c",
+    "AminScatter/src/preview_batches.inc": "a2a7df3d65a6278d49aad80361bffe8db15fae1419feb44e993354f5c31c7acd",
+    "AminScatter/src/geometry_preview.inc": "3a72c3064fb23f72e042554ad9d2e4ded7b4efaa1b481550f38753b357b8ad65",
+    "AminScatter/src/max_bridge.cpp": "baa0cab3edefe9668578897d354a28a585415a1f4b1927d6bea2e448640a9aa9",
+    "CyrusMCP/cyrus_mcp/models.py": "f22038cfc21c1ab80a3d9c23fd3a692dd663b537b93d6981c611a6eabc7aa835",
+    "CyrusMCP/cyrus_mcp/contracts.py": "bb674948f19f6037b7982e55761377bf8c69803f97608de086dcaaacfa26896f",
+    "CyrusMCP/cyrus_mcp/settings.py": "87b94c09167b5a832de367dc99c8bd18d13382c5c3cf2566dbf36c09d380121a",
+    "CyrusMCP/cyrus_mcp/records.py": "f0e56bf9b1547f28443d3f50dbdbeebaf96af4d4e8f241a0dfcfd1df83378bab"
+  },
+  "preexisting_dirty_paths": [
+    "README.md",
+    "docs/README.md",
+    "docs/AI_MCP_ML_Roadmap_2026-09-30/README.md",
+    "docs/Artist_Style_ML_2026-10-04/"
+  ],
+  "preservation_baseline": {
+    "tracked_non_documentation_files": 386,
+    "preexisting_documentation_files": 17
+  },
+  "scope": {
+    "production_edits": false,
+    "max_run": false,
+    "native_build": false,
+    "runtime_tests": false,
+    "performance_benchmark": false
+  },
+  "notes": [
+    "Source evidence also draws on the existing same-commit ML audit and shipped capability documentation.",
+    "The generated script and late layers-first transformation are authoritative together; the earlier planting template alone is incomplete.",
+    "Historical test outcomes are not rerun claims for this proposal."
+  ]
+}

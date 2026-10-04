@@ -14,6 +14,8 @@ The [Product Strategy](../Product_Strategy_2026-09-29/README.md) remains the gov
 
 ## Read by decision
 
+**2026-10-04 personal-style update:** [Artist Style ML](../Artist_Style_ML_2026-10-04/README.md) adds a separate companion design, portable profiles, authored-patch learning, optional personal ranking/LoRA and a concrete [roadmap](../Artist_Style_ML_2026-10-04/ROADMAP.md). Its audit targets Scatter 1.2.3 / MCP 1.1. Current automation has nine tools and executable plan versions 1.0 and 2.0; the original pending implementation checkboxes below remain historical. No custom learning system or automatic dataset collector exists yet.
+
 | Document | Decision it supports |
 | --- | --- |
 | [README — Navigation and manifest](README.md) | Evidence labels, task status and exact deliverables |

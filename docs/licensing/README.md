@@ -1,8 +1,10 @@
 # Cyrus licensing
 
-**Current plan: 2026-10-02. Documentation reconciled; licensing implementation and security qualification remain pending.**
+**Current plan: 2026-10-04. Post-expiry rendering selected; full-term offline use and one-device activation requested. Licensing implementation and security qualification remain pending.**
 
 Build and operate Cyrus's own licensing service. Keep Scatter computation and viewport work local, authorize meaningful native operations, and separate product rights from purchases and seat allocation. This is the selected direction. Exact commercial terms are still decisions to make.
+
+The user confirmed the subscription behavior: preserve and allow rendering of existing work after expiry, stop new authoring/editing, and restore editing after verified renewal. The foundation must allow supported policies to change without scattered checks or unnecessary redesign. [Decisions D09–D13](DECISIONS.md) record this intent, the request for offline editing through the subscription end, and one authorized device per seat with portal transfers. Exact evaluation/dependency behavior still needs L0 testing. Full-term offline use requires accepting clock/revocation limits; the transfer/overlap policy remains open. A website deactivation cannot instantly revoke a disconnected copy.
 
 This folder is the current authority for licensing. It replaces the provider-first implementation sequence in the September package and the older commercialization stages. Dated research remains available; it is not a second backlog.
 

@@ -1,6 +1,6 @@
 # Licensing source register
 
-**Reviewed:** 2026-10-02. RFC 8725, RFC 9700 and PostgreSQL locking were reopened during the consolidation; vendor sources were read in the preceding same-day validation. Microsoft DLL lifecycle/loading guidance was opened for the codebase follow-up. Companion to the [architecture](ARCHITECTURE.md) and [implementation roadmap](ROADMAP.md).
+**Reviewed:** initial consolidation 2026-10-02; offline timing and device follow-up 2026-10-04. RFC 8725, RFC 9700 and PostgreSQL locking were reopened during consolidation; vendor sources were read in the preceding same-day validation. Microsoft DLL guidance was opened for the codebase audit. The October 4 review opened the Windows/network references below and reread Keygen's clock-tampering section. Companion to the [architecture](ARCHITECTURE.md) and [implementation roadmap](ROADMAP.md).
 
 Sources are official vendor documentation or primary standards. Access date is not publication date. Claims describe the documented model only; they do not establish Cyrus implementation quality or disclose proprietary security internals. No vendor pricing or commercial contract was selected.
 
@@ -31,7 +31,21 @@ Sources are official vendor documentation or primary standards. Access date is n
 | [Microsoft cryptography tools](https://learn.microsoft.com/en-us/windows/win32/seccrypto/cryptography-tools) | Signing and verification establish publisher/integrity information | Separate release authenticity from licensing; final Max packages need actual qualification. |
 | [Microsoft DLL best practices](https://learn.microsoft.com/en-us/windows/win32/dlls/dynamic-link-library-best-practices) | Minimal `DllMain` work and loader-lock constraints | Full page opened for C09. Keep networking/complex initialization and worker joins outside loader callbacks; the correct Max lifecycle still needs qualification. |
 | [Microsoft DLL security](https://learn.microsoft.com/en-us/windows/win32/dlls/dynamic-link-library-security) | Uncontrolled dynamic-library search can load an unintended library | Full page opened for C09. Qualify deliberate runtime/dependency paths without changing host-global search policy; no exploited defect is claimed. |
-| [Keygen security](https://keygen.sh/docs/api/security/) | Desktop cracking and offline clock-tampering limitations | Realistic threat assumptions; no Keygen service or SDK is being adopted. |
+| [Keygen security](https://keygen.sh/docs/api/security/) | Desktop cracking and offline clock-tampering limitations | Clock section reread 2026-10-04. Supports the limitation of offline local time, not a guaranteed countermeasure. No Keygen service or SDK is being adopted. |
+
+## Offline timing and device evidence
+
+These references were opened on 2026-10-04. The Cyrus design is an engineering proposal using the documented platform properties; it has not been implemented or security-tested.
+
+| Source | Supported fact | Design consequence and limit |
+| --- | --- | --- |
+| [Microsoft CryptProtectData](https://learn.microsoft.com/en-us/windows/win32/api/dpapi/nf-dpapi-cryptprotectdata) | DPAPI ordinarily ties decryption to user/computer context; roaming and machine-scope exceptions are documented | Candidate secret storage with explicit scope. No entitlement authenticity, trusted time or rollback-proof storage follows from encryption. |
+| [Microsoft GetTickCount64](https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-gettickcount64) | Reports elapsed milliseconds since system start | Useful timing evidence within its scope; not a trusted calendar across boots or powered-off periods. Clock API and sleep behavior still need qualification. |
+| [Microsoft computer product UUID](https://learn.microsoft.com/en-us/windows/win32/cimwin32prov/win32-computersystemproduct) | WMI exposes the SMBIOS system UUID; unavailable UUID may be all zeros | Possible matching signal, not a secret, entitlement or universal device proof. Handle unavailable identity and recovery. |
+| [Microsoft DHCP overview](https://learn.microsoft.com/en-us/windows-server/networking/technologies/dhcp/dhcp-top) | IP addresses can be leased and reassigned | An IP-based device lock would reject legitimate network changes; do not use IP as activation identity. |
+| [RFC 3022](https://www.rfc-editor.org/rfc/rfc3022) | NAPT maps multiple local endpoints through one external network address | One observed public IP need not identify one computer. This is an informational networking RFC, not a licensing specification. |
+
+The inability to instantly revoke authority on a disconnected device is a consequence of our proposed data flow: the old client has no new server information. A portal status change or generation counter cannot change that fact. Delayed reuse, accepted overlap and shorter offline grants are Cyrus policy alternatives, not vendor guarantees.
 
 ## Retrieval limits and excluded conclusions
 

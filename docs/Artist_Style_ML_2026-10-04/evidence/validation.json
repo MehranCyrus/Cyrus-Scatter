@@ -1,0 +1,31 @@
+{
+  "checked_at_utc": "2026-10-04T12:30:27.351344+00:00",
+  "source_commit": "e3518f8f87f3144d531f20afbb6790ce243f2cfc",
+  "scope": "Documentation and synthetic schema examples only",
+  "production_source_changed": false,
+  "runtime_checks": {
+    "max_opened": false,
+    "scene_applied": false,
+    "model_inference": false,
+    "training": false,
+    "performance_benchmark": false
+  },
+  "checks": {
+    "pydantic_plan_2_0": "passed",
+    "independent_host_shape_and_settings": "passed",
+    "normalized_contract_equivalence": "passed",
+    "example_linkage_and_hand_authored_mapping": "passed; not an implemented compiler",
+    "aggregate_candidate_count": 640,
+    "unsupported_style_key_rejected_by": [
+      "Pydantic",
+      "independent_host_shape"
+    ],
+    "local_file_links_checked": 42,
+    "markdown_files_in_new_package": 7,
+    "primary_source_ledger_rows": 24,
+    "source_files_hashed": 17,
+    "git_diff_check": "passed",
+    "new_package_trailing_whitespace": "none",
+    "non_documentation_tracked_changes": []
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "source_commit": "e3518f8f87f3144d531f20afbb6790ce243f2cfc",
+  "hash_kind": "SHA-256 of working-tree bytes; not normalized Git blobs",
+  "files": [
+    {
+      "path": "CyrusMCP/cyrus_mcp/server.py",
+      "sha256": "37b544e2a1ce9f2534c4f46ed482089d0d529e3334d1b59edc087137f2d1fa22"
+    },
+    {
+      "path": "CyrusMCP/cyrus_mcp/models.py",
+      "sha256": "f22038cfc21c1ab80a3d9c23fd3a692dd663b537b93d6981c611a6eabc7aa835"
+    },
+    {
+      "path": "CyrusMCP/cyrus_mcp/contracts.py",
+      "sha256": "bb674948f19f6037b7982e55761377bf8c69803f97608de086dcaaacfa26896f"
+    },
+    {
+      "path": "CyrusMCP/cyrus_mcp/settings.py",
+      "sha256": "87b94c09167b5a832de367dc99c8bd18d13382c5c3cf2566dbf36c09d380121a"
+    },
+    {
+      "path": "CyrusMCP/cyrus_mcp/service.py",
+      "sha256": "e7c4865ef1a726964b1e5c1bfd675bac4af3cfa6cb0b36c576ba27694b18b2f0"
+    },
+    {
+      "path": "CyrusMCP/cyrus_mcp/max_host.py",
+      "sha256": "9f41d7f7a46119e681a4f89c8a9070e50d839febe04111148663dbd11056c645"
+    },
+    {
+      "path": "CyrusMCP/cyrus_mcp/records.py",
+      "sha256": "f0e56bf9b1547f28443d3f50dbdbeebaf96af4d4e8f241a0dfcfd1df83378bab"
+    },
+    {
+      "path": "AminScatter/include/scatter.h",
+      "sha256": "4decbc6deed39b30f403b5f174ae0bc7735323f8bd6f7058f4c7d31f2a9f2739"
+    },
+    {
+      "path": "AminScatter/src/scatter.cpp",
+      "sha256": "9ff51391dd3f5c9071ded61109b77eaaa8dcc37fed3ac092a55b85b2524ef8fb"
+    },
+    {
+      "path": "AminScatter/src/cluster.inc",
+      "sha256": "e3f7eddd8133e34f91c1e50d5c4d1ac4ca2f4a6dc611728a0848c16f9f3e3680"
+    },
+    {
+      "path": "AminScatter/src/edge_border.inc",
+      "sha256": "df5f43d5614d1d44a274b9a67c70c659d24964b1ffad665e1956232581951f8c"
+    },
+    {
+      "path": "AminScatter/src/max_bridge.cpp",
+      "sha256": "baa0cab3edefe9668578897d354a28a585415a1f4b1927d6bea2e448640a9aa9"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/logical-layers.ms",
+      "sha256": "07adc80ccab59e8ad5fccf8cb956d74396662f8a84c5670d0ce3acd0c00de689"
+    },
+    {
+      "path": "AminScatter/tools/ui/planting-groups.cjs",
+      "sha256": "ea07852bca03b1f8d140715276e8734c2573ade5cf31def88be4f35248339794"
+    },
+    {
+      "path": "AminScatter/tools/ui/procedural-brush.cjs",
+      "sha256": "c2697195142454c5879f092e438231bf8096263c79be32ae239fb134e745a748"
+    },
+    {
+      "path": "CyrusMCP/README.md",
+      "sha256": "c3302dcb030036355df5fe5b8e230188e406cff2dfcc81bb18db84b5c212c515"
+    },
+    {
+      "path": "docs/Layers_First_2026-10-03/CAPABILITIES.md",
+      "sha256": "c2afab83f1f1e4ffdac6a1ac01dfd124dc166be2fc7819d7115e02b6b17f93a7"
+    }
+  ]
+}
