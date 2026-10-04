@@ -43,6 +43,7 @@ class MaxHost:
     def __init__(self):
         self.main_thread = threading.get_ident()
         self.nodes, self.controllers, self.masks = {}, {}, {}
+        self.layouts={}
         self.metre = 1.0 / float(rt.units.decodeValue("1m"))
         self.site = None
         self.blocked = False
@@ -205,7 +206,7 @@ class MaxHost:
             sid=uid("source")
             radius=max(math.hypot(p[0],p[1]) for p in v)*self.metre
             require(math.isfinite(radius) and radius > 0, "Source has no measurable footprint", "GEOMETRY_CONSTRAINT")
-            data["sources"].append({"source_id":sid,"label":str(source.name)[:80],"radius_m":radius,"height_m":(max(p[2] for p in v)-min(p[2] for p in v))*self.metre,"triangles":len(f)})
+            data["sources"].append({"source_id":sid,"label":str(source.name)[:80],"radius_m":radius,"bounding_radius_m":max(math.sqrt(sum(x*x for x in p)) for p in v)*self.metre,"height_m":(max(p[2] for p in v)-min(p[2] for p in v))*self.metre,"triangles":len(f)})
             nodes[sid]=source
         for name,sequence in (("regions",regions),("excluded",excluded)):
             for region in sequence:
@@ -216,6 +217,7 @@ class MaxHost:
                 nodes[rid]=region
         self.nodes,self.site,self.site_z=nodes,site,z
         self.controllers,self.masks={},{}
+        self.layouts={}
         self.read_only=False
         return data
 
@@ -227,6 +229,7 @@ class MaxHost:
         self.metre=1.0/float(rt.units.decodeValue("1m"))
         cid=uid("observed")
         self.nodes,self.masks={},{}
+        self.layouts={}
         self.controllers={cid:obj}
         self.read_only=True
         layers=[]
@@ -246,8 +249,53 @@ class MaxHost:
     def controller_state(self, obj):
         keys = list(rt.AminScatterLayerFields)
         def params(layer):
-            return {str(k):frozen(rt.getProperty(layer,k)) for k in keys}
-        return {"root":params(obj),"surfaceNodes":frozen(obj.surfaceNodes),"names":list(obj.layerNames),"enabled":list(obj.layerEnabled),"layers":[params(layer) for layer in obj.layerObjects],"transform":frozen(obj.transform),"modifiers":[str(rt.classOf(m)) for m in obj.modifiers],"enabled_root":bool(obj.cyrusEnabled)}
+            result={str(k):frozen(rt.getProperty(layer,k)) for k in keys}
+            result["layer_id"]=str(layer.layerID)
+            result["edit_layer_key"]=int(layer.editLayerKey)
+            if layer.paintDocument is not None:
+                stats=rt.cyrusBrushStats(layer.paintDocument)
+                result["paint_revision"]=[int(stats[0]),int(stats[3])]
+            return result
+        shared={key:frozen(rt.getProperty(obj,rt.Name(key))) for key in ("groupPolicy","groupRuleA","groupRuleB","groupRuleEnabled","groupRuleGap","groupRuleFootprints","groupRulePlanar","groupCenters","viewportMode","proxyShape","viewportInstances","viewportFaces","radiusDisplayLimit","radiusDisplayAll")}
+        return {"root":params(obj),"shared":shared,"surfaceNodes":frozen(obj.surfaceNodes),"names":list(obj.layerNames),"enabled":list(obj.layerEnabled),"visible":list(obj.layerVisible),"layers":[params(layer) for layer in obj.layerObjects],"transform":frozen(obj.transform),"modifiers":[str(rt.classOf(m)) for m in obj.modifiers],"enabled_root":bool(obj.cyrusEnabled),"edit_revision":int(rt.cyrusEditRevision()) if len(obj.modifiers) else 0}
+
+    def configuration(self,cid):
+        self.assert_main()
+        from .settings import LAYER_SETTINGS, SOURCE_SETTINGS, DISPLAY_SETTINGS
+        obj=self.controllers.get(cid)
+        require(obj is not None and rt.isValidNode(obj),"Controller is unavailable","UNKNOWN_REFERENCE")
+        def read_settings(target,registry):
+            result={}
+            for key,(kind,_,_,prop) in registry.items():
+                if not prop:continue
+                value=[float(rt.getProperty(target,rt.Name(p))) for p in prop] if kind=="range" else frozen(rt.getProperty(target,rt.Name(prop)))
+                if key.endswith("_m"):value=[v*self.metre for v in value] if isinstance(value,list) else value*self.metre
+                result[key]=value
+            return result
+        layers=[]
+        for i,leaf in enumerate(obj.layerObjects):
+            parent=obj.logicalParent(leaf) if hasattr(obj,"logicalParent") else leaf
+            settings=read_settings(parent,LAYER_SETTINGS)
+            settings.update(enabled=bool(obj.enabledLayer(i+1)) if hasattr(obj,"enabledLayer") else bool(obj.layerEnabled[i]),visible=bool(obj.visibleLayer(i+1)))
+            source_settings={key:frozen(rt.getProperty(leaf,rt.Name(spec[3]))) for key,spec in SOURCE_SETTINGS.items()}
+            assets=[]
+            for j,node in enumerate(leaf.sources):
+                sid=next((key for key,value in self.nodes.items() if key.startswith("source_") and value==node),"asset_"+digest([cid,int(rt.getHandleByAnim(node))])[:24])
+                values={key:(source_settings[key][j] if j<len(source_settings[key]) else spec[1]) for key,spec in SOURCE_SETTINGS.items()}
+                for key in values:
+                    if key.endswith("_m"):values[key]*=self.metre
+                assets.append({"source_id":sid,"label":str(node.name)[:80],"weight":float(leaf.sourceWeights[j]) if j<len(leaf.sourceWeights) else 1.0,"settings":values})
+            paint=rt.cyrusBrushStats(leaf.paintDocument) if leaf.paintDocument is not None else None
+            layers.append({"layer_id":str(leaf.layerID),"parent_id":str(getattr(leaf,"logicalParentID","")) or None,"set_name":str(getattr(leaf,"paintSetName","Base")),
+                           "name":str(obj.layerNames[i]),"count":int(parent.amount),"seed":int(parent.randomSeed),"settings":settings,"assets":assets,
+                           "base_variation":{"advanced_axes":bool(parent.advancedAxes),"legacy_uniform_scale":[float(parent.scaleMinimum),float(parent.scaleMaximum)],"legacy_yaw_degrees":[float(parent.yawMinimum),float(parent.yawMaximum)],"whole_scale":[float(parent.wholeScaleMin),float(parent.wholeScaleMax)],"rotation_z_degrees":[float(parent.rotZMin),float(parent.rotZMax)]},
+                           "allocation":{"parent_candidate_budget":int(parent.amount),"count_mode_candidates":int(obj.populationAllocation(leaf)[0]) if hasattr(obj,"populationAllocation") else int(leaf.amount),"population_mode":int(parent.populationMode),"plants_per_m2":float(parent.plantsPerM2),"set_weight":float(getattr(leaf,"paintSetWeight",1)),"set_enabled":bool(getattr(leaf,"paintSetEnabled",True)),"set_visible":bool(getattr(leaf,"paintSetVisible",True))},
+                           "paint":{"enabled":bool(leaf.paintEnabled),"document_present":paint is not None,"stroke_count":int(paint[1]) if paint else 0,"revision":int(paint[0]) if paint else None}})
+        display=read_settings(obj,DISPLAY_SETTINGS)
+        display.update(mode="centres" if obj.groupCenters else {1:"point_cloud",2:"proxy",3:"mesh"}[int(obj.viewportMode)],proxy_shape={1:"box",2:"sphere",3:"pyramid"}[int(obj.proxyShape)],update_mode="manual" if obj.updateMode==1 else "real_time")
+        return {"configuration_schema":"cyrus.configuration/1.0","controller_id":cid,"layers":layers,"display":display,"group_policy":int(obj.groupPolicy),
+                "pair_rules":[{"a":str(obj.groupRuleA[i]),"b":str(obj.groupRuleB[i]),"enabled":bool(obj.groupRuleEnabled[i]),"gap_m":float(obj.groupRuleGap[i])*self.metre,"footprints":bool(obj.groupRuleFootprints[i]),"planar":bool(obj.groupRulePlanar[i])} for i in range(len(obj.groupRuleA))],
+                "freshness":"current parameter values only; no generation or geometry certification"}
 
     def fingerprint(self):
         self.assert_main()
@@ -274,7 +322,7 @@ class MaxHost:
         require(not self.busy(), "Host is busy", "HOST_BUSY")
         require(not rt.isSceneRedrawDisabled(),"Max viewport redraw is suspended; restore it locally before generating","HOST_BUSY")
         before=self.fingerprint()
-        old_controllers,old_masks=dict(self.controllers),dict(self.masks)
+        old_controllers,old_masks,old_layouts=dict(self.controllers),dict(self.masks),dict(self.layouts)
         created=[]
         selected=list(rt.selection)
         cid=plan.get("controller_id",uid("controller"))
@@ -292,14 +340,28 @@ class MaxHost:
                     require(len(obj.modifiers) == 0, "Controllers with modifiers cannot be refined", "UNSUPPORTED_CAPABILITY")
                 self.checkpoint("controller")
                 obj.setLayerTransfer(True)
+                # Select semantics deliberately; never inherit a newer UI default.
+                obj.groupPolicy=1 if plan["schema_version"]=="1.0" else 2
+                obj.cyrusEnabled=True
+                for field in ("groupRuleA","groupRuleB","groupRuleEnabled","groupRuleGap","groupRuleFootprints","groupRulePlanar"):
+                    rt.setProperty(obj,rt.Name(field),rt.Array())
                 obj.updateMode=1
                 obj.surfaceNodes=rt.Array(self.site)
                 obj.viewportMode=2
                 obj.proxyShape=1
                 obj.viewportInstances=2000
                 obj.previewBudget=20000
+                if plan["schema_version"]=="2.0":
+                    from .settings import LAYER_SETTINGS, SOURCE_SETTINGS, DISPLAY_SETTINGS
+                    for key,(_,_,_,prop) in DISPLAY_SETTINGS.items():
+                        if prop:rt.setProperty(obj,rt.Name(prop),plan["display"][key])
+                    mode=plan["display"]["mode"]
+                    obj.viewportMode={"point_cloud":1,"proxy":2,"mesh":3,"centres":1}[mode]
+                    obj.groupCenters=mode=="centres"
+                    obj.proxyShape={"box":1,"sphere":2,"pyramid":3}[plan["display"]["proxy_shape"]]
                 layers,new_masks,metrics=[],[],[]
                 transform_rows=[]
+                layout_instances=[]
                 for spec,mask in zip(plan["layers"],compiled):
                     shape=rt.splineShape(name="Cyrus region "+spec["name"])
                     created.append(shape)
@@ -313,6 +375,9 @@ class MaxHost:
                     new_masks.append(shape)
                     layer=rt.createInstance(rt.AminScatterObject)
                     layer.setLayerTransfer(True)
+                    layer.layerID=rt.CyrusNewLayerID()
+                    layer.editLayerKey=len(layers)+1
+                    layer.paintIdentity=plan["schema_version"]!="1.0"
                     sources=[self.nodes[s["source_id"]] for s in spec["sources"]]
                     layer.sources=rt.Array(*sources)
                     layer.amount=spec["count"]
@@ -331,30 +396,66 @@ class MaxHost:
                     layer.sourceColors=rt.Array(*(rt.color(65+45*i,175,110) for i in range(len(sources))))
                     layer.areaNodes=rt.Array(shape)
                     layer.areaModes=rt.Array(1)
+                    for polygon in mask.get("exclusions_m",[]):
+                        exclusion=rt.splineShape(name="Cyrus exclusion "+spec["name"])
+                        created.append(exclusion);new_masks.append(exclusion)
+                        rt.addNewSpline(exclusion)
+                        for x,y in polygon:rt.addKnot(exclusion,1,rt.Name("corner"),rt.Name("line"),rt.Point3(x/self.metre,y/self.metre,self.site_z/self.metre))
+                        rt.close(exclusion,1);rt.updateShape(exclusion)
+                        exclusion.renderable=False;exclusion.isHidden=True
+                        layer.areaNodes=rt.Array(*list(layer.areaNodes),exclusion)
+                        layer.areaModes=rt.Array(*list(layer.areaModes),2)
+                    if plan["schema_version"]=="2.0":
+                        layer.advancedAxes=True
+                        layer.wholeScaleMin,layer.wholeScaleMax=spec["scale"]
+                        layer.projectMove=True
+                        for key,(kind,_,_,prop) in LAYER_SETTINGS.items():
+                            if not prop:continue
+                            value=spec["settings"][key]
+                            if kind=="range":
+                                for target,item in zip(prop,value):rt.setProperty(layer,rt.Name(target),item/self.metre if key.endswith("_m") else item)
+                            else:rt.setProperty(layer,rt.Name(prop),value/self.metre if key.endswith("_m") else value)
+                        for key,(_,_,_,prop) in SOURCE_SETTINGS.items():
+                            values=[s["settings"][key]/self.metre if key.endswith("_m") else s["settings"][key] for s in spec["sources"]]
+                            rt.setProperty(layer,rt.Name(prop),rt.Array(*values))
                     layer.surfaceNodes=rt.Array(self.site)
                     layer.updateMode=1
                     layer.setLayerTransfer(False)
-                    obj.syncLayerSurface(layer)
-                    rows=layer.placements(layer.validSources())
-                    require(spec["underfill"] == "allow" or len(rows) == spec["count"], "Layer underfilled and policy is reject", "GEOMETRY_CONSTRAINT")
-                    for row in rows:
-                        position=point(row[0].row4)
-                        require(contains(mask["original_m"],[position[0]*self.metre,position[1]*self.metre],mask["footprint_m"]+mask["clearance_m"]), "Final source footprint crosses its approved region", "GEOMETRY_CONSTRAINT")
-                        transform_rows.append([max_to_column_matrix([point(row[0][i]) for i in range(4)],self.metre),int(row[1])])
                     layers.append(layer)
-                    metrics.append({"name":spec["name"],"requested":spec["count"],"emitted":len(rows),"underfilled":len(rows)<spec["count"]})
                 self.checkpoint("layers")
                 obj.layerObjects=rt.Array(*layers)
                 obj.layerNames=rt.Array(*(spec["name"] for spec in plan["layers"]))
-                obj.layerEnabled=rt.Array(*(True for _ in layers))
+                obj.layerEnabled=rt.Array(*(spec.get("settings",{}).get("enabled",True) for spec in plan["layers"]))
+                obj.layerVisible=rt.Array(*(spec.get("settings",{}).get("visible",True) for spec in plan["layers"]))
+                obj.nextEditLayerKey=len(layers)+1
                 obj.activeLayer=1
                 obj.setLayerTransfer(False)
+                obj.syncLayerIdentity()
+                for rule in plan.get("pair_rules",[]):
+                    obj.setGroupPair(layers[rule["a"]],layers[rule["b"]],True,rule["gap_m"]/self.metre,rule["footprints"],rule["planar"])
+                # Validate and report the same attached, final population that
+                # viewport/output consume, after the complete graph exists.
                 obj.refreshAll()
-                for layer,metric in zip(layers,metrics):
+                for layer,spec,mask in zip(layers,plan["layers"],compiled):
+                    rows=layer.placements(layer.validSources())
+                    expected=spec["count"] if spec.get("settings",{}).get("enabled",True) else 0
+                    require(spec["underfill"] == "allow" or len(rows) == expected, "Layer underfilled and policy is reject", "GEOMETRY_CONSTRAINT")
+                    for ordinal,row in enumerate(rows):
+                        position=point(row[0].row4)
+                        require(contains(mask["original_m"],[position[0]*self.metre,position[1]*self.metre],mask["footprint_m"]+mask["clearance_m"]), "Final source footprint crosses its approved region", "GEOMETRY_CONSTRAINT")
+                        require(not any(contains(poly,[position[0]*self.metre,position[1]*self.metre]) for poly in mask.get("validation_exclusions_m",[])),"Final source footprint intersects an excluded region","GEOMETRY_CONSTRAINT")
+                        matrix=max_to_column_matrix([point(row[0][i]) for i in range(4)],self.metre)
+                        transform_rows.append([matrix,int(row[1])])
+                        candidate=str(row[2]) if len(row)>=3 else "ordinal_"+str(ordinal)
+                        layout_instances.append({"instance_id":str(layer.layerID)+":"+candidate,"layer_id":str(layer.layerID),"set_id":str(layer.layerID),"source_id":spec["sources"][int(row[1])-1]["source_id"],"source_index":int(row[1]),"transform":matrix})
+                    metric={"name":spec["name"],"layer_id":str(layer.layerID),"requested":spec["count"],"effective_requested":expected,"emitted":len(rows),"underfilled":len(rows)<expected}
                     state=layer.cacheSnapshot()
                     require(not str(state[3]), "Preview generation failed: "+str(state[3]), "GENERATION_FAILED")
-                    require(int(state[4]) == metric["emitted"], "Preview count differs from validated generation", "GENERATION_FAILED")
-                    metric["displayed_instances"]=int(state[1])
+                    require(expected==0 or int(state[4]) == metric["emitted"], "Preview count differs from validated generation", "GENERATION_FAILED")
+                    mode=plan.get("display",{}).get("mode","proxy")
+                    metric["displayed_samples"]=int(state[1]) if expected and spec.get("settings",{}).get("visible",True) else 0
+                    metric["displayed_instances"]=metric["displayed_samples"] if mode!="point_cloud" else None
+                    metrics.append(metric)
                 self.checkpoint("preview")
                 for old in self.masks.get(cid,[]):
                     require(rt.isValidNode(old), "Owned mask changed", "STALE_CONTEXT")
@@ -364,7 +465,10 @@ class MaxHost:
                 rt.setUserProp(obj,"CyrusAutomationGeneration",gid)
                 self.controllers[cid]=obj
                 self.masks[cid]=new_masks
-                result={"controller_id":cid,"generation_id":gid,"layers":metrics,"emitted":sum(m["emitted"] for m in metrics),"requested":sum(m["requested"] for m in metrics),"transform_digest":digest(transform_rows),"display_mode":"proxy_boxes","undo_label":undo_label,"constraint_check":"all emitted footprint circles inside approved regions"}
+                if plan["schema_version"]=="2.0":obj.updateMode=1 if plan["display"]["update_mode"]=="manual" else 2
+                result={"controller_id":cid,"generation_id":gid,"layers":metrics,"emitted":sum(m["emitted"] for m in metrics),"requested":sum(m["requested"] for m in metrics),"transform_digest":digest(transform_rows),"display_mode":"proxy_boxes","group_policy":int(obj.groupPolicy),"ui_version":str(obj.uiVersion()),"plan_schema":plan["schema_version"],"undo_label":undo_label,"constraint_check":"all emitted footprint circles inside approved regions"}
+                if plan["schema_version"]=="2.0":result["display_mode"]=plan["display"]["mode"]
+                self.layouts[cid]={"layout_schema":"cyrus.layout/1.0","controller_id":cid,"generation_id":gid,"transform_digest":result["transform_digest"],"identity_scope":"this generation; refinement creates new population IDs","instances":layout_instances}
                 self.checkpoint("publish")
             except Exception as exc:
                 failure=exc
@@ -377,7 +481,7 @@ class MaxHost:
             names=list(rt.theHold.GetUndoNames())
             require(names and str(names[0]) == undo_label, "Failed transaction is not at the top of Undo; recovery was stopped", "ROLLBACK_FAILED")
             pymxs.run_undo()
-            self.controllers,self.masks=old_controllers,old_masks
+            self.controllers,self.masks,self.layouts=old_controllers,old_masks,old_layouts
             for old in self.controllers.values():
                 if rt.isValidNode(old):
                     old.setLayerTransfer(False)

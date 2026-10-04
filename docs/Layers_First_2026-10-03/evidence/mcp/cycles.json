@@ -1,0 +1,38 @@
+[
+  {
+    "cycle": 1,
+    "fixture": 0,
+    "layers": 1,
+    "requested": 200,
+    "emitted": 200,
+    "duration_ms": 341.255999985151,
+    "transform_digest": "fa4d8336ee31f39868e7dff385d74a540044b6357c9ccc7b09f1bddcaadacb46",
+    "pure_inspection": true,
+    "idempotent_retry": true,
+    "undo_nodes_restored": true
+  },
+  {
+    "cycle": 2,
+    "fixture": 1,
+    "layers": 2,
+    "requested": 400,
+    "emitted": 400,
+    "duration_ms": 508.44030000735074,
+    "transform_digest": "9c408ef3d85eec2212661feeb9a89b5719b0c000176196e97f84e3e324b787c3",
+    "pure_inspection": true,
+    "idempotent_retry": true,
+    "undo_nodes_restored": true
+  },
+  {
+    "cycle": 3,
+    "fixture": 2,
+    "layers": 3,
+    "requested": 600,
+    "emitted": 600,
+    "duration_ms": 694.3116000038572,
+    "transform_digest": "c976a42981bf30a4db2eaf0099c466bc3dcc55962b97ffd06ad1faff0331b43e",
+    "pure_inspection": true,
+    "idempotent_retry": true,
+    "undo_nodes_restored": true
+  }
+]

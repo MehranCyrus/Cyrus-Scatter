@@ -6,6 +6,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import sys
+import tomllib
 from packaging.utils import parse_wheel_filename
 
 ROOT=Path(__file__).resolve().parents[2]
@@ -31,7 +32,8 @@ def main():
     (output/"requirements-windows-py311.lock").write_text("# Qualified offline artifacts: Windows x64 / CPython 3.11.\n"+"\n".join(lock)+"\n")
     files=[{"path":p.relative_to(output).as_posix(),"sha256":hashlib.sha256(p.read_bytes()).hexdigest(),"bytes":p.stat().st_size} for p in sorted(output.rglob("*")) if p.is_file()]
     fingerprint=hashlib.sha256(json.dumps(files,sort_keys=True).encode()).hexdigest()[:12]
-    manifest={"version":"1.0.0","build_id":"1.0.0-"+fingerprint,"qualified_host":"3ds Max 2027.1","external_runtime":"CPython 3.11 x64","files":files}
+    version=tomllib.loads((ROOT/"CyrusMCP/pyproject.toml").read_text())["project"]["version"]
+    manifest={"version":version,"build_id":version+"-"+fingerprint,"qualified_host":"3ds Max 2027.1","external_runtime":"CPython 3.11 x64","files":files}
     (output/"package-manifest.json").write_text(json.dumps(manifest,indent=2))
     print(json.dumps({"folder":str(output),"build_id":manifest["build_id"],"files":len(files),"bytes":sum(v["bytes"] for v in files)},indent=2))
 

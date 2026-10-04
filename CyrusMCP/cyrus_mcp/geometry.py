@@ -78,6 +78,22 @@ def overlaps(a, b):
     return True
 
 
+def outset(poly, margin):
+    """Conservative convex miter expansion, containing the circular offset."""
+    require(math.isfinite(margin) and margin>=0,"Invalid exclusion margin","GEOMETRY_CONSTRAINT")
+    lines=[]
+    for a,b in zip(poly,poly[1:]+poly[:1]):
+        length=math.dist(a,b)
+        normal=(-(b[1]-a[1])/length,(b[0]-a[0])/length)
+        lines.append((normal,normal[0]*a[0]+normal[1]*a[1]-margin))
+    result=[]
+    for (a,da),(b,db) in zip(lines[-1:]+lines[:-1],lines):
+        determinant=a[0]*b[1]-a[1]*b[0]
+        require(abs(determinant)>1e-10,"Exclusion contains a redundant straight corner","GEOMETRY_CONSTRAINT")
+        result.append([(da*b[1]-a[1]*db)/determinant,(a[0]*db-da*b[0])/determinant])
+    return convex(result)
+
+
 def max_to_column_matrix(rows, metres_per_unit):
     """Max row-vector Matrix3 -> column-vector, right handed Z up 4x4."""
     return [[rows[j][i] for j in range(3)] + [rows[3][i]*metres_per_unit] for i in range(3)] + [[0,0,0,1]]

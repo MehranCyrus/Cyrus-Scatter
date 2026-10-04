@@ -1,0 +1,17 @@
+Rollout:layersUI width=246 HWND=2039740P rect=(Box2 1661 447 246 624)
+  parent1: hwnd=2171692P rect=(Box2 1660 427 248 645)
+  parent2: hwnd=1660736P rect=(Box2 1660 404 258 506)
+  parent3: hwnd=3626330P rect=(Box2 1658 195 262 717)
+  parent4: hwnd=2053464P rect=(Box2 1658 195 262 717)
+subrollout width=246 pos=[0,40]
+Rollout:layerPanel_1 width=234 HWND=3689838P rect=(Box2 1662 507 234 546)
+  parent1: hwnd=1449382P rect=(Box2 1661 487 236 567)
+  parent2: hwnd=6379022P rect=(Box2 1661 487 246 578)
+  parent3: hwnd=4459240P rect=(Box2 1661 487 246 578)
+  parent4: hwnd=3686078P rect=(Box2 1661 487 246 578)
+sections width=234
+Rollout:setsUI_1 width=232 HWND=3561458P rect=(Box2 1662 705 232 321)
+  parent1: hwnd=66730428P rect=(Box2 1662 705 234 21)
+  parent2: hwnd=3493228P rect=(Box2 1662 705 234 342)
+  parent3: hwnd=4740676P rect=(Box2 1662 705 234 342)
+  parent4: hwnd=4019788P rect=(Box2 1662 705 234 342)

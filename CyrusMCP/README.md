@@ -1,6 +1,6 @@
-# Cyrus Automation and MCP 1.0
+# Cyrus Automation and MCP 1.1
 
-Local automation for **Cyrus Scatter and 3ds Max 2027.1**, with a separate MCP server for Codex or another stdio MCP client. The initial qualification used Scatter 0.64; generation, recovery, retained diagnostics, capture and all seven stdio tools were regression-tested against the Scatter 1.0 foundation. See the [v1 qualification](../docs/Cyrus_Scatter_V1_2026-10-03/REPORT.md). The Max component uses its bundled Python; the external server uses an isolated **64-bit Python 3.11** environment and the official MCP Python SDK 2.3.0.
+Local automation for **Cyrus Scatter 1.2 and 3ds Max 2027.1**, with a separate MCP server for Codex or another stdio MCP client. MCP 1.1 adds typed plan 2.0 settings, exclusions, shared spacing, preview controls, effective configuration and actual-result export. See the [current capability map](../docs/Layers_First_2026-10-03/CAPABILITIES.md) and [qualification report](../docs/Layers_First_2026-10-03/REPORT.md). The Max component uses its bundled Python; the external server uses an isolated **64-bit Python 3.11** environment and the official MCP Python SDK 2.3.0.
 
 ## Install the built package
 
@@ -19,7 +19,7 @@ The wheel package is offline after download. Python 3.11 and the Cyrus plugin mu
 1. In **Max 2027**, choose **Scripting → Run Script** and run the printed `host/Start_Cyrus_Automation.ms`. The normal Cyrus plugin must already be loaded.
 2. Select your site, then click **Use selected site**. Assign one to three source meshes and one to three closed, straight, convex planting splines. Optional protected splines remain excluded. The first version supports static horizontal convex sites.
 3. Enable viewport sharing only if you want images available to the assistant. A capture includes other visible objects in that viewport; the MCP client controls whether it forwards images to its model provider.
-4. Click **Connect selected scope**. In Codex, reconnect the MCP server or start a new conversation after registration so the seven tools are available.
+4. Click **Connect selected scope**. In Codex, reconnect the MCP server or start a new conversation after registration so the nine tools are available.
 5. Ask for a proposal. Review its assets, regions, counts and variation in the Max panel. Click **Approve displayed proposal**. The assistant can then apply that exact proposal once and inspect its result.
 6. One additional candidate may replace the owned layers after a new local approval. **Undo last result / reject refinement** restores the previous result when it is still the next Max Undo operation. **Disconnect scope and continue manually** leaves the procedural layout editable in Cyrus.
 
@@ -42,20 +42,22 @@ MCP clients do not need another OpenAI API key for this connection. The client s
 | `scatter_get_status` | Recorded operation or last published controller state |
 | `scatter_get_diagnostics` | Cached preview counters, retained owner statistics and shared process totals; no regeneration or FPS estimate |
 | `scene_capture_viewport` | Approved viewport image and matching generation/camera metadata |
+| `scatter_get_configuration` | Current effective parent/set parameters and assets, without rebuilding |
+| `scatter_export_record` | Matching current generation's context, normalized plan, receipt and actual transforms; not training consent |
 
-Resources: `cyrus://plan-schema` and `cyrus://workflow`. The exposed plan is schema **1.0**; the older research JSON examples are illustrative 0.1 documents and are not executable requests.
+Resources: `cyrus://plan-schema` (legacy **1.0**), `cyrus://plan-schema/2.0`, `cyrus://capabilities` and `cyrus://workflow`. The older research 0.1 JSON examples are not executable requests. Read capabilities before proposing settings; no arbitrary Max property names are accepted.
 
 ## Supported boundary
 
 Up to three source meshes, three planting regions/layers, 2,000 aggregate requested instances, two successful candidate applications and two captures per enrollment. Plans are capped at 32 KiB; context at 64 KiB; viewport images at a 1,536-pixel long edge and 2 MiB of base64 image data. There are 24 tool calls per scope; outcome queries and exact idempotent retries remain available after the budget to avoid losing recovery information.
 
-Source weights, seeded count, uniform scale, yaw and footprint clearance are supported. The API derives persistent inset masks and checks every emitted footprint. It does not enforce inter-plant collision. Protected regions must be disjoint from the authored convex planting regions; author several separate planting splines around protected space. Counts can underfill under constraints; each layer explicitly chooses `allow` or `reject`.
+Both schemas support source weights, seeded count, uniform scale, yaw and footprint clearance. Schema 1.0 preserves legacy policy and requires protected regions to be disjoint. Schema 2.0 supports overlapping protected/excluded holes, XYZ scale, XY tilt/projected movement, source metadata, collision, pair spacing/priority, cleanup, visibility/enable and display/update settings. The adapter derives conservative masks and validates the final attached population. Counts can underfill; each layer explicitly chooses `allow` or `reject`.
 
 Design inputs use baked Editable Mesh/Poly objects or supported simple primitives, with no modifier stack. The site and sources together are limited to 10,000 evaluated triangles and 12,000 vertices. Keyed geometry, keyed parent transforms, procedural/constraint controllers and renderer proxies are rejected. These restrictions apply to design enrollment; read-only inspection can report cached statistics from existing Cyrus layouts with other inputs. It does not certify those assets for automated generation.
 
-Existing artist objects are read-only. The API creates one controller and at most three derived masks, then may replace only its own layers/masks. Any relevant external edit invalidates enrollment. Save/reopen preserves the ordinary procedural result but requires fresh enrollment; the assistant does not silently reclaim old objects. The default preview is proxy boxes; the ordinary Cyrus UI remains available for manual display choices.
+Existing artist objects are read-only. The API creates one controller and bounded derived include/exclude masks, then may replace only its own layers/masks. Any relevant external edit invalidates enrollment. Save/reopen preserves the ordinary procedural result but requires fresh enrollment; the assistant does not silently reclaim old objects. Default preview is proxy boxes; schema 2.0 also selects Point Cloud, Mesh or centres with explicit budgets.
 
-Complex/sloped terrain automation, Brush automation, CS Edit, renderer execution, arbitrary scripting, arbitrary files/URLs, custom ML and automatic learning are outside this version. These remain separate roadmap stages. Max 2026 runtime support is not claimed by the Max 2027 qualification.
+Complex/sloped terrain automation, Brush-set/history mutation, density-map enrollment, Relax, CS Edit, renderer execution, arbitrary scripting/files/URLs and ML remain outside this version. Versioned execution/correction contracts prepare for a future collector, but do not imply training consent, automatic labels or a learned system. Current-generation exports are in-memory, bounded to 1.5 MiB and invalidated by scope/generation changes. Max 2026 runtime support is not claimed.
 
 ## Recovery and connection
 
@@ -81,4 +83,4 @@ build/mcp-venv/Scripts/python.exe tools/mcp/scenarios.py build/mcp-qualification
 build/mcp-venv/Scripts/python.exe tools/mcp/stdio_acceptance.py build/mcp-qualification/my-test
 ```
 
-The launcher creates a separate visible Max session and redirects its configuration, plugins and generated artifacts into `build/`. `tools/mcp` includes privileged **test-only** controls; they are excluded from the product package and are never exposed as MCP tools. Run host campaigns serially against one fixture. Current results and remaining qualification boundaries are documented in `docs/MCP_Implementation_2026-10-03/REPORT.md` in the source repository.
+The launcher creates a separate visible Max session and redirects its configuration, plugins and generated artifacts into `build/`. `tools/mcp` includes privileged **test-only** controls; they are excluded from the product package and are never exposed as MCP tools. Run host campaigns serially against one fixture. Add `layers_v2_acceptance.py`, `boundary_acceptance.py`, `retained_acceptance.py`, `inspection_acceptance.py` and `budget_acceptance.py` for current qualification. Results and limits are in `docs/Layers_First_2026-10-03/REPORT.md`; the earlier MCP report preserves the 1.0 baseline.

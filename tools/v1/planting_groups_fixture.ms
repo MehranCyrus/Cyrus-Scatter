@@ -20,7 +20,7 @@ global CyrusGroupsNode,CyrusGroupsSource,CyrusGroupsSurface
     CyrusGroupsSource=cone name:"CYRUS_GROUPS_ASSET" radius1:1 radius2:0 height:5 sides:8 heightsegs:1 capsegs:1 pos:[130,0,0]
     CyrusGroupsNode=makeSetup CyrusGroupsSurface CyrusGroupsSource #("Grass","Red flowers","Blue flowers","Yellow flowers") #(1000,2000,2000,2000)
     local root=CyrusGroupsNode.baseObject,groups=root.layerObjects
-    require (root.groupPolicy==2 and root.uiVersion()=="1.1.0") "New setup did not use shared policy"
+    require (root.groupPolicy==2 and findItem #("1.1.0","1.2.0") (root.uiVersion())>0) "New setup did not use shared policy"
     for i=2 to 4 do (
         root.setGroupCoverage groups[i] true
         cyrusBrushSettings groups[i].paintDocument 45 1 0 false 1
@@ -122,8 +122,14 @@ global CyrusGroupsNode,CyrusGroupsSource,CyrusGroupsSurface
     append results #("copy_remove_undo",true)
     root.viewportInstances=100000;root.selectLayer 3;root.refreshAll()
     select CyrusGroupsNode;max modify mode;root.bindNativeUI()
-    local editor=root.brushUI.hwnd
-    for i=1 to 20 do (root.selectLayer (1+mod i 4);root.bindNativeUI();require (root.brushUI.hwnd==editor) "Group selection remounted Brush")
+    if root.uiVersion()=="1.1.0" then (
+        local editor=root.brushUI.hwnd
+        for i=1 to 20 do (root.selectLayer (1+mod i 4);root.bindNativeUI();require (root.brushUI.hwnd==editor) "Group selection remounted Brush")
+    ) else (
+        for p in root.layerPanels do (p.open=true;p.mount())
+        local editors=for r in root.brushEditors() collect r.hwnd
+        for i=1 to 20 do (root.selectLayer (1+mod i 4);root.bindNativeUI();require ((for r in root.brushEditors() collect r.hwnd) as string==editors as string) "Selection remounted layer editors")
+    )
     append results #("native_editor_reused",true)
     CSPWriteText (BLDir+"planting-groups-acceptance.json") (CSPObject results)
 )

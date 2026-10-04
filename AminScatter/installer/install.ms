@@ -27,7 +27,7 @@
             for key in #("AminScatter2026","AminScatter2027") do delINISetting pluginIni "Directories" key
             deleteFile (pathConfig.appendPath (getDir #userStartupScripts) "AminScatterStartup.ms")
             for name in #("AminScatter.mcr","Cyrus-AminScatterOpen.mcr") do deleteFile (pathConfig.appendPath (getDir #userMacros) name)
-            messageBox "Cyrus Scatter __VERSION__ is installed. Restart 3ds Max __MAX_YEAR__ to load the matching native engine.\n\nCreate > Geometry > Cyrus > Cyrus Scatter, then use Modify.\nPlant groups share one receiving surface and keep independent assets, coverage and statistics.\nSelect a group and open Coverage / Brush to paint. Group spacing controls pair gaps and priority.\n\nTest with a saved copy of your scene first." title:"Cyrus Scatter __VERSION__"
+            messageBox "Cyrus Scatter __VERSION__ is installed. Restart 3ds Max __MAX_YEAR__ to load the matching native engine.\n\nCreate > Geometry > Cyrus > Cyrus Scatter, then use Modify.\nChoose a receiving surface in Surface Scatter. Use Layer Manager to add Grass, Flowers and other layers. Open each named layer below it.\nInside a layer, Paint sets hold separate assets and Brush histories. Population, area, transforms and spacing apply to the whole layer.\n\nTest with a saved copy of your scene first." title:"Cyrus Scatter __VERSION__"
         ) catch (messageBox (getCurrentException()) title:"Cyrus Scatter installation")
     )
 )

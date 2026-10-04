@@ -1,0 +1,30 @@
+Internal ctest changing into directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/cyrus-v1/max2026
+Test project F:/Cursor/_Cyrus_Apps/CyrusScatter/build/cyrus-v1/max2026
+      Start  1: scatter_group_spacing
+ 1/12 Test  #1: scatter_group_spacing ............   Passed    0.13 sec
+      Start  2: scatter_brush
+ 2/12 Test  #2: scatter_brush ....................   Passed    0.10 sec
+      Start  3: scatter_brush_pick_fixture
+ 3/12 Test  #3: scatter_brush_pick_fixture .......   Passed    0.03 sec
+      Start  4: scatter_preview_sampling
+ 4/12 Test  #4: scatter_preview_sampling .........   Passed    0.26 sec
+      Start  5: scatter_threading
+ 5/12 Test  #5: scatter_threading ................   Passed    0.15 sec
+      Start  6: scatter_prepared_bands
+ 6/12 Test  #6: scatter_prepared_bands ...........   Passed    0.09 sec
+      Start  7: scatter_core
+ 7/12 Test  #7: scatter_core .....................   Passed    0.21 sec
+      Start  8: scatter_spacing
+ 8/12 Test  #8: scatter_spacing ..................   Passed    4.80 sec
+      Start  9: scatter_weights
+ 9/12 Test  #9: scatter_weights ..................   Passed    0.36 sec
+      Start 10: scatter_orientation
+10/12 Test #10: scatter_orientation ..............   Passed    0.04 sec
+      Start 11: scatter_edge_border
+11/12 Test #11: scatter_edge_border ..............   Passed    0.04 sec
+      Start 12: scatter_boundary_falloff
+12/12 Test #12: scatter_boundary_falloff .........   Passed    0.08 sec
+
+100% tests passed, 0 tests failed out of 12
+
+Total Test time (real) =   6.30 sec

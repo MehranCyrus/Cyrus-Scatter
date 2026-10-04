@@ -1,0 +1,99 @@
+{
+  "initial": {
+    "nodes": 8,
+    "trace": "all",
+    "inspectorHidden": true,
+    "zoom": "108%",
+    "overflow": false
+  },
+  "short": {
+    "zoom": "93%",
+    "overflow": false
+  },
+  "selection": {
+    "title": "Logical layers",
+    "inspectorVisible": true,
+    "trace": "direct"
+  },
+  "options": 5,
+  "connections": 13,
+  "lenses": [
+    {
+      "id": "overview",
+      "nodes": 8,
+      "paths": 8
+    },
+    {
+      "id": "layers",
+      "nodes": 20,
+      "paths": 27
+    },
+    {
+      "id": "generation",
+      "nodes": 16,
+      "paths": 16
+    },
+    {
+      "id": "viewport",
+      "nodes": 16,
+      "paths": 16
+    },
+    {
+      "id": "automation",
+      "nodes": 16,
+      "paths": 15
+    },
+    {
+      "id": "code",
+      "nodes": 16,
+      "paths": 15
+    }
+  ],
+  "features": 52,
+  "nativeControls": 194,
+  "controlSearch": 2,
+  "empty": "No controls match these filters. Clear your search or choose another scope.",
+  "catalogEscClosed": true,
+  "search": 29,
+  "searchSelected": "Coverage / Brush",
+  "stories": [
+    {
+      "id": "paint-flowers",
+      "steps": 6
+    },
+    {
+      "id": "underfill",
+      "steps": 6
+    },
+    {
+      "id": "hide-disable",
+      "steps": 5
+    },
+    {
+      "id": "navigate",
+      "steps": 5
+    },
+    {
+      "id": "manual-edit",
+      "steps": 5
+    },
+    {
+      "id": "ai",
+      "steps": 6
+    },
+    {
+      "id": "solve-order",
+      "steps": 10
+    }
+  ],
+  "zoom": "111%",
+  "fit": "93%",
+  "keyboardPan": true,
+  "mobile": {
+    "overflow": false,
+    "zoom": "80%",
+    "details": "Coverage / Brush"
+  },
+  "errors": [],
+  "externalRequests": []
+}

@@ -90,8 +90,9 @@ def validate_shape(plan):
     except (ValueError, TypeError, RecursionError) as exc:
         raise Fault("INVALID_PLAN", "Plan must contain finite JSON data") from exc
     require(len(encoded.encode()) <= 32768, "Plan exceeds 32 KiB", "BUDGET_EXCEEDED")
-    fields(plan, ("schema_version", "context_id", "name", "layers"), ("controller_id", "generation_id", "clearance_m"))
-    require(plan["schema_version"] == "1.0", "Unsupported plan schema")
+    require(type(plan) is dict and plan.get("schema_version") in ("1.0","2.0"), "Unsupported plan schema")
+    v2=plan["schema_version"]=="2.0"
+    fields(plan, ("schema_version", "context_id", "name", "layers"), ("controller_id", "generation_id", "clearance_m")+(("display","pair_rules") if v2 else ()))
     identifier(plan["context_id"])
     label(plan["name"])
     require(type(plan["layers"]) is list and 1 <= len(plan["layers"]) <= 3, "Choose one to three layers")
@@ -103,7 +104,7 @@ def validate_shape(plan):
     total = 0
     names = set()
     for layer in plan["layers"]:
-        fields(layer, ("name", "region_id", "count", "seed", "sources", "scale", "yaw_degrees", "underfill"))
+        fields(layer, ("name", "region_id", "count", "seed", "sources", "scale", "yaw_degrees", "underfill"), ("settings","exclude_region_ids") if v2 else ())
         label(layer["name"])
         require(layer["name"] not in names, "Layer names must be distinct")
         names.add(layer["name"])
@@ -116,11 +117,30 @@ def validate_shape(plan):
         require(type(layer["sources"]) is list and 1 <= len(layer["sources"]) <= 3, "Choose one to three sources")
         ids, weight = set(), 0
         for source in layer["sources"]:
-            fields(source, ("source_id", "weight"))
+            fields(source, ("source_id", "weight"), ("settings",) if v2 else ())
             identifier(source["source_id"])
             require(source["source_id"] not in ids, "Duplicate source")
             ids.add(source["source_id"])
             weight += number(source["weight"], 0, 1)
         require(weight > 0, "At least one source weight must be positive")
+        if v2:
+            ids=layer.get("exclude_region_ids",[])
+            require(type(ids) is list and len(ids)<=6,"At most six enrolled exclusions")
+            for value in ids:identifier(value)
+            require(len(set(ids))==len(ids),"Duplicate exclusion")
+    if v2:
+        from .settings import normalize_v2
+        normalize_v2(plan)
+        rules=plan.get("pair_rules",[])
+        require(type(rules) is list and len(rules)<=3,"At most three layer pair rules")
+        pairs=set()
+        for rule in rules:
+            fields(rule,("a","b","gap_m","footprints","planar"))
+            number(rule["a"],0,len(plan["layers"])-1,True);number(rule["b"],0,len(plan["layers"])-1,True)
+            require(rule["a"]!=rule["b"],"Pair must refer to different layers")
+            key=tuple(sorted((rule["a"],rule["b"])))
+            require(key not in pairs,"Duplicate pair rule");pairs.add(key)
+            number(rule["gap_m"],0,100)
+            require(type(rule["footprints"]) is bool and type(rule["planar"]) is bool,"Pair flags must be boolean")
     require(total <= 2000, "At most 2,000 requested instances", "BUDGET_EXCEEDED")
     return total

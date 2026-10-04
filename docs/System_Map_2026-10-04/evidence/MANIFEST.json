@@ -1,0 +1,72 @@
+{
+  "snapshot_date": "2026-10-04",
+  "versions": {
+    "scatter": "1.2.2",
+    "analyzer": "0.14",
+    "mcp": "1.1"
+  },
+  "artifacts": [
+    {
+      "path": "mockups/system-map/index.html",
+      "sha256": "14e764fcf3caa73d01a44c4f5b053f8a7fc8f0a690d0210c0ff8446647d07dbe",
+      "bytes": 285647
+    },
+    {
+      "path": "docs/System_Map_2026-10-04/model.json",
+      "sha256": "a1e7cbc4ecac612071345f1619017311b57df963a786f86c83e56add8717d58d",
+      "bytes": 227151
+    },
+    {
+      "path": "tools/docs/build_system_map.py",
+      "sha256": "3ff15afa5c7d9fdb00ea86921e7808ed34e76d0b157a10e0865c37257acb39d3",
+      "bytes": 79591
+    }
+  ],
+  "scope": "Source-grounded read-only interactive documentation; no new Max runtime/performance qualification.",
+  "browser_evidence": "browser-checks.json",
+  "qa_sizes": [
+    [
+      1440,
+      900
+    ],
+    [
+      1265,
+      715
+    ],
+    [
+      390,
+      844
+    ]
+  ],
+  "independent_review": {
+    "verdict": "PASS",
+    "report": "design-evaluation.md",
+    "browser_widths": [
+      1440,
+      768,
+      375
+    ],
+    "note": "No blocking defects; optional dense-map/mobile affordance refinements recorded."
+  },
+  "checkpoint_text_normalization": {
+    "date": "2026-10-04",
+    "note": "Stored the three text artifacts with repository-standard LF line endings and removed one trailing space in the builder. Application behavior, model content and recorded browser results are unchanged. Original local artifact identities are retained below.",
+    "original_artifacts": [
+      {
+        "path": "mockups/system-map/index.html",
+        "sha256": "3e6b0c8e4a207fda22680eab24603da4c5f0b57eedbcb3c6bb9e7443bcf478f3",
+        "bytes": 292652
+      },
+      {
+        "path": "docs/System_Map_2026-10-04/model.json",
+        "sha256": "2f381f3deea7f32def9215380ad40d11e9ad2c277ed04208770fd025a415059e",
+        "bytes": 233989
+      },
+      {
+        "path": "tools/docs/build_system_map.py",
+        "sha256": "1bb84015ad76eb726b19528f1b94e4e709cab3de1e169c373f58be5618a35ed7",
+        "bytes": 80215
+      }
+    ]
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "version": "1.2.1",
+  "scope": "Source-loaded private Max 2027 layout patch; default panel width",
+  "sources": {
+    "AminScatter/scripts/AminScatterObject.ms": "fa8a825a8e168ace28494b2bf0e17c3087fbc7e72bde141449d0502e6ca3cc16",
+    "AminScatter/tools/ui/layers-first.cjs": "b27dc3f8514aaa90599414cb9b5c18864614fe65d3c0489ceeda051180a6f7d1",
+    "AminScatter/tools/ui/templates/layers-first-host.ms": "cd7396cd5219f5872a7cce2a62bacfc1f51db4ea76192f2983822df428f2e264",
+    "AminScatter/tools/ui/templates/layers-first-panel.ms": "74ea3f5971906488bbf199ce37434ab88a93cb8833b9efe2fb047e61ec74ed60",
+    "tools/v1/layers_width_probe.ms": "ecab27c8292e28b1477163f4f271f94cb25a74a10812a6d17602918220bf902d",
+    "tools/v1/layers_width_acceptance.ms": "4be1615034131ea6dcc33b20ece432725b09c3a3b9598d966bb03ebca06b5bd4",
+    "tools/v1/layers_width_prepare.ms": "e95597723b4d74e5b0b8f539c998f50f4e13eb2843f68afec93c4c39f2093a26",
+    "tools/v1/package.py": "3850e87a09b705402e39bf8725f9313f12b953657df1854dc277b5fbf60cd811",
+    "tools/v1/collect_width_evidence.py": "0372263eecd3374bec5fc9f8d797e5bd4bd02ab28fd7f80dc46b9d4dc02fb89e"
+  },
+  "packages": {
+    "2026": {
+      "path": "dist/layers-first-1.2.1/CyrusScatter-1.2.1-Max2026.mzp",
+      "sha256": "b8a6444cdd32b4780562fa5ad454fc069481b31517adfca23fa09806ee47de63",
+      "native_unchanged_from_1_2_0": true,
+      "manifest": {
+        "product": "Cyrus Scatter",
+        "version": "1.2.1",
+        "max_year": 2026,
+        "toolset": "14.38.33130",
+        "windows_sdk": "10.0.19041.0",
+        "configuration": "Release",
+        "native_id": "e1c2e2ac00cf",
+        "files": {
+          "AminScatter.dlx": "c2a8cf71c9d38c5bacd540f79e0290eda9cdc707e1ba13454b7654184908151a",
+          "CyrusBrush.dlx": "61ddb946d2537e530fd254c83b27ad2d70994e584bc2708d598e93b0834075ac",
+          "CyrusBrushStorage.dlh": "2e977d3ed8b6d5380b93cb131d71436213112fe5ddfbc3201d67df94c1d36d12",
+          "CyrusScatter.mcr": "74a3c13a1c3f3a5dc721cdce18bd690e28e36940601755442bcb7075a9d0eb34",
+          "CyrusScatter.ms": "fa8a825a8e168ace28494b2bf0e17c3087fbc7e72bde141449d0502e6ca3cc16",
+          "CyrusScatterEdit.dlm": "63295df00b7b391617d5bcf0d779b752f7042763a7ddd50233765dc0cf0a0713",
+          "CyrusScatterStartup.ms": "fdf38b3bc83187eecb34b833bfff2751e78626e9e3dba41aa20a0ff7ff9e8405",
+          "INSTALL.txt": "ad383628f001eab4c5010f78003540eff88848fa10ddde405c62a0078e490e16",
+          "Uninstall.ms": "59e2b84901fcefaae1dab59886cd2f4079df4f764c789238947e19c514b4ed49",
+          "install.ms": "c730d6b1439b4bfe8e54e83d882737db80564cdd3f84a2766145e2f36581eff6",
+          "mzp.run": "663ddfb988a5e535270e6adea39c6bbae399822bcb8767f211b3cd4d5a9844e4"
+        }
+      }
+    },
+    "2027": {
+      "path": "dist/layers-first-1.2.1/CyrusScatter-1.2.1-Max2027.mzp",
+      "sha256": "41325ebfc1e9ec8f40d52ebd3e69ef9335b4f197223bc9d65702ce34b0289e27",
+      "native_unchanged_from_1_2_0": true,
+      "manifest": {
+        "product": "Cyrus Scatter",
+        "version": "1.2.1",
+        "max_year": 2027,
+        "toolset": "14.38.33130",
+        "windows_sdk": "10.0.19041.0",
+        "configuration": "Release",
+        "native_id": "84fbd9598c2c",
+        "files": {
+          "AminScatter.dlx": "a3852a4e2d15f24fbcc8c2843390551d613fd91aa02f0a334e68bd51130ac39b",
+          "CyrusBrush.dlx": "413c1fe7754bed2f856fdd5784dde60bc38a57ff1af4a3713dfad94f8ac426c0",
+          "CyrusBrushStorage.dlh": "78dcf68d8a9fc4dcbd6945d2bc3ac7f6d526a618371b9c5eb36278d9e3dd9812",
+          "CyrusScatter.mcr": "74a3c13a1c3f3a5dc721cdce18bd690e28e36940601755442bcb7075a9d0eb34",
+          "CyrusScatter.ms": "fa8a825a8e168ace28494b2bf0e17c3087fbc7e72bde141449d0502e6ca3cc16",
+          "CyrusScatterEdit.dlm": "828c82d8a0762698013761e1cab6365119c5627e41f0ab215703a59dd34e8e6f",
+          "CyrusScatterStartup.ms": "fdf38b3bc83187eecb34b833bfff2751e78626e9e3dba41aa20a0ff7ff9e8405",
+          "INSTALL.txt": "34b09f9eeb7da24fe58e6533b5cca994f4f7feb3524a5361e66bf60a6160142e",
+          "Uninstall.ms": "59e2b84901fcefaae1dab59886cd2f4079df4f764c789238947e19c514b4ed49",
+          "install.ms": "67cf6600d37333f5f286c9618d985f29ba985ca4de225267f667949e074ab15c",
+          "mzp.run": "e3e6aebe5cc61b280ced9d0c3ce2e6fa8c869850a41e4a047e1b517d844ca988"
+        }
+      }
+    }
+  },
+  "evidence": {
+    "loaded-identity.json": "1626061039abe4a66ae189ad432ce01fba9fb413ba322894480fdbfceb84a265",
+    "width-acceptance-246.json": "fc12a7b4b327b620d771447c85b0f32194977881455b430d57e2f1d5ca0b94c7",
+    "width-probe.txt": "aef1b37d68cff963cdb9aad27c9d5a2558d26be6b14bcdddaa87212ead72f291"
+  }
+}

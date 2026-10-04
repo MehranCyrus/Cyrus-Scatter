@@ -16,6 +16,10 @@
 /docs/Cyrus_Scatter_V1_2026-10-03/evidence/** -text whitespace=cr-at-eol
 /docs/Brush_Relax_Reset_2026-10-03/evidence/** -text whitespace=cr-at-eol
 /docs/Planting_Groups_2026-10-03/evidence/** -text whitespace=cr-at-eol
+/docs/Layers_First_2026-10-03/evidence/** -text whitespace=cr-at-eol
+/docs/Layer_Width_2026-10-04/evidence/** -text whitespace=cr-at-eol
+/docs/Classic_Layout_2026-10-04/evidence/** -text whitespace=cr-at-eol
+/docs/System_Map_2026-10-04/evidence/** -text whitespace=cr-at-eol
 /AminScatter/tests/data/brush_sphere_pole.txt -text whitespace=cr-at-eol
 
 # Exact logs, captured recipes and supplied reports retain original whitespace.

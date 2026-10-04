@@ -8,7 +8,8 @@ import time
 import uuid
 
 from .contracts import Fault, canonical, decode, digest, fields, identifier, number, require, validate_shape
-from .geometry import contains, convex, inset, overlaps
+from .geometry import contains, convex, inset, overlaps, outset
+from .settings import normalize_v2, capability_manifest
 
 
 def uid(prefix):
@@ -57,6 +58,7 @@ class Service:
         self.approved = set()
         self.owned = {}
         self.observed = {}
+        self.records = {}
         self.last_fingerprint = None
         self.last_undo = None
         self.calls = self.captures = self.applications = 0
@@ -72,6 +74,7 @@ class Service:
         self.approved.clear()
         self.owned.clear()
         self.observed.clear()
+        self.records.clear()
         self.last_undo = self.last_fingerprint = None
 
     def enroll(self, site, sources, regions, excluded=(), capture=False):
@@ -118,6 +121,8 @@ class Service:
             "scatter.apply_plan": self.apply,
             "scatter.get_status": self.status,
             "scatter.get_diagnostics": self.diagnostics,
+            "scatter.get_configuration": self.configuration,
+            "scatter.export_record": self.export_record,
             "scene.capture_viewport": self.capture,
             "connection.get_status": self.connection,
         }
@@ -134,7 +139,7 @@ class Service:
         return {"ok": True, **methods[method](**args)}
 
     def connection(self):
-        return {"version": "1.0.0", "scene_epoch": self.epoch, "scene_revision": self.revision,
+        return {"version": "1.1.0", "scene_epoch": self.epoch, "scene_revision": self.revision,
                 "scope_id": self.scope["scope_id"] if self.scope else None,
                 "message": self.last_message, "host": self.host.version(),
                 "support": "Static horizontal convex sites; up to three mesh assets and convex regions; two approved candidates."}
@@ -149,6 +154,7 @@ class Service:
                   "observed_controllers": deepcopy(self.observed),
                   "viewport_id": self.host.viewport_id(),
                   "capabilities": ["count", "seed", "random_source_weights", "uniform_scale_yaw", "convex_footprint_masks", "owned_create", "approved_refine", "viewport_capture"],
+                  "settings_contract":capability_manifest(),
                   "budget": {"calls_remaining": max(0,24-self.calls), "candidates_remaining": 2-self.applications, "captures_remaining": 2-self.captures}}
         if self.scope["kind"]=="inspection":
             result["capabilities"]=["cached_inspection","viewport_capture"]
@@ -161,6 +167,7 @@ class Service:
 
     def validate(self, plan):
         total = validate_shape(plan)
+        plan=normalize_v2(plan) if plan["schema_version"]=="2.0" else deepcopy(plan)
         self.fresh()
         require(self.scope["kind"]=="design", "This scope permits inspection only. Enroll a design site locally to create a layout.", "UNSUPPORTED_CAPABILITY")
         ctx = self.contexts.get(plan["context_id"])
@@ -173,23 +180,40 @@ class Service:
             require(not self.owned, "A scope owns one controller; supply its IDs for refinement", "BUDGET_EXCEEDED")
         sources = {s["source_id"]:s for s in self.scope["sources"]}
         regions = {r["region_id"]:r for r in self.scope["regions"]}
+        available_regions={r["region_id"]:r for r in [*self.scope["regions"],*self.scope["excluded"]]}
         compiled = []
         for layer in plan["layers"]:
             require(layer["region_id"] in regions, "Region was not enrolled", "UNKNOWN_REFERENCE")
             require(all(s["source_id"] in sources for s in layer["sources"]), "Source was not enrolled", "UNKNOWN_REFERENCE")
             region = regions[layer["region_id"]]["polygon_m"]
             radius = max(sources[s["source_id"]]["radius_m"] for s in layer["sources"] if s["weight"] > 0) * layer["scale"][1]
+            if plan["schema_version"]=="2.0":
+                settings=layer["settings"]
+                tilt=any(settings[key]!=[0,0] for key in ("rotation_x_degrees","rotation_y_degrees"))
+                radius=max(sources[s["source_id"]].get("bounding_radius_m",sources[s["source_id"]]["radius_m"]) * s["settings"]["scale"] if tilt else sources[s["source_id"]]["radius_m"] * s["settings"]["scale"] for s in layer["sources"] if s["weight"]>0)
+                radius*=layer["scale"][1]*max(settings[axis][1] for axis in ("scale_x","scale_y","scale_z"))
             clearance = plan.get("clearance_m", 0)
-            require(not any(overlaps(region, p["polygon_m"]) for p in self.scope["excluded"]), "Planting region intersects protected space; author separate convex planting regions", "GEOMETRY_CONSTRAINT")
-            compiled.append({"polygon_m": inset(region, radius+clearance+1e-5), "footprint_m": radius,
-                             "original_m": region, "clearance_m": clearance})
+            movement=0.0
+            if plan["schema_version"]=="2.0":
+                import math
+                movement=math.hypot(max(abs(x) for x in layer["settings"]["movement_x_m"]),max(abs(x) for x in layer["settings"]["movement_y_m"]))
+            exclusions=[];validation_exclusions=[]
+            if plan["schema_version"]=="1.0":
+                require(not any(overlaps(region, p["polygon_m"]) for p in self.scope["excluded"]), "Planting region intersects protected space; author separate convex planting regions", "GEOMETRY_CONSTRAINT")
+            else:
+                ids=set(layer["exclude_region_ids"])|{r["region_id"] for r in self.scope["excluded"]}
+                require(ids<=available_regions.keys(),"Exclusion was not enrolled","UNKNOWN_REFERENCE")
+                exclusions=[outset(available_regions[key]["polygon_m"],radius+clearance+movement+1e-5) for key in sorted(ids)]
+                validation_exclusions=[outset(available_regions[key]["polygon_m"],radius+clearance) for key in sorted(ids)]
+            compiled.append({"polygon_m": inset(region, radius+clearance+movement+1e-5), "footprint_m": radius,
+                             "original_m": region, "clearance_m": clearance,"exclusions_m":exclusions,"validation_exclusions_m":validation_exclusions})
         vid = uid("validation")
         normalized = deepcopy(plan)
         result = {"validation_id": vid, "digest": digest(normalized), "scene_epoch": self.epoch,
                   "scene_revision": self.revision, "expires_in_seconds": 300,
                   "requested_instances": total, "layers": len(plan["layers"]),
                   "effect": "replace_owned_layers" if "controller_id" in plan else "create_owned_controller",
-                  "derived_masks": len(compiled), "approval": "required_in_local_panel",
+                  "derived_masks": sum(1+len(m["exclusions_m"]) for m in compiled), "approval": "required_in_local_panel",
                   "warnings": ["Count is sampled over the site before masks; actual output can be lower. Underfill follows each layer's explicit policy."]}
         self.validations[vid] = {**result, "plan": normalized, "compiled": compiled, "deadline": time.monotonic()+300}
         while len(self.validations) > 8:
@@ -261,6 +285,9 @@ class Service:
             self.revision += 1
             self.last_fingerprint = self.host.fingerprint()
             self.owned[result["controller_id"]] = deepcopy(result)
+            if hasattr(self.host,"layouts") and result["controller_id"] in self.host.layouts:
+                from .records import execution_record
+                self.records[result["controller_id"]]=execution_record(self.scope,value["plan"],result,self.host.layouts[result["controller_id"]])
             record.update(state="succeeded", result=result, scene_revision=self.revision, duration_ms=(time.perf_counter()-started)*1000)
             self.last_undo = (self.revision, result["undo_label"])
             self.last_message = f"Published {result['emitted']} plants. Undo is available locally."
@@ -296,6 +323,20 @@ class Service:
                 "calls": self.calls, "captures": self.captures, "applications": self.applications,
                 "pending_operation": self.pending[0] if self.pending else None,
                 "timing_semantics": "cached host counters; no regeneration or FPS measurement"}
+
+    def configuration(self,scene_epoch,controller_id):
+        self.check_epoch(scene_epoch);self.fresh()
+        require(controller_id in self.owned or controller_id in self.observed,"Unknown scoped controller","UNKNOWN_REFERENCE")
+        return {"configuration":self.host.configuration(controller_id)}
+
+    def export_record(self,scene_epoch,controller_id,generation_id):
+        self.check_epoch(scene_epoch);self.fresh()
+        receipt=self.owned.get(controller_id)
+        require(receipt and receipt["generation_id"]==generation_id,"Unknown published generation","UNKNOWN_REFERENCE")
+        require(controller_id in self.records,"No recorded final layout for this generation","UNSUPPORTED_CAPABILITY")
+        record=deepcopy(self.records[controller_id])
+        require(len(canonical(record).encode())<=1500000,"Export exceeds its 1.5 MiB budget","BUDGET_EXCEEDED")
+        return {"record":record,"training_eligible":False}
 
     def capture(self, scene_epoch, scene_revision, viewport_id, generation_id):
         number(scene_revision,0,2**53,True)

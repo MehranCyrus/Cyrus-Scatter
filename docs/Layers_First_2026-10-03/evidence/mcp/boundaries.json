@@ -1,0 +1,102 @@
+[
+  {
+    "scenario": "busy_render_callback",
+    "passed": true
+  },
+  {
+    "scenario": "busy_undo_hold",
+    "passed": true
+  },
+  {
+    "scenario": "busy_modal",
+    "passed": true
+  },
+  {
+    "scenario": "reject_tilted_site",
+    "passed": true,
+    "error": {
+      "code": "UNSUPPORTED_CAPABILITY",
+      "message": "Site must be a static horizontal mesh"
+    }
+  },
+  {
+    "scenario": "reject_animated_source",
+    "passed": true,
+    "error": {
+      "code": "UNSUPPORTED_CAPABILITY",
+      "message": "Animated inputs are outside the supported scope"
+    }
+  },
+  {
+    "scenario": "reject_outside_region",
+    "passed": true,
+    "error": {
+      "code": "GEOMETRY_CONSTRAINT",
+      "message": "Region extends outside the site"
+    }
+  },
+  {
+    "scenario": "reject_concave_region",
+    "passed": true,
+    "error": {
+      "code": "GEOMETRY_CONSTRAINT",
+      "message": "Region must be simple and convex"
+    }
+  },
+  {
+    "scenario": "reject_protected_region",
+    "passed": true,
+    "error": {
+      "code": "GEOMETRY_CONSTRAINT",
+      "message": "Planting region intersects protected space; author separate convex planting regions"
+    }
+  },
+  {
+    "scenario": "reject_huge_asset",
+    "passed": true,
+    "error": {
+      "code": "GEOMETRY_CONSTRAINT",
+      "message": "Source footprint does not fit the region"
+    }
+  },
+  {
+    "scenario": "deleted_sources",
+    "passed": true
+  },
+  {
+    "scenario": "deleted_regions",
+    "passed": true
+  },
+  {
+    "scenario": "capture_revocation_immediate",
+    "passed": true
+  },
+  {
+    "scenario": "unrelated_artist_edit_not_undone",
+    "passed": true
+  },
+  {
+    "scenario": "scope_repick_revokes_previous_enrollment",
+    "passed": true
+  },
+  {
+    "scenario": "oversized_mesh_rejected_before_extraction",
+    "passed": true,
+    "measurement": {
+      "ok": false,
+      "error": {
+        "code": "BUDGET_EXCEEDED",
+        "message": "Design scope exceeds the aggregate 10,000-face / 12,000-vertex inspection budget"
+      },
+      "duration_ms": 0.32619998091831803
+    }
+  },
+  {
+    "scenario": "geometry_boundary_measurement",
+    "measurement": {
+      "enrolled": true,
+      "duration_ms": 1593.0076999939047,
+      "context_wall_ms": 790.8042999915779
+    }
+  }
+]

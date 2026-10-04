@@ -1,0 +1,38 @@
+[
+  {
+    "mode": "point_cloud",
+    "emitted": 159,
+    "post_attachment_digest": true,
+    "exclusion": true,
+    "shared_pair_gap": true,
+    "read_only_export": true,
+    "training_eligible": false
+  },
+  {
+    "mode": "proxy",
+    "emitted": 159,
+    "post_attachment_digest": true,
+    "exclusion": true,
+    "shared_pair_gap": true,
+    "read_only_export": true,
+    "training_eligible": false
+  },
+  {
+    "mode": "mesh",
+    "emitted": 159,
+    "post_attachment_digest": true,
+    "exclusion": true,
+    "shared_pair_gap": true,
+    "read_only_export": true,
+    "training_eligible": false
+  },
+  {
+    "mode": "centres",
+    "emitted": 159,
+    "post_attachment_digest": true,
+    "exclusion": true,
+    "shared_pair_gap": true,
+    "read_only_export": true,
+    "training_eligible": false
+  }
+]

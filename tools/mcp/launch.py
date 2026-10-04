@@ -15,6 +15,7 @@ def main():
     parser=argparse.ArgumentParser()
     parser.add_argument("--run",required=True)
     parser.add_argument("--installed-host",type=Path,help="Test the installed startup script and default connection in a fresh private Max")
+    parser.add_argument("--host-package",type=Path,help="Import an installed host package with a private test connection; leaves the artist connection untouched")
     parser.add_argument("--native-build",type=Path,default=ROOT/"build/cyrus-v1/max2027",help="Matching v1 native engine, CS Edit and Brush storage build")
     args=parser.parse_args()
     if not re.fullmatch(r"[a-z0-9-]+",args.run):
@@ -34,7 +35,8 @@ def main():
             raise SystemExit("Unrecognized Max configuration: "+key)
     (output/"desktop.ini").write_text(config,encoding="utf-16")
     (output/"plugins.ini").write_text("[Directories]\nAdditional MAX plug-ins=C:/Program Files/Autodesk/3ds Max 2027/PlugIns/\nCyrus="+str(output/"bin")+"\n[Help]\n")
-    host=(args.installed_host or ROOT/"CyrusMCP").resolve()
+    if args.installed_host and args.host_package:raise SystemExit("Choose one host package mode")
+    host=(args.installed_host or args.host_package or ROOT/"CyrusMCP").resolve()
     if not (host/"Start_Cyrus_Automation.ms").is_file():
         raise SystemExit("Missing host startup script")
     entry="host_fixture.start("+repr(str(output))+")"

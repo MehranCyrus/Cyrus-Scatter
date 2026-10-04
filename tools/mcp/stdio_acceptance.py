@@ -23,7 +23,7 @@ async def run(folder):
             assert value and value["ok"],result
             return value
         tools=await client.list_tools()
-        assert len(tools.tools)==7
+        assert len(tools.tools)==9
         plan_tool=next(t for t in tools.tools if t.name=="scatter_validate_plan")
         assert "layers" in json.dumps(plan_tool.input_schema),"Plan schema was not advertised"
         connection=await call("connection_get_status")

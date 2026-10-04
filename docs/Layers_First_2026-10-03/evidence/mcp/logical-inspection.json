@@ -1,0 +1,11 @@
+{
+  "pure_read": true,
+  "effective_parent_settings": true,
+  "membership_and_shared_budget": true,
+  "setup": {
+    "parent_id": "308dea64-4771-4313-844d-da917cc87f29",
+    "child_id": "9146cc72-5a9e-4ed2-81f3-e3a7b36624a4",
+    "stored_child_scale": 1.0,
+    "host_module": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-install-layers-first\\1.1.0-07ab9dc2b424\\host\\cyrus_mcp\\max_host.py"
+  }
+}

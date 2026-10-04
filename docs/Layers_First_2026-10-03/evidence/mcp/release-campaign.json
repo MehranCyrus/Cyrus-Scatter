@@ -1,0 +1,47 @@
+[
+  {
+    "script": "qualify.py",
+    "exit_code": 0,
+    "seconds": 15.64
+  },
+  {
+    "script": "layers_v2_acceptance.py",
+    "exit_code": 0,
+    "seconds": 26.688
+  },
+  {
+    "script": "scenarios.py",
+    "exit_code": 0,
+    "seconds": 35.625
+  },
+  {
+    "script": "stdio_acceptance.py",
+    "exit_code": 0,
+    "seconds": 9.203
+  },
+  {
+    "script": "boundary_acceptance.py",
+    "exit_code": 0,
+    "seconds": 36.969
+  },
+  {
+    "script": "retained_acceptance.py",
+    "exit_code": 0,
+    "seconds": 8.109
+  },
+  {
+    "script": "inspection_acceptance.py",
+    "exit_code": 0,
+    "seconds": 5.813
+  },
+  {
+    "script": "budget_acceptance.py",
+    "exit_code": 0,
+    "seconds": 13.656
+  },
+  {
+    "script": "layers_inspection_acceptance.py",
+    "exit_code": 0,
+    "seconds": 5.234
+  }
+]

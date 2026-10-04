@@ -6,7 +6,8 @@
     )
     -- Exercise Max's MZP reader and mzp.run, as the artist will use them.
     local object=createInstance CyrusScatterObject
-    fileIn (BLRoot+"dist/v1/CyrusScatter-"+object.uiVersion()+"-Max2027.mzp")
+    local packageDirectory=if object.uiVersion()=="1.2.0" then "dist/layers-first-1.2.0/" else "dist/v1/"
+    fileIn (BLRoot+packageDirectory+"CyrusScatter-"+object.uiVersion()+"-Max2027.mzp")
     local destination=pathConfig.appendPath (getDir #userScripts) "CyrusScatter"
     for name in #("CyrusScatter.ms","Uninstall.ms","manifest.json","INSTALL.txt") where not doesFileExist (pathConfig.appendPath destination name) do throw ("Installer omitted "+name)
     local ini=pathConfig.appendPath (getFilenamePath (getMAXIniFile())) "Plugin.UserSettings.ini"

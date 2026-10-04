@@ -1,0 +1,58 @@
+{
+  "version": "1.2.3",
+  "run": "classic-layout-scroll-release-20261004",
+  "host": [
+    29000,
+    70,
+    0,
+    29,
+    1,
+    0,
+    11426,
+    2027,
+    ".1"
+  ],
+  "source_sha256": {
+    "AminScatter/CMakeLists.txt": "d5502b95fe48b7e587b5ac57f45ce07597065d6f75f8526ef4386d17e612d6ff",
+    "AminScatter/src/rollout_scroll.cpp": "f73f1a3e8e87ec819f503dcde3c2c4d33fcd85a09e82fff7fa9f47865492fff5",
+    "AminScatter/scripts/AminScatterObject.ms": "64729c189dd631d04bf70f12aee6a6dde31d81e5265b3ac22df656932237069b",
+    "AminScatter/tools/ui/layers-first.cjs": "967351f87d67e590bd48f3abae9ff2cf5022457325df1714ddb8a3776800b277",
+    "AminScatter/tools/ui/templates/layers-first-host.ms": "16ddd483d0cd3d218263e467d90acae2b8ef331ffe6582e264f66f54cbce2cfc",
+    "AminScatter/tools/ui/templates/layers-first-panel.ms": "27aa828d2cb56e615d185e6e66d34d4c9623e5e1607bbb8217b63a6ba3c58a10",
+    "tools/v1/scrolling_prepare.ms": "9133f43cd5af8f6e2290d73c431d33e8e2538f83957638b9b43f89a9f70babd7",
+    "tools/v1/collect_scrolling_evidence.py": "68a749ab678a89d7ab96a2967cda0f8f0fb2ab53000e8bea00412408854c17ad",
+    "tools/v1/package.py": "284eff53d967038947aba345642b92cc9ee55f0c84f15b1313a3f76b39704508",
+    "tools/build_max.py": "500290285b862ee67edb3a2e456aeddfc88d178aa8471d75f467b509814a533a"
+  },
+  "packages": {
+    "2026": {
+      "file": "dist/classic-layout-1.2.3/CyrusScatter-1.2.3-Max2026.mzp",
+      "sha256": "9322ede8254304bff39b2210de1ed25bfdf30a45f7467e09a4d471ce1c0dc2f4",
+      "native_suites_passed": 12,
+      "runtime_gestures_tested": false
+    },
+    "2027": {
+      "file": "dist/classic-layout-1.2.3/CyrusScatter-1.2.3-Max2027.mzp",
+      "sha256": "c1a3865e4ee1f99d0fb05e26210a684af9f74f8a496f3c43562a9f0f135b31ac",
+      "native_suites_passed": 12,
+      "runtime_gestures_tested": true
+    }
+  },
+  "evidence_sha256": {
+    "classic-layout-acceptance.json": "7ad466cc009ab8293fe858cfff8c741e47d6027d5fd3d19551b38d5447322e84",
+    "classic-manager-acceptance.json": "9bee54bf8925eb577868b2eb612ef6c2890c540dca76439d7887868604a6e488",
+    "layout-check.ms": "4e770c065c92fd74e67e339d2f2f9665679fcddfa245ed99557ee763b1e96dce",
+    "loaded-identity.json": "749e9bbfb954f1491400780179b0905ba9431887d663436b80dfbfbf700f24a5",
+    "native-tests-max2026.txt": "14a26cf36d0f4c5cf4cc0166befa9998e80bdc46a4da54f0981ce14cf892c63a",
+    "native-tests-max2027.txt": "4026da116c99aea0e08962d8b0b84121b37c42011f0c8b8ce884bacea4d5a48e",
+    "package-max2026.json": "89d7bc0e6ce5e5fe5b45b2c2dc1c2ae27f1646da0a1f8298ea730f948cdf26f7",
+    "package-max2027.json": "3623cecee1d5ad3e62725a80dc14ab4f267ff67371a2ab0754e24d880806a692",
+    "scroll-drag-after-lifecycle.json": "c902431940106d69951bb50461be3c9708bbaaa4ee2eab5ff0ea5cb801bf9e0e",
+    "scroll-drag-down.json": "6e95761fc54ef1839a64591815fdc9ff2f627ac0ce10b8f94d019706a3784a96",
+    "scroll-drag-up.json": "0e4a92e8cef3295f36de1119728f0f6154ecad486dc51d746a8ef59760637f63",
+    "scroll-header-click.json": "4d07837477060105e04af559e6f01456c371f3b95965a1c085740f248af59769",
+    "scroll-prepared.json": "1c283746069676a5b25cf4aa108eb3f3808c988a2438c4edfcd7f04e977acb90",
+    "scroll-wheel-down.json": "591fd1257c8e66679a80861e780684e092d1fbc560d4f69a929e38550935a701",
+    "scroll-wheel-header.json": "dc9f0ccf7ed051404e5903bb42d06fb8fd590a1852580fcd26422ff60d964bb4"
+  }
+}

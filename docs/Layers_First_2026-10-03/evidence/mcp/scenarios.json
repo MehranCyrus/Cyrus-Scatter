@@ -1,0 +1,117 @@
+[
+  {
+    "scenario": "local_approval_required",
+    "passed": true
+  },
+  {
+    "scenario": "create_failure_controller",
+    "passed": true,
+    "error": {
+      "code": "GENERATION_FAILED",
+      "message": "Injected fixture failure: controller",
+      "rollback": "verified"
+    }
+  },
+  {
+    "scenario": "create_failure_layers",
+    "passed": true,
+    "error": {
+      "code": "GENERATION_FAILED",
+      "message": "Injected fixture failure: layers",
+      "rollback": "verified"
+    }
+  },
+  {
+    "scenario": "create_failure_preview",
+    "passed": true,
+    "error": {
+      "code": "GENERATION_FAILED",
+      "message": "Injected fixture failure: preview",
+      "rollback": "verified"
+    }
+  },
+  {
+    "scenario": "create_failure_replace",
+    "passed": true,
+    "error": {
+      "code": "GENERATION_FAILED",
+      "message": "Injected fixture failure: replace",
+      "rollback": "verified"
+    }
+  },
+  {
+    "scenario": "create_failure_publish",
+    "passed": true,
+    "error": {
+      "code": "GENERATION_FAILED",
+      "message": "Injected fixture failure: publish",
+      "rollback": "verified"
+    }
+  },
+  {
+    "scenario": "refinement_failure_preserves_initial",
+    "passed": true
+  },
+  {
+    "scenario": "owned_refinement",
+    "passed": true,
+    "emitted": 600
+  },
+  {
+    "scenario": "bounded_viewport_capture",
+    "passed": true,
+    "metadata": {
+      "camera_world_to_view": [
+        [
+          0.8000000715255737,
+          0.6000000238418579,
+          1.4901161193847656e-08,
+          -2.428889274597168e-06
+        ],
+        [
+          -0.3440774083137512,
+          0.45876988768577576,
+          0.8192319273948669,
+          1.9073486328125e-06
+        ],
+        [
+          0.4915391206741333,
+          -0.6553855538368225,
+          0.5734623670578003,
+          -61.03277587890625
+        ],
+        [
+          0,
+          0,
+          0,
+          1
+        ]
+      ],
+      "color": "viewport display RGB; no radiometric comparison implied",
+      "display": "smoothhighlights",
+      "fov_degrees": 45.0,
+      "freshness": "validated publication",
+      "generation_id": "generation_cae340f8117e4fb7ad759310f60e2063",
+      "height": 750,
+      "mime_type": "image/png",
+      "ok": true,
+      "scene_epoch": "scene_b9b2df757d30406fac0963c2e86b14a7",
+      "scene_revision": 65,
+      "view_type": "view_persp_user",
+      "viewport_id": "viewport_1",
+      "width": 1302
+    }
+  },
+  {
+    "scenario": "save_reopen_seeded_parity",
+    "passed": true,
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\layers-first-final\\QualifiedLayout.max",
+    "match": true,
+    "controllers": 1,
+    "scope_cleared": true
+  },
+  {
+    "scenario": "external_artist_edit_invalidates_proposal",
+    "passed": true
+  }
+]
