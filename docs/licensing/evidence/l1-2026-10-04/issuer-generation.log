@@ -1,0 +1,14 @@
+{
+  "cryptography": "50.0.2",
+  "openssl": "OpenSSL 4.0.3 29 Sep 2026",
+  "algorithm": "ES256 / P-256 / SHA-256",
+  "profile": "lab only, JWS compact",
+  "public_xy_sha256": "ca8a1aaa32bc22c33c0ed0ab0321d91fac4fccf7f469e4387e4e37cf3e52e8cc",
+  "private_key_persisted": false,
+  "cases": 148,
+  "term_values": [
+    1800000000,
+    1800003600
+  ],
+  "synthetic_device_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+}

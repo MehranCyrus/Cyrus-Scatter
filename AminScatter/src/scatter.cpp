@@ -22,8 +22,21 @@ Vec3 unit(Vec3 a) { return a*(1.0/length(a)); }
 bool finite(Vec3 a) { return std::isfinite(a.x)&&std::isfinite(a.y)&&std::isfinite(a.z); }
 struct Random {
     std::mt19937 rng;
+    bool counterMode=false;
+    std::uint64_t counter=0;
     explicit Random(std::uint32_t seed):rng(seed) {}
-    double next() { return static_cast<double>(rng()) / 4294967296.0; }
+    static std::uint64_t mix(std::uint64_t n) {
+        n=(n^(n>>30))*0xbf58476d1ce4e5b9ULL;
+        n=(n^(n>>27))*0x94d049bb133111ebULL;
+        return n^(n>>31);
+    }
+    void candidate(std::uint32_t seed,std::uint64_t ordinal,std::uint64_t channel) {
+        counterMode=true;counter=mix(ordinal)^mix((std::uint64_t(seed)<<32)^channel);
+    }
+    double next() {
+        if(counterMode)return double(mix(counter+=0x9e3779b97f4a7c15ULL)>>11)*(1.0/9007199254740992.0);
+        return static_cast<double>(rng()) / 4294967296.0;
+    }
     double range(Range r) { return r.min+(r.max-r.min)*next(); }
 };
 void validate(Range r) {
@@ -176,8 +189,16 @@ std::size_t weightedIndex(const std::vector<double>& cumulative,double u) {
 #include "boundary_falloff.inc"
 #include "edge_border.inc"
 Vec3 Instance::transformPoint(Vec3 p) const { return position+(xAxis*p.x+yAxis*p.y+zAxis*p.z)*scale; }
+double stableUnit(std::uint32_t seed,std::uint64_t ordinal,std::uint64_t channel){
+    const auto counter=Random::mix(ordinal)^Random::mix((std::uint64_t(seed)<<32)^channel);
+    return double(Random::mix(counter+0x9e3779b97f4a7c15ULL)>>11)*(1.0/9007199254740992.0);
+}
 std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settings& s) {
     detail::recordComputeStats({});
+    if(s.stableCandidates&&(s.linePattern||s.relaxEnabled||s.collisionEnabled))
+        throw std::invalid_argument("Procedural candidates require Random/Clusters and separate spacing; Relax and line assignment are not supported");
+    if(s.candidateStart>std::numeric_limits<std::uint64_t>::max()-s.count)
+        throw std::invalid_argument("Candidate ordinal overflow");
     if(s.linePattern&&std::any_of(s.lineBands.begin(),s.lineBands.end(),[](const LineBand& b){return b.kind==6;}))return scatter(surface,prepareEdgeRows(s));
     if((s.collisionEnabled&&(!std::isfinite(s.collisionRadius)||s.collisionRadius<=0)) ||
        (s.relaxEnabled&&(!std::isfinite(s.relaxSpacing)||s.relaxSpacing<=0||!std::isfinite(s.relaxStrength)||s.relaxStrength<0||s.relaxStrength>1||s.relaxIterations>100)))
@@ -255,7 +276,7 @@ std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settin
     const bool moved=std::any_of(s.movement.begin(),s.movement.end(),[](Range r){return r.min!=0||r.max!=0;});
     Random distribution(s.seed^0xc2b2ae35u), scales(s.seed^0x27d4eb2fu), diversity(s.clusterSeed^0xa341316cu);
     const bool population=!s.linePattern||std::any_of(s.lineBands.begin(),s.lineBands.end(),[](const LineBand& b){return b.kind!=5;});
-    const std::uint64_t limit=population?static_cast<std::uint64_t>(s.count)*(!s.preserveDensity&&(s.distribution==2||!masks.empty())?100:1):0;
+    const std::uint64_t limit=population?static_cast<std::uint64_t>(s.count)*(!s.stableCandidates&&!s.preserveDensity&&(s.distribution==2||!masks.empty())?100:1):0;
     std::vector<std::pair<Vec3,std::size_t>> anchors;
     for(std::size_t j=0;j<s.lineBands.size();++j) if(s.lineBands[j].kind==5)
         for(const auto& path:s.lineBands[j].boundary.loops) for(auto p:path) anchors.emplace_back(p,j);
@@ -281,7 +302,9 @@ std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settin
     ClusterQueries serialClusters(s,groupMembers.size(),groupCDF);
     if(batchClusters) {
         clusterCandidates.resize(s.count);
+        std::uint64_t ordinal=s.candidateStart;
         for(auto& candidate:clusterCandidates) {
+            if(s.stableCandidates)placement.candidate(s.seed,ordinal++,1);
             const auto sampled=sampler.sample(placement);
             candidate.position=sampled.first; candidate.triangle=sampled.second;
         }
@@ -300,6 +323,12 @@ std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settin
     }
     std::uint32_t accepted=0;
     for(std::uint64_t i=0;i<limit+anchors.size();++i) {
+        const auto ordinal=s.candidateStart+i;
+        if(s.stableCandidates) {
+            placement.candidate(s.seed,ordinal,1);transforms.candidate(s.seed,ordinal,2);
+            sources.candidate(s.seed,ordinal,3);scales.candidate(s.seed,ordinal,4);
+            distribution.candidate(s.seed,ordinal,5);diversity.candidate(s.clusterSeed,ordinal,6);
+        }
         const bool single=i>=limit;
         if(!single&&accepted>=s.count) {i=limit-1;continue;}
         auto [p,id]=batchClusters ? std::make_pair(clusterCandidates[static_cast<std::size_t>(i)].position,
@@ -310,7 +339,8 @@ std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settin
             for(auto j:sampler.indices) {const auto q=closest(target,surface[j]);const double d=length(q-target);if(d<best) {best=d;p=q;id=j;}}
             if(best>1e-4) continue; // Anchors must lie on one of the Scatter surfaces.
         }
-        if(s.distribution==2&&!single) {
+        const auto densityAccepts=[&]() {
+            if(s.distribution!=2||single)return true;
             const auto& t=surface[id];const auto ab=t.b-t.a,ac=t.c-t.a,ap=p-t.a;
             const double aa=dot(ab,ab),bb=dot(ac,ac),cc=dot(ab,ac),den=aa*bb-cc*cc;
             const double u=(bb*dot(ap,ab)-cc*dot(ap,ac))/den,v=(aa*dot(ap,ac)-cc*dot(ap,ab))/den;
@@ -321,14 +351,16 @@ std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settin
             const auto at=[&](std::uint32_t xx,std::uint32_t yy){return s.density[static_cast<std::size_t>(yy)*s.densityWidth+xx];};
             const double a=fx-x,b=fy-y;
             const double weight=(at(x,y)*(1-a)+at(x1,y)*a)*(1-b)+(at(x,y1)*(1-a)+at(x1,y1)*a)*b;
-            if(distribution.next()>=weight) continue;
-        }
+            return distribution.next()<weight;
+        };
+        if(!s.stableCandidates&&!densityAccepts())continue;
         const Vec3 offset{transforms.range(s.movement[0]),transforms.range(s.movement[1]),transforms.range(s.movement[2])};
         if(moved && s.projectMovement) {
             const Vec3 target=p+offset; double best=std::numeric_limits<double>::infinity();
             for(auto j:sampler.indices) { const auto q=closest(target,surface[j]); const double d=dot(q-target,q-target); if(d<best) {best=d;p=q;id=j;} }
         }
         else if(moved) p=p+offset;
+        if(s.stableCandidates&&!densityAccepts())continue;
         bool allowed=!hasInclude,excluded=false;
         for(const auto& mask:masks) if(mask.contains(p)) {
             if(mask.area.include) allowed=true;else {excluded=true;break;}
@@ -362,7 +394,7 @@ std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settin
         const Vec3 angles{transforms.range(s.rotationDegrees[0])*toRadians,transforms.range(s.rotationDegrees[1])*toRadians,transforms.range(s.rotationDegrees[2])*toRadians};
         const auto basis=[&](Vec3 axis) { const auto v=rotate(axis,angles); return x*v.x+y*v.y+normal*v.z; };
         Instance instance{p,basis({1,0,0})*scales.range(s.axisScale[0]),basis({0,1,0})*scales.range(s.axisScale[1]),basis({0,0,1})*scales.range(s.axisScale[2]),transforms.range(s.uniformScale)*strokeScale,source,id};
-        instance.candidateKey=i;
+        instance.candidateKey=s.stableCandidates?ordinal:i;
         if(emit) result.push_back(instance);
     }
     if(s.collisionEnabled||s.relaxEnabled) {

@@ -1,6 +1,6 @@
 # 08 — Validation plan and measurable acceptance
 
-These are future implementation tests. Only source/documentation checks were performed while writing this package. Do not present this matrix as a passed campaign.
+These are future implementation tests. The initial pass performed source/documentation checks; the follow-up [readiness campaign](evidence/readiness/README.md) also ran existing native/MCP suites and isolated design probes. Those do **not** mark this new-policy matrix passed.
 
 ## Numerical contract tests
 
@@ -42,7 +42,17 @@ Extend [the existing group-spacing tests](../../AminScatter/tests/group_spacing_
 | P13 | Point-only/empty source rows and source replacement | Slot/render counts and source policies are explicit; no lost ownership |
 | P14 | Curved static receiver, sphere seam/pole and transformed receiver | Brush and instance anchors refer to the correct indexed surface snapshot |
 | P15 | Topology/seed/distribution change with edits | Supported correspondence is preserved; unsupported bindings are reported, never assigned by compacted index |
-| P16 | Include/exclude and density maps with final movement | Ordinary accepted positions satisfy the new policy's declared eligibility checks |
+| P16 | Include/exclude and density maps with movement and source Z offset | Resolved support anchors satisfy declared eligibility; intentional lifted mesh origins are not falsely rejected |
+| P17 | Mask edit retains a candidate ID | New-policy source/rotation/scale channels stay stable for unchanged assignment inputs; old policy retains its recorded behavior |
+| P18 | Copy/reorder equal-weight sets | New owner IDs on copy; intentional retained sampling recipe; reorder does not reseed or change allocation tie keys |
+| P19 | Original and two CS Edit clones, different radius overrides | Distinct final instance IDs; independent overrides; no shared-candidate aliasing |
+| P20 | Erase bound input, then restore it; manual move outside mask | Input erasure suppresses active edited outputs without discarding records; valid manual movement remains a declared exception |
+| P21 | Quota zero with protected edits; invalid binding; disabled owner | Valid target-mode edits obey the qualified adapter; unresolved/disabled records reserve nothing; no silent record deletion |
+| P22 | Warm pool larger than requested prefix, then forced cold/evicted run | Same fixed logical replay sequence and final IDs/transforms; physical worker chunks do not affect results |
+| P23 | 50% coverage and moved anchors | Declared final-support evaluation is not inadvertently sampled twice or intersected with stale-anchor eligibility |
+| P24 | No-clearance/Whole surface/zero-weight/hidden/disabled Background references | Clear domain/rule diagnostics and the exact participation semantics in [11](11_OPTION_CONTRACTS.md) |
+| P25 | Accepted target with weighted Empty sources or only Point rows | Empty combination is rejected initially; Point slots and rendered mesh counts remain distinct |
+| P26 | New policy across all prior policy-2 dispatch sites | Paint Sets, Manual display, copying, Edit visibility and guards choose the intended path; MCP v1/v2 mappings stay unchanged |
 
 For refill, distinguish final validity from target attainment. Validate no forbidden ordinary overlap even when an attempt or repair limit is reached. Record unconsumed candidates and temporary cleanup suppression so underfill is explainable.
 
@@ -55,6 +65,8 @@ For refill, distinguish final validity from target attainment. Validate no forbi
 - Evict intermediate caches and reproduce the same final result. Measure temporary old/new-generation peak memory.
 - Cancel or supersede a build during each expensive stage. Stale results must not replace the current generation.
 - Inject preparation/solver/packet failures. Preserve the prior completed planting and report the failed owner/stage.
+- Inject a failure between Edit modifiers/consumer publications. Selection, statistics and display must agree with the retained completed generation.
+- Run collision reorder and quota-allocation tests independently; largest-remainder shares may decrease when total budget increases, but reordering alone must not alter the allocation tie key.
 - Test scene closure and plugin UI teardown with pending work. No raw scene pointer may outlive its valid host context.
 - Verify display/device recovery rebuilds appropriate resources without unexpectedly resampling planting.
 
@@ -89,6 +101,8 @@ Pure numeric suites should compile/run for supported SDK toolchains. Runtime qua
 Use disposable fixtures for Manual versus Live, rollouts/scrolling, set selection, Update, cancellation, artist overrides and Undo. Exercise renderer/Bake paths on the accepted output rather than display subsets. State which renderers were tested; do not generalize a Scanline fixture to all renderers.
 
 For MCP, retain legacy schema tests and add new-policy parity, unsupported-field rejection, candidate/work limits, approval freshness, digest agreement, idempotency, transaction ownership, cancellation, Undo and actual export-count/transform validation.
+
+Use [the option contract](11_OPTION_CONTRACTS.md) to turn every control family into a host interaction fixture. The 194-entry generated inventory establishes static coverage only; no claim of clicking every control or completing Max UI qualification is made by the readiness audit.
 
 ## Suggested experiment sequence
 

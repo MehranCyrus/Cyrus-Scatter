@@ -1,0 +1,7 @@
+{
+  "allowed": 900000,
+  "max_ns": 138.78,
+  "median_ns": 116.51,
+  "min_ns": 111.36,
+  "scope": "Real local clock, mutex and grant; no disk/signature in timed loops. Not FPS."
+}

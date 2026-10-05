@@ -1,0 +1,89 @@
+"""Read-only policy-3 recipe/last-publication export; no host evaluation calls."""
+
+RULE_FIELDS = ("procRuleScope", "procRuleA", "procRuleB", "procRuleEnabled",
+               "procRuleMultiplier", "procRuleGap", "procRulePlanar")
+STAT_FIELDS = ("eligible_pool", "accepted", "protected", "protected_conflicts",
+               "rejected_layer", "rejected_set", "rejected_self", "removed_cleanup",
+               "not_consumed", "candidate_attempts", "target_shortfall", "neighbor_visits")
+
+
+def _container_refs(owner, field):
+    # Older script/native pairs do not expose the container fields. Report
+    # unavailable instead of inventing current membership or evaluating Max.
+    try:
+        nodes = list(getattr(owner, field))
+    except (AttributeError, RuntimeError):
+        return None
+    result = []
+    for node in nodes:
+        try:
+            result.append({"handle": int(node.handle), "name": str(node.name)})
+        except (AttributeError, RuntimeError, TypeError, ValueError):
+            result.append(None)  # Persisted deleted-node slot.
+    return result
+
+
+def _container_pool(leaf):
+    try:
+        mode = int(leaf.containerMode)
+    except (AttributeError, RuntimeError):
+        return None
+    return {"mode": {1: "manual", 2: "layer_default", 3: "global", 4: "own"}.get(mode, "unknown"),
+            "own_rectangles": _container_refs(leaf, "containerNodes"),
+            "membership": "Source pivot in rectangle local XY; parked registrations retain settings. Membership is not recomputed by inspection."}
+
+
+def require_legacy_mutation(controller):
+    from .contracts import require
+    require(controller is None or int(controller.groupPolicy) in (1, 2),
+            "Plan schemas 1/2 cannot overwrite or convert a Procedural 0.7 controller. Inspect it read-only or create a separate setup.",
+            "UNSUPPORTED_CAPABILITY")
+
+
+def read_procedural(controller, metres_per_unit):
+    if int(controller.groupPolicy) != 3:
+        return None
+    parents = list(controller.logicalLayers())
+    layers = []
+    for parent in parents:
+        sets = []
+        for leaf in controller.layerSets(parent):
+            stats = leaf.procStatistics()
+            last = None
+            if len(stats[0]) == len(STAT_FIELDS):
+                last = dict(zip(STAT_FIELDS, map(int, stats[0])))
+                last.update(rounds=int(stats[1][0]), round_limit_reached=bool(stats[1][1]),
+                            epoch=int(stats[4]))
+            self_rule = leaf.procSelfRule()
+            overrides = []
+            for i, key in enumerate(leaf.procRadiusIDs):
+                world = int(leaf.procRadiusModes[i]) == 1
+                overrides.append({"instance_id": str(key), "mode": "world_radius" if world else "multiplier",
+                                  "value": float(leaf.procRadiusValues[i]) * (metres_per_unit if world else 1),
+                                  "units": "metres" if world else "unitless"})
+            sets.append({"set_id": str(leaf.layerID), "name": str(leaf.paintSetName),
+                         "sampling_salt": int(leaf.procSamplingSalt),
+                         "self_rule": {"inherited": not bool(leaf.procSelfOverride), "enabled": bool(self_rule[0]),
+                                       "radius_factor": float(self_rule[1]), "gap_m": float(self_rule[2]) * metres_per_unit,
+                                       "metric": "xy" if self_rule[3] else "xyz"},
+                         "background": {"mode": int(leaf.procBackground), "earlier_set_ids": list(map(str, leaf.procBackgroundIDs)),
+                                        "domain": "earlier siblings on the shared receiver and layer Area domain"},
+                         "source_entry_ids": list(map(str, leaf.procSourceSlots)), "radius_overrides": overrides,
+                         "source_pool": _container_pool(leaf),
+                         "last_published": last, "prepared_builds": int(stats[2]), "prepared_hits": int(stats[3])})
+        layers.append({"layer_id": str(parent.layerID), "population": "accepted_target" if int(parent.procPopulation) == 2 else "candidate_budget",
+                       "attempt_factor": int(parent.procAttemptFactor), "round_limit": int(parent.procRounds),
+                       "retry_cleanup_gaps": bool(parent.procRepair),
+                       "default_between_sets": {"enabled": bool(parent.procSiblingEnabled),
+                                                "radius_factor": float(parent.procSiblingMultiplier),
+                                                "gap_m": float(parent.procSiblingGap) * metres_per_unit,
+                                                "metric": "xy" if parent.procSiblingPlanar else "xyz"}, "sets_in_order": sets})
+    pairs = [{"scope": "paint_sets" if int(controller.procRuleScope[i]) == 1 else "layers",
+              "a": str(controller.procRuleA[i]), "b": str(controller.procRuleB[i]),
+              "enabled": bool(controller.procRuleEnabled[i]), "radius_factor": float(controller.procRuleMultiplier[i]),
+              "gap_m": float(controller.procRuleGap[i]) * metres_per_unit,
+              "metric": "xy" if controller.procRulePlanar[i] else "xyz"} for i in range(len(controller.procRuleA))]
+    return {"schema": "cyrus.procedural-configuration/1.0", "evaluation_policy": 3,
+            "global_source_containers": _container_refs(controller, "containerGlobalNodes"),
+            "layers_in_order": layers, "pair_rules": pairs, "mutation_supported": False,
+            "freshness": "Recipe values are current; last_published describes the last completed epoch. No solve is performed."}

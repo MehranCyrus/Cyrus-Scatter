@@ -1,0 +1,32 @@
+{
+  "status": "PASS",
+  "scope": "Native-owned count/seed, CS Edit and Brush history mutations through one shared runtime; real CNG/DPAPI and authenticated time anchor; development issuance only",
+  "render_comparisons": {
+    "expired.png": {
+      "maximum_channel_difference": 0,
+      "changed_pixels": 0
+    },
+    "reopened.png": {
+      "maximum_channel_difference": 0,
+      "changed_pixels": 0
+    }
+  },
+  "max_instances": 64,
+  "concurrent_Max_processes": 2,
+  "binaries": {
+    "AminScatter.dlx": "417796651ab53e1e21aa1c4a15270e8ec90aad88c6d845b4d3ca4f7faa4c3551",
+    "CyrusBrush.dlx": "bfb6f1c3a4b493c4414caf1c7011085a47d2db54053e94223ad715b64603dbb0",
+    "CyrusBrushStorage.dlh": "9dac6caef8c586fd13b7970c6ab17b75a693f9c7e890674be3842082b3110b1e",
+    "CyrusScatterEdit.dlm": "5ffa211659424922cf06eecf2e936c42ef250fc5c039f1afdcf17e9d60a71eaf"
+  },
+  "no_fake_clock_primitive": true,
+  "native_full_product_coverage": false,
+  "PFlow_or_other_renderers_qualified": false,
+  "source_scene_cryptographic_provenance": false,
+  "automatic_background_refresh_checkpoint": true,
+  "clean_host_shutdown_join": true,
+  "processes": [
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\licensing-installation-installation-run06-a",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\licensing-installation-installation-run06-b"
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "scope": "Design counterexamples and static inventory; not new-policy implementation or UI execution",
+  "quota_25": [
+    7,
+    7,
+    4,
+    3,
+    3,
+    1
+  ],
+  "quota_26": [
+    8,
+    8,
+    5,
+    2,
+    2,
+    1
+  ],
+  "reorder_with_stable_allocation_ties": {
+    "red": 167,
+    "blue": 167,
+    "yellow": 166
+  },
+  "naive_available_cache_cold": [],
+  "naive_available_cache_warm": [
+    0,
+    1
+  ],
+  "fixed_logical_prefix_cold": [],
+  "fixed_logical_prefix_warm": [],
+  "batch_one_result": [],
+  "batch_two_result": [
+    0,
+    1
+  ],
+  "coverage_50_percent_once": 0.5,
+  "coverage_50_percent_twice_independent": 0.25,
+  "inventory_counts": {
+    "general": {
+      "host": 1,
+      "updateUI": 2,
+      "previewUI": 15,
+      "surface": 3,
+      "manager": 7
+    },
+    "layer": {
+      "sourceUI": 19,
+      "distributionUI": 8,
+      "brushUI": 20,
+      "areaUI": 25,
+      "diversityUI": 36,
+      "randomUI": 26,
+      "spacingUI": 6,
+      "separationUI": 17,
+      "setsUI": 7,
+      "detailsUI": 2,
+      "panelUI": 0
+    }
+  },
+  "set_owned_rollouts_within_layer_inventory": [
+    "setsUI",
+    "sourceUI",
+    "brushUI"
+  ],
+  "inventory_total_entries": 194,
+  "presentation_fields_in_prepared_base_key": {
+    "paintSetName": true,
+    "paintSetVisible": true
+  },
+  "literal_policy_2_sites_in_generated_script": 80
+}

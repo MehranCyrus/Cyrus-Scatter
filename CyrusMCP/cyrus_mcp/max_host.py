@@ -257,6 +257,9 @@ class MaxHost:
                 result["paint_revision"]=[int(stats[0]),int(stats[3])]
             return result
         shared={key:frozen(rt.getProperty(obj,rt.Name(key))) for key in ("groupPolicy","groupRuleA","groupRuleB","groupRuleEnabled","groupRuleGap","groupRuleFootprints","groupRulePlanar","groupCenters","viewportMode","proxyShape","viewportInstances","viewportFaces","radiusDisplayLimit","radiusDisplayAll")}
+        if hasattr(obj,"procRuleScope"):
+            from .procedural import RULE_FIELDS
+            shared.update({key:frozen(rt.getProperty(obj,rt.Name(key))) for key in RULE_FIELDS})
         return {"root":params(obj),"shared":shared,"surfaceNodes":frozen(obj.surfaceNodes),"names":list(obj.layerNames),"enabled":list(obj.layerEnabled),"visible":list(obj.layerVisible),"layers":[params(layer) for layer in obj.layerObjects],"transform":frozen(obj.transform),"modifiers":[str(rt.classOf(m)) for m in obj.modifiers],"enabled_root":bool(obj.cyrusEnabled),"edit_revision":int(rt.cyrusEditRevision()) if len(obj.modifiers) else 0}
 
     def configuration(self,cid):
@@ -280,11 +283,16 @@ class MaxHost:
             source_settings={key:frozen(rt.getProperty(leaf,rt.Name(spec[3]))) for key,spec in SOURCE_SETTINGS.items()}
             assets=[]
             for j,node in enumerate(leaf.sources):
-                sid=next((key for key,value in self.nodes.items() if key.startswith("source_") and value==node),"asset_"+digest([cid,int(rt.getHandleByAnim(node))])[:24])
+                valid=node is not None and bool(rt.isValidNode(node))
+                entry_id=str(leaf.procSourceSlots[j]) if hasattr(leaf,"procSourceSlots") and j<len(leaf.procSourceSlots) else None
+                sid=next((key for key,value in self.nodes.items() if valid and key.startswith("source_") and value==node),"asset_"+digest([cid,str(leaf.layerID),entry_id or j])[:24])
                 values={key:(source_settings[key][j] if j<len(source_settings[key]) else spec[1]) for key,spec in SOURCE_SETTINGS.items()}
                 for key in values:
                     if key.endswith("_m"):values[key]*=self.metre
-                assets.append({"source_id":sid,"label":str(node.name)[:80],"weight":float(leaf.sourceWeights[j]) if j<len(leaf.sourceWeights) else 1.0,"settings":values})
+                point=bool(leaf.isPointSource(j+1));empty=bool(leaf.isEmptySource(j+1))
+                assets.append({"source_id":sid,"entry_id":entry_id,"label":str(node.name)[:80] if valid else "Point" if point else "Empty" if empty else "Missing asset",
+                               "kind":"point" if point else "empty" if empty else "mesh" if valid else "missing",
+                               "weight":float(leaf.sourceWeights[j]) if j<len(leaf.sourceWeights) else 1.0,"settings":values})
             paint=rt.cyrusBrushStats(leaf.paintDocument) if leaf.paintDocument is not None else None
             layers.append({"layer_id":str(leaf.layerID),"parent_id":str(getattr(leaf,"logicalParentID","")) or None,"set_name":str(getattr(leaf,"paintSetName","Base")),
                            "name":str(obj.layerNames[i]),"count":int(parent.amount),"seed":int(parent.randomSeed),"settings":settings,"assets":assets,
@@ -293,7 +301,9 @@ class MaxHost:
                            "paint":{"enabled":bool(leaf.paintEnabled),"document_present":paint is not None,"stroke_count":int(paint[1]) if paint else 0,"revision":int(paint[0]) if paint else None}})
         display=read_settings(obj,DISPLAY_SETTINGS)
         display.update(mode="centres" if obj.groupCenters else {1:"point_cloud",2:"proxy",3:"mesh"}[int(obj.viewportMode)],proxy_shape={1:"box",2:"sphere",3:"pyramid"}[int(obj.proxyShape)],update_mode="manual" if obj.updateMode==1 else "real_time")
+        from .procedural import read_procedural
         return {"configuration_schema":"cyrus.configuration/1.0","controller_id":cid,"layers":layers,"display":display,"group_policy":int(obj.groupPolicy),
+                "procedural":read_procedural(obj,self.metre),
                 "pair_rules":[{"a":str(obj.groupRuleA[i]),"b":str(obj.groupRuleB[i]),"enabled":bool(obj.groupRuleEnabled[i]),"gap_m":float(obj.groupRuleGap[i])*self.metre,"footprints":bool(obj.groupRuleFootprints[i]),"planar":bool(obj.groupRulePlanar[i])} for i in range(len(obj.groupRuleA))],
                 "freshness":"current parameter values only; no generation or geometry certification"}
 
@@ -326,6 +336,8 @@ class MaxHost:
         created=[]
         selected=list(rt.selection)
         cid=plan.get("controller_id",uid("controller"))
+        from .procedural import require_legacy_mutation
+        require_legacy_mutation(self.controllers.get(cid))
         gid=uid("generation")
         undo_label="Cyrus Automation "+gid[-8:]
         failure=None

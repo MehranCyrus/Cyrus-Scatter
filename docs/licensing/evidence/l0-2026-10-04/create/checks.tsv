@@ -1,0 +1,53 @@
+PASS	host_version	#(29000, 70, 0, 29, 1, 0, 11426, 2027, ".1")
+PASS	lab_identity	
+PASS	active_policy	
+PASS	expiry_boundary_policy	
+PASS	expired_policy	
+PASS	renewed_policy	
+PASS	unproven_render_rejected	
+PASS	unknown_operation_rejected	
+PASS	fixture_population	
+PASS	active_parameter_edit	
+PASS	active_parameter_result	
+PASS	parameter_undo	
+PASS	active_native_edit	
+PASS	native_edit_result	
+PASS	native_edit_undo	
+PASS	native_edit_redo	
+PASS	expired_parameter_denied	
+PASS	expired_native_edit_denied	
+PASS	denial_preserves_state	
+PASS	denial_preserves_identity	
+PASS	active_preview	
+PASS	preview_built	
+PASS	expired_refresh_denied	
+PASS	denial_precedes_cache_cleanup	
+PASS	artist_enable_unchanged	
+PASS	active_brush_fill	
+PASS	expired_brush_denied	
+PASS	brush_preserved	
+PASS	brush_direct_change_observed	
+OBSERVED	brush_direct_entry_ungated	Public native fill bypasses the lab wrapper
+PASS	brush_undo_while_expired	
+PASS	active_analyzer	
+PASS	analyzer_calculated	
+PASS	expired_analyzer_denied	
+PASS	analyzer_denial_preserves_runs	
+PASS	parameter_escape_observed	
+OBSERVED	parameter_entry_ungated	Changing the parameter then evaluating produces new work
+PASS	native_generation_escape_observed	
+OBSERVED	generation_entry_ungated	The native generator cannot infer authoring versus saved evaluation
+PASS	baseline_after_escape_probes	
+OBSERVED	surface_dependency	layout_changed=true
+PASS	restored_surface_baseline	
+PASS	render_fixture_baseline	
+PASS	render_policy	
+PASS	render_returned_image	
+PASS	render_population	64
+PASS	render_fixture_baseline	
+PASS	render_policy	
+PASS	render_returned_image	
+PASS	render_population	64
+PASS	save_policy_while_expired	
+PASS	save_while_expired	
+COMPLETE

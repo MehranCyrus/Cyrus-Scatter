@@ -1,10 +1,16 @@
 # Licensing architecture
 
-**Reconciled:** 2026-10-02; rendering, offline and device policy clarified 2026-10-04. **Status:** current engineering design; implementation and security qualification are pending. Start with the [roadmap](ROADMAP.md); commercial choices and continuity outcomes are tracked in [decisions](DECISIONS.md).
+**Reconciled:** 2026-10-02; rendering, offline/device policy and signed-license experiment updated 2026-10-04. **Status:** current engineering design with isolated policy/boundary and signature prototypes; production integration and security qualification are pending. Start with the [roadmap](ROADMAP.md); commercial choices and continuity outcomes are tracked in [decisions](DECISIONS.md).
+
+**October 5 implementation update:** [The native/local foundation](NATIVE_FOUNDATION_2026-10-05.md) now implements the bounded owner, immutable publication, permits, real CNG/DPAPI installation client, separate activation-time profile and shared Edit/Brush gates. Statements below about the first/second experiments are historical. Full recipe ownership, background lifecycle/recovery, transactional customer service and commercial release qualification remain design work; the linked report records the exact current evidence.
 
 Cyrus should own its licensing service, customer and studio records, entitlement policy, and native integration. The user selected that direction in this discussion. Established cryptographic, authentication, database and hosting components remain appropriate building blocks; operating our own licensing does not require inventing those primitives.
 
 Keep Scatter computation and viewport drawing local. Separate purchases, product permissions and seat allocation so ordinary feature development and studio seat purchases do not require redesigning licensing. First prove the native authorization boundary; then build an independently testable policy core and small service, followed by native integration and a controlled pilot.
+
+The [first experiment](L0_EXPERIMENT_2026-10-04.md) implements the pure policy portion using synthetic facts and exercises disposable Max scenes. It confirms that wrapper denial can preserve state but direct native/script routes remain outside it. The [operation contract](OPERATION_CONTRACT.md) proposes a small native authored-revision ownership experiment next. A public `ApprovedExistingState` argument is not an implemented security capability, and the current product still has no licensing enforcement.
+
+The [second experiment](SIGNED_LICENSE_EXPERIMENT_2026-10-04.md) adds actual signature/profile verification with Windows CNG and nlohmann/json, checked against an independent Python cryptography issuer. It exercises signed renewal inside disposable Max. Account/device context, time and scene evidence remain laboratory assumptions. It does not close the native ownership gap or authorize production deployment. [Component selection](IMPLEMENTATION_COMPONENTS.md) and the [candidate profile](SIGNED_TOKEN_PROFILE.md) record the tested choices.
 
 This is the implementation authority for licensing. The [September package](../CyrusScatter_Licensing_Implementation_Package_2026-09-27/README.md) remains historical evidence, with corrections mapped in the [document audit](DOCUMENT_AUDIT.md). Its native boundaries, scene preservation and testing principles remain useful. Vendor-first sequencing, price comparisons and old schedule estimates no longer guide implementation. Pricing, durations and detailed customer promises remain undecided.
 
@@ -175,7 +181,7 @@ Use one authoritative writer initially. Failover and restoration must preserve l
 
 ## Authentication and signed permissions
 
-Use a maintained asymmetric-signature implementation and a strict format profile. JWS is a candidate to test, not an invitation to write cryptographic primitives. Choose the algorithm after native-toolchain and protected-signer compatibility tests; bind each trusted key to its permitted algorithm and purpose.
+Use a maintained asymmetric-signature implementation and a strict format profile. Compact JWS/ES256 is now the tested laboratory candidate: Windows CNG verifies P-256/SHA-256 signatures created by Python cryptography/OpenSSL in both SDK builds. nlohmann/json handles syntax while application code enforces bounds, duplicate rejection and claims. Protected production signer compatibility, key distribution and rotation remain unqualified. Bind each trusted key to its permitted algorithm and purpose; never accept a key location or algorithm selected freely by the token.
 
 A grant needs schema/type, issuer, audience/product, grant ID, subject/organization, activation binding where applicable, explicit rights, build eligibility, issue/not-before/expiry times and lease identity where applicable. Resolve its key identifier only against trusted keys. Login tokens, receipts, worker grants and authoring grants have distinct validation rules.
 
@@ -256,4 +262,4 @@ Building this ourselves also means maintaining monitoring, security updates, bac
 
 Follow [ROADMAP.md](ROADMAP.md) for dependencies, acceptance experiments and the immediate coding packet. [DECISIONS.md](DECISIONS.md) is the only current commercial/continuity decision register. Those documents distinguish selected direction, engineering recommendations, unresolved policy and measured results.
 
-This review changed documentation only. It inspected prior documents, current source anchors and official references. It did not implement a licensing service, run licensing tests, test vendor internals or change Scatter, Analyzer or viewport behavior. Native builds and performance results from other tasks do not qualify licensing.
+The original October 2 review changed documentation only. Later [policy](L0_EXPERIMENT_2026-10-04.md) and [signed-license](SIGNED_LICENSE_EXPERIMENT_2026-10-04.md) experiments added isolated code and bounded tests with their own source/runtime evidence. No licensing service or product enforcement was installed. Neither these experiments nor unrelated performance work qualify the complete licensing system or reveal vendor internals.

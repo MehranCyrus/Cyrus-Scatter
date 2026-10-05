@@ -2,6 +2,8 @@
 
 Primary sources reviewed on 4 October 2026. Vendor documentation explains public behavior; it does not reveal proprietary implementation internals. The proposed Cyrus design is our engineering synthesis, not a claim that Houdini, Forest Pack or FStorm uses this exact architecture.
 
+The subsequent [readiness review](10_READINESS_REVIEW.md) adds direct code and executable evidence. It does not assert a new vendor-documentation search or change the sources below.
+
 ## Primary-source register
 
 | ID | Source | Supported observation | Application and limit |
@@ -35,6 +37,10 @@ No claims in this package require reverse-engineering a vendor. The FStorm previ
 | D11 | CPU correctness before further parallel/GPU work | Unnecessary work and wrong dependencies cannot be fixed by more processors | Measured numeric stages dominate after caching improvements |
 | D12 | Versioned MCP extension after native qualification | One evaluator and honest capability boundaries | Native policy and ownership contract are stable |
 | D13 | ML proposes recipes, engine evaluates them | Artist control and reproducible geometry remain inspectable | A measured learned-placement task merits a separate contract |
+| D14 | Separate owner, sampling, allocation and final-instance identities | Reorder/copy/clone semantics must not be accidental RNG or row-order effects | A versioned correspondence change is intentionally introduced |
+| D15 | Fixed logical refill schedule independent of cache capacity | Cleanup suppression makes batch history observable | A different refill algorithm proves a stronger schedule-independent contract |
+| D16 | Support-anchor eligibility separate from mesh origin | Preserve source offsets and explain protected moves without double sampling coverage | An explicit mesh-footprint boundary policy is implemented |
+| D17 | Explicit policy capabilities and pure keys | Policy 2 is assumed in multiple UI/display/Edit paths; presentation fields enter current keys | A tested adapter safely replaces each branch |
 
 ## Remaining engineering questions with concrete tests
 
@@ -56,4 +62,4 @@ Proposed here: new rule/data contracts, bounded cleanup/refill semantics, fine-g
 
 Not established here: current artist-scene FPS, a new build's correctness, shipping refill limits, GPU speedups, arbitrary topology/animation support, maximal packing, ML quality or vendor-internal algorithms.
 
-Refer to [source snapshot](evidence/source_snapshot.json) and [documentation validation](evidence/verification.json) for the actual scope of this pass. Preserve historical reports as dated evidence rather than silently treating them as tests of this proposal.
+Refer to [source snapshot](evidence/source_snapshot.json) and [documentation validation](evidence/verification.json) for the initial pass, and [readiness evidence](evidence/readiness/README.md) for the fresh pure-native/MCP and counterexample checks. Preserve historical reports as dated evidence rather than silently treating them as tests of this proposal.

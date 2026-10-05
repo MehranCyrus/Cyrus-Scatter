@@ -8,14 +8,25 @@
 #include "scatter.h"
 #include "execution.h"
 #include "group_spacing.h"
+#include "procedural.h"
+#include "license_boundary.h"
 #include <memory>
 #include <stdexcept>
 #include <map>
+#include <unordered_map>
+#include <limits>
+#include <cstring>
 #include <tuple>
 #include <cmath>
 #include <maxscript/macros/define_instantiation_functions.h>
 
-extern "C" __declspec(dllexport) const TCHAR* LibDescription() { return _T("Cyrus Scatter 1.1 native engine"); }
+extern "C" __declspec(dllexport) const TCHAR* LibDescription() {
+#ifdef CYRUS_NATIVE_LICENSE_EXPERIMENT
+    return _T("Cyrus Scatter CYRUS_LICENSE_EXPERIMENT_NEVER_SHIP");
+#else
+    return _T("Cyrus Scatter 0.7 native engine");
+#endif
+}
 extern "C" __declspec(dllexport) ULONG LibVersion() { return VERSION_3DSMAX; }
 extern "C" __declspec(dllexport) void LibInit() {}
 HINSTANCE CyrusEditInstance=nullptr;
@@ -186,9 +197,15 @@ Value* aminScatterAdvanced_cf(Value** args,int count) {
     if(count!=17&&count!=18&&count!=24&&count!=26&&count!=27&&count!=28&&count!=29&&count!=30&&count!=31&&count!=32) throw RuntimeError(_T("Invalid Cyrus Scatter generation argument count."));
     const bool options=count==32&&args[31]->is_kind_of(class_tag(Array));
     auto* v1=options?static_cast<Array*>(args[31]):nullptr;
-    if(v1&&v1->size!=8)throw RuntimeError(_T("Invalid v1 generation options"));
+    if(v1&&v1->size!=8&&v1->size!=10)throw RuntimeError(_T("Invalid Cyrus generation options"));
     const bool keyed=count==32&&(v1?v1->data[0]:args[31])->to_bool()!=FALSE;
     amin::Settings s;
+    if(v1&&v1->size==10) {
+        if(v1->data[8]->to_int()!=1)throw RuntimeError(_T("Unsupported procedural sampler version"));
+        const auto start=v1->data[9]->to_int64();
+        if(start<0)throw RuntimeError(_T("Negative candidate ordinal"));
+        s.stableCandidates=true;s.candidateStart=static_cast<std::uint64_t>(start);
+    }
     if(count>=29) {
         type_check(args[28],Array,_T("spacing controls"));
         auto* a=static_cast<Array*>(args[28]);
@@ -362,6 +379,19 @@ Value* aminScatterAdvanced_cf(Value** args,int count) {
 }
 def_visible_primitive(cyrusScatterAdvanced, "cyrusScatterAdvanced");
 Value* cyrusScatterAdvanced_cf(Value** args,int count){return aminScatterAdvanced_cf(args,count);}
+#include "procedural_bridge.inc"
+def_visible_primitive(cyrusProceduralSurfaceKey,"cyrusProceduralSurfaceKey");
+Value* cyrusProceduralSurfaceKey_cf(Value** a,int n){
+    check_arg_count(cyrusProceduralSurfaceKey,1,n);std::uint64_t hash=1469598103934665603ULL;
+    try{
+        const auto triangles=surfaceMeshes(a[0],false);
+        for(const auto& t:triangles)for(const auto p:{t.a,t.b,t.c})for(double value:{p.x,p.y,p.z}){
+            std::uint64_t bits=0;std::memcpy(&bits,&value,sizeof(bits));
+            for(int byte=0;byte<8;++byte){hash^=(bits>>(byte*8))&255;hash*=1099511628211ULL;}
+        }
+        const auto key=std::to_wstring(triangles.size())+L":"+std::to_wstring(hash);return new String(key.c_str());
+    }catch(const std::exception& e){throw RuntimeError(MSTR::FromACP(e.what()));}
+}
 #include "orientation_bridge.inc"
 #include "boundary_falloff_bridge.inc"
 #include "whole_scale_bridge.inc"
@@ -369,6 +399,7 @@ Value* cyrusScatterAdvanced_cf(Value** args,int count){return aminScatterAdvance
 def_visible_primitive(aminScatterTransforms, "aminScatterTransforms");
 Value* aminScatterTransforms_cf(Value** args,int count) {
     check_arg_count(aminScatterTransforms,10,count);
+    if(!cyrusBoundaryAllows(args))throw RuntimeError(_T("Cyrus new generation requires authoring authority"));
     const int n=args[1]->to_int(), sourceCount=args[3]->to_int();
     if(n<1||n>100000||sourceCount<1) throw RuntimeError(_T("Count must be 1..100000; sources must be nonempty."));
     amin::Settings s;
@@ -389,6 +420,8 @@ Value* aminScatterTransforms_cf(Value** args,int count) {
     }
     return_value(vl.result);
 }
+
+#include "authored_revision.inc"
 def_visible_primitive(aminScatterSourcePoints, "aminScatterSourcePoints");
 Value* aminScatterSourcePoints_cf(Value** args,int count) {
     check_arg_count(aminScatterSourcePoints,3,count);

@@ -1,6 +1,8 @@
 # Licensing decisions
 
-**Updated:** 2026-10-04. This is the current decision register; older worksheets are historical proposals. The user selected post-expiry rendering without editing and requested full-term offline use plus one-device activation and portal transfers. Transfer overlap and clock-recovery policy remain open. No price, subscription term length or sales contract is approved by this document.
+**Updated:** 2026-10-05. This is the current decision register; older worksheets are historical proposals. The user selected post-expiry rendering without editing and requested full-term offline use plus one-device activation and portal transfers. Transfer overlap and clock-recovery policy remain open. No price, subscription term length or sales contract is approved by this document.
+
+The [October 5 native/real-installation tests](NATIVE_FOUNDATION_2026-10-05.md) provide new B07/B08 evidence. Native recipe/Edit/Brush state survives expiry/reopen/renewal, but external source/receiver/animation changes still affect evaluation. Issuing a second installation permission leaves the disconnected first permission valid. B07 dependency-continuity versus frozen-world options and B08 immediate-overlap versus delayed-reuse options have been presented to the user; **no answer has been recorded, so both remain OPEN**. A development fixture is not a commercial policy selection.
 
 ## Selected direction and engineering constraints
 
@@ -59,7 +61,7 @@ The old 30-day trial, 12-month maintenance period, 90–365-day offline range an
 
 ## Operation and scene-continuity contract
 
-D09/D11 select preservation, rendering of existing work, the new-authoring lock and verified-renewal recovery for subscription expiry. Remaining evaluation/worker details and application to other denial causes are proposals to test. None of these permissions is implemented. Authoring authority must match product, build and operation; its expiry must not automatically disable the selected rendering behavior. “No valid grant” includes absent, expired or rejected authority; a temporary outage alone does not invalidate an unexpired verified grant.
+D09/D11 select preservation, rendering of existing work, the new-authoring lock and verified-renewal recovery for subscription expiry. A bounded private native slice now implements and tests this lifecycle; the table remains the intended whole-product contract, which is not yet enforced in ordinary builds. Remaining evaluation/worker details and application to other denial causes are proposals to test. Authoring authority must match product, build and operation; its expiry must not automatically disable the selected rendering behavior. “No valid grant” includes absent, expired or rejected authority; a temporary outage alone does not invalidate an unexpired verified grant.
 
 | Operation | Valid authoring authority | No valid authoring authority | Proposed worker behavior | Unresolved issue or test |
 | --- | --- | --- | --- | --- |

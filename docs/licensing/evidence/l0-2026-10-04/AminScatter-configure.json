@@ -1,0 +1,16 @@
+{
+  "command": [
+    "cmake",
+    "-S",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\licensing-l0-2026-10-04\\run04\\source\\AminScatter",
+    "-B",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\licensing-l0-2026-10-04\\run04\\AminScatter",
+    "-G",
+    "NMake Makefiles",
+    "-DCMAKE_BUILD_TYPE=Release",
+    "-DCYRUS_MAX_YEAR=2027",
+    "-DMAXSDK_ROOT=F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\tooling\\max2027-sdk\\Program Files\\Autodesk\\3ds Max 2027 SDK\\maxsdk"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 2.9689999999827705
+}

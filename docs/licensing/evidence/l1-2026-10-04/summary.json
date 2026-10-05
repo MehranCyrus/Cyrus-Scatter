@@ -1,0 +1,77 @@
+{
+  "status": "PASS (bounded signed-license experiment; not production qualification)",
+  "original_run": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\licensing-l1-2026-10-04\\run03",
+  "source_head": "53bfc5d1c76929958dbeb29f5d4c746b2321d0ac",
+  "source_files": 177,
+  "source_scope": "Current licensing/lab code plus frozen product baseline",
+  "product_baseline": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\licensing-l0-2026-10-04\\run04",
+  "native_declarations": 69,
+  "licensing_code_drift_at_capture": [],
+  "documentation_changes_after_build": [
+    "CyrusLicensing/README.md",
+    "tools/licensing_lab/README.md"
+  ],
+  "ctest": {
+    "2026": {
+      "signed_groups": 6,
+      "signed_assertions": 876,
+      "policy_groups": 6,
+      "policy_assertions": 138
+    },
+    "2027": {
+      "signed_groups": 6,
+      "signed_assertions": 876,
+      "policy_groups": 6,
+      "policy_assertions": 138
+    }
+  },
+  "sdk_artifact_sha256": {
+    "2026": {
+      "CyrusSignedLicenseLab.dlx": "85a32e85722eb6e8c04b50067f2496a06a482dfd7fa9355b9e534d13dc879422",
+      "signed_license_tests.exe": "96d2c304141c4ae30f8ee9bf847e7ad90f42cc5436447b1c0203b4d67ae89fec",
+      "policy/cyrus_license_token.lib": "b05b2f2698ca5219fb92c154fcbef651ac57b0146835d74cd35b4e67aae21612",
+      "policy/license_policy_tests.exe": "b15eef619a71b57310ec305fed8614c6b3ac44194deae1e68c48a8ed04cb7593"
+    },
+    "2027": {
+      "CyrusSignedLicenseLab.dlx": "2dc66466bcee95a542c5f2e2ce6bef582e445fd93999bd342ab87e2516475359",
+      "signed_license_tests.exe": "a9b7e00ab37ab5c5876df97826a7ff80f3d23b5e7ada5c9b1cd8eb9de7beca82",
+      "policy/cyrus_license_token.lib": "a8754aabab615a19acff01b5c201dd0df0a397ffafc49c694915af240d2e4547",
+      "policy/license_policy_tests.exe": "4ae3cffe680123eadba18062abfb177c85a6b19595f5956f8191bb2e74b95222"
+    }
+  },
+  "signed_cases": 148,
+  "case_groups": {
+    "profile": 27,
+    "signature": 71,
+    "claims": 42,
+    "scope": 8
+  },
+  "deterministic_malformed_probes": 256,
+  "host": {
+    "create": {
+      "assertions": 31,
+      "observations": 1,
+      "verified_modules": 6
+    },
+    "reopen": {
+      "assertions": 25,
+      "observations": 0,
+      "verified_modules": 6
+    }
+  },
+  "host_version": "Max 2027.1 (29.1.0.11426), batch",
+  "renderer": "Default Scanline",
+  "scene_instances": 64,
+  "render_size": [
+    128,
+    128
+  ],
+  "render_pixels_equal": true,
+  "production_enforcement": false,
+  "real_device_binding": false,
+  "real_clock_recovery": false,
+  "scene_provenance_verified": false,
+  "max2026_runtime_tested": false,
+  "L0_complete": false,
+  "L1_complete": false
+}

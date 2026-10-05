@@ -8,6 +8,8 @@
         checkbox visibleCheck "Visible in viewport" pos:[8,226] width:(layersUI.width-16)
         checkbox enabledCheck "Enabled in final output" pos:[8,250] width:(layersUI.width-16)
         label countInfo "Select a layer." pos:[8,280] width:(layersUI.width-16) height:46
+        button upButton "Move up" pos:[8,334] width:((layersUI.width-22)/2)
+        button downButton "Move down" pos:[(layersUI.width/2+3),334] width:((layersUI.width-22)/2)
         fn currentLayer = (local leaf=root.selectedLayer();if leaf==undefined then undefined else root.logicalParent leaf)
         fn refreshStats = (
             if not controlsReady do return false
@@ -32,6 +34,7 @@
             visibleCheck.checked=valid and root.layerVisible[index]
             enabledCheck.checked=valid and root.layerEnabled[index]
             addButton.enabled=root.layerObjects.count<10
+            upButton.enabled=root.groupPolicy==3 and findItem members selected>1;downButton.enabled=root.groupPolicy==3 and findItem members selected<members.count
             controlsReady=true;binding=false;refreshStats()
         )
         on layersUI open do bind undefined
@@ -53,10 +56,12 @@
         )
         on visibleCheck changed value do if not binding do (
             undo "Cyrus layer visibility" on root.layerVisible[findItem root.layerObjects (currentLayer())]=value
-            CyrusViewportRedraw();root.mainUI.refreshStats()
+            root.procSyncEditVisibility();CyrusViewportRedraw();root.mainUI.refreshStats()
         )
         on enabledCheck changed value do if not binding do (
             undo "Cyrus layer enabled" on root.layerEnabled[findItem root.layerObjects (currentLayer())]=value
             root.invalidateGroups();root.mainUI.refreshStats()
         )
+        on upButton pressed do try(root.procMove (currentLayer()) -1)catch(messageBox (getCurrentException()) title:"Cyrus order")
+        on downButton pressed do try(root.procMove (currentLayer()) 1)catch(messageBox (getCurrentException()) title:"Cyrus order")
     )

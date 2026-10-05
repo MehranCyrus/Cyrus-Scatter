@@ -1,8 +1,8 @@
 # Licensing implementation roadmap
 
-**Updated:** 2026-10-04. Current sequence for the owned Cyrus service. The [static source audit](CODEBASE_AUDIT.md) supplies L0 discovery evidence; D09–D13 cover continuity, post-expiry rendering, foundation flexibility and the requested offline/device policy. All implementation milestones remain PLANNED; no licensing prototype or acceptance experiment has run.
+**Updated:** 2026-10-05. Current sequence for the owned Cyrus service. **L0/L1 remain IN PROGRESS, with a tested native ownership slice and local foundation now implemented.** The [October 5 result](NATIVE_FOUNDATION_2026-10-05.md) adds immutable publication, bounded permits, real CNG installation identity, DPAPI state, signed activation/time anchoring, two-Max expiry/renewal, and shared CS Edit/Brush mutation gates. Whole-product ownership, recovery/lifecycle and B07/B08 remain open. L2 and commercial L3–L6 gates are not complete. The ordinary product build still has no licensing enforcement.
 
-The first result should be a small, demonstrated authorization contract. Next build a testable native core and minimal service, then prove the combined workflow inside Max. Release scope follows evidence. No fixed schedule is supported before the first boundary and interoperability experiments.
+Continue from the demonstrated native slice to complete operation ownership and host lifecycle; then implement transactional assigned-seat issuance under the selected policy. The development issuer has no customer authentication or seat ledger. Release scope follows evidence, not elapsed coding time or native test counts.
 
 ## Milestones and dependencies
 
@@ -28,13 +28,15 @@ L4 is not required for an assigned-seat launch. Manual grants are sufficient for
 
 Include the selected D09/D11 lifecycle in the fixture: authorized edits, offline expiry, denied new edits, save/reopen, successful rendering of existing work, and verified renewal followed by continued editing. Compare parameters and edit identities before/after. Separately vary a source object, distribution surface and animation frame while authoring is locked; record what changes and use the result to settle B07. The render permission is selected, while its precise evaluation boundary and any frozen-geometry promise need proof.
 
-**Output:** `operation_contract` covering each entry path, a small disposable fixture/reproduction, observed limitations, and an updated B07 recommendation. The source audit exists; the operation contract and runtime reproduction are future deliverables. Stop expanding the backend if its essential authority assumptions remain unresolved.
+**Output:** `operation_contract` covering each entry path, a disposable fixture/reproduction, observed limitations, and an updated B07 recommendation. The [operation-family contract](OPERATION_CONTRACT.md) now distinguishes the original wrapper failures from the [native recipe/Edit/Brush slice](NATIVE_FOUNDATION_2026-10-05.md). That slice covers direct calls, load/Undo/render and expiry before commit; it does not establish complete operation coverage. Next extend complete layer/source recipes and PFlow/bake failure paths after fixing their continuity policy. Stop expanding the backend if its essential authority assumptions remain unresolved.
 
 ## L1 — Build the independent core
 
 Create a host-independent C++ target, a small host-facing ABI, an immutable verified snapshot, a pure policy function, structured reasons and bounded operation permits. Separate rights, build eligibility, connectivity, capacity and time confidence. Keep fake service/clock dependencies in test targets.
 
-Choose one maintained verifier and strict signed-envelope profile after compiling it with the actual supported toolchains and the proposed protected signer. Test bounded parsing and verification with independent known-good/bad vectors. Fix token purpose, issuer/audience, rights, subject, binding, release eligibility, deadline and critical-version rules before service issuance.
+The [independent components](../../CyrusLicensing/README.md) now supply pure policy, bounded Windows verification, immutable concurrent snapshots, native owner/session-bound permits and a real CNG/DPAPI/clock client. This is not a stable public ABI, production trust configuration or complete recovery/lifecycle implementation. Deterministic synthetic-clock fixtures and real-installation fixtures are separate build contexts; neither development issuer enters ordinary targets.
+
+The [candidate profile](SIGNED_TOKEN_PROFILE.md) uses CNG/ES256, pinned nlohmann/json and a separate cryptography/OpenSSL issuer. The current 19 groups / 1,120 assertions per SDK and real-installation Max results are recorded in [the October 5 report](NATIVE_FOUNDATION_2026-10-05.md). Continue with production account context, protected signer, qualified release identity and trust/rotation/recovery. Real installation-key evidence is not physical hardware attestation, perfect offline time or a production security assessment.
 
 Define immutable release metadata without changing persisted Max Class IDs. Product versions, service API, signed schema, ABI and commercial policy versions are different identifiers. Avoid redesigning installers merely to centralize one metadata file.
 
@@ -98,7 +100,7 @@ Run normal key rotation, compromise response, service/signer outage, stale-backu
 
 ## Acceptance experiments
 
-All rows are **NOT RUN for licensing** as of this source audit. Static source and document checks are not acceptance results. The future evidence record contains test ID, source/build identity, exact environment, policy configuration, expected/actual result, raw evidence path and decision. Numerical performance budgets are set from the L3 baseline before accepting a candidate.
+The [October 5 foundation](NATIVE_FOUNDATION_2026-10-05.md) supplies stronger but still **bounded** evidence for E01–E04/E08/E09/E13/E15/E16/E17. E03's laboratory profile passes; production key configuration remains open. E08 has real key/DPAPI and two-process tests, but no cross-user/reinstall/hardware qualification. E13 has clock unit cases and actual expiry mid-Brush gesture, but no final recovery or scheduled host checkpoint lifecycle. E16 has memory-only permit measurements and real file-contention isolation, not whole-product performance qualification. E05–E07/E10–E12/E14 require an implemented service/policy and remain unqualified. The B08 overlap counterexample is evidence of a limit, not successful seat enforcement. No whole release gate is marked complete merely from these passing slices.
 
 | ID | Experiment | Acceptance condition |
 | --- | --- | --- |
@@ -123,15 +125,24 @@ All rows are **NOT RUN for licensing** as of this source audit. Static source an
 ## Immediate coding packet
 
 - [x] Record the static source map, selected-file fingerprints and native declaration inventory in [CODEBASE_AUDIT.md](CODEBASE_AUDIT.md). This is discovery evidence only.
-- [ ] Freeze the experiment's source snapshot and representative fixtures; reconcile changes since the audit and leave unrelated ongoing work intact.
-- [ ] Convert the map into the L0 operation/caller contract and changed-parameter versus saved-evaluation reproduction.
-- [ ] Prototype denial before preview/PFlow cleanup and shared CS Edit mutation; preserve enable controls, identities, Undo and approved saved-state behavior.
+- [x] Freeze the first experiment's source snapshot and disposable fixture; reconcile Brush/group/MCP additions since the audit and preserve unrelated work.
+- [x] Record a provisional operation-family contract and changed-parameter versus saved-evaluation counterexamples. Complete entry-path coverage remains L0 work.
+- [x] Exercise wrapper denial before preview cleanup and selected CS Edit/Brush mutations; preserve enable controls, identities and the tested Undo paths.
+- [x] Prototype native ownership of amount/seed; cover direct calls, real CS Edit mutation and the actual SDK Move callback. Extend shared admission to Brush history/gestures without duplicating the runtime.
+- [ ] Extend native ownership to the complete procedural recipe and denial before PFlow/bake cleanup, including failure rollback and old-scene migration.
 - [ ] Prove D09/D11 offline expiry/save/reopen/render/renewal behavior; resolve B07 dependency scope before claiming the selected rendering behavior is qualified.
-- [ ] Simulate a full-term grant on disconnected device A and portal transfer to B; present the B08 delay/overlap choice before implementing customer transfers.
-- [ ] Define `Operation`, independent license facts, `Decision`, immutable snapshot, release identity and bounded lifetime in a host-independent test target.
-- [ ] Use named synthetic policies for unsettled terms; document them as test values.
-- [ ] Prove allow/deny/continuity and same-product feature extension; record limitations before real enforcement.
-- [ ] Select and qualify one verifier/signer profile, then implement L1 negative tests.
-- [ ] Update this roadmap with actual evidence and the smallest justified L2 service scope.
+- [x] Demonstrate that issuing B a new full-term grant leaves disconnected A's signed authority valid; present the B08 delay/overlap choice. This is a synthetic issuer counterexample, not an implemented portal.
+- [x] Define `Operation`, independent facts and structured `Decision` in a host-independent test target.
+- [x] Add immutable verified snapshot ownership and bounded, single-use operation lifetime; test wrong owner/session, replay, renewal and expiry before commit.
+- [ ] Qualify immutable production release identity and old-build eligibility.
+- [x] Add real installation-key proof, protected transactional state, fresh signed activation anchor and renewal; verify same-user concurrent processes and file contention.
+- [x] Add background local checkpoint/refresh; prove renewal propagation without a refresh button and clean Max worker shutdown.
+- [ ] Complete authenticated clock/device recovery and host fault qualification; qualify crash/restart, account/profile change, disk failures and lost-state behavior.
+- [x] Document synthetic active/expired/renewed scenarios and term values as tests, not commercial policy.
+- [x] Exercise policy allow/deny/continuity and distinct same-product Max wrappers; record limitations. Full E02 extension acceptance remains pending.
+- [x] Select and compile a candidate verifier/profile; pass independent issuer, bounded parser/signature negative tests and a signed Max renewal fixture. See the second experiment's limited scope.
+- [ ] Review the candidate and qualify production trust ownership, protected signer compatibility, real context and rotation/recovery. Do not ship lab keys or fake bridge inputs.
+- [x] Record the first loop's actual evidence and incomplete qualification status.
+- [ ] Confirm the smallest L2 service scope after L0's native boundary and L1's real verification contract are credible.
 
 This packet implements no real checkout, customer migration or production enforcement. Those belong to later milestones with a concrete reviewed policy and tested candidate. Do not run a parallel provider-selection project or re-estimate the old vendor-based schedule.

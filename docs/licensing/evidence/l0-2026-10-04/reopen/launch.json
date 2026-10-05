@@ -1,0 +1,15 @@
+{
+  "command": [
+    "C:\\Program Files\\Autodesk\\3ds Max 2027\\3dsmaxbatch.exe",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\licensing-l0-2026-10-04\\run04\\reopen\\start.ms",
+    "-i",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\licensing-l0-2026-10-04\\run04\\reopen\\max.ini",
+    "-p",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\licensing-l0-2026-10-04\\run04\\reopen\\plugins.ini",
+    "-listenerlog",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\licensing-l0-2026-10-04\\run04\\reopen\\listener.log",
+    "-log",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\licensing-l0-2026-10-04\\run04\\reopen\\session.log"
+  ],
+  "exit_code": 0
+}

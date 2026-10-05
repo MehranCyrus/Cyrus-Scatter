@@ -1,0 +1,12 @@
+{
+  "pid": 32916,
+  "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\procedural07-ui-20261005-e",
+  "host_package": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusMCP",
+  "binaries": {
+    "AminScatter.dlx": "eabbbeab35453dbbfeae92316b5d1ff9578a19f4f97e563ed4f4a9323885fbbe",
+    "CyrusBrush.dlx": "d18936ca918bebb03303dac0da0703332da649ad3cd3c910512119a9597cd211",
+    "CyrusBrushStorage.dlh": "72e2ff37cbc2130f612ad930b95fabc50cd33d633d2f87caca542f71e26aa328",
+    "CyrusScatterEdit.dlm": "a12d3d9d5275a4c1e7ab7b313526f6a6b6372c71ae940ad1eeb175f0d535abc2",
+    "CyrusSurfaceAnalyzer.dlx": "b607557a9e1899e51db20d67acc816bd18deca42a192d542465f63305e6e9f36"
+  }
+}

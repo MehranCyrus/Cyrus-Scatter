@@ -7,7 +7,9 @@
         spinner weightSpin "Share weight:" pos:[4,120] width:132 fieldWidth:48 range:[0,10000,1]
         checkbox enabledCheck "Enable set" pos:[4,148] width:132
         checkbox visibleCheck "Show set" pos:[4,172] width:132
-        label info "Sources and Brush below edit this set. Other sections affect the whole layer." pos:[4,200] width:132 height:64
+        button upButton "Move up" pos:[4,200] width:62
+        button downButton "Move down" pos:[72,200] width:64
+        label info "Sources, Brush and set rules edit this set. Population, transforms and cleanup belong to the layer." pos:[4,232] width:132 height:76
         fn currentSet = (root.selectedPaintSet owner)
         fn bind layer = (
             binding=true;members=root.layerSets owner
@@ -17,6 +19,7 @@
             nameEdit.text=leaf.paintSetName;weightSpin.value=leaf.paintSetWeight
             enabledCheck.checked=leaf.paintSetEnabled;visibleCheck.checked=leaf.paintSetVisible
             removeButton.enabled=leaf!=owner;addButton.enabled=root.groupPolicy==2 and root.layerObjects.count<10
+            upButton.enabled=root.groupPolicy==3 and findItem members leaf>1;downButton.enabled=root.groupPolicy==3 and findItem members leaf<members.count
             controlsReady=true;binding=false
         )
         on setsUI open do bind owner
@@ -27,5 +30,7 @@
         on nameEdit entered value do if not binding and value!="" do (undo "Cyrus set name" on (currentSet()).paintSetName=value;panel.bindEditors())
         on weightSpin changed value do if not binding do (undo "Cyrus set weight" on (currentSet()).paintSetWeight=value;root.invalidateGroups())
         on enabledCheck changed value do if not binding do (undo "Cyrus set enabled" on (currentSet()).paintSetEnabled=value;root.invalidateGroups())
-        on visibleCheck changed value do if not binding do (undo "Cyrus set visible" on (currentSet()).paintSetVisible=value;CyrusViewportRedraw())
+        on visibleCheck changed value do if not binding do (undo "Cyrus set visible" on (currentSet()).paintSetVisible=value;root.procSyncEditVisibility();CyrusViewportRedraw())
+        on upButton pressed do try(root.procMove (currentSet()) -1 sets:true;panel.bind())catch(messageBox (getCurrentException()) title:"Cyrus order")
+        on downButton pressed do try(root.procMove (currentSet()) 1 sets:true;panel.bind())catch(messageBox (getCurrentException()) title:"Cyrus order")
     )

@@ -1,6 +1,6 @@
 # Licensing document audit
 
-**Review and consolidation:** 2026-10-02. This records documentation findings, not vulnerabilities found in a deployed licensing system. No such system was implemented or tested by this task.
+**Review and consolidation:** 2026-10-02. This records documentation findings, not vulnerabilities found in a deployed licensing system. That initial review implemented no licensing system. The separate [October 4 prototype follow-up](#first-implementation-follow-up-on-2026-10-04) records later bounded experiments.
 
 ## Scope and disposition
 
@@ -86,7 +86,7 @@ All nine diagrams were read. Diagrams 01, 03, 07 and 09 encode the retired provi
 
 The user's follow-up requested source-grounded improvements to the licensing plan. The [codebase audit](CODEBASE_AUDIT.md) records ten findings from generation, preview, retained display, CS Edit, Analyzer, bake/PFlow, startup and packaging paths. Its [source evidence](evidence/codebase_snapshot_2026-10-02.json) records 37 selected file fingerprints and 38 native MAXScript declarations, including relevant uncommitted viewport work. This is a targeted static integration audit, not a full code/security audit or completed licensing boundary experiment.
 
-The highest-priority additions are separate artist enable and license state; operation admission before clearing caches or transient render nodes; shared CS Edit mutation coverage; preservation of identity-recovery and history paths; explicit runtime/credential ownership; and final-artifact release identity/signing. No production source or scene was changed by this audit. These findings refine the existing L0/L1/L3 milestones and E01–E17 tests without creating another roadmap. All licensing runtime experiments remain NOT RUN.
+The highest-priority additions are separate artist enable and license state; operation admission before clearing caches or transient render nodes; shared CS Edit mutation coverage; preservation of identity-recovery and history paths; explicit runtime/credential ownership; and final-artifact release identity/signing. No production source or scene was changed by this audit. These findings refine the existing L0/L1/L3 milestones and E01–E17 tests without creating another roadmap. At that October 2 review, all licensing runtime experiments were NOT RUN.
 
 ## Policy clarification on 2026-10-04
 
@@ -95,6 +95,22 @@ The user confirmed an adaptable foundation and preservation of work with editing
 B07 remains open for the precise procedural dependency, animation, worker-deployment and bake/export boundary. B05/B08 must reconcile full-term offline use with time-confidence recovery and still-usable old grants. Website deletion cannot prove offline revocation; strict delayed reuse, explicitly accepted transfer overlap and shorter offline authority are unresolved alternatives. No subscription length, shorter refresh window or overlap exception was silently selected.
 
 The architecture now explains signed calendar deadlines, local protected storage, server-time/elapsed-time evidence, activation identity and recovery. It rejects local file timers as entitlement authority and IP/bare UUID as sufficient device proof. The source register records fresh Windows/network references and a clock-limit recheck. These updates affect six current licensing documents; the dated source audit and historical packages remain unchanged. No plugin behavior was changed or licensing runtime result claimed.
+
+## First implementation follow-up on 2026-10-04
+
+The user's request to proceed led to a bounded [policy and Max experiment](L0_EXPERIMENT_2026-10-04.md), not production enforcement. The new C++ policy target and opt-in lab are separate from product builds. The later source inventory contains 69 native declarations across a 163-file snapshot, including Brush/group/MCP development. The October 2 audit remains dated evidence; its count was not rewritten to describe unreviewed newer code.
+
+The first runtime loop passed its six policy groups in both SDK builds and its two Max 2027 batch stages with loaded-module verification and Scanline image comparison. Direct-call counterexamples demonstrate that script wrappers are insufficient. The [operation contract](OPERATION_CONTRACT.md), current README, architecture and roadmap now distinguish these partial results from the still-open E01–E17 acceptance conditions. Historical statements that experiments were unrun describe the earlier review, not the present status.
+
+## Signed-component follow-up on 2026-10-04
+
+The user asked to reuse appropriate open-source code and test an experimental version before main-plugin integration. The [component record](IMPLEMENTATION_COMPONENTS.md) selects Windows CNG plus pinned MIT-licensed nlohmann/json, with an independent Python cryptography issuer. The [candidate profile](SIGNED_TOKEN_PROFILE.md) documents real signature/claim admission and explicitly synthetic device/time/scene inputs.
+
+The [signed experiment](SIGNED_LICENSE_EXPERIMENT_2026-10-04.md) passed twelve native groups per SDK build and two disposable Max 2027 stages, including signed renewal and equal render pixels. The 177-file snapshot freezes the previously tested product baseline because concurrent procedural source edits were outside licensing scope. The report preserves failed-attempt history and exact artifact hashes. Current status pages now mark L1 in progress with partial E03 evidence; they no longer describe all signature work as unimplemented. L0 ownership remains open, and no production deployment or commercial policy was changed.
+
+The September package, October 2 audit and first-loop report remain dated evidence. Their historical scope is not rewritten as if they had already included real signatures. The new report's device/time and direct-call limitations prevent these results from being presented as completed licensing security.
+
+B07 remains open after source/surface dependency counterexamples, and B08 remains open for offline device transfers. No term length, transfer-overlap exception, real signing profile, service deployment or customer license was selected or issued.
 
 ## Preservation and validation
 

@@ -51,12 +51,21 @@ def scatter_version():
     return versions[0]
 
 
+def reject_development_binary(filename, data):
+    for marker in ('CYRUS_LICENSE_EXPERIMENT_NEVER_SHIP', 'NEVER SHIP',
+                   'cyrusOwnedLabClock', 'cyrusOwnedLabActivate',
+                   'cyrusOwnedLabBrushEnd', 'cyrusSignedLabInstall'):
+        if marker.encode('utf-16le') in data or marker.encode('ascii') in data:
+            raise RuntimeError('Refusing development licensing authority in product package: '+filename)
+
+
 def package(project, name, version, native_names, script_name, args, build_dir):
     if project == 'AminScatter' and version != scatter_version():
         raise ValueError('Requested Scatter version differs from generated source. Use a frozen checkout for historical versions.')
     payload = {}
     for filename in native_names:
         payload[filename] = (build_dir / project / filename).read_bytes()
+        reject_development_binary(filename, payload[filename])
     native_id = sha(b''.join(payload[n] for n in sorted(payload)))[:12]
     for path in sorted((ROOT / project / 'installer').iterdir()):
         if path.is_file():
@@ -87,12 +96,18 @@ def package(project, name, version, native_names, script_name, args, build_dir):
            'Open sections flow vertically at the panel width; Layer Manager owns names, visibility and cached counts.\n'
            'Scroll over section backgrounds/headers with the wheel, or left-drag blank grey panel space.\n'
            'Each layer owns its full settings. Named paint sets inside it own independent assets and saved Brush histories.\n'
-           'Population, area, transforms, collision and cleanup are shared by that parent layer. Capacity: 10 total populations.\n'
+           'Population, area, transforms and cleanup belong to the parent layer. Capacity: 10 total populations.\n'
+           'Procedural 0.7 is an explicit opt-in in Surface Scatter. Old scene policies keep their existing sampling.\n'
+           'Procedural / Rules separates self, paint-set and layer spacing, using adjustable radius factors and gaps.\n'
+           'Layer/paint-set order is visible and independent of random seeds and allocation tie order.\n'
+           'Background outside coverage references earlier siblings; Between plants uses configured spacing.\n'
+           'Accepted target refills a bounded prefix. Read shortfall/round/attempt diagnostics; limits do not prove a full surface.\n'
+           'Individual CS Edit plants/clones can have world-radius or multiplier overrides.\n'
            'Coverage / Brush: Paint/Erase the selected set, edit stroke history, Fill/Empty and Undo.\n'
-           'Spacing uses accepted final plants, pair gaps and priority; conflicting manual overrides are preserved and reported.\n'
+           'Spacing uses accepted plants and protected reservations; conflicting manual overrides are preserved and reported.\n'
            'Flat and curved static surfaces are supported. Topology changes require target validation; strokes are preserved.\n'
            'Manual mode updates the mask immediately and publishes plants when Update is pressed.\n'
-           'Painted coverage pauses point Relax. Shared groups pause Boundary Relax. Stored settings are preserved.\n'
+           'Brush and Procedural 0.7 pause point Relax. Shared policies pause Boundary Relax. Stored settings are preserved.\n'
            'Existing scenes retain legacy spacing. Explicit conversion is undoable; setups with CS Edit remain legacy.\n'
            'Randomize XYZ has separate Undoable rotation, scale, whole-scale and movement resets.\n'
            'Brush with unprojected random movement remains outside this release.\n'
@@ -103,8 +118,9 @@ def package(project, name, version, native_names, script_name, args, build_dir):
            if project == 'AminScatter' else 'The Analyzer algorithm is unchanged in this performance iteration.\n') +
         'Create > Geometry > Cyrus, then select the tool and use Modify.\n'
         'Use saved test scene copies to compare performance and verify output.\n'
-        + ('Max 2027 runtime qualification is recorded in the layers-first report. Max 2026 is SDK-built/tested and still needs host testing.\n'
-           'Cyrus Automation/MCP is a separate optional installation. Plan 2.0 adds typed settings; Brush history/set mutations remain local.\n'
+        + ('0.7 is a candidate pending interactive Max 2026/2027 qualification. Older runtime reports do not certify this build.\n'
+           'Procedural 0.7 supports Random/Clusters; Line Pattern/Analyzer assignment stays on the previous policies.\n'
+           'Cyrus Automation/MCP is separate. It can inspect 0.7 recipe/diagnostics; closed plan schemas 1/2 cannot overwrite policy 3.\n'
            if project == 'AminScatter' else '')
     ).encode('utf-8')
     manifest = dict(product=name, version=version, max_year=args.max_year,
@@ -151,6 +167,7 @@ def main():
         dest = base / project
         run(['cmake', '-S', ROOT / project, '-B', dest, '-G', 'NMake Makefiles',
              '-DCMAKE_BUILD_TYPE=Release', f'-DCYRUS_MAX_YEAR={args.max_year}',
+             '-DCYRUS_NATIVE_LICENSE_EXPERIMENT=OFF', '-DCYRUS_LICENSE_INSTALLATION_CONTEXT=OFF',
              f'-DMAXSDK_ROOT={args.sdk_root.resolve()}'], env)
         run(['cmake', '--build', dest], env)
         run(['ctest', '--test-dir', dest, '--output-on-failure'], env)

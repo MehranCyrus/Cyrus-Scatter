@@ -1,0 +1,45 @@
+[  8%] Building CXX object CMakeFiles/amin_scatter.dir/src/scatter.cpp.obj
+scatter.cpp
+[ 16%] Building CXX object CMakeFiles/amin_scatter.dir/src/execution.cpp.obj
+execution.cpp
+[ 25%] Building CXX object CMakeFiles/amin_scatter.dir/src/brush.cpp.obj
+brush.cpp
+[ 33%] Building CXX object CMakeFiles/amin_scatter.dir/src/group_spacing.cpp.obj
+group_spacing.cpp
+[ 41%] Linking CXX static library amin_scatter.lib
+[ 41%] Built target amin_scatter
+[ 50%] Building CXX object CMakeFiles/AminScatter.dir/src/max_bridge.cpp.obj
+max_bridge.cpp
+[ 58%] Building CXX object CMakeFiles/AminScatter.dir/src/preview.cpp.obj
+preview.cpp
+[ 66%] Building CXX object CMakeFiles/AminScatter.dir/src/point_display.cpp.obj
+point_display.cpp
+[ 75%] Building CXX object CMakeFiles/AminScatter.dir/src/cyrus_edit.cpp.obj
+cyrus_edit.cpp
+[ 83%] Building CXX object CMakeFiles/AminScatter.dir/src/rollout_scroll.cpp.obj
+rollout_scroll.cpp
+[ 91%] Building RC object CMakeFiles/AminScatter.dir/src/cyrus_edit.rc.res
+Microsoft (R) Windows (R) Resource Compiler Version 10.0.10011.16384
+
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+
+[100%] Linking CXX shared module AminScatter.dlx
+[100%] Built target AminScatter
+[ 35%] Built target amin_scatter
+[ 85%] Built target AminScatter
+[ 92%] Building CXX object CMakeFiles/CyrusScatterEdit.dir/src/edit_plugin.cpp.obj
+edit_plugin.cpp
+[100%] Linking CXX shared module CyrusScatterEdit.dlm
+[100%] Built target CyrusScatterEdit
+[ 71%] Built target amin_scatter
+[ 85%] Building CXX object CMakeFiles/CyrusBrush.dir/src/brush_host.cpp.obj
+brush_host.cpp
+[100%] Linking CXX shared module CyrusBrush.dlx
+[100%] Built target CyrusBrush
+[ 55%] Built target amin_scatter
+[ 77%] Built target CyrusBrush
+[ 88%] Building CXX object CMakeFiles/CyrusBrushStorage.dir/src/brush_storage_plugin.cpp.obj
+brush_storage_plugin.cpp
+[100%] Linking CXX shared module CyrusBrushStorage.dlh
+[100%] Built target CyrusBrushStorage

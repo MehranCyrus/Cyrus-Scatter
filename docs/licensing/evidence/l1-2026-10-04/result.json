@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "scope": "Real ES256 verification; synthetic identity/time/scene evidence; lab only",
+  "sdk_builds": [
+    2026,
+    2027
+  ],
+  "host": "Max 2027 batch, Default Scanline",
+  "render_pixels_equal": true,
+  "checks": {
+    "create": "PASS\thost_2027\nPASS\tsigned_lab_identity\nPASS\tdisposable_scene_loaded\nPASS\texisting_placements\nPASS\tempty_session_denied\nPASS\ttampered_grant_rejected\nPASS\ttamper_cannot_activate\nPASS\tsynthetic_wrong_device_rejected\nPASS\twrong_context_cannot_activate\nPASS\tsigned_grant_imported\nPASS\tsigned_grant_allows_authoring\nPASS\tbad_replacement_rejected\nPASS\tbad_replacement_preserves_valid_grant\nPASS\tsigned_authoring_admitted\nPASS\treal_native_edit_applied\nPASS\tpreview_ready\nPASS\tsigned_deadline_reached\nPASS\texpired_wrapper_denied\nPASS\texpired_denial_preserves_edit\nPASS\texpired_denial_preserves_cache\nPASS\tartist_flags_preserved\nPASS\trender_existing_fixture_state\nPASS\trender_continuity_policy\nPASS\trender_image\nPASS\trender_population_64\nPASS\trender_existing_fixture_state\nPASS\trender_continuity_policy\nPASS\trender_image\nPASS\trender_population_64\nPASS\tnative_boundary_gap_still_observable\nOBSERVED\tdirect_generation_ungated\tSignature validation alone does not enforce product entry points\nPASS\tsave_expired_scene\nCOMPLETE\n",
+    "reopen": "PASS\thost_2027\nPASS\tsigned_lab_identity\nPASS\tdisposable_scene_loaded\nPASS\texisting_placements\nPASS\tempty_session_denied\nPASS\ttampered_grant_rejected\nPASS\ttamper_cannot_activate\nPASS\tsynthetic_wrong_device_rejected\nPASS\twrong_context_cannot_activate\nPASS\tsigned_grant_imported\nPASS\tsigned_grant_allows_authoring\nPASS\tbad_replacement_rejected\nPASS\tbad_replacement_preserves_valid_grant\nPASS\tcold_saved_edit_retained\nPASS\tsaved_identities_retained\nPASS\treimport_does_not_restart_expired_term\nPASS\trender_existing_fixture_state\nPASS\trender_continuity_policy\nPASS\trender_image\nPASS\trender_population_64\nPASS\tsigned_renewal_imported\nPASS\tsigned_renewal_allows_authoring\nPASS\trenewed_wrapper_admitted\nPASS\trenewed_native_edit_applied\nPASS\trenewed_edit_undo_preserves_scene\nCOMPLETE\n"
+  },
+  "production_enforcement": false,
+  "real_device_binding": false,
+  "clock_recovery": false,
+  "native_boundary_gap": "Direct product primitives still accept authoring outside the lab wrapper"
+}

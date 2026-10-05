@@ -1,0 +1,5 @@
+population,kept,reported_neighbor_visits,elapsed_ms
+2000,2000,0,13.7575
+4000,4000,0,54.6121
+8000,8000,0,197.405
+16000,16000,0,745.894

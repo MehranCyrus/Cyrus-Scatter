@@ -1,0 +1,222 @@
+{
+  "recorded_at_utc": "2026-10-04T20:22:08.707143+00:00",
+  "checkpoint_commit": "53bfc5d1c76929958dbeb29f5d4c746b2321d0ac",
+  "working_tree_implementation": true,
+  "product_version": "0.7.0",
+  "evaluation_policy": 3,
+  "maxscript_serialization": 52,
+  "max_started": true,
+  "installed": false,
+  "interactive_qualification": "Max 2027 private host qualified within documented limits; Max 2026 host unavailable",
+  "generator": {
+    "check": "offline_generator_and_integration",
+    "passed": true,
+    "maxscript_compiled": false,
+    "ui_controls_in_inventory": 218,
+    "generated_sha256": "fb2350bb4f859dbbf4e043f2ee42d94f90084154996a822ca5cc18fc04ea7d29",
+    "preserved_files": [
+      "AminScatter/src/point_display.cpp",
+      "AminScatter/src/preview.cpp",
+      "AminScatter/src/rollout_scroll.cpp",
+      "CyrusMCP/cyrus_mcp/models.py",
+      "CyrusMCP/cyrus_mcp/contracts.py"
+    ],
+    "interactive_max_run": false
+  },
+  "native_builds": [
+    {
+      "max_sdk": 2026,
+      "native_tests_passed": 13,
+      "native_tests_failed": 0,
+      "native_files": {
+        "AminScatter.dlx": "c1db5237001c8e9faba5db2923e6505de81e1c28e6fafa499229268dfac74970",
+        "CyrusScatterEdit.dlm": "0df6b17a80749ec97891c965755fd113a716e14c5b2e536cdf6314c6b2887037",
+        "CyrusBrush.dlx": "dcbc3e2e90eafd412a15eaaa9fda11643c7e4fbbacae66bc223aa75cd4bac5bd",
+        "CyrusBrushStorage.dlh": "c1e5169b0f0796acbec9de2b6b6a96d49dfa3f19584af635915bec23c17b4fcb"
+      },
+      "logs": {
+        "configure.log": "7da8cba073f4ce8d048bb6c52fbb4312492a0a9824b3087a081f98dbdfaa9218",
+        "build.log": "ea9b74e8abd445dbc37bde5e6eaf719a79ec195b4bcd37ad49e54aec0ac8a9c7",
+        "tests.log": "aa2680417cc0d794893ee497ea8a97a5fb49d14a804fe148a5167f28fe08939d"
+      }
+    },
+    {
+      "max_sdk": 2027,
+      "native_tests_passed": 13,
+      "native_tests_failed": 0,
+      "native_files": {
+        "AminScatter.dlx": "a666f17f49471d1130886d5b0c530cf61b62a0759e103c5b582dcf36fc882a6b",
+        "CyrusScatterEdit.dlm": "a12d3d9d5275a4c1e7ab7b313526f6a6b6372c71ae940ad1eeb175f0d535abc2",
+        "CyrusBrush.dlx": "d18936ca918bebb03303dac0da0703332da649ad3cd3c910512119a9597cd211",
+        "CyrusBrushStorage.dlh": "72e2ff37cbc2130f612ad930b95fabc50cd33d633d2f87caca542f71e26aa328"
+      },
+      "logs": {
+        "configure.log": "c45200c4fba3a5cda9d4a7a961ad6e7e0d1004ab537ef03f8619649fc4e5f68f",
+        "build.log": "50ec6076565ad66d58b0752fd435fbcfc03562415bbb2ec20debbec7143035ad",
+        "tests.log": "7661c4f61624acc4722fdabbb0a4bb410e31d6a9ff879f1973fe28e786d31d2e"
+      }
+    }
+  ],
+  "mcp_tests": {
+    "passed": 64,
+    "failed": 0,
+    "live_host": false
+  },
+  "native_source_sha256": {
+    "AminScatter/include/brush.h": "c3859f67d437bf45eff2930d54c0e3652e390eecd341e3cb584d86ec1717ea56",
+    "AminScatter/include/execution.h": "e9f2cfdf677366f491dc01cea83301ce53111c5073633333a4adf1db2ad509d2",
+    "AminScatter/include/group_spacing.h": "b04b3e47f0f1d5789f274492ca4d2a0777e5f1b500070ba5ef88426c4cf08502",
+    "AminScatter/include/point_preview.h": "5dec4890f38338f99baf1d0e163274aa515b455b34d3a8acc51f4e917017edb6",
+    "AminScatter/include/preview_sampling.h": "14e389d96653e861896a133c6efa9a6d42f96e2cc8d3e5e6ee665221b9a4645f",
+    "AminScatter/include/procedural.h": "ef9ce89dce26aa9dafb077c903af73f1b0a71ebc946febabd4bf0a006e546dbd",
+    "AminScatter/include/scatter.h": "7c97f85affcd9af68da032458406524316e6570f69e3451012b5d187bcdaf5c2",
+    "AminScatter/src/analyzer_area_bridge.inc": "90c08d2650c8bea809900fd23f2abc8d3e26272c95d49a315552711aa6ad48bc",
+    "AminScatter/src/boundary_falloff.inc": "a8c2669675dcb853d79c2ceaf90bf092d09c27d09a48991f0ac3cd024737d99f",
+    "AminScatter/src/boundary_falloff_bridge.inc": "4af974149fa2fc6a82a6e2d0401bb88deca0e3cc9441ea6b8757013e7259d555",
+    "AminScatter/src/brush.cpp": "9e8f8a05fb9989b032a7a04de797323635a8bbbd71ab8bcf245fd22c84ccd317",
+    "AminScatter/src/brush_host.cpp": "3c0e50671bb815b894ac91905cdf8a3cca1622f9467a8feb72834d6dc2ea0309",
+    "AminScatter/src/brush_storage_plugin.cpp": "cf3d949ca9695e42c70f0905db41bd24e77d520b7f7a571a72a8bfc69ce995d3",
+    "AminScatter/src/cluster.inc": "e3f7eddd8133e34f91c1e50d5c4d1ac4ca2f4a6dc611728a0848c16f9f3e3680",
+    "AminScatter/src/cyrus_edit.cpp": "39b32acf1ed4f40458ca10adb71294b65be3139e33fa6b75c6872dfa37dcc9dd",
+    "AminScatter/src/cyrus_edit.rc": "2ed905b328e04f092f89a4e1e800d9fba724a0c33f9ea3262fe886040f53fb33",
+    "AminScatter/src/cyrus_edit_stack.inc": "f8e0b37d42ba6c7a2a1cf02d938c2b777a03335637cd9adac7050d132a35bd8b",
+    "AminScatter/src/cyrus_edit_storage.inc": "561ef94b0fa26e16eb4058398cbff0e0f7c3c84ec74fc181d0c674be9fbf036b",
+    "AminScatter/src/edge_border.inc": "df5f43d5614d1d44a274b9a67c70c659d24964b1ffad665e1956232581951f8c",
+    "AminScatter/src/edit_plugin.cpp": "81df34e45b3a7635d5b7ebead5950cbaf7bf45a0f5a569385ba52c7e4901091f",
+    "AminScatter/src/execution.cpp": "b54963d69441d473ed52f76b125c4eb3d0a38c564900f28abd76efa7bcbf1136",
+    "AminScatter/src/final.inc": "eb77d2cfcbc74c87b02a047d67f3623984dcbe3bd8f6e818d8d4c2698fdc7272",
+    "AminScatter/src/geometry_preview.inc": "3a72c3064fb23f72e042554ad9d2e4ded7b4efaa1b481550f38753b357b8ad65",
+    "AminScatter/src/group_spacing.cpp": "73d973b3d22f51c00dae7f4282d7f8159b19dea0b27f7ddb57c2d06815acc1a1",
+    "AminScatter/src/group_spacing_bridge.inc": "84514cdc7a7d4d9690d5ae179af1d9864897f4a1e56edacf2f4bacd158db77a7",
+    "AminScatter/src/max_bridge.cpp": "1f7927624560a115906b9fd0868060485696ce1439a749e66e9a3f1e77ee66d7",
+    "AminScatter/src/mesh_display.inc": "91b694e319d1d5864f1ae6a6dd67c8bb033d44420f770ed0645c4cc4547d8c39",
+    "AminScatter/src/orientation.inc": "d485e2b8ea5c3abf3fc00a7e7b7139ae4b5d3995ee17f3aad7afff8cc4bfcea8",
+    "AminScatter/src/orientation_bridge.inc": "c967d950dfd1308bd989dc3e819b959ae64eb69acdaf728b4c6ba2dd694c639e",
+    "AminScatter/src/placement_identity.inc": "a33f6d19e8bff75b90e2cbbc2f969d00c5982c5301918efddf1108a86ca0a2aa",
+    "AminScatter/src/point_display.cpp": "fffbba8c231ee937e749116dd4a0184f4d0c8ff4c366d85c60495c463d1eb620",
+    "AminScatter/src/prepared_band.inc": "5d01452faed01a630428506cc7ce099ee909ce64204edef5448a03c1a1000cf0",
+    "AminScatter/src/preview.cpp": "6465bf8dcbaaf213ab24f6362c6f92156333008d4585a645f539ba60bd4d8d6c",
+    "AminScatter/src/preview_batches.inc": "a2a7df3d65a6278d49aad80361bffe8db15fae1419feb44e993354f5c31c7acd",
+    "AminScatter/src/procedural.cpp": "53ac038ef7953c2dbc562112f44650a0ec2892ccc95e8436f8017472b5a51a62",
+    "AminScatter/src/procedural_bridge.inc": "839a69195d3f854a1540a942f71cf16dcdb8796a20da34dcd30156baf2d12e71",
+    "AminScatter/src/rollout_scroll.cpp": "f73f1a3e8e87ec819f503dcde3c2c4d33fcd85a09e82fff7fa9f47865492fff5",
+    "AminScatter/src/scatter.cpp": "4f05b7c2fa75cc50f768989e6dafd3a9432f8be1a6b23a0b75fdbcb274f33b49",
+    "AminScatter/src/spacing.inc": "96ef2d89f07cf9e6c67a93f4c91e990da98016f58c6278fce543a7b09e289c77",
+    "AminScatter/src/whole_scale_bridge.inc": "8374345cee715b0ad5c65e5478f191274e1ebdcbc5ffbe861bf450d7793c45d7",
+    "AminScatter/tests/boundary_falloff_tests.cpp": "ab48b370731b7f667fc39156654d532a0693b3e0a7836a06c759ed478bf3c06a",
+    "AminScatter/tests/brush_tests.cpp": "b2d62ac7e95d7678342f962f9dec7a977bb01d7272f7686c7cea242ffbf17a89",
+    "AminScatter/tests/compute_benchmark.cpp": "9f59cf70e0511c761d59c1c1b19335bbef0a3d9ddce30b3df93ce94f3adcc4c5",
+    "AminScatter/tests/edge_border_tests.cpp": "f85b1c429fc080e94ea7bdc5771286cef066d7979acfe4065caf5bc30f3c49b1",
+    "AminScatter/tests/group_spacing_tests.cpp": "67300e62c679ea27b95784216441af79119668cc3008a3a71dab04b493f75046",
+    "AminScatter/tests/orientation_tests.cpp": "3a49477ce55d03cd342beec23123b581a50a7d8f13626834207661c2f4fa8076",
+    "AminScatter/tests/prepared_band_tests.cpp": "ce1622cbe460eaba14c09a34ed669fcc74bdb08b018c17c754d12b0ddf33769d",
+    "AminScatter/tests/preview_sampling_tests.cpp": "e2eac5bd2ef640e5dc11f8778bb55749033baea4714d5fe2fccbd764f80be819",
+    "AminScatter/tests/procedural_tests.cpp": "2d0118d5330955dd7d8b875ac3f802245bc8cb708ee37ae60e678ab566743cb1",
+    "AminScatter/tests/scatter_tests.cpp": "c0e0eb48287e008d6f88c4baadd013d183bf49125f607c8c716315237600c402",
+    "AminScatter/tests/spacing_tests.cpp": "9fc18b3e4629b9e9a1b79b67ceb75f21ae671211396a5cfd909239040fc5a2e7",
+    "AminScatter/tests/threading_tests.cpp": "f3336cfd3ffe0c642fd839cf7eb4b6002fd697a04072010f963bf1d020f87507",
+    "AminScatter/tests/weight_tests.cpp": "792203629d369f7476d097c97f3dc8082811a5e5deb8fbc62ff74ab1a7b65df9",
+    "AminScatter/CMakeLists.txt": "eeaee55ff07b9c07cf24d33b56159baf48ac7e7afc7663312c059fb59c8a9299"
+  },
+  "packages": [
+    {
+      "path": "dist/procedural-0.7-candidate/CyrusScatter-0.7.0-Max2026.mzp",
+      "sha256": "c5c6edb7b7b56692ee84b82684a02f4d6254dc7758a01e96718901602161288b",
+      "manifest": {
+        "product": "Cyrus Scatter",
+        "version": "0.7.0",
+        "max_year": 2026,
+        "toolset": "14.38.33130",
+        "windows_sdk": "10.0.19041.0",
+        "configuration": "Release",
+        "native_id": "fc41f25156d1",
+        "files": {
+          "AminScatter.dlx": "c1db5237001c8e9faba5db2923e6505de81e1c28e6fafa499229268dfac74970",
+          "CyrusBrush.dlx": "dcbc3e2e90eafd412a15eaaa9fda11643c7e4fbbacae66bc223aa75cd4bac5bd",
+          "CyrusBrushStorage.dlh": "c1e5169b0f0796acbec9de2b6b6a96d49dfa3f19584af635915bec23c17b4fcb",
+          "CyrusScatter.mcr": "74a3c13a1c3f3a5dc721cdce18bd690e28e36940601755442bcb7075a9d0eb34",
+          "CyrusScatter.ms": "fb2350bb4f859dbbf4e043f2ee42d94f90084154996a822ca5cc18fc04ea7d29",
+          "CyrusScatterEdit.dlm": "0df6b17a80749ec97891c965755fd113a716e14c5b2e536cdf6314c6b2887037",
+          "CyrusScatterStartup.ms": "fdf38b3bc83187eecb34b833bfff2751e78626e9e3dba41aa20a0ff7ff9e8405",
+          "INSTALL.txt": "46ad5540101e5ee1ff2eb1791f63dcffe98fdb574a3e8b30b70a44d2adfaa906",
+          "Uninstall.ms": "59e2b84901fcefaae1dab59886cd2f4079df4f764c789238947e19c514b4ed49",
+          "install.ms": "af94c9845fcc6e4f5a000122ffdb503bb0436ddc6caeeb1c3ee62ad38e2ac582",
+          "mzp.run": "388e1fe8644b17bc398475e6bd5f512ac3660c86d4b170943230d7d0b245c76b"
+        }
+      }
+    },
+    {
+      "path": "dist/procedural-0.7-candidate/CyrusScatter-0.7.0-Max2027.mzp",
+      "sha256": "27cc72d0d3e6ffaa2f2a9b9451b40c7e44d5a043eec618bf20f570ddfb2bf8c6",
+      "manifest": {
+        "product": "Cyrus Scatter",
+        "version": "0.7.0",
+        "max_year": 2027,
+        "toolset": "14.38.33130",
+        "windows_sdk": "10.0.19041.0",
+        "configuration": "Release",
+        "native_id": "f85eac579a9d",
+        "files": {
+          "AminScatter.dlx": "a666f17f49471d1130886d5b0c530cf61b62a0759e103c5b582dcf36fc882a6b",
+          "CyrusBrush.dlx": "d18936ca918bebb03303dac0da0703332da649ad3cd3c910512119a9597cd211",
+          "CyrusBrushStorage.dlh": "72e2ff37cbc2130f612ad930b95fabc50cd33d633d2f87caca542f71e26aa328",
+          "CyrusScatter.mcr": "74a3c13a1c3f3a5dc721cdce18bd690e28e36940601755442bcb7075a9d0eb34",
+          "CyrusScatter.ms": "fb2350bb4f859dbbf4e043f2ee42d94f90084154996a822ca5cc18fc04ea7d29",
+          "CyrusScatterEdit.dlm": "a12d3d9d5275a4c1e7ab7b313526f6a6b6372c71ae940ad1eeb175f0d535abc2",
+          "CyrusScatterStartup.ms": "fdf38b3bc83187eecb34b833bfff2751e78626e9e3dba41aa20a0ff7ff9e8405",
+          "INSTALL.txt": "62e84388f0ca8d4db93f0e5c3889ad2aa7c29f9d8b63f17cba7c1658f8bd989f",
+          "Uninstall.ms": "59e2b84901fcefaae1dab59886cd2f4079df4f764c789238947e19c514b4ed49",
+          "install.ms": "cc1a653917d3dceaecc1ddab0f17784986a912a856fd942f54ee817ba24cf8b2",
+          "mzp.run": "3b086dd6de3a20782a582b82ff77eafcf5ef6aaf8c136c3852323880906bacca"
+        }
+      }
+    }
+  ],
+  "runtime": {
+    "recorded_at_utc": "2026-10-04T20:22:07.995630+00:00",
+    "host_year": 2027,
+    "maxscript_loaded": true,
+    "generated_sha256": "fb2350bb4f859dbbf4e043f2ee42d94f90084154996a822ca5cc18fc04ea7d29",
+    "private_sessions_only": true,
+    "artist_profile_installed": false,
+    "mcp_live_campaigns_passed": 9,
+    "procedural_mcp_read_only_passed": true,
+    "brush_pointer_surface": "nonuniformly scaled sphere",
+    "planar_brush_test": "native ray/dab API",
+    "native_rollout_cycles": 20,
+    "navigation_populations": [
+      20000,
+      100000
+    ],
+    "navigation_zero_rebuilds": true,
+    "max2026_runtime": "unavailable; SDK build/native suites only",
+    "artist_example": {
+      "path": "dist/procedural-0.7-candidate/CyrusScatter-0.7-Example-Max2027.max",
+      "sha256": "fedbca6f0e96bf47f9c637ce9ad95b29af1ee97964e179765b90e988a8987b16"
+    },
+    "limitations": [
+      "Automatic system-unit rescaling of stored Brush/Edit/radius data is unsupported. Adopt saved scene units.",
+      "High-count Proxy drawing remains expensive in both 0.64 and 0.7.",
+      "Policy 3 MCP mutation and ML are not implemented.",
+      "Installer replacement of an artist profile was not performed."
+    ],
+    "files_sha256": {
+      "artist-example.json": "3201ea510ef87e661c972ec23b70ded8348ba5f7c3ed5456c10de65eb528a357",
+      "baseline-100k-navigation.json": "f24dfc4e44f804b700d2a003c0d92c47974cb84ffeecd48c51b3053c0ee22e77",
+      "baseline-20k-navigation.json": "1191cbb5868a89988c86ac017992fc1fd34a85d8f5ad0ebc1d3831cc9a94af3c",
+      "baseline-loaded-binaries.json": "7553bcbd8f331cc741865971e95f03f939b79629f244f1ed1f48d0852bdcab5d",
+      "bindings-acceptance.json": "e65f3677fb670ff5a3a3283f4798d4b8b5b1153ed59bc2b17e5dda649aa1d001",
+      "loaded-binaries.json": "2b7caa540f05980807ab3e3f809cccbfc6a501404870d600344759cca24a5eaf",
+      "navigation-summary.json": "076a40716a5351b5167e9ccb868756a7b02149df3db6ede658133bfde8af4221",
+      "procedural-100k-navigation.json": "20bef843d5b6918c9bd357827236b84a1e80c5e9336ae6035fb1b1cf287e0b67",
+      "procedural-20k-navigation.json": "a02a1eed9632eeb5430d7c2bb7bf6cb61eb74daaebca1958263161f9f6035f62",
+      "procedural-acceptance.json": "728322ea78cedc385b60d05d4f2292eeda65e4f8ae6dd3212f95910993ca438b",
+      "procedural-mcp.json": "401c8e700e04a37a31b95a0d284a7cff954cf8b70f72335e621c7d121eac1156",
+      "release-campaign.json": "bedcfdedf8819eb7fc9a9590fc182bccc1dca347f839ddd52175b38d997d0865",
+      "ui-lifetime.json": "7bece28dc6ffd17ff0ca0d794c3b70af67d06a94629a6ef93b405500f042ed2e",
+      "ui-pointer.json": "9cb1190f2acdbf948cd410eee24574c990af113b125b8a67d09297ec7c1c3144",
+      "ui-rule.json": "9e963bf94d7b8e91b726fbff059af922fd18d84890c551e92809f1efcee9fe0e",
+      "units-acceptance.json": "5ed5271d1c3567b638d8287807a33421f8f0d93e0a4f1d316394b28d4edf8d0a"
+    }
+  }
+}

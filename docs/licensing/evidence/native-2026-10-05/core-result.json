@@ -1,0 +1,8 @@
+{
+  "status": "PASS",
+  "sdk_builds": [
+    2026,
+    2027
+  ],
+  "scope": "Core/Windows components; not Max UI or customer service"
+}

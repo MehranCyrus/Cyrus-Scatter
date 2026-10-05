@@ -1,0 +1,94 @@
+{
+  "script_sha256": "4f88237f486d49e067a6f3d65a28d46dea457de15cd4aa65c1ecd4501d11fd33",
+  "run": "build\\mcp-qualification\\procedural07-ui-integration-final-20261005",
+  "viewport": [
+    1176,
+    750
+  ],
+  "population": 100000,
+  "steps_per_mode": 60,
+  "metric": "Synchronous camera + completeRedraw + messages, not presented FPS",
+  "results": [
+    {
+      "label": "fresh-control-1",
+      "initial_update_ms": 300.4959,
+      "working_set_bytes": 2540032000,
+      "modes": [
+        {
+          "mode": 0,
+          "median_ms": 20.528,
+          "p95_ms": 44.946
+        },
+        {
+          "mode": 1,
+          "median_ms": 18.457,
+          "p95_ms": 30.37
+        },
+        {
+          "mode": 3,
+          "median_ms": 19.029,
+          "p95_ms": 35.476
+        },
+        {
+          "mode": 4,
+          "median_ms": 19.734,
+          "p95_ms": 37.605
+        }
+      ]
+    },
+    {
+      "label": "fresh-containers",
+      "initial_update_ms": 587.7509,
+      "working_set_bytes": 2682445824,
+      "modes": [
+        {
+          "mode": 0,
+          "median_ms": 21.544,
+          "p95_ms": 32.733
+        },
+        {
+          "mode": 1,
+          "median_ms": 19.766,
+          "p95_ms": 38.087
+        },
+        {
+          "mode": 3,
+          "median_ms": 19.353,
+          "p95_ms": 32.639
+        },
+        {
+          "mode": 4,
+          "median_ms": 18.883,
+          "p95_ms": 31.268
+        }
+      ]
+    },
+    {
+      "label": "fresh-control-2",
+      "initial_update_ms": 690.5407,
+      "working_set_bytes": 2711023616,
+      "modes": [
+        {
+          "mode": 0,
+          "median_ms": 19.083,
+          "p95_ms": 35.116
+        },
+        {
+          "mode": 1,
+          "median_ms": 18.578,
+          "p95_ms": 31.694
+        },
+        {
+          "mode": 3,
+          "median_ms": 19.403,
+          "p95_ms": 32.511
+        },
+        {
+          "mode": 4,
+          "median_ms": 18.446,
+          "p95_ms": 29.944
+        }
+      ]
+    }
+  ]
+}

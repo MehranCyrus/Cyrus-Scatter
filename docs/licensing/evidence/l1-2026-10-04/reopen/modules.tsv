@@ -1,0 +1,1091 @@
+3dsmax.exe	C:\Program Files\Autodesk\3ds Max 2027\3dsmax.exe
+ntdll.dll	C:\WINDOWS\SYSTEM32\ntdll.dll
+KERNEL32.DLL	C:\WINDOWS\System32\KERNEL32.DLL
+KERNELBASE.dll	C:\WINDOWS\System32\KERNELBASE.dll
+apphelp.dll	C:\WINDOWS\SYSTEM32\apphelp.dll
+AcGenral.dll	C:\WINDOWS\SYSTEM32\AcGenral.dll
+msvcrt.dll	C:\WINDOWS\System32\msvcrt.dll
+sechost.dll	C:\WINDOWS\System32\sechost.dll
+SHLWAPI.dll	C:\WINDOWS\System32\SHLWAPI.dll
+ucrtbase.dll	C:\WINDOWS\System32\ucrtbase.dll
+USER32.dll	C:\WINDOWS\System32\USER32.dll
+win32u.dll	C:\WINDOWS\System32\win32u.dll
+GDI32.dll	C:\WINDOWS\System32\GDI32.dll
+gdi32full.dll	C:\WINDOWS\System32\gdi32full.dll
+msvcp_win.dll	C:\WINDOWS\System32\msvcp_win.dll
+ole32.dll	C:\WINDOWS\System32\ole32.dll
+combase.dll	C:\WINDOWS\System32\combase.dll
+RPCRT4.dll	C:\WINDOWS\System32\RPCRT4.dll
+advapi32.dll	C:\WINDOWS\System32\advapi32.dll
+shcore.dll	C:\WINDOWS\System32\shcore.dll
+SHELL32.dll	C:\WINDOWS\System32\SHELL32.dll
+VERSION.dll	C:\WINDOWS\SYSTEM32\VERSION.dll
+USERENV.dll	C:\WINDOWS\SYSTEM32\USERENV.dll
+MPR.dll	C:\WINDOWS\SYSTEM32\MPR.dll
+SspiCli.dll	C:\WINDOWS\SYSTEM32\SspiCli.dll
+IMM32.DLL	C:\WINDOWS\System32\IMM32.DLL
+WINTRUST.dll	C:\WINDOWS\System32\WINTRUST.dll
+3dsmax_interop.dll	C:\Program Files\Autodesk\3ds Max 2027\3dsmax_interop.dll
+nethost.dll	C:\Program Files\Autodesk\3ds Max 2027\nethost.dll
+AdskIdentitySDK.dll	C:\Program Files\Autodesk\3ds Max 2027\AdskIdentitySDK.dll
+CRYPT32.dll	C:\WINDOWS\System32\CRYPT32.dll
+cer.dll	C:\Program Files\Autodesk\3ds Max 2027\cer.dll
+OLEAUT32.dll	C:\WINDOWS\System32\OLEAUT32.dll
+WS2_32.dll	C:\WINDOWS\System32\WS2_32.dll
+Tprofiler.dll	C:\Program Files\Autodesk\3ds Max 2027\Tprofiler.dll
+MouseCursors.dll	C:\Program Files\Autodesk\3ds Max 2027\MouseCursors.dll
+MaxQtBridge.dll	C:\Program Files\Autodesk\3ds Max 2027\MaxQtBridge.dll
+NotificationSystem.dll	C:\Program Files\Autodesk\3ds Max 2027\NotificationSystem.dll
+TipSystem.dll	C:\Program Files\Autodesk\3ds Max 2027\TipSystem.dll
+MaxThumbnailSaver.dll	C:\Program Files\Autodesk\3ds Max 2027\MaxThumbnailSaver.dll
+MaxThumbnailProvider.dll	C:\Program Files\Autodesk\3ds Max 2027\MaxThumbnailProvider.dll
+WelcomeScreen.dll	C:\Program Files\Autodesk\3ds Max 2027\WelcomeScreen.dll
+WindowsFilePropertyManager.dll	C:\Program Files\Autodesk\3ds Max 2027\WindowsFilePropertyManager.dll
+GraphicsUtility.dll	C:\Program Files\Autodesk\3ds Max 2027\GraphicsUtility.dll
+CommonRendererUI.dll	C:\Program Files\Autodesk\3ds Max 2027\CommonRendererUI.dll
+imagehlp.dll	C:\WINDOWS\System32\imagehlp.dll
+ViewSystem.dll	C:\Program Files\Autodesk\3ds Max 2027\ViewSystem.dll
+ExchangeStorePackageManager.dll	C:\Program Files\Autodesk\3ds Max 2027\ExchangeStorePackageManager.dll
+optiMeshObject.dll	C:\Program Files\Autodesk\3ds Max 2027\optiMeshObject.dll
+splash.dll	C:\Program Files\Autodesk\3ds Max 2027\splash.dll
+assetmanagement.dll	C:\Program Files\Autodesk\3ds Max 2027\assetmanagement.dll
+MSVFW32.dll	C:\WINDOWS\SYSTEM32\MSVFW32.dll
+AVIFIL32.dll	C:\WINDOWS\SYSTEM32\AVIFIL32.dll
+WINMM.dll	C:\WINDOWS\SYSTEM32\WINMM.dll
+ATSTreeView.dll	C:\Program Files\Autodesk\3ds Max 2027\ATSTreeView.dll
+WININET.dll	C:\WINDOWS\SYSTEM32\WININET.dll
+bmm.dll	C:\Program Files\Autodesk\3ds Max 2027\bmm.dll
+CustDlg.dll	C:\Program Files\Autodesk\3ds Max 2027\CustDlg.dll
+ManipSys.dll	C:\Program Files\Autodesk\3ds Max 2027\ManipSys.dll
+MAXScrpt.dll	C:\Program Files\Autodesk\3ds Max 2027\MAXScrpt.dll
+MenuMan.dll	C:\Program Files\Autodesk\3ds Max 2027\MenuMan.dll
+ParamBlk2.dll	C:\Program Files\Autodesk\3ds Max 2027\ParamBlk2.dll
+Poly.dll	C:\Program Files\Autodesk\3ds Max 2027\Poly.dll
+cfgmgr.dll	C:\Program Files\Autodesk\3ds Max 2027\cfgmgr.dll
+flt.dll	C:\Program Files\Autodesk\3ds Max 2027\flt.dll
+core.dll	C:\Program Files\Autodesk\3ds Max 2027\core.dll
+gdiplus.dll	C:\WINDOWS\WinSxS\amd64_microsoft.windows.gdiplus_6595b64144ccf1df_1.1.26100.9549_none_6ef4f67c3dc57a5e\gdiplus.dll
+gup.dll	C:\Program Files\Autodesk\3ds Max 2027\gup.dll
+gfx.dll	C:\Program Files\Autodesk\3ds Max 2027\gfx.dll
+imageViewers.dll	C:\Program Files\Autodesk\3ds Max 2027\imageViewers.dll
+maxnet.dll	C:\Program Files\Autodesk\3ds Max 2027\maxnet.dll
+mesh.dll	C:\Program Files\Autodesk\3ds Max 2027\mesh.dll
+maxutil.dll	C:\Program Files\Autodesk\3ds Max 2027\maxutil.dll
+resmgr.dll	C:\Program Files\Autodesk\3ds Max 2027\resmgr.dll
+undomgr.dll	C:\Program Files\Autodesk\3ds Max 2027\undomgr.dll
+viewfile.dll	C:\Program Files\Autodesk\3ds Max 2027\viewfile.dll
+Analytics.dll	C:\Program Files\Autodesk\3ds Max 2027\Analytics.dll
+UxTheme.dll	C:\WINDOWS\SYSTEM32\UxTheme.dll
+SceneScriptSecurityManager.dll	C:\Program Files\Autodesk\3ds Max 2027\SceneScriptSecurityManager.dll
+MSIMG32.dll	C:\WINDOWS\SYSTEM32\MSIMG32.dll
+dxutil.dll	C:\Program Files\Autodesk\3ds Max 2027\dxutil.dll
+rtmax.dll	C:\Program Files\Autodesk\3ds Max 2027\rtmax.dll
+GraphicsDriver.dll	C:\Program Files\Autodesk\3ds Max 2027\GraphicsDriver.dll
+MaxGraphicsObjects.dll	C:\Program Files\Autodesk\3ds Max 2027\MaxGraphicsObjects.dll
+synHub.dll	C:\Program Files\Autodesk\3ds Max 2027\synHub.dll
+MaxNetBackburner.dll	C:\Program Files\Autodesk\3ds Max 2027\MaxNetBackburner.dll
+QtWinMigrate.dll	C:\Program Files\Autodesk\3ds Max 2027\QtWinMigrate.dll
+ADPWrapper.dll	C:\Program Files\Autodesk\3ds Max 2027\ADPWrapper.dll
+UiCustomizations.dll	C:\Program Files\Autodesk\3ds Max 2027\UiCustomizations.dll
+InstallerInterface.dll	C:\Program Files\Autodesk\3ds Max 2027\InstallerInterface.dll
+ThreadingTools.dll	C:\Program Files\Autodesk\3ds Max 2027\ThreadingTools.dll
+dwmapi.dll	C:\WINDOWS\SYSTEM32\dwmapi.dll
+Qt6WebEngineCore.dll	C:\Program Files\Autodesk\3ds Max 2027\Qt6WebEngineCore.dll
+Qt6Widgets.dll	C:\Program Files\Autodesk\3ds Max 2027\Qt6Widgets.dll
+COMDLG32.dll	C:\WINDOWS\System32\COMDLG32.dll
+Qt6Gui.dll	C:\Program Files\Autodesk\3ds Max 2027\Qt6Gui.dll
+SETUPAPI.dll	C:\WINDOWS\System32\SETUPAPI.dll
+Qt6Core.dll	C:\Program Files\Autodesk\3ds Max 2027\Qt6Core.dll
+MSVCP140.dll	C:\WINDOWS\SYSTEM32\MSVCP140.dll
+VCRUNTIME140.dll	C:\WINDOWS\SYSTEM32\VCRUNTIME140.dll
+VCRUNTIME140_1.dll	C:\WINDOWS\SYSTEM32\VCRUNTIME140_1.dll
+Geom.dll	C:\Program Files\Autodesk\3ds Max 2027\Geom.dll
+zstd.dll	C:\Program Files\Autodesk\3ds Max 2027\zstd.dll
+tbb12.dll	C:\Program Files\Autodesk\3ds Max 2027\tbb12.dll
+zlib1.dll	C:\Program Files\Autodesk\3ds Max 2027\zlib1.dll
+dbghelp.dll	C:\WINDOWS\SYSTEM32\dbghelp.dll
+VCOMP140.DLL	C:\WINDOWS\SYSTEM32\VCOMP140.DLL
+StartupTemplate.dll	C:\Program Files\Autodesk\3ds Max 2027\StartupTemplate.dll
+ijwhost.dll	C:\Program Files\Autodesk\3ds Max 2027\ijwhost.dll
+QtExtensions.dll	C:\Program Files\Autodesk\3ds Max 2027\QtExtensions.dll
+Qt6WebEngineWidgets.dll	C:\Program Files\Autodesk\3ds Max 2027\Qt6WebEngineWidgets.dll
+FragmentGraph.dll	C:\Program Files\Autodesk\3ds Max 2027\FragmentGraph.dll
+OgsExtDevice.dll	C:\Program Files\Autodesk\3ds Max 2027\OgsExtDevice.dll
+pickonlygfx.drv	C:\Program Files\Autodesk\3ds Max 2027\pickonlygfx.drv
+DataBridge.dll	C:\Program Files\Autodesk\3ds Max 2027\DataBridge.dll
+optimesh.dll	C:\Program Files\Autodesk\3ds Max 2027\optimesh.dll
+COMCTL32.dll	C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.26100.9549_none_3e0a0396e3330090\COMCTL32.dll
+MSACM32.dll	C:\WINDOWS\SYSTEM32\MSACM32.dll
+RenderUtil.dll	C:\Program Files\Autodesk\3ds Max 2027\RenderUtil.dll
+MeshAccel.dll	C:\Program Files\Autodesk\3ds Max 2027\MeshAccel.dll
+ScriptLanguage.dll	C:\Program Files\Autodesk\3ds Max 2027\ScriptLanguage.dll
+UNZIP32.dll	C:\Program Files\Autodesk\3ds Max 2027\UNZIP32.dll
+DefaultRenderItems.dll	C:\Program Files\Autodesk\3ds Max 2027\DefaultRenderItems.dll
+expr.dll	C:\Program Files\Autodesk\3ds Max 2027\expr.dll
+MAGNIFICATION.dll	C:\WINDOWS\SYSTEM32\MAGNIFICATION.dll
+particle.dll	C:\Program Files\Autodesk\3ds Max 2027\particle.dll
+QMaxPixmapIconEngine.dll	C:\Program Files\Autodesk\3ds Max 2027\QMaxPixmapIconEngine.dll
+ToolClips.dll	C:\Program Files\Autodesk\3ds Max 2027\ToolClips.dll
+urlmon.dll	C:\WINDOWS\SYSTEM32\urlmon.dll
+WSOCK32.dll	C:\WINDOWS\SYSTEM32\WSOCK32.dll
+OpenColorIO_2_5.dll	C:\Program Files\Autodesk\3ds Max 2027\OpenColorIO_2_5.dll
+SHFOLDER.dll	C:\WINDOWS\SYSTEM32\SHFOLDER.dll
+GlobalNormalDataGenerators.dll	C:\Program Files\Autodesk\3ds Max 2027\GlobalNormalDataGenerators.dll
+tbbmalloc.dll	C:\Program Files\Autodesk\3ds Max 2027\tbbmalloc.dll
+D3DCOMPILER_47.dll	C:\Program Files\Autodesk\3ds Max 2027\D3DCOMPILER_47.dll
+dxgi.dll	C:\WINDOWS\SYSTEM32\dxgi.dll
+MetaSLCompiler.dll	C:\Program Files\Autodesk\3ds Max 2027\MetaSLCompiler.dll
+ShaderGeneratorFacet.dll	C:\Program Files\Autodesk\3ds Max 2027\ShaderGeneratorFacet.dll
+AbstractGraph.dll	C:\Program Files\Autodesk\3ds Max 2027\AbstractGraph.dll
+AdaptiveDegradation.dll	C:\Program Files\Autodesk\3ds Max 2027\AdaptiveDegradation.dll
+AmgAdapter.dll	C:\Program Files\Autodesk\3ds Max 2027\AmgAdapter.dll
+CacheFilePackage.dll	C:\Program Files\Autodesk\3ds Max 2027\CacheFilePackage.dll
+HLSLShaderExtension.dll	C:\Program Files\Autodesk\3ds Max 2027\HLSLShaderExtension.dll
+LanguageDXBase.dll	C:\Program Files\Autodesk\3ds Max 2027\LanguageDXBase.dll
+OGSDevices.dll	C:\Program Files\Autodesk\3ds Max 2027\OGSDevices.dll
+OgsExtEffect.dll	C:\Program Files\Autodesk\3ds Max 2027\OgsExtEffect.dll
+OgsExtRendering.dll	C:\Program Files\Autodesk\3ds Max 2027\OgsExtRendering.dll
+OgsExtWorld.dll	C:\Program Files\Autodesk\3ds Max 2027\OgsExtWorld.dll
+OGSGraphics.dll	C:\Program Files\Autodesk\3ds Max 2027\OGSGraphics.dll
+OGSObjects.dll	C:\Program Files\Autodesk\3ds Max 2027\OGSObjects.dll
+ShaderGeneratorAPI.dll	C:\Program Files\Autodesk\3ds Max 2027\ShaderGeneratorAPI.dll
+ShaderGeneratorImpl.dll	C:\Program Files\Autodesk\3ds Max 2027\ShaderGeneratorImpl.dll
+ShaderGeneratorUtils.dll	C:\Program Files\Autodesk\3ds Max 2027\ShaderGeneratorUtils.dll
+AmgTranslator.dll	C:\Program Files\Autodesk\3ds Max 2027\AmgTranslator.dll
+Gestura.dll	C:\Program Files\Autodesk\3ds Max 2027\Gestura.dll
+MSWSOCK.dll	C:\WINDOWS\SYSTEM32\MSWSOCK.dll
+NETAPI32.dll	C:\WINDOWS\SYSTEM32\NETAPI32.dll
+bcrypt.dll	C:\WINDOWS\SYSTEM32\bcrypt.dll
+MSVCP140_1.dll	C:\WINDOWS\SYSTEM32\MSVCP140_1.dll
+IPHLPAPI.DLL	C:\WINDOWS\SYSTEM32\IPHLPAPI.DLL
+CFGMGR32.dll	C:\WINDOWS\SYSTEM32\CFGMGR32.dll
+WINSPOOL.DRV	C:\WINDOWS\SYSTEM32\WINSPOOL.DRV
+WTSAPI32.dll	C:\WINDOWS\SYSTEM32\WTSAPI32.dll
+powrprof.dll	C:\WINDOWS\SYSTEM32\powrprof.dll
+ncrypt.dll	C:\WINDOWS\SYSTEM32\ncrypt.dll
+Secur32.dll	C:\WINDOWS\SYSTEM32\Secur32.dll
+WINHTTP.dll	C:\WINDOWS\SYSTEM32\WINHTTP.dll
+pdh.dll	C:\WINDOWS\SYSTEM32\pdh.dll
+PROPSYS.dll	C:\WINDOWS\SYSTEM32\PROPSYS.dll
+d3d11.dll	C:\WINDOWS\SYSTEM32\d3d11.dll
+DWrite.dll	C:\WINDOWS\SYSTEM32\DWrite.dll
+d3d9.dll	C:\WINDOWS\SYSTEM32\d3d9.dll
+HID.DLL	C:\WINDOWS\SYSTEM32\HID.DLL
+bthprops.cpl	C:\WINDOWS\SYSTEM32\bthprops.cpl
+WINUSB.DLL	C:\WINDOWS\SYSTEM32\WINUSB.DLL
+Qt6WebChannel.dll	C:\Program Files\Autodesk\3ds Max 2027\Qt6WebChannel.dll
+Qt6Positioning.dll	C:\Program Files\Autodesk\3ds Max 2027\Qt6Positioning.dll
+Qt6Quick.dll	C:\Program Files\Autodesk\3ds Max 2027\Qt6Quick.dll
+Qt6Qml.dll	C:\Program Files\Autodesk\3ds Max 2027\Qt6Qml.dll
+Qt6Network.dll	C:\Program Files\Autodesk\3ds Max 2027\Qt6Network.dll
+dhcpcsvc.DLL	C:\WINDOWS\SYSTEM32\dhcpcsvc.DLL
+d3d12.dll	C:\WINDOWS\SYSTEM32\d3d12.dll
+USP10.dll	C:\WINDOWS\SYSTEM32\USP10.dll
+MSVCP140_2.dll	C:\WINDOWS\SYSTEM32\MSVCP140_2.dll
+AUTHZ.dll	C:\WINDOWS\SYSTEM32\AUTHZ.dll
+Qt6QuickWidgets.dll	C:\Program Files\Autodesk\3ds Max 2027\Qt6QuickWidgets.dll
+Qt6PrintSupport.dll	C:\Program Files\Autodesk\3ds Max 2027\Qt6PrintSupport.dll
+NotificationAPIUtils.dll	C:\Program Files\Autodesk\3ds Max 2027\NotificationAPIUtils.dll
+Qt6Svg.dll	C:\Program Files\Autodesk\3ds Max 2027\Qt6Svg.dll
+iertutil.dll	C:\WINDOWS\SYSTEM32\iertutil.dll
+windows.storage.dll	C:\WINDOWS\SYSTEM32\windows.storage.dll
+Qt6Sql.dll	C:\Program Files\Autodesk\3ds Max 2027\Qt6Sql.dll
+Imath-3_1.dll	C:\Program Files\Autodesk\3ds Max 2027\Imath-3_1.dll
+LanguageDX9.dll	C:\Program Files\Autodesk\3ds Max 2027\LanguageDX9.dll
+LanguageDX11.dll	C:\Program Files\Autodesk\3ds Max 2027\LanguageDX11.dll
+amg.dll	C:\Program Files\Autodesk\3ds Max 2027\amg.dll
+WrapperWacom.dll	C:\Program Files\Autodesk\3ds Max 2027\WrapperWacom.dll
+Qt6QmlMeta.dll	C:\Program Files\Autodesk\3ds Max 2027\Qt6QmlMeta.dll
+Qt6QmlModels.dll	C:\Program Files\Autodesk\3ds Max 2027\Qt6QmlModels.dll
+Qt6OpenGL.dll	C:\Program Files\Autodesk\3ds Max 2027\Qt6OpenGL.dll
+DNSAPI.dll	C:\WINDOWS\SYSTEM32\DNSAPI.dll
+srvcli.dll	C:\WINDOWS\SYSTEM32\srvcli.dll
+netutils.dll	C:\WINDOWS\SYSTEM32\netutils.dll
+dxcore.dll	C:\WINDOWS\SYSTEM32\dxcore.dll
+CRYPTBASE.DLL	C:\WINDOWS\SYSTEM32\CRYPTBASE.DLL
+Qt6QmlWorkerScript.dll	C:\Program Files\Autodesk\3ds Max 2027\Qt6QmlWorkerScript.dll
+DSPARSE.dll	C:\WINDOWS\SYSTEM32\DSPARSE.dll
+bluetoothapis.dll	C:\WINDOWS\SYSTEM32\bluetoothapis.dll
+DEVOBJ.dll	C:\WINDOWS\SYSTEM32\DEVOBJ.dll
+UMPDC.dll	C:\WINDOWS\SYSTEM32\UMPDC.dll
+bcryptPrimitives.dll	C:\WINDOWS\System32\bcryptPrimitives.dll
+profapi.dll	C:\WINDOWS\SYSTEM32\profapi.dll
+MSASN1.dll	C:\WINDOWS\SYSTEM32\MSASN1.dll
+res1.dll	C:\Program Files\Autodesk\3ds Max 2027\res1.dll
+res2.dll	C:\Program Files\Autodesk\3ds Max 2027\res2.dll
+res3.dll	C:\Program Files\Autodesk\3ds Max 2027\res3.dll
+res4.dll	C:\Program Files\Autodesk\3ds Max 2027\res4.dll
+res5.dll	C:\Program Files\Autodesk\3ds Max 2027\res5.dll
+res6.dll	C:\Program Files\Autodesk\3ds Max 2027\res6.dll
+res8.dll	C:\Program Files\Autodesk\3ds Max 2027\res8.dll
+viz.dll	C:\Program Files\Autodesk\3ds Max 2027\viz.dll
+res7.dll	C:\Program Files\Autodesk\3ds Max 2027\res7.dll
+res10.dll	C:\Program Files\Autodesk\3ds Max 2027\res10.dll
+NSI.dll	C:\WINDOWS\System32\NSI.dll
+NTASN1.dll	C:\WINDOWS\SYSTEM32\NTASN1.dll
+ninput.dll	C:\WINDOWS\SYSTEM32\ninput.dll
+hostfxr.dll	C:\Program Files\dotnet\host\fxr\10.0.0\hostfxr.dll
+hostpolicy.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\hostpolicy.dll
+coreclr.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\coreclr.dll
+kernel.appcore.dll	C:\WINDOWS\SYSTEM32\kernel.appcore.dll
+System.Private.CoreLib.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Private.CoreLib.dll
+clrjit.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\clrjit.dll
+icu.dll	C:\WINDOWS\SYSTEM32\icu.dll
+qwindows.dll	C:\Program Files\Autodesk\3ds Max 2027\qt\plugins\platforms\qwindows.dll
+UIAutomationCore.DLL	C:\WINDOWS\SYSTEM32\UIAutomationCore.DLL
+MSCTF.dll	C:\WINDOWS\System32\MSCTF.dll
+clbcatq.dll	C:\WINDOWS\System32\clbcatq.dll
+Windows.UI.dll	C:\Windows\System32\Windows.UI.dll
+Windows.UI.Immersive.dll	C:\Windows\System32\Windows.UI.Immersive.dll
+qmodernwindowsstyle.dll	C:\Program Files\Autodesk\3ds Max 2027\qt\plugins\styles\qmodernwindowsstyle.dll
+cryptnet.dll	C:\WINDOWS\SYSTEM32\cryptnet.dll
+CRYPTSP.dll	C:\WINDOWS\SYSTEM32\CRYPTSP.dll
+rsaenh.dll	C:\WINDOWS\system32\rsaenh.dll
+directxdatabasehelper.dll	C:\WINDOWS\SYSTEM32\directxdatabasehelper.dll
+opengl32.DLL	C:\WINDOWS\SYSTEM32\opengl32.DLL
+GLU32.dll	C:\WINDOWS\SYSTEM32\GLU32.dll
+windows.staterepositorycore.dll	C:\WINDOWS\SYSTEM32\windows.staterepositorycore.dll
+nvoglv64.dll	C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispsi.inf_amd64_7cc7738d8e428783\nvoglv64.dll
+wldp.dll	C:\WINDOWS\SYSTEM32\wldp.dll
+drvstore.dll	C:\WINDOWS\SYSTEM32\drvstore.dll
+ntmarta.dll	C:\WINDOWS\SYSTEM32\ntmarta.dll
+nvgpucomp64.dll	C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispsi.inf_amd64_7cc7738d8e428783\nvgpucomp64.dll
+WINSTA.dll	C:\WINDOWS\SYSTEM32\WINSTA.dll
+gpapi.dll	C:\WINDOWS\SYSTEM32\gpapi.dll
+WINNSI.DLL	C:\WINDOWS\SYSTEM32\WINNSI.DLL
+AdpSDKCore.dll	C:\Program Files\Common Files\Autodesk\AdpDesktopSDK\bin\AdpSDKCore.dll
+AdpIPC.dll	C:\Program Files\Common Files\Autodesk\AdpDesktopSDK\bin\AdpIPC.dll
+AcPal.dll	C:\Program Files\Autodesk\3ds Max 2027\AcPal.dll
+MSVCP140_CODECVT_IDS.dll	C:\WINDOWS\SYSTEM32\MSVCP140_CODECVT_IDS.dll
+mfc140u.dll	C:\WINDOWS\SYSTEM32\mfc140u.dll
+System.Runtime.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Runtime.dll
+System.Threading.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Threading.dll
+System.Runtime.Extensions.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Runtime.Extensions.dll
+System.Runtime.InteropServices.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Runtime.InteropServices.dll
+System.Runtime.CompilerServices.VisualC.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Runtime.CompilerServices.VisualC.dll
+System.Collections.NonGeneric.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Collections.NonGeneric.dll
+System.Threading.Thread.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Threading.Thread.dll
+UIControls.dll	C:\Program Files\Autodesk\3ds Max 2027\UIControls.dll
+Riched32.dll	C:\WINDOWS\SYSTEM32\Riched32.dll
+RICHED20.dll	C:\WINDOWS\SYSTEM32\RICHED20.dll
+msls31.dll	C:\WINDOWS\SYSTEM32\msls31.dll
+Digilib.dlz	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\Digilib.dlz
+BatchRenderUtil.dlu	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\BatchRenderUtil.dlu
+CamTrakr.dlu	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\CamTrakr.dlu
+CurveControl.dlu	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\CurveControl.dlu
+CustomFileStream.dlu	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\CustomFileStream.dlu
+CustomFileStreamAPI.dll	C:\Program Files\Autodesk\3ds Max 2027\CustomFileStreamAPI.dll
+DefaultParameterUtil.dlu	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\DefaultParameterUtil.dlu
+DLsrr.dlu	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\DLsrr.dlu
+libDLcomponentManager.dll	C:\Program Files\Autodesk\3ds Max 2027\libDLcomponentManager.dll
+libDLmaxmgr.dll	C:\Program Files\Autodesk\3ds Max 2027\libDLmaxmgr.dll
+libDLltutility.dll	C:\Program Files\Autodesk\3ds Max 2027\libDLltutility.dll
+libDLbase.dll	C:\Program Files\Autodesk\3ds Max 2027\libDLbase.dll
+libDLresmgt.dll	C:\Program Files\Autodesk\3ds Max 2027\libDLresmgt.dll
+libDLprimitives.dll	C:\Program Files\Autodesk\3ds Max 2027\libDLprimitives.dll
+fbxmax.dlu	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\fbxmax.dlu
+MNMath.dll	C:\Program Files\Autodesk\3ds Max 2027\MNMath.dll
+libfbxsdk-adsk.dll	C:\Program Files\Autodesk\3ds Max 2027\libfbxsdk-adsk.dll
+Morpher.dlm	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\Morpher.dlm
+FileLink.dlu	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\FileLink.dlu
+DbxHost.dll	C:\Program Files\Autodesk\3ds Max 2027\DbxHost.dll
+ASMGA232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMGA232.dll
+composite.dll	C:\Program Files\Autodesk\3ds Max 2027\composite.dll
+ASMBASE232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMBASE232.dll
+AcSceneOE.dbx	C:\Program Files\Autodesk\3ds Max 2027\AcSceneOE.dbx
+acdb26.dll	C:\Program Files\Autodesk\3ds Max 2027\acdb26.dll
+acbr26.dbx	C:\Program Files\Autodesk\3ds Max 2027\acbr26.dbx
+AcGeomentObj.dbx	C:\Program Files\Autodesk\3ds Max 2027\AcGeomentObj.dbx
+AcGe26.dll	C:\Program Files\Autodesk\3ds Max 2027\AcGe26.dll
+ASMKERN232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMKERN232.dll
+AcDs.dll	C:\Program Files\Autodesk\3ds Max 2027\AcDs.dll
+MSVCP140_ATOMIC_WAIT.dll	C:\WINDOWS\SYSTEM32\MSVCP140_ATOMIC_WAIT.dll
+AcGex26.dll	C:\Program Files\Autodesk\3ds Max 2027\AcGex26.dll
+ASMFCT232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMFCT232.dll
+ASMCSTR232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMCSTR232.dll
+ASMLAW232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMLAW232.dll
+tsplines14.dll	C:\Program Files\Autodesk\3ds Max 2027\tsplines14.dll
+modlr26.dll	C:\Program Files\Autodesk\3ds Max 2027\modlr26.dll
+ASMINTR232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMINTR232.dll
+ASMTOPT232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMTOPT232.dll
+ASMBOOL232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMBOOL232.dll
+ASMCT232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMCT232.dll
+ASMDATAX232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMDATAX232.dll
+ASMIMPORT232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMIMPORT232.dll
+ASMNPCH232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMNPCH232.dll
+ASMSBAP232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMSBAP232.dll
+ASMCOVR232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMCOVR232.dll
+ASMHEAL232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMHEAL232.dll
+ASMBLND232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMBLND232.dll
+ASMSWP232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMSWP232.dll
+ASMSKIN232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMSKIN232.dll
+ASMOFST232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMOFST232.dll
+ASMLOP232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMLOP232.dll
+ASMREM232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMREM232.dll
+ASMSHL232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMSHL232.dll
+ASMAHL232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMAHL232.dll
+ASMTWK232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMTWK232.dll
+ASMDEFM232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMDEFM232.dll
+ASMSBOOL232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMSBOOL232.dll
+ASMRBASE232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMRBASE232.dll
+ASMEULR232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMEULR232.dll
+ASMOPER232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMOPER232.dll
+ASMRBI232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMRBI232.dll
+ASMLOPT232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMLOPT232.dll
+mmsdk.dll	C:\Program Files\Autodesk\3ds Max 2027\mmsdk.dll
+AdtTrans.dfl	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\AdtTrans.dfl
+FbxFileLink.dfl	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\FbxFileLink.dfl
+MapLink.dfl	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\MapLink.dfl
+RevitTrans.dfl	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\RevitTrans.dfl
+GameExporter.dlu	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\GameExporter.dlu
+ATFExporter.dle	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\ATFExporter.dle
+ASCWrapper.dll	C:\Program Files\Autodesk\3ds Max 2027\ASCWrapper.dll
+Body_Tools.dll	C:\Program Files\Autodesk\3ds Max 2027\Body_Tools.dll
+ImpExpDataBridge.dll	C:\Program Files\Autodesk\3ds Max 2027\ImpExpDataBridge.dll
+nPower_SolidsPP_Body.dll	C:\Program Files\Autodesk\3ds Max 2027\nPower_SolidsPP_Body.dll
+nPower_HWLibs_Body.dll	C:\Program Files\Autodesk\3ds Max 2027\nPower_HWLibs_Body.dll
+nPower_NLib_Body.dll	C:\Program Files\Autodesk\3ds Max 2027\nPower_NLib_Body.dll
+OpenVDBUtility.dlu	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\OpenVDBUtility.dlu
+openvdb.dll	C:\Program Files\Autodesk\3ds Max 2027\openvdb.dll
+Paintbox.dlu	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\Paintbox.dlu
+RayFX.dlu	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\RayFX.dlu
+utility.dlu	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\utility.dlu
+Body_Object.dlo	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\Body_Object.dlo
+crowd.dlo	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\crowd.dlo
+DLlights.dlo	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\DLlights.dlo
+ffdmod.dlo	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\ffdmod.dlo
+Hair.dlo	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\Hair.dlo
+landform.dlo	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\landform.dlo
+PointCloud.dlo	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\PointCloud.dlo
+AdskRcFileSystemUtility.dll	C:\Program Files\Autodesk\3ds Max 2027\AdskRcFileSystemUtility.dll
+AdskRcCommon.dll	C:\Program Files\Autodesk\3ds Max 2027\AdskRcCommon.dll
+AdskRcProjectIO.dll	C:\Program Files\Autodesk\3ds Max 2027\AdskRcProjectIO.dll
+AdskRealityStudioBaseAPI.dll	C:\Program Files\Autodesk\3ds Max 2027\AdskRealityStudioBaseAPI.dll
+AdskRealityStudioHLAPI.dll	C:\Program Files\Autodesk\3ds Max 2027\AdskRealityStudioHLAPI.dll
+RealityStudio.dll	C:\Program Files\Autodesk\3ds Max 2027\RealityStudio.dll
+acge232.dll	C:\Program Files\Autodesk\3ds Max 2027\acge232.dll
+AdskRcAdp.dll	C:\Program Files\Autodesk\3ds Max 2027\AdskRcAdp.dll
+AdskRcPointCloudEngine.dll	C:\Program Files\Autodesk\3ds Max 2027\AdskRcPointCloudEngine.dll
+AdskRcUtility.dll	C:\Program Files\Autodesk\3ds Max 2027\AdskRcUtility.dll
+AdskRcFilter.dll	C:\Program Files\Autodesk\3ds Max 2027\AdskRcFilter.dll
+pugixml.dll	C:\Program Files\Autodesk\3ds Max 2027\pugixml.dll
+AdskRcData.dll	C:\Program Files\Autodesk\3ds Max 2027\AdskRcData.dll
+xerces-ad-c_3.dll	C:\Program Files\Autodesk\3ds Max 2027\xerces-ad-c_3.dll
+AdskRcSpatialReference.dll	C:\Program Files\Autodesk\3ds Max 2027\AdskRcSpatialReference.dll
+AdskRcDevTools.dll	C:\Program Files\Autodesk\3ds Max 2027\AdskRcDevTools.dll
+AdskRcConfig.dll	C:\Program Files\Autodesk\3ds Max 2027\AdskRcConfig.dll
+AdskRcImageIO.dll	C:\Program Files\Autodesk\3ds Max 2027\AdskRcImageIO.dll
+AdskRcDispatch.dll	C:\Program Files\Autodesk\3ds Max 2027\AdskRcDispatch.dll
+AdskRcImport.dll	C:\Program Files\Autodesk\3ds Max 2027\AdskRcImport.dll
+AdskRcExport.dll	C:\Program Files\Autodesk\3ds Max 2027\AdskRcExport.dll
+AdskRcDataAccess.dll	C:\Program Files\Autodesk\3ds Max 2027\AdskRcDataAccess.dll
+laszip3.dll	C:\Program Files\Autodesk\3ds Max 2027\laszip3.dll
+prim.dlo	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\prim.dlo
+surfacearrive.dlo	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\surfacearrive.dlo
+bonesDef.dlm	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\bonesDef.dlm
+SkinEngine.dll	C:\Program Files\Autodesk\3ds Max 2027\SkinEngine.dll
+lag.dlm	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\lag.dlm
+physique.dlm	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\physique.dlm
+PointCache.dlm	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\PointCache.dlm
+vfield.dlm	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\vfield.dlm
+biped.dlc	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\biped.dlc
+boolcntrl.dlc	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\boolcntrl.dlc
+clip.dlc	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\clip.dlc
+PeopleOrch.dlc	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\PeopleOrch.dlc
+reactor.dlc	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\reactor.dlc
+spring.dlc	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\spring.dlc
+AutodeskMaterial.dlt	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\AutodeskMaterial.dlt
+adp_core-6_1.dll	C:\Program Files\Autodesk\3ds Max 2027\adp_core-6_1.dll
+AdCoreUnits-16.dll	C:\Program Files\Autodesk\3ds Max 2027\AdCoreUnits-16.dll
+adskassetapi_new-16.dll	C:\Program Files\Autodesk\3ds Max 2027\adskassetapi_new-16.dll
+xirangall-16.dll	C:\Program Files\Autodesk\3ds Max 2027\xirangall-16.dll
+inknpaint.dlt	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\inknpaint.dlt
+OSLMap.dlt	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\OSLMap.dlt
+QmaxAutoUI.dll	C:\Program Files\Autodesk\3ds Max 2027\QmaxAutoUI.dll
+oslexec.dll	C:\Program Files\Autodesk\3ds Max 2027\oslexec.dll
+Qt6UiTools.dll	C:\Program Files\Autodesk\3ds Max 2027\Qt6UiTools.dll
+oslcomp.dll	C:\Program Files\Autodesk\3ds Max 2027\oslcomp.dll
+oslquery.dll	C:\Program Files\Autodesk\3ds Max 2027\oslquery.dll
+OpenImageIO.dll	C:\Program Files\Autodesk\3ds Max 2027\OpenImageIO.dll
+OpenImageIO_Util.dll	C:\Program Files\Autodesk\3ds Max 2027\OpenImageIO_Util.dll
+oslnoise.dll	C:\Program Files\Autodesk\3ds Max 2027\oslnoise.dll
+Qt6OpenGLWidgets.dll	C:\Program Files\Autodesk\3ds Max 2027\Qt6OpenGLWidgets.dll
+libpng16.dll	C:\Program Files\Autodesk\3ds Max 2027\libpng16.dll
+OpenEXR-3_4.dll	C:\Program Files\Autodesk\3ds Max 2027\OpenEXR-3_4.dll
+OpenEXRCore-3_4.dll	C:\Program Files\Autodesk\3ds Max 2027\OpenEXRCore-3_4.dll
+tiff.dll	C:\Program Files\Autodesk\3ds Max 2027\tiff.dll
+jpeg8.dll	C:\Program Files\Autodesk\3ds Max 2027\jpeg8.dll
+Iex-3_4.dll	C:\Program Files\Autodesk\3ds Max 2027\Iex-3_4.dll
+IlmThread-3_4.dll	C:\Program Files\Autodesk\3ds Max 2027\IlmThread-3_4.dll
+RayMtl.dlt	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\RayMtl.dlt
+SubstanceDealer.dlt	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\SubstanceDealer.dlt
+AutoUI.dll	C:\Program Files\Autodesk\3ds Max 2027\AutoUI.dll
+substance_linker.dll	C:\Program Files\Autodesk\3ds Max 2027\substance_linker.dll
+substance_sse2_blend.dll	C:\Program Files\Autodesk\3ds Max 2027\substance_sse2_blend.dll
+vrmlexp.dle	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\vrmlexp.dle
+Apollo3.dlv	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\Apollo3.dlv
+DOF.dlv	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\DOF.dlv
+QuicksilverRenderer.dlr	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\QuicksilverRenderer.dlr
+RapidRTRenderer.dlr	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\RapidRTRenderer.dlr
+RapidRTCore.dll	C:\Program Files\Autodesk\3ds Max 2027\RapidRTCore.dll
+rti.dll	C:\Program Files\Autodesk\3ds Max 2027\rti.dll
+RenderingAPI.dll	C:\Program Files\Autodesk\3ds Max 2027\RenderingAPI.dll
+Assistant.gup	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\Assistant.gup
+AutoCamMax.gup	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\AutoCamMax.gup
+MaxPython3Host.gup	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\MaxPython3Host.gup
+python313.dll	C:\Program Files\Autodesk\3ds Max 2027\python313.dll
+PolyTools.gup	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\PolyTools.gup
+SceneConverter.gup	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\SceneConverter.gup
+MaxRestrictedSdk.dll	C:\Program Files\Autodesk\3ds Max 2027\MaxRestrictedSdk.dll
+snapPivot.gup	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\snapPivot.gup
+CoronaMaxUtils2027.dlt	C:\Program Files\Autodesk\3ds Max 2027\PlugIns\CoronaMaxUtils2027.dlt
+CoronaMaxUtils_Release-2027.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\CoronaMaxUtils_Release-2027.dll
+Corona_Release.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\Corona_Release.dll
+CoronaUi_Release.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\CoronaUi_Release.dll
+LegionLibWx_Release.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\LegionLibWx_Release.dll
+LegionLibQt_Release.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\LegionLibQt_Release.dll
+LegionLibImage_Release.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\LegionLibImage_Release.dll
+Qt6CoreLegion.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\Qt6CoreLegion.dll
+LegionLib_Release.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\LegionLib_Release.dll
+Qt6GuiLegion.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\Qt6GuiLegion.dll
+Qt6WidgetsLegion.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\Qt6WidgetsLegion.dll
+LegionOpenImageDenoise-2.3.3-v143-Release.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\LegionOpenImageDenoise-2.3.3-v143-Release.dll
+LegionOpenVdb-v143-Release.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\LegionOpenVdb-v143-Release.dll
+LegionTbb-2022.2-v143-Release.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\LegionTbb-2022.2-v143-Release.dll
+LegionWxWidgets-3.1.5-v143-Release.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\LegionWxWidgets-3.1.5-v143-Release.dll
+CloudGrpcClientLib_Release.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\CloudGrpcClientLib_Release.dll
+LegionQCefView-v1.1.0-Release.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\LegionQCefView-v1.1.0-Release.dll
+Qt6SvgLegion.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\Qt6SvgLegion.dll
+Qt6NetworkLegion.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\Qt6NetworkLegion.dll
+Qt6OpenGLWidgetsLegion.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\Qt6OpenGLWidgetsLegion.dll
+LegionOpenImageDenoise_core-2.3.3-v143-Release.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\LegionOpenImageDenoise_core-2.3.3-v143-Release.dll
+OLEACC.dll	C:\WINDOWS\system32\OLEACC.dll
+Qt6OpenGLLegion.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\Qt6OpenGLLegion.dll
+ShadingLib_Release.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\ShadingLib_Release.dll
+dbgcore.DLL	C:\WINDOWS\system32\dbgcore.DLL
+sme.gup	c:\program files\autodesk\3ds max 2027\stdplugs\sme.gup
+CoronaMax2027.dlr	C:\Program Files\Autodesk\3ds Max 2027\PlugIns\CoronaMax2027.dlr
+CoronaMax_Release-2027.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\CoronaMax_Release-2027.dll
+CoronaMaxPowerTools_Release-2027.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\CoronaMaxPowerTools_Release-2027.dll
+PARTICLEFLOW.dll	C:\Program Files\Autodesk\3ds Max 2027\PARTICLEFLOW.dll
+CosmosGrpcClientLib_Release.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\CosmosGrpcClientLib_Release.dll
+Corona_maxHairFur.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\Corona_maxHairFur.dll
+TelemetryLib_Release.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\TelemetryLib_Release.dll
+MaxSlateSDK.dll	C:\Program Files\Autodesk\3ds Max 2027\MaxSlateSDK.dll
+CoronaMaxPowerToolsToolbar_Release-2027.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\CoronaMaxPowerToolsToolbar_Release-2027.dll
+qwindowsLegion.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\QtPlugins\platforms\qwindowsLegion.dll
+qmodernwindowsstyleLegion.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\QtPlugins\styles\qmodernwindowsstyleLegion.dll
+qgifLegion.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\QtPlugins\imageformats\qgifLegion.dll
+qicnsLegion.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\QtPlugins\imageformats\qicnsLegion.dll
+qicoLegion.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\QtPlugins\imageformats\qicoLegion.dll
+qjpegLegion.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\QtPlugins\imageformats\qjpegLegion.dll
+qsvgLegion.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\QtPlugins\imageformats\qsvgLegion.dll
+qtgaLegion.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\QtPlugins\imageformats\qtgaLegion.dll
+qwbmpLegion.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\QtPlugins\imageformats\qwbmpLegion.dll
+qwebpLegion.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\QtPlugins\imageformats\qwebpLegion.dll
+LegionUlaToken.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\LegionUlaToken.dll
+ondemandconnroutehelper.dll	C:\WINDOWS\SYSTEM32\ondemandconnroutehelper.dll
+DPAPI.DLL	C:\WINDOWS\SYSTEM32\DPAPI.DLL
+rasadhlp.dll	C:\Windows\System32\rasadhlp.dll
+fwpuclnt.dll	C:\WINDOWS\System32\fwpuclnt.dll
+schannel.DLL	C:\WINDOWS\system32\schannel.DLL
+ncryptsslp.dll	C:\WINDOWS\system32\ncryptsslp.dll
+nvcuda.dll	C:\WINDOWS\SYSTEM32\nvcuda.dll
+cudart64_12.dll	C:\Program Files\Chaos\Corona\optix\cudart64_12.dll
+nvoptix.dll	C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispsi.inf_amd64_7cc7738d8e428783\nvoptix.dll
+WindowsCodecs.dll	C:\WINDOWS\SYSTEM32\WindowsCodecs.dll
+CyrusScatterEdit.dlm	F:\Cursor\_Cyrus_Apps\CyrusScatter\build\licensing-l1-2026-10-04\run03\bin\CyrusScatterEdit.dlm
+AminScatter.dlx	F:\Cursor\_Cyrus_Apps\CyrusScatter\build\licensing-l1-2026-10-04\run03\bin\AminScatter.dlx
+CyrusBrushStorage.dlh	F:\Cursor\_Cyrus_Apps\CyrusScatter\build\licensing-l1-2026-10-04\run03\bin\CyrusBrushStorage.dlh
+CyrusBrush.dlx	F:\Cursor\_Cyrus_Apps\CyrusScatter\build\licensing-l1-2026-10-04\run03\bin\CyrusBrush.dlx
+SecurityTools.gup	c:\program files\autodesk\3ds max 2027\applicationplugins\scenesecuritytools\contents\bin\SecurityTools.gup
+MaxUsdObjects.dlo	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\MaxUsdObjects.dlo
+UsdLayerEditor.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\UsdLayerEditor.dll
+MaxUsd_Preferences.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\MaxUsd_Preferences.dll
+usdUfe.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\usdUfe.dll
+ufe_6.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\ufe_6.dll
+3dsmax_usd.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_usd.dll
+3dsmax_sdf.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_sdf.dll
+3dsmax_tf.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_tf.dll
+3dsmax_ar.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_ar.dll
+3dsmax_arch.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_arch.dll
+3dsmax_gf.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_gf.dll
+3dsmax_hd.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_hd.dll
+3dsmax_hdx.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_hdx.dll
+3dsmax_kind.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_kind.dll
+3dsmax_plug.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_plug.dll
+3dsmax_usdGeom.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_usdGeom.dll
+3dsmax_usdImaging.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_usdImaging.dll
+3dsmax_usdImagingGL.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_usdImagingGL.dll
+3dsmax_vt.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_vt.dll
+3dsmax_work.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_work.dll
+3dsmax_usdUtils.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_usdUtils.dll
+3dsmax_python.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_python.dll
+maxUsd.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\maxUsd.dll
+UfeUi.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\UfeUi.dll
+RenderDelegate.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\RenderDelegate.dll
+3dsmax_ts.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_ts.dll
+3dsmax_trace.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_trace.dll
+3dsmax_js.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_js.dll
+3dsmax_cameraUtil.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_cameraUtil.dll
+3dsmax_hf.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_hf.dll
+3dsmax_pxOsd.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_pxOsd.dll
+3dsmax_sdr.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_sdr.dll
+3dsmax_hdSt.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_hdSt.dll
+3dsmax_hgiInterop.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_hgiInterop.dll
+3dsmax_glf.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_glf.dll
+3dsmax_hgiGL.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_hgiGL.dll
+3dsmax_garch.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_garch.dll
+3dsmax_hgi.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_hgi.dll
+3dsmax_hio.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_hio.dll
+3dsmax_geomUtil.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_geomUtil.dll
+3dsmax_hdar.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_hdar.dll
+3dsmax_usdLux.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_usdLux.dll
+3dsmax_usdRender.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_usdRender.dll
+3dsmax_usdShade.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_usdShade.dll
+3dsmax_usdVol.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_usdVol.dll
+3dsmax_hdsi.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_hdsi.dll
+3dsmax_pcp.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_pcp.dll
+3dsmax_usdMtlx.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_usdMtlx.dll
+3dsmax_usdSkel.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_usdSkel.dll
+3dsmax_hdMtlx.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_hdMtlx.dll
+MaterialXRender.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\MaterialXRender.dll
+MaterialXGenGlsl.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\MaterialXGenGlsl.dll
+MaterialXGenMsl.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\MaterialXGenMsl.dll
+MaterialXFormat.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\MaterialXFormat.dll
+MaterialXGenShader.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\MaterialXGenShader.dll
+MaterialXCore.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\MaterialXCore.dll
+3dsmax_usdUI.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_usdUI.dll
+3dsmax_usdHydra.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_usdHydra.dll
+sdrGlslfx.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\plugin\usd\sdrGlslfx.dll
+3dsmax_usdVolImaging.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_usdVolImaging.dll
+3dsmax_usdSkelImaging.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_usdSkelImaging.dll
+3dsmax_usdRi.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_usdRi.dll
+3dsmax_usdMedia.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_usdMedia.dll
+3dsmax_usdPhysics.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\3dsmax_usdPhysics.dll
+usdShaders.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\plugin\usd\usdShaders.dll
+usdAbc.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\plugin\usd\usdAbc.dll
+Imath-3_2.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\Imath-3_2.dll
+Alembic.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\Alembic.dll
+hdStorm.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\plugin\usd\hdStorm.dll
+RetopoFlow.dlu	c:\programdata\autodesk\applicationplugins\flowretopologyfor3dsmax2027\contents\bin\2027\RetopoFlow.dlu
+CloudServicesFramework.dll	C:\Program Files\Autodesk\3ds Max 2027\CloudServicesFramework.dll
+RevitImporter.dli	c:\program files\autodesk\3ds max 2027\applicationplugins\revitimporter\contents\RevitImporter.dli
+HiveWrapper.dll	C:\Program Files\Autodesk\3ds Max 2027\HiveWrapper.dll
+substancemax.dlt	c:\programdata\autodesk\applicationplugins\substancein3dsmax2027\plug-ins\substancemax.dlt
+substance_portal_cli.dll	c:\programdata\autodesk\applicationplugins\substancein3dsmax2027\plug-ins\substance_portal_cli.dll
+substance_connector.dll	c:\programdata\autodesk\applicationplugins\substancein3dsmax2027\plug-ins\substance_connector.dll
+substance_d3d11pc_blend.dll	c:\programdata\autodesk\applicationplugins\substancein3dsmax2027\bin\substance_d3d11pc_blend.dll
+ChaosScatterMax2027.dlt	c:\programdata\autodesk\applicationplugins\chaosscatter3dsmax2027\ChaosScatterMax2027.dlt
+ScatterMax_Release-2027.dll	c:\programdata\autodesk\applicationplugins\chaosscatter3dsmax2027\ScatterMax_Release-2027.dll
+ScatterCore.ForScatter_Release.dll	c:\programdata\autodesk\applicationplugins\chaosscatter3dsmax2027\ScatterCore.ForScatter_Release.dll
+LegionLibQt.ForScatter_Release.dll	c:\programdata\autodesk\applicationplugins\chaosscatter3dsmax2027\LegionLibQt.ForScatter_Release.dll
+ShadingLib.ForScatter_Release.dll	c:\programdata\autodesk\applicationplugins\chaosscatter3dsmax2027\ShadingLib.ForScatter_Release.dll
+LegionLibImage.ForScatter_Release.dll	c:\programdata\autodesk\applicationplugins\chaosscatter3dsmax2027\LegionLibImage.ForScatter_Release.dll
+Qt6CoreLegion.ForScatter.dll	c:\programdata\autodesk\applicationplugins\chaosscatter3dsmax2027\Qt6CoreLegion.ForScatter.dll
+Qt6WidgetsLegion.ForScatter.dll	c:\programdata\autodesk\applicationplugins\chaosscatter3dsmax2027\Qt6WidgetsLegion.ForScatter.dll
+LegionLib.ForScatter_Release.dll	c:\programdata\autodesk\applicationplugins\chaosscatter3dsmax2027\LegionLib.ForScatter_Release.dll
+Qt6OpenGLWidgetsLegion.ForScatter.dll	c:\programdata\autodesk\applicationplugins\chaosscatter3dsmax2027\Qt6OpenGLWidgetsLegion.ForScatter.dll
+Qt6GuiLegion.ForScatter.dll	c:\programdata\autodesk\applicationplugins\chaosscatter3dsmax2027\Qt6GuiLegion.ForScatter.dll
+Qt6OpenGLLegion.ForScatter.dll	c:\programdata\autodesk\applicationplugins\chaosscatter3dsmax2027\Qt6OpenGLLegion.ForScatter.dll
+qwindowsLegion.ForScatter.dll	C:\programdata\autodesk\applicationplugins\chaosscatter3dsmax2027\QtPlugins\qwindowsLegion.ForScatter.dll
+CivilView.Controller.PathSurfConstraint.v2.dlc	c:\program files\autodesk\3ds max 2027\applicationplugins\civilviewio\plugins\CivilView.Controller.PathSurfConstraint.v2.dlc
+CivilView.Controller.Traffic.dlc	c:\program files\autodesk\3ds max 2027\applicationplugins\civilviewio\plugins\CivilView.Controller.Traffic.dlc
+CivilView.Effect.Sight.dlv	c:\program files\autodesk\3ds max 2027\applicationplugins\civilviewio\plugins\CivilView.Effect.Sight.dlv
+CivilView.Modifier.DivideSpline.dlm	c:\program files\autodesk\3ds max 2027\applicationplugins\civilviewio\plugins\CivilView.Modifier.DivideSpline.dlm
+CivilView.Modifier.GuardRail.dlm	c:\program files\autodesk\3ds max 2027\applicationplugins\civilviewio\plugins\CivilView.Modifier.GuardRail.dlm
+CivilView.Modifier.RoadMarking.dlm	c:\program files\autodesk\3ds max 2027\applicationplugins\civilviewio\plugins\CivilView.Modifier.RoadMarking.dlm
+CivilView.Modifier.SplineMesh.dlm	c:\program files\autodesk\3ds max 2027\applicationplugins\civilviewio\plugins\CivilView.Modifier.SplineMesh.dlm
+CivilView.Modifier.Swept.dlm	c:\program files\autodesk\3ds max 2027\applicationplugins\civilviewio\plugins\CivilView.Modifier.Swept.dlm
+MAXtoA.dlr	c:\programdata\autodesk\applicationplugins\maxtoa_2027\MAXtoA.dlr
+RenderView.dll	c:\programdata\autodesk\applicationplugins\maxtoa_2027\RenderView.dll
+RenderingAPI2.dll	c:\programdata\autodesk\applicationplugins\maxtoa_2027\RenderingAPI2.dll
+flow_render_core.dll	c:\programdata\autodesk\applicationplugins\maxtoa_2027\flow_render_core.dll
+flow_render_gui.dll	c:\programdata\autodesk\applicationplugins\maxtoa_2027\flow_render_gui.dll
+tbb.dll	C:\Program Files\Autodesk\3ds Max 2027\tbb.dll
+ai.dll	C:\ProgramData\Autodesk\ApplicationPlugins\MAXtoA_2027\bin\ai.dll
+AdClmHub_3.3.0.dll	C:\ProgramData\Autodesk\ApplicationPlugins\MAXtoA_2027\bin\AdClmHub_3.3.0.dll
+AdskLicensingSDK_10.0.1.dll	C:\ProgramData\Autodesk\ApplicationPlugins\MAXtoA_2027\bin\AdskLicensingSDK_10.0.1.dll
+aiOpenImageDenoise_core.dll	C:\ProgramData\Autodesk\ApplicationPlugins\MAXtoA_2027\bin\aiOpenImageDenoise_core.dll
+ArnoldFluidUtil.dlu	c:\programdata\autodesk\applicationplugins\maxtoa_2027\ArnoldFluidUtil.dlu
+AssemblyLoader.dll	C:\Program Files\Autodesk\3ds Max 2027\AssemblyLoader.dll
+System.Runtime.Loader.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Runtime.Loader.dll
+System.Collections.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Collections.dll
+CSharpUtilities.dll	C:\Program Files\Autodesk\3ds Max 2027\CSharpUtilities.dll
+ManagedServices.dll	C:\Program Files\Autodesk\3ds Max 2027\ManagedServices.dll
+UiViewModels.dll	C:\Program Files\Autodesk\3ds Max 2027\UiViewModels.dll
+System.Linq.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Linq.dll
+Autodesk.Max.Wrappers.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\Autodesk.Max.Wrappers.dll
+ATSCore.dll	C:\Program Files\Autodesk\3ds Max 2027\ATSCore.dll
+edmodel.dll	C:\Program Files\Autodesk\3ds Max 2027\edmodel.dll
+PolyPaint.dll	C:\Program Files\Autodesk\3ds Max 2027\PolyPaint.dll
+IGame.dll	C:\Program Files\Autodesk\3ds Max 2027\IGame.dll
+tessint.dll	C:\Program Files\Autodesk\3ds Max 2027\tessint.dll
+MeshValidator.dll	C:\Program Files\Autodesk\3ds Max 2027\MeshValidator.dll
+Rm.dll	C:\Program Files\Autodesk\3ds Max 2027\Rm.dll
+ATSCoreUI.dll	C:\Program Files\Autodesk\3ds Max 2027\ATSCoreUI.dll
+Autodesk.Max.Anchor.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\Autodesk.Max.Anchor.dll
+Autodesk.Max.SlateSdkWrapper.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\Autodesk.Max.SlateSdkWrapper.dll
+IncrementalSearchListBox.dll	C:\Program Files\Autodesk\3ds Max 2027\IncrementalSearchListBox.dll
+Autodesk.Max.StateSets.CompositorLink.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\Autodesk.Max.StateSets.CompositorLink.dll
+Autodesk.Max.StateSets.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\Autodesk.Max.StateSets.dll
+Autodesk.Max.Utilities.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\Autodesk.Max.Utilities.dll
+BooleanExplorerView.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\BooleanExplorerView.dll
+CreaseExplorerView.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\CreaseExplorerView.dll
+DaylightSimulation.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\DaylightSimulation.dll
+Ephere.Annotations.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\Ephere.Annotations.dll
+Ephere.Data.Conversion.Image.Photoshop.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\Ephere.Data.Conversion.Image.Photoshop.dll
+Ephere.Gui.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\Ephere.Gui.dll
+Ephere.Math.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\Ephere.Math.dll
+Ephere.Modeling.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\Ephere.Modeling.dll
+Ephere.Modeling.Utilities.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\Ephere.Modeling.Utilities.dll
+Ephere.Utilities.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\Ephere.Utilities.dll
+FPMaxWpfContent.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\FPMaxWpfContent.dll
+Humanizer.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\Humanizer.dll
+ManagedBootstrap.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\ManagedBootstrap.dll
+ManagedNetworkUtilities.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\ManagedNetworkUtilities.dll
+MaterialExplorerView.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\MaterialExplorerView.dll
+MaxWpfContent.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\MaxWpfContent.dll
+Microsoft.Bcl.AsyncInterfaces.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\Microsoft.Bcl.AsyncInterfaces.dll
+Microsoft.CodeAnalysis.CSharp.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\Microsoft.CodeAnalysis.CSharp.dll
+Microsoft.CodeAnalysis.CSharp.Workspaces.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+Microsoft.CodeAnalysis.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\Microsoft.CodeAnalysis.dll
+Microsoft.CodeAnalysis.VisualBasic.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\Microsoft.CodeAnalysis.VisualBasic.dll
+Microsoft.CodeAnalysis.VisualBasic.Workspaces.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\Microsoft.CodeAnalysis.VisualBasic.Workspaces.dll
+Microsoft.CodeAnalysis.Workspaces.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\Microsoft.CodeAnalysis.Workspaces.dll
+Microsoft.Extensions.ObjectPool.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\Microsoft.Extensions.ObjectPool.dll
+Microsoft.Win32.Registry.AccessControl.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\Microsoft.Win32.Registry.AccessControl.dll
+Microsoft.Win32.SystemEvents.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\Microsoft.Win32.SystemEvents.dll
+ProceduralContentActions.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\ProceduralContentActions.dll
+protobuf-net.Core.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\protobuf-net.Core.dll
+protobuf-net.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\protobuf-net.dll
+SceneExplorerView.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\SceneExplorerView.dll
+Sunlight.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\Sunlight.dll
+System.CodeDom.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\System.CodeDom.dll
+System.ComponentModel.Composition.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\System.ComponentModel.Composition.dll
+System.ComponentModel.Composition.Registration.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\System.ComponentModel.Composition.Registration.dll
+System.Composition.AttributedModel.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\System.Composition.AttributedModel.dll
+System.Composition.Convention.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\System.Composition.Convention.dll
+System.Composition.Hosting.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\System.Composition.Hosting.dll
+System.Composition.Runtime.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\System.Composition.Runtime.dll
+System.Composition.TypedParts.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\System.Composition.TypedParts.dll
+System.Configuration.ConfigurationManager.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\System.Configuration.ConfigurationManager.dll
+System.Data.Odbc.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\System.Data.Odbc.dll
+System.Data.OleDb.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\System.Data.OleDb.dll
+System.Data.SqlClient.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\System.Data.SqlClient.dll
+System.Diagnostics.EventLog.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\System.Diagnostics.EventLog.dll
+System.Diagnostics.EventLog.Messages.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\System.Diagnostics.EventLog.Messages.dll
+System.Diagnostics.PerformanceCounter.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\System.Diagnostics.PerformanceCounter.dll
+System.DirectoryServices.AccountManagement.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\System.DirectoryServices.AccountManagement.dll
+System.DirectoryServices.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\System.DirectoryServices.dll
+System.DirectoryServices.Protocols.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\System.DirectoryServices.Protocols.dll
+System.Drawing.Common.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\System.Drawing.Common.dll
+System.IO.Packaging.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\System.IO.Packaging.dll
+System.IO.Ports.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\System.IO.Ports.dll
+System.Management.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\System.Management.dll
+System.Private.Windows.Core.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\System.Private.Windows.Core.dll
+System.Private.Windows.GdiPlus.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\System.Private.Windows.GdiPlus.dll
+System.Reflection.Context.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\System.Reflection.Context.dll
+System.Runtime.Caching.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\System.Runtime.Caching.dll
+System.Security.Cryptography.Pkcs.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\System.Security.Cryptography.Pkcs.dll
+System.Security.Cryptography.ProtectedData.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\System.Security.Cryptography.ProtectedData.dll
+System.Security.Cryptography.Xml.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\System.Security.Cryptography.Xml.dll
+System.Security.Permissions.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\System.Security.Permissions.dll
+System.ServiceModel.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\System.ServiceModel.dll
+System.ServiceModel.Duplex.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\System.ServiceModel.Duplex.dll
+System.ServiceModel.Http.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\System.ServiceModel.Http.dll
+System.ServiceModel.NetFramingBase.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\System.ServiceModel.NetFramingBase.dll
+System.ServiceModel.NetTcp.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\System.ServiceModel.NetTcp.dll
+System.ServiceModel.Primitives.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\System.ServiceModel.Primitives.dll
+System.ServiceModel.Security.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\System.ServiceModel.Security.dll
+System.ServiceModel.Syndication.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\System.ServiceModel.Syndication.dll
+System.ServiceProcess.ServiceController.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\System.ServiceProcess.ServiceController.dll
+System.Speech.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\System.Speech.dll
+System.Text.Encoding.CodePages.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Text.Encoding.CodePages.dll
+System.Web.Services.Description.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\System.Web.Services.Description.dll
+System.Windows.Extensions.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\System.Windows.Extensions.dll
+WeifenLuo.WinFormsUI.Docking.dll	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\WeifenLuo.WinFormsUI.Docking.dll
+Autodesk.Max.dll	C:\Program Files\Autodesk\3ds Max 2027\Autodesk.Max.dll
+System.Drawing.Primitives.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Drawing.Primitives.dll
+System.ComponentModel.Primitives.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.ComponentModel.Primitives.dll
+System.Windows.Forms.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\System.Windows.Forms.dll
+System.Windows.Forms.Primitives.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\System.Windows.Forms.Primitives.dll
+System.Collections.Specialized.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Collections.Specialized.dll
+System.IO.FileSystem.Watcher.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.IO.FileSystem.Watcher.dll
+Microsoft.Win32.Primitives.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\Microsoft.Win32.Primitives.dll
+System.ComponentModel.EventBasedAsync.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.ComponentModel.EventBasedAsync.dll
+System.Collections.Concurrent.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Collections.Concurrent.dll
+Accessibility.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\Accessibility.dll
+System.Xml.XmlSerializer.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Xml.XmlSerializer.dll
+System.Private.Xml.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Private.Xml.dll
+System.Memory.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Memory.dll
+System.Threading.Overlapped.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Threading.Overlapped.dll
+System.Xml.ReaderWriter.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Xml.ReaderWriter.dll
+System.ObjectModel.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.ObjectModel.dll
+SceneExplorer.dll	C:\Program Files\Autodesk\3ds Max 2027\SceneExplorer.dll
+ExplorerFramework.dll	C:\Program Files\Autodesk\3ds Max 2027\ExplorerFramework.dll
+System.ComponentModel.TypeConverter.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.ComponentModel.TypeConverter.dll
+System.Windows.Forms.Design.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\System.Windows.Forms.Design.dll
+System.Diagnostics.TextWriterTraceListener.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Diagnostics.TextWriterTraceListener.dll
+System.Diagnostics.TraceSource.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Diagnostics.TraceSource.dll
+System.Text.RegularExpressions.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Text.RegularExpressions.dll
+System.Xaml.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\System.Xaml.dll
+PresentationFramework.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\PresentationFramework.dll
+System.ComponentModel.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.ComponentModel.dll
+WPFCustomControls.dll	C:\Program Files\Autodesk\3ds Max 2027\WPFCustomControls.dll
+WindowsBase.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\WindowsBase.dll
+PresentationCore.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\PresentationCore.dll
+AdWindows.dll	C:\Program Files\Autodesk\3ds Max 2027\AdWindows.dll
+DevExpress.XtraTreeList.v25.1.dll	C:\Program Files\Autodesk\3ds Max 2027\DevExpress.XtraTreeList.v25.1.dll
+netstandard.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\netstandard.dll
+System.Collections.Immutable.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Collections.Immutable.dll
+System.Reflection.Metadata.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Reflection.Metadata.dll
+System.Xml.XDocument.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Xml.XDocument.dll
+System.Private.Xml.Linq.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Private.Xml.Linq.dll
+System.Security.Cryptography.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Security.Cryptography.dll
+System.Diagnostics.Tracing.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Diagnostics.Tracing.dll
+System.Runtime.Numerics.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Runtime.Numerics.dll
+System.IO.Compression.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.IO.Compression.dll
+System.IO.MemoryMappedFiles.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.IO.MemoryMappedFiles.dll
+System.Threading.Channels.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Threading.Channels.dll
+MaxCustomControls.dll	C:\Program Files\Autodesk\3ds Max 2027\MaxCustomControls.dll
+System.Private.Uri.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Private.Uri.dll
+System.Runtime.Serialization.Formatters.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Runtime.Serialization.Formatters.dll
+System.Reflection.Emit.ILGeneration.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Reflection.Emit.ILGeneration.dll
+System.Reflection.Primitives.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Reflection.Primitives.dll
+ExplorerManagement.dll	C:\Program Files\Autodesk\3ds Max 2027\ExplorerManagement.dll
+System.Linq.Expressions.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Linq.Expressions.dll
+System.Data.Common.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Data.Common.dll
+System.Transactions.Local.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Transactions.Local.dll
+System.IO.FileSystem.AccessControl.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.IO.FileSystem.AccessControl.dll
+System.Security.AccessControl.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Security.AccessControl.dll
+System.Security.Principal.Windows.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Security.Principal.Windows.dll
+System.Formats.Asn1.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Formats.Asn1.dll
+System.Net.Primitives.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Net.Primitives.dll
+System.Numerics.Vectors.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Numerics.Vectors.dll
+System.Formats.Nrbf.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\System.Formats.Nrbf.dll
+System.Net.Http.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Net.Http.dll
+System.Net.WebSockets.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Net.WebSockets.dll
+System.Net.Security.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Net.Security.dll
+System.Net.Sockets.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Net.Sockets.dll
+System.Net.NameResolution.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Net.NameResolution.dll
+System.Runtime.Serialization.Xml.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Runtime.Serialization.Xml.dll
+System.Private.DataContractSerialization.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Private.DataContractSerialization.dll
+System.Security.Claims.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Security.Claims.dll
+System.Reflection.DispatchProxy.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Reflection.DispatchProxy.dll
+textinputframework.dll	C:\WINDOWS\SYSTEM32\textinputframework.dll
+creasemod.dlm	c:\program files\autodesk\3ds max 2027\stdplugs\creasemod.dlm
+System.Resources.Extensions.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\System.Resources.Extensions.dll
+DevExpress.Utils.v25.1.dll	C:\Program Files\Autodesk\3ds Max 2027\DevExpress.Utils.v25.1.dll
+DevExpress.XtraEditors.v25.1.dll	C:\Program Files\Autodesk\3ds Max 2027\DevExpress.XtraEditors.v25.1.dll
+DevExpress.Data.v25.1.dll	C:\Program Files\Autodesk\3ds Max 2027\DevExpress.Data.v25.1.dll
+MaxMaterialBindings.dll	C:\Program Files\Autodesk\3ds Max 2027\MaxMaterialBindings.dll
+MaxBooleanBindings.dll	C:\Program Files\Autodesk\3ds Max 2027\MaxBooleanBindings.dll
+MaxCreaseBindings.dll	C:\Program Files\Autodesk\3ds Max 2027\MaxCreaseBindings.dll
+MaxExplorerBindings.dll	C:\Program Files\Autodesk\3ds Max 2027\MaxExplorerBindings.dll
+DevExpress.Data.Desktop.v25.1.dll	C:\Program Files\Autodesk\3ds Max 2027\DevExpress.Data.Desktop.v25.1.dll
+DevExpress.Drawing.v25.1.dll	C:\Program Files\Autodesk\3ds Max 2027\DevExpress.Drawing.v25.1.dll
+DevExpress.Printing.v25.1.Core.dll	C:\Program Files\Autodesk\3ds Max 2027\DevExpress.Printing.v25.1.Core.dll
+CoreManagedUiControls.dll	C:\Program Files\Autodesk\3ds Max 2027\CoreManagedUiControls.dll
+PresentationNative_cor3.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\PresentationNative_cor3.dll
+System.Diagnostics.Process.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Diagnostics.Process.dll
+System.Net.WebClient.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Net.WebClient.dll
+System.Net.Requests.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Net.Requests.dll
+System.Net.WebHeaderCollection.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Net.WebHeaderCollection.dll
+System.Text.Encoding.Extensions.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Text.Encoding.Extensions.dll
+Microsoft.Win32.Registry.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\Microsoft.Win32.Registry.dll
+DirectWriteForwarder.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\DirectWriteForwarder.dll
+System.Diagnostics.Debug.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Diagnostics.Debug.dll
+System.Threading.ThreadPool.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Threading.ThreadPool.dll
+wpfgfx_cor3.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\wpfgfx_cor3.dll
+D3DCompiler_47_cor3.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\D3DCompiler_47_cor3.dll
+System.Drawing.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\System.Drawing.dll
+MaxPlusDotNet.dll	C:\Program Files\Autodesk\3ds Max 2027\MaxPlusDotNet.dll
+MaxPlusDotNetBridge.DLL	C:\Program Files\Autodesk\3ds Max 2027\MaxPlusDotNetBridge.DLL
+System.Web.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Web.dll
+System.ComponentModel.Annotations.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.ComponentModel.Annotations.dll
+System.IO.Compression.Native.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.IO.Compression.Native.dll
+System.Reflection.Emit.Lightweight.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Reflection.Emit.Lightweight.dll
+System.Diagnostics.StackTrace.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Diagnostics.StackTrace.dll
+TextShaping.dll	C:\WINDOWS\SYSTEM32\TextShaping.dll
+System.Windows.Controls.Ribbon.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\System.Windows.Controls.Ribbon.dll
+WindowsFormsIntegration.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\WindowsFormsIntegration.dll
+nvldumdx.dll	C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispsi.inf_amd64_7cc7738d8e428783\nvldumdx.dll
+NvMessageBus.dll	C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispsi.inf_amd64_7cc7738d8e428783\Display.NvContainer\NvMessageBus.dll
+NvMemMapStoragex.dll	C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispsi.inf_amd64_7cc7738d8e428783\NvMemMapStoragex.dll
+nvd3dumx.dll	C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispsi.inf_amd64_7cc7738d8e428783\nvd3dumx.dll
+ctrl.dlc	c:\program files\autodesk\3ds max 2027\stdplugs\ctrl.dlc
+prosound.dlc	c:\program files\autodesk\3ds max 2027\stdplugs\prosound.dlc
+DSOUND.dll	C:\WINDOWS\SYSTEM32\DSOUND.dll
+winmmbase.dll	C:\WINDOWS\SYSTEM32\winmmbase.dll
+ResampleDmo.DLL	C:\WINDOWS\SYSTEM32\ResampleDmo.DLL
+msdmo.dll	C:\WINDOWS\SYSTEM32\msdmo.dll
+rend.dlr	c:\program files\autodesk\3ds max 2027\stdplugs\rend.dlr
+emproxy.dlo	c:\program files\autodesk\3ds max 2027\stdplugs\emproxy.dlo
+ASMpid232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMpid232.dll
+ASMfrec232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMfrec232.dll
+ASMufld232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMufld232.dll
+ASMweld232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMweld232.dll
+ASMsasm232.dll	C:\Program Files\Autodesk\3ds Max 2027\ASMsasm232.dll
+grid.dls	c:\program files\autodesk\3ds max 2027\stdplugs\grid.dls
+pivot.dls	c:\program files\autodesk\3ds max 2027\stdplugs\pivot.dls
+shape1.dls	c:\program files\autodesk\3ds max 2027\stdplugs\shape1.dls
+x_mesh.dls	c:\program files\autodesk\3ds max 2027\stdplugs\x_mesh.dls
+walkthrough.gup	c:\program files\autodesk\3ds max 2027\stdplugs\walkthrough.gup
+retimer.dlc	c:\program files\autodesk\3ds max 2027\stdplugs\retimer.dlc
+mtl.dlt	c:\program files\autodesk\3ds max 2027\stdplugs\mtl.dlt
+componentlocking.dlo	c:\program files\autodesk\3ds max 2027\stdplugs\componentlocking.dlo
+hsutil.dlu	c:\program files\autodesk\3ds max 2027\stdplugs\hsutil.dlu
+samplers.dlh	c:\program files\autodesk\3ds max 2027\stdplugs\samplers.dlh
+MaxSerialization.dll	C:\Program Files\Autodesk\3ds Max 2027\MaxSerialization.dll
+dataexchange.dll	C:\WINDOWS\system32\dataexchange.dll
+twinapi.appcore.dll	C:\WINDOWS\system32\twinapi.appcore.dll
+qgif.dll	C:\Program Files\Autodesk\3ds Max 2027\qt\plugins\imageformats\qgif.dll
+qicns.dll	C:\Program Files\Autodesk\3ds Max 2027\qt\plugins\imageformats\qicns.dll
+qico.dll	C:\Program Files\Autodesk\3ds Max 2027\qt\plugins\imageformats\qico.dll
+qjpeg.dll	C:\Program Files\Autodesk\3ds Max 2027\qt\plugins\imageformats\qjpeg.dll
+qpdf.dll	C:\Program Files\Autodesk\3ds Max 2027\qt\plugins\imageformats\qpdf.dll
+Qt6Pdf.dll	C:\Program Files\Autodesk\3ds Max 2027\Qt6Pdf.dll
+qsvg.dll	C:\Program Files\Autodesk\3ds Max 2027\qt\plugins\imageformats\qsvg.dll
+qtga.dll	C:\Program Files\Autodesk\3ds Max 2027\qt\plugins\imageformats\qtga.dll
+qtiff.dll	C:\Program Files\Autodesk\3ds Max 2027\qt\plugins\imageformats\qtiff.dll
+qwbmp.dll	C:\Program Files\Autodesk\3ds Max 2027\qt\plugins\imageformats\qwbmp.dll
+qwebp.dll	C:\Program Files\Autodesk\3ds Max 2027\qt\plugins\imageformats\qwebp.dll
+nvwgf2umx.dll	C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispsi.inf_amd64_7cc7738d8e428783\nvwgf2umx.dll
+nvppex.dll	C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispsi.inf_amd64_7cc7738d8e428783\nvppex.dll
+bitmapproxies.dlu	c:\program files\autodesk\3ds max 2027\stdplugs\bitmapproxies.dlu
+acadfuns.dlx	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\acadfuns.dlx
+emproxymxs.dlx	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\emproxymxs.dlx
+IMaxNet.dlx	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\IMaxNet.dlx
+Maxscript.Diagnostics.dlx	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\Maxscript.Diagnostics.dlx
+MorpherMXS.dlx	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\MorpherMXS.dlx
+MXSActiveX.dlx	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\MXSActiveX.dlx
+MXSAgni.dlx	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\MXSAgni.dlx
+MXSCurveCtl.dlx	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\MXSCurveCtl.dlx
+CyrusSignedLicenseLab.dlx	F:\Cursor\_Cyrus_Apps\CyrusScatter\build\licensing-l1-2026-10-04\run03\bin\CyrusSignedLicenseLab.dlx
+CyrusSurfaceAnalyzer.dlx	F:\Cursor\_Cyrus_Apps\CyrusScatter\build\licensing-l1-2026-10-04\run03\bin\CyrusSurfaceAnalyzer.dlx
+CivilView.ImportExport.dlx	c:\program files\autodesk\3ds max 2027\applicationplugins\civilviewio\plugins\CivilView.ImportExport.dlx
+mxsdotNet.dlx	C:\Program Files\Autodesk\3ds Max 2027\bin\assemblies\mxsdotNet.dlx
+mscorlib.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\mscorlib.dll
+MXS_Scintilla.DLL	C:\Program Files\Autodesk\3ds Max 2027\MXS_Scintilla.DLL
+MXS_SciTE.DLL	C:\Program Files\Autodesk\3ds Max 2027\MXS_SciTE.DLL
+characterhlpobj.dlo	c:\program files\autodesk\3ds max 2027\stdplugs\characterhlpobj.dlo
+epoly.dlo	c:\program files\autodesk\3ds max 2027\stdplugs\epoly.dlo
+mods.dlm	c:\program files\autodesk\3ds max 2027\stdplugs\mods.dlm
+physx.dlm	c:\program files\autodesk\3ds max 2027\stdplugs\physx.dlm
+ContentCoreShared.dll	c:\program files\autodesk\3ds max 2027\stdplugs\(MassFX)\ContentCoreShared.dll
+Main.dlmp	c:\program files\autodesk\3ds max 2027\stdplugs\(MassFX)\Plugins\Main.dlmp
+boost_log.dll	C:\Program Files\Autodesk\3ds Max 2027\boost_log.dll
+boost_thread.dll	C:\Program Files\Autodesk\3ds Max 2027\boost_thread.dll
+boost_filesystem.dll	C:\Program Files\Autodesk\3ds Max 2027\boost_filesystem.dll
+ContentCorePhysx2.dll	c:\program files\autodesk\3ds max 2027\stdplugs\(MassFX)\ContentCorePhysx2.dll
+PhysXDevice64.dll	c:\program files\autodesk\3ds max 2027\stdplugs\(MassFX)\PhysX_2.8.5\PhysXDevice64.dll
+cudart64_30_9.dll	c:\program files\autodesk\3ds max 2027\stdplugs\(MassFX)\PhysX_2.8.5\cudart64_30_9.dll
+PHYSX4DCC_PhysXCooking64.dll	c:\program files\autodesk\3ds max 2027\stdplugs\(MassFX)\PhysX_2.8.5\PHYSX4DCC_PhysXCooking64.dll
+PHYSX4DCC_PhysXCore64.dll	c:\program files\autodesk\3ds max 2027\stdplugs\(MassFX)\PhysX_2.8.5\PHYSX4DCC_PhysXCore64.dll
+openpbr.dlt	c:\program files\autodesk\3ds max 2027\stdplugs\openpbr.dlt
+scs.dlo	c:\program files\autodesk\3ds max 2027\stdplugs\scs.dlo
+painterinterface.dlu	c:\program files\autodesk\3ds max 2027\stdplugs\painterinterface.dlu
+pluginmanager.gup	c:\program files\autodesk\3ds max 2027\stdplugs\pluginmanager.gup
+python3.DLL	C:\Program Files\Autodesk\3ds Max 2027\python3.DLL
+_pymxs.pyd	C:\Program Files\Autodesk\3ds Max 2027\Python\Lib\site-packages\pymxs\_pymxs.pyd
+physicalmaterial.dlt	c:\program files\autodesk\3ds max 2027\stdplugs\physicalmaterial.dlt
+_wmi.pyd	C:\Program Files\Autodesk\3ds Max 2027\Python\DLLs\_wmi.pyd
+_socket.pyd	C:\Program Files\Autodesk\3ds Max 2027\Python\DLLs\_socket.pyd
+select.pyd	C:\Program Files\Autodesk\3ds Max 2027\Python\DLLs\select.pyd
+wbemprox.dll	C:\WINDOWS\system32\wbem\wbemprox.dll
+wbemcomn.dll	C:\WINDOWS\SYSTEM32\wbemcomn.dll
+wbemsvc.dll	C:\WINDOWS\system32\wbem\wbemsvc.dll
+fastprox.dll	C:\WINDOWS\system32\wbem\fastprox.dll
+amsi.dll	C:\WINDOWS\SYSTEM32\amsi.dll
+MpOav.dll	C:\ProgramData\Microsoft\Windows Defender\Platform\4.18.26080.4-0\MpOav.dll
+_tf.pyd	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\python\pxr\Tf\_tf.pyd
+_plug.pyd	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\python\pxr\Plug\_plug.pyd
+_trace.pyd	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\python\pxr\Trace\_trace.pyd
+_work.pyd	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\python\pxr\Work\_work.pyd
+containerobject.dlo	c:\program files\autodesk\3ds max 2027\stdplugs\containerobject.dlo
+maxtoa_menu.gup	c:\programdata\autodesk\applicationplugins\maxtoa_2027\maxtoa_menu.gup
+OperatorsGraphEditor.dll	c:\programdata\autodesk\applicationplugins\maxtoa_2027\OperatorsGraphEditor.dll
+msxml6.dll	C:\Windows\System32\msxml6.dll
+bakingtotexture.dlu	c:\program files\autodesk\3ds max 2027\stdplugs\bakingtotexture.dlu
+atsmax.gup	c:\program files\autodesk\3ds max 2027\stdplugs\atsmax.gup
+fixambient.dlu	c:\program files\autodesk\3ds max 2027\stdplugs\fixambient.dlu
+meditutils.dlu	c:\program files\autodesk\3ds max 2027\stdplugs\meditutils.dlu
+pbrimporter.dlu	c:\program files\autodesk\3ds max 2027\stdplugs\pbrimporter.dlu
+scenestateutil.dlu	c:\program files\autodesk\3ds max 2027\stdplugs\scenestateutil.dlu
+sharedviews.dlu	c:\program files\autodesk\3ds max 2027\stdplugs\sharedviews.dlu
+particleactionsorbaz.dlo	c:\program files\autodesk\3ds max 2027\stdplugs\particleactionsorbaz.dlo
+particleflowtoolsbox3.dlo	c:\program files\autodesk\3ds max 2027\stdplugs\particleflowtoolsbox3.dlo
+ParticleFlowTools.dll	C:\Program Files\Autodesk\3ds Max 2027\ParticleFlowTools.dll
+coml2.dll	C:\WINDOWS\System32\coml2.dll
+particleview.dlo	c:\program files\autodesk\3ds max 2027\stdplugs\particleview.dlo
+textobject2.dlo	c:\program files\autodesk\3ds max 2027\stdplugs\textobject2.dlo
+update1.dlo	c:\program files\autodesk\3ds max 2027\stdplugs\update1.dlo
+cloth.dlm	c:\program files\autodesk\3ds max 2027\stdplugs\cloth.dlm
+editpatch.dlm	c:\program files\autodesk\3ds max 2027\stdplugs\editpatch.dlm
+editpolymod.dlm	c:\program files\autodesk\3ds max 2027\stdplugs\editpolymod.dlm
+garmentmaker.dlm	c:\program files\autodesk\3ds max 2027\stdplugs\garmentmaker.dlm
+hsds.dlm	c:\program files\autodesk\3ds max 2027\stdplugs\hsds.dlm
+mcloth.dlm	c:\program files\autodesk\3ds max 2027\stdplugs\mcloth.dlm
+msmooth.dlm	c:\program files\autodesk\3ds max 2027\stdplugs\msmooth.dlm
+opensubdivmod.dlm	c:\program files\autodesk\3ds max 2027\stdplugs\opensubdivmod.dlm
+patchsel.dlm	c:\program files\autodesk\3ds max 2027\stdplugs\patchsel.dlm
+projection.dlm	c:\program files\autodesk\3ds max 2027\stdplugs\projection.dlm
+uvwunwrap.dlm	c:\program files\autodesk\3ds max 2027\stdplugs\uvwunwrap.dlm
+unfold3dlib.dll	C:\Program Files\Autodesk\3ds Max 2027\unfold3dlib.dll
+UnwrapInternal.dll	C:\Program Files\Autodesk\3ds Max 2027\UnwrapInternal.dll
+UnwrapBase.dll	C:\Program Files\Autodesk\3ds Max 2027\UnwrapBase.dll
+libiomp5md.dll	C:\Program Files\Autodesk\3ds Max 2027\libiomp5md.dll
+iksys.dlc	c:\program files\autodesk\3ds max 2027\stdplugs\iksys.dlc
+oneclick.gup	c:\program files\autodesk\3ds max 2027\stdplugs\oneclick.gup
+System.Reflection.Emit.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Reflection.Emit.dll
+custattribcontainer.dlo	c:\program files\autodesk\3ds max 2027\stdplugs\custattribcontainer.dlo
+UndoBody.dll	C:\Program Files\Autodesk\3ds Max 2027\UndoBody.dll
+sxs.dll	C:\WINDOWS\SYSTEM32\sxs.dll
+OGSIOIntegration.dll	C:\Program Files\Autodesk\3ds Max 2027\OGSIOIntegration.dll
+d3dcompiler_47.dll	C:\Program Files\Autodesk\3ds Max 2027\d3dcompiler_v2\d3dcompiler_47.dll
+OGSDeviceDx11.dll	C:\Program Files\Autodesk\3ds Max 2027\OGSDeviceDx11.dll
+nvapi64.dll	C:\WINDOWS\SYSTEM32\nvapi64.dll
+nvapi64_impl.dll	C:\WINDOWS\system32\DriverStore\FileRepository\nv_dispsi.inf_amd64_7cc7738d8e428783\nvapi64_impl.dll
+OGSLangHandlerWin.dll	C:\Program Files\Autodesk\3ds Max 2027\OGSLangHandlerWin.dll
+mlang.dll	C:\WINDOWS\system32\mlang.dll
+activeshadefragment.dlu	c:\program files\autodesk\3ds max 2027\stdplugs\activeshadefragment.dlu
+OGSATILIntegration.dll	C:\Program Files\Autodesk\3ds Max 2027\OGSATILIntegration.dll
+bloomadsk.dlu	c:\program files\autodesk\3ds max 2027\stdplugs\bloomadsk.dlu
+UIAutomationTypes.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\UIAutomationTypes.dll
+PresentationFramework.Aero2.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\PresentationFramework.Aero2.dll
+PresentationFramework.Aero.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\PresentationFramework.Aero.dll
+PresentationFramework-SystemXml.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\PresentationFramework-SystemXml.dll
+PresentationFramework-SystemData.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\PresentationFramework-SystemData.dll
+UIAutomationProvider.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\UIAutomationProvider.dll
+mscms.dll	C:\WINDOWS\SYSTEM32\mscms.dll
+WindowsCodecsExt.dll	C:\WINDOWS\SYSTEM32\WindowsCodecsExt.dll
+caddies.gup	c:\program files\autodesk\3ds max 2027\stdplugs\caddies.gup
+System.Windows.Primitives.dll	C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\10.0.0\System.Windows.Primitives.dll
+arnoldproceduralobject.dlo	c:\programdata\autodesk\applicationplugins\maxtoa_2027\arnoldproceduralobject.dlo
+ArnoldProceduralBase.dll	c:\programdata\autodesk\applicationplugins\maxtoa_2027\ArnoldProceduralBase.dll
+arnoldalembicobject.dlo	c:\programdata\autodesk\applicationplugins\maxtoa_2027\arnoldalembicobject.dlo
+arnoldvolumeobject.dlo	c:\programdata\autodesk\applicationplugins\maxtoa_2027\arnoldvolumeobject.dlo
+storageandfilter.bms	c:\program files\autodesk\3ds max 2027\stdplugs\storageandfilter.bms
+particleflowtoolsbox2.dlo	c:\program files\autodesk\3ds max 2027\stdplugs\particleflowtoolsbox2.dlo
+msxml3.dll	C:\WINDOWS\System32\msxml3.dll
+ATSVault10.dll	C:\Program Files\Autodesk\3ds Max 2027\stdplugs\AssetTracking\ATSVault10.dll
+ATSVaultUI.dll	C:\Program Files\Autodesk\3ds Max 2027\ATSVaultUI.dll
+Autodesk.DataManagement.Client.Framework.Vault.dll	C:\Program Files\Autodesk\3ds Max 2027\Autodesk.DataManagement.Client.Framework.Vault.dll
+Autodesk.Connectivity.WebServices.dll	C:\Program Files\Autodesk\3ds Max 2027\Autodesk.Connectivity.WebServices.dll
+Autodesk.DataManagement.Client.Framework.dll	C:\Program Files\Autodesk\3ds Max 2027\Autodesk.DataManagement.Client.Framework.dll
+Autodesk.DataManagement.Client.Framework.Vault.Forms.dll	C:\Program Files\Autodesk\3ds Max 2027\Autodesk.DataManagement.Client.Framework.Vault.Forms.dll
+Autodesk.DataManagement.Client.Framework.Forms.dll	C:\Program Files\Autodesk\3ds Max 2027\Autodesk.DataManagement.Client.Framework.Forms.dll
+Autodesk.Connectivity.Extensibility.Framework.dll	C:\Program Files\Autodesk\3ds Max 2027\Autodesk.Connectivity.Extensibility.Framework.dll
+Autodesk.Connectivity.WebServices.WCF.dll	C:\Program Files\Autodesk\3ds Max 2027\Autodesk.Connectivity.WebServices.WCF.dll
+Autodesk.Connectivity.LicenseWrapper.dll	C:\Program Files\Autodesk\3ds Max 2027\Autodesk.Connectivity.LicenseWrapper.dll
+System.Diagnostics.FileVersionInfo.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.Diagnostics.FileVersionInfo.dll
+thumbcache.dll	C:\Windows\System32\thumbcache.dll
+WrapperWMTOUCH.dll	C:\Program Files\Autodesk\3ds Max 2027\WrapperWMTOUCH.dll
+comsrv.gup	c:\program files\autodesk\3ds max 2027\stdplugs\comsrv.gup
+dialogmonitor.gup	c:\program files\autodesk\3ds max 2027\stdplugs\dialogmonitor.gup
+fltgup.gup	c:\program files\autodesk\3ds max 2027\stdplugs\fltgup.gup
+geometrychecker.gup	c:\program files\autodesk\3ds max 2027\stdplugs\geometrychecker.gup
+mapmatcol.gup	c:\program files\autodesk\3ds max 2027\stdplugs\mapmatcol.gup
+materialpreviewmanager.gup	c:\program files\autodesk\3ds max 2027\stdplugs\materialpreviewmanager.gup
+parameditor.gup	c:\program files\autodesk\3ds max 2027\stdplugs\parameditor.gup
+ParamRollup.dll	C:\Program Files\Autodesk\3ds Max 2027\ParamRollup.dll
+saveverification.gup	c:\program files\autodesk\3ds max 2027\stdplugs\saveverification.gup
+instancemgr.dlu	c:\program files\autodesk\3ds max 2027\stdplugs\instancemgr.dlu
+adtobjects.dlu	c:\program files\autodesk\3ds max 2027\stdplugs\adtobjects.dlu
+acadblocks.dlu	c:\program files\autodesk\3ds max 2027\stdplugs\acadblocks.dlu
+tprofilergup.gup	c:\program files\autodesk\3ds max 2027\stdplugs\tprofilergup.gup
+TprofilerTool.dll	C:\Program Files\Autodesk\3ds Max 2027\TprofilerTool.dll
+qcertonlybackend.dll	C:\Program Files\Autodesk\3ds Max 2027\qt\plugins\tls\qcertonlybackend.dll
+qopensslbackend.dll	C:\Program Files\Autodesk\3ds Max 2027\qt\plugins\tls\qopensslbackend.dll
+qschannelbackend.dll	C:\Program Files\Autodesk\3ds Max 2027\qt\plugins\tls\qschannelbackend.dll
+dhcpcsvc6.DLL	C:\WINDOWS\SYSTEM32\dhcpcsvc6.DLL
+netprofm.dll	C:\WINDOWS\System32\netprofm.dll
+npmproxy.dll	C:\WINDOWS\System32\npmproxy.dll
+arnoldshadersloader.gup	c:\programdata\autodesk\applicationplugins\maxtoa_2027\arnoldshadersloader.gup
+napinsp.dll	C:\WINDOWS\system32\napinsp.dll
+winrnr.dll	C:\WINDOWS\System32\winrnr.dll
+nlansp_c.dll	C:\WINDOWS\system32\nlansp_c.dll
+wshbth.dll	C:\WINDOWS\system32\wshbth.dll
+nvcuda64.dll	C:\WINDOWS\system32\DriverStore\FileRepository\nv_dispsi.inf_amd64_7cc7738d8e428783\nvcuda64.dll
+nvdxgdmal64.dll	C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispsi.inf_amd64_7cc7738d8e428783\nvdxgdmal64.dll
+nvobjectloader64.dll	C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispsi.inf_amd64_7cc7738d8e428783\nvobjectloader64.dll
+OGSGDIFontDevice.dll	C:\Program Files\Autodesk\3ds Max 2027\OGSGDIFontDevice.dll
+libcef.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\libcef.dll
+chrome_elf.dll	C:\Program Files\Chaos\Corona\Corona Renderer for 3ds Max\2027\chrome_elf.dll
+dxva2.dll	C:\WINDOWS\SYSTEM32\dxva2.dll
+CRYPTUI.dll	C:\WINDOWS\SYSTEM32\CRYPTUI.dll
+wevtapi.dll	C:\WINDOWS\SYSTEM32\wevtapi.dll
+credui.dll	C:\WINDOWS\SYSTEM32\credui.dll
+ESENT.dll	C:\WINDOWS\SYSTEM32\ESENT.dll
+DSROLE.DLL	C:\WINDOWS\SYSTEM32\DSROLE.DLL
+DSREG.DLL	C:\WINDOWS\SYSTEM32\DSREG.DLL
+WKSCLI.DLL	C:\WINDOWS\SYSTEM32\WKSCLI.DLL
+SAMCLI.DLL	C:\WINDOWS\SYSTEM32\SAMCLI.DLL
+MMDevApi.dll	C:\WINDOWS\System32\MMDevApi.dll
+AssetResolverPreferences.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\plugin\adskassetresolver\AssetResolverPreferences.dll
+AdskAssetResolver.dll	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\plugin\adskassetresolver\AdskAssetResolver.dll
+_ar.pyd	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\python\pxr\Ar\_ar.pyd
+_vt.pyd	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\python\pxr\Vt\_vt.pyd
+_gf.pyd	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\python\pxr\Gf\_gf.pyd
+_adskAssetResolver.pyd	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\python\AdskAssetResolver\_adskAssetResolver.pyd
+_assetResolverPreferences.pyd	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\python\AssetResolverPreferences\_assetResolverPreferences.pyd
+PhysXUpdateLoader64.dll	c:\program files\autodesk\3ds max 2027\stdplugs\(MassFX)\PhysX_2.8.5\PhysXUpdateLoader64.dll
+Viper3dsMaxBridge.dll	C:\Program Files\Autodesk\3ds Max 2027\Viper3dsMaxBridge.dll
+ViperEngine.dll	C:\Program Files\Autodesk\3ds Max 2027\ViperEngine.dll
+ImmutableArray.dll	C:\Program Files\Autodesk\3ds Max 2027\ImmutableArray.dll
+Geometry3D.dll	C:\Program Files\Autodesk\3ds Max 2027\Geometry3D.dll
+MonoGame.Framework.WindowsDX.dll	C:\Program Files\Autodesk\3ds Max 2027\MonoGame.Framework.WindowsDX.dll
+ViperGeometry3D.dll	C:\Program Files\Autodesk\3ds Max 2027\ViperGeometry3D.dll
+BulletSharp.dll	C:\Program Files\Autodesk\3ds Max 2027\BulletSharp.dll
+System.IO.Compression.ZipFile.dll	C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.0\System.IO.Compression.ZipFile.dll
+mtlgen.dlt	c:\program files\autodesk\3ds max 2027\stdplugs\mtlgen.dlt
+png.bmi	c:\program files\autodesk\3ds max 2027\stdplugs\png.bmi
+arnoldlightfiltermodifier.dlm	c:\programdata\autodesk\applicationplugins\maxtoa_2027\arnoldlightfiltermodifier.dlm
+PyUfe.cp313-win_amd64.pyd	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\python\ufe\PyUfe.cp313-win_amd64.pyd
+_bz2.pyd	C:\Program Files\Autodesk\3ds Max 2027\Python\DLLs\_bz2.pyd
+_lzma.pyd	C:\Program Files\Autodesk\3ds Max 2027\Python\DLLs\_lzma.pyd
+Shiboken.pyd	C:\Program Files\Autodesk\3ds Max 2027\Python\Lib\site-packages\shiboken6\Shiboken.pyd
+shiboken6.abi3.dll	C:\Program Files\Autodesk\3ds Max 2027\Python\Lib\site-packages\shiboken6\shiboken6.abi3.dll
+_maxUsd.pyd	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\python\maxUsd\_maxUsd.pyd
+_kind.pyd	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\python\pxr\Kind\_kind.pyd
+_sdf.pyd	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\python\pxr\Sdf\_sdf.pyd
+_ts.pyd	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\python\pxr\Ts\_ts.pyd
+_usd.pyd	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\python\pxr\Usd\_usd.pyd
+_pcp.pyd	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\python\pxr\Pcp\_pcp.pyd
+_usdGeom.pyd	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\python\pxr\UsdGeom\_usdGeom.pyd
+_usdImagingGL.pyd	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\python\pxr\UsdImagingGL\_usdImagingGL.pyd
+_glf.pyd	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\python\pxr\Glf\_glf.pyd
+_pxOsd.pyd	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\python\pxr\PxOsd\_pxOsd.pyd
+_sdr.pyd	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\python\pxr\Sdr\_sdr.pyd
+_usdHydra.pyd	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\python\pxr\UsdHydra\_usdHydra.pyd
+_usdShade.pyd	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\python\pxr\UsdShade\_usdShade.pyd
+_usdLux.pyd	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\python\pxr\UsdLux\_usdLux.pyd
+_usdRi.pyd	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\python\pxr\UsdRi\_usdRi.pyd
+_usdSkel.pyd	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\python\pxr\UsdSkel\_usdSkel.pyd
+_usdUtils.pyd	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\python\pxr\UsdUtils\_usdUtils.pyd
+_usdUI.pyd	c:\programdata\autodesk\applicationplugins\usd for 3ds max 2027\contents\bin\python\pxr\UsdUI\_usdUI.pyd
+QtCore.pyd	C:\Program Files\Autodesk\3ds Max 2027\Python\Lib\site-packages\PySide6\QtCore.pyd
+pyside6.abi3.dll	C:\Program Files\Autodesk\3ds Max 2027\Python\Lib\site-packages\PySide6\pyside6.abi3.dll
+QtWidgets.pyd	C:\Program Files\Autodesk\3ds Max 2027\Python\Lib\site-packages\PySide6\QtWidgets.pyd
+QtGui.pyd	C:\Program Files\Autodesk\3ds Max 2027\Python\Lib\site-packages\PySide6\QtGui.pyd
+materialswitcher.dlt	c:\program files\autodesk\3ds max 2027\stdplugs\materialswitcher.dlt
+metadata.dla	c:\program files\autodesk\3ds max 2027\stdplugs\metadata.dla
+explorerframe.dll	C:\WINDOWS\system32\explorerframe.dll
+multipassdof.dlv	c:\program files\autodesk\3ds max 2027\stdplugs\multipassdof.dlv
+kernel.dlk	c:\program files\autodesk\3ds max 2027\stdplugs\kernel.dlk
+vizwall.dlo	c:\program files\autodesk\3ds max 2027\stdplugs\vizwall.dlo
+geomimp.dll	C:\Program Files\Autodesk\3ds Max 2027\geomimp.dll
+Amodeler.dll	C:\Program Files\Autodesk\3ds Max 2027\Amodeler.dll
+cameramatch.dlu	c:\program files\autodesk\3ds max 2027\stdplugs\cameramatch.dlu
+cammatch.dlu	c:\program files\autodesk\3ds max 2027\stdplugs\cammatch.dlu
+motion.dlc	c:\program files\autodesk\3ds max 2027\stdplugs\motion.dlc
+multipassmotionblur.dlv	c:\program files\autodesk\3ds max 2027\stdplugs\multipassmotionblur.dlv
+flttools.dlu	c:\program files\autodesk\3ds max 2027\stdplugs\flttools.dlu
+Windows.System.Launcher.dll	C:\Windows\System32\Windows.System.Launcher.dll
+wintypes.dll	C:\Windows\System32\wintypes.dll
+particleshell.dlo	c:\program files\autodesk\3ds max 2027\stdplugs\particleshell.dlo
+particleengine.dlo	c:\program files\autodesk\3ds max 2027\stdplugs\particleengine.dlo
+particleactions.dlo	c:\program files\autodesk\3ds max 2027\stdplugs\particleactions.dlo
+particleactions2.dlo	c:\program files\autodesk\3ds max 2027\stdplugs\particleactions2.dlo
+particlechannels.dlo	c:\program files\autodesk\3ds max 2027\stdplugs\particlechannels.dlo

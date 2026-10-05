@@ -1,0 +1,339 @@
+{
+  "pure_inspection": true,
+  "new_order_and_rule": true,
+  "pending_recipe_separate_from_epoch": true,
+  "legacy_mutation_guard_rejected": true,
+  "configuration": {
+    "configuration_schema": "cyrus.configuration/1.0",
+    "controller_id": "observed_88eb2d41ab0446d1aa93daba53058f79",
+    "display": {
+      "faces_per_population": 2000000,
+      "instances_per_population": 2000,
+      "mode": "proxy",
+      "point_budget": 20000,
+      "points_per_plant": 80,
+      "proxy_shape": "box",
+      "show_preview": true,
+      "update_mode": "manual"
+    },
+    "freshness": "current parameter values only; no generation or geometry certification",
+    "group_policy": 3,
+    "layers": [
+      {
+        "allocation": {
+          "count_mode_candidates": 125,
+          "parent_candidate_budget": 250,
+          "plants_per_m2": 100.0,
+          "population_mode": 1,
+          "set_enabled": true,
+          "set_visible": true,
+          "set_weight": 1.0
+        },
+        "assets": [
+          {
+            "entry_id": "a9a3fc97-b832-428a-803e-e8cc07bc3d26",
+            "kind": "mesh",
+            "label": "MCP Tree",
+            "settings": {
+              "collision_radius_m": 0.0,
+              "forward_axis": 1,
+              "radius_follows_scale": true,
+              "scale": 1.0,
+              "show_radius": false,
+              "z_offset_m": 0.0
+            },
+            "source_id": "asset_54db2efdcdc4496f54ddb373",
+            "weight": 1.0
+          }
+        ],
+        "base_variation": {
+          "advanced_axes": true,
+          "legacy_uniform_scale": [
+            0.800000011920929,
+            1.2000000476837158
+          ],
+          "legacy_yaw_degrees": [
+            0.0,
+            360.0
+          ],
+          "rotation_z_degrees": [
+            0.0,
+            360.0
+          ],
+          "whole_scale": [
+            0.800000011920929,
+            1.2000000476837158
+          ]
+        },
+        "count": 250,
+        "layer_id": "841dac9e-03a9-4e10-b2a5-912cee8e74bc",
+        "name": "Trees 1",
+        "paint": {
+          "document_present": false,
+          "enabled": false,
+          "revision": null,
+          "stroke_count": 0
+        },
+        "parent_id": null,
+        "seed": 42,
+        "set_name": "Base",
+        "settings": {
+          "align_normal": true,
+          "cleanup_enabled": false,
+          "collision_enabled": false,
+          "collision_radius_m": 0.10000000149011612,
+          "enabled": true,
+          "minimum_island": 5,
+          "minimum_neighbors": 2,
+          "movement_x_m": [
+            0.0,
+            0.0
+          ],
+          "movement_y_m": [
+            0.0,
+            0.0
+          ],
+          "neighbor_radius_m": 1.0,
+          "planar_cleanup": true,
+          "priority": 0,
+          "rotation_x_degrees": [
+            0.0,
+            0.0
+          ],
+          "rotation_y_degrees": [
+            0.0,
+            0.0
+          ],
+          "scale_x": [
+            1.0,
+            1.0
+          ],
+          "scale_y": [
+            1.0,
+            1.0
+          ],
+          "scale_z": [
+            1.0,
+            1.0
+          ],
+          "visible": true
+        }
+      },
+      {
+        "allocation": {
+          "count_mode_candidates": 125,
+          "parent_candidate_budget": 250,
+          "plants_per_m2": 100.0,
+          "population_mode": 1,
+          "set_enabled": true,
+          "set_visible": true,
+          "set_weight": 1.0
+        },
+        "assets": [
+          {
+            "entry_id": "01c392b1-d920-4320-b239-201495b0e31b",
+            "kind": "mesh",
+            "label": "MCP Tree",
+            "settings": {
+              "collision_radius_m": 0.0,
+              "forward_axis": 1,
+              "radius_follows_scale": true,
+              "scale": 1,
+              "show_radius": false,
+              "z_offset_m": 0.0
+            },
+            "source_id": "asset_458547c87fc3cd70cbe1fdd5",
+            "weight": 1.0
+          }
+        ],
+        "base_variation": {
+          "advanced_axes": true,
+          "legacy_uniform_scale": [
+            0.800000011920929,
+            1.2000000476837158
+          ],
+          "legacy_yaw_degrees": [
+            0.0,
+            360.0
+          ],
+          "rotation_z_degrees": [
+            0.0,
+            360.0
+          ],
+          "whole_scale": [
+            0.800000011920929,
+            1.2000000476837158
+          ]
+        },
+        "count": 250,
+        "layer_id": "570d9522-4c3d-4c3f-80dc-72f57c202629",
+        "name": "Layer_01",
+        "paint": {
+          "document_present": true,
+          "enabled": true,
+          "revision": 3,
+          "stroke_count": 0
+        },
+        "parent_id": "841dac9e-03a9-4e10-b2a5-912cee8e74bc",
+        "seed": 42,
+        "set_name": "Flowers",
+        "settings": {
+          "align_normal": true,
+          "cleanup_enabled": false,
+          "collision_enabled": false,
+          "collision_radius_m": 0.10000000149011612,
+          "enabled": true,
+          "minimum_island": 5,
+          "minimum_neighbors": 2,
+          "movement_x_m": [
+            0.0,
+            0.0
+          ],
+          "movement_y_m": [
+            0.0,
+            0.0
+          ],
+          "neighbor_radius_m": 1.0,
+          "planar_cleanup": true,
+          "priority": 0,
+          "rotation_x_degrees": [
+            0.0,
+            0.0
+          ],
+          "rotation_y_degrees": [
+            0.0,
+            0.0
+          ],
+          "scale_x": [
+            1.0,
+            1.0
+          ],
+          "scale_y": [
+            1.0,
+            1.0
+          ],
+          "scale_z": [
+            1.0,
+            1.0
+          ],
+          "visible": true
+        }
+      }
+    ],
+    "pair_rules": [],
+    "procedural": {
+      "evaluation_policy": 3,
+      "freshness": "Recipe values are current; last_published describes the last completed epoch. No solve is performed.",
+      "layers_in_order": [
+        {
+          "attempt_factor": 8,
+          "default_between_sets": {
+            "enabled": false,
+            "gap_m": 0.20000000298023224,
+            "metric": "xyz",
+            "radius_factor": 0.0
+          },
+          "layer_id": "841dac9e-03a9-4e10-b2a5-912cee8e74bc",
+          "population": "candidate_budget",
+          "retry_cleanup_gaps": true,
+          "round_limit": 8,
+          "sets_in_order": [
+            {
+              "background": {
+                "domain": "earlier siblings on the shared receiver and layer Area domain",
+                "earlier_set_ids": [],
+                "mode": 1
+              },
+              "last_published": {
+                "accepted": 87,
+                "candidate_attempts": 100,
+                "eligible_pool": 87,
+                "epoch": 2,
+                "neighbor_visits": 0,
+                "not_consumed": 0,
+                "protected": 0,
+                "protected_conflicts": 0,
+                "rejected_layer": 0,
+                "rejected_self": 0,
+                "rejected_set": 0,
+                "removed_cleanup": 0,
+                "round_limit_reached": false,
+                "rounds": 1,
+                "target_shortfall": 0
+              },
+              "name": "Flowers",
+              "prepared_builds": 2,
+              "prepared_hits": 0,
+              "radius_overrides": [],
+              "sampling_salt": 2,
+              "self_rule": {
+                "enabled": false,
+                "gap_m": 0.20000000298023224,
+                "inherited": true,
+                "metric": "xyz",
+                "radius_factor": 0.0
+              },
+              "set_id": "570d9522-4c3d-4c3f-80dc-72f57c202629",
+              "source_entry_ids": [
+                "01c392b1-d920-4320-b239-201495b0e31b"
+              ]
+            },
+            {
+              "background": {
+                "domain": "earlier siblings on the shared receiver and layer Area domain",
+                "earlier_set_ids": [],
+                "mode": 1
+              },
+              "last_published": {
+                "accepted": 84,
+                "candidate_attempts": 100,
+                "eligible_pool": 85,
+                "epoch": 2,
+                "neighbor_visits": 2,
+                "not_consumed": 0,
+                "protected": 0,
+                "protected_conflicts": 0,
+                "rejected_layer": 0,
+                "rejected_self": 0,
+                "rejected_set": 1,
+                "removed_cleanup": 0,
+                "round_limit_reached": false,
+                "rounds": 1,
+                "target_shortfall": 0
+              },
+              "name": "Base",
+              "prepared_builds": 2,
+              "prepared_hits": 0,
+              "radius_overrides": [],
+              "sampling_salt": 0,
+              "self_rule": {
+                "enabled": false,
+                "gap_m": 0.20000000298023224,
+                "inherited": true,
+                "metric": "xyz",
+                "radius_factor": 0.0
+              },
+              "set_id": "841dac9e-03a9-4e10-b2a5-912cee8e74bc",
+              "source_entry_ids": [
+                "a9a3fc97-b832-428a-803e-e8cc07bc3d26"
+              ]
+            }
+          ]
+        }
+      ],
+      "mutation_supported": false,
+      "pair_rules": [
+        {
+          "a": "841dac9e-03a9-4e10-b2a5-912cee8e74bc",
+          "b": "570d9522-4c3d-4c3f-80dc-72f57c202629",
+          "enabled": true,
+          "gap_m": 0.20000000298023224,
+          "metric": "xy",
+          "radius_factor": 0.5,
+          "scope": "paint_sets"
+        }
+      ],
+      "schema": "cyrus.procedural-configuration/1.0"
+    }
+  }
+}

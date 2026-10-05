@@ -1,0 +1,26 @@
+[  7%] Building CXX object policy/CMakeFiles/cyrus_license_policy.dir/src/policy.cpp.obj
+policy.cpp
+[ 15%] Linking CXX static library cyrus_license_policy.lib
+[ 15%] Built target cyrus_license_policy
+[ 23%] Building CXX object CMakeFiles/CyrusLicenseLab.dir/bridge.cpp.obj
+bridge.cpp
+[ 30%] Linking CXX shared module CyrusLicenseLab.dlx
+[ 30%] Built target CyrusLicenseLab
+[ 38%] Building CXX object policy/CMakeFiles/cyrus_license_token.dir/src/signed_license.cpp.obj
+signed_license.cpp
+[ 46%] Building CXX object policy/CMakeFiles/cyrus_license_token.dir/src/cng_signature.cpp.obj
+cng_signature.cpp
+[ 53%] Linking CXX static library cyrus_license_token.lib
+[ 53%] Built target cyrus_license_token
+[ 61%] Building CXX object CMakeFiles/CyrusSignedLicenseLab.dir/signed_bridge.cpp.obj
+signed_bridge.cpp
+[ 69%] Linking CXX shared module CyrusSignedLicenseLab.dlx
+[ 69%] Built target CyrusSignedLicenseLab
+[ 76%] Building CXX object CMakeFiles/signed_license_tests.dir/F_/Cursor/_Cyrus_Apps/CyrusScatter/build/licensing-l1-2026-10-04/run03/source/CyrusLicensing/tests/signed_license_tests.cpp.obj
+signed_license_tests.cpp
+[ 84%] Linking CXX executable signed_license_tests.exe
+[ 84%] Built target signed_license_tests
+[ 92%] Building CXX object policy/CMakeFiles/license_policy_tests.dir/tests/policy_tests.cpp.obj
+policy_tests.cpp
+[100%] Linking CXX executable license_policy_tests.exe
+[100%] Built target license_policy_tests

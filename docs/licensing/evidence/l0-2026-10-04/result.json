@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "scope": "Synthetic policy and wrapper feasibility only; no production enforcement",
+  "sdk_builds": [
+    2026,
+    2027
+  ],
+  "runtime": "Max 2027 batch, Default Scanline only",
+  "render_pixels_equal": true,
+  "checks": {
+    "create": "PASS\thost_version\t#(29000, 70, 0, 29, 1, 0, 11426, 2027, \".1\")\nPASS\tlab_identity\t\nPASS\tactive_policy\t\nPASS\texpiry_boundary_policy\t\nPASS\texpired_policy\t\nPASS\trenewed_policy\t\nPASS\tunproven_render_rejected\t\nPASS\tunknown_operation_rejected\t\nPASS\tfixture_population\t\nPASS\tactive_parameter_edit\t\nPASS\tactive_parameter_result\t\nPASS\tparameter_undo\t\nPASS\tactive_native_edit\t\nPASS\tnative_edit_result\t\nPASS\tnative_edit_undo\t\nPASS\tnative_edit_redo\t\nPASS\texpired_parameter_denied\t\nPASS\texpired_native_edit_denied\t\nPASS\tdenial_preserves_state\t\nPASS\tdenial_preserves_identity\t\nPASS\tactive_preview\t\nPASS\tpreview_built\t\nPASS\texpired_refresh_denied\t\nPASS\tdenial_precedes_cache_cleanup\t\nPASS\tartist_enable_unchanged\t\nPASS\tactive_brush_fill\t\nPASS\texpired_brush_denied\t\nPASS\tbrush_preserved\t\nPASS\tbrush_direct_change_observed\t\nOBSERVED\tbrush_direct_entry_ungated\tPublic native fill bypasses the lab wrapper\nPASS\tbrush_undo_while_expired\t\nPASS\tactive_analyzer\t\nPASS\tanalyzer_calculated\t\nPASS\texpired_analyzer_denied\t\nPASS\tanalyzer_denial_preserves_runs\t\nPASS\tparameter_escape_observed\t\nOBSERVED\tparameter_entry_ungated\tChanging the parameter then evaluating produces new work\nPASS\tnative_generation_escape_observed\t\nOBSERVED\tgeneration_entry_ungated\tThe native generator cannot infer authoring versus saved evaluation\nPASS\tbaseline_after_escape_probes\t\nOBSERVED\tsurface_dependency\tlayout_changed=true\nPASS\trestored_surface_baseline\t\nPASS\trender_fixture_baseline\t\nPASS\trender_policy\t\nPASS\trender_returned_image\t\nPASS\trender_population\t64\nPASS\trender_fixture_baseline\t\nPASS\trender_policy\t\nPASS\trender_returned_image\t\nPASS\trender_population\t64\nPASS\tsave_policy_while_expired\t\nPASS\tsave_while_expired\t\nCOMPLETE\n",
+    "reopen": "PASS\thost_version\t#(29000, 70, 0, 29, 1, 0, 11426, 2027, \".1\")\nPASS\tlab_identity\t\nPASS\tactive_policy\t\nPASS\texpiry_boundary_policy\t\nPASS\texpired_policy\t\nPASS\trenewed_policy\t\nPASS\tunproven_render_rejected\t\nPASS\tunknown_operation_rejected\t\nPASS\treopen_while_expired\t\nPASS\tmodifier_persisted\t\nPASS\tparameters_persisted\t\nPASS\tidentities_persisted\t\nPASS\tcold_evaluation_restores_edits\t\nPASS\trender_fixture_baseline\t\nPASS\trender_policy\t\nPASS\trender_returned_image\t\nPASS\trender_population\t64\nPASS\treopened_expired_edit_denied\t\nPASS\trenewal_visible_edit_context\t\nPASS\trenewal_resumes_editing\t\nPASS\trenewed_result\t\nPASS\trenewal_undo_restores_prior_work\t\nPASS\tsource_edit_keeps_placement_positions\t\nOBSERVED\tsource_geometry\tSource height changed while placement fingerprint stayed unchanged\nPASS\trender_fixture_baseline\t\nPASS\trender_policy\t\nPASS\trender_returned_image\t\nPASS\trender_population\t64\nCOMPLETE\n"
+  },
+  "changed_source_render_differs": true,
+  "open_boundary": "Product direct calls and edited parameters remain ungated; see escape observations"
+}

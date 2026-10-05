@@ -47,7 +47,7 @@ source radius policy -> transformed source radius -> instance override -> rule t
 
 1. **Manual source radius** is the initial supported default and preserves existing artistic values. Zero is allowed and shown honestly.
 2. **Follow scale** applies the effective source/instance scale exactly once. Reconcile the current source-offset transform convention before implementing this calculation.
-3. **Per-instance override** is a sparse authored record keyed by stable candidate identity. Support either an explicit world-radius override or a multiplier with an unambiguous mode; do not multiply and override simultaneously.
+3. **Per-instance override** is a sparse authored record keyed by owner namespace plus the resolved instance/Edit output ID. A candidate ID remains provenance; clones can share a candidate while having different output IDs and radii. Support either an explicit world-radius override or a multiplier with an unambiguous mode; do not multiply and override simultaneously.
 4. The relationship multiplier changes spacing for that pair class without modifying source metadata, instance transform or render geometry.
 
 Optional automatic radius estimation from source bounds can follow after these rules work. Its UI must say whether it estimates a horizontal disk or a 3D sphere and where its centre is. A canopy, trunk and full tilted tree have different useful footprints. A manually chosen artistic radius is not a proof that meshes cannot intersect.

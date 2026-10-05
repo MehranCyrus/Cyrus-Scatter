@@ -33,7 +33,7 @@ std::vector<Instance> boundaryFalloff(const std::vector<Instance>& rows,const st
   if(f.areaSide&&distance>1e-8){bool inside=false;for(const auto& path:loops)for(std::size_t a=0,b=path.size()-1;a<path.size();b=a++) {auto p=path[a],q=path[b];if((p.y>query.y)!=(q.y>query.y)&&query.x<(q.x-p.x)*(query.y-p.y)/(q.y-p.y)+p.x)inside=!inside;}
    if(inside!=(f.areaSide==1)){out.push_back(row);continue;}}
   double start=f.remove?f.removeWidth:0;if(f.remove&&distance<start)continue;double d=std::max(0.0,distance-start);
-  if(f.density){double rate=std::clamp(fallCurve(f.densityCurve,f.densityWidth>0?d/f.densityWidth:1),0.0,1.0);double random=static_cast<double>(mix(seed^mix(static_cast<std::uint32_t>(i))))/4294967296.0;if(random>=rate)continue;}
+  if(f.density){double rate=std::clamp(fallCurve(f.densityCurve,f.densityWidth>0?d/f.densityWidth:1),0.0,1.0);double random=f.stableCandidates?stableUnit(seed,row.candidateKey,7):static_cast<double>(mix(seed^mix(static_cast<std::uint32_t>(i))))/4294967296.0;if(random>=rate)continue;}
   if(f.scale){double factor=fallCurve(f.scaleCurve,f.scaleWidth>0?d/f.scaleWidth:1);row.xAxis=row.xAxis*factor;row.yAxis=row.yAxis*factor;row.zAxis=row.zAxis*factor;}
   out.push_back(row);
  }return out;

@@ -22,6 +22,8 @@ Saving a scene does not require serializing every temporary spatial grid. A cach
 6. **Controller publication:** immutable references to compatible completed layers and the exact input revision.
 7. **Display packets:** selected display representation and its resource generation.
 
+The physical candidate cache may exceed the logical prefix requested by an evaluation. Store both values. Exposing the entire resident pool changes cleanup/refill decisions and violates cold/warm equivalence; only the versioned evaluation schedule decides which ordinals participate.
+
 Do not copy every buffer at every boundary. Keep shared immutable buffers, compact indices/bitsets and sparse overrides. Store rejection details selectively; full per-pair debug data needs a cap. Retain temporary grids only when measured reuse exceeds their memory cost.
 
 ## Cache key contract
@@ -31,6 +33,10 @@ An output key includes its algorithm/schema version, owner identity, relevant no
 Revision domains should distinguish receiver topology/geometry/transform, coverage, source assignment, source geometry, spacing footprint, transforms, edits, population, rule/order and display. Scene callbacks must cover each domain; an explicit Update remains a recovery path for unsupported external changes. Do not drop broad current invalidation until mutation tests prove the replacements.
 
 Time belongs in a key when an input is time-dependent or its validity interval ends. Do not globally remove time merely to improve cache hits. Likewise, a texture object's handle alone does not establish that its content or external bitmap is unchanged. Capture relevant texture validity/content revisions or conservatively invalidate at a defined boundary.
+
+The readiness audit found `paintSetName` and `paintSetVisible` included by the generated `paintBaseInputKey` field loop. Their UI handlers intend presentation-only changes, but the key can change and invalidate a prepared result or mark Manual mode pending. This is a confirmed key-classification issue; the actual runtime cost was not measured in this audit. Add rename/visibility mutation fixtures before excluding them. Do not infer that rollout clicks themselves trigger this path.
+
+Key construction must be a read-only operation over normalized effective settings. Current `syncLogicalSettings` writes inherited child values, and the Edit-key path also synchronizes transient visibility. Separate those effects from pure fingerprinting in the new adapter, with host-safe explicit publication. A function called “key” is not automatically free of side effects.
 
 ## Intended invalidation matrix
 
@@ -49,7 +55,8 @@ This table is the **target**, not a claim that current 1.2.3 already achieves it
 | Layer area mask | Member-set eligibility | Surface/source snapshots; candidate anchors if generation policy permits |
 | Collision gap or multiplier | Relevant solve/radius consumer | Candidate positions, coverage and source samples |
 | Source artistic radius | Effective radius and relevant solves | Positions, geometry buffers and coverage |
-| Source scale or instance movement | Transforms, radius/eligibility recheck, solve | Candidate identity/anchors where policy allows |
+| Source scale/offset | Instance transform, effective radius, solve and display | Support-anchor coverage when independent of source footprint/offset |
+| Procedural movement | Resolved support anchor, eligibility, assignment/transform and solve | Latent candidate anchors under the new random-channel contract |
 | Source geometry edit | Source display; footprint if geometry-derived | Placements if radius and placement are independent of geometry |
 | Pure display color | Style packet | Placement; exceptions for colors used as assignment/group keys |
 | Manual move/delete/radius edit | Authored constraints and affected solve | Unrelated prepared data; upstream layers may change for global reservations |
@@ -66,6 +73,8 @@ Assign configurable process/controller budgets after measurement. Account for sh
 Evict rebuildable least-recently-used intermediate entries first. Keep the current published result alive while display/render/export readers hold it. A new generation may temporarily coexist with the old one; admission control must consider that peak and reject/cancel a build rather than allocate without a limit. Eviction changes speed, not accepted output.
 
 Empty or disabled caches are real reusable states. Invalid/stale/error are different states; none should masquerade as an empty successful scene. Device loss invalidates device resources, not necessarily candidate/placement data.
+
+Eviction must also preserve the logical replay history implied by the policy: rebuild the canonical transaction when necessary instead of resuming from an arbitrary warm accepted subset. Saved authoring overrides and the current published generation must not be discarded as if they were expendable candidate pools.
 
 ## Keep the existing drawing paths
 

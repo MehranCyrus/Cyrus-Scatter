@@ -1,0 +1,13 @@
+{
+  "expected_rejection": true,
+  "exit_code": 1,
+  "command": [
+    "cmake",
+    "-S",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\licensing-l0-2026-10-04\\run04\\source\\tools\\licensing_lab",
+    "-B",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\licensing-l0-2026-10-04\\run04\\optin-default",
+    "-G",
+    "NMake Makefiles"
+  ]
+}

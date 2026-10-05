@@ -1,0 +1,12 @@
+-- The CXX compiler identification is MSVC 19.38.33145.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.38.33130/bin/Hostx64/x64/cl.exe - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring incomplete, errors occurred!
+CMake Error at CMakeLists.txt:5 (message):
+  This test-only target requires CYRUS_BUILD_LICENSING_LAB=ON; never package
+  it
+
+

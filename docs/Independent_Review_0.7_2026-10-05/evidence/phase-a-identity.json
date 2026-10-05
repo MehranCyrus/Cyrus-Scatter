@@ -1,0 +1,27 @@
+{
+  "script_sha256": "47d9aed183281ced28d2b5b1329d517458fa9edb81a0c94d94c76410ff83735e",
+  "run": "build/mcp-qualification/procedural07-ui-implementation-20261005-04",
+  "native_sha256": "314a785e6ad3ae1ecd8d7198fcfc71fe933b4036eeb4e4d778b03679d891e328",
+  "pointer_observations": {
+    "columns": [
+      3,
+      1,
+      2,
+      3
+    ],
+    "nested_wheel": true,
+    "background_drag": true,
+    "typed_manual_live": true,
+    "artist_session_touched": false
+  },
+  "receipts": [
+    "procedural-acceptance.json",
+    "bindings-acceptance.json",
+    "ui-acceptance.json",
+    "review-regressions.json",
+    "pointer-spacing.json",
+    "pointer-after.json",
+    "implementation-a-20k-navigation.json",
+    "implementation-a-100k-navigation.json"
+  ]
+}

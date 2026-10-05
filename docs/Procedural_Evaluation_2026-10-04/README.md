@@ -1,10 +1,12 @@
 # Cyrus Scatter: procedural evaluation implementation guide
 
-4 October 2026 · Research and design proposal · Source baseline: `e3518f8f87f3144d531f20afbb6790ce243f2cfc`
+4 October 2026 · Research and design proposal for **0.7 pre-release** · Initial source baseline: `e3518f8f87f3144d531f20afbb6790ce243f2cfc`; follow-up review: `53bfc5d1c76929958dbeb29f5d4c746b2321d0ac`
+
+**Implementation follow-up:** the [0.7 implementation record](../Procedural_Implementation_0.7_2026-10-04/README.md) records the candidate built from this design. The subsequent [Max 2027 runtime report](../Procedural_Implementation_0.7_2026-10-04/RUNTIME_REPORT.md) covers completed isolated qualification and remaining release gates. The investigation/evidence below describes the earlier baseline and is preserved as historical research.
 
 **Build on the existing engine: make ownership, execution order, spacing rules and cache dependencies explicit.** Preserve the current Brush data, stable candidate identities, protected artist edits and fast display paths. Implement the three independent collision scopes and the two fill behaviors before adding a general graph editor, GPU placement or ML.
 
-This package answers how the plugin should behave, what already exists, what is missing, where implementation belongs and how to qualify it. It does **not** implement the proposal. No production source, installed plugin or Max scene was changed for this investigation. Source inspection and documentation validation are not runtime qualification or a new FPS measurement.
+This package answers how the plugin should behave, what already exists, what is missing, where implementation belongs and how to qualify it. It does **not** implement the proposal. No production source, installed plugin or Max scene was changed for this investigation. The follow-up [readiness review](10_READINESS_REVIEW.md) adds fresh pure-native/MCP tests and isolated probes. Those checks are not Max runtime qualification or a new FPS measurement.
 
 ## The intended experience
 
@@ -47,8 +49,10 @@ The implementation details below are **recommended engineering choices**, not cl
 | [07 — Implementation roadmap](07_IMPLEMENTATION_ROADMAP.md) | Ordered coding tasks, dependencies, scope boundaries and release gates |
 | [08 — Validation and experiments](08_VALIDATION_AND_EXPERIMENTS.md) | Numerical oracles, lifecycle scenarios, performance comparisons and acceptance criteria |
 | [09 — Research and decisions](09_RESEARCH_AND_DECISIONS.md) | Primary sources, alternatives, remaining experiments and evidence limitations |
+| [10 — Readiness review](10_READINESS_REVIEW.md) | Fresh checks, corrected assumptions, confidence and remaining qualification gates |
+| [11 — Option contracts](11_OPTION_CONTRACTS.md) | Control ownership, Base versus child sets, switches, identity, eligibility and fill interactions |
 
-Evidence: [source snapshot](evidence/source_snapshot.json), [documentation verification](evidence/verification.json). These records distinguish this documentation pass from future implementation tests.
+Initial historical evidence: [source snapshot](evidence/source_snapshot.json), [documentation verification](evidence/verification.json). Follow-up evidence: [readiness campaign](evidence/readiness/README.md). Keep these scopes distinct from future implementation tests.
 
 ## What changes in our understanding
 
@@ -57,6 +61,8 @@ The current plugin is already procedural in important ways. It caches prepared p
 However, three independent artist-facing collision scopes do not yet exist. Self-spacing and sibling-set spacing share one layer radius. Whole-controller cache keys remain broad. Paint weights allocate candidates before coverage; they do not promise a final population or refill. Current execution priorities are also not a reliable substitute for a visible, editable top-to-bottom order.
 
 Adopting Houdini's dependency reasoning means knowing **which input invalidates which result**. It does not require calculating every stage on every change, saving every intermediate forever, or recreating Houdini's node editor.
+
+The follow-up tightens identity/random-channel stability, support-anchor versus mesh-origin semantics, active Edit reservations, fixed logical refill schedules, policy dispatch and presentation-only cache inputs. The design is ready for P0–P2 implementation; refill quality/defaults and host integration still have explicit experiment gates.
 
 ## First coding delivery
 

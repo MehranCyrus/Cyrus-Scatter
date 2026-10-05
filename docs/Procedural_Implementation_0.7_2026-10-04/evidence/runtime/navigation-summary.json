@@ -1,0 +1,214 @@
+[
+  {
+    "label": "baseline-20k",
+    "population": 20000,
+    "procedural": false,
+    "initial_update_ms": 60.6025,
+    "viewport": [
+      1302,
+      750
+    ],
+    "render_level": "smoothhighlights",
+    "source_faces": 32,
+    "working_set_bytes": 2485174272,
+    "peak_working_set_bytes": 2487214080,
+    "metric": "synchronous camera plus completeRedraw and posted messages, not presented FPS",
+    "trials": [
+      {
+        "mode": "Scatter hidden",
+        "frames": 90,
+        "p50_ms": 48.56,
+        "p95_ms": 79.84,
+        "p99_ms": 101.172,
+        "zero_rebuilds": true
+      },
+      {
+        "mode": "Point Cloud",
+        "frames": 90,
+        "p50_ms": 47.244,
+        "p95_ms": 65.383,
+        "p99_ms": 104.645,
+        "zero_rebuilds": true
+      },
+      {
+        "mode": "Proxy",
+        "frames": 90,
+        "p50_ms": 87.232,
+        "p95_ms": 124.181,
+        "p99_ms": 127.552,
+        "zero_rebuilds": true
+      },
+      {
+        "mode": "Mesh",
+        "frames": 90,
+        "p50_ms": 46.424,
+        "p95_ms": 62.317,
+        "p99_ms": 64.804,
+        "zero_rebuilds": true
+      }
+    ]
+  },
+  {
+    "label": "baseline-100k",
+    "population": 100000,
+    "procedural": false,
+    "initial_update_ms": 115.796,
+    "viewport": [
+      1302,
+      750
+    ],
+    "render_level": "smoothhighlights",
+    "source_faces": 32,
+    "working_set_bytes": 2510393344,
+    "peak_working_set_bytes": 2526556160,
+    "metric": "synchronous camera plus completeRedraw and posted messages, not presented FPS",
+    "trials": [
+      {
+        "mode": "Scatter hidden",
+        "frames": 60,
+        "p50_ms": 47.302,
+        "p95_ms": 60.553,
+        "p99_ms": 65.388,
+        "zero_rebuilds": true
+      },
+      {
+        "mode": "Point Cloud",
+        "frames": 60,
+        "p50_ms": 46.629,
+        "p95_ms": 61.87,
+        "p99_ms": 64.611,
+        "zero_rebuilds": true
+      },
+      {
+        "mode": "Proxy",
+        "frames": 60,
+        "p50_ms": 2188.857,
+        "p95_ms": 4085.734,
+        "p99_ms": 42422.919,
+        "zero_rebuilds": true
+      },
+      {
+        "mode": "Mesh",
+        "frames": 60,
+        "p50_ms": 34.875,
+        "p95_ms": 51.937,
+        "p99_ms": 65.028,
+        "zero_rebuilds": true
+      }
+    ]
+  },
+  {
+    "label": "procedural-20k",
+    "population": 20000,
+    "procedural": true,
+    "initial_update_ms": 411.0804,
+    "viewport": [
+      1302,
+      750
+    ],
+    "render_level": "smoothhighlights",
+    "source_faces": 32,
+    "working_set_bytes": 2611109888,
+    "peak_working_set_bytes": 2624733184,
+    "metric": "synchronous camera plus completeRedraw and posted messages, not presented FPS",
+    "trials": [
+      {
+        "mode": "Scatter hidden",
+        "frames": 90,
+        "p50_ms": 17.867,
+        "p95_ms": 34.87,
+        "p99_ms": 60.918,
+        "zero_rebuilds": true
+      },
+      {
+        "mode": "Point Cloud",
+        "frames": 90,
+        "p50_ms": 18.465,
+        "p95_ms": 30.424,
+        "p99_ms": 43.412,
+        "zero_rebuilds": true
+      },
+      {
+        "mode": "Proxy",
+        "frames": 90,
+        "p50_ms": 63.644,
+        "p95_ms": 91.227,
+        "p99_ms": 109.235,
+        "zero_rebuilds": true
+      },
+      {
+        "mode": "Mesh",
+        "frames": 90,
+        "p50_ms": 19.195,
+        "p95_ms": 31.668,
+        "p99_ms": 44.378,
+        "zero_rebuilds": true
+      },
+      {
+        "mode": "Plant centres",
+        "frames": 90,
+        "p50_ms": 17.931,
+        "p95_ms": 29.235,
+        "p99_ms": 63.831,
+        "zero_rebuilds": true
+      }
+    ]
+  },
+  {
+    "label": "procedural-100k",
+    "population": 100000,
+    "procedural": true,
+    "initial_update_ms": 729.0947,
+    "viewport": [
+      1302,
+      750
+    ],
+    "render_level": "smoothhighlights",
+    "source_faces": 32,
+    "working_set_bytes": 2693640192,
+    "peak_working_set_bytes": 2696704000,
+    "metric": "synchronous camera plus completeRedraw and posted messages, not presented FPS",
+    "trials": [
+      {
+        "mode": "Scatter hidden",
+        "frames": 60,
+        "p50_ms": 17.877,
+        "p95_ms": 31.776,
+        "p99_ms": 43.226,
+        "zero_rebuilds": true
+      },
+      {
+        "mode": "Point Cloud",
+        "frames": 60,
+        "p50_ms": 20.017,
+        "p95_ms": 41.216,
+        "p99_ms": 61.265,
+        "zero_rebuilds": true
+      },
+      {
+        "mode": "Proxy",
+        "frames": 60,
+        "p50_ms": 2253.294,
+        "p95_ms": 2469.27,
+        "p99_ms": 21232.729,
+        "zero_rebuilds": true
+      },
+      {
+        "mode": "Mesh",
+        "frames": 60,
+        "p50_ms": 18.87,
+        "p95_ms": 29.405,
+        "p99_ms": 71.25,
+        "zero_rebuilds": true
+      },
+      {
+        "mode": "Plant centres",
+        "frames": 60,
+        "p50_ms": 16.122,
+        "p95_ms": 30.656,
+        "p99_ms": 34.978,
+        "zero_rebuilds": true
+      }
+    ]
+  }
+]

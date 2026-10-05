@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "processes": [
+    {
+      "cycles": 3,
+      "elapsed_ms": 0,
+      "error": "",
+      "joined": true
+    },
+    {
+      "cycles": 2,
+      "elapsed_ms": 16,
+      "error": "",
+      "joined": true
+    }
+  ]
+}

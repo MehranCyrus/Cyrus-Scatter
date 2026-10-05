@@ -1,0 +1,12 @@
+[ 16%] Building CXX object policy/CMakeFiles/cyrus_license_policy.dir/src/policy.cpp.obj
+policy.cpp
+[ 33%] Linking CXX static library cyrus_license_policy.lib
+[ 33%] Built target cyrus_license_policy
+[ 50%] Building CXX object CMakeFiles/CyrusLicenseLab.dir/bridge.cpp.obj
+bridge.cpp
+[ 66%] Linking CXX shared module CyrusLicenseLab.dlx
+[ 66%] Built target CyrusLicenseLab
+[ 83%] Building CXX object policy/CMakeFiles/license_policy_tests.dir/tests/policy_tests.cpp.obj
+policy_tests.cpp
+[100%] Linking CXX executable license_policy_tests.exe
+[100%] Built target license_policy_tests

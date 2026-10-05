@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "automatic_refresh": true,
+  "worker": {
+    "cycles": 2,
+    "error": "",
+    "interval_seconds": 60
+  },
+  "persisted_generation": 5,
+  "persisted_highest_utc": 1791162400
+}

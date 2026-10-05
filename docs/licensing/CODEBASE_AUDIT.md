@@ -4,6 +4,8 @@
 
 The code supports adding a separate licensing layer without rewriting the scatter algorithms. The difficult part is deciding which operations that layer may stop: preview, render preparation and script authoring share calculation paths, while evaluation also updates edit identities and caches. A blanket check in every native function would create avoidable compatibility and performance risks.
 
+**October 4 follow-up:** this document retains its original static scope and evidence. The [first runtime experiment](L0_EXPERIMENT_2026-10-04.md) and [current provisional contract](OPERATION_CONTRACT.md) cover the later source snapshot, including Brush/group/MCP paths. Its 69 declarations supersede the count below only for that later snapshot. The [subsequent signed-license experiment](SIGNED_LICENSE_EXPERIMENT_2026-10-04.md) adds real verification while retaining that frozen product baseline; complete native boundary qualification remains unfinished.
+
 This audit supplies the source map for [roadmap L0](ROADMAP.md). L0's runtime prototype and policy proof remain unfinished. Findings below are integration hazards and improvement proposals, not vulnerabilities in an already deployed licensing system.
 
 ## Evidence and scope

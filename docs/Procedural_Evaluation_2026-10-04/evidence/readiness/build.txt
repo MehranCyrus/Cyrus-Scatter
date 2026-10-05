@@ -1,0 +1,58 @@
+[  3%] Building CXX object core/CMakeFiles/amin_scatter.dir/src/scatter.cpp.obj
+scatter.cpp
+[  6%] Building CXX object core/CMakeFiles/amin_scatter.dir/src/execution.cpp.obj
+execution.cpp
+[ 10%] Building CXX object core/CMakeFiles/amin_scatter.dir/src/brush.cpp.obj
+brush.cpp
+[ 13%] Building CXX object core/CMakeFiles/amin_scatter.dir/src/group_spacing.cpp.obj
+group_spacing.cpp
+[ 17%] Linking CXX static library amin_scatter.lib
+[ 17%] Built target amin_scatter
+[ 20%] Building CXX object CMakeFiles/readiness_probe.dir/F_/Cursor/_Cyrus_Apps/CyrusScatter/docs/Procedural_Evaluation_2026-10-04/evidence/readiness/native_readiness_probe.cpp.obj
+native_readiness_probe.cpp
+[ 24%] Linking CXX executable readiness_probe.exe
+[ 24%] Built target readiness_probe
+[ 27%] Building CXX object core/CMakeFiles/group_spacing_tests.dir/tests/group_spacing_tests.cpp.obj
+group_spacing_tests.cpp
+[ 31%] Linking CXX executable group_spacing_tests.exe
+[ 31%] Built target group_spacing_tests
+[ 34%] Building CXX object core/CMakeFiles/brush_tests.dir/tests/brush_tests.cpp.obj
+brush_tests.cpp
+[ 37%] Linking CXX executable brush_tests.exe
+[ 37%] Built target brush_tests
+[ 41%] Building CXX object core/CMakeFiles/preview_sampling_tests.dir/tests/preview_sampling_tests.cpp.obj
+preview_sampling_tests.cpp
+[ 44%] Linking CXX executable preview_sampling_tests.exe
+[ 44%] Built target preview_sampling_tests
+[ 48%] Building CXX object core/CMakeFiles/threading_tests.dir/tests/threading_tests.cpp.obj
+threading_tests.cpp
+[ 51%] Linking CXX executable threading_tests.exe
+[ 51%] Built target threading_tests
+[ 55%] Building CXX object core/CMakeFiles/prepared_band_tests.dir/tests/prepared_band_tests.cpp.obj
+prepared_band_tests.cpp
+[ 58%] Linking CXX executable prepared_band_tests.exe
+[ 58%] Built target prepared_band_tests
+[ 62%] Building CXX object core/CMakeFiles/scatter_tests.dir/tests/scatter_tests.cpp.obj
+scatter_tests.cpp
+[ 65%] Linking CXX executable scatter_tests.exe
+[ 65%] Built target scatter_tests
+[ 68%] Building CXX object core/CMakeFiles/spacing_tests.dir/tests/spacing_tests.cpp.obj
+spacing_tests.cpp
+[ 72%] Linking CXX executable spacing_tests.exe
+[ 72%] Built target spacing_tests
+[ 75%] Building CXX object core/CMakeFiles/weight_tests.dir/tests/weight_tests.cpp.obj
+weight_tests.cpp
+[ 79%] Linking CXX executable weight_tests.exe
+[ 79%] Built target weight_tests
+[ 82%] Building CXX object core/CMakeFiles/orientation_tests.dir/tests/orientation_tests.cpp.obj
+orientation_tests.cpp
+[ 86%] Linking CXX executable orientation_tests.exe
+[ 86%] Built target orientation_tests
+[ 89%] Building CXX object core/CMakeFiles/edge_border_tests.dir/tests/edge_border_tests.cpp.obj
+edge_border_tests.cpp
+[ 93%] Linking CXX executable edge_border_tests.exe
+[ 93%] Built target edge_border_tests
+[ 96%] Building CXX object core/CMakeFiles/boundary_falloff_tests.dir/tests/boundary_falloff_tests.cpp.obj
+boundary_falloff_tests.cpp
+[100%] Linking CXX executable boundary_falloff_tests.exe
+[100%] Built target boundary_falloff_tests

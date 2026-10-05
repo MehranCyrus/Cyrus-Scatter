@@ -1,0 +1,86 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "check": "request_is_not_authority"
+    },
+    {
+      "check": "real_key_proof_and_authenticated_activation"
+    },
+    {
+      "check": "activation_response_cannot_replay"
+    },
+    {
+      "check": "process_0_shares_activation"
+    },
+    {
+      "check": "process_1_shares_activation"
+    },
+    {
+      "check": "prolonged_process_0_expires_without_network"
+    },
+    {
+      "check": "prolonged_process_1_expires_without_network"
+    },
+    {
+      "check": "verified_renewal_import_restores_authoring"
+    },
+    {
+      "check": "process_0_refreshes_same_installation"
+    },
+    {
+      "check": "process_1_refreshes_same_installation"
+    },
+    {
+      "check": "malformed_replacement_denied"
+    },
+    {
+      "check": "rejected_import_preserves_persisted_grant"
+    },
+    {
+      "check": "disk_contention_does_not_block_decisions",
+      "decisions_and_commits": 2000,
+      "elapsed_ms": 0.2802,
+      "overlapping_io": true,
+      "worker_error": ""
+    },
+    {
+      "check": "real_clock_permit_microbenchmark_completes",
+      "allowed": 900000,
+      "max_ns": 138.78,
+      "median_ns": 116.51,
+      "min_ns": 111.36,
+      "scope": "Real local clock, mutex and grant; no disk/signature in timed loops. Not FPS."
+    },
+    {
+      "check": "different_installation_has_different_device_key"
+    },
+    {
+      "check": "copied_activation_response_denied"
+    },
+    {
+      "check": "independent_development_device_B_activated"
+    },
+    {
+      "check": "copied_device_A_license_denied_on_B"
+    },
+    {
+      "check": "B08_demo_immediate_second_issuance_leaves_two_valid_offline_grants",
+      "note": "Test issuer has no seat ledger; portal deletion cannot revoke device A offline authority"
+    },
+    {
+      "check": "32_transactions_across_processes_have_no_lost_updates"
+    }
+  ],
+  "binary_sha256": "c0d788fdc1b774eb3e3a82e61934f0cf0e4779cc075d36835e9bd467f81f6acf",
+  "development_only": true,
+  "real_key_and_dpapi": true,
+  "authenticated_clock_anchor": true,
+  "host": "Native CLI processes on Windows; not Max integration or cross-user hardware attestation",
+  "limitations": [
+    "No customer authentication/seat service",
+    "Software key does not defeat local-admin extraction",
+    "Whole protected-state replay across restarts remains possible",
+    "Offline transfer overlap needs policy"
+  ]
+}

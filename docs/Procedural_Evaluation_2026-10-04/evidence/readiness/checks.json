@@ -1,0 +1,88 @@
+{
+  "source_commit": "53bfc5d1c76929958dbeb29f5d4c746b2321d0ac",
+  "scope": "Native core, isolated generator and MCP local/mock/stdio tests; no Max runtime or viewport benchmark",
+  "commands": [
+    {
+      "name": "configure",
+      "args": [
+        "C:\\Users\\Mehran\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\cmake.EXE",
+        "-S",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\procedural-readiness-53bfc5d\\harness",
+        "-B",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\procedural-readiness-53bfc5d\\native",
+        "-G",
+        "NMake Makefiles",
+        "-DCMAKE_BUILD_TYPE=Release"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "build",
+      "args": [
+        "C:\\Users\\Mehran\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\cmake.EXE",
+        "--build",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\procedural-readiness-53bfc5d\\native"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "native-tests",
+      "args": [
+        "C:\\Users\\Mehran\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\ctest.EXE",
+        "--test-dir",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\procedural-readiness-53bfc5d\\native",
+        "--output-on-failure"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "native-probe",
+      "args": [
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\procedural-readiness-53bfc5d\\native\\readiness_probe.exe"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "generator",
+      "args": [
+        "C:\\Program Files\\nodejs\\node.EXE",
+        "tools/ui/generate.cjs"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "mcp-tests",
+      "args": [
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "CyrusMCP/tests",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\procedural-readiness-53bfc5d\\pytest"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "generated_artifacts_match": {
+    "scripts/AminScatterObject.ms": true,
+    "tools/ui/layers-control-inventory.json": true
+  },
+  "native_observations": {
+    "status": "passed",
+    "scope": "existing numeric core and mathematical witnesses; no Max host",
+    "unmasked_candidates": 128,
+    "masked_candidates": 68,
+    "same_id_position_changes": 0,
+    "same_id_attribute_changes": 66,
+    "same_id_source_changes": 41,
+    "unmasked_prefix_count": 32,
+    "cleanup_released_candidates": 2,
+    "single_pass_cleanup_survivors": 1,
+    "shear_largest_row_bound": 1.41421,
+    "shear_unit_vector_length": 1.58114
+  },
+  "probe_executable_sha256": "386925c44edaf74cb042dd40ba84ac9c0bc56a6e7708bf2ead9558003f9da342"
+}

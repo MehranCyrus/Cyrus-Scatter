@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "scope": "SDK2026 build and native tests only; Max 2026 host NOT RUN",
+  "binaries": {
+    "AminScatter.dlx": "bcdade3f2c9d0871655dfde3e7771860c5da94a5b6a7c5de650fc792976dd2ac",
+    "CyrusBrush.dlx": "7a0728ecb476de9c8d04aa36e758c762ea0f4020012ff74eaf77d6e8a61ac0f1",
+    "CyrusBrushStorage.dlh": "5073fdde8a84c2626892e8924ce56b57f60775134573e9b16a97b1dfa9305fe2",
+    "CyrusScatterEdit.dlm": "0975097ac307a2453427b723bc9331a9f1e6893c091bea87db551fe0ae1298d1"
+  }
+}

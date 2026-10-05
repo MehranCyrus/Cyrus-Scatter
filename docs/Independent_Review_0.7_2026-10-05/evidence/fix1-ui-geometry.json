@@ -1,0 +1,1082 @@
+[
+  {
+    "title": "Cyrus Scatter 0.7",
+    "hwnd": 24530314,
+    "open": true,
+    "chain": [
+      {
+        "class": "MaxSDK::QMaxLegacyRollup",
+        "name": "MaxSDK::QMaxLegacyRollup Cyrus Scatter 0.7",
+        "title": "Cyrus Scatter 0.7",
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          210,
+          48
+        ]
+      },
+      {
+        "class": "QWidget",
+        "name": "QmaxRollupContainer_ContentPanel",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          210,
+          94
+        ]
+      },
+      {
+        "class": "QWidget",
+        "name": "qt_scrollarea_viewport",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          210,
+          544
+        ]
+      },
+      {
+        "class": "CommandPanelRollupContainer",
+        "name": "MaxSDK::QMaxLegacyRollupContainer",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          2,
+          171,
+          220,
+          544
+        ]
+      },
+      {
+        "class": "QtCmdPanelWidget",
+        "name": "",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          663,
+          717
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Update",
+    "hwnd": 7230796,
+    "open": false,
+    "chain": [
+      {
+        "class": "MaxSDK::QMaxLegacyRollup",
+        "name": "MaxSDK::QMaxLegacyRollup Update",
+        "title": "Update",
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          50,
+          210,
+          21
+        ]
+      },
+      {
+        "class": "QWidget",
+        "name": "QmaxRollupContainer_ContentPanel",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          210,
+          94
+        ]
+      },
+      {
+        "class": "QWidget",
+        "name": "qt_scrollarea_viewport",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          210,
+          544
+        ]
+      },
+      {
+        "class": "CommandPanelRollupContainer",
+        "name": "MaxSDK::QMaxLegacyRollupContainer",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          2,
+          171,
+          220,
+          544
+        ]
+      },
+      {
+        "class": "QtCmdPanelWidget",
+        "name": "",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          663,
+          717
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Surface Scatter",
+    "hwnd": 3822978,
+    "open": false,
+    "chain": [
+      {
+        "class": "MaxSDK::QMaxLegacyRollup",
+        "name": "MaxSDK::QMaxLegacyRollup Surface Scatter",
+        "title": "Surface Scatter",
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          73,
+          210,
+          21
+        ]
+      },
+      {
+        "class": "QWidget",
+        "name": "QmaxRollupContainer_ContentPanel",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          210,
+          94
+        ]
+      },
+      {
+        "class": "QWidget",
+        "name": "qt_scrollarea_viewport",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          210,
+          544
+        ]
+      },
+      {
+        "class": "CommandPanelRollupContainer",
+        "name": "MaxSDK::QMaxLegacyRollupContainer",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          2,
+          171,
+          220,
+          544
+        ]
+      },
+      {
+        "class": "QtCmdPanelWidget",
+        "name": "",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          663,
+          717
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Viewport and Render",
+    "hwnd": 3625476,
+    "open": true,
+    "chain": [
+      {
+        "class": "MaxSDK::QMaxLegacyRollup",
+        "name": "MaxSDK::QMaxLegacyRollup Viewport and Render",
+        "title": "Viewport and Render",
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          209,
+          659
+        ]
+      },
+      {
+        "class": "QWidget",
+        "name": "QmaxRollupContainer_ContentPanel",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          209,
+          659
+        ]
+      },
+      {
+        "class": "QWidget",
+        "name": "qt_scrollarea_viewport",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          209,
+          711
+        ]
+      },
+      {
+        "class": "CommandPanelRollupContainer",
+        "name": "MaxSDK::QMaxLegacyRollupContainer",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          222,
+          4,
+          219,
+          711
+        ]
+      },
+      {
+        "class": "QtCmdPanelWidget",
+        "name": "",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          663,
+          717
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Layer Manager",
+    "hwnd": 3820024,
+    "open": true,
+    "chain": [
+      {
+        "class": "MaxSDK::QMaxLegacyRollup",
+        "name": "MaxSDK::QMaxLegacyRollup Layer Manager",
+        "title": "Layer Manager",
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          210,
+          382
+        ]
+      },
+      {
+        "class": "QWidget",
+        "name": "QmaxRollupContainer_ContentPanel",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          -171,
+          210,
+          2236
+        ]
+      },
+      {
+        "class": "QWidget",
+        "name": "qt_scrollarea_viewport",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          210,
+          711
+        ]
+      },
+      {
+        "class": "CommandPanelRollupContainer",
+        "name": "MaxSDK::QMaxLegacyRollupContainer",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          441,
+          4,
+          220,
+          711
+        ]
+      },
+      {
+        "class": "QtCmdPanelWidget",
+        "name": "",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          663,
+          717
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Layer_01 | 211",
+    "hwnd": 82855082,
+    "open": true,
+    "chain": [
+      {
+        "class": "MaxSDK::QMaxLegacyRollup",
+        "name": "MaxSDK::QMaxLegacyRollupLayer_01 | 211",
+        "title": "Layer_01 | 211",
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          384,
+          210,
+          1292
+        ]
+      },
+      {
+        "class": "QWidget",
+        "name": "QmaxRollupContainer_ContentPanel",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          -171,
+          210,
+          2236
+        ]
+      },
+      {
+        "class": "QWidget",
+        "name": "qt_scrollarea_viewport",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          210,
+          711
+        ]
+      },
+      {
+        "class": "CommandPanelRollupContainer",
+        "name": "MaxSDK::QMaxLegacyRollupContainer",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          441,
+          4,
+          220,
+          711
+        ]
+      },
+      {
+        "class": "QtCmdPanelWidget",
+        "name": "",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          663,
+          717
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Layer_04 | 30",
+    "hwnd": 2841350,
+    "open": true,
+    "chain": [
+      {
+        "class": "MaxSDK::QMaxLegacyRollup",
+        "name": "MaxSDK::QMaxLegacyRollupLayer_04 | 30",
+        "title": "Layer_04 | 30",
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          1678,
+          210,
+          278
+        ]
+      },
+      {
+        "class": "QWidget",
+        "name": "QmaxRollupContainer_ContentPanel",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          -171,
+          210,
+          2236
+        ]
+      },
+      {
+        "class": "QWidget",
+        "name": "qt_scrollarea_viewport",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          210,
+          711
+        ]
+      },
+      {
+        "class": "CommandPanelRollupContainer",
+        "name": "MaxSDK::QMaxLegacyRollupContainer",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          441,
+          4,
+          220,
+          711
+        ]
+      },
+      {
+        "class": "QtCmdPanelWidget",
+        "name": "",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          663,
+          717
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Layer_05 | 30",
+    "hwnd": 3954988,
+    "open": true,
+    "chain": [
+      {
+        "class": "MaxSDK::QMaxLegacyRollup",
+        "name": "MaxSDK::QMaxLegacyRollupLayer_05 | 30",
+        "title": "Layer_05 | 30",
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          1958,
+          210,
+          278
+        ]
+      },
+      {
+        "class": "QWidget",
+        "name": "QmaxRollupContainer_ContentPanel",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          -171,
+          210,
+          2236
+        ]
+      },
+      {
+        "class": "QWidget",
+        "name": "qt_scrollarea_viewport",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          210,
+          711
+        ]
+      },
+      {
+        "class": "CommandPanelRollupContainer",
+        "name": "MaxSDK::QMaxLegacyRollupContainer",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          441,
+          4,
+          220,
+          711
+        ]
+      },
+      {
+        "class": "QtCmdPanelWidget",
+        "name": "",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          663,
+          717
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Layer_05 | 30",
+    "hwnd": 2709768,
+    "open": false,
+    "chain": [
+      {
+        "class": "MaxSDK::QMaxLegacyRollup",
+        "name": "MaxSDK::QMaxLegacyRollupLayer_05 | 30",
+        "title": "Layer_05 | 30",
+        "visible": false,
+        "hidden": true,
+        "rect": [
+          0,
+          8,
+          207,
+          0
+        ]
+      },
+      {
+        "class": "QWidget",
+        "name": "QmaxRollupContainer_ContentPanel",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          -171,
+          210,
+          2236
+        ]
+      },
+      {
+        "class": "QWidget",
+        "name": "qt_scrollarea_viewport",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          210,
+          711
+        ]
+      },
+      {
+        "class": "CommandPanelRollupContainer",
+        "name": "MaxSDK::QMaxLegacyRollupContainer",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          441,
+          4,
+          220,
+          711
+        ]
+      },
+      {
+        "class": "QtCmdPanelWidget",
+        "name": "",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          663,
+          717
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Layer",
+    "hwnd": 96684512,
+    "open": false,
+    "chain": [
+      {
+        "class": "MaxSDK::QMaxLegacyRollup",
+        "name": "MaxSDK::QMaxLegacyRollup Layer",
+        "title": "Layer",
+        "visible": false,
+        "hidden": true,
+        "rect": [
+          0,
+          0,
+          206,
+          0
+        ]
+      },
+      {
+        "class": "QWidget",
+        "name": "QmaxRollupContainer_ContentPanel",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          -171,
+          210,
+          2236
+        ]
+      },
+      {
+        "class": "QWidget",
+        "name": "qt_scrollarea_viewport",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          210,
+          711
+        ]
+      },
+      {
+        "class": "CommandPanelRollupContainer",
+        "name": "MaxSDK::QMaxLegacyRollupContainer",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          441,
+          4,
+          220,
+          711
+        ]
+      },
+      {
+        "class": "QtCmdPanelWidget",
+        "name": "",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          663,
+          717
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Layer",
+    "hwnd": 4737160,
+    "open": false,
+    "chain": [
+      {
+        "class": "MaxSDK::QMaxLegacyRollup",
+        "name": "MaxSDK::QMaxLegacyRollup Layer",
+        "title": "Layer",
+        "visible": false,
+        "hidden": true,
+        "rect": [
+          0,
+          0,
+          206,
+          0
+        ]
+      },
+      {
+        "class": "QWidget",
+        "name": "QmaxRollupContainer_ContentPanel",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          -171,
+          210,
+          2236
+        ]
+      },
+      {
+        "class": "QWidget",
+        "name": "qt_scrollarea_viewport",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          210,
+          711
+        ]
+      },
+      {
+        "class": "CommandPanelRollupContainer",
+        "name": "MaxSDK::QMaxLegacyRollupContainer",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          441,
+          4,
+          220,
+          711
+        ]
+      },
+      {
+        "class": "QtCmdPanelWidget",
+        "name": "",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          663,
+          717
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Layer",
+    "hwnd": 2951598,
+    "open": false,
+    "chain": [
+      {
+        "class": "MaxSDK::QMaxLegacyRollup",
+        "name": "MaxSDK::QMaxLegacyRollup Layer",
+        "title": "Layer",
+        "visible": false,
+        "hidden": true,
+        "rect": [
+          0,
+          0,
+          206,
+          0
+        ]
+      },
+      {
+        "class": "QWidget",
+        "name": "QmaxRollupContainer_ContentPanel",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          -171,
+          210,
+          2236
+        ]
+      },
+      {
+        "class": "QWidget",
+        "name": "qt_scrollarea_viewport",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          210,
+          711
+        ]
+      },
+      {
+        "class": "CommandPanelRollupContainer",
+        "name": "MaxSDK::QMaxLegacyRollupContainer",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          441,
+          4,
+          220,
+          711
+        ]
+      },
+      {
+        "class": "QtCmdPanelWidget",
+        "name": "",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          663,
+          717
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Layer",
+    "hwnd": 6102056,
+    "open": false,
+    "chain": [
+      {
+        "class": "MaxSDK::QMaxLegacyRollup",
+        "name": "MaxSDK::QMaxLegacyRollup Layer",
+        "title": "Layer",
+        "visible": false,
+        "hidden": true,
+        "rect": [
+          0,
+          0,
+          206,
+          0
+        ]
+      },
+      {
+        "class": "QWidget",
+        "name": "QmaxRollupContainer_ContentPanel",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          -171,
+          210,
+          2236
+        ]
+      },
+      {
+        "class": "QWidget",
+        "name": "qt_scrollarea_viewport",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          210,
+          711
+        ]
+      },
+      {
+        "class": "CommandPanelRollupContainer",
+        "name": "MaxSDK::QMaxLegacyRollupContainer",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          441,
+          4,
+          220,
+          711
+        ]
+      },
+      {
+        "class": "QtCmdPanelWidget",
+        "name": "",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          663,
+          717
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Layer",
+    "hwnd": 3670570,
+    "open": false,
+    "chain": [
+      {
+        "class": "MaxSDK::QMaxLegacyRollup",
+        "name": "MaxSDK::QMaxLegacyRollup Layer",
+        "title": "Layer",
+        "visible": false,
+        "hidden": true,
+        "rect": [
+          0,
+          0,
+          206,
+          0
+        ]
+      },
+      {
+        "class": "QWidget",
+        "name": "QmaxRollupContainer_ContentPanel",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          -171,
+          210,
+          2236
+        ]
+      },
+      {
+        "class": "QWidget",
+        "name": "qt_scrollarea_viewport",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          210,
+          711
+        ]
+      },
+      {
+        "class": "CommandPanelRollupContainer",
+        "name": "MaxSDK::QMaxLegacyRollupContainer",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          441,
+          4,
+          220,
+          711
+        ]
+      },
+      {
+        "class": "QtCmdPanelWidget",
+        "name": "",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          663,
+          717
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Layer",
+    "hwnd": 10165612,
+    "open": false,
+    "chain": [
+      {
+        "class": "MaxSDK::QMaxLegacyRollup",
+        "name": "MaxSDK::QMaxLegacyRollup Layer",
+        "title": "Layer",
+        "visible": false,
+        "hidden": true,
+        "rect": [
+          0,
+          0,
+          206,
+          0
+        ]
+      },
+      {
+        "class": "QWidget",
+        "name": "QmaxRollupContainer_ContentPanel",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          -171,
+          210,
+          2236
+        ]
+      },
+      {
+        "class": "QWidget",
+        "name": "qt_scrollarea_viewport",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          210,
+          711
+        ]
+      },
+      {
+        "class": "CommandPanelRollupContainer",
+        "name": "MaxSDK::QMaxLegacyRollupContainer",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          441,
+          4,
+          220,
+          711
+        ]
+      },
+      {
+        "class": "QtCmdPanelWidget",
+        "name": "",
+        "title": null,
+        "visible": true,
+        "hidden": false,
+        "rect": [
+          0,
+          0,
+          663,
+          717
+        ]
+      }
+    ]
+  }
+]

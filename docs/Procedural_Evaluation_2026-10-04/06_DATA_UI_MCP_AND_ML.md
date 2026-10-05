@@ -6,17 +6,19 @@ Status: proposed new-policy contracts; current capabilities are called out separ
 
 Add a named evaluation-policy version rather than changing the meaning of existing `groupPolicy` values in place. The exact new numeric/schema identifier is an implementation decision. Use Cyrus names for new public APIs; renaming existing internal classes, class IDs and serialized plugin identities is not required for this feature.
 
+Introduce explicit policy capabilities at the adapter boundary. The generated program currently contains 80 literal `groupPolicy == 2` / `!= 2` sites, including repeated UI factories. Paint Set creation, Manual display, shared spacing, copying, Relax guards and Edit visibility all depend on them. Adding a third value only in the solver would fall through other legacy paths. Audit every dispatch site; preserve MCP plan 1.0/2.0 mappings in `max_host.py` until a separate schema extension is qualified.
+
 Recommended normalized model:
 
 | Record | Essential fields |
 | --- | --- |
 | Controller | schema/policy version, UUID namespace, receiver references, units, ordered layer IDs, revision domains |
 | Layer | ID, ordered set IDs, enabled/viewport-visible state, population mode and budget, inherited defaults, cleanup settings |
-| Set | ID, owner layer ID, source-entry IDs, coverage reference, share weight, self-rule override, optional background mode/references |
+| Set | ID, owner layer ID, sampling key, allocation tie-break key, source-entry IDs, coverage reference, share weight, self-rule override, optional background mode/references |
 | Source entry | Stable ID, scene reference, weight, geometry/transform revisions, source radius policy/value, follows-scale |
 | Pair rule | ID, scope, canonical endpoint IDs, enabled, XY/XYZ metric, radius multiplier, gap |
-| Candidate | Namespace/ordinal ID, receiver identity, face/barycentric anchor, deterministic random channels |
-| Instance edit | Candidate binding, transform/delete/protect fields, optional radius mode/value, binding revision |
+| Candidate | Namespace/ordinal ID, receiver identity, latent and resolved support anchors, deterministic random channels |
+| Instance edit | Input binding and distinct output ID, transform/delete/protect fields, optional radius mode/value, binding revision |
 | Completed result | Input revision, policy version, accepted views, consumed upstream digests, counts/timings, output digest |
 
 These are conceptual fields, not an already implemented JSON schema. Define types, bounds and units in a single contract before wiring UI or MCP. Native scene units may remain the existing implementation's units; external contracts should keep explicit metres and convert once at the boundary.
@@ -24,6 +26,8 @@ These are conceptual fields, not an already implemented JSON schema. Define type
 Names are labels. IDs survive rename/reorder and identify rule endpoints. Copy receives new IDs and remaps internal references. Removing a set removes or reports its incident rules and fill references in one Undo operation. Never reconnect a missing endpoint by matching a display name.
 
 Source entry identity also matters: inserting a source row must not silently attach a radius override or asset assignment to the next array element. Where existing generation cannot preserve correspondence, create a new binding revision and report that limit.
+
+Persist sparse radius overrides against the final instance identity, including clones. Store candidate provenance separately. Copy remaps instance/rule references while preserving the intended sampling recipe. Current generation-scoped or Edit-key-derived identities are inputs to conversion, not proof that these stronger guarantees already hold.
 
 ## Minimal native UI
 
@@ -48,6 +52,8 @@ Reuse one rule editor for the three scopes. Avoid an always-visible `N × N` mat
 
 Opening a rollout, selecting another layer or reading statistics must not dirty computation. A control event modifies its captured owner, creates one meaningful Undo transaction, bumps the appropriate revision and refreshes cached presentation. Suppress value-binding events while refreshing controls.
 
+[11 — Option contracts](11_OPTION_CONTRACTS.md) records the base-set versus layer distinction, zero weight, visibility, offsets, fill references and inherited controls. Use that table for native UI labels, configuration output and test fixtures; do not create different interpretations for each interface.
+
 ## Statistics with useful accounting
 
 Forest Pack's documented statistics are a useful usability reference, not an undocumented implementation blueprint. Cyrus should help the artist answer “where did my plants go?” and “why did this update take time?”
@@ -66,6 +72,8 @@ Recommended per-set/layer fields:
 Intentional point-only/placeholder rows can be accepted procedural slots without being final render geometry. Empty source choices and missing assets also need separate semantics; preserve the current source policies and label the resulting counts.
 
 For ordinary candidates, keep one disjoint **final classification** per unique ID in the completed transaction. Its categories must sum to the unique ordinary pool, including `not consumed` after a target/work stop. Protected records are counted separately; transferring a candidate to a protected override must not count it twice. Repeated checks across repair rounds are **work counters**, not extra candidate or removal counts.
+
+Clones introduce additional instance output IDs without additional sampled candidate anchors. Keep candidate accounting and instance accounting as two explicit totals. Count a clone's active protected result once, and label suppressed or unresolved authored records separately. The ordinary pool is the logically exposed pool for this transaction; unrelated cached suffix rows are resident memory, not attempted candidates.
 
 Avoid presenting the sum of all stage measurements as wall time when tasks overlap. A shared source cache is counted once at controller level; a per-layer referenced-byte estimate is explicitly non-additive. A stale displayed scene must not show new pending counts as if they describe its meshes. Reading these fields uses stored statistics and does not invoke the solver.
 

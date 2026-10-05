@@ -2,6 +2,8 @@
 
 Baseline: Scatter 1.2.3, MCP 1.1.0, commit `e3518f8f87f3144d531f20afbb6790ce243f2cfc`. Findings below are static source observations unless explicitly described as historical evidence. No current-scene execution or benchmark was performed for this guide.
 
+Follow-up: [10 — Readiness review](10_READINESS_REVIEW.md) rechecked the production source at checkpoint `53bfc5d`, rebuilt/reran the pure numerical suites and current MCP tests, and added isolated probes. It found attribute instability behind stable candidate keys, presentation fields in a prepared-base key and policy-dispatch integration risks. [11](11_OPTION_CONTRACTS.md) records the refined option contracts.
+
 ## Read the generated program and its generators together
 
 The shipped MAXScript is [AminScatterObject.ms](../../AminScatter/scripts/AminScatterObject.ms). Its behavior is assembled by [generate.cjs](../../AminScatter/tools/ui/generate.cjs). The late [layers-first transformer](../../AminScatter/tools/ui/layers-first.cjs) materially changes the earlier [planting-model template](../../AminScatter/tools/ui/templates/planting-model.ms).
@@ -85,4 +87,4 @@ Generated-script anchors at this baseline include `placementRadii` near line 126
 - Parent cleanup creates a real dependency barrier. Treating every Paint Set as independently final would be incorrect.
 - Current radius scaling is appropriate for ordinary scale/rotation transforms; its largest-row-length formula is not a general conservative bound for arbitrary shear. Test and define such transforms before promising exact footprint bounds.
 
-The [existing native tests](../../AminScatter/tests/group_spacing_tests.cpp) include 180 comparisons against an exhaustive oracle, protected edits, boundary distances and dense coincident candidates. This guide inspected those tests; it did not rerun them. New three-scope and refill behavior needs new oracles rather than borrowing historical pass claims.
+The [existing native tests](../../AminScatter/tests/group_spacing_tests.cpp) include 180 comparisons against an exhaustive oracle, protected edits, boundary distances and dense coincident candidates. The initial guide only inspected them; the follow-up [campaign](evidence/readiness/README.md) reran all twelve current native tests plus a new readiness probe successfully. New three-scope and refill behavior still needs new oracles rather than borrowing current-policy pass claims.

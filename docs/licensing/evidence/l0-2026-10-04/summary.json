@@ -1,0 +1,26 @@
+{
+  "status": "PASS (bounded synthetic experiment only)",
+  "source_head": "53bfc5d1c76929958dbeb29f5d4c746b2321d0ac",
+  "source_files": 163,
+  "native_declarations": 69,
+  "source_drift_at_evidence_capture": [],
+  "policy_groups_per_build": 6,
+  "policy_assertions_per_build": 138,
+  "create_assertions": 48,
+  "reopen_assertions": 27,
+  "observations": 5,
+  "loaded_module_count_per_process": 6,
+  "host_version": "3ds Max 2027.1, 29.1.0.11426",
+  "scene_instances": 64,
+  "renderer": "Default Scanline",
+  "render_size": [
+    128,
+    128
+  ],
+  "active_expired_and_reopen_pixels_equal": true,
+  "changed_source_render_differs": true,
+  "production_enforcement": false,
+  "runtime_max2026_tested": false,
+  "full_L0_complete": false,
+  "original_run": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\licensing-l0-2026-10-04\\run04"
+}

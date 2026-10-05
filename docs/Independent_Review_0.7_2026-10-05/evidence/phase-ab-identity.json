@@ -1,0 +1,36 @@
+{
+  "script_sha256": "4f88237f486d49e067a6f3d65a28d46dea457de15cd4aa65c1ecd4501d11fd33",
+  "run": "build/mcp-qualification/procedural07-ui-implementation-20261005-04",
+  "receipts": [
+    "procedural-acceptance.json",
+    "bindings-acceptance.json",
+    "ui-acceptance.json",
+    "review-regressions.json",
+    "source-containers.json",
+    "source-container-edge-cases.json",
+    "source-container-events.json",
+    "source-container-ui-events.json",
+    "source-container-pointer.json",
+    "source-container-output.json",
+    "source-container-mcp.json",
+    "containers-100k-navigation.json"
+  ],
+  "native_suites_per_sdk": 13,
+  "mcp_tests": 66,
+  "serialization": 53,
+  "product": "0.7.0",
+  "builds": {
+    "2026": {
+      "AminScatter.dlx": "9381126069993bc32bca84c8332a13932e2ea90cac78ab1b6aa5e027ada9837e",
+      "CyrusBrush.dlx": "8ee52f8e4fd6c37f08f7a332ac23bc8bf367d4fd9992d4cf61e4398ff7a8a58d",
+      "CyrusBrushStorage.dlh": "79f5742155b8c7b61bf9a659aa0d4a339f5d4ba6841279599f7b9249a8f65bc9",
+      "CyrusScatterEdit.dlm": "f44f9e1e7357b33b2644e61aa5c0b85a6cf42dd30e51d43afda3f3ef169be921"
+    },
+    "2027": {
+      "AminScatter.dlx": "314a785e6ad3ae1ecd8d7198fcfc71fe933b4036eeb4e4d778b03679d891e328",
+      "CyrusBrush.dlx": "18d88893f079407e07bff913f787a084b151eb3874a71ce597d420ca110414f3",
+      "CyrusBrushStorage.dlh": "d093ac3b85e6eb8dc402aac292679dae4a9a8edd49316a14284ab318ec7664d0",
+      "CyrusScatterEdit.dlm": "20ea62917a37325bf6d6d2d3f85a5c640323711839d67353c44f1a99d9ee9ee4"
+    }
+  }
+}

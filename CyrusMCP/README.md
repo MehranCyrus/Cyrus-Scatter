@@ -73,6 +73,8 @@ Closing the panel disconnects IPC. Reopen the startup script to reconnect. For a
 
 ## Development and qualification
 
+Scatter 0.7's policy 3 is currently **read-only through MCP**. Configuration includes the ordered procedural recipe and last published diagnostics under `cyrus.procedural-configuration/1.0`, with lengths in metres. Schemas 1/2 continue to select policies 1/2 and cannot overwrite a policy-3 controller. Brush/order/rule mutation and ML remain unavailable. See the [0.7 implementation report](../docs/Procedural_Implementation_0.7_2026-10-04/IMPLEMENTATION.md) and [validation record](../docs/Procedural_Implementation_0.7_2026-10-04/VALIDATION.md). After the offline coding phase, all nine existing live-host campaign programs and the new policy-3 inspection fixture passed in isolated Max 2027. Max 2026 runtime is not qualified.
+
 ```powershell
 python -m venv build/mcp-venv
 build/mcp-venv/Scripts/python.exe -m pip install -e CyrusMCP pytest==8.4.2

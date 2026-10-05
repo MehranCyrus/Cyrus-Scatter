@@ -18,8 +18,9 @@ fileIn ((getFilenamePath CSPToolPath)+"CyrusEditTrace.ms")
 fn CSPUtc = ((dotNetClass "System.DateTime").UtcNow.ToString "o")
 fn CSPText value = (with printAllElements on (value as string))
 fn CSPNumber value = (
-    -- MAXScript's default Double string has a d0 suffix, which is not JSON/CSV numeric syntax.
+    -- MAXScript Double and Integer64 literals have suffixes that JSON/CSV cannot use.
     local s=if classof value==Float or classof value==Double then formattedPrint value format:".17g" else CSPText value
+    if classof value==Integer64 do s=substituteString s "L" ""
     substituteString (substituteString s "d" "e") "," "."
 )
 fn CSPJson value = (

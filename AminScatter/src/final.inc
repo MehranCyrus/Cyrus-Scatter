@@ -1,16 +1,21 @@
 // Final cleanup followed by count-preserving, constrained boundary smoothing.
 std::vector<Instance> finalize(const std::vector<Triangle>& surface,const Settings& s,
  std::vector<Instance> points,const std::vector<Instance>& blockers,const std::vector<double>& radii,
- const std::vector<double>& blockerRadii,const FinalSettings& f) {
+ const std::vector<double>& blockerRadii,const FinalSettings& f,FinalWorkBudget* work) {
  if(!(f.radius>0)||!std::isfinite(f.radius)||f.strength<0||f.strength>1||f.maxMove<0||!std::isfinite(f.maxMove)||f.iterations>100) throw std::invalid_argument("Invalid final cleanup settings");
  if(radii.size()!=points.size()||blockerRadii.size()!=blockers.size())throw std::invalid_argument("Final radius count mismatch");
  const auto flat=[&](Vec3 p){if(f.planar)p.z=0;return p;};
  std::vector<double> own=radii;
  if(f.cleanup&&!points.empty()) {
+  if(work)work->rowVisits.assign(points.size(),0);
   PointGrid grid(f.radius);for(std::size_t i=0;i<points.size();++i)grid.add(flat(points[i].position),i);
   std::vector<std::size_t> parent(points.size()),counts(points.size()),neighbors(points.size());std::iota(parent.begin(),parent.end(),0);
   auto root=[&](std::size_t i){while(parent[i]!=i){parent[i]=parent[parent[i]];i=parent[i];}return i;};
   for(std::size_t i=0;i<points.size();++i)grid.visit(flat(points[i].position),[&](std::size_t j){
+   if(work){
+    if(work->visits>=work->limit)throw std::invalid_argument("Procedural cleanup work limit exceeded; reduce population, cleanup radius or retry rounds");
+    ++work->visits;++work->rowVisits[i];
+   }
    if(j>i&&length(flat(points[i].position-points[j].position))<=f.radius){++neighbors[i];++neighbors[j];auto a=root(i),b=root(j);if(a!=b)parent[b]=a;}return true;
   });
   for(std::size_t i=0;i<points.size();++i)++counts[root(i)];

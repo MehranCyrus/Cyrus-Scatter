@@ -1,0 +1,46 @@
+{
+  "status": "PASS",
+  "created_package": false,
+  "checks": [
+    {
+      "path": "build\\licensing-native-20261005\\installation-run06\\native\\AminScatter.dlx",
+      "sha256": "417796651ab53e1e21aa1c4a15270e8ec90aad88c6d845b4d3ca4f7faa4c3551",
+      "accepted": false
+    },
+    {
+      "path": "build\\licensing-native-20261005\\installation-run06\\native\\CyrusBrush.dlx",
+      "sha256": "bfb6f1c3a4b493c4414caf1c7011085a47d2db54053e94223ad715b64603dbb0",
+      "accepted": false
+    },
+    {
+      "path": "build\\licensing-core-20261005\\run02\\native-2027\\CyrusLicenseLab.dlx",
+      "sha256": "33e206256b413f09a681eec24ee12c68dab79d0cb0a153211a53e3abd9023446",
+      "accepted": false
+    },
+    {
+      "path": "build\\licensing-core-20261005\\run02\\native-2027\\CyrusSignedLicenseLab.dlx",
+      "sha256": "190fa2b3342d7adf59083873f5deb30b725beccd388ada163574e82af34c1152",
+      "accepted": false
+    },
+    {
+      "path": "build\\qualification-07-20261005\\final01\\max2027\\AminScatter.dlx",
+      "sha256": "4a098d7e4c66350a09738dfa239880150394d7a2e2fec944754e8941d96bbe99",
+      "accepted": true
+    },
+    {
+      "path": "build\\qualification-07-20261005\\final01\\max2027\\CyrusBrush.dlx",
+      "sha256": "b4e71258329f1ffb05779d8cad82748132e6deaec6e550d8e48378cefe71826c",
+      "accepted": true
+    },
+    {
+      "path": "build\\qualification-07-20261005\\final01\\max2027\\CyrusBrushStorage.dlh",
+      "sha256": "c669007ae8dae77f8c09464f970b544902f5ccfdef5691d28957571b27c45f49",
+      "accepted": true
+    },
+    {
+      "path": "build\\qualification-07-20261005\\final01\\max2027\\CyrusScatterEdit.dlm",
+      "sha256": "ecf052b72e61f6758ae49ccaf4feb9937dac0a342a1ea7674500ed94ac13bf39",
+      "accepted": true
+    }
+  ]
+}

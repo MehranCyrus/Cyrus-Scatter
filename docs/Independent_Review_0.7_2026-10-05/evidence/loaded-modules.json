@@ -1,0 +1,27 @@
+[
+  {
+    "name": "CyrusScatterEdit.dlm",
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\procedural07-ui-independent-20261005\\bin\\CyrusScatterEdit.dlm",
+    "sha256": "0236ef0620f1aa120874c75974254944dd5cf69b3b051a73403ffec572a4033e"
+  },
+  {
+    "name": "AminScatter.dlx",
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\procedural07-ui-independent-20261005\\bin\\AminScatter.dlx",
+    "sha256": "65128c52e9302b9f18ba8cd48dc924c12bf028ab3bd3d4d25839fd12f6da646b"
+  },
+  {
+    "name": "CyrusBrushStorage.dlh",
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\procedural07-ui-independent-20261005\\bin\\CyrusBrushStorage.dlh",
+    "sha256": "1c2a2619fe296c19ff0b0e20787ffbc61fed6fb30ef1d3e2c3ebae6df31d6ab0"
+  },
+  {
+    "name": "CyrusBrush.dlx",
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\procedural07-ui-independent-20261005\\bin\\CyrusBrush.dlx",
+    "sha256": "b88a323a13a5f296723395d8e9f86df94cad76e94fee223dd29df8cd7fea8e32"
+  },
+  {
+    "name": "CyrusSurfaceAnalyzer.dlx",
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\procedural07-ui-independent-20261005\\bin\\CyrusSurfaceAnalyzer.dlx",
+    "sha256": "b607557a9e1899e51db20d67acc816bd18deca42a192d542465f63305e6e9f36"
+  }
+]

@@ -1,0 +1,29 @@
+PASS	host_version	#(29000, 70, 0, 29, 1, 0, 11426, 2027, ".1")
+PASS	lab_identity	
+PASS	active_policy	
+PASS	expiry_boundary_policy	
+PASS	expired_policy	
+PASS	renewed_policy	
+PASS	unproven_render_rejected	
+PASS	unknown_operation_rejected	
+PASS	reopen_while_expired	
+PASS	modifier_persisted	
+PASS	parameters_persisted	
+PASS	identities_persisted	
+PASS	cold_evaluation_restores_edits	
+PASS	render_fixture_baseline	
+PASS	render_policy	
+PASS	render_returned_image	
+PASS	render_population	64
+PASS	reopened_expired_edit_denied	
+PASS	renewal_visible_edit_context	
+PASS	renewal_resumes_editing	
+PASS	renewed_result	
+PASS	renewal_undo_restores_prior_work	
+PASS	source_edit_keeps_placement_positions	
+OBSERVED	source_geometry	Source height changed while placement fingerprint stayed unchanged
+PASS	render_fixture_baseline	
+PASS	render_policy	
+PASS	render_returned_image	
+PASS	render_population	64
+COMPLETE

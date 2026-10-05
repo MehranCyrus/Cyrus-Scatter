@@ -1,0 +1,14 @@
+{
+  "command": [
+    "cmake",
+    "--build",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\licensing-l0-2026-10-04\\run04\\AminScatter",
+    "--target",
+    "AminScatter",
+    "CyrusScatterEdit",
+    "CyrusBrush",
+    "CyrusBrushStorage"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 26.64100000000326
+}

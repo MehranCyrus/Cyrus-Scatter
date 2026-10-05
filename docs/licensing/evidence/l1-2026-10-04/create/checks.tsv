@@ -1,0 +1,33 @@
+PASS	host_2027
+PASS	signed_lab_identity
+PASS	disposable_scene_loaded
+PASS	existing_placements
+PASS	empty_session_denied
+PASS	tampered_grant_rejected
+PASS	tamper_cannot_activate
+PASS	synthetic_wrong_device_rejected
+PASS	wrong_context_cannot_activate
+PASS	signed_grant_imported
+PASS	signed_grant_allows_authoring
+PASS	bad_replacement_rejected
+PASS	bad_replacement_preserves_valid_grant
+PASS	signed_authoring_admitted
+PASS	real_native_edit_applied
+PASS	preview_ready
+PASS	signed_deadline_reached
+PASS	expired_wrapper_denied
+PASS	expired_denial_preserves_edit
+PASS	expired_denial_preserves_cache
+PASS	artist_flags_preserved
+PASS	render_existing_fixture_state
+PASS	render_continuity_policy
+PASS	render_image
+PASS	render_population_64
+PASS	render_existing_fixture_state
+PASS	render_continuity_policy
+PASS	render_image
+PASS	render_population_64
+PASS	native_boundary_gap_still_observable
+OBSERVED	direct_generation_ungated	Signature validation alone does not enforce product entry points
+PASS	save_expired_scene
+COMPLETE

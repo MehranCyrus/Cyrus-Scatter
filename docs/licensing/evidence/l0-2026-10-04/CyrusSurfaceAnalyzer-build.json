@@ -1,0 +1,11 @@
+{
+  "command": [
+    "cmake",
+    "--build",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\licensing-l0-2026-10-04\\run04\\CyrusSurfaceAnalyzer",
+    "--target",
+    "CyrusSurfaceAnalyzer"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 6.045999999972992
+}

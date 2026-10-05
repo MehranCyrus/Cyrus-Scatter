@@ -1,0 +1,11 @@
+{
+  "command": [
+    "ctest",
+    "--test-dir",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\licensing-l0-2026-10-04\\run04\\lab-2026",
+    "--output-on-failure",
+    "-V"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 0.40700000000651926
+}

@@ -25,6 +25,9 @@ struct LineBand { Area boundary; double width{1}; std::uint32_t group{}; std::ve
     double edgeOffset=0,edgeAlongJitter=0,edgeAcrossJitter=0; // kind 6: ordered boundary row; width=spacing.
 };
 struct Settings {
+    // Opt-in procedural sampler v1. Legacy streams remain byte-for-byte ordered.
+    bool stableCandidates{false};
+    std::uint64_t candidateStart{0};
     std::vector<double> sourceWeights; // Empty preserves legacy uniform selection.
     bool collisionEnabled{false}, relaxEnabled{false};
     double collisionRadius{0.1}, relaxSpacing{0.2}, relaxStrength{0.5};
@@ -67,7 +70,8 @@ struct Instance {
     Vec3 anchorBary{1,0,0};
     Vec3 transformPoint(Vec3 local) const;
 };
-struct BoundaryFalloff { bool remove=false,scale=false,density=false; int areaSide=0; double removeWidth=0,scaleWidth=100,densityWidth=100; std::vector<double> scaleCurve{0,.25,.5,.75,1},densityCurve{0,.25,.5,.75,1}; };
+struct BoundaryFalloff { bool remove=false,scale=false,density=false; int areaSide=0; double removeWidth=0,scaleWidth=100,densityWidth=100; std::vector<double> scaleCurve{0,.25,.5,.75,1},densityCurve{0,.25,.5,.75,1}; bool stableCandidates=false; };
+double stableUnit(std::uint32_t seed,std::uint64_t ordinal,std::uint64_t channel);
 std::vector<Instance> boundaryFalloff(const std::vector<Instance>&,const std::vector<std::vector<Vec3>>&,const BoundaryFalloff&,std::uint32_t);
 // Forward axes: 1=+Y, 2=-Y, 3=+X, 4=-X. Changes basis only.
 void orientBoundary(std::vector<Instance>&,const std::vector<LineBand>&,
@@ -78,7 +82,13 @@ Settings prepareEdgeRows(const Settings&);
 // pivot-local space. Empty/degenerate/non-finite input raises invalid_argument.
 std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settings& settings);
 struct FinalSettings { bool cleanup{false},relax{false},planar{true}; double radius{1},strength{.3},maxMove{.1},gap{0}; unsigned minNeighbors{2},minIsland{5},iterations{5}; };
-std::vector<Instance> finalize(const std::vector<Triangle>&,const Settings&,std::vector<Instance>,const std::vector<Instance>&,const std::vector<double>&,const std::vector<double>&,const FinalSettings&);
+// Optional caller-owned budget. Procedural replay shares the remaining budget
+// with spacing; legacy callers retain their existing behavior.
+struct FinalWorkBudget {
+    std::uint64_t limit{},visits{};
+    std::vector<std::uint64_t> rowVisits;
+};
+std::vector<Instance> finalize(const std::vector<Triangle>&,const Settings&,std::vector<Instance>,const std::vector<Instance>&,const std::vector<double>&,const std::vector<double>&,const FinalSettings&,FinalWorkBudget* = nullptr);
 // Area-weighted points from actual source geometry, not placement markers.
 std::vector<Vec3> sampleSource(const std::vector<Triangle>& source, std::uint32_t count,
                              std::uint32_t seed);

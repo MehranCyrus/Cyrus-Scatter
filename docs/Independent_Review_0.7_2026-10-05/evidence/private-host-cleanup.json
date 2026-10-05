@@ -1,0 +1,21 @@
+{
+  "captured_utc": "2026-10-05T01:21:33.060464+00:00",
+  "private_processes": [
+    {
+      "pid": 63892,
+      "private_profile": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\procedural07-ui-integration-final-20261005\\desktop.ini",
+      "normal_quit_requested": true,
+      "exited": true
+    },
+    {
+      "pid": 23788,
+      "private_profile": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\procedural07-ui-perf01-navigation\\max.ini",
+      "normal_quit_requested": true,
+      "exited": true
+    }
+  ],
+  "artist_process_still_running": true,
+  "artist_pid": 57648,
+  "scene_contents_not_inspected": true,
+  "no_files_deleted": true
+}

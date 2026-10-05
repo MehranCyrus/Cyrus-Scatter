@@ -1,6 +1,6 @@
 # Licensing source register
 
-**Reviewed:** initial consolidation 2026-10-02; offline timing and device follow-up 2026-10-04. RFC 8725, RFC 9700 and PostgreSQL locking were reopened during consolidation; vendor sources were read in the preceding same-day validation. Microsoft DLL guidance was opened for the codebase audit. The October 4 review opened the Windows/network references below and reread Keygen's clock-tampering section. Companion to the [architecture](ARCHITECTURE.md) and [implementation roadmap](ROADMAP.md).
+**Reviewed:** initial consolidation 2026-10-02; offline timing, device and component-selection follow-ups 2026-10-04. RFC 8725, RFC 9700 and PostgreSQL locking were reopened during consolidation; vendor sources were read in the preceding same-day validation. Microsoft DLL guidance was opened for the codebase audit. The October 4 work opened the Windows/network and implementation-component references below and reread Keygen's clock-tampering section. Companion to the [architecture](ARCHITECTURE.md) and [implementation roadmap](ROADMAP.md).
 
 Sources are official vendor documentation or primary standards. Access date is not publication date. Claims describe the documented model only; they do not establish Cyrus implementation quality or disclose proprietary security internals. No vendor pricing or commercial contract was selected.
 
@@ -35,7 +35,7 @@ Sources are official vendor documentation or primary standards. Access date is n
 
 ## Offline timing and device evidence
 
-These references were opened on 2026-10-04. The Cyrus design is an engineering proposal using the documented platform properties; it has not been implemented or security-tested.
+These references were opened on 2026-10-04. The device/clock design remains an engineering proposal using the documented platform properties; the signed-license experiment uses synthetic device/time inputs and does not qualify these parts.
 
 | Source | Supported fact | Design consequence and limit |
 | --- | --- | --- |
@@ -46,6 +46,21 @@ These references were opened on 2026-10-04. The Cyrus design is an engineering p
 | [RFC 3022](https://www.rfc-editor.org/rfc/rfc3022) | NAPT maps multiple local endpoints through one external network address | One observed public IP need not identify one computer. This is an informational networking RFC, not a licensing specification. |
 
 The inability to instantly revoke authority on a disconnected device is a consequence of our proposed data flow: the old client has no new server information. A portal status change or generation counter cannot change that fact. Delayed reuse, accepted overlap and shorter offline grants are Cyrus policy alternatives, not vendor guarantees.
+
+## Reused implementation components
+
+These primary references were consulted on 2026-10-04 for the isolated [signed-license experiment](SIGNED_LICENSE_EXPERIMENT_2026-10-04.md). The [selection record](IMPLEMENTATION_COMPONENTS.md) distinguishes reused primitives from Cyrus's own profile/policy code.
+
+| Source | Supported fact | Use and limit |
+| --- | --- | --- |
+| [Microsoft BCryptVerifySignature](https://learn.microsoft.com/en-us/windows/win32/api/bcrypt/nf-bcrypt-bcryptverifysignature) | CNG signature-verification API and its inputs | Used for native P-256 signature verification; the API does not supply Cyrus claims, seat policy or trusted time. |
+| [Microsoft signing with CNG](https://learn.microsoft.com/en-us/windows/win32/seccng/signing-data-with-cng) | Native hash/key/signature workflow | Its SHA-1 sample choice is not adopted. Our ES256 profile uses SHA-256. |
+| [nlohmann/json 3.12.0 release](https://github.com/nlohmann/json/releases/tag/v3.12.0), [MIT text](https://raw.githubusercontent.com/nlohmann/json/v3.12.0/LICENSE.MIT) | Official single header, published SHA-256 and redistribution notice | Exact header vendored unchanged; notice retained. Pinning does not establish absence of vulnerabilities. |
+| [nlohmann parser interface](https://json.nlohmann.me/api/basic_json/sax_parse/) | Parser events and structured parsing interface | Library handles syntax; the implemented callback/profile additionally rejects duplicate fields and excessive depth. |
+| [cryptography changelog](https://cryptography.io/en/stable/changelog/) | Version 50.0.2 and Windows OpenSSL 4.0.3 wheel update | Independent development issuer; no Python/OpenSSL runtime is added to the Max plugin. |
+| [RFC 7515](https://www.rfc-editor.org/rfc/rfc7515), [RFC 7518 §3.4](https://www.rfc-editor.org/rfc/rfc7518#section-3.4) | Compact JWS signed bytes and ES256's P-256/SHA-256, fixed-width R/S representation | Narrow strict application profile; no claim of implementing every JOSE feature. |
+| [libsodium signatures](https://doc.libsodium.org/public-key_cryptography/public-key_signatures), [installation](https://doc.libsodium.org/installation), [license](https://github.com/jedisct1/libsodium/blob/master/LICENSE) | Ed25519 detached signatures, Windows support and permissive notice | Alternative considered, not adopted or benchmarked against CNG. |
+| [jwt-cpp](https://github.com/Thalhammer/jwt-cpp) | C++ JWT library, MIT notice and documented crypto-backend dependencies | General JWT alternative considered, not tested in Cyrus or declared unsuitable. |
 
 ## Retrieval limits and excluded conclusions
 

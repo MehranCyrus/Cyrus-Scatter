@@ -1,6 +1,6 @@
 # 07 — Implementation roadmap and engineering checklist
 
-All coding items below are **pending**. This documentation pass does not mark them implemented or tested. Deliver small reviewable changes with a runnable fixture and evidence at each gate. Preserve existing artist scenes and test in isolated copies/instances.
+This is the **frozen planning checklist before implementation**. Its boxes describe that starting point, not today's status. The [current delivery checklist](../Procedural_Implementation_0.7_2026-10-04/STATUS.md), [implemented subset](../Procedural_Implementation_0.7_2026-10-04/IMPLEMENTATION.md) and [Max 2027 report](../Procedural_Implementation_0.7_2026-10-04/RUNTIME_REPORT.md) now record completed work and remaining gates. The earlier [readiness review](10_READINESS_REVIEW.md) remains unchanged historical evidence. Keep future changes small and measurable, preserve artist scenes, and retain the [0.7 pre-release version decision](../Release_Versioning.md).
 
 ## P0 — Freeze behavior and add observability
 
@@ -11,6 +11,8 @@ Purpose: know whether a later change preserves old results and display performan
 - [ ] Capture current Point Cloud/Proxy/Mesh/centres display counters and navigation timings using identical source geometry and camera paths.
 - [ ] Add non-mutating stage/rejection instrumentation where missing; ensure reading it never triggers generation.
 - [ ] Inventory inherited versus set-owned fields before changing `syncLogicalSettings`.
+- [ ] Add source/rotation/scale-by-candidate digests, clone output IDs and source-offset/support-anchor cases to the baseline; count equality is insufficient.
+- [ ] Measure rename/visibility pending/build behavior and ensure read-only statistics/configuration paths do not mutate or evaluate planting.
 
 **Gate:** reproducible old-policy fixtures; counters explain current builds and display uploads. Historical reports are references, not replacements for the new baseline.
 
@@ -20,7 +22,10 @@ Dependencies: P0.
 
 - [ ] Add typed effective Layer/Set/Rule records, stable endpoint validation and a separate policy version.
 - [ ] Adapt current parent/base-set storage without rebuilding every scene object.
+- [ ] Centralize policy capability dispatch and audit all literal policy-2 branches, including Manual preview, Edit visibility, copying and UI guards.
 - [ ] Persist explicit layer/set order; normalize old priority/Edit-key order during explicit conversion.
+- [ ] Separate owner IDs, sampling keys, allocation tie keys and final Edit output IDs. Define random-channel stability and source-row correspondence under a versioned generator contract.
+- [ ] Define latent/support/final-origin coordinates and validate protected reservation activation before exposing any new rule UI.
 - [ ] Keep legacy generator/solver behavior available and unchanged.
 - [ ] Add copy/remove/reorder/Undo/save-reopen fixtures and generated-script consistency checks.
 
@@ -37,6 +42,7 @@ Dependencies: P1.
 - [ ] Add scoped rejection/conflict reporting and bounded diagnostic pair samples.
 - [ ] Add source-radius inheritance/multiplier behavior; qualify scale, mirroring and shear policy.
 - [ ] Add sparse per-instance radius overrides after the candidate/Edit binding contract is proven.
+- [ ] Verify original/clone overrides are independent and inactive/unresolved records never reserve space.
 - [ ] Wire a shared native rule editor for self, sibling and layer scopes; opening it must not compute.
 
 Primary areas: `group_spacing.h/.cpp`, `group_spacing_bridge.inc`, source-radius generator, CS Edit storage/stack, logical ownership and spacing UI factories.
@@ -51,15 +57,19 @@ Dependencies: P2 and stable candidate-stream support.
 
 - [ ] Separate candidate-budget and accepted-target modes in data and UI.
 - [ ] Implement deterministic ordinal batches and hard generated-candidate/memory/round caps.
+- [ ] Fix/version logical prefix and replay boundaries; cache capacity and physical worker chunking must not choose them.
 - [ ] Add background role/references and the two domain interpretations.
 - [ ] Implement the layer cleanup barrier and bounded replay with temporary cleanup suppression.
 - [ ] Rebuild scratch occupancy after removal; expose underfill, attempt-limit and repair-limit outcomes.
 - [ ] Preserve set shares; do not silently redistribute quota or remove protected over-target plants.
+- [ ] Qualify valid protected-input reconstruction when quota shrinks to zero; reject unsupported binding transitions while preserving records.
+- [ ] Evaluate probabilistic coverage once at the declared support anchor; test lifted source geometry and empty/whole-surface background references.
 - [ ] Reject cycles/forward fill references and unsupported generation-mode combinations explicitly.
+- [ ] Distinguish Point slots from renderable plants; initially reject weighted Empty sources with accepted-target mode so replenishment does not silently erase intentional gaps.
 
 Primary areas: scatter candidate generation, Brush/area filtering adapter, group evaluation and cleanup orchestration, population/coverage UI.
 
-**Gate:** impossible targets finish predictably; released-space fixture is reconsidered; final ordinary output remains collision-valid; deterministic results repeat across candidate-batch sizes allowed by the contract. If batch-size independence is not achieved, make the batch schedule fixed and versioned rather than claiming it.
+**Gate:** impossible targets finish predictably; released-space fixture is reconsidered; final ordinary output remains collision-valid. Cold/warm/evicted runs and all allowed physical worker partitions produce identical IDs/transforms under the same fixed logical schedule. Changing that schedule is an algorithm change, not a performance tuning knob that may silently alter planting.
 
 Density-target integration, all advanced line/Analyzer combinations and painted Relax are separate follow-ups. Maintain visible guards until their tests exist.
 
@@ -73,6 +83,7 @@ Dependencies: P1–P3 functional contracts; selected revision instrumentation ca
 - [ ] Track explicit occupancy dependencies and authored-reservation dependencies.
 - [ ] Verify all scene callbacks, external map changes, source deletion, Undo and time validity before removing broad fallback invalidation.
 - [ ] Add cache eviction/rebuild equality and stale-job/publication tests.
+- [ ] Stage or roll back Edit publication, statistics and display state together; inject failures between consumers and verify the prior generation survives coherently.
 
 **Gate:** every mutation produces a correct result; radius-only changes reuse candidate/coverage inputs; unrelated branches remain reusable; orbit and UI navigation add no placement work.
 

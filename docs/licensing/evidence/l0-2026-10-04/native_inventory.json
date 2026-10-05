@@ -1,0 +1,420 @@
+{
+  "scope": "Declarations only; SDK callbacks, script/MCP entry points need separate coverage",
+  "count": 69,
+  "declarations": [
+    {
+      "symbol": "cyrusAnalyzerArea",
+      "script_name": "cyrusAnalyzerArea",
+      "path": "AminScatter/src/analyzer_area_bridge.inc",
+      "line": 2
+    },
+    {
+      "symbol": "cyrusBoundaryFalloff",
+      "script_name": "cyrusBoundaryFalloff",
+      "path": "AminScatter/src/boundary_falloff_bridge.inc",
+      "line": 1
+    },
+    {
+      "symbol": "cyrusAreaFalloff",
+      "script_name": "cyrusAreaFalloff",
+      "path": "AminScatter/src/boundary_falloff_bridge.inc",
+      "line": 2
+    },
+    {
+      "symbol": "cyrusBrushCreate",
+      "script_name": "cyrusBrushCreate",
+      "path": "AminScatter/src/brush_host.cpp",
+      "line": 321
+    },
+    {
+      "symbol": "cyrusBrushBind",
+      "script_name": "cyrusBrushBind",
+      "path": "AminScatter/src/brush_host.cpp",
+      "line": 323
+    },
+    {
+      "symbol": "cyrusBrushBegin",
+      "script_name": "cyrusBrushBegin",
+      "path": "AminScatter/src/brush_host.cpp",
+      "line": 325
+    },
+    {
+      "symbol": "cyrusBrushStop",
+      "script_name": "cyrusBrushStop",
+      "path": "AminScatter/src/brush_host.cpp",
+      "line": 327
+    },
+    {
+      "symbol": "cyrusBrushSettings",
+      "script_name": "cyrusBrushSettings",
+      "path": "AminScatter/src/brush_host.cpp",
+      "line": 329
+    },
+    {
+      "symbol": "cyrusBrushDisplay",
+      "script_name": "cyrusBrushDisplay",
+      "path": "AminScatter/src/brush_host.cpp",
+      "line": 332
+    },
+    {
+      "symbol": "cyrusBrushStats",
+      "script_name": "cyrusBrushStats",
+      "path": "AminScatter/src/brush_host.cpp",
+      "line": 341
+    },
+    {
+      "symbol": "cyrusBrushRows",
+      "script_name": "cyrusBrushRows",
+      "path": "AminScatter/src/brush_host.cpp",
+      "line": 343
+    },
+    {
+      "symbol": "cyrusBrushRefreshMask",
+      "script_name": "cyrusBrushRefreshMask",
+      "path": "AminScatter/src/brush_host.cpp",
+      "line": 347
+    },
+    {
+      "symbol": "cyrusBrushStroke",
+      "script_name": "cyrusBrushStroke",
+      "path": "AminScatter/src/brush_host.cpp",
+      "line": 349
+    },
+    {
+      "symbol": "cyrusBrushDab",
+      "script_name": "cyrusBrushDab",
+      "path": "AminScatter/src/brush_host.cpp",
+      "line": 351
+    },
+    {
+      "symbol": "cyrusBrushCancel",
+      "script_name": "cyrusBrushCancel",
+      "path": "AminScatter/src/brush_host.cpp",
+      "line": 353
+    },
+    {
+      "symbol": "cyrusBrushProbe",
+      "script_name": "cyrusBrushProbe",
+      "path": "AminScatter/src/brush_host.cpp",
+      "line": 355
+    },
+    {
+      "symbol": "cyrusBrushHistory",
+      "script_name": "cyrusBrushHistory",
+      "path": "AminScatter/src/brush_host.cpp",
+      "line": 365
+    },
+    {
+      "symbol": "cyrusBrushOptions",
+      "script_name": "cyrusBrushOptions",
+      "path": "AminScatter/src/brush_host.cpp",
+      "line": 368
+    },
+    {
+      "symbol": "cyrusBrushStorageLog",
+      "script_name": "cyrusBrushStorageLog",
+      "path": "AminScatter/src/brush_host.cpp",
+      "line": 370
+    },
+    {
+      "symbol": "cyrusBrushTarget",
+      "script_name": "cyrusBrushTarget",
+      "path": "AminScatter/src/brush_host.cpp",
+      "line": 373
+    },
+    {
+      "symbol": "cyrusBrushFill",
+      "script_name": "cyrusBrushFill",
+      "path": "AminScatter/src/brush_host.cpp",
+      "line": 376
+    },
+    {
+      "symbol": "cyrusBrushDeleteStroke",
+      "script_name": "cyrusBrushDeleteStroke",
+      "path": "AminScatter/src/brush_host.cpp",
+      "line": 383
+    },
+    {
+      "symbol": "cyrusBrushFilter",
+      "script_name": "cyrusBrushFilter",
+      "path": "AminScatter/src/brush_host.cpp",
+      "line": 392
+    },
+    {
+      "symbol": "cyrusClonePlacementRows",
+      "script_name": "cyrusClonePlacementRows",
+      "path": "AminScatter/src/brush_host.cpp",
+      "line": 415
+    },
+    {
+      "symbol": "cyrusBrushDrawCurrent",
+      "script_name": "cyrusBrushDrawCurrent",
+      "path": "AminScatter/src/brush_host.cpp",
+      "line": 424
+    },
+    {
+      "symbol": "cyrusEditRevision",
+      "script_name": "cyrusEditRevision",
+      "path": "AminScatter/src/cyrus_edit.cpp",
+      "line": 102
+    },
+    {
+      "symbol": "cyrusEditFingerprint",
+      "script_name": "cyrusEditFingerprint",
+      "path": "AminScatter/src/cyrus_edit.cpp",
+      "line": 103
+    },
+    {
+      "symbol": "cyrusEditCommand",
+      "script_name": "cyrusEditCommand",
+      "path": "AminScatter/src/cyrus_edit.cpp",
+      "line": 105
+    },
+    {
+      "symbol": "cyrusEditTopology",
+      "script_name": "cyrusEditTopology",
+      "path": "AminScatter/src/cyrus_edit.cpp",
+      "line": 107
+    },
+    {
+      "symbol": "cyrusEditActiveLayers",
+      "script_name": "cyrusEditActiveLayers",
+      "path": "AminScatter/src/cyrus_edit.cpp",
+      "line": 109
+    },
+    {
+      "symbol": "cyrusEditSelect",
+      "script_name": "cyrusEditSelect",
+      "path": "AminScatter/src/cyrus_edit.cpp",
+      "line": 111
+    },
+    {
+      "symbol": "cyrusEditTransform",
+      "script_name": "cyrusEditTransform",
+      "path": "AminScatter/src/cyrus_edit.cpp",
+      "line": 113
+    },
+    {
+      "symbol": "cyrusEditStack",
+      "script_name": "cyrusEditStack",
+      "path": "AminScatter/src/cyrus_edit_stack.inc",
+      "line": 57
+    },
+    {
+      "symbol": "cyrusEditPublish",
+      "script_name": "cyrusEditPublish",
+      "path": "AminScatter/src/cyrus_edit_stack.inc",
+      "line": 90
+    },
+    {
+      "symbol": "cyrusEditVisibleCount",
+      "script_name": "cyrusEditVisibleCount",
+      "path": "AminScatter/src/cyrus_edit_stack.inc",
+      "line": 99
+    },
+    {
+      "symbol": "cyrusEditGroupVisibility",
+      "script_name": "cyrusEditGroupVisibility",
+      "path": "AminScatter/src/cyrus_edit_stack.inc",
+      "line": 102
+    },
+    {
+      "symbol": "cyrusBuildGeometryPreview",
+      "script_name": "cyrusBuildGeometryPreview",
+      "path": "AminScatter/src/geometry_preview.inc",
+      "line": 2
+    },
+    {
+      "symbol": "cyrusPreviewFaces",
+      "script_name": "cyrusPreviewFaces",
+      "path": "AminScatter/src/geometry_preview.inc",
+      "line": 50
+    },
+    {
+      "symbol": "cyrusResolveGroup",
+      "script_name": "cyrusResolveGroup",
+      "path": "AminScatter/src/group_spacing_bridge.inc",
+      "line": 10
+    },
+    {
+      "symbol": "cyrusCleanupGroup",
+      "script_name": "cyrusCleanupGroup",
+      "path": "AminScatter/src/group_spacing_bridge.inc",
+      "line": 30
+    },
+    {
+      "symbol": "cyrusScatterCPUThreads",
+      "script_name": "cyrusScatterCPUThreads",
+      "path": "AminScatter/src/max_bridge.cpp",
+      "line": 31
+    },
+    {
+      "symbol": "cyrusScatterComputeStats",
+      "script_name": "cyrusScatterComputeStats",
+      "path": "AminScatter/src/max_bridge.cpp",
+      "line": 41
+    },
+    {
+      "symbol": "cyrusFilterSourceRows",
+      "script_name": "cyrusFilterSourceRows",
+      "path": "AminScatter/src/max_bridge.cpp",
+      "line": 54
+    },
+    {
+      "symbol": "cyrusApplySourceTransforms",
+      "script_name": "cyrusApplySourceTransforms",
+      "path": "AminScatter/src/max_bridge.cpp",
+      "line": 74
+    },
+    {
+      "symbol": "cyrusRemoveOverlaps",
+      "script_name": "cyrusRemoveOverlaps",
+      "path": "AminScatter/src/max_bridge.cpp",
+      "line": 103
+    },
+    {
+      "symbol": "aminScatterAdvanced",
+      "script_name": "aminScatterAdvanced",
+      "path": "AminScatter/src/max_bridge.cpp",
+      "line": 184
+    },
+    {
+      "symbol": "cyrusScatterAdvanced",
+      "script_name": "cyrusScatterAdvanced",
+      "path": "AminScatter/src/max_bridge.cpp",
+      "line": 363
+    },
+    {
+      "symbol": "aminScatterTransforms",
+      "script_name": "aminScatterTransforms",
+      "path": "AminScatter/src/max_bridge.cpp",
+      "line": 369
+    },
+    {
+      "symbol": "aminScatterSourcePoints",
+      "script_name": "aminScatterSourcePoints",
+      "path": "AminScatter/src/max_bridge.cpp",
+      "line": 392
+    },
+    {
+      "symbol": "aminScatterValidArea",
+      "script_name": "aminScatterValidArea",
+      "path": "AminScatter/src/max_bridge.cpp",
+      "line": 405
+    },
+    {
+      "symbol": "aminScatterSurfaceArea",
+      "script_name": "aminScatterSurfaceArea",
+      "path": "AminScatter/src/max_bridge.cpp",
+      "line": 419
+    },
+    {
+      "symbol": "cyrusOrientRows",
+      "script_name": "cyrusOrientRows",
+      "path": "AminScatter/src/orientation_bridge.inc",
+      "line": 1
+    },
+    {
+      "symbol": "cyrusRetainedCreate",
+      "script_name": "cyrusRetainedCreate",
+      "path": "AminScatter/src/point_display.cpp",
+      "line": 307
+    },
+    {
+      "symbol": "cyrusRetainedAvailable",
+      "script_name": "cyrusRetainedAvailable",
+      "path": "AminScatter/src/point_display.cpp",
+      "line": 318
+    },
+    {
+      "symbol": "cyrusRetainedStats",
+      "script_name": "cyrusRetainedStats",
+      "path": "AminScatter/src/point_display.cpp",
+      "line": 323
+    },
+    {
+      "symbol": "cyrusRetainedMeshStats",
+      "script_name": "cyrusRetainedMeshStats",
+      "path": "AminScatter/src/point_display.cpp",
+      "line": 338
+    },
+    {
+      "symbol": "aminScatterBuildPreview",
+      "script_name": "aminScatterBuildPreview",
+      "path": "AminScatter/src/preview.cpp",
+      "line": 84
+    },
+    {
+      "symbol": "aminScatterPreviewCount",
+      "script_name": "aminScatterPreviewCount",
+      "path": "AminScatter/src/preview.cpp",
+      "line": 134
+    },
+    {
+      "symbol": "aminScatterDrawPreview",
+      "script_name": "aminScatterDrawPreview",
+      "path": "AminScatter/src/preview.cpp",
+      "line": 141
+    },
+    {
+      "symbol": "aminScatterPreviewPoints",
+      "script_name": "aminScatterPreviewPoints",
+      "path": "AminScatter/src/preview.cpp",
+      "line": 198
+    },
+    {
+      "symbol": "cyrusRetainedPublish",
+      "script_name": "cyrusRetainedPublish",
+      "path": "AminScatter/src/preview.cpp",
+      "line": 232
+    },
+    {
+      "symbol": "cyrusRetainedMatches",
+      "script_name": "cyrusRetainedMatches",
+      "path": "AminScatter/src/preview.cpp",
+      "line": 238
+    },
+    {
+      "symbol": "cyrusPreviewDrawStats",
+      "script_name": "cyrusPreviewDrawStats",
+      "path": "AminScatter/src/preview.cpp",
+      "line": 246
+    },
+    {
+      "symbol": "cyrusPreviewBatchDrawing",
+      "script_name": "cyrusPreviewBatchDrawing",
+      "path": "AminScatter/src/preview.cpp",
+      "line": 262
+    },
+    {
+      "symbol": "cyrusPreviewTriangles",
+      "script_name": "cyrusPreviewTriangles",
+      "path": "AminScatter/src/preview.cpp",
+      "line": 271
+    },
+    {
+      "symbol": "cyrusBindRolloutScroll",
+      "script_name": "cyrusBindRolloutScroll",
+      "path": "AminScatter/src/rollout_scroll.cpp",
+      "line": 92
+    },
+    {
+      "symbol": "cyrusReleaseRolloutScroll",
+      "script_name": "cyrusReleaseRolloutScroll",
+      "path": "AminScatter/src/rollout_scroll.cpp",
+      "line": 106
+    },
+    {
+      "symbol": "cyrusWholeScale",
+      "script_name": "cyrusWholeScale",
+      "path": "AminScatter/src/whole_scale_bridge.inc",
+      "line": 2
+    },
+    {
+      "symbol": "cyrusAnalyzeSurface",
+      "script_name": "cyrusAnalyzeSurface",
+      "path": "CyrusSurfaceAnalyzer/src/bridge.cpp",
+      "line": 18
+    }
+  ]
+}

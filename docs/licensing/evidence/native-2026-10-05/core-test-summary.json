@@ -1,0 +1,166 @@
+{
+  "2026": {
+    "groups": 19,
+    "assertions": 1120,
+    "cases": [
+      {
+        "group": "profile",
+        "assertions": 109
+      },
+      {
+        "group": "signature",
+        "assertions": 285
+      },
+      {
+        "group": "claims",
+        "assertions": 169
+      },
+      {
+        "group": "scope",
+        "assertions": 33
+      },
+      {
+        "group": "lifecycle",
+        "assertions": 19
+      },
+      {
+        "group": "isolation",
+        "assertions": 261
+      },
+      {
+        "group": "permits",
+        "assertions": 19
+      },
+      {
+        "group": "publication",
+        "assertions": 4
+      },
+      {
+        "group": "transfer",
+        "assertions": 6
+      },
+      {
+        "group": "activation",
+        "assertions": 49
+      },
+      {
+        "group": "local",
+        "assertions": 11
+      },
+      {
+        "group": "local",
+        "assertions": 6
+      },
+      {
+        "group": "local",
+        "assertions": 11
+      },
+      {
+        "group": "defaults",
+        "assertions": 16
+      },
+      {
+        "group": "lifecycle",
+        "assertions": 10
+      },
+      {
+        "group": "continuity",
+        "assertions": 32
+      },
+      {
+        "group": "facts",
+        "assertions": 44
+      },
+      {
+        "group": "deadlines",
+        "assertions": 24
+      },
+      {
+        "group": "extension",
+        "assertions": 12
+      }
+    ]
+  },
+  "2027": {
+    "groups": 19,
+    "assertions": 1120,
+    "cases": [
+      {
+        "group": "profile",
+        "assertions": 109
+      },
+      {
+        "group": "signature",
+        "assertions": 285
+      },
+      {
+        "group": "claims",
+        "assertions": 169
+      },
+      {
+        "group": "scope",
+        "assertions": 33
+      },
+      {
+        "group": "lifecycle",
+        "assertions": 19
+      },
+      {
+        "group": "isolation",
+        "assertions": 261
+      },
+      {
+        "group": "permits",
+        "assertions": 19
+      },
+      {
+        "group": "publication",
+        "assertions": 4
+      },
+      {
+        "group": "transfer",
+        "assertions": 6
+      },
+      {
+        "group": "activation",
+        "assertions": 49
+      },
+      {
+        "group": "local",
+        "assertions": 11
+      },
+      {
+        "group": "local",
+        "assertions": 6
+      },
+      {
+        "group": "local",
+        "assertions": 11
+      },
+      {
+        "group": "defaults",
+        "assertions": 16
+      },
+      {
+        "group": "lifecycle",
+        "assertions": 10
+      },
+      {
+        "group": "continuity",
+        "assertions": 32
+      },
+      {
+        "group": "facts",
+        "assertions": 44
+      },
+      {
+        "group": "deadlines",
+        "assertions": 24
+      },
+      {
+        "group": "extension",
+        "assertions": 12
+      }
+    ]
+  }
+}

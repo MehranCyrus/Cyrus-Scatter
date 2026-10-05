@@ -1,0 +1,89 @@
+{
+  "passed": true,
+  "no_evaluation": true,
+  "before": [
+    [
+      2,
+      57,
+      2,
+      3,
+      3
+    ]
+  ],
+  "recipe": {
+    "schema": "cyrus.procedural-configuration/1.0",
+    "evaluation_policy": 3,
+    "global_source_containers": [],
+    "layers_in_order": [
+      {
+        "layer_id": "bff56f4a-8cf3-439e-bdbd-68b94ce77c14",
+        "population": "candidate_budget",
+        "attempt_factor": 8,
+        "round_limit": 8,
+        "retry_cleanup_gaps": true,
+        "default_between_sets": {
+          "enabled": false,
+          "radius_factor": 0.0,
+          "gap_m": 0.0020000000298023225,
+          "metric": "xyz"
+        },
+        "sets_in_order": [
+          {
+            "set_id": "bff56f4a-8cf3-439e-bdbd-68b94ce77c14",
+            "name": "Base",
+            "sampling_salt": 0,
+            "self_rule": {
+              "inherited": true,
+              "enabled": false,
+              "radius_factor": 0.0,
+              "gap_m": 0.0020000000298023225,
+              "metric": "xyz"
+            },
+            "background": {
+              "mode": 1,
+              "earlier_set_ids": [],
+              "domain": "earlier siblings on the shared receiver and layer Area domain"
+            },
+            "source_entry_ids": [
+              "800b16e3-00cf-40cf-884c-1166f3ecd964",
+              "d1637f35-41d5-404a-b0d3-386509d98d3c"
+            ],
+            "radius_overrides": [],
+            "source_pool": {
+              "mode": "own",
+              "own_rectangles": [
+                {
+                  "handle": 5,
+                  "name": "Rectangle001"
+                }
+              ],
+              "membership": "Source pivot in rectangle local XY; parked registrations retain settings. Membership is not recomputed by inspection."
+            },
+            "last_published": {
+              "eligible_pool": 52,
+              "accepted": 52,
+              "protected": 0,
+              "protected_conflicts": 0,
+              "rejected_layer": 0,
+              "rejected_set": 0,
+              "rejected_self": 0,
+              "removed_cleanup": 0,
+              "not_consumed": 0,
+              "candidate_attempts": 100,
+              "target_shortfall": 0,
+              "neighbor_visits": 0,
+              "rounds": 1,
+              "round_limit_reached": false,
+              "epoch": 3
+            },
+            "prepared_builds": 3,
+            "prepared_hits": 0
+          }
+        ]
+      }
+    ],
+    "pair_rules": [],
+    "mutation_supported": false,
+    "freshness": "Recipe values are current; last_published describes the last completed epoch. No solve is performed."
+  }
+}

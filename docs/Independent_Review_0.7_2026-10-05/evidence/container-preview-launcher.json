@@ -1,0 +1,30 @@
+{
+  "pid": 42416,
+  "profile": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\user-tests\\source-containers-20261005\\sessions\\20261005-083813-38d6250a",
+  "command": [
+    "C:\\Program Files\\Autodesk\\3ds Max 2027\\3dsmax.exe",
+    "-q",
+    "-i",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\user-tests\\source-containers-20261005\\sessions\\20261005-083813-38d6250a\\max.ini",
+    "-p",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\user-tests\\source-containers-20261005\\sessions\\20261005-083813-38d6250a\\plugins.ini",
+    "-U",
+    "MAXScript",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\user-tests\\source-containers-20261005\\sessions\\20261005-083813-38d6250a\\start.ms",
+    "-listenerlog",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\user-tests\\source-containers-20261005\\sessions\\20261005-083813-38d6250a\\listener.log"
+  ],
+  "scene": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\user-tests\\source-containers-20261005\\sessions\\20261005-083813-38d6250a\\project\\scenes\\Source_Containers_Demo.max",
+  "native": {
+    "AminScatter.dlx": "4a098d7e4c66350a09738dfa239880150394d7a2e2fec944754e8941d96bbe99",
+    "CyrusBrush.dlx": "b4e71258329f1ffb05779d8cad82748132e6deaec6e550d8e48378cefe71826c",
+    "CyrusBrushStorage.dlh": "c669007ae8dae77f8c09464f970b544902f5ccfdef5691d28957571b27c45f49",
+    "CyrusScatterEdit.dlm": "ecf052b72e61f6758ae49ccaf4feb9937dac0a342a1ea7674500ed94ac13bf39"
+  },
+  "script_sha256": "4f88237f486d49e067a6f3d65a28d46dea457de15cd4aa65c1ecd4501d11fd33",
+  "smoke_test": true,
+  "normal_Max_profile_installed": false,
+  "status": "PASS",
+  "normal_exit": true,
+  "scope": "Private launch, actual module paths, script load and demo population/parking/reentry; no new pointer qualification"
+}

@@ -1,0 +1,10 @@
+{
+  "command": [
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\licensing-l1-tools-2026-10-04\\Scripts\\python.exe",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\licensing-l1-2026-10-04\\run03\\source\\tools\\licensing_lab\\make_signed_fixtures.py",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\licensing-l1-2026-10-04\\run03\\fixtures"
+  ],
+  "exit_code": 0,
+  "timeout": false,
+  "elapsed_seconds": 2.797000000020489
+}

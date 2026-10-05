@@ -90,6 +90,22 @@
       {
         "kind": "button",
         "name": "policyButton"
+      },
+      {
+        "kind": "listbox",
+        "name": "globalContainers"
+      },
+      {
+        "kind": "button",
+        "name": "createContainer"
+      },
+      {
+        "kind": "pickbutton",
+        "name": "pickContainer"
+      },
+      {
+        "kind": "button",
+        "name": "removeContainer"
       }
     ],
     "manager": [
@@ -120,6 +136,14 @@
       {
         "kind": "checkbox",
         "name": "enabledCheck"
+      },
+      {
+        "kind": "button",
+        "name": "upButton"
+      },
+      {
+        "kind": "button",
+        "name": "downButton"
       }
     ]
   },
@@ -768,6 +792,106 @@
         "name": "finalMoveSpin"
       }
     ],
+    "proceduralUI": [
+      {
+        "kind": "dropdownlist",
+        "name": "populationList"
+      },
+      {
+        "kind": "spinner",
+        "name": "attemptSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "roundSpin"
+      },
+      {
+        "kind": "checkbox",
+        "name": "repairCheck"
+      },
+      {
+        "kind": "dropdownlist",
+        "name": "scopeList"
+      },
+      {
+        "kind": "dropdownlist",
+        "name": "peerList"
+      },
+      {
+        "kind": "checkbox",
+        "name": "enabledCheck"
+      },
+      {
+        "kind": "spinner",
+        "name": "multiplierSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "gapSpin"
+      },
+      {
+        "kind": "checkbox",
+        "name": "planarCheck"
+      },
+      {
+        "kind": "button",
+        "name": "resetRule"
+      },
+      {
+        "kind": "dropdownlist",
+        "name": "backgroundList"
+      },
+      {
+        "kind": "multiListBox",
+        "name": "referenceList"
+      },
+      {
+        "kind": "button",
+        "name": "applyBackground"
+      },
+      {
+        "kind": "dropdownlist",
+        "name": "radiusMode"
+      },
+      {
+        "kind": "spinner",
+        "name": "radiusSpin"
+      },
+      {
+        "kind": "button",
+        "name": "applyRadius"
+      },
+      {
+        "kind": "button",
+        "name": "resetRadius"
+      },
+      {
+        "kind": "button",
+        "name": "clearRadius"
+      }
+    ],
+    "sourceContainersUI": [
+      {
+        "kind": "dropdownlist",
+        "name": "modeList"
+      },
+      {
+        "kind": "listbox",
+        "name": "containersList"
+      },
+      {
+        "kind": "button",
+        "name": "createContainer"
+      },
+      {
+        "kind": "pickbutton",
+        "name": "pickContainer"
+      },
+      {
+        "kind": "button",
+        "name": "removeContainer"
+      }
+    ],
     "setsUI": [
       {
         "kind": "dropdownlist",
@@ -796,6 +920,14 @@
       {
         "kind": "checkbox",
         "name": "visibleCheck"
+      },
+      {
+        "kind": "button",
+        "name": "upButton"
+      },
+      {
+        "kind": "button",
+        "name": "downButton"
       }
     ],
     "detailsUI": [
@@ -813,6 +945,8 @@
   "set": [
     "setsUI",
     "sourceUI",
-    "brushUI"
+    "brushUI",
+    "proceduralUI",
+    "sourceContainersUI"
   ]
 }

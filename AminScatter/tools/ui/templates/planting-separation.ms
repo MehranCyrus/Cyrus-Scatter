@@ -36,6 +36,11 @@
             refreshing=before
         )
         fn syncPair = (
+            if obj.groupPolicy==3 do (
+                for c in #(prioritySpin,peerList,blockerList,overlapCheck,gapSpin,planarCheck,radiusMode,radiusSpin) do c.enabled=false
+                policyInfo.text="Use Procedural / Rules for spacing. Cleanup below still applies."
+                return false
+            )
             refreshing=true
             local group=currentLayer(),peer=currentPeer(),valid=group!=undefined and (obj.groupPolicy==1 or peer!=undefined)
             for c in #(overlapCheck,gapSpin,planarCheck,radiusMode) do c.enabled=valid
@@ -76,6 +81,7 @@
         )
         fn changedOverlap = (obj.invalidateGroups())
         fn savePair = (
+            if obj.groupPolicy==3 do return false
             if refreshing or currentLayer()==undefined do return false
             local group=currentLayer()
             if obj.groupPolicy==2 then (

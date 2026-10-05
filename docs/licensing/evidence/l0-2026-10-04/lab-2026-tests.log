@@ -1,0 +1,62 @@
+Internal ctest changing into directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/licensing-l0-2026-10-04/run04/lab-2026
+UpdateCTestConfiguration  from :F:/Cursor/_Cyrus_Apps/CyrusScatter/build/licensing-l0-2026-10-04/run04/lab-2026/DartConfiguration.tcl
+UpdateCTestConfiguration  from :F:/Cursor/_Cyrus_Apps/CyrusScatter/build/licensing-l0-2026-10-04/run04/lab-2026/DartConfiguration.tcl
+Test project F:/Cursor/_Cyrus_Apps/CyrusScatter/build/licensing-l0-2026-10-04/run04/lab-2026
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start 1: license_policy_defaults
+
+1: Test command: F:\Cursor\_Cyrus_Apps\CyrusScatter\build\licensing-l0-2026-10-04\run04\lab-2026\policy\license_policy_tests.exe "defaults"
+1: Working Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/licensing-l0-2026-10-04/run04/lab-2026/policy
+1: Test timeout computed to be: 10000000
+1: PASS defaults: 16 assertions
+1/6 Test #1: license_policy_defaults ..........   Passed    0.04 sec
+test 2
+    Start 2: license_policy_lifecycle
+
+2: Test command: F:\Cursor\_Cyrus_Apps\CyrusScatter\build\licensing-l0-2026-10-04\run04\lab-2026\policy\license_policy_tests.exe "lifecycle"
+2: Working Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/licensing-l0-2026-10-04/run04/lab-2026/policy
+2: Test timeout computed to be: 10000000
+2: PASS lifecycle: 10 assertions
+2/6 Test #2: license_policy_lifecycle .........   Passed    0.02 sec
+test 3
+    Start 3: license_policy_continuity
+
+3: Test command: F:\Cursor\_Cyrus_Apps\CyrusScatter\build\licensing-l0-2026-10-04\run04\lab-2026\policy\license_policy_tests.exe "continuity"
+3: Working Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/licensing-l0-2026-10-04/run04/lab-2026/policy
+3: Test timeout computed to be: 10000000
+3: PASS continuity: 32 assertions
+3/6 Test #3: license_policy_continuity ........   Passed    0.01 sec
+test 4
+    Start 4: license_policy_facts
+
+4: Test command: F:\Cursor\_Cyrus_Apps\CyrusScatter\build\licensing-l0-2026-10-04\run04\lab-2026\policy\license_policy_tests.exe "facts"
+4: Working Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/licensing-l0-2026-10-04/run04/lab-2026/policy
+4: Test timeout computed to be: 10000000
+4: PASS facts: 44 assertions
+4/6 Test #4: license_policy_facts .............   Passed    0.01 sec
+test 5
+    Start 5: license_policy_deadlines
+
+5: Test command: F:\Cursor\_Cyrus_Apps\CyrusScatter\build\licensing-l0-2026-10-04\run04\lab-2026\policy\license_policy_tests.exe "deadlines"
+5: Working Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/licensing-l0-2026-10-04/run04/lab-2026/policy
+5: Test timeout computed to be: 10000000
+5: PASS deadlines: 24 assertions
+5/6 Test #5: license_policy_deadlines .........   Passed    0.01 sec
+test 6
+    Start 6: license_policy_extension
+
+6: Test command: F:\Cursor\_Cyrus_Apps\CyrusScatter\build\licensing-l0-2026-10-04\run04\lab-2026\policy\license_policy_tests.exe "extension"
+6: Working Directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/licensing-l0-2026-10-04/run04/lab-2026/policy
+6: Test timeout computed to be: 10000000
+6: PASS extension: 12 assertions
+6/6 Test #6: license_policy_extension .........   Passed    0.01 sec
+
+100% tests passed, 0 tests failed out of 6
+
+Total Test time (real) =   0.13 sec

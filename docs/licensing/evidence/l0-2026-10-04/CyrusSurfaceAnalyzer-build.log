@@ -1,0 +1,10 @@
+[ 20%] Building CXX object CMakeFiles/analyzer.dir/src/analyzer.cpp.obj
+analyzer.cpp
+[ 40%] Building CXX object CMakeFiles/analyzer.dir/src/elements.cpp.obj
+elements.cpp
+[ 60%] Linking CXX static library analyzer.lib
+[ 60%] Built target analyzer
+[ 80%] Building CXX object CMakeFiles/CyrusSurfaceAnalyzer.dir/src/bridge.cpp.obj
+bridge.cpp
+[100%] Linking CXX shared module CyrusSurfaceAnalyzer.dlx
+[100%] Built target CyrusSurfaceAnalyzer

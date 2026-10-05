@@ -1,4 +1,6 @@
 global CyrusFlowRolloutExtent,CyrusFlowLayerSummary
+global CyrusSourceContainerFilter
+fn CyrusSourceContainerFilter node = (isValidNode node and classof node.baseObject==Rectangle and node.modifiers.count==0)
 -- Native rollup headers occupy 21 logical pixels with 2 pixels between pages.
 -- Body heights remain MAXScript logical units; automatic layout applies DPI.
 fn CyrusFlowRolloutExtent r = (23+(if r.open then r.height else 0))

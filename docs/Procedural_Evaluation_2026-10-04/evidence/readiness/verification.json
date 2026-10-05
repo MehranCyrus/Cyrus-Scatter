@@ -1,0 +1,67 @@
+{
+  "status": "passed",
+  "verified_at_utc": "2026-10-04T16:24:21.001638+00:00",
+  "source_commit": "53bfc5d1c76929958dbeb29f5d4c746b2321d0ac",
+  "head_at_verification": "53bfc5d1c76929958dbeb29f5d4c746b2321d0ac",
+  "scope": "Documentation, source preservation, current core/local MCP/generator evidence; no new-policy Max qualification",
+  "tracked_baseline_files_checked": 385,
+  "changed_baseline_files": [],
+  "markdown_documents_checked": 14,
+  "unique_local_link_targets_checked": 59,
+  "missing_links": [],
+  "unbalanced_fences": [],
+  "trailing_whitespace": [],
+  "native_tests_passed": 13,
+  "mcp_tests_passed": 61,
+  "isolated_generated_artifacts_match": {
+    "scripts/AminScatterObject.ms": true,
+    "tools/ui/layers-control-inventory.json": true
+  },
+  "external_urls_listed_not_rebrowsed_this_followup": 9,
+  "documentation_sha256": {
+    "docs\\Procedural_Evaluation_2026-10-04\\01_CURRENT_CODE_AND_GAPS.md": "cca9cd96aa4ca5e474caf94ee90c1c41960b6e95dc2b6d94107d2fa7da43c516",
+    "docs\\Procedural_Evaluation_2026-10-04\\02_PROCEDURAL_PIPELINE.md": "25f6e645b7bc38031db088376839270800d8693f364f4c1151d49451027bc80c",
+    "docs\\Procedural_Evaluation_2026-10-04\\03_COLLISION_AND_RADIUS.md": "3f2500f31463070c01db3e8807d315df448cd89951079076fcf664e21b73a3e0",
+    "docs\\Procedural_Evaluation_2026-10-04\\04_COVERAGE_POPULATION_AND_FILL.md": "3402c81c10c670fd6a53c8eae2004203c6fb33ae3848f1eaafac1128966bc865",
+    "docs\\Procedural_Evaluation_2026-10-04\\05_CACHE_AND_VIEWPORT.md": "a783715217725dcde9cd52139a0f0d912d559146c43a25dca4360c9a157c21e9",
+    "docs\\Procedural_Evaluation_2026-10-04\\06_DATA_UI_MCP_AND_ML.md": "ca57831c8ea87ba2c262d8ed762c7c0a0d71ab723ef830094a98d77b32ea080d",
+    "docs\\Procedural_Evaluation_2026-10-04\\07_IMPLEMENTATION_ROADMAP.md": "efc566cd4515b9d206d0437588a0a97ba86028317550acf866818e6eb2dbb57f",
+    "docs\\Procedural_Evaluation_2026-10-04\\08_VALIDATION_AND_EXPERIMENTS.md": "fdf792a99f90d02952b748aeeae76fe314395b9fe03657843f9d082601e0894a",
+    "docs\\Procedural_Evaluation_2026-10-04\\09_RESEARCH_AND_DECISIONS.md": "76b47bdf3e6515eed003aa4d632cd91e2899dece2e45bf45441bb038c98f95fa",
+    "docs\\Procedural_Evaluation_2026-10-04\\10_READINESS_REVIEW.md": "4b5ec7d24da3d3a9e3e2254573ac3b2b091630f88e7b2c585caef4514114dc35",
+    "docs\\Procedural_Evaluation_2026-10-04\\11_OPTION_CONTRACTS.md": "7b0dc445254927bfcf1284fda3c490fc62655afc2944b95404dcf98ab5475e72",
+    "docs\\Procedural_Evaluation_2026-10-04\\README.md": "f360b512bffbcdd5ce3555ece831d9ad6aff537980059297a051c0d9fdaa3568",
+    "docs\\Procedural_Evaluation_2026-10-04\\evidence\\readiness\\README.md": "9b8bd9884ba9dc2791a2068da63a4132982e793881a37b6e9735a2293becb742",
+    "docs\\Release_Versioning.md": "fff890276d4fe4f396ac7e766b5a41d1374fc5bbd93a88ad9a44cc38e5397d20"
+  },
+  "evidence_sha256": {
+    "build.txt": "7a59eea32bd7a83c7acf1f9aa14e0ff51099aa4bd61cddd780f556c7fa73f724",
+    "checks.json": "7577c03aa2976ff190c4832960bd8d424648fd7479d38ca5351338543f967ee5",
+    "configure.txt": "385ec3f617c629af11b623edafff138dd3e9185464d08f96c3c216581cb079ec",
+    "contract-probes.json": "2d193836cfbc2f7a59cc4499265addbe837dcb02babd9591a87242562bf6df64",
+    "contract_probes.py": "6bdcbb4948ec4175dd5b96c1b75146f0ac930552d5a7671808c0e086d95ce1b5",
+    "generator.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mcp-tests.txt": "7adef70d88d4346552ffd397760fb3d23b469bf2d6b8571b4337914ae03be9e8",
+    "native-probe.txt": "a6fd23c6027deeaa17c8ca8f44785d3801e290c0b82e3cceea3f75fab865c03e",
+    "native-tests.txt": "a3aabb964cc87efd1d01b76692d916e10d89c3632bf20ff3aa5ab839e72bcfe7",
+    "native_readiness_probe.cpp": "69e621581eae29d0d7d429c5ac5f4eaaa32abac743ad7455b663d81a851542d4",
+    "preserved_source.json": "89b76bc5423a278524ea37be431a096070231b76ade3942a4a9dbeb4f8e5a302",
+    "README.md": "9b8bd9884ba9dc2791a2068da63a4132982e793881a37b6e9735a2293becb742",
+    "run_checks.py": "c1968041bf568d161777e0d3c9c68fd22e6054b24eb9604a39083de46b2eb4ae",
+    "verify_review.py": "398a34a477bb1f9b592bb2304d2a89be9315afa85e27cfc4af5cfa8e1c0aa671"
+  },
+  "out_of_scope_untracked_work_observed": [
+    "CyrusLicensing/",
+    "tools/licensing_lab/"
+  ],
+  "not_performed": [
+    "Production feature implementation",
+    "Max SDK plugin build/load",
+    "Max scene or interactive UI test",
+    "Renderer test",
+    "FPS benchmark",
+    "MCP apply to actual Max",
+    "ML training",
+    "Git commit/push"
+  ]
+}

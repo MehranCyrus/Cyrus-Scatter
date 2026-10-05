@@ -1,0 +1,20 @@
+{
+  "command": [
+    "cmake",
+    "-S",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\licensing-l1-2026-10-04\\run03\\source\\tools\\licensing_lab",
+    "-B",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\licensing-l1-2026-10-04\\run03\\lab-2027",
+    "-G",
+    "NMake Makefiles",
+    "-DCMAKE_BUILD_TYPE=Release",
+    "-DCYRUS_BUILD_LICENSING_LAB=ON",
+    "-DCYRUS_BUILD_SIGNED_LICENSE_LAB=ON",
+    "-DCYRUS_SIGNED_FIXTURES=F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\licensing-l1-2026-10-04\\run03/fixtures",
+    "-DCYRUS_MAX_YEAR=2027",
+    "-DMAXSDK_ROOT=F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\tooling\\max2027-sdk\\Program Files\\Autodesk\\3ds Max 2027 SDK\\maxsdk"
+  ],
+  "exit_code": 0,
+  "timeout": false,
+  "elapsed_seconds": 2.3589999999967404
+}

@@ -1,0 +1,47 @@
+{
+  "recorded_at_utc": "2026-10-04T20:22:07.995630+00:00",
+  "host_year": 2027,
+  "maxscript_loaded": true,
+  "generated_sha256": "fb2350bb4f859dbbf4e043f2ee42d94f90084154996a822ca5cc18fc04ea7d29",
+  "private_sessions_only": true,
+  "artist_profile_installed": false,
+  "mcp_live_campaigns_passed": 9,
+  "procedural_mcp_read_only_passed": true,
+  "brush_pointer_surface": "nonuniformly scaled sphere",
+  "planar_brush_test": "native ray/dab API",
+  "native_rollout_cycles": 20,
+  "navigation_populations": [
+    20000,
+    100000
+  ],
+  "navigation_zero_rebuilds": true,
+  "max2026_runtime": "unavailable; SDK build/native suites only",
+  "artist_example": {
+    "path": "dist/procedural-0.7-candidate/CyrusScatter-0.7-Example-Max2027.max",
+    "sha256": "fedbca6f0e96bf47f9c637ce9ad95b29af1ee97964e179765b90e988a8987b16"
+  },
+  "limitations": [
+    "Automatic system-unit rescaling of stored Brush/Edit/radius data is unsupported. Adopt saved scene units.",
+    "High-count Proxy drawing remains expensive in both 0.64 and 0.7.",
+    "Policy 3 MCP mutation and ML are not implemented.",
+    "Installer replacement of an artist profile was not performed."
+  ],
+  "files_sha256": {
+    "artist-example.json": "3201ea510ef87e661c972ec23b70ded8348ba5f7c3ed5456c10de65eb528a357",
+    "baseline-100k-navigation.json": "f24dfc4e44f804b700d2a003c0d92c47974cb84ffeecd48c51b3053c0ee22e77",
+    "baseline-20k-navigation.json": "1191cbb5868a89988c86ac017992fc1fd34a85d8f5ad0ebc1d3831cc9a94af3c",
+    "baseline-loaded-binaries.json": "7553bcbd8f331cc741865971e95f03f939b79629f244f1ed1f48d0852bdcab5d",
+    "bindings-acceptance.json": "e65f3677fb670ff5a3a3283f4798d4b8b5b1153ed59bc2b17e5dda649aa1d001",
+    "loaded-binaries.json": "2b7caa540f05980807ab3e3f809cccbfc6a501404870d600344759cca24a5eaf",
+    "navigation-summary.json": "076a40716a5351b5167e9ccb868756a7b02149df3db6ede658133bfde8af4221",
+    "procedural-100k-navigation.json": "20bef843d5b6918c9bd357827236b84a1e80c5e9336ae6035fb1b1cf287e0b67",
+    "procedural-20k-navigation.json": "a02a1eed9632eeb5430d7c2bb7bf6cb61eb74daaebca1958263161f9f6035f62",
+    "procedural-acceptance.json": "728322ea78cedc385b60d05d4f2292eeda65e4f8ae6dd3212f95910993ca438b",
+    "procedural-mcp.json": "401c8e700e04a37a31b95a0d284a7cff954cf8b70f72335e621c7d121eac1156",
+    "release-campaign.json": "bedcfdedf8819eb7fc9a9590fc182bccc1dca347f839ddd52175b38d997d0865",
+    "ui-lifetime.json": "7bece28dc6ffd17ff0ca0d794c3b70af67d06a94629a6ef93b405500f042ed2e",
+    "ui-pointer.json": "9cb1190f2acdbf948cd410eee24574c990af113b125b8a67d09297ec7c1c3144",
+    "ui-rule.json": "9e963bf94d7b8e91b726fbff059af922fd18d84890c551e92809f1efcee9fe0e",
+    "units-acceptance.json": "5ed5271d1c3567b638d8287807a33421f8f0d93e0a4f1d316394b28d4edf8d0a"
+  }
+}

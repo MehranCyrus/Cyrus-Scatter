@@ -1,0 +1,18 @@
+{
+  "admit_and_consume": {
+    "max_ns": 44.035,
+    "median_ns": 37.374,
+    "min_ns": 35.416
+  },
+  "note": "Native API microbenchmark only; excludes host clock acquisition and MAXScript. No network, disk or signature in loops. Not FPS.",
+  "pure_policy": {
+    "max_ns": 9.735,
+    "median_ns": 9.067,
+    "min_ns": 8.264
+  },
+  "verified_snapshot_decision": {
+    "max_ns": 40.256,
+    "median_ns": 30.015,
+    "min_ns": 27.256
+  }
+}

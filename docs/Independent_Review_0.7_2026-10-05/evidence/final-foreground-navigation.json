@@ -1,0 +1,106 @@
+{
+  "scope": "60 synchronous camera/redraw/message steps; not presented FPS",
+  "results": [
+    {
+      "label": "phaseab-visible-control",
+      "viewport": [
+        1176,
+        750
+      ],
+      "initial_update_ms": 290.1123,
+      "working_set_bytes": 2774835200,
+      "trials": [
+        {
+          "mode": 0,
+          "median_ms": 28.874,
+          "p95_ms": 159.704
+        },
+        {
+          "mode": 1,
+          "median_ms": 27.15,
+          "p95_ms": 175.982
+        },
+        {
+          "mode": 3,
+          "median_ms": 29.19,
+          "p95_ms": 161.928
+        },
+        {
+          "mode": 4,
+          "median_ms": 30.335,
+          "p95_ms": 163.201
+        }
+      ]
+    },
+    {
+      "label": "final-visible-containers",
+      "viewport": [
+        56,
+        341
+      ],
+      "initial_update_ms": 311.1008,
+      "working_set_bytes": 2530680832,
+      "trials": [
+        {
+          "mode": 0,
+          "median_ms": 25.688,
+          "p95_ms": 43.592
+        },
+        {
+          "mode": 1,
+          "median_ms": 22.13,
+          "p95_ms": 35.46
+        },
+        {
+          "mode": 3,
+          "median_ms": 21.503,
+          "p95_ms": 37.346
+        },
+        {
+          "mode": 4,
+          "median_ms": 20.963,
+          "p95_ms": 33.102
+        }
+      ]
+    },
+    {
+      "label": "final-matched-visible",
+      "viewport": [
+        1176,
+        750
+      ],
+      "initial_update_ms": 696.5615,
+      "working_set_bytes": 2663997440,
+      "trials": [
+        {
+          "mode": 0,
+          "median_ms": 22.786,
+          "p95_ms": 47.259
+        },
+        {
+          "mode": 1,
+          "median_ms": 29.306,
+          "p95_ms": 49.225
+        },
+        {
+          "mode": 3,
+          "median_ms": 24.605,
+          "p95_ms": 44.358
+        },
+        {
+          "mode": 4,
+          "median_ms": 25.297,
+          "p95_ms": 39.612
+        }
+      ]
+    }
+  ],
+  "final_loaded_modules": {
+    "CyrusScatterEdit.dlm": "ecf052b72e61f6758ae49ccaf4feb9937dac0a342a1ea7674500ed94ac13bf39",
+    "AminScatter.dlx": "4a098d7e4c66350a09738dfa239880150394d7a2e2fec944754e8941d96bbe99",
+    "CyrusBrushStorage.dlh": "c669007ae8dae77f8c09464f970b544902f5ccfdef5691d28957571b27c45f49",
+    "CyrusBrush.dlx": "b4e71258329f1ffb05779d8cad82748132e6deaec6e550d8e48378cefe71826c"
+  },
+  "small_window_run_comparable": false,
+  "formal_equivalence_claim": false
+}

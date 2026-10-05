@@ -101,3 +101,46 @@ Value* cyrusEditVisibleCount_cf(Value** a,int count){check_arg_count(cyrusEditVi
 
 def_visible_primitive(cyrusEditGroupVisibility,"cyrusEditGroupVisibility");
 Value* cyrusEditGroupVisibility_cf(Value** a,int count){check_arg_count(cyrusEditGroupVisibility,3,count);auto* m=edit(a[0]);const auto found=m->layers.find(a[1]->to_int());if(found!=m->layers.end()){found->second.viewportVisible=a[2]->to_bool()!=FALSE;m->status();}return &ok;}
+
+// A synchronous host transaction includes derived input bindings and published
+// selection state. It never lives on a worker or across a yielded host event.
+namespace {
+struct ProceduralEditTransaction {std::vector<std::pair<CSEdit*,std::map<int,EditLayer>>> before;};
+std::unique_ptr<ProceduralEditTransaction> proceduralEditTransaction;
+}
+def_visible_primitive(cyrusEditTransaction,"cyrusEditTransaction");
+Value* cyrusEditTransaction_cf(Value** a,int count){
+    check_arg_count(cyrusEditTransaction,2,count);type_check(a[0],Array,_T("Edit modifiers"));auto* mods=static_cast<Array*>(a[0]);const int command=a[1]->to_int();
+    if(command==0){
+        if(proceduralEditTransaction)throw RuntimeError(_T("Nested procedural Edit transaction"));
+        auto next=std::make_unique<ProceduralEditTransaction>();
+        for(int i=0;i<mods->size;++i){auto* m=edit(mods->data[i]);next->before.emplace_back(m,m->layers);}
+        proceduralEditTransaction=std::move(next);
+    }else if(command==1||command==2){
+        if(!proceduralEditTransaction)throw RuntimeError(_T("No procedural Edit transaction"));
+        if(command==2)for(auto& entry:proceduralEditTransaction->before){entry.first->layers.swap(entry.second);entry.first->status();}
+        proceduralEditTransaction.reset();
+    }else throw RuntimeError(_T("Unknown procedural Edit transaction command"));
+    return &ok;
+}
+def_visible_primitive(cyrusEditRequiredCandidates,"cyrusEditRequiredCandidates");
+def_visible_primitive(cyrusEditLocalRevision,"cyrusEditLocalRevision");
+Value* cyrusEditLocalRevision_cf(Value** a,int count){check_arg_count(cyrusEditLocalRevision,1,count);return Integer64::intern(edit(a[0])->localRevision);}
+Value* cyrusEditRequiredCandidates_cf(Value** a,int count){
+    check_arg_count(cyrusEditRequiredCandidates,2,count);type_check(a[0],Array,_T("Edit modifiers"));auto* mods=static_cast<Array*>(a[0]);const int key=a[1]->to_int();std::uint64_t required=0;
+    for(int i=0;i<mods->size;++i){auto* m=edit(mods->data[i]);const auto found=m->layers.find(key);if(found==m->layers.end())continue;
+        for(const auto& row:found->second.rows)if(!row.deleted&&(row.inputId!=row.outputId||hasEditTransform(row.delta))&&row.inputId.rfind(L"c:",0)==0){
+            try{std::size_t used=0;const auto ordinal=std::stoull(row.inputId.substr(2),&used);if(used!=row.inputId.size()-2||ordinal>=100000)throw std::invalid_argument("ordinal");required=std::max(required,ordinal+1);}catch(...){throw RuntimeError(_T("Saved Edit candidate exceeds the procedural pool limit"));}
+        }
+    }
+    return Integer::intern(int(required));
+}
+def_visible_primitive(cyrusEditSelectedIDs,"cyrusEditSelectedIDs");
+Value* cyrusEditSelectedIDs_cf(Value** a,int count){
+    check_arg_count(cyrusEditSelectedIDs,2,count);type_check(a[0],Array,_T("Edit modifiers"));auto* mods=static_cast<Array*>(a[0]);const int key=a[1]->to_int();std::unordered_set<std::wstring> seen;
+    one_typed_value_local(Array* result);vl.result=new Array(0);
+    for(int i=0;i<mods->size;++i){auto* m=edit(mods->data[i]);const auto found=m->layers.find(key);if(found==m->layers.end()||found->second.invalid)continue;
+        for(const auto& row:found->second.rows)if(row.selected&&found->second.shown(row)&&seen.insert(row.outputId).second)vl.result->append(new String(row.outputId.c_str()));
+    }
+    return_value(vl.result);
+}

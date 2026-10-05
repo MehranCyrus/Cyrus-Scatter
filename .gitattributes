@@ -20,6 +20,12 @@
 /docs/Layer_Width_2026-10-04/evidence/** -text whitespace=cr-at-eol
 /docs/Classic_Layout_2026-10-04/evidence/** -text whitespace=cr-at-eol
 /docs/System_Map_2026-10-04/evidence/** -text whitespace=cr-at-eol
+/docs/Procedural_Evaluation_2026-10-04/evidence/** -text whitespace=cr-at-eol
+/docs/Procedural_Implementation_0.7_2026-10-04/evidence/** -text whitespace=cr-at-eol
+/docs/Procedural_Implementation_0.7_2026-10-04/evidence.json -text whitespace=cr-at-eol
+/docs/Review_Handoff_2026-10-05/evidence/** -text whitespace=cr-at-eol
+/docs/Independent_Review_0.7_2026-10-05/evidence/** -text whitespace=cr-at-eol
+/docs/licensing/evidence/** -text whitespace=cr-at-eol
 /AminScatter/tests/data/brush_sphere_pole.txt -text whitespace=cr-at-eol
 
 # Exact logs, captured recipes and supplied reports retain original whitespace.
@@ -27,5 +33,8 @@
 /docs/**/evidence/** -whitespace
 /docs/**/recipes/** -whitespace
 /docs/Research_Inputs_2026-10-01/** -whitespace
+
+# Preserve the upstream license verbatim, including its title's trailing space.
+/CyrusLicensing/third_party/nlohmann/LICENSE.MIT -text -whitespace
 
 *.pdf binary

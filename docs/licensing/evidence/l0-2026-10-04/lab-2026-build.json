@@ -1,0 +1,9 @@
+{
+  "command": [
+    "cmake",
+    "--build",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\licensing-l0-2026-10-04\\run04\\lab-2026"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 3.702999999979511
+}
