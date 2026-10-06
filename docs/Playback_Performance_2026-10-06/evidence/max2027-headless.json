@@ -1,0 +1,50 @@
+{
+  "recorded_at_utc": "2026-10-06T06:11:58.692838+00:00",
+  "exit_code": 0,
+  "passed": true,
+  "headless_max2027": true,
+  "computer_use": false,
+  "artist_scene_opened": false,
+  "installed": false,
+  "artist_profile_unchanged": true,
+  "sources_and_binaries": {
+    "AminScatter.dlx": "6d76cdd96f0b9302ac07061103017fc7653aa7f53f8c389ab41b68aaa2783fbb",
+    "CyrusBrush.dlx": "f50ff5acd5d1cddb58d8db831c6025ed0b13d1975324f0c8cfb5577b682aec4b",
+    "CyrusBrushStorage.dlh": "7850fe81bde69cefc00674d8c0ca62694866a84c8a275695d2834dbde2aabcf4",
+    "CyrusScatterEdit.dlm": "0ca093ce510452c10bd8292718274734493e1c78cd8cae5878c476542bb35173",
+    "AminScatterObject.ms": "d1f264b7702d4ccc75eb782d60134b46ddcf04bf7f550f8a702c8a34fe65c772",
+    "fixture.ms": "b1a3a4b8f8fd3e731b2993d605fd3ade8f3f393b93fa0dfd78abe5e78fc5d929",
+    "CyrusSurfaceAnalyzer.dlx": "ec6d41636d045b33693e0c70ea0cbb4bb0b357f4cd643ab07e6411dde98102a2",
+    "CyrusSurfaceAnalyzer.ms": "9f1f146814870a094ab226334675459e0130a9f1d8bd1d621405b52f99ffb3c8",
+    "analyzer-fixture.ms": "1e3dfdb6e4880f6a533ea896d1114fa448093adbe7b87fe9b6b25854d0f7805a"
+  },
+  "payload_expected": "605f6b743df1f048ae4b7b0be67a496779956c26b68462ffd822c850ec8f7263",
+  "loaded_native": {
+    "CyrusScatterEdit.dlm": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\playback-20261006\\run19\\bin\\CyrusScatterEdit.dlm",
+      "sha256": "0ca093ce510452c10bd8292718274734493e1c78cd8cae5878c476542bb35173"
+    },
+    "AminScatter.dlx": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\playback-20261006\\run19\\bin\\AminScatter.dlx",
+      "sha256": "6d76cdd96f0b9302ac07061103017fc7653aa7f53f8c389ab41b68aaa2783fbb"
+    },
+    "CyrusBrushStorage.dlh": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\playback-20261006\\run19\\bin\\CyrusBrushStorage.dlh",
+      "sha256": "7850fe81bde69cefc00674d8c0ca62694866a84c8a275695d2834dbde2aabcf4"
+    },
+    "CyrusBrush.dlx": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\playback-20261006\\run19\\bin\\CyrusBrush.dlx",
+      "sha256": "f50ff5acd5d1cddb58d8db831c6025ed0b13d1975324f0c8cfb5577b682aec4b"
+    },
+    "CyrusSurfaceAnalyzer.dlx": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\playback-20261006\\run19\\bin\\CyrusSurfaceAnalyzer.dlx",
+      "sha256": "ec6d41636d045b33693e0c70ea0cbb4bb0b357f4cd643ab07e6411dde98102a2"
+    }
+  },
+  "loaded_native_matches": true,
+  "payload_observed": "605f6b743df1f048ae4b7b0be67a496779956c26b68462ffd822c850ec8f7263",
+  "report": "SCRIPT_PAYLOAD 605f6b743df1f048ae4b7b0be67a496779956c26b68462ffd822c850ec8f7263\nPASS unrelated animation and rewind, policy 1\nPASS parameter edit re-arms validity, policy 1\nPASS animated receiver, policy 1\nPASS Manual freeze and return to Live, policy 1\nPASS in-place density edit and Manual Update, policy 1\nPASS unrelated animation and rewind, policy 2\nPASS parameter edit re-arms validity, policy 2\nPASS animated receiver, policy 2\nPASS Manual freeze and return to Live, policy 2\nPASS in-place density edit and Manual Update, policy 2\nPASS unrelated animation and rewind, policy 3\nPASS parameter edit re-arms validity, policy 3\nPASS animated receiver, policy 3\nPASS Manual freeze and return to Live, policy 3\nPASS in-place density edit and Manual Update, policy 3\nPASS animated receiver parent, policy 3\nPASS Manual freeze and return to Live, policy 3\nPASS animated source geometry in Mesh mode\nPASS animated Scatter parameter\nPASS animated density map\nPASS unkeyed script transform and rewind\nPASS disabled layer/controller and hidden controller catch-up\nPASS static playback and repeated retained publication, viewport mode 1\nPASS static playback and repeated retained publication, viewport mode 2\nPASS static playback and repeated retained publication, viewport mode 3\nPOINT_CULLING_STATE #(1440L, 1L, 3L, 3L, 3L, 77L, 7572528L, 163L, 0L, 1L, 17280L, 1L, \"15176767000769001674;\")\nPASS submitted off-screen point data matches and settles without realization polling\nPASS registry save/reopen/reset/delete\nPASS Analyzer unrelated animation, rewind and settled message-loop idle\nPASS Analyzer real parameter edit and one-shot timer\nPASS Analyzer receiver animation and Manual freeze\nPASS Analyzer parent animation and Manual freeze\nPASS Analyzer failure stops retrying and recovers on a real correction\nPASS Scatter consumes Analyzer publication and preserves Analyzer Manual mode\nPASS Analyzer clone/save/reopen/reset/delete lifecycle\nSUCCESS 1312 assertions\n",
+  "limitations": [
+    "No presented FPS, interactive UI, real playback timing, or Corona IR qualification."
+  ]
+}

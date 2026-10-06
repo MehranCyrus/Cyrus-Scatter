@@ -1,0 +1,8 @@
+Internal ctest changing into directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/playback-20261006/analyzer-max2027
+Test project F:/Cursor/_Cyrus_Apps/CyrusScatter/build/playback-20261006/analyzer-max2027
+    Start 1: analyzer_core
+1/1 Test #1: analyzer_core ....................   Passed    0.22 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.23 sec

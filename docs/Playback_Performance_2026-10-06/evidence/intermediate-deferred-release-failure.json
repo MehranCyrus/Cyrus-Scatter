@@ -1,0 +1,50 @@
+{
+  "recorded_at_utc": "2026-10-06T05:53:33.540296+00:00",
+  "exit_code": 4294967166,
+  "passed": false,
+  "headless_max2027": true,
+  "computer_use": false,
+  "artist_scene_opened": false,
+  "installed": false,
+  "artist_profile_unchanged": true,
+  "sources_and_binaries": {
+    "AminScatter.dlx": "0ca90e93bd7e4cd29dedf39e39abfa7cfb0ad63d80a5bc856a3cc5da0ace660c",
+    "CyrusBrush.dlx": "f50ff5acd5d1cddb58d8db831c6025ed0b13d1975324f0c8cfb5577b682aec4b",
+    "CyrusBrushStorage.dlh": "7850fe81bde69cefc00674d8c0ca62694866a84c8a275695d2834dbde2aabcf4",
+    "CyrusScatterEdit.dlm": "0ca093ce510452c10bd8292718274734493e1c78cd8cae5878c476542bb35173",
+    "AminScatterObject.ms": "d1f264b7702d4ccc75eb782d60134b46ddcf04bf7f550f8a702c8a34fe65c772",
+    "fixture.ms": "f9ca425e5a25a7727bd6f32895923097a3d840b134a2e87290a95e290cbd6995",
+    "CyrusSurfaceAnalyzer.dlx": "7b2af4e975a183ed63a5a20f1ec1a079d4d31bc687af6991386c8ba891502c0e",
+    "CyrusSurfaceAnalyzer.ms": "9f1f146814870a094ab226334675459e0130a9f1d8bd1d621405b52f99ffb3c8",
+    "analyzer-fixture.ms": "1e3dfdb6e4880f6a533ea896d1114fa448093adbe7b87fe9b6b25854d0f7805a"
+  },
+  "payload_expected": "605f6b743df1f048ae4b7b0be67a496779956c26b68462ffd822c850ec8f7263",
+  "loaded_native": {
+    "CyrusScatterEdit.dlm": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\playback-20261006\\run16\\bin\\CyrusScatterEdit.dlm",
+      "sha256": "0ca093ce510452c10bd8292718274734493e1c78cd8cae5878c476542bb35173"
+    },
+    "AminScatter.dlx": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\playback-20261006\\run16\\bin\\AminScatter.dlx",
+      "sha256": "0ca90e93bd7e4cd29dedf39e39abfa7cfb0ad63d80a5bc856a3cc5da0ace660c"
+    },
+    "CyrusBrushStorage.dlh": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\playback-20261006\\run16\\bin\\CyrusBrushStorage.dlh",
+      "sha256": "7850fe81bde69cefc00674d8c0ca62694866a84c8a275695d2834dbde2aabcf4"
+    },
+    "CyrusBrush.dlx": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\playback-20261006\\run16\\bin\\CyrusBrush.dlx",
+      "sha256": "f50ff5acd5d1cddb58d8db831c6025ed0b13d1975324f0c8cfb5577b682aec4b"
+    },
+    "CyrusSurfaceAnalyzer.dlx": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\playback-20261006\\run16\\bin\\CyrusSurfaceAnalyzer.dlx",
+      "sha256": "7b2af4e975a183ed63a5a20f1ec1a079d4d31bc687af6991386c8ba891502c0e"
+    }
+  },
+  "loaded_native_matches": true,
+  "payload_observed": "605f6b743df1f048ae4b7b0be67a496779956c26b68462ffd822c850ec8f7263",
+  "report": "SCRIPT_PAYLOAD 605f6b743df1f048ae4b7b0be67a496779956c26b68462ffd822c850ec8f7263\nPASS unrelated animation and rewind, policy 1\nPASS parameter edit re-arms validity, policy 1\nPASS animated receiver, policy 1\nPASS Manual freeze and return to Live, policy 1\nPASS in-place density edit and Manual Update, policy 1\nPASS unrelated animation and rewind, policy 2\nPASS parameter edit re-arms validity, policy 2\nPASS animated receiver, policy 2\nPASS Manual freeze and return to Live, policy 2\nPASS in-place density edit and Manual Update, policy 2\nFAILED after 382 assertions: -- Runtime error: Static playback armed deferred work: #(3, 1, false, false, true, true)\n",
+  "limitations": [
+    "No presented FPS, interactive UI, real playback timing, or Corona IR qualification."
+  ]
+}

@@ -72,10 +72,22 @@ def main():
     for section in ('general','layer'):
         for name,entries in inventory[section].items():
             assert len({e['name'] for e in entries})==len(entries),(section,name,'duplicate control')
-    # Protect the proven display implementations and closed MCP mutation schemas.
+    # Protect the proven buffer/upload implementations and closed MCP schemas.
+    # The playback fix deliberately changes only the point matching predicate:
+    # culled items may never be realized, so require submission, as meshes did.
+    point_path=ROOT/'AminScatter/src/point_display.cpp'
+    original=subprocess.check_output(['git','show','HEAD:AminScatter/src/point_display.cpp'],cwd=ROOT).replace(b'\r\n',b'\n')
+    old=(b'    // Off-screen mesh items need not be realized yet. Nitrous realizes visible\n'
+         b'    // items before drawing; requiring every item ready would defeat culling.\n'
+         b'    return IsRetainedModeEnabled() && gen && gen->enabled.load() && !gen->failed.load() &&\n'
+         b'        (gen->hasMesh?gen->submitted.load():gen->ready.load()==gen->groups);')
+    new=old.replace(b'Off-screen mesh items',b'Off-screen items').replace(
+        b'(gen->hasMesh?gen->submitted.load():gen->ready.load()==gen->groups)',b'gen->submitted.load()')
+    assert original.count(old)==1 or original.count(new)==1,'Reconcile the deliberately bounded point readiness fix with the new baseline.'
+    assert point_path.read_bytes().replace(b'\r\n',b'\n')==original.replace(old,new),'Retained display changed beyond its readiness predicate.'
     # Rollout scrolling now resolves the actual native column (review fix).
     # Its host behavior is qualified by pointer tests, not source immutability.
-    preserved=['AminScatter/src/point_display.cpp','AminScatter/src/preview.cpp',
+    preserved=['AminScatter/src/preview.cpp',
                'CyrusMCP/cyrus_mcp/models.py',
                'CyrusMCP/cyrus_mcp/contracts.py']
     for name in preserved:
@@ -84,7 +96,8 @@ def main():
         assert original.replace(b'\r\n',b'\n')==current.replace(b'\r\n',b'\n'),name+' changed unexpectedly'
     result={'check':'offline_generator_and_integration','passed':True,'maxscript_compiled':False,
             'ui_controls_in_inventory':controls,'generated_sha256':hashlib.sha256(after).hexdigest(),
-            'preserved_files':preserved,'interactive_max_run':False}
+            'preserved_files':preserved,'bounded_changes':['point_display.cpp: submitted point readiness'],
+            'interactive_max_run':False}
     out=ROOT/'build/procedural-07';out.mkdir(parents=True,exist_ok=True)
     (out/'generated-check.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
     print(json.dumps(result,indent=2))

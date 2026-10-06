@@ -1,0 +1,26 @@
+## codex/floating-layer-editor-0.7.1...origin/codex/floating-layer-editor-0.7.1
+ M AminScatter/CMakeLists.txt
+ M AminScatter/scripts/AminScatterObject.ms
+ M AminScatter/src/point_display.cpp
+ M AminScatter/tools/ui/generate.cjs
+ M AminScatter/tools/ui/templates/brush-integration.ms
+ M AminScatter/tools/ui/templates/layer-editor.ms
+ M AminScatter/tools/ui/templates/procedural-model.ms
+ M AminScatter/tools/ui/templates/procedural-notifications.ms
+ M CyrusSurfaceAnalyzer/CMakeLists.txt
+ M CyrusSurfaceAnalyzer/scripts/CyrusSurfaceAnalyzer.ms
+ M docs/Live_Runtime_2026-10-06/NEXT_WORK.md
+ M docs/README.md
+ M docs/UI_Performance_2026-10-06/README.md
+ M tools/procedural_lab/check_generated.py
+ M tools/procedural_lab/offline_build.py
+?? AminScatter/src/input_validity.cpp
+?? AminScatter/tools/ui/input-time.cjs
+?? AminScatter/tools/ui/templates/input-time-owners.ms
+?? AminScatter/tools/ui/templates/input-time.ms
+?? docs/Playback_Performance_2026-10-06/
+?? docs/TyFlow_CyrusScatter_Assessment_2026-10-06/
+?? tools/procedural_lab/Max_Analyzer_Playback_Regression.ms
+?? tools/procedural_lab/Max_Playback_Regression.ms
+?? tools/procedural_lab/collect_playback.py
+?? tools/procedural_lab/test_playback.py

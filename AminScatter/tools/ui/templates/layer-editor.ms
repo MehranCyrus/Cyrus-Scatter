@@ -75,18 +75,26 @@ fn CyrusOpenLayerEditor root owner = (
             if resultInfo.text!=text do resultInfo.text=text
             local caption="Cyrus Scatter 0.7.1 | "+ownerNode.name+" / "+(root.layerCaption owner)
             if editor.title!=caption do editor.title=caption
-            setupInfo.text="Setup: "+ownerNode.name+"  |  Selecting scene models keeps this editor on its layer"
+            local setupText="Setup: "+ownerNode.name+"  |  Selecting scene models keeps this editor on its layer"
+            if setupInfo.text!=setupText do setupInfo.text=setupText
             true
+        )
+        fn retainListItems control values = (
+            local existing=control.items,changed=existing.count!=values.count
+            if not changed do for i=1 to values.count while not changed do changed=existing[i]!=values[i]
+            if changed do control.items=values
         )
         fn bindEditors = (
             if not validOwner() do return false
             local previous=binding;binding=true
             try (
                 members=root.logicalLayers();sets=root.layerSets owner
-                layerList.items=for m in members collect root.layerCaption m
-                layerList.selection=findItem members owner
-                setList.items=for m in sets collect m.paintSetName
-                setList.selection=findItem sets (root.selectedPaintSet owner)
+                retainListItems layerList (for m in members collect root.layerCaption m)
+                local layerIndex=findItem members owner
+                if layerList.selection!=layerIndex do layerList.selection=layerIndex
+                retainListItems setList (for m in sets collect m.paintSetName)
+                local setIndex=findItem sets (root.selectedPaintSet owner)
+                if setList.selection!=setIndex do setList.selection=setIndex
                 for r in editors do (
                     local changedOwner=r.root!=root or r.owner!=owner
                     r.root=root;r.owner=owner;r.panel=editor
@@ -103,6 +111,11 @@ fn CyrusOpenLayerEditor root owner = (
         )
         fn showTopic index = (
             if index<1 or index>6 do return false
+            if topic==index and built[index] do (
+                local tabs=#(assetsTab,populationTab,paintTab,transformTab,spacingTab,statisticsTab)
+                local previous=binding;binding=true;tabs[index].checked=true;binding=previous
+                refreshStats();return true
+            )
             if topic!=index do stopTools()
             topic=index
             local tabs=#(assetsTab,populationTab,paintTab,transformTab,spacingTab,statisticsTab)
@@ -143,7 +156,7 @@ fn CyrusOpenLayerEditor root owner = (
             true
         )
         fn selectSet index = (
-            if not binding and index>0 and index<=sets.count do (stopTools();owner.uiPaintSetID=sets[index].layerID;bindEditors())
+            if not binding and index>0 and index<=sets.count and (root.selectedPaintSet owner)!=sets[index] do (stopTools();owner.uiPaintSetID=sets[index].layerID;bindEditors())
         )
         on editor open do (
             pages=#(#(assetsLeft,assetsRight),#(populationLeft,populationRight),#(paintLeft,paintRight),#(transformLeft,transformRight),#(spacingLeft,spacingRight),#(statisticsLeft,statisticsRight))
@@ -182,6 +195,7 @@ fn CyrusOpenLayerEditor root owner = (
         on statisticsTab changed value do if not binding do showTopic 6
         on layerList selected index do if not binding and index>0 do (
             local next=members[index]
+            if next==owner do return false
             undo off root.selectLayer (findItem root.layerObjects next)
             retarget root next
             if root.mainUI.controlsReady do root.mainUI.bind()

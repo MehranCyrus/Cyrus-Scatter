@@ -1,4 +1,6 @@
 global CyrusSurfaceAnalyzerDraw
+global CyrusSurfaceAnalyzer,CyrusAnalyzerOwners=#()
+global CyrusAnalyzerRequest,CyrusAnalyzerRegister,CyrusAnalyzerResetOwners,CyrusAnalyzerPruneOwners,CyrusAnalyzerTimeChanged
 global CyrusPerfTraceBegin,CyrusPerfTraceEnd,CyrusPerfTraceInput
 global CyrusStreetEdges,CyrusStreetShapeFilter
 fn CyrusStreetShapeFilter n = (isValidNode n and superClassOf n==Shape)
@@ -90,10 +92,51 @@ classID:#(0x45a201c7,0x1829bc63)
 category:"Cyrus"
 version:13
 (
- local liveDirty=true,liveBusy=false,liveSignature="",analysisRuns=0
+ local liveDirty=true,liveBusy=false,analysisRuns=0
+ local liveTimeValidity=undefined,liveTimeQueries=0,liveInputHandles=#()
+ fn ensureTimeOwner = (
+  for n in refs.dependentNodes this where isValidNode n and n.baseObject==this do CyrusAnalyzerRegister n
+ )
+ fn markLiveDirty schedule:true = (
+  liveDirty=true;liveTimeValidity=undefined
+  this.ensureTimeOwner()
+  if schedule and CyrusAnalyzerRequest!=undefined do CyrusAnalyzerRequest()
+ )
+ fn livePending = (liveDirty and this.cyrusEnabled and this.updateMode==2 and not liveBusy)
+ fn liveTimeExpired = (
+  if not this.cyrusEnabled or this.updateMode!=2 or liveTimeValidity==undefined do return false
+  local tick=currentTime as integer
+  tick<liveTimeValidity[1] or tick>liveTimeValidity[2]
+ )
+ fn inputHandles = (
+  local result=#()
+  for source in #(this.surface,this.streetLine) where isValidNode source do (
+   local n=source,visited=#()
+   while isValidNode n do (
+    local handle=getHandleByAnim n
+    if findItem visited handle>0 or visited.count>=4096 do throw "Analyzer input parent chain exceeds the validity limit."
+    append visited handle;appendIfUnique result handle;n=n.parent
+   )
+  )
+  result
+ )
+ fn inputChanged event handles = (
+  local dependencies=this.inputHandles()
+  if event==#deleted do join dependencies liveInputHandles
+  for handle in handles where findItem dependencies handle>0 do return true
+  false
+ )
+ fn captureInputTime = (
+  this.ensureTimeOwner()
+  if cyrusAnalyzerInputValidity==undefined do throw "This Analyzer script requires matching native binaries with input validity support. Restart Max with the complete script/native pair."
+  local nodes=for n in #(this.surface,this.streetLine) where isValidNode n collect n
+  liveTimeValidity=cyrusAnalyzerInputValidity #(this) nodes #()
+  liveTimeQueries+=1;liveInputHandles=this.inputHandles()
+ )
+ fn getLiveStats = (#(analysisRuns,liveTimeQueries,liveDirty,liveBusy,liveTimeValidity))
  parameters activation rollout:enableUI (
   cyrusEnabled type:#boolean default:true ui:enableCheck
-  on cyrusEnabled set v do (liveDirty=true;analysisRuns+=1;redrawViews())
+  on cyrusEnabled set v do (this.markLiveDirty();analysisRuns+=1;redrawViews())
  )
  rollout enableUI "Surface Analyzer" (
   checkbox enableCheck "Enable Surface Analyzer" checked:true
@@ -123,16 +166,17 @@ version:13
   elementRelaxed type:#intTab tabSizeVariable:true
   fitRadius type:#worldUnits default:-1 ui:fitSpin
   relaxIterations type:#integer default:20 ui:relaxSpin
-  on fitRadius set value do liveDirty=true
-  on relaxIterations set value do liveDirty=true
-  on surface set value do liveDirty=true
-  on analysisMode set value do liveDirty=true
-  on minimumWidth set value do liveDirty=true
-  on minimumLength set value do liveDirty=true
-  on resolution set value do liveDirty=true
-  on ringFraction set value do liveDirty=true
-  on pointRadius set value do liveDirty=true
-  on minimumPoints set value do liveDirty=true
+  on fitRadius set value do this.markLiveDirty()
+  on relaxIterations set value do this.markLiveDirty()
+  on surface set value do this.markLiveDirty()
+  on analysisMode set value do this.markLiveDirty()
+  on pointCount set value do this.markLiveDirty()
+  on minimumWidth set value do this.markLiveDirty()
+  on minimumLength set value do this.markLiveDirty()
+  on resolution set value do this.markLiveDirty()
+  on ringFraction set value do this.markLiveDirty()
+  on pointRadius set value do this.markLiveDirty()
+  on minimumPoints set value do this.markLiveDirty()
 
  )
  parameters display rollout:displayUI (
@@ -147,19 +191,19 @@ version:13
   streetAngle type:#float default:75 ui:angleSpin
   streetDistance type:#worldunits default:0 ui:distanceSpin
   streetMinimumWidth type:#worldunits default:0 ui:streetWidthSpin
-  on streetMinimumWidth set value do liveDirty=true
+  on streetMinimumWidth set value do this.markLiveDirty()
   streetSamples type:#integer default:16 ui:samplesSpin
   showStreet type:#boolean default:true ui:streetCheck
   streetVertices type:#point3Tab tabSizeVariable:true
   streetCounts type:#intTab tabSizeVariable:true
-  on streetLine set v do liveDirty=true
-  on streetAngle set v do liveDirty=true
-  on streetDistance set v do liveDirty=true
-  on streetSamples set v do liveDirty=true
+  on streetLine set v do this.markLiveDirty()
+  on streetAngle set v do this.markLiveDirty()
+  on streetDistance set v do this.markLiveDirty()
+  on streetSamples set v do this.markLiveDirty()
  )
  parameters updateSettings rollout:updateUI (
   updateMode type:#integer default:1 ui:updateChoice
-  on updateMode set value do if value==2 do liveDirty=true
+  on updateMode set value do this.markLiveDirty()
  )
  fn packedLines verts counts = (
   local result=#(),cursorIndex=1
@@ -193,7 +237,7 @@ version:13
   )
  )
  fn inputSignature = (
-  local sig=(analysisMode as string)+"|"+(minimumWidth as string)+"|"+(minimumLength as string)+"|"+(pointRadius as string)+"|"+(minimumPoints as string)+"|"+(resolution as string)+"|"+(ringFraction as string)+"|"+(sliderTime as string)+"|"+(fitRadius as string)+"|"+(relaxIterations as string)
+  local sig=(analysisMode as string)+"|"+(minimumWidth as string)+"|"+(minimumLength as string)+"|"+(pointRadius as string)+"|"+(minimumPoints as string)+"|"+(resolution as string)+"|"+(ringFraction as string)+"|"+(fitRadius as string)+"|"+(relaxIterations as string)
   if isValidNode surface then sig+="|"+((getHandleByAnim surface) as string)+"|"+(surface.transform as string) else sig+="|missing"
   sig+="|"+(streetAngle as string)+"|"+(streetDistance as string)+"|"+(streetSamples as string)+"|"+(streetMinimumWidth as string)
   if isValidNode streetLine then sig+="|"+((getHandleByAnim streetLine) as string)+"|"+(streetLine.transform as string) else sig+="|no-street"
@@ -222,7 +266,7 @@ version:13
   resultText=(elementModes.count as string)+" elements | "+(samplePoints.count as string)+" points\n"+((timeStamp()-started) as string)+" ms"
   if samplePoints.count==0 do resultText="No region meets the current limits."
   if minimumPoints>0 and (for value in elementPointCounts where value<minimumPoints collect value).count>0 do resultText+="\nFit limit: minimum unmet."
-  liveSignature=inputSignature();liveDirty=false
+  this.captureInputTime();liveDirty=false
   redrawViews()
   result
  )
@@ -254,18 +298,21 @@ version:13
   )
   updateShape out;out
  )
- fn markLiveDirty = (liveDirty=true)
  fn getAnalysisRuns = analysisRuns
  fn liveTick = (
   if (try((dotNetClass "System.Windows.Forms.Control").MouseButtons != (dotNetClass "System.Windows.Forms.MouseButtons").None)catch(false)) do return false
-  if cyrusEnabled and updateMode==2 and not liveBusy do (
-   local sig=inputSignature()
-   if liveDirty or sig!=liveSignature do (
-    liveBusy=true;liveDirty=false;liveSignature=sig
-    try(with undo off runAnalysis())catch(resultText="Update failed:\n"+(getCurrentException()))
+  if this.liveTimeExpired() do this.markLiveDirty schedule:false
+  if this.livePending() then (
+    liveBusy=true;liveDirty=false
+    try(with undo off runAnalysis())catch(
+     liveDirty=false;liveTimeValidity=undefined
+     resultText="Update failed:\n"+(getCurrentException())
+    )
     liveBusy=false
     try(this.analyzeUI.refreshStats this)catch()
-   )
+    true
+  ) else (
+    false
   )
  )
  rollout updateUI "Update" width:170 (
@@ -337,7 +384,7 @@ version:13
  )
  on create do (pointRadius=units.decodeValue "1m";fitRadius=units.decodeValue "0.5m")
  on load do (if pointRadius<=0 do pointRadius=units.decodeValue "1m";if fitRadius<0 do fitRadius=minimumWidth*.5)
- on attachedToNode n do (n.renderable=false;n.wirecolor=red)
+ on attachedToNode n do (n.renderable=false;n.wirecolor=red;CyrusAnalyzerRegister n)
  parameters iconSettings (
   iconSize type:#worldunits default:10
  )
@@ -396,35 +443,76 @@ registerRedrawViewsCallback CyrusSurfaceAnalyzerDraw
 
 
 
--- Changes only invalidate the affected source. Geometry is evaluated on a debounced timer.
+-- Changes only invalidate real inputs. The one-shot timer stops when settled;
+-- registered owners handle relevant timeline changes without scene polling.
 global CyrusAnalyzerEvents,CyrusAnalyzerChanged,CyrusAnalyzerTimer,CyrusAnalyzerPulse,CyrusAnalyzerRendering=false
 try(CyrusAnalyzerEvents.enabled=false)catch()
-try(CyrusAnalyzerTimer.Stop())catch()
+try(CyrusAnalyzerTimer.Stop();CyrusAnalyzerTimer.Dispose())catch()
+try(unRegisterTimeCallback CyrusAnalyzerTimeChanged)catch()
+fn CyrusAnalyzerRegister n = (
+ if isValidNode n and classof n.baseObject==CyrusSurfaceAnalyzer do appendIfUnique CyrusAnalyzerOwners n
+)
+fn CyrusAnalyzerPruneOwners = (
+ CyrusAnalyzerOwners=for n in CyrusAnalyzerOwners where isValidNode n and classof n.baseObject==CyrusSurfaceAnalyzer collect n
+)
+fn CyrusAnalyzerRequest = (
+ local pending=false
+ for n in CyrusAnalyzerOwners where isValidNode n and n.baseObject.livePending() do pending=true
+ if CyrusAnalyzerTimer!=undefined do (
+  if pending and not CyrusAnalyzerRendering then CyrusAnalyzerTimer.Start() else CyrusAnalyzerTimer.Stop()
+ )
+ pending
+)
+fn CyrusAnalyzerResetOwners invalidate:true = (
+ CyrusAnalyzerOwners=for n in objects where classof n.baseObject==CyrusSurfaceAnalyzer collect n
+ if invalidate do for n in CyrusAnalyzerOwners do n.baseObject.markLiveDirty schedule:false
+ CyrusAnalyzerRequest()
+)
+fn CyrusAnalyzerTimeChanged = (
+ if CyrusAnalyzerRendering do return false
+ local changed=false
+ for n in CyrusAnalyzerOwners where isValidNode n and n.baseObject.liveTimeExpired() do (
+  n.baseObject.markLiveDirty schedule:false;changed=true
+ )
+ if changed do CyrusAnalyzerRequest()
+ changed
+)
 fn CyrusAnalyzerChanged event handles = (
  if CyrusPerfTraceInput!=undefined do try(CyrusPerfTraceInput "analyzer_input_received" event handles)catch()
  global CyrusPFDeletedHandles
  if event==#deleted and CyrusPFDeletedHandles!=undefined do (handles=for h in handles where findItem CyrusPFDeletedHandles h==0 collect h;if handles.count==0 do return false)
- local changed=for h in handles collect (getAnimByHandle h)
- for n in objects where classof n==CyrusSurfaceAnalyzer do (
+ if event==#added do for h in handles do CyrusAnalyzerRegister (getAnimByHandle h)
+ for n in CyrusAnalyzerOwners where isValidNode n do (
   local obj=n.baseObject
-  if event==#deleted or (findItem changed obj.surface)>0 or (findItem changed obj.streetLine)>0 do obj.markLiveDirty()
+  if obj.inputChanged event handles do obj.markLiveDirty schedule:false
  )
+ if event==#deleted do CyrusAnalyzerPruneOwners()
+ CyrusAnalyzerRequest()
 )
 fn CyrusAnalyzerPulse sender args = (
  CyrusAnalyzerTimer.Stop()
- if not CyrusAnalyzerRendering do try(for n in objects where classof n==CyrusSurfaceAnalyzer do n.baseObject.liveTick())catch()
- CyrusAnalyzerTimer.Start()
+ if not CyrusAnalyzerRendering do for n in CyrusAnalyzerOwners where isValidNode n do n.baseObject.liveTick()
+ -- A drag may defer pending work. Settled, Manual and failed inputs do not
+ -- restart the timer; a later real input notification can request another try.
+ CyrusAnalyzerRequest()
 )
-CyrusAnalyzerEvents=NodeEventCallback mouseUp:true delay:150 deleted:CyrusAnalyzerChanged geometryChanged:CyrusAnalyzerChanged topologyChanged:CyrusAnalyzerChanged modelStructured:CyrusAnalyzerChanged controllerOtherEvent:CyrusAnalyzerChanged controllerStructured:CyrusAnalyzerChanged linkChanged:CyrusAnalyzerChanged
+CyrusAnalyzerEvents=NodeEventCallback mouseUp:true delay:150 added:CyrusAnalyzerChanged deleted:CyrusAnalyzerChanged geometryChanged:CyrusAnalyzerChanged topologyChanged:CyrusAnalyzerChanged modelStructured:CyrusAnalyzerChanged controllerOtherEvent:CyrusAnalyzerChanged controllerStructured:CyrusAnalyzerChanged linkChanged:CyrusAnalyzerChanged
 CyrusAnalyzerTimer=dotNetObject "System.Windows.Forms.Timer"
 CyrusAnalyzerTimer.Interval=250
 dotNet.addEventHandler CyrusAnalyzerTimer "Tick" CyrusAnalyzerPulse
-CyrusAnalyzerTimer.Start()
+registerTimeCallback CyrusAnalyzerTimeChanged
 
 
 callbacks.removeScripts id:#CyrusAnalyzerRealtime
-callbacks.addScript #preRender "CyrusAnalyzerRendering=true" id:#CyrusAnalyzerRealtime
-callbacks.addScript #postRender "CyrusAnalyzerRendering=false" id:#CyrusAnalyzerRealtime
+callbacks.addScript #preRender "CyrusAnalyzerRendering=true;CyrusAnalyzerTimer.Stop()" id:#CyrusAnalyzerRealtime
+callbacks.addScript #postRender "CyrusAnalyzerRendering=false;CyrusAnalyzerRequest()" id:#CyrusAnalyzerRealtime
+callbacks.addScript #filePostOpen "CyrusAnalyzerResetOwners()" id:#CyrusAnalyzerRealtime persistent:false
+callbacks.addScript #filePostMerge "CyrusAnalyzerResetOwners()" id:#CyrusAnalyzerRealtime persistent:false
+callbacks.addScript #systemPostReset "CyrusAnalyzerResetOwners()" id:#CyrusAnalyzerRealtime persistent:false
+callbacks.addScript #sceneUndo "CyrusAnalyzerResetOwners invalidate:false" id:#CyrusAnalyzerRealtime persistent:false
+callbacks.addScript #sceneRedo "CyrusAnalyzerResetOwners invalidate:false" id:#CyrusAnalyzerRealtime persistent:false
+callbacks.addScript #nodeCreated "CyrusAnalyzerRegister (callbacks.notificationParam())" id:#CyrusAnalyzerRealtime persistent:false
+CyrusAnalyzerResetOwners()
 
 
 fn CyrusAnalyzerRedIcons = (for n in objects where classof n==CyrusSurfaceAnalyzer do n.wirecolor=red)

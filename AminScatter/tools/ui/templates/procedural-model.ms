@@ -51,10 +51,11 @@
     fn proceduralPolicy = (if overlapOwner==undefined then groupPolicy==3 else overlapOwner.groupPolicy==3)
     fn procWatchDensity = (
         global CyrusDensityMapChanged
-        if procDensityMap!=densityMap do (
+        local watched=if distributionMode==3 then densityMap else undefined
+        if procDensityMap!=watched do (
             if procDensityWatch!=undefined do deleteChangeHandler procDensityWatch
-            procDensityWatch=undefined;procDensityMap=densityMap;procDensityRevision+=1
-            if densityMap!=undefined do procDensityWatch=when parameters densityMap changes id:#CyrusDensityMap affected do (CyrusDensityMapChanged affected)
+            procDensityWatch=undefined;procDensityMap=watched;procDensityRevision+=1
+            if watched!=undefined do procDensityWatch=when parameters watched changes id:#CyrusDensityMap affected do (CyrusDensityMapChanged affected)
         )
         procDensityRevision
     )

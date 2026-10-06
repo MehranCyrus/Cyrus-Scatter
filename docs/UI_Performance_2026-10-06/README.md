@@ -4,7 +4,10 @@
 
 ## Product direction
 
+**Later coding slice:** [Playback and idle-work results](../Playback_Performance_2026-10-06/README.md) correct blanket time invalidation, recurring Analyzer polling and Point Cloud matching. They also guard current layer/set/topic selections and retain unchanged dropdown contents in the existing editor. The integrated column replacement and direct recording controls remain pending; headless script execution does not qualify visual layout or latency.
+
 - Keep the primary workflow integrated with 3ds Max. The user has tried the floating layer editor and now prefers an integrated interface without a mandatory popup.
+- Keep Edit Layer available as an optional popup over the same stored settings. Opening another view must not create a second evaluator or a recurring refresh loop.
 - Present one ordered layer list and one settings view for the selected layer. Global settings remain separate from layer and paint-set settings.
 - Retain controls and list contents where possible. Refresh the affected fields when their actual data changes; opening a dropdown, expanding a section or scrolling unchanged controls should not regenerate placements or re-upload unchanged buffers.
 - Put Start recording, Stop and Save report controls in Scatter's global Help / Diagnostics area. The current recorder is native and process-wide; its current friendly controls live in the separate Cyrus MCP Automation panel. Ordinary debugging should be accessible without that companion installation or an assistant connection.

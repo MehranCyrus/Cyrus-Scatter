@@ -1,0 +1,238 @@
+{
+  "source_matches": {
+    "AminScatter/CMakeLists.txt": {
+      "expected": "a23ec0b938045ff82f3abb1d71b3ac4962360b40ed2a546d188d4f61e28cd9d4",
+      "actual": "a23ec0b938045ff82f3abb1d71b3ac4962360b40ed2a546d188d4f61e28cd9d4",
+      "matches": true
+    },
+    "AminScatter/scripts/AminScatterObject.ms": {
+      "expected": "d1f264b7702d4ccc75eb782d60134b46ddcf04bf7f550f8a702c8a34fe65c772",
+      "actual": "d1f264b7702d4ccc75eb782d60134b46ddcf04bf7f550f8a702c8a34fe65c772",
+      "matches": true
+    },
+    "AminScatter/src/input_validity.cpp": {
+      "expected": "a78f974b020947e4c3e2f615907735dbc39a920347800e226d60af34c782d612",
+      "actual": "a78f974b020947e4c3e2f615907735dbc39a920347800e226d60af34c782d612",
+      "matches": true
+    },
+    "AminScatter/src/point_display.cpp": {
+      "expected": "358c5ff13763542dcc27eb2d8542686a622c051fa35a5161edf3dcb329173c44",
+      "actual": "358c5ff13763542dcc27eb2d8542686a622c051fa35a5161edf3dcb329173c44",
+      "matches": true
+    },
+    "AminScatter/tools/ui/generate.cjs": {
+      "expected": "c022c4c0040ae46bf487d4da0d6e738f16e3c5414d59f4b1e60b5ff36b0dc8dc",
+      "actual": "c022c4c0040ae46bf487d4da0d6e738f16e3c5414d59f4b1e60b5ff36b0dc8dc",
+      "matches": true
+    },
+    "AminScatter/tools/ui/input-time.cjs": {
+      "expected": "addbd16368739e2bef8bfce6672dc00387af67f9f8f0d0ca5fbdde5636700b25",
+      "actual": "addbd16368739e2bef8bfce6672dc00387af67f9f8f0d0ca5fbdde5636700b25",
+      "matches": true
+    },
+    "AminScatter/tools/ui/templates/brush-integration.ms": {
+      "expected": "670e650c2bb7db6c9bd3980b09cfcacbce3f6219eb5f8771b307659ebd7573d7",
+      "actual": "670e650c2bb7db6c9bd3980b09cfcacbce3f6219eb5f8771b307659ebd7573d7",
+      "matches": true
+    },
+    "AminScatter/tools/ui/templates/input-time-owners.ms": {
+      "expected": "6bc8c2496c57fa5bcbbe099c20e4509b1bd709d870db3042cb9809036c706825",
+      "actual": "6bc8c2496c57fa5bcbbe099c20e4509b1bd709d870db3042cb9809036c706825",
+      "matches": true
+    },
+    "AminScatter/tools/ui/templates/input-time.ms": {
+      "expected": "57c4839b448c2a2fb1305f2796ec458948cd7ded8e20dc7bcf9a491253533778",
+      "actual": "57c4839b448c2a2fb1305f2796ec458948cd7ded8e20dc7bcf9a491253533778",
+      "matches": true
+    },
+    "AminScatter/tools/ui/templates/layer-editor.ms": {
+      "expected": "670cf7134ae6b43a59241c132cff88bb33a36d4adbaf1799b5a220d33e4646a8",
+      "actual": "670cf7134ae6b43a59241c132cff88bb33a36d4adbaf1799b5a220d33e4646a8",
+      "matches": true
+    },
+    "AminScatter/tools/ui/templates/procedural-model.ms": {
+      "expected": "9b957b7708291ab5858c0b60eb18f57e200e03fd880498d664f944753f668b35",
+      "actual": "9b957b7708291ab5858c0b60eb18f57e200e03fd880498d664f944753f668b35",
+      "matches": true
+    },
+    "AminScatter/tools/ui/templates/procedural-notifications.ms": {
+      "expected": "f5a96bb2d8da5db949f9763e9b2e9cdbe049bed99d3c316e473a37166e1aa514",
+      "actual": "f5a96bb2d8da5db949f9763e9b2e9cdbe049bed99d3c316e473a37166e1aa514",
+      "matches": true
+    },
+    "CyrusSurfaceAnalyzer/CMakeLists.txt": {
+      "expected": "780d6d60f4afc3c475e85bf04ac5540bb3e930d266e4f364c2036810c2bcdd1b",
+      "actual": "780d6d60f4afc3c475e85bf04ac5540bb3e930d266e4f364c2036810c2bcdd1b",
+      "matches": true
+    },
+    "CyrusSurfaceAnalyzer/scripts/CyrusSurfaceAnalyzer.ms": {
+      "expected": "9f1f146814870a094ab226334675459e0130a9f1d8bd1d621405b52f99ffb3c8",
+      "actual": "9f1f146814870a094ab226334675459e0130a9f1d8bd1d621405b52f99ffb3c8",
+      "matches": true
+    },
+    "tools/procedural_lab/Max_Analyzer_Playback_Regression.ms": {
+      "expected": "1e3dfdb6e4880f6a533ea896d1114fa448093adbe7b87fe9b6b25854d0f7805a",
+      "actual": "1e3dfdb6e4880f6a533ea896d1114fa448093adbe7b87fe9b6b25854d0f7805a",
+      "matches": true
+    },
+    "tools/procedural_lab/Max_Playback_Regression.ms": {
+      "expected": "b1a3a4b8f8fd3e731b2993d605fd3ade8f3f393b93fa0dfd78abe5e78fc5d929",
+      "actual": "b1a3a4b8f8fd3e731b2993d605fd3ade8f3f393b93fa0dfd78abe5e78fc5d929",
+      "matches": true
+    },
+    "tools/procedural_lab/check_generated.py": {
+      "expected": "e8726498b3aeb0dbbe1d95ebc0b3cd6742b74e10ce87d23dbcb9047f0f134389",
+      "actual": "e8726498b3aeb0dbbe1d95ebc0b3cd6742b74e10ce87d23dbcb9047f0f134389",
+      "matches": true
+    },
+    "tools/procedural_lab/collect_playback.py": {
+      "expected": "59a7115f0221373ac27cbd1fbcd2041ca8c4a23ff9f32a32fddf7c00101f2848",
+      "actual": "59a7115f0221373ac27cbd1fbcd2041ca8c4a23ff9f32a32fddf7c00101f2848",
+      "matches": true
+    },
+    "tools/procedural_lab/offline_build.py": {
+      "expected": "dede55aecbed40a81adc1e3af47ee5752a564cc2eb480926a295d3c4b343a12d",
+      "actual": "dede55aecbed40a81adc1e3af47ee5752a564cc2eb480926a295d3c4b343a12d",
+      "matches": true
+    },
+    "tools/procedural_lab/test_playback.py": {
+      "expected": "52ffd671445bceba8fcf3567c67d532da37f4c7346a57c25b4761603704b4cc6",
+      "actual": "52ffd671445bceba8fcf3567c67d532da37f4c7346a57c25b4761603704b4cc6",
+      "matches": true
+    }
+  },
+  "receipt_matches": {
+    "analyzer-max2026-build.json": {
+      "matches": true,
+      "actual": "375d99da36d4e8f9b617e44b6b0e75350db6e03276ec1a29e28262213aad40dd"
+    },
+    "analyzer-max2026-tests.txt": {
+      "matches": true,
+      "actual": "d5dc987518115c0a1201b50d401fd4269e5232bf175a96cf0aa882e0ff024c89"
+    },
+    "analyzer-max2027-build.json": {
+      "matches": true,
+      "actual": "0edb15d4d90a37d9fa60398756fe1fdbae0342951c89e63e504f215ec00e5adc"
+    },
+    "analyzer-max2027-tests.txt": {
+      "matches": true,
+      "actual": "28c4e9785e2c6e9f4db78e287b86e66c083779a321546d9b9659e01f90a5ddd1"
+    },
+    "generated-check.json": {
+      "matches": true,
+      "actual": "95a1826265e7aa6e2b927b7f4225e15daa8bb6b802a6df22a3cd7a1a0e15e08e"
+    },
+    "intermediate-deferred-release-failure.json": {
+      "matches": true,
+      "actual": "a736b259f8b78633950b521b40ef9bcd9ed17c5a875e7f9d78cf71f741736030"
+    },
+    "max2026-build.json": {
+      "matches": true,
+      "actual": "8f4300b7caeb56fdd85e662566c743588a0092656e6faff71c14260ba35726bc"
+    },
+    "max2026-tests.txt": {
+      "matches": true,
+      "actual": "728cff2f79fef1b7946be9e75df6164cc36e6b2ff4af90bd5a03666c85cecb5b"
+    },
+    "max2027-build.json": {
+      "matches": true,
+      "actual": "0c77d5d581f81be119d21c2eb36be38b705fd226fd55b1a19bd15c9ea419d589"
+    },
+    "max2027-headless.json": {
+      "matches": true,
+      "actual": "10a68334a8fdf7659500dff548fb31583fe80e6f9538dcee48d93009d6cb6d43"
+    },
+    "max2027-result.txt": {
+      "matches": true,
+      "actual": "98a2d64563d65ac155b7b04b0c149115042083a28f7cafdd13d13bfc3262c7ad"
+    },
+    "max2027-tests.txt": {
+      "matches": true,
+      "actual": "40d3a8c35c5b9d14d2cc9a825fdee9498f692e4aabe456dc4ccfe8784936e37c"
+    },
+    "python-tests.xml": {
+      "matches": true,
+      "actual": "5afcd061f44e0948c0d9ba32a6eb8adffd6a98c691c65b0865611687d9bd76d6"
+    }
+  },
+  "recorded_build_sources": {
+    "max2026-build.json": {
+      "source_count": 65,
+      "mismatches": []
+    },
+    "max2027-build.json": {
+      "source_count": 65,
+      "mismatches": []
+    },
+    "analyzer-max2026-build.json": {
+      "source_count": 10,
+      "mismatches": []
+    },
+    "analyzer-max2027-build.json": {
+      "source_count": 10,
+      "mismatches": []
+    }
+  },
+  "local_binary_matches": {
+    "build/playback-20261006/max2026/AminScatter.dlx": {
+      "exists": true,
+      "expected": "1a6a511add91f76b09499d0f2feccc44f694fab442b1cc3f5f8a753a5ff2d474",
+      "actual": "1a6a511add91f76b09499d0f2feccc44f694fab442b1cc3f5f8a753a5ff2d474",
+      "matches": true
+    },
+    "build/playback-20261006/max2026/CyrusBrush.dlx": {
+      "exists": true,
+      "expected": "2c58c44de429fdb3131980ea42b98d8555e5789ee3c0506e53f24880f6a65563",
+      "actual": "2c58c44de429fdb3131980ea42b98d8555e5789ee3c0506e53f24880f6a65563",
+      "matches": true
+    },
+    "build/playback-20261006/max2026/CyrusBrushStorage.dlh": {
+      "exists": true,
+      "expected": "dbec26b2a67eb63fb5ea82654d58e7a7c18f120c012b0595df549944ca84ef13",
+      "actual": "dbec26b2a67eb63fb5ea82654d58e7a7c18f120c012b0595df549944ca84ef13",
+      "matches": true
+    },
+    "build/playback-20261006/max2026/CyrusScatterEdit.dlm": {
+      "exists": true,
+      "expected": "3eb29efd6c15d9f9a1f1904a7fd555385a124ee3f866b258d259cd9681f8baf8",
+      "actual": "3eb29efd6c15d9f9a1f1904a7fd555385a124ee3f866b258d259cd9681f8baf8",
+      "matches": true
+    },
+    "build/playback-20261006/max2027/AminScatter.dlx": {
+      "exists": true,
+      "expected": "6d76cdd96f0b9302ac07061103017fc7653aa7f53f8c389ab41b68aaa2783fbb",
+      "actual": "6d76cdd96f0b9302ac07061103017fc7653aa7f53f8c389ab41b68aaa2783fbb",
+      "matches": true
+    },
+    "build/playback-20261006/max2027/CyrusBrush.dlx": {
+      "exists": true,
+      "expected": "f50ff5acd5d1cddb58d8db831c6025ed0b13d1975324f0c8cfb5577b682aec4b",
+      "actual": "f50ff5acd5d1cddb58d8db831c6025ed0b13d1975324f0c8cfb5577b682aec4b",
+      "matches": true
+    },
+    "build/playback-20261006/max2027/CyrusBrushStorage.dlh": {
+      "exists": true,
+      "expected": "7850fe81bde69cefc00674d8c0ca62694866a84c8a275695d2834dbde2aabcf4",
+      "actual": "7850fe81bde69cefc00674d8c0ca62694866a84c8a275695d2834dbde2aabcf4",
+      "matches": true
+    },
+    "build/playback-20261006/max2027/CyrusScatterEdit.dlm": {
+      "exists": true,
+      "expected": "0ca093ce510452c10bd8292718274734493e1c78cd8cae5878c476542bb35173",
+      "actual": "0ca093ce510452c10bd8292718274734493e1c78cd8cae5878c476542bb35173",
+      "matches": true
+    },
+    "build/playback-20261006/analyzer-max2026/CyrusSurfaceAnalyzer.dlx": {
+      "exists": true,
+      "expected": "3892ba42c81bad5c7653b16bbb4ce3bcbe1d275983f405a628746a87d7bc8e4b",
+      "actual": "3892ba42c81bad5c7653b16bbb4ce3bcbe1d275983f405a628746a87d7bc8e4b",
+      "matches": true
+    },
+    "build/playback-20261006/analyzer-max2027/CyrusSurfaceAnalyzer.dlx": {
+      "exists": true,
+      "expected": "ec6d41636d045b33693e0c70ea0cbb4bb0b357f4cd643ab07e6411dde98102a2",
+      "actual": "ec6d41636d045b33693e0c70ea0cbb4bb0b357f4cd643ab07e6411dde98102a2",
+      "matches": true
+    }
+  }
+}

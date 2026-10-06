@@ -1,0 +1,34 @@
+Internal ctest changing into directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/playback-20261006/max2026
+Test project F:/Cursor/_Cyrus_Apps/CyrusScatter/build/playback-20261006/max2026
+      Start  1: scatter_diagnostics
+ 1/14 Test  #1: scatter_diagnostics ..............   Passed    0.02 sec
+      Start  2: scatter_procedural
+ 2/14 Test  #2: scatter_procedural ...............   Passed    0.09 sec
+      Start  3: scatter_group_spacing
+ 3/14 Test  #3: scatter_group_spacing ............   Passed    0.11 sec
+      Start  4: scatter_brush
+ 4/14 Test  #4: scatter_brush ....................   Passed    0.08 sec
+      Start  5: scatter_brush_pick_fixture
+ 5/14 Test  #5: scatter_brush_pick_fixture .......   Passed    0.02 sec
+      Start  6: scatter_preview_sampling
+ 6/14 Test  #6: scatter_preview_sampling .........   Passed    0.15 sec
+      Start  7: scatter_threading
+ 7/14 Test  #7: scatter_threading ................   Passed    0.11 sec
+      Start  8: scatter_prepared_bands
+ 8/14 Test  #8: scatter_prepared_bands ...........   Passed    0.06 sec
+      Start  9: scatter_core
+ 9/14 Test  #9: scatter_core .....................   Passed    0.17 sec
+      Start 10: scatter_spacing
+10/14 Test #10: scatter_spacing ..................   Passed    3.25 sec
+      Start 11: scatter_weights
+11/14 Test #11: scatter_weights ..................   Passed    0.35 sec
+      Start 12: scatter_orientation
+12/14 Test #12: scatter_orientation ..............   Passed    0.02 sec
+      Start 13: scatter_edge_border
+13/14 Test #13: scatter_edge_border ..............   Passed    0.02 sec
+      Start 14: scatter_boundary_falloff
+14/14 Test #14: scatter_boundary_falloff .........   Passed    0.06 sec
+
+100% tests passed, 0 tests failed out of 14
+
+Total Test time (real) =   4.52 sec

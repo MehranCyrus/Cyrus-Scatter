@@ -1,0 +1,85 @@
+{
+  "recorded_at_utc": "2026-10-06T06:20:58.134761+00:00",
+  "branch": "codex/floating-layer-editor-0.7.1",
+  "baseline": "147e3f524aa3f4cd9db9bb2bffb7350f9f78de31",
+  "computer_use": false,
+  "installed": false,
+  "packaged": false,
+  "qualification": "Code-only candidate: SDK/native executables and private headless Max 2027; no presented FPS/UI/IR qualification.",
+  "changed_source_sha256": {
+    "AminScatter/CMakeLists.txt": "a23ec0b938045ff82f3abb1d71b3ac4962360b40ed2a546d188d4f61e28cd9d4",
+    "AminScatter/scripts/AminScatterObject.ms": "d1f264b7702d4ccc75eb782d60134b46ddcf04bf7f550f8a702c8a34fe65c772",
+    "AminScatter/src/input_validity.cpp": "a78f974b020947e4c3e2f615907735dbc39a920347800e226d60af34c782d612",
+    "AminScatter/src/point_display.cpp": "358c5ff13763542dcc27eb2d8542686a622c051fa35a5161edf3dcb329173c44",
+    "AminScatter/tools/ui/generate.cjs": "c022c4c0040ae46bf487d4da0d6e738f16e3c5414d59f4b1e60b5ff36b0dc8dc",
+    "AminScatter/tools/ui/input-time.cjs": "addbd16368739e2bef8bfce6672dc00387af67f9f8f0d0ca5fbdde5636700b25",
+    "AminScatter/tools/ui/templates/brush-integration.ms": "670e650c2bb7db6c9bd3980b09cfcacbce3f6219eb5f8771b307659ebd7573d7",
+    "AminScatter/tools/ui/templates/input-time-owners.ms": "6bc8c2496c57fa5bcbbe099c20e4509b1bd709d870db3042cb9809036c706825",
+    "AminScatter/tools/ui/templates/input-time.ms": "57c4839b448c2a2fb1305f2796ec458948cd7ded8e20dc7bcf9a491253533778",
+    "AminScatter/tools/ui/templates/layer-editor.ms": "670cf7134ae6b43a59241c132cff88bb33a36d4adbaf1799b5a220d33e4646a8",
+    "AminScatter/tools/ui/templates/procedural-model.ms": "9b957b7708291ab5858c0b60eb18f57e200e03fd880498d664f944753f668b35",
+    "AminScatter/tools/ui/templates/procedural-notifications.ms": "f5a96bb2d8da5db949f9763e9b2e9cdbe049bed99d3c316e473a37166e1aa514",
+    "CyrusSurfaceAnalyzer/CMakeLists.txt": "780d6d60f4afc3c475e85bf04ac5540bb3e930d266e4f364c2036810c2bcdd1b",
+    "CyrusSurfaceAnalyzer/scripts/CyrusSurfaceAnalyzer.ms": "9f1f146814870a094ab226334675459e0130a9f1d8bd1d621405b52f99ffb3c8",
+    "tools/procedural_lab/Max_Analyzer_Playback_Regression.ms": "1e3dfdb6e4880f6a533ea896d1114fa448093adbe7b87fe9b6b25854d0f7805a",
+    "tools/procedural_lab/Max_Playback_Regression.ms": "b1a3a4b8f8fd3e731b2993d605fd3ade8f3f393b93fa0dfd78abe5e78fc5d929",
+    "tools/procedural_lab/check_generated.py": "e8726498b3aeb0dbbe1d95ebc0b3cd6742b74e10ce87d23dbcb9047f0f134389",
+    "tools/procedural_lab/collect_playback.py": "59a7115f0221373ac27cbd1fbcd2041ca8c4a23ff9f32a32fddf7c00101f2848",
+    "tools/procedural_lab/offline_build.py": "dede55aecbed40a81adc1e3af47ee5752a564cc2eb480926a295d3c4b343a12d",
+    "tools/procedural_lab/test_playback.py": "52ffd671445bceba8fcf3567c67d532da37f4c7346a57c25b4761603704b4cc6"
+  },
+  "evidence": {
+    "analyzer-max2026-build.json": {
+      "sha256": "375d99da36d4e8f9b617e44b6b0e75350db6e03276ec1a29e28262213aad40dd",
+      "bytes": 1746
+    },
+    "analyzer-max2026-tests.txt": {
+      "sha256": "d5dc987518115c0a1201b50d401fd4269e5232bf175a96cf0aa882e0ff024c89",
+      "bytes": 390
+    },
+    "analyzer-max2027-build.json": {
+      "sha256": "0edb15d4d90a37d9fa60398756fe1fdbae0342951c89e63e504f215ec00e5adc",
+      "bytes": 1746
+    },
+    "analyzer-max2027-tests.txt": {
+      "sha256": "28c4e9785e2c6e9f4db78e287b86e66c083779a321546d9b9659e01f90a5ddd1",
+      "bytes": 390
+    },
+    "generated-check.json": {
+      "sha256": "95a1826265e7aa6e2b927b7f4225e15daa8bb6b802a6df22a3cd7a1a0e15e08e",
+      "bytes": 489
+    },
+    "intermediate-deferred-release-failure.json": {
+      "sha256": "a736b259f8b78633950b521b40ef9bcd9ed17c5a875e7f9d78cf71f741736030",
+      "bytes": 3380
+    },
+    "max2026-build.json": {
+      "sha256": "8f4300b7caeb56fdd85e662566c743588a0092656e6faff71c14260ba35726bc",
+      "bytes": 8215
+    },
+    "max2026-tests.txt": {
+      "sha256": "728cff2f79fef1b7946be9e75df6164cc36e6b2ff4af90bd5a03666c85cecb5b",
+      "bytes": 1813
+    },
+    "max2027-build.json": {
+      "sha256": "0c77d5d581f81be119d21c2eb36be38b705fd226fd55b1a19bd15c9ea419d589",
+      "bytes": 8215
+    },
+    "max2027-headless.json": {
+      "sha256": "10a68334a8fdf7659500dff548fb31583fe80e6f9538dcee48d93009d6cb6d43",
+      "bytes": 4704
+    },
+    "max2027-result.txt": {
+      "sha256": "98a2d64563d65ac155b7b04b0c149115042083a28f7cafdd13d13bfc3262c7ad",
+      "bytes": 2000
+    },
+    "max2027-tests.txt": {
+      "sha256": "40d3a8c35c5b9d14d2cc9a825fdee9498f692e4aabe456dc4ccfe8784936e37c",
+      "bytes": 1813
+    },
+    "python-tests.xml": {
+      "sha256": "5afcd061f44e0948c0d9ba32a6eb8adffd6a98c691c65b0865611687d9bd76d6",
+      "bytes": 16646
+    }
+  }
+}

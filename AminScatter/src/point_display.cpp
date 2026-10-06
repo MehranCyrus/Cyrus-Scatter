@@ -295,10 +295,10 @@ bool publishPoints(INode* helper,INode* controller,std::vector<PointLayer> layer
 bool pointsMatch(INode* helper,const std::vector<PointLayer>& layers) {
     const auto* display=owner(helper);const auto& gen=display->generation;
     if(gen && !sameLayers(gen->layers,layers)) { gen->enabled=false;return false; }
-    // Off-screen mesh items need not be realized yet. Nitrous realizes visible
+    // Off-screen items need not be realized yet. Nitrous realizes visible
     // items before drawing; requiring every item ready would defeat culling.
     return IsRetainedModeEnabled() && gen && gen->enabled.load() && !gen->failed.load() &&
-        (gen->hasMesh?gen->submitted.load():gen->ready.load()==gen->groups);
+        gen->submitted.load();
 }
 }
 

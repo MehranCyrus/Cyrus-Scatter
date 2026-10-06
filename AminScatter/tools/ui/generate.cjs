@@ -151,6 +151,7 @@ fs.writeFileSync('scripts/AminScatterObject.ms',(header+helper+factories+contain
  text=require('./runtime-scheduling.cjs')(text);
  text=require('./trace.cjs')(text);
  text=require('./diagnostics.cjs')(text);
+ text=require('./input-time.cjs')(text);
  text=text.replace(/\r\n/g,'\n').replace(/^[ \t]+$/gm,'');
  const payloadHash=require('crypto').createHash('sha256').update(text,'utf8').digest('hex');
  text='global CyrusLoadedScriptFingerprint="'+payloadHash+'"\n'+text;

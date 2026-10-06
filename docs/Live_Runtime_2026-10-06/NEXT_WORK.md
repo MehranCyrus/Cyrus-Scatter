@@ -1,5 +1,7 @@
 # Next work and acceptance gates
 
+**Later snapshot:** the [code-only playback slice](../Playback_Performance_2026-10-06/README.md) adds relevant-input time invalidation, Analyzer idle scheduling, legacy texture tracking and a bounded point matching correction. Its receipts identify separate local binaries; the packages from this earlier campaign are not updated by those passes.
+
 6 October 2026. The runtime campaign is a development qualification, not completion of every release or AI-design feature. Use its results before starting the following slices.
 
 **Subsequent user direction:** prioritize [the integrated UI and diagnostics loop](../UI_Performance_2026-10-06/README.md). Measure dropdown/topic/owner interactions, replace the mandatory popup with an integrated selected-layer view, and expose the existing recorder directly in Scatter. The newly reported `Corona IR stop failed: 2` callback requires fresh reproduction and qualification; it remains unresolved. The table below retains the broader acceptance gates after this immediate loop.

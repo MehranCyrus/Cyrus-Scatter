@@ -1,0 +1,52 @@
+{
+  "recorded_at_utc": "2026-10-06T08:11:27.562205+00:00",
+  "passed": true,
+  "problems": [],
+  "source_files_compared": 532,
+  "source_changes": [],
+  "head_branch_staged_match": true,
+  "binary_hashes_match": true,
+  "artifact_hash_mismatches": 0,
+  "sdk_compile_exit_codes": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "local_links_checked": 75,
+  "local_link_errors": [],
+  "python_scripts_syntax_checked": 4,
+  "git_diff_check": {
+    "exit_code": 0,
+    "output": "warning: in the working copy of 'CyrusSurfaceAnalyzer/CMakeLists.txt', CRLF will be replaced by LF the next time Git touches it\nwarning: in the working copy of 'CyrusSurfaceAnalyzer/scripts/CyrusSurfaceAnalyzer.ms', CRLF will be replaced by LF the next time Git touches it\n"
+  },
+  "analysis_lifecycle": {
+    "recorded_at_utc": "2026-10-06T08:08:29.1850794Z",
+    "owned_pid": 27608,
+    "verified_command_line": "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\tools\\java\\jdk-21.0.12.1+1\\bin\\java.exe @C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\tools\\launch.args",
+    "verified_listener": "127.0.0.1:18089",
+    "program_saved": true,
+    "project_closed": true,
+    "save_response": {
+      "success": true,
+      "program": "tyFlow_2027.dlo",
+      "message": "Program saved successfully"
+    },
+    "close_response": {
+      "success": true,
+      "closed": "tyFlowArchitecture"
+    },
+    "target_executed": false,
+    "owned_process_stopped": true
+  },
+  "not_run": [
+    "Interactive Max",
+    "tyFlow runtime",
+    "presented FPS",
+    "Corona IR",
+    "production/native/Python regression campaigns"
+  ],
+  "preservation_scope": "Inventoried source/configuration hashes match; no scene/profile/package actions were performed. Not an all-files filesystem audit."
+}

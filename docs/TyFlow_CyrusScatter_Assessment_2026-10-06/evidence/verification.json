@@ -1,0 +1,61 @@
+{
+  "recorded_at_utc": "2026-10-06T07:37:58.729206+00:00",
+  "head_unchanged": true,
+  "branch_unchanged": true,
+  "staged_names_unchanged": true,
+  "source_files_before": 532,
+  "source_files_after": 532,
+  "changed_sources": [],
+  "added_sources": [],
+  "removed_sources": [],
+  "status_outside_allowed_docs_unchanged": false,
+  "other_status_rows_added": [
+    "?? docs/TyFlow_Architecture_Research_2026-10-06/"
+  ],
+  "other_status_rows_removed": [],
+  "unaccounted_status_changes": [],
+  "concurrent_documentation_note": "An untracked docs/TyFlow_Architecture_Research_2026-10-06/ directory appeared after the initial snapshot. This assessment did not create, modify or rely on it; it was left untouched. Its presence prevents a claim that the entire working-tree status stayed unchanged.",
+  "prior_docs_index_content_preserved": true,
+  "prior_docs_index_sha256": "d6792157109c1cdb0d3acd90a06f96451d17b2e5d06a3dfb3afa64a395f50fc6",
+  "current_docs_index_sha256": "92761f824b212ea1200274cc71ada37b8617b8f592479bb67233d30d731d7036",
+  "receipt_files_rechecked": 13,
+  "receipt_mismatches": [],
+  "local_binaries_rechecked": 10,
+  "binary_mismatches": [],
+  "local_markdown_links_checked": 154,
+  "source_line_references_checked": 111,
+  "broken_local_links": [],
+  "whitespace_errors": [],
+  "index_diff_check_exit_code": 0,
+  "index_diff_check_output": "",
+  "documents": {
+    "EVIDENCE.md": {
+      "words": 2236,
+      "lines": 102,
+      "sha256": "b77bff29ab7b3293800e8ed8a829cba93fd10e60947c828ee59097a290c0df03"
+    },
+    "EXPERIMENTS.md": {
+      "words": 2495,
+      "lines": 143,
+      "sha256": "649a549e777d276806f788bdf0191f341319e64dc3a0e7788e94a793bcacad5e"
+    },
+    "README.md": {
+      "words": 596,
+      "lines": 30,
+      "sha256": "1df8a1358725e6ba7ffc5f284c5c83e4bee5b81046588d7b714783cd4db6f95d"
+    },
+    "REPORT.md": {
+      "words": 4666,
+      "lines": 189,
+      "sha256": "329be6db61a4f8adb1d1b90c0505ac6504d1e0784b22373f2a57d2f4f43aee65"
+    },
+    "ROADMAP.md": {
+      "words": 2610,
+      "lines": 165,
+      "sha256": "73840f10378ff6040a5e79ef6f07cbb6c72d7a51407c120e8c7107b743936c74"
+    }
+  },
+  "runtime_tests_rerun": false,
+  "max_launched": false,
+  "passed": true
+}

@@ -1,4 +1,18 @@
-global CyrusLoadedScriptFingerprint="708ba32fbbebe62530d4168a81fd0b761471e843976926b87d07de42f9be5561"
+global CyrusLoadedScriptFingerprint="605f6b743df1f048ae4b7b0be67a496779956c26b68462ffd822c850ec8f7263"
+-- Only registered Scatter nodes participate in timeline notifications. This
+-- registry is rebuilt at scene boundaries, never by scanning every animation frame.
+global AminScatterObject
+global CyrusTimeOwners=#(),CyrusRegisterTimeOwner,CyrusResetTimeOwners,CyrusPruneTimeOwners
+fn CyrusRegisterTimeOwner node = (
+    if isValidNode node and classof node.baseObject==AminScatterObject do appendIfUnique CyrusTimeOwners node
+)
+fn CyrusPruneTimeOwners = (
+    CyrusTimeOwners=for node in CyrusTimeOwners where isValidNode node and classof node.baseObject==AminScatterObject collect node
+)
+fn CyrusResetTimeOwners = (
+    CyrusTimeOwners=for node in objects where classof node.baseObject==AminScatterObject collect node
+)
+
 global CyrusDiagnosticEmit
 fn CyrusDiagnosticEmit event origin owner epoch detail = (
     if cyrusDiagnosticActive!=undefined do try (
@@ -325,7 +339,7 @@ fn CyrusLayerEditor_sourceUI_1 = (
         )
         fn addSource n = (
             if obj.usableSource n and (findItem obj.sources n)==0 do (
-                obj.syncColors();while obj.sourceEmpty.count<obj.sources.count do append obj.sourceEmpty false;append obj.sourceEmpty false;append obj.sources n;append obj.sourceColors groupColor.color;if obj.sourceWeights.count>0 do append obj.sourceWeights 1.0;if obj.sourceZOffsets.count>0 do append obj.sourceZOffsets 0.0;if obj.sourceScales.count>0 do append obj.sourceScales 1.0;obj.dirty=true
+                obj.syncColors();while obj.sourceEmpty.count<obj.sources.count do append obj.sourceEmpty false;append obj.sourceEmpty false;append obj.sources n;append obj.sourceColors groupColor.color;if obj.sourceWeights.count>0 do append obj.sourceWeights 1.0;if obj.sourceZOffsets.count>0 do append obj.sourceZOffsets 0.0;if obj.sourceScales.count>0 do append obj.sourceScales 1.0;obj.markInputDirty()
             )
         )
 
@@ -417,7 +431,7 @@ fn CyrusLayerEditor_sourceUI_1 = (
                     deleteItem obj.sources rows[k];deleteItem obj.sourceColors rows[k]
                 )
             )
-            plantList.selection=#{};obj.dirty=true;updateList();CyrusViewportRedraw()
+            plantList.selection=#{};obj.markInputDirty();updateList();CyrusViewportRedraw()
         )
         on selectPlant pressed do if controlsReady and not binding and obj!=undefined do (
             local nodes=for i in plantList.selection where i<=obj.sources.count and isValidNode obj.sources[i] collect obj.sources[i]
@@ -480,14 +494,14 @@ fn CyrusLayerEditor_distributionUI_1 = (
             distributionUI_1.height=if obj.sharedSpacing() then (if textured then 308 else 184) else (if textured then 340 else 208)
         )
         fn syncControls = (showCenterCheck.visible=not obj.sharedSpacing();populationRadio.state=obj.populationMode;densitySpin.value=obj.plantsPerM2;densityButton.map=obj.densityMap;invertCheck.checked=obj.invertDensity;;arrangePopulation())
-        on modeRadio changed v do if controlsReady and not binding and obj!=undefined do (obj.distributionMode=if v==2 then 3 else 1;obj.dirty=true;syncControls();CyrusViewportRedraw())
-        on countSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.amount=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
-        on seedSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.randomSeed=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on modeRadio changed v do if controlsReady and not binding and obj!=undefined do (obj.distributionMode=if v==2 then 3 else 1;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on countSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.amount=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on seedSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.randomSeed=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
 
-        on populationRadio changed v do if controlsReady and not binding and obj!=undefined do (obj.populationMode=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
-        on densitySpin changed v do if controlsReady and not binding and obj!=undefined do (obj.plantsPerM2=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
-        on densityButton picked v do if controlsReady and not binding and obj!=undefined do (obj.densityMap=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
-        on invertCheck changed v do if controlsReady and not binding and obj!=undefined do (obj.invertDensity=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on populationRadio changed v do if controlsReady and not binding and obj!=undefined do (obj.populationMode=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on densitySpin changed v do if controlsReady and not binding and obj!=undefined do (obj.plantsPerM2=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on densityButton picked v do if controlsReady and not binding and obj!=undefined do (obj.densityMap=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on invertCheck changed v do if controlsReady and not binding and obj!=undefined do (obj.invertDensity=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
 
 
 
@@ -741,7 +755,7 @@ fn CyrusLayerEditor_areaUI_1 = (
         )
         fn addArea n = (
             if AminScatterAreaFilter n and findItem obj.areaNodes n==0 do (
-                append obj.areaNodes n;append obj.areaModes 1;obj.dirty=true
+                append obj.areaNodes n;append obj.areaModes 1;obj.markInputDirty()
             )
         )
 
@@ -758,7 +772,7 @@ fn CyrusLayerEditor_areaUI_1 = (
         )
         on areaMode changed mode do if controlsReady and not binding and obj!=undefined do (
             undo "Cyrus Scatter area mode" on (for i in areaList.selection do obj.areaModes[i]=mode)
-            obj.dirty=true;updateAreas();CyrusViewportRedraw()
+            obj.markInputDirty();updateAreas();CyrusViewportRedraw()
         )
         on removeArea pressed do if controlsReady and not binding and obj!=undefined do (
             if CyrusFalloffGraph!=undefined do try(destroyDialog CyrusFalloffGraph)catch()
@@ -767,9 +781,9 @@ fn CyrusLayerEditor_areaUI_1 = (
                 obj.ensureAreaFalloffs()
                 for i=rows.count to 1 by -1 do (deleteItem obj.areaNodes rows[i];deleteItem obj.areaModes rows[i];deleteItem obj.areaFallConfigs rows[i];deleteItem obj.areaFallScaleGraphs rows[i];deleteItem obj.areaFallDensityGraphs rows[i])
             )
-            areaList.selection=#{};obj.dirty=true;updateAreas();CyrusViewportRedraw()
+            areaList.selection=#{};obj.markInputDirty();updateAreas();CyrusViewportRedraw()
         )
-        on refreshAreas pressed do if controlsReady and not binding and obj!=undefined do (obj.dirty=true;obj.refreshPreview();CyrusViewportRedraw())
+        on refreshAreas pressed do if controlsReady and not binding and obj!=undefined do (obj.markInputDirty();obj.refreshPreview();CyrusViewportRedraw())
 
 
 
@@ -857,16 +871,16 @@ fn CyrusLayerEditor_diversityUI_1 = (
         fn syncControls = (diversityRadio.state=obj.diversityMode;sizeSpin.value=obj.diversitySize;divSeedSpin.value=obj.diversitySeed;roughSpin.value=obj.roughness;blurSpin.value=obj.blurryEdge;noiseSpin.value=obj.diversityNoise;)
         on faceOutCheck changed v do if controlsReady and not binding and obj!=undefined do (
             if analyzerChannel.selection==5 then obj.edgeFaceOut=v else if analyzerChannel.selection==4 then obj.streetFaceOut=v else obj.borderFaceOut=v
-            cornerRadiusSpin.enabled=v;obj.dirty=true;CyrusViewportRedraw()
+            cornerRadiusSpin.enabled=v;obj.markInputDirty();CyrusViewportRedraw()
         )
         on cornerRadiusSpin changed v do if controlsReady and not binding and obj!=undefined do (
             if analyzerChannel.selection==5 then obj.edgeCornerRadius=v else if analyzerChannel.selection==4 then obj.streetCornerRadius=v else obj.borderCornerRadius=v
-            obj.dirty=true;CyrusViewportRedraw()
+            obj.markInputDirty();CyrusViewportRedraw()
         )
         on streetStartSpin changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (obj.streetTrimStart=v;CyrusViewportRedraw())
         on streetEndSpin changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (obj.streetTrimEnd=v;CyrusViewportRedraw())
         on centerStreetSpin changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (obj.centerStreetOffset=v;CyrusViewportRedraw())
-        on straightStreet changed v do if controlsReady and not binding and obj!=undefined do (obj.streetStraight=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on straightStreet changed v do if controlsReady and not binding and obj!=undefined do (obj.streetStraight=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
         fn selectedStroke = (if strokesList.selection>0 and strokesList.selection<=strokeRows.count then strokeRows[strokesList.selection] else 0)
         fn showStroke = (
             loadingStroke=true
@@ -964,7 +978,7 @@ fn CyrusLayerEditor_diversityUI_1 = (
         on pathsDrop selected i do if controlsReady and not binding and obj!=undefined do showPath()
         on analyzerChannel selected i do if controlsReady and not binding and obj!=undefined do updatePattern()
         on pickAnalyzer picked n do if controlsReady and not binding and obj!=undefined do (
-            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.dirty=true;updatePattern();CyrusViewportRedraw())
+            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.markInputDirty();updatePattern();CyrusViewportRedraw())
         )
         on strokesList selected i do if controlsReady and not binding and obj!=undefined do showStroke()
         on pickPath picked n do if controlsReady and not binding and obj!=undefined do (
@@ -976,7 +990,7 @@ fn CyrusLayerEditor_diversityUI_1 = (
             for i=obj.patternLines.count to 1 by -1 where obj.patternLines[i]==path do obj.removeStroke i
             local k=findItem obj.patternPaths path;if k>0 do deleteItem obj.patternPaths k
             if obj.diversityMode==4 do obj.analyzerNode=undefined
-            updatePattern();obj.dirty=true;syncControls();CyrusViewportRedraw()
+            updatePattern();obj.markInputDirty();syncControls();CyrusViewportRedraw()
         )
         on addOutside pressed do if controlsReady and not binding and obj!=undefined do (
             if obj.diversityMode==4 and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5) do return false
@@ -1000,15 +1014,15 @@ fn CyrusLayerEditor_diversityUI_1 = (
         on edgeRotXSpin changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;CyrusViewportRedraw())
         on edgeRotYSpin changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;CyrusViewportRedraw())
         on edgeRotZSpin changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;CyrusViewportRedraw())
-        on strokeWidth changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.dirty=true;showPath();CyrusViewportRedraw())
-        on strokeMode changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on strokeWidth changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.markInputDirty();showPath();CyrusViewportRedraw())
+        on strokeMode changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.markInputDirty();syncControls();CyrusViewportRedraw())
         on strokeChoices selectionEnd do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (
             local row=selectedStroke()
             if row>0 do obj.setStrokeSelection row obj.strokeModes[row] (for i in strokeChoices.selection collect choiceValues[i])
             CyrusViewportRedraw()
         )
-        on strokeScaleMin changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
-        on strokeScaleMax changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on strokeScaleMin changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on strokeScaleMax changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.markInputDirty();syncControls();CyrusViewportRedraw())
         on refreshGroups pressed do if controlsReady and not binding and obj!=undefined do updatePattern()
                 fn updateControls = (
             for c in #(sizeSpin,divSeedSpin,roughSpin,blurSpin,noiseSpin,groupHint,fixedHint) do c.visible=obj.diversityMode==2
@@ -1016,14 +1030,14 @@ fn CyrusLayerEditor_diversityUI_1 = (
             if strokeExpandedHeight>0 do diversityUI_1.height=if obj.diversityMode>=3 then strokeExpandedHeight else (if obj.diversityMode==2 then 310 else 124)*1.0
             root.mainUI.layoutPanels()
         )
-        on diversityRadio changed v do if controlsReady and not binding and obj!=undefined do (if v>=3 and (root.layerSets owner).count>1 do (messageBox "Line Pattern / Analyzer need an independent layer. Multi-set layers support Random and Clusters." title:"Cyrus assignment";syncControls();return false);obj.diversityMode=v;updateControls();updatePattern();obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on diversityRadio changed v do if controlsReady and not binding and obj!=undefined do (if v>=3 and (root.layerSets owner).count>1 do (messageBox "Line Pattern / Analyzer need an independent layer. Multi-set layers support Random and Clusters." title:"Cyrus assignment";syncControls();return false);obj.diversityMode=v;updateControls();updatePattern();obj.markInputDirty();syncControls();CyrusViewportRedraw())
 
 
-        on sizeSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.diversitySize=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
-        on divSeedSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.diversitySeed=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
-        on roughSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.roughness=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
-        on blurSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.blurryEdge=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
-        on noiseSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.diversityNoise=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on sizeSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.diversitySize=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on divSeedSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.diversitySeed=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on roughSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.roughness=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on blurSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.blurryEdge=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on noiseSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.diversityNoise=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
 
 
 
@@ -1110,27 +1124,27 @@ fn CyrusLayerEditor_randomUI_1 = (
         on resetWholeScale pressed do resetBoundRandomization #wholeScale
         on resetMovement pressed do resetBoundRandomization #movement
         fn syncControls = (projectCheck.checked=obj.projectMove;rotXMinSpin.value=obj.rotXMin;rotXMaxSpin.value=obj.rotXMax;rotYMinSpin.value=obj.rotYMin;rotYMaxSpin.value=obj.rotYMax;rotZMinSpin.value=obj.rotZMin;rotZMaxSpin.value=obj.rotZMax;sclXMinSpin.value=obj.sclXMin;sclXMaxSpin.value=obj.sclXMax;sclYMinSpin.value=obj.sclYMin;sclYMaxSpin.value=obj.sclYMax;sclZMinSpin.value=obj.sclZMin;sclZMaxSpin.value=obj.sclZMax;movXMinSpin.value=obj.movXMin;movXMaxSpin.value=obj.movXMax;movYMinSpin.value=obj.movYMin;movYMaxSpin.value=obj.movYMax;movZMinSpin.value=obj.movZMin;movZMaxSpin.value=obj.movZMax;)
-        on alignCheck changed v do if controlsReady and not binding and obj!=undefined do (obj.alignNormal=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on alignCheck changed v do if controlsReady and not binding and obj!=undefined do (obj.alignNormal=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
 
-        on projectCheck changed v do if controlsReady and not binding and obj!=undefined do (obj.projectMove=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
-        on rotXMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.rotXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
-        on rotXMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.rotXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
-        on rotYMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.rotYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
-        on rotYMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.rotYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
-        on rotZMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.rotZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
-        on rotZMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.rotZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
-        on sclXMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.sclXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
-        on sclXMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.sclXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
-        on sclYMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.sclYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
-        on sclYMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.sclYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
-        on sclZMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.sclZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
-        on sclZMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.sclZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
-        on movXMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.movXMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
-        on movXMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.movXMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
-        on movYMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.movYMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
-        on movYMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.movYMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
-        on movZMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.movZMin=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
-        on movZMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.movZMax=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on projectCheck changed v do if controlsReady and not binding and obj!=undefined do (obj.projectMove=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on rotXMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.rotXMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on rotXMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.rotXMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on rotYMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.rotYMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on rotYMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.rotYMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on rotZMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.rotZMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on rotZMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.rotZMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on sclXMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.sclXMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on sclXMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.sclXMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on sclYMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.sclYMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on sclYMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.sclYMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on sclZMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.sclZMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on sclZMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.sclZMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on movXMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.movXMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on movXMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.movXMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on movYMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.movYMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on movYMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.movYMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on movZMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.movZMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on movZMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.movZMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
 
 
 
@@ -1722,18 +1736,26 @@ fn CyrusOpenLayerEditor root owner = (
             if resultInfo.text!=text do resultInfo.text=text
             local caption="Cyrus Scatter 0.7.1 | "+ownerNode.name+" / "+(root.layerCaption owner)
             if editor.title!=caption do editor.title=caption
-            setupInfo.text="Setup: "+ownerNode.name+"  |  Selecting scene models keeps this editor on its layer"
+            local setupText="Setup: "+ownerNode.name+"  |  Selecting scene models keeps this editor on its layer"
+            if setupInfo.text!=setupText do setupInfo.text=setupText
             true
+        )
+        fn retainListItems control values = (
+            local existing=control.items,changed=existing.count!=values.count
+            if not changed do for i=1 to values.count while not changed do changed=existing[i]!=values[i]
+            if changed do control.items=values
         )
         fn bindEditors = (
             if not validOwner() do return false
             local previous=binding;binding=true
             try (
                 members=root.logicalLayers();sets=root.layerSets owner
-                layerList.items=for m in members collect root.layerCaption m
-                layerList.selection=findItem members owner
-                setList.items=for m in sets collect m.paintSetName
-                setList.selection=findItem sets (root.selectedPaintSet owner)
+                retainListItems layerList (for m in members collect root.layerCaption m)
+                local layerIndex=findItem members owner
+                if layerList.selection!=layerIndex do layerList.selection=layerIndex
+                retainListItems setList (for m in sets collect m.paintSetName)
+                local setIndex=findItem sets (root.selectedPaintSet owner)
+                if setList.selection!=setIndex do setList.selection=setIndex
                 for r in editors do (
                     local changedOwner=r.root!=root or r.owner!=owner
                     r.root=root;r.owner=owner;r.panel=editor
@@ -1750,6 +1772,11 @@ fn CyrusOpenLayerEditor root owner = (
         )
         fn showTopic index = (
             if index<1 or index>6 do return false
+            if topic==index and built[index] do (
+                local tabs=#(assetsTab,populationTab,paintTab,transformTab,spacingTab,statisticsTab)
+                local previous=binding;binding=true;tabs[index].checked=true;binding=previous
+                refreshStats();return true
+            )
             if topic!=index do stopTools()
             topic=index
             local tabs=#(assetsTab,populationTab,paintTab,transformTab,spacingTab,statisticsTab)
@@ -1790,7 +1817,7 @@ fn CyrusOpenLayerEditor root owner = (
             true
         )
         fn selectSet index = (
-            if not binding and index>0 and index<=sets.count do (stopTools();owner.uiPaintSetID=sets[index].layerID;bindEditors())
+            if not binding and index>0 and index<=sets.count and (root.selectedPaintSet owner)!=sets[index] do (stopTools();owner.uiPaintSetID=sets[index].layerID;bindEditors())
         )
         on editor open do (
             pages=#(#(assetsLeft,assetsRight),#(populationLeft,populationRight),#(paintLeft,paintRight),#(transformLeft,transformRight),#(spacingLeft,spacingRight),#(statisticsLeft,statisticsRight))
@@ -1829,6 +1856,7 @@ fn CyrusOpenLayerEditor root owner = (
         on statisticsTab changed value do if not binding do showTopic 6
         on layerList selected index do if not binding and index>0 do (
             local next=members[index]
+            if next==owner do return false
             undo off root.selectLayer (findItem root.layerObjects next)
             retarget root next
             if root.mainUI.controlsReady do root.mainUI.bind()
@@ -1872,7 +1900,68 @@ initialRollupState:0x8
     local cachedPoints=undefined
     local cachedAnalyzerRun=-1
     local cachedPointCount=0
-    local dirty=true
+    local dirty = true
+    -- Session-only validity. Scene identities and publication records are unchanged.
+    local inputTimeValidity=undefined,inputTimeStamp=0,inputTimeObserved=0
+    local inputTimeQueries=0,inputTimeInvalidations=0
+    local timeOwnerRegistered=false
+    fn ensureTimeOwner = (
+        if not timeOwnerRegistered do (
+            for node in refs.dependentNodes this where isValidNode node and node.baseObject==this do (
+                CyrusRegisterTimeOwner node;timeOwnerRegistered=true
+            )
+        )
+    )
+    fn markInputDirty = (inputTimeValidity=undefined;dirty=true)
+    fn inputTimeExpired = (
+        if inputTimeValidity==undefined do return false
+        local tick=currentTime as integer
+        tick<inputTimeValidity[1] or tick>inputTimeValidity[2] or inputTimeStamp!=inputTimeObserved
+    )
+    fn inputTimeKey = (
+        local tick=currentTime as integer
+        if inputTimeValidity==undefined or tick<inputTimeValidity[1] or tick>inputTimeValidity[2] do (
+            if cyrusScatterInputValidity==undefined do throw "This Scatter script requires matching native binaries with input validity support. Restart Max with the complete script/native pair."
+            local nodes=this.validSurfaces(),settings=#(this),maps=#()
+            join nodes (this.sources as array);join nodes (this.areaNodes as array);join nodes (this.patternLines as array)
+            -- Analyzer is a cached producer. checkAnalyzerRevision() observes
+            -- its published output; its icon/receiver clock must not bypass
+            -- the Analyzer's own Manual mode or real-time scheduling.
+            if this.proceduralPolicy() do join nodes (this.effectiveContainers())
+            nodes=for n in nodes where isValidNode n collect n
+            if this.overlapOwner==undefined do join settings (this.procModifiers())
+            this.procWatchDensity()
+            if this.densityMap!=undefined and this.distributionMode==3 do append maps this.densityMap
+            local interval=cyrusScatterInputValidity settings nodes maps
+            inputTimeQueries+=1
+            -- Keep one key throughout a validity interval, including stepped keys.
+            -- FOREVER has no time component. A dirty notification re-arms the
+            -- interval without unnecessarily changing a still-valid time stamp.
+            if interval[3] then inputTimeStamp=0
+            else if inputTimeStamp<interval[1] or inputTimeStamp>interval[2] do inputTimeStamp=tick
+            inputTimeValidity=interval
+        )
+        inputTimeStamp
+    )
+    fn invalidateInputTime = (
+        if not this.inputTimeExpired() do return false
+        inputTimeInvalidations+=1
+        CyrusDiagnosticEmit "time.invalidated" "host_callback" this.layerID inputTimeInvalidations "dependency_interval_expired"
+        this.markInputDirty();true
+    )
+    fn liveTimeChanged = (
+        if this.updateMode!=2 or not this.cyrusEnabled do return false
+        local rootChanged=this.invalidateInputTime(),changed=rootChanged
+        for i=1 to this.layerObjects.count where this.enabledLayer i do (
+            local leaf=this.layerObjects[i]
+            if rootChanged then leaf.markInputDirty()
+            else if leaf.invalidateInputTime() do changed=true
+        )
+        changed
+    )
+    fn inputTimeStats = (#(inputTimeQueries,inputTimeInvalidations,inputTimeStamp,inputTimeObserved,inputTimeValidity))
+    fn publishedInputTime = inputTimeObserved
+
     local previewError=""
     local generatedCount=0
     local previewBuildCount=0
@@ -1920,44 +2009,44 @@ initialRollupState:0x8
         containerMode type:#integer default:1
         containerNodes type:#nodeTab tabSize:0 tabSizeVariable:true useNodeTmValidity:true useNodeOsValidity:true
         containerGlobalNodes type:#nodeTab tabSize:0 tabSizeVariable:true useNodeTmValidity:true useNodeOsValidity:true
-        on procOrder set value do dirty=true
-        on procSetOrder set value do dirty=true
-        on procSamplingSalt set value do dirty=true
-        on procPopulation set value do dirty=true
-        on procAttemptFactor set value do dirty=true
-        on procRounds set value do dirty=true
-        on procRepair set value do dirty=true
-        on procSelfOverride set value do dirty=true
-        on procSelfEnabled set value do dirty=true
-        on procSelfMultiplier set value do dirty=true
-        on procSelfGap set value do dirty=true
-        on procSelfPlanar set value do dirty=true
-        on procSiblingEnabled set value do dirty=true
-        on procSiblingMultiplier set value do dirty=true
-        on procSiblingGap set value do dirty=true
-        on procSiblingPlanar set value do dirty=true
-        on procBackground set value do dirty=true
-        on procBackgroundIDs set value index do dirty=true
-        on procRadiusIDs set value index do dirty=true
-        on procRadiusModes set value index do dirty=true
-        on procRadiusValues set value index do dirty=true
-        on procRadiusBinding set value do dirty=true
-        on procSourceNodes set value index do dirty=true
-        on procSourceIDs set value index do dirty=true
-        on procSourceSlots set value index do dirty=true
-        on procReceiverNodes set value index do dirty=true
-        on procReceiverIDs set value index do dirty=true
-        on procReceiverID set value do dirty=true
-        on procRuleScope set value index do dirty=true
-        on procRuleA set value index do dirty=true
-        on procRuleB set value index do dirty=true
-        on procRuleEnabled set value index do dirty=true
-        on procRuleMultiplier set value index do dirty=true
-        on procRuleGap set value index do dirty=true
-        on procRulePlanar set value index do dirty=true
-        on containerMode set value do dirty=true
-        on containerNodes set value index do dirty=true
-        on containerGlobalNodes set value index do dirty=true
+        on procOrder set value do markInputDirty()
+        on procSetOrder set value do markInputDirty()
+        on procSamplingSalt set value do markInputDirty()
+        on procPopulation set value do markInputDirty()
+        on procAttemptFactor set value do markInputDirty()
+        on procRounds set value do markInputDirty()
+        on procRepair set value do markInputDirty()
+        on procSelfOverride set value do markInputDirty()
+        on procSelfEnabled set value do markInputDirty()
+        on procSelfMultiplier set value do markInputDirty()
+        on procSelfGap set value do markInputDirty()
+        on procSelfPlanar set value do markInputDirty()
+        on procSiblingEnabled set value do markInputDirty()
+        on procSiblingMultiplier set value do markInputDirty()
+        on procSiblingGap set value do markInputDirty()
+        on procSiblingPlanar set value do markInputDirty()
+        on procBackground set value do markInputDirty()
+        on procBackgroundIDs set value index do markInputDirty()
+        on procRadiusIDs set value index do markInputDirty()
+        on procRadiusModes set value index do markInputDirty()
+        on procRadiusValues set value index do markInputDirty()
+        on procRadiusBinding set value do markInputDirty()
+        on procSourceNodes set value index do markInputDirty()
+        on procSourceIDs set value index do markInputDirty()
+        on procSourceSlots set value index do markInputDirty()
+        on procReceiverNodes set value index do markInputDirty()
+        on procReceiverIDs set value index do markInputDirty()
+        on procReceiverID set value do markInputDirty()
+        on procRuleScope set value index do markInputDirty()
+        on procRuleA set value index do markInputDirty()
+        on procRuleB set value index do markInputDirty()
+        on procRuleEnabled set value index do markInputDirty()
+        on procRuleMultiplier set value index do markInputDirty()
+        on procRuleGap set value index do markInputDirty()
+        on procRulePlanar set value index do markInputDirty()
+        on containerMode set value do markInputDirty()
+        on containerNodes set value index do markInputDirty()
+        on containerGlobalNodes set value index do markInputDirty()
     )
     local procCandidateCount=undefined,procPreparedKey="",procPreparedRows=#(),procBindingKey="",procBoundBase=undefined,procSurfaceKey=""
     local procLastStats=#(),procLastRounds=#(),procPreparedBuilds=0,procPreparedHits=0,procEpoch=0,procPublishedDisplayKey="",procManualRevision=0
@@ -1978,9 +2067,9 @@ initialRollupState:0x8
         paintDensity type:#float default:1
         editLayerKey type:#integer default:0
         nextEditLayerKey type:#integer default:1
-        on paintDocument set value do (cachedPaintRevision=0;dirty=true)
-        on paintEnabled set value do dirty=true
-        on paintDensity set value do dirty=true
+        on paintDocument set value do (cachedPaintRevision=0;markInputDirty())
+        on paintEnabled set value do markInputDirty()
+        on paintDensity set value do markInputDirty()
     )
 
     parameters settings (
@@ -1999,32 +2088,32 @@ initialRollupState:0x8
         showPoints type:#boolean default:true
         pointsPerPlant type:#integer default:80
         iconSize type:#worldUnits default:10
-        on surface set v do dirty=true
-        on sources set v i do dirty=true
-        on amount set v do dirty=true
-        on randomSeed set v do dirty=true
-        on scaleMinimum set v do dirty=true
-        on scaleMaximum set v do dirty=true
-        on tiltDegrees set v do dirty=true
-        on yawMinimum set v do dirty=true
-        on yawMaximum set v do dirty=true
-        on movementRange set v do dirty=true
-        on alignNormal set v do dirty=true
-        on pointsPerPlant set v do dirty=true
+        on surface set v do markInputDirty()
+        on sources set v i do markInputDirty()
+        on amount set v do markInputDirty()
+        on randomSeed set v do markInputDirty()
+        on scaleMinimum set v do markInputDirty()
+        on scaleMaximum set v do markInputDirty()
+        on tiltDegrees set v do markInputDirty()
+        on yawMinimum set v do markInputDirty()
+        on yawMaximum set v do markInputDirty()
+        on movementRange set v do markInputDirty()
+        on alignNormal set v do markInputDirty()
+        on pointsPerPlant set v do markInputDirty()
     )
     parameters surfaceSettings (
         surfaceNodes type:#nodeTab tabSize:0 tabSizeVariable:true useNodeTmValidity:true useNodeOsValidity:true
-        on surfaceNodes set v i do dirty=true
+        on surfaceNodes set v i do markInputDirty()
     )
     parameters updateSettings (
         updateMode type:#integer default:2
-        on updateMode set v do (dirty=true;if not layerTransfer do CyrusViewportRedraw())
+        on updateMode set v do (markInputDirty();if not layerTransfer do CyrusViewportRedraw())
     )
     parameters populationSettings (
         populationMode type:#integer default:1
         plantsPerM2 type:#float default:100
-        on populationMode set v do dirty=true
-        on plantsPerM2 set v do dirty=true
+        on populationMode set v do markInputDirty()
+        on plantsPerM2 set v do markInputDirty()
     )
     fn validSurfaces = (
         if this.paintIdentity and this.paintDocument!=undefined and not this.sharedSpacing() do (
@@ -2043,11 +2132,11 @@ initialRollupState:0x8
         overlapGap type:#worldunits default:0
         overlapPlanar type:#boolean default:true
         overlapBlockers type:#intTab tabSize:0 tabSizeVariable:true
-        on overlapEnabled set v do dirty=true
-        on overlapRadius set v do dirty=true
-        on overlapGap set v do dirty=true
-        on overlapPlanar set v do dirty=true
-        on overlapBlockers set v i do dirty=true
+        on overlapEnabled set v do markInputDirty()
+        on overlapRadius set v do markInputDirty()
+        on overlapGap set v do markInputDirty()
+        on overlapPlanar set v do markInputDirty()
+        on overlapBlockers set v i do markInputDirty()
     )
     fn setOverlapOwner root = (overlapOwner=root)
     fn overlapStats = (#(overlapBefore,overlapBefore-overlapAfter,overlapAfter))
@@ -2061,40 +2150,40 @@ initialRollupState:0x8
         finalStrength type:#float default:0.3
         finalIterations type:#integer default:5
         finalMaxMove type:#worldunits default:10
-        on finalCleanup set v do dirty=true
-        on finalNeighborRadius set v do dirty=true
-        on finalMinNeighbors set v do dirty=true
-        on finalMinIsland set v do dirty=true
-        on finalRelax set v do dirty=true
-        on finalStrength set v do dirty=true
-        on finalIterations set v do dirty=true
-        on finalMaxMove set v do dirty=true
+        on finalCleanup set v do markInputDirty()
+        on finalNeighborRadius set v do markInputDirty()
+        on finalMinNeighbors set v do markInputDirty()
+        on finalMinIsland set v do markInputDirty()
+        on finalRelax set v do markInputDirty()
+        on finalStrength set v do markInputDirty()
+        on finalIterations set v do markInputDirty()
+        on finalMaxMove set v do markInputDirty()
     )
     parameters viewportGeometrySettings (
         viewportMode type:#integer default:1
         proxyShape type:#integer default:1
         viewportInstances type:#integer default:2000
         viewportFaces type:#integer default:2000000
-        on viewportMode set v do dirty=true
-        on proxyShape set v do dirty=true
-        on viewportInstances set v do dirty=true
-        on viewportFaces set v do dirty=true
+        on viewportMode set v do markInputDirty()
+        on proxyShape set v do markInputDirty()
+        on viewportInstances set v do markInputDirty()
+        on viewportFaces set v do markInputDirty()
     )
     parameters radiusDisplaySettings (
         radiusDisplayLimit type:#integer default:2000
         radiusDisplayAll type:#boolean default:false
-        on radiusDisplayLimit set v do dirty=true
-        on radiusDisplayAll set v do dirty=true
+        on radiusDisplayLimit set v do markInputDirty()
+        on radiusDisplayAll set v do markInputDirty()
     )
     parameters radiusSettings (
         sourceRadii type:#floatTab tabSize:0 tabSizeVariable:true
         sourceFollowScale type:#boolTab tabSize:0 tabSizeVariable:true
         sourceShowRadius type:#boolTab tabSize:0 tabSizeVariable:true
         overlapSourceRadius type:#boolean default:false
-        on sourceRadii set v i do dirty=true
-        on sourceFollowScale set v i do dirty=true
-        on sourceShowRadius set v i do dirty=true
-        on overlapSourceRadius set v do dirty=true
+        on sourceRadii set v i do markInputDirty()
+        on sourceFollowScale set v i do markInputDirty()
+        on sourceShowRadius set v i do markInputDirty()
+        on overlapSourceRadius set v do markInputDirty()
     )
     fn sourceRadius i = (if i>0 and i<=sourceRadii.count then sourceRadii[i] else 0.0)
     fn sourceFollows i = (i>0 and i<=sourceFollowScale.count and sourceFollowScale[i])
@@ -2106,13 +2195,13 @@ initialRollupState:0x8
             while sourceShowRadius.count<sources.count do append sourceShowRadius false
             for i in rows do case kind of (1: (sourceRadii[i]=value); 2: (sourceFollowScale[i]=value); 3: (sourceShowRadius[i]=value))
         )
-        dirty=true
+        markInputDirty()
     )
     parameters emptySettings (
         sourcePoint type:#boolTab tabSize:0 tabSizeVariable:true
-        on sourcePoint set v i do dirty=true
+        on sourcePoint set v i do markInputDirty()
         sourceEmpty type:#boolTab tabSize:0 tabSizeVariable:true
-        on sourceEmpty set v i do dirty=true
+        on sourceEmpty set v i do markInputDirty()
     )
     local cachedFallRun=-1
     parameters falloffSettings (
@@ -2125,15 +2214,15 @@ initialRollupState:0x8
         fallDensity type:#boolean default:false
         fallDensityWidth type:#worldunits default:100
         fallDensityCurve type:#floatTab tabSize:0 tabSizeVariable:true
-        on fallAnalyzer set v do dirty=true
-        on fallDelete set v do dirty=true
-        on fallDeleteWidth set v do dirty=true
-        on fallScale set v do dirty=true
-        on fallScaleWidth set v do dirty=true
-        on fallScaleCurve set v i do dirty=true
-        on fallDensity set v do dirty=true
-        on fallDensityWidth set v do dirty=true
-        on fallDensityCurve set v i do dirty=true
+        on fallAnalyzer set v do markInputDirty()
+        on fallDelete set v do markInputDirty()
+        on fallDeleteWidth set v do markInputDirty()
+        on fallScale set v do markInputDirty()
+        on fallScaleWidth set v do markInputDirty()
+        on fallScaleCurve set v i do markInputDirty()
+        on fallDensity set v do markInputDirty()
+        on fallDensityWidth set v do markInputDirty()
+        on fallDensityCurve set v i do markInputDirty()
     )
     fn ensureFallCurves = (
         while fallScaleCurve.count<5 do append fallScaleCurve (fallScaleCurve.count/4.0)
@@ -2142,23 +2231,23 @@ initialRollupState:0x8
     parameters wholeScaleSettings (
         wholeScaleMin type:#float default:1.0
         wholeScaleMax type:#float default:1.0
-        on wholeScaleMin set v do dirty=true
-        on wholeScaleMax set v do dirty=true
+        on wholeScaleMin set v do markInputDirty()
+        on wholeScaleMax set v do markInputDirty()
     )
     local cachedAreaAnalyzerRun=-1
     parameters analyzerAreaSettings (
         areaAnalyzer type:#node useNodeTmValidity:true useNodeOsValidity:true
-        on areaAnalyzer set v do dirty=true
+        on areaAnalyzer set v do markInputDirty()
         areaUseLine type:#boolean default:false
-        on areaUseLine set v do dirty=true
+        on areaUseLine set v do markInputDirty()
         areaLineWidth type:#worldunits default:100
-        on areaLineWidth set v do dirty=true
+        on areaLineWidth set v do markInputDirty()
         areaLineCaps type:#integer default:1
-        on areaLineCaps set v do dirty=true
+        on areaLineCaps set v do markInputDirty()
         areaUsePoints type:#boolean default:false
-        on areaUsePoints set v do dirty=true
+        on areaUsePoints set v do markInputDirty()
         areaPointRadius type:#worldunits default:100
-        on areaPointRadius set v do dirty=true
+        on areaPointRadius set v do markInputDirty()
     )
     fn applyAnalyzerArea rows = (
         if not (areaUseLine or areaUsePoints) then rows else (
@@ -2174,7 +2263,7 @@ initialRollupState:0x8
         areaFallConfigs type:#stringTab tabSize:0 tabSizeVariable:true
         areaFallScaleGraphs type:#stringTab tabSize:0 tabSizeVariable:true
         areaFallDensityGraphs type:#stringTab tabSize:0 tabSizeVariable:true
-        on areaFallConfigs set v i do dirty=true
+        on areaFallConfigs set v i do markInputDirty()
     )
     fn ensureAreaFalloffs = (
         while areaFallConfigs.count<this.areaNodes.count do append areaFallConfigs ""
@@ -2202,7 +2291,7 @@ initialRollupState:0x8
             format "%|%|%|%|%|%|%|%" (if cfg[1] then 1 else 0) cfg[2] (if cfg[3] then 1 else 0) cfg[4] (CyrusFallPack cfg[5]) (if cfg[6] then 1 else 0) cfg[7] (CyrusFallPack cfg[8]) to:s
             areaFallConfigs[i]=s as string
         )
-        dirty=true
+        markInputDirty()
     )
     fn getFallGraph areaNode density = (
         if areaNode==undefined then (if density then fallDensityGraph else fallScaleGraph) else (
@@ -2234,27 +2323,27 @@ initialRollupState:0x8
 
     parameters edgeRowSettings (
         edgeRotX type:#floatTab tabSize:0 tabSizeVariable:true
-        on edgeRotX set v i do dirty=true
+        on edgeRotX set v i do markInputDirty()
         edgeRotY type:#floatTab tabSize:0 tabSizeVariable:true
-        on edgeRotY set v i do dirty=true
+        on edgeRotY set v i do markInputDirty()
         edgeRotZ type:#floatTab tabSize:0 tabSizeVariable:true
-        on edgeRotZ set v i do dirty=true
+        on edgeRotZ set v i do markInputDirty()
         edgeKeepCorners type:#boolean default:false
         edgeCornerAngle type:#float default:45
         edgeCornerCount type:#integer default:1
-        on edgeKeepCorners set v do dirty=true
-        on edgeCornerAngle set v do dirty=true
-        on edgeCornerCount set v do dirty=true
+        on edgeKeepCorners set v do markInputDirty()
+        on edgeCornerAngle set v do markInputDirty()
+        on edgeCornerCount set v do markInputDirty()
         edgeOffsets type:#floatTab tabSize:0 tabSizeVariable:true
         edgeAlong type:#floatTab tabSize:0 tabSizeVariable:true
         edgeAcross type:#floatTab tabSize:0 tabSizeVariable:true
         edgeFaceOut type:#boolean default:true
         edgeCornerRadius type:#worldunits default:10.0
-        on edgeOffsets set v i do dirty=true
-        on edgeAlong set v i do dirty=true
-        on edgeAcross set v i do dirty=true
-        on edgeFaceOut set v do dirty=true
-        on edgeCornerRadius set v do dirty=true
+        on edgeOffsets set v i do markInputDirty()
+        on edgeAlong set v i do markInputDirty()
+        on edgeAcross set v i do markInputDirty()
+        on edgeFaceOut set v do markInputDirty()
+        on edgeCornerRadius set v do markInputDirty()
     )
     parameters orientationSettings (
         sourceForwardAxes type:#intTab tabSize:0 tabSizeVariable:true
@@ -2262,11 +2351,11 @@ initialRollupState:0x8
         streetFaceOut type:#boolean default:false
         borderCornerRadius type:#worldunits default:10.0
         streetCornerRadius type:#worldunits default:10.0
-        on sourceForwardAxes set v i do dirty=true
-        on borderFaceOut set v do dirty=true
-        on streetFaceOut set v do dirty=true
-        on borderCornerRadius set v do dirty=true
-        on streetCornerRadius set v do dirty=true
+        on sourceForwardAxes set v i do markInputDirty()
+        on borderFaceOut set v do markInputDirty()
+        on streetFaceOut set v do markInputDirty()
+        on borderCornerRadius set v do markInputDirty()
+        on streetCornerRadius set v do markInputDirty()
     )
     fn sourceForward i = (if i>0 and i<=sourceForwardAxes.count then amax 1 (amin 4 sourceForwardAxes[i]) else 1)
     fn assignSourceForward rows value = (
@@ -2274,13 +2363,13 @@ initialRollupState:0x8
             while sourceForwardAxes.count<sources.count do append sourceForwardAxes 1
             for i in rows where i>0 and i<=sources.count do sourceForwardAxes[i]=value
         )
-        dirty=true
+        markInputDirty()
     )
     parameters sourceTransformSettings (
         sourceZOffsets type:#floatTab tabSize:0 tabSizeVariable:true
         sourceScales type:#floatTab tabSize:0 tabSizeVariable:true
-        on sourceZOffsets set v i do dirty=true
-        on sourceScales set v i do dirty=true
+        on sourceZOffsets set v i do markInputDirty()
+        on sourceScales set v i do markInputDirty()
     )
     fn sourceZOffset i = (if i>0 and i<=sourceZOffsets.count then sourceZOffsets[i] else 0.0)
     fn sourceScale i = (if i>0 and i<=sourceScales.count then sourceScales[i] else 1.0)
@@ -2294,11 +2383,11 @@ initialRollupState:0x8
                 for i in rows where i>0 and i<=sources.count do sourceZOffsets[i]=value
             )
         )
-        dirty=true
+        markInputDirty()
     )
     parameters weightSettings (
         sourceWeights type:#floatTab tabSize:0 tabSizeVariable:true
-        on sourceWeights set v i do dirty=true
+        on sourceWeights set v i do markInputDirty()
     )
     fn sourceWeight i = (if i>0 and i<=sourceWeights.count then sourceWeights[i] else 1.0)
     fn assignWeight rows value = (
@@ -2306,11 +2395,11 @@ initialRollupState:0x8
             while sourceWeights.count<sources.count do append sourceWeights 1.0
             for i in rows where i>0 and i<=sources.count do sourceWeights[i]=amin 1.0 (amax 0.0 value)
         )
-        dirty=true
+        markInputDirty()
     )
     parameters centerDisplay (
         showCenters type:#boolean default:false
-        on showCenters set v do (dirty=true;previewBuildCount=0)
+        on showCenters set v do (markInputDirty();previewBuildCount=0)
     )
     parameters spacingSettings (
         collisionEnabled type:#boolean default:false
@@ -2319,12 +2408,12 @@ initialRollupState:0x8
         relaxSpacing type:#worldUnits default:0.2
         relaxIterations type:#integer default:10
         relaxStrength type:#float default:0.5
-        on collisionEnabled set v do dirty=true
-        on collisionRadius set v do dirty=true
-        on relaxEnabled set v do dirty=true
-        on relaxSpacing set v do dirty=true
-        on relaxIterations set v do dirty=true
-        on relaxStrength set v do dirty=true
+        on collisionEnabled set v do markInputDirty()
+        on collisionRadius set v do markInputDirty()
+        on relaxEnabled set v do markInputDirty()
+        on relaxSpacing set v do markInputDirty()
+        on relaxIterations set v do markInputDirty()
+        on relaxStrength set v do markInputDirty()
     )
     parameters randomization (
         advancedAxes type:#boolean default:true
@@ -2347,25 +2436,25 @@ initialRollupState:0x8
         movYMax type:#float default:0
         movZMin type:#float default:0
         movZMax type:#float default:0
-        on projectMove set v do dirty=true
-        on rotXMin set v do (if not layerTransfer and v>rotXMax do rotXMax=v;dirty=true)
-        on rotXMax set v do (if not layerTransfer and v<rotXMin do rotXMin=v;dirty=true)
-        on rotYMin set v do (if not layerTransfer and v>rotYMax do rotYMax=v;dirty=true)
-        on rotYMax set v do (if not layerTransfer and v<rotYMin do rotYMin=v;dirty=true)
-        on rotZMin set v do (if not layerTransfer and v>rotZMax do rotZMax=v;dirty=true)
-        on rotZMax set v do (if not layerTransfer and v<rotZMin do rotZMin=v;dirty=true)
-        on sclXMin set v do (if not layerTransfer and v>sclXMax do sclXMax=v;dirty=true)
-        on sclXMax set v do (if not layerTransfer and v<sclXMin do sclXMin=v;dirty=true)
-        on sclYMin set v do (if not layerTransfer and v>sclYMax do sclYMax=v;dirty=true)
-        on sclYMax set v do (if not layerTransfer and v<sclYMin do sclYMin=v;dirty=true)
-        on sclZMin set v do (if not layerTransfer and v>sclZMax do sclZMax=v;dirty=true)
-        on sclZMax set v do (if not layerTransfer and v<sclZMin do sclZMin=v;dirty=true)
-        on movXMin set v do (if not layerTransfer and v>movXMax do movXMax=v;dirty=true)
-        on movXMax set v do (if not layerTransfer and v<movXMin do movXMin=v;dirty=true)
-        on movYMin set v do (if not layerTransfer and v>movYMax do movYMax=v;dirty=true)
-        on movYMax set v do (if not layerTransfer and v<movYMin do movYMin=v;dirty=true)
-        on movZMin set v do (if not layerTransfer and v>movZMax do movZMax=v;dirty=true)
-        on movZMax set v do (if not layerTransfer and v<movZMin do movZMin=v;dirty=true)
+        on projectMove set v do markInputDirty()
+        on rotXMin set v do (if not layerTransfer and v>rotXMax do rotXMax=v;markInputDirty())
+        on rotXMax set v do (if not layerTransfer and v<rotXMin do rotXMin=v;markInputDirty())
+        on rotYMin set v do (if not layerTransfer and v>rotYMax do rotYMax=v;markInputDirty())
+        on rotYMax set v do (if not layerTransfer and v<rotYMin do rotYMin=v;markInputDirty())
+        on rotZMin set v do (if not layerTransfer and v>rotZMax do rotZMax=v;markInputDirty())
+        on rotZMax set v do (if not layerTransfer and v<rotZMin do rotZMin=v;markInputDirty())
+        on sclXMin set v do (if not layerTransfer and v>sclXMax do sclXMax=v;markInputDirty())
+        on sclXMax set v do (if not layerTransfer and v<sclXMin do sclXMin=v;markInputDirty())
+        on sclYMin set v do (if not layerTransfer and v>sclYMax do sclYMax=v;markInputDirty())
+        on sclYMax set v do (if not layerTransfer and v<sclYMin do sclYMin=v;markInputDirty())
+        on sclZMin set v do (if not layerTransfer and v>sclZMax do sclZMax=v;markInputDirty())
+        on sclZMax set v do (if not layerTransfer and v<sclZMin do sclZMin=v;markInputDirty())
+        on movXMin set v do (if not layerTransfer and v>movXMax do movXMax=v;markInputDirty())
+        on movXMax set v do (if not layerTransfer and v<movXMin do movXMin=v;markInputDirty())
+        on movYMin set v do (if not layerTransfer and v>movYMax do movYMax=v;markInputDirty())
+        on movYMax set v do (if not layerTransfer and v<movYMin do movYMin=v;markInputDirty())
+        on movZMin set v do (if not layerTransfer and v>movZMax do movZMax=v;markInputDirty())
+        on movZMax set v do (if not layerTransfer and v<movZMin do movZMin=v;markInputDirty())
     )
     parameters distributionSettings (
         distributionMode type:#integer default:1
@@ -2373,11 +2462,11 @@ initialRollupState:0x8
         clusterRadius type:#worldUnits default:10
         densityMap type:#textureMap
         invertDensity type:#boolean default:false
-        on distributionMode set v do dirty=true
-        on clusterCount set v do dirty=true
-        on clusterRadius set v do dirty=true
-        on densityMap set v do dirty=true
-        on invertDensity set v do dirty=true
+        on distributionMode set v do markInputDirty()
+        on clusterCount set v do markInputDirty()
+        on clusterRadius set v do markInputDirty()
+        on densityMap set v do markInputDirty()
+        on invertDensity set v do markInputDirty()
     )
     parameters diversitySettings (
         diversityMode type:#integer default:1
@@ -2386,17 +2475,17 @@ initialRollupState:0x8
         roughness type:#float default:0
         blurryEdge type:#float default:0
         diversityNoise type:#float default:0
-        on diversityMode set v do dirty=true
-        on diversitySize set v do dirty=true
-        on diversitySeed set v do dirty=true
-        on roughness set v do dirty=true
-        on blurryEdge set v do dirty=true
-        on diversityNoise set v do dirty=true
+        on diversityMode set v do markInputDirty()
+        on diversitySize set v do markInputDirty()
+        on diversitySeed set v do markInputDirty()
+        on roughness set v do markInputDirty()
+        on blurryEdge set v do markInputDirty()
+        on diversityNoise set v do markInputDirty()
     )
     parameters displaySettings (
         autoRender type:#boolean default:true
         previewBudget type:#integer default:20000
-        on previewBudget set v do dirty=true
+        on previewBudget set v do markInputDirty()
         pointColorMode type:#integer default:2
         solidPointColor type:#color default:(color 100 220 120)
         on pointColorMode set v do if not layerTransfer do CyrusViewportRedraw()
@@ -2406,8 +2495,8 @@ initialRollupState:0x8
     parameters areaSettings (
         areaNodes type:#nodeTab tabSize:0 tabSizeVariable:true useNodeTmValidity:true useNodeOsValidity:true
         areaModes type:#intTab tabSize:0 tabSizeVariable:true
-        on areaNodes set v i do dirty=true
-        on areaModes set v i do dirty=true
+        on areaNodes set v i do markInputDirty()
+        on areaModes set v i do markInputDirty()
     )
     fn areaInputs = (
         local nodes=#();local modes=#()
@@ -2419,23 +2508,23 @@ initialRollupState:0x8
     )
     parameters colorGroups (
         sourceColors type:#colorTab tabSize:0 tabSizeVariable:true
-        on sourceColors set v i do dirty=true
+        on sourceColors set v i do markInputDirty()
     )
     parameters lineSettings (
         patternLines type:#nodeTab tabSize:0 tabSizeVariable:true useNodeTmValidity:true useNodeOsValidity:true
         patternWidths type:#worldUnitsTab tabSize:0 tabSizeVariable:true
         patternGroups type:#intTab tabSize:0 tabSizeVariable:true
         patternRestGroup type:#integer default:-1
-        on patternLines set v i do dirty=true
-        on patternWidths set v i do dirty=true
-        on patternGroups set v i do dirty=true
-        on patternRestGroup set v do dirty=true
+        on patternLines set v i do markInputDirty()
+        on patternWidths set v i do markInputDirty()
+        on patternGroups set v i do markInputDirty()
+        on patternRestGroup set v do markInputDirty()
     )
     fn assignLineGroup rows key = (
         undo "Cyrus Scatter band group" on (for i in rows where i>0 and i<=patternGroups.count do patternGroups[i]=key)
-        dirty=true
+        markInputDirty()
     )
-    fn assignRestGroup key = (patternRestGroup=key;dirty=true)
+    fn assignRestGroup key = (patternRestGroup=key;markInputDirty())
     fn cspImpl_externalChanged changedNodes = (
         if updateMode!=2 then false else (
             local affected=false
@@ -2452,7 +2541,7 @@ initialRollupState:0x8
                     dep=dep.parent
                 )
             )
-            if affected do dirty=true
+            if affected do markInputDirty()
             affected
         )
     )
@@ -2468,7 +2557,7 @@ initialRollupState:0x8
             throw()
         )
     )
-    fn invalidateLive = (if updateMode==2 do dirty=true)
+    fn invalidateLive = (if updateMode==2 do markInputDirty())
     fn canonicalColor c = (color (floor(c.r+0.5)) (floor(c.g+0.5)) (floor(c.b+0.5)))
     fn colorKey c = (
         local rgb=canonicalColor c
@@ -2486,7 +2575,7 @@ initialRollupState:0x8
         undo "Cyrus Scatter color group" on (
             for i in indices where i>0 and i<=sources.count do sourceColors[i]=canonicalColor c
         )
-        dirty=true
+        markInputDirty()
     )
     fn usableSource n = (
         isValidNode n and findItem (validSurfaces()) n==0 and classof n.baseObject!=AminScatterObject
@@ -2504,19 +2593,19 @@ initialRollupState:0x8
             if sourceZOffsets.count>0 do append sourceZOffsets 0.0
             if sourceScales.count>0 do append sourceScales 1.0
         )
-        dirty=true;sources.count
+        markInputDirty();sources.count
     )
     fn addPointSource = (
         local i=addEmptySource()
         while sourcePoint.count<sources.count do append sourcePoint false
-        sourcePoint[i]=true;dirty=true;i
+        sourcePoint[i]=true;markInputDirty();i
     )
     fn replacePointSource row node = (
         if not (isPointSource row) or not (usableSource node) or findItem sources node>0 do return false
         undo "Cyrus Scatter replace point" on (
             sources[row]=node;sourcePoint[row]=false;sourceEmpty[row]=false
         )
-        dirty=true;previewBuildCount=0;true
+        markInputDirty();previewBuildCount=0;true
     )
     fn placementRadii rows plants = (
         if this.proceduralPolicy() do return this.procRadii rows plants
@@ -2548,7 +2637,7 @@ initialRollupState:0x8
     fn validSources = (for i=1 to sources.count where (isEmptySource i) or (usableSource sources[i]) collect (if isEmptySource i then -i else sources[i]))
     parameters strokeSettings (
         streetStraight type:#boolean default:false
-        on streetStraight set v do dirty=true
+        on streetStraight set v do markInputDirty()
         strokeSides type:#intTab tabSize:0 tabSizeVariable:true
         patternPaths type:#nodeTab tabSize:0 tabSizeVariable:true
         strokeModes type:#intTab tabSize:0 tabSizeVariable:true
@@ -2559,7 +2648,7 @@ initialRollupState:0x8
         strokeMin type:#floatTab tabSize:0 tabSizeVariable:true
         strokeMax type:#floatTab tabSize:0 tabSizeVariable:true
         analyzerNode type:#node useNodeTmValidity:true useNodeOsValidity:true
-        on analyzerNode set v do dirty=true
+        on analyzerNode set v do markInputDirty()
     )
     fn syncStrokes = (
         while edgeRotX.count<patternLines.count do append edgeRotX 0.0
@@ -2579,7 +2668,7 @@ initialRollupState:0x8
         append patternLines path;append patternWidths (units.decodeValue "1m")
         local key=if sources.count>0 then colorKey(sourceColor 1) else 0
         append strokeSides side;append patternGroups key;append strokeModes 1;append strokeMin 1.0;append strokeMax 1.0
-        syncStrokes();dirty=true;patternLines.count
+        syncStrokes();markInputDirty();patternLines.count
     )
     fn removeStroke row = (
         for pair in #(#strokeColorRows,#strokeSourceRows) do (
@@ -2591,7 +2680,7 @@ initialRollupState:0x8
             )
         )
         for key in #(#edgeRotX,#edgeRotY,#edgeRotZ,#edgeOffsets,#edgeAlong,#edgeAcross,#strokeSides,#patternLines,#patternWidths,#patternGroups,#strokeModes,#strokeMin,#strokeMax) do deleteItem (getProperty this key) row
-        dirty=true
+        markInputDirty()
     )
     fn setStrokeSelection row mode values = (
         local rows=if mode==1 then strokeColorRows else strokeSourceRows
@@ -2599,7 +2688,7 @@ initialRollupState:0x8
         for i=rows.count to 1 by -1 where rows[i]==row do (deleteItem rows i;deleteItem targets i)
         for value in values do (append rows row;append targets value)
         if mode==1 do patternGroups[row]=if values.count>0 then values[1] else -1
-        dirty=true
+        markInputDirty()
     )
     fn streetEdgeMask path = (
         if not isProperty path #streetVertices do throw "Update Surface Analyzer to use Street Side."
@@ -2615,7 +2704,7 @@ initialRollupState:0x8
     )
     parameters activationSettings (
         cyrusEnabled type:#boolean default:true
-        on cyrusEnabled set v do (dirty=true;CyrusViewportRedraw())
+        on cyrusEnabled set v do (markInputDirty();CyrusViewportRedraw())
     )
     fn analyzerOff n = (isValidNode n and isProperty n #cyrusEnabled and not n.cyrusEnabled)
     fn disabledAnalyzerInput = (
@@ -2627,9 +2716,9 @@ initialRollupState:0x8
         streetTrimStart type:#worldunits default:0
         streetTrimEnd type:#worldunits default:0
         centerStreetOffset type:#worldunits default:0
-        on streetTrimStart set v do dirty=true
-        on streetTrimEnd set v do dirty=true
-        on centerStreetOffset set v do dirty=true
+        on streetTrimStart set v do markInputDirty()
+        on streetTrimEnd set v do markInputDirty()
+        on centerStreetOffset set v do markInputDirty()
     )
     fn centerStreetPaths analyzer = (
         local paths=analyzer.packedLines analyzer.pathVertices analyzer.pathCounts
@@ -2737,9 +2826,9 @@ initialRollupState:0x8
         paintSetEnabled type:#boolean default:true
         paintSetVisible type:#boolean default:true
         uiPaintSetID type:#string default:""
-        on logicalParentID set value do dirty=true
-        on paintSetWeight set value do dirty=true
-        on paintSetEnabled set value do dirty=true
+        on logicalParentID set value do markInputDirty()
+        on paintSetWeight set value do markInputDirty()
+        on paintSetEnabled set value do markInputDirty()
     )
     fn logicalParent leaf = (
         if leaf.logicalParentID=="" do return leaf
@@ -2900,14 +2989,14 @@ initialRollupState:0x8
         groupRuleFootprints type:#boolTab tabSize:0 tabSizeVariable:true
         groupRulePlanar type:#boolTab tabSize:0 tabSizeVariable:true
         groupCenters type:#boolean default:false
-        on groupPolicy set value do dirty=true
-        on groupPriority set value do dirty=true
+        on groupPolicy set value do markInputDirty()
+        on groupPriority set value do markInputDirty()
     )
     local groupSnapshotKey="",groupSnapshotRows=#(),groupSolving=false,groupDisplayOnly=false
     local groupBuilds=0,groupHits=0,groupPrepareKey="",groupPrepareRows=#(),groupPrepareBuilds=0
     local groupEligible=0,groupConflicts=0,groupRemoved=0
     fn sharedSpacing = (overlapOwner!=undefined and (CyrusUsesSharedPolicy overlapOwner.groupPolicy))
-    fn invalidateGroups = (for group in this.layerObjects do group.dirty=true;CyrusViewportRedraw())
+    fn invalidateGroups = (for group in this.layerObjects do group.markInputDirty();CyrusViewportRedraw())
     fn groupCounters = (#(groupBuilds,groupHits,groupPrepareBuilds))
     fn groupStats = (#(groupEligible,groupRemoved,groupConflicts))
     fn setGroupDisplay mode = (
@@ -2960,7 +3049,7 @@ initialRollupState:0x8
         if groupPolicy==3 do return this.procInputKey()
         local s=stringStream ""
         with printAllElements on (
-            format "%|%|%|%|%|%|%|%|%|%|%|" currentTime CyrusPFRevision CyrusPFManualRevision cyrusEnabled this.layerEnabled groupRuleA groupRuleB groupRuleEnabled groupRuleGap groupRuleFootprints groupRulePlanar to:s
+            format "%|%|%|%|%|%|%|%|%|%|%|" (this.inputTimeKey()) CyrusPFRevision CyrusPFManualRevision cyrusEnabled this.layerEnabled groupRuleA groupRuleB groupRuleEnabled groupRuleGap groupRuleFootprints groupRulePlanar to:s
             format "Edit:%|" (CyrusEditStackKey this) to:s
             for group in this.layerObjects do (
                 format "Group:%:%:%:%:%|" group.layerID group.groupPriority (group.paintBaseInputKey (group.validSources()) true) (group.paintKey()) group.paintDensity to:s
@@ -3121,7 +3210,7 @@ initialRollupState:0x8
     fn cachedBlockerRows plants = (
         local stream=stringStream ""
         with printAllElements on (
-            format "%|%|%|%|" currentTime CyrusPFRevision CyrusPFManualRevision plants to:stream
+            format "%|%|%|%|" (this.inputTimeKey()) CyrusPFRevision CyrusPFManualRevision plants to:stream
             for key in (AminScatterLayerFields+#(#cyrusEnabled,#surfaceNodes,#strokeSides,#strokeModes,#strokeColorRows,#strokeColorKeys,#strokeSourceRows,#strokeSourceNodes,#strokeMin,#strokeMax,#analyzerNode)) do (
                 if isProperty this key do try(format "%:%|" key (getProperty this key) to:stream)catch()
             )
@@ -3315,7 +3404,9 @@ initialRollupState:0x8
         local token=undefined
         if CyrusPerfTraceBegin!=undefined do try(token=CyrusPerfTraceBegin this "preview_rebuild")catch()
         try (
+            this.inputTimeKey()
             local answer=cspImpl_refreshPreview()
+            inputTimeObserved=inputTimeStamp
             if token!=undefined and CyrusPerfTraceEnd!=undefined do try(CyrusPerfTraceEnd token #(previewError,generatedCount,cachedPointCount,previewBuildCount))catch()
             answer
         )catch(
@@ -3324,11 +3415,11 @@ initialRollupState:0x8
         )
     )
     fn checkAnalyzerRevision = (
-        if updateMode==2 and isValidNode areaAnalyzer and (areaUseLine or areaUsePoints) do if cachedAreaAnalyzerRun!=areaAnalyzer.getAnalysisRuns() do dirty=true
-        if updateMode==2 and isValidNode fallAnalyzer and (fallDelete or fallScale or fallDensity) do if cachedFallRun!=fallAnalyzer.getAnalysisRuns() do dirty=true
+        if updateMode==2 and isValidNode areaAnalyzer and (areaUseLine or areaUsePoints) do if cachedAreaAnalyzerRun!=areaAnalyzer.getAnalysisRuns() do markInputDirty()
+        if updateMode==2 and isValidNode fallAnalyzer and (fallDelete or fallScale or fallDensity) do if cachedFallRun!=fallAnalyzer.getAnalysisRuns() do markInputDirty()
         if updateMode==2 and diversityMode==4 do (
             local revision=if isValidNode analyzerNode then analyzerNode.getAnalysisRuns() else -1
-            if revision!=cachedAnalyzerRun do dirty=true
+            if revision!=cachedAnalyzerRun do markInputDirty()
         )
     )
     local cachedDisabledInput=false,cachedDisabledPreview=undefined
@@ -3336,12 +3427,13 @@ initialRollupState:0x8
         local held=if interactionHeld==undefined then CyrusInteractionHeld() else interactionHeld
         if held do ((CyrusWasDragging=true;CyrusScheduleRelease());return cachedPoints)
         local inputOff=disabledAnalyzerInput()
-        if inputOff!=cachedDisabledInput do (dirty=true;cachedDisabledInput=inputOff)
+        if inputOff!=cachedDisabledInput do (markInputDirty();cachedDisabledInput=inputOff)
         if inputOff do (
             if cachedDisabledPreview==undefined do cachedDisabledPreview=aminScatterBuildPreview #() #() #() 1
             return cachedDisabledPreview
         )
         checkAnalyzerRevision()
+        if updateMode==2 do this.invalidateInputTime()
         if dirty and (updateMode==2 or previewBuildCount==0) do refreshPreview()
         cachedPoints
     )
@@ -3360,7 +3452,7 @@ initialRollupState:0x8
         layerObjects type:#maxObjectTab tabSize:0 tabSizeVariable:true
         layerNames type:#stringTab tabSize:0 tabSizeVariable:true
         layerEnabled type:#boolTab tabSize:0 tabSizeVariable:true
-        on layerEnabled set v i do (for layer in layerObjects do layer.dirty=true)
+        on layerEnabled set v i do (for layer in layerObjects do layer.markInputDirty())
         activeLayer type:#integer default:1
     )
     fn setLayerTransfer state = (layerTransfer=state)
@@ -3372,7 +3464,7 @@ initialRollupState:0x8
         generatedCount=state[5];previewBuildCount=state[6];previewBuildMs=state[7]
         requestedCount=state[8];densityCapped=state[9]
     )
-    fn forcePreviewUpdate = (dirty=true;previewBuildCount=0)
+    fn forcePreviewUpdate = (markInputDirty();previewBuildCount=0)
     fn ensureLayers = layerObjects.count
     fn syncLayerSurface obj targets:undefined layerBudget:undefined = (
         obj.setOverlapOwner this
@@ -3393,11 +3485,16 @@ initialRollupState:0x8
     )
     local editCacheKey=""
     fn layerEntries includeDisabled:false = (
+        this.ensureTimeOwner()
+        if cyrusEnabled and updateMode==2 do (
+            this.liveTimeChanged()
+            this.inputTimeKey();inputTimeObserved=inputTimeStamp
+        )
         this.syncLogicalSettings()
         local key=CyrusEditStackKey this
         if key!=editCacheKey do (
             editCacheKey=key
-            for layer in layerObjects do (if groupPolicy==3 then layer.dirty=true else layer.forcePreviewUpdate())
+            for layer in layerObjects do (if groupPolicy==3 then layer.markInputDirty() else layer.forcePreviewUpdate())
         )
         local entries=#(),targets=validSurfaces()
         local enabledCount=(for i=1 to layerObjects.count where this.enabledLayer i collect i).count
@@ -3409,7 +3506,7 @@ initialRollupState:0x8
             append entries #(i,obj)
         )
         if (for e in entries where this.enabledLayer e[1] and e[2].dirty collect e).count>0 do
-            for e in entries where this.enabledLayer e[1] and not e[2].dirty and ((CyrusUsesSharedPolicy this.groupPolicy) or e[2].overlapEnabled) do e[2].dirty=true
+            for e in entries where this.enabledLayer e[1] and not e[2].dirty and ((CyrusUsesSharedPolicy this.groupPolicy) or e[2].overlapEnabled) do e[2].markInputDirty()
         entries
     )
     fn viewportLayerEntries held = (
@@ -3460,7 +3557,7 @@ initialRollupState:0x8
                 for layer in layerObjects do (
                     layer.overlapBlockers=for k in layer.overlapBlockers where k!=i collect (if k>i then k-1 else k)
 
-                    layer.dirty=true
+                    layer.markInputDirty()
                 )
                 deleteItem layerObjects i;deleteItem layerNames i;deleteItem layerEnabled i
                 if i<=layerVisible.count do deleteItem layerVisible i
@@ -3472,7 +3569,7 @@ initialRollupState:0x8
     fn refreshDisplay = (
         local entries=layerEntries(),pending=(CyrusUsesSharedPolicy this.groupPolicy) and groupSnapshotKey!="" and groupSnapshotKey!=this.groupInputKey()
         groupDisplayOnly=(CyrusUsesSharedPolicy this.groupPolicy) and updateMode==1
-        try (for entry in entries do (entry[2].refreshPreview();if pending and updateMode==1 do entry[2].dirty=true)) catch(groupDisplayOnly=false;throw())
+        try (for entry in entries do (entry[2].refreshPreview();if pending and updateMode==1 do entry[2].markInputDirty())) catch(groupDisplayOnly=false;throw())
         groupDisplayOnly=false;CyrusViewportRedraw()
     )
     fn refreshAll = (
@@ -3542,7 +3639,7 @@ initialRollupState:0x8
     fn checkPaintRevision = (
         if paintDocument!=undefined do (
             local state=cyrusBrushStats paintDocument
-            if state[6]==0 and state[1]!=cachedPaintRevision do (cachedPaintRevision=state[1];dirty=true)
+            if state[6]==0 and state[1]!=cachedPaintRevision do (cachedPaintRevision=state[1];markInputDirty())
         )
     )
     fn paintKey = (
@@ -3566,10 +3663,11 @@ initialRollupState:0x8
         if this.proceduralPolicy() do join post #(#procOrder,#procSetOrder,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procBackground,#procBackgroundIDs,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusBinding,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverID,#containerMode,#containerNodes)
         local stream=stringStream ""
         with printAllElements on (
-            format "%|%|%|%|%|" currentTime (if this.proceduralPolicy() then procGeometryRevision else CyrusPFRevision) (if this.proceduralPolicy() and overlapOwner!=undefined then overlapOwner.procManualRevision else CyrusPFManualRevision) (this.containerSourceKey plants) previewOnly to:stream
+            format "%|%|%|%|%|" (this.inputTimeKey()) (if this.proceduralPolicy() then procGeometryRevision else CyrusPFRevision) (if this.proceduralPolicy() and overlapOwner!=undefined then overlapOwner.procManualRevision else CyrusPFManualRevision) (this.containerSourceKey plants) previewOnly to:stream
             format "DensityMap:%|" (if densityMap==undefined then 0 else getHandleByAnim densityMap) to:stream
             format "Ownership:%:%:%:%:%|" logicalParentID paintSetEnabled paintSetWeight (this.effectivePopulation()) (this.effectiveSeed()) to:stream
             format "EffectiveRelax:%|" (relaxEnabled and not this.layerPaintActive()) to:stream
+            format "Texture:%|" (this.procWatchDensity()) to:stream
             for key in AminScatterLayerFields where findItem #(#paintDocument,#paintEnabled,#paintIdentity,#paintDensity,#bakedNodes,#showPoints,#pointsPerPlant,#updateMode,#autoRender,#previewBudget,#pointColorMode,#solidPointColor) key==0 and findItem post key==0 and findItem #(#paintView,#paintColor,#showCenters,#paintSetName,#paintSetVisible,#uiPaintSetID) key==0 do format "%:%|" key (if key==#sources then this.containerSourceKey (sources as array) else getProperty this key) to:stream
             for n in (this.validSurfaces()+(sources as array)+(areaNodes as array)+(patternLines as array)+#(analyzerNode,areaAnalyzer,fallAnalyzer)) where isValidNode n do (
                 local tm=n.objectTransform
@@ -3600,7 +3698,7 @@ initialRollupState:0x8
         local priorTransfer=layerTransfer
         layerTransfer=true
         try (for row in values do setProperty this row[1] row[2]) catch(layerTransfer=priorTransfer;throw())
-        layerTransfer=priorTransfer;dirty=true;true
+        layerTransfer=priorTransfer;markInputDirty();true
     )
     fn resetSelectedRandomization group = (
         local layer=this.selectedLayer()
@@ -3642,10 +3740,11 @@ initialRollupState:0x8
     fn proceduralPolicy = (if overlapOwner==undefined then groupPolicy==3 else overlapOwner.groupPolicy==3)
     fn procWatchDensity = (
         global CyrusDensityMapChanged
-        if procDensityMap!=densityMap do (
+        local watched=if distributionMode==3 then densityMap else undefined
+        if procDensityMap!=watched do (
             if procDensityWatch!=undefined do deleteChangeHandler procDensityWatch
-            procDensityWatch=undefined;procDensityMap=densityMap;procDensityRevision+=1
-            if densityMap!=undefined do procDensityWatch=when parameters densityMap changes id:#CyrusDensityMap affected do (CyrusDensityMapChanged affected)
+            procDensityWatch=undefined;procDensityMap=watched;procDensityRevision+=1
+            if watched!=undefined do procDensityWatch=when parameters watched changes id:#CyrusDensityMap affected do (CyrusDensityMapChanged affected)
         )
         procDensityRevision
     )
@@ -3954,7 +4053,7 @@ initialRollupState:0x8
             )
             append sources node;append sourceColors (this.sourceColor sources.count)
         )
-        dirty=true;true
+        markInputDirty();true
     )
     fn containerRefresh = (
         if containerReconciling do return false
@@ -4057,7 +4156,7 @@ initialRollupState:0x8
                     if pending.count>=512 do (leaf.containerScan=true;relevant=true)
                 )
             )
-            if relevant do (leaf.dirty=true;interested=true)
+            if relevant do (leaf.markInputDirty();interested=true)
             CyrusDiagnosticEmit "container.notification" "host_callback" leaf.layerID leaf.procEpoch (if relevant then "reconcile_needed" else "unrelated")
         )
         interested
@@ -4076,7 +4175,7 @@ initialRollupState:0x8
             )
         )
         if event==#deleted do affected=true
-        if affected do (procGeometryRevision+=1;dirty=true)
+        if affected do (procGeometryRevision+=1;markInputDirty())
         CyrusDiagnosticEmit "input.classified" "host_callback" layerID procEpoch (if affected then "geometry_dependency" else "unrelated")
         affected
     )
@@ -4084,7 +4183,7 @@ initialRollupState:0x8
         if not this.proceduralPolicy() do throw "Enable Procedural 0.7 to use source containers."
         if mode<1 or mode>4 do throw "Unknown source-container mode."
         undo "Cyrus source pool" on containerMode=mode
-        containerScan=true;containerConfigKey="";dirty=true
+        containerScan=true;containerConfigKey="";markInputDirty()
         local root=this.containerRoot();root.invalidateGroups();root.bindNativeUI()
     )
     fn containerAdd node globalPool:false = (
@@ -4118,7 +4217,7 @@ initialRollupState:0x8
     fn procInputKey = (
         local stream=stringStream ""
         with printAllElements on (
-            format "Proc1:%:%:%:%:%:%:%:%|" currentTime 0 procManualRevision cyrusEnabled layerEnabled (this.procEditKey()) procRuleScope procRuleA to:stream
+            format "Proc1:%:%:%:%:%:%:%:%|" (this.inputTimeKey()) 0 procManualRevision cyrusEnabled layerEnabled (this.procEditKey()) procRuleScope procRuleA to:stream
             format "%:%:%:%:%|" procRuleB procRuleEnabled procRuleMultiplier procRuleGap procRulePlanar to:stream
             for parent in this.logicalLayers() do for leaf in this.layerSets parent do (
                 leaf.containerRefresh()
@@ -4200,6 +4299,7 @@ initialRollupState:0x8
         #(cache,(aminScatterPreviewCount cache),data.count,radii,(if viewportMode==1 and showCenters then 4 else viewportMode),timeStamp()-start,(if isValidNode areaAnalyzer then areaAnalyzer.getAnalysisRuns() else -1),(if isValidNode fallAnalyzer then fallAnalyzer.getAnalysisRuns() else -1))
     )
     fn procInstallPreview state pending = (
+        inputTimeObserved=inputTimeStamp
         CyrusDiagnosticEmit "preview.installed" "engine" layerID procEpoch (if pending then "pending" else "current")
         cachedPoints=state[1];cachedPointCount=state[2];generatedCount=state[3];radiusPreview=state[4];uiPreviewMode=state[5]
         previewBuildMs=state[6];cachedAreaAnalyzerRun=state[7];cachedFallRun=state[8];cachedAnalyzerRun=-1
@@ -4444,7 +4544,7 @@ initialRollupState:0x8
         fn syncControls = (updateRadio.state=obj.updateMode;updateHint.text=if obj.updateMode==1 then "Pending edits wait for Update." else "Updates after a brief pause.";)
         on updateNow pressed do if controlsReady and not binding and obj!=undefined do (obj.refreshAll();CyrusViewportRedraw())
 
-        on updateRadio changed v do if controlsReady and not binding and obj!=undefined do (obj.updateMode=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on updateRadio changed v do if controlsReady and not binding and obj!=undefined do (obj.updateMode=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
 
 
 
@@ -4551,15 +4651,15 @@ initialRollupState:0x8
         on instancesLimitSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.viewportInstances=v;obj.refreshDisplay();syncControls();status.text=obj.allStatus();CyrusViewportRedraw())
         on faceLimitSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.viewportFaces=v;obj.refreshDisplay();syncControls();status.text=obj.allStatus();CyrusViewportRedraw())
         on previewCheck changed v do if controlsReady and not binding and obj!=undefined do (obj.showPoints=v;CyrusViewportRedraw())
-        on pointsSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.pointsPerPlant=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on pointsSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.pointsPerPlant=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
         on iconSpin changed v do if controlsReady and not binding and obj!=undefined do obj.iconSize=v
         on refreshButton pressed do if controlsReady and not binding and obj!=undefined do (obj.refreshAll();status.text=obj.allStatus();CyrusViewportRedraw())
         on clearBakedButton pressed do if controlsReady and not binding and obj!=undefined do obj.clearAllBaked()
 
-        on autoRenderCheck changed v do if controlsReady and not binding and obj!=undefined do (obj.autoRender=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
-        on budgetSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.previewBudget=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
-        on pointColorRadio changed v do if controlsReady and not binding and obj!=undefined do (obj.pointColorMode=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
-        on solidColorPicker changed v do if controlsReady and not binding and obj!=undefined do (obj.solidPointColor=v;obj.dirty=true;syncControls();CyrusViewportRedraw())
+        on autoRenderCheck changed v do if controlsReady and not binding and obj!=undefined do (obj.autoRender=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on budgetSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.previewBudget=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on pointColorRadio changed v do if controlsReady and not binding and obj!=undefined do (obj.pointColorMode=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on solidColorPicker changed v do if controlsReady and not binding and obj!=undefined do (obj.solidPointColor=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
 
 
 
@@ -4665,9 +4765,9 @@ initialRollupState:0x8
         movXMax=movYMax=movZMax=movementRange
         )
         syncColors()
-        dirty=true
+        markInputDirty()
     )
-    on attachedToNode n do (n.renderable=false;n.wirecolor=red)
+    on attachedToNode n do (n.renderable=false;n.wirecolor=red;timeOwnerRegistered=false;CyrusRegisterTimeOwner n)
     local iconCacheSize=undefined,iconCachePaths=#()
     fn iconLines = (
         if iconCacheSize==iconSize do return iconCachePaths
@@ -4767,9 +4867,10 @@ fn CyrusPFClear = (
 fn CyrusPFKey = (
  local s=stringStream ""
  with printAllElements on (
-  format "%|%|%|" currentTime CyrusPFRevision CyrusPFManualRevision to:s
+  format "%|%|%|" 0 CyrusPFRevision CyrusPFManualRevision to:s
   for n in objects where classof n.baseObject==AminScatterObject do (
    local r=n.baseObject
+   if r.updateMode==2 and r.groupPolicy!=3 do format "InputTime:%|" (r.publishedInputTime()) to:s
    format "Enabled:%|" r.cyrusEnabled to:s
    for key in #(#groupPolicy,#groupRuleA,#groupRuleB,#groupRuleEnabled,#groupRuleGap,#groupRuleFootprints,#groupRulePlanar) do format "%:%|" key (getProperty r key) to:s
    for layer in r.layerObjects do format "Brush:%:%:%|" layer.paintEnabled layer.paintDensity (layer.paintKey()) to:s
@@ -4784,6 +4885,7 @@ fn CyrusPFKey = (
     format "%|" r.surfaceNodes to:s
     -- Signature polling must never synchronize parameters or invalidate preview.
     for obj in r.layerObjects do (
+     format "InputTime:%|Texture:%|" (obj.publishedInputTime()) obj.procDensityRevision to:s
      format "DensityMap:%|" (if obj.densityMap==undefined then 0 else getHandleByAnim obj.densityMap) to:s
      if isValidNode obj.areaAnalyzer and (obj.areaUseLine or obj.areaUsePoints) do format "|AnalyzerArea:%|" (obj.areaAnalyzer.getAnalysisRuns()) to:s
      if isValidNode obj.fallAnalyzer and (obj.fallDelete or obj.fallScale or obj.fallDensity) do format "|Falloff:%|" (obj.fallAnalyzer.getAnalysisRuns()) to:s
@@ -4945,6 +5047,7 @@ fn CyrusScatterLiveBatchEnd event handles = (
     )
 )
 fn AminScatterLiveChanged event handles = (
+    if event==#deleted do CyrusPruneTimeOwners()
     CyrusDiagnosticEmit "input.received" "host_callback" "" 0 (event as string)
     if CyrusPerfTraceInput!=undefined do try(CyrusPerfTraceInput "scatter_input_received" event handles)catch()
     CyrusLiveChangeCalls+=1
@@ -4976,10 +5079,14 @@ fn AminScatterLiveChanged event handles = (
     )
 )
 fn AminScatterLiveTime = (
-    if AminScatterRenderRedrawHeld!=true do (
-        for n in objects where classof n.baseObject==AminScatterObject do (for entry in (n.baseObject.layerEntries includeDisabled:true) do entry[2].invalidateLive())
-        CyrusViewportRedraw()
+    if AminScatterRenderRedrawHeld==true do return false
+    local changed=false
+    for node in CyrusTimeOwners where isValidNode node and not node.isHidden do (
+        local root=node.baseObject
+        if root.liveTimeChanged() do changed=true
     )
+    if changed do CyrusViewportRedraw()
+    changed
 )
 AminScatterNodeEvents=NodeEventCallback hideChanged:CyrusRenderNodeChanged materialStructured:CyrusRenderNodeChanged materialOtherEvent:CyrusRenderNodeChanged nameChanged:CyrusRenderNodeChanged mouseUp:true delay:150 callbackBegin:CyrusScatterLiveBatchBegin callbackEnd:CyrusScatterLiveBatchEnd added:AminScatterLiveChanged deleted:AminScatterLiveChanged geometryChanged:AminScatterLiveChanged topologyChanged:AminScatterLiveChanged mappingChanged:AminScatterLiveChanged modelStructured:AminScatterLiveChanged controllerOtherEvent:AminScatterLiveChanged controllerStructured:AminScatterLiveChanged linkChanged:AminScatterLiveChanged
 registerTimeCallback AminScatterLiveTime
@@ -5169,11 +5276,21 @@ registerRedrawViewsCallback CyrusBrushViewportDraw
 global CyrusDensityMapChanged
 fn CyrusDensityMapChanged texture = (
     CyrusDiagnosticEmit "density.changed" "host_callback" "" 0 "parameter_notification"
+    if texture==undefined do return false
     local changed=false
     for node in objects where classof node.baseObject==AminScatterObject do (
-        for leaf in node.baseObject.layerObjects where leaf.procDensityMap==texture do (
-            leaf.procDensityRevision+=1;leaf.dirty=true;changed=true
+        for leaf in (#(node.baseObject)+node.baseObject.layerObjects) where leaf.procDensityMap==texture do (
+            leaf.procDensityRevision+=1;leaf.markInputDirty();changed=true
         )
     )
     if changed do ((CyrusPointPending=true;CyrusScheduleRelease());CyrusScheduleUI())
 )
+
+callbacks.removeScripts id:#CyrusInputTimeOwners
+callbacks.addScript #filePostOpen "CyrusResetTimeOwners()" id:#CyrusInputTimeOwners persistent:false
+callbacks.addScript #filePostMerge "CyrusResetTimeOwners()" id:#CyrusInputTimeOwners persistent:false
+callbacks.addScript #systemPostReset "CyrusResetTimeOwners()" id:#CyrusInputTimeOwners persistent:false
+callbacks.addScript #sceneUndo "CyrusResetTimeOwners()" id:#CyrusInputTimeOwners persistent:false
+callbacks.addScript #sceneRedo "CyrusResetTimeOwners()" id:#CyrusInputTimeOwners persistent:false
+callbacks.addScript #nodeCreated "CyrusRegisterTimeOwner (callbacks.notificationParam())" id:#CyrusInputTimeOwners persistent:false
+CyrusResetTimeOwners()

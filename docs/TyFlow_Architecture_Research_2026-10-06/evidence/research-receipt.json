@@ -1,0 +1,1647 @@
+{
+  "recorded_at_utc": "2026-10-06T08:11:27.562205+00:00",
+  "scope": "bounded static research; no target/Max runtime execution",
+  "python_version": "3.11.13",
+  "target": [
+    {
+      "path": "C:\\Program Files\\Autodesk\\3ds Max 2027\\Plugins\\tyFlow_2027.dlo",
+      "bytes": 650320384,
+      "sha256": "5b1068b5b3627f64f78cd2b51ca0c23d616be09943077d5ffcf1c6fecc713fd9",
+      "machine": "0x8664",
+      "optional_header_magic": "0x20b",
+      "clr_rva": 0,
+      "clr_bytes": 0,
+      "pinned_hash_matches": true
+    },
+    {
+      "path": "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\inputs\\tyFlow_2027.dlo",
+      "bytes": 650320384,
+      "sha256": "5b1068b5b3627f64f78cd2b51ca0c23d616be09943077d5ffcf1c6fecc713fd9",
+      "machine": "0x8664",
+      "optional_header_magic": "0x20b",
+      "clr_rva": 0,
+      "clr_bytes": 0,
+      "pinned_hash_matches": true
+    }
+  ],
+  "tools": [
+    {
+      "path": "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\tools\\ghidra\\ghidra_12.1.4_PUBLIC\\Ghidra\\application.properties",
+      "bytes": 659,
+      "sha256": "e84c26b08545eee63d24a1a8a4dd7905e4209538e2e7192093877c435c64eb67"
+    },
+    {
+      "path": "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\tools\\java\\jdk-21.0.12.1+1\\release",
+      "bytes": 1664,
+      "sha256": "07117c72ce033949c14878e07fbf2fe23f59a1f8c90a6d1351b5c89099847ce7"
+    },
+    {
+      "path": "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\tools\\ghidra-mcp\\GhidraMCP\\lib\\GhidraMCP-6.0.0.jar",
+      "bytes": 739004,
+      "sha256": "b652a23b433786ac2e51e650fb6020cfdbb8743db6f58f16531fcac010d13522"
+    },
+    {
+      "path": "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\start_headless.py",
+      "bytes": 1806,
+      "sha256": "590faeced2658ed10a8d6e604635f25e615381b8763e924fa1121f88b3f2e0b7"
+    },
+    {
+      "path": "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\mcp_request.py",
+      "bytes": 1795,
+      "sha256": "c739af83f5289241a758b2c067df9072dee1c4f14436c4c07fe9d6c419c121f0"
+    }
+  ],
+  "raw_pe_scan": {
+    "file": {
+      "path": "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\research-20261006\\anchors-v3\\static-anchors.json",
+      "bytes": 2163711,
+      "sha256": "8475ab80e6d00e359cc9cafa8369122a463b498a2395fc48547551d71f732f26"
+    },
+    "imports": 4620,
+    "selected_instruction_pattern_candidates": 1789,
+    "selected_rtti": 15,
+    "raw_counts": {
+      "?RegisterNotification@@YAHP6AXPEAXPEAUNotifyInfo@@@Z0H@Z": 125,
+      "?connectImpl@QObject@@CA?AVConnection@QMetaObject@@PEBV1@PEAPEAX01PEAVQSlotObjectBase@QtPrivate@@W4ConnectionType@Qt@@PEBHPEBU3@@Z": 973,
+      "?start@QTimer@@QEAAXXZ": 3,
+      "?connect@QObject@@SA?AVConnection@QMetaObject@@PEBV1@PEBD01W4ConnectionType@Qt@@@Z": 5,
+      "?setUpdatesEnabled@QWidget@@QEAAX_N@Z": 14,
+      "?stop@QTimer@@QEAAXXZ": 2,
+      "?start@QTimer@@QEAAXH@Z": 2,
+      "?blockSignals@QObject@@QEAA_N_N@Z": 386,
+      "?BeginEditParams@ClassDesc2@@UEAAXPEAVIObjParam@@PEAVReferenceMaker@@KPEAVAnimatable@@@Z": 2,
+      "?EndEditParams@ClassDesc2@@UEAAXPEAVIObjParam@@PEAVReferenceMaker@@KPEAVAnimatable@@@Z": 2,
+      "?UnRegisterNotification@@YAHP6AXPEAXPEAUNotifyInfo@@@Z0@Z": 3,
+      "?isOpen@QmaxRollup@MaxSDK@@QEBA_NXZ": 3,
+      "?numRollups@QmaxRollupContainer@MaxSDK@@QEBAHXZ": 4,
+      "?rollup@QmaxRollupContainer@MaxSDK@@QEBAPEAVQmaxRollup@2@H@Z": 4,
+      "?takeRollup@QmaxRollupContainer@MaxSDK@@QEAAPEAVQmaxRollup@2@H@Z": 3,
+      "?addRollup@QmaxRollupContainer@MaxSDK@@QEAAXPEAVQmaxRollup@2@@Z": 3,
+      "?CreateRParamMap2@@YAPEAVIParamMap2@@FPEAVIParamBlock2@@PEAVIRendParams@@AEAVQMaxParamBlockWidget@MaxSDK@@PEB_WKH@Z": 3,
+      "?setCategory@QmaxRollup@MaxSDK@@QEAAXH@Z": 3,
+      "?widget@QmaxRollup@MaxSDK@@QEBAPEAVQWidget@@XZ": 4,
+      "?container@QmaxRollup@MaxSDK@@QEBAPEAVQmaxRollupContainer@2@XZ": 3,
+      "?takeRollup@QmaxRollupContainer@MaxSDK@@QEAAXPEAVQmaxRollup@2@@Z": 2,
+      "?UnRegisterNotification@@YAHP6AXPEAXPEAUNotifyInfo@@@Z0H@Z": 111,
+      "?Validity@ObjectState@@QEBA?AVInterval@@H@Z": 19,
+      "?CreateRWParamMap2@@YAPEAVIParamMap2@@FPEAVIParamBlock2@@PEAVIRollupWindow@@PEAUHINSTANCE__@@PEB_W3KPEAVParamMap2UserDlgProc@@H@Z": 2,
+      "?UpdateValidity@Object@@QEAAXW4ChannelIndex@@VInterval@@@Z": 78,
+      "?NotifyDependents@ReferenceTarget@@UEAA?AW4RefResult@@AEBVInterval@@_KIKHPEAV1@W4NotifyDependentsOption@@@Z": 9,
+      "?activate@QLayout@@QEAA_NXZ": 3,
+      "?close@QmaxRollup@MaxSDK@@QEAAXXZ": 3,
+      "?open@QmaxRollup@MaxSDK@@QEAAXXZ": 3,
+      "?title@QmaxRollup@MaxSDK@@QEBA?AVQString@@XZ": 2,
+      "?category@QmaxRollup@MaxSDK@@QEBAHXZ": 2,
+      "?sortRollups@QmaxRollupContainer@MaxSDK@@QEAAXXZ": 2,
+      "?NotifyDependents@ReferenceMaker@@UEAA?AW4RefResult@@AEBVInterval@@_KIKHPEAVReferenceTarget@@W4NotifyDependentsOption@@@Z": 1,
+      "?opened@QmaxRollup@MaxSDK@@QEAAXXZ": 1,
+      "?closed@QmaxRollup@MaxSDK@@QEAAXXZ": 1,
+      "?ObjectValidity@Object@@UEAA?AVInterval@@H@Z": 1,
+      "?ObjectValidity@SimpleObjectBase@@UEAA?AVInterval@@H@Z": 1,
+      "?ObjectValidity@SimpleWSMObject@@UEAA?AVInterval@@H@Z": 1
+    },
+    "warning": "Raw pattern counts are not verified call counts"
+  },
+  "batches": [
+    {
+      "name": "batch01",
+      "manifest": {
+        "path": "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\research-20261006\\batch01\\manifest.json",
+        "bytes": 16475,
+        "sha256": "255c761790f01bdab855d1bd56da943cbbcfa4af072c7fdd5eda57f01636744f"
+      },
+      "artifact_count": 71,
+      "hash_mismatches": [],
+      "selection": [
+        {
+          "label": "Signal_Guarded_Binding_B",
+          "begin": "0x139e1a0",
+          "end_exclusive": "0x139e2e7",
+          "basis": "PE unwind region; semantic labels are analyst hypotheses"
+        },
+        {
+          "label": "Signal_Guarded_Binding_A",
+          "begin": "0x139ffd4",
+          "end_exclusive": "0x13a008c",
+          "basis": "PE unwind region; semantic labels are analyst hypotheses"
+        },
+        {
+          "label": "TFlow_ClassDesc_Slot44",
+          "begin": "0x14bb770",
+          "end_exclusive": "0x14bb7b6",
+          "basis": "PE unwind region; semantic labels are analyst hypotheses"
+        },
+        {
+          "label": "Rollup_Selection_Path",
+          "begin": "0x151e060",
+          "end_exclusive": "0x151e8fd",
+          "basis": "PE unwind region; semantic labels are analyst hypotheses"
+        },
+        {
+          "label": "Rollup_Transfer_Path",
+          "begin": "0x1c736a0",
+          "end_exclusive": "0x1c745ae",
+          "basis": "PE unwind region; semantic labels are analyst hypotheses"
+        },
+        {
+          "label": "PBAccessor_Slot7",
+          "begin": "0x1dcb4c0",
+          "end_exclusive": "0x1dcb57b",
+          "basis": "PE unwind region; semantic labels are analyst hypotheses"
+        },
+        {
+          "label": "PBAccessor_Slot4",
+          "begin": "0x1dcbd80",
+          "end_exclusive": "0x1dcbdfe",
+          "basis": "PE unwind region; semantic labels are analyst hypotheses"
+        },
+        {
+          "label": "PBAccessor_Slot3",
+          "begin": "0x1dcbe00",
+          "end_exclusive": "0x1dcc2ef",
+          "basis": "PE unwind region; semantic labels are analyst hypotheses"
+        },
+        {
+          "label": "PBAccessor_Slot8",
+          "begin": "0x1dcc3d0",
+          "end_exclusive": "0x1dcc6c3",
+          "basis": "PE unwind region; semantic labels are analyst hypotheses"
+        },
+        {
+          "label": "Birth_Wrapper_Slot50",
+          "begin": "0x2da89c0",
+          "end_exclusive": "0x2da8bb9",
+          "basis": "PE unwind region; semantic labels are analyst hypotheses"
+        },
+        {
+          "label": "Birth_Wrapper_Slot52",
+          "begin": "0x2da9070",
+          "end_exclusive": "0x2da92c5",
+          "basis": "PE unwind region; semantic labels are analyst hypotheses"
+        },
+        {
+          "label": "TFlow_ClassDesc_Slot11",
+          "begin": "0x31c3050",
+          "end_exclusive": "0x31c3225",
+          "basis": "PE unwind region; semantic labels are analyst hypotheses"
+        },
+        {
+          "label": "PBAccessor_Slot2",
+          "begin": "0x3ee59a0",
+          "end_exclusive": "0x3ee59ff",
+          "basis": "PE unwind region; semantic labels are analyst hypotheses"
+        },
+        {
+          "label": "TFlow_Cache_Wrapper_Slot50",
+          "begin": "0x3f0c020",
+          "end_exclusive": "0x3f0c159",
+          "basis": "PE unwind region; semantic labels are analyst hypotheses"
+        },
+        {
+          "label": "TFlow_Cache_Wrapper_Slot52",
+          "begin": "0x3f111a0",
+          "end_exclusive": "0x3f11380",
+          "basis": "PE unwind region; semantic labels are analyst hypotheses"
+        },
+        {
+          "label": "TFlow_Settings_Wrapper_Slot52",
+          "begin": "0x3f123d0",
+          "end_exclusive": "0x3f12b12",
+          "basis": "PE unwind region; semantic labels are analyst hypotheses"
+        },
+        {
+          "label": "TFlow_Cache_Wrapper_Slot51",
+          "begin": "0x3f138e0",
+          "end_exclusive": "0x3f13d05",
+          "basis": "PE unwind region; semantic labels are analyst hypotheses"
+        },
+        {
+          "label": "Rollup_Open_Close_State",
+          "begin": "0x3ffaf30",
+          "end_exclusive": "0x3ffb2c8",
+          "basis": "PE unwind region; semantic labels are analyst hypotheses"
+        },
+        {
+          "label": "Rollup_Order_State",
+          "begin": "0x3ffb300",
+          "end_exclusive": "0x3ffb6c8",
+          "basis": "PE unwind region; semantic labels are analyst hypotheses"
+        },
+        {
+          "label": "FilterableCombo_Slot5",
+          "begin": "0x4018c90",
+          "end_exclusive": "0x4018f0c",
+          "basis": "PE unwind region; semantic labels are analyst hypotheses"
+        },
+        {
+          "label": "FilterableCombo_Slot47",
+          "begin": "0x4018f10",
+          "end_exclusive": "0x4018f4d",
+          "basis": "PE unwind region; semantic labels are analyst hypotheses"
+        },
+        {
+          "label": "FilterableCombo_Slot46",
+          "begin": "0x401a8a0",
+          "end_exclusive": "0x401acab",
+          "basis": "PE unwind region; semantic labels are analyst hypotheses"
+        },
+        {
+          "label": "LineEdit_Construction_Caller",
+          "begin": "0x4023420",
+          "end_exclusive": "0x4023631",
+          "basis": "PE unwind region; semantic labels are analyst hypotheses"
+        }
+      ],
+      "results": [
+        {
+          "label": "Signal_Guarded_Binding_B",
+          "va_begin": "18139e1a0",
+          "va_last": "18139e2e6",
+          "disassembly_return": "true",
+          "instructions": 77,
+          "instruction_bytes": 327,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "Signal_Guarded_Binding_A",
+          "va_begin": "18139ffd4",
+          "va_last": "1813a008b",
+          "disassembly_return": "true",
+          "instructions": 40,
+          "instruction_bytes": 184,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "TFlow_ClassDesc_Slot44",
+          "va_begin": "1814bb770",
+          "va_last": "1814bb7b5",
+          "disassembly_return": "true",
+          "instructions": 19,
+          "instruction_bytes": 70,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "Rollup_Selection_Path",
+          "va_begin": "18151e060",
+          "va_last": "18151e8fc",
+          "disassembly_return": "true",
+          "instructions": 567,
+          "instruction_bytes": 2205,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "Rollup_Transfer_Path",
+          "va_begin": "181c736a0",
+          "va_last": "181c745ad",
+          "disassembly_return": "true",
+          "instructions": 956,
+          "instruction_bytes": 3854,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "PBAccessor_Slot7",
+          "va_begin": "181dcb4c0",
+          "va_last": "181dcb57a",
+          "disassembly_return": "true",
+          "instructions": 52,
+          "instruction_bytes": 187,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "PBAccessor_Slot4",
+          "va_begin": "181dcbd80",
+          "va_last": "181dcbdfd",
+          "disassembly_return": "true",
+          "instructions": 36,
+          "instruction_bytes": 126,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "PBAccessor_Slot3",
+          "va_begin": "181dcbe00",
+          "va_last": "181dcc2ee",
+          "disassembly_return": "true",
+          "instructions": 348,
+          "instruction_bytes": 1263,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "PBAccessor_Slot8",
+          "va_begin": "181dcc3d0",
+          "va_last": "181dcc6c2",
+          "disassembly_return": "true",
+          "instructions": 201,
+          "instruction_bytes": 755,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "Birth_Wrapper_Slot50",
+          "va_begin": "182da89c0",
+          "va_last": "182da8bb8",
+          "disassembly_return": "true",
+          "instructions": 119,
+          "instruction_bytes": 505,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "Birth_Wrapper_Slot52",
+          "va_begin": "182da9070",
+          "va_last": "182da92c4",
+          "disassembly_return": "true",
+          "instructions": 148,
+          "instruction_bytes": 597,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "TFlow_ClassDesc_Slot11",
+          "va_begin": "1831c3050",
+          "va_last": "1831c3224",
+          "disassembly_return": "true",
+          "instructions": 120,
+          "instruction_bytes": 469,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "PBAccessor_Slot2",
+          "va_begin": "183ee59a0",
+          "va_last": "183ee59fe",
+          "disassembly_return": "true",
+          "instructions": 28,
+          "instruction_bytes": 95,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "TFlow_Cache_Wrapper_Slot50",
+          "va_begin": "183f0c020",
+          "va_last": "183f0c158",
+          "disassembly_return": "true",
+          "instructions": 72,
+          "instruction_bytes": 313,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "TFlow_Cache_Wrapper_Slot52",
+          "va_begin": "183f111a0",
+          "va_last": "183f1137f",
+          "disassembly_return": "true",
+          "instructions": 114,
+          "instruction_bytes": 480,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "TFlow_Settings_Wrapper_Slot52",
+          "va_begin": "183f123d0",
+          "va_last": "183f12b11",
+          "disassembly_return": "true",
+          "instructions": 468,
+          "instruction_bytes": 1858,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "TFlow_Cache_Wrapper_Slot51",
+          "va_begin": "183f138e0",
+          "va_last": "183f13d04",
+          "disassembly_return": "true",
+          "instructions": 271,
+          "instruction_bytes": 1061,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "Rollup_Open_Close_State",
+          "va_begin": "183ffaf30",
+          "va_last": "183ffb2c7",
+          "disassembly_return": "true",
+          "instructions": 235,
+          "instruction_bytes": 920,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "Rollup_Order_State",
+          "va_begin": "183ffb300",
+          "va_last": "183ffb6c7",
+          "disassembly_return": "true",
+          "instructions": 258,
+          "instruction_bytes": 968,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "FilterableCombo_Slot5",
+          "va_begin": "184018c90",
+          "va_last": "184018f0b",
+          "disassembly_return": "true",
+          "instructions": 161,
+          "instruction_bytes": 636,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "FilterableCombo_Slot47",
+          "va_begin": "184018f10",
+          "va_last": "184018f4c",
+          "disassembly_return": "true",
+          "instructions": 19,
+          "instruction_bytes": 61,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "FilterableCombo_Slot46",
+          "va_begin": "18401a8a0",
+          "va_last": "18401acaa",
+          "disassembly_return": "true",
+          "instructions": 264,
+          "instruction_bytes": 1035,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "LineEdit_Construction_Caller",
+          "va_begin": "184023420",
+          "va_last": "184023630",
+          "disassembly_return": "true",
+          "instructions": 127,
+          "instruction_bytes": 529,
+          "decompile_completed": true,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "name": "batch02",
+      "manifest": {
+        "path": "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\research-20261006\\batch02\\manifest.json",
+        "bytes": 13618,
+        "sha256": "07f33803f14f2807f801e116c4e90e2a0f4ad6c474b82355782211a7108112a4"
+      },
+      "artifact_count": 56,
+      "hash_mismatches": [],
+      "selection": [
+        {
+          "label": "TFlow_BeginEditParams_7",
+          "begin": "0x3efcb30",
+          "end_exclusive": "0x3efd09f",
+          "bytes": 1391,
+          "unwind_info_rva": "0x9d16a38",
+          "unwind_flags": 2,
+          "method": "Animatable::BeginEditParams",
+          "slot": 7
+        },
+        {
+          "label": "TFlow_RenderBegin_31",
+          "begin": "0x3f03b00",
+          "end_exclusive": "0x3f03f41",
+          "bytes": 1089,
+          "unwind_info_rva": "0x9d16e9c",
+          "unwind_flags": 3,
+          "method": "Animatable::RenderBegin",
+          "slot": 31
+        },
+        {
+          "label": "TFlow_RenderEnd_32",
+          "begin": "0x3f04060",
+          "end_exclusive": "0x3f04091",
+          "bytes": 49,
+          "unwind_info_rva": "0x9d16ef8",
+          "unwind_flags": 3,
+          "method": "Animatable::RenderEnd",
+          "slot": 32
+        },
+        {
+          "label": "TFlow_NotifyRefChanged_161",
+          "begin": "0x3f03500",
+          "end_exclusive": "0x3f035b2",
+          "bytes": 178,
+          "unwind_info_rva": "0x9d16b08",
+          "unwind_flags": 0,
+          "method": "ReferenceMaker::NotifyRefChanged",
+          "slot": 161
+        },
+        {
+          "label": "TFlow_PrepareDisplay_172",
+          "begin": "0x3f46a60",
+          "end_exclusive": "0x3f46a8c",
+          "bytes": 44,
+          "unwind_info_rva": "0x9d1b0d8",
+          "unwind_flags": 0,
+          "method": "BaseObject::PrepareDisplay",
+          "slot": 172
+        },
+        {
+          "label": "TFlow_Display_180",
+          "begin": "0x3f462b0",
+          "end_exclusive": "0x3f462dc",
+          "bytes": 44,
+          "unwind_info_rva": "0x9d1b070",
+          "unwind_flags": 3,
+          "method": "BaseObject::Display",
+          "slot": 180
+        },
+        {
+          "label": "TFlow_Eval_236",
+          "begin": "0x3eff670",
+          "end_exclusive": "0x3eff68e",
+          "bytes": 30,
+          "unwind_info_rva": "0x9d17a78",
+          "unwind_flags": 0,
+          "method": "Object::Eval",
+          "slot": 236
+        },
+        {
+          "label": "TFlow_ObjectValidity_272",
+          "begin": "0x3f03740",
+          "end_exclusive": "0x3f03890",
+          "bytes": 336,
+          "unwind_info_rva": "0x9d168f4",
+          "unwind_flags": 0,
+          "method": "Object::ObjectValidity",
+          "slot": 272
+        },
+        {
+          "label": "TFlow_GetRenderMesh_308",
+          "begin": "0x3f01cd0",
+          "end_exclusive": "0x3f01d43",
+          "bytes": 115,
+          "unwind_info_rva": "0x9d17a80",
+          "unwind_flags": 0,
+          "method": "GeomObject::GetRenderMesh",
+          "slot": 308
+        },
+        {
+          "label": "FilterPopup_Initialize",
+          "begin": "0x401a3e0",
+          "end_exclusive": "0x401a898",
+          "bytes": 1208,
+          "unwind_info_rva": "0x9d29ca0",
+          "unwind_flags": 2
+        },
+        {
+          "label": "FilterPopup_FilterModel",
+          "begin": "0x4019d20",
+          "end_exclusive": "0x401a163",
+          "bytes": 1091,
+          "unwind_info_rva": "0x9d29d34",
+          "unwind_flags": 3
+        },
+        {
+          "label": "ParamWidget_Dispatch",
+          "begin": "0x3fe5530",
+          "end_exclusive": "0x3fe56aa",
+          "bytes": 378,
+          "unwind_info_rva": "0x9d2352c",
+          "unwind_flags": 2
+        },
+        {
+          "label": "TFlow_PB_Set_Handler",
+          "begin": "0x3ee5a00",
+          "end_exclusive": "0x3ee5a2e",
+          "bytes": 46,
+          "unwind_info_rva": "0x9d18e64",
+          "unwind_flags": 0
+        },
+        {
+          "label": "TFlow_Cache_Reset",
+          "begin": "0x3f8cb40",
+          "end_exclusive": "0x3f8cd8b",
+          "bytes": 587,
+          "unwind_info_rva": "0x9d1e854",
+          "unwind_flags": 2
+        },
+        {
+          "label": "Global_Mesh_Cache_Clear",
+          "begin": "0x3fa4fa0",
+          "end_exclusive": "0x3fa51c7",
+          "bytes": 551,
+          "unwind_info_rva": "0x9d202d4",
+          "unwind_flags": 0
+        },
+        {
+          "label": "Cache_UI_Binding",
+          "begin": "0x3fa0390",
+          "end_exclusive": "0x3fa0e1b",
+          "bytes": 2699,
+          "unwind_info_rva": "0x9d1ee30",
+          "unwind_flags": 2
+        },
+        {
+          "label": "Node_UI_Update",
+          "begin": "0x3ff3950",
+          "end_exclusive": "0x3ff3faf",
+          "bytes": 1631,
+          "unwind_info_rva": "0x9d243ec",
+          "unwind_flags": 3
+        },
+        {
+          "label": "Texture_UI_Update",
+          "begin": "0x3ff3fb0",
+          "end_exclusive": "0x3ff4314",
+          "bytes": 868,
+          "unwind_info_rva": "0x9d244a4",
+          "unwind_flags": 2
+        }
+      ],
+      "results": [
+        {
+          "label": "TFlow_BeginEditParams_7",
+          "va_begin": "183efcb30",
+          "va_last": "183efd09e",
+          "disassembly_return": "true",
+          "instructions": 319,
+          "instruction_bytes": 1391,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "TFlow_RenderBegin_31",
+          "va_begin": "183f03b00",
+          "va_last": "183f03f40",
+          "disassembly_return": "true",
+          "instructions": 266,
+          "instruction_bytes": 1089,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "TFlow_RenderEnd_32",
+          "va_begin": "183f04060",
+          "va_last": "183f04090",
+          "disassembly_return": "true",
+          "instructions": 12,
+          "instruction_bytes": 49,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "TFlow_NotifyRefChanged_161",
+          "va_begin": "183f03500",
+          "va_last": "183f035b1",
+          "disassembly_return": "true",
+          "instructions": 48,
+          "instruction_bytes": 178,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "TFlow_PrepareDisplay_172",
+          "va_begin": "183f46a60",
+          "va_last": "183f46a8b",
+          "disassembly_return": "true",
+          "instructions": 11,
+          "instruction_bytes": 44,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "TFlow_Display_180",
+          "va_begin": "183f462b0",
+          "va_last": "183f462db",
+          "disassembly_return": "true",
+          "instructions": 13,
+          "instruction_bytes": 44,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "TFlow_Eval_236",
+          "va_begin": "183eff670",
+          "va_last": "183eff68d",
+          "disassembly_return": "true",
+          "instructions": 10,
+          "instruction_bytes": 30,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "TFlow_ObjectValidity_272",
+          "va_begin": "183f03740",
+          "va_last": "183f0388f",
+          "disassembly_return": "true",
+          "instructions": 85,
+          "instruction_bytes": 336,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "TFlow_GetRenderMesh_308",
+          "va_begin": "183f01cd0",
+          "va_last": "183f01d42",
+          "disassembly_return": "true",
+          "instructions": 29,
+          "instruction_bytes": 115,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "FilterPopup_Initialize",
+          "va_begin": "18401a3e0",
+          "va_last": "18401a897",
+          "disassembly_return": "true",
+          "instructions": 274,
+          "instruction_bytes": 1208,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "FilterPopup_FilterModel",
+          "va_begin": "184019d20",
+          "va_last": "18401a162",
+          "disassembly_return": "true",
+          "instructions": 277,
+          "instruction_bytes": 1090,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "ParamWidget_Dispatch",
+          "va_begin": "183fe5530",
+          "va_last": "183fe56a9",
+          "disassembly_return": "true",
+          "instructions": 86,
+          "instruction_bytes": 378,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "TFlow_PB_Set_Handler",
+          "va_begin": "183ee5a00",
+          "va_last": "183ee5a2d",
+          "disassembly_return": "true",
+          "instructions": 12,
+          "instruction_bytes": 46,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "TFlow_Cache_Reset",
+          "va_begin": "183f8cb40",
+          "va_last": "183f8cd8a",
+          "disassembly_return": "true",
+          "instructions": 135,
+          "instruction_bytes": 587,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "Global_Mesh_Cache_Clear",
+          "va_begin": "183fa4fa0",
+          "va_last": "183fa51c6",
+          "disassembly_return": "true",
+          "instructions": 148,
+          "instruction_bytes": 551,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "Cache_UI_Binding",
+          "va_begin": "183fa0390",
+          "va_last": "183fa0e1a",
+          "disassembly_return": "true",
+          "instructions": 663,
+          "instruction_bytes": 2699,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "Node_UI_Update",
+          "va_begin": "183ff3950",
+          "va_last": "183ff3fae",
+          "disassembly_return": "true",
+          "instructions": 420,
+          "instruction_bytes": 1631,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "Texture_UI_Update",
+          "va_begin": "183ff3fb0",
+          "va_last": "183ff4313",
+          "disassembly_return": "true",
+          "instructions": 228,
+          "instruction_bytes": 868,
+          "decompile_completed": true,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "name": "batch03-v2",
+      "manifest": {
+        "path": "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\research-20261006\\batch03-v2\\manifest.json",
+        "bytes": 10867,
+        "sha256": "50505ec7d015b5cd37a0a8a9a6454cf8542f70d8ff986ed75a91966f33311a79"
+      },
+      "artifact_count": 26,
+      "hash_mismatches": [],
+      "selection": [
+        {
+          "label": "Flow_Evaluation",
+          "begin": "0x3f60b80",
+          "end_exclusive": "0x3f612d8",
+          "evidence": "Unwind root plus transitive chained contiguous regions",
+          "unwind_regions": [
+            {
+              "begin": "0x3f60b80",
+              "end_exclusive": "0x3f612d8",
+              "bytes": 1880,
+              "unwind_info_rva": "0x9d1d0c4",
+              "unwind_flags": 3
+            }
+          ]
+        },
+        {
+          "label": "Flow_InvalidateNotify",
+          "begin": "0x3f12b20",
+          "end_exclusive": "0x3f12c85",
+          "evidence": "Unwind root plus transitive chained contiguous regions",
+          "unwind_regions": [
+            {
+              "begin": "0x3f12b20",
+              "end_exclusive": "0x3f12c85",
+              "bytes": 357,
+              "unwind_info_rva": "0x9d16d4c",
+              "unwind_flags": 0
+            }
+          ]
+        },
+        {
+          "label": "Flow_Time_Convert",
+          "begin": "0x3f69560",
+          "end_exclusive": "0x3f69605",
+          "evidence": "Unwind root plus transitive chained contiguous regions",
+          "unwind_regions": [
+            {
+              "begin": "0x3f69560",
+              "end_exclusive": "0x3f69605",
+              "bytes": 165,
+              "unwind_info_rva": "0x9d1d080",
+              "unwind_flags": 0
+            }
+          ]
+        },
+        {
+          "label": "PB_Set_Full",
+          "begin": "0x3ee5a00",
+          "end_exclusive": "0x3ee6055",
+          "evidence": "Unwind root plus transitive chained contiguous regions",
+          "unwind_regions": [
+            {
+              "begin": "0x3ee5a00",
+              "end_exclusive": "0x3ee5a2e",
+              "bytes": 46,
+              "unwind_info_rva": "0x9d18e64",
+              "unwind_flags": 0
+            },
+            {
+              "begin": "0x3ee5a2e",
+              "end_exclusive": "0x3ee5ac3",
+              "bytes": 149,
+              "unwind_info_rva": "0x9d18e70",
+              "unwind_flags": 4,
+              "chained_parent": {
+                "begin": "0x3ee5a00",
+                "end_exclusive": "0x3ee5a2e",
+                "unwind_info_rva": "0x9d18e64"
+              }
+            },
+            {
+              "begin": "0x3ee5ac3",
+              "end_exclusive": "0x3ee6047",
+              "bytes": 1412,
+              "unwind_info_rva": "0x9d18e84",
+              "unwind_flags": 4,
+              "chained_parent": {
+                "begin": "0x3ee6047",
+                "end_exclusive": "0x3ee604c",
+                "unwind_info_rva": "0x9d18ea4"
+              }
+            },
+            {
+              "begin": "0x3ee6047",
+              "end_exclusive": "0x3ee604c",
+              "bytes": 5,
+              "unwind_info_rva": "0x9d18ea4",
+              "unwind_flags": 4,
+              "chained_parent": {
+                "begin": "0x3ee5a00",
+                "end_exclusive": "0x3ee5a2e",
+                "unwind_info_rva": "0x9d18e64"
+              }
+            },
+            {
+              "begin": "0x3ee604c",
+              "end_exclusive": "0x3ee6055",
+              "bytes": 9,
+              "unwind_info_rva": "0x9d18eb8",
+              "unwind_flags": 4,
+              "chained_parent": {
+                "begin": "0x3ee5a00",
+                "end_exclusive": "0x3ee5a2e",
+                "unwind_info_rva": "0x9d18e64"
+              }
+            }
+          ]
+        },
+        {
+          "label": "Display_Full",
+          "begin": "0x3f462b0",
+          "end_exclusive": "0x3f469e9",
+          "evidence": "Unwind root plus transitive chained contiguous regions",
+          "unwind_regions": [
+            {
+              "begin": "0x3f462b0",
+              "end_exclusive": "0x3f462dc",
+              "bytes": 44,
+              "unwind_info_rva": "0x9d1b070",
+              "unwind_flags": 3
+            },
+            {
+              "begin": "0x3f462dc",
+              "end_exclusive": "0x3f4644f",
+              "bytes": 371,
+              "unwind_info_rva": "0x9d1b094",
+              "unwind_flags": 4,
+              "chained_parent": {
+                "begin": "0x3f462b0",
+                "end_exclusive": "0x3f462dc",
+                "unwind_info_rva": "0x9d1b070"
+              }
+            },
+            {
+              "begin": "0x3f4644f",
+              "end_exclusive": "0x3f4661b",
+              "bytes": 460,
+              "unwind_info_rva": "0x9d1b0a8",
+              "unwind_flags": 4,
+              "chained_parent": {
+                "begin": "0x3f462dc",
+                "end_exclusive": "0x3f4644f",
+                "unwind_info_rva": "0x9d1b094"
+              }
+            },
+            {
+              "begin": "0x3f4661b",
+              "end_exclusive": "0x3f469e9",
+              "bytes": 974,
+              "unwind_info_rva": "0x9d1b0c0",
+              "unwind_flags": 4,
+              "chained_parent": {
+                "begin": "0x3f462b0",
+                "end_exclusive": "0x3f462dc",
+                "unwind_info_rva": "0x9d1b070"
+              }
+            }
+          ]
+        },
+        {
+          "label": "ParamWidget_Full",
+          "begin": "0x3fe5530",
+          "end_exclusive": "0x3fe56aa",
+          "evidence": "Unwind root plus transitive chained contiguous regions",
+          "unwind_regions": [
+            {
+              "begin": "0x3fe5530",
+              "end_exclusive": "0x3fe56aa",
+              "bytes": 378,
+              "unwind_info_rva": "0x9d2352c",
+              "unwind_flags": 2
+            }
+          ]
+        },
+        {
+          "label": "Filter_Update_Full",
+          "begin": "0x4019d20",
+          "end_exclusive": "0x401a163",
+          "evidence": "Unwind root plus transitive chained contiguous regions",
+          "unwind_regions": [
+            {
+              "begin": "0x4019d20",
+              "end_exclusive": "0x401a163",
+              "bytes": 1091,
+              "unwind_info_rva": "0x9d29d34",
+              "unwind_flags": 3
+            }
+          ]
+        },
+        {
+          "label": "Signal_A_Full",
+          "begin": "0x139ffb0",
+          "end_exclusive": "0x13a00a9",
+          "evidence": "Unwind root plus transitive chained contiguous regions",
+          "unwind_regions": [
+            {
+              "begin": "0x139ffb0",
+              "end_exclusive": "0x139ffd4",
+              "bytes": 36,
+              "unwind_info_rva": "0x99b104c",
+              "unwind_flags": 0
+            },
+            {
+              "begin": "0x139ffd4",
+              "end_exclusive": "0x13a008c",
+              "bytes": 184,
+              "unwind_info_rva": "0x99b1054",
+              "unwind_flags": 4,
+              "chained_parent": {
+                "begin": "0x139ffb0",
+                "end_exclusive": "0x139ffd4",
+                "unwind_info_rva": "0x99b104c"
+              }
+            },
+            {
+              "begin": "0x13a008c",
+              "end_exclusive": "0x13a00a9",
+              "bytes": 29,
+              "unwind_info_rva": "0x99b106c",
+              "unwind_flags": 4,
+              "chained_parent": {
+                "begin": "0x139ffb0",
+                "end_exclusive": "0x139ffd4",
+                "unwind_info_rva": "0x99b104c"
+              }
+            }
+          ]
+        }
+      ],
+      "results": [
+        {
+          "label": "Flow_Evaluation",
+          "va_begin": "183f60b80",
+          "va_last": "183f612d7",
+          "disassembly_return": "true",
+          "instructions": 447,
+          "instruction_bytes": 1880,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "Flow_InvalidateNotify",
+          "va_begin": "183f12b20",
+          "va_last": "183f12c84",
+          "disassembly_return": "true",
+          "instructions": 83,
+          "instruction_bytes": 357,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "Flow_Time_Convert",
+          "va_begin": "183f69560",
+          "va_last": "183f69604",
+          "disassembly_return": "true",
+          "instructions": 41,
+          "instruction_bytes": 165,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "PB_Set_Full",
+          "va_begin": "183ee5a00",
+          "va_last": "183ee6054",
+          "disassembly_return": "true",
+          "instructions": 398,
+          "instruction_bytes": 1621,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "Display_Full",
+          "va_begin": "183f462b0",
+          "va_last": "183f469e8",
+          "disassembly_return": "true",
+          "instructions": 451,
+          "instruction_bytes": 1849,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "ParamWidget_Full",
+          "va_begin": "183fe5530",
+          "va_last": "183fe56a9",
+          "disassembly_return": "true",
+          "instructions": 86,
+          "instruction_bytes": 378,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "Filter_Update_Full",
+          "va_begin": "184019d20",
+          "va_last": "18401a162",
+          "disassembly_return": "true",
+          "instructions": 277,
+          "instruction_bytes": 1090,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "Signal_A_Full",
+          "va_begin": "18139ffb0",
+          "va_last": "1813a00a8",
+          "disassembly_return": "true",
+          "instructions": 60,
+          "instruction_bytes": 249,
+          "decompile_completed": true,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "name": "batch04",
+      "manifest": {
+        "path": "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\research-20261006\\batch04\\manifest.json",
+        "bytes": 2991,
+        "sha256": "c3cf7621670061ce5997302c944fa36515bbc70cfd922196b5d5623b2baf3227"
+      },
+      "artifact_count": 13,
+      "hash_mismatches": [],
+      "selection": [
+        {
+          "label": "Flow_Time_Dependence",
+          "begin": "0x3f0df10",
+          "end_exclusive": "0x3f0dfb5",
+          "bytes": 165,
+          "unwind_info_rva": "0x9d17c14",
+          "unwind_flags": 0
+        },
+        {
+          "label": "Widget_Value_Sync",
+          "begin": "0x3fe6960",
+          "end_exclusive": "0x3fe6dc2",
+          "bytes": 1122,
+          "unwind_info_rva": "0x9d2349c",
+          "unwind_flags": 3
+        },
+        {
+          "label": "Widget_Secondary_Sync",
+          "begin": "0x3fe4020",
+          "end_exclusive": "0x3fe47e5",
+          "bytes": 1989,
+          "unwind_info_rva": "0x9d23798",
+          "unwind_flags": 2
+        },
+        {
+          "label": "Flow_Simulation_Dispatch",
+          "begin": "0x3f80b70",
+          "end_exclusive": "0x3f87219",
+          "bytes": 26281,
+          "unwind_flags": 3
+        }
+      ],
+      "results": [
+        {
+          "label": "Flow_Time_Dependence",
+          "va_begin": "183f0df10",
+          "va_last": "183f0dfb4",
+          "disassembly_return": "true",
+          "instructions": 45,
+          "instruction_bytes": 165,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "Widget_Value_Sync",
+          "va_begin": "183fe6960",
+          "va_last": "183fe6dc1",
+          "disassembly_return": "true",
+          "instructions": 276,
+          "instruction_bytes": 1122,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "Widget_Secondary_Sync",
+          "va_begin": "183fe4020",
+          "va_last": "183fe47e4",
+          "disassembly_return": "true",
+          "instructions": 485,
+          "instruction_bytes": 1989,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "Flow_Simulation_Dispatch",
+          "va_begin": "183f80b70",
+          "va_last": "183f87218",
+          "disassembly_return": "true",
+          "instructions": 5030,
+          "instruction_bytes": 26281,
+          "decompile_completed": false,
+          "errors": [
+            "",
+            "Exception while decompiling 183f80b70: process: timeout"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "batch05-v2",
+      "manifest": {
+        "path": "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\research-20261006\\batch05-v2\\manifest.json",
+        "bytes": 6730,
+        "sha256": "4b1867803176f26f82af3648b2d97598c870eaddd2fcc4638820a5a32813fe9b"
+      },
+      "artifact_count": 29,
+      "hash_mismatches": [],
+      "selection": [
+        {
+          "label": "Nitrous_Requirements_Thunk",
+          "begin": "0x3f00b44",
+          "end_exclusive": "0x3f00b50",
+          "evidence": "Decoded SUB RCX,0x3f0; JMP rel32 terminal leaf thunk"
+        },
+        {
+          "label": "Nitrous_Requirements_Body",
+          "begin": "0x3f469f0",
+          "end_exclusive": "0x3f46a52",
+          "bytes": 98,
+          "unwind_info_rva": "0x9d1b178",
+          "unwind_flags": 0
+        },
+        {
+          "label": "Nitrous_Prepare_Thunk",
+          "begin": "0x3f03a9c",
+          "end_exclusive": "0x3f03aa8",
+          "evidence": "Decoded SUB RCX,0x3f0; JMP rel32 terminal leaf thunk"
+        },
+        {
+          "label": "Nitrous_Prepare_Body",
+          "begin": "0x3f46a60",
+          "end_exclusive": "0x3f46a8c",
+          "bytes": 44,
+          "unwind_info_rva": "0x9d1b0d8",
+          "unwind_flags": 0
+        },
+        {
+          "label": "Nitrous_NodeItems_Thunk",
+          "begin": "0x3f07858",
+          "end_exclusive": "0x3f07864",
+          "evidence": "Decoded SUB RCX,0x3f0; JMP rel32 terminal leaf thunk"
+        },
+        {
+          "label": "Nitrous_NodeItems_Body",
+          "begin": "0x3f46a90",
+          "end_exclusive": "0x3f474e7",
+          "bytes": 2647,
+          "unwind_info_rva": "0x9d1b0e0",
+          "unwind_flags": 3
+        },
+        {
+          "label": "Nitrous_ViewItems_Thunk",
+          "begin": "0x3f07870",
+          "end_exclusive": "0x3f0787c",
+          "evidence": "Decoded SUB RCX,0x3f0; JMP rel32 terminal leaf thunk"
+        },
+        {
+          "label": "Nitrous_ViewItems_Body",
+          "begin": "0x3f474f0",
+          "end_exclusive": "0x3f47553",
+          "bytes": 99,
+          "unwind_info_rva": "0x9d1b140",
+          "unwind_flags": 0
+        },
+        {
+          "label": "Interval_Contains_Leaf",
+          "begin": "0x1d9ae40",
+          "end_exclusive": "0x1d9ae51",
+          "evidence": "Two bounded signed comparisons; true/false branches both RET"
+        }
+      ],
+      "results": [
+        {
+          "label": "Nitrous_Requirements_Thunk",
+          "va_begin": "183f00b44",
+          "va_last": "183f00b4f",
+          "disassembly_return": "true",
+          "instructions": 2,
+          "instruction_bytes": 12,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "Nitrous_Requirements_Body",
+          "va_begin": "183f469f0",
+          "va_last": "183f46a51",
+          "disassembly_return": "true",
+          "instructions": 30,
+          "instruction_bytes": 98,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "Nitrous_Prepare_Thunk",
+          "va_begin": "183f03a9c",
+          "va_last": "183f03aa7",
+          "disassembly_return": "true",
+          "instructions": 2,
+          "instruction_bytes": 12,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "Nitrous_Prepare_Body",
+          "va_begin": "183f46a60",
+          "va_last": "183f46a8b",
+          "disassembly_return": "true",
+          "instructions": 11,
+          "instruction_bytes": 44,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "Nitrous_NodeItems_Thunk",
+          "va_begin": "183f07858",
+          "va_last": "183f07863",
+          "disassembly_return": "true",
+          "instructions": 2,
+          "instruction_bytes": 12,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "Nitrous_NodeItems_Body",
+          "va_begin": "183f46a90",
+          "va_last": "183f474e6",
+          "disassembly_return": "true",
+          "instructions": 650,
+          "instruction_bytes": 2647,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "Nitrous_ViewItems_Thunk",
+          "va_begin": "183f07870",
+          "va_last": "183f0787b",
+          "disassembly_return": "true",
+          "instructions": 2,
+          "instruction_bytes": 12,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "Nitrous_ViewItems_Body",
+          "va_begin": "183f474f0",
+          "va_last": "183f47552",
+          "disassembly_return": "true",
+          "instructions": 29,
+          "instruction_bytes": 99,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "Interval_Contains_Leaf",
+          "va_begin": "181d9ae40",
+          "va_last": "181d9ae50",
+          "disassembly_return": "true",
+          "instructions": 9,
+          "instruction_bytes": 17,
+          "decompile_completed": true,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "name": "batch06",
+      "manifest": {
+        "path": "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\research-20261006\\batch06\\manifest.json",
+        "bytes": 2524,
+        "sha256": "ed4f1fdbc7681271a354605b2459fcfaa639176d521b41aaeef545d8ddd200ae"
+      },
+      "artifact_count": 11,
+      "hash_mismatches": [],
+      "selection": [
+        {
+          "label": "Display_Context_Prepare",
+          "begin": "0x1de2630",
+          "end_exclusive": "0x1de48a9",
+          "bytes": 8825,
+          "unwind_info_rva": "0x9a8f4ac",
+          "unwind_flags": 3
+        },
+        {
+          "label": "Display_Context_Submit",
+          "begin": "0x1ddf130",
+          "end_exclusive": "0x1de0899",
+          "bytes": 5993,
+          "unwind_info_rva": "0x9a8f574",
+          "unwind_flags": 3
+        },
+        {
+          "label": "Display_Context_Invalidate",
+          "begin": "0x1de2470",
+          "end_exclusive": "0x1de248e",
+          "bytes": 30,
+          "unwind_info_rva": "0x9a8f47c",
+          "unwind_flags": 0
+        }
+      ],
+      "results": [
+        {
+          "label": "Display_Context_Prepare",
+          "va_begin": "181de2630",
+          "va_last": "181de48a8",
+          "disassembly_return": "true",
+          "instructions": 1968,
+          "instruction_bytes": 8825,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "Display_Context_Submit",
+          "va_begin": "181ddf130",
+          "va_last": "181de0898",
+          "disassembly_return": "true",
+          "instructions": 1306,
+          "instruction_bytes": 5993,
+          "decompile_completed": true,
+          "errors": []
+        },
+        {
+          "label": "Display_Context_Invalidate",
+          "va_begin": "181de2470",
+          "va_last": "181de248d",
+          "disassembly_return": "true",
+          "instructions": 7,
+          "instruction_bytes": 30,
+          "decompile_completed": true,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "name": "batch06-v2",
+      "manifest": {
+        "path": "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\research-20261006\\batch06-v2\\manifest.json",
+        "bytes": 1951,
+        "sha256": "2f641b30074a8fd63986fbf92cae13c560ab52e7a694cc9096e440aac1859b60"
+      },
+      "artifact_count": 5,
+      "hash_mismatches": [],
+      "selection": [
+        {
+          "label": "Display_Context_Invalidate",
+          "begin": "0x1de2470",
+          "end_exclusive": "0x1de2508",
+          "unwind_regions": [
+            {
+              "begin": "0x1de2470",
+              "end_exclusive": "0x1de248e",
+              "bytes": 30,
+              "unwind_info_rva": "0x9a8f47c",
+              "unwind_flags": 0
+            },
+            {
+              "begin": "0x1de248e",
+              "end_exclusive": "0x1de2502",
+              "bytes": 116,
+              "unwind_info_rva": "0x9a8f484",
+              "unwind_flags": 4,
+              "chained_parent": {
+                "begin": "0x1de2470",
+                "end_exclusive": "0x1de248e",
+                "unwind_info_rva": "0x9a8f47c"
+              }
+            },
+            {
+              "begin": "0x1de2502",
+              "end_exclusive": "0x1de2508",
+              "bytes": 6,
+              "unwind_info_rva": "0x9a8f49c",
+              "unwind_flags": 4,
+              "chained_parent": {
+                "begin": "0x1de2470",
+                "end_exclusive": "0x1de248e",
+                "unwind_info_rva": "0x9a8f47c"
+              }
+            }
+          ]
+        }
+      ],
+      "results": [
+        {
+          "label": "Display_Context_Invalidate",
+          "va_begin": "181de2470",
+          "va_last": "181de2507",
+          "disassembly_return": "true",
+          "instructions": 38,
+          "instruction_bytes": 152,
+          "decompile_completed": true,
+          "errors": []
+        }
+      ]
+    }
+  ],
+  "sdk": {
+    "receipt": {
+      "path": "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\research-20261006\\sdk-layout-v4\\receipt.json",
+      "bytes": 4724,
+      "sha256": "56dd3ea7eb21a75ae93c6ec4b0ea84769ba3439be4ba56657985f6a650ef6c78"
+    },
+    "exit_codes": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "source": {
+      "path": "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\research-20261006\\sdk-layout-v4\\sdk_layout.cpp",
+      "bytes": 931,
+      "sha256": "99fd3c24b12f801e3b3f611bafb48cf56d9e5da167e8cbf08de08e55ab8a6728"
+    },
+    "log": {
+      "path": "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\research-20261006\\sdk-layout-v4\\compile.txt",
+      "bytes": 84484,
+      "sha256": "d3c6ad48cab81cb0736e1c716628f71a9990cd1e8f3ba18b19b3d5c9eec9a71b"
+    },
+    "linked": false,
+    "executed": false
+  },
+  "additional_artifacts": [
+    {
+      "path": "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\research-20261006\\program-info.json",
+      "bytes": 820,
+      "sha256": "fff4940cd698e0dbb0c34ad686185414898bd4d07790a326b4bd21fdef9fc1d9"
+    },
+    {
+      "path": "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\research-20261006\\selected-class-hierarchies.json",
+      "bytes": 21813,
+      "sha256": "b1f11feea1f60f077ba8f91ec84a999746009c7d73af177309c3bb075f4f6684"
+    },
+    {
+      "path": "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\research-20261006\\tflow-host-vtable.json",
+      "bytes": 60655,
+      "sha256": "41de468722353be91035a1ecee7f6a1a1e66a32d87a74f577c0e7dcd262c6f91"
+    },
+    {
+      "path": "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\research-20261006\\display-thunks.json",
+      "bytes": 708,
+      "sha256": "e9a1c721b490577692eec2593a02202ea1a4ab0a89bc64e5cbb56c289e5c2021"
+    },
+    {
+      "path": "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\research-20261006\\sdk-layout-v4\\vtable-maps.json",
+      "bytes": 235077,
+      "sha256": "b0d9593fe4e01cd7c7edcf17eabfd5d78d2edebbfeec4404a0412250658da7ff"
+    },
+    {
+      "path": "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\research-20261006\\server-lifecycle.json",
+      "bytes": 677,
+      "sha256": "0ae0f21715931916f65e3149e3949f1cc1cb3171b23c14a8785e9779e673fcd0"
+    },
+    {
+      "path": "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\research-20261006\\target-version.json",
+      "bytes": 233,
+      "sha256": "eee44a854d47362f6f5a3dc1e63160dd39f12adce9150530b94d493f78e38712"
+    },
+    {
+      "path": "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\research-20261006\\save-program.json",
+      "bytes": 83,
+      "sha256": "0f8bc82a810e1641032da9390094159f3edf440e331d8ad71258f3796803c792"
+    },
+    {
+      "path": "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\research-20261006\\close-project.json",
+      "bytes": 49,
+      "sha256": "8982817de4e694ec96c9a0933a271ea29e6d6bffd0e8a2ced93dd16627f12d2d"
+    }
+  ],
+  "research_scripts": {
+    "capture_evidence.py": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\docs\\TyFlow_Architecture_Research_2026-10-06\\reproduce\\capture_evidence.py",
+      "bytes": 12229,
+      "sha256": "12d3f43990521159a794993de8cad1f1ef8a2bfd2e9dd8b24724766181bc8384"
+    },
+    "ghidra_batch.py": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\docs\\TyFlow_Architecture_Research_2026-10-06\\reproduce\\ghidra_batch.py",
+      "bytes": 8627,
+      "sha256": "84c1ef7897f840dc87120569faa09a32cd238dc2919a10370d396aa72c6a9e96"
+    },
+    "sdk_layout.py": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\docs\\TyFlow_Architecture_Research_2026-10-06\\reproduce\\sdk_layout.py",
+      "bytes": 3731,
+      "sha256": "6399d4e55d46f2b6af8a8da0911363ac7a5f06a2772266ff44724e753d908911"
+    },
+    "static_pe.py": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\docs\\TyFlow_Architecture_Research_2026-10-06\\reproduce\\static_pe.py",
+      "bytes": 12661,
+      "sha256": "9c5666534a25058159f73cdbb1d230499d0397c2e7fb021bb861ef81fdc061bd"
+    }
+  }
+}
