@@ -1,5 +1,9 @@
 # Artist style learning for Cyrus Scatter
 
+<!-- CURRENT_SYSTEM_2026-10-05 -->
+
+Current coordination: [system roadmap](../Current_System_2026-10-05/ROADMAP.md), [MCP boundaries](../Current_System_2026-10-05/CAPABILITY_MATRIX.md), and [5 October AI-design research](../AI_Design_Learning_Research_2026-10-05/README.md). This package remains research/proposal material; style-profile and learning implementation is still pending.
+
 Research and proposed implementation guide · 4 October 2026
 
 **Recommendation: build a separate Cyrus design companion with portable Artist Style Profiles.** A profile should work with references, approved examples and editable preferences before it contains a trained model. Add a personal preference model or LoRA only when it improves results on projects it has not seen.

@@ -1,0 +1,107 @@
+{
+  "label": "courtyard-idle-end",
+  "time_ms": 5524166,
+  "epoch": 3,
+  "group_hits": 7,
+  "prepared_builds": [
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3
+  ],
+  "prepared_hits": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "preview_builds": [
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3
+  ],
+  "dirty": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ],
+  "container_scans": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+  ],
+  "container_tests": [
+    236,
+    237,
+    236,
+    235,
+    238,
+    237,
+    237,
+    237
+  ],
+  "membership_builds": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+  ],
+  "interaction_checks": 109,
+  "ir_timer_calls": 17,
+  "render_key_calls": 0,
+  "bridge_builds": 0,
+  "bridge_error": "",
+  "live_callbacks": 58,
+  "live_redraw_requests": 1,
+  "retained": [
+    112420,
+    19,
+    3,
+    4,
+    6,
+    57,
+    4047120,
+    950,
+    0,
+    19,
+    1349040,
+    1,
+    "11198961125771887900;12337828514248020049;4619563419977151338;10094457647448624043;17701541047269358874;1337565488842185395;6739548895941332439;7117592840880962473;"
+  ],
+  "retained_mesh": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    536870912,
+    1073741824
+  ]
+}

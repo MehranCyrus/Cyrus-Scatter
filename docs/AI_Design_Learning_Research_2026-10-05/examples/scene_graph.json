@@ -1,0 +1,17 @@
+{
+  "schema": "cyrus.proposed.scene_graph/0.1",
+  "synthetic": true,
+  "coordinate_frame": "synthetic-site-local-z-up-metres",
+  "nodes": [
+    {"id": "site", "kind": "receiver", "reference": "synthetic-site-v1"},
+    {"id": "path", "kind": "artist_authored_path_region", "reference": null},
+    {"id": "grass", "kind": "planting_role", "reference": "synthetic-grass"},
+    {"id": "flowers", "kind": "planting_role", "reference": "synthetic-flower"}
+  ],
+  "relations": [
+    {"from": "grass", "relation": "inside", "to": "site", "hard": true, "source": "synthetic_artist_brief", "confidence": null},
+    {"from": "grass", "relation": "outside", "to": "path", "hard": true, "clearance_m": 0.2, "source": "synthetic_artist_brief", "confidence": null},
+    {"from": "flowers", "relation": "along", "to": "path", "hard": false, "preferred_band_width_m": 0.8, "source": "synthetic_reference_interpretation", "confidence": null}
+  ],
+  "status": "requires_real_geometry_and_artist_confirmation_before_compilation"
+}

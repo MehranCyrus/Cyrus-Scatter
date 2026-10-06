@@ -1,5 +1,9 @@
 # Cyrus Scatter — Complete Codebase Documentation
 
+<!-- CURRENT_SYSTEM_2026-10-05 -->
+
+Historical source reference, dated 27 September. Use the [current system guide](../Current_System_2026-10-05/SYSTEM_GUIDE.md), [capability coverage](../Current_System_2026-10-05/CAPABILITY_MATRIX.md) and [document authority map](../Current_System_2026-10-05/DOCUMENT_AUDIT.md) for later procedural, UI, container and MCP changes.
+
 **Snapshot:** 2026-09-27  
 **Audited source:** `MehranCyrus/Cyrus-Scatter` → `main` → `b9a9e909b469456a6193337363b7c50b2397e549`
 

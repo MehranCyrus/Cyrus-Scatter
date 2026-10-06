@@ -1,3 +1,3 @@
 """Cyrus local automation. The host modules have no third-party dependencies."""
 
-__version__ = "1.1.0"
+__version__ = "1.2.0"

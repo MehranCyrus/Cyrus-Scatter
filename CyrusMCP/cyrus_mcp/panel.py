@@ -8,13 +8,16 @@ import qtmax
 
 from .contracts import Fault
 from .max_host import MaxHost
-from .service import Journal, Service
+from .service import Journal, Service, uid
+from .diagnostics import validate_page, collect_report, save_report
 from .transport import Bridge, default_directory, private_directory
 
 PANEL = None
 
 
 class Panel(QtWidgets.QDialog):
+    work_available=QtCore.Signal()
+
     def __init__(self, directory=None):
         super().__init__(qtmax.GetQMaxMainWindow())
         self.setWindowTitle("Cyrus • Automation")
@@ -27,9 +30,17 @@ class Panel(QtWidgets.QDialog):
         self.directory=private_directory(directory or default_directory())
         self.host=MaxHost()
         self.service=Service(self.host,Journal(self.directory/"operations.json"))
-        self.bridge=Bridge(self.directory)
+        self.closing=False
+        self.dispatching=False
+        self.timer=QtCore.QTimer(self)
+        self.timer.setSingleShot(True)
+        self.timer.timeout.connect(self.tick)
+        self.work_available.connect(self.schedule,QtCore.Qt.QueuedConnection)
+        self.bridge=Bridge(self.directory,wake=self.work_available.emit)
         self.picked={"site":[],"sources":[],"regions":[],"excluded":[]}
         self.callbacks=[]
+        self.trace_session=None
+        self.trace_identity=None
         self.layout=QtWidgets.QVBoxLayout(self)
         heading=QtWidgets.QLabel("Connect your selected scene to an assistant")
         heading.setStyleSheet("font-size:16px; font-weight:600; padding:6px 0;")
@@ -69,14 +80,27 @@ class Panel(QtWidgets.QDialog):
         self.button("Cancel pending proposal / revoke approval",self.cancel)
         self.button("Undo last result / reject refinement",self.undo)
         self.button("Disconnect scope and continue manually",self.disconnect_scope)
+        diagnostics=QtWidgets.QGroupBox("Engineering diagnostics • off until started")
+        diagnostic_layout=QtWidgets.QVBoxLayout(diagnostics)
+        row=QtWidgets.QHBoxLayout()
+        for title, callback in (("Start recording",self.start_diagnostics),("Stop",self.stop_diagnostics),("Save report…",self.export_diagnostics)):
+            button=QtWidgets.QPushButton(title)
+            button.clicked.connect(lambda checked=False,fn=callback:self.action(fn))
+            row.addWidget(button)
+        diagnostic_layout.addLayout(row)
+        self.trace_share=QtWidgets.QCheckBox("Share this recording with the connected assistant")
+        self.trace_share.setToolTip("Explicitly shares this process-wide engineering trace, including events for other scatter controllers. No scene names, file paths, images or training labels are recorded by the built-in hooks. Sharing is revoked when the scope or recording changes.")
+        self.trace_share.toggled.connect(lambda allowed:self.action(lambda:self.diagnostic_permission(allowed)))
+        diagnostic_layout.addWidget(self.trace_share)
+        note=QtWidgets.QLabel("At most 10 minutes / 4,096 events / 4 MiB. A new recording replaces the previous ring. Save stops recording and exports locally.")
+        note.setWordWrap(True)
+        diagnostic_layout.addWidget(note)
+        self.layout.addWidget(diagnostics)
         self.status=QtWidgets.QLabel(self.service.last_message)
         self.status.setTextFormat(QtCore.Qt.PlainText)
         self.status.setWordWrap(True)
         self.layout.addWidget(self.status)
         self.setStyleSheet("QDialog {background:#353535; color:#eeeeee; font-family:'Segoe UI'; font-size:12px;} QLabel,QCheckBox {color:#eeeeee;} QPushButton {padding:6px; background:#515151; color:#eeeeee; border:1px solid #686868; border-radius:3px;} QPushButton:hover {background:#606060;} QPushButton:disabled {color:#969696; background:#414141;} QPlainTextEdit,QComboBox {background:#292929; color:#eeeeee; border:1px solid #606060; padding:4px;} QPlainTextEdit {font-family:Consolas;} QLabel {padding:2px;}")
-        self.timer=QtCore.QTimer(self)
-        self.timer.timeout.connect(self.tick)
-        self.timer.start(100)
         for event,callback in (("systemPreReset",self.scene_reset),("filePreOpen",self.scene_reset),("systemPreNew",self.scene_reset),("preRender",self.render_start),("postRender",self.render_end)):
             try:
                 rt.callbacks.addScript(rt.Name(event),callback,id=rt.Name("CyrusAutomation"))
@@ -123,6 +147,7 @@ class Panel(QtWidgets.QDialog):
         if len(self.picked["site"]) != 1:
             raise Fault("INVALID_PLAN","Choose one site first")
         scope=self.service.enroll(self.picked["site"][0],self.picked["sources"],self.picked["regions"],self.picked["excluded"],capture=self.share.isChecked())
+        self.revoke_diagnostic_share()
         self.scope_label.setText("Connected: "+scope["site"]["label"]+" • "+str(len(scope["sources"]))+" assets")
 
     def inspect_selected(self):
@@ -130,6 +155,7 @@ class Panel(QtWidgets.QDialog):
         if len(selected)!=1:
             raise Fault("INVALID_PLAN","Select exactly one Cyrus Scatter controller")
         self.service.observe(selected[0],capture=self.share.isChecked())
+        self.revoke_diagnostic_share()
         self.scope_label.setText("Read-only inspection: "+str(selected[0].name))
 
     def review(self):
@@ -164,16 +190,67 @@ class Panel(QtWidgets.QDialog):
 
     def disconnect_scope(self):
         self.service.reset()
+        self.revoke_diagnostic_share()
         self.service.last_message="Scope disconnected. The procedural result remains editable in Cyrus."
         self.scope_label.setText("No scope connected")
 
     def scene_reset(self):
+        try:
+            self.stop_diagnostics()
+        except Exception:
+            pass
         self.service.reset()
+        self.revoke_diagnostic_share()
         self.host.nodes,self.host.controllers,self.host.masks={},{},{}
         self.picked={"site":[],"sources":[],"regions":[],"excluded":[]}
         for text in self.picks.values():
             text.setText("None")
         self.scope_label.setText("Scene changed; choose a new scope")
+
+    def revoke_diagnostic_share(self):
+        self.service.diagnostic_session=None
+        self.trace_share.blockSignals(True)
+        self.trace_share.setChecked(False)
+        self.trace_share.blockSignals(False)
+
+    def start_diagnostics(self):
+        session=uid("trace")
+        identity=self.host.version()
+        self.host.diagnostic_start(session)
+        self.trace_session,self.trace_identity=session,identity
+        self.revoke_diagnostic_share()
+        self.service.last_message="Recording engineering events locally: "+session
+
+    def stop_diagnostics(self):
+        if self.trace_session is None:
+            return
+        validate_page(self.host.diagnostic_page(0,1),self.trace_session,0,1)
+        self.host.diagnostic_stop()
+        self.service.last_message="Recording stopped. The bounded history is available to save."
+
+    def diagnostic_permission(self,allowed):
+        if not allowed:
+            self.service.diagnostic_session=None
+            return
+        if self.trace_session is None or self.service.scope is None:
+            self.revoke_diagnostic_share()
+            raise Fault("APPROVAL_REQUIRED","Start a recording and connect a scope before sharing it")
+        validate_page(self.host.diagnostic_page(0,1),self.trace_session,0,1)
+        self.service.diagnostic_session=self.trace_session
+        self.service.last_message="Shared engineering session: "+self.trace_session
+
+    def export_diagnostics(self):
+        if self.trace_session is None:
+            raise Fault("UNKNOWN_REFERENCE","Start a recording first")
+        path,_=QtWidgets.QFileDialog.getSaveFileName(self,"Save Cyrus diagnostic report",self.trace_session+".json","JSON report (*.json)")
+        if not path:
+            return
+        self.stop_diagnostics()
+        report=collect_report(self.host.diagnostic_page,self.trace_session,
+                              {"at_start":self.trace_identity,"at_export":self.host.version()})
+        save_report(path,report)
+        health=report["recording"]["health"]
+        self.service.last_message=f"Report saved: {health['retained']} events; evicted {health['evicted']}, lock drops {health['lock_drops']}, failures {health['failures']}, truncated {health['truncated']}."
 
     def render_start(self):
         self.host.blocked=True
@@ -192,25 +269,46 @@ class Panel(QtWidgets.QDialog):
             self.proposals.setCurrentIndex(self.proposals.count()-1)
             self.proposals.blockSignals(False)
             self.review()
-        self.status.setText(self.service.last_message)
-        self.approve_button.setEnabled(bool(self.proposals.currentData()) and self.service.pending is None)
+        if self.status.text()!=self.service.last_message:
+            self.status.setText(self.service.last_message)
+        enabled=bool(self.proposals.currentData()) and self.service.pending is None
+        if self.approve_button.isEnabled()!=enabled:
+            self.approve_button.setEnabled(enabled)
+
+    @QtCore.Slot()
+    def schedule(self):
+        if not self.closing and not self.dispatching and not self.bridge.closed and not self.timer.isActive():
+            self.timer.start(0)
 
     def tick(self):
+        if self.closing or self.dispatching or self.bridge.closed:
+            return
+        self.dispatching=True
         try:
             # A queued apply receives its response before execution on a later UI tick.
             if self.service.pending and not self.host.busy():
                 self.service.step()
             self.bridge.drain_one(self.service)
             self.refresh()
+            if self.service.pending or not self.bridge.queue.empty():
+                self.timer.start(100)
         except Exception:
             self.timer.stop()
+            self.bridge.close()
             self.service.last_message="Automation stopped after a host error. Inspect the scene before reconnecting."
             (self.directory/"host-error.log").write_text(traceback.format_exc(),encoding="utf-8")
             self.status.setText(self.service.last_message)
+        finally:
+            self.dispatching=False
 
     def closeEvent(self,event):
         global PANEL
+        self.closing=True
         self.timer.stop()
+        try:
+            self.stop_diagnostics()
+        except Exception:
+            pass
         try:
             self.service.cancel()
         finally:

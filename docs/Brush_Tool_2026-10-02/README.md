@@ -1,5 +1,9 @@
 # Procedural Brush: recommended approach
 
+<!-- CURRENT_SYSTEM_2026-10-05 -->
+
+Historical Brush research/prototype package. Local integration and later real-asset tests are linked in the [current system guide](../Current_System_2026-10-05/CURRENT_STATE.md). Public MCP Brush authoring is still unavailable; the [new specification](../Current_System_2026-10-05/MCP_EXPANSION_SPEC.md) proposes its separate contract.
+
 3 October 2026 — design revision 3.1 with an implementation update. **An isolated M0/M1 prototype now exists and has Max 2027 fixture results. Production Brush integration and the full acceptance matrix remain open.** Read the [implementation report](IMPLEMENTATION_2026-10-03.md) and [lab instructions](../../tools/brush_lab/README.md) for the implemented scope, evidence and current limits. The product behavior below remains the integration specification.
 
 **Artist-zone integration addendum, 3 October:** the [unified planting proposal](../Artist_Zones_Integration_2026-10-03/README.md) extends this specification with named spline/mesh zones, layer roles, separate boundary and plant-spacing rules, a black/white mask overlay, optional map reuse and MCP context. Editable surface strokes remain the first authoritative Brush input. The new [source audit](../Artist_Zones_Integration_2026-10-03/CODEBASE_AUDIT.md) confirms that existing area, density-map and Analyzer features can be reused, while stable candidate identities and real layer ownership remain prerequisites. The proposed final-placement priority mode is additional work; existing raw-blocker behavior is preserved for legacy scenes.

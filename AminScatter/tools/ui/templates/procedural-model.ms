@@ -42,6 +42,7 @@
     local procCandidateCount=undefined,procPreparedKey="",procPreparedRows=#(),procBindingKey="",procBoundBase=undefined,procSurfaceKey=""
     local procLastStats=#(),procLastRounds=#(),procPreparedBuilds=0,procPreparedHits=0,procEpoch=0,procPublishedDisplayKey="",procManualRevision=0
     local procPublishedOwners=#(),procPublishedSources=#(),procPublishedFinalKeep=#()
+    local procPublishedRadii=#(),procPublishedInfo=#()
     local procDensityMap=undefined,procDensityWatch=undefined,procDensityRevision=0
     local procGeometryRevision=0,containerConfigKey="",containerPending=#(),containerScan=true,containerScans=0,containerTests=0
     local containerMembershipKey="",containerActive=#(),containerReconciling=false

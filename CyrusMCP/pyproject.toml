@@ -4,13 +4,17 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cyrus-scatter-mcp"
-version = "1.1.0"
+version = "1.2.0"
 description = "Local, scoped 3ds Max automation for Cyrus Scatter"
 requires-python = ">=3.11"
 dependencies = ["mcp==2.3.0"]
 
+[project.optional-dependencies]
+design-lab = ["Pillow==12.3.0"]
+
 [project.scripts]
 cyrus-scatter-mcp = "cyrus_mcp.server:main"
+cyrus-scatter-lab = "cyrus_mcp.design_lab.__main__:main"
 
 [tool.setuptools.package-data]
 cyrus_mcp = ["*.json"]

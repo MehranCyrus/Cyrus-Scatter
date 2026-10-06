@@ -1,5 +1,9 @@
 # Detailed surface/spline-edit tracing — recorder 0.2.2
 
+<!-- CURRENT_SYSTEM_2026-10-05 -->
+
+Current documentation: [diagnostics and IR runbook](Current_System_2026-10-05/DIAGNOSTICS_SPEC.md). Existing hooks are useful but do not cover complete procedural/container/renderer causality. The current script already carries selected hooks; do not apply an older installer without verifying its target/source identity.
+
 This adds optional synchronous timing hooks to the Scatter and Surface Analyzer scripts, plus a local recorder and report. The original tracing-only change preserved algorithms and binaries. The current Scatter 0.60 package also includes the [CPU performance implementation](Performance_Implementation_2026-10-01.md). Hooks are inactive when the recorder is stopped. The generator owns Scatter timing through `tools/ui/trace.cjs`; do not edit its generated script alone.
 
 ## Install once, then restart Max

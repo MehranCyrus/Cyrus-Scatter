@@ -1,5 +1,9 @@
 # CyrusScatter — product and engineering strategy
 
+<!-- CURRENT_SYSTEM_2026-10-05 -->
+
+Historical product strategy. Use the [current system and delivery roadmap](../Current_System_2026-10-05/README.md) for implemented status, known failures and the next coding loop. Research benefits and estimates in this dated package remain hypotheses unless linked to later evidence.
+
 **Review date: 2026-09-29. Status: recommended governing plan; implementation remains gated by evidence.**
 
 ## My assessment

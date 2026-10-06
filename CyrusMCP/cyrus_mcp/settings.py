@@ -81,6 +81,8 @@ def capability_manifest():
             "layer_settings":registry(LAYER_SETTINGS),"source_settings":registry(SOURCE_SETTINGS),"display_settings":registry(DISPLAY_SETTINGS),
             "supported":["count","seed","source_weights","uniform_scale_yaw","xyz_scale_xy_tilt","projected_xy_movement",
                          "enrolled_convex_include_exclude","shared_pair_spacing","collision","cleanup","visibility","enable","cached_configuration","published_layout_export","procedural_policy_3_read_only"],
+            "source_candidate_pending_host_qualification":["shared_diagnostic_event_pages","procedural_publication_pages","local_diagnostic_recording_export"],
+            "help_resources":["cyrus://feature-catalog","cyrus://agent-workflows","cyrus://error-guide"],
             "unavailable":{"brush_history_mutation":"Native local UI only; MCP has no enrolled paint-document mutation contract.",
                            "procedural_policy_3_mutation":"Read-only recipe and cached diagnostics. Plan schemas 1/2 retain policies 1/2; they cannot convert or overwrite a policy-3 controller.",
                            "brush_set_creation":"Native local UI only; automated plans currently create independent logical layers.",

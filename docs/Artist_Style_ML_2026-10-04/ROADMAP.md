@@ -1,5 +1,9 @@
 # Roadmap and implementation checklist
 
+<!-- CURRENT_SYSTEM_2026-10-05 -->
+
+This specialist proposal is coordinated by the [current system roadmap](../Current_System_2026-10-05/ROADMAP.md). Diagnostics and qualified procedural MCP/publication contracts precede broad automated design studies. Its unchecked ML items remain unimplemented.
+
 4 October 2026 · **Planning deliverable.** All implementation items below are pending. Completed work in this task is research, source inspection, contract examples and documentation verification. No ML feature has been built or qualified.
 
 The roadmap is ordered by dependencies and evidence, not estimated calendar dates. Profile-based assistance can ship before personalized training; each later stage must earn its complexity through a measured result.

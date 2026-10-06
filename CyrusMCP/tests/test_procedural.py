@@ -68,6 +68,24 @@ def test_old_script_does_not_claim_container_support():
     assert result["layers_in_order"][0]["sets_in_order"][0]["source_pool"] is None
 
 
+def test_cached_membership_preserves_parked_and_missing_rows_without_reconciliation():
+    controller,leaf=fixture_controller()
+    a,b=Obj(handle=1),Obj(handle=2)
+    leaf.containerMode=4;leaf.containerNodes=[];leaf.sources=[a,b,None,None]
+    leaf.containerTrackedSources=[a,b,None,None];leaf.containerActive=[True,False,False,False]
+    leaf.sourcePoint=[False,False,True,False];leaf.sourceEmpty=[False,False,True,False]
+    leaf.procSourceSlots=["a","b","placeholder:3","old_deleted"]
+    leaf.containerMembershipBuilds=5;leaf.containerScan=False;leaf.containerPending=[];leaf.dirty=True
+    leaf.containerRefresh=lambda:pytest.fail("Passive membership reader reconciled sources")
+    pool=read_procedural(controller,1)["layers_in_order"][0]["sets_in_order"][0]["source_pool"]["cached_membership"]
+    assert [r["cached_status"] for r in pool["rows"]]==["active","parked","placeholder","missing"]
+    assert pool["revision"]==5 and pool["pending_by_cached_flags"]
+    leaf.sources[0]=Obj(handle=99)
+    stale=read_procedural(controller,1)["layers_in_order"][0]["sets_in_order"][0]["source_pool"]["cached_membership"]
+    assert not stale["aligned_with_registered_order"]
+    assert stale["rows"][0]["cached_status"]=="unavailable_until_reconciliation" and stale["rows"][0]["source_entry_id"] is None
+
+
 def test_old_apply_contract_cannot_downgrade_new_policy():
     for controller in (None,Obj(groupPolicy=1),Obj(groupPolicy=2)):
         require_legacy_mutation(controller)

@@ -1,0 +1,1 @@
+{"passed":true,"checks":[["global_and_inherited_containers",true],["follow_scale_radius_oracle",200],["point_slots_vs_mesh_instances",[200,105]],["weighted_empty_and_target_guard",[105,true]],["union_cleanup",true]]}

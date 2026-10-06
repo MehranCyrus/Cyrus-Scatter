@@ -43,18 +43,32 @@ def main():
     assert before==after,'Generated source was stale; inspect regeneration and rerun.'
     text=after.decode('utf-8')
     check_balanced(text)
-    assert re.findall(r'fn uiVersion = "([^"]+)"',text)==['0.7.0']
+    assert re.findall(r'fn uiVersion = "([^"]+)"',text)==['0.7.1']
     assert 'version:53\ninitialRollupState' in text
     assert not re.search(r'\b(?:\w+\.)*groupPolicy[!=]=2',text),'Unclassified shared-policy consumer'
     for call in ('evaluateProcedural','procRefreshPreview','procApplyPaint','procEditKey','procCopyRelations'):
         assert re.search(r'fn '+call+r'\b',text),call
     inventory=json.loads((ROOT/'AminScatter/tools/ui/layers-control-inventory.json').read_text())
     controls=sum(len(v) for section in ('general','layer') for v in inventory[section].values())
-    assert controls==226,'Review the documented control inventory after changes.'
+    assert controls==241,'Review the documented control inventory after changes.'
     check_balanced((ROOT/'tools/procedural_lab/Max_Procedural_07_Fixture.ms').read_text())
-    for slot in range(1,11):
-        for group in ('sourceUI','brushUI','spacingUI','separationUI','proceduralUI'):
-            assert len(re.findall(r'rollout '+group+'_'+str(slot)+r'\b',text))==1
+    for group in inventory['layer']:
+        assert len(re.findall(r'rollout '+group+r'_1\b',text))==1,group
+        assert not re.search(r'rollout '+group+r'_(?:[2-9]|10)\b',text),group
+    assert 'rollout layerPanel_' not in text,'Obsolete per-layer pages remain'
+    # Feature controls from 0.7.0 must survive the move/split, not just preserve
+    # a total count. Topic structure and host behavior still require Max tests.
+    baseline=json.loads(subprocess.check_output(['git','show',
+        'addccb492a88292529594de81c287cc26e5ffe98:AminScatter/tools/ui/layers-control-inventory.json'],cwd=ROOT))
+    split={'populationList':'populationPolicyUI','attemptSpin':'populationPolicyUI',
+           'roundSpin':'populationPolicyUI','repairCheck':'populationPolicyUI',
+           'backgroundList':'backgroundUI','referenceList':'backgroundUI','applyBackground':'backgroundUI',
+           'radiusMode':'instanceRadiusUI','radiusSpin':'instanceRadiusUI','applyRadius':'instanceRadiusUI',
+           'resetRadius':'instanceRadiusUI','clearRadius':'instanceRadiusUI'}
+    for section,entries in baseline['layer'].items():
+        for entry in entries:
+            target=split.get(entry['name'],section) if section=='proceduralUI' else section
+            assert entry in inventory['layer'].get(target,[]),(section,entry,'lost feature control')
     for section in ('general','layer'):
         for name,entries in inventory[section].items():
             assert len({e['name'] for e in entries})==len(entries),(section,name,'duplicate control')

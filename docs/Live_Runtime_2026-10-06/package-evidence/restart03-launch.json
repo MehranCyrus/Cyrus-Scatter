@@ -1,0 +1,17 @@
+{
+  "pid": 47980,
+  "command": [
+    "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+    "-q",
+    "-i",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\procedural07-package-071-install01\\max.ini",
+    "-p",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\procedural07-package-071-install01\\plugins.ini",
+    "-U",
+    "MAXScript",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\procedural07-package-071-install01\\restart03.ms",
+    "-listenerlog",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\procedural07-package-071-install01\\restart03-listener.log"
+  ],
+  "startup_scripts_loaded_automatically": true
+}

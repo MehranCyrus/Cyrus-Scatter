@@ -1,0 +1,12 @@
+{
+  "command": [
+    "ctest",
+    "--test-dir",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\ui-071\\native01\\max2026",
+    "--output-on-failure",
+    "-V"
+  ],
+  "exit_code": 0,
+  "timeout": false,
+  "elapsed_seconds": 7.2189999999827705
+}

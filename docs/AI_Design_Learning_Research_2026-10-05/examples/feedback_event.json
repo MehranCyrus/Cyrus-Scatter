@@ -1,0 +1,22 @@
+{
+  "schema": "cyrus.proposed.feedback/0.1",
+  "synthetic": true,
+  "event_id": "synthetic-feedback-001",
+  "study_id": "synthetic-courtyard-study",
+  "reviewer_id": "synthetic-reviewer-01",
+  "profile_version": "synthetic-studio-v1",
+  "brief_version": "synthetic-brief-v1",
+  "candidate_a": "synthetic-candidate-a",
+  "candidate_b": "synthetic-candidate-b",
+  "display_order": ["synthetic-candidate-b", "synthetic-candidate-a"],
+  "choice": "a_preferred",
+  "absolute_acceptance": {"synthetic-candidate-a": null, "synthetic-candidate-b": null},
+  "reason_tags": ["height_balance"],
+  "selection": {"policy": "synthetic_pilot_random", "version": "0.1", "selection_probability": null},
+  "view_profile_id": "synthetic-hero-top-v1",
+  "validated_view_artifact_ids": [],
+  "label_origin": "synthetic_example_not_an_artist_response",
+  "consent_record_id": null,
+  "training_eligible": false,
+  "eligibility_note": "Illustration only; no executed candidates or validated images exist."
+}

@@ -1,0 +1,30 @@
+{
+  "checked_at_utc": "2026-10-05T10:19:12.412065+00:00",
+  "purpose": "read-only local SDK contract cross-check; not compilation or loaded-process verification",
+  "sdk_root_discovered_from": "build/ui-071/native01/max2027/CMakeCache.txt",
+  "sdk_root_cache_line": 224,
+  "files": {
+    "build/ui-071/native01/max2027/CMakeCache.txt": "7b82e099225ea5c75ac91d246b143a00230889a8ac6289825ae4509ec72a1c0d",
+    "build/tooling/max2027-sdk/Program Files/Autodesk/3ds Max 2027 SDK/maxsdk/include/ref.h": "3a3a172233837e4ad99e72c2297dc5a2474333c76a9130a83a6f83dc55fcb4fd",
+    "build/tooling/max2027-sdk/Program Files/Autodesk/3ds Max 2027 SDK/maxsdk/include/notify.h": "02d9a10087c34770ae55ff597239c54c382a375dc167eed45d9a3826e78da859"
+  },
+  "inspected_contracts": [
+    {
+      "file": "build/tooling/max2027-sdk/Program Files/Autodesk/3ds Max 2027 SDK/maxsdk/include/ref.h",
+      "line": 2159,
+      "topic": "NotifyDependents FOREVER interval; distinct from cache validity"
+    },
+    {
+      "file": "build/tooling/max2027-sdk/Program Files/Autodesk/3ds Max 2027 SDK/maxsdk/include/notify.h",
+      "line": 180,
+      "topic": "pre-render-frame mutation restriction"
+    },
+    {
+      "file": "build/tooling/max2027-sdk/Program Files/Autodesk/3ds Max 2027 SDK/maxsdk/include/notify.h",
+      "line": 274,
+      "topic": "render pre-evaluation phase"
+    }
+  ],
+  "fresh_builds": 0,
+  "host_processes_touched": 0
+}

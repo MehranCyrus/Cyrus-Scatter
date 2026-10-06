@@ -148,8 +148,12 @@ fs.writeFileSync('scripts/AminScatterObject.ms',(header+helper+factories+contain
  text=require('./planting-groups.cjs')(text);
  text=require('./layers-first.cjs')(text);
  text=require('./procedural-policy.cjs')(text);
+ text=require('./runtime-scheduling.cjs')(text);
  text=require('./trace.cjs')(text);
+ text=require('./diagnostics.cjs')(text);
  text=text.replace(/\r\n/g,'\n').replace(/^[ \t]+$/gm,'');
+ const payloadHash=require('crypto').createHash('sha256').update(text,'utf8').digest('hex');
+ text='global CyrusLoadedScriptFingerprint="'+payloadHash+'"\n'+text;
  fs.writeFileSync('scripts/AminScatterObject.ms',text);
 }
 

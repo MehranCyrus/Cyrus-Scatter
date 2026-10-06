@@ -1,0 +1,49 @@
+{
+  "schema": "cyrus.proposed.candidate_fixture/0.1",
+  "synthetic": true,
+  "context": {
+    "study_id": "synthetic-courtyard-study",
+    "site_snapshot_id": "synthetic-site-v1",
+    "brief_version": "synthetic-brief-v1",
+    "profile_version": "synthetic-studio-v1",
+    "asset_catalog_version": "synthetic-assets-v1",
+    "units": {"length": "metres", "angles": "degrees", "up_axis": "Z"},
+    "view_profile_id": "synthetic-hero-top-v1",
+    "asset_ids": ["synthetic-grass", "synthetic-flower"],
+    "training_eligible": false
+  },
+  "candidates": [
+    {
+      "candidate_id": "synthetic-candidate-a",
+      "parent_candidate_id": null,
+      "recipe_family": "synthetic-curated-meadow-v1",
+      "seed": 412,
+      "status": "synthetic_not_executed",
+      "recipe": {
+        "requested_candidate_budget": 600,
+        "source_weights": {"synthetic-grass": 0.8, "synthetic-flower": 0.2},
+        "uniform_scale_range": [0.85, 1.15],
+        "self_spacing": {"enabled": true, "radius_factor": 1.0, "gap_m": 0.05}
+      },
+      "publication_id": null,
+      "transform_digest": null,
+      "view_artifacts": []
+    },
+    {
+      "candidate_id": "synthetic-candidate-b",
+      "parent_candidate_id": "synthetic-candidate-a",
+      "recipe_family": "synthetic-curated-meadow-v1",
+      "seed": 412,
+      "status": "synthetic_not_executed",
+      "recipe": {
+        "requested_candidate_budget": 750,
+        "source_weights": {"synthetic-grass": 0.65, "synthetic-flower": 0.35},
+        "uniform_scale_range": [0.85, 1.3],
+        "self_spacing": {"enabled": true, "radius_factor": 1.0, "gap_m": 0.05}
+      },
+      "publication_id": null,
+      "transform_digest": null,
+      "view_artifacts": []
+    }
+  ]
+}

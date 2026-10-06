@@ -15,6 +15,7 @@ from PySide6 import QtCore, QtGui, QtWidgets
 from .contracts import Fault, digest, require
 from .geometry import area, contains, convex, cross, hull, max_to_column_matrix
 from .service import uid
+from . import __version__
 
 
 def point(p):
@@ -65,7 +66,7 @@ class MaxHost:
             kernel.GetModuleHandleW.restype=wintypes.HMODULE
             kernel.GetModuleFileNameW.argtypes=[wintypes.HMODULE,wintypes.LPWSTR,wintypes.DWORD]
             modules=[]
-            for name in ("AminScatter.dlx","CyrusScatterEdit.dlm","CyrusSurfaceAnalyzer.dlx"):
+            for name in ("AminScatter.dlx","CyrusScatterEdit.dlm","CyrusSurfaceAnalyzer.dlx","CyrusBrush.dlx","CyrusBrushStorage.dlh"):
                 module=kernel.GetModuleHandleW(name)
                 item={"module":name,"loaded":bool(module),"loaded_file_sha256":None}
                 if module:
@@ -77,8 +78,58 @@ class MaxHost:
                             item["identity_status"]="loaded module file could not be read"
                 modules.append(item)
             self.build_identity=modules
-        return {"max_version": frozen(rt.maxVersion()), "automation_version": "1.0.0", "python_thread": self.main_thread,
-                "pid":os.getpid(),"loaded_modules":self.build_identity,"identity_semantics":"SHA-256 of loaded module files, cached when connected; no memory-image attestation"}
+        script = getattr(rt, "CyrusLoadedScriptFingerprint", None)
+        return {"max_version": frozen(rt.maxVersion()), "automation_version": __version__, "python_thread": self.main_thread,
+                "pid":os.getpid(),"host_mode":"interactive_ui_thread", "loaded_modules":self.build_identity,
+                "loaded_script_payload_sha256": str(script) if script is not None else None,
+                "identity_semantics":"Module-file SHA-256 cached on first inspection; script payload fingerprint supplied by the loaded script (excluding its fingerprint line). Neither is a memory-image attestation."}
+
+    def diagnostic_start(self, session_id):
+        self.assert_main()
+        from .contracts import identifier
+        identifier(session_id)
+        require(getattr(rt, "cyrusDiagnosticStart", None) is not None,
+                "Load the matching diagnostic native/script build first", "UNSUPPORTED_CAPABILITY")
+        rt.cyrusDiagnosticStart(session_id, 4096, 4 * 1024 * 1024, 600000)
+
+    def diagnostic_stop(self):
+        self.assert_main()
+        require(getattr(rt, "cyrusDiagnosticStop", None) is not None,
+                "Diagnostic recorder is unavailable", "UNSUPPORTED_CAPABILITY")
+        rt.cyrusDiagnosticStop()
+
+    def diagnostic_page(self, after=0, limit=100):
+        self.assert_main()
+        require(getattr(rt, "cyrusDiagnosticSnapshot", None) is not None,
+                "Diagnostic recorder is unavailable", "UNSUPPORTED_CAPABILITY")
+        return str(rt.cyrusDiagnosticSnapshot(after, limit))
+
+    def publication_manifest(self, controller_id):
+        self.assert_main()
+        from .publication import manifest
+        obj=self.controllers.get(controller_id)
+        require(obj is not None and rt.isValidNode(obj), "Scoped controller is unavailable", "STALE_CONTEXT")
+        require(int(obj.groupPolicy)==3 and getattr(obj,"procPublicationInfo",None) is not None,
+                "This controller has no procedural publication reader; use the matching script/native pair", "UNSUPPORTED_CAPABILITY")
+        try:
+            info=frozen(obj.procPublicationInfo())
+        except RuntimeError as exc:
+            if "inspection budget" in str(exc):
+                raise Fault("BUDGET_EXCEEDED","Published input signature exceeds the passive inspection budget") from exc
+            raise Fault("PUBLICATION_UNAVAILABLE","Use Update locally to create a complete cached publication first") from exc
+        result=manifest(info)
+        result["cached_pending_flags"]=[bool(leaf.cacheSnapshot()[2]) for leaf in obj.layerObjects]
+        result["pending_semantics"]="Cached flags only; no input-key comparison or container reconciliation is performed."
+        return result
+
+    def publication_page(self, controller_id, publication_id, offset, limit):
+        self.assert_main()
+        obj=self.controllers.get(controller_id)
+        require(obj is not None and rt.isValidNode(obj), "Scoped controller is unavailable", "STALE_CONTEXT")
+        try:
+            return frozen(obj.procPublicationPage(publication_id,offset,limit))
+        except RuntimeError as exc:
+            raise Fault("STALE_CONTEXT","Publication changed or is unavailable; read its manifest again") from exc
 
     def busy(self):
         self.assert_main()

@@ -1,0 +1,222 @@
+{
+  "idle_start": {
+    "label": "panel-idle-before",
+    "ticks": 0,
+    "wrong_thread": false,
+    "timer_active": false,
+    "queued": 0,
+    "epochs": [
+      55
+    ],
+    "prepared": [
+      [
+        55
+      ]
+    ],
+    "recording": true,
+    "shared": null,
+    "closed": false
+  },
+  "idle_end": {
+    "label": "panel-idle-after",
+    "ticks": 0,
+    "wrong_thread": false,
+    "timer_active": false,
+    "queued": 0,
+    "epochs": [
+      55
+    ],
+    "prepared": [
+      [
+        55
+      ]
+    ],
+    "recording": true,
+    "shared": null,
+    "closed": false
+  },
+  "tools": 12,
+  "resources": 7,
+  "rows": 600,
+  "unique_identities": true,
+  "publication": {
+    "cached_pending_flags": [
+      false
+    ],
+    "count": 600,
+    "freshness": "Last complete publication. Does not certify that pending inputs or source geometry are current.",
+    "host_time_value": 0,
+    "identity_lifetime": "Publication ID is transient and replaced by each successful solve, including reconstruction after reopen. Instance identity is (set_id, instance_id), not output row index.",
+    "input_key_sha256": "f76881ae01564ba48d405daf4c63a9c5edd216d065c641ab99f48527dc6cf52b",
+    "metres_per_unit": 0.009999999776482582,
+    "pair_rules": [],
+    "pending_semantics": "Cached flags only; no input-key comparison or container reconciliation is performed.",
+    "publication_epoch": 55,
+    "publication_id": "88f3b75b-ebaf-4c4e-9f25-08403c332957",
+    "recipe_completeness": "Publication identities, budgets and pair rules; input signature is opaque. Full reconstructable recipe/asset export is not implemented.",
+    "schema": "cyrus.procedural-publication/1.0",
+    "script_payload_sha256": "708ba32fbbebe62530d4168a81fd0b761471e843976926b87d07de42f9be5561",
+    "sets": [
+      {
+        "admitted_pool": 600,
+        "attempt_limit": 600,
+        "count": 600,
+        "layer_id": "5b78be48-8aca-4798-b13e-eec5ada6cf64",
+        "layer_order": 1,
+        "requested": 600,
+        "sampling_salt": 0,
+        "set_id": "5b78be48-8aca-4798-b13e-eec5ada6cf64",
+        "set_order": 1,
+        "sources": [
+          {
+            "empty": false,
+            "included_in_exact_output": true,
+            "node_handle_at_publication": 68145,
+            "point": false,
+            "source_entry_id": "09e164e8-e7d9-4998-834e-d8401adb9373"
+          }
+        ]
+      }
+    ],
+    "training_eligible": false,
+    "units": {
+      "length": "metres",
+      "transform": "4x4 column-vector, right-handed Z-up; translation in metres"
+    }
+  },
+  "consent_denied_granted_revoked": true,
+  "host_busy_rejected": true,
+  "after_requests": {
+    "label": "panel-after-requests",
+    "ticks": 12,
+    "wrong_thread": false,
+    "timer_active": false,
+    "queued": 0,
+    "epochs": [
+      55
+    ],
+    "prepared": [
+      [
+        55
+      ]
+    ],
+    "recording": true,
+    "shared": null,
+    "closed": false
+  },
+  "settled_idle": {
+    "label": "panel-after-requests-idle",
+    "ticks": 12,
+    "wrong_thread": false,
+    "timer_active": false,
+    "queued": 0,
+    "epochs": [
+      55
+    ],
+    "prepared": [
+      [
+        55
+      ]
+    ],
+    "recording": true,
+    "shared": null,
+    "closed": false
+  },
+  "closed_schema_queued_writes": [
+    {
+      "created_unix": 1791240826.7428403,
+      "duration_ms": 108.85329998563975,
+      "idempotency_key": "831dbc6b762b485caa161a85ee20e200",
+      "operation_id": "operation_88f07ad5a7824c55ab2fdfe58588d5d0",
+      "result": {
+        "constraint_check": "all emitted footprint circles inside approved regions",
+        "controller_id": "controller_3ef7e357c9e34f2883f9789ad5333ec2",
+        "display_mode": "proxy_boxes",
+        "emitted": 0,
+        "generation_id": "generation_2fba453e394346358a4327762de2b961",
+        "group_policy": 1,
+        "layers": [
+          {
+            "displayed_instances": 0,
+            "displayed_samples": 0,
+            "effective_requested": 0,
+            "emitted": 0,
+            "layer_id": "40b01647-a5ca-4152-8180-68725bc1e9ff",
+            "name": "Trees",
+            "requested": 0,
+            "underfilled": false
+          }
+        ],
+        "plan_schema": "1.0",
+        "requested": 0,
+        "transform_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "ui_version": "0.7.1",
+        "undo_label": "Cyrus Automation 2de2b961"
+      },
+      "scene_epoch": "scene_5feb0933d7bb41bf8321ceaa950636b6",
+      "scene_revision": 5,
+      "signature": "[\"validation_edf7618ce6f0466e8c3b4cbd0569eeef\",\"1142fdb9c27cbaaa8fb1032b15ab5dcaa08e4761fb1d72c67a25b70acf769eea\",\"scene_5feb0933d7bb41bf8321ceaa950636b6\",4]",
+      "state": "succeeded"
+    },
+    {
+      "created_unix": 1791240827.4584427,
+      "duration_ms": 195.30020002275705,
+      "idempotency_key": "8b0b348f30f246a9b3ceac42ecfc52d7",
+      "operation_id": "operation_5388e66981fe41a7aacd6567adce7e27",
+      "result": {
+        "constraint_check": "all emitted footprint circles inside approved regions",
+        "controller_id": "controller_3ef7e357c9e34f2883f9789ad5333ec2",
+        "display_mode": "mesh",
+        "emitted": 59,
+        "generation_id": "generation_862512e918b4407d971a648853a60adb",
+        "group_policy": 2,
+        "layers": [
+          {
+            "displayed_instances": 59,
+            "displayed_samples": 59,
+            "effective_requested": 60,
+            "emitted": 59,
+            "layer_id": "8888e3f9-4ad9-4319-90c5-ed833084f3a5",
+            "name": "Trees",
+            "requested": 60,
+            "underfilled": true
+          }
+        ],
+        "plan_schema": "2.0",
+        "requested": 60,
+        "transform_digest": "e014e01d6439bc3275708e5865c2bd7bc43d68e407878ae6a1476b1a616f29aa",
+        "ui_version": "0.7.1",
+        "undo_label": "Cyrus Automation 53a60adb"
+      },
+      "scene_epoch": "scene_5feb0933d7bb41bf8321ceaa950636b6",
+      "scene_revision": 6,
+      "signature": "[\"validation_5cb1ea94daa54f278083c32de97965fc\",\"98630329cf752bd5ac206d6a0fb3afbb99d1ee2a2e57cc8a5381fe2fcc714983\",\"scene_5feb0933d7bb41bf8321ceaa950636b6\",5]",
+      "state": "succeeded"
+    }
+  ],
+  "save_reopen": {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\procedural07-ui-071-live-runtime-final03\\QualifiedLayout.max",
+    "match": true,
+    "controllers": 1,
+    "scope_cleared": true
+  },
+  "post_write_idle": {
+    "label": "panel-after-lifecycle-idle",
+    "ticks": 25,
+    "wrong_thread": false,
+    "timer_active": false,
+    "queued": 0,
+    "epochs": [
+      0
+    ],
+    "prepared": [
+      [
+        0
+      ]
+    ],
+    "recording": false,
+    "shared": null,
+    "closed": false
+  },
+  "closed_descriptor_removed": true
+}

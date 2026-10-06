@@ -1,0 +1,188 @@
+{
+  "schema": "cyrus.vendor-recheck-validation/1",
+  "checked_utc": "2026-10-05T11:04:33.331124+00:00",
+  "user_date": "2026-10-05",
+  "timezone": "Asia/Tehran",
+  "status": "PASS",
+  "status_scope": "documentation checks only; independent workspace implementation drift is recorded and not qualified",
+  "task_writes": "Markdown documents, this evidence receipt, and ignored before-snapshot only",
+  "starting_snapshot": {
+    "path": "build/docs-primary-recheck-20261005/before.json",
+    "sha256": "c437ec7e40c2458d8e9ae05dd898d13dc3ae73f2074d763f47b55520c4282a82",
+    "checked_utc": "2026-10-05T10:47:47.386197+00:00",
+    "head": "addccb492a88292529594de81c287cc26e5ffe98",
+    "branch": "codex/floating-layer-editor-0.7.1",
+    "files": 2119
+  },
+  "new_markdown_documents": [
+    "docs/Current_System_2026-10-05/VENDOR_RECHECK.md"
+  ],
+  "updated_markdown_documents": [
+    "docs/Current_System_2026-10-05/AGENT_WORKFLOW_GUIDE.md",
+    "docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md",
+    "docs/Current_System_2026-10-05/CURRENT_STATE.md",
+    "docs/Current_System_2026-10-05/DIAGNOSTICS_SPEC.md",
+    "docs/Current_System_2026-10-05/DOCUMENT_AUDIT.md",
+    "docs/Current_System_2026-10-05/EVIDENCE.md",
+    "docs/Current_System_2026-10-05/MCP_EXPANSION_SPEC.md",
+    "docs/Current_System_2026-10-05/README.md",
+    "docs/Current_System_2026-10-05/ROADMAP.md",
+    "docs/Current_System_2026-10-05/SYSTEM_GUIDE.md",
+    "docs/README.md"
+  ],
+  "document_hashes": {
+    "docs/Current_System_2026-10-05/VENDOR_RECHECK.md": "5b03a98ca69f484d0fad6b4ac3909d364e898450ef0dc4f6377940ff64789840",
+    "docs/Current_System_2026-10-05/README.md": "b97058ae3e3fc8abaa43c806bc4c1eef76706f0cbd6d28c8dbf47ff084590d1d",
+    "docs/Current_System_2026-10-05/ROADMAP.md": "d1b0245f16c4d67732150d064de6912569099b3c135a7e2e4a8c07d57c6d959d",
+    "docs/Current_System_2026-10-05/DIAGNOSTICS_SPEC.md": "1507228519ddd8fdce83f43f152c603e3b74e78276c57e66ad845b9a74b4abba",
+    "docs/Current_System_2026-10-05/MCP_EXPANSION_SPEC.md": "9734ad6f06f22e04e6016d9735d2865ac15474713adcf516fadfbb2ff2c5262f",
+    "docs/Current_System_2026-10-05/SYSTEM_GUIDE.md": "c6969bd71f2522576cd6e235ae24c24f2a135766e429ee87d14ffe11c00dc234",
+    "docs/Current_System_2026-10-05/CURRENT_STATE.md": "1133774103803a1db0ad785ee9b1320bee420136adc62244942fce2d4fa2cc02",
+    "docs/Current_System_2026-10-05/DOCUMENT_AUDIT.md": "36cf37f9ab8647cb9f0f5e42379351f1e1c2a12ad3c64bd572806d5248c28ed7",
+    "docs/Current_System_2026-10-05/EVIDENCE.md": "9a79ba954ba0d4cbc922d27ce3b6062b25d635b06ec413d81c2eb7203ffe8832",
+    "docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md": "c272a8d9e21f9cc4d049c97e316215fad62873302e7afec234ca8920497bf1d3",
+    "docs/Current_System_2026-10-05/AGENT_WORKFLOW_GUIDE.md": "19448a7a4271a9ea2a481fd20fe952403d0cd30a5899f818bc3c932747b92bc7",
+    "docs/README.md": "295f60461b18df2a1e2856146d693a4161bc41e55e59d2aa6224b7ec733ff49b"
+  },
+  "validation": {
+    "markdown_files_checked": 13,
+    "local_links": 309,
+    "local_fragments": 6,
+    "markdown_whitespace_pass": true,
+    "issues": [],
+    "named_controls": 241,
+    "control_sections": 22,
+    "control_inventory_hash_matches": true,
+    "recorded_baseline_tool_count": 9,
+    "observed_candidate_version": "1.2.0",
+    "candidate_tool_added_during_recheck": "scatter_read_diagnostic_events",
+    "candidate_runtime_qualified_by_this_pass": false,
+    "mcp_tools": [
+      "connection_get_status",
+      "scatter_apply_plan",
+      "scatter_export_record",
+      "scatter_get_configuration",
+      "scatter_get_diagnostics",
+      "scatter_get_status",
+      "scatter_read_diagnostic_events",
+      "scatter_validate_plan",
+      "scene_capture_viewport",
+      "scene_get_context"
+    ],
+    "mcp_resources": [
+      "cyrus://capabilities",
+      "cyrus://plan-schema",
+      "cyrus://plan-schema/2.0",
+      "cyrus://workflow"
+    ],
+    "primary_urls": [
+      "https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_reference_target.html",
+      "https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-Python/files/MAXDEV_Python_threading_html.html",
+      "https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-Python/files/MAXDEV_Python_using_pymxs_html.html",
+      "https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-Python/files/using_pymxs/MAXDEV_Python_using_pymxs_pymxs_module_html.html",
+      "https://help.autodesk.com/cloudhelp/2027/ENU/MAXScript-Help/files/MAXScript-Tools-and-Interaction/Change-Handlers-and-Callbacks/GUID-7C91D285-5683-4606-9F7C-B8D3A7CA508B.html",
+      "https://help.autodesk.com/cloudhelp/2027/ENU/MAXScript-Help/files/MAXScript-Tools-and-Interaction/Change-Handlers-and-Callbacks/GUID-C1F6495F-5831-4FC8-A00C-667C5F2EAE36.html",
+      "https://help.autodesk.com/cloudhelp/2027/ENU/MAXScript-Help/files/MAXScript-Tools-and-Interaction/Change-Handlers-and-Callbacks/General-Event-Callback-Mechanism/GUID-E5BE0058-2216-4E0B-88AF-680CA58AAC73.html",
+      "https://www.sidefx.com/docs/houdini/copy/instanceattrs.html",
+      "https://www.sidefx.com/docs/houdini/ml/stages.html",
+      "https://www.sidefx.com/docs/houdini/nodes/sop/attribfrompieces.html",
+      "https://www.sidefx.com/docs/houdini/nodes/sop/attribpaint.html",
+      "https://www.sidefx.com/docs/houdini/nodes/sop/scatter.html",
+      "https://www.sidefx.com/docs/houdini/nodes/sop/scatteralign.html",
+      "https://www.sidefx.com/docs/houdini/ref/panes/perfmon.html",
+      "https://www.sidefx.com/docs/houdini/tops/cooking.html"
+    ]
+  },
+  "workspace_observation": {
+    "unchanged_preexisting_files_outside_own_edit_list": 2097,
+    "externally_observed_changed_files": [
+      {
+        "path": "AminScatter/CMakeLists.txt",
+        "before_sha256": "f44cd0e2cd89a9fbc9009981279f71a340227d5865d6c3af57a559106e53136a",
+        "observed_after_sha256": "41b9282a8c993f7fafa6e9149c73d6f3f1eeeb70c340ac2164debb3f54c4c200"
+      },
+      {
+        "path": "AminScatter/scripts/AminScatterObject.ms",
+        "before_sha256": "07d0bca2efe330b8b632c1a483cea23c65629b0f7ef5c0cbecd2c6984f1f9924",
+        "observed_after_sha256": "2d2e88002384da309c5c6af29bd3704b64de89474b460e3dd76a67609eb20090"
+      },
+      {
+        "path": "AminScatter/tools/ui/generate.cjs",
+        "before_sha256": "94337743c57e959fe03c361e51be919f7761932a360e6f6f9e79a40b99e56513",
+        "observed_after_sha256": "394fc5b2a5d726d04a207b0e6a5add8598d9e12eda99fdb5f615e1c5606f702f"
+      },
+      {
+        "path": "AminScatter/tools/ui/templates/source-containers.ms",
+        "before_sha256": "b4cfd06297005c3604487fecdcd4e0f3de7a27d2dd32a9e6af1e890bf07c1a4a",
+        "observed_after_sha256": "e7257d0a23877c6052aa655eeb42b715ffe4165c11762a7c86e17846968d53cf"
+      },
+      {
+        "path": "CyrusMCP/cyrus_mcp/__init__.py",
+        "before_sha256": "37350cb7e3bffdad2831489c0b8bc78e49140a714a31437bd2268526e624c241",
+        "observed_after_sha256": "f6f0ea26c3b726a29520701d60c532c619eea8d40c89d27173265cebe07e5bf4"
+      },
+      {
+        "path": "CyrusMCP/cyrus_mcp/max_host.py",
+        "before_sha256": "a464ef90c7e735caf01bad6e836b3515acd9e85fea06fbda4fd3135dadb62de8",
+        "observed_after_sha256": "f0701998950169103327fd4e76698e5a6833924a314073eefc9a974104339d49"
+      },
+      {
+        "path": "CyrusMCP/cyrus_mcp/panel.py",
+        "before_sha256": "a9142b35c0bd33771cc3489ffd97b126380e76d40e750f3410e3e7f413e4a60a",
+        "observed_after_sha256": "042d97df3aee6be0700d0e3509e8d824e1de2fce211495229ff44b40cc7d10e0"
+      },
+      {
+        "path": "CyrusMCP/cyrus_mcp/server.py",
+        "before_sha256": "37b544e2a1ce9f2534c4f46ed482089d0d529e3334d1b59edc087137f2d1fa22",
+        "observed_after_sha256": "cf8d7f5300971b63985250076594564cf139ffbabf29925b3a4814f2b39ef512"
+      },
+      {
+        "path": "CyrusMCP/cyrus_mcp/service.py",
+        "before_sha256": "e7c4865ef1a726964b1e5c1bfd675bac4af3cfa6cb0b36c576ba27694b18b2f0",
+        "observed_after_sha256": "6135fd8bd7b440872ff4ab68dc51c6610d35ec67f2596d83b16c2455593a10fb"
+      },
+      {
+        "path": "CyrusMCP/pyproject.toml",
+        "before_sha256": "c6035afad37f90fc875b6746ff5df899d00d76c9c2a7e862605a814c68f339b7",
+        "observed_after_sha256": "6907918b154f855be8855489f5045e64bde444a5524186ecd4aaad012dfbeb12"
+      },
+      {
+        "path": "CyrusMCP/tests/test_mcp.py",
+        "before_sha256": "ea62bf7468fb6ab3c7828eef4e069e23c27be443d8aaf55213157ca9257a8c96",
+        "observed_after_sha256": "764bcaf3b2e6741ca00faefe60c5bcdb71d23248be369cabd0a4bec3cb655e2f"
+      }
+    ],
+    "externally_observed_new_files": [
+      "AminScatter/include/diagnostics.h",
+      "AminScatter/src/diagnostics.cpp",
+      "AminScatter/src/diagnostics_bridge.cpp",
+      "AminScatter/tests/diagnostics_tests.cpp",
+      "AminScatter/tools/ui/diagnostics.cjs",
+      "CyrusMCP/cyrus_mcp/diagnostics.py",
+      "CyrusMCP/tests/test_diagnostics.py",
+      "tools/procedural_lab/offline_build.py"
+    ],
+    "missing_preexisting_files": [],
+    "meaning": "Hash drift observed after the start snapshot; this pass performed no production writes. No inference about author or qualification."
+  },
+  "sdk_contract_files": [
+    {
+      "path": "build/tooling/max2027-sdk/Program Files/Autodesk/3ds Max 2027 SDK/maxsdk/include/ref.h",
+      "sha256": "3a3a172233837e4ad99e72c2297dc5a2474333c76a9130a83a6f83dc55fcb4fd"
+    },
+    {
+      "path": "build/tooling/max2027-sdk/Program Files/Autodesk/3ds Max 2027 SDK/maxsdk/include/notify.h",
+      "sha256": "02d9a10087c34770ae55ff597239c54c382a375dc167eed45d9a3826e78da859"
+    }
+  ],
+  "fresh_product_tests": false,
+  "fresh_host_tests": false,
+  "new_web_search_and_primary_reading": true,
+  "limitations": [
+    "Selected source paths and primary sections reviewed, not all historical files or vendor manuals.",
+    "No build, pytest, Max/Houdini runtime, render or artist-profile operation.",
+    "File hashes do not establish loaded module identities.",
+    "Concurrent implementation files remain unqualified by this document check.",
+    "Prior documentation and product test receipts were not overwritten."
+  ]
+}

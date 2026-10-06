@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "private_pid": 32336,
+  "epoch_before": 4,
+  "epoch_after": 4,
+  "unexpected_calculation_changes": {},
+  "client_size": "[720,510]",
+  "actions": [
+    "Clicked Spacing topic using pointer",
+    "Dragged native window corner from 922x832 to 722x542 outer bounds",
+    "Scrolled left column and expanded Instance radii controls"
+  ],
+  "observed": "All selected controls and fixed footer remain reachable; left column scrolls independently; cached result remains 62 placed. Tooltip displayed for inherited/default reset.",
+  "screenshot": "editor-resized-scrolled.png",
+  "render_images_reviewed": [
+    "Courtyard_IR.png",
+    "Courtyard_Production.png"
+  ],
+  "render_observation": "Both decoded images visibly contain pavilion, surrounding roads, grass/shrubs and the curved flower path. Existing third-party material limitations remain; this is not artistic-quality certification."
+}

@@ -1,0 +1,20 @@
+# Real-asset scene fixtures
+
+For normal use, run `Open_Garden_Pavilion.cmd` or `python tools/real_scene_071/open_scene.py`. The launcher validates the pinned build, redirects Max's profile, copies the selected delivered scene into a new private project, and opens that copy. `--verify-only` checks availability/identity; `--smoke-test` opens a hidden private process, verifies the saved populations, then closes only that process. `--scene <delivered variant filename>` selects an option example.
+
+The working-copy filename starts with `PREVIEW_0_7_1__` so its Max window can be distinguished from the original scene opened in the normal profile. The launcher checks the loaded UI version after opening the scene, expands Layer Manager and opens the floating Layer Editor. A successful launch now also requires an `editor-ready.json` receipt. These launcher changes have offline checks only until the next private Max run; earlier launch receipts do not qualify them. Existing open Max sessions are unaffected.
+
+The other scripts are **diagnostic scene-authoring fixtures**, not plugin startup scripts. They target an existing private qualification host through `tools/procedural_lab/runtime_driver.py`; they must never be injected into the artist's active Max session. Some deliberately reset/load a scene or test invalid settings. Several diagnostics represent failed intermediate assumptions retained for review; do not run this directory alphabetically.
+
+The completed scene sequence was:
+
+1. Copy/fingerprint the artist file, inspect it in an isolated host, relink local maps/proxies, and save a prepared plant library (`start_inspection.py`, `inspect.ms`, `relink.ms`, `prepare_assets.ms`).
+2. Build/start the private host with all five native modules and both matching scripts (`build_analyzer.py`, `freeze_identity.py`, `start_full_host.py`). These setup scripts contain fixed private output paths; select new private output folders when reproducing a fresh run, rather than deleting prior evidence.
+3. Author the pavilion/roads/receiver/source rectangles (`build_scene.ms`, `complete_build.ms`, `finish_design.ms`). The current build script normalizes the generated tiny-height tail and collapses UV geometry before Brush authoring. `stabilize_terrain.ms` records the repair used on the earlier generated receiver; it is not an instruction to rewrite artist terrain.
+4. Run the original `campaign.ms`, `advanced_campaign.ms`, `rare_options.ms`, and `brush_history.ms` on the six-population scene. Save the option variants. `legacy_campaign.ms` supplies the supported flat Analyzer/Line cases. `finalize_scene.ms` creates the source-library camera and saves the initial master.
+5. Add the user's curved meadow walk (`paint_curved_path.ms`), verify history/Undo and make curb openings (`path_acceptance.ms`), then add the final flower-corridor erase (`clear_flower_trail.ms`). These authoring scripts intentionally guard against applying their changes twice.
+6. `prepare_pointer_paint.ms` sets up a **real Windows pointer gesture** through Start Brush → viewport drag → Stop. `check_pointer_paint.ms` verifies publication and Undo/Redo after that gesture. It cannot substitute a script-generated dab for the pointer test.
+7. `polish_cameras.ms` saves the final presentation. Run `campaign.ms` and `oracle.py` on this final publication; the oracle also checks the exported curved path. `check_pending_status.ms` reproduces the separate Pending-label issue. `show_sources.ms` is a UI demonstration.
+8. `render_final.ms` renders two real Corona previews of the saved master. Run a fresh `open_scene.py --smoke-test`, then `collect_evidence.py` to check the original fingerprint, fresh-process counts/scene hash, oracle/export identity and render receipts, and freeze compact evidence into the dated report folder.
+
+The original filename is never a save destination. Scene binaries and asset maps remain in the ignored `Test Scene` / `build` workspaces. Read `docs/Real_Scene_0.7.1_2026-10-05/README.md`, `RESULTS.md` and `FINDINGS.md` before interpreting a pass as broader qualification.

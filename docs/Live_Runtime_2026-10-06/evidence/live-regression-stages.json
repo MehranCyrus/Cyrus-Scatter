@@ -1,0 +1,141 @@
+[
+  {
+    "stage": "identity",
+    "seconds": 1.625,
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-071-live-runtime-final03/probe-b14360baf61c4b15bf5049ced7f64543.ms",
+    "fixture_sha256": "54e42b4eacf31ae9b609b2ecea1b84cfcb3e0df27998972529b08b272b9dc2c4"
+  },
+  {
+    "stage": "definitions",
+    "seconds": 0.29699999996228144,
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-071-live-runtime-final03/probe-3b8475e31d994550bd22d7a029fd37c3.ms",
+    "fixture_sha256": "34f02da3eef1f79ab4969563b1e45531eb7a1d4b4d8cba6ffdd7d8905f10db93"
+  },
+  {
+    "stage": "procedural core",
+    "seconds": 35.23399999999674,
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-071-live-runtime-final03/probe-906b4849f76e4464bfa360dcde39fee0.ms",
+    "fixture_sha256": "9bdadceec5d3212cb13f4e42c345e201695f52b9b0180eafa4f1c658df3263b1"
+  },
+  {
+    "stage": "Max_Procedural_07_Bindings.ms",
+    "seconds": 2.9380000000237487,
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-071-live-runtime-final03/probe-94a6e75457264a98bb1b5a619e7afdce.ms",
+    "fixture_sha256": "141853103bcb3d5eba47a924260592cbf1f027a2b8377ea8d1ef25cd6c8073e3",
+    "source": "Max_Procedural_07_Bindings.ms"
+  },
+  {
+    "stage": "Max_Layer_Editor_071_Acceptance.ms",
+    "seconds": 19.875,
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-071-live-runtime-final03/probe-78796dfb4d594357b52ca2d1b16f6cb1.ms",
+    "fixture_sha256": "ab4317fba9870b91105b8ac3e4d4a74a015c192760a5b3a794dc18190ab0d435",
+    "source": "Max_Layer_Editor_071_Acceptance.ms"
+  },
+  {
+    "stage": "Max_Layer_Editor_071_BrushLive.ms",
+    "seconds": 4.936999999976251,
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-071-live-runtime-final03/probe-9e1806a7f20942c098cf55acb41189c9.ms",
+    "fixture_sha256": "6652bd3f1ddf8a9b9632de7551aa5db0733aeb337866c5ca43f7fe56058f03ea",
+    "source": "Max_Layer_Editor_071_BrushLive.ms"
+  },
+  {
+    "stage": "Max_Procedural_07_Regression.ms",
+    "seconds": 10.094000000040978,
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-071-live-runtime-final03/probe-d4ea808c9efc4ff8896613ef75214255.ms",
+    "fixture_sha256": "a0eb9f48b6254d45bb00c048541b66ec47b83f7624af0907a6c9926d70c5610c",
+    "source": "Max_Procedural_07_Regression.ms"
+  },
+  {
+    "stage": "Max_Source_Containers_Acceptance.ms",
+    "seconds": 8.969000000040978,
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-071-live-runtime-final03/probe-76372ee0e6094460af3116f9068cae73.ms",
+    "fixture_sha256": "39523bf41707ed46f6eb6a23b783c293b9005cc0aa8e07a19f8f79666531106f",
+    "source": "Max_Source_Containers_Acceptance.ms"
+  },
+  {
+    "stage": "Max_Source_Containers_EdgeCases.ms",
+    "seconds": 4.25,
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-071-live-runtime-final03/probe-1161170a3bb94ef09c0e9f235f627677.ms",
+    "fixture_sha256": "4f38f08545a2041c4fa398a79a0b29ac9139b9039e9cc9b25b259a12d358fa34",
+    "source": "Max_Source_Containers_EdgeCases.ms"
+  },
+  {
+    "stage": "Max_Source_Containers_Output.ms",
+    "seconds": 2.625,
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-071-live-runtime-final03/probe-1b809da9c51b4701a4f33739eb49dd65.ms",
+    "fixture_sha256": "862799669b72bad9363dbf33988a415adb5e028daab0c768300707b5fa0926c5",
+    "source": "Max_Source_Containers_Output.ms"
+  },
+  {
+    "stage": "event definitions",
+    "seconds": 0.2029999999795109,
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-071-live-runtime-final03/probe-05c0ccc4b60d4c81b9c746381f5f0d4f.ms",
+    "fixture_sha256": "72c177e0a2cacb9060afdf1b07b52ee2bce744f2c8d4e86b10803874746968a2"
+  },
+  {
+    "stage": "event setup",
+    "seconds": 1.5160000000032596,
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-071-live-runtime-final03/probe-a19aa234fcfa4309b3ef36937bb9370d.ms",
+    "fixture_sha256": "240753b7e8801679618acafde723c7fdfa227a7b425da05a46ab94dadf4cc4da"
+  },
+  {
+    "stage": "SCEventPark",
+    "seconds": 0.2029999999795109,
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-071-live-runtime-final03/probe-ec2550ea1f6e4cf2833eec4840f4db45.ms",
+    "fixture_sha256": "d198420ebca5b370ae96463ff657d880d07b5473475418143038c0845300d4eb"
+  },
+  {
+    "stage": "SCEventReturn",
+    "seconds": 0.2190000000409782,
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-071-live-runtime-final03/probe-a7feba9864494464bbac3cf3836f2013.ms",
+    "fixture_sha256": "f7f2c34f03e44ecec9485015aba028cdc15d12056dfb34d29b4fc63cbc4cf3dd"
+  },
+  {
+    "stage": "SCEventEnroll",
+    "seconds": 0.2029999999795109,
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-071-live-runtime-final03/probe-0d5a8ad76404421b9ca3236c68d18ce8.ms",
+    "fixture_sha256": "6c7b09379a7162ed53c6cfb0d6f6157327bc3d0b92c7565d51413e8a36466841"
+  },
+  {
+    "stage": "SCEventFinish",
+    "seconds": 0.09399999998277053,
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-071-live-runtime-final03/probe-e2dbce199b694684a2aee3ceccd1311f.ms",
+    "fixture_sha256": "ca792868919dfc3f9577106d1afbf692e30f922a53128873bc27d0596b7bd1b3"
+  },
+  {
+    "stage": "SCEventGroupFinish",
+    "seconds": 0.20300000003771856,
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-071-live-runtime-final03/probe-f22f751b724846fabac1b4d493166695.ms",
+    "fixture_sha256": "90a3856e7fd5f4a440e60063c2eb2ee54db7ee552b9be6780be06260f826d077"
+  },
+  {
+    "stage": "SCEventContainerReturn",
+    "seconds": 0.0940000000409782,
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-071-live-runtime-final03/probe-4888638b9d494710acd80ee807ee79a4.ms",
+    "fixture_sha256": "07d9b1e93389f3e94c13805581d6ee2f0110f75a811a0f996cef3c02c1573144"
+  },
+  {
+    "stage": "SCEventGeometry",
+    "seconds": 0.2029999999795109,
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-071-live-runtime-final03/probe-8606afab78e0414bb7c6ed61ea92b421.ms",
+    "fixture_sha256": "eaa229f4eb46e17fe8bdd21016cf24c0b0be125772d10157e52af9a435f1d6e9"
+  },
+  {
+    "stage": "SCEventGeometryFinish",
+    "seconds": 0.10999999998603016,
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-071-live-runtime-final03/probe-c4704cf58cc4422caaf9d17133db7f72.ms",
+    "fixture_sha256": "2ce32470208ad0a490628075c6df08284b3e50ddc369f2532dc5a366bf14b102"
+  },
+  {
+    "stage": "navigation definitions",
+    "seconds": 0.20300000003771856,
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-071-live-runtime-final03/probe-e1fbf149c21145fab48814f84ee7eda9.ms",
+    "fixture_sha256": "b4219f406d79b892c236a9fe2e0dfbbd06fe0afc84d7a807eb81c4cf5e288961"
+  },
+  {
+    "stage": "retained navigation 100k",
+    "seconds": 4.546999999962281,
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-071-live-runtime-final03/probe-67ca63b7929f49f8b0a7834f1d743be6.ms",
+    "fixture_sha256": "5d1a64dd5cab4c8d3d654f12c4017d62c58e67fd7e6f4aa54a20e38d24a70637"
+  }
+]

@@ -1,5 +1,9 @@
 # Cyrus Scatter 0.7 — independent review handoff
 
+<!-- CURRENT_SYSTEM_2026-10-05 -->
+
+Preserved handoff snapshot. Later source-container/UI work and the subsequent real-scene IR finding are summarized in the [current system guide](../Current_System_2026-10-05/README.md). The unfinished UI state described below is historical, not the latest local 0.7.1 source.
+
 5 October 2026. This is the current handoff for reviewing the local code and documentation before continuing development.
 
 **Status: procedural 0.7 has a previously tested candidate; the subsequent command-panel layout change is unfinished. The current working tree is not the same build as the packaged candidate.** Do not interpret the earlier runtime pass as qualification of today's UI source.

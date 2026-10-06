@@ -74,3 +74,62 @@ def test_two_max_sessions_cannot_silently_replace_pairing(bridge):
     bridge.close()
     replacement=Bridge(bridge.directory)
     replacement.close()
+
+
+def test_wake_signals_work_without_executing_host_on_network_thread(tmp_path):
+    ready=threading.Event()
+    calls=[]
+    main=threading.get_ident()
+    def wake():
+        calls.append(threading.get_ident())
+        ready.set()
+    class Service:
+        class host:
+            @staticmethod
+            def busy():
+                assert threading.get_ident()==main
+                return False
+        def dispatch(self,method,args):
+            assert threading.get_ident()==main
+            return {"ok":True}
+    with concurrent.futures.ThreadPoolExecutor() as pool:
+        bridge=Bridge(tmp_path/"wake",wake=wake)
+        try:
+            assert not send(request(bridge,headers={"X-Cyrus-Signature":"wrong"}))["ok"]
+            assert not ready.is_set()
+            future=pool.submit(send,request(bridge))
+            assert ready.wait(3)
+            assert calls[0]!=main
+            assert not future.done()
+            assert bridge.drain_one(Service())
+            assert future.result(timeout=3)["ok"]
+            assert bridge.drain_one(Service()) is False
+        finally:
+            bridge.close()
+
+
+def test_failed_wake_never_applies_later(tmp_path):
+    def fail():
+        raise RuntimeError("UI object closed")
+    bridge=Bridge(tmp_path/"failed-wake",wake=fail)
+    try:
+        result=send(request(bridge,data={"method":"scatter.apply_plan","args":{}}))
+        assert result["error"]["code"]=="HOST_BUSY"
+        assert bridge.drain_one(None) is True
+        assert bridge.queue.empty()
+    finally:
+        bridge.close()
+
+
+def test_closing_releases_queued_caller_without_dispatch(tmp_path):
+    ready=threading.Event()
+    bridge=Bridge(tmp_path/"close",wake=ready.set)
+    with concurrent.futures.ThreadPoolExecutor() as pool:
+        try:
+            future=pool.submit(send,request(bridge))
+            assert ready.wait(3)
+            bridge.close()
+            assert future.result(timeout=3)["error"]["code"]=="HOST_BUSY"
+            assert bridge.queue.empty()
+        finally:
+            bridge.close()

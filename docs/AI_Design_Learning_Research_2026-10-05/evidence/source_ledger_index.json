@@ -1,0 +1,405 @@
+[
+  {
+    "id": "S01",
+    "title": "GardenDesigner",
+    "primary_url": "https://arxiv.org/abs/2604.01777",
+    "additional_urls": [
+      "https://arxiv.org/html/2604.01777v1",
+      "https://monad-cube.github.io/GardenDesigner/"
+    ],
+    "date_status_reading_depth": "2 Apr 2026; CVPR 2026 identified by authors/project. Selected methods, human-study discussion and project page.",
+    "lesson_and_limit": "Expert asset knowledge and relation constraints are a close conceptual fit. Study concerns Jiangnan gardens, not general Cyrus planting or Max integration. Reuse the design lesson; independently evaluate our recipes.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S02",
+    "title": "Scenethesis",
+    "primary_url": "https://arxiv.org/abs/2505.02836",
+    "additional_urls": [],
+    "date_status_reading_depth": "Original May 2025; primary abstract read. ICLR 2026 manuscript surfaced; OpenReview forum access encountered verification.",
+    "lesson_and_limit": "Combines planning, visual refinement and physically informed optimization. Useful decomposition, but no reproduced artist preference or Cyrus performance result. Venue page was not independently inspected beyond the available manuscript evidence.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S03",
+    "title": "Infinite Photorealistic Worlds Using Procedural Generation / Infinigen",
+    "primary_url": "https://openaccess.thecvf.com/content/CVPR2023/html/Raistrick_Infinite_Photorealistic_Worlds_Using_Procedural_Generation_CVPR_2023_paper.html",
+    "additional_urls": [],
+    "date_status_reading_depth": "CVPR 2023; primary paper overview/abstract.",
+    "lesson_and_limit": "Procedural nature generation can produce broad synthetic variation. Synthetic quantity does not supply aesthetic preference labels. Cyrus already has an engine; replacing it is not implied.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S04",
+    "title": "Realistic Modeling and Rendering of Plant Ecosystems",
+    "primary_url": "https://graphics.stanford.edu/papers/ecosys/",
+    "additional_urls": [],
+    "date_status_reading_depth": "SIGGRAPH 1998; author paper page/overview.",
+    "lesson_and_limit": "Domain-specific plant distribution, ecosystem modelling and rendering have a long history. Artist controls and structured rules remain useful. Ecological simulation and attractive studio composition are different objectives.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S05",
+    "title": "Sample-Based Vegetation Distribution Information Synthesis",
+    "primary_url": "https://journals.plos.org/plosone/article?id=10.1371%2Fjournal.pone.0134009",
+    "additional_urls": [],
+    "date_status_reading_depth": "2015; selected overview/method material.",
+    "lesson_and_limit": "Local relationships in marked point distributions suggest measurable species/spacing descriptors. Local statistical similarity alone does not establish camera composition or task success.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S06",
+    "title": "Patternshop",
+    "primary_url": "https://xchhuang.github.io/patternshop/",
+    "additional_urls": [],
+    "date_status_reading_depth": "SIGGRAPH 2023; author project overview.",
+    "lesson_and_limit": "Separate density from correlation/point-pattern structure. Useful vocabulary for future recipe controls. Availability and reuse terms require checking; no implementation was copied.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S25",
+    "title": "Thinking in Space / VSI-Bench",
+    "primary_url": "https://arxiv.org/abs/2412.14171",
+    "additional_urls": [],
+    "date_status_reading_depth": "Original Dec 2024; CVPR 2025 paper. Abstract and paper overview.",
+    "lesson_and_limit": "Spatial reasoning should be evaluated against geometric truth. Benchmark findings do not prove that every later model has the same limitations; test the selected model on Cyrus tasks.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S40",
+    "title": "Generate Any Scene",
+    "primary_url": "https://arxiv.org/abs/2412.08221",
+    "additional_urls": [],
+    "date_status_reading_depth": "Original 11 Dec 2024; v4 17 Mar 2026, ICLR 2026. Primary abstract/version history.",
+    "lesson_and_limit": "Structured objects/attributes/relations can systematically vary semantic coverage. Candidate benchmark generation may benefit. Semantic correctness labels are not human aesthetic preferences, and synthetic self-improvement is not evidence of Cyrus quality.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S07",
+    "title": "Deep Reinforcement Learning from Human Preferences",
+    "primary_url": "https://arxiv.org/abs/1706.03741",
+    "additional_urls": [],
+    "date_status_reading_depth": "2017; primary abstract/overview.",
+    "lesson_and_limit": "Pairwise human judgments can train a reward used by an interactive policy. This supports the general feedback idea; it does not make full RL necessary for parameter search.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S08",
+    "title": "Deep Interactive Evolution",
+    "primary_url": "https://arxiv.org/abs/1801.08230",
+    "additional_urls": [],
+    "date_status_reading_depth": "2018; primary abstract.",
+    "lesson_and_limit": "Human selection can guide a generative search space. Cyrus can test local recipe mutation around favourites without adopting the paper's generative representation.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S09",
+    "title": "Multi-attribute Bayesian optimization with interactive preference learning",
+    "primary_url": "https://proceedings.mlr.press/v108/astudillo20a.html",
+    "additional_urls": [],
+    "date_status_reading_depth": "AISTATS 2020; primary paper abstract.",
+    "lesson_and_limit": "Expensive design search can use uncertainty about utility and comparisons. Useful low-dimensional baseline; mixed recipe structure and Max costs require a separate experiment.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S10",
+    "title": "BoTorch BOPE tutorial",
+    "primary_url": "https://botorch.org/docs/v0.17.0/tutorials/bope",
+    "additional_urls": [],
+    "date_status_reading_depth": "Versioned official tutorial, accessed 2026-10-05; model/acquisition example inspected.",
+    "lesson_and_limit": "Shows preference exploration over outcomes with pairwise utility modelling. A tutorial is a starting implementation reference, not a guarantee of better landscape search.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S11",
+    "title": "Illuminating search spaces by mapping elites",
+    "primary_url": "https://arxiv.org/abs/1504.04909",
+    "additional_urls": [],
+    "date_status_reading_depth": "2015; primary abstract.",
+    "lesson_and_limit": "Keep a repertoire across meaningful descriptors rather than only the top scalar score. Cyrus must validate the descriptors and artist value of that diversity.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S12",
+    "title": "ImageReward",
+    "primary_url": "https://proceedings.neurips.cc/paper_files/paper/2023/hash/33646ef0ed554145eab65f6250fab0c9-Abstract-Conference.html",
+    "additional_urls": [],
+    "date_status_reading_depth": "NeurIPS 2023; primary abstract.",
+    "lesson_and_limit": "Image preference models can learn from human comparisons. General text-to-image preferences should be tested as a baseline, not treated as professional planting authority.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S13",
+    "title": "Personalizing RLHF with Variational Preference Learning",
+    "primary_url": "https://proceedings.neurips.cc/paper_files/paper/2024/hash/5e1c255653eb98cef13f45b2d337c882-Abstract-Conference.html",
+    "additional_urls": [],
+    "date_status_reading_depth": "NeurIPS 2024; primary abstract.",
+    "lesson_and_limit": "Heterogeneous preferences motivate conditional rather than universal scoring. Does not determine our studio's decision policy or prove visual transfer.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S14",
+    "title": "Capturing Individual Human Preferences with Reward Features",
+    "primary_url": "https://proceedings.neurips.cc/paper_files/paper/2025/hash/761bc7f095f927e5a5de31ed4154bb45-Abstract-Conference.html",
+    "additional_urls": [],
+    "date_status_reading_depth": "NeurIPS 2025; primary abstract.",
+    "lesson_and_limit": "Shared reward features with individual adaptation are worth comparing to separate profiles. Domain, data scale and evaluation differ from Cyrus.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S15",
+    "title": "PreferThinker",
+    "primary_url": "https://arxiv.org/abs/2511.00609",
+    "additional_urls": [],
+    "date_status_reading_depth": "Original 1 Nov 2025; v4 26 Jun 2026; authors report ICLR 2026 acceptance. Abstract/version history.",
+    "lesson_and_limit": "Predict-then-assess preference profiles suggest editable profile hypotheses and dimension-specific assessments. Reasoning-trained scoring is not automatically better than a small ranker on our data.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S16",
+    "title": "PrefGen",
+    "primary_url": "https://arxiv.org/abs/2512.06020",
+    "additional_urls": [],
+    "date_status_reading_depth": "4 Dec 2025 preprint; primary abstract.",
+    "lesson_and_limit": "Multimodal preference representations can condition image generation. Transfer to a procedural recipe generator is a hypothesis, not a demonstrated capability.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S17",
+    "title": "XPASS-Vis",
+    "primary_url": "https://arxiv.org/abs/2606.15629",
+    "additional_urls": [],
+    "date_status_reading_depth": "14 Jun 2026 preprint; primary abstract/version history.",
+    "lesson_and_limit": "Cross-domain personalized aesthetics includes landscape images but still has a transfer gap. The abstract says data/code will be public upon acceptance; availability was not established. Do not assume it is a ready commercial training corpus.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S18",
+    "title": "Discrete Preference Learning for Personalized Multimodal Generation",
+    "primary_url": "https://arxiv.org/abs/2604.20434",
+    "additional_urls": [],
+    "date_status_reading_depth": "22 Apr 2026; authors report SIGIR 2026 acceptance. Primary abstract.",
+    "lesson_and_limit": "Modality-specific graphs and discrete preference tokens are a possible later representation. Evidence is for multimodal generation; it does not justify a GNN as the first Cyrus model.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S19",
+    "title": "CRED",
+    "primary_url": "https://arxiv.org/abs/2603.08531",
+    "additional_urls": [],
+    "date_status_reading_depth": "9 Mar 2026; ICRA 2026 stated in paper metadata. Primary abstract.",
+    "lesson_and_limit": "Generate comparisons that distinguish competing preference hypotheses. Robotics trajectories and environment design differ from aesthetic planting; test the acquisition idea under equal artist effort.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S20",
+    "title": "Optimal Design for Active Preference Learning with Biased LLM Judges / NAOD",
+    "primary_url": "https://arxiv.org/abs/2609.38860",
+    "additional_urls": [],
+    "date_status_reading_depth": "30 Sep 2026, v1 preprint. Primary abstract.",
+    "lesson_and_limit": "Active acquisition may expose residual judge bias. Keep human anchors and audit selection. Very recent language-preference evidence; no visual/Cyrus reproduction or maturity claim.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S21",
+    "title": "Direct Preference Optimization",
+    "primary_url": "https://arxiv.org/abs/2305.18290",
+    "additional_urls": [],
+    "date_status_reading_depth": "2023; primary abstract.",
+    "lesson_and_limit": "A later recipe language model could learn from context-matched preferred/rejected sequences. DPO does not directly train a C++ procedural evaluator or remove validity checks.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S22",
+    "title": "Scaling Laws for Reward Model Overoptimization",
+    "primary_url": "https://arxiv.org/abs/2210.10760",
+    "additional_urls": [],
+    "date_status_reading_depth": "Original 2022; ICML 2023 proceedings also surfaced. Primary abstract.",
+    "lesson_and_limit": "Optimizing an imperfect reward too hard can worsen a more faithful target. Keep independent human evaluation and capped search. The paper's synthetic reward setup is not a measured Cyrus failure rate.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S23",
+    "title": "Scaling Laws for Reward Model Overoptimization in Direct Alignment Algorithms",
+    "primary_url": "https://arxiv.org/abs/2406.02900",
+    "additional_urls": [],
+    "date_status_reading_depth": "2024; primary abstract.",
+    "lesson_and_limit": "Direct alignment can also overoptimize. Choosing DPO does not remove the need for evaluation, regularization and rollback.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S24",
+    "title": "Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena",
+    "primary_url": "https://arxiv.org/abs/2306.05685",
+    "additional_urls": [],
+    "date_status_reading_depth": "2023; primary abstract/overview.",
+    "lesson_and_limit": "Model judging needs bias checks and human comparison. Transfer to multimodal planting judgments must be measured rather than inferred from language evaluation.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S26",
+    "title": "SAM 3 official repository",
+    "primary_url": "https://github.com/facebookresearch/sam3",
+    "additional_urls": [],
+    "date_status_reading_depth": "Current README/access/license sections; SAM 3.1 release noted 27 Mar 2026.",
+    "lesson_and_limit": "Candidate for editable reference masks. The 3.1 update concerns multi-object video tracking. Its custom license, checkpoint access and dependency requirements need exact-version review; no installation or still-image benchmark here.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S27",
+    "title": "DINOv3 official repository",
+    "primary_url": "https://github.com/facebookresearch/dinov3",
+    "additional_urls": [],
+    "date_status_reading_depth": "Current README and license notice, accessed 2026-10-05.",
+    "lesson_and_limit": "Candidate frozen visual features for retrieval/ranking. Code and weights use the DINOv3 license. Benchmark an appropriate checkpoint and inspect terms before adoption; similarity is not preference.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S28",
+    "title": "Depth Anything 3 official repository",
+    "primary_url": "https://github.com/ByteDance-Seed/Depth-Anything-3",
+    "additional_urls": [],
+    "date_status_reading_depth": "Current README/model table; original release noted 14 Nov 2025; refreshed checkpoint notes inspected.",
+    "lesson_and_limit": "Optional depth/view cues, not automatic exact reconstruction. Weight terms vary by checkpoint; several large models are noncommercial, unlike some other variants. Pin the exact choice and use Max geometry as truth for generated scenes.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S29",
+    "title": "MCP specification",
+    "primary_url": "https://modelcontextprotocol.io/specification/2026-07-28",
+    "additional_urls": [],
+    "date_status_reading_depth": "Dated 28 Jul 2026; official overview/contracts.",
+    "lesson_and_limit": "Current protocol describes self-contained stateless requests and per-request negotiation. Existing Cyrus package versions are not proof of conformance; use compatibility tests.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S30",
+    "title": "MCP tools",
+    "primary_url": "https://modelcontextprotocol.io/specification/2026-07-28/server/tools",
+    "additional_urls": [],
+    "date_status_reading_depth": "Same dated specification; relevant structured output/annotation sections.",
+    "lesson_and_limit": "Typed input/output contracts improve interoperability. An annotation is not an access-control decision; Cyrus must enforce authority and scope itself.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S31",
+    "title": "MCP Tasks extension",
+    "primary_url": "https://tasks.extensions.modelcontextprotocol.io/specification/draft/tasks",
+    "additional_urls": [],
+    "date_status_reading_depth": "Draft as accessed; creation, polling and cancellation sections.",
+    "lesson_and_limit": "Optional durable-operation envelope. Cancellation is cooperative, acknowledgement is not proof of stopping, and support must be negotiated. Keep a compatible operation-status path.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S32",
+    "title": "LangGraph persistence",
+    "primary_url": "https://docs.langchain.com/oss/python/langgraph/persistence",
+    "additional_urls": [],
+    "date_status_reading_depth": "Current official documentation; persistence/checkpoint overview.",
+    "lesson_and_limit": "Durable orchestration may help complex human interactions. Use a persistent store; checkpoint state does not replace a host mutation ledger.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S33",
+    "title": "LangGraph interrupts",
+    "primary_url": "https://docs.langchain.com/oss/python/langgraph/interrupts",
+    "additional_urls": [],
+    "date_status_reading_depth": "Current official documentation; replay and side-effect sections.",
+    "lesson_and_limit": "Resuming can rerun code before an interrupt. Make scene commands idempotent and separate irreversible side effects from replayable computation.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S34",
+    "title": "GraphRAG",
+    "primary_url": "https://microsoft.github.io/graphrag/",
+    "additional_urls": [],
+    "date_status_reading_depth": "Current official documentation overview.",
+    "lesson_and_limit": "Text-derived entities, relationships and community summaries support retrieval. This is different from a scene graph, workflow graph or learned geometry model. Test against simple retrieval first.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S35",
+    "title": "Building effective agents",
+    "primary_url": "https://www.anthropic.com/engineering/building-effective-agents",
+    "additional_urls": [],
+    "date_status_reading_depth": "19 Dec 2024; official engineering article, workflow/agent discussion.",
+    "lesson_and_limit": "Predictable workflows and more autonomous agents solve different needs. Start with measurable bounded stages; avoid complexity added only because an agent framework exists.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S36",
+    "title": "Writing effective tools for agents",
+    "primary_url": "https://www.anthropic.com/engineering/writing-tools-for-agents",
+    "additional_urls": [],
+    "date_status_reading_depth": "11 Sep 2025; official engineering guidance, overview/relevant tool-design material.",
+    "lesson_and_limit": "Give tools clear jobs and evaluate their usefulness. Cyrus needs supported task coverage and actionable errors, not every property exposed separately.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S37",
+    "title": "Demystifying evals for AI agents",
+    "primary_url": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+    "additional_urls": [],
+    "date_status_reading_depth": "9 Jan 2026; official engineering article, definitions/grader sections.",
+    "lesson_and_limit": "Evaluate the real final state with deterministic, human and calibrated model checks. Task traces and a model's success claim are not the outcome.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S38",
+    "title": "3ds Max 2027 Python threading",
+    "primary_url": "https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-Python/files/MAXDEV_Python_threading_html.html",
+    "additional_urls": [],
+    "date_status_reading_depth": "Max 2027 official documentation; full short page.",
+    "lesson_and_limit": "Worker Python threads cannot call `pymxs`; the former token mechanism is deprecated/nonfunctional. Keep scene interaction on the supported host path and copied-data inference outside.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "S39",
+    "title": "OpenTelemetry logging",
+    "primary_url": "https://opentelemetry.io/docs/specs/otel/logs/",
+    "additional_urls": [],
+    "date_status_reading_depth": "Current official specification overview and correlation guidance.",
+    "lesson_and_limit": "Shared trace/span/resource context can correlate diagnostics. The local pilot can adopt field conventions without deploying a distributed observability service.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  }
+]

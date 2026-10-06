@@ -1,5 +1,9 @@
 # Roadmap reconciliation after MCP implementation
 
+<!-- CURRENT_SYSTEM_2026-10-05 -->
+
+Historical MCP implementation status. See [current tools and capabilities](../Current_System_2026-10-05/CAPABILITY_MATRIX.md) and [proposed expansion](../Current_System_2026-10-05/MCP_EXPANSION_SPEC.md). Proposed tools are not registered by these documents.
+
 The initial local automation/MCP implementation is in [CyrusMCP](../../CyrusMCP/README.md). The [qualification report](REPORT.md) defines its supported boundary. This update advances the original [AI/MCP/ML roadmap](../AI_MCP_ML_Roadmap_2026-09-30/15_Phased_Implementation_Roadmap.md); it does not claim completion of the later AI product and ML phases.
 
 | Roadmap area | Delivered | Remaining boundary |

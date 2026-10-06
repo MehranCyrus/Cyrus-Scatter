@@ -1,0 +1,227 @@
+[
+  {
+    "id": "H01",
+    "title": "Scatter",
+    "primary_url": "https://www.sidefx.com/docs/houdini/nodes/sop/scatter.html",
+    "version_reading_depth": "Live Houdini 22.0; overview and selected seeding/order/relaxation/attachment sections",
+    "lesson_and_limit": "Stable positions do not imply stable point indices. Primitive seeding and bounded relaxation have specific scopes; no universal identity guarantee.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "H02",
+    "title": "Scatter and Align",
+    "primary_url": "https://www.sidefx.com/docs/houdini/nodes/sop/scatteralign.html",
+    "version_reading_depth": "Live 22.0; workflow, scaling, constraints and relevant parameters",
+    "lesson_and_limit": "Separate population constraints, overlap removal and moving-point relaxation. Its normalized-source scale convention must not be assumed in Cyrus.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "H03",
+    "title": "Attribute From Pieces",
+    "primary_url": "https://www.sidefx.com/docs/houdini/nodes/sop/attribfrompieces.html",
+    "version_reading_depth": "Live 22.0; overview and assignment attributes",
+    "lesson_and_limit": "Asset-piece assignment is a distinct stage. Piece labels and source-size conventions require declared meanings.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "H04",
+    "title": "Copying and instancing point attributes",
+    "primary_url": "https://www.sidefx.com/docs/houdini/copy/instanceattrs.html",
+    "version_reading_depth": "Live 22.0; short attribute/precedence reference",
+    "lesson_and_limit": "Orientation, scale, pivot and matrix precedence are explicit contracts. Max conversion needs its own verified conventions.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "H05",
+    "title": "Attribute Interpolate",
+    "primary_url": "https://www.sidefx.com/docs/houdini/nodes/sop/attribinterpolate.html",
+    "version_reading_depth": "Live 22.0; parameter reference before navigation index",
+    "lesson_and_limit": "Primitive coordinates or element weights encode correspondence. They do not automatically survive remeshing.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "H06",
+    "title": "Copy to Points",
+    "primary_url": "https://www.sidefx.com/docs/houdini/nodes/sop/copytopoints.html",
+    "version_reading_depth": "Live 22.0; overview and relevant parameters",
+    "lesson_and_limit": "Piece matching and packed shared geometry separate assignment from geometry duplication. No cross-host memory/performance equivalence is established.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "H07",
+    "title": "Wedge TOP",
+    "primary_url": "https://www.sidefx.com/docs/houdini/nodes/top/wedge.html",
+    "version_reading_depth": "Live 22.0; overview, generation and target-parameter selection sections",
+    "lesson_and_limit": "Useful variation attributes and sweeps; selecting work can optionally alter parameters. Gallery browsing should not implicitly apply a candidate.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "H08",
+    "title": "Cooking/Executing TOP networks",
+    "primary_url": "https://www.sidefx.com/docs/houdini/tops/cooking.html",
+    "version_reading_depth": "Live 22.0; dirtying and execution sections",
+    "lesson_and_limit": "Intermediate result-file changes are not automatically a sufficient dependency signal. Validate artifacts on reuse/resume.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "H09",
+    "title": "pdg.WorkItem",
+    "primary_url": "https://www.sidefx.com/docs/houdini/tops/pdg/WorkItem.html",
+    "version_reading_depth": "Live 22.0; selected cache methods",
+    "lesson_and_limit": "Explicit cache invalidation exists. This is an analogy for an owned artifact contract, not a recommendation to add PDG.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "H10",
+    "title": "Local Scheduler",
+    "primary_url": "https://www.sidefx.com/docs/houdini/nodes/top/localscheduler.html",
+    "version_reading_depth": "Live 22.0; slots, memory/time limits and success/failure policies",
+    "lesson_and_limit": "Admission, process execution and semantic success are distinct. Do not equate a slot with an internal thread or a succeeded task with a valid render.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "H11",
+    "title": "Wait for All",
+    "primary_url": "https://www.sidefx.com/docs/houdini/nodes/top/waitforall.html",
+    "version_reading_depth": "Live 22.0; partition timing, failed inputs and split attributes",
+    "lesson_and_limit": "Partition options can omit failed or missing inputs. Cyrus must explicitly require the complete expected view set.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "H12",
+    "title": "ML overview",
+    "primary_url": "https://www.sidefx.com/docs/houdini/ml/overview.html",
+    "version_reading_depth": "Live 22.0; overview of utilities, building blocks and training",
+    "lesson_and_limit": "Procedural data and external training can form a pipeline. The existence of a toolchain does not create aesthetic supervision.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "H13",
+    "title": "ML stages",
+    "primary_url": "https://www.sidefx.com/docs/houdini/ml/stages.html",
+    "version_reading_depth": "Live 22.0; full short conceptual page",
+    "lesson_and_limit": "Forward approximation, inverse prediction, preprocessing and held-out evaluation are separate concerns. Small classical models remain valid baselines.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "H14",
+    "title": "ONNX inference",
+    "primary_url": "https://www.sidefx.com/docs/houdini/nodes/sop/onnx.html",
+    "version_reading_depth": "Live 22.0; input/output tensor and execution-provider sections",
+    "lesson_and_limit": "Tensor layout and execution backend matter. ONNX is an optional deployment format, not a requirement for the first Cyrus ranker.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "A01",
+    "title": "Python threading",
+    "primary_url": "https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-Python/files/MAXDEV_Python_threading_html.html",
+    "version_reading_depth": "Max 2027; short page rechecked; also S38",
+    "lesson_and_limit": "Keep worker Python away from `pymxs`. This does not forbid all carefully designed native parallel computation.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "A02",
+    "title": "ReferenceTarget",
+    "primary_url": "https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_reference_target.html",
+    "version_reading_depth": "Max 2027; `NotifyDependents` contract and relevant propagation details",
+    "lesson_and_limit": "Notification interval and cache validity differ. Trace initiators because propagated references need not identify the original source.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "A03",
+    "title": "Rendering notifications",
+    "primary_url": "https://help.autodesk.com/cloudhelp/2027/ENU/MAXScript-Help/files/MAXScript-Tools-and-Interaction/Change-Handlers-and-Callbacks/General-Event-Callback-Mechanism/GUID-E5BE0058-2216-4E0B-88AF-680CA58AAC73.html",
+    "version_reading_depth": "Max 2027; full short event reference",
+    "lesson_and_limit": "Setup/teardown and per-frame phases have different mutation permissions. Actual third-party renderer behaviour still needs runtime tests.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "A04",
+    "title": "General callback mechanism",
+    "primary_url": "https://help.autodesk.com/cloudhelp/2027/ENU/MAXScript-Help/files/MAXScript-Tools-and-Interaction/Change-Handlers-and-Callbacks/GUID-C1F6495F-5831-4FC8-A00C-667C5F2EAE36.html",
+    "version_reading_depth": "Max 2027; registration, removal, inspection and event-name sections",
+    "lesson_and_limit": "Own callback registrations; function redefinition is not replacement. `notificationEvent()` is a 2027 addition, so diagnostic paths need version gating.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "A05",
+    "title": "System notification codes",
+    "primary_url": "https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/group___notification_codes.html",
+    "version_reading_depth": "Max 2027; selected render notifications; matched local `notify.h`",
+    "lesson_and_limit": "Native phase contracts corroborate the MAXScript distinction. Not all notification payloads or SDK events were audited.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "A06",
+    "title": "GeomObject",
+    "primary_url": "https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_geom_object.html",
+    "version_reading_depth": "Max 2027; render-mesh ownership and multi-mesh transform sections",
+    "lesson_and_limit": "A future direct adapter must obey mesh ownership/space/validity contracts. This does not prove a defect in the current PFlow path.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "A07",
+    "title": "TexmapThreadSafe",
+    "primary_url": "https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_max_s_d_k_1_1_texmap_thread_safe.html",
+    "version_reading_depth": "Max 2027; detailed description and deprecation contract",
+    "lesson_and_limit": "Texture evaluation has a specific multithreaded prepared-data contract. The deprecated opt-in interface is not a recommended new implementation.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "A08",
+    "title": "Hold",
+    "primary_url": "https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_hold.html",
+    "version_reading_depth": "Max 2027; Begin, Accept, Cancel and nesting remarks",
+    "lesson_and_limit": "Balanced host Undo differs from persistent workflow history. A crashed process is not an automatic cancelled transaction.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "A09",
+    "title": "Time and intervals",
+    "primary_url": "https://help.autodesk.com/cloudhelp/2026/ENU/MAXDEV-Developer/files/overview/overview_time_and_intervals.html",
+    "version_reading_depth": "**Max 2026**; full short overview; equivalent 2027 overview URL unavailable",
+    "lesson_and_limit": "Validity can avoid repeated evaluation. Use matching SDK/API contracts before changing a concrete 2027 implementation.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "A10",
+    "title": "Node Event System",
+    "primary_url": "https://help.autodesk.com/cloudhelp/2027/ENU/MAXScript-Help/files/MAXScript-Tools-and-Interaction/Change-Handlers-and-Callbacks/GUID-7C91D285-5683-4606-9F7C-B8D3A7CA508B.html",
+    "version_reading_depth": "Max 2027; lifecycle, timer, polling and event sections",
+    "lesson_and_limit": "UI/message-loop dependence is a concrete Batch qualification concern. Node events do not replace every other callback mechanism.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  },
+  {
+    "id": "A11",
+    "title": "3ds Max Batch usage",
+    "primary_url": "https://help.autodesk.com/cloudhelp/2022/ENU/3DSMax-Batch/files/GUID-48A78515-C24B-4E46-AC5F-884FBCF40D59.htm",
+    "version_reading_depth": "**Max 2022**; command execution and process-return sections; same 2027 URL unavailable",
+    "lesson_and_limit": "Process/initialization outcomes are separate from domain artifact validity. Current Batch/renderer support remains unqualified.",
+    "accessed_on": "2026-10-05",
+    "reproduced_in_cyrus": false
+  }
+]

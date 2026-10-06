@@ -1,0 +1,2670 @@
+{
+  "schema": "cyrus.documentation-control-inventory/1",
+  "source_sha256": "ee693aa0f7a6ddaeb4fa62f47d9e70896c7cbd0db6349bda5134f898d08bf51e",
+  "control_count": 241,
+  "sections": [
+    "host",
+    "editor",
+    "updateUI",
+    "previewUI",
+    "surface",
+    "manager",
+    "sourceUI",
+    "distributionUI",
+    "brushUI",
+    "areaUI",
+    "diversityUI",
+    "randomUI",
+    "spacingUI",
+    "separationUI",
+    "proceduralUI",
+    "populationPolicyUI",
+    "backgroundUI",
+    "instanceRadiusUI",
+    "workflowUI",
+    "sourceContainersUI",
+    "setsUI",
+    "detailsUI"
+  ],
+  "rows": [
+    {
+      "group": "general",
+      "section": "host",
+      "name": "enabledCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C01"
+      ],
+      "owner_context": "Controller"
+    },
+    {
+      "group": "general",
+      "section": "editor",
+      "name": "updateNow",
+      "kind": "button",
+      "capabilities": [
+        "C24",
+        "C26",
+        "C27"
+      ],
+      "owner_context": "Editor context; action scope named in UI"
+    },
+    {
+      "group": "general",
+      "section": "editor",
+      "name": "layerList",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C24",
+        "C26",
+        "C27"
+      ],
+      "owner_context": "Editor context; action scope named in UI"
+    },
+    {
+      "group": "general",
+      "section": "editor",
+      "name": "setList",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C24",
+        "C26",
+        "C27"
+      ],
+      "owner_context": "Editor context; action scope named in UI"
+    },
+    {
+      "group": "general",
+      "section": "editor",
+      "name": "assetsTab",
+      "kind": "checkbutton",
+      "capabilities": [
+        "C24",
+        "C26",
+        "C27"
+      ],
+      "owner_context": "Editor context; action scope named in UI"
+    },
+    {
+      "group": "general",
+      "section": "editor",
+      "name": "populationTab",
+      "kind": "checkbutton",
+      "capabilities": [
+        "C24",
+        "C26",
+        "C27"
+      ],
+      "owner_context": "Editor context; action scope named in UI"
+    },
+    {
+      "group": "general",
+      "section": "editor",
+      "name": "paintTab",
+      "kind": "checkbutton",
+      "capabilities": [
+        "C24",
+        "C26",
+        "C27"
+      ],
+      "owner_context": "Editor context; action scope named in UI"
+    },
+    {
+      "group": "general",
+      "section": "editor",
+      "name": "transformTab",
+      "kind": "checkbutton",
+      "capabilities": [
+        "C24",
+        "C26",
+        "C27"
+      ],
+      "owner_context": "Editor context; action scope named in UI"
+    },
+    {
+      "group": "general",
+      "section": "editor",
+      "name": "spacingTab",
+      "kind": "checkbutton",
+      "capabilities": [
+        "C24",
+        "C26",
+        "C27"
+      ],
+      "owner_context": "Editor context; action scope named in UI"
+    },
+    {
+      "group": "general",
+      "section": "editor",
+      "name": "statisticsTab",
+      "kind": "checkbutton",
+      "capabilities": [
+        "C24",
+        "C26",
+        "C27"
+      ],
+      "owner_context": "Editor context; action scope named in UI"
+    },
+    {
+      "group": "general",
+      "section": "editor",
+      "name": "refreshButton",
+      "kind": "button",
+      "capabilities": [
+        "C24",
+        "C26",
+        "C27"
+      ],
+      "owner_context": "Editor context; action scope named in UI"
+    },
+    {
+      "group": "general",
+      "section": "updateUI",
+      "name": "updateRadio",
+      "kind": "radiobuttons",
+      "capabilities": [
+        "C24"
+      ],
+      "owner_context": "Controller"
+    },
+    {
+      "group": "general",
+      "section": "updateUI",
+      "name": "updateNow",
+      "kind": "button",
+      "capabilities": [
+        "C24"
+      ],
+      "owner_context": "Controller"
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
+      "name": "previewCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Setup display/output"
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
+      "name": "displayModeDrop",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Setup display/output"
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
+      "name": "proxyShapeDrop",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Setup display/output"
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
+      "name": "instancesLimitSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Setup display/output"
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
+      "name": "faceLimitSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Setup display/output"
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
+      "name": "pointColorRadio",
+      "kind": "radiobuttons",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Setup display/output"
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
+      "name": "solidColorPicker",
+      "kind": "colorpicker",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Setup display/output"
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
+      "name": "budgetSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Setup display/output"
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
+      "name": "pointsSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Setup display/output"
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
+      "name": "radiusLimitSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Setup display/output"
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
+      "name": "radiusAllCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Setup display/output"
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
+      "name": "iconSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Setup display/output"
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
+      "name": "refreshButton",
+      "kind": "button",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Setup display/output"
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
+      "name": "autoRenderCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Setup display/output"
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
+      "name": "clearBakedButton",
+      "kind": "button",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Setup display/output"
+    },
+    {
+      "group": "general",
+      "section": "surface",
+      "name": "sharedPick",
+      "kind": "pickbutton",
+      "capabilities": [
+        "C02",
+        "C07"
+      ],
+      "owner_context": "Controller/global pool"
+    },
+    {
+      "group": "general",
+      "section": "surface",
+      "name": "surfacesButton",
+      "kind": "button",
+      "capabilities": [
+        "C02",
+        "C07"
+      ],
+      "owner_context": "Controller/global pool"
+    },
+    {
+      "group": "general",
+      "section": "surface",
+      "name": "policyButton",
+      "kind": "button",
+      "capabilities": [
+        "C02",
+        "C07"
+      ],
+      "owner_context": "Controller/global pool"
+    },
+    {
+      "group": "general",
+      "section": "surface",
+      "name": "containersToggle",
+      "kind": "checkbutton",
+      "capabilities": [
+        "C02",
+        "C07"
+      ],
+      "owner_context": "Controller/global pool"
+    },
+    {
+      "group": "general",
+      "section": "surface",
+      "name": "globalContainers",
+      "kind": "listbox",
+      "capabilities": [
+        "C02",
+        "C07"
+      ],
+      "owner_context": "Controller/global pool"
+    },
+    {
+      "group": "general",
+      "section": "surface",
+      "name": "createContainer",
+      "kind": "button",
+      "capabilities": [
+        "C02",
+        "C07"
+      ],
+      "owner_context": "Controller/global pool"
+    },
+    {
+      "group": "general",
+      "section": "surface",
+      "name": "pickContainer",
+      "kind": "pickbutton",
+      "capabilities": [
+        "C02",
+        "C07"
+      ],
+      "owner_context": "Controller/global pool"
+    },
+    {
+      "group": "general",
+      "section": "surface",
+      "name": "removeContainer",
+      "kind": "button",
+      "capabilities": [
+        "C02",
+        "C07"
+      ],
+      "owner_context": "Controller/global pool"
+    },
+    {
+      "group": "general",
+      "section": "manager",
+      "name": "layerList",
+      "kind": "listbox",
+      "capabilities": [
+        "C03"
+      ],
+      "owner_context": "Controller/layer"
+    },
+    {
+      "group": "general",
+      "section": "manager",
+      "name": "editButton",
+      "kind": "button",
+      "capabilities": [
+        "C03"
+      ],
+      "owner_context": "Controller/layer"
+    },
+    {
+      "group": "general",
+      "section": "manager",
+      "name": "addButton",
+      "kind": "button",
+      "capabilities": [
+        "C03"
+      ],
+      "owner_context": "Controller/layer"
+    },
+    {
+      "group": "general",
+      "section": "manager",
+      "name": "copyButton",
+      "kind": "button",
+      "capabilities": [
+        "C03"
+      ],
+      "owner_context": "Controller/layer"
+    },
+    {
+      "group": "general",
+      "section": "manager",
+      "name": "removeButton",
+      "kind": "button",
+      "capabilities": [
+        "C03"
+      ],
+      "owner_context": "Controller/layer"
+    },
+    {
+      "group": "general",
+      "section": "manager",
+      "name": "nameEdit",
+      "kind": "edittext",
+      "capabilities": [
+        "C03"
+      ],
+      "owner_context": "Controller/layer"
+    },
+    {
+      "group": "general",
+      "section": "manager",
+      "name": "visibleCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C03"
+      ],
+      "owner_context": "Controller/layer"
+    },
+    {
+      "group": "general",
+      "section": "manager",
+      "name": "enabledCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C03"
+      ],
+      "owner_context": "Controller/layer"
+    },
+    {
+      "group": "general",
+      "section": "manager",
+      "name": "upButton",
+      "kind": "button",
+      "capabilities": [
+        "C03"
+      ],
+      "owner_context": "Controller/layer"
+    },
+    {
+      "group": "general",
+      "section": "manager",
+      "name": "downButton",
+      "kind": "button",
+      "capabilities": [
+        "C03"
+      ],
+      "owner_context": "Controller/layer"
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "plantList",
+      "kind": "multiListBox",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row"
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "selectFromScene",
+      "kind": "button",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row"
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "addPlant",
+      "kind": "pickbutton",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row"
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "addSelected",
+      "kind": "button",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row"
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "removePlant",
+      "kind": "button",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row"
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "selectPlant",
+      "kind": "button",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row"
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "addPoint",
+      "kind": "button",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row"
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "addEmpty",
+      "kind": "button",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row"
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "replacePoint",
+      "kind": "pickbutton",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row"
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "existingGroups",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row"
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "groupColor",
+      "kind": "colorpicker",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row"
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "applyColor",
+      "kind": "button",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row"
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "weightSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row"
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "sourceZSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row"
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "sourceScaleSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row"
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "radiusSourceSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row"
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "followRadiusCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row"
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "showRadiusCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row"
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "forwardAxis",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row"
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "detailsToggle",
+      "kind": "checkbutton",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row"
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "name": "modeRadio",
+      "kind": "radiobuttons",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Layer defaults"
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "name": "populationRadio",
+      "kind": "radiobuttons",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Layer defaults"
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "name": "showCenterCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Layer defaults"
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "name": "countSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Layer defaults"
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "name": "densitySpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Layer defaults"
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "name": "seedSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Layer defaults"
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "name": "densityButton",
+      "kind": "mapbutton",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Layer defaults"
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "name": "invertCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Layer defaults"
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "coverageMode",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage"
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "modeRadio",
+      "kind": "radiobuttons",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage"
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "radiusSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage"
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "strengthSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage"
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "softSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage"
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "densitySpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage"
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "beginButton",
+      "kind": "button",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage"
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "stopButton",
+      "kind": "button",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage"
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "fillButton",
+      "kind": "button",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage"
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "emptyButton",
+      "kind": "button",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage"
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "overlayMode",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage"
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "overlayColor",
+      "kind": "colorpicker",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage"
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "strokeList",
+      "kind": "listbox",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage"
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "strokeEnabled",
+      "kind": "checkbox",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage"
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "strokeErase",
+      "kind": "checkbox",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage"
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "strokeRadius",
+      "kind": "spinner",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage"
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "strokeStrength",
+      "kind": "spinner",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage"
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "strokeSoft",
+      "kind": "spinner",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage"
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "deleteStroke",
+      "kind": "button",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage"
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "resetTarget",
+      "kind": "button",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage"
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "detailsToggle",
+      "kind": "checkbutton",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage"
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "areaList",
+      "kind": "multiListBox",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff"
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "addAreaScene",
+      "kind": "button",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff"
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "pickArea",
+      "kind": "pickbutton",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff"
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "removeArea",
+      "kind": "button",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff"
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "areaMode",
+      "kind": "radiobuttons",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff"
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "refreshAreas",
+      "kind": "button",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff"
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "aaPick",
+      "kind": "pickbutton",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff"
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "aaRemove",
+      "kind": "button",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff"
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "aaLine",
+      "kind": "checkbox",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff"
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "aaWidth",
+      "kind": "spinner",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff"
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "aaCaps",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff"
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "aaStreetOffset",
+      "kind": "spinner",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff"
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "aaPoints",
+      "kind": "checkbox",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff"
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "aaRadius",
+      "kind": "spinner",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff"
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "fallTarget",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff"
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "fallPick",
+      "kind": "pickbutton",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff"
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "fallRemove",
+      "kind": "button",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff"
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "fallDeleteCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff"
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "fallDeleteSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff"
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "fallScaleCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff"
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "fallScaleSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff"
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "fallScaleEdit",
+      "kind": "button",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff"
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "fallDensityCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff"
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "fallDensitySpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff"
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "fallDensityEdit",
+      "kind": "button",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff"
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "detailsToggle",
+      "kind": "checkbutton",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "diversityRadio",
+      "kind": "radiobuttons",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "sizeSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "divSeedSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "roughSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "blurSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "noiseSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "pathsDrop",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "analyzerChannel",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "pickAnalyzer",
+      "kind": "pickbutton",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "pickPath",
+      "kind": "pickbutton",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "removePath",
+      "kind": "button",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "strokesList",
+      "kind": "listbox",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "addOutside",
+      "kind": "button",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "addInside",
+      "kind": "button",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "removeStrokeButton",
+      "kind": "button",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "strokeWidth",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "strokeMode",
+      "kind": "radiobuttons",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "strokeChoices",
+      "kind": "multiListBox",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "strokeScaleMin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "strokeScaleMax",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "refreshGroups",
+      "kind": "button",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "edgeOffsetSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "edgeAlongSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "edgeAcrossSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "keepCornerCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "cornerAngleSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "cornerCountSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "edgeRotXSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "edgeRotYSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "edgeRotZSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "streetStartSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "streetEndSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "centerStreetSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "faceOutCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "cornerRadiusSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "straightStreet",
+      "kind": "checkbox",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "rotXMinSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms"
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "rotXMaxSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms"
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "rotYMinSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms"
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "rotYMaxSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms"
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "rotZMinSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms"
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "rotZMaxSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms"
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "sclXMinSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms"
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "sclXMaxSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms"
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "sclYMinSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms"
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "sclYMaxSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms"
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "sclZMinSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms"
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "sclZMaxSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms"
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "wholeMinSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms"
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "wholeMaxSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms"
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "movXMinSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms"
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "movXMaxSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms"
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "movYMinSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms"
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "movYMaxSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms"
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "movZMinSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms"
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "movZMaxSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms"
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "projectCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms"
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "alignCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms"
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "resetRotation",
+      "kind": "button",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms"
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "resetScale",
+      "kind": "button",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms"
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "resetWholeScale",
+      "kind": "button",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms"
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "resetMovement",
+      "kind": "button",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms"
+    },
+    {
+      "group": "layer",
+      "section": "spacingUI",
+      "name": "collisionCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C20",
+        "C23"
+      ],
+      "owner_context": "Self-spacing inheritance or legacy layer"
+    },
+    {
+      "group": "layer",
+      "section": "spacingUI",
+      "name": "radiusSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C20",
+        "C23"
+      ],
+      "owner_context": "Self-spacing inheritance or legacy layer"
+    },
+    {
+      "group": "layer",
+      "section": "spacingUI",
+      "name": "relaxCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C20",
+        "C23"
+      ],
+      "owner_context": "Self-spacing inheritance or legacy layer"
+    },
+    {
+      "group": "layer",
+      "section": "spacingUI",
+      "name": "spacingSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C20",
+        "C23"
+      ],
+      "owner_context": "Self-spacing inheritance or legacy layer"
+    },
+    {
+      "group": "layer",
+      "section": "spacingUI",
+      "name": "iterationsSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C20",
+        "C23"
+      ],
+      "owner_context": "Self-spacing inheritance or legacy layer"
+    },
+    {
+      "group": "layer",
+      "section": "spacingUI",
+      "name": "strengthSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C20",
+        "C23"
+      ],
+      "owner_context": "Self-spacing inheritance or legacy layer"
+    },
+    {
+      "group": "layer",
+      "section": "separationUI",
+      "name": "prioritySpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C20",
+        "C22",
+        "C23"
+      ],
+      "owner_context": "Legacy pairs/layer union cleanup"
+    },
+    {
+      "group": "layer",
+      "section": "separationUI",
+      "name": "peerList",
+      "kind": "listbox",
+      "capabilities": [
+        "C20",
+        "C22",
+        "C23"
+      ],
+      "owner_context": "Legacy pairs/layer union cleanup"
+    },
+    {
+      "group": "layer",
+      "section": "separationUI",
+      "name": "blockerList",
+      "kind": "multiListBox",
+      "capabilities": [
+        "C20",
+        "C22",
+        "C23"
+      ],
+      "owner_context": "Legacy pairs/layer union cleanup"
+    },
+    {
+      "group": "layer",
+      "section": "separationUI",
+      "name": "overlapCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C20",
+        "C22",
+        "C23"
+      ],
+      "owner_context": "Legacy pairs/layer union cleanup"
+    },
+    {
+      "group": "layer",
+      "section": "separationUI",
+      "name": "radiusMode",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C20",
+        "C22",
+        "C23"
+      ],
+      "owner_context": "Legacy pairs/layer union cleanup"
+    },
+    {
+      "group": "layer",
+      "section": "separationUI",
+      "name": "gapSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C20",
+        "C22",
+        "C23"
+      ],
+      "owner_context": "Legacy pairs/layer union cleanup"
+    },
+    {
+      "group": "layer",
+      "section": "separationUI",
+      "name": "radiusSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C20",
+        "C22",
+        "C23"
+      ],
+      "owner_context": "Legacy pairs/layer union cleanup"
+    },
+    {
+      "group": "layer",
+      "section": "separationUI",
+      "name": "planarCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C20",
+        "C22",
+        "C23"
+      ],
+      "owner_context": "Legacy pairs/layer union cleanup"
+    },
+    {
+      "group": "layer",
+      "section": "separationUI",
+      "name": "statsButton",
+      "kind": "button",
+      "capabilities": [
+        "C20",
+        "C22",
+        "C23"
+      ],
+      "owner_context": "Legacy pairs/layer union cleanup"
+    },
+    {
+      "group": "layer",
+      "section": "separationUI",
+      "name": "cleanCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C20",
+        "C22",
+        "C23"
+      ],
+      "owner_context": "Legacy pairs/layer union cleanup"
+    },
+    {
+      "group": "layer",
+      "section": "separationUI",
+      "name": "neighborSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C20",
+        "C22",
+        "C23"
+      ],
+      "owner_context": "Legacy pairs/layer union cleanup"
+    },
+    {
+      "group": "layer",
+      "section": "separationUI",
+      "name": "minNeighborSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C20",
+        "C22",
+        "C23"
+      ],
+      "owner_context": "Legacy pairs/layer union cleanup"
+    },
+    {
+      "group": "layer",
+      "section": "separationUI",
+      "name": "minIslandSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C20",
+        "C22",
+        "C23"
+      ],
+      "owner_context": "Legacy pairs/layer union cleanup"
+    },
+    {
+      "group": "layer",
+      "section": "separationUI",
+      "name": "boundaryRelaxCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C20",
+        "C22",
+        "C23"
+      ],
+      "owner_context": "Legacy pairs/layer union cleanup"
+    },
+    {
+      "group": "layer",
+      "section": "separationUI",
+      "name": "finalStrengthSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C20",
+        "C22",
+        "C23"
+      ],
+      "owner_context": "Legacy pairs/layer union cleanup"
+    },
+    {
+      "group": "layer",
+      "section": "separationUI",
+      "name": "finalIterSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C20",
+        "C22",
+        "C23"
+      ],
+      "owner_context": "Legacy pairs/layer union cleanup"
+    },
+    {
+      "group": "layer",
+      "section": "separationUI",
+      "name": "finalMoveSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C20",
+        "C22",
+        "C23"
+      ],
+      "owner_context": "Legacy pairs/layer union cleanup"
+    },
+    {
+      "group": "layer",
+      "section": "proceduralUI",
+      "name": "scopeList",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C20"
+      ],
+      "owner_context": "Selected self/sibling/layer rule scope"
+    },
+    {
+      "group": "layer",
+      "section": "proceduralUI",
+      "name": "peerList",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C20"
+      ],
+      "owner_context": "Selected self/sibling/layer rule scope"
+    },
+    {
+      "group": "layer",
+      "section": "proceduralUI",
+      "name": "enabledCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C20"
+      ],
+      "owner_context": "Selected self/sibling/layer rule scope"
+    },
+    {
+      "group": "layer",
+      "section": "proceduralUI",
+      "name": "multiplierSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C20"
+      ],
+      "owner_context": "Selected self/sibling/layer rule scope"
+    },
+    {
+      "group": "layer",
+      "section": "proceduralUI",
+      "name": "gapSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C20"
+      ],
+      "owner_context": "Selected self/sibling/layer rule scope"
+    },
+    {
+      "group": "layer",
+      "section": "proceduralUI",
+      "name": "planarCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C20"
+      ],
+      "owner_context": "Selected self/sibling/layer rule scope"
+    },
+    {
+      "group": "layer",
+      "section": "proceduralUI",
+      "name": "resetRule",
+      "kind": "button",
+      "capabilities": [
+        "C20"
+      ],
+      "owner_context": "Selected self/sibling/layer rule scope"
+    },
+    {
+      "group": "layer",
+      "section": "populationPolicyUI",
+      "name": "populationList",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C10"
+      ],
+      "owner_context": "Layer work limits"
+    },
+    {
+      "group": "layer",
+      "section": "populationPolicyUI",
+      "name": "attemptSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C10"
+      ],
+      "owner_context": "Layer work limits"
+    },
+    {
+      "group": "layer",
+      "section": "populationPolicyUI",
+      "name": "roundSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C10"
+      ],
+      "owner_context": "Layer work limits"
+    },
+    {
+      "group": "layer",
+      "section": "populationPolicyUI",
+      "name": "repairCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C10"
+      ],
+      "owner_context": "Layer work limits"
+    },
+    {
+      "group": "layer",
+      "section": "backgroundUI",
+      "name": "backgroundList",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C16"
+      ],
+      "owner_context": "Paint set and earlier siblings"
+    },
+    {
+      "group": "layer",
+      "section": "backgroundUI",
+      "name": "referenceList",
+      "kind": "multiListBox",
+      "capabilities": [
+        "C16"
+      ],
+      "owner_context": "Paint set and earlier siblings"
+    },
+    {
+      "group": "layer",
+      "section": "backgroundUI",
+      "name": "applyBackground",
+      "kind": "button",
+      "capabilities": [
+        "C16"
+      ],
+      "owner_context": "Paint set and earlier siblings"
+    },
+    {
+      "group": "layer",
+      "section": "instanceRadiusUI",
+      "name": "radiusMode",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C21"
+      ],
+      "owner_context": "Set/published instance binding"
+    },
+    {
+      "group": "layer",
+      "section": "instanceRadiusUI",
+      "name": "radiusSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C21"
+      ],
+      "owner_context": "Set/published instance binding"
+    },
+    {
+      "group": "layer",
+      "section": "instanceRadiusUI",
+      "name": "applyRadius",
+      "kind": "button",
+      "capabilities": [
+        "C21"
+      ],
+      "owner_context": "Set/published instance binding"
+    },
+    {
+      "group": "layer",
+      "section": "instanceRadiusUI",
+      "name": "resetRadius",
+      "kind": "button",
+      "capabilities": [
+        "C21"
+      ],
+      "owner_context": "Set/published instance binding"
+    },
+    {
+      "group": "layer",
+      "section": "instanceRadiusUI",
+      "name": "clearRadius",
+      "kind": "button",
+      "capabilities": [
+        "C21"
+      ],
+      "owner_context": "Set/published instance binding"
+    },
+    {
+      "group": "layer",
+      "section": "sourceContainersUI",
+      "name": "modeList",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C07"
+      ],
+      "owner_context": "Set/layer/global pool selection"
+    },
+    {
+      "group": "layer",
+      "section": "sourceContainersUI",
+      "name": "containersList",
+      "kind": "listbox",
+      "capabilities": [
+        "C07"
+      ],
+      "owner_context": "Set/layer/global pool selection"
+    },
+    {
+      "group": "layer",
+      "section": "sourceContainersUI",
+      "name": "createContainer",
+      "kind": "button",
+      "capabilities": [
+        "C07"
+      ],
+      "owner_context": "Set/layer/global pool selection"
+    },
+    {
+      "group": "layer",
+      "section": "sourceContainersUI",
+      "name": "pickContainer",
+      "kind": "pickbutton",
+      "capabilities": [
+        "C07"
+      ],
+      "owner_context": "Set/layer/global pool selection"
+    },
+    {
+      "group": "layer",
+      "section": "sourceContainersUI",
+      "name": "removeContainer",
+      "kind": "button",
+      "capabilities": [
+        "C07"
+      ],
+      "owner_context": "Set/layer/global pool selection"
+    },
+    {
+      "group": "layer",
+      "section": "setsUI",
+      "name": "setList",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C04"
+      ],
+      "owner_context": "Layer/set administration"
+    },
+    {
+      "group": "layer",
+      "section": "setsUI",
+      "name": "addButton",
+      "kind": "button",
+      "capabilities": [
+        "C04"
+      ],
+      "owner_context": "Layer/set administration"
+    },
+    {
+      "group": "layer",
+      "section": "setsUI",
+      "name": "removeButton",
+      "kind": "button",
+      "capabilities": [
+        "C04"
+      ],
+      "owner_context": "Layer/set administration"
+    },
+    {
+      "group": "layer",
+      "section": "setsUI",
+      "name": "nameEdit",
+      "kind": "edittext",
+      "capabilities": [
+        "C04"
+      ],
+      "owner_context": "Layer/set administration"
+    },
+    {
+      "group": "layer",
+      "section": "setsUI",
+      "name": "weightSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C04"
+      ],
+      "owner_context": "Layer/set administration"
+    },
+    {
+      "group": "layer",
+      "section": "setsUI",
+      "name": "enabledCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C04"
+      ],
+      "owner_context": "Layer/set administration"
+    },
+    {
+      "group": "layer",
+      "section": "setsUI",
+      "name": "visibleCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C04"
+      ],
+      "owner_context": "Layer/set administration"
+    },
+    {
+      "group": "layer",
+      "section": "setsUI",
+      "name": "upButton",
+      "kind": "button",
+      "capabilities": [
+        "C04"
+      ],
+      "owner_context": "Layer/set administration"
+    },
+    {
+      "group": "layer",
+      "section": "setsUI",
+      "name": "downButton",
+      "kind": "button",
+      "capabilities": [
+        "C04"
+      ],
+      "owner_context": "Layer/set administration"
+    },
+    {
+      "group": "layer",
+      "section": "detailsUI",
+      "name": "refreshButton",
+      "kind": "button",
+      "capabilities": [
+        "C27"
+      ],
+      "owner_context": "Cached statistics/help"
+    },
+    {
+      "group": "layer",
+      "section": "detailsUI",
+      "name": "helpButton",
+      "kind": "button",
+      "capabilities": [
+        "C27"
+      ],
+      "owner_context": "Cached statistics/help"
+    }
+  ]
+}

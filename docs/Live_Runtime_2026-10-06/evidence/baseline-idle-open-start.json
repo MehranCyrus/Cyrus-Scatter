@@ -1,0 +1,58 @@
+{
+  "label": "idle-open-start",
+  "time_ms": 5268308,
+  "epoch": 6,
+  "group_hits": 0,
+  "prepared_builds": [
+    3
+  ],
+  "prepared_hits": [
+    4
+  ],
+  "preview_builds": [
+    7
+  ],
+  "dirty": [
+    false
+  ],
+  "container_scans": [
+    1
+  ],
+  "container_tests": [
+    2
+  ],
+  "membership_builds": [
+    3
+  ],
+  "interaction_checks": 127,
+  "ir_timer_calls": 22,
+  "render_key_calls": 0,
+  "bridge_builds": 0,
+  "bridge_error": "",
+  "live_callbacks": 13,
+  "live_redraw_requests": 1,
+  "retained": [
+    8000,
+    1,
+    2,
+    3,
+    4,
+    2,
+    192000,
+    2599,
+    0,
+    1,
+    96000,
+    1,
+    "18171501709645933629;"
+  ],
+  "retained_mesh": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    536870912,
+    1073741824
+  ]
+}

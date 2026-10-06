@@ -1,0 +1,75 @@
+{
+  "recorded_at_utc": "2026-10-05T11:59:13.548250+00:00",
+  "python": {
+    "tests": 120,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "sdk": [
+    {
+      "year": 2026,
+      "compiled": true,
+      "native_tests": 14,
+      "host_executed": false,
+      "receipt": "sdk-2026.json"
+    },
+    {
+      "year": 2027,
+      "compiled": true,
+      "native_tests": 14,
+      "host_executed": false,
+      "receipt": "sdk-2027.json"
+    }
+  ],
+  "generated_script": {
+    "check": "offline_generator_and_integration",
+    "passed": true,
+    "maxscript_compiled": false,
+    "ui_controls_in_inventory": 241,
+    "generated_sha256": "6c996c6d934b54a82b199b36d86eeeb18de42e51d3012e658cab18eafab43fd8",
+    "preserved_files": [
+      "AminScatter/src/point_display.cpp",
+      "AminScatter/src/preview.cpp",
+      "CyrusMCP/cyrus_mcp/models.py",
+      "CyrusMCP/cyrus_mcp/contracts.py"
+    ],
+    "interactive_max_run": false
+  },
+  "prepared_fixture_delimiters_checked": true,
+  "maxscript_compiled": false,
+  "mcp": {
+    "tool": [
+      "connection_get_status",
+      "scene_get_context",
+      "scatter_validate_plan",
+      "scatter_apply_plan",
+      "scatter_get_status",
+      "scatter_get_diagnostics",
+      "scatter_get_configuration",
+      "scatter_read_diagnostic_events",
+      "scatter_get_publication",
+      "scatter_read_publication_page",
+      "scatter_export_record",
+      "scene_capture_viewport"
+    ],
+    "resource": [
+      "cyrus://plan-schema",
+      "cyrus://workflow",
+      "cyrus://plan-schema/2.0",
+      "cyrus://capabilities",
+      "cyrus://feature-catalog",
+      "cyrus://agent-workflows",
+      "cyrus://error-guide"
+    ]
+  },
+  "protected_source_files_unchanged": 48,
+  "computer_use": false,
+  "max_launched": false,
+  "artist_profile_installation": false,
+  "packaged": false,
+  "committed": false,
+  "pushed": false,
+  "source_snapshot": "source_after.json",
+  "runtime_qualification": "Pending the separately authorized private Max campaign."
+}

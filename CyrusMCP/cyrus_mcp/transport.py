@@ -74,9 +74,12 @@ class Ticket:
 
 
 class Bridge:
-    def __init__(self, directory):
+    def __init__(self, directory, wake=None):
         self.directory = private_directory(directory)
         self.closed = False
+        # Notification only: the caller must marshal to its UI thread. No host
+        # methods or scene wrappers may be used by this HTTP worker.
+        self.wake = wake
         self.lease = (self.directory/"connection.lock").open("a+b")
         if self.lease.seek(0,2) == 0:
             self.lease.write(b"0")
@@ -144,9 +147,18 @@ class Bridge:
                     fields(payload, ("method", "args"))
                     ticket = Ticket(payload)
                     try:
-                        owner.queue.put_nowait(ticket)
+                        with owner.lock:
+                            require(not owner.closed, "The local connection is closing", "HOST_BUSY")
+                            owner.queue.put_nowait(ticket)
+                            wake=owner.wake
                     except queue.Full:
                         raise Fault("HOST_BUSY", "Host request queue is full")
+                    if wake is not None:
+                        try:
+                            wake()
+                        except Exception:
+                            ticket.result = Fault("HOST_BUSY", "The host dispatcher is unavailable").result()
+                            ticket.event.set()
                     if not ticket.event.wait(9):
                         raise Fault("OUTCOME_UNKNOWN", "Host response timed out. Reconcile any apply using the same key; no automatic retry was performed")
                     answer = ticket.result
@@ -175,7 +187,9 @@ class Bridge:
         try:
             ticket = self.queue.get_nowait()
         except queue.Empty:
-            return
+            return False
+        if ticket.event.is_set():
+            return True  # Failed wake/closed tickets must never execute later.
         try:
             if ticket.deadline < time.monotonic():
                 raise Fault("HOST_BUSY", "Request expired before host admission")
@@ -190,11 +204,21 @@ class Bridge:
             (self.directory/"host-error.log").write_text(traceback.format_exc(),encoding="utf-8")
         finally:
             ticket.event.set()
+        return True
 
     def close(self):
         if self.closed:
             return
-        self.closed=True
+        with self.lock:
+            self.closed=True
+            self.wake=None
+            while True:
+                try:
+                    ticket=self.queue.get_nowait()
+                except queue.Empty:
+                    break
+                ticket.result=Fault("HOST_BUSY", "The local connection closed before admission").result()
+                ticket.event.set()
         self.server.shutdown()
         self.server.server_close()
         try:

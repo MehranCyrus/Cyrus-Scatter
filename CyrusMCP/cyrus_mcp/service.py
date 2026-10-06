@@ -10,6 +10,7 @@ import uuid
 from .contracts import Fault, canonical, decode, digest, fields, identifier, number, require, validate_shape
 from .geometry import contains, convex, inset, overlaps, outset
 from .settings import normalize_v2, capability_manifest
+from . import __version__
 
 
 def uid(prefix):
@@ -62,6 +63,9 @@ class Service:
         self.last_fingerprint = None
         self.last_undo = None
         self.calls = self.captures = self.applications = 0
+        self.diagnostic_session = None  # Explicit, local grant for one process-wide trace.
+        self.publications = {}
+        self.publication_pages = 0
         self.last_message = "Enroll a site, sources and regions to begin."
 
     def reset(self):
@@ -76,6 +80,9 @@ class Service:
         self.observed.clear()
         self.records.clear()
         self.last_undo = self.last_fingerprint = None
+        self.diagnostic_session = None
+        self.publications.clear()
+        self.publication_pages = 0
 
     def enroll(self, site, sources, regions, excluded=(), capture=False):
         require(self.pending is None, "Finish or cancel the pending operation", "HOST_BUSY")
@@ -121,15 +128,18 @@ class Service:
             "scatter.apply_plan": self.apply,
             "scatter.get_status": self.status,
             "scatter.get_diagnostics": self.diagnostics,
+            "scatter.read_diagnostic_events": self.diagnostic_events,
+            "scatter.get_publication": self.publication,
+            "scatter.read_publication_page": self.publication_page,
             "scatter.get_configuration": self.configuration,
             "scatter.export_record": self.export_record,
             "scene.capture_viewport": self.capture,
             "connection.get_status": self.connection,
         }
         require(method in methods, "Unsupported operation", "UNSUPPORTED_CAPABILITY")
-        if method not in ("connection.get_status", "scatter.get_status", "scatter.get_diagnostics", "scatter.apply_plan"):
+        if method not in ("connection.get_status", "scatter.get_status", "scatter.get_diagnostics", "scatter.apply_plan", "scatter.read_publication_page"):
             require(self.calls < 24, "This scope reached its 24-call budget; re-enroll locally", "BUDGET_EXCEEDED")
-        if method != "connection.get_status":
+        if method not in ("connection.get_status", "scatter.read_publication_page"):
             self.calls += 1
         import inspect
         try:
@@ -139,8 +149,9 @@ class Service:
         return {"ok": True, **methods[method](**args)}
 
     def connection(self):
-        return {"version": "1.1.0", "scene_epoch": self.epoch, "scene_revision": self.revision,
+        return {"version": __version__, "scene_epoch": self.epoch, "scene_revision": self.revision,
                 "scope_id": self.scope["scope_id"] if self.scope else None,
+                "shared_diagnostic_session_id": self.diagnostic_session,
                 "message": self.last_message, "host": self.host.version(),
                 "support": "Static horizontal convex sites; up to three mesh assets and convex regions; two approved candidates."}
 
@@ -323,6 +334,43 @@ class Service:
                 "calls": self.calls, "captures": self.captures, "applications": self.applications,
                 "pending_operation": self.pending[0] if self.pending else None,
                 "timing_semantics": "cached host counters; no regeneration or FPS measurement"}
+
+    def diagnostic_events(self, scene_epoch, session_id, after_sequence=0, limit=100):
+        self.check_epoch(scene_epoch)
+        require(self.scope is not None and self.diagnostic_session == session_id,
+                "Share this diagnostic session locally before reading its events", "APPROVAL_REQUIRED")
+        from .diagnostics import validate_page
+        identifier(session_id)
+        number(after_sequence, 0, 2**53, True)
+        number(limit, 1, 500, True)
+        # Do not call fresh(): fingerprint inspection can evaluate geometry in
+        # design scopes. Diagnostic reads only copy the already recorded ring.
+        page = validate_page(self.host.diagnostic_page(after_sequence, limit), session_id, after_sequence, limit)
+        return {"page": page, "scope": "explicitly shared process-wide engineering trace"}
+
+    def publication(self, scene_epoch, controller_id):
+        self.check_epoch(scene_epoch)
+        require(self.scope is not None and (controller_id in self.owned or controller_id in self.observed),
+                "Unknown scoped controller", "UNKNOWN_REFERENCE")
+        require(hasattr(self.host,"publication_manifest"),"Publication reader unavailable","UNSUPPORTED_CAPABILITY")
+        published=self.host.publication_manifest(controller_id)
+        self.publications[controller_id]=(deepcopy(published),time.monotonic()+300)
+        return {"manifest":published,"expires_in_seconds":300,"page_limit":500,
+                "pages_remaining":max(0,2048-self.publication_pages)}
+
+    def publication_page(self, scene_epoch, controller_id, publication_id, offset=0, limit=100):
+        self.check_epoch(scene_epoch)
+        require(self.scope is not None and (controller_id in self.owned or controller_id in self.observed),
+                "Unknown scoped controller", "UNKNOWN_REFERENCE")
+        cached=self.publications.get(controller_id)
+        require(cached is not None and cached[1]>time.monotonic() and cached[0]["publication_id"]==publication_id,
+                "Read the current publication manifest first; handles expire after five minutes", "STALE_CONTEXT")
+        number(offset,0,cached[0]["count"],True);number(limit,1,500,True)
+        require(self.publication_pages<2048,"Publication paging budget exhausted; reconnect locally","BUDGET_EXCEEDED")
+        self.publication_pages+=1  # Failed and stale attempts consume the budget.
+        from .publication import page
+        raw=self.host.publication_page(controller_id,publication_id,offset,limit)
+        return {"page":page(raw,cached[0],offset,limit),"pages_remaining":2048-self.publication_pages}
 
     def configuration(self,scene_epoch,controller_id):
         self.check_epoch(scene_epoch);self.fresh()

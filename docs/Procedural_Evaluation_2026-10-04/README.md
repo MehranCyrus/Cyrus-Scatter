@@ -1,5 +1,9 @@
 # Cyrus Scatter: procedural evaluation implementation guide
 
+<!-- CURRENT_SYSTEM_2026-10-05 -->
+
+These dated design contracts remain detailed requirements. For the implemented subset, later corrections, current evidence and next work, use the [current system guide](../Current_System_2026-10-05/README.md). Proposed cache, MCP or ML capabilities in a design chapter are not necessarily implemented.
+
 4 October 2026 · Research and design proposal for **0.7 pre-release** · Initial source baseline: `e3518f8f87f3144d531f20afbb6790ce243f2cfc`; follow-up review: `53bfc5d1c76929958dbeb29f5d4c746b2321d0ac`
 
 **Implementation follow-up:** the [0.7 implementation record](../Procedural_Implementation_0.7_2026-10-04/README.md) records the candidate built from this design. The subsequent [Max 2027 runtime report](../Procedural_Implementation_0.7_2026-10-04/RUNTIME_REPORT.md) covers completed isolated qualification and remaining release gates. The investigation/evidence below describes the earlier baseline and is preserved as historical research.

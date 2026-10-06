@@ -10,7 +10,7 @@ fn CyrusProcedural07Fixture = (
     local surface=plane length:1000 width:1000 lengthsegs:1 widthsegs:1 name:"Cyrus07_Fixture_Surface"
     local source=box length:8 width:8 height:20 pos:[1200,0,0] name:"Cyrus07_Fixture_Source"
     local node=AminScatterObject name:"Cyrus07_Fixture_Controller",root=node.baseObject
-    verify (root.uiVersion()=="0.7.0") "UI version"
+    verify (root.uiVersion()=="0.7.1") "UI version"
     root.setLayerTransfer true
     root.updateMode=1;root.surfaceNodes=#(surface);root.newLayer()
     local parent=root.selectedLayer()

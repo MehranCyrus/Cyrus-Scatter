@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "script_sha256": "07d0bca2efe330b8b632c1a483cea23c65629b0f7ef5c0cbecd2c6984f1f9924",
+  "native_test_groups_per_sdk": 13,
+  "mcp_tests": 66,
+  "runtime_stages": 19,
+  "first_assets_open_ms": 2047,
+  "warm_switch_samples": 30,
+  "warm_switch_median_ms": 107.0,
+  "warm_switch_min_ms": 48,
+  "warm_switch_max_ms": 223,
+  "max_2026_runtime": false,
+  "normal_profile_installed": false,
+  "measurement_scope": "Synchronous UI construction/binding in one private synthetic scene; not a universal latency guarantee or presented FPS."
+}

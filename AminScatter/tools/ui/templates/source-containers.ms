@@ -126,19 +126,46 @@
         if groupPolicy!=3 do return false
         local interested=false
         for leaf in layerObjects where leaf.containerProvider()!=undefined do (
-            interested=true
-            if event==#deleted or event==#linkChanged do leaf.containerScan=true
+            -- Deletion payloads may no longer resolve to nodes. Keep the
+            -- existing conservative reconciliation for genuine deletions; the
+            -- dispatcher already filters our known deleted helper handles.
+            local relevant=event==#deleted,frames=undefined,rectangles=leaf.effectiveContainers()
+            if relevant do leaf.containerScan=true
+            for rectangle in rectangles where isValidNode rectangle do (
+                local parent=rectangle
+                while isValidNode parent and not relevant do (
+                    if findItem nodes parent>0 do relevant=true
+                    parent=parent.parent
+                )
+            )
             -- A moved parent may carry previously unregistered children into a
             -- rectangle. Traverse only this changed subtree, never every frame.
-            local pending=nodes as array,index=1
+            -- Keep callback work bounded. A large changed subtree requests one
+            -- conservative scan during normal reconciliation, not in this hook.
+            -- A new array also avoids appending children to the caller's batch.
+            local pending=(for i=1 to (amin nodes.count 512) collect nodes[i]),index=1
+            if nodes.count>512 do (leaf.containerScan=true;relevant=true)
             while index<=pending.count do (
                 local node=pending[index];index+=1
                 if isValidNode node do (
-                    if superclassof node==GeometryClass and classof node.baseObject!=AminScatterObject and classof node.baseObject!=CyrusPointDisplay and findItem leaf.sources node==0 and getUserProp node "CyrusPFTransient"!=true do appendIfUnique leaf.containerPending node
-                    for child in node.children do appendIfUnique pending child
+                    local generated=classof node.baseObject==AminScatterObject or classof node.baseObject==CyrusPointDisplay or getUserProp node "CyrusPFTransient"==true
+                    if not generated do (
+                        if findItem leaf.sources node>0 then relevant=true
+                        else if superclassof node==GeometryClass and not isGroupHead node do (
+                            -- An unrelated helper or a model outside the pool
+                            -- must not mark every container-backed layer dirty.
+                            try (
+                                if frames==undefined do frames=leaf.containerFrames()
+                                if leaf.containerContains node frames do (appendIfUnique leaf.containerPending node;relevant=true)
+                            )catch(relevant=true)
+                        )
+                    )
+                    for child in node.children while pending.count<512 do appendIfUnique pending child
+                    if pending.count>=512 do (leaf.containerScan=true;relevant=true)
                 )
             )
-            leaf.dirty=true
+            if relevant do (leaf.dirty=true;interested=true)
+            CyrusDiagnosticEmit "container.notification" "host_callback" leaf.layerID leaf.procEpoch (if relevant then "reconcile_needed" else "unrelated")
         )
         interested
     )
@@ -157,6 +184,7 @@
         )
         if event==#deleted do affected=true
         if affected do (procGeometryRevision+=1;dirty=true)
+        CyrusDiagnosticEmit "input.classified" "host_callback" layerID procEpoch (if affected then "geometry_dependency" else "unrelated")
         affected
     )
     fn containerSetMode mode = (

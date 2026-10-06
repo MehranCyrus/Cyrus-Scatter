@@ -1,5 +1,9 @@
 # AI-assisted scatter: research and roadmap
 
+<!-- CURRENT_SYSTEM_2026-10-05 -->
+
+Dated research and proposal baseline. Current capability truth and delivery order are in the [system guide](../Current_System_2026-10-05/README.md); [5 October AI research](../AI_Design_Learning_Research_2026-10-05/README.md) supplies newer specialist analysis. No model or automatic learning is implied.
+
 **Date: 2026-09-30. Status: PROPOSED future product/technology research track.**
 
 **Recommendation:** give reference-assisted design a gated place in Cyrus's roadmap. Build reliable automation first; test a general multimodal model and curated examples before considering custom ML. No AI capability was implemented or qualified by this documentation task.

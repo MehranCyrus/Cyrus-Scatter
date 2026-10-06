@@ -38,7 +38,7 @@
         rows
     )
     fn procValidate = (
-        if cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined do throw "Procedural 0.7 requires the matching native plugin binaries. Restart Max with the complete 0.7 package."
+        if cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined do throw "Procedural 0.7.1 requires the matching native plugin binaries. Restart the private test host with the complete matching script/native pair."
         if layerObjects.count>10 do throw "Procedural policy supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -114,7 +114,12 @@
         for leaf in layerObjects do (this.syncLayerSurface leaf;leaf.containerRefresh();leaf.procEnsureSources())
         this.procValidate()
         local key=this.procInputKey()
-        if key==groupSnapshotKey do (groupHits+=1;return groupSnapshotRows)
+        if key==groupSnapshotKey do (
+            -- A correction may restore the exact last successful recipe.
+            -- Reusing its publication is success; clear a prior failure status.
+            for leaf in layerObjects do leaf.previewError=""
+            groupHits+=1;return groupSnapshotRows
+        )
         local mods=this.procModifiers(),active=for m in mods where m.enabled collect m
         local parents=this.logicalLayers(),mapping=#(),layers=#(),admission=0
         local requests=for leaf in layerObjects collect #(0,0,0)
@@ -145,15 +150,17 @@
             )
             local pairs=for i=1 to procRuleA.count collect #(procRuleScope[i],procRuleA[i],procRuleB[i],#(procRuleEnabled[i],procRuleMultiplier[i],procRuleGap[i],procRulePlanar[i]))
             local resolved=cyrusEvaluateProcedural layers pairs 1000000
-            local accepted=for leaf in layerObjects collect #(),stats=for leaf in layerObjects collect #(),rounds=for leaf in layerObjects collect #()
+            local accepted=for leaf in layerObjects collect #(),stats=for leaf in layerObjects collect #(),rounds=for leaf in layerObjects collect #(),radii=for leaf in layerObjects collect #()
             for l=1 to mapping.count do for s=1 to mapping[l].count do (
                 local i=mapping[l][s]
                 accepted[i]=resolved[1][l][s];stats[i]=resolved[2][l][s];rounds[i]=resolved[3][l]
+                radii[i]=resolved[4][l][s]
             )
             local display=for i=1 to layerObjects.count collect layerObjects[i].procStagePreview accepted[i]
             local displayKey=this.procDisplayInputKey epoch:(procEpoch+1)
             local publishedOwners=layerObjects as array,publishedSources=for leaf in layerObjects collect leaf.validSources()
             local finalKeep=for i=1 to layerObjects.count collect (for n in publishedSources[i] collect not (layerObjects[i].isPointSource (layerObjects[i].sourceRow n)))
+            local publicationInfo=this.procStagePublication accepted requests publishedSources finalKeep
             -- Allocation and computation have finished; publish one coherent epoch.
             this.publishGroupEdits accepted
             this.procSyncEditVisibility()
@@ -169,6 +176,7 @@
                 leaf.procInstallPreview display[i] false
             )
             procPublishedOwners=publishedOwners;procPublishedSources=publishedSources;procPublishedFinalKeep=finalKeep
+            procPublishedRadii=radii;procPublishedInfo=publicationInfo
             groupSnapshotRows=accepted;groupSnapshotKey=finishedKey;procPublishedDisplayKey=displayKey;groupBuilds+=1
             groupSolving=false;accepted
         ) catch (

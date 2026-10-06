@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "instances": 10724,
+  "unique_ids": 10724,
+  "collision_pairs_checked": 7071654,
+  "minimum_rule_clearance_cm": 0.00583952643892971,
+  "minimum_plant_center_clearance_from_walk_edge_cm": 23.485438999885815,
+  "finite_transforms": true,
+  "include_exclude_oracle": true,
+  "campaign_export_identical": true,
+  "sha256": "0abae190441c9107a29e1818e54ac9ac119bf2f584e3a3d38b41e62006dcb8c2",
+  "counts": {
+    "1": 52,
+    "2": 46,
+    "3": 53,
+    "4": 200,
+    "5": 1320,
+    "6": 8692,
+    "7": 132,
+    "8": 229
+  }
+}

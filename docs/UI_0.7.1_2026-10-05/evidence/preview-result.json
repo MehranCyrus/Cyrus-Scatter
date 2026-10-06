@@ -1,0 +1,29 @@
+{
+  "pid": 32272,
+  "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\user-tests\\layer-editor-071\\20261005-100413-696bbc72",
+  "command": [
+    "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+    "-q",
+    "-i",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\user-tests\\layer-editor-071\\20261005-100413-696bbc72\\max.ini",
+    "-p",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\user-tests\\layer-editor-071\\20261005-100413-696bbc72\\plugins.ini",
+    "-U",
+    "MAXScript",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\user-tests\\layer-editor-071\\20261005-100413-696bbc72\\start.ms",
+    "-listenerlog",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\user-tests\\layer-editor-071\\20261005-100413-696bbc72\\listener.log"
+  ],
+  "binaries": {
+    "AminScatter.dlx": "d9b24bf33d06eb46070b53179c4fb49914b670861a139eeb768c9966e69895cb",
+    "CyrusBrush.dlx": "a7e7830d7b21f95e2bdd408fce6ef36f48767fd8bdc7ab5525780ef9bc0ddbb7",
+    "CyrusBrushStorage.dlh": "e7798e5ba801ed0d720d9ab1480ed77d2a2d50f515f76ba96d7a08c1d386c786",
+    "CyrusScatterEdit.dlm": "3402b16eb65a3de0bde44bccff152d123e237e818decfe778af8f77a75fd785a"
+  },
+  "script_sha256": "07d0bca2efe330b8b632c1a483cea23c65629b0f7ef5c0cbecd2c6984f1f9924",
+  "normal_profile_modified": false,
+  "development_transport": false,
+  "status": "PASS",
+  "scope": "Private launch, exact loaded modules, script and demo",
+  "smoke_test": false
+}

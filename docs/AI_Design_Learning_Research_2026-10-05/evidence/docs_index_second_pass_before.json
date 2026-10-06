@@ -1,0 +1,8 @@
+{
+  "captured_at_utc": "2026-10-05T10:19:12.410674+00:00",
+  "full_index_sha256_before_research_amendment": "0f0e9325fe7be0141f11d373b05bb21d9a0d5fe81c00afcad5e511f4e1aeda28",
+  "outside_research_paragraph_sha256": "bf063e5b6ab7ce2c8e3bb6d0d45777d04ab21adeca2b45e381611a202fba734c",
+  "first_pass_outside_research_paragraph_sha256": "a6138cedb49716ff21d055b05db9561fd43a2fc96cc581c2223f7efdfc333d19",
+  "other_index_updates_since_first_pass": true,
+  "policy": "Preserve current index content outside the one research paragraph; retain original baseline separately."
+}

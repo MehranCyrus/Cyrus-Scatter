@@ -6,6 +6,48 @@
         "name": "enabledCheck"
       }
     ],
+    "editor": [
+      {
+        "kind": "button",
+        "name": "updateNow"
+      },
+      {
+        "kind": "dropdownlist",
+        "name": "layerList"
+      },
+      {
+        "kind": "dropdownlist",
+        "name": "setList"
+      },
+      {
+        "kind": "checkbutton",
+        "name": "assetsTab"
+      },
+      {
+        "kind": "checkbutton",
+        "name": "populationTab"
+      },
+      {
+        "kind": "checkbutton",
+        "name": "paintTab"
+      },
+      {
+        "kind": "checkbutton",
+        "name": "transformTab"
+      },
+      {
+        "kind": "checkbutton",
+        "name": "spacingTab"
+      },
+      {
+        "kind": "checkbutton",
+        "name": "statisticsTab"
+      },
+      {
+        "kind": "button",
+        "name": "refreshButton"
+      }
+    ],
     "updateUI": [
       {
         "kind": "radiobuttons",
@@ -92,6 +134,10 @@
         "name": "policyButton"
       },
       {
+        "kind": "checkbutton",
+        "name": "containersToggle"
+      },
+      {
         "kind": "listbox",
         "name": "globalContainers"
       },
@@ -112,6 +158,10 @@
       {
         "kind": "listbox",
         "name": "layerList"
+      },
+      {
+        "kind": "button",
+        "name": "editButton"
       },
       {
         "kind": "button",
@@ -224,6 +274,10 @@
       {
         "kind": "dropdownlist",
         "name": "forwardAxis"
+      },
+      {
+        "kind": "checkbutton",
+        "name": "detailsToggle"
       }
     ],
     "distributionUI": [
@@ -340,6 +394,10 @@
       {
         "kind": "button",
         "name": "resetTarget"
+      },
+      {
+        "kind": "checkbutton",
+        "name": "detailsToggle"
       }
     ],
     "areaUI": [
@@ -442,6 +500,10 @@
       {
         "kind": "button",
         "name": "fallDensityEdit"
+      },
+      {
+        "kind": "checkbutton",
+        "name": "detailsToggle"
       }
     ],
     "diversityUI": [
@@ -795,22 +857,6 @@
     "proceduralUI": [
       {
         "kind": "dropdownlist",
-        "name": "populationList"
-      },
-      {
-        "kind": "spinner",
-        "name": "attemptSpin"
-      },
-      {
-        "kind": "spinner",
-        "name": "roundSpin"
-      },
-      {
-        "kind": "checkbox",
-        "name": "repairCheck"
-      },
-      {
-        "kind": "dropdownlist",
         "name": "scopeList"
       },
       {
@@ -836,7 +882,27 @@
       {
         "kind": "button",
         "name": "resetRule"
+      }
+    ],
+    "populationPolicyUI": [
+      {
+        "kind": "dropdownlist",
+        "name": "populationList"
       },
+      {
+        "kind": "spinner",
+        "name": "attemptSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "roundSpin"
+      },
+      {
+        "kind": "checkbox",
+        "name": "repairCheck"
+      }
+    ],
+    "backgroundUI": [
       {
         "kind": "dropdownlist",
         "name": "backgroundList"
@@ -848,7 +914,9 @@
       {
         "kind": "button",
         "name": "applyBackground"
-      },
+      }
+    ],
+    "instanceRadiusUI": [
       {
         "kind": "dropdownlist",
         "name": "radiusMode"
@@ -870,6 +938,7 @@
         "name": "clearRadius"
       }
     ],
+    "workflowUI": [],
     "sourceContainersUI": [
       {
         "kind": "dropdownlist",
@@ -939,8 +1008,7 @@
         "kind": "button",
         "name": "helpButton"
       }
-    ],
-    "panelUI": []
+    ]
   },
   "set": [
     "setsUI",

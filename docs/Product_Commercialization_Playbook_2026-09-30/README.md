@@ -1,5 +1,9 @@
 # Cyrus Scatter — your commercialization playbook
 
+<!-- CURRENT_SYSTEM_2026-10-05 -->
+
+Historical commercialization planning. Current development is 0.7.1, with [open product gates](../Current_System_2026-10-05/CURRENT_STATE.md) and a [coordinated roadmap](../Current_System_2026-10-05/ROADMAP.md). Licensing remains governed by [its own current contract](../licensing/README.md); this playbook does not establish release readiness.
+
 **Prepared 2026-09-30. Start with [Stage 01](01_Understand_the_Current_Product.md).**
 
 This is your working guide for taking responsibility for the product. Open one stage, do your tasks, record the result, and follow its next-stage link. The engineering specifications already exist; these pages explain what you need to do with them.

@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "actual_mzp_reader": true,
+  "normal_profile_installed": false,
+  "packages": {
+    "CyrusScatter-0.7.1-Max2027.mzp": {
+      "installed_files": {
+        "AminScatter.dlx": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\procedural07-package-071-install01\\scripts\\CyrusScatter\\bin-max2027-01e8f6e316b7\\AminScatter.dlx",
+        "CyrusBrush.dlx": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\procedural07-package-071-install01\\scripts\\CyrusScatter\\bin-max2027-01e8f6e316b7\\CyrusBrush.dlx",
+        "CyrusBrushStorage.dlh": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\procedural07-package-071-install01\\scripts\\CyrusScatter\\bin-max2027-01e8f6e316b7\\CyrusBrushStorage.dlh",
+        "CyrusScatter.mcr": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\procedural07-package-071-install01\\macros\\CyrusScatter.mcr",
+        "CyrusScatter.ms": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\procedural07-package-071-install01\\scripts\\CyrusScatter\\CyrusScatter.ms",
+        "CyrusScatterEdit.dlm": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\procedural07-package-071-install01\\scripts\\CyrusScatter\\bin-max2027-01e8f6e316b7\\CyrusScatterEdit.dlm",
+        "CyrusScatterStartup.ms": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\procedural07-package-071-install01\\startup\\CyrusScatterStartup.ms",
+        "INSTALL.txt": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\procedural07-package-071-install01\\scripts\\CyrusScatter\\INSTALL.txt",
+        "Uninstall.ms": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\procedural07-package-071-install01\\scripts\\CyrusScatter\\Uninstall.ms"
+      },
+      "matching_manifest": true,
+      "native_directory": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\procedural07-package-071-install01\\scripts\\CyrusScatter\\bin-max2027-01e8f6e316b7"
+    },
+    "CyrusSurfaceAnalyzer-0.14-Max2027.mzp": {
+      "installed_files": {
+        "CyrusSurfaceAnalyzer.dlx": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\procedural07-package-071-install01\\scripts\\CyrusSurfaceAnalyzer\\bin-max2027-737c50438892\\CyrusSurfaceAnalyzer.dlx",
+        "CyrusSurfaceAnalyzer.ms": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\procedural07-package-071-install01\\scripts\\CyrusSurfaceAnalyzer\\CyrusSurfaceAnalyzer.ms",
+        "CyrusSurfaceAnalyzerStartup.ms": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\procedural07-package-071-install01\\startup\\CyrusSurfaceAnalyzerStartup.ms"
+      },
+      "matching_manifest": true,
+      "native_directory": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\procedural07-package-071-install01\\scripts\\CyrusSurfaceAnalyzer\\bin-max2027-737c50438892"
+    }
+  }
+}

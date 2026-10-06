@@ -1,0 +1,51 @@
+{
+  "schema": "cyrus.existing-render-log-observation/1",
+  "read_date": "2026-10-05",
+  "fresh_runtime_test": false,
+  "cause": "unisolated",
+  "log": "build/user-tests/real-scene-071/20261005-115724-f00cd2a0/plugcfg/corona/CoronaMax2027_log.txt",
+  "sha256": "91de141d01e757078ab85e4aa107a86719a27eec86954f13241809a8b2d9e5c8",
+  "bytes": 1230081,
+  "time_basis": "Local timestamp strings as written by Corona; UTC offset not inferred",
+  "render_start_markers": 568,
+  "first_start": "2026-10-05 12:03:04",
+  "last_start": "2026-10-05 12:16:11",
+  "elapsed_between_first_last_start_seconds": 787,
+  "pass_marker_counts": {
+    "1/200": 564,
+    "2/200": 1,
+    "1/24": 1,
+    "2/24": 1,
+    "3/24": 1,
+    "4/24": 1,
+    "5/24": 1,
+    "6/24": 1,
+    "7/24": 1
+  },
+  "render_duration_record_count": 568,
+  "last_render_durations_seconds": [
+    0.186000004,
+    0.26700002,
+    0.283000022,
+    0.330000013,
+    0.231000006,
+    0.245000005,
+    0.165000007,
+    142.827011
+  ],
+  "warning_counts": {
+    "missing_texture_map_plugin": 42,
+    "missing_asset_file_list": 7
+  },
+  "licensing_text_markers_in_renderer_log": 0,
+  "asset_paths_omitted": true,
+  "interpretation": "Repeated restarts prevent refinement. No event-level trace establishes the initiating plugin/callback. Production rendering is a separately recorded result.",
+  "focused_ir_failure_window": {
+    "from": "2026-10-05 12:03:04",
+    "through": "2026-10-05 12:06:23",
+    "render_start_markers": 485,
+    "elapsed_seconds": 199,
+    "basis": "Recount of the inclusive timestamp window in the fuller current log; matches the earlier conversation observation."
+  },
+  "whole_log_scope_note": "Whole-session totals include later multi-pass rendering. They are not a count of proven IR failures; the initiating callback remains unisolated."
+}

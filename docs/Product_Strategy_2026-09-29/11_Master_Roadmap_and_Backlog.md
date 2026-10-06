@@ -1,5 +1,9 @@
 # 11 — Master roadmap and backlog
 
+<!-- CURRENT_SYSTEM_2026-10-05 -->
+
+This is the dated September strategy backlog. The [5 October coordinating roadmap](../Current_System_2026-10-05/ROADMAP.md) now determines current sequencing and evidence gates; retain this document for the original product intent.
+
 **This is the governing work order as of 2026-09-29. Task IDs below are planning identifiers. No dates or effort ranges are commitments.**
 
 ## Evidence-based sequence

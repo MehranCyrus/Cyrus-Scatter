@@ -1,0 +1,32 @@
+{
+  "schema": "cyrus.proposed.batch_scope/0.1",
+  "synthetic": true,
+  "scope_id": "synthetic-draft-scope",
+  "study_id": "synthetic-courtyard-study",
+  "status": "draft_not_authorized",
+  "authorized": false,
+  "authorization_record_id": null,
+  "host_id": "synthetic-private-host",
+  "base_snapshot_id": "synthetic-site-v1",
+  "ownership": "disposable_study_objects_only",
+  "allowed_asset_ids": ["synthetic-grass", "synthetic-flower"],
+  "allowed_variations": {
+    "requested_candidate_budget": [500, 1000],
+    "source_weights": "normalized_nonnegative_over_enrolled_assets",
+    "uniform_scale_range": [0.75, 1.5]
+  },
+  "view_profile_id": "synthetic-hero-top-v1",
+  "proposed_limits": {
+    "candidate_count": 24,
+    "total_generation_attempts": 30,
+    "render_attempts": 48,
+    "wall_seconds": 3600,
+    "artifact_bytes": 2000000000,
+    "concurrent_host_mutations": 1
+  },
+  "expiry": null,
+  "on_input_change": "pause_and_require_new_context",
+  "cancellation": "request_then_confirm_at_safe_boundary",
+  "training_consent": false,
+  "note": "Illustrative proposed limits, not current MCP permissions or measured capacity."
+}

@@ -30,7 +30,41 @@ def _container_pool(leaf):
         return None
     return {"mode": {1: "manual", 2: "layer_default", 3: "global", 4: "own"}.get(mode, "unknown"),
             "own_rectangles": _container_refs(leaf, "containerNodes"),
+            "cached_membership": _cached_membership(leaf,mode),
             "membership": "Source pivot in rectangle local XY; parked registrations retain settings. Membership is not recomputed by inspection."}
+
+
+def _cached_membership(leaf,mode):
+    """Copy existing membership only. Pending registration changes are not
+    reconciled, nor are stale index flags assigned to a different source node.
+    """
+    try:
+        sources=list(leaf.sources);tracked=list(leaf.containerTrackedSources)
+        active=list(leaf.containerActive);slots=list(leaf.procSourceSlots)
+        points=list(leaf.sourcePoint);empty=list(leaf.sourceEmpty)
+        revision=int(leaf.containerMembershipBuilds)
+        pending=bool(leaf.containerScan) or len(leaf.containerPending)>0 or bool(leaf.dirty)
+    except (AttributeError,RuntimeError,TypeError,ValueError):
+        return None
+    from .contracts import require
+    require(len(sources)<=1024,"Source membership exceeds the read budget","BUDGET_EXCEEDED")
+    def handle(node):
+        try:return int(node.handle)
+        except (AttributeError,RuntimeError,TypeError,ValueError):return None
+    handles=[handle(n) for n in sources]
+    aligned=len(tracked)==len(sources)==len(active) and handles==[handle(n) for n in tracked]
+    rows=[]
+    for i,node_handle in enumerate(handles):
+        point=i<len(points) and bool(points[i]);placeholder=point or (i<len(empty) and bool(empty[i]))
+        if node_handle is None:status="placeholder" if placeholder else "missing"
+        elif mode==1:status="manual"
+        elif aligned:status="active" if active[i] else "parked"
+        else:status="unavailable_until_reconciliation"
+        rows.append({"registered_row":i,"node_handle":node_handle,
+                     "source_entry_id":str(slots[i]) if aligned and i<len(slots) else None,
+                     "kind":"point" if point else "empty" if placeholder else "model","cached_status":status})
+    return {"revision":revision,"aligned_with_registered_order":aligned,"pending_by_cached_flags":pending,"rows":rows,
+            "freshness":"Last reconciliation flags; node transforms and rectangle containment are not inspected. No current membership claim."}
 
 
 def require_legacy_mutation(controller):

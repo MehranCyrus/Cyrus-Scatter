@@ -1,18 +1,18 @@
 # Cyrus Scatter release versioning
 
-**5 October source/package distinction:** Both current source and earlier installers report 0.7.0, but their contents differ. The sidebar corrections and opt-in source containers now have isolated Max 2027 evidence in the [independent review and implementation results](Independent_Review_0.7_2026-10-05/IMPLEMENTATION_RESULTS.md). They remain unpackaged. Current serialization is **53**; the earlier procedural candidate was 52. Identify builds by verified source/native hashes, not the version label alone.
+**5 October source/package distinction:** Current development source is **0.7.1**, introducing the compact Modify panel and [floating Layer Editor](UI_0.7.1_2026-10-05/WORKFLOW.md). Existing installers remain 0.7.0. Serialization stays **53** because the editor changes no persisted calculation parameters or class IDs. The preceding sidebar/source-container checkpoint is preserved at `addccb4`; its evidence remains in the [independent review results](Independent_Review_0.7_2026-10-05/IMPLEMENTATION_RESULTS.md). Identify builds by verified source/native hashes as well as version.
 
-**Decision recorded: 4 October 2026.** Cyrus Scatter is still in pre-release development. The next product version is **0.7** (`0.7.0` in build/package metadata). Reserve **1.0.0** for the version ready for public publication.
+**Historical decision recorded: 4 October 2026.** The development label was reset to **0.7** (`0.7.0` for that candidate). Current source is 0.7.1 as described above. Reserve **1.0.0** for publication readiness; see the [current system and roadmap](Current_System_2026-10-05/README.md).
 
 ## Current checkpoint and historical labels
 
 The development history progressed from the retained-Mesh **0.64** baseline through builds labeled **1.0.x**, **1.1.x** and **1.2.x**. Those labels identify existing development artifacts and evidence; they do not establish that a production 1.0 release was approved.
 
-The generated script and current candidate packages now report **0.7.0**, applied in the [procedural coding phase](Procedural_Implementation_0.7_2026-10-04/README.md). No candidate was installed during that phase. This keeps the latest features and performance paths; the label change is not a rollback to old 0.64 source.
+The procedural candidate packages report **0.7.0**, applied in the [procedural coding phase](Procedural_Implementation_0.7_2026-10-04/README.md). No candidate was installed during that phase. The later floating-editor development source advances to **0.7.1** while retaining those features and performance paths.
 
 Historical commit messages, report titles, filenames, package checksums and captured screenshots retain their original labels so evidence remains traceable. New planning should describe the product as **Cyrus Scatter 0.7 pre-release** and distinguish that intended version from the currently installed build label.
 
-## Next implementation checklist
+## Historical 0.7.0 implementation checklist
 
 - [x] Apply final UI version 0.7.0 in [procedural-policy.cjs](../AminScatter/tools/ui/procedural-policy.cjs), after the retained layout stages, and regenerate [AminScatterObject.ms](../AminScatter/scripts/AminScatterObject.ms).
 - [x] Align current product captions and candidate documentation to 0.7.
@@ -25,4 +25,4 @@ Historical commit messages, report titles, filenames, package checksums and capt
 
 Patch builds can use `0.7.1`, `0.7.2`, and so on. Later pre-release milestones can use `0.8.x` or `0.9.x` when appropriate. Do not infer publication readiness from completing an individual feature or checkpoint; move to 1.0 only when release readiness is confirmed.
 
-Current next-engine work is defined in the [procedural implementation guide](Procedural_Evaluation_2026-10-04/README.md). The [documentation index](README.md) links the current capabilities and historical qualification records.
+Current next work is coordinated by the [system roadmap](Current_System_2026-10-05/ROADMAP.md), beginning with IR diagnosis and causal diagnostics. The [procedural guide](Procedural_Evaluation_2026-10-04/README.md) remains the detailed calculation requirements reference. The [documentation index](README.md) links current capabilities and historical qualification records.

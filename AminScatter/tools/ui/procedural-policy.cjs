@@ -15,10 +15,10 @@ module.exports=function(s){
  // the legacy layer/group state and helpers they consume have been declared.
  const functions=model.indexOf('    fn proceduralPolicy');
  one('    parameters paintSettings (',model.slice(0,functions)+'\n    parameters paintSettings (');
- one('    fn nativeEditors =',model.slice(functions)+'\n'+read('source-containers')+'\n'+evaluation+'\n    fn nativeEditors =');
+ one('    fn nativeEditors =',model.slice(functions)+'\n'+read('source-containers')+'\n'+evaluation+'\n'+read('publication-read')+'\n    fn nativeEditors =');
  one('version:51\ninitialRollupState','version:53\ninitialRollupState');
- one('fn uiVersion = "1.2.3"','fn uiVersion = "0.7.0"');
- s=s.replaceAll('Cyrus Scatter 1.2','Cyrus Scatter 0.7');
+ one('fn uiVersion = "1.2.3"','fn uiVersion = "0.7.1"');
+ s=s.replaceAll('Cyrus Scatter 1.2','Cyrus Scatter 0.7.1');
  // Central capability predicate: all consumers of shared published placements
  // understand policy 3; the implementations of policy 1/2 remain available.
  s=s.replace(/\b((?:\w+\.)*groupPolicy)==2/g,'(CyrusUsesSharedPolicy $1)')

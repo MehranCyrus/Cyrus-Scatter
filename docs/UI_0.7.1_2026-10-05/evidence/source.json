@@ -1,0 +1,1827 @@
+{
+  "head": "addccb492a88292529594de81c287cc26e5ffe98",
+  "scope": "Working-tree snapshot, including uncommitted lab code; HEAD alone is insufficient",
+  "product_baseline": null,
+  "files": [
+    {
+      "path": "AminScatter/Analyzer-Area-guide.md",
+      "bytes": 1105,
+      "sha256": "04f4a5cbff0bcb2280ddb018e6bf80c96cc686d7af33b4f25f51e7305b798dbd"
+    },
+    {
+      "path": "AminScatter/Area-Falloff-Graph-guide.md",
+      "bytes": 1860,
+      "sha256": "cfbae79598e8f52597f419d39fca7e5fb2e04df73704e1e05d48d263f39bc4b6"
+    },
+    {
+      "path": "AminScatter/Boundary-Falloff-guide.md",
+      "bytes": 2100,
+      "sha256": "1fbc9cd3cc27f091f271f318d06356d86726129e604a20185fbf35b39056f55d"
+    },
+    {
+      "path": "AminScatter/Boundary-facing-guide.md",
+      "bytes": 2202,
+      "sha256": "80b81b28677a3e7a106cb4a17a365079ca906e406bbcbd096e995e4a91cb4bc8"
+    },
+    {
+      "path": "AminScatter/CMakeLists.txt",
+      "bytes": 7426,
+      "sha256": "f44cd0e2cd89a9fbc9009981279f71a340227d5865d6c3af57a559106e53136a"
+    },
+    {
+      "path": "AminScatter/CS-Edit-guide.md",
+      "bytes": 3447,
+      "sha256": "b228523b37bbe12575bdc5c28d7eb3bcd40980f542675b336193d15dbb6c3778"
+    },
+    {
+      "path": "AminScatter/Edge-Border-0.44-fix.md",
+      "bytes": 414,
+      "sha256": "32b35f12770938ea1125a9231d62431c3f1c6de894cdc562a16246bac9006ae1"
+    },
+    {
+      "path": "AminScatter/Edge-Border-guide.md",
+      "bytes": 4457,
+      "sha256": "7d1cd7ea044da38791b2286ec4479231fd1286a7845f1eef467dce9346bcb7cd"
+    },
+    {
+      "path": "AminScatter/Performance-0.58-guide.md",
+      "bytes": 2454,
+      "sha256": "f1411a17539a2f1fa251c72b63a0aad68270d2ca8dbe7428fd2efbc7718cd7de"
+    },
+    {
+      "path": "AminScatter/README.md",
+      "bytes": 21185,
+      "sha256": "9ce430ce8ed5a358aa3d040fa5e5594c1b3abbe634067779c842d9e64b7ea12c"
+    },
+    {
+      "path": "AminScatter/Selection-0.59-fix.md",
+      "bytes": 1485,
+      "sha256": "4305e04db9fcf1e6612544ee6f3ea577da6786e79394a46eab4941bc79ea4f87"
+    },
+    {
+      "path": "AminScatter/Street-layout-guide.md",
+      "bytes": 1240,
+      "sha256": "b0b07deff441a6167ac2151fcf3ca15b257e7314f33d0fe778bda32af75155bb"
+    },
+    {
+      "path": "AminScatter/UI-0.49-guide.md",
+      "bytes": 639,
+      "sha256": "a5b2deab72441fd6caf2da16d83b6dcf4cb533e6a60f4ecfd9cbe1fbd9c2fd1c"
+    },
+    {
+      "path": "AminScatter/Viewport-display-guide.md",
+      "bytes": 2454,
+      "sha256": "b94b51b9c778d7783ced95230d29305dec9c95561ae39867654ab75c080faafc"
+    },
+    {
+      "path": "AminScatter/include/brush.h",
+      "bytes": 3261,
+      "sha256": "c3859f67d437bf45eff2930d54c0e3652e390eecd341e3cb584d86ec1717ea56"
+    },
+    {
+      "path": "AminScatter/include/execution.h",
+      "bytes": 2975,
+      "sha256": "e9f2cfdf677366f491dc01cea83301ce53111c5073633333a4adf1db2ad509d2"
+    },
+    {
+      "path": "AminScatter/include/group_spacing.h",
+      "bytes": 1468,
+      "sha256": "b04b3e47f0f1d5789f274492ca4d2a0777e5f1b500070ba5ef88426c4cf08502"
+    },
+    {
+      "path": "AminScatter/include/license_boundary.h",
+      "bytes": 767,
+      "sha256": "92f2c3dd89977af053c27a25731246890209e0d2e3d4a1f931d4349dc2088178"
+    },
+    {
+      "path": "AminScatter/include/point_preview.h",
+      "bytes": 1610,
+      "sha256": "5dec4890f38338f99baf1d0e163274aa515b455b34d3a8acc51f4e917017edb6"
+    },
+    {
+      "path": "AminScatter/include/preview_sampling.h",
+      "bytes": 436,
+      "sha256": "14e389d96653e861896a133c6efa9a6d42f96e2cc8d3e5e6ee665221b9a4645f"
+    },
+    {
+      "path": "AminScatter/include/procedural.h",
+      "bytes": 1676,
+      "sha256": "ef9ce89dce26aa9dafb077c903af73f1b0a71ebc946febabd4bf0a006e546dbd"
+    },
+    {
+      "path": "AminScatter/include/scatter.h",
+      "bytes": 5685,
+      "sha256": "d8c573575fd98207857e564b98fef23afa7161ee994c6529d417535eefc5c96d"
+    },
+    {
+      "path": "AminScatter/installer/CyrusScatter.mcr",
+      "bytes": 351,
+      "sha256": "74a3c13a1c3f3a5dc721cdce18bd690e28e36940601755442bcb7075a9d0eb34"
+    },
+    {
+      "path": "AminScatter/installer/CyrusScatterStartup.ms",
+      "bytes": 151,
+      "sha256": "fdf38b3bc83187eecb34b833bfff2751e78626e9e3dba41aa20a0ff7ff9e8405"
+    },
+    {
+      "path": "AminScatter/installer/Uninstall.ms",
+      "bytes": 1622,
+      "sha256": "59e2b84901fcefaae1dab59886cd2f4079df4f764c789238947e19c514b4ed49"
+    },
+    {
+      "path": "AminScatter/installer/install.ms",
+      "bytes": 3167,
+      "sha256": "716fb827dd6685383d78875f25453c1c9b8cd455b852dbd3a22fd9210199144f"
+    },
+    {
+      "path": "AminScatter/installer/mzp.run",
+      "bytes": 76,
+      "sha256": "ba97caafe9959ac5d665f843ba898361545fcae93042e3b25b44f71a0dc200f5"
+    },
+    {
+      "path": "AminScatter/scripts/AminScatter.ms",
+      "bytes": 5741,
+      "sha256": "404723402cd4fd076465f965a8328d98b53d2573f94b46d21b19747548dacd21"
+    },
+    {
+      "path": "AminScatter/scripts/AminScatterObject.ms",
+      "bytes": 357301,
+      "sha256": "07d0bca2efe330b8b632c1a483cea23c65629b0f7ef5c0cbecd2c6984f1f9924"
+    },
+    {
+      "path": "AminScatter/src/analyzer_area_bridge.inc",
+      "bytes": 2116,
+      "sha256": "90c08d2650c8bea809900fd23f2abc8d3e26272c95d49a315552711aa6ad48bc"
+    },
+    {
+      "path": "AminScatter/src/authored_revision.inc",
+      "bytes": 8137,
+      "sha256": "9bdb0aadfa193983d9d18f42ac2e1ffe414bd6a99a5d556553dc2a00c1d8fe1e"
+    },
+    {
+      "path": "AminScatter/src/boundary_falloff.inc",
+      "bytes": 4077,
+      "sha256": "a8c2669675dcb853d79c2ceaf90bf092d09c27d09a48991f0ac3cd024737d99f"
+    },
+    {
+      "path": "AminScatter/src/boundary_falloff_bridge.inc",
+      "bytes": 3421,
+      "sha256": "4af974149fa2fc6a82a6e2d0401bb88deca0e3cc9441ea6b8757013e7259d555"
+    },
+    {
+      "path": "AminScatter/src/brush.cpp",
+      "bytes": 22366,
+      "sha256": "9e8f8a05fb9989b032a7a04de797323635a8bbbd71ab8bcf245fd22c84ccd317"
+    },
+    {
+      "path": "AminScatter/src/brush_host.cpp",
+      "bytes": 44925,
+      "sha256": "ec575d5f1d8cdc1dfaf96d4326875ce4165b4df3dfd15639c641b82ec71f5203"
+    },
+    {
+      "path": "AminScatter/src/brush_storage_plugin.cpp",
+      "bytes": 730,
+      "sha256": "cf3d949ca9695e42c70f0905db41bd24e77d520b7f7a571a72a8bfc69ce995d3"
+    },
+    {
+      "path": "AminScatter/src/cluster.inc",
+      "bytes": 3491,
+      "sha256": "e3f7eddd8133e34f91c1e50d5c4d1ac4ca2f4a6dc611728a0848c16f9f3e3680"
+    },
+    {
+      "path": "AminScatter/src/cyrus_edit.cpp",
+      "bytes": 16375,
+      "sha256": "cbac1001229c577f7c5e1da8d633c319c3b807aca3a2283031fce21bbede4d59"
+    },
+    {
+      "path": "AminScatter/src/cyrus_edit.rc",
+      "bytes": 301,
+      "sha256": "2ed905b328e04f092f89a4e1e800d9fba724a0c33f9ea3262fe886040f53fb33"
+    },
+    {
+      "path": "AminScatter/src/cyrus_edit_stack.inc",
+      "bytes": 10264,
+      "sha256": "f8e0b37d42ba6c7a2a1cf02d938c2b777a03335637cd9adac7050d132a35bd8b"
+    },
+    {
+      "path": "AminScatter/src/cyrus_edit_storage.inc",
+      "bytes": 2403,
+      "sha256": "561ef94b0fa26e16eb4058398cbff0e0f7c3c84ec74fc181d0c674be9fbf036b"
+    },
+    {
+      "path": "AminScatter/src/edge_border.inc",
+      "bytes": 5068,
+      "sha256": "df5f43d5614d1d44a274b9a67c70c659d24964b1ffad665e1956232581951f8c"
+    },
+    {
+      "path": "AminScatter/src/edit_plugin.cpp",
+      "bytes": 959,
+      "sha256": "4fd8df8537a0d70ce1f42ebd07c478786d9a0eca6be2c705162e0f5ab0b580a8"
+    },
+    {
+      "path": "AminScatter/src/execution.cpp",
+      "bytes": 819,
+      "sha256": "b54963d69441d473ed52f76b125c4eb3d0a38c564900f28abd76efa7bcbf1136"
+    },
+    {
+      "path": "AminScatter/src/final.inc",
+      "bytes": 5914,
+      "sha256": "24b2484832fa1ccd960a964de463cb3735f5e25607f423b3cde5227d392f0b81"
+    },
+    {
+      "path": "AminScatter/src/geometry_preview.inc",
+      "bytes": 4630,
+      "sha256": "3a72c3064fb23f72e042554ad9d2e4ded7b4efaa1b481550f38753b357b8ad65"
+    },
+    {
+      "path": "AminScatter/src/group_spacing.cpp",
+      "bytes": 7879,
+      "sha256": "73d973b3d22f51c00dae7f4282d7f8159b19dea0b27f7ddb57c2d06815acc1a1"
+    },
+    {
+      "path": "AminScatter/src/group_spacing_bridge.inc",
+      "bytes": 3457,
+      "sha256": "84514cdc7a7d4d9690d5ae179af1d9864897f4a1e56edacf2f4bacd158db77a7"
+    },
+    {
+      "path": "AminScatter/src/max_bridge.cpp",
+      "bytes": 28739,
+      "sha256": "f454444012ee28668a4e43777f8c33bbb0cca181f154c84903aa55268fb4e356"
+    },
+    {
+      "path": "AminScatter/src/mesh_display.inc",
+      "bytes": 6597,
+      "sha256": "91b694e319d1d5864f1ae6a6dd67c8bb033d44420f770ed0645c4cc4547d8c39"
+    },
+    {
+      "path": "AminScatter/src/orientation.inc",
+      "bytes": 7983,
+      "sha256": "d485e2b8ea5c3abf3fc00a7e7b7139ae4b5d3995ee17f3aad7afff8cc4bfcea8"
+    },
+    {
+      "path": "AminScatter/src/orientation_bridge.inc",
+      "bytes": 2949,
+      "sha256": "c967d950dfd1308bd989dc3e819b959ae64eb69acdaf728b4c6ba2dd694c639e"
+    },
+    {
+      "path": "AminScatter/src/placement_identity.inc",
+      "bytes": 1583,
+      "sha256": "a33f6d19e8bff75b90e2cbbc2f969d00c5982c5301918efddf1108a86ca0a2aa"
+    },
+    {
+      "path": "AminScatter/src/point_display.cpp",
+      "bytes": 18964,
+      "sha256": "fffbba8c231ee937e749116dd4a0184f4d0c8ff4c366d85c60495c463d1eb620"
+    },
+    {
+      "path": "AminScatter/src/prepared_band.inc",
+      "bytes": 2633,
+      "sha256": "5d01452faed01a630428506cc7ce099ee909ce64204edef5448a03c1a1000cf0"
+    },
+    {
+      "path": "AminScatter/src/preview.cpp",
+      "bytes": 15698,
+      "sha256": "6465bf8dcbaaf213ab24f6362c6f92156333008d4585a645f539ba60bd4d8d6c"
+    },
+    {
+      "path": "AminScatter/src/preview_batches.inc",
+      "bytes": 1890,
+      "sha256": "a2a7df3d65a6278d49aad80361bffe8db15fae1419feb44e993354f5c31c7acd"
+    },
+    {
+      "path": "AminScatter/src/procedural.cpp",
+      "bytes": 10296,
+      "sha256": "3bbdd2ef5463edb51af32a5ff3a7c8d5579d602027dc14738edf63a16185402c"
+    },
+    {
+      "path": "AminScatter/src/procedural_bridge.inc",
+      "bytes": 8876,
+      "sha256": "839a69195d3f854a1540a942f71cf16dcdb8796a20da34dcd30156baf2d12e71"
+    },
+    {
+      "path": "AminScatter/src/rollout_flow.cpp",
+      "bytes": 1436,
+      "sha256": "f1cdf4bb21e5dcb424b01a570c0c001424de3f4fa756638aafb85962bb5b4392"
+    },
+    {
+      "path": "AminScatter/src/rollout_scroll.cpp",
+      "bytes": 6217,
+      "sha256": "5573dd56b0ecaa87c6f521abd88b07f6d7e3259174a249ab53275a0bb12fb3a7"
+    },
+    {
+      "path": "AminScatter/src/scatter.cpp",
+      "bytes": 27721,
+      "sha256": "4f05b7c2fa75cc50f768989e6dafd3a9432f8be1a6b23a0b75fdbcb274f33b49"
+    },
+    {
+      "path": "AminScatter/src/spacing.inc",
+      "bytes": 7577,
+      "sha256": "96ef2d89f07cf9e6c67a93f4c91e990da98016f58c6278fce543a7b09e289c77"
+    },
+    {
+      "path": "AminScatter/src/whole_scale_bridge.inc",
+      "bytes": 1629,
+      "sha256": "8374345cee715b0ad5c65e5478f191274e1ebdcbc5ffbe861bf450d7793c45d7"
+    },
+    {
+      "path": "AminScatter/tests/boundary_falloff_tests.cpp",
+      "bytes": 3158,
+      "sha256": "ab48b370731b7f667fc39156654d532a0693b3e0a7836a06c759ed478bf3c06a"
+    },
+    {
+      "path": "AminScatter/tests/brush_tests.cpp",
+      "bytes": 8947,
+      "sha256": "b2d62ac7e95d7678342f962f9dec7a977bb01d7272f7686c7cea242ffbf17a89"
+    },
+    {
+      "path": "AminScatter/tests/compute_benchmark.cpp",
+      "bytes": 6343,
+      "sha256": "9f59cf70e0511c761d59c1c1b19335bbef0a3d9ddce30b3df93ce94f3adcc4c5"
+    },
+    {
+      "path": "AminScatter/tests/data/brush_sphere_pole.txt",
+      "bytes": 92738,
+      "sha256": "3e2bf0a248e2e0539ff4eadce7af0e1f8f12850636aa5d1293c03a5ea78ee819"
+    },
+    {
+      "path": "AminScatter/tests/edge_border_tests.cpp",
+      "bytes": 3709,
+      "sha256": "f85b1c429fc080e94ea7bdc5771286cef066d7979acfe4065caf5bc30f3c49b1"
+    },
+    {
+      "path": "AminScatter/tests/group_spacing_tests.cpp",
+      "bytes": 4260,
+      "sha256": "67300e62c679ea27b95784216441af79119668cc3008a3a71dab04b493f75046"
+    },
+    {
+      "path": "AminScatter/tests/orientation_tests.cpp",
+      "bytes": 4343,
+      "sha256": "3a49477ce55d03cd342beec23123b581a50a7d8f13626834207661c2f4fa8076"
+    },
+    {
+      "path": "AminScatter/tests/prepared_band_tests.cpp",
+      "bytes": 2379,
+      "sha256": "ce1622cbe460eaba14c09a34ed669fcc74bdb08b018c17c754d12b0ddf33769d"
+    },
+    {
+      "path": "AminScatter/tests/preview_sampling_tests.cpp",
+      "bytes": 1549,
+      "sha256": "e2eac5bd2ef640e5dc11f8778bb55749033baea4714d5fe2fccbd764f80be819"
+    },
+    {
+      "path": "AminScatter/tests/procedural_tests.cpp",
+      "bytes": 13033,
+      "sha256": "f2bdb0091e14a0819faf4776bdc212dbc55a7db6878868f9fa842704d9ab9ff2"
+    },
+    {
+      "path": "AminScatter/tests/scatter_tests.cpp",
+      "bytes": 18194,
+      "sha256": "c0e0eb48287e008d6f88c4baadd013d183bf49125f607c8c716315237600c402"
+    },
+    {
+      "path": "AminScatter/tests/spacing_tests.cpp",
+      "bytes": 3508,
+      "sha256": "9fc18b3e4629b9e9a1b79b67ceb75f21ae671211396a5cfd909239040fc5a2e7"
+    },
+    {
+      "path": "AminScatter/tests/threading_tests.cpp",
+      "bytes": 3642,
+      "sha256": "f3336cfd3ffe0c642fd839cf7eb4b6002fd697a04072010f963bf1d020f87507"
+    },
+    {
+      "path": "AminScatter/tests/weight_tests.cpp",
+      "bytes": 2209,
+      "sha256": "792203629d369f7476d097c97f3dc8082811a5e5deb8fbc62ff74ab1a7b65df9"
+    },
+    {
+      "path": "AminScatter/tools/ui/activation.cjs",
+      "bytes": 2453,
+      "sha256": "565cc12bcd904e8e6b9875e35bc48109b42ff032cb2fe8af576f4ec05184f0ba"
+    },
+    {
+      "path": "AminScatter/tools/ui/analyzer-area.cjs",
+      "bytes": 2640,
+      "sha256": "bc1d472ef08351b7bf5112b1fca0552fa6610747edaa5d880050e80933c89adf"
+    },
+    {
+      "path": "AminScatter/tools/ui/area-falloff.cjs",
+      "bytes": 2236,
+      "sha256": "153a1e93b0edd78bb941e03470d03e7fcc20c84596323d8421b3626c2c0b5a8b"
+    },
+    {
+      "path": "AminScatter/tools/ui/boundary-falloff.cjs",
+      "bytes": 8348,
+      "sha256": "baefdb6ec38d63048358b00d599c2225278e9737300eb155ecd3403992e6e9ed"
+    },
+    {
+      "path": "AminScatter/tools/ui/centers.cjs",
+      "bytes": 2900,
+      "sha256": "4579065bdd222e1714f70765840ff7998ff0b3e26e33eb780f8d20a7f01c84f0"
+    },
+    {
+      "path": "AminScatter/tools/ui/compute-performance.cjs",
+      "bytes": 3638,
+      "sha256": "65792c2c1f117796cf45daf14c28633ec6490688c6f26283972d951aae51b371"
+    },
+    {
+      "path": "AminScatter/tools/ui/display-modes.cjs",
+      "bytes": 4386,
+      "sha256": "d5b722fbb83d102e5173ee9c618e91e0af470427ddf9e3aca36941ea803442db"
+    },
+    {
+      "path": "AminScatter/tools/ui/edge-border.cjs",
+      "bytes": 7208,
+      "sha256": "3401f9542166922dfffb0316f380420dd625e3bf5c4389ce171750d4616b1f83"
+    },
+    {
+      "path": "AminScatter/tools/ui/edge-corners.cjs",
+      "bytes": 2301,
+      "sha256": "22f9c61b8117313ad1a5a2f042350713111ee236175c80594b375403a8a079a2"
+    },
+    {
+      "path": "AminScatter/tools/ui/edge-rotation.cjs",
+      "bytes": 1945,
+      "sha256": "f1896d3c7be1ce047695ef84fd4251139eeecf3e2d372f5a09201f25f8e93564"
+    },
+    {
+      "path": "AminScatter/tools/ui/edit.cjs",
+      "bytes": 2156,
+      "sha256": "e53a198c479027f39506d59f324f44226b570cb461e7a7e5e135df00da97c68b"
+    },
+    {
+      "path": "AminScatter/tools/ui/empty.cjs",
+      "bytes": 3439,
+      "sha256": "c9f7c8ec3922d655157f4a8f793e075e3fa3babfa0225e0a2411059ddd64a8d7"
+    },
+    {
+      "path": "AminScatter/tools/ui/final.cjs",
+      "bytes": 4743,
+      "sha256": "ac33e2ba4d660c1fb8673e8628afe91037152cfcc03cb8c970072a6863ed51d1"
+    },
+    {
+      "path": "AminScatter/tools/ui/generate.cjs",
+      "bytes": 11439,
+      "sha256": "94337743c57e959fe03c361e51be919f7761932a360e6f6f9e79a40b99e56513"
+    },
+    {
+      "path": "AminScatter/tools/ui/layer-editor-layout.cjs",
+      "bytes": 7702,
+      "sha256": "7016b2b6448200149c4311d796c7659254ffe44d59885ab3027e3fbd8a5179e6"
+    },
+    {
+      "path": "AminScatter/tools/ui/layer-editor-tooltips.json",
+      "bytes": 10830,
+      "sha256": "985c19d1012cde622b297c00d4c904594687fdf4ce5261b92961fd73fbf68f24"
+    },
+    {
+      "path": "AminScatter/tools/ui/layer-status.cjs",
+      "bytes": 5806,
+      "sha256": "82be9a58ca799299f80845d9e2d0be344ef2aa924d55b84df827f0bcdb34e970"
+    },
+    {
+      "path": "AminScatter/tools/ui/layers-control-inventory.json",
+      "bytes": 18904,
+      "sha256": "ee693aa0f7a6ddaeb4fa62f47d9e70896c7cbd0db6349bda5134f898d08bf51e"
+    },
+    {
+      "path": "AminScatter/tools/ui/layers-first.cjs",
+      "bytes": 18604,
+      "sha256": "412459e3610e3c1928798675c3b7b0a1561ea7094a712b473a8ed28caff0ba20"
+    },
+    {
+      "path": "AminScatter/tools/ui/native-v1.cjs",
+      "bytes": 10170,
+      "sha256": "ebc98ff0ecb36608dc1fa6e601ec7ff2df3c8cdb1b48629e9028f3c720dc5585"
+    },
+    {
+      "path": "AminScatter/tools/ui/orientation.cjs",
+      "bytes": 4992,
+      "sha256": "f0d584965c6a28e46858e12b3e59047d104eaceac672a64d4ddc42d57ef6ae87"
+    },
+    {
+      "path": "AminScatter/tools/ui/overlaps.cjs",
+      "bytes": 7086,
+      "sha256": "7c949fd674255f9ca26535aa89084907f74014ddd70906feb8fdacdb808c3f43"
+    },
+    {
+      "path": "AminScatter/tools/ui/performance.cjs",
+      "bytes": 7878,
+      "sha256": "507799812df3f13e2499fd9c803d44c1a6356f631387edd52fedc3e9f1b10ef2"
+    },
+    {
+      "path": "AminScatter/tools/ui/planting-groups.cjs",
+      "bytes": 9609,
+      "sha256": "ea07852bca03b1f8d140715276e8734c2573ade5cf31def88be4f35248339794"
+    },
+    {
+      "path": "AminScatter/tools/ui/point-source.cjs",
+      "bytes": 3328,
+      "sha256": "fb9fb4d351173526e01396d0a74a1cb1a7321151dc47bec47d10b1c6d22dbdb4"
+    },
+    {
+      "path": "AminScatter/tools/ui/procedural-brush.cjs",
+      "bytes": 7484,
+      "sha256": "c2697195142454c5879f092e438231bf8096263c79be32ae239fb134e745a748"
+    },
+    {
+      "path": "AminScatter/tools/ui/procedural-policy.cjs",
+      "bytes": 13242,
+      "sha256": "bdabdb7ba8fcb019983d5c65d3a36e9dc89fb5739f6c2214e5096c5d0627f5b1"
+    },
+    {
+      "path": "AminScatter/tools/ui/radius-display.cjs",
+      "bytes": 2512,
+      "sha256": "edf47968303b7c4bb202a5f74877e150de9376c519e35abd25a85bc821aa2694"
+    },
+    {
+      "path": "AminScatter/tools/ui/radius.cjs",
+      "bytes": 7163,
+      "sha256": "a021915901b3b4d985f79e76e47d0a398ddc523578f19f0004f836eac46ff3b5"
+    },
+    {
+      "path": "AminScatter/tools/ui/random-reset.cjs",
+      "bytes": 3032,
+      "sha256": "34640722dda2262e7f1bf8e8eb048b27bfece133f5c0bf213a46ff9d07e775d6"
+    },
+    {
+      "path": "AminScatter/tools/ui/responsive.cjs",
+      "bytes": 1841,
+      "sha256": "ef4d9939aae08f40a0593ad5bcdd1ad78950a5d7f9d110e03582fb3c3b57c81a"
+    },
+    {
+      "path": "AminScatter/tools/ui/retained-points.cjs",
+      "bytes": 9426,
+      "sha256": "593e7bfafd425692911b602ceb3b041ca4cfef63e6d53b8886281860b284de55"
+    },
+    {
+      "path": "AminScatter/tools/ui/source-refresh.cjs",
+      "bytes": 885,
+      "sha256": "4a64cc142d1db0bce03e2c63bc6e43251b0f190ecbc1472f327c5ff2fe9d32aa"
+    },
+    {
+      "path": "AminScatter/tools/ui/source-transforms.cjs",
+      "bytes": 3977,
+      "sha256": "1206435ac0f37d953b897aebc61996295b880c091bee8dab7d69ae9dbd88237d"
+    },
+    {
+      "path": "AminScatter/tools/ui/spacing.cjs",
+      "bytes": 3750,
+      "sha256": "eaca66a90fb6bd72de4e45b3720478ef242c8c4ac10525bcdebb8a4d8f652179"
+    },
+    {
+      "path": "AminScatter/tools/ui/street-layout.cjs",
+      "bytes": 3331,
+      "sha256": "f5c77fc5e6902e44caa5702d882d54e98016dd2652b6170250b9a6f2d4176ac2"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/analyzer-area-ui.ms",
+      "bytes": 2104,
+      "sha256": "70812259761ce88b4adc5b939b236cdd8ea68fe1d9d77a66e13497b65b997ea5"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/area-falloff-methods.ms",
+      "bytes": 3724,
+      "sha256": "10f6ebb739663e8c8f4318b4d8900e167665fa3cd0928a76718880ff95f8a8e2"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/area-falloff-ui.ms",
+      "bytes": 3715,
+      "sha256": "a4fe059f68418cccf52861c8426c779e5a3579f3715f4bae8147e1b232e9ecfd"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/background-ui.ms",
+      "bytes": 2010,
+      "sha256": "eb20113c20abde1adfb9b68b6f1a2004154cff78c246a9188325ec4d4f286b56"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/before.ms",
+      "bytes": 59863,
+      "sha256": "4ffe3f7698b0df6d6653364189fcf3d2563d90186ce266072e5e39cea1ed3bfa"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/brush-integration.ms",
+      "bytes": 10699,
+      "sha256": "d5c41da040e7cf3cbf8963912c872ed0665f083d39911e04526b6fb60bac1e9b"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/brush-session.ms",
+      "bytes": 2446,
+      "sha256": "5c2f0e72d2253649df3db989a6cf5429eb4276a67483b022161a30ebd7ca5015"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/compact-host.ms",
+      "bytes": 4490,
+      "sha256": "585711fcb99c2d600bc148432131a51ebbbf5f8c6b40b6d1827d2430f6ca9ae9"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/containers.ms",
+      "bytes": 4637,
+      "sha256": "6d96dde606ce89a395c193070799cf0dc694eff3d8d48591d603cda83c7444a4"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/falloff-graph.ms",
+      "bytes": 3780,
+      "sha256": "73ff8983484f282b29e5b2d559e54658f9465520dc26a0cdd9b5507a729d568b"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/host.ms",
+      "bytes": 6015,
+      "sha256": "a0fcf1cfc1d293fdf483e7808478da497c19075088b76953462d35f080f40fc3"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/instance-radius-ui.ms",
+      "bytes": 1612,
+      "sha256": "49b2fad414148619157fe2125068afdcbfb8bec8cf825c4574906eb673a6aa50"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/layer-editor.ms",
+      "bytes": 15592,
+      "sha256": "e3a6aaf14be6f136eb5a35d38f00177eafcad41e42e5f369556910082e51a8a0"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/layer-status-helpers.ms",
+      "bytes": 1448,
+      "sha256": "6eef1a52ad2023501de8181941b41c728193cddff34be215c80c0eca2fec1405"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/layer-status-manager.ms",
+      "bytes": 5547,
+      "sha256": "d14ac61aee62825db57d87513215036d0dfa866383f57a60c998175fdc0b517d"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/layer-workflow-ui.ms",
+      "bytes": 1665,
+      "sha256": "baae31377cbf5159ca5d885e9e58e97f2770abeb54bb57a9ab8d50b143b14edc"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/layers-first-details.ms",
+      "bytes": 4005,
+      "sha256": "1fadcbdbeb4051e7bb74734ba79e23968068cef137c37d34a056d3735d10cc19"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/layers-first-host.ms",
+      "bytes": 7768,
+      "sha256": "083ddb80a5fd567342d8ef989e506ab95060756eb480d3e452d62cc06b6d1a18"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/layers-first-panel.ms",
+      "bytes": 3282,
+      "sha256": "e2049a1df22a8a03498d45139920a6c073830550bc7334a6ab2185105fdb4f4d"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/layers-first-sets.ms",
+      "bytes": 3213,
+      "sha256": "7a7ac33da597fc5d7738bdca127d9d2864c5cedf4ac743fd0eac4b481f6b7a76"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/layers-flow-helpers.ms",
+      "bytes": 1053,
+      "sha256": "72fbfd0347a17e806e8ba241b83ccb8c9dfa95b74beec697d2fc159d42d2cf18"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/layers-flow-manager.ms",
+      "bytes": 5586,
+      "sha256": "7f6ff4b5ee756d7a736db18915cad5f1ce512de3f2eecc41a05781becbbee7a2"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/layers-flow-surface.ms",
+      "bytes": 4877,
+      "sha256": "59a6d3ad68879e026a417ba9784bc28519e63a5da3237d7fb40da716548d1ad3"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/logical-layers.ms",
+      "bytes": 9500,
+      "sha256": "07adc80ccab59e8ad5fccf8cb956d74396662f8a84c5670d0ce3acd0c00de689"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/native-layers.ms",
+      "bytes": 8152,
+      "sha256": "22aff7346b7672621c20f57224c79d40245c3b9b11015fb85d4d3b4b00698951"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/pflow.ms",
+      "bytes": 8300,
+      "sha256": "a613a919abdead513504ae6d275fe90a7d8c6090403572cc6cf482a0437b9e7a"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/planting-brush.ms",
+      "bytes": 8966,
+      "sha256": "7e54feb587e509b0fea306739d4e49bb08ed31396f68563ecfbcb6fb229a1bbc"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/planting-manager.ms",
+      "bytes": 8118,
+      "sha256": "04344354ae1b5ab227611d321b37dde469bf9aa4d6fd34e85fcffe408d5867fa"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/planting-model.ms",
+      "bytes": 12882,
+      "sha256": "f21aba3af533ce84c1991fbcfbfa0d45308aa9ef1e40898ae2fe4fc3714e9edc"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/planting-separation.ms",
+      "bytes": 10083,
+      "sha256": "11ef0ff35a8861bd521f85fd2d148b6ba047972bfb4a48917c3cd98ba603ffa7"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/population-policy-ui.ms",
+      "bytes": 1895,
+      "sha256": "e20661f26a029d7f968ebdcfdc1ef0faf5d9178ed8be2ef0c47851d050a8208b"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/procedural-evaluation.ms",
+      "bytes": 13908,
+      "sha256": "d1a880cfd902974bcb74a78b28f847fb6b134a6a3ad6250cdce72671eed52cf4"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/procedural-model.ms",
+      "bytes": 19211,
+      "sha256": "6db576de7c580053e733e8ff6401585c1fcf961d6165e75a5119b2214dd78838"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/procedural-notifications.ms",
+      "bytes": 469,
+      "sha256": "ad1364de48d628909c2f048c1a1ac80038444e8bdb6c11181713cf37b9c536f8"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/procedural-ui.ms",
+      "bytes": 6187,
+      "sha256": "f45858c9dc229f3aaf6cba092836186fd591c8601a0fcf94916c473d06bf836e"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/source-containers-ui.ms",
+      "bytes": 2935,
+      "sha256": "2ade4176c50b4309a5e761debe08d77bab50ffdaa082b192247d53b6cd78f50d"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/source-containers.ms",
+      "bytes": 11699,
+      "sha256": "b4cfd06297005c3604487fecdcd4e0f3de7a27d2dd32a9e6af1e890bf07c1a4a"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/storage.ms",
+      "bytes": 3635,
+      "sha256": "e0abd4988dcc117ace4931ee3d3c7a5238be0262aab0b85aa4f8ffb342eb0e52"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/street-layout-methods.ms",
+      "bytes": 3275,
+      "sha256": "62f4c02911d277e535da74aff6f1ecde8a8e5abc32614498b76f8c599f113e58"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/stroke-ui.ms",
+      "bytes": 10063,
+      "sha256": "c022ab57919d180a72d274705f86b22b5236538d06f84911a7b06a5b283bcacf"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/strokes.ms",
+      "bytes": 6286,
+      "sha256": "949e338cb27ee5c59e94cb1979d85557ca15e062b7ed1d823fde9f086174a1f9"
+    },
+    {
+      "path": "AminScatter/tools/ui/trace.cjs",
+      "bytes": 1985,
+      "sha256": "0d674e3602e4cba29a40246855c2acf8fdb46c1ae5440bf50d710619869b0800"
+    },
+    {
+      "path": "AminScatter/tools/ui/viewport-performance.cjs",
+      "bytes": 3594,
+      "sha256": "01c8f3cbae5f3587b509ffa3d7d68abf601a6b5f4960c35532142938eca01f53"
+    },
+    {
+      "path": "AminScatter/tools/ui/weights.cjs",
+      "bytes": 3340,
+      "sha256": "e9eac9bf22f6ecef3fe34e00ae36484179782cb037919fc450ba78596cb14814"
+    },
+    {
+      "path": "AminScatter/tools/ui/whole-scale.cjs",
+      "bytes": 1731,
+      "sha256": "24dfcfb11ba91748a26d09cc3825f79f244d46e2ba922c077f12af83a090df39"
+    },
+    {
+      "path": "CyrusLicensing/CMakeLists.txt",
+      "bytes": 3156,
+      "sha256": "042b1f154c30ab1f0885194c7cbb6f5c8bf5c3da95731707acb485ff9acbb279"
+    },
+    {
+      "path": "CyrusLicensing/README.md",
+      "bytes": 5374,
+      "sha256": "82ea7e19b995831ab0dba0bbb90533693b3430866cc5b70ce2fbe1dc68c4a5d1"
+    },
+    {
+      "path": "CyrusLicensing/include/cyrus/licensing/client.h",
+      "bytes": 1671,
+      "sha256": "ff3b5fb85988ccc032bc5dceacb1705e3c9d0b452ae68e32eb87d858c9542e58"
+    },
+    {
+      "path": "CyrusLicensing/include/cyrus/licensing/local_state.h",
+      "bytes": 2285,
+      "sha256": "af477a9492730c1568a52c9a4101923909dc00c2df39c30e7bc86d269db370ff"
+    },
+    {
+      "path": "CyrusLicensing/include/cyrus/licensing/policy.h",
+      "bytes": 2201,
+      "sha256": "4a3b6b3084966907c4a22d9802c394475107b284d1fb89d573e7b161ecd731a6"
+    },
+    {
+      "path": "CyrusLicensing/include/cyrus/licensing/signed_license.h",
+      "bytes": 4705,
+      "sha256": "e867e89c3b6cdb4bd34578ef720e27a42ae5bf255c0164a2c024034ec0a6ae9a"
+    },
+    {
+      "path": "CyrusLicensing/src/client.cpp",
+      "bytes": 6609,
+      "sha256": "02ecbb2ea065dc52f4d07e83523eaf2942c9638f9d4b781ec109dc01bcbd8f94"
+    },
+    {
+      "path": "CyrusLicensing/src/cng_signature.cpp",
+      "bytes": 4860,
+      "sha256": "49bbf2fbf79145bf99290786c275ac130e4d0c907e88dee8344b6a54ecf09e2f"
+    },
+    {
+      "path": "CyrusLicensing/src/cng_signature.h",
+      "bytes": 299,
+      "sha256": "87098a0ecfdcadde30e93b8882159c3d0e2b02646c6c5484df640011370f1f65"
+    },
+    {
+      "path": "CyrusLicensing/src/installation_key.cpp",
+      "bytes": 4735,
+      "sha256": "7fa82aa70037f9bdee5f1f04d6c1b1f47090f5475787245bfa78cefe43cc90a5"
+    },
+    {
+      "path": "CyrusLicensing/src/local_clock.cpp",
+      "bytes": 1327,
+      "sha256": "2701815546c5ecb64f9ddf76c429e7dc1ce15a43a467717eaceab43ccd60e113"
+    },
+    {
+      "path": "CyrusLicensing/src/local_store.cpp",
+      "bytes": 7447,
+      "sha256": "d102ae15dca160ca9b07986b0cb787d1ce5b2cd9d43705a2efd598759a2e4b98"
+    },
+    {
+      "path": "CyrusLicensing/src/operation_permit.cpp",
+      "bytes": 2913,
+      "sha256": "a539840dba6858535d3b72502291c34a553c20fee38a49193ab19098677fbd10"
+    },
+    {
+      "path": "CyrusLicensing/src/policy.cpp",
+      "bytes": 3078,
+      "sha256": "595aa92f8fa075e861843ed157bee4da285deac5f99e5eb9109b545a9ee061c4"
+    },
+    {
+      "path": "CyrusLicensing/src/signed_license.cpp",
+      "bytes": 11184,
+      "sha256": "32c59837871e8d134b0da739cbf19476c2fe281cdb5d6c67d8c4ab63f4421eb2"
+    },
+    {
+      "path": "CyrusLicensing/tests/local_state_tests.cpp",
+      "bytes": 6716,
+      "sha256": "68b1625a43c6859a7b598aa152ad5ca4309a727fa175650824080a07157de8ad"
+    },
+    {
+      "path": "CyrusLicensing/tests/policy_tests.cpp",
+      "bytes": 6848,
+      "sha256": "fc24a9abe5cebbd83801c8874590132dab4dd4fc26c6a5e06a6c0d726198c10e"
+    },
+    {
+      "path": "CyrusLicensing/tests/signed_license_tests.cpp",
+      "bytes": 12109,
+      "sha256": "375d1deeae262bcaeaa8a5ba82ae91b12996a29d0927635cfd7352e54186bf1d"
+    },
+    {
+      "path": "CyrusLicensing/third_party/README.md",
+      "bytes": 846,
+      "sha256": "0d11610db45d4ac3bc5c50b6e29e016f24c043abded35c2e8772f4f0d43071af"
+    },
+    {
+      "path": "CyrusLicensing/third_party/nlohmann/LICENSE.MIT",
+      "bytes": 1076,
+      "sha256": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603"
+    },
+    {
+      "path": "CyrusLicensing/third_party/nlohmann/json.hpp",
+      "bytes": 953436,
+      "sha256": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63"
+    },
+    {
+      "path": "CyrusMCP/Install_Cyrus_MCP.ps1",
+      "bytes": 3321,
+      "sha256": "b2644c9a5bd87dda9872239c4bb4244a637693295c800bb6d54dac056d28bcd0"
+    },
+    {
+      "path": "CyrusMCP/README.md",
+      "bytes": 11901,
+      "sha256": "0fb1c0c66d4d0e8f46fa45e6568d271da6137199a3b56139ee11dc9afe6bd54c"
+    },
+    {
+      "path": "CyrusMCP/Start_Cyrus_Automation.ms",
+      "bytes": 466,
+      "sha256": "899ec90fc16142b36adbfe230da656ffbcb54ef475152f2d9120fe5484d51e1d"
+    },
+    {
+      "path": "CyrusMCP/cyrus_mcp/__init__.py",
+      "bytes": 104,
+      "sha256": "37350cb7e3bffdad2831489c0b8bc78e49140a714a31437bd2268526e624c241"
+    },
+    {
+      "path": "CyrusMCP/cyrus_mcp/contracts.py",
+      "bytes": 6527,
+      "sha256": "bb674948f19f6037b7982e55761377bf8c69803f97608de086dcaaacfa26896f"
+    },
+    {
+      "path": "CyrusMCP/cyrus_mcp/geometry.py",
+      "bytes": 3955,
+      "sha256": "57bb50177d3191861b9ddb4d5ee48fd916337008c6ad211ebbaaf3cbfb3bc239"
+    },
+    {
+      "path": "CyrusMCP/cyrus_mcp/max_host.py",
+      "bytes": 40391,
+      "sha256": "a464ef90c7e735caf01bad6e836b3515acd9e85fea06fbda4fd3135dadb62de8"
+    },
+    {
+      "path": "CyrusMCP/cyrus_mcp/models.py",
+      "bytes": 3239,
+      "sha256": "f22038cfc21c1ab80a3d9c23fd3a692dd663b537b93d6981c611a6eabc7aa835"
+    },
+    {
+      "path": "CyrusMCP/cyrus_mcp/panel.py",
+      "bytes": 11939,
+      "sha256": "a9142b35c0bd33771cc3489ffd97b126380e76d40e750f3410e3e7f413e4a60a"
+    },
+    {
+      "path": "CyrusMCP/cyrus_mcp/plan.schema.json",
+      "bytes": 2082,
+      "sha256": "4e4252feee79951d9dd19a2c0cf9f08404db5a60505bac4a3a306b5d1773a13c"
+    },
+    {
+      "path": "CyrusMCP/cyrus_mcp/procedural.py",
+      "bytes": 5602,
+      "sha256": "82b9a1519847c997875cddf7b59c8167b1b6587062d8279e0410901a5d5a6c30"
+    },
+    {
+      "path": "CyrusMCP/cyrus_mcp/records.py",
+      "bytes": 2922,
+      "sha256": "f0e56bf9b1547f28443d3f50dbdbeebaf96af4d4e8f241a0dfcfd1df83378bab"
+    },
+    {
+      "path": "CyrusMCP/cyrus_mcp/server.py",
+      "bytes": 7364,
+      "sha256": "37b544e2a1ce9f2534c4f46ed482089d0d529e3334d1b59edc087137f2d1fa22"
+    },
+    {
+      "path": "CyrusMCP/cyrus_mcp/service.py",
+      "bytes": 21393,
+      "sha256": "e7c4865ef1a726964b1e5c1bfd675bac4af3cfa6cb0b36c576ba27694b18b2f0"
+    },
+    {
+      "path": "CyrusMCP/cyrus_mcp/settings.py",
+      "bytes": 5615,
+      "sha256": "2c5fd3932b8c5699616fdca6c6d952c7082622985904706bdb58f7a6212e6fb0"
+    },
+    {
+      "path": "CyrusMCP/cyrus_mcp/transport.py",
+      "bytes": 11168,
+      "sha256": "c6bf439e32e0a70b740652112249ae22b85da130aae7a201581a1ad24d8a7c5c"
+    },
+    {
+      "path": "CyrusMCP/pyproject.toml",
+      "bytes": 383,
+      "sha256": "c6035afad37f90fc875b6746ff5df899d00d76c9c2a7e862605a814c68f339b7"
+    },
+    {
+      "path": "CyrusMCP/requirements-pinned.txt",
+      "bytes": 559,
+      "sha256": "b421d2e477d7709734b65289f70cd35e2f2f55600c6a550e6a1bf97d886d4d20"
+    },
+    {
+      "path": "CyrusMCP/requirements.txt",
+      "bytes": 11,
+      "sha256": "b2a3a41cb92969a57ba10746218731ed453fe6528322ddda667df989ac494035"
+    },
+    {
+      "path": "CyrusMCP/tests/test_contracts.py",
+      "bytes": 3324,
+      "sha256": "4cdc94ce151bbd591d018606d0b9dd29596dad37cb57657fb5f029f178e4c634"
+    },
+    {
+      "path": "CyrusMCP/tests/test_mcp.py",
+      "bytes": 1119,
+      "sha256": "ea62bf7468fb6ab3c7828eef4e069e23c27be443d8aaf55213157ca9257a8c96"
+    },
+    {
+      "path": "CyrusMCP/tests/test_procedural.py",
+      "bytes": 3917,
+      "sha256": "87914dd43563f5d2da9ee5389705de4e2a982d1fec4fdace73f9cc72dc759f56"
+    },
+    {
+      "path": "CyrusMCP/tests/test_service.py",
+      "bytes": 6003,
+      "sha256": "b5ba82050f0c3a63554fc8bae4a785b49eecb5984742095471824cff2c2a41c6"
+    },
+    {
+      "path": "CyrusMCP/tests/test_settings.py",
+      "bytes": 4569,
+      "sha256": "aad5e617e168ae9f69e13ed4ff37d29e7df114ad08bec8471ee63c926f83c47d"
+    },
+    {
+      "path": "CyrusMCP/tests/test_transport.py",
+      "bytes": 2717,
+      "sha256": "fa6986ee8e6826e449c983acdc58311293fe020c5bebd2c41b9eb175b258c8cc"
+    },
+    {
+      "path": "CyrusSurfaceAnalyzer/CMakeLists.txt",
+      "bytes": 895,
+      "sha256": "7c7992a66dbadd729e3f7112f6c713b866f0bf0a91840fdd789f879357b823d7"
+    },
+    {
+      "path": "CyrusSurfaceAnalyzer/README.md",
+      "bytes": 5665,
+      "sha256": "94b7e51e87af672e6684c01689c6560eb490c4280a95deaacc33fc4ff1ec8932"
+    },
+    {
+      "path": "CyrusSurfaceAnalyzer/installer/CyrusSurfaceAnalyzerStartup.ms",
+      "bytes": 82,
+      "sha256": "19f14d940e163a5ee6c5b8fe8e2f4c57593f174a2db48eb66f875e0c9cb2ae6c"
+    },
+    {
+      "path": "CyrusSurfaceAnalyzer/installer/install.ms",
+      "bytes": 1358,
+      "sha256": "c4bd3034a8abee0574fe6634864dbe99a9a134e18fbdbc49be281cdf7bde469f"
+    },
+    {
+      "path": "CyrusSurfaceAnalyzer/installer/mzp.run",
+      "bytes": 72,
+      "sha256": "5bbfb28c90961f17060e99aa8aa27933a5f659b9f1cf9f929f56b0f7c6dcdd75"
+    },
+    {
+      "path": "CyrusSurfaceAnalyzer/scripts/CyrusSurfaceAnalyzer.ms",
+      "bytes": 22579,
+      "sha256": "b9a1f1aa2ba7847566eb8f36bee711f9c64753572955ed4549f2f68669e5f923"
+    },
+    {
+      "path": "CyrusSurfaceAnalyzer/src/analyzer.cpp",
+      "bytes": 10067,
+      "sha256": "61a64e15a0521e9f1a62788d8c09272a8754f50c35e89af5cbd05876a02c6f95"
+    },
+    {
+      "path": "CyrusSurfaceAnalyzer/src/analyzer.h",
+      "bytes": 779,
+      "sha256": "2433b91a725528ed5792a04f114cbd0206f2fe07664ca52acb7158e2ca16610c"
+    },
+    {
+      "path": "CyrusSurfaceAnalyzer/src/bridge.cpp",
+      "bytes": 3304,
+      "sha256": "5096d5dcfcd2a22846752b356de943dca5360c4c576f89bf3cb8ffe97fc1c605"
+    },
+    {
+      "path": "CyrusSurfaceAnalyzer/src/elements.cpp",
+      "bytes": 7555,
+      "sha256": "762ce99b9c74376b857ecf2db1472ff2f908459cd7f369b489538fd8a5e5b9e2"
+    },
+    {
+      "path": "CyrusSurfaceAnalyzer/tests/samples.h",
+      "bytes": 2956,
+      "sha256": "ae49447f4d9f04ae7a15a1f8d2af4aff5ccea232af902581c2b7e3e8ad010e37"
+    },
+    {
+      "path": "CyrusSurfaceAnalyzer/tests/test.cpp",
+      "bytes": 6828,
+      "sha256": "a8ac19818075c7a8811c78f1e09d0e19c66edd224850ffdae118b32d32fc80f5"
+    },
+    {
+      "path": "cmake/CyrusMaxSDK.cmake",
+      "bytes": 1548,
+      "sha256": "53cf91db75742990b80d1f0a8dc8094d45a2a964094b3785b2f6eb1c8b55248e"
+    },
+    {
+      "path": "tools/build_max.py",
+      "bytes": 11866,
+      "sha256": "98b6039e61c8bbfae2c6dfb496f15269f853876489077a6d4add24c4d8423cc2"
+    },
+    {
+      "path": "tools/licensing_lab/Activation_Panel.ms",
+      "bytes": 2520,
+      "sha256": "93907962ba6eb2863a345944361474654fdc82bef036a916c051618b6984869f"
+    },
+    {
+      "path": "tools/licensing_lab/CMakeLists.txt",
+      "bytes": 3886,
+      "sha256": "ca07fa6fa30e9853b05852b98f7f4e669c61b541ee2cdb571cab8d80e1179c9b"
+    },
+    {
+      "path": "tools/licensing_lab/README.md",
+      "bytes": 8922,
+      "sha256": "6f5a1b21f18851d309e0c868dd07a85d4249a89db3958100182415fea3818821"
+    },
+    {
+      "path": "tools/licensing_lab/bridge.cpp",
+      "bytes": 2860,
+      "sha256": "7ec582eb30ad59070ee62bc8ea940529acb602e2cd9c96591cb656005284ede6"
+    },
+    {
+      "path": "tools/licensing_lab/collect_signed_evidence.py",
+      "bytes": 6926,
+      "sha256": "2aa929086cd4e023752dee7ffdb86dd2f45003fcbc0afe287136b8f679e18600"
+    },
+    {
+      "path": "tools/licensing_lab/fixture.ms",
+      "bytes": 13163,
+      "sha256": "8aa335dd315304a9b76124607e8a927075aa1c08b9c7986094792dbaaa57c6e6"
+    },
+    {
+      "path": "tools/licensing_lab/installation_fixture.ms",
+      "bytes": 9700,
+      "sha256": "b8e3d4de0432c1eb0c41add4bd218cf603eb5b1fcd7d39b943d3c4e670803a7e"
+    },
+    {
+      "path": "tools/licensing_lab/local_client.cpp",
+      "bytes": 6429,
+      "sha256": "8544725037d02ae55d9bccff44b79f575b64f36fcde215ff7d180d08dc0a178e"
+    },
+    {
+      "path": "tools/licensing_lab/local_issuer.py",
+      "bytes": 3009,
+      "sha256": "8f265af937687f3d0d3ae703cb6635bc3a442473193e8b4b7849023fe4d78c50"
+    },
+    {
+      "path": "tools/licensing_lab/make_signed_fixtures.py",
+      "bytes": 11680,
+      "sha256": "8d0c4ef48b86f4e49d6c3b2fa30f25382b7135b6a6ae025d86199f4e9bf43190"
+    },
+    {
+      "path": "tools/licensing_lab/native_boundary.cpp",
+      "bytes": 8848,
+      "sha256": "c90aa2cf55697029e389a9f9a93a6e67049cddd72185eb2dca3987993c311243"
+    },
+    {
+      "path": "tools/licensing_lab/native_fixture.ms",
+      "bytes": 8818,
+      "sha256": "7ce9b8f1f5c87be2481d920907981724d292e8286ed0ab721179f9d7fff42193"
+    },
+    {
+      "path": "tools/licensing_lab/permit_benchmark.cpp",
+      "bytes": 2019,
+      "sha256": "a36bfa30769a80b7452c764179f708135a329fa59f1089f7fe8c00e018b677e5"
+    },
+    {
+      "path": "tools/licensing_lab/requirements-signer.txt",
+      "bytes": 475,
+      "sha256": "4b38054f40be7130696661995f4cebdded1dbf9af8dc7a9a46f47225a29884be"
+    },
+    {
+      "path": "tools/licensing_lab/run.py",
+      "bytes": 15004,
+      "sha256": "21c7e8dec09098dea422258ab82b9aac172aa3e38a5026f1fb0e005e9b082753"
+    },
+    {
+      "path": "tools/licensing_lab/run_core.py",
+      "bytes": 1815,
+      "sha256": "a7e8d492a7a8e1b7d1a00f2efa00fc6ac356392780f3948964300b5dae0629c4"
+    },
+    {
+      "path": "tools/licensing_lab/run_installation.py",
+      "bytes": 12365,
+      "sha256": "b4d5e88c06ba1a615d3ca79d3e37a4cac4aa6fa2499982f65e2ddea4c29678b6"
+    },
+    {
+      "path": "tools/licensing_lab/run_local_client.py",
+      "bytes": 7930,
+      "sha256": "a6d3b79a4a4534118a3db491276cae0e94959afe34f0f7d8f1df97788268651f"
+    },
+    {
+      "path": "tools/licensing_lab/run_native.py",
+      "bytes": 3888,
+      "sha256": "99a9f55c6d2cf940eef31fad729125136c957466eba98360fbedbc14c1231cd0"
+    },
+    {
+      "path": "tools/licensing_lab/run_signed.py",
+      "bytes": 5162,
+      "sha256": "d32a8f957d04dfca0d8f63a27da4e647ed8483ca8cb1616de8e8e06bc25aef9e"
+    },
+    {
+      "path": "tools/licensing_lab/signed_bridge.cpp",
+      "bytes": 3261,
+      "sha256": "bc8e539c27bc8bbf73447bc88e10d3259c110e368e7ee7bd893f9cbdfb258a9c"
+    },
+    {
+      "path": "tools/licensing_lab/signed_fixture.ms",
+      "bytes": 6939,
+      "sha256": "3ee989dc342aeee8d41b3765284726baeb8bae5cd2342feed8709147c4185659"
+    },
+    {
+      "path": "tools/licensing_lab/signed_support.h",
+      "bytes": 671,
+      "sha256": "2a54d95f6108fb59a0312d03657f35010ee344992854c448fdcdb21ec2867053"
+    },
+    {
+      "path": "tools/mcp/boundary_acceptance.py",
+      "bytes": 3973,
+      "sha256": "eba5aa403572621529b587ee23658b71dbc306bf718205263f1e6ed931606d87"
+    },
+    {
+      "path": "tools/mcp/budget_acceptance.py",
+      "bytes": 966,
+      "sha256": "675d0ddb86595f4fba1ee9981852de1365980babac4da4fa197294e4d8b34f8d"
+    },
+    {
+      "path": "tools/mcp/development_transport.ms",
+      "bytes": 1144,
+      "sha256": "0a297fcf28510c1e43f15e0b5f3d4885e6bc2558060fcfcc38f6d2a9e802eee5"
+    },
+    {
+      "path": "tools/mcp/host_boundary.py",
+      "bytes": 4139,
+      "sha256": "cec4bfdd164cec2e73e324c011561ddd4d78a943d3b76903fc891d2ed400bd2d"
+    },
+    {
+      "path": "tools/mcp/host_fixture.py",
+      "bytes": 6197,
+      "sha256": "5bf973f7687da04ad364f54c98dfde8e6ea1288f8f72b93b1e622a4019836dc4"
+    },
+    {
+      "path": "tools/mcp/inspection_acceptance.py",
+      "bytes": 1833,
+      "sha256": "c3af9435413cb9b33c7c48c9eaa8d0f12dec333199e2234c0f5dd2a19d6d63bb"
+    },
+    {
+      "path": "tools/mcp/installed_acceptance.py",
+      "bytes": 5261,
+      "sha256": "2cd5932b3eb3d3a98e84f51abda3145453dbf94b473afc6263bc480f981d24e4"
+    },
+    {
+      "path": "tools/mcp/launch.py",
+      "bytes": 4032,
+      "sha256": "34c07e2502cea17850dd5c6f9bbdcf62445154038a43a11663ecb39278ffc393"
+    },
+    {
+      "path": "tools/mcp/layers_inspection_acceptance.py",
+      "bytes": 2946,
+      "sha256": "6160d10adf8b48ece74fa306d851453e947f95f336c325cd5bb011399af8393f"
+    },
+    {
+      "path": "tools/mcp/layers_release_campaign.py",
+      "bytes": 1472,
+      "sha256": "2679c3bd6bd61a1594b80465f0bbfdd50e430e53ab11a3b10d3399c841bd7732"
+    },
+    {
+      "path": "tools/mcp/layers_v2_acceptance.py",
+      "bytes": 4513,
+      "sha256": "a0193567f249fce57ffd3255fbd71698f61b1e3a21f3cdc8720e8360182b4f81"
+    },
+    {
+      "path": "tools/mcp/package.py",
+      "bytes": 2308,
+      "sha256": "bed81476b3fed7c5fe64e3b3c4b27c73fed34126e9af4cc59f3bcb17cbb18753"
+    },
+    {
+      "path": "tools/mcp/qualify.py",
+      "bytes": 4555,
+      "sha256": "339ff7a828da0bdc1d798ed632f2a6ba5aa8c7edde7b2bb4ee76ef81016c6364"
+    },
+    {
+      "path": "tools/mcp/retained_acceptance.py",
+      "bytes": 1213,
+      "sha256": "e0d7e24c0b1727fdd346aa41e2514dbbb807f6fec52d5febfc94d1888e4dc600"
+    },
+    {
+      "path": "tools/mcp/scenarios.py",
+      "bytes": 4958,
+      "sha256": "49aade25f974ede68cf16c06720df8a27f4e1cd2a0f8b7960f3d61f8451eb2aa"
+    },
+    {
+      "path": "tools/mcp/stdio_acceptance.py",
+      "bytes": 4308,
+      "sha256": "b081c5845217440161d78b54bb7a89411041ecfde0977eb31803ee3427a4ca0a"
+    },
+    {
+      "path": "tools/performance/CompareViewport.ms",
+      "bytes": 2066,
+      "sha256": "1f07150297bc92af311b75deda5b81d4a6e19681eb1b7c60bc6932c85351bcb0"
+    },
+    {
+      "path": "tools/performance/CyrusEditTrace.ms",
+      "bytes": 6961,
+      "sha256": "ae3efa9aa473cd980eff6d984d78770882bd77e30954ffc466db222eb87e1c23"
+    },
+    {
+      "path": "tools/performance/CyrusPerformanceMonitor.ms",
+      "bytes": 24178,
+      "sha256": "41f8c0f6cae37b4d2aac329b00e85b235b861416b1745ba0740e954290a458db"
+    },
+    {
+      "path": "tools/performance/CyrusViewportBenchmark.ms",
+      "bytes": 4019,
+      "sha256": "939cf536188b665a530dac03d0bb8dba1519a6724cbf0225a6aa7361307f1abe"
+    },
+    {
+      "path": "tools/performance/Install-CyrusPerformanceTracing.ms",
+      "bytes": 3452,
+      "sha256": "e6809c9a453268a22dade73be944f34eacbad9ea0479c64647fd770382940338"
+    },
+    {
+      "path": "tools/performance/Measure-CyrusProcess.ps1",
+      "bytes": 6538,
+      "sha256": "48821e902ccac2611d8d795aaa058bf2ecc695130e6ff399e243292fd6e370a5"
+    },
+    {
+      "path": "tools/performance/benchmark_compute.py",
+      "bytes": 5846,
+      "sha256": "59aad45689c48adc343d2c7e15b0c7cc13fbac527ef8e5b13dc3c4159a8ef9cf"
+    },
+    {
+      "path": "tools/performance/benchmark_scene.py",
+      "bytes": 9905,
+      "sha256": "5f4e35b9ae790e5e7d31de950a1ebd3ea843ad2e0fc196de5174bd611bedf92c"
+    },
+    {
+      "path": "tools/performance/compare_runs.py",
+      "bytes": 14607,
+      "sha256": "06b4e5d410bc8160fdc997801442952c3f850a059a03b773a0b2f5acfac106b6"
+    },
+    {
+      "path": "tools/performance/mesh_integration/README.md",
+      "bytes": 3559,
+      "sha256": "c7c628dfa6bc974cfc88a4afd78692f1c417ee53cbe49717c2bb96acab65f2b3"
+    },
+    {
+      "path": "tools/performance/mesh_integration/analyze.py",
+      "bytes": 1844,
+      "sha256": "fe5c6eea877f5a10ae857dfd837aa9376d84c70f181371830cc3d0a28bc1903c"
+    },
+    {
+      "path": "tools/performance/mesh_integration/archive.py",
+      "bytes": 6578,
+      "sha256": "83d38bc692fa479b22980cd9df712aea3821f8e5db3bdfb406ae526d6d5fc5bf"
+    },
+    {
+      "path": "tools/performance/mesh_integration/artist.ms",
+      "bytes": 991,
+      "sha256": "d1ddaca580b1264aa1cf0404c411427c837474ce681979fd6abab948bacab922"
+    },
+    {
+      "path": "tools/performance/mesh_integration/artist_benchmark.ms",
+      "bytes": 417,
+      "sha256": "fef3ea20edc6cf354350f15f801345c406ccfae892f7fa12d1381c267a2d55ef"
+    },
+    {
+      "path": "tools/performance/mesh_integration/benchmark.ms",
+      "bytes": 3373,
+      "sha256": "9207386eb2d607c59e1aac96bc6e2182114d1821f6c64818fd595d6b4cf8e8bf"
+    },
+    {
+      "path": "tools/performance/mesh_integration/build.py",
+      "bytes": 551,
+      "sha256": "fe3b3823c1f41d43f1c05d24e9ba5091407e9b79e08b4c348797f7577780a4e4"
+    },
+    {
+      "path": "tools/performance/mesh_integration/launch.py",
+      "bytes": 165,
+      "sha256": "4c0c0676f10419ff49162d5f377415769a717cad82474b6b92558fa0ea07a71f"
+    },
+    {
+      "path": "tools/performance/mesh_integration/lifecycle.ms",
+      "bytes": 4929,
+      "sha256": "d21ba1ce9249180aafc4f03a95e908261768059da08e86caafd636b1653f87a3"
+    },
+    {
+      "path": "tools/performance/mesh_integration/memory.ms",
+      "bytes": 3167,
+      "sha256": "8c4c3f3d21330d1288896a2d1802e9a5cfaeec73343eed4081d73e55baf8d999"
+    },
+    {
+      "path": "tools/performance/mesh_integration/package.py",
+      "bytes": 2311,
+      "sha256": "9578e571da06c408afa3bfdb6e5afa30bd2b88881f248beab90466c2ee3701ec"
+    },
+    {
+      "path": "tools/performance/mesh_integration/parity.ms",
+      "bytes": 3573,
+      "sha256": "0b1be2ae4de66f38e3ae6d2d63a4cde8869b36ef1a640cf6781c2ea27d889bb7"
+    },
+    {
+      "path": "tools/performance/mesh_integration/point_regression.ms",
+      "bytes": 302,
+      "sha256": "5d8c3f16e658752d58482ed8f0c32d3055f59e8f1393cef351032438160aa19b"
+    },
+    {
+      "path": "tools/performance/mesh_integration/request.py",
+      "bytes": 89,
+      "sha256": "ce4d5250d786d1a0da88c09dafa893d283cb65c0e03885239d89cf964f9fd501"
+    },
+    {
+      "path": "tools/performance/mesh_integration/shutdown.ms",
+      "bytes": 804,
+      "sha256": "4b4b0dd443f5cdf077d334574479af5447c7e37cb56e3f8e2a99eef4f348b9bb"
+    },
+    {
+      "path": "tools/performance/mesh_integration/smoke.ms",
+      "bytes": 1237,
+      "sha256": "56ecb1ada15dc45d6b885029e91f484438fc9fdc6f23c323bfa145223c6bc757"
+    },
+    {
+      "path": "tools/performance/mesh_integration/stress.ms",
+      "bytes": 1900,
+      "sha256": "5d8bc7c90422ca27ac118f8d66d3ca8e3984e01541ed44fa1f98db3c6fc69ede"
+    },
+    {
+      "path": "tools/performance/mesh_integration/synthetic.ms",
+      "bytes": 1522,
+      "sha256": "294c918519eb2f1e2d398587e850fd22bc9e543fc51637ee2e1c377f37c7dfba"
+    },
+    {
+      "path": "tools/performance/native_point_probe/CMakeLists.txt",
+      "bytes": 839,
+      "sha256": "516c2e1c3317af1b2747f9090373c62448ea76ca8f2e96ecb543691ff96846a8"
+    },
+    {
+      "path": "tools/performance/native_point_probe/README.md",
+      "bytes": 7170,
+      "sha256": "8b9714264f8702cd69db675de4c393f8c02e0c81317fa14d47be346ba2c6e29b"
+    },
+    {
+      "path": "tools/performance/native_point_probe/analyze.py",
+      "bytes": 3875,
+      "sha256": "332a244f376379b4c243e43272a2c127aee9cdc9573b98336a86ba144ff65eea"
+    },
+    {
+      "path": "tools/performance/native_point_probe/analyze_presentmon.py",
+      "bytes": 2660,
+      "sha256": "0e56e9b594a587768287473510670d1a5bf02aab75f7fb2d394547992dc6ab6c"
+    },
+    {
+      "path": "tools/performance/native_point_probe/archive.py",
+      "bytes": 5553,
+      "sha256": "7bf6d841351f0743e6f2d2fa417241d038e9776e942933b9167395ada3cba38a"
+    },
+    {
+      "path": "tools/performance/native_point_probe/bootstrap.ms",
+      "bytes": 7250,
+      "sha256": "15a0989a4220a65d02305de01c5e7e1422d3f84418e1338e14ceea2d79f4aea0"
+    },
+    {
+      "path": "tools/performance/native_point_probe/build.py",
+      "bytes": 1753,
+      "sha256": "829fd80c4af2d2bae210b8d31ebda38148a703220d68d7566e944b20b4d5babd"
+    },
+    {
+      "path": "tools/performance/native_point_probe/cleanup.ms",
+      "bytes": 1256,
+      "sha256": "2c1113f463fb423b8dc532d0c6d80d2586dc78dda805b2e28bb5b658130ac8ed"
+    },
+    {
+      "path": "tools/performance/native_point_probe/launch.py",
+      "bytes": 2816,
+      "sha256": "c08a4b18350faaf17ed495f871637d502e57ac0d004225d34ef94787f906c09e"
+    },
+    {
+      "path": "tools/performance/native_point_probe/lifecycle.ms",
+      "bytes": 3289,
+      "sha256": "77840d00099aa7f6597528191a117a198c645b678a9bc4c42f4590d9171e51f8"
+    },
+    {
+      "path": "tools/performance/native_point_probe/matrix.ms",
+      "bytes": 601,
+      "sha256": "4955ca537eb569fe517962a64732fbb027a31a65e124e281be9e0824bbe94ec6"
+    },
+    {
+      "path": "tools/performance/native_point_probe/point_entry.cpp",
+      "bytes": 540,
+      "sha256": "b111e87d5777cedd07ea9978a9a18b908c3611cb4ccf8ded8c125949c15ad5e9"
+    },
+    {
+      "path": "tools/performance/native_point_probe/point_probe.cpp",
+      "bytes": 12662,
+      "sha256": "3831471f02313c8bc634ddd162bc530de9941b12069299ea99e04cc53f33ecb4"
+    },
+    {
+      "path": "tools/performance/native_point_probe/population.ms",
+      "bytes": 1982,
+      "sha256": "6da32597f0e14989b6e68a5b985cced6d464b0c16b5dc38f1ea2b934e6aa059b"
+    },
+    {
+      "path": "tools/performance/native_point_probe/request.py",
+      "bytes": 1459,
+      "sha256": "88373a52ab0d84e8208ea7f2f83c5eab39b5d6201afa510d2f0b47d934436c65"
+    },
+    {
+      "path": "tools/performance/native_point_probe/shutdown.ms",
+      "bytes": 949,
+      "sha256": "8d94c8147baf6d1b90e8d03d901080ed593acaf01b86789c5b12e6654b54f715"
+    },
+    {
+      "path": "tools/performance/native_point_probe/transport.ms",
+      "bytes": 1555,
+      "sha256": "98199a5322b4e2c4b84ec82e2821f5f30f03167f98d4871154d72ef59c1acab2"
+    },
+    {
+      "path": "tools/performance/native_point_probe/verify_evidence.py",
+      "bytes": 2291,
+      "sha256": "d97990c3dff2da0070c55fb52441bbd70c354d5eab7d854fe4f6d20e15eb39a1"
+    },
+    {
+      "path": "tools/performance/package_reference.py",
+      "bytes": 3952,
+      "sha256": "18f36bca1c6e41d012321d19160041d530cbb99ac4f0634e54ca6035d2beac2f"
+    },
+    {
+      "path": "tools/performance/retained_integration/README.md",
+      "bytes": 5660,
+      "sha256": "19daafdf7b8d94bd4bf5bf842db3125a7ac802fdde3fbd870a772b44cd282778"
+    },
+    {
+      "path": "tools/performance/retained_integration/analyze.py",
+      "bytes": 1198,
+      "sha256": "749fb390e711915b1090f68ae8354055fe05809dd7884b2d62d44d6301c5dd3d"
+    },
+    {
+      "path": "tools/performance/retained_integration/archive.py",
+      "bytes": 6323,
+      "sha256": "ce0cde876708296bb60e78ed4bb1fabff755e7b36f9a7ad88567e882fe74a127"
+    },
+    {
+      "path": "tools/performance/retained_integration/artist_benchmark.ms",
+      "bytes": 188,
+      "sha256": "b3ed70267404af0efa63a5712a36fda74fa7f917cf4a9b1a747a6c4210cc5b95"
+    },
+    {
+      "path": "tools/performance/retained_integration/artist_fullsize.ms",
+      "bytes": 318,
+      "sha256": "a963530f284cbc8f49d4a96b642a02f6a34c24a85798b6e49dc995cccac9b16d"
+    },
+    {
+      "path": "tools/performance/retained_integration/artist_scene.ms",
+      "bytes": 1640,
+      "sha256": "89308ccfe83e8aed3a28d08cdbcc045b7133c60cd0e33a2c6b84dd9e8cdbf7b7"
+    },
+    {
+      "path": "tools/performance/retained_integration/artist_single_view.ms",
+      "bytes": 307,
+      "sha256": "ced628698aef15b30d25cf8fab1dab22b9f1c91ba96e6d8cde98a2ed9363ce17"
+    },
+    {
+      "path": "tools/performance/retained_integration/benchmark.ms",
+      "bytes": 3261,
+      "sha256": "7c22870cea2686a01ff3b147f38d7f3b696722d83cb6af7c1eceeda4007c2b20"
+    },
+    {
+      "path": "tools/performance/retained_integration/bootstrap.ms",
+      "bytes": 2771,
+      "sha256": "5d6a677e9d4b6c594d48eb0574105abb36e8e2677ec30bb8653f0e72557577d9"
+    },
+    {
+      "path": "tools/performance/retained_integration/build.py",
+      "bytes": 1910,
+      "sha256": "9cad6ff0975c16c41c114c8d7b38f1863e73abdcf3e0332ae1af8eb0896b7fe0"
+    },
+    {
+      "path": "tools/performance/retained_integration/hardening.ms",
+      "bytes": 4687,
+      "sha256": "592d220bcd4736e16e84b01e5ce86e4daf85afe401d111998d74f5f7871f4b80"
+    },
+    {
+      "path": "tools/performance/retained_integration/inspect_quality.ms",
+      "bytes": 893,
+      "sha256": "111f37c2ece07dce63fd0d8de979eba7790b7ebe9bcfd5540322814123960d0f"
+    },
+    {
+      "path": "tools/performance/retained_integration/launch.py",
+      "bytes": 2637,
+      "sha256": "fc136b366af081c6fc5b2d164e15b5ce3727de9c4ca2c446a191b3d97870d360"
+    },
+    {
+      "path": "tools/performance/retained_integration/lifecycle.ms",
+      "bytes": 5362,
+      "sha256": "8ba679188280dd75f05fcad61335488006bd43e486c82a8998afe3e3e10ffade"
+    },
+    {
+      "path": "tools/performance/retained_integration/manual_navigation_begin.ms",
+      "bytes": 941,
+      "sha256": "f679a9ef525ba3a5ca4ce552dce5a34bc25e3afefbdc8b74e03b9fca0ce51c5a"
+    },
+    {
+      "path": "tools/performance/retained_integration/manual_navigation_end.ms",
+      "bytes": 1057,
+      "sha256": "b0e8cf8a55c7bf96cf46025267e89eca0a8ea5e2c5a50ad04a4c8c135a4ffc12"
+    },
+    {
+      "path": "tools/performance/retained_integration/package.py",
+      "bytes": 2375,
+      "sha256": "a1d8d69097852c9fe5026c291a02a322e0f426f6f5258bd9d18333d350ed4540"
+    },
+    {
+      "path": "tools/performance/retained_integration/quality.ms",
+      "bytes": 3143,
+      "sha256": "d59a6dbe87f7cbe306915fa820999fc33f6cd1d14b3f4f529b48cb2194902bd6"
+    },
+    {
+      "path": "tools/performance/retained_integration/request.py",
+      "bytes": 1474,
+      "sha256": "62661b3193ad714a2626fb02369edd47ceaf014697933691ff8adc76d0c08229"
+    },
+    {
+      "path": "tools/performance/retained_integration/restart_fixture.ms",
+      "bytes": 320,
+      "sha256": "f12ca74ee4fdedccc9a2adf9f712244bde3a2ffed42eafaf1b9bbc46eec93a57"
+    },
+    {
+      "path": "tools/performance/retained_integration/shutdown.ms",
+      "bytes": 808,
+      "sha256": "78fee216e0cdf7a1d60d501d9c43ff7fa6c62a9e4f0b49fd373e194d0f1fb55e"
+    },
+    {
+      "path": "tools/performance/retained_integration/synthetic_benchmark.ms",
+      "bytes": 113,
+      "sha256": "a4c56f09b85c17165bec76dd2f7122a9dedbc1434d9b28749f0b81a5d0792b06"
+    },
+    {
+      "path": "tools/performance/retained_integration/transport.ms",
+      "bytes": 1521,
+      "sha256": "3ff05e788649ae6b4e2fa5c422fea9daf0acdc84d22a4404fe06c307f4d669d4"
+    },
+    {
+      "path": "tools/performance/summarize_edit_trace.py",
+      "bytes": 11238,
+      "sha256": "2430536e2842de21389404247131a42307a6f039f60610a764da2616cee87cc5"
+    },
+    {
+      "path": "tools/performance/summarize_viewport.py",
+      "bytes": 3783,
+      "sha256": "34db859e89860707bf44809a1e9a1cac6b99dec982187730c2a0186f7b1f8715"
+    },
+    {
+      "path": "tools/procedural_lab/Max_Layer_Editor_071_Acceptance.ms",
+      "bytes": 9877,
+      "sha256": "b1597ca2f8d469f806b93765f69702e1516d1ae1728382c3b52e9ef062884d3d"
+    },
+    {
+      "path": "tools/procedural_lab/Max_Layer_Editor_071_BrushLive.ms",
+      "bytes": 4298,
+      "sha256": "2572168545afea5ef6c891c4397d800b2176a971f1093c2007aaf92653faa683"
+    },
+    {
+      "path": "tools/procedural_lab/Max_Procedural_07_Acceptance.ms",
+      "bytes": 11134,
+      "sha256": "34f02da3eef1f79ab4969563b1e45531eb7a1d4b4d8cba6ffdd7d8905f10db93"
+    },
+    {
+      "path": "tools/procedural_lab/Max_Procedural_07_Bindings.ms",
+      "bytes": 2743,
+      "sha256": "141853103bcb3d5eba47a924260592cbf1f027a2b8377ea8d1ef25cd6c8073e3"
+    },
+    {
+      "path": "tools/procedural_lab/Max_Procedural_07_Demo.ms",
+      "bytes": 3614,
+      "sha256": "faef7200082585739767d787e7f88a77d4695305fe3c744b0a63b59182ab59ad"
+    },
+    {
+      "path": "tools/procedural_lab/Max_Procedural_07_Fixture.ms",
+      "bytes": 4838,
+      "sha256": "09e92b01b8fc59ce4290dd0fe0c4628e57a91e401b459b69cb902aaa7b5caa05"
+    },
+    {
+      "path": "tools/procedural_lab/Max_Procedural_07_Navigation.ms",
+      "bytes": 5326,
+      "sha256": "b4219f406d79b892c236a9fe2e0dfbbd06fe0afc84d7a807eb81c4cf5e288961"
+    },
+    {
+      "path": "tools/procedural_lab/Max_Procedural_07_Regression.ms",
+      "bytes": 5719,
+      "sha256": "fa82ac5bc3876e0a0454143d6329ea92978b51444aaca8fa55dd97331eb02bef"
+    },
+    {
+      "path": "tools/procedural_lab/Max_Procedural_07_UI.ms",
+      "bytes": 1692,
+      "sha256": "c51ad523bdaefdfc5cca14cca2b9da54c0acc851fbb94225b510c20dda516f9e"
+    },
+    {
+      "path": "tools/procedural_lab/Max_Procedural_07_UI_Acceptance.ms",
+      "bytes": 7125,
+      "sha256": "6aa01a899334a03e582bad30b7d7eb7538c1347fd5d33ad6d1689f80534d6752"
+    },
+    {
+      "path": "tools/procedural_lab/Max_Procedural_07_UI_Prepare.ms",
+      "bytes": 1445,
+      "sha256": "9d4b7f10200e9b341421a468265fae2588c21ab9cd2e04d566e98929055e429e"
+    },
+    {
+      "path": "tools/procedural_lab/Max_Procedural_07_Units.ms",
+      "bytes": 1616,
+      "sha256": "d1a93950eaf16a869d883afc0d6eb4ce1cb02c1079fee55569bc4ff5e8bc2c38"
+    },
+    {
+      "path": "tools/procedural_lab/Max_Source_Containers_Acceptance.ms",
+      "bytes": 6827,
+      "sha256": "a3197470f1683834caf02ab45aa92a0321f19c5bc6d0ee9f8097cd75dbd5bfab"
+    },
+    {
+      "path": "tools/procedural_lab/Max_Source_Containers_EdgeCases.ms",
+      "bytes": 3695,
+      "sha256": "4372d003d3ead67c4ccf96928149cd317055445e09b1a2c59d75193fffc22d46"
+    },
+    {
+      "path": "tools/procedural_lab/Max_Source_Containers_Events.ms",
+      "bytes": 3655,
+      "sha256": "72c177e0a2cacb9060afdf1b07b52ee2bce744f2c8d4e86b10803874746968a2"
+    },
+    {
+      "path": "tools/procedural_lab/Max_Source_Containers_Output.ms",
+      "bytes": 2216,
+      "sha256": "53f124f984fc19255bd4a7786931e322787efa30b2a6fba3ec4ba1a78298eeb4"
+    },
+    {
+      "path": "tools/procedural_lab/build_check.py",
+      "bytes": 4022,
+      "sha256": "311b05f04e0e673b558cb6da2d7a1c91960ca95b220d32b9634a155673cec59f"
+    },
+    {
+      "path": "tools/procedural_lab/check_generated.py",
+      "bytes": 5143,
+      "sha256": "969bca9e1930ba35521a544145afe93378b7bc17f34db68b7c33782abb0b0cbd"
+    },
+    {
+      "path": "tools/procedural_lab/collect_evidence.py",
+      "bytes": 3969,
+      "sha256": "5379db147b7faa87b367d9d60fbe5a0946015df65dc520332926f7fc59ad219e"
+    },
+    {
+      "path": "tools/procedural_lab/collect_runtime_evidence.py",
+      "bytes": 5275,
+      "sha256": "02358907c85c857128ca15808ef561e357458793e2dce4571844e25081e334b2"
+    },
+    {
+      "path": "tools/procedural_lab/launch_baseline.py",
+      "bytes": 2801,
+      "sha256": "40c29e31557814c87d3ef75c3f21f8bc5bf5cbaf196e16acd910dc744d071641"
+    },
+    {
+      "path": "tools/procedural_lab/layer_editor_071/Launch_Preview.cmd",
+      "bytes": 57,
+      "sha256": "f70b93931eb8a5eddffd09e202f4e3d683e16168b5479ce38b8ade69f31d18d8"
+    },
+    {
+      "path": "tools/procedural_lab/layer_editor_071/README.md",
+      "bytes": 2279,
+      "sha256": "fd744e27884ee036714e74a190422a306995c7c795c9ccb520340e48c719c32e"
+    },
+    {
+      "path": "tools/procedural_lab/layer_editor_071/demo.ms",
+      "bytes": 2317,
+      "sha256": "a759e6a9933c38c70e4ab9c771c5c863727108f5a5403bf704bac4a9893f296a"
+    },
+    {
+      "path": "tools/procedural_lab/layer_editor_071/preview.py",
+      "bytes": 3500,
+      "sha256": "21d6cb49bff713b207cd12e019f8f4d0fa771fe9e98a9404be55c413721604f8"
+    },
+    {
+      "path": "tools/procedural_lab/layer_editor_071/private_host.py",
+      "bytes": 4172,
+      "sha256": "25b99d10c8388ba6b61f57afc3447c8c181452f71719ef4bc7a8cccc1fd5db2a"
+    },
+    {
+      "path": "tools/procedural_lab/layer_editor_071/qualify.py",
+      "bytes": 7178,
+      "sha256": "583623f75ac19af35d728f3c8247b024f627a478dae3b90c372e4016408ee97b"
+    },
+    {
+      "path": "tools/procedural_lab/mcp_acceptance.py",
+      "bytes": 3678,
+      "sha256": "0d31743c7b0ffe5c932332919fc42d676b7a3ad1faa8f98b080536a65baf5b5e"
+    },
+    {
+      "path": "tools/procedural_lab/qualify_current.py",
+      "bytes": 6896,
+      "sha256": "346023783028e237b02bc18ad11a11769ccd4a47647c0b08ec00f823bb706067"
+    },
+    {
+      "path": "tools/procedural_lab/runtime_driver.py",
+      "bytes": 2326,
+      "sha256": "80836d04182b7b93752b8f96e5d699e582081084fff67bde665b0c381add6985"
+    },
+    {
+      "path": "tools/procedural_lab/source_container_preview/Launch_Source_Containers.cmd",
+      "bytes": 59,
+      "sha256": "e85ceee3d8d8b737e048c297d88f5885e237def7e474eb3034358ecef0ecba93"
+    },
+    {
+      "path": "tools/procedural_lab/source_container_preview/README.md",
+      "bytes": 3284,
+      "sha256": "87697fa0e8c72f767fc0b7989dedab895e688a691d2c0c0e1f3ca34fd102df80"
+    },
+    {
+      "path": "tools/procedural_lab/source_container_preview/demo.ms",
+      "bytes": 1823,
+      "sha256": "e36fa1e363f5edd4c4689cfd57518660aa39f1f3b24632fdbf5d9b424afaa5a2"
+    },
+    {
+      "path": "tools/procedural_lab/source_container_preview/launch.py",
+      "bytes": 8612,
+      "sha256": "f201090f6370fe1dd8d2c4bc984ad80034f5bf9b189178b0a0156c9b84ec464d"
+    },
+    {
+      "path": "tools/procedural_lab/ui_geometry.py",
+      "bytes": 1069,
+      "sha256": "3a7336ae810b8f85edec9f2c400e19f02c930488cefa0cb950c32d0e405dc6ad"
+    }
+  ]
+}

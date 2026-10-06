@@ -1,15 +1,16 @@
     rollout layersUI "Layer Manager" width:162 autoLayoutOnResize:true (
         local root=CyrusLayerUIRoot,controlsReady=false,binding=false,members=#()
         listbox layerList "Layer | placed | status" pos:[8,8] width:(layersUI.width-16) height:6
-        button addButton "Add Layer" pos:[8,138] width:(layersUI.width-16)
-        button copyButton "Copy" pos:[8,166] width:((layersUI.width-22)/2)
-        button removeButton "Remove" pos:[(layersUI.width/2+3),166] width:((layersUI.width-22)/2)
-        edittext nameEdit "Name:" pos:[8,196] width:(layersUI.width-16)
-        checkbox visibleCheck "Visible in viewport" pos:[8,226] width:(layersUI.width-16)
-        checkbox enabledCheck "Enabled in final output" pos:[8,250] width:(layersUI.width-16)
-        label countInfo "Select a layer." pos:[8,280] width:(layersUI.width-16) height:46
-        button upButton "Move up" pos:[8,334] width:((layersUI.width-22)/2)
-        button downButton "Move down" pos:[(layersUI.width/2+3),334] width:((layersUI.width-22)/2)
+        button editButton "Edit layer..." pos:[8,138] width:(layersUI.width-16) height:28 tooltip:"Open the reusable Layer Editor. Double-clicking a layer does the same."
+        button addButton "Add layer" pos:[8,174] width:(layersUI.width-16) tooltip:"Add a layer and open its settings. Layers calculate from top to bottom."
+        button copyButton "Copy" pos:[8,204] width:((layersUI.width-22)/2) tooltip:"Copy this layer, its paint sets and their settings."
+        button removeButton "Remove" pos:[(layersUI.width/2+3),204] width:((layersUI.width-22)/2) tooltip:"Remove this layer and its paint sets. Undo restores them."
+        edittext nameEdit "Name:" pos:[8,236] width:(layersUI.width-16) tooltip:"Rename the selected layer without changing its identity."
+        checkbox visibleCheck "Visible in viewport" pos:[8,264] width:(layersUI.width-16) tooltip:"Hide display only. Hidden layers still calculate and affect spacing."
+        checkbox enabledCheck "Enabled in output" pos:[8,288] width:(layersUI.width-16) tooltip:"Include this layer in calculation and final output."
+        button upButton "Move up" pos:[8,318] width:((layersUI.width-22)/2) tooltip:"Evaluate earlier; earlier layers occupy space first."
+        button downButton "Move down" pos:[(layersUI.width/2+3),318] width:((layersUI.width-22)/2) tooltip:"Evaluate after the preceding layers."
+        label countInfo "Select a layer." pos:[8,350] width:(layersUI.width-16) height:46
         fn currentLayer = (local leaf=root.selectedLayer();if leaf==undefined then undefined else root.logicalParent leaf)
         fn refreshStats = (
             if not controlsReady do return false
@@ -29,7 +30,7 @@
         fn bind layer = (
             binding=true;members=root.logicalLayers()
             local selected=currentLayer(),index=findItem root.layerObjects selected,valid=index>0
-            for c in #(copyButton,removeButton,nameEdit,visibleCheck,enabledCheck) do c.enabled=valid
+            for c in #(editButton,copyButton,removeButton,nameEdit,visibleCheck,enabledCheck) do c.enabled=valid
             nameEdit.text=if valid then root.layerNames[index] else ""
             visibleCheck.checked=valid and root.layerVisible[index]
             enabledCheck.checked=valid and root.layerEnabled[index]
@@ -41,6 +42,7 @@
         on layersUI close do controlsReady=false
         on layerList selected i do if not binding and i>0 do (root.mainUI.selectLayerView members[i];bind undefined)
         on layerList doubleClicked i do if not binding and i>0 do root.mainUI.selectLayerView members[i] expand:true
+        on editButton pressed do root.mainUI.selectLayerView (currentLayer()) expand:true
         on addButton pressed do (
             root.newLayer();root.bindNativeUI();root.invalidateGroups()
             root.mainUI.selectLayerView (root.selectedLayer()) expand:true

@@ -1,0 +1,124 @@
+{
+  "copied_receipts": [
+    {
+      "file": "result.json",
+      "source": "build/ui-071/final01/result.json",
+      "sha256": "dc24c484f95f3ed66d4be6b561e9a1610d0f16898db078a869bde9e12c4c8f05"
+    },
+    {
+      "file": "stages.json",
+      "source": "build/ui-071/final01/stages.json",
+      "sha256": "3f2f645c20c7e4b8a5096e38d4d05e3eac6dd35507a29edb1801d0c1a1b864a0"
+    },
+    {
+      "file": "source.json",
+      "source": "build/ui-071/final01/source.json",
+      "sha256": "f1574b1af249f6a29ffd444dcbe56f5aceac6e06947f70834da95cc0a31ec3cf"
+    },
+    {
+      "file": "mcp-tests.json",
+      "source": "build/ui-071/final01/mcp-tests.json",
+      "sha256": "dadb86e137de3b6f456f5f065077d2f61d6d4c56e604f350dc98aaf16882c6e4"
+    },
+    {
+      "file": "mcp-tests.log",
+      "source": "build/ui-071/final01/mcp-tests.log",
+      "sha256": "ad816d8404d6ba8dd35d34e49a281082f9fbaff2ed41b2684599a8ccf93210bd"
+    },
+    {
+      "file": "generated.log",
+      "source": "build/ui-071/final01/generated.log",
+      "sha256": "e06d6a870414587cda50536abf2ee05e9b30418ad08f5088ad274e2bfd3574cb"
+    },
+    {
+      "file": "tests-2026.json",
+      "source": "build/ui-071/native01/tests-2026.json",
+      "sha256": "16b5af194d8898f9b8834053deb0bd8a7a9657557252c0942abe9898bfc6d8c8"
+    },
+    {
+      "file": "ready-2026.json",
+      "source": "build/ui-071/native01/ready-2026.json",
+      "sha256": "ea5ab8b70ed31ef68900ac323cf9dc26f7b279cb1a3da23d052adf744c4cd459"
+    },
+    {
+      "file": "tests-2026.log",
+      "source": "build/ui-071/native01/tests-2026.log",
+      "sha256": "819df8ef4a9f25168d89e5fd167c41f8e67b828b54f890b75a784189217b0332"
+    },
+    {
+      "file": "tests-2027.json",
+      "source": "build/ui-071/native01/tests-2027.json",
+      "sha256": "75942b6c07e724ed057543c70496bb2b8b73eca4f14d0cd1f80bcdb9678e28d8"
+    },
+    {
+      "file": "ready-2027.json",
+      "source": "build/ui-071/native01/ready-2027.json",
+      "sha256": "8a9e0137d4b4f9ee340e31338bdc66ac8f90b3cf233ea63f5f508a8679c56f50"
+    },
+    {
+      "file": "tests-2027.log",
+      "source": "build/ui-071/native01/tests-2027.log",
+      "sha256": "b02fe4e443bfb50ce868f81f40d4b48637ed6926b40756e5f68c455757584683"
+    },
+    {
+      "file": "loaded.tsv",
+      "source": "build/mcp-qualification/procedural07-ui-071-final01/loaded.tsv",
+      "sha256": "01214c93d5efae98775bde4f2882482b6c686aa679661ddcb2804521949a2151"
+    },
+    {
+      "file": "procedural-acceptance.json",
+      "source": "build/mcp-qualification/procedural07-ui-071-final01/procedural-acceptance.json",
+      "sha256": "c46dd5edb75c2fbc92afb220333f7eb644c18fbce218912b689171ad8e28f348"
+    },
+    {
+      "file": "bindings-acceptance.json",
+      "source": "build/mcp-qualification/procedural07-ui-071-final01/bindings-acceptance.json",
+      "sha256": "e65f3677fb670ff5a3a3283f4798d4b8b5b1153ed59bc2b17e5dda649aa1d001"
+    },
+    {
+      "file": "review-regressions.json",
+      "source": "build/mcp-qualification/procedural07-ui-071-final01/review-regressions.json",
+      "sha256": "abb329e05356a29405880915ba9d8ddcd6be2befb570ef9b52f124d449679d27"
+    },
+    {
+      "file": "layer-editor-071-events.json",
+      "source": "build/mcp-qualification/procedural07-ui-071-final01/layer-editor-071-events.json",
+      "sha256": "85c56dca15833f54bf5fd65f3fa8e524f4e9bfb5465c7b63e329bd243a816b3b"
+    },
+    {
+      "file": "layer-editor-071-brush-live.json",
+      "source": "build/mcp-qualification/procedural07-ui-071-final01/layer-editor-071-brush-live.json",
+      "sha256": "230eca7f5b228545e87b9cbf7dad13e6e1e4999aa0bbdaa5e92618b99f011096"
+    },
+    {
+      "file": "layer-editor-071-100k-navigation.json",
+      "source": "build/mcp-qualification/procedural07-ui-071-final01/layer-editor-071-100k-navigation.json",
+      "sha256": "af9da640389c4f0dcb6c765c603439c7d5ba2ddb01f9b2ebfbeace4952a12332"
+    },
+    {
+      "file": "retained-ui-071.json",
+      "source": "build/mcp-qualification/procedural07-ui-071-final01/retained-ui-071.json",
+      "sha256": "4d9d6850504f964a2692b0e7cbc04e03951ee01c33403a2e287615ffbd1b934a"
+    },
+    {
+      "file": "source-containers.json",
+      "source": "build/mcp-qualification/procedural07-ui-071-final01/source-containers.json",
+      "sha256": "d3689d34e8a55c6384d01312ca01805d05093f9245f0fda44961ceca237470b6"
+    },
+    {
+      "file": "source-container-edge-cases.json",
+      "source": "build/mcp-qualification/procedural07-ui-071-final01/source-container-edge-cases.json",
+      "sha256": "32992fa2222cd68e4fc395d2881c5dfda7def1e84a9bf27f12b86a8378c98cc5"
+    },
+    {
+      "file": "source-container-output.json",
+      "source": "build/mcp-qualification/procedural07-ui-071-final01/source-container-output.json",
+      "sha256": "9ef9b5617dfbf847c194fb0c051ccf00a49a769138015a766d53f2cac062e989"
+    },
+    {
+      "file": "source-container-events.json",
+      "source": "build/mcp-qualification/procedural07-ui-071-final01/source-container-events.json",
+      "sha256": "6081654c373a9908a8cb698789df96b2ec839ce30550f1c12111068e7b4d1b44"
+    }
+  ]
+}

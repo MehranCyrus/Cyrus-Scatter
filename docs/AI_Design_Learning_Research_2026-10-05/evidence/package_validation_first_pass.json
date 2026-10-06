@@ -1,0 +1,18 @@
+{
+  "checked_at_utc": "2026-10-05T09:53:24.815343+00:00",
+  "purpose": "research documentation consistency, not production qualification",
+  "passed": true,
+  "markdown_files": 16,
+  "markdown_words": 18870,
+  "local_links_checked": 64,
+  "json_files_checked": 10,
+  "primary_source_entries": 40,
+  "synthetic_example_files": 6,
+  "source_files_compared": 488,
+  "changed_source_files": [],
+  "docs_index_original_preserved": true,
+  "head_unchanged": true,
+  "fresh_max_tests": 0,
+  "trained_models": 0,
+  "errors": []
+}

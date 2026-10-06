@@ -1,5 +1,9 @@
 # Cyrus Scatter interactive system map
 
+<!-- CURRENT_SYSTEM_2026-10-05 -->
+
+This interactive map is a dated visualization; its UI/data were not regenerated during the documentation-only reconciliation. Use the [current system guide](../Current_System_2026-10-05/SYSTEM_GUIDE.md) and [capability matrix](../Current_System_2026-10-05/CAPABILITY_MATRIX.md) for the floating editor, model containers and current MCP gaps.
+
 [Open the self-contained HTML](../../mockups/system-map/index.html).
 
 This is a visual guide to the current local source: **Scatter 1.2.2, Surface Analyzer 0.14 and optional MCP 1.1**. Copy or share just `mockups/system-map/index.html`; its styles, application logic and model are embedded. It works without an installation, server or internet connection. It is documentation and does not connect to or change a Max scene.

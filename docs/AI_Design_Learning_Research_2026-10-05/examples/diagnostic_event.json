@@ -1,0 +1,20 @@
+{
+  "schema": "cyrus.proposed.diagnostic_event/0.1",
+  "synthetic": true,
+  "event_id": "synthetic-event-001",
+  "session_id": "synthetic-private-session",
+  "operation_id": "synthetic-operation-001",
+  "candidate_id": "synthetic-candidate-a",
+  "monotonic_ns": 1000000,
+  "wall_time_utc": "2026-10-05T00:00:00Z",
+  "kind": "invalidation.requested",
+  "reason": "example_spacing_setting_changed",
+  "controller_id": "synthetic-controller",
+  "layer_id": "synthetic-layer",
+  "publication_epoch_before": 3,
+  "publication_epoch_after": null,
+  "source_callback": "synthetic_example_only",
+  "cache_decision": "not_evaluated",
+  "dropped_events_total": 0,
+  "training_eligible": false
+}

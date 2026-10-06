@@ -1,0 +1,20 @@
+{
+  "recorded_at_utc": "2026-10-05T15:39:07.613372+00:00",
+  "status": "PASS_OFFLINE_ONLY",
+  "checks": [
+    "Python syntax",
+    "Real pinned script/native identity verification",
+    "Verify-only does not call launch",
+    "Launch intercepted before process creation or profile/scene writes",
+    "Generated MAXScript grouping/string delimiters",
+    "Copy destination isolated and distinctly named",
+    "Editor receipt JSON escaping"
+  ],
+  "max_launched": false,
+  "computer_use": false,
+  "maxscript_compiled": false,
+  "runtime_editor_auto_open": "Pending user/private host test",
+  "plugin_source_sha256": "07d0bca2efe330b8b632c1a483cea23c65629b0f7ef5c0cbecd2c6984f1f9924",
+  "launcher_sha256": "34e6d25e2aa454b65b4d19f4cc1594f5e65f071e3e35b9a4a06c98acaf7c78c4",
+  "master_scene_sha256": "6c28d6f6cc7dfc9947900843edf9234809bc1a5336ef5f7c55f4e23059534f23"
+}

@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "max_year": 2027,
+  "actual_mzp_installation": true,
+  "automatic_startup": true,
+  "copied_courtyard_reopened": true,
+  "logical_layers": 5,
+  "populations": 8,
+  "floating_editor_opened": true,
+  "source_script_sha256": "c3f0b693a3854e9d11077bdea739469290e9a8a6e45f82ba44f38c6a1b486c8f",
+  "loaded_modules": {
+    "AminScatter.dlx": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\procedural07-package-071-install01\\scripts\\CyrusScatter\\bin-max2027-01e8f6e316b7\\AminScatter.dlx",
+    "CyrusBrush.dlx": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\procedural07-package-071-install01\\scripts\\CyrusScatter\\bin-max2027-01e8f6e316b7\\CyrusBrush.dlx",
+    "CyrusBrushStorage.dlh": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\procedural07-package-071-install01\\scripts\\CyrusScatter\\bin-max2027-01e8f6e316b7\\CyrusBrushStorage.dlh",
+    "CyrusScatterEdit.dlm": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\procedural07-package-071-install01\\scripts\\CyrusScatter\\bin-max2027-01e8f6e316b7\\CyrusScatterEdit.dlm",
+    "CyrusSurfaceAnalyzer.dlx": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\procedural07-package-071-install01\\scripts\\CyrusSurfaceAnalyzer\\bin-max2027-737c50438892\\CyrusSurfaceAnalyzer.dlx"
+  },
+  "protected_original_files_unchanged": 28,
+  "normal_profile_installed": false,
+  "private_test_processes_exited": true,
+  "harness_notes": [
+    "The first path assertion compared Windows backslashes against forward slashes; normalized path separators and reran.",
+    "An intermediate startup produced no completion receipt. The next attempt displayed Startup Failure Detection; Continue Without Restore was selected. No factory reset was performed. Only the final explicit PASS is qualification evidence."
+  ],
+  "package_sha256": {
+    "CyrusScatter-0.7.1-Max2027.mzp": "9a7045730a1c76ac3b3cd5c776fedf5a612b85cd49cc60adbb73a49378fb048e",
+    "CyrusSurfaceAnalyzer-0.14-Max2027.mzp": "904814a46530be6dc1d8261dfa70088bad9f6d9700775a49b646e3be07452819"
+  }
+}

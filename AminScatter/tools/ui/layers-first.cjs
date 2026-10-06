@@ -78,25 +78,27 @@ module.exports=function(s){
                     for j in order where (this.logicalParent this.layerObjects[j])==parent do results[j][2]=accepted[j].count
                 )`);
  // Named layers share one flowing host with the general sections and manager.
- const names=['sourceUI','distributionUI','brushUI','areaUI','diversityUI','randomUI','spacingUI','separationUI','proceduralUI','sourceContainersUI'];
+ const extra={proceduralUI:'procedural-ui',populationPolicyUI:'population-policy-ui',backgroundUI:'background-ui',instanceRadiusUI:'instance-radius-ui',workflowUI:'layer-workflow-ui',sourceContainersUI:'source-containers-ui'};
+ const names=['sourceUI','distributionUI','brushUI','areaUI','diversityUI','randomUI','spacingUI','separationUI',...Object.keys(extra)];
  const blocks={};
- for(const name of [...names,'updateUI','previewUI']){if(name==='proceduralUI'||name==='sourceContainersUI'){blocks[name]=read(name==='proceduralUI'?'procedural-ui':'source-containers-ui');continue;}const a=s.indexOf('    rollout '+name+' ');let b=s.indexOf('\n    rollout ',a+1);if(b<0)b=s.indexOf('\n    on update do',a);if(a<0||b<0)throw Error('Missing editor '+name);blocks[name]=s.slice(a,b);}
- const controls=r=>[...r.matchAll(/^\s*(checkbox|spinner|button|pickbutton|dropdownlist|radiobuttons|mapbutton|multiListBox|listbox|colorpicker|edittext) (\w+)/gm)].map(m=>({kind:m[1],name:m[2]}));
+ for(const name of [...names,'updateUI','previewUI']){if(extra[name]){blocks[name]=read(extra[name]);continue;}const a=s.indexOf('    rollout '+name+' ');let b=s.indexOf('\n    rollout ',a+1);if(b<0)b=s.indexOf('\n    on update do',a);if(a<0||b<0)throw Error('Missing editor '+name);blocks[name]=s.slice(a,b);}
+ const controls=r=>[...r.matchAll(/^\s*(checkbox|checkbutton|spinner|button|pickbutton|dropdownlist|radiobuttons|mapbutton|multiListBox|listbox|colorpicker|edittext) (\w+)/gm)].map(m=>({kind:m[1],name:m[2]}));
  const inventory={general:{},layer:{},set:['setsUI','sourceUI','brushUI','proceduralUI','sourceContainersUI']};
  for(const name of names)inventory.layer[name]=controls(blocks[name]);
- inventory.general.host=controls(read('layers-first-host'));
+ inventory.general.host=controls(read('compact-host'));
+ inventory.general.editor=controls(read('layer-editor'));
  for(const name of ['updateUI','previewUI']){const a=s.indexOf('    rollout '+name+' '),b=s.indexOf('\n    rollout ',a+1);inventory.general[name]=controls(s.slice(a,b));}
- for(const name of ['sets','details','panel'])inventory.layer[name+'UI']=controls(read('layers-first-'+name));
+ for(const name of ['sets','details'])inventory.layer[name+'UI']=controls(read('layers-first-'+name));
  inventory.general.surface=controls(read('layers-flow-surface'));
  inventory.general.manager=controls(read('layers-flow-manager'));
  fs.writeFileSync('tools/ui/layers-control-inventory.json',JSON.stringify(inventory,null,2)+'\n');
- let factories=read('layers-flow-helpers')+'\nglobal CyrusLayerUIRoot,CyrusLayerUIOwner,CyrusLayerUISlot,CyrusLayerUIPanel,CyrusCreateLayerEditors\n';
+ let factories=read('layers-flow-helpers')+'\nglobal CyrusLayerUIRoot,CyrusLayerUIOwner,CyrusLayerUIPanel,CyrusCreateLayerEditorSection\n';
  // Let Max lay out retained native controls against their actual parent width.
  // Layout expressions are re-evaluated by autoLayoutOnResize; no width timer,
  // HWND resizing or remounting is needed. Height fitting is event-driven.
  const stretchEditor=(r,name)=>{
   r=r.replace(/(rollout \w+ "[^"]+" width:\d+) \(/,'$1 autoLayoutOnResize:true (');
-  return r.replace(/^\s*(?:checkbox|spinner|button|pickbutton|dropdownlist|radiobuttons|mapbutton|multiListBox|listbox|colorpicker|edittext|label) .+$/gm,line=>{
+  return r.replace(/^\s*(?:checkbox|checkbutton|spinner|button|pickbutton|dropdownlist|radiobuttons|mapbutton|multiListBox|listbox|colorpicker|edittext|label) .+$/gm,line=>{
    const pos=line.match(/pos:\[(\d+),(\d+)\]/),width=line.match(/\bwidth:(\d+)/);
    if(!pos||!width)throw Error('Missing native layout: '+line);
    const x=Number(pos[1]),w=Number(width[1]);
@@ -132,6 +134,11 @@ module.exports=function(s){
       .replace(/\bthis\b/g,'root').replace(/(?<![.\w])selectedLayer\(\)/g,'root.selectedLayer()');
    r=stretchEditor(r,name);
   }
+  if(name==='updateUI'){
+   r=r.replace('"Real-time"','"Live"').replace('fn syncControls = (updateRadio.state=obj.updateMode;)','fn syncControls = (updateRadio.state=obj.updateMode;updateHint.text=if obj.updateMode==1 then "Pending edits wait for Update." else "Updates after a brief pause.";)');
+   r=r.replace('updateRadio.state=obj.updateMode;controlsReady=true;','syncControls();controlsReady=true;');
+   r=r.replace(/(button updateNow [^\n]+)/,'$1 tooltip:"Calculate all enabled layers and paint sets in order."');
+  }
   r=addFlowHandler(r,name);
   // General sections are actual scripted-plugin rollouts, so the command
   // panel can distribute them across native columns. Preserve the aliases
@@ -141,10 +148,10 @@ module.exports=function(s){
    .replace(new RegExp('(?<![.\\w])'+name+'\\b','g'),'flow_'+name)+'\n';
  }
  const all=['setsUI',...names,'detailsUI'];
- for(let slot=1;slot<=10;slot++){
+ for(let slot=1;slot<=1;slot++){
   for(const name of all){
    let r=name==='setsUI'?read('layers-first-sets'):name==='detailsUI'?read('layers-first-details'):blocks[name];
-   if(name!=='setsUI' && name!=='detailsUI' && name!=='proceduralUI' && name!=='sourceContainersUI'){
+   if(name!=='setsUI' && name!=='detailsUI' && !extra[name]){
     r=r.replace('width:#cmdPanel (','width:146 (\n        local root=CyrusLayerUIRoot,owner=CyrusLayerUIOwner,panel=CyrusLayerUIPanel\n        local setSpecific='+(['sourceUI','brushUI'].includes(name)?'true':'false'));
     r=r.replace(/\bthis\b/g,'root').replace(/\bselectedLayer\(\)/g,'selectedPaintSet owner');
     r=r.replaceAll('root source list',"this set's source list").replaceAll("root group's saved paint","this paint set's saved paint").replaceAll('Increase root for denser','Increase this for denser').replaceAll('Within root layer only','Within this layer only').replaceAll('Keep root pair apart','Keep this pair apart');
@@ -176,20 +183,28 @@ module.exports=function(s){
     if(name==='distributionUI')r=r.replace('"Population / Density"','"Population"');
     if(name==='separationUI')r=r.replace('"Group spacing / Cleanup"','"Spacing / Cleanup"');
    }
+   r=require('./layer-editor-layout.cjs')(r,name);
+   inventory.layer[name]=controls(r);
    r=stretchEditor(r,name);
+   if(name==='separationUI'){
+    // Resize must evaluate the same policy-dependent positions as binding.
+    for(const [control,y] of Object.entries({finalTitle:440,cleanCheck:466,neighborSpin:494,minNeighborSpin:522,minIslandSpin:550})){
+     const re=new RegExp('^(\\s*(?:label|checkbox|spinner) '+control+' .+)$','m');
+     r=r.replace(re,line=>line.replace('pos:[4,'+y+']','pos:[4,(if root.groupPolicy==3 then '+(y-432)+' else '+y+')]'));
+    }
+   }
    r=addFlowHandler(r,name);
    r=r.replace(new RegExp('\\b'+name+'\\b','g'),name+'_'+slot);
    factories+=`global CyrusLayerEditor_${name}_${slot}\nfn CyrusLayerEditor_${name}_${slot} = (\n${r}\n${name}_${slot}\n)\n`;
   }
-  let panel=read('layers-first-panel').replace(/\blayerPanel\b/g,'layerPanel_'+slot);
-  nativeLayers+=panel.replace('root=CyrusLayerUIRoot,owner=CyrusLayerUIOwner,slot=CyrusLayerUISlot','root=undefined,owner=undefined,slot='+slot)
-   .replace('on layerPanel_'+slot+' open do bind()','on layerPanel_'+slot+' open do (root=this;bind())')+'\n';
  }
- factories+='fn CyrusCreateLayerEditors slot root owner panel = (\nCyrusLayerUIRoot=root;CyrusLayerUIOwner=owner;CyrusLayerUIPanel=panel\ncase slot of (\n'+Array.from({length:10},(_,i)=>`${i+1}: #(${all.map(n=>`CyrusLayerEditor_${n}_${i+1}()`).join(',')})`).join('\n')+'\n)\n)\n';
+ factories+='fn CyrusCreateLayerEditorSection name root owner panel = (\nCyrusLayerUIRoot=root;CyrusLayerUIOwner=owner;CyrusLayerUIPanel=panel\ncase name of (\n'+all.map(n=>`#${n}: CyrusLayerEditor_${n}_1()`).join('\n')+'\n)\n)\n';
+ factories+=read('layer-editor')+'\n';
+ fs.writeFileSync('tools/ui/layers-control-inventory.json',JSON.stringify(inventory,null,2)+'\n');
  const a=s.indexOf('    rollout sourceUI '),b=s.indexOf('\n    on update do',a);s=s.slice(0,a)+s.slice(b);
  const ma=s.indexOf('    fn bindNativeUI = ('),mb=s.indexOf('\n    on update do',ma);
- s=s.slice(0,ma)+read('layers-first-host')+'\n'+nativeRoots+nativeLayers+'\n'+s.slice(mb);
- one('initialRollupState:0xffc','initialRollupState:0x7ffe');
+ s=s.slice(0,ma)+read('compact-host')+'\n'+nativeRoots+'\n'+s.slice(mb);
+ one('initialRollupState:0xffc','initialRollupState:0x8');
  s=s.replaceAll('if this.brushUI.controlsReady do this.brushUI.status()','this.refreshBrushEditors()')
     .replaceAll('if root.brushUI.controlsReady do (root.brushUI.refreshHistory();root.brushUI.status())','root.refreshBrushEditors history:true')
     .replaceAll('if root.brushUI.controlsReady do root.brushUI.status()','root.refreshBrushEditors()')

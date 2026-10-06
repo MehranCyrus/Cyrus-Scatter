@@ -1,5 +1,9 @@
 # Cyrus performance baseline recorder
 
+<!-- CURRENT_SYSTEM_2026-10-05 -->
+
+Current documentation: [diagnostics specification](Current_System_2026-10-05/DIAGNOSTICS_SPEC.md). This is an existing manually started recorder, not an integrated everyday activity database. Preserve matching current script/native identities; historical tracing installers are not an instruction to replace the current 0.7.1 pair.
+
 **October 1 update:** Recorder **0.2.2** retains the 0.2 tracing and 0.2.1 edit-ID correction, and records optional CPU thread policy, native source-helper availability and callback batch counters in the manifest. Older native engines remain usable. See [Detailed edit tracing](Performance_Edit_Tracing.md), the [heavy-scene review](Spline_Edit_Trace_2026-10-01.md), and the [0.60 upgrade test](Performance_Upgrade_Test_2026-10-01.md). Updating only the recorder requires stopping/closing it and running its script again. Installing the new native performance build requires its MZP and a Max restart.
 
 **Started:** 2026-09-30. **First target:** 3ds Max 2027, with the artist's Corona 15 scene. **Current status:** recorder 0.2.2, synthetic Max 2027.1 fixtures and 14 report checks passed. Heavy-scene edit traces and isolated CPU comparisons exist; the 0.60 candidate's interactive and Corona retests are pending. The original 0.1 verification below is historical.

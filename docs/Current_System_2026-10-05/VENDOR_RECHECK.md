@@ -1,0 +1,88 @@
+# Houdini and Autodesk recheck: decisions for the product roadmap
+
+5 October 2026, Asia/Tehran. **Research and documentation only.** This follow-up independently checked selected official documentation and current source paths, then reconciled the product roadmap with the existing [vendor research](../AI_Design_Learning_Research_2026-10-05/16_SECOND_PASS_REPORT.md). It is not a new runtime qualification or a replacement master plan.
+
+## Conclusion and scope
+
+Keep the existing procedural evaluator, retained display and typed MCP boundary. The research supports tighter contracts and acceptance tests, not a new node engine, Houdini dependency, renderer replacement or immediate ML training. D01/R01 remain the next implementation loop: capture a causal trace, then correct the demonstrated IR trigger.
+
+The earlier specialist pass already added identity, artifact, host-mode and learning-feature requirements. Those requirements were not yet carried fully into the coordinated product specifications. This pass integrates them and adds measurement semantics, concrete container/Brush edge cases, and Python adapter failure checks.
+
+Fresh reading covered 15 selected official SideFX/Autodesk pages listed below, relevant local SDK excerpts, the current guides, specialist research supplements and source paths in the findings table. It did not rereview every historical document, compile code, run pytest, launch Max/Houdini, render, or operate the artist scene. The earlier 66-test result remains an earlier result.
+
+## Findings that affect implementation
+
+| Priority | Finding and evidence | Plan decision |
+| --- | --- | --- |
+| High | **IR cause remains unisolated.** Autodesk distinguishes setup/teardown from frame phases that cannot change rendered meshes. Cyrus registers `#preRender` and `#postRender`; this is not evidence of a phase violation. [Render notifications](https://help.autodesk.com/cloudhelp/2027/ENU/MAXScript-Help/files/MAXScript-Tools-and-Interaction/Change-Handlers-and-Callbacks/General-Event-Callback-Mechanism/GUID-E5BE0058-2216-4E0B-88AF-680CA58AAC73.html), [PFlow source](../../AminScatter/tools/ui/templates/pflow.ms). | D01/R01 must correlate bridge requests, actual renderer restarts and scene changes; keep production and IR evidence separate. |
+| High | **A dirty flag is not proof of a new publication.** At the starting snapshot, `procInputKey()` reconciled containers/density watchers and `containerNote()` dirtied container-backed leaves without first proving relevance. During this review the latter acquired a relevance filter through independent implementation activity. Neither version has fresh runtime evidence in this pass. [Evaluation: 1–14](../../AminScatter/tools/ui/templates/procedural-evaluation.ms), [container functions](../../AminScatter/tools/ui/templates/source-containers.ms). | Log existing decisions/revisions; do not invoke reconciliation just to observe it. R02 needs unchanged-input and genuine-edit tests against the final matching build. |
+| High | **Notification interval is not cache validity.** Autodesk requires `FOREVER` for ordinary `NotifyDependents` calls. The retained helper already skips replacement on `sameLayers`; the change notification follows the changed-publication path. [ReferenceTarget](https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_reference_target.html), [point display: 261–268](../../AminScatter/src/point_display.cpp). | Do not shorten that interval or suppress notifications as a generic fix. Find why a change was requested. Local `ref.h:2159` corroborated this contract. |
+| High | **Identity needs an operation-specific promise.** Houdini documents point-order changes without corresponding position changes, and supports explicit IDs for piece assignment. [Scatter](https://www.sidefx.com/docs/houdini/nodes/sop/scatter.html), [Attribute From Pieces](https://www.sidefx.com/docs/houdini/nodes/sop/attribfrompieces.html). Cyrus has pre-compaction candidate keys and persistent owner/source metadata. [Scatter record: 61–70](../../AminScatter/include/scatter.h). | M02/M04 must test correspondence after rejection, rename, parking, order changes, copy, merge and reopen. Unknown correspondence stays unknown. |
+| High | **Render success must identify the intended artifact.** TOPs documents cases where replacing/deleting intermediate outputs does not automatically dirty downstream work. [TOP cooking](https://www.sidefx.com/docs/houdini/tops/cooking.html). | M05 requires decoding, hashes, expected dimensions and a complete declared camera set joined to the correct attempt/publication. Process success or a filename is insufficient. |
+| Medium | **Brush semantics need more than “curved surfaces.”** Houdini distinguishes volume, surface, visibility and connectivity behaviour; its paint replay also has correspondence requirements. [Attribute Paint](https://www.sidefx.com/docs/houdini/nodes/sop/attribpaint.html). Cyrus uses connected face patches, transformed distance and captured-view visibility, not a geodesic distance brush. [Brush: 109–164](../../AminScatter/src/brush.cpp), [binding: 119–142](../../AminScatter/src/brush_host.cpp). | Qualify nearby/disconnected sheets, folds, occlusion, changed capture views and rigid/nonuniform transforms; preserve stale-binding rejection. Do not promise Houdini's painting modes. |
+| Medium | **Point limits do not bound total resource cost.** SideFX explicitly provides an emergency point ceiling for scatter expansion. [Scatter and Align](https://www.sidefx.com/docs/houdini/nodes/sop/scatteralign.html). Cyrus already limits candidates, rounds and neighbour visits; source extraction, Brush history, transient output and concurrent old/new publications have other costs. [Procedural evaluator](../../AminScatter/src/procedural.cpp). | Measure and bound the complete supported workload before increasing limits or introducing unattended studies. Underfill remains a valid reported outcome. |
+| Medium | **Timing totals need defined meaning.** Houdini separates self/cumulative timings, event counts, CPU/GPU drawing and frame statistics. [Performance Monitor](https://www.sidefx.com/docs/houdini/ref/panes/perfmon.html). | D01/D02 distinguish invocation, cache hit, rebuild, upload and draw counts; distinguish elapsed spans, CPU time, queue delay and measured presentation. Nested totals must not be added as independent time. |
+| Medium | **Adapter error/identity rules are easy to misread.** Autodesk documents different indexing conventions for array access and method arguments, wrapper equality distinct from Python identity, and exception handling inside `pymxs.undo()`. [Using pymxs](https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-Python/files/MAXDEV_Python_using_pymxs_html.html), [pymxs module](https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-Python/files/using_pymxs/MAXDEV_Python_using_pymxs_pymxs_module_html.html). | Preserve the current explicit failure capture and verified rollback in [max_host.py: 330–505](../../CyrusMCP/cyrus_mcp/max_host.py). New operations need injected-failure and boundary-index tests; this is not a newly reproduced rollback bug. |
+
+## Acceptance additions to the existing queue
+
+These are **planned gates**, not passing-test claims. The existing specialist [experiments E15–E18](../AI_Design_Learning_Research_2026-10-05/11_EXPERIMENTS.md#e15--identity-transform-and-surface-contracts) provide the larger fixtures; the smaller assertions below make them actionable in each product slice.
+
+| Gate | Owning tasks | Required evidence before claiming the relevant support |
+| --- | --- | --- |
+| V01 — Causality and lifecycle | D01, R01, R02 | Callback receipt time versus original action time; batched/coalesced events; explicit bridge restarts versus renderer reactions; owned timer/handler counts after reload, reset, close and Undo. Passive trace changes no solve/upload counts. |
+| V02 — Identity and palettes | M02, M04 | Persistent registration survives park/reenter and rename. Boundary membership uses pivot in rectangle-local XY with existing tolerance, ignores height and unions rectangles. Test moved parents/rectangles, overlapping pools and delete/recreate; never relink by name. Source settings remain per owner. |
+| V03 — Transforms and coverage | M02, M04 | Independent expected transforms/radii for pivots, parents, normal alignment, scale and Edit overrides; near/far sheets and folded surfaces; unchanged save/reopen versus changed geometry/topology. Unsupported units/transforms fail clearly without replacing valid output. |
+| V04 — Resource envelope | D02, M03, M05, performance track | Candidate/attempt/neighbor bounds plus source triangles, Brush samples/dabs, scene scanning, staging memory, render preparation, export bytes, retries and disk. Measure peak old-plus-new data. Record where cancellation can actually take effect. |
+| V05 — Passive UI and truthful timing | D01, D02, R02, M02, A01 | Orbit/editor/gallery inspection changes no placement epoch or unchanged-buffer uploads. Display-setting changes may rebuild presentation. Preserve measured retained baselines; instrument each timing domain or report it unavailable. |
+| V06 — Artifact completion | M02, M05 | Required views all exist, decode and match context/publication/attempt IDs and digests. Test stale late results, corrupt/truncated files, missing views, restart and quota persistence. Technical completion, reviewable result and artist approval remain distinct. |
+| V07 — Host/API failure behaviour | M03, M04, M05 | One supported transaction, captured primary error, verified rollback or explicit unknown/failed recovery. Test setter failure, nested holds, empty/first/last collections, deleted references and duplicate requests. Each advertised host mode must explicitly evaluate and complete jobs without assuming UI timers work. |
+| V08 — Reproducible learning inputs | A01, A02, A03 | Version units, field order, missing-value masks, asset roles, image colour/orientation/camera order and fitted preprocessing. Golden records must agree in training/inference. Holdout fitting and cross-project/seed leakage are prohibited. |
+
+Container/source facts above come from `source-containers.ms:21–41,66–114`; registration is persistent but does not guarantee identical acceptance after every membership edit. The palette's Z-insensitivity is current behaviour to document/test, not a new 3D-volume feature. `clusterEnabled` is explicitly source-diversity assignment (`scatter.h:52`); it does not generate spatial clumps.
+
+Transform conversion must declare Max's actual frame/order and distinguish geometry scale from collision radius. Houdini's attribute precedence and normalized-source conventions are useful examples, not a format to copy unmodified. [Instancing attributes](https://www.sidefx.com/docs/houdini/copy/instanceattrs.html).
+
+## Host documentation cautions
+
+The Node Event System batches delayed notifications and needs the Windows message loop. Receipt order alone is therefore not a complete causal ordering. Own general callback registrations and re-register changed function callbacks; gate the 2027-only `notificationEvent()` accessor for 2026. [Node Event System](https://help.autodesk.com/cloudhelp/2027/ENU/MAXScript-Help/files/MAXScript-Tools-and-Interaction/Change-Handlers-and-Callbacks/GUID-7C91D285-5683-4606-9F7C-B8D3A7CA508B.html), [general callbacks](https://help.autodesk.com/cloudhelp/2027/ENU/MAXScript-Help/files/MAXScript-Tools-and-Interaction/Change-Handlers-and-Callbacks/GUID-C1F6495F-5831-4FC8-A00C-667C5F2EAE36.html).
+
+There is a documentation inconsistency: the generic pymxs module page still describes `mxstoken()` as a worker-access mechanism, while the dedicated [Max 2027 Python threading page](https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-Python/files/MAXDEV_Python_threading_html.html) explicitly says it is deprecated/nonfunctional and prohibits worker `pymxs` calls. Follow the specific restriction. Keep scene access on the host path; background serialization receives copied plain data. This does not prohibit separately qualified native numeric workers.
+
+The dedicated Python module's undo behaviour also means that absence of an outer exception is insufficient to mark an operation successful. Current Cyrus deliberately captures failures inside its undo context and verifies recovery afterward. Preserve that behaviour until a replacement has equivalent host evidence.
+
+## ML conclusions remain unchanged
+
+SideFX distinguishes data preparation, training, held-out evaluation and inference, and describes both simple models and neural models. [ML stages](https://www.sidefx.com/docs/houdini/ml/stages.html). Cyrus should distinguish artist preference, technical cost/outcome prediction and inverse recipe proposals. Version the entire feature pipeline; a model hash alone is insufficient. Start with useful recipes/retrieval and explicit artist feedback. Native constraints still decide feasibility. Houdini's ML features are not evidence that Cyrus has a model or should embed a training runtime.
+
+## Fresh primary-source register
+
+All were accessed on 5 October 2026. Reading depth is the relevant sections, not every linked manual. SideFX's live pages identify Houdini 22.0; Autodesk pages below target 2027. Neither is an installed-build claim.
+
+| Source | Sections independently checked |
+| --- | --- |
+| [Scatter](https://www.sidefx.com/docs/houdini/nodes/sop/scatter.html) | Point order, seed, rest-surface attachment, limits and relaxation |
+| [Scatter and Align](https://www.sidefx.com/docs/houdini/nodes/sop/scatteralign.html) | Coverage, source scale, constraints and emergency limit |
+| [Attribute From Pieces](https://www.sidefx.com/docs/houdini/nodes/sop/attribfrompieces.html) | Assignment versus geometry copying; explicit ID selection |
+| [Instancing attributes](https://www.sidefx.com/docs/houdini/copy/instanceattrs.html) | Pivot, matrix/orientation and scale precedence |
+| [Attribute Paint](https://www.sidefx.com/docs/houdini/nodes/sop/attribpaint.html) | Correspondence, stroke replay, surface/volume and visibility/connectivity |
+| [Performance Monitor](https://www.sidefx.com/docs/houdini/ref/panes/perfmon.html) | Self/cumulative time, counts and draw/frame categories |
+| [TOP cooking](https://www.sidefx.com/docs/houdini/tops/cooking.html) | Dirtying and intermediate result-file limitations |
+| [ML stages](https://www.sidefx.com/docs/houdini/ml/stages.html) | Forward/inverse tasks, preprocessing, evaluation and inference |
+| [Render notifications](https://help.autodesk.com/cloudhelp/2027/ENU/MAXScript-Help/files/MAXScript-Tools-and-Interaction/Change-Handlers-and-Callbacks/General-Event-Callback-Mechanism/GUID-E5BE0058-2216-4E0B-88AF-680CA58AAC73.html) | Setup/teardown and frame mutation restrictions |
+| [ReferenceTarget](https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_reference_target.html) | `NotifyDependents` interval and propagation |
+| [Node Event System](https://help.autodesk.com/cloudhelp/2027/ENU/MAXScript-Help/files/MAXScript-Tools-and-Interaction/Change-Handlers-and-Callbacks/GUID-7C91D285-5683-4606-9F7C-B8D3A7CA508B.html) | Delay, batching, handles, polling and message loop |
+| [General callbacks](https://help.autodesk.com/cloudhelp/2027/ENU/MAXScript-Help/files/MAXScript-Tools-and-Interaction/Change-Handlers-and-Callbacks/GUID-C1F6495F-5831-4FC8-A00C-667C5F2EAE36.html) | Ownership, function reload and versioned event accessor |
+| [Python threading](https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-Python/files/MAXDEV_Python_threading_html.html) | Main-thread/runtime restriction and copied-data I/O |
+| [Using pymxs](https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-Python/files/MAXDEV_Python_using_pymxs_html.html) | Array/method indexing and wrapper equality |
+| [pymxs module](https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-Python/files/using_pymxs/MAXDEV_Python_using_pymxs_pymxs_module_html.html) | Undo exceptions; conflict with dedicated threading guidance |
+
+The existing [25-entry specialist vendor ledger](../AI_Design_Learning_Research_2026-10-05/17_VENDOR_SOURCE_LEDGER.md) remains separate. This 15-page set overlaps it; these counts must not be added as unique sources.
+
+## Snapshot and validation boundary
+
+The starting manifest is in ignored `build/docs-primary-recheck-20261005/before.json`. During reading, `AminScatter/CMakeLists.txt` and `AminScatter/tools/ui/generate.cjs` acquired diagnostics build/generator wiring through activity outside this documentation pass; the generated script and `source-containers.ms` also changed. The container edit adds relevance filtering and diagnostic emission. Preserve those edits. New diagnostics files and generated-script changes must be qualified by their own implementation receipts; this report does not mark D01 or R02 complete.
+
+MCP source also changed from 1.1.0/nine tools to a 1.2.0/ten-tool candidate while checks were running. The added `scatter_read_diagnostic_events` declares bounded reading of a locally shared recording. The capability matrix now distinguishes this observed registration from the earlier test coverage; the 66-test receipt cannot qualify a tool added afterward. Policy-3 mutation is still absent. This pass did not create, activate or test the new recorder/tool.
+
+The [follow-up receipt](evidence/vendor-recheck-validation.json) records start/end hashes, externally observed workspace changes, links and this pass's exact documentation changes. Earlier evidence files remain unchanged. The facts above refer to the inspected paths/snapshot, not an unverified in-memory module or later in-progress implementation.

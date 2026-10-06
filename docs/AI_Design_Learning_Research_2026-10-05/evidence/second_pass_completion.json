@@ -1,0 +1,32 @@
+{
+  "checked_at_utc": "2026-10-05T10:21:17.345793+00:00",
+  "purpose": "second-pass documentation QA and scope receipt",
+  "fragment_links_checked": 9,
+  "fragment_or_empty_heading_issues": [],
+  "changed_prior_package_files": [
+    "docs/AI_Design_Learning_Research_2026-10-05/01_RECOMMENDATION.md",
+    "docs/AI_Design_Learning_Research_2026-10-05/05_SEARCH_AND_LEARNING.md",
+    "docs/AI_Design_Learning_Research_2026-10-05/06_MCP_ROADMAP.md",
+    "docs/AI_Design_Learning_Research_2026-10-05/07_ARCHITECTURE_AND_GRAPHS.md",
+    "docs/AI_Design_Learning_Research_2026-10-05/08_DATA_AND_EVALUATION.md",
+    "docs/AI_Design_Learning_Research_2026-10-05/09_DIAGNOSTICS_AND_PERFORMANCE.md",
+    "docs/AI_Design_Learning_Research_2026-10-05/10_ROADMAP.md",
+    "docs/AI_Design_Learning_Research_2026-10-05/11_EXPERIMENTS.md",
+    "docs/AI_Design_Learning_Research_2026-10-05/13_REQUIREMENTS_AND_DECISIONS.md",
+    "docs/AI_Design_Learning_Research_2026-10-05/README.md",
+    "docs/AI_Design_Learning_Research_2026-10-05/validate_package.py",
+    "docs/AI_Design_Learning_Research_2026-10-05/evidence/package_validation.json",
+    "docs/AI_Design_Learning_Research_2026-10-05/evidence/README.md"
+  ],
+  "new_supplements": [
+    "14_HOUDINI_ENGINEERING_LESSONS.md",
+    "15_AUTODESK_HOST_CONTRACTS.md",
+    "16_SECOND_PASS_REPORT.md",
+    "17_VENDOR_SOURCE_LEDGER.md"
+  ],
+  "git_status_after": " M .gitattributes\n M AminScatter/CMakeLists.txt\n M AminScatter/scripts/AminScatterObject.ms\n M AminScatter/tools/ui/layers-control-inventory.json\n M AminScatter/tools/ui/layers-first.cjs\n M AminScatter/tools/ui/procedural-policy.cjs\n M AminScatter/tools/ui/templates/layers-flow-manager.ms\n M AminScatter/tools/ui/templates/layers-flow-surface.ms\n M AminScatter/tools/ui/templates/procedural-ui.ms\n M CyrusMCP/README.md\n M README.md\n M docs/AI_MCP_ML_Roadmap_2026-09-30/README.md\n M docs/Artist_Style_ML_2026-10-04/README.md\n M docs/Artist_Style_ML_2026-10-04/ROADMAP.md\n M docs/Brush_Tool_2026-10-02/README.md\n M docs/CyrusScatter_Complete_Codebase_Documentation_2026-09-27/README.md\n M docs/Independent_Review_0.7_2026-10-05/CURRENT_OUTCOME.md\n M docs/Layers_First_2026-10-03/CAPABILITIES.md\n M docs/MCP_Implementation_2026-10-03/ROADMAP_STATUS.md\n M docs/Performance_Baseline_Tool.md\n M docs/Performance_Edit_Tracing.md\n M docs/Procedural_Evaluation_2026-10-04/README.md\n M docs/Product_Commercialization_Playbook_2026-09-30/README.md\n M docs/Product_Strategy_2026-09-29/11_Master_Roadmap_and_Backlog.md\n M docs/Product_Strategy_2026-09-29/README.md\n M docs/README.md\n M docs/Release_Versioning.md\n M docs/Review_Handoff_2026-10-05/README.md\n M docs/System_Map_2026-10-04/README.md\n M tools/procedural_lab/Max_Procedural_07_Fixture.ms\n M tools/procedural_lab/check_generated.py\n?? AminScatter/tools/ui/layer-editor-layout.cjs\n?? AminScatter/tools/ui/layer-editor-tooltips.json\n?? AminScatter/tools/ui/templates/background-ui.ms\n?? AminScatter/tools/ui/templates/compact-host.ms\n?? AminScatter/tools/ui/templates/instance-radius-ui.ms\n?? AminScatter/tools/ui/templates/layer-editor.ms\n?? AminScatter/tools/ui/templates/layer-workflow-ui.ms\n?? AminScatter/tools/ui/templates/population-policy-ui.ms\n?? docs/AI_Design_Learning_Research_2026-10-05/\n?? docs/Current_System_2026-10-05/\n?? docs/Real_Scene_0.7.1_2026-10-05/\n?? docs/UI_0.7.1_2026-10-05/\n?? tools/procedural_lab/Max_Layer_Editor_071_Acceptance.ms\n?? tools/procedural_lab/Max_Layer_Editor_071_BrushLive.ms\n?? tools/procedural_lab/layer_editor_071/\n?? tools/real_scene_071/\n",
+  "fresh_max_tests": 0,
+  "fresh_houdini_tests": 0,
+  "production_changes_authored": false,
+  "prior_offline_tests_rerun": false
+}

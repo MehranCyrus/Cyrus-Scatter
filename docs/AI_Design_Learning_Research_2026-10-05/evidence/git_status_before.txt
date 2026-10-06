@@ -1,0 +1,28 @@
+ M .gitattributes
+ M AminScatter/CMakeLists.txt
+ M AminScatter/scripts/AminScatterObject.ms
+ M AminScatter/tools/ui/layers-control-inventory.json
+ M AminScatter/tools/ui/layers-first.cjs
+ M AminScatter/tools/ui/procedural-policy.cjs
+ M AminScatter/tools/ui/templates/layers-flow-manager.ms
+ M AminScatter/tools/ui/templates/layers-flow-surface.ms
+ M AminScatter/tools/ui/templates/procedural-ui.ms
+ M docs/README.md
+ M docs/Release_Versioning.md
+ M tools/procedural_lab/Max_Procedural_07_Fixture.ms
+ M tools/procedural_lab/check_generated.py
+?? AminScatter/tools/ui/layer-editor-layout.cjs
+?? AminScatter/tools/ui/layer-editor-tooltips.json
+?? AminScatter/tools/ui/templates/background-ui.ms
+?? AminScatter/tools/ui/templates/compact-host.ms
+?? AminScatter/tools/ui/templates/instance-radius-ui.ms
+?? AminScatter/tools/ui/templates/layer-editor.ms
+?? AminScatter/tools/ui/templates/layer-workflow-ui.ms
+?? AminScatter/tools/ui/templates/population-policy-ui.ms
+?? docs/AI_Design_Learning_Research_2026-10-05/
+?? docs/Real_Scene_0.7.1_2026-10-05/
+?? docs/UI_0.7.1_2026-10-05/
+?? tools/procedural_lab/Max_Layer_Editor_071_Acceptance.ms
+?? tools/procedural_lab/Max_Layer_Editor_071_BrushLive.ms
+?? tools/procedural_lab/layer_editor_071/
+?? tools/real_scene_071/

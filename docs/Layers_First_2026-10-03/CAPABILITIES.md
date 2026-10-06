@@ -1,5 +1,9 @@
 # Native controls, MCP coverage and future ML
 
+<!-- CURRENT_SYSTEM_2026-10-05 -->
+
+Historical native/shared-policy and MCP 1.1 capability snapshot. Use the [current coverage matrix](../Current_System_2026-10-05/CAPABILITY_MATRIX.md) for 0.7.1 and policy 3. An older plan capability does not grant write support for the new procedural system.
+
 4 October 2026. Product: Scatter 1.2.0; automation: MCP 1.1.0. Machine-readable native inventory: `AminScatter/tools/ui/layers-control-inventory.json`. Machine-readable automation registry: `CyrusMCP/cyrus_mcp/settings.py`; clients read `cyrus://capabilities`.
 
 ## Control-to-contract coverage

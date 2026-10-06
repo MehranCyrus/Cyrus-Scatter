@@ -1,5 +1,9 @@
 # Current outcome — 5 October 2026
 
+<!-- CURRENT_SYSTEM_2026-10-05 -->
+
+This outcome belongs to the 0.7.0 checkpoint described below. Subsequent 0.7.1 floating-editor work, real-scene evidence and unresolved IR behavior are coordinated by the [current system guide](../Current_System_2026-10-05/README.md). Original test claims retain their original scope.
+
 The authorized UI/correctness and visual source-container implementation is complete within the documented 0.7 contract and has passed fresh private Max 2027 regression. Licensing has advanced to a tested native/local foundation; it is **not a complete commercial licensing system and is not enabled in the ordinary build**. Product metadata remains 0.7.0, serialization is 53, and existing scene class IDs are preserved.
 
 Read [implementation evidence](IMPLEMENTATION_RESULTS.md), [the source evaluation trace](EVALUATION_TRACE.md), [source-container behavior](SOURCE_CONTAINERS.md), [licensing results and limits](../licensing/NATIVE_FOUNDATION_2026-10-05.md), then [the remaining implementation roadmap](IMPLEMENTATION_ROADMAP.md). The original [independent review](README.md) retains pre-fix findings and reproductions rather than rewriting history.

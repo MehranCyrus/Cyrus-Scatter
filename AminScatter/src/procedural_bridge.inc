@@ -60,21 +60,33 @@ Value* cyrusEvaluateProcedural_cf(Value** a,int n){
     }
     cyrus::procedural::Result resolved;
     try{resolved=cyrus::procedural::evaluate(plan);}catch(const std::exception& e){throw RuntimeError(MSTR::FromACP(e.what()));}
-    four_typed_value_locals(Array* result,Array* kept,Array* stats,Array* rounds);
-    vl.result=new Array(3);vl.kept=new Array(layers->size);vl.result->append(vl.kept);
+    five_typed_value_locals(Array* result,Array* kept,Array* stats,Array* rounds,Array* radii);
+    vl.result=new Array(4);vl.kept=new Array(layers->size);vl.result->append(vl.kept);
     vl.stats=new Array(layers->size);vl.result->append(vl.stats);vl.rounds=new Array(layers->size);vl.result->append(vl.rounds);
+    vl.radii=new Array(layers->size);vl.result->append(vl.radii);
     for(std::size_t l=0;l<resolved.layers.size();++l){
         auto* keptLayer=new Array(int(resolved.layers[l].sets.size()));vl.kept->append(keptLayer);
         auto* statsLayer=new Array(int(resolved.layers[l].sets.size()));vl.stats->append(statsLayer);
+        auto* radiusLayer=new Array(int(resolved.layers[l].sets.size()));vl.radii->append(radiusLayer);
         auto* round=new Array(2);vl.rounds->append(round);round->append(Integer::intern(int(resolved.layers[l].rounds)));round->append(resolved.layers[l].limitReached?&true_value:&false_value);
         for(std::size_t s=0;s<resolved.layers[l].sets.size();++s){const auto& r=resolved.layers[l].sets[s];
             auto* kept=new Array(int(r.kept.size()));keptLayer->append(kept);for(auto i:r.kept)kept->append(originals[l][s]->data[i]);
+            // Freeze the actual collision radii alongside the selected original
+            // rows. Inspection must not recalculate them from pending settings.
+            auto* keptRadii=new Array(int(r.kept.size()));radiusLayer->append(keptRadii);
+            for(auto i:r.kept)keptRadii->append(Float::intern(static_cast<float>(plan.layers[l].sets[s].samples[i].radius)));
             std::array<std::size_t,7> reasons{};for(auto reason:r.reasons)++reasons[std::size_t(reason)];
             auto* stats=new Array(12);statsLayer->append(stats);
             for(auto value:{std::uint64_t(r.reasons.size()),std::uint64_t(r.kept.size()),std::uint64_t(reasons[2]),std::uint64_t(r.conflicts.size()),std::uint64_t(reasons[3]),std::uint64_t(reasons[4]),std::uint64_t(reasons[5]),std::uint64_t(reasons[6]),std::uint64_t(reasons[0]),r.attempts,std::uint64_t(r.shortfall),r.neighborVisits})stats->append(Integer64::intern(static_cast<INT64>(value)));
         }
     }
     return_value(vl.result);
+}
+
+def_visible_primitive(cyrusProceduralPublicationVersion,"cyrusProceduralPublicationVersion");
+Value* cyrusProceduralPublicationVersion_cf(Value**,int n){
+    check_arg_count(cyrusProceduralPublicationVersion,0,n);
+    return Integer::intern(1);
 }
 
 def_visible_primitive(cyrusProceduralRadii,"cyrusProceduralRadii");

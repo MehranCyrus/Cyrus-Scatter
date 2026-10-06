@@ -1,0 +1,57 @@
+{
+  "max_year": 2027,
+  "qualification": "Live_Runtime_2026-10-06/final03",
+  "script_sha256": "c3f0b693a3854e9d11077bdea739469290e9a8a6e45f82ba44f38c6a1b486c8f",
+  "native_binaries_rebuilt": false,
+  "normal_profile_installed": false,
+  "packages": {
+    "CyrusScatter-0.7.1-Max2027.mzp": {
+      "sha256": "9a7045730a1c76ac3b3cd5c776fedf5a612b85cd49cc60adbb73a49378fb048e",
+      "bytes": 494535,
+      "manifest": {
+        "product": "Cyrus Scatter",
+        "version": "0.7.1",
+        "max_year": 2027,
+        "toolset": "14.38.33130",
+        "windows_sdk": "10.0.19041.0",
+        "configuration": "Release",
+        "native_id": "01e8f6e316b7",
+        "files": {
+          "AminScatter.dlx": "1159785553bdd69431aaa6226b47217f01819df1d9bc443f44aadcab1eb20a75",
+          "CyrusBrush.dlx": "3be69e177021a976b0e4fab4a0ba5c507b90d31528cfd86f758478e00284ebba",
+          "CyrusBrushStorage.dlh": "6cc5a9ab7f07b0492e407f6a6ae19e4d2c807d0fb2ff90791260dff97139403d",
+          "CyrusScatter.mcr": "ea8cf5cc48e10618047a595d52de3a5e972c1b9734ddcc24accebbbd9f1d7c91",
+          "CyrusScatter.ms": "c3f0b693a3854e9d11077bdea739469290e9a8a6e45f82ba44f38c6a1b486c8f",
+          "CyrusScatterEdit.dlm": "4ad6d6e50ca4f70b5953cd0d372f232a51c4702418dff68dca24f6bb0a3bf5c2",
+          "CyrusScatterStartup.ms": "fdf38b3bc83187eecb34b833bfff2751e78626e9e3dba41aa20a0ff7ff9e8405",
+          "INSTALL.txt": "d0929ebc95c45ab7912ddadc6f2c84f06115f96ee18f58d50de5a528d95100d9",
+          "Uninstall.ms": "59e2b84901fcefaae1dab59886cd2f4079df4f764c789238947e19c514b4ed49",
+          "install.ms": "b1080b154ead577e722808935a32b0432038ca99076774ee1afed8933a9459ba",
+          "mzp.run": "65c288baae5cf3f554d376bbc9f7d800b78f588c2b361be0b736157a03695486"
+        }
+      }
+    },
+    "CyrusSurfaceAnalyzer-0.14-Max2027.mzp": {
+      "sha256": "904814a46530be6dc1d8261dfa70088bad9f6d9700775a49b646e3be07452819",
+      "bytes": 50325,
+      "manifest": {
+        "product": "Cyrus Surface Analyzer",
+        "version": "0.14",
+        "max_year": 2027,
+        "toolset": "14.38.33130",
+        "windows_sdk": "10.0.19041.0",
+        "configuration": "Release",
+        "native_id": "737c50438892",
+        "files": {
+          "CyrusSurfaceAnalyzer.dlx": "737c50438892916cff7ece1b90fc606f7d6d08f695effc7e0bab76b3e9b15131",
+          "CyrusSurfaceAnalyzer.ms": "b9a1f1aa2ba7847566eb8f36bee711f9c64753572955ed4549f2f68669e5f923",
+          "CyrusSurfaceAnalyzerStartup.ms": "fdef46e54790c5c6d893479a17c6c885e4ff39897d00f1eac6b8567f86c18425",
+          "INSTALL.txt": "be102993eb74fb13f8a7d3e47efa265842ba20ca6acdc933f55c0d057ebee022",
+          "install.ms": "b9bf31ede5101b4a7d2112eae6ae17e213a0995721557cdc282486426c2df08b",
+          "mzp.run": "9a5e8deb72702b1be5214f4f9e99f3e4a12b04fd47d63ceb865f1f5ea28b2660"
+        }
+      }
+    }
+  },
+  "scope": "Scatter 0.7.1 and matching Analyzer dependency; Automation/MCP is separate."
+}

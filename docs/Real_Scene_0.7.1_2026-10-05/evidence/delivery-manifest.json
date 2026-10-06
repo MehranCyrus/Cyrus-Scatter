@@ -1,0 +1,264 @@
+{
+  "recorded_at": "2026-10-05T12:00:09.817256+03:30",
+  "original_preserved": true,
+  "input": {
+    "input": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\Test Scene\\Main Scene with 3D Model.max",
+    "sha256": "4c812b3e6cf1519c793075269b7c903463ca333a8548ef7b11bf4832e72dee76",
+    "bytes": 185413368,
+    "copy": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\real-scene-071\\Original_Artist_Scene_Copy.max"
+  },
+  "final_population_counts": {
+    "1": 52,
+    "2": 46,
+    "3": 53,
+    "4": 200,
+    "5": 1320,
+    "6": 8692,
+    "7": 132,
+    "8": 229
+  },
+  "exact_instances": 10724,
+  "branch": "codex/floating-layer-editor-0.7.1",
+  "head": "addccb492a88292529594de81c287cc26e5ffe98",
+  "working_tree": [
+    " M .gitattributes",
+    " M AminScatter/CMakeLists.txt",
+    " M AminScatter/scripts/AminScatterObject.ms",
+    " M AminScatter/tools/ui/layers-control-inventory.json",
+    " M AminScatter/tools/ui/layers-first.cjs",
+    " M AminScatter/tools/ui/procedural-policy.cjs",
+    " M AminScatter/tools/ui/templates/layers-flow-manager.ms",
+    " M AminScatter/tools/ui/templates/layers-flow-surface.ms",
+    " M AminScatter/tools/ui/templates/procedural-ui.ms",
+    " M docs/README.md",
+    " M docs/Release_Versioning.md",
+    " M tools/procedural_lab/Max_Procedural_07_Fixture.ms",
+    " M tools/procedural_lab/check_generated.py",
+    "?? AminScatter/tools/ui/layer-editor-layout.cjs",
+    "?? AminScatter/tools/ui/layer-editor-tooltips.json",
+    "?? AminScatter/tools/ui/templates/background-ui.ms",
+    "?? AminScatter/tools/ui/templates/compact-host.ms",
+    "?? AminScatter/tools/ui/templates/instance-radius-ui.ms",
+    "?? AminScatter/tools/ui/templates/layer-editor.ms",
+    "?? AminScatter/tools/ui/templates/layer-workflow-ui.ms",
+    "?? AminScatter/tools/ui/templates/population-policy-ui.ms",
+    "?? docs/Real_Scene_0.7.1_2026-10-05/",
+    "?? docs/UI_0.7.1_2026-10-05/",
+    "?? tools/procedural_lab/Max_Layer_Editor_071_Acceptance.ms",
+    "?? tools/procedural_lab/Max_Layer_Editor_071_BrushLive.ms",
+    "?? tools/procedural_lab/layer_editor_071/",
+    "?? tools/real_scene_071/"
+  ],
+  "outputs": [
+    {
+      "path": "Test Scene\\Cyrus_071_Courtyard\\01_Garden_Pavilion_Hero.png",
+      "bytes": 2363173,
+      "sha256": "a870bc900f37f101c0799a511087d5083f6bcf1e1fd2af47e10de9e445c227fb"
+    },
+    {
+      "path": "Test Scene\\Cyrus_071_Courtyard\\02_Garden_Walk_Detail.png",
+      "bytes": 4174905,
+      "sha256": "322914207e58fbfeb430beb3111d15d4b94d3b0ad98444b3369ddfdbd32acf53"
+    },
+    {
+      "path": "Test Scene\\Cyrus_071_Courtyard\\Cyrus_071_Garden_Pavilion.max",
+      "bytes": 110979404,
+      "sha256": "6c28d6f6cc7dfc9947900843edf9234809bc1a5336ef5f7c55f4e23059534f23"
+    },
+    {
+      "path": "Test Scene\\Cyrus_071_Courtyard\\Variant_Analyzer_Boundary.max",
+      "bytes": 110774604,
+      "sha256": "384e5588842cec3c49583f5767a7567c6bde6deffed68d778bfc90354a7a9690"
+    },
+    {
+      "path": "Test Scene\\Cyrus_071_Courtyard\\Variant_Clusters_Density_Transforms.max",
+      "bytes": 110737740,
+      "sha256": "a224e8fb99e634e969996edb35d7da61335885b307d504ce5fd307e1f3dac375"
+    },
+    {
+      "path": "Test Scene\\Cyrus_071_Courtyard\\Variant_Global_Containers_and_Radii.max",
+      "bytes": 110766412,
+      "sha256": "2f5a2bc7458353c9f4ecf560fc1f272766cedaa75a8526891ca2c8128270b48d"
+    },
+    {
+      "path": "Test Scene\\Cyrus_071_Courtyard\\Variant_Line_Pattern.max",
+      "bytes": 110774604,
+      "sha256": "06fd9efbd26a822e8046452d9ff351e45b6186e5cc7963e4bbe62ea97c475549"
+    },
+    {
+      "path": "Test Scene\\Cyrus_071_Courtyard\\Variant_Protected_Edits_Radii.max",
+      "bytes": 112175436,
+      "sha256": "453e76be8038ec3f5e34eaa90c70bddd7d1f615714e5fb532b908f6f3d08a4de"
+    }
+  ],
+  "fixture_sources": [
+    {
+      "path": "tools\\real_scene_071\\build_analyzer.py",
+      "sha256": "23d5fcabc0ab5d4f91ec4a971c4f2b8eb0917a984998b94d8bc73d47caeb4b7a"
+    },
+    {
+      "path": "tools\\real_scene_071\\collect_evidence.py",
+      "sha256": "6de41befbe2b85aa56b8fd150238b4893127e0c2dbc551adeef363440491ecb3"
+    },
+    {
+      "path": "tools\\real_scene_071\\diagnose_path_clearance.py",
+      "sha256": "bc7b668c73c24d668a24b18928548ee31454cbbfcb1895a1fa8069dad35d6157"
+    },
+    {
+      "path": "tools\\real_scene_071\\freeze_identity.py",
+      "sha256": "05a917f804c45d622f1db18064a5b010c4d786517f98f8a32036a51f5dac0ce1"
+    },
+    {
+      "path": "tools\\real_scene_071\\open_scene.py",
+      "sha256": "ae49fdf97ddab9bbe5dda4da57af18d427c93092b6734147d48b2a8cfed14de5"
+    },
+    {
+      "path": "tools\\real_scene_071\\oracle.py",
+      "sha256": "8f1bcf95b3043413784f61947e36a8946990ca49cd6bd5017a2fa1f510248dfa"
+    },
+    {
+      "path": "tools\\real_scene_071\\start_full_host.py",
+      "sha256": "be380e9361bdc593e3d0a74f7054f0e9c142bb8643de455b8f40513b1481bc1b"
+    },
+    {
+      "path": "tools\\real_scene_071\\start_inspection.py",
+      "sha256": "a1fbcf368d995ecfcf789255bd40336ac6129bdc01bcbfdd9bc00cef9b5362c4"
+    },
+    {
+      "path": "tools\\real_scene_071\\advanced_campaign.ms",
+      "sha256": "145ab83206c00dfff3514e82b2ebf602c424f81d2f66aa60e8fab72634b71634"
+    },
+    {
+      "path": "tools\\real_scene_071\\brush_history.ms",
+      "sha256": "faa61a8afb5bf36ecb67ed524460fa14e292228d13f3e6dd70d196a8afeddf62"
+    },
+    {
+      "path": "tools\\real_scene_071\\build_scene.ms",
+      "sha256": "4594d769c5428df8f2acf33698792973b82281b2f96080c530e8dfd0e01d37ba"
+    },
+    {
+      "path": "tools\\real_scene_071\\campaign.ms",
+      "sha256": "df5b76e6510df0c542127dc7c020a0a1e076c15d38e647ceeed801c21a22fd94"
+    },
+    {
+      "path": "tools\\real_scene_071\\check_pending_status.ms",
+      "sha256": "e3dfa275bdfc4b855bbd2fab14d3b2d71e4cc15b22edb7ff44b2f91863ea2430"
+    },
+    {
+      "path": "tools\\real_scene_071\\check_pointer_paint.ms",
+      "sha256": "4c0a4cb216e871f291e990a5266b366be395c309bddcd9be22ac049b8ba48c12"
+    },
+    {
+      "path": "tools\\real_scene_071\\clear_flower_trail.ms",
+      "sha256": "27f1a6b43b7c54fc06e8f36e008523c9f4cb415d4d865c02e2fdfb3d735f2da1"
+    },
+    {
+      "path": "tools\\real_scene_071\\close_private.ms",
+      "sha256": "d069610f4dcf20b9263ae5221b4cb6f7cd799e0215c106723d8f27bc9e45f4c3"
+    },
+    {
+      "path": "tools\\real_scene_071\\common.ms",
+      "sha256": "a88552a122ef66c801e370af759ce8412193ff98556290f664a9715d8599c653"
+    },
+    {
+      "path": "tools\\real_scene_071\\complete_build.ms",
+      "sha256": "7975ce59e515373ff8fbb0bb305ac1be4ecf59eeaea1bd2f47f3bcabd46f55e5"
+    },
+    {
+      "path": "tools\\real_scene_071\\details.ms",
+      "sha256": "7f22e6da6bdd4854ec1e1e43da78635deabb5ba16ca097e3ec0f2bda77396f35"
+    },
+    {
+      "path": "tools\\real_scene_071\\diagnose_advanced.ms",
+      "sha256": "7b88ff32eda36770a113fd2c33b6ad66d2abb039b97c39f94200f0acf4cfe53e"
+    },
+    {
+      "path": "tools\\real_scene_071\\diagnose_build.ms",
+      "sha256": "e73c851331ab016d5c1b6bca055971f0c04e6ff39fd36637c72c986cceaec8d4"
+    },
+    {
+      "path": "tools\\real_scene_071\\diagnose_surface.ms",
+      "sha256": "7f08844920c42a75c9e5b2cb707da9694ddd79b4b58d3858236c609f19f8c3a6"
+    },
+    {
+      "path": "tools\\real_scene_071\\disable_original.ms",
+      "sha256": "59ef86e6de7f1d7275aaa4b441096530d15c32c637c9952ede027befe3bfeafb"
+    },
+    {
+      "path": "tools\\real_scene_071\\finalize_scene.ms",
+      "sha256": "8adda56b37c3e226c79b5b3182fc765420875a44665556709073e59b68b19c84"
+    },
+    {
+      "path": "tools\\real_scene_071\\finish_design.ms",
+      "sha256": "07f99bd3addf8d445bd131b7f7d9082b726ca65bdc0072b46fd7653a0585e160"
+    },
+    {
+      "path": "tools\\real_scene_071\\inspect.ms",
+      "sha256": "3dc21ba04bb21758206e1739abe3f0aea04e55e7b89fd79882b05d7e1a27a144"
+    },
+    {
+      "path": "tools\\real_scene_071\\inspect_path.ms",
+      "sha256": "1b5ce67184d65d4cb27341b2187116f871c8a04d9eaeb63f725a80c115d04b43"
+    },
+    {
+      "path": "tools\\real_scene_071\\legacy_campaign.ms",
+      "sha256": "6c88f874f7fbde23c19a7706362cc8f7d4ecc8f1c48702dd7a1cb620e8d5e35e"
+    },
+    {
+      "path": "tools\\real_scene_071\\paint_curved_path.ms",
+      "sha256": "889a2adc413c2c2106dd91f87a8452c32945467d3b4941c643214cbbfffb7e76"
+    },
+    {
+      "path": "tools\\real_scene_071\\path_acceptance.ms",
+      "sha256": "1c9467acf9c71d9828a25132475b112294c8db0eb3dec1ac0528afc874ac572a"
+    },
+    {
+      "path": "tools\\real_scene_071\\polish_cameras.ms",
+      "sha256": "e59864b494f435855c1250fdce07066411b8209b623af1554c31833a087348df"
+    },
+    {
+      "path": "tools\\real_scene_071\\prepare_assets.ms",
+      "sha256": "e9d935ebfb55b63cbf1eada4d153e09cd7a87af11dc78156031a5a374802aaa1"
+    },
+    {
+      "path": "tools\\real_scene_071\\prepare_pointer_paint.ms",
+      "sha256": "bb219df9eaa71f4e91861bafa1ee27afcc7c961b149c39b42a918e5531196e19"
+    },
+    {
+      "path": "tools\\real_scene_071\\rare_options.ms",
+      "sha256": "c392e12cca3c9b1704ff430d4fe1d113c5a36a1e16e1d7f4b868b74a3594da60"
+    },
+    {
+      "path": "tools\\real_scene_071\\relink.ms",
+      "sha256": "9c8cce56fbb1fb5ff68aa7545b35788c0e0f43a78192352ac5306a4175866ebb"
+    },
+    {
+      "path": "tools\\real_scene_071\\render_detail_preview.ms",
+      "sha256": "ad8a39c9418a9f8889584d59b1b81564190b8e6e195d92574728fc0f3a3c97ad"
+    },
+    {
+      "path": "tools\\real_scene_071\\render_final.ms",
+      "sha256": "100f77c3334fa52942e82130b942e5b33bb1d240e49e2fd07fa6155885424422"
+    },
+    {
+      "path": "tools\\real_scene_071\\render_preview.ms",
+      "sha256": "908bfe0c50bae21dd0645e1b0be40cbd55bb469b643c76befcf1fe85ce9bc37f"
+    },
+    {
+      "path": "tools\\real_scene_071\\show_sources.ms",
+      "sha256": "b5772e705e9bf61ceb6bf1566e1d9e9c5aa6766ee0a36013cf3fb23d8ba7f941"
+    },
+    {
+      "path": "tools\\real_scene_071\\stabilize_terrain.ms",
+      "sha256": "8aaea4933a324bfd456871384db3313e71e4e80e21c03b312b1162553a0370cb"
+    },
+    {
+      "path": "tools\\real_scene_071\\Open_Garden_Pavilion.cmd",
+      "sha256": "ec28d3bf5238bfdb56928ccc89df8ef70570781ff59394e4b63441835bb09db9"
+    },
+    {
+      "path": "tools\\procedural_lab\\layer_editor_071\\private_host.py",
+      "sha256": "1de768d1a52e80d932ec1b5cf4780357cb6c29ca516822307a3f3100bc1d3e3a"
+    }
+  ]
+}

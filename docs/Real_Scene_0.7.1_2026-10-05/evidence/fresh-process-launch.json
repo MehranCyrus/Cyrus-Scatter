@@ -1,0 +1,65 @@
+{
+  "pid": 69432,
+  "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\user-tests\\real-scene-071\\20261005-115724-f00cd2a0",
+  "command": [
+    "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+    "-q",
+    "-i",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\user-tests\\real-scene-071\\20261005-115724-f00cd2a0\\max.ini",
+    "-p",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\user-tests\\real-scene-071\\20261005-115724-f00cd2a0\\plugins.ini",
+    "-U",
+    "MAXScript",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\user-tests\\real-scene-071\\20261005-115724-f00cd2a0\\start.ms",
+    "-listenerlog",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\user-tests\\real-scene-071\\20261005-115724-f00cd2a0\\listener.log"
+  ],
+  "binaries": {
+    "AminScatter.dlx": "d9b24bf33d06eb46070b53179c4fb49914b670861a139eeb768c9966e69895cb",
+    "CyrusBrush.dlx": "a7e7830d7b21f95e2bdd408fce6ef36f48767fd8bdc7ab5525780ef9bc0ddbb7",
+    "CyrusBrushStorage.dlh": "e7798e5ba801ed0d720d9ab1480ed77d2a2d50f515f76ba96d7a08c1d386c786",
+    "CyrusScatterEdit.dlm": "3402b16eb65a3de0bde44bccff152d123e237e818decfe778af8f77a75fd785a",
+    "CyrusSurfaceAnalyzer.dlx": "737c50438892916cff7ece1b90fc606f7d6d08f695effc7e0bab76b3e9b15131"
+  },
+  "script_sha256": "07d0bca2efe330b8b632c1a483cea23c65629b0f7ef5c0cbecd2c6984f1f9924",
+  "normal_profile_modified": false,
+  "development_transport": false,
+  "status": "PASS",
+  "scene": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\Test Scene\\Cyrus_071_Courtyard\\Cyrus_071_Garden_Pavilion.max",
+  "working_copy": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\user-tests\\real-scene-071\\20261005-115724-f00cd2a0\\project\\scenes\\Cyrus_071_Garden_Pavilion.max",
+  "populations": [
+    {
+      "name": "Base",
+      "instances": 52
+    },
+    {
+      "name": "Base",
+      "instances": 46
+    },
+    {
+      "name": "Base",
+      "instances": 53
+    },
+    {
+      "name": "Painted flower drifts",
+      "instances": 200
+    },
+    {
+      "name": "Clover outside flower coverage",
+      "instances": 1320
+    },
+    {
+      "name": "Grass between flowering plants",
+      "instances": 8692
+    },
+    {
+      "name": "Outer edge | Phlox and Viola",
+      "instances": 132
+    },
+    {
+      "name": "Inner edge | Lamium and Geranium",
+      "instances": 229
+    }
+  ],
+  "verified_scene_sha256": "6c28d6f6cc7dfc9947900843edf9234809bc1a5336ef5f7c55f4e23059534f23"
+}

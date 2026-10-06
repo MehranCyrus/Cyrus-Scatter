@@ -1,0 +1,3371 @@
+{
+  "schema": "cyrus.feature-catalog/1.0",
+  "authority": "Help only. Tool dispatch, closed schemas and local approval determine authority.",
+  "capability_source_sha256": "c272a8d9e21f9cc4d049c97e316215fad62873302e7afec234ca8920497bf1d3",
+  "control_inventory_sha256": "ee693aa0f7a6ddaeb4fa62f47d9e70896c7cbd0db6349bda5134f898d08bf51e",
+  "development_version": "0.7.1",
+  "mcp_version": "1.2.0",
+  "features": [
+    {
+      "feature_id": "C01",
+      "title": "Setup enable / controller",
+      "native": "Enable controls contribution; policy retained in scene",
+      "mcp": "Read configuration; plans act on enrolled/owned setups only",
+      "qualification_or_extension": "Explicit policy-3 controller creation/conversion contract; conversion must respect Edit bindings"
+    },
+    {
+      "feature_id": "C02",
+      "title": "Receiver and units / controller",
+      "native": "Static flat/curved supported meshes for scatter/Brush; shared receiver defaults",
+      "mcp": "Design enrollment: horizontal convex static site, restricted mesh/primitives",
+      "qualification_or_extension": "Receiver capability card, topology/units fingerprint, bounded curved enrollment after host proof"
+    },
+    {
+      "feature_id": "C03",
+      "title": "Layer administration / controller",
+      "native": "Create/copy/remove/name/enable/hide/order; ten total stored populations including sets",
+      "mcp": "Existing plans create up to three owned independent layers; read ordered policy-3 owners",
+      "qualification_or_extension": "Typed create/copy/remove/reorder with identity remapping, ownership and one transaction"
+    },
+    {
+      "feature_id": "C04",
+      "title": "Paint-set ownership / logical layer",
+      "native": "Weighted sets share layer population/defaults; independent sources and coverage",
+      "mcp": "Read effective values/paint status and procedural order; no set creation",
+      "qualification_or_extension": "Explicit declared/inherited/effective values, stable set IDs and atomic parent/set plan"
+    },
+    {
+      "feature_id": "C05",
+      "title": "Source palette / set",
+      "native": "Pick/remove/share models, groups, weights and metadata",
+      "mcp": "Enroll up to three approved mesh assets; plan source weights/settings; read source configuration",
+      "qualification_or_extension": "Broader qualified asset enrollment and capability restrictions; no arbitrary scene node IDs"
+    },
+    {
+      "feature_id": "C06",
+      "title": "Point/Empty source types / set",
+      "native": "Point slots and intentional Empty choices; target mode rejects Empty",
+      "mcp": "Inspection handles non-mesh/missing entries; design plans require mesh sources",
+      "qualification_or_extension": "Typed source kinds and count semantics before remote creation"
+    },
+    {
+      "feature_id": "C07",
+      "title": "Model containers / global/layer/set",
+      "native": "Rectangle-local XY pivot membership; global/inherited/own pools; parking preserves registration/settings",
+      "mcp": "Read configured references/mode plus cached active/parked/missing/placeholder rows and membership revision when available. Stale row alignment is reported as unavailable; no reconciliation or current-containment query. New cached-row adapter awaits isolated Max qualification.",
+      "qualification_or_extension": "Cached active/parked/missing snapshot with membership revision; later scoped rectangle/pool authoring"
+    },
+    {
+      "feature_id": "C08",
+      "title": "Source transform/radius / set row",
+      "native": "Source lift/scale/forward axis, radius and follow-scale; per-owner settings",
+      "mcp": "Plan-2 typed source settings; policy-3 metadata inspection",
+      "qualification_or_extension": "Policy-3 recipe authoring and normalized effective radius explanation"
+    },
+    {
+      "feature_id": "C09",
+      "title": "Population and seed / layer",
+      "native": "Count or density, stable seed, weighted quota allocation",
+      "mcp": "Plans use bounded count/seed; current configuration exposes more than plans can author",
+      "qualification_or_extension": "Density/target semantics and total sample budget; no implicit quota per child"
+    },
+    {
+      "feature_id": "C10",
+      "title": "Candidate budget / accepted target / layer",
+      "native": "Bounded attempt factor, rounds and cleanup-gap retries",
+      "mcp": "Policy-3 recipe and last-published statistics read only",
+      "qualification_or_extension": "Typed target/work admission and underfill acceptance after actual evaluation"
+    },
+    {
+      "feature_id": "C11",
+      "title": "Density texture / layer",
+      "native": "Texture/UV density and inversion; qualified native invalidation paths",
+      "mcp": "No map enrollment/write contract",
+      "qualification_or_extension": "Bounded enrolled map references, revisions and supported evaluation; reject missing assets explicitly"
+    },
+    {
+      "feature_id": "C12",
+      "title": "Area include/exclude / layer",
+      "native": "Supported scene splines/meshes; Area combines with Brush",
+      "mcp": "Plan-2 enrolled convex include/exclude/protected regions and conservative masks",
+      "qualification_or_extension": "General domain adapters and surface-bound references; no inferred world mask from an image"
+    },
+    {
+      "feature_id": "C13",
+      "title": "Analyzer Area/falloff / layer",
+      "native": "Existing supported Analyzer references, curves and distances",
+      "mcp": "No mutation; current plan geometry remains narrow",
+      "qualification_or_extension": "Analysis capability/version, cached result status and separately qualified binding"
+    },
+    {
+      "feature_id": "C14",
+      "title": "Brush coverage / set",
+      "native": "Static surface-bound Paint/Erase; radius, strength, softness, density; overlays",
+      "mcp": "Read paint enabled/document/revision/count; no Brush authoring",
+      "qualification_or_extension": "Typed target-bound stroke/field operations, capped samples/history and one Undo gesture"
+    },
+    {
+      "feature_id": "C15",
+      "title": "Brush history/reset / set",
+      "native": "Edit, enable, delete strokes; Fill/Empty reset histories; rebinding guard",
+      "mcp": "No mutation or arbitrary document import",
+      "qualification_or_extension": "Explicit replace/append/reset semantics, stale topology denial, rollback and persistence tests"
+    },
+    {
+      "feature_id": "C16",
+      "title": "Background composition / set",
+      "native": "Outside coverage, Between plants, both/off; earlier sibling references",
+      "mcp": "Policy-3 recipe read only",
+      "qualification_or_extension": "Separate typed operations/fields; validate order/domain/spacing without silent fallback"
+    },
+    {
+      "feature_id": "C17",
+      "title": "Random/cluster assignment / layer",
+      "native": "Policy 3 supports Random/Clusters and source grouping",
+      "mcp": "Existing plan writes random weighted sources; no cluster authoring",
+      "qualification_or_extension": "Qualified typed cluster parameters; preserve deterministic identities"
+    },
+    {
+      "feature_id": "C18",
+      "title": "Line/Analyzer assignment / layer",
+      "native": "Supported legacy policies; not policy-3 assignment",
+      "mcp": "Unavailable for mutation",
+      "qualification_or_extension": "Preserve honest policy restriction; do not offer it in a procedural plan until implemented"
+    },
+    {
+      "feature_id": "C19",
+      "title": "Rotation/scale/movement / layer",
+      "native": "XYZ/whole scale/rotation, normal alignment, projected movement and resets",
+      "mcp": "Plan 1 basic scale/yaw; plan 2 XYZ scale, XY tilt/projected movement; not every native axis/mode",
+      "qualification_or_extension": "Policy-3 parity, effective units/ranges and protected-binding effects"
+    },
+    {
+      "feature_id": "C20",
+      "title": "Three collision scopes / set/layer/pair",
+      "native": "Independent self, sibling and layer rules; XY/3D; radius factor/gap",
+      "mcp": "Plan 2 older shared collision/pair settings; read policy-3 rules",
+      "qualification_or_extension": "Policy-3 schema with ordered owners, inherited self rule, explicit pair overrides and final-radius checks"
+    },
+    {
+      "feature_id": "C21",
+      "title": "Instance Edit/radius / output identity",
+      "native": "Move/clone/delete protections and selected-instance world radius/multiplier",
+      "mcp": "No mutation; read stored procedural radius overrides",
+      "qualification_or_extension": "Snapshot-bound typed edits; define cross-generation correspondence or reject stale identities"
+    },
+    {
+      "feature_id": "C22",
+      "title": "Cleanup / layer union",
+      "native": "Final neighbor/island cleanup, protected reservations, bounded retry",
+      "mcp": "Typed older-plan cleanup; procedural diagnostics read",
+      "qualification_or_extension": "Policy-3 parity and disjoint candidate/instance accounting"
+    },
+    {
+      "feature_id": "C23",
+      "title": "Relax / legacy layer",
+      "native": "Supported older unpainted paths; incompatible Brush/shared/procedural paths paused",
+      "mcp": "Unavailable",
+      "qualification_or_extension": "Qualify movement/eligibility semantics before enabling; no misleading replacement with another algorithm"
+    },
+    {
+      "feature_id": "C24",
+      "title": "Manual/Live and Update / setup",
+      "native": "Manual keeps complete publication until Update; Live responds to relevant edits",
+      "mcp": "Existing plan display update mode; read cached result; no general policy-3 Update tool",
+      "qualification_or_extension": "Distinguish authored commit, evaluate, pending recipe and published result explicitly"
+    },
+    {
+      "feature_id": "C25",
+      "title": "Preview / setup/layer",
+      "native": "Retained Point Cloud/Mesh; Proxy/centres; display budgets, colours and radius helpers",
+      "mcp": "Plan-2 display subset; cached diagnostic counters and bounded viewport capture",
+      "qualification_or_extension": "Read-only current diagnostics; later display-only write with zero resampling contract"
+    },
+    {
+      "feature_id": "C26",
+      "title": "UI navigation / editor",
+      "native": "Six topics, binding, scrolling, resize and tooltips",
+      "mcp": "No remote UI clicking API",
+      "qualification_or_extension": "Feature help should map to artist location; UI browsing must not become a calculation action"
+    },
+    {
+      "feature_id": "C27",
+      "title": "Statistics / set/controller",
+      "native": "Cached accepted/rejected/attempt/shortfall/protected/error/epoch data",
+      "mcp": "Diagnostics/configuration; process totals distinct from per-controller data",
+      "qualification_or_extension": "Reason codes, field freshness/availability and optional bounded conflict samples"
+    },
+    {
+      "feature_id": "C28",
+      "title": "Renderer / output",
+      "native": "PFlow exact-output adapter; successful production examples; open IR restart issue",
+      "mcp": "No render execution tool; capture is viewport only",
+      "qualification_or_extension": "Qualified camera/profile enrollment, render jobs and correlated completion/failure receipts"
+    },
+    {
+      "feature_id": "C29",
+      "title": "Bake/clear / owned output",
+      "native": "Local Bake and clear-owned-output paths",
+      "mcp": "No mutation",
+      "qualification_or_extension": "Destructive scope, renderer/source fidelity, size cap, undo and failure-before-cleanup checks"
+    },
+    {
+      "feature_id": "C30",
+      "title": "Save/load/Undo / scene",
+      "native": "Authored state persists; caches reconstruct; binding/unit restrictions",
+      "mcp": "Scoped local recovery, journal and own top-Undo checks; no arbitrary scene-save command",
+      "qualification_or_extension": "Explicit future snapshot/recovery operations; no remote overwrite of arbitrary files"
+    },
+    {
+      "feature_id": "C31",
+      "title": "Export / published generation",
+      "native": "Exact local placements; native stable identity semantics",
+      "mcp": "Legacy owned records remain supported. MCP 1.2 source adds get_publication/read_publication_page for policy-3 cached transforms, effective radii, stable IDs and compact metadata. Full reconstructable recipe/asset export remains unavailable. New host adapter awaits isolated Max qualification.",
+      "qualification_or_extension": "Immutable policy-3 publication export with recipe, sources, radii, epoch, digest and bounded paging/artifacts"
+    },
+    {
+      "feature_id": "C32",
+      "title": "Diagnostics recording / session",
+      "native": "Recorded manual tools plus new recorder/local-export source under independent development",
+      "mcp": "MCP 1.2 source adds explicitly shared diagnostic event pages. Local panel starts/stops/saves bounded process-wide recording. Offline tests pass; runtime overhead/lifecycle/renderer acceptance remains pending. No remote start, stop, grant or file write.",
+      "qualification_or_extension": "Qualify the new bounded page and local-sharing boundary, then the full causal session/archive specification"
+    },
+    {
+      "feature_id": "C33",
+      "title": "Licensing / product",
+      "native": "Default-off native/local lab foundation, incomplete commercial boundary",
+      "mcp": "No licensing-administration authority or production enforcement implied",
+      "qualification_or_extension": "Apply operation policy consistently across UI/API once qualified; redact grants/keys from diagnostics"
+    },
+    {
+      "feature_id": "C34",
+      "title": "References/style/learning / companion",
+      "native": "Research and record contracts only",
+      "mcp": "No training/inference tools or automatic collection",
+      "qualification_or_extension": "Profile/recipe pilot, explicit comparisons, dataset eligibility and held-out evaluation"
+    }
+  ],
+  "controls": [
+    {
+      "group": "general",
+      "section": "host",
+      "name": "enabledCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C01"
+      ],
+      "owner_context": "Controller",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "editor",
+      "name": "updateNow",
+      "kind": "button",
+      "capabilities": [
+        "C24",
+        "C26",
+        "C27"
+      ],
+      "owner_context": "Editor context; action scope named in UI",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "editor",
+      "name": "layerList",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C24",
+        "C26",
+        "C27"
+      ],
+      "owner_context": "Editor context; action scope named in UI",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "editor",
+      "name": "setList",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C24",
+        "C26",
+        "C27"
+      ],
+      "owner_context": "Editor context; action scope named in UI",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "editor",
+      "name": "assetsTab",
+      "kind": "checkbutton",
+      "capabilities": [
+        "C24",
+        "C26",
+        "C27"
+      ],
+      "owner_context": "Editor context; action scope named in UI",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "editor",
+      "name": "populationTab",
+      "kind": "checkbutton",
+      "capabilities": [
+        "C24",
+        "C26",
+        "C27"
+      ],
+      "owner_context": "Editor context; action scope named in UI",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "editor",
+      "name": "paintTab",
+      "kind": "checkbutton",
+      "capabilities": [
+        "C24",
+        "C26",
+        "C27"
+      ],
+      "owner_context": "Editor context; action scope named in UI",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "editor",
+      "name": "transformTab",
+      "kind": "checkbutton",
+      "capabilities": [
+        "C24",
+        "C26",
+        "C27"
+      ],
+      "owner_context": "Editor context; action scope named in UI",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "editor",
+      "name": "spacingTab",
+      "kind": "checkbutton",
+      "capabilities": [
+        "C24",
+        "C26",
+        "C27"
+      ],
+      "owner_context": "Editor context; action scope named in UI",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "editor",
+      "name": "statisticsTab",
+      "kind": "checkbutton",
+      "capabilities": [
+        "C24",
+        "C26",
+        "C27"
+      ],
+      "owner_context": "Editor context; action scope named in UI",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "editor",
+      "name": "refreshButton",
+      "kind": "button",
+      "capabilities": [
+        "C24",
+        "C26",
+        "C27"
+      ],
+      "owner_context": "Editor context; action scope named in UI",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "updateUI",
+      "name": "updateRadio",
+      "kind": "radiobuttons",
+      "capabilities": [
+        "C24"
+      ],
+      "owner_context": "Controller",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "updateUI",
+      "name": "updateNow",
+      "kind": "button",
+      "capabilities": [
+        "C24"
+      ],
+      "owner_context": "Controller",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
+      "name": "previewCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Setup display/output",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
+      "name": "displayModeDrop",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Setup display/output",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
+      "name": "proxyShapeDrop",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Setup display/output",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
+      "name": "instancesLimitSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Setup display/output",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
+      "name": "faceLimitSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Setup display/output",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
+      "name": "pointColorRadio",
+      "kind": "radiobuttons",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Setup display/output",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
+      "name": "solidColorPicker",
+      "kind": "colorpicker",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Setup display/output",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
+      "name": "budgetSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Setup display/output",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
+      "name": "pointsSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Setup display/output",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
+      "name": "radiusLimitSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Setup display/output",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
+      "name": "radiusAllCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Setup display/output",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
+      "name": "iconSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Setup display/output",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
+      "name": "refreshButton",
+      "kind": "button",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Setup display/output",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
+      "name": "autoRenderCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Setup display/output",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
+      "name": "clearBakedButton",
+      "kind": "button",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Setup display/output",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "surface",
+      "name": "sharedPick",
+      "kind": "pickbutton",
+      "capabilities": [
+        "C02",
+        "C07"
+      ],
+      "owner_context": "Controller/global pool",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "surface",
+      "name": "surfacesButton",
+      "kind": "button",
+      "capabilities": [
+        "C02",
+        "C07"
+      ],
+      "owner_context": "Controller/global pool",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "surface",
+      "name": "policyButton",
+      "kind": "button",
+      "capabilities": [
+        "C02",
+        "C07"
+      ],
+      "owner_context": "Controller/global pool",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "surface",
+      "name": "containersToggle",
+      "kind": "checkbutton",
+      "capabilities": [
+        "C02",
+        "C07"
+      ],
+      "owner_context": "Controller/global pool",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "surface",
+      "name": "globalContainers",
+      "kind": "listbox",
+      "capabilities": [
+        "C02",
+        "C07"
+      ],
+      "owner_context": "Controller/global pool",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "surface",
+      "name": "createContainer",
+      "kind": "button",
+      "capabilities": [
+        "C02",
+        "C07"
+      ],
+      "owner_context": "Controller/global pool",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "surface",
+      "name": "pickContainer",
+      "kind": "pickbutton",
+      "capabilities": [
+        "C02",
+        "C07"
+      ],
+      "owner_context": "Controller/global pool",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "surface",
+      "name": "removeContainer",
+      "kind": "button",
+      "capabilities": [
+        "C02",
+        "C07"
+      ],
+      "owner_context": "Controller/global pool",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "manager",
+      "name": "layerList",
+      "kind": "listbox",
+      "capabilities": [
+        "C03"
+      ],
+      "owner_context": "Controller/layer",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "manager",
+      "name": "editButton",
+      "kind": "button",
+      "capabilities": [
+        "C03"
+      ],
+      "owner_context": "Controller/layer",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "manager",
+      "name": "addButton",
+      "kind": "button",
+      "capabilities": [
+        "C03"
+      ],
+      "owner_context": "Controller/layer",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "manager",
+      "name": "copyButton",
+      "kind": "button",
+      "capabilities": [
+        "C03"
+      ],
+      "owner_context": "Controller/layer",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "manager",
+      "name": "removeButton",
+      "kind": "button",
+      "capabilities": [
+        "C03"
+      ],
+      "owner_context": "Controller/layer",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "manager",
+      "name": "nameEdit",
+      "kind": "edittext",
+      "capabilities": [
+        "C03"
+      ],
+      "owner_context": "Controller/layer",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "manager",
+      "name": "visibleCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C03"
+      ],
+      "owner_context": "Controller/layer",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "manager",
+      "name": "enabledCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C03"
+      ],
+      "owner_context": "Controller/layer",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "manager",
+      "name": "upButton",
+      "kind": "button",
+      "capabilities": [
+        "C03"
+      ],
+      "owner_context": "Controller/layer",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "manager",
+      "name": "downButton",
+      "kind": "button",
+      "capabilities": [
+        "C03"
+      ],
+      "owner_context": "Controller/layer",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "plantList",
+      "kind": "multiListBox",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "selectFromScene",
+      "kind": "button",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row",
+      "help": "Choose one or more source models by name.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "addPlant",
+      "kind": "pickbutton",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row",
+      "help": "Pick a scene model for this paint set. The editor stays on its layer.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "addSelected",
+      "kind": "button",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row",
+      "help": "Add the currently selected scene objects to this paint set.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "removePlant",
+      "kind": "button",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row",
+      "help": "Unregister highlighted rows. To keep their settings, park models outside a source rectangle instead.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "selectPlant",
+      "kind": "button",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row",
+      "help": "Select the highlighted source models in the scene.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "addPoint",
+      "kind": "button",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row",
+      "help": "Add a placeholder source that can later be replaced by a model.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "addEmpty",
+      "kind": "button",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row",
+      "help": "Add a weighted empty source for intentional gaps in candidate-budget mode.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "replacePoint",
+      "kind": "pickbutton",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row",
+      "help": "Replace one highlighted Point row with a scene model.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "existingGroups",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row",
+      "help": "Assign highlighted sources to an existing color group for clustering.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "groupColor",
+      "kind": "colorpicker",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row",
+      "help": "Assign a color group to highlighted sources when the color is accepted.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "applyColor",
+      "kind": "button",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row",
+      "help": "Assign the chosen color group to all highlighted source rows.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "weightSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row",
+      "help": "Relative source share within this paint set. Zero disables the source.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "sourceZSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row",
+      "help": "Offset instances of highlighted models along their placement normal.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "sourceScaleSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row",
+      "help": "Per-model scale multiplier. 1 keeps the model's original scale.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "radiusSourceSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row",
+      "help": "Collision footprint radius for highlighted source rows, in scene units.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "followRadiusCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row",
+      "help": "Scale this source's collision footprint with its instance scale.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "showRadiusCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row",
+      "help": "Show this source's radius in the viewport; does not change collision rules.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "forwardAxis",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row",
+      "help": "The model's local forward direction, used for orientation.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "name": "detailsToggle",
+      "kind": "checkbutton",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Paint-set source row",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "name": "modeRadio",
+      "kind": "radiobuttons",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Layer defaults",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "name": "populationRadio",
+      "kind": "radiobuttons",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Layer defaults",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "name": "showCenterCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Layer defaults",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "name": "countSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Layer defaults",
+      "help": "Layer population before eligibility. Accepted target can retry up to its limits.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "name": "densitySpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Layer defaults",
+      "help": "Requested plants per square metre of receiving surface; capped at 100,000.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "name": "seedSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Layer defaults",
+      "help": "Deterministic generation seed. Changing it can invalidate existing Edit bindings.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "name": "densityButton",
+      "kind": "mapbutton",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Layer defaults",
+      "help": "Use UV channel 1: white permits candidates; black excludes them.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "name": "invertCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Layer defaults",
+      "help": "Reverse the density map's white and black eligibility.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "coverageMode",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage",
+      "help": "Use the whole receiver or this paint set's saved painted coverage.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "modeRadio",
+      "kind": "radiobuttons",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "radiusSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage",
+      "help": "World-space radius of the next Brush stroke on the receiving surface.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "strengthSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage",
+      "help": "Amount of coverage painted or erased by the next stroke.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "softSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage",
+      "help": "Softness of the next stroke's edge.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "densitySpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage",
+      "help": "Thin plants allowed by the saved mask. Set absolute population on Population.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "beginButton",
+      "kind": "button",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage",
+      "help": "Paint this set on the shared surface. Creates an empty mask when needed.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "stopButton",
+      "kind": "button",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage",
+      "help": "Finish painting and retain the editable stroke history.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "fillButton",
+      "kind": "button",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage",
+      "help": "Fill coverage and reset stroke history. Undo restores the previous field.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "emptyButton",
+      "kind": "button",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage",
+      "help": "Empty coverage and reset stroke history. Undo restores the previous field.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "overlayMode",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage",
+      "help": "Coverage feedback only; it does not show which plants survive spacing.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "overlayColor",
+      "kind": "colorpicker",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage",
+      "help": "Viewport color for this paint set's coverage feedback.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "strokeList",
+      "kind": "listbox",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "strokeEnabled",
+      "kind": "checkbox",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage",
+      "help": "Enable or disable the highlighted saved stroke without deleting it.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "strokeErase",
+      "kind": "checkbox",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage",
+      "help": "Change the highlighted saved stroke between paint and erase.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "strokeRadius",
+      "kind": "spinner",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage",
+      "help": "Change the radius of the highlighted saved stroke.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "strokeStrength",
+      "kind": "spinner",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage",
+      "help": "Change the strength of the highlighted saved stroke.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "strokeSoft",
+      "kind": "spinner",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage",
+      "help": "Change the edge softness of the highlighted saved stroke.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "deleteStroke",
+      "kind": "button",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage",
+      "help": "Delete the highlighted stroke. Undo restores it.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "resetTarget",
+      "kind": "button",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage",
+      "help": "Confirm before replacing this set's paint with an empty mask on the current receiver.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "name": "detailsToggle",
+      "kind": "checkbutton",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "areaList",
+      "kind": "multiListBox",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "addAreaScene",
+      "kind": "button",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff",
+      "help": "Choose closed Area shapes by name.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "pickArea",
+      "kind": "pickbutton",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff",
+      "help": "Pick a closed shape as an include/exclude Area shared by all sets in this layer.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "removeArea",
+      "kind": "button",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff",
+      "help": "Unlink highlighted Areas and their falloff settings; keep the scene shapes.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "areaMode",
+      "kind": "radiobuttons",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "refreshAreas",
+      "kind": "button",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff",
+      "help": "Refresh Area geometry and recalculate the layer preview.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "aaPick",
+      "kind": "pickbutton",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff",
+      "help": "Choose an existing Cyrus Surface Analyzer for line or point masks.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "aaRemove",
+      "kind": "button",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff",
+      "help": "Disable and unlink the layer's Analyzer Area mask.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "aaLine",
+      "kind": "checkbox",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff",
+      "help": "Use the Analyzer centre line as an XY mask; unions with its point mask.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "aaWidth",
+      "kind": "spinner",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff",
+      "help": "Full width of the Analyzer centre-line Area mask.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "aaCaps",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff",
+      "help": "Flat or round ends for the line mask.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "aaStreetOffset",
+      "kind": "spinner",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff",
+      "help": "Lateral offset from the Analyzer centre line.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "aaPoints",
+      "kind": "checkbox",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff",
+      "help": "Use discs around Analyzer points as an XY mask.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "aaRadius",
+      "kind": "spinner",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff",
+      "help": "Radius of each Analyzer point mask.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "fallTarget",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff",
+      "help": "Edit Analyzer boundary falloff or one highlighted Area's independent falloff.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "fallPick",
+      "kind": "pickbutton",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff",
+      "help": "Choose the Analyzer whose boundary drives this falloff.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "fallRemove",
+      "kind": "button",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff",
+      "help": "Unlink the falloff Analyzer and disable its falloff effects.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "fallDeleteCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff",
+      "help": "Exclude an edge band before scale and density ramps begin.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "fallDeleteSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff",
+      "help": "Width of the excluded edge band in scene units.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "fallScaleCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff",
+      "help": "Vary instance scale with distance from this boundary.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "fallScaleSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff",
+      "help": "Distance over which the scale curve is evaluated.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "fallScaleEdit",
+      "kind": "button",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff",
+      "help": "Edit this boundary's scale curve.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "fallDensityCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff",
+      "help": "Vary candidate eligibility with distance from this boundary.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "fallDensitySpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff",
+      "help": "Distance over which the density curve is evaluated.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "fallDensityEdit",
+      "kind": "button",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff",
+      "help": "Edit this boundary's density curve.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "name": "detailsToggle",
+      "kind": "checkbutton",
+      "capabilities": [
+        "C12",
+        "C13"
+      ],
+      "owner_context": "Layer Area/falloff",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "diversityRadio",
+      "kind": "radiobuttons",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "sizeSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": "Spatial size of source-color clusters.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "divSeedSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": "Change source assignment randomness without changing the generation seed.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "roughSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "blurSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "noiseSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "pathsDrop",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "analyzerChannel",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "pickAnalyzer",
+      "kind": "pickbutton",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": "Choose an existing Surface Analyzer for the legacy assignment modes.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "pickPath",
+      "kind": "pickbutton",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": "Pick a spline for Line Pattern assignment.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "removePath",
+      "kind": "button",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": "Remove the selected assignment path while keeping the scene spline.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "strokesList",
+      "kind": "listbox",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "addOutside",
+      "kind": "button",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": "Add a source-assignment band outside the selected path.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "addInside",
+      "kind": "button",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": "Add a source-assignment band inside the selected path.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "removeStrokeButton",
+      "kind": "button",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": "Remove the selected assignment band and its settings.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "strokeWidth",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "strokeMode",
+      "kind": "radiobuttons",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "strokeChoices",
+      "kind": "multiListBox",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "strokeScaleMin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "strokeScaleMax",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "refreshGroups",
+      "kind": "button",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": "Refresh available source color groups for assignment.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "edgeOffsetSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "edgeAlongSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "edgeAcrossSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "keepCornerCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "cornerAngleSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "cornerCountSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "edgeRotXSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "edgeRotYSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "edgeRotZSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "streetStartSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "streetEndSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "centerStreetSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "faceOutCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "cornerRadiusSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "name": "straightStreet",
+      "kind": "checkbox",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Layer assignment",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "rotXMinSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "rotXMaxSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "rotYMinSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "rotYMaxSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "rotZMinSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "rotZMaxSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "sclXMinSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "sclXMaxSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "sclYMinSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "sclYMaxSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "sclZMinSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "sclZMaxSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "wholeMinSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "wholeMaxSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "movXMinSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "movXMaxSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "movYMinSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "movYMaxSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "movZMinSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "movZMaxSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "projectCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms",
+      "help": "Project random movement back onto the receiving surface.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "alignCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms",
+      "help": "Align instances to the receiving surface normal.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "resetRotation",
+      "kind": "button",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms",
+      "help": "Reset only this layer's random rotation limits. Undo is available.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "resetScale",
+      "kind": "button",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms",
+      "help": "Reset only this layer's separate X, Y and Z scale limits.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "resetWholeScale",
+      "kind": "button",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms",
+      "help": "Reset only this layer's uniform scale multiplier.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "name": "resetMovement",
+      "kind": "button",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Layer transforms",
+      "help": "Reset only this layer's random translation limits.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "spacingUI",
+      "name": "collisionCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C20",
+        "C23"
+      ],
+      "owner_context": "Self-spacing inheritance or legacy layer",
+      "help": "Layer default for self-spacing, used by sets without a self override.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "spacingUI",
+      "name": "radiusSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C20",
+        "C23"
+      ],
+      "owner_context": "Self-spacing inheritance or legacy layer",
+      "help": "Inherited centre-distance rule uses two times this radius.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "spacingUI",
+      "name": "relaxCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C20",
+        "C23"
+      ],
+      "owner_context": "Self-spacing inheritance or legacy layer",
+      "help": "Legacy point relaxation; paused under procedural evaluation or Brush coverage.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "spacingUI",
+      "name": "spacingSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C20",
+        "C23"
+      ],
+      "owner_context": "Self-spacing inheritance or legacy layer",
+      "help": "Desired distance for legacy point relaxation.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "spacingUI",
+      "name": "iterationsSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C20",
+        "C23"
+      ],
+      "owner_context": "Self-spacing inheritance or legacy layer",
+      "help": "Bound the number of legacy relaxation passes.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "spacingUI",
+      "name": "strengthSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C20",
+        "C23"
+      ],
+      "owner_context": "Self-spacing inheritance or legacy layer",
+      "help": "Movement strength per legacy relaxation pass.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "separationUI",
+      "name": "prioritySpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C20",
+        "C22",
+        "C23"
+      ],
+      "owner_context": "Legacy pairs/layer union cleanup",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "separationUI",
+      "name": "peerList",
+      "kind": "listbox",
+      "capabilities": [
+        "C20",
+        "C22",
+        "C23"
+      ],
+      "owner_context": "Legacy pairs/layer union cleanup",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "separationUI",
+      "name": "blockerList",
+      "kind": "multiListBox",
+      "capabilities": [
+        "C20",
+        "C22",
+        "C23"
+      ],
+      "owner_context": "Legacy pairs/layer union cleanup",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "separationUI",
+      "name": "overlapCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C20",
+        "C22",
+        "C23"
+      ],
+      "owner_context": "Legacy pairs/layer union cleanup",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "separationUI",
+      "name": "radiusMode",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C20",
+        "C22",
+        "C23"
+      ],
+      "owner_context": "Legacy pairs/layer union cleanup",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "separationUI",
+      "name": "gapSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C20",
+        "C22",
+        "C23"
+      ],
+      "owner_context": "Legacy pairs/layer union cleanup",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "separationUI",
+      "name": "radiusSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C20",
+        "C22",
+        "C23"
+      ],
+      "owner_context": "Legacy pairs/layer union cleanup",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "separationUI",
+      "name": "planarCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C20",
+        "C22",
+        "C23"
+      ],
+      "owner_context": "Legacy pairs/layer union cleanup",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "separationUI",
+      "name": "statsButton",
+      "kind": "button",
+      "capabilities": [
+        "C20",
+        "C22",
+        "C23"
+      ],
+      "owner_context": "Legacy pairs/layer union cleanup",
+      "help": "Recalculate the setup, including spacing and cleanup.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "separationUI",
+      "name": "cleanCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C20",
+        "C22",
+        "C23"
+      ],
+      "owner_context": "Legacy pairs/layer union cleanup",
+      "help": "Remove isolated plants after collision across the whole logical layer.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "separationUI",
+      "name": "neighborSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C20",
+        "C22",
+        "C23"
+      ],
+      "owner_context": "Legacy pairs/layer union cleanup",
+      "help": "Distance used to count nearby accepted plants during final cleanup.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "separationUI",
+      "name": "minNeighborSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C20",
+        "C22",
+        "C23"
+      ],
+      "owner_context": "Legacy pairs/layer union cleanup",
+      "help": "Remove plants that have fewer than this many neighbors.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "separationUI",
+      "name": "minIslandSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C20",
+        "C22",
+        "C23"
+      ],
+      "owner_context": "Legacy pairs/layer union cleanup",
+      "help": "Remove connected islands smaller than this number of plants.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "separationUI",
+      "name": "boundaryRelaxCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C20",
+        "C22",
+        "C23"
+      ],
+      "owner_context": "Legacy pairs/layer union cleanup",
+      "help": "Legacy boundary relaxation; preserved but paused by shared spacing.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "separationUI",
+      "name": "finalStrengthSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C20",
+        "C22",
+        "C23"
+      ],
+      "owner_context": "Legacy pairs/layer union cleanup",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "separationUI",
+      "name": "finalIterSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C20",
+        "C22",
+        "C23"
+      ],
+      "owner_context": "Legacy pairs/layer union cleanup",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "separationUI",
+      "name": "finalMoveSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C20",
+        "C22",
+        "C23"
+      ],
+      "owner_context": "Legacy pairs/layer union cleanup",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "proceduralUI",
+      "name": "scopeList",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C20"
+      ],
+      "owner_context": "Selected self/sibling/layer rule scope",
+      "help": "Choose within-set, between-set defaults, a set pair, or a layer pair.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "proceduralUI",
+      "name": "peerList",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C20"
+      ],
+      "owner_context": "Selected self/sibling/layer rule scope",
+      "help": "The other set or layer affected by this pair rule.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "proceduralUI",
+      "name": "enabledCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C20"
+      ],
+      "owner_context": "Selected self/sibling/layer rule scope",
+      "help": "Enable only this collision scope. Other scopes are independent.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "proceduralUI",
+      "name": "multiplierSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C20"
+      ],
+      "owner_context": "Selected self/sibling/layer rule scope",
+      "help": "Minimum distance = factor times (radius A + radius B), plus extra gap.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "proceduralUI",
+      "name": "gapSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C20"
+      ],
+      "owner_context": "Selected self/sibling/layer rule scope",
+      "help": "Additional distance in scene units. Saves immediately; Manual waits for Update.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "proceduralUI",
+      "name": "planarCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C20"
+      ],
+      "owner_context": "Selected self/sibling/layer rule scope",
+      "help": "Measure distance in world XY. Turn off to include height in 3D distance.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "proceduralUI",
+      "name": "resetRule",
+      "kind": "button",
+      "capabilities": [
+        "C20"
+      ],
+      "owner_context": "Selected self/sibling/layer rule scope",
+      "help": "Remove a pair or self override, or reset the between-set default.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "populationPolicyUI",
+      "name": "populationList",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C10"
+      ],
+      "owner_context": "Layer work limits",
+      "help": "Budget evaluates the generated candidates; target makes bounded replacement attempts.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "populationPolicyUI",
+      "name": "attemptSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C10"
+      ],
+      "owner_context": "Layer work limits",
+      "help": "Maximum candidate attempts as a multiple of the requested population.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "populationPolicyUI",
+      "name": "roundSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C10"
+      ],
+      "owner_context": "Layer work limits",
+      "help": "Maximum rounds of eligibility, collision and cleanup. A shortfall can remain.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "populationPolicyUI",
+      "name": "repairCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C10"
+      ],
+      "owner_context": "Layer work limits",
+      "help": "Allow bounded retries for plants removed by final cleanup.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "backgroundUI",
+      "name": "backgroundList",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C16"
+      ],
+      "owner_context": "Paint set and earlier siblings",
+      "help": "Exclude earlier painted coverage, fill between plants, combine both, or turn off.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "backgroundUI",
+      "name": "referenceList",
+      "kind": "multiListBox",
+      "capabilities": [
+        "C16"
+      ],
+      "owner_context": "Paint set and earlier siblings",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "backgroundUI",
+      "name": "applyBackground",
+      "kind": "button",
+      "capabilities": [
+        "C16"
+      ],
+      "owner_context": "Paint set and earlier siblings",
+      "help": "Save this background mode and the selected earlier-set references together.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "instanceRadiusUI",
+      "name": "radiusMode",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C21"
+      ],
+      "owner_context": "Set/published instance binding",
+      "help": "Use an absolute world radius or multiply the selected instances' source radius.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "instanceRadiusUI",
+      "name": "radiusSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C21"
+      ],
+      "owner_context": "Set/published instance binding",
+      "help": "Value applied only when Set selected radii is pressed.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "instanceRadiusUI",
+      "name": "applyRadius",
+      "kind": "button",
+      "capabilities": [
+        "C21"
+      ],
+      "owner_context": "Set/published instance binding",
+      "help": "Apply radius overrides to selected CS Edit instances in this paint set.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "instanceRadiusUI",
+      "name": "resetRadius",
+      "kind": "button",
+      "capabilities": [
+        "C21"
+      ],
+      "owner_context": "Set/published instance binding",
+      "help": "Restore the selected instances' inherited source radii.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "instanceRadiusUI",
+      "name": "clearRadius",
+      "kind": "button",
+      "capabilities": [
+        "C21"
+      ],
+      "owner_context": "Set/published instance binding",
+      "help": "Remove every instance-radius override belonging to this paint set.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "sourceContainersUI",
+      "name": "modeList",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C07"
+      ],
+      "owner_context": "Set/layer/global pool selection",
+      "help": "Use a manual list or an explicit rectangle pool. Other paint sets may inherit the layer pool.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "sourceContainersUI",
+      "name": "containersList",
+      "kind": "listbox",
+      "capabilities": [
+        "C07"
+      ],
+      "owner_context": "Set/layer/global pool selection",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "sourceContainersUI",
+      "name": "createContainer",
+      "kind": "button",
+      "capabilities": [
+        "C07"
+      ],
+      "owner_context": "Set/layer/global pool selection",
+      "help": "Create a Rectangle for this owner. Put source-model pivots inside its local XY bounds.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "sourceContainersUI",
+      "name": "pickContainer",
+      "kind": "pickbutton",
+      "capabilities": [
+        "C07"
+      ],
+      "owner_context": "Set/layer/global pool selection",
+      "help": "Use an existing unmodified Rectangle as a source pool boundary.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "sourceContainersUI",
+      "name": "removeContainer",
+      "kind": "button",
+      "capabilities": [
+        "C07"
+      ],
+      "owner_context": "Set/layer/global pool selection",
+      "help": "Unlink this rectangle without deleting it or registered source settings.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "setsUI",
+      "name": "setList",
+      "kind": "dropdownlist",
+      "capabilities": [
+        "C04"
+      ],
+      "owner_context": "Layer/set administration",
+      "help": null,
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "setsUI",
+      "name": "addButton",
+      "kind": "button",
+      "capabilities": [
+        "C04"
+      ],
+      "owner_context": "Layer/set administration",
+      "help": "Add another paint set sharing this layer's population and defaults.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "setsUI",
+      "name": "removeButton",
+      "kind": "button",
+      "capabilities": [
+        "C04"
+      ],
+      "owner_context": "Layer/set administration",
+      "help": "Remove this paint set and its settings. The base set cannot be removed separately.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "setsUI",
+      "name": "nameEdit",
+      "kind": "edittext",
+      "capabilities": [
+        "C04"
+      ],
+      "owner_context": "Layer/set administration",
+      "help": "Rename this paint set without changing its identity.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "setsUI",
+      "name": "weightSpin",
+      "kind": "spinner",
+      "capabilities": [
+        "C04"
+      ],
+      "owner_context": "Layer/set administration",
+      "help": "Relative share of the layer population among enabled paint sets.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "setsUI",
+      "name": "enabledCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C04"
+      ],
+      "owner_context": "Layer/set administration",
+      "help": "Include this set in calculation and final output.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "setsUI",
+      "name": "visibleCheck",
+      "kind": "checkbox",
+      "capabilities": [
+        "C04"
+      ],
+      "owner_context": "Layer/set administration",
+      "help": "Viewport visibility only. Hidden sets still calculate and affect spacing.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "setsUI",
+      "name": "upButton",
+      "kind": "button",
+      "capabilities": [
+        "C04"
+      ],
+      "owner_context": "Layer/set administration",
+      "help": "Evaluate this set earlier. Earlier sets occupy space first.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "setsUI",
+      "name": "downButton",
+      "kind": "button",
+      "capabilities": [
+        "C04"
+      ],
+      "owner_context": "Layer/set administration",
+      "help": "Evaluate this set later, after the preceding sets.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "detailsUI",
+      "name": "refreshButton",
+      "kind": "button",
+      "capabilities": [
+        "C27"
+      ],
+      "owner_context": "Cached statistics/help",
+      "help": "Read the existing calculation statistics without regenerating placements.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "layer",
+      "section": "detailsUI",
+      "name": "helpButton",
+      "kind": "button",
+      "capabilities": [
+        "C27"
+      ],
+      "owner_context": "Cached statistics/help",
+      "help": "Explain settings ownership, display budgets, evaluation order and policy limits.",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    }
+  ]
+}

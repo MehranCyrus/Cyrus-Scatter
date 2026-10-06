@@ -3,6 +3,7 @@
 global CyrusBrushSessionRoot,CyrusBrushSessionLayer,CyrusBrushSessionRevision=0,CyrusBrushTimer,CyrusBrushBusy=false
 global CyrusStartBrush,CyrusStopBrush,CyrusBrushTick
 fn CyrusStopBrush = (
+    if CyrusBrushTimer!=undefined do CyrusBrushTimer.Stop()
     cyrusBrushStop()
     local root=CyrusBrushSessionRoot,layer=CyrusBrushSessionLayer
     CyrusBrushSessionRoot=undefined;CyrusBrushSessionLayer=undefined
@@ -16,9 +17,11 @@ fn CyrusStartBrush root layer = (
     cyrusBrushBegin layer.paintDocument
     CyrusBrushSessionRoot=root;CyrusBrushSessionLayer=layer;CyrusBrushSessionRevision=0
     cyrusBrushRefreshMask layer.paintDocument;redrawViews()
+    CyrusBrushTimer.Start()
 )
 fn CyrusBrushTick sender args = (
-    if CyrusBrushBusy or CyrusBrushSessionLayer==undefined do return false
+    if CyrusBrushSessionLayer==undefined do (CyrusBrushTimer.Stop();return false)
+    if CyrusBrushBusy do return false
     CyrusBrushBusy=true
     try (
         local layer=CyrusBrushSessionLayer,root=CyrusBrushSessionRoot,state=cyrusBrushStats layer.paintDocument
@@ -39,12 +42,12 @@ fn CyrusBrushTick sender args = (
         format "Cyrus Brush: %\n" failure
     )
     CyrusBrushBusy=false
+    if CyrusBrushSessionLayer==undefined do CyrusBrushTimer.Stop()
 )
-try(CyrusBrushTimer.Stop())catch()
+try(CyrusBrushTimer.Stop();CyrusBrushTimer.Dispose())catch()
 CyrusBrushTimer=dotNetObject "System.Windows.Forms.Timer"
 CyrusBrushTimer.Interval=150
 dotNet.addEventHandler CyrusBrushTimer "Tick" CyrusBrushTick
-CyrusBrushTimer.Start()
 callbacks.removeScripts id:#CyrusBrushSession
 callbacks.addScript #filePreOpen "CyrusStopBrush()" id:#CyrusBrushSession
 callbacks.addScript #systemPreReset "CyrusStopBrush()" id:#CyrusBrushSession

@@ -25,6 +25,13 @@
 /docs/Procedural_Implementation_0.7_2026-10-04/evidence.json -text whitespace=cr-at-eol
 /docs/Review_Handoff_2026-10-05/evidence/** -text whitespace=cr-at-eol
 /docs/Independent_Review_0.7_2026-10-05/evidence/** -text whitespace=cr-at-eol
+/docs/UI_0.7.1_2026-10-05/evidence/** -text whitespace=cr-at-eol
+/docs/AI_Design_Learning_Research_2026-10-05/evidence/** -text whitespace=cr-at-eol
+/docs/Current_System_2026-10-05/evidence/** -text whitespace=cr-at-eol
+/docs/Offline_Implementation_2026-10-05/evidence/** -text whitespace=cr-at-eol
+/docs/Real_Scene_0.7.1_2026-10-05/evidence/** -text whitespace=cr-at-eol
+/docs/Live_Runtime_2026-10-06/evidence/** -text whitespace=cr-at-eol
+/docs/Live_Runtime_2026-10-06/package-evidence/** -text -whitespace
 /docs/licensing/evidence/** -text whitespace=cr-at-eol
 /AminScatter/tests/data/brush_sphere_pole.txt -text whitespace=cr-at-eol
 

@@ -1,0 +1,12 @@
+{
+  "command": [
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\CyrusMCP\\tests",
+    "-q"
+  ],
+  "exit_code": 0,
+  "timeout": false,
+  "elapsed_seconds": 9.202999999979511
+}

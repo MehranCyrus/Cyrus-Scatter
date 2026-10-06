@@ -1,0 +1,13 @@
+{
+  "kind": "read_existing_log_not_new_runtime_test",
+  "source_path": "build/user-tests/real-scene-071/20261005-115724-f00cd2a0/plugcfg/corona/CoronaMax2027_log.txt",
+  "source_sha256": "91de141d01e757078ab85e4aa107a86719a27eec86954f13241809a8b2d9e5c8",
+  "render_start_count_total_at_read": 568,
+  "first_start": "2026-10-05 12:03:04",
+  "last_start": "2026-10-05 12:16:11",
+  "window_start": "2026-10-05 12:03:04",
+  "window_end": "2026-10-05 12:06:23",
+  "render_starts_in_window": 485,
+  "timestamp_timezone": "as written by renderer; not converted",
+  "interpretation": "Repeated starts confirmed. Initiating callback and cause not isolated."
+}

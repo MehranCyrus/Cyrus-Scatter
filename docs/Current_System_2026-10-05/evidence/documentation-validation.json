@@ -1,0 +1,86 @@
+{
+  "schema": "cyrus.documentation-validation/1",
+  "checked_utc": "2026-10-05T10:19:01.261250+00:00",
+  "documentation_only": true,
+  "new_markdown_documents": [
+    "docs/Current_System_2026-10-05/AGENT_WORKFLOW_GUIDE.md",
+    "docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md",
+    "docs/Current_System_2026-10-05/CONTROL_INVENTORY.md",
+    "docs/Current_System_2026-10-05/CURRENT_STATE.md",
+    "docs/Current_System_2026-10-05/DIAGNOSTICS_SPEC.md",
+    "docs/Current_System_2026-10-05/DOCUMENT_AUDIT.md",
+    "docs/Current_System_2026-10-05/EVIDENCE.md",
+    "docs/Current_System_2026-10-05/MCP_EXPANSION_SPEC.md",
+    "docs/Current_System_2026-10-05/README.md",
+    "docs/Current_System_2026-10-05/ROADMAP.md",
+    "docs/Current_System_2026-10-05/SYSTEM_GUIDE.md"
+  ],
+  "updated_existing_markdown_documents": [
+    "CyrusMCP/README.md",
+    "README.md",
+    "docs/AI_MCP_ML_Roadmap_2026-09-30/README.md",
+    "docs/Artist_Style_ML_2026-10-04/README.md",
+    "docs/Artist_Style_ML_2026-10-04/ROADMAP.md",
+    "docs/Brush_Tool_2026-10-02/README.md",
+    "docs/CyrusScatter_Complete_Codebase_Documentation_2026-09-27/README.md",
+    "docs/Independent_Review_0.7_2026-10-05/CURRENT_OUTCOME.md",
+    "docs/Layers_First_2026-10-03/CAPABILITIES.md",
+    "docs/MCP_Implementation_2026-10-03/ROADMAP_STATUS.md",
+    "docs/Performance_Baseline_Tool.md",
+    "docs/Performance_Edit_Tracing.md",
+    "docs/Procedural_Evaluation_2026-10-04/README.md",
+    "docs/Product_Commercialization_Playbook_2026-09-30/README.md",
+    "docs/Product_Strategy_2026-09-29/11_Master_Roadmap_and_Backlog.md",
+    "docs/Product_Strategy_2026-09-29/README.md",
+    "docs/README.md",
+    "docs/Real_Scene_0.7.1_2026-10-05/FINDINGS.md",
+    "docs/Real_Scene_0.7.1_2026-10-05/README.md",
+    "docs/Release_Versioning.md",
+    "docs/Review_Handoff_2026-10-05/README.md",
+    "docs/System_Map_2026-10-04/README.md",
+    "docs/UI_0.7.1_2026-10-05/README.md",
+    "docs/UI_0.7.1_2026-10-05/RESULTS.md"
+  ],
+  "markdown_documents_checked": 35,
+  "local_links_checked": 576,
+  "local_fragments_checked": 2,
+  "link_issues": [],
+  "control_inventory": {
+    "entries": 241,
+    "sections": 22,
+    "exact_source_match": true,
+    "capability_families": 34
+  },
+  "mcp_registration": {
+    "tools": 9,
+    "resources": 4,
+    "names_present_in_matrix": true
+  },
+  "preservation": {
+    "preexisting_non_document_files_checked": 505,
+    "changed": [],
+    "missing": []
+  },
+  "runtime_tests_run": false,
+  "pytest_run": false,
+  "limits": [
+    "Only local target/fragment existence and selected static consistency are checked; no browser rendering of Markdown/diagrams.",
+    "Historical archive contents are routed, not freshly requalified.",
+    "No new host/UI/renderer or model test."
+  ],
+  "status": "PASS",
+  "source_manifest_revalidated": true,
+  "product_identity": {
+    "source_ui": "0.7.1",
+    "serialization": 53,
+    "matches_delivered_script_hash": true
+  },
+  "ir_failure_window_recount": {
+    "starts": 485,
+    "separate_from_whole_session_starts": 568
+  },
+  "git_markdown_whitespace_check": {
+    "exit_code": 0,
+    "output": ""
+  }
+}

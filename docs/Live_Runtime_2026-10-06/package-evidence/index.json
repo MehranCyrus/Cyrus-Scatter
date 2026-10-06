@@ -1,0 +1,34 @@
+{
+  "BUILD.json": {
+    "bytes": 2972,
+    "sha256": "6ed7262ea115c9e76f11852e0e1e29778c00d87db6391053c8987b109e8e5a7b"
+  },
+  "INSTALLATION_VERIFIED.json": {
+    "bytes": 2134,
+    "sha256": "44234bdaf7cec121986beb8d101b91ede84cd3ebc787dc27fde1183ac4052912"
+  },
+  "installed-verified.json": {
+    "bytes": 2966,
+    "sha256": "905324f0341a1a896fdbf9bb3bbb6ea7772f8dfda8b921ccbe3569e462a566fa"
+  },
+  "restart-error.txt": {
+    "bytes": 3966,
+    "sha256": "0c9130d47c6af4f4d0f74d89ec5b0aa548010291bbce159a359d22655d50b611"
+  },
+  "restart03-launch.json": {
+    "bytes": 725,
+    "sha256": "03888d1029ab9550e95de341546ce14b077cb778b93c01d1b9781953ad973a0d"
+  },
+  "restart03-passed.txt": {
+    "bytes": 124,
+    "sha256": "0700cd7cd5124d9399c823cb40344f7c455b25d485d5cd7112c218fefa1f79b1"
+  },
+  "restart03.ms": {
+    "bytes": 3734,
+    "sha256": "d3fd20124aec564ed8671b09a0f6501d4985e386bf3cc619876826a2d1cdd6f3"
+  },
+  "restarted03-loaded.tsv": {
+    "bytes": 911,
+    "sha256": "efb28b23397aa0687c31337a8533f9c63579530b7e1c2146c6abcac81f53b0f5"
+  }
+}

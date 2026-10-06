@@ -1,0 +1,5 @@
+PASS
+version=0.7.1
+layers=5
+populations=8
+fingerprint=708ba32fbbebe62530d4168a81fd0b761471e843976926b87d07de42f9be5561

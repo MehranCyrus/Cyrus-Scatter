@@ -1,0 +1,50 @@
+-- Runtime error: Wrong installed module path: F:\Cursor\_Cyrus_Apps\CyrusScatter\build\mcp-qualification\procedural07-package-071-install01\scripts\CyrusScatter\bin-max2027-01e8f6e316b7\AminScatter.dlx
+--	thread data: threadID:37188
+--	------------------------------------------------------
+--	[stack level: 0]
+--	In i loop; filename: F:\Cursor\_Cyrus_Apps\CyrusScatter\build\mcp-qualification\procedural07-package-071-install01\restart.ms; position: 2016; line: 14
+--	member of: anonymous codeblock
+--		Parameters:
+--			i: 510
+--		Locals:
+--			m: dotNetObject:System.Diagnostics.ProcessModule
+--			i: 510
+--		Externals:
+--			spec: Free:spec : #("AminScatter.dlx", "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-package-071-install01/scripts/CyrusScatter/bin-max2027-01e8f6e316b7/AminScatter.dlx")
+--			found: Free:found : false
+--			owner: <CodeBlock:anonymous>
+--			process: dotNetObject:System.Diagnostics.Process
+--			log: <File:F:\Cursor\_Cyrus_Apps\CyrusScatter\build\mcp-qualification\procedural07-package-071-install01\restarted-loaded.tsv>
+--	------------------------------------------------------
+--	[stack level: 1]
+--	called from spec loop; filename: F:\Cursor\_Cyrus_Apps\CyrusScatter\build\mcp-qualification\procedural07-package-071-install01\restart.ms; position: 2093; line: 17
+--	member of: anonymous codeblock
+--		Parameters:
+--			spec: #("AminScatter.dlx", "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-package-071-install01/scripts/CyrusScatter/bin-max2027-01e8f6e316b7/AminScatter.dlx")
+--		Locals:
+--			spec: #("AminScatter.dlx", "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-package-071-install01/scripts/CyrusScatter/bin-max2027-01e8f6e316b7/AminScatter.dlx")
+--			found: false
+--		Externals:
+--			owner: <CodeBlock:anonymous>
+--			process: dotNetObject:System.Diagnostics.Process
+--	------------------------------------------------------
+--	[stack level: 2]
+--	called from anonymous codeblock; filename: F:\Cursor\_Cyrus_Apps\CyrusScatter\build\mcp-qualification\procedural07-package-071-install01\restart.ms; position: 2163; line: 19
+--		Locals:
+--			nodes: undefined
+--			probe: Cyrus Scatter
+--			layers: undefined
+--			expected: #(#("AminScatter.dlx", "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-package-071-install01/scripts/CyrusScatter/bin-max2027-01e8f6e316b7/AminScatter.dlx"), #("CyrusBrush.dlx", "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-package-071-install01/scripts/CyrusScatter/bin-max2027-01e8f6e316b7/CyrusBrush.dlx"), #("CyrusBrushStorage.dlh", "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-package-071-install01/scripts/CyrusScatter/bin-max2027-01e8f6e316b7/CyrusBrushStorage.dlh"), #("CyrusScatterEdit.dlm", "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-package-071-install01/scripts/CyrusScatter/bin-max2027-01e8f6e316b7/CyrusScatterEdit.dlm"), #("CyrusSurfaceAnalyzer.dlx", "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-package-071-install01/scripts/CyrusSurfaceAnalyzer/bin-max2027-737c50438892/CyrusSurfaceAnalyzer.dlx"))
+--			process: dotNetObject:System.Diagnostics.Process
+--			log: <File:F:\Cursor\_Cyrus_Apps\CyrusScatter\build\mcp-qualification\procedural07-package-071-install01\restarted-loaded.tsv>
+--			root: undefined
+--			report: undefined
+--		Externals:
+--			CyrusOpenLayerEditor: Global:CyrusOpenLayerEditor : CyrusOpenLayerEditor()
+--			CyrusSurfaceAnalyzer: Global:CyrusSurfaceAnalyzer : CyrusSurfaceAnalyzer
+--			AminScatterObject: Global:AminScatterObject : AminScatterObject
+--			CyrusLayerEditor: Global:CyrusLayerEditor : undefined
+--			CyrusLoadedScriptFingerprint: Global:CyrusLoadedScriptFingerprint : "708ba32fbbebe62530d4168a81fd0b761471e843976926b87d07de42f9be5561"
+--	------------------------------------------------------
+--	[stack level: 3]
+--	called from top-level

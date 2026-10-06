@@ -1,0 +1,16 @@
+{
+  "schema": "cyrus.proposed.dataset_manifest/0.1",
+  "synthetic": true,
+  "dataset_id": "synthetic-ineligible-dataset",
+  "included_candidate_ids": [],
+  "included_comparison_event_ids": [],
+  "excluded": [
+    {"id": "synthetic-candidate-a", "reason": "not_executed_no_validated_artifacts"},
+    {"id": "synthetic-candidate-b", "reason": "not_executed_no_validated_artifacts"},
+    {"id": "synthetic-feedback-001", "reason": "synthetic_label_no_training_consent"}
+  ],
+  "split_policy": "group_by_project_site_asset_recipe_lineage_before_feature_fitting",
+  "splits": {"train": [], "validation": [], "test": []},
+  "training_eligible": false,
+  "model_produced": null
+}

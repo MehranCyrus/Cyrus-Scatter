@@ -1,0 +1,196 @@
+{
+  "private_host_pid": 32336,
+  "launch_script_sha256": "c3f0b693a3854e9d11077bdea739469290e9a8a6e45f82ba44f38c6a1b486c8f",
+  "cases": [
+    {
+      "case": "live-closed",
+      "elapsed_s": 10.48399999999674,
+      "unexpected_changes": {},
+      "host_cpu_s": 1.53125,
+      "host_memory_start": {
+        "cpu_s": 136.765625,
+        "WorkingSet64": 2656456704,
+        "PrivateMemorySize64": 3984584704
+      },
+      "host_memory_end": {
+        "cpu_s": 138.296875,
+        "WorkingSet64": 2599309312,
+        "PrivateMemorySize64": 3927093248
+      }
+    },
+    {
+      "case": "live-editor-open",
+      "elapsed_s": 10.35899999999674,
+      "unexpected_changes": {},
+      "host_cpu_s": 2.0625,
+      "host_memory_start": {
+        "cpu_s": 140.390625,
+        "WorkingSet64": 2612518912,
+        "PrivateMemorySize64": 3940401152
+      },
+      "host_memory_end": {
+        "cpu_s": 142.453125,
+        "WorkingSet64": 2613833728,
+        "PrivateMemorySize64": 3941629952
+      }
+    },
+    {
+      "case": "manual-pending",
+      "elapsed_s": 10.46899999998277,
+      "unexpected_changes": {},
+      "host_cpu_s": 1.203125,
+      "host_memory_start": {
+        "cpu_s": 142.953125,
+        "WorkingSet64": 2612998144,
+        "PrivateMemorySize64": 3940524032
+      },
+      "host_memory_end": {
+        "cpu_s": 144.15625,
+        "WorkingSet64": 2612895744,
+        "PrivateMemorySize64": 3940294656
+      }
+    },
+    {
+      "case": "live-real-edit",
+      "elapsed_s": 10.35899999999674,
+      "unexpected_changes": {},
+      "host_cpu_s": 0.875,
+      "host_memory_start": {
+        "cpu_s": 145.125,
+        "WorkingSet64": 2614435840,
+        "PrivateMemorySize64": 3940855808
+      },
+      "host_memory_end": {
+        "cpu_s": 146,
+        "WorkingSet64": 2614484992,
+        "PrivateMemorySize64": 3940810752
+      }
+    },
+    {
+      "case": "live-density-edit",
+      "elapsed_s": 10.46799999999348,
+      "unexpected_changes": {},
+      "host_cpu_s": 1.640625,
+      "host_memory_start": {
+        "cpu_s": 148.609375,
+        "WorkingSet64": 2617950208,
+        "PrivateMemorySize64": 3940859904
+      },
+      "host_memory_end": {
+        "cpu_s": 150.25,
+        "WorkingSet64": 2618064896,
+        "PrivateMemorySize64": 3940814848
+      }
+    },
+    {
+      "case": "failed-successor",
+      "elapsed_s": 10.375,
+      "unexpected_changes": {},
+      "host_cpu_s": 1.921875,
+      "host_memory_start": {
+        "cpu_s": 150.625,
+        "WorkingSet64": 2618318848,
+        "PrivateMemorySize64": 3940859904
+      },
+      "host_memory_end": {
+        "cpu_s": 152.546875,
+        "WorkingSet64": 2618335232,
+        "PrivateMemorySize64": 3940765696
+      }
+    },
+    {
+      "case": "restored-valid-recipe",
+      "elapsed_s": 10.375,
+      "unexpected_changes": {},
+      "host_cpu_s": 1.546875,
+      "host_memory_start": {
+        "cpu_s": 153.3125,
+        "WorkingSet64": 2618556416,
+        "PrivateMemorySize64": 3940626432
+      },
+      "host_memory_end": {
+        "cpu_s": 154.859375,
+        "WorkingSet64": 2618671104,
+        "PrivateMemorySize64": 3940581376
+      }
+    },
+    {
+      "case": "after-diagnostic-recording",
+      "elapsed_s": 10.35999999998603,
+      "unexpected_changes": {},
+      "host_cpu_s": 1.703125,
+      "host_memory_start": {
+        "cpu_s": 172.796875,
+        "WorkingSet64": 2642980864,
+        "PrivateMemorySize64": 3931762688
+      },
+      "host_memory_end": {
+        "cpu_s": 174.5,
+        "WorkingSet64": 2644185088,
+        "PrivateMemorySize64": 3932942336
+      }
+    }
+  ],
+  "loaded_payload_sha256": "708ba32fbbebe62530d4168a81fd0b761471e843976926b87d07de42f9be5561",
+  "diagnostic_overhead": {
+    "False": {
+      "samples_ms": [
+        306,
+        294,
+        284,
+        262,
+        291,
+        268,
+        262,
+        269,
+        260,
+        254,
+        264,
+        467,
+        264,
+        264,
+        276,
+        257,
+        264,
+        286,
+        272,
+        266,
+        264,
+        293,
+        266,
+        266
+      ],
+      "median_ms": 266.0
+    },
+    "True": {
+      "samples_ms": [
+        287,
+        263,
+        261,
+        283,
+        284,
+        256,
+        271,
+        306,
+        266,
+        263,
+        288,
+        261,
+        259,
+        272,
+        282,
+        265,
+        262,
+        278,
+        284,
+        447,
+        285,
+        265,
+        258,
+        274
+      ],
+      "median_ms": 271.5
+    }
+  },
+  "passed": true
+}

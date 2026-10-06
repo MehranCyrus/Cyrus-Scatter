@@ -1,0 +1,14 @@
+{
+  "check": "offline_generator_and_integration",
+  "passed": true,
+  "maxscript_compiled": false,
+  "ui_controls_in_inventory": 241,
+  "generated_sha256": "07d0bca2efe330b8b632c1a483cea23c65629b0f7ef5c0cbecd2c6984f1f9924",
+  "preserved_files": [
+    "AminScatter/src/point_display.cpp",
+    "AminScatter/src/preview.cpp",
+    "CyrusMCP/cyrus_mcp/models.py",
+    "CyrusMCP/cyrus_mcp/contracts.py"
+  ],
+  "interactive_max_run": false
+}

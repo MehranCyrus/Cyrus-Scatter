@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-05",
+  "host": "3ds Max 2027",
+  "method": "Windows pointer/keyboard input via the computer-use skill, with screenshots inspected after actions",
+  "scope": "Disposable private demo scenes only",
+  "final_script_sha256": "07d0bca2efe330b8b632c1a483cea23c65629b0f7ef5c0cbecd2c6984f1f9924",
+  "final_source_pointer_checks": [
+    "Assets, Population, Paint, Transform, Spacing and Statistics pages inspected across the development loop",
+    "Native horizontal and vertical border drags; corrected minimum 720 x 500 columns, tabs, footer and scroll viewports remain reachable",
+    "Brush history expansion and wheel scrolling reach saved-stroke controls",
+    "Layer selector changes Trees to Shrubs and shows the corresponding model, rectangle and radius",
+    "Selecting the model through Select sources leaves the editor bound to Shrubs",
+    "Hover tooltip displayed for Assets navigation",
+    "Ordinary qualified preview launched without the development transport; actual loaded module paths verified",
+    "Close editor, then reopen with Modify / Layer Manager / Edit layer through real pointer input"
+  ],
+  "earlier_iteration_pointer_checks": [
+    "Independent Area-column scrolling after Analyzer/falloff expansion",
+    "Pair-of-layers scope and Shrubs peer selection",
+    "Typed 160mm and pressed Enter in extra gap; a read-only model probe confirmed 16 scene units and current Live publication epoch 4"
+  ],
+  "boundary": "Earlier pointer checks predate the final resize-handler correction. Their feature behavior was rerun in the final event fixtures. This is not a matrix of all displays/DPI settings or every possible artist scene.",
+  "final_preview_receipt": "preview-result.json",
+  "images": ["assets-editor.png", "modify-and-demo.png"]
+}

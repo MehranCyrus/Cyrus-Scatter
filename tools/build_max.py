@@ -92,13 +92,14 @@ def package(project, name, version, native_names, script_name, args, build_dir):
     payload['INSTALL.txt'] = (
         f'{name} {version} - 3ds Max {args.max_year} x64\n'
         'Run this MZP through Scripting > Run Script, then restart Max.\n'
-        + ('Classic native layout: Update, Surface Scatter, Viewport and Render, Layer Manager, then named layers.\n'
-           'Open sections flow vertically at the panel width; Layer Manager owns names, visibility and cached counts.\n'
-           'Scroll over section backgrounds/headers with the wheel, or left-drag blank grey panel space.\n'
+        + ('Global settings stay in Modify: Update, Surface Scatter, Layer Manager, Viewport and Render.\n'
+           'In Layer Manager select a layer and click Edit layer... to open its floating editor.\n'
+           'Editor pages: Assets, Population, Paint, Transform, Spacing and Statistics.\n'
+           'Resize the editor and scroll each column independently. Hover controls for short explanations.\n'
            'Each layer owns its full settings. Named paint sets inside it own independent assets and saved Brush histories.\n'
            'Population, area, transforms and cleanup belong to the parent layer. Capacity: 10 total populations.\n'
            'Procedural 0.7 is an explicit opt-in in Surface Scatter. Old scene policies keep their existing sampling.\n'
-           'Procedural / Rules separates self, paint-set and layer spacing, using adjustable radius factors and gaps.\n'
+           'Spacing separates self, paint-set and layer rules, using adjustable radius factors and gaps. Changes save automatically.\n'
            'Layer/paint-set order is visible and independent of random seeds and allocation tie order.\n'
            'Background outside coverage references earlier siblings; Between plants uses configured spacing.\n'
            'Accepted target refills a bounded prefix. Read shortfall/round/attempt diagnostics; limits do not prove a full surface.\n'
@@ -118,7 +119,7 @@ def package(project, name, version, native_names, script_name, args, build_dir):
            if project == 'AminScatter' else 'The Analyzer algorithm is unchanged in this performance iteration.\n') +
         'Create > Geometry > Cyrus, then select the tool and use Modify.\n'
         'Use saved test scene copies to compare performance and verify output.\n'
-        + ('0.7 is a candidate pending interactive Max 2026/2027 qualification. Older runtime reports do not certify this build.\n'
+        + ('Development build: use the accompanying qualification report for this exact script/native pair.\n'
            'Procedural 0.7 supports Random/Clusters; Line Pattern/Analyzer assignment stays on the previous policies.\n'
            'Cyrus Automation/MCP is separate. It can inspect 0.7 recipe/diagnostics; closed plan schemas 1/2 cannot overwrite policy 3.\n'
            if project == 'AminScatter' else '')
