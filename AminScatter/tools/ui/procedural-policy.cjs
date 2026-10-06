@@ -17,8 +17,8 @@ module.exports=function(s){
  one('    parameters paintSettings (',model.slice(0,functions)+'\n    parameters paintSettings (');
  one('    fn nativeEditors =',model.slice(functions)+'\n'+read('source-containers')+'\n'+evaluation+'\n'+read('publication-read')+'\n    fn nativeEditors =');
  one('version:51\ninitialRollupState','version:53\ninitialRollupState');
- one('fn uiVersion = "1.2.3"','fn uiVersion = "0.7.1"');
- s=s.replaceAll('Cyrus Scatter 1.2','Cyrus Scatter 0.7.1');
+ one('fn uiVersion = "1.2.3"','fn uiVersion = "0.72"');
+ s=s.replaceAll('Cyrus Scatter 1.2','Cyrus Scatter 0.72').replaceAll('Cyrus Scatter 0.7.1','Cyrus Scatter 0.72').replaceAll('Cyrus 0.7.1 native plugin','Cyrus 0.72 native plugin');
  // Central capability predicate: all consumers of shared published placements
  // understand policy 3; the implementations of policy 1/2 remain available.
  s=s.replace(/\b((?:\w+\.)*groupPolicy)==2/g,'(CyrusUsesSharedPolicy $1)')

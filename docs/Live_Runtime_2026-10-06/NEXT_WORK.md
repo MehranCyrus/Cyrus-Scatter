@@ -1,5 +1,7 @@
 # Next work and acceptance gates
 
+**Later completed slice:** [Cyrus Scatter 0.72](../Integrated_UI_0.72_2026-10-06/README.md) implements the integrated selected-layer UI, optional popup retarget fix, direct recording/export and a render-state-guarded Corona Stop. Its fresh receipts supersede the immediate pending UI/Stop statements below within their tested scope. The broader release, diagnostics, MCP and learning gates remain open.
+
 **Later snapshot:** the [code-only playback slice](../Playback_Performance_2026-10-06/README.md) adds relevant-input time invalidation, Analyzer idle scheduling, legacy texture tracking and a bounded point matching correction. Its receipts identify separate local binaries; the packages from this earlier campaign are not updated by those passes.
 
 6 October 2026. The runtime campaign is a development qualification, not completion of every release or AI-design feature. Use its results before starting the following slices.

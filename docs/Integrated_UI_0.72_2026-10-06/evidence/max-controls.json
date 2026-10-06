@@ -1,0 +1,139 @@
+{
+  "passed": true,
+  "development_version": "0.72",
+  "package_version": "0.72.0",
+  "serialization": 53,
+  "computer_use": false,
+  "artist_scene_opened": false,
+  "artist_profile_unchanged": true,
+  "script_sha256": "77dadf0df9faabbba224de5c0602745c98302b1401e7a21368d5af0ba77f855b",
+  "modules": {
+    "AminScatter.dlx": "a5278ea7138ea9dc9c44a7a42616990cdf78ac5c9043e98b8a422c3b3765c440",
+    "CyrusBrush.dlx": "c91859dbb67cfbde7f9c0f05aa7e8a360931b6a9f9fcb61163ea45c364a67cc0",
+    "CyrusBrushStorage.dlh": "2cc93df642ab8927467b95a632aa496f6ffa3b0b95a54b6dbe2f48c229e488ee",
+    "CyrusScatterEdit.dlm": "5fb12a35e1843643a96886dd795857aeb7d1b2c57f272fd1048cea5983390572",
+    "CyrusSurfaceAnalyzer.dlx": "ec6d41636d045b33693e0c70ea0cbb4bb0b357f4cd643ab07e6411dde98102a2"
+  },
+  "stages": [
+    {
+      "stage": "definitions",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-072-controls10/probe-1224d83898c945c286b2b838e8414b58.ms",
+      "fixture_sha256": "34f02da3eef1f79ab4969563b1e45531eb7a1d4b4d8cba6ffdd7d8905f10db93"
+    },
+    {
+      "stage": "UI 0.72",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-072-controls10/probe-1a0bd89d05af4184b61e8fc840e6cc0a.ms",
+      "fixture_sha256": "2bf8f23261f29df402e625af616846a90e8fe687bbe95fc97c2bf4fe55be21c4"
+    },
+    {
+      "stage": "Corona stop failure paths",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-072-controls10/probe-3c1feb19df5d4c25bbe0574b94497339.ms",
+      "fixture_sha256": "799ebbc061456406598c045558e32e872d50e655e3537d06162bec52b3f7141b"
+    },
+    {
+      "stage": "procedural core",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-072-controls10/probe-da4c9970ebc647ed88892a0953fd4d9b.ms",
+      "fixture_sha256": "9bdadceec5d3212cb13f4e42c345e201695f52b9b0180eafa4f1c658df3263b1"
+    },
+    {
+      "stage": "Max_Procedural_07_Bindings.ms",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-072-controls10/probe-a358c8ff80a541ea9c310127b835f88b.ms",
+      "fixture_sha256": "141853103bcb3d5eba47a924260592cbf1f027a2b8377ea8d1ef25cd6c8073e3"
+    },
+    {
+      "stage": "Max_Layer_Editor_071_Acceptance.ms",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-072-controls10/probe-f8164067e958489cba9bb32c5b2bcfdc.ms",
+      "fixture_sha256": "e39388bdff7aebba33bbb344ec74de12092f05b96d2d5a2e9868bf3187b3cfa5"
+    },
+    {
+      "stage": "Max_Layer_Editor_071_BrushLive.ms",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-072-controls10/probe-c8c031bb7e8a4ead8eed2af5a4ada273.ms",
+      "fixture_sha256": "43d878f9dbd1b106d61aabf520279c684e411793a7239f637cf42ea3b6580602"
+    },
+    {
+      "stage": "Max_Procedural_07_Regression.ms",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-072-controls10/probe-d11a1515d90645b4ba3d771569912ad4.ms",
+      "fixture_sha256": "d3c05af6c719afac41645f175eb08077a73c8aa3f95821127288fbe4276e36a0"
+    },
+    {
+      "stage": "Max_Source_Containers_Acceptance.ms",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-072-controls10/probe-6ead47be87b540a491067da24b97ba44.ms",
+      "fixture_sha256": "8447f576ba9ce530f658c516aae05e31614aff7dc0c62314f6e30d109892e918"
+    },
+    {
+      "stage": "Max_Source_Containers_EdgeCases.ms",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-072-controls10/probe-608e71ed218c47fd8f45a7af52982ccc.ms",
+      "fixture_sha256": "44fb06dc0cfe45587f14f7a3ec300eaaa4fc6bf358c205400536d2f5138340d0"
+    },
+    {
+      "stage": "Max_Source_Containers_Output.ms",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-072-controls10/probe-e8dd1dbe154d45feb154b74b3cafe6eb.ms",
+      "fixture_sha256": "5cfbe98c44b7b64fd3a0ce288d05d41067a9f9b633b27bb5ee0bdd248912737d"
+    },
+    {
+      "stage": "event definitions",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-072-controls10/probe-ca0f7812bbf141f4a2da7c8a6bc0f944.ms",
+      "fixture_sha256": "8c5bcd3ada66dd929f63d0e54d63bd44a46437f617e7e95590a39aec99abd4ab"
+    },
+    {
+      "stage": "SCEventPark",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-072-controls10/probe-0861e741dc874a66b78e0dba41ba91a1.ms",
+      "fixture_sha256": "d198420ebca5b370ae96463ff657d880d07b5473475418143038c0845300d4eb"
+    },
+    {
+      "stage": "SCEventReturn",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-072-controls10/probe-052c19f950374ca780e3d259ab871f23.ms",
+      "fixture_sha256": "f7f2c34f03e44ecec9485015aba028cdc15d12056dfb34d29b4fc63cbc4cf3dd"
+    },
+    {
+      "stage": "SCEventEnroll",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-072-controls10/probe-6740221c83244ca08cc718908b6bba6f.ms",
+      "fixture_sha256": "6c7b09379a7162ed53c6cfb0d6f6157327bc3d0b92c7565d51413e8a36466841"
+    },
+    {
+      "stage": "SCEventFinish",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-072-controls10/probe-3fc37629a02341e197c48e9fd223b2bc.ms",
+      "fixture_sha256": "ca792868919dfc3f9577106d1afbf692e30f922a53128873bc27d0596b7bd1b3"
+    },
+    {
+      "stage": "SCEventGroupFinish",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-072-controls10/probe-f4d65ca1d46a47e296f29b098417b8ae.ms",
+      "fixture_sha256": "90a3856e7fd5f4a440e60063c2eb2ee54db7ee552b9be6780be06260f826d077"
+    },
+    {
+      "stage": "SCEventContainerReturn",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-072-controls10/probe-7cd453e50bab4ec6aae927a0aa33de8a.ms",
+      "fixture_sha256": "07d9b1e93389f3e94c13805581d6ee2f0110f75a811a0f996cef3c02c1573144"
+    },
+    {
+      "stage": "SCEventGeometry",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-072-controls10/probe-d4b5f94dd2774962930bbf91875b77ae.ms",
+      "fixture_sha256": "eaa229f4eb46e17fe8bdd21016cf24c0b0be125772d10157e52af9a435f1d6e9"
+    },
+    {
+      "stage": "SCEventGeometryFinish",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-072-controls10/probe-caec08e5685f4185beaea296302ff7f2.ms",
+      "fixture_sha256": "2ce32470208ad0a490628075c6df08284b3e50ddc369f2532dc5a366bf14b102"
+    },
+    {
+      "stage": "retained 100k navigation",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-072-controls10/probe-a5b78a45166843fda8272ef36868642f.ms",
+      "fixture_sha256": "41f293ab717c075421f344ebe55478bde73e471d3472445c261934bb0e84c78a"
+    },
+    {
+      "stage": "retained integrated and popup browsing",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-072-controls10/probe-4ac2a320186a4f99abc8a2dd07a3c1c4.ms",
+      "fixture_sha256": "33a816d822ce797df7184accbe59a9632cc42fead8396d0f89a1acd1857bba42"
+    }
+  ],
+  "profile_sha256_before": "67718c4d9751f9077fd463ec1fb1da14f28650e9b285e30949ad10bc86854a71",
+  "profile_sha256_after": "67718c4d9751f9077fd463ec1fb1da14f28650e9b285e30949ad10bc86854a71",
+  "diagnostic_pages": 2,
+  "diagnostic_events": 620,
+  "loaded_paths_checked": true,
+  "normal_profile_installed": false,
+  "pointer_test": false,
+  "max2027_runtime": true,
+  "max2026_runtime": false,
+  "full": true
+}

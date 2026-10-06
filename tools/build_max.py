@@ -45,10 +45,14 @@ def sha(data):
 
 def scatter_version():
     script = (ROOT / 'AminScatter/scripts/AminScatterObject.ms').read_text(encoding='utf-8')
-    versions = re.findall(r'fn uiVersion\s*=\s*"(\d+\.\d+\.\d+)"', script)
+    versions = re.findall(r'fn uiVersion\s*=\s*"(\d+\.\d+(?:\.\d+)?)"', script)
     if len(versions) != 1:
         raise ValueError('Generate one SemVer-versioned Scatter script before packaging.')
-    return versions[0]
+    version = versions[0] if versions[0].count('.') == 2 else versions[0] + '.0'
+    cmake = (ROOT / 'AminScatter/CMakeLists.txt').read_text(encoding='utf-8')
+    if re.findall(r'project\(CyrusScatter VERSION ([0-9.]+) LANGUAGES CXX\)', cmake) != [version]:
+        raise ValueError('Scatter native/package metadata differs from the displayed development version.')
+    return version
 
 
 def reject_development_binary(filename, data):
@@ -93,7 +97,8 @@ def package(project, name, version, native_names, script_name, args, build_dir):
         f'{name} {version} - 3ds Max {args.max_year} x64\n'
         'Run this MZP through Scripting > Run Script, then restart Max.\n'
         + ('Global settings stay in Modify: Update, Surface Scatter, Layer Manager, Viewport and Render.\n'
-           'In Layer Manager select a layer and click Edit layer... to open its floating editor.\n'
+           'In Layer Manager select a layer; its native settings appear below in Modify.\n'
+           'Edit layer in window... opens an optional floating view of the same settings.\n'
            'Editor pages: Assets, Population, Paint, Transform, Spacing and Statistics.\n'
            'Resize the editor and scroll each column independently. Hover controls for short explanations.\n'
            'Each layer owns its full settings. Named paint sets inside it own independent assets and saved Brush histories.\n'
@@ -116,6 +121,8 @@ def package(project, name, version, native_names, script_name, args, build_dir):
            'Point Cloud and Mesh reuse GPU buffers during navigation. Existing preview limits still apply; no automatic camera LOD.\n'
            'Includes native source filtering/transforms, batched edit notifications, and bounded clustered queries.\n'
            'Automatic clustered calculations use at most 4 total CPU participants. GPU compute is not enabled.\n'
+           'Diagnostics in Modify records bounded process-wide events. Start, Stop and Save work without MCP.\n'
+           'Read recording status explicitly; the diagnostic controls have no polling timer or background disk writes.\n'
            if project == 'AminScatter' else 'The Analyzer algorithm is unchanged in this performance iteration.\n') +
         'Create > Geometry > Cyrus, then select the tool and use Modify.\n'
         'Use saved test scene copies to compare performance and verify output.\n'

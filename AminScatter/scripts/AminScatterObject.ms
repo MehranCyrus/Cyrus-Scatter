@@ -1,4 +1,4 @@
-global CyrusLoadedScriptFingerprint="605f6b743df1f048ae4b7b0be67a496779956c26b68462ffd822c850ec8f7263"
+global CyrusLoadedScriptFingerprint="11b6e68e09e114cbec1f78e6c1dea95493ec3b87624ac40612a3e13345470fa9"
 -- Only registered Scatter nodes participate in timeline notifications. This
 -- registry is rebuilt at scene boundaries, never by scanning every animation frame.
 global AminScatterObject
@@ -25,6 +25,30 @@ global CyrusPerfTraceBegin,CyrusPerfTraceEnd,CyrusPerfTraceInput
 global CyrusScheduleRelease,CyrusScheduleUI,CyrusPFRequestCheck,CyrusRenderNodeChanged
 global CyrusPFCheckPending=false,CyrusPFResumeMode=3,CyrusPFTicking=false
 global CyrusReleaseTimer,CyrusPFTimer,CyrusPFBusy,CyrusLayerEditor,CyrusPointPending,AminScatterObject
+global CyrusPFStopIR,CyrusPFLastError
+-- Corona stop can pump messages and deliver nested host callbacks. Keep bridge
+-- mutation excluded through the stop, and verify the resulting render state.
+-- A nonzero return alone cannot distinguish a nested/already-stopped request.
+-- The optional provider exists for deterministic failure/reentrancy fixtures.
+fn CyrusPFStopIR renderer:undefined = (
+    if CyrusPFBusy==true do (CyrusPFLastError="Corona Stop deferred while the Cyrus bridge is busy.";return false)
+    if renderer==undefined do renderer=CoronaRenderer
+    local previousBusy=CyrusPFBusy,stopped=false
+    CyrusPFBusy=true
+    try (
+        local before=renderer.getRenderType()
+        if before==0 then stopped=true
+        else if findItem #(2,3) before>0 then (
+            CyrusDiagnosticEmit "ir.stop_requested" "renderer" "" 0 "bridge"
+            local result=renderer.stopRender(),after=renderer.getRenderType()
+            CyrusDiagnosticEmit "ir.stop_result" "renderer" "" 0 ((result as string)+":"+(after as string))
+            stopped=after==0
+            if not stopped do CyrusPFLastError="Corona IR remains active after Stop (status "+(result as string)+", render type "+(after as string)+")."
+        ) else CyrusPFLastError="Corona render is not an interactive session; its bridge was preserved."
+    )catch(CyrusPFLastError=getCurrentException())
+    CyrusPFBusy=previousBusy
+    stopped
+)
 fn CyrusScheduleRelease = (
     if CyrusReleaseTimer!=undefined do CyrusReleaseTimer.Start()
 )
@@ -228,6 +252,13 @@ fn CyrusEditApplyLayer root layer rows = (
 )
 
 global CyrusFlowRolloutExtent,CyrusFlowLayerSummary
+global CyrusRetainListItems
+fn CyrusRetainListItems control values = (
+    local previous=control.items,changed=previous.count!=values.count
+    if not changed do for i=1 to values.count while not changed do changed=previous[i]!=values[i]
+    if changed do control.items=values
+    changed
+)
 global CyrusSourceContainerFilter
 fn CyrusSourceContainerFilter node = (isValidNode node and classof node.baseObject==Rectangle and node.modifiers.count==0)
 -- Native rollup headers occupy 21 logical pixels with 2 pixels between pages.
@@ -263,7 +294,7 @@ fn CyrusLayerEditor_setsUI_1 = (
         fn bind layer = (
             binding=true;members=root.layerSets owner
             local leaf=currentSet()
-            setList.items=for member in members collect member.paintSetName
+            CyrusRetainListItems setList (for member in members collect member.paintSetName)
             setList.selection=findItem members leaf
             nameEdit.text=leaf.paintSetName;weightSpin.value=leaf.paintSetWeight
             enabledCheck.checked=leaf.paintSetEnabled;visibleCheck.checked=leaf.paintSetVisible
@@ -273,7 +304,11 @@ fn CyrusLayerEditor_setsUI_1 = (
         )
         on setsUI_1 open do bind owner
         on setsUI_1 close do controlsReady=false
-        on setList selected i do if not binding and i>0 do (CyrusStopBrush();owner.uiPaintSetID=members[i].layerID;panel.bindEditors())
+        fn selectSet i = (
+            if binding or i<1 or i>members.count or (currentSet())==members[i] do return false
+            CyrusStopBrush();owner.uiPaintSetID=members[i].layerID;panel.bindEditors();true
+        )
+        on setList selected i do selectSet i
         on addButton pressed do try(root.addPaintSet owner label:("Paint "+(((root.layerSets owner).count+1) as string));panel.bind())catch(messageBox (getCurrentException()) title:"Cyrus paint set")
         on removeButton pressed do try(root.removePaintSet (currentSet());panel.bind())catch(messageBox (getCurrentException()) title:"Cyrus paint set")
         on nameEdit entered value do if not binding and value!="" do (undo "Cyrus set name" on (currentSet()).paintSetName=value;panel.bindEditors())
@@ -463,6 +498,44 @@ fn CyrusLayerEditor_sourceUI_1 = (
     )
 sourceUI_1
 )
+global CyrusLayerEditor_sourceContainersUI_1
+fn CyrusLayerEditor_sourceContainersUI_1 = (
+    rollout sourceContainersUI_1 "Source rectangles - own / inherited" width:146 autoLayoutOnResize:true (
+        local root=CyrusLayerUIRoot,owner=CyrusLayerUIOwner,panel=CyrusLayerUIPanel,controlsReady=false,binding=false,setSpecific=true,modes=#()
+        dropdownlist modeList "Source pool" items:#() pos:[4,8] width:(sourceContainersUI_1.width-8) tooltip:"Use a manual list or an explicit rectangle pool. Other paint sets may inherit the layer pool."
+        listbox containersList "Rectangles" items:#() pos:[4,60] width:(sourceContainersUI_1.width-8) height:4
+        button createContainer "Create rectangle" pos:[4,154] width:(sourceContainersUI_1.width-8) tooltip:"Create a Rectangle for this owner. Put source-model pivots inside its local XY bounds."
+        pickbutton pickContainer "Pick rectangle" filter:CyrusSourceContainerFilter pos:[4,184] width:(sourceContainersUI_1.width-8) tooltip:"Use an existing unmodified Rectangle as a source pool boundary."
+        button removeContainer "Unlink selected rectangle" pos:[4,214] width:(sourceContainersUI_1.width-8) tooltip:"Unlink this rectangle without deleting it or registered source settings."
+        label membershipInfo "Manual source list." pos:[4,244] width:(sourceContainersUI_1.width-8) height:48
+        label helpInfo "Pivot inside = active. Height is ignored. Moving out keeps source settings. Manual needs Update." pos:[4,286] width:(sourceContainersUI_1.width-8) height:44
+        fn currentSet = root.selectedPaintSet owner
+        fn bind layer = (
+            binding=true
+            local leaf=currentSet(),active=root.groupPolicy==3,own=leaf.logicalParentID==""
+            modes=if own then #(1,3,4) else #(1,2,3,4)
+            modeList.items=if own then #("Manual sources","Global containers","Layer containers") else #("Manual sources","Layer default","Global containers","This set's containers")
+            modeList.selection=amax 1 (findItem modes leaf.containerMode)
+            local nodes=leaf.effectiveContainers()
+            containersList.items=for node in nodes collect (if isValidNode node then node.name else "<deleted rectangle>")
+            modeList.enabled=active;containersList.enabled=active
+            for control in #(createContainer,pickContainer,removeContainer) do control.enabled=active and leaf.containerMode==4
+            local registered=leaf.sources.count,count=0
+            for value in leaf.containerActive where value do count+=1
+            membershipInfo.text=if leaf.containerProvider()==undefined then "Manual source list." else (count as string)+" active / "+(registered as string)+" registered\nGlobal rectangles: Surface Scatter."
+            controlsReady=true;binding=false
+        )
+        on sourceContainersUI_1 open do bind owner
+        on sourceContainersUI_1 close do controlsReady=false
+        on modeList selected index do if not binding do try((currentSet()).containerSetMode modes[index];bind owner)catch(messageBox (getCurrentException()) title:"Cyrus source containers")
+        on createContainer pressed do try((currentSet()).containerCreate();bind owner)catch(messageBox (getCurrentException()) title:"Cyrus source containers")
+        on pickContainer picked node do try((currentSet()).containerAdd node;bind owner)catch(messageBox (getCurrentException()) title:"Cyrus source containers")
+        on removeContainer pressed do try((currentSet()).containerRemove containersList.selection;bind owner)catch(messageBox (getCurrentException()) title:"Cyrus source containers")
+        on sourceContainersUI_1 rolledUp state do root.mainUI.layoutPanels()
+    )
+
+sourceContainersUI_1
+)
 global CyrusLayerEditor_distributionUI_1
 fn CyrusLayerEditor_distributionUI_1 = (
     rollout distributionUI_1 "Population and seed - layer" width:132 autoLayoutOnResize:true (
@@ -494,14 +567,14 @@ fn CyrusLayerEditor_distributionUI_1 = (
             distributionUI_1.height=if obj.sharedSpacing() then (if textured then 308 else 184) else (if textured then 340 else 208)
         )
         fn syncControls = (showCenterCheck.visible=not obj.sharedSpacing();populationRadio.state=obj.populationMode;densitySpin.value=obj.plantsPerM2;densityButton.map=obj.densityMap;invertCheck.checked=obj.invertDensity;;arrangePopulation())
-        on modeRadio changed v do if controlsReady and not binding and obj!=undefined do (obj.distributionMode=if v==2 then 3 else 1;obj.markInputDirty();syncControls();CyrusViewportRedraw())
-        on countSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.amount=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
-        on seedSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.randomSeed=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on modeRadio changed v do if controlsReady and not binding and obj!=undefined do undo "Cyrus layer population" on (obj.distributionMode=if v==2 then 3 else 1;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on countSpin changed v do if controlsReady and not binding and obj!=undefined do undo "Cyrus layer population" on (obj.amount=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on seedSpin changed v do if controlsReady and not binding and obj!=undefined do undo "Cyrus layer population" on (obj.randomSeed=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
 
-        on populationRadio changed v do if controlsReady and not binding and obj!=undefined do (obj.populationMode=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
-        on densitySpin changed v do if controlsReady and not binding and obj!=undefined do (obj.plantsPerM2=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
-        on densityButton picked v do if controlsReady and not binding and obj!=undefined do (obj.densityMap=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
-        on invertCheck changed v do if controlsReady and not binding and obj!=undefined do (obj.invertDensity=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on populationRadio changed v do if controlsReady and not binding and obj!=undefined do undo "Cyrus layer population" on (obj.populationMode=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on densitySpin changed v do if controlsReady and not binding and obj!=undefined do undo "Cyrus layer population" on (obj.plantsPerM2=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on densityButton picked v do if controlsReady and not binding and obj!=undefined do undo "Cyrus layer population" on (obj.densityMap=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on invertCheck changed v do if controlsReady and not binding and obj!=undefined do undo "Cyrus layer population" on (obj.invertDensity=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
 
 
 
@@ -522,131 +595,34 @@ fn CyrusLayerEditor_distributionUI_1 = (
     )
 distributionUI_1
 )
-global CyrusLayerEditor_brushUI_1
-fn CyrusLayerEditor_brushUI_1 = (
-    rollout brushUI_1 "Brush coverage and strokes - paint set" width:132 autoLayoutOnResize:true (
-        local root=CyrusLayerUIRoot,owner=CyrusLayerUIOwner,panel=CyrusLayerUIPanel
-        local setSpecific=true
-        local obj=undefined,controlsReady=false,binding=false,history=#()
-        label activeInfo "Select a plant group." pos:[4,8] width:(brushUI_1.width-8) height:32
-        dropdownlist coverageMode "Coverage" items:#("Whole shared surface","Painted area") pos:[4,44] width:(brushUI_1.width-8) tooltip:"Use the whole receiver or this paint set's saved painted coverage."
-        label targetInfo "Receiving surface comes from the setup." pos:[4,94] width:(brushUI_1.width-8) height:32
-        radiobuttons modeRadio "Next stroke" labels:#("Paint","Erase") columns:2 pos:[4,130] width:(brushUI_1.width-8)
-        spinner radiusSpin "Radius:" type:#worldunits range:[0.0001,1e9,20] fieldWidth:82 pos:[4,184] width:(brushUI_1.width-8) tooltip:"World-space radius of the next Brush stroke on the receiving surface."
-        spinner strengthSpin "Strength %:" range:[0,100,100] fieldWidth:82 pos:[4,212] width:(brushUI_1.width-8) tooltip:"Amount of coverage painted or erased by the next stroke."
-        spinner softSpin "Softness %:" range:[0,100,50] fieldWidth:82 pos:[4,240] width:(brushUI_1.width-8) tooltip:"Softness of the next stroke's edge."
-        spinner densitySpin "Mask %:" range:[0,100,100] fieldWidth:82 pos:[4,268] width:(brushUI_1.width-8) tooltip:"Thin plants allowed by the saved mask. Set absolute population on Population."
-        button beginButton "Start Brush" pos:[4,300] width:((brushUI_1.width-12)/2) tooltip:"Paint this set on the shared surface. Creates an empty mask when needed."
-        button stopButton "Stop" pos:[(brushUI_1.width/2+2),300] width:((brushUI_1.width-12)/2) tooltip:"Finish painting and retain the editable stroke history."
-        button fillButton "Fill" pos:[4,332] width:((brushUI_1.width-12)/2) tooltip:"Fill coverage and reset stroke history. Undo restores the previous field."
-        button emptyButton "Empty" pos:[(brushUI_1.width/2+2),332] width:((brushUI_1.width-12)/2) tooltip:"Empty coverage and reset stroke history. Undo restores the previous field."
-        label brushState "Select a group and receiving surface." pos:[4,366] width:(brushUI_1.width-8) height:66
-        dropdownlist overlayMode "Paint feedback" items:#("Coverage tint","Coverage samples","Off") pos:[4,470] width:(brushUI_1.width-8) tooltip:"Coverage feedback only; it does not show which plants survive spacing."
-        colorpicker overlayColor "Color:" pos:[4,524] width:(brushUI_1.width-8) tooltip:"Viewport color for this paint set's coverage feedback."
-        listbox strokeList "Group stroke history" items:#() pos:[4,556] width:(brushUI_1.width-8) height:5
-        checkbox strokeEnabled "Enabled" pos:[4,672] width:((brushUI_1.width-12)/2) tooltip:"Enable or disable the highlighted saved stroke without deleting it."
-        checkbox strokeErase "Erase" pos:[(brushUI_1.width/2+2),672] width:((brushUI_1.width-12)/2) tooltip:"Change the highlighted saved stroke between paint and erase."
-        spinner strokeRadius "Radius:" type:#worldunits range:[0.0001,1e9,20] fieldWidth:82 pos:[4,700] width:(brushUI_1.width-8) tooltip:"Change the radius of the highlighted saved stroke."
-        spinner strokeStrength "Strength %:" range:[0,100,100] fieldWidth:82 pos:[4,728] width:(brushUI_1.width-8) tooltip:"Change the strength of the highlighted saved stroke."
-        spinner strokeSoft "Softness %:" range:[0,100,50] fieldWidth:82 pos:[4,756] width:(brushUI_1.width-8) tooltip:"Change the edge softness of the highlighted saved stroke."
-        button deleteStroke "Delete selected stroke" pos:[4,788] width:(brushUI_1.width-8) tooltip:"Delete the highlighted stroke. Undo restores it."
-        button resetTarget "Reset coverage target..." pos:[4,820] width:(brushUI_1.width-8) tooltip:"Confirm before replacing this set's paint with an empty mask on the current receiver."
-        label brushHelp "One centre = one plant.\nTint shows painted coverage.\nManual mode needs Update." pos:[4,852] width:(brushUI_1.width-8) height:54
-        fn showStroke = (
+global CyrusLayerEditor_populationPolicyUI_1
+fn CyrusLayerEditor_populationPolicyUI_1 = (
+    rollout populationPolicyUI_1 "Target and retry limits - layer" width:146 autoLayoutOnResize:true (
+        local root=CyrusLayerUIRoot,owner=CyrusLayerUIOwner,panel=CyrusLayerUIPanel,controlsReady=false,binding=false,setSpecific=false
+        dropdownlist populationList "Layer population" items:#("Candidate budget","Accepted target") pos:[4,8] width:(populationPolicyUI_1.width-8) tooltip:"Budget evaluates the generated candidates; target makes bounded replacement attempts."
+        spinner attemptSpin "Attempt factor:" range:[1,32,8] type:#integer pos:[4,58] width:(populationPolicyUI_1.width-8) fieldWidth:82 tooltip:"Maximum candidate attempts as a multiple of the requested population."
+        spinner roundSpin "Max rounds:" range:[1,16,8] type:#integer pos:[4,86] width:(populationPolicyUI_1.width-8) fieldWidth:82 tooltip:"Maximum rounds of eligibility, collision and cleanup. A shortfall can remain."
+        checkbox repairCheck "Retry cleanup gaps" pos:[4,114] width:(populationPolicyUI_1.width-8) tooltip:"Allow bounded retries for plants removed by final cleanup."
+        label info "Candidate budget makes one bounded population. Accepted target retries rejected candidates up to these limits; it can finish short." pos:[4,152] width:(populationPolicyUI_1.width-8) height:64
+        fn bind layer = (
             binding=true
-            local i=strokeList.selection,valid=i>0 and i<=history.count
-            for c in #(strokeEnabled,strokeErase,strokeRadius,strokeStrength,strokeSoft,deleteStroke) do c.enabled=valid
-            if valid do (local row=history[i];strokeEnabled.checked=row[1];strokeErase.checked=row[2];strokeRadius.value=row[3];strokeStrength.value=row[4]*100;strokeSoft.value=row[5]*100)
-            binding=false
+            for c in populationPolicyUI_1.controls do c.enabled=root.groupPolicy==3
+            populationList.selection=owner.procPopulation;attemptSpin.value=owner.procAttemptFactor;roundSpin.value=owner.procRounds;repairCheck.checked=owner.procRepair
+            local retry=root.groupPolicy==3 and owner.procPopulation==2
+            attemptSpin.enabled=retry;roundSpin.enabled=retry;repairCheck.enabled=retry
+            info.enabled=true;controlsReady=true;binding=false
         )
-        fn refreshHistory = (
-            binding=true
-            local chosen=strokeList.selection
-            history=if obj!=undefined and obj.paintDocument!=undefined then cyrusBrushHistory obj.paintDocument else #()
-            strokeList.items=for i=1 to history.count collect ((i as string)+" | "+(if history[i][2] then "Erase" else "Paint")+(if history[i][1] then "" else " (off)")+" | "+(history[i][6] as string)+" samples")
-            strokeList.selection=amin chosen history.count;binding=false;showStroke()
-        )
-        fn editStroke = (
-            local i=strokeList.selection
-            if binding or i<1 or i>history.count do return false
-            cyrusBrushStroke obj.paintDocument i strokeEnabled.checked (strokeStrength.value/100.0) strokeRadius.value (strokeSoft.value/100.0) strokeErase.checked
-            obj.publishPaint();refreshHistory()
-        )
-        fn saveOptions = (
-            if not binding and obj!=undefined and obj.paintDocument!=undefined do (
-                cyrusBrushSettings obj.paintDocument radiusSpin.value (strengthSpin.value/100.0) (softSpin.value/100.0) (modeRadio.state==2) 1.0
-                cyrusBrushDisplay obj.paintDocument obj.paintView obj.paintColor
-            )
-        )
-        fn status = (
-            if obj==undefined do return false
-            if obj.paintDocument==undefined then brushState.text="Start Brush creates an empty mask\non the shared receiving surface." else (
-                local state=cyrusBrushStats obj.paintDocument
-                local message=(if state[5]==1 then "Brush active" else "Brush stopped")+" | "+(CyrusUICount state[2])+" strokes"
-                if not obj.paintEnabled do message+="\nWhole surface; strokes retained."
-                if state[11]!="" do message+="\n"+state[11]
-                if obj.updateMode==1 and obj.dirty do message+="\nChanges pending; plants need Update."
-                if state.count>=18 and state[18]>0 do message+="\nCoverage preview uses bounded detail."
-                if brushState.text!=message do brushState.text=message
-            )
-        )
-        fn bindFeatures layer = (
-            binding=true;obj=layer
-            for c in brushUI_1.controls do c.enabled=layer!=undefined
-            local has=layer!=undefined and layer.paintDocument!=undefined
-            for c in #(fillButton,emptyButton,stopButton) do c.enabled=has
-            activeInfo.text=if layer==undefined then "Select a plant group." else "Painting: "+(root.setCaption layer)
-            local targets=root.validSurfaces()
-            targetInfo.text=if has then "Mask surface: "+(if isValidNode (cyrusBrushTarget layer.paintDocument) then (cyrusBrushTarget layer.paintDocument).name else "<missing>") else (if targets.count==1 then "Shared surface: "+targets[1].name else "Pick one shared surface above.")
-            if layer!=undefined do (
-                coverageMode.selection=if layer.paintEnabled then 2 else 1
-                densitySpin.value=layer.paintDensity*100;overlayMode.selection=findItem #(2,1,0) layer.paintView;overlayColor.color=layer.paintColor
-            )
-            if has do (local cfg=cyrusBrushOptions layer.paintDocument;radiusSpin.value=cfg[1];strengthSpin.value=cfg[2]*100;softSpin.value=cfg[3]*100;modeRadio.state=if cfg[5] then 2 else 1)
-            controlsReady=true;binding=false;refreshHistory();status()
-        )
-        checkbutton detailsToggle "Paint feedback and editable stroke history" pos:[4,436] width:(brushUI_1.width-8) height:26 tooltip:"Show or hide these advanced controls; their saved settings are preserved."
-        fn arrangeDetails = (
-            for c in #(overlayMode,overlayColor,strokeList,strokeEnabled,strokeErase,strokeRadius,strokeStrength,strokeSoft,deleteStroke,resetTarget,brushHelp) do c.visible=detailsToggle.checked
-            brushUI_1.height=if detailsToggle.checked then 914 else 470
-        )
-        fn bind layer = (bindFeatures layer;arrangeDetails())
-        on detailsToggle changed value do arrangeDetails()
-        on brushUI_1 open do bind ((if setSpecific then root.selectedPaintSet owner else owner))
-        on brushUI_1 close do (controlsReady=false;CyrusStopBrush())
-        on coverageMode selected i do if not binding and obj!=undefined do try(root.setGroupCoverage obj (i==2))catch(messageBox (getCurrentException()) title:"Cyrus coverage";bind obj)
-        on beginButton pressed do if obj!=undefined do (
-            try (
-                local options=#(radiusSpin.value,strengthSpin.value,softSpin.value,modeRadio.state)
-                root.setGroupCoverage obj true
-                radiusSpin.value=options[1];strengthSpin.value=options[2];softSpin.value=options[3];modeRadio.state=options[4]
-                saveOptions();CyrusStartBrush root obj;status()
-            ) catch(messageBox (getCurrentException()) title:"Cyrus Brush")
-        )
-        on stopButton pressed do (CyrusStopBrush();refreshHistory();status())
-        on modeRadio changed value do saveOptions()
-        on radiusSpin changed value do saveOptions()
-        on strengthSpin changed value do saveOptions()
-        on softSpin changed value do saveOptions()
-        on densitySpin changed value do if not binding and obj!=undefined do (undo "Cyrus painted density" on obj.paintDensity=value/100.0;obj.publishPaint())
-        on overlayMode selected value do if not binding and obj!=undefined do (undo "Cyrus coverage display" on obj.paintView=(#(2,1,0))[value];saveOptions();redrawViews())
-        on overlayColor changed value do if not binding and obj!=undefined do (undo "Cyrus coverage color" on obj.paintColor=value;saveOptions();redrawViews())
-        on fillButton pressed do (cyrusBrushFill obj.paintDocument 1.0;obj.publishPaint();refreshHistory();status())
-        on emptyButton pressed do (cyrusBrushFill obj.paintDocument 0.0;obj.publishPaint();refreshHistory();status())
-        on strokeList selected value do showStroke()
-        on strokeEnabled changed value do editStroke()
-        on strokeErase changed value do editStroke()
-        on strokeRadius changed value do editStroke()
-        on strokeStrength changed value do editStroke()
-        on strokeSoft changed value do editStroke()
-        on deleteStroke pressed do if strokeList.selection>0 do (cyrusBrushDeleteStroke obj.paintDocument strokeList.selection;obj.publishPaint();refreshHistory();status())
-        on resetTarget pressed do if obj!=undefined do (
-            if queryBox "Replace this paint set's saved paint with an empty mask on the shared surface? Undo restores the previous document." title:"Cyrus reset coverage" do try(root.setGroupCoverage obj true reset:true)catch(messageBox (getCurrentException()) title:"Cyrus coverage")
-        )
-        on brushUI_1 rolledUp state do root.mainUI.layoutPanels()
+        fn changeLayer key value = (if not binding do (undo "Cyrus procedural settings" on setProperty owner key value;root.invalidateGroups();bind owner))
+        on populationPolicyUI_1 open do bind owner
+        on populationPolicyUI_1 close do controlsReady=false
+        on populationList selected i do changeLayer #procPopulation i
+        on attemptSpin changed v do changeLayer #procAttemptFactor v
+        on roundSpin changed v do changeLayer #procRounds v
+        on repairCheck changed v do changeLayer #procRepair v
+        on populationPolicyUI_1 rolledUp state do root.mainUI.layoutPanels()
     )
 
-brushUI_1
+populationPolicyUI_1
 )
 global CyrusLayerEditor_areaUI_1
 fn CyrusLayerEditor_areaUI_1 = (
@@ -809,6 +785,271 @@ fn CyrusLayerEditor_areaUI_1 = (
         on areaUI_1 rolledUp state do root.mainUI.layoutPanels()
     )
 areaUI_1
+)
+global CyrusLayerEditor_brushUI_1
+fn CyrusLayerEditor_brushUI_1 = (
+    rollout brushUI_1 "Brush coverage and strokes - paint set" width:132 autoLayoutOnResize:true (
+        local root=CyrusLayerUIRoot,owner=CyrusLayerUIOwner,panel=CyrusLayerUIPanel
+        local setSpecific=true
+        local obj=undefined,controlsReady=false,binding=false,history=#()
+        label activeInfo "Select a plant group." pos:[4,8] width:(brushUI_1.width-8) height:32
+        dropdownlist coverageMode "Coverage" items:#("Whole shared surface","Painted area") pos:[4,44] width:(brushUI_1.width-8) tooltip:"Use the whole receiver or this paint set's saved painted coverage."
+        label targetInfo "Receiving surface comes from the setup." pos:[4,94] width:(brushUI_1.width-8) height:32
+        radiobuttons modeRadio "Next stroke" labels:#("Paint","Erase") columns:2 pos:[4,130] width:(brushUI_1.width-8)
+        spinner radiusSpin "Radius:" type:#worldunits range:[0.0001,1e9,20] fieldWidth:82 pos:[4,184] width:(brushUI_1.width-8) tooltip:"World-space radius of the next Brush stroke on the receiving surface."
+        spinner strengthSpin "Strength %:" range:[0,100,100] fieldWidth:82 pos:[4,212] width:(brushUI_1.width-8) tooltip:"Amount of coverage painted or erased by the next stroke."
+        spinner softSpin "Softness %:" range:[0,100,50] fieldWidth:82 pos:[4,240] width:(brushUI_1.width-8) tooltip:"Softness of the next stroke's edge."
+        spinner densitySpin "Mask %:" range:[0,100,100] fieldWidth:82 pos:[4,268] width:(brushUI_1.width-8) tooltip:"Thin plants allowed by the saved mask. Set absolute population on Population."
+        button beginButton "Start Brush" pos:[4,300] width:((brushUI_1.width-12)/2) tooltip:"Paint this set on the shared surface. Creates an empty mask when needed."
+        button stopButton "Stop" pos:[(brushUI_1.width/2+2),300] width:((brushUI_1.width-12)/2) tooltip:"Finish painting and retain the editable stroke history."
+        button fillButton "Fill" pos:[4,332] width:((brushUI_1.width-12)/2) tooltip:"Fill coverage and reset stroke history. Undo restores the previous field."
+        button emptyButton "Empty" pos:[(brushUI_1.width/2+2),332] width:((brushUI_1.width-12)/2) tooltip:"Empty coverage and reset stroke history. Undo restores the previous field."
+        label brushState "Select a group and receiving surface." pos:[4,366] width:(brushUI_1.width-8) height:66
+        dropdownlist overlayMode "Paint feedback" items:#("Coverage tint","Coverage samples","Off") pos:[4,470] width:(brushUI_1.width-8) tooltip:"Coverage feedback only; it does not show which plants survive spacing."
+        colorpicker overlayColor "Color:" pos:[4,524] width:(brushUI_1.width-8) tooltip:"Viewport color for this paint set's coverage feedback."
+        listbox strokeList "Group stroke history" items:#() pos:[4,556] width:(brushUI_1.width-8) height:5
+        checkbox strokeEnabled "Enabled" pos:[4,672] width:((brushUI_1.width-12)/2) tooltip:"Enable or disable the highlighted saved stroke without deleting it."
+        checkbox strokeErase "Erase" pos:[(brushUI_1.width/2+2),672] width:((brushUI_1.width-12)/2) tooltip:"Change the highlighted saved stroke between paint and erase."
+        spinner strokeRadius "Radius:" type:#worldunits range:[0.0001,1e9,20] fieldWidth:82 pos:[4,700] width:(brushUI_1.width-8) tooltip:"Change the radius of the highlighted saved stroke."
+        spinner strokeStrength "Strength %:" range:[0,100,100] fieldWidth:82 pos:[4,728] width:(brushUI_1.width-8) tooltip:"Change the strength of the highlighted saved stroke."
+        spinner strokeSoft "Softness %:" range:[0,100,50] fieldWidth:82 pos:[4,756] width:(brushUI_1.width-8) tooltip:"Change the edge softness of the highlighted saved stroke."
+        button deleteStroke "Delete selected stroke" pos:[4,788] width:(brushUI_1.width-8) tooltip:"Delete the highlighted stroke. Undo restores it."
+        button resetTarget "Reset coverage target..." pos:[4,820] width:(brushUI_1.width-8) tooltip:"Confirm before replacing this set's paint with an empty mask on the current receiver."
+        label brushHelp "One centre = one plant.\nTint shows painted coverage.\nManual mode needs Update." pos:[4,852] width:(brushUI_1.width-8) height:54
+        fn showStroke = (
+            binding=true
+            local i=strokeList.selection,valid=i>0 and i<=history.count
+            for c in #(strokeEnabled,strokeErase,strokeRadius,strokeStrength,strokeSoft,deleteStroke) do c.enabled=valid
+            if valid do (local row=history[i];strokeEnabled.checked=row[1];strokeErase.checked=row[2];strokeRadius.value=row[3];strokeStrength.value=row[4]*100;strokeSoft.value=row[5]*100)
+            binding=false
+        )
+        fn refreshHistory = (
+            binding=true
+            local chosen=strokeList.selection
+            history=if obj!=undefined and obj.paintDocument!=undefined then cyrusBrushHistory obj.paintDocument else #()
+            strokeList.items=for i=1 to history.count collect ((i as string)+" | "+(if history[i][2] then "Erase" else "Paint")+(if history[i][1] then "" else " (off)")+" | "+(history[i][6] as string)+" samples")
+            strokeList.selection=amin chosen history.count;binding=false;showStroke()
+        )
+        fn editStroke = (
+            local i=strokeList.selection
+            if binding or i<1 or i>history.count do return false
+            cyrusBrushStroke obj.paintDocument i strokeEnabled.checked (strokeStrength.value/100.0) strokeRadius.value (strokeSoft.value/100.0) strokeErase.checked
+            obj.publishPaint();refreshHistory()
+        )
+        fn saveOptions = (
+            if not binding and obj!=undefined and obj.paintDocument!=undefined do (
+                cyrusBrushSettings obj.paintDocument radiusSpin.value (strengthSpin.value/100.0) (softSpin.value/100.0) (modeRadio.state==2) 1.0
+                cyrusBrushDisplay obj.paintDocument obj.paintView obj.paintColor
+            )
+        )
+        fn status = (
+            if obj==undefined do return false
+            if obj.paintDocument==undefined then brushState.text="Start Brush creates an empty mask\non the shared receiving surface." else (
+                local state=cyrusBrushStats obj.paintDocument
+                local message=(if state[5]==1 then "Brush active" else "Brush stopped")+" | "+(CyrusUICount state[2])+" strokes"
+                if not obj.paintEnabled do message+="\nWhole surface; strokes retained."
+                if state[11]!="" do message+="\n"+state[11]
+                if obj.updateMode==1 and obj.dirty do message+="\nChanges pending; plants need Update."
+                if state.count>=18 and state[18]>0 do message+="\nCoverage preview uses bounded detail."
+                if brushState.text!=message do brushState.text=message
+            )
+        )
+        fn bindFeatures layer = (
+            binding=true;obj=layer
+            for c in brushUI_1.controls do c.enabled=layer!=undefined
+            local has=layer!=undefined and layer.paintDocument!=undefined
+            for c in #(fillButton,emptyButton,stopButton) do c.enabled=has
+            activeInfo.text=if layer==undefined then "Select a plant group." else "Painting: "+(root.setCaption layer)
+            local targets=root.validSurfaces()
+            targetInfo.text=if has then "Mask surface: "+(if isValidNode (cyrusBrushTarget layer.paintDocument) then (cyrusBrushTarget layer.paintDocument).name else "<missing>") else (if targets.count==1 then "Shared surface: "+targets[1].name else "Pick one shared surface above.")
+            if layer!=undefined do (
+                coverageMode.selection=if layer.paintEnabled then 2 else 1
+                densitySpin.value=layer.paintDensity*100;overlayMode.selection=findItem #(2,1,0) layer.paintView;overlayColor.color=layer.paintColor
+            )
+            if has do (local cfg=cyrusBrushOptions layer.paintDocument;radiusSpin.value=cfg[1];strengthSpin.value=cfg[2]*100;softSpin.value=cfg[3]*100;modeRadio.state=if cfg[5] then 2 else 1)
+            controlsReady=true;binding=false;refreshHistory();status()
+        )
+        checkbutton detailsToggle "Paint feedback and editable stroke history" pos:[4,436] width:(brushUI_1.width-8) height:26 tooltip:"Show or hide these advanced controls; their saved settings are preserved."
+        fn arrangeDetails = (
+            for c in #(overlayMode,overlayColor,strokeList,strokeEnabled,strokeErase,strokeRadius,strokeStrength,strokeSoft,deleteStroke,resetTarget,brushHelp) do c.visible=detailsToggle.checked
+            brushUI_1.height=if detailsToggle.checked then 914 else 470
+        )
+        fn bind layer = (bindFeatures layer;arrangeDetails())
+        on detailsToggle changed value do arrangeDetails()
+        on brushUI_1 open do bind ((if setSpecific then root.selectedPaintSet owner else owner))
+        on brushUI_1 close do (controlsReady=false;CyrusStopBrush())
+        on coverageMode selected i do if not binding and obj!=undefined do try(root.setGroupCoverage obj (i==2))catch(messageBox (getCurrentException()) title:"Cyrus coverage";bind obj)
+        on beginButton pressed do if obj!=undefined do (
+            try (
+                local options=#(radiusSpin.value,strengthSpin.value,softSpin.value,modeRadio.state)
+                root.setGroupCoverage obj true
+                radiusSpin.value=options[1];strengthSpin.value=options[2];softSpin.value=options[3];modeRadio.state=options[4]
+                saveOptions();CyrusStartBrush root obj;status()
+            ) catch(messageBox (getCurrentException()) title:"Cyrus Brush")
+        )
+        on stopButton pressed do (CyrusStopBrush();refreshHistory();status())
+        on modeRadio changed value do saveOptions()
+        on radiusSpin changed value do saveOptions()
+        on strengthSpin changed value do saveOptions()
+        on softSpin changed value do saveOptions()
+        on densitySpin changed value do if not binding and obj!=undefined do (undo "Cyrus painted density" on obj.paintDensity=value/100.0;obj.publishPaint())
+        on overlayMode selected value do if not binding and obj!=undefined do (undo "Cyrus coverage display" on obj.paintView=(#(2,1,0))[value];saveOptions();redrawViews())
+        on overlayColor changed value do if not binding and obj!=undefined do (undo "Cyrus coverage color" on obj.paintColor=value;saveOptions();redrawViews())
+        on fillButton pressed do (cyrusBrushFill obj.paintDocument 1.0;obj.publishPaint();refreshHistory();status())
+        on emptyButton pressed do (cyrusBrushFill obj.paintDocument 0.0;obj.publishPaint();refreshHistory();status())
+        on strokeList selected value do showStroke()
+        on strokeEnabled changed value do editStroke()
+        on strokeErase changed value do editStroke()
+        on strokeRadius changed value do editStroke()
+        on strokeStrength changed value do editStroke()
+        on strokeSoft changed value do editStroke()
+        on deleteStroke pressed do if strokeList.selection>0 do (cyrusBrushDeleteStroke obj.paintDocument strokeList.selection;obj.publishPaint();refreshHistory();status())
+        on resetTarget pressed do if obj!=undefined do (
+            if queryBox "Replace this paint set's saved paint with an empty mask on the shared surface? Undo restores the previous document." title:"Cyrus reset coverage" do try(root.setGroupCoverage obj true reset:true)catch(messageBox (getCurrentException()) title:"Cyrus coverage")
+        )
+        on brushUI_1 rolledUp state do root.mainUI.layoutPanels()
+    )
+
+brushUI_1
+)
+global CyrusLayerEditor_backgroundUI_1
+fn CyrusLayerEditor_backgroundUI_1 = (
+    rollout backgroundUI_1 "Background fill - paint set" width:146 autoLayoutOnResize:true (
+        local root=CyrusLayerUIRoot,owner=CyrusLayerUIOwner,panel=CyrusLayerUIPanel,controlsReady=false,binding=false,setSpecific=true,backgrounds=#()
+        dropdownlist backgroundList "This set: background" items:#("Off","Outside painted coverage","Between plants","Outside + between") pos:[4,8] width:(backgroundUI_1.width-8) tooltip:"Exclude earlier painted coverage, fill between plants, combine both, or turn off."
+        multiListBox referenceList "Earlier paint sets" items:#() pos:[4,60] width:(backgroundUI_1.width-8) height:4
+        button applyBackground "Apply background" pos:[4,152] width:(backgroundUI_1.width-8) tooltip:"Save this background mode and the selected earlier-set references together."
+        label backgroundInfo "Outside uses earlier sibling coverage. Between plants uses the rules on the Spacing tab." pos:[4,182] width:(backgroundUI_1.width-8) height:62
+        fn currentSet = (root.selectedPaintSet owner)
+        fn bind layer = (
+            binding=true
+            for c in backgroundUI_1.controls do c.enabled=root.groupPolicy==3
+            local leaf=currentSet()
+            backgroundList.selection=leaf.procBackground;backgrounds=#()
+            for p in root.layerSets owner while p!=leaf do append backgrounds p
+            referenceList.items=for p in backgrounds collect p.paintSetName
+            referenceList.selection=for i=1 to backgrounds.count where findItem leaf.procBackgroundIDs backgrounds[i].layerID>0 collect i
+            controlsReady=true;binding=false
+        )
+        on backgroundUI_1 open do bind owner
+        on backgroundUI_1 close do controlsReady=false
+        on applyBackground pressed do try(
+            local leaf=currentSet(),ids=for i in referenceList.selection collect backgrounds[i].layerID
+            if backgroundList.selection!=1 and ids.count==0 do throw "Choose at least one earlier paint set."
+            undo "Cyrus background coverage" on (leaf.procBackground=backgroundList.selection;leaf.procBackgroundIDs=if backgroundList.selection==1 then #() else ids)
+            root.invalidateGroups();bind owner
+        )catch(messageBox (getCurrentException()) title:"Cyrus background")
+        on backgroundUI_1 rolledUp state do root.mainUI.layoutPanels()
+    )
+
+backgroundUI_1
+)
+global CyrusLayerEditor_randomUI_1
+fn CyrusLayerEditor_randomUI_1 = (
+    rollout randomUI_1 "Random transforms - layer" width:132 autoLayoutOnResize:true (
+        local root=CyrusLayerUIRoot,owner=CyrusLayerUIOwner,panel=CyrusLayerUIPanel
+        local setSpecific=false
+        local binding=false,
+        obj=undefined,parentView=undefined
+        local controlsReady=false
+
+        label rotTitle "Rotation (degrees)" pos:[4,8] width:(randomUI_1.width-8)
+        label rotMinTitle "Min" pos:[24,30] width:((randomUI_1.width-38)/2)
+        label rotMaxTitle "Max" pos:[((randomUI_1.width+18)/2),30] width:((randomUI_1.width-38)/2)
+        label rotXLabel "X" pos:[4,52] width:12
+        spinner rotXMinSpin "" range:[-360,360,0]  pos:[24,50] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
+        spinner rotXMaxSpin "" range:[-360,360,0]  pos:[((randomUI_1.width+18)/2),50] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
+        label rotYLabel "Y" pos:[4,76] width:12
+        spinner rotYMinSpin "" range:[-360,360,0]  pos:[24,74] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
+        spinner rotYMaxSpin "" range:[-360,360,0]  pos:[((randomUI_1.width+18)/2),74] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
+        label rotZLabel "Z" pos:[4,100] width:12
+        spinner rotZMinSpin "" range:[-360,360,0]  pos:[24,98] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
+        spinner rotZMaxSpin "" range:[-360,360,360]  pos:[((randomUI_1.width+18)/2),98] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
+        label sclTitle "Scale (multiplier)" pos:[4,162] width:(randomUI_1.width-8)
+        label sclMinTitle "Min" pos:[24,184] width:((randomUI_1.width-38)/2)
+        label sclMaxTitle "Max" pos:[((randomUI_1.width+18)/2),184] width:((randomUI_1.width-38)/2)
+        label sclXLabel "X" pos:[4,206] width:12
+        spinner sclXMinSpin "" range:[0.001,100,1]  pos:[24,204] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
+        spinner sclXMaxSpin "" range:[0.001,100,1]  pos:[((randomUI_1.width+18)/2),204] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
+        label sclYLabel "Y" pos:[4,230] width:12
+        spinner sclYMinSpin "" range:[0.001,100,1]  pos:[24,228] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
+        spinner sclYMaxSpin "" range:[0.001,100,1]  pos:[((randomUI_1.width+18)/2),228] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
+        label sclZLabel "Z" pos:[4,254] width:12
+        spinner sclZMinSpin "" range:[0.001,100,1]  pos:[24,252] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
+        spinner sclZMaxSpin "" range:[0.001,100,1]  pos:[((randomUI_1.width+18)/2),252] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
+        label wholeTitle "Whole Scale (uniform)" pos:[4,312] width:(randomUI_1.width-8)
+        label wholeMinTitle "Min" pos:[24,334] width:((randomUI_1.width-38)/2)
+        label wholeMaxTitle "Max" pos:[((randomUI_1.width+18)/2),334] width:((randomUI_1.width-38)/2)
+        spinner wholeMinSpin "" range:[0.001,1000,1] scale:0.01 pos:[24,356] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
+        spinner wholeMaxSpin "" range:[0.001,1000,1] scale:0.01 pos:[((randomUI_1.width+18)/2),356] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
+        on wholeMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.wholeScaleMin=v;if v>obj.wholeScaleMax do (obj.wholeScaleMax=v;wholeMaxSpin.value=v);CyrusViewportRedraw())
+        on wholeMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.wholeScaleMax=v;if v<obj.wholeScaleMin do (obj.wholeScaleMin=v;wholeMinSpin.value=v);CyrusViewportRedraw())
+        label movTitle "Movement (world units)" pos:[4,422] width:(randomUI_1.width-8)
+        label movMinTitle "Min" pos:[24,444] width:((randomUI_1.width-38)/2)
+        label movMaxTitle "Max" pos:[((randomUI_1.width+18)/2),444] width:((randomUI_1.width-38)/2)
+        label movXLabel "X" pos:[4,466] width:12
+        spinner movXMinSpin "" range:[-100000,100000,0] type:#worldUnits pos:[24,464] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
+        spinner movXMaxSpin "" range:[-100000,100000,0] type:#worldUnits pos:[((randomUI_1.width+18)/2),464] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
+        label movYLabel "Y" pos:[4,490] width:12
+        spinner movYMinSpin "" range:[-100000,100000,0] type:#worldUnits pos:[24,488] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
+        spinner movYMaxSpin "" range:[-100000,100000,0] type:#worldUnits pos:[((randomUI_1.width+18)/2),488] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
+        label movZLabel "Z" pos:[4,514] width:12
+        spinner movZMinSpin "" range:[-100000,100000,0] type:#worldUnits pos:[24,512] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
+        spinner movZMaxSpin "" range:[-100000,100000,0] type:#worldUnits pos:[((randomUI_1.width+18)/2),512] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
+        checkbox projectCheck "Keep on surface" pos:[4,576] width:(randomUI_1.width-8) tooltip:"Project random movement back onto the receiving surface."
+        checkbox alignCheck "Align to normal" pos:[4,600] width:(randomUI_1.width-8) tooltip:"Align instances to the receiving surface normal."
+
+        button resetRotation "Reset rotation" pos:[4,124] width:(randomUI_1.width-8) height:20 tooltip:"Reset only this layer's random rotation limits. Undo is available."
+        button resetScale "Reset XYZ scale" pos:[4,278] width:(randomUI_1.width-8) height:20 tooltip:"Reset only this layer's separate X, Y and Z scale limits."
+        button resetWholeScale "Reset whole scale" pos:[4,382] width:(randomUI_1.width-8) height:20 tooltip:"Reset only this layer's uniform scale multiplier."
+        button resetMovement "Reset movement" pos:[4,536] width:(randomUI_1.width-8) height:20 tooltip:"Reset only this layer's random translation limits."
+        fn resetBoundRandomization kind = (
+            undo "Cyrus reset layer transforms" on owner.resetRandomization kind
+            randomUI_1.bind owner;root.invalidateGroups();true
+        )
+        on resetRotation pressed do resetBoundRandomization #rotation
+        on resetScale pressed do resetBoundRandomization #scale
+        on resetWholeScale pressed do resetBoundRandomization #wholeScale
+        on resetMovement pressed do resetBoundRandomization #movement
+        fn syncControls = (projectCheck.checked=obj.projectMove;rotXMinSpin.value=obj.rotXMin;rotXMaxSpin.value=obj.rotXMax;rotYMinSpin.value=obj.rotYMin;rotYMaxSpin.value=obj.rotYMax;rotZMinSpin.value=obj.rotZMin;rotZMaxSpin.value=obj.rotZMax;sclXMinSpin.value=obj.sclXMin;sclXMaxSpin.value=obj.sclXMax;sclYMinSpin.value=obj.sclYMin;sclYMaxSpin.value=obj.sclYMax;sclZMinSpin.value=obj.sclZMin;sclZMaxSpin.value=obj.sclZMax;movXMinSpin.value=obj.movXMin;movXMaxSpin.value=obj.movXMax;movYMinSpin.value=obj.movYMin;movYMaxSpin.value=obj.movYMax;movZMinSpin.value=obj.movZMin;movZMaxSpin.value=obj.movZMax;)
+        on alignCheck changed v do if controlsReady and not binding and obj!=undefined do (obj.alignNormal=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+
+        on projectCheck changed v do if controlsReady and not binding and obj!=undefined do (obj.projectMove=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on rotXMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.rotXMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on rotXMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.rotXMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on rotYMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.rotYMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on rotYMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.rotYMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on rotZMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.rotZMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on rotZMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.rotZMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on sclXMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.sclXMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on sclXMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.sclXMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on sclYMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.sclYMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on sclYMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.sclYMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on sclZMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.sclZMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on sclZMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.sclZMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on movXMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.movXMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on movXMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.movXMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on movYMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.movYMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on movYMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.movYMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on movZMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.movZMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on movZMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.movZMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+
+
+
+        fn bind layer = (
+            local next=layer
+            binding=true;controlsReady=false
+            if obj!=next do ()
+            obj=next;parentView=root.mainUI
+            for c in randomUI_1.controls do c.enabled=layer!=undefined
+            try (undo off ((wholeMinSpin.value=obj.wholeScaleMin;wholeMaxSpin.value=obj.wholeScaleMax;projectCheck.checked=obj.projectMove;rotXMinSpin.value=obj.rotXMin;rotXMaxSpin.value=obj.rotXMax;rotYMinSpin.value=obj.rotYMin;rotYMaxSpin.value=obj.rotYMax;rotZMinSpin.value=obj.rotZMin;rotZMaxSpin.value=obj.rotZMax;sclXMinSpin.value=obj.sclXMin;sclXMaxSpin.value=obj.sclXMax;sclYMinSpin.value=obj.sclYMin;sclYMaxSpin.value=obj.sclYMax;sclZMinSpin.value=obj.sclZMin;sclZMaxSpin.value=obj.sclZMax;movXMinSpin.value=obj.movXMin;movXMaxSpin.value=obj.movXMax;movYMinSpin.value=obj.movYMin;movYMaxSpin.value=obj.movYMax;movZMinSpin.value=obj.movZMin;movZMaxSpin.value=obj.movZMax;controlsReady=true;alignCheck.checked=obj.alignNormal))) catch(binding=false;controlsReady=true;throw())
+            controlsReady=true;binding=false
+        )
+        on randomUI_1 open do (controlsReady=true;bind (if setSpecific then root.selectedPaintSet owner else owner))
+        on randomUI_1 close do controlsReady=false
+        on randomUI_1 rolledUp state do root.mainUI.layoutPanels()
+    )
+randomUI_1
 )
 global CyrusLayerEditor_diversityUI_1
 fn CyrusLayerEditor_diversityUI_1 = (
@@ -1056,112 +1297,115 @@ fn CyrusLayerEditor_diversityUI_1 = (
     )
 diversityUI_1
 )
-global CyrusLayerEditor_randomUI_1
-fn CyrusLayerEditor_randomUI_1 = (
-    rollout randomUI_1 "Random transforms - layer" width:132 autoLayoutOnResize:true (
-        local root=CyrusLayerUIRoot,owner=CyrusLayerUIOwner,panel=CyrusLayerUIPanel
-        local setSpecific=false
-        local binding=false,
-        obj=undefined,parentView=undefined
-        local controlsReady=false
-
-        label rotTitle "Rotation (degrees)" pos:[4,8] width:(randomUI_1.width-8)
-        label rotMinTitle "Min" pos:[24,30] width:((randomUI_1.width-38)/2)
-        label rotMaxTitle "Max" pos:[((randomUI_1.width+18)/2),30] width:((randomUI_1.width-38)/2)
-        label rotXLabel "X" pos:[4,52] width:12
-        spinner rotXMinSpin "" range:[-360,360,0]  pos:[24,50] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
-        spinner rotXMaxSpin "" range:[-360,360,0]  pos:[((randomUI_1.width+18)/2),50] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
-        label rotYLabel "Y" pos:[4,76] width:12
-        spinner rotYMinSpin "" range:[-360,360,0]  pos:[24,74] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
-        spinner rotYMaxSpin "" range:[-360,360,0]  pos:[((randomUI_1.width+18)/2),74] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
-        label rotZLabel "Z" pos:[4,100] width:12
-        spinner rotZMinSpin "" range:[-360,360,0]  pos:[24,98] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
-        spinner rotZMaxSpin "" range:[-360,360,360]  pos:[((randomUI_1.width+18)/2),98] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
-        label sclTitle "Scale (multiplier)" pos:[4,162] width:(randomUI_1.width-8)
-        label sclMinTitle "Min" pos:[24,184] width:((randomUI_1.width-38)/2)
-        label sclMaxTitle "Max" pos:[((randomUI_1.width+18)/2),184] width:((randomUI_1.width-38)/2)
-        label sclXLabel "X" pos:[4,206] width:12
-        spinner sclXMinSpin "" range:[0.001,100,1]  pos:[24,204] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
-        spinner sclXMaxSpin "" range:[0.001,100,1]  pos:[((randomUI_1.width+18)/2),204] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
-        label sclYLabel "Y" pos:[4,230] width:12
-        spinner sclYMinSpin "" range:[0.001,100,1]  pos:[24,228] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
-        spinner sclYMaxSpin "" range:[0.001,100,1]  pos:[((randomUI_1.width+18)/2),228] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
-        label sclZLabel "Z" pos:[4,254] width:12
-        spinner sclZMinSpin "" range:[0.001,100,1]  pos:[24,252] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
-        spinner sclZMaxSpin "" range:[0.001,100,1]  pos:[((randomUI_1.width+18)/2),252] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
-        label wholeTitle "Whole Scale (uniform)" pos:[4,312] width:(randomUI_1.width-8)
-        label wholeMinTitle "Min" pos:[24,334] width:((randomUI_1.width-38)/2)
-        label wholeMaxTitle "Max" pos:[((randomUI_1.width+18)/2),334] width:((randomUI_1.width-38)/2)
-        spinner wholeMinSpin "" range:[0.001,1000,1] scale:0.01 pos:[24,356] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
-        spinner wholeMaxSpin "" range:[0.001,1000,1] scale:0.01 pos:[((randomUI_1.width+18)/2),356] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
-        on wholeMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.wholeScaleMin=v;if v>obj.wholeScaleMax do (obj.wholeScaleMax=v;wholeMaxSpin.value=v);CyrusViewportRedraw())
-        on wholeMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.wholeScaleMax=v;if v<obj.wholeScaleMin do (obj.wholeScaleMin=v;wholeMinSpin.value=v);CyrusViewportRedraw())
-        label movTitle "Movement (world units)" pos:[4,422] width:(randomUI_1.width-8)
-        label movMinTitle "Min" pos:[24,444] width:((randomUI_1.width-38)/2)
-        label movMaxTitle "Max" pos:[((randomUI_1.width+18)/2),444] width:((randomUI_1.width-38)/2)
-        label movXLabel "X" pos:[4,466] width:12
-        spinner movXMinSpin "" range:[-100000,100000,0] type:#worldUnits pos:[24,464] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
-        spinner movXMaxSpin "" range:[-100000,100000,0] type:#worldUnits pos:[((randomUI_1.width+18)/2),464] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
-        label movYLabel "Y" pos:[4,490] width:12
-        spinner movYMinSpin "" range:[-100000,100000,0] type:#worldUnits pos:[24,488] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
-        spinner movYMaxSpin "" range:[-100000,100000,0] type:#worldUnits pos:[((randomUI_1.width+18)/2),488] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
-        label movZLabel "Z" pos:[4,514] width:12
-        spinner movZMinSpin "" range:[-100000,100000,0] type:#worldUnits pos:[24,512] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
-        spinner movZMaxSpin "" range:[-100000,100000,0] type:#worldUnits pos:[((randomUI_1.width+18)/2),512] fieldWidth:((randomUI_1.width-38)/2) width:((randomUI_1.width-38)/2)
-        checkbox projectCheck "Keep on surface" pos:[4,576] width:(randomUI_1.width-8) tooltip:"Project random movement back onto the receiving surface."
-        checkbox alignCheck "Align to normal" pos:[4,600] width:(randomUI_1.width-8) tooltip:"Align instances to the receiving surface normal."
-
-        button resetRotation "Reset rotation" pos:[4,124] width:(randomUI_1.width-8) height:20 tooltip:"Reset only this layer's random rotation limits. Undo is available."
-        button resetScale "Reset XYZ scale" pos:[4,278] width:(randomUI_1.width-8) height:20 tooltip:"Reset only this layer's separate X, Y and Z scale limits."
-        button resetWholeScale "Reset whole scale" pos:[4,382] width:(randomUI_1.width-8) height:20 tooltip:"Reset only this layer's uniform scale multiplier."
-        button resetMovement "Reset movement" pos:[4,536] width:(randomUI_1.width-8) height:20 tooltip:"Reset only this layer's random translation limits."
-        fn resetBoundRandomization kind = (
-            undo "Cyrus reset layer transforms" on owner.resetRandomization kind
-            randomUI_1.bind owner;root.invalidateGroups();true
+global CyrusLayerEditor_proceduralUI_1
+fn CyrusLayerEditor_proceduralUI_1 = (
+    rollout proceduralUI_1 "Spacing rules - selected scope" width:146 autoLayoutOnResize:true (
+        local root=CyrusLayerUIRoot,owner=CyrusLayerUIOwner,panel=CyrusLayerUIPanel,controlsReady=false,binding=false,setSpecific=true,peers=#()
+        dropdownlist scopeList "Spacing scope" items:#("This paint set","Default between sets","Pair of paint sets","Pair of layers") pos:[4,12] width:(proceduralUI_1.width-8) selection:1 tooltip:"Choose within-set, between-set defaults, a set pair, or a layer pair."
+        dropdownlist peerList "Other owner" items:#() pos:[4,64] width:(proceduralUI_1.width-8) tooltip:"The other set or layer affected by this pair rule."
+        checkbox enabledCheck "Enable this spacing" pos:[4,118] width:(proceduralUI_1.width-8) tooltip:"Enable only this collision scope. Other scopes are independent."
+        spinner multiplierSpin "Radius factor:" range:[0,10000,1] pos:[4,146] width:(proceduralUI_1.width-8) fieldWidth:82 tooltip:"Minimum distance = factor times (radius A + radius B), plus extra gap."
+        spinner gapSpin "Extra gap:" range:[0,1e9,0] type:#worldUnits pos:[4,174] width:(proceduralUI_1.width-8) fieldWidth:82 tooltip:"Additional distance in scene units. Saves immediately; Manual waits for Update."
+        checkbox planarCheck "XY distance (off = 3D)" pos:[4,202] width:(proceduralUI_1.width-8) tooltip:"Measure distance in world XY. Turn off to include height in 3D distance."
+        label ruleInfo "Factor x (radius A + radius B) + gap" pos:[4,230] width:(proceduralUI_1.width-8) height:40
+        button resetRule "Use inherited / default" pos:[4,274] width:(proceduralUI_1.width-8) tooltip:"Remove a pair or self override, or reset the between-set default."
+        fn currentSet = (root.selectedPaintSet owner)
+        fn bindRule resetPeer:false = (
+            local wasBinding=binding,leaf=currentSet(),scope=scopeList.selection,rule,previous=undefined
+            if not resetPeer and peerList.selection>0 and peerList.selection<=peers.count do previous=peers[peerList.selection]
+            binding=true
+            try (
+            peers=case scope of (
+                3:(for p in root.layerSets owner where p!=leaf collect p)
+                4:(for p in root.logicalLayers() where p!=owner collect p)
+                default:#()
+            )
+            peerList.items=for p in peers collect (if scope==4 then root.layerCaption p else p.paintSetName)
+            peerList.selection=if peers.count==0 then 0 else amax 1 (findItem peers previous)
+            local editable=root.groupPolicy==3 and (scope<3 or peers.count>0)
+            peerList.enabled=editable and scope>=3
+            for c in #(enabledCheck,multiplierSpin,gapSpin,planarCheck,resetRule) do c.enabled=editable
+            rule=case scope of (
+                1: leaf.procSelfRule()
+                2:#(owner.procSiblingEnabled,owner.procSiblingMultiplier,owner.procSiblingGap,owner.procSiblingPlanar)
+                default:#(false,1.0,0.0,false)
+            )
+            if scope>=3 and peerList.selection>0 do (
+                local i=root.procPair (scope-2) (if scope==3 then leaf else owner) peers[peerList.selection]
+                if i>0 then rule=#(root.procRuleEnabled[i],root.procRuleMultiplier[i],root.procRuleGap[i],root.procRulePlanar[i])
+                else if scope==3 do rule=#(owner.procSiblingEnabled,owner.procSiblingMultiplier,owner.procSiblingGap,owner.procSiblingPlanar)
+            )
+            enabledCheck.checked=rule[1];multiplierSpin.value=rule[2];gapSpin.value=rule[3];planarCheck.checked=rule[4]
+            ruleInfo.text=if not editable and scope>=3 then "Add another owner to set pair spacing." else if scope==1 and not leaf.procSelfOverride then "Inherited: 2 x Collision radius. Edit to override this set." else "Factor x (radius A + radius B) + gap. Changes save automatically."
+            binding=wasBinding
+            )catch(binding=wasBinding;throw())
         )
-        on resetRotation pressed do resetBoundRandomization #rotation
-        on resetScale pressed do resetBoundRandomization #scale
-        on resetWholeScale pressed do resetBoundRandomization #wholeScale
-        on resetMovement pressed do resetBoundRandomization #movement
-        fn syncControls = (projectCheck.checked=obj.projectMove;rotXMinSpin.value=obj.rotXMin;rotXMaxSpin.value=obj.rotXMax;rotYMinSpin.value=obj.rotYMin;rotYMaxSpin.value=obj.rotYMax;rotZMinSpin.value=obj.rotZMin;rotZMaxSpin.value=obj.rotZMax;sclXMinSpin.value=obj.sclXMin;sclXMaxSpin.value=obj.sclXMax;sclYMinSpin.value=obj.sclYMin;sclYMaxSpin.value=obj.sclYMax;sclZMinSpin.value=obj.sclZMin;sclZMaxSpin.value=obj.sclZMax;movXMinSpin.value=obj.movXMin;movXMaxSpin.value=obj.movXMax;movYMinSpin.value=obj.movYMin;movYMaxSpin.value=obj.movYMax;movZMinSpin.value=obj.movZMin;movZMaxSpin.value=obj.movZMax;)
-        on alignCheck changed v do if controlsReady and not binding and obj!=undefined do (obj.alignNormal=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
-
-        on projectCheck changed v do if controlsReady and not binding and obj!=undefined do (obj.projectMove=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
-        on rotXMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.rotXMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
-        on rotXMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.rotXMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
-        on rotYMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.rotYMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
-        on rotYMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.rotYMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
-        on rotZMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.rotZMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
-        on rotZMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.rotZMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
-        on sclXMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.sclXMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
-        on sclXMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.sclXMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
-        on sclYMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.sclYMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
-        on sclYMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.sclYMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
-        on sclZMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.sclZMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
-        on sclZMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.sclZMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
-        on movXMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.movXMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
-        on movXMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.movXMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
-        on movYMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.movYMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
-        on movYMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.movYMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
-        on movZMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.movZMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
-        on movZMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.movZMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
-
-
-
         fn bind layer = (
-            local next=layer
-            binding=true;controlsReady=false
-            if obj!=next do ()
-            obj=next;parentView=root.mainUI
-            for c in randomUI_1.controls do c.enabled=layer!=undefined
-            try (undo off ((wholeMinSpin.value=obj.wholeScaleMin;wholeMaxSpin.value=obj.wholeScaleMax;projectCheck.checked=obj.projectMove;rotXMinSpin.value=obj.rotXMin;rotXMaxSpin.value=obj.rotXMax;rotYMinSpin.value=obj.rotYMin;rotYMaxSpin.value=obj.rotYMax;rotZMinSpin.value=obj.rotZMin;rotZMaxSpin.value=obj.rotZMax;sclXMinSpin.value=obj.sclXMin;sclXMaxSpin.value=obj.sclXMax;sclYMinSpin.value=obj.sclYMin;sclYMaxSpin.value=obj.sclYMax;sclZMinSpin.value=obj.sclZMin;sclZMaxSpin.value=obj.sclZMax;movXMinSpin.value=obj.movXMin;movXMaxSpin.value=obj.movXMax;movYMinSpin.value=obj.movYMin;movYMaxSpin.value=obj.movYMax;movZMinSpin.value=obj.movZMin;movZMaxSpin.value=obj.movZMax;controlsReady=true;alignCheck.checked=obj.alignNormal))) catch(binding=false;controlsReady=true;throw())
-            controlsReady=true;binding=false
+            binding=true
+            for c in proceduralUI_1.controls do c.enabled=root.groupPolicy==3
+            bindRule();controlsReady=true;binding=false
+            if root.groupPolicy!=3 do ruleInfo.text="Use the preserved legacy spacing controls, or enable Procedural in the Modify panel."
         )
-        on randomUI_1 open do (controlsReady=true;bind (if setSpecific then root.selectedPaintSet owner else owner))
-        on randomUI_1 close do controlsReady=false
-        on randomUI_1 rolledUp state do root.mainUI.layoutPanels()
+        on proceduralUI_1 open do bind owner
+        on proceduralUI_1 close do controlsReady=false
+        fn saveRule = (
+            if binding or not controlsReady or root.groupPolicy!=3 do return false
+            local leaf=currentSet(),scope=scopeList.selection
+            if scope>=3 and (peerList.selection<1 or peerList.selection>peers.count) do return false
+            try (
+            undo "Cyrus procedural spacing" on case scope of (
+                1:(leaf.procSelfOverride=true;leaf.procSelfEnabled=enabledCheck.checked;leaf.procSelfMultiplier=multiplierSpin.value;leaf.procSelfGap=gapSpin.value;leaf.procSelfPlanar=planarCheck.checked)
+                2:(owner.procSiblingEnabled=enabledCheck.checked;owner.procSiblingMultiplier=multiplierSpin.value;owner.procSiblingGap=gapSpin.value;owner.procSiblingPlanar=planarCheck.checked)
+                default:(if peerList.selection<1 do throw "Choose a peer.";root.procSetPair (scope-2) (if scope==3 then leaf else owner) peers[peerList.selection] enabledCheck.checked multiplierSpin.value gapSpin.value planarCheck.checked)
+            )
+            -- Save the rule only. The normal Manual/Live pipeline decides when
+            -- to publish placements. Do not reset peer selection or spinner
+            -- focus by rebinding every control during a drag.
+            ruleInfo.text="Factor x (radius A + radius B) + gap. Changes save automatically."
+            root.invalidateGroups();true
+            )catch(bindRule();messageBox (getCurrentException()) title:"Cyrus spacing";false)
+        )
+        on scopeList selected i do if not binding do bindRule resetPeer:true
+        on peerList selected index do if not binding and index>0 do bindRule()
+        on enabledCheck changed value do saveRule()
+        on multiplierSpin changed value do saveRule()
+        on gapSpin changed value do saveRule()
+        on planarCheck changed value do saveRule()
+        on resetRule pressed do try(
+            local leaf=currentSet(),scope=scopeList.selection
+            undo "Cyrus spacing inheritance" on case scope of (
+                1: leaf.procSelfOverride=false
+                2:(owner.procSiblingEnabled=false;owner.procSiblingMultiplier=1;owner.procSiblingGap=0;owner.procSiblingPlanar=false)
+                default:(if peerList.selection>0 do root.procRemoveRule (root.procPair (scope-2) (if scope==3 then leaf else owner) peers[peerList.selection]))
+            )
+            root.invalidateGroups();bind owner
+        )catch(messageBox (getCurrentException()) title:"Cyrus spacing")
+        on proceduralUI_1 rolledUp state do root.mainUI.layoutPanels()
     )
-randomUI_1
+
+proceduralUI_1
+)
+global CyrusLayerEditor_instanceRadiusUI_1
+fn CyrusLayerEditor_instanceRadiusUI_1 = (
+    rollout instanceRadiusUI_1 "Instance radii - CS Edit" width:146 autoLayoutOnResize:true (
+        local root=CyrusLayerUIRoot,owner=CyrusLayerUIOwner,panel=CyrusLayerUIPanel,controlsReady=false,setSpecific=true
+        dropdownlist radiusMode "Selected CS Edit instances" items:#("World radius","Radius multiplier") selection:1 pos:[4,8] width:(instanceRadiusUI_1.width-8) tooltip:"Use an absolute world radius or multiply the selected instances' source radius."
+        spinner radiusSpin "Value:" range:[0,1e9,1] pos:[4,60] width:(instanceRadiusUI_1.width-8) fieldWidth:82 tooltip:"Value applied only when Set selected radii is pressed."
+        button applyRadius "Set selected radii" pos:[4,88] width:(instanceRadiusUI_1.width-8) tooltip:"Apply radius overrides to selected CS Edit instances in this paint set."
+        button resetRadius "Clear selected overrides" pos:[4,116] width:(instanceRadiusUI_1.width-8) tooltip:"Restore the selected instances' inherited source radii."
+        button clearRadius "Clear this set's overrides" pos:[4,144] width:(instanceRadiusUI_1.width-8) tooltip:"Remove every instance-radius override belonging to this paint set."
+        label info "Select instances with CS Edit before applying a radius. Overrides follow their stable instance identities." pos:[4,180] width:(instanceRadiusUI_1.width-8) height:54
+        fn currentSet = (root.selectedPaintSet owner)
+        fn bind layer = (for c in instanceRadiusUI_1.controls do c.enabled=root.groupPolicy==3;controlsReady=true)
+        on instanceRadiusUI_1 open do bind owner
+        on instanceRadiusUI_1 close do controlsReady=false
+        on applyRadius pressed do try((currentSet()).procSelectedRadius radiusMode.selection radiusSpin.value;bind owner)catch(messageBox (getCurrentException()) title:"Cyrus radius")
+        on resetRadius pressed do try((currentSet()).procSelectedRadius radiusMode.selection radiusSpin.value reset:true;bind owner)catch(messageBox (getCurrentException()) title:"Cyrus radius")
+        on clearRadius pressed do try((currentSet()).procClearRadii();bind owner)catch(messageBox (getCurrentException()) title:"Cyrus radius")
+        on instanceRadiusUI_1 rolledUp state do root.mainUI.layoutPanels()
+    )
+
+instanceRadiusUI_1
 )
 global CyrusLayerEditor_spacingUI_1
 fn CyrusLayerEditor_spacingUI_1 = (
@@ -1374,229 +1618,6 @@ fn CyrusLayerEditor_separationUI_1 = (
 
 separationUI_1
 )
-global CyrusLayerEditor_proceduralUI_1
-fn CyrusLayerEditor_proceduralUI_1 = (
-    rollout proceduralUI_1 "Spacing rules - selected scope" width:146 autoLayoutOnResize:true (
-        local root=CyrusLayerUIRoot,owner=CyrusLayerUIOwner,panel=CyrusLayerUIPanel,controlsReady=false,binding=false,setSpecific=true,peers=#()
-        dropdownlist scopeList "Spacing scope" items:#("This paint set","Default between sets","Pair of paint sets","Pair of layers") pos:[4,12] width:(proceduralUI_1.width-8) selection:1 tooltip:"Choose within-set, between-set defaults, a set pair, or a layer pair."
-        dropdownlist peerList "Other owner" items:#() pos:[4,64] width:(proceduralUI_1.width-8) tooltip:"The other set or layer affected by this pair rule."
-        checkbox enabledCheck "Enable this spacing" pos:[4,118] width:(proceduralUI_1.width-8) tooltip:"Enable only this collision scope. Other scopes are independent."
-        spinner multiplierSpin "Radius factor:" range:[0,10000,1] pos:[4,146] width:(proceduralUI_1.width-8) fieldWidth:82 tooltip:"Minimum distance = factor times (radius A + radius B), plus extra gap."
-        spinner gapSpin "Extra gap:" range:[0,1e9,0] type:#worldUnits pos:[4,174] width:(proceduralUI_1.width-8) fieldWidth:82 tooltip:"Additional distance in scene units. Saves immediately; Manual waits for Update."
-        checkbox planarCheck "XY distance (off = 3D)" pos:[4,202] width:(proceduralUI_1.width-8) tooltip:"Measure distance in world XY. Turn off to include height in 3D distance."
-        label ruleInfo "Factor x (radius A + radius B) + gap" pos:[4,230] width:(proceduralUI_1.width-8) height:40
-        button resetRule "Use inherited / default" pos:[4,274] width:(proceduralUI_1.width-8) tooltip:"Remove a pair or self override, or reset the between-set default."
-        fn currentSet = (root.selectedPaintSet owner)
-        fn bindRule resetPeer:false = (
-            local wasBinding=binding,leaf=currentSet(),scope=scopeList.selection,rule,previous=undefined
-            if not resetPeer and peerList.selection>0 and peerList.selection<=peers.count do previous=peers[peerList.selection]
-            binding=true
-            try (
-            peers=case scope of (
-                3:(for p in root.layerSets owner where p!=leaf collect p)
-                4:(for p in root.logicalLayers() where p!=owner collect p)
-                default:#()
-            )
-            peerList.items=for p in peers collect (if scope==4 then root.layerCaption p else p.paintSetName)
-            peerList.selection=if peers.count==0 then 0 else amax 1 (findItem peers previous)
-            local editable=root.groupPolicy==3 and (scope<3 or peers.count>0)
-            peerList.enabled=editable and scope>=3
-            for c in #(enabledCheck,multiplierSpin,gapSpin,planarCheck,resetRule) do c.enabled=editable
-            rule=case scope of (
-                1: leaf.procSelfRule()
-                2:#(owner.procSiblingEnabled,owner.procSiblingMultiplier,owner.procSiblingGap,owner.procSiblingPlanar)
-                default:#(false,1.0,0.0,false)
-            )
-            if scope>=3 and peerList.selection>0 do (
-                local i=root.procPair (scope-2) (if scope==3 then leaf else owner) peers[peerList.selection]
-                if i>0 then rule=#(root.procRuleEnabled[i],root.procRuleMultiplier[i],root.procRuleGap[i],root.procRulePlanar[i])
-                else if scope==3 do rule=#(owner.procSiblingEnabled,owner.procSiblingMultiplier,owner.procSiblingGap,owner.procSiblingPlanar)
-            )
-            enabledCheck.checked=rule[1];multiplierSpin.value=rule[2];gapSpin.value=rule[3];planarCheck.checked=rule[4]
-            ruleInfo.text=if not editable and scope>=3 then "Add another owner to set pair spacing." else if scope==1 and not leaf.procSelfOverride then "Inherited: 2 x Collision radius. Edit to override this set." else "Factor x (radius A + radius B) + gap. Changes save automatically."
-            binding=wasBinding
-            )catch(binding=wasBinding;throw())
-        )
-        fn bind layer = (
-            binding=true
-            for c in proceduralUI_1.controls do c.enabled=root.groupPolicy==3
-            bindRule();controlsReady=true;binding=false
-            if root.groupPolicy!=3 do ruleInfo.text="Use the preserved legacy spacing controls, or enable Procedural in the Modify panel."
-        )
-        on proceduralUI_1 open do bind owner
-        on proceduralUI_1 close do controlsReady=false
-        fn saveRule = (
-            if binding or not controlsReady or root.groupPolicy!=3 do return false
-            local leaf=currentSet(),scope=scopeList.selection
-            if scope>=3 and (peerList.selection<1 or peerList.selection>peers.count) do return false
-            try (
-            undo "Cyrus procedural spacing" on case scope of (
-                1:(leaf.procSelfOverride=true;leaf.procSelfEnabled=enabledCheck.checked;leaf.procSelfMultiplier=multiplierSpin.value;leaf.procSelfGap=gapSpin.value;leaf.procSelfPlanar=planarCheck.checked)
-                2:(owner.procSiblingEnabled=enabledCheck.checked;owner.procSiblingMultiplier=multiplierSpin.value;owner.procSiblingGap=gapSpin.value;owner.procSiblingPlanar=planarCheck.checked)
-                default:(if peerList.selection<1 do throw "Choose a peer.";root.procSetPair (scope-2) (if scope==3 then leaf else owner) peers[peerList.selection] enabledCheck.checked multiplierSpin.value gapSpin.value planarCheck.checked)
-            )
-            -- Save the rule only. The normal Manual/Live pipeline decides when
-            -- to publish placements. Do not reset peer selection or spinner
-            -- focus by rebinding every control during a drag.
-            ruleInfo.text="Factor x (radius A + radius B) + gap. Changes save automatically."
-            root.invalidateGroups();true
-            )catch(bindRule();messageBox (getCurrentException()) title:"Cyrus spacing";false)
-        )
-        on scopeList selected i do if not binding do bindRule resetPeer:true
-        on peerList selected index do if not binding and index>0 do bindRule()
-        on enabledCheck changed value do saveRule()
-        on multiplierSpin changed value do saveRule()
-        on gapSpin changed value do saveRule()
-        on planarCheck changed value do saveRule()
-        on resetRule pressed do try(
-            local leaf=currentSet(),scope=scopeList.selection
-            undo "Cyrus spacing inheritance" on case scope of (
-                1: leaf.procSelfOverride=false
-                2:(owner.procSiblingEnabled=false;owner.procSiblingMultiplier=1;owner.procSiblingGap=0;owner.procSiblingPlanar=false)
-                default:(if peerList.selection>0 do root.procRemoveRule (root.procPair (scope-2) (if scope==3 then leaf else owner) peers[peerList.selection]))
-            )
-            root.invalidateGroups();bind owner
-        )catch(messageBox (getCurrentException()) title:"Cyrus spacing")
-        on proceduralUI_1 rolledUp state do root.mainUI.layoutPanels()
-    )
-
-proceduralUI_1
-)
-global CyrusLayerEditor_populationPolicyUI_1
-fn CyrusLayerEditor_populationPolicyUI_1 = (
-    rollout populationPolicyUI_1 "Target and retry limits - layer" width:146 autoLayoutOnResize:true (
-        local root=CyrusLayerUIRoot,owner=CyrusLayerUIOwner,panel=CyrusLayerUIPanel,controlsReady=false,binding=false,setSpecific=false
-        dropdownlist populationList "Layer population" items:#("Candidate budget","Accepted target") pos:[4,8] width:(populationPolicyUI_1.width-8) tooltip:"Budget evaluates the generated candidates; target makes bounded replacement attempts."
-        spinner attemptSpin "Attempt factor:" range:[1,32,8] type:#integer pos:[4,58] width:(populationPolicyUI_1.width-8) fieldWidth:82 tooltip:"Maximum candidate attempts as a multiple of the requested population."
-        spinner roundSpin "Max rounds:" range:[1,16,8] type:#integer pos:[4,86] width:(populationPolicyUI_1.width-8) fieldWidth:82 tooltip:"Maximum rounds of eligibility, collision and cleanup. A shortfall can remain."
-        checkbox repairCheck "Retry cleanup gaps" pos:[4,114] width:(populationPolicyUI_1.width-8) tooltip:"Allow bounded retries for plants removed by final cleanup."
-        label info "Candidate budget makes one bounded population. Accepted target retries rejected candidates up to these limits; it can finish short." pos:[4,152] width:(populationPolicyUI_1.width-8) height:64
-        fn bind layer = (
-            binding=true
-            for c in populationPolicyUI_1.controls do c.enabled=root.groupPolicy==3
-            populationList.selection=owner.procPopulation;attemptSpin.value=owner.procAttemptFactor;roundSpin.value=owner.procRounds;repairCheck.checked=owner.procRepair
-            local retry=root.groupPolicy==3 and owner.procPopulation==2
-            attemptSpin.enabled=retry;roundSpin.enabled=retry;repairCheck.enabled=retry
-            info.enabled=true;controlsReady=true;binding=false
-        )
-        fn changeLayer key value = (if not binding do (undo "Cyrus procedural settings" on setProperty owner key value;root.invalidateGroups();bind owner))
-        on populationPolicyUI_1 open do bind owner
-        on populationPolicyUI_1 close do controlsReady=false
-        on populationList selected i do changeLayer #procPopulation i
-        on attemptSpin changed v do changeLayer #procAttemptFactor v
-        on roundSpin changed v do changeLayer #procRounds v
-        on repairCheck changed v do changeLayer #procRepair v
-        on populationPolicyUI_1 rolledUp state do root.mainUI.layoutPanels()
-    )
-
-populationPolicyUI_1
-)
-global CyrusLayerEditor_backgroundUI_1
-fn CyrusLayerEditor_backgroundUI_1 = (
-    rollout backgroundUI_1 "Background fill - paint set" width:146 autoLayoutOnResize:true (
-        local root=CyrusLayerUIRoot,owner=CyrusLayerUIOwner,panel=CyrusLayerUIPanel,controlsReady=false,binding=false,setSpecific=true,backgrounds=#()
-        dropdownlist backgroundList "This set: background" items:#("Off","Outside painted coverage","Between plants","Outside + between") pos:[4,8] width:(backgroundUI_1.width-8) tooltip:"Exclude earlier painted coverage, fill between plants, combine both, or turn off."
-        multiListBox referenceList "Earlier paint sets" items:#() pos:[4,60] width:(backgroundUI_1.width-8) height:4
-        button applyBackground "Apply background" pos:[4,152] width:(backgroundUI_1.width-8) tooltip:"Save this background mode and the selected earlier-set references together."
-        label backgroundInfo "Outside uses earlier sibling coverage. Between plants uses the rules on the Spacing tab." pos:[4,182] width:(backgroundUI_1.width-8) height:62
-        fn currentSet = (root.selectedPaintSet owner)
-        fn bind layer = (
-            binding=true
-            for c in backgroundUI_1.controls do c.enabled=root.groupPolicy==3
-            local leaf=currentSet()
-            backgroundList.selection=leaf.procBackground;backgrounds=#()
-            for p in root.layerSets owner while p!=leaf do append backgrounds p
-            referenceList.items=for p in backgrounds collect p.paintSetName
-            referenceList.selection=for i=1 to backgrounds.count where findItem leaf.procBackgroundIDs backgrounds[i].layerID>0 collect i
-            controlsReady=true;binding=false
-        )
-        on backgroundUI_1 open do bind owner
-        on backgroundUI_1 close do controlsReady=false
-        on applyBackground pressed do try(
-            local leaf=currentSet(),ids=for i in referenceList.selection collect backgrounds[i].layerID
-            if backgroundList.selection!=1 and ids.count==0 do throw "Choose at least one earlier paint set."
-            undo "Cyrus background coverage" on (leaf.procBackground=backgroundList.selection;leaf.procBackgroundIDs=if backgroundList.selection==1 then #() else ids)
-            root.invalidateGroups();bind owner
-        )catch(messageBox (getCurrentException()) title:"Cyrus background")
-        on backgroundUI_1 rolledUp state do root.mainUI.layoutPanels()
-    )
-
-backgroundUI_1
-)
-global CyrusLayerEditor_instanceRadiusUI_1
-fn CyrusLayerEditor_instanceRadiusUI_1 = (
-    rollout instanceRadiusUI_1 "Instance radii - CS Edit" width:146 autoLayoutOnResize:true (
-        local root=CyrusLayerUIRoot,owner=CyrusLayerUIOwner,panel=CyrusLayerUIPanel,controlsReady=false,setSpecific=true
-        dropdownlist radiusMode "Selected CS Edit instances" items:#("World radius","Radius multiplier") selection:1 pos:[4,8] width:(instanceRadiusUI_1.width-8) tooltip:"Use an absolute world radius or multiply the selected instances' source radius."
-        spinner radiusSpin "Value:" range:[0,1e9,1] pos:[4,60] width:(instanceRadiusUI_1.width-8) fieldWidth:82 tooltip:"Value applied only when Set selected radii is pressed."
-        button applyRadius "Set selected radii" pos:[4,88] width:(instanceRadiusUI_1.width-8) tooltip:"Apply radius overrides to selected CS Edit instances in this paint set."
-        button resetRadius "Clear selected overrides" pos:[4,116] width:(instanceRadiusUI_1.width-8) tooltip:"Restore the selected instances' inherited source radii."
-        button clearRadius "Clear this set's overrides" pos:[4,144] width:(instanceRadiusUI_1.width-8) tooltip:"Remove every instance-radius override belonging to this paint set."
-        label info "Select instances with CS Edit before applying a radius. Overrides follow their stable instance identities." pos:[4,180] width:(instanceRadiusUI_1.width-8) height:54
-        fn currentSet = (root.selectedPaintSet owner)
-        fn bind layer = (for c in instanceRadiusUI_1.controls do c.enabled=root.groupPolicy==3;controlsReady=true)
-        on instanceRadiusUI_1 open do bind owner
-        on instanceRadiusUI_1 close do controlsReady=false
-        on applyRadius pressed do try((currentSet()).procSelectedRadius radiusMode.selection radiusSpin.value;bind owner)catch(messageBox (getCurrentException()) title:"Cyrus radius")
-        on resetRadius pressed do try((currentSet()).procSelectedRadius radiusMode.selection radiusSpin.value reset:true;bind owner)catch(messageBox (getCurrentException()) title:"Cyrus radius")
-        on clearRadius pressed do try((currentSet()).procClearRadii();bind owner)catch(messageBox (getCurrentException()) title:"Cyrus radius")
-        on instanceRadiusUI_1 rolledUp state do root.mainUI.layoutPanels()
-    )
-
-instanceRadiusUI_1
-)
-global CyrusLayerEditor_workflowUI_1
-fn CyrusLayerEditor_workflowUI_1 = (
-    rollout workflowUI_1 "Workflow and ownership" width:146 autoLayoutOnResize:true (
-        local root=CyrusLayerUIRoot,owner=CyrusLayerUIOwner,panel=CyrusLayerUIPanel,controlsReady=false
-        label steps "1. SETUP\nChoose receiving surfaces in Modify. Add layers in the order they should calculate.\n\n2. ASSETS\nChoose models for each paint set, or place model pivots inside a source rectangle. Move outside to park a model without losing its settings.\n\n3. POPULATION\nSet the layer count or density. Enabled paint-set weights share that population. Accepted target retries within explicit limits.\n\n4. PAINT\nEnable coverage, then paint on the receiving surface. Area limits apply to all sets in this layer. Use earlier sets as explicit background references.\n\n5. TRANSFORM + SPACING\nLayer transforms apply to every set. Set self-spacing, between-set rules and layer pairs separately. Earlier owners occupy space first.\n\n6. UPDATE + INSPECT\nManual keeps the last completed result until Update. Live publishes after edits. Hidden owners still calculate; disabled owners do not. Counts here describe cached results, not an estimate of available room." pos:[4,8] width:(workflowUI_1.width-8) height:500
-        label help "The editor stays on this Scatter when scene selection changes. Use the Layer and Paint set selectors to change ownership. Hover buttons and numeric fields for short explanations.\n\nPoint Cloud samples and viewport budgets affect display. They are not plant counts or a promise of presented FPS." pos:[4,516] width:(workflowUI_1.width-8) height:120
-        fn bind layer = (controlsReady=true)
-        on workflowUI_1 open do bind owner
-        on workflowUI_1 close do controlsReady=false
-        on workflowUI_1 rolledUp state do root.mainUI.layoutPanels()
-    )
-
-workflowUI_1
-)
-global CyrusLayerEditor_sourceContainersUI_1
-fn CyrusLayerEditor_sourceContainersUI_1 = (
-    rollout sourceContainersUI_1 "Source rectangles - own / inherited" width:146 autoLayoutOnResize:true (
-        local root=CyrusLayerUIRoot,owner=CyrusLayerUIOwner,panel=CyrusLayerUIPanel,controlsReady=false,binding=false,setSpecific=true,modes=#()
-        dropdownlist modeList "Source pool" items:#() pos:[4,8] width:(sourceContainersUI_1.width-8) tooltip:"Use a manual list or an explicit rectangle pool. Other paint sets may inherit the layer pool."
-        listbox containersList "Rectangles" items:#() pos:[4,60] width:(sourceContainersUI_1.width-8) height:4
-        button createContainer "Create rectangle" pos:[4,154] width:(sourceContainersUI_1.width-8) tooltip:"Create a Rectangle for this owner. Put source-model pivots inside its local XY bounds."
-        pickbutton pickContainer "Pick rectangle" filter:CyrusSourceContainerFilter pos:[4,184] width:(sourceContainersUI_1.width-8) tooltip:"Use an existing unmodified Rectangle as a source pool boundary."
-        button removeContainer "Unlink selected rectangle" pos:[4,214] width:(sourceContainersUI_1.width-8) tooltip:"Unlink this rectangle without deleting it or registered source settings."
-        label membershipInfo "Manual source list." pos:[4,244] width:(sourceContainersUI_1.width-8) height:48
-        label helpInfo "Pivot inside = active. Height is ignored. Moving out keeps source settings. Manual needs Update." pos:[4,286] width:(sourceContainersUI_1.width-8) height:44
-        fn currentSet = root.selectedPaintSet owner
-        fn bind layer = (
-            binding=true
-            local leaf=currentSet(),active=root.groupPolicy==3,own=leaf.logicalParentID==""
-            modes=if own then #(1,3,4) else #(1,2,3,4)
-            modeList.items=if own then #("Manual sources","Global containers","Layer containers") else #("Manual sources","Layer default","Global containers","This set's containers")
-            modeList.selection=amax 1 (findItem modes leaf.containerMode)
-            local nodes=leaf.effectiveContainers()
-            containersList.items=for node in nodes collect (if isValidNode node then node.name else "<deleted rectangle>")
-            modeList.enabled=active;containersList.enabled=active
-            for control in #(createContainer,pickContainer,removeContainer) do control.enabled=active and leaf.containerMode==4
-            local registered=leaf.sources.count,count=0
-            for value in leaf.containerActive where value do count+=1
-            membershipInfo.text=if leaf.containerProvider()==undefined then "Manual source list." else (count as string)+" active / "+(registered as string)+" registered\nGlobal rectangles: Surface Scatter."
-            controlsReady=true;binding=false
-        )
-        on sourceContainersUI_1 open do bind owner
-        on sourceContainersUI_1 close do controlsReady=false
-        on modeList selected index do if not binding do try((currentSet()).containerSetMode modes[index];bind owner)catch(messageBox (getCurrentException()) title:"Cyrus source containers")
-        on createContainer pressed do try((currentSet()).containerCreate();bind owner)catch(messageBox (getCurrentException()) title:"Cyrus source containers")
-        on pickContainer picked node do try((currentSet()).containerAdd node;bind owner)catch(messageBox (getCurrentException()) title:"Cyrus source containers")
-        on removeContainer pressed do try((currentSet()).containerRemove containersList.selection;bind owner)catch(messageBox (getCurrentException()) title:"Cyrus source containers")
-        on sourceContainersUI_1 rolledUp state do root.mainUI.layoutPanels()
-    )
-
-sourceContainersUI_1
-)
 global CyrusLayerEditor_detailsUI_1
 fn CyrusLayerEditor_detailsUI_1 = (
     rollout detailsUI_1 "Statistics / Help" width:146 autoLayoutOnResize:true (
@@ -1638,25 +1659,39 @@ fn CyrusLayerEditor_detailsUI_1 = (
 
 detailsUI_1
 )
+global CyrusLayerEditor_workflowUI_1
+fn CyrusLayerEditor_workflowUI_1 = (
+    rollout workflowUI_1 "Workflow and ownership" width:146 autoLayoutOnResize:true (
+        local root=CyrusLayerUIRoot,owner=CyrusLayerUIOwner,panel=CyrusLayerUIPanel,controlsReady=false
+        label steps "1. SETUP\nChoose receiving surfaces in Modify. Add layers in the order they should calculate.\n\n2. ASSETS\nChoose models for each paint set, or place model pivots inside a source rectangle. Move outside to park a model without losing its settings.\n\n3. POPULATION\nSet the layer count or density. Enabled paint-set weights share that population. Accepted target retries within explicit limits.\n\n4. PAINT\nEnable coverage, then paint on the receiving surface. Area limits apply to all sets in this layer. Use earlier sets as explicit background references.\n\n5. TRANSFORM + SPACING\nLayer transforms apply to every set. Set self-spacing, between-set rules and layer pairs separately. Earlier owners occupy space first.\n\n6. UPDATE + INSPECT\nManual keeps the last completed result until Update. Live publishes after edits. Hidden owners still calculate; disabled owners do not. Counts here describe cached results, not an estimate of available room." pos:[4,8] width:(workflowUI_1.width-8) height:500
+        label help "The editor stays on this Scatter when scene selection changes. Use the Layer and Paint set selectors to change ownership. Hover buttons and numeric fields for short explanations.\n\nPoint Cloud samples and viewport budgets affect display. They are not plant counts or a promise of presented FPS." pos:[4,516] width:(workflowUI_1.width-8) height:120
+        fn bind layer = (controlsReady=true)
+        on workflowUI_1 open do bind owner
+        on workflowUI_1 close do controlsReady=false
+        on workflowUI_1 rolledUp state do root.mainUI.layoutPanels()
+    )
+
+workflowUI_1
+)
 fn CyrusCreateLayerEditorSection name root owner panel = (
 CyrusLayerUIRoot=root;CyrusLayerUIOwner=owner;CyrusLayerUIPanel=panel
 case name of (
 #setsUI: CyrusLayerEditor_setsUI_1()
 #sourceUI: CyrusLayerEditor_sourceUI_1()
+#sourceContainersUI: CyrusLayerEditor_sourceContainersUI_1()
 #distributionUI: CyrusLayerEditor_distributionUI_1()
-#brushUI: CyrusLayerEditor_brushUI_1()
+#populationPolicyUI: CyrusLayerEditor_populationPolicyUI_1()
 #areaUI: CyrusLayerEditor_areaUI_1()
-#diversityUI: CyrusLayerEditor_diversityUI_1()
+#brushUI: CyrusLayerEditor_brushUI_1()
+#backgroundUI: CyrusLayerEditor_backgroundUI_1()
 #randomUI: CyrusLayerEditor_randomUI_1()
+#diversityUI: CyrusLayerEditor_diversityUI_1()
+#proceduralUI: CyrusLayerEditor_proceduralUI_1()
+#instanceRadiusUI: CyrusLayerEditor_instanceRadiusUI_1()
 #spacingUI: CyrusLayerEditor_spacingUI_1()
 #separationUI: CyrusLayerEditor_separationUI_1()
-#proceduralUI: CyrusLayerEditor_proceduralUI_1()
-#populationPolicyUI: CyrusLayerEditor_populationPolicyUI_1()
-#backgroundUI: CyrusLayerEditor_backgroundUI_1()
-#instanceRadiusUI: CyrusLayerEditor_instanceRadiusUI_1()
-#workflowUI: CyrusLayerEditor_workflowUI_1()
-#sourceContainersUI: CyrusLayerEditor_sourceContainersUI_1()
 #detailsUI: CyrusLayerEditor_detailsUI_1()
+#workflowUI: CyrusLayerEditor_workflowUI_1()
 )
 )
 -- One modeless editor; each topic is built on first use and retained. Binding
@@ -1683,7 +1718,7 @@ fn CyrusBindLayerEditor root = (
 fn CyrusOpenLayerEditor root owner = (
     if owner==undefined or findItem root.layerObjects owner==0 do return false
     if CyrusLayerEditor!=undefined then (CyrusLayerEditor.retarget root owner;CyrusLayerEditor.visible=true;return true)
-    rollout editor "Cyrus Scatter 0.7.1 - Layer Editor" width:920 height:800 autoLayoutOnResize:true (
+    rollout editor "Cyrus Scatter 0.72 - Layer Editor" width:920 height:800 autoLayoutOnResize:true (
         local root=CyrusLayerUIRoot,owner=CyrusLayerUIOwner,ownerNode=undefined,binding=false,controlsReady=false,closing=false
         local clientSize=CyrusLayerEditorSize,layingOut=false
         local editors=#(),pages=#(),pageEditors=#(#(),#(),#(),#(),#(),#()),built=#{},topic=1,members=#(),sets=#(),pageSections=#(),ownerStates=#(),lastSet=undefined
@@ -1734,7 +1769,7 @@ fn CyrusOpenLayerEditor root owner = (
             local unit=if root.viewportMode==1 and not root.groupCenters then " preview samples" else " shown"
             local text=(if root.updateMode==1 then "Manual" else "Live")+" | "+summary[3]+" | "+(CyrusUICount summary[1])+" placed / "+(CyrusUICount summary[2])+unit
             if resultInfo.text!=text do resultInfo.text=text
-            local caption="Cyrus Scatter 0.7.1 | "+ownerNode.name+" / "+(root.layerCaption owner)
+            local caption="Cyrus Scatter 0.72 | "+ownerNode.name+" / "+(root.layerCaption owner)
             if editor.title!=caption do editor.title=caption
             local setupText="Setup: "+ownerNode.name+"  |  Selecting scene models keeps this editor on its layer"
             if setupInfo.text!=setupText do setupInfo.text=setupText
@@ -1763,6 +1798,7 @@ fn CyrusOpenLayerEditor root owner = (
                     else (r.controlsReady=false;if changedOwner and isProperty r #obj do r.obj=undefined)
                 )
                 lastSet=root.selectedPaintSet owner
+                if root.mainUI.controlsReady and not root.mainUI.binding do root.mainUI.bindEditors()
                 refreshStats();binding=previous;true
             )catch(binding=previous;throw())
         )
@@ -1770,12 +1806,13 @@ fn CyrusOpenLayerEditor root owner = (
             if binding or closing do return false
             if not validOwner() then (CyrusCloseLayerEditor();false) else bindEditors()
         )
-        fn showTopic index = (
+        fn showTopic index rebind:false = (
             if index<1 or index>6 do return false
             if topic==index and built[index] do (
                 local tabs=#(assetsTab,populationTab,paintTab,transformTab,spacingTab,statisticsTab)
                 local previous=binding;binding=true;tabs[index].checked=true;binding=previous
-                refreshStats();return true
+                if rebind then bindEditors() else refreshStats()
+                return true
             )
             if topic!=index do stopTools()
             topic=index
@@ -1812,7 +1849,7 @@ fn CyrusOpenLayerEditor root owner = (
             if not validOwner() do (CyrusCloseLayerEditor();return false)
             local nextTopic=1,state=undefined
             for row in ownerStates where row[1]==owner.layerID do (nextTopic=row[2];state=row)
-            showTopic nextTopic
+            showTopic nextTopic rebind:true
             if state!=undefined do for r in editors do for row in state[3] where row[1]==r do r.open=row[2]
             true
         )
@@ -3365,7 +3402,7 @@ initialRollupState:0x8
     fn uiLayerStats = (
         CyrusLayerStatusData hasResult:(cachedPoints!=undefined and (previewError=="" or this.proceduralPolicy())) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
     )
-    fn uiVersion = "0.7.1"
+    fn uiVersion = "0.72"
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
         if CyrusPerfTraceBegin!=undefined do try(token=CyrusPerfTraceBegin this "placements")catch()
@@ -4455,10 +4492,16 @@ initialRollupState:0x8
     )
 
     fn nativeEditors = (for r in #(updateUI,surfaceUI,previewUI,layersUI) where r!=undefined collect r)
-    fn brushEditors = (CyrusLayerEditorSections this method:#refreshHistory)
+    fn brushEditors = (
+        local editors=CyrusLayerEditorSections this method:#refreshHistory
+        if this.mainUI.controlsReady do for r in this.mainUI.editors where isProperty r #refreshHistory and r.controlsReady do appendIfUnique editors r
+        editors
+    )
     fn refreshBrushEditors history:false = (for r in this.brushEditors() where r.controlsReady do (if history do r.refreshHistory();r.status()))
     fn syncBrushCompatibility = (
-        for r in CyrusLayerEditorSections this where r.controlsReady do (
+        local editors=CyrusLayerEditorSections this
+        if this.mainUI.controlsReady do join editors this.mainUI.editors
+        for r in editors where r.controlsReady do (
             if isProperty r #syncRelaxAvailability do r.syncRelaxAvailability()
             if isProperty r #syncFinalRelaxAvailability do r.syncFinalRelaxAvailability()
         )
@@ -4468,18 +4511,51 @@ initialRollupState:0x8
         CyrusBindLayerEditor this
         true
     )
-    rollout mainUI "Cyrus Scatter 0.7.1" width:#cmdPanel height:30 autoLayoutOnResize:true (
-        local root=undefined,controlsReady=false,binding=false,roots=#()
+    rollout mainUI "Cyrus Scatter 0.72" width:#cmdPanel height:30 autoLayoutOnResize:true (
+        local root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),owner=undefined,layerPagesVisible=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for this entire Scatter setup."
         timer mountTimer interval:1 active:false
         timer statusTimer interval:1000 active:false
         fn layoutPanels = true
-        fn refreshTitles = (CyrusBindLayerEditor root;true)
+        fn refreshTitles = (
+            if owner!=undefined and root.selected_setsUI!=undefined do root.selected_setsUI.title="Paint sets | "+(root.layerCaption owner)
+            CyrusBindLayerEditor root;true
+        )
         fn refreshStats = (
             if not controlsReady do return false
             if root.layersUI!=undefined and root.layersUI.controlsReady do root.layersUI.refreshStats()
             if root.surfaceUI!=undefined and root.surfaceUI.controlsReady do root.surfaceUI.refreshStats()
             root.syncBrushCompatibility();true
+        )
+        fn bindSection section = (
+            if not controlsReady or owner==undefined or findItem root.layerObjects owner==0 do return false
+            section.root=root;section.owner=owner;section.panel=mainUI
+            if section.open then section.bind (if isProperty section #setSpecific and section.setSpecific then root.selectedPaintSet owner else owner)
+            else section.controlsReady=false
+            true
+        )
+        fn bindEditors = (
+            if not controlsReady or layerBinding do return false
+            layerBinding=true
+            try (
+            local leaf=root.selectedLayer(),nextOwner=if leaf==undefined then undefined else root.logicalParent leaf
+            if nextOwner!=owner do (
+                if CyrusBrushSessionRoot==root do CyrusStopBrush()
+                max select
+                owner=nextOwner
+                for r in editors do (
+                    r.root=root;r.owner=owner;r.panel=mainUI;r.controlsReady=false
+                    if isProperty r #obj do r.obj=undefined
+                )
+            )
+            local showPages=owner!=undefined
+            if layerPagesVisible!=showPages do (
+                for i=1 to editors.count do if not (cyrusSetRolloutVisible editors[i].hwnd showPages (40+i*10)) do throw "Cannot arrange selected-layer controls."
+                layerPagesVisible=showPages
+            )
+            if owner!=undefined do for r in editors do bindSection r
+            refreshTitles();layerBinding=false;true
+            )catch(layerBinding=false;throw())
         )
         fn bind = (
             if binding or not controlsReady do return false
@@ -4487,7 +4563,7 @@ initialRollupState:0x8
             try (
                 enabledCheck.checked=root.cyrusEnabled
                 for r in root.nativeEditors() where r.controlsReady do r.bind undefined
-                binding=false;refreshStats();true
+                bindEditors();binding=false;refreshStats();true
             )catch(binding=false;throw())
         )
         fn rebuild = (bind();CyrusBindLayerEditor root)
@@ -4496,19 +4572,27 @@ initialRollupState:0x8
             if layer==undefined do return false
             local parent=root.logicalParent layer
             if root.selectedLayer()!=parent do undo off root.selectLayer (findItem root.layerObjects parent)
-            if expand or (CyrusLayerEditor!=undefined and CyrusLayerEditor.root==root) do CyrusOpenLayerEditor root parent
+            bindEditors()
+            if expand then CyrusOpenLayerEditor root parent
+            else if CyrusLayerEditor!=undefined and CyrusLayerEditor.root==root do CyrusLayerEditor.retarget root parent
             if root.layersUI!=undefined and root.layersUI.controlsReady do root.layersUI.bind undefined
             true
         )
         on mainUI open do (root=this;controlsReady=false;mountTimer.active=true)
         on mountTimer tick do (
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.7.1 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.72 native plugin and restart Max."
             root.syncLayerIdentity()
-            roots=#(root.flow_updateUI,root.flow_surfaceUI,root.flow_layersUI,root.flow_previewUI)
-            root.updateUI=roots[1];root.surfaceUI=roots[2];root.layersUI=roots[3];root.previewUI=roots[4]
+            roots=#(root.flow_updateUI,root.flow_surfaceUI,root.flow_previewUI,root.flow_layersUI)
+            root.updateUI=roots[1];root.surfaceUI=roots[2];root.previewUI=roots[3];root.layersUI=roots[4]
+            editors=#(root.selected_setsUI,root.selected_sourceUI,root.selected_sourceContainersUI,root.selected_distributionUI,root.selected_populationPolicyUI,root.selected_areaUI,root.selected_brushUI,root.selected_backgroundUI,root.selected_randomUI,root.selected_diversityUI,root.selected_proceduralUI,root.selected_instanceRadiusUI,root.selected_spacingUI,root.selected_separationUI,root.selected_detailsUI,root.selected_workflowUI)
+            owner=undefined;layerPagesVisible=false
+            for r in editors do (r.root=root;r.owner=undefined;r.panel=mainUI;r.controlsReady=false;r.open=false)
+            for i=1 to editors.count do if not (cyrusSetRolloutVisible editors[i].hwnd false (40+i*10)) do throw "Cannot arrange selected-layer controls."
+            root.diagnosticsUI.root=root;root.diagnosticsUI.open=false
+            if not (cyrusSetRolloutVisible root.diagnosticsUI.hwnd true 220) do throw "Cannot arrange diagnostic controls."
             for i=1 to roots.count do (
-                roots[i].open=if i<=root.uiRootState.count then root.uiRootState[i] else (i==3 or (i==2 and (root.validSurfaces()).count==0))
+                roots[i].open=if i<=root.uiRootState.count then root.uiRootState[i] else (i==4 or (i==2 and (root.validSurfaces()).count==0))
                 if not (cyrusSetRolloutVisible roots[i].hwnd true (i*10)) do throw "Cannot arrange Cyrus setup controls."
             )
             cyrusSetRolloutVisible mainUI.hwnd true 0
@@ -4516,7 +4600,7 @@ initialRollupState:0x8
         )
         on mainUI close do (
             root.uiRootState=for r in roots collect r.open
-            controlsReady=false;statusTimer.active=false;mountTimer.active=false;roots=#()
+            controlsReady=false;statusTimer.active=false;mountTimer.active=false;roots=#();editors=#();owner=undefined;layerPagesVisible=false
             root.updateUI=root.surfaceUI=root.previewUI=root.layersUI=undefined
             -- The modeless editor keeps its explicitly bound owner when scene
             -- selection changes. Command-panel lifetime does not own it.
@@ -4531,7 +4615,7 @@ initialRollupState:0x8
         on enabledCheck changed value do if not binding do (undo "Cyrus enabled" on root.cyrusEnabled=value;root.invalidateGroups();bind())
     )
 
-    rollout flow_updateUI "Update" width:162 autoLayoutOnResize:true (
+    rollout flow_updateUI "Update" width:162 category:10 autoLayoutOnResize:true (
         local root=undefined
         local binding=false,
         obj=undefined,parentView=undefined
@@ -4561,7 +4645,7 @@ initialRollupState:0x8
         on flow_updateUI close do controlsReady=false
         on flow_updateUI rolledUp state do root.mainUI.layoutPanels()
     )
-    rollout flow_surfaceUI "Surface Scatter" width:162 autoLayoutOnResize:true (
+    rollout flow_surfaceUI "Surface Scatter" width:162 category:20 autoLayoutOnResize:true (
         local root=undefined,controlsReady=false,binding=false
         pickbutton sharedPick "Pick receiving surface" filter:AminScatterSourceFilter pos:[8,8] width:(flow_surfaceUI.width-16) tooltip:"Choose the surface on which every layer in this setup scatters."
         label sharedInfo "Choose a receiving surface." pos:[8,38] width:(flow_surfaceUI.width-16) height:32
@@ -4612,7 +4696,7 @@ initialRollupState:0x8
         on flow_surfaceUI rolledUp state do root.mainUI.layoutPanels()
     )
 
-    rollout flow_previewUI "Viewport and Render" width:162 autoLayoutOnResize:true (
+    rollout flow_previewUI "Viewport and Render" width:162 category:30 autoLayoutOnResize:true (
         local root=undefined
         local binding=false,
         obj=undefined,parentView=undefined
@@ -4676,11 +4760,11 @@ initialRollupState:0x8
         on flow_previewUI close do controlsReady=false
         on flow_previewUI rolledUp state do root.mainUI.layoutPanels()
     )
-    rollout flow_layersUI "Layer Manager" width:162 autoLayoutOnResize:true (
+    rollout flow_layersUI "Layer Manager" width:162 category:40 autoLayoutOnResize:true (
         local root=undefined,controlsReady=false,binding=false,members=#()
         listbox layerList "Layer | placed | status" pos:[8,8] width:(flow_layersUI.width-16) height:6
-        button editButton "Edit layer..." pos:[8,138] width:(flow_layersUI.width-16) height:28 tooltip:"Open the reusable Layer Editor. Double-clicking a layer does the same."
-        button addButton "Add layer" pos:[8,174] width:(flow_layersUI.width-16) tooltip:"Add a layer and open its settings. Layers calculate from top to bottom."
+        button editButton "Edit layer in window..." pos:[8,138] width:(flow_layersUI.width-16) height:28 tooltip:"Optional floating view of the same layer settings. Select a layer to edit it below in Modify."
+        button addButton "Add layer" pos:[8,174] width:(flow_layersUI.width-16) tooltip:"Add a layer and edit its controls below. Layers calculate from top to bottom."
         button copyButton "Copy" pos:[8,204] width:((flow_layersUI.width-22)/2) tooltip:"Copy this layer, its paint sets and their settings."
         button removeButton "Remove" pos:[(flow_layersUI.width/2+3),204] width:((flow_layersUI.width-22)/2) tooltip:"Remove this layer and its paint sets. Undo restores them."
         edittext nameEdit "Name:" pos:[8,236] width:(flow_layersUI.width-16) tooltip:"Rename the selected layer without changing its identity."
@@ -4723,11 +4807,11 @@ initialRollupState:0x8
         on editButton pressed do root.mainUI.selectLayerView (currentLayer()) expand:true
         on addButton pressed do (
             root.newLayer();root.bindNativeUI();root.invalidateGroups()
-            root.mainUI.selectLayerView (root.selectedLayer()) expand:true
+            root.mainUI.selectLayerView (root.selectedLayer())
         )
         on copyButton pressed do try(
             local parent=root.copyLogicalLayer (currentLayer())
-            root.mainUI.selectLayerView parent expand:true
+            root.mainUI.selectLayerView parent
         )catch(messageBox (getCurrentException()) title:"Cyrus layer")
         on removeButton pressed do try(root.removeLogicalLayer (currentLayer()))catch(messageBox (getCurrentException()) title:"Cyrus layer")
         on nameEdit entered value do if not binding and value!="" do (
@@ -4747,6 +4831,1435 @@ initialRollupState:0x8
         on flow_layersUI rolledUp state do root.mainUI.layoutPanels()
     )
 
+
+    rollout selected_setsUI "Paint sets" width:#cmdPanel category:50 autoLayoutOnResize:true (
+        local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,members=#()
+        dropdownlist setList "Edit set" items:#() pos:[4,8] width:(selected_setsUI.width-8)
+        button addButton "Add set" pos:[4,60] width:((selected_setsUI.width-12)/2) tooltip:"Add another paint set sharing this layer's population and defaults."
+        button removeButton "Remove" pos:[(selected_setsUI.width/2+2),60] width:((selected_setsUI.width-12)/2) tooltip:"Remove this paint set and its settings. The base set cannot be removed separately."
+        edittext nameEdit "Name:" pos:[4,90] width:(selected_setsUI.width-8) tooltip:"Rename this paint set without changing its identity."
+        spinner weightSpin "Share weight:" pos:[4,120] width:(selected_setsUI.width-8) fieldWidth:82 range:[0,10000,1] tooltip:"Relative share of the layer population among enabled paint sets."
+        checkbox enabledCheck "Enable set" pos:[4,148] width:(selected_setsUI.width-8) tooltip:"Include this set in calculation and final output."
+        checkbox visibleCheck "Show set" pos:[4,172] width:(selected_setsUI.width-8) tooltip:"Viewport visibility only. Hidden sets still calculate and affect spacing."
+        button upButton "Move up" pos:[4,200] width:((selected_setsUI.width-12)/2) tooltip:"Evaluate this set earlier. Earlier sets occupy space first."
+        button downButton "Move down" pos:[(selected_setsUI.width/2+2),200] width:((selected_setsUI.width-12)/2) tooltip:"Evaluate this set later, after the preceding sets."
+        label info "Sources, Brush and set rules edit this set. Population, transforms and cleanup belong to the layer." pos:[4,232] width:(selected_setsUI.width-8) height:76
+        fn currentSet = (root.selectedPaintSet owner)
+        fn bind layer = (
+            binding=true;members=root.layerSets owner
+            local leaf=currentSet()
+            CyrusRetainListItems setList (for member in members collect member.paintSetName)
+            setList.selection=findItem members leaf
+            nameEdit.text=leaf.paintSetName;weightSpin.value=leaf.paintSetWeight
+            enabledCheck.checked=leaf.paintSetEnabled;visibleCheck.checked=leaf.paintSetVisible
+            removeButton.enabled=leaf!=owner;addButton.enabled=(CyrusUsesSharedPolicy root.groupPolicy) and root.layerObjects.count<10
+            upButton.enabled=root.groupPolicy==3 and findItem members leaf>1;downButton.enabled=root.groupPolicy==3 and findItem members leaf<members.count
+            controlsReady=true;binding=false
+        )
+        on selected_setsUI open do (root=this;controlsReady=false)
+        on selected_setsUI close do controlsReady=false
+        fn selectSet i = (
+            if binding or i<1 or i>members.count or (currentSet())==members[i] do return false
+            CyrusStopBrush();owner.uiPaintSetID=members[i].layerID;panel.bindEditors();true
+        )
+        on setList selected i do selectSet i
+        on addButton pressed do try(root.addPaintSet owner label:("Paint "+(((root.layerSets owner).count+1) as string));panel.bind())catch(messageBox (getCurrentException()) title:"Cyrus paint set")
+        on removeButton pressed do try(root.removePaintSet (currentSet());panel.bind())catch(messageBox (getCurrentException()) title:"Cyrus paint set")
+        on nameEdit entered value do if not binding and value!="" do (undo "Cyrus set name" on (currentSet()).paintSetName=value;panel.bindEditors())
+        on weightSpin changed value do if not binding do (undo "Cyrus set weight" on (currentSet()).paintSetWeight=value;root.invalidateGroups())
+        on enabledCheck changed value do if not binding do (undo "Cyrus set enabled" on (currentSet()).paintSetEnabled=value;root.invalidateGroups())
+        on visibleCheck changed value do if not binding do (undo "Cyrus set visible" on (currentSet()).paintSetVisible=value;root.procSyncEditVisibility();CyrusViewportRedraw())
+        on upButton pressed do try(root.procMove (currentSet()) -1 sets:true;panel.bind())catch(messageBox (getCurrentException()) title:"Cyrus order")
+        on downButton pressed do try(root.procMove (currentSet()) 1 sets:true;panel.bind())catch(messageBox (getCurrentException()) title:"Cyrus order")
+        on selected_setsUI rolledUp state do root.mainUI.bindSection selected_setsUI
+    )
+
+    rollout selected_sourceUI "Models and settings - paint set" width:#cmdPanel category:60 autoLayoutOnResize:true (
+        local root=undefined,owner=undefined,panel=undefined
+        local setSpecific=true
+        local binding=false,
+        obj=undefined,parentView=undefined
+        local controlsReady=false
+
+        local groupPalette=#()
+        local loadingColor=false
+        local focusedRow=0
+        multiListBox plantList "Sources (Ctrl/Shift)" items:#() pos:[4,8] height:6 width:(selected_sourceUI.width-8)
+        button selectFromScene "Choose from list..." pos:[4,170] width:((selected_sourceUI.width-12)/2) tooltip:"Choose one or more source models by name."
+        pickbutton addPlant "Pick model" pos:[4,140] width:((selected_sourceUI.width-12)/2) tooltip:"Pick a scene model for this paint set. The editor stays on its layer."
+        button addSelected "Add selection" pos:[(selected_sourceUI.width/2+2),140] width:((selected_sourceUI.width-12)/2) tooltip:"Add the currently selected scene objects to this paint set."
+        button removePlant "Remove rows" pos:[4,200] width:(selected_sourceUI.width-8) tooltip:"Unregister highlighted rows. To keep their settings, park models outside a source rectangle instead."
+        button selectPlant "Select sources" pos:[(selected_sourceUI.width/2+2),170] width:((selected_sourceUI.width-12)/2) tooltip:"Select the highlighted source models in the scene."
+        button addPoint "Add Point" pos:[4,460] width:((selected_sourceUI.width-12)/2) tooltip:"Add a placeholder source that can later be replaced by a model."
+        button addEmpty "Add Empty" pos:[(selected_sourceUI.width/2+2),460] width:((selected_sourceUI.width-12)/2) tooltip:"Add a weighted empty source for intentional gaps in candidate-budget mode."
+        pickbutton replacePoint "Replace Point: pick object" filter:AminScatterSourceFilter pos:[4,490] width:(selected_sourceUI.width-8) tooltip:"Replace one highlighted Point row with a scene model."
+        label groupHeading "Cluster color group" pos:[4,530] width:(selected_sourceUI.width-8)
+        dropdownlist existingGroups "Reuse a group" items:#() pos:[4,552] width:(selected_sourceUI.width-8) tooltip:"Assign highlighted sources to an existing color group for clustering."
+        colorpicker groupColor "Color: " color:(color 100 220 120) pos:[4,606] width:(selected_sourceUI.width-8) modal:true notifyAfterAccept:true tooltip:"Assign a color group to highlighted sources when the color is accepted."
+        button applyColor "Apply to selected rows" pos:[4,634] width:(selected_sourceUI.width-8) tooltip:"Assign the chosen color group to all highlighted source rows."
+        label colorHelp "OK saves the selected color." pos:[4,664] width:(selected_sourceUI.width-8)
+        spinner weightSpin "Weight: " range:[0,1,1] scale:0.01 pos:[4,236] width:((selected_sourceUI.width-12)/2) fieldWidth:82 tooltip:"Relative source share within this paint set. Zero disables the source."
+        label weightHelp "0 = off; relative share" pos:[4,378] width:(selected_sourceUI.width-8)
+        spinner sourceZSpin "Z Offset: " range:[-1000000,1000000,0] type:#worldunits pos:[4,266] width:((selected_sourceUI.width-12)/2) fieldWidth:82 tooltip:"Offset instances of highlighted models along their placement normal."
+        spinner sourceScaleSpin "Scale: " range:[0,10000,1] scale:0.01 pos:[(selected_sourceUI.width/2+2),236] width:((selected_sourceUI.width-12)/2) fieldWidth:82 tooltip:"Per-model scale multiplier. 1 keeps the model's original scale."
+        label sourceTransformHelp "Scale: 1 = original" pos:[4,398] width:(selected_sourceUI.width-8)
+        spinner radiusSourceSpin "Radius:" type:#worldunits range:[0,1e9,0] pos:[(selected_sourceUI.width/2+2),266] width:((selected_sourceUI.width-12)/2) fieldWidth:82 tooltip:"Collision footprint radius for highlighted source rows, in scene units."
+        checkbox followRadiusCheck "Follow Scale" pos:[4,294] width:((selected_sourceUI.width-12)/2) tooltip:"Scale this source's collision footprint with its instance scale."
+        checkbox showRadiusCheck "Show Radius" pos:[(selected_sourceUI.width/2+2),294] width:((selected_sourceUI.width-12)/2) tooltip:"Show this source's radius in the viewport; does not change collision rules."
+        dropdownlist forwardAxis "Forward axis:" items:#("+Y","-Y","+X","-X") pos:[4,326] width:(selected_sourceUI.width-8) tooltip:"The model's local forward direction, used for orientation."
+        fn colorLabel c = ("#"+(formattedPrint (obj.colorKey c) format:"06X"))
+        fn updateList = (
+            local selectedRows=plantList.selection
+            if selectedRows.numberSet==0 and obj.sources.count>0 do selectedRows=#{1}
+            plantList.items=for i=1 to obj.sources.count collect ((formattedPrint (obj.sourceWeight i) format:".2f")+" | "+(colorLabel (obj.sourceColor i))+" | "+(if obj.isPointSource i then "[Point]" else if obj.isEmptySource i then "[Empty]" else if isValidNode obj.sources[i] then obj.sources[i].name else "<deleted>"))
+            plantList.selection=selectedRows
+            groupPalette=#()
+            local keys=#()
+            for i=1 to obj.sources.count do (
+                local c=obj.sourceColor i
+                local k=obj.colorKey c
+                if findItem keys k==0 do (append keys k;append groupPalette c)
+            )
+            existingGroups.items=for c in groupPalette collect (colorLabel c)
+        )
+        fn addSource n = (
+            if obj.usableSource n and (findItem obj.sources n)==0 do (
+                obj.syncColors();while obj.sourceEmpty.count<obj.sources.count do append obj.sourceEmpty false;append obj.sourceEmpty false;append obj.sources n;append obj.sourceColors groupColor.color;if obj.sourceWeights.count>0 do append obj.sourceWeights 1.0;if obj.sourceZOffsets.count>0 do append obj.sourceZOffsets 0.0;if obj.sourceScales.count>0 do append obj.sourceScales 1.0;obj.markInputDirty()
+            )
+        )
+
+        fn showSelectedColor = (
+            local rows=plantList.selection
+            weightSpin.enabled=rows.numberSet>0;sourceZSpin.enabled=rows.numberSet>0;sourceScaleSpin.enabled=rows.numberSet>0;forwardAxis.enabled=rows.numberSet>0
+            if rows.numberSet>0 then (
+                if focusedRow<1 or not rows[focusedRow] do focusedRow=(rows as array)[1]
+                loadingColor=true
+                groupColor.color=obj.sourceColor focusedRow
+                weightSpin.enabled=true;weightSpin.value=obj.sourceWeight focusedRow
+                radiusSourceSpin.value=obj.sourceRadius focusedRow;followRadiusCheck.checked=obj.sourceFollows focusedRow;showRadiusCheck.checked=obj.sourceShows focusedRow;sourceZSpin.value=obj.sourceZOffset focusedRow;sourceScaleSpin.value=obj.sourceScale focusedRow;forwardAxis.selection=obj.sourceForward focusedRow
+                existingGroups.selection=findItem groupPalette (obj.sourceColor focusedRow)
+                loadingColor=false
+            ) else (
+                loadingColor=true;groupColor.color=obj.sourceColor 1;existingGroups.selection=0;focusedRow=0;loadingColor=false
+            )
+        )
+
+        fn addSources nodes = (
+            local before=obj.sources.count
+            if nodes!=undefined do for n in nodes do addSource n
+            updateList()
+            if obj.sources.count>before do (
+                local rows=#{}
+                for i=before+1 to obj.sources.count do rows[i]=true
+                plantList.selection=rows;focusedRow=before+1
+            )
+            showSelectedColor();CyrusViewportRedraw()
+        )
+        on addPoint pressed do if controlsReady and not binding and obj!=undefined do (
+            local i=obj.addPointSource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();CyrusViewportRedraw()
+        )
+        on replacePoint picked n do if controlsReady and not binding and obj!=undefined do (
+            local rows=plantList.selection as array
+            if rows.count!=1 then messageBox "Select one Point row to replace." title:"Cyrus Scatter"
+            else if not (obj.replacePointSource rows[1] n) do messageBox "Select a Point row and an object that is not already in this set's source list." title:"Cyrus Scatter"
+            replacePoint.text="Replace Point: pick object";updateList();showSelectedColor();CyrusViewportRedraw()
+        )
+        on addEmpty pressed do if controlsReady and not binding and obj!=undefined do (
+            local i=obj.addEmptySource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();CyrusViewportRedraw()
+        )
+        on radiusSourceSpin changed v do if controlsReady and not binding and obj!=undefined do if not loadingColor do (obj.setSourceRadius plantList.selection v;CyrusViewportRedraw())
+        on followRadiusCheck changed v do if controlsReady and not binding and obj!=undefined do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:2;CyrusViewportRedraw())
+        on showRadiusCheck changed v do if controlsReady and not binding and obj!=undefined do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:3;CyrusViewportRedraw())
+        on forwardAxis selected v do if controlsReady and not binding and obj!=undefined do if not loadingColor do (obj.assignSourceForward plantList.selection v;CyrusViewportRedraw())
+        on sourceZSpin changed v do if controlsReady and not binding and obj!=undefined do if not loadingColor do (obj.assignSourceTransform plantList.selection v;CyrusViewportRedraw())
+        on sourceScaleSpin changed v do if controlsReady and not binding and obj!=undefined do if not loadingColor do (obj.assignSourceTransform plantList.selection v scaling:true;CyrusViewportRedraw())
+        on weightSpin changed v do if controlsReady and not binding and obj!=undefined do if not loadingColor do (obj.assignWeight plantList.selection v;updateList();CyrusViewportRedraw())
+        on plantList selected i do if controlsReady and not binding and obj!=undefined do (
+            if i>0 and plantList.selection[i] do focusedRow=i
+        )
+        on plantList selectionEnd do if controlsReady and not binding and obj!=undefined do showSelectedColor()
+        on existingGroups selected i do if controlsReady and not binding and obj!=undefined do (
+            if i>0 and i<=groupPalette.count do (
+                local c=groupPalette[i]
+                loadingColor=true;groupColor.color=c;loadingColor=false
+                obj.assignGroup plantList.selection c;updateList();CyrusViewportRedraw()
+            )
+        )
+        on groupColor changed c do if controlsReady and not binding and obj!=undefined do (
+            if not loadingColor and plantList.selection.numberSet>0 do (
+                obj.assignGroup plantList.selection c
+                updateList();CyrusViewportRedraw()
+            )
+        )
+        on applyColor pressed do if controlsReady and not binding and obj!=undefined do (
+            obj.assignGroup plantList.selection groupColor.color
+            updateList();CyrusViewportRedraw()
+        )
+        on selectFromScene pressed do if controlsReady and not binding and obj!=undefined do (
+            local picked=selectByName title:"Cyrus Scatter - Select From Scene" buttonText:"Add" filter:AminScatterSourceFilter single:false
+            addSources picked
+        )
+        on addPlant picked n do if controlsReady and not binding and obj!=undefined do addSources #(n)
+        on addSelected pressed do if controlsReady and not binding and obj!=undefined do addSources (selection as array)
+        on removePlant pressed do if controlsReady and not binding and obj!=undefined do (
+            obj.syncColors()
+            local rows=plantList.selection as array
+            undo "Cyrus Scatter remove sources" on (
+                for k=rows.count to 1 by -1 do (
+                    for key in #(#sourceRadii,#sourceFollowScale,#sourceShowRadius) do (local tab=getProperty obj key;if rows[k]<=tab.count do deleteItem tab rows[k])
+                    if rows[k]<=obj.sourcePoint.count do deleteItem obj.sourcePoint rows[k]
+                    if rows[k]<=obj.sourceEmpty.count do deleteItem obj.sourceEmpty rows[k]
+                    if rows[k]<=obj.sourceZOffsets.count do deleteItem obj.sourceZOffsets rows[k]
+                    if rows[k]<=obj.sourceScales.count do deleteItem obj.sourceScales rows[k]
+                    if rows[k]<=obj.sourceForwardAxes.count do deleteItem obj.sourceForwardAxes rows[k]
+                    if rows[k]<=obj.sourceWeights.count do deleteItem obj.sourceWeights rows[k]
+                    deleteItem obj.sources rows[k];deleteItem obj.sourceColors rows[k]
+                )
+            )
+            plantList.selection=#{};obj.markInputDirty();updateList();CyrusViewportRedraw()
+        )
+        on selectPlant pressed do if controlsReady and not binding and obj!=undefined do (
+            local nodes=for i in plantList.selection where i<=obj.sources.count and isValidNode obj.sources[i] collect obj.sources[i]
+            if nodes.count>0 do select nodes
+        )
+
+
+
+
+        fn bindFeatures layer = (
+            local next=layer
+            binding=true;controlsReady=false
+            if obj!=next do (plantList.selection=#{};)
+            obj=next;parentView=root.mainUI
+            for c in selected_sourceUI.controls do c.enabled=layer!=undefined
+            try (undo off ((controlsReady=true;(updateList();showSelectedColor())))) catch(binding=false;controlsReady=true;throw())
+            controlsReady=true;binding=false
+        )
+        checkbutton detailsToggle "Point / Empty sources and color groups" pos:[4,426] width:(selected_sourceUI.width-8) height:26 tooltip:"Show or hide these advanced controls; their saved settings are preserved."
+        fn arrangeDetails = (
+            for c in #(addPoint,addEmpty,replacePoint,groupHeading,existingGroups,groupColor,applyColor,colorHelp) do c.visible=detailsToggle.checked
+            selected_sourceUI.height=if detailsToggle.checked then 692 else 460
+        )
+        fn bind layer = (bindFeatures layer;arrangeDetails())
+        on detailsToggle changed value do arrangeDetails()
+        on selected_sourceUI open do (root=this;controlsReady=false)
+        on selected_sourceUI close do controlsReady=false
+        on selected_sourceUI rolledUp state do root.mainUI.bindSection selected_sourceUI
+    )
+    rollout selected_sourceContainersUI "Source rectangles - own / inherited" width:#cmdPanel category:70 autoLayoutOnResize:true (
+        local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,setSpecific=true,modes=#()
+        dropdownlist modeList "Source pool" items:#() pos:[4,8] width:(selected_sourceContainersUI.width-8) tooltip:"Use a manual list or an explicit rectangle pool. Other paint sets may inherit the layer pool."
+        listbox containersList "Rectangles" items:#() pos:[4,60] width:(selected_sourceContainersUI.width-8) height:4
+        button createContainer "Create rectangle" pos:[4,154] width:(selected_sourceContainersUI.width-8) tooltip:"Create a Rectangle for this owner. Put source-model pivots inside its local XY bounds."
+        pickbutton pickContainer "Pick rectangle" filter:CyrusSourceContainerFilter pos:[4,184] width:(selected_sourceContainersUI.width-8) tooltip:"Use an existing unmodified Rectangle as a source pool boundary."
+        button removeContainer "Unlink selected rectangle" pos:[4,214] width:(selected_sourceContainersUI.width-8) tooltip:"Unlink this rectangle without deleting it or registered source settings."
+        label membershipInfo "Manual source list." pos:[4,244] width:(selected_sourceContainersUI.width-8) height:48
+        label helpInfo "Pivot inside = active. Height is ignored. Moving out keeps source settings. Manual needs Update." pos:[4,286] width:(selected_sourceContainersUI.width-8) height:44
+        fn currentSet = root.selectedPaintSet owner
+        fn bind layer = (
+            binding=true
+            local leaf=currentSet(),active=root.groupPolicy==3,own=leaf.logicalParentID==""
+            modes=if own then #(1,3,4) else #(1,2,3,4)
+            modeList.items=if own then #("Manual sources","Global containers","Layer containers") else #("Manual sources","Layer default","Global containers","This set's containers")
+            modeList.selection=amax 1 (findItem modes leaf.containerMode)
+            local nodes=leaf.effectiveContainers()
+            containersList.items=for node in nodes collect (if isValidNode node then node.name else "<deleted rectangle>")
+            modeList.enabled=active;containersList.enabled=active
+            for control in #(createContainer,pickContainer,removeContainer) do control.enabled=active and leaf.containerMode==4
+            local registered=leaf.sources.count,count=0
+            for value in leaf.containerActive where value do count+=1
+            membershipInfo.text=if leaf.containerProvider()==undefined then "Manual source list." else (count as string)+" active / "+(registered as string)+" registered\nGlobal rectangles: Surface Scatter."
+            controlsReady=true;binding=false
+        )
+        on selected_sourceContainersUI open do (root=this;controlsReady=false)
+        on selected_sourceContainersUI close do controlsReady=false
+        on modeList selected index do if not binding do try((currentSet()).containerSetMode modes[index];bind owner)catch(messageBox (getCurrentException()) title:"Cyrus source containers")
+        on createContainer pressed do try((currentSet()).containerCreate();bind owner)catch(messageBox (getCurrentException()) title:"Cyrus source containers")
+        on pickContainer picked node do try((currentSet()).containerAdd node;bind owner)catch(messageBox (getCurrentException()) title:"Cyrus source containers")
+        on removeContainer pressed do try((currentSet()).containerRemove containersList.selection;bind owner)catch(messageBox (getCurrentException()) title:"Cyrus source containers")
+        on selected_sourceContainersUI rolledUp state do root.mainUI.bindSection selected_sourceContainersUI
+    )
+
+    rollout selected_distributionUI "Population and seed - layer" width:#cmdPanel category:80 autoLayoutOnResize:true (
+        local root=undefined,owner=undefined,panel=undefined
+        local setSpecific=false
+        local binding=false,
+        obj=undefined,parentView=undefined
+        local controlsReady=false
+
+        radiobuttons modeRadio "Method" labels:#("Random","Texture Density") columns:2 pos:[4,130] width:(selected_distributionUI.width-8)
+        radiobuttons populationRadio "Population" labels:#("Count","Plants per m2") columns:2 pos:[4,8] width:(selected_distributionUI.width-8)
+        checkbox showCenterCheck "Plant centres (legacy)" pos:[4,312] width:(selected_distributionUI.width-8)
+        on showCenterCheck changed v do if controlsReady and not binding and obj!=undefined do (obj.showCenters=v;CyrusViewportRedraw())
+        spinner countSpin "Requested count: " range:[1,100000,200] type:#integer fieldWidth:82 width:(selected_distributionUI.width-8) pos:[4,62] tooltip:"Layer population before eligibility. Accepted target can retry up to its limits."
+        spinner densitySpin "Per m2: " range:[0,1000000,100] fieldWidth:82 width:(selected_distributionUI.width-8) pos:[4,62] tooltip:"Requested plants per square metre of receiving surface; capped at 100,000."
+        spinner seedSpin "Seed: " range:[0,2147483647,42] type:#integer fieldWidth:82 width:(selected_distributionUI.width-8) pos:[4,92] tooltip:"Deterministic generation seed. Changing it can invalidate existing Edit bindings."
+        label densityHeading "Texture density" pos:[4,180] width:(selected_distributionUI.width-8)
+        mapbutton densityButton "Choose density map" pos:[4,204] width:(selected_distributionUI.width-8) tooltip:"Use UV channel 1: white permits candidates; black excludes them."
+        checkbox invertCheck "Invert density" pos:[4,234] width:(selected_distributionUI.width-8) tooltip:"Reverse the density map's white and black eligibility."
+        label uvHint "UV channel 1; 0..1" pos:[4,260] width:(selected_distributionUI.width-8)
+        label mapHint "White: dense / Black: empty" pos:[4,282] width:(selected_distributionUI.width-8)
+
+        fn arrangePopulation = (
+            local textured=obj.distributionMode==3
+            countSpin.visible=obj.populationMode==1;densitySpin.visible=obj.populationMode==2
+            for c in #(densityHeading,densityButton,invertCheck,uvHint,mapHint) do c.visible=textured
+            showCenterCheck.visible=not obj.sharedSpacing()
+            showCenterCheck.pos=[4,if textured then 312 else 180]
+            selected_distributionUI.height=if obj.sharedSpacing() then (if textured then 308 else 184) else (if textured then 340 else 208)
+        )
+        fn syncControls = (showCenterCheck.visible=not obj.sharedSpacing();populationRadio.state=obj.populationMode;densitySpin.value=obj.plantsPerM2;densityButton.map=obj.densityMap;invertCheck.checked=obj.invertDensity;;arrangePopulation())
+        on modeRadio changed v do if controlsReady and not binding and obj!=undefined do undo "Cyrus layer population" on (obj.distributionMode=if v==2 then 3 else 1;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on countSpin changed v do if controlsReady and not binding and obj!=undefined do undo "Cyrus layer population" on (obj.amount=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on seedSpin changed v do if controlsReady and not binding and obj!=undefined do undo "Cyrus layer population" on (obj.randomSeed=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+
+        on populationRadio changed v do if controlsReady and not binding and obj!=undefined do undo "Cyrus layer population" on (obj.populationMode=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on densitySpin changed v do if controlsReady and not binding and obj!=undefined do undo "Cyrus layer population" on (obj.plantsPerM2=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on densityButton picked v do if controlsReady and not binding and obj!=undefined do undo "Cyrus layer population" on (obj.densityMap=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on invertCheck changed v do if controlsReady and not binding and obj!=undefined do undo "Cyrus layer population" on (obj.invertDensity=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+
+
+
+        fn bindFeatures layer = (
+            local next=layer
+            binding=true;controlsReady=false
+            if obj!=next do ()
+            obj=next;parentView=root.mainUI
+            for c in selected_distributionUI.controls do c.enabled=layer!=undefined
+            showCenterCheck.visible=not obj.sharedSpacing()
+            try (undo off ((showCenterCheck.checked=obj.showCenters;populationRadio.state=obj.populationMode;densitySpin.value=obj.plantsPerM2;densityButton.map=obj.densityMap;invertCheck.checked=obj.invertDensity;controlsReady=true;(countSpin.value=obj.amount;seedSpin.value=obj.randomSeed;modeRadio.state=if obj.distributionMode==3 then 2 else 1)))) catch(binding=false;controlsReady=true;throw())
+            controlsReady=true;binding=false
+        )
+        fn bind layer = (bindFeatures layer;arrangePopulation())
+        on selected_distributionUI open do (root=this;controlsReady=false)
+        on selected_distributionUI close do controlsReady=false
+        on selected_distributionUI rolledUp state do root.mainUI.bindSection selected_distributionUI
+    )
+    rollout selected_populationPolicyUI "Target and retry limits - layer" width:#cmdPanel category:90 autoLayoutOnResize:true (
+        local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,setSpecific=false
+        dropdownlist populationList "Layer population" items:#("Candidate budget","Accepted target") pos:[4,8] width:(selected_populationPolicyUI.width-8) tooltip:"Budget evaluates the generated candidates; target makes bounded replacement attempts."
+        spinner attemptSpin "Attempt factor:" range:[1,32,8] type:#integer pos:[4,58] width:(selected_populationPolicyUI.width-8) fieldWidth:82 tooltip:"Maximum candidate attempts as a multiple of the requested population."
+        spinner roundSpin "Max rounds:" range:[1,16,8] type:#integer pos:[4,86] width:(selected_populationPolicyUI.width-8) fieldWidth:82 tooltip:"Maximum rounds of eligibility, collision and cleanup. A shortfall can remain."
+        checkbox repairCheck "Retry cleanup gaps" pos:[4,114] width:(selected_populationPolicyUI.width-8) tooltip:"Allow bounded retries for plants removed by final cleanup."
+        label info "Candidate budget makes one bounded population. Accepted target retries rejected candidates up to these limits; it can finish short." pos:[4,152] width:(selected_populationPolicyUI.width-8) height:64
+        fn bind layer = (
+            binding=true
+            for c in selected_populationPolicyUI.controls do c.enabled=root.groupPolicy==3
+            populationList.selection=owner.procPopulation;attemptSpin.value=owner.procAttemptFactor;roundSpin.value=owner.procRounds;repairCheck.checked=owner.procRepair
+            local retry=root.groupPolicy==3 and owner.procPopulation==2
+            attemptSpin.enabled=retry;roundSpin.enabled=retry;repairCheck.enabled=retry
+            info.enabled=true;controlsReady=true;binding=false
+        )
+        fn changeLayer key value = (if not binding do (undo "Cyrus procedural settings" on setProperty owner key value;root.invalidateGroups();bind owner))
+        on selected_populationPolicyUI open do (root=this;controlsReady=false)
+        on selected_populationPolicyUI close do controlsReady=false
+        on populationList selected i do changeLayer #procPopulation i
+        on attemptSpin changed v do changeLayer #procAttemptFactor v
+        on roundSpin changed v do changeLayer #procRounds v
+        on repairCheck changed v do changeLayer #procRepair v
+        on selected_populationPolicyUI rolledUp state do root.mainUI.bindSection selected_populationPolicyUI
+    )
+
+    rollout selected_areaUI "Include / exclude areas - layer" width:#cmdPanel category:100 autoLayoutOnResize:true (
+        local root=undefined,owner=undefined,panel=undefined
+        local setSpecific=false
+        local binding=false,
+        obj=undefined,parentView=undefined
+        local controlsReady=false
+
+        multiListBox areaList "Closed lines / shapes" items:#() pos:[4,8] width:(selected_areaUI.width-8) height:6
+        button addAreaScene "Select From Scene..." pos:[4,134] width:(selected_areaUI.width-8) tooltip:"Choose closed Area shapes by name."
+        pickbutton pickArea "Add: pick closed line" filter:AminScatterAreaFilter pos:[4,160] width:(selected_areaUI.width-8) tooltip:"Pick a closed shape as an include/exclude Area shared by all sets in this layer."
+        button removeArea "Remove selected rows" pos:[4,186] width:(selected_areaUI.width-8) tooltip:"Unlink highlighted Areas and their falloff settings; keep the scene shapes."
+        radiobuttons areaMode "Selected area mode" labels:#("Include","Exclude") columns:1 pos:[4,220] width:(selected_areaUI.width-8)
+        label areaHint "Exclude overrides Include." pos:[4,290] width:(selected_areaUI.width-8)
+        label projectionHint "Top / world XY projection." pos:[4,312] width:(selected_areaUI.width-8)
+        button refreshAreas "Refresh areas / preview" pos:[4,340] width:(selected_areaUI.width-8) tooltip:"Refresh Area geometry and recalculate the layer preview."
+        local loadingAnalyzerArea=false
+        label aaTitle "Surface Analyzer Area" pos:[4,412] width:(selected_areaUI.width-8)
+        pickbutton aaPick "Pick Surface Analyzer" filter:CyrusAnalyzerFilter pos:[4,438] width:(selected_areaUI.width-8) tooltip:"Choose an existing Cyrus Surface Analyzer for line or point masks."
+        button aaRemove "Remove Area Analyzer" pos:[4,466] width:(selected_areaUI.width-8) tooltip:"Disable and unlink the layer's Analyzer Area mask."
+        checkbox aaLine "Center Line" pos:[4,498] width:(selected_areaUI.width-8) tooltip:"Use the Analyzer centre line as an XY mask; unions with its point mask."
+        spinner aaWidth "Full width:" range:[0,1e9,100] type:#worldunits pos:[4,524] width:(selected_areaUI.width-8) fieldWidth:62 tooltip:"Full width of the Analyzer centre-line Area mask."
+        dropdownlist aaCaps "Line ends" items:#("Flat","Round") selection:1 pos:[4,552] width:(selected_areaUI.width-8) tooltip:"Flat or round ends for the line mask."
+        spinner aaStreetOffset "Street offset:" range:[-1e9,1e9,0] type:#worldunits pos:[4,606] width:(selected_areaUI.width-8) fieldWidth:62 tooltip:"Lateral offset from the Analyzer centre line."
+        checkbox aaPoints "Points" pos:[4,638] width:(selected_areaUI.width-8) tooltip:"Use discs around Analyzer points as an XY mask."
+        spinner aaRadius "Radius:" range:[0,1e9,100] type:#worldunits pos:[4,664] width:(selected_areaUI.width-8) fieldWidth:62 tooltip:"Radius of each Analyzer point mask."
+        label aaHelp "XY mask. Both enabled = union. Works with Random / Clusters." pos:[4,694] width:(selected_areaUI.width-8) height:40
+        fn syncAnalyzerArea = (
+            loadingAnalyzerArea=true
+            aaPick.text=if isValidNode obj.areaAnalyzer then obj.areaAnalyzer.name else "Pick Surface Analyzer"
+            aaLine.checked=obj.areaUseLine;aaPoints.checked=obj.areaUsePoints
+            aaStreetOffset.value=obj.centerStreetOffset;aaStreetOffset.enabled=obj.areaUseLine
+            aaWidth.value=obj.areaLineWidth;aaRadius.value=obj.areaPointRadius;aaCaps.selection=obj.areaLineCaps
+            aaWidth.enabled=obj.areaUseLine;aaCaps.enabled=obj.areaUseLine;aaRadius.enabled=obj.areaUsePoints
+            loadingAnalyzerArea=false
+        )
+        on aaPick picked n do if controlsReady and not binding and obj!=undefined do (obj.areaAnalyzer=n;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaRemove pressed do if controlsReady and not binding and obj!=undefined do (obj.areaUseLine=false;obj.areaUsePoints=false;obj.areaAnalyzer=undefined;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaLine changed v do if controlsReady and not binding and obj!=undefined do if not loadingAnalyzerArea do (obj.areaUseLine=v;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaPoints changed v do if controlsReady and not binding and obj!=undefined do if not loadingAnalyzerArea do (obj.areaUsePoints=v;syncAnalyzerArea();CyrusViewportRedraw())
+        on aaStreetOffset changed v do if controlsReady and not binding and obj!=undefined do if not loadingAnalyzerArea do (obj.centerStreetOffset=v;CyrusViewportRedraw())
+        on aaWidth changed v do if controlsReady and not binding and obj!=undefined do if not loadingAnalyzerArea do (obj.areaLineWidth=v;CyrusViewportRedraw())
+        on aaRadius changed v do if controlsReady and not binding and obj!=undefined do if not loadingAnalyzerArea do (obj.areaPointRadius=v;CyrusViewportRedraw())
+        on aaCaps selected v do if controlsReady and not binding and obj!=undefined do if not loadingAnalyzerArea do (obj.areaLineCaps=v;CyrusViewportRedraw())
+
+        local loadingFall=false
+        dropdownlist fallTarget "Edge falloff target" items:#("Analyzer Boundary","Selected Area line") selection:1 pos:[4,738] width:(selected_areaUI.width-8) tooltip:"Edit Analyzer boundary falloff or one highlighted Area's independent falloff."
+        pickbutton fallPick "Pick Surface Analyzer" filter:CyrusAnalyzerFilter pos:[4,794] width:(selected_areaUI.width-8) tooltip:"Choose the Analyzer whose boundary drives this falloff."
+        button fallRemove "Remove Analyzer" pos:[4,822] width:(selected_areaUI.width-8) tooltip:"Unlink the falloff Analyzer and disable its falloff effects."
+        label fallTargetName "" pos:[4,852] width:(selected_areaUI.width-8) height:40
+        checkbox fallDeleteCheck "Delete edge band" pos:[4,894] width:(selected_areaUI.width-8) tooltip:"Exclude an edge band before scale and density ramps begin."
+        spinner fallDeleteSpin "Delete width:" range:[0,1e9,0] type:#worldunits pos:[4,920] width:(selected_areaUI.width-8) fieldWidth:62 tooltip:"Width of the excluded edge band in scene units."
+        checkbox fallScaleCheck "Scale ramp" pos:[4,952] width:(selected_areaUI.width-8) tooltip:"Vary instance scale with distance from this boundary."
+        spinner fallScaleSpin "Scale width:" range:[0,1e9,100] type:#worldunits pos:[4,978] width:(selected_areaUI.width-8) fieldWidth:62 tooltip:"Distance over which the scale curve is evaluated."
+        button fallScaleEdit "Edit Scale Graph..." pos:[4,1008] width:(selected_areaUI.width-8) tooltip:"Edit this boundary's scale curve."
+        checkbox fallDensityCheck "Density ramp" pos:[4,1044] width:(selected_areaUI.width-8) tooltip:"Vary candidate eligibility with distance from this boundary."
+        spinner fallDensitySpin "Density width:" range:[0,1e9,100] type:#worldunits pos:[4,1070] width:(selected_areaUI.width-8) fieldWidth:62 tooltip:"Distance over which the density curve is evaluated."
+        button fallDensityEdit "Edit Density Graph..." pos:[4,1100] width:(selected_areaUI.width-8) tooltip:"Edit this boundary's density curve."
+        label fallHelp "Ramps start after delete band. Each Area line has its own settings." pos:[4,1138] width:(selected_areaUI.width-8) height:56
+        fn fallNode = (
+            if fallTarget.selection==1 then undefined else (
+                local rows=areaList.selection as array
+                if rows.count==1 and rows[1]<=obj.areaNodes.count then obj.areaNodes[rows[1]] else undefined
+            )
+        )
+        fn syncFalloff = (
+            loadingFall=true
+            local n=fallNode(),valid=(fallTarget.selection==1 or isValidNode n)
+            local cfg=if valid then obj.getFallConfig n else #(false,0,false,100,#(0,1),false,100,#(0,1))
+            fallPick.enabled=fallTarget.selection==1;fallRemove.enabled=fallTarget.selection==1
+            fallPick.text=if isValidNode obj.fallAnalyzer then obj.fallAnalyzer.name else "Pick Surface Analyzer"
+            fallTargetName.text=if fallTarget.selection==1 then "Full Boundary / inward" else (if valid then n.name+" / "+(if obj.areaModes[findItem obj.areaNodes n]==2 then "outward" else "inward") else "Select exactly one Area line above."
+            )
+            for c in #(fallDeleteCheck,fallDeleteSpin,fallScaleCheck,fallScaleSpin,fallScaleEdit,fallDensityCheck,fallDensitySpin,fallDensityEdit) do c.enabled=valid
+            fallDeleteCheck.checked=cfg[1];fallDeleteSpin.value=cfg[2];fallScaleCheck.checked=cfg[3];fallScaleSpin.value=cfg[4];fallDensityCheck.checked=cfg[6];fallDensitySpin.value=cfg[7]
+            loadingFall=false
+        )
+        fn setFallValue index value = (
+            if not loadingFall do (
+                local n=fallNode()
+                if fallTarget.selection==1 or isValidNode n do (local cfg=obj.getFallConfig n;cfg[index]=value;obj.setFallConfig n cfg;CyrusViewportRedraw())
+            )
+        )
+        on fallTarget selected v do if controlsReady and not binding and obj!=undefined do syncFalloff()
+        on fallPick picked n do if controlsReady and not binding and obj!=undefined do (if CyrusAnalyzerFilter n do obj.fallAnalyzer=n;syncFalloff();CyrusViewportRedraw())
+        on fallRemove pressed do if controlsReady and not binding and obj!=undefined do (obj.fallAnalyzer=undefined;obj.fallDelete=false;obj.fallScale=false;obj.fallDensity=false;syncFalloff();CyrusViewportRedraw())
+        on fallDeleteCheck changed v do if controlsReady and not binding and obj!=undefined do setFallValue 1 v
+        on fallDeleteSpin changed v do if controlsReady and not binding and obj!=undefined do setFallValue 2 v
+        on fallScaleCheck changed v do if controlsReady and not binding and obj!=undefined do setFallValue 3 v
+        on fallScaleSpin changed v do if controlsReady and not binding and obj!=undefined do setFallValue 4 v
+        on fallDensityCheck changed v do if controlsReady and not binding and obj!=undefined do setFallValue 6 v
+        on fallDensitySpin changed v do if controlsReady and not binding and obj!=undefined do setFallValue 7 v
+        on fallScaleEdit pressed do if controlsReady and not binding and obj!=undefined do CyrusOpenFalloffGraph obj (fallNode()) false
+        on fallDensityEdit pressed do if controlsReady and not binding and obj!=undefined do CyrusOpenFalloffGraph obj (fallNode()) true
+
+        fn updateAreas = (
+            local selectedRows=areaList.selection
+            areaList.items=for i=1 to obj.areaNodes.count collect (
+                (if i<=obj.areaModes.count and obj.areaModes[i]==2 then "Exclude | " else "Include | ")+
+                (if isValidNode obj.areaNodes[i] then obj.areaNodes[i].name else "<deleted>")
+            )
+            areaList.selection=selectedRows
+            syncFalloff()
+        )
+        fn addArea n = (
+            if AminScatterAreaFilter n and findItem obj.areaNodes n==0 do (
+                append obj.areaNodes n;append obj.areaModes 1;obj.markInputDirty()
+            )
+        )
+
+        on pickArea picked n do if controlsReady and not binding and obj!=undefined do (addArea n;updateAreas();CyrusViewportRedraw())
+        on addAreaScene pressed do if controlsReady and not binding and obj!=undefined do (
+            local nodes=selectByName title:"Cyrus Scatter - Closed Areas" buttonText:"Add" filter:AminScatterAreaFilter single:false
+            if nodes!=undefined do for n in nodes do addArea n
+            updateAreas();CyrusViewportRedraw()
+        )
+        on areaList selectionEnd do if controlsReady and not binding and obj!=undefined do (
+            if areaList.selection.numberSet==1 do fallTarget.selection=2
+            syncFalloff()
+            if areaList.selection.numberSet>0 do areaMode.state=obj.areaModes[(areaList.selection as array)[1]]
+        )
+        on areaMode changed mode do if controlsReady and not binding and obj!=undefined do (
+            undo "Cyrus Scatter area mode" on (for i in areaList.selection do obj.areaModes[i]=mode)
+            obj.markInputDirty();updateAreas();CyrusViewportRedraw()
+        )
+        on removeArea pressed do if controlsReady and not binding and obj!=undefined do (
+            if CyrusFalloffGraph!=undefined do try(destroyDialog CyrusFalloffGraph)catch()
+            local rows=areaList.selection as array
+            undo "Cyrus Scatter remove areas" on (
+                obj.ensureAreaFalloffs()
+                for i=rows.count to 1 by -1 do (deleteItem obj.areaNodes rows[i];deleteItem obj.areaModes rows[i];deleteItem obj.areaFallConfigs rows[i];deleteItem obj.areaFallScaleGraphs rows[i];deleteItem obj.areaFallDensityGraphs rows[i])
+            )
+            areaList.selection=#{};obj.markInputDirty();updateAreas();CyrusViewportRedraw()
+        )
+        on refreshAreas pressed do if controlsReady and not binding and obj!=undefined do (obj.markInputDirty();obj.refreshPreview();CyrusViewportRedraw())
+
+
+
+
+        fn bindFeatures layer = (
+            local next=layer
+            binding=true;controlsReady=false
+            if obj!=next do (areaList.selection=#{};)
+            obj=next;parentView=root.mainUI
+            for c in selected_areaUI.controls do c.enabled=layer!=undefined
+            try (undo off ((syncAnalyzerArea();syncFalloff();controlsReady=true;updateAreas()))) catch(binding=false;controlsReady=true;throw())
+            controlsReady=true;binding=false
+        )
+        checkbutton detailsToggle "Analyzer masks and edge falloff" pos:[4,378] width:(selected_areaUI.width-8) height:26 tooltip:"Show or hide these advanced controls; their saved settings are preserved."
+        fn arrangeDetails = (
+            for c in #(aaTitle,aaPick,aaRemove,aaLine,aaWidth,aaCaps,aaStreetOffset,aaPoints,aaRadius,aaHelp,fallTarget,fallPick,fallRemove,fallTargetName,fallDeleteCheck,fallDeleteSpin,fallScaleCheck,fallScaleSpin,fallScaleEdit,fallDensityCheck,fallDensitySpin,fallDensityEdit,fallHelp) do c.visible=detailsToggle.checked
+            selected_areaUI.height=if detailsToggle.checked then 1202 else 412
+        )
+        fn bind layer = (bindFeatures layer;arrangeDetails())
+        on detailsToggle changed value do arrangeDetails()
+        on selected_areaUI open do (root=this;controlsReady=false)
+        on selected_areaUI close do controlsReady=false
+        on selected_areaUI rolledUp state do root.mainUI.bindSection selected_areaUI
+    )
+    rollout selected_brushUI "Brush coverage and strokes - paint set" width:#cmdPanel category:110 autoLayoutOnResize:true (
+        local root=undefined,owner=undefined,panel=undefined
+        local setSpecific=true
+        local obj=undefined,controlsReady=false,binding=false,history=#()
+        label activeInfo "Select a plant group." pos:[4,8] width:(selected_brushUI.width-8) height:32
+        dropdownlist coverageMode "Coverage" items:#("Whole shared surface","Painted area") pos:[4,44] width:(selected_brushUI.width-8) tooltip:"Use the whole receiver or this paint set's saved painted coverage."
+        label targetInfo "Receiving surface comes from the setup." pos:[4,94] width:(selected_brushUI.width-8) height:32
+        radiobuttons modeRadio "Next stroke" labels:#("Paint","Erase") columns:2 pos:[4,130] width:(selected_brushUI.width-8)
+        spinner radiusSpin "Radius:" type:#worldunits range:[0.0001,1e9,20] fieldWidth:82 pos:[4,184] width:(selected_brushUI.width-8) tooltip:"World-space radius of the next Brush stroke on the receiving surface."
+        spinner strengthSpin "Strength %:" range:[0,100,100] fieldWidth:82 pos:[4,212] width:(selected_brushUI.width-8) tooltip:"Amount of coverage painted or erased by the next stroke."
+        spinner softSpin "Softness %:" range:[0,100,50] fieldWidth:82 pos:[4,240] width:(selected_brushUI.width-8) tooltip:"Softness of the next stroke's edge."
+        spinner densitySpin "Mask %:" range:[0,100,100] fieldWidth:82 pos:[4,268] width:(selected_brushUI.width-8) tooltip:"Thin plants allowed by the saved mask. Set absolute population on Population."
+        button beginButton "Start Brush" pos:[4,300] width:((selected_brushUI.width-12)/2) tooltip:"Paint this set on the shared surface. Creates an empty mask when needed."
+        button stopButton "Stop" pos:[(selected_brushUI.width/2+2),300] width:((selected_brushUI.width-12)/2) tooltip:"Finish painting and retain the editable stroke history."
+        button fillButton "Fill" pos:[4,332] width:((selected_brushUI.width-12)/2) tooltip:"Fill coverage and reset stroke history. Undo restores the previous field."
+        button emptyButton "Empty" pos:[(selected_brushUI.width/2+2),332] width:((selected_brushUI.width-12)/2) tooltip:"Empty coverage and reset stroke history. Undo restores the previous field."
+        label brushState "Select a group and receiving surface." pos:[4,366] width:(selected_brushUI.width-8) height:66
+        dropdownlist overlayMode "Paint feedback" items:#("Coverage tint","Coverage samples","Off") pos:[4,470] width:(selected_brushUI.width-8) tooltip:"Coverage feedback only; it does not show which plants survive spacing."
+        colorpicker overlayColor "Color:" pos:[4,524] width:(selected_brushUI.width-8) tooltip:"Viewport color for this paint set's coverage feedback."
+        listbox strokeList "Group stroke history" items:#() pos:[4,556] width:(selected_brushUI.width-8) height:5
+        checkbox strokeEnabled "Enabled" pos:[4,672] width:((selected_brushUI.width-12)/2) tooltip:"Enable or disable the highlighted saved stroke without deleting it."
+        checkbox strokeErase "Erase" pos:[(selected_brushUI.width/2+2),672] width:((selected_brushUI.width-12)/2) tooltip:"Change the highlighted saved stroke between paint and erase."
+        spinner strokeRadius "Radius:" type:#worldunits range:[0.0001,1e9,20] fieldWidth:82 pos:[4,700] width:(selected_brushUI.width-8) tooltip:"Change the radius of the highlighted saved stroke."
+        spinner strokeStrength "Strength %:" range:[0,100,100] fieldWidth:82 pos:[4,728] width:(selected_brushUI.width-8) tooltip:"Change the strength of the highlighted saved stroke."
+        spinner strokeSoft "Softness %:" range:[0,100,50] fieldWidth:82 pos:[4,756] width:(selected_brushUI.width-8) tooltip:"Change the edge softness of the highlighted saved stroke."
+        button deleteStroke "Delete selected stroke" pos:[4,788] width:(selected_brushUI.width-8) tooltip:"Delete the highlighted stroke. Undo restores it."
+        button resetTarget "Reset coverage target..." pos:[4,820] width:(selected_brushUI.width-8) tooltip:"Confirm before replacing this set's paint with an empty mask on the current receiver."
+        label brushHelp "One centre = one plant.\nTint shows painted coverage.\nManual mode needs Update." pos:[4,852] width:(selected_brushUI.width-8) height:54
+        fn showStroke = (
+            binding=true
+            local i=strokeList.selection,valid=i>0 and i<=history.count
+            for c in #(strokeEnabled,strokeErase,strokeRadius,strokeStrength,strokeSoft,deleteStroke) do c.enabled=valid
+            if valid do (local row=history[i];strokeEnabled.checked=row[1];strokeErase.checked=row[2];strokeRadius.value=row[3];strokeStrength.value=row[4]*100;strokeSoft.value=row[5]*100)
+            binding=false
+        )
+        fn refreshHistory = (
+            binding=true
+            local chosen=strokeList.selection
+            history=if obj!=undefined and obj.paintDocument!=undefined then cyrusBrushHistory obj.paintDocument else #()
+            strokeList.items=for i=1 to history.count collect ((i as string)+" | "+(if history[i][2] then "Erase" else "Paint")+(if history[i][1] then "" else " (off)")+" | "+(history[i][6] as string)+" samples")
+            strokeList.selection=amin chosen history.count;binding=false;showStroke()
+        )
+        fn editStroke = (
+            local i=strokeList.selection
+            if binding or i<1 or i>history.count do return false
+            cyrusBrushStroke obj.paintDocument i strokeEnabled.checked (strokeStrength.value/100.0) strokeRadius.value (strokeSoft.value/100.0) strokeErase.checked
+            obj.publishPaint();refreshHistory()
+        )
+        fn saveOptions = (
+            if not binding and obj!=undefined and obj.paintDocument!=undefined do (
+                cyrusBrushSettings obj.paintDocument radiusSpin.value (strengthSpin.value/100.0) (softSpin.value/100.0) (modeRadio.state==2) 1.0
+                cyrusBrushDisplay obj.paintDocument obj.paintView obj.paintColor
+            )
+        )
+        fn status = (
+            if obj==undefined do return false
+            if obj.paintDocument==undefined then brushState.text="Start Brush creates an empty mask\non the shared receiving surface." else (
+                local state=cyrusBrushStats obj.paintDocument
+                local message=(if state[5]==1 then "Brush active" else "Brush stopped")+" | "+(CyrusUICount state[2])+" strokes"
+                if not obj.paintEnabled do message+="\nWhole surface; strokes retained."
+                if state[11]!="" do message+="\n"+state[11]
+                if obj.updateMode==1 and obj.dirty do message+="\nChanges pending; plants need Update."
+                if state.count>=18 and state[18]>0 do message+="\nCoverage preview uses bounded detail."
+                if brushState.text!=message do brushState.text=message
+            )
+        )
+        fn bindFeatures layer = (
+            binding=true;obj=layer
+            for c in selected_brushUI.controls do c.enabled=layer!=undefined
+            local has=layer!=undefined and layer.paintDocument!=undefined
+            for c in #(fillButton,emptyButton,stopButton) do c.enabled=has
+            activeInfo.text=if layer==undefined then "Select a plant group." else "Painting: "+(root.setCaption layer)
+            local targets=root.validSurfaces()
+            targetInfo.text=if has then "Mask surface: "+(if isValidNode (cyrusBrushTarget layer.paintDocument) then (cyrusBrushTarget layer.paintDocument).name else "<missing>") else (if targets.count==1 then "Shared surface: "+targets[1].name else "Pick one shared surface above.")
+            if layer!=undefined do (
+                coverageMode.selection=if layer.paintEnabled then 2 else 1
+                densitySpin.value=layer.paintDensity*100;overlayMode.selection=findItem #(2,1,0) layer.paintView;overlayColor.color=layer.paintColor
+            )
+            if has do (local cfg=cyrusBrushOptions layer.paintDocument;radiusSpin.value=cfg[1];strengthSpin.value=cfg[2]*100;softSpin.value=cfg[3]*100;modeRadio.state=if cfg[5] then 2 else 1)
+            controlsReady=true;binding=false;refreshHistory();status()
+        )
+        checkbutton detailsToggle "Paint feedback and editable stroke history" pos:[4,436] width:(selected_brushUI.width-8) height:26 tooltip:"Show or hide these advanced controls; their saved settings are preserved."
+        fn arrangeDetails = (
+            for c in #(overlayMode,overlayColor,strokeList,strokeEnabled,strokeErase,strokeRadius,strokeStrength,strokeSoft,deleteStroke,resetTarget,brushHelp) do c.visible=detailsToggle.checked
+            selected_brushUI.height=if detailsToggle.checked then 914 else 470
+        )
+        fn bind layer = (bindFeatures layer;arrangeDetails())
+        on detailsToggle changed value do arrangeDetails()
+        on selected_brushUI open do (root=this;controlsReady=false)
+        on selected_brushUI close do (controlsReady=false;CyrusStopBrush())
+        on coverageMode selected i do if not binding and obj!=undefined do try(root.setGroupCoverage obj (i==2))catch(messageBox (getCurrentException()) title:"Cyrus coverage";bind obj)
+        on beginButton pressed do if obj!=undefined do (
+            try (
+                local options=#(radiusSpin.value,strengthSpin.value,softSpin.value,modeRadio.state)
+                root.setGroupCoverage obj true
+                radiusSpin.value=options[1];strengthSpin.value=options[2];softSpin.value=options[3];modeRadio.state=options[4]
+                saveOptions();CyrusStartBrush root obj;status()
+            ) catch(messageBox (getCurrentException()) title:"Cyrus Brush")
+        )
+        on stopButton pressed do (CyrusStopBrush();refreshHistory();status())
+        on modeRadio changed value do saveOptions()
+        on radiusSpin changed value do saveOptions()
+        on strengthSpin changed value do saveOptions()
+        on softSpin changed value do saveOptions()
+        on densitySpin changed value do if not binding and obj!=undefined do (undo "Cyrus painted density" on obj.paintDensity=value/100.0;obj.publishPaint())
+        on overlayMode selected value do if not binding and obj!=undefined do (undo "Cyrus coverage display" on obj.paintView=(#(2,1,0))[value];saveOptions();redrawViews())
+        on overlayColor changed value do if not binding and obj!=undefined do (undo "Cyrus coverage color" on obj.paintColor=value;saveOptions();redrawViews())
+        on fillButton pressed do (cyrusBrushFill obj.paintDocument 1.0;obj.publishPaint();refreshHistory();status())
+        on emptyButton pressed do (cyrusBrushFill obj.paintDocument 0.0;obj.publishPaint();refreshHistory();status())
+        on strokeList selected value do showStroke()
+        on strokeEnabled changed value do editStroke()
+        on strokeErase changed value do editStroke()
+        on strokeRadius changed value do editStroke()
+        on strokeStrength changed value do editStroke()
+        on strokeSoft changed value do editStroke()
+        on deleteStroke pressed do if strokeList.selection>0 do (cyrusBrushDeleteStroke obj.paintDocument strokeList.selection;obj.publishPaint();refreshHistory();status())
+        on resetTarget pressed do if obj!=undefined do (
+            if queryBox "Replace this paint set's saved paint with an empty mask on the shared surface? Undo restores the previous document." title:"Cyrus reset coverage" do try(root.setGroupCoverage obj true reset:true)catch(messageBox (getCurrentException()) title:"Cyrus coverage")
+        )
+        on selected_brushUI rolledUp state do root.mainUI.bindSection selected_brushUI
+    )
+
+    rollout selected_backgroundUI "Background fill - paint set" width:#cmdPanel category:120 autoLayoutOnResize:true (
+        local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,setSpecific=true,backgrounds=#()
+        dropdownlist backgroundList "This set: background" items:#("Off","Outside painted coverage","Between plants","Outside + between") pos:[4,8] width:(selected_backgroundUI.width-8) tooltip:"Exclude earlier painted coverage, fill between plants, combine both, or turn off."
+        multiListBox referenceList "Earlier paint sets" items:#() pos:[4,60] width:(selected_backgroundUI.width-8) height:4
+        button applyBackground "Apply background" pos:[4,152] width:(selected_backgroundUI.width-8) tooltip:"Save this background mode and the selected earlier-set references together."
+        label backgroundInfo "Outside uses earlier sibling coverage. Between plants uses the rules on the Spacing tab." pos:[4,182] width:(selected_backgroundUI.width-8) height:62
+        fn currentSet = (root.selectedPaintSet owner)
+        fn bind layer = (
+            binding=true
+            for c in selected_backgroundUI.controls do c.enabled=root.groupPolicy==3
+            local leaf=currentSet()
+            backgroundList.selection=leaf.procBackground;backgrounds=#()
+            for p in root.layerSets owner while p!=leaf do append backgrounds p
+            referenceList.items=for p in backgrounds collect p.paintSetName
+            referenceList.selection=for i=1 to backgrounds.count where findItem leaf.procBackgroundIDs backgrounds[i].layerID>0 collect i
+            controlsReady=true;binding=false
+        )
+        on selected_backgroundUI open do (root=this;controlsReady=false)
+        on selected_backgroundUI close do controlsReady=false
+        on applyBackground pressed do try(
+            local leaf=currentSet(),ids=for i in referenceList.selection collect backgrounds[i].layerID
+            if backgroundList.selection!=1 and ids.count==0 do throw "Choose at least one earlier paint set."
+            undo "Cyrus background coverage" on (leaf.procBackground=backgroundList.selection;leaf.procBackgroundIDs=if backgroundList.selection==1 then #() else ids)
+            root.invalidateGroups();bind owner
+        )catch(messageBox (getCurrentException()) title:"Cyrus background")
+        on selected_backgroundUI rolledUp state do root.mainUI.bindSection selected_backgroundUI
+    )
+
+    rollout selected_randomUI "Random transforms - layer" width:#cmdPanel category:130 autoLayoutOnResize:true (
+        local root=undefined,owner=undefined,panel=undefined
+        local setSpecific=false
+        local binding=false,
+        obj=undefined,parentView=undefined
+        local controlsReady=false
+
+        label rotTitle "Rotation (degrees)" pos:[4,8] width:(selected_randomUI.width-8)
+        label rotMinTitle "Min" pos:[24,30] width:((selected_randomUI.width-38)/2)
+        label rotMaxTitle "Max" pos:[((selected_randomUI.width+18)/2),30] width:((selected_randomUI.width-38)/2)
+        label rotXLabel "X" pos:[4,52] width:12
+        spinner rotXMinSpin "" range:[-360,360,0]  pos:[24,50] fieldWidth:((selected_randomUI.width-38)/2) width:((selected_randomUI.width-38)/2)
+        spinner rotXMaxSpin "" range:[-360,360,0]  pos:[((selected_randomUI.width+18)/2),50] fieldWidth:((selected_randomUI.width-38)/2) width:((selected_randomUI.width-38)/2)
+        label rotYLabel "Y" pos:[4,76] width:12
+        spinner rotYMinSpin "" range:[-360,360,0]  pos:[24,74] fieldWidth:((selected_randomUI.width-38)/2) width:((selected_randomUI.width-38)/2)
+        spinner rotYMaxSpin "" range:[-360,360,0]  pos:[((selected_randomUI.width+18)/2),74] fieldWidth:((selected_randomUI.width-38)/2) width:((selected_randomUI.width-38)/2)
+        label rotZLabel "Z" pos:[4,100] width:12
+        spinner rotZMinSpin "" range:[-360,360,0]  pos:[24,98] fieldWidth:((selected_randomUI.width-38)/2) width:((selected_randomUI.width-38)/2)
+        spinner rotZMaxSpin "" range:[-360,360,360]  pos:[((selected_randomUI.width+18)/2),98] fieldWidth:((selected_randomUI.width-38)/2) width:((selected_randomUI.width-38)/2)
+        label sclTitle "Scale (multiplier)" pos:[4,162] width:(selected_randomUI.width-8)
+        label sclMinTitle "Min" pos:[24,184] width:((selected_randomUI.width-38)/2)
+        label sclMaxTitle "Max" pos:[((selected_randomUI.width+18)/2),184] width:((selected_randomUI.width-38)/2)
+        label sclXLabel "X" pos:[4,206] width:12
+        spinner sclXMinSpin "" range:[0.001,100,1]  pos:[24,204] fieldWidth:((selected_randomUI.width-38)/2) width:((selected_randomUI.width-38)/2)
+        spinner sclXMaxSpin "" range:[0.001,100,1]  pos:[((selected_randomUI.width+18)/2),204] fieldWidth:((selected_randomUI.width-38)/2) width:((selected_randomUI.width-38)/2)
+        label sclYLabel "Y" pos:[4,230] width:12
+        spinner sclYMinSpin "" range:[0.001,100,1]  pos:[24,228] fieldWidth:((selected_randomUI.width-38)/2) width:((selected_randomUI.width-38)/2)
+        spinner sclYMaxSpin "" range:[0.001,100,1]  pos:[((selected_randomUI.width+18)/2),228] fieldWidth:((selected_randomUI.width-38)/2) width:((selected_randomUI.width-38)/2)
+        label sclZLabel "Z" pos:[4,254] width:12
+        spinner sclZMinSpin "" range:[0.001,100,1]  pos:[24,252] fieldWidth:((selected_randomUI.width-38)/2) width:((selected_randomUI.width-38)/2)
+        spinner sclZMaxSpin "" range:[0.001,100,1]  pos:[((selected_randomUI.width+18)/2),252] fieldWidth:((selected_randomUI.width-38)/2) width:((selected_randomUI.width-38)/2)
+        label wholeTitle "Whole Scale (uniform)" pos:[4,312] width:(selected_randomUI.width-8)
+        label wholeMinTitle "Min" pos:[24,334] width:((selected_randomUI.width-38)/2)
+        label wholeMaxTitle "Max" pos:[((selected_randomUI.width+18)/2),334] width:((selected_randomUI.width-38)/2)
+        spinner wholeMinSpin "" range:[0.001,1000,1] scale:0.01 pos:[24,356] fieldWidth:((selected_randomUI.width-38)/2) width:((selected_randomUI.width-38)/2)
+        spinner wholeMaxSpin "" range:[0.001,1000,1] scale:0.01 pos:[((selected_randomUI.width+18)/2),356] fieldWidth:((selected_randomUI.width-38)/2) width:((selected_randomUI.width-38)/2)
+        on wholeMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.wholeScaleMin=v;if v>obj.wholeScaleMax do (obj.wholeScaleMax=v;wholeMaxSpin.value=v);CyrusViewportRedraw())
+        on wholeMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.wholeScaleMax=v;if v<obj.wholeScaleMin do (obj.wholeScaleMin=v;wholeMinSpin.value=v);CyrusViewportRedraw())
+        label movTitle "Movement (world units)" pos:[4,422] width:(selected_randomUI.width-8)
+        label movMinTitle "Min" pos:[24,444] width:((selected_randomUI.width-38)/2)
+        label movMaxTitle "Max" pos:[((selected_randomUI.width+18)/2),444] width:((selected_randomUI.width-38)/2)
+        label movXLabel "X" pos:[4,466] width:12
+        spinner movXMinSpin "" range:[-100000,100000,0] type:#worldUnits pos:[24,464] fieldWidth:((selected_randomUI.width-38)/2) width:((selected_randomUI.width-38)/2)
+        spinner movXMaxSpin "" range:[-100000,100000,0] type:#worldUnits pos:[((selected_randomUI.width+18)/2),464] fieldWidth:((selected_randomUI.width-38)/2) width:((selected_randomUI.width-38)/2)
+        label movYLabel "Y" pos:[4,490] width:12
+        spinner movYMinSpin "" range:[-100000,100000,0] type:#worldUnits pos:[24,488] fieldWidth:((selected_randomUI.width-38)/2) width:((selected_randomUI.width-38)/2)
+        spinner movYMaxSpin "" range:[-100000,100000,0] type:#worldUnits pos:[((selected_randomUI.width+18)/2),488] fieldWidth:((selected_randomUI.width-38)/2) width:((selected_randomUI.width-38)/2)
+        label movZLabel "Z" pos:[4,514] width:12
+        spinner movZMinSpin "" range:[-100000,100000,0] type:#worldUnits pos:[24,512] fieldWidth:((selected_randomUI.width-38)/2) width:((selected_randomUI.width-38)/2)
+        spinner movZMaxSpin "" range:[-100000,100000,0] type:#worldUnits pos:[((selected_randomUI.width+18)/2),512] fieldWidth:((selected_randomUI.width-38)/2) width:((selected_randomUI.width-38)/2)
+        checkbox projectCheck "Keep on surface" pos:[4,576] width:(selected_randomUI.width-8) tooltip:"Project random movement back onto the receiving surface."
+        checkbox alignCheck "Align to normal" pos:[4,600] width:(selected_randomUI.width-8) tooltip:"Align instances to the receiving surface normal."
+
+        button resetRotation "Reset rotation" pos:[4,124] width:(selected_randomUI.width-8) height:20 tooltip:"Reset only this layer's random rotation limits. Undo is available."
+        button resetScale "Reset XYZ scale" pos:[4,278] width:(selected_randomUI.width-8) height:20 tooltip:"Reset only this layer's separate X, Y and Z scale limits."
+        button resetWholeScale "Reset whole scale" pos:[4,382] width:(selected_randomUI.width-8) height:20 tooltip:"Reset only this layer's uniform scale multiplier."
+        button resetMovement "Reset movement" pos:[4,536] width:(selected_randomUI.width-8) height:20 tooltip:"Reset only this layer's random translation limits."
+        fn resetBoundRandomization kind = (
+            undo "Cyrus reset layer transforms" on owner.resetRandomization kind
+            selected_randomUI.bind owner;root.invalidateGroups();true
+        )
+        on resetRotation pressed do resetBoundRandomization #rotation
+        on resetScale pressed do resetBoundRandomization #scale
+        on resetWholeScale pressed do resetBoundRandomization #wholeScale
+        on resetMovement pressed do resetBoundRandomization #movement
+        fn syncControls = (projectCheck.checked=obj.projectMove;rotXMinSpin.value=obj.rotXMin;rotXMaxSpin.value=obj.rotXMax;rotYMinSpin.value=obj.rotYMin;rotYMaxSpin.value=obj.rotYMax;rotZMinSpin.value=obj.rotZMin;rotZMaxSpin.value=obj.rotZMax;sclXMinSpin.value=obj.sclXMin;sclXMaxSpin.value=obj.sclXMax;sclYMinSpin.value=obj.sclYMin;sclYMaxSpin.value=obj.sclYMax;sclZMinSpin.value=obj.sclZMin;sclZMaxSpin.value=obj.sclZMax;movXMinSpin.value=obj.movXMin;movXMaxSpin.value=obj.movXMax;movYMinSpin.value=obj.movYMin;movYMaxSpin.value=obj.movYMax;movZMinSpin.value=obj.movZMin;movZMaxSpin.value=obj.movZMax;)
+        on alignCheck changed v do if controlsReady and not binding and obj!=undefined do (obj.alignNormal=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+
+        on projectCheck changed v do if controlsReady and not binding and obj!=undefined do (obj.projectMove=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on rotXMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.rotXMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on rotXMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.rotXMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on rotYMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.rotYMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on rotYMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.rotYMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on rotZMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.rotZMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on rotZMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.rotZMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on sclXMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.sclXMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on sclXMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.sclXMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on sclYMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.sclYMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on sclYMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.sclYMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on sclZMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.sclZMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on sclZMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.sclZMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on movXMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.movXMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on movXMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.movXMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on movYMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.movYMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on movYMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.movYMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on movZMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.movZMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on movZMaxSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.movZMax=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+
+
+
+        fn bind layer = (
+            local next=layer
+            binding=true;controlsReady=false
+            if obj!=next do ()
+            obj=next;parentView=root.mainUI
+            for c in selected_randomUI.controls do c.enabled=layer!=undefined
+            try (undo off ((wholeMinSpin.value=obj.wholeScaleMin;wholeMaxSpin.value=obj.wholeScaleMax;projectCheck.checked=obj.projectMove;rotXMinSpin.value=obj.rotXMin;rotXMaxSpin.value=obj.rotXMax;rotYMinSpin.value=obj.rotYMin;rotYMaxSpin.value=obj.rotYMax;rotZMinSpin.value=obj.rotZMin;rotZMaxSpin.value=obj.rotZMax;sclXMinSpin.value=obj.sclXMin;sclXMaxSpin.value=obj.sclXMax;sclYMinSpin.value=obj.sclYMin;sclYMaxSpin.value=obj.sclYMax;sclZMinSpin.value=obj.sclZMin;sclZMaxSpin.value=obj.sclZMax;movXMinSpin.value=obj.movXMin;movXMaxSpin.value=obj.movXMax;movYMinSpin.value=obj.movYMin;movYMaxSpin.value=obj.movYMax;movZMinSpin.value=obj.movZMin;movZMaxSpin.value=obj.movZMax;controlsReady=true;alignCheck.checked=obj.alignNormal))) catch(binding=false;controlsReady=true;throw())
+            controlsReady=true;binding=false
+        )
+        on selected_randomUI open do (root=this;controlsReady=false)
+        on selected_randomUI close do controlsReady=false
+        on selected_randomUI rolledUp state do root.mainUI.bindSection selected_randomUI
+    )
+    rollout selected_diversityUI "Source assignment - layer" width:#cmdPanel category:140 autoLayoutOnResize:true (
+        local root=undefined,owner=undefined,panel=undefined
+        local setSpecific=false
+        local binding=false,
+        obj=undefined,parentView=undefined
+        local boundaryOnly=false
+        local controlsReady=false,strokeExpandedHeight=0
+
+        radiobuttons diversityRadio "Source assignment" labels:#("Random","Clusters","Line Pattern","Analyze Surface") columns:1 pos:[4,8] width:(selected_diversityUI.width-8)
+        spinner sizeSpin "Size: " range:[0.01,100000,10] type:#worldUnits fieldWidth:82 width:(selected_diversityUI.width-8) pos:[4,104] tooltip:"Spatial size of source-color clusters."
+        spinner divSeedSpin "Seed: " range:[0,2147483647,42] type:#integer fieldWidth:82 width:(selected_diversityUI.width-8) pos:[4,130] tooltip:"Change source assignment randomness without changing the generation seed."
+        spinner roughSpin "Roughness %: " range:[0,100,0] fieldWidth:82 width:(selected_diversityUI.width-8) pos:[4,156]
+        spinner blurSpin "Blur edge %: " range:[0,100,0] fieldWidth:82 width:(selected_diversityUI.width-8) pos:[4,182]
+        spinner noiseSpin "Noise %: " range:[0,100,0] fieldWidth:82 width:(selected_diversityUI.width-8) pos:[4,208]
+        label groupHint "Uses source group colors." pos:[4,238] width:(selected_diversityUI.width-8)
+        label fixedHint "Point positions stay fixed." pos:[4,260] width:(selected_diversityUI.width-8)
+
+
+
+
+        local pathRows=#(),strokeRows=#(),choiceValues=#(),restKeys=#(),loadingStroke=false
+        label strokeTitle "Line Pattern / Strokes" pos:[4,118] width:(selected_diversityUI.width-8)
+        dropdownlist pathsDrop "Paths" items:#() pos:[4,142] width:(selected_diversityUI.width-8)
+        dropdownlist analyzerChannel "Analyzer data" items:#("Border","Centerline","Points","Street Side","Edge Border") pos:[4,142] width:(selected_diversityUI.width-8)
+        pickbutton pickAnalyzer "Pick Surface Analyzer" filter:CyrusAnalyzerFilter pos:[4,192] width:(selected_diversityUI.width-8) tooltip:"Choose an existing Surface Analyzer for the legacy assignment modes."
+        pickbutton pickPath "Add: pick closed line" filter:AminScatterAreaFilter pos:[4,192] width:(selected_diversityUI.width-8) tooltip:"Pick a spline for Line Pattern assignment."
+        button removePath "Remove path" pos:[4,218] width:(selected_diversityUI.width-8) tooltip:"Remove the selected assignment path while keeping the scene spline."
+        listbox strokesList "Consecutive strokes" items:#() pos:[4,250] width:(selected_diversityUI.width-8) height:4
+        button addOutside "Add Outside" pos:[4,346] width:((selected_diversityUI.width-12)/2) tooltip:"Add a source-assignment band outside the selected path."
+        button addInside "Add Inside" pos:[(if boundaryOnly then 4 else selected_diversityUI.width/2+2),346] width:(if boundaryOnly then selected_diversityUI.width-8 else (selected_diversityUI.width-12)/2) tooltip:"Add a source-assignment band inside the selected path."
+        button removeStrokeButton "Remove Stroke" pos:[4,372] width:(selected_diversityUI.width-8) tooltip:"Remove the selected assignment band and its settings."
+        spinner strokeWidth "Width:" range:[0.001,100000,1] type:#worldUnits pos:[4,406] width:(selected_diversityUI.width-8) fieldWidth:82
+        radiobuttons strokeMode "Assign by" labels:#("Color groups","Source objects") columns:1 pos:[4,434] width:(selected_diversityUI.width-8)
+        multiListBox strokeChoices "Ctrl / Shift: select several" items:#() pos:[4,506] width:(selected_diversityUI.width-8) height:5
+        spinner strokeScaleMin "Scale min:" range:[0.001,100,1] pos:[4,618] width:(selected_diversityUI.width-8) fieldWidth:82
+        spinner strokeScaleMax "Scale max:" range:[0.001,100,1] pos:[4,644] width:(selected_diversityUI.width-8) fieldWidth:82
+        button refreshGroups "Refresh sources / groups" pos:[4,676] width:(selected_diversityUI.width-8) tooltip:"Refresh available source color groups for assignment."
+        label strokeHelp "Outside strokes: empty." pos:[4,704] width:(selected_diversityUI.width-8)
+        spinner edgeOffsetSpin "Offset inward:" range:[-1000000,1000000,0] type:#worldunits pos:[4,814] width:(selected_diversityUI.width-8) fieldWidth:82
+        spinner edgeAlongSpin "Jitter along:" range:[0,1000000,0] type:#worldunits pos:[4,842] width:(selected_diversityUI.width-8) fieldWidth:82
+        spinner edgeAcrossSpin "Jitter across:" range:[0,1000000,0] type:#worldunits pos:[4,870] width:(selected_diversityUI.width-8) fieldWidth:82
+        label edgeRowHelp "Spacing sets count. Jitter 0 = exact." pos:[4,898] width:(selected_diversityUI.width-8) height:36
+        checkbox keepCornerCheck "Keep corner points" pos:[4,940] width:(selected_diversityUI.width-8)
+        spinner cornerAngleSpin "Min turn:" range:[0,180,45] type:#float pos:[4,968] width:(selected_diversityUI.width-8) fieldWidth:82
+        spinner cornerCountSpin "Points/corner:" range:[1,64,1] type:#integer pos:[4,996] width:(selected_diversityUI.width-8) fieldWidth:82
+        label cornerHelp "Turn angle in degrees. 0 = straight." pos:[4,1024] width:(selected_diversityUI.width-8) height:36
+        spinner edgeRotXSpin "Local X (deg):" range:[-36000,36000,0] type:#float pos:[4,1066] width:(selected_diversityUI.width-8) fieldWidth:82
+        spinner edgeRotYSpin "Local Y (deg):" range:[-36000,36000,0] type:#float pos:[4,1094] width:(selected_diversityUI.width-8) fieldWidth:82
+        spinner edgeRotZSpin "Local Z (deg):" range:[-36000,36000,0] type:#float pos:[4,1122] width:(selected_diversityUI.width-8) fieldWidth:82
+        spinner streetStartSpin "Trim start:" range:[0,1e9,0] type:#worldunits pos:[4,814] width:(selected_diversityUI.width-8) fieldWidth:62
+        spinner streetEndSpin "Trim end:" range:[0,1e9,0] type:#worldunits pos:[4,842] width:(selected_diversityUI.width-8) fieldWidth:62
+        spinner centerStreetSpin "Street offset:" range:[-1e9,1e9,0] type:#worldunits pos:[4,814] width:(selected_diversityUI.width-8) fieldWidth:62
+        label streetLayoutHelp "Positive offset = away from street. Trim follows path direction." pos:[4,874] width:(selected_diversityUI.width-8) height:44
+        checkbox faceOutCheck "Face outward" pos:[4,756] width:(selected_diversityUI.width-8)
+        spinner cornerRadiusSpin "Corner radius:" type:#worldunits range:[0,1000000,10] pos:[4,784] width:(selected_diversityUI.width-8) fieldWidth:82
+        checkbox straightStreet "Straight ends (Street Side)" pos:[4,730] width:(selected_diversityUI.width-8)
+        fn syncControls = (diversityRadio.state=obj.diversityMode;sizeSpin.value=obj.diversitySize;divSeedSpin.value=obj.diversitySeed;roughSpin.value=obj.roughness;blurSpin.value=obj.blurryEdge;noiseSpin.value=obj.diversityNoise;)
+        on faceOutCheck changed v do if controlsReady and not binding and obj!=undefined do (
+            if analyzerChannel.selection==5 then obj.edgeFaceOut=v else if analyzerChannel.selection==4 then obj.streetFaceOut=v else obj.borderFaceOut=v
+            cornerRadiusSpin.enabled=v;obj.markInputDirty();CyrusViewportRedraw()
+        )
+        on cornerRadiusSpin changed v do if controlsReady and not binding and obj!=undefined do (
+            if analyzerChannel.selection==5 then obj.edgeCornerRadius=v else if analyzerChannel.selection==4 then obj.streetCornerRadius=v else obj.borderCornerRadius=v
+            obj.markInputDirty();CyrusViewportRedraw()
+        )
+        on streetStartSpin changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (obj.streetTrimStart=v;CyrusViewportRedraw())
+        on streetEndSpin changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (obj.streetTrimEnd=v;CyrusViewportRedraw())
+        on centerStreetSpin changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (obj.centerStreetOffset=v;CyrusViewportRedraw())
+        on straightStreet changed v do if controlsReady and not binding and obj!=undefined do (obj.streetStraight=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        fn selectedStroke = (if strokesList.selection>0 and strokesList.selection<=strokeRows.count then strokeRows[strokesList.selection] else 0)
+        fn showStroke = (
+            loadingStroke=true
+            obj.syncStrokes()
+            local edgeVisible=obj.diversityMode==4 and analyzerChannel.selection==5
+            for c in #(edgeOffsetSpin,edgeAlongSpin,edgeAcrossSpin,edgeRowHelp,keepCornerCheck,cornerAngleSpin,cornerCountSpin,cornerHelp,edgeRotXSpin,edgeRotYSpin,edgeRotZSpin) do c.visible=edgeVisible
+            cornerRadiusSpin.text=if edgeVisible then "Blend radius:" else "Corner radius:"
+            keepCornerCheck.checked=obj.edgeKeepCorners
+            cornerAngleSpin.value=obj.edgeCornerAngle;cornerCountSpin.value=obj.edgeCornerCount
+            cornerAngleSpin.enabled=obj.edgeKeepCorners;cornerCountSpin.enabled=obj.edgeKeepCorners
+            strokeWidth.text=if edgeVisible then "Spacing:" else "Width:"
+            local row=selectedStroke();local active=row>0
+            for c in #(strokeWidth,strokeMode,strokeChoices,strokeScaleMin,strokeScaleMax,removeStrokeButton) do c.enabled=active
+            choiceValues=#();strokeChoices.items=#()
+            for c in #(edgeOffsetSpin,edgeAlongSpin,edgeAcrossSpin,edgeRotXSpin,edgeRotYSpin,edgeRotZSpin) do c.enabled=active
+            if active do (
+                edgeRotXSpin.value=obj.edgeRotX[row]
+                edgeRotYSpin.value=obj.edgeRotY[row]
+                edgeRotZSpin.value=obj.edgeRotZ[row]
+                edgeOffsetSpin.value=obj.edgeOffsets[row];edgeAlongSpin.value=obj.edgeAlong[row];edgeAcrossSpin.value=obj.edgeAcross[row]
+                strokeWidth.value=obj.patternWidths[row];strokeMode.state=obj.strokeModes[row]
+                strokeWidth.enabled=obj.strokeSides[row]!=5
+                strokeScaleMin.value=obj.strokeMin[row];strokeScaleMax.value=obj.strokeMax[row]
+                local labels=#();local selectedRows=#{}
+                if obj.strokeModes[row]==1 then (
+                    for i=1 to obj.sources.count do (
+                        local key=obj.colorKey(obj.sourceColor i)
+                        if findItem choiceValues key==0 do (append choiceValues key;append labels ("#"+(formattedPrint key format:"06X")))
+                    )
+                    local keys=for i=1 to obj.strokeColorRows.count where obj.strokeColorRows[i]==row collect obj.strokeColorKeys[i]
+                    if keys.count==0 do keys=#(obj.patternGroups[row])
+                    for i=1 to choiceValues.count where findItem keys choiceValues[i]>0 do selectedRows[i]=true
+                ) else (
+                    for n in obj.sources where isValidNode n do (append choiceValues n;append labels n.name)
+                    for i=1 to obj.strokeSourceRows.count where obj.strokeSourceRows[i]==row do (
+                        local k=findItem choiceValues obj.strokeSourceNodes[i];if k>0 do selectedRows[k]=true
+                    )
+                )
+                strokeChoices.items=labels;strokeChoices.selection=selectedRows
+            )
+            loadingStroke=false
+        )
+        fn showPath = (
+            loadingStroke=true
+            local old=strokesList.selection;strokeRows=#();local labels=#();local total=#(0.0,0.0,0.0,0.0,0.0,0.0,0.0)
+            local analyzed=obj.diversityMode==4
+            local path=if analyzed then obj.analyzerNode else (if pathsDrop.selection>0 then pathRows[pathsDrop.selection] else undefined)
+            if isValidNode path do (
+                for i=1 to obj.patternLines.count where obj.patternLines[i]==path and (not analyzed or (analyzerChannel.selection==1 and obj.strokeSides[i]<=2) or (analyzerChannel.selection==2 and obj.strokeSides[i]==3) or (analyzerChannel.selection==3 and (obj.strokeSides[i]==4 or obj.strokeSides[i]==5)) or (analyzerChannel.selection==4 and obj.strokeSides[i]==6) or (analyzerChannel.selection==5 and obj.strokeSides[i]==7)) do (
+                    append strokeRows i
+                    local side=obj.strokeSides[i];local start=total[side];total[side]+=obj.patternWidths[i]
+                    local prefixes=#("Out ","In ","Both ","Radius ","Single ","Street ","Edge ")
+                    append labels (if side==7 then ("Edge "+(strokeRows.count as string)+": spacing "+units.formatValue obj.patternWidths[i]) else (prefixes[side]+(strokeRows.count as string)+": "+units.formatValue start+" - "+units.formatValue total[side]))
+                )
+            )
+            strokesList.items=labels;strokesList.selection=amin (amax 1 old) labels.count
+            addOutside.enabled=isValidNode path;addInside.enabled=isValidNode path and (not analyzed or analyzerChannel.selection!=2);removePath.enabled=isValidNode path
+            loadingStroke=false;showStroke()
+        )
+        fn updatePattern = (
+            faceOutCheck.visible=obj.diversityMode==4 and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5)
+            cornerRadiusSpin.visible=faceOutCheck.visible
+            faceOutCheck.checked=if analyzerChannel.selection==5 then obj.edgeFaceOut else if analyzerChannel.selection==4 then obj.streetFaceOut else obj.borderFaceOut
+            cornerRadiusSpin.value=if analyzerChannel.selection==5 then obj.edgeCornerRadius else if analyzerChannel.selection==4 then obj.streetCornerRadius else obj.borderCornerRadius
+            cornerRadiusSpin.enabled=faceOutCheck.checked
+            streetStartSpin.visible=obj.diversityMode==4 and analyzerChannel.selection==4
+            streetEndSpin.visible=streetStartSpin.visible
+            centerStreetSpin.visible=obj.diversityMode==4 and analyzerChannel.selection==2
+            streetLayoutHelp.visible=streetStartSpin.visible or centerStreetSpin.visible
+            streetStartSpin.value=obj.streetTrimStart;streetEndSpin.value=obj.streetTrimEnd;centerStreetSpin.value=obj.centerStreetOffset
+            straightStreet.checked=obj.streetStraight;straightStreet.visible=obj.diversityMode==4 and analyzerChannel.selection==4
+            obj.syncStrokes();local old=pathsDrop.selection
+            local analyzed=obj.diversityMode==4
+            pathRows=for n in obj.patternPaths where isValidNode n and not isProperty n #samplePoints collect n
+            pathsDrop.items=for n in pathRows collect n.name
+            pathsDrop.selection=amin (amax 1 old) pathRows.count
+            pathsDrop.visible=obj.diversityMode==3;pickPath.visible=obj.diversityMode==3
+            analyzerChannel.visible=analyzed;pickAnalyzer.visible=analyzed
+            pickAnalyzer.text=if isValidNode obj.analyzerNode then obj.analyzerNode.name else "Pick Surface Analyzer"
+            removePath.text=if analyzed then "Remove Analyzer" else "Remove path"
+            strokeTitle.text=if analyzed then "Analyze Surface / Strokes" else "Line Pattern / Strokes"
+            addOutside.text=if not analyzed or analyzerChannel.selection==1 then "Add Outside" else (if analyzerChannel.selection==2 then "Add Stroke" else "Add Radius")
+            addInside.text=if analyzed and analyzerChannel.selection==3 then "Add Single" else "Add Inside"
+            boundaryOnly=analyzed and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5)
+            addOutside.visible=(obj.diversityMode==3 or analyzed) and not boundaryOnly
+            addInside.pos=[if boundaryOnly then 4 else selected_diversityUI.width/2+2,addOutside.pos.y]
+            addInside.width=if boundaryOnly then selected_diversityUI.width-8 else (selected_diversityUI.width-12)/2
+            if boundaryOnly do addInside.text=if analyzerChannel.selection==5 then "Add Edge Row" else "Add Stroke Inside"
+            strokeHelp.text=if analyzed and analyzerChannel.selection==5 then "One row along the boundary." else if analyzed then "Width = spread per side." else "Outside strokes: empty."
+            restKeys=#()
+            for i=1 to obj.sources.count do (local key=obj.colorKey(obj.sourceColor i);if findItem restKeys key==0 do append restKeys key)
+            showPath()
+        )
+
+        on pathsDrop selected i do if controlsReady and not binding and obj!=undefined do showPath()
+        on analyzerChannel selected i do if controlsReady and not binding and obj!=undefined do updatePattern()
+        on pickAnalyzer picked n do if controlsReady and not binding and obj!=undefined do (
+            if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.markInputDirty();updatePattern();CyrusViewportRedraw())
+        )
+        on strokesList selected i do if controlsReady and not binding and obj!=undefined do showStroke()
+        on pickPath picked n do if controlsReady and not binding and obj!=undefined do (
+            if isValidNode n and findItem obj.patternPaths n==0 do append obj.patternPaths n
+            updatePattern();pathsDrop.selection=findItem pathRows n;showPath()
+        )
+        on removePath pressed do if controlsReady and not binding and obj!=undefined do (
+            local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
+            for i=obj.patternLines.count to 1 by -1 where obj.patternLines[i]==path do obj.removeStroke i
+            local k=findItem obj.patternPaths path;if k>0 do deleteItem obj.patternPaths k
+            if obj.diversityMode==4 do obj.analyzerNode=undefined
+            updatePattern();obj.markInputDirty();syncControls();CyrusViewportRedraw()
+        )
+        on addOutside pressed do if controlsReady and not binding and obj!=undefined do (
+            if obj.diversityMode==4 and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5) do return false
+            local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
+            local types=#(1,3,4)
+            local side=if obj.diversityMode==4 then types[analyzerChannel.selection] else 1
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
+        )
+        on addInside pressed do if controlsReady and not binding and obj!=undefined do (
+            local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
+            local side=if obj.diversityMode==4 and analyzerChannel.selection==5 then 7 else if obj.diversityMode==4 and analyzerChannel.selection==4 then 6 else if obj.diversityMode==4 and analyzerChannel.selection==3 then 5 else 2
+            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
+        )
+        on removeStrokeButton pressed do if controlsReady and not binding and obj!=undefined do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();CyrusViewportRedraw())
+        on edgeOffsetSpin changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsets[row]=v;CyrusViewportRedraw())
+        on edgeAlongSpin changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlong[row]=v;CyrusViewportRedraw())
+        on edgeAcrossSpin changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcross[row]=v;CyrusViewportRedraw())
+        on keepCornerCheck changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (obj.edgeKeepCorners=v;cornerAngleSpin.enabled=v;cornerCountSpin.enabled=v;CyrusViewportRedraw())
+        on cornerAngleSpin changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (obj.edgeCornerAngle=v;CyrusViewportRedraw())
+        on cornerCountSpin changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (obj.edgeCornerCount=v;CyrusViewportRedraw())
+        on edgeRotXSpin changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotX[row]=v;CyrusViewportRedraw())
+        on edgeRotYSpin changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotY[row]=v;CyrusViewportRedraw())
+        on edgeRotZSpin changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;CyrusViewportRedraw())
+        on strokeWidth changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.markInputDirty();showPath();CyrusViewportRedraw())
+        on strokeMode changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on strokeChoices selectionEnd do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (
+            local row=selectedStroke()
+            if row>0 do obj.setStrokeSelection row obj.strokeModes[row] (for i in strokeChoices.selection collect choiceValues[i])
+            CyrusViewportRedraw()
+        )
+        on strokeScaleMin changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on strokeScaleMax changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on refreshGroups pressed do if controlsReady and not binding and obj!=undefined do updatePattern()
+                fn updateControls = (
+            for c in #(sizeSpin,divSeedSpin,roughSpin,blurSpin,noiseSpin,groupHint,fixedHint) do c.visible=obj.diversityMode==2
+            for c in #(strokeTitle,pathsDrop,analyzerChannel,pickAnalyzer,pickPath,removePath,strokesList,addOutside,addInside,removeStrokeButton,strokeWidth,strokeMode,strokeChoices,strokeScaleMin,strokeScaleMax,refreshGroups,strokeHelp) do c.visible=(obj.diversityMode==3 or obj.diversityMode==4)
+            if strokeExpandedHeight>0 do selected_diversityUI.height=if obj.diversityMode>=3 then strokeExpandedHeight else (if obj.diversityMode==2 then 310 else 124)*1.0
+            root.mainUI.layoutPanels()
+        )
+        on diversityRadio changed v do if controlsReady and not binding and obj!=undefined do (if v>=3 and (root.layerSets owner).count>1 do (messageBox "Line Pattern / Analyzer need an independent layer. Multi-set layers support Random and Clusters." title:"Cyrus assignment";syncControls();return false);obj.diversityMode=v;updateControls();updatePattern();obj.markInputDirty();syncControls();CyrusViewportRedraw())
+
+
+        on sizeSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.diversitySize=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on divSeedSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.diversitySeed=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on roughSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.roughness=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on blurSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.blurryEdge=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on noiseSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.diversityNoise=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+
+
+
+        fn bind layer = (
+            local next=layer
+            binding=true;controlsReady=false
+            if obj!=next do (strokesList.selection=0;strokeChoices.selection=0;)
+            obj=next;parentView=root.mainUI
+            for c in selected_diversityUI.controls do c.enabled=layer!=undefined
+            try (undo off ((diversityRadio.state=obj.diversityMode;sizeSpin.value=obj.diversitySize;divSeedSpin.value=obj.diversitySeed;roughSpin.value=obj.roughness;blurSpin.value=obj.blurryEdge;noiseSpin.value=obj.diversityNoise;controlsReady=true;strokeExpandedHeight=selected_diversityUI.height;updateControls();updatePattern()))) catch(binding=false;controlsReady=true;throw())
+            controlsReady=true;binding=false
+        )
+        on selected_diversityUI open do (root=this;controlsReady=false)
+        on selected_diversityUI close do controlsReady=false
+        on selected_diversityUI rolledUp state do root.mainUI.bindSection selected_diversityUI
+    )
+    rollout selected_proceduralUI "Spacing rules - selected scope" width:#cmdPanel category:150 autoLayoutOnResize:true (
+        local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,setSpecific=true,peers=#()
+        dropdownlist scopeList "Spacing scope" items:#("This paint set","Default between sets","Pair of paint sets","Pair of layers") pos:[4,12] width:(selected_proceduralUI.width-8) selection:1 tooltip:"Choose within-set, between-set defaults, a set pair, or a layer pair."
+        dropdownlist peerList "Other owner" items:#() pos:[4,64] width:(selected_proceduralUI.width-8) tooltip:"The other set or layer affected by this pair rule."
+        checkbox enabledCheck "Enable this spacing" pos:[4,118] width:(selected_proceduralUI.width-8) tooltip:"Enable only this collision scope. Other scopes are independent."
+        spinner multiplierSpin "Radius factor:" range:[0,10000,1] pos:[4,146] width:(selected_proceduralUI.width-8) fieldWidth:82 tooltip:"Minimum distance = factor times (radius A + radius B), plus extra gap."
+        spinner gapSpin "Extra gap:" range:[0,1e9,0] type:#worldUnits pos:[4,174] width:(selected_proceduralUI.width-8) fieldWidth:82 tooltip:"Additional distance in scene units. Saves immediately; Manual waits for Update."
+        checkbox planarCheck "XY distance (off = 3D)" pos:[4,202] width:(selected_proceduralUI.width-8) tooltip:"Measure distance in world XY. Turn off to include height in 3D distance."
+        label ruleInfo "Factor x (radius A + radius B) + gap" pos:[4,230] width:(selected_proceduralUI.width-8) height:40
+        button resetRule "Use inherited / default" pos:[4,274] width:(selected_proceduralUI.width-8) tooltip:"Remove a pair or self override, or reset the between-set default."
+        fn currentSet = (root.selectedPaintSet owner)
+        fn bindRule resetPeer:false = (
+            local wasBinding=binding,leaf=currentSet(),scope=scopeList.selection,rule,previous=undefined
+            if not resetPeer and peerList.selection>0 and peerList.selection<=peers.count do previous=peers[peerList.selection]
+            binding=true
+            try (
+            peers=case scope of (
+                3:(for p in root.layerSets owner where p!=leaf collect p)
+                4:(for p in root.logicalLayers() where p!=owner collect p)
+                default:#()
+            )
+            peerList.items=for p in peers collect (if scope==4 then root.layerCaption p else p.paintSetName)
+            peerList.selection=if peers.count==0 then 0 else amax 1 (findItem peers previous)
+            local editable=root.groupPolicy==3 and (scope<3 or peers.count>0)
+            peerList.enabled=editable and scope>=3
+            for c in #(enabledCheck,multiplierSpin,gapSpin,planarCheck,resetRule) do c.enabled=editable
+            rule=case scope of (
+                1: leaf.procSelfRule()
+                2:#(owner.procSiblingEnabled,owner.procSiblingMultiplier,owner.procSiblingGap,owner.procSiblingPlanar)
+                default:#(false,1.0,0.0,false)
+            )
+            if scope>=3 and peerList.selection>0 do (
+                local i=root.procPair (scope-2) (if scope==3 then leaf else owner) peers[peerList.selection]
+                if i>0 then rule=#(root.procRuleEnabled[i],root.procRuleMultiplier[i],root.procRuleGap[i],root.procRulePlanar[i])
+                else if scope==3 do rule=#(owner.procSiblingEnabled,owner.procSiblingMultiplier,owner.procSiblingGap,owner.procSiblingPlanar)
+            )
+            enabledCheck.checked=rule[1];multiplierSpin.value=rule[2];gapSpin.value=rule[3];planarCheck.checked=rule[4]
+            ruleInfo.text=if not editable and scope>=3 then "Add another owner to set pair spacing." else if scope==1 and not leaf.procSelfOverride then "Inherited: 2 x Collision radius. Edit to override this set." else "Factor x (radius A + radius B) + gap. Changes save automatically."
+            binding=wasBinding
+            )catch(binding=wasBinding;throw())
+        )
+        fn bind layer = (
+            binding=true
+            for c in selected_proceduralUI.controls do c.enabled=root.groupPolicy==3
+            bindRule();controlsReady=true;binding=false
+            if root.groupPolicy!=3 do ruleInfo.text="Use the preserved legacy spacing controls, or enable Procedural in the Modify panel."
+        )
+        on selected_proceduralUI open do (root=this;controlsReady=false)
+        on selected_proceduralUI close do controlsReady=false
+        fn saveRule = (
+            if binding or not controlsReady or root.groupPolicy!=3 do return false
+            local leaf=currentSet(),scope=scopeList.selection
+            if scope>=3 and (peerList.selection<1 or peerList.selection>peers.count) do return false
+            try (
+            undo "Cyrus procedural spacing" on case scope of (
+                1:(leaf.procSelfOverride=true;leaf.procSelfEnabled=enabledCheck.checked;leaf.procSelfMultiplier=multiplierSpin.value;leaf.procSelfGap=gapSpin.value;leaf.procSelfPlanar=planarCheck.checked)
+                2:(owner.procSiblingEnabled=enabledCheck.checked;owner.procSiblingMultiplier=multiplierSpin.value;owner.procSiblingGap=gapSpin.value;owner.procSiblingPlanar=planarCheck.checked)
+                default:(if peerList.selection<1 do throw "Choose a peer.";root.procSetPair (scope-2) (if scope==3 then leaf else owner) peers[peerList.selection] enabledCheck.checked multiplierSpin.value gapSpin.value planarCheck.checked)
+            )
+            -- Save the rule only. The normal Manual/Live pipeline decides when
+            -- to publish placements. Do not reset peer selection or spinner
+            -- focus by rebinding every control during a drag.
+            ruleInfo.text="Factor x (radius A + radius B) + gap. Changes save automatically."
+            root.invalidateGroups();true
+            )catch(bindRule();messageBox (getCurrentException()) title:"Cyrus spacing";false)
+        )
+        on scopeList selected i do if not binding do bindRule resetPeer:true
+        on peerList selected index do if not binding and index>0 do bindRule()
+        on enabledCheck changed value do saveRule()
+        on multiplierSpin changed value do saveRule()
+        on gapSpin changed value do saveRule()
+        on planarCheck changed value do saveRule()
+        on resetRule pressed do try(
+            local leaf=currentSet(),scope=scopeList.selection
+            undo "Cyrus spacing inheritance" on case scope of (
+                1: leaf.procSelfOverride=false
+                2:(owner.procSiblingEnabled=false;owner.procSiblingMultiplier=1;owner.procSiblingGap=0;owner.procSiblingPlanar=false)
+                default:(if peerList.selection>0 do root.procRemoveRule (root.procPair (scope-2) (if scope==3 then leaf else owner) peers[peerList.selection]))
+            )
+            root.invalidateGroups();bind owner
+        )catch(messageBox (getCurrentException()) title:"Cyrus spacing")
+        on selected_proceduralUI rolledUp state do root.mainUI.bindSection selected_proceduralUI
+    )
+
+    rollout selected_instanceRadiusUI "Instance radii - CS Edit" width:#cmdPanel category:160 autoLayoutOnResize:true (
+        local root=undefined,owner=undefined,panel=undefined,controlsReady=false,setSpecific=true
+        dropdownlist radiusMode "Selected CS Edit instances" items:#("World radius","Radius multiplier") selection:1 pos:[4,8] width:(selected_instanceRadiusUI.width-8) tooltip:"Use an absolute world radius or multiply the selected instances' source radius."
+        spinner radiusSpin "Value:" range:[0,1e9,1] pos:[4,60] width:(selected_instanceRadiusUI.width-8) fieldWidth:82 tooltip:"Value applied only when Set selected radii is pressed."
+        button applyRadius "Set selected radii" pos:[4,88] width:(selected_instanceRadiusUI.width-8) tooltip:"Apply radius overrides to selected CS Edit instances in this paint set."
+        button resetRadius "Clear selected overrides" pos:[4,116] width:(selected_instanceRadiusUI.width-8) tooltip:"Restore the selected instances' inherited source radii."
+        button clearRadius "Clear this set's overrides" pos:[4,144] width:(selected_instanceRadiusUI.width-8) tooltip:"Remove every instance-radius override belonging to this paint set."
+        label info "Select instances with CS Edit before applying a radius. Overrides follow their stable instance identities." pos:[4,180] width:(selected_instanceRadiusUI.width-8) height:54
+        fn currentSet = (root.selectedPaintSet owner)
+        fn bind layer = (for c in selected_instanceRadiusUI.controls do c.enabled=root.groupPolicy==3;controlsReady=true)
+        on selected_instanceRadiusUI open do (root=this;controlsReady=false)
+        on selected_instanceRadiusUI close do controlsReady=false
+        on applyRadius pressed do try((currentSet()).procSelectedRadius radiusMode.selection radiusSpin.value;bind owner)catch(messageBox (getCurrentException()) title:"Cyrus radius")
+        on resetRadius pressed do try((currentSet()).procSelectedRadius radiusMode.selection radiusSpin.value reset:true;bind owner)catch(messageBox (getCurrentException()) title:"Cyrus radius")
+        on clearRadius pressed do try((currentSet()).procClearRadii();bind owner)catch(messageBox (getCurrentException()) title:"Cyrus radius")
+        on selected_instanceRadiusUI rolledUp state do root.mainUI.bindSection selected_instanceRadiusUI
+    )
+
+    rollout selected_spacingUI "Inherited self-spacing / legacy Relax" width:#cmdPanel category:170 autoLayoutOnResize:true (
+        local root=undefined,owner=undefined,panel=undefined
+        local setSpecific=false
+        local binding=false,controlsReady=false,
+        obj=undefined,parentView=undefined,ready=false
+        checkbox collisionCheck "Enable collision" pos:[4,8] width:(selected_spacingUI.width-8) tooltip:"Layer default for self-spacing, used by sets without a self override."
+        spinner radiusSpin "Radius: " pos:[4,34] width:(selected_spacingUI.width-8) fieldWidth:82 type:#worldUnits range:[0.00001,1e9,0.1] tooltip:"Inherited centre-distance rule uses two times this radius."
+        label radiusHint "Min gap = 2 x radius" pos:[4,62] width:(selected_spacingUI.width-8)
+        checkbox relaxCheck "Enable relax" pos:[4,94] width:(selected_spacingUI.width-8) tooltip:"Legacy point relaxation; paused under procedural evaluation or Brush coverage."
+        spinner spacingSpin "Spacing: " pos:[4,120] width:(selected_spacingUI.width-8) fieldWidth:82 type:#worldUnits range:[0.00001,1e9,0.2] tooltip:"Desired distance for legacy point relaxation."
+        spinner iterationsSpin "Iterations: " pos:[4,146] width:(selected_spacingUI.width-8) fieldWidth:82 type:#integer range:[1,100,10] tooltip:"Bound the number of legacy relaxation passes."
+        spinner strengthSpin "Strength %: " pos:[4,172] width:(selected_spacingUI.width-8) fieldWidth:82 range:[0,100,50] tooltip:"Movement strength per legacy relaxation pass."
+        label orderHint "Relax, then collision" pos:[4,202] width:(selected_spacingUI.width-8)
+        label layerHint "Within this layer only" pos:[4,224] width:(selected_spacingUI.width-8) height:48
+        fn syncRelaxAvailability = (
+            local wasReady=ready;ready=false
+            local layer=owner,valid=layer!=undefined and obj==layer
+            local masked=valid and (obj.layerPaintActive() or obj.proceduralPolicy()),active=valid and obj.relaxEnabled and not masked
+            relaxCheck.checked=valid and obj.relaxEnabled
+            -- An already saved paused setting can still be unchecked.
+            relaxCheck.enabled=valid and (not masked or obj.relaxEnabled)
+            relaxCheck.tooltip="Brush or Procedural 0.7 pauses point Relax. Saved settings are preserved."
+            spacingSpin.enabled=active;iterationsSpin.enabled=active;strengthSpin.enabled=active
+            local message=if masked then "Relax is paused for this policy/coverage. Spacing remains available." else "Within this layer only"
+            if layerHint.text!=message do layerHint.text=message
+            ready=wasReady
+        )
+        fn syncControls = (
+            ready=false
+            collisionCheck.checked=obj.collisionEnabled;radiusSpin.value=obj.collisionRadius;radiusSpin.enabled=obj.collisionEnabled
+            relaxCheck.checked=obj.relaxEnabled;spacingSpin.value=obj.relaxSpacing;iterationsSpin.value=obj.relaxIterations;strengthSpin.value=obj.relaxStrength*100
+            syncRelaxAvailability()
+            ready=true
+        )
+        on collisionCheck changed v do if controlsReady and not binding and obj!=undefined do if ready do (obj.collisionEnabled=v;syncControls();CyrusViewportRedraw())
+        on radiusSpin changed v do if controlsReady and not binding and obj!=undefined do if ready do (obj.collisionRadius=v;CyrusViewportRedraw())
+        on relaxCheck changed v do if controlsReady and not binding and obj!=undefined do if ready do (undo "Cyrus Relax" on obj.relaxEnabled=(v and (not obj.layerPaintActive() and not obj.proceduralPolicy()));syncControls();CyrusViewportRedraw())
+        on spacingSpin changed v do if controlsReady and not binding and obj!=undefined do if ready do (obj.relaxSpacing=v;CyrusViewportRedraw())
+        on iterationsSpin changed v do if controlsReady and not binding and obj!=undefined do if ready do (obj.relaxIterations=v;CyrusViewportRedraw())
+        on strengthSpin changed v do if controlsReady and not binding and obj!=undefined do if ready do (obj.relaxStrength=v/100.0;CyrusViewportRedraw())
+
+
+
+
+        fn bindModel layer = (
+            local next=layer
+            binding=true;controlsReady=false
+            if obj!=next do ()
+            obj=next;parentView=root.mainUI
+            for c in selected_spacingUI.controls do c.enabled=layer!=undefined
+            try (undo off (syncControls())) catch(binding=false;controlsReady=true;throw())
+            controlsReady=true;binding=false
+        )
+        fn bind layer = (
+            bindModel layer
+            local legacy=root.groupPolicy!=3
+            for c in #(relaxCheck,spacingSpin,iterationsSpin,strengthSpin,orderHint,layerHint) do c.visible=legacy
+            selected_spacingUI.height=if legacy then 280 else 90
+            selected_spacingUI.title=if legacy then "Collision and Relax (legacy)" else "Inherited self-spacing - layer"
+            radiusHint.text=if legacy then "Min gap = 2 x radius" else "Default until a paint set overrides self-spacing."
+        )
+        on selected_spacingUI open do (root=this;controlsReady=false)
+        on selected_spacingUI close do controlsReady=false
+        on selected_spacingUI rolledUp state do root.mainUI.bindSection selected_spacingUI
+    )
+    rollout selected_separationUI "Final cleanup / legacy pair rules" width:#cmdPanel category:180 autoLayoutOnResize:true (
+        local root=undefined,owner=undefined,panel=undefined
+        local setSpecific=false
+        local obj=undefined,parentView=undefined,controlsReady=false,refreshing=true,blockerRows=#(),peerID=""
+        label policyInfo "Higher priority occupies space first." pos:[4,8] width:(selected_separationUI.width-8) height:32
+        spinner prioritySpin "Priority:" type:#integer range:[-100000,100000,0] fieldWidth:82 pos:[4,44] width:(selected_separationUI.width-8)
+        listbox peerList "Spacing with group" items:#() pos:[4,74] width:(selected_separationUI.width-8) height:5
+        multiListBox blockerList "Legacy blocking groups (Ctrl/Shift)" items:#() pos:[4,74] width:(selected_separationUI.width-8) height:5
+        checkbox overlapCheck "Keep this pair apart" pos:[4,192] width:(selected_separationUI.width-8)
+        dropdownlist radiusMode "Distance rule" items:#("Centre distance","Footprints + gap") pos:[4,220] width:(selected_separationUI.width-8)
+        spinner gapSpin "Distance / gap:" type:#worldunits range:[0,1e9,10] fieldWidth:82 pos:[4,272] width:(selected_separationUI.width-8)
+        spinner radiusSpin "Legacy radius:" type:#worldunits range:[0,1e9,10] fieldWidth:82 pos:[4,300] width:(selected_separationUI.width-8)
+        checkbox planarCheck "XY distance (ignore Z)" checked:true pos:[4,328] width:(selected_separationUI.width-8)
+        label overlapInfo "Eligible / Removed / Placed" pos:[4,356] width:(selected_separationUI.width-8)
+        label overlapCounts "-- / -- / --" pos:[4,378] width:(selected_separationUI.width-8)
+        button statsButton "Update planting" pos:[4,404] width:(selected_separationUI.width-8) tooltip:"Recalculate the setup, including spacing and cleanup."
+        label finalTitle "Final cleanup" pos:[4,(if root!=undefined and root.groupPolicy==3 then 8 else 440)] width:(selected_separationUI.width-8)
+        checkbox cleanCheck "Remove isolated plants" pos:[4,(if root!=undefined and root.groupPolicy==3 then 34 else 466)] width:(selected_separationUI.width-8) tooltip:"Remove isolated plants after collision across the whole logical layer."
+        spinner neighborSpin "Neighbor distance:" type:#worldunits range:[0.001,1e9,100] fieldWidth:82 pos:[4,(if root!=undefined and root.groupPolicy==3 then 62 else 494)] width:(selected_separationUI.width-8) tooltip:"Distance used to count nearby accepted plants during final cleanup."
+        spinner minNeighborSpin "Minimum neighbors:" type:#integer range:[0,10000,2] fieldWidth:82 pos:[4,(if root!=undefined and root.groupPolicy==3 then 90 else 522)] width:(selected_separationUI.width-8) tooltip:"Remove plants that have fewer than this many neighbors."
+        spinner minIslandSpin "Minimum island size:" type:#integer range:[0,100000,5] fieldWidth:82 pos:[4,(if root!=undefined and root.groupPolicy==3 then 118 else 550)] width:(selected_separationUI.width-8) tooltip:"Remove connected islands smaller than this number of plants."
+        checkbox boundaryRelaxCheck "Boundary Relax" pos:[4,582] width:(selected_separationUI.width-8) tooltip:"Legacy boundary relaxation; preserved but paused by shared spacing."
+        spinner finalStrengthSpin "Strength:" range:[0,1,.3] fieldWidth:82 pos:[4,610] width:(selected_separationUI.width-8)
+        spinner finalIterSpin "Iterations:" type:#integer range:[0,100,5] fieldWidth:82 pos:[4,638] width:(selected_separationUI.width-8)
+        spinner finalMoveSpin "Max movement:" type:#worldunits range:[0,1e9,10] fieldWidth:82 pos:[4,666] width:(selected_separationUI.width-8)
+        label relaxHint "" pos:[4,696] width:(selected_separationUI.width-8) height:54
+        fn currentLayer = owner
+        fn currentPeer = (
+            if peerList.selection>0 and peerList.selection<=blockerRows.count then obj.layerObjects[blockerRows[peerList.selection]] else undefined
+        )
+        fn syncFinalRelaxAvailability = (
+            local before=refreshing;refreshing=true
+            local group=currentLayer(),valid=group!=undefined
+            local paused=valid and (group.brushMaskActive() or (CyrusUsesSharedPolicy obj.groupPolicy)),active=valid and group.finalRelax and not paused
+            boundaryRelaxCheck.checked=valid and group.finalRelax;boundaryRelaxCheck.enabled=valid and not paused
+            finalStrengthSpin.enabled=active;finalIterSpin.enabled=active;finalMoveSpin.enabled=active
+            relaxHint.text=if paused then "Boundary Relax paused.\nManual edits are preserved.\nXY ignores height." else "Spatial distance includes height.\nFootprints are radius approximations."
+            refreshing=before
+        )
+        fn syncPair = (
+            if obj.groupPolicy==3 do (
+                for c in #(prioritySpin,peerList,blockerList,overlapCheck,gapSpin,planarCheck,radiusMode,radiusSpin) do c.enabled=false
+                policyInfo.text="Use Procedural / Rules for spacing. Cleanup below still applies."
+                return false
+            )
+            refreshing=true
+            local group=currentLayer(),peer=currentPeer(),valid=group!=undefined and (obj.groupPolicy==1 or peer!=undefined)
+            for c in #(overlapCheck,gapSpin,planarCheck,radiusMode) do c.enabled=valid
+            if (CyrusUsesSharedPolicy obj.groupPolicy) then (
+                local pair=if valid then obj.groupPair group peer else 0
+                if peer!=undefined do peerID=peer.layerID
+                overlapCheck.checked=pair>0 and obj.groupRuleEnabled[pair]
+                gapSpin.value=if pair>0 then obj.groupRuleGap[pair] else 10
+                radiusMode.selection=if pair>0 and obj.groupRuleFootprints[pair] then 2 else 1
+                planarCheck.checked=pair==0 or obj.groupRulePlanar[pair]
+            ) else if group!=undefined do (
+                overlapCheck.checked=group.overlapEnabled;radiusSpin.value=group.overlapRadius;gapSpin.value=group.overlapGap
+                radiusMode.selection=if group.overlapSourceRadius then 2 else 1;planarCheck.checked=group.overlapPlanar
+            )
+            refreshing=false
+        )
+        fn refreshOverlap = (
+            refreshing=true
+            local group=currentLayer(),labels=#(),chosen=#{},peerIndex=0,shared=(CyrusUsesSharedPolicy obj.groupPolicy)
+            peerList.visible=shared;blockerList.visible=not shared;radiusSpin.visible=not shared;prioritySpin.enabled=shared and group!=undefined
+            overlapCheck.text=if shared then "Keep this pair apart" else "Enable legacy overlap removal"
+            policyInfo.text=if shared then "Higher priority wins.\nTies use creation order." else "Legacy spacing is preserved.\nUpgrade from Plant groups when ready."
+            blockerRows=#()
+            if group!=undefined do (
+                prioritySpin.value=group.groupPriority
+                for i=1 to obj.layerObjects.count where obj.layerObjects[i]!=group and obj.layerObjects[i].logicalParentID=="" do (
+                    append blockerRows i;append labels obj.layerNames[i]
+                    if obj.layerObjects[i].layerID==peerID do peerIndex=blockerRows.count
+                    if findItem group.overlapBlockers i>0 do chosen[blockerRows.count]=true
+                )
+                cleanCheck.checked=group.finalCleanup;neighborSpin.value=group.finalNeighborRadius;minNeighborSpin.value=group.finalMinNeighbors;minIslandSpin.value=group.finalMinIsland
+                finalStrengthSpin.value=group.finalStrength;finalIterSpin.value=group.finalIterations;finalMoveSpin.value=group.finalMaxMove
+                local stats=group.overlapStats();overlapCounts.text=(stats[1] as string)+" / "+(stats[2] as string)+" / "+(stats[3] as string)
+            )
+            peerList.items=labels;peerList.selection=if peerIndex>0 then peerIndex else (if labels.count>0 then 1 else 0)
+            blockerList.items=labels;blockerList.selection=chosen
+            refreshing=false;syncPair();syncFinalRelaxAvailability()
+        )
+        fn changedOverlap = (obj.invalidateGroups())
+        fn savePair = (
+            if obj.groupPolicy==3 do return false
+            if refreshing or currentLayer()==undefined do return false
+            local group=currentLayer()
+            if (CyrusUsesSharedPolicy obj.groupPolicy) then (
+                local peer=currentPeer()
+                if peer!=undefined do obj.setGroupPair group peer overlapCheck.checked gapSpin.value (radiusMode.selection==2) planarCheck.checked
+            ) else (
+                undo "Cyrus legacy spacing" on (
+                    group.overlapEnabled=overlapCheck.checked;group.overlapRadius=radiusSpin.value;group.overlapGap=gapSpin.value
+                    group.overlapSourceRadius=radiusMode.selection==2;group.overlapPlanar=planarCheck.checked
+                )
+                changedOverlap()
+            )
+        )
+        on peerList selected value do if not refreshing do syncPair()
+        on prioritySpin changed value do if not refreshing and currentLayer()!=undefined do (undo "Cyrus group priority" on (currentLayer()).groupPriority=value;changedOverlap())
+        on overlapCheck changed value do savePair()
+        on radiusMode selected value do savePair()
+        on gapSpin changed value do savePair()
+        on radiusSpin changed value do savePair()
+        on planarCheck changed value do savePair()
+        on blockerList selected value do if not refreshing and obj.groupPolicy==1 and currentLayer()!=undefined do (
+            undo "Cyrus blocking groups" on (currentLayer()).overlapBlockers=(for k in blockerList.selection collect blockerRows[k]);changedOverlap()
+        )
+        on cleanCheck changed v do if not refreshing and currentLayer()!=undefined do (undo "Cyrus cleanup" on (currentLayer()).finalCleanup=v;changedOverlap())
+        on neighborSpin changed v do if not refreshing and currentLayer()!=undefined do (undo "Cyrus cleanup" on (currentLayer()).finalNeighborRadius=v;changedOverlap())
+        on minNeighborSpin changed v do if not refreshing and currentLayer()!=undefined do (undo "Cyrus cleanup" on (currentLayer()).finalMinNeighbors=v;changedOverlap())
+        on minIslandSpin changed v do if not refreshing and currentLayer()!=undefined do (undo "Cyrus cleanup" on (currentLayer()).finalMinIsland=v;changedOverlap())
+        on boundaryRelaxCheck changed v do if not refreshing and currentLayer()!=undefined do (undo "Cyrus boundary relax" on (currentLayer()).finalRelax=(v and obj.groupPolicy==1 and not (currentLayer()).brushMaskActive());changedOverlap())
+        on finalStrengthSpin changed v do if not refreshing and currentLayer()!=undefined do (undo "Cyrus boundary relax" on (currentLayer()).finalStrength=v;changedOverlap())
+        on finalIterSpin changed v do if not refreshing and currentLayer()!=undefined do (undo "Cyrus boundary relax" on (currentLayer()).finalIterations=v;changedOverlap())
+        on finalMoveSpin changed v do if not refreshing and currentLayer()!=undefined do (undo "Cyrus boundary relax" on (currentLayer()).finalMaxMove=v;changedOverlap())
+        on statsButton pressed do (obj.refreshAll();refreshOverlap())
+        fn bindModel layer = (
+            obj=root;parentView=root.mainUI;refreshing=true
+            for c in selected_separationUI.controls do c.enabled=layer!=undefined
+            refreshOverlap();controlsReady=true;refreshing=false
+        )
+        fn bind layer = (
+            local legacy=root.groupPolicy!=3
+            for c in #(policyInfo,prioritySpin,peerList,blockerList,overlapCheck,radiusMode,gapSpin,radiusSpin,planarCheck,overlapInfo,overlapCounts,statsButton,boundaryRelaxCheck,finalStrengthSpin,finalIterSpin,finalMoveSpin,relaxHint) do c.visible=legacy
+            bindModel layer
+            if not legacy do (peerList.visible=false;blockerList.visible=false;radiusSpin.visible=false)
+            local fields=#(finalTitle,cleanCheck,neighborSpin,minNeighborSpin,minIslandSpin),ys=#(440,466,494,522,550)
+            for i=1 to fields.count do fields[i].pos=[4,ys[i]-(if legacy then 0 else 432)]
+            selected_separationUI.height=if legacy then 756 else 154
+            selected_separationUI.title=if legacy then "Spacing and cleanup (legacy)" else "Final cleanup - layer"
+        )
+        on selected_separationUI open do (root=this;controlsReady=false)
+        on selected_separationUI close do (controlsReady=false;refreshing=true)
+        on selected_separationUI rolledUp state do root.mainUI.bindSection selected_separationUI
+    )
+
+    rollout selected_detailsUI "Statistics / Help" width:#cmdPanel category:190 autoLayoutOnResize:true (
+        local root=undefined,owner=undefined,panel=undefined,controlsReady=false
+        label info "Statistics describe the last build." pos:[4,74] width:(selected_detailsUI.width-8) height:300
+        button refreshButton "Read cached statistics" pos:[4,8] width:(selected_detailsUI.width-8) tooltip:"Read the existing calculation statistics without regenerating placements."
+        button helpButton "Layer / display help" pos:[4,38] width:(selected_detailsUI.width-8) tooltip:"Explain settings ownership, display budgets, evaluation order and policy limits."
+        fn bind layer = (
+            local text="Last completed build\n"
+            for leaf in root.layerSets owner do (
+                local state=leaf.uiLayerStats(),stats=leaf.groupStats(),cache=leaf.cacheSnapshot(),index=findItem root.layerObjects leaf
+                local status=CyrusUILayerState state (root.enabledLayer index) root.cyrusEnabled (root.visibleLayer index)
+                text+="\n"+leaf.paintSetName+" | "+status[2]
+                local eligible=if (CyrusUsesSharedPolicy root.groupPolicy) then CyrusUICount stats[1] else "n/a (legacy)",removed=if (CyrusUsesSharedPolicy root.groupPolicy) then CyrusUICount stats[2] else "n/a"
+                text+="\nRequested: "+(CyrusUICount cache[8])+" | Eligible: "+eligible
+                text+="\nPlaced: "+(CyrusUICount state.placements)+" | Removed: "+removed
+                text+="\nShown: "+(CyrusUICount state.previewCount)+" | "+(state.buildMs as string)+" ms"
+                if stats[3]>0 do text+="\nManual conflicts: "+(CyrusUICount stats[3])
+                if root.groupPolicy==3 do (
+                    local detail=leaf.procStatistics()
+                    if detail[1].count==12 do (
+                        text+="\nRejected layer / set / self: "+(detail[1][5] as string)+" / "+(detail[1][6] as string)+" / "+(detail[1][7] as string)
+                        text+="\nCleanup: "+(detail[1][8] as string)+" | Shortfall: "+(detail[1][11] as string)
+                        text+="\nEpoch: "+(detail[5] as string)+" | Rounds: "+(detail[2][1] as string)
+                    )
+                )
+                if state.densityCapped do text+="\nDensity limited to 100,000 candidates."
+                if leaf.brushRelaxPaused() do text+="\nRelax is paused for this coverage/policy."
+                if state.errorText!="" do text+="\n"+state.errorText
+            )
+            info.text=text;info.height=amax 300 ((filterString text "\n").count*17+20);selected_detailsUI.height=info.height+86;controlsReady=true
+        )
+        on selected_detailsUI open do (root=this;controlsReady=false)
+        on selected_detailsUI close do controlsReady=false
+        on refreshButton pressed do bind owner
+        on helpButton pressed do messageBox (info.text+"\n\nPaint sets own assets and independent stroke history. Population, area, transforms and cleanup belong to the layer. Enabled set weights divide the layer budget.\n\nPoint Cloud uses many samples per plant; Plant centres uses one. Preview budgets affect display. Hidden owners still affect collision and render; disabled owners do not. Manual shows the previous completed build until Update. Paint feedback shows coverage, not accepted instances.\n\n"+(if root!=undefined and root.groupPolicy==3 then "Procedural 0.7: visible order decides ordinary winners. Self, sibling-set and layer-pair rules are separate. Radius factor x (A + B) + gap; XY or 3D. Protected edits survive and report conflicts. Outside coverage uses explicitly referenced earlier siblings, including their shared Area domain. Between plants uses configured rules. Accepted target retries a bounded candidate prefix; a shortfall is not proof that the surface is full. Count/order changes preserve eligible Edit bindings; seed/source/receiver changes may need an explicit Reset. Relax is paused." else "Existing policy: within-layer collision includes all sets with 3D centre distance (2 x radius). Pair rules can use XY or 3D. Changes to base generation may invalidate CS Edit bindings. Existing results keep their original policy until explicit conversion.")+"\n\nBase cannot be removed separately; disable or erase it. Capacity: ten populations, including sets. A Point source is an accepted placeholder. Weighted Empty sources are supported in candidate-budget mode.") title:"Cyrus layer help"
+        on selected_detailsUI rolledUp state do root.mainUI.bindSection selected_detailsUI
+    )
+
+    rollout selected_workflowUI "Workflow and ownership" width:#cmdPanel category:200 autoLayoutOnResize:true (
+        local root=undefined,owner=undefined,panel=undefined,controlsReady=false
+        label steps "1. SETUP\nChoose receiving surfaces in Modify. Add layers in the order they should calculate.\n\n2. ASSETS\nChoose models for each paint set, or place model pivots inside a source rectangle. Move outside to park a model without losing its settings.\n\n3. POPULATION\nSet the layer count or density. Enabled paint-set weights share that population. Accepted target retries within explicit limits.\n\n4. PAINT\nEnable coverage, then paint on the receiving surface. Area limits apply to all sets in this layer. Use earlier sets as explicit background references.\n\n5. TRANSFORM + SPACING\nLayer transforms apply to every set. Set self-spacing, between-set rules and layer pairs separately. Earlier owners occupy space first.\n\n6. UPDATE + INSPECT\nManual keeps the last completed result until Update. Live publishes after edits. Hidden owners still calculate; disabled owners do not. Counts here describe cached results, not an estimate of available room." pos:[4,8] width:(selected_workflowUI.width-8) height:500
+        label help "The editor stays on this Scatter when scene selection changes. Use the Layer and Paint set selectors to change ownership. Hover buttons and numeric fields for short explanations.\n\nPoint Cloud samples and viewport budgets affect display. They are not plant counts or a promise of presented FPS." pos:[4,516] width:(selected_workflowUI.width-8) height:120
+        fn bind layer = (controlsReady=true)
+        on selected_workflowUI open do (root=this;controlsReady=false)
+        on selected_workflowUI close do controlsReady=false
+        on selected_workflowUI rolledUp state do root.mainUI.bindSection selected_workflowUI
+    )
+
+
+    rollout diagnosticsUI "Diagnostics" width:#cmdPanel category:220 autoLayoutOnResize:true (
+        local root=undefined,controlsReady=false
+        button startButton "Start recording" pos:[8,8] width:(diagnosticsUI.width-16) tooltip:"Record engineering events in this Max process. Off by default; at most ten minutes, 4,096 events and 4 MiB."
+        button stopButton "Stop" pos:[8,38] width:((diagnosticsUI.width-22)/2) tooltip:"Stop recording and retain the bounded history in memory."
+        button saveButton "Save report..." pos:[diagnosticsUI.width/2+3,38] width:((diagnosticsUI.width-22)/2) tooltip:"Choose a local JSON file, stop recording and save its retained pages. No MCP or upload is required."
+        button refreshButton "Read recording status" pos:[8,68] width:(diagnosticsUI.width-16) tooltip:"Read recorder state without evaluating the scene. Status has no polling timer."
+        label statusInfo "Recording is off." pos:[8,98] width:(diagnosticsUI.width-16) height:74
+        label scopeInfo "Records all Scatter setups in this Max process. Engineering events are not training data. Save reports explicitly; closing this panel keeps the session." pos:[8,178] width:(diagnosticsUI.width-16) height:84
+        fn field page name = (
+            local pattern="\""+name+"\":(\"[^\"]*\"|[0-9]+|true|false)"
+            local match=(dotNetClass "System.Text.RegularExpressions.Regex").Match page pattern
+            if not match.Success do throw ("Missing diagnostic field: "+name)
+            match.Groups.Item[1].Value
+        )
+        fn refresh = (
+            local page=cyrusDiagnosticSnapshot 0 0,active=cyrusDiagnosticActive(),session=field page "session_id"
+            startButton.enabled=not active;stopButton.enabled=active;saveButton.enabled=session!="\"\""
+            statusInfo.text=(if active then "Recording" else "Stopped / off")+" | "+(field page "retained")+" retained\nEvicted: "+(field page "evicted")+" | Lock drops: "+(field page "lock_drops")+"\nFailures: "+(field page "failures")+" | Truncated: "+(field page "truncated")+"\nUse Read recording status to refresh."
+            controlsReady=true;true
+        )
+        fn startRecording = (
+            local identifier=(dotNetClass "System.Guid").NewGuid(),session="trace_"+(identifier.ToString "N")
+            cyrusDiagnosticStart session 4096 4194304 600000
+            refresh();session
+        )
+        fn nativeIdentity = (
+            local process=(dotNetClass "System.Diagnostics.Process").GetCurrentProcess(),pairs=#()
+            local names=#("AminScatter.dlx","CyrusBrush.dlx","CyrusBrushStorage.dlh","CyrusScatterEdit.dlm")
+            for i=0 to process.Modules.Count-1 do (
+                local module=process.Modules.Item[i],name=filenameFromPath module.FileName
+                if findItem names name>0 do (
+                    local sha=(dotNetClass "System.Security.Cryptography.SHA256").Create(),hash
+                    try(hash=sha.ComputeHash ((dotNetClass "System.IO.File").ReadAllBytes module.FileName))catch(sha.Dispose();throw())
+                    sha.Dispose()
+                    append pairs ("\""+name+"\":\""+(toLower (substituteString ((dotNetClass "System.BitConverter").ToString hash) "-" ""))+"\"")
+                )
+            )
+            if pairs.count!=names.count do throw "Cannot identify the four loaded Cyrus native modules."
+            local json="{"
+            for i=1 to pairs.count do json+=(if i==1 then "" else ",")+pairs[i]
+            json+"}"
+        )
+        fn saveReport path = (
+            if path==undefined or path=="" do return false
+            local initial=cyrusDiagnosticSnapshot 0 0,session=field initial "session_id"
+            if session=="\"\"" do throw "Start a diagnostic recording first."
+            cyrusDiagnosticStop()
+            local identifier=(dotNetClass "System.Guid").NewGuid(),temporary=path+"."+(identifier.ToString "N")+".tmp",stream=undefined
+            try (
+                stream=dotNetObject "System.IO.StreamWriter" temporary false (dotNetObject "System.Text.UTF8Encoding" false)
+                local header="{\"schema\":\"cyrus.diagnostic-bundle/1.0\",\"training_eligible\":false,\"development_version\":\""+root.uiVersion()+"\",\"script_payload_sha256\":\""+CyrusLoadedScriptFingerprint+"\",\"native_file_sha256\":"+(nativeIdentity())+",\"pages\":["
+                stream.Write header
+                local cursor=0L,pageCount=0,bytes=header.count,finished=false,last=undefined,retained=undefined
+                while not finished do (
+                    local page=cyrusDiagnosticSnapshot cursor 500
+                    if field page "session_id"!=session or field page "active"!="false" do throw "Diagnostic session changed while saving."
+                    if last==undefined then (last=field page "last_sequence";retained=field page "retained")
+                    else if field page "last_sequence"!=last or field page "retained"!=retained do throw "Diagnostic history changed while saving."
+                    pageCount+=1;bytes+=(dotNetClass "System.Text.Encoding").UTF8.GetByteCount page
+                    if pageCount>33 or bytes>16777100 do throw "Diagnostic report exceeds its export limit."
+                    if pageCount>1 do stream.Write ","
+                    stream.Write page
+                    local next=(field page "next_sequence") as integer64
+                    finished=(field page "has_more")=="false"
+                    if not finished and next<=cursor do throw "Diagnostic page did not advance."
+                    cursor=next
+                )
+                stream.Write "]}";stream.Flush();stream.Close();stream=undefined
+                local cleanupNote=""
+                if (dotNetClass "System.IO.File").Exists path then (
+                    local backup=temporary+".previous"
+                    (dotNetClass "System.IO.File").Replace temporary path backup
+                    try((dotNetClass "System.IO.File").Delete backup)catch(cleanupNote="\nThe previous report backup remains beside the saved file.")
+                )
+                else (dotNetClass "System.IO.File").Move temporary path
+                refresh();statusInfo.text="Saved "+(pageCount as string)+" diagnostic pages locally.\nRecording stopped. Inspect page health for any dropped or evicted events."+cleanupNote
+                true
+            )catch(
+                if stream!=undefined do stream.Close()
+                if (dotNetClass "System.IO.File").Exists temporary do (dotNetClass "System.IO.File").Delete temporary
+                refresh();throw()
+            )
+        )
+        on diagnosticsUI open do (root=this;controlsReady=false)
+        on diagnosticsUI close do controlsReady=false
+        on diagnosticsUI rolledUp state do if diagnosticsUI.open do refresh()
+        on startButton pressed do try(startRecording())catch(messageBox (getCurrentException()) title:"Cyrus diagnostics")
+        on stopButton pressed do (cyrusDiagnosticStop();refresh())
+        on saveButton pressed do try(
+            local path=getSaveFileName caption:"Save Cyrus engineering report" types:"JSON report (*.json)|*.json|" filename:"Cyrus-diagnostics.json"
+            saveReport path
+        )catch(messageBox (getCurrentException()) title:"Cyrus diagnostics")
+        on refreshButton pressed do refresh()
+    )
 
 
     on update do (
@@ -4974,12 +6487,12 @@ fn AminScatterRenderBegin = (
 fn AminScatterRenderEnd = (CyrusDiagnosticEmit "render.post" "host_callback" "" 0 "restore";CyrusPFRequestCheck();CyrusPFProduction=false;if not CyrusPFBusy do CyrusPFRestoreBaked())
 fn CyrusPFBeforeSceneChange = (
  CyrusPFResume=false;CyrusPFPhase=0;CyrusPFCheckPending=false;CyrusPFTimer.Stop()
- if CyrusPFIR() do (local result=(CyrusDiagnosticEmit "ir.stop_requested" "renderer" "" 0 "bridge";CoronaRenderer.stopRender());if result!=0 do throw ("Corona IR stop failed: "+result as string);result)
+ if CyrusPFIR() do (if not CyrusPFStopIR() do throw CyrusPFLastError)
  CyrusPFClear()
 )
 fn CyrusPFBeforeSave = (
  CyrusPFPhase=0;CyrusPFResume=CyrusPFIR();if CyrusPFResume do CyrusPFResumeMode=CoronaRenderer.getRenderType();CyrusPFRequestCheck()
- if CyrusPFResume do (local result=(CyrusDiagnosticEmit "ir.stop_requested" "renderer" "" 0 "bridge";CoronaRenderer.stopRender());if result!=0 do throw ("Corona IR stop failed: "+result as string);result)
+ if CyrusPFResume do (if not CyrusPFStopIR() do throw CyrusPFLastError)
  CyrusPFClear()
 )
 fn CyrusPFTickImpl sender args = (
@@ -4999,7 +6512,7 @@ fn CyrusPFTickImpl sender args = (
     if wanted!=CyrusPFPendingKey then (CyrusPFPendingKey=wanted;CyrusPFStableSince=timeStamp())
     else if abs(timeStamp()-CyrusPFStableSince)>=1000 do (
      CyrusPFPhase=1;CyrusPFPendingKey=""
-     if active do (local result=(CyrusDiagnosticEmit "ir.stop_requested" "renderer" "" 0 "bridge";CoronaRenderer.stopRender());if result!=0 do throw ("Corona IR stop failed: "+result as string);result)
+     if active do (if not CyrusPFStopIR() do throw CyrusPFLastError)
     )
    ) else (CyrusPFPendingKey="";CyrusPFCheckPending=false)
   ) else (CyrusPFCheckPending=false;if CyrusPFNodes.count>0 do CyrusPFClear())

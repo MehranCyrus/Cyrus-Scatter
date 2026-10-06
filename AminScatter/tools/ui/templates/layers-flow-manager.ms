@@ -1,8 +1,8 @@
     rollout layersUI "Layer Manager" width:162 autoLayoutOnResize:true (
         local root=CyrusLayerUIRoot,controlsReady=false,binding=false,members=#()
         listbox layerList "Layer | placed | status" pos:[8,8] width:(layersUI.width-16) height:6
-        button editButton "Edit layer..." pos:[8,138] width:(layersUI.width-16) height:28 tooltip:"Open the reusable Layer Editor. Double-clicking a layer does the same."
-        button addButton "Add layer" pos:[8,174] width:(layersUI.width-16) tooltip:"Add a layer and open its settings. Layers calculate from top to bottom."
+        button editButton "Edit layer in window..." pos:[8,138] width:(layersUI.width-16) height:28 tooltip:"Optional floating view of the same layer settings. Select a layer to edit it below in Modify."
+        button addButton "Add layer" pos:[8,174] width:(layersUI.width-16) tooltip:"Add a layer and edit its controls below. Layers calculate from top to bottom."
         button copyButton "Copy" pos:[8,204] width:((layersUI.width-22)/2) tooltip:"Copy this layer, its paint sets and their settings."
         button removeButton "Remove" pos:[(layersUI.width/2+3),204] width:((layersUI.width-22)/2) tooltip:"Remove this layer and its paint sets. Undo restores them."
         edittext nameEdit "Name:" pos:[8,236] width:(layersUI.width-16) tooltip:"Rename the selected layer without changing its identity."
@@ -45,11 +45,11 @@
         on editButton pressed do root.mainUI.selectLayerView (currentLayer()) expand:true
         on addButton pressed do (
             root.newLayer();root.bindNativeUI();root.invalidateGroups()
-            root.mainUI.selectLayerView (root.selectedLayer()) expand:true
+            root.mainUI.selectLayerView (root.selectedLayer())
         )
         on copyButton pressed do try(
             local parent=root.copyLogicalLayer (currentLayer())
-            root.mainUI.selectLayerView parent expand:true
+            root.mainUI.selectLayerView parent
         )catch(messageBox (getCurrentException()) title:"Cyrus layer")
         on removeButton pressed do try(root.removeLogicalLayer (currentLayer()))catch(messageBox (getCurrentException()) title:"Cyrus layer")
         on nameEdit entered value do if not binding and value!="" do (

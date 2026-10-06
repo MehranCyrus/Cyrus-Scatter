@@ -34,6 +34,7 @@
 /docs/Playback_Performance_2026-10-06/evidence/** -text whitespace=cr-at-eol
 /docs/TyFlow_Architecture_Research_2026-10-06/evidence/** -text whitespace=cr-at-eol
 /docs/TyFlow_CyrusScatter_Assessment_2026-10-06/evidence/** -text whitespace=cr-at-eol
+/docs/Integrated_UI_0.72_2026-10-06/evidence/** -text whitespace=cr-at-eol
 /docs/Live_Runtime_2026-10-06/package-evidence/** -text -whitespace
 /docs/licensing/evidence/** -text whitespace=cr-at-eol
 /AminScatter/tests/data/brush_sphere_pole.txt -text whitespace=cr-at-eol

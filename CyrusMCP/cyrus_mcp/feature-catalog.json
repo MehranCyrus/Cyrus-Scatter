@@ -1,9 +1,9 @@
 {
   "schema": "cyrus.feature-catalog/1.0",
   "authority": "Help only. Tool dispatch, closed schemas and local approval determine authority.",
-  "capability_source_sha256": "c272a8d9e21f9cc4d049c97e316215fad62873302e7afec234ca8920497bf1d3",
-  "control_inventory_sha256": "ee693aa0f7a6ddaeb4fa62f47d9e70896c7cbd0db6349bda5134f898d08bf51e",
-  "development_version": "0.7.1",
+  "capability_source_sha256": "02b4b21be3bcec99f0383872e845f912f697fd23ea9388ea6a4e6af76c2207bf",
+  "control_inventory_sha256": "de7854aedb7b86c6220743882448afc5bd06055d3a0a91a1ce588dfbf2a40d35",
+  "development_version": "0.72",
   "mcp_version": "1.2.0",
   "features": [
     {
@@ -52,7 +52,7 @@
       "feature_id": "C07",
       "title": "Model containers / global/layer/set",
       "native": "Rectangle-local XY pivot membership; global/inherited/own pools; parking preserves registration/settings",
-      "mcp": "Read configured references/mode plus cached active/parked/missing/placeholder rows and membership revision when available. Stale row alignment is reported as unavailable; no reconciliation or current-containment query. New cached-row adapter awaits isolated Max qualification.",
+      "mcp": "Read configured references/mode plus cached active/parked/missing/placeholder rows and membership revision when available. Stale row alignment is unavailable; no reconciliation or current-containment query. Bounded private Max 2027 reads were qualified in the 6 October Live runtime campaign.",
       "qualification_or_extension": "Cached active/parked/missing snapshot with membership revision; later scoped rectangle/pool authoring"
     },
     {
@@ -184,7 +184,7 @@
     {
       "feature_id": "C26",
       "title": "UI navigation / editor",
-      "native": "Six topics, binding, scrolling, resize and tooltips",
+      "native": "One selected layer in sixteen native Modify sections; optional popup with six topics. Warm retarget binds the current owner. Browsing preserves publications and retained buffers; pointer/DPI latency is a separate qualification.",
       "mcp": "No remote UI clicking API",
       "qualification_or_extension": "Feature help should map to artist location; UI browsing must not become a calculation action"
     },
@@ -220,14 +220,14 @@
       "feature_id": "C31",
       "title": "Export / published generation",
       "native": "Exact local placements; native stable identity semantics",
-      "mcp": "Legacy owned records remain supported. MCP 1.2 source adds get_publication/read_publication_page for policy-3 cached transforms, effective radii, stable IDs and compact metadata. Full reconstructable recipe/asset export remains unavailable. New host adapter awaits isolated Max qualification.",
+      "mcp": "Legacy owned records remain supported. MCP 1.2 get_publication/read_publication_page reads policy-3 cached transforms, effective radii, stable IDs and compact metadata. Bounded private Max 2027 paging was qualified in the 6 October Live runtime campaign. Full reconstructable recipe/asset export remains unavailable.",
       "qualification_or_extension": "Immutable policy-3 publication export with recipe, sources, radii, epoch, digest and bounded paging/artifacts"
     },
     {
       "feature_id": "C32",
       "title": "Diagnostics recording / session",
-      "native": "Recorded manual tools plus new recorder/local-export source under independent development",
-      "mcp": "MCP 1.2 source adds explicitly shared diagnostic event pages. Local panel starts/stops/saves bounded process-wide recording. Offline tests pass; runtime overhead/lifecycle/renderer acceptance remains pending. No remote start, stop, grant or file write.",
+      "native": "Bounded process-wide native event recorder. Scatter Modify > Diagnostics starts/stops/exports a local paged bundle without MCP; Automation retains its own canonical report format. Off by default; no polling, automatic upload or training eligibility.",
+      "mcp": "MCP 1.2 reads explicitly shared diagnostic event pages. Local controls own recording and file export. Bounded sharing and host lifecycle were qualified in the 6 October Live runtime campaign; no remote start, stop, grant or file write. A full causal archive is future work.",
       "qualification_or_extension": "Qualify the new bounded page and local-sharing boundary, then the full causal session/archive specification"
     },
     {
@@ -256,6 +256,7 @@
       ],
       "owner_context": "Controller",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -270,6 +271,7 @@
       ],
       "owner_context": "Editor context; action scope named in UI",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -284,6 +286,7 @@
       ],
       "owner_context": "Editor context; action scope named in UI",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -298,6 +301,7 @@
       ],
       "owner_context": "Editor context; action scope named in UI",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -312,6 +316,7 @@
       ],
       "owner_context": "Editor context; action scope named in UI",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -326,6 +331,7 @@
       ],
       "owner_context": "Editor context; action scope named in UI",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -340,6 +346,7 @@
       ],
       "owner_context": "Editor context; action scope named in UI",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -354,6 +361,7 @@
       ],
       "owner_context": "Editor context; action scope named in UI",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -368,6 +376,7 @@
       ],
       "owner_context": "Editor context; action scope named in UI",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -382,6 +391,7 @@
       ],
       "owner_context": "Editor context; action scope named in UI",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -396,6 +406,7 @@
       ],
       "owner_context": "Editor context; action scope named in UI",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -408,6 +419,7 @@
       ],
       "owner_context": "Controller",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -420,6 +432,7 @@
       ],
       "owner_context": "Controller",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -434,6 +447,7 @@
       ],
       "owner_context": "Setup display/output",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -448,6 +462,7 @@
       ],
       "owner_context": "Setup display/output",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -462,6 +477,7 @@
       ],
       "owner_context": "Setup display/output",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -476,6 +492,7 @@
       ],
       "owner_context": "Setup display/output",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -490,6 +507,7 @@
       ],
       "owner_context": "Setup display/output",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -504,6 +522,7 @@
       ],
       "owner_context": "Setup display/output",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -518,6 +537,7 @@
       ],
       "owner_context": "Setup display/output",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -532,6 +552,7 @@
       ],
       "owner_context": "Setup display/output",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -546,6 +567,7 @@
       ],
       "owner_context": "Setup display/output",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -560,6 +582,7 @@
       ],
       "owner_context": "Setup display/output",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -574,6 +597,7 @@
       ],
       "owner_context": "Setup display/output",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -588,6 +612,7 @@
       ],
       "owner_context": "Setup display/output",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -602,6 +627,7 @@
       ],
       "owner_context": "Setup display/output",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -616,6 +642,7 @@
       ],
       "owner_context": "Setup display/output",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -630,6 +657,7 @@
       ],
       "owner_context": "Setup display/output",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -643,6 +671,7 @@
       ],
       "owner_context": "Controller/global pool",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -656,6 +685,7 @@
       ],
       "owner_context": "Controller/global pool",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -669,6 +699,7 @@
       ],
       "owner_context": "Controller/global pool",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -682,6 +713,7 @@
       ],
       "owner_context": "Controller/global pool",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -695,6 +727,7 @@
       ],
       "owner_context": "Controller/global pool",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -708,6 +741,7 @@
       ],
       "owner_context": "Controller/global pool",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -721,6 +755,7 @@
       ],
       "owner_context": "Controller/global pool",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -734,6 +769,7 @@
       ],
       "owner_context": "Controller/global pool",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -746,6 +782,7 @@
       ],
       "owner_context": "Controller/layer",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -758,6 +795,7 @@
       ],
       "owner_context": "Controller/layer",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -770,6 +808,7 @@
       ],
       "owner_context": "Controller/layer",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -782,6 +821,7 @@
       ],
       "owner_context": "Controller/layer",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -794,6 +834,7 @@
       ],
       "owner_context": "Controller/layer",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -806,6 +847,7 @@
       ],
       "owner_context": "Controller/layer",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -818,6 +860,7 @@
       ],
       "owner_context": "Controller/layer",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -830,6 +873,7 @@
       ],
       "owner_context": "Controller/layer",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -842,6 +886,7 @@
       ],
       "owner_context": "Controller/layer",
       "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -854,6 +899,59 @@
       ],
       "owner_context": "Controller/layer",
       "help": null,
+      "view": "Local setup/editor controls",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "diagnostics",
+      "kind": "button",
+      "name": "startButton",
+      "capabilities": [
+        "C32"
+      ],
+      "owner_context": "Process-wide local recording",
+      "help": null,
+      "view": "Local setup/editor controls",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "diagnostics",
+      "kind": "button",
+      "name": "stopButton",
+      "capabilities": [
+        "C32"
+      ],
+      "owner_context": "Process-wide local recording",
+      "help": null,
+      "view": "Local setup/editor controls",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "diagnostics",
+      "kind": "button",
+      "name": "saveButton",
+      "capabilities": [
+        "C32"
+      ],
+      "owner_context": "Process-wide local recording",
+      "help": null,
+      "view": "Local setup/editor controls",
+      "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
+    },
+    {
+      "group": "general",
+      "section": "diagnostics",
+      "kind": "button",
+      "name": "refreshButton",
+      "capabilities": [
+        "C32"
+      ],
+      "owner_context": "Process-wide local recording",
+      "help": null,
+      "view": "Local setup/editor controls",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -868,6 +966,7 @@
       ],
       "owner_context": "Paint-set source row",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -882,6 +981,7 @@
       ],
       "owner_context": "Paint-set source row",
       "help": "Choose one or more source models by name.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -896,6 +996,7 @@
       ],
       "owner_context": "Paint-set source row",
       "help": "Pick a scene model for this paint set. The editor stays on its layer.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -910,6 +1011,7 @@
       ],
       "owner_context": "Paint-set source row",
       "help": "Add the currently selected scene objects to this paint set.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -924,6 +1026,7 @@
       ],
       "owner_context": "Paint-set source row",
       "help": "Unregister highlighted rows. To keep their settings, park models outside a source rectangle instead.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -938,6 +1041,7 @@
       ],
       "owner_context": "Paint-set source row",
       "help": "Select the highlighted source models in the scene.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -952,6 +1056,7 @@
       ],
       "owner_context": "Paint-set source row",
       "help": "Add a placeholder source that can later be replaced by a model.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -966,6 +1071,7 @@
       ],
       "owner_context": "Paint-set source row",
       "help": "Add a weighted empty source for intentional gaps in candidate-budget mode.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -980,6 +1086,7 @@
       ],
       "owner_context": "Paint-set source row",
       "help": "Replace one highlighted Point row with a scene model.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -994,6 +1101,7 @@
       ],
       "owner_context": "Paint-set source row",
       "help": "Assign highlighted sources to an existing color group for clustering.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1008,6 +1116,7 @@
       ],
       "owner_context": "Paint-set source row",
       "help": "Assign a color group to highlighted sources when the color is accepted.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1022,6 +1131,7 @@
       ],
       "owner_context": "Paint-set source row",
       "help": "Assign the chosen color group to all highlighted source rows.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1036,6 +1146,7 @@
       ],
       "owner_context": "Paint-set source row",
       "help": "Relative source share within this paint set. Zero disables the source.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1050,6 +1161,7 @@
       ],
       "owner_context": "Paint-set source row",
       "help": "Offset instances of highlighted models along their placement normal.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1064,6 +1176,7 @@
       ],
       "owner_context": "Paint-set source row",
       "help": "Per-model scale multiplier. 1 keeps the model's original scale.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1078,6 +1191,7 @@
       ],
       "owner_context": "Paint-set source row",
       "help": "Collision footprint radius for highlighted source rows, in scene units.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1092,6 +1206,7 @@
       ],
       "owner_context": "Paint-set source row",
       "help": "Scale this source's collision footprint with its instance scale.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1106,6 +1221,7 @@
       ],
       "owner_context": "Paint-set source row",
       "help": "Show this source's radius in the viewport; does not change collision rules.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1120,6 +1236,7 @@
       ],
       "owner_context": "Paint-set source row",
       "help": "The model's local forward direction, used for orientation.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1134,6 +1251,7 @@
       ],
       "owner_context": "Paint-set source row",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1147,6 +1265,7 @@
       ],
       "owner_context": "Layer defaults",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1160,6 +1279,7 @@
       ],
       "owner_context": "Layer defaults",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1173,6 +1293,7 @@
       ],
       "owner_context": "Layer defaults",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1186,6 +1307,7 @@
       ],
       "owner_context": "Layer defaults",
       "help": "Layer population before eligibility. Accepted target can retry up to its limits.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1199,6 +1321,7 @@
       ],
       "owner_context": "Layer defaults",
       "help": "Requested plants per square metre of receiving surface; capped at 100,000.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1212,6 +1335,7 @@
       ],
       "owner_context": "Layer defaults",
       "help": "Deterministic generation seed. Changing it can invalidate existing Edit bindings.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1225,6 +1349,7 @@
       ],
       "owner_context": "Layer defaults",
       "help": "Use UV channel 1: white permits candidates; black excludes them.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1238,6 +1363,7 @@
       ],
       "owner_context": "Layer defaults",
       "help": "Reverse the density map's white and black eligibility.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1251,6 +1377,7 @@
       ],
       "owner_context": "Paint-set coverage",
       "help": "Use the whole receiver or this paint set's saved painted coverage.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1264,6 +1391,7 @@
       ],
       "owner_context": "Paint-set coverage",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1277,6 +1405,7 @@
       ],
       "owner_context": "Paint-set coverage",
       "help": "World-space radius of the next Brush stroke on the receiving surface.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1290,6 +1419,7 @@
       ],
       "owner_context": "Paint-set coverage",
       "help": "Amount of coverage painted or erased by the next stroke.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1303,6 +1433,7 @@
       ],
       "owner_context": "Paint-set coverage",
       "help": "Softness of the next stroke's edge.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1316,6 +1447,7 @@
       ],
       "owner_context": "Paint-set coverage",
       "help": "Thin plants allowed by the saved mask. Set absolute population on Population.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1329,6 +1461,7 @@
       ],
       "owner_context": "Paint-set coverage",
       "help": "Paint this set on the shared surface. Creates an empty mask when needed.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1342,6 +1475,7 @@
       ],
       "owner_context": "Paint-set coverage",
       "help": "Finish painting and retain the editable stroke history.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1355,6 +1489,7 @@
       ],
       "owner_context": "Paint-set coverage",
       "help": "Fill coverage and reset stroke history. Undo restores the previous field.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1368,6 +1503,7 @@
       ],
       "owner_context": "Paint-set coverage",
       "help": "Empty coverage and reset stroke history. Undo restores the previous field.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1381,6 +1517,7 @@
       ],
       "owner_context": "Paint-set coverage",
       "help": "Coverage feedback only; it does not show which plants survive spacing.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1394,6 +1531,7 @@
       ],
       "owner_context": "Paint-set coverage",
       "help": "Viewport color for this paint set's coverage feedback.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1407,6 +1545,7 @@
       ],
       "owner_context": "Paint-set coverage",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1420,6 +1559,7 @@
       ],
       "owner_context": "Paint-set coverage",
       "help": "Enable or disable the highlighted saved stroke without deleting it.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1433,6 +1573,7 @@
       ],
       "owner_context": "Paint-set coverage",
       "help": "Change the highlighted saved stroke between paint and erase.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1446,6 +1587,7 @@
       ],
       "owner_context": "Paint-set coverage",
       "help": "Change the radius of the highlighted saved stroke.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1459,6 +1601,7 @@
       ],
       "owner_context": "Paint-set coverage",
       "help": "Change the strength of the highlighted saved stroke.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1472,6 +1615,7 @@
       ],
       "owner_context": "Paint-set coverage",
       "help": "Change the edge softness of the highlighted saved stroke.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1485,6 +1629,7 @@
       ],
       "owner_context": "Paint-set coverage",
       "help": "Delete the highlighted stroke. Undo restores it.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1498,6 +1643,7 @@
       ],
       "owner_context": "Paint-set coverage",
       "help": "Confirm before replacing this set's paint with an empty mask on the current receiver.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1511,6 +1657,7 @@
       ],
       "owner_context": "Paint-set coverage",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1524,6 +1671,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1537,6 +1685,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Choose closed Area shapes by name.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1550,6 +1699,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Pick a closed shape as an include/exclude Area shared by all sets in this layer.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1563,6 +1713,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Unlink highlighted Areas and their falloff settings; keep the scene shapes.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1576,6 +1727,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1589,6 +1741,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Refresh Area geometry and recalculate the layer preview.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1602,6 +1755,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Choose an existing Cyrus Surface Analyzer for line or point masks.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1615,6 +1769,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Disable and unlink the layer's Analyzer Area mask.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1628,6 +1783,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Use the Analyzer centre line as an XY mask; unions with its point mask.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1641,6 +1797,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Full width of the Analyzer centre-line Area mask.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1654,6 +1811,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Flat or round ends for the line mask.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1667,6 +1825,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Lateral offset from the Analyzer centre line.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1680,6 +1839,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Use discs around Analyzer points as an XY mask.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1693,6 +1853,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Radius of each Analyzer point mask.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1706,6 +1867,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Edit Analyzer boundary falloff or one highlighted Area's independent falloff.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1719,6 +1881,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Choose the Analyzer whose boundary drives this falloff.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1732,6 +1895,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Unlink the falloff Analyzer and disable its falloff effects.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1745,6 +1909,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Exclude an edge band before scale and density ramps begin.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1758,6 +1923,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Width of the excluded edge band in scene units.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1771,6 +1937,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Vary instance scale with distance from this boundary.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1784,6 +1951,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Distance over which the scale curve is evaluated.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1797,6 +1965,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Edit this boundary's scale curve.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1810,6 +1979,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Vary candidate eligibility with distance from this boundary.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1823,6 +1993,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Distance over which the density curve is evaluated.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1836,6 +2007,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Edit this boundary's density curve.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1849,6 +2021,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1862,6 +2035,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1875,6 +2049,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": "Spatial size of source-color clusters.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1888,6 +2063,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": "Change source assignment randomness without changing the generation seed.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1901,6 +2077,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1914,6 +2091,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1927,6 +2105,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1940,6 +2119,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1953,6 +2133,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1966,6 +2147,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": "Choose an existing Surface Analyzer for the legacy assignment modes.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1979,6 +2161,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": "Pick a spline for Line Pattern assignment.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -1992,6 +2175,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": "Remove the selected assignment path while keeping the scene spline.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2005,6 +2189,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2018,6 +2203,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": "Add a source-assignment band outside the selected path.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2031,6 +2217,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": "Add a source-assignment band inside the selected path.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2044,6 +2231,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": "Remove the selected assignment band and its settings.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2057,6 +2245,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2070,6 +2259,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2083,6 +2273,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2096,6 +2287,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2109,6 +2301,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2122,6 +2315,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": "Refresh available source color groups for assignment.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2135,6 +2329,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2148,6 +2343,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2161,6 +2357,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2174,6 +2371,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2187,6 +2385,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2200,6 +2399,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2213,6 +2413,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2226,6 +2427,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2239,6 +2441,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2252,6 +2455,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2265,6 +2469,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2278,6 +2483,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2291,6 +2497,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2304,6 +2511,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2317,6 +2525,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2329,6 +2538,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2341,6 +2551,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2353,6 +2564,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2365,6 +2577,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2377,6 +2590,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2389,6 +2603,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2401,6 +2616,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2413,6 +2629,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2425,6 +2642,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2437,6 +2655,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2449,6 +2668,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2461,6 +2681,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2473,6 +2694,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2485,6 +2707,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2497,6 +2720,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2509,6 +2733,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2521,6 +2746,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2533,6 +2759,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2545,6 +2772,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2557,6 +2785,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2569,6 +2798,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": "Project random movement back onto the receiving surface.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2581,6 +2811,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": "Align instances to the receiving surface normal.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2593,6 +2824,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": "Reset only this layer's random rotation limits. Undo is available.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2605,6 +2837,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": "Reset only this layer's separate X, Y and Z scale limits.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2617,6 +2850,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": "Reset only this layer's uniform scale multiplier.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2629,6 +2863,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": "Reset only this layer's random translation limits.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2642,6 +2877,7 @@
       ],
       "owner_context": "Self-spacing inheritance or legacy layer",
       "help": "Layer default for self-spacing, used by sets without a self override.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2655,6 +2891,7 @@
       ],
       "owner_context": "Self-spacing inheritance or legacy layer",
       "help": "Inherited centre-distance rule uses two times this radius.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2668,6 +2905,7 @@
       ],
       "owner_context": "Self-spacing inheritance or legacy layer",
       "help": "Legacy point relaxation; paused under procedural evaluation or Brush coverage.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2681,6 +2919,7 @@
       ],
       "owner_context": "Self-spacing inheritance or legacy layer",
       "help": "Desired distance for legacy point relaxation.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2694,6 +2933,7 @@
       ],
       "owner_context": "Self-spacing inheritance or legacy layer",
       "help": "Bound the number of legacy relaxation passes.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2707,6 +2947,7 @@
       ],
       "owner_context": "Self-spacing inheritance or legacy layer",
       "help": "Movement strength per legacy relaxation pass.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2721,6 +2962,7 @@
       ],
       "owner_context": "Legacy pairs/layer union cleanup",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2735,6 +2977,7 @@
       ],
       "owner_context": "Legacy pairs/layer union cleanup",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2749,6 +2992,7 @@
       ],
       "owner_context": "Legacy pairs/layer union cleanup",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2763,6 +3007,7 @@
       ],
       "owner_context": "Legacy pairs/layer union cleanup",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2777,6 +3022,7 @@
       ],
       "owner_context": "Legacy pairs/layer union cleanup",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2791,6 +3037,7 @@
       ],
       "owner_context": "Legacy pairs/layer union cleanup",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2805,6 +3052,7 @@
       ],
       "owner_context": "Legacy pairs/layer union cleanup",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2819,6 +3067,7 @@
       ],
       "owner_context": "Legacy pairs/layer union cleanup",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2833,6 +3082,7 @@
       ],
       "owner_context": "Legacy pairs/layer union cleanup",
       "help": "Recalculate the setup, including spacing and cleanup.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2847,6 +3097,7 @@
       ],
       "owner_context": "Legacy pairs/layer union cleanup",
       "help": "Remove isolated plants after collision across the whole logical layer.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2861,6 +3112,7 @@
       ],
       "owner_context": "Legacy pairs/layer union cleanup",
       "help": "Distance used to count nearby accepted plants during final cleanup.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2875,6 +3127,7 @@
       ],
       "owner_context": "Legacy pairs/layer union cleanup",
       "help": "Remove plants that have fewer than this many neighbors.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2889,6 +3142,7 @@
       ],
       "owner_context": "Legacy pairs/layer union cleanup",
       "help": "Remove connected islands smaller than this number of plants.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2903,6 +3157,7 @@
       ],
       "owner_context": "Legacy pairs/layer union cleanup",
       "help": "Legacy boundary relaxation; preserved but paused by shared spacing.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2917,6 +3172,7 @@
       ],
       "owner_context": "Legacy pairs/layer union cleanup",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2931,6 +3187,7 @@
       ],
       "owner_context": "Legacy pairs/layer union cleanup",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2945,6 +3202,7 @@
       ],
       "owner_context": "Legacy pairs/layer union cleanup",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2957,6 +3215,7 @@
       ],
       "owner_context": "Selected self/sibling/layer rule scope",
       "help": "Choose within-set, between-set defaults, a set pair, or a layer pair.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2969,6 +3228,7 @@
       ],
       "owner_context": "Selected self/sibling/layer rule scope",
       "help": "The other set or layer affected by this pair rule.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2981,6 +3241,7 @@
       ],
       "owner_context": "Selected self/sibling/layer rule scope",
       "help": "Enable only this collision scope. Other scopes are independent.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -2993,6 +3254,7 @@
       ],
       "owner_context": "Selected self/sibling/layer rule scope",
       "help": "Minimum distance = factor times (radius A + radius B), plus extra gap.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -3005,6 +3267,7 @@
       ],
       "owner_context": "Selected self/sibling/layer rule scope",
       "help": "Additional distance in scene units. Saves immediately; Manual waits for Update.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -3017,6 +3280,7 @@
       ],
       "owner_context": "Selected self/sibling/layer rule scope",
       "help": "Measure distance in world XY. Turn off to include height in 3D distance.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -3029,6 +3293,7 @@
       ],
       "owner_context": "Selected self/sibling/layer rule scope",
       "help": "Remove a pair or self override, or reset the between-set default.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -3041,6 +3306,7 @@
       ],
       "owner_context": "Layer work limits",
       "help": "Budget evaluates the generated candidates; target makes bounded replacement attempts.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -3053,6 +3319,7 @@
       ],
       "owner_context": "Layer work limits",
       "help": "Maximum candidate attempts as a multiple of the requested population.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -3065,6 +3332,7 @@
       ],
       "owner_context": "Layer work limits",
       "help": "Maximum rounds of eligibility, collision and cleanup. A shortfall can remain.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -3077,6 +3345,7 @@
       ],
       "owner_context": "Layer work limits",
       "help": "Allow bounded retries for plants removed by final cleanup.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -3089,6 +3358,7 @@
       ],
       "owner_context": "Paint set and earlier siblings",
       "help": "Exclude earlier painted coverage, fill between plants, combine both, or turn off.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -3101,6 +3371,7 @@
       ],
       "owner_context": "Paint set and earlier siblings",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -3113,6 +3384,7 @@
       ],
       "owner_context": "Paint set and earlier siblings",
       "help": "Save this background mode and the selected earlier-set references together.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -3125,6 +3397,7 @@
       ],
       "owner_context": "Set/published instance binding",
       "help": "Use an absolute world radius or multiply the selected instances' source radius.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -3137,6 +3410,7 @@
       ],
       "owner_context": "Set/published instance binding",
       "help": "Value applied only when Set selected radii is pressed.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -3149,6 +3423,7 @@
       ],
       "owner_context": "Set/published instance binding",
       "help": "Apply radius overrides to selected CS Edit instances in this paint set.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -3161,6 +3436,7 @@
       ],
       "owner_context": "Set/published instance binding",
       "help": "Restore the selected instances' inherited source radii.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -3173,6 +3449,7 @@
       ],
       "owner_context": "Set/published instance binding",
       "help": "Remove every instance-radius override belonging to this paint set.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -3185,6 +3462,7 @@
       ],
       "owner_context": "Set/layer/global pool selection",
       "help": "Use a manual list or an explicit rectangle pool. Other paint sets may inherit the layer pool.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -3197,6 +3475,7 @@
       ],
       "owner_context": "Set/layer/global pool selection",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -3209,6 +3488,7 @@
       ],
       "owner_context": "Set/layer/global pool selection",
       "help": "Create a Rectangle for this owner. Put source-model pivots inside its local XY bounds.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -3221,6 +3501,7 @@
       ],
       "owner_context": "Set/layer/global pool selection",
       "help": "Use an existing unmodified Rectangle as a source pool boundary.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -3233,6 +3514,7 @@
       ],
       "owner_context": "Set/layer/global pool selection",
       "help": "Unlink this rectangle without deleting it or registered source settings.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -3245,6 +3527,7 @@
       ],
       "owner_context": "Layer/set administration",
       "help": null,
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -3257,6 +3540,7 @@
       ],
       "owner_context": "Layer/set administration",
       "help": "Add another paint set sharing this layer's population and defaults.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -3269,6 +3553,7 @@
       ],
       "owner_context": "Layer/set administration",
       "help": "Remove this paint set and its settings. The base set cannot be removed separately.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -3281,6 +3566,7 @@
       ],
       "owner_context": "Layer/set administration",
       "help": "Rename this paint set without changing its identity.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -3293,6 +3579,7 @@
       ],
       "owner_context": "Layer/set administration",
       "help": "Relative share of the layer population among enabled paint sets.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -3305,6 +3592,7 @@
       ],
       "owner_context": "Layer/set administration",
       "help": "Include this set in calculation and final output.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -3317,6 +3605,7 @@
       ],
       "owner_context": "Layer/set administration",
       "help": "Viewport visibility only. Hidden sets still calculate and affect spacing.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -3329,6 +3618,7 @@
       ],
       "owner_context": "Layer/set administration",
       "help": "Evaluate this set earlier. Earlier sets occupy space first.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -3341,6 +3631,7 @@
       ],
       "owner_context": "Layer/set administration",
       "help": "Evaluate this set later, after the preceding sets.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -3353,6 +3644,7 @@
       ],
       "owner_context": "Cached statistics/help",
       "help": "Read the existing calculation statistics without regenerating placements.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     },
     {
@@ -3365,6 +3657,7 @@
       ],
       "owner_context": "Cached statistics/help",
       "help": "Explain settings ownership, display budgets, evaluation order and policy limits.",
+      "view": "Modify selected layer and optional popup",
       "remote_control": "No direct UI-control invocation; consult the feature's typed plan support."
     }
   ]

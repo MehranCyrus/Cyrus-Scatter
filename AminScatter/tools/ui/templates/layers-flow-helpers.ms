@@ -1,4 +1,11 @@
 global CyrusFlowRolloutExtent,CyrusFlowLayerSummary
+global CyrusRetainListItems
+fn CyrusRetainListItems control values = (
+    local previous=control.items,changed=previous.count!=values.count
+    if not changed do for i=1 to values.count while not changed do changed=previous[i]!=values[i]
+    if changed do control.items=values
+    changed
+)
 global CyrusSourceContainerFilter
 fn CyrusSourceContainerFilter node = (isValidNode node and classof node.baseObject==Rectangle and node.modifiers.count==0)
 -- Native rollup headers occupy 21 logical pixels with 2 pixels between pages.

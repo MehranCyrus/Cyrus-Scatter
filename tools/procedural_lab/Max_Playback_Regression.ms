@@ -55,6 +55,11 @@ fn PTUnrelated policy = (
         PTAssert ((PTLeaf.paintBaseInputKey (PTLeaf.validSources()) true)==baseKey) "Static candidate key includes clock time"
         PTAssert (PTRoot.groupInputKey()==groupKey) "Static group key includes clock time"
         PTAssert (CyrusPFKey()==renderKey) "Unrelated time changed the render transport key"
+        if CyrusPFCheckPending or CyrusPFTimer.Enabled or CyrusReleaseTimer.Enabled do (
+            local view=CyrusPointOwner PTNode
+            format "DEFERRED_STATE mouse_held:% owner:% retained:% error:%\n" (CyrusInteractionHeld()) view (if isValidNode view then cyrusRetainedStats view else #()) CyrusPointLastError to:PTLog
+            flush PTLog
+        )
         PTAssert (not CyrusPFCheckPending and not CyrusPFTimer.Enabled and not CyrusReleaseTimer.Enabled) ("Static playback armed deferred work: "+(#(policy,frame,CyrusPFCheckPending,CyrusPFTimer.Enabled,CyrusReleaseTimer.Enabled,CyrusPointPending) as string))
     )
     PTAssert (PTLayout()==layout) "Static layout changed during unrelated animation"

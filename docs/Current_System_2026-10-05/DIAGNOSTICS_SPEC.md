@@ -1,5 +1,7 @@
 # Diagnostics and engineering records
 
+**0.72 delivery:** recording controls now also live directly in Scatter Modify > Diagnostics. The explicit local export is `cyrus.diagnostic-bundle/1.0`, containing stopped native event pages and script/native identities. Automation's `cyrus.diagnostic-report/1.0` format is preserved. Neither format grants sharing or training permission. See [0.72 workflow and limits](../Integrated_UI_0.72_2026-10-06/WORKFLOW.md).
+
 **6 October implementation boundary:** the opt-in bounded native recorder, Automation-panel start/stop/export and separately consented MCP reading now have [Max 2027 runtime evidence](../Live_Runtime_2026-10-06/RESULTS.md). The broader action/batch schema, searchable archive and artist-feedback pipeline below remain design targets. The implemented default is 10 minutes / 4,096 events / 4 MiB; an engineering trace remains ineligible for training by default.
 
 **Status: proposed extension to existing tools.** Nothing here activates a recorder or creates a telemetry service. Priority: explain IR-01 while preserving normal interaction, then support repeatable comparisons and future debugging.

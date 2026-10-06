@@ -13,9 +13,9 @@ import time
 from runtime_driver import ROOT, run_script
 
 
-def qualify(folder):
+def qualify(folder, integrated=False):
     metadata=json.loads((folder/"launch.json").read_text())
-    evidence={"private_host_pid":metadata["pid"],"launch_script_sha256":metadata["script_sha256"],"cases":[]}
+    evidence={"private_host_pid":metadata["pid"],"launch_script_sha256":metadata["script_sha256"],"integrated_sections_open":integrated,"cases":[]}
     def execute(code):
         result=run_script(folder,code,timeout=90)
         if not result.startswith("SUCCESS "):raise AssertionError(result)
@@ -45,6 +45,8 @@ def qualify(folder):
     evidence["loaded_payload_sha256"]=(folder/"idle-loaded-payload.txt").read_text()
     quiet("live-closed")
     execute("select P07Node;max modify mode;CyrusOpenLayerEditor P07Root P07Layer")
+    if integrated:
+        execute('if not P07Root.mainUI.controlsReady do P07Root.mainUI.mountTimer.tick();for section in P07Root.mainUI.editors do section.open=true;P07Root.mainUI.bindEditors();CyrusLayerEditor.showTopic 5;P07Root.diagnosticsUI.open=true')
     quiet("live-editor-open")
     execute("P07Root.updateMode=1;P07Layer.amount=500")
     quiet("manual-pending")
@@ -72,6 +74,7 @@ def qualify(folder):
 
 if __name__=="__main__":
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument("folder",type=Path)
-    folder=parser.parse_args().folder.resolve()
+    parser.add_argument('--integrated',action='store_true',help='Keep every native selected-layer section and Diagnostics open alongside the optional popup')
+    args=parser.parse_args();folder=args.folder.resolve()
     if folder.parent!=ROOT/"build/mcp-qualification":raise ValueError("Private host folder required")
-    qualify(folder)
+    qualify(folder,integrated=args.integrated)

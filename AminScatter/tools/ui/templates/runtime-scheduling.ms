@@ -2,6 +2,30 @@
 global CyrusScheduleRelease,CyrusScheduleUI,CyrusPFRequestCheck,CyrusRenderNodeChanged
 global CyrusPFCheckPending=false,CyrusPFResumeMode=3,CyrusPFTicking=false
 global CyrusReleaseTimer,CyrusPFTimer,CyrusPFBusy,CyrusLayerEditor,CyrusPointPending,AminScatterObject
+global CyrusPFStopIR,CyrusPFLastError
+-- Corona stop can pump messages and deliver nested host callbacks. Keep bridge
+-- mutation excluded through the stop, and verify the resulting render state.
+-- A nonzero return alone cannot distinguish a nested/already-stopped request.
+-- The optional provider exists for deterministic failure/reentrancy fixtures.
+fn CyrusPFStopIR renderer:undefined = (
+    if CyrusPFBusy==true do (CyrusPFLastError="Corona Stop deferred while the Cyrus bridge is busy.";return false)
+    if renderer==undefined do renderer=CoronaRenderer
+    local previousBusy=CyrusPFBusy,stopped=false
+    CyrusPFBusy=true
+    try (
+        local before=renderer.getRenderType()
+        if before==0 then stopped=true
+        else if findItem #(2,3) before>0 then (
+            CyrusDiagnosticEmit "ir.stop_requested" "renderer" "" 0 "bridge"
+            local result=renderer.stopRender(),after=renderer.getRenderType()
+            CyrusDiagnosticEmit "ir.stop_result" "renderer" "" 0 ((result as string)+":"+(after as string))
+            stopped=after==0
+            if not stopped do CyrusPFLastError="Corona IR remains active after Stop (status "+(result as string)+", render type "+(after as string)+")."
+        ) else CyrusPFLastError="Corona render is not an interactive session; its bridge was preserved."
+    )catch(CyrusPFLastError=getCurrentException())
+    CyrusPFBusy=previousBusy
+    stopped
+)
 fn CyrusScheduleRelease = (
     if CyrusReleaseTimer!=undefined do CyrusReleaseTimer.Start()
 )

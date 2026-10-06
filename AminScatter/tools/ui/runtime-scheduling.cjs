@@ -52,7 +52,7 @@ module.exports=function(s) {
  one('CoronaRenderer.startInteractive()',
      '(local result=(if CyrusPFResumeMode==2 then CoronaRenderer.startInteractiveDocked() else CoronaRenderer.startInteractive());if result!=0 do throw ("Corona IR start failed: "+result as string);result)');
  s=s.replaceAll('CoronaRenderer.stopRender()',
-     '(local result=CoronaRenderer.stopRender();if result!=0 do throw ("Corona IR stop failed: "+result as string);result)');
+     '(if not CyrusPFStopIR() do throw CyrusPFLastError)');
  // Direct scripted parameter/Edit changes need the same deferred update as UI
  // edits. This branch runs only for an actual notification of the controller.
  one('else if entry[2].externalChanged nodes do (redraw=true;CyrusPFRevision+=1)\n            )',

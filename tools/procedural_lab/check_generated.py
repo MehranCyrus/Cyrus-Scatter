@@ -43,17 +43,18 @@ def main():
     assert before==after,'Generated source was stale; inspect regeneration and rerun.'
     text=after.decode('utf-8')
     check_balanced(text)
-    assert re.findall(r'fn uiVersion = "([^"]+)"',text)==['0.7.1']
+    assert re.findall(r'fn uiVersion = "([^"]+)"',text)==['0.72']
     assert 'version:53\ninitialRollupState' in text
     assert not re.search(r'\b(?:\w+\.)*groupPolicy[!=]=2',text),'Unclassified shared-policy consumer'
     for call in ('evaluateProcedural','procRefreshPreview','procApplyPaint','procEditKey','procCopyRelations'):
         assert re.search(r'fn '+call+r'\b',text),call
     inventory=json.loads((ROOT/'AminScatter/tools/ui/layers-control-inventory.json').read_text())
     controls=sum(len(v) for section in ('general','layer') for v in inventory[section].values())
-    assert controls==241,'Review the documented control inventory after changes.'
+    assert controls==245,'Review the documented control inventory after changes.'
     check_balanced((ROOT/'tools/procedural_lab/Max_Procedural_07_Fixture.ms').read_text())
     for group in inventory['layer']:
         assert len(re.findall(r'rollout '+group+r'_1\b',text))==1,group
+        assert len(re.findall(r'rollout selected_'+group+r'\b',text))==1,group
         assert not re.search(r'rollout '+group+r'_(?:[2-9]|10)\b',text),group
     assert 'rollout layerPanel_' not in text,'Obsolete per-layer pages remain'
     # Feature controls from 0.7.0 must survive the move/split, not just preserve

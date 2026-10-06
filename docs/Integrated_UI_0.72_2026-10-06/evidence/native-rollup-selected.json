@@ -1,0 +1,1018 @@
+{
+  "schema": "cyrus.private-native-rollup-inspection/1",
+  "rows": [
+    {
+      "title": "Paint sets | Layer_01",
+      "class_name": "MaxSDK::QMaxLegacyRollup",
+      "category": 50,
+      "open": true,
+      "explicitly_hidden": false,
+      "width": 212,
+      "height": 335,
+      "x": 0,
+      "y": 0,
+      "parent_id": 2616002728480,
+      "global_x": 1696,
+      "ancestors": [
+        {
+          "class_name": "QWidget",
+          "name": "QmaxRollupContainer_ContentPanel",
+          "width": 212,
+          "height": 5595
+        },
+        {
+          "class_name": "QWidget",
+          "name": "qt_scrollarea_viewport",
+          "width": 212,
+          "height": 711
+        },
+        {
+          "class_name": "CommandPanelRollupContainer",
+          "name": "MaxSDK::QMaxLegacyRollupContainer",
+          "width": 222,
+          "height": 711
+        },
+        {
+          "class_name": "QtCmdPanelWidget",
+          "name": "",
+          "width": 449,
+          "height": 717
+        },
+        {
+          "class_name": "QStackedWidget",
+          "name": "qt_tabwidget_stackedwidget",
+          "width": 449,
+          "height": 717
+        },
+        {
+          "class_name": "MaxSDK::QMaxTabWidget",
+          "name": "",
+          "width": 449,
+          "height": 745
+        },
+        {
+          "class_name": "CommandPanel",
+          "name": "CommandPanel",
+          "width": 449,
+          "height": 754
+        },
+        {
+          "class_name": "QmaxApplicationWindow",
+          "name": "",
+          "width": 1920,
+          "height": 1009
+        }
+      ]
+    },
+    {
+      "title": "Final cleanup - layer",
+      "class_name": "MaxSDK::QMaxLegacyRollup",
+      "category": 180,
+      "open": true,
+      "explicitly_hidden": false,
+      "width": 212,
+      "height": 175,
+      "x": 0,
+      "y": 4323,
+      "parent_id": 2616002728480,
+      "global_x": 1696,
+      "ancestors": [
+        {
+          "class_name": "QWidget",
+          "name": "QmaxRollupContainer_ContentPanel",
+          "width": 212,
+          "height": 5595
+        },
+        {
+          "class_name": "QWidget",
+          "name": "qt_scrollarea_viewport",
+          "width": 212,
+          "height": 711
+        },
+        {
+          "class_name": "CommandPanelRollupContainer",
+          "name": "MaxSDK::QMaxLegacyRollupContainer",
+          "width": 222,
+          "height": 711
+        },
+        {
+          "class_name": "QtCmdPanelWidget",
+          "name": "",
+          "width": 449,
+          "height": 717
+        },
+        {
+          "class_name": "QStackedWidget",
+          "name": "qt_tabwidget_stackedwidget",
+          "width": 449,
+          "height": 717
+        },
+        {
+          "class_name": "MaxSDK::QMaxTabWidget",
+          "name": "",
+          "width": 449,
+          "height": 745
+        },
+        {
+          "class_name": "CommandPanel",
+          "name": "CommandPanel",
+          "width": 449,
+          "height": 754
+        },
+        {
+          "class_name": "QmaxApplicationWindow",
+          "name": "",
+          "width": 1920,
+          "height": 1009
+        }
+      ]
+    },
+    {
+      "title": "Workflow and ownership",
+      "class_name": "MaxSDK::QMaxLegacyRollup",
+      "category": 200,
+      "open": true,
+      "explicitly_hidden": false,
+      "width": 212,
+      "height": 663,
+      "x": 0,
+      "y": 4909,
+      "parent_id": 2616002728480,
+      "global_x": 1696,
+      "ancestors": [
+        {
+          "class_name": "QWidget",
+          "name": "QmaxRollupContainer_ContentPanel",
+          "width": 212,
+          "height": 5595
+        },
+        {
+          "class_name": "QWidget",
+          "name": "qt_scrollarea_viewport",
+          "width": 212,
+          "height": 711
+        },
+        {
+          "class_name": "CommandPanelRollupContainer",
+          "name": "MaxSDK::QMaxLegacyRollupContainer",
+          "width": 222,
+          "height": 711
+        },
+        {
+          "class_name": "QtCmdPanelWidget",
+          "name": "",
+          "width": 449,
+          "height": 717
+        },
+        {
+          "class_name": "QStackedWidget",
+          "name": "qt_tabwidget_stackedwidget",
+          "width": 449,
+          "height": 717
+        },
+        {
+          "class_name": "MaxSDK::QMaxTabWidget",
+          "name": "",
+          "width": 449,
+          "height": 745
+        },
+        {
+          "class_name": "CommandPanel",
+          "name": "CommandPanel",
+          "width": 449,
+          "height": 754
+        },
+        {
+          "class_name": "QmaxApplicationWindow",
+          "name": "",
+          "width": 1920,
+          "height": 1009
+        }
+      ]
+    },
+    {
+      "title": "Inherited self-spacing - layer",
+      "class_name": "MaxSDK::QMaxLegacyRollup",
+      "category": 170,
+      "open": true,
+      "explicitly_hidden": false,
+      "width": 212,
+      "height": 111,
+      "x": 0,
+      "y": 4210,
+      "parent_id": 2616002728480,
+      "global_x": 1696,
+      "ancestors": [
+        {
+          "class_name": "QWidget",
+          "name": "QmaxRollupContainer_ContentPanel",
+          "width": 212,
+          "height": 5595
+        },
+        {
+          "class_name": "QWidget",
+          "name": "qt_scrollarea_viewport",
+          "width": 212,
+          "height": 711
+        },
+        {
+          "class_name": "CommandPanelRollupContainer",
+          "name": "MaxSDK::QMaxLegacyRollupContainer",
+          "width": 222,
+          "height": 711
+        },
+        {
+          "class_name": "QtCmdPanelWidget",
+          "name": "",
+          "width": 449,
+          "height": 717
+        },
+        {
+          "class_name": "QStackedWidget",
+          "name": "qt_tabwidget_stackedwidget",
+          "width": 449,
+          "height": 717
+        },
+        {
+          "class_name": "MaxSDK::QMaxTabWidget",
+          "name": "",
+          "width": 449,
+          "height": 745
+        },
+        {
+          "class_name": "CommandPanel",
+          "name": "CommandPanel",
+          "width": 449,
+          "height": 754
+        },
+        {
+          "class_name": "QmaxApplicationWindow",
+          "name": "",
+          "width": 1920,
+          "height": 1009
+        }
+      ]
+    },
+    {
+      "title": "Population and seed - layer",
+      "class_name": "MaxSDK::QMaxLegacyRollup",
+      "category": 80,
+      "open": true,
+      "explicitly_hidden": false,
+      "width": 212,
+      "height": 205,
+      "x": 0,
+      "y": 1179,
+      "parent_id": 2616002728480,
+      "global_x": 1696,
+      "ancestors": [
+        {
+          "class_name": "QWidget",
+          "name": "QmaxRollupContainer_ContentPanel",
+          "width": 212,
+          "height": 5595
+        },
+        {
+          "class_name": "QWidget",
+          "name": "qt_scrollarea_viewport",
+          "width": 212,
+          "height": 711
+        },
+        {
+          "class_name": "CommandPanelRollupContainer",
+          "name": "MaxSDK::QMaxLegacyRollupContainer",
+          "width": 222,
+          "height": 711
+        },
+        {
+          "class_name": "QtCmdPanelWidget",
+          "name": "",
+          "width": 449,
+          "height": 717
+        },
+        {
+          "class_name": "QStackedWidget",
+          "name": "qt_tabwidget_stackedwidget",
+          "width": 449,
+          "height": 717
+        },
+        {
+          "class_name": "MaxSDK::QMaxTabWidget",
+          "name": "",
+          "width": 449,
+          "height": 745
+        },
+        {
+          "class_name": "CommandPanel",
+          "name": "CommandPanel",
+          "width": 449,
+          "height": 754
+        },
+        {
+          "class_name": "QmaxApplicationWindow",
+          "name": "",
+          "width": 1920,
+          "height": 1009
+        }
+      ]
+    },
+    {
+      "title": "Background fill - paint set",
+      "class_name": "MaxSDK::QMaxLegacyRollup",
+      "category": 120,
+      "open": true,
+      "explicitly_hidden": false,
+      "width": 212,
+      "height": 271,
+      "x": 0,
+      "y": 2559,
+      "parent_id": 2616002728480,
+      "global_x": 1696,
+      "ancestors": [
+        {
+          "class_name": "QWidget",
+          "name": "QmaxRollupContainer_ContentPanel",
+          "width": 212,
+          "height": 5595
+        },
+        {
+          "class_name": "QWidget",
+          "name": "qt_scrollarea_viewport",
+          "width": 212,
+          "height": 711
+        },
+        {
+          "class_name": "CommandPanelRollupContainer",
+          "name": "MaxSDK::QMaxLegacyRollupContainer",
+          "width": 222,
+          "height": 711
+        },
+        {
+          "class_name": "QtCmdPanelWidget",
+          "name": "",
+          "width": 449,
+          "height": 717
+        },
+        {
+          "class_name": "QStackedWidget",
+          "name": "qt_tabwidget_stackedwidget",
+          "width": 449,
+          "height": 717
+        },
+        {
+          "class_name": "MaxSDK::QMaxTabWidget",
+          "name": "",
+          "width": 449,
+          "height": 745
+        },
+        {
+          "class_name": "CommandPanel",
+          "name": "CommandPanel",
+          "width": 449,
+          "height": 754
+        },
+        {
+          "class_name": "QmaxApplicationWindow",
+          "name": "",
+          "width": 1920,
+          "height": 1009
+        }
+      ]
+    },
+    {
+      "title": "Source rectangles - own / inherited",
+      "class_name": "MaxSDK::QMaxLegacyRollup",
+      "category": 70,
+      "open": true,
+      "explicitly_hidden": false,
+      "width": 212,
+      "height": 357,
+      "x": 0,
+      "y": 820,
+      "parent_id": 2616002728480,
+      "global_x": 1696,
+      "ancestors": [
+        {
+          "class_name": "QWidget",
+          "name": "QmaxRollupContainer_ContentPanel",
+          "width": 212,
+          "height": 5595
+        },
+        {
+          "class_name": "QWidget",
+          "name": "qt_scrollarea_viewport",
+          "width": 212,
+          "height": 711
+        },
+        {
+          "class_name": "CommandPanelRollupContainer",
+          "name": "MaxSDK::QMaxLegacyRollupContainer",
+          "width": 222,
+          "height": 711
+        },
+        {
+          "class_name": "QtCmdPanelWidget",
+          "name": "",
+          "width": 449,
+          "height": 717
+        },
+        {
+          "class_name": "QStackedWidget",
+          "name": "qt_tabwidget_stackedwidget",
+          "width": 449,
+          "height": 717
+        },
+        {
+          "class_name": "MaxSDK::QMaxTabWidget",
+          "name": "",
+          "width": 449,
+          "height": 745
+        },
+        {
+          "class_name": "CommandPanel",
+          "name": "CommandPanel",
+          "width": 449,
+          "height": 754
+        },
+        {
+          "class_name": "QmaxApplicationWindow",
+          "name": "",
+          "width": 1920,
+          "height": 1009
+        }
+      ]
+    },
+    {
+      "title": "Random transforms - layer",
+      "class_name": "MaxSDK::QMaxLegacyRollup",
+      "category": 130,
+      "open": true,
+      "explicitly_hidden": false,
+      "width": 212,
+      "height": 642,
+      "x": 0,
+      "y": 2832,
+      "parent_id": 2616002728480,
+      "global_x": 1696,
+      "ancestors": [
+        {
+          "class_name": "QWidget",
+          "name": "QmaxRollupContainer_ContentPanel",
+          "width": 212,
+          "height": 5595
+        },
+        {
+          "class_name": "QWidget",
+          "name": "qt_scrollarea_viewport",
+          "width": 212,
+          "height": 711
+        },
+        {
+          "class_name": "CommandPanelRollupContainer",
+          "name": "MaxSDK::QMaxLegacyRollupContainer",
+          "width": 222,
+          "height": 711
+        },
+        {
+          "class_name": "QtCmdPanelWidget",
+          "name": "",
+          "width": 449,
+          "height": 717
+        },
+        {
+          "class_name": "QStackedWidget",
+          "name": "qt_tabwidget_stackedwidget",
+          "width": 449,
+          "height": 717
+        },
+        {
+          "class_name": "MaxSDK::QMaxTabWidget",
+          "name": "",
+          "width": 449,
+          "height": 745
+        },
+        {
+          "class_name": "CommandPanel",
+          "name": "CommandPanel",
+          "width": 449,
+          "height": 754
+        },
+        {
+          "class_name": "QmaxApplicationWindow",
+          "name": "",
+          "width": 1920,
+          "height": 1009
+        }
+      ]
+    },
+    {
+      "title": "Source assignment - layer",
+      "class_name": "MaxSDK::QMaxLegacyRollup",
+      "category": 140,
+      "open": true,
+      "explicitly_hidden": false,
+      "width": 212,
+      "height": 145,
+      "x": 0,
+      "y": 3476,
+      "parent_id": 2616002728480,
+      "global_x": 1696,
+      "ancestors": [
+        {
+          "class_name": "QWidget",
+          "name": "QmaxRollupContainer_ContentPanel",
+          "width": 212,
+          "height": 5595
+        },
+        {
+          "class_name": "QWidget",
+          "name": "qt_scrollarea_viewport",
+          "width": 212,
+          "height": 711
+        },
+        {
+          "class_name": "CommandPanelRollupContainer",
+          "name": "MaxSDK::QMaxLegacyRollupContainer",
+          "width": 222,
+          "height": 711
+        },
+        {
+          "class_name": "QtCmdPanelWidget",
+          "name": "",
+          "width": 449,
+          "height": 717
+        },
+        {
+          "class_name": "QStackedWidget",
+          "name": "qt_tabwidget_stackedwidget",
+          "width": 449,
+          "height": 717
+        },
+        {
+          "class_name": "MaxSDK::QMaxTabWidget",
+          "name": "",
+          "width": 449,
+          "height": 745
+        },
+        {
+          "class_name": "CommandPanel",
+          "name": "CommandPanel",
+          "width": 449,
+          "height": 754
+        },
+        {
+          "class_name": "QmaxApplicationWindow",
+          "name": "",
+          "width": 1920,
+          "height": 1009
+        }
+      ]
+    },
+    {
+      "title": "Statistics / Help",
+      "class_name": "MaxSDK::QMaxLegacyRollup",
+      "category": 190,
+      "open": true,
+      "explicitly_hidden": false,
+      "width": 212,
+      "height": 407,
+      "x": 0,
+      "y": 4500,
+      "parent_id": 2616002728480,
+      "global_x": 1696,
+      "ancestors": [
+        {
+          "class_name": "QWidget",
+          "name": "QmaxRollupContainer_ContentPanel",
+          "width": 212,
+          "height": 5595
+        },
+        {
+          "class_name": "QWidget",
+          "name": "qt_scrollarea_viewport",
+          "width": 212,
+          "height": 711
+        },
+        {
+          "class_name": "CommandPanelRollupContainer",
+          "name": "MaxSDK::QMaxLegacyRollupContainer",
+          "width": 222,
+          "height": 711
+        },
+        {
+          "class_name": "QtCmdPanelWidget",
+          "name": "",
+          "width": 449,
+          "height": 717
+        },
+        {
+          "class_name": "QStackedWidget",
+          "name": "qt_tabwidget_stackedwidget",
+          "width": 449,
+          "height": 717
+        },
+        {
+          "class_name": "MaxSDK::QMaxTabWidget",
+          "name": "",
+          "width": 449,
+          "height": 745
+        },
+        {
+          "class_name": "CommandPanel",
+          "name": "CommandPanel",
+          "width": 449,
+          "height": 754
+        },
+        {
+          "class_name": "QmaxApplicationWindow",
+          "name": "",
+          "width": 1920,
+          "height": 1009
+        }
+      ]
+    },
+    {
+      "title": "Brush coverage and strokes - paint set",
+      "class_name": "MaxSDK::QMaxLegacyRollup",
+      "category": 110,
+      "open": true,
+      "explicitly_hidden": false,
+      "width": 212,
+      "height": 491,
+      "x": 0,
+      "y": 2066,
+      "parent_id": 2616002728480,
+      "global_x": 1696,
+      "ancestors": [
+        {
+          "class_name": "QWidget",
+          "name": "QmaxRollupContainer_ContentPanel",
+          "width": 212,
+          "height": 5595
+        },
+        {
+          "class_name": "QWidget",
+          "name": "qt_scrollarea_viewport",
+          "width": 212,
+          "height": 711
+        },
+        {
+          "class_name": "CommandPanelRollupContainer",
+          "name": "MaxSDK::QMaxLegacyRollupContainer",
+          "width": 222,
+          "height": 711
+        },
+        {
+          "class_name": "QtCmdPanelWidget",
+          "name": "",
+          "width": 449,
+          "height": 717
+        },
+        {
+          "class_name": "QStackedWidget",
+          "name": "qt_tabwidget_stackedwidget",
+          "width": 449,
+          "height": 717
+        },
+        {
+          "class_name": "MaxSDK::QMaxTabWidget",
+          "name": "",
+          "width": 449,
+          "height": 745
+        },
+        {
+          "class_name": "CommandPanel",
+          "name": "CommandPanel",
+          "width": 449,
+          "height": 754
+        },
+        {
+          "class_name": "QmaxApplicationWindow",
+          "name": "",
+          "width": 1920,
+          "height": 1009
+        }
+      ]
+    },
+    {
+      "title": "Include / exclude areas - layer",
+      "class_name": "MaxSDK::QMaxLegacyRollup",
+      "category": 100,
+      "open": true,
+      "explicitly_hidden": false,
+      "width": 212,
+      "height": 433,
+      "x": 0,
+      "y": 1631,
+      "parent_id": 2616002728480,
+      "global_x": 1696,
+      "ancestors": [
+        {
+          "class_name": "QWidget",
+          "name": "QmaxRollupContainer_ContentPanel",
+          "width": 212,
+          "height": 5595
+        },
+        {
+          "class_name": "QWidget",
+          "name": "qt_scrollarea_viewport",
+          "width": 212,
+          "height": 711
+        },
+        {
+          "class_name": "CommandPanelRollupContainer",
+          "name": "MaxSDK::QMaxLegacyRollupContainer",
+          "width": 222,
+          "height": 711
+        },
+        {
+          "class_name": "QtCmdPanelWidget",
+          "name": "",
+          "width": 449,
+          "height": 717
+        },
+        {
+          "class_name": "QStackedWidget",
+          "name": "qt_tabwidget_stackedwidget",
+          "width": 449,
+          "height": 717
+        },
+        {
+          "class_name": "MaxSDK::QMaxTabWidget",
+          "name": "",
+          "width": 449,
+          "height": 745
+        },
+        {
+          "class_name": "CommandPanel",
+          "name": "CommandPanel",
+          "width": 449,
+          "height": 754
+        },
+        {
+          "class_name": "QmaxApplicationWindow",
+          "name": "",
+          "width": 1920,
+          "height": 1009
+        }
+      ]
+    },
+    {
+      "title": "Instance radii - CS Edit",
+      "class_name": "MaxSDK::QMaxLegacyRollup",
+      "category": 160,
+      "open": true,
+      "explicitly_hidden": false,
+      "width": 212,
+      "height": 261,
+      "x": 0,
+      "y": 3947,
+      "parent_id": 2616002728480,
+      "global_x": 1696,
+      "ancestors": [
+        {
+          "class_name": "QWidget",
+          "name": "QmaxRollupContainer_ContentPanel",
+          "width": 212,
+          "height": 5595
+        },
+        {
+          "class_name": "QWidget",
+          "name": "qt_scrollarea_viewport",
+          "width": 212,
+          "height": 711
+        },
+        {
+          "class_name": "CommandPanelRollupContainer",
+          "name": "MaxSDK::QMaxLegacyRollupContainer",
+          "width": 222,
+          "height": 711
+        },
+        {
+          "class_name": "QtCmdPanelWidget",
+          "name": "",
+          "width": 449,
+          "height": 717
+        },
+        {
+          "class_name": "QStackedWidget",
+          "name": "qt_tabwidget_stackedwidget",
+          "width": 449,
+          "height": 717
+        },
+        {
+          "class_name": "MaxSDK::QMaxTabWidget",
+          "name": "",
+          "width": 449,
+          "height": 745
+        },
+        {
+          "class_name": "CommandPanel",
+          "name": "CommandPanel",
+          "width": 449,
+          "height": 754
+        },
+        {
+          "class_name": "QmaxApplicationWindow",
+          "name": "",
+          "width": 1920,
+          "height": 1009
+        }
+      ]
+    },
+    {
+      "title": "Models and settings - paint set",
+      "class_name": "MaxSDK::QMaxLegacyRollup",
+      "category": 60,
+      "open": true,
+      "explicitly_hidden": false,
+      "width": 212,
+      "height": 481,
+      "x": 0,
+      "y": 337,
+      "parent_id": 2616002728480,
+      "global_x": 1696,
+      "ancestors": [
+        {
+          "class_name": "QWidget",
+          "name": "QmaxRollupContainer_ContentPanel",
+          "width": 212,
+          "height": 5595
+        },
+        {
+          "class_name": "QWidget",
+          "name": "qt_scrollarea_viewport",
+          "width": 212,
+          "height": 711
+        },
+        {
+          "class_name": "CommandPanelRollupContainer",
+          "name": "MaxSDK::QMaxLegacyRollupContainer",
+          "width": 222,
+          "height": 711
+        },
+        {
+          "class_name": "QtCmdPanelWidget",
+          "name": "",
+          "width": 449,
+          "height": 717
+        },
+        {
+          "class_name": "QStackedWidget",
+          "name": "qt_tabwidget_stackedwidget",
+          "width": 449,
+          "height": 717
+        },
+        {
+          "class_name": "MaxSDK::QMaxTabWidget",
+          "name": "",
+          "width": 449,
+          "height": 745
+        },
+        {
+          "class_name": "CommandPanel",
+          "name": "CommandPanel",
+          "width": 449,
+          "height": 754
+        },
+        {
+          "class_name": "QmaxApplicationWindow",
+          "name": "",
+          "width": 1920,
+          "height": 1009
+        }
+      ]
+    },
+    {
+      "title": "Spacing rules - selected scope",
+      "class_name": "MaxSDK::QMaxLegacyRollup",
+      "category": 150,
+      "open": true,
+      "explicitly_hidden": false,
+      "width": 212,
+      "height": 322,
+      "x": 0,
+      "y": 3623,
+      "parent_id": 2616002728480,
+      "global_x": 1696,
+      "ancestors": [
+        {
+          "class_name": "QWidget",
+          "name": "QmaxRollupContainer_ContentPanel",
+          "width": 212,
+          "height": 5595
+        },
+        {
+          "class_name": "QWidget",
+          "name": "qt_scrollarea_viewport",
+          "width": 212,
+          "height": 711
+        },
+        {
+          "class_name": "CommandPanelRollupContainer",
+          "name": "MaxSDK::QMaxLegacyRollupContainer",
+          "width": 222,
+          "height": 711
+        },
+        {
+          "class_name": "QtCmdPanelWidget",
+          "name": "",
+          "width": 449,
+          "height": 717
+        },
+        {
+          "class_name": "QStackedWidget",
+          "name": "qt_tabwidget_stackedwidget",
+          "width": 449,
+          "height": 717
+        },
+        {
+          "class_name": "MaxSDK::QMaxTabWidget",
+          "name": "",
+          "width": 449,
+          "height": 745
+        },
+        {
+          "class_name": "CommandPanel",
+          "name": "CommandPanel",
+          "width": 449,
+          "height": 754
+        },
+        {
+          "class_name": "QmaxApplicationWindow",
+          "name": "",
+          "width": 1920,
+          "height": 1009
+        }
+      ]
+    },
+    {
+      "title": "Target and retry limits - layer",
+      "class_name": "MaxSDK::QMaxLegacyRollup",
+      "category": 90,
+      "open": true,
+      "explicitly_hidden": false,
+      "width": 212,
+      "height": 243,
+      "x": 0,
+      "y": 1386,
+      "parent_id": 2616002728480,
+      "global_x": 1696,
+      "ancestors": [
+        {
+          "class_name": "QWidget",
+          "name": "QmaxRollupContainer_ContentPanel",
+          "width": 212,
+          "height": 5595
+        },
+        {
+          "class_name": "QWidget",
+          "name": "qt_scrollarea_viewport",
+          "width": 212,
+          "height": 711
+        },
+        {
+          "class_name": "CommandPanelRollupContainer",
+          "name": "MaxSDK::QMaxLegacyRollupContainer",
+          "width": 222,
+          "height": 711
+        },
+        {
+          "class_name": "QtCmdPanelWidget",
+          "name": "",
+          "width": 449,
+          "height": 717
+        },
+        {
+          "class_name": "QStackedWidget",
+          "name": "qt_tabwidget_stackedwidget",
+          "width": 449,
+          "height": 717
+        },
+        {
+          "class_name": "MaxSDK::QMaxTabWidget",
+          "name": "",
+          "width": 449,
+          "height": 745
+        },
+        {
+          "class_name": "CommandPanel",
+          "name": "CommandPanel",
+          "width": 449,
+          "height": 754
+        },
+        {
+          "class_name": "QmaxApplicationWindow",
+          "name": "",
+          "width": 1920,
+          "height": 1009
+        }
+      ]
+    }
+  ],
+  "expected_pages": 16,
+  "artist_scene_opened": false,
+  "computer_use": false,
+  "pointer_test": false,
+  "visual_qualification": false
+}

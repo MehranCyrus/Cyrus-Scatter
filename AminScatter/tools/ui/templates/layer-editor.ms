@@ -102,6 +102,7 @@ fn CyrusOpenLayerEditor root owner = (
                     else (r.controlsReady=false;if changedOwner and isProperty r #obj do r.obj=undefined)
                 )
                 lastSet=root.selectedPaintSet owner
+                if root.mainUI.controlsReady and not root.mainUI.binding do root.mainUI.bindEditors()
                 refreshStats();binding=previous;true
             )catch(binding=previous;throw())
         )
@@ -109,12 +110,13 @@ fn CyrusOpenLayerEditor root owner = (
             if binding or closing do return false
             if not validOwner() then (CyrusCloseLayerEditor();false) else bindEditors()
         )
-        fn showTopic index = (
+        fn showTopic index rebind:false = (
             if index<1 or index>6 do return false
             if topic==index and built[index] do (
                 local tabs=#(assetsTab,populationTab,paintTab,transformTab,spacingTab,statisticsTab)
                 local previous=binding;binding=true;tabs[index].checked=true;binding=previous
-                refreshStats();return true
+                if rebind then bindEditors() else refreshStats()
+                return true
             )
             if topic!=index do stopTools()
             topic=index
@@ -151,7 +153,7 @@ fn CyrusOpenLayerEditor root owner = (
             if not validOwner() do (CyrusCloseLayerEditor();return false)
             local nextTopic=1,state=undefined
             for row in ownerStates where row[1]==owner.layerID do (nextTopic=row[2];state=row)
-            showTopic nextTopic
+            showTopic nextTopic rebind:true
             if state!=undefined do for r in editors do for row in state[3] where row[1]==r do r.open=row[2]
             true
         )

@@ -1,5 +1,7 @@
 # Cyrus Scatter: current system and next engineering loops
 
+**Subsequent 0.72 implementation:** the [integrated UI campaign](../Integrated_UI_0.72_2026-10-06/README.md) is the current version/workflow authority. It adds selected-layer Modify sections, optional popup binding fixes and direct Scatter Diagnostics. This folder retains its dated architectural baseline; pending claims below are superseded only where a later receipt explicitly qualifies them.
+
 **6 October continuation:** use [the live runtime campaign](../Live_Runtime_2026-10-06/README.md) for the latest implementation, tests and remaining work. It qualifies the bounded recorder, twelve-tool/seven-resource MCP source and runtime scheduling on a frozen Max 2027 pair. Policy 3 remains read-only; ML and release tracks remain separate. The dated conclusions below describe this document's 5 October snapshot, including then-unqualified concurrent work.
 
 5 October 2026 · **Documentation reconciliation only.** This is the current navigation and planning authority for the local 0.7.1 development source. It does not qualify a release, activate logging, expand MCP permissions or implement ML.

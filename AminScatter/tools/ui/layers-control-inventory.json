@@ -195,6 +195,24 @@
         "kind": "button",
         "name": "downButton"
       }
+    ],
+    "diagnostics": [
+      {
+        "kind": "button",
+        "name": "startButton"
+      },
+      {
+        "kind": "button",
+        "name": "stopButton"
+      },
+      {
+        "kind": "button",
+        "name": "saveButton"
+      },
+      {
+        "kind": "button",
+        "name": "refreshButton"
+      }
     ]
   },
   "layer": {

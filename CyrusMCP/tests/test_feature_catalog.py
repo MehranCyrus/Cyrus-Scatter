@@ -9,7 +9,8 @@ def test_catalog_accounts_for_every_current_control_and_feature_family():
     expected={(group,section,c["name"],c["kind"]) for group,sections in inventory.items() if isinstance(sections,dict)
               for section,controls in sections.items() for c in controls}
     actual={(c["group"],c["section"],c["name"],c["kind"]) for c in catalog["controls"]}
-    assert expected==actual and len(actual)==len(catalog["controls"])==241
+    assert expected==actual and len(actual)==len(catalog["controls"])==245
+    assert catalog['development_version']=='0.72'
     features={f["feature_id"] for f in catalog["features"]}
     assert features=={f"C{i:02}" for i in range(1,35)}
     assert all(set(c["capabilities"])<=features and c["remote_control"] for c in catalog["controls"])

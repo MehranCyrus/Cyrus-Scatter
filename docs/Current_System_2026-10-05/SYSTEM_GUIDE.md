@@ -1,5 +1,7 @@
 # System and workflow guide
 
+**0.72 artist location update:** select a layer in Modify > Layer Manager and use its sixteen native sections below. Edit layer in window... is optional. Modify > Diagnostics starts/stops/saves bounded recording without MCP. See [current workflow](../Integrated_UI_0.72_2026-10-06/WORKFLOW.md); the ownership and evaluation contracts below remain the dated baseline.
+
 This guide describes local 0.7.1 source. Detailed option contracts remain in [procedural requirements](../Procedural_Evaluation_2026-10-04/11_OPTION_CONTRACTS.md). Availability depends on evaluation policy; the native UI is broader than MCP.
 
 ## Artist workflow and ownership

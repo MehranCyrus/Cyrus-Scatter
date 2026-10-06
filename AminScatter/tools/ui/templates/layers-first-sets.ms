@@ -14,7 +14,7 @@
         fn bind layer = (
             binding=true;members=root.layerSets owner
             local leaf=currentSet()
-            setList.items=for member in members collect member.paintSetName
+            CyrusRetainListItems setList (for member in members collect member.paintSetName)
             setList.selection=findItem members leaf
             nameEdit.text=leaf.paintSetName;weightSpin.value=leaf.paintSetWeight
             enabledCheck.checked=leaf.paintSetEnabled;visibleCheck.checked=leaf.paintSetVisible
@@ -24,7 +24,11 @@
         )
         on setsUI open do bind owner
         on setsUI close do controlsReady=false
-        on setList selected i do if not binding and i>0 do (CyrusStopBrush();owner.uiPaintSetID=members[i].layerID;panel.bindEditors())
+        fn selectSet i = (
+            if binding or i<1 or i>members.count or (currentSet())==members[i] do return false
+            CyrusStopBrush();owner.uiPaintSetID=members[i].layerID;panel.bindEditors();true
+        )
+        on setList selected i do selectSet i
         on addButton pressed do try(root.addPaintSet owner label:("Paint "+(((root.layerSets owner).count+1) as string));panel.bind())catch(messageBox (getCurrentException()) title:"Cyrus paint set")
         on removeButton pressed do try(root.removePaintSet (currentSet());panel.bind())catch(messageBox (getCurrentException()) title:"Cyrus paint set")
         on nameEdit entered value do if not binding and value!="" do (undo "Cyrus set name" on (currentSet()).paintSetName=value;panel.bindEditors())
