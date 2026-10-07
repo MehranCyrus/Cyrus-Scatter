@@ -1,0 +1,263 @@
+{
+  "campaigns": {
+    "core": "unified073-selectionfix-core01",
+    "ui": "unified073-selectionfix-ui01",
+    "playback": "unified073-selectionfix-playback01",
+    "navigation": "unified073-selectionfix-100k01",
+    "mcp-direct": "unified073-selectionfix-mcp-direct01",
+    "mcp-panel": "unified073-selectionfix-mcp-panel01",
+    "analyzer-assignment": "unified073-selectionfix-analyzer01",
+    "retirement": "unified073-selectionfix-retirement01",
+    "selection": "unified073-selectionfix-selection06"
+  },
+  "copied": [
+    {
+      "path": "native-max2026/receipt.json",
+      "source": "build/unified-073-20261006/native-max2026/receipt.json",
+      "sha256": "391ae6658e2d3c39b0abc335537e6e7352f0d991a806869740c0f66cae25d1a4",
+      "bytes": 8368
+    },
+    {
+      "path": "native-max2026/tests.log",
+      "source": "build/unified-073-20261006/native-max2026/tests.log",
+      "sha256": "952666c354310c5be4c75af6ab76678425371e8b5c7933f20dafbfef9002d222",
+      "bytes": 1833
+    },
+    {
+      "path": "analyzer-max2026/receipt.json",
+      "source": "build/unified-073-20261006/analyzer-max2026/receipt.json",
+      "sha256": "52f1685bd7befe602904daed990c26dc8faec7348ca7b1b883126d5b4b91ac82",
+      "bytes": 1749
+    },
+    {
+      "path": "analyzer-max2026/tests.log",
+      "source": "build/unified-073-20261006/analyzer-max2026/tests.log",
+      "sha256": "ae23c42363421003db356201e9bf9a0000b4d55e4cf2803eb965ceb715ff7f74",
+      "bytes": 396
+    },
+    {
+      "path": "native-max2027/receipt.json",
+      "source": "build/unified-073-20261006/native-max2027/receipt.json",
+      "sha256": "dbb8224368c95c31a7e9ffcffdd82889fc649783110c83e6849ec2661eaee4a7",
+      "bytes": 8368
+    },
+    {
+      "path": "native-max2027/tests.log",
+      "source": "build/unified-073-20261006/native-max2027/tests.log",
+      "sha256": "3a8015b3e2f6beb753fc08a3c4e89064297d66c7ff1e61a9620ed40220ba9cf2",
+      "bytes": 1833
+    },
+    {
+      "path": "analyzer-max2027/receipt.json",
+      "source": "build/unified-073-20261006/analyzer-max2027/receipt.json",
+      "sha256": "cc8fc3e49cd5d914c6194d58c817fc98594d8f0a0112932484b14044d69fdc7f",
+      "bytes": 1749
+    },
+    {
+      "path": "analyzer-max2027/tests.log",
+      "source": "build/unified-073-20261006/analyzer-max2027/tests.log",
+      "sha256": "8d6a89b5a0b0adfcfb15a6dc6e23263b0ce9e56f73d34db0d646a18d1f394c6f",
+      "bytes": 396
+    },
+    {
+      "path": "python-tests.xml",
+      "source": "build/unified-073-20261006/python-tests.xml",
+      "sha256": "ed83f87deaa2412606d23a19e68e2ceefda67d23a0683481b48666825a20c2a0",
+      "bytes": 17262
+    },
+    {
+      "path": "generated-check.json",
+      "source": "build/unified-073-20261006/generated-check.json",
+      "sha256": "0a9e778f060cb3cd2735b14cd620c2555dd761f01cfa8be5868d18c253cd7e64",
+      "bytes": 541
+    },
+    {
+      "path": "core/qualification.json",
+      "source": "build/mcp-qualification/unified073-selectionfix-core01/qualification.json",
+      "sha256": "4778992f6dda3a9808de8b6a9027709b9f625946eccf9bea847253ca9f78b997",
+      "bytes": 24247
+    },
+    {
+      "path": "core/core073.json",
+      "source": "build/mcp-qualification/unified073-selectionfix-core01/core073.json",
+      "sha256": "3c782f7651143bcdaa8cc5454286eeb53c40331c85cf5163701a5bfed3467a7a",
+      "bytes": 731
+    },
+    {
+      "path": "core/containers073.json",
+      "source": "build/mcp-qualification/unified073-selectionfix-core01/containers073.json",
+      "sha256": "af39c910b34deb508088cdae240cefc2bf54880b92d6af3e98a481b57c833682",
+      "bytes": 369
+    },
+    {
+      "path": "core/ports073.json",
+      "source": "build/mcp-qualification/unified073-selectionfix-core01/ports073.json",
+      "sha256": "28b06f92880f777b23b0880421fc4d45f42010a95a9febfb4b0090a0a220fb43",
+      "bytes": 387
+    },
+    {
+      "path": "core/groups073.json",
+      "source": "build/mcp-qualification/unified073-selectionfix-core01/groups073.json",
+      "sha256": "99826751397ee3f534aaca180b34a4d0c86947ae65d0e3590c717e67de7dbab9",
+      "bytes": 86
+    },
+    {
+      "path": "core/persistence073.json",
+      "source": "build/mcp-qualification/unified073-selectionfix-core01/persistence073.json",
+      "sha256": "ec0b9155231ade53bde9203be73cee13a93c2f209bb46fdf8e8f51ec2e276ca1",
+      "bytes": 156
+    },
+    {
+      "path": "core/group-move-diagnostics.json",
+      "source": "build/mcp-qualification/unified073-selectionfix-core01/group-move-diagnostics.json",
+      "sha256": "f327b5f6ac254ad4c6909ee8f707f5df99cbf7d1614a3070efb3fc8ecd3e6928",
+      "bytes": 3007
+    },
+    {
+      "path": "core/group-retained-comparison.json",
+      "source": "build/mcp-qualification/unified073-selectionfix-core01/group-retained-comparison.json",
+      "sha256": "8e69813cc848a081e5c4201874a96d25c243f591748076a150af825705c6e141",
+      "bytes": 138
+    },
+    {
+      "path": "ui/qualification.json",
+      "source": "build/mcp-qualification/unified073-selectionfix-ui01/qualification.json",
+      "sha256": "01255a16861b24126049e41cddbf569111850b494bd6d1e0798f3c399cfd7b5e",
+      "bytes": 22590
+    },
+    {
+      "path": "ui/ui073-acceptance.json",
+      "source": "build/mcp-qualification/unified073-selectionfix-ui01/ui073-acceptance.json",
+      "sha256": "3938e1c1b8712b971341e6176806abfad7bb29f47c8679944beab4a18677d0d9",
+      "bytes": 163
+    },
+    {
+      "path": "ui/corona-stop-073.json",
+      "source": "build/mcp-qualification/unified073-selectionfix-ui01/corona-stop-073.json",
+      "sha256": "d64660f114e42480de204b1441f98748ce05b0969e987faaad8aa9b9b03d03b4",
+      "bytes": 68
+    },
+    {
+      "path": "ui/idle-qualification.json",
+      "source": "build/mcp-qualification/unified073-selectionfix-ui01/idle-qualification.json",
+      "sha256": "bb8e8fbb1ad7b81aa52b104254c9e22141ad5137aaa002ceb04976f57d0a94b4",
+      "bytes": 4885
+    },
+    {
+      "path": "ui/diagnostic-overhead.json",
+      "source": "build/mcp-qualification/unified073-selectionfix-ui01/diagnostic-overhead.json",
+      "sha256": "60937a160511a4679d3013b86d22e21837ecc9eca9e5393a3191897f6592a648",
+      "bytes": 250
+    },
+    {
+      "path": "playback/qualification.json",
+      "source": "build/mcp-qualification/unified073-selectionfix-playback01/qualification.json",
+      "sha256": "b68c729c5e311fe56639af19421b00e51d65ff1c70b16bffb4db56e96a997e64",
+      "bytes": 22064
+    },
+    {
+      "path": "playback/result.txt",
+      "source": "build/mcp-qualification/unified073-selectionfix-playback01/result.txt",
+      "sha256": "c9aba6ebb6ce353d0b62258e108dad1af06f2c5cef6e3b69c1c3eb636515b3cb",
+      "bytes": 1559
+    },
+    {
+      "path": "navigation/qualification.json",
+      "source": "build/mcp-qualification/unified073-selectionfix-100k01/qualification.json",
+      "sha256": "3c9b510f3cb611aee5f56ccfadbfaaea33b96a4da6499f8af31044fc1cf62d6a",
+      "bytes": 22108
+    },
+    {
+      "path": "navigation/unified073-final-100k-navigation.json",
+      "source": "build/mcp-qualification/unified073-selectionfix-100k01/unified073-final-100k-navigation.json",
+      "sha256": "d6d27d458b441126dc71cf7a15cfe67e94ab90aaf0ba42359bf039c1626ef392",
+      "bytes": 4710
+    },
+    {
+      "path": "mcp-direct/qualification.json",
+      "source": "build/mcp-qualification/unified073-selectionfix-mcp-direct01/qualification.json",
+      "sha256": "36108601bce78806792e4be309f6b30dac0d7e33d5e9de165221e85f86b9ccee",
+      "bytes": 21961
+    },
+    {
+      "path": "mcp-direct/mcp073.json",
+      "source": "build/mcp-qualification/unified073-selectionfix-mcp-direct01/mcp073.json",
+      "sha256": "54b0f4665dec103bbadac547935e93e9a9cf78bfafca8b37401039fa9e8408b9",
+      "bytes": 820
+    },
+    {
+      "path": "mcp-panel/qualification.json",
+      "source": "build/mcp-qualification/unified073-selectionfix-mcp-panel01/qualification.json",
+      "sha256": "9e9c206c15a43cc801a8bb21a46cdf1f5e51cb93da881ac93b9e090356f0ef9d",
+      "bytes": 22549
+    },
+    {
+      "path": "mcp-panel/panel-runtime-result.json",
+      "source": "build/mcp-qualification/unified073-selectionfix-mcp-panel01/panel-runtime-result.json",
+      "sha256": "037c8f18b3b3bf201a2b1f4e6a288ba5ab2a623cc963cecd59aaa036c74aa8ba",
+      "bytes": 28385
+    },
+    {
+      "path": "mcp-panel/panel-save-reopen.json",
+      "source": "build/mcp-qualification/unified073-selectionfix-mcp-panel01/panel-save-reopen.json",
+      "sha256": "d3e5d11243093dda760807f0c3dcdf812c11039a1da80ab57b41726142fd2685",
+      "bytes": 20484
+    },
+    {
+      "path": "analyzer-assignment/qualification.json",
+      "source": "build/mcp-qualification/unified073-selectionfix-analyzer01/qualification.json",
+      "sha256": "2ed661a2583117814da3c2d19466ece5631a8702381e9350ba320775822afb2c",
+      "bytes": 22869
+    },
+    {
+      "path": "analyzer-assignment/analyzer-assignment073.json",
+      "source": "build/mcp-qualification/unified073-selectionfix-analyzer01/analyzer-assignment073.json",
+      "sha256": "19bd25320e0d2b504ea27df320438a8672467d5699bac398b7b2f38ede41a24c",
+      "bytes": 202
+    },
+    {
+      "path": "analyzer-assignment/baseline-parity073.json",
+      "source": "build/mcp-qualification/unified073-selectionfix-analyzer01/baseline-parity073.json",
+      "sha256": "eb732e7cff171d41391139b1d353a8071fb77336be007de5e90d83e6b90802a6",
+      "bytes": 104
+    },
+    {
+      "path": "retirement/qualification.json",
+      "source": "build/mcp-qualification/unified073-selectionfix-retirement01/qualification.json",
+      "sha256": "244df78546ffa2e04eb19acd65365b851ab6d6f88bde51f0bede4a7543f8851a",
+      "bytes": 22144
+    },
+    {
+      "path": "retirement/retirement073.json",
+      "source": "build/mcp-qualification/unified073-selectionfix-retirement01/retirement073.json",
+      "sha256": "a7d5b18cbed94993351b812132713204c99060ceb3d840174409de93192191ff",
+      "bytes": 142
+    },
+    {
+      "path": "selection/qualification.json",
+      "source": "build/mcp-qualification/unified073-selectionfix-selection06/qualification.json",
+      "sha256": "aec800a859b8ab38ee6505eabc266d52f943f48b9bfc5d4b5fc5e58e9a735108",
+      "bytes": 27429
+    },
+    {
+      "path": "selection/container-selection073.json",
+      "source": "build/mcp-qualification/unified073-selectionfix-selection06/container-selection073.json",
+      "sha256": "c93d9d9306155b8728b9569f594e13c034e0e24cf8f2072397d4b346fd5c30ff",
+      "bytes": 589
+    },
+    {
+      "path": "selection/selection-reopen-warmup.json",
+      "source": "build/mcp-qualification/unified073-selectionfix-selection06/selection-reopen-warmup.json",
+      "sha256": "40d92970bae34ff99557ef826b862094703f982d16c5b2da4ee53a3f675a46c8",
+      "bytes": 339
+    },
+    {
+      "path": "selection/selection-counter-comparison.json",
+      "source": "build/mcp-qualification/unified073-selectionfix-selection06/selection-counter-comparison.json",
+      "sha256": "f97855d9fb8e8a04f4ec2f9a1f3e294a2c02b014c19c27fb019622a17cdbf728",
+      "bytes": 468
+    }
+  ],
+  "private_material_excluded": "Connection descriptors, authentication secrets, journals, scenes, binaries, full private logs and vendor analysis",
+  "purpose": "Matching evidence, not every possible feature combination or production readiness"
+}

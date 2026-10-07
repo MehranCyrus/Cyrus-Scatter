@@ -1,0 +1,282 @@
+{
+  "passed": true,
+  "launch": {
+    "pid": 46088,
+    "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\full073-selection02",
+    "command": [
+      "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+      "-q",
+      "-i",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\full073-selection02\\max.ini",
+      "-p",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\full073-selection02\\plugins.ini",
+      "-U",
+      "MAXScript",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\full073-selection02\\start.ms",
+      "-listenerlog",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\full073-selection02\\listener.log"
+    ],
+    "binaries": {
+      "AminScatter.dlx": "146a1adafe16e71829841b3886804b9d627e77fb1b80e1ca094cd50111673d82",
+      "CyrusBrush.dlx": "48cf18266ada5f36acb967025de592a193f1c48f43d2a3800c94cd7ca7784006",
+      "CyrusBrushStorage.dlh": "6b02436c7c83322b3b7874ae03285084dddf7a3197ae7bb573d38b5ff0253799",
+      "CyrusScatterEdit.dlm": "a1fd381984943b1b8ed20cfa1a9d8ed31187d95dec7fddbf81ebd4a716deb31a"
+    },
+    "script_sha256": "15390e733aac8a02433bfbc938f61fbe95f7f41eb35102baedf100dfe6c1a268",
+    "normal_profile_modified": false,
+    "development_transport": true
+  },
+  "computer_use": false,
+  "fixtures": {
+    "tools\\procedural_lab\\Max_Procedural_07_Acceptance.ms": "c7673c0d3dbfc8af537880935543332dbf1f77271e81666a8d9d18478726c97c",
+    "tools\\procedural_lab\\Max_Unified_073_Selection.ms": "13c18b82b528d6371aeddbf063bc6d2fc0c6eb771e7390e1871c09cac4d5e07c"
+  },
+  "code_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "probe_sha256": [
+    "38ac61a5ba9e185e29c19b0f5e5fb9a96bc6db3d5025a68b201a0a4129f4e1fd",
+    "a7354ba4acaedc331cd36cdfa4ede7d8313835d9a976152c491132436fab4301",
+    "8ab9b30805fa8ac94ec61e7ae20b9937d1a1de75880738bd324021866f1d4e38",
+    "83df30987ab8da67b3832822e781e8b63fe7bc4720c9dc7c6746b7b73b4f361d",
+    "a7354ba4acaedc331cd36cdfa4ede7d8313835d9a976152c491132436fab4301",
+    "7c51a86b4b2d923bb6cff56f6f112774b5b78f312c665897c9f4c51e94cc389b",
+    "a7354ba4acaedc331cd36cdfa4ede7d8313835d9a976152c491132436fab4301",
+    "2817c8b4f1b40881b59bcf1ec4b4afc240a7ebe128226708ada97fde8a0a3c38",
+    "a7354ba4acaedc331cd36cdfa4ede7d8313835d9a976152c491132436fab4301",
+    "584b873e155c69acfab54d9dfdaa4e839b78de2201301fc117a1103c665c741e",
+    "a7354ba4acaedc331cd36cdfa4ede7d8313835d9a976152c491132436fab4301",
+    "e341f9914033b8c0fcd628c3855a9b1f2d3c71e4213e18d40628ae696e287c13",
+    "a7354ba4acaedc331cd36cdfa4ede7d8313835d9a976152c491132436fab4301",
+    "34b239be800dc421ba1747c461b2981033d2fee1dc7951e70a1825aba14205fd",
+    "d7a9e7e8fec24acf6a1f8d5e9802ab0ae77aea4c63c5776587c11f167c48ec3a",
+    "a9d047be0b365a9e2a8bbaf31973a76e285c22192e09f6c165e869337ea190a5",
+    "e0bb19a7a05308eaab468bf3a8e7b2a68ef287753997cc62687cd0a2a52f92de",
+    "a7354ba4acaedc331cd36cdfa4ede7d8313835d9a976152c491132436fab4301",
+    "8ab9b30805fa8ac94ec61e7ae20b9937d1a1de75880738bd324021866f1d4e38",
+    "9b82fcdf1dcad8e2f7d9c54b1b5003239764ee67b89a0bfedfad5b84640b4677"
+  ],
+  "probes": [
+    {
+      "index": 0,
+      "elapsed_s": 24.45299999997951,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/full073-selection02/probe-077ef58472634f9e8e995a86a4e87ce9.ms"
+    },
+    {
+      "index": 1,
+      "elapsed_s": 0.9220000000204891,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/full073-selection02/probe-c60a04011a2c40efa39a0fb5b68d9baa.ms"
+    },
+    {
+      "index": 2,
+      "elapsed_s": 2.422000000020489,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/full073-selection02/probe-f4a95795ec8a40438f3684054dbe18b8.ms"
+    },
+    {
+      "index": 3,
+      "elapsed_s": 0.2970000000204891,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/full073-selection02/probe-0901a31f867c47b682a56541546b4c48.ms"
+    },
+    {
+      "index": 4,
+      "elapsed_s": 0.4059999999590218,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/full073-selection02/probe-7aa75dbc7dfa45e5ae147de39707f561.ms"
+    },
+    {
+      "index": 5,
+      "elapsed_s": 0.3440000000409782,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/full073-selection02/probe-d4dc46167a23460b810eb79f9184705f.ms"
+    },
+    {
+      "index": 6,
+      "elapsed_s": 0.515999999945052,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/full073-selection02/probe-85ced8057dc34f79a52a8afe2d266933.ms"
+    },
+    {
+      "index": 7,
+      "elapsed_s": 2.125,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/full073-selection02/probe-2af11fab9b904c9d83511948e551b36c.ms"
+    },
+    {
+      "index": 8,
+      "elapsed_s": 0.609000000054948,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/full073-selection02/probe-c9952bff76b84ff394bcd4841d847f6c.ms"
+    },
+    {
+      "index": 9,
+      "elapsed_s": 1.922000000020489,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/full073-selection02/probe-41d946e7051a4b9b9d10ed70c3b4f711.ms"
+    },
+    {
+      "index": 10,
+      "elapsed_s": 0.2029999999795109,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/full073-selection02/probe-aea3b6617f2c40eeb8e971c9e06947f0.ms"
+    },
+    {
+      "index": 11,
+      "elapsed_s": 1.6089999999385327,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/full073-selection02/probe-2f10b255085f48c79e97953ee10c7aea.ms"
+    },
+    {
+      "index": 12,
+      "elapsed_s": 0.6099999999860302,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/full073-selection02/probe-0fa5f55014514a34a21ecb930b3e05eb.ms"
+    },
+    {
+      "index": 13,
+      "elapsed_s": 0.5150000000139698,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/full073-selection02/probe-3213a42361554ce58a8ffc4e93907181.ms"
+    },
+    {
+      "index": 14,
+      "elapsed_s": 0.20400000002700835,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/full073-selection02/probe-9ce7f46e0378493ba3435e0449f0ffdd.ms"
+    },
+    {
+      "index": 15,
+      "elapsed_s": 2.4209999999729916,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/full073-selection02/probe-135c666e64ab4f619a1ef5fbb9952b18.ms"
+    },
+    {
+      "index": 16,
+      "elapsed_s": 3.047000000020489,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/full073-selection02/probe-6b1a22202bf94e5ebdac43e11f331218.ms"
+    },
+    {
+      "index": 17,
+      "elapsed_s": 0.5,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/full073-selection02/probe-b391897d8010446393b7913196e22865.ms"
+    },
+    {
+      "index": 18,
+      "elapsed_s": 3.0320000000065193,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/full073-selection02/probe-177ed58094494f1180354af38f48ec70.ms"
+    },
+    {
+      "index": 19,
+      "elapsed_s": 0.21799999999348074,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/full073-selection02/probe-c174e384626b4d498aed6c53202bcdf9.ms"
+    }
+  ],
+  "normal_profile_before": {
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-01e8f6e316b7\\AminScatter.dlx": "1159785553bdd69431aaa6226b47217f01819df1d9bc443f44aadcab1eb20a75",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-01e8f6e316b7\\CyrusBrush.dlx": "3be69e177021a976b0e4fab4a0ba5c507b90d31528cfd86f758478e00284ebba",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-01e8f6e316b7\\CyrusBrushStorage.dlh": "6cc5a9ab7f07b0492e407f6a6ae19e4d2c807d0fb2ff90791260dff97139403d",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-01e8f6e316b7\\CyrusScatterEdit.dlm": "4ad6d6e50ca4f70b5953cd0d372f232a51c4702418dff68dca24f6bb0a3bf5c2",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-130d8d8db83e\\AminScatter.dlx": "a5278ea7138ea9dc9c44a7a42616990cdf78ac5c9043e98b8a422c3b3765c440",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-130d8d8db83e\\CyrusBrush.dlx": "c91859dbb67cfbde7f9c0f05aa7e8a360931b6a9f9fcb61163ea45c364a67cc0",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-130d8d8db83e\\CyrusBrushStorage.dlh": "2cc93df642ab8927467b95a632aa496f6ffa3b0b95a54b6dbe2f48c229e488ee",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-130d8d8db83e\\CyrusScatterEdit.dlm": "5fb12a35e1843643a96886dd795857aeb7d1b2c57f272fd1048cea5983390572",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-33177c188896\\AminScatter.dlx": "22dd0bd23f0e4ed35870259cf64e04804d942ca2789f9b302d183b1ddc805460",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-33177c188896\\CyrusBrush.dlx": "81fa571d26ecc964ed092145d3670f3a7bb0a9adafe9277b04ec9ebebf10d521",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-33177c188896\\CyrusBrushStorage.dlh": "af37357d992528f86c72863abe401f274da5b4e231dd387d34f792bfcc7d5649",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-33177c188896\\CyrusScatterEdit.dlm": "b28d97844d549a46dba085bfb4436f5c424fd1c95cd4c6e02cbbb49419e914eb",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-84fbd9598c2c\\AminScatter.dlx": "a3852a4e2d15f24fbcc8c2843390551d613fd91aa02f0a334e68bd51130ac39b",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-84fbd9598c2c\\CyrusBrush.dlx": "413c1fe7754bed2f856fdd5784dde60bc38a57ff1af4a3713dfad94f8ac426c0",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-84fbd9598c2c\\CyrusBrushStorage.dlh": "78dcf68d8a9fc4dcbd6945d2bc3ac7f6d526a618371b9c5eb36278d9e3dd9812",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-84fbd9598c2c\\CyrusScatterEdit.dlm": "828c82d8a0762698013761e1cab6365119c5627e41f0ab215703a59dd34e8e6f",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-889d44f94344\\AminScatter.dlx": "2e580f785c1fb8d43206fc631cc2409868502b222a74833c16e233e69c1230ac",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-889d44f94344\\CyrusBrush.dlx": "413c1fe7754bed2f856fdd5784dde60bc38a57ff1af4a3713dfad94f8ac426c0",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-889d44f94344\\CyrusBrushStorage.dlh": "78dcf68d8a9fc4dcbd6945d2bc3ac7f6d526a618371b9c5eb36278d9e3dd9812",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-889d44f94344\\CyrusScatterEdit.dlm": "828c82d8a0762698013761e1cab6365119c5627e41f0ab215703a59dd34e8e6f",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-b54e1d9bb026\\AminScatter.dlx": "7b5a133d8df7d762274efe8261c5644f15e4b90150092949ecd72f87a8b7a3e5",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-b54e1d9bb026\\CyrusBrush.dlx": "1d916aae2c651db4da2807327a2206cfb6315aec186ce99899633508b5e15418",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-b54e1d9bb026\\CyrusBrushStorage.dlh": "5061c0b2fb85fc46566edeab086f134b3ae3a2537c1952e63330a7ca9d4a3ea7",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-b54e1d9bb026\\CyrusScatterEdit.dlm": "828c82d8a0762698013761e1cab6365119c5627e41f0ab215703a59dd34e8e6f",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-f85eac579a9d\\AminScatter.dlx": "a666f17f49471d1130886d5b0c530cf61b62a0759e103c5b582dcf36fc882a6b",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-f85eac579a9d\\CyrusBrush.dlx": "d18936ca918bebb03303dac0da0703332da649ad3cd3c910512119a9597cd211",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-f85eac579a9d\\CyrusBrushStorage.dlh": "72e2ff37cbc2130f612ad930b95fabc50cd33d633d2f87caca542f71e26aa328",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-f85eac579a9d\\CyrusScatterEdit.dlm": "a12d3d9d5275a4c1e7ab7b313526f6a6b6372c71ae940ad1eeb175f0d535abc2",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\CyrusScatter.ms": "003b717f070bf07d6f7cae031afd4fb7b14f4d550549e5d16492ff73e8716162",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\INSTALL.txt": "9a3b302dfe01e420a4d28a60f9063d06f87a1888147ae624cb6ebed378815934",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\manifest.json": "5f50307287a52cce114b4419b8ee31f3cbb4cc36316a5b8926388bbce1b4ad27",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\Uninstall.ms": "59e2b84901fcefaae1dab59886cd2f4079df4f764c789238947e19c514b4ed49",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusSurfaceAnalyzer\\bin-max2027-e2318bd967cf\\CyrusSurfaceAnalyzer.dlx": "e2318bd967cf8b17ce1b1208e156c61a9f6361a80b8160c34c54bd2eb2a886de",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusSurfaceAnalyzer\\CyrusSurfaceAnalyzer.ms": "b9a1f1aa2ba7847566eb8f36bee711f9c64753572955ed4549f2f68669e5f923",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\Startup\\CyrusScatterStartup.ms": "fdf38b3bc83187eecb34b833bfff2751e78626e9e3dba41aa20a0ff7ff9e8405",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\Startup\\CyrusSurfaceAnalyzerStartup.ms": "fdef46e54790c5c6d893479a17c6c885e4ff39897d00f1eac6b8567f86c18425",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\usermacros\\CyrusScatter-CyrusScatter.mcr": null,
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\usermacros\\CyrusSurfaceAnalyzer-CyrusSurfaceAnalyzer.mcr": null,
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\plugins\\AminScatter.dlx": null,
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\plugins\\CyrusScatterEdit.dlm": null,
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\plugins\\CyrusBrush.dlx": null,
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\plugins\\CyrusBrushStorage.dlh": null,
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\plugins\\CyrusSurfaceAnalyzer.dlx": null
+  },
+  "host_python_sources": {
+    "CyrusMCP/cyrus_mcp/__init__.py": "1768a28ecf9c2546a436cf9517a42aa14d2065c6036dbda740f732c69dbf6983",
+    "CyrusMCP/cyrus_mcp/agent_help.py": "a46357a2e19e2fb26a26644af87270ddd9d7da155c6046f88c3e99961595afcf",
+    "CyrusMCP/cyrus_mcp/contracts.py": "53b86d44b365c296e4b912aa6589e64727841230e0a7991b55e10c2aeeba83ca",
+    "CyrusMCP/cyrus_mcp/design_lab/__init__.py": "00729161dd163b1ad5e88d8e3781d1ef2d00ca23896304c82508ba8c3d712943",
+    "CyrusMCP/cyrus_mcp/design_lab/__main__.py": "dd06b03774e29a3f19592b0c8ddb1de6eea4e1d0cbbcdbd6a2cdaf919eb978bb",
+    "CyrusMCP/cyrus_mcp/design_lab/ranking.py": "322fd803267214b3116dd55de98810954691302e9efee7f3e598efa5f2a8ef79",
+    "CyrusMCP/cyrus_mcp/design_lab/store.py": "526f4c18f999fcd5b4d26611808e733a91605711cfb1948b69cf8a581d05808c",
+    "CyrusMCP/cyrus_mcp/diagnostics.py": "7b5c875407ed59fe70bbbb13551449a23b82892487321766d941e8a5b563062b",
+    "CyrusMCP/cyrus_mcp/feature-catalog.json": "4d661fdb45eedd7b84dace3889e103c9e7c84bf5fdb9144d01798e2dc2fd8f3f",
+    "CyrusMCP/cyrus_mcp/geometry.py": "57bb50177d3191861b9ddb4d5ee48fd916337008c6ad211ebbaaf3cbfb3bc239",
+    "CyrusMCP/cyrus_mcp/max_host.py": "81154df7b3ec79911f56016a6a558283895751f1f0aed4eea7d754f4cc7b8d65",
+    "CyrusMCP/cyrus_mcp/models.py": "ac4990984c2e8cd9b77582f22f07ec27b9fa2208d14ce2fd734d73cb58086441",
+    "CyrusMCP/cyrus_mcp/panel.py": "79f64a02a53ca54bfd71398264e6b7f36e0faa40ed61061d375ffef75e9911cf",
+    "CyrusMCP/cyrus_mcp/plan.schema.json": "857dd0b18b3340a09bb7f19948cc2358d2ca34de00399e1cabbc303bd3439691",
+    "CyrusMCP/cyrus_mcp/procedural.py": "29f5a99e26faa44dad62cd6c1a61ecbe1d6434963c45a309b5fff72bd2ef7118",
+    "CyrusMCP/cyrus_mcp/procedural_plan.py": "3fb922948f237696b46dde0465632a9229cf6b2deb662cc3f0f86e180e583103",
+    "CyrusMCP/cyrus_mcp/publication.py": "ba28e41d20f57126abbc2c0268d49779051f1e414c7d22e029500313f89555db",
+    "CyrusMCP/cyrus_mcp/records.py": "f0e56bf9b1547f28443d3f50dbdbeebaf96af4d4e8f241a0dfcfd1df83378bab",
+    "CyrusMCP/cyrus_mcp/server.py": "6a85c491c09e6caea2ec51b3303ff9aa3847c9fc9ad2018d816c8f5e28faed07",
+    "CyrusMCP/cyrus_mcp/service.py": "36fdf88cf5ddc1eed3e93bd731c4397dffefeffe3d26b49e9b7e46ab48fbf716",
+    "CyrusMCP/cyrus_mcp/settings.py": "d31b0d7bf6e77349b799594f953314c2ec4620d9b96dd31273ae517989261c8d",
+    "CyrusMCP/cyrus_mcp/transport.py": "c7822dda4f7664f787c5981785749d86c1753bb145d73c68813ddd818d16ade6",
+    "tools/mcp/host_boundary.py": "cec4bfdd164cec2e73e324c011561ddd4d78a943d3b76903fc891d2ed400bd2d",
+    "tools/mcp/host_fixture.py": "5bf973f7687da04ad364f54c98dfde8e6ea1288f8f72b93b1e622a4019836dc4",
+    "tools/procedural_lab/Max_Runtime_Panel_Fixture.py": "6c25f30e2422132cc03af56d8193b28f8158f45308f8187bdd1e7a4a0c33a4f2",
+    "tools/procedural_lab/unified_073_mcp_host.py": "157cc4a56a6ffeff921a5217bff9bdfff83cde71174f3ac64a23c837690ff53e",
+    "tools/procedural_lab/unified_073_panel_host.py": "c33a9caef3e8537aa531a9940b9c86af5e5b1f8d174bef9ed863143d947faf3e"
+  },
+  "owned_process_stopped": true,
+  "owned_process_returncode": 1,
+  "normal_profile_after": {
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-01e8f6e316b7\\AminScatter.dlx": "1159785553bdd69431aaa6226b47217f01819df1d9bc443f44aadcab1eb20a75",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-01e8f6e316b7\\CyrusBrush.dlx": "3be69e177021a976b0e4fab4a0ba5c507b90d31528cfd86f758478e00284ebba",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-01e8f6e316b7\\CyrusBrushStorage.dlh": "6cc5a9ab7f07b0492e407f6a6ae19e4d2c807d0fb2ff90791260dff97139403d",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-01e8f6e316b7\\CyrusScatterEdit.dlm": "4ad6d6e50ca4f70b5953cd0d372f232a51c4702418dff68dca24f6bb0a3bf5c2",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-130d8d8db83e\\AminScatter.dlx": "a5278ea7138ea9dc9c44a7a42616990cdf78ac5c9043e98b8a422c3b3765c440",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-130d8d8db83e\\CyrusBrush.dlx": "c91859dbb67cfbde7f9c0f05aa7e8a360931b6a9f9fcb61163ea45c364a67cc0",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-130d8d8db83e\\CyrusBrushStorage.dlh": "2cc93df642ab8927467b95a632aa496f6ffa3b0b95a54b6dbe2f48c229e488ee",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-130d8d8db83e\\CyrusScatterEdit.dlm": "5fb12a35e1843643a96886dd795857aeb7d1b2c57f272fd1048cea5983390572",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-33177c188896\\AminScatter.dlx": "22dd0bd23f0e4ed35870259cf64e04804d942ca2789f9b302d183b1ddc805460",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-33177c188896\\CyrusBrush.dlx": "81fa571d26ecc964ed092145d3670f3a7bb0a9adafe9277b04ec9ebebf10d521",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-33177c188896\\CyrusBrushStorage.dlh": "af37357d992528f86c72863abe401f274da5b4e231dd387d34f792bfcc7d5649",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-33177c188896\\CyrusScatterEdit.dlm": "b28d97844d549a46dba085bfb4436f5c424fd1c95cd4c6e02cbbb49419e914eb",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-84fbd9598c2c\\AminScatter.dlx": "a3852a4e2d15f24fbcc8c2843390551d613fd91aa02f0a334e68bd51130ac39b",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-84fbd9598c2c\\CyrusBrush.dlx": "413c1fe7754bed2f856fdd5784dde60bc38a57ff1af4a3713dfad94f8ac426c0",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-84fbd9598c2c\\CyrusBrushStorage.dlh": "78dcf68d8a9fc4dcbd6945d2bc3ac7f6d526a618371b9c5eb36278d9e3dd9812",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-84fbd9598c2c\\CyrusScatterEdit.dlm": "828c82d8a0762698013761e1cab6365119c5627e41f0ab215703a59dd34e8e6f",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-889d44f94344\\AminScatter.dlx": "2e580f785c1fb8d43206fc631cc2409868502b222a74833c16e233e69c1230ac",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-889d44f94344\\CyrusBrush.dlx": "413c1fe7754bed2f856fdd5784dde60bc38a57ff1af4a3713dfad94f8ac426c0",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-889d44f94344\\CyrusBrushStorage.dlh": "78dcf68d8a9fc4dcbd6945d2bc3ac7f6d526a618371b9c5eb36278d9e3dd9812",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-889d44f94344\\CyrusScatterEdit.dlm": "828c82d8a0762698013761e1cab6365119c5627e41f0ab215703a59dd34e8e6f",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-b54e1d9bb026\\AminScatter.dlx": "7b5a133d8df7d762274efe8261c5644f15e4b90150092949ecd72f87a8b7a3e5",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-b54e1d9bb026\\CyrusBrush.dlx": "1d916aae2c651db4da2807327a2206cfb6315aec186ce99899633508b5e15418",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-b54e1d9bb026\\CyrusBrushStorage.dlh": "5061c0b2fb85fc46566edeab086f134b3ae3a2537c1952e63330a7ca9d4a3ea7",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-b54e1d9bb026\\CyrusScatterEdit.dlm": "828c82d8a0762698013761e1cab6365119c5627e41f0ab215703a59dd34e8e6f",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-f85eac579a9d\\AminScatter.dlx": "a666f17f49471d1130886d5b0c530cf61b62a0759e103c5b582dcf36fc882a6b",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-f85eac579a9d\\CyrusBrush.dlx": "d18936ca918bebb03303dac0da0703332da649ad3cd3c910512119a9597cd211",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-f85eac579a9d\\CyrusBrushStorage.dlh": "72e2ff37cbc2130f612ad930b95fabc50cd33d633d2f87caca542f71e26aa328",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\bin-max2027-f85eac579a9d\\CyrusScatterEdit.dlm": "a12d3d9d5275a4c1e7ab7b313526f6a6b6372c71ae940ad1eeb175f0d535abc2",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\CyrusScatter.ms": "003b717f070bf07d6f7cae031afd4fb7b14f4d550549e5d16492ff73e8716162",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\INSTALL.txt": "9a3b302dfe01e420a4d28a60f9063d06f87a1888147ae624cb6ebed378815934",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\manifest.json": "5f50307287a52cce114b4419b8ee31f3cbb4cc36316a5b8926388bbce1b4ad27",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusScatter\\Uninstall.ms": "59e2b84901fcefaae1dab59886cd2f4079df4f764c789238947e19c514b4ed49",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusSurfaceAnalyzer\\bin-max2027-e2318bd967cf\\CyrusSurfaceAnalyzer.dlx": "e2318bd967cf8b17ce1b1208e156c61a9f6361a80b8160c34c54bd2eb2a886de",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\CyrusSurfaceAnalyzer\\CyrusSurfaceAnalyzer.ms": "b9a1f1aa2ba7847566eb8f36bee711f9c64753572955ed4549f2f68669e5f923",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\Startup\\CyrusScatterStartup.ms": "fdf38b3bc83187eecb34b833bfff2751e78626e9e3dba41aa20a0ff7ff9e8405",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\scripts\\Startup\\CyrusSurfaceAnalyzerStartup.ms": "fdef46e54790c5c6d893479a17c6c885e4ff39897d00f1eac6b8567f86c18425",
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\usermacros\\CyrusScatter-CyrusScatter.mcr": null,
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\usermacros\\CyrusSurfaceAnalyzer-CyrusSurfaceAnalyzer.mcr": null,
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\plugins\\AminScatter.dlx": null,
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\plugins\\CyrusScatterEdit.dlm": null,
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\plugins\\CyrusBrush.dlx": null,
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\plugins\\CyrusBrushStorage.dlh": null,
+    "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\plugins\\CyrusSurfaceAnalyzer.dlx": null
+  },
+  "installed_product_files_unchanged": true,
+  "host_python_sources_unchanged": true
+}

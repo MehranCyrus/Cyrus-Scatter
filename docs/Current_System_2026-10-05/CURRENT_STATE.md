@@ -1,5 +1,9 @@
 # Current state and evidence boundaries
 
+**Current 7 October continuation:** [approved UI, real scenes, exact evidence and remaining limits](../Full_Qualification_0.73_2026-10-07/RESULTS.md). The latest report supersedes older UI/runtime qualification claims; dated implementation and R&D evidence below remains historical. No artist installation or Git operations are part of this campaign.
+
+**Historical snapshot:** current development state/evidence is [0.73](../Unified_System_0.73_2026-10-06/README.md). This file preserves the 5 October state; older read-only-policy/compatibility claims are superseded by the [current capability matrix](CAPABILITY_MATRIX.md).
+
 **Superseding runtime slice, 6 October:** [results](../Live_Runtime_2026-10-06/RESULTS.md) and [source/receipt identities](../Live_Runtime_2026-10-06/evidence/scope-and-identities.json) record idle/Manual/IR fixes, diagnostics and actual MCP qualification. Current MCP source has twelve tools/seven resources and passive actual-publication pages. The older unresolved/status table below is the 5 October baseline; BR-01, material/host qualification, policy-3 writes and licensing remain open in the [updated queue](../Live_Runtime_2026-10-06/NEXT_WORK.md).
 
 As of 5 October 2026. Source facts were checked in the local worktree; runtime results below are prior receipts, not new runtime tests in this documentation pass.

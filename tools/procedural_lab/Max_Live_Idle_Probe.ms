@@ -31,6 +31,11 @@ fn CSIdleSample node label = (
         #("interaction_checks",CSIdleHeld),#("ir_timer_calls",CSIdlePFTicks),#("render_key_calls",CSIdlePFKeys),
         #("bridge_builds",CyrusPFBuilds),#("bridge_error",CyrusPFLastError),
         #("live_callbacks",CyrusLiveChangeCalls),#("live_redraw_requests",CyrusLiveRedrawRequests),
+        #("plugin_timers",#(
+            try(CyrusReleaseTimer.Enabled)catch(false),try(CyrusPFTimer.Enabled)catch(false),
+            try(root.mainUI.mountTimer.active)catch(false),try(root.mainUI.statusTimer.active)catch(false),
+            try(CyrusLayerEditor.statusTimer.active)catch(false))),
+        #("animation_playing",isAnimPlaying()),
         #("retained",if isValidNode view then cyrusRetainedStats view else #()),
         #("retained_mesh",if isValidNode view then cyrusRetainedMeshStats view else #())
     )

@@ -32,7 +32,7 @@ This is the main integration seam to design before M2. It reuses existing algori
 
 ## CB04 Validate active paint targets even in Manual mode
 
-**Observed:** [`externalChanged` and `invalidateLive`](../../AminScatter/tools/ui/templates/before.ms) intentionally gate ordinary live invalidation on Realtime. Node-event delivery is batched and delayed until mouse-up by [the performance stages](../../AminScatter/tools/ui/performance.cjs).
+**Observed:** [`externalChanged` and `invalidateLive`](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/AminScatter/tools/ui/templates/before.ms) intentionally gate ordinary live invalidation on Realtime. Node-event delivery is batched and delayed until mouse-up by [the performance stages](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/AminScatter/tools/ui/performance.cjs).
 
 **Required:** distinguish “do not regenerate plants automatically” from “the painting surface is still valid.” An active Brush session needs target reference/geometry/transform validation in both modes. Invalidate or suspend before accepting another sample after a relevant change; do not wait for the normal preview timer to refresh an obsolete hit mesh.
 
@@ -40,7 +40,7 @@ Keep Manual's existing viewport behavior. This is a Brush-session validity chann
 
 ## CB05 Give render, IR and bake explicit Brush revisions
 
-**Observed:** [`CyrusPFKey`, `CyrusPFBuild` and `AminScatterRenderBegin`](../../AminScatter/tools/ui/templates/pflow.ms) govern render transport. Detailed layer-property polling is inside the Realtime branch. `refreshAll` advances a separate manual revision. Render and [`bakeInstances`](../../AminScatter/scripts/AminScatterObject.ms) call placements again; neither simply consumes the viewport cache.
+**Observed:** [`CyrusPFKey`, `CyrusPFBuild` and `AminScatterRenderBegin`](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/AminScatter/tools/ui/templates/pflow.ms) govern render transport. Detailed layer-property polling is inside the Realtime branch. `refreshAll` advances a separate manual revision. Render and [`bakeInstances`](../../AminScatter/scripts/AminScatterObject.ms) call placements again; neither simply consumes the viewport cache.
 
 **Required:** include a compact committed paint revision and binding validity in render input keys. Merely adding a ReferenceTarget property to the generic field list must not be assumed to detect edits inside that holder. Never stringify complete stroke history for periodic key polling.
 
@@ -60,7 +60,7 @@ Baking creates artist-owned scene instances and sets `autoRender=false`; later p
 
 ## CB06 Make Brush Undo local without weakening other Undo handling
 
-**Observed:** [`AminScatterLayerUndo`](../../AminScatter/tools/ui/templates/before.ms) walks every controller/layer on every scene Undo/Redo and calls `forcePreviewUpdate`. That resets build counts and can make unrelated layers rebuild. A local Brush restore object alone would not prevent this broader callback.
+**Observed:** [`AminScatterLayerUndo`](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/AminScatter/tools/ui/templates/before.ms) walks every controller/layer on every scene Undo/Redo and calls `forcePreviewUpdate`. That resets build counts and can make unrelated layers rebuild. A local Brush restore object alone would not prevent this broader callback.
 
 **Required:** provide an explicit affected-layer/dependent-layer path for Brush-owned Undo/Redo. Ensure the existing global callback recognizes that completed handling or reconciles revisions without forcing unrelated generations. Retain the conservative fallback for changes whose dependencies are not known.
 
@@ -68,17 +68,17 @@ Measure Undo with several independent controllers plus one real blocker dependen
 
 ## CB07 Persist and copy the native holder deliberately
 
-**Observed:** [`AminScatterCopyLayer`](../../AminScatter/tools/ui/templates/before.ms) copies controllers/arrays and directly assigns other values. Its current generated uses include older-scene migration; it is not evidence of an existing dedicated Copy Layer UI. A newly added maxObject holder would otherwise need explicit copy policy.
+**Observed:** [`AminScatterCopyLayer`](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/AminScatter/tools/ui/templates/before.ms) copies controllers/arrays and directly assigns other values. Its current generated uses include older-scene migration; it is not evidence of an existing dedicated Copy Layer UI. A newly added maxObject holder would otherwise need explicit copy policy.
 
 [Native storage](../../AminScatter/src/cyrus_edit_storage.inc) and [class-descriptor registration](../../AminScatter/src/edit_plugin.cpp) provide examples to study. The transient native preview Value is not a saved document.
 
 **Required:** register a stable persistent Brush class through the existing plugin registration arrangement, and verify fresh-process save/open without the Brush UI. Explicitly distinguish migration transfer, independent controller/layer copy and intentional Max object instancing. Do not clone the document on every ordinary surface synchronization.
 
-Save/reset callbacks for [PFlow](../../AminScatter/tools/ui/templates/pflow.ms) and [retained display](../../AminScatter/tools/ui/retained-points.cjs) delete disposable objects at different lifecycle hooks. Brush must finish/cancel its transaction at a safe boundary and retain authority in the layer-owned holder through both cleanups. Test callback ordering, reopen and script reload in E03/E12.
+Save/reset callbacks for [PFlow](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/AminScatter/tools/ui/templates/pflow.ms) and [retained display](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/AminScatter/tools/ui/retained-points.cjs) delete disposable objects at different lifecycle hooks. Brush must finish/cancel its transaction at a safe boundary and retain authority in the layer-owned holder through both cleanups. Test callback ordering, reopen and script reload in E03/E12.
 
 ## CB08 Integrate with the generated and lazily mounted UI
 
-**Observed:** [`generate.cjs`](../../AminScatter/tools/ui/generate.cjs) creates separate rollout declarations for ten layer slots, replaces the old render block with PFlow, then applies ordered transformation stages. [Host UI](../../AminScatter/tools/ui/templates/host.ms) rebuilds panels on resizing; the performance stage mounts layer contents lazily.
+**Observed:** [`generate.cjs`](../../AminScatter/tools/ui/generate.cjs) creates separate rollout declarations for ten layer slots, replaces the old render block with PFlow, then applies ordered transformation stages. [Host UI](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/AminScatter/tools/ui/templates/host.ms) rebuilds panels on resizing; the performance stage mounts layer contents lazily.
 
 **Required:** create Brush controls for all supported slots through the generator, with explicit anchor-count checks. Place new UI before responsive transformation and account for trace-wrapper anchors. Validate generated output in a disposable directory so generator checking cannot overwrite unrelated working changes.
 
@@ -91,7 +91,7 @@ Useful existing pieces:
 - [Pure C++ core and native tests](../../AminScatter/CMakeLists.txt): add a host-independent Brush evaluator to the existing library/tests.
 - [`forRanges`](../../AminScatter/include/execution.h): synchronous bounded participation on owned numeric data, with worker joins and serial fallback. Reuse only after profiling; spawning workers for every tiny dab may cost more than serial evaluation.
 - [Spacing grid and projection code](../../AminScatter/src/spacing.inc): inspect reusable pieces, but nearest-point projection is not camera-ray picking and does not supply surface adjacency. Preserve the known face/tie qualification requirement.
-- [Trace hooks](../../AminScatter/tools/ui/trace.cjs) and [performance monitor](../../tools/performance/CyrusPerformanceMonitor.ms): extend existing recording instead of adding a competing profiler.
+- [Trace hooks](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/AminScatter/tools/ui/trace.cjs) and [performance monitor](../../tools/performance/CyrusPerformanceMonitor.ms): extend existing recording instead of adding a competing profiler.
 - [Viewport lifecycle fixtures](../../tools/tests/viewport_performance_smoke.ms) and [retained-display lifecycle fixtures](../../tools/performance/retained_integration/lifecycle.ms): extend their isolated patterns for Brush clone/save/mode-switch tests. Existing fixtures are not Brush qualification.
 
 Expose compact Brush statistics: active/committed/applied revisions, surface conversions, base generations, source-sample rebuilds, affected queries, replay work, pending publications, upload bytes and retained memory. Preserve existing `cacheSnapshot` positions or version its consumers explicitly. The monitor intentionally does not retain native preview caches; keep that property and avoid copying full strokes every observation.

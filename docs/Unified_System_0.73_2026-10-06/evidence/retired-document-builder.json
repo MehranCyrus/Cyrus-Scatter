@@ -1,0 +1,6 @@
+{
+  "path": "tools/docs/build_system_map.py",
+  "sha256": "3ff15afa5c7d9fdb00ea86921e7808ed34e76d0b157a10e0865c37257acb39d3",
+  "reason": "Frozen 4 October system-map builder assumes the retired 194-control schema. Current help derives from the capability matrix and semantic inventory.",
+  "historical_commit": "01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2"
+}

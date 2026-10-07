@@ -195,8 +195,8 @@ double stableUnit(std::uint32_t seed,std::uint64_t ordinal,std::uint64_t channel
 }
 std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settings& s) {
     detail::recordComputeStats({});
-    if(s.stableCandidates&&(s.linePattern||s.relaxEnabled||s.collisionEnabled))
-        throw std::invalid_argument("Procedural candidates require Random/Clusters and separate spacing; Relax and line assignment are not supported");
+    if(s.stableCandidates&&s.collisionEnabled)
+        throw std::invalid_argument("Procedural collision rules must be resolved by the ordered evaluator");
     if(s.candidateStart>std::numeric_limits<std::uint64_t>::max()-s.count)
         throw std::invalid_argument("Candidate ordinal overflow");
     if(s.linePattern&&std::any_of(s.lineBands.begin(),s.lineBands.end(),[](const LineBand& b){return b.kind==6;}))return scatter(surface,prepareEdgeRows(s));
@@ -280,6 +280,9 @@ std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settin
     std::vector<std::pair<Vec3,std::size_t>> anchors;
     for(std::size_t j=0;j<s.lineBands.size();++j) if(s.lineBands[j].kind==5)
         for(const auto& path:s.lineBands[j].boundary.loops) for(auto p:path) anchors.emplace_back(p,j);
+    // Anchors occupy the beginning of the canonical candidate stream. They
+    // consume its bounded quota; a larger prefix cannot change their IDs.
+    const auto end=s.stableCandidates?static_cast<std::uint64_t>(s.count):limit+anchors.size();
     // Lazy and evaluation-owned: an unused band is never additionally prepared.
     std::vector<std::unique_ptr<PreparedAnalyzerBand>> preparedBands(bands.size());
     const auto inBand=[&](Vec3 p,std::size_t j) {
@@ -322,19 +325,21 @@ std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settin
         }
     }
     std::uint32_t accepted=0;
-    for(std::uint64_t i=0;i<limit+anchors.size();++i) {
+    for(std::uint64_t i=0;i<end;++i) {
         const auto ordinal=s.candidateStart+i;
         if(s.stableCandidates) {
             placement.candidate(s.seed,ordinal,1);transforms.candidate(s.seed,ordinal,2);
             sources.candidate(s.seed,ordinal,3);scales.candidate(s.seed,ordinal,4);
             distribution.candidate(s.seed,ordinal,5);diversity.candidate(s.clusterSeed,ordinal,6);
         }
-        const bool single=i>=limit;
+        const bool single=s.stableCandidates?ordinal<anchors.size():i>=limit;
+        const auto anchorIndex=static_cast<std::size_t>(s.stableCandidates?ordinal:i-limit);
+        if(s.stableCandidates&&!population&&!single) break;
         if(!single&&accepted>=s.count) {i=limit-1;continue;}
         auto [p,id]=batchClusters ? std::make_pair(clusterCandidates[static_cast<std::size_t>(i)].position,
                                                  clusterCandidates[static_cast<std::size_t>(i)].triangle) : sampler.sample(placement);
         if(single) {
-            const auto target=anchors[static_cast<std::size_t>(i-limit)].first;
+            const auto target=anchors[anchorIndex].first;
             double best=INFINITY;
             for(auto j:sampler.indices) {const auto q=closest(target,surface[j]);const double d=length(q-target);if(d<best) {best=d;p=q;id=j;}}
             if(best>1e-4) continue; // Anchors must lie on one of the Scatter surfaces.
@@ -370,11 +375,11 @@ std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settin
         std::uint32_t source=0; double strokeScale=1; bool emit=true;
         if(s.linePattern) {
             const std::vector<std::uint32_t>* members=nullptr;
-            for(std::size_t j=0;j<bands.size();++j) if(single ? j==anchors[static_cast<std::size_t>(i-limit)].second :
+            for(std::size_t j=0;j<bands.size();++j) if(single ? j==anchors[anchorIndex].second :
                 (bands[j]?bands[j]->strokeBand(p,s.lineBands[j].width,s.lineBands[j].inside):inBand(p,j))) {
                 members=&bandMembers[j];
                 // Separate RNG: stroke sizing never shifts placements or the XYZ random stream.
-                Random strokeRandom(s.seed ^ static_cast<std::uint32_t>(i*2654435761u) ^ 0x9e3779b9u);
+                Random strokeRandom(s.seed ^ static_cast<std::uint32_t>((s.stableCandidates?ordinal:i)*2654435761u) ^ 0x9e3779b9u);
                 strokeScale=strokeRandom.range({s.lineBands[j].scaleMin,s.lineBands[j].scaleMax});break;
             }
             const double sourceRandom=sources.next();

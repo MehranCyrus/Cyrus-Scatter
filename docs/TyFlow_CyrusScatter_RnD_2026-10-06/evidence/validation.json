@@ -1,0 +1,105 @@
+{
+  "schema": "cyrus.rnd-validation/1.0",
+  "utc": "2026-10-06T11:53:11.899725+00:00",
+  "passed": true,
+  "errors": [],
+  "head": "01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2",
+  "changed_tracked_docs": [
+    "CyrusMCP/README.md",
+    "README.md",
+    "docs/Current_System_2026-10-05/AGENT_WORKFLOW_GUIDE.md",
+    "docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md",
+    "docs/Current_System_2026-10-05/CONTROL_INVENTORY.md",
+    "docs/Current_System_2026-10-05/README.md",
+    "docs/Integrated_UI_0.72_2026-10-06/NEXT_WORK.md",
+    "docs/Integrated_UI_0.72_2026-10-06/README.md",
+    "docs/Product_Strategy_2026-09-29/README.md",
+    "docs/README.md",
+    "docs/TyFlow_Architecture_Research_2026-10-06/README.md",
+    "docs/TyFlow_CyrusScatter_Assessment_2026-10-06/README.md"
+  ],
+  "untracked_review_files": [
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/CAPABILITY_MAP.md",
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/CODE_REVIEW.md",
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/CYRUS_PIPELINE.md",
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/DOCUMENT_AUDIT.md",
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/EXPERIMENTS.md",
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/FINDINGS_AND_ROADMAP.md",
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/MATURITY.md",
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/METHOD_AND_EVIDENCE.md",
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/README.md",
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/TASKS.md",
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/TYFLOW_INTERNALS.md",
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/evidence/CustomItemABIProbe.txt",
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/evidence/VirtualDeviceABIProbe.txt",
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/evidence/core-build-commands.json",
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/evidence/core-probe.json",
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/evidence/display-abi.json",
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/evidence/end-snapshot.json",
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/evidence/first-ctest.log",
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/evidence/first-probe.log",
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/evidence/index-initial.json",
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/evidence/index.json",
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/evidence/prior-receipt-audit.json",
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/evidence/process-closed.json",
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/evidence/python-tests.json",
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/evidence/selected-rtti.json",
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/evidence/start-snapshot.json",
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/evidence/static-region-ledger.json",
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/evidence/validation-initial.json",
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/reproduce/capture_snapshot.py",
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/reproduce/collect_evidence.py",
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/reproduce/core_probe.cpp",
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/reproduce/display_abi.py",
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/reproduce/run_core_probe.py",
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/reproduce/selected_rtti.py",
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/reproduce/start_analysis.py",
+    "docs/TyFlow_CyrusScatter_RnD_2026-10-06/reproduce/validate_review.py"
+  ],
+  "markdown_files": 23,
+  "local_links_checked": 461,
+  "parsed_json": [
+    "evidence/core-build-commands.json",
+    "evidence/core-probe.json",
+    "evidence/display-abi.json",
+    "evidence/end-snapshot.json",
+    "evidence/index-initial.json",
+    "evidence/index.json",
+    "evidence/prior-receipt-audit.json",
+    "evidence/process-closed.json",
+    "evidence/python-tests.json",
+    "evidence/selected-rtti.json",
+    "evidence/start-snapshot.json",
+    "evidence/static-region-ledger.json",
+    "evidence/validation-initial.json"
+  ],
+  "public_surface": {
+    "tool": 12,
+    "resource": 7
+  },
+  "capability_families": 34,
+  "controls": 245,
+  "changed_protected_files": [
+    "CyrusMCP/README.md"
+  ],
+  "changed_inventory_files": [
+    "CyrusMCP/README.md"
+  ],
+  "unchanged_source_inventory_entries": 559,
+  "unchanged_protected_entries": 584,
+  "vendor": [
+    {
+      "path": "C:\\Program Files\\Autodesk\\3ds Max 2027\\Plugins\\tyFlow_2027.dlo",
+      "matches": true
+    },
+    {
+      "path": "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\inputs\\tyFlow_2027.dlo",
+      "matches": true
+    }
+  ],
+  "deferred_catalog_source_hash_mismatch": true,
+  "runtime_executed": false,
+  "computer_use": false,
+  "preflight": false,
+  "self_result_link": "evidence\\validation.json"
+}

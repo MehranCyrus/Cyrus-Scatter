@@ -1,0 +1,17 @@
+{
+  "cpu": [
+    {
+      "Name": "AMD Ryzen 5 5600X 6-Core Processor             ",
+      "NumberOfCores": 6,
+      "NumberOfLogicalProcessors": 12
+    }
+  ],
+  "ram_bytes": 102986215424,
+  "gpu": [
+    {
+      "Name": "NVIDIA GeForce RTX 3090",
+      "DriverVersion": "32.0.16.1047"
+    }
+  ],
+  "note": "Whole-machine context; no exclusive plugin RAM or VRAM attribution. Artist Max remains open."
+}

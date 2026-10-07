@@ -1,0 +1,703 @@
+[
+  {
+    "name": ".?AVParticleRenderer@@",
+    "descriptor_rva": "0xa3efdc8",
+    "locators": [
+      {
+        "rva": "0x954d1f0",
+        "object_offset": 0,
+        "constructor_displacement": 0,
+        "hierarchy_rva": "0x954d218",
+        "vtables": [
+          {
+            "vtable_rva": "0x6bc3a20",
+            "slots": [
+              {
+                "slot": 0,
+                "va": "0x181dde590",
+                "rva": "0x1dde590",
+                "unwind_region": {
+                  "begin": "0x1dde590",
+                  "end_exclusive": "0x1dde5df",
+                  "bytes": 79,
+                  "unwind_info_rva": "0x9a8f6d0",
+                  "unwind_flags": 0
+                }
+              },
+              {
+                "slot": 1,
+                "va": "0x184932282",
+                "rva": "0x4932282",
+                "unwind_region": null
+              },
+              {
+                "slot": 2,
+                "va": "0x184932288",
+                "rva": "0x4932288",
+                "unwind_region": null
+              },
+              {
+                "slot": 3,
+                "va": "0x184932276",
+                "rva": "0x4932276",
+                "unwind_region": null
+              },
+              {
+                "slot": 4,
+                "va": "0x18493227c",
+                "rva": "0x493227c",
+                "unwind_region": null
+              },
+              {
+                "slot": 5,
+                "va": "0x181dde5e0",
+                "rva": "0x1dde5e0",
+                "unwind_region": null
+              },
+              {
+                "slot": 6,
+                "va": "0x181deeb50",
+                "rva": "0x1deeb50",
+                "unwind_region": null
+              },
+              {
+                "slot": 7,
+                "va": "0x181dee8d0",
+                "rva": "0x1dee8d0",
+                "unwind_region": {
+                  "begin": "0x1dee8d0",
+                  "end_exclusive": "0x1dee8f0",
+                  "bytes": 32,
+                  "unwind_info_rva": "0x9a9103c",
+                  "unwind_flags": 0
+                }
+              },
+              {
+                "slot": 8,
+                "va": "0x181dde5f0",
+                "rva": "0x1dde5f0",
+                "unwind_region": null
+              },
+              {
+                "slot": 9,
+                "va": "0x181dde610",
+                "rva": "0x1dde610",
+                "unwind_region": null
+              },
+              {
+                "slot": 10,
+                "va": "0x181dde620",
+                "rva": "0x1dde620",
+                "unwind_region": null
+              }
+            ]
+          }
+        ],
+        "bases": [
+          {
+            "name": ".?AVParticleRenderer@@",
+            "mdisp": 0,
+            "pdisp": -1,
+            "vdisp": 0,
+            "attributes": 64
+          },
+          {
+            "name": ".?AVICustomRenderItem@Graphics@MaxSDK@@",
+            "mdisp": 0,
+            "pdisp": -1,
+            "vdisp": 0,
+            "attributes": 64
+          },
+          {
+            "name": ".?AVARefObject@Graphics@MaxSDK@@",
+            "mdisp": 0,
+            "pdisp": -1,
+            "vdisp": 0,
+            "attributes": 64
+          },
+          {
+            "name": ".?AVIRefObject@Graphics@MaxSDK@@",
+            "mdisp": 0,
+            "pdisp": -1,
+            "vdisp": 0,
+            "attributes": 64
+          },
+          {
+            "name": ".?AVMaxHeapOperators@@",
+            "mdisp": 8,
+            "pdisp": -1,
+            "vdisp": 0,
+            "attributes": 66
+          },
+          {
+            "name": ".?AVBaseInterfaceServer@@",
+            "mdisp": 24,
+            "pdisp": -1,
+            "vdisp": 0,
+            "attributes": 64
+          },
+          {
+            "name": ".?AVInterfaceServer@@",
+            "mdisp": 24,
+            "pdisp": -1,
+            "vdisp": 0,
+            "attributes": 64
+          },
+          {
+            "name": ".?AVMaxHeapOperators@@",
+            "mdisp": 32,
+            "pdisp": -1,
+            "vdisp": 0,
+            "attributes": 66
+          }
+        ]
+      },
+      {
+        "rva": "0x954d2a0",
+        "object_offset": 24,
+        "constructor_displacement": 0,
+        "hierarchy_rva": "0x954d218",
+        "vtables": [
+          {
+            "vtable_rva": "0x6bc3a80",
+            "slots": [
+              {
+                "slot": 0,
+                "va": "0x181dde470",
+                "rva": "0x1dde470",
+                "unwind_region": null
+              },
+              {
+                "slot": 1,
+                "va": "0x184931c40",
+                "rva": "0x4931c40",
+                "unwind_region": null
+              },
+              {
+                "slot": 2,
+                "va": "0x184931c46",
+                "rva": "0x4931c46",
+                "unwind_region": null
+              },
+              {
+                "slot": 3,
+                "va": "0x184931c4c",
+                "rva": "0x4931c4c",
+                "unwind_region": null
+              }
+            ]
+          }
+        ],
+        "bases": [
+          {
+            "name": ".?AVParticleRenderer@@",
+            "mdisp": 0,
+            "pdisp": -1,
+            "vdisp": 0,
+            "attributes": 64
+          },
+          {
+            "name": ".?AVICustomRenderItem@Graphics@MaxSDK@@",
+            "mdisp": 0,
+            "pdisp": -1,
+            "vdisp": 0,
+            "attributes": 64
+          },
+          {
+            "name": ".?AVARefObject@Graphics@MaxSDK@@",
+            "mdisp": 0,
+            "pdisp": -1,
+            "vdisp": 0,
+            "attributes": 64
+          },
+          {
+            "name": ".?AVIRefObject@Graphics@MaxSDK@@",
+            "mdisp": 0,
+            "pdisp": -1,
+            "vdisp": 0,
+            "attributes": 64
+          },
+          {
+            "name": ".?AVMaxHeapOperators@@",
+            "mdisp": 8,
+            "pdisp": -1,
+            "vdisp": 0,
+            "attributes": 66
+          },
+          {
+            "name": ".?AVBaseInterfaceServer@@",
+            "mdisp": 24,
+            "pdisp": -1,
+            "vdisp": 0,
+            "attributes": 64
+          },
+          {
+            "name": ".?AVInterfaceServer@@",
+            "mdisp": 24,
+            "pdisp": -1,
+            "vdisp": 0,
+            "attributes": 64
+          },
+          {
+            "name": ".?AVMaxHeapOperators@@",
+            "mdisp": 32,
+            "pdisp": -1,
+            "vdisp": 0,
+            "attributes": 66
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": ".?AVTerrainRendererItem@@",
+    "descriptor_rva": "0xa5422a8",
+    "locators": [
+      {
+        "rva": "0x95c2030",
+        "object_offset": 0,
+        "constructor_displacement": 0,
+        "hierarchy_rva": "0x95c2058",
+        "vtables": [
+          {
+            "vtable_rva": "0x73dd7a0",
+            "slots": [
+              {
+                "slot": 0,
+                "va": "0x1837575a0",
+                "rva": "0x37575a0",
+                "unwind_region": {
+                  "begin": "0x37575a0",
+                  "end_exclusive": "0x37575fd",
+                  "bytes": 93,
+                  "unwind_info_rva": "0x9c63974",
+                  "unwind_flags": 0
+                }
+              },
+              {
+                "slot": 1,
+                "va": "0x184932282",
+                "rva": "0x4932282",
+                "unwind_region": null
+              },
+              {
+                "slot": 2,
+                "va": "0x184932288",
+                "rva": "0x4932288",
+                "unwind_region": null
+              },
+              {
+                "slot": 3,
+                "va": "0x184932276",
+                "rva": "0x4932276",
+                "unwind_region": null
+              },
+              {
+                "slot": 4,
+                "va": "0x18493227c",
+                "rva": "0x493227c",
+                "unwind_region": null
+              },
+              {
+                "slot": 5,
+                "va": "0x18493229a",
+                "rva": "0x493229a",
+                "unwind_region": null
+              },
+              {
+                "slot": 6,
+                "va": "0x183ea9ff0",
+                "rva": "0x3ea9ff0",
+                "unwind_region": null
+              },
+              {
+                "slot": 7,
+                "va": "0x183ea9990",
+                "rva": "0x3ea9990",
+                "unwind_region": null
+              },
+              {
+                "slot": 8,
+                "va": "0x183ea9ef0",
+                "rva": "0x3ea9ef0",
+                "unwind_region": null
+              },
+              {
+                "slot": 9,
+                "va": "0x183757690",
+                "rva": "0x3757690",
+                "unwind_region": null
+              },
+              {
+                "slot": 10,
+                "va": "0x181dde620",
+                "rva": "0x1dde620",
+                "unwind_region": null
+              }
+            ]
+          }
+        ],
+        "bases": [
+          {
+            "name": ".?AVTerrainRendererItem@@",
+            "mdisp": 0,
+            "pdisp": -1,
+            "vdisp": 0,
+            "attributes": 64
+          },
+          {
+            "name": ".?AVICustomRenderItem@Graphics@MaxSDK@@",
+            "mdisp": 0,
+            "pdisp": -1,
+            "vdisp": 0,
+            "attributes": 64
+          },
+          {
+            "name": ".?AVARefObject@Graphics@MaxSDK@@",
+            "mdisp": 0,
+            "pdisp": -1,
+            "vdisp": 0,
+            "attributes": 64
+          },
+          {
+            "name": ".?AVIRefObject@Graphics@MaxSDK@@",
+            "mdisp": 0,
+            "pdisp": -1,
+            "vdisp": 0,
+            "attributes": 64
+          },
+          {
+            "name": ".?AVMaxHeapOperators@@",
+            "mdisp": 8,
+            "pdisp": -1,
+            "vdisp": 0,
+            "attributes": 66
+          },
+          {
+            "name": ".?AVBaseInterfaceServer@@",
+            "mdisp": 24,
+            "pdisp": -1,
+            "vdisp": 0,
+            "attributes": 64
+          },
+          {
+            "name": ".?AVInterfaceServer@@",
+            "mdisp": 24,
+            "pdisp": -1,
+            "vdisp": 0,
+            "attributes": 64
+          },
+          {
+            "name": ".?AVMaxHeapOperators@@",
+            "mdisp": 32,
+            "pdisp": -1,
+            "vdisp": 0,
+            "attributes": 66
+          }
+        ]
+      },
+      {
+        "rva": "0x95c20e0",
+        "object_offset": 24,
+        "constructor_displacement": 0,
+        "hierarchy_rva": "0x95c2058",
+        "vtables": [
+          {
+            "vtable_rva": "0x73dd800",
+            "slots": [
+              {
+                "slot": 0,
+                "va": "0x18375758c",
+                "rva": "0x375758c",
+                "unwind_region": null
+              },
+              {
+                "slot": 1,
+                "va": "0x184931c40",
+                "rva": "0x4931c40",
+                "unwind_region": null
+              },
+              {
+                "slot": 2,
+                "va": "0x184931c46",
+                "rva": "0x4931c46",
+                "unwind_region": null
+              },
+              {
+                "slot": 3,
+                "va": "0x184931c4c",
+                "rva": "0x4931c4c",
+                "unwind_region": null
+              }
+            ]
+          }
+        ],
+        "bases": [
+          {
+            "name": ".?AVTerrainRendererItem@@",
+            "mdisp": 0,
+            "pdisp": -1,
+            "vdisp": 0,
+            "attributes": 64
+          },
+          {
+            "name": ".?AVICustomRenderItem@Graphics@MaxSDK@@",
+            "mdisp": 0,
+            "pdisp": -1,
+            "vdisp": 0,
+            "attributes": 64
+          },
+          {
+            "name": ".?AVARefObject@Graphics@MaxSDK@@",
+            "mdisp": 0,
+            "pdisp": -1,
+            "vdisp": 0,
+            "attributes": 64
+          },
+          {
+            "name": ".?AVIRefObject@Graphics@MaxSDK@@",
+            "mdisp": 0,
+            "pdisp": -1,
+            "vdisp": 0,
+            "attributes": 64
+          },
+          {
+            "name": ".?AVMaxHeapOperators@@",
+            "mdisp": 8,
+            "pdisp": -1,
+            "vdisp": 0,
+            "attributes": 66
+          },
+          {
+            "name": ".?AVBaseInterfaceServer@@",
+            "mdisp": 24,
+            "pdisp": -1,
+            "vdisp": 0,
+            "attributes": 64
+          },
+          {
+            "name": ".?AVInterfaceServer@@",
+            "mdisp": 24,
+            "pdisp": -1,
+            "vdisp": 0,
+            "attributes": 64
+          },
+          {
+            "name": ".?AVMaxHeapOperators@@",
+            "mdisp": 32,
+            "pdisp": -1,
+            "vdisp": 0,
+            "attributes": 66
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": ".?AVThreadPool@@",
+    "descriptor_rva": "0xa68f140",
+    "locators": [
+      {
+        "rva": "0x9667a30",
+        "object_offset": 0,
+        "constructor_displacement": 0,
+        "hierarchy_rva": "0x9667a58",
+        "vtables": [
+          {
+            "vtable_rva": "0x75f2078",
+            "slots": [
+              {
+                "slot": 0,
+                "va": "0x1860f8ae3",
+                "rva": "0x60f8ae3",
+                "unwind_region": null
+              },
+              {
+                "slot": 1,
+                "va": "0x1860f8ae3",
+                "rva": "0x60f8ae3",
+                "unwind_region": null
+              },
+              {
+                "slot": 2,
+                "va": "0x1860f8ae3",
+                "rva": "0x60f8ae3",
+                "unwind_region": null
+              },
+              {
+                "slot": 3,
+                "va": "0x183fb3a30",
+                "rva": "0x3fb3a30",
+                "unwind_region": null
+              },
+              {
+                "slot": 4,
+                "va": "0x183fb3a20",
+                "rva": "0x3fb3a20",
+                "unwind_region": null
+              },
+              {
+                "slot": 5,
+                "va": "0x1860f8ae3",
+                "rva": "0x60f8ae3",
+                "unwind_region": null
+              },
+              {
+                "slot": 6,
+                "va": "0x1860f8ae3",
+                "rva": "0x60f8ae3",
+                "unwind_region": null
+              },
+              {
+                "slot": 7,
+                "va": "0x183fb3980",
+                "rva": "0x3fb3980",
+                "unwind_region": {
+                  "begin": "0x3fb3980",
+                  "end_exclusive": "0x3fb3986",
+                  "bytes": 6,
+                  "unwind_info_rva": "0x9d21858",
+                  "unwind_flags": 0
+                }
+              }
+            ]
+          }
+        ],
+        "bases": [
+          {
+            "name": ".?AVThreadPool@@",
+            "mdisp": 0,
+            "pdisp": -1,
+            "vdisp": 0,
+            "attributes": 64
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": ".?AVThreadPool_lockless@@",
+    "descriptor_rva": "0xa68f168",
+    "locators": [
+      {
+        "rva": "0x9667aa8",
+        "object_offset": 0,
+        "constructor_displacement": 0,
+        "hierarchy_rva": "0x9667ad0",
+        "vtables": [
+          {
+            "vtable_rva": "0x75f8730",
+            "slots": [
+              {
+                "slot": 0,
+                "va": "0x183fcc5e0",
+                "rva": "0x3fcc5e0",
+                "unwind_region": {
+                  "begin": "0x3fcc5e0",
+                  "end_exclusive": "0x3fcc675",
+                  "bytes": 149,
+                  "unwind_info_rva": "0x9d21c0c",
+                  "unwind_flags": 2
+                }
+              },
+              {
+                "slot": 1,
+                "va": "0x183fcc680",
+                "rva": "0x3fcc680",
+                "unwind_region": {
+                  "begin": "0x3fcc680",
+                  "end_exclusive": "0x3fcc6cb",
+                  "bytes": 75,
+                  "unwind_info_rva": "0x9d21c3c",
+                  "unwind_flags": 2
+                }
+              },
+              {
+                "slot": 2,
+                "va": "0x183fcd2e0",
+                "rva": "0x3fcd2e0",
+                "unwind_region": {
+                  "begin": "0x3fcd2e0",
+                  "end_exclusive": "0x3fcd445",
+                  "bytes": 357,
+                  "unwind_info_rva": "0x9d21bf8",
+                  "unwind_flags": 0
+                }
+              },
+              {
+                "slot": 3,
+                "va": "0x183fcd1f0",
+                "rva": "0x3fcd1f0",
+                "unwind_region": {
+                  "begin": "0x3fcd1f0",
+                  "end_exclusive": "0x3fcd20c",
+                  "bytes": 28,
+                  "unwind_info_rva": "0x9d21b54",
+                  "unwind_flags": 0
+                }
+              },
+              {
+                "slot": 4,
+                "va": "0x183fcc9a0",
+                "rva": "0x3fcc9a0",
+                "unwind_region": {
+                  "begin": "0x3fcc9a0",
+                  "end_exclusive": "0x3fcca05",
+                  "bytes": 101,
+                  "unwind_info_rva": "0x9d21bb8",
+                  "unwind_flags": 0
+                }
+              },
+              {
+                "slot": 5,
+                "va": "0x183fccce0",
+                "rva": "0x3fccce0",
+                "unwind_region": {
+                  "begin": "0x3fccce0",
+                  "end_exclusive": "0x3fccd44",
+                  "bytes": 100,
+                  "unwind_info_rva": "0x9d21c34",
+                  "unwind_flags": 0
+                }
+              },
+              {
+                "slot": 6,
+                "va": "0x183fcc6d0",
+                "rva": "0x3fcc6d0",
+                "unwind_region": null
+              },
+              {
+                "slot": 7,
+                "va": "0x183fcc2b0",
+                "rva": "0x3fcc2b0",
+                "unwind_region": {
+                  "begin": "0x3fcc2b0",
+                  "end_exclusive": "0x3fcc2e4",
+                  "bytes": 52,
+                  "unwind_info_rva": "0x9d21c88",
+                  "unwind_flags": 0
+                }
+              }
+            ]
+          }
+        ],
+        "bases": [
+          {
+            "name": ".?AVThreadPool_lockless@@",
+            "mdisp": 0,
+            "pdisp": -1,
+            "vdisp": 0,
+            "attributes": 64
+          },
+          {
+            "name": ".?AVThreadPool@@",
+            "mdisp": 0,
+            "pdisp": -1,
+            "vdisp": 0,
+            "attributes": 64
+          }
+        ]
+      }
+    ]
+  }
+]

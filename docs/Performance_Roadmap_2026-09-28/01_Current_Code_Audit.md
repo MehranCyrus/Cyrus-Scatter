@@ -6,7 +6,7 @@
 
 The generated [AminScatterObject.ms](../../AminScatter/scripts/AminScatterObject.ms) orchestrates native calls. Its `placements` path includes fast/advanced scatter, whole-scale handling, Analyzer area, falloff, filtering, blockers/overlaps, optional final spacing, boundary orientation, CS Edit, and point-source exclusion. Conditional recursive placement work occurs for final processing. Preserve this order.
 
-`refreshPreview` reaches native `aminScatterBuildPreview` or `cyrusBuildGeometryPreview`. Rendering reaches [pflow.ms](../../AminScatter/tools/ui/templates/pflow.ms), which builds Max scene objects after computing placements. Faster native sampling cannot by itself eliminate script marshaling, scene evaluation, drawing, or PFlow creation.
+`refreshPreview` reaches native `aminScatterBuildPreview` or `cyrusBuildGeometryPreview`. Rendering reaches [pflow.ms](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/AminScatter/tools/ui/templates/pflow.ms), which builds Max scene objects after computing placements. Faster native sampling cannot by itself eliminate script marshaling, scene evaluation, drawing, or PFlow creation.
 
 ## Findings to instrument
 
@@ -34,7 +34,7 @@ The generated [AminScatterObject.ms](../../AminScatter/scripts/AminScatterObject
 
 ## Existing optimizations worth preserving
 
-[performance.cjs](../../AminScatter/tools/ui/performance.cjs) already coalesces updates and caches blocker inputs. It retains preview while the mouse is held and uses release/event timers; PFlow also waits for state stability. These delays belong in perceived-latency measurements. The presence of timers does not imply background computation.
+[performance.cjs](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/AminScatter/tools/ui/performance.cjs) already coalesces updates and caches blocker inputs. It retains preview while the mouse is held and uses release/event timers; PFlow also waits for state stability. These delays belong in perceived-latency measurements. The presence of timers does not imply background computation.
 
 `previewBuildMs`, `previewBuildCount`, blocker cache counters, `CyrusPFBuilds`, and Analyzer analysis-run counters provide useful existing signals. They do not account for every nested stage, cache miss reason, or redraw cost.
 

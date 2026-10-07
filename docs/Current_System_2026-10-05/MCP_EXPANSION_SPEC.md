@@ -1,5 +1,7 @@
 # MCP expansion and agent guidance contract
 
+**Successor boundary:** [current capabilities](CAPABILITY_MATRIX.md) and [0.73 roadmap](../Unified_System_0.73_2026-10-06/ROADMAP.md) supersede the old-schema-preservation/read-only-policy premise below. Closed Plan 0.73 is implemented; the wider typed Brush/container/Edit/recipe and renderer proposals remain future work.
+
 **Status: proposed work after the current documentation pass.** This does not register tools, modify schemas 1/2 or grant broader scene authority. [Coverage](CAPABILITY_MATRIX.md) is the current-state reference.
 
 ## What “understand the whole plugin” should mean

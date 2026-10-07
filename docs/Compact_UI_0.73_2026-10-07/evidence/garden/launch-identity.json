@@ -1,0 +1,13 @@
+{
+  "pid": 15540,
+  "binaries": {
+    "AminScatter.dlx": "146a1adafe16e71829841b3886804b9d627e77fb1b80e1ca094cd50111673d82",
+    "CyrusBrush.dlx": "48cf18266ada5f36acb967025de592a193f1c48f43d2a3800c94cd7ca7784006",
+    "CyrusBrushStorage.dlh": "6b02436c7c83322b3b7874ae03285084dddf7a3197ae7bb573d38b5ff0253799",
+    "CyrusScatterEdit.dlm": "a1fd381984943b1b8ed20cfa1a9d8ed31187d95dec7fddbf81ebd4a716deb31a",
+    "CyrusSurfaceAnalyzer.dlx": "ca333595a53d5252dc68c8a797beb6971d6d3f36a298323ee3edc8f8371cfefb"
+  },
+  "script_sha256": "53bf85f9a2cfe1034468919c408d4c73ca6e865f7e1b9c816cc7375fe12f10fa",
+  "normal_profile_modified": false,
+  "development_transport": true
+}

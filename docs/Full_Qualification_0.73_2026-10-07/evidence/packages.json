@@ -1,0 +1,159 @@
+{
+  "development_version": "0.73",
+  "version": "0.73.0",
+  "serialization": 54,
+  "calculation_model": "CyrusUnified1",
+  "script_sha256": "15390e733aac8a02433bfbc938f61fbe95f7f41eb35102baedf100dfe6c1a268",
+  "campaigns": {
+    "core": {
+      "folder": "build/mcp-qualification/full073-core-idle05",
+      "sha256": "b5ab1003305e82080cb06a4f62dd9cdbe2e7779110aef665c3735755678ec2ea"
+    },
+    "idle": {
+      "folder": "build/mcp-qualification/full073-core-idle05",
+      "sha256": "b5ab1003305e82080cb06a4f62dd9cdbe2e7779110aef665c3735755678ec2ea"
+    },
+    "selection": {
+      "folder": "build/mcp-qualification/full073-selection02",
+      "sha256": "ad93918a348ed90998023589abeb27d359880922381b9faedae9c3fe48ccd66d"
+    },
+    "playback": {
+      "folder": "build/mcp-qualification/full073-playback02",
+      "sha256": "67661c530f691e3ec1f5af324441ae499be7bad791df874f6ce1af817662d499"
+    },
+    "corona_mock": {
+      "folder": "build/mcp-qualification/full073-corona-mock02",
+      "sha256": "b79695a42bfa0dfdb0a4b6f88ac1280ec850400d7bad4196a806ccca4246f257"
+    },
+    "retirement": {
+      "folder": "build/mcp-qualification/full073-retirement02",
+      "sha256": "3da1cd0a080ed5b901e952a26febdb1e64a5e4d19536ece887d341250488ca6c"
+    },
+    "mcp_direct": {
+      "folder": "build/mcp-qualification/full073-mcp-direct02",
+      "sha256": "f1d1b1607071f047f002f5fc6e2a358f89219850f58b5b3d5f04ac55d00387b4"
+    },
+    "mcp_panel": {
+      "folder": "build/mcp-qualification/full073-mcp-panel02",
+      "sha256": "cb191ca9c99c6ecb3c7fff7101300769019b00d96aae215dc6c9017f2e70e6f2"
+    }
+  },
+  "real_host": "build/mcp-qualification/real073-ui-assets08",
+  "installed": false,
+  "pushed": false,
+  "pointer_scope": "Final real two-column captions, disclosures, scrolling, retargeting, Brush/Undo and controlled whole-node source Move/Undo/Redo in isolated Max 2027. Automated narrow/wide dimensions; not all pointer controls/DPI",
+  "real_IR_scope": "Real garden, floating Corona 15 IR idle/edit/stop and four-pass production. Seven Missing_TextureMap placeholders limit source-material fidelity",
+  "measurement_limits": "Real 100k mixed sources; Mesh triangle budget displays 839 plants. Whole-host RAM/VRAM and limited PresentMon phases, no unlimited FPS claim.",
+  "unresolved_findings": [
+    "First cold container Undo/Redo lost its stack; controlled repeat passed. Cause remains unisolated; see retained failing receipt and roadmap."
+  ],
+  "publication_ready": false,
+  "packages": {
+    "2026": {
+      "runtime_qualified": false,
+      "qualification": "SDK/native tests only; Max 2026 runtime unqualified",
+      "files": {
+        "CyrusScatter-0.73.0-Max2026.mzp": {
+          "sha256": "41d4cdfbded4bfbcdb47ddd9a37dc38622e4a92130939d4a4ce32ab2eaa86e83",
+          "bytes": 624795,
+          "manifest": {
+            "product": "Cyrus Scatter",
+            "version": "0.73.0",
+            "max_year": 2026,
+            "toolset": "14.38.33130",
+            "windows_sdk": "10.0.19041.0",
+            "configuration": "Release",
+            "native_id": "594943e455ee",
+            "files": {
+              "AminScatter.dlx": "6d3e664bdf0d6d9ba64dc822105db169e3d4cd9df2aa425365b84ec7d964ee1d",
+              "CyrusBrush.dlx": "c6837fcede9ece3d4dbd7144a2dbfdc6c74f26dae421bc5d271e3899d0b58858",
+              "CyrusBrushStorage.dlh": "b5dcb2485fef8436550cf0b05f517f42672359f6fc1e6b978cc36cca4168eabe",
+              "CyrusScatter.mcr": "94b543b8e80ce4562b91fd716f9d67720d3841ae718ef8964a1e4f78de6ae293",
+              "CyrusScatter.ms": "15390e733aac8a02433bfbc938f61fbe95f7f41eb35102baedf100dfe6c1a268",
+              "CyrusScatterEdit.dlm": "c0d5d610b785a67eb989f3273a86f44c3afd8503b3c10e59e9ef0b13855fcfb4",
+              "CyrusScatterStartup.ms": "fdf38b3bc83187eecb34b833bfff2751e78626e9e3dba41aa20a0ff7ff9e8405",
+              "INSTALL.txt": "f8d97983bc76007a8f749f0646915c5c4c040a800ccf6b4262ea56cabb56e927",
+              "Uninstall.ms": "59e2b84901fcefaae1dab59886cd2f4079df4f764c789238947e19c514b4ed49",
+              "install.ms": "b9ea803cd532f832997efd942a178d208adec03fe65457ea35191f7e53f3a769",
+              "mzp.run": "a2336b6ccf68a1da9252d7887a861a85923ed99998f03dc15d1e6b54a1dd29f7"
+            }
+          }
+        },
+        "CyrusSurfaceAnalyzer-0.14-Max2026.mzp": {
+          "sha256": "ae9f395f22562f1bac6c880c914ad71f6d28c441394299a295f8213e83fa04f6",
+          "bytes": 54909,
+          "manifest": {
+            "product": "Cyrus Surface Analyzer",
+            "version": "0.14",
+            "max_year": 2026,
+            "toolset": "14.38.33130",
+            "windows_sdk": "10.0.19041.0",
+            "configuration": "Release",
+            "native_id": "3df3fb4bed5f",
+            "files": {
+              "CyrusSurfaceAnalyzer.dlx": "3df3fb4bed5ffc5d40415c080a5b0db574cc430619ff43e0ba7769089a1dcdf0",
+              "CyrusSurfaceAnalyzer.ms": "9f1f146814870a094ab226334675459e0130a9f1d8bd1d621405b52f99ffb3c8",
+              "CyrusSurfaceAnalyzerStartup.ms": "fdef46e54790c5c6d893479a17c6c885e4ff39897d00f1eac6b8567f86c18425",
+              "INSTALL.txt": "bf07401eda96431e8423d6c96accadd9d465e9faa8c44f84bcb81531ad750f97",
+              "install.ms": "6821868795289d092aa04c5b5b6bb8c359d8ae378a622695512199c5a0b894c8",
+              "mzp.run": "adddebc984ab4c94bb46147a046b3a7804251fbf723b4df601dc6051823e9d59"
+            }
+          }
+        }
+      }
+    },
+    "2027": {
+      "runtime_qualified": true,
+      "qualification": "Controlled isolated Max 2027 campaigns pass; first cold pointer Undo history remains open",
+      "files": {
+        "CyrusScatter-0.73.0-Max2027.mzp": {
+          "sha256": "a852849e9033b89d07d5bed9a0ed7e366d3bce13b1212a47b992e4e53000794b",
+          "bytes": 625258,
+          "manifest": {
+            "product": "Cyrus Scatter",
+            "version": "0.73.0",
+            "max_year": 2027,
+            "toolset": "14.38.33130",
+            "windows_sdk": "10.0.19041.0",
+            "configuration": "Release",
+            "native_id": "e9536ab1e38a",
+            "files": {
+              "AminScatter.dlx": "146a1adafe16e71829841b3886804b9d627e77fb1b80e1ca094cd50111673d82",
+              "CyrusBrush.dlx": "48cf18266ada5f36acb967025de592a193f1c48f43d2a3800c94cd7ca7784006",
+              "CyrusBrushStorage.dlh": "6b02436c7c83322b3b7874ae03285084dddf7a3197ae7bb573d38b5ff0253799",
+              "CyrusScatter.mcr": "94b543b8e80ce4562b91fd716f9d67720d3841ae718ef8964a1e4f78de6ae293",
+              "CyrusScatter.ms": "15390e733aac8a02433bfbc938f61fbe95f7f41eb35102baedf100dfe6c1a268",
+              "CyrusScatterEdit.dlm": "a1fd381984943b1b8ed20cfa1a9d8ed31187d95dec7fddbf81ebd4a716deb31a",
+              "CyrusScatterStartup.ms": "fdf38b3bc83187eecb34b833bfff2751e78626e9e3dba41aa20a0ff7ff9e8405",
+              "INSTALL.txt": "89813059279839b7a600abb9ab27e6a8662dcb849fd42ace693f9f3e045ad6a8",
+              "Uninstall.ms": "59e2b84901fcefaae1dab59886cd2f4079df4f764c789238947e19c514b4ed49",
+              "install.ms": "af525842526f46f98e950f36a3ef78c8217ea29a3963e891dcff68b3e97a89d0",
+              "mzp.run": "7e82bd01e9d3333d55cbb9286f68ab2d2b765c2ffe4c27d417eed7a62fc661a3"
+            }
+          }
+        },
+        "CyrusSurfaceAnalyzer-0.14-Max2027.mzp": {
+          "sha256": "7a473fa9911ec539d528794475c9a3c23589c13b6e6f0648e736bd588a3b0bfc",
+          "bytes": 55239,
+          "manifest": {
+            "product": "Cyrus Surface Analyzer",
+            "version": "0.14",
+            "max_year": 2027,
+            "toolset": "14.38.33130",
+            "windows_sdk": "10.0.19041.0",
+            "configuration": "Release",
+            "native_id": "ca333595a53d",
+            "files": {
+              "CyrusSurfaceAnalyzer.dlx": "ca333595a53d5252dc68c8a797beb6971d6d3f36a298323ee3edc8f8371cfefb",
+              "CyrusSurfaceAnalyzer.ms": "9f1f146814870a094ab226334675459e0130a9f1d8bd1d621405b52f99ffb3c8",
+              "CyrusSurfaceAnalyzerStartup.ms": "fdef46e54790c5c6d893479a17c6c885e4ff39897d00f1eac6b8567f86c18425",
+              "INSTALL.txt": "be102993eb74fb13f8a7d3e47efa265842ba20ca6acdc933f55c0d057ebee022",
+              "install.ms": "2867659851efc6513b1e69a532df959ec20dbb225f8b34921d5b529b58c96587",
+              "mzp.run": "9a5e8deb72702b1be5214f4f9e99f3e4a12b04fd47d63ceb865f1f5ea28b2660"
+            }
+          }
+        }
+      }
+    }
+  }
+}

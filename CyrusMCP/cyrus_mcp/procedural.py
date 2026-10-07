@@ -1,4 +1,4 @@
-"""Read-only policy-3 recipe/last-publication export; no host evaluation calls."""
+"""Read-only unified recipe/last-publication export; no host evaluation calls."""
 
 RULE_FIELDS = ("procRuleScope", "procRuleA", "procRuleB", "procRuleEnabled",
                "procRuleMultiplier", "procRuleGap", "procRulePlanar")
@@ -8,16 +8,27 @@ STAT_FIELDS = ("eligible_pool", "accepted", "protected", "protected_conflicts",
 
 
 def _container_refs(owner, field):
-    # Older script/native pairs do not expose the container fields. Report
-    # unavailable instead of inventing current membership or evaluating Max.
+    # An incomplete inspection fixture reports unavailable fields explicitly;
+    # never synthesize membership or evaluate Max from this passive reader.
     try:
         nodes = list(getattr(owner, field))
     except (AttributeError, RuntimeError):
         return None
     result = []
+    from .contracts import require
+    require(len(nodes)<=32,"Container references exceed the read budget","BUDGET_EXCEEDED")
     for node in nodes:
         try:
-            result.append({"handle": int(node.handle), "name": str(node.name)})
+            row={"handle": int(node.handle), "name": str(node.name)}
+            try:
+                row['cached_helper']={
+                    'container_id':str(node.containerID),'context_root_id':str(node.contextRootID),
+                    'context_set_id':str(node.contextSetID),'label':str(node.cachedLabel)[:1024],
+                    'active':int(node.cachedActiveCount),'saved':int(node.cachedSavedCount),
+                    'movement_status':str(node.movementStatus)[:1024],
+                    'freshness':'Cached presentation from the last event reconciliation; no transform or containment query.'}
+            except (AttributeError,RuntimeError,TypeError,ValueError):pass
+            result.append(row)
         except (AttributeError, RuntimeError, TypeError, ValueError):
             result.append(None)  # Persisted deleted-node slot.
     return result
@@ -67,15 +78,15 @@ def _cached_membership(leaf,mode):
             "freshness":"Last reconciliation flags; node transforms and rectangle containment are not inspected. No current membership claim."}
 
 
-def require_legacy_mutation(controller):
+def require_unified_mutation(controller):
     from .contracts import require
-    require(controller is None or int(controller.groupPolicy) in (1, 2),
-            "Plan schemas 1/2 cannot overwrite or convert a Procedural 0.7 controller. Inspect it read-only or create a separate setup.",
+    require(controller is None or str(getattr(controller,"calculationModel",lambda:"")())=="CyrusUnified1",
+            "Only a matching unified controller may be refined. Retired scene schemas are unsupported.",
             "UNSUPPORTED_CAPABILITY")
 
 
 def read_procedural(controller, metres_per_unit):
-    if int(controller.groupPolicy) != 3:
+    if str(getattr(controller,"calculationModel",lambda:"")()) != "CyrusUnified1":
         return None
     parents = list(controller.logicalLayers())
     layers = []
@@ -108,6 +119,7 @@ def read_procedural(controller, metres_per_unit):
         layers.append({"layer_id": str(parent.layerID), "population": "accepted_target" if int(parent.procPopulation) == 2 else "candidate_budget",
                        "attempt_factor": int(parent.procAttemptFactor), "round_limit": int(parent.procRounds),
                        "retry_cleanup_gaps": bool(parent.procRepair),
+                       "default_within_sets": {"enabled": bool(parent.procLayerSelfEnabled), "radius_factor": float(parent.procLayerSelfMultiplier), "gap_m": float(parent.procLayerSelfGap)*metres_per_unit, "metric": "xy" if parent.procLayerSelfPlanar else "xyz"},
                        "default_between_sets": {"enabled": bool(parent.procSiblingEnabled),
                                                 "radius_factor": float(parent.procSiblingMultiplier),
                                                 "gap_m": float(parent.procSiblingGap) * metres_per_unit,
@@ -117,7 +129,7 @@ def read_procedural(controller, metres_per_unit):
               "enabled": bool(controller.procRuleEnabled[i]), "radius_factor": float(controller.procRuleMultiplier[i]),
               "gap_m": float(controller.procRuleGap[i]) * metres_per_unit,
               "metric": "xy" if controller.procRulePlanar[i] else "xyz"} for i in range(len(controller.procRuleA))]
-    return {"schema": "cyrus.procedural-configuration/1.0", "evaluation_policy": 3,
+    return {"schema": "cyrus.procedural-configuration/1.0", "calculation_model": "CyrusUnified1",
             "global_source_containers": _container_refs(controller, "containerGlobalNodes"),
             "layers_in_order": layers, "pair_rules": pairs, "mutation_supported": False,
             "freshness": "Recipe values are current; last_published describes the last completed epoch. No solve is performed."}

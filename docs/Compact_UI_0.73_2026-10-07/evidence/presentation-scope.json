@@ -1,0 +1,10 @@
+{
+  "before_script_sha256": "15390e733aac8a02433bfbc938f61fbe95f7f41eb35102baedf100dfe6c1a268",
+  "current_script_sha256": "53bf85f9a2cfe1034468919c408d4c73ca6e865f7e1b9c816cc7375fe12f10fa",
+  "outside_rollouts_identical": true,
+  "before_outside_rollouts_sha256": "b21de3acd1695dddee0797a735f036952e97083bbb38846648ed7d4ffdf0e85c",
+  "current_outside_rollouts_sha256": "b21de3acd1695dddee0797a735f036952e97083bbb38846648ed7d4ffdf0e85c",
+  "rollout_names_identical": true,
+  "rollouts": 33,
+  "scope": "Removes native rollout bodies and the generated payload fingerprint; this does not certify setting handlers inside rollouts."
+}

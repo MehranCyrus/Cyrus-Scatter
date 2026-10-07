@@ -39,7 +39,7 @@ SideFX documents that randomized output ordering can change point numbers even w
 
 These are acceptance targets, not a claim that all cases already pass. [E15](11_EXPERIMENTS.md#e15--identity-transform-and-surface-contracts) makes that distinction executable in a later loop.
 
-The model-container rectangle is an **asset palette and membership control**. It is not the ground receiver or an include/exclude planting area. Keep source placement inside the palette separate from the authored source pivot/frame used to instantiate it. Container movement must not silently become a planting transform or erase parked settings. The current [procedural model](../../AminScatter/tools/ui/templates/procedural-model.ms), lines 21–48, already separates source IDs/radii, container settings, binding keys and membership caches; the new publication/API should explain those distinctions.
+The model-container rectangle is an **asset palette and membership control**. It is not the ground receiver or an include/exclude planting area. Keep source placement inside the palette separate from the authored source pivot/frame used to instantiate it. Container movement must not silently become a planting transform or erase parked settings. The current [procedural model](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/AminScatter/tools/ui/templates/procedural-model.ms), lines 21–48, already separates source IDs/radii, container settings, binding keys and membership caches; the new publication/API should explain those distinctions.
 
 ## Make transform and radius meanings explicit
 

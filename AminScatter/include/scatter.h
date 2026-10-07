@@ -83,7 +83,7 @@ Settings prepareEdgeRows(const Settings&);
 std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settings& settings);
 struct FinalSettings { bool cleanup{false},relax{false},planar{true}; double radius{1},strength{.3},maxMove{.1},gap{0}; unsigned minNeighbors{2},minIsland{5},iterations{5}; };
 // Optional caller-owned budget. Procedural replay shares the remaining budget
-// with spacing; legacy callers retain their existing behavior.
+// with spacing; direct numerical callers may omit this budget.
 struct FinalWorkBudget {
     std::uint64_t limit{},visits{};
     std::vector<std::uint64_t> rowVisits;

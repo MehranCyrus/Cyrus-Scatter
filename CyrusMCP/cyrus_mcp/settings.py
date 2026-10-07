@@ -1,4 +1,4 @@
-"""Closed, unit-labelled settings for plan 2.0; no arbitrary Max properties.
+"""Closed, unit-labelled settings for unified plan 0.73; no arbitrary Max properties.
 
 This registry is shared by host validation, tool schemas and capability docs.
 Length values cross the adapter boundary exactly once (metres -> Max units).
@@ -10,14 +10,15 @@ from .contracts import fields, number, pair, require
 LAYER_SETTINGS = {
     "visible": ("bool", True, (), None),
     "enabled": ("bool", True, (), None),
-    "priority": ("int", 0, (-100000, 100000), "groupPriority"),
-    "collision_enabled": ("bool", False, (), "collisionEnabled"),
-    "collision_radius_m": ("number", .1, (0, 100), "collisionRadius"),
+    "self_spacing_enabled": ("bool", False, (), "procLayerSelfEnabled"),
+    "self_radius_factor": ("number", 1, (0, 100), "procLayerSelfMultiplier"),
+    "self_gap_m": ("number", 0, (0, 100), "procLayerSelfGap"),
+    "self_planar": ("bool", False, (), "procLayerSelfPlanar"),
     "cleanup_enabled": ("bool", False, (), "finalCleanup"),
     "neighbor_radius_m": ("number", 1, (.000001, 1000), "finalNeighborRadius"),
     "minimum_neighbors": ("int", 2, (0, 10000), "finalMinNeighbors"),
     "minimum_island": ("int", 5, (0, 100000), "finalMinIsland"),
-    "planar_cleanup": ("bool", True, (), "overlapPlanar"),
+    "planar_cleanup": ("bool", True, (), "cleanupPlanar"),
     "align_normal": ("bool", True, (), "alignNormal"),
     "scale_x": ("range", [1, 1], (.01, 10), ("sclXMin", "sclXMax")),
     "scale_y": ("range", [1, 1], (.01, 10), ("sclYMin", "sclYMax")),
@@ -30,7 +31,7 @@ LAYER_SETTINGS = {
 SOURCE_SETTINGS = {
     "scale": ("number", 1, (.01, 10), "sourceScales"),
     "z_offset_m": ("number", 0, (-100, 100), "sourceZOffsets"),
-    "collision_radius_m": ("number", 0, (0, 100), "sourceRadii"),
+    "radius_m": ("number", 0, (0, 100), "sourceRadii"),
     "radius_follows_scale": ("bool", True, (), "sourceFollowScale"),
     "show_radius": ("bool", False, (), "sourceShowRadius"),
     "forward_axis": ("int", 1, (1, 4), "sourceForwardAxes"),
@@ -60,10 +61,12 @@ def normalize_settings(value, registry):
     return result
 
 
-def normalize_v2(plan):
+def normalize_plan(plan):
     result=deepcopy(plan)
     result["display"]=normalize_settings(plan.get("display",{}),DISPLAY_SETTINGS)
     result["pair_rules"]=deepcopy(plan.get("pair_rules",[]))
+    for rule in result["pair_rules"]:
+        rule.setdefault("enabled",True)
     for layer in result["layers"]:
         layer["settings"]=normalize_settings(layer.get("settings",{}),LAYER_SETTINGS)
         layer["exclude_region_ids"]=layer.get("exclude_region_ids",[])
@@ -77,16 +80,16 @@ def capability_manifest():
         return {key:{"type":value[0],"default":value[1],"bounds_or_choices":value[2],
                      "units":"metres" if key.endswith("_m") else "degrees" if key.endswith("_degrees") else "unitless"}
                 for key,value in entries.items()}
-    return {"schema_version":"1.0","plan_versions":["1.0","2.0"],
+    return {"schema_version":"1.0","plan_versions":["0.73"],"calculation_model":"CyrusUnified1",
             "layer_settings":registry(LAYER_SETTINGS),"source_settings":registry(SOURCE_SETTINGS),"display_settings":registry(DISPLAY_SETTINGS),
             "supported":["count","seed","source_weights","uniform_scale_yaw","xyz_scale_xy_tilt","projected_xy_movement",
-                         "enrolled_convex_include_exclude","shared_pair_spacing","collision","cleanup","visibility","enable","cached_configuration","published_layout_export","procedural_policy_3_read_only"],
+                         "enrolled_convex_include_exclude","ordered_layer_pair_spacing","set_self_spacing","cleanup","visibility","enable","cached_configuration","published_layout_export","unified_recipe_read_only"],
             "source_candidate_pending_host_qualification":["shared_diagnostic_event_pages","procedural_publication_pages","local_diagnostic_recording_export"],
             "help_resources":["cyrus://feature-catalog","cyrus://agent-workflows","cyrus://error-guide"],
             "unavailable":{"brush_history_mutation":"Native local UI only; MCP has no enrolled paint-document mutation contract.",
-                           "procedural_policy_3_mutation":"Read-only recipe and cached diagnostics. Plan schemas 1/2 retain policies 1/2; they cannot convert or overwrite a policy-3 controller.",
+                           "full_procedural_recipe_mutation":"Plan 0.73 authors/refines only its own bounded independent layers. Full paint-set/background/Edit/container recipes remain local; inspection cannot mutate artist controllers.",
                            "brush_set_creation":"Native local UI only; automated plans currently create independent logical layers.",
-                           "relax":"Not qualified through automation; painted/shared Boundary Relax remains paused in the UI.",
+                           "relax":"Candidate Relax is available locally; no remote Relax authoring contract is qualified.",
                            "density_texture_and_falloff":"Local maps/curves require a separately enrolled, bounded reference contract.",
                            "spline_diversity_analyzer":"Existing native controls remain local; automation scope is convex horizontal sites.",
                            "bake_render_cs_edit":"Local actions; no remote mutation of renderer, scene modifiers or baked nodes.",

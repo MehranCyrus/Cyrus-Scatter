@@ -1,0 +1,33 @@
+{
+  "version": "0.73.0",
+  "date": "2026-10-07",
+  "script_sha256": "53bf85f9a2cfe1034468919c408d4c73ca6e865f7e1b9c816cc7375fe12f10fa",
+  "payload_sha256": "d74672d06df57514d70accd5632bfa187a1546633e6327d6b8360905e202ea94",
+  "native_reused": true,
+  "campaigns": {
+    "core": {
+      "folder": "build/mcp-qualification/compact073-core-idle04",
+      "receipt_sha256": "e3f2e35438117865754e368ff875f6a4065e3924b4046709a108d357e92b1037"
+    },
+    "bounds": {
+      "folder": "build/mcp-qualification/compact073-bounds02",
+      "receipt_sha256": "1e649f85feac9f696987d8ecbdabc4ffab990d1527b0a35714b9311d8d3092ef"
+    }
+  },
+  "real_host": "build/mcp-qualification/real073-compact-ui05",
+  "real_receipts": {
+    "compact-browsing-result.json": "9976f5dbe35308c2b18dec8e074dcd86ed4f20d51b2f0a4f7915dff4ffaf12a0",
+    "compact-quiet-result.json": "8a81dbea7df9a41eec55f6c6a1967f7a8b8de1bd9a050f569f517e0f797c5997",
+    "compact-container-geometry.json": "5ade628ff092de15960b3901cf7b77dc1251c7f41a1199034adf189889c77d96",
+    "protection.json": "6c8672fb34a90e324478cb527fa8afb6f641c09bdf0ce404606636179a79c60f"
+  },
+  "packages": {
+    "SDK_ONLY_Max2026/CyrusScatter-0.73.0-Max2026.mzp": "f487f4e663cf1ed6d7c44d74effb5d556249dae31d5d7f90f6e4abaa75031835",
+    "SDK_ONLY_Max2026/CyrusSurfaceAnalyzer-0.14-Max2026.mzp": "ae9f395f22562f1bac6c880c914ad71f6d28c441394299a295f8213e83fa04f6",
+    "Max2027/CyrusScatter-0.73.0-Max2027.mzp": "2c95f486ce2943fac180174ae49ad26baf45cfcd6ba2895074cfd4df17228114",
+    "Max2027/CyrusSurfaceAnalyzer-0.14-Max2027.mzp": "7a473fa9911ec539d528794475c9a3c23589c13b6e6f0648e736bd588a3b0bfc"
+  },
+  "installed": false,
+  "committed": false,
+  "max2026_runtime_qualified": false
+}

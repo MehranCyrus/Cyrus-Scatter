@@ -1,0 +1,831 @@
+{
+  "target_sha256": "5b1068b5b3627f64f78cd2b51ca0c23d616be09943077d5ffcf1c6fecc713fd9",
+  "preferred_image_base": "0x180000000",
+  "regions": [
+    {
+      "batch": "batch07",
+      "label": "Particle_Render_Display",
+      "begin_rva": "0x1dee8d0",
+      "end_exclusive_rva": "0x1deeb1c",
+      "selected_span_bytes": 588,
+      "disassembly_command_ok": true,
+      "instructions": 145,
+      "decoded_instruction_bytes": 588,
+      "decompiler_completed": true,
+      "generic_decompiler_warnings": [
+        "Could not recover jumptable at 0x000181deeb0e. Too many branches ",
+        "Treating indirect jump as call "
+      ],
+      "private_artifacts": [
+        {
+          "name": "Particle_Render_Display.asm.txt",
+          "bytes": 5088,
+          "sha256": "fdb98c4d79113552eee77620e81fcb034f403463c5ea90439142caa9580e7136"
+        },
+        {
+          "name": "Particle_Render_Display.c",
+          "bytes": 5153,
+          "sha256": "f54da32d141e2db663dd8a7f12cd2a7abcdfc136f49ebc4b5717971d08547d8e"
+        },
+        {
+          "name": "Particle_Render_Display.refs.tsv",
+          "bytes": 801,
+          "sha256": "d33da4761189b71f3be56f6a951825d61fc604944521d253d6d0a864a38fefd5"
+        }
+      ],
+      "complete_private_function_not_certified": true
+    },
+    {
+      "batch": "batch07",
+      "label": "Display_Parallel_Helper_A",
+      "begin_rva": "0x1ddb6f0",
+      "end_exclusive_rva": "0x1ddc4d7",
+      "selected_span_bytes": 3559,
+      "disassembly_command_ok": true,
+      "instructions": 520,
+      "decoded_instruction_bytes": 2160,
+      "decompiler_completed": true,
+      "generic_decompiler_warnings": [
+        "Bad instruction - Truncating control flow here ",
+        "Control flow encountered bad instruction data ",
+        "Globals starting with '_' overlap smaller symbols at the same address "
+      ],
+      "private_artifacts": [
+        {
+          "name": "Display_Parallel_Helper_A.asm.txt",
+          "bytes": 17670,
+          "sha256": "7f7488ddb62fbd4f2b55fe8b1d79073e2f53a1f6b7ea9401e58d623f2da53834"
+        },
+        {
+          "name": "Display_Parallel_Helper_A.c",
+          "bytes": 12614,
+          "sha256": "e86bb543e11479de337a26ace721201ea87e59c92cc9bb5f0ba39ecb6a61053b"
+        },
+        {
+          "name": "Display_Parallel_Helper_A.refs.tsv",
+          "bytes": 5172,
+          "sha256": "c91b48a1d3f30546f9abdceff30fc51c3e890e937c66b73e9d52e4eb90698e62"
+        }
+      ],
+      "complete_private_function_not_certified": true
+    },
+    {
+      "batch": "batch07",
+      "label": "Display_Parallel_Helper_B",
+      "begin_rva": "0x1ddc4e0",
+      "end_exclusive_rva": "0x1ddd4de",
+      "selected_span_bytes": 4094,
+      "disassembly_command_ok": true,
+      "instructions": 636,
+      "decoded_instruction_bytes": 2699,
+      "decompiler_completed": true,
+      "generic_decompiler_warnings": [
+        "Bad instruction - Truncating control flow here ",
+        "Control flow encountered bad instruction data ",
+        "Globals starting with '_' overlap smaller symbols at the same address "
+      ],
+      "private_artifacts": [
+        {
+          "name": "Display_Parallel_Helper_B.asm.txt",
+          "bytes": 22070,
+          "sha256": "ac2db8c488c2ec553b8b6e4d6a6d037f58bc430e4bc2f6c29980d27bc23f5ac5"
+        },
+        {
+          "name": "Display_Parallel_Helper_B.c",
+          "bytes": 19092,
+          "sha256": "eace3778fd2bbdf9dde00b6c64c88f1a9b5e7f1013c2d3cd10447f409deb584e"
+        },
+        {
+          "name": "Display_Parallel_Helper_B.refs.tsv",
+          "bytes": 5347,
+          "sha256": "8418e8dd38ca6856be4a0c21403e8b50ed25722e418c5bb46e3f886d67ef729e"
+        }
+      ],
+      "complete_private_function_not_certified": true
+    },
+    {
+      "batch": "batch07",
+      "label": "Display_Numeric_Job_A",
+      "begin_rva": "0x1de1230",
+      "end_exclusive_rva": "0x1de1d25",
+      "selected_span_bytes": 2805,
+      "disassembly_command_ok": true,
+      "instructions": 696,
+      "decoded_instruction_bytes": 2805,
+      "decompiler_completed": true,
+      "generic_decompiler_warnings": [
+        "Globals starting with '_' overlap smaller symbols at the same address "
+      ],
+      "private_artifacts": [
+        {
+          "name": "Display_Numeric_Job_A.asm.txt",
+          "bytes": 20699,
+          "sha256": "925fa97b20d375321a084ca7919c2094d2abd78206ba9dbe2cd2ba235585f461"
+        },
+        {
+          "name": "Display_Numeric_Job_A.c",
+          "bytes": 14706,
+          "sha256": "88fbd365719e94939b3a90074ca22e1141e2d2111d7a2a43d5b08f6ce9808e1a"
+        },
+        {
+          "name": "Display_Numeric_Job_A.refs.tsv",
+          "bytes": 8938,
+          "sha256": "3776236b01a2beaacf9eced186d7e3f2f89c6b29a922982fdb813d18c017c2ea"
+        }
+      ],
+      "complete_private_function_not_certified": true
+    },
+    {
+      "batch": "batch07",
+      "label": "Display_Numeric_Job_B",
+      "begin_rva": "0x1de0a00",
+      "end_exclusive_rva": "0x1de1223",
+      "selected_span_bytes": 2083,
+      "disassembly_command_ok": true,
+      "instructions": 493,
+      "decoded_instruction_bytes": 2083,
+      "decompiler_completed": true,
+      "generic_decompiler_warnings": [
+        "Globals starting with '_' overlap smaller symbols at the same address "
+      ],
+      "private_artifacts": [
+        {
+          "name": "Display_Numeric_Job_B.asm.txt",
+          "bytes": 15919,
+          "sha256": "5449d1e67807430f6b03afd93d08396d20fab13e34cc3b8bf13d6e14e0c3e535"
+        },
+        {
+          "name": "Display_Numeric_Job_B.c",
+          "bytes": 13924,
+          "sha256": "5edf9ee4341e6ba81ab25027432cd3043cead0198d14a308ba09217bf1bda2c4"
+        },
+        {
+          "name": "Display_Numeric_Job_B.refs.tsv",
+          "bytes": 4924,
+          "sha256": "79bc6f1b4898984899e631a5d2fcb481912ad3daaa3d40f973ecdb4a5090bbdf"
+        }
+      ],
+      "complete_private_function_not_certified": true
+    },
+    {
+      "batch": "batch07",
+      "label": "Pool_Slot0",
+      "begin_rva": "0x3fcc5e0",
+      "end_exclusive_rva": "0x3fcc675",
+      "selected_span_bytes": 149,
+      "disassembly_command_ok": true,
+      "instructions": 39,
+      "decoded_instruction_bytes": 149,
+      "decompiler_completed": true,
+      "generic_decompiler_warnings": [],
+      "private_artifacts": [
+        {
+          "name": "Pool_Slot0.asm.txt",
+          "bytes": 1216,
+          "sha256": "b0e416acb89444c35b70df06245bbe17d56f9687a5f443fbc4f1af17da2700e3"
+        },
+        {
+          "name": "Pool_Slot0.c",
+          "bytes": 734,
+          "sha256": "3dedbc29dcda75590aa5b77814d8474ffc7ef3a017be68fa420d60930e8f050f"
+        },
+        {
+          "name": "Pool_Slot0.refs.tsv",
+          "bytes": 171,
+          "sha256": "8aacf70c055af260e1317eb83ddc0635afa00fbc143764012178e48f77221e15"
+        }
+      ],
+      "complete_private_function_not_certified": true
+    },
+    {
+      "batch": "batch07",
+      "label": "Pool_Slot1",
+      "begin_rva": "0x3fcc680",
+      "end_exclusive_rva": "0x3fcc6cb",
+      "selected_span_bytes": 75,
+      "disassembly_command_ok": true,
+      "instructions": 19,
+      "decoded_instruction_bytes": 75,
+      "decompiler_completed": true,
+      "generic_decompiler_warnings": [],
+      "private_artifacts": [
+        {
+          "name": "Pool_Slot1.asm.txt",
+          "bytes": 656,
+          "sha256": "a116586971dd565a602a2cde49f774867cdc3e6742e8e0c7925e07d9be26d9dc"
+        },
+        {
+          "name": "Pool_Slot1.c",
+          "bytes": 372,
+          "sha256": "a92b44927bec3105c1b4a5494fae4dee97f81a33a51509d551ff3f34f7facd61"
+        },
+        {
+          "name": "Pool_Slot1.refs.tsv",
+          "bytes": 171,
+          "sha256": "6a07a850ff37eded13768933fb6acc5a6fafc0877b866aa97508291b6d5d6da2"
+        }
+      ],
+      "complete_private_function_not_certified": true
+    },
+    {
+      "batch": "batch07",
+      "label": "Pool_Slot2",
+      "begin_rva": "0x3fcd2e0",
+      "end_exclusive_rva": "0x3fcd445",
+      "selected_span_bytes": 357,
+      "disassembly_command_ok": true,
+      "instructions": 88,
+      "decoded_instruction_bytes": 357,
+      "decompiler_completed": true,
+      "generic_decompiler_warnings": [
+        "Bad instruction - Truncating control flow here ",
+        "Control flow encountered bad instruction data ",
+        "Globals starting with '_' overlap smaller symbols at the same address "
+      ],
+      "private_artifacts": [
+        {
+          "name": "Pool_Slot2.asm.txt",
+          "bytes": 2816,
+          "sha256": "fc96a0f3512fdadb1169dc49370611aa562028cd7a0329f5209f575060ba59df"
+        },
+        {
+          "name": "Pool_Slot2.c",
+          "bytes": 6643,
+          "sha256": "e0cf7d8ce1e0548298fb7508acb5fa94326594b797d6d97faee532f1b5d76ad9"
+        },
+        {
+          "name": "Pool_Slot2.refs.tsv",
+          "bytes": 955,
+          "sha256": "61a1334bd9aee56264260b9fd240fc9d96663e44cb21460ba2e76836fdeee9f1"
+        }
+      ],
+      "complete_private_function_not_certified": true
+    },
+    {
+      "batch": "batch07",
+      "label": "Pool_Slot3",
+      "begin_rva": "0x3fcd1f0",
+      "end_exclusive_rva": "0x3fcd2da",
+      "selected_span_bytes": 234,
+      "disassembly_command_ok": true,
+      "instructions": 60,
+      "decoded_instruction_bytes": 234,
+      "decompiler_completed": true,
+      "generic_decompiler_warnings": [],
+      "private_artifacts": [
+        {
+          "name": "Pool_Slot3.asm.txt",
+          "bytes": 1912,
+          "sha256": "07d63614bc25b12dfbaea98aeaadef6910ebcc03eb053861b320be982b126c6d"
+        },
+        {
+          "name": "Pool_Slot3.c",
+          "bytes": 1327,
+          "sha256": "eda475a5064f6dc3fe2e27e9d0ff1f43f1c226c7e45cc64a3998fa95069df735"
+        },
+        {
+          "name": "Pool_Slot3.refs.tsv",
+          "bytes": 761,
+          "sha256": "a2c31ce239404a6dae9eab4419c1ee2832e721a54a165c1ef4867e653ff73cae"
+        }
+      ],
+      "complete_private_function_not_certified": true
+    },
+    {
+      "batch": "batch07",
+      "label": "Pool_Slot4",
+      "begin_rva": "0x3fcc9a0",
+      "end_exclusive_rva": "0x3fccc09",
+      "selected_span_bytes": 617,
+      "disassembly_command_ok": true,
+      "instructions": 150,
+      "decoded_instruction_bytes": 617,
+      "decompiler_completed": true,
+      "generic_decompiler_warnings": [
+        "Globals starting with '_' overlap smaller symbols at the same address "
+      ],
+      "private_artifacts": [
+        {
+          "name": "Pool_Slot4.asm.txt",
+          "bytes": 4417,
+          "sha256": "c3f46f06672b854e3bf48b4dfe366f59d7a8fc095a49e71f00233fc59f06b665"
+        },
+        {
+          "name": "Pool_Slot4.c",
+          "bytes": 3160,
+          "sha256": "1ccdedeac8821c3003ea78d64e10c569c7e7bf99071ef1450d364e45dcd2b9a2"
+        },
+        {
+          "name": "Pool_Slot4.refs.tsv",
+          "bytes": 1391,
+          "sha256": "a37eb2a6157f1b02a8cf5468a55c2e2d357f0412bb712ba5ebafbe4aaa012780"
+        }
+      ],
+      "complete_private_function_not_certified": true
+    },
+    {
+      "batch": "batch07",
+      "label": "Pool_Slot5",
+      "begin_rva": "0x3fccce0",
+      "end_exclusive_rva": "0x3fccd44",
+      "selected_span_bytes": 100,
+      "disassembly_command_ok": true,
+      "instructions": 25,
+      "decoded_instruction_bytes": 100,
+      "decompiler_completed": true,
+      "generic_decompiler_warnings": [],
+      "private_artifacts": [
+        {
+          "name": "Pool_Slot5.asm.txt",
+          "bytes": 872,
+          "sha256": "87e9885694810f34c04ed10b07b0b3a4a7a063de0f6317999f0c3414d06ce3bc"
+        },
+        {
+          "name": "Pool_Slot5.c",
+          "bytes": 763,
+          "sha256": "1299732e344637c7cd3119319b2b3fcc8e14b1c4aeb0911283b4dc3b41318e0c"
+        },
+        {
+          "name": "Pool_Slot5.refs.tsv",
+          "bytes": 281,
+          "sha256": "2b426bbe200f47a2e56d3288a5b58480e3f51b74de8eba9d9e103a05fbaa49c5"
+        }
+      ],
+      "complete_private_function_not_certified": true
+    },
+    {
+      "batch": "batch07",
+      "label": "Pool_Slot7",
+      "begin_rva": "0x3fcc2b0",
+      "end_exclusive_rva": "0x3fcc2e4",
+      "selected_span_bytes": 52,
+      "disassembly_command_ok": true,
+      "instructions": 16,
+      "decoded_instruction_bytes": 52,
+      "decompiler_completed": true,
+      "generic_decompiler_warnings": [],
+      "private_artifacts": [
+        {
+          "name": "Pool_Slot7.asm.txt",
+          "bytes": 496,
+          "sha256": "25a1b6cb80ca215bb3cf078d86f0059dd3978d9c489d211411443baa44d75295"
+        },
+        {
+          "name": "Pool_Slot7.c",
+          "bytes": 188,
+          "sha256": "2a5bd53cbb742e45ac9208b6b9517bd60a608a2d8aa0f40e423cf0ca42ecf093"
+        },
+        {
+          "name": "Pool_Slot7.refs.tsv",
+          "bytes": 228,
+          "sha256": "233cfd15bf43437afc078f26d6fedb397ed2d503a31b184a97dbb191afd04b64"
+        }
+      ],
+      "complete_private_function_not_certified": true
+    },
+    {
+      "batch": "batch07",
+      "label": "Particle_Realize_Leaf",
+      "begin_rva": "0x1deeb50",
+      "end_exclusive_rva": "0x1deeb53",
+      "selected_span_bytes": 3,
+      "disassembly_command_ok": true,
+      "instructions": 1,
+      "decoded_instruction_bytes": 3,
+      "decompiler_completed": true,
+      "generic_decompiler_warnings": [],
+      "private_artifacts": [
+        {
+          "name": "Particle_Realize_Leaf.asm.txt",
+          "bytes": 108,
+          "sha256": "88ebd7ae3f1a2bb54a75b88a8f92ccc36026be030a8f1836873f91d486d20902"
+        },
+        {
+          "name": "Particle_Realize_Leaf.c",
+          "bytes": 49,
+          "sha256": "0f7d328769965b5e2c11e5404066163b6ca960ef9d85b80c16067fb8b0e0baf2"
+        },
+        {
+          "name": "Particle_Realize_Leaf.refs.tsv",
+          "bytes": 30,
+          "sha256": "3ef8115f29b819a734a6e6ea38dc43733bc25f8ecfbf86850a7f05fbbdde8078"
+        }
+      ],
+      "complete_private_function_not_certified": true
+    },
+    {
+      "batch": "batch07",
+      "label": "Particle_Primitive_Leaf",
+      "begin_rva": "0x1dde5f0",
+      "end_exclusive_rva": "0x1dde5f8",
+      "selected_span_bytes": 8,
+      "disassembly_command_ok": true,
+      "instructions": 2,
+      "decoded_instruction_bytes": 8,
+      "decompiler_completed": true,
+      "generic_decompiler_warnings": [],
+      "private_artifacts": [
+        {
+          "name": "Particle_Primitive_Leaf.asm.txt",
+          "bytes": 150,
+          "sha256": "5c35bb732af9cdc779a618eba5423667d616fe17be3e7079c605046b027ae8f7"
+        },
+        {
+          "name": "Particle_Primitive_Leaf.c",
+          "bytes": 101,
+          "sha256": "6dab14e434486e417209c7e33840f63f20f3a9d81695f1ea8f2cbd6e1dfefe50"
+        },
+        {
+          "name": "Particle_Primitive_Leaf.refs.tsv",
+          "bytes": 30,
+          "sha256": "3ef8115f29b819a734a6e6ea38dc43733bc25f8ecfbf86850a7f05fbbdde8078"
+        }
+      ],
+      "complete_private_function_not_certified": true
+    },
+    {
+      "batch": "batch07",
+      "label": "Terrain_Realize_Leaf",
+      "begin_rva": "0x3ea9ff0",
+      "end_exclusive_rva": "0x3ea9ff3",
+      "selected_span_bytes": 3,
+      "disassembly_command_ok": true,
+      "instructions": 1,
+      "decoded_instruction_bytes": 3,
+      "decompiler_completed": true,
+      "generic_decompiler_warnings": [],
+      "private_artifacts": [
+        {
+          "name": "Terrain_Realize_Leaf.asm.txt",
+          "bytes": 108,
+          "sha256": "610b73a63b811052b939688c79563844c6549120f729bf5d3f793b10d9cb27e1"
+        },
+        {
+          "name": "Terrain_Realize_Leaf.c",
+          "bytes": 49,
+          "sha256": "addf551f996fd12432b9bdefbbe61a89434608bbd6b8a93916710eb244ab10a6"
+        },
+        {
+          "name": "Terrain_Realize_Leaf.refs.tsv",
+          "bytes": 30,
+          "sha256": "3ef8115f29b819a734a6e6ea38dc43733bc25f8ecfbf86850a7f05fbbdde8078"
+        }
+      ],
+      "complete_private_function_not_certified": true
+    },
+    {
+      "batch": "batch07",
+      "label": "Terrain_Display_Leaf",
+      "begin_rva": "0x3ea9990",
+      "end_exclusive_rva": "0x3ea99a5",
+      "selected_span_bytes": 21,
+      "disassembly_command_ok": true,
+      "instructions": 7,
+      "decoded_instruction_bytes": 21,
+      "decompiler_completed": true,
+      "generic_decompiler_warnings": [
+        "Globals starting with '_' overlap smaller symbols at the same address "
+      ],
+      "private_artifacts": [
+        {
+          "name": "Terrain_Display_Leaf.asm.txt",
+          "bytes": 268,
+          "sha256": "adab218a84e9b42ea2dcb1c59074eb437d742717cc986b6f96bb5d8224ecdb6a"
+        },
+        {
+          "name": "Terrain_Display_Leaf.c",
+          "bytes": 15004,
+          "sha256": "1b5ce9ffba9a07fbc533752308e720e623677cdcf2dd1e22d5dd434d17c68fb0"
+        },
+        {
+          "name": "Terrain_Display_Leaf.refs.tsv",
+          "bytes": 142,
+          "sha256": "0eab84898561d8077c12a887c861760b19af1130eea450af5f688f234d7f6ca1"
+        }
+      ],
+      "complete_private_function_not_certified": true
+    },
+    {
+      "batch": "batch07",
+      "label": "Terrain_Primitive_Leaf",
+      "begin_rva": "0x3ea9ef0",
+      "end_exclusive_rva": "0x3ea9eff",
+      "selected_span_bytes": 15,
+      "disassembly_command_ok": true,
+      "instructions": 6,
+      "decoded_instruction_bytes": 15,
+      "decompiler_completed": true,
+      "generic_decompiler_warnings": [],
+      "private_artifacts": [
+        {
+          "name": "Terrain_Primitive_Leaf.asm.txt",
+          "bytes": 253,
+          "sha256": "9edbb593ebc1450b053db5153e159a868b35ee83a4e0abaca564be4c2e3986a7"
+        },
+        {
+          "name": "Terrain_Primitive_Leaf.c",
+          "bytes": 186,
+          "sha256": "3d4a5532b9cf3869f922ba9a4bd41bf54c5e88c421b4b294dee58221404ca5b0"
+        },
+        {
+          "name": "Terrain_Primitive_Leaf.refs.tsv",
+          "bytes": 85,
+          "sha256": "6b3e3db8fd9d4bc7cdfcfbe719f519128782ddc4bb631d464db69dd37a9edc9f"
+        }
+      ],
+      "complete_private_function_not_certified": true
+    },
+    {
+      "batch": "batch08",
+      "label": "Particle_Item_Initialize",
+      "begin_rva": "0x1de48b0",
+      "end_exclusive_rva": "0x1de4aa4",
+      "selected_span_bytes": 500,
+      "disassembly_command_ok": true,
+      "instructions": 113,
+      "decoded_instruction_bytes": 500,
+      "decompiler_completed": true,
+      "generic_decompiler_warnings": [
+        "Globals starting with '_' overlap smaller symbols at the same address "
+      ],
+      "private_artifacts": [
+        {
+          "name": "Particle_Item_Initialize.asm.txt",
+          "bytes": 3651,
+          "sha256": "f1315f901527aa0f79abbadc8e817f8f20877de2f08159d1b2afbdb42f1a5afa"
+        },
+        {
+          "name": "Particle_Item_Initialize.c",
+          "bytes": 2164,
+          "sha256": "749859c1ac5b6e3e9b7b48beb2a6031aebf987a02a1307ac2b7c48be88258894"
+        },
+        {
+          "name": "Particle_Item_Initialize.refs.tsv",
+          "bytes": 1543,
+          "sha256": "8b548861744894f6a82ee8e48aeab6484bb16bd80af9cc2512cf26b6cf7b0d1c"
+        }
+      ],
+      "complete_private_function_not_certified": true
+    },
+    {
+      "batch": "batch08",
+      "label": "Particle_Item_Destroy",
+      "begin_rva": "0x1dedc20",
+      "end_exclusive_rva": "0x1dedd5f",
+      "selected_span_bytes": 319,
+      "disassembly_command_ok": true,
+      "instructions": 63,
+      "decoded_instruction_bytes": 319,
+      "decompiler_completed": true,
+      "generic_decompiler_warnings": [
+        "Could not recover jumptable at 0x000181dedd58. Too many branches ",
+        "Treating indirect jump as call "
+      ],
+      "private_artifacts": [
+        {
+          "name": "Particle_Item_Destroy.asm.txt",
+          "bytes": 2182,
+          "sha256": "2f7e0a3dc94593afcc3303b2fc54bbe475a611ad79f86314dc13172810bfa98c"
+        },
+        {
+          "name": "Particle_Item_Destroy.c",
+          "bytes": 1512,
+          "sha256": "4efad935236c07a437c68dde2fe8b923a6f5c2ecc6c25da1dac9f724a459193e"
+        },
+        {
+          "name": "Particle_Item_Destroy.refs.tsv",
+          "bytes": 1490,
+          "sha256": "f1823d1bd438df6a16db54c2c8d4e3e799dfb280f17a2aa969c25a829df6f5d1"
+        }
+      ],
+      "complete_private_function_not_certified": true
+    },
+    {
+      "batch": "batch08",
+      "label": "Pool_Queue_Copy",
+      "begin_rva": "0x3fcc520",
+      "end_exclusive_rva": "0x3fcc5de",
+      "selected_span_bytes": 190,
+      "disassembly_command_ok": true,
+      "instructions": 52,
+      "decoded_instruction_bytes": 190,
+      "decompiler_completed": true,
+      "generic_decompiler_warnings": [
+        "Globals starting with '_' overlap smaller symbols at the same address "
+      ],
+      "private_artifacts": [
+        {
+          "name": "Pool_Queue_Copy.asm.txt",
+          "bytes": 1695,
+          "sha256": "ce82fbc27c199840702c645853980f0951723ff2672a31612b3d54c3c85438a6"
+        },
+        {
+          "name": "Pool_Queue_Copy.c",
+          "bytes": 1188,
+          "sha256": "b7355f5a8a3b8dd2639986114fb5df121ea0969c7194ed6e00d4b5397011a75f"
+        },
+        {
+          "name": "Pool_Queue_Copy.refs.tsv",
+          "bytes": 579,
+          "sha256": "67a849c87be182d00873ce549dcf63c835ff50e2257203ae873c72bfc76e1e26"
+        }
+      ],
+      "complete_private_function_not_certified": true
+    },
+    {
+      "batch": "batch08",
+      "label": "Pool_Dispatch_Parameters",
+      "begin_rva": "0x3fcd110",
+      "end_exclusive_rva": "0x3fcd1e1",
+      "selected_span_bytes": 209,
+      "disassembly_command_ok": true,
+      "instructions": 53,
+      "decoded_instruction_bytes": 209,
+      "decompiler_completed": true,
+      "generic_decompiler_warnings": [],
+      "private_artifacts": [
+        {
+          "name": "Pool_Dispatch_Parameters.asm.txt",
+          "bytes": 1657,
+          "sha256": "83f0903c8bc0b07e75ac976c914c2ad1a96691acc465a3d1461ca07af08ceaec"
+        },
+        {
+          "name": "Pool_Dispatch_Parameters.c",
+          "bytes": 913,
+          "sha256": "22f97ee7e5deb3d8ae54c5dbc0a6401f57150b50c1601b9c5268e8cd554e0a7a"
+        },
+        {
+          "name": "Pool_Dispatch_Parameters.refs.tsv",
+          "bytes": 881,
+          "sha256": "8c2103f686796dd135c082b0bf54e5aff17971bb8cf3112dd03acceaafe52999"
+        }
+      ],
+      "complete_private_function_not_certified": true
+    },
+    {
+      "batch": "batch08",
+      "label": "Pool_Job_Bank_Access",
+      "begin_rva": "0x3fcc750",
+      "end_exclusive_rva": "0x3fcc812",
+      "selected_span_bytes": 194,
+      "disassembly_command_ok": true,
+      "instructions": 60,
+      "decoded_instruction_bytes": 194,
+      "decompiler_completed": true,
+      "generic_decompiler_warnings": [
+        "Globals starting with '_' overlap smaller symbols at the same address "
+      ],
+      "private_artifacts": [
+        {
+          "name": "Pool_Job_Bank_Access.asm.txt",
+          "bytes": 1729,
+          "sha256": "7a33cb52246086068913054e4e2257f606e2730fee6c2ba53adb4ccfa221982c"
+        },
+        {
+          "name": "Pool_Job_Bank_Access.c",
+          "bytes": 1062,
+          "sha256": "9e088e37603a26d4974cc12b7f568bc87ea325c7e05ea1455a42bc603eca1234"
+        },
+        {
+          "name": "Pool_Job_Bank_Access.refs.tsv",
+          "bytes": 520,
+          "sha256": "429c7f23dd5cfeccac547ac33f9f61e3ebedc71fb6926983329d7c7b679f0738"
+        }
+      ],
+      "complete_private_function_not_certified": true
+    },
+    {
+      "batch": "batch08",
+      "label": "Pool_Destruction",
+      "begin_rva": "0x3fcbf90",
+      "end_exclusive_rva": "0x3fcc17c",
+      "selected_span_bytes": 492,
+      "disassembly_command_ok": true,
+      "instructions": 118,
+      "decoded_instruction_bytes": 492,
+      "decompiler_completed": true,
+      "generic_decompiler_warnings": [
+        "Globals starting with '_' overlap smaller symbols at the same address "
+      ],
+      "private_artifacts": [
+        {
+          "name": "Pool_Destruction.asm.txt",
+          "bytes": 3589,
+          "sha256": "2650e23d87970bf443cace2adc965aac94e89519893443503d37d95b801447c0"
+        },
+        {
+          "name": "Pool_Destruction.c",
+          "bytes": 3597,
+          "sha256": "02893c81f12892798f560804b3eeccb9e45deaffc7a9c83009a9aebd7708adac"
+        },
+        {
+          "name": "Pool_Destruction.refs.tsv",
+          "bytes": 1725,
+          "sha256": "5346265e8eac6cecb5a7bc41a8894be9388c6db9cdb09eb353a7be2150837abc"
+        }
+      ],
+      "complete_private_function_not_certified": true
+    },
+    {
+      "batch": "batch09",
+      "label": "Particle_Item_Settings",
+      "begin_rva": "0x1df13d0",
+      "end_exclusive_rva": "0x1df20e2",
+      "selected_span_bytes": 3346,
+      "disassembly_command_ok": true,
+      "instructions": 789,
+      "decoded_instruction_bytes": 3338,
+      "decompiler_completed": true,
+      "generic_decompiler_warnings": [
+        "Could not recover jumptable at 0x000181df20db. Too many branches ",
+        "Globals starting with '_' overlap smaller symbols at the same address ",
+        "Treating indirect jump as call "
+      ],
+      "private_artifacts": [
+        {
+          "name": "Particle_Item_Settings.asm.txt",
+          "bytes": 25562,
+          "sha256": "4bf630b7bdafce4d56cd561224029beb97a266d1847cabbdfbd25a4b859c779a"
+        },
+        {
+          "name": "Particle_Item_Settings.c",
+          "bytes": 17414,
+          "sha256": "6c64e25989d33df28767fb18d9a208e3cf598a12e854ae8826f06e443f580468"
+        },
+        {
+          "name": "Particle_Item_Settings.refs.tsv",
+          "bytes": 10704,
+          "sha256": "8ec88a9230b3da55fbeb9e4c7ab32bbda56e2946312d40b8db9decce146487e4"
+        }
+      ],
+      "complete_private_function_not_certified": true
+    },
+    {
+      "batch": "batch09",
+      "label": "Particle_Item_Streams",
+      "begin_rva": "0x1df25c0",
+      "end_exclusive_rva": "0x1df3511",
+      "selected_span_bytes": 3921,
+      "disassembly_command_ok": true,
+      "instructions": 928,
+      "decoded_instruction_bytes": 3921,
+      "decompiler_completed": true,
+      "generic_decompiler_warnings": [
+        "Globals starting with '_' overlap smaller symbols at the same address "
+      ],
+      "private_artifacts": [
+        {
+          "name": "Particle_Item_Streams.asm.txt",
+          "bytes": 30302,
+          "sha256": "063efb149729859dea37855155d8be67308c83914f71351888af8ec949cd857f"
+        },
+        {
+          "name": "Particle_Item_Streams.c",
+          "bytes": 20659,
+          "sha256": "a10178db6a1fb87e5b6c0f317eddce947428cba36316693687aef5ccccbb88da"
+        },
+        {
+          "name": "Particle_Item_Streams.refs.tsv",
+          "bytes": 7438,
+          "sha256": "b6aa0469f57d0be0e44549894ddc9854a9e0c47ac448f491f6da35d99b9bc531"
+        }
+      ],
+      "complete_private_function_not_certified": true
+    },
+    {
+      "batch": "batch09",
+      "label": "Particle_Item_Materials",
+      "begin_rva": "0x1df0fb0",
+      "end_exclusive_rva": "0x1df117c",
+      "selected_span_bytes": 460,
+      "disassembly_command_ok": true,
+      "instructions": 117,
+      "decoded_instruction_bytes": 460,
+      "decompiler_completed": true,
+      "generic_decompiler_warnings": [],
+      "private_artifacts": [
+        {
+          "name": "Particle_Item_Materials.asm.txt",
+          "bytes": 3764,
+          "sha256": "9dcfb2d2b5c93501ae668a7a1c502f44f2921fd718cb320c9d68cc52967f30f1"
+        },
+        {
+          "name": "Particle_Item_Materials.c",
+          "bytes": 3848,
+          "sha256": "e3fb76c5e4f880095904ed9cb743c1e21735bac7ead1ea844d9f90c0becc3a86"
+        },
+        {
+          "name": "Particle_Item_Materials.refs.tsv",
+          "bytes": 3684,
+          "sha256": "6a237f908b7411d14fe0b9151a176c6853f3f8a1b56b72334a1400d2e7c9ae0f"
+        }
+      ],
+      "complete_private_function_not_certified": true
+    }
+  ],
+  "vendor_executed": false,
+  "semantic_label_corrections": {
+    "Pool_Dispatch_Parameters": "Main-thread progress/UI guard",
+    "Pool_Job_Bank_Access": "Worker-count settings/clamp"
+  }
+}

@@ -1,0 +1,829 @@
+{
+  "pid": 51112,
+  "script_sha256": "15390e733aac8a02433bfbc938f61fbe95f7f41eb35102baedf100dfe6c1a268",
+  "target": "stress",
+  "kind": "navigation",
+  "phases": [
+    {
+      "mode": 0,
+      "actual_layer_modes": [
+        1
+      ],
+      "preview_faces": [
+        0
+      ],
+      "errors": [
+        ""
+      ],
+      "begin_qpc_ms": 589897742.8115,
+      "end_qpc_ms": 589898251.0402,
+      "step_ms": [
+        32.82349999999997,
+        25.16369999999995,
+        24.96219999999994,
+        21.972699999999918,
+        29.51430000000005,
+        22.011099999999942,
+        25.627500000000055,
+        22.818500000000085,
+        29.86839999999995,
+        29.1096,
+        23.158800000000042,
+        26.95640000000003,
+        21.729299999999967,
+        22.125600000000077,
+        24.792500000000018,
+        22.562900000000127,
+        28.87850000000003,
+        24.562200000000075,
+        23.617500000000064,
+        24.952400000000125
+      ],
+      "accepted": [
+        100000
+      ],
+      "shown": [
+        300000
+      ],
+      "retained_before": [
+        0,
+        0,
+        5,
+        6,
+        10,
+        231,
+        15728544,
+        45395,
+        0,
+        0,
+        0,
+        1,
+        ""
+      ],
+      "retained_after": [
+        0,
+        0,
+        5,
+        6,
+        10,
+        231,
+        15728544,
+        45395,
+        0,
+        0,
+        0,
+        1,
+        ""
+      ],
+      "mesh": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        536870912,
+        1073741824
+      ],
+      "unchanged_placement_preview_membership_upload": true,
+      "label": "stress-navigation-0",
+      "viewport": [
+        1176,
+        750
+      ],
+      "before_resource": {
+        "cpu_s": 1127.90625,
+        "private_bytes": 7454752768,
+        "working_bytes": 4621238272,
+        "graphics": [
+          {
+            "Name": "pid_51112_luid_0x00000000_0x00013A27_phys_0",
+            "DedicatedUsage": 2437771264,
+            "SharedUsage": 281079808,
+            "TotalCommitted": 2680643584
+          }
+        ]
+      },
+      "after_resource": {
+        "cpu_s": 1130.03125,
+        "private_bytes": 7546851328,
+        "working_bytes": 4620042240,
+        "graphics": [
+          {
+            "Name": "pid_51112_luid_0x00000000_0x00013A27_phys_0",
+            "DedicatedUsage": 2433839104,
+            "SharedUsage": 280948736,
+            "TotalCommitted": 2676580352
+          }
+        ]
+      }
+    },
+    {
+      "mode": 1,
+      "actual_layer_modes": [
+        1
+      ],
+      "preview_faces": [
+        0
+      ],
+      "errors": [
+        ""
+      ],
+      "begin_qpc_ms": 589900042.1087,
+      "end_qpc_ms": 589900547.7499,
+      "step_ms": [
+        19.95079999999996,
+        19.630499999999984,
+        25.356300000000033,
+        23.674199999999928,
+        29.560499999999934,
+        22.770700000000033,
+        23.861599999999953,
+        22.32140000000004,
+        27.395300000000134,
+        28.948499999999967,
+        47.65499999999997,
+        33.38720000000012,
+        25.232899999999972,
+        24.579799999999977,
+        19.549800000000005,
+        20.348400000000083,
+        24.51559999999995,
+        19.086199999999963,
+        21.791100000000142,
+        24.896199999999908
+      ],
+      "accepted": [
+        100000
+      ],
+      "shown": [
+        300000
+      ],
+      "retained_before": [
+        300000,
+        15,
+        6,
+        7,
+        12,
+        246,
+        19328544,
+        45995,
+        0,
+        15,
+        3600000,
+        1,
+        "3538991859895003078;"
+      ],
+      "retained_after": [
+        300000,
+        15,
+        6,
+        7,
+        12,
+        246,
+        19328544,
+        47195,
+        0,
+        15,
+        3600000,
+        1,
+        "3538991859895003078;"
+      ],
+      "mesh": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        536870912,
+        1073741824
+      ],
+      "unchanged_placement_preview_membership_upload": true,
+      "label": "stress-navigation-1",
+      "viewport": [
+        1176,
+        750
+      ],
+      "before_resource": {
+        "cpu_s": 1130.28125,
+        "private_bytes": 7546851328,
+        "working_bytes": 4620042240,
+        "graphics": [
+          {
+            "Name": "pid_51112_luid_0x00000000_0x00013A27_phys_0",
+            "DedicatedUsage": 2433839104,
+            "SharedUsage": 280948736,
+            "TotalCommitted": 2676580352
+          }
+        ]
+      },
+      "after_resource": {
+        "cpu_s": 1132.84375,
+        "private_bytes": 7571918848,
+        "working_bytes": 4625293312,
+        "graphics": [
+          {
+            "Name": "pid_51112_luid_0x00000000_0x00013A27_phys_0",
+            "DedicatedUsage": 2437681152,
+            "SharedUsage": 280948736,
+            "TotalCommitted": 2680422400
+          }
+        ]
+      }
+    },
+    {
+      "mode": 2,
+      "actual_layer_modes": [
+        2
+      ],
+      "preview_faces": [
+        1200000
+      ],
+      "errors": [
+        ""
+      ],
+      "begin_qpc_ms": 589913043.5021,
+      "end_qpc_ms": 589934644.1738,
+      "step_ms": [
+        1083.1363999999994,
+        1076.7392999999993,
+        1094.8125,
+        1081.0872,
+        1075.6415000000015,
+        1065.0974999999999,
+        1085.4805000000015,
+        1116.8117999999995,
+        1072.787400000001,
+        1067.0443000000014,
+        1067.8718000000008,
+        1065.369700000003,
+        1075.236499999999,
+        1066.245799999997,
+        1132.185300000001,
+        1075.133600000001,
+        1074.072799999998,
+        1061.477600000002,
+        1085.8305,
+        1077.4690000000046
+      ],
+      "accepted": [
+        100000
+      ],
+      "shown": [
+        100000
+      ],
+      "retained_before": [
+        0,
+        0,
+        7,
+        8,
+        14,
+        246,
+        19328544,
+        47285,
+        0,
+        0,
+        0,
+        1,
+        ""
+      ],
+      "retained_after": [
+        0,
+        0,
+        7,
+        8,
+        14,
+        246,
+        19328544,
+        47285,
+        0,
+        0,
+        0,
+        1,
+        ""
+      ],
+      "mesh": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        536870912,
+        1073741824
+      ],
+      "unchanged_placement_preview_membership_upload": true,
+      "label": "stress-navigation-2",
+      "viewport": [
+        1176,
+        750
+      ],
+      "before_resource": {
+        "cpu_s": 1133.125,
+        "private_bytes": 7571918848,
+        "working_bytes": 4625358848,
+        "graphics": [
+          {
+            "Name": "pid_51112_luid_0x00000000_0x00013A27_phys_0",
+            "DedicatedUsage": 2437681152,
+            "SharedUsage": 280948736,
+            "TotalCommitted": 2680422400
+          }
+        ]
+      },
+      "after_resource": {
+        "cpu_s": 1175.71875,
+        "private_bytes": 7464083456,
+        "working_bytes": 4633460736,
+        "graphics": [
+          {
+            "Name": "pid_51112_luid_0x00000000_0x00013A27_phys_0",
+            "DedicatedUsage": 2433921024,
+            "SharedUsage": 289894400,
+            "TotalCommitted": 2685607936
+          }
+        ]
+      }
+    },
+    {
+      "mode": 3,
+      "actual_layer_modes": [
+        3
+      ],
+      "preview_faces": [
+        19999083
+      ],
+      "errors": [
+        ""
+      ],
+      "begin_qpc_ms": 589938795.7228,
+      "end_qpc_ms": 589939350.6728,
+      "step_ms": [
+        29.839299999999866,
+        28.782700000000204,
+        27.038099999999986,
+        28.24700000000007,
+        24.526600000000144,
+        27.297500000000127,
+        27.34739999999988,
+        26.271499999999833,
+        28.101300000000037,
+        25.94380000000001,
+        26.898899999999912,
+        27.756700000000137,
+        26.449499999999944,
+        28.335199999999986,
+        28.521999999999935,
+        25.044600000000173,
+        28.355299999999716,
+        26.504899999999907,
+        31.894800000000032,
+        30.950900000000274
+      ],
+      "accepted": [
+        100000
+      ],
+      "shown": [
+        839
+      ],
+      "retained_before": [
+        0,
+        15,
+        8,
+        9,
+        16,
+        306,
+        348562752,
+        47885,
+        0,
+        15,
+        0,
+        1,
+        "12034860198685700820;"
+      ],
+      "retained_after": [
+        0,
+        15,
+        8,
+        9,
+        16,
+        306,
+        348562752,
+        49085,
+        0,
+        15,
+        0,
+        1,
+        "12034860198685700820;"
+      ],
+      "mesh": [
+        19999083,
+        839,
+        3048092,
+        329234208,
+        329234208,
+        536870912,
+        1073741824
+      ],
+      "unchanged_placement_preview_membership_upload": true,
+      "label": "stress-navigation-3",
+      "viewport": [
+        1176,
+        750
+      ],
+      "before_resource": {
+        "cpu_s": 1176.171875,
+        "private_bytes": 7464083456,
+        "working_bytes": 4633460736,
+        "graphics": [
+          {
+            "Name": "pid_51112_luid_0x00000000_0x00013A27_phys_0",
+            "DedicatedUsage": 2433921024,
+            "SharedUsage": 289894400,
+            "TotalCommitted": 2685607936
+          }
+        ]
+      },
+      "after_resource": {
+        "cpu_s": 1180.609375,
+        "private_bytes": 8364019712,
+        "working_bytes": 5103067136,
+        "graphics": [
+          {
+            "Name": "pid_51112_luid_0x00000000_0x00013A27_phys_0",
+            "DedicatedUsage": 2845003776,
+            "SharedUsage": 302841856,
+            "TotalCommitted": 3109634048
+          }
+        ]
+      }
+    },
+    {
+      "mode": 4,
+      "actual_layer_modes": [
+        4
+      ],
+      "preview_faces": [
+        0
+      ],
+      "errors": [
+        ""
+      ],
+      "begin_qpc_ms": 589941191.2541,
+      "end_qpc_ms": 589941676.2541001,
+      "step_ms": [
+        19.51819999999998,
+        21.239499999999907,
+        18.559600000000046,
+        20.35609999999997,
+        20.895700000000033,
+        53.86979999999994,
+        33.245299999999816,
+        27.927400000000034,
+        20.55190000000016,
+        21.88649999999984,
+        21.743600000000015,
+        19.09159999999997,
+        21.69809999999984,
+        24.158899999999903,
+        24.06140000000005,
+        22.373100000000022,
+        25.010600000000068,
+        22.456300000000056,
+        24.31770000000006,
+        21.27729999999997
+      ],
+      "accepted": [
+        100000
+      ],
+      "shown": [
+        100000
+      ],
+      "retained_before": [
+        100000,
+        15,
+        9,
+        10,
+        18,
+        321,
+        349762752,
+        49895,
+        0,
+        15,
+        1200000,
+        1,
+        "4184790750815074492;"
+      ],
+      "retained_after": [
+        100000,
+        15,
+        9,
+        10,
+        18,
+        321,
+        349762752,
+        51095,
+        0,
+        15,
+        1200000,
+        1,
+        "4184790750815074492;"
+      ],
+      "mesh": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        536870912,
+        1073741824
+      ],
+      "unchanged_placement_preview_membership_upload": true,
+      "label": "stress-navigation-4",
+      "viewport": [
+        1176,
+        750
+      ],
+      "before_resource": {
+        "cpu_s": 1180.8125,
+        "private_bytes": 8364019712,
+        "working_bytes": 5103067136,
+        "graphics": [
+          {
+            "Name": "pid_51112_luid_0x00000000_0x00013A27_phys_0",
+            "DedicatedUsage": 2844999680,
+            "SharedUsage": 301793280,
+            "TotalCommitted": 3108581376
+          }
+        ]
+      },
+      "after_resource": {
+        "cpu_s": 1183.171875,
+        "private_bytes": 7826116608,
+        "working_bytes": 4775231488,
+        "graphics": [
+          {
+            "Name": "pid_51112_luid_0x00000000_0x00013A27_phys_0",
+            "DedicatedUsage": 2435305472,
+            "SharedUsage": 289505280,
+            "TotalCommitted": 2686599168
+          }
+        ]
+      }
+    }
+  ],
+  "presentmon_sha256": "b2a706bc6ad475749e3b7e3409263aa1e6906d45bdcf993f6dbc0f660188f1af",
+  "measurement_limits": "Resource counters include whole Max, asset geometry/materials/renderer and private transport polling; no exclusive Cyrus RAM/VRAM claim.",
+  "passed": true,
+  "capture_exit_code": 0,
+  "presentmon": {
+    "available": true,
+    "clock_column": "CPUStartQPCTimeInMs",
+    "arms": [
+      {
+        "label": "stress-navigation-0",
+        "chain_counts": {
+          "0x1D58701FF60": 40
+        },
+        "selected_chain": "0x1D58701FF60",
+        "presents": 40,
+        "modes": {
+          "Composed: Copy with GPU GDI": 40
+        },
+        "metrics_ms": {
+          "MsBetweenAppStart": {
+            "n": 40,
+            "median": 11.8672,
+            "p95": 21.0318
+          },
+          "MsBetweenPresents": {
+            "n": 40,
+            "median": 11.8644,
+            "p95": 21.008
+          },
+          "MsBetweenDisplayChange": {
+            "n": 28,
+            "median": 16.7101,
+            "p95": 33.331
+          },
+          "DisplayedTime": {
+            "n": 0
+          },
+          "MsCPUBusy": {
+            "n": 40,
+            "median": 11.80015,
+            "p95": 20.9598
+          },
+          "MsGPUBusy": {
+            "n": 40,
+            "median": 4.77595,
+            "p95": 10.2299
+          },
+          "MsGPUTime": {
+            "n": 40,
+            "median": 12.630949999999999,
+            "p95": 20.5234
+          },
+          "DisplayLatency": {
+            "n": 0
+          }
+        }
+      },
+      {
+        "label": "stress-navigation-1",
+        "chain_counts": {
+          "0x1D58701FF60": 40
+        },
+        "selected_chain": "0x1D58701FF60",
+        "presents": 40,
+        "modes": {
+          "Composed: Copy with GPU GDI": 40
+        },
+        "metrics_ms": {
+          "MsBetweenAppStart": {
+            "n": 40,
+            "median": 11.12645,
+            "p95": 20.4743
+          },
+          "MsBetweenPresents": {
+            "n": 40,
+            "median": 11.15465,
+            "p95": 20.4389
+          },
+          "MsBetweenDisplayChange": {
+            "n": 29,
+            "median": 16.6646,
+            "p95": 33.3124
+          },
+          "DisplayedTime": {
+            "n": 0
+          },
+          "MsCPUBusy": {
+            "n": 40,
+            "median": 11.0688,
+            "p95": 20.385
+          },
+          "MsGPUBusy": {
+            "n": 40,
+            "median": 2.2299499999999997,
+            "p95": 9.2959
+          },
+          "MsGPUTime": {
+            "n": 40,
+            "median": 11.30275,
+            "p95": 23.1269
+          },
+          "DisplayLatency": {
+            "n": 0
+          }
+        }
+      },
+      {
+        "label": "stress-navigation-2",
+        "chain_counts": {
+          "0x1D58701FF60": 40
+        },
+        "selected_chain": "0x1D58701FF60",
+        "presents": 40,
+        "modes": {
+          "Composed: Copy with GPU GDI": 40
+        },
+        "metrics_ms": {
+          "MsBetweenAppStart": {
+            "n": 40,
+            "median": 536.38335,
+            "p95": 576.5492
+          },
+          "MsBetweenPresents": {
+            "n": 40,
+            "median": 536.3832500000001,
+            "p95": 576.5267
+          },
+          "MsBetweenDisplayChange": {
+            "n": 40,
+            "median": 538.1902,
+            "p95": 580.1204
+          },
+          "DisplayedTime": {
+            "n": 0
+          },
+          "MsCPUBusy": {
+            "n": 40,
+            "median": 536.2908,
+            "p95": 576.4435
+          },
+          "MsGPUBusy": {
+            "n": 40,
+            "median": 156.71475,
+            "p95": 175.2691
+          },
+          "MsGPUTime": {
+            "n": 40,
+            "median": 537.1006500000001,
+            "p95": 578.4716
+          },
+          "DisplayLatency": {
+            "n": 0
+          }
+        }
+      },
+      {
+        "label": "stress-navigation-3",
+        "chain_counts": {
+          "0x1D58701FF60": 40
+        },
+        "selected_chain": "0x1D58701FF60",
+        "presents": 40,
+        "modes": {
+          "Composed: Copy with GPU GDI": 40
+        },
+        "metrics_ms": {
+          "MsBetweenAppStart": {
+            "n": 40,
+            "median": 14.57195,
+            "p95": 19.3399
+          },
+          "MsBetweenPresents": {
+            "n": 40,
+            "median": 14.570049999999998,
+            "p95": 19.3226
+          },
+          "MsBetweenDisplayChange": {
+            "n": 33,
+            "median": 16.6701,
+            "p95": 20.0118
+          },
+          "DisplayedTime": {
+            "n": 0
+          },
+          "MsCPUBusy": {
+            "n": 40,
+            "median": 14.49695,
+            "p95": 19.2671
+          },
+          "MsGPUBusy": {
+            "n": 40,
+            "median": 8.90965,
+            "p95": 10.5239
+          },
+          "MsGPUTime": {
+            "n": 40,
+            "median": 14.300799999999999,
+            "p95": 19.2613
+          },
+          "DisplayLatency": {
+            "n": 0
+          }
+        }
+      },
+      {
+        "label": "stress-navigation-4",
+        "chain_counts": {
+          "0x1D58701FF60": 40
+        },
+        "selected_chain": "0x1D58701FF60",
+        "presents": 40,
+        "modes": {
+          "Composed: Copy with GPU GDI": 40
+        },
+        "metrics_ms": {
+          "MsBetweenAppStart": {
+            "n": 40,
+            "median": 11.15,
+            "p95": 24.5226
+          },
+          "MsBetweenPresents": {
+            "n": 40,
+            "median": 11.174,
+            "p95": 24.3444
+          },
+          "MsBetweenDisplayChange": {
+            "n": 28,
+            "median": 16.673099999999998,
+            "p95": 20.0038
+          },
+          "DisplayedTime": {
+            "n": 0
+          },
+          "MsCPUBusy": {
+            "n": 40,
+            "median": 11.08495,
+            "p95": 24.2718
+          },
+          "MsGPUBusy": {
+            "n": 40,
+            "median": 1.43405,
+            "p95": 2.6172
+          },
+          "MsGPUTime": {
+            "n": 40,
+            "median": 11.0577,
+            "p95": 25.0401
+          },
+          "DisplayLatency": {
+            "n": 0
+          }
+        }
+      }
+    ],
+    "limits": "Dominant swap chain per phase. DisplayedTime excludes unavailable/dropped rows; presentation does not guarantee screen FPS. Whole Max scene/GPU work, not isolated plugin timing. No calibrated input-to-photon latency."
+  }
+}

@@ -1,0 +1,431 @@
+{
+  "copied": [
+    {
+      "file": "scatter-max2026/receipt.json",
+      "source": "build/full-qualification-073-20261007/native-max2026/receipt.json",
+      "sha256": "8b068f9bd73a3bdf45027da8a5b4828c79cd89e67dfd521cccf08526ad9c95d5",
+      "bytes": 8412
+    },
+    {
+      "file": "scatter-max2026/tests.log",
+      "source": "build/full-qualification-073-20261007/native-max2026/tests.log",
+      "sha256": "50b6754eae2b5249600f5e316c9776bdef7a93038372a1e5ca507590d5547e40",
+      "bytes": 1855
+    },
+    {
+      "file": "analyzer-max2026/receipt.json",
+      "source": "build/unified-073-20261006/analyzer-max2026/receipt.json",
+      "sha256": "52f1685bd7befe602904daed990c26dc8faec7348ca7b1b883126d5b4b91ac82",
+      "bytes": 1749
+    },
+    {
+      "file": "analyzer-max2026/tests.log",
+      "source": "build/unified-073-20261006/analyzer-max2026/tests.log",
+      "sha256": "ae23c42363421003db356201e9bf9a0000b4d55e4cf2803eb965ceb715ff7f74",
+      "bytes": 396
+    },
+    {
+      "file": "scatter-max2027/receipt.json",
+      "source": "build/full-qualification-073-20261007/native-max2027/receipt.json",
+      "sha256": "cda7e0c9e46887364288c0ae00d98280eeb2044273621853178e62b47859353e",
+      "bytes": 8412
+    },
+    {
+      "file": "scatter-max2027/tests.log",
+      "source": "build/full-qualification-073-20261007/native-max2027/tests.log",
+      "sha256": "d560716f193ef9c5d6d61301d5ca5fa44a43e47413389b8616d2e7281b3bc089",
+      "bytes": 1855
+    },
+    {
+      "file": "analyzer-max2027/receipt.json",
+      "source": "build/unified-073-20261006/analyzer-max2027/receipt.json",
+      "sha256": "cc8fc3e49cd5d914c6194d58c817fc98594d8f0a0112932484b14044d69fdc7f",
+      "bytes": 1749
+    },
+    {
+      "file": "analyzer-max2027/tests.log",
+      "source": "build/unified-073-20261006/analyzer-max2027/tests.log",
+      "sha256": "8d6a89b5a0b0adfcfb15a6dc6e23263b0ce9e56f73d34db0d646a18d1f394c6f",
+      "bytes": 396
+    },
+    {
+      "file": "core/qualification.json",
+      "source": "build/mcp-qualification/full073-core-idle05/qualification.json",
+      "sha256": "b5ab1003305e82080cb06a4f62dd9cdbe2e7779110aef665c3735755678ec2ea",
+      "bytes": 25126
+    },
+    {
+      "file": "core/approved-layout073.json",
+      "source": "build/mcp-qualification/full073-core-idle05/approved-layout073.json",
+      "sha256": "1d922fa7c233e423501572505bce12e6029e50aabb2b77584cd66c0ef63d82d9",
+      "bytes": 178
+    },
+    {
+      "file": "core/core073.json",
+      "source": "build/mcp-qualification/full073-core-idle05/core073.json",
+      "sha256": "229658cf07d704a5f67a2963906f6ef73ccb17209d9bdde6dda00d828714a978",
+      "bytes": 720
+    },
+    {
+      "file": "core/ports073.json",
+      "source": "build/mcp-qualification/full073-core-idle05/ports073.json",
+      "sha256": "2ec2bd54fb8830d9fe7298cfb6b869b75b926871122040183ca28717dfa4a81c",
+      "bytes": 376
+    },
+    {
+      "file": "core/containers073.json",
+      "source": "build/mcp-qualification/full073-core-idle05/containers073.json",
+      "sha256": "403c92d2624dd3e45d578d05469fc95f42be6251147c1e1b4854a20ae98b3ad1",
+      "bytes": 369
+    },
+    {
+      "file": "core/groups073.json",
+      "source": "build/mcp-qualification/full073-core-idle05/groups073.json",
+      "sha256": "99826751397ee3f534aaca180b34a4d0c86947ae65d0e3590c717e67de7dbab9",
+      "bytes": 86
+    },
+    {
+      "file": "core/node-move073.json",
+      "source": "build/mcp-qualification/full073-core-idle05/node-move073.json",
+      "sha256": "fd2a86ebfa707e8bf68483c2c08018ec69bfcad378af001d55c686a41ab08136",
+      "bytes": 82
+    },
+    {
+      "file": "core/persistence073.json",
+      "source": "build/mcp-qualification/full073-core-idle05/persistence073.json",
+      "sha256": "2d3dfa2a7dc73892ca45108b41cbe6ecd28a89ccd2d127e21a21b32485c2aba1",
+      "bytes": 145
+    },
+    {
+      "file": "core/analyzer-assignment073.json",
+      "source": "build/mcp-qualification/full073-core-idle05/analyzer-assignment073.json",
+      "sha256": "51295f43823ee8bf1e50440394c40f129c2bb83b3f12cd8ef2574498a274c7b3",
+      "bytes": 187
+    },
+    {
+      "file": "idle/qualification.json",
+      "source": "build/mcp-qualification/full073-core-idle05/qualification.json",
+      "sha256": "b5ab1003305e82080cb06a4f62dd9cdbe2e7779110aef665c3735755678ec2ea",
+      "bytes": 25126
+    },
+    {
+      "file": "idle/idle-qualification.json",
+      "source": "build/mcp-qualification/full073-core-idle05/idle-qualification.json",
+      "sha256": "333e5c028629b088adbf6058f10ee70eeaae529454756ce098e0957d6843eaf3",
+      "bytes": 5807
+    },
+    {
+      "file": "idle/diagnostic-overhead.json",
+      "source": "build/mcp-qualification/full073-core-idle05/diagnostic-overhead.json",
+      "sha256": "0bdeaf67aa943046a93e77813f0fbf69c223164567b5f068d882003da98d7d7f",
+      "bytes": 250
+    },
+    {
+      "file": "selection/qualification.json",
+      "source": "build/mcp-qualification/full073-selection02/qualification.json",
+      "sha256": "ad93918a348ed90998023589abeb27d359880922381b9faedae9c3fe48ccd66d",
+      "bytes": 27793
+    },
+    {
+      "file": "selection/container-selection073.json",
+      "source": "build/mcp-qualification/full073-selection02/container-selection073.json",
+      "sha256": "5dadd32520960221a139e96c4e8e627cf49d9afb21fd6b4dbb6d423df3506fd6",
+      "bytes": 523
+    },
+    {
+      "file": "playback/qualification.json",
+      "source": "build/mcp-qualification/full073-playback02/qualification.json",
+      "sha256": "67661c530f691e3ec1f5af324441ae499be7bad791df874f6ce1af817662d499",
+      "bytes": 22102
+    },
+    {
+      "file": "playback/result.txt",
+      "source": "build/mcp-qualification/full073-playback02/result.txt",
+      "sha256": "6a1ca626d60446b63df5156138bb73fb9af16bc9f89c188fe12c623ecdf88d92",
+      "bytes": 1559
+    },
+    {
+      "file": "corona_mock/qualification.json",
+      "source": "build/mcp-qualification/full073-corona-mock02/qualification.json",
+      "sha256": "b79695a42bfa0dfdb0a4b6f88ac1280ec850400d7bad4196a806ccca4246f257",
+      "bytes": 22018
+    },
+    {
+      "file": "corona_mock/corona-stop-073.json",
+      "source": "build/mcp-qualification/full073-corona-mock02/corona-stop-073.json",
+      "sha256": "d64660f114e42480de204b1441f98748ce05b0969e987faaad8aa9b9b03d03b4",
+      "bytes": 68
+    },
+    {
+      "file": "retirement/qualification.json",
+      "source": "build/mcp-qualification/full073-retirement02/qualification.json",
+      "sha256": "3da1cd0a080ed5b901e952a26febdb1e64a5e4d19536ece887d341250488ca6c",
+      "bytes": 22141
+    },
+    {
+      "file": "retirement/retirement073.json",
+      "source": "build/mcp-qualification/full073-retirement02/retirement073.json",
+      "sha256": "a7d5b18cbed94993351b812132713204c99060ceb3d840174409de93192191ff",
+      "bytes": 142
+    },
+    {
+      "file": "mcp_direct/qualification.json",
+      "source": "build/mcp-qualification/full073-mcp-direct02/qualification.json",
+      "sha256": "f1d1b1607071f047f002f5fc6e2a358f89219850f58b5b3d5f04ac55d00387b4",
+      "bytes": 21999
+    },
+    {
+      "file": "mcp_direct/mcp073.json",
+      "source": "build/mcp-qualification/full073-mcp-direct02/mcp073.json",
+      "sha256": "54b0f4665dec103bbadac547935e93e9a9cf78bfafca8b37401039fa9e8408b9",
+      "bytes": 820
+    },
+    {
+      "file": "mcp_panel/qualification.json",
+      "source": "build/mcp-qualification/full073-mcp-panel02/qualification.json",
+      "sha256": "cb191ca9c99c6ecb3c7fff7101300769019b00d96aae215dc6c9017f2e70e6f2",
+      "bytes": 22209
+    },
+    {
+      "file": "mcp_panel/panel-runtime-result.json",
+      "source": "build/mcp-qualification/full073-mcp-panel02/panel-runtime-result.json",
+      "sha256": "d5a87b1ecc0bc1bb8271fbf80cfd826c102e500e14afb195bd9b67e509985c8e",
+      "bytes": 28383
+    },
+    {
+      "file": "real-assets/launch.json",
+      "source": "build/mcp-qualification/real073-ui-assets08/launch.json",
+      "sha256": "835202896d70aeb49d072773566a1ccffab523138c0a9551b9364999380e2f2d",
+      "bytes": 1363
+    },
+    {
+      "file": "real-assets/protection.json",
+      "source": "build/mcp-qualification/real073-ui-assets08/protection.json",
+      "sha256": "2f850130fcebb27cff91db2f8462bd700ee7d3ac1dbf44a28238f9578faa2f57",
+      "bytes": 17413
+    },
+    {
+      "file": "real-assets/pointer-container-selection.json",
+      "source": "build/mcp-qualification/real073-ui-assets08/pointer-container-selection.json",
+      "sha256": "4afcff2d2e5361a868ff6aa0eed4998201aef086df72bc9d491b581f41f901a0",
+      "bytes": 313
+    },
+    {
+      "file": "real-assets/pointer-container-movement.json",
+      "source": "build/mcp-qualification/real073-ui-assets08/pointer-container-movement.json",
+      "sha256": "d06fa389a5be913b7aeecb171ee3f618ee60ddd1ece4a1476e4a497fed8d4066",
+      "bytes": 448
+    },
+    {
+      "file": "real-assets/pointer-ui-qualification.json",
+      "source": "build/mcp-qualification/real073-ui-assets08/pointer-ui-qualification.json",
+      "sha256": "8847714344edcc9e6b07e59022bfd6ddae1ef9b190638b089fe57a3db2ebedab",
+      "bytes": 1245
+    },
+    {
+      "file": "real-assets/pointer-brush-before.json",
+      "source": "build/mcp-qualification/real073-ui-assets08/pointer-brush-before.json",
+      "sha256": "e191b4def06937e79a701e19ca46e7397b4e44fe6eee2a8573affeb51273cea4",
+      "bytes": 139
+    },
+    {
+      "file": "real-assets/pointer-brush-after.json",
+      "source": "build/mcp-qualification/real073-ui-assets08/pointer-brush-after.json",
+      "sha256": "4fe2fd003f4cd4a10033bb85f3f61e531680273a90778cdafd2eefaeb2e75eba",
+      "bytes": 192
+    },
+    {
+      "file": "real-assets/pointer-brush-undo.json",
+      "source": "build/mcp-qualification/real073-ui-assets08/pointer-brush-undo.json",
+      "sha256": "1c14959a61d9b0145b6f09880a83c5e685c35e59a4c1e4cf50b3fbccf83fe919",
+      "bytes": 40
+    },
+    {
+      "file": "real-assets/original-material-map-audit.json",
+      "source": "build/mcp-qualification/real073-ui-assets08/original-material-map-audit.json",
+      "sha256": "b65b02a44d41a79f5d4aaaf3c237e01ff8cadd1fa814fbe43bf7f34f6d3971ee",
+      "bytes": 419
+    },
+    {
+      "file": "real-assets/pointer-container-first-redo-failed.json",
+      "source": "build/mcp-qualification/real073-ui-assets08/pointer-container-first-redo-failed.json",
+      "sha256": "cb6941257e8f92b7168fea485675d2f9eefa5c0fd4408063adab153ac250811a",
+      "bytes": 415
+    },
+    {
+      "file": "real-assets/pointer-undo-events.json",
+      "source": "build/mcp-qualification/real073-ui-assets08/pointer-undo-events.json",
+      "sha256": "279ad8750bbcaea8ac417cc0bfbbe0415f66b01424a86c3822ba382a56d9679a",
+      "bytes": 293
+    },
+    {
+      "file": "real-assets/pointer-heap-state.json",
+      "source": "build/mcp-qualification/real073-ui-assets08/pointer-heap-state.json",
+      "sha256": "6a7a85de9055c3ae77d1fa5d925861eec9664e90bd5135d7f8b63bcc60eaefb5",
+      "bytes": 72
+    },
+    {
+      "file": "real-assets/pointer-brush-unsettled-after-undo.json",
+      "source": "build/mcp-qualification/real073-ui-assets08/pointer-brush-unsettled-after-undo.json",
+      "sha256": "1ac0d0eda26ffa0fa6d1011fb9d9b7b912bc370e114c6f2c224527d617678949",
+      "bytes": 193
+    },
+    {
+      "file": "real-assets/cold-undo-result.json",
+      "source": "build/mcp-qualification/real073-ui-assets08/cold-undo-result.json",
+      "sha256": "d162b168e19e63569ebc120a93bed91ac5cbe25e2dbd92764c55b2e4b294aedf",
+      "bytes": 112
+    },
+    {
+      "file": "real-assets/cold-undo-prepare.json",
+      "source": "build/mcp-qualification/real073-ui-assets08/cold-undo-prepare.json",
+      "sha256": "a259ee76599553011bc9b95984bb97acc7e1b069174d837932373f02ba2fa2d4",
+      "bytes": 72
+    },
+    {
+      "file": "real-assets/cold-undo-trace.json",
+      "source": "build/mcp-qualification/real073-ui-assets08/cold-undo-trace.json",
+      "sha256": "f340540f78cb98f07d02301f568e0ca803a44170b1add9f8537351e084ed4e42",
+      "bytes": 667
+    },
+    {
+      "file": "real-assets/host-undo-callbacks.json",
+      "source": "build/mcp-qualification/real073-ui-assets08/host-undo-callbacks.json",
+      "sha256": "2f750908b5295ed78a46434b94fe756333e9779de16b0abb7f8e7ea04ab11b62",
+      "bytes": 932
+    },
+    {
+      "file": "real-assets/garden-resource-stages.json",
+      "source": "build/mcp-qualification/real073-ui-assets08/garden-resource-stages.json",
+      "sha256": "d4a3ba7e9e89690caa9c64b41b3a15c7dcf18456b76684355376fa73e3f45f9f",
+      "bytes": 13331
+    },
+    {
+      "file": "real-assets/stress-resource-stages.json",
+      "source": "build/mcp-qualification/real073-ui-assets08/stress-resource-stages.json",
+      "sha256": "b0f2123ce8962c26e8c066d06459c8812b4eeb93704d3d398042e334604d3713",
+      "bytes": 11668
+    },
+    {
+      "file": "real-assets/stress-navigation-performance.json",
+      "source": "build/mcp-qualification/real073-ui-assets08/stress-navigation-performance.json",
+      "sha256": "560addaca7d5f741bf172b68f8b300ad60ec81a2b82d062eb52d09428408f1b4",
+      "bytes": 19283
+    },
+    {
+      "file": "real-assets/stress-playback-performance.json",
+      "source": "build/mcp-qualification/real073-ui-assets08/stress-playback-performance.json",
+      "sha256": "47fd683e123980a2007dfb3c5f0f6f07aff022772d53a56067674ab8895dcce6",
+      "bytes": 25439
+    },
+    {
+      "file": "real-assets/stress-enabled-performance.json",
+      "source": "build/mcp-qualification/real073-ui-assets08/stress-enabled-performance.json",
+      "sha256": "60f0d83d46b1498b8c9c76b917589dba03ae8c4e2f43258f8dee9f83c25178a9",
+      "bytes": 10627
+    },
+    {
+      "file": "real-assets/original-render-settings.json",
+      "source": "build/mcp-qualification/real073-ui-assets08/original-render-settings.json",
+      "sha256": "a86c54b899ef5580a692d87fa5bc90eea28cf25f5131f0b2fd450c1c8c0eee01",
+      "bytes": 37
+    },
+    {
+      "file": "real-assets/restored-render-settings.json",
+      "source": "build/mcp-qualification/real073-ui-assets08/restored-render-settings.json",
+      "sha256": "a86c54b899ef5580a692d87fa5bc90eea28cf25f5131f0b2fd450c1c8c0eee01",
+      "bytes": 37
+    },
+    {
+      "file": "real-assets/real-corona-qualification.json",
+      "source": "build/mcp-qualification/real073-ui-assets08/real-corona-qualification.json",
+      "sha256": "ff454378a7181a586bc2e7dcef5dfaa8d6610bfa68f671cb3b7c193f405f1e65",
+      "bytes": 19778
+    },
+    {
+      "file": "real-assets/real-production.json",
+      "source": "build/mcp-qualification/real073-ui-assets08/real-production.json",
+      "sha256": "be025305a7dc392d93ee064a53547f7e866d58a3b2ef9ea8dc0ba54503d199d4",
+      "bytes": 98
+    },
+    {
+      "file": "real-assets/real-ir-final.json",
+      "source": "build/mcp-qualification/real073-ui-assets08/real-ir-final.json",
+      "sha256": "cc8937825d47bad77695ded4f2ca12a6d79ba2b18a63a57f27477a8f66231d0c",
+      "bytes": 88
+    },
+    {
+      "file": "real-assets/material-map-audit03.json",
+      "source": "build/mcp-qualification/real073-ui-assets08/material-map-audit03.json",
+      "sha256": "5b237b4e0c6e529b9053317e1256d6c781e88cdcec742a0b37b5a84065d09524",
+      "bytes": 419
+    },
+    {
+      "file": "real-assets/saved-stress-100k.json",
+      "source": "build/mcp-qualification/real073-ui-assets08/saved-stress-100k.json",
+      "sha256": "1e1bc777d72bc747760a91c6290406eab6e961318ed8d7da6bec0b30881267d0",
+      "bytes": 1084
+    },
+    {
+      "file": "real-assets/saved-heavy-garden.json",
+      "source": "build/mcp-qualification/real073-ui-assets08/saved-heavy-garden.json",
+      "sha256": "15bba0c4f4876524f37f3fff664d9936ac13f1536a28a86fa58b0070814a509f",
+      "bytes": 2030
+    },
+    {
+      "file": "offline/generated-check.json",
+      "source": "build/full-qualification-073-20261007/offline/generated-check.json",
+      "sha256": "89327aa4a61b64a7a1ccfe58110d3d6445965bd8fd17c8422e76324fecff45cc",
+      "bytes": 541
+    },
+    {
+      "file": "offline/python-tests.xml",
+      "source": "build/full-qualification-073-20261007/offline/python-tests.xml",
+      "sha256": "9ede5e149c0e94b876245eae0ced9da3b9fb151dfb0ff21823307c5837d813a1",
+      "bytes": 17262
+    },
+    {
+      "file": "offline/packaged-mcp-smoke.json",
+      "source": "build/full-qualification-073-20261007/offline/packaged-mcp-smoke.json",
+      "sha256": "f6ab414562b2fb08659dd4dde945a063c32c9c250de8946bbc1272c338f1324e",
+      "bytes": 291
+    },
+    {
+      "file": "hardware.json",
+      "source": "build/full-qualification-073-20261007/hardware.json",
+      "sha256": "0125a2b1d82cec9f56b4e2b7dc60c3981b0cac3fef1c8cc2eba0c0b8990946f9",
+      "bytes": 419
+    },
+    {
+      "file": "intermediate/page-clip-state.json",
+      "source": "build/mcp-qualification/real073-ui-assets07/page-clip-state.json",
+      "sha256": "bbfceaf593b7ea529189ceee6f1672896d85d177927035b9ff29caf76266a59b",
+      "bytes": 191
+    },
+    {
+      "file": "packages.json",
+      "source": "dist/Full_Qualification_0.73_2026-10-07/BUILD.json",
+      "sha256": "aa2ce8b66ca426847a2d474a93658e0808e26d3492f2d8de704e6fb7b9301947",
+      "bytes": 8531
+    },
+    {
+      "file": "mcp-package.json",
+      "source": "dist/Full_Qualification_0.73_2026-10-07/CyrusMCP-0.73.0/package-manifest.json",
+      "sha256": "909208e0568a8baa8e62e93469be2936c0f39225f77fcb4ad892c3572ed4c9ae",
+      "bytes": 10040
+    }
+  ],
+  "campaigns": {
+    "core": "build/mcp-qualification/full073-core-idle05",
+    "idle": "build/mcp-qualification/full073-core-idle05",
+    "selection": "build/mcp-qualification/full073-selection02",
+    "playback": "build/mcp-qualification/full073-playback02",
+    "corona_mock": "build/mcp-qualification/full073-corona-mock02",
+    "retirement": "build/mcp-qualification/full073-retirement02",
+    "mcp_direct": "build/mcp-qualification/full073-mcp-direct02",
+    "mcp_panel": "build/mcp-qualification/full073-mcp-panel02"
+  },
+  "real_host": "build/mcp-qualification/real073-ui-assets08",
+  "excluded": "IPC connection descriptors, authentication secrets, journals, full private traces, vendor listings, native binaries and scene bytes",
+  "boundary": "Exact finite qualification, not every feature combination or publication readiness"
+}

@@ -170,10 +170,9 @@ class Panel(QtWidgets.QDialog):
         lines=[plan["name"],"",proposal["effect"].replace("_"," "),"Derived mask shapes: "+str(proposal["derived_masks"]),""]
         for layer in plan["layers"]:
             lines.extend([layer["name"]+" on "+regions[layer["region_id"]],f"  {layer['count']} requested • seed {layer['seed']}","  Assets: "+", ".join(sources[s["source_id"]]+" ("+str(s["weight"])+")" for s in layer["sources"]),f"  Scale {layer['scale']} • yaw {layer['yaw_degrees']}°",f"  Underfill: {layer['underfill']}",""])
-            if plan["schema_version"]=="2.0":
-                import json
-                lines.extend(["  Layer settings: "+json.dumps(layer["settings"],sort_keys=True),"  Exclusions: "+str(layer["exclude_region_ids"]),"  Asset settings: "+json.dumps([s["settings"] for s in layer["sources"]],sort_keys=True)])
-        if plan["schema_version"]=="2.0":lines.extend(["Display: "+json.dumps(plan["display"],sort_keys=True),"Layer pair rules: "+json.dumps(plan["pair_rules"],sort_keys=True)])
+            import json
+            lines.extend(["  Layer settings: "+json.dumps(layer["settings"],sort_keys=True),"  Exclusions: "+str(layer["exclude_region_ids"]),"  Asset settings: "+json.dumps([s["settings"] for s in layer["sources"]],sort_keys=True)])
+        lines.extend(["Display: "+json.dumps(plan["display"],sort_keys=True),"Layer pair rules: "+json.dumps(plan["pair_rules"],sort_keys=True)])
         lines.extend(["Clearance: "+str(plan.get("clearance_m",0))+" metres","Existing site, assets and authored regions stay read-only.","Approval applies to this exact proposal; expires in five minutes."])
         self.review_text.setPlainText("\n".join(lines))
 

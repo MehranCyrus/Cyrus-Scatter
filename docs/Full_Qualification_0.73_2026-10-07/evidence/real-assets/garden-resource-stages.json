@@ -1,0 +1,588 @@
+{
+  "pid": 51112,
+  "script_sha256": "15390e733aac8a02433bfbc938f61fbe95f7f41eb35102baedf100dfe6c1a268",
+  "stages": [
+    {
+      "label": "garden_60000",
+      "source": {
+        "label": "garden_60000",
+        "duration_ms": 2355.1848,
+        "epoch": 7,
+        "calculation_model": "CyrusUnified1",
+        "requested_layers": [
+          120,
+          260,
+          220,
+          30000,
+          60000
+        ],
+        "accepted": [
+          65,
+          15,
+          83,
+          101,
+          309,
+          2282,
+          14262,
+          81
+        ],
+        "shown": [
+          780,
+          180,
+          996,
+          1212,
+          3708,
+          25000,
+          25000,
+          972
+        ],
+        "shown_unit": "points",
+        "prepared_builds": [
+          4,
+          4,
+          4,
+          4,
+          7,
+          7,
+          7,
+          4
+        ],
+        "preview_builds": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "sources": [
+          [
+            "196cc5f0-2588-45b3-a01f-fb589301ee04",
+            "Base",
+            [
+              [
+                "crp_MT_PM_V33_Myrtle_01_003",
+                31
+              ],
+              [
+                "crp_MT_PM_Rosa_rugosa_01_02",
+                24
+              ],
+              [
+                "crp_MT_PM_Sambucus_nigra_02_01",
+                10
+              ]
+            ]
+          ],
+          [
+            "58cd035d-8940-4b6b-a289-e84bc95c902a",
+            "Base",
+            [
+              [
+                "MT_PM_V41_Arthropodium_01_01",
+                8
+              ],
+              [
+                "MT_PM_V41_Arthropodium_01_04",
+                7
+              ]
+            ]
+          ],
+          [
+            "95144abf-73fb-4203-88e7-e0002e18051d",
+            "Base",
+            [
+              [
+                "crp_Lavander_01",
+                37
+              ],
+              [
+                "crp_Lavander_05",
+                36
+              ],
+              [
+                "crp_MT_PM_V33_Glossy_abelia_01_006",
+                10
+              ]
+            ]
+          ],
+          [
+            "4c465bcd-c945-4462-b78f-92bb476cf3b0",
+            "Outer walk flowers",
+            [
+              [
+                "PATH | MT_PM_V41_Phlox_stolonifera_01_01",
+                54
+              ],
+              [
+                "PATH | MT_PM_V41_Viola_sororia_01_05",
+                47
+              ]
+            ]
+          ],
+          [
+            "92b1853a-e76a-405d-a7eb-7d39c487db25",
+            "Flower drifts",
+            [
+              [
+                "MT_PM_V41_Geranium_robertianum_01_04",
+                62
+              ],
+              [
+                "MT_PM_V41_Lamium_maculatum_01_04",
+                43
+              ],
+              [
+                "MT_PM_V41_Phlox_stolonifera_01_01",
+                138
+              ],
+              [
+                "MT_PM_V41_Viola_sororia_01_05",
+                66
+              ]
+            ]
+          ],
+          [
+            "03702115-ca1c-43f5-bf13-ff633bb0a06a",
+            "Clover outside flower coverage",
+            [
+              [
+                "clover_pack_004",
+                2282
+              ]
+            ]
+          ],
+          [
+            "a1b8f0d9-baa7-4b11-a7f4-b08cf70e5cdc",
+            "Grass between flowering plants",
+            [
+              [
+                "grass_bush",
+                4382
+              ],
+              [
+                "grass_small",
+                9880
+              ]
+            ]
+          ],
+          [
+            "d68c66b6-cdbd-4f9e-9134-2367ae3c6e80",
+            "Inner walk flowers",
+            [
+              [
+                "PATH | MT_PM_V41_Lamium_maculatum_01_04",
+                48
+              ],
+              [
+                "PATH | MT_PM_V41_Geranium_robertianum_01_04",
+                33
+              ]
+            ]
+          ]
+        ],
+        "container_counters": [
+          [
+            6,
+            1416,
+            5
+          ],
+          [
+            2,
+            474,
+            1
+          ],
+          [
+            2,
+            472,
+            1
+          ],
+          [
+            2,
+            474,
+            1
+          ],
+          [
+            2,
+            470,
+            1
+          ],
+          [
+            2,
+            476,
+            1
+          ],
+          [
+            2,
+            474,
+            1
+          ],
+          [
+            2,
+            474,
+            1
+          ]
+        ],
+        "retained": [
+          57848,
+          19,
+          7,
+          8,
+          14,
+          133,
+          4949952,
+          39121,
+          0,
+          19,
+          694176,
+          1,
+          "5799876280246200693;16332259342737025148;6389547519504418288;12848674751808468220;7883368263341241864;10995041627916787512;9706764016480934631;15897211525963229049;"
+        ],
+        "retained_mesh": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          536870912,
+          1073741824
+        ],
+        "host_private_bytes": 7730290688,
+        "host_working_bytes": 4577370112,
+        "host_peak_working_bytes": 4865449984,
+        "errors": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      },
+      "transport_wall_s": 2.640999999945052,
+      "host_cpu_s": 5.21875,
+      "before": {
+        "cpu_s": 940.890625,
+        "private_bytes": 7542947840,
+        "working_bytes": 4576104448,
+        "graphics": [
+          {
+            "Name": "pid_51112_luid_0x00000000_0x00013A27_phys_0",
+            "DedicatedUsage": 2506522624,
+            "SharedUsage": 281911296,
+            "TotalCommitted": 2751275008
+          }
+        ]
+      },
+      "after": {
+        "cpu_s": 946.109375,
+        "private_bytes": 7730290688,
+        "working_bytes": 4577398784,
+        "graphics": [
+          {
+            "Name": "pid_51112_luid_0x00000000_0x00013A27_phys_0",
+            "DedicatedUsage": 2676617216,
+            "SharedUsage": 282337280,
+            "TotalCommitted": 2921795584
+          }
+        ]
+      }
+    },
+    {
+      "label": "garden_100000",
+      "source": {
+        "label": "garden_100000",
+        "duration_ms": 2550.079,
+        "epoch": 8,
+        "calculation_model": "CyrusUnified1",
+        "requested_layers": [
+          120,
+          260,
+          220,
+          30000,
+          100000
+        ],
+        "accepted": [
+          65,
+          15,
+          83,
+          101,
+          414,
+          3460,
+          20394,
+          81
+        ],
+        "shown": [
+          780,
+          180,
+          996,
+          1212,
+          4968,
+          25000,
+          25000,
+          972
+        ],
+        "shown_unit": "points",
+        "prepared_builds": [
+          5,
+          5,
+          5,
+          5,
+          8,
+          8,
+          8,
+          5
+        ],
+        "preview_builds": [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "sources": [
+          [
+            "196cc5f0-2588-45b3-a01f-fb589301ee04",
+            "Base",
+            [
+              [
+                "crp_MT_PM_V33_Myrtle_01_003",
+                31
+              ],
+              [
+                "crp_MT_PM_Rosa_rugosa_01_02",
+                24
+              ],
+              [
+                "crp_MT_PM_Sambucus_nigra_02_01",
+                10
+              ]
+            ]
+          ],
+          [
+            "58cd035d-8940-4b6b-a289-e84bc95c902a",
+            "Base",
+            [
+              [
+                "MT_PM_V41_Arthropodium_01_01",
+                8
+              ],
+              [
+                "MT_PM_V41_Arthropodium_01_04",
+                7
+              ]
+            ]
+          ],
+          [
+            "95144abf-73fb-4203-88e7-e0002e18051d",
+            "Base",
+            [
+              [
+                "crp_Lavander_01",
+                37
+              ],
+              [
+                "crp_Lavander_05",
+                36
+              ],
+              [
+                "crp_MT_PM_V33_Glossy_abelia_01_006",
+                10
+              ]
+            ]
+          ],
+          [
+            "4c465bcd-c945-4462-b78f-92bb476cf3b0",
+            "Outer walk flowers",
+            [
+              [
+                "PATH | MT_PM_V41_Phlox_stolonifera_01_01",
+                54
+              ],
+              [
+                "PATH | MT_PM_V41_Viola_sororia_01_05",
+                47
+              ]
+            ]
+          ],
+          [
+            "92b1853a-e76a-405d-a7eb-7d39c487db25",
+            "Flower drifts",
+            [
+              [
+                "MT_PM_V41_Geranium_robertianum_01_04",
+                80
+              ],
+              [
+                "MT_PM_V41_Lamium_maculatum_01_04",
+                56
+              ],
+              [
+                "MT_PM_V41_Phlox_stolonifera_01_01",
+                177
+              ],
+              [
+                "MT_PM_V41_Viola_sororia_01_05",
+                101
+              ]
+            ]
+          ],
+          [
+            "03702115-ca1c-43f5-bf13-ff633bb0a06a",
+            "Clover outside flower coverage",
+            [
+              [
+                "clover_pack_004",
+                3460
+              ]
+            ]
+          ],
+          [
+            "a1b8f0d9-baa7-4b11-a7f4-b08cf70e5cdc",
+            "Grass between flowering plants",
+            [
+              [
+                "grass_bush",
+                6026
+              ],
+              [
+                "grass_small",
+                14368
+              ]
+            ]
+          ],
+          [
+            "d68c66b6-cdbd-4f9e-9134-2367ae3c6e80",
+            "Inner walk flowers",
+            [
+              [
+                "PATH | MT_PM_V41_Lamium_maculatum_01_04",
+                48
+              ],
+              [
+                "PATH | MT_PM_V41_Geranium_robertianum_01_04",
+                33
+              ]
+            ]
+          ]
+        ],
+        "container_counters": [
+          [
+            6,
+            1416,
+            5
+          ],
+          [
+            2,
+            474,
+            1
+          ],
+          [
+            2,
+            472,
+            1
+          ],
+          [
+            2,
+            474,
+            1
+          ],
+          [
+            2,
+            470,
+            1
+          ],
+          [
+            2,
+            476,
+            1
+          ],
+          [
+            2,
+            474,
+            1
+          ],
+          [
+            2,
+            474,
+            1
+          ]
+        ],
+        "retained": [
+          59108,
+          19,
+          8,
+          9,
+          16,
+          152,
+          5659248,
+          39235,
+          0,
+          19,
+          709296,
+          1,
+          "5799876280246200693;16332259342737025148;6389547519504418288;12848674751808468220;13532334141177647490;8499064062431895781;12928649646595373736;15897211525963229049;"
+        ],
+        "retained_mesh": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          536870912,
+          1073741824
+        ],
+        "host_private_bytes": 7731982336,
+        "host_working_bytes": 4579041280,
+        "host_peak_working_bytes": 4865449984,
+        "errors": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ]
+      },
+      "transport_wall_s": 2.827999999979511,
+      "host_cpu_s": 5.28125,
+      "before": {
+        "cpu_s": 946.421875,
+        "private_bytes": 7731228672,
+        "working_bytes": 4578332672,
+        "graphics": [
+          {
+            "Name": "pid_51112_luid_0x00000000_0x00013A27_phys_0",
+            "DedicatedUsage": 2676617216,
+            "SharedUsage": 282337280,
+            "TotalCommitted": 2921795584
+          }
+        ]
+      },
+      "after": {
+        "cpu_s": 951.703125,
+        "private_bytes": 7732002816,
+        "working_bytes": 4578955264,
+        "graphics": [
+          {
+            "Name": "pid_51112_luid_0x00000000_0x00013A27_phys_0",
+            "DedicatedUsage": 2676617216,
+            "SharedUsage": 282337280,
+            "TotalCommitted": 2921795584
+          }
+        ]
+      }
+    }
+  ],
+  "metric_limits": "CPU/RAM and GPU-process memory include the entire private Max scene and renderer. They do not identify exclusive plugin allocations. The development transport polls independently.",
+  "passed": true
+}

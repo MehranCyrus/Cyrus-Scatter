@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "script_sha256": "15390e733aac8a02433bfbc938f61fbe95f7f41eb35102baedf100dfe6c1a268",
+  "host_pid": 51112,
+  "actual_pointer": true,
+  "manual_layout_repair_used": false,
+  "observations": [
+    "Cold source-container selection exposes the full layer body through Advanced.",
+    "Deselect/reselect retains the full body without collapse/reopen repair.",
+    "Selecting the perennial container retargets layer and linked context, then shrub re-selection restores the shrub context.",
+    "Advanced expands and collapses; wheel scrolling reaches lower paint-set management, source properties and subsequent native pages.",
+    "Source properties expose width, length, active model list, following status and Edit layer.",
+    "Coverage opens in native Modify; Start Brush, pointer drag, Stop, Update and keyboard Undo are exercised separately."
+  ],
+  "scope": "Real Max 2027, two native command-panel columns at 1920x1032. Narrow/wide layout dimensions are covered by the final isolated layout fixture, not a final pointer border resize.",
+  "limits": "Not every control, DPI or docking arrangement. First cold Undo/Redo lost its stack; the controlled repeat passed and the unresolved observation is retained separately."
+}

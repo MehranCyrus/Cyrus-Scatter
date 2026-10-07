@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "version": "0.73.0",
+  "module": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\unified-073-20261006\\mcp-package-venv\\Lib\\site-packages\\cyrus_mcp\\__init__.py",
+  "tools": 12,
+  "resources": 7,
+  "plan_schema": "0.73",
+  "unpaired_host_denied": true,
+  "offline_hashed_wheel_install": true,
+  "artist_install": false,
+  "host_started": false
+}

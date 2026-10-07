@@ -1,0 +1,45 @@
+{
+  "linked": false,
+  "executed": false,
+  "source_sha256": "75c0af5e5c5f42016b9f888dc116410db622349f6bb7409680b5609bfbc2a339",
+  "results": [
+    {
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+        "/nologo",
+        "/c",
+        "/std:c++17",
+        "/EHsc",
+        "/D_UNICODE",
+        "/DUNICODE",
+        "/DNOMINMAX",
+        "/IF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\tooling\\max2027-sdk\\Program Files\\Autodesk\\3ds Max 2027 SDK\\maxsdk\\include",
+        "/FoC:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\research-072-rnd-20261006\\display-abi\\CustomItemABIProbe.obj",
+        "/d1reportSingleClassLayoutCustomItemABIProbe",
+        "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\research-072-rnd-20261006\\display-abi\\display_abi.cpp"
+      ],
+      "exit_code": 0,
+      "log": "CustomItemABIProbe.txt",
+      "sha256": "f498918d7356a17eac5e15c70898d40afa7c654503274c42646da2dfe6a7a078"
+    },
+    {
+      "command": [
+        "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+        "/nologo",
+        "/c",
+        "/std:c++17",
+        "/EHsc",
+        "/D_UNICODE",
+        "/DUNICODE",
+        "/DNOMINMAX",
+        "/IF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\tooling\\max2027-sdk\\Program Files\\Autodesk\\3ds Max 2027 SDK\\maxsdk\\include",
+        "/FoC:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\research-072-rnd-20261006\\display-abi\\VirtualDeviceABIProbe.obj",
+        "/d1reportSingleClassLayoutVirtualDeviceABIProbe",
+        "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\research-072-rnd-20261006\\display-abi\\display_abi.cpp"
+      ],
+      "exit_code": 0,
+      "log": "VirtualDeviceABIProbe.txt",
+      "sha256": "3fff40ff5c09d898755192a9a1f8fb13c877d3fa5684058fd5a39cb0b351d519"
+    }
+  ]
+}

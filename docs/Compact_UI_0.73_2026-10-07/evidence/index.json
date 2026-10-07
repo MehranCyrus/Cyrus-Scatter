@@ -1,0 +1,451 @@
+{
+  "date": "2026-10-07",
+  "script_sha256": "53bf85f9a2cfe1034468919c408d4c73ca6e865f7e1b9c816cc7375fe12f10fa",
+  "payload_sha256": "d74672d06df57514d70accd5632bfa187a1546633e6327d6b8360905e202ea94",
+  "native_reused": true,
+  "production_scope": "Presentation, installer help and documentation; calculations/native/MCP unchanged",
+  "campaigns": [
+    "compact073-core-idle04",
+    "compact073-bounds02",
+    "real073-compact-ui05"
+  ],
+  "limits": [
+    "Current desktop scale only",
+    "Max 2026 runtime unqualified",
+    "Earlier performance/renderer measurements retain their original identities",
+    "Active browsing event counters are reported separately from solve/upload work; the initial strict counter failure is preserved"
+  ],
+  "entries": [
+    {
+      "path": "source-identities.json",
+      "bytes": 1628,
+      "sha256": "5a16f37556028c4936735158aa4553c95711947ea34422738a2b56d9a79d6a35",
+      "source": "Current authoritative UI, fixture and installer files",
+      "projection": true
+    },
+    {
+      "path": "generated-check.json",
+      "bytes": 541,
+      "sha256": "39fc88b5becc3a23b03b61ee059fb5ccabf577cea20b819769d83d0d53353e81",
+      "source": "build/compact-ui-073-20261007/offline/generated-check.json",
+      "source_sha256": "39fc88b5becc3a23b03b61ee059fb5ccabf577cea20b819769d83d0d53353e81",
+      "projection": false
+    },
+    {
+      "path": "control-port-results.csv",
+      "bytes": 61504,
+      "sha256": "1a23f79444d5bc217d25d9f2a712228b6b9a6ab31c4305004595d776ea20e0f4",
+      "source": "build/compact-ui-073-20261007/offline/CONTROL_PORT_RESULTS.csv",
+      "source_sha256": "1a23f79444d5bc217d25d9f2a712228b6b9a6ab31c4305004595d776ea20e0f4",
+      "projection": false
+    },
+    {
+      "path": "structural-test.log",
+      "bytes": 350,
+      "sha256": "7fe02ea356042c45d48937794a271ee660e1cc53cf24a1f17a48842bbb57390f",
+      "source": "build/compact-ui-073-20261007/structural-test.log",
+      "source_sha256": "7fe02ea356042c45d48937794a271ee660e1cc53cf24a1f17a48842bbb57390f",
+      "projection": false
+    },
+    {
+      "path": "presentation-scope.json",
+      "bytes": 631,
+      "sha256": "d034403fe2898ad1917efbe454ec0f5dbacd1b15016c4d05edf667442a5d9f5f",
+      "source": "build/compact-ui-073-20261007/presentation-scope.json",
+      "source_sha256": "d034403fe2898ad1917efbe454ec0f5dbacd1b15016c4d05edf667442a5d9f5f",
+      "projection": false
+    },
+    {
+      "path": "native-max2026/receipt.json",
+      "bytes": 8660,
+      "sha256": "d8435892c1fa7292588fd52fb788e1419c49af59ad73f5d43e383538394953e9",
+      "source": "build/compact-ui-073-20261007/native-final-max2026/receipt.json",
+      "source_sha256": "d8435892c1fa7292588fd52fb788e1419c49af59ad73f5d43e383538394953e9",
+      "projection": false
+    },
+    {
+      "path": "native-max2026/tests.log",
+      "bytes": 1855,
+      "sha256": "3f6013096e080523c5b6d32c7542aae7dd3cdca4889b9dc8590a7c4a95c56101",
+      "source": "build/compact-ui-073-20261007/native-final-max2026/tests.log",
+      "source_sha256": "3f6013096e080523c5b6d32c7542aae7dd3cdca4889b9dc8590a7c4a95c56101",
+      "projection": false
+    },
+    {
+      "path": "native-max2027/receipt.json",
+      "bytes": 8660,
+      "sha256": "f4c948c78aaa95d753294f14f8538f00dd7ee88dd0a940886e454469e8f10c08",
+      "source": "build/compact-ui-073-20261007/native-final-max2027/receipt.json",
+      "source_sha256": "f4c948c78aaa95d753294f14f8538f00dd7ee88dd0a940886e454469e8f10c08",
+      "projection": false
+    },
+    {
+      "path": "native-max2027/tests.log",
+      "bytes": 1855,
+      "sha256": "b9bfe72f88f92baa7eaa79f243932f20f9d23da4e25ef435502167532611ede1",
+      "source": "build/compact-ui-073-20261007/native-final-max2027/tests.log",
+      "source_sha256": "b9bfe72f88f92baa7eaa79f243932f20f9d23da4e25ef435502167532611ede1",
+      "projection": false
+    },
+    {
+      "path": "core/qualification.json",
+      "bytes": 4379,
+      "sha256": "35d71047f7e496fed08ce17fac0e8d4f8c6d2ff99bdc8261a4653fc89ea7688e",
+      "source": "build/mcp-qualification/compact073-core-idle04/qualification.json",
+      "source_sha256": "e3f2e35438117865754e368ff875f6a4065e3924b4046709a108d357e92b1037",
+      "projection": true
+    },
+    {
+      "path": "bounds/qualification.json",
+      "bytes": 1451,
+      "sha256": "14462cc7bc7ab81e67191df9a4da81dc04b2d6c9c8538ede6ccc88d5116d2da2",
+      "source": "build/mcp-qualification/compact073-bounds02/qualification.json",
+      "source_sha256": "1e649f85feac9f696987d8ecbdabc4ffab990d1527b0a35714b9311d8d3092ef",
+      "projection": true
+    },
+    {
+      "path": "core/core073.json",
+      "bytes": 723,
+      "sha256": "ed0bbfbce402f59c1f8c0bd5e24c547cde0724c9d9537d7d71ec93f457802d7a",
+      "source": "build/mcp-qualification/compact073-core-idle04/core073.json",
+      "source_sha256": "ed0bbfbce402f59c1f8c0bd5e24c547cde0724c9d9537d7d71ec93f457802d7a",
+      "projection": false
+    },
+    {
+      "path": "core/approved-layout073.json",
+      "bytes": 178,
+      "sha256": "1d922fa7c233e423501572505bce12e6029e50aabb2b77584cd66c0ef63d82d9",
+      "source": "build/mcp-qualification/compact073-core-idle04/approved-layout073.json",
+      "source_sha256": "1d922fa7c233e423501572505bce12e6029e50aabb2b77584cd66c0ef63d82d9",
+      "projection": false
+    },
+    {
+      "path": "core/approved-page-order.json",
+      "bytes": 214,
+      "sha256": "1b1085332eb2c3d59dd0fab8c221f2521ce9d3600db74c7e57245901ccaa6ba2",
+      "source": "build/mcp-qualification/compact073-core-idle04/approved-page-order.json",
+      "source_sha256": "1b1085332eb2c3d59dd0fab8c221f2521ce9d3600db74c7e57245901ccaa6ba2",
+      "projection": false
+    },
+    {
+      "path": "core/procedural-acceptance.json",
+      "bytes": 190,
+      "sha256": "ebf96d64fb1dad0e15a5efca36d35ce5da0166355d068013f1d4ef90d0da0335",
+      "source": "build/mcp-qualification/compact073-core-idle04/procedural-acceptance.json",
+      "source_sha256": "ebf96d64fb1dad0e15a5efca36d35ce5da0166355d068013f1d4ef90d0da0335",
+      "projection": false
+    },
+    {
+      "path": "core/containers073.json",
+      "bytes": 369,
+      "sha256": "29819059b0a9bbc18b521b245fcbf28ac570f85252fa53843b06643a9631c911",
+      "source": "build/mcp-qualification/compact073-core-idle04/containers073.json",
+      "source_sha256": "29819059b0a9bbc18b521b245fcbf28ac570f85252fa53843b06643a9631c911",
+      "projection": false
+    },
+    {
+      "path": "core/groups073.json",
+      "bytes": 86,
+      "sha256": "99826751397ee3f534aaca180b34a4d0c86947ae65d0e3590c717e67de7dbab9",
+      "source": "build/mcp-qualification/compact073-core-idle04/groups073.json",
+      "source_sha256": "99826751397ee3f534aaca180b34a4d0c86947ae65d0e3590c717e67de7dbab9",
+      "projection": false
+    },
+    {
+      "path": "core/node-move073.json",
+      "bytes": 82,
+      "sha256": "fd2a86ebfa707e8bf68483c2c08018ec69bfcad378af001d55c686a41ab08136",
+      "source": "build/mcp-qualification/compact073-core-idle04/node-move073.json",
+      "source_sha256": "fd2a86ebfa707e8bf68483c2c08018ec69bfcad378af001d55c686a41ab08136",
+      "projection": false
+    },
+    {
+      "path": "core/persistence073.json",
+      "bytes": 148,
+      "sha256": "8b0948fb7d91827ae1e5754c0dc8f21d11df5f09edce1da6a974f231d6ff7623",
+      "source": "build/mcp-qualification/compact073-core-idle04/persistence073.json",
+      "source_sha256": "8b0948fb7d91827ae1e5754c0dc8f21d11df5f09edce1da6a974f231d6ff7623",
+      "projection": false
+    },
+    {
+      "path": "core/analyzer-assignment073.json",
+      "bytes": 190,
+      "sha256": "ebf96d64fb1dad0e15a5efca36d35ce5da0166355d068013f1d4ef90d0da0335",
+      "source": "build/mcp-qualification/compact073-core-idle04/analyzer-assignment073.json",
+      "source_sha256": "ebf96d64fb1dad0e15a5efca36d35ce5da0166355d068013f1d4ef90d0da0335",
+      "projection": false
+    },
+    {
+      "path": "core/idle-qualification.json",
+      "bytes": 5836,
+      "sha256": "b27de9b96c3a3d4ce2d3225a0ea29bdd56e463336d298ac11f4c3994f211a6eb",
+      "source": "build/mcp-qualification/compact073-core-idle04/idle-qualification.json",
+      "source_sha256": "b27de9b96c3a3d4ce2d3225a0ea29bdd56e463336d298ac11f4c3994f211a6eb",
+      "projection": false
+    },
+    {
+      "path": "core/diagnostic-overhead.json",
+      "bytes": 250,
+      "sha256": "4c6f452f571723be93eb021936eac794722617b089b0c7d41a24e85a5a9fed0b",
+      "source": "build/mcp-qualification/compact073-core-idle04/diagnostic-overhead.json",
+      "source_sha256": "4c6f452f571723be93eb021936eac794722617b089b0c7d41a24e85a5a9fed0b",
+      "projection": false
+    },
+    {
+      "path": "core/live-closed-start.json",
+      "bytes": 570,
+      "sha256": "7cb15e593c07bcf7042b79223cc94b03975be246c82d9ee46ab2573f3c3c88f3",
+      "source": "build/mcp-qualification/compact073-core-idle04/live-closed-start.json",
+      "source_sha256": "7cb15e593c07bcf7042b79223cc94b03975be246c82d9ee46ab2573f3c3c88f3",
+      "projection": false
+    },
+    {
+      "path": "core/live-closed-end.json",
+      "bytes": 568,
+      "sha256": "154d6f27c5a084c607cf4bcaa72abcd767c9d51c90cb007a7efbdf57c3ae0c30",
+      "source": "build/mcp-qualification/compact073-core-idle04/live-closed-end.json",
+      "source_sha256": "154d6f27c5a084c607cf4bcaa72abcd767c9d51c90cb007a7efbdf57c3ae0c30",
+      "projection": false
+    },
+    {
+      "path": "core/live-editor-open-start.json",
+      "bytes": 576,
+      "sha256": "568266dc833584c2c699f856c6eba69602e27caefdeb60adb5b2deb5578a9bc6",
+      "source": "build/mcp-qualification/compact073-core-idle04/live-editor-open-start.json",
+      "source_sha256": "568266dc833584c2c699f856c6eba69602e27caefdeb60adb5b2deb5578a9bc6",
+      "projection": false
+    },
+    {
+      "path": "core/live-editor-open-end.json",
+      "bytes": 575,
+      "sha256": "06440843b75839246fb5a18de908e03010381a470b1392afa12adbdbd9a15f8c",
+      "source": "build/mcp-qualification/compact073-core-idle04/live-editor-open-end.json",
+      "source_sha256": "06440843b75839246fb5a18de908e03010381a470b1392afa12adbdbd9a15f8c",
+      "projection": false
+    },
+    {
+      "path": "core/manual-pending-start.json",
+      "bytes": 574,
+      "sha256": "d4c4c9548d59117d8cbae102996d89aaac37aded1e340e6105e49b9fe94fbbfc",
+      "source": "build/mcp-qualification/compact073-core-idle04/manual-pending-start.json",
+      "source_sha256": "d4c4c9548d59117d8cbae102996d89aaac37aded1e340e6105e49b9fe94fbbfc",
+      "projection": false
+    },
+    {
+      "path": "core/manual-pending-end.json",
+      "bytes": 572,
+      "sha256": "7e4bb7818d6537ebf94f58060dc33eb33d75b041362a55beab855cd843ac21de",
+      "source": "build/mcp-qualification/compact073-core-idle04/manual-pending-end.json",
+      "source_sha256": "7e4bb7818d6537ebf94f58060dc33eb33d75b041362a55beab855cd843ac21de",
+      "projection": false
+    },
+    {
+      "path": "core/live-real-edit-start.json",
+      "bytes": 575,
+      "sha256": "8391cb87f8d1798f8b9b6fe3bd6545d220f15db384543db55568315b4f22537b",
+      "source": "build/mcp-qualification/compact073-core-idle04/live-real-edit-start.json",
+      "source_sha256": "8391cb87f8d1798f8b9b6fe3bd6545d220f15db384543db55568315b4f22537b",
+      "projection": false
+    },
+    {
+      "path": "core/live-real-edit-end.json",
+      "bytes": 573,
+      "sha256": "a568e8ee90857eb1dc721ba2a3bfa36c2030424644a1ca3420a3a9d9b8157d9f",
+      "source": "build/mcp-qualification/compact073-core-idle04/live-real-edit-end.json",
+      "source_sha256": "a568e8ee90857eb1dc721ba2a3bfa36c2030424644a1ca3420a3a9d9b8157d9f",
+      "projection": false
+    },
+    {
+      "path": "core/live-density-edit-start.json",
+      "bytes": 579,
+      "sha256": "09afdd08baf59cb09c5f59e850a3e4814af9947cb06353f67c3e388e91b1b8cd",
+      "source": "build/mcp-qualification/compact073-core-idle04/live-density-edit-start.json",
+      "source_sha256": "09afdd08baf59cb09c5f59e850a3e4814af9947cb06353f67c3e388e91b1b8cd",
+      "projection": false
+    },
+    {
+      "path": "core/live-density-edit-end.json",
+      "bytes": 577,
+      "sha256": "4a213c28a83b26230aef34c54abdfd6afea9ed71b36a43b6334a0d5f024b1c56",
+      "source": "build/mcp-qualification/compact073-core-idle04/live-density-edit-end.json",
+      "source_sha256": "4a213c28a83b26230aef34c54abdfd6afea9ed71b36a43b6334a0d5f024b1c56",
+      "projection": false
+    },
+    {
+      "path": "core/failed-successor-start.json",
+      "bytes": 578,
+      "sha256": "d11cf8e41d5bf56b974c96a76deb9262aebbc96fb2104e90b65efcf270b83ef1",
+      "source": "build/mcp-qualification/compact073-core-idle04/failed-successor-start.json",
+      "source_sha256": "d11cf8e41d5bf56b974c96a76deb9262aebbc96fb2104e90b65efcf270b83ef1",
+      "projection": false
+    },
+    {
+      "path": "core/failed-successor-end.json",
+      "bytes": 576,
+      "sha256": "91379e99dd8e6a5fabf6e3f24a614ee51be610d10e9ba67366b996b68d724ee8",
+      "source": "build/mcp-qualification/compact073-core-idle04/failed-successor-end.json",
+      "source_sha256": "91379e99dd8e6a5fabf6e3f24a614ee51be610d10e9ba67366b996b68d724ee8",
+      "projection": false
+    },
+    {
+      "path": "core/restored-valid-recipe-start.json",
+      "bytes": 583,
+      "sha256": "0bb65bf92c17cecd945a90a1176c81b906cc393f23cb9ee9f47e07345432e3e7",
+      "source": "build/mcp-qualification/compact073-core-idle04/restored-valid-recipe-start.json",
+      "source_sha256": "0bb65bf92c17cecd945a90a1176c81b906cc393f23cb9ee9f47e07345432e3e7",
+      "projection": false
+    },
+    {
+      "path": "core/restored-valid-recipe-end.json",
+      "bytes": 581,
+      "sha256": "a9c4c90669751aedbc024d51f1322e06b358f4342aeb01a6c3f308ac86d9b4c5",
+      "source": "build/mcp-qualification/compact073-core-idle04/restored-valid-recipe-end.json",
+      "source_sha256": "a9c4c90669751aedbc024d51f1322e06b358f4342aeb01a6c3f308ac86d9b4c5",
+      "projection": false
+    },
+    {
+      "path": "core/after-diagnostic-recording-start.json",
+      "bytes": 593,
+      "sha256": "6fbeeb000dcb68ddd45352fbf8d6298c9a2a7a597867ad7527d77aecd6794d04",
+      "source": "build/mcp-qualification/compact073-core-idle04/after-diagnostic-recording-start.json",
+      "source_sha256": "6fbeeb000dcb68ddd45352fbf8d6298c9a2a7a597867ad7527d77aecd6794d04",
+      "projection": false
+    },
+    {
+      "path": "core/after-diagnostic-recording-end.json",
+      "bytes": 591,
+      "sha256": "5defac318b07aaa4caa176c5ea996eafcf7df517a7dd403bf565e456a6be80c3",
+      "source": "build/mcp-qualification/compact073-core-idle04/after-diagnostic-recording-end.json",
+      "source_sha256": "5defac318b07aaa4caa176c5ea996eafcf7df517a7dd403bf565e456a6be80c3",
+      "projection": false
+    },
+    {
+      "path": "bounds/compact-layout073.json",
+      "bytes": 14080,
+      "sha256": "dd45ffab573c0482e5db2abccfadc61b8507003888a239784341ffb409860d70",
+      "source": "build/mcp-qualification/compact073-bounds02/compact-layout073.json",
+      "source_sha256": "dd45ffab573c0482e5db2abccfadc61b8507003888a239784341ffb409860d70",
+      "projection": false
+    },
+    {
+      "path": "bounds/compact-basic-heights.json",
+      "bytes": 41,
+      "sha256": "9c50e0ced319dea3c82a4dfe2fdf3be5e16e4e1190ca3eebaeea437165ff3dc6",
+      "source": "build/mcp-qualification/compact073-bounds02/compact-basic-heights.json",
+      "source_sha256": "9c50e0ced319dea3c82a4dfe2fdf3be5e16e4e1190ca3eebaeea437165ff3dc6",
+      "projection": false
+    },
+    {
+      "path": "garden/launch-identity.json",
+      "bytes": 682,
+      "sha256": "97d7034ad83d0f4791c1fac92227d668a0f2fa897a91937675833205d38028a2",
+      "source": "build/mcp-qualification/real073-compact-ui05/launch.json",
+      "source_sha256": "6f152cfacd28d78c9ec45a8f77093a8f6fd8d98cdd889de2ed484b06da4e2fb9",
+      "projection": true
+    },
+    {
+      "path": "garden/protection.json",
+      "bytes": 469,
+      "sha256": "fe8024eec07731909095c39b36202a13104b574a4960c93705d1e3611481f2cb",
+      "source": "build/mcp-qualification/real073-compact-ui05/protection.json",
+      "source_sha256": "6c8672fb34a90e324478cb527fa8afb6f641c09bdf0ce404606636179a79c60f",
+      "projection": true
+    },
+    {
+      "path": "garden/compact-prepare.json",
+      "bytes": 131,
+      "sha256": "0fa6a58e6a6bb4a665bf8472832fbdd3fa6dbb2f2e53bbed086fdff3d2be986c",
+      "source": "build/mcp-qualification/real073-compact-ui05/compact-prepare.json",
+      "source_sha256": "0fa6a58e6a6bb4a665bf8472832fbdd3fa6dbb2f2e53bbed086fdff3d2be986c",
+      "projection": false
+    },
+    {
+      "path": "garden/compact-browse-stable-before.json",
+      "bytes": 870,
+      "sha256": "0dbe2d601e25c929cc9e8ccd5d5f4ec334cf07c8b6b02d6d96c73298674b2f25",
+      "source": "build/mcp-qualification/real073-compact-ui05/compact-browse-stable-before.json",
+      "source_sha256": "0dbe2d601e25c929cc9e8ccd5d5f4ec334cf07c8b6b02d6d96c73298674b2f25",
+      "projection": false
+    },
+    {
+      "path": "garden/compact-browse-after.json",
+      "bytes": 862,
+      "sha256": "09a75a5809bbaadfff1709e2addc22c2a908d358d8e3c26a6f718079f5550ab9",
+      "source": "build/mcp-qualification/real073-compact-ui05/compact-browse-after.json",
+      "source_sha256": "09a75a5809bbaadfff1709e2addc22c2a908d358d8e3c26a6f718079f5550ab9",
+      "projection": false
+    },
+    {
+      "path": "garden/compact-browsing-strict-counters.json",
+      "bytes": 955,
+      "sha256": "4ea4ed821921034e4e0613329b7cf216b5a3d2e073a7dd360917a5911963b07d",
+      "source": "build/mcp-qualification/real073-compact-ui05/compact-browsing-strict-counters.json",
+      "source_sha256": "4ea4ed821921034e4e0613329b7cf216b5a3d2e073a7dd360917a5911963b07d",
+      "projection": false
+    },
+    {
+      "path": "garden/compact-browsing-result.json",
+      "bytes": 1120,
+      "sha256": "9976f5dbe35308c2b18dec8e074dcd86ed4f20d51b2f0a4f7915dff4ffaf12a0",
+      "source": "build/mcp-qualification/real073-compact-ui05/compact-browsing-result.json",
+      "source_sha256": "9976f5dbe35308c2b18dec8e074dcd86ed4f20d51b2f0a4f7915dff4ffaf12a0",
+      "projection": false
+    },
+    {
+      "path": "garden/compact-final-quiet-before.json",
+      "bytes": 866,
+      "sha256": "399318420745f8825b04aabb5549a8cbe0e84d13b5375b372f73bb4b5c453186",
+      "source": "build/mcp-qualification/real073-compact-ui05/compact-final-quiet-before.json",
+      "source_sha256": "399318420745f8825b04aabb5549a8cbe0e84d13b5375b372f73bb4b5c453186",
+      "projection": false
+    },
+    {
+      "path": "garden/compact-final-quiet-after.json",
+      "bytes": 865,
+      "sha256": "41c85a233e2f171bd3c0342a2132258e073ece590cb6956707d444b1efd83950",
+      "source": "build/mcp-qualification/real073-compact-ui05/compact-final-quiet-after.json",
+      "source_sha256": "41c85a233e2f171bd3c0342a2132258e073ece590cb6956707d444b1efd83950",
+      "projection": false
+    },
+    {
+      "path": "garden/compact-quiet-result.json",
+      "bytes": 336,
+      "sha256": "8a81dbea7df9a41eec55f6c6a1967f7a8b8de1bd9a050f569f517e0f797c5997",
+      "source": "build/mcp-qualification/real073-compact-ui05/compact-quiet-result.json",
+      "source_sha256": "8a81dbea7df9a41eec55f6c6a1967f7a8b8de1bd9a050f569f517e0f797c5997",
+      "projection": false
+    },
+    {
+      "path": "garden/compact-container-geometry.json",
+      "bytes": 215,
+      "sha256": "5ade628ff092de15960b3901cf7b77dc1251c7f41a1199034adf189889c77d96",
+      "source": "build/mcp-qualification/real073-compact-ui05/compact-container-geometry.json",
+      "source_sha256": "5ade628ff092de15960b3901cf7b77dc1251c7f41a1199034adf189889c77d96",
+      "projection": false
+    },
+    {
+      "path": "garden/compact-basic-geometry.json",
+      "bytes": 108,
+      "sha256": "2415aa6d70166f62d72e9bd4fd38a62bd07059649b432d6dedb183baf6db2d71",
+      "source": "build/mcp-qualification/real073-compact-ui05/compact-basic-geometry.json",
+      "source_sha256": "2415aa6d70166f62d72e9bd4fd38a62bd07059649b432d6dedb183baf6db2d71",
+      "projection": false
+    },
+    {
+      "path": "garden/compact-advanced-geometry.json",
+      "bytes": 608,
+      "sha256": "e39ca911115109b71214b0f5b36bf88458c528979dd813b1f39c33c9a36ea8b4",
+      "source": "build/mcp-qualification/real073-compact-ui05/compact-advanced-geometry.json",
+      "source_sha256": "e39ca911115109b71214b0f5b36bf88458c528979dd813b1f39c33c9a36ea8b4",
+      "projection": false
+    },
+    {
+      "path": "package-BUILD.json",
+      "bytes": 1742,
+      "sha256": "48b2f697885132a0ff33367306c9e82ec5c46719cce7aaa05a0f1276ef7c02c4",
+      "source": "dist/Compact_UI_0.73_2026-10-07/BUILD.json",
+      "source_sha256": "48b2f697885132a0ff33367306c9e82ec5c46719cce7aaa05a0f1276ef7c02c4",
+      "projection": false
+    }
+  ]
+}

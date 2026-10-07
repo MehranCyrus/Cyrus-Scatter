@@ -1,0 +1,71 @@
+[
+  {
+    "label": "configure",
+    "command": [
+      "C:\\Users\\Mehran\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\cmake.EXE",
+      "-S",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\AminScatter",
+      "-B",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\rnd-072-20261006\\core-probe01\\core",
+      "-G",
+      "NMake Makefiles",
+      "-DCMAKE_BUILD_TYPE=Release",
+      "-DAMIN_BUILD_MAX=OFF"
+    ],
+    "exit_code": 0,
+    "log": "configure.log",
+    "sha256": "fc43d92942d79525f26aeac5534fb50911cf5c894a64abfc401290531747b655"
+  },
+  {
+    "label": "build",
+    "command": [
+      "C:\\Users\\Mehran\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\cmake.EXE",
+      "--build",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\rnd-072-20261006\\core-probe01\\core"
+    ],
+    "exit_code": 0,
+    "log": "build.log",
+    "sha256": "e51274b92f5f4fd2a00563cd9490b4ff8eab8e39f631e06b8e545d886a60b305"
+  },
+  {
+    "label": "ctest",
+    "command": [
+      "C:\\Users\\Mehran\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\ctest.exe",
+      "--test-dir",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\rnd-072-20261006\\core-probe01\\core",
+      "--output-on-failure"
+    ],
+    "exit_code": 0,
+    "log": "ctest.log",
+    "sha256": "544113d3d3abe8e7c3cecba12a8e49f0fb81ddbd78e3959bf68659385f023962"
+  },
+  {
+    "label": "probe-compile",
+    "command": [
+      "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+      "/nologo",
+      "/std:c++17",
+      "/EHsc",
+      "/MD",
+      "/O2",
+      "/DNDEBUG",
+      "/IF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\AminScatter\\include",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\docs\\TyFlow_CyrusScatter_RnD_2026-10-06\\reproduce\\core_probe.cpp",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\rnd-072-20261006\\core-probe01\\core\\amin_scatter.lib",
+      "/FeF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\rnd-072-20261006\\core-probe01\\core_probe.exe",
+      "/FoF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\rnd-072-20261006\\core-probe01\\core_probe.obj"
+    ],
+    "exit_code": 0,
+    "log": "probe-compile.log",
+    "sha256": "5b84ceff2464e33fad0b3f0d3b1b0105d707267f81f0d2d565a325f3bbea6c30"
+  },
+  {
+    "label": "probe",
+    "command": [
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\rnd-072-20261006\\core-probe01\\core_probe.exe"
+    ],
+    "exit_code": 1,
+    "log": "probe.log",
+    "sha256": "3eaaf1fb680c0ce7f218ddf8fd9847224b000f6222bb107ad0f3d54362cdb239"
+  }
+]

@@ -90,7 +90,7 @@ The dedicated test is [viewport_performance_smoke.ms](../tools/tests/viewport_pe
 | [preview_batches.inc](../AminScatter/src/preview_batches.inc) | Batch data structures, memory reservations, shading preparation and caps. |
 | [preview.cpp](../AminScatter/src/preview.cpp) | Cache preparation, batched drawing, preserved fallback, diagnostics. |
 | [geometry_preview.inc](../AminScatter/src/geometry_preview.inc) | Prepare batches after existing geometry selection completes. |
-| [viewport-performance.cjs](../AminScatter/tools/ui/viewport-performance.cjs) | Guarded source-generation transformations for redraw optimizations. |
+| [viewport-performance.cjs](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/AminScatter/tools/ui/viewport-performance.cjs) | Guarded source-generation transformations for redraw optimizations. |
 | [generate.cjs](../AminScatter/tools/ui/generate.cjs) | Runs the viewport stage after the existing CPU performance stage. |
 | [build_max.py](../tools/build_max.py) | Produces version 0.61 installers with hashed payloads. |
 

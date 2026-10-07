@@ -1,0 +1,57 @@
+display_abi.cpp
+
+class VirtualDeviceABIProbe	size(8):
+	+---
+ 0	| +--- (base class MaxSDK::Graphics::IVirtualDevice)
+ 0	| | {vfptr}
+ 8	| | +--- (base class MaxHeapOperators)
+	| | +---
+	| +---
+	+---
+
+VirtualDeviceABIProbe::$vftable@:
+	| &VirtualDeviceABIProbe_meta
+	|  0
+ 0	| &VirtualDeviceABIProbe::{dtor} 
+ 1	| &MaxSDK::Graphics::IVirtualDevice::ThreadID 
+ 2	| &MaxSDK::Graphics::IVirtualDevice::IsValid 
+ 3	| &MaxSDK::Graphics::IVirtualDevice::BeginFrame 
+ 4	| &MaxSDK::Graphics::IVirtualDevice::EndFrame 
+ 5	| &MaxSDK::Graphics::IVirtualDevice::BeginScene 
+ 6	| &MaxSDK::Graphics::IVirtualDevice::EndScene 
+ 7	| &MaxSDK::Graphics::IVirtualDevice::GetRasterizerState 
+ 8	| &MaxSDK::Graphics::IVirtualDevice::SetRasterizerState 
+ 9	| &MaxSDK::Graphics::IVirtualDevice::GetDepthStencilState 
+10	| &MaxSDK::Graphics::IVirtualDevice::SetDepthStencilState 
+11	| &MaxSDK::Graphics::IVirtualDevice::GetBlendState 
+12	| &MaxSDK::Graphics::IVirtualDevice::SetBlendState 
+13	| &MaxSDK::Graphics::IVirtualDevice::Viewport 
+14	| &MaxSDK::Graphics::IVirtualDevice::Viewport 
+15	| &MaxSDK::Graphics::IVirtualDevice::DepthRange 
+16	| &MaxSDK::Graphics::IVirtualDevice::DepthRange 
+17	| &MaxSDK::Graphics::IVirtualDevice::ScissorBox 
+18	| &MaxSDK::Graphics::IVirtualDevice::ScissorBox 
+19	| &MaxSDK::Graphics::IVirtualDevice::VertexStreamCount 
+20	| &MaxSDK::Graphics::IVirtualDevice::GetVertexStream 
+21	| &MaxSDK::Graphics::IVirtualDevice::SetVertexStreams 
+22	| &MaxSDK::Graphics::IVirtualDevice::SetStreamFormat 
+23	| &MaxSDK::Graphics::IVirtualDevice::OutputStreamCount 
+24	| &MaxSDK::Graphics::IVirtualDevice::GetOutputStream 
+25	| &MaxSDK::Graphics::IVirtualDevice::SetOutputStreams 
+26	| &MaxSDK::Graphics::IVirtualDevice::SetTarget 
+27	| &MaxSDK::Graphics::IVirtualDevice::SetTargets 
+28	| &MaxSDK::Graphics::IVirtualDevice::GetTarget 
+29	| &MaxSDK::Graphics::IVirtualDevice::TargetCount 
+30	| &MaxSDK::Graphics::IVirtualDevice::GetZBuffer 
+31	| &MaxSDK::Graphics::IVirtualDevice::GetIndexBuffer 
+32	| &MaxSDK::Graphics::IVirtualDevice::SetIndexBuffer 
+33	| &MaxSDK::Graphics::IVirtualDevice::Draw 
+34	| &MaxSDK::Graphics::IVirtualDevice::DrawInstanced 
+35	| &MaxSDK::Graphics::IVirtualDevice::Clear 
+36	| &MaxSDK::Graphics::IVirtualDevice::ClearRegion 
+37	| &MaxSDK::Graphics::IVirtualDevice::SetTargetsAndUnorderedAccessViews 
+38	| &MaxSDK::Graphics::IVirtualDevice::ClearUnorderedAccessView 
+
+VirtualDeviceABIProbe::{dtor} this adjustor: 0
+VirtualDeviceABIProbe::__delDtor this adjustor: 0
+VirtualDeviceABIProbe::__vecDelDtor this adjustor: 0

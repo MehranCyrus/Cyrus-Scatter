@@ -15,7 +15,7 @@ from cyrus_mcp.geometry import convex, contains, inset, overlaps, area, max_to_c
 
 
 def plan(context="context_x"):
-    return {"schema_version":"1.0","context_id":context,"name":"Test layout","layers":[{"name":"Trees","region_id":"region_x","count":100,"seed":42,"sources":[{"source_id":"source_x","weight":1}],"scale":[.8,1.2],"yaw_degrees":[0,360],"underfill":"allow"}]}
+    return {"schema_version":"0.73","context_id":context,"name":"Test layout","layers":[{"name":"Trees","region_id":"region_x","count":100,"seed":42,"sources":[{"source_id":"source_x","weight":1}],"scale":[.8,1.2],"yaw_degrees":[0,360],"underfill":"allow"}]}
 
 
 @pytest.mark.parametrize("raw",['{"x":1,"x":2}','{"x":NaN}','{"x":Infinity}','{"x":1e999}', '['*19+'0'+']'*19, '{"x":'])

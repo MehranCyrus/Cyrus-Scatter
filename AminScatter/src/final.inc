@@ -51,7 +51,10 @@ std::vector<Instance> finalize(const std::vector<Triangle>& surface,const Settin
   double moved=0;
   // Sequential acceptance keeps the already accepted moves collision-safe.
   for(std::size_t i=0;i<points.size();++i){Vec3 mean{},direction{};std::size_t n=0;
-   grid.visit(flat(points[i].position),[&](std::size_t j){auto d=points[j].position-points[i].position;double len=length(flat(d));if(j!=i&&len>1e-9&&len<=f.radius){mean=mean+d;direction=direction+flat(d)*(1/len);++n;}return n<128;});
+   // Bound visits, including coincident and out-of-radius neighbours. Counting
+   // only accepted neighbours leaves degenerate dense cells quadratic.
+   std::size_t visited=0;
+   grid.visit(flat(points[i].position),[&](std::size_t j){++visited;auto d=points[j].position-points[i].position;double len=length(flat(d));if(j!=i&&len>1e-9&&len<=f.radius){mean=mean+d;direction=direction+flat(d)*(1/len);++n;}return visited<128;});
    if(n<2||length(direction)*(1.0/n)<.2)continue; // interior points stay unchanged
    Vec3 delta=mean*(f.strength/n);double dl=length(delta);if(dl>f.maxMove)delta=delta*(f.maxMove/dl);
    auto [q,tri]=tree.project(points[i].position-offsets[i]+delta,points[i].triangle);

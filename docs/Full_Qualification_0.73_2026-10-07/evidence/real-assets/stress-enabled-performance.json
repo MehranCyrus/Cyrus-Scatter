@@ -1,0 +1,451 @@
+{
+  "pid": 51112,
+  "script_sha256": "15390e733aac8a02433bfbc938f61fbe95f7f41eb35102baedf100dfe6c1a268",
+  "target": "stress",
+  "kind": "enabled",
+  "phases": [
+    {
+      "label": "stress-enabled-0-1",
+      "display": 0,
+      "update": 1,
+      "controller_enabled": false,
+      "unexpected_calculation_upload_changes": {},
+      "before": {
+        "label": "stress-enabled-0-1-before",
+        "time_ms": 12019152,
+        "epoch": 1,
+        "group_hits": 0,
+        "prepared_builds": [
+          1
+        ],
+        "prepared_hits": [
+          0
+        ],
+        "preview_builds": [
+          1
+        ],
+        "dirty": [
+          true
+        ],
+        "container_scans": [
+          0
+        ],
+        "container_tests": [
+          0
+        ],
+        "membership_builds": [
+          0
+        ],
+        "interaction_checks": 34,
+        "ir_timer_calls": 1,
+        "render_key_calls": 0,
+        "bridge_builds": 3,
+        "bridge_error": "",
+        "live_callbacks": 251,
+        "live_redraw_requests": 37,
+        "plugin_timers": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "animation_playing": false,
+        "retained": [
+          0,
+          0,
+          2,
+          3,
+          4,
+          536,
+          696944016,
+          152133,
+          0,
+          0,
+          0,
+          1,
+          ""
+        ],
+        "retained_mesh": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          536870912,
+          1073741824
+        ]
+      },
+      "after": {
+        "label": "stress-enabled-0-1-after",
+        "time_ms": 12029604,
+        "epoch": 1,
+        "group_hits": 0,
+        "prepared_builds": [
+          1
+        ],
+        "prepared_hits": [
+          0
+        ],
+        "preview_builds": [
+          1
+        ],
+        "dirty": [
+          true
+        ],
+        "container_scans": [
+          0
+        ],
+        "container_tests": [
+          0
+        ],
+        "membership_builds": [
+          0
+        ],
+        "interaction_checks": 231,
+        "ir_timer_calls": 1,
+        "render_key_calls": 0,
+        "bridge_builds": 3,
+        "bridge_error": "",
+        "live_callbacks": 251,
+        "live_redraw_requests": 37,
+        "plugin_timers": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "animation_playing": false,
+        "retained": [
+          0,
+          0,
+          2,
+          3,
+          4,
+          536,
+          696944016,
+          152133,
+          0,
+          0,
+          0,
+          1,
+          ""
+        ],
+        "retained_mesh": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          536870912,
+          1073741824
+        ]
+      },
+      "before_resource": {
+        "cpu_s": 2293.375,
+        "private_bytes": 7833899008,
+        "working_bytes": 4874387456,
+        "graphics": [
+          {
+            "Name": "pid_51112_luid_0x00000000_0x00013A27_phys_0",
+            "DedicatedUsage": 2435858432,
+            "SharedUsage": 284880896,
+            "TotalCommitted": 2682531840
+          }
+        ]
+      },
+      "after_resource": {
+        "cpu_s": 2366.71875,
+        "private_bytes": 7853408256,
+        "working_bytes": 4886740992,
+        "graphics": [
+          {
+            "Name": "pid_51112_luid_0x00000000_0x00013A27_phys_0",
+            "DedicatedUsage": 2442137600,
+            "SharedUsage": 284487680,
+            "TotalCommitted": 2688417792
+          }
+        ]
+      },
+      "begin_qpc_ms": 590459492.9414,
+      "end_qpc_ms": 590469943.2543
+    },
+    {
+      "label": "stress-enabled-1-1",
+      "display": 1,
+      "update": 1,
+      "controller_enabled": true,
+      "unexpected_calculation_upload_changes": {},
+      "before": {
+        "label": "stress-enabled-1-1-before",
+        "time_ms": 12034446,
+        "epoch": 1,
+        "group_hits": 0,
+        "prepared_builds": [
+          1
+        ],
+        "prepared_hits": [
+          0
+        ],
+        "preview_builds": [
+          1
+        ],
+        "dirty": [
+          true
+        ],
+        "container_scans": [
+          0
+        ],
+        "container_tests": [
+          0
+        ],
+        "membership_builds": [
+          0
+        ],
+        "interaction_checks": 268,
+        "ir_timer_calls": 2,
+        "render_key_calls": 0,
+        "bridge_builds": 3,
+        "bridge_error": "",
+        "live_callbacks": 254,
+        "live_redraw_requests": 37,
+        "plugin_timers": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "animation_playing": false,
+        "retained": [
+          300000,
+          15,
+          3,
+          4,
+          6,
+          551,
+          700544016,
+          153003,
+          0,
+          15,
+          3600000,
+          1,
+          "3538991859895003078;"
+        ],
+        "retained_mesh": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          536870912,
+          1073741824
+        ]
+      },
+      "after": {
+        "label": "stress-enabled-1-1-after",
+        "time_ms": 12044891,
+        "epoch": 1,
+        "group_hits": 0,
+        "prepared_builds": [
+          1
+        ],
+        "prepared_hits": [
+          0
+        ],
+        "preview_builds": [
+          1
+        ],
+        "dirty": [
+          true
+        ],
+        "container_scans": [
+          0
+        ],
+        "container_tests": [
+          0
+        ],
+        "membership_builds": [
+          0
+        ],
+        "interaction_checks": 821,
+        "ir_timer_calls": 2,
+        "render_key_calls": 0,
+        "bridge_builds": 3,
+        "bridge_error": "",
+        "live_callbacks": 254,
+        "live_redraw_requests": 37,
+        "plugin_timers": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "animation_playing": false,
+        "retained": [
+          300000,
+          15,
+          3,
+          4,
+          6,
+          551,
+          700544016,
+          169623,
+          0,
+          15,
+          3600000,
+          1,
+          "3538991859895003078;"
+        ],
+        "retained_mesh": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          536870912,
+          1073741824
+        ]
+      },
+      "before_resource": {
+        "cpu_s": 2371.78125,
+        "private_bytes": 7851712512,
+        "working_bytes": 4885172224,
+        "graphics": [
+          {
+            "Name": "pid_51112_luid_0x00000000_0x00013A27_phys_0",
+            "DedicatedUsage": 2445844480,
+            "SharedUsage": 284487680,
+            "TotalCommitted": 2692124672
+          }
+        ]
+      },
+      "after_resource": {
+        "cpu_s": 2383.265625,
+        "private_bytes": 7862054912,
+        "working_bytes": 4883935232,
+        "graphics": [
+          {
+            "Name": "pid_51112_luid_0x00000000_0x00013A27_phys_0",
+            "DedicatedUsage": 2445844480,
+            "SharedUsage": 284487680,
+            "TotalCommitted": 2692124672
+          }
+        ]
+      },
+      "begin_qpc_ms": 590474786.367,
+      "end_qpc_ms": 590485230.3815
+    }
+  ],
+  "presentmon_sha256": "b2a706bc6ad475749e3b7e3409263aa1e6906d45bdcf993f6dbc0f660188f1af",
+  "measurement_limits": "Resource counters include whole Max, asset geometry/materials/renderer and private transport polling; no exclusive Cyrus RAM/VRAM claim.",
+  "passed": true,
+  "capture_exit_code": 0,
+  "presentmon": {
+    "available": true,
+    "clock_column": "CPUStartQPCTimeInMs",
+    "arms": [
+      {
+        "label": "stress-enabled-0-1",
+        "chain_counts": {
+          "0x1D58701FF60": 197
+        },
+        "selected_chain": "0x1D58701FF60",
+        "presents": 197,
+        "modes": {
+          "Composed: Copy with GPU GDI": 197
+        },
+        "metrics_ms": {
+          "MsBetweenAppStart": {
+            "n": 197,
+            "median": 15.9987,
+            "p95": 26.5849
+          },
+          "MsBetweenPresents": {
+            "n": 197,
+            "median": 15.9938,
+            "p95": 26.5814
+          },
+          "MsBetweenDisplayChange": {
+            "n": 189,
+            "median": 16.6711,
+            "p95": 33.3203
+          },
+          "DisplayedTime": {
+            "n": 0
+          },
+          "MsCPUBusy": {
+            "n": 197,
+            "median": 15.9306,
+            "p95": 26.4999
+          },
+          "MsGPUBusy": {
+            "n": 197,
+            "median": 1.3869,
+            "p95": 5.9
+          },
+          "MsGPUTime": {
+            "n": 197,
+            "median": 16.1032,
+            "p95": 28.0383
+          },
+          "DisplayLatency": {
+            "n": 0
+          }
+        }
+      },
+      {
+        "label": "stress-enabled-1-1",
+        "chain_counts": {
+          "0x1D58701FF60": 553
+        },
+        "selected_chain": "0x1D58701FF60",
+        "presents": 553,
+        "modes": {
+          "Composed: Copy with GPU GDI": 553
+        },
+        "metrics_ms": {
+          "MsBetweenAppStart": {
+            "n": 553,
+            "median": 17.5037,
+            "p95": 23.6998
+          },
+          "MsBetweenPresents": {
+            "n": 553,
+            "median": 17.5043,
+            "p95": 23.7226
+          },
+          "MsBetweenDisplayChange": {
+            "n": 542,
+            "median": 16.673650000000002,
+            "p95": 33.3333
+          },
+          "DisplayedTime": {
+            "n": 0
+          },
+          "MsCPUBusy": {
+            "n": 553,
+            "median": 17.4311,
+            "p95": 23.6197
+          },
+          "MsGPUBusy": {
+            "n": 553,
+            "median": 2.4919,
+            "p95": 6.3023
+          },
+          "MsGPUTime": {
+            "n": 553,
+            "median": 17.4552,
+            "p95": 24.9609
+          },
+          "DisplayLatency": {
+            "n": 0
+          }
+        }
+      }
+    ],
+    "limits": "Dominant swap chain per phase. DisplayedTime excludes unavailable/dropped rows; presentation does not guarantee screen FPS. Whole Max scene/GPU work, not isolated plugin timing. No calibrated input-to-photon latency."
+  }
+}

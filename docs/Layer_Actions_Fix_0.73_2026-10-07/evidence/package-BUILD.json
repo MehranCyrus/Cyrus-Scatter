@@ -1,0 +1,25 @@
+{
+  "version": "0.73.0",
+  "date": "2026-10-07",
+  "script_sha256": "9614f6b7d95c0e7c97f9bbe7fa2cb5a770f7a3eca813f7a9f55ea68463d114bf",
+  "payload_sha256": "562300e09f3be559388b05899823d5455e6e7562ce571ae5633a1d093cfc74c7",
+  "native_reused": true,
+  "native_receipt_sha256": "32e16f69015b8a803c3483bcadbb3b18f7d7d97d29e59c6044095e63af11b947",
+  "campaigns": {
+    "layer-actions073-fixed03": {
+      "receipt_sha256": "f08df82e46155f69c146f9123fe6e744da6e0656f01b8aa332aefe55b5f3774d",
+      "probes": 15
+    },
+    "layer-actions073-regression02": {
+      "receipt_sha256": "fafad2e268e61a709e92335cf89226d9a5266b974e368a38e4c1d938fc62d190",
+      "probes": 2
+    }
+  },
+  "packages": {
+    "Max2027/CyrusScatter-0.73.0-Max2027.mzp": "92d1f93600c89e02133d90a9a4f6072db1daae2f0e7a0c110aa60f3de28ba9a7"
+  },
+  "installed": false,
+  "committed": false,
+  "max2027_scripted_runtime": true,
+  "computer_use": false
+}

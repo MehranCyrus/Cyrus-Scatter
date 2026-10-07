@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-06",
+  "passed": true,
+  "scope": "Documentation/readiness preparation; no product test or Max runtime execution.",
+  "head": "01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2",
+  "inventoried_non_document_files": 559,
+  "unchanged_non_document_files": 559,
+  "markdown_files_checked": 7,
+  "local_links_checked": 177,
+  "primary_sdk_links": [
+    "https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_helper_object.html",
+    "https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_i_node.html",
+    "https://help.autodesk.com/cloudhelp/2027/ENU/MAXDEV-CPP-API-REF/class_reference_target.html"
+  ],
+  "current_controls": 245,
+  "capability_families": 34,
+  "production_fixes_implemented": false,
+  "computer_use": false,
+  "errors": []
+}

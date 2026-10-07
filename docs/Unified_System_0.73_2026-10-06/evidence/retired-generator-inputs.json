@@ -1,0 +1,735 @@
+{
+  "retired": [
+    {
+      "path": "AminScatter/tools/ui/activation.cjs",
+      "sha256": "565cc12bcd904e8e6b9875e35bc48109b42ff032cb2fe8af576f4ec05184f0ba"
+    },
+    {
+      "path": "AminScatter/tools/ui/analyzer-area.cjs",
+      "sha256": "bc1d472ef08351b7bf5112b1fca0552fa6610747edaa5d880050e80933c89adf"
+    },
+    {
+      "path": "AminScatter/tools/ui/area-falloff.cjs",
+      "sha256": "153a1e93b0edd78bb941e03470d03e7fcc20c84596323d8421b3626c2c0b5a8b"
+    },
+    {
+      "path": "AminScatter/tools/ui/boundary-falloff.cjs",
+      "sha256": "baefdb6ec38d63048358b00d599c2225278e9737300eb155ecd3403992e6e9ed"
+    },
+    {
+      "path": "AminScatter/tools/ui/centers.cjs",
+      "sha256": "4579065bdd222e1714f70765840ff7998ff0b3e26e33eb780f8d20a7f01c84f0"
+    },
+    {
+      "path": "AminScatter/tools/ui/compute-performance.cjs",
+      "sha256": "65792c2c1f117796cf45daf14c28633ec6490688c6f26283972d951aae51b371"
+    },
+    {
+      "path": "AminScatter/tools/ui/diagnostics.cjs",
+      "sha256": "b2a2e5b713dcb628e8ce56177a9b2c993144560ade87ddd56e3c2d8d2baeb1ee"
+    },
+    {
+      "path": "AminScatter/tools/ui/display-modes.cjs",
+      "sha256": "d5b722fbb83d102e5173ee9c618e91e0af470427ddf9e3aca36941ea803442db"
+    },
+    {
+      "path": "AminScatter/tools/ui/edge-border.cjs",
+      "sha256": "3401f9542166922dfffb0316f380420dd625e3bf5c4389ce171750d4616b1f83"
+    },
+    {
+      "path": "AminScatter/tools/ui/edge-corners.cjs",
+      "sha256": "22f9c61b8117313ad1a5a2f042350713111ee236175c80594b375403a8a079a2"
+    },
+    {
+      "path": "AminScatter/tools/ui/edge-rotation.cjs",
+      "sha256": "f1896d3c7be1ce047695ef84fd4251139eeecf3e2d372f5a09201f25f8e93564"
+    },
+    {
+      "path": "AminScatter/tools/ui/edit.cjs",
+      "sha256": "e53a198c479027f39506d59f324f44226b570cb461e7a7e5e135df00da97c68b"
+    },
+    {
+      "path": "AminScatter/tools/ui/empty.cjs",
+      "sha256": "c9f7c8ec3922d655157f4a8f793e075e3fa3babfa0225e0a2411059ddd64a8d7"
+    },
+    {
+      "path": "AminScatter/tools/ui/final.cjs",
+      "sha256": "ac33e2ba4d660c1fb8673e8628afe91037152cfcc03cb8c970072a6863ed51d1"
+    },
+    {
+      "path": "AminScatter/tools/ui/input-time.cjs",
+      "sha256": "addbd16368739e2bef8bfce6672dc00387af67f9f8f0d0ca5fbdde5636700b25"
+    },
+    {
+      "path": "AminScatter/tools/ui/layer-editor-layout.cjs",
+      "sha256": "7016b2b6448200149c4311d796c7659254ffe44d59885ab3027e3fbd8a5179e6"
+    },
+    {
+      "path": "AminScatter/tools/ui/layer-status.cjs",
+      "sha256": "82be9a58ca799299f80845d9e2d0be344ef2aa924d55b84df827f0bcdb34e970"
+    },
+    {
+      "path": "AminScatter/tools/ui/layers-first.cjs",
+      "sha256": "498d9ea056da787130e7f28364f4731e6931d18b7fc7cebaedbcd451ef8573a9"
+    },
+    {
+      "path": "AminScatter/tools/ui/native-v1.cjs",
+      "sha256": "ebc98ff0ecb36608dc1fa6e601ec7ff2df3c8cdb1b48629e9028f3c720dc5585"
+    },
+    {
+      "path": "AminScatter/tools/ui/orientation.cjs",
+      "sha256": "f0d584965c6a28e46858e12b3e59047d104eaceac672a64d4ddc42d57ef6ae87"
+    },
+    {
+      "path": "AminScatter/tools/ui/overlaps.cjs",
+      "sha256": "7c949fd674255f9ca26535aa89084907f74014ddd70906feb8fdacdb808c3f43"
+    },
+    {
+      "path": "AminScatter/tools/ui/performance.cjs",
+      "sha256": "507799812df3f13e2499fd9c803d44c1a6356f631387edd52fedc3e9f1b10ef2"
+    },
+    {
+      "path": "AminScatter/tools/ui/planting-groups.cjs",
+      "sha256": "ea07852bca03b1f8d140715276e8734c2573ade5cf31def88be4f35248339794"
+    },
+    {
+      "path": "AminScatter/tools/ui/point-source.cjs",
+      "sha256": "fb9fb4d351173526e01396d0a74a1cb1a7321151dc47bec47d10b1c6d22dbdb4"
+    },
+    {
+      "path": "AminScatter/tools/ui/procedural-brush.cjs",
+      "sha256": "c2697195142454c5879f092e438231bf8096263c79be32ae239fb134e745a748"
+    },
+    {
+      "path": "AminScatter/tools/ui/procedural-policy.cjs",
+      "sha256": "f9d4fdbbed8c2d0d010251805fb777a0481bbc9bcb0d636ee1dd04e7903b9cef"
+    },
+    {
+      "path": "AminScatter/tools/ui/radius-display.cjs",
+      "sha256": "edf47968303b7c4bb202a5f74877e150de9376c519e35abd25a85bc821aa2694"
+    },
+    {
+      "path": "AminScatter/tools/ui/radius.cjs",
+      "sha256": "a021915901b3b4d985f79e76e47d0a398ddc523578f19f0004f836eac46ff3b5"
+    },
+    {
+      "path": "AminScatter/tools/ui/random-reset.cjs",
+      "sha256": "34640722dda2262e7f1bf8e8eb048b27bfece133f5c0bf213a46ff9d07e775d6"
+    },
+    {
+      "path": "AminScatter/tools/ui/responsive.cjs",
+      "sha256": "ef4d9939aae08f40a0593ad5bcdd1ad78950a5d7f9d110e03582fb3c3b57c81a"
+    },
+    {
+      "path": "AminScatter/tools/ui/retained-points.cjs",
+      "sha256": "593e7bfafd425692911b602ceb3b041ca4cfef63e6d53b8886281860b284de55"
+    },
+    {
+      "path": "AminScatter/tools/ui/runtime-scheduling.cjs",
+      "sha256": "e62ac9a0e81931be15ca882858308da6f2a26d3d252376e5a52b5f58f9964f70"
+    },
+    {
+      "path": "AminScatter/tools/ui/source-refresh.cjs",
+      "sha256": "4a64cc142d1db0bce03e2c63bc6e43251b0f190ecbc1472f327c5ff2fe9d32aa"
+    },
+    {
+      "path": "AminScatter/tools/ui/source-transforms.cjs",
+      "sha256": "1206435ac0f37d953b897aebc61996295b880c091bee8dab7d69ae9dbd88237d"
+    },
+    {
+      "path": "AminScatter/tools/ui/spacing.cjs",
+      "sha256": "eaca66a90fb6bd72de4e45b3720478ef242c8c4ac10525bcdebb8a4d8f652179"
+    },
+    {
+      "path": "AminScatter/tools/ui/street-layout.cjs",
+      "sha256": "f5c77fc5e6902e44caa5702d882d54e98016dd2652b6170250b9a6f2d4176ac2"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/analyzer-area-ui.ms",
+      "sha256": "70812259761ce88b4adc5b939b236cdd8ea68fe1d9d77a66e13497b65b997ea5"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/area-falloff-methods.ms",
+      "sha256": "10f6ebb739663e8c8f4318b4d8900e167665fa3cd0928a76718880ff95f8a8e2"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/area-falloff-ui.ms",
+      "sha256": "a4fe059f68418cccf52861c8426c779e5a3579f3715f4bae8147e1b232e9ecfd"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/background-ui.ms",
+      "sha256": "eb20113c20abde1adfb9b68b6f1a2004154cff78c246a9188325ec4d4f286b56"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/before.ms",
+      "sha256": "4ffe3f7698b0df6d6653364189fcf3d2563d90186ce266072e5e39cea1ed3bfa"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/brush-integration.ms",
+      "sha256": "670e650c2bb7db6c9bd3980b09cfcacbce3f6219eb5f8771b307659ebd7573d7"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/brush-session.ms",
+      "sha256": "649e1543dae8d76e8fe9893373822e6c4762df858e363136850410b9413355b2"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/compact-host.ms",
+      "sha256": "d761ef76320579fc8dc00dce36cb3ae4ef1553373865c660e20b040732da7f78"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/containers.ms",
+      "sha256": "6d96dde606ce89a395c193070799cf0dc694eff3d8d48591d603cda83c7444a4"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/diagnostics-ui.ms",
+      "sha256": "26bac1b021c6170649550c1cceee00683281e83685c2b072130a5748e3ad0594"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/falloff-graph.ms",
+      "sha256": "73ff8983484f282b29e5b2d559e54658f9465520dc26a0cdd9b5507a729d568b"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/host.ms",
+      "sha256": "a0fcf1cfc1d293fdf483e7808478da497c19075088b76953462d35f080f40fc3"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/input-time-owners.ms",
+      "sha256": "6bc8c2496c57fa5bcbbe099c20e4509b1bd709d870db3042cb9809036c706825"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/input-time.ms",
+      "sha256": "57c4839b448c2a2fb1305f2796ec458948cd7ded8e20dc7bcf9a491253533778"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/instance-radius-ui.ms",
+      "sha256": "49b2fad414148619157fe2125068afdcbfb8bec8cf825c4574906eb673a6aa50"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/layer-editor.ms",
+      "sha256": "df1b5a01c19140d1cab3fb96caa146c96ac59d3f1f2f4b7675e00789169838cb"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/layer-status-helpers.ms",
+      "sha256": "6eef1a52ad2023501de8181941b41c728193cddff34be215c80c0eca2fec1405"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/layer-status-manager.ms",
+      "sha256": "d14ac61aee62825db57d87513215036d0dfa866383f57a60c998175fdc0b517d"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/layer-workflow-ui.ms",
+      "sha256": "baae31377cbf5159ca5d885e9e58e97f2770abeb54bb57a9ab8d50b143b14edc"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/layers-first-details.ms",
+      "sha256": "1fadcbdbeb4051e7bb74734ba79e23968068cef137c37d34a056d3735d10cc19"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/layers-first-host.ms",
+      "sha256": "083ddb80a5fd567342d8ef989e506ab95060756eb480d3e452d62cc06b6d1a18"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/layers-first-panel.ms",
+      "sha256": "e2049a1df22a8a03498d45139920a6c073830550bc7334a6ab2185105fdb4f4d"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/layers-first-sets.ms",
+      "sha256": "7c3e5bc14e5b353316e5bb967c3e81f4578f0cb4ee2dc9420ed1249ab2f3b8d3"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/layers-flow-helpers.ms",
+      "sha256": "ec469eb8f3f0c9ff06942a33b6dd70125abf34646baab05d2d9c245c09e2a50c"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/layers-flow-manager.ms",
+      "sha256": "bd9ac66ce00de9fdb55c6f8a637d964450a07249dc678dbbd8488a00f845b02a"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/layers-flow-surface.ms",
+      "sha256": "59a6d3ad68879e026a417ba9784bc28519e63a5da3237d7fb40da716548d1ad3"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/logical-layers.ms",
+      "sha256": "07adc80ccab59e8ad5fccf8cb956d74396662f8a84c5670d0ce3acd0c00de689"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/native-layers.ms",
+      "sha256": "22aff7346b7672621c20f57224c79d40245c3b9b11015fb85d4d3b4b00698951"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/pflow.ms",
+      "sha256": "a613a919abdead513504ae6d275fe90a7d8c6090403572cc6cf482a0437b9e7a"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/planting-brush.ms",
+      "sha256": "7e54feb587e509b0fea306739d4e49bb08ed31396f68563ecfbcb6fb229a1bbc"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/planting-manager.ms",
+      "sha256": "04344354ae1b5ab227611d321b37dde469bf9aa4d6fd34e85fcffe408d5867fa"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/planting-model.ms",
+      "sha256": "f21aba3af533ce84c1991fbcfbfa0d45308aa9ef1e40898ae2fe4fc3714e9edc"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/planting-separation.ms",
+      "sha256": "11ef0ff35a8861bd521f85fd2d148b6ba047972bfb4a48917c3cd98ba603ffa7"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/population-policy-ui.ms",
+      "sha256": "e20661f26a029d7f968ebdcfdc1ef0faf5d9178ed8be2ef0c47851d050a8208b"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/procedural-evaluation.ms",
+      "sha256": "6113cf8f3f9eb71e6cb63e671e85d04d113b0087935e1e778e5f34763b541e46"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/procedural-model.ms",
+      "sha256": "4c81b4c56c83d206e717d32fc0add994a7de137cafc6ecb1eb27ed7fda30946f"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/procedural-notifications.ms",
+      "sha256": "f5a96bb2d8da5db949f9763e9b2e9cdbe049bed99d3c316e473a37166e1aa514"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/procedural-ui.ms",
+      "sha256": "f45858c9dc229f3aaf6cba092836186fd591c8601a0fcf94916c473d06bf836e"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/publication-read.ms",
+      "sha256": "0329618aec118668f5b433cc813ff976bffd90d4d495975beb7d3c77b17d99b3"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/runtime-scheduling.ms",
+      "sha256": "b8adb2551b06d0d46abac9eda172717dd376e86284f13f5c030f6bf419de4cc0"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/source-containers-ui.ms",
+      "sha256": "2ade4176c50b4309a5e761debe08d77bab50ffdaa082b192247d53b6cd78f50d"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/source-containers.ms",
+      "sha256": "7f9b27459f043d05d7157e3f8022d15bdc0412bba1ccdfed14460d25b7944357"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/storage.ms",
+      "sha256": "e0abd4988dcc117ace4931ee3d3c7a5238be0262aab0b85aa4f8ffb342eb0e52"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/street-layout-methods.ms",
+      "sha256": "62f4c02911d277e535da74aff6f1ecde8a8e5abc32614498b76f8c599f113e58"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/stroke-ui.ms",
+      "sha256": "c022ab57919d180a72d274705f86b22b5236538d06f84911a7b06a5b283bcacf"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/strokes.ms",
+      "sha256": "949e338cb27ee5c59e94cb1979d85557ca15e062b7ed1d823fde9f086174a1f9"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/unified-candidates.ms",
+      "sha256": "f9eb9d3eee3e7822a239e775a45efe34ed8e017715101b6c34eba6458e14b5fa"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/unified-cleanup-ui.ms",
+      "sha256": "daf53f29b611f5fb1705e2b6145e3db6d0a517d02eff9a0893130915941a9d1c"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/unified-relax-ui.ms",
+      "sha256": "cf55a250408cb16fe766864dd927b3680a253485a6d3f1f85d81fac9cd74a979"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/unified-spacing-ui.ms",
+      "sha256": "563d76b1dabbcd4ee05a52f6be9dfcb3d73687fe1c736547ac6996f2fdc4eb17"
+    },
+    {
+      "path": "AminScatter/tools/ui/trace.cjs",
+      "sha256": "0d674e3602e4cba29a40246855c2acf8fdb46c1ae5440bf50d710619869b0800"
+    },
+    {
+      "path": "AminScatter/tools/ui/unified-system.cjs",
+      "sha256": "124c61482571d3271ada5aff2838725318e91a4a3d9c4307a000f14f01f98e92"
+    },
+    {
+      "path": "AminScatter/tools/ui/viewport-performance.cjs",
+      "sha256": "01c8f3cbae5f3587b509ffa3d7d68abf601a6b5f4960c35532142938eca01f53"
+    },
+    {
+      "path": "AminScatter/tools/ui/weights.cjs",
+      "sha256": "e9eac9bf22f6ecef3fe34e00ae36484179782cb037919fc450ba78596cb14814"
+    },
+    {
+      "path": "AminScatter/tools/ui/whole-scale.cjs",
+      "sha256": "24dfcfb11ba91748a26d09cc3825f79f244d46e2ba922c077f12af83a090df39"
+    }
+  ],
+  "count": 91,
+  "backup": "build/unified-073-20261006/retired-generator-backup",
+  "historical_commit": "01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2",
+  "historical_links_updated": [
+    {
+      "file": "docs/Release_Versioning.md",
+      "links": [
+        "../AminScatter/tools/ui/procedural-policy.cjs"
+      ]
+    },
+    {
+      "file": "docs/Selection_Diagnosis_2026-10-01.md",
+      "links": [
+        "../AminScatter/tools/ui/templates/before.ms"
+      ]
+    },
+    {
+      "file": "docs/UI_Layer_Expansion_2026-10-02.md",
+      "links": [
+        "../AminScatter/tools/ui/templates/host.ms",
+        "../AminScatter/tools/ui/templates/containers.ms",
+        "../AminScatter/tools/ui/performance.cjs",
+        "../AminScatter/tools/ui/layer-status.cjs",
+        "../AminScatter/tools/ui/templates/layer-status-manager.ms",
+        "../AminScatter/tools/ui/templates/containers.ms",
+        "../AminScatter/tools/ui/templates/host.ms",
+        "../AminScatter/tools/ui/performance.cjs",
+        "../AminScatter/tools/ui/responsive.cjs"
+      ]
+    },
+    {
+      "file": "docs/Viewport_Performance_Implementation_2026-10-01.md",
+      "links": [
+        "../AminScatter/tools/ui/viewport-performance.cjs"
+      ]
+    },
+    {
+      "file": "docs/Viewport_Performance_Round2_2026-10-01.md",
+      "links": [
+        "../AminScatter/tools/ui/viewport-performance.cjs"
+      ]
+    },
+    {
+      "file": "docs/AI_Design_Learning_Research_2026-10-05/02_CODEBASE_AUDIT.md",
+      "links": [
+        "../../AminScatter/tools/ui/templates/procedural-evaluation.ms",
+        "../../AminScatter/tools/ui/templates/source-containers.ms"
+      ]
+    },
+    {
+      "file": "docs/AI_Design_Learning_Research_2026-10-05/14_HOUDINI_ENGINEERING_LESSONS.md",
+      "links": [
+        "../../AminScatter/tools/ui/templates/procedural-model.ms"
+      ]
+    },
+    {
+      "file": "docs/AI_MCP_ML_Roadmap_2026-09-30/01_Current_Cyrus_Automation_Audit.md",
+      "links": [
+        "../../AminScatter/tools/ui/templates/pflow.ms"
+      ]
+    },
+    {
+      "file": "docs/Artist_Style_ML_2026-10-04/CODEBASE_AUDIT.md",
+      "links": [
+        "../../AminScatter/tools/ui/templates/logical-layers.ms",
+        "../../AminScatter/tools/ui/planting-groups.cjs"
+      ]
+    },
+    {
+      "file": "docs/Artist_Zones_Integration_2026-10-03/CODEBASE_AUDIT.md",
+      "links": [
+        "../../AminScatter/tools/ui/analyzer-area.cjs",
+        "../../AminScatter/tools/ui/radius.cjs",
+        "../../AminScatter/tools/ui/edit.cjs"
+      ]
+    },
+    {
+      "file": "docs/Brush_Tool_2026-10-02/CODEBASE_INTEGRATION.md",
+      "links": [
+        "../../AminScatter/tools/ui/templates/before.ms",
+        "../../AminScatter/tools/ui/performance.cjs",
+        "../../AminScatter/tools/ui/templates/pflow.ms",
+        "../../AminScatter/tools/ui/templates/before.ms",
+        "../../AminScatter/tools/ui/templates/before.ms",
+        "../../AminScatter/tools/ui/templates/pflow.ms",
+        "../../AminScatter/tools/ui/retained-points.cjs",
+        "../../AminScatter/tools/ui/templates/host.ms",
+        "../../AminScatter/tools/ui/trace.cjs"
+      ]
+    },
+    {
+      "file": "docs/Brush_Tool_2026-10-02/PROCEDURAL_RESEARCH.md",
+      "links": [
+        "../../AminScatter/tools/ui/edit.cjs",
+        "../../AminScatter/tools/ui/templates/storage.ms",
+        "../../AminScatter/tools/ui/overlaps.cjs",
+        "../../AminScatter/tools/ui/performance.cjs",
+        "../../AminScatter/tools/ui/final.cjs",
+        "../../AminScatter/tools/ui/retained-points.cjs"
+      ]
+    },
+    {
+      "file": "docs/Codebase_Research_2026-10-01/REPORT.md",
+      "links": [
+        "F:/Cursor/_Cyrus_Apps/CyrusScatter/AminScatter/tools/ui/compute-performance.cjs",
+        "F:/Cursor/_Cyrus_Apps/CyrusScatter/AminScatter/tools/ui/viewport-performance.cjs",
+        "F:/Cursor/_Cyrus_Apps/CyrusScatter/AminScatter/tools/ui/templates/pflow.ms"
+      ]
+    },
+    {
+      "file": "docs/Current_System_2026-10-05/DIAGNOSTICS_SPEC.md",
+      "links": [
+        "../../AminScatter/tools/ui/trace.cjs"
+      ]
+    },
+    {
+      "file": "docs/Current_System_2026-10-05/SYSTEM_GUIDE.md",
+      "links": [
+        "../../AminScatter/tools/ui/templates/source-containers.ms"
+      ]
+    },
+    {
+      "file": "docs/Current_System_2026-10-05/VENDOR_RECHECK.md",
+      "links": [
+        "../../AminScatter/tools/ui/templates/pflow.ms",
+        "../../AminScatter/tools/ui/templates/procedural-evaluation.ms",
+        "../../AminScatter/tools/ui/templates/source-containers.ms"
+      ]
+    },
+    {
+      "file": "docs/Offline_Implementation_2026-10-05/IMPLEMENTATION.md",
+      "links": [
+        "../../AminScatter/tools/ui/diagnostics.cjs",
+        "../../AminScatter/tools/ui/templates/source-containers.ms",
+        "../../AminScatter/tools/ui/templates/procedural-evaluation.ms",
+        "../../AminScatter/tools/ui/templates/publication-read.ms"
+      ]
+    },
+    {
+      "file": "docs/Performance_Roadmap_2026-09-28/01_Current_Code_Audit.md",
+      "links": [
+        "../../AminScatter/tools/ui/templates/pflow.ms",
+        "../../AminScatter/tools/ui/performance.cjs"
+      ]
+    },
+    {
+      "file": "docs/Performance_Roadmap_2026-09-28/13_Render_Preparation_Plan.md",
+      "links": [
+        "../../AminScatter/tools/ui/templates/pflow.ms"
+      ]
+    },
+    {
+      "file": "docs/Playback_Performance_2026-10-06/README.md",
+      "links": [
+        "../../AminScatter/tools/ui/input-time.cjs",
+        "../../AminScatter/tools/ui/templates/input-time.ms",
+        "../../AminScatter/tools/ui/templates/layer-editor.ms"
+      ]
+    },
+    {
+      "file": "docs/Playback_Performance_2026-10-06/RESULTS.md",
+      "links": [
+        "../../AminScatter/tools/ui/input-time.cjs",
+        "../../AminScatter/tools/ui/templates/layer-editor.ms"
+      ]
+    },
+    {
+      "file": "docs/Procedural_Evaluation_2026-10-04/01_CURRENT_CODE_AND_GAPS.md",
+      "links": [
+        "../../AminScatter/tools/ui/layers-first.cjs",
+        "../../AminScatter/tools/ui/templates/planting-model.ms",
+        "../../AminScatter/tools/ui/templates/logical-layers.ms",
+        "../../AminScatter/tools/ui/layers-first.cjs",
+        "../../AminScatter/tools/ui/retained-points.cjs",
+        "../../AminScatter/tools/ui/templates/layers-first-details.ms"
+      ]
+    },
+    {
+      "file": "docs/Product_Commercialization_Playbook_2026-09-30/10_Licensing_Technical_Preparation.md",
+      "links": [
+        "../../AminScatter/tools/ui/templates/before.ms"
+      ]
+    },
+    {
+      "file": "docs/Product_Commercialization_Playbook_2026-09-30/98_Repository_Review_and_Deliverables.md",
+      "links": [
+        "../../AminScatter/tools/ui/templates/pflow.ms"
+      ]
+    },
+    {
+      "file": "docs/Product_Strategy_2026-09-29/02_Current_System_and_Evidence.md",
+      "links": [
+        "../../AminScatter/tools/ui/templates/pflow.ms",
+        "../../AminScatter/tools/ui/templates/storage.ms"
+      ]
+    },
+    {
+      "file": "docs/TyFlow_Architecture_Research_2026-10-06/CYRUS_COMPARISON.md",
+      "links": [
+        "../../AminScatter/tools/ui/templates/layer-editor.ms#L87",
+        "../../AminScatter/tools/ui/templates/input-time.ms#L13",
+        "../../AminScatter/tools/ui/input-time.cjs#L41",
+        "../../AminScatter/tools/ui/templates/procedural-evaluation.ms#L138",
+        "../../AminScatter/tools/ui/diagnostics.cjs#L5",
+        "../../AminScatter/tools/ui/templates/procedural-evaluation.ms#L163",
+        "../../AminScatter/tools/ui/templates/source-containers.ms#L1",
+        "../../AminScatter/tools/ui/templates/layer-editor.ms#L114",
+        "../../AminScatter/tools/ui/templates/layer-editor.ms#L145",
+        "../../AminScatter/tools/ui/templates/layer-editor.ms#L87",
+        "../../AminScatter/tools/ui/templates/input-time.ms#L49",
+        "../../AminScatter/tools/ui/input-time.cjs#L41",
+        "../../AminScatter/tools/ui/templates/layer-editor.ms#L91",
+        "../../AminScatter/tools/ui/diagnostics.cjs#L5"
+      ]
+    },
+    {
+      "file": "docs/TyFlow_Architecture_Research_2026-10-06/UI_AND_BINDING.md",
+      "links": [
+        "../../AminScatter/tools/ui/templates/layer-editor.ms#L25",
+        "../../AminScatter/tools/ui/templates/layer-editor.ms#L87",
+        "../../AminScatter/tools/ui/templates/layer-editor.ms#L114",
+        "../../AminScatter/tools/ui/templates/layer-editor.ms#L145"
+      ]
+    },
+    {
+      "file": "docs/TyFlow_CyrusScatter_Assessment_2026-10-06/EVIDENCE.md",
+      "links": [
+        "../../AminScatter/tools/ui/templates/input-time.ms#L12",
+        "../../AminScatter/tools/ui/templates/input-time.ms#L18",
+        "../../AminScatter/tools/ui/templates/input-time.ms#L49",
+        "../../AminScatter/tools/ui/templates/procedural-model.ms#L52",
+        "../../AminScatter/tools/ui/templates/procedural-model.ms#L79",
+        "../../AminScatter/tools/ui/templates/procedural-model.ms#L121",
+        "../../AminScatter/tools/ui/templates/procedural-evaluation.ms#L159",
+        "../../AminScatter/tools/ui/templates/layer-editor.ms#L87",
+        "../../AminScatter/tools/ui/templates/layer-editor.ms#L112",
+        "../../AminScatter/tools/ui/templates/layer-editor.ms#L145",
+        "../../AminScatter/tools/ui/templates/layer-editor.ms#L196",
+        "../../AminScatter/tools/ui/templates/layer-editor.ms#L174",
+        "../../AminScatter/tools/ui/templates/layer-editor.ms#L223",
+        "../../AminScatter/tools/ui/templates/source-containers.ms#L66",
+        "../../AminScatter/tools/ui/templates/source-containers.ms#L125",
+        "../../AminScatter/tools/ui/diagnostics.cjs#L1",
+        "../../AminScatter/tools/ui/templates/publication-read.ms"
+      ]
+    },
+    {
+      "file": "docs/TyFlow_CyrusScatter_Assessment_2026-10-06/REPORT.md",
+      "links": [
+        "../../AminScatter/tools/ui/templates/layer-editor.ms#L112",
+        "../../AminScatter/tools/ui/templates/layer-editor.ms#L145",
+        "../../AminScatter/tools/ui/templates/layer-editor.ms#L87",
+        "../../AminScatter/tools/ui/diagnostics.cjs#L1"
+      ]
+    },
+    {
+      "file": "docs/TyFlow_CyrusScatter_Assessment_2026-10-06/ROADMAP.md",
+      "links": [
+        "../../AminScatter/tools/ui/templates/layer-editor.ms#L112",
+        "../../AminScatter/tools/ui/templates/layer-editor.ms#L145",
+        "../../AminScatter/tools/ui/templates/layer-editor.ms#L87",
+        "../../AminScatter/tools/ui/diagnostics.cjs",
+        "../../AminScatter/tools/ui/templates/layer-editor.ms#L87",
+        "../../AminScatter/tools/ui/templates/publication-read.ms"
+      ]
+    },
+    {
+      "file": "docs/TyFlow_CyrusScatter_RnD_2026-10-06/CAPABILITY_MAP.md",
+      "links": [
+        "../../AminScatter/tools/ui/templates/procedural-evaluation.ms#L124",
+        "../../AminScatter/tools/ui/templates/logical-layers.ms#L13",
+        "../../AminScatter/tools/ui/templates/procedural-model.ms#L89",
+        "../../AminScatter/tools/ui/templates/logical-layers.ms#L37",
+        "../../AminScatter/tools/ui/templates/procedural-evaluation.ms#L61",
+        "../../AminScatter/tools/ui/templates/source-containers.ms#L21",
+        "../../AminScatter/tools/ui/templates/procedural-model.ms#L211",
+        "../../AminScatter/tools/ui/templates/procedural-evaluation.ms#L16",
+        "../../AminScatter/tools/ui/templates/procedural-model.ms#L52",
+        "../../AminScatter/tools/ui/templates/procedural-model.ms#L241",
+        "../../AminScatter/tools/ui/templates/procedural-evaluation.ms#L46",
+        "../../AminScatter/tools/ui/templates/procedural-model.ms#L218",
+        "../../AminScatter/tools/ui/templates/input-time.ms#L18",
+        "../../AminScatter/tools/ui/templates/compact-host.ms#L38",
+        "../../AminScatter/tools/ui/templates/layer-editor.ms#L147",
+        "../../AminScatter/tools/ui/templates/procedural-model.ms#L78",
+        "../../AminScatter/tools/ui/templates/pflow.ms",
+        "../../AminScatter/tools/ui/templates/runtime-scheduling.ms#L10",
+        "../../AminScatter/tools/ui/templates/publication-read.ms#L21",
+        "../../AminScatter/tools/ui/templates/diagnostics-ui.ms#L43"
+      ]
+    },
+    {
+      "file": "docs/TyFlow_CyrusScatter_RnD_2026-10-06/CODE_REVIEW.md",
+      "links": [
+        "../../AminScatter/tools/ui/templates/diagnostics-ui.ms#L78"
+      ]
+    },
+    {
+      "file": "docs/TyFlow_CyrusScatter_RnD_2026-10-06/CYRUS_PIPELINE.md",
+      "links": [
+        "../../AminScatter/tools/ui/templates/logical-layers.ms#L13",
+        "../../AminScatter/tools/ui/templates/logical-layers.ms#L37",
+        "../../AminScatter/tools/ui/templates/procedural-model.ms#L89",
+        "../../AminScatter/tools/ui/templates/source-containers.ms#L21",
+        "../../AminScatter/tools/ui/templates/source-containers.ms#L50",
+        "../../AminScatter/tools/ui/templates/procedural-evaluation.ms#L124",
+        "../../AminScatter/tools/ui/procedural-brush.cjs#L38",
+        "../../AminScatter/tools/ui/templates/procedural-model.ms#L241",
+        "../../AminScatter/tools/ui/templates/procedural-evaluation.ms#L24",
+        "../../AminScatter/tools/ui/templates/procedural-model.ms#L211",
+        "../../AminScatter/tools/ui/templates/procedural-model.ms#L207",
+        "../../AminScatter/tools/ui/templates/procedural-evaluation.ms#L155",
+        "../../AminScatter/tools/ui/templates/procedural-evaluation.ms#L68",
+        "../../AminScatter/tools/ui/templates/publication-read.ms#L3",
+        "../../AminScatter/tools/ui/templates/pflow.ms",
+        "../../AminScatter/tools/ui/templates/input-time.ms#L18",
+        "../../AminScatter/tools/ui/input-time.cjs#L35"
+      ]
+    },
+    {
+      "file": "docs/TyFlow_CyrusScatter_RnD_2026-10-06/FINDINGS_AND_ROADMAP.md",
+      "links": [
+        "../../AminScatter/tools/ui/templates/diagnostics-ui.ms#L78"
+      ]
+    },
+    {
+      "file": "docs/UI_Performance_2026-10-06/README.md",
+      "links": [
+        "../../AminScatter/tools/ui/templates/layer-editor.ms"
+      ]
+    },
+    {
+      "file": "docs/Unified_Procedural_Settings_2026-10-06/README.md",
+      "links": [
+        "../../AminScatter/tools/ui/templates/planting-model.ms#L2",
+        "../../AminScatter/tools/ui/templates/procedural-evaluation.ms#L46",
+        "../../AminScatter/tools/ui/templates/logical-layers.ms#L70",
+        "../../AminScatter/tools/ui/procedural-policy.cjs#L85",
+        "../../AminScatter/tools/ui/templates/procedural-model.ms#L207",
+        "../../AminScatter/tools/ui/templates/source-containers.ms#L21",
+        "../../AminScatter/tools/ui/templates/source-containers.ms#L50",
+        "../../AminScatter/tools/ui/templates/source-containers.ms#L116",
+        "../../AminScatter/tools/ui/templates/logical-layers.ms#L66",
+        "../../AminScatter/tools/ui/input-time.cjs#L35"
+      ]
+    },
+    {
+      "file": "docs/Unified_Procedural_Settings_2026-10-06/SOURCE_CONTAINER_CONTRACT.md",
+      "links": [
+        "../../AminScatter/tools/ui/templates/source-containers.ms#L25",
+        "../../AminScatter/tools/ui/templates/source-containers.ms#L125",
+        "../../AminScatter/tools/ui/templates/input-time.ms#L27"
+      ]
+    }
+  ],
+  "protected_original_links": [
+    {
+      "file": "docs/licensing/CODEBASE_AUDIT.md",
+      "retired_targets": [
+        "AminScatter/tools/ui/activation.cjs",
+        "AminScatter/tools/ui/templates/pflow.ms",
+        "AminScatter/tools/ui/templates/before.ms",
+        "AminScatter/tools/ui/retained-points.cjs"
+      ],
+      "reason": "Unrelated licensing documentation preserved exactly; historical sources are available at historical_commit."
+    }
+  ]
+}

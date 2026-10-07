@@ -1,0 +1,50 @@
+display_abi.cpp
+
+class CustomItemABIProbe	size(48):
+	+---
+ 0	| +--- (base class MaxSDK::Graphics::ICustomRenderItem)
+ 0	| | +--- (base class MaxSDK::Graphics::ARefObject)
+ 0	| | | +--- (base class MaxSDK::Graphics::IRefObject)
+ 0	| | | | {vfptr}
+ 8	| | | | +--- (base class MaxHeapOperators)
+	| | | | +---
+	| | | +---
+ 8	| | | AtomicRefCounter mRefCount
+  	| | | <alignment member> (size=4)
+	| | +---
+24	| | +--- (base class BaseInterfaceServer)
+24	| | | +--- (base class InterfaceServer)
+24	| | | | {vfptr}
+32	| | | | +--- (base class MaxHeapOperators)
+	| | | | +---
+	| | | +---
+32	| | | ?$Tab@PEAVBaseInterface@@ interfaces
+	| | +---
+	| +---
+	+---
+
+CustomItemABIProbe::$vftable@ARefObject@:
+	| &CustomItemABIProbe_meta
+	|  0
+ 0	| &CustomItemABIProbe::{dtor} 
+ 1	| &MaxSDK::Graphics::ARefObject::AddRef 
+ 2	| &MaxSDK::Graphics::ARefObject::Release 
+ 3	| &MaxSDK::Graphics::ARefObject::RefCount 
+ 4	| &MaxSDK::Graphics::ARefObject::QueryInterface 
+ 5	| &MaxSDK::Graphics::ARefObject::DeleteThis 
+ 6	| &MaxSDK::Graphics::ICustomRenderItem::Realize 
+ 7	| &MaxSDK::Graphics::ICustomRenderItem::Display 
+ 8	| &MaxSDK::Graphics::ICustomRenderItem::GetPrimitiveCount 
+ 9	| &MaxSDK::Graphics::ICustomRenderItem::HitTest 
+10	| &MaxSDK::Graphics::ICustomRenderItem::OnHit 
+
+CustomItemABIProbe::$vftable@BaseInterfaceServer@:
+	| -24
+ 0	| &thunk: this-=24; goto CustomItemABIProbe::{dtor} 
+ 1	| &BaseInterfaceServer::GetInterface 
+ 2	| &BaseInterfaceServer::NumInterfaces 
+ 3	| &BaseInterfaceServer::GetInterfaceAt 
+
+CustomItemABIProbe::{dtor} this adjustor: 0
+CustomItemABIProbe::__delDtor this adjustor: 0
+CustomItemABIProbe::__vecDelDtor this adjustor: 0

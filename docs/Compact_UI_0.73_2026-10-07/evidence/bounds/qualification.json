@@ -1,0 +1,33 @@
+{
+  "passed": true,
+  "computer_use": false,
+  "fixtures": {
+    "tools\\procedural_lab\\Max_Procedural_07_Acceptance.ms": "c7673c0d3dbfc8af537880935543332dbf1f77271e81666a8d9d18478726c97c",
+    "tools\\procedural_lab\\Max_Compact_Layout_073.ms": "1a234c88896583a04fa9e08d50cad30227fa45ccf8b22045213fa32baa29d787"
+  },
+  "code_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "probe_sha256": [
+    "95400cdfc253c2b8515c9bbd7149c8ae3613afe2bd25e937c3c878081ac49b92"
+  ],
+  "probes": [
+    {
+      "index": 0,
+      "elapsed_s": 126.42200000000048,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/compact073-bounds02/probe-e33fb23c0fea4bd4a394deeb65a332f8.ms"
+    }
+  ],
+  "owned_process_stopped": true,
+  "installed_product_files_unchanged": true,
+  "launch": {
+    "pid": 34964,
+    "binaries": {
+      "AminScatter.dlx": "146a1adafe16e71829841b3886804b9d627e77fb1b80e1ca094cd50111673d82",
+      "CyrusBrush.dlx": "48cf18266ada5f36acb967025de592a193f1c48f43d2a3800c94cd7ca7784006",
+      "CyrusBrushStorage.dlh": "6b02436c7c83322b3b7874ae03285084dddf7a3197ae7bb573d38b5ff0253799",
+      "CyrusScatterEdit.dlm": "a1fd381984943b1b8ed20cfa1a9d8ed31187d95dec7fddbf81ebd4a716deb31a"
+    },
+    "script_sha256": "53bf85f9a2cfe1034468919c408d4c73ca6e865f7e1b9c816cc7375fe12f10fa",
+    "normal_profile_modified": false,
+    "development_transport": true
+  }
+}

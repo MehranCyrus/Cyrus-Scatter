@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cyrus Scatter 0.73 · Layout study</title>
+<style>
+:root{color-scheme:dark;--page:#242424;--panel:#3c3c3c;--field:#303030;--text:#eee;--muted:#c1c1c1;--blue:#386d96;--focus:#84b4db}
+*{box-sizing:border-box}
+body{margin:0;padding:16px;background:var(--page);color:var(--text);font:12px "Segoe UI",Tahoma,sans-serif;display:flex;justify-content:center;min-height:100vh}
+button,input,select{font:inherit;color:inherit;border:1px solid #656565;border-radius:1px;min-width:0}
+button{background:#555;padding:3px 7px;line-height:17px;cursor:pointer}
+button:hover:not(:disabled){background:#646464;border-color:#909090}
+button:active:not(:disabled){background:#414141}
+button:disabled,input:disabled,select:disabled{opacity:.48;cursor:default}
+button.primary{background:var(--blue);border-color:#6892b5}
+button.primary:hover:not(:disabled){background:#447da8}
+input:not([type=checkbox]):not([type=radio]),select{width:100%;background:var(--field);padding:2px 5px;min-height:24px}
+input[type=number]{text-align:right;padding-right:1px}
+input[type=checkbox],input[type=radio]{accent-color:#729bc0;margin:0;flex:none;width:13px;height:13px}
+input[type=color]{padding:1px;height:24px}
+select{padding-right:2px}
+select[size]{padding:2px;line-height:19px}
+select option{padding:2px 4px}
+select option:checked{background:#386585;color:#fff}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.study{--panel-width:400px;width:min(var(--panel-width),calc(100vw - 32px));height:min(930px,calc(100dvh - 32px));min-height:390px;display:flex;flex-direction:column;gap:7px}
+.toolbar{display:flex;align-items:center;gap:4px;flex-wrap:wrap;font-size:11px}
+.toolbar label{display:flex;align-items:center;gap:5px;margin-right:auto}
+.toolbar select{width:66px;font-size:11px}
+.toolbar button{padding:2px 6px;font-size:11px;white-space:nowrap}
+.toolbar button[aria-pressed=true]{background:#386d96;border-color:#80a3c3}
+.toolbar-instruction{margin:0;color:var(--muted);font-size:10.5px;line-height:15px}
+.command-panel{display:flex;flex-direction:column;flex:1;min-height:0;background:var(--panel);border:1px solid #636363;box-shadow:0 2px 4px #0004}
+.object-bar{display:flex;justify-content:space-between;gap:8px;padding:5px 8px;background:#4c4c4c;border-bottom:1px solid #2d2d2d;font-size:11px}
+.object-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.object-bar .mode-tab{color:#d7d7d7}
+.modifier-stack{padding:5px 7px;border-bottom:1px solid #2c2c2c;background:#363636}
+.modifier-stack div{background:#386585;border:1px solid #7492a8;padding:3px 6px;display:flex;justify-content:space-between;font-size:11px}
+.panel-title{margin:0;padding:7px 8px 4px;font-size:13px;font-weight:600}
+.setup-controls{padding:2px 8px 6px;display:grid;gap:5px}
+.update-row{display:flex;align-items:center;gap:12px}
+.update-row .check{margin:0}
+.update-row button{margin-left:auto;min-width:104px}
+.check{display:flex;align-items:center;gap:5px;line-height:19px;min-width:0;cursor:pointer}
+.check span{min-width:0}
+.pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;align-items:center}
+.actions{display:flex;gap:5px;min-width:0}
+.actions>*{flex:1;min-width:0}
+.actions button{white-space:normal}
+.field{display:grid;grid-template-columns:minmax(0,1fr) 76px;gap:6px;align-items:center;min-width:0;line-height:16px}
+.field.compact{grid-template-columns:minmax(0,1fr) 59px}
+.field label{min-width:0;overflow-wrap:anywhere}
+.field.full{display:block}
+.field.full>label{display:block;margin-bottom:3px;color:#dfdfdf;font-size:11px}
+.breadcrumb{background:#303030;border-top:1px solid #515151;border-bottom:1px solid #515151;padding:6px 8px;font-size:11px;line-height:16px;overflow-wrap:anywhere}
+.breadcrumb strong{font-weight:600;color:#d8e8f4}
+.breadcrumb .owner-word{color:#bcbcbc;margin-right:3px}
+.prototype-caption{margin:0;padding:4px 8px;color:#c6c6c6;font-size:10px;border-bottom:1px solid #2c2c2c}
+.panel-scroll{overflow-y:auto;overflow-x:hidden;min-height:0;flex:1;padding:5px 5px 8px;scrollbar-color:#777 #343434;scrollbar-width:thin}
+.panel-scroll::-webkit-scrollbar{width:9px}
+.panel-scroll::-webkit-scrollbar-track{background:#343434}
+.panel-scroll::-webkit-scrollbar-thumb{background:#747474;border:2px solid #343434}
+.rollout{border:1px solid #5b5b5b;margin:0 0 5px;background:#404040}
+.rollout>summary{display:flex;align-items:center;gap:5px;list-style:none;cursor:pointer;min-height:27px;padding:4px 6px;background:#4b4b4b;border-bottom:1px solid transparent;line-height:16px}
+.rollout[open]>summary{border-bottom-color:#2e2e2e}
+summary::-webkit-details-marker{display:none}
+.rollout>summary::before,.advanced>summary::before{content:"";width:0;height:0;border-top:4px solid transparent;border-bottom:4px solid transparent;border-left:5px solid #c7c7c7;flex:none;transform-origin:2px 4px}
+.rollout[open]>summary::before,.advanced[open]>summary::before{transform:rotate(90deg)}
+.summary-title{font-weight:600;min-width:0;flex:1}
+.owner-badge{font-size:9.5px;color:#d0d0d0;font-weight:400;white-space:nowrap;padding:0 3px;border:1px solid #777;line-height:14px}
+.rollout-content{padding:6px}
+.row-group{padding:0;margin:0;min-inline-size:0;border:0}
+.group-legend{font-size:10.5px;color:#cecece;width:100%;padding:0 0 4px;display:flex;align-items:center;gap:6px}
+.group-legend .owner-badge{margin-left:auto}
+.row-group+.row-group{margin-top:8px;padding-top:6px;border-top:1px solid #585858}
+.field-row{display:grid;grid-template-columns:minmax(0,1fr);min-width:0;margin-bottom:5px;gap:5px;align-items:start}
+.field-row:last-child{margin-bottom:0}
+.row-content{min-width:0}
+.minmax{display:grid;grid-template-columns:66px minmax(0,1fr) minmax(0,1fr);gap:6px;align-items:center}
+.minmax label{font-size:11px;line-height:16px}
+.range-input{display:flex;gap:4px;align-items:center;min-width:0}
+.range-input span{font-size:9px;color:#c5c5c5}
+.hint{margin:2px 0 0;font-size:10.5px;color:var(--muted);line-height:15px;overflow-wrap:anywhere}
+.advanced{border-top:1px solid #626262;margin-top:7px;padding-top:3px}
+.advanced>summary{display:flex;list-style:none;align-items:center;gap:6px;padding:3px 0;color:#d2d2d2;font-size:11px;cursor:pointer}
+.advanced>summary .advanced-note{margin-left:auto;font-size:9.5px;color:#c4c4c4}
+.advanced-content{padding-top:6px}
+.help-copy{margin:0 0 6px;font-size:11px;color:#d5d5d5;line-height:17px}
+.help-copy:last-child{margin-bottom:0}
+.status{padding:5px 8px;border-top:1px solid #676767;background:#363636;font-size:10.5px;line-height:15px;color:#d2d2d2;min-height:27px;overflow-wrap:anywhere}
+.section-tools,.row-tools{display:none;align-items:center;gap:2px;flex:none}
+.section-tools button,.row-tools button{width:17px;min-height:19px;padding:0;line-height:17px;font-size:11px}
+.section-tools .drag-handle,.row-tools .drag-handle{cursor:grab;color:#d4d4d4}
+.drag-handle:active{cursor:grabbing}
+body.arranging .section-tools,body.arranging .row-tools{display:flex}
+body.arranging .field-row{grid-template-columns:55px minmax(0,1fr)}
+body.arranging .row-tools{padding-top:2px}
+body.arranging .owner-badge{font-size:9px;padding:0 2px}
+body.arranging .pair{gap:5px}
+body.arranging .field.compact{grid-template-columns:minmax(0,1fr) 50px;gap:4px}
+body.arranging .minmax{grid-template-columns:53px minmax(0,1fr) minmax(0,1fr);gap:4px}
+body.arranging .range-input{display:block}
+body.arranging .range-input span{display:block}
+body.arranging .rollout>summary{cursor:default}
+.drop-before{box-shadow:inset 0 2px 0 #9bc6e8}
+.drop-after{box-shadow:inset 0 -2px 0 #9bc6e8}
+.is-dragging{opacity:.55}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:360px){body{padding:8px}.study{width:min(var(--panel-width),calc(100vw - 16px));height:calc(100dvh - 16px)}.toolbar{gap:3px}.toolbar button{padding:2px 4px}.toolbar label{gap:3px}.toolbar select{width:62px}.owner-badge{font-size:9px}.update-row{gap:9px}.update-row button{min-width:95px}.pair{gap:6px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<main class="study" id="study" aria-label="Cyrus Scatter layout study">
+<div class="toolbar" aria-label="Layout tools">
+<label for="panel-width">Width <select id="panel-width" title="Preview the command panel at a compact width"><option value="320">320 px</option><option value="400" selected>400 px</option><option value="480">480 px</option></select></label>
+<button type="button" id="arrange" aria-pressed="false" title="Reorder sections and complete rows within their current groups">Arrange</button>
+<button type="button" id="reset-layout" title="Restore order, width and disclosures; keep demo values and layer evaluation order">Reset layout</button>
+<button type="button" id="save-html" title="Download a self-contained copy with this layout and demo settings">Save HTML</button>
+</div>
+<p class="toolbar-instruction">Arrange: drag headers or rows; arrows also work. Save HTML to keep changes.</p>
+<section class="command-panel" aria-label="Modify command panel">
+<header class="object-bar"><span class="object-name" id="object-name">CS_Scatter_001</span><span>Modify</span></header>
+<div class="modifier-stack"><div><span>Cyrus Scatter</span><span aria-hidden="true">▾</span></div></div>
+<h1 class="panel-title">Cyrus Scatter 0.73</h1>
+<div class="setup-controls" id="setup-controls"></div>
+<div class="breadcrumb" id="owner-breadcrumb" aria-label="Currently editing"></div>
+<p class="prototype-caption">Layout prototype · no scene calculation</p>
+<div class="panel-scroll" id="panel-scroll"><div id="rollouts"></div></div>
+<footer class="status" id="status" role="status" aria-live="polite">Demo values · Save HTML keeps changes.</footer>
+</section>
+</main>
+<script id="prototype-state" type="application/json">{}</script>
+<script id="application-script">
+'use strict';
+(function(){
+const SECTION_ORDER=['surfaces','layers','models','population','coverage','areas','transforms','spacing','viewport','statistics'];
+const DEFAULT_OPEN={'section-surfaces':true,'section-layers':true,'section-models':true,'section-population':true};
+const originalRows={};
+let arranging=false,dragSession=null,exportUrl=null;
+const $=function(id){return document.getElementById(id);};
+const esc=function(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});};
+const copy=function(v){return JSON.parse(JSON.stringify(v));};
+const freshRule=function(){return {enabled:false,factor:1,gap:0,distance:'3D'};};
+function makeSource(id,name,parked){return {id:id,name:name,parked:!!parked,weight:1,scale:1,radius:20,z:0,follow:true,showRadius:false,forward:'+Y',colorGroup:'Green'};}
+function ensureAreaFalloff(area){if(!area)return undefined;const defaults={edgeDelete:false,edgeWidth:0,scaleRamp:false,scaleWidth:100,densityRamp:false,densityWidth:100};Object.keys(defaults).forEach(function(key){if(!Object.prototype.hasOwnProperty.call(area,key))area[key]=defaults[key];});return area;}
+function makeSet(id,name,base,sources){return {id:id,name:name,base:base,enabled:true,shown:true,share:1,pool:base?'manual':'inherit',containers:[],selectedContainer:'',sources:sources,selectedSource:sources[0]?sources[0].id:'',coverage:base?'Whole shared surface':'Painted area',brushMode:'Paint',brushRadius:20,brushStrength:100,softness:50,mask:100,feedback:'Coverage tint',feedbackColor:'#85b075',strokes:base?[]:[{id:id+'-stroke1',name:'Demo stroke 01',enabled:true,erase:false,radius:20,strength:100,softness:50}],selectedStroke:base?'':id+'-stroke1',backgroundMode:'Off',backgroundRefs:[],backgroundApplied:{mode:'Off',refs:[]},selfRule:null,radiusMode:'World radius',instanceRadius:1};}
+function makeLayer(id,name,sources){return {id:id,name:name,enabled:true,shown:true,population:'Count',count:200,density:100,seed:42,method:'Random',densityMap:'No map',invert:false,policy:'Candidate budget',attemptFactor:8,maxRounds:8,retryGaps:false,rotXMin:0,rotXMax:0,rotYMin:0,rotYMax:0,rotZMin:0,rotZMax:360,scaleMin:1,scaleMax:1,sclXMin:1,sclXMax:1,sclYMin:1,sclYMax:1,sclZMin:1,sclZMax:1,movXMin:0,movXMax:0,movYMin:0,movYMax:0,movZMin:0,movZMax:0,align:true,keepSurface:true,assignment:'Random',clusterSize:10,assignmentSeed:42,path:'No path',analyzerData:'Border',areas:[{id:id+'-area1',name:'Garden_outline (demo)',mode:'Include'}],selectedArea:id+'-area1',analyzer:'No Analyzer',centerline:false,lineWidth:100,lineEnds:'Flat',points:false,pointRadius:100,fallTarget:'Analyzer Boundary',edgeDelete:false,edgeWidth:0,scaleRamp:false,scaleWidth:100,densityRamp:false,densityWidth:100,relax:false,relaxSpacing:.2,relaxIterations:10,relaxStrength:50,boundaryRelax:false,boundaryStrength:.3,boundaryIterations:5,boundaryMovement:10,cleanup:false,neighborDistance:100,minNeighbors:2,minIsland:5,cleanupXY:false,defaultWithin:freshRule(),betweenSets:freshRule(),containers:[],selectedContainer:'',sets:[makeSet(id+'-base','Base',true,sources),makeSet(id+'-accent','Accent',false,[makeSource(id+'-accent-source','Accent_model (demo)',false)])],selectedSet:id+'-base'};}
+function defaultState(){
+const grass=makeLayer('grass','Grass',[makeSource('grass-a','Grass_tuft_A',false),makeSource('grass-b','Grass_tuft_B',false),makeSource('grass-c','Grass_dry_C',true)]);
+grass.sets[0].pool='own';grass.containers=[{id:'grass-palette',name:'Grass_Palette (demo)',width:500,length:300,showLabel:true}];grass.selectedContainer='grass-palette';grass.sets[0].sources[0].weight=.65;grass.sets[0].sources[1].weight=.35;
+const flowers=makeLayer('flowers','Flowers',[makeSource('flower-a','Wildflower_A',false),makeSource('flower-b','Wildflower_B',false)]);flowers.count=120;flowers.seed=18;
+const shrubs=makeLayer('shrubs','Shrubs',[makeSource('shrub-a','Shrub_low_A',false)]);shrubs.count=40;shrubs.seed=7;shrubs.sets[0].sources[0].radius=45;
+return {format:1,nextId:1,setup:{name:'CS_Scatter_001',enabled:true,updateMode:'Manual',receiver:'Terrain_Main (demo)',globalContainers:[],selectedGlobalContainer:'',preview:true,display:'Point Cloud',proxy:'Box',instances:2000,faces:2000000,pointColor:'Source Group Colors',pointLimit:20000,pointsPerPlant:80,radiusLimit:2000,allRadii:false,iconSize:10,autoRender:true},layers:[grass,flowers,shrubs],selectedLayer:'grass',spacingScope:'This paint set',spacingPeer:'',setPairs:{},layerPairs:{},ui:{width:400,sections:SECTION_ORDER.slice(),groups:{},open:copy(DEFAULT_OPEN)}};
+}
+let seed;
+try{seed=JSON.parse($('prototype-state').textContent);}catch(error){seed={};}
+let state=seed&&seed.format===1&&Array.isArray(seed.layers)&&seed.layers.length?seed:defaultState();
+if(!state.ui)state.ui=defaultState().ui;
+state.ui.groups=state.ui.groups||{};state.ui.open=state.ui.open||{};
+function uid(prefix){return prefix+'-demo'+state.nextId++;}
+function currentLayer(){return state.layers.find(function(l){return l.id===state.selectedLayer;})||state.layers[0];}
+function currentSet(){const l=currentLayer();return l.sets.find(function(s){return s.id===l.selectedSet;})||l.sets[0];}
+function targetLayer(l){return 'layer:'+l.id;}
+function targetSet(l,s){return 'set:'+l.id+':'+s.id;}
+function pairKey(a,b){return [a,b].sort().join('|');}
+function ruleToken(){const l=currentLayer(),s=currentSet(),scope=state.spacingScope;if(scope==='This paint set')return 'rule:self:'+l.id+':'+s.id;if(scope==='Default between sets')return 'rule:between:'+l.id;if(scope==='Layer default within sets')return 'rule:within:'+l.id;if(scope==='Pair of paint sets')return 'rule:setpair:'+l.id+':'+s.id+':'+state.spacingPeer;return 'rule:layerpair:'+l.id+':'+state.spacingPeer;}
+function resolveTarget(token,write){
+const p=token.split(':'),l=state.layers.find(function(o){return o.id===p[1];}),s=l&&l.sets.find(function(o){return o.id===p[2];});
+if(p[0]==='setup')return state.setup;if(p[0]==='context')return state;if(p[0]==='layer')return l;if(p[0]==='set')return s;
+if(p[0]==='source')return s&&s.sources.find(function(o){return o.id===p[3];});
+if(p[0]==='stroke')return s&&s.strokes.find(function(o){return o.id===p[3];});
+if(p[0]==='area')return l&&ensureAreaFalloff(l.areas.find(function(o){return o.id===p[2];}));
+if(p[0]==='container'){const rectangles=state.setup.globalContainers.concat(state.layers.flatMap(function(layer){return layer.containers.concat(layer.sets.flatMap(function(set){return set.containers;}));}));return rectangles.find(function(o){return o.id===p[1];});}
+if(p[0]==='rule'){const owner=state.layers.find(function(o){return o.id===p[2];});if(!owner)return undefined;if(p[1]==='between')return owner.betweenSets;if(p[1]==='within')return owner.defaultWithin;
+if(p[1]==='self'){const leaf=owner.sets.find(function(o){return o.id===p[3];});if(!leaf)return undefined;if(write&&!leaf.selfRule)leaf.selfRule=copy(owner.defaultWithin);return leaf.selfRule||owner.defaultWithin;}
+if(p[1]==='setpair'){if(!owner.sets.some(function(o){return o.id===p[3];})||!owner.sets.some(function(o){return o.id===p[4];})||p[3]===p[4])return undefined;const key=pairKey(p[3],p[4]);if(write&&!state.setPairs[key])state.setPairs[key]=copy(owner.betweenSets);return state.setPairs[key]||owner.betweenSets;}
+if(p[1]==='layerpair'){if(!state.layers.some(function(o){return o.id===p[3];})||p[2]===p[3])return undefined;const key=pairKey(p[2],p[3]);if(write&&!state.layerPairs[key])state.layerPairs[key]=freshRule();return state.layerPairs[key]||freshRule();}}
+return undefined;
+}
+function normalizeOrder(saved,ids){const valid=Array.isArray(saved)?saved:[];return valid.filter(function(id,i,a){return ids.includes(id)&&a.indexOf(id)===i;}).concat(ids.filter(function(id){return !valid.includes(id);}));}
+function controlId(t,k){return 'c-'+t.replace(/[^a-zA-Z0-9_-]/g,'_')+'-'+k;}
+function bindAttrs(t,k,title,refresh){return ' data-target="'+esc(t)+'" data-field="'+esc(k)+'" title="'+esc(title||'Edit this demo setting; no scene calculation.')+'"'+(refresh?' data-refresh="true"':'');}
+function numberField(label,t,k,min,max,step,title,compact,disabled){const o=resolveTarget(t),id=controlId(t,k);return '<div class="field'+(compact?' compact':'')+'"><label for="'+id+'">'+esc(label)+'</label><input type="number" id="'+id+'" min="'+min+'" max="'+max+'" step="'+step+'" value="'+esc(o?o[k]:0)+'"'+bindAttrs(t,k,title,false)+(disabled?' disabled':'')+'></div>';}
+function textField(label,t,k,title,disabled){const o=resolveTarget(t),id=controlId(t,k);return '<div class="field full"><label for="'+id+'">'+esc(label)+'</label><input type="text" maxlength="80" id="'+id+'" value="'+esc(o?o[k]:'')+'"'+bindAttrs(t,k,title,false)+(disabled?' disabled':'')+'></div>';}
+function selectField(label,t,k,options,title,refresh,disabled,size,extra){const o=resolveTarget(t),id=controlId(t,k),v=o?o[k]:'';return '<div class="field full"><label for="'+id+'">'+esc(label)+'</label><select id="'+id+'"'+bindAttrs(t,k,title,refresh)+(disabled?' disabled':'')+(size?' size="'+size+'"':'')+(extra||'')+'>'+options.map(function(option){const val=Array.isArray(option)?option[0]:option,txt=Array.isArray(option)?option[1]:option;return '<option value="'+esc(val)+'"'+(String(val)===String(v)?' selected':'')+'>'+esc(txt)+'</option>';}).join('')+'</select></div>';}
+function checkbox(label,t,k,title,disabled){const o=resolveTarget(t),id=controlId(t,k);return '<label class="check" for="'+id+'"><input type="checkbox" id="'+id+'"'+bindAttrs(t,k,title,true)+(o&&o[k]?' checked':'')+(disabled?' disabled':'')+'><span>'+esc(label)+'</span></label>';}
+function button(label,action,title,disabled,primary,extra){return '<button type="button" data-action="'+esc(action)+'" title="'+esc(title||label)+'"'+(disabled?' disabled':'')+(primary?' class="primary"':'')+(extra||'')+'>'+esc(label)+'</button>';}
+function sceneButton(label,title,disabled){return button(label,'scene',title,disabled,false,' data-scene-label="'+esc(label)+'"');}
+function actions(){return '<div class="actions">'+Array.from(arguments).join('')+'</div>';}
+function pair(a,b){return '<div class="pair">'+a+b+'</div>';}
+function hint(t){return '<p class="hint">'+esc(t)+'</p>';}
+function row(id,content){return {id:id,content:content};}
+function moveTools(kind,id,groupId,up,down){const label=kind==='section'?'section':'row',attrs=' data-layout-kind="'+kind+'" data-layout-id="'+esc(id)+'"'+(groupId?' data-layout-group="'+esc(groupId)+'"':'');return '<span class="'+(kind==='section'?'section-tools':'row-tools')+'"><button type="button" class="drag-handle"'+attrs+' data-layout-drag="true" draggable="'+arranging+'" aria-label="Drag '+label+' '+esc(id)+'" title="Drag within this '+(kind==='section'?'panel':'group')+'">⋮</button><button type="button"'+attrs+' data-layout-delta="-1" aria-label="Move '+label+' '+esc(id)+' up" title="Move '+label+' up"'+(up?' disabled':'')+'>↑</button><button type="button"'+attrs+' data-layout-delta="1" aria-label="Move '+label+' '+esc(id)+' down" title="Move '+label+' down"'+(down?' disabled':'')+'>↓</button></span>';}
+function group(id,legend,owner,rows,quiet){const ids=rows.map(function(r){return r.id;});if(!originalRows[id])originalRows[id]=ids.slice();const order=normalizeOrder(state.ui.groups[id],ids);state.ui.groups[id]=order;return '<fieldset class="row-group" data-group="'+esc(id)+'" data-owner="'+esc(owner)+'"><legend class="'+(quiet?'sr-only':'group-legend')+'">'+esc(legend)+(quiet?'':'<span class="owner-badge">'+esc(owner)+'</span>')+'</legend>'+order.map(function(rowId,index){const item=rows.find(function(r){return r.id===rowId;});return '<div class="field-row" data-row="'+esc(rowId)+'">'+moveTools('row',rowId,id,index===0,index===order.length-1)+'<div class="row-content">'+item.content+'</div></div>';}).join('')+'</fieldset>';}
+function advanced(id,content,note,title){return '<details class="advanced" data-disclosure="'+esc(id)+'"><summary>'+esc(title||'Advanced')+'<span class="advanced-note">'+esc(note||'Less-used settings')+'</span></summary><div class="advanced-content">'+content+'</div></details>';}
+function section(id,title,owner,content){const i=state.ui.sections.indexOf(id);return '<details class="rollout" data-section="'+id+'" data-disclosure="section-'+id+'"><summary><span class="summary-title">'+esc(title)+'</span><span class="owner-badge">'+esc(owner)+'</span>'+moveTools('section',id,'',i===0,i===state.ui.sections.length-1)+'</summary><div class="rollout-content">'+content+'</div></details>';}
+function rangeRow(label,t,prefix,min,max,step,title){const o=resolveTarget(t),kmin=prefix+'Min',kmax=prefix+'Max';return '<div class="minmax"><span>'+esc(label)+'</span><label class="range-input"><span>Min</span><input type="number" aria-label="'+esc(label)+' minimum" id="'+controlId(t,kmin)+'" min="'+min+'" max="'+max+'" step="'+step+'" value="'+o[kmin]+'"'+bindAttrs(t,kmin,title,false)+'></label><label class="range-input"><span>Max</span><input type="number" aria-label="'+esc(label)+' maximum" id="'+controlId(t,kmax)+'" min="'+min+'" max="'+max+'" step="'+step+'" value="'+o[kmax]+'"'+bindAttrs(t,kmax,title,false)+'></label></div>';}
+function poolContext(l,s){let mode=s.pool;if(mode==='inherit'){const base=l.sets.find(function(o){return o.base;});mode=base?base.pool:'manual';}if(mode==='global')return {owner:'Setup',rows:state.setup.globalContainers,selected:state.setup.selectedGlobalContainer};if((mode==='own'&&s.base)||(s.pool==='inherit'&&mode==='own'))return {owner:'Layer',rows:l.containers,selected:l.selectedContainer};if(mode==='own')return {owner:'Paint set',rows:s.containers,selected:s.selectedContainer};return {owner:'Paint set',rows:[],selected:'',manual:true};}
+function selectedRectangle(l,s){const p=poolContext(l,s);return p.rows.find(function(r){return r.id===p.selected;})||p.rows[0];}
+function selectedSource(l,s){return s.sources.find(function(o){return o.id===s.selectedSource;})||s.sources[0];}
+function earlierSets(l,s){return l.sets.slice(0,l.sets.indexOf(s));}
+function ensurePeers(){const l=currentLayer(),s=currentSet(),peers=state.spacingScope==='Pair of paint sets'?l.sets.filter(function(o){return o.id!==s.id;}):state.spacingScope==='Pair of layers'?state.layers.filter(function(o){return o.id!==l.id;}):[];if(!peers.some(function(o){return o.id===state.spacingPeer;}))state.spacingPeer=peers[0]?peers[0].id:'';return peers;}
+function surfacesSection(){
+return section('surfaces','Receiving surfaces','Setup',
+group('surfaces-basic','Receiving surfaces','Setup',[
+row('receiver',textField('Current receiver','setup','receiver','Sample receiving-surface name. All layers use these surfaces.')),
+row('surface-actions',actions(sceneButton('Pick','Choose a surface on which all layers scatter.'),sceneButton('Manage…','Choose receiving surfaces by name; Brush requires one shared surface.')))
+],true)+advanced('surfaces-advanced',group('global-containers','Global model palettes','Setup',[
+row('global-list','<div class="field full"><label for="global-list">Global source containers</label><select id="global-list" data-context="global-container" size="2"'+(!state.setup.globalContainers.length?' disabled':'')+'>'+(!state.setup.globalContainers.length?'<option>No global rectangles linked</option>':state.setup.globalContainers.map(function(r){return '<option value="'+esc(r.id)+'"'+(r.id===state.setup.selectedGlobalContainer?' selected':'')+'>'+esc(r.name)+'</option>';}).join(''))+'</select></div>'),
+row('global-actions',actions(button('Create','create-global','Add a demo global rectangle; owners must explicitly select Global containers.'),sceneButton('Pick','Max would link a global source rectangle.'),button('Unlink','unlink-global','Unlink the demo rectangle; registered source settings remain.',!state.setup.globalContainers.length))),
+row('global-info',hint('Model palettes, not receiving surfaces. Choose Global containers in each consuming set.'))
+],false),'Global containers'));
+}
+function layersSection(l,s){
+const lt=targetLayer(l),st=targetSet(l,s),li=state.layers.indexOf(l),si=l.sets.indexOf(s);
+const list='<div class="field full"><label for="layer-selector">Layers · evaluation order</label><select id="layer-selector" data-context="layer" size="3" title="Select a layer to edit. Layers evaluate from top to bottom.">'+state.layers.map(function(o,i){return '<option value="'+esc(o.id)+'"'+(o.id===l.id?' selected':'')+'>'+(i+1)+'. '+esc(o.name)+'</option>';}).join('')+'</select></div>';
+return section('layers','Layers & paint sets','Setup',
+group('layers-manager','Layer evaluation order','Setup',[
+row('layer-list',list),
+row('layer-actions',actions(button('Add','add-layer','Add a demo layer.'),button('Copy','copy-layer','Copy this demo layer and its independent paint sets.'),button('Remove','remove-layer','Remove this demo layer and its sets.',state.layers.length<2))),
+row('layer-order',actions(button('Move up','layer-up','Evaluate this layer earlier. This changes demo evaluation order.',li===0),button('Move down','layer-down','Evaluate this layer later. This changes demo evaluation order.',li===state.layers.length-1)))
+],true)+group('selected-layer','Layer state','Layer',[
+row('layer-state',pair(checkbox('Enable layer',lt,'enabled','Include this layer in calculation and final output.'),checkbox('Show layer',lt,'shown','Viewport visibility only. Hidden layers still calculate and affect spacing.')))
+],false)+group('selected-set','Selected paint set','Paint set',[
+row('set-selector',selectField('Paint set',lt,'selectedSet',l.sets.map(function(o){return [o.id,o.name];}),'Paint sets keep independent models and coverage; their shares divide layer population.',true,false,0,' data-context="set"')),
+row('set-share',numberField('Share weight',st,'share',0,10000,.1,'Relative share of the layer population among enabled paint sets.')),
+row('set-state',pair(checkbox('Enable set',st,'enabled','Include this set in calculation and final output.'),checkbox('Show set',st,'shown','Viewport visibility only. Hidden sets still calculate and affect spacing.')))
+],false)+advanced('layers-advanced',
+group('layer-admin','Layer management','Layer',[
+row('layer-name',textField('Layer name',lt,'name','Rename the demo layer without changing its identity.')),
+row('layer-window',sceneButton('Edit layer in window…','Max would open a floating view of this same layer.'))
+],false)+group('set-admin','Paint-set management','Paint set',[
+row('set-name',textField('Paint-set name',st,'name','Rename this paint set without changing its identity.')),
+row('set-admin-actions',actions(button('Add set','add-set','Add a demo set sharing the layer population and recipe.'),button('Remove set','remove-set','Remove this demo set. Base cannot be removed separately.',s.base))),
+row('set-order',actions(button('Move set up','set-up','Evaluate this set earlier; earlier sets occupy space first.',si===0),button('Move set down','set-down','Evaluate this set later.',si===l.sets.length-1))),
+row('share-help',hint('Shares divide population. Show controls visibility; Enable controls output.'))
+],false),'Names & management'));
+}
+function modelsSection(l,s){
+const st=targetSet(l,s),lt=targetLayer(l),source=selectedSource(l,s),src=source?'source:'+l.id+':'+s.id+':'+source.id:'none:source',pool=poolContext(l,s),rect=selectedRectangle(l,s);
+const pools=s.base?[['manual','Manual sources'],['global','Global containers'],['own','Layer containers']]:[['manual','Manual sources'],['inherit','Layer default'],['global','Global containers'],['own',"This set's containers"]];
+const sourceOptions=s.sources.length?s.sources.map(function(o){return [o.id,o.name+(!pool.manual?(o.parked?' · parked':' · active'):'')];}):[['','No registered source models']];
+let rectControls=group('rectangle-empty','Selected rectangle',pool.owner,[row('rectangle-empty-info',hint('Choose a rectangle pool to see helper properties.'))],false);
+if(rect){const rt='container:'+rect.id;rectControls=group('rectangle-properties','Selected rectangle · '+rect.name,pool.owner,[
+row('rectangle-context',hint('Editing '+l.name+' / '+s.name+'. Model settings belong to the consuming set.')),
+row('rectangle-size',pair(numberField('Width',rt,'width',.01,1e9,.1,'Resize the palette boundary; source transforms stay unchanged.',true),numberField('Length',rt,'length',.01,1e9,.1,'Resize the palette boundary; source transforms stay unchanged.',true))),
+row('rectangle-label',checkbox('Show viewport label',rt,'showLabel','Presentation only.')),
+row('rectangle-follow',sceneButton('Follow this container','Max would resolve overlapping movement ownership for the selected source; usage in other sets stays unchanged.',!source)),
+row('rectangle-info',hint('Palette dimensions are demo values. No model transforms are performed.'))
+],false);}
+return section('models','Models & containers','Paint set',
+group('models-pool','Source pool','Paint set',[
+row('pool-selector',selectField('Source pool',st,'pool',pools,'Use manual sources or a rectangle pool. Base owns the layer pool; extra sets may inherit it.',true)),
+row('container-actions',actions(button('Create','create-container','Add a demo own rectangle and select its pool automatically.'),sceneButton('Pick','Max would link a rectangle and select the appropriate own pool.'),button('Unlink','unlink-container','Unlink an own rectangle; keep saved source settings.',s.pool!=='own'||!pool.rows.length))),
+row('container-list','<div class="field full"><label for="container-selector">Rectangles · '+esc(pool.owner)+' pool</label><select id="container-selector" data-context="container"'+(!pool.rows.length?' disabled':'')+'>'+(!pool.rows.length?'<option>'+(pool.manual?'Manual source list':'No rectangles linked')+'</option>':pool.rows.map(function(r){return '<option value="'+esc(r.id)+'"'+(rect&&r.id===rect.id?' selected':'')+'>'+esc(r.name)+'</option>';}).join(''))+'</select></div>')
+],true)+group('models-source','Selected source settings','Paint set',[
+row('source-list',selectField('Source models',st,'selectedSource',sourceOptions,'Settings belong to this paint set. Parked models keep saved settings.',true,!s.sources.length,3)),
+row('source-actions',actions(sceneButton('Pick model','Max would choose a model for this paint set.'),sceneButton('Add selection','Max would add selected scene objects to this paint set.'))),
+row('source-weight-scale',pair(numberField('Weight',src,'weight',0,1,.01,'Relative source share within this paint set; zero disables it.',true,!source),numberField('Scale',src,'scale',0,10000,.01,'Per-model scale multiplier; 1 keeps the original scale.',true,!source))),
+row('source-radius-offset',pair(numberField('Radius',src,'radius',0,1e9,.1,'Collision footprint radius in scene units.',true,!source),numberField('Z offset',src,'z',-1e6,1e6,.1,'Offset along the placement normal.',true,!source))),
+row('source-radius-state',pair(checkbox('Follow scale',src,'follow','Scale the collision footprint with instance scale.',!source),checkbox('Show radius',src,'showRadius','Viewport display only; spacing rules stay unchanged.',!source))),
+row('source-status',hint(pool.manual?'Manual source rows are independent of rectangles.':'Rectangle palettes use source pivots inside local XY bounds. Parked rows keep settings.'))
+],false)+advanced('models-advanced',
+group('source-extra','Source details','Paint set',[
+row('forward-axis',selectField('Forward axis',src,'forward',['+Y','-Y','+X','-X'],'Local forward direction for orientation.',false,!source)),
+row('source-point-empty',actions(button('Add Point','add-point','Add a demo placeholder source for later replacement.'),button('Add Empty','add-empty','Add a demo weighted Empty source; gaps matter in candidate-budget mode.'))),
+row('source-replace-remove',actions(sceneButton('Replace Point','Max would replace the selected placeholder with a source model.',!source||source.kind!=='Point'),button('Remove row','remove-source','Unregister the demo row. Parking is separate.',!source))),
+row('source-color',selectField('Color group',src,'colorGroup',['Green','Flowers','Shrubs'],'Source-color groups feed layer source assignment.',false,!source))
+],false)+group('source-assignment','Source assignment','Layer',[
+row('assignment-mode',selectField('Assignment',lt,'assignment',['Random','Clusters','Line Pattern','Analyze Surface'],'Layer assignment recipe shared by its paint sets.',true)),
+row('assignment-clusters',pair(numberField('Size',lt,'clusterSize',.01,100000,.1,'Spatial size of source-color clusters.',true,l.assignment!=='Clusters'),numberField('Seed',lt,'assignmentSeed',0,2147483647,1,'Assignment seed; independent from population seed.',true,l.assignment!=='Clusters'))),
+row('assignment-path',textField('Path',lt,'path','Demo path name; picking a real spline requires Max.',l.assignment!=='Line Pattern')),
+row('assignment-analyzer',selectField('Analyzer data',lt,'analyzerData',['Border','Centerline','Points','Street Side','Edge Border'],'Surface Analyzer channel for assignment.',false,l.assignment!=='Analyze Surface')),
+row('assignment-actions',actions(sceneButton('Pick path','Max would choose a Line Pattern spline.',l.assignment!=='Line Pattern'),sceneButton('Pick Analyzer','Max would choose a Surface Analyzer.',l.assignment!=='Analyze Surface')))
+],false)+rectControls,'Source, assignment & helper'));
+}
+function populationSection(l){
+const lt=targetLayer(l),target=l.policy==='Accepted target',texture=l.method==='Texture Density';
+return section('population','Population','Layer',group('population-basic','Population','Layer',[
+row('population-mode',selectField('Population',lt,'population',['Count','Plants per m2'],'Requested layer population before eligibility; paint sets divide it.',true)),
+row('population-value',l.population==='Count'?numberField('Requested count',lt,'count',1,100000,1,'Layer population before eligibility. Accepted target can retry to its limits.'):numberField('Per m2',lt,'density',0,1e6,.1,'Requested plants per square metre of receiving surface.')),
+row('population-seed',numberField('Seed',lt,'seed',0,2147483647,1,'Deterministic generation seed; changing it may invalidate Edit bindings.'))
+],true)+advanced('population-advanced',
+group('density-method','Density method','Layer',[
+row('density-method-selector',selectField('Method',lt,'method',['Random','Texture Density'],'Texture Density uses UV channel 1: white permits, black excludes candidates.',true)),
+row('density-map',textField('Density map',lt,'densityMap','Demo map label. Real texture assignment requires Max.',!texture)),
+row('density-invert',checkbox('Invert density',lt,'invert','Reverse white and black eligibility.',!texture))
+],false)+group('retry-policy','Target & retry limits','Layer',[
+row('policy',selectField('Layer population',lt,'policy',['Candidate budget','Accepted target'],'Budget evaluates generated candidates; target makes bounded replacement attempts.',true)),
+row('retry-limits',pair(numberField('Attempt factor',lt,'attemptFactor',1,32,1,'Maximum attempts as a multiple of requested population.',true,!target),numberField('Max rounds',lt,'maxRounds',1,16,1,'Maximum eligibility, collision and cleanup rounds.',true,!target))),
+row('retry-cleanup',checkbox('Retry cleanup gaps',lt,'retryGaps','Bounded retries for plants removed by final cleanup.',!target)),
+row('retry-hint',hint('Accepted target is bounded; retries can end short.'))
+],false),'Density & retries'));
+}
+function coverageSection(l,s){
+const st=targetSet(l,s),painted=s.coverage==='Painted area',stroke=s.strokes.find(function(o){return o.id===s.selectedStroke;})||s.strokes[0],str=stroke?'stroke:'+l.id+':'+s.id+':'+stroke.id:'none:stroke',earlier=earlierSets(l,s);
+return section('coverage','Coverage & painting','Paint set',group('coverage-basic','Paint coverage','Paint set',[
+row('coverage-mode',selectField('Coverage',st,'coverage',['Whole shared surface','Painted area'],'Whole receiver or this paint set’s saved painted coverage.',true)),
+row('brush-mode',selectField('Next stroke',st,'brushMode',['Paint','Erase'],'Controls the next Brush stroke in this set.',false,!painted)),
+row('brush-shape',pair(numberField('Radius',st,'brushRadius',.0001,1e9,.1,'World-space radius of the next Brush stroke.',true,!painted),numberField('Strength %',st,'brushStrength',0,100,1,'Amount of coverage painted or erased.',true,!painted))),
+row('brush-actions',actions(sceneButton('Start Brush','Max would paint this set on the shared receiver.'),sceneButton('Stop','Max would finish Brush and retain its editable history.'))),
+row('coverage-actions',actions(button('Fill','fill-coverage','Mark the demo coverage full and reset its demo stroke history.'),button('Empty','empty-coverage','Mark the demo coverage empty and reset its demo stroke history.')))
+],true)+advanced('coverage-advanced',
+group('brush-extra','Mask & feedback','Paint set',[
+row('brush-edge-mask',pair(numberField('Softness %',st,'softness',0,100,1,'Edge softness of the next stroke.',true,!painted),numberField('Mask %',st,'mask',0,100,1,'Thin plants permitted by the mask; absolute population belongs to the layer.',true,!painted))),
+row('brush-feedback',selectField('Paint feedback',st,'feedback',['Coverage tint','Coverage samples','Off'],'Coverage feedback does not show which plants survive spacing.',false))
+],false)+group('stroke-history','Editable stroke history · demo','Paint set',[
+row('stroke-list',selectField('Saved strokes',st,'selectedStroke',s.strokes.length?s.strokes.map(function(o){return [o.id,o.name];}):[['','No demo strokes']], 'Saved Brush history belongs to this paint set.',true,!stroke,2)),
+row('stroke-state',pair(checkbox('Enabled',str,'enabled','Keep this stroke enabled without deleting it.',!stroke),checkbox('Erase',str,'erase','Change the selected demo stroke between Paint and Erase.',!stroke))),
+row('stroke-size-strength',pair(numberField('Radius',str,'radius',.0001,1e9,.1,'Radius of the selected saved stroke.',true,!stroke),numberField('Strength %',str,'strength',0,100,1,'Strength of the selected saved stroke.',true,!stroke))),
+row('stroke-softness',numberField('Softness %',str,'softness',0,100,1,'Edge softness of the selected saved stroke.',false,!stroke)),
+row('stroke-delete',button('Delete selected stroke','delete-stroke','Delete this demo stroke record.',!stroke))
+],false)+group('set-background','Background composition','Paint set',[
+row('background-mode',selectField('This set: background',st,'backgroundMode',['Off','Outside painted coverage','Between plants','Outside + between'],'Exclude earlier coverage, fill between earlier plants, or combine both.',true,!earlier.length)),
+row('background-references','<div class="field full"><label for="background-references">Earlier paint sets</label><select id="background-references" multiple size="2" data-context="background-refs" title="Only earlier siblings can be referenced"'+(!earlier.length||s.backgroundMode==='Off'?' disabled':'')+'>'+(!earlier.length?'<option>No earlier paint sets</option>':earlier.map(function(o){return '<option value="'+esc(o.id)+'"'+(s.backgroundRefs.includes(o.id)?' selected':'')+'>'+esc(o.name)+'</option>';}).join(''))+'</select></div>'),
+row('background-apply',button('Apply background','apply-background','Store the chosen background mode and earlier-set references together.',!earlier.length)),
+row('background-info',hint(!earlier.length?'No earlier siblings for this set.':('Applied demo mode: '+s.backgroundApplied.mode+'. Use Apply background to store mode + references.')))
+],false),'Strokes & background'));
+}
+function areasSection(l){
+const lt=targetLayer(l),area=ensureAreaFalloff(l.areas.find(function(o){return o.id===l.selectedArea;})||l.areas[0]),at=area?'area:'+l.id+':'+area.id:'none:area';
+const areaTarget=l.fallTarget==='Selected Area line',ft=areaTarget?at:lt,falloff=areaTarget?area:l,missing=areaTarget&&!area;
+return section('areas','Include / exclude areas','Layer',group('areas-basic','Closed areas','Layer',[
+row('area-list',selectField('Closed lines / shapes',lt,'selectedArea',l.areas.length?l.areas.map(function(o){return [o.id,o.name];}):[['','No demo areas']],'Closed Area shapes are shared by all paint sets in this layer.',true,!area,2)),
+row('area-mode',selectField('Selected area mode',at,'mode',['Include','Exclude'],'Include inside this shape, or exclude it.',false,!area)),
+row('area-actions',actions(sceneButton('Add','Max would choose a closed shape as a layer Area.'),button('Remove','remove-area','Unlink the selected demo Area and its settings.',!area)))
+],true)+advanced('areas-advanced',
+group('area-analyzer','Surface Analyzer mask','Layer',[
+row('analyzer-link',actions(sceneButton('Pick Analyzer','Max would choose a Surface Analyzer for line or point masks.'),sceneButton('Remove Analyzer','Max would unlink the layer Analyzer mask.'))),
+row('analyzer-centerline',checkbox('Center Line',lt,'centerline','Use the Analyzer centre line as an XY mask; union with its point mask.')),
+row('analyzer-line-width',numberField('Full width',lt,'lineWidth',0,1e9,.1,'Full width of the centre-line mask.',false,!l.centerline)),
+row('analyzer-line-ends',selectField('Line ends',lt,'lineEnds',['Flat','Round'],'Ends of the centre-line mask.',false,!l.centerline)),
+row('analyzer-points',checkbox('Points',lt,'points','Use discs around Analyzer points as an XY mask.')),
+row('analyzer-point-radius',numberField('Radius',lt,'pointRadius',0,1e9,.1,'Radius of each Analyzer point mask.',false,!l.points))
+],false)+group('area-falloff-target','Edge falloff target','Layer',[
+row('falloff-target',selectField('Edge falloff target',lt,'fallTarget',['Analyzer Boundary','Selected Area line'],'Analyzer boundary, or the highlighted Area’s independent falloff.',true))
+],true)+group('area-falloff',areaTarget?'Selected Area falloff':'Analyzer boundary falloff',areaTarget?'Area':'Layer',[
+row('edge-delete',checkbox('Delete edge band',ft,'edgeDelete','Exclude an edge band before scale and density ramps.',missing)),
+row('edge-width',numberField('Delete width',ft,'edgeWidth',0,1e9,.1,'Width of excluded edge band in scene units.',false,missing||!falloff.edgeDelete)),
+row('edge-scale',checkbox('Scale ramp',ft,'scaleRamp','Vary instance scale with distance from this boundary.',missing)),
+row('edge-scale-width',numberField('Scale width',ft,'scaleWidth',0,1e9,.1,'Distance over which this boundary’s scale curve is evaluated.',false,missing||!falloff.scaleRamp)),
+row('edge-density',checkbox('Density ramp',ft,'densityRamp','Vary candidate eligibility with this boundary’s distance.',missing)),
+row('edge-density-width',numberField('Density width',ft,'densityWidth',0,1e9,.1,'Distance over which this boundary’s density curve is evaluated.',false,missing||!falloff.densityRamp)),
+row('edge-graphs',actions(sceneButton('Scale graph…','Max would edit this boundary’s scale curve.',missing||!falloff.scaleRamp),sceneButton('Density graph…','Max would edit this boundary’s density curve.',missing||!falloff.densityRamp))),
+row('falloff-owner-note',hint(areaTarget?(missing?'No Area available. Area falloff controls are disabled.':'Independent falloff for '+area.name+'.'):'Analyzer Boundary uses this layer’s settings.'))
+],false),'Analyzer & edge falloff'));
+}
+function transformsSection(l){
+const lt=targetLayer(l);
+return section('transforms','Transforms','Layer',group('transforms-basic','Common transforms','Layer',[
+row('rotation-z',rangeRow('Z rotation',lt,'rotZ',-360,360,1,'Layer random Z rotation, in degrees.')),
+row('whole-scale',rangeRow('Whole scale',lt,'scale',.001,1000,.01,'Uniform layer scale multiplier.')),
+row('transform-alignment',pair(checkbox('Align to normal',lt,'align','Align instances to the receiving-surface normal.'),checkbox('Keep on surface',lt,'keepSurface','Project random movement back onto the receiving surface.')))
+],true)+advanced('transforms-advanced',
+group('rotation-extra','Rotation · degrees','Layer',[
+row('rotation-x',rangeRow('X rotation',lt,'rotX',-360,360,1,'Random X rotation bounds.')),
+row('rotation-y',rangeRow('Y rotation',lt,'rotY',-360,360,1,'Random Y rotation bounds.')),
+row('rotation-reset',button('Reset rotation','reset-rotation','Reset this demo layer’s X, Y and Z rotation bounds.'))
+],false)+group('scale-extra','Separate XYZ scale','Layer',[
+row('scale-x',rangeRow('X scale',lt,'sclX',.001,100,.01,'Separate X scale multiplier.')),
+row('scale-y',rangeRow('Y scale',lt,'sclY',.001,100,.01,'Separate Y scale multiplier.')),
+row('scale-z',rangeRow('Z scale',lt,'sclZ',.001,100,.01,'Separate Z scale multiplier.')),
+row('scale-resets',actions(button('Reset XYZ scale','reset-xyz-scale','Reset this layer’s separate scale multipliers.'),button('Reset whole scale','reset-whole-scale','Reset this layer’s uniform scale bounds.')))
+],false)+group('movement-extra','Movement · scene units','Layer',[
+row('movement-x',rangeRow('X movement',lt,'movX',-100000,100000,.1,'Random X translation bounds.')),
+row('movement-y',rangeRow('Y movement',lt,'movY',-100000,100000,.1,'Random Y translation bounds.')),
+row('movement-z',rangeRow('Z movement',lt,'movZ',-100000,100000,.1,'Random Z translation bounds.')),
+row('movement-reset',button('Reset movement','reset-movement','Reset this layer’s translation bounds.'))
+],false),'XYZ & reset actions'));
+}
+function spacingSection(l,s,peers){
+const lt=targetLayer(l),st=targetSet(l,s),rt=ruleToken(),isPair=state.spacingScope==='Pair of paint sets'||state.spacingScope==='Pair of layers',editable=!isPair||peers.length>0;
+const inherited=state.spacingScope==='This paint set'&&!s.selfRule;
+return section('spacing','Spacing & cleanup','Selected scope',
+group('spacing-scope','Spacing scope','Selected scope',[
+row('spacing-scope-selector',selectField('Spacing scope','context','spacingScope',['This paint set','Default between sets','Pair of paint sets','Pair of layers','Layer default within sets'],'Within-set, between-set and between-layer rules are independent.',true)),
+row('spacing-peer',selectField('Other owner','context','spacingPeer',peers.length?peers.map(function(o){return [o.id,o.name];}):[['','No peer required']],'Choose the peer for this independent pair rule.',true,!isPair||!peers.length))
+],true)+group('spacing-rule','Current rule','Selected scope',[
+row('spacing-enable',checkbox('Enable this spacing',rt,'enabled','Save this scope automatically; edits do not overwrite other scopes.',!editable)),
+row('spacing-distance-values',pair(numberField('Radius factor',rt,'factor',0,10000,.01,'Multiply the sum of source or instance radii.',true,!editable),numberField('Extra gap',rt,'gap',0,1e9,.1,'Add a scene-unit gap after the radius factor.',true,!editable))),
+row('spacing-distance-mode',selectField('Distance',rt,'distance',['XY','3D'],'XY measures projected distance; 3D measures spatial distance.',false,!editable)),
+row('spacing-formula',hint(!editable?'Add another owner for a pair rule.':('factor × (radius A + radius B) + gap. '+(inherited?'Using layer default; editing overrides this set.':'Demo edits save automatically.'))))
+],false)+advanced('spacing-advanced',
+group('spacing-reset','Inheritance / defaults','Selected scope',[
+row('spacing-inherit',button('Use inherited / default','reset-rule','Restore this scope’s inherited or default demo rule.',!editable))
+],false)+group('instance-radius','CS Edit instance radius','Paint set',[
+row('instance-radius-mode',selectField('Selected CS Edit instances',st,'radiusMode',['World radius','Radius multiplier'],'Absolute world radius or multiplier of source radius.')),
+row('instance-radius-value',numberField('Value',st,'instanceRadius',0,1e9,.1,'Only applied when Set selected radii is pressed.')),
+row('instance-radius-apply',sceneButton('Set selected radii','Max would apply overrides to selected CS Edit instances in this set.')),
+row('instance-radius-clear',actions(sceneButton('Clear selected overrides','Max would restore inherited radii for selected instances.'),sceneButton('Clear this set’s overrides','Max would clear instance-radius overrides belonging to this paint set.')))
+],false)+group('candidate-relax','Candidate Relax','Layer',[
+row('candidate-relax-enable',checkbox('Point Relax',lt,'relax','Separate nearby candidates before Brush, artist edits and spacing; fixed anchors stay fixed.')),
+row('candidate-relax-spacing',numberField('Desired spacing',lt,'relaxSpacing',.00001,1e9,.1,'Desired candidate spacing.',false,!l.relax)),
+row('candidate-relax-values',pair(numberField('Iterations',lt,'relaxIterations',1,100,1,'Bounded candidate-relax iterations.',true,!l.relax),numberField('Strength %',lt,'relaxStrength',0,100,1,'Candidate relaxation strength.',true,!l.relax)))
+],false)+group('boundary-relax','Boundary Relax','Layer',[
+row('boundary-relax-enable',checkbox('Boundary Relax',lt,'boundaryRelax','Smooth candidate neighborhoods with bounded movement before author edits.')),
+row('boundary-relax-values',pair(numberField('Strength',lt,'boundaryStrength',0,1,.01,'Boundary relaxation strength.',true,!l.boundaryRelax),numberField('Iterations',lt,'boundaryIterations',0,100,1,'Bounded boundary-relax iterations.',true,!l.boundaryRelax))),
+row('boundary-relax-movement',numberField('Max movement',lt,'boundaryMovement',0,1e9,.1,'Maximum candidate displacement.',false,!l.boundaryRelax))
+],false)+group('final-cleanup','Final isolated-plant cleanup','Layer',[
+row('cleanup-enable',checkbox('Remove isolated plants',lt,'cleanup','Clean the accepted layer union after spacing. Protected edits remain.')),
+row('cleanup-neighbor-distance',numberField('Neighbor distance',lt,'neighborDistance',.001,1e9,.1,'Radius of the final neighborhood check.',false,!l.cleanup)),
+row('cleanup-minimums',pair(numberField('Min neighbors',lt,'minNeighbors',0,10000,1,'Minimum neighbors for accepted plants.',true,!l.cleanup),numberField('Min island size',lt,'minIsland',0,100000,1,'Minimum connected island size.',true,!l.cleanup))),
+row('cleanup-xy',checkbox('XY neighborhoods (off = 3D)',lt,'cleanupXY','Distance mode for layer cleanup only.',!l.cleanup))
+],false),'Radii, Relax & cleanup'));
+}
+function viewportSection(){
+const st='setup',cloud=state.setup.display==='Point Cloud',centres=state.setup.display==='Plant centres',proxy=state.setup.display==='Proxy';
+return section('viewport','Viewport & render','Setup',group('viewport-basic','Viewport & render','Setup',[
+row('show-preview',checkbox('Show preview',st,'preview','Viewport presentation only.')),
+row('display-mode',selectField('Display mode',st,'display',['Point Cloud','Proxy','Mesh','Plant centres'],'Display budgets do not change accepted population.',true)),
+row('auto-render',checkbox('Automatic final render',st,'autoRender','Generate final output for render in Max.'))
+],true)+advanced('viewport-advanced',
+group('display-budgets','Preview display budgets','Setup',[
+row('proxy-shape',selectField('Proxy shape',st,'proxy',['Box','Sphere','Pyramid'],'Proxy display shape.',false,!proxy)),
+row('instances-faces',pair(numberField('Instances/layer',st,'instances',1,100000,1,'Maximum displayed instances per layer.',true,cloud||centres),numberField('Faces/layer',st,'faces',12,20000000,1,'Displayed face budget per layer.',true,cloud||centres))),
+row('point-colors',selectField('Preview color',st,'pointColor',['Solid Color','Source Group Colors'],'Color point-cloud feedback.',false,!cloud&&!centres)),
+row('point-budget',pair(numberField('Point limit',st,'pointLimit',1000,500000,1000,'Total displayed point budget.',true,!cloud&&!centres),numberField('Points/plant',st,'pointsPerPlant',10,10000,1,'Points per plant in Point Cloud mode.',true,!cloud))),
+row('all-radii',checkbox('Show All Radii',st,'allRadii','Display every radius instead of the per-layer radius limit.')),
+row('radius-icon',pair(numberField('Radii/layer',st,'radiusLimit',0,1000000,1,'Display only; zero hides radii.',true,state.setup.allRadii),numberField('Icon size',st,'iconSize',.1,10000,.1,'Viewport helper icon size in scene units.',true))),
+row('preview-actions',actions(sceneButton('Refresh preview','Max would refresh the preview.'),sceneButton('Remove old baked output','Max would remove old scene output.'))),
+row('viewport-info',hint('Budgets change display only. These values are limits, not measured statistics.'))
+],false),'Preview limits & cleanup'));
+}
+function statisticsSection(){
+return section('statistics','Statistics & diagnostics','Selected scope',
+group('statistics-basic','Cached statistics','Layer',[
+row('cached-result',hint('Demonstration · no cached scene results.')),
+row('statistics-actions',actions(sceneButton('Read cached statistics','Max would read existing calculation results without rebuilding placements.'),button('Help','show-help','Show the compact workflow and ownership explanation.')))
+],true)+advanced('statistics-advanced',
+group('diagnostics-controls','Diagnostics · demonstration','Setup',[
+row('diagnostics-start-stop',actions(sceneButton('Start','Max would start bounded local diagnostic recording.'),sceneButton('Stop','Max would stop recording and retain its history.'))),
+row('diagnostics-save-read',actions(sceneButton('Save report','Max would save a local JSON diagnostic report.'),sceneButton('Read status','Max would read recorder status without calculating the scene.'))),
+row('diagnostics-info',hint('Recorder is off by default in Max. This HTML records no engineering events.'))
+],false)+advanced('workflow-help','<p class="help-copy">Setup owns receiving surfaces, update, display and render. A layer owns population, Areas, transforms, source assignment and cleanup.</p><p class="help-copy">Paint sets own models, shares, coverage and stroke history. Sharing a model pool keeps each set’s model settings independent.</p><p class="help-copy">Layers and paint sets evaluate in list order. Arrange changes presentation only. Within-set, between-set and between-layer spacing rules remain independent.</p>','Ownership & order','Workflow & ownership'),'Diagnostics & help'));
+}
+function render(){
+clearDrag();
+const scroll=$('panel-scroll').scrollTop,active=document.activeElement,focusId=active&&active.id;
+let selection;try{selection=active&&[active.selectionStart,active.selectionEnd];}catch(error){}
+const l=currentLayer(),s=currentSet(),peers=ensurePeers();
+state.selectedLayer=l.id;l.selectedSet=s.id;
+state.ui.sections=normalizeOrder(state.ui.sections,SECTION_ORDER);
+const builders={surfaces:surfacesSection,layers:function(){return layersSection(l,s);},models:function(){return modelsSection(l,s);},population:function(){return populationSection(l);},coverage:function(){return coverageSection(l,s);},areas:function(){return areasSection(l);},transforms:function(){return transformsSection(l);},spacing:function(){return spacingSection(l,s,peers);},viewport:viewportSection,statistics:statisticsSection};
+$('rollouts').innerHTML=state.ui.sections.map(function(id){return builders[id]();}).join('');
+$('setup-controls').innerHTML=checkbox('Enable Cyrus Scatter','setup','enabled','Enable calculation and output for this setup.')+'<div class="update-row">'+['Manual','Live'].map(function(mode){return '<label class="check"><input type="radio" name="update-mode" value="'+mode+'"'+bindAttrs('setup','updateMode',mode==='Manual'?'Pending scene edits wait for Update now.':'Max updates after relevant edits settle.',false)+(state.setup.updateMode===mode?' checked':'')+'><span>'+mode+'</span></label>';}).join('')+button('Update now','scene','Max would calculate all enabled layers and paint sets in order.',!state.setup.enabled,true,' data-scene-label="Update now"')+'</div>';
+$('object-name').textContent=state.setup.name;
+updateBreadcrumb();
+const width=[320,400,480].includes(Number(state.ui.width))?Number(state.ui.width):400;state.ui.width=width;
+$('study').style.setProperty('--panel-width',width+'px');$('panel-width').value=String(width);
+document.body.classList.toggle('arranging',arranging);$('arrange').setAttribute('aria-pressed',String(arranging));
+document.querySelectorAll('details[data-disclosure]').forEach(function(d){const key=d.dataset.disclosure;d.open=Object.prototype.hasOwnProperty.call(state.ui.open,key)?!!state.ui.open[key]:!!DEFAULT_OPEN[key];});
+if(focusId){const next=$(focusId);if(next&&!next.disabled){next.focus({preventScroll:true});if(selection&&selection[0]!=null)try{next.setSelectionRange(selection[0],selection[1]);}catch(error){}}}
+$('panel-scroll').scrollTop=scroll;
+}
+function updateBreadcrumb(){const l=currentLayer(),s=currentSet();$('owner-breadcrumb').innerHTML='<span class="owner-word">Layer</span><strong>'+esc(l.name)+'</strong> <span aria-hidden="true">›</span> <span class="owner-word">Paint set</span><strong>'+esc(s.name)+'</strong>';}
+function announce(message){$('status').textContent=message;}
+function switchLayer(id){if(!state.layers.some(function(l){return l.id===id;}))return false;state.selectedLayer=id;state.spacingPeer='';clearDrag();render();announce('Editing demo '+currentLayer().name+' / '+currentSet().name+'.');return true;}
+function switchSet(id){const l=currentLayer();if(!l.sets.some(function(s){return s.id===id;}))return false;l.selectedSet=id;state.spacingPeer='';clearDrag();render();announce('Editing demo '+l.name+' / '+currentSet().name+'.');return true;}
+function moveIndex(list,id,delta){const i=list.indexOf(id),next=i+delta;if(i<0||next<0||next>=list.length)return false;list.splice(i,1);list.splice(next,0,id);return true;}
+function moveSection(id,delta){if(!arranging||!SECTION_ORDER.includes(id)||![-1,1].includes(delta))return false;if(!moveIndex(state.ui.sections,id,delta))return false;render();announce('Section presentation moved. Demo evaluation order stays in Layers.');return true;}
+function findGroup(id){return Array.from(document.querySelectorAll('fieldset[data-group]')).find(function(g){return g.dataset.group===id;});}
+function moveRow(groupId,rowId,delta){const g=findGroup(groupId);if(!arranging||!g||![-1,1].includes(delta)||!Array.from(g.children).some(function(r){return r.dataset.row===rowId;}))return false;const order=state.ui.groups[groupId];if(!Array.isArray(order)||!moveIndex(order,rowId,delta))return false;render();announce('Row presentation moved within its current group.');return true;}
+function clearDrag(){dragSession=null;document.querySelectorAll('.is-dragging,.drop-before,.drop-after').forEach(function(el){el.classList.remove('is-dragging','drop-before','drop-after');});}
+function pruneReferences(l){l.sets.forEach(function(s){const allowed=earlierSets(l,s).map(function(o){return o.id;});s.backgroundRefs=s.backgroundRefs.filter(function(id){return allowed.includes(id);});s.backgroundApplied.refs=s.backgroundApplied.refs.filter(function(id){return allowed.includes(id);});});}
+function makeRectangle(name){return {id:uid('rectangle'),name:name+' (demo)',width:500,length:300,showLabel:true};}
+function reorderEvaluation(list,object,delta){const i=list.indexOf(object),next=i+delta;if(next<0||next>=list.length)return false;list.splice(i,1);list.splice(next,0,object);return true;}
+function cloneLayer(layer){
+const c=copy(layer),oldSetIds=c.sets.map(function(s){return s.id;});c.id=uid('layer');c.name=layer.name+' copy';
+c.containers.forEach(function(r){r.id=uid('rectangle');});c.selectedContainer=c.containers[0]?c.containers[0].id:'';
+c.areas.forEach(function(a){a.id=uid('area');});c.selectedArea=c.areas[0]?c.areas[0].id:'';
+c.sets.forEach(function(s){s.id=uid('set');s.sources.forEach(function(o){o.id=uid('source');});s.selectedSource=s.sources[0]?s.sources[0].id:'';s.containers.forEach(function(r){r.id=uid('rectangle');});s.selectedContainer=s.containers[0]?s.containers[0].id:'';s.strokes.forEach(function(o){o.id=uid('stroke');});s.selectedStroke=s.strokes[0]?s.strokes[0].id:'';});
+c.sets.forEach(function(s){s.backgroundRefs=s.backgroundRefs.map(function(id){const i=oldSetIds.indexOf(id);return i>=0?c.sets[i].id:'';}).filter(Boolean);s.backgroundApplied.refs=s.backgroundApplied.refs.map(function(id){const i=oldSetIds.indexOf(id);return i>=0?c.sets[i].id:'';}).filter(Boolean);});c.selectedSet=c.sets[0].id;return c;
+}
+function performAction(action,element){
+const l=currentLayer(),s=currentSet(),source=selectedSource(l,s),rect=selectedRectangle(l,s);
+let message='Demo settings updated.';
+if(action==='scene'){announce('Prototype: '+(element.dataset.sceneLabel||element.textContent)+' requires Max. No scene action ran.');return;}
+if(action==='add-layer'){const id=uid('layer'),n=makeLayer(id,'New layer',[makeSource(uid('source'),'Source_model (demo)',false)]);state.layers.push(n);state.selectedLayer=n.id;message='Demo layer added.';}
+else if(action==='copy-layer'){const n=cloneLayer(l);state.layers.splice(state.layers.indexOf(l)+1,0,n);state.selectedLayer=n.id;message='Demo layer copied with independent paint sets.';}
+else if(action==='remove-layer'){if(state.layers.length<2)return;const i=state.layers.indexOf(l);state.layers.splice(i,1);state.selectedLayer=state.layers[Math.min(i,state.layers.length-1)].id;message='Demo layer removed.';}
+else if(action==='layer-up'||action==='layer-down'){if(!reorderEvaluation(state.layers,l,action==='layer-up'?-1:1))return;message='Demo layer evaluation order changed.';}
+else if(action==='add-set'){const n=makeSet(uid('set'),'New set',false,[]);l.sets.push(n);l.selectedSet=n.id;message='Independent demo paint set added.';}
+else if(action==='remove-set'){if(s.base)return;const i=l.sets.indexOf(s);l.sets.splice(i,1);l.selectedSet=l.sets[Math.min(i,l.sets.length-1)].id;pruneReferences(l);message='Demo paint set removed.';}
+else if(action==='set-up'||action==='set-down'){if(!reorderEvaluation(l.sets,s,action==='set-up'?-1:1))return;pruneReferences(l);message='Demo set evaluation order changed. Background references use earlier sets only.';}
+else if(action==='create-container'){const r=makeRectangle(l.name+'_'+s.name+'_Palette');if(s.base){l.containers.push(r);l.selectedContainer=r.id;}else{s.containers.push(r);s.selectedContainer=r.id;}s.pool='own';message='Demo rectangle added; own '+(s.base?'Layer containers':"This set's containers")+' pool selected.';}
+else if(action==='unlink-container'){if(s.pool!=='own'||!rect)return;const rows=s.base?l.containers:s.containers,selected=s.base?'selectedContainer':'selectedContainer';rows.splice(rows.findIndex(function(r){return r.id===rect.id;}),1);(s.base?l:s)[selected]=rows[0]?rows[0].id:'';message='Demo rectangle unlinked. Source settings are retained.';}
+else if(action==='create-global'){const r=makeRectangle('Global_Palette');state.setup.globalContainers.push(r);state.setup.selectedGlobalContainer=r.id;message='Demo global model palette added.';}
+else if(action==='unlink-global'){const rows=state.setup.globalContainers,i=rows.findIndex(function(r){return r.id===state.setup.selectedGlobalContainer;});if(i<0)return;rows.splice(i,1);state.setup.selectedGlobalContainer=rows[0]?rows[0].id:'';message='Demo global rectangle unlinked; source settings are retained.';}
+else if(action==='add-point'||action==='add-empty'){const n=makeSource(uid('source'),action==='add-point'?'Point (demo)':'Empty (demo)',false);n.kind=action==='add-point'?'Point':'Empty';s.sources.push(n);s.selectedSource=n.id;message='Demo '+n.kind+' source added.';}
+else if(action==='remove-source'){if(!source)return;s.sources=s.sources.filter(function(o){return o.id!==source.id;});s.selectedSource=s.sources[0]?s.sources[0].id:'';message='Demo source row unregistered.';}
+else if(action==='fill-coverage'||action==='empty-coverage'){s.coverage='Painted area';s.demoCoverage=action==='fill-coverage'?'Full':'Empty';s.strokes=[];s.selectedStroke='';message='Demo coverage marked '+s.demoCoverage.toLowerCase()+'; demo history reset. No scene calculation.';}
+else if(action==='delete-stroke'){s.strokes=s.strokes.filter(function(o){return o.id!==s.selectedStroke;});s.selectedStroke=s.strokes[0]?s.strokes[0].id:'';message='Demo stroke removed.';}
+else if(action==='apply-background'){const allowed=earlierSets(l,s).map(function(o){return o.id;});s.backgroundApplied={mode:s.backgroundMode,refs:s.backgroundRefs.filter(function(id){return allowed.includes(id);})};message='Demo background mode and references stored together.';}
+else if(action==='remove-area'){l.areas=l.areas.filter(function(o){return o.id!==l.selectedArea;});l.selectedArea=l.areas[0]?l.areas[0].id:'';message='Demo Area unlinked.';}
+else if(action==='reset-rotation'){['rotXMin','rotXMax','rotYMin','rotYMax','rotZMin'].forEach(function(k){l[k]=0;});l.rotZMax=360;}
+else if(action==='reset-xyz-scale'){['sclXMin','sclXMax','sclYMin','sclYMax','sclZMin','sclZMax'].forEach(function(k){l[k]=1;});}
+else if(action==='reset-whole-scale'){l.scaleMin=1;l.scaleMax=1;}
+else if(action==='reset-movement'){['movXMin','movXMax','movYMin','movYMax','movZMin','movZMax'].forEach(function(k){l[k]=0;});}
+else if(action==='reset-rule'){const scope=state.spacingScope;if(scope==='This paint set')s.selfRule=null;else if(scope==='Default between sets')l.betweenSets=freshRule();else if(scope==='Layer default within sets')l.defaultWithin=freshRule();else if(scope==='Pair of paint sets')delete state.setPairs[pairKey(s.id,state.spacingPeer)];else delete state.layerPairs[pairKey(l.id,state.spacingPeer)];message='Current demo scope uses its inherited / default rule.';}
+else if(action==='show-help'){state.ui.open['statistics-advanced']=true;state.ui.open['workflow-help']=true;message='Workflow and ownership help opened.';}
+else return;
+clearDrag();render();announce(message);
+}
+function saveBoundValue(element){
+if(element.disabled||!element.dataset.target||!element.dataset.field)return false;
+if(element.type==='radio'&&!element.checked)return false;
+const object=resolveTarget(element.dataset.target,true),key=element.dataset.field;if(!object)return false;
+let value;
+if(element.type==='checkbox')value=element.checked;
+else if(element.type==='number'){if(element.value===''||!Number.isFinite(element.valueAsNumber))return false;value=element.valueAsNumber;if(element.min!=='')value=Math.max(Number(element.min),value);if(element.max!=='')value=Math.min(Number(element.max),value);}
+else value=element.value;
+object[key]=value;
+if(key==='name')updateBreadcrumb();
+return true;
+}
+function safeJson(value){return JSON.stringify(value).replace(/</g,'\\u003c').replace(/>/g,'\\u003e').replace(/&/g,'\\u0026').replace(/\u2028/g,'\\u2028').replace(/\u2029/g,'\\u2029');}
+function serializeSnapshot(){
+document.querySelectorAll('details[data-disclosure]').forEach(function(d){state.ui.open[d.dataset.disclosure]=d.open;});
+const clone=document.documentElement.cloneNode(true);
+clone.querySelector('#prototype-state').textContent=safeJson(state);
+clone.querySelector('body').classList.remove('arranging');
+clone.querySelector('#arrange').setAttribute('aria-pressed','false');
+clone.querySelector('#rollouts').replaceChildren();clone.querySelector('#setup-controls').replaceChildren();
+clone.querySelector('#status').textContent='Saved demo layout · Save HTML keeps further changes.';
+clone.querySelectorAll('.drop-before,.drop-after,.is-dragging').forEach(function(el){el.classList.remove('drop-before','drop-after','is-dragging');});
+return '<!doctype html>\n'+clone.outerHTML;
+}
+function saveHTML(){const html=serializeSnapshot();if(exportUrl)URL.revokeObjectURL(exportUrl);exportUrl=URL.createObjectURL(new Blob([html],{type:'text/html;charset=utf-8'}));const a=document.createElement('a');a.href=exportUrl;a.download='cyrus-scatter-073-layout.html';document.body.appendChild(a);a.click();a.remove();announce('HTML copy prepared with layout, disclosures, width and demo settings.');}
+function resetLayout(){state.ui.sections=SECTION_ORDER.slice();state.ui.groups=copy(originalRows);state.ui.open=copy(DEFAULT_OPEN);state.ui.width=400;arranging=false;clearDrag();render();announce('Layout reset. Demo values and evaluation order were kept.');}
+function dropTarget(event){
+if(!arranging||!dragSession)return null;
+if(dragSession.kind==='section'){const summary=event.target.closest('.rollout > summary');if(!summary)return null;const el=summary.closest('[data-section]'),id=el.dataset.section;return SECTION_ORDER.includes(id)?{element:el,hitbox:summary,id:id,group:'',kind:'section'}:null;}
+const el=event.target.closest('.field-row[data-row]');if(!el)return null;const group=el.parentElement;
+if(!group.matches('fieldset[data-group]')||group.dataset.group!==dragSession.group)return null;
+const source=findGroup(dragSession.group);if(!source||!Array.from(source.children).some(function(r){return r.dataset.row===dragSession.id;}))return null;
+return {element:el,id:el.dataset.row,group:group.dataset.group,kind:'row'};
+}
+function reorderAt(order,sourceId,targetId,after){if(sourceId===targetId||!order.includes(sourceId)||!order.includes(targetId))return false;order.splice(order.indexOf(sourceId),1);order.splice(order.indexOf(targetId)+(after?1:0),0,sourceId);return true;}
+$('arrange').addEventListener('click',function(){arranging=!arranging;clearDrag();render();announce(arranging?'Arrange on. Drag handles or use arrows; rows stay in their group.':'Arrange off. Demo controls are ready to edit.');});
+$('panel-width').addEventListener('change',function(e){const width=Number(e.target.value);if(![320,400,480].includes(width))return;state.ui.width=width;$('study').style.setProperty('--panel-width',width+'px');announce('Panel width: '+width+' px.');});
+$('reset-layout').addEventListener('click',resetLayout);
+$('save-html').addEventListener('click',saveHTML);
+document.addEventListener('toggle',function(e){const d=e.target;if(d.isConnected&&d.matches('details[data-disclosure]'))state.ui.open[d.dataset.disclosure]=d.open;},true);
+document.addEventListener('input',function(e){const el=e.target;if(el.matches('input[data-target]')&&el.type!=='checkbox'&&el.type!=='radio')saveBoundValue(el);});
+document.addEventListener('change',function(e){
+const el=e.target,context=el.dataset.context;
+if(context==='layer'){switchLayer(el.value);return;}
+if(context==='set'){switchSet(el.value);return;}
+if(context==='background-refs'){currentSet().backgroundRefs=Array.from(el.selectedOptions).map(function(o){return o.value;}).filter(function(id){return earlierSets(currentLayer(),currentSet()).some(function(s){return s.id===id;});});return;}
+if(context==='container'){const l=currentLayer(),s=currentSet(),p=poolContext(l,s);if(p.rows.some(function(r){return r.id===el.value;})){if(p.owner==='Setup')state.setup.selectedGlobalContainer=el.value;else if(p.owner==='Layer')l.selectedContainer=el.value;else s.selectedContainer=el.value;render();}return;}
+if(context==='global-container'){state.setup.selectedGlobalContainer=el.value;render();return;}
+if(saveBoundValue(el)){if(el.type==='number')el.value=String(resolveTarget(el.dataset.target)[el.dataset.field]);if(el.dataset.refresh==='true'||el.dataset.field==='name')render();}
+});
+document.addEventListener('click',function(e){
+const move=e.target.closest('[data-layout-delta]');
+if(move){e.preventDefault();e.stopPropagation();if(move.disabled)return;const kind=move.dataset.layoutKind,id=move.dataset.layoutId,delta=Number(move.dataset.layoutDelta),g=move.dataset.layoutGroup;if(kind==='section')moveSection(id,delta);else moveRow(g,id,delta);const next=Array.from(document.querySelectorAll('[data-layout-delta]')).find(function(b){return b.dataset.layoutKind===kind&&b.dataset.layoutId===id&&b.dataset.layoutGroup===g&&Number(b.dataset.layoutDelta)===delta;});if(next&&!next.disabled)next.focus({preventScroll:true});return;}
+const handle=e.target.closest('[data-layout-drag]');if(handle){e.preventDefault();e.stopPropagation();return;}
+const action=e.target.closest('button[data-action]');if(action&&!action.disabled)performAction(action.dataset.action,action);
+});
+document.addEventListener('dragstart',function(e){
+const h=e.target.closest('[data-layout-drag]');if(!arranging||!h){e.preventDefault();return;}
+const kind=h.dataset.layoutKind,id=h.dataset.layoutId,group=h.dataset.layoutGroup||'';
+if(kind==='section'&&!SECTION_ORDER.includes(id)){e.preventDefault();return;}
+if(kind==='row'){const g=findGroup(group);if(!g||h.closest('fieldset[data-group]')!==g||h.closest('[data-row]').dataset.row!==id){e.preventDefault();return;}}
+dragSession={kind:kind,id:id,group:group};
+e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('application/x-cyrus-layout',JSON.stringify(dragSession));
+const source=kind==='section'?h.closest('[data-section]'):h.closest('[data-row]');source.classList.add('is-dragging');
+});
+document.addEventListener('dragover',function(e){
+if(!dragSession)return;e.preventDefault();
+document.querySelectorAll('.drop-before,.drop-after').forEach(function(el){el.classList.remove('drop-before','drop-after');});
+const target=dropTarget(e);if(!target||target.id===dragSession.id){e.dataTransfer.dropEffect='none';return;}
+e.dataTransfer.dropEffect='move';const bounds=(target.hitbox||target.element).getBoundingClientRect(),after=e.clientY>bounds.top+bounds.height/2;target.element.classList.add(after?'drop-after':'drop-before');
+});
+document.addEventListener('drop',function(e){
+if(!dragSession)return;e.preventDefault();const target=dropTarget(e);
+let payload;try{payload=JSON.parse(e.dataTransfer.getData('application/x-cyrus-layout'));}catch(error){}
+if(!target||!payload||payload.kind!==dragSession.kind||payload.id!==dragSession.id||payload.group!==dragSession.group){clearDrag();announce('Drop ignored. Move complete rows within their current group.');return;}
+const bounds=(target.hitbox||target.element).getBoundingClientRect(),after=e.clientY>bounds.top+bounds.height/2;
+const order=target.kind==='section'?state.ui.sections:state.ui.groups[target.group];
+const moved=Array.isArray(order)&&reorderAt(order,dragSession.id,target.id,after);clearDrag();if(moved){render();announce('Presentation reordered. Settings and evaluation order were kept.');}
+});
+document.addEventListener('dragend',clearDrag);
+window.addEventListener('pagehide',function(){if(exportUrl)URL.revokeObjectURL(exportUrl);});
+render();
+})();
+</script>
+</body>
+</html>

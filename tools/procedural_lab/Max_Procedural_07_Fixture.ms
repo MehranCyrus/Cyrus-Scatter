@@ -10,13 +10,13 @@ fn CyrusProcedural07Fixture = (
     local surface=plane length:1000 width:1000 lengthsegs:1 widthsegs:1 name:"Cyrus07_Fixture_Surface"
     local source=box length:8 width:8 height:20 pos:[1200,0,0] name:"Cyrus07_Fixture_Source"
     local node=AminScatterObject name:"Cyrus07_Fixture_Controller",root=node.baseObject
-    verify (root.uiVersion()=="0.72") "UI version"
+    verify (root.uiVersion()=="0.73" and root.calculationModel()=="CyrusUnified1") "UI version/model"
     root.setLayerTransfer true
     root.updateMode=1;root.surfaceNodes=#(surface);root.newLayer()
     local parent=root.selectedLayer()
     parent.amount=100;parent.sources=#(source);parent.sourceWeights=#(1.0);parent.paintEnabled=false
-    parent.randomSeed=42;parent.collisionEnabled=false
-    root.setLayerTransfer false;root.procUpgrade()
+    parent.randomSeed=42
+    root.setLayerTransfer false
     local rows=root.evaluateGroups(),builds=(root.groupCounters())[1]
     verify (rows[1].count==100) "candidate-budget count"
     root.evaluateGroups();verify ((root.groupCounters())[1]==builds) "warm controller cache"

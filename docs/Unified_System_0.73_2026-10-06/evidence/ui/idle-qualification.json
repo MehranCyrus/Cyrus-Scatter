@@ -1,0 +1,198 @@
+{
+  "private_host_pid": 59168,
+  "launch_script_sha256": "003b717f070bf07d6f7cae031afd4fb7b14f4d550549e5d16492ff73e8716162",
+  "integrated_sections_open": true,
+  "cases": [
+    {
+      "case": "live-closed",
+      "elapsed_s": 10.577999999979511,
+      "unexpected_changes": {},
+      "host_cpu_s": 2.625,
+      "host_memory_start": {
+        "cpu_s": 75.765625,
+        "WorkingSet64": 3039924224,
+        "PrivateMemorySize64": 5249249280
+      },
+      "host_memory_end": {
+        "cpu_s": 78.390625,
+        "WorkingSet64": 3035754496,
+        "PrivateMemorySize64": 5244960768
+      }
+    },
+    {
+      "case": "live-editor-open",
+      "elapsed_s": 10.5,
+      "unexpected_changes": {},
+      "host_cpu_s": 2.25,
+      "host_memory_start": {
+        "cpu_s": 82.734375,
+        "WorkingSet64": 3052023808,
+        "PrivateMemorySize64": 5259268096
+      },
+      "host_memory_end": {
+        "cpu_s": 84.984375,
+        "WorkingSet64": 3051991040,
+        "PrivateMemorySize64": 5259202560
+      }
+    },
+    {
+      "case": "manual-pending",
+      "elapsed_s": 10.375,
+      "unexpected_changes": {},
+      "host_cpu_s": 2.03125,
+      "host_memory_start": {
+        "cpu_s": 85.703125,
+        "WorkingSet64": 3055489024,
+        "PrivateMemorySize64": 5259251712
+      },
+      "host_memory_end": {
+        "cpu_s": 87.734375,
+        "WorkingSet64": 3055431680,
+        "PrivateMemorySize64": 5259128832
+      }
+    },
+    {
+      "case": "live-real-edit",
+      "elapsed_s": 10.484000000054948,
+      "unexpected_changes": {},
+      "host_cpu_s": 2.625,
+      "host_memory_start": {
+        "cpu_s": 88.421875,
+        "WorkingSet64": 3056734208,
+        "PrivateMemorySize64": 5260296192
+      },
+      "host_memory_end": {
+        "cpu_s": 91.046875,
+        "WorkingSet64": 3055128576,
+        "PrivateMemorySize64": 5258522624
+      }
+    },
+    {
+      "case": "live-density-edit",
+      "elapsed_s": 10.594000000040978,
+      "unexpected_changes": {},
+      "host_cpu_s": 2.34375,
+      "host_memory_start": {
+        "cpu_s": 93.234375,
+        "WorkingSet64": 3055996928,
+        "PrivateMemorySize64": 5258682368
+      },
+      "host_memory_end": {
+        "cpu_s": 95.578125,
+        "WorkingSet64": 3057549312,
+        "PrivateMemorySize64": 5260042240
+      }
+    },
+    {
+      "case": "failed-successor",
+      "elapsed_s": 10.484000000054948,
+      "unexpected_changes": {},
+      "host_cpu_s": 2.4375,
+      "host_memory_start": {
+        "cpu_s": 96.453125,
+        "WorkingSet64": 3056365568,
+        "PrivateMemorySize64": 5258752000
+      },
+      "host_memory_end": {
+        "cpu_s": 98.890625,
+        "WorkingSet64": 3056340992,
+        "PrivateMemorySize64": 5258706944
+      }
+    },
+    {
+      "case": "restored-valid-recipe",
+      "elapsed_s": 10.5,
+      "unexpected_changes": {},
+      "host_cpu_s": 2.265625,
+      "host_memory_start": {
+        "cpu_s": 99.78125,
+        "WorkingSet64": 3056308224,
+        "PrivateMemorySize64": 5258752000
+      },
+      "host_memory_end": {
+        "cpu_s": 102.046875,
+        "WorkingSet64": 3056283648,
+        "PrivateMemorySize64": 5258706944
+      }
+    },
+    {
+      "case": "after-diagnostic-recording",
+      "elapsed_s": 10.483999999938533,
+      "unexpected_changes": {},
+      "host_cpu_s": 1.953125,
+      "host_memory_start": {
+        "cpu_s": 121.234375,
+        "WorkingSet64": 3112927232,
+        "PrivateMemorySize64": 5270429696
+      },
+      "host_memory_end": {
+        "cpu_s": 123.1875,
+        "WorkingSet64": 3112947712,
+        "PrivateMemorySize64": 5270429696
+      }
+    }
+  ],
+  "parameter_edits": "Live mode/count use actual Modify handlers; direct texture and invalid-value fixture writes explicitly request redraw, as authoring callers must.",
+  "loaded_payload_sha256": "1df871f7859c89f39d8b7aa65c28f4df0ad28c022f3659cfdfec82415ca87451",
+  "diagnostic_overhead": {
+    "False": {
+      "samples_ms": [
+        274,
+        286,
+        271,
+        352,
+        455,
+        369,
+        372,
+        292,
+        267,
+        324,
+        281,
+        279,
+        270,
+        285,
+        270,
+        271,
+        266,
+        288,
+        277,
+        282,
+        532,
+        278,
+        286,
+        264
+      ],
+      "median_ms": 281.5
+    },
+    "True": {
+      "samples_ms": [
+        275,
+        277,
+        280,
+        276,
+        269,
+        279,
+        283,
+        274,
+        295,
+        381,
+        388,
+        292,
+        296,
+        271,
+        276,
+        279,
+        293,
+        282,
+        285,
+        274,
+        281,
+        282,
+        266,
+        269
+      ],
+      "median_ms": 279.5
+    }
+  },
+  "passed": true
+}

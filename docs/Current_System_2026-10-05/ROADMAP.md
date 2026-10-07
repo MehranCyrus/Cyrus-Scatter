@@ -1,10 +1,16 @@
 # Ordered roadmap and implementation guidelines
 
+**Current acceptance loops:** [approved UI, real scenes, exact evidence and remaining limits](../Full_Qualification_0.73_2026-10-07/ROADMAP.md). The latest report supersedes older UI/runtime qualification claims; dated implementation and R&D evidence below remains historical. No artist installation or Git operations are part of this campaign.
+
+**Superseded implementation queue:** the [0.73 roadmap](../Unified_System_0.73_2026-10-06/ROADMAP.md) now governs next work. Unified settings, labelled/linked/movable containers, catalog reconciliation and a closed MCP successor are implemented in that campaign. The dated queue below retains useful wider reporting/render/learning/release gates. Old-schema preservation and perpetual policy-3 read-only requirements no longer apply. Full causal archives and full recipe/Brush/Edit automation remain incomplete.
+
+**Latest user direction, 6 October:** the next prepared slice is [unified procedural settings and source-container nodes](../Unified_Procedural_Settings_2026-10-06/README.md). Preserve useful old features by porting them, then remove unpublished legacy policies/settings/schema support; add container labels, linked Modify editing and transactional source movement. Its [checklist](../Unified_Procedural_Settings_2026-10-06/IMPLEMENTATION_CHECKLIST.md) supersedes this older queue's requirement to keep old schemas indefinitely. This is preparation, not delivered implementation or qualification.
+
 **6 October status:** D01/D02's bounded recorder/export slice, M01 catalog, M02 cached publication pages and R01/R02's tested idle/Manual/IR cases now have [runtime evidence](../Live_Runtime_2026-10-06/RESULTS.md). Full causal archives, complete recipe export, policy-3 writes, renderer workers and artistic learning are not complete. Use [the updated ordered queue](../Live_Runtime_2026-10-06/NEXT_WORK.md) for the next implementation slice; retain the acceptance gates below.
 
 5 October 2026. **Planning only.** The current task finishes with documentation. The unchecked items below are later implementation work, not actions being silently started. Preserve the native engine/UI, artist files, licensing work and historical evidence.
 
-**Vendor recheck:** the [5 October follow-up](VENDOR_RECHECK.md) confirms the sequence and adds gates V01–V08 below. Its source research is not runtime acceptance. Diagnostics build/generator edits appeared independently during this pass; D01 remains unqualified until its own implementation and test receipts meet these gates.
+**Vendor recheck:** the [5 October follow-up](VENDOR_RECHECK.md) confirms the sequence and adds gates V01â€“V08 below. Its source research is not runtime acceptance. Diagnostics build/generator edits appeared independently during this pass; D01 remains unqualified until its own implementation and test receipts meet these gates.
 
 ## Delivery sequence
 
@@ -46,7 +52,7 @@ No percentage-complete or delivery date is inferred from this queue. Increase co
 
 ### Required additions from the vendor recheck
 
-These extend the acceptance column above; they do not create a second implementation sequence. Full assertions and source evidence are in [V01–V08](VENDOR_RECHECK.md#acceptance-additions-to-the-existing-queue).
+These extend the acceptance column above; they do not create a second implementation sequence. Full assertions and source evidence are in [V01â€“V08](VENDOR_RECHECK.md#acceptance-additions-to-the-existing-queue).
 
 | Existing tasks | Additional exit gates |
 | --- | --- |
@@ -54,10 +60,10 @@ These extend the acceptance column above; they do not create a second implementa
 | D02 / performance | V04/V05: self versus inclusive elapsed time, queue delay, CPU/draw/upload counters and unavailable GPU/presentation values; full source/Brush/staging resource envelope and safe cancellation boundaries. |
 | M01 / M02 | V02/V03/V05: explicit identity lifetimes, native policy and host mode, passive cached membership, actual transforms/radii and immutable publication recipes. Describe source diversity separately from spatial clumping. |
 | M03 / M04 | V02/V03/V07: container boundary/parent/overlap cases, nearby/folded Brush surfaces, unit and transform boundaries; Python indexing/wrapper identity and failure/Undo semantics. Preserve old plans and current verified recovery. |
-| M05 | V04/V06/V07: total candidate × required-camera × attempt budgets, explicit worker mode, independently qualified Batch, actual decoded matching artifacts and complete-view joins. Interrupted/late output cannot impersonate the current attempt. |
+| M05 | V04/V06/V07: total candidate Ã— required-camera Ã— attempt budgets, explicit worker mode, independently qualified Batch, actual decoded matching artifacts and complete-view joins. Interrupted/late output cannot impersonate the current attempt. |
 | A01 / A02 / A03 | V05/V08: artifact-only gallery browsing, explicit apply, versioned feature preparation and training/inference parity. Taste ranking, technical prediction and inverse recipe proposals have separate labels and metrics. |
 
-The research roadmap's P0–P7 phases map to this queue in its [coordination section](../AI_Design_Learning_Research_2026-10-05/10_ROADMAP.md#coordination-with-the-current-product-roadmap). Its E15–E18 fixtures are planned tests to reuse, not additional passing evidence.
+The research roadmap's P0â€“P7 phases map to this queue in its [coordination section](../AI_Design_Learning_Research_2026-10-05/10_ROADMAP.md#coordination-with-the-current-product-roadmap). Its E15â€“E18 fixtures are planned tests to reuse, not additional passing evidence.
 
 ## Cross-cutting product work
 

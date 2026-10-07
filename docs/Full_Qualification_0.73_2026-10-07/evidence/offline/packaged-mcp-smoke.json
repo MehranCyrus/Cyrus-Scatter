@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "tool_count": 12,
+  "resource_count": 7,
+  "package_source_equivalent_files": 22,
+  "no_enrollment_granted": true,
+  "offline_hash_install": true,
+  "wheel_sha256": "a313ce89b9bac6254409e110c99a34ae86e3405b693107afc47a5ba4a4e6fd2d",
+  "host_not_opened": true
+}

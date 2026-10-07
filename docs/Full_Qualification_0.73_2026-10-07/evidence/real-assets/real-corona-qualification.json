@@ -1,0 +1,1019 @@
+{
+  "pid": 51112,
+  "script_sha256": "15390e733aac8a02433bfbc938f61fbe95f7f41eb35102baedf100dfe6c1a268",
+  "cases": [
+    {
+      "label": "real-editor-idle",
+      "before": {
+        "label": "real-editor-idle-start",
+        "time_ms": 11701345,
+        "epoch": 2,
+        "group_hits": 0,
+        "prepared_builds": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "prepared_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "preview_builds": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "dirty": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "container_scans": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "container_tests": [
+          472,
+          474,
+          472,
+          474,
+          470,
+          476,
+          474,
+          474
+        ],
+        "membership_builds": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "interaction_checks": 9,
+        "ir_timer_calls": 2,
+        "render_key_calls": 0,
+        "bridge_builds": 0,
+        "bridge_error": "",
+        "live_callbacks": 192,
+        "live_redraw_requests": 30,
+        "plugin_timers": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "animation_playing": false,
+        "retained": [
+          59108,
+          19,
+          2,
+          3,
+          4,
+          464,
+          691215552,
+          130601,
+          0,
+          19,
+          709296,
+          1,
+          "5799876280246200693;16332259342737025148;6389547519504418288;12848674751808468220;13532334141177647490;8499064062431895781;12928649646595373736;15897211525963229049;"
+        ],
+        "retained_mesh": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          536870912,
+          1073741824
+        ]
+      },
+      "after": {
+        "label": "real-editor-idle-end",
+        "time_ms": 11713517,
+        "epoch": 2,
+        "group_hits": 0,
+        "prepared_builds": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "prepared_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "preview_builds": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "dirty": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "container_scans": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "container_tests": [
+          472,
+          474,
+          472,
+          474,
+          470,
+          476,
+          474,
+          474
+        ],
+        "membership_builds": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "interaction_checks": 26,
+        "ir_timer_calls": 2,
+        "render_key_calls": 0,
+        "bridge_builds": 0,
+        "bridge_error": "",
+        "live_callbacks": 192,
+        "live_redraw_requests": 30,
+        "plugin_timers": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "animation_playing": false,
+        "retained": [
+          59108,
+          19,
+          2,
+          3,
+          4,
+          464,
+          691215552,
+          131247,
+          0,
+          19,
+          709296,
+          1,
+          "5799876280246200693;16332259342737025148;6389547519504418288;12848674751808468220;13532334141177647490;8499064062431895781;12928649646595373736;15897211525963229049;"
+        ],
+        "retained_mesh": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          536870912,
+          1073741824
+        ]
+      },
+      "unexpected_calculation_upload_changes": {}
+    },
+    {
+      "label": "real-ir-idle",
+      "before": {
+        "label": "real-ir-idle-start",
+        "time_ms": 11729953,
+        "epoch": 2,
+        "group_hits": 16,
+        "prepared_builds": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "prepared_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "preview_builds": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "dirty": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "container_scans": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "container_tests": [
+          472,
+          474,
+          472,
+          474,
+          470,
+          476,
+          474,
+          474
+        ],
+        "membership_builds": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "interaction_checks": 31,
+        "ir_timer_calls": 3,
+        "render_key_calls": 3,
+        "bridge_builds": 1,
+        "bridge_error": "",
+        "live_callbacks": 196,
+        "live_redraw_requests": 30,
+        "plugin_timers": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "animation_playing": false,
+        "retained": [
+          59108,
+          19,
+          2,
+          3,
+          4,
+          464,
+          691215552,
+          131361,
+          0,
+          19,
+          709296,
+          1,
+          "5799876280246200693;16332259342737025148;6389547519504418288;12848674751808468220;13532334141177647490;8499064062431895781;12928649646595373736;15897211525963229049;"
+        ],
+        "retained_mesh": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          536870912,
+          1073741824
+        ]
+      },
+      "after": {
+        "label": "real-ir-idle-end",
+        "time_ms": 11742157,
+        "epoch": 2,
+        "group_hits": 16,
+        "prepared_builds": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "prepared_hits": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "preview_builds": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "dirty": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "container_scans": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "container_tests": [
+          472,
+          474,
+          472,
+          474,
+          470,
+          476,
+          474,
+          474
+        ],
+        "membership_builds": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "interaction_checks": 31,
+        "ir_timer_calls": 3,
+        "render_key_calls": 3,
+        "bridge_builds": 1,
+        "bridge_error": "",
+        "live_callbacks": 196,
+        "live_redraw_requests": 30,
+        "plugin_timers": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "animation_playing": false,
+        "retained": [
+          59108,
+          19,
+          2,
+          3,
+          4,
+          464,
+          691215552,
+          131361,
+          0,
+          19,
+          709296,
+          1,
+          "5799876280246200693;16332259342737025148;6389547519504418288;12848674751808468220;13532334141177647490;8499064062431895781;12928649646595373736;15897211525963229049;"
+        ],
+        "retained_mesh": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          536870912,
+          1073741824
+        ]
+      },
+      "unexpected_calculation_upload_changes": {}
+    },
+    {
+      "label": "real-ir-edited",
+      "before": {
+        "label": "real-ir-edited-start",
+        "time_ms": 11758761,
+        "epoch": 3,
+        "group_hits": 40,
+        "prepared_builds": [
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "prepared_hits": [
+          0,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "preview_builds": [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "dirty": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "container_scans": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "container_tests": [
+          472,
+          474,
+          472,
+          474,
+          470,
+          476,
+          474,
+          474
+        ],
+        "membership_builds": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "interaction_checks": 50,
+        "ir_timer_calls": 9,
+        "render_key_calls": 9,
+        "bridge_builds": 2,
+        "bridge_error": "",
+        "live_callbacks": 210,
+        "live_redraw_requests": 31,
+        "plugin_timers": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "animation_playing": false,
+        "retained": [
+          59156,
+          19,
+          3,
+          4,
+          6,
+          483,
+          691925424,
+          131779,
+          0,
+          19,
+          709872,
+          1,
+          "9711160740986367011;3448895458682716261;6389547519504418288;14207307843667384609;798475571084931770;13640248132709871455;11601737101804263448;15897211525963229049;"
+        ],
+        "retained_mesh": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          536870912,
+          1073741824
+        ]
+      },
+      "after": {
+        "label": "real-ir-edited-end",
+        "time_ms": 11770932,
+        "epoch": 3,
+        "group_hits": 40,
+        "prepared_builds": [
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "prepared_hits": [
+          0,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "preview_builds": [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "dirty": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "container_scans": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "container_tests": [
+          472,
+          474,
+          472,
+          474,
+          470,
+          476,
+          474,
+          474
+        ],
+        "membership_builds": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "interaction_checks": 50,
+        "ir_timer_calls": 9,
+        "render_key_calls": 9,
+        "bridge_builds": 2,
+        "bridge_error": "",
+        "live_callbacks": 210,
+        "live_redraw_requests": 31,
+        "plugin_timers": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "animation_playing": false,
+        "retained": [
+          59156,
+          19,
+          3,
+          4,
+          6,
+          483,
+          691925424,
+          131779,
+          0,
+          19,
+          709872,
+          1,
+          "9711160740986367011;3448895458682716261;6389547519504418288;14207307843667384609;798475571084931770;13640248132709871455;11601737101804263448;15897211525963229049;"
+        ],
+        "retained_mesh": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          536870912,
+          1073741824
+        ]
+      },
+      "unexpected_calculation_upload_changes": {}
+    },
+    {
+      "label": "real-after-stop-idle",
+      "before": {
+        "label": "real-after-stop-idle-start",
+        "time_ms": 11776212,
+        "epoch": 3,
+        "group_hits": 48,
+        "prepared_builds": [
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "prepared_hits": [
+          0,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "preview_builds": [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "dirty": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "container_scans": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "container_tests": [
+          472,
+          474,
+          472,
+          474,
+          470,
+          476,
+          474,
+          474
+        ],
+        "membership_builds": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "interaction_checks": 66,
+        "ir_timer_calls": 11,
+        "render_key_calls": 9,
+        "bridge_builds": 2,
+        "bridge_error": "",
+        "live_callbacks": 217,
+        "live_redraw_requests": 32,
+        "plugin_timers": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "animation_playing": false,
+        "retained": [
+          59156,
+          19,
+          3,
+          4,
+          6,
+          483,
+          691925424,
+          132311,
+          0,
+          19,
+          709872,
+          1,
+          "9711160740986367011;3448895458682716261;6389547519504418288;14207307843667384609;798475571084931770;13640248132709871455;11601737101804263448;15897211525963229049;"
+        ],
+        "retained_mesh": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          536870912,
+          1073741824
+        ]
+      },
+      "after": {
+        "label": "real-after-stop-idle-end",
+        "time_ms": 11788413,
+        "epoch": 3,
+        "group_hits": 48,
+        "prepared_builds": [
+          3,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "prepared_hits": [
+          0,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "preview_builds": [
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "dirty": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "container_scans": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2
+        ],
+        "container_tests": [
+          472,
+          474,
+          472,
+          474,
+          470,
+          476,
+          474,
+          474
+        ],
+        "membership_builds": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "interaction_checks": 87,
+        "ir_timer_calls": 11,
+        "render_key_calls": 9,
+        "bridge_builds": 2,
+        "bridge_error": "",
+        "live_callbacks": 217,
+        "live_redraw_requests": 32,
+        "plugin_timers": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "animation_playing": false,
+        "retained": [
+          59156,
+          19,
+          3,
+          4,
+          6,
+          483,
+          691925424,
+          133147,
+          0,
+          19,
+          709872,
+          1,
+          "9711160740986367011;3448895458682716261;6389547519504418288;14207307843667384609;798475571084931770;13640248132709871455;11601737101804263448;15897211525963229049;"
+        ],
+        "retained_mesh": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          536870912,
+          1073741824
+        ]
+      },
+      "unexpected_calculation_upload_changes": {}
+    }
+  ],
+  "passed": true,
+  "stop_observations": [
+    {
+      "type": 0,
+      "timer": true,
+      "phase": 0,
+      "pending": true,
+      "resume": false,
+      "nodes": 193,
+      "busy": false,
+      "error": "",
+      "observed_after_s": 0.2029999999795109
+    },
+    {
+      "type": 0,
+      "timer": false,
+      "phase": 0,
+      "pending": false,
+      "resume": false,
+      "nodes": 0,
+      "busy": false,
+      "error": "",
+      "observed_after_s": 1.6099999999860302
+    }
+  ],
+  "ir_events": {
+    "render.pre": 2,
+    "bridge.build_requested": 2,
+    "publication.reused": 48,
+    "bridge.completed": 2,
+    "input.received": 25,
+    "container.notification": 184,
+    "input.classified": 184,
+    "solve.started": 1,
+    "prepare.started": 1,
+    "prepare.reused": 7,
+    "preview.installed": 8,
+    "publication.committed": 1,
+    "ir.stop_requested": 1,
+    "render.post": 2,
+    "ir.stop_result": 1,
+    "ir.start_requested": 1
+  },
+  "ir_health": {
+    "retained": 470,
+    "retained_bytes": 124984,
+    "high_water_bytes": 124984,
+    "evicted": 0,
+    "lock_drops": 0,
+    "failures": 0,
+    "truncated": 0
+  },
+  "ir": {
+    "passes": 5,
+    "type": 3,
+    "groups": 19,
+    "error": "",
+    "accepted": [
+      66,
+      16,
+      83,
+      104,
+      413,
+      3417,
+      20344,
+      81
+    ]
+  },
+  "production": {
+    "duration_ms": 22615,
+    "bridge_builds": 1,
+    "epoch_before": 4,
+    "epoch_after": 4,
+    "error": "",
+    "pass_limit": 4
+  },
+  "visual_review_required": true
+}

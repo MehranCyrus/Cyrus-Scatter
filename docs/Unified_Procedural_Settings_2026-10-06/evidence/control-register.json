@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-06",
+  "status": "planned_not_implemented",
+  "control_count": 245,
+  "capability_count": 34,
+  "disposition_counts": {
+    "retain": 180,
+    "merge": 19,
+    "port": 45,
+    "retire": 1
+  },
+  "source_control_inventory_sha256": "de7854aedb7b86c6220743882448afc5bd06055d3a0a91a1ce588dfbf2a40d35",
+  "catalog_snapshot_sha256": "ed323f1e84be949acd590c3655381bebf91255f4e9c6f0193c3ea19067ea8a01",
+  "register_sha256": "4457d1d6b6e4aa7f8be3a7103448c7f3724fbf0924fc1af623b8fe945c5a4ee4",
+  "note": "Catalog controls match the current control inventory. Its previously documented capability-text/hash drift is not fixed by this planning register."
+}

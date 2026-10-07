@@ -1,0 +1,230 @@
+{
+  "private_host_pid": 30732,
+  "launch_script_sha256": "9614f6b7d95c0e7c97f9bbe7fa2cb5a770f7a3eca813f7a9f55ea68463d114bf",
+  "integrated_sections_open": true,
+  "cases": [
+    {
+      "case": "live-closed",
+      "elapsed_s": 10.375,
+      "unexpected_changes": {},
+      "draw_callback_observations": {
+        "interaction_queries": 0,
+        "retained_draws": 0
+      },
+      "host_cpu_s": 1.46875,
+      "host_memory_start": {
+        "cpu_s": 99.5625,
+        "WorkingSet64": 3093721088,
+        "PrivateMemorySize64": 5048528896
+      },
+      "host_memory_end": {
+        "cpu_s": 101.03125,
+        "WorkingSet64": 3087917056,
+        "PrivateMemorySize64": 5042593792
+      }
+    },
+    {
+      "case": "live-editor-open",
+      "elapsed_s": 10.375,
+      "unexpected_changes": {},
+      "draw_callback_observations": {
+        "interaction_queries": 0,
+        "retained_draws": 0
+      },
+      "host_cpu_s": 1.125,
+      "host_memory_start": {
+        "cpu_s": 106.90625,
+        "WorkingSet64": 3105173504,
+        "PrivateMemorySize64": 5059895296
+      },
+      "host_memory_end": {
+        "cpu_s": 108.03125,
+        "WorkingSet64": 3105492992,
+        "PrivateMemorySize64": 5059944448
+      }
+    },
+    {
+      "case": "manual-pending",
+      "elapsed_s": 10.359000000000378,
+      "unexpected_changes": {},
+      "draw_callback_observations": {
+        "interaction_queries": 0,
+        "retained_draws": 0
+      },
+      "host_cpu_s": 1.25,
+      "host_memory_start": {
+        "cpu_s": 108.59375,
+        "WorkingSet64": 3105554432,
+        "PrivateMemorySize64": 5059796992
+      },
+      "host_memory_end": {
+        "cpu_s": 109.84375,
+        "WorkingSet64": 3105550336,
+        "PrivateMemorySize64": 5059715072
+      }
+    },
+    {
+      "case": "live-real-edit",
+      "elapsed_s": 10.390000000001237,
+      "unexpected_changes": {},
+      "draw_callback_observations": {
+        "interaction_queries": 0,
+        "retained_draws": 0
+      },
+      "host_cpu_s": 0.828125,
+      "host_memory_start": {
+        "cpu_s": 111.109375,
+        "WorkingSet64": 3105779712,
+        "PrivateMemorySize64": 5059506176
+      },
+      "host_memory_end": {
+        "cpu_s": 111.9375,
+        "WorkingSet64": 3105759232,
+        "PrivateMemorySize64": 5059461120
+      }
+    },
+    {
+      "case": "live-density-edit",
+      "elapsed_s": 10.546999999998661,
+      "unexpected_changes": {},
+      "draw_callback_observations": {
+        "interaction_queries": 0,
+        "retained_draws": 0
+      },
+      "host_cpu_s": 2.328125,
+      "host_memory_start": {
+        "cpu_s": 113.75,
+        "WorkingSet64": 3105832960,
+        "PrivateMemorySize64": 5059612672
+      },
+      "host_memory_end": {
+        "cpu_s": 116.078125,
+        "WorkingSet64": 3105824768,
+        "PrivateMemorySize64": 5059592192
+      }
+    },
+    {
+      "case": "failed-successor",
+      "elapsed_s": 10.468999999999141,
+      "unexpected_changes": {},
+      "draw_callback_observations": {
+        "interaction_queries": 0,
+        "retained_draws": 0
+      },
+      "host_cpu_s": 1.84375,
+      "host_memory_start": {
+        "cpu_s": 116.8125,
+        "WorkingSet64": 3106123776,
+        "PrivateMemorySize64": 5059624960
+      },
+      "host_memory_end": {
+        "cpu_s": 118.65625,
+        "WorkingSet64": 3106107392,
+        "PrivateMemorySize64": 5059698688
+      }
+    },
+    {
+      "case": "restored-valid-recipe",
+      "elapsed_s": 10.468000000000757,
+      "unexpected_changes": {},
+      "draw_callback_observations": {
+        "interaction_queries": 0,
+        "retained_draws": 0
+      },
+      "host_cpu_s": 1.5,
+      "host_memory_start": {
+        "cpu_s": 119.359375,
+        "WorkingSet64": 3106131968,
+        "PrivateMemorySize64": 5059751936
+      },
+      "host_memory_end": {
+        "cpu_s": 120.859375,
+        "WorkingSet64": 3106140160,
+        "PrivateMemorySize64": 5059694592
+      }
+    },
+    {
+      "case": "after-diagnostic-recording",
+      "elapsed_s": 10.468999999999141,
+      "unexpected_changes": {},
+      "draw_callback_observations": {
+        "interaction_queries": 0,
+        "retained_draws": 0
+      },
+      "host_cpu_s": 1.484375,
+      "host_memory_start": {
+        "cpu_s": 140.1875,
+        "WorkingSet64": 3112632320,
+        "PrivateMemorySize64": 5062823936
+      },
+      "host_memory_end": {
+        "cpu_s": 141.671875,
+        "WorkingSet64": 3112648704,
+        "PrivateMemorySize64": 5062823936
+      }
+    }
+  ],
+  "parameter_edits": "Live mode/count use actual Modify handlers; direct texture and invalid-value fixture writes explicitly request redraw, as authoring callers must.",
+  "loaded_payload_sha256": "562300e09f3be559388b05899823d5455e6e7562ce571ae5633a1d093cfc74c7",
+  "diagnostic_overhead": {
+    "False": {
+      "samples_ms": [
+        349,
+        314,
+        312,
+        320,
+        313,
+        311,
+        322,
+        311,
+        317,
+        306,
+        337,
+        311,
+        310,
+        552,
+        331,
+        319,
+        301,
+        306,
+        315,
+        325,
+        317,
+        346,
+        311,
+        309
+      ],
+      "median_ms": 314.5
+    },
+    "True": {
+      "samples_ms": [
+        309,
+        319,
+        313,
+        308,
+        338,
+        312,
+        304,
+        351,
+        340,
+        322,
+        313,
+        336,
+        305,
+        304,
+        315,
+        323,
+        312,
+        319,
+        298,
+        314,
+        309,
+        309,
+        305,
+        303
+      ],
+      "median_ms": 312.5
+    }
+  },
+  "passed": true
+}

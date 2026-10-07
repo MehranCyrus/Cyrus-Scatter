@@ -1,0 +1,14 @@
+{
+  "changed_markdown_documents": 71,
+  "local_links_checked": 1130,
+  "unexpected_broken_links": [],
+  "protected_historical_link_exceptions": [],
+  "diff_check_exit": 0,
+  "production_sources_frozen": true,
+  "package_manifests_verified": true,
+  "no_computer_use": true,
+  "no_artist_install": true,
+  "no_commit_push": true,
+  "limitations": "File existence/whitespace checks, not semantic correctness of every historical statement or visual host acceptance",
+  "passed": true
+}

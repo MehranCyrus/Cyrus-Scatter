@@ -1,0 +1,38 @@
+{
+  "passed": true,
+  "computer_use": false,
+  "fixtures": {
+    "tools\\procedural_lab\\Max_Procedural_07_Acceptance.ms": "c7673c0d3dbfc8af537880935543332dbf1f77271e81666a8d9d18478726c97c",
+    "tools\\procedural_lab\\Max_Approved_Layout_073.ms": "ffba391b76189b7768a394dc38a0566058e7601ca2b4d16914e3c157af323d02"
+  },
+  "probe_sha256": [
+    "41c0b46bb1154f75c530728c11061b806127808ab438c81a2813f35d13846503",
+    "9bdadceec5d3212cb13f4e42c345e201695f52b9b0180eafa4f1c658df3263b1"
+  ],
+  "probes": [
+    {
+      "index": 0,
+      "elapsed_s": 59.875,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/layer-actions073-regression02/probe-aa5c60960c5a4980a81ecfc9f1f2ba8f.ms"
+    },
+    {
+      "index": 1,
+      "elapsed_s": 19.186999999999898,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/layer-actions073-regression02/probe-ddaa4c35226446a4839eca5b76fccfc0.ms"
+    }
+  ],
+  "owned_process_stopped": true,
+  "installed_product_files_unchanged": true,
+  "host_python_sources_unchanged": true,
+  "launch": {
+    "script_sha256": "9614f6b7d95c0e7c97f9bbe7fa2cb5a770f7a3eca813f7a9f55ea68463d114bf",
+    "binaries": {
+      "AminScatter.dlx": "146a1adafe16e71829841b3886804b9d627e77fb1b80e1ca094cd50111673d82",
+      "CyrusBrush.dlx": "48cf18266ada5f36acb967025de592a193f1c48f43d2a3800c94cd7ca7784006",
+      "CyrusBrushStorage.dlh": "6b02436c7c83322b3b7874ae03285084dddf7a3197ae7bb573d38b5ff0253799",
+      "CyrusScatterEdit.dlm": "a1fd381984943b1b8ed20cfa1a9d8ed31187d95dec7fddbf81ebd4a716deb31a"
+    },
+    "normal_profile_modified": false,
+    "development_transport": true
+  }
+}

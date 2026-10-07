@@ -1,4 +1,8 @@
-# Complete current control inventory
+# Historical 5 October control inventory
+
+For plain-language explanations of today's controls, use the [current artist reference](../Artist_Reference_0.73_2026-10-07/README.md) and its [complete control index](../Artist_Reference_0.73_2026-10-07/15_CONTROL_INDEX.md). This older listing is an inventory, not a current artist manual.
+
+**0.73 superseding inventory:** the current [semantic source inventory](../../AminScatter/tools/ui/layers-control-inventory.json) has 240 controls. [CONTROL_PORT_RESULTS.csv](../Unified_System_0.73_2026-10-06/CONTROL_PORT_RESULTS.csv) maps every previous 0.72 control to its current location or explicit retirement. The [artist guide](../Unified_System_0.73_2026-10-06/ARTIST_GUIDE.md) covers native Modify, optional popup and selected-container editing. The 241-row listing/hash below remains frozen 5 October evidence; [current capability coverage](CAPABILITY_MATRIX.md) governs today's native/MCP boundary.
 
 Generated from the existing authoritative inventory on 5 October 2026. No new controls or MCP tools are introduced. Capability IDs refer to [the coverage matrix](CAPABILITY_MATRIX.md). A family can contain both remotely supported and unavailable operations; family coverage is not per-button write authority. All **241** entries across **22** sections are listed. Repeated names in different sections are separate controls.
 

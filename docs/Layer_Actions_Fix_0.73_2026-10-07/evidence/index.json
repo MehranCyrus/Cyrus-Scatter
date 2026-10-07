@@ -1,0 +1,291 @@
+{
+  "date": "2026-10-07",
+  "sources": {
+    "AminScatter/scripts/AminScatterObject.ms": "9614f6b7d95c0e7c97f9bbe7fa2cb5a770f7a3eca813f7a9f55ea68463d114bf",
+    "AminScatter/tools/ui/templates/unified-core.ms": "e718cb1de707e0af7464313c591a86bbf35fd66b16e16ff73f3100174416e799",
+    "AminScatter/tools/ui/approved-layout.cjs": "f2e40ee64783d98db009040f52180b5b7b84527fbffecf115ebb9bd10a4a4405",
+    "AminScatter/tools/ui/templates/approved-main-ui.ms": "f19125dcdbf0f31fd7d99cb9d3291ca238473df58076189b73a3a2df23a1acd7",
+    "AminScatter/tools/ui/templates/container-properties-ui.ms": "607aa45af27cb7f931c88d76c769ab0357d5dafdf981600badbbbdb43393c296",
+    "AminScatter/tools/ui/approved-layout-rows.cjs": "07517aa33e440131d91e0645b9947992402f3214a19157c826012f74d5a31355",
+    "AminScatter/tools/ui/approved-layout-manifest.json": "44a976e9f7242eccb7d446202e2a1d32ab9fc2c7fe059862e961cbf3d1f49063",
+    "tools/procedural_lab/Max_Layer_Actions_073.ms": "64173b5d08b694700790662ac0f8375ce2ca614d018759c10d051f570588fcce"
+  },
+  "entries": [
+    {
+      "path": "layer-actions073-before02/qualification.json",
+      "bytes": 2729,
+      "sha256": "012740cda0c7c79d725baf9e01e7da81f7fa3e6bd5e8939ac9a6ea4eafeafe74",
+      "source": "build/mcp-qualification/layer-actions073-before02/qualification.json",
+      "source_sha256": "c03d65948d811f4c6554ec5fd14ab3047a6bb11738290488b811ea9009be2459",
+      "projected": true
+    },
+    {
+      "path": "layer-actions073-before02/layer-first-add.json",
+      "bytes": 237,
+      "sha256": "57dcbb61d58798ab4028e7585696d1f5e6778981f09c653d3db2743595b5f816",
+      "source": "build/mcp-qualification/layer-actions073-before02/layer-first-add.json",
+      "source_sha256": "57dcbb61d58798ab4028e7585696d1f5e6778981f09c653d3db2743595b5f816",
+      "projected": false
+    },
+    {
+      "path": "layer-actions073-fixed02/qualification.json",
+      "bytes": 5739,
+      "sha256": "088ea3b44c33f45f3d59c6935887e63bd10fe48dac7a7081bee1e782e87d4d1a",
+      "source": "build/mcp-qualification/layer-actions073-fixed02/qualification.json",
+      "source_sha256": "a5b632051bcfb46abf8582980779df6b07a0ce090ee050888c0cbf87e6a5f7bc",
+      "projected": true
+    },
+    {
+      "path": "layer-actions073-fixed02/layer-first-add.json",
+      "bytes": 221,
+      "sha256": "6f22408b71d9755255c5196cf370f4f57a752a6da5869c658e3c6d6d9975a3c7",
+      "source": "build/mcp-qualification/layer-actions073-fixed02/layer-first-add.json",
+      "source_sha256": "6f22408b71d9755255c5196cf370f4f57a752a6da5869c658e3c6d6d9975a3c7",
+      "projected": false
+    },
+    {
+      "path": "layer-actions073-fixed03/qualification.json",
+      "bytes": 5442,
+      "sha256": "7c0d2faa35ac8ac01518fb122c8d23731ccb525f6ae0e121e7129697325dcad7",
+      "source": "build/mcp-qualification/layer-actions073-fixed03/qualification.json",
+      "source_sha256": "f08df82e46155f69c146f9123fe6e744da6e0656f01b8aa332aefe55b5f3774d",
+      "projected": true
+    },
+    {
+      "path": "layer-actions073-fixed03/layer-first-add.json",
+      "bytes": 183,
+      "sha256": "cd600b896163472c2b58ceb10d1dd48a24503b6d7ca126c572a7b02600ea2d2e",
+      "source": "build/mcp-qualification/layer-actions073-fixed03/layer-first-add.json",
+      "source_sha256": "cd600b896163472c2b58ceb10d1dd48a24503b6d7ca126c572a7b02600ea2d2e",
+      "projected": false
+    },
+    {
+      "path": "layer-actions073-fixed03/layer-actions073.json",
+      "bytes": 581,
+      "sha256": "f432a610c30607f87c0f26b6ae1f44aa0f158471f722b5296c8543a818f2f8e2",
+      "source": "build/mcp-qualification/layer-actions073-fixed03/layer-actions073.json",
+      "source_sha256": "f432a610c30607f87c0f26b6ae1f44aa0f158471f722b5296c8543a818f2f8e2",
+      "projected": false
+    },
+    {
+      "path": "layer-actions073-regression02/qualification.json",
+      "bytes": 1692,
+      "sha256": "69bdcfef6d1fed2c226493f1533b569c5630b27032369b80af90987f12640ea1",
+      "source": "build/mcp-qualification/layer-actions073-regression02/qualification.json",
+      "source_sha256": "fafad2e268e61a709e92335cf89226d9a5266b974e368a38e4c1d938fc62d190",
+      "projected": true
+    },
+    {
+      "path": "layer-actions073-regression02/approved-layout073.json",
+      "bytes": 178,
+      "sha256": "1d922fa7c233e423501572505bce12e6029e50aabb2b77584cd66c0ef63d82d9",
+      "source": "build/mcp-qualification/layer-actions073-regression02/approved-layout073.json",
+      "source_sha256": "1d922fa7c233e423501572505bce12e6029e50aabb2b77584cd66c0ef63d82d9",
+      "projected": false
+    },
+    {
+      "path": "layer-actions073-regression02/approved-page-order.json",
+      "bytes": 214,
+      "sha256": "1b1085332eb2c3d59dd0fab8c221f2521ce9d3600db74c7e57245901ccaa6ba2",
+      "source": "build/mcp-qualification/layer-actions073-regression02/approved-page-order.json",
+      "source_sha256": "1b1085332eb2c3d59dd0fab8c221f2521ce9d3600db74c7e57245901ccaa6ba2",
+      "projected": false
+    },
+    {
+      "path": "layer-actions073-regression02/procedural-acceptance.json",
+      "bytes": 730,
+      "sha256": "e64d92c24e11b867c3b7bf7e039e7d42389821b2e0257f42a8892df8c6277606",
+      "source": "build/mcp-qualification/layer-actions073-regression02/procedural-acceptance.json",
+      "source_sha256": "e64d92c24e11b867c3b7bf7e039e7d42389821b2e0257f42a8892df8c6277606",
+      "projected": false
+    },
+    {
+      "path": "layer-actions073-regression02/idle-qualification.json",
+      "bytes": 5802,
+      "sha256": "7d2b3a6e53210eecfdfe1d69e4e2ebc2c43a1948be7d4c6d237a2f55cd240ebd",
+      "source": "build/mcp-qualification/layer-actions073-regression02/idle-qualification.json",
+      "source_sha256": "7d2b3a6e53210eecfdfe1d69e4e2ebc2c43a1948be7d4c6d237a2f55cd240ebd",
+      "projected": false
+    },
+    {
+      "path": "layer-actions073-regression02/live-closed-start.json",
+      "bytes": 567,
+      "sha256": "ffa9a122b341d110d971dbf2ee49aba3d27ced6feb6ecb774466c0ed1961835a",
+      "source": "build/mcp-qualification/layer-actions073-regression02/live-closed-start.json",
+      "source_sha256": "ffa9a122b341d110d971dbf2ee49aba3d27ced6feb6ecb774466c0ed1961835a",
+      "projected": false
+    },
+    {
+      "path": "layer-actions073-regression02/live-closed-end.json",
+      "bytes": 565,
+      "sha256": "ef42e5652dcab7bf6801f0b8f0803ca7b4bb0bc801d1282cd01bcd048cc8b443",
+      "source": "build/mcp-qualification/layer-actions073-regression02/live-closed-end.json",
+      "source_sha256": "ef42e5652dcab7bf6801f0b8f0803ca7b4bb0bc801d1282cd01bcd048cc8b443",
+      "projected": false
+    },
+    {
+      "path": "layer-actions073-regression02/live-editor-open-start.json",
+      "bytes": 572,
+      "sha256": "251de4ab894351a6347ece0ce362bd40b06adba4ab1ba98d17ff6dcfc0b26f4c",
+      "source": "build/mcp-qualification/layer-actions073-regression02/live-editor-open-start.json",
+      "source_sha256": "251de4ab894351a6347ece0ce362bd40b06adba4ab1ba98d17ff6dcfc0b26f4c",
+      "projected": false
+    },
+    {
+      "path": "layer-actions073-regression02/live-editor-open-end.json",
+      "bytes": 570,
+      "sha256": "cb4413d2732e4545e1769f6f9c9b9336dd5db3e0687c18f33fe3fb61cf705578",
+      "source": "build/mcp-qualification/layer-actions073-regression02/live-editor-open-end.json",
+      "source_sha256": "cb4413d2732e4545e1769f6f9c9b9336dd5db3e0687c18f33fe3fb61cf705578",
+      "projected": false
+    },
+    {
+      "path": "layer-actions073-regression02/manual-pending-start.json",
+      "bytes": 569,
+      "sha256": "b608f09ea61b3317f9c22ab857270b2f27c8e9d647450527201dce5610764b99",
+      "source": "build/mcp-qualification/layer-actions073-regression02/manual-pending-start.json",
+      "source_sha256": "b608f09ea61b3317f9c22ab857270b2f27c8e9d647450527201dce5610764b99",
+      "projected": false
+    },
+    {
+      "path": "layer-actions073-regression02/manual-pending-end.json",
+      "bytes": 567,
+      "sha256": "04c415fa0cd058e4a50ab6fb8fb3b4227d3c7b32af3034d6ad93e53ebad62713",
+      "source": "build/mcp-qualification/layer-actions073-regression02/manual-pending-end.json",
+      "source_sha256": "04c415fa0cd058e4a50ab6fb8fb3b4227d3c7b32af3034d6ad93e53ebad62713",
+      "projected": false
+    },
+    {
+      "path": "layer-actions073-regression02/live-real-edit-start.json",
+      "bytes": 570,
+      "sha256": "826391b3a9fca030de6ab140590d044a109825ffa5625000d506e082bf487f65",
+      "source": "build/mcp-qualification/layer-actions073-regression02/live-real-edit-start.json",
+      "source_sha256": "826391b3a9fca030de6ab140590d044a109825ffa5625000d506e082bf487f65",
+      "projected": false
+    },
+    {
+      "path": "layer-actions073-regression02/live-real-edit-end.json",
+      "bytes": 568,
+      "sha256": "fa0dfd66b1fed182c1af99d6ab0df9bb41ca9393cf1a5b218c8fd05b0066dc4b",
+      "source": "build/mcp-qualification/layer-actions073-regression02/live-real-edit-end.json",
+      "source_sha256": "fa0dfd66b1fed182c1af99d6ab0df9bb41ca9393cf1a5b218c8fd05b0066dc4b",
+      "projected": false
+    },
+    {
+      "path": "layer-actions073-regression02/live-density-edit-start.json",
+      "bytes": 574,
+      "sha256": "22f433c35f1e946201b807de229d1b9b14bc803df3a590c84154e0df302df9a6",
+      "source": "build/mcp-qualification/layer-actions073-regression02/live-density-edit-start.json",
+      "source_sha256": "22f433c35f1e946201b807de229d1b9b14bc803df3a590c84154e0df302df9a6",
+      "projected": false
+    },
+    {
+      "path": "layer-actions073-regression02/live-density-edit-end.json",
+      "bytes": 572,
+      "sha256": "6de1c970aae8921337775f3edcf9e0fc96c8e018a95a97a2b196204344080b38",
+      "source": "build/mcp-qualification/layer-actions073-regression02/live-density-edit-end.json",
+      "source_sha256": "6de1c970aae8921337775f3edcf9e0fc96c8e018a95a97a2b196204344080b38",
+      "projected": false
+    },
+    {
+      "path": "layer-actions073-regression02/failed-successor-start.json",
+      "bytes": 573,
+      "sha256": "e9a5f39bf7018f69a60d5772f709792a821c55264699cd9f6bccffd5449aee0d",
+      "source": "build/mcp-qualification/layer-actions073-regression02/failed-successor-start.json",
+      "source_sha256": "e9a5f39bf7018f69a60d5772f709792a821c55264699cd9f6bccffd5449aee0d",
+      "projected": false
+    },
+    {
+      "path": "layer-actions073-regression02/failed-successor-end.json",
+      "bytes": 571,
+      "sha256": "1c481b1d37ba7850f7d4d18f7edc62de6dab8ce35aba79e2db72d61ec24910ea",
+      "source": "build/mcp-qualification/layer-actions073-regression02/failed-successor-end.json",
+      "source_sha256": "1c481b1d37ba7850f7d4d18f7edc62de6dab8ce35aba79e2db72d61ec24910ea",
+      "projected": false
+    },
+    {
+      "path": "layer-actions073-regression02/restored-valid-recipe-start.json",
+      "bytes": 578,
+      "sha256": "cb42f0e88c1ef7816420964471109b174c9abf6db91ddda3d6e22d924a233dbf",
+      "source": "build/mcp-qualification/layer-actions073-regression02/restored-valid-recipe-start.json",
+      "source_sha256": "cb42f0e88c1ef7816420964471109b174c9abf6db91ddda3d6e22d924a233dbf",
+      "projected": false
+    },
+    {
+      "path": "layer-actions073-regression02/restored-valid-recipe-end.json",
+      "bytes": 576,
+      "sha256": "dc1d8312836b8c8091970ba195910ad54a2fcd110eac7742848dafb2c011f0d3",
+      "source": "build/mcp-qualification/layer-actions073-regression02/restored-valid-recipe-end.json",
+      "source_sha256": "dc1d8312836b8c8091970ba195910ad54a2fcd110eac7742848dafb2c011f0d3",
+      "projected": false
+    },
+    {
+      "path": "layer-actions073-regression02/after-diagnostic-recording-start.json",
+      "bytes": 592,
+      "sha256": "0c575c03b2dab93ad2194ad22817c9454e43ad724a0660ccb746c52d95ab2240",
+      "source": "build/mcp-qualification/layer-actions073-regression02/after-diagnostic-recording-start.json",
+      "source_sha256": "0c575c03b2dab93ad2194ad22817c9454e43ad724a0660ccb746c52d95ab2240",
+      "projected": false
+    },
+    {
+      "path": "layer-actions073-regression02/after-diagnostic-recording-end.json",
+      "bytes": 590,
+      "sha256": "cf63479dd4eb73ea10501bed32f3579a7b5401ed6edbb5333204fcf0d03d5169",
+      "source": "build/mcp-qualification/layer-actions073-regression02/after-diagnostic-recording-end.json",
+      "source_sha256": "cf63479dd4eb73ea10501bed32f3579a7b5401ed6edbb5333204fcf0d03d5169",
+      "projected": false
+    },
+    {
+      "path": "offline/generated-check.json",
+      "bytes": 541,
+      "sha256": "5f28b329d25248fa59779d4b5b8267eb8ba7a07ac759da03e8664daf6c188056",
+      "source": "build/layer-actions-073-20261007/offline/generated-check.json",
+      "source_sha256": "5f28b329d25248fa59779d4b5b8267eb8ba7a07ac759da03e8664daf6c188056",
+      "projected": false
+    },
+    {
+      "path": "structural-test.log",
+      "bytes": 349,
+      "sha256": "40ad8a0328e80f6b3e3721aed1a4a07df402e5349b2267bcdfb37e2d79c7618b",
+      "source": "build/layer-actions-073-20261007/structural-test.log",
+      "source_sha256": "40ad8a0328e80f6b3e3721aed1a4a07df402e5349b2267bcdfb37e2d79c7618b",
+      "projected": false
+    },
+    {
+      "path": "presentation-scope.json",
+      "bytes": 631,
+      "sha256": "95495183a7efddd37f440c7ceb62b25036b5366555495ccc4ddf3d9411d4456d",
+      "source": "build/layer-actions-073-20261007/presentation-scope.json",
+      "source_sha256": "95495183a7efddd37f440c7ceb62b25036b5366555495ccc4ddf3d9411d4456d",
+      "projected": false
+    },
+    {
+      "path": "native-max2027/receipt.json",
+      "bytes": 8788,
+      "sha256": "32e16f69015b8a803c3483bcadbb3b18f7d7d97d29e59c6044095e63af11b947",
+      "source": "build/layer-actions-073-20261007/native-max2027/receipt.json",
+      "source_sha256": "32e16f69015b8a803c3483bcadbb3b18f7d7d97d29e59c6044095e63af11b947",
+      "projected": false
+    },
+    {
+      "path": "package-BUILD.json",
+      "bytes": 939,
+      "sha256": "f8673ae94ff846d7774fc0e343e4ae9e9106c44b43f9a1dfee99b21c783f99db",
+      "source": "dist/Layer_Actions_Fix_0.73_2026-10-07/BUILD.json",
+      "source_sha256": "f8673ae94ff846d7774fc0e343e4ae9e9106c44b43f9a1dfee99b21c783f99db",
+      "projected": false
+    }
+  ],
+  "acceptance_campaigns": [
+    "layer-actions073-fixed03",
+    "layer-actions073-regression02"
+  ],
+  "diagnostic_campaigns": [
+    "layer-actions073-before02",
+    "layer-actions073-fixed02"
+  ],
+  "installed": false,
+  "committed": false,
+  "computer_use": false,
+  "scope": "UI event lifetime and related duplicate refreshes only; unchanged native binaries, calculations and scene model"
+}

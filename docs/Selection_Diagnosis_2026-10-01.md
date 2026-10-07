@@ -20,7 +20,7 @@ The cause in that scene is **not yet established**. Low FPS alone is not evidenc
 
 Both scripted objects construct their icon meshes using repeated triangle indices `[k+1,k+2,k+2]`. The actual visible lines are drawn separately in viewport redraw callbacks:
 
-- [Scatter generator source](../AminScatter/tools/ui/templates/before.ms), `on buildMesh`; emitted in [AminScatterObject.ms](../AminScatter/scripts/AminScatterObject.ms).
+- [Scatter generator source](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/AminScatter/tools/ui/templates/before.ms), `on buildMesh`; emitted in [AminScatterObject.ms](../AminScatter/scripts/AminScatterObject.ms).
 - [Surface Analyzer script](../CyrusSurfaceAnalyzer/scripts/CyrusSurfaceAnalyzer.ms), `on buildMesh`.
 
 A separate Max 2027.1 batch probe measured **161/161 zero-area Scatter faces** and **116/116 zero-area Analyzer faces**. This is a picking risk: the object mesh is what a SimpleObject supplies for Max's ordinary geometry/hit-testing infrastructure. The visible overlay is not proof of a robust selectable surface. Actual Nitrous mouse picking has not been reproduced by this batch probe, and this finding does not by itself explain a failure of Scene Explorer selection.

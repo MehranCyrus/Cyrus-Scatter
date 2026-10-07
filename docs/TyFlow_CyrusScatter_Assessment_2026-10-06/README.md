@@ -1,5 +1,7 @@
 # tyFlow and Cyrus Scatter: independent engineering assessment
 
+**Frozen pre-0.72 assessment.** Its same-topic popup-owner P1 was subsequently fixed in [Scatter 0.72](../Integrated_UI_0.72_2026-10-06/RESULTS.md). Later bounded binary work establishes selected UI reuse and render paths that were unknown at this assessment. Use the [current comparative R&D review](../TyFlow_CyrusScatter_RnD_2026-10-06/README.md) for today's source/evidence/maturity and next loops. The original identities and results below are preserved.
+
 6 October 2026. Research and source review of the actual working tree, including untracked playback changes. No production code was changed for this assessment.
 
 The strongest explanation for the earlier Live playback problem is unnecessary work in the former unconditional time callback and clock-based cache keys. Those paths have been corrected in the current source, with matching private build and headless regression evidence. This does not establish the FPS improvement in the artist's installed session. UI interaction latency remains unmeasured. Proxy has a separate drawing limitation: it submits cached triangles on each redraw, while Mesh and Point Cloud use retained render items.

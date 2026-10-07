@@ -10,7 +10,7 @@ Order: correct owner routing; expose the existing recorder and establish identit
 
 **Problem:** A popup retarget to a different layer/root can take the built same-topic return. Its title and editor owner change, but child controls remain bound to the preceding owner. Editing can alter the wrong layer. This is finding F1, a source-traced regression rather than an interactive reproduction.
 
-**Evidence:** [layer-editor.ms:112](../../AminScatter/tools/ui/templates/layer-editor.ms#L112), [retarget:145](../../AminScatter/tools/ui/templates/layer-editor.ms#L145), [bindEditors:87](../../AminScatter/tools/ui/templates/layer-editor.ms#L87), and [generated mainUI.bind:4484](../../AminScatter/scripts/AminScatterObject.ms#L4484). The setup bind does not repair popup child references.
+**Evidence:** [layer-editor.ms:112](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/AminScatter/tools/ui/templates/layer-editor.ms#L112), [retarget:145](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/AminScatter/tools/ui/templates/layer-editor.ms#L145), [bindEditors:87](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/AminScatter/tools/ui/templates/layer-editor.ms#L87), and [generated mainUI.bind:4484](../../AminScatter/scripts/AminScatterObject.ms#L4484). The setup bind does not repair popup child references.
 
 **Change and smallest implementation:** On a context change, rebind the retained active controls and selector lists under existing write suppression. Permit the same-topic shortcut only when root, owner and selected paint-set context are already bound. Invalidate inactive sections until next use. Do not recreate controls or request calculation to repair references.
 
@@ -26,7 +26,7 @@ Order: correct owner routing; expose the existing recorder and establish identit
 
 **Problem:** A recorder already exists, but normal Scatter editing lacks direct Record/Stop/Export controls. Current counters do not connect every input cause to UI and stage durations. A 0.7.1 caption identifies multiple different script/native candidates.
 
-**Evidence:** [diagnostics.cpp:33](../../AminScatter/src/diagnostics.cpp#L33), [record path:67](../../AminScatter/src/diagnostics.cpp#L67), [direct primitives:25](../../AminScatter/src/diagnostics_bridge.cpp#L25), [script instrumentation](../../AminScatter/tools/ui/diagnostics.cjs), and the [snapshot identities](EVIDENCE.md#snapshot-and-measurement-identity). This is F5, not a missing backend.
+**Evidence:** [diagnostics.cpp:33](../../AminScatter/src/diagnostics.cpp#L33), [record path:67](../../AminScatter/src/diagnostics.cpp#L67), [direct primitives:25](../../AminScatter/src/diagnostics_bridge.cpp#L25), [script instrumentation](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/AminScatter/tools/ui/diagnostics.cjs), and the [snapshot identities](EVIDENCE.md#snapshot-and-measurement-identity). This is F5, not a missing backend.
 
 **Change and smallest implementation:** Add a small diagnostics section to Scatter's own UI over existing primitives. Provide explicit recording, stop and bounded export; show cached recorder health. Add bounded correlation/reason and coarse duration fields for validity, capture, prepare/solve, publication, UI bind/layout, upload deltas and renderer phases. Record full script/module identities once per campaign, outside hot frame paths. Read cached build metadata thereafter.
 
@@ -58,7 +58,7 @@ Order: correct owner routing; expose the existing recorder and establish identit
 
 **Problem:** Active-topic binding traverses all its sections and reconstructs some source/color lists. The reported dropdown latency is unmeasured; opening/cancelling a list may use a different path from selecting an item.
 
-**Evidence:** [layer-editor.ms:87](../../AminScatter/tools/ui/templates/layer-editor.ms#L87), [source bind:444](../../AminScatter/scripts/AminScatterObject.ms#L444), [source lists:326](../../AminScatter/scripts/AminScatterObject.ms#L326), and F3. tyFlow's private binding strategy is unknown.
+**Evidence:** [layer-editor.ms:87](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/AminScatter/tools/ui/templates/layer-editor.ms#L87), [source bind:444](../../AminScatter/scripts/AminScatterObject.ms#L444), [source lists:326](../../AminScatter/scripts/AminScatterObject.ms#L326), and F3. tyFlow's private binding strategy is unknown.
 
 **Change and smallest implementation:** Measure E2, then retain unchanged list contents and refresh only the affected section/field family. Use existing owner/revision contracts and binding guards. Restore guards on failure. A context change still forces complete active-section binding as R0 requires.
 
@@ -138,7 +138,7 @@ Order: correct owner routing; expose the existing recorder and establish identit
 
 **Problem:** Two views and later tools need identical validation, ownership and Undo rules. Reading a completed publication must remain separate from initiating a solve or writing authored settings.
 
-**Evidence:** Current persisted model C3–C4, [published reader](../../AminScatter/tools/ui/templates/publication-read.ms), [MCP cached diagnostics:72](../../CyrusMCP/cyrus_mcp/server.py#L72), and [parameter contracts](REPORT.md#parameter-contracts-mcp-and-future-ai).
+**Evidence:** Current persisted model C3–C4, [published reader](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/AminScatter/tools/ui/templates/publication-read.ms), [MCP cached diagnostics:72](../../CyrusMCP/cyrus_mcp/server.py#L72), and [parameter contracts](REPORT.md#parameter-contracts-mcp-and-future-ai).
 
 **Change and smallest implementation:** For the UI fields being reused, document stable parameter name, owner scope, units/type/range, animation and capability gates, normalized value and affected revision/stage. Route both views through the existing setter/Undo boundary. Read pending/error/completed epoch from cached runtime state. Later authorized proposals may reference stable IDs and an input epoch with validation before an explicit apply action.
 

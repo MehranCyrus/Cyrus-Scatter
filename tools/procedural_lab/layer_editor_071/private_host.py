@@ -62,7 +62,7 @@ def launch(folder,script,native,extra='',transport=False,visible=False,extra_mod
         fileIn @"__SCRIPT__"
         __EXTRA__
         (dotNetClass "System.IO.File").WriteAllText (MCPFixtureDir+"ready.json") "{}"
-    )catch((dotNetClass "System.IO.File").WriteAllText (MCPFixtureDir+"startup-error.txt") (getCurrentException()+"\\n"+getCurrentExceptionStackTrace()))
+    )catch((dotNetClass "System.IO.File").WriteAllText (MCPFixtureDir+"startup-error.txt") (getCurrentException()+"\\nSOURCE: "+(getErrorSourceFileName() as string)+" LINE: "+(getErrorSourceFileLine() as string)+"\\n"+getCurrentExceptionStackTrace()))
 '''.replace('__EXPECTED__',expected).replace('__SCRIPT__',copied.as_posix()).replace('__EXTRA__',extra)
     start=folder/'start.ms';start.write_text(bootstrap,encoding='utf-8-sig')
     command=['C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe','-q','-i',str(folder/'max.ini'),'-p',str(folder/'plugins.ini'),'-U','MAXScript',str(start),'-listenerlog',str(folder/'listener.log')]

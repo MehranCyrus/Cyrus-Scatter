@@ -4,7 +4,7 @@
 
 ## Current path
 
-[pflow.ms](../../AminScatter/tools/ui/templates/pflow.ms) constructs transient Particle Flow objects from placement matrices grouped by source. It may copy a Corona proxy prototype, builds PF sources/events/operators, validates observed vs expected particle counts, and tracks disposable nodes. Generated production script receives this template through [generate.cjs](../../AminScatter/tools/ui/generate.cjs).
+[pflow.ms](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/AminScatter/tools/ui/templates/pflow.ms) constructs transient Particle Flow objects from placement matrices grouped by source. It may copy a Corona proxy prototype, builds PF sources/events/operators, validates observed vs expected particle counts, and tracks disposable nodes. Generated production script receives this template through [generate.cjs](../../AminScatter/tools/ui/generate.cjs).
 
 The current cache signature includes time, revisions, controller/layer settings and source transforms/materials. `CyrusPFBuild` clears previous transport before building. `postRender` restores baked renderability; other lifecycle/timer paths handle clearing. Treat that lifecycle as a behavior to preserve and verify.
 

@@ -1,0 +1,50 @@
+{
+  "passed": false,
+  "error": "ERROR -- Runtime error: -- Runtime error: -- Unknown property: \"invalidateGroups\" in undefined\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/layer-actions073-before02/probe-23a10759e74d4e3986b3d3fdba8a1eed.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\Max_Layer_Actions_073.ms LINE: 30P\n",
+  "computer_use": false,
+  "fixtures": {
+    "tools\\procedural_lab\\Max_Layer_Actions_073.ms": "b2d7d3d6c3fc3c08942bbf6d526d5ebfeac0c8c92c896d50d2675779c11ced46"
+  },
+  "probe_sha256": [
+    "d0e931ed0535276f05d3795c2f7f309a4972562ef9b1bfba9bd9214d9f8c4858",
+    "585ec9153851094ba85784013170d1c96e53235a79232a9f1975dd08ef600d9a",
+    "d0e931ed0535276f05d3795c2f7f309a4972562ef9b1bfba9bd9214d9f8c4858",
+    "9e1766ea58a5d6cc8b41056bcadc9a17bd9b40d8af25f11b3c66cb9c2f913bf3"
+  ],
+  "probes": [
+    {
+      "index": 0,
+      "elapsed_s": 23.936999999999898,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/layer-actions073-before02/probe-0d3f0f14c2484b958cd150c0efb3fd18.ms"
+    },
+    {
+      "index": 1,
+      "elapsed_s": 0.8130000000001019,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/layer-actions073-before02/probe-ad18aacf277f48cfad2aa0dcd158b105.ms"
+    },
+    {
+      "index": 2,
+      "elapsed_s": 3.5469999999986612,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/layer-actions073-before02/probe-b2da3e14a33d45ff959e30e1ecf4ef88.ms"
+    },
+    {
+      "index": 3,
+      "elapsed_s": 1.015000000001237,
+      "result": "ERROR -- Runtime error: -- Runtime error: -- Unknown property: \"invalidateGroups\" in undefined\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/layer-actions073-before02/probe-23a10759e74d4e3986b3d3fdba8a1eed.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\Max_Layer_Actions_073.ms LINE: 30P\n"
+    }
+  ],
+  "owned_process_stopped": true,
+  "installed_product_files_unchanged": true,
+  "host_python_sources_unchanged": true,
+  "launch": {
+    "script_sha256": "53bf85f9a2cfe1034468919c408d4c73ca6e865f7e1b9c816cc7375fe12f10fa",
+    "binaries": {
+      "AminScatter.dlx": "146a1adafe16e71829841b3886804b9d627e77fb1b80e1ca094cd50111673d82",
+      "CyrusBrush.dlx": "48cf18266ada5f36acb967025de592a193f1c48f43d2a3800c94cd7ca7784006",
+      "CyrusBrushStorage.dlh": "6b02436c7c83322b3b7874ae03285084dddf7a3197ae7bb573d38b5ff0253799",
+      "CyrusScatterEdit.dlm": "a1fd381984943b1b8ed20cfa1a9d8ed31187d95dec7fddbf81ebd4a716deb31a"
+    },
+    "normal_profile_modified": false,
+    "development_transport": true
+  }
+}

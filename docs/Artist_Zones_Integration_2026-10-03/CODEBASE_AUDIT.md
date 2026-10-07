@@ -18,7 +18,7 @@ Add persistent layer/zone identities and explicit layer-local target subsets whi
 
 ## A03 — Analyzer integration exists, but its geometry scope differs
 
-[analyzer-area.cjs](../../AminScatter/tools/ui/analyzer-area.cjs), `applyAnalyzerArea`, generates layer parameters for paths/point-radius masks. The final generated implementation appears around line 10830. [analyzer_area_bridge.inc](../../AminScatter/src/analyzer_area_bridge.inc), `cyrusAnalyzerArea_cf`, explicitly evaluates both path bands and point disks in world XY. The adapter returns original two-field rows.
+[analyzer-area.cjs](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/AminScatter/tools/ui/analyzer-area.cjs), `applyAnalyzerArea`, generates layer parameters for paths/point-radius masks. The final generated implementation appears around line 10830. [analyzer_area_bridge.inc](../../AminScatter/src/analyzer_area_bridge.inc), `cyrusAnalyzerArea_cf`, explicitly evaluates both path bands and point disks in world XY. The adapter returns original two-field rows.
 
 Reuse this optional geometric input. Do not require Analyzer for every hand-drawn zone or Brush target, and do not equate its tilted-element support with a fully surface-aware Scatter Area adapter. Analyzer guides are derived outputs; a persistent artist zone can reference them but should own its semantic identity separately. Its README's obsolete statement that no scatter integration exists was corrected in this documentation pass.
 
@@ -44,7 +44,7 @@ Keep an owned native `CandidateBatch` through the new path: target identity, can
 
 ## A07 — spacing has a reusable native broad phase, but raw blockers have limits
 
-[max_bridge.cpp](../../AminScatter/src/max_bridge.cpp), `cyrusRemoveOverlaps_cf`, lines 100–141, bins blockers into spatial cells and supports XY or 3D centre-distance testing. In source-radius mode the rejection threshold is gap plus both per-instance radii. [radius.cjs](../../AminScatter/tools/ui/radius.cjs) defines artist source radii and optional scale following.
+[max_bridge.cpp](../../AminScatter/src/max_bridge.cpp), `cyrusRemoveOverlaps_cf`, lines 100–141, bins blockers into spatial cells and supports XY or 3D centre-distance testing. In source-radius mode the rejection threshold is gap plus both per-instance radii. [radius.cjs](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/AminScatter/tools/ui/radius.cjs) defines artist source radii and optional scale following.
 
 [AminScatterObject.ms](../../AminScatter/scripts/AminScatterObject.ms), `cachedBlockerRows`, around line 11400, calls `placements ... rawOnly:true`. The raw path includes area/falloff/source transforms but skips inter-layer overlap, final cleanup/relaxation and `CyrusEditApplyLayer`. The normal path applies the edit afterward, around line 11516. Therefore blocker locations can differ from final visible/edited locations. This is a source-level consequence, not a measured regression introduced by this review.
 
@@ -52,13 +52,13 @@ Immediately required for any Brush integration: filter raw blockers by Brush mem
 
 ## A08 — CS Edit protects its binding; paint needs a new keyed entry
 
-[edit.cjs](../../AminScatter/tools/ui/edit.cjs), `CyrusEditApplyLayer`, fingerprints input rows with seeds and a layer index. [cyrus_edit_stack.inc](../../AminScatter/src/cyrus_edit_stack.inc), `cyrusEditStack_cf`, constructs IDs as `b:<incoming row index>`. `applyStable` marks changed signatures invalid; it already retains internal rows whose input IDs disappear.
+[edit.cjs](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/AminScatter/tools/ui/edit.cjs), `CyrusEditApplyLayer`, fingerprints input rows with seeds and a layer index. [cyrus_edit_stack.inc](../../AminScatter/src/cyrus_edit_stack.inc), `cyrusEditStack_cf`, constructs IDs as `b:<incoming row index>`. `applyStable` marks changed signatures invalid; it already retains internal rows whose input IDs disappear.
 
 The immediate risk is invalidating edits when mask filtering changes the input signature, not evidence that current code silently transfers an edit to the wrong plant. Add a keyed entry and a population binding that excludes mask-only membership revisions. Keep missing edited candidates dormant, with their original identity and copy lineage. Never suppress signature validation while retaining compacted ordinal IDs. Migrate only when correspondence is provable; otherwise preserve records and request an explicit rebind through the product UI.
 
 ## A09 — Brush storage is reusable; product ownership and overlay are incomplete
 
-[brush.h](../../AminScatter/include/brush.h) defines strokes, surface anchors and the scalar-field interface independently of Max. [brush_lab.cpp](../../AminScatter/src/brush_lab.cpp), `PaintDocument`, supplies a native reference target, save/load/clone and stroke-level Undo integration. [brush_storage_plugin.cpp](../../AminScatter/src/brush_storage_plugin.cpp) supplies the storage-class registration companion. [CMakeLists.txt](../../AminScatter/CMakeLists.txt) keeps the lab opt-in. [generate.cjs](../../AminScatter/tools/ui/generate.cjs) does not mount a Brush editor.
+[brush.h](../../AminScatter/include/brush.h) defines strokes, surface anchors and the scalar-field interface independently of Max. The `PaintDocument` implementation formerly called `brush_lab.cpp` is now in [brush_host.cpp](../../AminScatter/src/brush_host.cpp); it supplies a native reference target, save/load/clone and stroke-level Undo integration. [brush_storage_plugin.cpp](../../AminScatter/src/brush_storage_plugin.cpp) supplies the registration companion. The following opt-in/UI observations describe this dated audit, not today's implementation; use the [0.73 implementation](../Unified_System_0.73_2026-10-06/IMPLEMENTATION.md) for current Brush ownership and controls.
 
 Move the qualified document/session functionality behind layer ownership rather than copying the prototype's helper-window workflow into the product. Add independent target bindings, safe session end on layer changes, saved mask initialization and old-scene defaults. The current lab document binds one static mesh; multi-target product support still needs design and testing.
 

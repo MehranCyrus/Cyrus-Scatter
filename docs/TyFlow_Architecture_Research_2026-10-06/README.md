@@ -1,5 +1,7 @@
 # tyFlow architecture research and Cyrus Scatter comparison
 
+**Frozen pre-0.72 research snapshot.** The popup-owner P1 below was subsequently fixed and qualified within the [0.72 implementation campaign](../Integrated_UI_0.72_2026-10-06/RESULTS.md). The new [0.72 comparative R&D review](../TyFlow_CyrusScatter_RnD_2026-10-06/README.md) adds connected render-item lifetime/stream/draw and selected job evidence, fresh offline experiments and current findings. Original measurements, hashes and private listings here retain their own source scope; claims of an open popup defect are historical.
+
 6 October 2026. Completed bounded static investigation of the installed tyFlow 2027 binary, its existing Ghidra working copy, official vendor/Autodesk/Qt documentation, and the current tracked/untracked Cyrus Scatter source. Research and documentation only; no production implementation or runtime speed qualification.
 
 ## What we learned

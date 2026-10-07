@@ -1,0 +1,42 @@
+{
+  "AminScatter/tools/ui/approved-layout.cjs": {
+    "sha256": "66bfee630b8c739e16f8c0eb3fa801f337c46743aa4dcfab0a648539eaded96e",
+    "bytes": 24326
+  },
+  "AminScatter/tools/ui/approved-layout-rows.cjs": {
+    "sha256": "07517aa33e440131d91e0645b9947992402f3214a19157c826012f74d5a31355",
+    "bytes": 7458
+  },
+  "AminScatter/tools/ui/templates/approved-main-ui.ms": {
+    "sha256": "f19125dcdbf0f31fd7d99cb9d3291ca238473df58076189b73a3a2df23a1acd7",
+    "bytes": 7601
+  },
+  "AminScatter/tools/ui/templates/container-properties-ui.ms": {
+    "sha256": "607aa45af27cb7f931c88d76c769ab0357d5dafdf981600badbbbdb43393c296",
+    "bytes": 5935
+  },
+  "AminScatter/tools/ui/approved-layout.test.cjs": {
+    "sha256": "2d921ac19a74bb61d0376946301e0c950b5c156ff9e7e772b5d41907c0b4ec28",
+    "bytes": 2883
+  },
+  "AminScatter/scripts/AminScatterObject.ms": {
+    "sha256": "53bf85f9a2cfe1034468919c408d4c73ca6e865f7e1b9c816cc7375fe12f10fa",
+    "bytes": 1876309
+  },
+  "AminScatter/installer/install.ms": {
+    "sha256": "477b4d13eceb198c5aa614491e49b2fb96b6b31426a5ec8eb83b6efc7a19cc51",
+    "bytes": 3334
+  },
+  "tools/procedural_lab/Max_Compact_Layout_073.ms": {
+    "sha256": "1a234c88896583a04fa9e08d50cad30227fa45ccf8b22045213fa32baa29d787",
+    "bytes": 4945
+  },
+  "tools/procedural_lab/Max_Live_Idle_Probe.ms": {
+    "sha256": "337ae802086ef364fad76eb6570b27b0f4550a79d3ff4f3aae291394d7859f3b",
+    "bytes": 2725
+  },
+  "AminScatter/tools/ui/approved-layout-manifest.json": {
+    "sha256": "44a976e9f7242eccb7d446202e2a1d32ab9fc2c7fe059862e961cbf3d1f49063",
+    "bytes": 50918
+  }
+}

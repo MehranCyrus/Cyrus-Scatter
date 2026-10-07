@@ -20,7 +20,7 @@ The pure Scatter API is in [scatter.h](../../AminScatter/include/scatter.h). The
 
 Placement is followed by whole scale, Analyzer-area/falloff filtering, source transforms, cross-layer blockers, optional final cleanup, boundary orientation, CS Edit, and render-only point-placeholder exclusion. Special modes alter this sequence through explicit branches. Changing this order can change existing scenes.
 
-Rendering currently uses [PFlow construction](../../AminScatter/tools/ui/templates/pflow.ms), including source grouping and a Corona proxy workaround. It is not a proven renderer-native procedural integration. Mesh preview uses evaluated viewport geometry and simple shading; it does not promise final-material appearance.
+Rendering currently uses [PFlow construction](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/AminScatter/tools/ui/templates/pflow.ms), including source grouping and a Corona proxy workaround. It is not a proven renderer-native procedural integration. Mesh preview uses evaluated viewport geometry and simple shading; it does not promise final-material appearance.
 
 ## Verification ledger
 
@@ -54,7 +54,7 @@ The findings below distinguish visible behavior from possible consequences. Repr
 | C-09 | Layer factory/storage limit is 10; proxy/mesh budgets are per layer; density mode caps requested population at 100,000 | Show limits clearly. A UI maximum is not a performance guarantee or global memory budget |
 | C-10 | Existing feature `activation.cjs` only controls enable/disable | Licensing is not implemented; avoid mistaking that file for a commercial gate |
 
-Source references: [controller](../../AminScatter/scripts/AminScatterObject.ms), [bridge](../../AminScatter/src/max_bridge.cpp), [edit stack](../../AminScatter/src/cyrus_edit_stack.inc), [storage](../../AminScatter/src/cyrus_edit_storage.inc), [preview](../../AminScatter/src/preview.cpp), [orientation](../../AminScatter/src/orientation.inc), [layer storage template](../../AminScatter/tools/ui/templates/storage.ms).
+Source references: [controller](../../AminScatter/scripts/AminScatterObject.ms), [bridge](../../AminScatter/src/max_bridge.cpp), [edit stack](../../AminScatter/src/cyrus_edit_stack.inc), [storage](../../AminScatter/src/cyrus_edit_storage.inc), [preview](../../AminScatter/src/preview.cpp), [orientation](../../AminScatter/src/orientation.inc), [layer storage template](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/AminScatter/tools/ui/templates/storage.ms).
 
 ## Important semantic distinctions
 

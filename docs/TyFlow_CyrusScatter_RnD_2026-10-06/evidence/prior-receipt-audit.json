@@ -1,0 +1,244 @@
+{
+  "indexed_receipts": [
+    {
+      "name": "bindings-acceptance.json",
+      "matches": true
+    },
+    {
+      "name": "corona-stop-072.json",
+      "matches": true
+    },
+    {
+      "name": "corona072-result.json",
+      "matches": true
+    },
+    {
+      "name": "corona072-trace.json",
+      "matches": true
+    },
+    {
+      "name": "direct-diagnostics.json",
+      "matches": true
+    },
+    {
+      "name": "generated-check.json",
+      "matches": true
+    },
+    {
+      "name": "idle/after-diagnostic-recording-end.json",
+      "matches": true
+    },
+    {
+      "name": "idle/after-diagnostic-recording-start.json",
+      "matches": true
+    },
+    {
+      "name": "idle/failed-successor-end.json",
+      "matches": true
+    },
+    {
+      "name": "idle/failed-successor-start.json",
+      "matches": true
+    },
+    {
+      "name": "idle/live-closed-end.json",
+      "matches": true
+    },
+    {
+      "name": "idle/live-closed-start.json",
+      "matches": true
+    },
+    {
+      "name": "idle/live-density-edit-end.json",
+      "matches": true
+    },
+    {
+      "name": "idle/live-density-edit-start.json",
+      "matches": true
+    },
+    {
+      "name": "idle/live-editor-open-end.json",
+      "matches": true
+    },
+    {
+      "name": "idle/live-editor-open-start.json",
+      "matches": true
+    },
+    {
+      "name": "idle/live-real-edit-end.json",
+      "matches": true
+    },
+    {
+      "name": "idle/live-real-edit-start.json",
+      "matches": true
+    },
+    {
+      "name": "idle/manual-pending-end.json",
+      "matches": true
+    },
+    {
+      "name": "idle/manual-pending-start.json",
+      "matches": true
+    },
+    {
+      "name": "idle/restored-valid-recipe-end.json",
+      "matches": true
+    },
+    {
+      "name": "idle/restored-valid-recipe-start.json",
+      "matches": true
+    },
+    {
+      "name": "idle-qualification.json",
+      "matches": true
+    },
+    {
+      "name": "intermediate/playback03.json",
+      "matches": true
+    },
+    {
+      "name": "intermediate/playback04.json",
+      "matches": true
+    },
+    {
+      "name": "launch.json",
+      "matches": true
+    },
+    {
+      "name": "layer-editor-071-brush-live.json",
+      "matches": true
+    },
+    {
+      "name": "layer-editor-071-events.json",
+      "matches": true
+    },
+    {
+      "name": "max-controls.json",
+      "matches": true
+    },
+    {
+      "name": "native-2026-analyzer-tests.log",
+      "matches": true
+    },
+    {
+      "name": "native-2026-analyzer.json",
+      "matches": true
+    },
+    {
+      "name": "native-2026-scatter-tests.log",
+      "matches": true
+    },
+    {
+      "name": "native-2026-scatter.json",
+      "matches": true
+    },
+    {
+      "name": "native-2027-analyzer-tests.log",
+      "matches": true
+    },
+    {
+      "name": "native-2027-analyzer.json",
+      "matches": true
+    },
+    {
+      "name": "native-2027-scatter-tests.log",
+      "matches": true
+    },
+    {
+      "name": "native-2027-scatter.json",
+      "matches": true
+    },
+    {
+      "name": "native-rollup-empty.json",
+      "matches": true
+    },
+    {
+      "name": "native-rollup-selected.json",
+      "matches": true
+    },
+    {
+      "name": "packages.json",
+      "matches": true
+    },
+    {
+      "name": "playback-final.json",
+      "matches": true
+    },
+    {
+      "name": "procedural-acceptance.json",
+      "matches": true
+    },
+    {
+      "name": "python-tests.xml",
+      "matches": true
+    },
+    {
+      "name": "retained-ui-072.json",
+      "matches": true
+    },
+    {
+      "name": "review-regressions.json",
+      "matches": true
+    },
+    {
+      "name": "snapshot.json",
+      "matches": true
+    },
+    {
+      "name": "source-container-edge-cases.json",
+      "matches": true
+    },
+    {
+      "name": "source-container-events.json",
+      "matches": true
+    },
+    {
+      "name": "source-container-output.json",
+      "matches": true
+    },
+    {
+      "name": "source-containers.json",
+      "matches": true
+    },
+    {
+      "name": "ui072-100k-navigation.json",
+      "matches": true
+    },
+    {
+      "name": "ui072-acceptance.json",
+      "matches": true
+    }
+  ],
+  "native": [
+    {
+      "receipt": "native-2026-scatter.json",
+      "checked_sources": 65,
+      "source_mismatches": [],
+      "checked_binaries": 4,
+      "binary_mismatches": []
+    },
+    {
+      "receipt": "native-2027-scatter.json",
+      "checked_sources": 65,
+      "source_mismatches": [],
+      "checked_binaries": 4,
+      "binary_mismatches": []
+    },
+    {
+      "receipt": "native-2026-analyzer.json",
+      "checked_sources": 10,
+      "source_mismatches": [],
+      "checked_binaries": 1,
+      "binary_mismatches": []
+    },
+    {
+      "receipt": "native-2027-analyzer.json",
+      "checked_sources": 10,
+      "source_mismatches": [],
+      "checked_binaries": 1,
+      "binary_mismatches": []
+    }
+  ],
+  "all_matches": true,
+  "runtime_reexecuted": false
+}

@@ -1,0 +1,115 @@
+{
+  "passed": true,
+  "computer_use": false,
+  "fixtures": {
+    "tools\\procedural_lab\\Max_Layer_Actions_073.ms": "64173b5d08b694700790662ac0f8375ce2ca614d018759c10d051f570588fcce"
+  },
+  "probe_sha256": [
+    "3cb6e0634f00d34d05ad3d489db251bfd0e14f996b0e5360c9ec9fce1d8927b2",
+    "585ec9153851094ba85784013170d1c96e53235a79232a9f1975dd08ef600d9a",
+    "0afb2d665d2b2ff26b637e2f2029a1b805e938038684d343775ba6a1f2ce5706",
+    "3c8a168379efbbe3d4c354df8ce2e0a682230eeec40395055d1fb3f45477ca7d",
+    "141cd8e7f5f0ce6c8a59e9805f4a351b0b6546fa1843f5c0de6acaa85903f7ef",
+    "51baef0c6c7852d1527588944e5d19ce4b401fd3a519ca849a4502e76cd0d116",
+    "d0e931ed0535276f05d3795c2f7f309a4972562ef9b1bfba9bd9214d9f8c4858",
+    "585ec9153851094ba85784013170d1c96e53235a79232a9f1975dd08ef600d9a",
+    "0afb2d665d2b2ff26b637e2f2029a1b805e938038684d343775ba6a1f2ce5706",
+    "3c8a168379efbbe3d4c354df8ce2e0a682230eeec40395055d1fb3f45477ca7d",
+    "141cd8e7f5f0ce6c8a59e9805f4a351b0b6546fa1843f5c0de6acaa85903f7ef",
+    "51baef0c6c7852d1527588944e5d19ce4b401fd3a519ca849a4502e76cd0d116",
+    "d0e931ed0535276f05d3795c2f7f309a4972562ef9b1bfba9bd9214d9f8c4858",
+    "9e1766ea58a5d6cc8b41056bcadc9a17bd9b40d8af25f11b3c66cb9c2f913bf3",
+    "fb200c1a0013580caa3d704df92092281cf2a13008bb16930d5885b60f8c39cf"
+  ],
+  "probes": [
+    {
+      "index": 0,
+      "elapsed_s": 24.860000000000582,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/layer-actions073-fixed03/probe-c93243ad95504d6b8e58282b4cf58b60.ms"
+    },
+    {
+      "index": 1,
+      "elapsed_s": 1.014999999999418,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/layer-actions073-fixed03/probe-b53327ed7b454bfe8ba4bcad12e71541.ms"
+    },
+    {
+      "index": 2,
+      "elapsed_s": 2.92200000000048,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/layer-actions073-fixed03/probe-c9c33a390fbf4bec9bac185c2d946011.ms"
+    },
+    {
+      "index": 3,
+      "elapsed_s": 3.8440000000009604,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/layer-actions073-fixed03/probe-7b88009ebb5f4464bb2a1429e6dcc61e.ms"
+    },
+    {
+      "index": 4,
+      "elapsed_s": 1.3119999999998981,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/layer-actions073-fixed03/probe-046e6de656014358a1450225e5946ca5.ms"
+    },
+    {
+      "index": 5,
+      "elapsed_s": 5.968999999999141,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/layer-actions073-fixed03/probe-c489172990fc4ef59144f4430a4f48bc.ms"
+    },
+    {
+      "index": 6,
+      "elapsed_s": 5.765999999999622,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/layer-actions073-fixed03/probe-ddec4d03b9244f6d8c174590ab24d5aa.ms"
+    },
+    {
+      "index": 7,
+      "elapsed_s": 0.8119999999998981,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/layer-actions073-fixed03/probe-dc869e2c77ff4df998d7a7136586c7f0.ms"
+    },
+    {
+      "index": 8,
+      "elapsed_s": 3.1410000000014406,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/layer-actions073-fixed03/probe-72cbc7c564c24343972c3ce05c8586df.ms"
+    },
+    {
+      "index": 9,
+      "elapsed_s": 3.639999999999418,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/layer-actions073-fixed03/probe-8b1456117de24ef394d8ded5a6f7abcf.ms"
+    },
+    {
+      "index": 10,
+      "elapsed_s": 1.110000000000582,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/layer-actions073-fixed03/probe-ea7b6c0c0b984f56acf11c9464135e8b.ms"
+    },
+    {
+      "index": 11,
+      "elapsed_s": 6.78099999999904,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/layer-actions073-fixed03/probe-a4813e6a1d2c4d309479fa6c963d7871.ms"
+    },
+    {
+      "index": 12,
+      "elapsed_s": 6.67200000000048,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/layer-actions073-fixed03/probe-fe2b742646cf4031a74b677c7ce8ee3f.ms"
+    },
+    {
+      "index": 13,
+      "elapsed_s": 1.125,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/layer-actions073-fixed03/probe-b9bc29a86a064a1a90dab746a87c6263.ms"
+    },
+    {
+      "index": 14,
+      "elapsed_s": 0.2029999999995198,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/layer-actions073-fixed03/probe-d8c45684e93a424f9a0a720ffe9defcf.ms"
+    }
+  ],
+  "owned_process_stopped": true,
+  "installed_product_files_unchanged": true,
+  "host_python_sources_unchanged": true,
+  "launch": {
+    "script_sha256": "9614f6b7d95c0e7c97f9bbe7fa2cb5a770f7a3eca813f7a9f55ea68463d114bf",
+    "binaries": {
+      "AminScatter.dlx": "146a1adafe16e71829841b3886804b9d627e77fb1b80e1ca094cd50111673d82",
+      "CyrusBrush.dlx": "48cf18266ada5f36acb967025de592a193f1c48f43d2a3800c94cd7ca7784006",
+      "CyrusBrushStorage.dlh": "6b02436c7c83322b3b7874ae03285084dddf7a3197ae7bb573d38b5ff0253799",
+      "CyrusScatterEdit.dlm": "a1fd381984943b1b8ed20cfa1a9d8ed31187d95dec7fddbf81ebd4a716deb31a"
+    },
+    "normal_profile_modified": false,
+    "development_transport": true
+  }
+}

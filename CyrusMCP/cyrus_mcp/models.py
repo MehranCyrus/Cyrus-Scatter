@@ -12,32 +12,6 @@ class Closed(BaseModel):
     model_config=ConfigDict(extra="forbid",strict=True)
 
 
-class Source(Closed):
-    source_id: Identifier
-    weight: Annotated[float,Field(ge=0,le=1,allow_inf_nan=False)]
-
-
-class Layer(Closed):
-    name: Label
-    region_id: Identifier
-    count: Annotated[int,Field(ge=0,le=2000)]
-    seed: Annotated[int,Field(ge=0,le=2147483646)]
-    sources: Annotated[list[Source],Field(min_length=1,max_length=3)]
-    scale: Annotated[list[ScaleValue],Field(min_length=2,max_length=2)]
-    yaw_degrees: Annotated[list[YawValue],Field(min_length=2,max_length=2)]
-    underfill: Literal["allow","reject"]
-
-
-class DesignPlan(Closed):
-    schema_version: Literal["1.0"]
-    context_id: Identifier
-    name: Label
-    layers: Annotated[list[Layer],Field(min_length=1,max_length=3)]
-    controller_id: Identifier | None = None
-    generation_id: Identifier | None = None
-    clearance_m: Annotated[float,Field(ge=0,le=100,allow_inf_nan=False)] = 0
-
-
 def settings_model(name, registry):
     entries={}
     for key,(kind,default,bounds,_) in registry.items():
@@ -56,12 +30,21 @@ SourceSettings=settings_model("SourceSettings",SOURCE_SETTINGS)
 DisplaySettings=settings_model("DisplaySettings",DISPLAY_SETTINGS)
 
 
-class SourceV2(Source):
+class Source(Closed):
+    source_id: Identifier
+    weight: Annotated[float,Field(ge=0,le=1,allow_inf_nan=False)]
     settings: SourceSettings = Field(default_factory=SourceSettings)
 
 
-class LayerV2(Layer):
-    sources: Annotated[list[SourceV2],Field(min_length=1,max_length=3)]
+class Layer(Closed):
+    name: Label
+    region_id: Identifier
+    count: Annotated[int,Field(ge=0,le=2000)]
+    seed: Annotated[int,Field(ge=0,le=2147483646)]
+    sources: Annotated[list[Source],Field(min_length=1,max_length=3)]
+    scale: Annotated[list[ScaleValue],Field(min_length=2,max_length=2)]
+    yaw_degrees: Annotated[list[YawValue],Field(min_length=2,max_length=2)]
+    underfill: Literal["allow","reject"]
     settings: LayerSettings = Field(default_factory=LayerSettings)
     exclude_region_ids: Annotated[list[Identifier],Field(max_length=6)] = Field(default_factory=list)
 
@@ -70,13 +53,19 @@ class PairRule(Closed):
     a: Annotated[int,Field(ge=0,le=2)]
     b: Annotated[int,Field(ge=0,le=2)]
     gap_m: Annotated[float,Field(ge=0,le=100,allow_inf_nan=False)]
-    footprints: bool
+    radius_factor: Annotated[float,Field(ge=0,le=100,allow_inf_nan=False)]
+    enabled: bool = True
     planar: bool
 
 
-class DesignPlanV2(DesignPlan):
-    schema_version: Literal["2.0"]
-    layers: Annotated[list[LayerV2],Field(min_length=1,max_length=3)]
+class DesignPlan(Closed):
+    schema_version: Literal["0.73"]
+    context_id: Identifier
+    name: Label
+    layers: Annotated[list[Layer],Field(min_length=1,max_length=3)]
+    controller_id: Identifier | None = None
+    generation_id: Identifier | None = None
+    clearance_m: Annotated[float,Field(ge=0,le=100,allow_inf_nan=False)] = 0
     display: DisplaySettings = Field(default_factory=DisplaySettings)
     pair_rules: Annotated[list[PairRule],Field(max_length=3)] = Field(default_factory=list)
 

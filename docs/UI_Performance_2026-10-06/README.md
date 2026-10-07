@@ -19,7 +19,7 @@
 
 | Observation | Source | Evidence boundary |
 | --- | --- | --- |
-| `bindEditors()` reconstructs layer/set list contents and binds all active-topic sections. | [layer-editor.ms](../../AminScatter/tools/ui/templates/layer-editor.ms), function `bindEditors` | Real UI work; no timing or direct attribution to the reported delay yet. |
+| `bindEditors()` reconstructs layer/set list contents and binds all active-topic sections. | [layer-editor.ms](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/AminScatter/tools/ui/templates/layer-editor.ms), function `bindEditors` | Real UI work; no timing or direct attribution to the reported delay yet. |
 | `showTopic()` calls that binding path on topic changes; sections are created only on first use while the editor remains open. | Same file, `showTopic` | Controls are partly retained, but broad rebinding remains. |
 | Paint-set selection invokes broad binding; choosing the same selection is not explicitly excluded by `selectSet`. | Same file, `selectSet` | Identify which set-specific fields actually changed before choosing a narrower update. |
 | Closing destroys the dialog and drops its sections; reopening constructs them again. | Same file, `CyrusCloseLayerEditor` and editor close/open handlers | Retention lasts for the open dialog, not across destruction. |

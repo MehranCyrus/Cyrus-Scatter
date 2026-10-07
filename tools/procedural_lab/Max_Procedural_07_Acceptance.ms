@@ -17,7 +17,9 @@ fn P07New count:1000 curved:false = (
     P07Root.setLayerTransfer true
     P07Root.autoRender=false;P07Root.updateMode=1;P07Root.surfaceNodes=#(P07Surface);P07Root.newLayer()
     P07Layer=P07Root.selectedLayer();P07Layer.amount=count;P07Layer.sources=#(P07Source);P07Layer.sourceWeights=#(1.0);P07Layer.paintEnabled=false;P07Layer.randomSeed=42
-    P07Root.setLayerTransfer false;P07Root.procUpgrade();P07Root.evaluateGroups()
+    P07Root.setLayerTransfer false
+    P07Assert (P07Root.calculationModel()=="CyrusUnified1" and not isProperty P07Root #groupPolicy) "Setup is not the sole unified model"
+    P07Root.evaluateGroups()
     P07Root
 )
 fn P07Acceptance = (
@@ -178,7 +180,7 @@ fn P07Acceptance = (
     saveMaxFile path quiet:true
     loadMaxFile path quiet:true
     P07Node=getNodeByName "P07_Controller";r=P07Node.baseObject;a=r.layerObjects[1]
-    P07Assert (r.groupPolicy==3 and (P07Fingerprint r) as string==signature as string) "Save/reopen differs"
+    P07Assert (r.calculationModel()=="CyrusUnified1" and (P07Fingerprint r) as string==signature as string) "Save/reopen differs"
     P07Assert ((cyrusBrushHistory a.paintDocument) as string==history) "Save lost strokes"
     P07Root=r;P07Layer=a;P07Surface=getNodeByName "P07_Receiver";P07Source=getNodeByName "P07_Asset"
     P07Record P07Case #(rows.count,path)

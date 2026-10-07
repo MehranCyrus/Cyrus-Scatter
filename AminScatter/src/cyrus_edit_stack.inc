@@ -4,35 +4,9 @@ static bool hasEditTransform(const Matrix3& m){
     for(int i=0;i<4;++i)if(m.GetRow(i)!=identity.GetRow(i))return true;
     return false;
 }
-static std::wstring legacyTopology(const EditLayer& l) {
-    std::uint64_t h=1469598103934665603ULL;
-    for(unsigned i=0;i<l.rows.size();++i)if(!l.rows[i].deleted){h=(h^i)*1099511628211ULL;h=(h^l.rows[i].source)*1099511628211ULL;}
-    return std::to_wstring(h);
-}
 static std::vector<EditInput> applyStable(CSEdit* m,int key,const std::vector<EditInput>& input,
-    const std::wstring& signature,const std::wstring& legacySignature,unsigned baseCount) {
+    const std::wstring& signature) {
     auto& l=m->layers[key];l.active=true;l.pending=false;
-    if(l.legacy) {
-        // Recover old invalid flags only when the original index mapping is provable.
-        // A modifier originally bound directly to the base has unambiguous base IDs,
-        // even if a lower modifier is now enabled and supplies additional copies.
-        const bool baseBinding=l.signature==signature;
-        const bool sameBinding=l.signature==legacySignature;
-        if(!baseBinding&&!sameBinding) {
-            l.pending=true;l.invalid=true;l.input.clear();m->status();return input;
-        }
-        std::unordered_set<unsigned> seen;
-        for(auto& r:l.rows) {
-            if(r.source>=(baseBinding?baseCount:unsigned(input.size()))) {
-                l.pending=true;l.invalid=true;l.input.clear();m->status();return input;
-            }
-        }
-        for(auto& r:l.rows) {
-            r.inputId=baseBinding?L"b:"+std::to_wstring(r.source):input[r.source].id;
-            r.outputId=seen.insert(r.source).second?r.inputId:pointId();
-        }
-        l.signature=signature;l.legacy=false;l.invalid=false;
-    }
     if(l.signature.empty())l.signature=signature;
     if(l.signature!=signature)l.invalid=true; // Real base generation changes still require Reset.
     l.input.clear();l.sources.clear();
@@ -52,8 +26,9 @@ static std::vector<EditInput> applyStable(CSEdit* m,int key,const std::vector<Ed
     for(auto& r:l.rows)if(!r.deleted&&r.source<input.size())output.push_back({input[r.source].tm*r.delta,input[r.source].source,r.outputId,input[r.source].protectedEdit||r.inputId!=r.outputId||hasEditTransform(r.delta)});
     m->status();return output;
 }
-// Legacy rows retain index binding. Keyed rows use immutable candidate IDs and
-// a full base-population signature, independent of current Brush membership.
+// Keyed rows use immutable candidate IDs and a base-population signature,
+// independent of current Brush membership. The generic two-column adapter is
+// retained for direct diagnostic calls, not as an older scene-model reader.
 def_visible_primitive(cyrusEditStack,"cyrusEditStack");
 Value* cyrusEditStack_cf(Value** a,int count) {
     if(count!=4&&count!=5&&count!=6)throw RuntimeError(_T("Expected 4, 5 or 6 CS Edit stack arguments"));
@@ -69,16 +44,13 @@ Value* cyrusEditStack_cf(Value** a,int count) {
         const auto id=keyed?L"c:"+std::to_wstring(row->data[2]->to_int64()):L"b:"+std::to_wstring(i);
         input.push_back({row->data[0]->to_matrix3(),row->data[1]->to_int(),id});
     }
-    std::wstring legacy=signature;
     for(int i=mods->size-1;i>=0;--i) {
         auto* m=edit(mods->data[i]);
         // Capture the old topology before conversion remaps transient input indices.
         auto it=m->layers.find(key);
-        std::wstring topology=it==m->layers.end()?L"pass":legacyTopology(it->second);
-        input=applyStable(m,key,input,signature,legacy,unsigned(rows->size));
+        input=applyStable(m,key,input,signature);
         if(annotated&&m->layers[key].invalid)throw RuntimeError(_T("CS Edit base changed. Restore the generation settings or explicitly Reset Edits before updating this planting setup."));
         if(!annotated){m->layers[key].published=false;m->layers[key].publishedIDs.clear();}
-        legacy+=L"|"+std::to_wstring(mods->size-i)+L":"+topology;
     }
     two_typed_value_locals(Array* result,Array* row);
     vl.result=new Array(0);

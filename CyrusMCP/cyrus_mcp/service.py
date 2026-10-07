@@ -9,7 +9,7 @@ import uuid
 
 from .contracts import Fault, canonical, decode, digest, fields, identifier, number, require, validate_shape
 from .geometry import contains, convex, inset, overlaps, outset
-from .settings import normalize_v2, capability_manifest
+from .settings import normalize_plan, capability_manifest
 from . import __version__
 
 
@@ -178,7 +178,7 @@ class Service:
 
     def validate(self, plan):
         total = validate_shape(plan)
-        plan=normalize_v2(plan) if plan["schema_version"]=="2.0" else deepcopy(plan)
+        plan=normalize_plan(plan)
         self.fresh()
         require(self.scope["kind"]=="design", "This scope permits inspection only. Enroll a design site locally to create a layout.", "UNSUPPORTED_CAPABILITY")
         ctx = self.contexts.get(plan["context_id"])
@@ -198,24 +198,19 @@ class Service:
             require(all(s["source_id"] in sources for s in layer["sources"]), "Source was not enrolled", "UNKNOWN_REFERENCE")
             region = regions[layer["region_id"]]["polygon_m"]
             radius = max(sources[s["source_id"]]["radius_m"] for s in layer["sources"] if s["weight"] > 0) * layer["scale"][1]
-            if plan["schema_version"]=="2.0":
-                settings=layer["settings"]
-                tilt=any(settings[key]!=[0,0] for key in ("rotation_x_degrees","rotation_y_degrees"))
-                radius=max(sources[s["source_id"]].get("bounding_radius_m",sources[s["source_id"]]["radius_m"]) * s["settings"]["scale"] if tilt else sources[s["source_id"]]["radius_m"] * s["settings"]["scale"] for s in layer["sources"] if s["weight"]>0)
-                radius*=layer["scale"][1]*max(settings[axis][1] for axis in ("scale_x","scale_y","scale_z"))
+            settings=layer["settings"]
+            tilt=any(settings[key]!=[0,0] for key in ("rotation_x_degrees","rotation_y_degrees"))
+            radius=max(sources[s["source_id"]].get("bounding_radius_m",sources[s["source_id"]]["radius_m"]) * s["settings"]["scale"] if tilt else sources[s["source_id"]]["radius_m"] * s["settings"]["scale"] for s in layer["sources"] if s["weight"]>0)
+            radius*=layer["scale"][1]*max(settings[axis][1] for axis in ("scale_x","scale_y","scale_z"))
             clearance = plan.get("clearance_m", 0)
             movement=0.0
-            if plan["schema_version"]=="2.0":
-                import math
-                movement=math.hypot(max(abs(x) for x in layer["settings"]["movement_x_m"]),max(abs(x) for x in layer["settings"]["movement_y_m"]))
+            import math
+            movement=math.hypot(max(abs(x) for x in layer["settings"]["movement_x_m"]),max(abs(x) for x in layer["settings"]["movement_y_m"]))
             exclusions=[];validation_exclusions=[]
-            if plan["schema_version"]=="1.0":
-                require(not any(overlaps(region, p["polygon_m"]) for p in self.scope["excluded"]), "Planting region intersects protected space; author separate convex planting regions", "GEOMETRY_CONSTRAINT")
-            else:
-                ids=set(layer["exclude_region_ids"])|{r["region_id"] for r in self.scope["excluded"]}
-                require(ids<=available_regions.keys(),"Exclusion was not enrolled","UNKNOWN_REFERENCE")
-                exclusions=[outset(available_regions[key]["polygon_m"],radius+clearance+movement+1e-5) for key in sorted(ids)]
-                validation_exclusions=[outset(available_regions[key]["polygon_m"],radius+clearance) for key in sorted(ids)]
+            ids=set(layer["exclude_region_ids"])|{r["region_id"] for r in self.scope["excluded"]}
+            require(ids<=available_regions.keys(),"Exclusion was not enrolled","UNKNOWN_REFERENCE")
+            exclusions=[outset(available_regions[key]["polygon_m"],radius+clearance+movement+1e-5) for key in sorted(ids)]
+            validation_exclusions=[outset(available_regions[key]["polygon_m"],radius+clearance) for key in sorted(ids)]
             compiled.append({"polygon_m": inset(region, radius+clearance+movement+1e-5), "footprint_m": radius,
                              "original_m": region, "clearance_m": clearance,"exclusions_m":exclusions,"validation_exclusions_m":validation_exclusions})
         vid = uid("validation")

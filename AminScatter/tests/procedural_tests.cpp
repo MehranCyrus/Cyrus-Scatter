@@ -25,7 +25,36 @@ void stableSampler(){
     for(std::size_t i=0;i<part.size();++i){const auto& p=part[i];const auto& a=all[i+93];
         check(p.candidateKey==i+93&&p.source==a.source&&p.scale==a.scale&&amin::length(p.position-a.position)==0,"Candidate range changed prefix");
     }
-    s.relaxEnabled=true;rejects([&]{amin::scatter(mesh,s);});
+    s.collisionEnabled=true;s.collisionRadius=1;rejects([&]{amin::scatter(mesh,s);});
+}
+void stablePatternAndRelax(){
+    const std::vector<amin::Triangle> mesh={{{-10,-10,0},{10,-10,0},{10,10,0}},{{-10,-10,0},{10,10,0},{-10,10,0}}};
+    amin::Settings s;s.stableCandidates=true;s.count=2;s.sourceCount=1;s.linePattern=true;
+    amin::LineBand anchors;anchors.kind=5;anchors.width=1;anchors.sources={0};
+    anchors.scaleMin=.5;anchors.scaleMax=1.5;anchors.boundary.loops={{{0,0,0},{2,2,0},{4,4,0},{30,30,0}}};
+    s.lineBands={anchors};auto prefix=amin::scatter(mesh,s);
+    check(prefix.size()==2&&prefix[0].candidateKey==0&&prefix[1].candidateKey==1,"Anchors exceeded canonical quota");
+    s.count=8;auto all=amin::scatter(mesh,s);
+    check(all.size()==3,"Anchor outside receiver was accepted or anchors were repeated");
+    for(std::size_t i=0;i<prefix.size();++i)check(all[i].candidateKey==prefix[i].candidateKey&&all[i].scale==prefix[i].scale&&amin::length(all[i].position-prefix[i].position)==0,"Anchor prefix changed when quota grew");
+    s.candidateStart=1;s.count=1;auto range=amin::scatter(mesh,s);
+    check(range.size()==1&&range[0].candidateKey==1&&range[0].scale==all[1].scale,"Anchor range changed identity or stroke scale");
+    s.candidateStart=0;s.count=128;
+    amin::LineBand band;band.kind=0;band.width=2;band.sources={0};band.inside=true;
+    band.boundary.loops={{{-8,-8,0},{8,-8,0},{8,8,0},{-8,8,0}}};
+    s.lineBands.push_back(band);auto mixed=amin::scatter(mesh,s);
+    check(mixed.size()>3&&mixed.size()<=s.count,"Mixed pattern did not use bounded population");
+    s.relaxEnabled=true;s.relaxSpacing=1;s.relaxStrength=.5;s.relaxIterations=3;
+    const auto relaxed=amin::scatter(mesh,s),repeat=amin::scatter(mesh,s);
+    check(relaxed.size()==mixed.size(),"Point Relax filtered the candidate stream");
+    bool moved=false;
+    for(std::size_t i=0;i<relaxed.size();++i){
+        check(relaxed[i].candidateKey==mixed[i].candidateKey&&relaxed[i].source==mixed[i].source,"Relax changed candidate/source identity");
+        check(amin::length(relaxed[i].position-repeat[i].position)==0&&std::abs(relaxed[i].position.z)<1e-10,"Relax is nondeterministic or left receiver");
+        if(relaxed[i].candidateKey<3)check(amin::length(relaxed[i].position-mixed[i].position)==0,"Relax moved fixed anchor");
+        moved|=amin::length(relaxed[i].position-mixed[i].position)>0;
+    }
+    check(moved,"Relax was silently disabled");
 }
 void distances(){
     using namespace cyrus::groups;
@@ -177,4 +206,4 @@ void exhaustive(){
         }
     }
 }
-int main(){try{stableSampler();distances();refill();targetAndOrdering();scaleBounds();cleanupWorkLimit();stableFalloff();stableThreadsAndDensity();exhaustive();std::cout<<"Procedural v1: stable/parallel sampler and falloff, anchor density, scopes, radius bounds, protected edits, bounded cleanup/replay and 240 exhaustive comparisons passed\n";return 0;}catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}
+int main(){try{stableSampler();stablePatternAndRelax();distances();refill();targetAndOrdering();scaleBounds();cleanupWorkLimit();stableFalloff();stableThreadsAndDensity();exhaustive();std::cout<<"Procedural: stable/parallel sampler, bounded anchors and pattern/Relax, falloff, scopes, protected edits, bounded cleanup/replay and 240 exhaustive comparisons passed\n";return 0;}catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}

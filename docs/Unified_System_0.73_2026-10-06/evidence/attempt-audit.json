@@ -1,0 +1,109 @@
+{
+  "failed_intermediate_receipts": [
+    {
+      "campaign": "unified073-final-core04",
+      "receipt_sha256": "6f27342a4add7f0b46b8d604b206116491426f436a7c85d2a58882e0dfa255bd",
+      "passed": false,
+      "diagnosis": "idle fixture: raw embedded writes did not request redraw; all five core probes passed; final core05 and actual-handler ui01 pass",
+      "installed_product_files_unchanged": true
+    },
+    {
+      "campaign": "unified073-final-mcp-panel01",
+      "receipt_sha256": "9035bb71b1f7d712eaac428b5ed4b78e16638795e982df1e894084c0659a7c78",
+      "passed": false,
+      "diagnosis": "fixture read cold embedded records before root publication binding",
+      "installed_product_files_unchanged": true
+    },
+    {
+      "campaign": "unified073-final-mcp-panel02",
+      "receipt_sha256": "b70d3ebb1830ec60f6d90da2389b7604c624f03198953026dcfe1362a61076c1",
+      "passed": false,
+      "diagnosis": "diagnostic reproduction: 49 accepted versus 50 raw; scope/diagnostic reset passed",
+      "installed_product_files_unchanged": true
+    },
+    {
+      "campaign": "unified073-final-analyzer-assignment01",
+      "receipt_sha256": "3f03189cb5986adcc117b052c8cd685d964e424a338077b93565c9b9ce8c5cc6",
+      "passed": false,
+      "diagnosis": "fixture resolution32 below native minimum48",
+      "installed_product_files_unchanged": true
+    },
+    {
+      "campaign": "unified073-final-analyzer-assignment02",
+      "receipt_sha256": "4ae661f8562153a92359cea3c4722db03613d787674f1b31d2413ecae6686487",
+      "passed": false,
+      "diagnosis": "fixture outside-border channel has no receiver outside coincident boundary",
+      "installed_product_files_unchanged": true
+    },
+    {
+      "campaign": "unified073-final-analyzer-assignment03",
+      "receipt_sha256": "a441f2d0996980a259b8eadce06dbe5585585cb1e89fe39177e5b8fa180d44b0",
+      "passed": false,
+      "diagnosis": "same outside-border diagnostic reproduction; corrected assignment04 passes",
+      "installed_product_files_unchanged": true
+    },
+    {
+      "campaign": "unified073-guard-ui01",
+      "receipt_sha256": "7398113cfa35c8c33daf72a1edcd1034662e6971834d95f7d3d1bfc9ac257f01",
+      "passed": false,
+      "diagnosis": "Max exited before bootstrap with 4294967295 during concurrent private startup; script/UI acceptance did not run. Cause unproven; retry serially on unchanged bits.",
+      "installed_product_files_unchanged": true
+    },
+    {
+      "campaign": "unified073-selectionfix-selection01",
+      "receipt_sha256": "ad3ba170a9dae6d664793f8687b0693ba8d5e531c801dc5ce5da61f6dc0d568c",
+      "passed": false,
+      "diagnosis": "Regression fixture opened the Source rollout by property assignment without invoking its rolledUp handler, leaving fields unbound; corrected fixture invokes the actual expansion handler. No product change between these attempts.",
+      "installed_product_files_unchanged": true
+    },
+    {
+      "campaign": "unified073-selectionfix-selection02",
+      "receipt_sha256": "d1f68fff843b6a1dcfe085d303f7cdd9ec517066c5fee3cb7bdd68226bdf99cf",
+      "passed": false,
+      "diagnosis": "Negative fixture cleared general rollout owners, then called a normal ready-panel bind without restoring them; the invalid fixture transition caused updateMode/undefined. Restore the simulated owners before normal binding.",
+      "installed_product_files_unchanged": true
+    },
+    {
+      "campaign": "unified073-selectionfix-selection03",
+      "receipt_sha256": "3d7f40be956046c2298f39fd80a51260b09a45e31fcec42940fd04a0c4d1abdd",
+      "passed": false,
+      "diagnosis": "Fixture tried to call dropdown.selected, which is the selected item string; use the production selectConsumer function called by the native selection event. No positive mount timer invocation or product change.",
+      "installed_product_files_unchanged": true
+    },
+    {
+      "campaign": "unified073-selectionfix-selection04",
+      "receipt_sha256": "f6bd8a98c8d3eb341694b823141cf9cf5789cd98423bcf700341a0782f861ddd",
+      "passed": false,
+      "diagnosis": "Scene reset/load changed the command-panel task; fixture now enters Modify before testing selection. Explicit mounting still not used.",
+      "installed_product_files_unchanged": true
+    },
+    {
+      "campaign": "unified073-selectionfix-selection05",
+      "receipt_sha256": "e42f80db9c8f6b14d892f8c0e8294cbafd0eb92b853d1be5fcf73e0976e6d91d",
+      "passed": false,
+      "diagnosis": "Fixture froze retained-buffer counters before the first cold-scene preview draw. Isolated diagnostic showed unchanged epoch/candidate/membership counts; preview owners appeared and initial uploads occurred, then subsequent selection reused them. Warm the cold scene with no selection before the passive-UI baseline.",
+      "installed_product_files_unchanged": true
+    }
+  ],
+  "diagnostic_reproductions": [
+    {
+      "campaign": "unified073-final-retirement02",
+      "receipt_sha256": "7e7cbd276505075ab5f38c9926de6b766c4534c91223e26322daf24548411ff4",
+      "diagnostic_execution_passed": true,
+      "acceptance": false,
+      "diagnosis": "Max continued opening an older scene after an on-update exception and relabelled the record as 54. A persistent schema-validity marker now denies calculation, publication, copying and re-save/reopen bypass."
+    },
+    {
+      "campaign": "unified073-selection-reproduce01",
+      "receipt_sha256": "bee220a74883d5ef009fe22ba6138d1a35fbd17f36ceda4ddf0fd318b975b828",
+      "diagnostic_execution_passed": true,
+      "acceptance": false,
+      "diagnosis": "Previous delivered script: 21 original mainUI/undefined router errors witnessed, including one explicit cold-handler probe; natural selection did not manually run the mount timer. Earlier UI tests forced timer mounting and missed asynchronous rollout exceptions."
+    }
+  ],
+  "actual_production_fixes": [
+    "helper cloned rollout explicit view reference; final shared/inactive/global context tests pass",
+    "persistent development-schema denial; final retirement guard test passes",
+    "container child rollups capture their panel and guard readiness/reentrancy; natural selection and closed handler regression passes"
+  ]
+}

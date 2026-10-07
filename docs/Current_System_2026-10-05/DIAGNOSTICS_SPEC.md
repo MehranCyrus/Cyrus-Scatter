@@ -1,5 +1,7 @@
 # Diagnostics and engineering records
 
+**0.73 successor:** [current implementation](../Unified_System_0.73_2026-10-06/IMPLEMENTATION.md) preserves direct Scatter recording/export and adds bounded container movement/ownership summaries. [Matching results](../Unified_System_0.73_2026-10-06/RESULTS.md) qualify idle counters and MCP consent/lifecycle. The broader archive/training proposals below remain future work.
+
 **0.72 delivery:** recording controls now also live directly in Scatter Modify > Diagnostics. The explicit local export is `cyrus.diagnostic-bundle/1.0`, containing stopped native event pages and script/native identities. Automation's `cyrus.diagnostic-report/1.0` format is preserved. Neither format grants sharing or training permission. See [0.72 workflow and limits](../Integrated_UI_0.72_2026-10-06/WORKFLOW.md).
 
 **6 October implementation boundary:** the opt-in bounded native recorder, Automation-panel start/stop/export and separately consented MCP reading now have [Max 2027 runtime evidence](../Live_Runtime_2026-10-06/RESULTS.md). The broader action/batch schema, searchable archive and artist-feedback pipeline below remain design targets. The implemented default is 10 minutes / 4,096 events / 4 MiB; an engineering trace remains ineligible for training by default.
@@ -15,7 +17,7 @@ That work also introduces native recorder/bridge files, a Python diagnostic page
 | Mechanism | Source / behavior | Gap |
 | --- | --- | --- |
 | Performance recorder 0.2.2 | [Monitor](../../tools/performance/CyrusPerformanceMonitor.ms): selected controller, cached layer observations, manual event notes, controlled rebuild trials, CSV/JSON manifest/results | Manually loaded; not an integrated multi-controller activity archive |
-| Detailed edit trace | [Collector](../../tools/performance/CyrusEditTrace.ms), [generated hooks](../../AminScatter/tools/ui/trace.cjs): input receipt, legacy invalidation wrapper, placements and preview spans | Watched-input filtering can miss generated helpers; direct procedural invalidation, container reconciliation and render reasons are not fully instrumented |
+| Detailed edit trace | [Collector](../../tools/performance/CyrusEditTrace.ms), [generated hooks](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/AminScatter/tools/ui/trace.cjs): input receipt, legacy invalidation wrapper, placements and preview spans | Watched-input filtering can miss generated helpers; direct procedural invalidation, container reconciliation and render reasons are not fully instrumented |
 | Resource sampler | [PowerShell sampler](../../tools/performance/Measure-CyrusProcess.ps1): separate process, CPU/private bytes/working set and file fingerprints | Whole-Max resource totals, sampled peaks; not attributable native/GPU allocation or presented FPS |
 | Runtime statistics | `procStatistics`, `cacheSnapshot`, `CyrusScatterLiveBatchStats`, `CyrusPFBuilds`, retained/Brush/Analyzer counters and last errors | Several values are memory-only; no complete causal history |
 | MCP journal | [Service](../../CyrusMCP/cyrus_mcp/service.py): at most 128 operation records, retry/recovery and unknown outcomes | Operational recovery history only; not all UI behavior or an ML dataset |

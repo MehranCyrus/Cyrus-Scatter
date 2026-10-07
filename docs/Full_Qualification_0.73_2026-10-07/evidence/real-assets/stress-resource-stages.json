@@ -1,0 +1,482 @@
+{
+  "pid": 51112,
+  "script_sha256": "15390e733aac8a02433bfbc938f61fbe95f7f41eb35102baedf100dfe6c1a268",
+  "stages": [
+    {
+      "label": "stress_10000",
+      "source": {
+        "label": "stress_10000",
+        "duration_ms": 672.8787,
+        "epoch": 2,
+        "calculation_model": "CyrusUnified1",
+        "requested_layers": [
+          10000
+        ],
+        "accepted": [
+          10000
+        ],
+        "shown": [
+          30000
+        ],
+        "shown_unit": "points",
+        "prepared_builds": [
+          2
+        ],
+        "preview_builds": [
+          2
+        ],
+        "sources": [
+          [
+            "f2ae4915-fb8e-4b72-83cb-f84e45bf5e7b",
+            "Base",
+            [
+              [
+                "crp_MT_PM_V33_Myrtle_01_003",
+                42
+              ],
+              [
+                "crp_MT_PM_Rosa_rugosa_01_02",
+                40
+              ],
+              [
+                "crp_MT_PM_Sambucus_nigra_02_01",
+                47
+              ],
+              [
+                "MT_PM_V41_Arthropodium_01_01",
+                90
+              ],
+              [
+                "MT_PM_V41_Arthropodium_01_04",
+                83
+              ],
+              [
+                "crp_Lavander_01",
+                62
+              ],
+              [
+                "crp_Lavander_05",
+                56
+              ],
+              [
+                "crp_MT_PM_V33_Glossy_abelia_01_006",
+                44
+              ],
+              [
+                "MT_PM_V41_Geranium_robertianum_01_04",
+                160
+              ],
+              [
+                "MT_PM_V41_Lamium_maculatum_01_04",
+                151
+              ],
+              [
+                "MT_PM_V41_Phlox_stolonifera_01_01",
+                140
+              ],
+              [
+                "MT_PM_V41_Viola_sororia_01_05",
+                150
+              ],
+              [
+                "clover_pack_004",
+                1710
+              ],
+              [
+                "grass_bush",
+                2879
+              ],
+              [
+                "grass_small",
+                4346
+              ]
+            ]
+          ]
+        ],
+        "container_counters": [
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "retained": [
+          30000,
+          15,
+          2,
+          3,
+          4,
+          201,
+          10328544,
+          39935,
+          0,
+          15,
+          360000,
+          1,
+          "5462655159642164824;"
+        ],
+        "retained_mesh": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          536870912,
+          1073741824
+        ],
+        "host_private_bytes": 7805513728,
+        "host_working_bytes": 4688375808,
+        "host_peak_working_bytes": 4909674496,
+        "errors": [
+          ""
+        ]
+      },
+      "transport_wall_s": 0.9070000000065193,
+      "host_cpu_s": 3.359375,
+      "before": {
+        "cpu_s": 1080.53125,
+        "private_bytes": 7807393792,
+        "working_bytes": 4689231872,
+        "graphics": [
+          {
+            "Name": "pid_51112_luid_0x00000000_0x00013A27_phys_0",
+            "DedicatedUsage": 2567565312,
+            "SharedUsage": 316698624,
+            "TotalCommitted": 2846056448
+          }
+        ]
+      },
+      "after": {
+        "cpu_s": 1083.890625,
+        "private_bytes": 7622688768,
+        "working_bytes": 4650250240,
+        "graphics": [
+          {
+            "Name": "pid_51112_luid_0x00000000_0x00013A27_phys_0",
+            "DedicatedUsage": 2503004160,
+            "SharedUsage": 281374720,
+            "TotalCommitted": 2746171392
+          }
+        ]
+      }
+    },
+    {
+      "label": "stress_50000",
+      "source": {
+        "label": "stress_50000",
+        "duration_ms": 1007.5189,
+        "epoch": 3,
+        "calculation_model": "CyrusUnified1",
+        "requested_layers": [
+          50000
+        ],
+        "accepted": [
+          50000
+        ],
+        "shown": [
+          150000
+        ],
+        "shown_unit": "points",
+        "prepared_builds": [
+          3
+        ],
+        "preview_builds": [
+          3
+        ],
+        "sources": [
+          [
+            "f2ae4915-fb8e-4b72-83cb-f84e45bf5e7b",
+            "Base",
+            [
+              [
+                "crp_MT_PM_V33_Myrtle_01_003",
+                231
+              ],
+              [
+                "crp_MT_PM_Rosa_rugosa_01_02",
+                237
+              ],
+              [
+                "crp_MT_PM_Sambucus_nigra_02_01",
+                219
+              ],
+              [
+                "MT_PM_V41_Arthropodium_01_01",
+                433
+              ],
+              [
+                "MT_PM_V41_Arthropodium_01_04",
+                409
+              ],
+              [
+                "crp_Lavander_01",
+                286
+              ],
+              [
+                "crp_Lavander_05",
+                285
+              ],
+              [
+                "crp_MT_PM_V33_Glossy_abelia_01_006",
+                243
+              ],
+              [
+                "MT_PM_V41_Geranium_robertianum_01_04",
+                769
+              ],
+              [
+                "MT_PM_V41_Lamium_maculatum_01_04",
+                740
+              ],
+              [
+                "MT_PM_V41_Phlox_stolonifera_01_01",
+                765
+              ],
+              [
+                "MT_PM_V41_Viola_sororia_01_05",
+                710
+              ],
+              [
+                "clover_pack_004",
+                8682
+              ],
+              [
+                "grass_bush",
+                14281
+              ],
+              [
+                "grass_small",
+                21710
+              ]
+            ]
+          ]
+        ],
+        "container_counters": [
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "retained": [
+          150000,
+          15,
+          3,
+          4,
+          6,
+          216,
+          12128544,
+          40385,
+          0,
+          15,
+          1800000,
+          1,
+          "5881692176589677148;"
+        ],
+        "retained_mesh": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          536870912,
+          1073741824
+        ],
+        "host_private_bytes": 7656730624,
+        "host_working_bytes": 4656738304,
+        "host_peak_working_bytes": 4909674496,
+        "errors": [
+          ""
+        ]
+      },
+      "transport_wall_s": 1.2179999999934807,
+      "host_cpu_s": 3.78125,
+      "before": {
+        "cpu_s": 1084.125,
+        "private_bytes": 7622406144,
+        "working_bytes": 4650250240,
+        "graphics": [
+          {
+            "Name": "pid_51112_luid_0x00000000_0x00013A27_phys_0",
+            "DedicatedUsage": 2481246208,
+            "SharedUsage": 281374720,
+            "TotalCommitted": 2724413440
+          }
+        ]
+      },
+      "after": {
+        "cpu_s": 1087.90625,
+        "private_bytes": 7611432960,
+        "working_bytes": 4620677120,
+        "graphics": [
+          {
+            "Name": "pid_51112_luid_0x00000000_0x00013A27_phys_0",
+            "DedicatedUsage": 2565849088,
+            "SharedUsage": 283078656,
+            "TotalCommitted": 2810720256
+          }
+        ]
+      }
+    },
+    {
+      "label": "stress_100000",
+      "source": {
+        "label": "stress_100000",
+        "duration_ms": 993.6884,
+        "epoch": 4,
+        "calculation_model": "CyrusUnified1",
+        "requested_layers": [
+          100000
+        ],
+        "accepted": [
+          100000
+        ],
+        "shown": [
+          300000
+        ],
+        "shown_unit": "points",
+        "prepared_builds": [
+          4
+        ],
+        "preview_builds": [
+          4
+        ],
+        "sources": [
+          [
+            "f2ae4915-fb8e-4b72-83cb-f84e45bf5e7b",
+            "Base",
+            [
+              [
+                "crp_MT_PM_V33_Myrtle_01_003",
+                451
+              ],
+              [
+                "crp_MT_PM_Rosa_rugosa_01_02",
+                451
+              ],
+              [
+                "crp_MT_PM_Sambucus_nigra_02_01",
+                430
+              ],
+              [
+                "MT_PM_V41_Arthropodium_01_01",
+                887
+              ],
+              [
+                "MT_PM_V41_Arthropodium_01_04",
+                830
+              ],
+              [
+                "crp_Lavander_01",
+                577
+              ],
+              [
+                "crp_Lavander_05",
+                591
+              ],
+              [
+                "crp_MT_PM_V33_Glossy_abelia_01_006",
+                425
+              ],
+              [
+                "MT_PM_V41_Geranium_robertianum_01_04",
+                1475
+              ],
+              [
+                "MT_PM_V41_Lamium_maculatum_01_04",
+                1495
+              ],
+              [
+                "MT_PM_V41_Phlox_stolonifera_01_01",
+                1458
+              ],
+              [
+                "MT_PM_V41_Viola_sororia_01_05",
+                1427
+              ],
+              [
+                "clover_pack_004",
+                17209
+              ],
+              [
+                "grass_bush",
+                28780
+              ],
+              [
+                "grass_small",
+                43514
+              ]
+            ]
+          ]
+        ],
+        "container_counters": [
+          [
+            0,
+            0,
+            0
+          ]
+        ],
+        "retained": [
+          300000,
+          15,
+          4,
+          5,
+          8,
+          231,
+          15728544,
+          40775,
+          0,
+          15,
+          3600000,
+          1,
+          "3538991859895003078;"
+        ],
+        "retained_mesh": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          536870912,
+          1073741824
+        ],
+        "host_private_bytes": 7616577536,
+        "host_working_bytes": 4626296832,
+        "host_peak_working_bytes": 4909674496,
+        "errors": [
+          ""
+        ]
+      },
+      "transport_wall_s": 1.422000000020489,
+      "host_cpu_s": 3.796875,
+      "before": {
+        "cpu_s": 1088.1875,
+        "private_bytes": 7600357376,
+        "working_bytes": 4620021760,
+        "graphics": [
+          {
+            "Name": "pid_51112_luid_0x00000000_0x00013A27_phys_0",
+            "DedicatedUsage": 2563387392,
+            "SharedUsage": 282292224,
+            "TotalCommitted": 2807472128
+          }
+        ]
+      },
+      "after": {
+        "cpu_s": 1091.984375,
+        "private_bytes": 7616245760,
+        "working_bytes": 4626128896,
+        "graphics": [
+          {
+            "Name": "pid_51112_luid_0x00000000_0x00013A27_phys_0",
+            "DedicatedUsage": 2567073792,
+            "SharedUsage": 284520448,
+            "TotalCommitted": 2813386752
+          }
+        ]
+      }
+    }
+  ],
+  "metric_limits": "CPU/RAM and GPU-process memory include the entire private Max scene and renderer. They do not identify exclusive plugin allocations. The development transport polls independently.",
+  "passed": true
+}

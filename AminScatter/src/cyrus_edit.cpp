@@ -25,7 +25,7 @@
 static unsigned editRevision=0;
 static std::wstring pointId(){GUID id{};if(FAILED(CoCreateGuid(&id)))throw RuntimeError(_T("Cannot allocate instance identity"));wchar_t text[40];StringFromGUID2(id,text,40);return text;}
 struct EditRow { std::wstring inputId,outputId;unsigned source=0; Matrix3 delta{1}; bool deleted=false,selected=false; };
-struct EditLayer { std::wstring signature; bool invalid=false,active=true,legacy=false,pending=false;std::vector<EditRow> rows;std::vector<Matrix3> input;std::vector<int> sources;bool published=false,viewportVisible=true;std::unordered_set<std::wstring> publishedIDs;bool shown(const EditRow& r)const{return viewportVisible&&!r.deleted&&r.source<input.size()&&(!published||publishedIDs.count(r.outputId)>0);} };
+struct EditLayer { std::wstring signature; bool invalid=false,active=true,pending=false;std::vector<EditRow> rows;std::vector<Matrix3> input;std::vector<int> sources;bool published=false,viewportVisible=true;std::unordered_set<std::wstring> publishedIDs;bool shown(const EditRow& r)const{return viewportVisible&&!r.deleted&&r.source<input.size()&&(!published||publishedIDs.count(r.outputId)>0);} };
 class CSEdit;
 class EditRestore:public RestoreObj { CSEdit* mod;std::map<int,EditLayer> before,after;public:EditRestore(CSEdit*);void Restore(int)override;void Redo()override;void EndHold()override;MSTR Description()override{return _T("CS Edit");}};
 class CSEdit:public Modifier,public EventUser {

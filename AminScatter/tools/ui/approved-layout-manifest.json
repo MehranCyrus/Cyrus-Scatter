@@ -1,0 +1,1787 @@
+{
+  "schema": "cyrus.ui-layout/1",
+  "version": "0.73",
+  "source": "approved single-file HTML study",
+  "sections": [
+    {
+      "name": "surfacesUI",
+      "title": "Receiving surfaces",
+      "scope": "Setup",
+      "controls": [
+        {
+          "component": "flow_surfaceUI",
+          "control": "sharedPick",
+          "presentation": "flow_surfaceUI_sharedPick",
+          "advanced": false
+        },
+        {
+          "component": "flow_surfaceUI",
+          "control": "sharedInfo",
+          "presentation": "flow_surfaceUI_sharedInfo",
+          "advanced": false
+        },
+        {
+          "component": "flow_surfaceUI",
+          "control": "surfacesButton",
+          "presentation": "flow_surfaceUI_surfacesButton",
+          "advanced": false
+        },
+        {
+          "component": "flow_surfaceUI",
+          "control": "countInfo",
+          "presentation": "flow_surfaceUI_countInfo",
+          "advanced": false
+        },
+        {
+          "component": "flow_surfaceUI",
+          "control": "containersToggle",
+          "presentation": "flow_surfaceUI_containersToggle",
+          "advanced": false
+        },
+        {
+          "component": "flow_surfaceUI",
+          "control": "globalContainers",
+          "presentation": "flow_surfaceUI_globalContainers",
+          "advanced": true
+        },
+        {
+          "component": "flow_surfaceUI",
+          "control": "createContainer",
+          "presentation": "flow_surfaceUI_createContainer",
+          "advanced": true
+        },
+        {
+          "component": "flow_surfaceUI",
+          "control": "pickContainer",
+          "presentation": "flow_surfaceUI_pickContainer",
+          "advanced": true
+        },
+        {
+          "component": "flow_surfaceUI",
+          "control": "removeContainer",
+          "presentation": "flow_surfaceUI_removeContainer",
+          "advanced": true
+        },
+        {
+          "component": "flow_surfaceUI",
+          "control": "containerInfo",
+          "presentation": "flow_surfaceUI_containerInfo",
+          "advanced": true
+        }
+      ]
+    },
+    {
+      "name": "managerUI",
+      "title": "Layers & paint sets",
+      "scope": "Setup",
+      "controls": [
+        {
+          "component": "flow_layersUI",
+          "control": "layerList",
+          "presentation": "flow_layersUI_layerList",
+          "advanced": false
+        },
+        {
+          "component": "flow_layersUI",
+          "control": "editButton",
+          "presentation": "flow_layersUI_editButton",
+          "advanced": true
+        },
+        {
+          "component": "flow_layersUI",
+          "control": "addButton",
+          "presentation": "flow_layersUI_addButton",
+          "advanced": false
+        },
+        {
+          "component": "flow_layersUI",
+          "control": "copyButton",
+          "presentation": "flow_layersUI_copyButton",
+          "advanced": false
+        },
+        {
+          "component": "flow_layersUI",
+          "control": "removeButton",
+          "presentation": "flow_layersUI_removeButton",
+          "advanced": false
+        },
+        {
+          "component": "flow_layersUI",
+          "control": "nameEdit",
+          "presentation": "flow_layersUI_nameEdit",
+          "advanced": true
+        },
+        {
+          "component": "flow_layersUI",
+          "control": "visibleCheck",
+          "presentation": "flow_layersUI_visibleCheck",
+          "advanced": false
+        },
+        {
+          "component": "flow_layersUI",
+          "control": "enabledCheck",
+          "presentation": "flow_layersUI_enabledCheck",
+          "advanced": false
+        },
+        {
+          "component": "flow_layersUI",
+          "control": "upButton",
+          "presentation": "flow_layersUI_upButton",
+          "advanced": false
+        },
+        {
+          "component": "flow_layersUI",
+          "control": "downButton",
+          "presentation": "flow_layersUI_downButton",
+          "advanced": false
+        },
+        {
+          "component": "flow_layersUI",
+          "control": "countInfo",
+          "presentation": "flow_layersUI_countInfo",
+          "advanced": true
+        },
+        {
+          "component": "setsUI",
+          "control": "setList",
+          "presentation": "setsUI_setList",
+          "advanced": false
+        },
+        {
+          "component": "setsUI",
+          "control": "addButton",
+          "presentation": "setsUI_addButton",
+          "advanced": true
+        },
+        {
+          "component": "setsUI",
+          "control": "removeButton",
+          "presentation": "setsUI_removeButton",
+          "advanced": true
+        },
+        {
+          "component": "setsUI",
+          "control": "nameEdit",
+          "presentation": "setsUI_nameEdit",
+          "advanced": true
+        },
+        {
+          "component": "setsUI",
+          "control": "weightSpin",
+          "presentation": "setsUI_weightSpin",
+          "advanced": false
+        },
+        {
+          "component": "setsUI",
+          "control": "enabledCheck",
+          "presentation": "setsUI_enabledCheck",
+          "advanced": false
+        },
+        {
+          "component": "setsUI",
+          "control": "visibleCheck",
+          "presentation": "setsUI_visibleCheck",
+          "advanced": false
+        },
+        {
+          "component": "setsUI",
+          "control": "upButton",
+          "presentation": "setsUI_upButton",
+          "advanced": true
+        },
+        {
+          "component": "setsUI",
+          "control": "downButton",
+          "presentation": "setsUI_downButton",
+          "advanced": true
+        },
+        {
+          "component": "setsUI",
+          "control": "info",
+          "presentation": "setsUI_info",
+          "advanced": true
+        }
+      ]
+    },
+    {
+      "name": "modelsUI",
+      "title": "Models & source containers",
+      "scope": "Layer",
+      "controls": [
+        {
+          "component": "sourceContainersUI",
+          "control": "modeList",
+          "presentation": "sourceContainersUI_modeList",
+          "advanced": false
+        },
+        {
+          "component": "sourceContainersUI",
+          "control": "containersList",
+          "presentation": "sourceContainersUI_containersList",
+          "advanced": false
+        },
+        {
+          "component": "sourceContainersUI",
+          "control": "createContainer",
+          "presentation": "sourceContainersUI_createContainer",
+          "advanced": false
+        },
+        {
+          "component": "sourceContainersUI",
+          "control": "pickContainer",
+          "presentation": "sourceContainersUI_pickContainer",
+          "advanced": false
+        },
+        {
+          "component": "sourceContainersUI",
+          "control": "removeContainer",
+          "presentation": "sourceContainersUI_removeContainer",
+          "advanced": false
+        },
+        {
+          "component": "sourceContainersUI",
+          "control": "membershipInfo",
+          "presentation": "sourceContainersUI_membershipInfo",
+          "advanced": false
+        },
+        {
+          "component": "sourceContainersUI",
+          "control": "helpInfo",
+          "presentation": "sourceContainersUI_helpInfo",
+          "advanced": true
+        },
+        {
+          "component": "sourceUI",
+          "control": "plantList",
+          "presentation": "sourceUI_plantList",
+          "advanced": false
+        },
+        {
+          "component": "sourceUI",
+          "control": "selectFromScene",
+          "presentation": "sourceUI_selectFromScene",
+          "advanced": true
+        },
+        {
+          "component": "sourceUI",
+          "control": "addPlant",
+          "presentation": "sourceUI_addPlant",
+          "advanced": false
+        },
+        {
+          "component": "sourceUI",
+          "control": "addSelected",
+          "presentation": "sourceUI_addSelected",
+          "advanced": false
+        },
+        {
+          "component": "sourceUI",
+          "control": "removePlant",
+          "presentation": "sourceUI_removePlant",
+          "advanced": true
+        },
+        {
+          "component": "sourceUI",
+          "control": "selectPlant",
+          "presentation": "sourceUI_selectPlant",
+          "advanced": true
+        },
+        {
+          "component": "sourceUI",
+          "control": "addPoint",
+          "presentation": "sourceUI_addPoint",
+          "advanced": true
+        },
+        {
+          "component": "sourceUI",
+          "control": "addEmpty",
+          "presentation": "sourceUI_addEmpty",
+          "advanced": true
+        },
+        {
+          "component": "sourceUI",
+          "control": "replacePoint",
+          "presentation": "sourceUI_replacePoint",
+          "advanced": true
+        },
+        {
+          "component": "sourceUI",
+          "control": "groupHeading",
+          "presentation": "sourceUI_groupHeading",
+          "advanced": true
+        },
+        {
+          "component": "sourceUI",
+          "control": "existingGroups",
+          "presentation": "sourceUI_existingGroups",
+          "advanced": true
+        },
+        {
+          "component": "sourceUI",
+          "control": "groupColor",
+          "presentation": "sourceUI_groupColor",
+          "advanced": true
+        },
+        {
+          "component": "sourceUI",
+          "control": "applyColor",
+          "presentation": "sourceUI_applyColor",
+          "advanced": true
+        },
+        {
+          "component": "sourceUI",
+          "control": "colorHelp",
+          "presentation": "sourceUI_colorHelp",
+          "advanced": true
+        },
+        {
+          "component": "sourceUI",
+          "control": "weightSpin",
+          "presentation": "sourceUI_weightSpin",
+          "advanced": false
+        },
+        {
+          "component": "sourceUI",
+          "control": "weightHelp",
+          "presentation": "sourceUI_weightHelp",
+          "advanced": true
+        },
+        {
+          "component": "sourceUI",
+          "control": "sourceZSpin",
+          "presentation": "sourceUI_sourceZSpin",
+          "advanced": false
+        },
+        {
+          "component": "sourceUI",
+          "control": "sourceScaleSpin",
+          "presentation": "sourceUI_sourceScaleSpin",
+          "advanced": false
+        },
+        {
+          "component": "sourceUI",
+          "control": "sourceTransformHelp",
+          "presentation": "sourceUI_sourceTransformHelp",
+          "advanced": true
+        },
+        {
+          "component": "sourceUI",
+          "control": "radiusSourceSpin",
+          "presentation": "sourceUI_radiusSourceSpin",
+          "advanced": false
+        },
+        {
+          "component": "sourceUI",
+          "control": "followRadiusCheck",
+          "presentation": "sourceUI_followRadiusCheck",
+          "advanced": false
+        },
+        {
+          "component": "sourceUI",
+          "control": "showRadiusCheck",
+          "presentation": "sourceUI_showRadiusCheck",
+          "advanced": false
+        },
+        {
+          "component": "sourceUI",
+          "control": "forwardAxis",
+          "presentation": "sourceUI_forwardAxis",
+          "advanced": true
+        },
+        {
+          "component": "sourceUI",
+          "control": "detailsToggle",
+          "presentation": "sourceUI_detailsToggle",
+          "advanced": false
+        },
+        {
+          "component": "diversityUI",
+          "control": "diversityRadio",
+          "presentation": "diversityUI_diversityRadio",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "sizeSpin",
+          "presentation": "diversityUI_sizeSpin",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "divSeedSpin",
+          "presentation": "diversityUI_divSeedSpin",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "roughSpin",
+          "presentation": "diversityUI_roughSpin",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "blurSpin",
+          "presentation": "diversityUI_blurSpin",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "noiseSpin",
+          "presentation": "diversityUI_noiseSpin",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "groupHint",
+          "presentation": "diversityUI_groupHint",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "fixedHint",
+          "presentation": "diversityUI_fixedHint",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "strokeTitle",
+          "presentation": "diversityUI_strokeTitle",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "pathsDrop",
+          "presentation": "diversityUI_pathsDrop",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "analyzerChannel",
+          "presentation": "diversityUI_analyzerChannel",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "pickAnalyzer",
+          "presentation": "diversityUI_pickAnalyzer",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "pickPath",
+          "presentation": "diversityUI_pickPath",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "removePath",
+          "presentation": "diversityUI_removePath",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "strokesList",
+          "presentation": "diversityUI_strokesList",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "addOutside",
+          "presentation": "diversityUI_addOutside",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "addInside",
+          "presentation": "diversityUI_addInside",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "removeStrokeButton",
+          "presentation": "diversityUI_removeStrokeButton",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "strokeWidth",
+          "presentation": "diversityUI_strokeWidth",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "strokeMode",
+          "presentation": "diversityUI_strokeMode",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "strokeChoices",
+          "presentation": "diversityUI_strokeChoices",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "strokeScaleMin",
+          "presentation": "diversityUI_strokeScaleMin",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "strokeScaleMax",
+          "presentation": "diversityUI_strokeScaleMax",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "refreshGroups",
+          "presentation": "diversityUI_refreshGroups",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "strokeHelp",
+          "presentation": "diversityUI_strokeHelp",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "edgeOffsetSpin",
+          "presentation": "diversityUI_edgeOffsetSpin",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "edgeAlongSpin",
+          "presentation": "diversityUI_edgeAlongSpin",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "edgeAcrossSpin",
+          "presentation": "diversityUI_edgeAcrossSpin",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "edgeRowHelp",
+          "presentation": "diversityUI_edgeRowHelp",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "keepCornerCheck",
+          "presentation": "diversityUI_keepCornerCheck",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "cornerAngleSpin",
+          "presentation": "diversityUI_cornerAngleSpin",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "cornerCountSpin",
+          "presentation": "diversityUI_cornerCountSpin",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "cornerHelp",
+          "presentation": "diversityUI_cornerHelp",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "edgeRotXSpin",
+          "presentation": "diversityUI_edgeRotXSpin",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "edgeRotYSpin",
+          "presentation": "diversityUI_edgeRotYSpin",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "edgeRotZSpin",
+          "presentation": "diversityUI_edgeRotZSpin",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "streetStartSpin",
+          "presentation": "diversityUI_streetStartSpin",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "streetEndSpin",
+          "presentation": "diversityUI_streetEndSpin",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "centerStreetSpin",
+          "presentation": "diversityUI_centerStreetSpin",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "streetLayoutHelp",
+          "presentation": "diversityUI_streetLayoutHelp",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "faceOutCheck",
+          "presentation": "diversityUI_faceOutCheck",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "cornerRadiusSpin",
+          "presentation": "diversityUI_cornerRadiusSpin",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "straightStreet",
+          "presentation": "diversityUI_straightStreet",
+          "advanced": true
+        }
+      ]
+    },
+    {
+      "name": "populationUI",
+      "title": "Population",
+      "scope": "Layer",
+      "controls": [
+        {
+          "component": "distributionUI",
+          "control": "modeRadio",
+          "presentation": "distributionUI_modeRadio",
+          "advanced": true
+        },
+        {
+          "component": "distributionUI",
+          "control": "populationRadio",
+          "presentation": "distributionUI_populationRadio",
+          "advanced": false
+        },
+        {
+          "component": "distributionUI",
+          "control": "countSpin",
+          "presentation": "distributionUI_countSpin",
+          "advanced": false
+        },
+        {
+          "component": "distributionUI",
+          "control": "densitySpin",
+          "presentation": "distributionUI_densitySpin",
+          "advanced": false
+        },
+        {
+          "component": "distributionUI",
+          "control": "seedSpin",
+          "presentation": "distributionUI_seedSpin",
+          "advanced": false
+        },
+        {
+          "component": "distributionUI",
+          "control": "densityHeading",
+          "presentation": "distributionUI_densityHeading",
+          "advanced": true
+        },
+        {
+          "component": "distributionUI",
+          "control": "densityButton",
+          "presentation": "distributionUI_densityButton",
+          "advanced": true
+        },
+        {
+          "component": "distributionUI",
+          "control": "invertCheck",
+          "presentation": "distributionUI_invertCheck",
+          "advanced": true
+        },
+        {
+          "component": "distributionUI",
+          "control": "uvHint",
+          "presentation": "distributionUI_uvHint",
+          "advanced": true
+        },
+        {
+          "component": "distributionUI",
+          "control": "mapHint",
+          "presentation": "distributionUI_mapHint",
+          "advanced": true
+        },
+        {
+          "component": "populationPolicyUI",
+          "control": "populationList",
+          "presentation": "populationPolicyUI_populationList",
+          "advanced": true
+        },
+        {
+          "component": "populationPolicyUI",
+          "control": "attemptSpin",
+          "presentation": "populationPolicyUI_attemptSpin",
+          "advanced": true
+        },
+        {
+          "component": "populationPolicyUI",
+          "control": "roundSpin",
+          "presentation": "populationPolicyUI_roundSpin",
+          "advanced": true
+        },
+        {
+          "component": "populationPolicyUI",
+          "control": "repairCheck",
+          "presentation": "populationPolicyUI_repairCheck",
+          "advanced": true
+        },
+        {
+          "component": "populationPolicyUI",
+          "control": "info",
+          "presentation": "populationPolicyUI_info",
+          "advanced": true
+        }
+      ]
+    },
+    {
+      "name": "coverageUI",
+      "title": "Coverage & painting",
+      "scope": "Layer",
+      "controls": [
+        {
+          "component": "brushUI",
+          "control": "activeInfo",
+          "presentation": "brushUI_activeInfo",
+          "advanced": true
+        },
+        {
+          "component": "brushUI",
+          "control": "coverageMode",
+          "presentation": "brushUI_coverageMode",
+          "advanced": false
+        },
+        {
+          "component": "brushUI",
+          "control": "targetInfo",
+          "presentation": "brushUI_targetInfo",
+          "advanced": false
+        },
+        {
+          "component": "brushUI",
+          "control": "modeRadio",
+          "presentation": "brushUI_modeRadio",
+          "advanced": false
+        },
+        {
+          "component": "brushUI",
+          "control": "radiusSpin",
+          "presentation": "brushUI_radiusSpin",
+          "advanced": false
+        },
+        {
+          "component": "brushUI",
+          "control": "strengthSpin",
+          "presentation": "brushUI_strengthSpin",
+          "advanced": false
+        },
+        {
+          "component": "brushUI",
+          "control": "softSpin",
+          "presentation": "brushUI_softSpin",
+          "advanced": true
+        },
+        {
+          "component": "brushUI",
+          "control": "densitySpin",
+          "presentation": "brushUI_densitySpin",
+          "advanced": true
+        },
+        {
+          "component": "brushUI",
+          "control": "beginButton",
+          "presentation": "brushUI_beginButton",
+          "advanced": false
+        },
+        {
+          "component": "brushUI",
+          "control": "stopButton",
+          "presentation": "brushUI_stopButton",
+          "advanced": false
+        },
+        {
+          "component": "brushUI",
+          "control": "fillButton",
+          "presentation": "brushUI_fillButton",
+          "advanced": false
+        },
+        {
+          "component": "brushUI",
+          "control": "emptyButton",
+          "presentation": "brushUI_emptyButton",
+          "advanced": false
+        },
+        {
+          "component": "brushUI",
+          "control": "brushState",
+          "presentation": "brushUI_brushState",
+          "advanced": false
+        },
+        {
+          "component": "brushUI",
+          "control": "overlayMode",
+          "presentation": "brushUI_overlayMode",
+          "advanced": true
+        },
+        {
+          "component": "brushUI",
+          "control": "overlayColor",
+          "presentation": "brushUI_overlayColor",
+          "advanced": true
+        },
+        {
+          "component": "brushUI",
+          "control": "strokeList",
+          "presentation": "brushUI_strokeList",
+          "advanced": true
+        },
+        {
+          "component": "brushUI",
+          "control": "strokeEnabled",
+          "presentation": "brushUI_strokeEnabled",
+          "advanced": true
+        },
+        {
+          "component": "brushUI",
+          "control": "strokeErase",
+          "presentation": "brushUI_strokeErase",
+          "advanced": true
+        },
+        {
+          "component": "brushUI",
+          "control": "strokeRadius",
+          "presentation": "brushUI_strokeRadius",
+          "advanced": true
+        },
+        {
+          "component": "brushUI",
+          "control": "strokeStrength",
+          "presentation": "brushUI_strokeStrength",
+          "advanced": true
+        },
+        {
+          "component": "brushUI",
+          "control": "strokeSoft",
+          "presentation": "brushUI_strokeSoft",
+          "advanced": true
+        },
+        {
+          "component": "brushUI",
+          "control": "deleteStroke",
+          "presentation": "brushUI_deleteStroke",
+          "advanced": true
+        },
+        {
+          "component": "brushUI",
+          "control": "resetTarget",
+          "presentation": "brushUI_resetTarget",
+          "advanced": true
+        },
+        {
+          "component": "brushUI",
+          "control": "brushHelp",
+          "presentation": "brushUI_brushHelp",
+          "advanced": true
+        },
+        {
+          "component": "brushUI",
+          "control": "detailsToggle",
+          "presentation": "brushUI_detailsToggle",
+          "advanced": false
+        },
+        {
+          "component": "backgroundUI",
+          "control": "backgroundList",
+          "presentation": "backgroundUI_backgroundList",
+          "advanced": true
+        },
+        {
+          "component": "backgroundUI",
+          "control": "referenceList",
+          "presentation": "backgroundUI_referenceList",
+          "advanced": true
+        },
+        {
+          "component": "backgroundUI",
+          "control": "applyBackground",
+          "presentation": "backgroundUI_applyBackground",
+          "advanced": true
+        },
+        {
+          "component": "backgroundUI",
+          "control": "backgroundInfo",
+          "presentation": "backgroundUI_backgroundInfo",
+          "advanced": true
+        }
+      ]
+    },
+    {
+      "name": "areasUI",
+      "title": "Include / exclude areas",
+      "scope": "Layer",
+      "controls": [
+        {
+          "component": "areaUI",
+          "control": "areaList",
+          "presentation": "areaUI_areaList",
+          "advanced": false
+        },
+        {
+          "component": "areaUI",
+          "control": "addAreaScene",
+          "presentation": "areaUI_addAreaScene",
+          "advanced": false
+        },
+        {
+          "component": "areaUI",
+          "control": "pickArea",
+          "presentation": "areaUI_pickArea",
+          "advanced": false
+        },
+        {
+          "component": "areaUI",
+          "control": "removeArea",
+          "presentation": "areaUI_removeArea",
+          "advanced": false
+        },
+        {
+          "component": "areaUI",
+          "control": "areaMode",
+          "presentation": "areaUI_areaMode",
+          "advanced": false
+        },
+        {
+          "component": "areaUI",
+          "control": "areaHint",
+          "presentation": "areaUI_areaHint",
+          "advanced": false
+        },
+        {
+          "component": "areaUI",
+          "control": "projectionHint",
+          "presentation": "areaUI_projectionHint",
+          "advanced": true
+        },
+        {
+          "component": "areaUI",
+          "control": "refreshAreas",
+          "presentation": "areaUI_refreshAreas",
+          "advanced": true
+        },
+        {
+          "component": "areaUI",
+          "control": "aaTitle",
+          "presentation": "areaUI_aaTitle",
+          "advanced": true
+        },
+        {
+          "component": "areaUI",
+          "control": "aaPick",
+          "presentation": "areaUI_aaPick",
+          "advanced": true
+        },
+        {
+          "component": "areaUI",
+          "control": "aaRemove",
+          "presentation": "areaUI_aaRemove",
+          "advanced": true
+        },
+        {
+          "component": "areaUI",
+          "control": "aaLine",
+          "presentation": "areaUI_aaLine",
+          "advanced": true
+        },
+        {
+          "component": "areaUI",
+          "control": "aaWidth",
+          "presentation": "areaUI_aaWidth",
+          "advanced": true
+        },
+        {
+          "component": "areaUI",
+          "control": "aaCaps",
+          "presentation": "areaUI_aaCaps",
+          "advanced": true
+        },
+        {
+          "component": "areaUI",
+          "control": "aaStreetOffset",
+          "presentation": "areaUI_aaStreetOffset",
+          "advanced": true
+        },
+        {
+          "component": "areaUI",
+          "control": "aaPoints",
+          "presentation": "areaUI_aaPoints",
+          "advanced": true
+        },
+        {
+          "component": "areaUI",
+          "control": "aaRadius",
+          "presentation": "areaUI_aaRadius",
+          "advanced": true
+        },
+        {
+          "component": "areaUI",
+          "control": "aaHelp",
+          "presentation": "areaUI_aaHelp",
+          "advanced": true
+        },
+        {
+          "component": "areaUI",
+          "control": "fallTarget",
+          "presentation": "areaUI_fallTarget",
+          "advanced": true
+        },
+        {
+          "component": "areaUI",
+          "control": "fallPick",
+          "presentation": "areaUI_fallPick",
+          "advanced": true
+        },
+        {
+          "component": "areaUI",
+          "control": "fallRemove",
+          "presentation": "areaUI_fallRemove",
+          "advanced": true
+        },
+        {
+          "component": "areaUI",
+          "control": "fallTargetName",
+          "presentation": "areaUI_fallTargetName",
+          "advanced": true
+        },
+        {
+          "component": "areaUI",
+          "control": "fallDeleteCheck",
+          "presentation": "areaUI_fallDeleteCheck",
+          "advanced": true
+        },
+        {
+          "component": "areaUI",
+          "control": "fallDeleteSpin",
+          "presentation": "areaUI_fallDeleteSpin",
+          "advanced": true
+        },
+        {
+          "component": "areaUI",
+          "control": "fallScaleCheck",
+          "presentation": "areaUI_fallScaleCheck",
+          "advanced": true
+        },
+        {
+          "component": "areaUI",
+          "control": "fallScaleSpin",
+          "presentation": "areaUI_fallScaleSpin",
+          "advanced": true
+        },
+        {
+          "component": "areaUI",
+          "control": "fallScaleEdit",
+          "presentation": "areaUI_fallScaleEdit",
+          "advanced": true
+        },
+        {
+          "component": "areaUI",
+          "control": "fallDensityCheck",
+          "presentation": "areaUI_fallDensityCheck",
+          "advanced": true
+        },
+        {
+          "component": "areaUI",
+          "control": "fallDensitySpin",
+          "presentation": "areaUI_fallDensitySpin",
+          "advanced": true
+        },
+        {
+          "component": "areaUI",
+          "control": "fallDensityEdit",
+          "presentation": "areaUI_fallDensityEdit",
+          "advanced": true
+        },
+        {
+          "component": "areaUI",
+          "control": "fallHelp",
+          "presentation": "areaUI_fallHelp",
+          "advanced": true
+        },
+        {
+          "component": "areaUI",
+          "control": "detailsToggle",
+          "presentation": "areaUI_detailsToggle",
+          "advanced": false
+        }
+      ]
+    },
+    {
+      "name": "transformsUI",
+      "title": "Transforms",
+      "scope": "Layer",
+      "controls": [
+        {
+          "component": "randomUI",
+          "control": "rotTitle",
+          "presentation": "randomUI_rotTitle",
+          "advanced": false
+        },
+        {
+          "component": "randomUI",
+          "control": "rotMinTitle",
+          "presentation": "randomUI_rotMinTitle",
+          "advanced": false
+        },
+        {
+          "component": "randomUI",
+          "control": "rotMaxTitle",
+          "presentation": "randomUI_rotMaxTitle",
+          "advanced": false
+        },
+        {
+          "component": "randomUI",
+          "control": "rotXLabel",
+          "presentation": "randomUI_rotXLabel",
+          "advanced": true
+        },
+        {
+          "component": "randomUI",
+          "control": "rotXMinSpin",
+          "presentation": "randomUI_rotXMinSpin",
+          "advanced": true
+        },
+        {
+          "component": "randomUI",
+          "control": "rotXMaxSpin",
+          "presentation": "randomUI_rotXMaxSpin",
+          "advanced": true
+        },
+        {
+          "component": "randomUI",
+          "control": "rotYLabel",
+          "presentation": "randomUI_rotYLabel",
+          "advanced": true
+        },
+        {
+          "component": "randomUI",
+          "control": "rotYMinSpin",
+          "presentation": "randomUI_rotYMinSpin",
+          "advanced": true
+        },
+        {
+          "component": "randomUI",
+          "control": "rotYMaxSpin",
+          "presentation": "randomUI_rotYMaxSpin",
+          "advanced": true
+        },
+        {
+          "component": "randomUI",
+          "control": "rotZLabel",
+          "presentation": "randomUI_rotZLabel",
+          "advanced": false
+        },
+        {
+          "component": "randomUI",
+          "control": "rotZMinSpin",
+          "presentation": "randomUI_rotZMinSpin",
+          "advanced": false
+        },
+        {
+          "component": "randomUI",
+          "control": "rotZMaxSpin",
+          "presentation": "randomUI_rotZMaxSpin",
+          "advanced": false
+        },
+        {
+          "component": "randomUI",
+          "control": "sclTitle",
+          "presentation": "randomUI_sclTitle",
+          "advanced": true
+        },
+        {
+          "component": "randomUI",
+          "control": "sclMinTitle",
+          "presentation": "randomUI_sclMinTitle",
+          "advanced": true
+        },
+        {
+          "component": "randomUI",
+          "control": "sclMaxTitle",
+          "presentation": "randomUI_sclMaxTitle",
+          "advanced": true
+        },
+        {
+          "component": "randomUI",
+          "control": "sclXLabel",
+          "presentation": "randomUI_sclXLabel",
+          "advanced": true
+        },
+        {
+          "component": "randomUI",
+          "control": "sclXMinSpin",
+          "presentation": "randomUI_sclXMinSpin",
+          "advanced": true
+        },
+        {
+          "component": "randomUI",
+          "control": "sclXMaxSpin",
+          "presentation": "randomUI_sclXMaxSpin",
+          "advanced": true
+        },
+        {
+          "component": "randomUI",
+          "control": "sclYLabel",
+          "presentation": "randomUI_sclYLabel",
+          "advanced": true
+        },
+        {
+          "component": "randomUI",
+          "control": "sclYMinSpin",
+          "presentation": "randomUI_sclYMinSpin",
+          "advanced": true
+        },
+        {
+          "component": "randomUI",
+          "control": "sclYMaxSpin",
+          "presentation": "randomUI_sclYMaxSpin",
+          "advanced": true
+        },
+        {
+          "component": "randomUI",
+          "control": "sclZLabel",
+          "presentation": "randomUI_sclZLabel",
+          "advanced": true
+        },
+        {
+          "component": "randomUI",
+          "control": "sclZMinSpin",
+          "presentation": "randomUI_sclZMinSpin",
+          "advanced": true
+        },
+        {
+          "component": "randomUI",
+          "control": "sclZMaxSpin",
+          "presentation": "randomUI_sclZMaxSpin",
+          "advanced": true
+        },
+        {
+          "component": "randomUI",
+          "control": "wholeTitle",
+          "presentation": "randomUI_wholeTitle",
+          "advanced": false
+        },
+        {
+          "component": "randomUI",
+          "control": "wholeMinTitle",
+          "presentation": "randomUI_wholeMinTitle",
+          "advanced": false
+        },
+        {
+          "component": "randomUI",
+          "control": "wholeMaxTitle",
+          "presentation": "randomUI_wholeMaxTitle",
+          "advanced": false
+        },
+        {
+          "component": "randomUI",
+          "control": "wholeMinSpin",
+          "presentation": "randomUI_wholeMinSpin",
+          "advanced": false
+        },
+        {
+          "component": "randomUI",
+          "control": "wholeMaxSpin",
+          "presentation": "randomUI_wholeMaxSpin",
+          "advanced": false
+        },
+        {
+          "component": "randomUI",
+          "control": "movTitle",
+          "presentation": "randomUI_movTitle",
+          "advanced": true
+        },
+        {
+          "component": "randomUI",
+          "control": "movMinTitle",
+          "presentation": "randomUI_movMinTitle",
+          "advanced": true
+        },
+        {
+          "component": "randomUI",
+          "control": "movMaxTitle",
+          "presentation": "randomUI_movMaxTitle",
+          "advanced": true
+        },
+        {
+          "component": "randomUI",
+          "control": "movXLabel",
+          "presentation": "randomUI_movXLabel",
+          "advanced": true
+        },
+        {
+          "component": "randomUI",
+          "control": "movXMinSpin",
+          "presentation": "randomUI_movXMinSpin",
+          "advanced": true
+        },
+        {
+          "component": "randomUI",
+          "control": "movXMaxSpin",
+          "presentation": "randomUI_movXMaxSpin",
+          "advanced": true
+        },
+        {
+          "component": "randomUI",
+          "control": "movYLabel",
+          "presentation": "randomUI_movYLabel",
+          "advanced": true
+        },
+        {
+          "component": "randomUI",
+          "control": "movYMinSpin",
+          "presentation": "randomUI_movYMinSpin",
+          "advanced": true
+        },
+        {
+          "component": "randomUI",
+          "control": "movYMaxSpin",
+          "presentation": "randomUI_movYMaxSpin",
+          "advanced": true
+        },
+        {
+          "component": "randomUI",
+          "control": "movZLabel",
+          "presentation": "randomUI_movZLabel",
+          "advanced": true
+        },
+        {
+          "component": "randomUI",
+          "control": "movZMinSpin",
+          "presentation": "randomUI_movZMinSpin",
+          "advanced": true
+        },
+        {
+          "component": "randomUI",
+          "control": "movZMaxSpin",
+          "presentation": "randomUI_movZMaxSpin",
+          "advanced": true
+        },
+        {
+          "component": "randomUI",
+          "control": "projectCheck",
+          "presentation": "randomUI_projectCheck",
+          "advanced": false
+        },
+        {
+          "component": "randomUI",
+          "control": "alignCheck",
+          "presentation": "randomUI_alignCheck",
+          "advanced": false
+        },
+        {
+          "component": "randomUI",
+          "control": "resetRotation",
+          "presentation": "randomUI_resetRotation",
+          "advanced": true
+        },
+        {
+          "component": "randomUI",
+          "control": "resetScale",
+          "presentation": "randomUI_resetScale",
+          "advanced": true
+        },
+        {
+          "component": "randomUI",
+          "control": "resetWholeScale",
+          "presentation": "randomUI_resetWholeScale",
+          "advanced": true
+        },
+        {
+          "component": "randomUI",
+          "control": "resetMovement",
+          "presentation": "randomUI_resetMovement",
+          "advanced": true
+        }
+      ]
+    },
+    {
+      "name": "spacingUI",
+      "title": "Spacing & cleanup",
+      "scope": "Layer",
+      "controls": [
+        {
+          "component": "proceduralUI",
+          "control": "scopeList",
+          "presentation": "proceduralUI_scopeList",
+          "advanced": false
+        },
+        {
+          "component": "proceduralUI",
+          "control": "peerList",
+          "presentation": "proceduralUI_peerList",
+          "advanced": false
+        },
+        {
+          "component": "proceduralUI",
+          "control": "enabledCheck",
+          "presentation": "proceduralUI_enabledCheck",
+          "advanced": false
+        },
+        {
+          "component": "proceduralUI",
+          "control": "multiplierSpin",
+          "presentation": "proceduralUI_multiplierSpin",
+          "advanced": false
+        },
+        {
+          "component": "proceduralUI",
+          "control": "gapSpin",
+          "presentation": "proceduralUI_gapSpin",
+          "advanced": false
+        },
+        {
+          "component": "proceduralUI",
+          "control": "planarCheck",
+          "presentation": "proceduralUI_planarCheck",
+          "advanced": false
+        },
+        {
+          "component": "proceduralUI",
+          "control": "ruleInfo",
+          "presentation": "proceduralUI_ruleInfo",
+          "advanced": false
+        },
+        {
+          "component": "proceduralUI",
+          "control": "resetRule",
+          "presentation": "proceduralUI_resetRule",
+          "advanced": true
+        },
+        {
+          "component": "instanceRadiusUI",
+          "control": "radiusMode",
+          "presentation": "instanceRadiusUI_radiusMode",
+          "advanced": true
+        },
+        {
+          "component": "instanceRadiusUI",
+          "control": "radiusSpin",
+          "presentation": "instanceRadiusUI_radiusSpin",
+          "advanced": true
+        },
+        {
+          "component": "instanceRadiusUI",
+          "control": "applyRadius",
+          "presentation": "instanceRadiusUI_applyRadius",
+          "advanced": true
+        },
+        {
+          "component": "instanceRadiusUI",
+          "control": "resetRadius",
+          "presentation": "instanceRadiusUI_resetRadius",
+          "advanced": true
+        },
+        {
+          "component": "instanceRadiusUI",
+          "control": "clearRadius",
+          "presentation": "instanceRadiusUI_clearRadius",
+          "advanced": true
+        },
+        {
+          "component": "instanceRadiusUI",
+          "control": "info",
+          "presentation": "instanceRadiusUI_info",
+          "advanced": true
+        },
+        {
+          "component": "spacingUI",
+          "control": "relaxCheck",
+          "presentation": "spacingUI_relaxCheck",
+          "advanced": true
+        },
+        {
+          "component": "spacingUI",
+          "control": "spacingSpin",
+          "presentation": "spacingUI_spacingSpin",
+          "advanced": true
+        },
+        {
+          "component": "spacingUI",
+          "control": "iterationsSpin",
+          "presentation": "spacingUI_iterationsSpin",
+          "advanced": true
+        },
+        {
+          "component": "spacingUI",
+          "control": "strengthSpin",
+          "presentation": "spacingUI_strengthSpin",
+          "advanced": true
+        },
+        {
+          "component": "spacingUI",
+          "control": "boundaryRelaxCheck",
+          "presentation": "spacingUI_boundaryRelaxCheck",
+          "advanced": true
+        },
+        {
+          "component": "spacingUI",
+          "control": "finalStrengthSpin",
+          "presentation": "spacingUI_finalStrengthSpin",
+          "advanced": true
+        },
+        {
+          "component": "spacingUI",
+          "control": "finalIterSpin",
+          "presentation": "spacingUI_finalIterSpin",
+          "advanced": true
+        },
+        {
+          "component": "spacingUI",
+          "control": "finalMoveSpin",
+          "presentation": "spacingUI_finalMoveSpin",
+          "advanced": true
+        },
+        {
+          "component": "spacingUI",
+          "control": "orderHint",
+          "presentation": "spacingUI_orderHint",
+          "advanced": true
+        },
+        {
+          "component": "separationUI",
+          "control": "cleanCheck",
+          "presentation": "separationUI_cleanCheck",
+          "advanced": true
+        },
+        {
+          "component": "separationUI",
+          "control": "neighborSpin",
+          "presentation": "separationUI_neighborSpin",
+          "advanced": true
+        },
+        {
+          "component": "separationUI",
+          "control": "minNeighborSpin",
+          "presentation": "separationUI_minNeighborSpin",
+          "advanced": true
+        },
+        {
+          "component": "separationUI",
+          "control": "minIslandSpin",
+          "presentation": "separationUI_minIslandSpin",
+          "advanced": true
+        },
+        {
+          "component": "separationUI",
+          "control": "planarCheck",
+          "presentation": "separationUI_planarCheck",
+          "advanced": true
+        },
+        {
+          "component": "separationUI",
+          "control": "helpInfo",
+          "presentation": "separationUI_helpInfo",
+          "advanced": true
+        }
+      ]
+    },
+    {
+      "name": "displayUI",
+      "title": "Viewport & render",
+      "scope": "Setup",
+      "controls": [
+        {
+          "component": "flow_previewUI",
+          "control": "previewCheck",
+          "presentation": "flow_previewUI_previewCheck",
+          "advanced": false
+        },
+        {
+          "component": "flow_previewUI",
+          "control": "displayModeDrop",
+          "presentation": "flow_previewUI_displayModeDrop",
+          "advanced": false
+        },
+        {
+          "component": "flow_previewUI",
+          "control": "proxyShapeDrop",
+          "presentation": "flow_previewUI_proxyShapeDrop",
+          "advanced": true
+        },
+        {
+          "component": "flow_previewUI",
+          "control": "instancesLimitSpin",
+          "presentation": "flow_previewUI_instancesLimitSpin",
+          "advanced": true
+        },
+        {
+          "component": "flow_previewUI",
+          "control": "faceLimitSpin",
+          "presentation": "flow_previewUI_faceLimitSpin",
+          "advanced": true
+        },
+        {
+          "component": "flow_previewUI",
+          "control": "pointColorRadio",
+          "presentation": "flow_previewUI_pointColorRadio",
+          "advanced": true
+        },
+        {
+          "component": "flow_previewUI",
+          "control": "solidColorPicker",
+          "presentation": "flow_previewUI_solidColorPicker",
+          "advanced": true
+        },
+        {
+          "component": "flow_previewUI",
+          "control": "budgetSpin",
+          "presentation": "flow_previewUI_budgetSpin",
+          "advanced": true
+        },
+        {
+          "component": "flow_previewUI",
+          "control": "pointsSpin",
+          "presentation": "flow_previewUI_pointsSpin",
+          "advanced": true
+        },
+        {
+          "component": "flow_previewUI",
+          "control": "radiusLimitSpin",
+          "presentation": "flow_previewUI_radiusLimitSpin",
+          "advanced": true
+        },
+        {
+          "component": "flow_previewUI",
+          "control": "radiusAllCheck",
+          "presentation": "flow_previewUI_radiusAllCheck",
+          "advanced": true
+        },
+        {
+          "component": "flow_previewUI",
+          "control": "radiusHint",
+          "presentation": "flow_previewUI_radiusHint",
+          "advanced": true
+        },
+        {
+          "component": "flow_previewUI",
+          "control": "iconSpin",
+          "presentation": "flow_previewUI_iconSpin",
+          "advanced": true
+        },
+        {
+          "component": "flow_previewUI",
+          "control": "refreshButton",
+          "presentation": "flow_previewUI_refreshButton",
+          "advanced": true
+        },
+        {
+          "component": "flow_previewUI",
+          "control": "autoRenderCheck",
+          "presentation": "flow_previewUI_autoRenderCheck",
+          "advanced": false
+        },
+        {
+          "component": "flow_previewUI",
+          "control": "clearBakedButton",
+          "presentation": "flow_previewUI_clearBakedButton",
+          "advanced": true
+        },
+        {
+          "component": "flow_previewUI",
+          "control": "status",
+          "presentation": "flow_previewUI_status",
+          "advanced": false
+        }
+      ]
+    },
+    {
+      "name": "statisticsUI",
+      "title": "Statistics & diagnostics",
+      "scope": "Setup",
+      "controls": [
+        {
+          "component": "detailsUI",
+          "control": "info",
+          "presentation": "detailsUI_info",
+          "advanced": false
+        },
+        {
+          "component": "detailsUI",
+          "control": "refreshButton",
+          "presentation": "detailsUI_refreshButton",
+          "advanced": false
+        },
+        {
+          "component": "detailsUI",
+          "control": "helpButton",
+          "presentation": "detailsUI_helpButton",
+          "advanced": false
+        },
+        {
+          "component": "workflowUI",
+          "control": "steps",
+          "presentation": "workflowUI_steps",
+          "advanced": true
+        },
+        {
+          "component": "workflowUI",
+          "control": "help",
+          "presentation": "workflowUI_help",
+          "advanced": true
+        },
+        {
+          "component": "diagnosticsUI",
+          "control": "startButton",
+          "presentation": "diagnosticsUI_startButton",
+          "advanced": true
+        },
+        {
+          "component": "diagnosticsUI",
+          "control": "stopButton",
+          "presentation": "diagnosticsUI_stopButton",
+          "advanced": true
+        },
+        {
+          "component": "diagnosticsUI",
+          "control": "saveButton",
+          "presentation": "diagnosticsUI_saveButton",
+          "advanced": true
+        },
+        {
+          "component": "diagnosticsUI",
+          "control": "refreshButton",
+          "presentation": "diagnosticsUI_refreshButton",
+          "advanced": true
+        },
+        {
+          "component": "diagnosticsUI",
+          "control": "statusInfo",
+          "presentation": "diagnosticsUI_statusInfo",
+          "advanced": true
+        },
+        {
+          "component": "diagnosticsUI",
+          "control": "scopeInfo",
+          "presentation": "diagnosticsUI_scopeInfo",
+          "advanced": true
+        }
+      ]
+    }
+  ]
+}

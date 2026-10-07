@@ -19,7 +19,7 @@ flowchart TD
   E --> D["Native edit save/load chunks"]
 ~~~
 
-Sources: [controller](../../AminScatter/scripts/AminScatterObject.ms), [generator](../../AminScatter/tools/ui/generate.cjs), [native header](../../AminScatter/include/scatter.h), [bridge](../../AminScatter/src/max_bridge.cpp), [Analyzer script](../../CyrusSurfaceAnalyzer/scripts/CyrusSurfaceAnalyzer.ms), [PFlow template](../../AminScatter/tools/ui/templates/pflow.ms).
+Sources: [controller](../../AminScatter/scripts/AminScatterObject.ms), [generator](../../AminScatter/tools/ui/generate.cjs), [native header](../../AminScatter/include/scatter.h), [bridge](../../AminScatter/src/max_bridge.cpp), [Analyzer script](../../CyrusSurfaceAnalyzer/scripts/CyrusSurfaceAnalyzer.ms), [PFlow template](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/AminScatter/tools/ui/templates/pflow.ms).
 
 There is no stable provider-neutral automation API or MCP server in the inspected product source. Low-level scriptability is substantial; safe agent automation still requires a new boundary.
 

@@ -6,7 +6,7 @@ This interactive map is a dated visualization; its UI/data were not regenerated 
 
 [Open the self-contained HTML](../../mockups/system-map/index.html).
 
-This is a visual guide to the current local source: **Scatter 1.2.2, Surface Analyzer 0.14 and optional MCP 1.1**. Copy or share just `mockups/system-map/index.html`; its styles, application logic and model are embedded. It works without an installation, server or internet connection. It is documentation and does not connect to or change a Max scene.
+This is a **frozen 4 October** visual guide: **Scatter 1.2.2, Surface Analyzer 0.14 and MCP 1.1**. Current source is [0.73](../Unified_System_0.73_2026-10-06/README.md); controls, policies and source anchors in this older map are historical. Copy/share `mockups/system-map/index.html` for that dated explanation only. It is self-contained documentation and never connects to Max.
 
 ## Explore
 
@@ -40,12 +40,12 @@ Important source findings preserved in the guide include:
 
 ## Sources and maintenance
 
-The authoring source is [build_system_map.py](../../tools/docs/build_system_map.py). It reads the actual generated main-panel declarations and inventory, resolves source evidence anchors, parses the MCP registry as data, and writes [model.json](model.json). The model includes SHA-256 hashes of the inspected source/document files. Historical documents are used with their dates and scope; the current generated runtime and templates take precedence.
+The historical [builder source](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/tools/docs/build_system_map.py) and frozen [model.json](model.json) retain their source hashes. The old builder is retired because it assumes removed schemas/templates; it must not rewrite this frozen map from current code. [Retirement receipt](../Unified_System_0.73_2026-10-06/evidence/retired-document-builder.json).
 
-To refresh after reviewing source changes:
+Current capability/control help is maintained through the [0.73 matrix](../Current_System_2026-10-05/CAPABILITY_MATRIX.md), semantic inventory and catalog builder:
 
 ```powershell
-python tools/docs/build_system_map.py
+python tools/procedural_lab/build_feature_catalog.py
 ```
 
 The builder validates unique IDs, all edge endpoints, lens membership, source anchors, guided-step targets and complete native-control mapping. It updates the HTML's `system-data` block without running or rebuilding the plugin. Semantic descriptions and relationships still require human/source review when behavior changes; this is not automatic code analysis.

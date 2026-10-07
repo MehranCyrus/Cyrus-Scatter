@@ -6,48 +6,6 @@
         "name": "enabledCheck"
       }
     ],
-    "editor": [
-      {
-        "kind": "button",
-        "name": "updateNow"
-      },
-      {
-        "kind": "dropdownlist",
-        "name": "layerList"
-      },
-      {
-        "kind": "dropdownlist",
-        "name": "setList"
-      },
-      {
-        "kind": "checkbutton",
-        "name": "assetsTab"
-      },
-      {
-        "kind": "checkbutton",
-        "name": "populationTab"
-      },
-      {
-        "kind": "checkbutton",
-        "name": "paintTab"
-      },
-      {
-        "kind": "checkbutton",
-        "name": "transformTab"
-      },
-      {
-        "kind": "checkbutton",
-        "name": "spacingTab"
-      },
-      {
-        "kind": "checkbutton",
-        "name": "statisticsTab"
-      },
-      {
-        "kind": "button",
-        "name": "refreshButton"
-      }
-    ],
     "updateUI": [
       {
         "kind": "radiobuttons",
@@ -130,10 +88,6 @@
         "name": "surfacesButton"
       },
       {
-        "kind": "button",
-        "name": "policyButton"
-      },
-      {
         "kind": "checkbutton",
         "name": "containersToggle"
       },
@@ -213,9 +167,89 @@
         "kind": "button",
         "name": "refreshButton"
       }
+    ],
+    "editor": [
+      {
+        "kind": "button",
+        "name": "updateNow"
+      },
+      {
+        "kind": "dropdownlist",
+        "name": "layerList"
+      },
+      {
+        "kind": "dropdownlist",
+        "name": "setList"
+      },
+      {
+        "kind": "checkbutton",
+        "name": "assetsTab"
+      },
+      {
+        "kind": "checkbutton",
+        "name": "populationTab"
+      },
+      {
+        "kind": "checkbutton",
+        "name": "paintTab"
+      },
+      {
+        "kind": "checkbutton",
+        "name": "transformTab"
+      },
+      {
+        "kind": "checkbutton",
+        "name": "spacingTab"
+      },
+      {
+        "kind": "checkbutton",
+        "name": "statisticsTab"
+      },
+      {
+        "kind": "button",
+        "name": "refreshButton"
+      }
     ]
   },
   "layer": {
+    "setsUI": [
+      {
+        "kind": "dropdownlist",
+        "name": "setList"
+      },
+      {
+        "kind": "button",
+        "name": "addButton"
+      },
+      {
+        "kind": "button",
+        "name": "removeButton"
+      },
+      {
+        "kind": "edittext",
+        "name": "nameEdit"
+      },
+      {
+        "kind": "spinner",
+        "name": "weightSpin"
+      },
+      {
+        "kind": "checkbox",
+        "name": "enabledCheck"
+      },
+      {
+        "kind": "checkbox",
+        "name": "visibleCheck"
+      },
+      {
+        "kind": "button",
+        "name": "upButton"
+      },
+      {
+        "kind": "button",
+        "name": "downButton"
+      }
+    ],
     "sourceUI": [
       {
         "kind": "multiListBox",
@@ -298,6 +332,28 @@
         "name": "detailsToggle"
       }
     ],
+    "sourceContainersUI": [
+      {
+        "kind": "dropdownlist",
+        "name": "modeList"
+      },
+      {
+        "kind": "listbox",
+        "name": "containersList"
+      },
+      {
+        "kind": "button",
+        "name": "createContainer"
+      },
+      {
+        "kind": "pickbutton",
+        "name": "pickContainer"
+      },
+      {
+        "kind": "button",
+        "name": "removeContainer"
+      }
+    ],
     "distributionUI": [
       {
         "kind": "radiobuttons",
@@ -306,10 +362,6 @@
       {
         "kind": "radiobuttons",
         "name": "populationRadio"
-      },
-      {
-        "kind": "checkbox",
-        "name": "showCenterCheck"
       },
       {
         "kind": "spinner",
@@ -332,90 +384,22 @@
         "name": "invertCheck"
       }
     ],
-    "brushUI": [
+    "populationPolicyUI": [
       {
         "kind": "dropdownlist",
-        "name": "coverageMode"
-      },
-      {
-        "kind": "radiobuttons",
-        "name": "modeRadio"
+        "name": "populationList"
       },
       {
         "kind": "spinner",
-        "name": "radiusSpin"
+        "name": "attemptSpin"
       },
       {
         "kind": "spinner",
-        "name": "strengthSpin"
-      },
-      {
-        "kind": "spinner",
-        "name": "softSpin"
-      },
-      {
-        "kind": "spinner",
-        "name": "densitySpin"
-      },
-      {
-        "kind": "button",
-        "name": "beginButton"
-      },
-      {
-        "kind": "button",
-        "name": "stopButton"
-      },
-      {
-        "kind": "button",
-        "name": "fillButton"
-      },
-      {
-        "kind": "button",
-        "name": "emptyButton"
-      },
-      {
-        "kind": "dropdownlist",
-        "name": "overlayMode"
-      },
-      {
-        "kind": "colorpicker",
-        "name": "overlayColor"
-      },
-      {
-        "kind": "listbox",
-        "name": "strokeList"
+        "name": "roundSpin"
       },
       {
         "kind": "checkbox",
-        "name": "strokeEnabled"
-      },
-      {
-        "kind": "checkbox",
-        "name": "strokeErase"
-      },
-      {
-        "kind": "spinner",
-        "name": "strokeRadius"
-      },
-      {
-        "kind": "spinner",
-        "name": "strokeStrength"
-      },
-      {
-        "kind": "spinner",
-        "name": "strokeSoft"
-      },
-      {
-        "kind": "button",
-        "name": "deleteStroke"
-      },
-      {
-        "kind": "button",
-        "name": "resetTarget"
-      },
-      {
-        "kind": "checkbutton",
-        "name": "detailsToggle"
+        "name": "repairCheck"
       }
     ],
     "areaUI": [
@@ -522,6 +506,212 @@
       {
         "kind": "checkbutton",
         "name": "detailsToggle"
+      }
+    ],
+    "brushUI": [
+      {
+        "kind": "dropdownlist",
+        "name": "coverageMode"
+      },
+      {
+        "kind": "radiobuttons",
+        "name": "modeRadio"
+      },
+      {
+        "kind": "spinner",
+        "name": "radiusSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "strengthSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "softSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "densitySpin"
+      },
+      {
+        "kind": "button",
+        "name": "beginButton"
+      },
+      {
+        "kind": "button",
+        "name": "stopButton"
+      },
+      {
+        "kind": "button",
+        "name": "fillButton"
+      },
+      {
+        "kind": "button",
+        "name": "emptyButton"
+      },
+      {
+        "kind": "dropdownlist",
+        "name": "overlayMode"
+      },
+      {
+        "kind": "colorpicker",
+        "name": "overlayColor"
+      },
+      {
+        "kind": "listbox",
+        "name": "strokeList"
+      },
+      {
+        "kind": "checkbox",
+        "name": "strokeEnabled"
+      },
+      {
+        "kind": "checkbox",
+        "name": "strokeErase"
+      },
+      {
+        "kind": "spinner",
+        "name": "strokeRadius"
+      },
+      {
+        "kind": "spinner",
+        "name": "strokeStrength"
+      },
+      {
+        "kind": "spinner",
+        "name": "strokeSoft"
+      },
+      {
+        "kind": "button",
+        "name": "deleteStroke"
+      },
+      {
+        "kind": "button",
+        "name": "resetTarget"
+      },
+      {
+        "kind": "checkbutton",
+        "name": "detailsToggle"
+      }
+    ],
+    "backgroundUI": [
+      {
+        "kind": "dropdownlist",
+        "name": "backgroundList"
+      },
+      {
+        "kind": "multiListBox",
+        "name": "referenceList"
+      },
+      {
+        "kind": "button",
+        "name": "applyBackground"
+      }
+    ],
+    "randomUI": [
+      {
+        "kind": "spinner",
+        "name": "rotXMinSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "rotXMaxSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "rotYMinSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "rotYMaxSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "rotZMinSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "rotZMaxSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "sclXMinSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "sclXMaxSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "sclYMinSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "sclYMaxSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "sclZMinSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "sclZMaxSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "wholeMinSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "wholeMaxSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "movXMinSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "movXMaxSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "movYMinSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "movYMaxSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "movZMinSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "movZMaxSpin"
+      },
+      {
+        "kind": "checkbox",
+        "name": "projectCheck"
+      },
+      {
+        "kind": "checkbox",
+        "name": "alignCheck"
+      },
+      {
+        "kind": "button",
+        "name": "resetRotation"
+      },
+      {
+        "kind": "button",
+        "name": "resetScale"
+      },
+      {
+        "kind": "button",
+        "name": "resetWholeScale"
+      },
+      {
+        "kind": "button",
+        "name": "resetMovement"
       }
     ],
     "diversityUI": [
@@ -670,208 +860,6 @@
         "name": "straightStreet"
       }
     ],
-    "randomUI": [
-      {
-        "kind": "spinner",
-        "name": "rotXMinSpin"
-      },
-      {
-        "kind": "spinner",
-        "name": "rotXMaxSpin"
-      },
-      {
-        "kind": "spinner",
-        "name": "rotYMinSpin"
-      },
-      {
-        "kind": "spinner",
-        "name": "rotYMaxSpin"
-      },
-      {
-        "kind": "spinner",
-        "name": "rotZMinSpin"
-      },
-      {
-        "kind": "spinner",
-        "name": "rotZMaxSpin"
-      },
-      {
-        "kind": "spinner",
-        "name": "sclXMinSpin"
-      },
-      {
-        "kind": "spinner",
-        "name": "sclXMaxSpin"
-      },
-      {
-        "kind": "spinner",
-        "name": "sclYMinSpin"
-      },
-      {
-        "kind": "spinner",
-        "name": "sclYMaxSpin"
-      },
-      {
-        "kind": "spinner",
-        "name": "sclZMinSpin"
-      },
-      {
-        "kind": "spinner",
-        "name": "sclZMaxSpin"
-      },
-      {
-        "kind": "spinner",
-        "name": "wholeMinSpin"
-      },
-      {
-        "kind": "spinner",
-        "name": "wholeMaxSpin"
-      },
-      {
-        "kind": "spinner",
-        "name": "movXMinSpin"
-      },
-      {
-        "kind": "spinner",
-        "name": "movXMaxSpin"
-      },
-      {
-        "kind": "spinner",
-        "name": "movYMinSpin"
-      },
-      {
-        "kind": "spinner",
-        "name": "movYMaxSpin"
-      },
-      {
-        "kind": "spinner",
-        "name": "movZMinSpin"
-      },
-      {
-        "kind": "spinner",
-        "name": "movZMaxSpin"
-      },
-      {
-        "kind": "checkbox",
-        "name": "projectCheck"
-      },
-      {
-        "kind": "checkbox",
-        "name": "alignCheck"
-      },
-      {
-        "kind": "button",
-        "name": "resetRotation"
-      },
-      {
-        "kind": "button",
-        "name": "resetScale"
-      },
-      {
-        "kind": "button",
-        "name": "resetWholeScale"
-      },
-      {
-        "kind": "button",
-        "name": "resetMovement"
-      }
-    ],
-    "spacingUI": [
-      {
-        "kind": "checkbox",
-        "name": "collisionCheck"
-      },
-      {
-        "kind": "spinner",
-        "name": "radiusSpin"
-      },
-      {
-        "kind": "checkbox",
-        "name": "relaxCheck"
-      },
-      {
-        "kind": "spinner",
-        "name": "spacingSpin"
-      },
-      {
-        "kind": "spinner",
-        "name": "iterationsSpin"
-      },
-      {
-        "kind": "spinner",
-        "name": "strengthSpin"
-      }
-    ],
-    "separationUI": [
-      {
-        "kind": "spinner",
-        "name": "prioritySpin"
-      },
-      {
-        "kind": "listbox",
-        "name": "peerList"
-      },
-      {
-        "kind": "multiListBox",
-        "name": "blockerList"
-      },
-      {
-        "kind": "checkbox",
-        "name": "overlapCheck"
-      },
-      {
-        "kind": "dropdownlist",
-        "name": "radiusMode"
-      },
-      {
-        "kind": "spinner",
-        "name": "gapSpin"
-      },
-      {
-        "kind": "spinner",
-        "name": "radiusSpin"
-      },
-      {
-        "kind": "checkbox",
-        "name": "planarCheck"
-      },
-      {
-        "kind": "button",
-        "name": "statsButton"
-      },
-      {
-        "kind": "checkbox",
-        "name": "cleanCheck"
-      },
-      {
-        "kind": "spinner",
-        "name": "neighborSpin"
-      },
-      {
-        "kind": "spinner",
-        "name": "minNeighborSpin"
-      },
-      {
-        "kind": "spinner",
-        "name": "minIslandSpin"
-      },
-      {
-        "kind": "checkbox",
-        "name": "boundaryRelaxCheck"
-      },
-      {
-        "kind": "spinner",
-        "name": "finalStrengthSpin"
-      },
-      {
-        "kind": "spinner",
-        "name": "finalIterSpin"
-      },
-      {
-        "kind": "spinner",
-        "name": "finalMoveSpin"
-      }
-    ],
     "proceduralUI": [
       {
         "kind": "dropdownlist",
@@ -902,38 +890,6 @@
         "name": "resetRule"
       }
     ],
-    "populationPolicyUI": [
-      {
-        "kind": "dropdownlist",
-        "name": "populationList"
-      },
-      {
-        "kind": "spinner",
-        "name": "attemptSpin"
-      },
-      {
-        "kind": "spinner",
-        "name": "roundSpin"
-      },
-      {
-        "kind": "checkbox",
-        "name": "repairCheck"
-      }
-    ],
-    "backgroundUI": [
-      {
-        "kind": "dropdownlist",
-        "name": "backgroundList"
-      },
-      {
-        "kind": "multiListBox",
-        "name": "referenceList"
-      },
-      {
-        "kind": "button",
-        "name": "applyBackground"
-      }
-    ],
     "instanceRadiusUI": [
       {
         "kind": "dropdownlist",
@@ -956,65 +912,60 @@
         "name": "clearRadius"
       }
     ],
-    "workflowUI": [],
-    "sourceContainersUI": [
+    "spacingUI": [
       {
-        "kind": "dropdownlist",
-        "name": "modeList"
-      },
-      {
-        "kind": "listbox",
-        "name": "containersList"
-      },
-      {
-        "kind": "button",
-        "name": "createContainer"
-      },
-      {
-        "kind": "pickbutton",
-        "name": "pickContainer"
-      },
-      {
-        "kind": "button",
-        "name": "removeContainer"
-      }
-    ],
-    "setsUI": [
-      {
-        "kind": "dropdownlist",
-        "name": "setList"
-      },
-      {
-        "kind": "button",
-        "name": "addButton"
-      },
-      {
-        "kind": "button",
-        "name": "removeButton"
-      },
-      {
-        "kind": "edittext",
-        "name": "nameEdit"
+        "kind": "checkbox",
+        "name": "relaxCheck"
       },
       {
         "kind": "spinner",
-        "name": "weightSpin"
+        "name": "spacingSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "iterationsSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "strengthSpin"
       },
       {
         "kind": "checkbox",
-        "name": "enabledCheck"
+        "name": "boundaryRelaxCheck"
+      },
+      {
+        "kind": "spinner",
+        "name": "finalStrengthSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "finalIterSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "finalMoveSpin"
+      }
+    ],
+    "separationUI": [
+      {
+        "kind": "checkbox",
+        "name": "cleanCheck"
+      },
+      {
+        "kind": "spinner",
+        "name": "neighborSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "minNeighborSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "minIslandSpin"
       },
       {
         "kind": "checkbox",
-        "name": "visibleCheck"
-      },
-      {
-        "kind": "button",
-        "name": "upButton"
-      },
-      {
-        "kind": "button",
-        "name": "downButton"
+        "name": "planarCheck"
       }
     ],
     "detailsUI": [
@@ -1025,6 +976,39 @@
       {
         "kind": "button",
         "name": "helpButton"
+      }
+    ],
+    "workflowUI": []
+  },
+  "container": {
+    "properties": [
+      {
+        "kind": "dropdownlist",
+        "name": "consumerList"
+      },
+      {
+        "kind": "spinner",
+        "name": "widthSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "lengthSpin"
+      },
+      {
+        "kind": "checkbox",
+        "name": "labelCheck"
+      },
+      {
+        "kind": "listbox",
+        "name": "sourceList"
+      },
+      {
+        "kind": "button",
+        "name": "assignOwner"
+      },
+      {
+        "kind": "button",
+        "name": "editLayer"
       }
     ]
   },

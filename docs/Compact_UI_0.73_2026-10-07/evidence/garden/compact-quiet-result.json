@@ -1,0 +1,7 @@
+{
+  "passed": true,
+  "script_sha256": "53bf85f9a2cfe1034468919c408d4c73ca6e865f7e1b9c816cc7375fe12f10fa",
+  "elapsed_s": 98.376,
+  "unexpected_changes": {},
+  "note": "No UI input during this interval; every sampled counter/identity including callbacks, cached lookups and draws is compared, with all plugin timers inactive."
+}

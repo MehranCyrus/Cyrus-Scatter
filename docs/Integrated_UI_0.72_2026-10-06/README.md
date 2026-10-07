@@ -1,5 +1,9 @@
 # Cyrus Scatter 0.72 — selected-layer UI and runtime qualification
 
+**Superseded source:** [0.73 unified system](../Unified_System_0.73_2026-10-06/README.md) is the current development model. This 0.72 folder retains its exact original implementation, packages and actual renderer evidence.
+
+**Subsequent independent review:** [0.72 / tyFlow R&D](../TyFlow_CyrusScatter_RnD_2026-10-06/README.md) audits this campaign's source/receipt identities, runs new offline experiments and adds bounded projection/radius/Brush/reporting findings. It changes documentation only. This folder's implementation/package identities and original host results remain frozen.
+
 6 October 2026. Implementation campaign; development version **0.72**, package/native metadata **0.72.0**, scene serialization **53**. Publication readiness remains 1.0.
 
 **Completed within the no-computer-use scope.** Read [results and limits](RESULTS.md), [artist workflow](WORKFLOW.md), [matching packages](PACKAGE.md) and [next acceptance gates](NEXT_WORK.md). The final pair passes 140 Python tests, both SDK/native builds, 1,312 playback assertions, private Max 2027 UI/core/container fixtures, 100k retained browsing, eight settled idle cases and actual floating-Corona lifecycle checks. Pointer/DPI, presented FPS, successful docked IR and Max 2026 runtime remain separate gates.

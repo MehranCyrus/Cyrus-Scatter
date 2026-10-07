@@ -1,0 +1,288 @@
+{
+  "version": "0.73.0",
+  "build_id": "0.73.0-499b99f91c84",
+  "qualified_host": "3ds Max 2027.1",
+  "external_runtime": "CPython 3.11 x64",
+  "files": [
+    {
+      "path": "host/cyrus_mcp/__init__.py",
+      "sha256": "1768a28ecf9c2546a436cf9517a42aa14d2065c6036dbda740f732c69dbf6983",
+      "bytes": 105
+    },
+    {
+      "path": "host/cyrus_mcp/agent_help.py",
+      "sha256": "a46357a2e19e2fb26a26644af87270ddd9d7da155c6046f88c3e99961595afcf",
+      "bytes": 3940
+    },
+    {
+      "path": "host/cyrus_mcp/contracts.py",
+      "sha256": "53b86d44b365c296e4b912aa6589e64727841230e0a7991b55e10c2aeeba83ca",
+      "bytes": 6413
+    },
+    {
+      "path": "host/cyrus_mcp/design_lab/__init__.py",
+      "sha256": "00729161dd163b1ad5e88d8e3781d1ef2d00ca23896304c82508ba8c3d712943",
+      "bytes": 149
+    },
+    {
+      "path": "host/cyrus_mcp/design_lab/__main__.py",
+      "sha256": "dd06b03774e29a3f19592b0c8ddb1de6eea4e1d0cbbcdbd6a2cdaf919eb978bb",
+      "bytes": 6444
+    },
+    {
+      "path": "host/cyrus_mcp/design_lab/ranking.py",
+      "sha256": "322fd803267214b3116dd55de98810954691302e9efee7f3e598efa5f2a8ef79",
+      "bytes": 7734
+    },
+    {
+      "path": "host/cyrus_mcp/design_lab/store.py",
+      "sha256": "526f4c18f999fcd5b4d26611808e733a91605711cfb1948b69cf8a581d05808c",
+      "bytes": 19633
+    },
+    {
+      "path": "host/cyrus_mcp/diagnostics.py",
+      "sha256": "7b5c875407ed59fe70bbbb13551449a23b82892487321766d941e8a5b563062b",
+      "bytes": 6136
+    },
+    {
+      "path": "host/cyrus_mcp/feature-catalog.json",
+      "sha256": "4d661fdb45eedd7b84dace3889e103c9e7c84bf5fdb9144d01798e2dc2fd8f3f",
+      "bytes": 133871
+    },
+    {
+      "path": "host/cyrus_mcp/geometry.py",
+      "sha256": "57bb50177d3191861b9ddb4d5ee48fd916337008c6ad211ebbaaf3cbfb3bc239",
+      "bytes": 3955
+    },
+    {
+      "path": "host/cyrus_mcp/max_host.py",
+      "sha256": "81154df7b3ec79911f56016a6a558283895751f1f0aed4eea7d754f4cc7b8d65",
+      "bytes": 42236
+    },
+    {
+      "path": "host/cyrus_mcp/models.py",
+      "sha256": "ac4990984c2e8cd9b77582f22f07ec27b9fa2208d14ce2fd734d73cb58086441",
+      "bytes": 3058
+    },
+    {
+      "path": "host/cyrus_mcp/panel.py",
+      "sha256": "79f64a02a53ca54bfd71398264e6b7f36e0faa40ed61061d375ffef75e9911cf",
+      "bytes": 16817
+    },
+    {
+      "path": "host/cyrus_mcp/plan.schema.json",
+      "sha256": "857dd0b18b3340a09bb7f19948cc2358d2ca34de00399e1cabbc303bd3439691",
+      "bytes": 13050
+    },
+    {
+      "path": "host/cyrus_mcp/procedural.py",
+      "sha256": "29f5a99e26faa44dad62cd6c1a61ecbe1d6434963c45a309b5fff72bd2ef7118",
+      "bytes": 8744
+    },
+    {
+      "path": "host/cyrus_mcp/procedural_plan.py",
+      "sha256": "3fb922948f237696b46dde0465632a9229cf6b2deb662cc3f0f86e180e583103",
+      "bytes": 9409
+    },
+    {
+      "path": "host/cyrus_mcp/publication.py",
+      "sha256": "ba28e41d20f57126abbc2c0268d49779051f1e414c7d22e029500313f89555db",
+      "bytes": 6633
+    },
+    {
+      "path": "host/cyrus_mcp/records.py",
+      "sha256": "f0e56bf9b1547f28443d3f50dbdbeebaf96af4d4e8f241a0dfcfd1df83378bab",
+      "bytes": 2922
+    },
+    {
+      "path": "host/cyrus_mcp/server.py",
+      "sha256": "6a85c491c09e6caea2ec51b3303ff9aa3847c9fc9ad2018d816c8f5e28faed07",
+      "bytes": 9741
+    },
+    {
+      "path": "host/cyrus_mcp/service.py",
+      "sha256": "36fdf88cf5ddc1eed3e93bd731c4397dffefeffe3d26b49e9b7e46ab48fbf716",
+      "bytes": 24186
+    },
+    {
+      "path": "host/cyrus_mcp/settings.py",
+      "sha256": "d31b0d7bf6e77349b799594f953314c2ec4620d9b96dd31273ae517989261c8d",
+      "bytes": 6116
+    },
+    {
+      "path": "host/cyrus_mcp/transport.py",
+      "sha256": "c7822dda4f7664f787c5981785749d86c1753bb145d73c68813ddd818d16ade6",
+      "bytes": 12341
+    },
+    {
+      "path": "host/Start_Cyrus_Automation.ms",
+      "sha256": "899ec90fc16142b36adbfe230da656ffbcb54ef475152f2d9120fe5484d51e1d",
+      "bytes": 466
+    },
+    {
+      "path": "Install_Cyrus_MCP.ps1",
+      "sha256": "b2644c9a5bd87dda9872239c4bb4244a637693295c800bb6d54dac056d28bcd0",
+      "bytes": 3321
+    },
+    {
+      "path": "README.md",
+      "sha256": "ad14524d848f3e9ef49a75c59d22f2d0fad0739357944105553e5ad7a24dbeef",
+      "bytes": 8850
+    },
+    {
+      "path": "requirements-windows-py311.lock",
+      "sha256": "9b58020fa4d24fcd3e512d06acfc92c369f9737c16c7f7cf85d34a049224e9f0",
+      "bytes": 3016
+    },
+    {
+      "path": "wheels/annotated_types-0.8.0-py3-none-any.whl",
+      "sha256": "f072f4d804ea359e4eaf198b1af7a8b0943881a87f31bb764f8bf219bb9419e0",
+      "bytes": 13427
+    },
+    {
+      "path": "wheels/anyio-4.15.1-py3-none-any.whl",
+      "sha256": "6152fdbbf9a77fdec97731721bebf7c4c44f7c29b424b0065826173efc7ed101",
+      "bytes": 132079
+    },
+    {
+      "path": "wheels/attrs-26.1.0-py3-none-any.whl",
+      "sha256": "c647aa4a12dfbad9333ca4e71fe62ddc36f4e63b2d260a37a8b83d2f043ac309",
+      "bytes": 67548
+    },
+    {
+      "path": "wheels/cffi-2.1.1-cp311-cp311-win_amd64.whl",
+      "sha256": "42f6930c31dc7f50732c9ae793c2786c7b6b044195967bbdde40bb9be81c4cc0",
+      "bytes": 185096
+    },
+    {
+      "path": "wheels/click-8.5.0-py3-none-any.whl",
+      "sha256": "255bc9599cf7748b4b1a446ccc735421bd08a2ae529a8b88597d3de5664ee360",
+      "bytes": 125251
+    },
+    {
+      "path": "wheels/cryptography-50.0.2-cp311-abi3-win_amd64.whl",
+      "sha256": "7afa5a6602a9f29af1f3a2965f831bae7c9d5d597b7cbb716d41ab3b7d89879c",
+      "bytes": 3824692
+    },
+    {
+      "path": "wheels/cyrus_scatter_mcp-0.73.0-py3-none-any.whl",
+      "sha256": "a313ce89b9bac6254409e110c99a34ae86e3405b693107afc47a5ba4a4e6fd2d",
+      "bytes": 81428
+    },
+    {
+      "path": "wheels/h11-0.16.0-py3-none-any.whl",
+      "sha256": "63cf8bbe7522de3bf65932fda1d9c2772064ffb3dae62d55932da54b31cb6c86",
+      "bytes": 37515
+    },
+    {
+      "path": "wheels/httpcore2-2.13.1-py3-none-any.whl",
+      "sha256": "e1e05d4f25f7d7d496bfb96748f6f4b67657b03da069b3a68c36069f3db73d0a",
+      "bytes": 83423
+    },
+    {
+      "path": "wheels/httpx2-2.13.1-py3-none-any.whl",
+      "sha256": "6dff50fabc270ee5fd25d845d0b078ed20564579744d6d962850975996d2f9a4",
+      "bytes": 95597
+    },
+    {
+      "path": "wheels/idna-3.20-py3-none-any.whl",
+      "sha256": "ab7ae7122974553370f0bdb919e1a960b2cd1bc1ef0276416d896db81c14582c",
+      "bytes": 69583
+    },
+    {
+      "path": "wheels/jsonschema-4.26.0-py3-none-any.whl",
+      "sha256": "d489f15263b8d200f8387e64b4c3a75f06629559fb73deb8fdfb525f2dab50ce",
+      "bytes": 90630
+    },
+    {
+      "path": "wheels/jsonschema_specifications-2025.9.1-py3-none-any.whl",
+      "sha256": "98802fee3a11ee76ecaca44429fda8a41bff98b00a0f2838151b113f210cc6fe",
+      "bytes": 18437
+    },
+    {
+      "path": "wheels/mcp-2.3.0-py3-none-any.whl",
+      "sha256": "dd0c44c089d16453e8ae31a3877a0054d7a2314caaa81f5e0541b9b1734b2377",
+      "bytes": 368664
+    },
+    {
+      "path": "wheels/mcp_types-2.3.0-py3-none-any.whl",
+      "sha256": "968efdbdaedfab06adae40d378a34395f1090c5921d4be3c9cde283aaf76d91d",
+      "bytes": 69108
+    },
+    {
+      "path": "wheels/opentelemetry_api-1.45.0-py3-none-any.whl",
+      "sha256": "80e068aba7cd56c8b58512d6a36f8d25cb1dfaa0c0a4cc1c938ccf9f362d9cb3",
+      "bytes": 60020
+    },
+    {
+      "path": "wheels/pycparser-3.0-py3-none-any.whl",
+      "sha256": "b727414169a36b7d524c1c3e31839a521725078d7b2ff038656844266160a992",
+      "bytes": 48172
+    },
+    {
+      "path": "wheels/pydantic-2.13.5-py3-none-any.whl",
+      "sha256": "346a034f080da3755d8e9cb5e00e8b07de1d39e4f6e2c87d8ab7cafa0b269a73",
+      "bytes": 472589
+    },
+    {
+      "path": "wheels/pydantic_core-2.46.5-cp311-cp311-win_amd64.whl",
+      "sha256": "40375c2d05acec10323e45dfe2077ac44bc74659008614af5069034e2cfc781c",
+      "bytes": 2041030
+    },
+    {
+      "path": "wheels/pyjwt-2.15.1-py3-none-any.whl",
+      "sha256": "42d59d631f7768a1028a64c7ff581a9bf7519804daf91fc5b6c56e30eec5e193",
+      "bytes": 33860
+    },
+    {
+      "path": "wheels/python_multipart-0.0.32-py3-none-any.whl",
+      "sha256": "ff6d3f776f16878c894e52e107296ffc890e913c611b1a4ec6c44e2821fe2e23",
+      "bytes": 30042
+    },
+    {
+      "path": "wheels/pywin32-312-cp311-cp311-win_amd64.whl",
+      "sha256": "d11417d84412f859b722fad0841b3614459ed0047f7542d8362e77884f6b6e8a",
+      "bytes": 6928825
+    },
+    {
+      "path": "wheels/referencing-0.37.0-py3-none-any.whl",
+      "sha256": "381329a9f99628c9069361716891d34ad94af76e461dcb0335825aecc7692231",
+      "bytes": 26766
+    },
+    {
+      "path": "wheels/rpds_py-2026.6.3-cp311-cp311-win_amd64.whl",
+      "sha256": "2c54a076ca4d370980ab57bc0e31df57bbe8d41340436a90ef8b1219a3cbb127",
+      "bytes": 223219
+    },
+    {
+      "path": "wheels/sse_starlette-3.5.0-py3-none-any.whl",
+      "sha256": "3e6e1070df3f0f5d9cea81496de92dbb72f6721871d99748ece67441dd8b7997",
+      "bytes": 17407
+    },
+    {
+      "path": "wheels/starlette-1.7.0-py3-none-any.whl",
+      "sha256": "67f8e99895493dd2911a03f11314af6ceebeae4e704bb9f43dfc6a9db151c93e",
+      "bytes": 78980
+    },
+    {
+      "path": "wheels/truststore-0.10.4-py3-none-any.whl",
+      "sha256": "adaeaecf1cbb5f4de3b1959b42d41f6fab57b2b1666adb59e89cb0b53361d981",
+      "bytes": 18660
+    },
+    {
+      "path": "wheels/typing_extensions-4.16.0-py3-none-any.whl",
+      "sha256": "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8",
+      "bytes": 45571
+    },
+    {
+      "path": "wheels/typing_inspection-0.4.4-py3-none-any.whl",
+      "sha256": "65b8397ba37ccbce054456aaccddfc91e6e3083c92824df348d96ca832f3f147",
+      "bytes": 14750
+    },
+    {
+      "path": "wheels/uvicorn-0.54.0-py3-none-any.whl",
+      "sha256": "505bdb0f318731d45f1f712071fc781a8981f6847a31c902c9f5e652d4f67faf",
+      "bytes": 87427
+    }
+  ]
+}

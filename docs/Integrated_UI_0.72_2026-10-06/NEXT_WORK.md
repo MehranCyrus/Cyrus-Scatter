@@ -1,6 +1,10 @@
 # Next work and acceptance criteria
 
+**Latest prepared scope, 6 October:** [unified settings and source-container nodes](../Unified_Procedural_Settings_2026-10-06/README.md) records the user's decision to retire unpublished legacy paths after porting their useful features. It adds labels, linked Modify editing and palette movement with explicit ownership and preservation tests. The new [implementation checklist](../Unified_Procedural_Settings_2026-10-06/IMPLEMENTATION_CHECKLIST.md) governs that future slice; the runtime/performance gates below remain open. No cleanup/new container implementation has occurred in this preparation.
+
 6 October 2026. 0.72 is a development candidate. Complete the bounded UI/runtime slice before opening more abstraction, GPU-compute or ML work.
+
+The subsequent [independent R&D loops](../TyFlow_CyrusScatter_RnD_2026-10-06/FINDINGS_AND_ROADMAP.md) add reproduced projection/radius/Brush preparation costs and a small report-cleanup failure concern. Start with bounded persistence/resource/reporting closure and the specific projection slice; the UI/runtime/renderer acceptance below remains required. New experiments do not qualify presented FPS.
 
 | Priority | Next loop | Acceptance |
 | --- | --- | --- |

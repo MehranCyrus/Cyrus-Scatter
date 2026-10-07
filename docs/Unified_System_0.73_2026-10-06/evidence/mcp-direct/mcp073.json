@@ -1,0 +1,37 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "mode": "point_cloud",
+      "emitted": 173,
+      "explicit_model": true,
+      "approval_guard": true,
+      "passive_publication": true,
+      "rollback_verified": true
+    },
+    {
+      "mode": "proxy",
+      "emitted": 173,
+      "explicit_model": true,
+      "approval_guard": true,
+      "passive_publication": true,
+      "rollback_verified": true
+    },
+    {
+      "mode": "mesh",
+      "emitted": 173,
+      "explicit_model": true,
+      "approval_guard": true,
+      "passive_publication": true,
+      "rollback_verified": true
+    },
+    {
+      "mode": "centres",
+      "emitted": 173,
+      "explicit_model": true,
+      "approval_guard": true,
+      "passive_publication": true,
+      "rollback_verified": true
+    }
+  ]
+}

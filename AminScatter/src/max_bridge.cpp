@@ -361,6 +361,7 @@ Value* aminScatterAdvanced_cf(Value** args,int count) {
             cfg.minNeighbors=f->data[6]->to_int();cfg.minIsland=f->data[7]->to_int();cfg.relax=f->data[8]->to_bool()!=FALSE;
             cfg.strength=f->data[9]->to_float();cfg.iterations=f->data[10]->to_int();cfg.maxMove=f->data[11]->to_float();cfg.gap=f->data[12]->to_float();cfg.planar=f->data[13]->to_bool()!=FALSE;
             instances=amin::finalize(mesh,amin::prepareEdgeRows(s),rows(f->data[0]),rows(f->data[1]),radii(f->data[2]),radii(f->data[3]),cfg);
+            if(keyed)for(auto& p:instances)anchorInstance(p,mesh);
         } else {
             instances=amin::scatter(mesh,s);
             if(keyed)for(auto& p:instances)anchorInstance(p,mesh);

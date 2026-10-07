@@ -13,7 +13,7 @@ Prepare and then test a native authorization boundary that preserves agreed scen
 | [max_bridge.cpp](../../AminScatter/src/max_bridge.cpp): `aminScatterAdvanced_cf`, `aminScatterTransforms_cf`, related exposed helpers | New input, direct calls and saved-state computation |
 | [cyrus_edit.cpp](../../AminScatter/src/cyrus_edit.cpp): native mutations and script primitives | Move/rotate/scale/clone/delete/reset, Undo/Redo and restore |
 | [Analyzer bridge](../../CyrusSurfaceAnalyzer/src/bridge.cpp): `cyrusAnalyzeSurface_cf` | New analysis versus evaluation dependencies |
-| [Controller template](../../AminScatter/tools/ui/templates/before.ms): `bakeInstances` and parameter handlers | Authoring, bake/export and scene-owned state; a separate script check is insufficient authority |
+| [Controller template](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/AminScatter/tools/ui/templates/before.ms): `bakeInstances` and parameter handlers | Authoring, bake/export and scene-owned state; a separate script check is insufficient authority |
 | [UI generator](../../AminScatter/tools/ui/generate.cjs) and its inputs | Generated licensing/recovery UI; avoid hand-editing generated output |
 | [Preview](../../AminScatter/src/preview.cpp) and display paths | Preserve prepared-data drawing; no license I/O, verification or checkout in callbacks |
 

@@ -1,0 +1,36 @@
+{
+  "stages": [
+    {
+      "stage": "configure",
+      "exit_code": 0
+    },
+    {
+      "stage": "build",
+      "exit_code": 0
+    },
+    {
+      "stage": "tests",
+      "exit_code": 0
+    }
+  ],
+  "project": "analyzer",
+  "max_year": 2027,
+  "host_launched": false,
+  "installed": false,
+  "binaries": {
+    "build/unified-073-20261006/analyzer-max2027/CyrusSurfaceAnalyzer.dlx": "ca333595a53d5252dc68c8a797beb6971d6d3f36a298323ee3edc8f8371cfefb"
+  },
+  "sources": {
+    "CyrusSurfaceAnalyzer/CMakeLists.txt": "780d6d60f4afc3c475e85bf04ac5540bb3e930d266e4f364c2036810c2bcdd1b",
+    "CyrusSurfaceAnalyzer/scripts/CyrusSurfaceAnalyzer.ms": "9f1f146814870a094ab226334675459e0130a9f1d8bd1d621405b52f99ffb3c8",
+    "cmake/CyrusMaxSDK.cmake": "53cf91db75742990b80d1f0a8dc8094d45a2a964094b3785b2f6eb1c8b55248e",
+    "AminScatter/src/input_validity.cpp": "a65514bdcee3e67d3296768063979ed1c670b020323bc62e757ac7a9c232605d",
+    "CyrusSurfaceAnalyzer/src/analyzer.cpp": "61a64e15a0521e9f1a62788d8c09272a8754f50c35e89af5cbd05876a02c6f95",
+    "CyrusSurfaceAnalyzer/src/analyzer.h": "2433b91a725528ed5792a04f114cbd0206f2fe07664ca52acb7158e2ca16610c",
+    "CyrusSurfaceAnalyzer/src/bridge.cpp": "5096d5dcfcd2a22846752b356de943dca5360c4c576f89bf3cb8ffe97fc1c605",
+    "CyrusSurfaceAnalyzer/src/elements.cpp": "762ce99b9c74376b857ecf2db1472ff2f908459cd7f369b489538fd8a5e5b9e2",
+    "CyrusSurfaceAnalyzer/tests/samples.h": "ae49447f4d9f04ae7a15a1f8d2af4aff5ccea232af902581c2b7e3e8ad010e37",
+    "CyrusSurfaceAnalyzer/tests/test.cpp": "a8ac19818075c7a8811c78f1e09d0e19c66edd224850ffdae118b32d32fc80f5"
+  },
+  "qualification": "SDK compilation and native executables only; generated MAXScript is hashed, not compiled by Max."
+}

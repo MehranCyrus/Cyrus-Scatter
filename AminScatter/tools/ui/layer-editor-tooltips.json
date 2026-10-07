@@ -1,23 +1,45 @@
 {
-  "sourceUI": {
-    "addPlant": "Pick a scene model for this paint set. The editor stays on its layer.",
-    "addSelected": "Add the currently selected scene objects to this paint set.",
-    "selectFromScene": "Choose one or more source models by name.",
-    "selectPlant": "Select the highlighted source models in the scene.",
-    "removePlant": "Unregister highlighted rows. To keep their settings, park models outside a source rectangle instead.",
-    "addPoint": "Add a placeholder source that can later be replaced by a model.",
-    "addEmpty": "Add a weighted empty source for intentional gaps in candidate-budget mode.",
-    "replacePoint": "Replace one highlighted Point row with a scene model.",
-    "weightSpin": "Relative source share within this paint set. Zero disables the source.",
-    "sourceZSpin": "Offset instances of highlighted models along their placement normal.",
-    "sourceScaleSpin": "Per-model scale multiplier. 1 keeps the model's original scale.",
-    "radiusSourceSpin": "Collision footprint radius for highlighted source rows, in scene units.",
-    "followRadiusCheck": "Scale this source's collision footprint with its instance scale.",
-    "showRadiusCheck": "Show this source's radius in the viewport; does not change collision rules.",
-    "forwardAxis": "The model's local forward direction, used for orientation.",
-    "existingGroups": "Assign highlighted sources to an existing color group for clustering.",
-    "groupColor": "Assign a color group to highlighted sources when the color is accepted.",
-    "applyColor": "Assign the chosen color group to all highlighted source rows."
+  "host": {
+    "enabledCheck": "Enable calculation and output for this entire Scatter setup."
+  },
+  "updateUI": {
+    "updateNow": "Calculate all enabled layers and paint sets in order."
+  },
+  "previewUI": {},
+  "surface": {
+    "sharedPick": "Choose the surface on which every layer in this setup scatters.",
+    "surfacesButton": "Choose multiple receiving surfaces by name. Brush needs one shared surface.",
+    "containersToggle": "Optional shared source pool. Enable Global containers in a layer's Assets tab.",
+    "createContainer": "Create a source rectangle shared by owners that explicitly use the global pool.",
+    "pickContainer": "Link an existing Cyrus Source Container to the global pool.",
+    "removeContainer": "Unlink the rectangle while keeping its scene node and registered model settings."
+  },
+  "manager": {
+    "editButton": "Optional floating view of the same layer settings. Select a layer to edit it below in Modify.",
+    "addButton": "Add a layer and edit its controls below. Layers calculate from top to bottom.",
+    "copyButton": "Copy this layer, its paint sets and their settings.",
+    "removeButton": "Remove this layer and its paint sets. Undo restores them.",
+    "nameEdit": "Rename the selected layer without changing its identity.",
+    "visibleCheck": "Hide display only. Hidden layers still calculate and affect spacing.",
+    "enabledCheck": "Include this layer in calculation and final output.",
+    "upButton": "Evaluate earlier; earlier layers occupy space first.",
+    "downButton": "Evaluate after the preceding layers."
+  },
+  "diagnostics": {
+    "startButton": "Record engineering events in this Max process. Off by default; at most ten minutes, 4,096 events and 4 MiB.",
+    "stopButton": "Stop recording and retain the bounded history in memory.",
+    "saveButton": "Choose a local JSON file, stop recording and save its retained pages. No MCP or upload is required.",
+    "refreshButton": "Read recorder state without evaluating the scene. Status has no polling timer."
+  },
+  "editor": {
+    "updateNow": "Recalculate every enabled layer in this setup, in order.",
+    "assetsTab": "Models, source rectangles and paint-set administration.",
+    "populationTab": "Shared layer count, density, Area and retry limits.",
+    "paintTab": "Independent set coverage, strokes and background fill.",
+    "transformTab": "Layer random transforms and source assignment.",
+    "spacingTab": "Self, between-set and layer-pair rules, radii and cleanup.",
+    "statisticsTab": "Cached calculation results and workflow help.",
+    "refreshButton": "Read current settings and cached counts; does not rebuild placements."
   },
   "setsUI": {
     "addButton": "Add another paint set sharing this layer's population and defaults.",
@@ -28,6 +50,33 @@
     "visibleCheck": "Viewport visibility only. Hidden sets still calculate and affect spacing.",
     "upButton": "Evaluate this set earlier. Earlier sets occupy space first.",
     "downButton": "Evaluate this set later, after the preceding sets."
+  },
+  "sourceUI": {
+    "selectFromScene": "Choose one or more source models by name.",
+    "addPlant": "Pick a scene model for this paint set. The editor stays on its layer.",
+    "addSelected": "Add the currently selected scene objects to this paint set.",
+    "removePlant": "Unregister highlighted rows. To keep their settings, park models outside a source rectangle instead.",
+    "selectPlant": "Select the highlighted source models in the scene.",
+    "addPoint": "Add a placeholder source that can later be replaced by a model.",
+    "addEmpty": "Add a weighted empty source for intentional gaps in candidate-budget mode.",
+    "replacePoint": "Replace one highlighted Point row with a scene model.",
+    "existingGroups": "Assign highlighted sources to an existing color group for clustering.",
+    "groupColor": "Assign a color group to highlighted sources when the color is accepted.",
+    "applyColor": "Assign the chosen color group to all highlighted source rows.",
+    "weightSpin": "Relative source share within this paint set. Zero disables the source.",
+    "sourceZSpin": "Offset instances of highlighted models along their placement normal.",
+    "sourceScaleSpin": "Per-model scale multiplier. 1 keeps the model's original scale.",
+    "radiusSourceSpin": "Collision footprint radius for highlighted source rows, in scene units.",
+    "followRadiusCheck": "Scale this source's collision footprint with its instance scale.",
+    "showRadiusCheck": "Show this source's radius in the viewport; does not change collision rules.",
+    "forwardAxis": "The model's local forward direction, used for orientation.",
+    "detailsToggle": "Show or hide these advanced controls; their saved settings are preserved."
+  },
+  "sourceContainersUI": {
+    "modeList": "Use a manual list or an explicit rectangle pool. Other paint sets may inherit the layer pool.",
+    "createContainer": "Create a Rectangle for this owner. Put source-model pivots inside its local XY bounds.",
+    "pickContainer": "Link a Cyrus container, or copy a square-corner Rectangle into a container. The original spline is preserved.",
+    "removeContainer": "Unlink this rectangle without deleting it or registered source settings."
   },
   "distributionUI": {
     "countSpin": "Layer population before eligibility. Accepted target can retry up to its limits.",
@@ -42,71 +91,9 @@
     "roundSpin": "Maximum rounds of eligibility, collision and cleanup. A shortfall can remain.",
     "repairCheck": "Allow bounded retries for plants removed by final cleanup."
   },
-  "proceduralUI": {
-    "scopeList": "Choose within-set, between-set defaults, a set pair, or a layer pair.",
-    "peerList": "The other set or layer affected by this pair rule.",
-    "enabledCheck": "Enable only this collision scope. Other scopes are independent.",
-    "multiplierSpin": "Minimum distance = factor times (radius A + radius B), plus extra gap.",
-    "gapSpin": "Additional distance in scene units. Saves immediately; Manual waits for Update.",
-    "planarCheck": "Measure distance in world XY. Turn off to include height in 3D distance.",
-    "resetRule": "Remove a pair or self override, or reset the between-set default."
-  },
-  "backgroundUI": {
-    "backgroundList": "Exclude earlier painted coverage, fill between plants, combine both, or turn off.",
-    "applyBackground": "Save this background mode and the selected earlier-set references together."
-  },
-  "instanceRadiusUI": {
-    "radiusMode": "Use an absolute world radius or multiply the selected instances' source radius.",
-    "radiusSpin": "Value applied only when Set selected radii is pressed.",
-    "applyRadius": "Apply radius overrides to selected CS Edit instances in this paint set.",
-    "resetRadius": "Restore the selected instances' inherited source radii.",
-    "clearRadius": "Remove every instance-radius override belonging to this paint set."
-  },
-  "spacingUI": {
-    "collisionCheck": "Layer default for self-spacing, used by sets without a self override.",
-    "radiusSpin": "Inherited centre-distance rule uses two times this radius.",
-    "relaxCheck": "Legacy point relaxation; paused under procedural evaluation or Brush coverage.",
-    "spacingSpin": "Desired distance for legacy point relaxation.",
-    "iterationsSpin": "Bound the number of legacy relaxation passes.",
-    "strengthSpin": "Movement strength per legacy relaxation pass."
-  },
-  "separationUI": {
-    "cleanCheck": "Remove isolated plants after collision across the whole logical layer.",
-    "neighborSpin": "Distance used to count nearby accepted plants during final cleanup.",
-    "minNeighborSpin": "Remove plants that have fewer than this many neighbors.",
-    "minIslandSpin": "Remove connected islands smaller than this number of plants.",
-    "statsButton": "Recalculate the setup, including spacing and cleanup.",
-    "boundaryRelaxCheck": "Legacy boundary relaxation; preserved but paused by shared spacing."
-  },
-  "sourceContainersUI": {
-    "modeList": "Use a manual list or an explicit rectangle pool. Other paint sets may inherit the layer pool.",
-    "createContainer": "Create a Rectangle for this owner. Put source-model pivots inside its local XY bounds.",
-    "pickContainer": "Use an existing unmodified Rectangle as a source pool boundary.",
-    "removeContainer": "Unlink this rectangle without deleting it or registered source settings."
-  },
-  "brushUI": {
-    "coverageMode": "Use the whole receiver or this paint set's saved painted coverage.",
-    "radiusSpin": "World-space radius of the next Brush stroke on the receiving surface.",
-    "strengthSpin": "Amount of coverage painted or erased by the next stroke.",
-    "softSpin": "Softness of the next stroke's edge.",
-    "densitySpin": "Thin plants allowed by the saved mask. Set absolute population on Population.",
-    "beginButton": "Paint this set on the shared surface. Creates an empty mask when needed.",
-    "stopButton": "Finish painting and retain the editable stroke history.",
-    "fillButton": "Fill coverage and reset stroke history. Undo restores the previous field.",
-    "emptyButton": "Empty coverage and reset stroke history. Undo restores the previous field.",
-    "overlayMode": "Coverage feedback only; it does not show which plants survive spacing.",
-    "overlayColor": "Viewport color for this paint set's coverage feedback.",
-    "strokeEnabled": "Enable or disable the highlighted saved stroke without deleting it.",
-    "strokeErase": "Change the highlighted saved stroke between paint and erase.",
-    "strokeRadius": "Change the radius of the highlighted saved stroke.",
-    "strokeStrength": "Change the strength of the highlighted saved stroke.",
-    "strokeSoft": "Change the edge softness of the highlighted saved stroke.",
-    "deleteStroke": "Delete the highlighted stroke. Undo restores it.",
-    "resetTarget": "Confirm before replacing this set's paint with an empty mask on the current receiver."
-  },
   "areaUI": {
-    "pickArea": "Pick a closed shape as an include/exclude Area shared by all sets in this layer.",
     "addAreaScene": "Choose closed Area shapes by name.",
+    "pickArea": "Pick a closed shape as an include/exclude Area shared by all sets in this layer.",
     "removeArea": "Unlink highlighted Areas and their falloff settings; keep the scene shapes.",
     "refreshAreas": "Refresh Area geometry and recalculate the layer preview.",
     "aaPick": "Choose an existing Cyrus Surface Analyzer for line or point masks.",
@@ -127,7 +114,33 @@
     "fallScaleEdit": "Edit this boundary's scale curve.",
     "fallDensityCheck": "Vary candidate eligibility with distance from this boundary.",
     "fallDensitySpin": "Distance over which the density curve is evaluated.",
-    "fallDensityEdit": "Edit this boundary's density curve."
+    "fallDensityEdit": "Edit this boundary's density curve.",
+    "detailsToggle": "Show or hide these advanced controls; their saved settings are preserved."
+  },
+  "brushUI": {
+    "coverageMode": "Use the whole receiver or this paint set's saved painted coverage.",
+    "radiusSpin": "World-space radius of the next Brush stroke on the receiving surface.",
+    "strengthSpin": "Amount of coverage painted or erased by the next stroke.",
+    "softSpin": "Softness of the next stroke's edge.",
+    "densitySpin": "Thin plants allowed by the saved mask. Set absolute population on Population.",
+    "beginButton": "Paint this set on the shared surface. Creates an empty mask when needed.",
+    "stopButton": "Finish painting and retain the editable stroke history.",
+    "fillButton": "Fill coverage and reset stroke history. Undo restores the previous field.",
+    "emptyButton": "Empty coverage and reset stroke history. Undo restores the previous field.",
+    "overlayMode": "Coverage feedback only; it does not show which plants survive spacing.",
+    "overlayColor": "Viewport color for this paint set's coverage feedback.",
+    "strokeEnabled": "Enable or disable the highlighted saved stroke without deleting it.",
+    "strokeErase": "Change the highlighted saved stroke between paint and erase.",
+    "strokeRadius": "Change the radius of the highlighted saved stroke.",
+    "strokeStrength": "Change the strength of the highlighted saved stroke.",
+    "strokeSoft": "Change the edge softness of the highlighted saved stroke.",
+    "deleteStroke": "Delete the highlighted stroke. Undo restores it.",
+    "resetTarget": "Confirm before replacing this set's paint with an empty mask on the current receiver.",
+    "detailsToggle": "Show or hide these advanced controls; their saved settings are preserved."
+  },
+  "backgroundUI": {
+    "backgroundList": "Exclude earlier painted coverage, fill between plants, combine both, or turn off.",
+    "applyBackground": "Save this background mode and the selected earlier-set references together."
   },
   "randomUI": {
     "projectCheck": "Project random movement back onto the receiving surface.",
@@ -140,7 +153,7 @@
   "diversityUI": {
     "sizeSpin": "Spatial size of source-color clusters.",
     "divSeedSpin": "Change source assignment randomness without changing the generation seed.",
-    "pickAnalyzer": "Choose an existing Surface Analyzer for the legacy assignment modes.",
+    "pickAnalyzer": "Use Surface Analyzer output for bands, rows and fixed anchors.",
     "pickPath": "Pick a spline for Line Pattern assignment.",
     "removePath": "Remove the selected assignment path while keeping the scene spline.",
     "addOutside": "Add a source-assignment band outside the selected path.",
@@ -148,8 +161,32 @@
     "removeStrokeButton": "Remove the selected assignment band and its settings.",
     "refreshGroups": "Refresh available source color groups for assignment."
   },
+  "proceduralUI": {
+    "scopeList": "Each scope is independent. A set can inherit or override its layer's within-set default."
+  },
+  "instanceRadiusUI": {
+    "radiusMode": "Use an absolute world radius or multiply the selected instances' source radius.",
+    "radiusSpin": "Value applied only when Set selected radii is pressed.",
+    "applyRadius": "Apply radius overrides to selected CS Edit instances in this paint set.",
+    "resetRadius": "Restore the selected instances' inherited source radii.",
+    "clearRadius": "Remove every instance-radius override belonging to this paint set."
+  },
+  "spacingUI": {
+    "relaxCheck": "Separate nearby candidates on the receiving surface before Brush, artist edits and spacing. Fixed anchors stay fixed.",
+    "boundaryRelaxCheck": "Smooth candidate neighborhoods with bounded movement. Eligibility is checked before publication; author edits run afterwards."
+  },
+  "separationUI": {
+    "cleanCheck": "Clean the accepted union of this layer's paint sets after all three spacing scopes. Protected edits remain."
+  },
   "detailsUI": {
     "refreshButton": "Read the existing calculation statistics without regenerating placements.",
     "helpButton": "Explain settings ownership, display budgets, evaluation order and policy limits."
+  },
+  "workflowUI": {},
+  "properties": {
+    "consumerList": "Choose a linked setup or paint set. Inactive pools remain editable; this changes the view only.",
+    "widthSpin": "Resize the boundary. Source models keep their transforms.",
+    "assignOwner": "Resolve overlapping movement ownership for the selected source. Its usage and settings in other sets are unchanged.",
+    "editLayer": "Open the optional layer editor for the current consumer."
   }
 }

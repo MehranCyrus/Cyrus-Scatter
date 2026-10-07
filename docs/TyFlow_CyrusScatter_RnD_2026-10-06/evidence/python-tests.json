@@ -1,0 +1,8 @@
+{
+  "tests": 140,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "junit_sha256": "df4d69212e2acf11b8bd43e0748b8b0867e623285d6723e5687f16b8b9d7ffcc",
+  "command": "build/mcp-venv/Scripts/python.exe -m pytest CyrusMCP/tests tools/tests -q --junitxml=build/rnd-072-20261006/python-tests.xml"
+}

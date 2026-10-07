@@ -17,7 +17,7 @@ Audited 4 October 2026 at commit `e3518f8f87f3144d531f20afbb6790ce243f2cfc`. Fin
 | [max_host.py](../../CyrusMCP/cyrus_mcp/max_host.py), lines 320–472 | Build owned layers, solve after graph attachment, validate final footprints, export actual matrices/counts | Train/evaluate against final results rather than assuming plan settings equal output |
 | [records.py](../../CyrusMCP/cyrus_mcp/records.py), lines 6–35 | Execution and correction record contracts; training eligibility false | Reuse provenance and lineage; add an explicit collector and dataset review |
 | [scatter.h](../../AminScatter/include/scatter.h), lines 27–68 | Seeded settings, density and area controls, candidate keys and surface anchors | Reuse procedural state and known geometry; do not replace the scatter core with an opaque model |
-| [logical-layers.ms](../../AminScatter/tools/ui/templates/logical-layers.ms) and [planting-groups.cjs](../../AminScatter/tools/ui/planting-groups.cjs) | Parent/set ownership and shared settings/placement policy | Future learned coverage and recipes must respect existing ownership semantics |
+| [logical-layers.ms](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/AminScatter/tools/ui/templates/logical-layers.ms) and [planting-groups.cjs](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/AminScatter/tools/ui/planting-groups.cjs) | Parent/set ownership and shared settings/placement policy | Future learned coverage and recipes must respect existing ownership semantics |
 
 Use the current [capability guide](../Layers_First_2026-10-03/CAPABILITIES.md) and [MCP README](../../CyrusMCP/README.md) for the broader documented qualification boundary.
 

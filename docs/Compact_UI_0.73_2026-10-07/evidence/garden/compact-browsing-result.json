@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "script_sha256": "53bf85f9a2cfe1034468919c408d4c73ca6e865f7e1b9c816cc7375fe12f10fa",
+  "loaded_payload_sha256": "d74672d06df57514d70accd5632bfa187a1546633e6327d6b8360905e202ea94",
+  "elapsed_s": 428.11,
+  "unexpected_changes": {},
+  "computer_use": true,
+  "private_host": true,
+  "activities": [
+    "Expand/fold native rollouts",
+    "Expand Advanced",
+    "Scroll native columns",
+    "Resize command panel between two and three columns",
+    "Open and browse the optional editor"
+  ],
+  "observations": {
+    "interaction_queries": 500,
+    "draw_callbacks": 9386,
+    "input_event_counters": {
+      "group_hits": 16,
+      "ir_timer_calls": 2,
+      "live_callbacks": 12,
+      "live_redraw_requests": 2
+    }
+  },
+  "note": "Active browsing produced finite host notifications, cached group lookups and two deferred IR checks. Render-key queries, bridge builds, candidates, scans, publication and buffer identities were unchanged. This is not zero host CPU or presented FPS. A separate settled-idle sample includes these event counters in its strict comparison."
+}

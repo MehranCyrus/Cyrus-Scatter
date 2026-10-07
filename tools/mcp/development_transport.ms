@@ -11,7 +11,7 @@ fn MCPFixtureTick sender args = (
                 MCPFixtureLast=path
                 if not matchPattern path pattern:(MCPFixtureDir+"*.ms") do throw "Outside private fixture directory"
                 try (fileIn path; (dotNetClass "System.IO.File").WriteAllText (MCPFixtureDir+"dev-result.txt") ("SUCCESS "+path))
-                catch ((dotNetClass "System.IO.File").WriteAllText (MCPFixtureDir+"dev-result.txt") ("ERROR "+getCurrentException()+"\n"+getCurrentExceptionStackTrace()))
+                catch ((dotNetClass "System.IO.File").WriteAllText (MCPFixtureDir+"dev-result.txt") ("ERROR "+getCurrentException()+"\nREQUEST: "+path+"\nSOURCE: "+(getErrorSourceFileName() as string)+" LINE: "+(getErrorSourceFileLine() as string)+"\n"+getCurrentExceptionStackTrace()))
             )
         )
     ) catch ()

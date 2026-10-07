@@ -50,7 +50,7 @@ class Qualification:
     def plan(self,context,count=200,layers=1):
         source=context["scope"]["sources"][0]["source_id"]
         region=context["scope"]["regions"][0]["region_id"]
-        return {"schema_version":"1.0","context_id":context["context_id"],"name":"MCP Qualified Layout","layers":[{"name":"Trees "+str(i+1),"region_id":region,"count":count,"seed":42+i*101,"sources":[{"source_id":source,"weight":1}],"scale":[.8,1.2],"yaw_degrees":[0,360],"underfill":"allow"} for i in range(layers)]}
+        return {"schema_version":"0.73","context_id":context["context_id"],"name":"MCP Qualified Layout","layers":[{"name":"Trees "+str(i+1),"region_id":region,"count":count,"seed":42+i*101,"sources":[{"source_id":source,"weight":1}],"scale":[.8,1.2],"yaw_degrees":[0,360],"underfill":"allow"} for i in range(layers)]}
 
     def apply(self,plan):
         value=self.call("scatter.validate_plan",plan=plan)

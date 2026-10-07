@@ -6,7 +6,7 @@ from mcp.server import MCPServer
 from mcp.types import ToolAnnotations, CallToolResult, TextContent, ImageContent
 from .contracts import Fault
 from .transport import Client
-from .models import DesignPlan, DesignPlanV2, ResponseEnvelope
+from .models import DesignPlan, ResponseEnvelope
 from . import __version__
 
 ToolResult=Annotated[CallToolResult,ResponseEnvelope]
@@ -44,8 +44,8 @@ def make_server(directory=None):
         return call("scene.get_context",scope_id=scope_id)
 
     @server.tool(annotations=read)
-    def scatter_validate_plan(plan: DesignPlan | DesignPlanV2) -> ToolResult:
-        """Validate a complete bounded plan without mutation. Schema 1.0 retains independent populations. Schema 2.0 adds typed layer/source/display settings, enrolled exclusions and shared pair rules. Lengths are metres, rotations degrees; at most three layers and 2,000 candidates. Read cyrus://capabilities and the versioned plan schema. Approval is exclusively local."""
+    def scatter_validate_plan(plan: DesignPlan) -> ToolResult:
+        """Validate a complete bounded plan without mutation. Schema 0.73 uses the sole ordered evaluator with typed layer/source/display settings, enrolled exclusions and explicit radius-factor/gap spacing. Lengths are metres, rotations degrees; at most three layers and 2,000 candidates. Read cyrus://capabilities and the versioned plan schema. Approval is exclusively local."""
         return call("scatter.validate_plan",plan=plan.model_dump(exclude_none=True))
 
     @server.tool(annotations=write)
@@ -75,7 +75,7 @@ def make_server(directory=None):
 
     @server.tool(annotations=read)
     def scatter_get_publication(scene_epoch: str, controller_id: str) -> ToolResult:
-        """Read a policy-3 controller's last complete cached publication: opaque identity, per-set counts, source IDs, rules and script fingerprint. Never solves, reconciles containers or certifies current input geometry. Returns a five-minute paging handle. The compact metadata is not a reconstructable full recipe."""
+        """Read a unified controller's last complete cached publication: opaque identity, per-set counts, source IDs, rules and script fingerprint. Never solves, reconciles containers or certifies current input geometry. Returns a five-minute paging handle. The compact metadata is not a reconstructable full recipe."""
         return call("scatter.get_publication", scene_epoch=scene_epoch, controller_id=controller_id)
 
     @server.tool(annotations=read)
@@ -100,11 +100,11 @@ def make_server(directory=None):
 
     @server.resource("cyrus://workflow")
     def workflow() -> str:
-        return "Local artist enrolls a horizontal site, 1–3 mesh sources and convex straight closed regions. Read context and cyrus://capabilities; validate a schema 1.0 (legacy policy) or 2.0 (shared policy) proposal. Schema 2.0 adds typed settings, exclusions, pair spacing and preview options. The artist reviews normalized effective values and approves locally; apply once, query operation, then inspect configuration or export the matching actual layout record. Capture the matching generation only if allowed. Approved refinement replaces owned layers. Artist can Cancel, Undo/Reject, disconnect or take over. Changed inputs invalidate scope. Native Brush history/set creation, complex terrain, texture maps, Relax, rendering, CS Edit mutations and ML are outside the current automation contract. Exported records are not training consent; no training telemetry."
+        return "Local artist enrolls a horizontal site, 1–3 mesh sources and convex straight closed regions. Read context and cyrus://capabilities; validate a schema 0.73 proposal. The unified bounded contract includes typed settings, exclusions, pair spacing and preview options. The artist reviews normalized effective values and approves locally; apply once, query operation, then inspect configuration or export the matching actual layout record. Capture the matching generation only if allowed. Approved refinement replaces owned layers. Artist can Cancel, Undo/Reject, disconnect or take over. Changed inputs invalidate scope. Native Brush history/set creation, complex terrain, texture maps, Relax, rendering, CS Edit mutations and ML are outside the current automation contract. Exported records are not training consent; no training telemetry."
 
-    @server.resource("cyrus://plan-schema/2.0")
-    def plan_schema_v2() -> str:
-        return json.dumps(DesignPlanV2.model_json_schema(),indent=2)
+    @server.resource("cyrus://plan-schema/0.73")
+    def plan_schema_unified() -> str:
+        return json.dumps(DesignPlan.model_json_schema(),indent=2)
 
     @server.resource("cyrus://capabilities")
     def capabilities() -> str:

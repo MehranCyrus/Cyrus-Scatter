@@ -1,8 +1,0 @@
-    rollout workflowUI "Workflow and ownership" width:146 (
-        local root=CyrusLayerUIRoot,owner=CyrusLayerUIOwner,panel=CyrusLayerUIPanel,controlsReady=false
-        label steps "1. SETUP\nChoose receiving surfaces in Modify. Add layers in the order they should calculate.\n\n2. ASSETS\nChoose models for each paint set, or place model pivots inside a source rectangle. Move outside to park a model without losing its settings.\n\n3. POPULATION\nSet the layer count or density. Enabled paint-set weights share that population. Accepted target retries within explicit limits.\n\n4. PAINT\nEnable coverage, then paint on the receiving surface. Area limits apply to all sets in this layer. Use earlier sets as explicit background references.\n\n5. TRANSFORM + SPACING\nLayer transforms apply to every set. Set self-spacing, between-set rules and layer pairs separately. Earlier owners occupy space first.\n\n6. UPDATE + INSPECT\nManual keeps the last completed result until Update. Live publishes after edits. Hidden owners still calculate; disabled owners do not. Counts here describe cached results, not an estimate of available room." pos:[4,8] width:132 height:500
-        label help "The editor stays on this Scatter when scene selection changes. Use the Layer and Paint set selectors to change ownership. Hover buttons and numeric fields for short explanations.\n\nPoint Cloud samples and viewport budgets affect display. They are not plant counts or a promise of presented FPS." pos:[4,516] width:132 height:120
-        fn bind layer = (controlsReady=true)
-        on workflowUI open do bind owner
-        on workflowUI close do controlsReady=false
-    )

@@ -1,16 +1,19 @@
-"""Offline integration checks. This is not a MAXScript compiler or Max test."""
+"""Check reproducible source/help and reviewed control ports, not Max runtime."""
+import csv
 import hashlib
 import json
 from pathlib import Path
 import re
 import subprocess
+import argparse
 
-ROOT = Path(__file__).resolve().parents[2]
-SCRIPT = ROOT / 'AminScatter/scripts/AminScatterObject.ms'
+ROOT=Path(__file__).resolve().parents[2]
+BASE='01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2'
+SCRIPT=ROOT/'AminScatter/scripts/AminScatterObject.ms'
 
 
 def check_balanced(text):
-    """Ignore strings/comments, then check all MAXScript grouping delimiters."""
+    """Ignore MAXScript strings/comments and check grouping delimiters."""
     stack=[];i=0;line=1
     while i<len(text):
         ch=text[i]
@@ -36,70 +39,103 @@ def check_balanced(text):
     assert not stack,f'Unclosed delimiters: {stack[-5:]}'
 
 
+def controls(inventory):
+    return {f'{group}/{section}/{entry["name"]}':entry
+            for group in ('general','layer','container')
+            for section,entries in inventory[group].items() for entry in entries}
+
+
+def port_rows(inventory):
+    current=controls(inventory)
+    with (ROOT/'docs/Unified_Procedural_Settings_2026-10-06/CONTROL_PORT_REGISTER.csv').open(encoding='utf-8-sig',newline='') as file:
+        baseline=list(csv.DictReader(file))
+    assert len(baseline)==245 and len({r['control_key'] for r in baseline})==245
+    replacements={
+        'general/surface/policyButton':[],
+        'layer/distributionUI/showCenterCheck':['general/previewUI/displayModeDrop'],
+        'layer/spacingUI/collisionCheck':['layer/proceduralUI/scopeList','layer/proceduralUI/enabledCheck'],
+        'layer/spacingUI/radiusSpin':['layer/proceduralUI/multiplierSpin','layer/proceduralUI/gapSpin'],
+        'layer/separationUI/prioritySpin':['general/manager/upButton','general/manager/downButton'],
+        'layer/separationUI/peerList':['layer/proceduralUI/peerList'],
+        'layer/separationUI/blockerList':['layer/proceduralUI/scopeList','layer/proceduralUI/peerList'],
+        'layer/separationUI/overlapCheck':['layer/proceduralUI/enabledCheck'],
+        'layer/separationUI/radiusMode':['layer/proceduralUI/multiplierSpin'],
+        'layer/separationUI/gapSpin':['layer/proceduralUI/gapSpin'],
+        'layer/separationUI/radiusSpin':['layer/proceduralUI/multiplierSpin','layer/proceduralUI/gapSpin'],
+        'layer/separationUI/statsButton':['layer/detailsUI/refreshButton'],
+        **{f'layer/separationUI/{name}':[f'layer/spacingUI/{name}'] for name in
+           ('boundaryRelaxCheck','finalStrengthSpin','finalIterSpin','finalMoveSpin')},
+    }
+    result=[]
+    for row in baseline:
+        key=row['control_key']
+        targets=[key] if key in current else replacements[key]
+        assert all(target in current for target in targets),(key,targets)
+        if targets==[key]:assert current[key]['kind']==row['kind'],key
+        result.append(dict(control_key=key,planned_disposition=row['disposition'],
+            actual_controls='|'.join(targets),status='retired_conversion' if not targets else
+            'present' if targets==[key] and row['disposition']=='retain' else 'merged_or_ported',
+            evidence='README.md; IMPLEMENTATION.md; RESULTS.md; current generated inventory',
+            limitation='Control mapping is source evidence; runtime acceptance is by feature/scenario, not every combination.'))
+    return result
+
+
 def main():
-    before=SCRIPT.read_bytes()
-    subprocess.run(['node','tools/ui/generate.cjs'],cwd=ROOT/'AminScatter',check=True)
-    after=SCRIPT.read_bytes()
-    assert before==after,'Generated source was stale; inspect regeneration and rerun.'
-    text=after.decode('utf-8')
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--output',type=Path,default=ROOT/'build/approved-layout-073-20261006')
+    args=parser.parse_args()
+    products=[SCRIPT,ROOT/'AminScatter/tools/ui/layers-control-inventory.json',ROOT/'AminScatter/tools/ui/layer-editor-tooltips.json']
+    before={p:p.read_bytes() for p in products}
+    subprocess.run(['node','tools/ui/generate.cjs','--check'],cwd=ROOT/'AminScatter',check=True)
+    assert all(p.read_bytes()==data for p,data in before.items()),'Generated source/help was stale; inspect and rerun.'
+    text=SCRIPT.read_text(encoding='utf-8')
     check_balanced(text)
-    assert re.findall(r'fn uiVersion = "([^"]+)"',text)==['0.72']
-    assert 'version:53\ninitialRollupState' in text
-    assert not re.search(r'\b(?:\w+\.)*groupPolicy[!=]=2',text),'Unclassified shared-policy consumer'
-    for call in ('evaluateProcedural','procRefreshPreview','procApplyPaint','procEditKey','procCopyRelations'):
-        assert re.search(r'fn '+call+r'\b',text),call
-    inventory=json.loads((ROOT/'AminScatter/tools/ui/layers-control-inventory.json').read_text())
-    controls=sum(len(v) for section in ('general','layer') for v in inventory[section].values())
-    assert controls==245,'Review the documented control inventory after changes.'
-    check_balanced((ROOT/'tools/procedural_lab/Max_Procedural_07_Fixture.ms').read_text())
-    for group in inventory['layer']:
-        assert len(re.findall(r'rollout '+group+r'_1\b',text))==1,group
-        assert len(re.findall(r'rollout selected_'+group+r'\b',text))==1,group
-        assert not re.search(r'rollout '+group+r'_(?:[2-9]|10)\b',text),group
-    assert 'rollout layerPanel_' not in text,'Obsolete per-layer pages remain'
-    # Feature controls from 0.7.0 must survive the move/split, not just preserve
-    # a total count. Topic structure and host behavior still require Max tests.
-    baseline=json.loads(subprocess.check_output(['git','show',
-        'addccb492a88292529594de81c287cc26e5ffe98:AminScatter/tools/ui/layers-control-inventory.json'],cwd=ROOT))
-    split={'populationList':'populationPolicyUI','attemptSpin':'populationPolicyUI',
-           'roundSpin':'populationPolicyUI','repairCheck':'populationPolicyUI',
-           'backgroundList':'backgroundUI','referenceList':'backgroundUI','applyBackground':'backgroundUI',
-           'radiusMode':'instanceRadiusUI','radiusSpin':'instanceRadiusUI','applyRadius':'instanceRadiusUI',
-           'resetRadius':'instanceRadiusUI','clearRadius':'instanceRadiusUI'}
-    for section,entries in baseline['layer'].items():
-        for entry in entries:
-            target=split.get(entry['name'],section) if section=='proceduralUI' else section
-            assert entry in inventory['layer'].get(target,[]),(section,entry,'lost feature control')
-    for section in ('general','layer'):
-        for name,entries in inventory[section].items():
-            assert len({e['name'] for e in entries})==len(entries),(section,name,'duplicate control')
-    # Protect the proven buffer/upload implementations and closed MCP schemas.
-    # The playback fix deliberately changes only the point matching predicate:
-    # culled items may never be realized, so require submission, as meshes did.
-    point_path=ROOT/'AminScatter/src/point_display.cpp'
-    original=subprocess.check_output(['git','show','HEAD:AminScatter/src/point_display.cpp'],cwd=ROOT).replace(b'\r\n',b'\n')
-    old=(b'    // Off-screen mesh items need not be realized yet. Nitrous realizes visible\n'
-         b'    // items before drawing; requiring every item ready would defeat culling.\n'
-         b'    return IsRetainedModeEnabled() && gen && gen->enabled.load() && !gen->failed.load() &&\n'
-         b'        (gen->hasMesh?gen->submitted.load():gen->ready.load()==gen->groups);')
-    new=old.replace(b'Off-screen mesh items',b'Off-screen items').replace(
-        b'(gen->hasMesh?gen->submitted.load():gen->ready.load()==gen->groups)',b'gen->submitted.load()')
-    assert original.count(old)==1 or original.count(new)==1,'Reconcile the deliberately bounded point readiness fix with the new baseline.'
-    assert point_path.read_bytes().replace(b'\r\n',b'\n')==original.replace(old,new),'Retained display changed beyond its readiness predicate.'
-    # Rollout scrolling now resolves the actual native column (review fix).
-    # Its host behavior is qualified by pointer tests, not source immutability.
-    preserved=['AminScatter/src/preview.cpp',
-               'CyrusMCP/cyrus_mcp/models.py',
-               'CyrusMCP/cyrus_mcp/contracts.py']
+    assert re.findall(r'fn uiVersion = "([^"]+)"',text)==['0.73']
+    assert 'version:54\ninitialRollupState' in text and 'CyrusUnified1' in text
+    for obsolete in ('groupPolicy','procUpgrade','paintIdentity','Layer priority','legacyUI','if true then','if false then'):
+        assert obsolete not in text,obsolete
+    for name in ('evaluateProcedural','procRefreshPreview','procApplyPaint','procEditKey','procCopyRelations',
+                 'CyrusContainerConsumers','CyrusContainerLinks','CyrusContainerRefreshAll'):
+        assert re.search(r'fn '+name+r'\b',text),name
+    inventory=json.loads(products[1].read_text())
+    current=controls(inventory)
+    assert len(current)==240
+    layout=json.loads((ROOT/'AminScatter/tools/ui/approved-layout-manifest.json').read_text())
+    assert len(layout['sections'])==10
+    for section in layout['sections']:
+        assert len(re.findall(r'rollout '+section['name']+r'\b',text))==2,section['name']
+        for control in section['controls']:
+            assert len(re.findall(r'\b'+control['presentation']+r'\b',text))>=2,control
+    assert not re.search(r'rollout selected_\w+UI\b',text)
+    assert 'rollout layerPanel_' not in text
+    for group in ('general','layer','container'):
+        for section,entries in inventory[group].items():
+            assert len({e['name'] for e in entries})==len(entries),(group,section)
+    ports=port_rows(inventory)
+    report_dir=args.output
+    report_dir.mkdir(parents=True,exist_ok=True)
+    with (report_dir/'CONTROL_PORT_RESULTS.csv').open('w',newline='',encoding='utf-8') as file:
+        writer=csv.DictWriter(file,fieldnames=list(ports[0]));writer.writeheader();writer.writerows(ports)
+    # The known retained-display implementation is intentionally unchanged.
+    preserved=['AminScatter/src/preview.cpp','AminScatter/src/point_display.cpp']
     for name in preserved:
-        original=subprocess.check_output(['git','show','HEAD:'+name],cwd=ROOT)
-        current=(ROOT/name).read_bytes()
-        assert original.replace(b'\r\n',b'\n')==current.replace(b'\r\n',b'\n'),name+' changed unexpectedly'
-    result={'check':'offline_generator_and_integration','passed':True,'maxscript_compiled':False,
-            'ui_controls_in_inventory':controls,'generated_sha256':hashlib.sha256(after).hexdigest(),
-            'preserved_files':preserved,'bounded_changes':['point_display.cpp: submitted point readiness'],
-            'interactive_max_run':False}
-    out=ROOT/'build/procedural-07';out.mkdir(parents=True,exist_ok=True)
+        original=subprocess.check_output(['git','show',BASE+':'+name],cwd=ROOT).replace(b'\r\n',b'\n')
+        assert (ROOT/name).read_bytes().replace(b'\r\n',b'\n')==original,name
+    schema=json.loads((ROOT/'CyrusMCP/cyrus_mcp/plan.schema.json').read_text())
+    assert schema['properties']['schema_version']['const']=='0.73'
+    catalog=json.loads((ROOT/'CyrusMCP/cyrus_mcp/feature-catalog.json').read_text())
+    assert catalog['development_version']=='0.73' and catalog['calculation_model']=='CyrusUnified1'
+    assert len(catalog['controls'])==len(current) and len(catalog['features'])==34
+    assert catalog['control_inventory_sha256']==hashlib.sha256(products[1].read_bytes()).hexdigest()
+    assert catalog['capability_source_sha256']==hashlib.sha256((ROOT/'docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md').read_bytes()).hexdigest()
+    fixtures=sorted((ROOT/'tools/procedural_lab').glob('Max_*073*.ms'))
+    fixtures += [ROOT/'tools/procedural_lab/Max_Procedural_07_Fixture.ms',ROOT/'tools/procedural_lab/Max_Procedural_07_Acceptance.ms']
+    for fixture in fixtures:check_balanced(fixture.read_text(encoding='utf-8-sig'))
+    result=dict(check='unified_073_generator_integration',passed=True,development_version='0.73',
+        baseline=BASE,maxscript_compiled=False,ui_controls_in_inventory=len(current),baseline_controls_accounted=245,
+        generated_sha256=hashlib.sha256(SCRIPT.read_bytes()).hexdigest(),preserved_files=preserved,
+        fixture_delimiters_checked=len(fixtures),interactive_max_run=False)
+    out=args.output;out.mkdir(parents=True,exist_ok=True)
     (out/'generated-check.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
     print(json.dumps(result,indent=2))
 

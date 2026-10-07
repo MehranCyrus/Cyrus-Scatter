@@ -1,0 +1,82 @@
+{
+  "passed": true,
+  "computer_use": false,
+  "fixtures": {
+    "tools\\procedural_lab\\Max_Procedural_07_Acceptance.ms": "c7673c0d3dbfc8af537880935543332dbf1f77271e81666a8d9d18478726c97c",
+    "tools\\procedural_lab\\Max_Approved_Layout_073.ms": "ffba391b76189b7768a394dc38a0566058e7601ca2b4d16914e3c157af323d02",
+    "tools\\procedural_lab\\Max_Unified_073_Advanced.ms": "a63a811d6cd90cd8e718e541624c9067acffe3b6e83a0366a24ad18f22dbbe37",
+    "tools\\procedural_lab\\Max_Unified_073_Containers.ms": "b34f6d9364f19b2abcc59709f89a3af7795541c4eef2b545839d8087775afec6",
+    "tools\\procedural_lab\\Max_Unified_073_Group_Move.ms": "0f9000e191613264d67e9189420d59c8acb6fcb1e7dc6cb08596c26c25a26a04",
+    "tools\\procedural_lab\\Max_Unified_073_Node_Move.ms": "09d002ce68758355f02aa5bcbb172c55764afdcd87fdc032385317c3b40bc8f8",
+    "tools\\procedural_lab\\Max_Unified_073_Persistence.ms": "36df03b0ad3b9ce8267f809c4861d6469cc8808b60bc5540abd7b6bcb03fecb4",
+    "tools\\procedural_lab\\Max_Unified_073_Analyzer_Assignment.ms": "02ee4c400431899c45614803a3ece79b8a59030c527852c6996f1b8d00c03291"
+  },
+  "code_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "probe_sha256": [
+    "47dddbf463f6d2daef92d39023fe77a547c40fdcfcf243ec8472fc15ce9d80d1",
+    "557cbdeca6c84933208240413cf2c8a827b495bb4806b6c2a90972b24ff6899f",
+    "41c0b46bb1154f75c530728c11061b806127808ab438c81a2813f35d13846503",
+    "ad4942383be969d1d4c28968608ccce114235f0d0d53c0ef4d1b8792761b293c",
+    "e53f365e392302d4dbdcc79526cdc282c5a602e834bf2d566e274d6d4fc4e775",
+    "43e3509b10909b1cd53a73f13c1fed0683ccd77836991ead0b1d5c92b24c535f",
+    "82a4b938a70cb43df274441630bf39bd3503837e0d9d22898b40ddff3c476fb2",
+    "6bdd821d8ac6361f332863f3e65338843ff1a084137e097408f5985c9b04ad5b"
+  ],
+  "probes": [
+    {
+      "index": 0,
+      "elapsed_s": 8.078999999999724,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/compact073-core-idle04/probe-00065f5f82c94f16b29f11e04fe8a732.ms"
+    },
+    {
+      "index": 1,
+      "elapsed_s": 3.436999999999898,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/compact073-core-idle04/probe-7f477384fe374b738cef5cda21462fba.ms"
+    },
+    {
+      "index": 2,
+      "elapsed_s": 51.1880000000001,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/compact073-core-idle04/probe-ef72698bcf9c46beaa37679c82c6ee30.ms"
+    },
+    {
+      "index": 3,
+      "elapsed_s": 16.35900000000038,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/compact073-core-idle04/probe-236efbaccfce4ac2b9af4fb0b1ae1b97.ms"
+    },
+    {
+      "index": 4,
+      "elapsed_s": 26.25,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/compact073-core-idle04/probe-098956ea7e654fcb9e5c8682238afc17.ms"
+    },
+    {
+      "index": 5,
+      "elapsed_s": 3.125,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/compact073-core-idle04/probe-be5d071334804d7fa2152c831b48f044.ms"
+    },
+    {
+      "index": 6,
+      "elapsed_s": 4.25,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/compact073-core-idle04/probe-67a17d37b3194a75845a5585dc92dc4f.ms"
+    },
+    {
+      "index": 7,
+      "elapsed_s": 3.344000000000051,
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/compact073-core-idle04/probe-7a1aed9df856493fb25e36b88bb2e393.ms"
+    }
+  ],
+  "owned_process_stopped": true,
+  "installed_product_files_unchanged": true,
+  "launch": {
+    "pid": 37384,
+    "binaries": {
+      "AminScatter.dlx": "146a1adafe16e71829841b3886804b9d627e77fb1b80e1ca094cd50111673d82",
+      "CyrusBrush.dlx": "48cf18266ada5f36acb967025de592a193f1c48f43d2a3800c94cd7ca7784006",
+      "CyrusBrushStorage.dlh": "6b02436c7c83322b3b7874ae03285084dddf7a3197ae7bb573d38b5ff0253799",
+      "CyrusScatterEdit.dlm": "a1fd381984943b1b8ed20cfa1a9d8ed31187d95dec7fddbf81ebd4a716deb31a",
+      "CyrusSurfaceAnalyzer.dlx": "ca333595a53d5252dc68c8a797beb6971d6d3f36a298323ee3edc8f8371cfefb"
+    },
+    "script_sha256": "53bf85f9a2cfe1034468919c408d4c73ca6e865f7e1b9c816cc7375fe12f10fa",
+    "normal_profile_modified": false,
+    "development_transport": true
+  }
+}

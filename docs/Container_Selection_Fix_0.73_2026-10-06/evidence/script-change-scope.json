@@ -1,0 +1,304 @@
+{
+  "previous_file_sha256": "ee0061a365bc818eb162e0f6d0953decb57aea3d4a5879a7ee728f9148a5d550",
+  "current_file_sha256": "003b717f070bf07d6f7cae031afd4fb7b14f4d550549e5d16492ff73e8716162",
+  "current_payload": "global CyrusLoadedScriptFingerprint=\"1df871f7859c89f39d8b7aa65c28f4df0ad28c022f3659cfdfec82415ca87451\"",
+  "pre_ui_evaluator_text_unchanged": true,
+  "pre_ui_text_sha256": "fc38d58f3601bdf9fae61828f597fcd72e33a1203338da0c6f769d9c2d7b16ae",
+  "changed_blocks": [
+    {
+      "before_start": 0,
+      "after_start": 0,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 4081,
+      "after_start": 4081,
+      "before_count": 0,
+      "after_count": 1
+    },
+    {
+      "before_start": 4113,
+      "after_start": 4114,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 6291,
+      "after_start": 6292,
+      "before_count": 0,
+      "after_count": 1
+    },
+    {
+      "before_start": 6336,
+      "after_start": 6338,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 6339,
+      "after_start": 6341,
+      "before_count": 0,
+      "after_count": 1
+    },
+    {
+      "before_start": 6364,
+      "after_start": 6367,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 6366,
+      "after_start": 6369,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 6369,
+      "after_start": 6372,
+      "before_count": 0,
+      "after_count": 1
+    },
+    {
+      "before_start": 6402,
+      "after_start": 6406,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 6413,
+      "after_start": 6417,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 6416,
+      "after_start": 6420,
+      "before_count": 0,
+      "after_count": 1
+    },
+    {
+      "before_start": 6475,
+      "after_start": 6480,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 6477,
+      "after_start": 6482,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 6480,
+      "after_start": 6485,
+      "before_count": 0,
+      "after_count": 1
+    },
+    {
+      "before_start": 6519,
+      "after_start": 6525,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 6547,
+      "after_start": 6553,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 6573,
+      "after_start": 6579,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 6588,
+      "after_start": 6594,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 6758,
+      "after_start": 6764,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 6760,
+      "after_start": 6766,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 6787,
+      "after_start": 6793,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 6793,
+      "after_start": 6799,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 6841,
+      "after_start": 6847,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 6843,
+      "after_start": 6849,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 6861,
+      "after_start": 6867,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 6867,
+      "after_start": 6873,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 7023,
+      "after_start": 7029,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 7025,
+      "after_start": 7031,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 7115,
+      "after_start": 7121,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 7146,
+      "after_start": 7152,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 7165,
+      "after_start": 7171,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 7173,
+      "after_start": 7179,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 7274,
+      "after_start": 7280,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 7276,
+      "after_start": 7282,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 7516,
+      "after_start": 7522,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 7518,
+      "after_start": 7524,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 7559,
+      "after_start": 7565,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 7591,
+      "after_start": 7597,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 7603,
+      "after_start": 7609,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 7608,
+      "after_start": 7614,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 7630,
+      "after_start": 7636,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 7632,
+      "after_start": 7638,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 7657,
+      "after_start": 7663,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 7659,
+      "after_start": 7665,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 7695,
+      "after_start": 7701,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 7699,
+      "after_start": 7705,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 7706,
+      "after_start": 7712,
+      "before_count": 1,
+      "after_count": 1
+    },
+    {
+      "before_start": 7708,
+      "after_start": 7714,
+      "before_count": 1,
+      "after_count": 1
+    }
+  ],
+  "verification_scope": "Exact text prefix before the first mainUI, excluding only the generated identity line; full diff retained privately. This is scope evidence, not runtime qualification."
+}

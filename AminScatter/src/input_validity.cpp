@@ -84,6 +84,25 @@ void settingsValidity(ReferenceTarget* owner, TimeValue t, Interval& valid) {
 }
 }
 
+// Shared conservative preflight for source-container movement. Animation,
+// constraints, list/script controllers and locked position axes are excluded.
+bool CyrusContainerStaticNode(INode* node) {
+    if(!node || !constantController(node->GetTMController())) return false;
+    for(int axis=0;axis<3;++axis)if(node->GetTransformLock(INODE_LOCKPOS,axis))return false;
+    return true;
+}
+
+#ifndef CYRUS_ANALYZER_INPUT_VALIDITY
+// A world-space modifier can change the evaluated source when its palette node
+// moves. Never classify that notification as presentation-only translation.
+def_visible_primitive(cyrusSourceWorldDependent, "cyrusSourceWorldDependent");
+Value* cyrusSourceWorldDependent_cf(Value** args,int count) {
+    check_arg_count(cyrusSourceWorldDependent,1,count);
+    auto* node=args[0]->to_node();
+    return node && node->GetWSMDerivedObject()!=nullptr ? &true_value : &false_value;
+}
+#endif
+
 // Called on the Max thread when an input changes or its cached interval expires.
 // Never copies meshes, generates placements, or keeps scene references in C++.
 // The script owns the interval and discards it on actual input notifications.

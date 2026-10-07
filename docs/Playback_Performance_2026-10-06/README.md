@@ -22,7 +22,7 @@ See [results and exact boundaries](RESULTS.md), [source/build/runtime receipts](
 - Fresh Python/MCP/report-parser campaign: **137 tests passed**.
 - Generator/integration checks retain **241 inventoried controls**, unchanged preview construction and closed MCP schemas. The retained implementation check permits only the documented matching-predicate change.
 
-Source navigation: [validity query](../../AminScatter/src/input_validity.cpp), [generated lifecycle](../../AminScatter/tools/ui/input-time.cjs), [lifecycle template](../../AminScatter/tools/ui/templates/input-time.ms), [point matching](../../AminScatter/src/point_display.cpp#L295), [Analyzer scheduling](../../CyrusSurfaceAnalyzer/scripts/CyrusSurfaceAnalyzer.ms#L443), [UI selection guards](../../AminScatter/tools/ui/templates/layer-editor.ms), [headless fixture](../../tools/procedural_lab/Max_Playback_Regression.ms).
+Source navigation: [validity query](../../AminScatter/src/input_validity.cpp), [generated lifecycle](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/AminScatter/tools/ui/input-time.cjs), [lifecycle template](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/AminScatter/tools/ui/templates/input-time.ms), [point matching](../../AminScatter/src/point_display.cpp#L295), [Analyzer scheduling](../../CyrusSurfaceAnalyzer/scripts/CyrusSurfaceAnalyzer.ms#L443), [UI selection guards](https://github.com/MehranCyrus/Cyrus-Scatter/blob/01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2/AminScatter/tools/ui/templates/layer-editor.ms), [headless fixture](../../tools/procedural_lab/Max_Playback_Regression.ms).
 
 ## Boundaries that still matter
 

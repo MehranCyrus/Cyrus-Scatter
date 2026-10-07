@@ -1,6 +1,6 @@
 from types import SimpleNamespace as Obj
 import pytest
-from cyrus_mcp.procedural import read_procedural, require_legacy_mutation, STAT_FIELDS
+from cyrus_mcp.procedural import read_procedural, require_unified_mutation, STAT_FIELDS
 from cyrus_mcp.contracts import Fault
 from cyrus_mcp.settings import capability_manifest
 
@@ -12,8 +12,8 @@ def fixture_controller():
              procSourceSlots=["source-entry-a"],procSelfRule=lambda:[True,.5,10,True],
              procStatistics=lambda:[[30,10,2,1,4,5,6,3,2,40,10,120],[3,True],4,2,17])
     parent=Obj(layerID="layer_a",procPopulation=2,procAttemptFactor=8,procRounds=8,procRepair=True,
-               procSiblingEnabled=True,procSiblingMultiplier=1,procSiblingGap=20,procSiblingPlanar=False)
-    controller=Obj(groupPolicy=3,logicalLayers=lambda:[parent],layerSets=lambda _:[leaf],
+               procLayerSelfEnabled=False,procLayerSelfMultiplier=1,procLayerSelfGap=0,procLayerSelfPlanar=False,procSiblingEnabled=True,procSiblingMultiplier=1,procSiblingGap=20,procSiblingPlanar=False)
+    controller=Obj(calculationModel=lambda:"CyrusUnified1",logicalLayers=lambda:[parent],layerSets=lambda _:[leaf],
                    procRuleScope=[2],procRuleA=["layer_a"],procRuleB=["layer_b"],procRuleEnabled=[True],
                    procRuleMultiplier=[.8],procRuleGap=[100],procRulePlanar=[True])
     return controller,leaf
@@ -39,7 +39,7 @@ def test_unbuilt_and_legacy_snapshots_are_not_invented():
     controller,leaf=fixture_controller()
     leaf.procStatistics=lambda:[[],[],0,0,0]
     assert read_procedural(controller,1)["layers_in_order"][0]["sets_in_order"][0]["last_published"] is None
-    controller.groupPolicy=2
+    controller.calculationModel=lambda:"retired"
     assert read_procedural(controller,1) is None
 
 
@@ -68,6 +68,30 @@ def test_old_script_does_not_claim_container_support():
     assert result["layers_in_order"][0]["sets_in_order"][0]["source_pool"] is None
 
 
+def test_container_helper_metadata_is_bounded_cached_presentation_only():
+    controller,leaf=fixture_controller()
+    class Helper:
+        handle=123;name='Palette';containerID='container-uuid'
+        contextRootID='root-uuid';contextSetID='set_b'
+        cachedLabel='x'*2048;cachedActiveCount=2;cachedSavedCount=3
+        movementStatus='y'*2048
+        @property
+        def transform(self):
+            pytest.fail('Passive container inspection read transforms')
+        def movePalette(self,*_):
+            pytest.fail('Passive container inspection moved sources')
+    helper=Helper()
+    controller.containerGlobalNodes=[helper]
+    leaf.containerMode=4;leaf.containerNodes=[helper]
+    leaf.containerRefresh=lambda:pytest.fail('Passive container inspection reconciled sources')
+    row=read_procedural(controller,1)['global_source_containers'][0]
+    assert row['cached_helper']['container_id']=='container-uuid'
+    assert row['cached_helper']['context_set_id']=='set_b'
+    assert len(row['cached_helper']['label'])==1024
+    assert len(row['cached_helper']['movement_status'])==1024
+    assert (row['cached_helper']['active'],row['cached_helper']['saved'])==(2,3)
+
+
 def test_cached_membership_preserves_parked_and_missing_rows_without_reconciliation():
     controller,leaf=fixture_controller()
     a,b=Obj(handle=1),Obj(handle=2)
@@ -86,13 +110,13 @@ def test_cached_membership_preserves_parked_and_missing_rows_without_reconciliat
     assert stale["rows"][0]["cached_status"]=="unavailable_until_reconciliation" and stale["rows"][0]["source_entry_id"] is None
 
 
-def test_old_apply_contract_cannot_downgrade_new_policy():
-    for controller in (None,Obj(groupPolicy=1),Obj(groupPolicy=2)):
-        require_legacy_mutation(controller)
-    for policy in (3,4):
-        with pytest.raises(Fault,match="cannot overwrite"):
-            require_legacy_mutation(Obj(groupPolicy=policy))
+def test_apply_requires_the_sole_explicit_model_and_rejects_retired_schemas():
+    require_unified_mutation(None)
+    require_unified_mutation(Obj(calculationModel=lambda:"CyrusUnified1"))
+    for controller in (Obj(groupPolicy=1),Obj(groupPolicy=2),Obj(calculationModel=lambda:"other")):
+        with pytest.raises(Fault,match="Only a matching"):
+            require_unified_mutation(controller)
     caps=capability_manifest()
-    assert caps["plan_versions"]==["1.0","2.0"]
-    assert "procedural_policy_3_read_only" in caps["supported"]
-    assert "procedural_policy_3_mutation" in caps["unavailable"]
+    assert caps["plan_versions"]==["0.73"]
+    assert "unified_recipe_read_only" in caps["supported"]
+    assert "full_procedural_recipe_mutation" in caps["unavailable"]
