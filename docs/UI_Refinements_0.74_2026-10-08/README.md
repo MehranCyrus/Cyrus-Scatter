@@ -2,6 +2,10 @@
 
 Development source, 8 October 2026. Package/native version **0.74.0**, UI **0.74**, calculation model **CyrusUnified1**, serialization **54**. Analyzer and MCP protocol versions remain independent. No normal-profile installation was performed.
 
+## Installer
+
+[Max 2027 installer](../../dist/UI_Refinements_0.74_2026-10-08/Max2027/CyrusScatter-0.74.0-Max2027.mzp) · [package identity](PACKAGE.json). The local installer contains the exact script and four native modules qualified below; archive integrity, manifest hashes and Max 2027 guard passed. Binaries stay local and are not stored in Git. In Max, choose **Scripting > Run Script**, select the MZP, then **restart Max**. Analyzer and MCP need no update for this pass.
+
 ## Implemented scope
 
 - [x] Visible receiving-surface list with additive viewport picking, additive selection by name, deduplication and multi-row removal of assignments. Scene nodes are retained. Existing receiver identity/resource bounds still apply; this adds no UI count limit. Brush still requires one shared receiver.
