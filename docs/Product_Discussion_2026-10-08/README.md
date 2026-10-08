@@ -4,6 +4,8 @@ Started 8 October 2026. This folder keeps the artist's reported issues, agreed b
 
 The current focus is to fix what Cyrus Scatter already has and decide how it should be presented. Forest's many options are useful references; they do not establish a requirement to reproduce every feature.
 
+The artist subsequently authorized the **0.74 UI refinement implementation and Git push**. See [completed work and remaining acceptance](../UI_Refinements_0.74_2026-10-08/README.md), and [the models/painting recommendation](MODELS_AND_PAINTING.md). Source renaming is confirmed to change only the label inside Scatter.
+
 ## Working list
 
 See [the discussion backlog](BACKLOG.md) for the current items and their status:
@@ -19,7 +21,7 @@ The Forest library manager and settings overview are reference observations awai
 
 ## How we will work
 
-- Continue talking, researching and reasoning together. The user has authorized maintaining these discussion notes; implementation, builds, installation and host testing wait for an explicit request.
+- Continue recording the discussion while completing the authorized 0.74 refinements. The layer/set ownership decision remains open; normal-profile installation and broader feature work are not part of this pass.
 - Record reported behavior separately from source-confirmed behavior, host-tested results and desired changes.
 - Give each issue or idea a stable number. Update its description as the user clarifies it, retaining unresolved questions rather than inventing decisions.
 - Keep confirmed changes separate from ideas and reference observations. A new idea does not automatically become an implementation task.

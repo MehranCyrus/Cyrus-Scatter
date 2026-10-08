@@ -1,0 +1,106 @@
+{
+  "schema": "cyrus.ui-refinement-evidence/1",
+  "date": "2026-10-08",
+  "version": "0.74",
+  "package_native_version": "0.74.0",
+  "source_baseline": "221e9f42bc65d1ad63f4f9b201efeb9ac589d5bb",
+  "branch": "codex/ui-0.74",
+  "source_state": "Final source identified by hashes below; commit follows evidence capture.",
+  "source_sha256": {
+    "AminScatter/CMakeLists.txt": "7053e506acb4bde99ed7b2891fabae808cf40f6ecedbc426be9288bbab01edc0",
+    "AminScatter/scripts/AminScatterObject.ms": "84436fa6969a80d6911b248547b569975c6666956173645620157ade53e2ced2",
+    "AminScatter/tools/ui/approved-layout-manifest.json": "c58ce7ec0e7198c8854e83d4ee440097414a3c1481fcb4b5926f905eb0c796a7",
+    "AminScatter/tools/ui/approved-layout-rows.cjs": "54a0a15b90e04533633cf76e90ef264cce78908a227c5938ed52755e4b9aef64",
+    "AminScatter/tools/ui/approved-layout.cjs": "048b997bb30075b88a8699f00aa0cdb89cb151261ca9ff2830899c75a9852208",
+    "AminScatter/tools/ui/layer-editor-tooltips.json": "b04d06194216db9123ce290c4214cad53462acbed645b986dc95c196251ed87c",
+    "AminScatter/tools/ui/layers-control-inventory.json": "37170c51b751949d6087f3c4125108cc6da4f4d54072ac8dc913bdc53eb2f1ff",
+    "AminScatter/tools/ui/templates/approved-main-ui.ms": "28511b3f10e70b649f54d4d5299297500db23a1583ddc3c8677adfea204f70a9",
+    "AminScatter/tools/ui/templates/container-node.ms": "f239659425ac0fc2109e3c3f0550973ac62e01d8e1bb346d4c7aaaacd2b26b3b",
+    "AminScatter/tools/ui/templates/unified-core.ms": "19d85227200f339e716af9599bcc3ee24dcc62aecab51ac7559dc5dbaab4d3e8",
+    "CyrusMCP/cyrus_mcp/feature-catalog.json": "00ee1311cbdca0c6e72d50a3907af3437dd80807b65c332da8173ce56a85da79",
+    "CyrusMCP/tests/test_feature_catalog.py": "d4f7654895534521b015f591c0ce131e9c150f1b89212ba447031bf3fa2e0d5e",
+    "tools/procedural_lab/build_feature_catalog.py": "b9a5585de6cbe0d3ed864c1f50eaf64690ed209279e6dfb2716092712a9622ff",
+    "tools/procedural_lab/check_generated.py": "05c1c010807ad0b5b1a1d5a59f9b3432876ba4c1af88d09a11af563de0bfa9a6",
+    "AminScatter/tools/ui/colored-lists.cjs": "647d99a3cd58898c293120222cf7ea0f1e372e9b0e6067e3ba2fd0f82b65f039",
+    "tools/procedural_lab/Max_UI_074.ms": "fb36878366c43cba5645aa3c8f9dd3d1d4a412c9369c79772b2b29f531cefaba"
+  },
+  "generated_check": {
+    "check": "unified_073_generator_integration",
+    "passed": true,
+    "development_version": "0.74",
+    "baseline": "01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2",
+    "maxscript_compiled": false,
+    "ui_controls_in_inventory": 246,
+    "baseline_controls_accounted": 245,
+    "generated_sha256": "84436fa6969a80d6911b248547b569975c6666956173645620157ade53e2ced2",
+    "preserved_files": [
+      "AminScatter/src/preview.cpp",
+      "AminScatter/src/point_display.cpp"
+    ],
+    "fixture_delimiters_checked": 22,
+    "interactive_max_run": false
+  },
+  "python_checks": {
+    "passed": 141,
+    "command": "build/mcp-venv/Scripts/python.exe -m pytest CyrusMCP/tests tools/tests -q",
+    "receipt": "build/ui074-20261008-delivery/pytest.txt"
+  },
+  "native_checks": {
+    "passed": 14,
+    "receipt": "build/ui074-20261008-final2/native2027/receipt.json",
+    "receipt_sha256": "134b7dd37ba70b50aaa3d50e1afbc0de34b040a77e6707df6d9994de46d962bc",
+    "all_native_build_inputs_unchanged": true,
+    "changed_since_build": [
+      {
+        "path": "AminScatter/scripts/AminScatterObject.ms",
+        "reason": "Subsequent MAXScript selection focus and layer editor action changes. All native sources and build inputs still match the successful build receipt; final script qualified with these exact binaries in a fresh private host."
+      }
+    ]
+  },
+  "host": {
+    "max_version": "29.1.0.11426",
+    "max_year": 2027,
+    "private_folder": "build/mcp-qualification/ui074-20261008-delivery",
+    "pid": 35628,
+    "startup_script_sha256": "f181089d60e645f44d21d12e280a6da170dc04916636b9bb60eeb2e204f200f9",
+    "loaded_module_paths_verified": [
+      "AminScatter.dlx\tF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\ui074-20261008-delivery\\bin\\AminScatter.dlx",
+      "CyrusBrush.dlx\tF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\ui074-20261008-delivery\\bin\\CyrusBrush.dlx",
+      "CyrusBrushStorage.dlh\tF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\ui074-20261008-delivery\\bin\\CyrusBrushStorage.dlh",
+      "CyrusScatterEdit.dlm\tF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\ui074-20261008-delivery\\bin\\CyrusScatterEdit.dlm"
+    ],
+    "script_sha256": "84436fa6969a80d6911b248547b569975c6666956173645620157ade53e2ced2",
+    "binaries": {
+      "AminScatter.dlx": "897633b4cc2badabbf466143548848a65b94288c03c0e8554c155ebe940b7a09",
+      "CyrusBrush.dlx": "ce829dbac2273283d6e00efb844ec0b5c74a15a8f20b08d1654a62ac2f90aef3",
+      "CyrusBrushStorage.dlh": "12945a78e9d7446cda5a0cbc992ef7c1a6bf086b89b83156869c48e93372af18",
+      "CyrusScatterEdit.dlm": "b9cbd7b7bfbf720bd0009e03a3a019aa92b03cc4721cd352d90e42a1e15e8732"
+    },
+    "results": {
+      "ui074-checks.txt": "PASS: compact actions; named properties; list height/reflow; source labels; visual colors; copy; pending Manual isolation; additive receivers; multi-remove; Undo/Redo; mixed/all-open/all-closed reselection; metadata save/reopen.\nPointer dragging and visual/DPI appearance are separate acceptance gates.",
+      "ui074-views.txt": "PASS: colored source/layer selection; Ctrl-add focus; double-click action helper; owner isolation; independent container/setup view state; popup reflow at two sizes."
+    },
+    "requests": [
+      {
+        "script": "UI074Run()",
+        "request": "probe-4982bbab7f764e579f5a58db2841830c.ms",
+        "result": "SUCCESS; observed matching completion after 55-second client timeout"
+      },
+      {
+        "script": "UI074Views()",
+        "request": "probe-7c074c00597c4402b7832737947cfe2e.ms",
+        "result": "SUCCESS; observed matching completion after 55-second client timeout"
+      }
+    ],
+    "normal_profile_modified": false,
+    "product_installed": false
+  },
+  "limitations": [
+    "Actual mouse drag and screenshot/DPI inspection not performed: computer-use kernel asset initialization failed before window access.",
+    "Script-driven UI selection, helper dispatch and reflow assertions do not prove physical click/drag or appearance.",
+    "Max 2026 is not installed; no 2026 runtime claim.",
+    "No new renderer, comparative FPS or cache-invalidation research qualification.",
+    "Painting ownership and naming remain an open design decision. Existing single-receiver brush requirement and bounded receiver/history resources remain.",
+    "UI disclosure/list-height state is session-only; no restart or exact scroll/column restoration claim."
+  ]
+}

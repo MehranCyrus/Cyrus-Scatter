@@ -1,6 +1,6 @@
 {
   "schema": "cyrus.ui-layout/1",
-  "version": "0.73",
+  "version": "0.74",
   "source": "approved single-file HTML study",
   "sections": [
     {
@@ -8,6 +8,18 @@
       "title": "Receiving surfaces",
       "scope": "Setup",
       "controls": [
+        {
+          "component": "flow_surfaceUI",
+          "control": "receiversList",
+          "presentation": "flow_surfaceUI_receiversList",
+          "advanced": false
+        },
+        {
+          "component": "flow_surfaceUI",
+          "control": "removeSurfaces",
+          "presentation": "flow_surfaceUI_removeSurfaces",
+          "advanced": false
+        },
         {
           "component": "flow_surfaceUI",
           "control": "sharedPick",
@@ -107,9 +119,15 @@
         },
         {
           "component": "flow_layersUI",
+          "control": "layerColor",
+          "presentation": "flow_layersUI_layerColor",
+          "advanced": false
+        },
+        {
+          "component": "flow_layersUI",
           "control": "nameEdit",
           "presentation": "flow_layersUI_nameEdit",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "flow_layersUI",
@@ -151,19 +169,19 @@
           "component": "setsUI",
           "control": "addButton",
           "presentation": "setsUI_addButton",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "setsUI",
           "control": "removeButton",
           "presentation": "setsUI_removeButton",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "setsUI",
           "control": "nameEdit",
           "presentation": "setsUI_nameEdit",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "setsUI",
@@ -187,13 +205,13 @@
           "component": "setsUI",
           "control": "upButton",
           "presentation": "setsUI_upButton",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "setsUI",
           "control": "downButton",
           "presentation": "setsUI_downButton",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "setsUI",
@@ -252,6 +270,18 @@
         },
         {
           "component": "sourceUI",
+          "control": "sourceName",
+          "presentation": "sourceUI_sourceName",
+          "advanced": false
+        },
+        {
+          "component": "sourceUI",
+          "control": "idColor",
+          "presentation": "sourceUI_idColor",
+          "advanced": false
+        },
+        {
+          "component": "sourceUI",
           "control": "plantList",
           "presentation": "sourceUI_plantList",
           "advanced": false
@@ -260,7 +290,7 @@
           "component": "sourceUI",
           "control": "selectFromScene",
           "presentation": "sourceUI_selectFromScene",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "sourceUI",
@@ -278,13 +308,13 @@
           "component": "sourceUI",
           "control": "removePlant",
           "presentation": "sourceUI_removePlant",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "sourceUI",
           "control": "selectPlant",
           "presentation": "sourceUI_selectPlant",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "sourceUI",
@@ -1635,6 +1665,12 @@
           "control": "faceLimitSpin",
           "presentation": "flow_previewUI_faceLimitSpin",
           "advanced": true
+        },
+        {
+          "component": "flow_previewUI",
+          "control": "identificationDrop",
+          "presentation": "flow_previewUI_identificationDrop",
+          "advanced": false
         },
         {
           "component": "flow_previewUI",

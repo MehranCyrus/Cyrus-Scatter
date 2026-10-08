@@ -222,6 +222,8 @@ fn AminScatterCopyLayer origin destination = (
                 )
             )
         )
+        for key in #(#visualSourceNodes,#visualSourceLabels,#visualSourceColors,#visualSourceColorSet) do setProperty destination key ((getProperty origin key) as array)
+        destination.layerIDColor=origin.layerIDColor
         destination.setLayerTransfer false
     ) catch(destination.setLayerTransfer false;throw())
 )
@@ -325,6 +327,8 @@ fn CyrusLayerEditor_sourceUI_1 = (
         local groupPalette=#()
         local loadingColor=false
         local focusedRow=0
+        edittext sourceName "Name:" text:"" pos:[4,116] width:(sourceUI_1.width-8) tooltip:"Label inside Scatter only. Clear it to use the scene object's name."
+        colorpicker idColor "" color:(color 100 220 120) pos:[4,118] width:22 height:22 modal:true notifyAfterAccept:true tooltip:"Viewport identification color. This does not change clustering or model frequency."
         multiListBox plantList "Sources (Ctrl/Shift)" items:#() pos:[4,8] height:6 width:(sourceUI_1.width-8)
         button selectFromScene "Choose from list..." pos:[4,170] width:((sourceUI_1.width-12)/2) tooltip:"Choose one or more source models by name."
         pickbutton addPlant "Pick model" pos:[4,140] width:((sourceUI_1.width-12)/2) tooltip:"Pick a scene model for this paint set. The editor stays on its layer."
@@ -352,7 +356,7 @@ fn CyrusLayerEditor_sourceUI_1 = (
         fn updateList = (
             local selectedRows=plantList.selection
             if selectedRows.numberSet==0 and obj.sources.count>0 do selectedRows=#{1}
-            plantList.items=for i=1 to obj.sources.count collect ((formattedPrint (obj.sourceWeight i) format:".2f")+" | "+(colorLabel (obj.sourceColor i))+" | "+(if obj.isPointSource i then "[Point]" else if obj.isEmptySource i then "[Empty]" else if isValidNode obj.sources[i] then obj.sources[i].name else "<deleted>"))
+            plantList.items=for i=1 to obj.sources.count collect ((obj.sourceLabel i)+" | "+(formattedPrint (obj.sourceWeight i) format:".2f"))
             plantList.selection=selectedRows
             groupPalette=#()
             local keys=#()
@@ -375,12 +379,15 @@ fn CyrusLayerEditor_sourceUI_1 = (
             if rows.numberSet>0 then (
                 if focusedRow<1 or not rows[focusedRow] do focusedRow=(rows as array)[1]
                 loadingColor=true
+                sourceName.text=obj.sourceLabel focusedRow;idColor.color=obj.sourceIDColor focusedRow
+                sourceName.enabled=isValidNode obj.sources[focusedRow];idColor.enabled=sourceName.enabled
                 groupColor.color=obj.sourceColor focusedRow
                 weightSpin.enabled=true;weightSpin.value=obj.sourceWeight focusedRow
                 radiusSourceSpin.value=obj.sourceRadius focusedRow;followRadiusCheck.checked=obj.sourceFollows focusedRow;showRadiusCheck.checked=obj.sourceShows focusedRow;sourceZSpin.value=obj.sourceZOffset focusedRow;sourceScaleSpin.value=obj.sourceScale focusedRow;forwardAxis.selection=obj.sourceForward focusedRow
                 existingGroups.selection=findItem groupPalette (obj.sourceColor focusedRow)
                 loadingColor=false
             ) else (
+                sourceName.text="";sourceName.enabled=false;idColor.enabled=false
                 loadingColor=true;groupColor.color=obj.sourceColor 1;existingGroups.selection=0;focusedRow=0;loadingColor=false
             )
         )
@@ -396,6 +403,8 @@ fn CyrusLayerEditor_sourceUI_1 = (
             )
             showSelectedColor();CyrusViewportRedraw()
         )
+        on sourceName entered value do if not loadingColor and focusedRow>0 do (obj.setSourceLabel focusedRow value;updateList())
+        on idColor changed value do if not loadingColor do (obj.setSourceIDColor plantList.selection value;updateList())
         on addPoint pressed do if controlsReady and not binding and obj!=undefined do (
             local i=obj.addPointSource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();CyrusViewportRedraw()
         )
@@ -1550,7 +1559,7 @@ fn CyrusBindLayerEditor root = (
 fn CyrusOpenLayerEditor root owner = (
     if owner==undefined or findItem root.layerObjects owner==0 do return false
     if CyrusLayerEditor!=undefined then (CyrusLayerEditor.retarget root owner;CyrusLayerEditor.visible=true;return true)
-    rollout editor "Cyrus Scatter 0.73 - Layer Editor" width:920 height:800 autoLayoutOnResize:true (
+    rollout editor "Cyrus Scatter 0.74 - Layer Editor" width:920 height:800 autoLayoutOnResize:true (
         local root=CyrusLayerUIRoot,owner=CyrusLayerUIOwner,ownerNode=undefined,binding=false,controlsReady=false,closing=false
         local clientSize=CyrusLayerEditorSize,layingOut=false
         local editors=#(),pages=#(),pageEditors=#(#(),#(),#(),#(),#(),#()),built=#{},topic=1,members=#(),sets=#(),pageSections=#(),ownerStates=#(),lastSet=undefined
@@ -1601,7 +1610,7 @@ fn CyrusOpenLayerEditor root owner = (
             local unit=if root.viewportMode==1 and not root.groupCenters then " preview samples" else " shown"
             local text=(if root.updateMode==1 then "Manual" else "Live")+" | "+summary[3]+" | "+(CyrusUICount summary[1])+" placed / "+(CyrusUICount summary[2])+unit
             if resultInfo.text!=text do resultInfo.text=text
-            local caption="Cyrus Scatter 0.73 | "+ownerNode.name+" / "+(root.layerCaption owner)
+            local caption="Cyrus Scatter 0.74 | "+ownerNode.name+" / "+(root.layerCaption owner)
             if editor.title!=caption do editor.title=caption
             local setupText="Setup: "+ownerNode.name+"  |  Selecting scene models keeps this editor on its layer"
             if setupInfo.text!=setupText do setupInfo.text=setupText
@@ -2942,7 +2951,7 @@ initialRollupState:0x8
     fn uiLayerStats = (
         CyrusLayerStatusData hasResult:(cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
     )
-    fn uiVersion = "0.73"
+    fn uiVersion = "0.74"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified1")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -3011,6 +3020,51 @@ initialRollupState:0x8
         layerEnabled type:#boolTab tabSize:0 tabSizeVariable:true
         on layerEnabled set v i do (for layer in layerObjects do layer.markInputDirty())
         activeLayer type:#integer default:1
+    )
+    -- Saved identification metadata never enters placement keys.
+    parameters identificationSettings (
+        visualSourceNodes type:#nodeTab tabSize:0 tabSizeVariable:true
+        visualSourceLabels type:#stringTab tabSize:0 tabSizeVariable:true
+        visualSourceColors type:#colorTab tabSize:0 tabSizeVariable:true
+        visualSourceColorSet type:#boolTab tabSize:0 tabSizeVariable:true
+        layerIDColor type:#color default:(color 100 220 120)
+        identificationMode type:#integer default:1
+    )
+    fn sourceVisualIndex row create:false = (
+        if row<1 or row>this.sources.count or not isValidNode this.sources[row] do return 0
+        local index=findItem visualSourceNodes this.sources[row]
+        if index==0 and create do (
+            append visualSourceNodes this.sources[row];append visualSourceLabels ""
+            append visualSourceColors (this.sourceColor row);append visualSourceColorSet false
+            index=visualSourceNodes.count
+        )
+        index
+    )
+    fn sourceLabel row = (
+        local index=this.sourceVisualIndex row
+        if index>0 and visualSourceLabels[index]!="" then visualSourceLabels[index]
+        else if this.isPointSource row then "[Point]" else if this.isEmptySource row then "[Empty]"
+        else if row>0 and row<=this.sources.count and isValidNode this.sources[row] then this.sources[row].name else "<deleted>"
+    )
+    fn sourceIDColor row = (
+        local index=this.sourceVisualIndex row
+        if index>0 and visualSourceColorSet[index] then visualSourceColors[index] else this.sourceColor row
+    )
+    fn setSourceLabel row value = (
+        undo "Cyrus source label" on (local index=this.sourceVisualIndex row create:true;if index>0 do visualSourceLabels[index]=value)
+        true
+    )
+    fn setSourceIDColor rows value = (
+        undo "Cyrus source identification color" on for row in rows do (
+            local index=this.sourceVisualIndex row create:true
+            if index>0 do (visualSourceColors[index]=value;visualSourceColorSet[index]=true)
+        )
+        this.refreshIdentification()
+    )
+    fn refreshIdentification = (
+        local controller=if this.overlapOwner==undefined then this else this.overlapOwner
+        if controller.groupSnapshotKey!="" do controller.procEnsureDisplay pending:(controller.groupSnapshotKey!=controller.procInputKey())
+        CyrusViewportRedraw();true
     )
     fn setLayerTransfer state = (layerTransfer=state)
     fn performanceTraceVersion = 1
@@ -3272,7 +3326,7 @@ initialRollupState:0x8
         if leaf==undefined do return false
         if leaf.logicalParentID=="" then this.removeLogicalLayer leaf else this.removePaintSet leaf
     )
-    local updateUI,surfaceUI,previewUI,layersUI,uiRootState=#()
+    local updateUI,surfaceUI,previewUI,layersUI,uiRootState=#(),uiPresentationState=#()
 
     fn procWatchDensity = (
         global CyrusDensityMapChanged
@@ -3785,14 +3839,14 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This unpublished development scene uses a retired Cyrus settings schema. Create a new 0.73 setup."
+        local message="This unpublished development scene uses a retired Cyrus settings schema. Create a new 0.74 setup."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
     fn procValidate = (
         this.procAssertSchema()
-        if cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined do throw "Cyrus 0.73 requires the matching native plugin binaries. Restart the private test host with the complete matching script/native pair."
+        if cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined do throw "Cyrus 0.74 requires the matching native plugin binaries. Restart the private test host with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -3821,16 +3875,19 @@ initialRollupState:0x8
     fn procDisplayInputKey epoch:undefined = (
         local stream=stringStream ""
         with printAllElements on (
-            format "Display:%|" (if epoch==undefined then procEpoch else epoch) to:stream
+            format "Display:%:%|" (if epoch==undefined then procEpoch else epoch) identificationMode to:stream
+            for leaf in layerObjects do format "%:%|" (for i=1 to leaf.sources.count collect leaf.sourceIDColor i) (this.logicalParent leaf).layerIDColor to:stream
             for leaf in layerObjects do for key in #(#viewportMode,#proxyShape,#viewportInstances,#viewportFaces,#previewBudget,#showCenters,#pointsPerPlant,#pointColorMode,#solidPointColor,#sourceShowRadius,#radiusDisplayLimit,#radiusDisplayAll) do format "%:%|" key (getProperty leaf key) to:stream
         )
         stream as string
     )
-    fn procStagePreview data = (
-        local start=timeStamp(),plants=this.validSources(),previousRadius=radiusPreview,radii
+    fn procStagePreview data plants:undefined = (
+        local start=timeStamp(),previousRadius=radiusPreview,radii
+        if plants==undefined do plants=this.validSources()
         try(cacheRadii data plants;radii=radiusPreview;radiusPreview=previousRadius)catch(radiusPreview=previousRadius;throw())
         local samples=if viewportMode!=1 then #() else if showCenters then (for i=1 to (amax 1 plants.count) collect #([0,0,0])) else (for n in plants collect (if classof n==Integer then (for p=1 to pointsPerPlant collect [0,0,0]) else pointSourceSamples n))
-        local colors=if plants.count==0 then #(solidPointColor) else for n in plants collect sourceColor (sourceRow n)
+        local controller=if overlapOwner==undefined then this else overlapOwner,parent=controller.logicalParent this
+        local colors=if plants.count==0 then #(solidPointColor) else for n in plants collect (if controller.identificationMode==2 then parent.layerIDColor else this.sourceIDColor (sourceRow n))
         local cache=if data.count==0 then aminScatterBuildPreview #() #() #() 1 else if viewportMode==1 then aminScatterBuildPreview data samples colors (if showCenters then 500000 else previewBudget) else cyrusBuildGeometryPreview data (if plants.count==0 then #(-1) else plants) colors (if viewportMode==2 then proxyShape else 4) viewportInstances viewportFaces
         #(cache,(aminScatterPreviewCount cache),data.count,radii,(if viewportMode==1 and showCenters then 4 else viewportMode),timeStamp()-start,(if isValidNode areaAnalyzer then areaAnalyzer.getAnalysisRuns() else -1),(if isValidNode fallAnalyzer then fallAnalyzer.getAnalysisRuns() else -1))
     )
@@ -3844,7 +3901,7 @@ initialRollupState:0x8
     fn procEnsureDisplay pending:false = (
         local key=this.procDisplayInputKey()
         if key!=procPublishedDisplayKey do (
-            local stage=for i=1 to layerObjects.count collect layerObjects[i].procStagePreview groupSnapshotRows[i]
+            local stage=for i=1 to layerObjects.count collect layerObjects[i].procStagePreview groupSnapshotRows[i] plants:procPublishedSources[i]
             for i=1 to layerObjects.count do layerObjects[i].procInstallPreview stage[i] pending
             procPublishedDisplayKey=key
         )
@@ -4011,7 +4068,7 @@ initialRollupState:0x8
         CyrusBindLayerEditor this
         true
     )
-    rollout mainUI "Cyrus Scatter 0.73" width:#cmdPanel height:30 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.74" width:#cmdPanel height:30 autoLayoutOnResize:true (
         local root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),owner=undefined,layerPagesVisible=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for this entire Scatter setup."
         timer mountTimer interval:1 active:false
@@ -4082,7 +4139,7 @@ initialRollupState:0x8
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.73 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.74 native plugin and restart Max."
             root.syncLayerIdentity()
             roots=#(root.flow_updateUI,root.flow_surfaceUI,root.flow_previewUI,root.flow_layersUI)
             root.updateUI=roots[1];root.surfaceUI=roots[2];root.previewUI=roots[3];root.layersUI=roots[4]
@@ -4147,10 +4204,12 @@ initialRollupState:0x8
         on flow_updateUI rolledUp state do (CyrusContainerPanel root).layoutPanels()
     )
     rollout flow_surfaceUI "Surface Scatter" width:162 category:20 autoLayoutOnResize:true (
-        local root=undefined,controlsReady=false,binding=false
-        pickbutton sharedPick "Pick receiving surface" filter:AminScatterSourceFilter pos:[8,8] width:(flow_surfaceUI.width-16) tooltip:"Choose the surface on which every layer in this setup scatters."
+        local root=undefined,controlsReady=false,binding=false,receiverRows=#()
+        multiListBox receiversList "Surfaces" items:#() pos:[8,8] width:(flow_surfaceUI.width-16) height:6
+        button removeSurfaces "Remove selected surfaces" pos:[8,108] width:(flow_surfaceUI.width-16) tooltip:"Remove highlighted assignments from this setup. Scene objects are kept."
+        pickbutton sharedPick "Pick receiving surface" filter:AminScatterSourceFilter pos:[8,8] width:(flow_surfaceUI.width-16) tooltip:"Add a receiving surface without replacing existing assignments."
         label sharedInfo "Choose a receiving surface." pos:[8,38] width:(flow_surfaceUI.width-16) height:32
-        button surfacesButton "Receiving surfaces..." pos:[8,76] width:(flow_surfaceUI.width-16) tooltip:"Choose multiple receiving surfaces by name. Brush needs one shared surface."
+        button surfacesButton "Receiving surfaces..." pos:[8,76] width:(flow_surfaceUI.width-16) tooltip:"Add multiple receiving surfaces by name. Existing assignments are kept. Brush still needs one shared surface."
         label countInfo "Add a layer in Layer Manager." pos:[8,136] width:(flow_surfaceUI.width-16) height:42
         checkbutton containersToggle "Global source containers" pos:[8,188] width:(flow_surfaceUI.width-16) height:26 tooltip:"Optional shared source pool. Enable Global containers in a layer's Assets tab."
         listbox globalContainers "Global source containers" items:#() pos:[8,224] width:(flow_surfaceUI.width-16) height:4
@@ -4170,23 +4229,40 @@ initialRollupState:0x8
         )
         fn bind layer = (
             binding=true
-            local targets=root.validSurfaces()
+            local targets=root.validSurfaces(),selected=for i in receiversList.selection where i<=receiverRows.count collect receiverRows[i]
+            receiverRows=targets
+            receiversList.items=for node in receiverRows collect node.name
+            receiversList.selection=for node in selected where findItem receiverRows node>0 collect findItem receiverRows node
+            removeSurfaces.enabled=receiversList.selection.numberSet>0
             sharedInfo.text=if targets.count==1 then targets[1].name else (targets.count as string)+" surfaces; paint needs one"
             globalContainers.items=for node in root.containerGlobalNodes collect (if isValidNode node then node.name else "<deleted rectangle>")
             for control in #(globalContainers,createContainer,pickContainer,removeContainer) do control.enabled=true
             controlsReady=true;binding=false;refreshStats();arrangeContainers()
         )
         fn setSurfaces nodes = (
-            CyrusStopBrush();undo "Cyrus receiving surface" on (root.surfaceNodes=nodes;root.surface=undefined)
-            root.invalidateGroups();root.bindNativeUI()
+            local controller=root,uniqueNodes=#()
+            for node in nodes where isValidNode node and findItem uniqueNodes node==0 do append uniqueNodes node
+            local previous=controller.validSurfaces(),same=previous.count==uniqueNodes.count
+            if same do for i=1 to previous.count where previous[i]!=uniqueNodes[i] do same=false
+            if same do return false
+            CyrusStopBrush();undo "Cyrus receiving surfaces" on (controller.surfaceNodes=uniqueNodes;controller.surface=undefined)
+            controller.invalidateGroups();controller.bindNativeUI();true
+        )
+        fn addSurfaces nodes = (local combined=root.validSurfaces();for node in nodes where findItem combined node==0 do append combined node;setSurfaces combined)
+        fn removeSelectedSurfaces = (
+            local selectedRows=receiversList.selection,remaining=#()
+            for i=1 to receiverRows.count do if not selectedRows[i] do append remaining receiverRows[i]
+            setSurfaces remaining
         )
         on flow_surfaceUI open do (root=this;bind undefined)
         on flow_surfaceUI close do controlsReady=false
         on containersToggle changed value do arrangeContainers()
-        on sharedPick picked node do setSurfaces #(node)
+        on sharedPick picked node do addSurfaces #(node)
+        on receiversList selectionEnd do removeSurfaces.enabled=receiversList.selection.numberSet>0
+        on removeSurfaces pressed do removeSelectedSurfaces()
         on surfacesButton pressed do (
-            local nodes=selectByName title:"Cyrus receiving surfaces" buttonText:"Use selected" filter:AminScatterSourceFilter single:false
-            if nodes!=undefined and nodes.count>0 do setSurfaces nodes
+            local controller=root,nodes=selectByName title:"Add receiving surfaces" buttonText:"Add selected" filter:AminScatterSourceFilter single:false
+            if controlsReady and root==controller and nodes!=undefined and nodes.count>0 do addSurfaces nodes
         )
         on createContainer pressed do try(root.containerCreate globalPool:true;bind undefined)catch(messageBox (getCurrentException()) title:"Cyrus source containers")
         on pickContainer picked node do try(root.containerAdd node globalPool:true;bind undefined)catch(messageBox (getCurrentException()) title:"Cyrus source containers")
@@ -4205,7 +4281,8 @@ initialRollupState:0x8
         dropdownlist proxyShapeDrop "Proxy shape" items:#("Box","Sphere","Pyramid") pos:[6,82] width:(flow_previewUI.width-12)
         spinner instancesLimitSpin "Instances/layer:" range:[1,100000,2000] type:#integer fieldWidth:58 pos:[6,138] width:(flow_previewUI.width-12)
         spinner faceLimitSpin "Faces/layer:" range:[12,20000000,2000000] type:#integer fieldWidth:58 pos:[6,166] width:(flow_previewUI.width-12)
-        radiobuttons pointColorRadio "Preview color" labels:#("Solid Color","Source Group Colors") columns:1 pos:[6,194] width:(flow_previewUI.width-12)
+        dropdownlist identificationDrop "Color by" items:#("Model","Layer") pos:[6,208] width:(flow_previewUI.width-12) tooltip:"Use model or layer identification colors in Points, Proxy and shaded Mesh previews."
+        radiobuttons pointColorRadio "Preview color" labels:#("Solid Color","Identification Colors") columns:1 pos:[6,194] width:(flow_previewUI.width-12)
         colorpicker solidColorPicker "Solid: " color:(color 100 220 120) pos:[6,264] width:(flow_previewUI.width-12)
         spinner budgetSpin "Point limit: " range:[1000,500000,20000] type:#integer fieldWidth:58 width:(flow_previewUI.width-12) pos:[6,292]
         spinner pointsSpin "Points/plant: " range:[10,10000,80] type:#integer fieldWidth:58 width:(flow_previewUI.width-12) pos:[6,318]
@@ -4225,7 +4302,7 @@ initialRollupState:0x8
             instancesLimitSpin.value=obj.viewportInstances;faceLimitSpin.value=obj.viewportFaces
             budgetSpin.enabled=obj.viewportMode==1;pointsSpin.enabled=obj.viewportMode==1 and not obj.groupCenters
         )
-        fn syncControls = (syncDisplay();radiusLimitSpin.value=obj.radiusDisplayLimit;radiusAllCheck.checked=obj.radiusDisplayAll;radiusLimitSpin.enabled=not obj.radiusDisplayAll;autoRenderCheck.checked=obj.autoRender;budgetSpin.value=obj.previewBudget;pointColorRadio.state=obj.pointColorMode;solidColorPicker.color=obj.solidPointColor;)
+        fn syncControls = (syncDisplay();identificationDrop.selection=obj.identificationMode;radiusLimitSpin.value=obj.radiusDisplayLimit;radiusAllCheck.checked=obj.radiusDisplayAll;radiusLimitSpin.enabled=not obj.radiusDisplayAll;autoRenderCheck.checked=obj.autoRender;budgetSpin.value=obj.previewBudget;pointColorRadio.state=obj.pointColorMode;solidColorPicker.color=obj.solidPointColor;)
         on radiusLimitSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.radiusDisplayLimit=v;obj.refreshAll();syncControls();CyrusViewportRedraw())
         on radiusAllCheck changed v do if controlsReady and not binding and obj!=undefined do (obj.radiusDisplayAll=v;obj.refreshAll();syncControls();CyrusViewportRedraw())
         on displayModeDrop selected v do if controlsReady and not binding and obj!=undefined do (obj.setGroupDisplay v;syncControls();status.text=obj.allStatus();CyrusViewportRedraw())
@@ -4240,6 +4317,8 @@ initialRollupState:0x8
 
         on autoRenderCheck changed v do if controlsReady and not binding and obj!=undefined do (obj.autoRender=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
         on budgetSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.previewBudget=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        fn selectIdentification value = (obj.identificationMode=value;identificationDrop.selection=value;obj.refreshIdentification())
+        on identificationDrop selected v do selectIdentification v
         on pointColorRadio changed v do if controlsReady and not binding and obj!=undefined do (obj.pointColorMode=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
         on solidColorPicker changed v do if controlsReady and not binding and obj!=undefined do (obj.solidPointColor=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
 
@@ -4251,7 +4330,7 @@ initialRollupState:0x8
             if obj!=next do ()
             obj=next;parentView=(CyrusContainerPanel root)
             for c in flow_previewUI.controls do c.enabled=true
-            try (undo off ((syncDisplay();radiusLimitSpin.value=obj.radiusDisplayLimit;radiusAllCheck.checked=obj.radiusDisplayAll;radiusLimitSpin.enabled=not obj.radiusDisplayAll;autoRenderCheck.checked=obj.autoRender;budgetSpin.value=obj.previewBudget;pointColorRadio.state=obj.pointColorMode;solidColorPicker.color=obj.solidPointColor;controlsReady=true;(previewCheck.checked=obj.showPoints;pointsSpin.value=obj.pointsPerPlant;iconSpin.value=obj.iconSize)))) catch(binding=false;controlsReady=true;throw())
+            try (undo off ((syncDisplay();identificationDrop.selection=obj.identificationMode;radiusLimitSpin.value=obj.radiusDisplayLimit;radiusAllCheck.checked=obj.radiusDisplayAll;radiusLimitSpin.enabled=not obj.radiusDisplayAll;autoRenderCheck.checked=obj.autoRender;budgetSpin.value=obj.previewBudget;pointColorRadio.state=obj.pointColorMode;solidColorPicker.color=obj.solidPointColor;controlsReady=true;(previewCheck.checked=obj.showPoints;pointsSpin.value=obj.pointsPerPlant;iconSpin.value=obj.iconSize)))) catch(binding=false;controlsReady=true;throw())
             controlsReady=true;binding=false
         )
         on flow_previewUI open do (root=this;(controlsReady=true;bind (root.selectedLayer())))
@@ -4265,6 +4344,7 @@ initialRollupState:0x8
         button addButton "Add layer" pos:[8,174] width:(flow_layersUI.width-16) tooltip:"Add a layer and edit its controls below. Layers calculate from top to bottom."
         button copyButton "Copy" pos:[8,204] width:((flow_layersUI.width-22)/2) tooltip:"Copy this layer, its paint sets and their settings."
         button removeButton "Remove" pos:[(flow_layersUI.width/2+3),204] width:((flow_layersUI.width-22)/2) tooltip:"Remove this layer and its paint sets. Undo restores them."
+        colorpicker layerColor "" color:(color 100 220 120) pos:[8,238] width:22 height:22 modal:true notifyAfterAccept:true tooltip:"Identification color for this layer. Choose Layer colors in Viewport & render to display it."
         edittext nameEdit "Name:" pos:[8,236] width:(flow_layersUI.width-16) tooltip:"Rename the selected layer without changing its identity."
         checkbox visibleCheck "Visible in viewport" pos:[8,264] width:(flow_layersUI.width-16) tooltip:"Hide display only. Hidden layers still calculate and affect spacing."
         checkbox enabledCheck "Enabled in output" pos:[8,288] width:(flow_layersUI.width-16) tooltip:"Include this layer in calculation and final output."
@@ -4292,12 +4372,14 @@ initialRollupState:0x8
             local selected=currentLayer(),index=findItem root.layerObjects selected,valid=index>0
             for c in #(editButton,copyButton,removeButton,nameEdit,visibleCheck,enabledCheck) do c.enabled=valid
             nameEdit.text=if valid then root.layerNames[index] else ""
+            layerColor.enabled=valid;layerColor.color=if valid then selected.layerIDColor else (color 100 220 120)
             visibleCheck.checked=valid and root.layerVisible[index]
             enabledCheck.checked=valid and root.layerEnabled[index]
             addButton.enabled=root.layerObjects.count<10
             upButton.enabled=true and findItem members selected>1;downButton.enabled=true and findItem members selected<members.count
             controlsReady=true;binding=false;refreshStats()
         )
+        on layerColor changed value do if not binding do (local controller=root,layer=currentLayer();undo "Cyrus layer identification color" on layer.layerIDColor=value;controller.refreshIdentification())
         on flow_layersUI open do (root=this;bind undefined)
         on flow_layersUI close do controlsReady=false
         on layerList selected i do if not binding and i>0 do ((CyrusContainerPanel root).selectLayerView members[i];bind undefined)
@@ -4391,6 +4473,8 @@ initialRollupState:0x8
         local groupPalette=#()
         local loadingColor=false
         local focusedRow=0
+        edittext sourceName "Name:" text:"" pos:[4,116] width:(selected_sourceUI.width-8) tooltip:"Label inside Scatter only. Clear it to use the scene object's name."
+        colorpicker idColor "" color:(color 100 220 120) pos:[4,118] width:22 height:22 modal:true notifyAfterAccept:true tooltip:"Viewport identification color. This does not change clustering or model frequency."
         multiListBox plantList "Sources (Ctrl/Shift)" items:#() pos:[4,8] height:6 width:(selected_sourceUI.width-8)
         button selectFromScene "Choose from list..." pos:[4,170] width:((selected_sourceUI.width-12)/2) tooltip:"Choose one or more source models by name."
         pickbutton addPlant "Pick model" pos:[4,140] width:((selected_sourceUI.width-12)/2) tooltip:"Pick a scene model for this paint set. The editor stays on its layer."
@@ -4418,7 +4502,7 @@ initialRollupState:0x8
         fn updateList = (
             local selectedRows=plantList.selection
             if selectedRows.numberSet==0 and obj.sources.count>0 do selectedRows=#{1}
-            plantList.items=for i=1 to obj.sources.count collect ((formattedPrint (obj.sourceWeight i) format:".2f")+" | "+(colorLabel (obj.sourceColor i))+" | "+(if obj.isPointSource i then "[Point]" else if obj.isEmptySource i then "[Empty]" else if isValidNode obj.sources[i] then obj.sources[i].name else "<deleted>"))
+            plantList.items=for i=1 to obj.sources.count collect ((obj.sourceLabel i)+" | "+(formattedPrint (obj.sourceWeight i) format:".2f"))
             plantList.selection=selectedRows
             groupPalette=#()
             local keys=#()
@@ -4441,12 +4525,15 @@ initialRollupState:0x8
             if rows.numberSet>0 then (
                 if focusedRow<1 or not rows[focusedRow] do focusedRow=(rows as array)[1]
                 loadingColor=true
+                sourceName.text=obj.sourceLabel focusedRow;idColor.color=obj.sourceIDColor focusedRow
+                sourceName.enabled=isValidNode obj.sources[focusedRow];idColor.enabled=sourceName.enabled
                 groupColor.color=obj.sourceColor focusedRow
                 weightSpin.enabled=true;weightSpin.value=obj.sourceWeight focusedRow
                 radiusSourceSpin.value=obj.sourceRadius focusedRow;followRadiusCheck.checked=obj.sourceFollows focusedRow;showRadiusCheck.checked=obj.sourceShows focusedRow;sourceZSpin.value=obj.sourceZOffset focusedRow;sourceScaleSpin.value=obj.sourceScale focusedRow;forwardAxis.selection=obj.sourceForward focusedRow
                 existingGroups.selection=findItem groupPalette (obj.sourceColor focusedRow)
                 loadingColor=false
             ) else (
+                sourceName.text="";sourceName.enabled=false;idColor.enabled=false
                 loadingColor=true;groupColor.color=obj.sourceColor 1;existingGroups.selection=0;focusedRow=0;loadingColor=false
             )
         )
@@ -4462,6 +4549,8 @@ initialRollupState:0x8
             )
             showSelectedColor();CyrusViewportRedraw()
         )
+        on sourceName entered value do if not loadingColor and focusedRow>0 do (obj.setSourceLabel focusedRow value;updateList())
+        on idColor changed value do if not loadingColor do (obj.setSourceIDColor plantList.selection value;updateList())
         on addPoint pressed do if controlsReady and not binding and obj!=undefined do (
             local i=obj.addPointSource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();CyrusViewportRedraw()
         )

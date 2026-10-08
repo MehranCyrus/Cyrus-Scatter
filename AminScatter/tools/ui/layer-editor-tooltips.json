@@ -5,10 +5,13 @@
   "updateUI": {
     "updateNow": "Calculate all enabled layers and paint sets in order."
   },
-  "previewUI": {},
+  "previewUI": {
+    "identificationDrop": "Use model or layer identification colors in Points, Proxy and shaded Mesh previews."
+  },
   "surface": {
-    "sharedPick": "Choose the surface on which every layer in this setup scatters.",
-    "surfacesButton": "Choose multiple receiving surfaces by name. Brush needs one shared surface.",
+    "removeSurfaces": "Remove highlighted assignments from this setup. Scene objects are kept.",
+    "sharedPick": "Add a receiving surface without replacing existing assignments.",
+    "surfacesButton": "Add multiple receiving surfaces by name. Existing assignments are kept. Brush still needs one shared surface.",
     "containersToggle": "Optional shared source pool. Enable Global containers in a layer's Assets tab.",
     "createContainer": "Create a source rectangle shared by owners that explicitly use the global pool.",
     "pickContainer": "Link an existing Cyrus Source Container to the global pool.",
@@ -19,6 +22,7 @@
     "addButton": "Add a layer and edit its controls below. Layers calculate from top to bottom.",
     "copyButton": "Copy this layer, its paint sets and their settings.",
     "removeButton": "Remove this layer and its paint sets. Undo restores them.",
+    "layerColor": "Identification color for this layer. Choose Layer colors in Viewport & render to display it.",
     "nameEdit": "Rename the selected layer without changing its identity.",
     "visibleCheck": "Hide display only. Hidden layers still calculate and affect spacing.",
     "enabledCheck": "Include this layer in calculation and final output.",
@@ -52,6 +56,8 @@
     "downButton": "Evaluate this set later, after the preceding sets."
   },
   "sourceUI": {
+    "sourceName": "Label inside Scatter only. Clear it to use the scene object's name.",
+    "idColor": "Viewport identification color. This does not change clustering or model frequency.",
     "selectFromScene": "Choose one or more source models by name.",
     "addPlant": "Pick a scene model for this paint set. The editor stays on its layer.",
     "addSelected": "Add the currently selected scene objects to this paint set.",

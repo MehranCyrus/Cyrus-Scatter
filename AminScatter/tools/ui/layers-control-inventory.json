@@ -38,6 +38,10 @@
         "name": "faceLimitSpin"
       },
       {
+        "kind": "dropdownlist",
+        "name": "identificationDrop"
+      },
+      {
         "kind": "radiobuttons",
         "name": "pointColorRadio"
       },
@@ -79,6 +83,14 @@
       }
     ],
     "surface": [
+      {
+        "kind": "multiListBox",
+        "name": "receiversList"
+      },
+      {
+        "kind": "button",
+        "name": "removeSurfaces"
+      },
       {
         "kind": "pickbutton",
         "name": "sharedPick"
@@ -128,6 +140,10 @@
       {
         "kind": "button",
         "name": "removeButton"
+      },
+      {
+        "kind": "colorpicker",
+        "name": "layerColor"
       },
       {
         "kind": "edittext",
@@ -251,6 +267,14 @@
       }
     ],
     "sourceUI": [
+      {
+        "kind": "edittext",
+        "name": "sourceName"
+      },
+      {
+        "kind": "colorpicker",
+        "name": "idColor"
+      },
       {
         "kind": "multiListBox",
         "name": "plantList"

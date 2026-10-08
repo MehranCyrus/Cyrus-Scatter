@@ -104,6 +104,13 @@ function page(s,definition,{name=definition.name,category=0,popup=false}={}){
    rows.push({advanced:true,controls:[full],when:layouts.conditions[p.key+'.'+c.name]});
   }
  }
+ // Each list has a view-only grip immediately below it, using the same
+ // visibility condition. Native list heights are pixels at runtime.
+ const lists=controls.filter(c=>['listbox','multiListBox'].includes(c.kind));
+ for(const c of lists){
+  const at=rows.findIndex(r=>r.controls?.includes(c));
+  if(at>=0)rows.splice(at+1,0,{advanced:rows[at].advanced,when:rows[at].when,height:8,controls:[{id:c.id+'_grip',kind:'dotNetControl'}]});
+ }
  let declarations=controls.map(c=>{
   let line=rename(c.declaration,components.find(p=>p.key===c.key).names).replaceAll('__PAGE__',name);
   // Layout is event driven. Remove the old absolute coordinates and widths.
@@ -139,6 +146,7 @@ function page(s,definition,{name=definition.name,category=0,popup=false}={}){
  headingRows.forEach((r,i)=>{r.id='heading_'+i;declarations+='\n        label '+r.id+' '+JSON.stringify(r.heading)+' pos:[6,6] width:('+name+'.width-12) height:18';});
  const disclosures=rows.filter(r=>r.toggle);
  for(const r of disclosures)declarations+='\n        checkbutton '+r.toggle+' '+JSON.stringify(r.caption)+' pos:[6,6] width:('+name+'.width-12) height:22';
+ for(const c of lists)declarations+='\n        dotNetControl '+c.id+'_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8';
  declarations+='\n        checkbutton advancedToggle "Advanced" pos:[6,6] width:('+name+'.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."';
  let code=components.map(p=>'        local '+p.key+'_bodyHeight=0\n'+p.code.replaceAll('__PAGE__',name)).join('\n');
  const reset=components.map(p=>['root','owner','panel','controlsReady','binding'].map(v=>p.key+'_'+v+'='+v).join(';')).join('\n            ');
@@ -179,7 +187,8 @@ function page(s,definition,{name=definition.name,category=0,popup=false}={}){
   });
   const dynamic=r.height||'(amax #('+heights.join(',')+'))';
   const table=items.length===3&&items[0].kind==='label';
-  const columns=table?items.length:labels.length===items.length?items.length:'(amin rowControls.count (amax 1 (floor ((widthValue-8)/'+(minimum+4)+'))))';
+  const swatch=items.length===2&&items[1].kind==='colorpicker';
+  const columns=swatch?2:table?items.length:labels.length===items.length?items.length:'(amin rowControls.count (amax 1 (floor ((widthValue-8)/'+(minimum+4)+'))))';
   const captions=captioned.map(c=>`${c.captionID}.visible=show`).join(';');
   const fitCaptions=captioned.map(c=>`fitLabel ${c.captionID} 18 cellWidth`).join(';');
   const captionPositions=captioned.map(c=>{
@@ -193,10 +202,12 @@ function page(s,definition,{name=definition.name,category=0,popup=false}={}){
   }).join(';');
   const reserved=top.length?'(amax #('+top.map(c=>c.captionID+'.height').join(',')+'))':'0';
   const stacked=inline.length?'(amax #('+inline.map(c=>c.captionID+'.height').join(',')+'))':'0';
-  const positions=table
+  const positions=swatch
+   ? `rowControls[1].pos=[6,y+captionHeight];fitWidth rowControls[1] cellWidth;rowControls[2].pos=[widthValue-28,y]`
+   : table
    ? `rowControls[1].pos=[6,y];rowControls[1].width=18;for i=2 to 3 do (rowControls[i].pos=[28+(i-2)*(cellWidth+4)+cellWidth-12,y];fitWidth rowControls[i] cellWidth)`
    : `for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)`;
-  return `            rowControls=#(${ids.join(',')});show=${vis}\n            for c in rowControls do c.visible=show\n${captions?'            '+captions+'\n':''}            if show do (\n${r.heading?'                if y>6 do y+=4\n':''}                columns=${columns};cellWidth=${table?'(widthValue-38)/2':'(widthValue-12-(columns-1)*4)/columns'}\n${fitLabels?'                '+fitLabels+'\n':''}${fitCaptions?'                '+fitCaptions+'\n':''}                stackedCaption=${inline.length?'cellWidth<'+minimum:'false'};captionHeight=amax ${reserved} (if stackedCaption then ${stacked} else 0)\n                rowHeight=${dynamic}+2+captionHeight\n                ${positions}\n${captionPositions?'                '+captionPositions+'\n':''}                y+=${table?'rowHeight':'(ceil (rowControls.count as float/columns))*rowHeight'}\n            )`;
+  return `            rowControls=#(${ids.join(',')});show=${vis}\n            for c in rowControls do c.visible=show\n${captions?'            '+captions+'\n':''}            if show do (\n${r.heading?'                if y>6 do y+=4\n':''}                columns=${columns};cellWidth=${swatch?'widthValue-40':table?'(widthValue-38)/2':'(widthValue-12-(columns-1)*4)/columns'}\n${fitLabels?'                '+fitLabels+'\n':''}${fitCaptions?'                '+fitCaptions+'\n':''}                stackedCaption=${inline.length?'cellWidth<'+minimum:'false'};captionHeight=amax ${reserved} (if stackedCaption then ${stacked} else 0)\n                rowHeight=${dynamic}+2+captionHeight\n                ${positions}\n${captionPositions?'                '+captionPositions+'\n':''}                y+=${table||swatch?'rowHeight':'(ceil (rowControls.count as float/columns))*rowHeight'}\n            )`;
  }).join('\n');
  const folded=controls.filter(c=>c.name==='detailsToggle'||c.name==='containersToggle').map(c=>c.id+'.visible=false').join(';');
  // Insert Advanced between basic rows and advanced rows, never as a page.
@@ -222,11 +233,39 @@ function page(s,definition,{name=definition.name,category=0,popup=false}={}){
             )
             true
         )\n`;
- let final=out.replace('        fn layout = (',widthHelper+'        fn layout = (').replace('        on advancedToggle changed value do layout()',disclosures.map(r=>'        on '+r.toggle+' changed value do layout()').join('\n')+'\n        on advancedToggle changed value do layout()');
+ const remember=popup?'':'if panel!=undefined do panel.rememberViews();';
+ const toggles=['advancedToggle',...disclosures.map(r=>r.toggle)];
+ const presentation=`        local dragList=undefined,dragStartY=0,dragStartHeight=0
+        fn captureView = #(${name}.open,#(${toggles.map(id=>id+'.checked').join(',')}),#(${lists.map(c=>c.id+'.height').join(',')}))
+        fn restoreView state = (
+            ${name}.open=state[1]
+            ${toggles.map((id,i)=>id+'.checked=state[2]['+(i+1)+']').join(';')}
+            ${lists.map((c,i)=>c.id+'.height=state[3]['+(i+1)+']').join(';')}
+            true
+        )
+        fn setupGrips = (
+            for grip in #(${lists.map(c=>c.id+'_grip').join(',')}) do (
+                grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
+                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").Fixed3D
+            )
+            true
+        )
+${lists.map(c=>`        on ${c.id}_grip MouseDown sender args do if args.Button==(dotNetClass "System.Windows.Forms.MouseButtons").Left do (
+            dragList=${c.id};dragStartY=(dotNetClass "System.Windows.Forms.Cursor").Position.Y;dragStartHeight=dragList.height;sender.Capture=true
+        )
+        on ${c.id}_grip MouseMove sender args do if sender.Capture and dragList!=undefined do (
+            dragList.height=amin 900 (amax 42 (dragStartHeight+(dotNetClass "System.Windows.Forms.Cursor").Position.Y-dragStartY));layout();${remember}true
+        )
+        on ${c.id}_grip MouseUp sender args do (sender.Capture=false;dragList=undefined;${remember}true)
+        on ${c.id}_grip MouseCaptureChanged sender args do if not sender.Capture do dragList=undefined`).join('\n')}
+`;
+ let final=require('./colored-lists.cjs')(out,components).replace('        fn layout = (',presentation+widthHelper+'        fn layout = (').replace('        on advancedToggle changed value do layout()',disclosures.map(r=>'        on '+r.toggle+' changed value do (layout();'+remember+'true)').join('\n')+'\n        on advancedToggle changed value do (layout();'+remember+'true)');
+ final=final.replace('                controlsReady=true;binding=false;layout();true','                setupGrips();controlsReady=true;binding=false;layout();true');
+ if(!popup)final=final.replace('do panel.bindSection '+name,'do (panel.bindSection '+name+';panel.rememberViews())');
  // Max may allocate a scrollbar after the parent layout finishes. Reflow
  // only on a real width change; our own height update must not recurse.
  final=final.replace('        local layout\n','        local layout,lastLayoutWidth=0\n')
-  .replace('            '+name+'.height=y+4;true','            lastLayoutWidth=widthValue;'+name+'.height=y+4;true')
+  .replace('            '+name+'.height=y+4','            lastLayoutWidth=widthValue;'+name+'.height=y+4')
   .replace('        on '+name+' open do','        on '+name+' resized size do if controlsReady and not binding and (amax 140 '+name+'.width)!=lastLayoutWidth do layout()\n        on '+name+' open do');
  // Each control event has one guarded expression. The action can close the
  // rollout, so its follow-up layout must check the current lifetime again.
@@ -234,7 +273,7 @@ function page(s,definition,{name=definition.name,category=0,popup=false}={}){
  const eventParts=statements(final.slice(bodyStart,bodyEnd));
  for(const part of eventParts){
   const event=/^        on (\w+) (?!open\b|close\b|rolledUp\b)[^\n]*? do /.exec(part);
-  if(!event||event[1]===name)continue;
+  if(!event||event[1]===name||event[0].includes(' DrawItem ')||event[0].includes(' SelectedIndexChanged '))continue;
   const expression=part.slice(event[0].length);
   const component=components.find(p=>event[1].startsWith(p.key+'_'));
   const ready=component?component.key+'_controlsReady and not '+component.key+'_binding and ':'';
@@ -245,7 +284,7 @@ function page(s,definition,{name=definition.name,category=0,popup=false}={}){
 module.exports=function(s,{check=false}={}){
  const definitions=layouts.pages;
  const pages=definitions.map((d,i)=>page(s,d,{category:(i+1)*10}));
- const manifest={schema:'cyrus.ui-layout/1',version:'0.73',source:'approved single-file HTML study',sections:pages.map(p=>({name:p.name,title:definitions.find(d=>d.name===p.name).title,scope:p.scope,controls:p.controls.map(c=>({component:c.key,control:c.name,presentation:c.id,advanced:!!p.rows.find(r=>r.controls?.some(x=>x.id===c.id))?.advanced}))}))};
+ const manifest={schema:'cyrus.ui-layout/1',version:'0.74',source:'approved single-file HTML study',sections:pages.map(p=>({name:p.name,title:definitions.find(d=>d.name===p.name).title,scope:p.scope,controls:p.controls.map(c=>({component:c.key,control:c.name,presentation:c.id,advanced:!!p.rows.find(r=>r.controls?.some(x=>x.id===c.id))?.advanced}))}))};
  const output=JSON.stringify(manifest,null,2)+'\n',path='tools/ui/approved-layout-manifest.json';
  if(check){if(fs.readFileSync(path,'utf8')!==output)throw Error('Layout manifest is stale');}else fs.writeFileSync(path,output);
  // Replace the old native pages as one contiguous UI block, keeping calculation

@@ -1,4 +1,4 @@
-    rollout mainUI "Cyrus Scatter 0.73" width:#cmdPanel height:112 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.74" width:#cmdPanel height:112 autoLayoutOnResize:true (
         local view=undefined,root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),owner=undefined,layerPagesVisible=false,pagesArranged=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for the entire setup."
         radiobuttons updateRadio "Viewport update" labels:#("Manual","Live") columns:2 pos:[8,26] width:(mainUI.width-16) tooltip:"Manual waits for Update. Live calculates after relevant edits."
@@ -7,6 +7,11 @@
         timer mountTimer interval:1 active:false
         timer statusTimer interval:1000 active:false
         fn layoutPanels = (for r in editors where r.controlsReady and r.open do r.layout();true)
+        fn rememberViews = (
+            if not controlsReady or binding or layerBinding or view==undefined do return false
+            view.uiPresentationState=for r in editors collect r.captureView()
+            true
+        )
         fn refreshTitles = (CyrusContainerRefreshLabels root;CyrusBindLayerEditor root;true)
         fn refreshStats = (
             if not controlsReady do return false
@@ -66,7 +71,7 @@
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.73 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.74 native plugin and restart Max."
             local context=if classof view==CyrusSourceContainer then CyrusContainerResolve view else undefined
             root=if classof view==CyrusSourceContainer then (if context==undefined then undefined else context[1]) else view
             editors=#(view.surfacesUI,view.managerUI,view.modelsUI,view.populationUI,view.coverageUI,view.areasUI,view.transformsUI,view.spacingUI,view.displayUI,view.statisticsUI)
@@ -80,10 +85,15 @@
             roots=#(view.surfacesUI,view.displayUI,view.managerUI)
             root.updateUI=undefined;root.surfaceUI=roots[1];root.previewUI=roots[2];root.layersUI=roots[3]
             owner=undefined;pagesArranged=false
-            for r in editors do (r.root=root;r.owner=undefined;r.panel=mainUI;r.controlsReady=false;r.open=false)
-            roots[1].open=(root.validSurfaces()).count==0;roots[3].open=true
+            for r in editors do (r.root=root;r.owner=undefined;r.panel=mainUI;r.controlsReady=false)
+            if view.uiPresentationState.count==editors.count then (
+                for i=1 to editors.count do editors[i].restoreView view.uiPresentationState[i]
+            ) else (
+                for r in editors do r.open=false
+                roots[1].open=(root.validSurfaces()).count==0;roots[3].open=true
+            )
             cyrusSetRolloutVisible mainUI.hwnd true 0
-            controlsReady=true;bind()
+            controlsReady=true;bind();rememberViews()
             if isProperty view #containerUI do view.containerUI.bind()
             -- Max measured these pages before bind assigned their final heights.
             -- Reflow once after all bodies, including the container, are ready.

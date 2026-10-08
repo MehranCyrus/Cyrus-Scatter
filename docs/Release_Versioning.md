@@ -1,6 +1,8 @@
 # Cyrus Scatter release versioning
 
-**6 October current development label: 0.73, explicitly requested by the user.** Native/package metadata is **0.73.0**, MAXScript serialization **54**, calculation model **`CyrusUnified1`**, and MCP package/closed plan **0.73.0 / 0.73**. The [unified campaign](Unified_System_0.73_2026-10-06/README.md) retires unpublished old policies/scene formats/schemas, ports useful features and adds source-container nodes. Internal names/class IDs remain registration identities, not old-scene compatibility promises. Stable-only Edit storage uses a new chunk and rejects old development storage. Analyzer stays **0.14**; 1.0 remains reserved for publication readiness.
+**8 October current development label: 0.74**, requested by the artist for UI refinements. Native/package metadata is **0.74.0**; serialization stays **54** and model stays **CyrusUnified1**. Identification metadata is appended after the existing parameter blocks. MCP package/plan and Analyzer versions remain unchanged. [Current implementation and acceptance](UI_Refinements_0.74_2026-10-08/README.md).
+
+**Historical 6 October development label: 0.73, explicitly requested by the user.** Native/package metadata is **0.73.0**, MAXScript serialization **54**, calculation model **`CyrusUnified1`**, and MCP package/closed plan **0.73.0 / 0.73**. The [unified campaign](Unified_System_0.73_2026-10-06/README.md) retires unpublished old policies/scene formats/schemas, ports useful features and adds source-container nodes. Internal names/class IDs remain registration identities, not old-scene compatibility promises. Stable-only Edit storage uses a new chunk and rejects old development storage. Analyzer stays **0.14**; 1.0 remains reserved for publication readiness.
 
 **Previous 0.72 checkpoint:** package metadata 0.72.0 and serialization 53 belong to the [integrated selected-layer campaign](Integrated_UI_0.72_2026-10-06/README.md). Use that pair's receipts for its actual renderer/UI evidence, not the version caption alone.
 
@@ -14,7 +16,7 @@ The development history progressed from the retained-Mesh **0.64** baseline thro
 
 The procedural candidate packages report **0.7.0**, applied in the [procedural coding phase](Procedural_Implementation_0.7_2026-10-04/README.md). No candidate was installed during that phase. The later floating-editor development source advances to **0.7.1** while retaining those features and performance paths.
 
-Historical commit messages, report titles, filenames, package checksums and captured screenshots retain their original labels so evidence remains traceable. Current planning should describe **Cyrus Scatter 0.73 development** and distinguish it from the installed build and from the procedural policy's historical 0.7 label.
+Historical commit messages, report titles, filenames, package checksums and captured screenshots retain their original labels so evidence remains traceable. Current planning should describe **Cyrus Scatter 0.74 development** and distinguish it from the installed build and from the procedural policy's historical 0.7 label.
 
 ## Historical 0.7.0 implementation checklist
 

@@ -1,15 +1,15 @@
 # Cyrus Scatter discussion backlog
 
-Updated 8 October 2026. Items below capture the current discussion; implementation has not started.
+Updated 8 October 2026. The artist authorized a 0.74 implementation pass and Git backup. See [the implementation checklist and acceptance limits](../UI_Refinements_0.74_2026-10-08/README.md). Descriptions below preserve the original 0.73 discussion baseline; the implementation report supersedes those baseline descriptions where marked complete. The layer/set ownership decision remains open; see [the research-backed recommendation](MODELS_AND_PAINTING.md).
 
 | Item | Subject | Status |
 | --- | --- | --- |
-| Issue 1 | Receiving-surface selection and management | Desired interaction confirmed; details remain open |
-| Issue 2 | Expanded sections reset after deselecting and reselecting Scatter | Artist-reported failure; source reset confirmed |
-| Issue 3 | Drag handles for resizing list height | Desired interaction confirmed; placement details remain open |
-| Issue 4 | Independently collapsible settings groups inside main sections | Desired interaction confirmed; grouping details remain open |
+| Issue 1 | Receiving-surface selection and management | Implemented; additive/dedup/multi-remove/Undo/Redo host checks pass |
+| Issue 2 | Expanded sections reset after deselecting and reselecting Scatter | Implemented; mixed/all-open/all-closed session restoration host checks pass |
+| Issue 3 | Drag handles for resizing list height | Implemented; height/reflow checked; physical pointer dragging remains unverified |
+| Issue 4 | Independently collapsible settings groups inside main sections | Implemented for layer/source Properties; folding and reflow host checks pass |
 | Issue 5 | Simple naming and placement of paint-set controls | Painting-only presentation proposed; artist is examining current behavior before deciding |
-| Issue 6 | Compact action icons and editable names and identification colors | UI direction requested; rename and color ownership details remain open |
+| Issue 6 | Compact action icons and editable names and identification colors | Implemented; label-only rename, independent colors, copy/save and Manual isolation checks pass; visual/DPI acceptance remains |
 | Reference 1 | Separate downloadable library packages | Observation recorded; no addition agreed |
 | Reference 2 | Forest settings and presentation | Comparison recorded; no feature-parity goal agreed |
 
@@ -172,7 +172,7 @@ The existing source-color value also contributes to procedural grouping for sour
 
 ### Details to decide
 
-- Does renaming a source in the plugin change the actual 3ds Max scene-node name, or only an optional label stored by Scatter? Default display should identify the real selected source. Preserve stable identity when names change.
+- Confirmed: renaming a source changes only its optional label inside Scatter. Default display identifies the real selected scene source. Preserve stable identity when names change.
 - Is color assigned per source model, per layer, or both? If both, define the active display choice and precedence clearly.
 - Should Mesh offer an explicit choice between identification colors and model materials? Geometry detail and material appearance are separate choices; do not promise a material preview from the current Mesh implementation.
 - Are identification colors purely visual, or also an explicit grouping tool? Clarify this before reusing the current color-group setting.

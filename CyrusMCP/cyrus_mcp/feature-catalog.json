@@ -2,8 +2,8 @@
   "schema": "cyrus.feature-catalog/1.0",
   "authority": "Help only. Tool dispatch, closed schema and local approval determine authority.",
   "capability_source_sha256": "7679925c6b0d2f0bcf3a8ec1a1639fec198006a5d81ebb87ba4413ba9efd4332",
-  "control_inventory_sha256": "568dacb1ca949cae50a8c7f5aad108554b42acb985132f9dd9170097c9ba5df7",
-  "development_version": "0.73",
+  "control_inventory_sha256": "37170c51b751949d6087f3c4125108cc6da4f4d54072ac8dc913bdc53eb2f1ff",
+  "development_version": "0.74",
   "mcp_version": "0.73.0",
   "calculation_model": "CyrusUnified1",
   "features": [
@@ -364,6 +364,21 @@
     {
       "group": "general",
       "section": "previewUI",
+      "kind": "dropdownlist",
+      "name": "identificationDrop",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Controller / local view",
+      "help": "Use model or layer identification colors in Points, Proxy and shaded Mesh previews.",
+      "view": "Local setup/editor controls",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
       "kind": "radiobuttons",
       "name": "pointColorRadio",
       "capabilities": [
@@ -514,6 +529,34 @@
     {
       "group": "general",
       "section": "surface",
+      "kind": "multiListBox",
+      "name": "receiversList",
+      "capabilities": [
+        "C02",
+        "C07"
+      ],
+      "owner_context": "Controller / local view",
+      "help": null,
+      "view": "Local setup/editor controls",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "general",
+      "section": "surface",
+      "kind": "button",
+      "name": "removeSurfaces",
+      "capabilities": [
+        "C02",
+        "C07"
+      ],
+      "owner_context": "Controller / local view",
+      "help": "Remove highlighted assignments from this setup. Scene objects are kept.",
+      "view": "Local setup/editor controls",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "general",
+      "section": "surface",
       "kind": "pickbutton",
       "name": "sharedPick",
       "capabilities": [
@@ -521,7 +564,7 @@
         "C07"
       ],
       "owner_context": "Controller/global pool",
-      "help": "Choose the surface on which every layer in this setup scatters.",
+      "help": "Add a receiving surface without replacing existing assignments.",
       "view": "Local setup/editor controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -535,7 +578,7 @@
         "C07"
       ],
       "owner_context": "Controller/global pool",
-      "help": "Choose multiple receiving surfaces by name. Brush needs one shared surface.",
+      "help": "Add multiple receiving surfaces by name. Existing assignments are kept. Brush still needs one shared surface.",
       "view": "Local setup/editor controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -671,6 +714,20 @@
       ],
       "owner_context": "Controller/layer",
       "help": "Remove this layer and its paint sets. Undo restores them.",
+      "view": "Local setup/editor controls",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "general",
+      "section": "manager",
+      "kind": "colorpicker",
+      "name": "layerColor",
+      "capabilities": [
+        "C03",
+        "C26"
+      ],
+      "owner_context": "Controller / local view",
+      "help": "Identification color for this layer. Choose Layer colors in Viewport & render to display it.",
       "view": "Local setup/editor controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -1055,6 +1112,36 @@
       ],
       "owner_context": "Layer/set administration",
       "help": "Evaluate this set later, after the preceding sets.",
+      "view": "Modify selected layer, selected container and optional popup",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "kind": "edittext",
+      "name": "sourceName",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Label inside Scatter only. Clear it to use the scene object's name.",
+      "view": "Modify selected layer, selected container and optional popup",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "kind": "colorpicker",
+      "name": "idColor",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Viewport identification color. This does not change clustering or model frequency.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },

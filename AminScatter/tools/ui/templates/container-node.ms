@@ -18,7 +18,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         on showLabel set value do CyrusContainerRefreshPresentation this
     )
     local consumerRows=#(),consumerLabels=#(),cachedLabel="Unlinked source container",cachedActiveCount=0,cachedSavedCount=0,cachedConsumerCount=0,movementUnits=#(),movementStatus="Ready"
-    local updateUI,surfaceUI,previewUI,layersUI,uiRootState=#()
+    local updateUI,surfaceUI,previewUI,layersUI,uiRootState=#(),uiPresentationState=#()
     fn configure node = (
         if (refs.dependentNodes this).count!=1 do (
             movementStatus="Instanced containers cannot carry sources. Make a unique copy."
