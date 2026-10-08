@@ -1,5 +1,7 @@
 # Cyrus Scatter
 
+**0.74 list resize correction — 8 October 2026:** [Fixed cursor errors, revised handles, regression evidence and corrected Max 2027 installer](docs/UI_Refinements_0.74_2026-10-08/GRIP_FIX.md). This supersedes the first 0.74 package.
+
 **0.74 UI refinement work — 8 October 2026:** [Implemented changes, checklist and remaining acceptance](docs/UI_Refinements_0.74_2026-10-08/README.md). This development pass adds surface-list management, remembered sections, list grips, Properties disclosures, compact actions and separate identification labels/colors. [The layer/paint-area ownership recommendation](docs/Product_Discussion_2026-10-08/MODELS_AND_PAINTING.md) remains a design decision. The normal installation is unchanged; earlier 0.73 installer receipts remain historical evidence.
 
 **Agent entry point:** [Repository guidelines](AGENTS.md) and [engineering workflow](docs/AGENT_WORKFLOW.md). Read these with the current status/handoff below before changing source or running host fixtures.

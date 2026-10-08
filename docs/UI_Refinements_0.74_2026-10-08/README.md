@@ -1,10 +1,12 @@
 # Cyrus Scatter 0.74 UI refinements
 
+**List resize correction, 8 October:** the first installer below is superseded by [the grip fix and corrected installer](GRIP_FIX.md). It fixes the artist-reported Cursor `pos` exceptions and revises the handle design. All 27 mounted list handles passed mouse-event regression checks; physical pointer/DPI acceptance remains pending.
+
 Development source, 8 October 2026. Package/native version **0.74.0**, UI **0.74**, calculation model **CyrusUnified1**, serialization **54**. Analyzer and MCP protocol versions remain independent. No normal-profile installation was performed.
 
 ## Installer
 
-[Max 2027 installer](../../dist/UI_Refinements_0.74_2026-10-08/Max2027/CyrusScatter-0.74.0-Max2027.mzp) · [package identity](PACKAGE.json). The local installer contains the exact script and four native modules qualified below; archive integrity, manifest hashes and Max 2027 guard passed. Binaries stay local and are not stored in Git. In Max, choose **Scripting > Run Script**, select the MZP, then **restart Max**. Analyzer and MCP need no update for this pass.
+[Corrected Max 2027 installer](../../dist/UI_Grip_Fix_0.74_2026-10-08/Max2027/CyrusScatter-0.74.0-Max2027.mzp) · [current package identity](GRIP_PACKAGE.json). The [original package identity](PACKAGE.json) and results below remain historical; [the correction report](GRIP_FIX.md) records the latest qualification. Binaries stay local and are not stored in Git. In Max, choose **Scripting > Run Script**, select the MZP, then **restart Max**. Analyzer and MCP need no update for this pass.
 
 ## Implemented scope
 

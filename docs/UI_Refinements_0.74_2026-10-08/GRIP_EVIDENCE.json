@@ -1,0 +1,85 @@
+{
+  "date": "2026-10-08",
+  "source_baseline": "369a5ad803dd52818a56b1571146352fdf003ac9",
+  "source_sha256": {
+    "AminScatter/tools/ui/approved-layout.cjs": "6e47fbb51d46b3e554ccae80a160b79cc9e4017c2a52c226e414c9e61847eda9",
+    "AminScatter/tools/ui/approved-layout.test.cjs": "1859244a6f8bb2c4e99b11412682f2518ece5b4b839905c5283f6ec5c9f5cfb3",
+    "AminScatter/scripts/AminScatterObject.ms": "df533e6f4c5de8909737808125df0ce116bcc6076ad4dc263501051a3700b402",
+    "tools/procedural_lab/Max_UI_074_Grips.ms": "2a9add96485d90a54af4e99dd58a6836bcdcb1d215dbd9985aff4b73db8f15eb",
+    "tools/procedural_lab/Max_UI_074.ms": "fb36878366c43cba5645aa3c8f9dd3d1d4a412c9369c79772b2b29f531cefaba",
+    "tools/procedural_lab/check_generated.py": "8c68cc93a8f394c2651e71b36d5395daea303349b5e23cf8492eaef39cf4f6a0"
+  },
+  "original_error": "-- Unknown property: \"pos\" in dotNetClass:System.Windows.Forms.Cursor",
+  "host": {
+    "pid": 34668,
+    "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\ui074-grips-20261008-01",
+    "command": [
+      "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+      "-q",
+      "-i",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\ui074-grips-20261008-01\\max.ini",
+      "-p",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\ui074-grips-20261008-01\\plugins.ini",
+      "-U",
+      "MAXScript",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\ui074-grips-20261008-01\\start.ms",
+      "-listenerlog",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\ui074-grips-20261008-01\\listener.log"
+    ],
+    "binaries": {
+      "AminScatter.dlx": "897633b4cc2badabbf466143548848a65b94288c03c0e8554c155ebe940b7a09",
+      "CyrusBrush.dlx": "ce829dbac2273283d6e00efb844ec0b5c74a15a8f20b08d1654a62ac2f90aef3",
+      "CyrusBrushStorage.dlh": "12945a78e9d7446cda5a0cbc992ef7c1a6bf086b89b83156869c48e93372af18",
+      "CyrusScatterEdit.dlm": "b9cbd7b7bfbf720bd0009e03a3a019aa92b03cc4721cd352d90e42a1e15e8732"
+    },
+    "script_sha256": "df533e6f4c5de8909737808125df0ce116bcc6076ad4dc263501051a3700b402",
+    "normal_profile_modified": false,
+    "development_transport": true
+  },
+  "max_version": "29.1.0.11426",
+  "loaded_paths": [
+    "AminScatter.dlx\tF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\ui074-grips-20261008-01\\bin\\AminScatter.dlx",
+    "CyrusBrush.dlx\tF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\ui074-grips-20261008-01\\bin\\CyrusBrush.dlx",
+    "CyrusBrushStorage.dlh\tF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\ui074-grips-20261008-01\\bin\\CyrusBrushStorage.dlh",
+    "CyrusScatterEdit.dlm\tF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\ui074-grips-20261008-01\\bin\\CyrusScatterEdit.dlm"
+  ],
+  "results": {
+    "grips-main.txt": "PASS: 10 grip controls; down/move/up, stationary point, bounds, hover, right click, capture loss, rebind, paint, contents/selection and placement isolation.\n#(\"main/flow_surfaceUI_receiversList\", \"main/flow_surfaceUI_globalContainers\", \"main/flow_layersUI_layerList\", \"main/sourceContainersUI_containersList\", \"main/sourceUI_plantList\", \"main/diversityUI_strokeChoices\", \"main/diversityUI_strokesList\", \"main/brushUI_strokeList\", \"main/backgroundUI_referenceList\", \"main/areaUI_areaList\")",
+    "grips-container.txt": "PASS: 10 grip controls; down/move/up, stationary point, bounds, hover, right click, capture loss, rebind, paint, contents/selection and placement isolation.\n#(\"container/flow_surfaceUI_receiversList\", \"container/flow_surfaceUI_globalContainers\", \"container/flow_layersUI_layerList\", \"container/sourceContainersUI_containersList\", \"container/sourceUI_plantList\", \"container/diversityUI_strokeChoices\", \"container/diversityUI_strokesList\", \"container/brushUI_strokeList\", \"container/backgroundUI_referenceList\", \"container/areaUI_areaList\")",
+    "grips-popup.txt": "PASS: 7 grip controls; down/move/up, stationary point, bounds, hover, right click, capture loss, rebind, paint, contents/selection and placement isolation.\n#(\"popup1/sourceContainersUI_containersList\", \"popup1/sourceUI_plantList\", \"popup1/diversityUI_strokeChoices\", \"popup1/diversityUI_strokesList\", \"popup2/areaUI_areaList\", \"popup3/brushUI_strokeList\", \"popup3/backgroundUI_referenceList\")",
+    "grips-lifecycle.txt": "PASS: close while dragging in main/popup; actual dragged height restored after reselection; pending Manual edits retained.",
+    "ui074-checks.txt": "PASS: compact actions; named properties; list height/reflow; source labels; visual colors; copy; pending Manual isolation; additive receivers; multi-remove; Undo/Redo; mixed/all-open/all-closed reselection; metadata save/reopen.\nPointer dragging and visual/DPI appearance are separate acceptance gates.",
+    "ui074-views.txt": "PASS: colored source/layer selection; Ctrl-add focus; double-click action helper; owner isolation; independent container/setup view state; popup reflow at two sizes."
+  },
+  "grips_tested": {
+    "main": 10,
+    "container": 10,
+    "popup": 7
+  },
+  "generator_check": {
+    "check": "unified_073_generator_integration",
+    "passed": true,
+    "development_version": "0.74",
+    "baseline": "01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2",
+    "maxscript_compiled": false,
+    "ui_controls_in_inventory": 246,
+    "baseline_controls_accounted": 245,
+    "generated_sha256": "df533e6f4c5de8909737808125df0ce116bcc6076ad4dc263501051a3700b402",
+    "preserved_files": [
+      "AminScatter/src/preview.cpp",
+      "AminScatter/src/point_display.cpp"
+    ],
+    "fixture_delimiters_checked": 24,
+    "interactive_max_run": false
+  },
+  "native_build_inputs_unchanged": true,
+  "native_receipt": "build/ui074-20261008-final2/native2027/receipt.json",
+  "native_rebuilt": false,
+  "normal_profile_modified": false,
+  "physical_pointer_tested": false,
+  "limitations": [
+    "Computer-use initialization failed before window access. Actual physical dragging, screenshot/DPI appearance and artist acceptance remain pending.",
+    "WinForms events were raised through reflection; conditionally hidden lists were enabled by the fixture to test all handlers.",
+    "No new renderer/performance qualification or Max 2026 runtime test."
+  ]
+}

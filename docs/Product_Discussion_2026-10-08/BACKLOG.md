@@ -6,7 +6,7 @@ Updated 8 October 2026. The artist authorized a 0.74 implementation pass and Git
 | --- | --- | --- |
 | Issue 1 | Receiving-surface selection and management | Implemented; additive/dedup/multi-remove/Undo/Redo host checks pass |
 | Issue 2 | Expanded sections reset after deselecting and reselecting Scatter | Implemented; mixed/all-open/all-closed session restoration host checks pass |
-| Issue 3 | Drag handles for resizing list height | Implemented; height/reflow checked; physical pointer dragging remains unverified |
+| Issue 3 | Drag handles for resizing list height | [Shared cursor error fixed; flat grip design](../UI_Refinements_0.74_2026-10-08/GRIP_FIX.md); all 27 mounted handles pass event tests; physical pointer/DPI review remains |
 | Issue 4 | Independently collapsible settings groups inside main sections | Implemented for layer/source Properties; folding and reflow host checks pass |
 | Issue 5 | Simple naming and placement of paint-set controls | Painting-only presentation proposed; artist is examining current behavior before deciding |
 | Issue 6 | Compact action icons and editable names and identification colors | Implemented; label-only rename, independent colors, copy/save and Manual isolation checks pass; visual/DPI acceptance remains |

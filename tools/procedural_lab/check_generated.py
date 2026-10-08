@@ -129,6 +129,7 @@ def main():
     assert catalog['control_inventory_sha256']==hashlib.sha256(products[1].read_bytes()).hexdigest()
     assert catalog['capability_source_sha256']==hashlib.sha256((ROOT/'docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md').read_bytes()).hexdigest()
     fixtures=sorted((ROOT/'tools/procedural_lab').glob('Max_*073*.ms'))
+    fixtures += sorted((ROOT/'tools/procedural_lab').glob('Max_*074*.ms'))
     fixtures += [ROOT/'tools/procedural_lab/Max_Procedural_07_Fixture.ms',ROOT/'tools/procedural_lab/Max_Procedural_07_Acceptance.ms']
     for fixture in fixtures:check_balanced(fixture.read_text(encoding='utf-8-sig'))
     result=dict(check='unified_073_generator_integration',passed=True,development_version='0.74',

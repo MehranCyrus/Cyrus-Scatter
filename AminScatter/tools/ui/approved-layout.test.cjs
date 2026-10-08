@@ -24,4 +24,9 @@ assert.ok(!script.includes('Multi-set layers support Random and Clusters.'),'The
 assert.ok(script.includes('then cellWidth-12 else 0'),'Spinner position addresses arrows, not the compound control origin');
 assert.ok(script.includes('label setsUI_weightSpin_caption "Share weight:"'));
 assert.ok(script.includes('label sourceContainersUI_containersList_caption "Rectangles"'),'List captions must keep their own layout row');
+assert.ok(!script.includes('(dotNetClass "System.Windows.Forms.Cursor").Position'),'MAXScript aliases Position to pos; drag must use event coordinates');
+const gripMoves=[...script.matchAll(/on (\w+_grip) MouseMove sender args do ([^\n]+)/g)];
+assert.ok(gripMoves.length>=20,'Both native and popup list grips must be covered');
+for(const [,id,body] of gripMoves)assert.equal(body,'moveListDrag sender args',id+': idle mouse moves must not trigger an unconditional layout');
+assert.ok(script.includes('close do (stopListDrag();'),'Closing a view must release mouse capture');
 console.log('PASS: namespaces, declaration scope, complete field mapping, control property guards and cold event guards');

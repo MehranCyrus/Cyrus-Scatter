@@ -1,4 +1,4 @@
-global CyrusLoadedScriptFingerprint="efc5deba5e4806db30b7b4099dd82fdbed8a5f1b954916faafa246465d147ac1"
+global CyrusLoadedScriptFingerprint="c1352e6bb1bf422e77026cf72692c069d017e800072d1fefb1063c5262d5abbb"
 -- Only registered Scatter nodes participate in timeline notifications. This
 -- registry is rebuilt at scene boundaries, never by scanning every animation frame.
 global AminScatterObject,CyrusSourceContainer,CyrusContainerRefreshLabels
@@ -921,7 +921,7 @@ fn CyrusLayerEditor_modelsUI_1 = (
                 syncingColorLists=false;true
             )catch(syncingColorLists=false;throw())
         )
-        local dragList=undefined,dragStartY=0,dragStartHeight=0
+        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
         fn captureView = #(modelsUI_1.open,#(advancedToggle.checked,propertiesToggle.checked),#(sourceContainersUI_containersList.height,sourceUI_plantList.height,diversityUI_strokesList.height,diversityUI_strokeChoices.height))
         fn restoreView state = (
             modelsUI_1.open=state[1]
@@ -929,77 +929,66 @@ fn CyrusLayerEditor_modelsUI_1 = (
             sourceContainersUI_containersList.height=state[3][1];sourceUI_plantList.height=state[3][2];diversityUI_strokesList.height=state[3][3];diversityUI_strokeChoices.height=state[3][4]
             true
         )
+        fn stopListDrag = (
+            local previous=dragGrip
+            dragGrip=undefined;dragList=undefined
+            if previous!=undefined do previous.Capture=false
+            true
+        )
+        fn gripScreenY sender args = (
+            local point=dotNetObject "System.Drawing.Point" args.X args.Y
+            (sender.PointToScreen point).Y
+        )
+        fn beginListDrag sender args target = (
+            if not controlsReady or binding or root==undefined or not sender.Visible or not sender.Enabled do return false
+            if args.Button!=(dotNetClass "System.Windows.Forms.MouseButtons").Left do return false
+            stopListDrag()
+            dragStartY=gripScreenY sender args;dragStartHeight=target.height
+            dragList=target;dragGrip=sender;sender.Capture=true;true
+        )
+        fn moveListDrag sender args = (
+            if dragGrip!=sender or dragList==undefined or not sender.Capture do return false
+            if not controlsReady or binding or root==undefined or not sender.Visible do return stopListDrag()
+            local nextHeight=amin 900 (amax 42 (dragStartHeight+(gripScreenY sender args)-dragStartY))
+            if nextHeight!=dragList.height do (dragList.height=nextHeight;layout();true)
+            true
+        )
+        fn paintListGrip sender args = (
+            local pen=dotNetObject "System.Drawing.Pen" ((dotNetClass "System.Drawing.Color").FromArgb 135 135 135)
+            local center=(sender.ClientSize.Width/2) as integer
+            args.Graphics.DrawLine pen (center-10) 3 (center+10) 3
+            args.Graphics.DrawLine pen (center-10) 5 (center+10) 5
+            pen.Dispose()
+        )
         fn setupGrips = (
             for grip in #(sourceContainersUI_containersList_grip,sourceUI_plantList_grip,diversityUI_strokesList_grip,diversityUI_strokeChoices_grip) do (
                 grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
-                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").Fixed3D
+                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
+                grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
+                grip.TabStop=false
             )
             true
         )
-        on sourceContainersUI_containersList_grip MouseDown sender args do if controlsReady and not binding and root!=undefined and sourceContainersUI_controlsReady and not sourceContainersUI_binding and true do (if args.Button==(dotNetClass "System.Windows.Forms.MouseButtons").Left do (
-            dragList=sourceContainersUI_containersList;dragStartY=(dotNetClass "System.Windows.Forms.Cursor").Position.Y;dragStartHeight=dragList.height;sender.Capture=true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on sourceContainersUI_containersList_grip MouseMove sender args do if controlsReady and not binding and root!=undefined and sourceContainersUI_controlsReady and not sourceContainersUI_binding and true do (if sender.Capture and dragList!=undefined do (
-            dragList.height=amin 900 (amax 42 (dragStartHeight+(dotNetClass "System.Windows.Forms.Cursor").Position.Y-dragStartY));layout();true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on sourceContainersUI_containersList_grip MouseUp sender args do if controlsReady and not binding and root!=undefined and sourceContainersUI_controlsReady and not sourceContainersUI_binding and true do ((sender.Capture=false;dragList=undefined;true)
-            if controlsReady and root!=undefined do layout()
-        )
-        on sourceContainersUI_containersList_grip MouseCaptureChanged sender args do if controlsReady and not binding and root!=undefined and sourceContainersUI_controlsReady and not sourceContainersUI_binding and true do (if not sender.Capture do dragList=undefined
-            if controlsReady and root!=undefined do layout()
-        )
-        on sourceUI_plantList_grip MouseDown sender args do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and true do (if args.Button==(dotNetClass "System.Windows.Forms.MouseButtons").Left do (
-            dragList=sourceUI_plantList;dragStartY=(dotNetClass "System.Windows.Forms.Cursor").Position.Y;dragStartHeight=dragList.height;sender.Capture=true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on sourceUI_plantList_grip MouseMove sender args do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and true do (if sender.Capture and dragList!=undefined do (
-            dragList.height=amin 900 (amax 42 (dragStartHeight+(dotNetClass "System.Windows.Forms.Cursor").Position.Y-dragStartY));layout();true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on sourceUI_plantList_grip MouseUp sender args do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and true do ((sender.Capture=false;dragList=undefined;true)
-            if controlsReady and root!=undefined do layout()
-        )
-        on sourceUI_plantList_grip MouseCaptureChanged sender args do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and true do (if not sender.Capture do dragList=undefined
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokesList_grip MouseDown sender args do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if args.Button==(dotNetClass "System.Windows.Forms.MouseButtons").Left do (
-            dragList=diversityUI_strokesList;dragStartY=(dotNetClass "System.Windows.Forms.Cursor").Position.Y;dragStartHeight=dragList.height;sender.Capture=true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokesList_grip MouseMove sender args do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if sender.Capture and dragList!=undefined do (
-            dragList.height=amin 900 (amax 42 (dragStartHeight+(dotNetClass "System.Windows.Forms.Cursor").Position.Y-dragStartY));layout();true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokesList_grip MouseUp sender args do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do ((sender.Capture=false;dragList=undefined;true)
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokesList_grip MouseCaptureChanged sender args do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if not sender.Capture do dragList=undefined
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokeChoices_grip MouseDown sender args do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if args.Button==(dotNetClass "System.Windows.Forms.MouseButtons").Left do (
-            dragList=diversityUI_strokeChoices;dragStartY=(dotNetClass "System.Windows.Forms.Cursor").Position.Y;dragStartHeight=dragList.height;sender.Capture=true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokeChoices_grip MouseMove sender args do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if sender.Capture and dragList!=undefined do (
-            dragList.height=amin 900 (amax 42 (dragStartHeight+(dotNetClass "System.Windows.Forms.Cursor").Position.Y-dragStartY));layout();true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokeChoices_grip MouseUp sender args do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do ((sender.Capture=false;dragList=undefined;true)
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokeChoices_grip MouseCaptureChanged sender args do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if not sender.Capture do dragList=undefined
-            if controlsReady and root!=undefined do layout()
-        )
+        on sourceContainersUI_containersList_grip MouseDown sender args do beginListDrag sender args sourceContainersUI_containersList
+        on sourceContainersUI_containersList_grip MouseMove sender args do moveListDrag sender args
+        on sourceContainersUI_containersList_grip MouseUp sender args do (stopListDrag();true)
+        on sourceContainersUI_containersList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on sourceContainersUI_containersList_grip Paint sender args do paintListGrip sender args
+        on sourceUI_plantList_grip MouseDown sender args do beginListDrag sender args sourceUI_plantList
+        on sourceUI_plantList_grip MouseMove sender args do moveListDrag sender args
+        on sourceUI_plantList_grip MouseUp sender args do (stopListDrag();true)
+        on sourceUI_plantList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on sourceUI_plantList_grip Paint sender args do paintListGrip sender args
+        on diversityUI_strokesList_grip MouseDown sender args do beginListDrag sender args diversityUI_strokesList
+        on diversityUI_strokesList_grip MouseMove sender args do moveListDrag sender args
+        on diversityUI_strokesList_grip MouseUp sender args do (stopListDrag();true)
+        on diversityUI_strokesList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on diversityUI_strokesList_grip Paint sender args do paintListGrip sender args
+        on diversityUI_strokeChoices_grip MouseDown sender args do beginListDrag sender args diversityUI_strokeChoices
+        on diversityUI_strokeChoices_grip MouseMove sender args do moveListDrag sender args
+        on diversityUI_strokeChoices_grip MouseUp sender args do (stopListDrag();true)
+        on diversityUI_strokeChoices_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on diversityUI_strokeChoices_grip Paint sender args do paintListGrip sender args
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -1810,7 +1799,7 @@ fn CyrusLayerEditor_modelsUI_1 = (
         )
         fn bind layer = (
             if root==undefined do return false
-            binding=true;controlsReady=false
+            stopListDrag();binding=true;controlsReady=false
             try (
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
@@ -1832,7 +1821,7 @@ fn CyrusLayerEditor_modelsUI_1 = (
         )
         on modelsUI_1 resized size do if controlsReady and not binding and (amax 140 modelsUI_1.width)!=lastLayoutWidth do layout()
         on modelsUI_1 open do (root=CyrusLayerUIRoot;owner=CyrusLayerUIOwner;panel=CyrusLayerUIPanel;bind owner)
-        on modelsUI_1 close do (controlsReady=false;root=undefined;owner=undefined;obj=undefined;sourceContainersUI_controlsReady=false;sourceContainersUI_root=undefined;sourceContainersUI_owner=undefined;sourceUI_controlsReady=false;sourceUI_root=undefined;sourceUI_owner=undefined;sourceUI_obj=undefined;diversityUI_controlsReady=false;diversityUI_root=undefined;diversityUI_owner=undefined;diversityUI_obj=undefined)
+        on modelsUI_1 close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;sourceContainersUI_controlsReady=false;sourceContainersUI_root=undefined;sourceContainersUI_owner=undefined;sourceUI_controlsReady=false;sourceUI_root=undefined;sourceUI_owner=undefined;sourceUI_obj=undefined;diversityUI_controlsReady=false;diversityUI_root=undefined;diversityUI_owner=undefined;diversityUI_obj=undefined)
         on modelsUI_1 rolledUp state do (if controlsReady do bind owner)
     )
     modelsUI_1
@@ -1948,7 +1937,7 @@ fn CyrusLayerEditor_populationUI_1 = (
             )
             control.height=amax minimum (lines*14+2);true
         )
-        local dragList=undefined,dragStartY=0,dragStartHeight=0
+        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
         fn captureView = #(populationUI_1.open,#(advancedToggle.checked),#())
         fn restoreView state = (
             populationUI_1.open=state[1]
@@ -1956,10 +1945,43 @@ fn CyrusLayerEditor_populationUI_1 = (
 
             true
         )
+        fn stopListDrag = (
+            local previous=dragGrip
+            dragGrip=undefined;dragList=undefined
+            if previous!=undefined do previous.Capture=false
+            true
+        )
+        fn gripScreenY sender args = (
+            local point=dotNetObject "System.Drawing.Point" args.X args.Y
+            (sender.PointToScreen point).Y
+        )
+        fn beginListDrag sender args target = (
+            if not controlsReady or binding or root==undefined or not sender.Visible or not sender.Enabled do return false
+            if args.Button!=(dotNetClass "System.Windows.Forms.MouseButtons").Left do return false
+            stopListDrag()
+            dragStartY=gripScreenY sender args;dragStartHeight=target.height
+            dragList=target;dragGrip=sender;sender.Capture=true;true
+        )
+        fn moveListDrag sender args = (
+            if dragGrip!=sender or dragList==undefined or not sender.Capture do return false
+            if not controlsReady or binding or root==undefined or not sender.Visible do return stopListDrag()
+            local nextHeight=amin 900 (amax 42 (dragStartHeight+(gripScreenY sender args)-dragStartY))
+            if nextHeight!=dragList.height do (dragList.height=nextHeight;layout();true)
+            true
+        )
+        fn paintListGrip sender args = (
+            local pen=dotNetObject "System.Drawing.Pen" ((dotNetClass "System.Drawing.Color").FromArgb 135 135 135)
+            local center=(sender.ClientSize.Width/2) as integer
+            args.Graphics.DrawLine pen (center-10) 3 (center+10) 3
+            args.Graphics.DrawLine pen (center-10) 5 (center+10) 5
+            pen.Dispose()
+        )
         fn setupGrips = (
             for grip in #() do (
                 grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
-                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").Fixed3D
+                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
+                grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
+                grip.TabStop=false
             )
             true
         )
@@ -2172,7 +2194,7 @@ fn CyrusLayerEditor_populationUI_1 = (
         )
         fn bind layer = (
             if root==undefined do return false
-            binding=true;controlsReady=false
+            stopListDrag();binding=true;controlsReady=false
             try (
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
@@ -2190,7 +2212,7 @@ fn CyrusLayerEditor_populationUI_1 = (
         )
         on populationUI_1 resized size do if controlsReady and not binding and (amax 140 populationUI_1.width)!=lastLayoutWidth do layout()
         on populationUI_1 open do (root=CyrusLayerUIRoot;owner=CyrusLayerUIOwner;panel=CyrusLayerUIPanel;bind owner)
-        on populationUI_1 close do (controlsReady=false;root=undefined;owner=undefined;obj=undefined;distributionUI_controlsReady=false;distributionUI_root=undefined;distributionUI_owner=undefined;distributionUI_obj=undefined;populationPolicyUI_controlsReady=false;populationPolicyUI_root=undefined;populationPolicyUI_owner=undefined)
+        on populationUI_1 close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;distributionUI_controlsReady=false;distributionUI_root=undefined;distributionUI_owner=undefined;distributionUI_obj=undefined;populationPolicyUI_controlsReady=false;populationPolicyUI_root=undefined;populationPolicyUI_owner=undefined)
         on populationUI_1 rolledUp state do (if controlsReady do bind owner)
     )
     populationUI_1
@@ -2416,7 +2438,7 @@ fn CyrusLayerEditor_coverageUI_1 = (
             )
             control.height=amax minimum (lines*14+2);true
         )
-        local dragList=undefined,dragStartY=0,dragStartHeight=0
+        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
         fn captureView = #(coverageUI_1.open,#(advancedToggle.checked),#(brushUI_strokeList.height,backgroundUI_referenceList.height))
         fn restoreView state = (
             coverageUI_1.open=state[1]
@@ -2424,45 +2446,56 @@ fn CyrusLayerEditor_coverageUI_1 = (
             brushUI_strokeList.height=state[3][1];backgroundUI_referenceList.height=state[3][2]
             true
         )
+        fn stopListDrag = (
+            local previous=dragGrip
+            dragGrip=undefined;dragList=undefined
+            if previous!=undefined do previous.Capture=false
+            true
+        )
+        fn gripScreenY sender args = (
+            local point=dotNetObject "System.Drawing.Point" args.X args.Y
+            (sender.PointToScreen point).Y
+        )
+        fn beginListDrag sender args target = (
+            if not controlsReady or binding or root==undefined or not sender.Visible or not sender.Enabled do return false
+            if args.Button!=(dotNetClass "System.Windows.Forms.MouseButtons").Left do return false
+            stopListDrag()
+            dragStartY=gripScreenY sender args;dragStartHeight=target.height
+            dragList=target;dragGrip=sender;sender.Capture=true;true
+        )
+        fn moveListDrag sender args = (
+            if dragGrip!=sender or dragList==undefined or not sender.Capture do return false
+            if not controlsReady or binding or root==undefined or not sender.Visible do return stopListDrag()
+            local nextHeight=amin 900 (amax 42 (dragStartHeight+(gripScreenY sender args)-dragStartY))
+            if nextHeight!=dragList.height do (dragList.height=nextHeight;layout();true)
+            true
+        )
+        fn paintListGrip sender args = (
+            local pen=dotNetObject "System.Drawing.Pen" ((dotNetClass "System.Drawing.Color").FromArgb 135 135 135)
+            local center=(sender.ClientSize.Width/2) as integer
+            args.Graphics.DrawLine pen (center-10) 3 (center+10) 3
+            args.Graphics.DrawLine pen (center-10) 5 (center+10) 5
+            pen.Dispose()
+        )
         fn setupGrips = (
             for grip in #(brushUI_strokeList_grip,backgroundUI_referenceList_grip) do (
                 grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
-                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").Fixed3D
+                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
+                grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
+                grip.TabStop=false
             )
             true
         )
-        on brushUI_strokeList_grip MouseDown sender args do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (if args.Button==(dotNetClass "System.Windows.Forms.MouseButtons").Left do (
-            dragList=brushUI_strokeList;dragStartY=(dotNetClass "System.Windows.Forms.Cursor").Position.Y;dragStartHeight=dragList.height;sender.Capture=true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on brushUI_strokeList_grip MouseMove sender args do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (if sender.Capture and dragList!=undefined do (
-            dragList.height=amin 900 (amax 42 (dragStartHeight+(dotNetClass "System.Windows.Forms.Cursor").Position.Y-dragStartY));layout();true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on brushUI_strokeList_grip MouseUp sender args do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do ((sender.Capture=false;dragList=undefined;true)
-            if controlsReady and root!=undefined do layout()
-        )
-        on brushUI_strokeList_grip MouseCaptureChanged sender args do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (if not sender.Capture do dragList=undefined
-            if controlsReady and root!=undefined do layout()
-        )
-        on backgroundUI_referenceList_grip MouseDown sender args do if controlsReady and not binding and root!=undefined and backgroundUI_controlsReady and not backgroundUI_binding and true do (if args.Button==(dotNetClass "System.Windows.Forms.MouseButtons").Left do (
-            dragList=backgroundUI_referenceList;dragStartY=(dotNetClass "System.Windows.Forms.Cursor").Position.Y;dragStartHeight=dragList.height;sender.Capture=true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on backgroundUI_referenceList_grip MouseMove sender args do if controlsReady and not binding and root!=undefined and backgroundUI_controlsReady and not backgroundUI_binding and true do (if sender.Capture and dragList!=undefined do (
-            dragList.height=amin 900 (amax 42 (dragStartHeight+(dotNetClass "System.Windows.Forms.Cursor").Position.Y-dragStartY));layout();true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on backgroundUI_referenceList_grip MouseUp sender args do if controlsReady and not binding and root!=undefined and backgroundUI_controlsReady and not backgroundUI_binding and true do ((sender.Capture=false;dragList=undefined;true)
-            if controlsReady and root!=undefined do layout()
-        )
-        on backgroundUI_referenceList_grip MouseCaptureChanged sender args do if controlsReady and not binding and root!=undefined and backgroundUI_controlsReady and not backgroundUI_binding and true do (if not sender.Capture do dragList=undefined
-            if controlsReady and root!=undefined do layout()
-        )
+        on brushUI_strokeList_grip MouseDown sender args do beginListDrag sender args brushUI_strokeList
+        on brushUI_strokeList_grip MouseMove sender args do moveListDrag sender args
+        on brushUI_strokeList_grip MouseUp sender args do (stopListDrag();true)
+        on brushUI_strokeList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on brushUI_strokeList_grip Paint sender args do paintListGrip sender args
+        on backgroundUI_referenceList_grip MouseDown sender args do beginListDrag sender args backgroundUI_referenceList
+        on backgroundUI_referenceList_grip MouseMove sender args do moveListDrag sender args
+        on backgroundUI_referenceList_grip MouseUp sender args do (stopListDrag();true)
+        on backgroundUI_referenceList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on backgroundUI_referenceList_grip Paint sender args do paintListGrip sender args
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -2796,7 +2829,7 @@ fn CyrusLayerEditor_coverageUI_1 = (
         )
         fn bind layer = (
             if root==undefined do return false
-            binding=true;controlsReady=false
+            stopListDrag();binding=true;controlsReady=false
             try (
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
@@ -2815,7 +2848,7 @@ fn CyrusLayerEditor_coverageUI_1 = (
         )
         on coverageUI_1 resized size do if controlsReady and not binding and (amax 140 coverageUI_1.width)!=lastLayoutWidth do layout()
         on coverageUI_1 open do (root=CyrusLayerUIRoot;owner=CyrusLayerUIOwner;panel=CyrusLayerUIPanel;bind owner)
-        on coverageUI_1 close do (controlsReady=false;root=undefined;owner=undefined;obj=undefined;brushUI_controlsReady=false;brushUI_root=undefined;brushUI_owner=undefined;brushUI_obj=undefined;backgroundUI_controlsReady=false;backgroundUI_root=undefined;backgroundUI_owner=undefined)
+        on coverageUI_1 close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;brushUI_controlsReady=false;brushUI_root=undefined;brushUI_owner=undefined;brushUI_obj=undefined;backgroundUI_controlsReady=false;backgroundUI_root=undefined;backgroundUI_owner=undefined)
         on coverageUI_1 rolledUp state do (if controlsReady do bind owner)
     )
     coverageUI_1
@@ -3049,7 +3082,7 @@ fn CyrusLayerEditor_areasUI_1 = (
             )
             control.height=amax minimum (lines*14+2);true
         )
-        local dragList=undefined,dragStartY=0,dragStartHeight=0
+        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
         fn captureView = #(areasUI_1.open,#(advancedToggle.checked),#(areaUI_areaList.height))
         fn restoreView state = (
             areasUI_1.open=state[1]
@@ -3057,29 +3090,51 @@ fn CyrusLayerEditor_areasUI_1 = (
             areaUI_areaList.height=state[3][1]
             true
         )
+        fn stopListDrag = (
+            local previous=dragGrip
+            dragGrip=undefined;dragList=undefined
+            if previous!=undefined do previous.Capture=false
+            true
+        )
+        fn gripScreenY sender args = (
+            local point=dotNetObject "System.Drawing.Point" args.X args.Y
+            (sender.PointToScreen point).Y
+        )
+        fn beginListDrag sender args target = (
+            if not controlsReady or binding or root==undefined or not sender.Visible or not sender.Enabled do return false
+            if args.Button!=(dotNetClass "System.Windows.Forms.MouseButtons").Left do return false
+            stopListDrag()
+            dragStartY=gripScreenY sender args;dragStartHeight=target.height
+            dragList=target;dragGrip=sender;sender.Capture=true;true
+        )
+        fn moveListDrag sender args = (
+            if dragGrip!=sender or dragList==undefined or not sender.Capture do return false
+            if not controlsReady or binding or root==undefined or not sender.Visible do return stopListDrag()
+            local nextHeight=amin 900 (amax 42 (dragStartHeight+(gripScreenY sender args)-dragStartY))
+            if nextHeight!=dragList.height do (dragList.height=nextHeight;layout();true)
+            true
+        )
+        fn paintListGrip sender args = (
+            local pen=dotNetObject "System.Drawing.Pen" ((dotNetClass "System.Drawing.Color").FromArgb 135 135 135)
+            local center=(sender.ClientSize.Width/2) as integer
+            args.Graphics.DrawLine pen (center-10) 3 (center+10) 3
+            args.Graphics.DrawLine pen (center-10) 5 (center+10) 5
+            pen.Dispose()
+        )
         fn setupGrips = (
             for grip in #(areaUI_areaList_grip) do (
                 grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
-                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").Fixed3D
+                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
+                grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
+                grip.TabStop=false
             )
             true
         )
-        on areaUI_areaList_grip MouseDown sender args do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and true do (if args.Button==(dotNetClass "System.Windows.Forms.MouseButtons").Left do (
-            dragList=areaUI_areaList;dragStartY=(dotNetClass "System.Windows.Forms.Cursor").Position.Y;dragStartHeight=dragList.height;sender.Capture=true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on areaUI_areaList_grip MouseMove sender args do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and true do (if sender.Capture and dragList!=undefined do (
-            dragList.height=amin 900 (amax 42 (dragStartHeight+(dotNetClass "System.Windows.Forms.Cursor").Position.Y-dragStartY));layout();true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on areaUI_areaList_grip MouseUp sender args do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and true do ((sender.Capture=false;dragList=undefined;true)
-            if controlsReady and root!=undefined do layout()
-        )
-        on areaUI_areaList_grip MouseCaptureChanged sender args do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and true do (if not sender.Capture do dragList=undefined
-            if controlsReady and root!=undefined do layout()
-        )
+        on areaUI_areaList_grip MouseDown sender args do beginListDrag sender args areaUI_areaList
+        on areaUI_areaList_grip MouseMove sender args do moveListDrag sender args
+        on areaUI_areaList_grip MouseUp sender args do (stopListDrag();true)
+        on areaUI_areaList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on areaUI_areaList_grip Paint sender args do paintListGrip sender args
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -3433,7 +3488,7 @@ fn CyrusLayerEditor_areasUI_1 = (
         )
         fn bind layer = (
             if root==undefined do return false
-            binding=true;controlsReady=false
+            stopListDrag();binding=true;controlsReady=false
             try (
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
@@ -3449,7 +3504,7 @@ fn CyrusLayerEditor_areasUI_1 = (
         )
         on areasUI_1 resized size do if controlsReady and not binding and (amax 140 areasUI_1.width)!=lastLayoutWidth do layout()
         on areasUI_1 open do (root=CyrusLayerUIRoot;owner=CyrusLayerUIOwner;panel=CyrusLayerUIPanel;bind owner)
-        on areasUI_1 close do (controlsReady=false;root=undefined;owner=undefined;obj=undefined;areaUI_controlsReady=false;areaUI_root=undefined;areaUI_owner=undefined;areaUI_obj=undefined)
+        on areasUI_1 close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;areaUI_controlsReady=false;areaUI_root=undefined;areaUI_owner=undefined;areaUI_obj=undefined)
         on areasUI_1 rolledUp state do (if controlsReady do bind owner)
     )
     areasUI_1
@@ -3620,7 +3675,7 @@ fn CyrusLayerEditor_transformsUI_1 = (
             )
             control.height=amax minimum (lines*14+2);true
         )
-        local dragList=undefined,dragStartY=0,dragStartHeight=0
+        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
         fn captureView = #(transformsUI_1.open,#(advancedToggle.checked),#())
         fn restoreView state = (
             transformsUI_1.open=state[1]
@@ -3628,10 +3683,43 @@ fn CyrusLayerEditor_transformsUI_1 = (
 
             true
         )
+        fn stopListDrag = (
+            local previous=dragGrip
+            dragGrip=undefined;dragList=undefined
+            if previous!=undefined do previous.Capture=false
+            true
+        )
+        fn gripScreenY sender args = (
+            local point=dotNetObject "System.Drawing.Point" args.X args.Y
+            (sender.PointToScreen point).Y
+        )
+        fn beginListDrag sender args target = (
+            if not controlsReady or binding or root==undefined or not sender.Visible or not sender.Enabled do return false
+            if args.Button!=(dotNetClass "System.Windows.Forms.MouseButtons").Left do return false
+            stopListDrag()
+            dragStartY=gripScreenY sender args;dragStartHeight=target.height
+            dragList=target;dragGrip=sender;sender.Capture=true;true
+        )
+        fn moveListDrag sender args = (
+            if dragGrip!=sender or dragList==undefined or not sender.Capture do return false
+            if not controlsReady or binding or root==undefined or not sender.Visible do return stopListDrag()
+            local nextHeight=amin 900 (amax 42 (dragStartHeight+(gripScreenY sender args)-dragStartY))
+            if nextHeight!=dragList.height do (dragList.height=nextHeight;layout();true)
+            true
+        )
+        fn paintListGrip sender args = (
+            local pen=dotNetObject "System.Drawing.Pen" ((dotNetClass "System.Drawing.Color").FromArgb 135 135 135)
+            local center=(sender.ClientSize.Width/2) as integer
+            args.Graphics.DrawLine pen (center-10) 3 (center+10) 3
+            args.Graphics.DrawLine pen (center-10) 5 (center+10) 5
+            pen.Dispose()
+        )
         fn setupGrips = (
             for grip in #() do (
                 grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
-                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").Fixed3D
+                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
+                grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
+                grip.TabStop=false
             )
             true
         )
@@ -4064,7 +4152,7 @@ fn CyrusLayerEditor_transformsUI_1 = (
         )
         fn bind layer = (
             if root==undefined do return false
-            binding=true;controlsReady=false
+            stopListDrag();binding=true;controlsReady=false
             try (
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
@@ -4080,7 +4168,7 @@ fn CyrusLayerEditor_transformsUI_1 = (
         )
         on transformsUI_1 resized size do if controlsReady and not binding and (amax 140 transformsUI_1.width)!=lastLayoutWidth do layout()
         on transformsUI_1 open do (root=CyrusLayerUIRoot;owner=CyrusLayerUIOwner;panel=CyrusLayerUIPanel;bind owner)
-        on transformsUI_1 close do (controlsReady=false;root=undefined;owner=undefined;obj=undefined;randomUI_controlsReady=false;randomUI_root=undefined;randomUI_owner=undefined;randomUI_obj=undefined)
+        on transformsUI_1 close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;randomUI_controlsReady=false;randomUI_root=undefined;randomUI_owner=undefined;randomUI_obj=undefined)
         on transformsUI_1 rolledUp state do (if controlsReady do bind owner)
     )
     transformsUI_1
@@ -4303,7 +4391,7 @@ fn CyrusLayerEditor_spacingUI_1 = (
             )
             control.height=amax minimum (lines*14+2);true
         )
-        local dragList=undefined,dragStartY=0,dragStartHeight=0
+        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
         fn captureView = #(spacingUI_1.open,#(advancedToggle.checked),#())
         fn restoreView state = (
             spacingUI_1.open=state[1]
@@ -4311,10 +4399,43 @@ fn CyrusLayerEditor_spacingUI_1 = (
 
             true
         )
+        fn stopListDrag = (
+            local previous=dragGrip
+            dragGrip=undefined;dragList=undefined
+            if previous!=undefined do previous.Capture=false
+            true
+        )
+        fn gripScreenY sender args = (
+            local point=dotNetObject "System.Drawing.Point" args.X args.Y
+            (sender.PointToScreen point).Y
+        )
+        fn beginListDrag sender args target = (
+            if not controlsReady or binding or root==undefined or not sender.Visible or not sender.Enabled do return false
+            if args.Button!=(dotNetClass "System.Windows.Forms.MouseButtons").Left do return false
+            stopListDrag()
+            dragStartY=gripScreenY sender args;dragStartHeight=target.height
+            dragList=target;dragGrip=sender;sender.Capture=true;true
+        )
+        fn moveListDrag sender args = (
+            if dragGrip!=sender or dragList==undefined or not sender.Capture do return false
+            if not controlsReady or binding or root==undefined or not sender.Visible do return stopListDrag()
+            local nextHeight=amin 900 (amax 42 (dragStartHeight+(gripScreenY sender args)-dragStartY))
+            if nextHeight!=dragList.height do (dragList.height=nextHeight;layout();true)
+            true
+        )
+        fn paintListGrip sender args = (
+            local pen=dotNetObject "System.Drawing.Pen" ((dotNetClass "System.Drawing.Color").FromArgb 135 135 135)
+            local center=(sender.ClientSize.Width/2) as integer
+            args.Graphics.DrawLine pen (center-10) 3 (center+10) 3
+            args.Graphics.DrawLine pen (center-10) 5 (center+10) 5
+            pen.Dispose()
+        )
         fn setupGrips = (
             for grip in #() do (
                 grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
-                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").Fixed3D
+                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
+                grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
+                grip.TabStop=false
             )
             true
         )
@@ -4690,7 +4811,7 @@ fn CyrusLayerEditor_spacingUI_1 = (
         )
         fn bind layer = (
             if root==undefined do return false
-            binding=true;controlsReady=false
+            stopListDrag();binding=true;controlsReady=false
             try (
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
@@ -4712,7 +4833,7 @@ fn CyrusLayerEditor_spacingUI_1 = (
         )
         on spacingUI_1 resized size do if controlsReady and not binding and (amax 140 spacingUI_1.width)!=lastLayoutWidth do layout()
         on spacingUI_1 open do (root=CyrusLayerUIRoot;owner=CyrusLayerUIOwner;panel=CyrusLayerUIPanel;bind owner)
-        on spacingUI_1 close do (controlsReady=false;root=undefined;owner=undefined;obj=undefined;proceduralUI_controlsReady=false;proceduralUI_root=undefined;proceduralUI_owner=undefined;instanceRadiusUI_controlsReady=false;instanceRadiusUI_root=undefined;instanceRadiusUI_owner=undefined;spacingUI_controlsReady=false;spacingUI_root=undefined;spacingUI_owner=undefined;spacingUI_obj=undefined;separationUI_controlsReady=false;separationUI_root=undefined;separationUI_owner=undefined)
+        on spacingUI_1 close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;proceduralUI_controlsReady=false;proceduralUI_root=undefined;proceduralUI_owner=undefined;instanceRadiusUI_controlsReady=false;instanceRadiusUI_root=undefined;instanceRadiusUI_owner=undefined;spacingUI_controlsReady=false;spacingUI_root=undefined;spacingUI_owner=undefined;spacingUI_obj=undefined;separationUI_controlsReady=false;separationUI_root=undefined;separationUI_owner=undefined)
         on spacingUI_1 rolledUp state do (if controlsReady do bind owner)
     )
     spacingUI_1
@@ -4881,7 +5002,7 @@ fn CyrusLayerEditor_statisticsUI_1 = (
             )
             control.height=amax minimum (lines*14+2);true
         )
-        local dragList=undefined,dragStartY=0,dragStartHeight=0
+        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
         fn captureView = #(statisticsUI_1.open,#(advancedToggle.checked,workflowToggle.checked),#())
         fn restoreView state = (
             statisticsUI_1.open=state[1]
@@ -4889,10 +5010,43 @@ fn CyrusLayerEditor_statisticsUI_1 = (
 
             true
         )
+        fn stopListDrag = (
+            local previous=dragGrip
+            dragGrip=undefined;dragList=undefined
+            if previous!=undefined do previous.Capture=false
+            true
+        )
+        fn gripScreenY sender args = (
+            local point=dotNetObject "System.Drawing.Point" args.X args.Y
+            (sender.PointToScreen point).Y
+        )
+        fn beginListDrag sender args target = (
+            if not controlsReady or binding or root==undefined or not sender.Visible or not sender.Enabled do return false
+            if args.Button!=(dotNetClass "System.Windows.Forms.MouseButtons").Left do return false
+            stopListDrag()
+            dragStartY=gripScreenY sender args;dragStartHeight=target.height
+            dragList=target;dragGrip=sender;sender.Capture=true;true
+        )
+        fn moveListDrag sender args = (
+            if dragGrip!=sender or dragList==undefined or not sender.Capture do return false
+            if not controlsReady or binding or root==undefined or not sender.Visible do return stopListDrag()
+            local nextHeight=amin 900 (amax 42 (dragStartHeight+(gripScreenY sender args)-dragStartY))
+            if nextHeight!=dragList.height do (dragList.height=nextHeight;layout();true)
+            true
+        )
+        fn paintListGrip sender args = (
+            local pen=dotNetObject "System.Drawing.Pen" ((dotNetClass "System.Drawing.Color").FromArgb 135 135 135)
+            local center=(sender.ClientSize.Width/2) as integer
+            args.Graphics.DrawLine pen (center-10) 3 (center+10) 3
+            args.Graphics.DrawLine pen (center-10) 5 (center+10) 5
+            pen.Dispose()
+        )
         fn setupGrips = (
             for grip in #() do (
                 grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
-                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").Fixed3D
+                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
+                grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
+                grip.TabStop=false
             )
             true
         )
@@ -5012,7 +5166,7 @@ fn CyrusLayerEditor_statisticsUI_1 = (
         )
         fn bind layer = (
             if root==undefined do return false
-            binding=true;controlsReady=false
+            stopListDrag();binding=true;controlsReady=false
             try (
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
@@ -5034,7 +5188,7 @@ fn CyrusLayerEditor_statisticsUI_1 = (
         )
         on statisticsUI_1 resized size do if controlsReady and not binding and (amax 140 statisticsUI_1.width)!=lastLayoutWidth do layout()
         on statisticsUI_1 open do (root=CyrusLayerUIRoot;owner=CyrusLayerUIOwner;panel=CyrusLayerUIPanel;bind owner)
-        on statisticsUI_1 close do (controlsReady=false;root=undefined;owner=undefined;obj=undefined;detailsUI_controlsReady=false;detailsUI_root=undefined;detailsUI_owner=undefined;workflowUI_controlsReady=false;workflowUI_root=undefined;workflowUI_owner=undefined;diagnosticsUI_controlsReady=false;diagnosticsUI_root=undefined;diagnosticsUI_owner=undefined)
+        on statisticsUI_1 close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;detailsUI_controlsReady=false;detailsUI_root=undefined;detailsUI_owner=undefined;workflowUI_controlsReady=false;workflowUI_root=undefined;workflowUI_owner=undefined;diagnosticsUI_controlsReady=false;diagnosticsUI_root=undefined;diagnosticsUI_owner=undefined)
         on statisticsUI_1 rolledUp state do (if controlsReady do bind owner)
     )
     statisticsUI_1
@@ -5118,7 +5272,7 @@ fn CyrusLayerEditor_setsUI_1 = (
             )
             control.height=amax minimum (lines*14+2);true
         )
-        local dragList=undefined,dragStartY=0,dragStartHeight=0
+        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
         fn captureView = #(setsUI_1.open,#(advancedToggle.checked),#())
         fn restoreView state = (
             setsUI_1.open=state[1]
@@ -5126,10 +5280,43 @@ fn CyrusLayerEditor_setsUI_1 = (
 
             true
         )
+        fn stopListDrag = (
+            local previous=dragGrip
+            dragGrip=undefined;dragList=undefined
+            if previous!=undefined do previous.Capture=false
+            true
+        )
+        fn gripScreenY sender args = (
+            local point=dotNetObject "System.Drawing.Point" args.X args.Y
+            (sender.PointToScreen point).Y
+        )
+        fn beginListDrag sender args target = (
+            if not controlsReady or binding or root==undefined or not sender.Visible or not sender.Enabled do return false
+            if args.Button!=(dotNetClass "System.Windows.Forms.MouseButtons").Left do return false
+            stopListDrag()
+            dragStartY=gripScreenY sender args;dragStartHeight=target.height
+            dragList=target;dragGrip=sender;sender.Capture=true;true
+        )
+        fn moveListDrag sender args = (
+            if dragGrip!=sender or dragList==undefined or not sender.Capture do return false
+            if not controlsReady or binding or root==undefined or not sender.Visible do return stopListDrag()
+            local nextHeight=amin 900 (amax 42 (dragStartHeight+(gripScreenY sender args)-dragStartY))
+            if nextHeight!=dragList.height do (dragList.height=nextHeight;layout();true)
+            true
+        )
+        fn paintListGrip sender args = (
+            local pen=dotNetObject "System.Drawing.Pen" ((dotNetClass "System.Drawing.Color").FromArgb 135 135 135)
+            local center=(sender.ClientSize.Width/2) as integer
+            args.Graphics.DrawLine pen (center-10) 3 (center+10) 3
+            args.Graphics.DrawLine pen (center-10) 5 (center+10) 5
+            pen.Dispose()
+        )
         fn setupGrips = (
             for grip in #() do (
                 grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
-                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").Fixed3D
+                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
+                grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
+                grip.TabStop=false
             )
             true
         )
@@ -5251,7 +5438,7 @@ fn CyrusLayerEditor_setsUI_1 = (
         )
         fn bind layer = (
             if root==undefined do return false
-            binding=true;controlsReady=false
+            stopListDrag();binding=true;controlsReady=false
             try (
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
@@ -5267,7 +5454,7 @@ fn CyrusLayerEditor_setsUI_1 = (
         )
         on setsUI_1 resized size do if controlsReady and not binding and (amax 140 setsUI_1.width)!=lastLayoutWidth do layout()
         on setsUI_1 open do (root=CyrusLayerUIRoot;owner=CyrusLayerUIOwner;panel=CyrusLayerUIPanel;bind owner)
-        on setsUI_1 close do (controlsReady=false;root=undefined;owner=undefined;obj=undefined;setsUI_controlsReady=false;setsUI_root=undefined;setsUI_owner=undefined)
+        on setsUI_1 close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;setsUI_controlsReady=false;setsUI_root=undefined;setsUI_owner=undefined)
         on setsUI_1 rolledUp state do (if controlsReady do bind owner)
     )
     setsUI_1
@@ -8043,7 +8230,7 @@ initialRollupState:0x8
             )
             control.height=amax minimum (lines*14+2);true
         )
-        local dragList=undefined,dragStartY=0,dragStartHeight=0
+        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
         fn captureView = #(surfacesUI.open,#(advancedToggle.checked),#(flow_surfaceUI_receiversList.height,flow_surfaceUI_globalContainers.height))
         fn restoreView state = (
             surfacesUI.open=state[1]
@@ -8051,45 +8238,56 @@ initialRollupState:0x8
             flow_surfaceUI_receiversList.height=state[3][1];flow_surfaceUI_globalContainers.height=state[3][2]
             true
         )
+        fn stopListDrag = (
+            local previous=dragGrip
+            dragGrip=undefined;dragList=undefined
+            if previous!=undefined do previous.Capture=false
+            true
+        )
+        fn gripScreenY sender args = (
+            local point=dotNetObject "System.Drawing.Point" args.X args.Y
+            (sender.PointToScreen point).Y
+        )
+        fn beginListDrag sender args target = (
+            if not controlsReady or binding or root==undefined or not sender.Visible or not sender.Enabled do return false
+            if args.Button!=(dotNetClass "System.Windows.Forms.MouseButtons").Left do return false
+            stopListDrag()
+            dragStartY=gripScreenY sender args;dragStartHeight=target.height
+            dragList=target;dragGrip=sender;sender.Capture=true;true
+        )
+        fn moveListDrag sender args = (
+            if dragGrip!=sender or dragList==undefined or not sender.Capture do return false
+            if not controlsReady or binding or root==undefined or not sender.Visible do return stopListDrag()
+            local nextHeight=amin 900 (amax 42 (dragStartHeight+(gripScreenY sender args)-dragStartY))
+            if nextHeight!=dragList.height do (dragList.height=nextHeight;layout();if panel!=undefined do panel.rememberViews();true)
+            true
+        )
+        fn paintListGrip sender args = (
+            local pen=dotNetObject "System.Drawing.Pen" ((dotNetClass "System.Drawing.Color").FromArgb 135 135 135)
+            local center=(sender.ClientSize.Width/2) as integer
+            args.Graphics.DrawLine pen (center-10) 3 (center+10) 3
+            args.Graphics.DrawLine pen (center-10) 5 (center+10) 5
+            pen.Dispose()
+        )
         fn setupGrips = (
             for grip in #(flow_surfaceUI_receiversList_grip,flow_surfaceUI_globalContainers_grip) do (
                 grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
-                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").Fixed3D
+                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
+                grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
+                grip.TabStop=false
             )
             true
         )
-        on flow_surfaceUI_receiversList_grip MouseDown sender args do if controlsReady and not binding and root!=undefined and flow_surfaceUI_controlsReady and not flow_surfaceUI_binding and true do (if args.Button==(dotNetClass "System.Windows.Forms.MouseButtons").Left do (
-            dragList=flow_surfaceUI_receiversList;dragStartY=(dotNetClass "System.Windows.Forms.Cursor").Position.Y;dragStartHeight=dragList.height;sender.Capture=true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on flow_surfaceUI_receiversList_grip MouseMove sender args do if controlsReady and not binding and root!=undefined and flow_surfaceUI_controlsReady and not flow_surfaceUI_binding and true do (if sender.Capture and dragList!=undefined do (
-            dragList.height=amin 900 (amax 42 (dragStartHeight+(dotNetClass "System.Windows.Forms.Cursor").Position.Y-dragStartY));layout();if panel!=undefined do panel.rememberViews();true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on flow_surfaceUI_receiversList_grip MouseUp sender args do if controlsReady and not binding and root!=undefined and flow_surfaceUI_controlsReady and not flow_surfaceUI_binding and true do ((sender.Capture=false;dragList=undefined;if panel!=undefined do panel.rememberViews();true)
-            if controlsReady and root!=undefined do layout()
-        )
-        on flow_surfaceUI_receiversList_grip MouseCaptureChanged sender args do if controlsReady and not binding and root!=undefined and flow_surfaceUI_controlsReady and not flow_surfaceUI_binding and true do (if not sender.Capture do dragList=undefined
-            if controlsReady and root!=undefined do layout()
-        )
-        on flow_surfaceUI_globalContainers_grip MouseDown sender args do if controlsReady and not binding and root!=undefined and flow_surfaceUI_controlsReady and not flow_surfaceUI_binding and true do (if args.Button==(dotNetClass "System.Windows.Forms.MouseButtons").Left do (
-            dragList=flow_surfaceUI_globalContainers;dragStartY=(dotNetClass "System.Windows.Forms.Cursor").Position.Y;dragStartHeight=dragList.height;sender.Capture=true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on flow_surfaceUI_globalContainers_grip MouseMove sender args do if controlsReady and not binding and root!=undefined and flow_surfaceUI_controlsReady and not flow_surfaceUI_binding and true do (if sender.Capture and dragList!=undefined do (
-            dragList.height=amin 900 (amax 42 (dragStartHeight+(dotNetClass "System.Windows.Forms.Cursor").Position.Y-dragStartY));layout();if panel!=undefined do panel.rememberViews();true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on flow_surfaceUI_globalContainers_grip MouseUp sender args do if controlsReady and not binding and root!=undefined and flow_surfaceUI_controlsReady and not flow_surfaceUI_binding and true do ((sender.Capture=false;dragList=undefined;if panel!=undefined do panel.rememberViews();true)
-            if controlsReady and root!=undefined do layout()
-        )
-        on flow_surfaceUI_globalContainers_grip MouseCaptureChanged sender args do if controlsReady and not binding and root!=undefined and flow_surfaceUI_controlsReady and not flow_surfaceUI_binding and true do (if not sender.Capture do dragList=undefined
-            if controlsReady and root!=undefined do layout()
-        )
+        on flow_surfaceUI_receiversList_grip MouseDown sender args do beginListDrag sender args flow_surfaceUI_receiversList
+        on flow_surfaceUI_receiversList_grip MouseMove sender args do moveListDrag sender args
+        on flow_surfaceUI_receiversList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
+        on flow_surfaceUI_receiversList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on flow_surfaceUI_receiversList_grip Paint sender args do paintListGrip sender args
+        on flow_surfaceUI_globalContainers_grip MouseDown sender args do beginListDrag sender args flow_surfaceUI_globalContainers
+        on flow_surfaceUI_globalContainers_grip MouseMove sender args do moveListDrag sender args
+        on flow_surfaceUI_globalContainers_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
+        on flow_surfaceUI_globalContainers_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on flow_surfaceUI_globalContainers_grip Paint sender args do paintListGrip sender args
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -8228,7 +8426,7 @@ initialRollupState:0x8
         )
         fn bind layer = (
             if root==undefined do return false
-            binding=true;controlsReady=false
+            stopListDrag();binding=true;controlsReady=false
             try (
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
@@ -8244,7 +8442,7 @@ initialRollupState:0x8
         )
         on surfacesUI resized size do if controlsReady and not binding and (amax 140 surfacesUI.width)!=lastLayoutWidth do layout()
         on surfacesUI open do (panel=this.mainUI;root=undefined;controlsReady=false)
-        on surfacesUI close do (controlsReady=false;root=undefined;owner=undefined;obj=undefined;flow_surfaceUI_controlsReady=false;flow_surfaceUI_root=undefined;flow_surfaceUI_owner=undefined)
+        on surfacesUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;flow_surfaceUI_controlsReady=false;flow_surfaceUI_root=undefined;flow_surfaceUI_owner=undefined)
         on surfacesUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection surfacesUI;panel.rememberViews()))
     )
 
@@ -8476,7 +8674,7 @@ initialRollupState:0x8
                 syncingColorLists=false;true
             )catch(syncingColorLists=false;throw())
         )
-        local dragList=undefined,dragStartY=0,dragStartHeight=0
+        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
         fn captureView = #(managerUI.open,#(advancedToggle.checked,propertiesToggle.checked),#(flow_layersUI_layerList.height))
         fn restoreView state = (
             managerUI.open=state[1]
@@ -8484,29 +8682,51 @@ initialRollupState:0x8
             flow_layersUI_layerList.height=state[3][1]
             true
         )
+        fn stopListDrag = (
+            local previous=dragGrip
+            dragGrip=undefined;dragList=undefined
+            if previous!=undefined do previous.Capture=false
+            true
+        )
+        fn gripScreenY sender args = (
+            local point=dotNetObject "System.Drawing.Point" args.X args.Y
+            (sender.PointToScreen point).Y
+        )
+        fn beginListDrag sender args target = (
+            if not controlsReady or binding or root==undefined or not sender.Visible or not sender.Enabled do return false
+            if args.Button!=(dotNetClass "System.Windows.Forms.MouseButtons").Left do return false
+            stopListDrag()
+            dragStartY=gripScreenY sender args;dragStartHeight=target.height
+            dragList=target;dragGrip=sender;sender.Capture=true;true
+        )
+        fn moveListDrag sender args = (
+            if dragGrip!=sender or dragList==undefined or not sender.Capture do return false
+            if not controlsReady or binding or root==undefined or not sender.Visible do return stopListDrag()
+            local nextHeight=amin 900 (amax 42 (dragStartHeight+(gripScreenY sender args)-dragStartY))
+            if nextHeight!=dragList.height do (dragList.height=nextHeight;layout();if panel!=undefined do panel.rememberViews();true)
+            true
+        )
+        fn paintListGrip sender args = (
+            local pen=dotNetObject "System.Drawing.Pen" ((dotNetClass "System.Drawing.Color").FromArgb 135 135 135)
+            local center=(sender.ClientSize.Width/2) as integer
+            args.Graphics.DrawLine pen (center-10) 3 (center+10) 3
+            args.Graphics.DrawLine pen (center-10) 5 (center+10) 5
+            pen.Dispose()
+        )
         fn setupGrips = (
             for grip in #(flow_layersUI_layerList_grip) do (
                 grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
-                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").Fixed3D
+                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
+                grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
+                grip.TabStop=false
             )
             true
         )
-        on flow_layersUI_layerList_grip MouseDown sender args do if controlsReady and not binding and root!=undefined and flow_layersUI_controlsReady and not flow_layersUI_binding and true do (if args.Button==(dotNetClass "System.Windows.Forms.MouseButtons").Left do (
-            dragList=flow_layersUI_layerList;dragStartY=(dotNetClass "System.Windows.Forms.Cursor").Position.Y;dragStartHeight=dragList.height;sender.Capture=true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on flow_layersUI_layerList_grip MouseMove sender args do if controlsReady and not binding and root!=undefined and flow_layersUI_controlsReady and not flow_layersUI_binding and true do (if sender.Capture and dragList!=undefined do (
-            dragList.height=amin 900 (amax 42 (dragStartHeight+(dotNetClass "System.Windows.Forms.Cursor").Position.Y-dragStartY));layout();if panel!=undefined do panel.rememberViews();true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on flow_layersUI_layerList_grip MouseUp sender args do if controlsReady and not binding and root!=undefined and flow_layersUI_controlsReady and not flow_layersUI_binding and true do ((sender.Capture=false;dragList=undefined;if panel!=undefined do panel.rememberViews();true)
-            if controlsReady and root!=undefined do layout()
-        )
-        on flow_layersUI_layerList_grip MouseCaptureChanged sender args do if controlsReady and not binding and root!=undefined and flow_layersUI_controlsReady and not flow_layersUI_binding and true do (if not sender.Capture do dragList=undefined
-            if controlsReady and root!=undefined do layout()
-        )
+        on flow_layersUI_layerList_grip MouseDown sender args do beginListDrag sender args flow_layersUI_layerList
+        on flow_layersUI_layerList_grip MouseMove sender args do moveListDrag sender args
+        on flow_layersUI_layerList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
+        on flow_layersUI_layerList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on flow_layersUI_layerList_grip Paint sender args do paintListGrip sender args
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -8709,7 +8929,7 @@ initialRollupState:0x8
         )
         fn bind layer = (
             if root==undefined do return false
-            binding=true;controlsReady=false
+            stopListDrag();binding=true;controlsReady=false
             try (
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
@@ -8729,7 +8949,7 @@ initialRollupState:0x8
         )
         on managerUI resized size do if controlsReady and not binding and (amax 140 managerUI.width)!=lastLayoutWidth do layout()
         on managerUI open do (panel=this.mainUI;root=undefined;controlsReady=false)
-        on managerUI close do (controlsReady=false;root=undefined;owner=undefined;obj=undefined;flow_layersUI_controlsReady=false;flow_layersUI_root=undefined;flow_layersUI_owner=undefined;setsUI_controlsReady=false;setsUI_root=undefined;setsUI_owner=undefined)
+        on managerUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;flow_layersUI_controlsReady=false;flow_layersUI_root=undefined;flow_layersUI_owner=undefined;setsUI_controlsReady=false;setsUI_root=undefined;setsUI_owner=undefined)
         on managerUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection managerUI;panel.rememberViews()))
     )
 
@@ -9384,7 +9604,7 @@ initialRollupState:0x8
                 syncingColorLists=false;true
             )catch(syncingColorLists=false;throw())
         )
-        local dragList=undefined,dragStartY=0,dragStartHeight=0
+        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
         fn captureView = #(modelsUI.open,#(advancedToggle.checked,propertiesToggle.checked),#(sourceContainersUI_containersList.height,sourceUI_plantList.height,diversityUI_strokesList.height,diversityUI_strokeChoices.height))
         fn restoreView state = (
             modelsUI.open=state[1]
@@ -9392,77 +9612,66 @@ initialRollupState:0x8
             sourceContainersUI_containersList.height=state[3][1];sourceUI_plantList.height=state[3][2];diversityUI_strokesList.height=state[3][3];diversityUI_strokeChoices.height=state[3][4]
             true
         )
+        fn stopListDrag = (
+            local previous=dragGrip
+            dragGrip=undefined;dragList=undefined
+            if previous!=undefined do previous.Capture=false
+            true
+        )
+        fn gripScreenY sender args = (
+            local point=dotNetObject "System.Drawing.Point" args.X args.Y
+            (sender.PointToScreen point).Y
+        )
+        fn beginListDrag sender args target = (
+            if not controlsReady or binding or root==undefined or not sender.Visible or not sender.Enabled do return false
+            if args.Button!=(dotNetClass "System.Windows.Forms.MouseButtons").Left do return false
+            stopListDrag()
+            dragStartY=gripScreenY sender args;dragStartHeight=target.height
+            dragList=target;dragGrip=sender;sender.Capture=true;true
+        )
+        fn moveListDrag sender args = (
+            if dragGrip!=sender or dragList==undefined or not sender.Capture do return false
+            if not controlsReady or binding or root==undefined or not sender.Visible do return stopListDrag()
+            local nextHeight=amin 900 (amax 42 (dragStartHeight+(gripScreenY sender args)-dragStartY))
+            if nextHeight!=dragList.height do (dragList.height=nextHeight;layout();if panel!=undefined do panel.rememberViews();true)
+            true
+        )
+        fn paintListGrip sender args = (
+            local pen=dotNetObject "System.Drawing.Pen" ((dotNetClass "System.Drawing.Color").FromArgb 135 135 135)
+            local center=(sender.ClientSize.Width/2) as integer
+            args.Graphics.DrawLine pen (center-10) 3 (center+10) 3
+            args.Graphics.DrawLine pen (center-10) 5 (center+10) 5
+            pen.Dispose()
+        )
         fn setupGrips = (
             for grip in #(sourceContainersUI_containersList_grip,sourceUI_plantList_grip,diversityUI_strokesList_grip,diversityUI_strokeChoices_grip) do (
                 grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
-                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").Fixed3D
+                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
+                grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
+                grip.TabStop=false
             )
             true
         )
-        on sourceContainersUI_containersList_grip MouseDown sender args do if controlsReady and not binding and root!=undefined and sourceContainersUI_controlsReady and not sourceContainersUI_binding and true do (if args.Button==(dotNetClass "System.Windows.Forms.MouseButtons").Left do (
-            dragList=sourceContainersUI_containersList;dragStartY=(dotNetClass "System.Windows.Forms.Cursor").Position.Y;dragStartHeight=dragList.height;sender.Capture=true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on sourceContainersUI_containersList_grip MouseMove sender args do if controlsReady and not binding and root!=undefined and sourceContainersUI_controlsReady and not sourceContainersUI_binding and true do (if sender.Capture and dragList!=undefined do (
-            dragList.height=amin 900 (amax 42 (dragStartHeight+(dotNetClass "System.Windows.Forms.Cursor").Position.Y-dragStartY));layout();if panel!=undefined do panel.rememberViews();true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on sourceContainersUI_containersList_grip MouseUp sender args do if controlsReady and not binding and root!=undefined and sourceContainersUI_controlsReady and not sourceContainersUI_binding and true do ((sender.Capture=false;dragList=undefined;if panel!=undefined do panel.rememberViews();true)
-            if controlsReady and root!=undefined do layout()
-        )
-        on sourceContainersUI_containersList_grip MouseCaptureChanged sender args do if controlsReady and not binding and root!=undefined and sourceContainersUI_controlsReady and not sourceContainersUI_binding and true do (if not sender.Capture do dragList=undefined
-            if controlsReady and root!=undefined do layout()
-        )
-        on sourceUI_plantList_grip MouseDown sender args do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and true do (if args.Button==(dotNetClass "System.Windows.Forms.MouseButtons").Left do (
-            dragList=sourceUI_plantList;dragStartY=(dotNetClass "System.Windows.Forms.Cursor").Position.Y;dragStartHeight=dragList.height;sender.Capture=true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on sourceUI_plantList_grip MouseMove sender args do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and true do (if sender.Capture and dragList!=undefined do (
-            dragList.height=amin 900 (amax 42 (dragStartHeight+(dotNetClass "System.Windows.Forms.Cursor").Position.Y-dragStartY));layout();if panel!=undefined do panel.rememberViews();true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on sourceUI_plantList_grip MouseUp sender args do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and true do ((sender.Capture=false;dragList=undefined;if panel!=undefined do panel.rememberViews();true)
-            if controlsReady and root!=undefined do layout()
-        )
-        on sourceUI_plantList_grip MouseCaptureChanged sender args do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and true do (if not sender.Capture do dragList=undefined
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokesList_grip MouseDown sender args do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if args.Button==(dotNetClass "System.Windows.Forms.MouseButtons").Left do (
-            dragList=diversityUI_strokesList;dragStartY=(dotNetClass "System.Windows.Forms.Cursor").Position.Y;dragStartHeight=dragList.height;sender.Capture=true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokesList_grip MouseMove sender args do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if sender.Capture and dragList!=undefined do (
-            dragList.height=amin 900 (amax 42 (dragStartHeight+(dotNetClass "System.Windows.Forms.Cursor").Position.Y-dragStartY));layout();if panel!=undefined do panel.rememberViews();true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokesList_grip MouseUp sender args do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do ((sender.Capture=false;dragList=undefined;if panel!=undefined do panel.rememberViews();true)
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokesList_grip MouseCaptureChanged sender args do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if not sender.Capture do dragList=undefined
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokeChoices_grip MouseDown sender args do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if args.Button==(dotNetClass "System.Windows.Forms.MouseButtons").Left do (
-            dragList=diversityUI_strokeChoices;dragStartY=(dotNetClass "System.Windows.Forms.Cursor").Position.Y;dragStartHeight=dragList.height;sender.Capture=true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokeChoices_grip MouseMove sender args do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if sender.Capture and dragList!=undefined do (
-            dragList.height=amin 900 (amax 42 (dragStartHeight+(dotNetClass "System.Windows.Forms.Cursor").Position.Y-dragStartY));layout();if panel!=undefined do panel.rememberViews();true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokeChoices_grip MouseUp sender args do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do ((sender.Capture=false;dragList=undefined;if panel!=undefined do panel.rememberViews();true)
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokeChoices_grip MouseCaptureChanged sender args do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if not sender.Capture do dragList=undefined
-            if controlsReady and root!=undefined do layout()
-        )
+        on sourceContainersUI_containersList_grip MouseDown sender args do beginListDrag sender args sourceContainersUI_containersList
+        on sourceContainersUI_containersList_grip MouseMove sender args do moveListDrag sender args
+        on sourceContainersUI_containersList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
+        on sourceContainersUI_containersList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on sourceContainersUI_containersList_grip Paint sender args do paintListGrip sender args
+        on sourceUI_plantList_grip MouseDown sender args do beginListDrag sender args sourceUI_plantList
+        on sourceUI_plantList_grip MouseMove sender args do moveListDrag sender args
+        on sourceUI_plantList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
+        on sourceUI_plantList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on sourceUI_plantList_grip Paint sender args do paintListGrip sender args
+        on diversityUI_strokesList_grip MouseDown sender args do beginListDrag sender args diversityUI_strokesList
+        on diversityUI_strokesList_grip MouseMove sender args do moveListDrag sender args
+        on diversityUI_strokesList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
+        on diversityUI_strokesList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on diversityUI_strokesList_grip Paint sender args do paintListGrip sender args
+        on diversityUI_strokeChoices_grip MouseDown sender args do beginListDrag sender args diversityUI_strokeChoices
+        on diversityUI_strokeChoices_grip MouseMove sender args do moveListDrag sender args
+        on diversityUI_strokeChoices_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
+        on diversityUI_strokeChoices_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on diversityUI_strokeChoices_grip Paint sender args do paintListGrip sender args
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -10273,7 +10482,7 @@ initialRollupState:0x8
         )
         fn bind layer = (
             if root==undefined do return false
-            binding=true;controlsReady=false
+            stopListDrag();binding=true;controlsReady=false
             try (
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
@@ -10295,7 +10504,7 @@ initialRollupState:0x8
         )
         on modelsUI resized size do if controlsReady and not binding and (amax 140 modelsUI.width)!=lastLayoutWidth do layout()
         on modelsUI open do (panel=this.mainUI;root=undefined;controlsReady=false)
-        on modelsUI close do (controlsReady=false;root=undefined;owner=undefined;obj=undefined;sourceContainersUI_controlsReady=false;sourceContainersUI_root=undefined;sourceContainersUI_owner=undefined;sourceUI_controlsReady=false;sourceUI_root=undefined;sourceUI_owner=undefined;sourceUI_obj=undefined;diversityUI_controlsReady=false;diversityUI_root=undefined;diversityUI_owner=undefined;diversityUI_obj=undefined)
+        on modelsUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;sourceContainersUI_controlsReady=false;sourceContainersUI_root=undefined;sourceContainersUI_owner=undefined;sourceUI_controlsReady=false;sourceUI_root=undefined;sourceUI_owner=undefined;sourceUI_obj=undefined;diversityUI_controlsReady=false;diversityUI_root=undefined;diversityUI_owner=undefined;diversityUI_obj=undefined)
         on modelsUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection modelsUI;panel.rememberViews()))
     )
 
@@ -10408,7 +10617,7 @@ initialRollupState:0x8
             )
             control.height=amax minimum (lines*14+2);true
         )
-        local dragList=undefined,dragStartY=0,dragStartHeight=0
+        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
         fn captureView = #(populationUI.open,#(advancedToggle.checked),#())
         fn restoreView state = (
             populationUI.open=state[1]
@@ -10416,10 +10625,43 @@ initialRollupState:0x8
 
             true
         )
+        fn stopListDrag = (
+            local previous=dragGrip
+            dragGrip=undefined;dragList=undefined
+            if previous!=undefined do previous.Capture=false
+            true
+        )
+        fn gripScreenY sender args = (
+            local point=dotNetObject "System.Drawing.Point" args.X args.Y
+            (sender.PointToScreen point).Y
+        )
+        fn beginListDrag sender args target = (
+            if not controlsReady or binding or root==undefined or not sender.Visible or not sender.Enabled do return false
+            if args.Button!=(dotNetClass "System.Windows.Forms.MouseButtons").Left do return false
+            stopListDrag()
+            dragStartY=gripScreenY sender args;dragStartHeight=target.height
+            dragList=target;dragGrip=sender;sender.Capture=true;true
+        )
+        fn moveListDrag sender args = (
+            if dragGrip!=sender or dragList==undefined or not sender.Capture do return false
+            if not controlsReady or binding or root==undefined or not sender.Visible do return stopListDrag()
+            local nextHeight=amin 900 (amax 42 (dragStartHeight+(gripScreenY sender args)-dragStartY))
+            if nextHeight!=dragList.height do (dragList.height=nextHeight;layout();if panel!=undefined do panel.rememberViews();true)
+            true
+        )
+        fn paintListGrip sender args = (
+            local pen=dotNetObject "System.Drawing.Pen" ((dotNetClass "System.Drawing.Color").FromArgb 135 135 135)
+            local center=(sender.ClientSize.Width/2) as integer
+            args.Graphics.DrawLine pen (center-10) 3 (center+10) 3
+            args.Graphics.DrawLine pen (center-10) 5 (center+10) 5
+            pen.Dispose()
+        )
         fn setupGrips = (
             for grip in #() do (
                 grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
-                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").Fixed3D
+                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
+                grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
+                grip.TabStop=false
             )
             true
         )
@@ -10632,7 +10874,7 @@ initialRollupState:0x8
         )
         fn bind layer = (
             if root==undefined do return false
-            binding=true;controlsReady=false
+            stopListDrag();binding=true;controlsReady=false
             try (
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
@@ -10650,7 +10892,7 @@ initialRollupState:0x8
         )
         on populationUI resized size do if controlsReady and not binding and (amax 140 populationUI.width)!=lastLayoutWidth do layout()
         on populationUI open do (panel=this.mainUI;root=undefined;controlsReady=false)
-        on populationUI close do (controlsReady=false;root=undefined;owner=undefined;obj=undefined;distributionUI_controlsReady=false;distributionUI_root=undefined;distributionUI_owner=undefined;distributionUI_obj=undefined;populationPolicyUI_controlsReady=false;populationPolicyUI_root=undefined;populationPolicyUI_owner=undefined)
+        on populationUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;distributionUI_controlsReady=false;distributionUI_root=undefined;distributionUI_owner=undefined;distributionUI_obj=undefined;populationPolicyUI_controlsReady=false;populationPolicyUI_root=undefined;populationPolicyUI_owner=undefined)
         on populationUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection populationUI;panel.rememberViews()))
     )
 
@@ -10873,7 +11115,7 @@ initialRollupState:0x8
             )
             control.height=amax minimum (lines*14+2);true
         )
-        local dragList=undefined,dragStartY=0,dragStartHeight=0
+        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
         fn captureView = #(coverageUI.open,#(advancedToggle.checked),#(brushUI_strokeList.height,backgroundUI_referenceList.height))
         fn restoreView state = (
             coverageUI.open=state[1]
@@ -10881,45 +11123,56 @@ initialRollupState:0x8
             brushUI_strokeList.height=state[3][1];backgroundUI_referenceList.height=state[3][2]
             true
         )
+        fn stopListDrag = (
+            local previous=dragGrip
+            dragGrip=undefined;dragList=undefined
+            if previous!=undefined do previous.Capture=false
+            true
+        )
+        fn gripScreenY sender args = (
+            local point=dotNetObject "System.Drawing.Point" args.X args.Y
+            (sender.PointToScreen point).Y
+        )
+        fn beginListDrag sender args target = (
+            if not controlsReady or binding or root==undefined or not sender.Visible or not sender.Enabled do return false
+            if args.Button!=(dotNetClass "System.Windows.Forms.MouseButtons").Left do return false
+            stopListDrag()
+            dragStartY=gripScreenY sender args;dragStartHeight=target.height
+            dragList=target;dragGrip=sender;sender.Capture=true;true
+        )
+        fn moveListDrag sender args = (
+            if dragGrip!=sender or dragList==undefined or not sender.Capture do return false
+            if not controlsReady or binding or root==undefined or not sender.Visible do return stopListDrag()
+            local nextHeight=amin 900 (amax 42 (dragStartHeight+(gripScreenY sender args)-dragStartY))
+            if nextHeight!=dragList.height do (dragList.height=nextHeight;layout();if panel!=undefined do panel.rememberViews();true)
+            true
+        )
+        fn paintListGrip sender args = (
+            local pen=dotNetObject "System.Drawing.Pen" ((dotNetClass "System.Drawing.Color").FromArgb 135 135 135)
+            local center=(sender.ClientSize.Width/2) as integer
+            args.Graphics.DrawLine pen (center-10) 3 (center+10) 3
+            args.Graphics.DrawLine pen (center-10) 5 (center+10) 5
+            pen.Dispose()
+        )
         fn setupGrips = (
             for grip in #(brushUI_strokeList_grip,backgroundUI_referenceList_grip) do (
                 grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
-                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").Fixed3D
+                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
+                grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
+                grip.TabStop=false
             )
             true
         )
-        on brushUI_strokeList_grip MouseDown sender args do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (if args.Button==(dotNetClass "System.Windows.Forms.MouseButtons").Left do (
-            dragList=brushUI_strokeList;dragStartY=(dotNetClass "System.Windows.Forms.Cursor").Position.Y;dragStartHeight=dragList.height;sender.Capture=true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on brushUI_strokeList_grip MouseMove sender args do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (if sender.Capture and dragList!=undefined do (
-            dragList.height=amin 900 (amax 42 (dragStartHeight+(dotNetClass "System.Windows.Forms.Cursor").Position.Y-dragStartY));layout();if panel!=undefined do panel.rememberViews();true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on brushUI_strokeList_grip MouseUp sender args do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do ((sender.Capture=false;dragList=undefined;if panel!=undefined do panel.rememberViews();true)
-            if controlsReady and root!=undefined do layout()
-        )
-        on brushUI_strokeList_grip MouseCaptureChanged sender args do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (if not sender.Capture do dragList=undefined
-            if controlsReady and root!=undefined do layout()
-        )
-        on backgroundUI_referenceList_grip MouseDown sender args do if controlsReady and not binding and root!=undefined and backgroundUI_controlsReady and not backgroundUI_binding and true do (if args.Button==(dotNetClass "System.Windows.Forms.MouseButtons").Left do (
-            dragList=backgroundUI_referenceList;dragStartY=(dotNetClass "System.Windows.Forms.Cursor").Position.Y;dragStartHeight=dragList.height;sender.Capture=true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on backgroundUI_referenceList_grip MouseMove sender args do if controlsReady and not binding and root!=undefined and backgroundUI_controlsReady and not backgroundUI_binding and true do (if sender.Capture and dragList!=undefined do (
-            dragList.height=amin 900 (amax 42 (dragStartHeight+(dotNetClass "System.Windows.Forms.Cursor").Position.Y-dragStartY));layout();if panel!=undefined do panel.rememberViews();true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on backgroundUI_referenceList_grip MouseUp sender args do if controlsReady and not binding and root!=undefined and backgroundUI_controlsReady and not backgroundUI_binding and true do ((sender.Capture=false;dragList=undefined;if panel!=undefined do panel.rememberViews();true)
-            if controlsReady and root!=undefined do layout()
-        )
-        on backgroundUI_referenceList_grip MouseCaptureChanged sender args do if controlsReady and not binding and root!=undefined and backgroundUI_controlsReady and not backgroundUI_binding and true do (if not sender.Capture do dragList=undefined
-            if controlsReady and root!=undefined do layout()
-        )
+        on brushUI_strokeList_grip MouseDown sender args do beginListDrag sender args brushUI_strokeList
+        on brushUI_strokeList_grip MouseMove sender args do moveListDrag sender args
+        on brushUI_strokeList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
+        on brushUI_strokeList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on brushUI_strokeList_grip Paint sender args do paintListGrip sender args
+        on backgroundUI_referenceList_grip MouseDown sender args do beginListDrag sender args backgroundUI_referenceList
+        on backgroundUI_referenceList_grip MouseMove sender args do moveListDrag sender args
+        on backgroundUI_referenceList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
+        on backgroundUI_referenceList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on backgroundUI_referenceList_grip Paint sender args do paintListGrip sender args
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -11253,7 +11506,7 @@ initialRollupState:0x8
         )
         fn bind layer = (
             if root==undefined do return false
-            binding=true;controlsReady=false
+            stopListDrag();binding=true;controlsReady=false
             try (
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
@@ -11272,7 +11525,7 @@ initialRollupState:0x8
         )
         on coverageUI resized size do if controlsReady and not binding and (amax 140 coverageUI.width)!=lastLayoutWidth do layout()
         on coverageUI open do (panel=this.mainUI;root=undefined;controlsReady=false)
-        on coverageUI close do (controlsReady=false;root=undefined;owner=undefined;obj=undefined;brushUI_controlsReady=false;brushUI_root=undefined;brushUI_owner=undefined;brushUI_obj=undefined;backgroundUI_controlsReady=false;backgroundUI_root=undefined;backgroundUI_owner=undefined)
+        on coverageUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;brushUI_controlsReady=false;brushUI_root=undefined;brushUI_owner=undefined;brushUI_obj=undefined;backgroundUI_controlsReady=false;backgroundUI_root=undefined;backgroundUI_owner=undefined)
         on coverageUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection coverageUI;panel.rememberViews()))
     )
 
@@ -11503,7 +11756,7 @@ initialRollupState:0x8
             )
             control.height=amax minimum (lines*14+2);true
         )
-        local dragList=undefined,dragStartY=0,dragStartHeight=0
+        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
         fn captureView = #(areasUI.open,#(advancedToggle.checked),#(areaUI_areaList.height))
         fn restoreView state = (
             areasUI.open=state[1]
@@ -11511,29 +11764,51 @@ initialRollupState:0x8
             areaUI_areaList.height=state[3][1]
             true
         )
+        fn stopListDrag = (
+            local previous=dragGrip
+            dragGrip=undefined;dragList=undefined
+            if previous!=undefined do previous.Capture=false
+            true
+        )
+        fn gripScreenY sender args = (
+            local point=dotNetObject "System.Drawing.Point" args.X args.Y
+            (sender.PointToScreen point).Y
+        )
+        fn beginListDrag sender args target = (
+            if not controlsReady or binding or root==undefined or not sender.Visible or not sender.Enabled do return false
+            if args.Button!=(dotNetClass "System.Windows.Forms.MouseButtons").Left do return false
+            stopListDrag()
+            dragStartY=gripScreenY sender args;dragStartHeight=target.height
+            dragList=target;dragGrip=sender;sender.Capture=true;true
+        )
+        fn moveListDrag sender args = (
+            if dragGrip!=sender or dragList==undefined or not sender.Capture do return false
+            if not controlsReady or binding or root==undefined or not sender.Visible do return stopListDrag()
+            local nextHeight=amin 900 (amax 42 (dragStartHeight+(gripScreenY sender args)-dragStartY))
+            if nextHeight!=dragList.height do (dragList.height=nextHeight;layout();if panel!=undefined do panel.rememberViews();true)
+            true
+        )
+        fn paintListGrip sender args = (
+            local pen=dotNetObject "System.Drawing.Pen" ((dotNetClass "System.Drawing.Color").FromArgb 135 135 135)
+            local center=(sender.ClientSize.Width/2) as integer
+            args.Graphics.DrawLine pen (center-10) 3 (center+10) 3
+            args.Graphics.DrawLine pen (center-10) 5 (center+10) 5
+            pen.Dispose()
+        )
         fn setupGrips = (
             for grip in #(areaUI_areaList_grip) do (
                 grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
-                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").Fixed3D
+                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
+                grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
+                grip.TabStop=false
             )
             true
         )
-        on areaUI_areaList_grip MouseDown sender args do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and true do (if args.Button==(dotNetClass "System.Windows.Forms.MouseButtons").Left do (
-            dragList=areaUI_areaList;dragStartY=(dotNetClass "System.Windows.Forms.Cursor").Position.Y;dragStartHeight=dragList.height;sender.Capture=true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on areaUI_areaList_grip MouseMove sender args do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and true do (if sender.Capture and dragList!=undefined do (
-            dragList.height=amin 900 (amax 42 (dragStartHeight+(dotNetClass "System.Windows.Forms.Cursor").Position.Y-dragStartY));layout();if panel!=undefined do panel.rememberViews();true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on areaUI_areaList_grip MouseUp sender args do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and true do ((sender.Capture=false;dragList=undefined;if panel!=undefined do panel.rememberViews();true)
-            if controlsReady and root!=undefined do layout()
-        )
-        on areaUI_areaList_grip MouseCaptureChanged sender args do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and true do (if not sender.Capture do dragList=undefined
-            if controlsReady and root!=undefined do layout()
-        )
+        on areaUI_areaList_grip MouseDown sender args do beginListDrag sender args areaUI_areaList
+        on areaUI_areaList_grip MouseMove sender args do moveListDrag sender args
+        on areaUI_areaList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
+        on areaUI_areaList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on areaUI_areaList_grip Paint sender args do paintListGrip sender args
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -11887,7 +12162,7 @@ initialRollupState:0x8
         )
         fn bind layer = (
             if root==undefined do return false
-            binding=true;controlsReady=false
+            stopListDrag();binding=true;controlsReady=false
             try (
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
@@ -11903,7 +12178,7 @@ initialRollupState:0x8
         )
         on areasUI resized size do if controlsReady and not binding and (amax 140 areasUI.width)!=lastLayoutWidth do layout()
         on areasUI open do (panel=this.mainUI;root=undefined;controlsReady=false)
-        on areasUI close do (controlsReady=false;root=undefined;owner=undefined;obj=undefined;areaUI_controlsReady=false;areaUI_root=undefined;areaUI_owner=undefined;areaUI_obj=undefined)
+        on areasUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;areaUI_controlsReady=false;areaUI_root=undefined;areaUI_owner=undefined;areaUI_obj=undefined)
         on areasUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection areasUI;panel.rememberViews()))
     )
 
@@ -12071,7 +12346,7 @@ initialRollupState:0x8
             )
             control.height=amax minimum (lines*14+2);true
         )
-        local dragList=undefined,dragStartY=0,dragStartHeight=0
+        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
         fn captureView = #(transformsUI.open,#(advancedToggle.checked),#())
         fn restoreView state = (
             transformsUI.open=state[1]
@@ -12079,10 +12354,43 @@ initialRollupState:0x8
 
             true
         )
+        fn stopListDrag = (
+            local previous=dragGrip
+            dragGrip=undefined;dragList=undefined
+            if previous!=undefined do previous.Capture=false
+            true
+        )
+        fn gripScreenY sender args = (
+            local point=dotNetObject "System.Drawing.Point" args.X args.Y
+            (sender.PointToScreen point).Y
+        )
+        fn beginListDrag sender args target = (
+            if not controlsReady or binding or root==undefined or not sender.Visible or not sender.Enabled do return false
+            if args.Button!=(dotNetClass "System.Windows.Forms.MouseButtons").Left do return false
+            stopListDrag()
+            dragStartY=gripScreenY sender args;dragStartHeight=target.height
+            dragList=target;dragGrip=sender;sender.Capture=true;true
+        )
+        fn moveListDrag sender args = (
+            if dragGrip!=sender or dragList==undefined or not sender.Capture do return false
+            if not controlsReady or binding or root==undefined or not sender.Visible do return stopListDrag()
+            local nextHeight=amin 900 (amax 42 (dragStartHeight+(gripScreenY sender args)-dragStartY))
+            if nextHeight!=dragList.height do (dragList.height=nextHeight;layout();if panel!=undefined do panel.rememberViews();true)
+            true
+        )
+        fn paintListGrip sender args = (
+            local pen=dotNetObject "System.Drawing.Pen" ((dotNetClass "System.Drawing.Color").FromArgb 135 135 135)
+            local center=(sender.ClientSize.Width/2) as integer
+            args.Graphics.DrawLine pen (center-10) 3 (center+10) 3
+            args.Graphics.DrawLine pen (center-10) 5 (center+10) 5
+            pen.Dispose()
+        )
         fn setupGrips = (
             for grip in #() do (
                 grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
-                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").Fixed3D
+                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
+                grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
+                grip.TabStop=false
             )
             true
         )
@@ -12515,7 +12823,7 @@ initialRollupState:0x8
         )
         fn bind layer = (
             if root==undefined do return false
-            binding=true;controlsReady=false
+            stopListDrag();binding=true;controlsReady=false
             try (
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
@@ -12531,7 +12839,7 @@ initialRollupState:0x8
         )
         on transformsUI resized size do if controlsReady and not binding and (amax 140 transformsUI.width)!=lastLayoutWidth do layout()
         on transformsUI open do (panel=this.mainUI;root=undefined;controlsReady=false)
-        on transformsUI close do (controlsReady=false;root=undefined;owner=undefined;obj=undefined;randomUI_controlsReady=false;randomUI_root=undefined;randomUI_owner=undefined;randomUI_obj=undefined)
+        on transformsUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;randomUI_controlsReady=false;randomUI_root=undefined;randomUI_owner=undefined;randomUI_obj=undefined)
         on transformsUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection transformsUI;panel.rememberViews()))
     )
 
@@ -12751,7 +13059,7 @@ initialRollupState:0x8
             )
             control.height=amax minimum (lines*14+2);true
         )
-        local dragList=undefined,dragStartY=0,dragStartHeight=0
+        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
         fn captureView = #(spacingUI.open,#(advancedToggle.checked),#())
         fn restoreView state = (
             spacingUI.open=state[1]
@@ -12759,10 +13067,43 @@ initialRollupState:0x8
 
             true
         )
+        fn stopListDrag = (
+            local previous=dragGrip
+            dragGrip=undefined;dragList=undefined
+            if previous!=undefined do previous.Capture=false
+            true
+        )
+        fn gripScreenY sender args = (
+            local point=dotNetObject "System.Drawing.Point" args.X args.Y
+            (sender.PointToScreen point).Y
+        )
+        fn beginListDrag sender args target = (
+            if not controlsReady or binding or root==undefined or not sender.Visible or not sender.Enabled do return false
+            if args.Button!=(dotNetClass "System.Windows.Forms.MouseButtons").Left do return false
+            stopListDrag()
+            dragStartY=gripScreenY sender args;dragStartHeight=target.height
+            dragList=target;dragGrip=sender;sender.Capture=true;true
+        )
+        fn moveListDrag sender args = (
+            if dragGrip!=sender or dragList==undefined or not sender.Capture do return false
+            if not controlsReady or binding or root==undefined or not sender.Visible do return stopListDrag()
+            local nextHeight=amin 900 (amax 42 (dragStartHeight+(gripScreenY sender args)-dragStartY))
+            if nextHeight!=dragList.height do (dragList.height=nextHeight;layout();if panel!=undefined do panel.rememberViews();true)
+            true
+        )
+        fn paintListGrip sender args = (
+            local pen=dotNetObject "System.Drawing.Pen" ((dotNetClass "System.Drawing.Color").FromArgb 135 135 135)
+            local center=(sender.ClientSize.Width/2) as integer
+            args.Graphics.DrawLine pen (center-10) 3 (center+10) 3
+            args.Graphics.DrawLine pen (center-10) 5 (center+10) 5
+            pen.Dispose()
+        )
         fn setupGrips = (
             for grip in #() do (
                 grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
-                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").Fixed3D
+                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
+                grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
+                grip.TabStop=false
             )
             true
         )
@@ -13138,7 +13479,7 @@ initialRollupState:0x8
         )
         fn bind layer = (
             if root==undefined do return false
-            binding=true;controlsReady=false
+            stopListDrag();binding=true;controlsReady=false
             try (
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
@@ -13160,7 +13501,7 @@ initialRollupState:0x8
         )
         on spacingUI resized size do if controlsReady and not binding and (amax 140 spacingUI.width)!=lastLayoutWidth do layout()
         on spacingUI open do (panel=this.mainUI;root=undefined;controlsReady=false)
-        on spacingUI close do (controlsReady=false;root=undefined;owner=undefined;obj=undefined;proceduralUI_controlsReady=false;proceduralUI_root=undefined;proceduralUI_owner=undefined;instanceRadiusUI_controlsReady=false;instanceRadiusUI_root=undefined;instanceRadiusUI_owner=undefined;spacingUI_controlsReady=false;spacingUI_root=undefined;spacingUI_owner=undefined;spacingUI_obj=undefined;separationUI_controlsReady=false;separationUI_root=undefined;separationUI_owner=undefined)
+        on spacingUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;proceduralUI_controlsReady=false;proceduralUI_root=undefined;proceduralUI_owner=undefined;instanceRadiusUI_controlsReady=false;instanceRadiusUI_root=undefined;instanceRadiusUI_owner=undefined;spacingUI_controlsReady=false;spacingUI_root=undefined;spacingUI_owner=undefined;spacingUI_obj=undefined;separationUI_controlsReady=false;separationUI_root=undefined;separationUI_owner=undefined)
         on spacingUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection spacingUI;panel.rememberViews()))
     )
 
@@ -13280,7 +13621,7 @@ initialRollupState:0x8
             )
             control.height=amax minimum (lines*14+2);true
         )
-        local dragList=undefined,dragStartY=0,dragStartHeight=0
+        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
         fn captureView = #(displayUI.open,#(advancedToggle.checked),#())
         fn restoreView state = (
             displayUI.open=state[1]
@@ -13288,10 +13629,43 @@ initialRollupState:0x8
 
             true
         )
+        fn stopListDrag = (
+            local previous=dragGrip
+            dragGrip=undefined;dragList=undefined
+            if previous!=undefined do previous.Capture=false
+            true
+        )
+        fn gripScreenY sender args = (
+            local point=dotNetObject "System.Drawing.Point" args.X args.Y
+            (sender.PointToScreen point).Y
+        )
+        fn beginListDrag sender args target = (
+            if not controlsReady or binding or root==undefined or not sender.Visible or not sender.Enabled do return false
+            if args.Button!=(dotNetClass "System.Windows.Forms.MouseButtons").Left do return false
+            stopListDrag()
+            dragStartY=gripScreenY sender args;dragStartHeight=target.height
+            dragList=target;dragGrip=sender;sender.Capture=true;true
+        )
+        fn moveListDrag sender args = (
+            if dragGrip!=sender or dragList==undefined or not sender.Capture do return false
+            if not controlsReady or binding or root==undefined or not sender.Visible do return stopListDrag()
+            local nextHeight=amin 900 (amax 42 (dragStartHeight+(gripScreenY sender args)-dragStartY))
+            if nextHeight!=dragList.height do (dragList.height=nextHeight;layout();if panel!=undefined do panel.rememberViews();true)
+            true
+        )
+        fn paintListGrip sender args = (
+            local pen=dotNetObject "System.Drawing.Pen" ((dotNetClass "System.Drawing.Color").FromArgb 135 135 135)
+            local center=(sender.ClientSize.Width/2) as integer
+            args.Graphics.DrawLine pen (center-10) 3 (center+10) 3
+            args.Graphics.DrawLine pen (center-10) 5 (center+10) 5
+            pen.Dispose()
+        )
         fn setupGrips = (
             for grip in #() do (
                 grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
-                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").Fixed3D
+                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
+                grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
+                grip.TabStop=false
             )
             true
         )
@@ -13516,7 +13890,7 @@ initialRollupState:0x8
         )
         fn bind layer = (
             if root==undefined do return false
-            binding=true;controlsReady=false
+            stopListDrag();binding=true;controlsReady=false
             try (
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
@@ -13532,7 +13906,7 @@ initialRollupState:0x8
         )
         on displayUI resized size do if controlsReady and not binding and (amax 140 displayUI.width)!=lastLayoutWidth do layout()
         on displayUI open do (panel=this.mainUI;root=undefined;controlsReady=false)
-        on displayUI close do (controlsReady=false;root=undefined;owner=undefined;obj=undefined;flow_previewUI_controlsReady=false;flow_previewUI_root=undefined;flow_previewUI_owner=undefined;flow_previewUI_obj=undefined)
+        on displayUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;flow_previewUI_controlsReady=false;flow_previewUI_root=undefined;flow_previewUI_owner=undefined;flow_previewUI_obj=undefined)
         on displayUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection displayUI;panel.rememberViews()))
     )
 
@@ -13698,7 +14072,7 @@ initialRollupState:0x8
             )
             control.height=amax minimum (lines*14+2);true
         )
-        local dragList=undefined,dragStartY=0,dragStartHeight=0
+        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
         fn captureView = #(statisticsUI.open,#(advancedToggle.checked,workflowToggle.checked),#())
         fn restoreView state = (
             statisticsUI.open=state[1]
@@ -13706,10 +14080,43 @@ initialRollupState:0x8
 
             true
         )
+        fn stopListDrag = (
+            local previous=dragGrip
+            dragGrip=undefined;dragList=undefined
+            if previous!=undefined do previous.Capture=false
+            true
+        )
+        fn gripScreenY sender args = (
+            local point=dotNetObject "System.Drawing.Point" args.X args.Y
+            (sender.PointToScreen point).Y
+        )
+        fn beginListDrag sender args target = (
+            if not controlsReady or binding or root==undefined or not sender.Visible or not sender.Enabled do return false
+            if args.Button!=(dotNetClass "System.Windows.Forms.MouseButtons").Left do return false
+            stopListDrag()
+            dragStartY=gripScreenY sender args;dragStartHeight=target.height
+            dragList=target;dragGrip=sender;sender.Capture=true;true
+        )
+        fn moveListDrag sender args = (
+            if dragGrip!=sender or dragList==undefined or not sender.Capture do return false
+            if not controlsReady or binding or root==undefined or not sender.Visible do return stopListDrag()
+            local nextHeight=amin 900 (amax 42 (dragStartHeight+(gripScreenY sender args)-dragStartY))
+            if nextHeight!=dragList.height do (dragList.height=nextHeight;layout();if panel!=undefined do panel.rememberViews();true)
+            true
+        )
+        fn paintListGrip sender args = (
+            local pen=dotNetObject "System.Drawing.Pen" ((dotNetClass "System.Drawing.Color").FromArgb 135 135 135)
+            local center=(sender.ClientSize.Width/2) as integer
+            args.Graphics.DrawLine pen (center-10) 3 (center+10) 3
+            args.Graphics.DrawLine pen (center-10) 5 (center+10) 5
+            pen.Dispose()
+        )
         fn setupGrips = (
             for grip in #() do (
                 grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
-                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").Fixed3D
+                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
+                grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
+                grip.TabStop=false
             )
             true
         )
@@ -13829,7 +14236,7 @@ initialRollupState:0x8
         )
         fn bind layer = (
             if root==undefined do return false
-            binding=true;controlsReady=false
+            stopListDrag();binding=true;controlsReady=false
             try (
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
@@ -13851,7 +14258,7 @@ initialRollupState:0x8
         )
         on statisticsUI resized size do if controlsReady and not binding and (amax 140 statisticsUI.width)!=lastLayoutWidth do layout()
         on statisticsUI open do (panel=this.mainUI;root=undefined;controlsReady=false)
-        on statisticsUI close do (controlsReady=false;root=undefined;owner=undefined;obj=undefined;detailsUI_controlsReady=false;detailsUI_root=undefined;detailsUI_owner=undefined;workflowUI_controlsReady=false;workflowUI_root=undefined;workflowUI_owner=undefined;diagnosticsUI_controlsReady=false;diagnosticsUI_root=undefined;diagnosticsUI_owner=undefined)
+        on statisticsUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;detailsUI_controlsReady=false;detailsUI_root=undefined;detailsUI_owner=undefined;workflowUI_controlsReady=false;workflowUI_root=undefined;workflowUI_owner=undefined;diagnosticsUI_controlsReady=false;diagnosticsUI_root=undefined;diagnosticsUI_owner=undefined)
         on statisticsUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection statisticsUI;panel.rememberViews()))
     )
 
@@ -14718,7 +15125,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             )
             control.height=amax minimum (lines*14+2);true
         )
-        local dragList=undefined,dragStartY=0,dragStartHeight=0
+        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
         fn captureView = #(surfacesUI.open,#(advancedToggle.checked),#(flow_surfaceUI_receiversList.height,flow_surfaceUI_globalContainers.height))
         fn restoreView state = (
             surfacesUI.open=state[1]
@@ -14726,45 +15133,56 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             flow_surfaceUI_receiversList.height=state[3][1];flow_surfaceUI_globalContainers.height=state[3][2]
             true
         )
+        fn stopListDrag = (
+            local previous=dragGrip
+            dragGrip=undefined;dragList=undefined
+            if previous!=undefined do previous.Capture=false
+            true
+        )
+        fn gripScreenY sender args = (
+            local point=dotNetObject "System.Drawing.Point" args.X args.Y
+            (sender.PointToScreen point).Y
+        )
+        fn beginListDrag sender args target = (
+            if not controlsReady or binding or root==undefined or not sender.Visible or not sender.Enabled do return false
+            if args.Button!=(dotNetClass "System.Windows.Forms.MouseButtons").Left do return false
+            stopListDrag()
+            dragStartY=gripScreenY sender args;dragStartHeight=target.height
+            dragList=target;dragGrip=sender;sender.Capture=true;true
+        )
+        fn moveListDrag sender args = (
+            if dragGrip!=sender or dragList==undefined or not sender.Capture do return false
+            if not controlsReady or binding or root==undefined or not sender.Visible do return stopListDrag()
+            local nextHeight=amin 900 (amax 42 (dragStartHeight+(gripScreenY sender args)-dragStartY))
+            if nextHeight!=dragList.height do (dragList.height=nextHeight;layout();if panel!=undefined do panel.rememberViews();true)
+            true
+        )
+        fn paintListGrip sender args = (
+            local pen=dotNetObject "System.Drawing.Pen" ((dotNetClass "System.Drawing.Color").FromArgb 135 135 135)
+            local center=(sender.ClientSize.Width/2) as integer
+            args.Graphics.DrawLine pen (center-10) 3 (center+10) 3
+            args.Graphics.DrawLine pen (center-10) 5 (center+10) 5
+            pen.Dispose()
+        )
         fn setupGrips = (
             for grip in #(flow_surfaceUI_receiversList_grip,flow_surfaceUI_globalContainers_grip) do (
                 grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
-                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").Fixed3D
+                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
+                grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
+                grip.TabStop=false
             )
             true
         )
-        on flow_surfaceUI_receiversList_grip MouseDown sender args do if controlsReady and not binding and root!=undefined and flow_surfaceUI_controlsReady and not flow_surfaceUI_binding and true do (if args.Button==(dotNetClass "System.Windows.Forms.MouseButtons").Left do (
-            dragList=flow_surfaceUI_receiversList;dragStartY=(dotNetClass "System.Windows.Forms.Cursor").Position.Y;dragStartHeight=dragList.height;sender.Capture=true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on flow_surfaceUI_receiversList_grip MouseMove sender args do if controlsReady and not binding and root!=undefined and flow_surfaceUI_controlsReady and not flow_surfaceUI_binding and true do (if sender.Capture and dragList!=undefined do (
-            dragList.height=amin 900 (amax 42 (dragStartHeight+(dotNetClass "System.Windows.Forms.Cursor").Position.Y-dragStartY));layout();if panel!=undefined do panel.rememberViews();true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on flow_surfaceUI_receiversList_grip MouseUp sender args do if controlsReady and not binding and root!=undefined and flow_surfaceUI_controlsReady and not flow_surfaceUI_binding and true do ((sender.Capture=false;dragList=undefined;if panel!=undefined do panel.rememberViews();true)
-            if controlsReady and root!=undefined do layout()
-        )
-        on flow_surfaceUI_receiversList_grip MouseCaptureChanged sender args do if controlsReady and not binding and root!=undefined and flow_surfaceUI_controlsReady and not flow_surfaceUI_binding and true do (if not sender.Capture do dragList=undefined
-            if controlsReady and root!=undefined do layout()
-        )
-        on flow_surfaceUI_globalContainers_grip MouseDown sender args do if controlsReady and not binding and root!=undefined and flow_surfaceUI_controlsReady and not flow_surfaceUI_binding and true do (if args.Button==(dotNetClass "System.Windows.Forms.MouseButtons").Left do (
-            dragList=flow_surfaceUI_globalContainers;dragStartY=(dotNetClass "System.Windows.Forms.Cursor").Position.Y;dragStartHeight=dragList.height;sender.Capture=true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on flow_surfaceUI_globalContainers_grip MouseMove sender args do if controlsReady and not binding and root!=undefined and flow_surfaceUI_controlsReady and not flow_surfaceUI_binding and true do (if sender.Capture and dragList!=undefined do (
-            dragList.height=amin 900 (amax 42 (dragStartHeight+(dotNetClass "System.Windows.Forms.Cursor").Position.Y-dragStartY));layout();if panel!=undefined do panel.rememberViews();true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on flow_surfaceUI_globalContainers_grip MouseUp sender args do if controlsReady and not binding and root!=undefined and flow_surfaceUI_controlsReady and not flow_surfaceUI_binding and true do ((sender.Capture=false;dragList=undefined;if panel!=undefined do panel.rememberViews();true)
-            if controlsReady and root!=undefined do layout()
-        )
-        on flow_surfaceUI_globalContainers_grip MouseCaptureChanged sender args do if controlsReady and not binding and root!=undefined and flow_surfaceUI_controlsReady and not flow_surfaceUI_binding and true do (if not sender.Capture do dragList=undefined
-            if controlsReady and root!=undefined do layout()
-        )
+        on flow_surfaceUI_receiversList_grip MouseDown sender args do beginListDrag sender args flow_surfaceUI_receiversList
+        on flow_surfaceUI_receiversList_grip MouseMove sender args do moveListDrag sender args
+        on flow_surfaceUI_receiversList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
+        on flow_surfaceUI_receiversList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on flow_surfaceUI_receiversList_grip Paint sender args do paintListGrip sender args
+        on flow_surfaceUI_globalContainers_grip MouseDown sender args do beginListDrag sender args flow_surfaceUI_globalContainers
+        on flow_surfaceUI_globalContainers_grip MouseMove sender args do moveListDrag sender args
+        on flow_surfaceUI_globalContainers_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
+        on flow_surfaceUI_globalContainers_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on flow_surfaceUI_globalContainers_grip Paint sender args do paintListGrip sender args
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -14903,7 +15321,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         )
         fn bind layer = (
             if root==undefined do return false
-            binding=true;controlsReady=false
+            stopListDrag();binding=true;controlsReady=false
             try (
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
@@ -14919,7 +15337,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         )
         on surfacesUI resized size do if controlsReady and not binding and (amax 140 surfacesUI.width)!=lastLayoutWidth do layout()
         on surfacesUI open do (panel=this.mainUI;root=undefined;controlsReady=false)
-        on surfacesUI close do (controlsReady=false;root=undefined;owner=undefined;obj=undefined;flow_surfaceUI_controlsReady=false;flow_surfaceUI_root=undefined;flow_surfaceUI_owner=undefined)
+        on surfacesUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;flow_surfaceUI_controlsReady=false;flow_surfaceUI_root=undefined;flow_surfaceUI_owner=undefined)
         on surfacesUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection surfacesUI;panel.rememberViews()))
     )
 
@@ -15151,7 +15569,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 syncingColorLists=false;true
             )catch(syncingColorLists=false;throw())
         )
-        local dragList=undefined,dragStartY=0,dragStartHeight=0
+        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
         fn captureView = #(managerUI.open,#(advancedToggle.checked,propertiesToggle.checked),#(flow_layersUI_layerList.height))
         fn restoreView state = (
             managerUI.open=state[1]
@@ -15159,29 +15577,51 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             flow_layersUI_layerList.height=state[3][1]
             true
         )
+        fn stopListDrag = (
+            local previous=dragGrip
+            dragGrip=undefined;dragList=undefined
+            if previous!=undefined do previous.Capture=false
+            true
+        )
+        fn gripScreenY sender args = (
+            local point=dotNetObject "System.Drawing.Point" args.X args.Y
+            (sender.PointToScreen point).Y
+        )
+        fn beginListDrag sender args target = (
+            if not controlsReady or binding or root==undefined or not sender.Visible or not sender.Enabled do return false
+            if args.Button!=(dotNetClass "System.Windows.Forms.MouseButtons").Left do return false
+            stopListDrag()
+            dragStartY=gripScreenY sender args;dragStartHeight=target.height
+            dragList=target;dragGrip=sender;sender.Capture=true;true
+        )
+        fn moveListDrag sender args = (
+            if dragGrip!=sender or dragList==undefined or not sender.Capture do return false
+            if not controlsReady or binding or root==undefined or not sender.Visible do return stopListDrag()
+            local nextHeight=amin 900 (amax 42 (dragStartHeight+(gripScreenY sender args)-dragStartY))
+            if nextHeight!=dragList.height do (dragList.height=nextHeight;layout();if panel!=undefined do panel.rememberViews();true)
+            true
+        )
+        fn paintListGrip sender args = (
+            local pen=dotNetObject "System.Drawing.Pen" ((dotNetClass "System.Drawing.Color").FromArgb 135 135 135)
+            local center=(sender.ClientSize.Width/2) as integer
+            args.Graphics.DrawLine pen (center-10) 3 (center+10) 3
+            args.Graphics.DrawLine pen (center-10) 5 (center+10) 5
+            pen.Dispose()
+        )
         fn setupGrips = (
             for grip in #(flow_layersUI_layerList_grip) do (
                 grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
-                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").Fixed3D
+                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
+                grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
+                grip.TabStop=false
             )
             true
         )
-        on flow_layersUI_layerList_grip MouseDown sender args do if controlsReady and not binding and root!=undefined and flow_layersUI_controlsReady and not flow_layersUI_binding and true do (if args.Button==(dotNetClass "System.Windows.Forms.MouseButtons").Left do (
-            dragList=flow_layersUI_layerList;dragStartY=(dotNetClass "System.Windows.Forms.Cursor").Position.Y;dragStartHeight=dragList.height;sender.Capture=true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on flow_layersUI_layerList_grip MouseMove sender args do if controlsReady and not binding and root!=undefined and flow_layersUI_controlsReady and not flow_layersUI_binding and true do (if sender.Capture and dragList!=undefined do (
-            dragList.height=amin 900 (amax 42 (dragStartHeight+(dotNetClass "System.Windows.Forms.Cursor").Position.Y-dragStartY));layout();if panel!=undefined do panel.rememberViews();true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on flow_layersUI_layerList_grip MouseUp sender args do if controlsReady and not binding and root!=undefined and flow_layersUI_controlsReady and not flow_layersUI_binding and true do ((sender.Capture=false;dragList=undefined;if panel!=undefined do panel.rememberViews();true)
-            if controlsReady and root!=undefined do layout()
-        )
-        on flow_layersUI_layerList_grip MouseCaptureChanged sender args do if controlsReady and not binding and root!=undefined and flow_layersUI_controlsReady and not flow_layersUI_binding and true do (if not sender.Capture do dragList=undefined
-            if controlsReady and root!=undefined do layout()
-        )
+        on flow_layersUI_layerList_grip MouseDown sender args do beginListDrag sender args flow_layersUI_layerList
+        on flow_layersUI_layerList_grip MouseMove sender args do moveListDrag sender args
+        on flow_layersUI_layerList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
+        on flow_layersUI_layerList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on flow_layersUI_layerList_grip Paint sender args do paintListGrip sender args
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -15384,7 +15824,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         )
         fn bind layer = (
             if root==undefined do return false
-            binding=true;controlsReady=false
+            stopListDrag();binding=true;controlsReady=false
             try (
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
@@ -15404,7 +15844,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         )
         on managerUI resized size do if controlsReady and not binding and (amax 140 managerUI.width)!=lastLayoutWidth do layout()
         on managerUI open do (panel=this.mainUI;root=undefined;controlsReady=false)
-        on managerUI close do (controlsReady=false;root=undefined;owner=undefined;obj=undefined;flow_layersUI_controlsReady=false;flow_layersUI_root=undefined;flow_layersUI_owner=undefined;setsUI_controlsReady=false;setsUI_root=undefined;setsUI_owner=undefined)
+        on managerUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;flow_layersUI_controlsReady=false;flow_layersUI_root=undefined;flow_layersUI_owner=undefined;setsUI_controlsReady=false;setsUI_root=undefined;setsUI_owner=undefined)
         on managerUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection managerUI;panel.rememberViews()))
     )
 
@@ -16059,7 +16499,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 syncingColorLists=false;true
             )catch(syncingColorLists=false;throw())
         )
-        local dragList=undefined,dragStartY=0,dragStartHeight=0
+        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
         fn captureView = #(modelsUI.open,#(advancedToggle.checked,propertiesToggle.checked),#(sourceContainersUI_containersList.height,sourceUI_plantList.height,diversityUI_strokesList.height,diversityUI_strokeChoices.height))
         fn restoreView state = (
             modelsUI.open=state[1]
@@ -16067,77 +16507,66 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             sourceContainersUI_containersList.height=state[3][1];sourceUI_plantList.height=state[3][2];diversityUI_strokesList.height=state[3][3];diversityUI_strokeChoices.height=state[3][4]
             true
         )
+        fn stopListDrag = (
+            local previous=dragGrip
+            dragGrip=undefined;dragList=undefined
+            if previous!=undefined do previous.Capture=false
+            true
+        )
+        fn gripScreenY sender args = (
+            local point=dotNetObject "System.Drawing.Point" args.X args.Y
+            (sender.PointToScreen point).Y
+        )
+        fn beginListDrag sender args target = (
+            if not controlsReady or binding or root==undefined or not sender.Visible or not sender.Enabled do return false
+            if args.Button!=(dotNetClass "System.Windows.Forms.MouseButtons").Left do return false
+            stopListDrag()
+            dragStartY=gripScreenY sender args;dragStartHeight=target.height
+            dragList=target;dragGrip=sender;sender.Capture=true;true
+        )
+        fn moveListDrag sender args = (
+            if dragGrip!=sender or dragList==undefined or not sender.Capture do return false
+            if not controlsReady or binding or root==undefined or not sender.Visible do return stopListDrag()
+            local nextHeight=amin 900 (amax 42 (dragStartHeight+(gripScreenY sender args)-dragStartY))
+            if nextHeight!=dragList.height do (dragList.height=nextHeight;layout();if panel!=undefined do panel.rememberViews();true)
+            true
+        )
+        fn paintListGrip sender args = (
+            local pen=dotNetObject "System.Drawing.Pen" ((dotNetClass "System.Drawing.Color").FromArgb 135 135 135)
+            local center=(sender.ClientSize.Width/2) as integer
+            args.Graphics.DrawLine pen (center-10) 3 (center+10) 3
+            args.Graphics.DrawLine pen (center-10) 5 (center+10) 5
+            pen.Dispose()
+        )
         fn setupGrips = (
             for grip in #(sourceContainersUI_containersList_grip,sourceUI_plantList_grip,diversityUI_strokesList_grip,diversityUI_strokeChoices_grip) do (
                 grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
-                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").Fixed3D
+                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
+                grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
+                grip.TabStop=false
             )
             true
         )
-        on sourceContainersUI_containersList_grip MouseDown sender args do if controlsReady and not binding and root!=undefined and sourceContainersUI_controlsReady and not sourceContainersUI_binding and true do (if args.Button==(dotNetClass "System.Windows.Forms.MouseButtons").Left do (
-            dragList=sourceContainersUI_containersList;dragStartY=(dotNetClass "System.Windows.Forms.Cursor").Position.Y;dragStartHeight=dragList.height;sender.Capture=true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on sourceContainersUI_containersList_grip MouseMove sender args do if controlsReady and not binding and root!=undefined and sourceContainersUI_controlsReady and not sourceContainersUI_binding and true do (if sender.Capture and dragList!=undefined do (
-            dragList.height=amin 900 (amax 42 (dragStartHeight+(dotNetClass "System.Windows.Forms.Cursor").Position.Y-dragStartY));layout();if panel!=undefined do panel.rememberViews();true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on sourceContainersUI_containersList_grip MouseUp sender args do if controlsReady and not binding and root!=undefined and sourceContainersUI_controlsReady and not sourceContainersUI_binding and true do ((sender.Capture=false;dragList=undefined;if panel!=undefined do panel.rememberViews();true)
-            if controlsReady and root!=undefined do layout()
-        )
-        on sourceContainersUI_containersList_grip MouseCaptureChanged sender args do if controlsReady and not binding and root!=undefined and sourceContainersUI_controlsReady and not sourceContainersUI_binding and true do (if not sender.Capture do dragList=undefined
-            if controlsReady and root!=undefined do layout()
-        )
-        on sourceUI_plantList_grip MouseDown sender args do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and true do (if args.Button==(dotNetClass "System.Windows.Forms.MouseButtons").Left do (
-            dragList=sourceUI_plantList;dragStartY=(dotNetClass "System.Windows.Forms.Cursor").Position.Y;dragStartHeight=dragList.height;sender.Capture=true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on sourceUI_plantList_grip MouseMove sender args do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and true do (if sender.Capture and dragList!=undefined do (
-            dragList.height=amin 900 (amax 42 (dragStartHeight+(dotNetClass "System.Windows.Forms.Cursor").Position.Y-dragStartY));layout();if panel!=undefined do panel.rememberViews();true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on sourceUI_plantList_grip MouseUp sender args do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and true do ((sender.Capture=false;dragList=undefined;if panel!=undefined do panel.rememberViews();true)
-            if controlsReady and root!=undefined do layout()
-        )
-        on sourceUI_plantList_grip MouseCaptureChanged sender args do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and true do (if not sender.Capture do dragList=undefined
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokesList_grip MouseDown sender args do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if args.Button==(dotNetClass "System.Windows.Forms.MouseButtons").Left do (
-            dragList=diversityUI_strokesList;dragStartY=(dotNetClass "System.Windows.Forms.Cursor").Position.Y;dragStartHeight=dragList.height;sender.Capture=true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokesList_grip MouseMove sender args do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if sender.Capture and dragList!=undefined do (
-            dragList.height=amin 900 (amax 42 (dragStartHeight+(dotNetClass "System.Windows.Forms.Cursor").Position.Y-dragStartY));layout();if panel!=undefined do panel.rememberViews();true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokesList_grip MouseUp sender args do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do ((sender.Capture=false;dragList=undefined;if panel!=undefined do panel.rememberViews();true)
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokesList_grip MouseCaptureChanged sender args do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if not sender.Capture do dragList=undefined
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokeChoices_grip MouseDown sender args do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if args.Button==(dotNetClass "System.Windows.Forms.MouseButtons").Left do (
-            dragList=diversityUI_strokeChoices;dragStartY=(dotNetClass "System.Windows.Forms.Cursor").Position.Y;dragStartHeight=dragList.height;sender.Capture=true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokeChoices_grip MouseMove sender args do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if sender.Capture and dragList!=undefined do (
-            dragList.height=amin 900 (amax 42 (dragStartHeight+(dotNetClass "System.Windows.Forms.Cursor").Position.Y-dragStartY));layout();if panel!=undefined do panel.rememberViews();true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokeChoices_grip MouseUp sender args do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do ((sender.Capture=false;dragList=undefined;if panel!=undefined do panel.rememberViews();true)
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokeChoices_grip MouseCaptureChanged sender args do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if not sender.Capture do dragList=undefined
-            if controlsReady and root!=undefined do layout()
-        )
+        on sourceContainersUI_containersList_grip MouseDown sender args do beginListDrag sender args sourceContainersUI_containersList
+        on sourceContainersUI_containersList_grip MouseMove sender args do moveListDrag sender args
+        on sourceContainersUI_containersList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
+        on sourceContainersUI_containersList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on sourceContainersUI_containersList_grip Paint sender args do paintListGrip sender args
+        on sourceUI_plantList_grip MouseDown sender args do beginListDrag sender args sourceUI_plantList
+        on sourceUI_plantList_grip MouseMove sender args do moveListDrag sender args
+        on sourceUI_plantList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
+        on sourceUI_plantList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on sourceUI_plantList_grip Paint sender args do paintListGrip sender args
+        on diversityUI_strokesList_grip MouseDown sender args do beginListDrag sender args diversityUI_strokesList
+        on diversityUI_strokesList_grip MouseMove sender args do moveListDrag sender args
+        on diversityUI_strokesList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
+        on diversityUI_strokesList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on diversityUI_strokesList_grip Paint sender args do paintListGrip sender args
+        on diversityUI_strokeChoices_grip MouseDown sender args do beginListDrag sender args diversityUI_strokeChoices
+        on diversityUI_strokeChoices_grip MouseMove sender args do moveListDrag sender args
+        on diversityUI_strokeChoices_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
+        on diversityUI_strokeChoices_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on diversityUI_strokeChoices_grip Paint sender args do paintListGrip sender args
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -16948,7 +17377,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         )
         fn bind layer = (
             if root==undefined do return false
-            binding=true;controlsReady=false
+            stopListDrag();binding=true;controlsReady=false
             try (
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
@@ -16970,7 +17399,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         )
         on modelsUI resized size do if controlsReady and not binding and (amax 140 modelsUI.width)!=lastLayoutWidth do layout()
         on modelsUI open do (panel=this.mainUI;root=undefined;controlsReady=false)
-        on modelsUI close do (controlsReady=false;root=undefined;owner=undefined;obj=undefined;sourceContainersUI_controlsReady=false;sourceContainersUI_root=undefined;sourceContainersUI_owner=undefined;sourceUI_controlsReady=false;sourceUI_root=undefined;sourceUI_owner=undefined;sourceUI_obj=undefined;diversityUI_controlsReady=false;diversityUI_root=undefined;diversityUI_owner=undefined;diversityUI_obj=undefined)
+        on modelsUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;sourceContainersUI_controlsReady=false;sourceContainersUI_root=undefined;sourceContainersUI_owner=undefined;sourceUI_controlsReady=false;sourceUI_root=undefined;sourceUI_owner=undefined;sourceUI_obj=undefined;diversityUI_controlsReady=false;diversityUI_root=undefined;diversityUI_owner=undefined;diversityUI_obj=undefined)
         on modelsUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection modelsUI;panel.rememberViews()))
     )
 
@@ -17083,7 +17512,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             )
             control.height=amax minimum (lines*14+2);true
         )
-        local dragList=undefined,dragStartY=0,dragStartHeight=0
+        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
         fn captureView = #(populationUI.open,#(advancedToggle.checked),#())
         fn restoreView state = (
             populationUI.open=state[1]
@@ -17091,10 +17520,43 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
 
             true
         )
+        fn stopListDrag = (
+            local previous=dragGrip
+            dragGrip=undefined;dragList=undefined
+            if previous!=undefined do previous.Capture=false
+            true
+        )
+        fn gripScreenY sender args = (
+            local point=dotNetObject "System.Drawing.Point" args.X args.Y
+            (sender.PointToScreen point).Y
+        )
+        fn beginListDrag sender args target = (
+            if not controlsReady or binding or root==undefined or not sender.Visible or not sender.Enabled do return false
+            if args.Button!=(dotNetClass "System.Windows.Forms.MouseButtons").Left do return false
+            stopListDrag()
+            dragStartY=gripScreenY sender args;dragStartHeight=target.height
+            dragList=target;dragGrip=sender;sender.Capture=true;true
+        )
+        fn moveListDrag sender args = (
+            if dragGrip!=sender or dragList==undefined or not sender.Capture do return false
+            if not controlsReady or binding or root==undefined or not sender.Visible do return stopListDrag()
+            local nextHeight=amin 900 (amax 42 (dragStartHeight+(gripScreenY sender args)-dragStartY))
+            if nextHeight!=dragList.height do (dragList.height=nextHeight;layout();if panel!=undefined do panel.rememberViews();true)
+            true
+        )
+        fn paintListGrip sender args = (
+            local pen=dotNetObject "System.Drawing.Pen" ((dotNetClass "System.Drawing.Color").FromArgb 135 135 135)
+            local center=(sender.ClientSize.Width/2) as integer
+            args.Graphics.DrawLine pen (center-10) 3 (center+10) 3
+            args.Graphics.DrawLine pen (center-10) 5 (center+10) 5
+            pen.Dispose()
+        )
         fn setupGrips = (
             for grip in #() do (
                 grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
-                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").Fixed3D
+                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
+                grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
+                grip.TabStop=false
             )
             true
         )
@@ -17307,7 +17769,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         )
         fn bind layer = (
             if root==undefined do return false
-            binding=true;controlsReady=false
+            stopListDrag();binding=true;controlsReady=false
             try (
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
@@ -17325,7 +17787,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         )
         on populationUI resized size do if controlsReady and not binding and (amax 140 populationUI.width)!=lastLayoutWidth do layout()
         on populationUI open do (panel=this.mainUI;root=undefined;controlsReady=false)
-        on populationUI close do (controlsReady=false;root=undefined;owner=undefined;obj=undefined;distributionUI_controlsReady=false;distributionUI_root=undefined;distributionUI_owner=undefined;distributionUI_obj=undefined;populationPolicyUI_controlsReady=false;populationPolicyUI_root=undefined;populationPolicyUI_owner=undefined)
+        on populationUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;distributionUI_controlsReady=false;distributionUI_root=undefined;distributionUI_owner=undefined;distributionUI_obj=undefined;populationPolicyUI_controlsReady=false;populationPolicyUI_root=undefined;populationPolicyUI_owner=undefined)
         on populationUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection populationUI;panel.rememberViews()))
     )
 
@@ -17548,7 +18010,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             )
             control.height=amax minimum (lines*14+2);true
         )
-        local dragList=undefined,dragStartY=0,dragStartHeight=0
+        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
         fn captureView = #(coverageUI.open,#(advancedToggle.checked),#(brushUI_strokeList.height,backgroundUI_referenceList.height))
         fn restoreView state = (
             coverageUI.open=state[1]
@@ -17556,45 +18018,56 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             brushUI_strokeList.height=state[3][1];backgroundUI_referenceList.height=state[3][2]
             true
         )
+        fn stopListDrag = (
+            local previous=dragGrip
+            dragGrip=undefined;dragList=undefined
+            if previous!=undefined do previous.Capture=false
+            true
+        )
+        fn gripScreenY sender args = (
+            local point=dotNetObject "System.Drawing.Point" args.X args.Y
+            (sender.PointToScreen point).Y
+        )
+        fn beginListDrag sender args target = (
+            if not controlsReady or binding or root==undefined or not sender.Visible or not sender.Enabled do return false
+            if args.Button!=(dotNetClass "System.Windows.Forms.MouseButtons").Left do return false
+            stopListDrag()
+            dragStartY=gripScreenY sender args;dragStartHeight=target.height
+            dragList=target;dragGrip=sender;sender.Capture=true;true
+        )
+        fn moveListDrag sender args = (
+            if dragGrip!=sender or dragList==undefined or not sender.Capture do return false
+            if not controlsReady or binding or root==undefined or not sender.Visible do return stopListDrag()
+            local nextHeight=amin 900 (amax 42 (dragStartHeight+(gripScreenY sender args)-dragStartY))
+            if nextHeight!=dragList.height do (dragList.height=nextHeight;layout();if panel!=undefined do panel.rememberViews();true)
+            true
+        )
+        fn paintListGrip sender args = (
+            local pen=dotNetObject "System.Drawing.Pen" ((dotNetClass "System.Drawing.Color").FromArgb 135 135 135)
+            local center=(sender.ClientSize.Width/2) as integer
+            args.Graphics.DrawLine pen (center-10) 3 (center+10) 3
+            args.Graphics.DrawLine pen (center-10) 5 (center+10) 5
+            pen.Dispose()
+        )
         fn setupGrips = (
             for grip in #(brushUI_strokeList_grip,backgroundUI_referenceList_grip) do (
                 grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
-                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").Fixed3D
+                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
+                grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
+                grip.TabStop=false
             )
             true
         )
-        on brushUI_strokeList_grip MouseDown sender args do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (if args.Button==(dotNetClass "System.Windows.Forms.MouseButtons").Left do (
-            dragList=brushUI_strokeList;dragStartY=(dotNetClass "System.Windows.Forms.Cursor").Position.Y;dragStartHeight=dragList.height;sender.Capture=true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on brushUI_strokeList_grip MouseMove sender args do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (if sender.Capture and dragList!=undefined do (
-            dragList.height=amin 900 (amax 42 (dragStartHeight+(dotNetClass "System.Windows.Forms.Cursor").Position.Y-dragStartY));layout();if panel!=undefined do panel.rememberViews();true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on brushUI_strokeList_grip MouseUp sender args do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do ((sender.Capture=false;dragList=undefined;if panel!=undefined do panel.rememberViews();true)
-            if controlsReady and root!=undefined do layout()
-        )
-        on brushUI_strokeList_grip MouseCaptureChanged sender args do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (if not sender.Capture do dragList=undefined
-            if controlsReady and root!=undefined do layout()
-        )
-        on backgroundUI_referenceList_grip MouseDown sender args do if controlsReady and not binding and root!=undefined and backgroundUI_controlsReady and not backgroundUI_binding and true do (if args.Button==(dotNetClass "System.Windows.Forms.MouseButtons").Left do (
-            dragList=backgroundUI_referenceList;dragStartY=(dotNetClass "System.Windows.Forms.Cursor").Position.Y;dragStartHeight=dragList.height;sender.Capture=true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on backgroundUI_referenceList_grip MouseMove sender args do if controlsReady and not binding and root!=undefined and backgroundUI_controlsReady and not backgroundUI_binding and true do (if sender.Capture and dragList!=undefined do (
-            dragList.height=amin 900 (amax 42 (dragStartHeight+(dotNetClass "System.Windows.Forms.Cursor").Position.Y-dragStartY));layout();if panel!=undefined do panel.rememberViews();true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on backgroundUI_referenceList_grip MouseUp sender args do if controlsReady and not binding and root!=undefined and backgroundUI_controlsReady and not backgroundUI_binding and true do ((sender.Capture=false;dragList=undefined;if panel!=undefined do panel.rememberViews();true)
-            if controlsReady and root!=undefined do layout()
-        )
-        on backgroundUI_referenceList_grip MouseCaptureChanged sender args do if controlsReady and not binding and root!=undefined and backgroundUI_controlsReady and not backgroundUI_binding and true do (if not sender.Capture do dragList=undefined
-            if controlsReady and root!=undefined do layout()
-        )
+        on brushUI_strokeList_grip MouseDown sender args do beginListDrag sender args brushUI_strokeList
+        on brushUI_strokeList_grip MouseMove sender args do moveListDrag sender args
+        on brushUI_strokeList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
+        on brushUI_strokeList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on brushUI_strokeList_grip Paint sender args do paintListGrip sender args
+        on backgroundUI_referenceList_grip MouseDown sender args do beginListDrag sender args backgroundUI_referenceList
+        on backgroundUI_referenceList_grip MouseMove sender args do moveListDrag sender args
+        on backgroundUI_referenceList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
+        on backgroundUI_referenceList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on backgroundUI_referenceList_grip Paint sender args do paintListGrip sender args
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -17928,7 +18401,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         )
         fn bind layer = (
             if root==undefined do return false
-            binding=true;controlsReady=false
+            stopListDrag();binding=true;controlsReady=false
             try (
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
@@ -17947,7 +18420,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         )
         on coverageUI resized size do if controlsReady and not binding and (amax 140 coverageUI.width)!=lastLayoutWidth do layout()
         on coverageUI open do (panel=this.mainUI;root=undefined;controlsReady=false)
-        on coverageUI close do (controlsReady=false;root=undefined;owner=undefined;obj=undefined;brushUI_controlsReady=false;brushUI_root=undefined;brushUI_owner=undefined;brushUI_obj=undefined;backgroundUI_controlsReady=false;backgroundUI_root=undefined;backgroundUI_owner=undefined)
+        on coverageUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;brushUI_controlsReady=false;brushUI_root=undefined;brushUI_owner=undefined;brushUI_obj=undefined;backgroundUI_controlsReady=false;backgroundUI_root=undefined;backgroundUI_owner=undefined)
         on coverageUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection coverageUI;panel.rememberViews()))
     )
 
@@ -18178,7 +18651,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             )
             control.height=amax minimum (lines*14+2);true
         )
-        local dragList=undefined,dragStartY=0,dragStartHeight=0
+        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
         fn captureView = #(areasUI.open,#(advancedToggle.checked),#(areaUI_areaList.height))
         fn restoreView state = (
             areasUI.open=state[1]
@@ -18186,29 +18659,51 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             areaUI_areaList.height=state[3][1]
             true
         )
+        fn stopListDrag = (
+            local previous=dragGrip
+            dragGrip=undefined;dragList=undefined
+            if previous!=undefined do previous.Capture=false
+            true
+        )
+        fn gripScreenY sender args = (
+            local point=dotNetObject "System.Drawing.Point" args.X args.Y
+            (sender.PointToScreen point).Y
+        )
+        fn beginListDrag sender args target = (
+            if not controlsReady or binding or root==undefined or not sender.Visible or not sender.Enabled do return false
+            if args.Button!=(dotNetClass "System.Windows.Forms.MouseButtons").Left do return false
+            stopListDrag()
+            dragStartY=gripScreenY sender args;dragStartHeight=target.height
+            dragList=target;dragGrip=sender;sender.Capture=true;true
+        )
+        fn moveListDrag sender args = (
+            if dragGrip!=sender or dragList==undefined or not sender.Capture do return false
+            if not controlsReady or binding or root==undefined or not sender.Visible do return stopListDrag()
+            local nextHeight=amin 900 (amax 42 (dragStartHeight+(gripScreenY sender args)-dragStartY))
+            if nextHeight!=dragList.height do (dragList.height=nextHeight;layout();if panel!=undefined do panel.rememberViews();true)
+            true
+        )
+        fn paintListGrip sender args = (
+            local pen=dotNetObject "System.Drawing.Pen" ((dotNetClass "System.Drawing.Color").FromArgb 135 135 135)
+            local center=(sender.ClientSize.Width/2) as integer
+            args.Graphics.DrawLine pen (center-10) 3 (center+10) 3
+            args.Graphics.DrawLine pen (center-10) 5 (center+10) 5
+            pen.Dispose()
+        )
         fn setupGrips = (
             for grip in #(areaUI_areaList_grip) do (
                 grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
-                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").Fixed3D
+                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
+                grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
+                grip.TabStop=false
             )
             true
         )
-        on areaUI_areaList_grip MouseDown sender args do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and true do (if args.Button==(dotNetClass "System.Windows.Forms.MouseButtons").Left do (
-            dragList=areaUI_areaList;dragStartY=(dotNetClass "System.Windows.Forms.Cursor").Position.Y;dragStartHeight=dragList.height;sender.Capture=true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on areaUI_areaList_grip MouseMove sender args do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and true do (if sender.Capture and dragList!=undefined do (
-            dragList.height=amin 900 (amax 42 (dragStartHeight+(dotNetClass "System.Windows.Forms.Cursor").Position.Y-dragStartY));layout();if panel!=undefined do panel.rememberViews();true
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on areaUI_areaList_grip MouseUp sender args do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and true do ((sender.Capture=false;dragList=undefined;if panel!=undefined do panel.rememberViews();true)
-            if controlsReady and root!=undefined do layout()
-        )
-        on areaUI_areaList_grip MouseCaptureChanged sender args do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and true do (if not sender.Capture do dragList=undefined
-            if controlsReady and root!=undefined do layout()
-        )
+        on areaUI_areaList_grip MouseDown sender args do beginListDrag sender args areaUI_areaList
+        on areaUI_areaList_grip MouseMove sender args do moveListDrag sender args
+        on areaUI_areaList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
+        on areaUI_areaList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on areaUI_areaList_grip Paint sender args do paintListGrip sender args
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -18562,7 +19057,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         )
         fn bind layer = (
             if root==undefined do return false
-            binding=true;controlsReady=false
+            stopListDrag();binding=true;controlsReady=false
             try (
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
@@ -18578,7 +19073,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         )
         on areasUI resized size do if controlsReady and not binding and (amax 140 areasUI.width)!=lastLayoutWidth do layout()
         on areasUI open do (panel=this.mainUI;root=undefined;controlsReady=false)
-        on areasUI close do (controlsReady=false;root=undefined;owner=undefined;obj=undefined;areaUI_controlsReady=false;areaUI_root=undefined;areaUI_owner=undefined;areaUI_obj=undefined)
+        on areasUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;areaUI_controlsReady=false;areaUI_root=undefined;areaUI_owner=undefined;areaUI_obj=undefined)
         on areasUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection areasUI;panel.rememberViews()))
     )
 
@@ -18746,7 +19241,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             )
             control.height=amax minimum (lines*14+2);true
         )
-        local dragList=undefined,dragStartY=0,dragStartHeight=0
+        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
         fn captureView = #(transformsUI.open,#(advancedToggle.checked),#())
         fn restoreView state = (
             transformsUI.open=state[1]
@@ -18754,10 +19249,43 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
 
             true
         )
+        fn stopListDrag = (
+            local previous=dragGrip
+            dragGrip=undefined;dragList=undefined
+            if previous!=undefined do previous.Capture=false
+            true
+        )
+        fn gripScreenY sender args = (
+            local point=dotNetObject "System.Drawing.Point" args.X args.Y
+            (sender.PointToScreen point).Y
+        )
+        fn beginListDrag sender args target = (
+            if not controlsReady or binding or root==undefined or not sender.Visible or not sender.Enabled do return false
+            if args.Button!=(dotNetClass "System.Windows.Forms.MouseButtons").Left do return false
+            stopListDrag()
+            dragStartY=gripScreenY sender args;dragStartHeight=target.height
+            dragList=target;dragGrip=sender;sender.Capture=true;true
+        )
+        fn moveListDrag sender args = (
+            if dragGrip!=sender or dragList==undefined or not sender.Capture do return false
+            if not controlsReady or binding or root==undefined or not sender.Visible do return stopListDrag()
+            local nextHeight=amin 900 (amax 42 (dragStartHeight+(gripScreenY sender args)-dragStartY))
+            if nextHeight!=dragList.height do (dragList.height=nextHeight;layout();if panel!=undefined do panel.rememberViews();true)
+            true
+        )
+        fn paintListGrip sender args = (
+            local pen=dotNetObject "System.Drawing.Pen" ((dotNetClass "System.Drawing.Color").FromArgb 135 135 135)
+            local center=(sender.ClientSize.Width/2) as integer
+            args.Graphics.DrawLine pen (center-10) 3 (center+10) 3
+            args.Graphics.DrawLine pen (center-10) 5 (center+10) 5
+            pen.Dispose()
+        )
         fn setupGrips = (
             for grip in #() do (
                 grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
-                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").Fixed3D
+                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
+                grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
+                grip.TabStop=false
             )
             true
         )
@@ -19190,7 +19718,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         )
         fn bind layer = (
             if root==undefined do return false
-            binding=true;controlsReady=false
+            stopListDrag();binding=true;controlsReady=false
             try (
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
@@ -19206,7 +19734,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         )
         on transformsUI resized size do if controlsReady and not binding and (amax 140 transformsUI.width)!=lastLayoutWidth do layout()
         on transformsUI open do (panel=this.mainUI;root=undefined;controlsReady=false)
-        on transformsUI close do (controlsReady=false;root=undefined;owner=undefined;obj=undefined;randomUI_controlsReady=false;randomUI_root=undefined;randomUI_owner=undefined;randomUI_obj=undefined)
+        on transformsUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;randomUI_controlsReady=false;randomUI_root=undefined;randomUI_owner=undefined;randomUI_obj=undefined)
         on transformsUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection transformsUI;panel.rememberViews()))
     )
 
@@ -19426,7 +19954,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             )
             control.height=amax minimum (lines*14+2);true
         )
-        local dragList=undefined,dragStartY=0,dragStartHeight=0
+        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
         fn captureView = #(spacingUI.open,#(advancedToggle.checked),#())
         fn restoreView state = (
             spacingUI.open=state[1]
@@ -19434,10 +19962,43 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
 
             true
         )
+        fn stopListDrag = (
+            local previous=dragGrip
+            dragGrip=undefined;dragList=undefined
+            if previous!=undefined do previous.Capture=false
+            true
+        )
+        fn gripScreenY sender args = (
+            local point=dotNetObject "System.Drawing.Point" args.X args.Y
+            (sender.PointToScreen point).Y
+        )
+        fn beginListDrag sender args target = (
+            if not controlsReady or binding or root==undefined or not sender.Visible or not sender.Enabled do return false
+            if args.Button!=(dotNetClass "System.Windows.Forms.MouseButtons").Left do return false
+            stopListDrag()
+            dragStartY=gripScreenY sender args;dragStartHeight=target.height
+            dragList=target;dragGrip=sender;sender.Capture=true;true
+        )
+        fn moveListDrag sender args = (
+            if dragGrip!=sender or dragList==undefined or not sender.Capture do return false
+            if not controlsReady or binding or root==undefined or not sender.Visible do return stopListDrag()
+            local nextHeight=amin 900 (amax 42 (dragStartHeight+(gripScreenY sender args)-dragStartY))
+            if nextHeight!=dragList.height do (dragList.height=nextHeight;layout();if panel!=undefined do panel.rememberViews();true)
+            true
+        )
+        fn paintListGrip sender args = (
+            local pen=dotNetObject "System.Drawing.Pen" ((dotNetClass "System.Drawing.Color").FromArgb 135 135 135)
+            local center=(sender.ClientSize.Width/2) as integer
+            args.Graphics.DrawLine pen (center-10) 3 (center+10) 3
+            args.Graphics.DrawLine pen (center-10) 5 (center+10) 5
+            pen.Dispose()
+        )
         fn setupGrips = (
             for grip in #() do (
                 grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
-                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").Fixed3D
+                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
+                grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
+                grip.TabStop=false
             )
             true
         )
@@ -19813,7 +20374,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         )
         fn bind layer = (
             if root==undefined do return false
-            binding=true;controlsReady=false
+            stopListDrag();binding=true;controlsReady=false
             try (
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
@@ -19835,7 +20396,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         )
         on spacingUI resized size do if controlsReady and not binding and (amax 140 spacingUI.width)!=lastLayoutWidth do layout()
         on spacingUI open do (panel=this.mainUI;root=undefined;controlsReady=false)
-        on spacingUI close do (controlsReady=false;root=undefined;owner=undefined;obj=undefined;proceduralUI_controlsReady=false;proceduralUI_root=undefined;proceduralUI_owner=undefined;instanceRadiusUI_controlsReady=false;instanceRadiusUI_root=undefined;instanceRadiusUI_owner=undefined;spacingUI_controlsReady=false;spacingUI_root=undefined;spacingUI_owner=undefined;spacingUI_obj=undefined;separationUI_controlsReady=false;separationUI_root=undefined;separationUI_owner=undefined)
+        on spacingUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;proceduralUI_controlsReady=false;proceduralUI_root=undefined;proceduralUI_owner=undefined;instanceRadiusUI_controlsReady=false;instanceRadiusUI_root=undefined;instanceRadiusUI_owner=undefined;spacingUI_controlsReady=false;spacingUI_root=undefined;spacingUI_owner=undefined;spacingUI_obj=undefined;separationUI_controlsReady=false;separationUI_root=undefined;separationUI_owner=undefined)
         on spacingUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection spacingUI;panel.rememberViews()))
     )
 
@@ -19955,7 +20516,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             )
             control.height=amax minimum (lines*14+2);true
         )
-        local dragList=undefined,dragStartY=0,dragStartHeight=0
+        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
         fn captureView = #(displayUI.open,#(advancedToggle.checked),#())
         fn restoreView state = (
             displayUI.open=state[1]
@@ -19963,10 +20524,43 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
 
             true
         )
+        fn stopListDrag = (
+            local previous=dragGrip
+            dragGrip=undefined;dragList=undefined
+            if previous!=undefined do previous.Capture=false
+            true
+        )
+        fn gripScreenY sender args = (
+            local point=dotNetObject "System.Drawing.Point" args.X args.Y
+            (sender.PointToScreen point).Y
+        )
+        fn beginListDrag sender args target = (
+            if not controlsReady or binding or root==undefined or not sender.Visible or not sender.Enabled do return false
+            if args.Button!=(dotNetClass "System.Windows.Forms.MouseButtons").Left do return false
+            stopListDrag()
+            dragStartY=gripScreenY sender args;dragStartHeight=target.height
+            dragList=target;dragGrip=sender;sender.Capture=true;true
+        )
+        fn moveListDrag sender args = (
+            if dragGrip!=sender or dragList==undefined or not sender.Capture do return false
+            if not controlsReady or binding or root==undefined or not sender.Visible do return stopListDrag()
+            local nextHeight=amin 900 (amax 42 (dragStartHeight+(gripScreenY sender args)-dragStartY))
+            if nextHeight!=dragList.height do (dragList.height=nextHeight;layout();if panel!=undefined do panel.rememberViews();true)
+            true
+        )
+        fn paintListGrip sender args = (
+            local pen=dotNetObject "System.Drawing.Pen" ((dotNetClass "System.Drawing.Color").FromArgb 135 135 135)
+            local center=(sender.ClientSize.Width/2) as integer
+            args.Graphics.DrawLine pen (center-10) 3 (center+10) 3
+            args.Graphics.DrawLine pen (center-10) 5 (center+10) 5
+            pen.Dispose()
+        )
         fn setupGrips = (
             for grip in #() do (
                 grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
-                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").Fixed3D
+                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
+                grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
+                grip.TabStop=false
             )
             true
         )
@@ -20191,7 +20785,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         )
         fn bind layer = (
             if root==undefined do return false
-            binding=true;controlsReady=false
+            stopListDrag();binding=true;controlsReady=false
             try (
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
@@ -20207,7 +20801,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         )
         on displayUI resized size do if controlsReady and not binding and (amax 140 displayUI.width)!=lastLayoutWidth do layout()
         on displayUI open do (panel=this.mainUI;root=undefined;controlsReady=false)
-        on displayUI close do (controlsReady=false;root=undefined;owner=undefined;obj=undefined;flow_previewUI_controlsReady=false;flow_previewUI_root=undefined;flow_previewUI_owner=undefined;flow_previewUI_obj=undefined)
+        on displayUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;flow_previewUI_controlsReady=false;flow_previewUI_root=undefined;flow_previewUI_owner=undefined;flow_previewUI_obj=undefined)
         on displayUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection displayUI;panel.rememberViews()))
     )
 
@@ -20373,7 +20967,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             )
             control.height=amax minimum (lines*14+2);true
         )
-        local dragList=undefined,dragStartY=0,dragStartHeight=0
+        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
         fn captureView = #(statisticsUI.open,#(advancedToggle.checked,workflowToggle.checked),#())
         fn restoreView state = (
             statisticsUI.open=state[1]
@@ -20381,10 +20975,43 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
 
             true
         )
+        fn stopListDrag = (
+            local previous=dragGrip
+            dragGrip=undefined;dragList=undefined
+            if previous!=undefined do previous.Capture=false
+            true
+        )
+        fn gripScreenY sender args = (
+            local point=dotNetObject "System.Drawing.Point" args.X args.Y
+            (sender.PointToScreen point).Y
+        )
+        fn beginListDrag sender args target = (
+            if not controlsReady or binding or root==undefined or not sender.Visible or not sender.Enabled do return false
+            if args.Button!=(dotNetClass "System.Windows.Forms.MouseButtons").Left do return false
+            stopListDrag()
+            dragStartY=gripScreenY sender args;dragStartHeight=target.height
+            dragList=target;dragGrip=sender;sender.Capture=true;true
+        )
+        fn moveListDrag sender args = (
+            if dragGrip!=sender or dragList==undefined or not sender.Capture do return false
+            if not controlsReady or binding or root==undefined or not sender.Visible do return stopListDrag()
+            local nextHeight=amin 900 (amax 42 (dragStartHeight+(gripScreenY sender args)-dragStartY))
+            if nextHeight!=dragList.height do (dragList.height=nextHeight;layout();if panel!=undefined do panel.rememberViews();true)
+            true
+        )
+        fn paintListGrip sender args = (
+            local pen=dotNetObject "System.Drawing.Pen" ((dotNetClass "System.Drawing.Color").FromArgb 135 135 135)
+            local center=(sender.ClientSize.Width/2) as integer
+            args.Graphics.DrawLine pen (center-10) 3 (center+10) 3
+            args.Graphics.DrawLine pen (center-10) 5 (center+10) 5
+            pen.Dispose()
+        )
         fn setupGrips = (
             for grip in #() do (
                 grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
-                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").Fixed3D
+                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
+                grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
+                grip.TabStop=false
             )
             true
         )
@@ -20504,7 +21131,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         )
         fn bind layer = (
             if root==undefined do return false
-            binding=true;controlsReady=false
+            stopListDrag();binding=true;controlsReady=false
             try (
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
@@ -20526,7 +21153,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         )
         on statisticsUI resized size do if controlsReady and not binding and (amax 140 statisticsUI.width)!=lastLayoutWidth do layout()
         on statisticsUI open do (panel=this.mainUI;root=undefined;controlsReady=false)
-        on statisticsUI close do (controlsReady=false;root=undefined;owner=undefined;obj=undefined;detailsUI_controlsReady=false;detailsUI_root=undefined;detailsUI_owner=undefined;workflowUI_controlsReady=false;workflowUI_root=undefined;workflowUI_owner=undefined;diagnosticsUI_controlsReady=false;diagnosticsUI_root=undefined;diagnosticsUI_owner=undefined)
+        on statisticsUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;detailsUI_controlsReady=false;detailsUI_root=undefined;detailsUI_owner=undefined;workflowUI_controlsReady=false;workflowUI_root=undefined;workflowUI_owner=undefined;diagnosticsUI_controlsReady=false;diagnosticsUI_root=undefined;diagnosticsUI_owner=undefined)
         on statisticsUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection statisticsUI;panel.rememberViews()))
     )
     on attachedToNode node do (

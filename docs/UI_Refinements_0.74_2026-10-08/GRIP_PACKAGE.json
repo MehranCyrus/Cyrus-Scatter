@@ -1,0 +1,37 @@
+{
+  "date": "2026-10-08",
+  "source_baseline": "369a5ad803dd52818a56b1571146352fdf003ac9",
+  "source_state": "Final script SHA and generation inputs recorded in GRIP_EVIDENCE.json; commit follows evidence capture.",
+  "package": "dist/UI_Grip_Fix_0.74_2026-10-08/Max2027/CyrusScatter-0.74.0-Max2027.mzp",
+  "sha256": "332968fadc294cbe22e78e167cc04ee139b4341da5cd2edf83a4fe18dc05290e",
+  "size_bytes": 678366,
+  "manifest": {
+    "product": "Cyrus Scatter",
+    "version": "0.74.0",
+    "max_year": 2027,
+    "toolset": "14.38.33130",
+    "windows_sdk": "10.0.19041.0",
+    "configuration": "Release",
+    "native_id": "0bcc8d5752de",
+    "files": {
+      "AminScatter.dlx": "897633b4cc2badabbf466143548848a65b94288c03c0e8554c155ebe940b7a09",
+      "CyrusBrush.dlx": "ce829dbac2273283d6e00efb844ec0b5c74a15a8f20b08d1654a62ac2f90aef3",
+      "CyrusBrushStorage.dlh": "12945a78e9d7446cda5a0cbc992ef7c1a6bf086b89b83156869c48e93372af18",
+      "CyrusScatter.mcr": "05dba0d99e78105836157fa1cd403001fa620aa542eb7c7b02b8b33e416ea251",
+      "CyrusScatter.ms": "df533e6f4c5de8909737808125df0ce116bcc6076ad4dc263501051a3700b402",
+      "CyrusScatterEdit.dlm": "b9cbd7b7bfbf720bd0009e03a3a019aa92b03cc4721cd352d90e42a1e15e8732",
+      "CyrusScatterStartup.ms": "fdf38b3bc83187eecb34b833bfff2751e78626e9e3dba41aa20a0ff7ff9e8405",
+      "INSTALL.txt": "0cb7d20f3ba9e810572cdd884dfbab9f889872d8ec6167ea62d09cc04ac73541",
+      "Uninstall.ms": "59e2b84901fcefaae1dab59886cd2f4079df4f764c789238947e19c514b4ed49",
+      "install.ms": "a0adc0f0e6c8222f7a4446807bc1caa028deaa141f2d23451bff9e8ef907cd7d",
+      "mzp.run": "8df2fc891a16df4cb46bd46ef94f3fc4b7722e7f7bfc9128f03aa6d392f5c990"
+    }
+  },
+  "verification": {
+    "zip_integrity": true,
+    "all_manifest_hashes": true,
+    "matches_host_tested_script_and_native_modules": true,
+    "max_year_guard": 2027,
+    "installed": false
+  }
+}

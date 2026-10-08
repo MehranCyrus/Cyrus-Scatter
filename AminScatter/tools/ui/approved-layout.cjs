@@ -235,7 +235,7 @@ function page(s,definition,{name=definition.name,category=0,popup=false}={}){
         )\n`;
  const remember=popup?'':'if panel!=undefined do panel.rememberViews();';
  const toggles=['advancedToggle',...disclosures.map(r=>r.toggle)];
- const presentation=`        local dragList=undefined,dragStartY=0,dragStartHeight=0
+ const presentation=`        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
         fn captureView = #(${name}.open,#(${toggles.map(id=>id+'.checked').join(',')}),#(${lists.map(c=>c.id+'.height').join(',')}))
         fn restoreView state = (
             ${name}.open=state[1]
@@ -243,23 +243,54 @@ function page(s,definition,{name=definition.name,category=0,popup=false}={}){
             ${lists.map((c,i)=>c.id+'.height=state[3]['+(i+1)+']').join(';')}
             true
         )
+        fn stopListDrag = (
+            local previous=dragGrip
+            dragGrip=undefined;dragList=undefined
+            if previous!=undefined do previous.Capture=false
+            true
+        )
+        fn gripScreenY sender args = (
+            local point=dotNetObject "System.Drawing.Point" args.X args.Y
+            (sender.PointToScreen point).Y
+        )
+        fn beginListDrag sender args target = (
+            if not controlsReady or binding or root==undefined or not sender.Visible or not sender.Enabled do return false
+            if args.Button!=(dotNetClass "System.Windows.Forms.MouseButtons").Left do return false
+            stopListDrag()
+            dragStartY=gripScreenY sender args;dragStartHeight=target.height
+            dragList=target;dragGrip=sender;sender.Capture=true;true
+        )
+        fn moveListDrag sender args = (
+            if dragGrip!=sender or dragList==undefined or not sender.Capture do return false
+            if not controlsReady or binding or root==undefined or not sender.Visible do return stopListDrag()
+            local nextHeight=amin 900 (amax 42 (dragStartHeight+(gripScreenY sender args)-dragStartY))
+            if nextHeight!=dragList.height do (dragList.height=nextHeight;layout();${remember}true)
+            true
+        )
+        fn paintListGrip sender args = (
+            local pen=dotNetObject "System.Drawing.Pen" ((dotNetClass "System.Drawing.Color").FromArgb 135 135 135)
+            local center=(sender.ClientSize.Width/2) as integer
+            args.Graphics.DrawLine pen (center-10) 3 (center+10) 3
+            args.Graphics.DrawLine pen (center-10) 5 (center+10) 5
+            pen.Dispose()
+        )
         fn setupGrips = (
             for grip in #(${lists.map(c=>c.id+'_grip').join(',')}) do (
                 grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
-                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").Fixed3D
+                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
+                grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
+                grip.TabStop=false
             )
             true
         )
-${lists.map(c=>`        on ${c.id}_grip MouseDown sender args do if args.Button==(dotNetClass "System.Windows.Forms.MouseButtons").Left do (
-            dragList=${c.id};dragStartY=(dotNetClass "System.Windows.Forms.Cursor").Position.Y;dragStartHeight=dragList.height;sender.Capture=true
-        )
-        on ${c.id}_grip MouseMove sender args do if sender.Capture and dragList!=undefined do (
-            dragList.height=amin 900 (amax 42 (dragStartHeight+(dotNetClass "System.Windows.Forms.Cursor").Position.Y-dragStartY));layout();${remember}true
-        )
-        on ${c.id}_grip MouseUp sender args do (sender.Capture=false;dragList=undefined;${remember}true)
-        on ${c.id}_grip MouseCaptureChanged sender args do if not sender.Capture do dragList=undefined`).join('\n')}
+${lists.map(c=>`        on ${c.id}_grip MouseDown sender args do beginListDrag sender args ${c.id}
+        on ${c.id}_grip MouseMove sender args do moveListDrag sender args
+        on ${c.id}_grip MouseUp sender args do (stopListDrag();${remember}true)
+        on ${c.id}_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on ${c.id}_grip Paint sender args do paintListGrip sender args`).join('\n')}
 `;
  let final=require('./colored-lists.cjs')(out,components).replace('        fn layout = (',presentation+widthHelper+'        fn layout = (').replace('        on advancedToggle changed value do layout()',disclosures.map(r=>'        on '+r.toggle+' changed value do (layout();'+remember+'true)').join('\n')+'\n        on advancedToggle changed value do (layout();'+remember+'true)');
+ final=final.replace('            binding=true;controlsReady=false','            stopListDrag();binding=true;controlsReady=false').replace('on '+name+' close do (','on '+name+' close do (stopListDrag();');
  final=final.replace('                controlsReady=true;binding=false;layout();true','                setupGrips();controlsReady=true;binding=false;layout();true');
  if(!popup)final=final.replace('do panel.bindSection '+name,'do (panel.bindSection '+name+';panel.rememberViews())');
  // Max may allocate a scrollbar after the parent layout finishes. Reflow
@@ -273,7 +304,7 @@ ${lists.map(c=>`        on ${c.id}_grip MouseDown sender args do if args.Button=
  const eventParts=statements(final.slice(bodyStart,bodyEnd));
  for(const part of eventParts){
   const event=/^        on (\w+) (?!open\b|close\b|rolledUp\b)[^\n]*? do /.exec(part);
-  if(!event||event[1]===name||event[0].includes(' DrawItem ')||event[0].includes(' SelectedIndexChanged '))continue;
+  if(!event||event[1]===name||event[1].endsWith('_grip')||event[0].includes(' DrawItem ')||event[0].includes(' SelectedIndexChanged '))continue;
   const expression=part.slice(event[0].length);
   const component=components.find(p=>event[1].startsWith(p.key+'_'));
   const ready=component?component.key+'_controlsReady and not '+component.key+'_binding and ':'';
