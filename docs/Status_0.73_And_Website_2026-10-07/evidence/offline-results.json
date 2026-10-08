@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-07",
+  "python": {
+    "passed": 141,
+    "command": "build/mcp-venv/Scripts/python.exe -m pytest CyrusMCP/tests tools/tests -q",
+    "log": "python-tests.log"
+  },
+  "nativeScatter": {
+    "freshCoreBuild": true,
+    "passed": 14,
+    "log": "scatter-core-tests.log"
+  },
+  "nativeAnalyzer": {
+    "freshCoreBuild": true,
+    "passed": 1,
+    "log": "analyzer-core-tests.log"
+  },
+  "generator": {
+    "passed": true,
+    "controls": 240,
+    "fixtureDelimiters": 22,
+    "maxscriptCompiled": false
+  },
+  "approvedLayoutAssertions": {
+    "passed": true,
+    "command": "node tools/ui/approved-layout.test.cjs (cwd AminScatter)"
+  },
+  "boundaries": [
+    "No 3ds Max process launched",
+    "No new SDK plugin build, MZP, installation, render or FPS/VRAM measurement",
+    "Core C++ builds are current source; historical Max receipts retain their own script/native identities"
+  ]
+}

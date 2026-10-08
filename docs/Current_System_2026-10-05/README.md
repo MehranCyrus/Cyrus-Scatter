@@ -1,6 +1,6 @@
 # Cyrus Scatter: current system and next engineering loops
 
-**Current 7 October authority:** [approved UI, real scenes, exact evidence and remaining limits](../Full_Qualification_0.73_2026-10-07/README.md). The latest report supersedes older UI/runtime qualification claims; dated implementation and R&D evidence below remains historical. No artist installation or Git operations are part of this campaign.
+**Current 7 October authority:** [compact UI](../Compact_UI_0.73_2026-10-07/README.md), [latest layer-button correction and delivery](../Layer_Actions_Fix_0.73_2026-10-07/README.md), and [reconciled status/handoff](../Status_0.73_And_Website_2026-10-07/README.md). The [full qualification](../Full_Qualification_0.73_2026-10-07/README.md) retains frozen broader host, real-scene and renderer evidence. The capability matrix describes the unified architecture; use these links for later UI/build identity. Dated implementation and R&D evidence below remains historical.
 
 **Current 0.73 authority:** [unified implementation/results](../Unified_System_0.73_2026-10-06/README.md), [system guide](SYSTEM_GUIDE.md), [capability matrix](CAPABILITY_MATRIX.md) and [AI workflow](AGENT_WORKFLOW_GUIDE.md) are updated for `CyrusUnified1` and closed Plan 0.73. Old policies/scene formats/schemas are retired. The remaining content below preserves the 5 October documentation baseline and subsequent 0.72 history; older compatibility and read-only-policy claims are not current behavior. [New prioritized roadmap](../Unified_System_0.73_2026-10-06/ROADMAP.md).
 
@@ -10,7 +10,7 @@
 
 **Frozen 6 October MCP continuation:** [the live runtime campaign](../Live_Runtime_2026-10-06/README.md) qualifies the bounded recorder, twelve-tool/seven-resource MCP source and runtime scheduling on its pinned Max 2027 pair. Subsequent Scatter implementation/renderer evidence is in 0.72 above. At that historical snapshot, policy 3 was read-only; deployed artist ML and release tracks remain separate. The dated conclusions below describe this document's 5 October snapshot, including then-unqualified concurrent work.
 
-5 October 2026 Ã‚Â· **Documentation reconciliation only.** This is the current navigation and planning authority for the local 0.7.1 development source. It does not qualify a release, activate logging, expand MCP permissions or implement ML.
+5 October 2026 Ã‚Â· **Documentation reconciliation only.** This section preserves the 5 October navigation and planning baseline for 0.7.1. It does not qualify a release, activate logging, expand MCP permissions or implement ML.
 
 The user requested a pause in coding to document the whole plugin, reconcile existing evidence, and define trustworthy diagnostics and MCP work before future AI-assisted design. This package answers that request. Historical reports keep their original dates, results and limitations.
 
@@ -31,7 +31,7 @@ The user requested a pause in coding to document the whole plugin, reconcile exi
 | Which older document should I trust for which subject? | [Document audit and maintenance rules](DOCUMENT_AUDIT.md) |
 | What was checked during this documentation pass? | [Evidence and validation](EVIDENCE.md) |
 
-## Current conclusion
+## Historical 5 October conclusion
 
 - **Plugin:** local 0.7.1 source has the floating Layer Editor, procedural policy 3, source containers, Brush, Edit/radius integration and retained previews. It is a development candidate. Existing installers are a different snapshot.
 - **Known failure:** Corona Interactive Rendering repeatedly restarted in the user's test session. Production renders succeeded in the earlier real-scene campaign. The initiating callback is not isolated. A separate false Pending status was reproduced; their relationship is not established.

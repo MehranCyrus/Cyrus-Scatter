@@ -1,0 +1,23 @@
+{
+  "date": "2026-10-07",
+  "initialFilesCompared": 2662,
+  "changedExistingFiles": [
+    "CyrusMCP/README.md",
+    "README.md",
+    "docs/Current_System_2026-10-05/README.md",
+    "docs/Current_System_2026-10-05/SYSTEM_GUIDE.md",
+    "docs/README.md",
+    "website/README.md",
+    "website/TASKS.md",
+    "website/app.js",
+    "website/index.html",
+    "website/styles.css",
+    "website/tools/verify_reference.py",
+    "website/verification/static-checks.json"
+  ],
+  "missingInitialFiles": [],
+  "unexpectedChanges": [],
+  "localLinksChecked": 250,
+  "missingLocalLinks": [],
+  "scope": "Initial tracked and website files. Ignored artist scenes were not opened or edited; not all ignored files were hashed."
+}

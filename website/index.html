@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#2f4935">
+  <meta name="description" content="Artist-directed procedural planting in 3ds Max. Explore the Cyrus Scatter workflow, complete visual reference and development roadmap.">
+  <title>Cyrus Scatter — Visual Guide</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script src="content/reference.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <aside class="sidebar" id="sidebar" aria-label="Guide navigation">
+    <button class="icon-button mobile-nav-close" id="close-navigation" aria-label="Close navigation">×</button>
+    <a class="brand" href="#/" aria-label="Cyrus Scatter Visual Guide home">
+      <svg viewBox="0 0 42 42" aria-hidden="true"><path d="M21 3 39 13.5v15L21 39 3 28.5v-15Z" fill="none" stroke="currentColor"/><path d="m3 13.5 18 11 18-11M21 24.5V39M12 8.2v15L30 34" fill="none" stroke="currentColor"/><circle cx="21" cy="16" r="3" fill="currentColor"/></svg>
+      <span>CYRUS<span class="brand-sub">SCATTER / VISUAL GUIDE</span></span>
+    </a>
+    <nav id="navigation"></nav>
+    <div class="sidebar-foot"><span class="version-dot"></span><strong>0.73</strong> development reference<br><span>7 October 2026 · Artist edition</span><a href="#/status">Development status & roadmap <span aria-hidden="true">↗</span></a></div>
+  </aside>
+  <button class="nav-scrim" id="nav-scrim" aria-label="Close navigation" hidden></button>
+  <div class="workspace">
+    <header class="topbar">
+      <button class="icon-button mobile-menu" id="menu-toggle" aria-controls="sidebar" aria-expanded="false" aria-label="Open navigation"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      <div class="breadcrumb" id="breadcrumb">The artist’s field guide</div>
+      <button class="search-trigger" id="open-search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><span>Find a control or idea…</span><kbd>Ctrl K</kbd></button>
+      <a class="header-reference" href="#/controls">Control finder <span aria-hidden="true">↗</span></a>
+    </header>
+    <main id="main-content" tabindex="-1"></main>
+    <footer class="site-footer"><span>CYRUS SCATTER <span class="footer-divider">/</span> Made for the way artists work.</span><a href="#/about">Sources & image credits <span aria-hidden="true">↗</span></a></footer>
+  </div>
+  <dialog id="search-dialog" class="search-dialog" aria-labelledby="search-title">
+    <div class="search-heading"><h2 id="search-title">Find your next answer.</h2><button class="icon-button" id="close-search" aria-label="Close search">×</button></div>
+    <label class="search-field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><span class="sr-only">Search documentation</span><input id="global-search" type="search" autocomplete="off" placeholder="Try “source radius” or “paint a path”…"></label>
+    <p class="search-count" id="search-count" aria-live="polite">Search controls, explanations and artist workflows.</p>
+    <div id="search-results" class="search-results"></div>
+    <div class="search-foot"><span><kbd>↓</kbd> Browse results</span><span><kbd>Esc</kbd> Close</span><span>All 16 reference chapters</span></div>
+  </dialog>
+  <noscript><div class="noscript"><h1>Cyrus Scatter artist reference</h1><p>This visual guide needs JavaScript for navigation and search. The complete reference remains available as portable Markdown.</p><a href="sources/README.md">Open the original guide contents</a></div></noscript>
+</body>
+</html>

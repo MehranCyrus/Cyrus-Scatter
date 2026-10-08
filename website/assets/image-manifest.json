@@ -1,0 +1,29 @@
+[
+  {
+    "name": "garden-composition",
+    "width": 1536,
+    "height": 1024,
+    "original_bytes": 3650532,
+    "webp_bytes": 487008,
+    "original_sha256": "53db1cca98155c7a8187b2c49b09574277ca0ea2d4f9e6025b022fe7f16a3dc3",
+    "webp_sha256": "7be83b028d06a963fc22cc14e79ff22ce787426675d7d9639805406c8b7c83d2"
+  },
+  {
+    "name": "painted-flower-ribbon",
+    "width": 1536,
+    "height": 1024,
+    "original_bytes": 4248777,
+    "webp_bytes": 623316,
+    "original_sha256": "829cac681d8d29ef67a4243878675961c926775774ff70aea393676956dab7ac",
+    "webp_sha256": "0e399b0f2ec1fcf674d261d6bafb41cf092b9d5f5328c12c10fea758401fd279"
+  },
+  {
+    "name": "source-library",
+    "width": 1536,
+    "height": 1024,
+    "original_bytes": 2838166,
+    "webp_bytes": 284458,
+    "original_sha256": "9952b06de827e08ee61fda07b61e04ad88af4dcf18ede95673bcce539d694133",
+    "webp_sha256": "77fd582caf6eb1b7d4ae98628ef271266342044a905cf5784a9e588cc24fc3dd"
+  }
+]

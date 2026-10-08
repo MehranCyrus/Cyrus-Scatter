@@ -1,0 +1,173 @@
+{
+  "errors": [],
+  "routes": [
+    {
+      "heading": "Guide contents",
+      "overflow": false,
+      "route": "#/doc/guide",
+      "unnamedFields": []
+    },
+    {
+      "heading": "Setup & layers",
+      "overflow": false,
+      "route": "#/doc/setup",
+      "unnamedFields": []
+    },
+    {
+      "heading": "Models & containers",
+      "overflow": false,
+      "route": "#/doc/models",
+      "unnamedFields": []
+    },
+    {
+      "heading": "Source assignment",
+      "overflow": false,
+      "route": "#/doc/assignment",
+      "unnamedFields": []
+    },
+    {
+      "heading": "Population",
+      "overflow": false,
+      "route": "#/doc/population",
+      "unnamedFields": []
+    },
+    {
+      "heading": "Coverage & painting",
+      "overflow": false,
+      "route": "#/doc/painting",
+      "unnamedFields": []
+    },
+    {
+      "heading": "Areas & falloff",
+      "overflow": false,
+      "route": "#/doc/areas",
+      "unnamedFields": []
+    },
+    {
+      "heading": "Transforms",
+      "overflow": false,
+      "route": "#/doc/transforms",
+      "unnamedFields": []
+    },
+    {
+      "heading": "Spacing & cleanup",
+      "overflow": false,
+      "route": "#/doc/spacing",
+      "unnamedFields": []
+    },
+    {
+      "heading": "Viewport & render",
+      "overflow": false,
+      "route": "#/doc/viewport",
+      "unnamedFields": []
+    },
+    {
+      "heading": "Statistics & recording",
+      "overflow": false,
+      "route": "#/doc/diagnostics",
+      "unnamedFields": []
+    },
+    {
+      "heading": "Other editing views",
+      "overflow": false,
+      "route": "#/doc/editing",
+      "unnamedFields": []
+    },
+    {
+      "heading": "Surface Analyzer",
+      "overflow": false,
+      "route": "#/doc/analyzer",
+      "unnamedFields": []
+    },
+    {
+      "heading": "Automation & limits",
+      "overflow": false,
+      "route": "#/doc/limits",
+      "unnamedFields": []
+    },
+    {
+      "heading": "Artist walkthrough",
+      "overflow": false,
+      "route": "#/doc/walkthrough",
+      "unnamedFields": []
+    },
+    {
+      "heading": "Complete control index",
+      "overflow": false,
+      "route": "#/doc/index",
+      "unnamedFields": []
+    },
+    {
+      "heading": "A landscape.By your hand.",
+      "overflow": false,
+      "route": "#/",
+      "unnamedFields": []
+    },
+    {
+      "heading": "A working tool.Confidence comes next.",
+      "overflow": false,
+      "route": "#/status",
+      "unnamedFields": []
+    },
+    {
+      "heading": "A small scene.A clear first result.",
+      "overflow": false,
+      "route": "#/workflow",
+      "unnamedFields": []
+    },
+    {
+      "heading": "Find the right control.",
+      "overflow": false,
+      "route": "#/controls",
+      "unnamedFields": []
+    },
+    {
+      "heading": "Change one thing.See what it means.",
+      "overflow": false,
+      "route": "#/visuals/shares",
+      "unnamedFields": []
+    },
+    {
+      "heading": "Change one thing.See what it means.",
+      "overflow": false,
+      "route": "#/visuals/containers",
+      "unnamedFields": []
+    },
+    {
+      "heading": "Change one thing.See what it means.",
+      "overflow": false,
+      "route": "#/visuals/coverage",
+      "unnamedFields": []
+    },
+    {
+      "heading": "Change one thing.See what it means.",
+      "overflow": false,
+      "route": "#/visuals/spacing",
+      "unnamedFields": []
+    },
+    {
+      "heading": "Change one thing.See what it means.",
+      "overflow": false,
+      "route": "#/visuals/updates",
+      "unnamedFields": []
+    },
+    {
+      "heading": "Change one thing.See what it means.",
+      "overflow": false,
+      "route": "#/visuals/output",
+      "unnamedFields": []
+    },
+    {
+      "heading": "Take it one step at a time.",
+      "overflow": false,
+      "route": "#/walkthrough",
+      "unnamedFields": []
+    },
+    {
+      "heading": "A guide you can trace.",
+      "overflow": false,
+      "route": "#/about",
+      "unnamedFields": []
+    }
+  ]
+}

@@ -1,5 +1,11 @@
 # Cyrus Scatter
 
+**Agent entry point:** [Repository guidelines](AGENTS.md) and [engineering workflow](docs/AGENT_WORKFLOW.md). Read these with the current status/handoff below before changing source or running host fixtures.
+
+**Max 2026 build — 7 October 2026:** [Current compact 0.73 installers and build verification](docs/Max2026_Build_0.73_2026-10-07/README.md). Fresh SDK compilation/native tests passed; Max 2026 runtime remains untested.
+
+**Current baseline review and next-session handoff — 7 October 2026:** [Verified 0.73 status, fresh offline checks and open gates](docs/Status_0.73_And_Website_2026-10-07/README.md), [next-conversation handoff](docs/Status_0.73_And_Website_2026-10-07/HANDOFF.md) and [local visual website](website/index.html). The source and latest Add-layer package match; the inspected installed script still predates that correction. Check exact identities before the next Max test. This round changes documentation and website files only.
+
 **Current artist documentation — 7 October 2026:** [Plain-language control guide](docs/Artist_Reference_0.73_2026-10-07/README.md), [complete control index](docs/Artist_Reference_0.73_2026-10-07/15_CONTROL_INDEX.md), and [documentation review / next artist walkthrough](docs/Artist_Reference_0.73_2026-10-07/14_REVIEW_AND_WALKTHROUGH.md). Use this guide for today's compact layout; earlier dated artist guides describe their original layouts. This documentation round changes no plugin behavior.
 
 **Cyrus Scatter 0.73: Add layer callback correction:** [the latest fix, actual button regression tests and matching delivery](docs/Layer_Actions_Fix_0.73_2026-10-07/README.md) follows the [compact UI layout](docs/Compact_UI_0.73_2026-10-07/README.md). The [earlier full qualification](docs/Full_Qualification_0.73_2026-10-07/README.md) retains its frozen engine, real-scene and renderer evidence.

@@ -1,0 +1,30 @@
+{
+  "date": "2026-10-07",
+  "scope": "Offline website checks only; no Max qualification.",
+  "result": "passed",
+  "sourceDocuments": 16,
+  "inventoryEntries": 240,
+  "walkthroughSteps": 28,
+  "sourceLinksChecked": 333,
+  "authoredChapterLinksChecked": 25,
+  "uniqueDeepLinksChecked": 847,
+  "localShellAssetsChecked": 7,
+  "generatedImagesChecked": 3,
+  "checks": [
+    "Reference regeneration exactly matches checked-in website data",
+    "All source snapshots retain original hashes",
+    "Every inventory entry has an existing explanatory anchor",
+    "Same-label controls preserve section and owner context",
+    "All rendered source links resolve",
+    "All authored chapter/anchor links resolve",
+    "No duplicate IDs within a chapter",
+    "Walkthrough contains all 28 source steps",
+    "Main shell and fonts use local assets",
+    "Generated-image hashes match the supplied manifest",
+    "WOFF2 and WebP file signatures are correct"
+  ],
+  "notChecked": [
+    "Browser layout and interaction need a browser run",
+    "3ds Max, plugin behavior, rendering and performance are not tested by this script"
+  ]
+}

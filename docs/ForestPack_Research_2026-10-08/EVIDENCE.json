@@ -1,0 +1,568 @@
+{
+  "completed_utc": "2026-10-08T09:07:06.883134+00:00",
+  "run": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\forestpack-research-20261008-01",
+  "baseline_git": {
+    "status": "M CyrusMCP/README.md\n M README.md\n M docs/Current_System_2026-10-05/README.md\n M docs/Current_System_2026-10-05/SYSTEM_GUIDE.md\n M docs/README.md\n?? AGENTS.md\n?? \"Landing Page Design/\"\n?? docs/AGENT_WORKFLOW.md\n?? docs/Artist_Reference_0.73_2026-10-07/Artist_Reference_0.73_2026-10-07.zip\n?? docs/ForestPack_Research_2026-10-08/\n?? docs/Max2026_Build_0.73_2026-10-07/\n?? docs/Product_Discussion_2026-10-08/\n?? docs/Status_0.73_And_Website_2026-10-07/\n?? website/",
+    "branch": "codex/unified-0.73",
+    "head": "d55dfa88cbeda7af366e4510ac3119a749368958"
+  },
+  "final_git": {
+    "head": "d55dfa88cbeda7af366e4510ac3119a749368958",
+    "branch": "codex/unified-0.73",
+    "status": "M CyrusMCP/README.md\n M README.md\n M docs/Current_System_2026-10-05/README.md\n M docs/Current_System_2026-10-05/SYSTEM_GUIDE.md\n M docs/README.md\n?? AGENTS.md\n?? \"Landing Page Design/\"\n?? docs/AGENT_WORKFLOW.md\n?? docs/Artist_Reference_0.73_2026-10-07/Artist_Reference_0.73_2026-10-07.zip\n?? docs/ForestPack_Research_2026-10-08/\n?? docs/Max2026_Build_0.73_2026-10-07/\n?? docs/Product_Discussion_2026-10-08/\n?? docs/Status_0.73_And_Website_2026-10-07/\n?? website/"
+  },
+  "original_checks": [
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ForestPackLite2027\\PackageContents.xml",
+      "sha256": "b7020c08adc658afb619ae9f1897161c9fd3ec7d9709da332a10602ad79a343a",
+      "original_unchanged": true,
+      "copy_unchanged": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ForestPackLite2027\\Contents\\plugins\\2027\\ForestPackLite.dlo",
+      "sha256": "23b25adf28954a4cd6c3d7fe5f7ea90b6a6e9be480f8a422fa7ef8b99c9a325d",
+      "original_unchanged": true,
+      "copy_unchanged": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ForestPackLite2027\\Contents\\plugins\\2027\\ForestQt.dll",
+      "sha256": "6ac7021bedb83c0ed70f6a0c2b2d123fad44be9bd8fb328c75e6dd9eb65abefb",
+      "original_unchanged": true,
+      "copy_unchanged": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ForestPackLite2027\\Contents\\plugins\\2027\\ForestQtCatalog.dll",
+      "sha256": "eefef4a421bdb50320c951bf271a6b90d847bc09572337b816572f2ef9767e20",
+      "original_unchanged": true,
+      "copy_unchanged": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ForestPackLite2027\\Contents\\plugins\\2027\\ForestVRay70.dll",
+      "sha256": "7154989af41bbc8b3132d0e7eab3374e3b045a2e47e0e61132592b21830fb180",
+      "original_unchanged": true,
+      "copy_unchanged": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ForestPackLite2027\\Contents\\scripts\\forest_utils.ms",
+      "sha256": "722804afe7694baef929c9154d9981e64979ede6250f07ad305a86e639134648",
+      "original_unchanged": true,
+      "copy_unchanged": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ForestPackLite2027\\Contents\\scripts\\optmat.mse",
+      "sha256": "de6a4e710d7d26c4ad41e2cd9d1497214963bee827defab6ebeaaa67ef3953a7",
+      "original_unchanged": true,
+      "copy_unchanged": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ForestPackLite2027\\Contents\\scripts\\startup\\forestpack.ms",
+      "sha256": "8f51b8ddc2a79cb29c0cfbcbb35a18364118de2ebc83563e8d37e38ed91122bd",
+      "original_unchanged": true,
+      "copy_unchanged": true
+    }
+  ],
+  "source_checks": [
+    {
+      "path": "AminScatter/src/point_display.cpp",
+      "sha256": "358c5ff13763542dcc27eb2d8542686a622c051fa35a5161edf3dcb329173c44",
+      "unchanged": true
+    },
+    {
+      "path": "AminScatter/src/mesh_display.inc",
+      "sha256": "91b694e319d1d5864f1ae6a6dd67c8bb033d44420f770ed0645c4cc4547d8c39",
+      "unchanged": true
+    },
+    {
+      "path": "AminScatter/src/input_validity.cpp",
+      "sha256": "a65514bdcee3e67d3296768063979ed1c670b020323bc62e757ac7a9c232605d",
+      "unchanged": true
+    },
+    {
+      "path": "AminScatter/src/procedural.cpp",
+      "sha256": "3bbdd2ef5463edb51af32a5ff3a7c8d5579d602027dc14738edf63a16185402c",
+      "unchanged": true
+    },
+    {
+      "path": "AminScatter/src/execution.cpp",
+      "sha256": "b54963d69441d473ed52f76b125c4eb3d0a38c564900f28abd76efa7bcbf1136",
+      "unchanged": true
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/unified-core.ms",
+      "sha256": "e718cb1de707e0af7464313c591a86bbf35fd66b16e16ff73f3100174416e799",
+      "unchanged": true
+    },
+    {
+      "path": "AminScatter/scripts/AminScatterObject.ms",
+      "sha256": "9614f6b7d95c0e7c97f9bbe7fa2cb5a770f7a3eca813f7a9f55ea68463d114bf",
+      "unchanged": true
+    },
+    {
+      "path": "CyrusLicensing/README.md",
+      "sha256": "82ea7e19b995831ab0dba0bbb90533693b3430866cc5b70ce2fbe1dc68c4a5d1",
+      "unchanged": true
+    }
+  ],
+  "modules": [
+    {
+      "name": "ForestPackLite.dlo",
+      "bytes": 3357768,
+      "sha256": "23b25adf28954a4cd6c3d7fe5f7ea90b6a6e9be480f8a422fa7ef8b99c9a325d",
+      "image_base": "0x180000000",
+      "clr_directory": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "ForestQt.dll",
+      "bytes": 918088,
+      "sha256": "6ac7021bedb83c0ed70f6a0c2b2d123fad44be9bd8fb328c75e6dd9eb65abefb",
+      "image_base": "0x180000000",
+      "clr_directory": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "ForestQtCatalog.dll",
+      "bytes": 3183176,
+      "sha256": "eefef4a421bdb50320c951bf271a6b90d847bc09572337b816572f2ef9767e20",
+      "image_base": "0x180000000",
+      "clr_directory": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "ForestVRay70.dll",
+      "bytes": 5345864,
+      "sha256": "7154989af41bbc8b3132d0e7eab3374e3b045a2e47e0e61132592b21830fb180",
+      "image_base": "0x180000000",
+      "clr_directory": [
+        0,
+        0
+      ]
+    }
+  ],
+  "selected_records": [
+    {
+      "batch": "batch01",
+      "label": "display_dialog_slot1",
+      "requested": "180055a20",
+      "entry": "180055a20",
+      "bytes": "2672",
+      "instructions": "607",
+      "decoded_bytes": "2672",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch01",
+      "label": "transform_dialog_slot1",
+      "requested": "180054d30",
+      "entry": "180054d30",
+      "bytes": "401",
+      "instructions": "96",
+      "decoded_bytes": "401",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch01",
+      "label": "auto_update_thread_slot1",
+      "requested": "1800735b0",
+      "entry": "1800735b0",
+      "bytes": "31",
+      "instructions": "10",
+      "decoded_bytes": "31",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch01",
+      "label": "distribution_area_worker_slot2",
+      "requested": "1800a1d20",
+      "entry": "1800a1d20",
+      "bytes": "195",
+      "instructions": "50",
+      "decoded_bytes": "195",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch01",
+      "label": "distribution_reference_worker_slot2",
+      "requested": "1800a93a0",
+      "entry": "1800a93a0",
+      "bytes": "151",
+      "instructions": "41",
+      "decoded_bytes": "151",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch01",
+      "label": "distribution_generic_worker_slot2",
+      "requested": "180033620",
+      "entry": "180033620",
+      "bytes": "151",
+      "instructions": "41",
+      "decoded_bytes": "151",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch01",
+      "label": "mesh_cache_slot1",
+      "requested": "18007a5d0",
+      "entry": "18007a5d0",
+      "bytes": "112",
+      "instructions": "31",
+      "decoded_bytes": "112",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch01",
+      "label": "gpu_marker_slot6",
+      "requested": "18019f6b0",
+      "entry": "18019f6b0",
+      "bytes": "602",
+      "instructions": "139",
+      "decoded_bytes": "602",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch01",
+      "label": "gpu_marker_slot7",
+      "requested": "18019f910",
+      "entry": "18019f910",
+      "bytes": "493",
+      "instructions": "124",
+      "decoded_bytes": "493",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch01",
+      "label": "gpu_marker_slot8",
+      "requested": "18002d870",
+      "entry": "18002d870",
+      "bytes": "17",
+      "instructions": "6",
+      "decoded_bytes": "17",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch01",
+      "label": "gpu_marker_thunk1",
+      "requested": "1801e3d86",
+      "entry": "1801e3d86",
+      "bytes": "6",
+      "instructions": "1",
+      "decoded_bytes": "6",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch01",
+      "label": "gpu_marker_thunk2",
+      "requested": "1801e3d80",
+      "entry": "1801e3d80",
+      "bytes": "6",
+      "instructions": "1",
+      "decoded_bytes": "6",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch01",
+      "label": "lib_class_desc",
+      "requested": "180017920",
+      "entry": "180017920",
+      "bytes": "104",
+      "instructions": "27",
+      "decoded_bytes": "104",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch01",
+      "label": "calculate_scatter_proxy",
+      "requested": "180029cf0",
+      "entry": "180029cf0",
+      "bytes": "1590",
+      "instructions": "349",
+      "decoded_bytes": "1590",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch01",
+      "label": "get_scatter_proxy",
+      "requested": "18002a580",
+      "entry": "18002a580",
+      "bytes": "8",
+      "instructions": "2",
+      "decoded_bytes": "8",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch01",
+      "label": "cloud_destructor",
+      "requested": "18015cf50",
+      "entry": "18015cf50",
+      "bytes": "63",
+      "instructions": "20",
+      "decoded_bytes": "63",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch01",
+      "label": "mesh_cloud_destructor",
+      "requested": "18015cb30",
+      "entry": "18015cb30",
+      "bytes": "126",
+      "instructions": "32",
+      "decoded_bytes": "126",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch02",
+      "label": "build_items_xy_uv_dispatch",
+      "requested": "18003afe0",
+      "entry": "18003afe0",
+      "bytes": "10123",
+      "instructions": "2107",
+      "decoded_bytes": "10123",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch02",
+      "label": "prepare_display_dispatch",
+      "requested": "1800415a0",
+      "entry": "1800415a0",
+      "bytes": "502",
+      "instructions": "109",
+      "decoded_bytes": "502",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch02",
+      "label": "config_reader",
+      "requested": "18006b610",
+      "entry": "18006b610",
+      "bytes": "5178",
+      "instructions": "1065",
+      "decoded_bytes": "5178",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch02",
+      "label": "config_writer",
+      "requested": "18006ca50",
+      "entry": "18006ca50",
+      "bytes": "3891",
+      "instructions": "794",
+      "decoded_bytes": "3891",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch02",
+      "label": "sample_cache_purge",
+      "requested": "18001c850",
+      "entry": "18001c850",
+      "bytes": "410",
+      "instructions": "95",
+      "decoded_bytes": "410",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch02",
+      "label": "area_distribution_dispatch",
+      "requested": "1800caaf0",
+      "entry": "1800caaf0",
+      "bytes": "4487",
+      "instructions": "1092",
+      "decoded_bytes": "4487",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch02",
+      "label": "gpu_fill_worker_stored",
+      "requested": "1801edbf0",
+      "entry": "1801edbf0",
+      "bytes": "236",
+      "instructions": "64",
+      "decoded_bytes": "236",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch02",
+      "label": "gpu_fill_worker_callback",
+      "requested": "1801edce0",
+      "entry": "1801edce0",
+      "bytes": "164",
+      "instructions": "45",
+      "decoded_bytes": "164",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch02",
+      "label": "auto_update_callback",
+      "requested": "180073050",
+      "entry": "180073050",
+      "bytes": "1365",
+      "instructions": "328",
+      "decoded_bytes": "1365",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch03",
+      "label": "collision_filter",
+      "requested": "180091890",
+      "entry": "180091890",
+      "bytes": "931",
+      "instructions": "225",
+      "decoded_bytes": "931",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch03",
+      "label": "area_worker_compute",
+      "requested": "1800a2d10",
+      "entry": "1800a2d10",
+      "bytes": "192",
+      "instructions": "45",
+      "decoded_bytes": "192",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch03",
+      "label": "sample_cache_evict",
+      "requested": "18007a670",
+      "entry": "18007a670",
+      "bytes": "1241",
+      "instructions": "321",
+      "decoded_bytes": "1241",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch04",
+      "label": "collision_grid_construct",
+      "requested": "180090930",
+      "entry": "180090930",
+      "bytes": "593",
+      "instructions": "162",
+      "decoded_bytes": "593",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch04",
+      "label": "collision_grid_test_insert",
+      "requested": "180090c60",
+      "entry": "180090c60",
+      "bytes": "3049",
+      "instructions": "687",
+      "decoded_bytes": "3049",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch04",
+      "label": "sample_cache_priority_compare",
+      "requested": "18007a650",
+      "entry": "missing",
+      "bytes": null,
+      "instructions": null,
+      "decoded_bytes": null,
+      "completed": null,
+      "error": null
+    },
+    {
+      "batch": "batch04",
+      "label": "sample_cache_cost",
+      "requested": "18007aed0",
+      "entry": "18007aed0",
+      "bytes": "168",
+      "instructions": "50",
+      "decoded_bytes": "168",
+      "completed": "true",
+      "error": ""
+    }
+  ],
+  "selected_count": 33,
+  "decompiled_count": 32,
+  "decoded_coverage_matches": 32,
+  "sdk_compile_records": [
+    {
+      "name": "ForestCustomItemProbe",
+      "exit_code": 0,
+      "log_sha256": "509507eb720fad190fc75ad9244b56319207d8c29a2e8c1a5c483653817aa7ab"
+    },
+    {
+      "name": "ForestVirtualDeviceProbe",
+      "exit_code": 0,
+      "log_sha256": "cbfe67e6eebe5d220175ac3b0204706b09a071978c18792459d57ca2e5258a2b"
+    },
+    {
+      "name": "ForestParamMapProbe",
+      "exit_code": 0,
+      "log_sha256": "6e0d58a006707189e68066034888736f68ea6117d3a969507d68f95b59914122"
+    },
+    {
+      "name": "ForestParamBlockProbe",
+      "exit_code": 0,
+      "log_sha256": "02d1a339190d964b7a0961b4a531526d42a201395ab5a3d3880ef24bbf934d4f"
+    }
+  ],
+  "linked": false,
+  "executed": false,
+  "official_sources": [
+    "retrieved_utc",
+    "pages",
+    "retrieved_utc",
+    "pages"
+  ],
+  "save": {
+    "success": true,
+    "saved_count": 1,
+    "open_program_count": 1,
+    "programs": [
+      {
+        "program": "ForestPackLite.dlo",
+        "path": "/ForestPackLite.dlo"
+      }
+    ],
+    "errors": []
+  },
+  "close": {
+    "success": true,
+    "closed": "ForestPack943"
+  },
+  "backend_stop": {
+    "utc": "2026-10-08T09:06:17.0386748Z",
+    "port": 18091,
+    "stoppedPid": 26972,
+    "reason": "Research saved and project closed; verified executable, argument file and listener ownership"
+  }
+}
