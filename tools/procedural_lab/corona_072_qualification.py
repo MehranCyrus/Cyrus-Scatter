@@ -41,6 +41,7 @@ def qualify(folder):
                 #("passes",CoronaRenderer.getStatistic 0),#("epoch",P07Root.procEpoch),
                 #("bridge_builds",CyrusPFBuilds),#("bridge_instances",for rows in CyrusPFData collect rows.count),
                 #("phase",CyrusPFPhase),#("timer",CyrusPFTimer.Enabled),#("pending",CyrusPFCheckPending),
+                #("production_guard",CyrusPFProduction),#("busy",CyrusPFBusy),#("ticking",CyrusPFTicking),#("interaction_held",CyrusInteractionHeld()),
                 #("resume",CyrusPFResume),#("error",CyrusPFLastError),#("helper_nodes",CyrusPFNodes.count)
             ))
         )
@@ -63,14 +64,33 @@ def qualify(folder):
     execute('actual Live population edit','P07Layer.amount=180')
     time.sleep(6)
     edited=state('ir072-after-edit')
+    # The product intentionally defers publication/IR recovery while a mouse
+    # button is held anywhere on the desktop. Observe real release/recovery;
+    # do not override its interaction guard in a test.
+    edit_start=time.monotonic();edit_recovery=[dict(elapsed_s=0,**edited)]
+    while edited['render_type']!=3 or edited['timer'] or edited['pending']:
+        if time.monotonic()-edit_start>=45:raise AssertionError(('IR edit did not settle within 45 seconds',edited))
+        time.sleep(2)
+        edited=state('ir072-after-edit')
+        edit_recovery.append(dict(elapsed_s=time.monotonic()-edit_start,**edited))
+        (folder/'corona072-edit-recovery.json').write_text(json.dumps(edit_recovery,indent=2)+'\n')
     assert edited['render_type']==3 and edited['passes']>0 and edited['epoch']==after['epoch']+1,edited
     assert edited['bridge_builds']==after['bridge_builds']+1 and edited['bridge_instances']==[180] and not edited['error'],edited
     time.sleep(5)
     settled=state('ir072-edit-settled')
     assert settled['bridge_builds']==edited['bridge_builds'] and settled['passes']>edited['passes'] and not settled['timer'],settled
     execute('save during actual IR','P07Assert (saveMaxFile (MCPFixtureDir+"ir072-disposable.max") quiet:true) "IR save failed"')
-    time.sleep(6)
-    saved=state('ir072-after-save')
+    # Saving suspends the bridge and schedules asynchronous IR recovery. Capture
+    # the transition, then require settlement within a bounded acceptance window
+    # rather than treating one six-second snapshot as a terminal state.
+    recovery_start=time.monotonic();recovery=[]
+    while True:
+        time.sleep(2)
+        saved=state('ir072-after-save')
+        recovery.append(dict(elapsed_s=time.monotonic()-recovery_start,**saved))
+        (folder/'corona072-save-recovery.json').write_text(json.dumps(recovery,indent=2)+'\n')
+        if saved['render_type']==3 and saved['passes']>0 and not saved['timer'] and not saved['pending']:break
+        if time.monotonic()-recovery_start>=45:raise AssertionError(('IR did not resume and settle within 45 seconds after save',saved))
     assert saved['render_type']==3 and saved['passes']>0 and saved['epoch']==edited['epoch'] and not saved['error'],saved
     execute('repeated guarded Stop','P07Assert (CyrusPFStopIR()) "Actual guarded stop failed";P07Assert (CyrusPFStopIR()) "Repeated stop failed"')
     time.sleep(2)
@@ -92,7 +112,8 @@ def qualify(folder):
     execute('scene reset and diagnostic export',r'''
         select P07Node;max modify mode
         if not P07Root.mainUI.controlsReady do P07Root.mainUI.mountTimer.tick()
-        P07Root.diagnosticsUI.saveReport (MCPFixtureDir+"corona072-trace.json")
+        P07Root.statisticsUI.open=true;P07Root.mainUI.bindSection P07Root.statisticsUI
+        P07Root.statisticsUI.diagnosticsUI_saveReport (MCPFixtureDir+"corona072-trace.json")
         resetMaxFile #noPrompt
         P07Assert (CyrusPFNodes.count==0 and not CyrusPFTimer.Enabled and not CyrusPFResume) "Reset retained renderer work"
     ''')

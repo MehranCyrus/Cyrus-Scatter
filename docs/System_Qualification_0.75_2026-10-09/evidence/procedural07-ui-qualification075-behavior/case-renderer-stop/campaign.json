@@ -1,0 +1,104 @@
+[
+  {
+    "name": "containers",
+    "phase": "behavior",
+    "files": {
+      "tools/procedural_lab/Max_Source_Containers_Acceptance.ms": "a3197470f1683834caf02ab45aa92a0321f19c5bc6d0ee9f8097cd75dbd5bfab"
+    },
+    "steps": [
+      {
+        "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Source_Containers_Acceptance.ms\"",
+        "result": "ERROR -- Compile error: no local declarations at top level:  r\n--  In line: local r=\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior/probe-c291a9281d344b67aefc8c4bf93cb891.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\Max_Source_Containers_Acceptance.ms LINE: 11P\n"
+      }
+    ],
+    "passed": false,
+    "error": "ERROR -- Compile error: no local declarations at top level:  r\n--  In line: local r=\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior/probe-c291a9281d344b67aefc8c4bf93cb891.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\Max_Source_Containers_Acceptance.ms LINE: 11P\n",
+    "elapsed_s": 28.9849999999999
+  },
+  {
+    "name": "output",
+    "phase": "behavior",
+    "files": {
+      "tools/procedural_lab/Max_Source_Containers_Output.ms": "53f124f984fc19255bd4a7786931e322787efa30b2a6fba3ec4ba1a78298eeb4"
+    },
+    "steps": [
+      {
+        "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Source_Containers_Output.ms\"",
+        "result": "ERROR -- Runtime error: [source containers: exact, PFlow and bake mapping] Initial PFlow source mapping differs\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior/probe-e89e5a6f3b14415eb6bfacc73b8f5270.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\Max_Procedural_07_Acceptance.ms LINE: 4P\n"
+      }
+    ],
+    "passed": false,
+    "error": "ERROR -- Runtime error: [source containers: exact, PFlow and bake mapping] Initial PFlow source mapping differs\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior/probe-e89e5a6f3b14415eb6bfacc73b8f5270.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\Max_Procedural_07_Acceptance.ms LINE: 4P\n",
+    "elapsed_s": 4.734000000000037
+  },
+  {
+    "name": "edit-bindings",
+    "phase": "behavior",
+    "files": {
+      "tools/procedural_lab/Max_Procedural_07_Bindings.ms": "141853103bcb3d5eba47a924260592cbf1f027a2b8377ea8d1ef25cd6c8073e3"
+    },
+    "steps": [
+      {
+        "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Procedural_07_Bindings.ms\"",
+        "result": "ERROR -- Runtime error: [Edit bindings and rollback] Receiver replacement silently rebound edits\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior/probe-332f2f37d40e4e0da7aa72fd95a06a90.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\Max_Procedural_07_Acceptance.ms LINE: 4P\n"
+      }
+    ],
+    "passed": false,
+    "error": "ERROR -- Runtime error: [Edit bindings and rollback] Receiver replacement silently rebound edits\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior/probe-332f2f37d40e4e0da7aa72fd95a06a90.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\Max_Procedural_07_Acceptance.ms LINE: 4P\n",
+    "elapsed_s": 10.358999999999924
+  },
+  {
+    "name": "publication",
+    "phase": "behavior",
+    "files": {
+      "tools/procedural_lab/Max_Procedural_07_Regression.ms": "fa82ac5bc3876e0a0454143d6329ea92978b51444aaca8fa55dd97331eb02bef"
+    },
+    "steps": [
+      {
+        "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Procedural_07_Regression.ms\"",
+        "result": "ERROR -- Runtime error: [Live root pair rules reach render] Live pair rule left stale render rows\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior/probe-f708bc57d9534ffdb664b5a6f31bcb2a.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\Max_Procedural_07_Acceptance.ms LINE: 4P\n"
+      }
+    ],
+    "passed": false,
+    "error": "ERROR -- Runtime error: [Live root pair rules reach render] Live pair rule left stale render rows\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior/probe-f708bc57d9534ffdb664b5a6f31bcb2a.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\Max_Procedural_07_Acceptance.ms LINE: 4P\n",
+    "elapsed_s": 11.32899999999995
+  },
+  {
+    "name": "analyzer",
+    "phase": "behavior",
+    "files": {
+      "tools/procedural_lab/Max_Unified_073_Analyzer_Assignment.ms": "02ee4c400431899c45614803a3ece79b8a59030c527852c6996f1b8d00c03291"
+    },
+    "steps": [
+      {
+        "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Unified_073_Analyzer_Assignment.ms\"",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior/probe-b4cb351286f74c03b3d389539810eb28.ms"
+      },
+      {
+        "code": "U73AnalyzerAssignment()",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior/probe-39bc24ce10fa4810ade64267f49bf4d9.ms"
+      }
+    ],
+    "passed": true,
+    "elapsed_s": 18.390999999999963
+  },
+  {
+    "name": "arrangement",
+    "phase": "behavior",
+    "files": {
+      "docs/Arrangement_Research_0.75_2026-10-09/Probe.ms": "6deed1c95cba3b04185dc429966fb9b6e169b0a19ddbe9b168b4ada70455fe75"
+    },
+    "steps": [
+      {
+        "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/docs/Arrangement_Research_0.75_2026-10-09/Probe.ms\"",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior/probe-784835b27874482e8cc05263d02df2ab.ms"
+      },
+      {
+        "code": "ARBasic();ARLine();ARAnalyzer();ARExtra()",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior/probe-84980db7f0a8425b97428ced830b8ab8.ms"
+      }
+    ],
+    "passed": true,
+    "elapsed_s": 45.389999999999986
+  }
+]

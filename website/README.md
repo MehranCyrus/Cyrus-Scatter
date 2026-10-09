@@ -1,5 +1,7 @@
 # Cyrus Scatter — Visual Guide
 
+**Historical snapshot:** current plugin development is 0.75. Use the [current artist guide](../docs/System_Qualification_0.75_2026-10-09/ARTIST_GUIDE.md) and [qualification checklist](../docs/System_Qualification_0.75_2026-10-09/CHECKLIST.md) for layer-owned surfaces and Paint Areas. This site's 0.73 model-owning-set examples have not been migrated; do not use them as the current ownership specification.
+
 A complete local landing page, visual artist guide and development roadmap for the **0.73 development baseline**, dated **7 October 2026**. It pairs all 16 reference chapters with a contextual control finder, practical workflows, six interactive explanations and three generated concept images. “Final” describes this combined website iteration, not a public plugin release.
 
 ## Open the guide

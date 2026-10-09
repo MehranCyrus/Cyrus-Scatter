@@ -1,0 +1,37 @@
+[
+  {
+    "name": "bindings",
+    "phase": "ui",
+    "files": {
+      "docs/System_Qualification_0.75_2026-10-09/Control_Bindings.ms": "3651d0768fb5e4301d51eb29908d572347584d4e7424a699bbbc9c7ac3d8ee84"
+    },
+    "steps": [
+      {
+        "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/docs/System_Qualification_0.75_2026-10-09/Control_Bindings.ms\"",
+        "result": "ERROR -- Compile error: no local declarations at top level:  f\n--  In line: local f=\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui/probe-e903078a5a5b4e769d35b696dd3f9b90.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\docs\\System_Qualification_0.75_2026-10-09\\Control_Bindings.ms LINE: 5P\n"
+      }
+    ],
+    "passed": false,
+    "error": "ERROR -- Compile error: no local declarations at top level:  f\n--  In line: local f=\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui/probe-e903078a5a5b4e769d35b696dd3f9b90.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\docs\\System_Qualification_0.75_2026-10-09\\Control_Bindings.ms LINE: 5P\n",
+    "elapsed_s": 43.48399999999998
+  },
+  {
+    "name": "layout",
+    "phase": "ui",
+    "files": {
+      "tools/procedural_lab/Max_Layout_075.ms": "b04078e84d847c13198c2d76c3af9f2e3e729a03e7b37fcfee9df89287208f52"
+    },
+    "steps": [
+      {
+        "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Layout_075.ms\"",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui/probe-d83a7b44290d41ad845fb7a6e324e90b.ms"
+      },
+      {
+        "code": "L75Run()",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui/probe-5e0c1176b38a414a948095698fbbf934.ms"
+      }
+    ],
+    "passed": true,
+    "elapsed_s": 79.875
+  }
+]

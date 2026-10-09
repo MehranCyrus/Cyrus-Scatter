@@ -1,0 +1,63 @@
+[
+  {
+    "elapsed_s": 2.217999999999847,
+    "label": "ir072-after-save",
+    "render_type": 0,
+    "passes": 27,
+    "epoch": 4,
+    "bridge_builds": 3,
+    "bridge_instances": [],
+    "phase": 1,
+    "timer": true,
+    "pending": true,
+    "production_guard": false,
+    "busy": false,
+    "ticking": false,
+    "interaction_held": false,
+    "resume": true,
+    "error": "",
+    "helper_nodes": 0
+  },
+  {
+    "elapsed_s": 4.358999999999924,
+    "label": "ir072-after-save",
+    "render_type": 3,
+    "passes": 5,
+    "epoch": 4,
+    "bridge_builds": 4,
+    "bridge_instances": [
+      180
+    ],
+    "phase": 0,
+    "timer": true,
+    "pending": true,
+    "production_guard": true,
+    "busy": false,
+    "ticking": false,
+    "interaction_held": false,
+    "resume": false,
+    "error": "",
+    "helper_nodes": 10
+  },
+  {
+    "elapsed_s": 6.5779999999999745,
+    "label": "ir072-after-save",
+    "render_type": 3,
+    "passes": 12,
+    "epoch": 4,
+    "bridge_builds": 4,
+    "bridge_instances": [
+      180
+    ],
+    "phase": 0,
+    "timer": false,
+    "pending": false,
+    "production_guard": false,
+    "busy": false,
+    "ticking": false,
+    "interaction_held": false,
+    "resume": false,
+    "error": "",
+    "helper_nodes": 10
+  }
+]

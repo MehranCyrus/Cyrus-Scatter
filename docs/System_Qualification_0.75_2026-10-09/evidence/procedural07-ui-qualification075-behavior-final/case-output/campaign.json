@@ -1,0 +1,17 @@
+[
+  {
+    "name": "containers",
+    "phase": "behavior",
+    "files": {
+      "tools/procedural_lab/Max_Source_Containers_Acceptance.ms": "b0719c198be0f4dfb5462897c996499518df35cc38a91b43d6f8b9373d02cdc1"
+    },
+    "steps": [
+      {
+        "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Source_Containers_Acceptance.ms\"",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior-final/probe-6791c8c2672e4063994484e6aba2cc57.ms"
+      }
+    ],
+    "passed": true,
+    "elapsed_s": 62.875
+  }
+]

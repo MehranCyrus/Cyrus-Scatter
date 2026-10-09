@@ -1,0 +1,592 @@
+{
+  "completed_utc": "2026-10-08T11:13:26.015725+00:00",
+  "run": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\forest-brush-research-20261008-01",
+  "baseline_git": {
+    "status": "M CyrusMCP/README.md\n M README.md\n M docs/Current_System_2026-10-05/README.md\n M docs/Current_System_2026-10-05/SYSTEM_GUIDE.md\n M docs/README.md\n?? AGENTS.md\n?? \"Landing Page Design/\"\n?? docs/AGENT_WORKFLOW.md\n?? docs/Artist_Reference_0.73_2026-10-07/Artist_Reference_0.73_2026-10-07.zip\n?? docs/ForestPack_Research_2026-10-08/\n?? docs/Max2026_Build_0.73_2026-10-07/\n?? docs/Product_Discussion_2026-10-08/\n?? docs/Status_0.73_And_Website_2026-10-07/\n?? website/",
+    "branch": "codex/unified-0.73",
+    "head": "d55dfa88cbeda7af366e4510ac3119a749368958"
+  },
+  "final_git": {
+    "head": "221e9f42bc65d1ad63f4f9b201efeb9ac589d5bb",
+    "branch": "codex/ui-0.74",
+    "status": "M AminScatter/CMakeLists.txt\n M AminScatter/scripts/AminScatterObject.ms\n M AminScatter/tools/ui/approved-layout-manifest.json\n M AminScatter/tools/ui/approved-layout-rows.cjs\n M AminScatter/tools/ui/approved-layout.cjs\n M AminScatter/tools/ui/layer-editor-tooltips.json\n M AminScatter/tools/ui/layers-control-inventory.json\n M AminScatter/tools/ui/templates/approved-main-ui.ms\n M AminScatter/tools/ui/templates/container-node.ms\n M AminScatter/tools/ui/templates/unified-core.ms\n M CyrusMCP/cyrus_mcp/feature-catalog.json\n M docs/ForestPack_Research_2026-10-08/README.md\n M docs/README.md\n M tools/procedural_lab/build_feature_catalog.py\n M tools/procedural_lab/check_generated.py\n?? \"Landing Page Design/\"\n?? docs/ForestPack_Research_2026-10-08/brush/CYRUS_COMPARISON.md\n?? docs/ForestPack_Research_2026-10-08/brush/NATIVE_FINDINGS.md\n?? docs/ForestPack_Research_2026-10-08/brush/README.md\n?? docs/ForestPack_Research_2026-10-08/brush/reproduce/README.md\n?? docs/ForestPack_Research_2026-10-08/brush/reproduce/finalize.py"
+  },
+  "original_checks": [
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ForestPackLite2027\\PackageContents.xml",
+      "sha256": "b7020c08adc658afb619ae9f1897161c9fd3ec7d9709da332a10602ad79a343a",
+      "original_unchanged": true,
+      "copy_unchanged": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ForestPackLite2027\\Contents\\plugins\\2027\\ForestPackLite.dlo",
+      "sha256": "23b25adf28954a4cd6c3d7fe5f7ea90b6a6e9be480f8a422fa7ef8b99c9a325d",
+      "original_unchanged": true,
+      "copy_unchanged": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ForestPackLite2027\\Contents\\plugins\\2027\\ForestQt.dll",
+      "sha256": "6ac7021bedb83c0ed70f6a0c2b2d123fad44be9bd8fb328c75e6dd9eb65abefb",
+      "original_unchanged": true,
+      "copy_unchanged": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ForestPackLite2027\\Contents\\plugins\\2027\\ForestQtCatalog.dll",
+      "sha256": "eefef4a421bdb50320c951bf271a6b90d847bc09572337b816572f2ef9767e20",
+      "original_unchanged": true,
+      "copy_unchanged": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ForestPackLite2027\\Contents\\plugins\\2027\\ForestVRay70.dll",
+      "sha256": "7154989af41bbc8b3132d0e7eab3374e3b045a2e47e0e61132592b21830fb180",
+      "original_unchanged": true,
+      "copy_unchanged": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ForestPackLite2027\\Contents\\scripts\\forest_utils.ms",
+      "sha256": "722804afe7694baef929c9154d9981e64979ede6250f07ad305a86e639134648",
+      "original_unchanged": true,
+      "copy_unchanged": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ForestPackLite2027\\Contents\\scripts\\optmat.mse",
+      "sha256": "de6a4e710d7d26c4ad41e2cd9d1497214963bee827defab6ebeaaa67ef3953a7",
+      "original_unchanged": true,
+      "copy_unchanged": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ForestPackLite2027\\Contents\\scripts\\startup\\forestpack.ms",
+      "sha256": "8f51b8ddc2a79cb29c0cfbcbb35a18364118de2ebc83563e8d37e38ed91122bd",
+      "original_unchanged": true,
+      "copy_unchanged": true
+    }
+  ],
+  "source_checks": [
+    {
+      "path": "AminScatter/src/point_display.cpp",
+      "sha256": "358c5ff13763542dcc27eb2d8542686a622c051fa35a5161edf3dcb329173c44",
+      "unchanged": true
+    },
+    {
+      "path": "AminScatter/src/mesh_display.inc",
+      "sha256": "91b694e319d1d5864f1ae6a6dd67c8bb033d44420f770ed0645c4cc4547d8c39",
+      "unchanged": true
+    },
+    {
+      "path": "AminScatter/src/input_validity.cpp",
+      "sha256": "a65514bdcee3e67d3296768063979ed1c670b020323bc62e757ac7a9c232605d",
+      "unchanged": true
+    },
+    {
+      "path": "AminScatter/src/procedural.cpp",
+      "sha256": "3bbdd2ef5463edb51af32a5ff3a7c8d5579d602027dc14738edf63a16185402c",
+      "unchanged": true
+    },
+    {
+      "path": "AminScatter/src/execution.cpp",
+      "sha256": "b54963d69441d473ed52f76b125c4eb3d0a38c564900f28abd76efa7bcbf1136",
+      "unchanged": true
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/unified-core.ms",
+      "sha256": "f5f0c0448ed9661d09308f23e95ee16cdaa7867e7e9b12e76b5640d6cce1aeb6",
+      "unchanged": false
+    },
+    {
+      "path": "AminScatter/scripts/AminScatterObject.ms",
+      "sha256": "85e42b71beb4160367b15e4607e960157cd999aba75091e0ffb3fc36249af1f6",
+      "unchanged": false
+    },
+    {
+      "path": "CyrusLicensing/README.md",
+      "sha256": "82ea7e19b995831ab0dba0bbb90533693b3430866cc5b70ce2fbe1dc68c4a5d1",
+      "unchanged": true
+    }
+  ],
+  "brush_source_checks": [
+    {
+      "path": "AminScatter/include/brush.h",
+      "sha256": "c3859f67d437bf45eff2930d54c0e3652e390eecd341e3cb584d86ec1717ea56",
+      "git_blob": "551c641666a7f72b0c0ac239b51d1f3cbe3d66c9",
+      "baseline_git_blob": "551c641666a7f72b0c0ac239b51d1f3cbe3d66c9",
+      "unchanged_from_captured_HEAD": true
+    },
+    {
+      "path": "AminScatter/src/brush.cpp",
+      "sha256": "9e8f8a05fb9989b032a7a04de797323635a8bbbd71ab8bcf245fd22c84ccd317",
+      "git_blob": "f4f2c5abb99c6102cb4e33d20dc08e419a72372e",
+      "baseline_git_blob": "f4f2c5abb99c6102cb4e33d20dc08e419a72372e",
+      "unchanged_from_captured_HEAD": true
+    },
+    {
+      "path": "AminScatter/src/brush_host.cpp",
+      "sha256": "ec575d5f1d8cdc1dfaf96d4326875ce4165b4df3dfd15639c641b82ec71f5203",
+      "git_blob": "96f9fe6dc89da7d0d13f555547362cb6adf1472b",
+      "baseline_git_blob": "96f9fe6dc89da7d0d13f555547362cb6adf1472b",
+      "unchanged_from_captured_HEAD": true
+    }
+  ],
+  "selected_records": [
+    {
+      "batch": "batch02",
+      "label": "area_start_stroke",
+      "requested": "18008da40",
+      "entry": "18008da40",
+      "bytes": "265",
+      "instructions": "60",
+      "decoded_bytes": "265",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch02",
+      "label": "area_paint_stroke",
+      "requested": "18008db50",
+      "entry": "18008db50",
+      "bytes": "1193",
+      "instructions": "268",
+      "decoded_bytes": "1193",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch02",
+      "label": "area_end_stroke",
+      "requested": "18008e150",
+      "entry": "18008e150",
+      "bytes": "101",
+      "instructions": "24",
+      "decoded_bytes": "101",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch02",
+      "label": "area_end_stroke_batch",
+      "requested": "18008e0e0",
+      "entry": "18008e0e0",
+      "bytes": "101",
+      "instructions": "24",
+      "decoded_bytes": "101",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch02",
+      "label": "area_cancel_stroke",
+      "requested": "18008e1c0",
+      "entry": "18008e1c0",
+      "bytes": "27",
+      "instructions": "6",
+      "decoded_bytes": "27",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch02",
+      "label": "area_end_session",
+      "requested": "18008e1e0",
+      "entry": "18008e1e0",
+      "bytes": "36",
+      "instructions": "8",
+      "decoded_bytes": "36",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch02",
+      "label": "area_restore_slot2",
+      "requested": "18008e770",
+      "entry": "18008e770",
+      "bytes": "496",
+      "instructions": "109",
+      "decoded_bytes": "496",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch02",
+      "label": "area_restore_slot3",
+      "requested": "18008e960",
+      "entry": "18008e960",
+      "bytes": "431",
+      "instructions": "90",
+      "decoded_bytes": "431",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch03",
+      "label": "area_begin_paint_session",
+      "requested": "18008e320",
+      "entry": "18008e320",
+      "bytes": "958",
+      "instructions": "215",
+      "decoded_bytes": "958",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch03",
+      "label": "paint_to_spline",
+      "requested": "18008d4d0",
+      "entry": "18008d4d0",
+      "bytes": "655",
+      "instructions": "140",
+      "decoded_bytes": "655",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch03",
+      "label": "spline_to_paint",
+      "requested": "18008d250",
+      "entry": "18008d250",
+      "bytes": "630",
+      "instructions": "133",
+      "decoded_bytes": "630",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch03",
+      "label": "area_publish_contours",
+      "requested": "18008d8d0",
+      "entry": "18008d8d0",
+      "bytes": "365",
+      "instructions": "91",
+      "decoded_bytes": "365",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch03",
+      "label": "area_load_contours",
+      "requested": "18008d700",
+      "entry": "18008d4d0",
+      "bytes": "655",
+      "instructions": "140",
+      "decoded_bytes": "655",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch03",
+      "label": "paint_circle_path",
+      "requested": "18019c980",
+      "entry": "18019c980",
+      "bytes": "3283",
+      "instructions": "707",
+      "decoded_bytes": "3283",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch03",
+      "label": "paint_polygon_boolean",
+      "requested": "180198a20",
+      "entry": "180198a20",
+      "bytes": "381",
+      "instructions": "106",
+      "decoded_bytes": "381",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch03",
+      "label": "paint_polygon_cleanup",
+      "requested": "18019d660",
+      "entry": "18019d660",
+      "bytes": "1750",
+      "instructions": "449",
+      "decoded_bytes": "1750",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch03",
+      "label": "area_parameter_registration",
+      "requested": "180004480",
+      "entry": "180004480",
+      "bytes": "4811",
+      "instructions": "501",
+      "decoded_bytes": "4811",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch04",
+      "label": "area_session_cleanup",
+      "requested": "18008e210",
+      "entry": "18008e210",
+      "bytes": "269",
+      "instructions": "61",
+      "decoded_bytes": "269",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch04",
+      "label": "area_load_polygon_paths",
+      "requested": "18019dd40",
+      "entry": "18019dd40",
+      "bytes": "644",
+      "instructions": "162",
+      "decoded_bytes": "644",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch04",
+      "label": "area_contour_vertex_fill",
+      "requested": "1801ec530",
+      "entry": "1801ec530",
+      "bytes": "777",
+      "instructions": "178",
+      "decoded_bytes": "777",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch04",
+      "label": "area_read_record",
+      "requested": "18007eed0",
+      "entry": "18007eed0",
+      "bytes": "3327",
+      "instructions": "757",
+      "decoded_bytes": "3327",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch04",
+      "label": "area_write_record",
+      "requested": "18007fbd0",
+      "entry": "18007fbd0",
+      "bytes": "1359",
+      "instructions": "284",
+      "decoded_bytes": "1359",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch04",
+      "label": "area_restore_redo",
+      "requested": "18008e960",
+      "entry": "18008e960",
+      "bytes": "431",
+      "instructions": "90",
+      "decoded_bytes": "431",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch04",
+      "label": "area_dialog_dispatch",
+      "requested": "180087bf0",
+      "entry": "180087bf0",
+      "bytes": "206",
+      "instructions": "47",
+      "decoded_bytes": "206",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch05",
+      "label": "area_dialog_callback",
+      "requested": "18008be40",
+      "entry": "18008be40",
+      "bytes": "3521",
+      "instructions": "774",
+      "decoded_bytes": "3521",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch05",
+      "label": "clipper_execute_native",
+      "requested": "180198cc0",
+      "entry": "180198cc0",
+      "bytes": "558",
+      "instructions": "153",
+      "decoded_bytes": "558",
+      "completed": "true",
+      "error": ""
+    },
+    {
+      "batch": "batch06",
+      "label": "area_dialog_initialize",
+      "requested": "18008cd70",
+      "entry": "18008cd70",
+      "bytes": "1233",
+      "instructions": "270",
+      "decoded_bytes": "1233",
+      "completed": "true",
+      "error": ""
+    }
+  ],
+  "selected_records_count": 27,
+  "unique_entry_count": 25,
+  "incomplete_attempts": [
+    {
+      "batch": "batch01",
+      "response": "{\"error\":\"No program loaded.\"}"
+    }
+  ],
+  "analysis": {
+    "success": true,
+    "duration_ms": 77989,
+    "total_functions": 8732,
+    "new_functions": 68,
+    "program": "ForestPackLite.dlo"
+  },
+  "sdk": {
+    "compiler": "MSVC 14.38.33130",
+    "sdk": "Max 2027",
+    "linked": false,
+    "executed": false,
+    "records": [
+      {
+        "name": "ForestBrushCanvasProbe",
+        "exit_code": 0,
+        "log_sha256": "bee0374cdf0b5b310edffd982a9d3557b71c64e021cb487861a442dcf65462e3"
+      },
+      {
+        "name": "ForestBrushPainterProbe",
+        "exit_code": 0,
+        "log_sha256": "9f10b13f675afdd8c5b38bf1021bc99df1c7d734ad778e2a9793a55114c4bf98"
+      },
+      {
+        "name": "ForestBrushPainterV7Probe",
+        "exit_code": 0,
+        "log_sha256": "929f7b8cafd84307980c5dd765b21edc8702ddbbb46094be28d489c08497fa0a"
+      },
+      {
+        "name": "ForestBrushRestoreProbe",
+        "exit_code": 0,
+        "log_sha256": "327146c8a28c24af55b5be43d65c6116dbcbd84b3727bc46b142b0a8c560cee8"
+      }
+    ]
+  },
+  "official_sources": [
+    {
+      "name": "areas",
+      "url": "https://docs.itoosoft.com/forestpack/forest-plugin/areas",
+      "status": 200,
+      "sha256": "0b39c760f6cea797581f8e2abf6fe17bf3680fac31f2db889b7bc5c43c1ddac5",
+      "utc": "2026-10-08T10:59:33.793176+00:00"
+    },
+    {
+      "name": "item-editor",
+      "url": "https://docs.itoosoft.com/forestpack/forest-plugin/item-editor",
+      "status": 200,
+      "sha256": "81a2fa7a00420006180045d1d970513d2988bd4e59c1d250f9bfc94d7f276aba",
+      "utc": "2026-10-08T10:59:33.803737+00:00"
+    },
+    {
+      "name": "brush-size-change",
+      "url": "https://docs.itoosoft.com/changelog/2022/11/02/forestpack-8_0_4",
+      "status": 200,
+      "sha256": "b868c05f1c84efcbb569b7cd01710fa8f369134904011e46e31eef1e0560944f",
+      "utc": "2026-10-08T10:59:33.918196+00:00"
+    },
+    {
+      "name": "paint-transform-kb",
+      "url": "https://docs.itoosoft.com/kb/forest-pack/when-i-use-the-paint-tool-the-items-are-displaced-in-relation-to-the-brush-strokes-why",
+      "status": 200,
+      "sha256": "5cb336a3d9e7047f4fe2411708f1b23ceccc1bd2048c91d69bd8eed454b45f14",
+      "utc": "2026-10-08T10:59:33.919196+00:00"
+    },
+    {
+      "name": "paint-tutorial",
+      "url": "https://www.itoosoft.com/tutorials/modernbarn2",
+      "status": 200,
+      "sha256": "dfb39f9c1505dddbccc2093c79a11c0c73dde9c9178270003a57441f9818bf87",
+      "utc": "2026-10-08T10:59:34.434516+00:00"
+    },
+    {
+      "name": "painting-lite",
+      "url": "https://www.itoosoft.com/tutorials/getting-started-with-forest-pack-lite",
+      "status": 200,
+      "sha256": "44c645602687fe04b84d45ad6d9239ebb580d1c8f75c3f5bff9e1eaee61b5fed",
+      "utc": "2026-10-08T10:59:34.420477+00:00"
+    }
+  ],
+  "constants": [
+    {
+      "rva": "0x2453c8",
+      "format": "<f",
+      "value": 0.5
+    },
+    {
+      "rva": "0x245380",
+      "format": "<f",
+      "value": 0.10000000149011612
+    },
+    {
+      "rva": "0x245378",
+      "format": "<f",
+      "value": 0.05000000074505806
+    },
+    {
+      "rva": "0x245440",
+      "format": "<f",
+      "value": 1.0499999523162842
+    },
+    {
+      "rva": "0x2453a4",
+      "format": "<f",
+      "value": 0.2617993950843811
+    },
+    {
+      "rva": "0x245680",
+      "format": "<d",
+      "value": 6755399441055744.0
+    }
+  ],
+  "protocol_attempts": {
+    "open-response.json": {
+      "success": true,
+      "project": "ForestPack943"
+    },
+    "open-program-response.json": {
+      "error": "Opening programs requires GUI mode (PluginTool not available)"
+    },
+    "load-program-response.json": {
+      "success": true,
+      "program": "ForestPackLite.dlo",
+      "language": "x86:LE:64:default"
+    }
+  },
+  "save": {
+    "success": true,
+    "saved_count": 1,
+    "open_program_count": 1,
+    "programs": [
+      {
+        "program": "ForestPackLite.dlo",
+        "path": "/ForestPackLite.dlo"
+      }
+    ],
+    "errors": []
+  },
+  "close": {
+    "success": true,
+    "closed": "ForestPack943"
+  },
+  "stop": {
+    "verified": "executable, argument file, listener ownership",
+    "stoppedPid": 21384,
+    "port": 18091,
+    "utc": "2026-10-08T11:07:47.2882582Z"
+  },
+  "validation": {
+    "helper_syntax": "pass",
+    "local_report_links": "pass",
+    "diff_whitespace": "pass",
+    "raw_vendor_inputs_ignored": "pass"
+  },
+  "target_executed_by_this_research": false,
+  "max_launched_by_this_research": false,
+  "product_implementation_changed_by_this_research": false
+}

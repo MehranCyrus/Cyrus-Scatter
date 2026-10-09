@@ -1,0 +1,4 @@
+PASS static playback and repeated retained publication, viewport mode 1
+PASS static playback and repeated retained publication, viewport mode 2
+PASS static playback and repeated retained publication, viewport mode 3
+SUCCESS 102 assertions

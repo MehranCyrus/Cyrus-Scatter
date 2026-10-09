@@ -6,6 +6,8 @@ Research stays in the CyrusScatter repository. No production plugin implementati
 
 ## Read the results
 
+- [Focused Forest brush investigation: contour editing, Max Painter, Undo and Cyrus comparison](brush/README.md)
+
 - [How the native system works, with evidence addresses](NATIVE_FINDINGS.md)
 - [What the screenshot's controls imply about the model](CONTROL_MODEL.md)
 - [What Cyrus already has and what would be useful to investigate next](CYRUS_LESSONS.md)

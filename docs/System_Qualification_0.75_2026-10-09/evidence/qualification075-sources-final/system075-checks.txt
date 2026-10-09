@@ -1,0 +1,19 @@
+Initial render bridge builds
+Live pair rule reaches render, repeat 1
+Initial render bridge builds
+Live pair rule reaches render, repeat 2
+Initial render bridge builds
+Live pair rule reaches render, repeat 3
+Add Point button creates a point placeholder
+Add Point Undo removes its source slot
+Add Point Redo restores point kind
+Add Empty button creates a distinct empty slot
+Multi-selection grouping edits only selected rows
+Source alias preserves scene node name
+Identification color does not change assignment group
+Zero source weight excludes that source
+Replace Point callback changes only selected slot
+Radius scale and Follow Scale callbacks save selected source settings
+Remove multiple rows preserves remaining metadata
+Remove source rows Undo restores types and nodes
+Source types aliases groups and output survive reopen

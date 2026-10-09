@@ -1,0 +1,18 @@
+Unrelated Undo preserves Manual publication and epoch
+Manual Undo does not rearm cold preview preparation
+Unrelated Redo does not publish pending count
+Passive preview refresh preserves Manual result
+Explicit Update publishes pending count
+Update releases its explicit-publication scope
+Failed Update retains complete output and releases publication scope
+Update failure/empty input does not leak publication permission
+Live refresh still publishes relevant edits
+Current source reports 0.75
+Basic scatter requires no Paint Area
+Model row retained; optional containers are under Advanced
+Advanced still exposes source containers
+Painting off hides area and brush controls
+Painting on exposes area creation
+Turning painting off preserves paint and model ownership
+Turning painting off hides brush again
+Painting off returns to whole surfaces

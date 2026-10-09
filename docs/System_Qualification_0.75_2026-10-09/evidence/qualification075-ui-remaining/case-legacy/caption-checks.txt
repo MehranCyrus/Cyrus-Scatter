@@ -1,0 +1,8 @@
+Preview color native bounds pass in mode 1
+Preview color native bounds pass in mode 2
+Preview color native bounds pass in mode 3
+Main Layout heading and options separated
+Popup Layout caption passes at [720,500]
+Popup Layout caption passes at [920,650]
+Caption reflow preserves placement publication and preparation
+Container Layout and Preview color captions separated

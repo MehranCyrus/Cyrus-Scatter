@@ -1,0 +1,699 @@
+{
+  "date": "2026-10-08",
+  "run": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\receiving-surface-research-20261008-04",
+  "source_head": "65cf22e9f4ae38f0e20a8e30dff3189d796b3c3a",
+  "source_branch": "codex/ui-0.74",
+  "inputs": [
+    {
+      "original": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ForestPackLite2027\\PackageContents.xml",
+      "copy": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\receiving-surface-research-20261008-04\\inputs\\ForestPackLite2027\\PackageContents.xml",
+      "sha256": "b7020c08adc658afb619ae9f1897161c9fd3ec7d9709da332a10602ad79a343a",
+      "bytes": 1848
+    },
+    {
+      "original": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ForestPackLite2027\\Contents\\plugins\\2027\\ForestPackLite.dlo",
+      "copy": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\receiving-surface-research-20261008-04\\inputs\\ForestPackLite2027\\Contents\\plugins\\2027\\ForestPackLite.dlo",
+      "sha256": "23b25adf28954a4cd6c3d7fe5f7ea90b6a6e9be480f8a422fa7ef8b99c9a325d",
+      "bytes": 3357768
+    },
+    {
+      "original": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ForestPackLite2027\\Contents\\scripts\\startup\\forestpack.ms",
+      "copy": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\receiving-surface-research-20261008-04\\inputs\\ForestPackLite2027\\Contents\\scripts\\startup\\forestpack.ms",
+      "sha256": "8f51b8ddc2a79cb29c0cfbcbb35a18364118de2ebc83563e8d37e38ed91122bd",
+      "bytes": 5762
+    },
+    {
+      "original": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ChaosScatter3dsMax2027\\PackageContents.xml",
+      "copy": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\receiving-surface-research-20261008-04\\inputs\\ChaosScatter3dsMax2027\\PackageContents.xml",
+      "sha256": "b6ef25f1507552311f3523edc7c5b4edea1d6c3a48f41a063e1ec823c8cb7da1",
+      "bytes": 1464
+    },
+    {
+      "original": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ChaosScatter3dsMax2027\\ChaosScatterMax2027.dlt",
+      "copy": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\receiving-surface-research-20261008-04\\inputs\\ChaosScatter3dsMax2027\\ChaosScatterMax2027.dlt",
+      "sha256": "eabcb0b258d4a1c4a8435d67deb0cf20bb2d363eb74802df8b2fa308552ed327",
+      "bytes": 79360
+    },
+    {
+      "original": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ChaosScatter3dsMax2027\\ScatterMax_Release-2027.dll",
+      "copy": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\receiving-surface-research-20261008-04\\inputs\\ChaosScatter3dsMax2027\\ScatterMax_Release-2027.dll",
+      "sha256": "f7fdd25428e8374174501e6bb4ebd3b83e21c5ba2c33fcdc94280c022695b887",
+      "bytes": 2318336
+    },
+    {
+      "original": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ChaosScatter3dsMax2027\\ScatterCore.ForScatter_Release.dll",
+      "copy": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\receiving-surface-research-20261008-04\\inputs\\ChaosScatter3dsMax2027\\ScatterCore.ForScatter_Release.dll",
+      "sha256": "069ababd0dbc09218928f24d5bdc860509b237f34af703581e3fd78ed5d3cf86",
+      "bytes": 1195008
+    }
+  ],
+  "sources": {
+    "AminScatter/src/scatter.cpp": "4aebe37a65d54a8b9f0c4980de1c391936fe283c3532998dab58bed7b8a14ae6",
+    "AminScatter/src/max_bridge.cpp": "577986b09f1a70135b1f8c00bdea95b2309c00c3cedb8f29549fa8a7d04ce52a",
+    "AminScatter/src/procedural.cpp": "3bbdd2ef5463edb51af32a5ff3a7c8d5579d602027dc14738edf63a16185402c",
+    "AminScatter/src/point_display.cpp": "358c5ff13763542dcc27eb2d8542686a622c051fa35a5161edf3dcb329173c44",
+    "AminScatter/src/mesh_display.inc": "91b694e319d1d5864f1ae6a6dd67c8bb033d44420f770ed0645c4cc4547d8c39",
+    "AminScatter/src/brush_host.cpp": "ec575d5f1d8cdc1dfaf96d4326875ce4165b4df3dfd15639c641b82ec71f5203",
+    "AminScatter/tools/ui/templates/unified-core.ms": "19d85227200f339e716af9599bcc3ee24dcc62aecab51ac7559dc5dbaab4d3e8",
+    "AminScatter/scripts/AminScatterObject.ms": "df533e6f4c5de8909737808125df0ce116bcc6076ad4dc263501051a3700b402"
+  },
+  "host_launch": {
+    "pid": 41628,
+    "command": [
+      "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+      "-q",
+      "-i",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\receiving-surface-research-20261008-04\\host\\max.ini",
+      "-p",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\receiving-surface-research-20261008-04\\host\\plugins.ini",
+      "-U",
+      "MAXScript",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\receiving-surface-research-20261008-04\\host\\start.ms",
+      "-listenerlog",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\receiving-surface-research-20261008-04\\host\\listener.log"
+    ],
+    "host": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\receiving-surface-research-20261008-04\\host",
+    "files": {
+      "AminScatter.dlx": "897633b4cc2badabbf466143548848a65b94288c03c0e8554c155ebe940b7a09",
+      "CyrusBrush.dlx": "ce829dbac2273283d6e00efb844ec0b5c74a15a8f20b08d1654a62ac2f90aef3",
+      "CyrusBrushStorage.dlh": "12945a78e9d7446cda5a0cbc992ef7c1a6bf086b89b83156869c48e93372af18",
+      "CyrusScatterEdit.dlm": "b9cbd7b7bfbf720bd0009e03a3a019aa92b03cc4721cd352d90e42a1e15e8732",
+      "CyrusScatter.ms": "df533e6f4c5de8909737808125df0ce116bcc6076ad4dc263501051a3700b402"
+    }
+  },
+  "max_version": "29.1.0.11426",
+  "campaign_script_sha256": "53b08889ceeb675a2aa1cc2f67c45ad8da8ee0d93a793f99003fe34397c809c9",
+  "timing_scope": "One timestamp around evaluateGroups, before TSV export. Aggregate synchronous host call, not stage timing, GPU upload or FPS.",
+  "exact_comparisons": [
+    {
+      "before": "fixed_20",
+      "after": "fixed_20_repeat",
+      "beforeCount": "10000",
+      "afterCount": "10000",
+      "sameIDs": "10000",
+      "samePositions": "10000",
+      "sameBasis": "10000",
+      "sameModels": "10000",
+      "sameTransforms": "10000"
+    },
+    {
+      "before": "fixed_20",
+      "after": "fixed_21",
+      "beforeCount": "10000",
+      "afterCount": "10000",
+      "sameIDs": "10000",
+      "samePositions": "2534",
+      "sameBasis": "10000",
+      "sameModels": "10000",
+      "sameTransforms": "2534"
+    },
+    {
+      "before": "fixed_20",
+      "after": "fixed_20_restored",
+      "beforeCount": "10000",
+      "afterCount": "10000",
+      "sameIDs": "10000",
+      "samePositions": "10000",
+      "sameBasis": "10000",
+      "sameModels": "10000",
+      "sameTransforms": "10000"
+    },
+    {
+      "before": "fixed_20",
+      "after": "fixed_20_reordered",
+      "beforeCount": "10000",
+      "afterCount": "10000",
+      "sameIDs": "10000",
+      "samePositions": "0",
+      "sameBasis": "10000",
+      "sameModels": "10000",
+      "sameTransforms": "0"
+    },
+    {
+      "before": "fixed_20",
+      "after": "fixed_20_moved",
+      "beforeCount": "10000",
+      "afterCount": "10000",
+      "sameIDs": "10000",
+      "samePositions": "9509",
+      "sameBasis": "10000",
+      "sameModels": "10000",
+      "sameTransforms": "9509"
+    },
+    {
+      "before": "density_20",
+      "after": "density_21",
+      "beforeCount": "10000",
+      "afterCount": "10500",
+      "sameIDs": "10000",
+      "samePositions": "2534",
+      "sameBasis": "10000",
+      "sameModels": "10000",
+      "sameTransforms": "2534"
+    },
+    {
+      "before": "density_21",
+      "after": "density_21_near",
+      "beforeCount": "10500",
+      "afterCount": "10500",
+      "sameIDs": "10500",
+      "samePositions": "9989",
+      "sameBasis": "10500",
+      "sameModels": "10500",
+      "sameTransforms": "9989"
+    },
+    {
+      "before": "density_20",
+      "after": "density_20_edited",
+      "beforeCount": "10000",
+      "afterCount": "10250",
+      "sameIDs": "10000",
+      "samePositions": "4989",
+      "sameBasis": "10000",
+      "sameModels": "10000",
+      "sameTransforms": "4989"
+    },
+    {
+      "before": "collision_20",
+      "after": "collision_21_far",
+      "beforeCount": "3417",
+      "afterCount": "3567",
+      "sameIDs": "2627",
+      "samePositions": "670",
+      "sameBasis": "2627",
+      "sameModels": "2627",
+      "sameTransforms": "670"
+    },
+    {
+      "before": "collision_21_far",
+      "after": "collision_21_near",
+      "beforeCount": "3567",
+      "afterCount": "3452",
+      "sameIDs": "3417",
+      "samePositions": "3316",
+      "sameBasis": "3417",
+      "sameModels": "3417",
+      "sameTransforms": "3316"
+    }
+  ],
+  "captures": [
+    {
+      "label": "collision_20",
+      "milliseconds": 64,
+      "count": 3417,
+      "receiver_count": 20,
+      "area_system_units_squared": 200000.0,
+      "statistics": "#(#(10000L, 3417L, 0L, 0L, 0L, 0L, 6583L, 0L, 0L, 10000L, 0L, 16414L), #(1, false), 11, 0, 10)",
+      "model_counts": {
+        "1": 1717,
+        "2": 1700
+      },
+      "sha256": "16a2a78e6ad9f9a27c1e261147d7588d1d0212ed210ba2105d3e2c6b72cb4d2d"
+    },
+    {
+      "label": "collision_21_far",
+      "milliseconds": 68,
+      "count": 3567,
+      "receiver_count": 21,
+      "area_system_units_squared": 210000.0,
+      "statistics": "#(#(10500L, 3567L, 0L, 0L, 0L, 0L, 6933L, 0L, 0L, 10500L, 0L, 17212L), #(1, false), 12, 0, 11)",
+      "model_counts": {
+        "1": 1806,
+        "2": 1761
+      },
+      "sha256": "498a2fb2a452fbb6df214f18ba102872a9460d1711516f187085f6174632dabb"
+    },
+    {
+      "label": "collision_21_near",
+      "milliseconds": 69,
+      "count": 3452,
+      "receiver_count": 21,
+      "area_system_units_squared": 210000.0,
+      "statistics": "#(#(10500L, 3452L, 0L, 0L, 0L, 0L, 7048L, 0L, 0L, 10500L, 0L, 17452L), #(1, false), 13, 0, 12)",
+      "model_counts": {
+        "1": 1736,
+        "2": 1716
+      },
+      "sha256": "2013d5b5dbca5bf4efcf8b938a540ec708931adfc3276bc4d0e0294b101b43b4"
+    },
+    {
+      "label": "density_20",
+      "milliseconds": 66,
+      "count": 10000,
+      "receiver_count": 20,
+      "area_system_units_squared": 200000.0,
+      "statistics": "#(#(10000L, 10000L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 10000L, 0L, 0L), #(1, false), 7, 0, 6)",
+      "model_counts": {
+        "1": 4998,
+        "2": 5002
+      },
+      "sha256": "6550ea8cf713d7d069d53fd2259bbe64d2d61b11365fabc6fabe33df36327a06"
+    },
+    {
+      "label": "density_20_edited",
+      "milliseconds": 62,
+      "count": 10250,
+      "receiver_count": 20,
+      "area_system_units_squared": 205000.0,
+      "statistics": "#(#(10250L, 10250L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 10250L, 0L, 0L), #(1, false), 10, 0, 9)",
+      "model_counts": {
+        "1": 5114,
+        "2": 5136
+      },
+      "sha256": "e48c15773c2d4b649e1ef5700b7ca082356f95eababadba10f409133e9e9d5ce"
+    },
+    {
+      "label": "density_21",
+      "milliseconds": 203,
+      "count": 10500,
+      "receiver_count": 21,
+      "area_system_units_squared": 210000.0,
+      "statistics": "#(#(10500L, 10500L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 10500L, 0L, 0L), #(1, false), 8, 0, 7)",
+      "model_counts": {
+        "1": 5254,
+        "2": 5246
+      },
+      "sha256": "a4329119e9eb38dd8b494a15cb75c9283b58f8fa0c8ca244cb55e9f2da3d4104"
+    },
+    {
+      "label": "density_21_near",
+      "milliseconds": 57,
+      "count": 10500,
+      "receiver_count": 21,
+      "area_system_units_squared": 210000.0,
+      "statistics": "#(#(10500L, 10500L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 10500L, 0L, 0L), #(1, false), 9, 0, 8)",
+      "model_counts": {
+        "1": 5254,
+        "2": 5246
+      },
+      "sha256": "7bdc55bfef45e1d7e28bc20a24047b5b5937c5748d9704d453585ce697ec4aaf"
+    },
+    {
+      "label": "fixed_20",
+      "milliseconds": 65,
+      "count": 10000,
+      "receiver_count": 20,
+      "area_system_units_squared": 200000.0,
+      "statistics": "#(#(10000L, 10000L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 10000L, 0L, 0L), #(1, false), 2, 0, 1)",
+      "model_counts": {
+        "1": 4998,
+        "2": 5002
+      },
+      "sha256": "7fbfa9c83f6a8934610dc3adda1d77c1b12dc541f833ea53d6092f159f3d5868"
+    },
+    {
+      "label": "fixed_20_moved",
+      "milliseconds": 61,
+      "count": 10000,
+      "receiver_count": 20,
+      "area_system_units_squared": 200000.0,
+      "statistics": "#(#(10000L, 10000L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 10000L, 0L, 0L), #(1, false), 6, 0, 5)",
+      "model_counts": {
+        "1": 4998,
+        "2": 5002
+      },
+      "sha256": "5f354bcecbd09c7357d59021f1d58f7581a9b0ea23d7bb142f3d0ceda15d76d2"
+    },
+    {
+      "label": "fixed_20_reordered",
+      "milliseconds": 60,
+      "count": 10000,
+      "receiver_count": 20,
+      "area_system_units_squared": 200000.0,
+      "statistics": "#(#(10000L, 10000L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 10000L, 0L, 0L), #(1, false), 5, 0, 4)",
+      "model_counts": {
+        "1": 4998,
+        "2": 5002
+      },
+      "sha256": "bae4808105fd2e5ed4c7e1ad08f89620dc791b90d7fed2b8efa9bb956c836c95"
+    },
+    {
+      "label": "fixed_20_repeat",
+      "milliseconds": 8,
+      "count": 10000,
+      "receiver_count": 20,
+      "area_system_units_squared": 200000.0,
+      "statistics": "#(#(10000L, 10000L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 10000L, 0L, 0L), #(1, false), 2, 0, 1)",
+      "model_counts": {
+        "1": 4998,
+        "2": 5002
+      },
+      "sha256": "e6fb4b7190acfc5ef5a7c0649d2a54d83d3d2c2c925c06d6a656f01b1cf7ae5b"
+    },
+    {
+      "label": "fixed_20_restored",
+      "milliseconds": 56,
+      "count": 10000,
+      "receiver_count": 20,
+      "area_system_units_squared": 200000.0,
+      "statistics": "#(#(10000L, 10000L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 10000L, 0L, 0L), #(1, false), 4, 0, 3)",
+      "model_counts": {
+        "1": 4998,
+        "2": 5002
+      },
+      "sha256": "d20fea7a35fca8a964ca1189ad986f97cdb6dc2ea9125711f7e727498cd1a755"
+    },
+    {
+      "label": "fixed_21",
+      "milliseconds": 58,
+      "count": 10000,
+      "receiver_count": 21,
+      "area_system_units_squared": 210000.0,
+      "statistics": "#(#(10000L, 10000L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 10000L, 0L, 0L), #(1, false), 3, 0, 2)",
+      "model_counts": {
+        "1": 4998,
+        "2": 5002
+      },
+      "sha256": "3c56bf6a5ab13d92c5239de773b7b67925b8aab24eaf92ae16db1cdc59d6aacb"
+    },
+    {
+      "label": "three_unequal_density",
+      "milliseconds": 30,
+      "count": 600,
+      "receiver_count": 3,
+      "area_system_units_squared": 60000.0,
+      "statistics": "#(#(600L, 600L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 600L, 0L, 0L), #(1, false), 15, 0, 14)",
+      "model_counts": {
+        "1": 292,
+        "2": 308
+      },
+      "sha256": "772e1f3c2ee7a4d391a4684937985a4fc9e367b55f8e30015349b316a08020db"
+    },
+    {
+      "label": "three_unequal_fixed",
+      "milliseconds": 35,
+      "count": 600,
+      "receiver_count": 3,
+      "area_system_units_squared": 60000.0,
+      "statistics": "#(#(600L, 600L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 600L, 0L, 0L), #(1, false), 14, 0, 13)",
+      "model_counts": {
+        "1": 292,
+        "2": 308
+      },
+      "sha256": "cc3dc06789eaab40b8df29abd233751b491d2e710448512cc5bd169b2bc9fd7b"
+    }
+  ],
+  "paint_guard": "painted count 591 retained count 591 identical snapshot true same document true same paint target true\nerror -- Runtime error: Paint target differs from the shared receiver. Saved strokes are preserved.\nrestored count 591 restored fingerprint true\n",
+  "edit_guard": "error -- Runtime error: CS Edit base changed. Restore the generation settings or explicitly Reset Edits before updating this planting setup.\nretained exact true restored exact true",
+  "vendor_api_versions": "Forest API 900\nChaos API 9, build timestamp: May 25 2026 14:02:33\nChaos number 2586051349200859L",
+  "file_versions": [
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ForestPackLite2027\\Contents\\plugins\\2027\\ForestPackLite.dlo",
+      "version": "9,4,3,766",
+      "product": "9,4,3,766"
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ChaosScatter3dsMax2027\\ChaosScatterMax2027.dlt",
+      "version": "15.0.671707",
+      "product": "15.0.671707"
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ChaosScatter3dsMax2027\\ScatterMax_Release-2027.dll",
+      "version": "15.0.671707",
+      "product": "15.0.671707"
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ChaosScatter3dsMax2027\\ScatterCore.ForScatter_Release.dll",
+      "version": "15.0.671707",
+      "product": "15.0.671707"
+    }
+  ],
+  "official_forest_sources": {
+    "retrieved_utc": "2026-10-08T15:22:53.210769+00:00",
+    "pages": [
+      {
+        "name": "lite-pro",
+        "url": "https://docs.itoosoft.com/forestpack/lite-and-pro",
+        "resolved_url": "https://docs.itoosoft.com/forestpack/lite-and-pro",
+        "status": 200,
+        "sha256": "3de10795b6da8ff8d3abff8e217240f4016dc6bbae1c006c437bb94855ed5f41",
+        "text_lines": 57
+      },
+      {
+        "name": "ui",
+        "url": "https://docs.itoosoft.com/forestpack/forest-plugin/ui",
+        "resolved_url": "https://docs.itoosoft.com/forestpack/forest-plugin/ui",
+        "status": 200,
+        "sha256": "ac9e31df94d1b23960a4b741d7fb99362e6680bdd034147bb4289b40127e8cf9",
+        "text_lines": 160
+      },
+      {
+        "name": "geometry",
+        "url": "https://docs.itoosoft.com/forestpack/forest-plugin/add-geometry",
+        "resolved_url": "https://docs.itoosoft.com/forestpack/forest-plugin/add-geometry",
+        "status": 200,
+        "sha256": "7d83429c300bca383235b3242da49dec12fecf1889dea97cf54079a3a6293a90",
+        "text_lines": 266
+      },
+      {
+        "name": "distribution",
+        "url": "https://docs.itoosoft.com/forestpack/forest-plugin/distribution",
+        "resolved_url": "https://docs.itoosoft.com/forestpack/forest-plugin/distribution",
+        "status": 200,
+        "sha256": "154e4817db952437f2f0b116ee475526e2c8cb4237eafce1a45a43bd618a116c",
+        "text_lines": 13
+      },
+      {
+        "name": "image",
+        "url": "https://docs.itoosoft.com/forestpack/forest-plugin/distribution/image-mode",
+        "resolved_url": "https://docs.itoosoft.com/forestpack/forest-plugin/distribution/image-mode",
+        "status": 200,
+        "sha256": "ed465ba3ff333f26e3570c4e81dba8e16c64a3d89c5743fb54dd2fdae972c31d",
+        "text_lines": 128
+      },
+      {
+        "name": "areas",
+        "url": "https://docs.itoosoft.com/forestpack/forest-plugin/areas",
+        "resolved_url": "https://docs.itoosoft.com/forestpack/forest-plugin/areas",
+        "status": 200,
+        "sha256": "0b39c760f6cea797581f8e2abf6fe17bf3680fac31f2db889b7bc5c43c1ddac5",
+        "text_lines": 343
+      },
+      {
+        "name": "surfaces",
+        "url": "https://docs.itoosoft.com/forestpack/forest-plugin/surfaces",
+        "resolved_url": "https://docs.itoosoft.com/forestpack/forest-plugin/surfaces",
+        "status": 200,
+        "sha256": "310b779726bc8170179365fda46ec72a66376af0cd8572600b9530cc31130389",
+        "text_lines": 72
+      },
+      {
+        "name": "transform",
+        "url": "https://docs.itoosoft.com/forestpack/forest-plugin/transform",
+        "resolved_url": "https://docs.itoosoft.com/forestpack/forest-plugin/transform",
+        "status": 200,
+        "sha256": "3192e147d0071a65bbba308b36408a0c80d623d21d66d904d3f849cc8d1e3627",
+        "text_lines": 45
+      },
+      {
+        "name": "camera",
+        "url": "https://docs.itoosoft.com/forestpack/forest-plugin/camera",
+        "resolved_url": "https://docs.itoosoft.com/forestpack/forest-plugin/camera",
+        "status": 200,
+        "sha256": "5516a50394775aa290988af615bcdf8d5fd2d874709e0619710d470ab11a083f",
+        "text_lines": 52
+      },
+      {
+        "name": "items-editor",
+        "url": "https://docs.itoosoft.com/forestpack/forest-plugin/item-editor",
+        "resolved_url": "https://docs.itoosoft.com/forestpack/forest-plugin/item-editor",
+        "status": 200,
+        "sha256": "81a2fa7a00420006180045d1d970513d2988bd4e59c1d250f9bfc94d7f276aba",
+        "text_lines": 94
+      },
+      {
+        "name": "path",
+        "url": "https://docs.itoosoft.com/forestpack/forest-plugin/distribution/path-mode",
+        "resolved_url": "https://docs.itoosoft.com/forestpack/forest-plugin/distribution/path-mode",
+        "status": 200,
+        "sha256": "9e0340d16ad5af5a5805c6f25e6dba28e1734c4746e8f5a734b7dc4c0b039023",
+        "text_lines": 70
+      },
+      {
+        "name": "reference",
+        "url": "https://docs.itoosoft.com/forestpack/forest-plugin/distribution/reference-mode",
+        "resolved_url": "https://docs.itoosoft.com/forestpack/forest-plugin/distribution/reference-mode",
+        "status": 200,
+        "sha256": "dd87a8f93226881a09d78b3239fb84f84d40969176b6f4ea7146a344bea6f9c3",
+        "text_lines": 125
+      },
+      {
+        "name": "particle-flow",
+        "url": "https://docs.itoosoft.com/forestpack/forest-plugin/distribution/particle-flow-mode",
+        "resolved_url": "https://docs.itoosoft.com/forestpack/forest-plugin/distribution/particle-flow-mode",
+        "status": 200,
+        "sha256": "f6606ca186386322c43ad6bdad9cdb37a7178e9e1a23ccfd3029c1a90e8b0849",
+        "text_lines": 56
+      },
+      {
+        "name": "effects",
+        "url": "https://docs.itoosoft.com/forestpack/forest-plugin/effects",
+        "resolved_url": "https://docs.itoosoft.com/forestpack/forest-plugin/effects",
+        "status": 200,
+        "sha256": "4ac5ef44913222bf85436bf58ebb74c60f8b7fa490c72cf0f987c963ce7910e4",
+        "text_lines": 31
+      },
+      {
+        "name": "effects-syntax",
+        "url": "https://docs.itoosoft.com/forestpack/forest-plugin/effects/creating-and-editing-effects/effects-syntax",
+        "resolved_url": "https://docs.itoosoft.com/forestpack/forest-plugin/effects/creating-and-editing-effects/effects-syntax",
+        "status": 200,
+        "sha256": "947e1a2c7880d5ca17de38301e83c71895807b059a95515e09c134c34e2d5d2c",
+        "text_lines": 220
+      },
+      {
+        "name": "effects-attributes",
+        "url": "https://docs.itoosoft.com/forestpack/forest-plugin/effects/creating-and-editing-effects/attributes",
+        "resolved_url": "https://docs.itoosoft.com/forestpack/forest-plugin/effects/creating-and-editing-effects/attributes",
+        "status": 200,
+        "sha256": "7d2719d2901cb9f0c65691d6f6c54cd27285ba74da75e051d30b26c92d946dc2",
+        "text_lines": 66
+      },
+      {
+        "name": "animation",
+        "url": "https://docs.itoosoft.com/forestpack/forest-plugin/animation",
+        "resolved_url": "https://docs.itoosoft.com/forestpack/forest-plugin/animation",
+        "status": 200,
+        "sha256": "07d9a132b3a6008435f772fcc1e4c0bd94a65878f33e1739da6b2c1b176ce4b6",
+        "text_lines": 91
+      },
+      {
+        "name": "display",
+        "url": "https://docs.itoosoft.com/forestpack/forest-plugin/display",
+        "resolved_url": "https://docs.itoosoft.com/forestpack/forest-plugin/display",
+        "status": 200,
+        "sha256": "a56d15759dbfd2dc33aadf09f5054510fc6defe15e83b3f0d79b7d03aa7ed243",
+        "text_lines": 71
+      },
+      {
+        "name": "general",
+        "url": "https://docs.itoosoft.com/forestpack/forest-plugin/general",
+        "resolved_url": "https://docs.itoosoft.com/forestpack/forest-plugin/general",
+        "status": 200,
+        "sha256": "48331811eeb308f992e14f2ef1d00be4044621d13f29f98bea18bb00b9f58fe7",
+        "text_lines": 115
+      }
+    ]
+  },
+  "cleanup": {
+    "artistRunning": true,
+    "ownedRemaining": [],
+    "checkedAt": "2026-10-08T19:04:56.0781104+03:30"
+  },
+  "research_scripts": {
+    "core_probe.py": "8a60014c683729df2e3433b9beef88e04dbd0fc0cb41214f7e0c94fe6d91118b",
+    "cyrus_surfaces.ms": "53b08889ceeb675a2aa1cc2f67c45ad8da8ee0d93a793f99003fe34397c809c9",
+    "defaults.ms": "0d1e5e086aaf1261da2bff7739c5fd7154500c886caab903c85554350262444d",
+    "edit_guard.ms": "948ecaa92abaf0a5064a04999608836130f39e59be022e41b25f752e6363a0f7",
+    "finalize.py": "875c17cde0d5676cb372a158f195958dd9e7d2e73f80716868cc7aadf9ababf8",
+    "inventory.ms": "1df4df8518fe5fb6ee1c8c2a6139f6a2b43d368d757c9cd0e881b0937953990a",
+    "lab.py": "706bd20d38d5b78a0c07fc7b78259b03d3d72a9df9871d5a59032abca0d924e6",
+    "paint_guard.ms": "313b9013c6bbd4cf4cf1e7188cd92456de8d6d9165671b98d69910c8244822ef",
+    "README.md": "ffcdaef909e5e24d139a0b8cbdb690817c1e9b19db0fd144a2ce7bbbb0004302",
+    "setup.ms": "3bb311b8646ff5d5f8a18827519dd0e27066caf71aff3e236ab019948fcc1f4e",
+    "setup_observed.ms": "979f4934e0cbb200aa6dff1820df50011a20c832efd5a6478faff93ff3b82084",
+    "transport.ms": "276179e265fd0be955b7049fcf1d5076a446a5a1c2b39c306df7e69ec93c9cd1",
+    "vendor_versions.ms": "a66414d701a37f150af39d54ed8298d3d007b27ba95879e90ce06959f52b4946"
+  },
+  "chaos_core_inspection": {
+    "run": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\receiving-surface-research-20261008-02",
+    "project": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\receiving-surface-research-20261008-02\\projects\\ReceivingSurfaceCore.gpr",
+    "binary_sha256": "069ababd0dbc09218928f24d5bdc860509b237f34af703581e3fd78ed5d3cf86",
+    "selections": [
+      [
+        {
+          "label": "core_generate",
+          "address": "0x180040bc0"
+        },
+        {
+          "label": "core_getInstanceTargetIndex",
+          "address": "0x180017fc0"
+        },
+        {
+          "label": "core_getInstance",
+          "address": "0x180042a40"
+        },
+        {
+          "label": "core_setInstanceOverride",
+          "address": "0x18004b300"
+        },
+        {
+          "label": "generateInstanceIds",
+          "address": "0x180041f80"
+        },
+        {
+          "label": "gatherPlacedInstanceData",
+          "address": "0x1800409e0"
+        },
+        {
+          "label": "scatterInstances",
+          "address": "0x18005b5e0"
+        },
+        {
+          "label": "generateRandom",
+          "address": "0x180057c30"
+        },
+        {
+          "label": "scatterPlacedInstances",
+          "address": "0x18005bb30"
+        }
+      ],
+      [
+        {
+          "label": "prepareReceivers",
+          "address": "0x18005e520"
+        },
+        {
+          "label": "prepareDistribution",
+          "address": "0x180054930"
+        }
+      ]
+    ],
+    "ledgers": {
+      "core-selected": "label\trequested\tentry\tbytes\tinstructions\tdecoded_bytes\tcompleted\terror\ncore_generate\t180040bc0\t180040bc0\t4161\t1094\t4161\ttrue\t\ncore_getInstanceTargetIndex\t180017fc0\t180017fc0\t42\t11\t42\ttrue\t\ncore_getInstance\t180042a40\t180042a40\t198\t52\t198\ttrue\t\ncore_setInstanceOverride\t18004b300\t18004b300\t537\t140\t537\ttrue\t\ngenerateInstanceIds\t180041f80\t180041f80\t1362\t366\t1362\ttrue\t\ngatherPlacedInstanceData\t1800409e0\t1800409e0\t469\t123\t469\ttrue\t\nscatterInstances\t18005b5e0\t18005b5e0\t1347\t370\t1347\ttrue\t\ngenerateRandom\t180057c30\t180057c30\t1188\t303\t1188\ttrue\t\nscatterPlacedInstances\t18005bb30\t18005bb30\t948\t257\t948\ttrue\t\n",
+      "core-preparation": "label\trequested\tentry\tbytes\tinstructions\tdecoded_bytes\tcompleted\terror\nprepareReceivers\t18005e520\t18005e520\t200\t56\t200\ttrue\t\nprepareDistribution\t180054930\t180054930\t363\t84\t363\ttrue\t\n"
+    },
+    "listings_sha256": {
+      "core-selected\\core_generate.c": "8b5ca821b62af4391be525ec39cb775d8e1da5e6eeff07d5a3de7c8ca0f2e71c",
+      "core-selected\\core_getInstance.c": "981ccd37dd443bbe974ab7a519d06ada1ef677b569c58d2a055b17f3f27dbc58",
+      "core-selected\\core_getInstanceTargetIndex.c": "678d5999b8e6430b4042e96f741797f1a9695c1c6f5f3e279f255572727dc94e",
+      "core-selected\\core_setInstanceOverride.c": "d321340e9958fd89c966b0160af39d3da2095b56dac5f0f3bd3706afc7002fa0",
+      "core-selected\\gatherPlacedInstanceData.c": "228adb3413886c379f62da45dbab0269b353a57c94dec660af51930a14fd2ade",
+      "core-selected\\generateInstanceIds.c": "04559d6c53d4c47fefd21a72d7d2ebf4217d647c5e2849ff59f5fc02d327d874",
+      "core-selected\\generateRandom.c": "118eaff2c270552ea8eb77ff7f1b1586ef90a815042dbc052ea49583a9ebe008",
+      "core-selected\\scatterInstances.c": "62667508cc96dca3b5374b3d35ba664796d8198629d51c019f709529d372198c",
+      "core-selected\\scatterPlacedInstances.c": "54692778925a64abd0cbd86cb9ba627c302970f12e33c9aa732ff324170fa78e",
+      "core-preparation\\prepareDistribution.c": "181ce917ce2b0e2986166b34a080bfbf0df012c2a55c4546996014ba48794784",
+      "core-preparation\\prepareReceivers.c": "fbac96a121e06d9c7687c24846eb0fe9985f7bf432d243cf31abcb9daf5e8f9a"
+    }
+  },
+  "vendor_host_attempts": [
+    {
+      "run": "build/receiving-surface-research-20261008-02",
+      "result": "API inventory and defaults succeeded; explicit Chaos FpInterface.update(interval 0 0,0) stayed RUNNING; no placement data."
+    },
+    {
+      "run": "build/receiving-surface-research-20261008-03",
+      "result": "RUNNING at Forest receiving-surface configuration checkpoint; checkpoint covers two setters; no placement data."
+    }
+  ],
+  "preservation": {
+    "AminScatter/src/scatter.cpp": true,
+    "AminScatter/src/max_bridge.cpp": true,
+    "AminScatter/src/procedural.cpp": true,
+    "AminScatter/src/point_display.cpp": true,
+    "AminScatter/src/mesh_display.inc": true,
+    "AminScatter/src/brush_host.cpp": true,
+    "AminScatter/tools/ui/templates/unified-core.ms": true,
+    "AminScatter/scripts/AminScatterObject.ms": true
+  },
+  "installed_inputs_preserved": {
+    "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ForestPackLite2027\\PackageContents.xml": true,
+    "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ForestPackLite2027\\Contents\\plugins\\2027\\ForestPackLite.dlo": true,
+    "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ForestPackLite2027\\Contents\\scripts\\startup\\forestpack.ms": true,
+    "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ChaosScatter3dsMax2027\\PackageContents.xml": true,
+    "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ChaosScatter3dsMax2027\\ChaosScatterMax2027.dlt": true,
+    "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ChaosScatter3dsMax2027\\ScatterMax_Release-2027.dll": true,
+    "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ChaosScatter3dsMax2027\\ScatterCore.ForScatter_Release.dll": true
+  }
+}

@@ -41,6 +41,7 @@ try (
     local key=CyrusPFSignature
     r.procSetPair 2 a b true 0 100000 false
     AminScatterRenderBegin()
+    CSPWriteText (MCPFixtureDir+"live-pair-render-probe.json") (CSPObject #(#("a",a.generatedCount),#("b",b.generatedCount),#("errors",#(a.previewError,b.previewError)),#("bridge",for rows in CyrusPFData collect rows.count),#("published",for rows in r.groupSnapshotRows collect rows.count)))
     P07Assert (b.generatedCount==0 and CyrusPFData.count==1 and CyrusPFData[1].count==100) "Live pair rule left stale render rows"
     P07Assert (CyrusPFSignature!=key) "Live root rule did not change render signature"
     AminScatterRenderEnd();CyrusPFClear();r.autoRender=false

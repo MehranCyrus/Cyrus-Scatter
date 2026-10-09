@@ -1,0 +1,217 @@
+{
+  "passed": true,
+  "computer_use": false,
+  "artist_scene_opened": false,
+  "visual_qualification": false,
+  "script_sha256": "72cdf16b0825a5e67a9792a3eee3eddfad1589e99eab0cae7a529701189e8f15",
+  "floating_IR": true,
+  "docked_IR": false,
+  "inactive_stop": {
+    "before": 0,
+    "status": 2,
+    "after": 0,
+    "guarded_stop": true
+  },
+  "snapshots": [
+    {
+      "label": "ir072-before-idle",
+      "render_type": 3,
+      "passes": 5,
+      "epoch": 3,
+      "bridge_builds": 2,
+      "bridge_instances": [
+        120
+      ],
+      "phase": 0,
+      "timer": false,
+      "pending": false,
+      "production_guard": false,
+      "busy": false,
+      "ticking": false,
+      "interaction_held": false,
+      "resume": false,
+      "error": "",
+      "helper_nodes": 10
+    },
+    {
+      "label": "ir072-after-idle",
+      "render_type": 3,
+      "passes": 23,
+      "epoch": 3,
+      "bridge_builds": 2,
+      "bridge_instances": [
+        120
+      ],
+      "phase": 0,
+      "timer": false,
+      "pending": false,
+      "production_guard": false,
+      "busy": false,
+      "ticking": false,
+      "interaction_held": false,
+      "resume": false,
+      "error": "",
+      "helper_nodes": 10
+    },
+    {
+      "label": "ir072-after-edit",
+      "render_type": 3,
+      "passes": 8,
+      "epoch": 4,
+      "bridge_builds": 3,
+      "bridge_instances": [
+        180
+      ],
+      "phase": 0,
+      "timer": false,
+      "pending": false,
+      "production_guard": false,
+      "busy": false,
+      "ticking": false,
+      "interaction_held": false,
+      "resume": false,
+      "error": "",
+      "helper_nodes": 10
+    },
+    {
+      "label": "ir072-edit-settled",
+      "render_type": 3,
+      "passes": 26,
+      "epoch": 4,
+      "bridge_builds": 3,
+      "bridge_instances": [
+        180
+      ],
+      "phase": 0,
+      "timer": false,
+      "pending": false,
+      "production_guard": false,
+      "busy": false,
+      "ticking": false,
+      "interaction_held": false,
+      "resume": false,
+      "error": "",
+      "helper_nodes": 10
+    },
+    {
+      "label": "ir072-after-save",
+      "render_type": 3,
+      "passes": 12,
+      "epoch": 4,
+      "bridge_builds": 4,
+      "bridge_instances": [
+        180
+      ],
+      "phase": 0,
+      "timer": false,
+      "pending": false,
+      "production_guard": false,
+      "busy": false,
+      "ticking": false,
+      "interaction_held": false,
+      "resume": false,
+      "error": "",
+      "helper_nodes": 10
+    },
+    {
+      "label": "ir072-stopped",
+      "render_type": 0,
+      "passes": 13,
+      "epoch": 4,
+      "bridge_builds": 4,
+      "bridge_instances": [
+        180
+      ],
+      "phase": 0,
+      "timer": false,
+      "pending": false,
+      "production_guard": false,
+      "busy": false,
+      "ticking": false,
+      "interaction_held": false,
+      "resume": false,
+      "error": "",
+      "helper_nodes": 10
+    },
+    {
+      "label": "ir072-production",
+      "render_type": 0,
+      "passes": 13,
+      "epoch": 4,
+      "bridge_builds": 4,
+      "bridge_instances": [],
+      "phase": 0,
+      "timer": false,
+      "pending": false,
+      "production_guard": false,
+      "busy": false,
+      "ticking": false,
+      "interaction_held": false,
+      "resume": false,
+      "error": "",
+      "helper_nodes": 0
+    }
+  ],
+  "stages": [
+    {
+      "stage": "setup",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-lifecycle-final/probe-519e51c91e714772b2014b1262d1bdab.ms"
+    },
+    {
+      "stage": "ir072-before-idle",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-lifecycle-final/probe-1997b4edde684df791df70d7be19e276.ms"
+    },
+    {
+      "stage": "ir072-after-idle",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-lifecycle-final/probe-dc49356a4e8f4b6ca8f5fd7354948c40.ms"
+    },
+    {
+      "stage": "actual Live population edit",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-lifecycle-final/probe-2bbc1e473efa47dba1b7274c26dfcf48.ms"
+    },
+    {
+      "stage": "ir072-after-edit",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-lifecycle-final/probe-1b14f4ae0e1e41a9b395b1a350555814.ms"
+    },
+    {
+      "stage": "ir072-edit-settled",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-lifecycle-final/probe-1b81b4046c244d6f8c7a9f686fcea5df.ms"
+    },
+    {
+      "stage": "save during actual IR",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-lifecycle-final/probe-94710e86a7b94d9b8b0f30a5bd141c55.ms"
+    },
+    {
+      "stage": "ir072-after-save",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-lifecycle-final/probe-0a1864d3120e4283a9c2fa058d679e11.ms"
+    },
+    {
+      "stage": "ir072-after-save",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-lifecycle-final/probe-b0bf06ca5c174ffabbed1340a35105f1.ms"
+    },
+    {
+      "stage": "ir072-after-save",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-lifecycle-final/probe-234862cd56cf468a99d52e42b3c0bdaa.ms"
+    },
+    {
+      "stage": "repeated guarded Stop",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-lifecycle-final/probe-6f9c06f4a00b43cfac8d3d764d08f3c4.ms"
+    },
+    {
+      "stage": "ir072-stopped",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-lifecycle-final/probe-8d130eb62a354470ad9a28dd79bd6a64.ms"
+    },
+    {
+      "stage": "production render",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-lifecycle-final/probe-8486739d811f46ff9c3c1884fe81f1fe.ms"
+    },
+    {
+      "stage": "ir072-production",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-lifecycle-final/probe-9bd471d93a7444fd93c99f6287b1fdfb.ms"
+    },
+    {
+      "stage": "scene reset and diagnostic export",
+      "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-lifecycle-final/probe-b4bfadb1d0004d39897da89105f65471.ms"
+    }
+  ]
+}

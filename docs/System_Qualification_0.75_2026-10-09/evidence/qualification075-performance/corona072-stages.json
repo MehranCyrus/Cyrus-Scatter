@@ -1,0 +1,34 @@
+[
+  {
+    "stage": "setup",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-performance/probe-74d74afe390b4e21850e08c3bbd663c2.ms"
+  },
+  {
+    "stage": "ir072-before-idle",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-performance/probe-8daf6b47034e4d05b8ac923025e6ebe6.ms"
+  },
+  {
+    "stage": "ir072-after-idle",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-performance/probe-00189141f918498fb84b4aaee6ba0ae0.ms"
+  },
+  {
+    "stage": "actual Live population edit",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-performance/probe-a0ce82121bef44bab9c988f1897848f6.ms"
+  },
+  {
+    "stage": "ir072-after-edit",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-performance/probe-b3e0d0ddb87f44648de3f29fe98ba464.ms"
+  },
+  {
+    "stage": "ir072-edit-settled",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-performance/probe-285d8017f85a4dce84a0fcedf65807c3.ms"
+  },
+  {
+    "stage": "save during actual IR",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-performance/probe-0bb1303d82fd4bb2b33770c104b0d1d1.ms"
+  },
+  {
+    "stage": "ir072-after-save",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-performance/probe-f8b78f0588a94fc088b27c92aff2493f.ms"
+  }
+]

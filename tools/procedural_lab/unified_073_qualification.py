@@ -28,6 +28,7 @@ def main():
     parser.add_argument('--completion',help='Asynchronous private report, with passed=true')
     parser.add_argument('--external',type=Path,help='Private external client runner; receives this fixture folder')
     parser.add_argument('--external-python',type=Path,default=Path(sys.executable))
+    parser.add_argument('--external-timeout',type=int,default=300,help='Bounded total seconds for a serial multi-scenario external campaign')
     args=parser.parse_args()
     fixture_paths=([args.fixture] if args.fixture else [])+args.definitions
     # Reject malformed fixture arguments before creating a Max process. A
@@ -104,7 +105,7 @@ def main():
             environment=dict(os.environ,PYTHONPATH=str(ROOT/'CyrusMCP'))
             external=subprocess.run([str(args.external_python),str(args.external.resolve()),str(folder)],
                 cwd=ROOT,env=environment,text=True,encoding='utf-8',errors='replace',
-                stdout=subprocess.PIPE,stderr=subprocess.STDOUT,timeout=300)
+                stdout=subprocess.PIPE,stderr=subprocess.STDOUT,timeout=args.external_timeout)
             (folder/'external-client.log').write_text(external.stdout,encoding='utf-8')
             receipt['external_exit_code']=external.returncode
             if external.returncode:raise RuntimeError(external.stdout[-8000:])

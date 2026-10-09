@@ -1,0 +1,47 @@
+[
+  {
+    "name": "containers",
+    "phase": "behavior",
+    "files": {
+      "tools/procedural_lab/Max_Source_Containers_Acceptance.ms": "b0719c198be0f4dfb5462897c996499518df35cc38a91b43d6f8b9373d02cdc1"
+    },
+    "steps": [
+      {
+        "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Source_Containers_Acceptance.ms\"",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior-final/probe-6791c8c2672e4063994484e6aba2cc57.ms"
+      }
+    ],
+    "passed": true,
+    "elapsed_s": 62.875
+  },
+  {
+    "name": "output",
+    "phase": "behavior",
+    "files": {
+      "tools/procedural_lab/Max_Source_Containers_Output.ms": "e1ba8f49b81634cc7dfff02528f04a785926c39e7b00c3563403c3984328945a"
+    },
+    "steps": [
+      {
+        "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Source_Containers_Output.ms\"",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior-final/probe-2a0ae566281d404194b4e4f656ec2f10.ms"
+      }
+    ],
+    "passed": true,
+    "elapsed_s": 7.375
+  },
+  {
+    "name": "edit-bindings",
+    "phase": "behavior",
+    "files": {
+      "tools/procedural_lab/Max_Procedural_07_Bindings.ms": "5c9343dd35397461a62f7ae9230ad9d4f28eab778a779f56dd7d46b3024adb64"
+    },
+    "steps": [
+      {
+        "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Procedural_07_Bindings.ms\"",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior-final/probe-3bfb1ddf6f5043a7a878c9add2d3cb90.ms"
+      }
+    ],
+    "passed": true,
+    "elapsed_s": 6.469000000000051
+  }
+]

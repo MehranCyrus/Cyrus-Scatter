@@ -1,0 +1,18 @@
+[
+  {
+    "name": "containers",
+    "phase": "behavior",
+    "files": {
+      "tools/procedural_lab/Max_Source_Containers_Acceptance.ms": "a3197470f1683834caf02ab45aa92a0321f19c5bc6d0ee9f8097cd75dbd5bfab"
+    },
+    "steps": [
+      {
+        "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Source_Containers_Acceptance.ms\"",
+        "result": "ERROR -- Compile error: no local declarations at top level:  r\n--  In line: local r=\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior/probe-c291a9281d344b67aefc8c4bf93cb891.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\Max_Source_Containers_Acceptance.ms LINE: 11P\n"
+      }
+    ],
+    "passed": false,
+    "error": "ERROR -- Compile error: no local declarations at top level:  r\n--  In line: local r=\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior/probe-c291a9281d344b67aefc8c4bf93cb891.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\Max_Source_Containers_Acceptance.ms LINE: 11P\n",
+    "elapsed_s": 28.9849999999999
+  }
+]

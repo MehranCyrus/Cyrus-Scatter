@@ -1,4 +1,5 @@
 -- Run through runtime_driver in a disposable Max profile, matching script/DLL.
+(
 if findString MCPFixtureDir "/procedural07-ui-"==undefined do throw "Private container fixture required"
 global P07New,P07Root,P07Layer,P07Source,P07Surface,P07Assert,P07Case,CSPWriteText,CSPObject
 global SCResults=#()
@@ -12,7 +13,7 @@ P07New count:400
 local r=P07Root,a=P07Layer,first=P07Source
 first.pos=[1000,0,50]
 local second=box name:"SC Shrub" width:4 length:4 height:6 pos:[1050,0,0]
-local rect=rectangle name:"SC Layer Plants" width:300 length:200 pos:[1000,0,0]
+local rect=CyrusSourceContainer name:"SC Layer Plants" width:300 length:200 pos:[1000,0,0]
 a.containerNodes=#(rect);a.containerMode=4
 r.refreshAll()
 P07Assert (a.sources.count==2 and findItem a.sources second>0) "Inside asset was not automatically registered"
@@ -60,7 +61,7 @@ r.evaluateGroups()
 P07Assert (b.sources.count==2 and c.sources.count==2) "Layer/global inheritance failed"
 b.sourceRadii=#(90.0,80.0)
 r.evaluateGroups();P07Assert (a.sourceRadii[1]==5 and b.sourceRadii[1]==90) "Owner source settings leaked"
-local solo=rectangle name:"SC Own Pool" width:20 length:20 pos:[1050,0,0]
+local solo=CyrusSourceContainer name:"SC Own Pool" width:20 length:20 pos:[1050,0,0]
 c.containerMode=4;c.containerNodes=#(solo);r.evaluateGroups()
 P07Assert (not c.containerActive[1] and c.containerActive[2]) "Set override did not own its membership"
 local copied=r.copyLogicalLayer a;r.evaluateGroups()
@@ -77,7 +78,7 @@ SCRecord P07Case true
 P07Case="source containers: edited rows park without losing edits"
 P07New count:100
 r=P07Root;a=P07Layer;first=P07Source;first.pos=[1000,0,0]
-rect=rectangle width:300 length:200 pos:[1000,0,0]
+rect=CyrusSourceContainer width:300 length:200 pos:[1000,0,0]
 a.containerNodes=#(rect);a.containerMode=4
 local edit=CyrusScatterEdit();addModifier P07Node edit
 r.evaluateGroups();cyrusEditSelect edit #(1);cyrusEditCommand edit 4 (transMatrix [5,7,0]);r.evaluateGroups()
@@ -97,7 +98,7 @@ SCRecord P07Case true
 P07Case="source containers: navigation has no scene scan"
 P07New count:20000
 r=P07Root;a=P07Layer;first=P07Source;first.pos=[1000,0,0]
-rect=rectangle width:300 length:200 pos:[1000,0,0];a.containerNodes=#(rect);a.containerMode=4
+rect=CyrusSourceContainer width:300 length:200 pos:[1000,0,0];a.containerNodes=#(rect);a.containerMode=4
 r.refreshAll();SCDrain();r.procInputKey()
 local scans=a.containerScans,tests=a.containerTests,builds=a.paintBaseBuilds,epoch=r.procEpoch
 for i=1 to 50 do r.procInputKey()
@@ -105,3 +106,4 @@ SCRecord "navigation counters" #(scans,a.containerScans,tests,a.containerTests,b
 P07Assert (a.containerScans==scans and a.containerTests==tests and a.paintBaseBuilds==builds and r.procEpoch==epoch) "Read/navigation scanned scene or rebuilt data"
 SCRecord P07Case #(true,scans,tests,builds)
 SCRecord "complete" true
+)

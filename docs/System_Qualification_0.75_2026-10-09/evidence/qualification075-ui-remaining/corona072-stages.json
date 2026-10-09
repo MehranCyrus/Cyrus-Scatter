@@ -1,0 +1,22 @@
+[
+  {
+    "stage": "setup",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-remaining/probe-eb48b42afe224055b3d7f445b58acdd7.ms"
+  },
+  {
+    "stage": "ir072-before-idle",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-remaining/probe-a4b8d1088864452e9b8a209a5e88a655.ms"
+  },
+  {
+    "stage": "ir072-after-idle",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-remaining/probe-d589e1a9c00a41feba0a8a0eab888a96.ms"
+  },
+  {
+    "stage": "actual Live population edit",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-remaining/probe-45f26be3bae44d398cde32ad6efaa9fd.ms"
+  },
+  {
+    "stage": "ir072-after-edit",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-remaining/probe-b069e70c642f42f09b3f81866304421d.ms"
+  }
+]

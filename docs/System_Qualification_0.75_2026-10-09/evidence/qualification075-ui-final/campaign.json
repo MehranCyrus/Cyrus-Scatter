@@ -1,0 +1,90 @@
+[
+  {
+    "name": "bindings",
+    "phase": "ui",
+    "files": {
+      "docs/System_Qualification_0.75_2026-10-09/Control_Bindings.ms": "3433f8b6276f33734076c38ff032eb29464ed69f6be716e8e55f3f1c883017fb"
+    },
+    "steps": [
+      {
+        "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/docs/System_Qualification_0.75_2026-10-09/Control_Bindings.ms\"",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-final/probe-b992bffe6d12478d819a25fbca618c6e.ms"
+      }
+    ],
+    "passed": true,
+    "elapsed_s": 44.54699999999991
+  },
+  {
+    "name": "layout",
+    "phase": "ui",
+    "files": {
+      "tools/procedural_lab/Max_Layout_075.ms": "b04078e84d847c13198c2d76c3af9f2e3e729a03e7b37fcfee9df89287208f52"
+    },
+    "steps": [
+      {
+        "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Layout_075.ms\"",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-final/probe-2326db3a7bfd44348c2bcba8240507c7.ms"
+      },
+      {
+        "code": "L75Run()",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-final/probe-8595a101659a449db8277258998558f3.ms"
+      }
+    ],
+    "passed": true,
+    "elapsed_s": 89.42200000000003
+  },
+  {
+    "name": "regions",
+    "phase": "ui",
+    "files": {
+      "tools/procedural_lab/Max_Layer_Regions_074.ms": "c2bb569b7ae63bd05430a3c5d60c6dfeb48bb666eb55cf0c274837324b26ded3"
+    },
+    "steps": [
+      {
+        "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Layer_Regions_074.ms\"",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-final/probe-fb76dd677f3743dda3b35e3d3606db49.ms"
+      },
+      {
+        "code": "LRSetup();LRRun();LRViews();LRReopen();LRAdditional()",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-final/probe-642256855a4843a9b65821ad9a7819d6.ms"
+      }
+    ],
+    "passed": true,
+    "elapsed_s": 125.59400000000005
+  },
+  {
+    "name": "manual-workflow",
+    "phase": "ui",
+    "files": {
+      "tools/procedural_lab/Max_Consolidation_075.ms": "c465b84da9436382dfc6ee61cb181b0109cf9b0ca4133d9c047bb21566a44168"
+    },
+    "steps": [
+      {
+        "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Consolidation_075.ms\"",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-final/probe-ccc2dc9603f64ef7b0b9d5862160b73b.ms"
+      },
+      {
+        "code": "C75Manual();C75Workflow();C75Spacing()",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-final/probe-78149e9f56a94ec9922a0be4e0961133.ms"
+      }
+    ],
+    "passed": true,
+    "elapsed_s": 86.42200000000003
+  },
+  {
+    "name": "grips",
+    "phase": "ui",
+    "files": {
+      "tools/procedural_lab/Max_UI_074_Grips.ms": "2a9add96485d90a54af4e99dd58a6836bcdcb1d215dbd9985aff4b73db8f15eb"
+    },
+    "steps": [
+      {
+        "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_UI_074_Grips.ms\"",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-final/probe-61c5aa8ee0224568a78ed92c6f9c2209.ms"
+      }
+    ],
+    "passed": false,
+    "error": "Private Max fixture did not complete: probe-f8f7bdfbcc414e26bee5ec93ef455931.ms",
+    "elapsed_s": 181.34399999999982
+  }
+]

@@ -1,0 +1,3 @@
+evidence/** -text whitespace=cr-at-eol,-blank-at-eof
+# Frozen test inputs retain their tested bytes, including final blank lines.
+fixtures/** -text whitespace=cr-at-eol,-blank-at-eof

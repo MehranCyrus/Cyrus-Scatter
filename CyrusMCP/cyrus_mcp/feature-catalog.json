@@ -1,7 +1,7 @@
 {
   "schema": "cyrus.feature-catalog/1.0",
   "authority": "Help only. Tool dispatch, closed schema and local approval determine authority.",
-  "capability_source_sha256": "7679925c6b0d2f0bcf3a8ec1a1639fec198006a5d81ebb87ba4413ba9efd4332",
+  "capability_source_sha256": "10057730fc0b65fe76b5e9f760ea273833d1845405306cb3edaeab323e30cfe5",
   "control_inventory_sha256": "ba881f533385202d0a258c150e2b71308575df92e49b6e8fe5c94064895efaf5",
   "development_version": "0.75",
   "mcp_version": "0.73.0",
@@ -16,8 +16,8 @@
     },
     {
       "feature_id": "C02",
-      "title": "Receiver and units / controller",
-      "native": "Supported static flat/curved meshes for scatter/Brush; shared receiver defaults",
+      "title": "Receiver and units / layer",
+      "native": "Each layer owns static flat/curved receivers; Paint Areas have explicit receiver targets; Brush topology/automatic-rescale guards remain",
       "mcp": "Design enrollment remains a horizontal convex static site with restricted geometry",
       "qualification_or_extension": "Bounded curved enrollment, topology/units capability contract"
     },
@@ -30,15 +30,15 @@
     },
     {
       "feature_id": "C04",
-      "title": "Paint sets / layer",
-      "native": "Independent sources/Brush histories/share; common layer recipe and population/defaults",
-      "mcp": "Read ordered sets and effective rules; each plan layer starts with Base",
-      "qualification_or_extension": "Remote set creation, share/history edits and declared/effective field parity"
+      "title": "Paint Areas / layer",
+      "native": "Optional named receiver-bound coverage shares layer models; overlap unions without duplicates; missing-target areas remain inactive; older model-owning sets retained",
+      "mcp": "Older set/configuration reads remain; no public Paint Area or Brush authoring contract",
+      "qualification_or_extension": "Explicit older multi-set conversion; typed area inspection/authoring with bounded coverage and ownership"
     },
     {
       "feature_id": "C05",
-      "title": "Source palette / set",
-      "native": "Pick/remove/share sources, weights, colors/groups and saved metadata",
+      "title": "Source palette / layer",
+      "native": "Pick/remove models, local aliases, weights, separate identification and assignment colors; older groups retain independent source metadata",
       "mcp": "Enroll up to three mesh assets; plan weights and typed source settings",
       "qualification_or_extension": "Qualified broader asset kinds; no arbitrary scene IDs"
     },
@@ -58,15 +58,15 @@
     },
     {
       "feature_id": "C08",
-      "title": "Source transforms/radii / set row",
-      "native": "Scale, lift, forward axis, radius/follow-scale and display independently saved per set",
+      "title": "Source transforms/radii / model row",
+      "native": "Scale, lift, forward axis and radius/follow-scale are saved independently per model row; older groups retain their metadata",
       "mcp": "Plan 0.73 typed source metadata; read current assets",
       "qualification_or_extension": "Complete recipe parity and explanations of effective scaled radius"
     },
     {
       "feature_id": "C09",
       "title": "Population/seed / layer",
-      "native": "Count/density, deterministic ordinals and weighted set quota",
+      "native": "Count/density and deterministic ordinals; weighted quotas retained for older model groups; changing receiver membership can move surviving placements",
       "mcp": "Plan 0.73 bounded count/seed",
       "qualification_or_extension": "Density and accepted-target plan contracts with total work admission"
     },
@@ -100,15 +100,15 @@
     },
     {
       "feature_id": "C14",
-      "title": "Brush coverage / set",
-      "native": "Editable Paint/Erase on supported static flat/curved surfaces; radius/strength/softness/density and overlays",
+      "title": "Brush / selected Paint Area",
+      "native": "Flat/curved Paint/Erase edits selected receiver-bound area; repeated strokes stay in that area; layer models and amount are shared",
       "mcp": "Read saved coverage metadata; no Brush authoring",
       "qualification_or_extension": "Bounded target-bound strokes/fields, one gesture Undo, explicit provenance"
     },
     {
       "feature_id": "C15",
-      "title": "Brush history/reset / set",
-      "native": "Edit/enable/delete history, Fill/Empty and rebinding guard; current persistence tests",
+      "title": "Paint persistence / Paint Area",
+      "native": "Undo/Redo and save/reopen retain coverage; individual stroke editor removed; prepared unchanged strokes reused; canonical final-region storage unfinished",
       "mcp": "No history import or mutation",
       "qualification_or_extension": "BR-01 tiny-coordinate reopen remains unisolated; derived-history memory and folded/nearby-sheet cases"
     },
@@ -128,8 +128,8 @@
     },
     {
       "feature_id": "C18",
-      "title": "Line/Analyzer assignment / layer",
-      "native": "Ported bands, per-set direct/group choices, stroke scales, fixed anchors and supported orientation/edge/street data",
+      "title": "Layout bands / layer",
+      "native": "Main Layout exposes Spline bands and Surface Analyzer channels; world-XY bands, first-match priority, source/group choices and explicit Analyzer update",
       "mcp": "No assignment mutation",
       "qualification_or_extension": "Artist coverage of all Analyzer channels, corners, multi-set scale and curved combinations"
     },
@@ -185,9 +185,9 @@
     {
       "feature_id": "C26",
       "title": "UI / editor",
-      "native": "Ten workflow sections in the approved order, per-section Advanced, optional same-model popup and linked container view; retained lazy controls and guarded owner binding",
+      "native": "Eleven main sections, optional popup and linked container view; direct Layer controls, paired XYZ fields, list grips and separate radio captions",
       "mcp": "Catalog/workflow help; no remote UI invocation",
-      "qualification_or_extension": "Isolated pointer disclosure, narrow/wide scroll, Brush, Update and Undo evidence exists. The 7 October results record pointer scope and matching loaded identities; all fields/DPI/long-session combinations remain unqualified"
+      "qualification_or_extension": "Current scripted bounds/bindings and handler evidence in system audit; historical pointer results do not certify current DPI, docking, tablet or every control"
     },
     {
       "feature_id": "C27",
@@ -213,7 +213,7 @@
     {
       "feature_id": "C30",
       "title": "Save/load/Undo / scene",
-      "native": "Current schema 54 and stable-only Edit storage; container UUIDs/context and source settings persist",
+      "native": "Schema 54, stable Edit storage, layer surfaces, Paint Areas, container UUIDs and source metadata persist; supported older 0.74 sets retained",
       "mcp": "Scoped own-top-Undo/journal recovery; no arbitrary scene save",
       "qualification_or_extension": "Older unpublished Scatter scene formats deliberately unsupported; Max 2026 runtime qualification"
     },
@@ -535,7 +535,7 @@
         "C02",
         "C07"
       ],
-      "owner_context": "Controller / local view",
+      "owner_context": "Selected layer receiving surfaces",
       "help": null,
       "view": "Local setup/editor controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -549,7 +549,7 @@
         "C02",
         "C07"
       ],
-      "owner_context": "Controller / local view",
+      "owner_context": "Selected layer receiving surfaces",
       "help": "Remove highlighted assignments from this setup. Scene objects are kept.",
       "view": "Local setup/editor controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -563,7 +563,7 @@
         "C02",
         "C07"
       ],
-      "owner_context": "Controller/global pool",
+      "owner_context": "Selected layer receiving surfaces",
       "help": "Add a receiving surface without replacing existing assignments.",
       "view": "Local setup/editor controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -577,7 +577,7 @@
         "C02",
         "C07"
       ],
-      "owner_context": "Controller/global pool",
+      "owner_context": "Selected layer receiving surfaces",
       "help": "Add multiple receiving surfaces by name. Existing assignments are kept. Choose the target for each Paint Area under Painting.",
       "view": "Local setup/editor controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1006,7 +1006,7 @@
       "capabilities": [
         "C04"
       ],
-      "owner_context": "Selected layer recipe",
+      "owner_context": "Selected layer / named Paint Area; older model-owning sets are distinct",
       "help": "Restrict this layer to its painted areas. Turn off to scatter across all its surfaces.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1019,7 +1019,7 @@
       "capabilities": [
         "C04"
       ],
-      "owner_context": "Selected layer recipe",
+      "owner_context": "Selected layer / named Paint Area; older model-owning sets are distinct",
       "help": "Bring this older layer's existing coverage into a named area without changing its paint. Undo restores the old ownership.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1032,7 +1032,7 @@
       "capabilities": [
         "C04"
       ],
-      "owner_context": "Layer/set administration",
+      "owner_context": "Selected layer / named Paint Area; older model-owning sets are distinct",
       "help": null,
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1045,7 +1045,7 @@
       "capabilities": [
         "C04"
       ],
-      "owner_context": "Layer/set administration",
+      "owner_context": "Selected layer / named Paint Area; older model-owning sets are distinct",
       "help": "Create a named area. Painting again edits the selected area.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1058,7 +1058,7 @@
       "capabilities": [
         "C04"
       ],
-      "owner_context": "Layer/set administration",
+      "owner_context": "Selected layer / named Paint Area; older model-owning sets are distinct",
       "help": "Remove the selected area. Undo restores it.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1071,7 +1071,7 @@
       "capabilities": [
         "C04"
       ],
-      "owner_context": "Layer/set administration",
+      "owner_context": "Selected layer / named Paint Area; older model-owning sets are distinct",
       "help": null,
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1084,7 +1084,7 @@
       "capabilities": [
         "C04"
       ],
-      "owner_context": "Selected layer recipe",
+      "owner_context": "Selected layer / named Paint Area; older model-owning sets are distinct",
       "help": "Explicit target within this layer. An area with saved paint cannot be silently retargeted.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1097,7 +1097,7 @@
       "capabilities": [
         "C04"
       ],
-      "owner_context": "Layer/set administration",
+      "owner_context": "Selected layer / named Paint Area; older model-owning sets are distinct",
       "help": null,
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1112,7 +1112,7 @@
         "C06",
         "C08"
       ],
-      "owner_context": "Selected layer recipe",
+      "owner_context": "Selected layer model collection; older groups retain independent metadata",
       "help": "Label inside Scatter only. Clear it to use the scene object's name.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1127,7 +1127,7 @@
         "C06",
         "C08"
       ],
-      "owner_context": "Selected layer recipe",
+      "owner_context": "Selected layer model collection; older groups retain independent metadata",
       "help": "Viewport identification color. This does not change clustering or model frequency.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1142,7 +1142,7 @@
         "C06",
         "C08"
       ],
-      "owner_context": "Paint-set source row",
+      "owner_context": "Selected layer model collection; older groups retain independent metadata",
       "help": null,
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1157,7 +1157,7 @@
         "C06",
         "C08"
       ],
-      "owner_context": "Paint-set source row",
+      "owner_context": "Selected layer model collection; older groups retain independent metadata",
       "help": "Choose one or more source models by name.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1172,7 +1172,7 @@
         "C06",
         "C08"
       ],
-      "owner_context": "Paint-set source row",
+      "owner_context": "Selected layer model collection; older groups retain independent metadata",
       "help": "Pick a scene model for this layer. The editor stays on its layer.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1187,7 +1187,7 @@
         "C06",
         "C08"
       ],
-      "owner_context": "Paint-set source row",
+      "owner_context": "Selected layer model collection; older groups retain independent metadata",
       "help": "Add the currently selected scene objects to this layer.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1202,7 +1202,7 @@
         "C06",
         "C08"
       ],
-      "owner_context": "Paint-set source row",
+      "owner_context": "Selected layer model collection; older groups retain independent metadata",
       "help": "Unregister highlighted rows. To keep their settings, park models outside a source rectangle instead.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1217,7 +1217,7 @@
         "C06",
         "C08"
       ],
-      "owner_context": "Paint-set source row",
+      "owner_context": "Selected layer model collection; older groups retain independent metadata",
       "help": "Select the highlighted source models in the scene.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1232,7 +1232,7 @@
         "C06",
         "C08"
       ],
-      "owner_context": "Paint-set source row",
+      "owner_context": "Selected layer model collection; older groups retain independent metadata",
       "help": "Add a placeholder source that can later be replaced by a model.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1247,7 +1247,7 @@
         "C06",
         "C08"
       ],
-      "owner_context": "Paint-set source row",
+      "owner_context": "Selected layer model collection; older groups retain independent metadata",
       "help": "Add a weighted empty source for intentional gaps in candidate-budget mode.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1262,7 +1262,7 @@
         "C06",
         "C08"
       ],
-      "owner_context": "Paint-set source row",
+      "owner_context": "Selected layer model collection; older groups retain independent metadata",
       "help": "Replace one highlighted Point row with a scene model.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1277,7 +1277,7 @@
         "C06",
         "C08"
       ],
-      "owner_context": "Paint-set source row",
+      "owner_context": "Selected layer model collection; older groups retain independent metadata",
       "help": "Assign highlighted sources to an existing color group for clustering.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1292,7 +1292,7 @@
         "C06",
         "C08"
       ],
-      "owner_context": "Paint-set source row",
+      "owner_context": "Selected layer model collection; older groups retain independent metadata",
       "help": "Assign a color group to highlighted sources when the color is accepted.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1307,7 +1307,7 @@
         "C06",
         "C08"
       ],
-      "owner_context": "Paint-set source row",
+      "owner_context": "Selected layer model collection; older groups retain independent metadata",
       "help": "Assign the chosen color group to all highlighted source rows.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1322,7 +1322,7 @@
         "C06",
         "C08"
       ],
-      "owner_context": "Paint-set source row",
+      "owner_context": "Selected layer model collection; older groups retain independent metadata",
       "help": "Relative model frequency in this layer. Zero disables the model.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1337,7 +1337,7 @@
         "C06",
         "C08"
       ],
-      "owner_context": "Paint-set source row",
+      "owner_context": "Selected layer model collection; older groups retain independent metadata",
       "help": "Offset instances of highlighted models along their placement normal.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1352,7 +1352,7 @@
         "C06",
         "C08"
       ],
-      "owner_context": "Paint-set source row",
+      "owner_context": "Selected layer model collection; older groups retain independent metadata",
       "help": "Per-model scale multiplier. 1 keeps the model's original scale.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1367,7 +1367,7 @@
         "C06",
         "C08"
       ],
-      "owner_context": "Paint-set source row",
+      "owner_context": "Selected layer model collection; older groups retain independent metadata",
       "help": "Collision footprint radius for highlighted source rows, in scene units.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1382,7 +1382,7 @@
         "C06",
         "C08"
       ],
-      "owner_context": "Paint-set source row",
+      "owner_context": "Selected layer model collection; older groups retain independent metadata",
       "help": "Scale this source's collision footprint with its instance scale.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1397,7 +1397,7 @@
         "C06",
         "C08"
       ],
-      "owner_context": "Paint-set source row",
+      "owner_context": "Selected layer model collection; older groups retain independent metadata",
       "help": "Show this source's radius in the viewport; does not change collision rules.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1412,7 +1412,7 @@
         "C06",
         "C08"
       ],
-      "owner_context": "Paint-set source row",
+      "owner_context": "Selected layer model collection; older groups retain independent metadata",
       "help": "The model's local forward direction, used for orientation.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1427,7 +1427,7 @@
         "C06",
         "C08"
       ],
-      "owner_context": "Paint-set source row",
+      "owner_context": "Selected layer model collection; older groups retain independent metadata",
       "help": "Show or hide these advanced controls; their saved settings are preserved.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1440,7 +1440,7 @@
       "capabilities": [
         "C07"
       ],
-      "owner_context": "Set/layer/global pool selection",
+      "owner_context": "Selected layer model collection; older groups retain independent metadata",
       "help": "Use the model list directly, or optionally collect models from source rectangles.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1453,7 +1453,7 @@
       "capabilities": [
         "C07"
       ],
-      "owner_context": "Set/layer/global pool selection",
+      "owner_context": "Selected layer model collection; older groups retain independent metadata",
       "help": null,
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1466,7 +1466,7 @@
       "capabilities": [
         "C07"
       ],
-      "owner_context": "Set/layer/global pool selection",
+      "owner_context": "Selected layer model collection; older groups retain independent metadata",
       "help": "Create a Rectangle for this owner. Put source-model pivots inside its local XY bounds.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1479,7 +1479,7 @@
       "capabilities": [
         "C07"
       ],
-      "owner_context": "Set/layer/global pool selection",
+      "owner_context": "Selected layer model collection; older groups retain independent metadata",
       "help": "Link a Cyrus container, or copy a square-corner Rectangle into a container. The original spline is preserved.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1492,7 +1492,7 @@
       "capabilities": [
         "C07"
       ],
-      "owner_context": "Set/layer/global pool selection",
+      "owner_context": "Selected layer model collection; older groups retain independent metadata",
       "help": "Unlink this rectangle without deleting it or registered source settings.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -2020,7 +2020,7 @@
         "C14",
         "C15"
       ],
-      "owner_context": "Paint-set coverage",
+      "owner_context": "Selected Paint Area and its receiver; shared layer models",
       "help": null,
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -2034,7 +2034,7 @@
         "C14",
         "C15"
       ],
-      "owner_context": "Paint-set coverage",
+      "owner_context": "Selected Paint Area and its receiver; shared layer models",
       "help": null,
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -2048,7 +2048,7 @@
         "C14",
         "C15"
       ],
-      "owner_context": "Paint-set coverage",
+      "owner_context": "Selected Paint Area and its receiver; shared layer models",
       "help": null,
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -2062,7 +2062,7 @@
         "C14",
         "C15"
       ],
-      "owner_context": "Paint-set coverage",
+      "owner_context": "Selected Paint Area and its receiver; shared layer models",
       "help": null,
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -2076,7 +2076,7 @@
         "C14",
         "C15"
       ],
-      "owner_context": "Paint-set coverage",
+      "owner_context": "Selected Paint Area and its receiver; shared layer models",
       "help": null,
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -2090,7 +2090,7 @@
         "C14",
         "C15"
       ],
-      "owner_context": "Paint-set coverage",
+      "owner_context": "Selected Paint Area and its receiver; shared layer models",
       "help": null,
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -2104,7 +2104,7 @@
         "C14",
         "C15"
       ],
-      "owner_context": "Paint-set coverage",
+      "owner_context": "Selected Paint Area and its receiver; shared layer models",
       "help": null,
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -2118,7 +2118,7 @@
         "C14",
         "C15"
       ],
-      "owner_context": "Paint-set coverage",
+      "owner_context": "Selected Paint Area and its receiver; shared layer models",
       "help": null,
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -2132,7 +2132,7 @@
         "C14",
         "C15"
       ],
-      "owner_context": "Paint-set coverage",
+      "owner_context": "Selected Paint Area and its receiver; shared layer models",
       "help": null,
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -2146,7 +2146,7 @@
         "C14",
         "C15"
       ],
-      "owner_context": "Paint-set coverage",
+      "owner_context": "Selected Paint Area and its receiver; shared layer models",
       "help": null,
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -2160,7 +2160,7 @@
         "C14",
         "C15"
       ],
-      "owner_context": "Paint-set coverage",
+      "owner_context": "Selected Paint Area and its receiver; shared layer models",
       "help": null,
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."

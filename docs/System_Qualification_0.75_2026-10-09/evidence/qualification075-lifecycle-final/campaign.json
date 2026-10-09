@@ -1,0 +1,23 @@
+[
+  {
+    "name": "playback",
+    "phase": "lifecycle",
+    "files": {
+      "tools/procedural_lab/Max_Playback_073_Regression.ms": "9725c203915bc144bd319af1e96bf3cd12137de232fdb27e171f5a35cf233f37",
+      "tools/procedural_lab/Max_Analyzer_Playback_073_Regression.ms": "d66159a806280da3f1014fa70f15edfa85ca4aab7f016dbcaa814b20ee7f6063"
+    },
+    "steps": [
+      {
+        "code": "global PTDir=MCPFixtureDir,PTNativeExpected=#(\"AminScatter.dlx\",\"CyrusBrush.dlx\",\"CyrusBrushStorage.dlh\",\"CyrusScatterEdit.dlm\");fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Playback_073_Regression.ms\"",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-lifecycle-final/probe-d2a98bb42a25416eb36798542b7a5139.ms"
+      }
+    ],
+    "passed": true,
+    "elapsed_s": 60.4380000000001
+  },
+  {
+    "name": "corona",
+    "phase": "lifecycle",
+    "passed": true
+  }
+]

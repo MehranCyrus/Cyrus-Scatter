@@ -1,0 +1,17 @@
+[
+  {
+    "name": "bindings",
+    "phase": "ui",
+    "files": {
+      "docs/System_Qualification_0.75_2026-10-09/Control_Bindings.ms": "3433f8b6276f33734076c38ff032eb29464ed69f6be716e8e55f3f1c883017fb"
+    },
+    "steps": [
+      {
+        "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/docs/System_Qualification_0.75_2026-10-09/Control_Bindings.ms\"",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-final/probe-b992bffe6d12478d819a25fbca618c6e.ms"
+      }
+    ],
+    "passed": true,
+    "elapsed_s": 44.54699999999991
+  }
+]

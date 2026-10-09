@@ -1,0 +1,1151 @@
+{
+  "date": "2026-10-09",
+  "scope": "research only; official references, question-selected binary bodies and owned disposable Max tests",
+  "run": "build/vendor-surface-paint-20261009-01",
+  "starting_branch": "codex/ui-0.74",
+  "starting_head": "65cf22e9f4ae38f0e20a8e30dff3189d796b3c3a",
+  "ending_branch": "codex/ui-0.74",
+  "ending_head": "65cf22e9f4ae38f0e20a8e30dff3189d796b3c3a",
+  "installed_inputs": [
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ForestPackLite2027\\PackageContents.xml",
+      "sha256": "b7020c08adc658afb619ae9f1897161c9fd3ec7d9709da332a10602ad79a343a",
+      "bytes": 1848,
+      "preserved": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ForestPackLite2027\\Contents\\plugins\\2027\\ForestPackLite.dlo",
+      "sha256": "23b25adf28954a4cd6c3d7fe5f7ea90b6a6e9be480f8a422fa7ef8b99c9a325d",
+      "bytes": 3357768,
+      "preserved": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ForestPackLite2027\\Contents\\scripts\\startup\\forestpack.ms",
+      "sha256": "8f51b8ddc2a79cb29c0cfbcbb35a18364118de2ebc83563e8d37e38ed91122bd",
+      "bytes": 5762,
+      "preserved": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ChaosScatter3dsMax2027\\PackageContents.xml",
+      "sha256": "b6ef25f1507552311f3523edc7c5b4edea1d6c3a48f41a063e1ec823c8cb7da1",
+      "bytes": 1464,
+      "preserved": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ChaosScatter3dsMax2027\\ChaosScatterMax2027.dlt",
+      "sha256": "eabcb0b258d4a1c4a8435d67deb0cf20bb2d363eb74802df8b2fa308552ed327",
+      "bytes": 79360,
+      "preserved": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ChaosScatter3dsMax2027\\ScatterMax_Release-2027.dll",
+      "sha256": "f7fdd25428e8374174501e6bb4ebd3b83e21c5ba2c33fcdc94280c022695b887",
+      "bytes": 2318336,
+      "preserved": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ChaosScatter3dsMax2027\\ScatterCore.ForScatter_Release.dll",
+      "sha256": "069ababd0dbc09218928f24d5bdc860509b237f34af703581e3fd78ed5d3cf86",
+      "bytes": 1195008,
+      "preserved": true
+    }
+  ],
+  "inspected_product_sources_preserved": {
+    "AminScatter/src/scatter.cpp": "4aebe37a65d54a8b9f0c4980de1c391936fe283c3532998dab58bed7b8a14ae6",
+    "AminScatter/src/max_bridge.cpp": "e9794eb23faa48f0a4c9f5f04003934fff5b2300f7838b0d022d56dfc0e0dd4f",
+    "AminScatter/src/procedural.cpp": "3bbdd2ef5463edb51af32a5ff3a7c8d5579d602027dc14738edf63a16185402c",
+    "AminScatter/src/point_display.cpp": "358c5ff13763542dcc27eb2d8542686a622c051fa35a5161edf3dcb329173c44",
+    "AminScatter/src/mesh_display.inc": "91b694e319d1d5864f1ae6a6dd67c8bb033d44420f770ed0645c4cc4547d8c39",
+    "AminScatter/src/brush_host.cpp": "b2c742889124070e9f644cfce347a172569c9725a2e371946a706899e1ee0dd0",
+    "AminScatter/tools/ui/templates/unified-core.ms": "19d85227200f339e716af9599bcc3ee24dcc62aecab51ac7559dc5dbaab4d3e8",
+    "AminScatter/scripts/AminScatterObject.ms": "df533e6f4c5de8909737808125df0ce116bcc6076ad4dc263501051a3700b402"
+  },
+  "max_version": "29.1.0.11426",
+  "vendor_api_versions": "9, build timestamp: May 25 2026 14:02:33",
+  "loaded_modules": [
+    "CyrusScatterEdit.dlm\tF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vendor-surface-paint-20261009-01\\host\\bin\\CyrusScatterEdit.dlm",
+    "AminScatter.dlx\tF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vendor-surface-paint-20261009-01\\host\\bin\\AminScatter.dlx",
+    "ChaosScatterMax2027.dlt\tc:\\programdata\\autodesk\\applicationplugins\\chaosscatter3dsmax2027\\ChaosScatterMax2027.dlt",
+    "ScatterMax_Release-2027.dll\tc:\\programdata\\autodesk\\applicationplugins\\chaosscatter3dsmax2027\\ScatterMax_Release-2027.dll",
+    "ScatterCore.ForScatter_Release.dll\tc:\\programdata\\autodesk\\applicationplugins\\chaosscatter3dsmax2027\\ScatterCore.ForScatter_Release.dll",
+    "ShadingLib.ForScatter_Release.dll\tc:\\programdata\\autodesk\\applicationplugins\\chaosscatter3dsmax2027\\ShadingLib.ForScatter_Release.dll",
+    "LegionLibImage.ForScatter_Release.dll\tc:\\programdata\\autodesk\\applicationplugins\\chaosscatter3dsmax2027\\LegionLibImage.ForScatter_Release.dll",
+    "LegionLibQt.ForScatter_Release.dll\tc:\\programdata\\autodesk\\applicationplugins\\chaosscatter3dsmax2027\\LegionLibQt.ForScatter_Release.dll",
+    "LegionLib.ForScatter_Release.dll\tc:\\programdata\\autodesk\\applicationplugins\\chaosscatter3dsmax2027\\LegionLib.ForScatter_Release.dll",
+    "Qt6CoreLegion.ForScatter.dll\tc:\\programdata\\autodesk\\applicationplugins\\chaosscatter3dsmax2027\\Qt6CoreLegion.ForScatter.dll",
+    "Qt6WidgetsLegion.ForScatter.dll\tc:\\programdata\\autodesk\\applicationplugins\\chaosscatter3dsmax2027\\Qt6WidgetsLegion.ForScatter.dll",
+    "Qt6OpenGLWidgetsLegion.ForScatter.dll\tc:\\programdata\\autodesk\\applicationplugins\\chaosscatter3dsmax2027\\Qt6OpenGLWidgetsLegion.ForScatter.dll",
+    "Qt6GuiLegion.ForScatter.dll\tc:\\programdata\\autodesk\\applicationplugins\\chaosscatter3dsmax2027\\Qt6GuiLegion.ForScatter.dll",
+    "Qt6OpenGLLegion.ForScatter.dll\tc:\\programdata\\autodesk\\applicationplugins\\chaosscatter3dsmax2027\\Qt6OpenGLLegion.ForScatter.dll",
+    "qwindowsLegion.ForScatter.dll\tC:\\programdata\\autodesk\\applicationplugins\\chaosscatter3dsmax2027\\QtPlugins\\qwindowsLegion.ForScatter.dll",
+    "ForestPackLite.dlo\tc:\\programdata\\autodesk\\applicationplugins\\forestpacklite2027\\contents\\plugins\\2027\\ForestPackLite.dlo"
+  ],
+  "targeted_binary_ledger": [
+    {
+      "label": "layerDataFactory",
+      "requested": "1800331e0",
+      "entry": "1800331e0",
+      "bytes": "380",
+      "instructions": "113",
+      "decoded_bytes": "380",
+      "completed": "true",
+      "error": "",
+      "artifact": "layer-factory-loaded/ledger.tsv"
+    },
+    {
+      "label": "layerDataAdapter",
+      "requested": "180086a00",
+      "entry": "180086a00",
+      "bytes": "2533",
+      "instructions": "668",
+      "decoded_bytes": "2533",
+      "completed": "true",
+      "error": "",
+      "artifact": "adapter-layer-selected/ledger.tsv"
+    },
+    {
+      "label": "rearrangeStrokePoints",
+      "requested": "180097ce0",
+      "entry": "180097ce0",
+      "bytes": "3216",
+      "instructions": "844",
+      "decoded_bytes": "3216",
+      "completed": "true",
+      "error": "",
+      "artifact": "adapter-layer-selected/ledger.tsv"
+    }
+  ],
+  "measurements": {
+    "chaos_three_receivers": {
+      "precision": "MAXScript default matrix text, no native IDs",
+      "cases": {
+        "fixed_valid_baseline": {
+          "instances": 600,
+          "updateResult": 0,
+          "updateMs": 7,
+          "converted": 0,
+          "convertMs": 787,
+          "nodes": 600,
+          "by_receiver": {
+            "3": 280,
+            "1": 117,
+            "2": 203
+          }
+        },
+        "fixed_repeat": {
+          "instances": 600,
+          "updateResult": 0,
+          "updateMs": 5,
+          "converted": 0,
+          "convertMs": 750,
+          "nodes": 600,
+          "by_receiver": {
+            "3": 280,
+            "1": 117,
+            "2": 203
+          }
+        },
+        "fixed_add": {
+          "instances": 600,
+          "updateResult": 0,
+          "updateMs": 7,
+          "converted": 0,
+          "convertMs": 801,
+          "nodes": 600,
+          "by_receiver": {
+            "3": 251,
+            "4": 80,
+            "1": 100,
+            "2": 169
+          }
+        },
+        "fixed_restore": {
+          "instances": 600,
+          "updateResult": 0,
+          "updateMs": 5,
+          "converted": 0,
+          "convertMs": 827,
+          "nodes": 600,
+          "by_receiver": {
+            "3": 280,
+            "1": 117,
+            "2": 203
+          }
+        },
+        "fixed_reverse_rebuild_list": {
+          "instances": 600,
+          "updateResult": 0,
+          "updateMs": 7,
+          "converted": 0,
+          "convertMs": 886,
+          "nodes": 600,
+          "by_receiver": {
+            "2": 190,
+            "1": 90,
+            "3": 320
+          }
+        },
+        "fixed_order_restore": {
+          "instances": 600,
+          "updateResult": 0,
+          "updateMs": 8,
+          "converted": 0,
+          "convertMs": 910,
+          "nodes": 600,
+          "by_receiver": {
+            "3": 280,
+            "1": 117,
+            "2": 203
+          }
+        },
+        "fixed_remove_middle": {
+          "instances": 600,
+          "updateResult": 0,
+          "updateMs": 4,
+          "converted": 0,
+          "convertMs": 937,
+          "nodes": 600,
+          "by_receiver": {
+            "3": 427,
+            "1": 173
+          }
+        },
+        "density_three": {
+          "instances": 600,
+          "updateResult": 0,
+          "updateMs": 5,
+          "converted": 0,
+          "convertMs": 931,
+          "nodes": 600,
+          "by_receiver": {
+            "3": 280,
+            "1": 117,
+            "2": 203
+          }
+        },
+        "density_repeat": {
+          "instances": 600,
+          "updateResult": 0,
+          "updateMs": 9,
+          "converted": 0,
+          "convertMs": 918,
+          "nodes": 600,
+          "by_receiver": {
+            "3": 280,
+            "1": 117,
+            "2": 203
+          }
+        },
+        "density_add": {
+          "instances": 700,
+          "updateResult": 0,
+          "updateMs": 8,
+          "converted": 0,
+          "convertMs": 969,
+          "nodes": 700,
+          "by_receiver": {
+            "3": 307,
+            "4": 93,
+            "1": 112,
+            "2": 188
+          }
+        },
+        "density_restore": {
+          "instances": 600,
+          "updateResult": 0,
+          "updateMs": 4,
+          "converted": 0,
+          "convertMs": 927,
+          "nodes": 600,
+          "by_receiver": {
+            "3": 280,
+            "1": 117,
+            "2": 203
+          }
+        },
+        "density_reverse_rebuild_list": {
+          "instances": 600,
+          "updateResult": 0,
+          "updateMs": 7,
+          "converted": 0,
+          "convertMs": 929,
+          "nodes": 600,
+          "by_receiver": {
+            "2": 190,
+            "1": 90,
+            "3": 320
+          }
+        },
+        "density_order_restore": {
+          "instances": 600,
+          "updateResult": 0,
+          "updateMs": 9,
+          "converted": 0,
+          "convertMs": 925,
+          "nodes": 600,
+          "by_receiver": {
+            "3": 280,
+            "1": 117,
+            "2": 203
+          }
+        },
+        "density_remove_middle": {
+          "instances": 400,
+          "updateResult": 0,
+          "updateMs": 5,
+          "converted": 0,
+          "convertMs": 887,
+          "nodes": 400,
+          "by_receiver": {
+            "3": 288,
+            "1": 112
+          }
+        },
+        "density_move_first": {
+          "instances": 600,
+          "updateResult": 0,
+          "updateMs": 8,
+          "converted": 0,
+          "convertMs": 940,
+          "nodes": 600,
+          "by_receiver": {
+            "3": 280,
+            "1": 117,
+            "2": 203
+          }
+        },
+        "density_move_restore": {
+          "instances": 600,
+          "updateResult": 0,
+          "updateMs": 9,
+          "converted": 0,
+          "convertMs": 949,
+          "nodes": 600,
+          "by_receiver": {
+            "3": 280,
+            "1": 117,
+            "2": 203
+          }
+        },
+        "density_after_selection_redraw": {
+          "instances": 600,
+          "updateResult": 0,
+          "updateMs": 6,
+          "converted": 0,
+          "convertMs": 776,
+          "nodes": 600,
+          "by_receiver": {
+            "3": 280,
+            "1": 117,
+            "2": 203
+          }
+        }
+      },
+      "comparisons": [
+        {
+          "baseline": "fixed_valid_baseline",
+          "case": "fixed_valid_baseline",
+          "unchanged_receivers": [
+            1,
+            2,
+            3
+          ],
+          "baseline_on_unchanged": 600,
+          "after_on_unchanged": 600,
+          "same_position": 600,
+          "same_full_transform_model": 600
+        },
+        {
+          "baseline": "fixed_valid_baseline",
+          "case": "fixed_repeat",
+          "unchanged_receivers": [
+            1,
+            2,
+            3
+          ],
+          "baseline_on_unchanged": 600,
+          "after_on_unchanged": 600,
+          "same_position": 600,
+          "same_full_transform_model": 600
+        },
+        {
+          "baseline": "fixed_valid_baseline",
+          "case": "fixed_add",
+          "unchanged_receivers": [
+            1,
+            2,
+            3
+          ],
+          "baseline_on_unchanged": 600,
+          "after_on_unchanged": 520,
+          "same_position": 13,
+          "same_full_transform_model": 13
+        },
+        {
+          "baseline": "fixed_valid_baseline",
+          "case": "fixed_restore",
+          "unchanged_receivers": [
+            1,
+            2,
+            3
+          ],
+          "baseline_on_unchanged": 600,
+          "after_on_unchanged": 600,
+          "same_position": 600,
+          "same_full_transform_model": 600
+        },
+        {
+          "baseline": "fixed_valid_baseline",
+          "case": "fixed_reverse_rebuild_list",
+          "unchanged_receivers": [
+            1,
+            2,
+            3
+          ],
+          "baseline_on_unchanged": 600,
+          "after_on_unchanged": 600,
+          "same_position": 0,
+          "same_full_transform_model": 0
+        },
+        {
+          "baseline": "fixed_valid_baseline",
+          "case": "fixed_order_restore",
+          "unchanged_receivers": [
+            1,
+            2,
+            3
+          ],
+          "baseline_on_unchanged": 600,
+          "after_on_unchanged": 600,
+          "same_position": 600,
+          "same_full_transform_model": 600
+        },
+        {
+          "baseline": "fixed_valid_baseline",
+          "case": "fixed_remove_middle",
+          "unchanged_receivers": [
+            1,
+            3
+          ],
+          "baseline_on_unchanged": 397,
+          "after_on_unchanged": 600,
+          "same_position": 21,
+          "same_full_transform_model": 21
+        },
+        {
+          "baseline": "density_three",
+          "case": "density_three",
+          "unchanged_receivers": [
+            1,
+            2,
+            3
+          ],
+          "baseline_on_unchanged": 600,
+          "after_on_unchanged": 600,
+          "same_position": 600,
+          "same_full_transform_model": 600
+        },
+        {
+          "baseline": "density_three",
+          "case": "density_repeat",
+          "unchanged_receivers": [
+            1,
+            2,
+            3
+          ],
+          "baseline_on_unchanged": 600,
+          "after_on_unchanged": 600,
+          "same_position": 600,
+          "same_full_transform_model": 600
+        },
+        {
+          "baseline": "density_three",
+          "case": "density_add",
+          "unchanged_receivers": [
+            1,
+            2,
+            3
+          ],
+          "baseline_on_unchanged": 600,
+          "after_on_unchanged": 607,
+          "same_position": 13,
+          "same_full_transform_model": 13
+        },
+        {
+          "baseline": "density_three",
+          "case": "density_restore",
+          "unchanged_receivers": [
+            1,
+            2,
+            3
+          ],
+          "baseline_on_unchanged": 600,
+          "after_on_unchanged": 600,
+          "same_position": 600,
+          "same_full_transform_model": 600
+        },
+        {
+          "baseline": "density_three",
+          "case": "density_reverse_rebuild_list",
+          "unchanged_receivers": [
+            1,
+            2,
+            3
+          ],
+          "baseline_on_unchanged": 600,
+          "after_on_unchanged": 600,
+          "same_position": 0,
+          "same_full_transform_model": 0
+        },
+        {
+          "baseline": "density_three",
+          "case": "density_order_restore",
+          "unchanged_receivers": [
+            1,
+            2,
+            3
+          ],
+          "baseline_on_unchanged": 600,
+          "after_on_unchanged": 600,
+          "same_position": 600,
+          "same_full_transform_model": 600
+        },
+        {
+          "baseline": "density_three",
+          "case": "density_remove_middle",
+          "unchanged_receivers": [
+            1,
+            3
+          ],
+          "baseline_on_unchanged": 397,
+          "after_on_unchanged": 400,
+          "same_position": 11,
+          "same_full_transform_model": 11
+        },
+        {
+          "baseline": "density_three",
+          "case": "density_move_first",
+          "unchanged_receivers": [
+            2,
+            3
+          ],
+          "baseline_on_unchanged": 483,
+          "after_on_unchanged": 483,
+          "same_position": 483,
+          "same_full_transform_model": 483
+        },
+        {
+          "baseline": "density_three",
+          "case": "density_move_restore",
+          "unchanged_receivers": [
+            1,
+            2,
+            3
+          ],
+          "baseline_on_unchanged": 600,
+          "after_on_unchanged": 600,
+          "same_position": 600,
+          "same_full_transform_model": 600
+        },
+        {
+          "baseline": "density_three",
+          "case": "density_after_selection_redraw",
+          "unchanged_receivers": [
+            1,
+            2,
+            3
+          ],
+          "baseline_on_unchanged": 600,
+          "after_on_unchanged": 600,
+          "same_position": 600,
+          "same_full_transform_model": 600
+        }
+      ]
+    },
+    "chaos_twenty_to_twenty_one": [
+      {
+        "mode": "fixed",
+        "cases": [
+          {
+            "case": "split_twenty_fixed_baseline",
+            "count": 10000,
+            "on_unchanged_receivers": 10000,
+            "update_ms": 0,
+            "convert_ms": 17750
+          },
+          {
+            "case": "split_twenty_fixed_add",
+            "count": 10000,
+            "on_unchanged_receivers": 9541,
+            "update_ms": 0,
+            "convert_ms": 21239
+          }
+        ],
+        "same_full_transform_model": 163
+      },
+      {
+        "mode": "density",
+        "cases": [
+          {
+            "case": "split_twenty_density_baseline",
+            "count": 10000,
+            "on_unchanged_receivers": 10000,
+            "update_ms": 1,
+            "convert_ms": 19101
+          },
+          {
+            "case": "split_twenty_density_add",
+            "count": 10500,
+            "on_unchanged_receivers": 10018,
+            "update_ms": 0,
+            "convert_ms": 20047
+          }
+        ],
+        "same_full_transform_model": 163
+      }
+    ],
+    "forest_lite_flat_regions": {
+      "precision": "MAXScript matrix text; zero-based tree indices; model+transform multisets",
+      "cases": {
+        "forest_paint_valid_baseline": {
+          "count": 38,
+          "update_ms": 4,
+          "original_full_transforms_retained": 38,
+          "unique_model_transforms": 38,
+          "duplicate_extra": 0
+        },
+        "forest_paint_add_far": {
+          "count": 38,
+          "update_ms": 4,
+          "original_full_transforms_retained": 38,
+          "unique_model_transforms": 38,
+          "duplicate_extra": 0
+        },
+        "forest_paint_remove_far": {
+          "count": 38,
+          "update_ms": 4,
+          "original_full_transforms_retained": 38,
+          "unique_model_transforms": 38,
+          "duplicate_extra": 0
+        },
+        "forest_paint_no_receiver": {
+          "count": 38,
+          "update_ms": 4,
+          "original_full_transforms_retained": 38,
+          "unique_model_transforms": 38,
+          "duplicate_extra": 0
+        },
+        "forest_paint_restore_receiver": {
+          "count": 38,
+          "update_ms": 4,
+          "original_full_transforms_retained": 38,
+          "unique_model_transforms": 38,
+          "duplicate_extra": 0
+        },
+        "forest_two_regions": {
+          "count": 59,
+          "update_ms": 5,
+          "original_full_transforms_retained": 38,
+          "unique_model_transforms": 59,
+          "duplicate_extra": 0
+        },
+        "forest_two_regions_removed_receiver_two": {
+          "count": 38,
+          "update_ms": 4,
+          "original_full_transforms_retained": 38,
+          "unique_model_transforms": 38,
+          "duplicate_extra": 0
+        },
+        "forest_two_regions_restored": {
+          "count": 59,
+          "update_ms": 6,
+          "original_full_transforms_retained": 38,
+          "unique_model_transforms": 59,
+          "duplicate_extra": 0
+        },
+        "forest_overlap_include": {
+          "count": 80,
+          "update_ms": 4,
+          "original_full_transforms_retained": 38,
+          "unique_model_transforms": 59,
+          "duplicate_extra": 21
+        },
+        "forest_overlap_exclude_upper": {
+          "count": 38,
+          "update_ms": 3,
+          "original_full_transforms_retained": 38,
+          "unique_model_transforms": 38,
+          "duplicate_extra": 0
+        },
+        "forest_overlap_include_restored": {
+          "count": 80,
+          "update_ms": 3,
+          "original_full_transforms_retained": 38,
+          "unique_model_transforms": 59,
+          "duplicate_extra": 21
+        },
+        "forest_after_interface_redraw": {
+          "count": 80,
+          "update_ms": 5,
+          "original_full_transforms_retained": 38,
+          "unique_model_transforms": 59,
+          "duplicate_extra": 21
+        }
+      }
+    },
+    "chaos_artist_authored_paint": {
+      "method": "MAXScript text multisets; no native IDs; click-only curved attempt in two_receivers did not author a curved stroke",
+      "cases": {
+        "before_strokes": {
+          "instances": 400,
+          "updateResult": 0,
+          "updateMs": 6,
+          "converted": 0,
+          "convertMs": 810,
+          "nodes": 400,
+          "receiver_models": {
+            "curved/Box": 289,
+            "flat/Box": 111
+          },
+          "unique_full_transforms": 400,
+          "unique_positions": 400
+        },
+        "two_receivers": {
+          "instances": 400,
+          "updateResult": 0,
+          "updateMs": 6,
+          "converted": 0,
+          "convertMs": 841,
+          "nodes": 400,
+          "receiver_models": {
+            "curved/Box": 289,
+            "flat/Box": 98,
+            "flat/Sphere": 13
+          },
+          "unique_full_transforms": 400,
+          "unique_positions": 400
+        },
+        "curved_stroke": {
+          "instances": 400,
+          "updateResult": 0,
+          "updateMs": 6,
+          "converted": 0,
+          "convertMs": 1051,
+          "nodes": 400,
+          "receiver_models": {
+            "curved/Box": 269,
+            "flat/Box": 98,
+            "curved/Sphere": 20,
+            "flat/Sphere": 13
+          },
+          "unique_full_transforms": 400,
+          "unique_positions": 400,
+          "painted_sphere_z_cm": [
+            42.8402,
+            48.721
+          ]
+        },
+        "curved_removed": {
+          "instances": 400,
+          "updateResult": 0,
+          "updateMs": 4,
+          "converted": 0,
+          "convertMs": 1032,
+          "nodes": 400,
+          "receiver_models": {
+            "flat/Sphere": 53,
+            "flat/Box": 347
+          },
+          "unique_full_transforms": 400,
+          "unique_positions": 400
+        },
+        "curved_restored": {
+          "instances": 400,
+          "updateResult": 0,
+          "updateMs": 4,
+          "converted": 0,
+          "convertMs": 809,
+          "nodes": 400,
+          "receiver_models": {
+            "curved/Box": 289,
+            "flat/Box": 98,
+            "flat/Sphere": 13
+          },
+          "unique_full_transforms": 400,
+          "unique_positions": 400
+        },
+        "upper_overlap": {
+          "instances": 400,
+          "updateResult": 0,
+          "updateMs": 5,
+          "converted": 0,
+          "convertMs": 848,
+          "nodes": 400,
+          "receiver_models": {
+            "curved/Box": 289,
+            "flat/Box": 111
+          },
+          "unique_full_transforms": 400,
+          "unique_positions": 400
+        },
+        "upper_erased": {
+          "instances": 400,
+          "updateResult": 0,
+          "updateMs": 6,
+          "converted": 0,
+          "convertMs": 789,
+          "nodes": 400,
+          "receiver_models": {
+            "curved/Box": 289,
+            "flat/Box": 98,
+            "flat/Sphere": 13
+          },
+          "unique_full_transforms": 400,
+          "unique_positions": 400
+        }
+      },
+      "comparisons": [
+        {
+          "before": "before_strokes",
+          "after": "two_receivers",
+          "same_position": 400,
+          "same_full_transform_model": 387
+        },
+        {
+          "before": "two_receivers",
+          "after": "curved_stroke",
+          "same_position": 400,
+          "same_full_transform_model": 380
+        },
+        {
+          "before": "two_receivers",
+          "after": "curved_restored",
+          "same_position": 400,
+          "same_full_transform_model": 400
+        },
+        {
+          "before": "curved_restored",
+          "after": "upper_overlap",
+          "same_position": 400,
+          "same_full_transform_model": 387
+        },
+        {
+          "before": "curved_restored",
+          "after": "upper_erased",
+          "same_position": 400,
+          "same_full_transform_model": 400
+        }
+      ],
+      "public_records": {
+        "before_strokes": "#targetNodes #($Plane:VP_Flat @ [0.000000,0.000000,0.000000], $Sphere:VP_Curved @ [300.000000,0.000000,0.000000])\n#clustersMode 2\n#layerData #()\n#layerRecords #()\n#layerList #(1, 2)\n#layerListRecords #($Box:VS_Box @ [-1000.000000,-1000.000000,0.000000], $Sphere:VS_Sphere @ [-1100.000000,-1000.000000,0.000000])\n#layerDetails #(0, 0)\n#layerLabels #(\"Base\", \"Layer 1\")\n",
+        "two_receivers": "#targetNodes #($Plane:VP_Flat @ [0.000000,0.000000,0.000000], $Sphere:VP_Curved @ [300.000000,0.000000,0.000000])\n#clustersMode 2\n#layerData #([0.0269197,0.0646967,0])\n#layerRecords #([0,0,0,20])\n#layerList #(1, 2)\n#layerListRecords #($Box:VS_Box @ [-1000.000000,-1000.000000,0.000000], $Sphere:VS_Sphere @ [-1100.000000,-1000.000000,0.000000])\n#layerDetails #(0, 0)\n#layerLabels #(\"Base\", \"Layer 1\")\n",
+        "curved_stroke": "#targetNodes #($Plane:VP_Flat @ [0.000000,0.000000,0.000000], $Sphere:VP_Curved @ [300.000000,0.000000,0.000000])\n#clustersMode 2\n#layerData #([0.0269197,0.0646967,0], [0.398258,0.139399,0], [0.114427,0.517097,0])\n#layerRecords #([0,0,0,20], [0,0,0,20])\n#layerList #(1, 2)\n#layerListRecords #($Box:VS_Box @ [-1000.000000,-1000.000000,0.000000], $Sphere:VS_Sphere @ [-1100.000000,-1000.000000,0.000000])\n#layerDetails #(0, 0)\n#layerLabels #(\"Base\", \"Layer 1\")\n",
+        "curved_removed": "#targetNodes #($Plane:VP_Flat @ [0.000000,0.000000,0.000000])\n#clustersMode 2\n#layerData #([0.0269197,0.0646967,0])\n#layerRecords #([0,0,0,20])\n#layerList #(1, 2)\n#layerListRecords #($Box:VS_Box @ [-1000.000000,-1000.000000,0.000000], $Sphere:VS_Sphere @ [-1100.000000,-1000.000000,0.000000])\n#layerDetails #(0, 0)\n#layerLabels #(\"Base\", \"Layer 1\")\n",
+        "curved_restored": "#targetNodes #($Plane:VP_Flat @ [0.000000,0.000000,0.000000], $Sphere:VP_Curved @ [300.000000,0.000000,0.000000])\n#clustersMode 2\n#layerData #([0.0269197,0.0646967,0])\n#layerRecords #([0,0,0,20])\n#layerList #(1, 2)\n#layerListRecords #($Box:VS_Box @ [-1000.000000,-1000.000000,0.000000], $Sphere:VS_Sphere @ [-1100.000000,-1000.000000,0.000000])\n#layerDetails #(0, 0)\n#layerLabels #(\"Base\", \"Layer 1\")\n",
+        "upper_overlap": "#targetNodes #($Plane:VP_Flat @ [0.000000,0.000000,0.000000], $Sphere:VP_Curved @ [300.000000,0.000000,0.000000])\n#clustersMode 2\n#layerData #([0.0269197,0.0646967,0], [0.0269197,0.0646967,0], [0.0181109,0.00284912,0])\n#layerRecords #([0,0,0,20], [0,0,0,20])\n#layerList #(1, 2, 3)\n#layerListRecords #($Box:VS_Box @ [-1000.000000,-1000.000000,0.000000], $Sphere:VS_Sphere @ [-1100.000000,-1000.000000,0.000000], $Box:VS_Box @ [-1000.000000,-1000.000000,0.000000])\n#layerDetails #(0, 0, 0)\n#layerLabels #(\"Base\", \"Layer 1\", \"Layer 2\")\n",
+        "upper_erased": "#targetNodes #($Plane:VP_Flat @ [0.000000,0.000000,0.000000], $Sphere:VP_Curved @ [300.000000,0.000000,0.000000])\n#clustersMode 2\n#layerData #([0.0269197,0.0646967,0], [0.0269197,0.0646967,0], [0.0181109,0.00284912,0], [0.0269197,0.0646967,0], [0.0181109,0.00284912,0])\n#layerRecords #([0,0,0,20], [0,0,0,20], [0,0,0,20])\n#layerList #(1, 2, 3)\n#layerListRecords #($Box:VS_Box @ [-1000.000000,-1000.000000,0.000000], $Sphere:VS_Sphere @ [-1100.000000,-1000.000000,0.000000], $Box:VS_Box @ [-1000.000000,-1000.000000,0.000000])\n#layerDetails #(0, 0, 1)\n#layerLabels #(\"Base\", \"Layer 1\", \"Layer 2\")\n"
+      }
+    }
+  },
+  "excluded": [
+    "property-only Chaos zero-model fixture",
+    "undefined target-list expansion probe",
+    "single-callback Chaos update/manual experiments",
+    "single-callback twenty-surface exports including hidden/redraw variants",
+    "Forest one-based transform exports and initial bitmap zero-output fixture",
+    "first click-only Chaos curved attempt as evidence of curved painting"
+  ],
+  "limitations": [
+    "vendor transform text precision; no native IDs",
+    "explicit capture evaluates/updates; stable output does not prove cache reuse",
+    "coarse single-run call timers exclude setters/queued work; no stage timings, FPS or GPU upload counters",
+    "Forest Lite curved/whole-surface restrictions; no qualified exact-total counterpart",
+    "Chaos folded/stacked meshes, explicit per-layer receiver picking and paint reorder not qualified",
+    "no save/reopen or full Manual/Live scheduling qualification"
+  ],
+  "cleanup": {
+    "all_owned_processes_stopped": true,
+    "method": "Saved owned scene and copied project; matched PID/executable/private arguments and backend listener before stopping only these processes; verified exit on a separate follow-up check",
+    "host_pid": 24888,
+    "scene": "host/vendor-fixture.max",
+    "project_saved_and_closed": true,
+    "backend_pid": 41164
+  },
+  "local_artifacts": {
+    "chaos-results.json": {
+      "sha256": "ab1ebafbf0469006983caaae02633a2f60fb81f5343bf7b865e29a8a58885aae",
+      "bytes": 9851
+    },
+    "chaos-twenty-results.json": {
+      "sha256": "bc52be74168d581756f5988c045fb263089fda46bbfd461c574527b93ba6710e",
+      "bytes": 938
+    },
+    "chaos-paint-results.json": {
+      "sha256": "aa7f1b58842120651d5a98f12ec7bed12a4e22485dcd31faeca07bde65817485",
+      "bytes": 6904
+    },
+    "forest-results-corrected.json": {
+      "sha256": "3116c71b15fd749c72055b7ec7d1f66ccbd8fb6e4bb89df39022b913fa723897",
+      "bytes": 2547
+    },
+    "capture.json": {
+      "sha256": "887d6ef2af937cd571676f2fe698f6d479792590cbc48cdeeb1bed2d47c8be99",
+      "bytes": 4872
+    },
+    "final-save-program.json": {
+      "sha256": "2008e0f513e576599703d92073c9a516869ea01e624e1209daeb45fedacc6f31",
+      "bytes": 95
+    },
+    "final-close-project.json": {
+      "sha256": "e56302efad3be55fb592ff1af8efaeb9529e1b05effe78910e68e754ac54a2d6",
+      "bytes": 45
+    },
+    "cleanup.json": {
+      "sha256": "c2e40c786852ac606767815e885664d6ab39c860f0017ae82e0acb835a8a666e",
+      "bytes": 366
+    },
+    "host/valid_forest_after_interface_redraw.txt": {
+      "sha256": "b8ced6eaddf0927616c5a1e70a58433fb3b96705332d66389b246193e5cade1a",
+      "bytes": 4788
+    },
+    "host/valid_forest_capture_corrected.txt": {
+      "sha256": "14f679f30daaf1e1e8a9ec38e6779e1f5779bdc332e22f4128107f7d8fb36633",
+      "bytes": 3646
+    },
+    "host/valid_forest_overlap_exclude_upper.txt": {
+      "sha256": "d75848f1503ada54c1e5dfc583b01088a9921b122ace8d710e863a47065ef3ab",
+      "bytes": 2504
+    },
+    "host/valid_forest_overlap_include.txt": {
+      "sha256": "42315b3f678bf2f7a8b92231df48a697e5b095a49183d1557147ccb4177132f1",
+      "bytes": 4788
+    },
+    "host/valid_forest_overlap_include_restored.txt": {
+      "sha256": "62b8ff91fa89675cb1038c48652037ae64fb8d0d056341ba9cb6bd1da00d337d",
+      "bytes": 4788
+    },
+    "host/valid_forest_paint_add_far.txt": {
+      "sha256": "514ec7a4e2a29a17f072e0633e7987f64d216638b302c91fe489ddfd961839ce",
+      "bytes": 2505
+    },
+    "host/valid_forest_paint_no_receiver.txt": {
+      "sha256": "2aadcc7bd0bcebf568a51ef8004c65c834c1c78e4421b62afcd5d6a98e23aef0",
+      "bytes": 2415
+    },
+    "host/valid_forest_paint_remove_far.txt": {
+      "sha256": "72809285fc21c1209b2f81aac3d7ce39df98b41b522478ad1854fbd593c35df4",
+      "bytes": 2458
+    },
+    "host/valid_forest_paint_restore_receiver.txt": {
+      "sha256": "660707fa189fdf787c44af7ac044b6229e956321c77b5b2f63a963470f115a11",
+      "bytes": 2458
+    },
+    "host/valid_forest_paint_valid_baseline.txt": {
+      "sha256": "660707fa189fdf787c44af7ac044b6229e956321c77b5b2f63a963470f115a11",
+      "bytes": 2458
+    },
+    "host/valid_forest_two_regions.txt": {
+      "sha256": "8be2d58c94ee673cece5d31f0a6732f07c0573ad65abc54488a03ebb359a8604",
+      "bytes": 3646
+    },
+    "host/valid_forest_two_regions_removed_receiver_two.txt": {
+      "sha256": "4bf8979cd64ab4c34289ca4be1d83f8e3f31368d9376f73926a3c9465c840bd7",
+      "bytes": 2457
+    },
+    "host/valid_forest_two_regions_restored.txt": {
+      "sha256": "76ed12d4635c5c8ae3807269dd92079836c8150ba688bb457d05f988648915c0",
+      "bytes": 3646
+    },
+    "host/fixed_valid_baseline.tsv": {
+      "sha256": "62a0f49d6b657d1ab14db3e6bfdc82892f6e6dafc530aaa5009135835aae15bf",
+      "bytes": 55290
+    },
+    "host/fixed_repeat.tsv": {
+      "sha256": "ee0e739d33f4e2f8a5bc3ff3349e909885b999de3e3c62989cf0a7a15292c195",
+      "bytes": 55290
+    },
+    "host/fixed_add.tsv": {
+      "sha256": "c750c78fe88ddfc0408a427986fc9b82becbd6e478ae77d139bba355403bb8e9",
+      "bytes": 55330
+    },
+    "host/fixed_restore.tsv": {
+      "sha256": "e07a2417850c9f9c640bc6fd626adeca6cc520ee879b2334592603d3ba25429d",
+      "bytes": 55290
+    },
+    "host/fixed_reverse_rebuild_list.tsv": {
+      "sha256": "07cd37e6d4e933ea7070cd8139c751e1b17d7c70ff8f7a890d6ba565a80b1271",
+      "bytes": 55272
+    },
+    "host/fixed_order_restore.tsv": {
+      "sha256": "0450b9f924160b3dad9ac6cbd4d2ee2256170e156edd875192eda1088f9f0d55",
+      "bytes": 55290
+    },
+    "host/fixed_remove_middle.tsv": {
+      "sha256": "7a6906db60a00340a3c0208b1e19f8f19b925d3eadc38752cf223a631f5a8618",
+      "bytes": 55242
+    },
+    "host/density_add.tsv": {
+      "sha256": "7d46c856f9451565922fe951dbd792ff6bf3bbe7894351f62fddd8e3ed1cf5a8",
+      "bytes": 64505
+    },
+    "host/density_after_selection_redraw.tsv": {
+      "sha256": "45544fb09c066ad836c58c8923f952ad3eab9370ef884feb541e60480087dcdb",
+      "bytes": 55289
+    },
+    "host/density_move_first.tsv": {
+      "sha256": "c103dacfd9e64ed57205aac0d7887fccc19507bf7b0a526a3b37cfc78c816d58",
+      "bytes": 55525
+    },
+    "host/density_move_restore.tsv": {
+      "sha256": "d0196837508c594a34bc5afca598a08f8eaacdb0a3174668f21cebebbb5981f9",
+      "bytes": 55289
+    },
+    "host/density_order_restore.tsv": {
+      "sha256": "3ba573c3777ca127e4bbfc0e09f81ab77562fcf563b20f9dc9b6dc3dc786d990",
+      "bytes": 55289
+    },
+    "host/density_remove_middle.tsv": {
+      "sha256": "7012092314fcbb8ab5cb4317bd95b11e85cb09a7c94d5e3dc9efbd031ab41203",
+      "bytes": 36861
+    },
+    "host/density_repeat.tsv": {
+      "sha256": "7fef6ebf9f13bbc737a1fc97a1548284dba97b19e943cea9bf0e002d2e1f93ca",
+      "bytes": 55289
+    },
+    "host/density_restore.tsv": {
+      "sha256": "d9fb278acb4bca5983fa0de3ae09f851c60bf37254d90cd6184e0e37c3b1aba0",
+      "bytes": 55289
+    },
+    "host/density_reverse_rebuild_list.tsv": {
+      "sha256": "b82f04d910301e9bb7ad78c87edc910c1b0e4275871bb8feeaa99f100fbaddbc",
+      "bytes": 55271
+    },
+    "host/density_three.tsv": {
+      "sha256": "a52cf23b0974ec33e0430a364f1867623f6442e86df8be604227f52d6cc05bd3",
+      "bytes": 55289
+    },
+    "host/split_twenty_density_add.tsv": {
+      "sha256": "71ded7788ef35cbbf75d3a192c7729e53e28f7bd8f70013de090469a483d002a",
+      "bytes": 963229
+    },
+    "host/split_twenty_density_baseline.tsv": {
+      "sha256": "1df1e02a6977025e4fc0605acc990a33695ece206d207a0cdce73940fa66bb70",
+      "bytes": 917479
+    },
+    "host/split_twenty_fixed_add.tsv": {
+      "sha256": "c7e80e0f5965b1bf204e05d99db26bc599a502cde8d25db742ceaa0b766f52fc",
+      "bytes": 917448
+    },
+    "host/split_twenty_fixed_baseline.tsv": {
+      "sha256": "ffe1c836bbccaee53935c641092fe5fea11b6e4563537baed54ca8b4bd76d7dd",
+      "bytes": 917480
+    },
+    "host/paint_before_strokes.tsv": {
+      "sha256": "b59751b0d0bd1c129151a7fb15c7a4ae533f5878f2f2f268c4a5375d71fa5c93",
+      "bytes": 49028
+    },
+    "host/paint_curved_removed.tsv": {
+      "sha256": "d8a6ba0faf5ea0592e454bed21ed576b5f9ad7e2c4e9f53472710d60596eb09c",
+      "bytes": 36529
+    },
+    "host/paint_curved_restored.tsv": {
+      "sha256": "5599c7653ae94f435f7c861d4cb97dbdf644433e7f423c0c69c39b795205f295",
+      "bytes": 49067
+    },
+    "host/paint_curved_stroke.tsv": {
+      "sha256": "800df4116e521a18d3cc84237069d921e434442dc6d556a1da4b84c8691c0633",
+      "bytes": 49128
+    },
+    "host/paint_removed_curved.tsv": {
+      "sha256": "f7a88e81464963a831dc1b89a081f7edc493ca397ec1582869da85d822b8ad6f",
+      "bytes": 36528
+    },
+    "host/paint_restored_curved.tsv": {
+      "sha256": "87f09663b88bca936e2f7b69a2a9d81f762ffc60d6aa4401332f5c1ac4d788e3",
+      "bytes": 49068
+    },
+    "host/paint_two_receivers.tsv": {
+      "sha256": "7971686061250653da1d74d8f54c6f40dac524898495003b8b7e4867e906156d",
+      "bytes": 49067
+    },
+    "host/paint_upper_erased.tsv": {
+      "sha256": "4e3698e89fbdda973cd306ea969b4af5fc162f318690e06cbd12567bd2464d81",
+      "bytes": 49067
+    },
+    "host/paint_upper_overlap.tsv": {
+      "sha256": "bdf04d24048b5d475b2ac4099870d527765a537f7662de0a48529c42f4d3eec1",
+      "bytes": 49028
+    },
+    "host/paint_before_strokes_records.txt": {
+      "sha256": "d057cd608f7d8e1e952902791dbbae163c1369cd9236c3f56a440d8361c29672",
+      "bytes": 368
+    },
+    "host/paint_curved_removed_records.txt": {
+      "sha256": "1ce05da497a19cea588e3c7362887c1b479dd40355d68f11d42b1d34a3235b94",
+      "bytes": 349
+    },
+    "host/paint_curved_restored_records.txt": {
+      "sha256": "4b694c703de99a01266525bbf619384a66fed82fc049ffe6f9a1cc0f09b8390e",
+      "bytes": 401
+    },
+    "host/paint_curved_stroke_records.txt": {
+      "sha256": "cfdde0e5e650c72a917e612cb1057ac97fca0138abfaaef51d132c052f5fbfd6",
+      "bytes": 459
+    },
+    "host/paint_removed_curved_records.txt": {
+      "sha256": "1ce05da497a19cea588e3c7362887c1b479dd40355d68f11d42b1d34a3235b94",
+      "bytes": 349
+    },
+    "host/paint_restored_curved_records.txt": {
+      "sha256": "4b694c703de99a01266525bbf619384a66fed82fc049ffe6f9a1cc0f09b8390e",
+      "bytes": 401
+    },
+    "host/paint_two_receivers_records.txt": {
+      "sha256": "4b694c703de99a01266525bbf619384a66fed82fc049ffe6f9a1cc0f09b8390e",
+      "bytes": 401
+    },
+    "host/paint_upper_erased_records.txt": {
+      "sha256": "c9c286cacba6e759ddb2b3243aea60b6db76e81ee8cfc763f65840076cdfa367",
+      "bytes": 596
+    },
+    "host/paint_upper_overlap_records.txt": {
+      "sha256": "8301bc802a035e04f34f58f4675f6ae054b4f57e4667a26ec4ff2ec6fa84d4a7",
+      "bytes": 533
+    },
+    "host/forest-converted-contours.txt": {
+      "sha256": "7baafb09d5f3292b62cffed0e0ddb3f584a765522cb367f77cb4b4fd6c7d1e04",
+      "bytes": 758
+    },
+    "host/loaded.tsv": {
+      "sha256": "b094391b5933a529205114eef01825cf5431561f801c726bbe644da982c8e1f0",
+      "bytes": 2060
+    },
+    "host/max-version.txt": {
+      "sha256": "b94f32a6a09e0a873a9edb9b42489364c155043aa7482652cd48db9cd0868b17",
+      "bytes": 12
+    },
+    "host/vendor-version.txt": {
+      "sha256": "cfdfe08dc75dcac86effac582a262822d3527152ab16d9810531ae275eb9e9c2",
+      "bytes": 40
+    },
+    "host/vendor-fixture.max": {
+      "sha256": "0c9833af69d4e886f84bf0509976a860d6f7849b437125e64674e4f163d036bd",
+      "bytes": 1056768
+    },
+    "adapter-layer-selected/ledger.tsv": {
+      "sha256": "adf8174a847c7083f03af23e77fb5772da885d7ba73baa29366c976217b60876",
+      "bytes": 190
+    },
+    "layer-factory-loaded/ledger.tsv": {
+      "sha256": "a5bb7c48a884de23bcd18741b4145c4f6b64f381288cfde905f5c15733c6e267",
+      "bytes": 126
+    }
+  },
+  "official_sources": [
+    "https://docs.itoosoft.com/forestpack/forest-plugin/areas",
+    "https://docs.itoosoft.com/forestpack/forest-plugin/surfaces",
+    "https://docs.itoosoft.com/forestpack/lite-and-pro",
+    "https://documentation.chaos.com/space/CRMAX/124525180/Chaos%20Scatter",
+    "https://docs.itoosoft.com/installation/forest-pack-installation-files"
+  ]
+}

@@ -1,0 +1,18 @@
+[
+  {
+    "name": "bindings",
+    "phase": "ui",
+    "files": {
+      "docs/System_Qualification_0.75_2026-10-09/Control_Bindings.ms": "3651d0768fb5e4301d51eb29908d572347584d4e7424a699bbbc9c7ac3d8ee84"
+    },
+    "steps": [
+      {
+        "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/docs/System_Qualification_0.75_2026-10-09/Control_Bindings.ms\"",
+        "result": "ERROR -- Compile error: no local declarations at top level:  f\n--  In line: local f=\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui/probe-e903078a5a5b4e769d35b696dd3f9b90.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\docs\\System_Qualification_0.75_2026-10-09\\Control_Bindings.ms LINE: 5P\n"
+      }
+    ],
+    "passed": false,
+    "error": "ERROR -- Compile error: no local declarations at top level:  f\n--  In line: local f=\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui/probe-e903078a5a5b4e769d35b696dd3f9b90.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\docs\\System_Qualification_0.75_2026-10-09\\Control_Bindings.ms LINE: 5P\n",
+    "elapsed_s": 43.48399999999998
+  }
+]

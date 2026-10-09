@@ -1,0 +1,55 @@
+[
+  {
+    "name": "bindings",
+    "phase": "ui",
+    "files": {
+      "docs/System_Qualification_0.75_2026-10-09/Control_Bindings.ms": "3433f8b6276f33734076c38ff032eb29464ed69f6be716e8e55f3f1c883017fb"
+    },
+    "steps": [
+      {
+        "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/docs/System_Qualification_0.75_2026-10-09/Control_Bindings.ms\"",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-final/probe-b992bffe6d12478d819a25fbca618c6e.ms"
+      }
+    ],
+    "passed": true,
+    "elapsed_s": 44.54699999999991
+  },
+  {
+    "name": "layout",
+    "phase": "ui",
+    "files": {
+      "tools/procedural_lab/Max_Layout_075.ms": "b04078e84d847c13198c2d76c3af9f2e3e729a03e7b37fcfee9df89287208f52"
+    },
+    "steps": [
+      {
+        "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Layout_075.ms\"",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-final/probe-2326db3a7bfd44348c2bcba8240507c7.ms"
+      },
+      {
+        "code": "L75Run()",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-final/probe-8595a101659a449db8277258998558f3.ms"
+      }
+    ],
+    "passed": true,
+    "elapsed_s": 89.42200000000003
+  },
+  {
+    "name": "regions",
+    "phase": "ui",
+    "files": {
+      "tools/procedural_lab/Max_Layer_Regions_074.ms": "c2bb569b7ae63bd05430a3c5d60c6dfeb48bb666eb55cf0c274837324b26ded3"
+    },
+    "steps": [
+      {
+        "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Layer_Regions_074.ms\"",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-final/probe-fb76dd677f3743dda3b35e3d3606db49.ms"
+      },
+      {
+        "code": "LRSetup();LRRun();LRViews();LRReopen();LRAdditional()",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-final/probe-642256855a4843a9b65821ad9a7819d6.ms"
+      }
+    ],
+    "passed": true,
+    "elapsed_s": 125.59400000000005
+  }
+]

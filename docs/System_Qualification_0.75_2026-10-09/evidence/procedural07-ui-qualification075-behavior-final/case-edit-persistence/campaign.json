@@ -1,0 +1,119 @@
+[
+  {
+    "name": "containers",
+    "phase": "behavior",
+    "files": {
+      "tools/procedural_lab/Max_Source_Containers_Acceptance.ms": "b0719c198be0f4dfb5462897c996499518df35cc38a91b43d6f8b9373d02cdc1"
+    },
+    "steps": [
+      {
+        "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Source_Containers_Acceptance.ms\"",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior-final/probe-6791c8c2672e4063994484e6aba2cc57.ms"
+      }
+    ],
+    "passed": true,
+    "elapsed_s": 62.875
+  },
+  {
+    "name": "output",
+    "phase": "behavior",
+    "files": {
+      "tools/procedural_lab/Max_Source_Containers_Output.ms": "e1ba8f49b81634cc7dfff02528f04a785926c39e7b00c3563403c3984328945a"
+    },
+    "steps": [
+      {
+        "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Source_Containers_Output.ms\"",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior-final/probe-2a0ae566281d404194b4e4f656ec2f10.ms"
+      }
+    ],
+    "passed": true,
+    "elapsed_s": 7.375
+  },
+  {
+    "name": "edit-bindings",
+    "phase": "behavior",
+    "files": {
+      "tools/procedural_lab/Max_Procedural_07_Bindings.ms": "5c9343dd35397461a62f7ae9230ad9d4f28eab778a779f56dd7d46b3024adb64"
+    },
+    "steps": [
+      {
+        "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Procedural_07_Bindings.ms\"",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior-final/probe-3bfb1ddf6f5043a7a878c9add2d3cb90.ms"
+      }
+    ],
+    "passed": true,
+    "elapsed_s": 6.469000000000051
+  },
+  {
+    "name": "publication",
+    "phase": "behavior",
+    "files": {
+      "tools/procedural_lab/Max_Procedural_07_Regression.ms": "ed95a70ae7118f978f43fa218ee3abfc54f4697bf5ef77d16d45164fed405d4c"
+    },
+    "steps": [
+      {
+        "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Procedural_07_Regression.ms\"",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior-final/probe-9ea3490a78224831a43fe1cf5ea5f928.ms"
+      }
+    ],
+    "passed": true,
+    "elapsed_s": 43.64099999999985
+  },
+  {
+    "name": "analyzer",
+    "phase": "behavior",
+    "files": {
+      "tools/procedural_lab/Max_Unified_073_Analyzer_Assignment.ms": "02ee4c400431899c45614803a3ece79b8a59030c527852c6996f1b8d00c03291"
+    },
+    "steps": [
+      {
+        "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Unified_073_Analyzer_Assignment.ms\"",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior-final/probe-fa9b798a66e64edcb73e7329f4152d68.ms"
+      },
+      {
+        "code": "U73AnalyzerAssignment()",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior-final/probe-0e43c1f16f874edd9729cad60c490b89.ms"
+      }
+    ],
+    "passed": true,
+    "elapsed_s": 20.937000000000126
+  },
+  {
+    "name": "group-move",
+    "phase": "behavior",
+    "files": {
+      "tools/procedural_lab/Max_Unified_073_Group_Move.ms": "0f9000e191613264d67e9189420d59c8acb6fcb1e7dc6cb08596c26c25a26a04"
+    },
+    "steps": [
+      {
+        "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Unified_073_Group_Move.ms\"",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior-final/probe-8b35f000ce034171b4d985029562f0df.ms"
+      },
+      {
+        "code": "U73GroupMove()",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior-final/probe-926cfe05b11b470aa767c9042d678579.ms"
+      }
+    ],
+    "passed": true,
+    "elapsed_s": 6.6870000000001255
+  },
+  {
+    "name": "node-move",
+    "phase": "behavior",
+    "files": {
+      "tools/procedural_lab/Max_Unified_073_Node_Move.ms": "09d002ce68758355f02aa5bcbb172c55764afdcd87fdc032385317c3b40bc8f8"
+    },
+    "steps": [
+      {
+        "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Unified_073_Node_Move.ms\"",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior-final/probe-6f73f4cfb0124fe396ecb81b2e21ded9.ms"
+      },
+      {
+        "code": "U73NodeMove()",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior-final/probe-d08b35dcbac84034989110fb37004a53.ms"
+      }
+    ],
+    "passed": true,
+    "elapsed_s": 5.8599999999999
+  }
+]

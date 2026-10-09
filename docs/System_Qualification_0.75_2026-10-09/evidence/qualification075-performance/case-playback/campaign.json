@@ -1,0 +1,21 @@
+[
+  {
+    "name": "navigation",
+    "phase": "performance",
+    "files": {
+      "tools/procedural_lab/Max_Unified_073_Navigation.ms": "ecd34e12ed5ebc996ce99460d4b2ebe2c6e080d2981eac6d44e4aca6f1a0141c"
+    },
+    "steps": [
+      {
+        "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Unified_073_Navigation.ms\"",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-performance/probe-4c71813b82904f3fad07afa118f69bf1.ms"
+      },
+      {
+        "code": "P07Navigation \"100k\" 100000 frames:30 modes:#(0,1,2,3,4) containers:true",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-performance/probe-17d5e25cde054c99a078916456ffd47d.ms"
+      }
+    ],
+    "passed": true,
+    "elapsed_s": 128.65600000000018
+  }
+]

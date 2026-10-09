@@ -42,6 +42,10 @@ def build():
                 previous=ownership.get((group,section,entry['name']),{})
                 caps=SECTION_CAPS[section] if section in ('spacingUI','separationUI','proceduralUI','properties') else previous.get('capabilities',SECTION_CAPS[section])
                 owner=previous.get('owner_context','Selected layer recipe' if group=='layer' else 'Local container view' if group=='container' else 'Controller / local view')
+                if section=='setsUI':owner='Selected layer / named Paint Area; older model-owning sets are distinct'
+                elif section=='brushUI':owner='Selected Paint Area and its receiver; shared layer models'
+                elif section in ('sourceUI','sourceContainersUI'):owner='Selected layer model collection; older groups retain independent metadata'
+                elif section=='surface' and entry['name'] in ('sharedPick','removeSurfaces','surfacesButton','receiversList'):owner='Selected layer receiving surfaces'
                 controls.append(dict(group=group,section=section,**entry,capabilities=caps,owner_context=owner,
                     help=tooltips.get(section,{}).get(entry['name']),
                     view='Modify selected layer, selected container and optional popup' if group=='layer' else 'Local setup/editor controls',

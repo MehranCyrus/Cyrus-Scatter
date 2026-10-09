@@ -1,0 +1,45 @@
+[
+  {
+    "name": "navigation",
+    "phase": "performance",
+    "files": {
+      "tools/procedural_lab/Max_Unified_073_Navigation.ms": "ecd34e12ed5ebc996ce99460d4b2ebe2c6e080d2981eac6d44e4aca6f1a0141c"
+    },
+    "steps": [
+      {
+        "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Unified_073_Navigation.ms\"",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-performance/probe-4c71813b82904f3fad07afa118f69bf1.ms"
+      },
+      {
+        "code": "P07Navigation \"100k\" 100000 frames:30 modes:#(0,1,2,3,4) containers:true",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-performance/probe-17d5e25cde054c99a078916456ffd47d.ms"
+      }
+    ],
+    "passed": true,
+    "elapsed_s": 128.65600000000018
+  },
+  {
+    "name": "playback",
+    "phase": "performance",
+    "files": {},
+    "steps": [
+      {
+        "code": "global PTDir=MCPFixtureDir,PTNativeExpected=#(\"AminScatter.dlx\",\"CyrusBrush.dlx\",\"CyrusBrushStorage.dlh\",\"CyrusScatterEdit.dlm\");fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Playback_073_Regression.ms\"",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-performance/probe-28070c31a2ea46099588ba989f20ec3c.ms"
+      }
+    ],
+    "passed": true,
+    "elapsed_s": 53.297000000000025
+  },
+  {
+    "name": "idle",
+    "phase": "performance",
+    "passed": true
+  },
+  {
+    "name": "corona",
+    "phase": "performance",
+    "passed": false,
+    "error": "{'label': 'ir072-after-save', 'render_type': 0, 'passes': 6, 'epoch': 3, 'bridge_builds': 3, 'bridge_instances': [180], 'phase': 2, 'timer': True, 'pending': True, 'resume': True, 'error': '', 'helper_nodes': 10}"
+  }
+]

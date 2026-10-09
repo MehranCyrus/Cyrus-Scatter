@@ -6,8 +6,9 @@ try (
     local r=P07Root,a=P07Layer,first=P07Source
     first.pos=[1000,0,0]
     local second=box width:4 length:4 height:6 pos:[1050,0,0]
-    local rect=rectangle width:300 length:200 pos:[1000,0,0]
+    local rect=CyrusSourceContainer width:300 length:200 pos:[1000,0,0]
     a.containerMode=4;a.containerNodes=#(rect);r.autoRender=true;r.refreshAll()
+    P07Assert (a.previewError=="" and a.sources.count==2) "Current container fixture failed to publish two enrolled sources"
     local total=0
     P07Assert (CyrusPFBuild()) CyrusPFLastError
     for group in CyrusPFData do total+=group.count

@@ -18,7 +18,7 @@
     max undo
     P07Assert ((P07Fingerprint root) as string==original as string) "Source Undo lost original binding"
     local secondSurface=copy surface
-    undo "Replace test receiver" on root.surfaceNodes=#(secondSurface)
+    undo "Replace test receiver" on root.setLayerSurfaces leaf #(secondSurface)
     rejected=false;try(root.evaluateGroups())catch(rejected=true)
     P07Assert rejected "Receiver replacement silently rebound edits"
     max undo

@@ -1,0 +1,21 @@
+[
+  {
+    "name": "display-repeat",
+    "phase": "retained",
+    "files": {
+      "build/playback075_definitions.ms": "0a09e8b1a0b4787b995b284be862ee23f9046401ad705ec3ed488b45c974a391"
+    },
+    "steps": [
+      {
+        "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/build/playback075_definitions.ms\"",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-retained/probe-887d6ebc43f54d99b61be9be2e35173e.ms"
+      },
+      {
+        "code": "global PTDir=MCPFixtureDir;PTLog=createFile (MCPFixtureDir+\"retained-repeat.txt\");try(PTDisplayModes();format \"SUCCESS % assertions\\n\" PTChecks to:PTLog;close PTLog)catch(close PTLog;throw())",
+        "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-retained/probe-35dd7a07a43843f08d94ab7c4c51edb0.ms"
+      }
+    ],
+    "passed": true,
+    "elapsed_s": 26.139999999999873
+  }
+]

@@ -1,0 +1,14 @@
+SCRIPT_PAYLOAD b60245d754e74ec03527e18d823d9d1fdd208193d9637116cea16732d7d892b0
+PASS unrelated animation and rewind, policy unified
+PASS parameter edit re-arms validity, policy unified
+PASS animated receiver, unified
+PASS Manual freeze and return to Live, policy unified
+PASS in-place density edit and Manual Update, policy unified
+PASS animated receiver parent, unified
+PASS Manual freeze and return to Live, policy unified
+PASS animated source geometry in Mesh mode
+PASS animated Scatter parameter
+PASS animated density map
+PASS unkeyed script transform and rewind
+PASS disabled layer/controller and hidden controller catch-up
+FAILED after 601 assertions: -- Runtime error: Unchanged retained data was prepared, published or uploaded again

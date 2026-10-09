@@ -1,0 +1,2 @@
+PASS: 7 grip controls; down/move/up, stationary point, bounds, hover, right click, capture loss, rebind, paint, contents/selection and placement isolation.
+#("popup1/sourceContainersUI_containersList", "popup1/sourceUI_plantList", "popup1/diversityUI_strokeChoices", "popup1/diversityUI_strokesList", "popup1/flow_surfaceUI_receiversList", "popup1/flow_surfaceUI_globalContainers", "popup2/areaUI_areaList")

@@ -1,0 +1,38 @@
+Layer has both receivers
+Unpainted layer needs no area
+Areas are not populations
+Selecting areas preserves layer models
+Paint plane
+Paint curved sphere
+One layer paints both targets
+Second gesture accepted
+Second gesture edits same area
+Repeated hard paint retains output
+Overlapping areas union without duplicates
+Removed target is inactive
+Inactive target keeps authored paint
+Restoring target restores paint
+Layer copy owns independent paint
+Layer copy preserves targets
+Layer receivers are independent
+Manual paint keeps last publication
+Update publishes erase
+Brush Undo restores coverage
+Brush Redo restores coverage
+Layers precede surfaces
+Paint Areas listed in Painting
+Per-stroke editing removed
+Plane area selected for brush
+Sphere area selected for brush
+Area selection does not rebuild placements
+Popup painting view mounts
+Saved areas retain targets
+Save/reopen preserves placement result
+Painted area cannot silently change target
+No receivers keeps inactive areas with no placements
+Restoring all receivers restores coverage
+Receiver removal Undo restores target and result
+Whole surfaces retains optional areas
+Re-enabling areas restores coverage
+Start Brush callback uses selected sphere among multiple receivers
+Live area edit reaches its owning layer

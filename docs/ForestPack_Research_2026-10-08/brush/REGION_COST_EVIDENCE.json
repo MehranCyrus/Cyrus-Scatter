@@ -1,0 +1,131 @@
+{
+  "qualification": "Frozen native core CPU experiment only. No Forest, polygon engine, Max, overlay, memory peak or FPS timing.",
+  "head": "221e9f42bc65d1ad63f4f9b201efeb9ac589d5bb",
+  "status_before": " M AminScatter/CMakeLists.txt\n M AminScatter/scripts/AminScatterObject.ms\n M AminScatter/tools/ui/approved-layout-manifest.json\n M AminScatter/tools/ui/approved-layout-rows.cjs\n M AminScatter/tools/ui/approved-layout.cjs\n M AminScatter/tools/ui/layer-editor-tooltips.json\n M AminScatter/tools/ui/layers-control-inventory.json\n M AminScatter/tools/ui/templates/approved-main-ui.ms\n M AminScatter/tools/ui/templates/container-node.ms\n M AminScatter/tools/ui/templates/unified-core.ms\n M CyrusMCP/cyrus_mcp/feature-catalog.json\n M docs/ForestPack_Research_2026-10-08/README.md\n M docs/Product_Discussion_2026-10-08/BACKLOG.md\n M docs/README.md\n M tools/procedural_lab/build_feature_catalog.py\n M tools/procedural_lab/check_generated.py\n?? AminScatter/tools/ui/colored-lists.cjs\n?? \"Landing Page Design/\"\n?? docs/ForestPack_Research_2026-10-08/brush/CYRUS_COMPARISON.md\n?? docs/ForestPack_Research_2026-10-08/brush/EVIDENCE.json\n?? docs/ForestPack_Research_2026-10-08/brush/NATIVE_FINDINGS.md\n?? docs/ForestPack_Research_2026-10-08/brush/README.md\n?? docs/ForestPack_Research_2026-10-08/brush/reproduce/README.md\n?? docs/ForestPack_Research_2026-10-08/brush/reproduce/finalize.py\n?? docs/ForestPack_Research_2026-10-08/brush/reproduce/region_history_cost.cpp\n?? docs/ForestPack_Research_2026-10-08/brush/reproduce/region_history_cost.py\n?? docs/Product_Discussion_2026-10-08/MODELS_AND_PAINTING.md\n",
+  "sources": {
+    "AminScatter/include/brush.h": "c3859f67d437bf45eff2930d54c0e3652e390eecd341e3cb584d86ec1717ea56",
+    "AminScatter/include/diagnostics.h": "e56003670ca92ae26041ea5bf23e6cd2290f1c53921a0a10e828965cfb10a092",
+    "AminScatter/include/execution.h": "e9f2cfdf677366f491dc01cea83301ce53111c5073633333a4adf1db2ad509d2",
+    "AminScatter/include/group_spacing.h": "b04b3e47f0f1d5789f274492ca4d2a0777e5f1b500070ba5ef88426c4cf08502",
+    "AminScatter/include/license_boundary.h": "92f2c3dd89977af053c27a25731246890209e0d2e3d4a1f931d4349dc2088178",
+    "AminScatter/include/point_preview.h": "5dec4890f38338f99baf1d0e163274aa515b455b34d3a8acc51f4e917017edb6",
+    "AminScatter/include/preview_sampling.h": "14e389d96653e861896a133c6efa9a6d42f96e2cc8d3e5e6ee665221b9a4645f",
+    "AminScatter/include/procedural.h": "ef9ce89dce26aa9dafb077c903af73f1b0a71ebc946febabd4bf0a006e546dbd",
+    "AminScatter/include/scatter.h": "632b834f410a06904061df74a10fd8e4e449d918fd2f242f7e369bd4b75184ac",
+    "AminScatter/src/brush.cpp": "9e8f8a05fb9989b032a7a04de797323635a8bbbd71ab8bcf245fd22c84ccd317",
+    "AminScatter/src/brush_host.cpp": "ec575d5f1d8cdc1dfaf96d4326875ce4165b4df3dfd15639c641b82ec71f5203",
+    "AminScatter/src/brush_storage_plugin.cpp": "cf3d949ca9695e42c70f0905db41bd24e77d520b7f7a571a72a8bfc69ce995d3",
+    "AminScatter/src/cyrus_edit.cpp": "df4f69f75a12ddbb83ac925fcb3f3422a4526cde2ac739c71edcfab820a995d4",
+    "AminScatter/src/diagnostics.cpp": "8f7e61296c0570aa6288e50ae159f041ef449768a00781abbc84ac033febeeb4",
+    "AminScatter/src/diagnostics_bridge.cpp": "ce31a4bed58860076bbbd6deb5a15302890facda98d29e8d3f0e65fe794c2da7",
+    "AminScatter/src/edit_plugin.cpp": "79f0056899a9c831022e17f12ae35232890e6e21b44b9c7b6f608632f871ac9b",
+    "AminScatter/src/execution.cpp": "b54963d69441d473ed52f76b125c4eb3d0a38c564900f28abd76efa7bcbf1136",
+    "AminScatter/src/group_spacing.cpp": "73d973b3d22f51c00dae7f4282d7f8159b19dea0b27f7ddb57c2d06815acc1a1",
+    "AminScatter/src/input_validity.cpp": "a65514bdcee3e67d3296768063979ed1c670b020323bc62e757ac7a9c232605d",
+    "AminScatter/src/max_bridge.cpp": "577986b09f1a70135b1f8c00bdea95b2309c00c3cedb8f29549fa8a7d04ce52a",
+    "AminScatter/src/point_display.cpp": "358c5ff13763542dcc27eb2d8542686a622c051fa35a5161edf3dcb329173c44",
+    "AminScatter/src/preview.cpp": "6465bf8dcbaaf213ab24f6362c6f92156333008d4585a645f539ba60bd4d8d6c",
+    "AminScatter/src/procedural.cpp": "3bbdd2ef5463edb51af32a5ff3a7c8d5579d602027dc14738edf63a16185402c",
+    "AminScatter/src/rollout_flow.cpp": "f1cdf4bb21e5dcb424b01a570c0c001424de3f4fa756638aafb85962bb5b4392",
+    "AminScatter/src/rollout_scroll.cpp": "5573dd56b0ecaa87c6f521abd88b07f6d7e3259174a249ab53275a0bb12fb3a7",
+    "AminScatter/src/scatter.cpp": "4aebe37a65d54a8b9f0c4980de1c391936fe283c3532998dab58bed7b8a14ae6",
+    "AminScatter/src/source_container.cpp": "634208e611a0cf1abffe917dfd5c31e94e7ed7e1e5a1037589786ec84fdba1b4",
+    "AminScatter/src/analyzer_area_bridge.inc": "90c08d2650c8bea809900fd23f2abc8d3e26272c95d49a315552711aa6ad48bc",
+    "AminScatter/src/authored_revision.inc": "9bdb0aadfa193983d9d18f42ac2e1ffe414bd6a99a5d556553dc2a00c1d8fe1e",
+    "AminScatter/src/boundary_falloff.inc": "a8c2669675dcb853d79c2ceaf90bf092d09c27d09a48991f0ac3cd024737d99f",
+    "AminScatter/src/boundary_falloff_bridge.inc": "4af974149fa2fc6a82a6e2d0401bb88deca0e3cc9441ea6b8757013e7259d555",
+    "AminScatter/src/cluster.inc": "e3f7eddd8133e34f91c1e50d5c4d1ac4ca2f4a6dc611728a0848c16f9f3e3680",
+    "AminScatter/src/cyrus_edit_stack.inc": "83b85de9d8007e20c69fb6d8bc6174c3d99ef2dfa0b0fa6bcc85dfee3e1e9ac9",
+    "AminScatter/src/cyrus_edit_storage.inc": "4e9e9f23845a0d9ee2b0fed5fdba450b176cbbe5b4b04a557cb1963655f43109",
+    "AminScatter/src/edge_border.inc": "df5f43d5614d1d44a274b9a67c70c659d24964b1ffad665e1956232581951f8c",
+    "AminScatter/src/final.inc": "ba36be03d08d2af4726b9b44b411e05c191a90bc73db1269f7670722bbf6f5e5",
+    "AminScatter/src/geometry_preview.inc": "3a72c3064fb23f72e042554ad9d2e4ded7b4efaa1b481550f38753b357b8ad65",
+    "AminScatter/src/group_spacing_bridge.inc": "84514cdc7a7d4d9690d5ae179af1d9864897f4a1e56edacf2f4bacd158db77a7",
+    "AminScatter/src/mesh_display.inc": "91b694e319d1d5864f1ae6a6dd67c8bb033d44420f770ed0645c4cc4547d8c39",
+    "AminScatter/src/orientation.inc": "d485e2b8ea5c3abf3fc00a7e7b7139ae4b5d3995ee17f3aad7afff8cc4bfcea8",
+    "AminScatter/src/orientation_bridge.inc": "c967d950dfd1308bd989dc3e819b959ae64eb69acdaf728b4c6ba2dd694c639e",
+    "AminScatter/src/placement_identity.inc": "a33f6d19e8bff75b90e2cbbc2f969d00c5982c5301918efddf1108a86ca0a2aa",
+    "AminScatter/src/prepared_band.inc": "5d01452faed01a630428506cc7ce099ee909ce64204edef5448a03c1a1000cf0",
+    "AminScatter/src/preview_batches.inc": "a2a7df3d65a6278d49aad80361bffe8db15fae1419feb44e993354f5c31c7acd",
+    "AminScatter/src/procedural_bridge.inc": "646195da92bc2ce7253b3c409a11594dd2606c842a04b97206a20799480639ed",
+    "AminScatter/src/spacing.inc": "96ef2d89f07cf9e6c67a93f4c91e990da98016f58c6278fce543a7b09e289c77",
+    "AminScatter/src/whole_scale_bridge.inc": "8374345cee715b0ad5c65e5478f191274e1ebdcbc5ffbe861bf450d7793c45d7",
+    "docs/ForestPack_Research_2026-10-08/brush/reproduce/region_history_cost.cpp": "af7b810d9de2fb38dddecfacb3829645817455f27e10dfbaf2db3fe81030d1e5"
+  },
+  "command": [
+    "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+    "/nologo",
+    "/O2",
+    "/EHsc",
+    "/std:c++17",
+    "/IF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\region-design-research-20261008-02\\snapshot\\AminScatter\\include",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\region-design-research-20261008-02\\snapshot\\AminScatter\\src\\scatter.cpp",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\region-design-research-20261008-02\\snapshot\\AminScatter\\src\\execution.cpp",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\region-design-research-20261008-02\\snapshot\\AminScatter\\src\\brush.cpp",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\region-design-research-20261008-02\\snapshot\\AminScatter\\src\\group_spacing.cpp",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\region-design-research-20261008-02\\snapshot\\AminScatter\\src\\procedural.cpp",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\region-design-research-20261008-02\\snapshot\\AminScatter\\src\\diagnostics.cpp",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\region-design-research-20261008-02\\snapshot\\docs\\ForestPack_Research_2026-10-08\\brush\\reproduce\\region_history_cost.cpp",
+    "/Fe:F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\region-design-research-20261008-02\\probe.exe"
+  ],
+  "compile_exit": 0,
+  "summary": [
+    {
+      "strokes": 1,
+      "queries": 10000,
+      "warm_repetitions": 3,
+      "build_ms_median": 0.0032,
+      "query_ms_median": 0.7415,
+      "query_ms_range": [
+        0.7335,
+        0.9727
+      ],
+      "serialized_bytes": 284,
+      "accepted": 316,
+      "max_error": 0.0
+    },
+    {
+      "strokes": 10,
+      "queries": 10000,
+      "warm_repetitions": 3,
+      "build_ms_median": 0.0074,
+      "query_ms_median": 4.8508,
+      "query_ms_range": [
+        4.7516,
+        5.0084
+      ],
+      "serialized_bytes": 2624,
+      "accepted": 316,
+      "max_error": 0.0
+    },
+    {
+      "strokes": 100,
+      "queries": 10000,
+      "warm_repetitions": 3,
+      "build_ms_median": 0.0646,
+      "query_ms_median": 44.6295,
+      "query_ms_range": [
+        44.4027,
+        44.8417
+      ],
+      "serialized_bytes": 26024,
+      "accepted": 316,
+      "max_error": 0.0
+    },
+    {
+      "strokes": 1000,
+      "queries": 10000,
+      "warm_repetitions": 3,
+      "build_ms_median": 0.6222,
+      "query_ms_median": 449.0441,
+      "query_ms_range": [
+        445.1612,
+        449.5667
+      ],
+      "serialized_bytes": 260024,
+      "accepted": 316,
+      "max_error": 0.0
+    }
+  ],
+  "source_changes_during_run": []
+}

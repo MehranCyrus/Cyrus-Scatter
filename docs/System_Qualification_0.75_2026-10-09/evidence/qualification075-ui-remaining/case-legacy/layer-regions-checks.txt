@@ -1,0 +1,7 @@
+Old single-set scene preserves soft paint and erase
+Older paint has an explicit import action
+Existing paint adopts into area without changing output
+Area adoption Undo preserves older document
+Old multi-set population result remains intact
+Old multi-set population result remains intact
+Old model-owning sets remain distinct

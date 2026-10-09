@@ -196,7 +196,10 @@ fn PTDisplayModes = (
             PTAssert ((PTCounts() as string)==(before as string)) "Static viewport mode rebuilt during playback"
             if isValidNode owner do (
                 local now=cyrusRetainedStats owner
-                for i in #(3,4,5,6,7,13) do PTAssert (now[i]==retained[i]) "Unchanged retained data was prepared, published or uploaded again"
+                for i in #(3,4,5,6,7,13) do (
+                    if now[i]!=retained[i] do (format "RETAINED_MISMATCH mode:% frame:% index:% before:% after:%\n" mode frame i retained now to:PTLog;flush PTLog)
+                    PTAssert (now[i]==retained[i]) "Unchanged retained data was prepared, published or uploaded again"
+                )
             )
         )
         PTRecord ("static playback and repeated retained publication, viewport mode "+mode as string)

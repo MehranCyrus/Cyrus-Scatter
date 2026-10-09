@@ -1,4 +1,4 @@
-global CyrusLoadedScriptFingerprint="71856739e168848417cd419a09f8959be6c31e2a4514f829bd9cd17d8ff6dece"
+global CyrusLoadedScriptFingerprint="b60245d754e74ec03527e18d823d9d1fdd208193d9637116cea16732d7d892b0"
 -- Only registered Scatter nodes participate in timeline notifications. This
 -- registry is rebuilt at scene boundaries, never by scanning every animation frame.
 global AminScatterObject,CyrusSourceContainer,CyrusContainerRefreshLabels
@@ -1349,7 +1349,8 @@ fn CyrusLayerEditor_layoutUI_1 = (
     rollout layoutUI_1 "Layout" width:146 category:0 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
         local layout,lastLayoutWidth=0
-        radiobuttons diversityUI_diversityRadio "Source assignment" labels:#("Random mix","Clusters","Spline bands","Surface Analyzer") columns:1 pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58)))))
+        radiobuttons diversityUI_diversityRadio "" labels:#("Random mix","Clusters","Spline bands","Surface Analyzer") columns:1 pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58)))))
+        label diversityUI_diversityRadio_caption "Source assignment" pos:[6,6] width:(layoutUI_1.width-12) height:18
         label diversityUI_layoutHelp "" pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58))))) height:36
         label diversityUI_analyzerStatus "Pick a Surface Analyzer." pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58))))) height:54
         button diversityUI_selectAnalyzer "Select" pos:[8,8] width:70 tooltip:"Select the linked Surface Analyzer in the scene." height:22
@@ -1381,7 +1382,8 @@ fn CyrusLayerEditor_layoutUI_1 = (
         button diversityUI_removeStrokeButton "Remove band" pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/75.2))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/75.2))))) tooltip:"Remove the selected band and its settings." height:22
         spinner diversityUI_strokeWidth "" range:[0.001,100000,1] type:#worldUnits pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/113.2))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/113.2))))) fieldWidth:58
         label diversityUI_strokeWidth_caption "Width:" pos:[6,6] width:(layoutUI_1.width-12) height:18
-        radiobuttons diversityUI_strokeMode "Assign by" labels:#("Color groups","Source objects") columns:1 pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58)))))
+        radiobuttons diversityUI_strokeMode "" labels:#("Color groups","Source objects") columns:1 pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58)))))
+        label diversityUI_strokeMode_caption "Assign by" pos:[6,6] width:(layoutUI_1.width-12) height:18
         multiListBox diversityUI_strokeChoices "" items:#() pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58))))) height:5
         label diversityUI_strokeChoices_caption "Ctrl / Shift: select several" pos:[6,6] width:(layoutUI_1.width-12) height:18
         spinner diversityUI_strokeScaleMin "" range:[0.001,100,1] pos:[8,8] width:((layoutUI_1.width-16-((amin 2 (amax 1 (floor ((layoutUI_1.width-8)/134))))-1)*4)/(amin 2 (amax 1 (floor ((layoutUI_1.width-8)/134))))) fieldWidth:58
@@ -1820,11 +1822,14 @@ fn CyrusLayerEditor_layoutUI_1 = (
             local widthValue=amax 140 layoutUI_1.width,y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
             rowControls=#(diversityUI_diversityRadio);show=(true and (true))
             for c in rowControls do c.visible=show
+            diversityUI_diversityRadio_caption.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(98))+2+captionHeight
+                fitLabel diversityUI_diversityRadio_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(diversityUI_diversityRadio_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(80))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                diversityUI_diversityRadio_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_diversityRadio_caption.width=cellWidth;diversityUI_diversityRadio_caption.enabled=diversityUI_diversityRadio.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(diversityUI_layoutHelp);show=(true and (true))
@@ -2004,11 +2009,14 @@ fn CyrusLayerEditor_layoutUI_1 = (
             )
             rowControls=#(diversityUI_strokeMode);show=(true and (diversityUI_diversityRadio.state>=3))
             for c in rowControls do c.visible=show
+            diversityUI_strokeMode_caption.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(58))+2+captionHeight
+                fitLabel diversityUI_strokeMode_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(diversityUI_strokeMode_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(40))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                diversityUI_strokeMode_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokeMode_caption.width=cellWidth;diversityUI_strokeMode_caption.enabled=diversityUI_strokeMode.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(diversityUI_strokeChoices);show=(true and (diversityUI_diversityRadio.state>=3))
@@ -2352,8 +2360,10 @@ fn CyrusLayerEditor_populationUI_1 = (
     rollout populationUI_1 "Amount" width:146 category:0 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
         local layout,lastLayoutWidth=0
-        radiobuttons distributionUI_modeRadio "Method" labels:#("Random","Texture Density") columns:2 pos:[8,8] width:((populationUI_1.width-16-((amin 1 (amax 1 (floor ((populationUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI_1.width-8)/58)))))
-        radiobuttons distributionUI_populationRadio "Amount" labels:#("Count","Plants per m2") columns:2 pos:[8,8] width:((populationUI_1.width-16-((amin 1 (amax 1 (floor ((populationUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI_1.width-8)/58)))))
+        radiobuttons distributionUI_modeRadio "" labels:#("Random","Texture Density") columns:2 pos:[8,8] width:((populationUI_1.width-16-((amin 1 (amax 1 (floor ((populationUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI_1.width-8)/58)))))
+        label distributionUI_modeRadio_caption "Method" pos:[6,6] width:(populationUI_1.width-12) height:18
+        radiobuttons distributionUI_populationRadio "" labels:#("Count","Plants per m2") columns:2 pos:[8,8] width:((populationUI_1.width-16-((amin 1 (amax 1 (floor ((populationUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI_1.width-8)/58)))))
+        label distributionUI_populationRadio_caption "Amount" pos:[6,6] width:(populationUI_1.width-12) height:18
         spinner distributionUI_countSpin "" range:[1,100000,200] type:#integer fieldWidth:58 width:((populationUI_1.width-16-((amin 1 (amax 1 (floor ((populationUI_1.width-8)/118.4))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI_1.width-8)/118.4))))) pos:[8,8] tooltip:"Layer population before eligibility. Accepted target can retry up to its limits."
         label distributionUI_countSpin_caption "Count: " pos:[6,6] width:(populationUI_1.width-12) height:18
         spinner distributionUI_densitySpin "" range:[0,1000000,100] fieldWidth:58 width:((populationUI_1.width-16-((amin 1 (amax 1 (floor ((populationUI_1.width-8)/123.6))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI_1.width-8)/123.6))))) pos:[8,8] tooltip:"Requested plants per square metre of receiving surface; capped at 100,000."
@@ -2544,11 +2554,14 @@ fn CyrusLayerEditor_populationUI_1 = (
             )
             rowControls=#(distributionUI_populationRadio);show=(true and (true))
             for c in rowControls do c.visible=show
+            distributionUI_populationRadio_caption.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(38))+2+captionHeight
+                fitLabel distributionUI_populationRadio_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(distributionUI_populationRadio_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(20))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                distributionUI_populationRadio_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_populationRadio_caption.width=cellWidth;distributionUI_populationRadio_caption.enabled=distributionUI_populationRadio.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(distributionUI_countSpin);show=(true and (distributionUI_populationRadio.state==1))
@@ -2601,11 +2614,14 @@ fn CyrusLayerEditor_populationUI_1 = (
             )
             rowControls=#(distributionUI_modeRadio);show=(advancedToggle.checked and (true))
             for c in rowControls do c.visible=show
+            distributionUI_modeRadio_caption.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(38))+2+captionHeight
+                fitLabel distributionUI_modeRadio_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(distributionUI_modeRadio_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(20))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                distributionUI_modeRadio_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_modeRadio_caption.width=cellWidth;distributionUI_modeRadio_caption.enabled=distributionUI_modeRadio.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(distributionUI_densityHeading);show=(advancedToggle.checked and (distributionUI_modeRadio.state==2))
@@ -2766,7 +2782,8 @@ fn CyrusLayerEditor_coverageUI_1 = (
         checkbox setsUI_enabledCheck "Enabled" pos:[8,8] width:((coverageUI_1.width-16-((amin 1 (amax 1 (floor ((coverageUI_1.width-8)/62.4))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI_1.width-8)/62.4)))))
         label setsUI_info "Areas use the layer's models. Overlaps combine coverage." pos:[8,8] width:((coverageUI_1.width-16-((amin 1 (amax 1 (floor ((coverageUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI_1.width-8)/58))))) height:58
         label brushUI_targetInfo "Add a Paint Area to begin." pos:[8,8] width:((coverageUI_1.width-16-((amin 1 (amax 1 (floor ((coverageUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI_1.width-8)/58))))) height:36
-        radiobuttons brushUI_modeRadio "Brush" labels:#("Paint","Erase") columns:2 pos:[8,8] width:((coverageUI_1.width-16-((amin 1 (amax 1 (floor ((coverageUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI_1.width-8)/58)))))
+        radiobuttons brushUI_modeRadio "" labels:#("Paint","Erase") columns:2 pos:[8,8] width:((coverageUI_1.width-16-((amin 1 (amax 1 (floor ((coverageUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI_1.width-8)/58)))))
+        label brushUI_modeRadio_caption "Brush" pos:[6,6] width:(coverageUI_1.width-12) height:18
         spinner brushUI_radiusSpin "" type:#worldunits range:[0.0001,1e9,20] pos:[8,8] width:((coverageUI_1.width-16-((amin 2 (amax 1 (floor ((coverageUI_1.width-8)/139.2))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI_1.width-8)/139.2))))) fieldWidth:58
         label brushUI_radiusSpin_caption "Radius:" pos:[6,6] width:(coverageUI_1.width-12) height:18
         spinner brushUI_strengthSpin "" range:[0,100,100] pos:[8,8] width:((coverageUI_1.width-16-((amin 2 (amax 1 (floor ((coverageUI_1.width-8)/139.2))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI_1.width-8)/139.2))))) fieldWidth:58
@@ -3087,11 +3104,14 @@ fn CyrusLayerEditor_coverageUI_1 = (
             )
             rowControls=#(brushUI_modeRadio);show=(true and (setsUI_paintedCheck.checked))
             for c in rowControls do c.visible=show
+            brushUI_modeRadio_caption.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(38))+2+captionHeight
+                fitLabel brushUI_modeRadio_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(brushUI_modeRadio_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(20))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                brushUI_modeRadio_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];brushUI_modeRadio_caption.width=cellWidth;brushUI_modeRadio_caption.enabled=brushUI_modeRadio.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(brushUI_radiusSpin,brushUI_strengthSpin);show=(true and (setsUI_paintedCheck.checked))
@@ -3239,7 +3259,8 @@ fn CyrusLayerEditor_areasUI_1 = (
         button areaUI_addAreaScene "Select From Scene..." pos:[8,8] width:((areasUI_1.width-16-((amin 2 (amax 1 (floor ((areasUI_1.width-8)/127.2))))-1)*4)/(amin 2 (amax 1 (floor ((areasUI_1.width-8)/127.2))))) tooltip:"Choose closed Area shapes by name." height:22
         pickbutton areaUI_pickArea "Add: pick closed line" filter:AminScatterAreaFilter pos:[8,8] width:((areasUI_1.width-16-((amin 2 (amax 1 (floor ((areasUI_1.width-8)/127.2))))-1)*4)/(amin 2 (amax 1 (floor ((areasUI_1.width-8)/127.2))))) tooltip:"Pick a closed shape as an include/exclude Area shared by all sets in this layer." height:22
         button areaUI_removeArea "Remove selected rows" pos:[8,8] width:((areasUI_1.width-16-((amin 1 (amax 1 (floor ((areasUI_1.width-8)/122))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI_1.width-8)/122))))) tooltip:"Unlink highlighted Areas and their falloff settings; keep the scene shapes." height:22
-        radiobuttons areaUI_areaMode "Selected area mode" labels:#("Include","Exclude") columns:1 pos:[8,8] width:((areasUI_1.width-16-((amin 1 (amax 1 (floor ((areasUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI_1.width-8)/58)))))
+        radiobuttons areaUI_areaMode "" labels:#("Include","Exclude") columns:1 pos:[8,8] width:((areasUI_1.width-16-((amin 1 (amax 1 (floor ((areasUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI_1.width-8)/58)))))
+        label areaUI_areaMode_caption "Selected area mode" pos:[6,6] width:(areasUI_1.width-12) height:18
         label areaUI_areaHint "Exclude overrides Include." pos:[8,8] width:((areasUI_1.width-16-((amin 1 (amax 1 (floor ((areasUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI_1.width-8)/58)))))
         label areaUI_projectionHint "Top / world XY projection." pos:[8,8] width:((areasUI_1.width-16-((amin 1 (amax 1 (floor ((areasUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI_1.width-8)/58)))))
         button areaUI_refreshAreas "Refresh areas / preview" pos:[8,8] width:((areasUI_1.width-16-((amin 1 (amax 1 (floor ((areasUI_1.width-8)/137.60000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI_1.width-8)/137.60000000000002))))) tooltip:"Refresh Area geometry and recalculate the layer preview." height:22
@@ -3588,11 +3609,14 @@ fn CyrusLayerEditor_areasUI_1 = (
             )
             rowControls=#(areaUI_areaMode);show=(true and (true))
             for c in rowControls do c.visible=show
+            areaUI_areaMode_caption.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(58))+2+captionHeight
+                fitLabel areaUI_areaMode_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(areaUI_areaMode_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(40))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                areaUI_areaMode_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];areaUI_areaMode_caption.width=cellWidth;areaUI_areaMode_caption.enabled=areaUI_areaMode.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(areaUI_areaHint);show=(true and (true))
@@ -9911,7 +9935,8 @@ initialRollupState:0x8
     rollout layoutUI "Layout" width:#cmdPanel category:40 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
         local layout,lastLayoutWidth=0
-        radiobuttons diversityUI_diversityRadio "Source assignment" labels:#("Random mix","Clusters","Spline bands","Surface Analyzer") columns:1 pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58)))))
+        radiobuttons diversityUI_diversityRadio "" labels:#("Random mix","Clusters","Spline bands","Surface Analyzer") columns:1 pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58)))))
+        label diversityUI_diversityRadio_caption "Source assignment" pos:[6,6] width:(layoutUI.width-12) height:18
         label diversityUI_layoutHelp "" pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))) height:36
         label diversityUI_analyzerStatus "Pick a Surface Analyzer." pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))) height:54
         button diversityUI_selectAnalyzer "Select" pos:[8,8] width:70 tooltip:"Select the linked Surface Analyzer in the scene." height:22
@@ -9943,7 +9968,8 @@ initialRollupState:0x8
         button diversityUI_removeStrokeButton "Remove band" pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/75.2))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/75.2))))) tooltip:"Remove the selected band and its settings." height:22
         spinner diversityUI_strokeWidth "" range:[0.001,100000,1] type:#worldUnits pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/113.2))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/113.2))))) fieldWidth:58
         label diversityUI_strokeWidth_caption "Width:" pos:[6,6] width:(layoutUI.width-12) height:18
-        radiobuttons diversityUI_strokeMode "Assign by" labels:#("Color groups","Source objects") columns:1 pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58)))))
+        radiobuttons diversityUI_strokeMode "" labels:#("Color groups","Source objects") columns:1 pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58)))))
+        label diversityUI_strokeMode_caption "Assign by" pos:[6,6] width:(layoutUI.width-12) height:18
         multiListBox diversityUI_strokeChoices "" items:#() pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))) height:5
         label diversityUI_strokeChoices_caption "Ctrl / Shift: select several" pos:[6,6] width:(layoutUI.width-12) height:18
         spinner diversityUI_strokeScaleMin "" range:[0.001,100,1] pos:[8,8] width:((layoutUI.width-16-((amin 2 (amax 1 (floor ((layoutUI.width-8)/134))))-1)*4)/(amin 2 (amax 1 (floor ((layoutUI.width-8)/134))))) fieldWidth:58
@@ -10382,11 +10408,14 @@ initialRollupState:0x8
             local widthValue=amax 140 layoutUI.width,y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
             rowControls=#(diversityUI_diversityRadio);show=(true and (true))
             for c in rowControls do c.visible=show
+            diversityUI_diversityRadio_caption.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(98))+2+captionHeight
+                fitLabel diversityUI_diversityRadio_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(diversityUI_diversityRadio_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(80))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                diversityUI_diversityRadio_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_diversityRadio_caption.width=cellWidth;diversityUI_diversityRadio_caption.enabled=diversityUI_diversityRadio.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(diversityUI_layoutHelp);show=(true and (true))
@@ -10566,11 +10595,14 @@ initialRollupState:0x8
             )
             rowControls=#(diversityUI_strokeMode);show=(true and (diversityUI_diversityRadio.state>=3))
             for c in rowControls do c.visible=show
+            diversityUI_strokeMode_caption.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(58))+2+captionHeight
+                fitLabel diversityUI_strokeMode_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(diversityUI_strokeMode_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(40))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                diversityUI_strokeMode_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokeMode_caption.width=cellWidth;diversityUI_strokeMode_caption.enabled=diversityUI_strokeMode.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(diversityUI_strokeChoices);show=(true and (diversityUI_diversityRadio.state>=3))
@@ -10911,8 +10943,10 @@ initialRollupState:0x8
     rollout populationUI "Amount" width:#cmdPanel category:50 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
         local layout,lastLayoutWidth=0
-        radiobuttons distributionUI_modeRadio "Method" labels:#("Random","Texture Density") columns:2 pos:[8,8] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58)))))
-        radiobuttons distributionUI_populationRadio "Amount" labels:#("Count","Plants per m2") columns:2 pos:[8,8] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58)))))
+        radiobuttons distributionUI_modeRadio "" labels:#("Random","Texture Density") columns:2 pos:[8,8] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58)))))
+        label distributionUI_modeRadio_caption "Method" pos:[6,6] width:(populationUI.width-12) height:18
+        radiobuttons distributionUI_populationRadio "" labels:#("Count","Plants per m2") columns:2 pos:[8,8] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58)))))
+        label distributionUI_populationRadio_caption "Amount" pos:[6,6] width:(populationUI.width-12) height:18
         spinner distributionUI_countSpin "" range:[1,100000,200] type:#integer fieldWidth:58 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/118.4))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/118.4))))) pos:[8,8] tooltip:"Layer population before eligibility. Accepted target can retry up to its limits."
         label distributionUI_countSpin_caption "Count: " pos:[6,6] width:(populationUI.width-12) height:18
         spinner distributionUI_densitySpin "" range:[0,1000000,100] fieldWidth:58 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/123.6))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/123.6))))) pos:[8,8] tooltip:"Requested plants per square metre of receiving surface; capped at 100,000."
@@ -11103,11 +11137,14 @@ initialRollupState:0x8
             )
             rowControls=#(distributionUI_populationRadio);show=(true and (true))
             for c in rowControls do c.visible=show
+            distributionUI_populationRadio_caption.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(38))+2+captionHeight
+                fitLabel distributionUI_populationRadio_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(distributionUI_populationRadio_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(20))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                distributionUI_populationRadio_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_populationRadio_caption.width=cellWidth;distributionUI_populationRadio_caption.enabled=distributionUI_populationRadio.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(distributionUI_countSpin);show=(true and (distributionUI_populationRadio.state==1))
@@ -11160,11 +11197,14 @@ initialRollupState:0x8
             )
             rowControls=#(distributionUI_modeRadio);show=(advancedToggle.checked and (true))
             for c in rowControls do c.visible=show
+            distributionUI_modeRadio_caption.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(38))+2+captionHeight
+                fitLabel distributionUI_modeRadio_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(distributionUI_modeRadio_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(20))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                distributionUI_modeRadio_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_modeRadio_caption.width=cellWidth;distributionUI_modeRadio_caption.enabled=distributionUI_modeRadio.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(distributionUI_densityHeading);show=(advancedToggle.checked and (distributionUI_modeRadio.state==2))
@@ -11322,7 +11362,8 @@ initialRollupState:0x8
         checkbox setsUI_enabledCheck "Enabled" pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/62.4))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/62.4)))))
         label setsUI_info "Areas use the layer's models. Overlaps combine coverage." pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))) height:58
         label brushUI_targetInfo "Add a Paint Area to begin." pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))) height:36
-        radiobuttons brushUI_modeRadio "Brush" labels:#("Paint","Erase") columns:2 pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/58)))))
+        radiobuttons brushUI_modeRadio "" labels:#("Paint","Erase") columns:2 pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/58)))))
+        label brushUI_modeRadio_caption "Brush" pos:[6,6] width:(coverageUI.width-12) height:18
         spinner brushUI_radiusSpin "" type:#worldunits range:[0.0001,1e9,20] pos:[8,8] width:((coverageUI.width-16-((amin 2 (amax 1 (floor ((coverageUI.width-8)/139.2))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI.width-8)/139.2))))) fieldWidth:58
         label brushUI_radiusSpin_caption "Radius:" pos:[6,6] width:(coverageUI.width-12) height:18
         spinner brushUI_strengthSpin "" range:[0,100,100] pos:[8,8] width:((coverageUI.width-16-((amin 2 (amax 1 (floor ((coverageUI.width-8)/139.2))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI.width-8)/139.2))))) fieldWidth:58
@@ -11643,11 +11684,14 @@ initialRollupState:0x8
             )
             rowControls=#(brushUI_modeRadio);show=(true and (setsUI_paintedCheck.checked))
             for c in rowControls do c.visible=show
+            brushUI_modeRadio_caption.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(38))+2+captionHeight
+                fitLabel brushUI_modeRadio_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(brushUI_modeRadio_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(20))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                brushUI_modeRadio_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];brushUI_modeRadio_caption.width=cellWidth;brushUI_modeRadio_caption.enabled=brushUI_modeRadio.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(brushUI_radiusSpin,brushUI_strengthSpin);show=(true and (setsUI_paintedCheck.checked))
@@ -11792,7 +11836,8 @@ initialRollupState:0x8
         button areaUI_addAreaScene "Select From Scene..." pos:[8,8] width:((areasUI.width-16-((amin 2 (amax 1 (floor ((areasUI.width-8)/127.2))))-1)*4)/(amin 2 (amax 1 (floor ((areasUI.width-8)/127.2))))) tooltip:"Choose closed Area shapes by name." height:22
         pickbutton areaUI_pickArea "Add: pick closed line" filter:AminScatterAreaFilter pos:[8,8] width:((areasUI.width-16-((amin 2 (amax 1 (floor ((areasUI.width-8)/127.2))))-1)*4)/(amin 2 (amax 1 (floor ((areasUI.width-8)/127.2))))) tooltip:"Pick a closed shape as an include/exclude Area shared by all sets in this layer." height:22
         button areaUI_removeArea "Remove selected rows" pos:[8,8] width:((areasUI.width-16-((amin 1 (amax 1 (floor ((areasUI.width-8)/122))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI.width-8)/122))))) tooltip:"Unlink highlighted Areas and their falloff settings; keep the scene shapes." height:22
-        radiobuttons areaUI_areaMode "Selected area mode" labels:#("Include","Exclude") columns:1 pos:[8,8] width:((areasUI.width-16-((amin 1 (amax 1 (floor ((areasUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI.width-8)/58)))))
+        radiobuttons areaUI_areaMode "" labels:#("Include","Exclude") columns:1 pos:[8,8] width:((areasUI.width-16-((amin 1 (amax 1 (floor ((areasUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI.width-8)/58)))))
+        label areaUI_areaMode_caption "Selected area mode" pos:[6,6] width:(areasUI.width-12) height:18
         label areaUI_areaHint "Exclude overrides Include." pos:[8,8] width:((areasUI.width-16-((amin 1 (amax 1 (floor ((areasUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI.width-8)/58)))))
         label areaUI_projectionHint "Top / world XY projection." pos:[8,8] width:((areasUI.width-16-((amin 1 (amax 1 (floor ((areasUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI.width-8)/58)))))
         button areaUI_refreshAreas "Refresh areas / preview" pos:[8,8] width:((areasUI.width-16-((amin 1 (amax 1 (floor ((areasUI.width-8)/137.60000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI.width-8)/137.60000000000002))))) tooltip:"Refresh Area geometry and recalculate the layer preview." height:22
@@ -12141,11 +12186,14 @@ initialRollupState:0x8
             )
             rowControls=#(areaUI_areaMode);show=(true and (true))
             for c in rowControls do c.visible=show
+            areaUI_areaMode_caption.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(58))+2+captionHeight
+                fitLabel areaUI_areaMode_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(areaUI_areaMode_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(40))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                areaUI_areaMode_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];areaUI_areaMode_caption.width=cellWidth;areaUI_areaMode_caption.enabled=areaUI_areaMode.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(areaUI_areaHint);show=(true and (true))
@@ -13640,7 +13688,8 @@ initialRollupState:0x8
         label flow_previewUI_faceLimitSpin_caption "Faces/layer:" pos:[6,6] width:(displayUI.width-12) height:18
         dropdownlist flow_previewUI_identificationDrop "" items:#("Model","Layer") pos:[8,8] width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/58))))) tooltip:"Use model or layer identification colors in Points, Proxy and shaded Mesh previews."
         label flow_previewUI_identificationDrop_caption "Color by" pos:[6,6] width:(displayUI.width-12) height:18
-        radiobuttons flow_previewUI_pointColorRadio "Preview color" labels:#("Solid Color","Identification Colors") columns:1 pos:[8,8] width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/58)))))
+        radiobuttons flow_previewUI_pointColorRadio "" labels:#("Solid Color","Identification Colors") columns:1 pos:[8,8] width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/58)))))
+        label flow_previewUI_pointColorRadio_caption "Preview color" pos:[6,6] width:(displayUI.width-12) height:18
         colorpicker flow_previewUI_solidColorPicker "Solid: " color:(color 100 220 120) pos:[8,8] width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/58)))))
         spinner flow_previewUI_budgetSpin "" range:[1000,500000,20000] type:#integer fieldWidth:58 width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/149.60000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/149.60000000000002))))) pos:[8,8]
         label flow_previewUI_budgetSpin_caption "Point limit: " pos:[6,6] width:(displayUI.width-12) height:18
@@ -13917,11 +13966,14 @@ initialRollupState:0x8
             )
             rowControls=#(flow_previewUI_pointColorRadio);show=(advancedToggle.checked and (true))
             for c in rowControls do c.visible=show
+            flow_previewUI_pointColorRadio_caption.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(58))+2+captionHeight
+                fitLabel flow_previewUI_pointColorRadio_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(flow_previewUI_pointColorRadio_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(40))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                flow_previewUI_pointColorRadio_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];flow_previewUI_pointColorRadio_caption.width=cellWidth;flow_previewUI_pointColorRadio_caption.enabled=flow_previewUI_pointColorRadio.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(flow_previewUI_solidColorPicker);show=(advancedToggle.checked and (flow_previewUI_pointColorRadio.state==1))
@@ -16590,7 +16642,8 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
     rollout layoutUI "Layout" width:#cmdPanel category:40 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
         local layout,lastLayoutWidth=0
-        radiobuttons diversityUI_diversityRadio "Source assignment" labels:#("Random mix","Clusters","Spline bands","Surface Analyzer") columns:1 pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58)))))
+        radiobuttons diversityUI_diversityRadio "" labels:#("Random mix","Clusters","Spline bands","Surface Analyzer") columns:1 pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58)))))
+        label diversityUI_diversityRadio_caption "Source assignment" pos:[6,6] width:(layoutUI.width-12) height:18
         label diversityUI_layoutHelp "" pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))) height:36
         label diversityUI_analyzerStatus "Pick a Surface Analyzer." pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))) height:54
         button diversityUI_selectAnalyzer "Select" pos:[8,8] width:70 tooltip:"Select the linked Surface Analyzer in the scene." height:22
@@ -16622,7 +16675,8 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         button diversityUI_removeStrokeButton "Remove band" pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/75.2))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/75.2))))) tooltip:"Remove the selected band and its settings." height:22
         spinner diversityUI_strokeWidth "" range:[0.001,100000,1] type:#worldUnits pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/113.2))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/113.2))))) fieldWidth:58
         label diversityUI_strokeWidth_caption "Width:" pos:[6,6] width:(layoutUI.width-12) height:18
-        radiobuttons diversityUI_strokeMode "Assign by" labels:#("Color groups","Source objects") columns:1 pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58)))))
+        radiobuttons diversityUI_strokeMode "" labels:#("Color groups","Source objects") columns:1 pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58)))))
+        label diversityUI_strokeMode_caption "Assign by" pos:[6,6] width:(layoutUI.width-12) height:18
         multiListBox diversityUI_strokeChoices "" items:#() pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))) height:5
         label diversityUI_strokeChoices_caption "Ctrl / Shift: select several" pos:[6,6] width:(layoutUI.width-12) height:18
         spinner diversityUI_strokeScaleMin "" range:[0.001,100,1] pos:[8,8] width:((layoutUI.width-16-((amin 2 (amax 1 (floor ((layoutUI.width-8)/134))))-1)*4)/(amin 2 (amax 1 (floor ((layoutUI.width-8)/134))))) fieldWidth:58
@@ -17061,11 +17115,14 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             local widthValue=amax 140 layoutUI.width,y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
             rowControls=#(diversityUI_diversityRadio);show=(true and (true))
             for c in rowControls do c.visible=show
+            diversityUI_diversityRadio_caption.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(98))+2+captionHeight
+                fitLabel diversityUI_diversityRadio_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(diversityUI_diversityRadio_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(80))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                diversityUI_diversityRadio_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_diversityRadio_caption.width=cellWidth;diversityUI_diversityRadio_caption.enabled=diversityUI_diversityRadio.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(diversityUI_layoutHelp);show=(true and (true))
@@ -17245,11 +17302,14 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             )
             rowControls=#(diversityUI_strokeMode);show=(true and (diversityUI_diversityRadio.state>=3))
             for c in rowControls do c.visible=show
+            diversityUI_strokeMode_caption.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(58))+2+captionHeight
+                fitLabel diversityUI_strokeMode_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(diversityUI_strokeMode_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(40))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                diversityUI_strokeMode_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokeMode_caption.width=cellWidth;diversityUI_strokeMode_caption.enabled=diversityUI_strokeMode.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(diversityUI_strokeChoices);show=(true and (diversityUI_diversityRadio.state>=3))
@@ -17590,8 +17650,10 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
     rollout populationUI "Amount" width:#cmdPanel category:50 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
         local layout,lastLayoutWidth=0
-        radiobuttons distributionUI_modeRadio "Method" labels:#("Random","Texture Density") columns:2 pos:[8,8] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58)))))
-        radiobuttons distributionUI_populationRadio "Amount" labels:#("Count","Plants per m2") columns:2 pos:[8,8] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58)))))
+        radiobuttons distributionUI_modeRadio "" labels:#("Random","Texture Density") columns:2 pos:[8,8] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58)))))
+        label distributionUI_modeRadio_caption "Method" pos:[6,6] width:(populationUI.width-12) height:18
+        radiobuttons distributionUI_populationRadio "" labels:#("Count","Plants per m2") columns:2 pos:[8,8] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58)))))
+        label distributionUI_populationRadio_caption "Amount" pos:[6,6] width:(populationUI.width-12) height:18
         spinner distributionUI_countSpin "" range:[1,100000,200] type:#integer fieldWidth:58 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/118.4))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/118.4))))) pos:[8,8] tooltip:"Layer population before eligibility. Accepted target can retry up to its limits."
         label distributionUI_countSpin_caption "Count: " pos:[6,6] width:(populationUI.width-12) height:18
         spinner distributionUI_densitySpin "" range:[0,1000000,100] fieldWidth:58 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/123.6))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/123.6))))) pos:[8,8] tooltip:"Requested plants per square metre of receiving surface; capped at 100,000."
@@ -17782,11 +17844,14 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             )
             rowControls=#(distributionUI_populationRadio);show=(true and (true))
             for c in rowControls do c.visible=show
+            distributionUI_populationRadio_caption.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(38))+2+captionHeight
+                fitLabel distributionUI_populationRadio_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(distributionUI_populationRadio_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(20))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                distributionUI_populationRadio_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_populationRadio_caption.width=cellWidth;distributionUI_populationRadio_caption.enabled=distributionUI_populationRadio.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(distributionUI_countSpin);show=(true and (distributionUI_populationRadio.state==1))
@@ -17839,11 +17904,14 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             )
             rowControls=#(distributionUI_modeRadio);show=(advancedToggle.checked and (true))
             for c in rowControls do c.visible=show
+            distributionUI_modeRadio_caption.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(38))+2+captionHeight
+                fitLabel distributionUI_modeRadio_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(distributionUI_modeRadio_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(20))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                distributionUI_modeRadio_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_modeRadio_caption.width=cellWidth;distributionUI_modeRadio_caption.enabled=distributionUI_modeRadio.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(distributionUI_densityHeading);show=(advancedToggle.checked and (distributionUI_modeRadio.state==2))
@@ -18001,7 +18069,8 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         checkbox setsUI_enabledCheck "Enabled" pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/62.4))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/62.4)))))
         label setsUI_info "Areas use the layer's models. Overlaps combine coverage." pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))) height:58
         label brushUI_targetInfo "Add a Paint Area to begin." pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))) height:36
-        radiobuttons brushUI_modeRadio "Brush" labels:#("Paint","Erase") columns:2 pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/58)))))
+        radiobuttons brushUI_modeRadio "" labels:#("Paint","Erase") columns:2 pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/58)))))
+        label brushUI_modeRadio_caption "Brush" pos:[6,6] width:(coverageUI.width-12) height:18
         spinner brushUI_radiusSpin "" type:#worldunits range:[0.0001,1e9,20] pos:[8,8] width:((coverageUI.width-16-((amin 2 (amax 1 (floor ((coverageUI.width-8)/139.2))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI.width-8)/139.2))))) fieldWidth:58
         label brushUI_radiusSpin_caption "Radius:" pos:[6,6] width:(coverageUI.width-12) height:18
         spinner brushUI_strengthSpin "" range:[0,100,100] pos:[8,8] width:((coverageUI.width-16-((amin 2 (amax 1 (floor ((coverageUI.width-8)/139.2))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI.width-8)/139.2))))) fieldWidth:58
@@ -18322,11 +18391,14 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             )
             rowControls=#(brushUI_modeRadio);show=(true and (setsUI_paintedCheck.checked))
             for c in rowControls do c.visible=show
+            brushUI_modeRadio_caption.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(38))+2+captionHeight
+                fitLabel brushUI_modeRadio_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(brushUI_modeRadio_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(20))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                brushUI_modeRadio_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];brushUI_modeRadio_caption.width=cellWidth;brushUI_modeRadio_caption.enabled=brushUI_modeRadio.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(brushUI_radiusSpin,brushUI_strengthSpin);show=(true and (setsUI_paintedCheck.checked))
@@ -18471,7 +18543,8 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         button areaUI_addAreaScene "Select From Scene..." pos:[8,8] width:((areasUI.width-16-((amin 2 (amax 1 (floor ((areasUI.width-8)/127.2))))-1)*4)/(amin 2 (amax 1 (floor ((areasUI.width-8)/127.2))))) tooltip:"Choose closed Area shapes by name." height:22
         pickbutton areaUI_pickArea "Add: pick closed line" filter:AminScatterAreaFilter pos:[8,8] width:((areasUI.width-16-((amin 2 (amax 1 (floor ((areasUI.width-8)/127.2))))-1)*4)/(amin 2 (amax 1 (floor ((areasUI.width-8)/127.2))))) tooltip:"Pick a closed shape as an include/exclude Area shared by all sets in this layer." height:22
         button areaUI_removeArea "Remove selected rows" pos:[8,8] width:((areasUI.width-16-((amin 1 (amax 1 (floor ((areasUI.width-8)/122))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI.width-8)/122))))) tooltip:"Unlink highlighted Areas and their falloff settings; keep the scene shapes." height:22
-        radiobuttons areaUI_areaMode "Selected area mode" labels:#("Include","Exclude") columns:1 pos:[8,8] width:((areasUI.width-16-((amin 1 (amax 1 (floor ((areasUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI.width-8)/58)))))
+        radiobuttons areaUI_areaMode "" labels:#("Include","Exclude") columns:1 pos:[8,8] width:((areasUI.width-16-((amin 1 (amax 1 (floor ((areasUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI.width-8)/58)))))
+        label areaUI_areaMode_caption "Selected area mode" pos:[6,6] width:(areasUI.width-12) height:18
         label areaUI_areaHint "Exclude overrides Include." pos:[8,8] width:((areasUI.width-16-((amin 1 (amax 1 (floor ((areasUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI.width-8)/58)))))
         label areaUI_projectionHint "Top / world XY projection." pos:[8,8] width:((areasUI.width-16-((amin 1 (amax 1 (floor ((areasUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI.width-8)/58)))))
         button areaUI_refreshAreas "Refresh areas / preview" pos:[8,8] width:((areasUI.width-16-((amin 1 (amax 1 (floor ((areasUI.width-8)/137.60000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI.width-8)/137.60000000000002))))) tooltip:"Refresh Area geometry and recalculate the layer preview." height:22
@@ -18820,11 +18893,14 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             )
             rowControls=#(areaUI_areaMode);show=(true and (true))
             for c in rowControls do c.visible=show
+            areaUI_areaMode_caption.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(58))+2+captionHeight
+                fitLabel areaUI_areaMode_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(areaUI_areaMode_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(40))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                areaUI_areaMode_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];areaUI_areaMode_caption.width=cellWidth;areaUI_areaMode_caption.enabled=areaUI_areaMode.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(areaUI_areaHint);show=(true and (true))
@@ -20319,7 +20395,8 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         label flow_previewUI_faceLimitSpin_caption "Faces/layer:" pos:[6,6] width:(displayUI.width-12) height:18
         dropdownlist flow_previewUI_identificationDrop "" items:#("Model","Layer") pos:[8,8] width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/58))))) tooltip:"Use model or layer identification colors in Points, Proxy and shaded Mesh previews."
         label flow_previewUI_identificationDrop_caption "Color by" pos:[6,6] width:(displayUI.width-12) height:18
-        radiobuttons flow_previewUI_pointColorRadio "Preview color" labels:#("Solid Color","Identification Colors") columns:1 pos:[8,8] width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/58)))))
+        radiobuttons flow_previewUI_pointColorRadio "" labels:#("Solid Color","Identification Colors") columns:1 pos:[8,8] width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/58)))))
+        label flow_previewUI_pointColorRadio_caption "Preview color" pos:[6,6] width:(displayUI.width-12) height:18
         colorpicker flow_previewUI_solidColorPicker "Solid: " color:(color 100 220 120) pos:[8,8] width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/58)))))
         spinner flow_previewUI_budgetSpin "" range:[1000,500000,20000] type:#integer fieldWidth:58 width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/149.60000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/149.60000000000002))))) pos:[8,8]
         label flow_previewUI_budgetSpin_caption "Point limit: " pos:[6,6] width:(displayUI.width-12) height:18
@@ -20596,11 +20673,14 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             )
             rowControls=#(flow_previewUI_pointColorRadio);show=(advancedToggle.checked and (true))
             for c in rowControls do c.visible=show
+            flow_previewUI_pointColorRadio_caption.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(58))+2+captionHeight
+                fitLabel flow_previewUI_pointColorRadio_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(flow_previewUI_pointColorRadio_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(40))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                flow_previewUI_pointColorRadio_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];flow_previewUI_pointColorRadio_caption.width=cellWidth;flow_previewUI_pointColorRadio_caption.enabled=flow_previewUI_pointColorRadio.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(flow_previewUI_solidColorPicker);show=(advancedToggle.checked and (flow_previewUI_pointColorRadio.state==1))

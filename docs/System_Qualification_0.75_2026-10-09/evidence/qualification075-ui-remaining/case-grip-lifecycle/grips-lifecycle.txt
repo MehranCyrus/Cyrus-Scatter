@@ -1,0 +1,1 @@
+PASS: close while dragging in main/popup; actual dragged height restored after reselection; pending Manual edits retained.

@@ -1,0 +1,951 @@
+{
+  "date": "2026-10-09",
+  "completed_utc": "2026-10-09T06:38:18.297253+00:00",
+  "run": "build/vendor-native-deep-20261009-01",
+  "scope": "Deeper static native research plus read-only reopening of prior owned paint fixture. No vendor implementation copied into Cyrus.",
+  "starting_branch": "codex/ui-0.74",
+  "starting_head": "65cf22e9f4ae38f0e20a8e30dff3189d796b3c3a",
+  "ending_branch": "codex/ui-0.74",
+  "ending_head": "65cf22e9f4ae38f0e20a8e30dff3189d796b3c3a",
+  "starting_status": " M AminScatter/src/brush_host.cpp\n M AminScatter/src/max_bridge.cpp\n M docs/ForestPack_Research_2026-10-08/README.md\n M docs/README.md\n?? \"Landing Page Design/\"\n?? docs/ForestPack_Research_2026-10-08/brush/CYRUS_COMPARISON.md\n?? docs/ForestPack_Research_2026-10-08/brush/EVIDENCE.json\n?? docs/ForestPack_Research_2026-10-08/brush/NATIVE_FINDINGS.md\n?? docs/ForestPack_Research_2026-10-08/brush/README.md\n?? docs/ForestPack_Research_2026-10-08/brush/REGION_COST_EVIDENCE.json\n?? docs/ForestPack_Research_2026-10-08/brush/REGION_DESIGN.md\n?? docs/ForestPack_Research_2026-10-08/brush/reproduce/README.md\n?? docs/ForestPack_Research_2026-10-08/brush/reproduce/finalize.py\n?? docs/ForestPack_Research_2026-10-08/brush/reproduce/region_history_cost.cpp\n?? docs/ForestPack_Research_2026-10-08/brush/reproduce/region_history_cost.py\n?? docs/Receiving_Surface_Research_2026-10-08/\n?? docs/Vendor_Surface_Paint_Research_2026-10-09/\n",
+  "ending_status": "M AminScatter/include/brush.h\n M AminScatter/scripts/AminScatterObject.ms\n M AminScatter/src/brush.cpp\n M AminScatter/src/brush_host.cpp\n M AminScatter/src/max_bridge.cpp\n M AminScatter/tests/brush_tests.cpp\n M AminScatter/tools/ui/approved-layout-manifest.json\n M AminScatter/tools/ui/approved-layout-rows.cjs\n M AminScatter/tools/ui/approved-layout.cjs\n M AminScatter/tools/ui/approved-layout.test.cjs\n M AminScatter/tools/ui/inventory.cjs\n M AminScatter/tools/ui/layer-editor-tooltips.json\n M AminScatter/tools/ui/layers-control-inventory.json\n M AminScatter/tools/ui/templates/approved-main-ui.ms\n M AminScatter/tools/ui/templates/unified-core.ms\n M CyrusMCP/cyrus_mcp/feature-catalog.json\n M CyrusMCP/tests/test_feature_catalog.py\n M docs/ForestPack_Research_2026-10-08/README.md\n M docs/README.md\n M tools/procedural_lab/check_generated.py\n?? \"Landing Page Design/\"\n?? docs/ForestPack_Research_2026-10-08/brush/CYRUS_COMPARISON.md\n?? docs/ForestPack_Research_2026-10-08/brush/EVIDENCE.json\n?? docs/ForestPack_Research_2026-10-08/brush/NATIVE_FINDINGS.md\n?? docs/ForestPack_Research_2026-10-08/brush/README.md\n?? docs/ForestPack_Research_2026-10-08/brush/REGION_COST_EVIDENCE.json\n?? docs/ForestPack_Research_2026-10-08/brush/REGION_DESIGN.md\n?? docs/ForestPack_Research_2026-10-08/brush/reproduce/README.md\n?? docs/ForestPack_Research_2026-10-08/brush/reproduce/finalize.py\n?? docs/ForestPack_Research_2026-10-08/brush/reproduce/region_history_cost.cpp\n?? docs/ForestPack_Research_2026-10-08/brush/reproduce/region_history_cost.py\n?? docs/Receiving_Surface_Research_2026-10-08/\n?? docs/Vendor_Native_Deep_Research_2026-10-09/\n?? docs/Vendor_Surface_Paint_Research_2026-10-09/\n?? tools/procedural_lab/Max_Layer_Regions_074.ms\n?? tools/procedural_lab/Max_Layer_Regions_074_Legacy.ms",
+  "installed_inputs": [
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ForestPackLite2027\\PackageContents.xml",
+      "sha256": "b7020c08adc658afb619ae9f1897161c9fd3ec7d9709da332a10602ad79a343a",
+      "bytes": 1848,
+      "preserved": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ForestPackLite2027\\Contents\\plugins\\2027\\ForestPackLite.dlo",
+      "sha256": "23b25adf28954a4cd6c3d7fe5f7ea90b6a6e9be480f8a422fa7ef8b99c9a325d",
+      "bytes": 3357768,
+      "preserved": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ForestPackLite2027\\Contents\\scripts\\startup\\forestpack.ms",
+      "sha256": "8f51b8ddc2a79cb29c0cfbcbb35a18364118de2ebc83563e8d37e38ed91122bd",
+      "bytes": 5762,
+      "preserved": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ChaosScatter3dsMax2027\\PackageContents.xml",
+      "sha256": "b6ef25f1507552311f3523edc7c5b4edea1d6c3a48f41a063e1ec823c8cb7da1",
+      "bytes": 1464,
+      "preserved": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ChaosScatter3dsMax2027\\ChaosScatterMax2027.dlt",
+      "sha256": "eabcb0b258d4a1c4a8435d67deb0cf20bb2d363eb74802df8b2fa308552ed327",
+      "bytes": 79360,
+      "preserved": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ChaosScatter3dsMax2027\\ScatterMax_Release-2027.dll",
+      "sha256": "f7fdd25428e8374174501e6bb4ebd3b83e21c5ba2c33fcdc94280c022695b887",
+      "bytes": 2318336,
+      "preserved": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ChaosScatter3dsMax2027\\ScatterCore.ForScatter_Release.dll",
+      "sha256": "069ababd0dbc09218928f24d5bdc860509b237f34af703581e3fd78ed5d3cf86",
+      "bytes": 1195008,
+      "preserved": true
+    }
+  ],
+  "source_comparisons": [
+    {
+      "path": "AminScatter/src/scatter.cpp",
+      "before": "4aebe37a65d54a8b9f0c4980de1c391936fe283c3532998dab58bed7b8a14ae6",
+      "after": "4aebe37a65d54a8b9f0c4980de1c391936fe283c3532998dab58bed7b8a14ae6",
+      "unchanged": true
+    },
+    {
+      "path": "AminScatter/src/max_bridge.cpp",
+      "before": "e9794eb23faa48f0a4c9f5f04003934fff5b2300f7838b0d022d56dfc0e0dd4f",
+      "after": "e9794eb23faa48f0a4c9f5f04003934fff5b2300f7838b0d022d56dfc0e0dd4f",
+      "unchanged": true
+    },
+    {
+      "path": "AminScatter/src/procedural.cpp",
+      "before": "3bbdd2ef5463edb51af32a5ff3a7c8d5579d602027dc14738edf63a16185402c",
+      "after": "3bbdd2ef5463edb51af32a5ff3a7c8d5579d602027dc14738edf63a16185402c",
+      "unchanged": true
+    },
+    {
+      "path": "AminScatter/src/point_display.cpp",
+      "before": "358c5ff13763542dcc27eb2d8542686a622c051fa35a5161edf3dcb329173c44",
+      "after": "358c5ff13763542dcc27eb2d8542686a622c051fa35a5161edf3dcb329173c44",
+      "unchanged": true
+    },
+    {
+      "path": "AminScatter/src/mesh_display.inc",
+      "before": "91b694e319d1d5864f1ae6a6dd67c8bb033d44420f770ed0645c4cc4547d8c39",
+      "after": "91b694e319d1d5864f1ae6a6dd67c8bb033d44420f770ed0645c4cc4547d8c39",
+      "unchanged": true
+    },
+    {
+      "path": "AminScatter/src/brush_host.cpp",
+      "before": "b2c742889124070e9f644cfce347a172569c9725a2e371946a706899e1ee0dd0",
+      "after": "b2c742889124070e9f644cfce347a172569c9725a2e371946a706899e1ee0dd0",
+      "unchanged": true
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/unified-core.ms",
+      "before": "19d85227200f339e716af9599bcc3ee24dcc62aecab51ac7559dc5dbaab4d3e8",
+      "after": "5fc3e65a23bd8a2e4c7ea16c8cce27d922064f9d09701f2fc1f5f4ecdd4f496d",
+      "unchanged": false
+    },
+    {
+      "path": "AminScatter/scripts/AminScatterObject.ms",
+      "before": "df533e6f4c5de8909737808125df0ce116bcc6076ad4dc263501051a3700b402",
+      "after": "b297d60a2f9d9232f1aa4e859a386e620e69be12137ca2e191d79ef2462e1cfb",
+      "unchanged": false
+    }
+  ],
+  "concurrent_workspace_changes": "Product files changed during this research; this pass edited only its research folder and docs navigation. Current source is not runtime-qualified by these results.",
+  "source_inventory": {
+    "ForestPackLite2027": [
+      "Contents/scripts/forest_utils.ms",
+      "Contents/scripts/optmat.mse",
+      "Contents/scripts/startup/forestpack.ms"
+    ],
+    "ChaosScatter3dsMax2027": []
+  },
+  "toolchain": {
+    "ghidra": "12.1.4",
+    "ghidra_mcp": "6.0.0",
+    "java": "21",
+    "max": "29.1.0.11426"
+  },
+  "exports": [
+    {
+      "module": "ScatterMax_Release-2027.dll",
+      "batch": "adapter-batch1",
+      "label": "layer_core_config",
+      "rva": "0x84190",
+      "bytes": 1979,
+      "instructions": 469,
+      "completed": true
+    },
+    {
+      "module": "ScatterMax_Release-2027.dll",
+      "batch": "adapter-batch1",
+      "label": "topology_warning",
+      "rva": "0x6e840",
+      "bytes": 263,
+      "instructions": 62,
+      "completed": true
+    },
+    {
+      "module": "ScatterMax_Release-2027.dll",
+      "batch": "adapter-batch1",
+      "label": "stroke_edit_owner",
+      "rva": "0x82060",
+      "bytes": 910,
+      "instructions": 239,
+      "completed": true
+    },
+    {
+      "module": "ScatterMax_Release-2027.dll",
+      "batch": "adapter-batch1",
+      "label": "stroke_change_other",
+      "rva": "0x9c870",
+      "bytes": 367,
+      "instructions": 97,
+      "completed": true
+    },
+    {
+      "module": "ScatterMax_Release-2027.dll",
+      "batch": "adapter-batch1",
+      "label": "stroke_callback",
+      "rva": "0xa0820",
+      "bytes": 64,
+      "instructions": 15,
+      "completed": true
+    },
+    {
+      "module": "ScatterMax_Release-2027.dll",
+      "batch": "adapter-batch1",
+      "label": "targets_cache_reset",
+      "rva": "0x9c650",
+      "bytes": 544,
+      "instructions": 141,
+      "completed": true
+    },
+    {
+      "module": "ScatterMax_Release-2027.dll",
+      "batch": "adapter-batch2",
+      "label": "distribution_change_prepare",
+      "rva": "0x88f30",
+      "bytes": 513,
+      "instructions": 154,
+      "completed": true
+    },
+    {
+      "module": "ScatterMax_Release-2027.dll",
+      "batch": "adapter-batch2",
+      "label": "parameter_registration",
+      "rva": "0x7050",
+      "bytes": 34679,
+      "instructions": 3550,
+      "completed": true
+    },
+    {
+      "module": "ScatterMax_Release-2027.dll",
+      "batch": "adapter-batch3",
+      "label": "receiver_signature_build",
+      "rva": "0x88330",
+      "bytes": 114,
+      "instructions": 32,
+      "completed": true
+    },
+    {
+      "module": "ScatterMax_Release-2027.dll",
+      "batch": "adapter-batch3",
+      "label": "receiver_signature_compare",
+      "rva": "0x26180",
+      "bytes": 309,
+      "instructions": 92,
+      "completed": true
+    },
+    {
+      "module": "ScatterMax_Release-2027.dll",
+      "batch": "adapter-batch3",
+      "label": "paint_cache_reset_callback",
+      "rva": "0x919b0",
+      "bytes": 11,
+      "instructions": 3,
+      "completed": true
+    },
+    {
+      "module": "ScatterMax_Release-2027.dll",
+      "batch": "adapter-batch3",
+      "label": "canvas_hit_path",
+      "rva": "0xa1b70",
+      "bytes": 360,
+      "instructions": 95,
+      "completed": true
+    },
+    {
+      "module": "ScatterMax_Release-2027.dll",
+      "batch": "adapter-batch3",
+      "label": "canvas_hit_dispatch",
+      "rva": "0x9fe80",
+      "bytes": 62,
+      "instructions": 20,
+      "completed": true
+    },
+    {
+      "module": "ScatterMax_Release-2027.dll",
+      "batch": "adapter-batch3",
+      "label": "canvas_node_map",
+      "rva": "0xa0650",
+      "bytes": 78,
+      "instructions": 28,
+      "completed": true
+    },
+    {
+      "module": "ScatterMax_Release-2027.dll",
+      "batch": "adapter-batch4",
+      "label": "target_node_signature",
+      "rva": "0x25ab0",
+      "bytes": 884,
+      "instructions": 259,
+      "completed": true
+    },
+    {
+      "module": "ScatterMax_Release-2027.dll",
+      "batch": "adapter-batch4",
+      "label": "core_data_cache_construct",
+      "rva": "0x73de0",
+      "bytes": 557,
+      "instructions": 131,
+      "completed": true
+    },
+    {
+      "module": "ScatterMax_Release-2027.dll",
+      "batch": "adapter-batch4",
+      "label": "core_data_cache_swap",
+      "rva": "0x89c20",
+      "bytes": 172,
+      "instructions": 51,
+      "completed": true
+    },
+    {
+      "module": "ScatterMax_Release-2027.dll",
+      "batch": "adapter-batch4",
+      "label": "stroke_session_targets",
+      "rva": "0x9c9e0",
+      "bytes": 712,
+      "instructions": 203,
+      "completed": true
+    },
+    {
+      "module": "ScatterMax_Release-2027.dll",
+      "batch": "adapter-batch5",
+      "label": "evaluated_triobject_acquire",
+      "rva": "0x95c20",
+      "bytes": 137,
+      "instructions": 35,
+      "completed": true
+    },
+    {
+      "module": "ScatterMax_Release-2027.dll",
+      "batch": "adapter-batch6",
+      "label": "triobject_conversion",
+      "rva": "0x95cb0",
+      "bytes": 792,
+      "instructions": 218,
+      "completed": true
+    },
+    {
+      "module": "ScatterMax_Release-2027.dll",
+      "batch": "adapter-batch6",
+      "label": "stroke_receiver_remap",
+      "rva": "0x97ce0",
+      "bytes": 3216,
+      "instructions": 844,
+      "completed": true
+    },
+    {
+      "module": "ScatterCore.ForScatter_Release.dll",
+      "batch": "core-batch1",
+      "label": "strokes_evaluator_owner",
+      "rva": "0x16870",
+      "bytes": 474,
+      "instructions": 127,
+      "completed": true
+    },
+    {
+      "module": "ScatterCore.ForScatter_Release.dll",
+      "batch": "core-batch1",
+      "label": "instance_target_lookup",
+      "rva": "0x17fc0",
+      "bytes": 42,
+      "instructions": 11,
+      "completed": true
+    },
+    {
+      "module": "ScatterCore.ForScatter_Release.dll",
+      "batch": "core-batch2",
+      "label": "layer_model_resolve",
+      "rva": "0x15910",
+      "bytes": 773,
+      "instructions": 218,
+      "completed": true
+    },
+    {
+      "module": "ScatterCore.ForScatter_Release.dll",
+      "batch": "core-batch2",
+      "label": "cluster_layers_construct",
+      "rva": "0x15790",
+      "bytes": 371,
+      "instructions": 104,
+      "completed": true
+    },
+    {
+      "module": "ScatterCore.ForScatter_Release.dll",
+      "batch": "core-batch3",
+      "label": "stroke_bounds_prepare",
+      "rva": "0x153b0",
+      "bytes": 856,
+      "instructions": 214,
+      "completed": true
+    },
+    {
+      "module": "ScatterCore.ForScatter_Release.dll",
+      "batch": "core-batch3",
+      "label": "stroke_acceleration_build",
+      "rva": "0x16510",
+      "bytes": 858,
+      "instructions": 218,
+      "completed": true
+    },
+    {
+      "module": "ScatterCore.ForScatter_Release.dll",
+      "batch": "core-batch4",
+      "label": "layer_tree_split",
+      "rva": "0x17330",
+      "bytes": 1435,
+      "instructions": 393,
+      "completed": true
+    },
+    {
+      "module": "ScatterCore.ForScatter_Release.dll",
+      "batch": "core-batch4",
+      "label": "layer_evaluate_callsite",
+      "rva": "0x5b5e0",
+      "bytes": 1347,
+      "instructions": 370,
+      "completed": true
+    },
+    {
+      "module": "ScatterCore.ForScatter_Release.dll",
+      "batch": "core-batch5",
+      "label": "instance_worker",
+      "rva": "0x508c0",
+      "bytes": 4858,
+      "instructions": 1094,
+      "completed": true
+    },
+    {
+      "module": "ScatterCore.ForScatter_Release.dll",
+      "batch": "core-batch6",
+      "label": "stroke_layer_query",
+      "rva": "0x16ca0",
+      "bytes": 341,
+      "instructions": 93,
+      "completed": true
+    },
+    {
+      "module": "ScatterCore.ForScatter_Release.dll",
+      "batch": "core-batch6",
+      "label": "stroke_model_select",
+      "rva": "0x179f0",
+      "bytes": 826,
+      "instructions": 241,
+      "completed": true
+    },
+    {
+      "module": "ScatterCore.ForScatter_Release.dll",
+      "batch": "core-batch7",
+      "label": "stroke_spatial_query",
+      "rva": "0x14a20",
+      "bytes": 807,
+      "instructions": 212,
+      "completed": true
+    },
+    {
+      "module": "ScatterCore.ForScatter_Release.dll",
+      "batch": "core-batch8",
+      "label": "stroke_tube_construct",
+      "rva": "0x32bd0",
+      "bytes": 27,
+      "instructions": 8,
+      "completed": true
+    },
+    {
+      "module": "ScatterCore.ForScatter_Release.dll",
+      "batch": "core-batch8",
+      "label": "stroke_tube_contains",
+      "rva": "0x33130",
+      "bytes": 130,
+      "instructions": 39,
+      "completed": true
+    },
+    {
+      "module": "ForestPackLite.dlo",
+      "batch": "forest-batch1",
+      "label": "sample_eviction_compare",
+      "requested": "18007a650",
+      "result": "initially missing; recovered later by bounded leaf helper"
+    },
+    {
+      "module": "ForestPackLite.dlo",
+      "batch": "forest-batch1",
+      "label": "sample_eviction",
+      "rva": "0x7a670",
+      "bytes": 1239,
+      "instructions": 319,
+      "completed": true
+    },
+    {
+      "module": "ForestPackLite.dlo",
+      "batch": "forest-batch1",
+      "label": "contour_surface_projection",
+      "rva": "0x942e0",
+      "bytes": 733,
+      "instructions": 183,
+      "completed": true
+    },
+    {
+      "module": "ForestPackLite.dlo",
+      "batch": "forest-batch1",
+      "label": "display_revision_gate",
+      "rva": "0x415a0",
+      "bytes": 502,
+      "instructions": 109,
+      "completed": true
+    },
+    {
+      "module": "ForestPackLite.dlo",
+      "batch": "forest-batch2",
+      "label": "sample_eviction_compare",
+      "rva": "0x7a650",
+      "bytes": 28,
+      "instructions": 7,
+      "completed": true
+    },
+    {
+      "module": "ForestPackLite.dlo",
+      "batch": "forest-batch2",
+      "label": "sample_touch",
+      "rva": "0x79b80",
+      "bytes": 1067,
+      "instructions": 270,
+      "completed": true
+    },
+    {
+      "module": "ForestPackLite.dlo",
+      "batch": "forest-batch2",
+      "label": "sample_initialize",
+      "rva": "0x79520",
+      "bytes": 124,
+      "instructions": 21,
+      "completed": true
+    },
+    {
+      "module": "ForestPackLite.dlo",
+      "batch": "forest-batch2",
+      "label": "projection_triangle_solve",
+      "rva": "0x930a0",
+      "bytes": 655,
+      "instructions": 150,
+      "completed": true
+    }
+  ],
+  "export_summary": {
+    "selected_records": 43,
+    "complete_records": 42,
+    "unique_functions": 42,
+    "unique_decoded_bytes": 64216,
+    "unique_instructions": 11139,
+    "not_source_coverage": true
+  },
+  "sdk_witness": {
+    "compiler": "MSVC 14.38.33130",
+    "sdk": "Max 2027",
+    "exit_code": 0,
+    "linked": false,
+    "executed": false,
+    "records": [
+      {
+        "name": "Mesh",
+        "command": [
+          "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+          "/nologo",
+          "/c",
+          "/std:c++17",
+          "/EHsc",
+          "/D_UNICODE",
+          "/DUNICODE",
+          "/DNOMINMAX",
+          "/IF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\tooling\\max2027-sdk\\Program Files\\Autodesk\\3ds Max 2027 SDK\\maxsdk\\include",
+          "/FoF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vendor-native-deep-20261009-01\\sdk-qualified\\Mesh.obj",
+          "/d1reportSingleClassLayoutMesh",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vendor-native-deep-20261009-01\\sdk-qualified\\witness.cpp"
+        ],
+        "exit_code": 0,
+        "log_sha256": "bafa5399e4c067fc2fb881c7dfa6bfcd25a35702c4d4f36c4e4922da20ca281c"
+      },
+      {
+        "name": "TriObject",
+        "command": [
+          "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+          "/nologo",
+          "/c",
+          "/std:c++17",
+          "/EHsc",
+          "/D_UNICODE",
+          "/DUNICODE",
+          "/DNOMINMAX",
+          "/IF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\tooling\\max2027-sdk\\Program Files\\Autodesk\\3ds Max 2027 SDK\\maxsdk\\include",
+          "/FoF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vendor-native-deep-20261009-01\\sdk-qualified\\TriObject.obj",
+          "/d1reportSingleClassLayoutTriObject",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vendor-native-deep-20261009-01\\sdk-qualified\\witness.cpp"
+        ],
+        "exit_code": 0,
+        "log_sha256": "a1ae6a0264549efb6940630fe844dc13c8f6ea8a58b2bc3e7a409394d48ba4e8"
+      },
+      {
+        "name": "BlockWrite_Value",
+        "command": [
+          "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.38.33130\\bin\\Hostx64\\x64\\cl.exe",
+          "/nologo",
+          "/c",
+          "/std:c++17",
+          "/EHsc",
+          "/D_UNICODE",
+          "/DUNICODE",
+          "/DNOMINMAX",
+          "/IF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\tooling\\max2027-sdk\\Program Files\\Autodesk\\3ds Max 2027 SDK\\maxsdk\\include",
+          "/FoF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vendor-native-deep-20261009-01\\sdk-qualified\\BlockWrite_Value.obj",
+          "/d1reportSingleClassLayoutBlockWrite_Value",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vendor-native-deep-20261009-01\\sdk-qualified\\witness.cpp"
+        ],
+        "exit_code": 0,
+        "log_sha256": "69ab37d96cbdc4d84ac8f2576b837b00b889387760def1ca2f36bc9ca881ce57"
+      }
+    ],
+    "source_sha256": "7d5f1860b58ef518bcb7c0178fb7dd328d0c2de1995b4a669064b71e213bc374"
+  },
+  "host_probe": {
+    "points": 5,
+    "records": [
+      {
+        "index": 1,
+        "count": 1,
+        "receiver": 0,
+        "layer": 1,
+        "operation": 0,
+        "radius": 20.0
+      },
+      {
+        "index": 2,
+        "count": 2,
+        "receiver": 0,
+        "layer": 2,
+        "operation": 0,
+        "radius": 20.0
+      },
+      {
+        "index": 3,
+        "count": 2,
+        "receiver": 0,
+        "layer": 2,
+        "operation": 1,
+        "radius": 20.0
+      }
+    ],
+    "receiver_faces": {
+      "0": 32,
+      "1": 528
+    },
+    "unique_anchors": 2,
+    "resolved": [
+      {
+        "index": 1,
+        "u": 0.0269197,
+        "v": 0.0646967,
+        "face": 19,
+        "record": 1,
+        "receiver": 0,
+        "position_scene_units": [
+          -1.6174175,
+          0.6729925,
+          0.0
+        ]
+      },
+      {
+        "index": 2,
+        "u": 0.0269197,
+        "v": 0.0646967,
+        "face": 19,
+        "record": 2,
+        "receiver": 0,
+        "position_scene_units": [
+          -1.6174175,
+          0.6729925,
+          0.0
+        ]
+      },
+      {
+        "index": 3,
+        "u": 0.0181109,
+        "v": 0.00284912,
+        "face": 12,
+        "record": 2,
+        "receiver": 0,
+        "position_scene_units": [
+          0.071228,
+          -0.45277249999999997,
+          0.0
+        ]
+      },
+      {
+        "index": 4,
+        "u": 0.0269197,
+        "v": 0.0646967,
+        "face": 19,
+        "record": 3,
+        "receiver": 0,
+        "position_scene_units": [
+          -1.6174175,
+          0.6729925,
+          0.0
+        ]
+      },
+      {
+        "index": 5,
+        "u": 0.0181109,
+        "v": 0.00284912,
+        "face": 12,
+        "record": 3,
+        "receiver": 0,
+        "position_scene_units": [
+          0.071228,
+          -0.45277249999999997,
+          0.0
+        ]
+      }
+    ],
+    "coordinate_limit": "Flat receiver has identity transform. Public MAXScript text precision only; no curved or nonidentity anchor reconstruction test."
+  },
+  "prior_owned_scene": {
+    "path": "build/vendor-surface-paint-20261009-01/host/vendor-fixture.max",
+    "sha256": "0c9833af69d4e886f84bf0509976a860d6f7849b437125e64674e4f163d036bd",
+    "preserved": true
+  },
+  "cleanup": {
+    "max": {
+      "pid": 49592,
+      "reason": "Owned read-only fixture probe complete",
+      "stopped": true,
+      "command": "\"C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe\" -q -i F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vendor-native-deep-20261009-01\\host\\max.ini -p F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vendor-native-deep-20261009-01\\host\\plugins.ini -U MAXScript F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vendor-native-deep-20261009-01\\host\\start.ms -listenerlog F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vendor-native-deep-20261009-01\\host\\listener.log"
+    },
+    "ghidra": {
+      "pid": 42196,
+      "stopped": true,
+      "command": "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\tools\\java\\jdk-21.0.12.1+1\\bin\\java.exe @F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vendor-native-deep-20261009-01\\launch.args",
+      "port": 18091
+    }
+  },
+  "local_artifacts": {
+    "adapter-batch1/manifest.json": {
+      "sha256": "d8b01e9ebd4c18d046e8de971c9363ebe8ee85fe10babea7108d8a51005a8051",
+      "bytes": 3960
+    },
+    "adapter-batch1/ledger.tsv": {
+      "sha256": "7ba5cf965e63d648c39325a75fb84d74a1e31c9c4c8730f66b404e3a60e74603",
+      "bytes": 405
+    },
+    "adapter-batch2/manifest.json": {
+      "sha256": "8f55760e87508888d6896065851d7c12a7c6726210e72c158fbbdfe361d34699",
+      "bytes": 1724
+    },
+    "adapter-batch2/ledger.tsv": {
+      "sha256": "0298fb7a1065eecf3cc1ffaa5400a46cb4ed865219a4ad74d39710d041a7cdfc",
+      "bytes": 203
+    },
+    "adapter-batch3/manifest.json": {
+      "sha256": "84bb5d160600af08aacdd8f2783da278c69833bb0a258d7de84235594d4d35cc",
+      "bytes": 4036
+    },
+    "adapter-batch3/ledger.tsv": {
+      "sha256": "72833955118dbcc462319474badec220b711c9cacea95872480e8d6032e77456",
+      "bytes": 417
+    },
+    "adapter-batch4/manifest.json": {
+      "sha256": "957693bd8ddcfa28eaadde545edcf0348c4373ab3e5ab4afcd404820e63538ff",
+      "bytes": 2888
+    },
+    "adapter-batch4/ledger.tsv": {
+      "sha256": "e724adfd01105bb279b879f889abf78053826597a5fb09a1a5b5d23aee69c12b",
+      "bytes": 314
+    },
+    "adapter-batch5/manifest.json": {
+      "sha256": "25731bb2def978f496a39928384670de5e0ed3556d3d7fde97bbaca19f8f0653",
+      "bytes": 1123
+    },
+    "adapter-batch5/ledger.tsv": {
+      "sha256": "130ddfb0324d8f54c6ea00ea0b36a545f094fbdda59ed4be181c8874ae14e97d",
+      "bytes": 136
+    },
+    "adapter-batch6/manifest.json": {
+      "sha256": "85393d354582988826f752afaebbf2b2c2d70e4a806ddab96c3f13a4dbb10717",
+      "bytes": 1688
+    },
+    "adapter-batch6/ledger.tsv": {
+      "sha256": "1878506c23bbe2f21ddf84e3fa38b8521a1a33a6ecc874531d25756720a4b90e",
+      "bytes": 192
+    },
+    "core-batch1/manifest.json": {
+      "sha256": "c18a3ee315195fc1b002a35b3cd4774b14c2cc7857bc16468cd34b06f21a21c8",
+      "bytes": 1702
+    },
+    "core-batch1/ledger.tsv": {
+      "sha256": "377210d7e51fca2e6ff8ecfabecc1617c540ec23586ba3fe0c282e970c2cacee",
+      "bytes": 191
+    },
+    "core-batch2/manifest.json": {
+      "sha256": "7a680d9d9bd677a4656cf2a648dc89c92f7f1eacabde7269fec700245951250f",
+      "bytes": 1697
+    },
+    "core-batch2/ledger.tsv": {
+      "sha256": "9d960aa32fbb2d901568dd68a869fa090e007cc48556097d1ef39a7b8868c873",
+      "bytes": 192
+    },
+    "core-batch3/manifest.json": {
+      "sha256": "bfbbdeaf8fde695741877d695cd5e7a5c3baa178e1f513c96694cfd4d0b80b5d",
+      "bytes": 1709
+    },
+    "core-batch3/ledger.tsv": {
+      "sha256": "68c9224a7c26167d23c0a668177713dcde9422861fd5c2a31033b914c3ef45ad",
+      "bytes": 195
+    },
+    "core-batch4/manifest.json": {
+      "sha256": "53046cc371f0d3340af5132958448d5b83b648f993ed63dd6e625f406accdc81",
+      "bytes": 1686
+    },
+    "core-batch4/ledger.tsv": {
+      "sha256": "4e690875fa89b3c30e11a3bf075394996eaedb6a1733680e18d3a1acb3682c3d",
+      "bytes": 192
+    },
+    "core-batch5/manifest.json": {
+      "sha256": "24800b7b26f8eaa62b88f10bbdd3f0949699cc4d9f01d20df68ed94db8ecf284",
+      "bytes": 1080
+    },
+    "core-batch5/ledger.tsv": {
+      "sha256": "5c718d99eda0a2797a16aa191fe647a0d39da4bd4484ad77ae3c4668455fdadb",
+      "bytes": 128
+    },
+    "core-batch6/manifest.json": {
+      "sha256": "0a8839d04c38c6333c1a4c3b33dc588277d5085e52a6560cf1de484ca0f455ca",
+      "bytes": 1669
+    },
+    "core-batch6/ledger.tsv": {
+      "sha256": "ba5549937678f7f0e12e473f66ddb84c6a56e3a49e215bdef249fa033fec5103",
+      "bytes": 185
+    },
+    "core-batch7/manifest.json": {
+      "sha256": "8343c2d63c844245dc99101fa930a95f86f0b95914a2c08e53f6a4ea47fb738a",
+      "bytes": 1097
+    },
+    "core-batch7/ledger.tsv": {
+      "sha256": "b2a3b30ac6819c9104c6743f6222a2d4d76ddc77010df674267b7ed6f2ecd7cb",
+      "bytes": 130
+    },
+    "core-batch8/manifest.json": {
+      "sha256": "ab9bab08a4574d546a6e7fe3a519bf48ffa864d5401066f10432482c06c3ffdf",
+      "bytes": 1680
+    },
+    "core-batch8/ledger.tsv": {
+      "sha256": "d570095605699757a3a820383c3cddb4dd00408a51954529ade3d42594d7572d",
+      "bytes": 185
+    },
+    "forest-batch1/manifest.json": {
+      "sha256": "81dab6141bdedec498ace52681121cc57d52d66afa2309c73c4d5e7091cd57ad",
+      "bytes": 2361
+    },
+    "forest-batch1/ledger.tsv": {
+      "sha256": "d0b05f34865f5125bec66e8d0e345f227002991830881f7cde3a400d97845ae9",
+      "bytes": 294
+    },
+    "forest-batch2/manifest.json": {
+      "sha256": "ed5900bdc1cdf699c3e26a35e59d14113a38aad99c93105f02638fb662d77ece",
+      "bytes": 2830
+    },
+    "forest-batch2/ledger.tsv": {
+      "sha256": "98c91123f89e238d162d03cc593a02f041a74d6338e1c1cb0d6388130cc70ee4",
+      "bytes": 301
+    },
+    "capture.json": {
+      "sha256": "a494ecea19632bde1d91a8fcc165bdac17c02aa0bc6bce8517d589d00bff644f",
+      "bytes": 4858
+    },
+    "saved-paint-analysis.json": {
+      "sha256": "65e26016f31310bf536fa173f19e09b08a417353e5957669d2f08b7cf3809ad2",
+      "bytes": 1922
+    },
+    "sdk-qualified/receipt.json": {
+      "sha256": "a65a63dbe9a5e71823a6016b9c3523c99a773be0cd0b58a22b5d9b51b7f0dab6",
+      "bytes": 2888
+    },
+    "sdk-qualified/BlockWrite_Value.txt": {
+      "sha256": "69ab37d96cbdc4d84ac8f2576b837b00b889387760def1ca2f36bc9ca881ce57",
+      "bytes": 4366
+    },
+    "sdk-qualified/Mesh.txt": {
+      "sha256": "bafa5399e4c067fc2fb881c7dfa6bfcd25a35702c4d4f36c4e4922da20ca281c",
+      "bytes": 35743
+    },
+    "sdk-qualified/TriObject.txt": {
+      "sha256": "a1ae6a0264549efb6940630fe844dc13c8f6ea8a58b2bc3e7a409394d48ba4e8",
+      "bytes": 17276
+    },
+    "host/saved-paint-decoded.tsv": {
+      "sha256": "1e9130ee5ef5f127ea628a1aba568f4e11eca543131587c323ba269a28902b17",
+      "bytes": 48386
+    },
+    "host/launch.json": {
+      "sha256": "dc86d9e40fced7c7e7fbd886d26f7b31f890a5eec7eeeb872d24d3267deb9847",
+      "bytes": 1178
+    },
+    "host/loaded.tsv": {
+      "sha256": "28b12a15133f0d7a56ec48e6db4195729605da10a051bb75a729d64ff19d2841",
+      "bytes": 2056
+    },
+    "host/response.txt": {
+      "sha256": "efd84ccbcfe89631a2314e6a652f7f093bb5a936b69263d4e407c8fcc9d6be15",
+      "bytes": 124
+    },
+    "host/cleanup.json": {
+      "sha256": "0bf1a0ffddd573d5ba78c00412bd8c247246b13669ea657194fd2ce32387fd02",
+      "bytes": 581
+    },
+    "analysis-cleanup.json": {
+      "sha256": "47658e23d14da743dd6376ffecac602c6a1d65e01ff89e78e3aa7ed0dd4d11cb",
+      "bytes": 274
+    },
+    "adapter-final-save.json": {
+      "sha256": "2008e0f513e576599703d92073c9a516869ea01e624e1209daeb45fedacc6f31",
+      "bytes": 95
+    },
+    "adapter-save.json": {
+      "sha256": "2008e0f513e576599703d92073c9a516869ea01e624e1209daeb45fedacc6f31",
+      "bytes": 95
+    },
+    "core-save.json": {
+      "sha256": "a5e7eb587829bdba382f4c509d4a87de512c5fb659d700dad29fb06ccf0163d6",
+      "bytes": 102
+    },
+    "forest-save.json": {
+      "sha256": "c08df9a898bec7f1687d567a39880aad2ae352c90fbe560429d6187b30b1c34d",
+      "bytes": 86
+    },
+    "adapter-close.json": {
+      "sha256": "e56302efad3be55fb592ff1af8efaeb9529e1b05effe78910e68e754ac54a2d6",
+      "bytes": 45
+    },
+    "adapter-final-close.json": {
+      "sha256": "e56302efad3be55fb592ff1af8efaeb9529e1b05effe78910e68e754ac54a2d6",
+      "bytes": 45
+    },
+    "core-close.json": {
+      "sha256": "aada2e1d3a86af38f18ffafbd795a523859f261629a03c78eba5ec050b163dc0",
+      "bytes": 51
+    },
+    "forest-close.json": {
+      "sha256": "53f47dd666f2c539d9b8eb00ad3ecdf27712e74de2f800fb0bf72b2aefb8be53",
+      "bytes": 44
+    },
+    "field-f48f0.tsv": {
+      "sha256": "118130af75bd43bb7632f3c8dc2d11a9905f0d1ac63e0c4dd47eec42570e176d",
+      "bytes": 261
+    },
+    "leaf-18007a650.response.txt": {
+      "sha256": "ecb6dd541f05b7938a1221ad175eddf7029546c51b486560c76f3acd32fa5b58",
+      "bytes": 725
+    },
+    "leaf-18007a650.txt": {
+      "sha256": "3e83d438da0272e56b4abdf64273087098702b1aa468e206ee101690963f7e83",
+      "bytes": 227
+    }
+  },
+  "excluded": [
+    "Initial RTTI hierarchy-descriptor-as-vtable guesses: all inspected pointers non-executable.",
+    "Initial probe JSON receipt parsing failed; endpoint returns text. TSV output was valid, harness corrected.",
+    "Exploratory labels canvas_hit_path, canvas_hit_dispatch, canvas_node_map and stroke_layer_query do not describe actual roles; corrections in CODE_MAP.md.",
+    "No placement-cache hit rates, timings, FPS or buffer-upload counts measured."
+  ],
+  "official_sources": [
+    {
+      "url": "https://docs.itoosoft.com/forestpack/forest-plugin/areas",
+      "rechecked": "2026-10-09"
+    },
+    {
+      "url": "https://docs.itoosoft.com/forestpack/forest-plugin/surfaces",
+      "rechecked": "2026-10-09"
+    },
+    {
+      "url": "https://docs.itoosoft.com/forestpack/forest-plugin/animation",
+      "rechecked": "2026-10-09"
+    },
+    {
+      "url": "https://documentation.chaos.com/space/CRMAX/124525180/Chaos%20Scatter",
+      "rechecked": "2026-10-09",
+      "limitation": "Web text extraction returned zero lines in this pass; prior report remains the documented source."
+    }
+  ]
+}

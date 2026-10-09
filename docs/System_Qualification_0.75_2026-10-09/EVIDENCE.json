@@ -1,0 +1,1339 @@
+{
+  "version": "0.75",
+  "date": "2026-10-09",
+  "base_commit": "108e26c6322cd8bcad392bf6fa266ccc6b96b20c",
+  "computer_use": false,
+  "normal_profile_installation": false,
+  "hosts": [
+    {
+      "name": "procedural07-ui-qualification075-behavior",
+      "passed": false,
+      "stopped": true,
+      "installed_files_unchanged": true,
+      "script_sha256": "72cdf16b0825a5e67a9792a3eee3eddfad1589e99eab0cae7a529701189e8f15",
+      "binaries": {
+        "AminScatter.dlx": "8059047d70f73386232322bce1b22b43e500efc1ae4769f61712bf6635c9d33e",
+        "CyrusBrush.dlx": "63c80ff15b7c0ecb0bcfd96ba395a81b3978f1eb777d408fe01f025aea80868b",
+        "CyrusBrushStorage.dlh": "042e5d9fa3a9f1c583f70c25100459673ecc35e11f5aaeb246d3f3eea8b32fb6",
+        "CyrusScatterEdit.dlm": "c0b79bc7ae50e7d8b5774cd1f8f99eeb3c49c3e9685b0d7ad9b3fa9d66fb9b14",
+        "CyrusSurfaceAnalyzer.dlx": "e094f3e587267cb7951695be5d97e3f236c6325cdf9973144663b8d04005499e"
+      },
+      "scenarios": [
+        {
+          "name": "containers",
+          "phase": "behavior",
+          "files": {
+            "tools/procedural_lab/Max_Source_Containers_Acceptance.ms": "a3197470f1683834caf02ab45aa92a0321f19c5bc6d0ee9f8097cd75dbd5bfab"
+          },
+          "steps": [
+            {
+              "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Source_Containers_Acceptance.ms\"",
+              "result": "ERROR -- Compile error: no local declarations at top level:  r\n--  In line: local r=\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior/probe-c291a9281d344b67aefc8c4bf93cb891.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\Max_Source_Containers_Acceptance.ms LINE: 11P\n"
+            }
+          ],
+          "passed": false,
+          "error": "ERROR -- Compile error: no local declarations at top level:  r\n--  In line: local r=\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior/probe-c291a9281d344b67aefc8c4bf93cb891.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\Max_Source_Containers_Acceptance.ms LINE: 11P\n",
+          "elapsed_s": 28.9849999999999
+        },
+        {
+          "name": "output",
+          "phase": "behavior",
+          "files": {
+            "tools/procedural_lab/Max_Source_Containers_Output.ms": "53f124f984fc19255bd4a7786931e322787efa30b2a6fba3ec4ba1a78298eeb4"
+          },
+          "steps": [
+            {
+              "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Source_Containers_Output.ms\"",
+              "result": "ERROR -- Runtime error: [source containers: exact, PFlow and bake mapping] Initial PFlow source mapping differs\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior/probe-e89e5a6f3b14415eb6bfacc73b8f5270.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\Max_Procedural_07_Acceptance.ms LINE: 4P\n"
+            }
+          ],
+          "passed": false,
+          "error": "ERROR -- Runtime error: [source containers: exact, PFlow and bake mapping] Initial PFlow source mapping differs\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior/probe-e89e5a6f3b14415eb6bfacc73b8f5270.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\Max_Procedural_07_Acceptance.ms LINE: 4P\n",
+          "elapsed_s": 4.734000000000037
+        },
+        {
+          "name": "edit-bindings",
+          "phase": "behavior",
+          "files": {
+            "tools/procedural_lab/Max_Procedural_07_Bindings.ms": "141853103bcb3d5eba47a924260592cbf1f027a2b8377ea8d1ef25cd6c8073e3"
+          },
+          "steps": [
+            {
+              "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Procedural_07_Bindings.ms\"",
+              "result": "ERROR -- Runtime error: [Edit bindings and rollback] Receiver replacement silently rebound edits\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior/probe-332f2f37d40e4e0da7aa72fd95a06a90.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\Max_Procedural_07_Acceptance.ms LINE: 4P\n"
+            }
+          ],
+          "passed": false,
+          "error": "ERROR -- Runtime error: [Edit bindings and rollback] Receiver replacement silently rebound edits\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior/probe-332f2f37d40e4e0da7aa72fd95a06a90.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\Max_Procedural_07_Acceptance.ms LINE: 4P\n",
+          "elapsed_s": 10.358999999999924
+        },
+        {
+          "name": "publication",
+          "phase": "behavior",
+          "files": {
+            "tools/procedural_lab/Max_Procedural_07_Regression.ms": "fa82ac5bc3876e0a0454143d6329ea92978b51444aaca8fa55dd97331eb02bef"
+          },
+          "steps": [
+            {
+              "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Procedural_07_Regression.ms\"",
+              "result": "ERROR -- Runtime error: [Live root pair rules reach render] Live pair rule left stale render rows\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior/probe-f708bc57d9534ffdb664b5a6f31bcb2a.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\Max_Procedural_07_Acceptance.ms LINE: 4P\n"
+            }
+          ],
+          "passed": false,
+          "error": "ERROR -- Runtime error: [Live root pair rules reach render] Live pair rule left stale render rows\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior/probe-f708bc57d9534ffdb664b5a6f31bcb2a.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\Max_Procedural_07_Acceptance.ms LINE: 4P\n",
+          "elapsed_s": 11.32899999999995
+        },
+        {
+          "name": "analyzer",
+          "phase": "behavior",
+          "files": {
+            "tools/procedural_lab/Max_Unified_073_Analyzer_Assignment.ms": "02ee4c400431899c45614803a3ece79b8a59030c527852c6996f1b8d00c03291"
+          },
+          "steps": [
+            {
+              "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Unified_073_Analyzer_Assignment.ms\"",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior/probe-b4cb351286f74c03b3d389539810eb28.ms"
+            },
+            {
+              "code": "U73AnalyzerAssignment()",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior/probe-39bc24ce10fa4810ade64267f49bf4d9.ms"
+            }
+          ],
+          "passed": true,
+          "elapsed_s": 18.390999999999963
+        },
+        {
+          "name": "arrangement",
+          "phase": "behavior",
+          "files": {
+            "docs/Arrangement_Research_0.75_2026-10-09/Probe.ms": "6deed1c95cba3b04185dc429966fb9b6e169b0a19ddbe9b168b4ada70455fe75"
+          },
+          "steps": [
+            {
+              "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/docs/Arrangement_Research_0.75_2026-10-09/Probe.ms\"",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior/probe-784835b27874482e8cc05263d02df2ab.ms"
+            },
+            {
+              "code": "ARBasic();ARLine();ARAnalyzer();ARExtra()",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior/probe-84980db7f0a8425b97428ced830b8ab8.ms"
+            }
+          ],
+          "passed": true,
+          "elapsed_s": 45.389999999999986
+        },
+        {
+          "name": "renderer-stop",
+          "phase": "behavior",
+          "files": {
+            "tools/procedural_lab/Max_Corona_Stop_073.ms": "a127d97042a627eafd2846e3e91d0b4e03679255dba1cdcf71e274b0ab31ee1f"
+          },
+          "steps": [
+            {
+              "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Corona_Stop_073.ms\"",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior/probe-1a9059bc27764a4080d2b4377fc2c8d9.ms"
+            }
+          ],
+          "passed": true,
+          "elapsed_s": 0.40599999999994907
+        }
+      ],
+      "error": "containers: ERROR -- Compile error: no local declarations at top level:  r\n--  In line: local r=\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior/probe-c291a9281d344b67aefc8c4bf93cb891.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\Max_Source_Containers_Acceptance.ms LINE: 11P\n\noutput: ERROR -- Runtime error: [source containers: exact, PFlow and bake mapping] Initial PFlow source mapping differs\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior/probe-e89e5a6f3b14415eb6bfacc73b8f5270.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\Max_Procedural_07_Acceptance.ms LINE: 4P\n\nedit-bindings: ERROR -- Runtime error: [Edit bindings and rollback] Receiver replacement silently rebound edits\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior/probe-332f2f37d40e4e0da7aa72fd95a06a90.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\Max_Procedural_07_Acceptance.ms LINE: 4P\n\npublication: ERROR -- Runtime error: [Live root pair rules reach render] Live pair rule left stale render rows\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior/probe-f708bc57d9534ffdb664b5a6f31bcb2a.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\Max_Procedural_07_Acceptance.ms LINE: 4P\n\nanalyzer: PASS\narrangement: PASS\nrenderer-stop: PASS\n"
+    },
+    {
+      "name": "procedural07-ui-qualification075-behavior-final",
+      "passed": true,
+      "stopped": true,
+      "installed_files_unchanged": true,
+      "script_sha256": "72cdf16b0825a5e67a9792a3eee3eddfad1589e99eab0cae7a529701189e8f15",
+      "binaries": {
+        "AminScatter.dlx": "8059047d70f73386232322bce1b22b43e500efc1ae4769f61712bf6635c9d33e",
+        "CyrusBrush.dlx": "63c80ff15b7c0ecb0bcfd96ba395a81b3978f1eb777d408fe01f025aea80868b",
+        "CyrusBrushStorage.dlh": "042e5d9fa3a9f1c583f70c25100459673ecc35e11f5aaeb246d3f3eea8b32fb6",
+        "CyrusScatterEdit.dlm": "c0b79bc7ae50e7d8b5774cd1f8f99eeb3c49c3e9685b0d7ad9b3fa9d66fb9b14",
+        "CyrusSurfaceAnalyzer.dlx": "e094f3e587267cb7951695be5d97e3f236c6325cdf9973144663b8d04005499e"
+      },
+      "scenarios": [
+        {
+          "name": "containers",
+          "phase": "behavior",
+          "files": {
+            "tools/procedural_lab/Max_Source_Containers_Acceptance.ms": "b0719c198be0f4dfb5462897c996499518df35cc38a91b43d6f8b9373d02cdc1"
+          },
+          "steps": [
+            {
+              "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Source_Containers_Acceptance.ms\"",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior-final/probe-6791c8c2672e4063994484e6aba2cc57.ms"
+            }
+          ],
+          "passed": true,
+          "elapsed_s": 62.875
+        },
+        {
+          "name": "output",
+          "phase": "behavior",
+          "files": {
+            "tools/procedural_lab/Max_Source_Containers_Output.ms": "e1ba8f49b81634cc7dfff02528f04a785926c39e7b00c3563403c3984328945a"
+          },
+          "steps": [
+            {
+              "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Source_Containers_Output.ms\"",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior-final/probe-2a0ae566281d404194b4e4f656ec2f10.ms"
+            }
+          ],
+          "passed": true,
+          "elapsed_s": 7.375
+        },
+        {
+          "name": "edit-bindings",
+          "phase": "behavior",
+          "files": {
+            "tools/procedural_lab/Max_Procedural_07_Bindings.ms": "5c9343dd35397461a62f7ae9230ad9d4f28eab778a779f56dd7d46b3024adb64"
+          },
+          "steps": [
+            {
+              "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Procedural_07_Bindings.ms\"",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior-final/probe-3bfb1ddf6f5043a7a878c9add2d3cb90.ms"
+            }
+          ],
+          "passed": true,
+          "elapsed_s": 6.469000000000051
+        },
+        {
+          "name": "publication",
+          "phase": "behavior",
+          "files": {
+            "tools/procedural_lab/Max_Procedural_07_Regression.ms": "ed95a70ae7118f978f43fa218ee3abfc54f4697bf5ef77d16d45164fed405d4c"
+          },
+          "steps": [
+            {
+              "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Procedural_07_Regression.ms\"",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior-final/probe-9ea3490a78224831a43fe1cf5ea5f928.ms"
+            }
+          ],
+          "passed": true,
+          "elapsed_s": 43.64099999999985
+        },
+        {
+          "name": "analyzer",
+          "phase": "behavior",
+          "files": {
+            "tools/procedural_lab/Max_Unified_073_Analyzer_Assignment.ms": "02ee4c400431899c45614803a3ece79b8a59030c527852c6996f1b8d00c03291"
+          },
+          "steps": [
+            {
+              "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Unified_073_Analyzer_Assignment.ms\"",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior-final/probe-fa9b798a66e64edcb73e7329f4152d68.ms"
+            },
+            {
+              "code": "U73AnalyzerAssignment()",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior-final/probe-0e43c1f16f874edd9729cad60c490b89.ms"
+            }
+          ],
+          "passed": true,
+          "elapsed_s": 20.937000000000126
+        },
+        {
+          "name": "group-move",
+          "phase": "behavior",
+          "files": {
+            "tools/procedural_lab/Max_Unified_073_Group_Move.ms": "0f9000e191613264d67e9189420d59c8acb6fcb1e7dc6cb08596c26c25a26a04"
+          },
+          "steps": [
+            {
+              "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Unified_073_Group_Move.ms\"",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior-final/probe-8b35f000ce034171b4d985029562f0df.ms"
+            },
+            {
+              "code": "U73GroupMove()",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior-final/probe-926cfe05b11b470aa767c9042d678579.ms"
+            }
+          ],
+          "passed": true,
+          "elapsed_s": 6.6870000000001255
+        },
+        {
+          "name": "node-move",
+          "phase": "behavior",
+          "files": {
+            "tools/procedural_lab/Max_Unified_073_Node_Move.ms": "09d002ce68758355f02aa5bcbb172c55764afdcd87fdc032385317c3b40bc8f8"
+          },
+          "steps": [
+            {
+              "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Unified_073_Node_Move.ms\"",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior-final/probe-6f73f4cfb0124fe396ecb81b2e21ded9.ms"
+            },
+            {
+              "code": "U73NodeMove()",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior-final/probe-d08b35dcbac84034989110fb37004a53.ms"
+            }
+          ],
+          "passed": true,
+          "elapsed_s": 5.8599999999999
+        },
+        {
+          "name": "edit-persistence",
+          "phase": "behavior",
+          "files": {
+            "tools/procedural_lab/Max_Unified_073_Persistence.ms": "36df03b0ad3b9ce8267f809c4861d6469cc8808b60bc5540abd7b6bcb03fecb4"
+          },
+          "steps": [
+            {
+              "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Unified_073_Persistence.ms\"",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior-final/probe-66f973d6d5ab43aeb04ba56e8cce3a9d.ms"
+            },
+            {
+              "code": "U73EditPersistence()",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior-final/probe-bbb261f492544b729ed3c43af9357dfb.ms"
+            }
+          ],
+          "passed": true,
+          "elapsed_s": 13.968999999999824
+        },
+        {
+          "name": "arrangement",
+          "phase": "behavior",
+          "files": {
+            "docs/Arrangement_Research_0.75_2026-10-09/Probe.ms": "6deed1c95cba3b04185dc429966fb9b6e169b0a19ddbe9b168b4ada70455fe75"
+          },
+          "steps": [
+            {
+              "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/docs/Arrangement_Research_0.75_2026-10-09/Probe.ms\"",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior-final/probe-64835041137d45cf891108bd2a877ee8.ms"
+            },
+            {
+              "code": "ARBasic();ARLine();ARAnalyzer();ARExtra()",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior-final/probe-7e5c2cbc85474d7fb82ea42ef819b761.ms"
+            }
+          ],
+          "passed": true,
+          "elapsed_s": 29.593000000000075
+        },
+        {
+          "name": "renderer-stop",
+          "phase": "behavior",
+          "files": {
+            "tools/procedural_lab/Max_Corona_Stop_073.ms": "a127d97042a627eafd2846e3e91d0b4e03679255dba1cdcf71e274b0ab31ee1f"
+          },
+          "steps": [
+            {
+              "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Corona_Stop_073.ms\"",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/procedural07-ui-qualification075-behavior-final/probe-35f11a49d1d14e398c51cb423650822a.ms"
+            }
+          ],
+          "passed": true,
+          "elapsed_s": 0.2339999999999236
+        }
+      ]
+    },
+    {
+      "name": "qualification075-core",
+      "passed": true,
+      "stopped": true,
+      "installed_files_unchanged": true,
+      "script_sha256": "72cdf16b0825a5e67a9792a3eee3eddfad1589e99eab0cae7a529701189e8f15",
+      "binaries": {
+        "AminScatter.dlx": "8059047d70f73386232322bce1b22b43e500efc1ae4769f61712bf6635c9d33e",
+        "CyrusBrush.dlx": "63c80ff15b7c0ecb0bcfd96ba395a81b3978f1eb777d408fe01f025aea80868b",
+        "CyrusBrushStorage.dlh": "042e5d9fa3a9f1c583f70c25100459673ecc35e11f5aaeb246d3f3eea8b32fb6",
+        "CyrusScatterEdit.dlm": "c0b79bc7ae50e7d8b5774cd1f8f99eeb3c49c3e9685b0d7ad9b3fa9d66fb9b14",
+        "CyrusSurfaceAnalyzer.dlx": "e094f3e587267cb7951695be5d97e3f236c6325cdf9973144663b8d04005499e"
+      }
+    },
+    {
+      "name": "qualification075-lifecycle-final",
+      "passed": true,
+      "stopped": true,
+      "installed_files_unchanged": true,
+      "script_sha256": "72cdf16b0825a5e67a9792a3eee3eddfad1589e99eab0cae7a529701189e8f15",
+      "binaries": {
+        "AminScatter.dlx": "8059047d70f73386232322bce1b22b43e500efc1ae4769f61712bf6635c9d33e",
+        "CyrusBrush.dlx": "63c80ff15b7c0ecb0bcfd96ba395a81b3978f1eb777d408fe01f025aea80868b",
+        "CyrusBrushStorage.dlh": "042e5d9fa3a9f1c583f70c25100459673ecc35e11f5aaeb246d3f3eea8b32fb6",
+        "CyrusScatterEdit.dlm": "c0b79bc7ae50e7d8b5774cd1f8f99eeb3c49c3e9685b0d7ad9b3fa9d66fb9b14",
+        "CyrusSurfaceAnalyzer.dlx": "e094f3e587267cb7951695be5d97e3f236c6325cdf9973144663b8d04005499e"
+      },
+      "scenarios": [
+        {
+          "name": "playback",
+          "phase": "lifecycle",
+          "files": {
+            "tools/procedural_lab/Max_Playback_073_Regression.ms": "9725c203915bc144bd319af1e96bf3cd12137de232fdb27e171f5a35cf233f37",
+            "tools/procedural_lab/Max_Analyzer_Playback_073_Regression.ms": "d66159a806280da3f1014fa70f15edfa85ca4aab7f016dbcaa814b20ee7f6063"
+          },
+          "steps": [
+            {
+              "code": "global PTDir=MCPFixtureDir,PTNativeExpected=#(\"AminScatter.dlx\",\"CyrusBrush.dlx\",\"CyrusBrushStorage.dlh\",\"CyrusScatterEdit.dlm\");fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Playback_073_Regression.ms\"",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-lifecycle-final/probe-d2a98bb42a25416eb36798542b7a5139.ms"
+            }
+          ],
+          "passed": true,
+          "elapsed_s": 60.4380000000001
+        },
+        {
+          "name": "corona",
+          "phase": "lifecycle",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "qualification075-output-probe",
+      "passed": true,
+      "stopped": true,
+      "installed_files_unchanged": true,
+      "script_sha256": "72cdf16b0825a5e67a9792a3eee3eddfad1589e99eab0cae7a529701189e8f15",
+      "binaries": {
+        "AminScatter.dlx": "8059047d70f73386232322bce1b22b43e500efc1ae4769f61712bf6635c9d33e",
+        "CyrusBrush.dlx": "63c80ff15b7c0ecb0bcfd96ba395a81b3978f1eb777d408fe01f025aea80868b",
+        "CyrusBrushStorage.dlh": "042e5d9fa3a9f1c583f70c25100459673ecc35e11f5aaeb246d3f3eea8b32fb6",
+        "CyrusScatterEdit.dlm": "c0b79bc7ae50e7d8b5774cd1f8f99eeb3c49c3e9685b0d7ad9b3fa9d66fb9b14"
+      }
+    },
+    {
+      "name": "qualification075-performance",
+      "passed": false,
+      "stopped": true,
+      "installed_files_unchanged": true,
+      "script_sha256": "72cdf16b0825a5e67a9792a3eee3eddfad1589e99eab0cae7a529701189e8f15",
+      "binaries": {
+        "AminScatter.dlx": "8059047d70f73386232322bce1b22b43e500efc1ae4769f61712bf6635c9d33e",
+        "CyrusBrush.dlx": "63c80ff15b7c0ecb0bcfd96ba395a81b3978f1eb777d408fe01f025aea80868b",
+        "CyrusBrushStorage.dlh": "042e5d9fa3a9f1c583f70c25100459673ecc35e11f5aaeb246d3f3eea8b32fb6",
+        "CyrusScatterEdit.dlm": "c0b79bc7ae50e7d8b5774cd1f8f99eeb3c49c3e9685b0d7ad9b3fa9d66fb9b14",
+        "CyrusSurfaceAnalyzer.dlx": "e094f3e587267cb7951695be5d97e3f236c6325cdf9973144663b8d04005499e"
+      },
+      "scenarios": [
+        {
+          "name": "navigation",
+          "phase": "performance",
+          "files": {
+            "tools/procedural_lab/Max_Unified_073_Navigation.ms": "ecd34e12ed5ebc996ce99460d4b2ebe2c6e080d2981eac6d44e4aca6f1a0141c"
+          },
+          "steps": [
+            {
+              "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Unified_073_Navigation.ms\"",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-performance/probe-4c71813b82904f3fad07afa118f69bf1.ms"
+            },
+            {
+              "code": "P07Navigation \"100k\" 100000 frames:30 modes:#(0,1,2,3,4) containers:true",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-performance/probe-17d5e25cde054c99a078916456ffd47d.ms"
+            }
+          ],
+          "passed": true,
+          "elapsed_s": 128.65600000000018
+        },
+        {
+          "name": "playback",
+          "phase": "performance",
+          "files": {},
+          "steps": [
+            {
+              "code": "global PTDir=MCPFixtureDir,PTNativeExpected=#(\"AminScatter.dlx\",\"CyrusBrush.dlx\",\"CyrusBrushStorage.dlh\",\"CyrusScatterEdit.dlm\");fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Playback_073_Regression.ms\"",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-performance/probe-28070c31a2ea46099588ba989f20ec3c.ms"
+            }
+          ],
+          "passed": true,
+          "elapsed_s": 53.297000000000025
+        },
+        {
+          "name": "idle",
+          "phase": "performance",
+          "passed": true
+        },
+        {
+          "name": "corona",
+          "phase": "performance",
+          "passed": false,
+          "error": "{'label': 'ir072-after-save', 'render_type': 0, 'passes': 6, 'epoch': 3, 'bridge_builds': 3, 'bridge_instances': [180], 'phase': 2, 'timer': True, 'pending': True, 'resume': True, 'error': '', 'helper_nodes': 10}"
+        }
+      ],
+      "error": "navigation: PASS\nplayback: PASS\nPASS live-closed\nPASS live-editor-open\nPASS manual-pending\nPASS live-real-edit\nPASS live-density-edit\nPASS failed-successor\nPASS restored-valid-recipe\nPASS after-diagnostic-recording\nPASS idle/change/failure/overhead qualification\nidle: PASS\nsetup: SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-performance/probe-74d74afe390b4e21850e08c3bbd663c2.ms\nir072-before-idle: SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-performance/probe-8daf6b47034e4d05b8ac923025e6ebe6.ms\nir072-after-idle: SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-performance/probe-00189141f918498fb84b4aaee6ba0ae0.ms\nactual Live population edit: SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-performance/probe-a0ce82121bef44bab9c988f1897848f6.ms\nir072-after-edit: SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-performance/probe-b3e0d0ddb87f44648de3f29fe98ba464.ms\nir072-edit-settled: SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-performance/probe-285d8017f85a4dce84a0fcedf65807c3.ms\nsave during actual IR: SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-performance/probe-0bb1303d82fd4bb2b33770c104b0d1d1.ms\nir072-after-save: SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-performance/probe-f8b78f0588a94fc088b27c92aff2493f.ms\ncorona: {'label': 'ir072-after-save', 'render_type': 0, 'passes': 6, 'epoch': 3, 'bridge_builds': 3, 'bridge_instances': [180], 'phase': 2, 'timer': True, 'pending': True, 'resume': True, 'error': '', 'helper_nodes': 10}\n"
+    },
+    {
+      "name": "qualification075-retained",
+      "passed": false,
+      "stopped": true,
+      "installed_files_unchanged": true,
+      "script_sha256": "72cdf16b0825a5e67a9792a3eee3eddfad1589e99eab0cae7a529701189e8f15",
+      "binaries": {
+        "AminScatter.dlx": "8059047d70f73386232322bce1b22b43e500efc1ae4769f61712bf6635c9d33e",
+        "CyrusBrush.dlx": "63c80ff15b7c0ecb0bcfd96ba395a81b3978f1eb777d408fe01f025aea80868b",
+        "CyrusBrushStorage.dlh": "042e5d9fa3a9f1c583f70c25100459673ecc35e11f5aaeb246d3f3eea8b32fb6",
+        "CyrusScatterEdit.dlm": "c0b79bc7ae50e7d8b5774cd1f8f99eeb3c49c3e9685b0d7ad9b3fa9d66fb9b14",
+        "CyrusSurfaceAnalyzer.dlx": "e094f3e587267cb7951695be5d97e3f236c6325cdf9973144663b8d04005499e"
+      },
+      "scenarios": [
+        {
+          "name": "display-repeat",
+          "phase": "retained",
+          "files": {
+            "build/playback075_definitions.ms": "0a09e8b1a0b4787b995b284be862ee23f9046401ad705ec3ed488b45c974a391"
+          },
+          "steps": [
+            {
+              "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/build/playback075_definitions.ms\"",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-retained/probe-887d6ebc43f54d99b61be9be2e35173e.ms"
+            },
+            {
+              "code": "global PTDir=MCPFixtureDir;PTLog=createFile (MCPFixtureDir+\"retained-repeat.txt\");try(PTDisplayModes();format \"SUCCESS % assertions\\n\" PTChecks to:PTLog;close PTLog)catch(close PTLog;throw())",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-retained/probe-35dd7a07a43843f08d94ab7c4c51edb0.ms"
+            }
+          ],
+          "passed": true,
+          "elapsed_s": 26.139999999999873
+        },
+        {
+          "name": "analyzer-playback",
+          "phase": "retained",
+          "files": {},
+          "steps": [
+            {
+              "code": "PTLog=createFile (MCPFixtureDir+\"analyzer-playback.txt\");try(fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Analyzer_Playback_073_Regression.ms\";format \"SUCCESS % cumulative assertions\\n\" PTChecks to:PTLog;close PTLog)catch(close PTLog;throw())",
+              "result": "ERROR -- Runtime error: Analyzer fixture has no boundary\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-retained/probe-79b84da92bb84254a3b5da4f4ee06009.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\playback075_definitions.ms LINE: 4P\n"
+            }
+          ],
+          "passed": false,
+          "error": "ERROR -- Runtime error: Analyzer fixture has no boundary\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-retained/probe-79b84da92bb84254a3b5da4f4ee06009.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\playback075_definitions.ms LINE: 4P\n",
+          "elapsed_s": 3.5470000000000255
+        }
+      ],
+      "error": "display-repeat: PASS\nanalyzer-playback: ERROR -- Runtime error: Analyzer fixture has no boundary\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-retained/probe-79b84da92bb84254a3b5da4f4ee06009.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\playback075_definitions.ms LINE: 4P\n\n"
+    },
+    {
+      "name": "qualification075-sources-final",
+      "passed": true,
+      "stopped": true,
+      "installed_files_unchanged": true,
+      "script_sha256": "72cdf16b0825a5e67a9792a3eee3eddfad1589e99eab0cae7a529701189e8f15",
+      "binaries": {
+        "AminScatter.dlx": "8059047d70f73386232322bce1b22b43e500efc1ae4769f61712bf6635c9d33e",
+        "CyrusBrush.dlx": "63c80ff15b7c0ecb0bcfd96ba395a81b3978f1eb777d408fe01f025aea80868b",
+        "CyrusBrushStorage.dlh": "042e5d9fa3a9f1c583f70c25100459673ecc35e11f5aaeb246d3f3eea8b32fb6",
+        "CyrusScatterEdit.dlm": "c0b79bc7ae50e7d8b5774cd1f8f99eeb3c49c3e9685b0d7ad9b3fa9d66fb9b14",
+        "CyrusSurfaceAnalyzer.dlx": "e094f3e587267cb7951695be5d97e3f236c6325cdf9973144663b8d04005499e"
+      },
+      "scenarios": [
+        {
+          "name": "sources",
+          "phase": "source-final",
+          "files": {
+            "tools/procedural_lab/Max_System_075.ms": "c7fb13dafae5a8074b570fce692067bb699314cbdba2860eb3520a1fd10e34b0"
+          },
+          "steps": [
+            {
+              "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_System_075.ms\"",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-sources-final/probe-7fa165f5a30a4718974b88c562c1e720.ms"
+            },
+            {
+              "code": "Q75Sources()",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-sources-final/probe-f132c829ef344e168bcf3f8feca591e6.ms"
+            }
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "qualification075-ui",
+      "passed": false,
+      "stopped": true,
+      "installed_files_unchanged": true,
+      "script_sha256": "72cdf16b0825a5e67a9792a3eee3eddfad1589e99eab0cae7a529701189e8f15",
+      "binaries": {
+        "AminScatter.dlx": "8059047d70f73386232322bce1b22b43e500efc1ae4769f61712bf6635c9d33e",
+        "CyrusBrush.dlx": "63c80ff15b7c0ecb0bcfd96ba395a81b3978f1eb777d408fe01f025aea80868b",
+        "CyrusBrushStorage.dlh": "042e5d9fa3a9f1c583f70c25100459673ecc35e11f5aaeb246d3f3eea8b32fb6",
+        "CyrusScatterEdit.dlm": "c0b79bc7ae50e7d8b5774cd1f8f99eeb3c49c3e9685b0d7ad9b3fa9d66fb9b14",
+        "CyrusSurfaceAnalyzer.dlx": "e094f3e587267cb7951695be5d97e3f236c6325cdf9973144663b8d04005499e"
+      },
+      "scenarios": [
+        {
+          "name": "bindings",
+          "phase": "ui",
+          "files": {
+            "docs/System_Qualification_0.75_2026-10-09/Control_Bindings.ms": "3651d0768fb5e4301d51eb29908d572347584d4e7424a699bbbc9c7ac3d8ee84"
+          },
+          "steps": [
+            {
+              "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/docs/System_Qualification_0.75_2026-10-09/Control_Bindings.ms\"",
+              "result": "ERROR -- Compile error: no local declarations at top level:  f\n--  In line: local f=\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui/probe-e903078a5a5b4e769d35b696dd3f9b90.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\docs\\System_Qualification_0.75_2026-10-09\\Control_Bindings.ms LINE: 5P\n"
+            }
+          ],
+          "passed": false,
+          "error": "ERROR -- Compile error: no local declarations at top level:  f\n--  In line: local f=\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui/probe-e903078a5a5b4e769d35b696dd3f9b90.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\docs\\System_Qualification_0.75_2026-10-09\\Control_Bindings.ms LINE: 5P\n",
+          "elapsed_s": 43.48399999999998
+        },
+        {
+          "name": "layout",
+          "phase": "ui",
+          "files": {
+            "tools/procedural_lab/Max_Layout_075.ms": "b04078e84d847c13198c2d76c3af9f2e3e729a03e7b37fcfee9df89287208f52"
+          },
+          "steps": [
+            {
+              "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Layout_075.ms\"",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui/probe-d83a7b44290d41ad845fb7a6e324e90b.ms"
+            },
+            {
+              "code": "L75Run()",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui/probe-5e0c1176b38a414a948095698fbbf934.ms"
+            }
+          ],
+          "passed": true,
+          "elapsed_s": 79.875
+        },
+        {
+          "name": "regions",
+          "phase": "ui",
+          "files": {
+            "tools/procedural_lab/Max_Layer_Regions_074.ms": "c2bb569b7ae63bd05430a3c5d60c6dfeb48bb666eb55cf0c274837324b26ded3"
+          },
+          "steps": [
+            {
+              "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Layer_Regions_074.ms\"",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui/probe-de329f83289348dd86585ea60ea3ea4e.ms"
+            },
+            {
+              "code": "LRSetup();LRRun();LRViews();LRReopen();LRAdditional()",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui/probe-6da3a38cdd224e32a6979fee05412821.ms"
+            }
+          ],
+          "passed": true,
+          "elapsed_s": 70.31299999999999
+        }
+      ],
+      "error": "Command '['C:\\\\ProgramData\\\\miniconda3\\\\python.exe', 'F:\\\\Cursor\\\\_Cyrus_Apps\\\\CyrusScatter\\\\tools\\\\procedural_lab\\\\system_075_campaign.py', 'F:\\\\Cursor\\\\_Cyrus_Apps\\\\CyrusScatter\\\\build\\\\mcp-qualification\\\\qualification075-ui']' timed out after 300 seconds"
+    },
+    {
+      "name": "qualification075-ui-final",
+      "passed": false,
+      "stopped": true,
+      "installed_files_unchanged": true,
+      "script_sha256": "72cdf16b0825a5e67a9792a3eee3eddfad1589e99eab0cae7a529701189e8f15",
+      "binaries": {
+        "AminScatter.dlx": "8059047d70f73386232322bce1b22b43e500efc1ae4769f61712bf6635c9d33e",
+        "CyrusBrush.dlx": "63c80ff15b7c0ecb0bcfd96ba395a81b3978f1eb777d408fe01f025aea80868b",
+        "CyrusBrushStorage.dlh": "042e5d9fa3a9f1c583f70c25100459673ecc35e11f5aaeb246d3f3eea8b32fb6",
+        "CyrusScatterEdit.dlm": "c0b79bc7ae50e7d8b5774cd1f8f99eeb3c49c3e9685b0d7ad9b3fa9d66fb9b14",
+        "CyrusSurfaceAnalyzer.dlx": "e094f3e587267cb7951695be5d97e3f236c6325cdf9973144663b8d04005499e"
+      },
+      "scenarios": [
+        {
+          "name": "bindings",
+          "phase": "ui",
+          "files": {
+            "docs/System_Qualification_0.75_2026-10-09/Control_Bindings.ms": "3433f8b6276f33734076c38ff032eb29464ed69f6be716e8e55f3f1c883017fb"
+          },
+          "steps": [
+            {
+              "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/docs/System_Qualification_0.75_2026-10-09/Control_Bindings.ms\"",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-final/probe-b992bffe6d12478d819a25fbca618c6e.ms"
+            }
+          ],
+          "passed": true,
+          "elapsed_s": 44.54699999999991
+        },
+        {
+          "name": "layout",
+          "phase": "ui",
+          "files": {
+            "tools/procedural_lab/Max_Layout_075.ms": "b04078e84d847c13198c2d76c3af9f2e3e729a03e7b37fcfee9df89287208f52"
+          },
+          "steps": [
+            {
+              "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Layout_075.ms\"",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-final/probe-2326db3a7bfd44348c2bcba8240507c7.ms"
+            },
+            {
+              "code": "L75Run()",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-final/probe-8595a101659a449db8277258998558f3.ms"
+            }
+          ],
+          "passed": true,
+          "elapsed_s": 89.42200000000003
+        },
+        {
+          "name": "regions",
+          "phase": "ui",
+          "files": {
+            "tools/procedural_lab/Max_Layer_Regions_074.ms": "c2bb569b7ae63bd05430a3c5d60c6dfeb48bb666eb55cf0c274837324b26ded3"
+          },
+          "steps": [
+            {
+              "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Layer_Regions_074.ms\"",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-final/probe-fb76dd677f3743dda3b35e3d3606db49.ms"
+            },
+            {
+              "code": "LRSetup();LRRun();LRViews();LRReopen();LRAdditional()",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-final/probe-642256855a4843a9b65821ad9a7819d6.ms"
+            }
+          ],
+          "passed": true,
+          "elapsed_s": 125.59400000000005
+        },
+        {
+          "name": "manual-workflow",
+          "phase": "ui",
+          "files": {
+            "tools/procedural_lab/Max_Consolidation_075.ms": "c465b84da9436382dfc6ee61cb181b0109cf9b0ca4133d9c047bb21566a44168"
+          },
+          "steps": [
+            {
+              "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Consolidation_075.ms\"",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-final/probe-ccc2dc9603f64ef7b0b9d5862160b73b.ms"
+            },
+            {
+              "code": "C75Manual();C75Workflow();C75Spacing()",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-final/probe-78149e9f56a94ec9922a0be4e0961133.ms"
+            }
+          ],
+          "passed": true,
+          "elapsed_s": 86.42200000000003
+        },
+        {
+          "name": "grips",
+          "phase": "ui",
+          "files": {
+            "tools/procedural_lab/Max_UI_074_Grips.ms": "2a9add96485d90a54af4e99dd58a6836bcdcb1d215dbd9985aff4b73db8f15eb"
+          },
+          "steps": [
+            {
+              "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_UI_074_Grips.ms\"",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-final/probe-61c5aa8ee0224568a78ed92c6f9c2209.ms"
+            }
+          ],
+          "passed": false,
+          "error": "Private Max fixture did not complete: probe-f8f7bdfbcc414e26bee5ec93ef455931.ms",
+          "elapsed_s": 181.34399999999982
+        }
+      ],
+      "error": "bindings: PASS\nlayout: PASS\nregions: PASS\nmanual-workflow: PASS\ngrips: Private Max fixture did not complete: probe-f8f7bdfbcc414e26bee5ec93ef455931.ms\nTraceback (most recent call last):\n  File \"F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\system_075_campaign.py\", line 84, in <module>\n    if phase=='performance':\n                        ^^^^^\n  File \"F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\system_075_campaign.py\", line 51, in main\n    ],\n       \n  File \"F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\runtime_driver.py\", line 42, in run_script\n    return _run_single(folder,script,timeout)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\runtime_driver.py\", line 72, in _run_single\n    raise TimeoutError(f'Private Max fixture did not complete: {name}')\nTimeoutError: Private Max fixture did not complete: probe-f8f7bdfbcc414e26bee5ec93ef455931.ms\n"
+    },
+    {
+      "name": "qualification075-ui-remaining",
+      "passed": false,
+      "stopped": true,
+      "installed_files_unchanged": true,
+      "script_sha256": "72cdf16b0825a5e67a9792a3eee3eddfad1589e99eab0cae7a529701189e8f15",
+      "binaries": {
+        "AminScatter.dlx": "8059047d70f73386232322bce1b22b43e500efc1ae4769f61712bf6635c9d33e",
+        "CyrusBrush.dlx": "63c80ff15b7c0ecb0bcfd96ba395a81b3978f1eb777d408fe01f025aea80868b",
+        "CyrusBrushStorage.dlh": "042e5d9fa3a9f1c583f70c25100459673ecc35e11f5aaeb246d3f3eea8b32fb6",
+        "CyrusScatterEdit.dlm": "c0b79bc7ae50e7d8b5774cd1f8f99eeb3c49c3e9685b0d7ad9b3fa9d66fb9b14",
+        "CyrusSurfaceAnalyzer.dlx": "e094f3e587267cb7951695be5d97e3f236c6325cdf9973144663b8d04005499e"
+      },
+      "scenarios": [
+        {
+          "name": "sources",
+          "phase": "ui-remaining",
+          "files": {
+            "tools/procedural_lab/Max_System_075.ms": "a84a9104ee7382527b3ca74206312cb8b634374ceff79ef66defc26e1964faec"
+          },
+          "steps": [
+            {
+              "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_System_075.ms\"",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-remaining/probe-8497dbc975924754817fbd3a95246d84.ms"
+            },
+            {
+              "code": "Q75Sources()",
+              "result": "ERROR -- Type error: Type conversion needs a class argument, got: \"updateNow\"\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-remaining/probe-ae680a206af74f5ba6ab56c742586942.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\Max_System_075.ms LINE: 20P\n"
+            }
+          ],
+          "passed": false,
+          "error": "ERROR -- Type error: Type conversion needs a class argument, got: \"updateNow\"\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-remaining/probe-ae680a206af74f5ba6ab56c742586942.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\Max_System_075.ms LINE: 20P\n",
+          "elapsed_s": 43.29599999999982
+        },
+        {
+          "name": "captions",
+          "phase": "ui-remaining",
+          "files": {
+            "tools/procedural_lab/Max_Captions_075.ms": "921f3677c456568bfa32baf8d85628c9e508cd7afc89b3bcbba97601c84a46aa"
+          },
+          "steps": [
+            {
+              "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Captions_075.ms\"",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-remaining/probe-da94f172ace847819be841c411871633.ms"
+            }
+          ],
+          "passed": true,
+          "elapsed_s": 53.797000000000025
+        },
+        {
+          "name": "grip-lifecycle",
+          "phase": "ui-remaining",
+          "files": {
+            "tools/procedural_lab/Max_UI_074_Grips.ms": "2a9add96485d90a54af4e99dd58a6836bcdcb1d215dbd9985aff4b73db8f15eb"
+          },
+          "steps": [
+            {
+              "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_UI_074_Grips.ms\"",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-remaining/probe-ba4ad2386eb043cda32c1811f3e838a7.ms"
+            },
+            {
+              "code": "G074Lifecycle()",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-remaining/probe-13061a614cd641cfbc03447db5d3091a.ms"
+            }
+          ],
+          "passed": true,
+          "elapsed_s": 38.375
+        },
+        {
+          "name": "legacy",
+          "phase": "ui-remaining",
+          "files": {
+            "tools/procedural_lab/Max_Layer_Regions_074.ms": "c2bb569b7ae63bd05430a3c5d60c6dfeb48bb666eb55cf0c274837324b26ded3",
+            "tools/procedural_lab/Max_Layer_Regions_074_Legacy.ms": "434f3db656e9481f8ac9a43cfb81e3bacfb190807e673587285ce8d1c2b75654"
+          },
+          "steps": [
+            {
+              "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Layer_Regions_074.ms\"",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-remaining/probe-6a5efab945324f89ba14fec77c71b4aa.ms"
+            },
+            {
+              "code": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Layer_Regions_074_Legacy.ms\"",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-remaining/probe-262972ca1f6047a1b4f8f524b141d441.ms"
+            },
+            {
+              "code": "LRChecks=#();LRLegacyCheck @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/layer-regions-old-20261009-01/\"",
+              "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-remaining/probe-8b8aa306f49647ada0cb9bda4d3c3f84.ms"
+            }
+          ],
+          "passed": true,
+          "elapsed_s": 27.563000000000102
+        },
+        {
+          "name": "playback",
+          "phase": "ui-remaining",
+          "files": {
+            "tools/procedural_lab/Max_Analyzer_Playback_073_Regression.ms": "d66159a806280da3f1014fa70f15edfa85ca4aab7f016dbcaa814b20ee7f6063"
+          },
+          "steps": [
+            {
+              "code": "global PTDir=MCPFixtureDir,PTNativeExpected=#(\"AminScatter.dlx\",\"CyrusBrush.dlx\",\"CyrusBrushStorage.dlh\",\"CyrusScatterEdit.dlm\");fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Playback_073_Regression.ms\"",
+              "result": "ERROR -- Runtime error: Unchanged retained data was prepared, published or uploaded again\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-remaining/probe-f3878715161e4d5586c38e8dca2afb2a.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\Max_Playback_073_Regression.ms LINE: 4P\n"
+            }
+          ],
+          "passed": false,
+          "error": "ERROR -- Runtime error: Unchanged retained data was prepared, published or uploaded again\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-remaining/probe-f3878715161e4d5586c38e8dca2afb2a.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\Max_Playback_073_Regression.ms LINE: 4P\n",
+          "elapsed_s": 51.65599999999995
+        },
+        {
+          "name": "idle",
+          "phase": "ui-remaining",
+          "passed": true
+        },
+        {
+          "name": "corona",
+          "phase": "ui-remaining",
+          "passed": false,
+          "error": "{'label': 'ir072-after-edit', 'render_type': 0, 'passes': 11, 'epoch': 4, 'bridge_builds': 3, 'bridge_instances': [180], 'phase': 2, 'timer': True, 'pending': True, 'production_guard': False, 'busy': False, 'ticking': False, 'interaction_held': True, 'resume': False, 'error': '', 'helper_nodes': 10}"
+        }
+      ],
+      "error": "sources: ERROR -- Type error: Type conversion needs a class argument, got: \"updateNow\"\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-remaining/probe-ae680a206af74f5ba6ab56c742586942.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\Max_System_075.ms LINE: 20P\n\ncaptions: PASS\ngrip-lifecycle: PASS\nlegacy: PASS\nplayback: ERROR -- Runtime error: Unchanged retained data was prepared, published or uploaded again\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-remaining/probe-f3878715161e4d5586c38e8dca2afb2a.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\Max_Playback_073_Regression.ms LINE: 4P\n\nPASS live-closed\nPASS live-editor-open\nPASS manual-pending\nPASS live-real-edit\nPASS live-density-edit\nPASS failed-successor\nPASS restored-valid-recipe\nPASS after-diagnostic-recording\nPASS idle/change/failure/overhead qualification\nidle: PASS\nsetup: SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-remaining/probe-eb48b42afe224055b3d7f445b58acdd7.ms\nir072-before-idle: SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-remaining/probe-a4b8d1088864452e9b8a209a5e88a655.ms\nir072-after-idle: SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-remaining/probe-d589e1a9c00a41feba0a8a0eab888a96.ms\nactual Live population edit: SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-remaining/probe-45f26be3bae44d398cde32ad6efaa9fd.ms\nir072-after-edit: SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/qualification075-ui-remaining/probe-b069e70c642f42f09b3f81866304421d.ms\ncorona: {'label': 'ir072-after-edit', 'render_type': 0, 'passes': 11, 'epoch': 4, 'bridge_builds': 3, 'bridge_instances': [180], 'phase': 2, 'timer': True, 'pending': True, 'production_guard': False, 'busy': False, 'ticking': False, 'interaction_held': True, 'resume': False, 'error': '', 'helper_nodes': 10}\n"
+    }
+  ],
+  "files": {
+    "evidence/procedural07-ui-qualification075-behavior/arrangement-results.json": "560c8dcdb0295d0bbf712d1ac4abe7a20c1969d683b94d1d7ba5c205b2918c09",
+    "evidence/procedural07-ui-qualification075-behavior/campaign.json": "926f0db199e66afeb3f9c946fc794cb9fac09119fd4dc543ef046a9ee5edbcd8",
+    "evidence/procedural07-ui-qualification075-behavior/corona-stop-073.json": "d64660f114e42480de204b1441f98748ce05b0969e987faaad8aa9b9b03d03b4",
+    "evidence/procedural07-ui-qualification075-behavior/launch.json": "613dbda7122d48a35b646024abd88d282cd5db0e353fd7d0d08355403f8e565f",
+    "evidence/procedural07-ui-qualification075-behavior/loaded.tsv": "8c484520551e2a453b14b3fd19de7a4333cb4c259ddeaf2c24f7fb4f2fb352ab",
+    "evidence/procedural07-ui-qualification075-behavior/procedural-acceptance.json": "145b4aa94d374b42147b62fc3c3ca29229343283346bf61d20567a93459f5932",
+    "evidence/procedural07-ui-qualification075-behavior/qualification.json": "91b41c1b55f53a4f524d0988f8b7d661311b42fd69d5871725623ebec5f8432f",
+    "evidence/procedural07-ui-qualification075-behavior/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/procedural07-ui-qualification075-behavior/review-regressions.json": "d564f1a92cc32fdd1a1e7b34eae99cc47400973fdaf4168c278b5025fb21160c",
+    "evidence/procedural07-ui-qualification075-behavior/case-analyzer/campaign.json": "36fbbdf56caaad1c378d0db4fb418257bf4e2b58b95be452327f61718a766d6d",
+    "evidence/procedural07-ui-qualification075-behavior/case-analyzer/launch.json": "613dbda7122d48a35b646024abd88d282cd5db0e353fd7d0d08355403f8e565f",
+    "evidence/procedural07-ui-qualification075-behavior/case-analyzer/loaded.tsv": "8c484520551e2a453b14b3fd19de7a4333cb4c259ddeaf2c24f7fb4f2fb352ab",
+    "evidence/procedural07-ui-qualification075-behavior/case-analyzer/procedural-acceptance.json": "145b4aa94d374b42147b62fc3c3ca29229343283346bf61d20567a93459f5932",
+    "evidence/procedural07-ui-qualification075-behavior/case-analyzer/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/procedural07-ui-qualification075-behavior/case-analyzer/review-regressions.json": "d564f1a92cc32fdd1a1e7b34eae99cc47400973fdaf4168c278b5025fb21160c",
+    "evidence/procedural07-ui-qualification075-behavior/case-arrangement/arrangement-results.json": "560c8dcdb0295d0bbf712d1ac4abe7a20c1969d683b94d1d7ba5c205b2918c09",
+    "evidence/procedural07-ui-qualification075-behavior/case-arrangement/campaign.json": "5dddfd851405b10fc41f40f0c6dd3e105e84f5cd6a7d31a6094589bc58ad1494",
+    "evidence/procedural07-ui-qualification075-behavior/case-arrangement/launch.json": "613dbda7122d48a35b646024abd88d282cd5db0e353fd7d0d08355403f8e565f",
+    "evidence/procedural07-ui-qualification075-behavior/case-arrangement/loaded.tsv": "8c484520551e2a453b14b3fd19de7a4333cb4c259ddeaf2c24f7fb4f2fb352ab",
+    "evidence/procedural07-ui-qualification075-behavior/case-arrangement/procedural-acceptance.json": "145b4aa94d374b42147b62fc3c3ca29229343283346bf61d20567a93459f5932",
+    "evidence/procedural07-ui-qualification075-behavior/case-arrangement/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/procedural07-ui-qualification075-behavior/case-arrangement/review-regressions.json": "d564f1a92cc32fdd1a1e7b34eae99cc47400973fdaf4168c278b5025fb21160c",
+    "evidence/procedural07-ui-qualification075-behavior/case-containers/launch.json": "613dbda7122d48a35b646024abd88d282cd5db0e353fd7d0d08355403f8e565f",
+    "evidence/procedural07-ui-qualification075-behavior/case-containers/loaded.tsv": "8c484520551e2a453b14b3fd19de7a4333cb4c259ddeaf2c24f7fb4f2fb352ab",
+    "evidence/procedural07-ui-qualification075-behavior/case-containers/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/procedural07-ui-qualification075-behavior/case-edit-bindings/campaign.json": "f2cc4ffcb1edbb8685f2f1dc96faba82257a3ac20efa1f82853fa696daab2646",
+    "evidence/procedural07-ui-qualification075-behavior/case-edit-bindings/launch.json": "613dbda7122d48a35b646024abd88d282cd5db0e353fd7d0d08355403f8e565f",
+    "evidence/procedural07-ui-qualification075-behavior/case-edit-bindings/loaded.tsv": "8c484520551e2a453b14b3fd19de7a4333cb4c259ddeaf2c24f7fb4f2fb352ab",
+    "evidence/procedural07-ui-qualification075-behavior/case-edit-bindings/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/procedural07-ui-qualification075-behavior/case-output/campaign.json": "ce84781a9741dd780d79888fa6cf7981a59210e24dbcb5b900052a036f4ce8b3",
+    "evidence/procedural07-ui-qualification075-behavior/case-output/launch.json": "613dbda7122d48a35b646024abd88d282cd5db0e353fd7d0d08355403f8e565f",
+    "evidence/procedural07-ui-qualification075-behavior/case-output/loaded.tsv": "8c484520551e2a453b14b3fd19de7a4333cb4c259ddeaf2c24f7fb4f2fb352ab",
+    "evidence/procedural07-ui-qualification075-behavior/case-output/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/procedural07-ui-qualification075-behavior/case-publication/campaign.json": "9f1f6d3c64d39ccba3bc5bd1b787655c5b52581a0c5e092d640b0c722bfa6749",
+    "evidence/procedural07-ui-qualification075-behavior/case-publication/launch.json": "613dbda7122d48a35b646024abd88d282cd5db0e353fd7d0d08355403f8e565f",
+    "evidence/procedural07-ui-qualification075-behavior/case-publication/loaded.tsv": "8c484520551e2a453b14b3fd19de7a4333cb4c259ddeaf2c24f7fb4f2fb352ab",
+    "evidence/procedural07-ui-qualification075-behavior/case-publication/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/procedural07-ui-qualification075-behavior/case-publication/review-regressions.json": "d564f1a92cc32fdd1a1e7b34eae99cc47400973fdaf4168c278b5025fb21160c",
+    "evidence/procedural07-ui-qualification075-behavior/case-renderer-stop/arrangement-results.json": "560c8dcdb0295d0bbf712d1ac4abe7a20c1969d683b94d1d7ba5c205b2918c09",
+    "evidence/procedural07-ui-qualification075-behavior/case-renderer-stop/campaign.json": "b4db5959d618e7edad448e9215def33a7e75a4784ff99c531ab99ab6834eb29e",
+    "evidence/procedural07-ui-qualification075-behavior/case-renderer-stop/corona-stop-073.json": "d64660f114e42480de204b1441f98748ce05b0969e987faaad8aa9b9b03d03b4",
+    "evidence/procedural07-ui-qualification075-behavior/case-renderer-stop/launch.json": "613dbda7122d48a35b646024abd88d282cd5db0e353fd7d0d08355403f8e565f",
+    "evidence/procedural07-ui-qualification075-behavior/case-renderer-stop/loaded.tsv": "8c484520551e2a453b14b3fd19de7a4333cb4c259ddeaf2c24f7fb4f2fb352ab",
+    "evidence/procedural07-ui-qualification075-behavior/case-renderer-stop/procedural-acceptance.json": "145b4aa94d374b42147b62fc3c3ca29229343283346bf61d20567a93459f5932",
+    "evidence/procedural07-ui-qualification075-behavior/case-renderer-stop/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/procedural07-ui-qualification075-behavior/case-renderer-stop/review-regressions.json": "d564f1a92cc32fdd1a1e7b34eae99cc47400973fdaf4168c278b5025fb21160c",
+    "evidence/procedural07-ui-qualification075-behavior-final/arrangement-results.json": "a43c2556212ba5d1dc698f6b2253f6765101d49a1f4dde5fffe6e72e32445711",
+    "evidence/procedural07-ui-qualification075-behavior-final/bindings-acceptance.json": "e65f3677fb670ff5a3a3283f4798d4b8b5b1153ed59bc2b17e5dda649aa1d001",
+    "evidence/procedural07-ui-qualification075-behavior-final/campaign.json": "e807f3285c50ccab5e17bf40aee895723d6d6082088e1ae7694b2090bb9f853f",
+    "evidence/procedural07-ui-qualification075-behavior-final/corona-stop-073.json": "d64660f114e42480de204b1441f98748ce05b0969e987faaad8aa9b9b03d03b4",
+    "evidence/procedural07-ui-qualification075-behavior-final/group-move-diagnostics.json": "b8f9dbaeed654880ea912ce2701915f3b711bd98df530a4c1414a3331b78927f",
+    "evidence/procedural07-ui-qualification075-behavior-final/group-retained-comparison.json": "5c395941f738e4ac1200219af3a2e902c227c34ad8073c4bbb86bd5446b5533f",
+    "evidence/procedural07-ui-qualification075-behavior-final/launch.json": "f64a8b3d4b4d06a58584112ceac0deddea64087614c2354e55467cf15fa30ea8",
+    "evidence/procedural07-ui-qualification075-behavior-final/live-pair-render-probe.json": "ce80f315e20f365b2f1d4420eb2ef17881777a482ad616ca9093db0f56fbf006",
+    "evidence/procedural07-ui-qualification075-behavior-final/loaded.tsv": "acb3308ae69538fa10bca1aa794a019329dee94a4b9251cf4d3cde9b5abb7eca",
+    "evidence/procedural07-ui-qualification075-behavior-final/node-combined-debug.json": "c1a70ba7abe7357dac38a0a0d909bf893c07227d108a34a1c62506d824c2d99f",
+    "evidence/procedural07-ui-qualification075-behavior-final/node-second-undo-debug.json": "7f95c86e147774eeac9ba58493e4342eb3c210ec203acd499c0f1befcd7ab7e1",
+    "evidence/procedural07-ui-qualification075-behavior-final/procedural-acceptance.json": "80e9664ccb9710b70e82acbb6805f2d5a031494950d06a279ad539705fd4d6c2",
+    "evidence/procedural07-ui-qualification075-behavior-final/qualification.json": "1357eb12de9eaefc89f635859e58860ca968f251d9146ed10d074939ef6b5934",
+    "evidence/procedural07-ui-qualification075-behavior-final/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/procedural07-ui-qualification075-behavior-final/review-regressions.json": "abb329e05356a29405880915ba9d8ddcd6be2befb570ef9b52f124d449679d27",
+    "evidence/procedural07-ui-qualification075-behavior-final/source-container-output.json": "9ef9b5617dfbf847c194fb0c051ccf00a49a769138015a766d53f2cac062e989",
+    "evidence/procedural07-ui-qualification075-behavior-final/source-containers.json": "d9a2f730ad0b4e11bf70bf4921541f1737bcd13cc39085351297a82d401f0af1",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-analyzer/bindings-acceptance.json": "e65f3677fb670ff5a3a3283f4798d4b8b5b1153ed59bc2b17e5dda649aa1d001",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-analyzer/campaign.json": "d88e46fed60b26ff9f54f49e794d912610ad18a5a095503aff6eac68d727a93e",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-analyzer/launch.json": "f64a8b3d4b4d06a58584112ceac0deddea64087614c2354e55467cf15fa30ea8",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-analyzer/live-pair-render-probe.json": "ce80f315e20f365b2f1d4420eb2ef17881777a482ad616ca9093db0f56fbf006",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-analyzer/loaded.tsv": "acb3308ae69538fa10bca1aa794a019329dee94a4b9251cf4d3cde9b5abb7eca",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-analyzer/procedural-acceptance.json": "e2c519c550b571d172f9f19a6fbf2655de514404e97d66c4c777eab4b03f466e",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-analyzer/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-analyzer/review-regressions.json": "abb329e05356a29405880915ba9d8ddcd6be2befb570ef9b52f124d449679d27",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-analyzer/source-container-output.json": "9ef9b5617dfbf847c194fb0c051ccf00a49a769138015a766d53f2cac062e989",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-analyzer/source-containers.json": "d9a2f730ad0b4e11bf70bf4921541f1737bcd13cc39085351297a82d401f0af1",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-arrangement/arrangement-results.json": "a43c2556212ba5d1dc698f6b2253f6765101d49a1f4dde5fffe6e72e32445711",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-arrangement/bindings-acceptance.json": "e65f3677fb670ff5a3a3283f4798d4b8b5b1153ed59bc2b17e5dda649aa1d001",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-arrangement/campaign.json": "0b7ee50ab4791b94916b5ea668927c4dfd7cdf53d3d8fc25a7221e50f83e2c8b",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-arrangement/group-move-diagnostics.json": "b8f9dbaeed654880ea912ce2701915f3b711bd98df530a4c1414a3331b78927f",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-arrangement/group-retained-comparison.json": "5c395941f738e4ac1200219af3a2e902c227c34ad8073c4bbb86bd5446b5533f",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-arrangement/launch.json": "f64a8b3d4b4d06a58584112ceac0deddea64087614c2354e55467cf15fa30ea8",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-arrangement/live-pair-render-probe.json": "ce80f315e20f365b2f1d4420eb2ef17881777a482ad616ca9093db0f56fbf006",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-arrangement/loaded.tsv": "acb3308ae69538fa10bca1aa794a019329dee94a4b9251cf4d3cde9b5abb7eca",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-arrangement/node-combined-debug.json": "c1a70ba7abe7357dac38a0a0d909bf893c07227d108a34a1c62506d824c2d99f",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-arrangement/node-second-undo-debug.json": "7f95c86e147774eeac9ba58493e4342eb3c210ec203acd499c0f1befcd7ab7e1",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-arrangement/procedural-acceptance.json": "80e9664ccb9710b70e82acbb6805f2d5a031494950d06a279ad539705fd4d6c2",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-arrangement/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-arrangement/review-regressions.json": "abb329e05356a29405880915ba9d8ddcd6be2befb570ef9b52f124d449679d27",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-arrangement/source-container-output.json": "9ef9b5617dfbf847c194fb0c051ccf00a49a769138015a766d53f2cac062e989",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-arrangement/source-containers.json": "d9a2f730ad0b4e11bf70bf4921541f1737bcd13cc39085351297a82d401f0af1",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-containers/launch.json": "f64a8b3d4b4d06a58584112ceac0deddea64087614c2354e55467cf15fa30ea8",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-containers/loaded.tsv": "acb3308ae69538fa10bca1aa794a019329dee94a4b9251cf4d3cde9b5abb7eca",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-containers/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-containers/source-containers.json": "d9a2f730ad0b4e11bf70bf4921541f1737bcd13cc39085351297a82d401f0af1",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-edit-bindings/bindings-acceptance.json": "e65f3677fb670ff5a3a3283f4798d4b8b5b1153ed59bc2b17e5dda649aa1d001",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-edit-bindings/campaign.json": "fd426d5d47667968b9db4f44a37ee1e3658b06f9ebe75818fda31aea55dde498",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-edit-bindings/launch.json": "f64a8b3d4b4d06a58584112ceac0deddea64087614c2354e55467cf15fa30ea8",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-edit-bindings/loaded.tsv": "acb3308ae69538fa10bca1aa794a019329dee94a4b9251cf4d3cde9b5abb7eca",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-edit-bindings/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-edit-bindings/source-container-output.json": "9ef9b5617dfbf847c194fb0c051ccf00a49a769138015a766d53f2cac062e989",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-edit-bindings/source-containers.json": "d9a2f730ad0b4e11bf70bf4921541f1737bcd13cc39085351297a82d401f0af1",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-edit-persistence/bindings-acceptance.json": "e65f3677fb670ff5a3a3283f4798d4b8b5b1153ed59bc2b17e5dda649aa1d001",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-edit-persistence/campaign.json": "787c3b4bb21e694605cf3a13364f64ca9fa43f58b4a74f182bb485bec00f06c9",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-edit-persistence/group-move-diagnostics.json": "b8f9dbaeed654880ea912ce2701915f3b711bd98df530a4c1414a3331b78927f",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-edit-persistence/group-retained-comparison.json": "5c395941f738e4ac1200219af3a2e902c227c34ad8073c4bbb86bd5446b5533f",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-edit-persistence/launch.json": "f64a8b3d4b4d06a58584112ceac0deddea64087614c2354e55467cf15fa30ea8",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-edit-persistence/live-pair-render-probe.json": "ce80f315e20f365b2f1d4420eb2ef17881777a482ad616ca9093db0f56fbf006",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-edit-persistence/loaded.tsv": "acb3308ae69538fa10bca1aa794a019329dee94a4b9251cf4d3cde9b5abb7eca",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-edit-persistence/node-combined-debug.json": "c1a70ba7abe7357dac38a0a0d909bf893c07227d108a34a1c62506d824c2d99f",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-edit-persistence/node-second-undo-debug.json": "7f95c86e147774eeac9ba58493e4342eb3c210ec203acd499c0f1befcd7ab7e1",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-edit-persistence/procedural-acceptance.json": "80e9664ccb9710b70e82acbb6805f2d5a031494950d06a279ad539705fd4d6c2",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-edit-persistence/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-edit-persistence/review-regressions.json": "abb329e05356a29405880915ba9d8ddcd6be2befb570ef9b52f124d449679d27",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-edit-persistence/source-container-output.json": "9ef9b5617dfbf847c194fb0c051ccf00a49a769138015a766d53f2cac062e989",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-edit-persistence/source-containers.json": "d9a2f730ad0b4e11bf70bf4921541f1737bcd13cc39085351297a82d401f0af1",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-group-move/bindings-acceptance.json": "e65f3677fb670ff5a3a3283f4798d4b8b5b1153ed59bc2b17e5dda649aa1d001",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-group-move/campaign.json": "5c3c960a50303f76101b478df7765b7ac8c0d859c4a6716291ae36499bea45ab",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-group-move/group-move-diagnostics.json": "b8f9dbaeed654880ea912ce2701915f3b711bd98df530a4c1414a3331b78927f",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-group-move/group-retained-comparison.json": "5c395941f738e4ac1200219af3a2e902c227c34ad8073c4bbb86bd5446b5533f",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-group-move/launch.json": "f64a8b3d4b4d06a58584112ceac0deddea64087614c2354e55467cf15fa30ea8",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-group-move/live-pair-render-probe.json": "ce80f315e20f365b2f1d4420eb2ef17881777a482ad616ca9093db0f56fbf006",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-group-move/loaded.tsv": "acb3308ae69538fa10bca1aa794a019329dee94a4b9251cf4d3cde9b5abb7eca",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-group-move/procedural-acceptance.json": "99826751397ee3f534aaca180b34a4d0c86947ae65d0e3590c717e67de7dbab9",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-group-move/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-group-move/review-regressions.json": "abb329e05356a29405880915ba9d8ddcd6be2befb570ef9b52f124d449679d27",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-group-move/source-container-output.json": "9ef9b5617dfbf847c194fb0c051ccf00a49a769138015a766d53f2cac062e989",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-group-move/source-containers.json": "d9a2f730ad0b4e11bf70bf4921541f1737bcd13cc39085351297a82d401f0af1",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-node-move/bindings-acceptance.json": "e65f3677fb670ff5a3a3283f4798d4b8b5b1153ed59bc2b17e5dda649aa1d001",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-node-move/campaign.json": "11e16f16dac83052eeb2014b940ea5bc40990e299ce3c9f5f2e4cfd387018490",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-node-move/group-move-diagnostics.json": "b8f9dbaeed654880ea912ce2701915f3b711bd98df530a4c1414a3331b78927f",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-node-move/group-retained-comparison.json": "5c395941f738e4ac1200219af3a2e902c227c34ad8073c4bbb86bd5446b5533f",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-node-move/launch.json": "f64a8b3d4b4d06a58584112ceac0deddea64087614c2354e55467cf15fa30ea8",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-node-move/live-pair-render-probe.json": "ce80f315e20f365b2f1d4420eb2ef17881777a482ad616ca9093db0f56fbf006",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-node-move/loaded.tsv": "acb3308ae69538fa10bca1aa794a019329dee94a4b9251cf4d3cde9b5abb7eca",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-node-move/node-combined-debug.json": "c1a70ba7abe7357dac38a0a0d909bf893c07227d108a34a1c62506d824c2d99f",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-node-move/node-second-undo-debug.json": "7f95c86e147774eeac9ba58493e4342eb3c210ec203acd499c0f1befcd7ab7e1",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-node-move/procedural-acceptance.json": "fd2a86ebfa707e8bf68483c2c08018ec69bfcad378af001d55c686a41ab08136",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-node-move/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-node-move/review-regressions.json": "abb329e05356a29405880915ba9d8ddcd6be2befb570ef9b52f124d449679d27",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-node-move/source-container-output.json": "9ef9b5617dfbf847c194fb0c051ccf00a49a769138015a766d53f2cac062e989",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-node-move/source-containers.json": "d9a2f730ad0b4e11bf70bf4921541f1737bcd13cc39085351297a82d401f0af1",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-output/campaign.json": "9172f758ff03465613dcbf0f96210dc32825424113d77707cb5f33934c1f98ae",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-output/launch.json": "f64a8b3d4b4d06a58584112ceac0deddea64087614c2354e55467cf15fa30ea8",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-output/loaded.tsv": "acb3308ae69538fa10bca1aa794a019329dee94a4b9251cf4d3cde9b5abb7eca",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-output/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-output/source-container-output.json": "9ef9b5617dfbf847c194fb0c051ccf00a49a769138015a766d53f2cac062e989",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-output/source-containers.json": "d9a2f730ad0b4e11bf70bf4921541f1737bcd13cc39085351297a82d401f0af1",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-publication/bindings-acceptance.json": "e65f3677fb670ff5a3a3283f4798d4b8b5b1153ed59bc2b17e5dda649aa1d001",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-publication/campaign.json": "69863475fa0b20871f56758aa93026592942adac1105c5cbfd5e4f1a457a8047",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-publication/launch.json": "f64a8b3d4b4d06a58584112ceac0deddea64087614c2354e55467cf15fa30ea8",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-publication/live-pair-render-probe.json": "ce80f315e20f365b2f1d4420eb2ef17881777a482ad616ca9093db0f56fbf006",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-publication/loaded.tsv": "acb3308ae69538fa10bca1aa794a019329dee94a4b9251cf4d3cde9b5abb7eca",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-publication/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-publication/review-regressions.json": "abb329e05356a29405880915ba9d8ddcd6be2befb570ef9b52f124d449679d27",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-publication/source-container-output.json": "9ef9b5617dfbf847c194fb0c051ccf00a49a769138015a766d53f2cac062e989",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-publication/source-containers.json": "d9a2f730ad0b4e11bf70bf4921541f1737bcd13cc39085351297a82d401f0af1",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-renderer-stop/arrangement-results.json": "a43c2556212ba5d1dc698f6b2253f6765101d49a1f4dde5fffe6e72e32445711",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-renderer-stop/bindings-acceptance.json": "e65f3677fb670ff5a3a3283f4798d4b8b5b1153ed59bc2b17e5dda649aa1d001",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-renderer-stop/campaign.json": "de66c99b0e1aadc825ddeb52f27194e91a565609b01d3a11644303429f1a6575",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-renderer-stop/corona-stop-073.json": "d64660f114e42480de204b1441f98748ce05b0969e987faaad8aa9b9b03d03b4",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-renderer-stop/group-move-diagnostics.json": "b8f9dbaeed654880ea912ce2701915f3b711bd98df530a4c1414a3331b78927f",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-renderer-stop/group-retained-comparison.json": "5c395941f738e4ac1200219af3a2e902c227c34ad8073c4bbb86bd5446b5533f",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-renderer-stop/launch.json": "f64a8b3d4b4d06a58584112ceac0deddea64087614c2354e55467cf15fa30ea8",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-renderer-stop/live-pair-render-probe.json": "ce80f315e20f365b2f1d4420eb2ef17881777a482ad616ca9093db0f56fbf006",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-renderer-stop/loaded.tsv": "acb3308ae69538fa10bca1aa794a019329dee94a4b9251cf4d3cde9b5abb7eca",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-renderer-stop/node-combined-debug.json": "c1a70ba7abe7357dac38a0a0d909bf893c07227d108a34a1c62506d824c2d99f",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-renderer-stop/node-second-undo-debug.json": "7f95c86e147774eeac9ba58493e4342eb3c210ec203acd499c0f1befcd7ab7e1",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-renderer-stop/procedural-acceptance.json": "80e9664ccb9710b70e82acbb6805f2d5a031494950d06a279ad539705fd4d6c2",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-renderer-stop/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-renderer-stop/review-regressions.json": "abb329e05356a29405880915ba9d8ddcd6be2befb570ef9b52f124d449679d27",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-renderer-stop/source-container-output.json": "9ef9b5617dfbf847c194fb0c051ccf00a49a769138015a766d53f2cac062e989",
+    "evidence/procedural07-ui-qualification075-behavior-final/case-renderer-stop/source-containers.json": "d9a2f730ad0b4e11bf70bf4921541f1737bcd13cc39085351297a82d401f0af1",
+    "evidence/qualification075-core/launch.json": "28e90f262cb3d8005ce987a669493efcbf24e3c25ed6452a1d77414273174f51",
+    "evidence/qualification075-core/loaded.tsv": "751963abc848bd63041f3da3969dd88ecc93a631008a52fd3e37e1ce6d1da34e",
+    "evidence/qualification075-core/procedural-acceptance.json": "5e089b6f5a37cde25f1686708a4bc2d3d4a7af25f0a8ccf9a7151d4b85099ae3",
+    "evidence/qualification075-core/qualification.json": "4129a8087eb07948379d1338eeea49c6d3fce6de488b83031be54bee9c20a4b5",
+    "evidence/qualification075-core/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/qualification075-core/units-acceptance.json": "5ed5271d1c3567b638d8287807a33421f8f0d93e0a4f1d316394b28d4edf8d0a",
+    "evidence/qualification075-lifecycle-final/campaign.json": "ee584476993cbdc865f398a0b1f03489163e6f13306a4fa35166da7025bf235c",
+    "evidence/qualification075-lifecycle-final/corona072-inactive-stop.json": "9beb7495ec0216398b2fe85c9da423cec0809a5a9f94879ac327cf93443455fc",
+    "evidence/qualification075-lifecycle-final/corona072-result.json": "a4d5b5bc6c1792c6061678d100408663d7835483d4464a5caa0971e928addafb",
+    "evidence/qualification075-lifecycle-final/corona072-save-recovery.json": "a3b5da0eaa85fd1fa23c9673c71f5cc90304d495fc0193cc4ce26c551b0b1181",
+    "evidence/qualification075-lifecycle-final/corona072-stages.json": "f76ed0e9ba7541e6a53809489c4821f526e603808da361514c94f37dc9bcb56e",
+    "evidence/qualification075-lifecycle-final/corona072-start.json": "995313d819364ec833f395ff8051a355dff0e136a65b7ec48b01f16707df1e45",
+    "evidence/qualification075-lifecycle-final/corona072-trace.json": "f7718df28e632f78d242a9cf8cfc13c35067733c9d36c89bbafeb98fa6d42864",
+    "evidence/qualification075-lifecycle-final/ir072-after-edit.json": "de80f0bafe89016224a1930638e2b0fd9754dc13635f893e036a7d5537f97853",
+    "evidence/qualification075-lifecycle-final/ir072-after-idle.json": "0c2b3b6c8d689b24b850590c223b1819b3294cb5bbf6a5502aaaa225d31cc02d",
+    "evidence/qualification075-lifecycle-final/ir072-after-save.json": "b7df4eaafd2fc300ecb42fdce41e55c38b054ba1fc67131bf67a588b3faf331b",
+    "evidence/qualification075-lifecycle-final/ir072-before-idle.json": "c6ea47f4d9bd8ad46de8e416ee1161bbb865fdaeaa44e8bd6bc39d84c7b4fa00",
+    "evidence/qualification075-lifecycle-final/ir072-edit-settled.json": "2d82d36fd7581fb04bd3ab1b19696f25ded8e752db192ef9748654c645b4e65c",
+    "evidence/qualification075-lifecycle-final/ir072-production.json": "98ee84b6351e7af5c964b2edb6cbf03f15a0ddce2a784f1327e57e93a4e8f757",
+    "evidence/qualification075-lifecycle-final/ir072-stopped.json": "dedbfa1f3217705a5fd60bb13435a8733b5574266cbe0167617c344bdf59783d",
+    "evidence/qualification075-lifecycle-final/launch.json": "0cd3e2ad67c15a89c32fe7a8c86cdaef15dd68ab859c1706140a1ef0d3ea71f5",
+    "evidence/qualification075-lifecycle-final/loaded-native.txt": "9dc969505d4c845edc60e5f7d094200b687f0c88e4dd3489a47bee1b03846b9e",
+    "evidence/qualification075-lifecycle-final/loaded.tsv": "811259afabe3d65b59b391fed18dae0604868c657d0be3ad68765d74cc860db8",
+    "evidence/qualification075-lifecycle-final/qualification.json": "b5f2e2941f45ee5bf8f519dc8f89fbbb31b95c178858114a8ad301eac502dfb8",
+    "evidence/qualification075-lifecycle-final/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/qualification075-lifecycle-final/result.txt": "d9047b3bb90b53517c0d3f434b0b1694b4fa6f3481982b615373b59fb60720a3",
+    "evidence/qualification075-lifecycle-final/case-playback/launch.json": "0cd3e2ad67c15a89c32fe7a8c86cdaef15dd68ab859c1706140a1ef0d3ea71f5",
+    "evidence/qualification075-lifecycle-final/case-playback/loaded-native.txt": "9dc969505d4c845edc60e5f7d094200b687f0c88e4dd3489a47bee1b03846b9e",
+    "evidence/qualification075-lifecycle-final/case-playback/loaded.tsv": "811259afabe3d65b59b391fed18dae0604868c657d0be3ad68765d74cc860db8",
+    "evidence/qualification075-lifecycle-final/case-playback/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/qualification075-lifecycle-final/case-playback/result.txt": "d9047b3bb90b53517c0d3f434b0b1694b4fa6f3481982b615373b59fb60720a3",
+    "evidence/qualification075-output-probe/launch.json": "362286695e581f606437330feb3883d35992b98aaa24609921ac1ea9edb4a153",
+    "evidence/qualification075-output-probe/loaded.tsv": "d2910c6163bfa5545069dd944c69851d88a7bab181982ce62d472b50e940cb86",
+    "evidence/qualification075-output-probe/output075-probe.json": "5c8e36c67c85f2dd452ad7f1c3cfc4aea706ee4e116ba9ce2cba5875e95c7784",
+    "evidence/qualification075-output-probe/qualification.json": "64dabe43affe702ed46c16b6bf80b98c69c6d8b6ed766426f012282c7e294c34",
+    "evidence/qualification075-output-probe/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/qualification075-performance/100k-navigation.json": "184ef10150fa888653e0f46fd20de212432bd9af01fe4b0d537ffbc8e8eaa61e",
+    "evidence/qualification075-performance/after-diagnostic-recording-end.json": "56501f223db50180b0924f806d8d10121d278215579476d4e040beb5bb6c2fa5",
+    "evidence/qualification075-performance/after-diagnostic-recording-start.json": "c9eafa85a6558811497c2e4b2966267ce05f0d639d95fc39ebe5699975c3a879",
+    "evidence/qualification075-performance/campaign.json": "2702ceac46b88787fc21f02d450a8433e16e02e4d7172f73932d85ae1aa1a7d3",
+    "evidence/qualification075-performance/corona072-inactive-stop.json": "9beb7495ec0216398b2fe85c9da423cec0809a5a9f94879ac327cf93443455fc",
+    "evidence/qualification075-performance/corona072-stages.json": "638939bba79ed9e77cb286d2d819982a03a62fc70a2cf81c22e1422206c9615c",
+    "evidence/qualification075-performance/corona072-start.json": "995313d819364ec833f395ff8051a355dff0e136a65b7ec48b01f16707df1e45",
+    "evidence/qualification075-performance/diagnostic-overhead.json": "d66cf58ec53e258552f8f101345050b8f8f9cd07bc33cd934acff3a63d935c06",
+    "evidence/qualification075-performance/failed-successor-end.json": "c56c3e700d9979aff4deeb61ca4c710b465a56f608857fba859d421ff21e4225",
+    "evidence/qualification075-performance/failed-successor-start.json": "6b90f6ad065ab182ccf218d054af59cb5812d174dc956abe632754dbafb45cd4",
+    "evidence/qualification075-performance/idle-loaded-payload.txt": "5626165eea3f1abf39b58a1edf77a3bcbc7b00d09869ba2cd9b464c0c872ca4a",
+    "evidence/qualification075-performance/idle-qualification.json": "86126bd8d4edb652989763956cbc5a4b7c20c4f4505b3a76fca01d549f74df99",
+    "evidence/qualification075-performance/ir072-after-edit.json": "baa75d1527d6bc6cf6d9562ea09edb7d999b5b70fa81225a9fce9ff8cc283ee2",
+    "evidence/qualification075-performance/ir072-after-idle.json": "a5eff3fa75261d8e366dbe1f99e1dc3bab1bf245e47676b289476240e35d659c",
+    "evidence/qualification075-performance/ir072-after-save.json": "cb2752771d826c077d1fac89afaea9f073198f6a420f7d0d2b327dde5207e37e",
+    "evidence/qualification075-performance/ir072-before-idle.json": "df12af4a7fa7da8f292aaf156296d89fb777658a61dd050a293ab5ed2cdebc29",
+    "evidence/qualification075-performance/ir072-edit-settled.json": "71d1c649b776234fc708bd249711d46213b8b2f7b3afaa6e774939ea167b7c55",
+    "evidence/qualification075-performance/launch.json": "04ea67dda827d65e25db6153b74e8715bd6ae6f065f6a7a3a8d9c84d40010498",
+    "evidence/qualification075-performance/live-closed-end.json": "5e584391f8d3a7d1ed53a47789c779d4f39cb1f29d02d38f0d9abee95d1cc85e",
+    "evidence/qualification075-performance/live-closed-start.json": "370d72d5c395b448731aa26b50507219a38213fe0f3a526a553070ee23349981",
+    "evidence/qualification075-performance/live-density-edit-end.json": "2b5aee23b394953dfd932df0a24dbe074592780b689610adfb2c1a85612ac630",
+    "evidence/qualification075-performance/live-density-edit-start.json": "e3bd2a3d62cc83ce1a2c4c4a8f70fc481a4242d0eb3a2e9cbebc25b73d748a06",
+    "evidence/qualification075-performance/live-editor-open-end.json": "d4bcae56c4c22bd0c2f4916d19f26cee2897109a2f4588eb07ff50e07ad5eaf2",
+    "evidence/qualification075-performance/live-editor-open-start.json": "ddbb7f7ff9f02be3776813985d031ee20b77d1f7dc6ec43ee64b49546c8deca6",
+    "evidence/qualification075-performance/live-real-edit-end.json": "c4ecb4f91de859e14baeba311fa284fc2b8cd95a0fa625dd14e253775c5054c5",
+    "evidence/qualification075-performance/live-real-edit-start.json": "283ab0b2f150a2c7d1adaaadfadb9cf04316b111a375902585dc94aaf51115e9",
+    "evidence/qualification075-performance/loaded-native.txt": "e37ffd3af49212ae5bb132641b2edb487627cfe3ac11e0840ebc0a29b67033f7",
+    "evidence/qualification075-performance/loaded.tsv": "1e375466b00decc46eba14f26b99224b3140d2fbbf82c8a75dfb55c73101ea6a",
+    "evidence/qualification075-performance/manual-pending-end.json": "2db147767642f114c741a54153777a9ebdbe3c1a30c6c9057e90b71fbbfd5a8a",
+    "evidence/qualification075-performance/manual-pending-start.json": "eed02836954696b5a3ef80ab1ba30677b6e6594611058d56e5301e832acdb4c6",
+    "evidence/qualification075-performance/qualification.json": "ca80356030bfa2e521b50646e4a403bde2aa8fb7036e657ed7a3baa564671af6",
+    "evidence/qualification075-performance/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/qualification075-performance/restored-valid-recipe-end.json": "33713aada8828c34a125b8b6844f5e931ad72c9aa5eb2a1cf64f959bfb16efd1",
+    "evidence/qualification075-performance/restored-valid-recipe-start.json": "6b2d2044ee0c4e1db99199f04e76cc7de8bfef1eb40094d28bbce71f7ade61f8",
+    "evidence/qualification075-performance/result.txt": "2b69dd783e1a9935426495ab96cbdf2444bb8bcb4777c62ab4000e54ca5b9574",
+    "evidence/qualification075-performance/case-navigation/100k-navigation.json": "184ef10150fa888653e0f46fd20de212432bd9af01fe4b0d537ffbc8e8eaa61e",
+    "evidence/qualification075-performance/case-navigation/launch.json": "04ea67dda827d65e25db6153b74e8715bd6ae6f065f6a7a3a8d9c84d40010498",
+    "evidence/qualification075-performance/case-navigation/loaded.tsv": "1e375466b00decc46eba14f26b99224b3140d2fbbf82c8a75dfb55c73101ea6a",
+    "evidence/qualification075-performance/case-navigation/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/qualification075-performance/case-playback/100k-navigation.json": "184ef10150fa888653e0f46fd20de212432bd9af01fe4b0d537ffbc8e8eaa61e",
+    "evidence/qualification075-performance/case-playback/campaign.json": "fc5531dc2a63f432cda8d6f0abc9227949ad499a2f177e7dd7814b0eda574cdc",
+    "evidence/qualification075-performance/case-playback/launch.json": "04ea67dda827d65e25db6153b74e8715bd6ae6f065f6a7a3a8d9c84d40010498",
+    "evidence/qualification075-performance/case-playback/loaded-native.txt": "e37ffd3af49212ae5bb132641b2edb487627cfe3ac11e0840ebc0a29b67033f7",
+    "evidence/qualification075-performance/case-playback/loaded.tsv": "1e375466b00decc46eba14f26b99224b3140d2fbbf82c8a75dfb55c73101ea6a",
+    "evidence/qualification075-performance/case-playback/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/qualification075-performance/case-playback/result.txt": "2b69dd783e1a9935426495ab96cbdf2444bb8bcb4777c62ab4000e54ca5b9574",
+    "evidence/qualification075-retained/analyzer-playback.txt": "17f858f898283b60e86758e64e267458ee1a45a99d8d68296e7d9137eedbd20a",
+    "evidence/qualification075-retained/campaign.json": "e51de67f724cd7bcb8e69bf123cfcc27cfc5f32397dc301aee09e43846d4d83c",
+    "evidence/qualification075-retained/launch.json": "def33262a513cd724c9dc122a94ef48cb76e544640db38bc7968c90d35b9cc74",
+    "evidence/qualification075-retained/loaded.tsv": "50af6ae22631e81d791e65c60f04677e21ba0e80aff5eef668fa95bc1ee15548",
+    "evidence/qualification075-retained/qualification.json": "960b9042e6ee58adc0ed24fbcc6eadfa3b7efde1b16e51aa509377c6039eb68a",
+    "evidence/qualification075-retained/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/qualification075-retained/retained-repeat.txt": "bfc916c96374d13414bb07501febe80f52fbd7f3f4c3e8c59ab90fa0ed8839eb",
+    "evidence/qualification075-retained/case-analyzer-playback/analyzer-playback.txt": "17f858f898283b60e86758e64e267458ee1a45a99d8d68296e7d9137eedbd20a",
+    "evidence/qualification075-retained/case-analyzer-playback/campaign.json": "eac7a657bd1740690175850e1e9c161b20e25a42f18bbff3c0c9386555a23a4f",
+    "evidence/qualification075-retained/case-analyzer-playback/launch.json": "def33262a513cd724c9dc122a94ef48cb76e544640db38bc7968c90d35b9cc74",
+    "evidence/qualification075-retained/case-analyzer-playback/loaded.tsv": "50af6ae22631e81d791e65c60f04677e21ba0e80aff5eef668fa95bc1ee15548",
+    "evidence/qualification075-retained/case-analyzer-playback/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/qualification075-retained/case-analyzer-playback/retained-repeat.txt": "bfc916c96374d13414bb07501febe80f52fbd7f3f4c3e8c59ab90fa0ed8839eb",
+    "evidence/qualification075-retained/case-display-repeat/launch.json": "def33262a513cd724c9dc122a94ef48cb76e544640db38bc7968c90d35b9cc74",
+    "evidence/qualification075-retained/case-display-repeat/loaded.tsv": "50af6ae22631e81d791e65c60f04677e21ba0e80aff5eef668fa95bc1ee15548",
+    "evidence/qualification075-retained/case-display-repeat/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/qualification075-retained/case-display-repeat/retained-repeat.txt": "bfc916c96374d13414bb07501febe80f52fbd7f3f4c3e8c59ab90fa0ed8839eb",
+    "evidence/qualification075-sources-final/campaign.json": "ca89964d1fd78a0ab605951f217e03a553e7c090fa992ade649de5d5765b8810",
+    "evidence/qualification075-sources-final/launch.json": "b6f4804bca5373af16fa110547a64e706a1d9c7998ec9728e2346e8c4c06efbc",
+    "evidence/qualification075-sources-final/loaded.tsv": "277d747ea2a39707e76a07b66ec6873ec916855d745e113ab8d97a1e79b835ad",
+    "evidence/qualification075-sources-final/other-control-bindings.tsv": "7312eb14f7079b011994e34b76bc26c165175896147e9b876e79f8c8f92cb881",
+    "evidence/qualification075-sources-final/qualification.json": "26b08c496c121b417331650a967dc02980d425057ef8803795eb7497621a69f9",
+    "evidence/qualification075-sources-final/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/qualification075-sources-final/system075-checks.txt": "feea79b84e650d04938f3b59d0687d6e123d2cea785fc71b8c080e7ad57b481f",
+    "evidence/qualification075-ui/campaign.json": "a1b8480b63ce83cf82efb019dba9b8da012b785715b3832a197d6b83d9630595",
+    "evidence/qualification075-ui/consolidation075-checks.txt": "cf4b8a458f177356c9f73d168c932afb88e48b617ddbb56bc03a6915697adb12",
+    "evidence/qualification075-ui/launch.json": "2a38e4153bbd837923197b6fe34b70e76b0ff231154baee9db5438d9fa6afdc0",
+    "evidence/qualification075-ui/layer-regions-before-save.txt": "f70d047874c0576c0391ffe88651577e92bb96736166f000790dbb2884a46aa2",
+    "evidence/qualification075-ui/layer-regions-checks.txt": "5abf8ea5f9b4dc512926fba59aea6fe607ec6a195903bd483ac0a1587437a648",
+    "evidence/qualification075-ui/layout075-checks.txt": "39e0c28d4cd69e568ce1aaa53f8fa3a6c214c446856ad5702e48e6224264ca81",
+    "evidence/qualification075-ui/loaded.tsv": "8d1aef2fe19952a838b5e4c6bc4dd09237b7f916a5e1ffb0a4be6c41d1ccdb66",
+    "evidence/qualification075-ui/qualification.json": "c41abf6bb73c61fd992580568b3517af5eb273ba647f2d3b43ed1011da25a61a",
+    "evidence/qualification075-ui/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/qualification075-ui/case-bindings/launch.json": "2a38e4153bbd837923197b6fe34b70e76b0ff231154baee9db5438d9fa6afdc0",
+    "evidence/qualification075-ui/case-bindings/loaded.tsv": "8d1aef2fe19952a838b5e4c6bc4dd09237b7f916a5e1ffb0a4be6c41d1ccdb66",
+    "evidence/qualification075-ui/case-bindings/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/qualification075-ui/case-layout/campaign.json": "89b9089e88c8f41b056321e728bf7998009220f4e5945368c985aa417c207619",
+    "evidence/qualification075-ui/case-layout/launch.json": "2a38e4153bbd837923197b6fe34b70e76b0ff231154baee9db5438d9fa6afdc0",
+    "evidence/qualification075-ui/case-layout/layout075-checks.txt": "39e0c28d4cd69e568ce1aaa53f8fa3a6c214c446856ad5702e48e6224264ca81",
+    "evidence/qualification075-ui/case-layout/loaded.tsv": "8d1aef2fe19952a838b5e4c6bc4dd09237b7f916a5e1ffb0a4be6c41d1ccdb66",
+    "evidence/qualification075-ui/case-layout/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/qualification075-ui/case-regions/campaign.json": "293371e7a7c1bd2c4d825ce97bf88ce3c476dba506d736b82284573214e5ff7f",
+    "evidence/qualification075-ui/case-regions/launch.json": "2a38e4153bbd837923197b6fe34b70e76b0ff231154baee9db5438d9fa6afdc0",
+    "evidence/qualification075-ui/case-regions/layer-regions-before-save.txt": "f70d047874c0576c0391ffe88651577e92bb96736166f000790dbb2884a46aa2",
+    "evidence/qualification075-ui/case-regions/layer-regions-checks.txt": "2bcf7c89b2498ad9c2fb1d4c73fb3850f25cfafb639fc9056505347c364fee1c",
+    "evidence/qualification075-ui/case-regions/layout075-checks.txt": "39e0c28d4cd69e568ce1aaa53f8fa3a6c214c446856ad5702e48e6224264ca81",
+    "evidence/qualification075-ui/case-regions/loaded.tsv": "8d1aef2fe19952a838b5e4c6bc4dd09237b7f916a5e1ffb0a4be6c41d1ccdb66",
+    "evidence/qualification075-ui/case-regions/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/qualification075-ui-final/campaign.json": "d0f5599ed534ade32d216c76934c55ff6fafcd06516663ef8bd16ba7fa46611c",
+    "evidence/qualification075-ui-final/consolidation075-checks.txt": "9de61fc0a018ff911c964877ce0d0b83b8ae1e9b5bad892e20f19eef6f9a2d50",
+    "evidence/qualification075-ui-final/control-bindings.tsv": "373b703e11dcb5064536b3b71925617399884763b3ab1cf31673be9d31dffe26",
+    "evidence/qualification075-ui-final/grips-Container.txt": "68d8e11449b44f399cde48055259bf6eabf3b8265c38f82cb3d25456b6654c47",
+    "evidence/qualification075-ui-final/grips-main.txt": "85e8d9dc8196bc8f25e43b37de7bb3327417cfcd4e6428c44d97071dc187ff75",
+    "evidence/qualification075-ui-final/grips-Popup.txt": "b8df53af9cd584c49cb46a3b0c0bf197c676f55216fb4b8e8055a5e23ae64627",
+    "evidence/qualification075-ui-final/launch.json": "c3cfe1c6e247ee417ad20de4dd37473b647eda10dc4fa36dbb3351c9c370af11",
+    "evidence/qualification075-ui-final/layer-regions-before-save.txt": "f70d047874c0576c0391ffe88651577e92bb96736166f000790dbb2884a46aa2",
+    "evidence/qualification075-ui-final/layer-regions-checks.txt": "5abf8ea5f9b4dc512926fba59aea6fe607ec6a195903bd483ac0a1587437a648",
+    "evidence/qualification075-ui-final/layout075-checks.txt": "39e0c28d4cd69e568ce1aaa53f8fa3a6c214c446856ad5702e48e6224264ca81",
+    "evidence/qualification075-ui-final/loaded.tsv": "553ce8200e08b1a8956dc22b86ba9a5b338c1df919944179fc2569ba9424a382",
+    "evidence/qualification075-ui-final/qualification.json": "482d331d893540f845c85e5f869cbe2366a5e764b31980efd40ddd351c6ff06a",
+    "evidence/qualification075-ui-final/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/qualification075-ui-final/case-bindings/control-bindings.tsv": "373b703e11dcb5064536b3b71925617399884763b3ab1cf31673be9d31dffe26",
+    "evidence/qualification075-ui-final/case-bindings/launch.json": "c3cfe1c6e247ee417ad20de4dd37473b647eda10dc4fa36dbb3351c9c370af11",
+    "evidence/qualification075-ui-final/case-bindings/loaded.tsv": "553ce8200e08b1a8956dc22b86ba9a5b338c1df919944179fc2569ba9424a382",
+    "evidence/qualification075-ui-final/case-bindings/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/qualification075-ui-final/case-grips/campaign.json": "fada43637f48a8296687ce9af745afc95b6474bcdda30dcaba36edde57bb2d78",
+    "evidence/qualification075-ui-final/case-grips/consolidation075-checks.txt": "9de61fc0a018ff911c964877ce0d0b83b8ae1e9b5bad892e20f19eef6f9a2d50",
+    "evidence/qualification075-ui-final/case-grips/control-bindings.tsv": "373b703e11dcb5064536b3b71925617399884763b3ab1cf31673be9d31dffe26",
+    "evidence/qualification075-ui-final/case-grips/grips-Container.txt": "68d8e11449b44f399cde48055259bf6eabf3b8265c38f82cb3d25456b6654c47",
+    "evidence/qualification075-ui-final/case-grips/grips-main.txt": "85e8d9dc8196bc8f25e43b37de7bb3327417cfcd4e6428c44d97071dc187ff75",
+    "evidence/qualification075-ui-final/case-grips/grips-Popup.txt": "b8df53af9cd584c49cb46a3b0c0bf197c676f55216fb4b8e8055a5e23ae64627",
+    "evidence/qualification075-ui-final/case-grips/launch.json": "c3cfe1c6e247ee417ad20de4dd37473b647eda10dc4fa36dbb3351c9c370af11",
+    "evidence/qualification075-ui-final/case-grips/layer-regions-before-save.txt": "f70d047874c0576c0391ffe88651577e92bb96736166f000790dbb2884a46aa2",
+    "evidence/qualification075-ui-final/case-grips/layer-regions-checks.txt": "5abf8ea5f9b4dc512926fba59aea6fe607ec6a195903bd483ac0a1587437a648",
+    "evidence/qualification075-ui-final/case-grips/layout075-checks.txt": "39e0c28d4cd69e568ce1aaa53f8fa3a6c214c446856ad5702e48e6224264ca81",
+    "evidence/qualification075-ui-final/case-grips/loaded.tsv": "553ce8200e08b1a8956dc22b86ba9a5b338c1df919944179fc2569ba9424a382",
+    "evidence/qualification075-ui-final/case-grips/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/qualification075-ui-final/case-layout/campaign.json": "2a8711fccce2f701662359ab00539d7a82f6ee8f623e84b62cce33570833257b",
+    "evidence/qualification075-ui-final/case-layout/control-bindings.tsv": "373b703e11dcb5064536b3b71925617399884763b3ab1cf31673be9d31dffe26",
+    "evidence/qualification075-ui-final/case-layout/launch.json": "c3cfe1c6e247ee417ad20de4dd37473b647eda10dc4fa36dbb3351c9c370af11",
+    "evidence/qualification075-ui-final/case-layout/layout075-checks.txt": "39e0c28d4cd69e568ce1aaa53f8fa3a6c214c446856ad5702e48e6224264ca81",
+    "evidence/qualification075-ui-final/case-layout/loaded.tsv": "553ce8200e08b1a8956dc22b86ba9a5b338c1df919944179fc2569ba9424a382",
+    "evidence/qualification075-ui-final/case-layout/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/qualification075-ui-final/case-manual-workflow/campaign.json": "bbece5d89147719357ca840c1f8b066c121daffb363235ebc2f39ed3bc370ed6",
+    "evidence/qualification075-ui-final/case-manual-workflow/consolidation075-checks.txt": "9de61fc0a018ff911c964877ce0d0b83b8ae1e9b5bad892e20f19eef6f9a2d50",
+    "evidence/qualification075-ui-final/case-manual-workflow/control-bindings.tsv": "373b703e11dcb5064536b3b71925617399884763b3ab1cf31673be9d31dffe26",
+    "evidence/qualification075-ui-final/case-manual-workflow/launch.json": "c3cfe1c6e247ee417ad20de4dd37473b647eda10dc4fa36dbb3351c9c370af11",
+    "evidence/qualification075-ui-final/case-manual-workflow/layer-regions-before-save.txt": "f70d047874c0576c0391ffe88651577e92bb96736166f000790dbb2884a46aa2",
+    "evidence/qualification075-ui-final/case-manual-workflow/layer-regions-checks.txt": "5abf8ea5f9b4dc512926fba59aea6fe607ec6a195903bd483ac0a1587437a648",
+    "evidence/qualification075-ui-final/case-manual-workflow/layout075-checks.txt": "39e0c28d4cd69e568ce1aaa53f8fa3a6c214c446856ad5702e48e6224264ca81",
+    "evidence/qualification075-ui-final/case-manual-workflow/loaded.tsv": "553ce8200e08b1a8956dc22b86ba9a5b338c1df919944179fc2569ba9424a382",
+    "evidence/qualification075-ui-final/case-manual-workflow/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/qualification075-ui-final/case-regions/campaign.json": "db140fad1339f363ed8037a470e0eef447dd15ba10cd137b6ed860df6c907390",
+    "evidence/qualification075-ui-final/case-regions/control-bindings.tsv": "373b703e11dcb5064536b3b71925617399884763b3ab1cf31673be9d31dffe26",
+    "evidence/qualification075-ui-final/case-regions/launch.json": "c3cfe1c6e247ee417ad20de4dd37473b647eda10dc4fa36dbb3351c9c370af11",
+    "evidence/qualification075-ui-final/case-regions/layer-regions-before-save.txt": "f70d047874c0576c0391ffe88651577e92bb96736166f000790dbb2884a46aa2",
+    "evidence/qualification075-ui-final/case-regions/layer-regions-checks.txt": "2bcf7c89b2498ad9c2fb1d4c73fb3850f25cfafb639fc9056505347c364fee1c",
+    "evidence/qualification075-ui-final/case-regions/layout075-checks.txt": "39e0c28d4cd69e568ce1aaa53f8fa3a6c214c446856ad5702e48e6224264ca81",
+    "evidence/qualification075-ui-final/case-regions/loaded.tsv": "553ce8200e08b1a8956dc22b86ba9a5b338c1df919944179fc2569ba9424a382",
+    "evidence/qualification075-ui-final/case-regions/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/qualification075-ui-remaining/after-diagnostic-recording-end.json": "a04a6df3f60856b07f7736f5fe0e1d01a59a0efb8b9e63699b150acf2b2f8066",
+    "evidence/qualification075-ui-remaining/after-diagnostic-recording-start.json": "b9deca698af124b211a425b64f211df5bae5c226502a590a124dcfb9221cab12",
+    "evidence/qualification075-ui-remaining/campaign.json": "cec4cecdd675758e612c012c45af6d92b390928552dd198638f51c5110c55e44",
+    "evidence/qualification075-ui-remaining/caption-checks.txt": "8fa5051f21dbf7b93d1acb4e96e3f0613dffd577d34178a7f7c0f95d7d3a698e",
+    "evidence/qualification075-ui-remaining/corona072-inactive-stop.json": "9beb7495ec0216398b2fe85c9da423cec0809a5a9f94879ac327cf93443455fc",
+    "evidence/qualification075-ui-remaining/corona072-stages.json": "46df693d94328d5952344d3941b0f6e349c8e7ebf74cf5211118ae51dd928509",
+    "evidence/qualification075-ui-remaining/corona072-start.json": "995313d819364ec833f395ff8051a355dff0e136a65b7ec48b01f16707df1e45",
+    "evidence/qualification075-ui-remaining/diagnostic-overhead.json": "d6c387555741ec9b68508ffddc4f4bf5bfeacd8332bec9d45573a5f8f5dc4f56",
+    "evidence/qualification075-ui-remaining/failed-successor-end.json": "4741897ccf087fa2a08114afcae0ac966ddf3e1d7c2e53fc0dd2d0d2de3d410b",
+    "evidence/qualification075-ui-remaining/failed-successor-start.json": "6e25f5e46291a442d3c62d79373f6a9994c2ef3268cec48135153080772d4717",
+    "evidence/qualification075-ui-remaining/grips-lifecycle.txt": "d3e72353b744f73a505bc5acd4264b55c2376ee9dcce660a8b10eb164eb61827",
+    "evidence/qualification075-ui-remaining/idle-loaded-payload.txt": "5626165eea3f1abf39b58a1edf77a3bcbc7b00d09869ba2cd9b464c0c872ca4a",
+    "evidence/qualification075-ui-remaining/idle-qualification.json": "71176b2c87786f7862ced18571c89427f894a269e5bf37b9bf9440022916752b",
+    "evidence/qualification075-ui-remaining/ir072-after-edit.json": "5df5e2597df92fe980714872461ba6acf83a2f59c1d08615642e7ff3e0d18eef",
+    "evidence/qualification075-ui-remaining/ir072-after-idle.json": "4b947615b5028023e8e2a1d2f1d953ce3eea9fde8ac4e5b525c4487d9aefbeaf",
+    "evidence/qualification075-ui-remaining/ir072-before-idle.json": "d5e291805e3555c9b691ad5ed8c1d39fc58169f79be2d704de6123ea57a15143",
+    "evidence/qualification075-ui-remaining/launch.json": "cad48b3fb2fbe6af476d9a2fb7708749293f0dd3621b415ffa5e2d9d63389a75",
+    "evidence/qualification075-ui-remaining/layer-regions-checks.txt": "30717e4b86bd24612ca1baf4fb93cc245d6f5ef74583e437b357452483667da5",
+    "evidence/qualification075-ui-remaining/live-closed-end.json": "6512021ee1d317603169ef868db0d2eb767dd17d43305aa2d041844764a7d40a",
+    "evidence/qualification075-ui-remaining/live-closed-start.json": "98edc3e9968be217cb7246422c3984ceff48050275667414d30ee5ec3f3e90c8",
+    "evidence/qualification075-ui-remaining/live-density-edit-end.json": "a40b98a0555461af30f77aece03c6eceb9182c78df339f417f187346a86d5fc3",
+    "evidence/qualification075-ui-remaining/live-density-edit-start.json": "d640fb9977932cd7ef07e42523b07c77bf18f2ffc07c21666e00e3504e353dc4",
+    "evidence/qualification075-ui-remaining/live-editor-open-end.json": "04680aac157e622603db3670db976c26d9ee03e2799c161622f58765f7c0a470",
+    "evidence/qualification075-ui-remaining/live-editor-open-start.json": "f9a642a6412df941dcb43206b474796757b71d751d49870ecf9e27173db0cf4b",
+    "evidence/qualification075-ui-remaining/live-real-edit-end.json": "f5eda07a4412356ece4d4bec72eb5cb34f4f1b558895ec33cdf056948f02a63f",
+    "evidence/qualification075-ui-remaining/live-real-edit-start.json": "c316e0d4c0349d615ea1557e25906e9dd59e712433d9c17f7362b14f9c0ca989",
+    "evidence/qualification075-ui-remaining/loaded-native.txt": "263ec7bfa0153e65a7fd1895c2d42228283a0438a4f2f76c61b6132267060647",
+    "evidence/qualification075-ui-remaining/loaded.tsv": "924ec25129cbc3882de4dc582c9b03f5da54f747ee258ca228071dba68953ca5",
+    "evidence/qualification075-ui-remaining/manual-pending-end.json": "84b513f9c09596666afac404d6726c9812b6059f5c7af908f1113fccdf969cd9",
+    "evidence/qualification075-ui-remaining/manual-pending-start.json": "d173d4f50d850f701328a0d0a5c2d02f89937a457379a9eb66f19b81415a33d2",
+    "evidence/qualification075-ui-remaining/other-control-bindings.tsv": "bd00b21460e309d0dcbb540bcb53aba8f9cb5b2e43af3acb7ba45bdf77ac6d84",
+    "evidence/qualification075-ui-remaining/qualification.json": "563c653590e9f8648b8f5da2b15bc2afff32881d465761268c661ef526bc5a27",
+    "evidence/qualification075-ui-remaining/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/qualification075-ui-remaining/restored-valid-recipe-end.json": "78a002b91e671038b83d5507eb1d0f56ab7632b7001392fdebfce81cb3e3dc41",
+    "evidence/qualification075-ui-remaining/restored-valid-recipe-start.json": "5c01d4c50394ac3e19687dbeba6365b8c9f938a9d612fa305fe9effc2e8064ba",
+    "evidence/qualification075-ui-remaining/result.txt": "f32007178bada8f5e271b65c1ce0b69134f2e7ba13adc986403e95a9fee07e2c",
+    "evidence/qualification075-ui-remaining/case-captions/campaign.json": "733aa55b76f83b384b852cb053e6e590ac41766797a87ba066449d185212de74",
+    "evidence/qualification075-ui-remaining/case-captions/caption-checks.txt": "8fa5051f21dbf7b93d1acb4e96e3f0613dffd577d34178a7f7c0f95d7d3a698e",
+    "evidence/qualification075-ui-remaining/case-captions/launch.json": "cad48b3fb2fbe6af476d9a2fb7708749293f0dd3621b415ffa5e2d9d63389a75",
+    "evidence/qualification075-ui-remaining/case-captions/loaded.tsv": "924ec25129cbc3882de4dc582c9b03f5da54f747ee258ca228071dba68953ca5",
+    "evidence/qualification075-ui-remaining/case-captions/other-control-bindings.tsv": "bd00b21460e309d0dcbb540bcb53aba8f9cb5b2e43af3acb7ba45bdf77ac6d84",
+    "evidence/qualification075-ui-remaining/case-captions/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/qualification075-ui-remaining/case-grip-lifecycle/campaign.json": "046e787a548662d34c147be84e243aa17026245bcece6ed49bf0ac5e85b0fc32",
+    "evidence/qualification075-ui-remaining/case-grip-lifecycle/caption-checks.txt": "8fa5051f21dbf7b93d1acb4e96e3f0613dffd577d34178a7f7c0f95d7d3a698e",
+    "evidence/qualification075-ui-remaining/case-grip-lifecycle/grips-lifecycle.txt": "d3e72353b744f73a505bc5acd4264b55c2376ee9dcce660a8b10eb164eb61827",
+    "evidence/qualification075-ui-remaining/case-grip-lifecycle/launch.json": "cad48b3fb2fbe6af476d9a2fb7708749293f0dd3621b415ffa5e2d9d63389a75",
+    "evidence/qualification075-ui-remaining/case-grip-lifecycle/loaded.tsv": "924ec25129cbc3882de4dc582c9b03f5da54f747ee258ca228071dba68953ca5",
+    "evidence/qualification075-ui-remaining/case-grip-lifecycle/other-control-bindings.tsv": "bd00b21460e309d0dcbb540bcb53aba8f9cb5b2e43af3acb7ba45bdf77ac6d84",
+    "evidence/qualification075-ui-remaining/case-grip-lifecycle/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/qualification075-ui-remaining/case-legacy/campaign.json": "d07ef9e8dae5f0c6735dbec17fd73afcc21be6f8f55b56fc37f193b54deac42d",
+    "evidence/qualification075-ui-remaining/case-legacy/caption-checks.txt": "8fa5051f21dbf7b93d1acb4e96e3f0613dffd577d34178a7f7c0f95d7d3a698e",
+    "evidence/qualification075-ui-remaining/case-legacy/grips-lifecycle.txt": "d3e72353b744f73a505bc5acd4264b55c2376ee9dcce660a8b10eb164eb61827",
+    "evidence/qualification075-ui-remaining/case-legacy/launch.json": "cad48b3fb2fbe6af476d9a2fb7708749293f0dd3621b415ffa5e2d9d63389a75",
+    "evidence/qualification075-ui-remaining/case-legacy/layer-regions-checks.txt": "30717e4b86bd24612ca1baf4fb93cc245d6f5ef74583e437b357452483667da5",
+    "evidence/qualification075-ui-remaining/case-legacy/loaded.tsv": "924ec25129cbc3882de4dc582c9b03f5da54f747ee258ca228071dba68953ca5",
+    "evidence/qualification075-ui-remaining/case-legacy/other-control-bindings.tsv": "bd00b21460e309d0dcbb540bcb53aba8f9cb5b2e43af3acb7ba45bdf77ac6d84",
+    "evidence/qualification075-ui-remaining/case-legacy/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/qualification075-ui-remaining/case-playback/campaign.json": "af55f9d5d34fdf017f2f6a3d0cfab680013e25b77bdabadbe9dbaf05f34e3dcd",
+    "evidence/qualification075-ui-remaining/case-playback/caption-checks.txt": "8fa5051f21dbf7b93d1acb4e96e3f0613dffd577d34178a7f7c0f95d7d3a698e",
+    "evidence/qualification075-ui-remaining/case-playback/grips-lifecycle.txt": "d3e72353b744f73a505bc5acd4264b55c2376ee9dcce660a8b10eb164eb61827",
+    "evidence/qualification075-ui-remaining/case-playback/launch.json": "cad48b3fb2fbe6af476d9a2fb7708749293f0dd3621b415ffa5e2d9d63389a75",
+    "evidence/qualification075-ui-remaining/case-playback/layer-regions-checks.txt": "30717e4b86bd24612ca1baf4fb93cc245d6f5ef74583e437b357452483667da5",
+    "evidence/qualification075-ui-remaining/case-playback/loaded-native.txt": "263ec7bfa0153e65a7fd1895c2d42228283a0438a4f2f76c61b6132267060647",
+    "evidence/qualification075-ui-remaining/case-playback/loaded.tsv": "924ec25129cbc3882de4dc582c9b03f5da54f747ee258ca228071dba68953ca5",
+    "evidence/qualification075-ui-remaining/case-playback/other-control-bindings.tsv": "bd00b21460e309d0dcbb540bcb53aba8f9cb5b2e43af3acb7ba45bdf77ac6d84",
+    "evidence/qualification075-ui-remaining/case-playback/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/qualification075-ui-remaining/case-playback/result.txt": "f32007178bada8f5e271b65c1ce0b69134f2e7ba13adc986403e95a9fee07e2c",
+    "evidence/qualification075-ui-remaining/case-sources/launch.json": "cad48b3fb2fbe6af476d9a2fb7708749293f0dd3621b415ffa5e2d9d63389a75",
+    "evidence/qualification075-ui-remaining/case-sources/loaded.tsv": "924ec25129cbc3882de4dc582c9b03f5da54f747ee258ca228071dba68953ca5",
+    "evidence/qualification075-ui-remaining/case-sources/other-control-bindings.tsv": "bd00b21460e309d0dcbb540bcb53aba8f9cb5b2e43af3acb7ba45bdf77ac6d84",
+    "evidence/qualification075-ui-remaining/case-sources/ready.json": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "evidence/scatter-receipt.json": "2366d8d8aae59e668ca50a98709e38ca7d56deb686ec70ac7907beda1e4f41f3",
+    "evidence/scatter-tests.log": "441ae553535f9f8f7a63293002433440f7deec79b7c0ad3e8a04eda1eef65037",
+    "evidence/analyzer-receipt.json": "ffd15a23308cf0210f87163c1b22234653e5a9c309c2e66b5a1848f2dc6df974",
+    "evidence/analyzer-tests.log": "2c9579c96322a6849fcdb306c194008c612b3620f456e6c8c8ae418514c6e542",
+    "evidence/generated-generated-check.json": "ce28358407cc9085e7e6e48185b03dc0556c083bdb33d2090fda7ddb42e255d1",
+    "evidence/generated-final-generated-check.json": "db68ac32b2ff9922372e1161616acde9a346c3cb719992181dc1861c497d2abc",
+    "evidence/pytest.xml": "bb7ad0b604917362dab8c4c69487f2f7ec6f2dbb8f5ff60d3a66912448a200a8",
+    "evidence/pytest.log": "65006c0d4f6be05a687a81d890ba8d4d19942c9621f416f213685dabd1eddf28",
+    "evidence/layout-tests.log": "a42efc4c3fe7f50985e3ab711b789bdb2054dd5957613af5f60850d9d4f19ada",
+    "fixtures/Max_System_075.ms": "c7fb13dafae5a8074b570fce692067bb699314cbdba2860eb3520a1fd10e34b0"
+  },
+  "performance": [
+    {
+      "host": "qualification075-performance",
+      "initial_update_ms": 2614.4963,
+      "population": 100000,
+      "viewport": [
+        843,
+        741
+      ],
+      "source_faces": 32,
+      "working_set_bytes": 3283959808,
+      "metric": "synchronous camera plus completeRedraw and posted messages, not presented FPS",
+      "trials": [
+        {
+          "mode": 0,
+          "generated": 100000,
+          "shown": 100000,
+          "median_ms": 46.74884999999995,
+          "p95_ms": 62.137000000000626,
+          "zero_rebuilds": true,
+          "zero_brush_work": true
+        },
+        {
+          "mode": 1,
+          "generated": 100000,
+          "shown": 500000,
+          "median_ms": 38.95105000000058,
+          "p95_ms": 60.58640000000014,
+          "zero_rebuilds": true,
+          "zero_brush_work": true
+        },
+        {
+          "mode": 2,
+          "generated": 100000,
+          "shown": 100000,
+          "median_ms": 2227.4886499999993,
+          "p95_ms": 2968.7114999999903,
+          "zero_rebuilds": true,
+          "zero_brush_work": true
+        },
+        {
+          "mode": 3,
+          "generated": 100000,
+          "shown": 100000,
+          "median_ms": 405.7266000000018,
+          "p95_ms": 455.00749999999243,
+          "zero_rebuilds": true,
+          "zero_brush_work": true
+        },
+        {
+          "mode": 4,
+          "generated": 100000,
+          "shown": 100000,
+          "median_ms": 136.0395500000086,
+          "p95_ms": 141.3850000000093,
+          "zero_rebuilds": true,
+          "zero_brush_work": true
+        }
+      ]
+    }
+  ],
+  "current_sources": {
+    "AminScatter/tools/ui/templates/unified-core.ms": "bf6c428fcea37d566b75bb50a2478aa31f9850b10f37c9cbfc3ddf3240804b22",
+    "AminScatter/tools/ui/approved-layout.cjs": "ee1fa501d3cd51dab79cb3893490cd42c2b662f8ee10c27c77750e97a8b73030",
+    "AminScatter/tools/ui/approved-layout-rows.cjs": "aafe1f1baa374f3fdf56e8852a9efd80908ca66a15482c133f2c5102070c21c1",
+    "AminScatter/scripts/AminScatterObject.ms": "72cdf16b0825a5e67a9792a3eee3eddfad1589e99eab0cae7a529701189e8f15",
+    "CyrusSurfaceAnalyzer/scripts/CyrusSurfaceAnalyzer.ms": "9f1f146814870a094ab226334675459e0130a9f1d8bd1d621405b52f99ffb3c8"
+  },
+  "scope_note": "Scripted host/native/offline evidence; unchecked controls and physical/long-session/render gates remain explicit in CHECKLIST.md."
+}

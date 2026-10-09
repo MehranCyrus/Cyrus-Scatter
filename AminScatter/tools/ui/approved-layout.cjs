@@ -131,7 +131,10 @@ function page(s,definition,{name=definition.name,category=0,popup=false}={}){
   // .pos for a spinner addresses its arrows; edittext and list controls
   // position their fields independently of their captions. Separate labels
   // keep captions inside the reserved row when the host changes columns.
-  if(['spinner','edittext','dropdownlist','listbox','multiListBox'].includes(c.kind)){
+  // Radio-group .pos anchors the first option; its native title sits above it.
+  // Give that title its own reserved row too, so it cannot overlap the previous
+  // control or disappear above the rollout body.
+  if(['spinner','edittext','dropdownlist','listbox','multiListBox','radiobuttons'].includes(c.kind)){
    const match=/^(        \w+ \w+ )("(?:\\.|[^"\\])*"|@"[^"]*")/.exec(line);
    if(match&&match[2]!=='""'){
     c.captionID=c.id+'_caption';
@@ -182,7 +185,7 @@ function page(s,definition,{name=definition.name,category=0,popup=false}={}){
    if(c.kind==='radiobuttons'){
     const count=(/labels:#\(([^\n]*?)\)/.exec(c.declaration)?.[1].match(/"(?:\\.|[^"\\])*"/g)||[]).length;
     const columns=Number(/columns:(\d+)/.exec(c.declaration)?.[1]||1);
-    return (caption(c)?18:0)+20*Math.ceil(count/columns);
+    return 20*Math.ceil(count/columns);
    }
    return c.kind==='checkbox'?20:22;
   });
