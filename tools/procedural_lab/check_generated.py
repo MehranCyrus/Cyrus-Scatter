@@ -106,9 +106,9 @@ def main():
         assert re.search(r'fn '+name+r'\b',text),name
     inventory=json.loads(products[1].read_text())
     current=controls(inventory)
-    assert len(current)==232
+    assert len(current)==234
     layout=json.loads((ROOT/'AminScatter/tools/ui/approved-layout-manifest.json').read_text())
-    assert len(layout['sections'])==10
+    assert len(layout['sections'])==11
     for section in layout['sections']:
         assert len(re.findall(r'rollout '+section['name']+r'\b',text))==2,section['name']
         for control in section['controls']:

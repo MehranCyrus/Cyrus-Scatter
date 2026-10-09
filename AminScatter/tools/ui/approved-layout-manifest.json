@@ -18,7 +18,7 @@
           "component": "flow_layersUI",
           "control": "editButton",
           "presentation": "flow_layersUI_editButton",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "flow_layersUI",
@@ -78,7 +78,7 @@
           "component": "flow_layersUI",
           "control": "countInfo",
           "presentation": "flow_layersUI_countInfo",
-          "advanced": true
+          "advanced": false
         }
       ]
     },
@@ -363,24 +363,55 @@
           "control": "detailsToggle",
           "presentation": "sourceUI_detailsToggle",
           "advanced": false
-        },
+        }
+      ]
+    },
+    {
+      "name": "layoutUI",
+      "title": "Layout",
+      "scope": "Layer",
+      "controls": [
         {
           "component": "diversityUI",
           "control": "diversityRadio",
           "presentation": "diversityUI_diversityRadio",
-          "advanced": true
+          "advanced": false
+        },
+        {
+          "component": "diversityUI",
+          "control": "layoutHelp",
+          "presentation": "diversityUI_layoutHelp",
+          "advanced": false
+        },
+        {
+          "component": "diversityUI",
+          "control": "analyzerStatus",
+          "presentation": "diversityUI_analyzerStatus",
+          "advanced": false
+        },
+        {
+          "component": "diversityUI",
+          "control": "selectAnalyzer",
+          "presentation": "diversityUI_selectAnalyzer",
+          "advanced": false
+        },
+        {
+          "component": "diversityUI",
+          "control": "updateAnalyzer",
+          "presentation": "diversityUI_updateAnalyzer",
+          "advanced": false
         },
         {
           "component": "diversityUI",
           "control": "sizeSpin",
           "presentation": "diversityUI_sizeSpin",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "diversityUI",
           "control": "divSeedSpin",
           "presentation": "diversityUI_divSeedSpin",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "diversityUI",
@@ -404,7 +435,7 @@
           "component": "diversityUI",
           "control": "groupHint",
           "presentation": "diversityUI_groupHint",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "diversityUI",
@@ -416,103 +447,103 @@
           "component": "diversityUI",
           "control": "strokeTitle",
           "presentation": "diversityUI_strokeTitle",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "diversityUI",
           "control": "pathsDrop",
           "presentation": "diversityUI_pathsDrop",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "diversityUI",
           "control": "analyzerChannel",
           "presentation": "diversityUI_analyzerChannel",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "diversityUI",
           "control": "pickAnalyzer",
           "presentation": "diversityUI_pickAnalyzer",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "diversityUI",
           "control": "pickPath",
           "presentation": "diversityUI_pickPath",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "diversityUI",
           "control": "removePath",
           "presentation": "diversityUI_removePath",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "diversityUI",
           "control": "strokesList",
           "presentation": "diversityUI_strokesList",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "diversityUI",
           "control": "addOutside",
           "presentation": "diversityUI_addOutside",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "diversityUI",
           "control": "addInside",
           "presentation": "diversityUI_addInside",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "diversityUI",
           "control": "removeStrokeButton",
           "presentation": "diversityUI_removeStrokeButton",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "diversityUI",
           "control": "strokeWidth",
           "presentation": "diversityUI_strokeWidth",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "diversityUI",
           "control": "strokeMode",
           "presentation": "diversityUI_strokeMode",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "diversityUI",
           "control": "strokeChoices",
           "presentation": "diversityUI_strokeChoices",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "diversityUI",
           "control": "strokeScaleMin",
           "presentation": "diversityUI_strokeScaleMin",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "diversityUI",
           "control": "strokeScaleMax",
           "presentation": "diversityUI_strokeScaleMax",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "diversityUI",
           "control": "refreshGroups",
           "presentation": "diversityUI_refreshGroups",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "diversityUI",
           "control": "strokeHelp",
           "presentation": "diversityUI_strokeHelp",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "diversityUI",
@@ -1092,37 +1123,37 @@
           "component": "randomUI",
           "control": "rotXLabel",
           "presentation": "randomUI_rotXLabel",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "randomUI",
           "control": "rotXMinSpin",
           "presentation": "randomUI_rotXMinSpin",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "randomUI",
           "control": "rotXMaxSpin",
           "presentation": "randomUI_rotXMaxSpin",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "randomUI",
           "control": "rotYLabel",
           "presentation": "randomUI_rotYLabel",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "randomUI",
           "control": "rotYMinSpin",
           "presentation": "randomUI_rotYMinSpin",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "randomUI",
           "control": "rotYMaxSpin",
           "presentation": "randomUI_rotYMaxSpin",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "randomUI",
@@ -1146,73 +1177,73 @@
           "component": "randomUI",
           "control": "sclTitle",
           "presentation": "randomUI_sclTitle",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "randomUI",
           "control": "sclMinTitle",
           "presentation": "randomUI_sclMinTitle",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "randomUI",
           "control": "sclMaxTitle",
           "presentation": "randomUI_sclMaxTitle",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "randomUI",
           "control": "sclXLabel",
           "presentation": "randomUI_sclXLabel",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "randomUI",
           "control": "sclXMinSpin",
           "presentation": "randomUI_sclXMinSpin",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "randomUI",
           "control": "sclXMaxSpin",
           "presentation": "randomUI_sclXMaxSpin",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "randomUI",
           "control": "sclYLabel",
           "presentation": "randomUI_sclYLabel",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "randomUI",
           "control": "sclYMinSpin",
           "presentation": "randomUI_sclYMinSpin",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "randomUI",
           "control": "sclYMaxSpin",
           "presentation": "randomUI_sclYMaxSpin",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "randomUI",
           "control": "sclZLabel",
           "presentation": "randomUI_sclZLabel",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "randomUI",
           "control": "sclZMinSpin",
           "presentation": "randomUI_sclZMinSpin",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "randomUI",
           "control": "sclZMaxSpin",
           "presentation": "randomUI_sclZMaxSpin",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "randomUI",
@@ -1248,73 +1279,73 @@
           "component": "randomUI",
           "control": "movTitle",
           "presentation": "randomUI_movTitle",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "randomUI",
           "control": "movMinTitle",
           "presentation": "randomUI_movMinTitle",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "randomUI",
           "control": "movMaxTitle",
           "presentation": "randomUI_movMaxTitle",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "randomUI",
           "control": "movXLabel",
           "presentation": "randomUI_movXLabel",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "randomUI",
           "control": "movXMinSpin",
           "presentation": "randomUI_movXMinSpin",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "randomUI",
           "control": "movXMaxSpin",
           "presentation": "randomUI_movXMaxSpin",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "randomUI",
           "control": "movYLabel",
           "presentation": "randomUI_movYLabel",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "randomUI",
           "control": "movYMinSpin",
           "presentation": "randomUI_movYMinSpin",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "randomUI",
           "control": "movYMaxSpin",
           "presentation": "randomUI_movYMaxSpin",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "randomUI",
           "control": "movZLabel",
           "presentation": "randomUI_movZLabel",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "randomUI",
           "control": "movZMinSpin",
           "presentation": "randomUI_movZMinSpin",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "randomUI",
           "control": "movZMaxSpin",
           "presentation": "randomUI_movZMaxSpin",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "randomUI",
@@ -1332,25 +1363,25 @@
           "component": "randomUI",
           "control": "resetRotation",
           "presentation": "randomUI_resetRotation",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "randomUI",
           "control": "resetScale",
           "presentation": "randomUI_resetScale",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "randomUI",
           "control": "resetWholeScale",
           "presentation": "randomUI_resetWholeScale",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "randomUI",
           "control": "resetMovement",
           "presentation": "randomUI_resetMovement",
-          "advanced": true
+          "advanced": false
         }
       ]
     },

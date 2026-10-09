@@ -686,6 +686,14 @@
         "name": "diversityRadio"
       },
       {
+        "kind": "button",
+        "name": "selectAnalyzer"
+      },
+      {
+        "kind": "button",
+        "name": "updateAnalyzer"
+      },
+      {
         "kind": "spinner",
         "name": "sizeSpin"
       },

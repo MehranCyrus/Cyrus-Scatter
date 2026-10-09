@@ -97,7 +97,7 @@ def package(project, name, version, native_names, script_name, args, build_dir):
         f'{name} {version} - 3ds Max {args.max_year} x64\n'
         'Run this MZP through Scripting > Run Script, then restart Max.\n'
         + ('Enable, Manual/Live and Update scatter stay together at the top of Modify.\n'
-           'Workflow: Layers > Surfaces > Models > Amount > Update scatter; Painting is optional.\n'
+           'Workflow: Layers > Surfaces > Models > Layout > Amount > Update scatter; Painting is optional.\n'
            'Then Include / exclude areas > Transforms > Spacing & cleanup > Viewport & render > Statistics & diagnostics.\n'
            'Select a layer; its Surfaces and Models are independent of other layers. Paint Areas are optional.\n'
            'Edit layer in window... opens an optional floating view of the same settings.\n'

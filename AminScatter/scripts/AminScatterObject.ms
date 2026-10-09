@@ -1,4 +1,4 @@
-global CyrusLoadedScriptFingerprint="59adc58f0a5307ea0d76b78b5144c2128a567805b006442769bd6cab2817e350"
+global CyrusLoadedScriptFingerprint="71856739e168848417cd419a09f8959be6c31e2a4514f829bd9cd17d8ff6dece"
 -- Only registered Scatter nodes participate in timeline notifications. This
 -- registry is rebuilt at scene boundaries, never by scanning every animation frame.
 global AminScatterObject,CyrusSourceContainer,CyrusContainerRefreshLabels
@@ -439,6 +439,17 @@ fn CyrusLayerEditor_surfacesUI_1 = (
         on flow_surfaceUI_globalContainers_grip MouseUp sender args do (stopListDrag();true)
         on flow_surfaceUI_globalContainers_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
         on flow_surfaceUI_globalContainers_grip Paint sender args do paintListGrip sender args
+        fn fitPairField control available = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
+            for handle in control.hwnd do (
+                local data=windows.getHWNDData handle
+                if data[4]=="CustEdit" do (
+                    local rectangle=windows.getWindowPos handle,position=windows.screenToClient data[2] (arrow.x-fieldWidth) arrow.y
+                    windows.setWindowPos handle position.x position.y fieldWidth rectangle.h true
+                )
+            )
+            true
+        )
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -503,7 +514,7 @@ fn CyrusLayerEditor_surfacesUI_1 = (
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
             rowControls=#(heading_0);show=(advancedToggle.checked and (true))
             for c in rowControls do c.visible=show
             if show do (
@@ -647,83 +658,13 @@ fn CyrusLayerEditor_modelsUI_1 = (
         dropdownlist sourceUI_forwardAxis "" items:#("+Y","-Y","+X","-X") pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58))))) tooltip:"The model's local forward direction, used for orientation."
         label sourceUI_forwardAxis_caption "Forward axis:" pos:[6,6] width:(modelsUI_1.width-12) height:18
         checkbutton sourceUI_detailsToggle "Point / Empty sources and color groups" pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/215.6))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/215.6))))) height:22 tooltip:"Show or hide these advanced controls; their saved settings are preserved."
-        radiobuttons diversityUI_diversityRadio "Source assignment" labels:#("Random","Clusters","Line Pattern","Analyze Surface") columns:1 pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58)))))
-        spinner diversityUI_sizeSpin "" range:[0.01,100000,10] type:#worldUnits fieldWidth:58 width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/113.2))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/113.2))))) pos:[8,8] tooltip:"Spatial size of source-color clusters."
-        label diversityUI_sizeSpin_caption "Size: " pos:[6,6] width:(modelsUI_1.width-12) height:18
-        spinner diversityUI_divSeedSpin "" range:[0,2147483647,42] type:#integer fieldWidth:58 width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/113.2))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/113.2))))) pos:[8,8] tooltip:"Change source assignment randomness without changing the generation seed."
-        label diversityUI_divSeedSpin_caption "Seed: " pos:[6,6] width:(modelsUI_1.width-12) height:18
-        spinner diversityUI_roughSpin "" range:[0,100,0] fieldWidth:58 width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/149.60000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/149.60000000000002))))) pos:[8,8]
-        label diversityUI_roughSpin_caption "Roughness %: " pos:[6,6] width:(modelsUI_1.width-12) height:18
-        spinner diversityUI_blurSpin "" range:[0,100,0] fieldWidth:58 width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/149.60000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/149.60000000000002))))) pos:[8,8]
-        label diversityUI_blurSpin_caption "Blur edge %: " pos:[6,6] width:(modelsUI_1.width-12) height:18
-        spinner diversityUI_noiseSpin "" range:[0,100,0] fieldWidth:58 width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/128.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/128.8))))) pos:[8,8]
-        label diversityUI_noiseSpin_caption "Noise %: " pos:[6,6] width:(modelsUI_1.width-12) height:18
-        label diversityUI_groupHint "Uses source group colors." pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58)))))
-        label diversityUI_fixedHint "Point positions stay fixed." pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58)))))
-        label diversityUI_strokeTitle "Line Pattern / Strokes" pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58)))))
-        dropdownlist diversityUI_pathsDrop "" items:#() pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58)))))
-        label diversityUI_pathsDrop_caption "Paths" pos:[6,6] width:(modelsUI_1.width-12) height:18
-        dropdownlist diversityUI_analyzerChannel "" items:#("Border","Centerline","Points","Street Side","Edge Border") pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58)))))
-        label diversityUI_analyzerChannel_caption "Analyzer data" pos:[6,6] width:(modelsUI_1.width-12) height:18
-        pickbutton diversityUI_pickAnalyzer "Pick Surface Analyzer" filter:CyrusAnalyzerFilter pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/127.2))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/127.2))))) tooltip:"Use Surface Analyzer output for bands, rows and fixed anchors." height:22
-        pickbutton diversityUI_pickPath "Add: pick closed line" filter:AminScatterAreaFilter pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/127.2))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/127.2))))) tooltip:"Pick a spline for Line Pattern assignment." height:22
-        button diversityUI_removePath "Remove path" pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/75.2))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/75.2))))) tooltip:"Remove the selected assignment path while keeping the scene spline." height:22
-        listbox diversityUI_strokesList "" items:#() pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58))))) height:4
-        label diversityUI_strokesList_caption "Consecutive strokes" pos:[6,6] width:(modelsUI_1.width-12) height:18
-        button diversityUI_addOutside "Add Outside" pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/75.2))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/75.2))))) tooltip:"Add a source-assignment band outside the selected path." height:22
-        button diversityUI_addInside "Add Inside" pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/70))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/70))))) tooltip:"Add a source-assignment band inside the selected path." height:22
-        button diversityUI_removeStrokeButton "Remove Stroke" pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/85.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/85.60000000000001))))) tooltip:"Remove the selected assignment band and its settings." height:22
-        spinner diversityUI_strokeWidth "" range:[0.001,100000,1] type:#worldUnits pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/113.2))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/113.2))))) fieldWidth:58
-        label diversityUI_strokeWidth_caption "Width:" pos:[6,6] width:(modelsUI_1.width-12) height:18
-        radiobuttons diversityUI_strokeMode "Assign by" labels:#("Color groups","Source objects") columns:1 pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58)))))
-        multiListBox diversityUI_strokeChoices "" items:#() pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58))))) height:5
-        label diversityUI_strokeChoices_caption "Ctrl / Shift: select several" pos:[6,6] width:(modelsUI_1.width-12) height:18
-        spinner diversityUI_strokeScaleMin "" range:[0.001,100,1] pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/134))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/134))))) fieldWidth:58
-        label diversityUI_strokeScaleMin_caption "Scale min:" pos:[6,6] width:(modelsUI_1.width-12) height:18
-        spinner diversityUI_strokeScaleMax "" range:[0.001,100,1] pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/134))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/134))))) fieldWidth:58
-        label diversityUI_strokeScaleMax_caption "Scale max:" pos:[6,6] width:(modelsUI_1.width-12) height:18
-        button diversityUI_refreshGroups "Refresh sources / groups" pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/142.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/142.8))))) tooltip:"Refresh available source color groups for assignment." height:22
-        label diversityUI_strokeHelp "Outside strokes: empty." pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58)))))
-        spinner diversityUI_edgeOffsetSpin "" range:[-1000000,1000000,0] type:#worldunits pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/154.8))))) fieldWidth:58
-        label diversityUI_edgeOffsetSpin_caption "Offset inward:" pos:[6,6] width:(modelsUI_1.width-12) height:18
-        spinner diversityUI_edgeAlongSpin "" range:[0,1000000,0] type:#worldunits pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/149.60000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/149.60000000000002))))) fieldWidth:58
-        label diversityUI_edgeAlongSpin_caption "Jitter along:" pos:[6,6] width:(modelsUI_1.width-12) height:18
-        spinner diversityUI_edgeAcrossSpin "" range:[0,1000000,0] type:#worldunits pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/154.8))))) fieldWidth:58
-        label diversityUI_edgeAcrossSpin_caption "Jitter across:" pos:[6,6] width:(modelsUI_1.width-12) height:18
-        label diversityUI_edgeRowHelp "Spacing sets count. Jitter 0 = exact." pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58))))) height:36
-        checkbox diversityUI_keepCornerCheck "Keep corner points" pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/119.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/119.60000000000001)))))
-        spinner diversityUI_cornerAngleSpin "" range:[0,180,45] type:#float pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/128.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/128.8))))) fieldWidth:58
-        label diversityUI_cornerAngleSpin_caption "Min turn:" pos:[6,6] width:(modelsUI_1.width-12) height:18
-        spinner diversityUI_cornerCountSpin "" range:[1,64,1] type:#integer pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/154.8))))) fieldWidth:58
-        label diversityUI_cornerCountSpin_caption "Points/corner:" pos:[6,6] width:(modelsUI_1.width-12) height:18
-        label diversityUI_cornerHelp "Turn angle in degrees. 0 = straight." pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58))))) height:36
-        spinner diversityUI_edgeRotXSpin "" range:[-36000,36000,0] type:#float pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/154.8))))) fieldWidth:58
-        label diversityUI_edgeRotXSpin_caption "Local X (deg):" pos:[6,6] width:(modelsUI_1.width-12) height:18
-        spinner diversityUI_edgeRotYSpin "" range:[-36000,36000,0] type:#float pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/154.8))))) fieldWidth:58
-        label diversityUI_edgeRotYSpin_caption "Local Y (deg):" pos:[6,6] width:(modelsUI_1.width-12) height:18
-        spinner diversityUI_edgeRotZSpin "" range:[-36000,36000,0] type:#float pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/154.8))))) fieldWidth:58
-        label diversityUI_edgeRotZSpin_caption "Local Z (deg):" pos:[6,6] width:(modelsUI_1.width-12) height:18
-        spinner diversityUI_streetStartSpin "" range:[0,1e9,0] type:#worldunits pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/139.2))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/139.2))))) fieldWidth:58
-        label diversityUI_streetStartSpin_caption "Trim start:" pos:[6,6] width:(modelsUI_1.width-12) height:18
-        spinner diversityUI_streetEndSpin "" range:[0,1e9,0] type:#worldunits pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/128.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/128.8))))) fieldWidth:58
-        label diversityUI_streetEndSpin_caption "Trim end:" pos:[6,6] width:(modelsUI_1.width-12) height:18
-        spinner diversityUI_centerStreetSpin "" range:[-1e9,1e9,0] type:#worldunits pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/154.8))))) fieldWidth:58
-        label diversityUI_centerStreetSpin_caption "Street offset:" pos:[6,6] width:(modelsUI_1.width-12) height:18
-        label diversityUI_streetLayoutHelp "Positive offset = away from street. Trim follows path direction." pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58))))) height:44
-        checkbox diversityUI_faceOutCheck "Face outward" pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/88.4))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/88.4)))))
-        spinner diversityUI_cornerRadiusSpin "" type:#worldunits range:[0,1000000,10] pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/154.8))))) fieldWidth:58
-        label diversityUI_cornerRadiusSpin_caption "Corner radius:" pos:[6,6] width:(modelsUI_1.width-12) height:18
-        checkbox diversityUI_straightStreet "Straight ends (Street Side)" pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/166.4))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/166.4)))))
         label heading_0 "Models for this layer" pos:[6,6] width:(modelsUI_1.width-12) height:18
         label heading_1 "Optional source containers" pos:[6,6] width:(modelsUI_1.width-12) height:18
         label heading_2 "Source pool help" pos:[6,6] width:(modelsUI_1.width-12) height:18
         label heading_3 "Source details - layer" pos:[6,6] width:(modelsUI_1.width-12) height:18
-        label heading_4 "Source assignment - layer" pos:[6,6] width:(modelsUI_1.width-12) height:18
         checkbutton propertiesToggle "Properties" pos:[6,6] width:(modelsUI_1.width-12) height:22
         dotNetControl sourceContainersUI_containersList_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8
         dotNetControl sourceUI_plantList_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8
-        dotNetControl diversityUI_strokesList_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8
-        dotNetControl diversityUI_strokeChoices_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8
         checkbutton advancedToggle "Advanced" pos:[6,6] width:(modelsUI_1.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
         local sourceContainersUI_bodyHeight=0
         local sourceContainersUI_controlsReady=false
@@ -945,263 +886,6 @@ fn CyrusLayerEditor_modelsUI_1 = (
         on sourceUI_detailsToggle changed value do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and true do (sourceUI_arrangeDetails()
             if controlsReady and root!=undefined do layout()
         )
-        local diversityUI_bodyHeight=0
-        local diversityUI_controlsReady=false
-        local diversityUI_root=undefined,diversityUI_owner=undefined,diversityUI_panel=undefined
-        local diversityUI_setSpecific=false
-        local diversityUI_binding=false,
-        diversityUI_obj=undefined,diversityUI_parentView=undefined
-        local diversityUI_boundaryOnly=false
-        local diversityUI_controlsReady=false,diversityUI_strokeExpandedHeight=0
-        local diversityUI_pathRows=#(),diversityUI_strokeRows=#(),diversityUI_choiceValues=#(),diversityUI_restKeys=#(),diversityUI_loadingStroke=false
-        fn diversityUI_syncControls = (diversityUI_diversityRadio.state=diversityUI_obj.diversityMode;diversityUI_sizeSpin.value=diversityUI_obj.diversitySize;diversityUI_divSeedSpin.value=diversityUI_obj.diversitySeed;diversityUI_roughSpin.value=diversityUI_obj.roughness;diversityUI_blurSpin.value=diversityUI_obj.blurryEdge;diversityUI_noiseSpin.value=diversityUI_obj.diversityNoise;)
-        on diversityUI_faceOutCheck changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
-            if diversityUI_analyzerChannel.selection==5 then diversityUI_obj.edgeFaceOut=v else if diversityUI_analyzerChannel.selection==4 then diversityUI_obj.streetFaceOut=v else diversityUI_obj.borderFaceOut=v
-            diversityUI_cornerRadiusSpin.enabled=v;diversityUI_obj.markInputDirty();CyrusViewportRedraw()
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_cornerRadiusSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
-            if diversityUI_analyzerChannel.selection==5 then diversityUI_obj.edgeCornerRadius=v else if diversityUI_analyzerChannel.selection==4 then diversityUI_obj.streetCornerRadius=v else diversityUI_obj.borderCornerRadius=v
-            diversityUI_obj.markInputDirty();CyrusViewportRedraw()
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_streetStartSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.streetTrimStart=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_streetEndSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.streetTrimEnd=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_centerStreetSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.centerStreetOffset=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_straightStreet changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.streetStraight=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        fn diversityUI_selectedStroke = (if diversityUI_strokesList.selection>0 and diversityUI_strokesList.selection<=diversityUI_strokeRows.count then diversityUI_strokeRows[diversityUI_strokesList.selection] else 0)
-        fn diversityUI_showStroke = (
-            diversityUI_loadingStroke=true
-            diversityUI_obj.syncStrokes()
-            local edgeVisible=diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==5
-            for c in #(diversityUI_edgeOffsetSpin,diversityUI_edgeAlongSpin,diversityUI_edgeAcrossSpin,diversityUI_edgeRowHelp,diversityUI_keepCornerCheck,diversityUI_cornerAngleSpin,diversityUI_cornerCountSpin,diversityUI_cornerHelp,diversityUI_edgeRotXSpin,diversityUI_edgeRotYSpin,diversityUI_edgeRotZSpin) do c.visible=edgeVisible
-            diversityUI_cornerRadiusSpin.text=if edgeVisible then "Blend radius:" else "Corner radius:"
-            diversityUI_keepCornerCheck.checked=diversityUI_obj.edgeKeepCorners
-            diversityUI_cornerAngleSpin.value=diversityUI_obj.edgeCornerAngle;diversityUI_cornerCountSpin.value=diversityUI_obj.edgeCornerCount
-            diversityUI_cornerAngleSpin.enabled=diversityUI_obj.edgeKeepCorners;diversityUI_cornerCountSpin.enabled=diversityUI_obj.edgeKeepCorners
-            diversityUI_strokeWidth.text=if edgeVisible then "Spacing:" else "Width:"
-            local row=diversityUI_selectedStroke();local active=row>0
-            for c in #(diversityUI_strokeWidth,diversityUI_strokeMode,diversityUI_strokeChoices,diversityUI_strokeScaleMin,diversityUI_strokeScaleMax,diversityUI_removeStrokeButton) do c.enabled=active
-            diversityUI_choiceValues=#();diversityUI_strokeChoices.items=#()
-            for c in #(diversityUI_edgeOffsetSpin,diversityUI_edgeAlongSpin,diversityUI_edgeAcrossSpin,diversityUI_edgeRotXSpin,diversityUI_edgeRotYSpin,diversityUI_edgeRotZSpin) do c.enabled=active
-            if active do (
-                diversityUI_edgeRotXSpin.value=diversityUI_obj.edgeRotX[row]
-                diversityUI_edgeRotYSpin.value=diversityUI_obj.edgeRotY[row]
-                diversityUI_edgeRotZSpin.value=diversityUI_obj.edgeRotZ[row]
-                diversityUI_edgeOffsetSpin.value=diversityUI_obj.edgeOffsets[row];diversityUI_edgeAlongSpin.value=diversityUI_obj.edgeAlong[row];diversityUI_edgeAcrossSpin.value=diversityUI_obj.edgeAcross[row]
-                diversityUI_strokeWidth.value=diversityUI_obj.patternWidths[row];diversityUI_strokeMode.state=diversityUI_obj.strokeModes[row]
-                diversityUI_strokeWidth.enabled=diversityUI_obj.strokeSides[row]!=5
-                diversityUI_strokeScaleMin.value=diversityUI_obj.strokeMin[row];diversityUI_strokeScaleMax.value=diversityUI_obj.strokeMax[row]
-                local labels=#();local selectedRows=#{}
-                if diversityUI_obj.strokeModes[row]==1 then (
-                    for i=1 to diversityUI_obj.sources.count do (
-                        local key=diversityUI_obj.colorKey(diversityUI_obj.sourceColor i)
-                        if findItem diversityUI_choiceValues key==0 do (append diversityUI_choiceValues key;append labels ("#"+(formattedPrint key format:"06X")))
-                    )
-                    local keys=for i=1 to diversityUI_obj.strokeColorRows.count where diversityUI_obj.strokeColorRows[i]==row collect diversityUI_obj.strokeColorKeys[i]
-                    if keys.count==0 do keys=#(diversityUI_obj.patternGroups[row])
-                    for i=1 to diversityUI_choiceValues.count where findItem keys diversityUI_choiceValues[i]>0 do selectedRows[i]=true
-                ) else (
-                    for n in diversityUI_obj.sources where isValidNode n do (append diversityUI_choiceValues n;append labels n.name)
-                    for i=1 to diversityUI_obj.strokeSourceRows.count where diversityUI_obj.strokeSourceRows[i]==row do (
-                        local k=findItem diversityUI_choiceValues diversityUI_obj.strokeSourceNodes[i];if k>0 do selectedRows[k]=true
-                    )
-                )
-                diversityUI_strokeChoices.items=labels;diversityUI_strokeChoices.selection=selectedRows
-            )
-            diversityUI_loadingStroke=false
-        )
-        fn diversityUI_showPath = (
-            diversityUI_loadingStroke=true
-            local old=diversityUI_strokesList.selection;diversityUI_strokeRows=#();local labels=#();local total=#(0.0,0.0,0.0,0.0,0.0,0.0,0.0)
-            local analyzed=diversityUI_obj.diversityMode==4
-            local path=if analyzed then diversityUI_obj.analyzerNode else (if diversityUI_pathsDrop.selection>0 then diversityUI_pathRows[diversityUI_pathsDrop.selection] else undefined)
-            if isValidNode path do (
-                for i=1 to diversityUI_obj.patternLines.count where diversityUI_obj.patternLines[i]==path and (not analyzed or (diversityUI_analyzerChannel.selection==1 and diversityUI_obj.strokeSides[i]<=2) or (diversityUI_analyzerChannel.selection==2 and diversityUI_obj.strokeSides[i]==3) or (diversityUI_analyzerChannel.selection==3 and (diversityUI_obj.strokeSides[i]==4 or diversityUI_obj.strokeSides[i]==5)) or (diversityUI_analyzerChannel.selection==4 and diversityUI_obj.strokeSides[i]==6) or (diversityUI_analyzerChannel.selection==5 and diversityUI_obj.strokeSides[i]==7)) do (
-                    append diversityUI_strokeRows i
-                    local side=diversityUI_obj.strokeSides[i];local start=total[side];total[side]+=diversityUI_obj.patternWidths[i]
-                    local prefixes=#("Out ","In ","Both ","Radius ","Single ","Street ","Edge ")
-                    append labels (if side==7 then ("Edge "+(diversityUI_strokeRows.count as string)+": spacing "+units.formatValue diversityUI_obj.patternWidths[i]) else (prefixes[side]+(diversityUI_strokeRows.count as string)+": "+units.formatValue start+" - "+units.formatValue total[side]))
-                )
-            )
-            diversityUI_strokesList.items=labels;diversityUI_strokesList.selection=amin (amax 1 old) labels.count
-            diversityUI_addOutside.enabled=isValidNode path;diversityUI_addInside.enabled=isValidNode path and (not analyzed or diversityUI_analyzerChannel.selection!=2);diversityUI_removePath.enabled=isValidNode path
-            diversityUI_loadingStroke=false;diversityUI_showStroke()
-        )
-        fn diversityUI_updatePattern = (
-            diversityUI_faceOutCheck.visible=diversityUI_obj.diversityMode==4 and (diversityUI_analyzerChannel.selection==1 or diversityUI_analyzerChannel.selection==4 or diversityUI_analyzerChannel.selection==5)
-            diversityUI_cornerRadiusSpin.visible=diversityUI_faceOutCheck.visible
-            diversityUI_faceOutCheck.checked=if diversityUI_analyzerChannel.selection==5 then diversityUI_obj.edgeFaceOut else if diversityUI_analyzerChannel.selection==4 then diversityUI_obj.streetFaceOut else diversityUI_obj.borderFaceOut
-            diversityUI_cornerRadiusSpin.value=if diversityUI_analyzerChannel.selection==5 then diversityUI_obj.edgeCornerRadius else if diversityUI_analyzerChannel.selection==4 then diversityUI_obj.streetCornerRadius else diversityUI_obj.borderCornerRadius
-            diversityUI_cornerRadiusSpin.enabled=diversityUI_faceOutCheck.checked
-            diversityUI_streetStartSpin.visible=diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==4
-            diversityUI_streetEndSpin.visible=diversityUI_streetStartSpin.visible
-            diversityUI_centerStreetSpin.visible=diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==2
-            diversityUI_streetLayoutHelp.visible=diversityUI_streetStartSpin.visible or diversityUI_centerStreetSpin.visible
-            diversityUI_streetStartSpin.value=diversityUI_obj.streetTrimStart;diversityUI_streetEndSpin.value=diversityUI_obj.streetTrimEnd;diversityUI_centerStreetSpin.value=diversityUI_obj.centerStreetOffset
-            diversityUI_straightStreet.checked=diversityUI_obj.streetStraight;diversityUI_straightStreet.visible=diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==4
-            diversityUI_obj.syncStrokes();local old=diversityUI_pathsDrop.selection
-            local analyzed=diversityUI_obj.diversityMode==4
-            diversityUI_pathRows=for n in diversityUI_obj.patternPaths where isValidNode n and not isProperty n #samplePoints collect n
-            diversityUI_pathsDrop.items=for n in diversityUI_pathRows collect n.name
-            diversityUI_pathsDrop.selection=amin (amax 1 old) diversityUI_pathRows.count
-            diversityUI_pathsDrop.visible=diversityUI_obj.diversityMode==3;diversityUI_pickPath.visible=diversityUI_obj.diversityMode==3
-            diversityUI_analyzerChannel.visible=analyzed;diversityUI_pickAnalyzer.visible=analyzed
-            diversityUI_pickAnalyzer.text=if isValidNode diversityUI_obj.analyzerNode then diversityUI_obj.analyzerNode.name else "Pick Surface Analyzer"
-            diversityUI_removePath.text=if analyzed then "Remove Analyzer" else "Remove path"
-            diversityUI_strokeTitle.text=if analyzed then "Analyze Surface / Strokes" else "Line Pattern / Strokes"
-            diversityUI_addOutside.text=if not analyzed or diversityUI_analyzerChannel.selection==1 then "Add Outside" else (if diversityUI_analyzerChannel.selection==2 then "Add Stroke" else "Add Radius")
-            diversityUI_addInside.text=if analyzed and diversityUI_analyzerChannel.selection==3 then "Add Single" else "Add Inside"
-            diversityUI_boundaryOnly=analyzed and (diversityUI_analyzerChannel.selection==1 or diversityUI_analyzerChannel.selection==4 or diversityUI_analyzerChannel.selection==5)
-            diversityUI_addOutside.visible=(diversityUI_obj.diversityMode==3 or analyzed) and not diversityUI_boundaryOnly
-            diversityUI_addInside.pos=[if diversityUI_boundaryOnly then 4 else modelsUI_1.width/2+2,diversityUI_addOutside.pos.y]
-            diversityUI_addInside.width=if diversityUI_boundaryOnly then modelsUI_1.width-8 else (modelsUI_1.width-12)/2
-            if diversityUI_boundaryOnly do diversityUI_addInside.text=if diversityUI_analyzerChannel.selection==5 then "Add Edge Row" else "Add Stroke Inside"
-            diversityUI_strokeHelp.text=if analyzed and diversityUI_analyzerChannel.selection==5 then "One row along the boundary." else if analyzed then "Width = spread per side." else "Outside strokes: empty."
-            diversityUI_restKeys=#()
-            for i=1 to diversityUI_obj.sources.count do (local key=diversityUI_obj.colorKey(diversityUI_obj.sourceColor i);if findItem diversityUI_restKeys key==0 do append diversityUI_restKeys key)
-            diversityUI_showPath()
-        )
-        on diversityUI_pathsDrop selected i do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do diversityUI_showPath()
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_analyzerChannel selected i do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do diversityUI_updatePattern()
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_pickAnalyzer picked n do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
-            if CyrusAnalyzerFilter n do (diversityUI_obj.analyzerNode=n;diversityUI_obj.markInputDirty();diversityUI_updatePattern();CyrusViewportRedraw())
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokesList selected i do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do diversityUI_showStroke()
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_pickPath picked n do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
-            if isValidNode n and findItem diversityUI_obj.patternPaths n==0 do append diversityUI_obj.patternPaths n
-            diversityUI_updatePattern();diversityUI_pathsDrop.selection=findItem diversityUI_pathRows n;diversityUI_showPath()
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_removePath pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
-            local path=if diversityUI_obj.diversityMode==4 then diversityUI_obj.analyzerNode else diversityUI_pathRows[diversityUI_pathsDrop.selection]
-            for i=diversityUI_obj.patternLines.count to 1 by -1 where diversityUI_obj.patternLines[i]==path do diversityUI_obj.removeStroke i
-            local k=findItem diversityUI_obj.patternPaths path;if k>0 do deleteItem diversityUI_obj.patternPaths k
-            if diversityUI_obj.diversityMode==4 do diversityUI_obj.analyzerNode=undefined
-            diversityUI_updatePattern();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw()
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_addOutside pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
-            if diversityUI_obj.diversityMode==4 and (diversityUI_analyzerChannel.selection==1 or diversityUI_analyzerChannel.selection==4 or diversityUI_analyzerChannel.selection==5) do return false
-            local path=if diversityUI_obj.diversityMode==4 then diversityUI_obj.analyzerNode else diversityUI_pathRows[diversityUI_pathsDrop.selection]
-            local types=#(1,3,4)
-            local side=if diversityUI_obj.diversityMode==4 then types[diversityUI_analyzerChannel.selection] else 1
-            diversityUI_obj.addStroke path side:side;diversityUI_showPath();diversityUI_strokesList.selection=diversityUI_strokeRows.count;diversityUI_showStroke();CyrusViewportRedraw()
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_addInside pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
-            local path=if diversityUI_obj.diversityMode==4 then diversityUI_obj.analyzerNode else diversityUI_pathRows[diversityUI_pathsDrop.selection]
-            local side=if diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==5 then 7 else if diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==4 then 6 else if diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==3 then 5 else 2
-            diversityUI_obj.addStroke path side:side;diversityUI_showPath();diversityUI_strokesList.selection=diversityUI_strokeRows.count;diversityUI_showStroke();CyrusViewportRedraw()
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_removeStrokeButton pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.removeStroke row;diversityUI_showPath();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_edgeOffsetSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeOffsets[row]=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_edgeAlongSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeAlong[row]=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_edgeAcrossSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeAcross[row]=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_keepCornerCheck changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.edgeKeepCorners=v;diversityUI_cornerAngleSpin.enabled=v;diversityUI_cornerCountSpin.enabled=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_cornerAngleSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.edgeCornerAngle=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_cornerCountSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.edgeCornerCount=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_edgeRotXSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeRotX[row]=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_edgeRotYSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeRotY[row]=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_edgeRotZSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeRotZ[row]=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokeWidth changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.patternWidths[row]=v;diversityUI_obj.markInputDirty();diversityUI_showPath();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokeMode changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.strokeModes[row]=v;diversityUI_showStroke();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokeChoices selectionEnd do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (
-            local row=diversityUI_selectedStroke()
-            if row>0 do diversityUI_obj.setStrokeSelection row diversityUI_obj.strokeModes[row] (for i in diversityUI_strokeChoices.selection collect diversityUI_choiceValues[i])
-            CyrusViewportRedraw()
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokeScaleMin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();diversityUI_obj.strokeMin[row]=v;if v>diversityUI_obj.strokeMax[row] do diversityUI_obj.strokeMax[row]=v;diversityUI_showStroke();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokeScaleMax changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();diversityUI_obj.strokeMax[row]=v;if v<diversityUI_obj.strokeMin[row] do diversityUI_obj.strokeMin[row]=v;diversityUI_showStroke();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_refreshGroups pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do diversityUI_updatePattern()
-            if controlsReady and root!=undefined do layout()
-        )
-        fn diversityUI_updateControls = (
-            for c in #(diversityUI_sizeSpin,diversityUI_divSeedSpin,diversityUI_roughSpin,diversityUI_blurSpin,diversityUI_noiseSpin,diversityUI_groupHint,diversityUI_fixedHint) do c.visible=diversityUI_obj.diversityMode==2
-            for c in #(diversityUI_strokeTitle,diversityUI_pathsDrop,diversityUI_analyzerChannel,diversityUI_pickAnalyzer,diversityUI_pickPath,diversityUI_removePath,diversityUI_strokesList,diversityUI_addOutside,diversityUI_addInside,diversityUI_removeStrokeButton,diversityUI_strokeWidth,diversityUI_strokeMode,diversityUI_strokeChoices,diversityUI_strokeScaleMin,diversityUI_strokeScaleMax,diversityUI_refreshGroups,diversityUI_strokeHelp) do c.visible=(diversityUI_obj.diversityMode==3 or diversityUI_obj.diversityMode==4)
-            if diversityUI_strokeExpandedHeight>0 do diversityUI_bodyHeight=if diversityUI_obj.diversityMode>=3 then diversityUI_strokeExpandedHeight else (if diversityUI_obj.diversityMode==2 then 310 else 124)*1.0
-            (CyrusContainerPanel diversityUI_root).layoutPanels()
-        )
-        on diversityUI_diversityRadio changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.diversityMode=v;diversityUI_updateControls();diversityUI_updatePattern();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_sizeSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.diversitySize=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_divSeedSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.diversitySeed=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_roughSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.roughness=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_blurSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.blurryEdge=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_noiseSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.diversityNoise=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        fn diversityUI_bind layer = (
-            local next=layer
-            diversityUI_binding=true;diversityUI_controlsReady=false
-            if diversityUI_obj!=next do (diversityUI_strokesList.selection=0;diversityUI_strokeChoices.selection=0;)
-            diversityUI_obj=next;diversityUI_parentView=(CyrusContainerPanel diversityUI_root)
-            for c in #(diversityUI_diversityRadio,diversityUI_sizeSpin,diversityUI_divSeedSpin,diversityUI_roughSpin,diversityUI_blurSpin,diversityUI_noiseSpin,diversityUI_groupHint,diversityUI_fixedHint,diversityUI_strokeTitle,diversityUI_pathsDrop,diversityUI_analyzerChannel,diversityUI_pickAnalyzer,diversityUI_pickPath,diversityUI_removePath,diversityUI_strokesList,diversityUI_addOutside,diversityUI_addInside,diversityUI_removeStrokeButton,diversityUI_strokeWidth,diversityUI_strokeMode,diversityUI_strokeChoices,diversityUI_strokeScaleMin,diversityUI_strokeScaleMax,diversityUI_refreshGroups,diversityUI_strokeHelp,diversityUI_edgeOffsetSpin,diversityUI_edgeAlongSpin,diversityUI_edgeAcrossSpin,diversityUI_edgeRowHelp,diversityUI_keepCornerCheck,diversityUI_cornerAngleSpin,diversityUI_cornerCountSpin,diversityUI_cornerHelp,diversityUI_edgeRotXSpin,diversityUI_edgeRotYSpin,diversityUI_edgeRotZSpin,diversityUI_streetStartSpin,diversityUI_streetEndSpin,diversityUI_centerStreetSpin,diversityUI_streetLayoutHelp,diversityUI_faceOutCheck,diversityUI_cornerRadiusSpin,diversityUI_straightStreet) do c.enabled=layer!=undefined
-            try (undo off ((diversityUI_diversityRadio.state=diversityUI_obj.diversityMode;diversityUI_sizeSpin.value=diversityUI_obj.diversitySize;diversityUI_divSeedSpin.value=diversityUI_obj.diversitySeed;diversityUI_roughSpin.value=diversityUI_obj.roughness;diversityUI_blurSpin.value=diversityUI_obj.blurryEdge;diversityUI_noiseSpin.value=diversityUI_obj.diversityNoise;diversityUI_controlsReady=true;diversityUI_strokeExpandedHeight=diversityUI_bodyHeight;diversityUI_updateControls();diversityUI_updatePattern()))) catch(diversityUI_binding=false;diversityUI_controlsReady=true;throw())
-            diversityUI_controlsReady=true;diversityUI_binding=false
-        )
         fn fitLabel control minimum available = (
             local capacity=amax 1 (floor ((available-4)/5.2)),lines=0
             for paragraph in filterString control.text "\n" splitEmptyTokens:true do (
@@ -1252,11 +936,11 @@ fn CyrusLayerEditor_modelsUI_1 = (
             )catch(syncingColorLists=false;throw())
         )
         local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
-        fn captureView = #(modelsUI_1.open,#(advancedToggle.checked,propertiesToggle.checked),#(sourceContainersUI_containersList.height,sourceUI_plantList.height,diversityUI_strokesList.height,diversityUI_strokeChoices.height))
+        fn captureView = #(modelsUI_1.open,#(advancedToggle.checked,propertiesToggle.checked),#(sourceContainersUI_containersList.height,sourceUI_plantList.height))
         fn restoreView state = (
             modelsUI_1.open=state[1]
             advancedToggle.checked=state[2][1];propertiesToggle.checked=state[2][2]
-            sourceContainersUI_containersList.height=state[3][1];sourceUI_plantList.height=state[3][2];diversityUI_strokesList.height=state[3][3];diversityUI_strokeChoices.height=state[3][4]
+            sourceContainersUI_containersList.height=state[3][1];sourceUI_plantList.height=state[3][2]
             true
         )
         fn stopListDrag = (
@@ -1291,7 +975,7 @@ fn CyrusLayerEditor_modelsUI_1 = (
             pen.Dispose()
         )
         fn setupGrips = (
-            for grip in #(sourceContainersUI_containersList_grip,sourceUI_plantList_grip,diversityUI_strokesList_grip,diversityUI_strokeChoices_grip) do (
+            for grip in #(sourceContainersUI_containersList_grip,sourceUI_plantList_grip) do (
                 grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
                 grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
                 grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
@@ -1309,16 +993,17 @@ fn CyrusLayerEditor_modelsUI_1 = (
         on sourceUI_plantList_grip MouseUp sender args do (stopListDrag();true)
         on sourceUI_plantList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
         on sourceUI_plantList_grip Paint sender args do paintListGrip sender args
-        on diversityUI_strokesList_grip MouseDown sender args do beginListDrag sender args diversityUI_strokesList
-        on diversityUI_strokesList_grip MouseMove sender args do moveListDrag sender args
-        on diversityUI_strokesList_grip MouseUp sender args do (stopListDrag();true)
-        on diversityUI_strokesList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
-        on diversityUI_strokesList_grip Paint sender args do paintListGrip sender args
-        on diversityUI_strokeChoices_grip MouseDown sender args do beginListDrag sender args diversityUI_strokeChoices
-        on diversityUI_strokeChoices_grip MouseMove sender args do moveListDrag sender args
-        on diversityUI_strokeChoices_grip MouseUp sender args do (stopListDrag();true)
-        on diversityUI_strokeChoices_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
-        on diversityUI_strokeChoices_grip Paint sender args do paintListGrip sender args
+        fn fitPairField control available = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
+            for handle in control.hwnd do (
+                local data=windows.getHWNDData handle
+                if data[4]=="CustEdit" do (
+                    local rectangle=windows.getWindowPos handle,position=windows.screenToClient data[2] (arrow.x-fieldWidth) arrow.y
+                    windows.setWindowPos handle position.x position.y fieldWidth rectangle.h true
+                )
+            )
+            true
+        )
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -1428,7 +1113,7 @@ fn CyrusLayerEditor_modelsUI_1 = (
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
             rowControls=#(heading_1);show=(advancedToggle.checked and (true))
             for c in rowControls do c.visible=show
             if show do (
@@ -1630,18 +1315,510 @@ fn CyrusLayerEditor_modelsUI_1 = (
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(heading_4);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                if y>6 do y+=4
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel heading_4 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(heading_4.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            lastLayoutWidth=widthValue;modelsUI_1.height=y+4;syncColorLists();true
+        )
+        fn bind layer = (
+            if root==undefined do return false
+            stopListDrag();binding=true;controlsReady=false
+            try (
+                if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
+                obj=owner
+                sourceContainersUI_root=root;sourceContainersUI_owner=owner;sourceContainersUI_panel=panel;sourceContainersUI_controlsReady=controlsReady;sourceContainersUI_binding=binding
+            sourceUI_root=root;sourceUI_owner=owner;sourceUI_panel=panel;sourceUI_controlsReady=controlsReady;sourceUI_binding=binding
+            if owner!=undefined then (sourceContainersUI_bind (root.selectedPaintSet owner);) else (for c in #(sourceContainersUI_modeList,sourceContainersUI_containersList,sourceContainersUI_createContainer,sourceContainersUI_pickContainer,sourceContainersUI_removeContainer,sourceContainersUI_membershipInfo,sourceContainersUI_helpInfo) do c.enabled=false;sourceContainersUI_controlsReady=false)
+            sourceUI_detailsToggle.checked=true;if owner!=undefined then (sourceUI_bind (root.selectedPaintSet owner);) else (for c in #(sourceUI_sourceName,sourceUI_idColor,sourceUI_plantList,sourceUI_selectFromScene,sourceUI_addPlant,sourceUI_addSelected,sourceUI_removePlant,sourceUI_selectPlant,sourceUI_addPoint,sourceUI_addEmpty,sourceUI_replacePoint,sourceUI_groupHeading,sourceUI_existingGroups,sourceUI_groupColor,sourceUI_applyColor,sourceUI_colorHelp,sourceUI_weightSpin,sourceUI_weightHelp,sourceUI_sourceZSpin,sourceUI_sourceScaleSpin,sourceUI_sourceTransformHelp,sourceUI_radiusSourceSpin,sourceUI_followRadiusCheck,sourceUI_showRadiusCheck,sourceUI_forwardAxis,sourceUI_detailsToggle) do c.enabled=false;sourceUI_controlsReady=false)
+                setupGrips();controlsReady=true;binding=false;layout();true
+            )catch(binding=false;controlsReady=false;throw())
+        )
+
+        on propertiesToggle changed value do if controlsReady and not binding and root!=undefined and true do ((layout();true)
+            if controlsReady and root!=undefined do layout()
+        )
+        on advancedToggle changed value do if controlsReady and not binding and root!=undefined and true do ((layout();true)
+            if controlsReady and root!=undefined do layout()
+        )
+        on modelsUI_1 resized size do if controlsReady and not binding and (amax 140 modelsUI_1.width)!=lastLayoutWidth do layout()
+        on modelsUI_1 open do (root=CyrusLayerUIRoot;owner=CyrusLayerUIOwner;panel=CyrusLayerUIPanel;bind owner)
+        on modelsUI_1 close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;sourceContainersUI_controlsReady=false;sourceContainersUI_root=undefined;sourceContainersUI_owner=undefined;sourceUI_controlsReady=false;sourceUI_root=undefined;sourceUI_owner=undefined;sourceUI_obj=undefined)
+        on modelsUI_1 rolledUp state do (if controlsReady do bind owner)
+    )
+    modelsUI_1
+)
+
+fn CyrusLayerEditor_layoutUI_1 = (
+    rollout layoutUI_1 "Layout" width:146 category:0 autoLayoutOnResize:false (
+        local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
+        local layout,lastLayoutWidth=0
+        radiobuttons diversityUI_diversityRadio "Source assignment" labels:#("Random mix","Clusters","Spline bands","Surface Analyzer") columns:1 pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58)))))
+        label diversityUI_layoutHelp "" pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58))))) height:36
+        label diversityUI_analyzerStatus "Pick a Surface Analyzer." pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58))))) height:54
+        button diversityUI_selectAnalyzer "Select" pos:[8,8] width:70 tooltip:"Select the linked Surface Analyzer in the scene." height:22
+        button diversityUI_updateAnalyzer "Update Analyzer" pos:[8,8] width:140 tooltip:"Analyze the linked guide. In Manual mode, use Update scatter afterwards to publish placements." height:22
+        spinner diversityUI_sizeSpin "" range:[0.01,100000,10] type:#worldUnits fieldWidth:58 width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/113.2))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/113.2))))) pos:[8,8] tooltip:"Spatial size of source-color clusters."
+        label diversityUI_sizeSpin_caption "Size: " pos:[6,6] width:(layoutUI_1.width-12) height:18
+        spinner diversityUI_divSeedSpin "" range:[0,2147483647,42] type:#integer fieldWidth:58 width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/113.2))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/113.2))))) pos:[8,8] tooltip:"Change source assignment randomness without changing the generation seed."
+        label diversityUI_divSeedSpin_caption "Seed: " pos:[6,6] width:(layoutUI_1.width-12) height:18
+        spinner diversityUI_roughSpin "" range:[0,100,0] fieldWidth:58 width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/149.60000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/149.60000000000002))))) pos:[8,8]
+        label diversityUI_roughSpin_caption "Roughness %: " pos:[6,6] width:(layoutUI_1.width-12) height:18
+        spinner diversityUI_blurSpin "" range:[0,100,0] fieldWidth:58 width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/149.60000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/149.60000000000002))))) pos:[8,8]
+        label diversityUI_blurSpin_caption "Blur edge %: " pos:[6,6] width:(layoutUI_1.width-12) height:18
+        spinner diversityUI_noiseSpin "" range:[0,100,0] fieldWidth:58 width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/128.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/128.8))))) pos:[8,8]
+        label diversityUI_noiseSpin_caption "Noise %: " pos:[6,6] width:(layoutUI_1.width-12) height:18
+        label diversityUI_groupHint "Uses assignment groups, not viewport colors." pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58)))))
+        label diversityUI_fixedHint "Point positions stay fixed." pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58)))))
+        label diversityUI_strokeTitle "Spline bands" pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58)))))
+        dropdownlist diversityUI_pathsDrop "" items:#() pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58)))))
+        label diversityUI_pathsDrop_caption "Paths" pos:[6,6] width:(layoutUI_1.width-12) height:18
+        dropdownlist diversityUI_analyzerChannel "" items:#("Border","Centerline","Points","Street Side","Edge Border") pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58)))))
+        label diversityUI_analyzerChannel_caption "Analyzer data" pos:[6,6] width:(layoutUI_1.width-12) height:18
+        pickbutton diversityUI_pickAnalyzer "Pick Surface Analyzer" filter:CyrusAnalyzerFilter pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/127.2))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/127.2))))) tooltip:"Use Surface Analyzer output for bands, rows and fixed anchors." height:22
+        pickbutton diversityUI_pickPath "Add: pick closed line" filter:AminScatterAreaFilter pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/127.2))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/127.2))))) tooltip:"Pick a spline for Line Pattern assignment." height:22
+        button diversityUI_removePath "Remove path" pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/75.2))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/75.2))))) tooltip:"Remove the selected assignment path while keeping the scene spline." height:22
+        listbox diversityUI_strokesList "" items:#() pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58))))) height:4
+        label diversityUI_strokesList_caption "Bands" pos:[6,6] width:(layoutUI_1.width-12) height:18
+        button diversityUI_addOutside "Add Outside" pos:[8,8] width:((layoutUI_1.width-16-((amin 2 (amax 1 (floor ((layoutUI_1.width-8)/75.2))))-1)*4)/(amin 2 (amax 1 (floor ((layoutUI_1.width-8)/75.2))))) tooltip:"Add a source-assignment band outside the selected path." height:22
+        button diversityUI_addInside "Add Inside" pos:[8,8] width:((layoutUI_1.width-16-((amin 2 (amax 1 (floor ((layoutUI_1.width-8)/75.2))))-1)*4)/(amin 2 (amax 1 (floor ((layoutUI_1.width-8)/75.2))))) tooltip:"Add a source-assignment band inside the selected path." height:22
+        button diversityUI_removeStrokeButton "Remove band" pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/75.2))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/75.2))))) tooltip:"Remove the selected band and its settings." height:22
+        spinner diversityUI_strokeWidth "" range:[0.001,100000,1] type:#worldUnits pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/113.2))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/113.2))))) fieldWidth:58
+        label diversityUI_strokeWidth_caption "Width:" pos:[6,6] width:(layoutUI_1.width-12) height:18
+        radiobuttons diversityUI_strokeMode "Assign by" labels:#("Color groups","Source objects") columns:1 pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58)))))
+        multiListBox diversityUI_strokeChoices "" items:#() pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58))))) height:5
+        label diversityUI_strokeChoices_caption "Ctrl / Shift: select several" pos:[6,6] width:(layoutUI_1.width-12) height:18
+        spinner diversityUI_strokeScaleMin "" range:[0.001,100,1] pos:[8,8] width:((layoutUI_1.width-16-((amin 2 (amax 1 (floor ((layoutUI_1.width-8)/134))))-1)*4)/(amin 2 (amax 1 (floor ((layoutUI_1.width-8)/134))))) fieldWidth:58
+        label diversityUI_strokeScaleMin_caption "Scale min:" pos:[6,6] width:(layoutUI_1.width-12) height:18
+        spinner diversityUI_strokeScaleMax "" range:[0.001,100,1] pos:[8,8] width:((layoutUI_1.width-16-((amin 2 (amax 1 (floor ((layoutUI_1.width-8)/134))))-1)*4)/(amin 2 (amax 1 (floor ((layoutUI_1.width-8)/134))))) fieldWidth:58
+        label diversityUI_strokeScaleMax_caption "Scale max:" pos:[6,6] width:(layoutUI_1.width-12) height:18
+        button diversityUI_refreshGroups "Refresh sources / groups" pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/142.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/142.8))))) tooltip:"Refresh available source color groups for assignment." height:22
+        label diversityUI_strokeHelp "Outside bands: empty. First match wins." pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58)))))
+        spinner diversityUI_edgeOffsetSpin "" range:[-1000000,1000000,0] type:#worldunits pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/154.8))))) fieldWidth:58
+        label diversityUI_edgeOffsetSpin_caption "Offset inward:" pos:[6,6] width:(layoutUI_1.width-12) height:18
+        spinner diversityUI_edgeAlongSpin "" range:[0,1000000,0] type:#worldunits pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/149.60000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/149.60000000000002))))) fieldWidth:58
+        label diversityUI_edgeAlongSpin_caption "Jitter along:" pos:[6,6] width:(layoutUI_1.width-12) height:18
+        spinner diversityUI_edgeAcrossSpin "" range:[0,1000000,0] type:#worldunits pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/154.8))))) fieldWidth:58
+        label diversityUI_edgeAcrossSpin_caption "Jitter across:" pos:[6,6] width:(layoutUI_1.width-12) height:18
+        label diversityUI_edgeRowHelp "Spacing sets count. Jitter 0 = exact." pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58))))) height:36
+        checkbox diversityUI_keepCornerCheck "Keep corner points" pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/119.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/119.60000000000001)))))
+        spinner diversityUI_cornerAngleSpin "" range:[0,180,45] type:#float pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/128.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/128.8))))) fieldWidth:58
+        label diversityUI_cornerAngleSpin_caption "Min turn:" pos:[6,6] width:(layoutUI_1.width-12) height:18
+        spinner diversityUI_cornerCountSpin "" range:[1,64,1] type:#integer pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/154.8))))) fieldWidth:58
+        label diversityUI_cornerCountSpin_caption "Points/corner:" pos:[6,6] width:(layoutUI_1.width-12) height:18
+        label diversityUI_cornerHelp "Turn angle in degrees. 0 = straight." pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58))))) height:36
+        spinner diversityUI_edgeRotXSpin "" range:[-36000,36000,0] type:#float pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/154.8))))) fieldWidth:58
+        label diversityUI_edgeRotXSpin_caption "Local X (deg):" pos:[6,6] width:(layoutUI_1.width-12) height:18
+        spinner diversityUI_edgeRotYSpin "" range:[-36000,36000,0] type:#float pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/154.8))))) fieldWidth:58
+        label diversityUI_edgeRotYSpin_caption "Local Y (deg):" pos:[6,6] width:(layoutUI_1.width-12) height:18
+        spinner diversityUI_edgeRotZSpin "" range:[-36000,36000,0] type:#float pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/154.8))))) fieldWidth:58
+        label diversityUI_edgeRotZSpin_caption "Local Z (deg):" pos:[6,6] width:(layoutUI_1.width-12) height:18
+        spinner diversityUI_streetStartSpin "" range:[0,1e9,0] type:#worldunits pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/139.2))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/139.2))))) fieldWidth:58
+        label diversityUI_streetStartSpin_caption "Trim start:" pos:[6,6] width:(layoutUI_1.width-12) height:18
+        spinner diversityUI_streetEndSpin "" range:[0,1e9,0] type:#worldunits pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/128.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/128.8))))) fieldWidth:58
+        label diversityUI_streetEndSpin_caption "Trim end:" pos:[6,6] width:(layoutUI_1.width-12) height:18
+        spinner diversityUI_centerStreetSpin "" range:[-1e9,1e9,0] type:#worldunits pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/154.8))))) fieldWidth:58
+        label diversityUI_centerStreetSpin_caption "Street offset:" pos:[6,6] width:(layoutUI_1.width-12) height:18
+        label diversityUI_streetLayoutHelp "Positive offset = away from street. Trim follows path direction." pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/58))))) height:44
+        checkbox diversityUI_faceOutCheck "Face outward" pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/88.4))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/88.4)))))
+        spinner diversityUI_cornerRadiusSpin "" type:#worldunits range:[0,1000000,10] pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/154.8))))) fieldWidth:58
+        label diversityUI_cornerRadiusSpin_caption "Corner radius:" pos:[6,6] width:(layoutUI_1.width-12) height:18
+        checkbox diversityUI_straightStreet "Straight ends (Street Side)" pos:[8,8] width:((layoutUI_1.width-16-((amin 1 (amax 1 (floor ((layoutUI_1.width-8)/166.4))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI_1.width-8)/166.4)))))
+        label heading_0 "Source assignment - layer" pos:[6,6] width:(layoutUI_1.width-12) height:18
+        dotNetControl diversityUI_strokesList_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8
+        dotNetControl diversityUI_strokeChoices_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8
+        checkbutton advancedToggle "Advanced" pos:[6,6] width:(layoutUI_1.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
+        local diversityUI_bodyHeight=0
+        local diversityUI_controlsReady=false
+        local diversityUI_root=undefined,diversityUI_owner=undefined,diversityUI_panel=undefined
+        local diversityUI_setSpecific=false
+        local diversityUI_binding=false,
+        diversityUI_obj=undefined,diversityUI_parentView=undefined
+        local diversityUI_boundaryOnly=false
+        local diversityUI_controlsReady=false,diversityUI_strokeExpandedHeight=0
+        local diversityUI_pathRows=#(),diversityUI_strokeRows=#(),diversityUI_choiceValues=#(),diversityUI_restKeys=#(),diversityUI_loadingStroke=false
+        fn diversityUI_syncControls = (diversityUI_diversityRadio.state=diversityUI_obj.diversityMode;diversityUI_sizeSpin.value=diversityUI_obj.diversitySize;diversityUI_divSeedSpin.value=diversityUI_obj.diversitySeed;diversityUI_roughSpin.value=diversityUI_obj.roughness;diversityUI_blurSpin.value=diversityUI_obj.blurryEdge;diversityUI_noiseSpin.value=diversityUI_obj.diversityNoise;)
+        on diversityUI_faceOutCheck changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
+            if diversityUI_analyzerChannel.selection==5 then diversityUI_obj.edgeFaceOut=v else if diversityUI_analyzerChannel.selection==4 then diversityUI_obj.streetFaceOut=v else diversityUI_obj.borderFaceOut=v
+            diversityUI_cornerRadiusSpin.enabled=v;diversityUI_obj.markInputDirty();CyrusViewportRedraw()
+        )
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_cornerRadiusSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
+            if diversityUI_analyzerChannel.selection==5 then diversityUI_obj.edgeCornerRadius=v else if diversityUI_analyzerChannel.selection==4 then diversityUI_obj.streetCornerRadius=v else diversityUI_obj.borderCornerRadius=v
+            diversityUI_obj.markInputDirty();CyrusViewportRedraw()
+        )
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_streetStartSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.streetTrimStart=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_streetEndSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.streetTrimEnd=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_centerStreetSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.centerStreetOffset=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_straightStreet changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.streetStraight=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        fn diversityUI_selectedStroke = (if diversityUI_strokesList.selection>0 and diversityUI_strokesList.selection<=diversityUI_strokeRows.count then diversityUI_strokeRows[diversityUI_strokesList.selection] else 0)
+        fn diversityUI_showStroke = (
+            diversityUI_loadingStroke=true
+            diversityUI_obj.syncStrokes()
+            local edgeVisible=diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==5
+            for c in #(diversityUI_edgeOffsetSpin,diversityUI_edgeAlongSpin,diversityUI_edgeAcrossSpin,diversityUI_edgeRowHelp,diversityUI_keepCornerCheck,diversityUI_cornerAngleSpin,diversityUI_cornerCountSpin,diversityUI_cornerHelp,diversityUI_edgeRotXSpin,diversityUI_edgeRotYSpin,diversityUI_edgeRotZSpin) do c.visible=edgeVisible
+            diversityUI_cornerRadiusSpin.text=if edgeVisible then "Blend radius:" else "Corner radius:"
+            diversityUI_keepCornerCheck.checked=diversityUI_obj.edgeKeepCorners
+            diversityUI_cornerAngleSpin.value=diversityUI_obj.edgeCornerAngle;diversityUI_cornerCountSpin.value=diversityUI_obj.edgeCornerCount
+            diversityUI_cornerAngleSpin.enabled=diversityUI_obj.edgeKeepCorners;diversityUI_cornerCountSpin.enabled=diversityUI_obj.edgeKeepCorners
+            diversityUI_strokeWidth.text=if edgeVisible then "Spacing:" else "Width:"
+            local row=diversityUI_selectedStroke();local active=row>0
+            for c in #(diversityUI_strokeWidth,diversityUI_strokeMode,diversityUI_strokeChoices,diversityUI_strokeScaleMin,diversityUI_strokeScaleMax,diversityUI_removeStrokeButton) do c.enabled=active
+            diversityUI_choiceValues=#();diversityUI_strokeChoices.items=#()
+            for c in #(diversityUI_edgeOffsetSpin,diversityUI_edgeAlongSpin,diversityUI_edgeAcrossSpin,diversityUI_edgeRotXSpin,diversityUI_edgeRotYSpin,diversityUI_edgeRotZSpin) do c.enabled=active
+            if active do (
+                diversityUI_edgeRotXSpin.value=diversityUI_obj.edgeRotX[row]
+                diversityUI_edgeRotYSpin.value=diversityUI_obj.edgeRotY[row]
+                diversityUI_edgeRotZSpin.value=diversityUI_obj.edgeRotZ[row]
+                diversityUI_edgeOffsetSpin.value=diversityUI_obj.edgeOffsets[row];diversityUI_edgeAlongSpin.value=diversityUI_obj.edgeAlong[row];diversityUI_edgeAcrossSpin.value=diversityUI_obj.edgeAcross[row]
+                diversityUI_strokeWidth.value=diversityUI_obj.patternWidths[row];diversityUI_strokeMode.state=diversityUI_obj.strokeModes[row]
+                diversityUI_strokeWidth.enabled=diversityUI_obj.strokeSides[row]!=5
+                diversityUI_strokeScaleMin.value=diversityUI_obj.strokeMin[row];diversityUI_strokeScaleMax.value=diversityUI_obj.strokeMax[row]
+                local labels=#();local selectedRows=#{}
+                if diversityUI_obj.strokeModes[row]==1 then (
+                    for i=1 to diversityUI_obj.sources.count do (
+                        local key=diversityUI_obj.colorKey(diversityUI_obj.sourceColor i)
+                        if findItem diversityUI_choiceValues key==0 do (append diversityUI_choiceValues key;append labels ("#"+(formattedPrint key format:"06X")))
+                    )
+                    local keys=for i=1 to diversityUI_obj.strokeColorRows.count where diversityUI_obj.strokeColorRows[i]==row collect diversityUI_obj.strokeColorKeys[i]
+                    if keys.count==0 do keys=#(diversityUI_obj.patternGroups[row])
+                    for i=1 to diversityUI_choiceValues.count where findItem keys diversityUI_choiceValues[i]>0 do selectedRows[i]=true
+                ) else (
+                    for n in diversityUI_obj.sources where isValidNode n do (append diversityUI_choiceValues n;append labels (diversityUI_obj.sourceLabel (diversityUI_obj.sourceRow n)))
+                    for i=1 to diversityUI_obj.strokeSourceRows.count where diversityUI_obj.strokeSourceRows[i]==row do (
+                        local k=findItem diversityUI_choiceValues diversityUI_obj.strokeSourceNodes[i];if k>0 do selectedRows[k]=true
+                    )
+                )
+                diversityUI_strokeChoices.items=labels;diversityUI_strokeChoices.selection=selectedRows
             )
-            rowControls=#(diversityUI_diversityRadio);show=(advancedToggle.checked and (true))
+            diversityUI_loadingStroke=false
+            if diversityUI_obj.diversityMode>=3 do (
+                local analyzed=diversityUI_obj.diversityMode==4
+                diversityUI_strokeHelp.text=if analyzed then "Width is spread per side; spacing and masks still apply." else "Outside bands: empty. First match wins."
+                local guideReady=if analyzed then isValidNode diversityUI_obj.analyzerNode else diversityUI_pathsDrop.selection>0
+                if not guideReady then diversityUI_strokeHelp.text=if analyzed then "Pick an Analyzer to begin." else "Pick a closed spline to begin."
+                else if diversityUI_strokeRows.count==0 then diversityUI_strokeHelp.text=if analyzed and diversityUI_analyzerChannel.selection==5 then "Add an edge row, then choose models." else "Add a band, then choose models."
+                else if diversityUI_selectedStroke()>0 and diversityUI_strokeChoices.selection.numberSet==0 then diversityUI_strokeHelp.text="Choose models or groups for this band."
+                else if analyzed and diversityUI_analyzerChannel.selection==5 then diversityUI_strokeHelp.text="Spacing controls row count. Amount 0 disables output."
+                else if analyzed and diversityUI_analyzerChannel.selection==3 and diversityUI_obj.strokeSides[diversityUI_selectedStroke()]==5 then diversityUI_strokeHelp.text="Analyzer points control count. Amount 0 disables output."
+            )
+        )
+        fn diversityUI_showPath = (
+            diversityUI_loadingStroke=true
+            local old=diversityUI_strokesList.selection;diversityUI_strokeRows=#();local labels=#();local total=#(0.0,0.0,0.0,0.0,0.0,0.0,0.0)
+            local analyzed=diversityUI_obj.diversityMode==4
+            local path=if analyzed then diversityUI_obj.analyzerNode else (if diversityUI_pathsDrop.selection>0 then diversityUI_pathRows[diversityUI_pathsDrop.selection] else undefined)
+            if isValidNode path do (
+                for i=1 to diversityUI_obj.patternLines.count where diversityUI_obj.patternLines[i]==path and (not analyzed or (diversityUI_analyzerChannel.selection==1 and diversityUI_obj.strokeSides[i]<=2) or (diversityUI_analyzerChannel.selection==2 and diversityUI_obj.strokeSides[i]==3) or (diversityUI_analyzerChannel.selection==3 and (diversityUI_obj.strokeSides[i]==4 or diversityUI_obj.strokeSides[i]==5)) or (diversityUI_analyzerChannel.selection==4 and diversityUI_obj.strokeSides[i]==6) or (diversityUI_analyzerChannel.selection==5 and diversityUI_obj.strokeSides[i]==7)) do (
+                    append diversityUI_strokeRows i
+                    local side=diversityUI_obj.strokeSides[i];local start=total[side];total[side]+=diversityUI_obj.patternWidths[i]
+                    local prefixes=#("Out ","In ","Both ","Radius ","Single ","Street ","Edge ")
+                    append labels (if side==7 then ("Edge "+(diversityUI_strokeRows.count as string)+": spacing "+units.formatValue diversityUI_obj.patternWidths[i]) else (prefixes[side]+(diversityUI_strokeRows.count as string)+": "+units.formatValue start+" - "+units.formatValue total[side]))
+                )
+            )
+            diversityUI_strokesList.items=labels;diversityUI_strokesList.selection=amin (amax 1 old) labels.count
+            diversityUI_addOutside.enabled=isValidNode path;diversityUI_addInside.enabled=isValidNode path and (not analyzed or diversityUI_analyzerChannel.selection!=2);diversityUI_removePath.enabled=isValidNode path
+            diversityUI_loadingStroke=false;diversityUI_showStroke()
+        )
+        fn diversityUI_updateAnalyzerStatus = (
+            local guide=diversityUI_obj.analyzerNode,valid=isValidNode diversityUI_obj.analyzerNode
+            diversityUI_selectAnalyzer.enabled=valid;diversityUI_updateAnalyzer.enabled=valid
+            diversityUI_analyzerStatus.text=if not valid then "Pick an existing Analyzer. Open planar surfaces only." else (
+                local target=if isValidNode guide.surface then guide.surface.name else "Missing surface"
+                local state=if not guide.cyrusEnabled then "Disabled" else if not isValidNode guide.surface then "Missing surface" else if guide.getAnalysisRuns()==0 then "Not analyzed" else if (guide.getLiveStats())[3] then "Update needed" else "Ready"
+                guide.name+"\nSurface: "+target+"\n"+state
+            )
+        )
+        on diversityUI_selectAnalyzer pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
+            local guide=diversityUI_obj.analyzerNode
+            if isValidNode guide do (select guide;max modify mode)
+        )
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_updateAnalyzer pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
+            local savedOwner=diversityUI_obj,guide=diversityUI_obj.analyzerNode
+            if isValidNode guide do try (
+                guide.runAnalysis();savedOwner.markInputDirty()
+                if diversityUI_controlsReady and diversityUI_obj==savedOwner do diversityUI_updateAnalyzerStatus()
+                CyrusViewportRedraw()
+            )catch(if diversityUI_controlsReady and diversityUI_obj==savedOwner do diversityUI_analyzerStatus.text="Analysis failed: "+getCurrentException())
+        )
+            if controlsReady and root!=undefined do layout()
+        )
+        fn diversityUI_updatePattern = (
+            diversityUI_updateAnalyzerStatus()
+            diversityUI_layoutHelp.text=case diversityUI_obj.diversityMode of (
+                1: "Mix models using their weights."
+                2: "Group models into patches. Size controls patch size."
+                3: "Closed spline bands use top-down XY projection."
+                4: "Use the linked Analyzer's published guides."
+            )
+            diversityUI_faceOutCheck.visible=diversityUI_obj.diversityMode==4 and (diversityUI_analyzerChannel.selection==1 or diversityUI_analyzerChannel.selection==4 or diversityUI_analyzerChannel.selection==5)
+            diversityUI_cornerRadiusSpin.visible=diversityUI_faceOutCheck.visible
+            diversityUI_faceOutCheck.checked=if diversityUI_analyzerChannel.selection==5 then diversityUI_obj.edgeFaceOut else if diversityUI_analyzerChannel.selection==4 then diversityUI_obj.streetFaceOut else diversityUI_obj.borderFaceOut
+            diversityUI_cornerRadiusSpin.value=if diversityUI_analyzerChannel.selection==5 then diversityUI_obj.edgeCornerRadius else if diversityUI_analyzerChannel.selection==4 then diversityUI_obj.streetCornerRadius else diversityUI_obj.borderCornerRadius
+            diversityUI_cornerRadiusSpin.enabled=diversityUI_faceOutCheck.checked
+            diversityUI_streetStartSpin.visible=diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==4
+            diversityUI_streetEndSpin.visible=diversityUI_streetStartSpin.visible
+            diversityUI_centerStreetSpin.visible=diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==2
+            diversityUI_streetLayoutHelp.visible=diversityUI_streetStartSpin.visible or diversityUI_centerStreetSpin.visible
+            diversityUI_streetStartSpin.value=diversityUI_obj.streetTrimStart;diversityUI_streetEndSpin.value=diversityUI_obj.streetTrimEnd;diversityUI_centerStreetSpin.value=diversityUI_obj.centerStreetOffset
+            diversityUI_straightStreet.checked=diversityUI_obj.streetStraight;diversityUI_straightStreet.visible=diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==4
+            diversityUI_obj.syncStrokes();local old=diversityUI_pathsDrop.selection
+            local analyzed=diversityUI_obj.diversityMode==4
+            diversityUI_pathRows=for n in diversityUI_obj.patternPaths where isValidNode n and not isProperty n #samplePoints collect n
+            diversityUI_pathsDrop.items=for n in diversityUI_pathRows collect n.name
+            diversityUI_pathsDrop.selection=amin (amax 1 old) diversityUI_pathRows.count
+            diversityUI_pathsDrop.visible=diversityUI_obj.diversityMode==3;diversityUI_pickPath.visible=diversityUI_obj.diversityMode==3
+            diversityUI_analyzerChannel.visible=analyzed;diversityUI_pickAnalyzer.visible=analyzed
+            diversityUI_pickAnalyzer.text=if isValidNode diversityUI_obj.analyzerNode then diversityUI_obj.analyzerNode.name else "Pick Surface Analyzer"
+            diversityUI_removePath.text=if analyzed then "Remove Analyzer" else "Remove path"
+            diversityUI_strokeTitle.text=if analyzed then "Analyzer bands / rows" else "Spline bands"
+            diversityUI_addOutside.text=if not analyzed or diversityUI_analyzerChannel.selection==1 then "Add Outside" else (if diversityUI_analyzerChannel.selection==2 then "Add band" else "Add Radius")
+            diversityUI_addInside.text=if analyzed and diversityUI_analyzerChannel.selection==3 then "Add Single" else "Add Inside"
+            diversityUI_boundaryOnly=analyzed and (diversityUI_analyzerChannel.selection==1 or diversityUI_analyzerChannel.selection==4 or diversityUI_analyzerChannel.selection==5)
+            diversityUI_addOutside.visible=(diversityUI_obj.diversityMode==3 or analyzed) and not diversityUI_boundaryOnly
+            diversityUI_addInside.pos=[if diversityUI_boundaryOnly then 4 else layoutUI_1.width/2+2,diversityUI_addOutside.pos.y]
+            diversityUI_addInside.width=if diversityUI_boundaryOnly then layoutUI_1.width-8 else (layoutUI_1.width-12)/2
+            if diversityUI_boundaryOnly do diversityUI_addInside.text=if diversityUI_analyzerChannel.selection==5 then "Add Edge Row" else "Add band inside"
+            diversityUI_strokeHelp.text=if analyzed and diversityUI_analyzerChannel.selection==5 then "One row along the boundary." else if analyzed then "Width = spread per side." else "Outside bands: empty. First match wins."
+            diversityUI_restKeys=#()
+            for i=1 to diversityUI_obj.sources.count do (local key=diversityUI_obj.colorKey(diversityUI_obj.sourceColor i);if findItem diversityUI_restKeys key==0 do append diversityUI_restKeys key)
+            diversityUI_showPath()
+
+        )
+        on diversityUI_pathsDrop selected i do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do diversityUI_showPath()
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_analyzerChannel selected i do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do diversityUI_updatePattern()
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_pickAnalyzer picked n do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
+            if CyrusAnalyzerFilter n do (diversityUI_obj.analyzerNode=n;diversityUI_obj.markInputDirty();diversityUI_updatePattern();CyrusViewportRedraw())
+        )
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_strokesList selected i do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do diversityUI_showStroke()
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_pickPath picked n do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
+            if isValidNode n and findItem diversityUI_obj.patternPaths n==0 do append diversityUI_obj.patternPaths n
+            diversityUI_updatePattern();diversityUI_pathsDrop.selection=findItem diversityUI_pathRows n;diversityUI_showPath()
+        )
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_removePath pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
+            local path=if diversityUI_obj.diversityMode==4 then diversityUI_obj.analyzerNode else diversityUI_pathRows[diversityUI_pathsDrop.selection]
+            for i=diversityUI_obj.patternLines.count to 1 by -1 where diversityUI_obj.patternLines[i]==path do diversityUI_obj.removeStroke i
+            local k=findItem diversityUI_obj.patternPaths path;if k>0 do deleteItem diversityUI_obj.patternPaths k
+            if diversityUI_obj.diversityMode==4 do diversityUI_obj.analyzerNode=undefined
+            diversityUI_updatePattern();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw()
+        )
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_addOutside pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
+            if diversityUI_obj.diversityMode==4 and (diversityUI_analyzerChannel.selection==1 or diversityUI_analyzerChannel.selection==4 or diversityUI_analyzerChannel.selection==5) do return false
+            local path=if diversityUI_obj.diversityMode==4 then diversityUI_obj.analyzerNode else diversityUI_pathRows[diversityUI_pathsDrop.selection]
+            local types=#(1,3,4)
+            local side=if diversityUI_obj.diversityMode==4 then types[diversityUI_analyzerChannel.selection] else 1
+            diversityUI_obj.addStroke path side:side;diversityUI_showPath();diversityUI_strokesList.selection=diversityUI_strokeRows.count;diversityUI_showStroke();CyrusViewportRedraw()
+        )
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_addInside pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
+            local path=if diversityUI_obj.diversityMode==4 then diversityUI_obj.analyzerNode else diversityUI_pathRows[diversityUI_pathsDrop.selection]
+            local side=if diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==5 then 7 else if diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==4 then 6 else if diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==3 then 5 else 2
+            diversityUI_obj.addStroke path side:side;diversityUI_showPath();diversityUI_strokesList.selection=diversityUI_strokeRows.count;diversityUI_showStroke();CyrusViewportRedraw()
+        )
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_removeStrokeButton pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.removeStroke row;diversityUI_showPath();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_edgeOffsetSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeOffsets[row]=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_edgeAlongSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeAlong[row]=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_edgeAcrossSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeAcross[row]=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_keepCornerCheck changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.edgeKeepCorners=v;diversityUI_cornerAngleSpin.enabled=v;diversityUI_cornerCountSpin.enabled=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_cornerAngleSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.edgeCornerAngle=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_cornerCountSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.edgeCornerCount=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_edgeRotXSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeRotX[row]=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_edgeRotYSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeRotY[row]=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_edgeRotZSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeRotZ[row]=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_strokeWidth changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.patternWidths[row]=v;diversityUI_obj.markInputDirty();diversityUI_showPath();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_strokeMode changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.strokeModes[row]=v;diversityUI_showStroke();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_strokeChoices selectionEnd do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (
+            local row=diversityUI_selectedStroke()
+            if row>0 do diversityUI_obj.setStrokeSelection row diversityUI_obj.strokeModes[row] (for i in diversityUI_strokeChoices.selection collect diversityUI_choiceValues[i])
+            CyrusViewportRedraw()
+        )
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_strokeScaleMin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();diversityUI_obj.strokeMin[row]=v;if v>diversityUI_obj.strokeMax[row] do diversityUI_obj.strokeMax[row]=v;diversityUI_showStroke();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_strokeScaleMax changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();diversityUI_obj.strokeMax[row]=v;if v<diversityUI_obj.strokeMin[row] do diversityUI_obj.strokeMin[row]=v;diversityUI_showStroke();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_refreshGroups pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do diversityUI_updatePattern()
+            if controlsReady and root!=undefined do layout()
+        )
+        fn diversityUI_updateControls = (
+            for c in #(diversityUI_sizeSpin,diversityUI_divSeedSpin,diversityUI_roughSpin,diversityUI_blurSpin,diversityUI_noiseSpin,diversityUI_groupHint,diversityUI_fixedHint) do c.visible=diversityUI_obj.diversityMode==2
+            for c in #(diversityUI_strokeTitle,diversityUI_pathsDrop,diversityUI_analyzerChannel,diversityUI_pickAnalyzer,diversityUI_pickPath,diversityUI_removePath,diversityUI_strokesList,diversityUI_addOutside,diversityUI_addInside,diversityUI_removeStrokeButton,diversityUI_strokeWidth,diversityUI_strokeMode,diversityUI_strokeChoices,diversityUI_strokeScaleMin,diversityUI_strokeScaleMax,diversityUI_refreshGroups,diversityUI_strokeHelp) do c.visible=(diversityUI_obj.diversityMode==3 or diversityUI_obj.diversityMode==4)
+            if diversityUI_strokeExpandedHeight>0 do diversityUI_bodyHeight=if diversityUI_obj.diversityMode>=3 then diversityUI_strokeExpandedHeight else (if diversityUI_obj.diversityMode==2 then 310 else 124)*1.0
+            (CyrusContainerPanel diversityUI_root).layoutPanels()
+        )
+        on diversityUI_diversityRadio changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.diversityMode=v;diversityUI_updateControls();diversityUI_updatePattern();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_sizeSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.diversitySize=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_divSeedSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.diversitySeed=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_roughSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.roughness=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_blurSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.blurryEdge=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_noiseSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.diversityNoise=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        fn diversityUI_bind layer = (
+            local next=layer
+            diversityUI_binding=true;diversityUI_controlsReady=false
+            if diversityUI_obj!=next do (diversityUI_strokesList.selection=0;diversityUI_strokeChoices.selection=0;)
+            diversityUI_obj=next;diversityUI_parentView=(CyrusContainerPanel diversityUI_root)
+            for c in #(diversityUI_diversityRadio,diversityUI_layoutHelp,diversityUI_analyzerStatus,diversityUI_selectAnalyzer,diversityUI_updateAnalyzer,diversityUI_sizeSpin,diversityUI_divSeedSpin,diversityUI_roughSpin,diversityUI_blurSpin,diversityUI_noiseSpin,diversityUI_groupHint,diversityUI_fixedHint,diversityUI_strokeTitle,diversityUI_pathsDrop,diversityUI_analyzerChannel,diversityUI_pickAnalyzer,diversityUI_pickPath,diversityUI_removePath,diversityUI_strokesList,diversityUI_addOutside,diversityUI_addInside,diversityUI_removeStrokeButton,diversityUI_strokeWidth,diversityUI_strokeMode,diversityUI_strokeChoices,diversityUI_strokeScaleMin,diversityUI_strokeScaleMax,diversityUI_refreshGroups,diversityUI_strokeHelp,diversityUI_edgeOffsetSpin,diversityUI_edgeAlongSpin,diversityUI_edgeAcrossSpin,diversityUI_edgeRowHelp,diversityUI_keepCornerCheck,diversityUI_cornerAngleSpin,diversityUI_cornerCountSpin,diversityUI_cornerHelp,diversityUI_edgeRotXSpin,diversityUI_edgeRotYSpin,diversityUI_edgeRotZSpin,diversityUI_streetStartSpin,diversityUI_streetEndSpin,diversityUI_centerStreetSpin,diversityUI_streetLayoutHelp,diversityUI_faceOutCheck,diversityUI_cornerRadiusSpin,diversityUI_straightStreet) do c.enabled=layer!=undefined
+            try (undo off ((diversityUI_diversityRadio.state=diversityUI_obj.diversityMode;diversityUI_sizeSpin.value=diversityUI_obj.diversitySize;diversityUI_divSeedSpin.value=diversityUI_obj.diversitySeed;diversityUI_roughSpin.value=diversityUI_obj.roughness;diversityUI_blurSpin.value=diversityUI_obj.blurryEdge;diversityUI_noiseSpin.value=diversityUI_obj.diversityNoise;diversityUI_controlsReady=true;diversityUI_strokeExpandedHeight=diversityUI_bodyHeight;diversityUI_updateControls();diversityUI_updatePattern()))) catch(diversityUI_binding=false;diversityUI_controlsReady=true;throw())
+            diversityUI_controlsReady=true;diversityUI_binding=false
+        )
+        fn fitLabel control minimum available = (
+            local capacity=amax 1 (floor ((available-4)/5.2)),lines=0
+            for paragraph in filterString control.text "\n" splitEmptyTokens:true do (
+                local occupied=0;lines+=1
+                for word in filterString paragraph " " do (
+                    local size=word.count+(if occupied==0 then 0 else 1)
+                    if occupied>0 and occupied+size>capacity do (lines+=1;occupied=0;size=word.count)
+                    lines+=floor ((amax 0 (size-1))/capacity);occupied=(mod (amax 0 (size-1)) capacity)+1+occupied
+                )
+            )
+            control.height=amax minimum (lines*14+2);true
+        )
+        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
+        fn captureView = #(layoutUI_1.open,#(advancedToggle.checked),#(diversityUI_strokesList.height,diversityUI_strokeChoices.height))
+        fn restoreView state = (
+            layoutUI_1.open=state[1]
+            advancedToggle.checked=state[2][1]
+            diversityUI_strokesList.height=state[3][1];diversityUI_strokeChoices.height=state[3][2]
+            true
+        )
+        fn stopListDrag = (
+            local previous=dragGrip
+            dragGrip=undefined;dragList=undefined
+            if previous!=undefined do previous.Capture=false
+            true
+        )
+        fn gripScreenY sender args = (
+            local point=dotNetObject "System.Drawing.Point" args.X args.Y
+            (sender.PointToScreen point).Y
+        )
+        fn beginListDrag sender args target = (
+            if not controlsReady or binding or root==undefined or not sender.Visible or not sender.Enabled do return false
+            if args.Button!=(dotNetClass "System.Windows.Forms.MouseButtons").Left do return false
+            stopListDrag()
+            dragStartY=gripScreenY sender args;dragStartHeight=target.height
+            dragList=target;dragGrip=sender;sender.Capture=true;true
+        )
+        fn moveListDrag sender args = (
+            if dragGrip!=sender or dragList==undefined or not sender.Capture do return false
+            if not controlsReady or binding or root==undefined or not sender.Visible do return stopListDrag()
+            local nextHeight=amin 900 (amax 42 (dragStartHeight+(gripScreenY sender args)-dragStartY))
+            if nextHeight!=dragList.height do (dragList.height=nextHeight;layout();true)
+            true
+        )
+        fn paintListGrip sender args = (
+            local pen=dotNetObject "System.Drawing.Pen" ((dotNetClass "System.Drawing.Color").FromArgb 135 135 135)
+            local center=(sender.ClientSize.Width/2) as integer
+            args.Graphics.DrawLine pen (center-10) 3 (center+10) 3
+            args.Graphics.DrawLine pen (center-10) 5 (center+10) 5
+            pen.Dispose()
+        )
+        fn setupGrips = (
+            for grip in #(diversityUI_strokesList_grip,diversityUI_strokeChoices_grip) do (
+                grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
+                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
+                grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
+                grip.TabStop=false
+            )
+            true
+        )
+        on diversityUI_strokesList_grip MouseDown sender args do beginListDrag sender args diversityUI_strokesList
+        on diversityUI_strokesList_grip MouseMove sender args do moveListDrag sender args
+        on diversityUI_strokesList_grip MouseUp sender args do (stopListDrag();true)
+        on diversityUI_strokesList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on diversityUI_strokesList_grip Paint sender args do paintListGrip sender args
+        on diversityUI_strokeChoices_grip MouseDown sender args do beginListDrag sender args diversityUI_strokeChoices
+        on diversityUI_strokeChoices_grip MouseMove sender args do moveListDrag sender args
+        on diversityUI_strokeChoices_grip MouseUp sender args do (stopListDrag();true)
+        on diversityUI_strokeChoices_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on diversityUI_strokeChoices_grip Paint sender args do paintListGrip sender args
+        fn fitPairField control available = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
+            for handle in control.hwnd do (
+                local data=windows.getHWNDData handle
+                if data[4]=="CustEdit" do (
+                    local rectangle=windows.getWindowPos handle,position=windows.screenToClient data[2] (arrow.x-fieldWidth) arrow.y
+                    windows.setWindowPos handle position.x position.y fieldWidth rectangle.h true
+                )
+            )
+            true
+        )
+        fn fitWidth control available = (
+            if isProperty control #width then control.width=available
+            else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
+                local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
+                if rectangle.w!=target do (
+                    local data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y target rectangle.h true
+                )
+            )
+            true
+        )
+        fn layout = (
+            local widthValue=amax 140 layoutUI_1.width,y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
+            rowControls=#(diversityUI_diversityRadio);show=(true and (true))
             for c in rowControls do c.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
@@ -1650,7 +1827,17 @@ fn CyrusLayerEditor_modelsUI_1 = (
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(diversityUI_sizeSpin);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==2))
+            rowControls=#(diversityUI_layoutHelp);show=(true and (true))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel diversityUI_layoutHelp 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(diversityUI_layoutHelp.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_sizeSpin);show=(true and (diversityUI_diversityRadio.state==2))
             for c in rowControls do c.visible=show
             diversityUI_sizeSpin_caption.visible=show
             if show do (
@@ -1662,17 +1849,7 @@ fn CyrusLayerEditor_modelsUI_1 = (
                 if not stackedCaption then (diversityUI_sizeSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_sizeSpin_caption.width=cellWidth-78) else (diversityUI_sizeSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_sizeSpin_caption.width=cellWidth);diversityUI_sizeSpin_caption.enabled=diversityUI_sizeSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(diversityUI_strokeTitle);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel diversityUI_strokeTitle 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(diversityUI_strokeTitle.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_divSeedSpin);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==2))
+            rowControls=#(diversityUI_divSeedSpin);show=(true and (diversityUI_diversityRadio.state==2))
             for c in rowControls do c.visible=show
             diversityUI_divSeedSpin_caption.visible=show
             if show do (
@@ -1684,7 +1861,17 @@ fn CyrusLayerEditor_modelsUI_1 = (
                 if not stackedCaption then (diversityUI_divSeedSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_divSeedSpin_caption.width=cellWidth-78) else (diversityUI_divSeedSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_divSeedSpin_caption.width=cellWidth);diversityUI_divSeedSpin_caption.enabled=diversityUI_divSeedSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(diversityUI_pathsDrop);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==3))
+            rowControls=#(diversityUI_groupHint);show=(true and (diversityUI_diversityRadio.state==2))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel diversityUI_groupHint 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(diversityUI_groupHint.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_pathsDrop);show=(true and (diversityUI_diversityRadio.state==3))
             for c in rowControls do c.visible=show
             diversityUI_pathsDrop_caption.visible=show
             if show do (
@@ -1696,7 +1883,44 @@ fn CyrusLayerEditor_modelsUI_1 = (
                 diversityUI_pathsDrop_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_pathsDrop_caption.width=cellWidth;diversityUI_pathsDrop_caption.enabled=diversityUI_pathsDrop.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(diversityUI_analyzerChannel);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==4))
+            rowControls=#(diversityUI_pickPath);show=(true and (diversityUI_diversityRadio.state==3))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/127.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_pickAnalyzer);show=(true and (diversityUI_diversityRadio.state==4))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/127.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_analyzerStatus);show=(true and (diversityUI_diversityRadio.state==4))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel diversityUI_analyzerStatus 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(diversityUI_analyzerStatus.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_selectAnalyzer,diversityUI_updateAnalyzer);show=(true and (diversityUI_diversityRadio.state==4))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/96))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_analyzerChannel);show=(true and (diversityUI_diversityRadio.state==4))
             for c in rowControls do c.visible=show
             diversityUI_analyzerChannel_caption.visible=show
             if show do (
@@ -1706,6 +1930,149 @@ fn CyrusLayerEditor_modelsUI_1 = (
                 rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 diversityUI_analyzerChannel_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_analyzerChannel_caption.width=cellWidth;diversityUI_analyzerChannel_caption.enabled=diversityUI_analyzerChannel.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_removePath);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/75.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_strokeTitle);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel diversityUI_strokeTitle 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(diversityUI_strokeTitle.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_strokesList);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            diversityUI_strokesList_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel diversityUI_strokesList_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(diversityUI_strokesList_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(diversityUI_strokesList.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                diversityUI_strokesList_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokesList_caption.width=cellWidth;diversityUI_strokesList_caption.enabled=diversityUI_strokesList.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_strokesList_grip);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=8+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_addOutside,diversityUI_addInside);show=(true and (diversityUI_diversityRadio.state==3 or (diversityUI_diversityRadio.state==4 and (diversityUI_analyzerChannel.selection==2 or diversityUI_analyzerChannel.selection==3))))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/75.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_removeStrokeButton);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/75.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_strokeWidth);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            diversityUI_strokeWidth_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/113.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel diversityUI_strokeWidth_caption 18 cellWidth
+                stackedCaption=cellWidth<109.2;captionHeight=amax 0 (if stackedCaption then (amax #(diversityUI_strokeWidth_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (diversityUI_strokeWidth_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_strokeWidth_caption.width=cellWidth-78) else (diversityUI_strokeWidth_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokeWidth_caption.width=cellWidth);diversityUI_strokeWidth_caption.enabled=diversityUI_strokeWidth.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_strokeMode);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(58))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_strokeChoices);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            diversityUI_strokeChoices_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel diversityUI_strokeChoices_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(diversityUI_strokeChoices_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(diversityUI_strokeChoices.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                diversityUI_strokeChoices_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokeChoices_caption.width=cellWidth;diversityUI_strokeChoices_caption.enabled=diversityUI_strokeChoices.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_strokeChoices_grip);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=8+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_strokeScaleMin,diversityUI_strokeScaleMax);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            diversityUI_strokeScaleMin_caption.visible=show;diversityUI_strokeScaleMax_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/134))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel diversityUI_strokeScaleMin_caption 18 cellWidth;fitLabel diversityUI_strokeScaleMax_caption 18 cellWidth
+                stackedCaption=cellWidth<130;captionHeight=amax 0 (if stackedCaption then (amax #(diversityUI_strokeScaleMin_caption.height,diversityUI_strokeScaleMax_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (diversityUI_strokeScaleMin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_strokeScaleMin_caption.width=cellWidth-78) else (diversityUI_strokeScaleMin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokeScaleMin_caption.width=cellWidth);diversityUI_strokeScaleMin_caption.enabled=diversityUI_strokeScaleMin.enabled;if not stackedCaption then (diversityUI_strokeScaleMax_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];diversityUI_strokeScaleMax_caption.width=cellWidth-78) else (diversityUI_strokeScaleMax_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];diversityUI_strokeScaleMax_caption.width=cellWidth);diversityUI_strokeScaleMax_caption.enabled=diversityUI_strokeScaleMax.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_refreshGroups);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/142.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_strokeHelp);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel diversityUI_strokeHelp 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(diversityUI_strokeHelp.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            rowControls=#(heading_0);show=(advancedToggle.checked and (true))
+            for c in rowControls do c.visible=show
+            if show do (
+                if y>6 do y+=4
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel heading_0 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(heading_0.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(diversityUI_roughSpin);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==2))
@@ -1732,24 +2099,6 @@ fn CyrusLayerEditor_modelsUI_1 = (
                 if not stackedCaption then (diversityUI_blurSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_blurSpin_caption.width=cellWidth-78) else (diversityUI_blurSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_blurSpin_caption.width=cellWidth);diversityUI_blurSpin_caption.enabled=diversityUI_blurSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(diversityUI_pickAnalyzer);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==4))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/127.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_pickPath);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==3))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/127.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
             rowControls=#(diversityUI_noiseSpin);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==2))
             for c in rowControls do c.visible=show
             diversityUI_noiseSpin_caption.visible=show
@@ -1762,46 +2111,6 @@ fn CyrusLayerEditor_modelsUI_1 = (
                 if not stackedCaption then (diversityUI_noiseSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_noiseSpin_caption.width=cellWidth-78) else (diversityUI_noiseSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_noiseSpin_caption.width=cellWidth);diversityUI_noiseSpin_caption.enabled=diversityUI_noiseSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(diversityUI_removePath);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/75.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_groupHint);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==2))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel diversityUI_groupHint 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(diversityUI_groupHint.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_strokesList);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            diversityUI_strokesList_caption.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel diversityUI_strokesList_caption 18 cellWidth
-                stackedCaption=false;captionHeight=amax (amax #(diversityUI_strokesList_caption.height)) (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(diversityUI_strokesList.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                diversityUI_strokesList_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokesList_caption.width=cellWidth;diversityUI_strokesList_caption.enabled=diversityUI_strokesList.enabled
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_strokesList_grip);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=8+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
             rowControls=#(diversityUI_fixedHint);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==2))
             for c in rowControls do c.visible=show
             if show do (
@@ -1809,118 +2118,6 @@ fn CyrusLayerEditor_modelsUI_1 = (
                 fitLabel diversityUI_fixedHint 18 cellWidth
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(diversityUI_fixedHint.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_addOutside);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==3 or (diversityUI_diversityRadio.state==4 and (diversityUI_analyzerChannel.selection==2 or diversityUI_analyzerChannel.selection==3))))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/75.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_addInside);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/70))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_removeStrokeButton);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/85.60000000000001))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_strokeWidth);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            diversityUI_strokeWidth_caption.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/113.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel diversityUI_strokeWidth_caption 18 cellWidth
-                stackedCaption=cellWidth<109.2;captionHeight=amax 0 (if stackedCaption then (amax #(diversityUI_strokeWidth_caption.height)) else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                if not stackedCaption then (diversityUI_strokeWidth_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_strokeWidth_caption.width=cellWidth-78) else (diversityUI_strokeWidth_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokeWidth_caption.width=cellWidth);diversityUI_strokeWidth_caption.enabled=diversityUI_strokeWidth.enabled
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_strokeMode);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(58))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_strokeChoices);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            diversityUI_strokeChoices_caption.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel diversityUI_strokeChoices_caption 18 cellWidth
-                stackedCaption=false;captionHeight=amax (amax #(diversityUI_strokeChoices_caption.height)) (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(diversityUI_strokeChoices.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                diversityUI_strokeChoices_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokeChoices_caption.width=cellWidth;diversityUI_strokeChoices_caption.enabled=diversityUI_strokeChoices.enabled
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_strokeChoices_grip);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=8+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_strokeScaleMin);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            diversityUI_strokeScaleMin_caption.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/134))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel diversityUI_strokeScaleMin_caption 18 cellWidth
-                stackedCaption=cellWidth<130;captionHeight=amax 0 (if stackedCaption then (amax #(diversityUI_strokeScaleMin_caption.height)) else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                if not stackedCaption then (diversityUI_strokeScaleMin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_strokeScaleMin_caption.width=cellWidth-78) else (diversityUI_strokeScaleMin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokeScaleMin_caption.width=cellWidth);diversityUI_strokeScaleMin_caption.enabled=diversityUI_strokeScaleMin.enabled
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_strokeScaleMax);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            diversityUI_strokeScaleMax_caption.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/134))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel diversityUI_strokeScaleMax_caption 18 cellWidth
-                stackedCaption=cellWidth<130;captionHeight=amax 0 (if stackedCaption then (amax #(diversityUI_strokeScaleMax_caption.height)) else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                if not stackedCaption then (diversityUI_strokeScaleMax_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_strokeScaleMax_caption.width=cellWidth-78) else (diversityUI_strokeScaleMax_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokeScaleMax_caption.width=cellWidth);diversityUI_strokeScaleMax_caption.enabled=diversityUI_strokeScaleMax.enabled
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_refreshGroups);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/142.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_strokeHelp);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel diversityUI_strokeHelp 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(diversityUI_strokeHelp.height))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
@@ -2125,7 +2322,7 @@ fn CyrusLayerEditor_modelsUI_1 = (
                 if not stackedCaption then (diversityUI_edgeRotZSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_edgeRotZSpin_caption.width=cellWidth-78) else (diversityUI_edgeRotZSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_edgeRotZSpin_caption.width=cellWidth);diversityUI_edgeRotZSpin_caption.enabled=diversityUI_edgeRotZSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            lastLayoutWidth=widthValue;modelsUI_1.height=y+4;syncColorLists();true
+            lastLayoutWidth=widthValue;layoutUI_1.height=y+4;true
         )
         fn bind layer = (
             if root==undefined do return false
@@ -2133,28 +2330,22 @@ fn CyrusLayerEditor_modelsUI_1 = (
             try (
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
-                sourceContainersUI_root=root;sourceContainersUI_owner=owner;sourceContainersUI_panel=panel;sourceContainersUI_controlsReady=controlsReady;sourceContainersUI_binding=binding
-            sourceUI_root=root;sourceUI_owner=owner;sourceUI_panel=panel;sourceUI_controlsReady=controlsReady;sourceUI_binding=binding
-            diversityUI_root=root;diversityUI_owner=owner;diversityUI_panel=panel;diversityUI_controlsReady=controlsReady;diversityUI_binding=binding
-            if owner!=undefined then (sourceContainersUI_bind (root.selectedPaintSet owner);) else (for c in #(sourceContainersUI_modeList,sourceContainersUI_containersList,sourceContainersUI_createContainer,sourceContainersUI_pickContainer,sourceContainersUI_removeContainer,sourceContainersUI_membershipInfo,sourceContainersUI_helpInfo) do c.enabled=false;sourceContainersUI_controlsReady=false)
-            sourceUI_detailsToggle.checked=true;if owner!=undefined then (sourceUI_bind (root.selectedPaintSet owner);) else (for c in #(sourceUI_sourceName,sourceUI_idColor,sourceUI_plantList,sourceUI_selectFromScene,sourceUI_addPlant,sourceUI_addSelected,sourceUI_removePlant,sourceUI_selectPlant,sourceUI_addPoint,sourceUI_addEmpty,sourceUI_replacePoint,sourceUI_groupHeading,sourceUI_existingGroups,sourceUI_groupColor,sourceUI_applyColor,sourceUI_colorHelp,sourceUI_weightSpin,sourceUI_weightHelp,sourceUI_sourceZSpin,sourceUI_sourceScaleSpin,sourceUI_sourceTransformHelp,sourceUI_radiusSourceSpin,sourceUI_followRadiusCheck,sourceUI_showRadiusCheck,sourceUI_forwardAxis,sourceUI_detailsToggle) do c.enabled=false;sourceUI_controlsReady=false)
-            if owner!=undefined then (diversityUI_bind owner;) else (for c in #(diversityUI_diversityRadio,diversityUI_sizeSpin,diversityUI_divSeedSpin,diversityUI_roughSpin,diversityUI_blurSpin,diversityUI_noiseSpin,diversityUI_groupHint,diversityUI_fixedHint,diversityUI_strokeTitle,diversityUI_pathsDrop,diversityUI_analyzerChannel,diversityUI_pickAnalyzer,diversityUI_pickPath,diversityUI_removePath,diversityUI_strokesList,diversityUI_addOutside,diversityUI_addInside,diversityUI_removeStrokeButton,diversityUI_strokeWidth,diversityUI_strokeMode,diversityUI_strokeChoices,diversityUI_strokeScaleMin,diversityUI_strokeScaleMax,diversityUI_refreshGroups,diversityUI_strokeHelp,diversityUI_edgeOffsetSpin,diversityUI_edgeAlongSpin,diversityUI_edgeAcrossSpin,diversityUI_edgeRowHelp,diversityUI_keepCornerCheck,diversityUI_cornerAngleSpin,diversityUI_cornerCountSpin,diversityUI_cornerHelp,diversityUI_edgeRotXSpin,diversityUI_edgeRotYSpin,diversityUI_edgeRotZSpin,diversityUI_streetStartSpin,diversityUI_streetEndSpin,diversityUI_centerStreetSpin,diversityUI_streetLayoutHelp,diversityUI_faceOutCheck,diversityUI_cornerRadiusSpin,diversityUI_straightStreet) do c.enabled=false;diversityUI_controlsReady=false)
+                diversityUI_root=root;diversityUI_owner=owner;diversityUI_panel=panel;diversityUI_controlsReady=controlsReady;diversityUI_binding=binding
+            if owner!=undefined then (diversityUI_bind owner;) else (for c in #(diversityUI_diversityRadio,diversityUI_layoutHelp,diversityUI_analyzerStatus,diversityUI_selectAnalyzer,diversityUI_updateAnalyzer,diversityUI_sizeSpin,diversityUI_divSeedSpin,diversityUI_roughSpin,diversityUI_blurSpin,diversityUI_noiseSpin,diversityUI_groupHint,diversityUI_fixedHint,diversityUI_strokeTitle,diversityUI_pathsDrop,diversityUI_analyzerChannel,diversityUI_pickAnalyzer,diversityUI_pickPath,diversityUI_removePath,diversityUI_strokesList,diversityUI_addOutside,diversityUI_addInside,diversityUI_removeStrokeButton,diversityUI_strokeWidth,diversityUI_strokeMode,diversityUI_strokeChoices,diversityUI_strokeScaleMin,diversityUI_strokeScaleMax,diversityUI_refreshGroups,diversityUI_strokeHelp,diversityUI_edgeOffsetSpin,diversityUI_edgeAlongSpin,diversityUI_edgeAcrossSpin,diversityUI_edgeRowHelp,diversityUI_keepCornerCheck,diversityUI_cornerAngleSpin,diversityUI_cornerCountSpin,diversityUI_cornerHelp,diversityUI_edgeRotXSpin,diversityUI_edgeRotYSpin,diversityUI_edgeRotZSpin,diversityUI_streetStartSpin,diversityUI_streetEndSpin,diversityUI_centerStreetSpin,diversityUI_streetLayoutHelp,diversityUI_faceOutCheck,diversityUI_cornerRadiusSpin,diversityUI_straightStreet) do c.enabled=false;diversityUI_controlsReady=false)
                 setupGrips();controlsReady=true;binding=false;layout();true
             )catch(binding=false;controlsReady=false;throw())
         )
 
-        on propertiesToggle changed value do if controlsReady and not binding and root!=undefined and true do ((layout();true)
-            if controlsReady and root!=undefined do layout()
-        )
+
         on advancedToggle changed value do if controlsReady and not binding and root!=undefined and true do ((layout();true)
             if controlsReady and root!=undefined do layout()
         )
-        on modelsUI_1 resized size do if controlsReady and not binding and (amax 140 modelsUI_1.width)!=lastLayoutWidth do layout()
-        on modelsUI_1 open do (root=CyrusLayerUIRoot;owner=CyrusLayerUIOwner;panel=CyrusLayerUIPanel;bind owner)
-        on modelsUI_1 close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;sourceContainersUI_controlsReady=false;sourceContainersUI_root=undefined;sourceContainersUI_owner=undefined;sourceUI_controlsReady=false;sourceUI_root=undefined;sourceUI_owner=undefined;sourceUI_obj=undefined;diversityUI_controlsReady=false;diversityUI_root=undefined;diversityUI_owner=undefined;diversityUI_obj=undefined)
-        on modelsUI_1 rolledUp state do (if controlsReady do bind owner)
+        on layoutUI_1 resized size do if controlsReady and not binding and (amax 140 layoutUI_1.width)!=lastLayoutWidth do layout()
+        on layoutUI_1 open do (root=CyrusLayerUIRoot;owner=CyrusLayerUIOwner;panel=CyrusLayerUIPanel;bind owner)
+        on layoutUI_1 close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;diversityUI_controlsReady=false;diversityUI_root=undefined;diversityUI_owner=undefined;diversityUI_obj=undefined)
+        on layoutUI_1 rolledUp state do (if controlsReady do bind owner)
     )
-    modelsUI_1
+    layoutUI_1
 )
 
 fn CyrusLayerEditor_populationUI_1 = (
@@ -2316,6 +2507,17 @@ fn CyrusLayerEditor_populationUI_1 = (
             true
         )
 
+        fn fitPairField control available = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
+            for handle in control.hwnd do (
+                local data=windows.getHWNDData handle
+                if data[4]=="CustEdit" do (
+                    local rectangle=windows.getWindowPos handle,position=windows.screenToClient data[2] (arrow.x-fieldWidth) arrow.y
+                    windows.setWindowPos handle position.x position.y fieldWidth rectangle.h true
+                )
+            )
+            true
+        )
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -2385,7 +2587,7 @@ fn CyrusLayerEditor_populationUI_1 = (
                 if not stackedCaption then (distributionUI_seedSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];distributionUI_seedSpin_caption.width=cellWidth-78) else (distributionUI_seedSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_seedSpin_caption.width=cellWidth);distributionUI_seedSpin_caption.enabled=distributionUI_seedSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
             rowControls=#(heading_1);show=(advancedToggle.checked and (true))
             for c in rowControls do c.visible=show
             if show do (
@@ -2770,6 +2972,17 @@ fn CyrusLayerEditor_coverageUI_1 = (
             true
         )
 
+        fn fitPairField control available = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
+            for handle in control.hwnd do (
+                local data=windows.getHWNDData handle
+                if data[4]=="CustEdit" do (
+                    local rectangle=windows.getWindowPos handle,position=windows.screenToClient data[2] (arrow.x-fieldWidth) arrow.y
+                    windows.setWindowPos handle position.x position.y fieldWidth rectangle.h true
+                )
+            )
+            true
+        )
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -2933,7 +3146,7 @@ fn CyrusLayerEditor_coverageUI_1 = (
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
             rowControls=#(heading_0);show=(advancedToggle.checked and (true))
             for c in rowControls do c.visible=show
             if show do (
@@ -3298,6 +3511,17 @@ fn CyrusLayerEditor_areasUI_1 = (
         on areaUI_areaList_grip MouseUp sender args do (stopListDrag();true)
         on areaUI_areaList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
         on areaUI_areaList_grip Paint sender args do paintListGrip sender args
+        fn fitPairField control available = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
+            for handle in control.hwnd do (
+                local data=windows.getHWNDData handle
+                if data[4]=="CustEdit" do (
+                    local rectangle=windows.getWindowPos handle,position=windows.screenToClient data[2] (arrow.x-fieldWidth) arrow.y
+                    windows.setWindowPos handle position.x position.y fieldWidth rectangle.h true
+                )
+            )
+            true
+        )
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -3381,7 +3605,7 @@ fn CyrusLayerEditor_areasUI_1 = (
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
             rowControls=#(heading_1);show=(advancedToggle.checked and (true))
             for c in rowControls do c.visible=show
             if show do (
@@ -3678,54 +3902,72 @@ fn CyrusLayerEditor_transformsUI_1 = (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
         local layout,lastLayoutWidth=0
         label randomUI_rotTitle "Rotation (degrees)" pos:[8,8] width:((transformsUI_1.width-16-((amin 1 (amax 1 (floor ((transformsUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI_1.width-8)/58)))))
-        label randomUI_rotMinTitle "Min" pos:[8,8] width:((transformsUI_1.width-16-((amin 2 (amax 1 (floor ((transformsUI_1.width-8)/58))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI_1.width-8)/58)))))
-        label randomUI_rotMaxTitle "Max" pos:[8,8] width:((transformsUI_1.width-16-((amin 2 (amax 1 (floor ((transformsUI_1.width-8)/58))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI_1.width-8)/58)))))
+        label randomUI_rotMinTitle "Min" pos:[8,8] width:((transformsUI_1.width-16-((amin 1 (amax 1 (floor ((transformsUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI_1.width-8)/58)))))
+        label randomUI_rotMaxTitle "Max" pos:[8,8] width:((transformsUI_1.width-16-((amin 1 (amax 1 (floor ((transformsUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI_1.width-8)/58)))))
         label randomUI_rotXLabel "X" pos:[8,8] width:12
-        spinner randomUI_rotXMinSpin "" range:[-360,360,0]  pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 1 (amax 1 (floor ((transformsUI_1.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI_1.width-8)/74)))))
-        spinner randomUI_rotXMaxSpin "" range:[-360,360,0]  pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 1 (amax 1 (floor ((transformsUI_1.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI_1.width-8)/74)))))
+        spinner randomUI_rotXMinSpin "" range:[-360,360,0]  pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108)))))
+        label randomUI_rotXMinSpin_caption "X Min" pos:[6,6] width:(transformsUI_1.width-12) height:18
+        spinner randomUI_rotXMaxSpin "" range:[-360,360,0]  pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108)))))
+        label randomUI_rotXMaxSpin_caption "X Max" pos:[6,6] width:(transformsUI_1.width-12) height:18
         label randomUI_rotYLabel "Y" pos:[8,8] width:12
-        spinner randomUI_rotYMinSpin "" range:[-360,360,0]  pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 1 (amax 1 (floor ((transformsUI_1.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI_1.width-8)/74)))))
-        spinner randomUI_rotYMaxSpin "" range:[-360,360,0]  pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 1 (amax 1 (floor ((transformsUI_1.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI_1.width-8)/74)))))
+        spinner randomUI_rotYMinSpin "" range:[-360,360,0]  pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108)))))
+        label randomUI_rotYMinSpin_caption "Y Min" pos:[6,6] width:(transformsUI_1.width-12) height:18
+        spinner randomUI_rotYMaxSpin "" range:[-360,360,0]  pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108)))))
+        label randomUI_rotYMaxSpin_caption "Y Max" pos:[6,6] width:(transformsUI_1.width-12) height:18
         label randomUI_rotZLabel "Z" pos:[8,8] width:12
-        spinner randomUI_rotZMinSpin "" range:[-360,360,0]  pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-(3-1)*4)/3)
-        spinner randomUI_rotZMaxSpin "" range:[-360,360,360]  pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-(3-1)*4)/3)
+        spinner randomUI_rotZMinSpin "" range:[-360,360,0]  pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108)))))
+        label randomUI_rotZMinSpin_caption "Z Min" pos:[6,6] width:(transformsUI_1.width-12) height:18
+        spinner randomUI_rotZMaxSpin "" range:[-360,360,360]  pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108)))))
+        label randomUI_rotZMaxSpin_caption "Z Max" pos:[6,6] width:(transformsUI_1.width-12) height:18
         label randomUI_sclTitle "Scale (multiplier)" pos:[8,8] width:((transformsUI_1.width-16-((amin 1 (amax 1 (floor ((transformsUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI_1.width-8)/58)))))
         label randomUI_sclMinTitle "Min" pos:[8,8] width:((transformsUI_1.width-16-((amin 1 (amax 1 (floor ((transformsUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI_1.width-8)/58)))))
         label randomUI_sclMaxTitle "Max" pos:[8,8] width:((transformsUI_1.width-16-((amin 1 (amax 1 (floor ((transformsUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI_1.width-8)/58)))))
         label randomUI_sclXLabel "X" pos:[8,8] width:12
-        spinner randomUI_sclXMinSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 1 (amax 1 (floor ((transformsUI_1.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI_1.width-8)/74)))))
-        spinner randomUI_sclXMaxSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 1 (amax 1 (floor ((transformsUI_1.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI_1.width-8)/74)))))
+        spinner randomUI_sclXMinSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108)))))
+        label randomUI_sclXMinSpin_caption "X Min" pos:[6,6] width:(transformsUI_1.width-12) height:18
+        spinner randomUI_sclXMaxSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108)))))
+        label randomUI_sclXMaxSpin_caption "X Max" pos:[6,6] width:(transformsUI_1.width-12) height:18
         label randomUI_sclYLabel "Y" pos:[8,8] width:12
-        spinner randomUI_sclYMinSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 1 (amax 1 (floor ((transformsUI_1.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI_1.width-8)/74)))))
-        spinner randomUI_sclYMaxSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 1 (amax 1 (floor ((transformsUI_1.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI_1.width-8)/74)))))
+        spinner randomUI_sclYMinSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108)))))
+        label randomUI_sclYMinSpin_caption "Y Min" pos:[6,6] width:(transformsUI_1.width-12) height:18
+        spinner randomUI_sclYMaxSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108)))))
+        label randomUI_sclYMaxSpin_caption "Y Max" pos:[6,6] width:(transformsUI_1.width-12) height:18
         label randomUI_sclZLabel "Z" pos:[8,8] width:12
-        spinner randomUI_sclZMinSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 1 (amax 1 (floor ((transformsUI_1.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI_1.width-8)/74)))))
-        spinner randomUI_sclZMaxSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 1 (amax 1 (floor ((transformsUI_1.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI_1.width-8)/74)))))
+        spinner randomUI_sclZMinSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108)))))
+        label randomUI_sclZMinSpin_caption "Z Min" pos:[6,6] width:(transformsUI_1.width-12) height:18
+        spinner randomUI_sclZMaxSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108)))))
+        label randomUI_sclZMaxSpin_caption "Z Max" pos:[6,6] width:(transformsUI_1.width-12) height:18
         label randomUI_wholeTitle "Whole Scale (uniform)" pos:[8,8] width:((transformsUI_1.width-16-((amin 1 (amax 1 (floor ((transformsUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI_1.width-8)/58)))))
-        label randomUI_wholeMinTitle "Min" pos:[8,8] width:((transformsUI_1.width-16-((amin 2 (amax 1 (floor ((transformsUI_1.width-8)/58))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI_1.width-8)/58)))))
-        label randomUI_wholeMaxTitle "Max" pos:[8,8] width:((transformsUI_1.width-16-((amin 2 (amax 1 (floor ((transformsUI_1.width-8)/58))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI_1.width-8)/58)))))
-        spinner randomUI_wholeMinSpin "" range:[0.001,1000,1] scale:0.01 pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 2 (amax 1 (floor ((transformsUI_1.width-8)/74))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI_1.width-8)/74)))))
-        spinner randomUI_wholeMaxSpin "" range:[0.001,1000,1] scale:0.01 pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 2 (amax 1 (floor ((transformsUI_1.width-8)/74))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI_1.width-8)/74)))))
+        label randomUI_wholeMinTitle "Min" pos:[8,8] width:((transformsUI_1.width-16-((amin 1 (amax 1 (floor ((transformsUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI_1.width-8)/58)))))
+        label randomUI_wholeMaxTitle "Max" pos:[8,8] width:((transformsUI_1.width-16-((amin 1 (amax 1 (floor ((transformsUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI_1.width-8)/58)))))
+        spinner randomUI_wholeMinSpin "" range:[0.001,1000,1] scale:0.01 pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 2 (amax 1 (floor ((transformsUI_1.width-8)/97.6))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI_1.width-8)/97.6)))))
+        label randomUI_wholeMinSpin_caption "Min" pos:[6,6] width:(transformsUI_1.width-12) height:18
+        spinner randomUI_wholeMaxSpin "" range:[0.001,1000,1] scale:0.01 pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 2 (amax 1 (floor ((transformsUI_1.width-8)/97.6))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI_1.width-8)/97.6)))))
+        label randomUI_wholeMaxSpin_caption "Max" pos:[6,6] width:(transformsUI_1.width-12) height:18
         label randomUI_movTitle "Movement (world units)" pos:[8,8] width:((transformsUI_1.width-16-((amin 1 (amax 1 (floor ((transformsUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI_1.width-8)/58)))))
         label randomUI_movMinTitle "Min" pos:[8,8] width:((transformsUI_1.width-16-((amin 1 (amax 1 (floor ((transformsUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI_1.width-8)/58)))))
         label randomUI_movMaxTitle "Max" pos:[8,8] width:((transformsUI_1.width-16-((amin 1 (amax 1 (floor ((transformsUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI_1.width-8)/58)))))
         label randomUI_movXLabel "X" pos:[8,8] width:12
-        spinner randomUI_movXMinSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 1 (amax 1 (floor ((transformsUI_1.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI_1.width-8)/74)))))
-        spinner randomUI_movXMaxSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 1 (amax 1 (floor ((transformsUI_1.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI_1.width-8)/74)))))
+        spinner randomUI_movXMinSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108)))))
+        label randomUI_movXMinSpin_caption "X Min" pos:[6,6] width:(transformsUI_1.width-12) height:18
+        spinner randomUI_movXMaxSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108)))))
+        label randomUI_movXMaxSpin_caption "X Max" pos:[6,6] width:(transformsUI_1.width-12) height:18
         label randomUI_movYLabel "Y" pos:[8,8] width:12
-        spinner randomUI_movYMinSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 1 (amax 1 (floor ((transformsUI_1.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI_1.width-8)/74)))))
-        spinner randomUI_movYMaxSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 1 (amax 1 (floor ((transformsUI_1.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI_1.width-8)/74)))))
+        spinner randomUI_movYMinSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108)))))
+        label randomUI_movYMinSpin_caption "Y Min" pos:[6,6] width:(transformsUI_1.width-12) height:18
+        spinner randomUI_movYMaxSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108)))))
+        label randomUI_movYMaxSpin_caption "Y Max" pos:[6,6] width:(transformsUI_1.width-12) height:18
         label randomUI_movZLabel "Z" pos:[8,8] width:12
-        spinner randomUI_movZMinSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 1 (amax 1 (floor ((transformsUI_1.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI_1.width-8)/74)))))
-        spinner randomUI_movZMaxSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 1 (amax 1 (floor ((transformsUI_1.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI_1.width-8)/74)))))
+        spinner randomUI_movZMinSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108)))))
+        label randomUI_movZMinSpin_caption "Z Min" pos:[6,6] width:(transformsUI_1.width-12) height:18
+        spinner randomUI_movZMaxSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI_1.width-38)/2) width:((transformsUI_1.width-16-((amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI_1.width-8)/108)))))
+        label randomUI_movZMaxSpin_caption "Z Max" pos:[6,6] width:(transformsUI_1.width-12) height:18
         checkbox randomUI_projectCheck "Keep on surface" pos:[8,8] width:((transformsUI_1.width-16-((amin 2 (amax 1 (floor ((transformsUI_1.width-8)/104))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI_1.width-8)/104))))) tooltip:"Project random movement back onto the receiving surface."
         checkbox randomUI_alignCheck "Align to normal" pos:[8,8] width:((transformsUI_1.width-16-((amin 2 (amax 1 (floor ((transformsUI_1.width-8)/104))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI_1.width-8)/104))))) tooltip:"Align instances to the receiving surface normal."
         button randomUI_resetRotation "Reset rotation" pos:[8,8] width:((transformsUI_1.width-16-((amin 1 (amax 1 (floor ((transformsUI_1.width-8)/90.8))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI_1.width-8)/90.8))))) height:22 tooltip:"Reset only this layer's random rotation limits. Undo is available."
         button randomUI_resetScale "Reset XYZ scale" pos:[8,8] width:((transformsUI_1.width-16-((amin 1 (amax 1 (floor ((transformsUI_1.width-8)/96))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI_1.width-8)/96))))) height:22 tooltip:"Reset only this layer's separate X, Y and Z scale limits."
         button randomUI_resetWholeScale "Reset whole scale" pos:[8,8] width:((transformsUI_1.width-16-((amin 1 (amax 1 (floor ((transformsUI_1.width-8)/106.4))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI_1.width-8)/106.4))))) height:22 tooltip:"Reset only this layer's uniform scale multiplier."
         button randomUI_resetMovement "Reset movement" pos:[8,8] width:((transformsUI_1.width-16-((amin 1 (amax 1 (floor ((transformsUI_1.width-8)/90.8))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI_1.width-8)/90.8))))) height:22 tooltip:"Reset only this layer's random translation limits."
-        label heading_0 "Transforms - layer" pos:[6,6] width:(transformsUI_1.width-12) height:18
-        label heading_1 "Per-axis scale and movement" pos:[6,6] width:(transformsUI_1.width-12) height:18
         checkbutton advancedToggle "Advanced" pos:[6,6] width:(transformsUI_1.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
         local randomUI_bodyHeight=0
         local randomUI_controlsReady=false
@@ -3887,6 +4129,17 @@ fn CyrusLayerEditor_transformsUI_1 = (
             true
         )
 
+        fn fitPairField control available = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
+            for handle in control.hwnd do (
+                local data=windows.getHWNDData handle
+                if data[4]=="CustEdit" do (
+                    local rectangle=windows.getWindowPos handle,position=windows.screenToClient data[2] (arrow.x-fieldWidth) arrow.y
+                    windows.setWindowPos handle position.x position.y fieldWidth rectangle.h true
+                )
+            )
+            true
+        )
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -3900,17 +4153,7 @@ fn CyrusLayerEditor_transformsUI_1 = (
         )
         fn layout = (
             local widthValue=amax 140 transformsUI_1.width,y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
-            rowControls=#(heading_0);show=(true and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                if y>6 do y+=4
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel heading_0 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(heading_0.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
+            randomUI_rotMinTitle.visible=false;randomUI_rotMaxTitle.visible=false;randomUI_rotXLabel.visible=false;randomUI_rotYLabel.visible=false;randomUI_rotZLabel.visible=false;randomUI_sclMinTitle.visible=false;randomUI_sclMaxTitle.visible=false;randomUI_sclXLabel.visible=false;randomUI_sclYLabel.visible=false;randomUI_sclZLabel.visible=false;randomUI_wholeMinTitle.visible=false;randomUI_wholeMaxTitle.visible=false;randomUI_movMinTitle.visible=false;randomUI_movMaxTitle.visible=false;randomUI_movXLabel.visible=false;randomUI_movYLabel.visible=false;randomUI_movZLabel.visible=false
             rowControls=#(randomUI_rotTitle);show=(true and (true))
             for c in rowControls do c.visible=show
             if show do (
@@ -3921,25 +4164,111 @@ fn CyrusLayerEditor_transformsUI_1 = (
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(randomUI_rotMinTitle,randomUI_rotMaxTitle);show=(true and (true))
+            rowControls=#(randomUI_rotXMinSpin,randomUI_rotXMaxSpin);show=(true and (true))
             for c in rowControls do c.visible=show
+            randomUI_rotXMinSpin_caption.visible=show;randomUI_rotXMaxSpin_caption.visible=show
             if show do (
                 columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_rotMinTitle 18 cellWidth;fitLabel randomUI_rotMaxTitle 18 cellWidth
+                fitLabel randomUI_rotXMinSpin_caption 18 cellWidth;fitLabel randomUI_rotXMaxSpin_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_rotXMinSpin_caption.height,randomUI_rotXMaxSpin_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                for c in rowControls do fitPairField c cellWidth
+                if not stackedCaption then (randomUI_rotXMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_rotXMinSpin_caption.width=32) else (randomUI_rotXMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_rotXMinSpin_caption.width=cellWidth);randomUI_rotXMinSpin_caption.enabled=randomUI_rotXMinSpin.enabled;if not stackedCaption then (randomUI_rotXMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_rotXMaxSpin_caption.width=32) else (randomUI_rotXMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_rotXMaxSpin_caption.width=cellWidth);randomUI_rotXMaxSpin_caption.enabled=randomUI_rotXMaxSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_rotYMinSpin,randomUI_rotYMaxSpin);show=(true and (true))
+            for c in rowControls do c.visible=show
+            randomUI_rotYMinSpin_caption.visible=show;randomUI_rotYMaxSpin_caption.visible=show
+            if show do (
+                columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel randomUI_rotYMinSpin_caption 18 cellWidth;fitLabel randomUI_rotYMaxSpin_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_rotYMinSpin_caption.height,randomUI_rotYMaxSpin_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                for c in rowControls do fitPairField c cellWidth
+                if not stackedCaption then (randomUI_rotYMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_rotYMinSpin_caption.width=32) else (randomUI_rotYMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_rotYMinSpin_caption.width=cellWidth);randomUI_rotYMinSpin_caption.enabled=randomUI_rotYMinSpin.enabled;if not stackedCaption then (randomUI_rotYMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_rotYMaxSpin_caption.width=32) else (randomUI_rotYMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_rotYMaxSpin_caption.width=cellWidth);randomUI_rotYMaxSpin_caption.enabled=randomUI_rotYMaxSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_rotZMinSpin,randomUI_rotZMaxSpin);show=(true and (true))
+            for c in rowControls do c.visible=show
+            randomUI_rotZMinSpin_caption.visible=show;randomUI_rotZMaxSpin_caption.visible=show
+            if show do (
+                columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel randomUI_rotZMinSpin_caption 18 cellWidth;fitLabel randomUI_rotZMaxSpin_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_rotZMinSpin_caption.height,randomUI_rotZMaxSpin_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                for c in rowControls do fitPairField c cellWidth
+                if not stackedCaption then (randomUI_rotZMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_rotZMinSpin_caption.width=32) else (randomUI_rotZMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_rotZMinSpin_caption.width=cellWidth);randomUI_rotZMinSpin_caption.enabled=randomUI_rotZMinSpin.enabled;if not stackedCaption then (randomUI_rotZMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_rotZMaxSpin_caption.width=32) else (randomUI_rotZMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_rotZMaxSpin_caption.width=cellWidth);randomUI_rotZMaxSpin_caption.enabled=randomUI_rotZMaxSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_resetRotation);show=(true and (true))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/90.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_rotMinTitle.height,randomUI_rotMaxTitle.height))+2+captionHeight
+                rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(randomUI_rotZLabel,randomUI_rotZMinSpin,randomUI_rotZMaxSpin);show=(true and (true))
+            rowControls=#(randomUI_sclTitle);show=(true and (true))
             for c in rowControls do c.visible=show
             if show do (
-                columns=3;cellWidth=(widthValue-38)/2
-                fitLabel randomUI_rotZLabel 18 cellWidth
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel randomUI_sclTitle 18 cellWidth
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_rotZLabel.height,22,22))+2+captionHeight
-                rowControls[1].pos=[6,y];rowControls[1].width=18;for i=2 to 3 do (rowControls[i].pos=[28+(i-2)*(cellWidth+4)+cellWidth-12,y];fitWidth rowControls[i] cellWidth)
-                y+=rowHeight
+                rowHeight=(amax #(randomUI_sclTitle.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_sclXMinSpin,randomUI_sclXMaxSpin);show=(true and (true))
+            for c in rowControls do c.visible=show
+            randomUI_sclXMinSpin_caption.visible=show;randomUI_sclXMaxSpin_caption.visible=show
+            if show do (
+                columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel randomUI_sclXMinSpin_caption 18 cellWidth;fitLabel randomUI_sclXMaxSpin_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_sclXMinSpin_caption.height,randomUI_sclXMaxSpin_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                for c in rowControls do fitPairField c cellWidth
+                if not stackedCaption then (randomUI_sclXMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_sclXMinSpin_caption.width=32) else (randomUI_sclXMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_sclXMinSpin_caption.width=cellWidth);randomUI_sclXMinSpin_caption.enabled=randomUI_sclXMinSpin.enabled;if not stackedCaption then (randomUI_sclXMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_sclXMaxSpin_caption.width=32) else (randomUI_sclXMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_sclXMaxSpin_caption.width=cellWidth);randomUI_sclXMaxSpin_caption.enabled=randomUI_sclXMaxSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_sclYMinSpin,randomUI_sclYMaxSpin);show=(true and (true))
+            for c in rowControls do c.visible=show
+            randomUI_sclYMinSpin_caption.visible=show;randomUI_sclYMaxSpin_caption.visible=show
+            if show do (
+                columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel randomUI_sclYMinSpin_caption 18 cellWidth;fitLabel randomUI_sclYMaxSpin_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_sclYMinSpin_caption.height,randomUI_sclYMaxSpin_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                for c in rowControls do fitPairField c cellWidth
+                if not stackedCaption then (randomUI_sclYMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_sclYMinSpin_caption.width=32) else (randomUI_sclYMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_sclYMinSpin_caption.width=cellWidth);randomUI_sclYMinSpin_caption.enabled=randomUI_sclYMinSpin.enabled;if not stackedCaption then (randomUI_sclYMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_sclYMaxSpin_caption.width=32) else (randomUI_sclYMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_sclYMaxSpin_caption.width=cellWidth);randomUI_sclYMaxSpin_caption.enabled=randomUI_sclYMaxSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_sclZMinSpin,randomUI_sclZMaxSpin);show=(true and (true))
+            for c in rowControls do c.visible=show
+            randomUI_sclZMinSpin_caption.visible=show;randomUI_sclZMaxSpin_caption.visible=show
+            if show do (
+                columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel randomUI_sclZMinSpin_caption 18 cellWidth;fitLabel randomUI_sclZMaxSpin_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_sclZMinSpin_caption.height,randomUI_sclZMaxSpin_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                for c in rowControls do fitPairField c cellWidth
+                if not stackedCaption then (randomUI_sclZMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_sclZMinSpin_caption.width=32) else (randomUI_sclZMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_sclZMinSpin_caption.width=cellWidth);randomUI_sclZMinSpin_caption.enabled=randomUI_sclZMinSpin.enabled;if not stackedCaption then (randomUI_sclZMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_sclZMaxSpin_caption.width=32) else (randomUI_sclZMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_sclZMaxSpin_caption.width=cellWidth);randomUI_sclZMaxSpin_caption.enabled=randomUI_sclZMaxSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_resetScale);show=(true and (true))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/96))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(randomUI_wholeTitle);show=(true and (true))
             for c in rowControls do c.visible=show
@@ -3951,22 +4280,83 @@ fn CyrusLayerEditor_transformsUI_1 = (
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(randomUI_wholeMinTitle,randomUI_wholeMaxTitle);show=(true and (true))
+            rowControls=#(randomUI_wholeMinSpin,randomUI_wholeMaxSpin);show=(true and (true))
             for c in rowControls do c.visible=show
+            randomUI_wholeMinSpin_caption.visible=show;randomUI_wholeMaxSpin_caption.visible=show
             if show do (
                 columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_wholeMinTitle 18 cellWidth;fitLabel randomUI_wholeMaxTitle 18 cellWidth
+                fitLabel randomUI_wholeMinSpin_caption 18 cellWidth;fitLabel randomUI_wholeMaxSpin_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_wholeMinSpin_caption.height,randomUI_wholeMaxSpin_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                for c in rowControls do fitPairField c cellWidth
+                if not stackedCaption then (randomUI_wholeMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_wholeMinSpin_caption.width=32) else (randomUI_wholeMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_wholeMinSpin_caption.width=cellWidth);randomUI_wholeMinSpin_caption.enabled=randomUI_wholeMinSpin.enabled;if not stackedCaption then (randomUI_wholeMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_wholeMaxSpin_caption.width=32) else (randomUI_wholeMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_wholeMaxSpin_caption.width=cellWidth);randomUI_wholeMaxSpin_caption.enabled=randomUI_wholeMaxSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_resetWholeScale);show=(true and (true))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/106.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_wholeMinTitle.height,randomUI_wholeMaxTitle.height))+2+captionHeight
+                rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(randomUI_wholeMinSpin,randomUI_wholeMaxSpin);show=(true and (true))
+            rowControls=#(randomUI_movTitle);show=(true and (true))
             for c in rowControls do c.visible=show
             if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel randomUI_movTitle 18 cellWidth
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(randomUI_movTitle.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_movXMinSpin,randomUI_movXMaxSpin);show=(true and (true))
+            for c in rowControls do c.visible=show
+            randomUI_movXMinSpin_caption.visible=show;randomUI_movXMaxSpin_caption.visible=show
+            if show do (
+                columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel randomUI_movXMinSpin_caption 18 cellWidth;fitLabel randomUI_movXMaxSpin_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_movXMinSpin_caption.height,randomUI_movXMaxSpin_caption.height)) else 0)
                 rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                for c in rowControls do fitPairField c cellWidth
+                if not stackedCaption then (randomUI_movXMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_movXMinSpin_caption.width=32) else (randomUI_movXMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_movXMinSpin_caption.width=cellWidth);randomUI_movXMinSpin_caption.enabled=randomUI_movXMinSpin.enabled;if not stackedCaption then (randomUI_movXMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_movXMaxSpin_caption.width=32) else (randomUI_movXMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_movXMaxSpin_caption.width=cellWidth);randomUI_movXMaxSpin_caption.enabled=randomUI_movXMaxSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_movYMinSpin,randomUI_movYMaxSpin);show=(true and (true))
+            for c in rowControls do c.visible=show
+            randomUI_movYMinSpin_caption.visible=show;randomUI_movYMaxSpin_caption.visible=show
+            if show do (
+                columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel randomUI_movYMinSpin_caption 18 cellWidth;fitLabel randomUI_movYMaxSpin_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_movYMinSpin_caption.height,randomUI_movYMaxSpin_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                for c in rowControls do fitPairField c cellWidth
+                if not stackedCaption then (randomUI_movYMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_movYMinSpin_caption.width=32) else (randomUI_movYMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_movYMinSpin_caption.width=cellWidth);randomUI_movYMinSpin_caption.enabled=randomUI_movYMinSpin.enabled;if not stackedCaption then (randomUI_movYMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_movYMaxSpin_caption.width=32) else (randomUI_movYMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_movYMaxSpin_caption.width=cellWidth);randomUI_movYMaxSpin_caption.enabled=randomUI_movYMaxSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_movZMinSpin,randomUI_movZMaxSpin);show=(true and (true))
+            for c in rowControls do c.visible=show
+            randomUI_movZMinSpin_caption.visible=show;randomUI_movZMaxSpin_caption.visible=show
+            if show do (
+                columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel randomUI_movZMinSpin_caption 18 cellWidth;fitLabel randomUI_movZMaxSpin_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_movZMinSpin_caption.height,randomUI_movZMaxSpin_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                for c in rowControls do fitPairField c cellWidth
+                if not stackedCaption then (randomUI_movZMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_movZMinSpin_caption.width=32) else (randomUI_movZMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_movZMinSpin_caption.width=cellWidth);randomUI_movZMinSpin_caption.enabled=randomUI_movZMinSpin.enabled;if not stackedCaption then (randomUI_movZMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_movZMaxSpin_caption.width=32) else (randomUI_movZMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_movZMaxSpin_caption.width=cellWidth);randomUI_movZMaxSpin_caption.enabled=randomUI_movZMaxSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_resetMovement);show=(true and (true))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/90.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
@@ -3979,338 +4369,8 @@ fn CyrusLayerEditor_transformsUI_1 = (
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
-            rowControls=#(heading_1);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                if y>6 do y+=4
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel heading_1 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(heading_1.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_rotXMinSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_rotXMaxSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_rotXLabel);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_rotXLabel 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_rotXLabel.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_rotYMinSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_rotYMaxSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_rotYLabel);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_rotYLabel 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_rotYLabel.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_resetRotation);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/90.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclTitle);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_sclTitle 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_sclTitle.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclMinTitle);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_sclMinTitle 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_sclMinTitle.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclMaxTitle);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_sclMaxTitle 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_sclMaxTitle.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclXMinSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclXMaxSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclXLabel);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_sclXLabel 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_sclXLabel.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclYMinSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclYMaxSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclYLabel);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_sclYLabel 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_sclYLabel.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclZMinSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclZMaxSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclZLabel);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_sclZLabel 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_sclZLabel.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_resetScale);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/96))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_resetWholeScale);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/106.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movTitle);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_movTitle 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_movTitle.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movMinTitle);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_movMinTitle 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_movMinTitle.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movMaxTitle);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_movMaxTitle 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_movMaxTitle.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movXMinSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movXMaxSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movXLabel);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_movXLabel 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_movXLabel.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movYMinSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movYMaxSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movYLabel);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_movYLabel 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_movYLabel.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movZMinSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movZMaxSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movZLabel);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_movZLabel 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_movZLabel.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_resetMovement);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/90.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
+            advancedToggle.visible=false
+
             lastLayoutWidth=widthValue;transformsUI_1.height=y+4;true
         )
         fn bind layer = (
@@ -4611,6 +4671,17 @@ fn CyrusLayerEditor_spacingUI_1 = (
             true
         )
 
+        fn fitPairField control available = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
+            for handle in control.hwnd do (
+                local data=windows.getHWNDData handle
+                if data[4]=="CustEdit" do (
+                    local rectangle=windows.getWindowPos handle,position=windows.screenToClient data[2] (arrow.x-fieldWidth) arrow.y
+                    windows.setWindowPos handle position.x position.y fieldWidth rectangle.h true
+                )
+            )
+            true
+        )
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -4699,7 +4770,7 @@ fn CyrusLayerEditor_spacingUI_1 = (
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
             rowControls=#(heading_1);show=(advancedToggle.checked and (true))
             for c in rowControls do c.visible=show
             if show do (
@@ -5222,6 +5293,17 @@ fn CyrusLayerEditor_statisticsUI_1 = (
             true
         )
 
+        fn fitPairField control available = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
+            for handle in control.hwnd do (
+                local data=windows.getHWNDData handle
+                if data[4]=="CustEdit" do (
+                    local rectangle=windows.getWindowPos handle,position=windows.screenToClient data[2] (arrow.x-fieldWidth) arrow.y
+                    windows.setWindowPos handle position.x position.y fieldWidth rectangle.h true
+                )
+            )
+            true
+        )
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -5254,7 +5336,7 @@ fn CyrusLayerEditor_statisticsUI_1 = (
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
             rowControls=#(heading_0);show=(advancedToggle.checked and (true))
             for c in rowControls do c.visible=show
             if show do (
@@ -5499,6 +5581,17 @@ fn CyrusLayerEditor_setsUI_1 = (
             true
         )
 
+        fn fitPairField control available = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
+            for handle in control.hwnd do (
+                local data=windows.getHWNDData handle
+                if data[4]=="CustEdit" do (
+                    local rectangle=windows.getWindowPos handle,position=windows.screenToClient data[2] (arrow.x-fieldWidth) arrow.y
+                    windows.setWindowPos handle position.x position.y fieldWidth rectangle.h true
+                )
+            )
+            true
+        )
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -5590,7 +5683,8 @@ fn CyrusLayerEditor_setsUI_1 = (
                 rowHeight=(amax #(setsUI_info.height))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )            advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            )
+            advancedToggle.visible=false
 
             lastLayoutWidth=widthValue;setsUI_1.height=y+4;true
         )
@@ -5622,6 +5716,7 @@ fn CyrusCreateLayerEditorSection component root owner panel = (
     case component of (
         #surfacesUI: CyrusLayerEditor_surfacesUI_1()
         #modelsUI: CyrusLayerEditor_modelsUI_1()
+        #layoutUI: CyrusLayerEditor_layoutUI_1()
         #populationUI: CyrusLayerEditor_populationUI_1()
         #coverageUI: CyrusLayerEditor_coverageUI_1()
         #areasUI: CyrusLayerEditor_areasUI_1()
@@ -5805,7 +5900,7 @@ fn CyrusOpenLayerEditor root owner = (
         )
         on editor open do (
             pages=#(#(assetsLeft,assetsRight),#(populationLeft,populationRight),#(paintLeft,paintRight),#(transformLeft,transformRight),#(spacingLeft,spacingRight),#(statisticsLeft,statisticsRight))
-            pageSections=#(#(#(#(#modelsUI,false)),#(#(#surfacesUI,false))),#(#(#(#populationUI,false)),#(#(#areasUI,false))),#(#(#(#coverageUI,false)),#()),#(#(#(#transformsUI,false)),#()),#(#(#(#spacingUI,false)),#()),#(#(#(#statisticsUI,false)),#()))
+            pageSections=#(#(#(#(#modelsUI,false),#(#layoutUI,false)),#(#(#surfacesUI,false))),#(#(#(#populationUI,false)),#(#(#areasUI,false))),#(#(#(#coverageUI,false)),#()),#(#(#(#transformsUI,false)),#()),#(#(#(#spacingUI,false)),#()),#(#(#(#statisticsUI,false)),#()))
             for node in refs.dependentNodes root where isValidNode node and node.baseObject==root do if ownerNode==undefined do ownerNode=node
             controlsReady=true;showTopic 1
         )
@@ -8348,7 +8443,7 @@ initialRollupState:0x8
             if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.75 native plugin and restart Max."
             local context=if classof view==CyrusSourceContainer then CyrusContainerResolve view else undefined
             root=if classof view==CyrusSourceContainer then (if context==undefined then undefined else context[1]) else view
-            editors=#(view.managerUI,view.surfacesUI,view.modelsUI,view.populationUI,view.coverageUI,view.areasUI,view.transformsUI,view.spacingUI,view.displayUI,view.statisticsUI)
+            editors=#(view.managerUI,view.surfacesUI,view.modelsUI,view.layoutUI,view.populationUI,view.coverageUI,view.areasUI,view.transformsUI,view.spacingUI,view.displayUI,view.statisticsUI)
             if root==undefined do (
                 for r in editors do (r.controlsReady=false;cyrusSetRolloutVisible r.hwnd false 0)
                 if isProperty view #containerUI do view.containerUI.bind()
@@ -8415,7 +8510,6 @@ initialRollupState:0x8
         label flow_layersUI_countInfo "Select a layer." pos:[8,8] width:((managerUI.width-16-((amin 1 (amax 1 (floor ((managerUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((managerUI.width-8)/58))))) height:46
         label heading_0 "Layers - evaluation order" pos:[6,6] width:(managerUI.width-12) height:18
         label heading_1 "Layer management" pos:[6,6] width:(managerUI.width-12) height:18
-        checkbutton propertiesToggle "Properties" pos:[6,6] width:(managerUI.width-12) height:22
         dotNetControl flow_layersUI_layerList_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8
         checkbutton advancedToggle "Advanced" pos:[6,6] width:(managerUI.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
         local flow_layersUI_bodyHeight=0
@@ -8561,10 +8655,10 @@ initialRollupState:0x8
             )catch(syncingColorLists=false;throw())
         )
         local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
-        fn captureView = #(managerUI.open,#(advancedToggle.checked,propertiesToggle.checked),#(flow_layersUI_layerList.height))
+        fn captureView = #(managerUI.open,#(advancedToggle.checked),#(flow_layersUI_layerList.height))
         fn restoreView state = (
             managerUI.open=state[1]
-            advancedToggle.checked=state[2][1];propertiesToggle.checked=state[2][2]
+            advancedToggle.checked=state[2][1]
             flow_layersUI_layerList.height=state[3][1]
             true
         )
@@ -8613,6 +8707,17 @@ initialRollupState:0x8
         on flow_layersUI_layerList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
         on flow_layersUI_layerList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
         on flow_layersUI_layerList_grip Paint sender args do paintListGrip sender args
+        fn fitPairField control available = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
+            for handle in control.hwnd do (
+                local data=windows.getHWNDData handle
+                if data[4]=="CustEdit" do (
+                    local rectangle=windows.getWindowPos handle,position=windows.screenToClient data[2] (arrow.x-fieldWidth) arrow.y
+                    windows.setWindowPos handle position.x position.y fieldWidth rectangle.h true
+                )
+            )
+            true
+        )
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -8679,16 +8784,7 @@ initialRollupState:0x8
                 if not stackedCaption then (flow_layersUI_nameEdit_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];flow_layersUI_nameEdit_caption.width=amin (cellWidth/2) 38;flow_layersUI_nameEdit.pos=[6+(mod 0 columns)*(cellWidth+4)+flow_layersUI_nameEdit_caption.width+4,y+(floor (0/columns))*rowHeight];flow_layersUI_nameEdit.width=cellWidth-flow_layersUI_nameEdit_caption.width-4) else (flow_layersUI_nameEdit_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];flow_layersUI_nameEdit_caption.width=cellWidth);flow_layersUI_nameEdit_caption.enabled=flow_layersUI_nameEdit.enabled
                 y+=rowHeight
             )
-            rowControls=#(propertiesToggle);show=(true and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/18))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(flow_layersUI_enabledCheck,flow_layersUI_visibleCheck);show=(true and (propertiesToggle.checked))
+            rowControls=#(flow_layersUI_enabledCheck,flow_layersUI_visibleCheck);show=(true and (true))
             for c in rowControls do c.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/62.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
@@ -8697,8 +8793,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
-            rowControls=#(heading_1);show=(advancedToggle.checked and (true))
+            rowControls=#(heading_1);show=(true and (true))
             for c in rowControls do c.visible=show
             if show do (
                 if y>6 do y+=4
@@ -8709,7 +8804,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(flow_layersUI_editButton);show=(advancedToggle.checked and (true))
+            rowControls=#(flow_layersUI_editButton);show=(true and (true))
             for c in rowControls do c.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/137.60000000000002))));cellWidth=(widthValue-12-(columns-1)*4)/columns
@@ -8718,7 +8813,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(flow_layersUI_countInfo);show=(advancedToggle.checked and (true))
+            rowControls=#(flow_layersUI_countInfo);show=(true and (true))
             for c in rowControls do c.visible=show
             if show do (
                 columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
@@ -8728,6 +8823,8 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
+            advancedToggle.visible=false
+
             lastLayoutWidth=widthValue;managerUI.height=y+4;syncColorLists();true
         )
         fn bind layer = (
@@ -8742,9 +8839,7 @@ initialRollupState:0x8
             )catch(binding=false;controlsReady=false;throw())
         )
         fn refreshStats = (if flow_layersUI_controlsReady do flow_layersUI_refreshStats();if controlsReady do layout();true)
-        on propertiesToggle changed value do if controlsReady and not binding and root!=undefined and true do ((layout();if panel!=undefined do panel.rememberViews();true)
-            if controlsReady and root!=undefined do layout()
-        )
+
         on advancedToggle changed value do if controlsReady and not binding and root!=undefined and true do ((layout();if panel!=undefined do panel.rememberViews();true)
             if controlsReady and root!=undefined do layout()
         )
@@ -8912,6 +9007,17 @@ initialRollupState:0x8
         on flow_surfaceUI_globalContainers_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
         on flow_surfaceUI_globalContainers_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
         on flow_surfaceUI_globalContainers_grip Paint sender args do paintListGrip sender args
+        fn fitPairField control available = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
+            for handle in control.hwnd do (
+                local data=windows.getHWNDData handle
+                if data[4]=="CustEdit" do (
+                    local rectangle=windows.getWindowPos handle,position=windows.screenToClient data[2] (arrow.x-fieldWidth) arrow.y
+                    windows.setWindowPos handle position.x position.y fieldWidth rectangle.h true
+                )
+            )
+            true
+        )
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -8976,7 +9082,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
             rowControls=#(heading_0);show=(advancedToggle.checked and (true))
             for c in rowControls do c.visible=show
             if show do (
@@ -9117,83 +9223,13 @@ initialRollupState:0x8
         dropdownlist sourceUI_forwardAxis "" items:#("+Y","-Y","+X","-X") pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))) tooltip:"The model's local forward direction, used for orientation."
         label sourceUI_forwardAxis_caption "Forward axis:" pos:[6,6] width:(modelsUI.width-12) height:18
         checkbutton sourceUI_detailsToggle "Point / Empty sources and color groups" pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/215.6))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/215.6))))) height:22 tooltip:"Show or hide these advanced controls; their saved settings are preserved."
-        radiobuttons diversityUI_diversityRadio "Source assignment" labels:#("Random","Clusters","Line Pattern","Analyze Surface") columns:1 pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58)))))
-        spinner diversityUI_sizeSpin "" range:[0.01,100000,10] type:#worldUnits fieldWidth:58 width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/113.2))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/113.2))))) pos:[8,8] tooltip:"Spatial size of source-color clusters."
-        label diversityUI_sizeSpin_caption "Size: " pos:[6,6] width:(modelsUI.width-12) height:18
-        spinner diversityUI_divSeedSpin "" range:[0,2147483647,42] type:#integer fieldWidth:58 width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/113.2))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/113.2))))) pos:[8,8] tooltip:"Change source assignment randomness without changing the generation seed."
-        label diversityUI_divSeedSpin_caption "Seed: " pos:[6,6] width:(modelsUI.width-12) height:18
-        spinner diversityUI_roughSpin "" range:[0,100,0] fieldWidth:58 width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/149.60000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/149.60000000000002))))) pos:[8,8]
-        label diversityUI_roughSpin_caption "Roughness %: " pos:[6,6] width:(modelsUI.width-12) height:18
-        spinner diversityUI_blurSpin "" range:[0,100,0] fieldWidth:58 width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/149.60000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/149.60000000000002))))) pos:[8,8]
-        label diversityUI_blurSpin_caption "Blur edge %: " pos:[6,6] width:(modelsUI.width-12) height:18
-        spinner diversityUI_noiseSpin "" range:[0,100,0] fieldWidth:58 width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/128.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/128.8))))) pos:[8,8]
-        label diversityUI_noiseSpin_caption "Noise %: " pos:[6,6] width:(modelsUI.width-12) height:18
-        label diversityUI_groupHint "Uses source group colors." pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58)))))
-        label diversityUI_fixedHint "Point positions stay fixed." pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58)))))
-        label diversityUI_strokeTitle "Line Pattern / Strokes" pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58)))))
-        dropdownlist diversityUI_pathsDrop "" items:#() pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58)))))
-        label diversityUI_pathsDrop_caption "Paths" pos:[6,6] width:(modelsUI.width-12) height:18
-        dropdownlist diversityUI_analyzerChannel "" items:#("Border","Centerline","Points","Street Side","Edge Border") pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58)))))
-        label diversityUI_analyzerChannel_caption "Analyzer data" pos:[6,6] width:(modelsUI.width-12) height:18
-        pickbutton diversityUI_pickAnalyzer "Pick Surface Analyzer" filter:CyrusAnalyzerFilter pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/127.2))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/127.2))))) tooltip:"Use Surface Analyzer output for bands, rows and fixed anchors." height:22
-        pickbutton diversityUI_pickPath "Add: pick closed line" filter:AminScatterAreaFilter pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/127.2))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/127.2))))) tooltip:"Pick a spline for Line Pattern assignment." height:22
-        button diversityUI_removePath "Remove path" pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/75.2))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/75.2))))) tooltip:"Remove the selected assignment path while keeping the scene spline." height:22
-        listbox diversityUI_strokesList "" items:#() pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))) height:4
-        label diversityUI_strokesList_caption "Consecutive strokes" pos:[6,6] width:(modelsUI.width-12) height:18
-        button diversityUI_addOutside "Add Outside" pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/75.2))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/75.2))))) tooltip:"Add a source-assignment band outside the selected path." height:22
-        button diversityUI_addInside "Add Inside" pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/70))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/70))))) tooltip:"Add a source-assignment band inside the selected path." height:22
-        button diversityUI_removeStrokeButton "Remove Stroke" pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/85.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/85.60000000000001))))) tooltip:"Remove the selected assignment band and its settings." height:22
-        spinner diversityUI_strokeWidth "" range:[0.001,100000,1] type:#worldUnits pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/113.2))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/113.2))))) fieldWidth:58
-        label diversityUI_strokeWidth_caption "Width:" pos:[6,6] width:(modelsUI.width-12) height:18
-        radiobuttons diversityUI_strokeMode "Assign by" labels:#("Color groups","Source objects") columns:1 pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58)))))
-        multiListBox diversityUI_strokeChoices "" items:#() pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))) height:5
-        label diversityUI_strokeChoices_caption "Ctrl / Shift: select several" pos:[6,6] width:(modelsUI.width-12) height:18
-        spinner diversityUI_strokeScaleMin "" range:[0.001,100,1] pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/134))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/134))))) fieldWidth:58
-        label diversityUI_strokeScaleMin_caption "Scale min:" pos:[6,6] width:(modelsUI.width-12) height:18
-        spinner diversityUI_strokeScaleMax "" range:[0.001,100,1] pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/134))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/134))))) fieldWidth:58
-        label diversityUI_strokeScaleMax_caption "Scale max:" pos:[6,6] width:(modelsUI.width-12) height:18
-        button diversityUI_refreshGroups "Refresh sources / groups" pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/142.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/142.8))))) tooltip:"Refresh available source color groups for assignment." height:22
-        label diversityUI_strokeHelp "Outside strokes: empty." pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58)))))
-        spinner diversityUI_edgeOffsetSpin "" range:[-1000000,1000000,0] type:#worldunits pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/154.8))))) fieldWidth:58
-        label diversityUI_edgeOffsetSpin_caption "Offset inward:" pos:[6,6] width:(modelsUI.width-12) height:18
-        spinner diversityUI_edgeAlongSpin "" range:[0,1000000,0] type:#worldunits pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/149.60000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/149.60000000000002))))) fieldWidth:58
-        label diversityUI_edgeAlongSpin_caption "Jitter along:" pos:[6,6] width:(modelsUI.width-12) height:18
-        spinner diversityUI_edgeAcrossSpin "" range:[0,1000000,0] type:#worldunits pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/154.8))))) fieldWidth:58
-        label diversityUI_edgeAcrossSpin_caption "Jitter across:" pos:[6,6] width:(modelsUI.width-12) height:18
-        label diversityUI_edgeRowHelp "Spacing sets count. Jitter 0 = exact." pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))) height:36
-        checkbox diversityUI_keepCornerCheck "Keep corner points" pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/119.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/119.60000000000001)))))
-        spinner diversityUI_cornerAngleSpin "" range:[0,180,45] type:#float pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/128.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/128.8))))) fieldWidth:58
-        label diversityUI_cornerAngleSpin_caption "Min turn:" pos:[6,6] width:(modelsUI.width-12) height:18
-        spinner diversityUI_cornerCountSpin "" range:[1,64,1] type:#integer pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/154.8))))) fieldWidth:58
-        label diversityUI_cornerCountSpin_caption "Points/corner:" pos:[6,6] width:(modelsUI.width-12) height:18
-        label diversityUI_cornerHelp "Turn angle in degrees. 0 = straight." pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))) height:36
-        spinner diversityUI_edgeRotXSpin "" range:[-36000,36000,0] type:#float pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/154.8))))) fieldWidth:58
-        label diversityUI_edgeRotXSpin_caption "Local X (deg):" pos:[6,6] width:(modelsUI.width-12) height:18
-        spinner diversityUI_edgeRotYSpin "" range:[-36000,36000,0] type:#float pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/154.8))))) fieldWidth:58
-        label diversityUI_edgeRotYSpin_caption "Local Y (deg):" pos:[6,6] width:(modelsUI.width-12) height:18
-        spinner diversityUI_edgeRotZSpin "" range:[-36000,36000,0] type:#float pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/154.8))))) fieldWidth:58
-        label diversityUI_edgeRotZSpin_caption "Local Z (deg):" pos:[6,6] width:(modelsUI.width-12) height:18
-        spinner diversityUI_streetStartSpin "" range:[0,1e9,0] type:#worldunits pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/139.2))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/139.2))))) fieldWidth:58
-        label diversityUI_streetStartSpin_caption "Trim start:" pos:[6,6] width:(modelsUI.width-12) height:18
-        spinner diversityUI_streetEndSpin "" range:[0,1e9,0] type:#worldunits pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/128.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/128.8))))) fieldWidth:58
-        label diversityUI_streetEndSpin_caption "Trim end:" pos:[6,6] width:(modelsUI.width-12) height:18
-        spinner diversityUI_centerStreetSpin "" range:[-1e9,1e9,0] type:#worldunits pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/154.8))))) fieldWidth:58
-        label diversityUI_centerStreetSpin_caption "Street offset:" pos:[6,6] width:(modelsUI.width-12) height:18
-        label diversityUI_streetLayoutHelp "Positive offset = away from street. Trim follows path direction." pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))) height:44
-        checkbox diversityUI_faceOutCheck "Face outward" pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/88.4))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/88.4)))))
-        spinner diversityUI_cornerRadiusSpin "" type:#worldunits range:[0,1000000,10] pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/154.8))))) fieldWidth:58
-        label diversityUI_cornerRadiusSpin_caption "Corner radius:" pos:[6,6] width:(modelsUI.width-12) height:18
-        checkbox diversityUI_straightStreet "Straight ends (Street Side)" pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/166.4))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/166.4)))))
         label heading_0 "Models for this layer" pos:[6,6] width:(modelsUI.width-12) height:18
         label heading_1 "Optional source containers" pos:[6,6] width:(modelsUI.width-12) height:18
         label heading_2 "Source pool help" pos:[6,6] width:(modelsUI.width-12) height:18
         label heading_3 "Source details - layer" pos:[6,6] width:(modelsUI.width-12) height:18
-        label heading_4 "Source assignment - layer" pos:[6,6] width:(modelsUI.width-12) height:18
         checkbutton propertiesToggle "Properties" pos:[6,6] width:(modelsUI.width-12) height:22
         dotNetControl sourceContainersUI_containersList_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8
         dotNetControl sourceUI_plantList_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8
-        dotNetControl diversityUI_strokesList_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8
-        dotNetControl diversityUI_strokeChoices_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8
         checkbutton advancedToggle "Advanced" pos:[6,6] width:(modelsUI.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
         local sourceContainersUI_bodyHeight=0
         local sourceContainersUI_controlsReady=false
@@ -9415,263 +9451,6 @@ initialRollupState:0x8
         on sourceUI_detailsToggle changed value do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and true do (sourceUI_arrangeDetails()
             if controlsReady and root!=undefined do layout()
         )
-        local diversityUI_bodyHeight=0
-        local diversityUI_controlsReady=false
-        local diversityUI_root=undefined,diversityUI_owner=undefined,diversityUI_panel=undefined
-        local diversityUI_setSpecific=false
-        local diversityUI_binding=false,
-        diversityUI_obj=undefined,diversityUI_parentView=undefined
-        local diversityUI_boundaryOnly=false
-        local diversityUI_controlsReady=false,diversityUI_strokeExpandedHeight=0
-        local diversityUI_pathRows=#(),diversityUI_strokeRows=#(),diversityUI_choiceValues=#(),diversityUI_restKeys=#(),diversityUI_loadingStroke=false
-        fn diversityUI_syncControls = (diversityUI_diversityRadio.state=diversityUI_obj.diversityMode;diversityUI_sizeSpin.value=diversityUI_obj.diversitySize;diversityUI_divSeedSpin.value=diversityUI_obj.diversitySeed;diversityUI_roughSpin.value=diversityUI_obj.roughness;diversityUI_blurSpin.value=diversityUI_obj.blurryEdge;diversityUI_noiseSpin.value=diversityUI_obj.diversityNoise;)
-        on diversityUI_faceOutCheck changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
-            if diversityUI_analyzerChannel.selection==5 then diversityUI_obj.edgeFaceOut=v else if diversityUI_analyzerChannel.selection==4 then diversityUI_obj.streetFaceOut=v else diversityUI_obj.borderFaceOut=v
-            diversityUI_cornerRadiusSpin.enabled=v;diversityUI_obj.markInputDirty();CyrusViewportRedraw()
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_cornerRadiusSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
-            if diversityUI_analyzerChannel.selection==5 then diversityUI_obj.edgeCornerRadius=v else if diversityUI_analyzerChannel.selection==4 then diversityUI_obj.streetCornerRadius=v else diversityUI_obj.borderCornerRadius=v
-            diversityUI_obj.markInputDirty();CyrusViewportRedraw()
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_streetStartSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.streetTrimStart=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_streetEndSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.streetTrimEnd=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_centerStreetSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.centerStreetOffset=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_straightStreet changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.streetStraight=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        fn diversityUI_selectedStroke = (if diversityUI_strokesList.selection>0 and diversityUI_strokesList.selection<=diversityUI_strokeRows.count then diversityUI_strokeRows[diversityUI_strokesList.selection] else 0)
-        fn diversityUI_showStroke = (
-            diversityUI_loadingStroke=true
-            diversityUI_obj.syncStrokes()
-            local edgeVisible=diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==5
-            for c in #(diversityUI_edgeOffsetSpin,diversityUI_edgeAlongSpin,diversityUI_edgeAcrossSpin,diversityUI_edgeRowHelp,diversityUI_keepCornerCheck,diversityUI_cornerAngleSpin,diversityUI_cornerCountSpin,diversityUI_cornerHelp,diversityUI_edgeRotXSpin,diversityUI_edgeRotYSpin,diversityUI_edgeRotZSpin) do c.visible=edgeVisible
-            diversityUI_cornerRadiusSpin.text=if edgeVisible then "Blend radius:" else "Corner radius:"
-            diversityUI_keepCornerCheck.checked=diversityUI_obj.edgeKeepCorners
-            diversityUI_cornerAngleSpin.value=diversityUI_obj.edgeCornerAngle;diversityUI_cornerCountSpin.value=diversityUI_obj.edgeCornerCount
-            diversityUI_cornerAngleSpin.enabled=diversityUI_obj.edgeKeepCorners;diversityUI_cornerCountSpin.enabled=diversityUI_obj.edgeKeepCorners
-            diversityUI_strokeWidth.text=if edgeVisible then "Spacing:" else "Width:"
-            local row=diversityUI_selectedStroke();local active=row>0
-            for c in #(diversityUI_strokeWidth,diversityUI_strokeMode,diversityUI_strokeChoices,diversityUI_strokeScaleMin,diversityUI_strokeScaleMax,diversityUI_removeStrokeButton) do c.enabled=active
-            diversityUI_choiceValues=#();diversityUI_strokeChoices.items=#()
-            for c in #(diversityUI_edgeOffsetSpin,diversityUI_edgeAlongSpin,diversityUI_edgeAcrossSpin,diversityUI_edgeRotXSpin,diversityUI_edgeRotYSpin,diversityUI_edgeRotZSpin) do c.enabled=active
-            if active do (
-                diversityUI_edgeRotXSpin.value=diversityUI_obj.edgeRotX[row]
-                diversityUI_edgeRotYSpin.value=diversityUI_obj.edgeRotY[row]
-                diversityUI_edgeRotZSpin.value=diversityUI_obj.edgeRotZ[row]
-                diversityUI_edgeOffsetSpin.value=diversityUI_obj.edgeOffsets[row];diversityUI_edgeAlongSpin.value=diversityUI_obj.edgeAlong[row];diversityUI_edgeAcrossSpin.value=diversityUI_obj.edgeAcross[row]
-                diversityUI_strokeWidth.value=diversityUI_obj.patternWidths[row];diversityUI_strokeMode.state=diversityUI_obj.strokeModes[row]
-                diversityUI_strokeWidth.enabled=diversityUI_obj.strokeSides[row]!=5
-                diversityUI_strokeScaleMin.value=diversityUI_obj.strokeMin[row];diversityUI_strokeScaleMax.value=diversityUI_obj.strokeMax[row]
-                local labels=#();local selectedRows=#{}
-                if diversityUI_obj.strokeModes[row]==1 then (
-                    for i=1 to diversityUI_obj.sources.count do (
-                        local key=diversityUI_obj.colorKey(diversityUI_obj.sourceColor i)
-                        if findItem diversityUI_choiceValues key==0 do (append diversityUI_choiceValues key;append labels ("#"+(formattedPrint key format:"06X")))
-                    )
-                    local keys=for i=1 to diversityUI_obj.strokeColorRows.count where diversityUI_obj.strokeColorRows[i]==row collect diversityUI_obj.strokeColorKeys[i]
-                    if keys.count==0 do keys=#(diversityUI_obj.patternGroups[row])
-                    for i=1 to diversityUI_choiceValues.count where findItem keys diversityUI_choiceValues[i]>0 do selectedRows[i]=true
-                ) else (
-                    for n in diversityUI_obj.sources where isValidNode n do (append diversityUI_choiceValues n;append labels n.name)
-                    for i=1 to diversityUI_obj.strokeSourceRows.count where diversityUI_obj.strokeSourceRows[i]==row do (
-                        local k=findItem diversityUI_choiceValues diversityUI_obj.strokeSourceNodes[i];if k>0 do selectedRows[k]=true
-                    )
-                )
-                diversityUI_strokeChoices.items=labels;diversityUI_strokeChoices.selection=selectedRows
-            )
-            diversityUI_loadingStroke=false
-        )
-        fn diversityUI_showPath = (
-            diversityUI_loadingStroke=true
-            local old=diversityUI_strokesList.selection;diversityUI_strokeRows=#();local labels=#();local total=#(0.0,0.0,0.0,0.0,0.0,0.0,0.0)
-            local analyzed=diversityUI_obj.diversityMode==4
-            local path=if analyzed then diversityUI_obj.analyzerNode else (if diversityUI_pathsDrop.selection>0 then diversityUI_pathRows[diversityUI_pathsDrop.selection] else undefined)
-            if isValidNode path do (
-                for i=1 to diversityUI_obj.patternLines.count where diversityUI_obj.patternLines[i]==path and (not analyzed or (diversityUI_analyzerChannel.selection==1 and diversityUI_obj.strokeSides[i]<=2) or (diversityUI_analyzerChannel.selection==2 and diversityUI_obj.strokeSides[i]==3) or (diversityUI_analyzerChannel.selection==3 and (diversityUI_obj.strokeSides[i]==4 or diversityUI_obj.strokeSides[i]==5)) or (diversityUI_analyzerChannel.selection==4 and diversityUI_obj.strokeSides[i]==6) or (diversityUI_analyzerChannel.selection==5 and diversityUI_obj.strokeSides[i]==7)) do (
-                    append diversityUI_strokeRows i
-                    local side=diversityUI_obj.strokeSides[i];local start=total[side];total[side]+=diversityUI_obj.patternWidths[i]
-                    local prefixes=#("Out ","In ","Both ","Radius ","Single ","Street ","Edge ")
-                    append labels (if side==7 then ("Edge "+(diversityUI_strokeRows.count as string)+": spacing "+units.formatValue diversityUI_obj.patternWidths[i]) else (prefixes[side]+(diversityUI_strokeRows.count as string)+": "+units.formatValue start+" - "+units.formatValue total[side]))
-                )
-            )
-            diversityUI_strokesList.items=labels;diversityUI_strokesList.selection=amin (amax 1 old) labels.count
-            diversityUI_addOutside.enabled=isValidNode path;diversityUI_addInside.enabled=isValidNode path and (not analyzed or diversityUI_analyzerChannel.selection!=2);diversityUI_removePath.enabled=isValidNode path
-            diversityUI_loadingStroke=false;diversityUI_showStroke()
-        )
-        fn diversityUI_updatePattern = (
-            diversityUI_faceOutCheck.visible=diversityUI_obj.diversityMode==4 and (diversityUI_analyzerChannel.selection==1 or diversityUI_analyzerChannel.selection==4 or diversityUI_analyzerChannel.selection==5)
-            diversityUI_cornerRadiusSpin.visible=diversityUI_faceOutCheck.visible
-            diversityUI_faceOutCheck.checked=if diversityUI_analyzerChannel.selection==5 then diversityUI_obj.edgeFaceOut else if diversityUI_analyzerChannel.selection==4 then diversityUI_obj.streetFaceOut else diversityUI_obj.borderFaceOut
-            diversityUI_cornerRadiusSpin.value=if diversityUI_analyzerChannel.selection==5 then diversityUI_obj.edgeCornerRadius else if diversityUI_analyzerChannel.selection==4 then diversityUI_obj.streetCornerRadius else diversityUI_obj.borderCornerRadius
-            diversityUI_cornerRadiusSpin.enabled=diversityUI_faceOutCheck.checked
-            diversityUI_streetStartSpin.visible=diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==4
-            diversityUI_streetEndSpin.visible=diversityUI_streetStartSpin.visible
-            diversityUI_centerStreetSpin.visible=diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==2
-            diversityUI_streetLayoutHelp.visible=diversityUI_streetStartSpin.visible or diversityUI_centerStreetSpin.visible
-            diversityUI_streetStartSpin.value=diversityUI_obj.streetTrimStart;diversityUI_streetEndSpin.value=diversityUI_obj.streetTrimEnd;diversityUI_centerStreetSpin.value=diversityUI_obj.centerStreetOffset
-            diversityUI_straightStreet.checked=diversityUI_obj.streetStraight;diversityUI_straightStreet.visible=diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==4
-            diversityUI_obj.syncStrokes();local old=diversityUI_pathsDrop.selection
-            local analyzed=diversityUI_obj.diversityMode==4
-            diversityUI_pathRows=for n in diversityUI_obj.patternPaths where isValidNode n and not isProperty n #samplePoints collect n
-            diversityUI_pathsDrop.items=for n in diversityUI_pathRows collect n.name
-            diversityUI_pathsDrop.selection=amin (amax 1 old) diversityUI_pathRows.count
-            diversityUI_pathsDrop.visible=diversityUI_obj.diversityMode==3;diversityUI_pickPath.visible=diversityUI_obj.diversityMode==3
-            diversityUI_analyzerChannel.visible=analyzed;diversityUI_pickAnalyzer.visible=analyzed
-            diversityUI_pickAnalyzer.text=if isValidNode diversityUI_obj.analyzerNode then diversityUI_obj.analyzerNode.name else "Pick Surface Analyzer"
-            diversityUI_removePath.text=if analyzed then "Remove Analyzer" else "Remove path"
-            diversityUI_strokeTitle.text=if analyzed then "Analyze Surface / Strokes" else "Line Pattern / Strokes"
-            diversityUI_addOutside.text=if not analyzed or diversityUI_analyzerChannel.selection==1 then "Add Outside" else (if diversityUI_analyzerChannel.selection==2 then "Add Stroke" else "Add Radius")
-            diversityUI_addInside.text=if analyzed and diversityUI_analyzerChannel.selection==3 then "Add Single" else "Add Inside"
-            diversityUI_boundaryOnly=analyzed and (diversityUI_analyzerChannel.selection==1 or diversityUI_analyzerChannel.selection==4 or diversityUI_analyzerChannel.selection==5)
-            diversityUI_addOutside.visible=(diversityUI_obj.diversityMode==3 or analyzed) and not diversityUI_boundaryOnly
-            diversityUI_addInside.pos=[if diversityUI_boundaryOnly then 4 else modelsUI.width/2+2,diversityUI_addOutside.pos.y]
-            diversityUI_addInside.width=if diversityUI_boundaryOnly then modelsUI.width-8 else (modelsUI.width-12)/2
-            if diversityUI_boundaryOnly do diversityUI_addInside.text=if diversityUI_analyzerChannel.selection==5 then "Add Edge Row" else "Add Stroke Inside"
-            diversityUI_strokeHelp.text=if analyzed and diversityUI_analyzerChannel.selection==5 then "One row along the boundary." else if analyzed then "Width = spread per side." else "Outside strokes: empty."
-            diversityUI_restKeys=#()
-            for i=1 to diversityUI_obj.sources.count do (local key=diversityUI_obj.colorKey(diversityUI_obj.sourceColor i);if findItem diversityUI_restKeys key==0 do append diversityUI_restKeys key)
-            diversityUI_showPath()
-        )
-        on diversityUI_pathsDrop selected i do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do diversityUI_showPath()
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_analyzerChannel selected i do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do diversityUI_updatePattern()
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_pickAnalyzer picked n do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
-            if CyrusAnalyzerFilter n do (diversityUI_obj.analyzerNode=n;diversityUI_obj.markInputDirty();diversityUI_updatePattern();CyrusViewportRedraw())
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokesList selected i do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do diversityUI_showStroke()
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_pickPath picked n do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
-            if isValidNode n and findItem diversityUI_obj.patternPaths n==0 do append diversityUI_obj.patternPaths n
-            diversityUI_updatePattern();diversityUI_pathsDrop.selection=findItem diversityUI_pathRows n;diversityUI_showPath()
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_removePath pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
-            local path=if diversityUI_obj.diversityMode==4 then diversityUI_obj.analyzerNode else diversityUI_pathRows[diversityUI_pathsDrop.selection]
-            for i=diversityUI_obj.patternLines.count to 1 by -1 where diversityUI_obj.patternLines[i]==path do diversityUI_obj.removeStroke i
-            local k=findItem diversityUI_obj.patternPaths path;if k>0 do deleteItem diversityUI_obj.patternPaths k
-            if diversityUI_obj.diversityMode==4 do diversityUI_obj.analyzerNode=undefined
-            diversityUI_updatePattern();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw()
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_addOutside pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
-            if diversityUI_obj.diversityMode==4 and (diversityUI_analyzerChannel.selection==1 or diversityUI_analyzerChannel.selection==4 or diversityUI_analyzerChannel.selection==5) do return false
-            local path=if diversityUI_obj.diversityMode==4 then diversityUI_obj.analyzerNode else diversityUI_pathRows[diversityUI_pathsDrop.selection]
-            local types=#(1,3,4)
-            local side=if diversityUI_obj.diversityMode==4 then types[diversityUI_analyzerChannel.selection] else 1
-            diversityUI_obj.addStroke path side:side;diversityUI_showPath();diversityUI_strokesList.selection=diversityUI_strokeRows.count;diversityUI_showStroke();CyrusViewportRedraw()
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_addInside pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
-            local path=if diversityUI_obj.diversityMode==4 then diversityUI_obj.analyzerNode else diversityUI_pathRows[diversityUI_pathsDrop.selection]
-            local side=if diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==5 then 7 else if diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==4 then 6 else if diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==3 then 5 else 2
-            diversityUI_obj.addStroke path side:side;diversityUI_showPath();diversityUI_strokesList.selection=diversityUI_strokeRows.count;diversityUI_showStroke();CyrusViewportRedraw()
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_removeStrokeButton pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.removeStroke row;diversityUI_showPath();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_edgeOffsetSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeOffsets[row]=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_edgeAlongSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeAlong[row]=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_edgeAcrossSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeAcross[row]=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_keepCornerCheck changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.edgeKeepCorners=v;diversityUI_cornerAngleSpin.enabled=v;diversityUI_cornerCountSpin.enabled=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_cornerAngleSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.edgeCornerAngle=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_cornerCountSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.edgeCornerCount=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_edgeRotXSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeRotX[row]=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_edgeRotYSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeRotY[row]=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_edgeRotZSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeRotZ[row]=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokeWidth changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.patternWidths[row]=v;diversityUI_obj.markInputDirty();diversityUI_showPath();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokeMode changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.strokeModes[row]=v;diversityUI_showStroke();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokeChoices selectionEnd do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (
-            local row=diversityUI_selectedStroke()
-            if row>0 do diversityUI_obj.setStrokeSelection row diversityUI_obj.strokeModes[row] (for i in diversityUI_strokeChoices.selection collect diversityUI_choiceValues[i])
-            CyrusViewportRedraw()
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokeScaleMin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();diversityUI_obj.strokeMin[row]=v;if v>diversityUI_obj.strokeMax[row] do diversityUI_obj.strokeMax[row]=v;diversityUI_showStroke();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokeScaleMax changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();diversityUI_obj.strokeMax[row]=v;if v<diversityUI_obj.strokeMin[row] do diversityUI_obj.strokeMin[row]=v;diversityUI_showStroke();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_refreshGroups pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do diversityUI_updatePattern()
-            if controlsReady and root!=undefined do layout()
-        )
-        fn diversityUI_updateControls = (
-            for c in #(diversityUI_sizeSpin,diversityUI_divSeedSpin,diversityUI_roughSpin,diversityUI_blurSpin,diversityUI_noiseSpin,diversityUI_groupHint,diversityUI_fixedHint) do c.visible=diversityUI_obj.diversityMode==2
-            for c in #(diversityUI_strokeTitle,diversityUI_pathsDrop,diversityUI_analyzerChannel,diversityUI_pickAnalyzer,diversityUI_pickPath,diversityUI_removePath,diversityUI_strokesList,diversityUI_addOutside,diversityUI_addInside,diversityUI_removeStrokeButton,diversityUI_strokeWidth,diversityUI_strokeMode,diversityUI_strokeChoices,diversityUI_strokeScaleMin,diversityUI_strokeScaleMax,diversityUI_refreshGroups,diversityUI_strokeHelp) do c.visible=(diversityUI_obj.diversityMode==3 or diversityUI_obj.diversityMode==4)
-            if diversityUI_strokeExpandedHeight>0 do diversityUI_bodyHeight=if diversityUI_obj.diversityMode>=3 then diversityUI_strokeExpandedHeight else (if diversityUI_obj.diversityMode==2 then 310 else 124)*1.0
-            (CyrusContainerPanel diversityUI_root).layoutPanels()
-        )
-        on diversityUI_diversityRadio changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.diversityMode=v;diversityUI_updateControls();diversityUI_updatePattern();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_sizeSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.diversitySize=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_divSeedSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.diversitySeed=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_roughSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.roughness=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_blurSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.blurryEdge=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_noiseSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.diversityNoise=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        fn diversityUI_bind layer = (
-            local next=layer
-            diversityUI_binding=true;diversityUI_controlsReady=false
-            if diversityUI_obj!=next do (diversityUI_strokesList.selection=0;diversityUI_strokeChoices.selection=0;)
-            diversityUI_obj=next;diversityUI_parentView=(CyrusContainerPanel diversityUI_root)
-            for c in #(diversityUI_diversityRadio,diversityUI_sizeSpin,diversityUI_divSeedSpin,diversityUI_roughSpin,diversityUI_blurSpin,diversityUI_noiseSpin,diversityUI_groupHint,diversityUI_fixedHint,diversityUI_strokeTitle,diversityUI_pathsDrop,diversityUI_analyzerChannel,diversityUI_pickAnalyzer,diversityUI_pickPath,diversityUI_removePath,diversityUI_strokesList,diversityUI_addOutside,diversityUI_addInside,diversityUI_removeStrokeButton,diversityUI_strokeWidth,diversityUI_strokeMode,diversityUI_strokeChoices,diversityUI_strokeScaleMin,diversityUI_strokeScaleMax,diversityUI_refreshGroups,diversityUI_strokeHelp,diversityUI_edgeOffsetSpin,diversityUI_edgeAlongSpin,diversityUI_edgeAcrossSpin,diversityUI_edgeRowHelp,diversityUI_keepCornerCheck,diversityUI_cornerAngleSpin,diversityUI_cornerCountSpin,diversityUI_cornerHelp,diversityUI_edgeRotXSpin,diversityUI_edgeRotYSpin,diversityUI_edgeRotZSpin,diversityUI_streetStartSpin,diversityUI_streetEndSpin,diversityUI_centerStreetSpin,diversityUI_streetLayoutHelp,diversityUI_faceOutCheck,diversityUI_cornerRadiusSpin,diversityUI_straightStreet) do c.enabled=layer!=undefined
-            try (undo off ((diversityUI_diversityRadio.state=diversityUI_obj.diversityMode;diversityUI_sizeSpin.value=diversityUI_obj.diversitySize;diversityUI_divSeedSpin.value=diversityUI_obj.diversitySeed;diversityUI_roughSpin.value=diversityUI_obj.roughness;diversityUI_blurSpin.value=diversityUI_obj.blurryEdge;diversityUI_noiseSpin.value=diversityUI_obj.diversityNoise;diversityUI_controlsReady=true;diversityUI_strokeExpandedHeight=diversityUI_bodyHeight;diversityUI_updateControls();diversityUI_updatePattern()))) catch(diversityUI_binding=false;diversityUI_controlsReady=true;throw())
-            diversityUI_controlsReady=true;diversityUI_binding=false
-        )
         fn fitLabel control minimum available = (
             local capacity=amax 1 (floor ((available-4)/5.2)),lines=0
             for paragraph in filterString control.text "\n" splitEmptyTokens:true do (
@@ -9722,11 +9501,11 @@ initialRollupState:0x8
             )catch(syncingColorLists=false;throw())
         )
         local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
-        fn captureView = #(modelsUI.open,#(advancedToggle.checked,propertiesToggle.checked),#(sourceContainersUI_containersList.height,sourceUI_plantList.height,diversityUI_strokesList.height,diversityUI_strokeChoices.height))
+        fn captureView = #(modelsUI.open,#(advancedToggle.checked,propertiesToggle.checked),#(sourceContainersUI_containersList.height,sourceUI_plantList.height))
         fn restoreView state = (
             modelsUI.open=state[1]
             advancedToggle.checked=state[2][1];propertiesToggle.checked=state[2][2]
-            sourceContainersUI_containersList.height=state[3][1];sourceUI_plantList.height=state[3][2];diversityUI_strokesList.height=state[3][3];diversityUI_strokeChoices.height=state[3][4]
+            sourceContainersUI_containersList.height=state[3][1];sourceUI_plantList.height=state[3][2]
             true
         )
         fn stopListDrag = (
@@ -9761,7 +9540,7 @@ initialRollupState:0x8
             pen.Dispose()
         )
         fn setupGrips = (
-            for grip in #(sourceContainersUI_containersList_grip,sourceUI_plantList_grip,diversityUI_strokesList_grip,diversityUI_strokeChoices_grip) do (
+            for grip in #(sourceContainersUI_containersList_grip,sourceUI_plantList_grip) do (
                 grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
                 grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
                 grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
@@ -9779,16 +9558,17 @@ initialRollupState:0x8
         on sourceUI_plantList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
         on sourceUI_plantList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
         on sourceUI_plantList_grip Paint sender args do paintListGrip sender args
-        on diversityUI_strokesList_grip MouseDown sender args do beginListDrag sender args diversityUI_strokesList
-        on diversityUI_strokesList_grip MouseMove sender args do moveListDrag sender args
-        on diversityUI_strokesList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
-        on diversityUI_strokesList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
-        on diversityUI_strokesList_grip Paint sender args do paintListGrip sender args
-        on diversityUI_strokeChoices_grip MouseDown sender args do beginListDrag sender args diversityUI_strokeChoices
-        on diversityUI_strokeChoices_grip MouseMove sender args do moveListDrag sender args
-        on diversityUI_strokeChoices_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
-        on diversityUI_strokeChoices_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
-        on diversityUI_strokeChoices_grip Paint sender args do paintListGrip sender args
+        fn fitPairField control available = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
+            for handle in control.hwnd do (
+                local data=windows.getHWNDData handle
+                if data[4]=="CustEdit" do (
+                    local rectangle=windows.getWindowPos handle,position=windows.screenToClient data[2] (arrow.x-fieldWidth) arrow.y
+                    windows.setWindowPos handle position.x position.y fieldWidth rectangle.h true
+                )
+            )
+            true
+        )
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -9898,7 +9678,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
             rowControls=#(heading_1);show=(advancedToggle.checked and (true))
             for c in rowControls do c.visible=show
             if show do (
@@ -10100,18 +9880,507 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(heading_4);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                if y>6 do y+=4
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel heading_4 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(heading_4.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            lastLayoutWidth=widthValue;modelsUI.height=y+4;syncColorLists();true
+        )
+        fn bind layer = (
+            if root==undefined do return false
+            stopListDrag();binding=true;controlsReady=false
+            try (
+                if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
+                obj=owner
+                sourceContainersUI_root=root;sourceContainersUI_owner=owner;sourceContainersUI_panel=panel;sourceContainersUI_controlsReady=controlsReady;sourceContainersUI_binding=binding
+            sourceUI_root=root;sourceUI_owner=owner;sourceUI_panel=panel;sourceUI_controlsReady=controlsReady;sourceUI_binding=binding
+            if owner!=undefined then (sourceContainersUI_bind (root.selectedPaintSet owner);) else (for c in #(sourceContainersUI_modeList,sourceContainersUI_containersList,sourceContainersUI_createContainer,sourceContainersUI_pickContainer,sourceContainersUI_removeContainer,sourceContainersUI_membershipInfo,sourceContainersUI_helpInfo) do c.enabled=false;sourceContainersUI_controlsReady=false)
+            sourceUI_detailsToggle.checked=true;if owner!=undefined then (sourceUI_bind (root.selectedPaintSet owner);) else (for c in #(sourceUI_sourceName,sourceUI_idColor,sourceUI_plantList,sourceUI_selectFromScene,sourceUI_addPlant,sourceUI_addSelected,sourceUI_removePlant,sourceUI_selectPlant,sourceUI_addPoint,sourceUI_addEmpty,sourceUI_replacePoint,sourceUI_groupHeading,sourceUI_existingGroups,sourceUI_groupColor,sourceUI_applyColor,sourceUI_colorHelp,sourceUI_weightSpin,sourceUI_weightHelp,sourceUI_sourceZSpin,sourceUI_sourceScaleSpin,sourceUI_sourceTransformHelp,sourceUI_radiusSourceSpin,sourceUI_followRadiusCheck,sourceUI_showRadiusCheck,sourceUI_forwardAxis,sourceUI_detailsToggle) do c.enabled=false;sourceUI_controlsReady=false)
+                setupGrips();controlsReady=true;binding=false;layout();true
+            )catch(binding=false;controlsReady=false;throw())
+        )
+
+        on propertiesToggle changed value do if controlsReady and not binding and root!=undefined and true do ((layout();if panel!=undefined do panel.rememberViews();true)
+            if controlsReady and root!=undefined do layout()
+        )
+        on advancedToggle changed value do if controlsReady and not binding and root!=undefined and true do ((layout();if panel!=undefined do panel.rememberViews();true)
+            if controlsReady and root!=undefined do layout()
+        )
+        on modelsUI resized size do if controlsReady and not binding and (amax 140 modelsUI.width)!=lastLayoutWidth do layout()
+        on modelsUI open do (panel=this.mainUI;root=undefined;controlsReady=false)
+        on modelsUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;sourceContainersUI_controlsReady=false;sourceContainersUI_root=undefined;sourceContainersUI_owner=undefined;sourceUI_controlsReady=false;sourceUI_root=undefined;sourceUI_owner=undefined;sourceUI_obj=undefined)
+        on modelsUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection modelsUI;panel.rememberViews()))
+    )
+
+    rollout layoutUI "Layout" width:#cmdPanel category:40 autoLayoutOnResize:false (
+        local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
+        local layout,lastLayoutWidth=0
+        radiobuttons diversityUI_diversityRadio "Source assignment" labels:#("Random mix","Clusters","Spline bands","Surface Analyzer") columns:1 pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58)))))
+        label diversityUI_layoutHelp "" pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))) height:36
+        label diversityUI_analyzerStatus "Pick a Surface Analyzer." pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))) height:54
+        button diversityUI_selectAnalyzer "Select" pos:[8,8] width:70 tooltip:"Select the linked Surface Analyzer in the scene." height:22
+        button diversityUI_updateAnalyzer "Update Analyzer" pos:[8,8] width:140 tooltip:"Analyze the linked guide. In Manual mode, use Update scatter afterwards to publish placements." height:22
+        spinner diversityUI_sizeSpin "" range:[0.01,100000,10] type:#worldUnits fieldWidth:58 width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/113.2))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/113.2))))) pos:[8,8] tooltip:"Spatial size of source-color clusters."
+        label diversityUI_sizeSpin_caption "Size: " pos:[6,6] width:(layoutUI.width-12) height:18
+        spinner diversityUI_divSeedSpin "" range:[0,2147483647,42] type:#integer fieldWidth:58 width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/113.2))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/113.2))))) pos:[8,8] tooltip:"Change source assignment randomness without changing the generation seed."
+        label diversityUI_divSeedSpin_caption "Seed: " pos:[6,6] width:(layoutUI.width-12) height:18
+        spinner diversityUI_roughSpin "" range:[0,100,0] fieldWidth:58 width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/149.60000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/149.60000000000002))))) pos:[8,8]
+        label diversityUI_roughSpin_caption "Roughness %: " pos:[6,6] width:(layoutUI.width-12) height:18
+        spinner diversityUI_blurSpin "" range:[0,100,0] fieldWidth:58 width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/149.60000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/149.60000000000002))))) pos:[8,8]
+        label diversityUI_blurSpin_caption "Blur edge %: " pos:[6,6] width:(layoutUI.width-12) height:18
+        spinner diversityUI_noiseSpin "" range:[0,100,0] fieldWidth:58 width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/128.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/128.8))))) pos:[8,8]
+        label diversityUI_noiseSpin_caption "Noise %: " pos:[6,6] width:(layoutUI.width-12) height:18
+        label diversityUI_groupHint "Uses assignment groups, not viewport colors." pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58)))))
+        label diversityUI_fixedHint "Point positions stay fixed." pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58)))))
+        label diversityUI_strokeTitle "Spline bands" pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58)))))
+        dropdownlist diversityUI_pathsDrop "" items:#() pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58)))))
+        label diversityUI_pathsDrop_caption "Paths" pos:[6,6] width:(layoutUI.width-12) height:18
+        dropdownlist diversityUI_analyzerChannel "" items:#("Border","Centerline","Points","Street Side","Edge Border") pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58)))))
+        label diversityUI_analyzerChannel_caption "Analyzer data" pos:[6,6] width:(layoutUI.width-12) height:18
+        pickbutton diversityUI_pickAnalyzer "Pick Surface Analyzer" filter:CyrusAnalyzerFilter pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/127.2))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/127.2))))) tooltip:"Use Surface Analyzer output for bands, rows and fixed anchors." height:22
+        pickbutton diversityUI_pickPath "Add: pick closed line" filter:AminScatterAreaFilter pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/127.2))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/127.2))))) tooltip:"Pick a spline for Line Pattern assignment." height:22
+        button diversityUI_removePath "Remove path" pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/75.2))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/75.2))))) tooltip:"Remove the selected assignment path while keeping the scene spline." height:22
+        listbox diversityUI_strokesList "" items:#() pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))) height:4
+        label diversityUI_strokesList_caption "Bands" pos:[6,6] width:(layoutUI.width-12) height:18
+        button diversityUI_addOutside "Add Outside" pos:[8,8] width:((layoutUI.width-16-((amin 2 (amax 1 (floor ((layoutUI.width-8)/75.2))))-1)*4)/(amin 2 (amax 1 (floor ((layoutUI.width-8)/75.2))))) tooltip:"Add a source-assignment band outside the selected path." height:22
+        button diversityUI_addInside "Add Inside" pos:[8,8] width:((layoutUI.width-16-((amin 2 (amax 1 (floor ((layoutUI.width-8)/75.2))))-1)*4)/(amin 2 (amax 1 (floor ((layoutUI.width-8)/75.2))))) tooltip:"Add a source-assignment band inside the selected path." height:22
+        button diversityUI_removeStrokeButton "Remove band" pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/75.2))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/75.2))))) tooltip:"Remove the selected band and its settings." height:22
+        spinner diversityUI_strokeWidth "" range:[0.001,100000,1] type:#worldUnits pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/113.2))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/113.2))))) fieldWidth:58
+        label diversityUI_strokeWidth_caption "Width:" pos:[6,6] width:(layoutUI.width-12) height:18
+        radiobuttons diversityUI_strokeMode "Assign by" labels:#("Color groups","Source objects") columns:1 pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58)))))
+        multiListBox diversityUI_strokeChoices "" items:#() pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))) height:5
+        label diversityUI_strokeChoices_caption "Ctrl / Shift: select several" pos:[6,6] width:(layoutUI.width-12) height:18
+        spinner diversityUI_strokeScaleMin "" range:[0.001,100,1] pos:[8,8] width:((layoutUI.width-16-((amin 2 (amax 1 (floor ((layoutUI.width-8)/134))))-1)*4)/(amin 2 (amax 1 (floor ((layoutUI.width-8)/134))))) fieldWidth:58
+        label diversityUI_strokeScaleMin_caption "Scale min:" pos:[6,6] width:(layoutUI.width-12) height:18
+        spinner diversityUI_strokeScaleMax "" range:[0.001,100,1] pos:[8,8] width:((layoutUI.width-16-((amin 2 (amax 1 (floor ((layoutUI.width-8)/134))))-1)*4)/(amin 2 (amax 1 (floor ((layoutUI.width-8)/134))))) fieldWidth:58
+        label diversityUI_strokeScaleMax_caption "Scale max:" pos:[6,6] width:(layoutUI.width-12) height:18
+        button diversityUI_refreshGroups "Refresh sources / groups" pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/142.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/142.8))))) tooltip:"Refresh available source color groups for assignment." height:22
+        label diversityUI_strokeHelp "Outside bands: empty. First match wins." pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58)))))
+        spinner diversityUI_edgeOffsetSpin "" range:[-1000000,1000000,0] type:#worldunits pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/154.8))))) fieldWidth:58
+        label diversityUI_edgeOffsetSpin_caption "Offset inward:" pos:[6,6] width:(layoutUI.width-12) height:18
+        spinner diversityUI_edgeAlongSpin "" range:[0,1000000,0] type:#worldunits pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/149.60000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/149.60000000000002))))) fieldWidth:58
+        label diversityUI_edgeAlongSpin_caption "Jitter along:" pos:[6,6] width:(layoutUI.width-12) height:18
+        spinner diversityUI_edgeAcrossSpin "" range:[0,1000000,0] type:#worldunits pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/154.8))))) fieldWidth:58
+        label diversityUI_edgeAcrossSpin_caption "Jitter across:" pos:[6,6] width:(layoutUI.width-12) height:18
+        label diversityUI_edgeRowHelp "Spacing sets count. Jitter 0 = exact." pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))) height:36
+        checkbox diversityUI_keepCornerCheck "Keep corner points" pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/119.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/119.60000000000001)))))
+        spinner diversityUI_cornerAngleSpin "" range:[0,180,45] type:#float pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/128.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/128.8))))) fieldWidth:58
+        label diversityUI_cornerAngleSpin_caption "Min turn:" pos:[6,6] width:(layoutUI.width-12) height:18
+        spinner diversityUI_cornerCountSpin "" range:[1,64,1] type:#integer pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/154.8))))) fieldWidth:58
+        label diversityUI_cornerCountSpin_caption "Points/corner:" pos:[6,6] width:(layoutUI.width-12) height:18
+        label diversityUI_cornerHelp "Turn angle in degrees. 0 = straight." pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))) height:36
+        spinner diversityUI_edgeRotXSpin "" range:[-36000,36000,0] type:#float pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/154.8))))) fieldWidth:58
+        label diversityUI_edgeRotXSpin_caption "Local X (deg):" pos:[6,6] width:(layoutUI.width-12) height:18
+        spinner diversityUI_edgeRotYSpin "" range:[-36000,36000,0] type:#float pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/154.8))))) fieldWidth:58
+        label diversityUI_edgeRotYSpin_caption "Local Y (deg):" pos:[6,6] width:(layoutUI.width-12) height:18
+        spinner diversityUI_edgeRotZSpin "" range:[-36000,36000,0] type:#float pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/154.8))))) fieldWidth:58
+        label diversityUI_edgeRotZSpin_caption "Local Z (deg):" pos:[6,6] width:(layoutUI.width-12) height:18
+        spinner diversityUI_streetStartSpin "" range:[0,1e9,0] type:#worldunits pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/139.2))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/139.2))))) fieldWidth:58
+        label diversityUI_streetStartSpin_caption "Trim start:" pos:[6,6] width:(layoutUI.width-12) height:18
+        spinner diversityUI_streetEndSpin "" range:[0,1e9,0] type:#worldunits pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/128.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/128.8))))) fieldWidth:58
+        label diversityUI_streetEndSpin_caption "Trim end:" pos:[6,6] width:(layoutUI.width-12) height:18
+        spinner diversityUI_centerStreetSpin "" range:[-1e9,1e9,0] type:#worldunits pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/154.8))))) fieldWidth:58
+        label diversityUI_centerStreetSpin_caption "Street offset:" pos:[6,6] width:(layoutUI.width-12) height:18
+        label diversityUI_streetLayoutHelp "Positive offset = away from street. Trim follows path direction." pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))) height:44
+        checkbox diversityUI_faceOutCheck "Face outward" pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/88.4))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/88.4)))))
+        spinner diversityUI_cornerRadiusSpin "" type:#worldunits range:[0,1000000,10] pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/154.8))))) fieldWidth:58
+        label diversityUI_cornerRadiusSpin_caption "Corner radius:" pos:[6,6] width:(layoutUI.width-12) height:18
+        checkbox diversityUI_straightStreet "Straight ends (Street Side)" pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/166.4))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/166.4)))))
+        label heading_0 "Source assignment - layer" pos:[6,6] width:(layoutUI.width-12) height:18
+        dotNetControl diversityUI_strokesList_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8
+        dotNetControl diversityUI_strokeChoices_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8
+        checkbutton advancedToggle "Advanced" pos:[6,6] width:(layoutUI.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
+        local diversityUI_bodyHeight=0
+        local diversityUI_controlsReady=false
+        local diversityUI_root=undefined,diversityUI_owner=undefined,diversityUI_panel=undefined
+        local diversityUI_setSpecific=false
+        local diversityUI_binding=false,
+        diversityUI_obj=undefined,diversityUI_parentView=undefined
+        local diversityUI_boundaryOnly=false
+        local diversityUI_controlsReady=false,diversityUI_strokeExpandedHeight=0
+        local diversityUI_pathRows=#(),diversityUI_strokeRows=#(),diversityUI_choiceValues=#(),diversityUI_restKeys=#(),diversityUI_loadingStroke=false
+        fn diversityUI_syncControls = (diversityUI_diversityRadio.state=diversityUI_obj.diversityMode;diversityUI_sizeSpin.value=diversityUI_obj.diversitySize;diversityUI_divSeedSpin.value=diversityUI_obj.diversitySeed;diversityUI_roughSpin.value=diversityUI_obj.roughness;diversityUI_blurSpin.value=diversityUI_obj.blurryEdge;diversityUI_noiseSpin.value=diversityUI_obj.diversityNoise;)
+        on diversityUI_faceOutCheck changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
+            if diversityUI_analyzerChannel.selection==5 then diversityUI_obj.edgeFaceOut=v else if diversityUI_analyzerChannel.selection==4 then diversityUI_obj.streetFaceOut=v else diversityUI_obj.borderFaceOut=v
+            diversityUI_cornerRadiusSpin.enabled=v;diversityUI_obj.markInputDirty();CyrusViewportRedraw()
+        )
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_cornerRadiusSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
+            if diversityUI_analyzerChannel.selection==5 then diversityUI_obj.edgeCornerRadius=v else if diversityUI_analyzerChannel.selection==4 then diversityUI_obj.streetCornerRadius=v else diversityUI_obj.borderCornerRadius=v
+            diversityUI_obj.markInputDirty();CyrusViewportRedraw()
+        )
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_streetStartSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.streetTrimStart=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_streetEndSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.streetTrimEnd=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_centerStreetSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.centerStreetOffset=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_straightStreet changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.streetStraight=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        fn diversityUI_selectedStroke = (if diversityUI_strokesList.selection>0 and diversityUI_strokesList.selection<=diversityUI_strokeRows.count then diversityUI_strokeRows[diversityUI_strokesList.selection] else 0)
+        fn diversityUI_showStroke = (
+            diversityUI_loadingStroke=true
+            diversityUI_obj.syncStrokes()
+            local edgeVisible=diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==5
+            for c in #(diversityUI_edgeOffsetSpin,diversityUI_edgeAlongSpin,diversityUI_edgeAcrossSpin,diversityUI_edgeRowHelp,diversityUI_keepCornerCheck,diversityUI_cornerAngleSpin,diversityUI_cornerCountSpin,diversityUI_cornerHelp,diversityUI_edgeRotXSpin,diversityUI_edgeRotYSpin,diversityUI_edgeRotZSpin) do c.visible=edgeVisible
+            diversityUI_cornerRadiusSpin.text=if edgeVisible then "Blend radius:" else "Corner radius:"
+            diversityUI_keepCornerCheck.checked=diversityUI_obj.edgeKeepCorners
+            diversityUI_cornerAngleSpin.value=diversityUI_obj.edgeCornerAngle;diversityUI_cornerCountSpin.value=diversityUI_obj.edgeCornerCount
+            diversityUI_cornerAngleSpin.enabled=diversityUI_obj.edgeKeepCorners;diversityUI_cornerCountSpin.enabled=diversityUI_obj.edgeKeepCorners
+            diversityUI_strokeWidth.text=if edgeVisible then "Spacing:" else "Width:"
+            local row=diversityUI_selectedStroke();local active=row>0
+            for c in #(diversityUI_strokeWidth,diversityUI_strokeMode,diversityUI_strokeChoices,diversityUI_strokeScaleMin,diversityUI_strokeScaleMax,diversityUI_removeStrokeButton) do c.enabled=active
+            diversityUI_choiceValues=#();diversityUI_strokeChoices.items=#()
+            for c in #(diversityUI_edgeOffsetSpin,diversityUI_edgeAlongSpin,diversityUI_edgeAcrossSpin,diversityUI_edgeRotXSpin,diversityUI_edgeRotYSpin,diversityUI_edgeRotZSpin) do c.enabled=active
+            if active do (
+                diversityUI_edgeRotXSpin.value=diversityUI_obj.edgeRotX[row]
+                diversityUI_edgeRotYSpin.value=diversityUI_obj.edgeRotY[row]
+                diversityUI_edgeRotZSpin.value=diversityUI_obj.edgeRotZ[row]
+                diversityUI_edgeOffsetSpin.value=diversityUI_obj.edgeOffsets[row];diversityUI_edgeAlongSpin.value=diversityUI_obj.edgeAlong[row];diversityUI_edgeAcrossSpin.value=diversityUI_obj.edgeAcross[row]
+                diversityUI_strokeWidth.value=diversityUI_obj.patternWidths[row];diversityUI_strokeMode.state=diversityUI_obj.strokeModes[row]
+                diversityUI_strokeWidth.enabled=diversityUI_obj.strokeSides[row]!=5
+                diversityUI_strokeScaleMin.value=diversityUI_obj.strokeMin[row];diversityUI_strokeScaleMax.value=diversityUI_obj.strokeMax[row]
+                local labels=#();local selectedRows=#{}
+                if diversityUI_obj.strokeModes[row]==1 then (
+                    for i=1 to diversityUI_obj.sources.count do (
+                        local key=diversityUI_obj.colorKey(diversityUI_obj.sourceColor i)
+                        if findItem diversityUI_choiceValues key==0 do (append diversityUI_choiceValues key;append labels ("#"+(formattedPrint key format:"06X")))
+                    )
+                    local keys=for i=1 to diversityUI_obj.strokeColorRows.count where diversityUI_obj.strokeColorRows[i]==row collect diversityUI_obj.strokeColorKeys[i]
+                    if keys.count==0 do keys=#(diversityUI_obj.patternGroups[row])
+                    for i=1 to diversityUI_choiceValues.count where findItem keys diversityUI_choiceValues[i]>0 do selectedRows[i]=true
+                ) else (
+                    for n in diversityUI_obj.sources where isValidNode n do (append diversityUI_choiceValues n;append labels (diversityUI_obj.sourceLabel (diversityUI_obj.sourceRow n)))
+                    for i=1 to diversityUI_obj.strokeSourceRows.count where diversityUI_obj.strokeSourceRows[i]==row do (
+                        local k=findItem diversityUI_choiceValues diversityUI_obj.strokeSourceNodes[i];if k>0 do selectedRows[k]=true
+                    )
+                )
+                diversityUI_strokeChoices.items=labels;diversityUI_strokeChoices.selection=selectedRows
             )
-            rowControls=#(diversityUI_diversityRadio);show=(advancedToggle.checked and (true))
+            diversityUI_loadingStroke=false
+            if diversityUI_obj.diversityMode>=3 do (
+                local analyzed=diversityUI_obj.diversityMode==4
+                diversityUI_strokeHelp.text=if analyzed then "Width is spread per side; spacing and masks still apply." else "Outside bands: empty. First match wins."
+                local guideReady=if analyzed then isValidNode diversityUI_obj.analyzerNode else diversityUI_pathsDrop.selection>0
+                if not guideReady then diversityUI_strokeHelp.text=if analyzed then "Pick an Analyzer to begin." else "Pick a closed spline to begin."
+                else if diversityUI_strokeRows.count==0 then diversityUI_strokeHelp.text=if analyzed and diversityUI_analyzerChannel.selection==5 then "Add an edge row, then choose models." else "Add a band, then choose models."
+                else if diversityUI_selectedStroke()>0 and diversityUI_strokeChoices.selection.numberSet==0 then diversityUI_strokeHelp.text="Choose models or groups for this band."
+                else if analyzed and diversityUI_analyzerChannel.selection==5 then diversityUI_strokeHelp.text="Spacing controls row count. Amount 0 disables output."
+                else if analyzed and diversityUI_analyzerChannel.selection==3 and diversityUI_obj.strokeSides[diversityUI_selectedStroke()]==5 then diversityUI_strokeHelp.text="Analyzer points control count. Amount 0 disables output."
+            )
+        )
+        fn diversityUI_showPath = (
+            diversityUI_loadingStroke=true
+            local old=diversityUI_strokesList.selection;diversityUI_strokeRows=#();local labels=#();local total=#(0.0,0.0,0.0,0.0,0.0,0.0,0.0)
+            local analyzed=diversityUI_obj.diversityMode==4
+            local path=if analyzed then diversityUI_obj.analyzerNode else (if diversityUI_pathsDrop.selection>0 then diversityUI_pathRows[diversityUI_pathsDrop.selection] else undefined)
+            if isValidNode path do (
+                for i=1 to diversityUI_obj.patternLines.count where diversityUI_obj.patternLines[i]==path and (not analyzed or (diversityUI_analyzerChannel.selection==1 and diversityUI_obj.strokeSides[i]<=2) or (diversityUI_analyzerChannel.selection==2 and diversityUI_obj.strokeSides[i]==3) or (diversityUI_analyzerChannel.selection==3 and (diversityUI_obj.strokeSides[i]==4 or diversityUI_obj.strokeSides[i]==5)) or (diversityUI_analyzerChannel.selection==4 and diversityUI_obj.strokeSides[i]==6) or (diversityUI_analyzerChannel.selection==5 and diversityUI_obj.strokeSides[i]==7)) do (
+                    append diversityUI_strokeRows i
+                    local side=diversityUI_obj.strokeSides[i];local start=total[side];total[side]+=diversityUI_obj.patternWidths[i]
+                    local prefixes=#("Out ","In ","Both ","Radius ","Single ","Street ","Edge ")
+                    append labels (if side==7 then ("Edge "+(diversityUI_strokeRows.count as string)+": spacing "+units.formatValue diversityUI_obj.patternWidths[i]) else (prefixes[side]+(diversityUI_strokeRows.count as string)+": "+units.formatValue start+" - "+units.formatValue total[side]))
+                )
+            )
+            diversityUI_strokesList.items=labels;diversityUI_strokesList.selection=amin (amax 1 old) labels.count
+            diversityUI_addOutside.enabled=isValidNode path;diversityUI_addInside.enabled=isValidNode path and (not analyzed or diversityUI_analyzerChannel.selection!=2);diversityUI_removePath.enabled=isValidNode path
+            diversityUI_loadingStroke=false;diversityUI_showStroke()
+        )
+        fn diversityUI_updateAnalyzerStatus = (
+            local guide=diversityUI_obj.analyzerNode,valid=isValidNode diversityUI_obj.analyzerNode
+            diversityUI_selectAnalyzer.enabled=valid;diversityUI_updateAnalyzer.enabled=valid
+            diversityUI_analyzerStatus.text=if not valid then "Pick an existing Analyzer. Open planar surfaces only." else (
+                local target=if isValidNode guide.surface then guide.surface.name else "Missing surface"
+                local state=if not guide.cyrusEnabled then "Disabled" else if not isValidNode guide.surface then "Missing surface" else if guide.getAnalysisRuns()==0 then "Not analyzed" else if (guide.getLiveStats())[3] then "Update needed" else "Ready"
+                guide.name+"\nSurface: "+target+"\n"+state
+            )
+        )
+        on diversityUI_selectAnalyzer pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
+            local guide=diversityUI_obj.analyzerNode
+            if isValidNode guide do (select guide;max modify mode)
+        )
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_updateAnalyzer pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
+            local savedOwner=diversityUI_obj,guide=diversityUI_obj.analyzerNode
+            if isValidNode guide do try (
+                guide.runAnalysis();savedOwner.markInputDirty()
+                if diversityUI_controlsReady and diversityUI_obj==savedOwner do diversityUI_updateAnalyzerStatus()
+                CyrusViewportRedraw()
+            )catch(if diversityUI_controlsReady and diversityUI_obj==savedOwner do diversityUI_analyzerStatus.text="Analysis failed: "+getCurrentException())
+        )
+            if controlsReady and root!=undefined do layout()
+        )
+        fn diversityUI_updatePattern = (
+            diversityUI_updateAnalyzerStatus()
+            diversityUI_layoutHelp.text=case diversityUI_obj.diversityMode of (
+                1: "Mix models using their weights."
+                2: "Group models into patches. Size controls patch size."
+                3: "Closed spline bands use top-down XY projection."
+                4: "Use the linked Analyzer's published guides."
+            )
+            diversityUI_faceOutCheck.visible=diversityUI_obj.diversityMode==4 and (diversityUI_analyzerChannel.selection==1 or diversityUI_analyzerChannel.selection==4 or diversityUI_analyzerChannel.selection==5)
+            diversityUI_cornerRadiusSpin.visible=diversityUI_faceOutCheck.visible
+            diversityUI_faceOutCheck.checked=if diversityUI_analyzerChannel.selection==5 then diversityUI_obj.edgeFaceOut else if diversityUI_analyzerChannel.selection==4 then diversityUI_obj.streetFaceOut else diversityUI_obj.borderFaceOut
+            diversityUI_cornerRadiusSpin.value=if diversityUI_analyzerChannel.selection==5 then diversityUI_obj.edgeCornerRadius else if diversityUI_analyzerChannel.selection==4 then diversityUI_obj.streetCornerRadius else diversityUI_obj.borderCornerRadius
+            diversityUI_cornerRadiusSpin.enabled=diversityUI_faceOutCheck.checked
+            diversityUI_streetStartSpin.visible=diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==4
+            diversityUI_streetEndSpin.visible=diversityUI_streetStartSpin.visible
+            diversityUI_centerStreetSpin.visible=diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==2
+            diversityUI_streetLayoutHelp.visible=diversityUI_streetStartSpin.visible or diversityUI_centerStreetSpin.visible
+            diversityUI_streetStartSpin.value=diversityUI_obj.streetTrimStart;diversityUI_streetEndSpin.value=diversityUI_obj.streetTrimEnd;diversityUI_centerStreetSpin.value=diversityUI_obj.centerStreetOffset
+            diversityUI_straightStreet.checked=diversityUI_obj.streetStraight;diversityUI_straightStreet.visible=diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==4
+            diversityUI_obj.syncStrokes();local old=diversityUI_pathsDrop.selection
+            local analyzed=diversityUI_obj.diversityMode==4
+            diversityUI_pathRows=for n in diversityUI_obj.patternPaths where isValidNode n and not isProperty n #samplePoints collect n
+            diversityUI_pathsDrop.items=for n in diversityUI_pathRows collect n.name
+            diversityUI_pathsDrop.selection=amin (amax 1 old) diversityUI_pathRows.count
+            diversityUI_pathsDrop.visible=diversityUI_obj.diversityMode==3;diversityUI_pickPath.visible=diversityUI_obj.diversityMode==3
+            diversityUI_analyzerChannel.visible=analyzed;diversityUI_pickAnalyzer.visible=analyzed
+            diversityUI_pickAnalyzer.text=if isValidNode diversityUI_obj.analyzerNode then diversityUI_obj.analyzerNode.name else "Pick Surface Analyzer"
+            diversityUI_removePath.text=if analyzed then "Remove Analyzer" else "Remove path"
+            diversityUI_strokeTitle.text=if analyzed then "Analyzer bands / rows" else "Spline bands"
+            diversityUI_addOutside.text=if not analyzed or diversityUI_analyzerChannel.selection==1 then "Add Outside" else (if diversityUI_analyzerChannel.selection==2 then "Add band" else "Add Radius")
+            diversityUI_addInside.text=if analyzed and diversityUI_analyzerChannel.selection==3 then "Add Single" else "Add Inside"
+            diversityUI_boundaryOnly=analyzed and (diversityUI_analyzerChannel.selection==1 or diversityUI_analyzerChannel.selection==4 or diversityUI_analyzerChannel.selection==5)
+            diversityUI_addOutside.visible=(diversityUI_obj.diversityMode==3 or analyzed) and not diversityUI_boundaryOnly
+            diversityUI_addInside.pos=[if diversityUI_boundaryOnly then 4 else layoutUI.width/2+2,diversityUI_addOutside.pos.y]
+            diversityUI_addInside.width=if diversityUI_boundaryOnly then layoutUI.width-8 else (layoutUI.width-12)/2
+            if diversityUI_boundaryOnly do diversityUI_addInside.text=if diversityUI_analyzerChannel.selection==5 then "Add Edge Row" else "Add band inside"
+            diversityUI_strokeHelp.text=if analyzed and diversityUI_analyzerChannel.selection==5 then "One row along the boundary." else if analyzed then "Width = spread per side." else "Outside bands: empty. First match wins."
+            diversityUI_restKeys=#()
+            for i=1 to diversityUI_obj.sources.count do (local key=diversityUI_obj.colorKey(diversityUI_obj.sourceColor i);if findItem diversityUI_restKeys key==0 do append diversityUI_restKeys key)
+            diversityUI_showPath()
+
+        )
+        on diversityUI_pathsDrop selected i do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do diversityUI_showPath()
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_analyzerChannel selected i do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do diversityUI_updatePattern()
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_pickAnalyzer picked n do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
+            if CyrusAnalyzerFilter n do (diversityUI_obj.analyzerNode=n;diversityUI_obj.markInputDirty();diversityUI_updatePattern();CyrusViewportRedraw())
+        )
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_strokesList selected i do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do diversityUI_showStroke()
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_pickPath picked n do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
+            if isValidNode n and findItem diversityUI_obj.patternPaths n==0 do append diversityUI_obj.patternPaths n
+            diversityUI_updatePattern();diversityUI_pathsDrop.selection=findItem diversityUI_pathRows n;diversityUI_showPath()
+        )
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_removePath pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
+            local path=if diversityUI_obj.diversityMode==4 then diversityUI_obj.analyzerNode else diversityUI_pathRows[diversityUI_pathsDrop.selection]
+            for i=diversityUI_obj.patternLines.count to 1 by -1 where diversityUI_obj.patternLines[i]==path do diversityUI_obj.removeStroke i
+            local k=findItem diversityUI_obj.patternPaths path;if k>0 do deleteItem diversityUI_obj.patternPaths k
+            if diversityUI_obj.diversityMode==4 do diversityUI_obj.analyzerNode=undefined
+            diversityUI_updatePattern();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw()
+        )
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_addOutside pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
+            if diversityUI_obj.diversityMode==4 and (diversityUI_analyzerChannel.selection==1 or diversityUI_analyzerChannel.selection==4 or diversityUI_analyzerChannel.selection==5) do return false
+            local path=if diversityUI_obj.diversityMode==4 then diversityUI_obj.analyzerNode else diversityUI_pathRows[diversityUI_pathsDrop.selection]
+            local types=#(1,3,4)
+            local side=if diversityUI_obj.diversityMode==4 then types[diversityUI_analyzerChannel.selection] else 1
+            diversityUI_obj.addStroke path side:side;diversityUI_showPath();diversityUI_strokesList.selection=diversityUI_strokeRows.count;diversityUI_showStroke();CyrusViewportRedraw()
+        )
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_addInside pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
+            local path=if diversityUI_obj.diversityMode==4 then diversityUI_obj.analyzerNode else diversityUI_pathRows[diversityUI_pathsDrop.selection]
+            local side=if diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==5 then 7 else if diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==4 then 6 else if diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==3 then 5 else 2
+            diversityUI_obj.addStroke path side:side;diversityUI_showPath();diversityUI_strokesList.selection=diversityUI_strokeRows.count;diversityUI_showStroke();CyrusViewportRedraw()
+        )
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_removeStrokeButton pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.removeStroke row;diversityUI_showPath();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_edgeOffsetSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeOffsets[row]=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_edgeAlongSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeAlong[row]=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_edgeAcrossSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeAcross[row]=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_keepCornerCheck changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.edgeKeepCorners=v;diversityUI_cornerAngleSpin.enabled=v;diversityUI_cornerCountSpin.enabled=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_cornerAngleSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.edgeCornerAngle=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_cornerCountSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.edgeCornerCount=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_edgeRotXSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeRotX[row]=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_edgeRotYSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeRotY[row]=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_edgeRotZSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeRotZ[row]=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_strokeWidth changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.patternWidths[row]=v;diversityUI_obj.markInputDirty();diversityUI_showPath();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_strokeMode changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.strokeModes[row]=v;diversityUI_showStroke();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_strokeChoices selectionEnd do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (
+            local row=diversityUI_selectedStroke()
+            if row>0 do diversityUI_obj.setStrokeSelection row diversityUI_obj.strokeModes[row] (for i in diversityUI_strokeChoices.selection collect diversityUI_choiceValues[i])
+            CyrusViewportRedraw()
+        )
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_strokeScaleMin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();diversityUI_obj.strokeMin[row]=v;if v>diversityUI_obj.strokeMax[row] do diversityUI_obj.strokeMax[row]=v;diversityUI_showStroke();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_strokeScaleMax changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();diversityUI_obj.strokeMax[row]=v;if v<diversityUI_obj.strokeMin[row] do diversityUI_obj.strokeMin[row]=v;diversityUI_showStroke();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_refreshGroups pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do diversityUI_updatePattern()
+            if controlsReady and root!=undefined do layout()
+        )
+        fn diversityUI_updateControls = (
+            for c in #(diversityUI_sizeSpin,diversityUI_divSeedSpin,diversityUI_roughSpin,diversityUI_blurSpin,diversityUI_noiseSpin,diversityUI_groupHint,diversityUI_fixedHint) do c.visible=diversityUI_obj.diversityMode==2
+            for c in #(diversityUI_strokeTitle,diversityUI_pathsDrop,diversityUI_analyzerChannel,diversityUI_pickAnalyzer,diversityUI_pickPath,diversityUI_removePath,diversityUI_strokesList,diversityUI_addOutside,diversityUI_addInside,diversityUI_removeStrokeButton,diversityUI_strokeWidth,diversityUI_strokeMode,diversityUI_strokeChoices,diversityUI_strokeScaleMin,diversityUI_strokeScaleMax,diversityUI_refreshGroups,diversityUI_strokeHelp) do c.visible=(diversityUI_obj.diversityMode==3 or diversityUI_obj.diversityMode==4)
+            if diversityUI_strokeExpandedHeight>0 do diversityUI_bodyHeight=if diversityUI_obj.diversityMode>=3 then diversityUI_strokeExpandedHeight else (if diversityUI_obj.diversityMode==2 then 310 else 124)*1.0
+            (CyrusContainerPanel diversityUI_root).layoutPanels()
+        )
+        on diversityUI_diversityRadio changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.diversityMode=v;diversityUI_updateControls();diversityUI_updatePattern();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_sizeSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.diversitySize=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_divSeedSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.diversitySeed=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_roughSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.roughness=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_blurSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.blurryEdge=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_noiseSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.diversityNoise=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        fn diversityUI_bind layer = (
+            local next=layer
+            diversityUI_binding=true;diversityUI_controlsReady=false
+            if diversityUI_obj!=next do (diversityUI_strokesList.selection=0;diversityUI_strokeChoices.selection=0;)
+            diversityUI_obj=next;diversityUI_parentView=(CyrusContainerPanel diversityUI_root)
+            for c in #(diversityUI_diversityRadio,diversityUI_layoutHelp,diversityUI_analyzerStatus,diversityUI_selectAnalyzer,diversityUI_updateAnalyzer,diversityUI_sizeSpin,diversityUI_divSeedSpin,diversityUI_roughSpin,diversityUI_blurSpin,diversityUI_noiseSpin,diversityUI_groupHint,diversityUI_fixedHint,diversityUI_strokeTitle,diversityUI_pathsDrop,diversityUI_analyzerChannel,diversityUI_pickAnalyzer,diversityUI_pickPath,diversityUI_removePath,diversityUI_strokesList,diversityUI_addOutside,diversityUI_addInside,diversityUI_removeStrokeButton,diversityUI_strokeWidth,diversityUI_strokeMode,diversityUI_strokeChoices,diversityUI_strokeScaleMin,diversityUI_strokeScaleMax,diversityUI_refreshGroups,diversityUI_strokeHelp,diversityUI_edgeOffsetSpin,diversityUI_edgeAlongSpin,diversityUI_edgeAcrossSpin,diversityUI_edgeRowHelp,diversityUI_keepCornerCheck,diversityUI_cornerAngleSpin,diversityUI_cornerCountSpin,diversityUI_cornerHelp,diversityUI_edgeRotXSpin,diversityUI_edgeRotYSpin,diversityUI_edgeRotZSpin,diversityUI_streetStartSpin,diversityUI_streetEndSpin,diversityUI_centerStreetSpin,diversityUI_streetLayoutHelp,diversityUI_faceOutCheck,diversityUI_cornerRadiusSpin,diversityUI_straightStreet) do c.enabled=layer!=undefined
+            try (undo off ((diversityUI_diversityRadio.state=diversityUI_obj.diversityMode;diversityUI_sizeSpin.value=diversityUI_obj.diversitySize;diversityUI_divSeedSpin.value=diversityUI_obj.diversitySeed;diversityUI_roughSpin.value=diversityUI_obj.roughness;diversityUI_blurSpin.value=diversityUI_obj.blurryEdge;diversityUI_noiseSpin.value=diversityUI_obj.diversityNoise;diversityUI_controlsReady=true;diversityUI_strokeExpandedHeight=diversityUI_bodyHeight;diversityUI_updateControls();diversityUI_updatePattern()))) catch(diversityUI_binding=false;diversityUI_controlsReady=true;throw())
+            diversityUI_controlsReady=true;diversityUI_binding=false
+        )
+        fn fitLabel control minimum available = (
+            local capacity=amax 1 (floor ((available-4)/5.2)),lines=0
+            for paragraph in filterString control.text "\n" splitEmptyTokens:true do (
+                local occupied=0;lines+=1
+                for word in filterString paragraph " " do (
+                    local size=word.count+(if occupied==0 then 0 else 1)
+                    if occupied>0 and occupied+size>capacity do (lines+=1;occupied=0;size=word.count)
+                    lines+=floor ((amax 0 (size-1))/capacity);occupied=(mod (amax 0 (size-1)) capacity)+1+occupied
+                )
+            )
+            control.height=amax minimum (lines*14+2);true
+        )
+        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
+        fn captureView = #(layoutUI.open,#(advancedToggle.checked),#(diversityUI_strokesList.height,diversityUI_strokeChoices.height))
+        fn restoreView state = (
+            layoutUI.open=state[1]
+            advancedToggle.checked=state[2][1]
+            diversityUI_strokesList.height=state[3][1];diversityUI_strokeChoices.height=state[3][2]
+            true
+        )
+        fn stopListDrag = (
+            local previous=dragGrip
+            dragGrip=undefined;dragList=undefined
+            if previous!=undefined do previous.Capture=false
+            true
+        )
+        fn gripScreenY sender args = (
+            local point=dotNetObject "System.Drawing.Point" args.X args.Y
+            (sender.PointToScreen point).Y
+        )
+        fn beginListDrag sender args target = (
+            if not controlsReady or binding or root==undefined or not sender.Visible or not sender.Enabled do return false
+            if args.Button!=(dotNetClass "System.Windows.Forms.MouseButtons").Left do return false
+            stopListDrag()
+            dragStartY=gripScreenY sender args;dragStartHeight=target.height
+            dragList=target;dragGrip=sender;sender.Capture=true;true
+        )
+        fn moveListDrag sender args = (
+            if dragGrip!=sender or dragList==undefined or not sender.Capture do return false
+            if not controlsReady or binding or root==undefined or not sender.Visible do return stopListDrag()
+            local nextHeight=amin 900 (amax 42 (dragStartHeight+(gripScreenY sender args)-dragStartY))
+            if nextHeight!=dragList.height do (dragList.height=nextHeight;layout();if panel!=undefined do panel.rememberViews();true)
+            true
+        )
+        fn paintListGrip sender args = (
+            local pen=dotNetObject "System.Drawing.Pen" ((dotNetClass "System.Drawing.Color").FromArgb 135 135 135)
+            local center=(sender.ClientSize.Width/2) as integer
+            args.Graphics.DrawLine pen (center-10) 3 (center+10) 3
+            args.Graphics.DrawLine pen (center-10) 5 (center+10) 5
+            pen.Dispose()
+        )
+        fn setupGrips = (
+            for grip in #(diversityUI_strokesList_grip,diversityUI_strokeChoices_grip) do (
+                grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
+                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
+                grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
+                grip.TabStop=false
+            )
+            true
+        )
+        on diversityUI_strokesList_grip MouseDown sender args do beginListDrag sender args diversityUI_strokesList
+        on diversityUI_strokesList_grip MouseMove sender args do moveListDrag sender args
+        on diversityUI_strokesList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
+        on diversityUI_strokesList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on diversityUI_strokesList_grip Paint sender args do paintListGrip sender args
+        on diversityUI_strokeChoices_grip MouseDown sender args do beginListDrag sender args diversityUI_strokeChoices
+        on diversityUI_strokeChoices_grip MouseMove sender args do moveListDrag sender args
+        on diversityUI_strokeChoices_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
+        on diversityUI_strokeChoices_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on diversityUI_strokeChoices_grip Paint sender args do paintListGrip sender args
+        fn fitPairField control available = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
+            for handle in control.hwnd do (
+                local data=windows.getHWNDData handle
+                if data[4]=="CustEdit" do (
+                    local rectangle=windows.getWindowPos handle,position=windows.screenToClient data[2] (arrow.x-fieldWidth) arrow.y
+                    windows.setWindowPos handle position.x position.y fieldWidth rectangle.h true
+                )
+            )
+            true
+        )
+        fn fitWidth control available = (
+            if isProperty control #width then control.width=available
+            else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
+                local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
+                if rectangle.w!=target do (
+                    local data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y target rectangle.h true
+                )
+            )
+            true
+        )
+        fn layout = (
+            local widthValue=amax 140 layoutUI.width,y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
+            rowControls=#(diversityUI_diversityRadio);show=(true and (true))
             for c in rowControls do c.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
@@ -10120,7 +10389,17 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(diversityUI_sizeSpin);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==2))
+            rowControls=#(diversityUI_layoutHelp);show=(true and (true))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel diversityUI_layoutHelp 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(diversityUI_layoutHelp.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_sizeSpin);show=(true and (diversityUI_diversityRadio.state==2))
             for c in rowControls do c.visible=show
             diversityUI_sizeSpin_caption.visible=show
             if show do (
@@ -10132,17 +10411,7 @@ initialRollupState:0x8
                 if not stackedCaption then (diversityUI_sizeSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_sizeSpin_caption.width=cellWidth-78) else (diversityUI_sizeSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_sizeSpin_caption.width=cellWidth);diversityUI_sizeSpin_caption.enabled=diversityUI_sizeSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(diversityUI_strokeTitle);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel diversityUI_strokeTitle 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(diversityUI_strokeTitle.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_divSeedSpin);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==2))
+            rowControls=#(diversityUI_divSeedSpin);show=(true and (diversityUI_diversityRadio.state==2))
             for c in rowControls do c.visible=show
             diversityUI_divSeedSpin_caption.visible=show
             if show do (
@@ -10154,7 +10423,17 @@ initialRollupState:0x8
                 if not stackedCaption then (diversityUI_divSeedSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_divSeedSpin_caption.width=cellWidth-78) else (diversityUI_divSeedSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_divSeedSpin_caption.width=cellWidth);diversityUI_divSeedSpin_caption.enabled=diversityUI_divSeedSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(diversityUI_pathsDrop);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==3))
+            rowControls=#(diversityUI_groupHint);show=(true and (diversityUI_diversityRadio.state==2))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel diversityUI_groupHint 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(diversityUI_groupHint.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_pathsDrop);show=(true and (diversityUI_diversityRadio.state==3))
             for c in rowControls do c.visible=show
             diversityUI_pathsDrop_caption.visible=show
             if show do (
@@ -10166,7 +10445,44 @@ initialRollupState:0x8
                 diversityUI_pathsDrop_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_pathsDrop_caption.width=cellWidth;diversityUI_pathsDrop_caption.enabled=diversityUI_pathsDrop.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(diversityUI_analyzerChannel);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==4))
+            rowControls=#(diversityUI_pickPath);show=(true and (diversityUI_diversityRadio.state==3))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/127.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_pickAnalyzer);show=(true and (diversityUI_diversityRadio.state==4))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/127.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_analyzerStatus);show=(true and (diversityUI_diversityRadio.state==4))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel diversityUI_analyzerStatus 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(diversityUI_analyzerStatus.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_selectAnalyzer,diversityUI_updateAnalyzer);show=(true and (diversityUI_diversityRadio.state==4))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/96))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_analyzerChannel);show=(true and (diversityUI_diversityRadio.state==4))
             for c in rowControls do c.visible=show
             diversityUI_analyzerChannel_caption.visible=show
             if show do (
@@ -10176,6 +10492,149 @@ initialRollupState:0x8
                 rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 diversityUI_analyzerChannel_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_analyzerChannel_caption.width=cellWidth;diversityUI_analyzerChannel_caption.enabled=diversityUI_analyzerChannel.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_removePath);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/75.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_strokeTitle);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel diversityUI_strokeTitle 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(diversityUI_strokeTitle.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_strokesList);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            diversityUI_strokesList_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel diversityUI_strokesList_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(diversityUI_strokesList_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(diversityUI_strokesList.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                diversityUI_strokesList_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokesList_caption.width=cellWidth;diversityUI_strokesList_caption.enabled=diversityUI_strokesList.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_strokesList_grip);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=8+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_addOutside,diversityUI_addInside);show=(true and (diversityUI_diversityRadio.state==3 or (diversityUI_diversityRadio.state==4 and (diversityUI_analyzerChannel.selection==2 or diversityUI_analyzerChannel.selection==3))))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/75.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_removeStrokeButton);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/75.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_strokeWidth);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            diversityUI_strokeWidth_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/113.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel diversityUI_strokeWidth_caption 18 cellWidth
+                stackedCaption=cellWidth<109.2;captionHeight=amax 0 (if stackedCaption then (amax #(diversityUI_strokeWidth_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (diversityUI_strokeWidth_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_strokeWidth_caption.width=cellWidth-78) else (diversityUI_strokeWidth_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokeWidth_caption.width=cellWidth);diversityUI_strokeWidth_caption.enabled=diversityUI_strokeWidth.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_strokeMode);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(58))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_strokeChoices);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            diversityUI_strokeChoices_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel diversityUI_strokeChoices_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(diversityUI_strokeChoices_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(diversityUI_strokeChoices.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                diversityUI_strokeChoices_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokeChoices_caption.width=cellWidth;diversityUI_strokeChoices_caption.enabled=diversityUI_strokeChoices.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_strokeChoices_grip);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=8+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_strokeScaleMin,diversityUI_strokeScaleMax);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            diversityUI_strokeScaleMin_caption.visible=show;diversityUI_strokeScaleMax_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/134))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel diversityUI_strokeScaleMin_caption 18 cellWidth;fitLabel diversityUI_strokeScaleMax_caption 18 cellWidth
+                stackedCaption=cellWidth<130;captionHeight=amax 0 (if stackedCaption then (amax #(diversityUI_strokeScaleMin_caption.height,diversityUI_strokeScaleMax_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (diversityUI_strokeScaleMin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_strokeScaleMin_caption.width=cellWidth-78) else (diversityUI_strokeScaleMin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokeScaleMin_caption.width=cellWidth);diversityUI_strokeScaleMin_caption.enabled=diversityUI_strokeScaleMin.enabled;if not stackedCaption then (diversityUI_strokeScaleMax_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];diversityUI_strokeScaleMax_caption.width=cellWidth-78) else (diversityUI_strokeScaleMax_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];diversityUI_strokeScaleMax_caption.width=cellWidth);diversityUI_strokeScaleMax_caption.enabled=diversityUI_strokeScaleMax.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_refreshGroups);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/142.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_strokeHelp);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel diversityUI_strokeHelp 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(diversityUI_strokeHelp.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            rowControls=#(heading_0);show=(advancedToggle.checked and (true))
+            for c in rowControls do c.visible=show
+            if show do (
+                if y>6 do y+=4
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel heading_0 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(heading_0.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(diversityUI_roughSpin);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==2))
@@ -10202,24 +10661,6 @@ initialRollupState:0x8
                 if not stackedCaption then (diversityUI_blurSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_blurSpin_caption.width=cellWidth-78) else (diversityUI_blurSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_blurSpin_caption.width=cellWidth);diversityUI_blurSpin_caption.enabled=diversityUI_blurSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(diversityUI_pickAnalyzer);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==4))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/127.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_pickPath);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==3))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/127.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
             rowControls=#(diversityUI_noiseSpin);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==2))
             for c in rowControls do c.visible=show
             diversityUI_noiseSpin_caption.visible=show
@@ -10232,46 +10673,6 @@ initialRollupState:0x8
                 if not stackedCaption then (diversityUI_noiseSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_noiseSpin_caption.width=cellWidth-78) else (diversityUI_noiseSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_noiseSpin_caption.width=cellWidth);diversityUI_noiseSpin_caption.enabled=diversityUI_noiseSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(diversityUI_removePath);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/75.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_groupHint);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==2))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel diversityUI_groupHint 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(diversityUI_groupHint.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_strokesList);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            diversityUI_strokesList_caption.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel diversityUI_strokesList_caption 18 cellWidth
-                stackedCaption=false;captionHeight=amax (amax #(diversityUI_strokesList_caption.height)) (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(diversityUI_strokesList.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                diversityUI_strokesList_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokesList_caption.width=cellWidth;diversityUI_strokesList_caption.enabled=diversityUI_strokesList.enabled
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_strokesList_grip);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=8+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
             rowControls=#(diversityUI_fixedHint);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==2))
             for c in rowControls do c.visible=show
             if show do (
@@ -10279,118 +10680,6 @@ initialRollupState:0x8
                 fitLabel diversityUI_fixedHint 18 cellWidth
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(diversityUI_fixedHint.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_addOutside);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==3 or (diversityUI_diversityRadio.state==4 and (diversityUI_analyzerChannel.selection==2 or diversityUI_analyzerChannel.selection==3))))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/75.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_addInside);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/70))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_removeStrokeButton);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/85.60000000000001))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_strokeWidth);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            diversityUI_strokeWidth_caption.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/113.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel diversityUI_strokeWidth_caption 18 cellWidth
-                stackedCaption=cellWidth<109.2;captionHeight=amax 0 (if stackedCaption then (amax #(diversityUI_strokeWidth_caption.height)) else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                if not stackedCaption then (diversityUI_strokeWidth_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_strokeWidth_caption.width=cellWidth-78) else (diversityUI_strokeWidth_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokeWidth_caption.width=cellWidth);diversityUI_strokeWidth_caption.enabled=diversityUI_strokeWidth.enabled
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_strokeMode);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(58))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_strokeChoices);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            diversityUI_strokeChoices_caption.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel diversityUI_strokeChoices_caption 18 cellWidth
-                stackedCaption=false;captionHeight=amax (amax #(diversityUI_strokeChoices_caption.height)) (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(diversityUI_strokeChoices.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                diversityUI_strokeChoices_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokeChoices_caption.width=cellWidth;diversityUI_strokeChoices_caption.enabled=diversityUI_strokeChoices.enabled
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_strokeChoices_grip);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=8+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_strokeScaleMin);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            diversityUI_strokeScaleMin_caption.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/134))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel diversityUI_strokeScaleMin_caption 18 cellWidth
-                stackedCaption=cellWidth<130;captionHeight=amax 0 (if stackedCaption then (amax #(diversityUI_strokeScaleMin_caption.height)) else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                if not stackedCaption then (diversityUI_strokeScaleMin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_strokeScaleMin_caption.width=cellWidth-78) else (diversityUI_strokeScaleMin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokeScaleMin_caption.width=cellWidth);diversityUI_strokeScaleMin_caption.enabled=diversityUI_strokeScaleMin.enabled
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_strokeScaleMax);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            diversityUI_strokeScaleMax_caption.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/134))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel diversityUI_strokeScaleMax_caption 18 cellWidth
-                stackedCaption=cellWidth<130;captionHeight=amax 0 (if stackedCaption then (amax #(diversityUI_strokeScaleMax_caption.height)) else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                if not stackedCaption then (diversityUI_strokeScaleMax_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_strokeScaleMax_caption.width=cellWidth-78) else (diversityUI_strokeScaleMax_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokeScaleMax_caption.width=cellWidth);diversityUI_strokeScaleMax_caption.enabled=diversityUI_strokeScaleMax.enabled
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_refreshGroups);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/142.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_strokeHelp);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel diversityUI_strokeHelp 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(diversityUI_strokeHelp.height))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
@@ -10595,7 +10884,7 @@ initialRollupState:0x8
                 if not stackedCaption then (diversityUI_edgeRotZSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_edgeRotZSpin_caption.width=cellWidth-78) else (diversityUI_edgeRotZSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_edgeRotZSpin_caption.width=cellWidth);diversityUI_edgeRotZSpin_caption.enabled=diversityUI_edgeRotZSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            lastLayoutWidth=widthValue;modelsUI.height=y+4;syncColorLists();true
+            lastLayoutWidth=widthValue;layoutUI.height=y+4;true
         )
         fn bind layer = (
             if root==undefined do return false
@@ -10603,29 +10892,23 @@ initialRollupState:0x8
             try (
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
-                sourceContainersUI_root=root;sourceContainersUI_owner=owner;sourceContainersUI_panel=panel;sourceContainersUI_controlsReady=controlsReady;sourceContainersUI_binding=binding
-            sourceUI_root=root;sourceUI_owner=owner;sourceUI_panel=panel;sourceUI_controlsReady=controlsReady;sourceUI_binding=binding
-            diversityUI_root=root;diversityUI_owner=owner;diversityUI_panel=panel;diversityUI_controlsReady=controlsReady;diversityUI_binding=binding
-            if owner!=undefined then (sourceContainersUI_bind (root.selectedPaintSet owner);) else (for c in #(sourceContainersUI_modeList,sourceContainersUI_containersList,sourceContainersUI_createContainer,sourceContainersUI_pickContainer,sourceContainersUI_removeContainer,sourceContainersUI_membershipInfo,sourceContainersUI_helpInfo) do c.enabled=false;sourceContainersUI_controlsReady=false)
-            sourceUI_detailsToggle.checked=true;if owner!=undefined then (sourceUI_bind (root.selectedPaintSet owner);) else (for c in #(sourceUI_sourceName,sourceUI_idColor,sourceUI_plantList,sourceUI_selectFromScene,sourceUI_addPlant,sourceUI_addSelected,sourceUI_removePlant,sourceUI_selectPlant,sourceUI_addPoint,sourceUI_addEmpty,sourceUI_replacePoint,sourceUI_groupHeading,sourceUI_existingGroups,sourceUI_groupColor,sourceUI_applyColor,sourceUI_colorHelp,sourceUI_weightSpin,sourceUI_weightHelp,sourceUI_sourceZSpin,sourceUI_sourceScaleSpin,sourceUI_sourceTransformHelp,sourceUI_radiusSourceSpin,sourceUI_followRadiusCheck,sourceUI_showRadiusCheck,sourceUI_forwardAxis,sourceUI_detailsToggle) do c.enabled=false;sourceUI_controlsReady=false)
-            if owner!=undefined then (diversityUI_bind owner;) else (for c in #(diversityUI_diversityRadio,diversityUI_sizeSpin,diversityUI_divSeedSpin,diversityUI_roughSpin,diversityUI_blurSpin,diversityUI_noiseSpin,diversityUI_groupHint,diversityUI_fixedHint,diversityUI_strokeTitle,diversityUI_pathsDrop,diversityUI_analyzerChannel,diversityUI_pickAnalyzer,diversityUI_pickPath,diversityUI_removePath,diversityUI_strokesList,diversityUI_addOutside,diversityUI_addInside,diversityUI_removeStrokeButton,diversityUI_strokeWidth,diversityUI_strokeMode,diversityUI_strokeChoices,diversityUI_strokeScaleMin,diversityUI_strokeScaleMax,diversityUI_refreshGroups,diversityUI_strokeHelp,diversityUI_edgeOffsetSpin,diversityUI_edgeAlongSpin,diversityUI_edgeAcrossSpin,diversityUI_edgeRowHelp,diversityUI_keepCornerCheck,diversityUI_cornerAngleSpin,diversityUI_cornerCountSpin,diversityUI_cornerHelp,diversityUI_edgeRotXSpin,diversityUI_edgeRotYSpin,diversityUI_edgeRotZSpin,diversityUI_streetStartSpin,diversityUI_streetEndSpin,diversityUI_centerStreetSpin,diversityUI_streetLayoutHelp,diversityUI_faceOutCheck,diversityUI_cornerRadiusSpin,diversityUI_straightStreet) do c.enabled=false;diversityUI_controlsReady=false)
+                diversityUI_root=root;diversityUI_owner=owner;diversityUI_panel=panel;diversityUI_controlsReady=controlsReady;diversityUI_binding=binding
+            if owner!=undefined then (diversityUI_bind owner;) else (for c in #(diversityUI_diversityRadio,diversityUI_layoutHelp,diversityUI_analyzerStatus,diversityUI_selectAnalyzer,diversityUI_updateAnalyzer,diversityUI_sizeSpin,diversityUI_divSeedSpin,diversityUI_roughSpin,diversityUI_blurSpin,diversityUI_noiseSpin,diversityUI_groupHint,diversityUI_fixedHint,diversityUI_strokeTitle,diversityUI_pathsDrop,diversityUI_analyzerChannel,diversityUI_pickAnalyzer,diversityUI_pickPath,diversityUI_removePath,diversityUI_strokesList,diversityUI_addOutside,diversityUI_addInside,diversityUI_removeStrokeButton,diversityUI_strokeWidth,diversityUI_strokeMode,diversityUI_strokeChoices,diversityUI_strokeScaleMin,diversityUI_strokeScaleMax,diversityUI_refreshGroups,diversityUI_strokeHelp,diversityUI_edgeOffsetSpin,diversityUI_edgeAlongSpin,diversityUI_edgeAcrossSpin,diversityUI_edgeRowHelp,diversityUI_keepCornerCheck,diversityUI_cornerAngleSpin,diversityUI_cornerCountSpin,diversityUI_cornerHelp,diversityUI_edgeRotXSpin,diversityUI_edgeRotYSpin,diversityUI_edgeRotZSpin,diversityUI_streetStartSpin,diversityUI_streetEndSpin,diversityUI_centerStreetSpin,diversityUI_streetLayoutHelp,diversityUI_faceOutCheck,diversityUI_cornerRadiusSpin,diversityUI_straightStreet) do c.enabled=false;diversityUI_controlsReady=false)
                 setupGrips();controlsReady=true;binding=false;layout();true
             )catch(binding=false;controlsReady=false;throw())
         )
 
-        on propertiesToggle changed value do if controlsReady and not binding and root!=undefined and true do ((layout();if panel!=undefined do panel.rememberViews();true)
-            if controlsReady and root!=undefined do layout()
-        )
+
         on advancedToggle changed value do if controlsReady and not binding and root!=undefined and true do ((layout();if panel!=undefined do panel.rememberViews();true)
             if controlsReady and root!=undefined do layout()
         )
-        on modelsUI resized size do if controlsReady and not binding and (amax 140 modelsUI.width)!=lastLayoutWidth do layout()
-        on modelsUI open do (panel=this.mainUI;root=undefined;controlsReady=false)
-        on modelsUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;sourceContainersUI_controlsReady=false;sourceContainersUI_root=undefined;sourceContainersUI_owner=undefined;sourceUI_controlsReady=false;sourceUI_root=undefined;sourceUI_owner=undefined;sourceUI_obj=undefined;diversityUI_controlsReady=false;diversityUI_root=undefined;diversityUI_owner=undefined;diversityUI_obj=undefined)
-        on modelsUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection modelsUI;panel.rememberViews()))
+        on layoutUI resized size do if controlsReady and not binding and (amax 140 layoutUI.width)!=lastLayoutWidth do layout()
+        on layoutUI open do (panel=this.mainUI;root=undefined;controlsReady=false)
+        on layoutUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;diversityUI_controlsReady=false;diversityUI_root=undefined;diversityUI_owner=undefined;diversityUI_obj=undefined)
+        on layoutUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection layoutUI;panel.rememberViews()))
     )
 
-    rollout populationUI "Amount" width:#cmdPanel category:40 autoLayoutOnResize:false (
+    rollout populationUI "Amount" width:#cmdPanel category:50 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
         local layout,lastLayoutWidth=0
         radiobuttons distributionUI_modeRadio "Method" labels:#("Random","Texture Density") columns:2 pos:[8,8] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58)))))
@@ -10783,6 +11066,17 @@ initialRollupState:0x8
             true
         )
 
+        fn fitPairField control available = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
+            for handle in control.hwnd do (
+                local data=windows.getHWNDData handle
+                if data[4]=="CustEdit" do (
+                    local rectangle=windows.getWindowPos handle,position=windows.screenToClient data[2] (arrow.x-fieldWidth) arrow.y
+                    windows.setWindowPos handle position.x position.y fieldWidth rectangle.h true
+                )
+            )
+            true
+        )
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -10852,7 +11146,7 @@ initialRollupState:0x8
                 if not stackedCaption then (distributionUI_seedSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];distributionUI_seedSpin_caption.width=cellWidth-78) else (distributionUI_seedSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_seedSpin_caption.width=cellWidth);distributionUI_seedSpin_caption.enabled=distributionUI_seedSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
             rowControls=#(heading_1);show=(advancedToggle.checked and (true))
             for c in rowControls do c.visible=show
             if show do (
@@ -11013,7 +11307,7 @@ initialRollupState:0x8
         on populationUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection populationUI;panel.rememberViews()))
     )
 
-    rollout coverageUI "Painting" width:#cmdPanel category:50 autoLayoutOnResize:false (
+    rollout coverageUI "Painting" width:#cmdPanel category:60 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
         local layout,lastLayoutWidth=0
         checkbox setsUI_paintedCheck "Use Paint Areas" pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/104))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/104))))) tooltip:"Restrict this layer to its painted areas. Turn off to scatter across all its surfaces."
@@ -11234,6 +11528,17 @@ initialRollupState:0x8
             true
         )
 
+        fn fitPairField control available = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
+            for handle in control.hwnd do (
+                local data=windows.getHWNDData handle
+                if data[4]=="CustEdit" do (
+                    local rectangle=windows.getWindowPos handle,position=windows.screenToClient data[2] (arrow.x-fieldWidth) arrow.y
+                    windows.setWindowPos handle position.x position.y fieldWidth rectangle.h true
+                )
+            )
+            true
+        )
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -11397,7 +11702,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
             rowControls=#(heading_0);show=(advancedToggle.checked and (true))
             for c in rowControls do c.visible=show
             if show do (
@@ -11479,7 +11784,7 @@ initialRollupState:0x8
         on coverageUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection coverageUI;panel.rememberViews()))
     )
 
-    rollout areasUI "Include / exclude areas" width:#cmdPanel category:60 autoLayoutOnResize:false (
+    rollout areasUI "Include / exclude areas" width:#cmdPanel category:70 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
         local layout,lastLayoutWidth=0
         multiListBox areaUI_areaList "" items:#() pos:[8,8] width:((areasUI.width-16-((amin 1 (amax 1 (floor ((areasUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI.width-8)/58))))) height:6
@@ -11759,6 +12064,17 @@ initialRollupState:0x8
         on areaUI_areaList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
         on areaUI_areaList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
         on areaUI_areaList_grip Paint sender args do paintListGrip sender args
+        fn fitPairField control available = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
+            for handle in control.hwnd do (
+                local data=windows.getHWNDData handle
+                if data[4]=="CustEdit" do (
+                    local rectangle=windows.getWindowPos handle,position=windows.screenToClient data[2] (arrow.x-fieldWidth) arrow.y
+                    windows.setWindowPos handle position.x position.y fieldWidth rectangle.h true
+                )
+            )
+            true
+        )
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -11842,7 +12158,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
             rowControls=#(heading_1);show=(advancedToggle.checked and (true))
             for c in rowControls do c.visible=show
             if show do (
@@ -12132,58 +12448,76 @@ initialRollupState:0x8
         on areasUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection areasUI;panel.rememberViews()))
     )
 
-    rollout transformsUI "Transforms" width:#cmdPanel category:70 autoLayoutOnResize:false (
+    rollout transformsUI "Transforms" width:#cmdPanel category:80 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
         local layout,lastLayoutWidth=0
         label randomUI_rotTitle "Rotation (degrees)" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/58)))))
-        label randomUI_rotMinTitle "Min" pos:[8,8] width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/58)))))
-        label randomUI_rotMaxTitle "Max" pos:[8,8] width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/58)))))
+        label randomUI_rotMinTitle "Min" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/58)))))
+        label randomUI_rotMaxTitle "Max" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/58)))))
         label randomUI_rotXLabel "X" pos:[8,8] width:12
-        spinner randomUI_rotXMinSpin "" range:[-360,360,0]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/74)))))
-        spinner randomUI_rotXMaxSpin "" range:[-360,360,0]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/74)))))
+        spinner randomUI_rotXMinSpin "" range:[-360,360,0]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_rotXMinSpin_caption "X Min" pos:[6,6] width:(transformsUI.width-12) height:18
+        spinner randomUI_rotXMaxSpin "" range:[-360,360,0]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_rotXMaxSpin_caption "X Max" pos:[6,6] width:(transformsUI.width-12) height:18
         label randomUI_rotYLabel "Y" pos:[8,8] width:12
-        spinner randomUI_rotYMinSpin "" range:[-360,360,0]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/74)))))
-        spinner randomUI_rotYMaxSpin "" range:[-360,360,0]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/74)))))
+        spinner randomUI_rotYMinSpin "" range:[-360,360,0]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_rotYMinSpin_caption "Y Min" pos:[6,6] width:(transformsUI.width-12) height:18
+        spinner randomUI_rotYMaxSpin "" range:[-360,360,0]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_rotYMaxSpin_caption "Y Max" pos:[6,6] width:(transformsUI.width-12) height:18
         label randomUI_rotZLabel "Z" pos:[8,8] width:12
-        spinner randomUI_rotZMinSpin "" range:[-360,360,0]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-(3-1)*4)/3)
-        spinner randomUI_rotZMaxSpin "" range:[-360,360,360]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-(3-1)*4)/3)
+        spinner randomUI_rotZMinSpin "" range:[-360,360,0]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_rotZMinSpin_caption "Z Min" pos:[6,6] width:(transformsUI.width-12) height:18
+        spinner randomUI_rotZMaxSpin "" range:[-360,360,360]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_rotZMaxSpin_caption "Z Max" pos:[6,6] width:(transformsUI.width-12) height:18
         label randomUI_sclTitle "Scale (multiplier)" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/58)))))
         label randomUI_sclMinTitle "Min" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/58)))))
         label randomUI_sclMaxTitle "Max" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/58)))))
         label randomUI_sclXLabel "X" pos:[8,8] width:12
-        spinner randomUI_sclXMinSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/74)))))
-        spinner randomUI_sclXMaxSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/74)))))
+        spinner randomUI_sclXMinSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_sclXMinSpin_caption "X Min" pos:[6,6] width:(transformsUI.width-12) height:18
+        spinner randomUI_sclXMaxSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_sclXMaxSpin_caption "X Max" pos:[6,6] width:(transformsUI.width-12) height:18
         label randomUI_sclYLabel "Y" pos:[8,8] width:12
-        spinner randomUI_sclYMinSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/74)))))
-        spinner randomUI_sclYMaxSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/74)))))
+        spinner randomUI_sclYMinSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_sclYMinSpin_caption "Y Min" pos:[6,6] width:(transformsUI.width-12) height:18
+        spinner randomUI_sclYMaxSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_sclYMaxSpin_caption "Y Max" pos:[6,6] width:(transformsUI.width-12) height:18
         label randomUI_sclZLabel "Z" pos:[8,8] width:12
-        spinner randomUI_sclZMinSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/74)))))
-        spinner randomUI_sclZMaxSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/74)))))
+        spinner randomUI_sclZMinSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_sclZMinSpin_caption "Z Min" pos:[6,6] width:(transformsUI.width-12) height:18
+        spinner randomUI_sclZMaxSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_sclZMaxSpin_caption "Z Max" pos:[6,6] width:(transformsUI.width-12) height:18
         label randomUI_wholeTitle "Whole Scale (uniform)" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/58)))))
-        label randomUI_wholeMinTitle "Min" pos:[8,8] width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/58)))))
-        label randomUI_wholeMaxTitle "Max" pos:[8,8] width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/58)))))
-        spinner randomUI_wholeMinSpin "" range:[0.001,1000,1] scale:0.01 pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/74)))))
-        spinner randomUI_wholeMaxSpin "" range:[0.001,1000,1] scale:0.01 pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/74)))))
+        label randomUI_wholeMinTitle "Min" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/58)))))
+        label randomUI_wholeMaxTitle "Max" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/58)))))
+        spinner randomUI_wholeMinSpin "" range:[0.001,1000,1] scale:0.01 pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/97.6))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/97.6)))))
+        label randomUI_wholeMinSpin_caption "Min" pos:[6,6] width:(transformsUI.width-12) height:18
+        spinner randomUI_wholeMaxSpin "" range:[0.001,1000,1] scale:0.01 pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/97.6))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/97.6)))))
+        label randomUI_wholeMaxSpin_caption "Max" pos:[6,6] width:(transformsUI.width-12) height:18
         label randomUI_movTitle "Movement (world units)" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/58)))))
         label randomUI_movMinTitle "Min" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/58)))))
         label randomUI_movMaxTitle "Max" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/58)))))
         label randomUI_movXLabel "X" pos:[8,8] width:12
-        spinner randomUI_movXMinSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/74)))))
-        spinner randomUI_movXMaxSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/74)))))
+        spinner randomUI_movXMinSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_movXMinSpin_caption "X Min" pos:[6,6] width:(transformsUI.width-12) height:18
+        spinner randomUI_movXMaxSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_movXMaxSpin_caption "X Max" pos:[6,6] width:(transformsUI.width-12) height:18
         label randomUI_movYLabel "Y" pos:[8,8] width:12
-        spinner randomUI_movYMinSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/74)))))
-        spinner randomUI_movYMaxSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/74)))))
+        spinner randomUI_movYMinSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_movYMinSpin_caption "Y Min" pos:[6,6] width:(transformsUI.width-12) height:18
+        spinner randomUI_movYMaxSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_movYMaxSpin_caption "Y Max" pos:[6,6] width:(transformsUI.width-12) height:18
         label randomUI_movZLabel "Z" pos:[8,8] width:12
-        spinner randomUI_movZMinSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/74)))))
-        spinner randomUI_movZMaxSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/74)))))
+        spinner randomUI_movZMinSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_movZMinSpin_caption "Z Min" pos:[6,6] width:(transformsUI.width-12) height:18
+        spinner randomUI_movZMaxSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_movZMaxSpin_caption "Z Max" pos:[6,6] width:(transformsUI.width-12) height:18
         checkbox randomUI_projectCheck "Keep on surface" pos:[8,8] width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/104))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/104))))) tooltip:"Project random movement back onto the receiving surface."
         checkbox randomUI_alignCheck "Align to normal" pos:[8,8] width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/104))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/104))))) tooltip:"Align instances to the receiving surface normal."
         button randomUI_resetRotation "Reset rotation" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/90.8))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/90.8))))) height:22 tooltip:"Reset only this layer's random rotation limits. Undo is available."
         button randomUI_resetScale "Reset XYZ scale" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/96))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/96))))) height:22 tooltip:"Reset only this layer's separate X, Y and Z scale limits."
         button randomUI_resetWholeScale "Reset whole scale" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/106.4))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/106.4))))) height:22 tooltip:"Reset only this layer's uniform scale multiplier."
         button randomUI_resetMovement "Reset movement" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/90.8))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/90.8))))) height:22 tooltip:"Reset only this layer's random translation limits."
-        label heading_0 "Transforms - layer" pos:[6,6] width:(transformsUI.width-12) height:18
-        label heading_1 "Per-axis scale and movement" pos:[6,6] width:(transformsUI.width-12) height:18
         checkbutton advancedToggle "Advanced" pos:[6,6] width:(transformsUI.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
         local randomUI_bodyHeight=0
         local randomUI_controlsReady=false
@@ -12345,6 +12679,17 @@ initialRollupState:0x8
             true
         )
 
+        fn fitPairField control available = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
+            for handle in control.hwnd do (
+                local data=windows.getHWNDData handle
+                if data[4]=="CustEdit" do (
+                    local rectangle=windows.getWindowPos handle,position=windows.screenToClient data[2] (arrow.x-fieldWidth) arrow.y
+                    windows.setWindowPos handle position.x position.y fieldWidth rectangle.h true
+                )
+            )
+            true
+        )
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -12358,17 +12703,7 @@ initialRollupState:0x8
         )
         fn layout = (
             local widthValue=amax 140 transformsUI.width,y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
-            rowControls=#(heading_0);show=(true and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                if y>6 do y+=4
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel heading_0 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(heading_0.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
+            randomUI_rotMinTitle.visible=false;randomUI_rotMaxTitle.visible=false;randomUI_rotXLabel.visible=false;randomUI_rotYLabel.visible=false;randomUI_rotZLabel.visible=false;randomUI_sclMinTitle.visible=false;randomUI_sclMaxTitle.visible=false;randomUI_sclXLabel.visible=false;randomUI_sclYLabel.visible=false;randomUI_sclZLabel.visible=false;randomUI_wholeMinTitle.visible=false;randomUI_wholeMaxTitle.visible=false;randomUI_movMinTitle.visible=false;randomUI_movMaxTitle.visible=false;randomUI_movXLabel.visible=false;randomUI_movYLabel.visible=false;randomUI_movZLabel.visible=false
             rowControls=#(randomUI_rotTitle);show=(true and (true))
             for c in rowControls do c.visible=show
             if show do (
@@ -12379,25 +12714,111 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(randomUI_rotMinTitle,randomUI_rotMaxTitle);show=(true and (true))
+            rowControls=#(randomUI_rotXMinSpin,randomUI_rotXMaxSpin);show=(true and (true))
             for c in rowControls do c.visible=show
+            randomUI_rotXMinSpin_caption.visible=show;randomUI_rotXMaxSpin_caption.visible=show
             if show do (
                 columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_rotMinTitle 18 cellWidth;fitLabel randomUI_rotMaxTitle 18 cellWidth
+                fitLabel randomUI_rotXMinSpin_caption 18 cellWidth;fitLabel randomUI_rotXMaxSpin_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_rotXMinSpin_caption.height,randomUI_rotXMaxSpin_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                for c in rowControls do fitPairField c cellWidth
+                if not stackedCaption then (randomUI_rotXMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_rotXMinSpin_caption.width=32) else (randomUI_rotXMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_rotXMinSpin_caption.width=cellWidth);randomUI_rotXMinSpin_caption.enabled=randomUI_rotXMinSpin.enabled;if not stackedCaption then (randomUI_rotXMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_rotXMaxSpin_caption.width=32) else (randomUI_rotXMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_rotXMaxSpin_caption.width=cellWidth);randomUI_rotXMaxSpin_caption.enabled=randomUI_rotXMaxSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_rotYMinSpin,randomUI_rotYMaxSpin);show=(true and (true))
+            for c in rowControls do c.visible=show
+            randomUI_rotYMinSpin_caption.visible=show;randomUI_rotYMaxSpin_caption.visible=show
+            if show do (
+                columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel randomUI_rotYMinSpin_caption 18 cellWidth;fitLabel randomUI_rotYMaxSpin_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_rotYMinSpin_caption.height,randomUI_rotYMaxSpin_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                for c in rowControls do fitPairField c cellWidth
+                if not stackedCaption then (randomUI_rotYMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_rotYMinSpin_caption.width=32) else (randomUI_rotYMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_rotYMinSpin_caption.width=cellWidth);randomUI_rotYMinSpin_caption.enabled=randomUI_rotYMinSpin.enabled;if not stackedCaption then (randomUI_rotYMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_rotYMaxSpin_caption.width=32) else (randomUI_rotYMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_rotYMaxSpin_caption.width=cellWidth);randomUI_rotYMaxSpin_caption.enabled=randomUI_rotYMaxSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_rotZMinSpin,randomUI_rotZMaxSpin);show=(true and (true))
+            for c in rowControls do c.visible=show
+            randomUI_rotZMinSpin_caption.visible=show;randomUI_rotZMaxSpin_caption.visible=show
+            if show do (
+                columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel randomUI_rotZMinSpin_caption 18 cellWidth;fitLabel randomUI_rotZMaxSpin_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_rotZMinSpin_caption.height,randomUI_rotZMaxSpin_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                for c in rowControls do fitPairField c cellWidth
+                if not stackedCaption then (randomUI_rotZMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_rotZMinSpin_caption.width=32) else (randomUI_rotZMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_rotZMinSpin_caption.width=cellWidth);randomUI_rotZMinSpin_caption.enabled=randomUI_rotZMinSpin.enabled;if not stackedCaption then (randomUI_rotZMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_rotZMaxSpin_caption.width=32) else (randomUI_rotZMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_rotZMaxSpin_caption.width=cellWidth);randomUI_rotZMaxSpin_caption.enabled=randomUI_rotZMaxSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_resetRotation);show=(true and (true))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/90.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_rotMinTitle.height,randomUI_rotMaxTitle.height))+2+captionHeight
+                rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(randomUI_rotZLabel,randomUI_rotZMinSpin,randomUI_rotZMaxSpin);show=(true and (true))
+            rowControls=#(randomUI_sclTitle);show=(true and (true))
             for c in rowControls do c.visible=show
             if show do (
-                columns=3;cellWidth=(widthValue-38)/2
-                fitLabel randomUI_rotZLabel 18 cellWidth
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel randomUI_sclTitle 18 cellWidth
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_rotZLabel.height,22,22))+2+captionHeight
-                rowControls[1].pos=[6,y];rowControls[1].width=18;for i=2 to 3 do (rowControls[i].pos=[28+(i-2)*(cellWidth+4)+cellWidth-12,y];fitWidth rowControls[i] cellWidth)
-                y+=rowHeight
+                rowHeight=(amax #(randomUI_sclTitle.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_sclXMinSpin,randomUI_sclXMaxSpin);show=(true and (true))
+            for c in rowControls do c.visible=show
+            randomUI_sclXMinSpin_caption.visible=show;randomUI_sclXMaxSpin_caption.visible=show
+            if show do (
+                columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel randomUI_sclXMinSpin_caption 18 cellWidth;fitLabel randomUI_sclXMaxSpin_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_sclXMinSpin_caption.height,randomUI_sclXMaxSpin_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                for c in rowControls do fitPairField c cellWidth
+                if not stackedCaption then (randomUI_sclXMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_sclXMinSpin_caption.width=32) else (randomUI_sclXMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_sclXMinSpin_caption.width=cellWidth);randomUI_sclXMinSpin_caption.enabled=randomUI_sclXMinSpin.enabled;if not stackedCaption then (randomUI_sclXMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_sclXMaxSpin_caption.width=32) else (randomUI_sclXMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_sclXMaxSpin_caption.width=cellWidth);randomUI_sclXMaxSpin_caption.enabled=randomUI_sclXMaxSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_sclYMinSpin,randomUI_sclYMaxSpin);show=(true and (true))
+            for c in rowControls do c.visible=show
+            randomUI_sclYMinSpin_caption.visible=show;randomUI_sclYMaxSpin_caption.visible=show
+            if show do (
+                columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel randomUI_sclYMinSpin_caption 18 cellWidth;fitLabel randomUI_sclYMaxSpin_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_sclYMinSpin_caption.height,randomUI_sclYMaxSpin_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                for c in rowControls do fitPairField c cellWidth
+                if not stackedCaption then (randomUI_sclYMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_sclYMinSpin_caption.width=32) else (randomUI_sclYMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_sclYMinSpin_caption.width=cellWidth);randomUI_sclYMinSpin_caption.enabled=randomUI_sclYMinSpin.enabled;if not stackedCaption then (randomUI_sclYMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_sclYMaxSpin_caption.width=32) else (randomUI_sclYMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_sclYMaxSpin_caption.width=cellWidth);randomUI_sclYMaxSpin_caption.enabled=randomUI_sclYMaxSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_sclZMinSpin,randomUI_sclZMaxSpin);show=(true and (true))
+            for c in rowControls do c.visible=show
+            randomUI_sclZMinSpin_caption.visible=show;randomUI_sclZMaxSpin_caption.visible=show
+            if show do (
+                columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel randomUI_sclZMinSpin_caption 18 cellWidth;fitLabel randomUI_sclZMaxSpin_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_sclZMinSpin_caption.height,randomUI_sclZMaxSpin_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                for c in rowControls do fitPairField c cellWidth
+                if not stackedCaption then (randomUI_sclZMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_sclZMinSpin_caption.width=32) else (randomUI_sclZMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_sclZMinSpin_caption.width=cellWidth);randomUI_sclZMinSpin_caption.enabled=randomUI_sclZMinSpin.enabled;if not stackedCaption then (randomUI_sclZMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_sclZMaxSpin_caption.width=32) else (randomUI_sclZMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_sclZMaxSpin_caption.width=cellWidth);randomUI_sclZMaxSpin_caption.enabled=randomUI_sclZMaxSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_resetScale);show=(true and (true))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/96))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(randomUI_wholeTitle);show=(true and (true))
             for c in rowControls do c.visible=show
@@ -12409,22 +12830,83 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(randomUI_wholeMinTitle,randomUI_wholeMaxTitle);show=(true and (true))
+            rowControls=#(randomUI_wholeMinSpin,randomUI_wholeMaxSpin);show=(true and (true))
             for c in rowControls do c.visible=show
+            randomUI_wholeMinSpin_caption.visible=show;randomUI_wholeMaxSpin_caption.visible=show
             if show do (
                 columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_wholeMinTitle 18 cellWidth;fitLabel randomUI_wholeMaxTitle 18 cellWidth
+                fitLabel randomUI_wholeMinSpin_caption 18 cellWidth;fitLabel randomUI_wholeMaxSpin_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_wholeMinSpin_caption.height,randomUI_wholeMaxSpin_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                for c in rowControls do fitPairField c cellWidth
+                if not stackedCaption then (randomUI_wholeMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_wholeMinSpin_caption.width=32) else (randomUI_wholeMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_wholeMinSpin_caption.width=cellWidth);randomUI_wholeMinSpin_caption.enabled=randomUI_wholeMinSpin.enabled;if not stackedCaption then (randomUI_wholeMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_wholeMaxSpin_caption.width=32) else (randomUI_wholeMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_wholeMaxSpin_caption.width=cellWidth);randomUI_wholeMaxSpin_caption.enabled=randomUI_wholeMaxSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_resetWholeScale);show=(true and (true))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/106.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_wholeMinTitle.height,randomUI_wholeMaxTitle.height))+2+captionHeight
+                rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(randomUI_wholeMinSpin,randomUI_wholeMaxSpin);show=(true and (true))
+            rowControls=#(randomUI_movTitle);show=(true and (true))
             for c in rowControls do c.visible=show
             if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel randomUI_movTitle 18 cellWidth
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(randomUI_movTitle.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_movXMinSpin,randomUI_movXMaxSpin);show=(true and (true))
+            for c in rowControls do c.visible=show
+            randomUI_movXMinSpin_caption.visible=show;randomUI_movXMaxSpin_caption.visible=show
+            if show do (
+                columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel randomUI_movXMinSpin_caption 18 cellWidth;fitLabel randomUI_movXMaxSpin_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_movXMinSpin_caption.height,randomUI_movXMaxSpin_caption.height)) else 0)
                 rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                for c in rowControls do fitPairField c cellWidth
+                if not stackedCaption then (randomUI_movXMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_movXMinSpin_caption.width=32) else (randomUI_movXMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_movXMinSpin_caption.width=cellWidth);randomUI_movXMinSpin_caption.enabled=randomUI_movXMinSpin.enabled;if not stackedCaption then (randomUI_movXMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_movXMaxSpin_caption.width=32) else (randomUI_movXMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_movXMaxSpin_caption.width=cellWidth);randomUI_movXMaxSpin_caption.enabled=randomUI_movXMaxSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_movYMinSpin,randomUI_movYMaxSpin);show=(true and (true))
+            for c in rowControls do c.visible=show
+            randomUI_movYMinSpin_caption.visible=show;randomUI_movYMaxSpin_caption.visible=show
+            if show do (
+                columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel randomUI_movYMinSpin_caption 18 cellWidth;fitLabel randomUI_movYMaxSpin_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_movYMinSpin_caption.height,randomUI_movYMaxSpin_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                for c in rowControls do fitPairField c cellWidth
+                if not stackedCaption then (randomUI_movYMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_movYMinSpin_caption.width=32) else (randomUI_movYMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_movYMinSpin_caption.width=cellWidth);randomUI_movYMinSpin_caption.enabled=randomUI_movYMinSpin.enabled;if not stackedCaption then (randomUI_movYMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_movYMaxSpin_caption.width=32) else (randomUI_movYMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_movYMaxSpin_caption.width=cellWidth);randomUI_movYMaxSpin_caption.enabled=randomUI_movYMaxSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_movZMinSpin,randomUI_movZMaxSpin);show=(true and (true))
+            for c in rowControls do c.visible=show
+            randomUI_movZMinSpin_caption.visible=show;randomUI_movZMaxSpin_caption.visible=show
+            if show do (
+                columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel randomUI_movZMinSpin_caption 18 cellWidth;fitLabel randomUI_movZMaxSpin_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_movZMinSpin_caption.height,randomUI_movZMaxSpin_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                for c in rowControls do fitPairField c cellWidth
+                if not stackedCaption then (randomUI_movZMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_movZMinSpin_caption.width=32) else (randomUI_movZMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_movZMinSpin_caption.width=cellWidth);randomUI_movZMinSpin_caption.enabled=randomUI_movZMinSpin.enabled;if not stackedCaption then (randomUI_movZMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_movZMaxSpin_caption.width=32) else (randomUI_movZMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_movZMaxSpin_caption.width=cellWidth);randomUI_movZMaxSpin_caption.enabled=randomUI_movZMaxSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_resetMovement);show=(true and (true))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/90.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
@@ -12437,338 +12919,8 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
-            rowControls=#(heading_1);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                if y>6 do y+=4
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel heading_1 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(heading_1.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_rotXMinSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_rotXMaxSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_rotXLabel);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_rotXLabel 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_rotXLabel.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_rotYMinSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_rotYMaxSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_rotYLabel);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_rotYLabel 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_rotYLabel.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_resetRotation);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/90.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclTitle);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_sclTitle 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_sclTitle.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclMinTitle);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_sclMinTitle 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_sclMinTitle.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclMaxTitle);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_sclMaxTitle 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_sclMaxTitle.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclXMinSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclXMaxSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclXLabel);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_sclXLabel 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_sclXLabel.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclYMinSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclYMaxSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclYLabel);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_sclYLabel 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_sclYLabel.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclZMinSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclZMaxSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclZLabel);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_sclZLabel 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_sclZLabel.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_resetScale);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/96))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_resetWholeScale);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/106.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movTitle);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_movTitle 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_movTitle.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movMinTitle);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_movMinTitle 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_movMinTitle.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movMaxTitle);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_movMaxTitle 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_movMaxTitle.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movXMinSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movXMaxSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movXLabel);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_movXLabel 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_movXLabel.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movYMinSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movYMaxSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movYLabel);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_movYLabel 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_movYLabel.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movZMinSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movZMaxSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movZLabel);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_movZLabel 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_movZLabel.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_resetMovement);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/90.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
+            advancedToggle.visible=false
+
             lastLayoutWidth=widthValue;transformsUI.height=y+4;true
         )
         fn bind layer = (
@@ -12793,7 +12945,7 @@ initialRollupState:0x8
         on transformsUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection transformsUI;panel.rememberViews()))
     )
 
-    rollout spacingUI "Spacing & cleanup" width:#cmdPanel category:80 autoLayoutOnResize:false (
+    rollout spacingUI "Spacing & cleanup" width:#cmdPanel category:90 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
         local layout,lastLayoutWidth=0
         dropdownlist proceduralUI_scopeList "" items:#("Within this layer","Between layers") pos:[8,8] width:(spacingUI.width-8) selection:1 tooltip:"Choose spacing within the selected layer or between it and another layer."
@@ -13066,6 +13218,17 @@ initialRollupState:0x8
             true
         )
 
+        fn fitPairField control available = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
+            for handle in control.hwnd do (
+                local data=windows.getHWNDData handle
+                if data[4]=="CustEdit" do (
+                    local rectangle=windows.getWindowPos handle,position=windows.screenToClient data[2] (arrow.x-fieldWidth) arrow.y
+                    windows.setWindowPos handle position.x position.y fieldWidth rectangle.h true
+                )
+            )
+            true
+        )
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -13154,7 +13317,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
             rowControls=#(heading_1);show=(advancedToggle.checked and (true))
             for c in rowControls do c.visible=show
             if show do (
@@ -13463,7 +13626,7 @@ initialRollupState:0x8
         on spacingUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection spacingUI;panel.rememberViews()))
     )
 
-    rollout displayUI "Viewport & render" width:#cmdPanel category:90 autoLayoutOnResize:false (
+    rollout displayUI "Viewport & render" width:#cmdPanel category:100 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=false,setSpecific=false
         local layout,lastLayoutWidth=0
         checkbox flow_previewUI_previewCheck "Show preview" pos:[8,8] width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/88.4))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/88.4)))))
@@ -13628,6 +13791,17 @@ initialRollupState:0x8
             true
         )
 
+        fn fitPairField control available = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
+            for handle in control.hwnd do (
+                local data=windows.getHWNDData handle
+                if data[4]=="CustEdit" do (
+                    local rectangle=windows.getWindowPos handle,position=windows.screenToClient data[2] (arrow.x-fieldWidth) arrow.y
+                    windows.setWindowPos handle position.x position.y fieldWidth rectangle.h true
+                )
+            )
+            true
+        )
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -13693,7 +13867,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
             rowControls=#(heading_0);show=(advancedToggle.checked and (true))
             for c in rowControls do c.visible=show
             if show do (
@@ -13868,7 +14042,7 @@ initialRollupState:0x8
         on displayUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection displayUI;panel.rememberViews()))
     )
 
-    rollout statisticsUI "Statistics & diagnostics" width:#cmdPanel category:100 autoLayoutOnResize:false (
+    rollout statisticsUI "Statistics & diagnostics" width:#cmdPanel category:110 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=false,setSpecific=false
         local layout,lastLayoutWidth=0
         label detailsUI_info "Statistics describe the last build." pos:[8,8] width:((statisticsUI.width-16-((amin 1 (amax 1 (floor ((statisticsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((statisticsUI.width-8)/58))))) height:300
@@ -14079,6 +14253,17 @@ initialRollupState:0x8
             true
         )
 
+        fn fitPairField control available = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
+            for handle in control.hwnd do (
+                local data=windows.getHWNDData handle
+                if data[4]=="CustEdit" do (
+                    local rectangle=windows.getWindowPos handle,position=windows.screenToClient data[2] (arrow.x-fieldWidth) arrow.y
+                    windows.setWindowPos handle position.x position.y fieldWidth rectangle.h true
+                )
+            )
+            true
+        )
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -14111,7 +14296,7 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
             rowControls=#(heading_0);show=(advancedToggle.checked and (true))
             for c in rowControls do c.visible=show
             if show do (
@@ -14937,7 +15122,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.75 native plugin and restart Max."
             local context=if classof view==CyrusSourceContainer then CyrusContainerResolve view else undefined
             root=if classof view==CyrusSourceContainer then (if context==undefined then undefined else context[1]) else view
-            editors=#(view.managerUI,view.surfacesUI,view.modelsUI,view.populationUI,view.coverageUI,view.areasUI,view.transformsUI,view.spacingUI,view.displayUI,view.statisticsUI)
+            editors=#(view.managerUI,view.surfacesUI,view.modelsUI,view.layoutUI,view.populationUI,view.coverageUI,view.areasUI,view.transformsUI,view.spacingUI,view.displayUI,view.statisticsUI)
             if root==undefined do (
                 for r in editors do (r.controlsReady=false;cyrusSetRolloutVisible r.hwnd false 0)
                 if isProperty view #containerUI do view.containerUI.bind()
@@ -15004,7 +15189,6 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         label flow_layersUI_countInfo "Select a layer." pos:[8,8] width:((managerUI.width-16-((amin 1 (amax 1 (floor ((managerUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((managerUI.width-8)/58))))) height:46
         label heading_0 "Layers - evaluation order" pos:[6,6] width:(managerUI.width-12) height:18
         label heading_1 "Layer management" pos:[6,6] width:(managerUI.width-12) height:18
-        checkbutton propertiesToggle "Properties" pos:[6,6] width:(managerUI.width-12) height:22
         dotNetControl flow_layersUI_layerList_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8
         checkbutton advancedToggle "Advanced" pos:[6,6] width:(managerUI.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
         local flow_layersUI_bodyHeight=0
@@ -15150,10 +15334,10 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             )catch(syncingColorLists=false;throw())
         )
         local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
-        fn captureView = #(managerUI.open,#(advancedToggle.checked,propertiesToggle.checked),#(flow_layersUI_layerList.height))
+        fn captureView = #(managerUI.open,#(advancedToggle.checked),#(flow_layersUI_layerList.height))
         fn restoreView state = (
             managerUI.open=state[1]
-            advancedToggle.checked=state[2][1];propertiesToggle.checked=state[2][2]
+            advancedToggle.checked=state[2][1]
             flow_layersUI_layerList.height=state[3][1]
             true
         )
@@ -15202,6 +15386,17 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         on flow_layersUI_layerList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
         on flow_layersUI_layerList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
         on flow_layersUI_layerList_grip Paint sender args do paintListGrip sender args
+        fn fitPairField control available = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
+            for handle in control.hwnd do (
+                local data=windows.getHWNDData handle
+                if data[4]=="CustEdit" do (
+                    local rectangle=windows.getWindowPos handle,position=windows.screenToClient data[2] (arrow.x-fieldWidth) arrow.y
+                    windows.setWindowPos handle position.x position.y fieldWidth rectangle.h true
+                )
+            )
+            true
+        )
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -15268,16 +15463,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 if not stackedCaption then (flow_layersUI_nameEdit_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];flow_layersUI_nameEdit_caption.width=amin (cellWidth/2) 38;flow_layersUI_nameEdit.pos=[6+(mod 0 columns)*(cellWidth+4)+flow_layersUI_nameEdit_caption.width+4,y+(floor (0/columns))*rowHeight];flow_layersUI_nameEdit.width=cellWidth-flow_layersUI_nameEdit_caption.width-4) else (flow_layersUI_nameEdit_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];flow_layersUI_nameEdit_caption.width=cellWidth);flow_layersUI_nameEdit_caption.enabled=flow_layersUI_nameEdit.enabled
                 y+=rowHeight
             )
-            rowControls=#(propertiesToggle);show=(true and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/18))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(flow_layersUI_enabledCheck,flow_layersUI_visibleCheck);show=(true and (propertiesToggle.checked))
+            rowControls=#(flow_layersUI_enabledCheck,flow_layersUI_visibleCheck);show=(true and (true))
             for c in rowControls do c.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/62.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
@@ -15286,8 +15472,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
-            rowControls=#(heading_1);show=(advancedToggle.checked and (true))
+            rowControls=#(heading_1);show=(true and (true))
             for c in rowControls do c.visible=show
             if show do (
                 if y>6 do y+=4
@@ -15298,7 +15483,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(flow_layersUI_editButton);show=(advancedToggle.checked and (true))
+            rowControls=#(flow_layersUI_editButton);show=(true and (true))
             for c in rowControls do c.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/137.60000000000002))));cellWidth=(widthValue-12-(columns-1)*4)/columns
@@ -15307,7 +15492,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(flow_layersUI_countInfo);show=(advancedToggle.checked and (true))
+            rowControls=#(flow_layersUI_countInfo);show=(true and (true))
             for c in rowControls do c.visible=show
             if show do (
                 columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
@@ -15317,6 +15502,8 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
+            advancedToggle.visible=false
+
             lastLayoutWidth=widthValue;managerUI.height=y+4;syncColorLists();true
         )
         fn bind layer = (
@@ -15331,9 +15518,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             )catch(binding=false;controlsReady=false;throw())
         )
         fn refreshStats = (if flow_layersUI_controlsReady do flow_layersUI_refreshStats();if controlsReady do layout();true)
-        on propertiesToggle changed value do if controlsReady and not binding and root!=undefined and true do ((layout();if panel!=undefined do panel.rememberViews();true)
-            if controlsReady and root!=undefined do layout()
-        )
+
         on advancedToggle changed value do if controlsReady and not binding and root!=undefined and true do ((layout();if panel!=undefined do panel.rememberViews();true)
             if controlsReady and root!=undefined do layout()
         )
@@ -15501,6 +15686,17 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         on flow_surfaceUI_globalContainers_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
         on flow_surfaceUI_globalContainers_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
         on flow_surfaceUI_globalContainers_grip Paint sender args do paintListGrip sender args
+        fn fitPairField control available = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
+            for handle in control.hwnd do (
+                local data=windows.getHWNDData handle
+                if data[4]=="CustEdit" do (
+                    local rectangle=windows.getWindowPos handle,position=windows.screenToClient data[2] (arrow.x-fieldWidth) arrow.y
+                    windows.setWindowPos handle position.x position.y fieldWidth rectangle.h true
+                )
+            )
+            true
+        )
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -15565,7 +15761,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
             rowControls=#(heading_0);show=(advancedToggle.checked and (true))
             for c in rowControls do c.visible=show
             if show do (
@@ -15706,83 +15902,13 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         dropdownlist sourceUI_forwardAxis "" items:#("+Y","-Y","+X","-X") pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))) tooltip:"The model's local forward direction, used for orientation."
         label sourceUI_forwardAxis_caption "Forward axis:" pos:[6,6] width:(modelsUI.width-12) height:18
         checkbutton sourceUI_detailsToggle "Point / Empty sources and color groups" pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/215.6))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/215.6))))) height:22 tooltip:"Show or hide these advanced controls; their saved settings are preserved."
-        radiobuttons diversityUI_diversityRadio "Source assignment" labels:#("Random","Clusters","Line Pattern","Analyze Surface") columns:1 pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58)))))
-        spinner diversityUI_sizeSpin "" range:[0.01,100000,10] type:#worldUnits fieldWidth:58 width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/113.2))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/113.2))))) pos:[8,8] tooltip:"Spatial size of source-color clusters."
-        label diversityUI_sizeSpin_caption "Size: " pos:[6,6] width:(modelsUI.width-12) height:18
-        spinner diversityUI_divSeedSpin "" range:[0,2147483647,42] type:#integer fieldWidth:58 width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/113.2))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/113.2))))) pos:[8,8] tooltip:"Change source assignment randomness without changing the generation seed."
-        label diversityUI_divSeedSpin_caption "Seed: " pos:[6,6] width:(modelsUI.width-12) height:18
-        spinner diversityUI_roughSpin "" range:[0,100,0] fieldWidth:58 width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/149.60000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/149.60000000000002))))) pos:[8,8]
-        label diversityUI_roughSpin_caption "Roughness %: " pos:[6,6] width:(modelsUI.width-12) height:18
-        spinner diversityUI_blurSpin "" range:[0,100,0] fieldWidth:58 width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/149.60000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/149.60000000000002))))) pos:[8,8]
-        label diversityUI_blurSpin_caption "Blur edge %: " pos:[6,6] width:(modelsUI.width-12) height:18
-        spinner diversityUI_noiseSpin "" range:[0,100,0] fieldWidth:58 width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/128.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/128.8))))) pos:[8,8]
-        label diversityUI_noiseSpin_caption "Noise %: " pos:[6,6] width:(modelsUI.width-12) height:18
-        label diversityUI_groupHint "Uses source group colors." pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58)))))
-        label diversityUI_fixedHint "Point positions stay fixed." pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58)))))
-        label diversityUI_strokeTitle "Line Pattern / Strokes" pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58)))))
-        dropdownlist diversityUI_pathsDrop "" items:#() pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58)))))
-        label diversityUI_pathsDrop_caption "Paths" pos:[6,6] width:(modelsUI.width-12) height:18
-        dropdownlist diversityUI_analyzerChannel "" items:#("Border","Centerline","Points","Street Side","Edge Border") pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58)))))
-        label diversityUI_analyzerChannel_caption "Analyzer data" pos:[6,6] width:(modelsUI.width-12) height:18
-        pickbutton diversityUI_pickAnalyzer "Pick Surface Analyzer" filter:CyrusAnalyzerFilter pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/127.2))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/127.2))))) tooltip:"Use Surface Analyzer output for bands, rows and fixed anchors." height:22
-        pickbutton diversityUI_pickPath "Add: pick closed line" filter:AminScatterAreaFilter pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/127.2))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/127.2))))) tooltip:"Pick a spline for Line Pattern assignment." height:22
-        button diversityUI_removePath "Remove path" pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/75.2))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/75.2))))) tooltip:"Remove the selected assignment path while keeping the scene spline." height:22
-        listbox diversityUI_strokesList "" items:#() pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))) height:4
-        label diversityUI_strokesList_caption "Consecutive strokes" pos:[6,6] width:(modelsUI.width-12) height:18
-        button diversityUI_addOutside "Add Outside" pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/75.2))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/75.2))))) tooltip:"Add a source-assignment band outside the selected path." height:22
-        button diversityUI_addInside "Add Inside" pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/70))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/70))))) tooltip:"Add a source-assignment band inside the selected path." height:22
-        button diversityUI_removeStrokeButton "Remove Stroke" pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/85.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/85.60000000000001))))) tooltip:"Remove the selected assignment band and its settings." height:22
-        spinner diversityUI_strokeWidth "" range:[0.001,100000,1] type:#worldUnits pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/113.2))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/113.2))))) fieldWidth:58
-        label diversityUI_strokeWidth_caption "Width:" pos:[6,6] width:(modelsUI.width-12) height:18
-        radiobuttons diversityUI_strokeMode "Assign by" labels:#("Color groups","Source objects") columns:1 pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58)))))
-        multiListBox diversityUI_strokeChoices "" items:#() pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))) height:5
-        label diversityUI_strokeChoices_caption "Ctrl / Shift: select several" pos:[6,6] width:(modelsUI.width-12) height:18
-        spinner diversityUI_strokeScaleMin "" range:[0.001,100,1] pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/134))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/134))))) fieldWidth:58
-        label diversityUI_strokeScaleMin_caption "Scale min:" pos:[6,6] width:(modelsUI.width-12) height:18
-        spinner diversityUI_strokeScaleMax "" range:[0.001,100,1] pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/134))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/134))))) fieldWidth:58
-        label diversityUI_strokeScaleMax_caption "Scale max:" pos:[6,6] width:(modelsUI.width-12) height:18
-        button diversityUI_refreshGroups "Refresh sources / groups" pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/142.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/142.8))))) tooltip:"Refresh available source color groups for assignment." height:22
-        label diversityUI_strokeHelp "Outside strokes: empty." pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58)))))
-        spinner diversityUI_edgeOffsetSpin "" range:[-1000000,1000000,0] type:#worldunits pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/154.8))))) fieldWidth:58
-        label diversityUI_edgeOffsetSpin_caption "Offset inward:" pos:[6,6] width:(modelsUI.width-12) height:18
-        spinner diversityUI_edgeAlongSpin "" range:[0,1000000,0] type:#worldunits pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/149.60000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/149.60000000000002))))) fieldWidth:58
-        label diversityUI_edgeAlongSpin_caption "Jitter along:" pos:[6,6] width:(modelsUI.width-12) height:18
-        spinner diversityUI_edgeAcrossSpin "" range:[0,1000000,0] type:#worldunits pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/154.8))))) fieldWidth:58
-        label diversityUI_edgeAcrossSpin_caption "Jitter across:" pos:[6,6] width:(modelsUI.width-12) height:18
-        label diversityUI_edgeRowHelp "Spacing sets count. Jitter 0 = exact." pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))) height:36
-        checkbox diversityUI_keepCornerCheck "Keep corner points" pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/119.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/119.60000000000001)))))
-        spinner diversityUI_cornerAngleSpin "" range:[0,180,45] type:#float pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/128.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/128.8))))) fieldWidth:58
-        label diversityUI_cornerAngleSpin_caption "Min turn:" pos:[6,6] width:(modelsUI.width-12) height:18
-        spinner diversityUI_cornerCountSpin "" range:[1,64,1] type:#integer pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/154.8))))) fieldWidth:58
-        label diversityUI_cornerCountSpin_caption "Points/corner:" pos:[6,6] width:(modelsUI.width-12) height:18
-        label diversityUI_cornerHelp "Turn angle in degrees. 0 = straight." pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))) height:36
-        spinner diversityUI_edgeRotXSpin "" range:[-36000,36000,0] type:#float pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/154.8))))) fieldWidth:58
-        label diversityUI_edgeRotXSpin_caption "Local X (deg):" pos:[6,6] width:(modelsUI.width-12) height:18
-        spinner diversityUI_edgeRotYSpin "" range:[-36000,36000,0] type:#float pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/154.8))))) fieldWidth:58
-        label diversityUI_edgeRotYSpin_caption "Local Y (deg):" pos:[6,6] width:(modelsUI.width-12) height:18
-        spinner diversityUI_edgeRotZSpin "" range:[-36000,36000,0] type:#float pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/154.8))))) fieldWidth:58
-        label diversityUI_edgeRotZSpin_caption "Local Z (deg):" pos:[6,6] width:(modelsUI.width-12) height:18
-        spinner diversityUI_streetStartSpin "" range:[0,1e9,0] type:#worldunits pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/139.2))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/139.2))))) fieldWidth:58
-        label diversityUI_streetStartSpin_caption "Trim start:" pos:[6,6] width:(modelsUI.width-12) height:18
-        spinner diversityUI_streetEndSpin "" range:[0,1e9,0] type:#worldunits pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/128.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/128.8))))) fieldWidth:58
-        label diversityUI_streetEndSpin_caption "Trim end:" pos:[6,6] width:(modelsUI.width-12) height:18
-        spinner diversityUI_centerStreetSpin "" range:[-1e9,1e9,0] type:#worldunits pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/154.8))))) fieldWidth:58
-        label diversityUI_centerStreetSpin_caption "Street offset:" pos:[6,6] width:(modelsUI.width-12) height:18
-        label diversityUI_streetLayoutHelp "Positive offset = away from street. Trim follows path direction." pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))) height:44
-        checkbox diversityUI_faceOutCheck "Face outward" pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/88.4))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/88.4)))))
-        spinner diversityUI_cornerRadiusSpin "" type:#worldunits range:[0,1000000,10] pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/154.8))))) fieldWidth:58
-        label diversityUI_cornerRadiusSpin_caption "Corner radius:" pos:[6,6] width:(modelsUI.width-12) height:18
-        checkbox diversityUI_straightStreet "Straight ends (Street Side)" pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/166.4))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/166.4)))))
         label heading_0 "Models for this layer" pos:[6,6] width:(modelsUI.width-12) height:18
         label heading_1 "Optional source containers" pos:[6,6] width:(modelsUI.width-12) height:18
         label heading_2 "Source pool help" pos:[6,6] width:(modelsUI.width-12) height:18
         label heading_3 "Source details - layer" pos:[6,6] width:(modelsUI.width-12) height:18
-        label heading_4 "Source assignment - layer" pos:[6,6] width:(modelsUI.width-12) height:18
         checkbutton propertiesToggle "Properties" pos:[6,6] width:(modelsUI.width-12) height:22
         dotNetControl sourceContainersUI_containersList_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8
         dotNetControl sourceUI_plantList_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8
-        dotNetControl diversityUI_strokesList_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8
-        dotNetControl diversityUI_strokeChoices_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8
         checkbutton advancedToggle "Advanced" pos:[6,6] width:(modelsUI.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
         local sourceContainersUI_bodyHeight=0
         local sourceContainersUI_controlsReady=false
@@ -16004,263 +16130,6 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         on sourceUI_detailsToggle changed value do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and true do (sourceUI_arrangeDetails()
             if controlsReady and root!=undefined do layout()
         )
-        local diversityUI_bodyHeight=0
-        local diversityUI_controlsReady=false
-        local diversityUI_root=undefined,diversityUI_owner=undefined,diversityUI_panel=undefined
-        local diversityUI_setSpecific=false
-        local diversityUI_binding=false,
-        diversityUI_obj=undefined,diversityUI_parentView=undefined
-        local diversityUI_boundaryOnly=false
-        local diversityUI_controlsReady=false,diversityUI_strokeExpandedHeight=0
-        local diversityUI_pathRows=#(),diversityUI_strokeRows=#(),diversityUI_choiceValues=#(),diversityUI_restKeys=#(),diversityUI_loadingStroke=false
-        fn diversityUI_syncControls = (diversityUI_diversityRadio.state=diversityUI_obj.diversityMode;diversityUI_sizeSpin.value=diversityUI_obj.diversitySize;diversityUI_divSeedSpin.value=diversityUI_obj.diversitySeed;diversityUI_roughSpin.value=diversityUI_obj.roughness;diversityUI_blurSpin.value=diversityUI_obj.blurryEdge;diversityUI_noiseSpin.value=diversityUI_obj.diversityNoise;)
-        on diversityUI_faceOutCheck changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
-            if diversityUI_analyzerChannel.selection==5 then diversityUI_obj.edgeFaceOut=v else if diversityUI_analyzerChannel.selection==4 then diversityUI_obj.streetFaceOut=v else diversityUI_obj.borderFaceOut=v
-            diversityUI_cornerRadiusSpin.enabled=v;diversityUI_obj.markInputDirty();CyrusViewportRedraw()
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_cornerRadiusSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
-            if diversityUI_analyzerChannel.selection==5 then diversityUI_obj.edgeCornerRadius=v else if diversityUI_analyzerChannel.selection==4 then diversityUI_obj.streetCornerRadius=v else diversityUI_obj.borderCornerRadius=v
-            diversityUI_obj.markInputDirty();CyrusViewportRedraw()
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_streetStartSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.streetTrimStart=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_streetEndSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.streetTrimEnd=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_centerStreetSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.centerStreetOffset=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_straightStreet changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.streetStraight=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        fn diversityUI_selectedStroke = (if diversityUI_strokesList.selection>0 and diversityUI_strokesList.selection<=diversityUI_strokeRows.count then diversityUI_strokeRows[diversityUI_strokesList.selection] else 0)
-        fn diversityUI_showStroke = (
-            diversityUI_loadingStroke=true
-            diversityUI_obj.syncStrokes()
-            local edgeVisible=diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==5
-            for c in #(diversityUI_edgeOffsetSpin,diversityUI_edgeAlongSpin,diversityUI_edgeAcrossSpin,diversityUI_edgeRowHelp,diversityUI_keepCornerCheck,diversityUI_cornerAngleSpin,diversityUI_cornerCountSpin,diversityUI_cornerHelp,diversityUI_edgeRotXSpin,diversityUI_edgeRotYSpin,diversityUI_edgeRotZSpin) do c.visible=edgeVisible
-            diversityUI_cornerRadiusSpin.text=if edgeVisible then "Blend radius:" else "Corner radius:"
-            diversityUI_keepCornerCheck.checked=diversityUI_obj.edgeKeepCorners
-            diversityUI_cornerAngleSpin.value=diversityUI_obj.edgeCornerAngle;diversityUI_cornerCountSpin.value=diversityUI_obj.edgeCornerCount
-            diversityUI_cornerAngleSpin.enabled=diversityUI_obj.edgeKeepCorners;diversityUI_cornerCountSpin.enabled=diversityUI_obj.edgeKeepCorners
-            diversityUI_strokeWidth.text=if edgeVisible then "Spacing:" else "Width:"
-            local row=diversityUI_selectedStroke();local active=row>0
-            for c in #(diversityUI_strokeWidth,diversityUI_strokeMode,diversityUI_strokeChoices,diversityUI_strokeScaleMin,diversityUI_strokeScaleMax,diversityUI_removeStrokeButton) do c.enabled=active
-            diversityUI_choiceValues=#();diversityUI_strokeChoices.items=#()
-            for c in #(diversityUI_edgeOffsetSpin,diversityUI_edgeAlongSpin,diversityUI_edgeAcrossSpin,diversityUI_edgeRotXSpin,diversityUI_edgeRotYSpin,diversityUI_edgeRotZSpin) do c.enabled=active
-            if active do (
-                diversityUI_edgeRotXSpin.value=diversityUI_obj.edgeRotX[row]
-                diversityUI_edgeRotYSpin.value=diversityUI_obj.edgeRotY[row]
-                diversityUI_edgeRotZSpin.value=diversityUI_obj.edgeRotZ[row]
-                diversityUI_edgeOffsetSpin.value=diversityUI_obj.edgeOffsets[row];diversityUI_edgeAlongSpin.value=diversityUI_obj.edgeAlong[row];diversityUI_edgeAcrossSpin.value=diversityUI_obj.edgeAcross[row]
-                diversityUI_strokeWidth.value=diversityUI_obj.patternWidths[row];diversityUI_strokeMode.state=diversityUI_obj.strokeModes[row]
-                diversityUI_strokeWidth.enabled=diversityUI_obj.strokeSides[row]!=5
-                diversityUI_strokeScaleMin.value=diversityUI_obj.strokeMin[row];diversityUI_strokeScaleMax.value=diversityUI_obj.strokeMax[row]
-                local labels=#();local selectedRows=#{}
-                if diversityUI_obj.strokeModes[row]==1 then (
-                    for i=1 to diversityUI_obj.sources.count do (
-                        local key=diversityUI_obj.colorKey(diversityUI_obj.sourceColor i)
-                        if findItem diversityUI_choiceValues key==0 do (append diversityUI_choiceValues key;append labels ("#"+(formattedPrint key format:"06X")))
-                    )
-                    local keys=for i=1 to diversityUI_obj.strokeColorRows.count where diversityUI_obj.strokeColorRows[i]==row collect diversityUI_obj.strokeColorKeys[i]
-                    if keys.count==0 do keys=#(diversityUI_obj.patternGroups[row])
-                    for i=1 to diversityUI_choiceValues.count where findItem keys diversityUI_choiceValues[i]>0 do selectedRows[i]=true
-                ) else (
-                    for n in diversityUI_obj.sources where isValidNode n do (append diversityUI_choiceValues n;append labels n.name)
-                    for i=1 to diversityUI_obj.strokeSourceRows.count where diversityUI_obj.strokeSourceRows[i]==row do (
-                        local k=findItem diversityUI_choiceValues diversityUI_obj.strokeSourceNodes[i];if k>0 do selectedRows[k]=true
-                    )
-                )
-                diversityUI_strokeChoices.items=labels;diversityUI_strokeChoices.selection=selectedRows
-            )
-            diversityUI_loadingStroke=false
-        )
-        fn diversityUI_showPath = (
-            diversityUI_loadingStroke=true
-            local old=diversityUI_strokesList.selection;diversityUI_strokeRows=#();local labels=#();local total=#(0.0,0.0,0.0,0.0,0.0,0.0,0.0)
-            local analyzed=diversityUI_obj.diversityMode==4
-            local path=if analyzed then diversityUI_obj.analyzerNode else (if diversityUI_pathsDrop.selection>0 then diversityUI_pathRows[diversityUI_pathsDrop.selection] else undefined)
-            if isValidNode path do (
-                for i=1 to diversityUI_obj.patternLines.count where diversityUI_obj.patternLines[i]==path and (not analyzed or (diversityUI_analyzerChannel.selection==1 and diversityUI_obj.strokeSides[i]<=2) or (diversityUI_analyzerChannel.selection==2 and diversityUI_obj.strokeSides[i]==3) or (diversityUI_analyzerChannel.selection==3 and (diversityUI_obj.strokeSides[i]==4 or diversityUI_obj.strokeSides[i]==5)) or (diversityUI_analyzerChannel.selection==4 and diversityUI_obj.strokeSides[i]==6) or (diversityUI_analyzerChannel.selection==5 and diversityUI_obj.strokeSides[i]==7)) do (
-                    append diversityUI_strokeRows i
-                    local side=diversityUI_obj.strokeSides[i];local start=total[side];total[side]+=diversityUI_obj.patternWidths[i]
-                    local prefixes=#("Out ","In ","Both ","Radius ","Single ","Street ","Edge ")
-                    append labels (if side==7 then ("Edge "+(diversityUI_strokeRows.count as string)+": spacing "+units.formatValue diversityUI_obj.patternWidths[i]) else (prefixes[side]+(diversityUI_strokeRows.count as string)+": "+units.formatValue start+" - "+units.formatValue total[side]))
-                )
-            )
-            diversityUI_strokesList.items=labels;diversityUI_strokesList.selection=amin (amax 1 old) labels.count
-            diversityUI_addOutside.enabled=isValidNode path;diversityUI_addInside.enabled=isValidNode path and (not analyzed or diversityUI_analyzerChannel.selection!=2);diversityUI_removePath.enabled=isValidNode path
-            diversityUI_loadingStroke=false;diversityUI_showStroke()
-        )
-        fn diversityUI_updatePattern = (
-            diversityUI_faceOutCheck.visible=diversityUI_obj.diversityMode==4 and (diversityUI_analyzerChannel.selection==1 or diversityUI_analyzerChannel.selection==4 or diversityUI_analyzerChannel.selection==5)
-            diversityUI_cornerRadiusSpin.visible=diversityUI_faceOutCheck.visible
-            diversityUI_faceOutCheck.checked=if diversityUI_analyzerChannel.selection==5 then diversityUI_obj.edgeFaceOut else if diversityUI_analyzerChannel.selection==4 then diversityUI_obj.streetFaceOut else diversityUI_obj.borderFaceOut
-            diversityUI_cornerRadiusSpin.value=if diversityUI_analyzerChannel.selection==5 then diversityUI_obj.edgeCornerRadius else if diversityUI_analyzerChannel.selection==4 then diversityUI_obj.streetCornerRadius else diversityUI_obj.borderCornerRadius
-            diversityUI_cornerRadiusSpin.enabled=diversityUI_faceOutCheck.checked
-            diversityUI_streetStartSpin.visible=diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==4
-            diversityUI_streetEndSpin.visible=diversityUI_streetStartSpin.visible
-            diversityUI_centerStreetSpin.visible=diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==2
-            diversityUI_streetLayoutHelp.visible=diversityUI_streetStartSpin.visible or diversityUI_centerStreetSpin.visible
-            diversityUI_streetStartSpin.value=diversityUI_obj.streetTrimStart;diversityUI_streetEndSpin.value=diversityUI_obj.streetTrimEnd;diversityUI_centerStreetSpin.value=diversityUI_obj.centerStreetOffset
-            diversityUI_straightStreet.checked=diversityUI_obj.streetStraight;diversityUI_straightStreet.visible=diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==4
-            diversityUI_obj.syncStrokes();local old=diversityUI_pathsDrop.selection
-            local analyzed=diversityUI_obj.diversityMode==4
-            diversityUI_pathRows=for n in diversityUI_obj.patternPaths where isValidNode n and not isProperty n #samplePoints collect n
-            diversityUI_pathsDrop.items=for n in diversityUI_pathRows collect n.name
-            diversityUI_pathsDrop.selection=amin (amax 1 old) diversityUI_pathRows.count
-            diversityUI_pathsDrop.visible=diversityUI_obj.diversityMode==3;diversityUI_pickPath.visible=diversityUI_obj.diversityMode==3
-            diversityUI_analyzerChannel.visible=analyzed;diversityUI_pickAnalyzer.visible=analyzed
-            diversityUI_pickAnalyzer.text=if isValidNode diversityUI_obj.analyzerNode then diversityUI_obj.analyzerNode.name else "Pick Surface Analyzer"
-            diversityUI_removePath.text=if analyzed then "Remove Analyzer" else "Remove path"
-            diversityUI_strokeTitle.text=if analyzed then "Analyze Surface / Strokes" else "Line Pattern / Strokes"
-            diversityUI_addOutside.text=if not analyzed or diversityUI_analyzerChannel.selection==1 then "Add Outside" else (if diversityUI_analyzerChannel.selection==2 then "Add Stroke" else "Add Radius")
-            diversityUI_addInside.text=if analyzed and diversityUI_analyzerChannel.selection==3 then "Add Single" else "Add Inside"
-            diversityUI_boundaryOnly=analyzed and (diversityUI_analyzerChannel.selection==1 or diversityUI_analyzerChannel.selection==4 or diversityUI_analyzerChannel.selection==5)
-            diversityUI_addOutside.visible=(diversityUI_obj.diversityMode==3 or analyzed) and not diversityUI_boundaryOnly
-            diversityUI_addInside.pos=[if diversityUI_boundaryOnly then 4 else modelsUI.width/2+2,diversityUI_addOutside.pos.y]
-            diversityUI_addInside.width=if diversityUI_boundaryOnly then modelsUI.width-8 else (modelsUI.width-12)/2
-            if diversityUI_boundaryOnly do diversityUI_addInside.text=if diversityUI_analyzerChannel.selection==5 then "Add Edge Row" else "Add Stroke Inside"
-            diversityUI_strokeHelp.text=if analyzed and diversityUI_analyzerChannel.selection==5 then "One row along the boundary." else if analyzed then "Width = spread per side." else "Outside strokes: empty."
-            diversityUI_restKeys=#()
-            for i=1 to diversityUI_obj.sources.count do (local key=diversityUI_obj.colorKey(diversityUI_obj.sourceColor i);if findItem diversityUI_restKeys key==0 do append diversityUI_restKeys key)
-            diversityUI_showPath()
-        )
-        on diversityUI_pathsDrop selected i do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do diversityUI_showPath()
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_analyzerChannel selected i do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do diversityUI_updatePattern()
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_pickAnalyzer picked n do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
-            if CyrusAnalyzerFilter n do (diversityUI_obj.analyzerNode=n;diversityUI_obj.markInputDirty();diversityUI_updatePattern();CyrusViewportRedraw())
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokesList selected i do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do diversityUI_showStroke()
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_pickPath picked n do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
-            if isValidNode n and findItem diversityUI_obj.patternPaths n==0 do append diversityUI_obj.patternPaths n
-            diversityUI_updatePattern();diversityUI_pathsDrop.selection=findItem diversityUI_pathRows n;diversityUI_showPath()
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_removePath pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
-            local path=if diversityUI_obj.diversityMode==4 then diversityUI_obj.analyzerNode else diversityUI_pathRows[diversityUI_pathsDrop.selection]
-            for i=diversityUI_obj.patternLines.count to 1 by -1 where diversityUI_obj.patternLines[i]==path do diversityUI_obj.removeStroke i
-            local k=findItem diversityUI_obj.patternPaths path;if k>0 do deleteItem diversityUI_obj.patternPaths k
-            if diversityUI_obj.diversityMode==4 do diversityUI_obj.analyzerNode=undefined
-            diversityUI_updatePattern();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw()
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_addOutside pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
-            if diversityUI_obj.diversityMode==4 and (diversityUI_analyzerChannel.selection==1 or diversityUI_analyzerChannel.selection==4 or diversityUI_analyzerChannel.selection==5) do return false
-            local path=if diversityUI_obj.diversityMode==4 then diversityUI_obj.analyzerNode else diversityUI_pathRows[diversityUI_pathsDrop.selection]
-            local types=#(1,3,4)
-            local side=if diversityUI_obj.diversityMode==4 then types[diversityUI_analyzerChannel.selection] else 1
-            diversityUI_obj.addStroke path side:side;diversityUI_showPath();diversityUI_strokesList.selection=diversityUI_strokeRows.count;diversityUI_showStroke();CyrusViewportRedraw()
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_addInside pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
-            local path=if diversityUI_obj.diversityMode==4 then diversityUI_obj.analyzerNode else diversityUI_pathRows[diversityUI_pathsDrop.selection]
-            local side=if diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==5 then 7 else if diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==4 then 6 else if diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==3 then 5 else 2
-            diversityUI_obj.addStroke path side:side;diversityUI_showPath();diversityUI_strokesList.selection=diversityUI_strokeRows.count;diversityUI_showStroke();CyrusViewportRedraw()
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_removeStrokeButton pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.removeStroke row;diversityUI_showPath();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_edgeOffsetSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeOffsets[row]=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_edgeAlongSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeAlong[row]=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_edgeAcrossSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeAcross[row]=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_keepCornerCheck changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.edgeKeepCorners=v;diversityUI_cornerAngleSpin.enabled=v;diversityUI_cornerCountSpin.enabled=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_cornerAngleSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.edgeCornerAngle=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_cornerCountSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.edgeCornerCount=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_edgeRotXSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeRotX[row]=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_edgeRotYSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeRotY[row]=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_edgeRotZSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeRotZ[row]=v;CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokeWidth changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.patternWidths[row]=v;diversityUI_obj.markInputDirty();diversityUI_showPath();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokeMode changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.strokeModes[row]=v;diversityUI_showStroke();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokeChoices selectionEnd do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (
-            local row=diversityUI_selectedStroke()
-            if row>0 do diversityUI_obj.setStrokeSelection row diversityUI_obj.strokeModes[row] (for i in diversityUI_strokeChoices.selection collect diversityUI_choiceValues[i])
-            CyrusViewportRedraw()
-        )
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokeScaleMin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();diversityUI_obj.strokeMin[row]=v;if v>diversityUI_obj.strokeMax[row] do diversityUI_obj.strokeMax[row]=v;diversityUI_showStroke();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_strokeScaleMax changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();diversityUI_obj.strokeMax[row]=v;if v<diversityUI_obj.strokeMin[row] do diversityUI_obj.strokeMin[row]=v;diversityUI_showStroke();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_refreshGroups pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do diversityUI_updatePattern()
-            if controlsReady and root!=undefined do layout()
-        )
-        fn diversityUI_updateControls = (
-            for c in #(diversityUI_sizeSpin,diversityUI_divSeedSpin,diversityUI_roughSpin,diversityUI_blurSpin,diversityUI_noiseSpin,diversityUI_groupHint,diversityUI_fixedHint) do c.visible=diversityUI_obj.diversityMode==2
-            for c in #(diversityUI_strokeTitle,diversityUI_pathsDrop,diversityUI_analyzerChannel,diversityUI_pickAnalyzer,diversityUI_pickPath,diversityUI_removePath,diversityUI_strokesList,diversityUI_addOutside,diversityUI_addInside,diversityUI_removeStrokeButton,diversityUI_strokeWidth,diversityUI_strokeMode,diversityUI_strokeChoices,diversityUI_strokeScaleMin,diversityUI_strokeScaleMax,diversityUI_refreshGroups,diversityUI_strokeHelp) do c.visible=(diversityUI_obj.diversityMode==3 or diversityUI_obj.diversityMode==4)
-            if diversityUI_strokeExpandedHeight>0 do diversityUI_bodyHeight=if diversityUI_obj.diversityMode>=3 then diversityUI_strokeExpandedHeight else (if diversityUI_obj.diversityMode==2 then 310 else 124)*1.0
-            (CyrusContainerPanel diversityUI_root).layoutPanels()
-        )
-        on diversityUI_diversityRadio changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.diversityMode=v;diversityUI_updateControls();diversityUI_updatePattern();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_sizeSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.diversitySize=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_divSeedSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.diversitySeed=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_roughSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.roughness=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_blurSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.blurryEdge=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        on diversityUI_noiseSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.diversityNoise=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
-            if controlsReady and root!=undefined do layout()
-        )
-        fn diversityUI_bind layer = (
-            local next=layer
-            diversityUI_binding=true;diversityUI_controlsReady=false
-            if diversityUI_obj!=next do (diversityUI_strokesList.selection=0;diversityUI_strokeChoices.selection=0;)
-            diversityUI_obj=next;diversityUI_parentView=(CyrusContainerPanel diversityUI_root)
-            for c in #(diversityUI_diversityRadio,diversityUI_sizeSpin,diversityUI_divSeedSpin,diversityUI_roughSpin,diversityUI_blurSpin,diversityUI_noiseSpin,diversityUI_groupHint,diversityUI_fixedHint,diversityUI_strokeTitle,diversityUI_pathsDrop,diversityUI_analyzerChannel,diversityUI_pickAnalyzer,diversityUI_pickPath,diversityUI_removePath,diversityUI_strokesList,diversityUI_addOutside,diversityUI_addInside,diversityUI_removeStrokeButton,diversityUI_strokeWidth,diversityUI_strokeMode,diversityUI_strokeChoices,diversityUI_strokeScaleMin,diversityUI_strokeScaleMax,diversityUI_refreshGroups,diversityUI_strokeHelp,diversityUI_edgeOffsetSpin,diversityUI_edgeAlongSpin,diversityUI_edgeAcrossSpin,diversityUI_edgeRowHelp,diversityUI_keepCornerCheck,diversityUI_cornerAngleSpin,diversityUI_cornerCountSpin,diversityUI_cornerHelp,diversityUI_edgeRotXSpin,diversityUI_edgeRotYSpin,diversityUI_edgeRotZSpin,diversityUI_streetStartSpin,diversityUI_streetEndSpin,diversityUI_centerStreetSpin,diversityUI_streetLayoutHelp,diversityUI_faceOutCheck,diversityUI_cornerRadiusSpin,diversityUI_straightStreet) do c.enabled=layer!=undefined
-            try (undo off ((diversityUI_diversityRadio.state=diversityUI_obj.diversityMode;diversityUI_sizeSpin.value=diversityUI_obj.diversitySize;diversityUI_divSeedSpin.value=diversityUI_obj.diversitySeed;diversityUI_roughSpin.value=diversityUI_obj.roughness;diversityUI_blurSpin.value=diversityUI_obj.blurryEdge;diversityUI_noiseSpin.value=diversityUI_obj.diversityNoise;diversityUI_controlsReady=true;diversityUI_strokeExpandedHeight=diversityUI_bodyHeight;diversityUI_updateControls();diversityUI_updatePattern()))) catch(diversityUI_binding=false;diversityUI_controlsReady=true;throw())
-            diversityUI_controlsReady=true;diversityUI_binding=false
-        )
         fn fitLabel control minimum available = (
             local capacity=amax 1 (floor ((available-4)/5.2)),lines=0
             for paragraph in filterString control.text "\n" splitEmptyTokens:true do (
@@ -16311,11 +16180,11 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             )catch(syncingColorLists=false;throw())
         )
         local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
-        fn captureView = #(modelsUI.open,#(advancedToggle.checked,propertiesToggle.checked),#(sourceContainersUI_containersList.height,sourceUI_plantList.height,diversityUI_strokesList.height,diversityUI_strokeChoices.height))
+        fn captureView = #(modelsUI.open,#(advancedToggle.checked,propertiesToggle.checked),#(sourceContainersUI_containersList.height,sourceUI_plantList.height))
         fn restoreView state = (
             modelsUI.open=state[1]
             advancedToggle.checked=state[2][1];propertiesToggle.checked=state[2][2]
-            sourceContainersUI_containersList.height=state[3][1];sourceUI_plantList.height=state[3][2];diversityUI_strokesList.height=state[3][3];diversityUI_strokeChoices.height=state[3][4]
+            sourceContainersUI_containersList.height=state[3][1];sourceUI_plantList.height=state[3][2]
             true
         )
         fn stopListDrag = (
@@ -16350,7 +16219,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             pen.Dispose()
         )
         fn setupGrips = (
-            for grip in #(sourceContainersUI_containersList_grip,sourceUI_plantList_grip,diversityUI_strokesList_grip,diversityUI_strokeChoices_grip) do (
+            for grip in #(sourceContainersUI_containersList_grip,sourceUI_plantList_grip) do (
                 grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
                 grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
                 grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
@@ -16368,16 +16237,17 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         on sourceUI_plantList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
         on sourceUI_plantList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
         on sourceUI_plantList_grip Paint sender args do paintListGrip sender args
-        on diversityUI_strokesList_grip MouseDown sender args do beginListDrag sender args diversityUI_strokesList
-        on diversityUI_strokesList_grip MouseMove sender args do moveListDrag sender args
-        on diversityUI_strokesList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
-        on diversityUI_strokesList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
-        on diversityUI_strokesList_grip Paint sender args do paintListGrip sender args
-        on diversityUI_strokeChoices_grip MouseDown sender args do beginListDrag sender args diversityUI_strokeChoices
-        on diversityUI_strokeChoices_grip MouseMove sender args do moveListDrag sender args
-        on diversityUI_strokeChoices_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
-        on diversityUI_strokeChoices_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
-        on diversityUI_strokeChoices_grip Paint sender args do paintListGrip sender args
+        fn fitPairField control available = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
+            for handle in control.hwnd do (
+                local data=windows.getHWNDData handle
+                if data[4]=="CustEdit" do (
+                    local rectangle=windows.getWindowPos handle,position=windows.screenToClient data[2] (arrow.x-fieldWidth) arrow.y
+                    windows.setWindowPos handle position.x position.y fieldWidth rectangle.h true
+                )
+            )
+            true
+        )
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -16487,7 +16357,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
             rowControls=#(heading_1);show=(advancedToggle.checked and (true))
             for c in rowControls do c.visible=show
             if show do (
@@ -16689,18 +16559,507 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(heading_4);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                if y>6 do y+=4
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel heading_4 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(heading_4.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            lastLayoutWidth=widthValue;modelsUI.height=y+4;syncColorLists();true
+        )
+        fn bind layer = (
+            if root==undefined do return false
+            stopListDrag();binding=true;controlsReady=false
+            try (
+                if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
+                obj=owner
+                sourceContainersUI_root=root;sourceContainersUI_owner=owner;sourceContainersUI_panel=panel;sourceContainersUI_controlsReady=controlsReady;sourceContainersUI_binding=binding
+            sourceUI_root=root;sourceUI_owner=owner;sourceUI_panel=panel;sourceUI_controlsReady=controlsReady;sourceUI_binding=binding
+            if owner!=undefined then (sourceContainersUI_bind (root.selectedPaintSet owner);) else (for c in #(sourceContainersUI_modeList,sourceContainersUI_containersList,sourceContainersUI_createContainer,sourceContainersUI_pickContainer,sourceContainersUI_removeContainer,sourceContainersUI_membershipInfo,sourceContainersUI_helpInfo) do c.enabled=false;sourceContainersUI_controlsReady=false)
+            sourceUI_detailsToggle.checked=true;if owner!=undefined then (sourceUI_bind (root.selectedPaintSet owner);) else (for c in #(sourceUI_sourceName,sourceUI_idColor,sourceUI_plantList,sourceUI_selectFromScene,sourceUI_addPlant,sourceUI_addSelected,sourceUI_removePlant,sourceUI_selectPlant,sourceUI_addPoint,sourceUI_addEmpty,sourceUI_replacePoint,sourceUI_groupHeading,sourceUI_existingGroups,sourceUI_groupColor,sourceUI_applyColor,sourceUI_colorHelp,sourceUI_weightSpin,sourceUI_weightHelp,sourceUI_sourceZSpin,sourceUI_sourceScaleSpin,sourceUI_sourceTransformHelp,sourceUI_radiusSourceSpin,sourceUI_followRadiusCheck,sourceUI_showRadiusCheck,sourceUI_forwardAxis,sourceUI_detailsToggle) do c.enabled=false;sourceUI_controlsReady=false)
+                setupGrips();controlsReady=true;binding=false;layout();true
+            )catch(binding=false;controlsReady=false;throw())
+        )
+
+        on propertiesToggle changed value do if controlsReady and not binding and root!=undefined and true do ((layout();if panel!=undefined do panel.rememberViews();true)
+            if controlsReady and root!=undefined do layout()
+        )
+        on advancedToggle changed value do if controlsReady and not binding and root!=undefined and true do ((layout();if panel!=undefined do panel.rememberViews();true)
+            if controlsReady and root!=undefined do layout()
+        )
+        on modelsUI resized size do if controlsReady and not binding and (amax 140 modelsUI.width)!=lastLayoutWidth do layout()
+        on modelsUI open do (panel=this.mainUI;root=undefined;controlsReady=false)
+        on modelsUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;sourceContainersUI_controlsReady=false;sourceContainersUI_root=undefined;sourceContainersUI_owner=undefined;sourceUI_controlsReady=false;sourceUI_root=undefined;sourceUI_owner=undefined;sourceUI_obj=undefined)
+        on modelsUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection modelsUI;panel.rememberViews()))
+    )
+
+    rollout layoutUI "Layout" width:#cmdPanel category:40 autoLayoutOnResize:false (
+        local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
+        local layout,lastLayoutWidth=0
+        radiobuttons diversityUI_diversityRadio "Source assignment" labels:#("Random mix","Clusters","Spline bands","Surface Analyzer") columns:1 pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58)))))
+        label diversityUI_layoutHelp "" pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))) height:36
+        label diversityUI_analyzerStatus "Pick a Surface Analyzer." pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))) height:54
+        button diversityUI_selectAnalyzer "Select" pos:[8,8] width:70 tooltip:"Select the linked Surface Analyzer in the scene." height:22
+        button diversityUI_updateAnalyzer "Update Analyzer" pos:[8,8] width:140 tooltip:"Analyze the linked guide. In Manual mode, use Update scatter afterwards to publish placements." height:22
+        spinner diversityUI_sizeSpin "" range:[0.01,100000,10] type:#worldUnits fieldWidth:58 width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/113.2))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/113.2))))) pos:[8,8] tooltip:"Spatial size of source-color clusters."
+        label diversityUI_sizeSpin_caption "Size: " pos:[6,6] width:(layoutUI.width-12) height:18
+        spinner diversityUI_divSeedSpin "" range:[0,2147483647,42] type:#integer fieldWidth:58 width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/113.2))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/113.2))))) pos:[8,8] tooltip:"Change source assignment randomness without changing the generation seed."
+        label diversityUI_divSeedSpin_caption "Seed: " pos:[6,6] width:(layoutUI.width-12) height:18
+        spinner diversityUI_roughSpin "" range:[0,100,0] fieldWidth:58 width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/149.60000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/149.60000000000002))))) pos:[8,8]
+        label diversityUI_roughSpin_caption "Roughness %: " pos:[6,6] width:(layoutUI.width-12) height:18
+        spinner diversityUI_blurSpin "" range:[0,100,0] fieldWidth:58 width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/149.60000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/149.60000000000002))))) pos:[8,8]
+        label diversityUI_blurSpin_caption "Blur edge %: " pos:[6,6] width:(layoutUI.width-12) height:18
+        spinner diversityUI_noiseSpin "" range:[0,100,0] fieldWidth:58 width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/128.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/128.8))))) pos:[8,8]
+        label diversityUI_noiseSpin_caption "Noise %: " pos:[6,6] width:(layoutUI.width-12) height:18
+        label diversityUI_groupHint "Uses assignment groups, not viewport colors." pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58)))))
+        label diversityUI_fixedHint "Point positions stay fixed." pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58)))))
+        label diversityUI_strokeTitle "Spline bands" pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58)))))
+        dropdownlist diversityUI_pathsDrop "" items:#() pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58)))))
+        label diversityUI_pathsDrop_caption "Paths" pos:[6,6] width:(layoutUI.width-12) height:18
+        dropdownlist diversityUI_analyzerChannel "" items:#("Border","Centerline","Points","Street Side","Edge Border") pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58)))))
+        label diversityUI_analyzerChannel_caption "Analyzer data" pos:[6,6] width:(layoutUI.width-12) height:18
+        pickbutton diversityUI_pickAnalyzer "Pick Surface Analyzer" filter:CyrusAnalyzerFilter pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/127.2))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/127.2))))) tooltip:"Use Surface Analyzer output for bands, rows and fixed anchors." height:22
+        pickbutton diversityUI_pickPath "Add: pick closed line" filter:AminScatterAreaFilter pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/127.2))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/127.2))))) tooltip:"Pick a spline for Line Pattern assignment." height:22
+        button diversityUI_removePath "Remove path" pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/75.2))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/75.2))))) tooltip:"Remove the selected assignment path while keeping the scene spline." height:22
+        listbox diversityUI_strokesList "" items:#() pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))) height:4
+        label diversityUI_strokesList_caption "Bands" pos:[6,6] width:(layoutUI.width-12) height:18
+        button diversityUI_addOutside "Add Outside" pos:[8,8] width:((layoutUI.width-16-((amin 2 (amax 1 (floor ((layoutUI.width-8)/75.2))))-1)*4)/(amin 2 (amax 1 (floor ((layoutUI.width-8)/75.2))))) tooltip:"Add a source-assignment band outside the selected path." height:22
+        button diversityUI_addInside "Add Inside" pos:[8,8] width:((layoutUI.width-16-((amin 2 (amax 1 (floor ((layoutUI.width-8)/75.2))))-1)*4)/(amin 2 (amax 1 (floor ((layoutUI.width-8)/75.2))))) tooltip:"Add a source-assignment band inside the selected path." height:22
+        button diversityUI_removeStrokeButton "Remove band" pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/75.2))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/75.2))))) tooltip:"Remove the selected band and its settings." height:22
+        spinner diversityUI_strokeWidth "" range:[0.001,100000,1] type:#worldUnits pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/113.2))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/113.2))))) fieldWidth:58
+        label diversityUI_strokeWidth_caption "Width:" pos:[6,6] width:(layoutUI.width-12) height:18
+        radiobuttons diversityUI_strokeMode "Assign by" labels:#("Color groups","Source objects") columns:1 pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58)))))
+        multiListBox diversityUI_strokeChoices "" items:#() pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))) height:5
+        label diversityUI_strokeChoices_caption "Ctrl / Shift: select several" pos:[6,6] width:(layoutUI.width-12) height:18
+        spinner diversityUI_strokeScaleMin "" range:[0.001,100,1] pos:[8,8] width:((layoutUI.width-16-((amin 2 (amax 1 (floor ((layoutUI.width-8)/134))))-1)*4)/(amin 2 (amax 1 (floor ((layoutUI.width-8)/134))))) fieldWidth:58
+        label diversityUI_strokeScaleMin_caption "Scale min:" pos:[6,6] width:(layoutUI.width-12) height:18
+        spinner diversityUI_strokeScaleMax "" range:[0.001,100,1] pos:[8,8] width:((layoutUI.width-16-((amin 2 (amax 1 (floor ((layoutUI.width-8)/134))))-1)*4)/(amin 2 (amax 1 (floor ((layoutUI.width-8)/134))))) fieldWidth:58
+        label diversityUI_strokeScaleMax_caption "Scale max:" pos:[6,6] width:(layoutUI.width-12) height:18
+        button diversityUI_refreshGroups "Refresh sources / groups" pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/142.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/142.8))))) tooltip:"Refresh available source color groups for assignment." height:22
+        label diversityUI_strokeHelp "Outside bands: empty. First match wins." pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58)))))
+        spinner diversityUI_edgeOffsetSpin "" range:[-1000000,1000000,0] type:#worldunits pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/154.8))))) fieldWidth:58
+        label diversityUI_edgeOffsetSpin_caption "Offset inward:" pos:[6,6] width:(layoutUI.width-12) height:18
+        spinner diversityUI_edgeAlongSpin "" range:[0,1000000,0] type:#worldunits pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/149.60000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/149.60000000000002))))) fieldWidth:58
+        label diversityUI_edgeAlongSpin_caption "Jitter along:" pos:[6,6] width:(layoutUI.width-12) height:18
+        spinner diversityUI_edgeAcrossSpin "" range:[0,1000000,0] type:#worldunits pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/154.8))))) fieldWidth:58
+        label diversityUI_edgeAcrossSpin_caption "Jitter across:" pos:[6,6] width:(layoutUI.width-12) height:18
+        label diversityUI_edgeRowHelp "Spacing sets count. Jitter 0 = exact." pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))) height:36
+        checkbox diversityUI_keepCornerCheck "Keep corner points" pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/119.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/119.60000000000001)))))
+        spinner diversityUI_cornerAngleSpin "" range:[0,180,45] type:#float pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/128.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/128.8))))) fieldWidth:58
+        label diversityUI_cornerAngleSpin_caption "Min turn:" pos:[6,6] width:(layoutUI.width-12) height:18
+        spinner diversityUI_cornerCountSpin "" range:[1,64,1] type:#integer pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/154.8))))) fieldWidth:58
+        label diversityUI_cornerCountSpin_caption "Points/corner:" pos:[6,6] width:(layoutUI.width-12) height:18
+        label diversityUI_cornerHelp "Turn angle in degrees. 0 = straight." pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))) height:36
+        spinner diversityUI_edgeRotXSpin "" range:[-36000,36000,0] type:#float pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/154.8))))) fieldWidth:58
+        label diversityUI_edgeRotXSpin_caption "Local X (deg):" pos:[6,6] width:(layoutUI.width-12) height:18
+        spinner diversityUI_edgeRotYSpin "" range:[-36000,36000,0] type:#float pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/154.8))))) fieldWidth:58
+        label diversityUI_edgeRotYSpin_caption "Local Y (deg):" pos:[6,6] width:(layoutUI.width-12) height:18
+        spinner diversityUI_edgeRotZSpin "" range:[-36000,36000,0] type:#float pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/154.8))))) fieldWidth:58
+        label diversityUI_edgeRotZSpin_caption "Local Z (deg):" pos:[6,6] width:(layoutUI.width-12) height:18
+        spinner diversityUI_streetStartSpin "" range:[0,1e9,0] type:#worldunits pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/139.2))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/139.2))))) fieldWidth:58
+        label diversityUI_streetStartSpin_caption "Trim start:" pos:[6,6] width:(layoutUI.width-12) height:18
+        spinner diversityUI_streetEndSpin "" range:[0,1e9,0] type:#worldunits pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/128.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/128.8))))) fieldWidth:58
+        label diversityUI_streetEndSpin_caption "Trim end:" pos:[6,6] width:(layoutUI.width-12) height:18
+        spinner diversityUI_centerStreetSpin "" range:[-1e9,1e9,0] type:#worldunits pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/154.8))))) fieldWidth:58
+        label diversityUI_centerStreetSpin_caption "Street offset:" pos:[6,6] width:(layoutUI.width-12) height:18
+        label diversityUI_streetLayoutHelp "Positive offset = away from street. Trim follows path direction." pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))) height:44
+        checkbox diversityUI_faceOutCheck "Face outward" pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/88.4))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/88.4)))))
+        spinner diversityUI_cornerRadiusSpin "" type:#worldunits range:[0,1000000,10] pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/154.8))))) fieldWidth:58
+        label diversityUI_cornerRadiusSpin_caption "Corner radius:" pos:[6,6] width:(layoutUI.width-12) height:18
+        checkbox diversityUI_straightStreet "Straight ends (Street Side)" pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/166.4))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/166.4)))))
+        label heading_0 "Source assignment - layer" pos:[6,6] width:(layoutUI.width-12) height:18
+        dotNetControl diversityUI_strokesList_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8
+        dotNetControl diversityUI_strokeChoices_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8
+        checkbutton advancedToggle "Advanced" pos:[6,6] width:(layoutUI.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
+        local diversityUI_bodyHeight=0
+        local diversityUI_controlsReady=false
+        local diversityUI_root=undefined,diversityUI_owner=undefined,diversityUI_panel=undefined
+        local diversityUI_setSpecific=false
+        local diversityUI_binding=false,
+        diversityUI_obj=undefined,diversityUI_parentView=undefined
+        local diversityUI_boundaryOnly=false
+        local diversityUI_controlsReady=false,diversityUI_strokeExpandedHeight=0
+        local diversityUI_pathRows=#(),diversityUI_strokeRows=#(),diversityUI_choiceValues=#(),diversityUI_restKeys=#(),diversityUI_loadingStroke=false
+        fn diversityUI_syncControls = (diversityUI_diversityRadio.state=diversityUI_obj.diversityMode;diversityUI_sizeSpin.value=diversityUI_obj.diversitySize;diversityUI_divSeedSpin.value=diversityUI_obj.diversitySeed;diversityUI_roughSpin.value=diversityUI_obj.roughness;diversityUI_blurSpin.value=diversityUI_obj.blurryEdge;diversityUI_noiseSpin.value=diversityUI_obj.diversityNoise;)
+        on diversityUI_faceOutCheck changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
+            if diversityUI_analyzerChannel.selection==5 then diversityUI_obj.edgeFaceOut=v else if diversityUI_analyzerChannel.selection==4 then diversityUI_obj.streetFaceOut=v else diversityUI_obj.borderFaceOut=v
+            diversityUI_cornerRadiusSpin.enabled=v;diversityUI_obj.markInputDirty();CyrusViewportRedraw()
+        )
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_cornerRadiusSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
+            if diversityUI_analyzerChannel.selection==5 then diversityUI_obj.edgeCornerRadius=v else if diversityUI_analyzerChannel.selection==4 then diversityUI_obj.streetCornerRadius=v else diversityUI_obj.borderCornerRadius=v
+            diversityUI_obj.markInputDirty();CyrusViewportRedraw()
+        )
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_streetStartSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.streetTrimStart=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_streetEndSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.streetTrimEnd=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_centerStreetSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.centerStreetOffset=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_straightStreet changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.streetStraight=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        fn diversityUI_selectedStroke = (if diversityUI_strokesList.selection>0 and diversityUI_strokesList.selection<=diversityUI_strokeRows.count then diversityUI_strokeRows[diversityUI_strokesList.selection] else 0)
+        fn diversityUI_showStroke = (
+            diversityUI_loadingStroke=true
+            diversityUI_obj.syncStrokes()
+            local edgeVisible=diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==5
+            for c in #(diversityUI_edgeOffsetSpin,diversityUI_edgeAlongSpin,diversityUI_edgeAcrossSpin,diversityUI_edgeRowHelp,diversityUI_keepCornerCheck,diversityUI_cornerAngleSpin,diversityUI_cornerCountSpin,diversityUI_cornerHelp,diversityUI_edgeRotXSpin,diversityUI_edgeRotYSpin,diversityUI_edgeRotZSpin) do c.visible=edgeVisible
+            diversityUI_cornerRadiusSpin.text=if edgeVisible then "Blend radius:" else "Corner radius:"
+            diversityUI_keepCornerCheck.checked=diversityUI_obj.edgeKeepCorners
+            diversityUI_cornerAngleSpin.value=diversityUI_obj.edgeCornerAngle;diversityUI_cornerCountSpin.value=diversityUI_obj.edgeCornerCount
+            diversityUI_cornerAngleSpin.enabled=diversityUI_obj.edgeKeepCorners;diversityUI_cornerCountSpin.enabled=diversityUI_obj.edgeKeepCorners
+            diversityUI_strokeWidth.text=if edgeVisible then "Spacing:" else "Width:"
+            local row=diversityUI_selectedStroke();local active=row>0
+            for c in #(diversityUI_strokeWidth,diversityUI_strokeMode,diversityUI_strokeChoices,diversityUI_strokeScaleMin,diversityUI_strokeScaleMax,diversityUI_removeStrokeButton) do c.enabled=active
+            diversityUI_choiceValues=#();diversityUI_strokeChoices.items=#()
+            for c in #(diversityUI_edgeOffsetSpin,diversityUI_edgeAlongSpin,diversityUI_edgeAcrossSpin,diversityUI_edgeRotXSpin,diversityUI_edgeRotYSpin,diversityUI_edgeRotZSpin) do c.enabled=active
+            if active do (
+                diversityUI_edgeRotXSpin.value=diversityUI_obj.edgeRotX[row]
+                diversityUI_edgeRotYSpin.value=diversityUI_obj.edgeRotY[row]
+                diversityUI_edgeRotZSpin.value=diversityUI_obj.edgeRotZ[row]
+                diversityUI_edgeOffsetSpin.value=diversityUI_obj.edgeOffsets[row];diversityUI_edgeAlongSpin.value=diversityUI_obj.edgeAlong[row];diversityUI_edgeAcrossSpin.value=diversityUI_obj.edgeAcross[row]
+                diversityUI_strokeWidth.value=diversityUI_obj.patternWidths[row];diversityUI_strokeMode.state=diversityUI_obj.strokeModes[row]
+                diversityUI_strokeWidth.enabled=diversityUI_obj.strokeSides[row]!=5
+                diversityUI_strokeScaleMin.value=diversityUI_obj.strokeMin[row];diversityUI_strokeScaleMax.value=diversityUI_obj.strokeMax[row]
+                local labels=#();local selectedRows=#{}
+                if diversityUI_obj.strokeModes[row]==1 then (
+                    for i=1 to diversityUI_obj.sources.count do (
+                        local key=diversityUI_obj.colorKey(diversityUI_obj.sourceColor i)
+                        if findItem diversityUI_choiceValues key==0 do (append diversityUI_choiceValues key;append labels ("#"+(formattedPrint key format:"06X")))
+                    )
+                    local keys=for i=1 to diversityUI_obj.strokeColorRows.count where diversityUI_obj.strokeColorRows[i]==row collect diversityUI_obj.strokeColorKeys[i]
+                    if keys.count==0 do keys=#(diversityUI_obj.patternGroups[row])
+                    for i=1 to diversityUI_choiceValues.count where findItem keys diversityUI_choiceValues[i]>0 do selectedRows[i]=true
+                ) else (
+                    for n in diversityUI_obj.sources where isValidNode n do (append diversityUI_choiceValues n;append labels (diversityUI_obj.sourceLabel (diversityUI_obj.sourceRow n)))
+                    for i=1 to diversityUI_obj.strokeSourceRows.count where diversityUI_obj.strokeSourceRows[i]==row do (
+                        local k=findItem diversityUI_choiceValues diversityUI_obj.strokeSourceNodes[i];if k>0 do selectedRows[k]=true
+                    )
+                )
+                diversityUI_strokeChoices.items=labels;diversityUI_strokeChoices.selection=selectedRows
             )
-            rowControls=#(diversityUI_diversityRadio);show=(advancedToggle.checked and (true))
+            diversityUI_loadingStroke=false
+            if diversityUI_obj.diversityMode>=3 do (
+                local analyzed=diversityUI_obj.diversityMode==4
+                diversityUI_strokeHelp.text=if analyzed then "Width is spread per side; spacing and masks still apply." else "Outside bands: empty. First match wins."
+                local guideReady=if analyzed then isValidNode diversityUI_obj.analyzerNode else diversityUI_pathsDrop.selection>0
+                if not guideReady then diversityUI_strokeHelp.text=if analyzed then "Pick an Analyzer to begin." else "Pick a closed spline to begin."
+                else if diversityUI_strokeRows.count==0 then diversityUI_strokeHelp.text=if analyzed and diversityUI_analyzerChannel.selection==5 then "Add an edge row, then choose models." else "Add a band, then choose models."
+                else if diversityUI_selectedStroke()>0 and diversityUI_strokeChoices.selection.numberSet==0 then diversityUI_strokeHelp.text="Choose models or groups for this band."
+                else if analyzed and diversityUI_analyzerChannel.selection==5 then diversityUI_strokeHelp.text="Spacing controls row count. Amount 0 disables output."
+                else if analyzed and diversityUI_analyzerChannel.selection==3 and diversityUI_obj.strokeSides[diversityUI_selectedStroke()]==5 then diversityUI_strokeHelp.text="Analyzer points control count. Amount 0 disables output."
+            )
+        )
+        fn diversityUI_showPath = (
+            diversityUI_loadingStroke=true
+            local old=diversityUI_strokesList.selection;diversityUI_strokeRows=#();local labels=#();local total=#(0.0,0.0,0.0,0.0,0.0,0.0,0.0)
+            local analyzed=diversityUI_obj.diversityMode==4
+            local path=if analyzed then diversityUI_obj.analyzerNode else (if diversityUI_pathsDrop.selection>0 then diversityUI_pathRows[diversityUI_pathsDrop.selection] else undefined)
+            if isValidNode path do (
+                for i=1 to diversityUI_obj.patternLines.count where diversityUI_obj.patternLines[i]==path and (not analyzed or (diversityUI_analyzerChannel.selection==1 and diversityUI_obj.strokeSides[i]<=2) or (diversityUI_analyzerChannel.selection==2 and diversityUI_obj.strokeSides[i]==3) or (diversityUI_analyzerChannel.selection==3 and (diversityUI_obj.strokeSides[i]==4 or diversityUI_obj.strokeSides[i]==5)) or (diversityUI_analyzerChannel.selection==4 and diversityUI_obj.strokeSides[i]==6) or (diversityUI_analyzerChannel.selection==5 and diversityUI_obj.strokeSides[i]==7)) do (
+                    append diversityUI_strokeRows i
+                    local side=diversityUI_obj.strokeSides[i];local start=total[side];total[side]+=diversityUI_obj.patternWidths[i]
+                    local prefixes=#("Out ","In ","Both ","Radius ","Single ","Street ","Edge ")
+                    append labels (if side==7 then ("Edge "+(diversityUI_strokeRows.count as string)+": spacing "+units.formatValue diversityUI_obj.patternWidths[i]) else (prefixes[side]+(diversityUI_strokeRows.count as string)+": "+units.formatValue start+" - "+units.formatValue total[side]))
+                )
+            )
+            diversityUI_strokesList.items=labels;diversityUI_strokesList.selection=amin (amax 1 old) labels.count
+            diversityUI_addOutside.enabled=isValidNode path;diversityUI_addInside.enabled=isValidNode path and (not analyzed or diversityUI_analyzerChannel.selection!=2);diversityUI_removePath.enabled=isValidNode path
+            diversityUI_loadingStroke=false;diversityUI_showStroke()
+        )
+        fn diversityUI_updateAnalyzerStatus = (
+            local guide=diversityUI_obj.analyzerNode,valid=isValidNode diversityUI_obj.analyzerNode
+            diversityUI_selectAnalyzer.enabled=valid;diversityUI_updateAnalyzer.enabled=valid
+            diversityUI_analyzerStatus.text=if not valid then "Pick an existing Analyzer. Open planar surfaces only." else (
+                local target=if isValidNode guide.surface then guide.surface.name else "Missing surface"
+                local state=if not guide.cyrusEnabled then "Disabled" else if not isValidNode guide.surface then "Missing surface" else if guide.getAnalysisRuns()==0 then "Not analyzed" else if (guide.getLiveStats())[3] then "Update needed" else "Ready"
+                guide.name+"\nSurface: "+target+"\n"+state
+            )
+        )
+        on diversityUI_selectAnalyzer pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
+            local guide=diversityUI_obj.analyzerNode
+            if isValidNode guide do (select guide;max modify mode)
+        )
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_updateAnalyzer pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
+            local savedOwner=diversityUI_obj,guide=diversityUI_obj.analyzerNode
+            if isValidNode guide do try (
+                guide.runAnalysis();savedOwner.markInputDirty()
+                if diversityUI_controlsReady and diversityUI_obj==savedOwner do diversityUI_updateAnalyzerStatus()
+                CyrusViewportRedraw()
+            )catch(if diversityUI_controlsReady and diversityUI_obj==savedOwner do diversityUI_analyzerStatus.text="Analysis failed: "+getCurrentException())
+        )
+            if controlsReady and root!=undefined do layout()
+        )
+        fn diversityUI_updatePattern = (
+            diversityUI_updateAnalyzerStatus()
+            diversityUI_layoutHelp.text=case diversityUI_obj.diversityMode of (
+                1: "Mix models using their weights."
+                2: "Group models into patches. Size controls patch size."
+                3: "Closed spline bands use top-down XY projection."
+                4: "Use the linked Analyzer's published guides."
+            )
+            diversityUI_faceOutCheck.visible=diversityUI_obj.diversityMode==4 and (diversityUI_analyzerChannel.selection==1 or diversityUI_analyzerChannel.selection==4 or diversityUI_analyzerChannel.selection==5)
+            diversityUI_cornerRadiusSpin.visible=diversityUI_faceOutCheck.visible
+            diversityUI_faceOutCheck.checked=if diversityUI_analyzerChannel.selection==5 then diversityUI_obj.edgeFaceOut else if diversityUI_analyzerChannel.selection==4 then diversityUI_obj.streetFaceOut else diversityUI_obj.borderFaceOut
+            diversityUI_cornerRadiusSpin.value=if diversityUI_analyzerChannel.selection==5 then diversityUI_obj.edgeCornerRadius else if diversityUI_analyzerChannel.selection==4 then diversityUI_obj.streetCornerRadius else diversityUI_obj.borderCornerRadius
+            diversityUI_cornerRadiusSpin.enabled=diversityUI_faceOutCheck.checked
+            diversityUI_streetStartSpin.visible=diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==4
+            diversityUI_streetEndSpin.visible=diversityUI_streetStartSpin.visible
+            diversityUI_centerStreetSpin.visible=diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==2
+            diversityUI_streetLayoutHelp.visible=diversityUI_streetStartSpin.visible or diversityUI_centerStreetSpin.visible
+            diversityUI_streetStartSpin.value=diversityUI_obj.streetTrimStart;diversityUI_streetEndSpin.value=diversityUI_obj.streetTrimEnd;diversityUI_centerStreetSpin.value=diversityUI_obj.centerStreetOffset
+            diversityUI_straightStreet.checked=diversityUI_obj.streetStraight;diversityUI_straightStreet.visible=diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==4
+            diversityUI_obj.syncStrokes();local old=diversityUI_pathsDrop.selection
+            local analyzed=diversityUI_obj.diversityMode==4
+            diversityUI_pathRows=for n in diversityUI_obj.patternPaths where isValidNode n and not isProperty n #samplePoints collect n
+            diversityUI_pathsDrop.items=for n in diversityUI_pathRows collect n.name
+            diversityUI_pathsDrop.selection=amin (amax 1 old) diversityUI_pathRows.count
+            diversityUI_pathsDrop.visible=diversityUI_obj.diversityMode==3;diversityUI_pickPath.visible=diversityUI_obj.diversityMode==3
+            diversityUI_analyzerChannel.visible=analyzed;diversityUI_pickAnalyzer.visible=analyzed
+            diversityUI_pickAnalyzer.text=if isValidNode diversityUI_obj.analyzerNode then diversityUI_obj.analyzerNode.name else "Pick Surface Analyzer"
+            diversityUI_removePath.text=if analyzed then "Remove Analyzer" else "Remove path"
+            diversityUI_strokeTitle.text=if analyzed then "Analyzer bands / rows" else "Spline bands"
+            diversityUI_addOutside.text=if not analyzed or diversityUI_analyzerChannel.selection==1 then "Add Outside" else (if diversityUI_analyzerChannel.selection==2 then "Add band" else "Add Radius")
+            diversityUI_addInside.text=if analyzed and diversityUI_analyzerChannel.selection==3 then "Add Single" else "Add Inside"
+            diversityUI_boundaryOnly=analyzed and (diversityUI_analyzerChannel.selection==1 or diversityUI_analyzerChannel.selection==4 or diversityUI_analyzerChannel.selection==5)
+            diversityUI_addOutside.visible=(diversityUI_obj.diversityMode==3 or analyzed) and not diversityUI_boundaryOnly
+            diversityUI_addInside.pos=[if diversityUI_boundaryOnly then 4 else layoutUI.width/2+2,diversityUI_addOutside.pos.y]
+            diversityUI_addInside.width=if diversityUI_boundaryOnly then layoutUI.width-8 else (layoutUI.width-12)/2
+            if diversityUI_boundaryOnly do diversityUI_addInside.text=if diversityUI_analyzerChannel.selection==5 then "Add Edge Row" else "Add band inside"
+            diversityUI_strokeHelp.text=if analyzed and diversityUI_analyzerChannel.selection==5 then "One row along the boundary." else if analyzed then "Width = spread per side." else "Outside bands: empty. First match wins."
+            diversityUI_restKeys=#()
+            for i=1 to diversityUI_obj.sources.count do (local key=diversityUI_obj.colorKey(diversityUI_obj.sourceColor i);if findItem diversityUI_restKeys key==0 do append diversityUI_restKeys key)
+            diversityUI_showPath()
+
+        )
+        on diversityUI_pathsDrop selected i do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do diversityUI_showPath()
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_analyzerChannel selected i do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do diversityUI_updatePattern()
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_pickAnalyzer picked n do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
+            if CyrusAnalyzerFilter n do (diversityUI_obj.analyzerNode=n;diversityUI_obj.markInputDirty();diversityUI_updatePattern();CyrusViewportRedraw())
+        )
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_strokesList selected i do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do diversityUI_showStroke()
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_pickPath picked n do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
+            if isValidNode n and findItem diversityUI_obj.patternPaths n==0 do append diversityUI_obj.patternPaths n
+            diversityUI_updatePattern();diversityUI_pathsDrop.selection=findItem diversityUI_pathRows n;diversityUI_showPath()
+        )
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_removePath pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
+            local path=if diversityUI_obj.diversityMode==4 then diversityUI_obj.analyzerNode else diversityUI_pathRows[diversityUI_pathsDrop.selection]
+            for i=diversityUI_obj.patternLines.count to 1 by -1 where diversityUI_obj.patternLines[i]==path do diversityUI_obj.removeStroke i
+            local k=findItem diversityUI_obj.patternPaths path;if k>0 do deleteItem diversityUI_obj.patternPaths k
+            if diversityUI_obj.diversityMode==4 do diversityUI_obj.analyzerNode=undefined
+            diversityUI_updatePattern();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw()
+        )
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_addOutside pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
+            if diversityUI_obj.diversityMode==4 and (diversityUI_analyzerChannel.selection==1 or diversityUI_analyzerChannel.selection==4 or diversityUI_analyzerChannel.selection==5) do return false
+            local path=if diversityUI_obj.diversityMode==4 then diversityUI_obj.analyzerNode else diversityUI_pathRows[diversityUI_pathsDrop.selection]
+            local types=#(1,3,4)
+            local side=if diversityUI_obj.diversityMode==4 then types[diversityUI_analyzerChannel.selection] else 1
+            diversityUI_obj.addStroke path side:side;diversityUI_showPath();diversityUI_strokesList.selection=diversityUI_strokeRows.count;diversityUI_showStroke();CyrusViewportRedraw()
+        )
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_addInside pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (
+            local path=if diversityUI_obj.diversityMode==4 then diversityUI_obj.analyzerNode else diversityUI_pathRows[diversityUI_pathsDrop.selection]
+            local side=if diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==5 then 7 else if diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==4 then 6 else if diversityUI_obj.diversityMode==4 and diversityUI_analyzerChannel.selection==3 then 5 else 2
+            diversityUI_obj.addStroke path side:side;diversityUI_showPath();diversityUI_strokesList.selection=diversityUI_strokeRows.count;diversityUI_showStroke();CyrusViewportRedraw()
+        )
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_removeStrokeButton pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.removeStroke row;diversityUI_showPath();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_edgeOffsetSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeOffsets[row]=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_edgeAlongSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeAlong[row]=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_edgeAcrossSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeAcross[row]=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_keepCornerCheck changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.edgeKeepCorners=v;diversityUI_cornerAngleSpin.enabled=v;diversityUI_cornerCountSpin.enabled=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_cornerAngleSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.edgeCornerAngle=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_cornerCountSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.edgeCornerCount=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_edgeRotXSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeRotX[row]=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_edgeRotYSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeRotY[row]=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_edgeRotZSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeRotZ[row]=v;CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_strokeWidth changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.patternWidths[row]=v;diversityUI_obj.markInputDirty();diversityUI_showPath();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_strokeMode changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.strokeModes[row]=v;diversityUI_showStroke();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_strokeChoices selectionEnd do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (
+            local row=diversityUI_selectedStroke()
+            if row>0 do diversityUI_obj.setStrokeSelection row diversityUI_obj.strokeModes[row] (for i in diversityUI_strokeChoices.selection collect diversityUI_choiceValues[i])
+            CyrusViewportRedraw()
+        )
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_strokeScaleMin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();diversityUI_obj.strokeMin[row]=v;if v>diversityUI_obj.strokeMax[row] do diversityUI_obj.strokeMax[row]=v;diversityUI_showStroke();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_strokeScaleMax changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();diversityUI_obj.strokeMax[row]=v;if v<diversityUI_obj.strokeMin[row] do diversityUI_obj.strokeMin[row]=v;diversityUI_showStroke();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_refreshGroups pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do diversityUI_updatePattern()
+            if controlsReady and root!=undefined do layout()
+        )
+        fn diversityUI_updateControls = (
+            for c in #(diversityUI_sizeSpin,diversityUI_divSeedSpin,diversityUI_roughSpin,diversityUI_blurSpin,diversityUI_noiseSpin,diversityUI_groupHint,diversityUI_fixedHint) do c.visible=diversityUI_obj.diversityMode==2
+            for c in #(diversityUI_strokeTitle,diversityUI_pathsDrop,diversityUI_analyzerChannel,diversityUI_pickAnalyzer,diversityUI_pickPath,diversityUI_removePath,diversityUI_strokesList,diversityUI_addOutside,diversityUI_addInside,diversityUI_removeStrokeButton,diversityUI_strokeWidth,diversityUI_strokeMode,diversityUI_strokeChoices,diversityUI_strokeScaleMin,diversityUI_strokeScaleMax,diversityUI_refreshGroups,diversityUI_strokeHelp) do c.visible=(diversityUI_obj.diversityMode==3 or diversityUI_obj.diversityMode==4)
+            if diversityUI_strokeExpandedHeight>0 do diversityUI_bodyHeight=if diversityUI_obj.diversityMode>=3 then diversityUI_strokeExpandedHeight else (if diversityUI_obj.diversityMode==2 then 310 else 124)*1.0
+            (CyrusContainerPanel diversityUI_root).layoutPanels()
+        )
+        on diversityUI_diversityRadio changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.diversityMode=v;diversityUI_updateControls();diversityUI_updatePattern();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_sizeSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.diversitySize=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_divSeedSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.diversitySeed=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_roughSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.roughness=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_blurSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.blurryEdge=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        on diversityUI_noiseSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (diversityUI_obj.diversityNoise=v;diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
+            if controlsReady and root!=undefined do layout()
+        )
+        fn diversityUI_bind layer = (
+            local next=layer
+            diversityUI_binding=true;diversityUI_controlsReady=false
+            if diversityUI_obj!=next do (diversityUI_strokesList.selection=0;diversityUI_strokeChoices.selection=0;)
+            diversityUI_obj=next;diversityUI_parentView=(CyrusContainerPanel diversityUI_root)
+            for c in #(diversityUI_diversityRadio,diversityUI_layoutHelp,diversityUI_analyzerStatus,diversityUI_selectAnalyzer,diversityUI_updateAnalyzer,diversityUI_sizeSpin,diversityUI_divSeedSpin,diversityUI_roughSpin,diversityUI_blurSpin,diversityUI_noiseSpin,diversityUI_groupHint,diversityUI_fixedHint,diversityUI_strokeTitle,diversityUI_pathsDrop,diversityUI_analyzerChannel,diversityUI_pickAnalyzer,diversityUI_pickPath,diversityUI_removePath,diversityUI_strokesList,diversityUI_addOutside,diversityUI_addInside,diversityUI_removeStrokeButton,diversityUI_strokeWidth,diversityUI_strokeMode,diversityUI_strokeChoices,diversityUI_strokeScaleMin,diversityUI_strokeScaleMax,diversityUI_refreshGroups,diversityUI_strokeHelp,diversityUI_edgeOffsetSpin,diversityUI_edgeAlongSpin,diversityUI_edgeAcrossSpin,diversityUI_edgeRowHelp,diversityUI_keepCornerCheck,diversityUI_cornerAngleSpin,diversityUI_cornerCountSpin,diversityUI_cornerHelp,diversityUI_edgeRotXSpin,diversityUI_edgeRotYSpin,diversityUI_edgeRotZSpin,diversityUI_streetStartSpin,diversityUI_streetEndSpin,diversityUI_centerStreetSpin,diversityUI_streetLayoutHelp,diversityUI_faceOutCheck,diversityUI_cornerRadiusSpin,diversityUI_straightStreet) do c.enabled=layer!=undefined
+            try (undo off ((diversityUI_diversityRadio.state=diversityUI_obj.diversityMode;diversityUI_sizeSpin.value=diversityUI_obj.diversitySize;diversityUI_divSeedSpin.value=diversityUI_obj.diversitySeed;diversityUI_roughSpin.value=diversityUI_obj.roughness;diversityUI_blurSpin.value=diversityUI_obj.blurryEdge;diversityUI_noiseSpin.value=diversityUI_obj.diversityNoise;diversityUI_controlsReady=true;diversityUI_strokeExpandedHeight=diversityUI_bodyHeight;diversityUI_updateControls();diversityUI_updatePattern()))) catch(diversityUI_binding=false;diversityUI_controlsReady=true;throw())
+            diversityUI_controlsReady=true;diversityUI_binding=false
+        )
+        fn fitLabel control minimum available = (
+            local capacity=amax 1 (floor ((available-4)/5.2)),lines=0
+            for paragraph in filterString control.text "\n" splitEmptyTokens:true do (
+                local occupied=0;lines+=1
+                for word in filterString paragraph " " do (
+                    local size=word.count+(if occupied==0 then 0 else 1)
+                    if occupied>0 and occupied+size>capacity do (lines+=1;occupied=0;size=word.count)
+                    lines+=floor ((amax 0 (size-1))/capacity);occupied=(mod (amax 0 (size-1)) capacity)+1+occupied
+                )
+            )
+            control.height=amax minimum (lines*14+2);true
+        )
+        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
+        fn captureView = #(layoutUI.open,#(advancedToggle.checked),#(diversityUI_strokesList.height,diversityUI_strokeChoices.height))
+        fn restoreView state = (
+            layoutUI.open=state[1]
+            advancedToggle.checked=state[2][1]
+            diversityUI_strokesList.height=state[3][1];diversityUI_strokeChoices.height=state[3][2]
+            true
+        )
+        fn stopListDrag = (
+            local previous=dragGrip
+            dragGrip=undefined;dragList=undefined
+            if previous!=undefined do previous.Capture=false
+            true
+        )
+        fn gripScreenY sender args = (
+            local point=dotNetObject "System.Drawing.Point" args.X args.Y
+            (sender.PointToScreen point).Y
+        )
+        fn beginListDrag sender args target = (
+            if not controlsReady or binding or root==undefined or not sender.Visible or not sender.Enabled do return false
+            if args.Button!=(dotNetClass "System.Windows.Forms.MouseButtons").Left do return false
+            stopListDrag()
+            dragStartY=gripScreenY sender args;dragStartHeight=target.height
+            dragList=target;dragGrip=sender;sender.Capture=true;true
+        )
+        fn moveListDrag sender args = (
+            if dragGrip!=sender or dragList==undefined or not sender.Capture do return false
+            if not controlsReady or binding or root==undefined or not sender.Visible do return stopListDrag()
+            local nextHeight=amin 900 (amax 42 (dragStartHeight+(gripScreenY sender args)-dragStartY))
+            if nextHeight!=dragList.height do (dragList.height=nextHeight;layout();if panel!=undefined do panel.rememberViews();true)
+            true
+        )
+        fn paintListGrip sender args = (
+            local pen=dotNetObject "System.Drawing.Pen" ((dotNetClass "System.Drawing.Color").FromArgb 135 135 135)
+            local center=(sender.ClientSize.Width/2) as integer
+            args.Graphics.DrawLine pen (center-10) 3 (center+10) 3
+            args.Graphics.DrawLine pen (center-10) 5 (center+10) 5
+            pen.Dispose()
+        )
+        fn setupGrips = (
+            for grip in #(diversityUI_strokesList_grip,diversityUI_strokeChoices_grip) do (
+                grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
+                grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
+                grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
+                grip.TabStop=false
+            )
+            true
+        )
+        on diversityUI_strokesList_grip MouseDown sender args do beginListDrag sender args diversityUI_strokesList
+        on diversityUI_strokesList_grip MouseMove sender args do moveListDrag sender args
+        on diversityUI_strokesList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
+        on diversityUI_strokesList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on diversityUI_strokesList_grip Paint sender args do paintListGrip sender args
+        on diversityUI_strokeChoices_grip MouseDown sender args do beginListDrag sender args diversityUI_strokeChoices
+        on diversityUI_strokeChoices_grip MouseMove sender args do moveListDrag sender args
+        on diversityUI_strokeChoices_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
+        on diversityUI_strokeChoices_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
+        on diversityUI_strokeChoices_grip Paint sender args do paintListGrip sender args
+        fn fitPairField control available = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
+            for handle in control.hwnd do (
+                local data=windows.getHWNDData handle
+                if data[4]=="CustEdit" do (
+                    local rectangle=windows.getWindowPos handle,position=windows.screenToClient data[2] (arrow.x-fieldWidth) arrow.y
+                    windows.setWindowPos handle position.x position.y fieldWidth rectangle.h true
+                )
+            )
+            true
+        )
+        fn fitWidth control available = (
+            if isProperty control #width then control.width=available
+            else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
+                local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
+                if rectangle.w!=target do (
+                    local data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y target rectangle.h true
+                )
+            )
+            true
+        )
+        fn layout = (
+            local widthValue=amax 140 layoutUI.width,y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
+            rowControls=#(diversityUI_diversityRadio);show=(true and (true))
             for c in rowControls do c.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
@@ -16709,7 +17068,17 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(diversityUI_sizeSpin);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==2))
+            rowControls=#(diversityUI_layoutHelp);show=(true and (true))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel diversityUI_layoutHelp 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(diversityUI_layoutHelp.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_sizeSpin);show=(true and (diversityUI_diversityRadio.state==2))
             for c in rowControls do c.visible=show
             diversityUI_sizeSpin_caption.visible=show
             if show do (
@@ -16721,17 +17090,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 if not stackedCaption then (diversityUI_sizeSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_sizeSpin_caption.width=cellWidth-78) else (diversityUI_sizeSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_sizeSpin_caption.width=cellWidth);diversityUI_sizeSpin_caption.enabled=diversityUI_sizeSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(diversityUI_strokeTitle);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel diversityUI_strokeTitle 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(diversityUI_strokeTitle.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_divSeedSpin);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==2))
+            rowControls=#(diversityUI_divSeedSpin);show=(true and (diversityUI_diversityRadio.state==2))
             for c in rowControls do c.visible=show
             diversityUI_divSeedSpin_caption.visible=show
             if show do (
@@ -16743,7 +17102,17 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 if not stackedCaption then (diversityUI_divSeedSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_divSeedSpin_caption.width=cellWidth-78) else (diversityUI_divSeedSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_divSeedSpin_caption.width=cellWidth);diversityUI_divSeedSpin_caption.enabled=diversityUI_divSeedSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(diversityUI_pathsDrop);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==3))
+            rowControls=#(diversityUI_groupHint);show=(true and (diversityUI_diversityRadio.state==2))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel diversityUI_groupHint 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(diversityUI_groupHint.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_pathsDrop);show=(true and (diversityUI_diversityRadio.state==3))
             for c in rowControls do c.visible=show
             diversityUI_pathsDrop_caption.visible=show
             if show do (
@@ -16755,7 +17124,44 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 diversityUI_pathsDrop_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_pathsDrop_caption.width=cellWidth;diversityUI_pathsDrop_caption.enabled=diversityUI_pathsDrop.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(diversityUI_analyzerChannel);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==4))
+            rowControls=#(diversityUI_pickPath);show=(true and (diversityUI_diversityRadio.state==3))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/127.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_pickAnalyzer);show=(true and (diversityUI_diversityRadio.state==4))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/127.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_analyzerStatus);show=(true and (diversityUI_diversityRadio.state==4))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel diversityUI_analyzerStatus 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(diversityUI_analyzerStatus.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_selectAnalyzer,diversityUI_updateAnalyzer);show=(true and (diversityUI_diversityRadio.state==4))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/96))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_analyzerChannel);show=(true and (diversityUI_diversityRadio.state==4))
             for c in rowControls do c.visible=show
             diversityUI_analyzerChannel_caption.visible=show
             if show do (
@@ -16765,6 +17171,149 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 diversityUI_analyzerChannel_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_analyzerChannel_caption.width=cellWidth;diversityUI_analyzerChannel_caption.enabled=diversityUI_analyzerChannel.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_removePath);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/75.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_strokeTitle);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel diversityUI_strokeTitle 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(diversityUI_strokeTitle.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_strokesList);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            diversityUI_strokesList_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel diversityUI_strokesList_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(diversityUI_strokesList_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(diversityUI_strokesList.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                diversityUI_strokesList_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokesList_caption.width=cellWidth;diversityUI_strokesList_caption.enabled=diversityUI_strokesList.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_strokesList_grip);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=8+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_addOutside,diversityUI_addInside);show=(true and (diversityUI_diversityRadio.state==3 or (diversityUI_diversityRadio.state==4 and (diversityUI_analyzerChannel.selection==2 or diversityUI_analyzerChannel.selection==3))))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/75.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_removeStrokeButton);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/75.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_strokeWidth);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            diversityUI_strokeWidth_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/113.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel diversityUI_strokeWidth_caption 18 cellWidth
+                stackedCaption=cellWidth<109.2;captionHeight=amax 0 (if stackedCaption then (amax #(diversityUI_strokeWidth_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (diversityUI_strokeWidth_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_strokeWidth_caption.width=cellWidth-78) else (diversityUI_strokeWidth_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokeWidth_caption.width=cellWidth);diversityUI_strokeWidth_caption.enabled=diversityUI_strokeWidth.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_strokeMode);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(58))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_strokeChoices);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            diversityUI_strokeChoices_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel diversityUI_strokeChoices_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(diversityUI_strokeChoices_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(diversityUI_strokeChoices.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                diversityUI_strokeChoices_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokeChoices_caption.width=cellWidth;diversityUI_strokeChoices_caption.enabled=diversityUI_strokeChoices.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_strokeChoices_grip);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=8+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_strokeScaleMin,diversityUI_strokeScaleMax);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            diversityUI_strokeScaleMin_caption.visible=show;diversityUI_strokeScaleMax_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/134))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel diversityUI_strokeScaleMin_caption 18 cellWidth;fitLabel diversityUI_strokeScaleMax_caption 18 cellWidth
+                stackedCaption=cellWidth<130;captionHeight=amax 0 (if stackedCaption then (amax #(diversityUI_strokeScaleMin_caption.height,diversityUI_strokeScaleMax_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (diversityUI_strokeScaleMin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_strokeScaleMin_caption.width=cellWidth-78) else (diversityUI_strokeScaleMin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokeScaleMin_caption.width=cellWidth);diversityUI_strokeScaleMin_caption.enabled=diversityUI_strokeScaleMin.enabled;if not stackedCaption then (diversityUI_strokeScaleMax_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];diversityUI_strokeScaleMax_caption.width=cellWidth-78) else (diversityUI_strokeScaleMax_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];diversityUI_strokeScaleMax_caption.width=cellWidth);diversityUI_strokeScaleMax_caption.enabled=diversityUI_strokeScaleMax.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_refreshGroups);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/142.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_strokeHelp);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel diversityUI_strokeHelp 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(diversityUI_strokeHelp.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            rowControls=#(heading_0);show=(advancedToggle.checked and (true))
+            for c in rowControls do c.visible=show
+            if show do (
+                if y>6 do y+=4
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel heading_0 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(heading_0.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(diversityUI_roughSpin);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==2))
@@ -16791,24 +17340,6 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 if not stackedCaption then (diversityUI_blurSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_blurSpin_caption.width=cellWidth-78) else (diversityUI_blurSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_blurSpin_caption.width=cellWidth);diversityUI_blurSpin_caption.enabled=diversityUI_blurSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(diversityUI_pickAnalyzer);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==4))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/127.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_pickPath);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==3))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/127.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
             rowControls=#(diversityUI_noiseSpin);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==2))
             for c in rowControls do c.visible=show
             diversityUI_noiseSpin_caption.visible=show
@@ -16821,46 +17352,6 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 if not stackedCaption then (diversityUI_noiseSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_noiseSpin_caption.width=cellWidth-78) else (diversityUI_noiseSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_noiseSpin_caption.width=cellWidth);diversityUI_noiseSpin_caption.enabled=diversityUI_noiseSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(diversityUI_removePath);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/75.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_groupHint);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==2))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel diversityUI_groupHint 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(diversityUI_groupHint.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_strokesList);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            diversityUI_strokesList_caption.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel diversityUI_strokesList_caption 18 cellWidth
-                stackedCaption=false;captionHeight=amax (amax #(diversityUI_strokesList_caption.height)) (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(diversityUI_strokesList.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                diversityUI_strokesList_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokesList_caption.width=cellWidth;diversityUI_strokesList_caption.enabled=diversityUI_strokesList.enabled
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_strokesList_grip);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=8+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
             rowControls=#(diversityUI_fixedHint);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==2))
             for c in rowControls do c.visible=show
             if show do (
@@ -16868,118 +17359,6 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 fitLabel diversityUI_fixedHint 18 cellWidth
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(diversityUI_fixedHint.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_addOutside);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==3 or (diversityUI_diversityRadio.state==4 and (diversityUI_analyzerChannel.selection==2 or diversityUI_analyzerChannel.selection==3))))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/75.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_addInside);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/70))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_removeStrokeButton);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/85.60000000000001))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_strokeWidth);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            diversityUI_strokeWidth_caption.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/113.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel diversityUI_strokeWidth_caption 18 cellWidth
-                stackedCaption=cellWidth<109.2;captionHeight=amax 0 (if stackedCaption then (amax #(diversityUI_strokeWidth_caption.height)) else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                if not stackedCaption then (diversityUI_strokeWidth_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_strokeWidth_caption.width=cellWidth-78) else (diversityUI_strokeWidth_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokeWidth_caption.width=cellWidth);diversityUI_strokeWidth_caption.enabled=diversityUI_strokeWidth.enabled
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_strokeMode);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(58))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_strokeChoices);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            diversityUI_strokeChoices_caption.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel diversityUI_strokeChoices_caption 18 cellWidth
-                stackedCaption=false;captionHeight=amax (amax #(diversityUI_strokeChoices_caption.height)) (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(diversityUI_strokeChoices.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                diversityUI_strokeChoices_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokeChoices_caption.width=cellWidth;diversityUI_strokeChoices_caption.enabled=diversityUI_strokeChoices.enabled
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_strokeChoices_grip);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=8+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_strokeScaleMin);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            diversityUI_strokeScaleMin_caption.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/134))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel diversityUI_strokeScaleMin_caption 18 cellWidth
-                stackedCaption=cellWidth<130;captionHeight=amax 0 (if stackedCaption then (amax #(diversityUI_strokeScaleMin_caption.height)) else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                if not stackedCaption then (diversityUI_strokeScaleMin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_strokeScaleMin_caption.width=cellWidth-78) else (diversityUI_strokeScaleMin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokeScaleMin_caption.width=cellWidth);diversityUI_strokeScaleMin_caption.enabled=diversityUI_strokeScaleMin.enabled
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_strokeScaleMax);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            diversityUI_strokeScaleMax_caption.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/134))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel diversityUI_strokeScaleMax_caption 18 cellWidth
-                stackedCaption=cellWidth<130;captionHeight=amax 0 (if stackedCaption then (amax #(diversityUI_strokeScaleMax_caption.height)) else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                if not stackedCaption then (diversityUI_strokeScaleMax_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_strokeScaleMax_caption.width=cellWidth-78) else (diversityUI_strokeScaleMax_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokeScaleMax_caption.width=cellWidth);diversityUI_strokeScaleMax_caption.enabled=diversityUI_strokeScaleMax.enabled
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_refreshGroups);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/142.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_strokeHelp);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel diversityUI_strokeHelp 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(diversityUI_strokeHelp.height))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
@@ -17184,7 +17563,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 if not stackedCaption then (diversityUI_edgeRotZSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_edgeRotZSpin_caption.width=cellWidth-78) else (diversityUI_edgeRotZSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_edgeRotZSpin_caption.width=cellWidth);diversityUI_edgeRotZSpin_caption.enabled=diversityUI_edgeRotZSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            lastLayoutWidth=widthValue;modelsUI.height=y+4;syncColorLists();true
+            lastLayoutWidth=widthValue;layoutUI.height=y+4;true
         )
         fn bind layer = (
             if root==undefined do return false
@@ -17192,29 +17571,23 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             try (
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
-                sourceContainersUI_root=root;sourceContainersUI_owner=owner;sourceContainersUI_panel=panel;sourceContainersUI_controlsReady=controlsReady;sourceContainersUI_binding=binding
-            sourceUI_root=root;sourceUI_owner=owner;sourceUI_panel=panel;sourceUI_controlsReady=controlsReady;sourceUI_binding=binding
-            diversityUI_root=root;diversityUI_owner=owner;diversityUI_panel=panel;diversityUI_controlsReady=controlsReady;diversityUI_binding=binding
-            if owner!=undefined then (sourceContainersUI_bind (root.selectedPaintSet owner);) else (for c in #(sourceContainersUI_modeList,sourceContainersUI_containersList,sourceContainersUI_createContainer,sourceContainersUI_pickContainer,sourceContainersUI_removeContainer,sourceContainersUI_membershipInfo,sourceContainersUI_helpInfo) do c.enabled=false;sourceContainersUI_controlsReady=false)
-            sourceUI_detailsToggle.checked=true;if owner!=undefined then (sourceUI_bind (root.selectedPaintSet owner);) else (for c in #(sourceUI_sourceName,sourceUI_idColor,sourceUI_plantList,sourceUI_selectFromScene,sourceUI_addPlant,sourceUI_addSelected,sourceUI_removePlant,sourceUI_selectPlant,sourceUI_addPoint,sourceUI_addEmpty,sourceUI_replacePoint,sourceUI_groupHeading,sourceUI_existingGroups,sourceUI_groupColor,sourceUI_applyColor,sourceUI_colorHelp,sourceUI_weightSpin,sourceUI_weightHelp,sourceUI_sourceZSpin,sourceUI_sourceScaleSpin,sourceUI_sourceTransformHelp,sourceUI_radiusSourceSpin,sourceUI_followRadiusCheck,sourceUI_showRadiusCheck,sourceUI_forwardAxis,sourceUI_detailsToggle) do c.enabled=false;sourceUI_controlsReady=false)
-            if owner!=undefined then (diversityUI_bind owner;) else (for c in #(diversityUI_diversityRadio,diversityUI_sizeSpin,diversityUI_divSeedSpin,diversityUI_roughSpin,diversityUI_blurSpin,diversityUI_noiseSpin,diversityUI_groupHint,diversityUI_fixedHint,diversityUI_strokeTitle,diversityUI_pathsDrop,diversityUI_analyzerChannel,diversityUI_pickAnalyzer,diversityUI_pickPath,diversityUI_removePath,diversityUI_strokesList,diversityUI_addOutside,diversityUI_addInside,diversityUI_removeStrokeButton,diversityUI_strokeWidth,diversityUI_strokeMode,diversityUI_strokeChoices,diversityUI_strokeScaleMin,diversityUI_strokeScaleMax,diversityUI_refreshGroups,diversityUI_strokeHelp,diversityUI_edgeOffsetSpin,diversityUI_edgeAlongSpin,diversityUI_edgeAcrossSpin,diversityUI_edgeRowHelp,diversityUI_keepCornerCheck,diversityUI_cornerAngleSpin,diversityUI_cornerCountSpin,diversityUI_cornerHelp,diversityUI_edgeRotXSpin,diversityUI_edgeRotYSpin,diversityUI_edgeRotZSpin,diversityUI_streetStartSpin,diversityUI_streetEndSpin,diversityUI_centerStreetSpin,diversityUI_streetLayoutHelp,diversityUI_faceOutCheck,diversityUI_cornerRadiusSpin,diversityUI_straightStreet) do c.enabled=false;diversityUI_controlsReady=false)
+                diversityUI_root=root;diversityUI_owner=owner;diversityUI_panel=panel;diversityUI_controlsReady=controlsReady;diversityUI_binding=binding
+            if owner!=undefined then (diversityUI_bind owner;) else (for c in #(diversityUI_diversityRadio,diversityUI_layoutHelp,diversityUI_analyzerStatus,diversityUI_selectAnalyzer,diversityUI_updateAnalyzer,diversityUI_sizeSpin,diversityUI_divSeedSpin,diversityUI_roughSpin,diversityUI_blurSpin,diversityUI_noiseSpin,diversityUI_groupHint,diversityUI_fixedHint,diversityUI_strokeTitle,diversityUI_pathsDrop,diversityUI_analyzerChannel,diversityUI_pickAnalyzer,diversityUI_pickPath,diversityUI_removePath,diversityUI_strokesList,diversityUI_addOutside,diversityUI_addInside,diversityUI_removeStrokeButton,diversityUI_strokeWidth,diversityUI_strokeMode,diversityUI_strokeChoices,diversityUI_strokeScaleMin,diversityUI_strokeScaleMax,diversityUI_refreshGroups,diversityUI_strokeHelp,diversityUI_edgeOffsetSpin,diversityUI_edgeAlongSpin,diversityUI_edgeAcrossSpin,diversityUI_edgeRowHelp,diversityUI_keepCornerCheck,diversityUI_cornerAngleSpin,diversityUI_cornerCountSpin,diversityUI_cornerHelp,diversityUI_edgeRotXSpin,diversityUI_edgeRotYSpin,diversityUI_edgeRotZSpin,diversityUI_streetStartSpin,diversityUI_streetEndSpin,diversityUI_centerStreetSpin,diversityUI_streetLayoutHelp,diversityUI_faceOutCheck,diversityUI_cornerRadiusSpin,diversityUI_straightStreet) do c.enabled=false;diversityUI_controlsReady=false)
                 setupGrips();controlsReady=true;binding=false;layout();true
             )catch(binding=false;controlsReady=false;throw())
         )
 
-        on propertiesToggle changed value do if controlsReady and not binding and root!=undefined and true do ((layout();if panel!=undefined do panel.rememberViews();true)
-            if controlsReady and root!=undefined do layout()
-        )
+
         on advancedToggle changed value do if controlsReady and not binding and root!=undefined and true do ((layout();if panel!=undefined do panel.rememberViews();true)
             if controlsReady and root!=undefined do layout()
         )
-        on modelsUI resized size do if controlsReady and not binding and (amax 140 modelsUI.width)!=lastLayoutWidth do layout()
-        on modelsUI open do (panel=this.mainUI;root=undefined;controlsReady=false)
-        on modelsUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;sourceContainersUI_controlsReady=false;sourceContainersUI_root=undefined;sourceContainersUI_owner=undefined;sourceUI_controlsReady=false;sourceUI_root=undefined;sourceUI_owner=undefined;sourceUI_obj=undefined;diversityUI_controlsReady=false;diversityUI_root=undefined;diversityUI_owner=undefined;diversityUI_obj=undefined)
-        on modelsUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection modelsUI;panel.rememberViews()))
+        on layoutUI resized size do if controlsReady and not binding and (amax 140 layoutUI.width)!=lastLayoutWidth do layout()
+        on layoutUI open do (panel=this.mainUI;root=undefined;controlsReady=false)
+        on layoutUI close do (stopListDrag();controlsReady=false;root=undefined;owner=undefined;obj=undefined;diversityUI_controlsReady=false;diversityUI_root=undefined;diversityUI_owner=undefined;diversityUI_obj=undefined)
+        on layoutUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection layoutUI;panel.rememberViews()))
     )
 
-    rollout populationUI "Amount" width:#cmdPanel category:40 autoLayoutOnResize:false (
+    rollout populationUI "Amount" width:#cmdPanel category:50 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
         local layout,lastLayoutWidth=0
         radiobuttons distributionUI_modeRadio "Method" labels:#("Random","Texture Density") columns:2 pos:[8,8] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58)))))
@@ -17372,6 +17745,17 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             true
         )
 
+        fn fitPairField control available = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
+            for handle in control.hwnd do (
+                local data=windows.getHWNDData handle
+                if data[4]=="CustEdit" do (
+                    local rectangle=windows.getWindowPos handle,position=windows.screenToClient data[2] (arrow.x-fieldWidth) arrow.y
+                    windows.setWindowPos handle position.x position.y fieldWidth rectangle.h true
+                )
+            )
+            true
+        )
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -17441,7 +17825,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 if not stackedCaption then (distributionUI_seedSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];distributionUI_seedSpin_caption.width=cellWidth-78) else (distributionUI_seedSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_seedSpin_caption.width=cellWidth);distributionUI_seedSpin_caption.enabled=distributionUI_seedSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
             rowControls=#(heading_1);show=(advancedToggle.checked and (true))
             for c in rowControls do c.visible=show
             if show do (
@@ -17602,7 +17986,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         on populationUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection populationUI;panel.rememberViews()))
     )
 
-    rollout coverageUI "Painting" width:#cmdPanel category:50 autoLayoutOnResize:false (
+    rollout coverageUI "Painting" width:#cmdPanel category:60 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
         local layout,lastLayoutWidth=0
         checkbox setsUI_paintedCheck "Use Paint Areas" pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/104))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/104))))) tooltip:"Restrict this layer to its painted areas. Turn off to scatter across all its surfaces."
@@ -17823,6 +18207,17 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             true
         )
 
+        fn fitPairField control available = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
+            for handle in control.hwnd do (
+                local data=windows.getHWNDData handle
+                if data[4]=="CustEdit" do (
+                    local rectangle=windows.getWindowPos handle,position=windows.screenToClient data[2] (arrow.x-fieldWidth) arrow.y
+                    windows.setWindowPos handle position.x position.y fieldWidth rectangle.h true
+                )
+            )
+            true
+        )
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -17986,7 +18381,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
             rowControls=#(heading_0);show=(advancedToggle.checked and (true))
             for c in rowControls do c.visible=show
             if show do (
@@ -18068,7 +18463,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         on coverageUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection coverageUI;panel.rememberViews()))
     )
 
-    rollout areasUI "Include / exclude areas" width:#cmdPanel category:60 autoLayoutOnResize:false (
+    rollout areasUI "Include / exclude areas" width:#cmdPanel category:70 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
         local layout,lastLayoutWidth=0
         multiListBox areaUI_areaList "" items:#() pos:[8,8] width:((areasUI.width-16-((amin 1 (amax 1 (floor ((areasUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI.width-8)/58))))) height:6
@@ -18348,6 +18743,17 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         on areaUI_areaList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
         on areaUI_areaList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
         on areaUI_areaList_grip Paint sender args do paintListGrip sender args
+        fn fitPairField control available = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
+            for handle in control.hwnd do (
+                local data=windows.getHWNDData handle
+                if data[4]=="CustEdit" do (
+                    local rectangle=windows.getWindowPos handle,position=windows.screenToClient data[2] (arrow.x-fieldWidth) arrow.y
+                    windows.setWindowPos handle position.x position.y fieldWidth rectangle.h true
+                )
+            )
+            true
+        )
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -18431,7 +18837,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
             rowControls=#(heading_1);show=(advancedToggle.checked and (true))
             for c in rowControls do c.visible=show
             if show do (
@@ -18721,58 +19127,76 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         on areasUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection areasUI;panel.rememberViews()))
     )
 
-    rollout transformsUI "Transforms" width:#cmdPanel category:70 autoLayoutOnResize:false (
+    rollout transformsUI "Transforms" width:#cmdPanel category:80 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
         local layout,lastLayoutWidth=0
         label randomUI_rotTitle "Rotation (degrees)" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/58)))))
-        label randomUI_rotMinTitle "Min" pos:[8,8] width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/58)))))
-        label randomUI_rotMaxTitle "Max" pos:[8,8] width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/58)))))
+        label randomUI_rotMinTitle "Min" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/58)))))
+        label randomUI_rotMaxTitle "Max" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/58)))))
         label randomUI_rotXLabel "X" pos:[8,8] width:12
-        spinner randomUI_rotXMinSpin "" range:[-360,360,0]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/74)))))
-        spinner randomUI_rotXMaxSpin "" range:[-360,360,0]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/74)))))
+        spinner randomUI_rotXMinSpin "" range:[-360,360,0]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_rotXMinSpin_caption "X Min" pos:[6,6] width:(transformsUI.width-12) height:18
+        spinner randomUI_rotXMaxSpin "" range:[-360,360,0]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_rotXMaxSpin_caption "X Max" pos:[6,6] width:(transformsUI.width-12) height:18
         label randomUI_rotYLabel "Y" pos:[8,8] width:12
-        spinner randomUI_rotYMinSpin "" range:[-360,360,0]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/74)))))
-        spinner randomUI_rotYMaxSpin "" range:[-360,360,0]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/74)))))
+        spinner randomUI_rotYMinSpin "" range:[-360,360,0]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_rotYMinSpin_caption "Y Min" pos:[6,6] width:(transformsUI.width-12) height:18
+        spinner randomUI_rotYMaxSpin "" range:[-360,360,0]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_rotYMaxSpin_caption "Y Max" pos:[6,6] width:(transformsUI.width-12) height:18
         label randomUI_rotZLabel "Z" pos:[8,8] width:12
-        spinner randomUI_rotZMinSpin "" range:[-360,360,0]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-(3-1)*4)/3)
-        spinner randomUI_rotZMaxSpin "" range:[-360,360,360]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-(3-1)*4)/3)
+        spinner randomUI_rotZMinSpin "" range:[-360,360,0]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_rotZMinSpin_caption "Z Min" pos:[6,6] width:(transformsUI.width-12) height:18
+        spinner randomUI_rotZMaxSpin "" range:[-360,360,360]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_rotZMaxSpin_caption "Z Max" pos:[6,6] width:(transformsUI.width-12) height:18
         label randomUI_sclTitle "Scale (multiplier)" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/58)))))
         label randomUI_sclMinTitle "Min" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/58)))))
         label randomUI_sclMaxTitle "Max" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/58)))))
         label randomUI_sclXLabel "X" pos:[8,8] width:12
-        spinner randomUI_sclXMinSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/74)))))
-        spinner randomUI_sclXMaxSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/74)))))
+        spinner randomUI_sclXMinSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_sclXMinSpin_caption "X Min" pos:[6,6] width:(transformsUI.width-12) height:18
+        spinner randomUI_sclXMaxSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_sclXMaxSpin_caption "X Max" pos:[6,6] width:(transformsUI.width-12) height:18
         label randomUI_sclYLabel "Y" pos:[8,8] width:12
-        spinner randomUI_sclYMinSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/74)))))
-        spinner randomUI_sclYMaxSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/74)))))
+        spinner randomUI_sclYMinSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_sclYMinSpin_caption "Y Min" pos:[6,6] width:(transformsUI.width-12) height:18
+        spinner randomUI_sclYMaxSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_sclYMaxSpin_caption "Y Max" pos:[6,6] width:(transformsUI.width-12) height:18
         label randomUI_sclZLabel "Z" pos:[8,8] width:12
-        spinner randomUI_sclZMinSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/74)))))
-        spinner randomUI_sclZMaxSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/74)))))
+        spinner randomUI_sclZMinSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_sclZMinSpin_caption "Z Min" pos:[6,6] width:(transformsUI.width-12) height:18
+        spinner randomUI_sclZMaxSpin "" range:[0.001,100,1]  pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_sclZMaxSpin_caption "Z Max" pos:[6,6] width:(transformsUI.width-12) height:18
         label randomUI_wholeTitle "Whole Scale (uniform)" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/58)))))
-        label randomUI_wholeMinTitle "Min" pos:[8,8] width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/58)))))
-        label randomUI_wholeMaxTitle "Max" pos:[8,8] width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/58)))))
-        spinner randomUI_wholeMinSpin "" range:[0.001,1000,1] scale:0.01 pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/74)))))
-        spinner randomUI_wholeMaxSpin "" range:[0.001,1000,1] scale:0.01 pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/74)))))
+        label randomUI_wholeMinTitle "Min" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/58)))))
+        label randomUI_wholeMaxTitle "Max" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/58)))))
+        spinner randomUI_wholeMinSpin "" range:[0.001,1000,1] scale:0.01 pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/97.6))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/97.6)))))
+        label randomUI_wholeMinSpin_caption "Min" pos:[6,6] width:(transformsUI.width-12) height:18
+        spinner randomUI_wholeMaxSpin "" range:[0.001,1000,1] scale:0.01 pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/97.6))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/97.6)))))
+        label randomUI_wholeMaxSpin_caption "Max" pos:[6,6] width:(transformsUI.width-12) height:18
         label randomUI_movTitle "Movement (world units)" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/58)))))
         label randomUI_movMinTitle "Min" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/58)))))
         label randomUI_movMaxTitle "Max" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/58)))))
         label randomUI_movXLabel "X" pos:[8,8] width:12
-        spinner randomUI_movXMinSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/74)))))
-        spinner randomUI_movXMaxSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/74)))))
+        spinner randomUI_movXMinSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_movXMinSpin_caption "X Min" pos:[6,6] width:(transformsUI.width-12) height:18
+        spinner randomUI_movXMaxSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_movXMaxSpin_caption "X Max" pos:[6,6] width:(transformsUI.width-12) height:18
         label randomUI_movYLabel "Y" pos:[8,8] width:12
-        spinner randomUI_movYMinSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/74)))))
-        spinner randomUI_movYMaxSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/74)))))
+        spinner randomUI_movYMinSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_movYMinSpin_caption "Y Min" pos:[6,6] width:(transformsUI.width-12) height:18
+        spinner randomUI_movYMaxSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_movYMaxSpin_caption "Y Max" pos:[6,6] width:(transformsUI.width-12) height:18
         label randomUI_movZLabel "Z" pos:[8,8] width:12
-        spinner randomUI_movZMinSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/74)))))
-        spinner randomUI_movZMaxSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/74))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/74)))))
+        spinner randomUI_movZMinSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_movZMinSpin_caption "Z Min" pos:[6,6] width:(transformsUI.width-12) height:18
+        spinner randomUI_movZMaxSpin "" range:[-100000,100000,0] type:#worldUnits pos:[8,8] fieldWidth:((transformsUI.width-38)/2) width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/108))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/108)))))
+        label randomUI_movZMaxSpin_caption "Z Max" pos:[6,6] width:(transformsUI.width-12) height:18
         checkbox randomUI_projectCheck "Keep on surface" pos:[8,8] width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/104))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/104))))) tooltip:"Project random movement back onto the receiving surface."
         checkbox randomUI_alignCheck "Align to normal" pos:[8,8] width:((transformsUI.width-16-((amin 2 (amax 1 (floor ((transformsUI.width-8)/104))))-1)*4)/(amin 2 (amax 1 (floor ((transformsUI.width-8)/104))))) tooltip:"Align instances to the receiving surface normal."
         button randomUI_resetRotation "Reset rotation" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/90.8))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/90.8))))) height:22 tooltip:"Reset only this layer's random rotation limits. Undo is available."
         button randomUI_resetScale "Reset XYZ scale" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/96))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/96))))) height:22 tooltip:"Reset only this layer's separate X, Y and Z scale limits."
         button randomUI_resetWholeScale "Reset whole scale" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/106.4))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/106.4))))) height:22 tooltip:"Reset only this layer's uniform scale multiplier."
         button randomUI_resetMovement "Reset movement" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/90.8))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/90.8))))) height:22 tooltip:"Reset only this layer's random translation limits."
-        label heading_0 "Transforms - layer" pos:[6,6] width:(transformsUI.width-12) height:18
-        label heading_1 "Per-axis scale and movement" pos:[6,6] width:(transformsUI.width-12) height:18
         checkbutton advancedToggle "Advanced" pos:[6,6] width:(transformsUI.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
         local randomUI_bodyHeight=0
         local randomUI_controlsReady=false
@@ -18934,6 +19358,17 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             true
         )
 
+        fn fitPairField control available = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
+            for handle in control.hwnd do (
+                local data=windows.getHWNDData handle
+                if data[4]=="CustEdit" do (
+                    local rectangle=windows.getWindowPos handle,position=windows.screenToClient data[2] (arrow.x-fieldWidth) arrow.y
+                    windows.setWindowPos handle position.x position.y fieldWidth rectangle.h true
+                )
+            )
+            true
+        )
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -18947,17 +19382,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         )
         fn layout = (
             local widthValue=amax 140 transformsUI.width,y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
-            rowControls=#(heading_0);show=(true and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                if y>6 do y+=4
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel heading_0 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(heading_0.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
+            randomUI_rotMinTitle.visible=false;randomUI_rotMaxTitle.visible=false;randomUI_rotXLabel.visible=false;randomUI_rotYLabel.visible=false;randomUI_rotZLabel.visible=false;randomUI_sclMinTitle.visible=false;randomUI_sclMaxTitle.visible=false;randomUI_sclXLabel.visible=false;randomUI_sclYLabel.visible=false;randomUI_sclZLabel.visible=false;randomUI_wholeMinTitle.visible=false;randomUI_wholeMaxTitle.visible=false;randomUI_movMinTitle.visible=false;randomUI_movMaxTitle.visible=false;randomUI_movXLabel.visible=false;randomUI_movYLabel.visible=false;randomUI_movZLabel.visible=false
             rowControls=#(randomUI_rotTitle);show=(true and (true))
             for c in rowControls do c.visible=show
             if show do (
@@ -18968,25 +19393,111 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(randomUI_rotMinTitle,randomUI_rotMaxTitle);show=(true and (true))
+            rowControls=#(randomUI_rotXMinSpin,randomUI_rotXMaxSpin);show=(true and (true))
             for c in rowControls do c.visible=show
+            randomUI_rotXMinSpin_caption.visible=show;randomUI_rotXMaxSpin_caption.visible=show
             if show do (
                 columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_rotMinTitle 18 cellWidth;fitLabel randomUI_rotMaxTitle 18 cellWidth
+                fitLabel randomUI_rotXMinSpin_caption 18 cellWidth;fitLabel randomUI_rotXMaxSpin_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_rotXMinSpin_caption.height,randomUI_rotXMaxSpin_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                for c in rowControls do fitPairField c cellWidth
+                if not stackedCaption then (randomUI_rotXMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_rotXMinSpin_caption.width=32) else (randomUI_rotXMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_rotXMinSpin_caption.width=cellWidth);randomUI_rotXMinSpin_caption.enabled=randomUI_rotXMinSpin.enabled;if not stackedCaption then (randomUI_rotXMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_rotXMaxSpin_caption.width=32) else (randomUI_rotXMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_rotXMaxSpin_caption.width=cellWidth);randomUI_rotXMaxSpin_caption.enabled=randomUI_rotXMaxSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_rotYMinSpin,randomUI_rotYMaxSpin);show=(true and (true))
+            for c in rowControls do c.visible=show
+            randomUI_rotYMinSpin_caption.visible=show;randomUI_rotYMaxSpin_caption.visible=show
+            if show do (
+                columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel randomUI_rotYMinSpin_caption 18 cellWidth;fitLabel randomUI_rotYMaxSpin_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_rotYMinSpin_caption.height,randomUI_rotYMaxSpin_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                for c in rowControls do fitPairField c cellWidth
+                if not stackedCaption then (randomUI_rotYMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_rotYMinSpin_caption.width=32) else (randomUI_rotYMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_rotYMinSpin_caption.width=cellWidth);randomUI_rotYMinSpin_caption.enabled=randomUI_rotYMinSpin.enabled;if not stackedCaption then (randomUI_rotYMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_rotYMaxSpin_caption.width=32) else (randomUI_rotYMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_rotYMaxSpin_caption.width=cellWidth);randomUI_rotYMaxSpin_caption.enabled=randomUI_rotYMaxSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_rotZMinSpin,randomUI_rotZMaxSpin);show=(true and (true))
+            for c in rowControls do c.visible=show
+            randomUI_rotZMinSpin_caption.visible=show;randomUI_rotZMaxSpin_caption.visible=show
+            if show do (
+                columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel randomUI_rotZMinSpin_caption 18 cellWidth;fitLabel randomUI_rotZMaxSpin_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_rotZMinSpin_caption.height,randomUI_rotZMaxSpin_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                for c in rowControls do fitPairField c cellWidth
+                if not stackedCaption then (randomUI_rotZMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_rotZMinSpin_caption.width=32) else (randomUI_rotZMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_rotZMinSpin_caption.width=cellWidth);randomUI_rotZMinSpin_caption.enabled=randomUI_rotZMinSpin.enabled;if not stackedCaption then (randomUI_rotZMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_rotZMaxSpin_caption.width=32) else (randomUI_rotZMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_rotZMaxSpin_caption.width=cellWidth);randomUI_rotZMaxSpin_caption.enabled=randomUI_rotZMaxSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_resetRotation);show=(true and (true))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/90.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_rotMinTitle.height,randomUI_rotMaxTitle.height))+2+captionHeight
+                rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(randomUI_rotZLabel,randomUI_rotZMinSpin,randomUI_rotZMaxSpin);show=(true and (true))
+            rowControls=#(randomUI_sclTitle);show=(true and (true))
             for c in rowControls do c.visible=show
             if show do (
-                columns=3;cellWidth=(widthValue-38)/2
-                fitLabel randomUI_rotZLabel 18 cellWidth
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel randomUI_sclTitle 18 cellWidth
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_rotZLabel.height,22,22))+2+captionHeight
-                rowControls[1].pos=[6,y];rowControls[1].width=18;for i=2 to 3 do (rowControls[i].pos=[28+(i-2)*(cellWidth+4)+cellWidth-12,y];fitWidth rowControls[i] cellWidth)
-                y+=rowHeight
+                rowHeight=(amax #(randomUI_sclTitle.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_sclXMinSpin,randomUI_sclXMaxSpin);show=(true and (true))
+            for c in rowControls do c.visible=show
+            randomUI_sclXMinSpin_caption.visible=show;randomUI_sclXMaxSpin_caption.visible=show
+            if show do (
+                columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel randomUI_sclXMinSpin_caption 18 cellWidth;fitLabel randomUI_sclXMaxSpin_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_sclXMinSpin_caption.height,randomUI_sclXMaxSpin_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                for c in rowControls do fitPairField c cellWidth
+                if not stackedCaption then (randomUI_sclXMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_sclXMinSpin_caption.width=32) else (randomUI_sclXMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_sclXMinSpin_caption.width=cellWidth);randomUI_sclXMinSpin_caption.enabled=randomUI_sclXMinSpin.enabled;if not stackedCaption then (randomUI_sclXMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_sclXMaxSpin_caption.width=32) else (randomUI_sclXMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_sclXMaxSpin_caption.width=cellWidth);randomUI_sclXMaxSpin_caption.enabled=randomUI_sclXMaxSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_sclYMinSpin,randomUI_sclYMaxSpin);show=(true and (true))
+            for c in rowControls do c.visible=show
+            randomUI_sclYMinSpin_caption.visible=show;randomUI_sclYMaxSpin_caption.visible=show
+            if show do (
+                columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel randomUI_sclYMinSpin_caption 18 cellWidth;fitLabel randomUI_sclYMaxSpin_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_sclYMinSpin_caption.height,randomUI_sclYMaxSpin_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                for c in rowControls do fitPairField c cellWidth
+                if not stackedCaption then (randomUI_sclYMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_sclYMinSpin_caption.width=32) else (randomUI_sclYMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_sclYMinSpin_caption.width=cellWidth);randomUI_sclYMinSpin_caption.enabled=randomUI_sclYMinSpin.enabled;if not stackedCaption then (randomUI_sclYMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_sclYMaxSpin_caption.width=32) else (randomUI_sclYMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_sclYMaxSpin_caption.width=cellWidth);randomUI_sclYMaxSpin_caption.enabled=randomUI_sclYMaxSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_sclZMinSpin,randomUI_sclZMaxSpin);show=(true and (true))
+            for c in rowControls do c.visible=show
+            randomUI_sclZMinSpin_caption.visible=show;randomUI_sclZMaxSpin_caption.visible=show
+            if show do (
+                columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel randomUI_sclZMinSpin_caption 18 cellWidth;fitLabel randomUI_sclZMaxSpin_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_sclZMinSpin_caption.height,randomUI_sclZMaxSpin_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                for c in rowControls do fitPairField c cellWidth
+                if not stackedCaption then (randomUI_sclZMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_sclZMinSpin_caption.width=32) else (randomUI_sclZMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_sclZMinSpin_caption.width=cellWidth);randomUI_sclZMinSpin_caption.enabled=randomUI_sclZMinSpin.enabled;if not stackedCaption then (randomUI_sclZMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_sclZMaxSpin_caption.width=32) else (randomUI_sclZMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_sclZMaxSpin_caption.width=cellWidth);randomUI_sclZMaxSpin_caption.enabled=randomUI_sclZMaxSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_resetScale);show=(true and (true))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/96))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(randomUI_wholeTitle);show=(true and (true))
             for c in rowControls do c.visible=show
@@ -18998,22 +19509,83 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(randomUI_wholeMinTitle,randomUI_wholeMaxTitle);show=(true and (true))
+            rowControls=#(randomUI_wholeMinSpin,randomUI_wholeMaxSpin);show=(true and (true))
             for c in rowControls do c.visible=show
+            randomUI_wholeMinSpin_caption.visible=show;randomUI_wholeMaxSpin_caption.visible=show
             if show do (
                 columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_wholeMinTitle 18 cellWidth;fitLabel randomUI_wholeMaxTitle 18 cellWidth
+                fitLabel randomUI_wholeMinSpin_caption 18 cellWidth;fitLabel randomUI_wholeMaxSpin_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_wholeMinSpin_caption.height,randomUI_wholeMaxSpin_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                for c in rowControls do fitPairField c cellWidth
+                if not stackedCaption then (randomUI_wholeMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_wholeMinSpin_caption.width=32) else (randomUI_wholeMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_wholeMinSpin_caption.width=cellWidth);randomUI_wholeMinSpin_caption.enabled=randomUI_wholeMinSpin.enabled;if not stackedCaption then (randomUI_wholeMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_wholeMaxSpin_caption.width=32) else (randomUI_wholeMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_wholeMaxSpin_caption.width=cellWidth);randomUI_wholeMaxSpin_caption.enabled=randomUI_wholeMaxSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_resetWholeScale);show=(true and (true))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/106.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_wholeMinTitle.height,randomUI_wholeMaxTitle.height))+2+captionHeight
+                rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(randomUI_wholeMinSpin,randomUI_wholeMaxSpin);show=(true and (true))
+            rowControls=#(randomUI_movTitle);show=(true and (true))
             for c in rowControls do c.visible=show
             if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel randomUI_movTitle 18 cellWidth
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(randomUI_movTitle.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_movXMinSpin,randomUI_movXMaxSpin);show=(true and (true))
+            for c in rowControls do c.visible=show
+            randomUI_movXMinSpin_caption.visible=show;randomUI_movXMaxSpin_caption.visible=show
+            if show do (
+                columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel randomUI_movXMinSpin_caption 18 cellWidth;fitLabel randomUI_movXMaxSpin_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_movXMinSpin_caption.height,randomUI_movXMaxSpin_caption.height)) else 0)
                 rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                for c in rowControls do fitPairField c cellWidth
+                if not stackedCaption then (randomUI_movXMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_movXMinSpin_caption.width=32) else (randomUI_movXMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_movXMinSpin_caption.width=cellWidth);randomUI_movXMinSpin_caption.enabled=randomUI_movXMinSpin.enabled;if not stackedCaption then (randomUI_movXMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_movXMaxSpin_caption.width=32) else (randomUI_movXMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_movXMaxSpin_caption.width=cellWidth);randomUI_movXMaxSpin_caption.enabled=randomUI_movXMaxSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_movYMinSpin,randomUI_movYMaxSpin);show=(true and (true))
+            for c in rowControls do c.visible=show
+            randomUI_movYMinSpin_caption.visible=show;randomUI_movYMaxSpin_caption.visible=show
+            if show do (
+                columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel randomUI_movYMinSpin_caption 18 cellWidth;fitLabel randomUI_movYMaxSpin_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_movYMinSpin_caption.height,randomUI_movYMaxSpin_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                for c in rowControls do fitPairField c cellWidth
+                if not stackedCaption then (randomUI_movYMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_movYMinSpin_caption.width=32) else (randomUI_movYMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_movYMinSpin_caption.width=cellWidth);randomUI_movYMinSpin_caption.enabled=randomUI_movYMinSpin.enabled;if not stackedCaption then (randomUI_movYMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_movYMaxSpin_caption.width=32) else (randomUI_movYMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_movYMaxSpin_caption.width=cellWidth);randomUI_movYMaxSpin_caption.enabled=randomUI_movYMaxSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_movZMinSpin,randomUI_movZMaxSpin);show=(true and (true))
+            for c in rowControls do c.visible=show
+            randomUI_movZMinSpin_caption.visible=show;randomUI_movZMaxSpin_caption.visible=show
+            if show do (
+                columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel randomUI_movZMinSpin_caption 18 cellWidth;fitLabel randomUI_movZMaxSpin_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then (amax #(randomUI_movZMinSpin_caption.height,randomUI_movZMaxSpin_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                for c in rowControls do fitPairField c cellWidth
+                if not stackedCaption then (randomUI_movZMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];randomUI_movZMinSpin_caption.width=32) else (randomUI_movZMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];randomUI_movZMinSpin_caption.width=cellWidth);randomUI_movZMinSpin_caption.enabled=randomUI_movZMinSpin.enabled;if not stackedCaption then (randomUI_movZMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];randomUI_movZMaxSpin_caption.width=32) else (randomUI_movZMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];randomUI_movZMaxSpin_caption.width=cellWidth);randomUI_movZMaxSpin_caption.enabled=randomUI_movZMaxSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(randomUI_resetMovement);show=(true and (true))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/90.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
@@ -19026,338 +19598,8 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
-            rowControls=#(heading_1);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                if y>6 do y+=4
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel heading_1 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(heading_1.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_rotXMinSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_rotXMaxSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_rotXLabel);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_rotXLabel 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_rotXLabel.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_rotYMinSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_rotYMaxSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_rotYLabel);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_rotYLabel 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_rotYLabel.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_resetRotation);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/90.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclTitle);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_sclTitle 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_sclTitle.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclMinTitle);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_sclMinTitle 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_sclMinTitle.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclMaxTitle);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_sclMaxTitle 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_sclMaxTitle.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclXMinSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclXMaxSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclXLabel);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_sclXLabel 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_sclXLabel.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclYMinSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclYMaxSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclYLabel);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_sclYLabel 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_sclYLabel.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclZMinSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclZMaxSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_sclZLabel);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_sclZLabel 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_sclZLabel.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_resetScale);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/96))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_resetWholeScale);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/106.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movTitle);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_movTitle 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_movTitle.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movMinTitle);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_movMinTitle 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_movMinTitle.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movMaxTitle);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_movMaxTitle 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_movMaxTitle.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movXMinSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movXMaxSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movXLabel);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_movXLabel 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_movXLabel.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movYMinSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movYMaxSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movYLabel);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_movYLabel 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_movYLabel.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movZMinSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movZMaxSpin);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/74))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_movZLabel);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel randomUI_movZLabel 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(randomUI_movZLabel.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(randomUI_resetMovement);show=(advancedToggle.checked and (true))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/90.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
+            advancedToggle.visible=false
+
             lastLayoutWidth=widthValue;transformsUI.height=y+4;true
         )
         fn bind layer = (
@@ -19382,7 +19624,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         on transformsUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection transformsUI;panel.rememberViews()))
     )
 
-    rollout spacingUI "Spacing & cleanup" width:#cmdPanel category:80 autoLayoutOnResize:false (
+    rollout spacingUI "Spacing & cleanup" width:#cmdPanel category:90 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
         local layout,lastLayoutWidth=0
         dropdownlist proceduralUI_scopeList "" items:#("Within this layer","Between layers") pos:[8,8] width:(spacingUI.width-8) selection:1 tooltip:"Choose spacing within the selected layer or between it and another layer."
@@ -19655,6 +19897,17 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             true
         )
 
+        fn fitPairField control available = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
+            for handle in control.hwnd do (
+                local data=windows.getHWNDData handle
+                if data[4]=="CustEdit" do (
+                    local rectangle=windows.getWindowPos handle,position=windows.screenToClient data[2] (arrow.x-fieldWidth) arrow.y
+                    windows.setWindowPos handle position.x position.y fieldWidth rectangle.h true
+                )
+            )
+            true
+        )
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -19743,7 +19996,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
             rowControls=#(heading_1);show=(advancedToggle.checked and (true))
             for c in rowControls do c.visible=show
             if show do (
@@ -20052,7 +20305,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         on spacingUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection spacingUI;panel.rememberViews()))
     )
 
-    rollout displayUI "Viewport & render" width:#cmdPanel category:90 autoLayoutOnResize:false (
+    rollout displayUI "Viewport & render" width:#cmdPanel category:100 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=false,setSpecific=false
         local layout,lastLayoutWidth=0
         checkbox flow_previewUI_previewCheck "Show preview" pos:[8,8] width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/88.4))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/88.4)))))
@@ -20217,6 +20470,17 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             true
         )
 
+        fn fitPairField control available = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
+            for handle in control.hwnd do (
+                local data=windows.getHWNDData handle
+                if data[4]=="CustEdit" do (
+                    local rectangle=windows.getWindowPos handle,position=windows.screenToClient data[2] (arrow.x-fieldWidth) arrow.y
+                    windows.setWindowPos handle position.x position.y fieldWidth rectangle.h true
+                )
+            )
+            true
+        )
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -20282,7 +20546,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
             rowControls=#(heading_0);show=(advancedToggle.checked and (true))
             for c in rowControls do c.visible=show
             if show do (
@@ -20457,7 +20721,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         on displayUI rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do (panel.bindSection displayUI;panel.rememberViews()))
     )
 
-    rollout statisticsUI "Statistics & diagnostics" width:#cmdPanel category:100 autoLayoutOnResize:false (
+    rollout statisticsUI "Statistics & diagnostics" width:#cmdPanel category:110 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=false,setSpecific=false
         local layout,lastLayoutWidth=0
         label detailsUI_info "Statistics describe the last build." pos:[8,8] width:((statisticsUI.width-16-((amin 1 (amax 1 (floor ((statisticsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((statisticsUI.width-8)/58))))) height:300
@@ -20668,6 +20932,17 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             true
         )
 
+        fn fitPairField control available = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
+            for handle in control.hwnd do (
+                local data=windows.getHWNDData handle
+                if data[4]=="CustEdit" do (
+                    local rectangle=windows.getWindowPos handle,position=windows.screenToClient data[2] (arrow.x-fieldWidth) arrow.y
+                    windows.setWindowPos handle position.x position.y fieldWidth rectangle.h true
+                )
+            )
+            true
+        )
         fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
@@ -20700,7 +20975,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
             rowControls=#(heading_0);show=(advancedToggle.checked and (true))
             for c in rowControls do c.visible=show
             if show do (

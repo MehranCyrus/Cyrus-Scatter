@@ -85,6 +85,7 @@ function page(s,definition,{name=definition.name,category=0,popup=false}={}){
   const c=controls.find(c=>c.key+'.'+c.name===name);if(!c)throw Error('Unknown layout control '+name);
   if(used.has(c.id))throw Error('Duplicate layout control '+name);used.add(c.id);return c;
  };
+ for(const name of definition.hidden||[])resolve(name);
  for(const entry of definition.rows){
   if(entry.heading){rows.push({heading:entry.heading,advanced:!!entry.advanced});continue;}
   if(entry.toggle){rows.push({...entry,controls:[{id:entry.toggle,kind:'checkbutton'}]});continue;}
@@ -93,7 +94,7 @@ function page(s,definition,{name=definition.name,category=0,popup=false}={}){
  // Every existing field is accounted for, including uncommon Analyzer channels.
  for(const p of components){
   const remaining=p.controls.filter(c=>!used.has(p.names.get(c.name.toLowerCase())));
-  if(remaining.some(c=>c.name!=='detailsToggle'&&c.name!=='containersToggle'))rows.push({heading:layouts.captions[p.key]||p.key,advanced:true});
+  if(remaining.some(c=>c.name!=='detailsToggle'&&c.name!=='containersToggle'))rows.push({heading:layouts.captions[p.key]||p.key,advanced:!definition.noAdvanced});
   remaining.sort((a,b)=>{
    const y=c=>Number(/pos:\[[^,]+,(\d+)\]/.exec(c.declaration)?.[1]||0);
    return y(a)-y(b);
@@ -101,7 +102,7 @@ function page(s,definition,{name=definition.name,category=0,popup=false}={}){
   for(const c of remaining){
    const full=resolve(p.key+'.'+c.name);
    if(c.name==='detailsToggle'||c.name==='containersToggle')continue;
-   rows.push({advanced:true,controls:[full],when:layouts.conditions[p.key+'.'+c.name]});
+   rows.push({advanced:!definition.noAdvanced,controls:[full],when:layouts.conditions[p.key+'.'+c.name]});
   }
  }
  // Each list has a view-only grip immediately below it, using the same
@@ -188,14 +189,14 @@ function page(s,definition,{name=definition.name,category=0,popup=false}={}){
   const dynamic=r.height||'(amax #('+heights.join(',')+'))';
   const table=items.length===3&&items[0].kind==='label';
   const swatch=items.length===2&&items[1].kind==='colorpicker';
-  const columns=swatch?2:table?items.length:labels.length===items.length?items.length:'(amin rowControls.count (amax 1 (floor ((widthValue-8)/'+(minimum+4)+'))))';
+  const columns=r.pair?2:swatch?2:table?items.length:labels.length===items.length?items.length:'(amin rowControls.count (amax 1 (floor ((widthValue-8)/'+(minimum+4)+'))))';
   const captions=captioned.map(c=>`${c.captionID}.visible=show`).join(';');
   const fitCaptions=captioned.map(c=>`fitLabel ${c.captionID} 18 cellWidth`).join(';');
   const captionPositions=captioned.map(c=>{
    const i=items.indexOf(c);
    const base=`6+(mod ${i} columns)*(cellWidth+4)`,cy=`y+(floor (${i}/columns))*rowHeight`;
    const inlineLayout=c.kind==='spinner'
-    ? `${c.captionID}.pos=[${base},${cy}+1];${c.captionID}.width=cellWidth-78`
+    ? `${c.captionID}.pos=[${base},${cy}+1];${c.captionID}.width=${r.pair?'32':'cellWidth-78'}`
     : `${c.captionID}.pos=[${base},${cy}+1];${c.captionID}.width=amin (cellWidth/2) ${caption(c).length*6+8};${c.id}.pos=[${base}+${c.captionID}.width+4,${cy}];${c.id}.width=cellWidth-${c.captionID}.width-4`;
    const above=`${c.captionID}.pos=[${base},${cy}];${c.captionID}.width=cellWidth`;
    return `${c.inlineCaption?'if not stackedCaption then ('+inlineLayout+') else ('+above+')':above};${c.captionID}.enabled=${c.id}.enabled`;
@@ -207,14 +208,15 @@ function page(s,definition,{name=definition.name,category=0,popup=false}={}){
    : table
    ? `rowControls[1].pos=[6,y];rowControls[1].width=18;for i=2 to 3 do (rowControls[i].pos=[28+(i-2)*(cellWidth+4)+cellWidth-12,y];fitWidth rowControls[i] cellWidth)`
    : `for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)`;
-  return `            rowControls=#(${ids.join(',')});show=${vis}\n            for c in rowControls do c.visible=show\n${captions?'            '+captions+'\n':''}            if show do (\n${r.heading?'                if y>6 do y+=4\n':''}                columns=${columns};cellWidth=${swatch?'widthValue-40':table?'(widthValue-38)/2':'(widthValue-12-(columns-1)*4)/columns'}\n${fitLabels?'                '+fitLabels+'\n':''}${fitCaptions?'                '+fitCaptions+'\n':''}                stackedCaption=${inline.length?'cellWidth<'+minimum:'false'};captionHeight=amax ${reserved} (if stackedCaption then ${stacked} else 0)\n                rowHeight=${dynamic}+2+captionHeight\n                ${positions}\n${captionPositions?'                '+captionPositions+'\n':''}                y+=${table||swatch?'rowHeight':'(ceil (rowControls.count as float/columns))*rowHeight'}\n            )`;
+  return `            rowControls=#(${ids.join(',')});show=${vis}\n            for c in rowControls do c.visible=show\n${captions?'            '+captions+'\n':''}            if show do (\n${r.heading?'                if y>6 do y+=4\n':''}                columns=${columns};cellWidth=${swatch?'widthValue-40':table?'(widthValue-38)/2':'(widthValue-12-(columns-1)*4)/columns'}\n${fitLabels?'                '+fitLabels+'\n':''}${fitCaptions?'                '+fitCaptions+'\n':''}                stackedCaption=${!r.pair&&inline.length?'cellWidth<'+minimum:'false'};captionHeight=amax ${reserved} (if stackedCaption then ${stacked} else 0)\n                rowHeight=${dynamic}+2+captionHeight\n                ${positions}\n${r.pair?'                for c in rowControls do fitPairField c cellWidth\n':''}${captionPositions?'                '+captionPositions+'\n':''}                y+=${table||swatch?'rowHeight':'(ceil (rowControls.count as float/columns))*rowHeight'}\n            )`;
  }).join('\n');
- const folded=controls.filter(c=>c.name==='detailsToggle'||c.name==='containersToggle').map(c=>c.id+'.visible=false').join(';');
+ const folded=controls.filter(c=>c.name==='detailsToggle'||c.name==='containersToggle'||(definition.hidden||[]).includes(c.key+'.'+c.name)).map(c=>c.id+'.visible=false').join(';');
  // Insert Advanced between basic rows and advanced rows, never as a page.
  const basicEnd=rows.findIndex(r=>r.advanced);
  const parts=rowText.split(/(?=            rowControls=#)/);
  if(basicEnd<0)parts.push('');
- parts.splice(basicEnd<0?parts.length:basicEnd,0,`            advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28\n`);
+ if(basicEnd>=0)parts.splice(basicEnd,0,`            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28\n`);
+ else parts.push('\n            advancedToggle.visible=false\n');
  const scope=definition.layerPage?'Layer':'Setup';
  const out=`    rollout ${name} ${JSON.stringify(definition.title)} width:${popup?146:'#cmdPanel'} category:${category} autoLayoutOnResize:false (\n        local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=${definition.layerPage?'true':'false'},setSpecific=false\n        local layout\n${declarations}\n${code}\n        fn fitLabel control minimum available = (\n            local capacity=amax 1 (floor ((available-4)/5.2)),lines=0\n            for paragraph in filterString control.text "\\n" splitEmptyTokens:true do (\n                local occupied=0;lines+=1\n                for word in filterString paragraph " " do (\n                    local size=word.count+(if occupied==0 then 0 else 1)\n                    if occupied>0 and occupied+size>capacity do (lines+=1;occupied=0;size=word.count)\n                    lines+=floor ((amax 0 (size-1))/capacity);occupied=(mod (amax 0 (size-1)) capacity)+1+occupied\n                )\n            )\n            control.height=amax minimum (lines*14+2);true\n        )\n        fn layout = (\n            local widthValue=amax 140 ${name}.width,y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false\n${folded?'            '+folded+'\n':''}${parts.join('')}\n            ${name}.height=y+4;true\n        )\n        fn bind layer = (\n            if root==undefined do return false\n            binding=true;controlsReady=false\n            try (\n                if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)\n                obj=owner\n                ${reset}\n${binding}\n                controlsReady=true;binding=false;layout();true\n            )catch(binding=false;controlsReady=false;throw())\n        )\n${delegates.join('\n')}\n        on advancedToggle changed value do layout()\n        on ${name} open do (${popup?'root=CyrusLayerUIRoot;owner=CyrusLayerUIOwner;panel=CyrusLayerUIPanel;bind owner':'panel=this.mainUI;root=undefined;controlsReady=false'})\n        on ${name} close do (controlsReady=false;root=undefined;owner=undefined;obj=undefined;${components.map(p=>p.key+'_controlsReady=false;'+p.key+'_root=undefined;'+p.key+'_owner=undefined'+(p.names.has('obj')?';'+p.key+'_obj=undefined':'')).join(';')})\n        on ${name} rolledUp state do (${popup?'if controlsReady do bind owner':'if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do panel.bindSection '+name})\n    )`;
  // Visibility-changing component handlers must re-apply the presentation fold.
@@ -222,7 +224,18 @@ function page(s,definition,{name=definition.name,category=0,popup=false}={}){
  // These two single-window native controls expose no writable width. Their
  // creation width can precede Max's final column allocation, so resize only
  // their own HWND through the documented SDK API during explicit layout.
- const widthHelper=`        fn fitWidth control available = (
+ const widthHelper=`        fn fitPairField control available = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
+            for handle in control.hwnd do (
+                local data=windows.getHWNDData handle
+                if data[4]=="CustEdit" do (
+                    local rectangle=windows.getWindowPos handle,position=windows.screenToClient data[2] (arrow.x-fieldWidth) arrow.y
+                    windows.setWindowPos handle position.x position.y fieldWidth rectangle.h true
+                )
+            )
+            true
+        )
+        fn fitWidth control available = (
             if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
@@ -325,7 +338,7 @@ module.exports=function(s,{check=false}={}){
  const main=fs.readFileSync('tools/ui/templates/approved-main-ui.ms','utf8').replace(/\r/g,'');
  s=s.slice(0,a)+main+'\n'+pages.map(p=>p.text).join('\n\n')+s.slice(b);
  // Optional floating editors use the exact same composed handlers and rows.
- const popupDefs=[...definitions.filter(d=>['surfacesUI','modelsUI','populationUI','coverageUI','areasUI','transformsUI','spacingUI','statisticsUI'].includes(d.name)),layouts.popupSets];
+ const popupDefs=[...definitions.filter(d=>['surfacesUI','modelsUI','layoutUI','populationUI','coverageUI','areasUI','transformsUI','spacingUI','statisticsUI'].includes(d.name)),layouts.popupSets];
  const factories=popupDefs.map(d=>`fn CyrusLayerEditor_${d.name}_1 = (\n${page(safeOriginal,d,{name:d.name+'_1',popup:true}).text}\n    ${d.name}_1\n)`);
  const popupStart=s.indexOf('fn CyrusLayerEditor_setsUI_1 = ('),popupEnd=s.indexOf('fn CyrusCreateLayerEditorSection');
  s=s.slice(0,popupStart)+factories.join('\n\n')+'\n'+s.slice(popupEnd);
@@ -334,7 +347,7 @@ module.exports=function(s,{check=false}={}){
  const sections=/^            pageSections=#\(/m.exec(s);
  if(!sections)throw Error('Missing popup topic layout');
  const sectionsEnd=blocks.close(s,s.indexOf('(',sections.index));
- s=s.slice(0,sections.index)+'            pageSections=#(#(#(#(#modelsUI,false)),#(#(#surfacesUI,false))),#(#(#(#populationUI,false)),#(#(#areasUI,false))),#(#(#(#coverageUI,false)),#()),#(#(#(#transformsUI,false)),#()),#(#(#(#spacingUI,false)),#()),#(#(#(#statisticsUI,false)),#()))'+s.slice(sectionsEnd);
+ s=s.slice(0,sections.index)+'            pageSections=#(#(#(#(#modelsUI,false),#(#layoutUI,false)),#(#(#surfacesUI,false))),#(#(#(#populationUI,false)),#(#(#areasUI,false))),#(#(#(#coverageUI,false)),#()),#(#(#(#transformsUI,false)),#()),#(#(#(#spacingUI,false)),#()),#(#(#(#statisticsUI,false)),#()))'+s.slice(sectionsEnd);
  s=s.replace('        fn showTopic index rebind:false = (',`        fn layoutPages index = (
             for p=1 to pages.count do (
                 local single=pageSections[p][2].count==0

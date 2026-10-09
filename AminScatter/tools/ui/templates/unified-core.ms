@@ -1067,36 +1067,40 @@ fn CyrusLayerEditor_diversityUI_1 = (
         local boundaryOnly=false
         local controlsReady=false,strokeExpandedHeight=0
 
-        radiobuttons diversityRadio "Source assignment" labels:#("Random","Clusters","Line Pattern","Analyze Surface") columns:1 pos:[4,8] width:(diversityUI_1.width-8)
+        radiobuttons diversityRadio "Source assignment" labels:#("Random mix","Clusters","Spline bands","Surface Analyzer") columns:1 pos:[4,8] width:(diversityUI_1.width-8)
+        label layoutHelp "" pos:[4,90] width:(diversityUI_1.width-8) height:36
+        label analyzerStatus "Pick a Surface Analyzer." pos:[4,100] width:(diversityUI_1.width-8) height:54
+        button selectAnalyzer "Select" pos:[4,100] width:70 tooltip:"Select the linked Surface Analyzer in the scene."
+        button updateAnalyzer "Update Analyzer" pos:[4,124] width:140 tooltip:"Analyze the linked guide. In Manual mode, use Update scatter afterwards to publish placements."
         spinner sizeSpin "Size: " range:[0.01,100000,10] type:#worldUnits fieldWidth:82 width:(diversityUI_1.width-8) pos:[4,104] tooltip:"Spatial size of source-color clusters."
         spinner divSeedSpin "Seed: " range:[0,2147483647,42] type:#integer fieldWidth:82 width:(diversityUI_1.width-8) pos:[4,130] tooltip:"Change source assignment randomness without changing the generation seed."
         spinner roughSpin "Roughness %: " range:[0,100,0] fieldWidth:82 width:(diversityUI_1.width-8) pos:[4,156]
         spinner blurSpin "Blur edge %: " range:[0,100,0] fieldWidth:82 width:(diversityUI_1.width-8) pos:[4,182]
         spinner noiseSpin "Noise %: " range:[0,100,0] fieldWidth:82 width:(diversityUI_1.width-8) pos:[4,208]
-        label groupHint "Uses source group colors." pos:[4,238] width:(diversityUI_1.width-8)
+        label groupHint "Uses assignment groups, not viewport colors." pos:[4,238] width:(diversityUI_1.width-8)
         label fixedHint "Point positions stay fixed." pos:[4,260] width:(diversityUI_1.width-8)
 
 
 
 
         local pathRows=#(),strokeRows=#(),choiceValues=#(),restKeys=#(),loadingStroke=false
-        label strokeTitle "Line Pattern / Strokes" pos:[4,118] width:(diversityUI_1.width-8)
+        label strokeTitle "Spline bands" pos:[4,118] width:(diversityUI_1.width-8)
         dropdownlist pathsDrop "Paths" items:#() pos:[4,142] width:(diversityUI_1.width-8)
         dropdownlist analyzerChannel "Analyzer data" items:#("Border","Centerline","Points","Street Side","Edge Border") pos:[4,142] width:(diversityUI_1.width-8)
         pickbutton pickAnalyzer "Pick Surface Analyzer" filter:CyrusAnalyzerFilter pos:[4,192] width:(diversityUI_1.width-8) tooltip:"Use Surface Analyzer output for bands, rows and fixed anchors."
         pickbutton pickPath "Add: pick closed line" filter:AminScatterAreaFilter pos:[4,192] width:(diversityUI_1.width-8) tooltip:"Pick a spline for Line Pattern assignment."
         button removePath "Remove path" pos:[4,218] width:(diversityUI_1.width-8) tooltip:"Remove the selected assignment path while keeping the scene spline."
-        listbox strokesList "Consecutive strokes" items:#() pos:[4,250] width:(diversityUI_1.width-8) height:4
+        listbox strokesList "Bands" items:#() pos:[4,250] width:(diversityUI_1.width-8) height:4
         button addOutside "Add Outside" pos:[4,346] width:((diversityUI_1.width-12)/2) tooltip:"Add a source-assignment band outside the selected path."
         button addInside "Add Inside" pos:[(if boundaryOnly then 4 else diversityUI_1.width/2+2),346] width:(if boundaryOnly then diversityUI_1.width-8 else (diversityUI_1.width-12)/2) tooltip:"Add a source-assignment band inside the selected path."
-        button removeStrokeButton "Remove Stroke" pos:[4,372] width:(diversityUI_1.width-8) tooltip:"Remove the selected assignment band and its settings."
+        button removeStrokeButton "Remove band" pos:[4,372] width:(diversityUI_1.width-8) tooltip:"Remove the selected band and its settings."
         spinner strokeWidth "Width:" range:[0.001,100000,1] type:#worldUnits pos:[4,406] width:(diversityUI_1.width-8) fieldWidth:82
         radiobuttons strokeMode "Assign by" labels:#("Color groups","Source objects") columns:1 pos:[4,434] width:(diversityUI_1.width-8)
         multiListBox strokeChoices "Ctrl / Shift: select several" items:#() pos:[4,506] width:(diversityUI_1.width-8) height:5
         spinner strokeScaleMin "Scale min:" range:[0.001,100,1] pos:[4,618] width:(diversityUI_1.width-8) fieldWidth:82
         spinner strokeScaleMax "Scale max:" range:[0.001,100,1] pos:[4,644] width:(diversityUI_1.width-8) fieldWidth:82
         button refreshGroups "Refresh sources / groups" pos:[4,676] width:(diversityUI_1.width-8) tooltip:"Refresh available source color groups for assignment."
-        label strokeHelp "Outside strokes: empty." pos:[4,704] width:(diversityUI_1.width-8)
+        label strokeHelp "Outside bands: empty. First match wins." pos:[4,704] width:(diversityUI_1.width-8)
         spinner edgeOffsetSpin "Offset inward:" range:[-1000000,1000000,0] type:#worldunits pos:[4,814] width:(diversityUI_1.width-8) fieldWidth:82
         spinner edgeAlongSpin "Jitter along:" range:[0,1000000,0] type:#worldunits pos:[4,842] width:(diversityUI_1.width-8) fieldWidth:82
         spinner edgeAcrossSpin "Jitter across:" range:[0,1000000,0] type:#worldunits pos:[4,870] width:(diversityUI_1.width-8) fieldWidth:82
@@ -1161,7 +1165,7 @@ fn CyrusLayerEditor_diversityUI_1 = (
                     if keys.count==0 do keys=#(obj.patternGroups[row])
                     for i=1 to choiceValues.count where findItem keys choiceValues[i]>0 do selectedRows[i]=true
                 ) else (
-                    for n in obj.sources where isValidNode n do (append choiceValues n;append labels n.name)
+                    for n in obj.sources where isValidNode n do (append choiceValues n;append labels (obj.sourceLabel (obj.sourceRow n)))
                     for i=1 to obj.strokeSourceRows.count where obj.strokeSourceRows[i]==row do (
                         local k=findItem choiceValues obj.strokeSourceNodes[i];if k>0 do selectedRows[k]=true
                     )
@@ -1169,6 +1173,16 @@ fn CyrusLayerEditor_diversityUI_1 = (
                 strokeChoices.items=labels;strokeChoices.selection=selectedRows
             )
             loadingStroke=false
+            if obj.diversityMode>=3 do (
+                local analyzed=obj.diversityMode==4
+                strokeHelp.text=if analyzed then "Width is spread per side; spacing and masks still apply." else "Outside bands: empty. First match wins."
+                local guideReady=if analyzed then isValidNode obj.analyzerNode else pathsDrop.selection>0
+                if not guideReady then strokeHelp.text=if analyzed then "Pick an Analyzer to begin." else "Pick a closed spline to begin."
+                else if strokeRows.count==0 then strokeHelp.text=if analyzed and analyzerChannel.selection==5 then "Add an edge row, then choose models." else "Add a band, then choose models."
+                else if selectedStroke()>0 and strokeChoices.selection.numberSet==0 then strokeHelp.text="Choose models or groups for this band."
+                else if analyzed and analyzerChannel.selection==5 then strokeHelp.text="Spacing controls row count. Amount 0 disables output."
+                else if analyzed and analyzerChannel.selection==3 and obj.strokeSides[selectedStroke()]==5 then strokeHelp.text="Analyzer points control count. Amount 0 disables output."
+            )
         )
         fn showPath = (
             loadingStroke=true
@@ -1187,7 +1201,35 @@ fn CyrusLayerEditor_diversityUI_1 = (
             addOutside.enabled=isValidNode path;addInside.enabled=isValidNode path and (not analyzed or analyzerChannel.selection!=2);removePath.enabled=isValidNode path
             loadingStroke=false;showStroke()
         )
+        fn updateAnalyzerStatus = (
+            local guide=obj.analyzerNode,valid=isValidNode obj.analyzerNode
+            selectAnalyzer.enabled=valid;updateAnalyzer.enabled=valid
+            analyzerStatus.text=if not valid then "Pick an existing Analyzer. Open planar surfaces only." else (
+                local target=if isValidNode guide.surface then guide.surface.name else "Missing surface"
+                local state=if not guide.cyrusEnabled then "Disabled" else if not isValidNode guide.surface then "Missing surface" else if guide.getAnalysisRuns()==0 then "Not analyzed" else if (guide.getLiveStats())[3] then "Update needed" else "Ready"
+                guide.name+"\nSurface: "+target+"\n"+state
+            )
+        )
+        on selectAnalyzer pressed do if controlsReady and not binding and obj!=undefined do (
+            local guide=obj.analyzerNode
+            if isValidNode guide do (select guide;max modify mode)
+        )
+        on updateAnalyzer pressed do if controlsReady and not binding and obj!=undefined do (
+            local savedOwner=obj,guide=obj.analyzerNode
+            if isValidNode guide do try (
+                guide.runAnalysis();savedOwner.markInputDirty()
+                if controlsReady and obj==savedOwner do updateAnalyzerStatus()
+                CyrusViewportRedraw()
+            )catch(if controlsReady and obj==savedOwner do analyzerStatus.text="Analysis failed: "+getCurrentException())
+        )
         fn updatePattern = (
+            updateAnalyzerStatus()
+            layoutHelp.text=case obj.diversityMode of (
+                1: "Mix models using their weights."
+                2: "Group models into patches. Size controls patch size."
+                3: "Closed spline bands use top-down XY projection."
+                4: "Use the linked Analyzer's published guides."
+            )
             faceOutCheck.visible=obj.diversityMode==4 and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5)
             cornerRadiusSpin.visible=faceOutCheck.visible
             faceOutCheck.checked=if analyzerChannel.selection==5 then obj.edgeFaceOut else if analyzerChannel.selection==4 then obj.streetFaceOut else obj.borderFaceOut
@@ -1208,18 +1250,19 @@ fn CyrusLayerEditor_diversityUI_1 = (
             analyzerChannel.visible=analyzed;pickAnalyzer.visible=analyzed
             pickAnalyzer.text=if isValidNode obj.analyzerNode then obj.analyzerNode.name else "Pick Surface Analyzer"
             removePath.text=if analyzed then "Remove Analyzer" else "Remove path"
-            strokeTitle.text=if analyzed then "Analyze Surface / Strokes" else "Line Pattern / Strokes"
-            addOutside.text=if not analyzed or analyzerChannel.selection==1 then "Add Outside" else (if analyzerChannel.selection==2 then "Add Stroke" else "Add Radius")
+            strokeTitle.text=if analyzed then "Analyzer bands / rows" else "Spline bands"
+            addOutside.text=if not analyzed or analyzerChannel.selection==1 then "Add Outside" else (if analyzerChannel.selection==2 then "Add band" else "Add Radius")
             addInside.text=if analyzed and analyzerChannel.selection==3 then "Add Single" else "Add Inside"
             boundaryOnly=analyzed and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5)
             addOutside.visible=(obj.diversityMode==3 or analyzed) and not boundaryOnly
             addInside.pos=[if boundaryOnly then 4 else diversityUI_1.width/2+2,addOutside.pos.y]
             addInside.width=if boundaryOnly then diversityUI_1.width-8 else (diversityUI_1.width-12)/2
-            if boundaryOnly do addInside.text=if analyzerChannel.selection==5 then "Add Edge Row" else "Add Stroke Inside"
-            strokeHelp.text=if analyzed and analyzerChannel.selection==5 then "One row along the boundary." else if analyzed then "Width = spread per side." else "Outside strokes: empty."
+            if boundaryOnly do addInside.text=if analyzerChannel.selection==5 then "Add Edge Row" else "Add band inside"
+            strokeHelp.text=if analyzed and analyzerChannel.selection==5 then "One row along the boundary." else if analyzed then "Width = spread per side." else "Outside bands: empty. First match wins."
             restKeys=#()
             for i=1 to obj.sources.count do (local key=obj.colorKey(obj.sourceColor i);if findItem restKeys key==0 do append restKeys key)
             showPath()
+
         )
 
         on pathsDrop selected i do if controlsReady and not binding and obj!=undefined do showPath()
@@ -5236,36 +5279,40 @@ initialRollupState:0x8
         local boundaryOnly=false
         local controlsReady=false,strokeExpandedHeight=0
 
-        radiobuttons diversityRadio "Source assignment" labels:#("Random","Clusters","Line Pattern","Analyze Surface") columns:1 pos:[4,8] width:(selected_diversityUI.width-8)
+        radiobuttons diversityRadio "Source assignment" labels:#("Random mix","Clusters","Spline bands","Surface Analyzer") columns:1 pos:[4,8] width:(selected_diversityUI.width-8)
+        label layoutHelp "" pos:[4,90] width:(selected_diversityUI.width-8) height:36
+        label analyzerStatus "Pick a Surface Analyzer." pos:[4,100] width:(selected_diversityUI.width-8) height:54
+        button selectAnalyzer "Select" pos:[4,100] width:70 tooltip:"Select the linked Surface Analyzer in the scene."
+        button updateAnalyzer "Update Analyzer" pos:[4,124] width:140 tooltip:"Analyze the linked guide. In Manual mode, use Update scatter afterwards to publish placements."
         spinner sizeSpin "Size: " range:[0.01,100000,10] type:#worldUnits fieldWidth:82 width:(selected_diversityUI.width-8) pos:[4,104] tooltip:"Spatial size of source-color clusters."
         spinner divSeedSpin "Seed: " range:[0,2147483647,42] type:#integer fieldWidth:82 width:(selected_diversityUI.width-8) pos:[4,130] tooltip:"Change source assignment randomness without changing the generation seed."
         spinner roughSpin "Roughness %: " range:[0,100,0] fieldWidth:82 width:(selected_diversityUI.width-8) pos:[4,156]
         spinner blurSpin "Blur edge %: " range:[0,100,0] fieldWidth:82 width:(selected_diversityUI.width-8) pos:[4,182]
         spinner noiseSpin "Noise %: " range:[0,100,0] fieldWidth:82 width:(selected_diversityUI.width-8) pos:[4,208]
-        label groupHint "Uses source group colors." pos:[4,238] width:(selected_diversityUI.width-8)
+        label groupHint "Uses assignment groups, not viewport colors." pos:[4,238] width:(selected_diversityUI.width-8)
         label fixedHint "Point positions stay fixed." pos:[4,260] width:(selected_diversityUI.width-8)
 
 
 
 
         local pathRows=#(),strokeRows=#(),choiceValues=#(),restKeys=#(),loadingStroke=false
-        label strokeTitle "Line Pattern / Strokes" pos:[4,118] width:(selected_diversityUI.width-8)
+        label strokeTitle "Spline bands" pos:[4,118] width:(selected_diversityUI.width-8)
         dropdownlist pathsDrop "Paths" items:#() pos:[4,142] width:(selected_diversityUI.width-8)
         dropdownlist analyzerChannel "Analyzer data" items:#("Border","Centerline","Points","Street Side","Edge Border") pos:[4,142] width:(selected_diversityUI.width-8)
         pickbutton pickAnalyzer "Pick Surface Analyzer" filter:CyrusAnalyzerFilter pos:[4,192] width:(selected_diversityUI.width-8) tooltip:"Use Surface Analyzer output for bands, rows and fixed anchors."
         pickbutton pickPath "Add: pick closed line" filter:AminScatterAreaFilter pos:[4,192] width:(selected_diversityUI.width-8) tooltip:"Pick a spline for Line Pattern assignment."
         button removePath "Remove path" pos:[4,218] width:(selected_diversityUI.width-8) tooltip:"Remove the selected assignment path while keeping the scene spline."
-        listbox strokesList "Consecutive strokes" items:#() pos:[4,250] width:(selected_diversityUI.width-8) height:4
+        listbox strokesList "Bands" items:#() pos:[4,250] width:(selected_diversityUI.width-8) height:4
         button addOutside "Add Outside" pos:[4,346] width:((selected_diversityUI.width-12)/2) tooltip:"Add a source-assignment band outside the selected path."
         button addInside "Add Inside" pos:[(if boundaryOnly then 4 else selected_diversityUI.width/2+2),346] width:(if boundaryOnly then selected_diversityUI.width-8 else (selected_diversityUI.width-12)/2) tooltip:"Add a source-assignment band inside the selected path."
-        button removeStrokeButton "Remove Stroke" pos:[4,372] width:(selected_diversityUI.width-8) tooltip:"Remove the selected assignment band and its settings."
+        button removeStrokeButton "Remove band" pos:[4,372] width:(selected_diversityUI.width-8) tooltip:"Remove the selected band and its settings."
         spinner strokeWidth "Width:" range:[0.001,100000,1] type:#worldUnits pos:[4,406] width:(selected_diversityUI.width-8) fieldWidth:82
         radiobuttons strokeMode "Assign by" labels:#("Color groups","Source objects") columns:1 pos:[4,434] width:(selected_diversityUI.width-8)
         multiListBox strokeChoices "Ctrl / Shift: select several" items:#() pos:[4,506] width:(selected_diversityUI.width-8) height:5
         spinner strokeScaleMin "Scale min:" range:[0.001,100,1] pos:[4,618] width:(selected_diversityUI.width-8) fieldWidth:82
         spinner strokeScaleMax "Scale max:" range:[0.001,100,1] pos:[4,644] width:(selected_diversityUI.width-8) fieldWidth:82
         button refreshGroups "Refresh sources / groups" pos:[4,676] width:(selected_diversityUI.width-8) tooltip:"Refresh available source color groups for assignment."
-        label strokeHelp "Outside strokes: empty." pos:[4,704] width:(selected_diversityUI.width-8)
+        label strokeHelp "Outside bands: empty. First match wins." pos:[4,704] width:(selected_diversityUI.width-8)
         spinner edgeOffsetSpin "Offset inward:" range:[-1000000,1000000,0] type:#worldunits pos:[4,814] width:(selected_diversityUI.width-8) fieldWidth:82
         spinner edgeAlongSpin "Jitter along:" range:[0,1000000,0] type:#worldunits pos:[4,842] width:(selected_diversityUI.width-8) fieldWidth:82
         spinner edgeAcrossSpin "Jitter across:" range:[0,1000000,0] type:#worldunits pos:[4,870] width:(selected_diversityUI.width-8) fieldWidth:82
@@ -5330,7 +5377,7 @@ initialRollupState:0x8
                     if keys.count==0 do keys=#(obj.patternGroups[row])
                     for i=1 to choiceValues.count where findItem keys choiceValues[i]>0 do selectedRows[i]=true
                 ) else (
-                    for n in obj.sources where isValidNode n do (append choiceValues n;append labels n.name)
+                    for n in obj.sources where isValidNode n do (append choiceValues n;append labels (obj.sourceLabel (obj.sourceRow n)))
                     for i=1 to obj.strokeSourceRows.count where obj.strokeSourceRows[i]==row do (
                         local k=findItem choiceValues obj.strokeSourceNodes[i];if k>0 do selectedRows[k]=true
                     )
@@ -5338,6 +5385,16 @@ initialRollupState:0x8
                 strokeChoices.items=labels;strokeChoices.selection=selectedRows
             )
             loadingStroke=false
+            if obj.diversityMode>=3 do (
+                local analyzed=obj.diversityMode==4
+                strokeHelp.text=if analyzed then "Width is spread per side; spacing and masks still apply." else "Outside bands: empty. First match wins."
+                local guideReady=if analyzed then isValidNode obj.analyzerNode else pathsDrop.selection>0
+                if not guideReady then strokeHelp.text=if analyzed then "Pick an Analyzer to begin." else "Pick a closed spline to begin."
+                else if strokeRows.count==0 then strokeHelp.text=if analyzed and analyzerChannel.selection==5 then "Add an edge row, then choose models." else "Add a band, then choose models."
+                else if selectedStroke()>0 and strokeChoices.selection.numberSet==0 then strokeHelp.text="Choose models or groups for this band."
+                else if analyzed and analyzerChannel.selection==5 then strokeHelp.text="Spacing controls row count. Amount 0 disables output."
+                else if analyzed and analyzerChannel.selection==3 and obj.strokeSides[selectedStroke()]==5 then strokeHelp.text="Analyzer points control count. Amount 0 disables output."
+            )
         )
         fn showPath = (
             loadingStroke=true
@@ -5356,7 +5413,35 @@ initialRollupState:0x8
             addOutside.enabled=isValidNode path;addInside.enabled=isValidNode path and (not analyzed or analyzerChannel.selection!=2);removePath.enabled=isValidNode path
             loadingStroke=false;showStroke()
         )
+        fn updateAnalyzerStatus = (
+            local guide=obj.analyzerNode,valid=isValidNode obj.analyzerNode
+            selectAnalyzer.enabled=valid;updateAnalyzer.enabled=valid
+            analyzerStatus.text=if not valid then "Pick an existing Analyzer. Open planar surfaces only." else (
+                local target=if isValidNode guide.surface then guide.surface.name else "Missing surface"
+                local state=if not guide.cyrusEnabled then "Disabled" else if not isValidNode guide.surface then "Missing surface" else if guide.getAnalysisRuns()==0 then "Not analyzed" else if (guide.getLiveStats())[3] then "Update needed" else "Ready"
+                guide.name+"\nSurface: "+target+"\n"+state
+            )
+        )
+        on selectAnalyzer pressed do if controlsReady and not binding and obj!=undefined do (
+            local guide=obj.analyzerNode
+            if isValidNode guide do (select guide;max modify mode)
+        )
+        on updateAnalyzer pressed do if controlsReady and not binding and obj!=undefined do (
+            local savedOwner=obj,guide=obj.analyzerNode
+            if isValidNode guide do try (
+                guide.runAnalysis();savedOwner.markInputDirty()
+                if controlsReady and obj==savedOwner do updateAnalyzerStatus()
+                CyrusViewportRedraw()
+            )catch(if controlsReady and obj==savedOwner do analyzerStatus.text="Analysis failed: "+getCurrentException())
+        )
         fn updatePattern = (
+            updateAnalyzerStatus()
+            layoutHelp.text=case obj.diversityMode of (
+                1: "Mix models using their weights."
+                2: "Group models into patches. Size controls patch size."
+                3: "Closed spline bands use top-down XY projection."
+                4: "Use the linked Analyzer's published guides."
+            )
             faceOutCheck.visible=obj.diversityMode==4 and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5)
             cornerRadiusSpin.visible=faceOutCheck.visible
             faceOutCheck.checked=if analyzerChannel.selection==5 then obj.edgeFaceOut else if analyzerChannel.selection==4 then obj.streetFaceOut else obj.borderFaceOut
@@ -5377,18 +5462,19 @@ initialRollupState:0x8
             analyzerChannel.visible=analyzed;pickAnalyzer.visible=analyzed
             pickAnalyzer.text=if isValidNode obj.analyzerNode then obj.analyzerNode.name else "Pick Surface Analyzer"
             removePath.text=if analyzed then "Remove Analyzer" else "Remove path"
-            strokeTitle.text=if analyzed then "Analyze Surface / Strokes" else "Line Pattern / Strokes"
-            addOutside.text=if not analyzed or analyzerChannel.selection==1 then "Add Outside" else (if analyzerChannel.selection==2 then "Add Stroke" else "Add Radius")
+            strokeTitle.text=if analyzed then "Analyzer bands / rows" else "Spline bands"
+            addOutside.text=if not analyzed or analyzerChannel.selection==1 then "Add Outside" else (if analyzerChannel.selection==2 then "Add band" else "Add Radius")
             addInside.text=if analyzed and analyzerChannel.selection==3 then "Add Single" else "Add Inside"
             boundaryOnly=analyzed and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5)
             addOutside.visible=(obj.diversityMode==3 or analyzed) and not boundaryOnly
             addInside.pos=[if boundaryOnly then 4 else selected_diversityUI.width/2+2,addOutside.pos.y]
             addInside.width=if boundaryOnly then selected_diversityUI.width-8 else (selected_diversityUI.width-12)/2
-            if boundaryOnly do addInside.text=if analyzerChannel.selection==5 then "Add Edge Row" else "Add Stroke Inside"
-            strokeHelp.text=if analyzed and analyzerChannel.selection==5 then "One row along the boundary." else if analyzed then "Width = spread per side." else "Outside strokes: empty."
+            if boundaryOnly do addInside.text=if analyzerChannel.selection==5 then "Add Edge Row" else "Add band inside"
+            strokeHelp.text=if analyzed and analyzerChannel.selection==5 then "One row along the boundary." else if analyzed then "Width = spread per side." else "Outside bands: empty. First match wins."
             restKeys=#()
             for i=1 to obj.sources.count do (local key=obj.colorKey(obj.sourceColor i);if findItem restKeys key==0 do append restKeys key)
             showPath()
+
         )
 
         on pathsDrop selected i do if controlsReady and not binding and obj!=undefined do showPath()

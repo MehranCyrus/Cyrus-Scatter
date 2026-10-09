@@ -1,0 +1,67 @@
+{
+  "baseline_commit": "30df5cdab9b591e6d7bce4e414c5d889b6db0bf8",
+  "branch": "codex/workflow-0.75",
+  "launch": {
+    "pid": 26556,
+    "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\arrangement075",
+    "command": [
+      "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+      "-q",
+      "-i",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\arrangement075\\max.ini",
+      "-p",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\arrangement075\\plugins.ini",
+      "-U",
+      "MAXScript",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\arrangement075\\start.ms",
+      "-listenerlog",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\arrangement075\\listener.log"
+    ],
+    "binaries": {
+      "AminScatter.dlx": "df9cbf8de8659194403f4d5cc481cb9a6e258fe69c915a017650426cde6d1693",
+      "CyrusBrush.dlx": "930e9cc1f5fadbd15a933b4dbeae687c2b87ee78ad8b875daeb34f1a58f8963f",
+      "CyrusBrushStorage.dlh": "47134f0a0010b80c38a2e85d11c31075f3c5dfcacbf4e6071bcfd1929656a28f",
+      "CyrusScatterEdit.dlm": "9ae89575140780c0ad21624e4e4db71aeefc4209f2f764cd194f867e4010e2ec",
+      "CyrusSurfaceAnalyzer.dlx": "ca333595a53d5252dc68c8a797beb6971d6d3f36a298323ee3edc8f8371cfefb"
+    },
+    "script_sha256": "48c702736169748d2b4526cf6439d4cf96997bfc17ddc3a792d50e09e3e4aea8",
+    "normal_profile_modified": false,
+    "development_transport": true
+  },
+  "source_sha256": {
+    "scatter_script": "48c702736169748d2b4526cf6439d4cf96997bfc17ddc3a792d50e09e3e4aea8",
+    "analyzer_script": "9f1f146814870a094ab226334675459e0130a9f1d8bd1d621405b52f99ffb3c8"
+  },
+  "native_build_inputs_verified": true,
+  "checks": {
+    "random_weights": true,
+    "cluster_positions": true,
+    "cluster_seed_positions": true,
+    "display_color_is_separate": true,
+    "bands_geometry": true,
+    "xy_projection": true,
+    "overlap_priority": true,
+    "empty_bands": true,
+    "all_analyzer_channels_emit": true,
+    "manual_analyzer_stays_manual": true,
+    "stale_boundary_empty": true,
+    "closed_sphere_rejected": true
+  },
+  "native_tests": [
+    "scatter_tests.exe: PASS",
+    "prepared_band_tests.exe: PASS 160000 differential queries",
+    "edge_border_tests.exe: PASS"
+  ],
+  "performance_scope": "Three changed-seed and warm evaluateGroups calls, simple assets, no viewport/render timing",
+  "product_changes": false,
+  "computer_use": false,
+  "owned_process_stopped": true,
+  "fixture_note": "One extra-probe wrapper referenced ARExtra before fileIn defined it. Reran after definitions loaded; no product change. Primary probes rerun to retain all metrics in one result file.",
+  "artifacts": {
+    "analyzer-regression.json": "277e077818df40f561ad42928a47f81897ec2379f34637bb3aef506f96a24451",
+    "loaded.tsv": "da75d462cabdf58294b02263352b6b2d8a0dfc20a51628bb9741edede8c4c4bd",
+    "Probe.ms": "6deed1c95cba3b04185dc429966fb9b6e169b0a19ddbe9b168b4ada70455fe75",
+    "README.md": "2f22ae5602572845475a363aaf784347083a55388d8aeab4b022b1f3ddef7a1d",
+    "results.json": "b29aa5e0e0e976d281304918fecd1ea7be875f0b30109060f0216460f69f1e09"
+  }
+}

@@ -1,5 +1,7 @@
 # Cyrus Scatter
 
+**0.75 Layout UI refinement — 9 October 2026:** [Current UI changes, installer and validation](docs/UI_Layout_0.75_2026-10-09/README.md). Layout is a main section after Models; Layers no longer hides its controls behind Properties/Advanced; rotation, scale and movement have paired axis Min/Max fields. Surface Analyzer selection, explicit update and status are available in Layout. Native calculation behavior is unchanged.
+
 **0.75 workflow consolidation — 9 October 2026:** [Current workflow, fixes, testing and remaining work](docs/Consolidation_0.75_2026-10-09/README.md). Models come first, containers stay under Advanced, Painting is optional, and ordinary spacing offers within-layer/between-layer choices. Manual Undo no longer publishes pending edits. Brush preparation reuses unchanged strokes. Stable receiver generation and final-region storage remain unfinished.
 
 **Layer surfaces and Paint Areas — 9 October 2026:** [Current workflow, tested changes, compatibility and remaining work](docs/Layer_Paint_Areas_0.74_2026-10-09/README.md). Layers now own receiving surfaces; optional named areas can paint different receivers in one layer. The individual stroke editor is removed. Canonical region storage and stable per-receiver generation remain unfinished.
@@ -26,7 +28,7 @@ Native C++ and MAXScript sources for Cyrus Scatter and Cyrus Surface Analyzer fo
 
 The last packaged 0.73 Max 2027 development test build is in [Layer_Actions_Fix_0.73_2026-10-07](dist/Layer_Actions_Fix_0.73_2026-10-07/Max2027/START_HERE.txt). It pairs the compact workflow and corrected button lifetimes with the verified unchanged native binaries. [Exact build identities](dist/Layer_Actions_Fix_0.73_2026-10-07/BUILD.json) and [known findings](docs/Full_Qualification_0.73_2026-10-07/RESULTS.md) identify this delivery; the version caption alone does not.
 
-Selected-layer Modify sections remain primary; the optional popup and selected-container view use the same records. The 232-control catalog includes the new identification and surface-list fields and accounts for every previous control. Ordered scopes, stable Brush/Edit/source identities, relevant-input Manual/Live scheduling, atomic publication and retained Point Cloud/Mesh data reuse remain the engineering contracts. Source rectangles organize palette models; receiving surfaces carry instances.
+Selected-layer Modify sections remain primary; the optional popup and selected-container view use the same records. The 234-control catalog includes the new identification and surface-list fields and accounts for every previous control. Ordered scopes, stable Brush/Edit/source identities, relevant-input Manual/Live scheduling, atomic publication and retained Point Cloud/Mesh data reuse remain the engineering contracts. Source rectangles organize palette models; receiving surfaces carry instances.
 
 MCP **0.73.0** has twelve tools/seven resources and the **closed Plan 0.73** authoring subset with enrollment, local approval, units, ownership, freshness, work limits and rollback. Plans 1/2 are retired. Full recipe/Brush/container/Edit writes, render jobs and portable asset reconstruction remain unavailable. [MCP guide](CyrusMCP/README.md) and [capability matrix](docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md) define the boundary. Diagnostics are integrated in Scatter and need no MCP.
 

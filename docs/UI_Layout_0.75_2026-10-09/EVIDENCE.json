@@ -1,0 +1,95 @@
+{
+  "baseline_commit": "30df5cd",
+  "product": "0.75.0",
+  "ui": "0.75",
+  "schema": 54,
+  "final_private_host": {
+    "pid": 52732,
+    "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\layout075-final",
+    "command": [
+      "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+      "-q",
+      "-i",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\layout075-final\\max.ini",
+      "-p",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\layout075-final\\plugins.ini",
+      "-U",
+      "MAXScript",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\layout075-final\\start.ms",
+      "-listenerlog",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\layout075-final\\listener.log"
+    ],
+    "binaries": {
+      "AminScatter.dlx": "df9cbf8de8659194403f4d5cc481cb9a6e258fe69c915a017650426cde6d1693",
+      "CyrusBrush.dlx": "930e9cc1f5fadbd15a933b4dbeae687c2b87ee78ad8b875daeb34f1a58f8963f",
+      "CyrusBrushStorage.dlh": "47134f0a0010b80c38a2e85d11c31075f3c5dfcacbf4e6071bcfd1929656a28f",
+      "CyrusScatterEdit.dlm": "9ae89575140780c0ad21624e4e4db71aeefc4209f2f764cd194f867e4010e2ec",
+      "CyrusSurfaceAnalyzer.dlx": "ca333595a53d5252dc68c8a797beb6971d6d3f36a298323ee3edc8f8371cfefb"
+    },
+    "script_sha256": "7545c844b048f40f4c06af5665bc16f6f0ad6947dde461f1e7f805d055e549c3",
+    "normal_profile_modified": false,
+    "development_transport": true
+  },
+  "package": {
+    "package": "dist/UI_Layout_0.75_2026-10-09/Max2027/CyrusScatter-0.75.0-Max2027.mzp",
+    "sha256": "6173bd25900c99e80315117005de5de549beea938a587cc6b7aff9fdbc08a378",
+    "script_sha256": "7545c844b048f40f4c06af5665bc16f6f0ad6947dde461f1e7f805d055e549c3",
+    "native": {
+      "AminScatter.dlx": "df9cbf8de8659194403f4d5cc481cb9a6e258fe69c915a017650426cde6d1693",
+      "CyrusBrush.dlx": "930e9cc1f5fadbd15a933b4dbeae687c2b87ee78ad8b875daeb34f1a58f8963f",
+      "CyrusBrushStorage.dlh": "47134f0a0010b80c38a2e85d11c31075f3c5dfcacbf4e6071bcfd1929656a28f",
+      "CyrusScatterEdit.dlm": "9ae89575140780c0ad21624e4e4db71aeefc4209f2f764cd194f867e4010e2ec"
+    },
+    "source_package_loaded_pair_match": true
+  },
+  "native_inputs_unchanged": true,
+  "generated": {
+    "check": "unified_073_generator_integration",
+    "passed": true,
+    "development_version": "0.75",
+    "baseline": "01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2",
+    "maxscript_compiled": false,
+    "ui_controls_in_inventory": 234,
+    "baseline_controls_accounted": 245,
+    "generated_sha256": "7545c844b048f40f4c06af5665bc16f6f0ad6947dde461f1e7f805d055e549c3",
+    "preserved_files": [
+      "AminScatter/src/preview.cpp",
+      "AminScatter/src/point_display.cpp"
+    ],
+    "fixture_delimiters_checked": 28,
+    "interactive_max_run": false
+  },
+  "python_tests": {
+    "passed": 141,
+    "command": "build/mcp-venv/Scripts/python.exe -m pytest CyrusMCP/tests tools/tests -q",
+    "evidence": "Successful command output in this task"
+  },
+  "layout_assertions": 94,
+  "consolidation_assertions": 22,
+  "layer_paint_assertions": 45,
+  "intermediate_corrections": [
+    "Fixed missing generated newline after hiding an unused Advanced control",
+    "Replaced unsupported runtime SpinnerControl.fieldWidth with native CustEdit sizing",
+    "After explicit Analyzer selection, fixture reopens/rebinds Transforms before invoking its guarded callback"
+  ],
+  "limits": [
+    "No computer use",
+    "No physical/DPI/tablet acceptance",
+    "No new native or renderer behavior",
+    "Max 2027 only",
+    "No installation into artist profile"
+  ],
+  "receipts": {
+    "consolidation075-checks.txt": "9de61fc0a018ff911c964877ce0d0b83b8ae1e9b5bad892e20f19eef6f9a2d50",
+    "grips-Container.txt": "68d8e11449b44f399cde48055259bf6eabf3b8265c38f82cb3d25456b6654c47",
+    "grips-lifecycle.txt": "d3e72353b744f73a505bc5acd4264b55c2376ee9dcce660a8b10eb164eb61827",
+    "grips-main.txt": "85e8d9dc8196bc8f25e43b37de7bb3327417cfcd4e6428c44d97071dc187ff75",
+    "grips-Popup.txt": "b8df53af9cd584c49cb46a3b0c0bf197c676f55216fb4b8e8055a5e23ae64627",
+    "layer-regions-checks.txt": "c91a4ee312601d1faea626d564e7ffeb96e3f050cf2b8d11df33ad728a60aae0",
+    "layout-results.json": "5f7b0be9d871739b9b05efa57c769654dfd31af7e35594e3b19c04a0215e72b5",
+    "layout075-checks.txt": "39e0c28d4cd69e568ce1aaa53f8fa3a6c214c446856ad5702e48e6224264ca81",
+    "regressions.json": "367be48f59e732dcb9fa7502bc5660ba1e2546d8a5a1c3134f637b440bd39e9f",
+    "results.json": "1b7029443b81fa1d8a942d16ec4d2859a411d89a5790e164973e0157bc0584ef",
+    "ui074-views.txt": "527b7a564cf0b0d20771dcfa86929136e7d58a50043ca3cc0d6c46f4764996de"
+  }
+}

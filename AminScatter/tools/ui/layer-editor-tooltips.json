@@ -130,6 +130,8 @@
     "resetMovement": "Reset only this layer's random translation limits."
   },
   "diversityUI": {
+    "selectAnalyzer": "Select the linked Surface Analyzer in the scene.",
+    "updateAnalyzer": "Analyze the linked guide. In Manual mode, use Update scatter afterwards to publish placements.",
     "sizeSpin": "Spatial size of source-color clusters.",
     "divSeedSpin": "Change source assignment randomness without changing the generation seed.",
     "pickAnalyzer": "Use Surface Analyzer output for bands, rows and fixed anchors.",
@@ -137,7 +139,7 @@
     "removePath": "Remove the selected assignment path while keeping the scene spline.",
     "addOutside": "Add a source-assignment band outside the selected path.",
     "addInside": "Add a source-assignment band inside the selected path.",
-    "removeStrokeButton": "Remove the selected assignment band and its settings.",
+    "removeStrokeButton": "Remove the selected band and its settings.",
     "refreshGroups": "Refresh available source color groups for assignment."
   },
   "proceduralUI": {

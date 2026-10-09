@@ -1,0 +1,94 @@
+Layout has its own main section after Models
+Layers controls visible without Properties/Advanced
+rotX: paired Min/Max
+rotX: native label/edit/arrow bounds do not overlap
+rotY: paired Min/Max
+rotY: native label/edit/arrow bounds do not overlap
+rotZ: paired Min/Max
+rotZ: native label/edit/arrow bounds do not overlap
+sclX: paired Min/Max
+sclX: native label/edit/arrow bounds do not overlap
+sclY: paired Min/Max
+sclY: native label/edit/arrow bounds do not overlap
+sclZ: paired Min/Max
+sclZ: native label/edit/arrow bounds do not overlap
+movX: paired Min/Max
+movX: native label/edit/arrow bounds do not overlap
+movY: paired Min/Max
+movY: native label/edit/arrow bounds do not overlap
+movZ: paired Min/Max
+movZ: native label/edit/arrow bounds do not overlap
+Transform axes visible without Advanced
+Spline mode shows only spline setup
+Empty spline mode explains next action
+Band creation refreshes next-action help
+Band model picker uses Scatter label
+Analyzer mode shows link and status
+Update Analyzer executes and refreshes status
+Layout authoring preserves pending Manual publication
+Unsupported Analyzer input reports failure and retains publication
+Select Analyzer action safely changes selection
+Paired transform callback changes correct setting
+Transform reset callback remains wired
+Random mode hides guide settings
+Popup includes Layout on Models topic
+rotX: paired Min/Max
+rotX: native label/edit/arrow bounds do not overlap
+rotY: paired Min/Max
+rotY: native label/edit/arrow bounds do not overlap
+rotZ: paired Min/Max
+rotZ: native label/edit/arrow bounds do not overlap
+sclX: paired Min/Max
+sclX: native label/edit/arrow bounds do not overlap
+sclY: paired Min/Max
+sclY: native label/edit/arrow bounds do not overlap
+sclZ: paired Min/Max
+sclZ: native label/edit/arrow bounds do not overlap
+movX: paired Min/Max
+movX: native label/edit/arrow bounds do not overlap
+movY: paired Min/Max
+movY: native label/edit/arrow bounds do not overlap
+movZ: paired Min/Max
+movZ: native label/edit/arrow bounds do not overlap
+Transform axes visible without Advanced
+rotX: paired Min/Max
+rotX: native label/edit/arrow bounds do not overlap
+rotY: paired Min/Max
+rotY: native label/edit/arrow bounds do not overlap
+rotZ: paired Min/Max
+rotZ: native label/edit/arrow bounds do not overlap
+sclX: paired Min/Max
+sclX: native label/edit/arrow bounds do not overlap
+sclY: paired Min/Max
+sclY: native label/edit/arrow bounds do not overlap
+sclZ: paired Min/Max
+sclZ: native label/edit/arrow bounds do not overlap
+movX: paired Min/Max
+movX: native label/edit/arrow bounds do not overlap
+movY: paired Min/Max
+movY: native label/edit/arrow bounds do not overlap
+movZ: paired Min/Max
+movZ: native label/edit/arrow bounds do not overlap
+Transform axes visible without Advanced
+Layout controls isolate layer owners
+Container view includes Layout
+Container Layout uses the same layer owner
+rotX: paired Min/Max
+rotX: native label/edit/arrow bounds do not overlap
+rotY: paired Min/Max
+rotY: native label/edit/arrow bounds do not overlap
+rotZ: paired Min/Max
+rotZ: native label/edit/arrow bounds do not overlap
+sclX: paired Min/Max
+sclX: native label/edit/arrow bounds do not overlap
+sclY: paired Min/Max
+sclY: native label/edit/arrow bounds do not overlap
+sclZ: paired Min/Max
+sclZ: native label/edit/arrow bounds do not overlap
+movX: paired Min/Max
+movX: native label/edit/arrow bounds do not overlap
+movY: paired Min/Max
+movY: native label/edit/arrow bounds do not overlap
+movZ: paired Min/Max
+movZ: native label/edit/arrow bounds do not overlap
+Transform axes visible without Advanced

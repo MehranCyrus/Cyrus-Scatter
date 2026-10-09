@@ -1,0 +1,43 @@
+[
+  {
+    "script": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Procedural_07_Acceptance.ms\"",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/layout075-final/probe-80a81e121f3140eebd6db55ba30d0b94.ms"
+  },
+  {
+    "script": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_UI_074_Grips.ms\"",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/layout075-final/probe-e7a44c92fd6e4d66b6bc5fef27e38d08.ms"
+  },
+  {
+    "script": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_UI_074.ms\"",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/layout075-final/probe-d1573eebc0ba4038b37e8f372c3011ea.ms"
+  },
+  {
+    "script": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Layer_Regions_074_Legacy.ms\"",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/layout075-final/probe-6701ff98392f43559003b671c1e15672.ms"
+  },
+  {
+    "script": "G074Run #main",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/layout075-final/probe-f7191d2e1676441a8cd1775acee6f570.ms"
+  },
+  {
+    "script": "G074Run #container",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/layout075-final/probe-515dba57b21a4d6ba7010a6749a6954b.ms"
+  },
+  {
+    "script": "G074Run #popup",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/layout075-final/probe-16d5ab36df674e4f8dde5d7bad2a9509.ms"
+  },
+  {
+    "script": "G074Lifecycle()",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/layout075-final/probe-2f791833ed9a4826a83fbe87f9961946.ms"
+  },
+  {
+    "script": "UI074Views()",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/layout075-final/probe-62c02ca9d3834650ac1fba95ffe2c6b5.ms"
+  },
+  {
+    "script": "LRLegacyCheck @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/layer-regions-old-20261009-01/\"",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/layout075-final/probe-e687f59875d9468696eb12363207a1eb.ms",
+    "harness_note": "Loaded LRAssert dependency before recompiling the legacy fixture."
+  }
+]
