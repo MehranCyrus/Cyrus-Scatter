@@ -22,7 +22,10 @@ assert.ok(script.includes('if isProperty control #width then control.width=avail
 assert.ok(script.includes('if controlsReady and not binding and root!=undefined and sourceContainersUI_controlsReady'));
 assert.ok(!script.includes('Multi-set layers support Random and Clusters.'),'The unified engine supports per-set Line/Analyzer choices; the UI must not retain the old gate');
 assert.ok(script.includes('then cellWidth-12 else 0'),'Spinner position addresses arrows, not the compound control origin');
-assert.ok(script.includes('label setsUI_weightSpin_caption "Share weight:"'));
+assert.ok(script.includes('label setsUI_targetList_caption "Surface"'));
+assert.ok(!script.includes('brushUI_strokeList'),'Per-stroke editing is retired');
+assert.equal(layout.sections[0].name,'managerUI');
+assert.equal(layout.sections[1].name,'surfacesUI');
 assert.ok(script.includes('label sourceContainersUI_containersList_caption "Rectangles"'),'List captions must keep their own layout row');
 assert.ok(!script.includes('(dotNetClass "System.Windows.Forms.Cursor").Position'),'MAXScript aliases Position to pos; drag must use event coordinates');
 const gripMoves=[...script.matchAll(/on (\w+_grip) MouseMove sender args do ([^\n]+)/g)];

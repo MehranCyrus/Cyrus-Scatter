@@ -4,9 +4,88 @@
   "source": "approved single-file HTML study",
   "sections": [
     {
-      "name": "surfacesUI",
-      "title": "Receiving surfaces",
+      "name": "managerUI",
+      "title": "Layers",
       "scope": "Setup",
+      "controls": [
+        {
+          "component": "flow_layersUI",
+          "control": "layerList",
+          "presentation": "flow_layersUI_layerList",
+          "advanced": false
+        },
+        {
+          "component": "flow_layersUI",
+          "control": "editButton",
+          "presentation": "flow_layersUI_editButton",
+          "advanced": true
+        },
+        {
+          "component": "flow_layersUI",
+          "control": "addButton",
+          "presentation": "flow_layersUI_addButton",
+          "advanced": false
+        },
+        {
+          "component": "flow_layersUI",
+          "control": "copyButton",
+          "presentation": "flow_layersUI_copyButton",
+          "advanced": false
+        },
+        {
+          "component": "flow_layersUI",
+          "control": "removeButton",
+          "presentation": "flow_layersUI_removeButton",
+          "advanced": false
+        },
+        {
+          "component": "flow_layersUI",
+          "control": "layerColor",
+          "presentation": "flow_layersUI_layerColor",
+          "advanced": false
+        },
+        {
+          "component": "flow_layersUI",
+          "control": "nameEdit",
+          "presentation": "flow_layersUI_nameEdit",
+          "advanced": false
+        },
+        {
+          "component": "flow_layersUI",
+          "control": "visibleCheck",
+          "presentation": "flow_layersUI_visibleCheck",
+          "advanced": false
+        },
+        {
+          "component": "flow_layersUI",
+          "control": "enabledCheck",
+          "presentation": "flow_layersUI_enabledCheck",
+          "advanced": false
+        },
+        {
+          "component": "flow_layersUI",
+          "control": "upButton",
+          "presentation": "flow_layersUI_upButton",
+          "advanced": false
+        },
+        {
+          "component": "flow_layersUI",
+          "control": "downButton",
+          "presentation": "flow_layersUI_downButton",
+          "advanced": false
+        },
+        {
+          "component": "flow_layersUI",
+          "control": "countInfo",
+          "presentation": "flow_layersUI_countInfo",
+          "advanced": true
+        }
+      ]
+    },
+    {
+      "name": "surfacesUI",
+      "title": "Surfaces",
+      "scope": "Layer",
       "controls": [
         {
           "component": "flow_surfaceUI",
@@ -83,147 +162,8 @@
       ]
     },
     {
-      "name": "managerUI",
-      "title": "Layers & paint sets",
-      "scope": "Setup",
-      "controls": [
-        {
-          "component": "flow_layersUI",
-          "control": "layerList",
-          "presentation": "flow_layersUI_layerList",
-          "advanced": false
-        },
-        {
-          "component": "flow_layersUI",
-          "control": "editButton",
-          "presentation": "flow_layersUI_editButton",
-          "advanced": true
-        },
-        {
-          "component": "flow_layersUI",
-          "control": "addButton",
-          "presentation": "flow_layersUI_addButton",
-          "advanced": false
-        },
-        {
-          "component": "flow_layersUI",
-          "control": "copyButton",
-          "presentation": "flow_layersUI_copyButton",
-          "advanced": false
-        },
-        {
-          "component": "flow_layersUI",
-          "control": "removeButton",
-          "presentation": "flow_layersUI_removeButton",
-          "advanced": false
-        },
-        {
-          "component": "flow_layersUI",
-          "control": "layerColor",
-          "presentation": "flow_layersUI_layerColor",
-          "advanced": false
-        },
-        {
-          "component": "flow_layersUI",
-          "control": "nameEdit",
-          "presentation": "flow_layersUI_nameEdit",
-          "advanced": false
-        },
-        {
-          "component": "flow_layersUI",
-          "control": "visibleCheck",
-          "presentation": "flow_layersUI_visibleCheck",
-          "advanced": false
-        },
-        {
-          "component": "flow_layersUI",
-          "control": "enabledCheck",
-          "presentation": "flow_layersUI_enabledCheck",
-          "advanced": false
-        },
-        {
-          "component": "flow_layersUI",
-          "control": "upButton",
-          "presentation": "flow_layersUI_upButton",
-          "advanced": false
-        },
-        {
-          "component": "flow_layersUI",
-          "control": "downButton",
-          "presentation": "flow_layersUI_downButton",
-          "advanced": false
-        },
-        {
-          "component": "flow_layersUI",
-          "control": "countInfo",
-          "presentation": "flow_layersUI_countInfo",
-          "advanced": true
-        },
-        {
-          "component": "setsUI",
-          "control": "setList",
-          "presentation": "setsUI_setList",
-          "advanced": false
-        },
-        {
-          "component": "setsUI",
-          "control": "addButton",
-          "presentation": "setsUI_addButton",
-          "advanced": false
-        },
-        {
-          "component": "setsUI",
-          "control": "removeButton",
-          "presentation": "setsUI_removeButton",
-          "advanced": false
-        },
-        {
-          "component": "setsUI",
-          "control": "nameEdit",
-          "presentation": "setsUI_nameEdit",
-          "advanced": false
-        },
-        {
-          "component": "setsUI",
-          "control": "weightSpin",
-          "presentation": "setsUI_weightSpin",
-          "advanced": false
-        },
-        {
-          "component": "setsUI",
-          "control": "enabledCheck",
-          "presentation": "setsUI_enabledCheck",
-          "advanced": false
-        },
-        {
-          "component": "setsUI",
-          "control": "visibleCheck",
-          "presentation": "setsUI_visibleCheck",
-          "advanced": false
-        },
-        {
-          "component": "setsUI",
-          "control": "upButton",
-          "presentation": "setsUI_upButton",
-          "advanced": false
-        },
-        {
-          "component": "setsUI",
-          "control": "downButton",
-          "presentation": "setsUI_downButton",
-          "advanced": false
-        },
-        {
-          "component": "setsUI",
-          "control": "info",
-          "presentation": "setsUI_info",
-          "advanced": true
-        }
-      ]
-    },
-    {
       "name": "modelsUI",
-      "title": "Models & source containers",
+      "title": "Models",
       "scope": "Layer",
       "controls": [
         {
@@ -783,19 +723,61 @@
     },
     {
       "name": "coverageUI",
-      "title": "Coverage & painting",
+      "title": "Painting",
       "scope": "Layer",
       "controls": [
         {
-          "component": "brushUI",
-          "control": "activeInfo",
-          "presentation": "brushUI_activeInfo",
-          "advanced": true
+          "component": "setsUI",
+          "control": "paintedCheck",
+          "presentation": "setsUI_paintedCheck",
+          "advanced": false
         },
         {
-          "component": "brushUI",
-          "control": "coverageMode",
-          "presentation": "brushUI_coverageMode",
+          "component": "setsUI",
+          "control": "importButton",
+          "presentation": "setsUI_importButton",
+          "advanced": false
+        },
+        {
+          "component": "setsUI",
+          "control": "setList",
+          "presentation": "setsUI_setList",
+          "advanced": false
+        },
+        {
+          "component": "setsUI",
+          "control": "addButton",
+          "presentation": "setsUI_addButton",
+          "advanced": false
+        },
+        {
+          "component": "setsUI",
+          "control": "removeButton",
+          "presentation": "setsUI_removeButton",
+          "advanced": false
+        },
+        {
+          "component": "setsUI",
+          "control": "nameEdit",
+          "presentation": "setsUI_nameEdit",
+          "advanced": false
+        },
+        {
+          "component": "setsUI",
+          "control": "targetList",
+          "presentation": "setsUI_targetList",
+          "advanced": false
+        },
+        {
+          "component": "setsUI",
+          "control": "enabledCheck",
+          "presentation": "setsUI_enabledCheck",
+          "advanced": false
+        },
+        {
+          "component": "setsUI",
+          "control": "info",
+          "presentation": "setsUI_info",
           "advanced": false
         },
         {
@@ -826,13 +808,7 @@
           "component": "brushUI",
           "control": "softSpin",
           "presentation": "brushUI_softSpin",
-          "advanced": true
-        },
-        {
-          "component": "brushUI",
-          "control": "densitySpin",
-          "presentation": "brushUI_densitySpin",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "brushUI",
@@ -866,6 +842,12 @@
         },
         {
           "component": "brushUI",
+          "control": "densitySpin",
+          "presentation": "brushUI_densitySpin",
+          "advanced": true
+        },
+        {
+          "component": "brushUI",
           "control": "overlayMode",
           "presentation": "brushUI_overlayMode",
           "advanced": true
@@ -878,86 +860,8 @@
         },
         {
           "component": "brushUI",
-          "control": "strokeList",
-          "presentation": "brushUI_strokeList",
-          "advanced": true
-        },
-        {
-          "component": "brushUI",
-          "control": "strokeEnabled",
-          "presentation": "brushUI_strokeEnabled",
-          "advanced": true
-        },
-        {
-          "component": "brushUI",
-          "control": "strokeErase",
-          "presentation": "brushUI_strokeErase",
-          "advanced": true
-        },
-        {
-          "component": "brushUI",
-          "control": "strokeRadius",
-          "presentation": "brushUI_strokeRadius",
-          "advanced": true
-        },
-        {
-          "component": "brushUI",
-          "control": "strokeStrength",
-          "presentation": "brushUI_strokeStrength",
-          "advanced": true
-        },
-        {
-          "component": "brushUI",
-          "control": "strokeSoft",
-          "presentation": "brushUI_strokeSoft",
-          "advanced": true
-        },
-        {
-          "component": "brushUI",
-          "control": "deleteStroke",
-          "presentation": "brushUI_deleteStroke",
-          "advanced": true
-        },
-        {
-          "component": "brushUI",
-          "control": "resetTarget",
-          "presentation": "brushUI_resetTarget",
-          "advanced": true
-        },
-        {
-          "component": "brushUI",
           "control": "brushHelp",
           "presentation": "brushUI_brushHelp",
-          "advanced": true
-        },
-        {
-          "component": "brushUI",
-          "control": "detailsToggle",
-          "presentation": "brushUI_detailsToggle",
-          "advanced": false
-        },
-        {
-          "component": "backgroundUI",
-          "control": "backgroundList",
-          "presentation": "backgroundUI_backgroundList",
-          "advanced": true
-        },
-        {
-          "component": "backgroundUI",
-          "control": "referenceList",
-          "presentation": "backgroundUI_referenceList",
-          "advanced": true
-        },
-        {
-          "component": "backgroundUI",
-          "control": "applyBackground",
-          "presentation": "backgroundUI_applyBackground",
-          "advanced": true
-        },
-        {
-          "component": "backgroundUI",
-          "control": "backgroundInfo",
-          "presentation": "backgroundUI_backgroundInfo",
           "advanced": true
         }
       ]

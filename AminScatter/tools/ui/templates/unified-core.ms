@@ -224,6 +224,17 @@ fn AminScatterCopyLayer origin destination = (
         )
         for key in #(#visualSourceNodes,#visualSourceLabels,#visualSourceColors,#visualSourceColorSet) do setProperty destination key ((getProperty origin key) as array)
         destination.layerIDColor=origin.layerIDColor
+        destination.ownsReceivers=origin.ownsReceivers;destination.areaMode=origin.areaMode
+        destination.paintAreas=#();destination.uiAreaID=""
+        for area in origin.paintAreas do (
+            local duplicate=createInstance AminScatterObject
+            duplicate.isPaintArea=true;duplicate.layerID=CyrusNewLayerID();duplicate.logicalParentID=destination.layerID
+            duplicate.areaTarget=area.areaTarget;duplicate.paintSetName=area.paintSetName
+            duplicate.paintSetEnabled=area.paintSetEnabled;duplicate.paintEnabled=true
+            duplicate.paintDensity=area.paintDensity;duplicate.paintView=area.paintView;duplicate.paintColor=area.paintColor
+            if area.paintDocument!=undefined do duplicate.paintDocument=copy area.paintDocument
+            append destination.paintAreas duplicate
+        )
         destination.setLayerTransfer false
     ) catch(destination.setLayerTransfer false;throw())
 )
@@ -280,7 +291,7 @@ fn CyrusLayerEditor_setsUI_1 = (
         checkbox visibleCheck "Show set" pos:[4,172] width:(setsUI_1.width-8) tooltip:"Viewport visibility only. Hidden sets still calculate and affect spacing."
         button upButton "Move up" pos:[4,200] width:((setsUI_1.width-12)/2) tooltip:"Evaluate this set earlier. Earlier sets occupy space first."
         button downButton "Move down" pos:[(setsUI_1.width/2+2),200] width:((setsUI_1.width-12)/2) tooltip:"Evaluate this set later, after the preceding sets."
-        label info "Sources, Brush and set rules edit this set. Population, transforms and cleanup belong to the layer." pos:[4,232] width:(setsUI_1.width-8) height:76
+        label info "Layers own surfaces, models and population. Paint Areas optionally restrict where the layer scatters." pos:[4,232] width:(setsUI_1.width-8) height:76
         fn currentSet = (root.selectedPaintSet owner)
         fn bind layer = (
             binding=true;members=root.layerSets owner
@@ -1566,10 +1577,10 @@ fn CyrusOpenLayerEditor root owner = (
         label setupInfo "" pos:[12,10] width:(clientSize.x-178) height:18
         button updateNow "Update setup" pos:[clientSize.x-158,8] width:146 height:24 tooltip:"Recalculate every enabled layer in this setup, in order."
         dropdownlist layerList "Layer" pos:[12,36] width:((clientSize.x-36)/2)
-        dropdownlist setList "Paint set" pos:[clientSize.x/2+6,36] width:((clientSize.x-36)/2)
-        checkbutton assetsTab "Assets" pos:[12,90] width:((clientSize.x-34)/6) height:26 checked:true tooltip:"Models, source rectangles and paint-set administration."
+        dropdownlist setList "Existing model group" pos:[clientSize.x/2+6,36] width:((clientSize.x-36)/2)
+        checkbutton assetsTab "Assets" pos:[12,90] width:((clientSize.x-34)/6) height:26 checked:true tooltip:"Models and receiving surfaces for this layer."
         checkbutton populationTab "Population" pos:[12+(clientSize.x-22)/6,90] width:((clientSize.x-34)/6) height:26 tooltip:"Shared layer count, density, Area and retry limits."
-        checkbutton paintTab "Paint" pos:[12+2*(clientSize.x-22)/6,90] width:((clientSize.x-34)/6) height:26 tooltip:"Independent set coverage, strokes and background fill."
+        checkbutton paintTab "Paint" pos:[12+2*(clientSize.x-22)/6,90] width:((clientSize.x-34)/6) height:26 tooltip:"Optional receiver-bound Paint Areas."
         checkbutton transformTab "Transform" pos:[12+3*(clientSize.x-22)/6,90] width:((clientSize.x-34)/6) height:26 tooltip:"Layer random transforms and source assignment."
         checkbutton spacingTab "Spacing" pos:[12+4*(clientSize.x-22)/6,90] width:((clientSize.x-34)/6) height:26 tooltip:"Self, between-set and layer-pair rules, radii and cleanup."
         checkbutton statisticsTab "Statistics" pos:[12+5*(clientSize.x-22)/6,90] width:((clientSize.x-34)/6) height:26 tooltip:"Cached calculation results and workflow help."
@@ -1625,7 +1636,7 @@ fn CyrusOpenLayerEditor root owner = (
             if not validOwner() do return false
             local previous=binding;binding=true
             try (
-                members=root.logicalLayers();sets=root.layerSets owner
+                members=root.logicalLayers();sets=root.layerSets owner;setList.visible=sets.count>1
                 retainListItems layerList (for m in members collect root.layerCaption m)
                 local layerIndex=findItem members owner
                 if layerList.selection!=layerIndex do layerList.selection=layerIndex
@@ -2004,6 +2015,7 @@ initialRollupState:0x8
     fn validSurfaces = (
         local result=#()
         local nodes=if surfaceNodes.count>0 then (surfaceNodes as array) else #(surface)
+        if this.layerObjects.count>0 do for layer in this.layerObjects where layer.ownsReceivers do join nodes (layer.validSurfaces())
         for n in nodes where isValidNode n and classof n.baseObject!=AminScatterObject and findItem result n==0 do append result n
         result
     )
@@ -2870,9 +2882,19 @@ initialRollupState:0x8
 
     fn setGroupCoverage group painted reset:false = (
         if group==undefined do return false
+        if group.isPaintArea do (
+            local parent=this.logicalParent group,target=group.areaTarget
+            if not isValidNode target or findItem (parent.validSurfaces()) target==0 do throw "This Paint Area is inactive. Add its target surface back to the layer, or create a new area."
+            CyrusStopBrush()
+            undo "Cyrus painted area" on (
+                if group.paintDocument==undefined or reset do group.paintDocument=cyrusBrushCreate target
+                parent.paintEnabled=painted;group.paintEnabled=true
+            )
+            group.setOverlapOwner this;parent.markInputDirty();this.bindNativeUI();return true
+        )
         CyrusStopBrush()
         if painted then (
-            local targets=this.validSurfaces()
+            local targets=group.validSurfaces()
             if targets.count!=1 or not isValidNode targets[1] do throw "Choose one shared receiving surface before painting. Curved meshes are supported."
             if group.paintDocument!=undefined and cyrusBrushTarget group.paintDocument!=targets[1] and not reset do throw "This group has strokes on another surface. Restore that surface or use Reset coverage to explicitly create an empty mask."
             undo "Cyrus painted coverage" on (
@@ -2883,6 +2905,7 @@ initialRollupState:0x8
         this.invalidateGroups();this.bindNativeUI();true
     )
 
+    local paintBaseFaceCounts=#()
     local blockerCacheKey="",blockerCacheRows=#(),blockerCacheBuilds=0,blockerCacheHits=0
 
     fn blockerCacheStats = (#(blockerCacheBuilds,blockerCacheHits))
@@ -2898,7 +2921,7 @@ initialRollupState:0x8
         if not cyrusEnabled or disabledAnalyzerInput() do return #()
         if this.brushMaskActive() and not projectMove and (movXMin!=0 or movXMax!=0 or movYMin!=0 or movYMax!=0 or movZMin!=0 or movZMax!=0 or movementRange!=0) do throw "Brush requires projected movement."
         local targets=this.validSurfaces(),seed=this.effectiveSeed(),sourceCount=amax 1 plants.count
-        if targets.count==0 do throw "Add a receiving surface."
+        if targets.count==0 do return #()
         if plants.count==0 and not previewOnly do throw "Add a plant model."
         requestedCount=if procCandidateCount==undefined then (this.effectivePopulation())[1] else procCandidateCount
         if requestedCount<=0 do return #()
@@ -2933,6 +2956,7 @@ initialRollupState:0x8
             if wholeScaleMin!=1.0 or wholeScaleMax!=1.0 do result=cyrusWholeScale result wholeScaleMin wholeScaleMax seed true
             result=this.applyAnalyzerArea result
             result=this.applyFalloff result
+            paintBaseFaceCounts=cyrusReceiverFaceCounts targets
             paintBaseRows=result;paintBaseKey=baseKey;paintBaseBuilds+=1
         )
         result=this.procApplyPaint result
@@ -3030,6 +3054,81 @@ initialRollupState:0x8
         layerIDColor type:#color default:(color 100 220 120)
         identificationMode type:#integer default:1
     )
+    -- Appended storage keeps earlier 0.74 parameter blocks readable.
+    parameters regionSettings (
+        ownsReceivers type:#boolean default:false
+        areaMode type:#boolean default:false
+        paintAreas type:#maxObjectTab tabSize:0 tabSizeVariable:true
+        areaTarget type:#node
+        uiAreaID type:#string default:""
+        isPaintArea type:#boolean default:false
+    )
+    fn selectedPaintArea parent = (
+        if parent==undefined do return undefined
+        for area in parent.paintAreas where area.layerID==parent.uiAreaID do return area
+        if parent.paintAreas.count>0 then parent.paintAreas[1] else undefined
+    )
+    fn adoptPaintArea parent = (
+        -- Preserve the old document exactly, including soft paint and erase.
+        if parent.paintDocument==undefined or parent.paintAreas.count>0 do return false
+        local area=createInstance AminScatterObject
+        area.isPaintArea=true;area.layerID=CyrusNewLayerID();area.logicalParentID=parent.layerID
+        area.paintDocument=parent.paintDocument;area.areaTarget=cyrusBrushTarget parent.paintDocument
+        area.paintSetName="Existing paint";area.paintDensity=parent.paintDensity
+        area.paintView=parent.paintView;area.paintColor=parent.paintColor;area.paintEnabled=true
+        area.setOverlapOwner this;parent.areaMode=true;append parent.paintAreas area;parent.uiAreaID=area.layerID
+        true
+    )
+    fn addPaintArea parent target:undefined = (
+        if parent==undefined or findItem layerObjects parent==0 or parent.logicalParentID!="" do throw "Select an owning layer first."
+        if (this.layerSets parent).count>1 do throw "This older layer has model-owning sets. Its original settings are retained; convert those populations before adding Paint Areas."
+        if parent.paintAreas.count>=128 do throw "A layer supports up to 128 Paint Areas."
+        local targets=parent.validSurfaces(),area
+        if target==undefined and targets.count==1 do target=targets[1]
+        if target!=undefined and findItem targets target==0 do throw "Choose a surface assigned to this layer."
+        CyrusStopBrush()
+        undo "Cyrus add Paint Area" on (
+            this.adoptPaintArea parent
+            area=createInstance AminScatterObject
+            area.isPaintArea=true;area.layerID=CyrusNewLayerID();area.logicalParentID=parent.layerID
+            area.paintSetName="Area "+((parent.paintAreas.count+1) as string)
+            area.areaTarget=target;area.paintEnabled=true;area.setOverlapOwner this
+            if isValidNode target do area.paintDocument=cyrusBrushCreate target
+            append parent.paintAreas area;parent.areaMode=true;parent.uiAreaID=area.layerID;parent.paintEnabled=true
+        )
+        parent.markInputDirty();this.bindNativeUI();CyrusViewportRedraw();area
+    )
+    fn removePaintArea parent area = (
+        local index=findItem parent.paintAreas area
+        if index==0 do return false
+        CyrusStopBrush()
+        undo "Cyrus remove Paint Area" on (deleteItem parent.paintAreas index;parent.uiAreaID="";parent.paintDocument=undefined)
+        parent.markInputDirty();this.bindNativeUI();CyrusViewportRedraw();true
+    )
+    fn setPaintAreaTarget parent area target = (
+        if findItem parent.paintAreas area==0 or findItem (parent.validSurfaces()) target==0 do throw "Choose a surface in this layer."
+        if area.areaTarget==target do return false
+        if area.paintDocument!=undefined and ((cyrusBrushStats area.paintDocument)[2]>0 or (cyrusBrushStats area.paintDocument)[17]!=0) do throw "This area already has paint. Add another area for a different surface; existing paint is preserved."
+        CyrusStopBrush()
+        undo "Cyrus Paint Area surface" on (area.areaTarget=target;area.paintDocument=cyrusBrushCreate target)
+        parent.markInputDirty();this.bindNativeUI();CyrusViewportRedraw();true
+    )
+    fn setLayerSurfaces parent nodes = (
+        if parent==undefined or findItem layerObjects parent==0 or parent.logicalParentID!="" do throw "Select an owning layer first."
+        local targets=#()
+        for node in nodes do (
+            if not isValidNode node or classof node.baseObject==AminScatterObject do throw "Invalid receiving surface."
+            if findItem targets node==0 do append targets node
+        )
+        if targets.count>128 do throw "A layer supports up to 128 receiving surfaces."
+        CyrusStopBrush()
+        undo "Cyrus layer surfaces" on (
+            this.adoptPaintArea parent
+            parent.ownsReceivers=true;parent.surfaceNodes=targets;parent.surface=undefined
+            for member in this.layerSets parent where member!=parent do (member.ownsReceivers=true;member.surfaceNodes=targets;member.surface=undefined)
+        )
+        parent.markInputDirty();this.bindNativeUI();CyrusViewportRedraw();true
+    )
     fn sourceVisualIndex row create:false = (
         if row<1 or row>this.sources.count or not isValidNode this.sources[row] do return 0
         local index=findItem visualSourceNodes this.sources[row]
@@ -3080,7 +3179,9 @@ initialRollupState:0x8
     fn syncLayerSurface obj targets:undefined layerBudget:undefined = (
         obj.setOverlapOwner this
         if obj.showCenters!=this.groupCenters do undo off obj.showCenters=this.groupCenters
-        if targets==undefined do targets=validSurfaces()
+        if obj.ownsReceivers then targets=obj.validSurfaces() else (
+            targets=#();for node in ((this.surfaceNodes as array)+#(this.surface)) where isValidNode node and findItem targets node==0 do append targets node
+        )
         local equal=obj.surfaceNodes.count==targets.count
         if equal do for i=1 to targets.count where obj.surfaceNodes[i]!=targets[i] do equal=false
         if not equal do undo off (obj.surfaceNodes=targets;obj.surface=undefined)
@@ -3135,6 +3236,7 @@ initialRollupState:0x8
         if layerObjects.count>=10 do throw "A scatter controller supports up to 10 layers."
         undo "Cyrus Scatter add layer" on (
             local obj=createInstance AminScatterObject
+            obj.ownsReceivers=true;obj.surfaceNodes=this.surfaceNodes as array;obj.surface=this.surface
             obj.editLayerKey=nextEditLayerKey;nextEditLayerKey+=1
             
             obj.randomSeed=42+layerObjects.count*101
@@ -3236,12 +3338,13 @@ initialRollupState:0x8
     )
     -- Native rollups: one editor per controller, bound to the selected layer.
     -- UI browsing never rebuilds a rollout or a placement cache.
-    fn brushMaskActive = (paintEnabled and paintDocument!=undefined)
+    fn brushMaskActive = (paintEnabled and (areaMode or paintDocument!=undefined))
     fn brushRelaxPaused = (false)
     fn checkPaintRevision = (
+        for area in paintAreas do (area.setOverlapOwner overlapOwner;area.checkPaintRevision())
         if paintDocument!=undefined do (
             local state=cyrusBrushStats paintDocument
-            if state[6]==0 and state[1]!=cachedPaintRevision do (cachedPaintRevision=state[1];markInputDirty())
+            if state[6]==0 and state[1]!=cachedPaintRevision do (cachedPaintRevision=state[1];markInputDirty();if isPaintArea and overlapOwner!=undefined do (overlapOwner.logicalParent this).markInputDirty())
         )
     )
     fn paintKey = (
@@ -3527,11 +3630,21 @@ initialRollupState:0x8
     )
     fn procCoverageKey = (
         local stream=stringStream ""
-        format "%:%:%:%:%|" (this.paintKey()) paintEnabled paintDensity procBackground procBackgroundIDs to:stream
+        format "%:%:%:%:%:%|" (this.paintKey()) paintEnabled paintDensity procBackground procBackgroundIDs areaMode to:stream
+        for area in paintAreas do format "Area:%:%:%:%:%|" area.layerID area.areaTarget area.paintSetEnabled area.paintDensity (area.paintKey()) to:stream
         if procBackground!=1 do for member in this.procBackgroundMembers() do format "%:%:%|" member.layerID member.paintEnabled (member.paintKey()) to:stream
         stream as string
     )
     fn procApplyPaint rows = (
+        if areaMode do (
+            if not paintEnabled or rows.count==0 do return cyrusClonePlacementRows rows
+            local docs=#(),densities=#(),targets=this.validSurfaces()
+            for area in paintAreas where area.paintSetEnabled and area.paintDocument!=undefined and findItem targets area.areaTarget>0 do (
+                if cyrusBrushTarget area.paintDocument!=area.areaTarget do throw "Paint Area target mismatch; saved paint is preserved."
+                append docs area.paintDocument;append densities area.paintDensity
+            )
+            return cyrusBrushRegionFilter rows docs densities targets paintBaseFaceCounts ("CyrusStableMask1:"+(this.effectiveSeed() as string))
+        )
         local sampling="CyrusStableMask1:"+(this.effectiveSeed() as string)
         local outside=procBackground==2 or procBackground==4,refs=if outside then this.procBackgroundMembers() else #()
         if outside and refs.count>0 then (
@@ -3817,7 +3930,7 @@ initialRollupState:0x8
         (overlapOwner.populationAllocation this countOverride:budget)[1]
     )
     fn procPrepare pool plants = (
-        if paintEnabled and paintDocument!=undefined do (
+        if not areaMode and paintEnabled and paintDocument!=undefined do (
             local targets=this.validSurfaces()
             if targets.count!=1 or (cyrusBrushTarget paintDocument)!=targets[1] do throw "Paint target differs from the shared receiver. Saved strokes are preserved."
         )
@@ -4204,12 +4317,12 @@ initialRollupState:0x8
         on flow_updateUI rolledUp state do (CyrusContainerPanel root).layoutPanels()
     )
     rollout flow_surfaceUI "Surface Scatter" width:162 category:20 autoLayoutOnResize:true (
-        local root=undefined,controlsReady=false,binding=false,receiverRows=#()
+        local root=undefined,owner=undefined,controlsReady=false,binding=false,receiverRows=#()
         multiListBox receiversList "Surfaces" items:#() pos:[8,8] width:(flow_surfaceUI.width-16) height:6
         button removeSurfaces "Remove selected surfaces" pos:[8,108] width:(flow_surfaceUI.width-16) tooltip:"Remove highlighted assignments from this setup. Scene objects are kept."
         pickbutton sharedPick "Pick receiving surface" filter:AminScatterSourceFilter pos:[8,8] width:(flow_surfaceUI.width-16) tooltip:"Add a receiving surface without replacing existing assignments."
         label sharedInfo "Choose a receiving surface." pos:[8,38] width:(flow_surfaceUI.width-16) height:32
-        button surfacesButton "Receiving surfaces..." pos:[8,76] width:(flow_surfaceUI.width-16) tooltip:"Add multiple receiving surfaces by name. Existing assignments are kept. Brush still needs one shared surface."
+        button surfacesButton "Receiving surfaces..." pos:[8,76] width:(flow_surfaceUI.width-16) tooltip:"Add multiple receiving surfaces by name. Existing assignments are kept. Choose the target for each Paint Area under Painting."
         label countInfo "Add a layer in Layer Manager." pos:[8,136] width:(flow_surfaceUI.width-16) height:42
         checkbutton containersToggle "Global source containers" pos:[8,188] width:(flow_surfaceUI.width-16) height:26 tooltip:"Optional shared source pool. Enable Global containers in a layer's Assets tab."
         listbox globalContainers "Global source containers" items:#() pos:[8,224] width:(flow_surfaceUI.width-16) height:4
@@ -4229,12 +4342,12 @@ initialRollupState:0x8
         )
         fn bind layer = (
             binding=true
-            local targets=root.validSurfaces(),selected=for i in receiversList.selection where i<=receiverRows.count collect receiverRows[i]
+            local targets=if owner==undefined then #() else owner.validSurfaces(),selected=for i in receiversList.selection where i<=receiverRows.count collect receiverRows[i]
             receiverRows=targets
             receiversList.items=for node in receiverRows collect node.name
             receiversList.selection=for node in selected where findItem receiverRows node>0 collect findItem receiverRows node
             removeSurfaces.enabled=receiversList.selection.numberSet>0
-            sharedInfo.text=if targets.count==1 then targets[1].name else (targets.count as string)+" surfaces; paint needs one"
+            sharedInfo.text=if targets.count==1 then targets[1].name else (targets.count as string)+" surfaces in this layer"
             globalContainers.items=for node in root.containerGlobalNodes collect (if isValidNode node then node.name else "<deleted rectangle>")
             for control in #(globalContainers,createContainer,pickContainer,removeContainer) do control.enabled=true
             controlsReady=true;binding=false;refreshStats();arrangeContainers()
@@ -4242,13 +4355,13 @@ initialRollupState:0x8
         fn setSurfaces nodes = (
             local controller=root,uniqueNodes=#()
             for node in nodes where isValidNode node and findItem uniqueNodes node==0 do append uniqueNodes node
-            local previous=controller.validSurfaces(),same=previous.count==uniqueNodes.count
+            if owner==undefined do return false
+            local previous=owner.validSurfaces(),same=previous.count==uniqueNodes.count
             if same do for i=1 to previous.count where previous[i]!=uniqueNodes[i] do same=false
             if same do return false
-            CyrusStopBrush();undo "Cyrus receiving surfaces" on (controller.surfaceNodes=uniqueNodes;controller.surface=undefined)
-            controller.invalidateGroups();controller.bindNativeUI();true
+            controller.setLayerSurfaces owner uniqueNodes
         )
-        fn addSurfaces nodes = (local combined=root.validSurfaces();for node in nodes where findItem combined node==0 do append combined node;setSurfaces combined)
+        fn addSurfaces nodes = (if owner==undefined do return false;local combined=owner.validSurfaces();for node in nodes where findItem combined node==0 do append combined node;setSurfaces combined)
         fn removeSelectedSurfaces = (
             local selectedRows=receiversList.selection,remaining=#()
             for i=1 to receiverRows.count do if not selectedRows[i] do append remaining receiverRows[i]
@@ -4419,48 +4532,57 @@ initialRollupState:0x8
     )
 
 
-    rollout selected_setsUI "Paint sets" width:#cmdPanel category:50 autoLayoutOnResize:true (
-        local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,members=#()
-        dropdownlist setList "Edit set" items:#() pos:[4,8] width:(selected_setsUI.width-8)
-        button addButton "Add set" pos:[4,60] width:((selected_setsUI.width-12)/2) tooltip:"Add another paint set sharing this layer's population and defaults."
-        button removeButton "Remove" pos:[(selected_setsUI.width/2+2),60] width:((selected_setsUI.width-12)/2) tooltip:"Remove this paint set and its settings. The base set cannot be removed separately."
-        edittext nameEdit "Name:" pos:[4,90] width:(selected_setsUI.width-8) tooltip:"Rename this paint set without changing its identity."
-        spinner weightSpin "Share weight:" pos:[4,120] width:(selected_setsUI.width-8) fieldWidth:82 range:[0,10000,1] tooltip:"Relative share of the layer population among enabled paint sets."
-        checkbox enabledCheck "Enable set" pos:[4,148] width:(selected_setsUI.width-8) tooltip:"Include this set in calculation and final output."
-        checkbox visibleCheck "Show set" pos:[4,172] width:(selected_setsUI.width-8) tooltip:"Viewport visibility only. Hidden sets still calculate and affect spacing."
-        button upButton "Move up" pos:[4,200] width:((selected_setsUI.width-12)/2) tooltip:"Evaluate this set earlier. Earlier sets occupy space first."
-        button downButton "Move down" pos:[(selected_setsUI.width/2+2),200] width:((selected_setsUI.width-12)/2) tooltip:"Evaluate this set later, after the preceding sets."
-        label info "Sources, Brush and set rules edit this set. Population, transforms and cleanup belong to the layer." pos:[4,232] width:(selected_setsUI.width-8) height:76
-        fn currentSet = (root.selectedPaintSet owner)
+    rollout selected_setsUI "Paint Areas" width:#cmdPanel category:50 autoLayoutOnResize:true (
+        local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,members=#(),targets=#()
+        checkbox paintedCheck "Use Paint Areas" pos:[4,8] width:(selected_setsUI.width-8) tooltip:"Restrict this layer to its painted areas. Turn off to scatter across all its surfaces."
+        button importButton "Use existing paint" pos:[4,30] width:(selected_setsUI.width-8) tooltip:"Bring this older layer's existing coverage into a named area without changing its paint. Undo restores the old ownership."
+        dropdownlist setList "Paint Area" items:#() pos:[4,36] width:(selected_setsUI.width-8)
+        button addButton "+" pos:[4,86] width:60 tooltip:"Create a named area. Painting again edits the selected area."
+        button removeButton "Remove" pos:[68,86] width:60 tooltip:"Remove the selected area. Undo restores it."
+        edittext nameEdit "Name:" pos:[4,116] width:(selected_setsUI.width-8)
+        dropdownlist targetList "Surface" items:#() pos:[4,144] width:(selected_setsUI.width-8) tooltip:"Explicit target within this layer. An area with saved paint cannot be silently retargeted."
+        checkbox enabledCheck "Enable area" pos:[4,198] width:(selected_setsUI.width-8)
+        label info "Areas use the layer's models. Overlaps combine coverage." pos:[4,226] width:(selected_setsUI.width-8) height:58
+        fn currentSet = (root.selectedPaintArea owner)
         fn bind layer = (
-            binding=true;members=root.layerSets owner
-            local leaf=currentSet()
-            CyrusRetainListItems setList (for member in members collect member.paintSetName)
-            setList.selection=findItem members leaf
-            nameEdit.text=leaf.paintSetName;weightSpin.value=leaf.paintSetWeight
-            enabledCheck.checked=leaf.paintSetEnabled;visibleCheck.checked=leaf.paintSetVisible
-            removeButton.enabled=leaf!=owner;addButton.enabled=true and root.layerObjects.count<10
-            upButton.enabled=true and findItem members leaf>1;downButton.enabled=true and findItem members leaf<members.count
+            binding=true;members=owner.paintAreas as array;targets=owner.validSurfaces()
+            local area=currentSet()
+            paintedCheck.checked=owner.paintEnabled
+            setList.items=for item in members collect (item.paintSetName+(if findItem targets item.areaTarget==0 then " (inactive)" else ""))
+            setList.selection=findItem members area
+            targetList.items=for node in targets collect node.name
+            for control in #(removeButton,nameEdit,targetList,enabledCheck) do control.enabled=area!=undefined
+            nameEdit.text=if area==undefined then "" else area.paintSetName
+            targetList.selection=if area==undefined then 0 else findItem targets area.areaTarget
+            enabledCheck.checked=area!=undefined and area.paintSetEnabled
+            importButton.enabled=owner.paintDocument!=undefined and not owner.areaMode and (root.layerSets owner).count==1
+            addButton.enabled=members.count<128 and (root.layerSets owner).count==1
+            info.text=if (root.layerSets owner).count>1 then "Older model-owning sets are retained. Conversion is required before adding areas." else if area!=undefined and findItem targets area.areaTarget==0 then "Inactive: assign a surface, or restore this area's original surface to the layer. Saved paint is retained." else "Paint and Erase edit this area. Areas share the layer's models; overlaps do not duplicate plants."
             controlsReady=true;binding=false
         )
-        on selected_setsUI open do (root=this;controlsReady=false)
-        on selected_setsUI close do controlsReady=false
         fn selectSet i = (
-            if binding or i<1 or i>members.count or (currentSet())==members[i] do return false
-            CyrusStopBrush();owner.uiPaintSetID=members[i].layerID;panel.bindEditors();true
+            if binding or i<1 or i>members.count do return false
+            local controller=root,parent=owner
+            CyrusStopBrush();parent.uiAreaID=members[i].layerID;controller.bindNativeUI();true
+        )
+        on importButton pressed do (
+            local controller=root,parent=owner
+            undo "Cyrus use existing paint" on controller.adoptPaintArea parent
+            parent.markInputDirty();controller.bindNativeUI();CyrusViewportRedraw()
         )
         on setList selected i do selectSet i
-        -- These model operations already refresh the native and popup views.
-        -- They can close/rebind this rollout; do not read its locals afterwards.
-        on addButton pressed do try(root.addPaintSet owner label:("Paint "+(((root.layerSets owner).count+1) as string)))catch(messageBox (getCurrentException()) title:"Cyrus paint set")
-        on removeButton pressed do try(root.removePaintSet (currentSet()))catch(messageBox (getCurrentException()) title:"Cyrus paint set")
-        on nameEdit entered value do if not binding and value!="" do (undo "Cyrus set name" on (currentSet()).paintSetName=value;panel.bindEditors())
-        on weightSpin changed value do if not binding do (undo "Cyrus set weight" on (currentSet()).paintSetWeight=value;root.invalidateGroups())
-        on enabledCheck changed value do if not binding do (undo "Cyrus set enabled" on (currentSet()).paintSetEnabled=value;root.invalidateGroups())
-        on visibleCheck changed value do if not binding do (undo "Cyrus set visible" on (currentSet()).paintSetVisible=value;root.procSyncEditVisibility();CyrusViewportRedraw())
-        on upButton pressed do try(root.procMove (currentSet()) -1 sets:true)catch(messageBox (getCurrentException()) title:"Cyrus order")
-        on downButton pressed do try(root.procMove (currentSet()) 1 sets:true)catch(messageBox (getCurrentException()) title:"Cyrus order")
-        on selected_setsUI rolledUp state do (CyrusContainerPanel root).bindSection selected_setsUI
+        on addButton pressed do try(root.addPaintArea owner)catch(messageBox (getCurrentException()) title:"Cyrus Paint Area")
+        on removeButton pressed do try(root.removePaintArea owner (currentSet()))catch(messageBox (getCurrentException()) title:"Cyrus Paint Area")
+        on nameEdit entered value do if not binding and value!="" and currentSet()!=undefined do (undo "Cyrus area name" on (currentSet()).paintSetName=value;root.bindNativeUI())
+        on paintedCheck changed value do if not binding do (
+            local controller=root,parent=owner
+            CyrusStopBrush();undo "Cyrus coverage mode" on (controller.adoptPaintArea parent;parent.areaMode=true;parent.paintEnabled=value)
+            parent.markInputDirty();controller.bindNativeUI();CyrusViewportRedraw()
+        )
+        on enabledCheck changed value do if not binding and currentSet()!=undefined do (undo "Cyrus area enabled" on (currentSet()).paintSetEnabled=value;owner.markInputDirty();CyrusViewportRedraw())
+        on targetList selected i do if not binding and i>0 do try(root.setPaintAreaTarget owner (currentSet()) targets[i])catch(messageBox (getCurrentException()) title:"Cyrus Paint Area";root.bindNativeUI())
+        on selected_setsUI open do (root=this;controlsReady=false)
+        on selected_setsUI close do controlsReady=false
     )
 
     rollout selected_sourceUI "Models and settings - paint set" width:#cmdPanel category:60 autoLayoutOnResize:true (
@@ -4909,53 +5031,29 @@ initialRollupState:0x8
         on selected_areaUI close do controlsReady=false
         on selected_areaUI rolledUp state do (CyrusContainerPanel root).bindSection selected_areaUI
     )
-    rollout selected_brushUI "Brush coverage and strokes - paint set" width:#cmdPanel category:110 autoLayoutOnResize:true (
-        local root=undefined,owner=undefined,panel=undefined
-        local setSpecific=true
-        local obj=undefined,controlsReady=false,binding=false,history=#()
-        label activeInfo "Select a plant group." pos:[4,8] width:(selected_brushUI.width-8) height:32
-        dropdownlist coverageMode "Coverage" items:#("Whole shared surface","Painted area") pos:[4,44] width:(selected_brushUI.width-8) tooltip:"Use the whole receiver or this paint set's saved painted coverage."
-        label targetInfo "Receiving surface comes from the setup." pos:[4,94] width:(selected_brushUI.width-8) height:32
-        radiobuttons modeRadio "Next stroke" labels:#("Paint","Erase") columns:2 pos:[4,130] width:(selected_brushUI.width-8)
-        spinner radiusSpin "Radius:" type:#worldunits range:[0.0001,1e9,20] fieldWidth:82 pos:[4,184] width:(selected_brushUI.width-8) tooltip:"World-space radius of the next Brush stroke on the receiving surface."
-        spinner strengthSpin "Strength %:" range:[0,100,100] fieldWidth:82 pos:[4,212] width:(selected_brushUI.width-8) tooltip:"Amount of coverage painted or erased by the next stroke."
-        spinner softSpin "Softness %:" range:[0,100,50] fieldWidth:82 pos:[4,240] width:(selected_brushUI.width-8) tooltip:"Softness of the next stroke's edge."
-        spinner densitySpin "Mask %:" range:[0,100,100] fieldWidth:82 pos:[4,268] width:(selected_brushUI.width-8) tooltip:"Thin plants allowed by the saved mask. Set absolute population on Population."
-        button beginButton "Start Brush" pos:[4,300] width:((selected_brushUI.width-12)/2) tooltip:"Paint this set on the shared surface. Creates an empty mask when needed."
-        button stopButton "Stop" pos:[(selected_brushUI.width/2+2),300] width:((selected_brushUI.width-12)/2) tooltip:"Finish painting and retain the editable stroke history."
-        button fillButton "Fill" pos:[4,332] width:((selected_brushUI.width-12)/2) tooltip:"Fill coverage and reset stroke history. Undo restores the previous field."
-        button emptyButton "Empty" pos:[(selected_brushUI.width/2+2),332] width:((selected_brushUI.width-12)/2) tooltip:"Empty coverage and reset stroke history. Undo restores the previous field."
-        label brushState "Select a group and receiving surface." pos:[4,366] width:(selected_brushUI.width-8) height:66
-        dropdownlist overlayMode "Paint feedback" items:#("Coverage tint","Coverage samples","Off") pos:[4,470] width:(selected_brushUI.width-8) tooltip:"Coverage feedback only; it does not show which plants survive spacing."
-        colorpicker overlayColor "Color:" pos:[4,524] width:(selected_brushUI.width-8) tooltip:"Viewport color for this paint set's coverage feedback."
-        listbox strokeList "Group stroke history" items:#() pos:[4,556] width:(selected_brushUI.width-8) height:5
-        checkbox strokeEnabled "Enabled" pos:[4,672] width:((selected_brushUI.width-12)/2) tooltip:"Enable or disable the highlighted saved stroke without deleting it."
-        checkbox strokeErase "Erase" pos:[(selected_brushUI.width/2+2),672] width:((selected_brushUI.width-12)/2) tooltip:"Change the highlighted saved stroke between paint and erase."
-        spinner strokeRadius "Radius:" type:#worldunits range:[0.0001,1e9,20] fieldWidth:82 pos:[4,700] width:(selected_brushUI.width-8) tooltip:"Change the radius of the highlighted saved stroke."
-        spinner strokeStrength "Strength %:" range:[0,100,100] fieldWidth:82 pos:[4,728] width:(selected_brushUI.width-8) tooltip:"Change the strength of the highlighted saved stroke."
-        spinner strokeSoft "Softness %:" range:[0,100,50] fieldWidth:82 pos:[4,756] width:(selected_brushUI.width-8) tooltip:"Change the edge softness of the highlighted saved stroke."
-        button deleteStroke "Delete selected stroke" pos:[4,788] width:(selected_brushUI.width-8) tooltip:"Delete the highlighted stroke. Undo restores it."
-        button resetTarget "Reset coverage target..." pos:[4,820] width:(selected_brushUI.width-8) tooltip:"Confirm before replacing this set's paint with an empty mask on the current receiver."
-        label brushHelp "One centre = one plant.\nTint shows painted coverage.\nManual mode needs Update." pos:[4,852] width:(selected_brushUI.width-8) height:54
-        fn showStroke = (
-            binding=true
-            local i=strokeList.selection,valid=i>0 and i<=history.count
-            for c in #(strokeEnabled,strokeErase,strokeRadius,strokeStrength,strokeSoft,deleteStroke) do c.enabled=valid
-            if valid do (local row=history[i];strokeEnabled.checked=row[1];strokeErase.checked=row[2];strokeRadius.value=row[3];strokeStrength.value=row[4]*100;strokeSoft.value=row[5]*100)
-            binding=false
-        )
-        fn refreshHistory = (
-            binding=true
-            local chosen=strokeList.selection
-            history=if obj!=undefined and obj.paintDocument!=undefined then cyrusBrushHistory obj.paintDocument else #()
-            strokeList.items=for i=1 to history.count collect ((i as string)+" | "+(if history[i][2] then "Erase" else "Paint")+(if history[i][1] then "" else " (off)")+" | "+(history[i][6] as string)+" samples")
-            strokeList.selection=amin chosen history.count;binding=false;showStroke()
-        )
-        fn editStroke = (
-            local i=strokeList.selection
-            if binding or i<1 or i>history.count do return false
-            cyrusBrushStroke obj.paintDocument i strokeEnabled.checked (strokeStrength.value/100.0) strokeRadius.value (strokeSoft.value/100.0) strokeErase.checked
-            obj.publishPaint();refreshHistory()
+    rollout selected_brushUI "Painting" width:#cmdPanel category:110 autoLayoutOnResize:true (
+        local root=undefined,owner=undefined,panel=undefined,obj=undefined,controlsReady=false,binding=false,setSpecific=true
+        label targetInfo "Add a Paint Area to begin." pos:[4,8] width:(selected_brushUI.width-8) height:36
+        radiobuttons modeRadio "Brush" labels:#("Paint","Erase") columns:2 pos:[4,48] width:(selected_brushUI.width-8)
+        spinner radiusSpin "Radius:" type:#worldunits range:[0.0001,1e9,20] pos:[4,94] width:(selected_brushUI.width-8) fieldWidth:82
+        spinner strengthSpin "Strength %:" range:[0,100,100] pos:[4,122] width:(selected_brushUI.width-8) fieldWidth:82
+        spinner softSpin "Softness %:" range:[0,100,0] pos:[4,150] width:(selected_brushUI.width-8) fieldWidth:82
+        button beginButton "Start Brush" pos:[4,178] width:80
+        button stopButton "Stop" pos:[88,178] width:80
+        button fillButton "Fill" pos:[4,208] width:80
+        button emptyButton "Clear" pos:[88,208] width:80
+        label brushState "" pos:[4,238] width:(selected_brushUI.width-8) height:54
+        spinner densitySpin "Area density %:" range:[0,100,100] pos:[4,298] width:(selected_brushUI.width-8) fieldWidth:82
+        dropdownlist overlayMode "Paint feedback" items:#("Coverage tint","Coverage samples","Off") pos:[4,326] width:(selected_brushUI.width-8)
+        colorpicker overlayColor "" color:(color 100 220 120) pos:[4,380] width:(selected_brushUI.width-8)
+        label brushHelp "Continue painting to edit the same area. Undo/Redo restores brush actions. Manual mode needs Update." pos:[4,412] width:(selected_brushUI.width-8) height:56
+        fn refreshHistory = (true)
+        fn status = (
+            if obj==undefined then brushState.text="Add or select a Paint Area." else (
+                local state=if obj.paintDocument==undefined then undefined else cyrusBrushStats obj.paintDocument
+                brushState.text=if state==undefined then "Choose this area's surface." else (if state[5]==1 then "Brush active" else "Brush stopped")+(if state[11]!="" then "\n"+state[11] else "")
+                if owner!=undefined and not owner.paintEnabled do brushState.text+="\nWhole surfaces; areas retained."
+            )
         )
         fn saveOptions = (
             if not binding and obj!=undefined and obj.paintDocument!=undefined do (
@@ -4963,72 +5061,37 @@ initialRollupState:0x8
                 cyrusBrushDisplay obj.paintDocument obj.paintView obj.paintColor
             )
         )
-        fn status = (
-            if obj==undefined do return false
-            if obj.paintDocument==undefined then brushState.text="Start Brush creates an empty mask\non the shared receiving surface." else (
-                local state=cyrusBrushStats obj.paintDocument
-                local message=(if state[5]==1 then "Brush active" else "Brush stopped")+" | "+(CyrusUICount state[2])+" strokes"
-                if not obj.paintEnabled do message+="\nWhole surface; strokes retained."
-                if state[11]!="" do message+="\n"+state[11]
-                if obj.updateMode==1 and obj.dirty do message+="\nChanges pending; plants need Update."
-                if state.count>=18 and state[18]>0 do message+="\nCoverage preview uses bounded detail."
-                if brushState.text!=message do brushState.text=message
-            )
-        )
-        fn bindFeatures layer = (
+        fn bind layer = (
             binding=true;obj=layer
-            for c in selected_brushUI.controls do c.enabled=layer!=undefined
-            local has=layer!=undefined and layer.paintDocument!=undefined
-            for c in #(fillButton,emptyButton,stopButton) do c.enabled=has
-            activeInfo.text=if layer==undefined then "Select a plant group." else "Painting: "+(root.setCaption layer)
-            local targets=root.validSurfaces()
-            targetInfo.text=if has then "Mask surface: "+(if isValidNode (cyrusBrushTarget layer.paintDocument) then (cyrusBrushTarget layer.paintDocument).name else "<missing>") else (if targets.count==1 then "Shared surface: "+targets[1].name else "Pick one shared surface above.")
-            if layer!=undefined do (
-                coverageMode.selection=if layer.paintEnabled then 2 else 1
-                densitySpin.value=layer.paintDensity*100;overlayMode.selection=findItem #(2,1,0) layer.paintView;overlayColor.color=layer.paintColor
-            )
-            if has do (local cfg=cyrusBrushOptions layer.paintDocument;radiusSpin.value=cfg[1];strengthSpin.value=cfg[2]*100;softSpin.value=cfg[3]*100;modeRadio.state=if cfg[5] then 2 else 1)
-            controlsReady=true;binding=false;refreshHistory();status()
+            local has=obj!=undefined and obj.paintDocument!=undefined
+            for control in selected_brushUI.controls do control.enabled=obj!=undefined
+            for control in #(stopButton,fillButton,emptyButton) do control.enabled=has
+            local target=if obj==undefined then undefined else obj.areaTarget
+            targetInfo.text=if obj==undefined then "Add a Paint Area to begin." else obj.paintSetName+" / "+(if isValidNode target then target.name else "<choose surface>")
+            beginButton.enabled=obj!=undefined and isValidNode target and findItem (owner.validSurfaces()) target>0
+            if obj!=undefined do (densitySpin.value=obj.paintDensity*100;overlayMode.selection=findItem #(2,1,0) obj.paintView;overlayColor.color=obj.paintColor;obj.setOverlapOwner root)
+            if has do (local cfg=cyrusBrushOptions obj.paintDocument;radiusSpin.value=cfg[1];strengthSpin.value=cfg[2]*100;softSpin.value=cfg[3]*100;modeRadio.state=if cfg[5] then 2 else 1)
+            controlsReady=true;binding=false;status()
         )
-        checkbutton detailsToggle "Paint feedback and editable stroke history" pos:[4,436] width:(selected_brushUI.width-8) height:26 tooltip:"Show or hide these advanced controls; their saved settings are preserved."
-        fn arrangeDetails = (
-            for c in #(overlayMode,overlayColor,strokeList,strokeEnabled,strokeErase,strokeRadius,strokeStrength,strokeSoft,deleteStroke,resetTarget,brushHelp) do c.visible=detailsToggle.checked
-            selected_brushUI.height=if detailsToggle.checked then 914 else 470
-        )
-        fn bind layer = (bindFeatures layer;arrangeDetails())
-        on detailsToggle changed value do arrangeDetails()
-        on selected_brushUI open do (root=this;controlsReady=false)
-        on selected_brushUI close do (controlsReady=false;CyrusStopBrush())
-        on coverageMode selected i do if not binding and obj!=undefined do try(root.setGroupCoverage obj (i==2))catch(messageBox (getCurrentException()) title:"Cyrus coverage";bind obj)
-        on beginButton pressed do if obj!=undefined do (
-            try (
-                local options=#(radiusSpin.value,strengthSpin.value,softSpin.value,modeRadio.state)
-                root.setGroupCoverage obj true
-                radiusSpin.value=options[1];strengthSpin.value=options[2];softSpin.value=options[3];modeRadio.state=options[4]
-                saveOptions();CyrusStartBrush root obj;status()
-            ) catch(messageBox (getCurrentException()) title:"Cyrus Brush")
-        )
-        on stopButton pressed do (CyrusStopBrush();refreshHistory();status())
+        on beginButton pressed do if obj!=undefined do try (
+            local controller=root,area=obj,options=#(radiusSpin.value,strengthSpin.value,softSpin.value,modeRadio.state)
+            controller.setGroupCoverage area true
+            cyrusBrushSettings area.paintDocument options[1] (options[2]/100.0) (options[3]/100.0) (options[4]==2) 1.0
+            cyrusBrushDisplay area.paintDocument area.paintView area.paintColor
+            CyrusStartBrush controller area
+        )catch(messageBox (getCurrentException()) title:"Cyrus Brush")
+        on stopButton pressed do (CyrusStopBrush();status())
         on modeRadio changed value do saveOptions()
         on radiusSpin changed value do saveOptions()
         on strengthSpin changed value do saveOptions()
         on softSpin changed value do saveOptions()
-        on densitySpin changed value do if not binding and obj!=undefined do (undo "Cyrus painted density" on obj.paintDensity=value/100.0;obj.publishPaint())
-        on overlayMode selected value do if not binding and obj!=undefined do (undo "Cyrus coverage display" on obj.paintView=(#(2,1,0))[value];saveOptions();redrawViews())
-        on overlayColor changed value do if not binding and obj!=undefined do (undo "Cyrus coverage color" on obj.paintColor=value;saveOptions();redrawViews())
-        on fillButton pressed do (cyrusBrushFill obj.paintDocument 1.0;obj.publishPaint();refreshHistory();status())
-        on emptyButton pressed do (cyrusBrushFill obj.paintDocument 0.0;obj.publishPaint();refreshHistory();status())
-        on strokeList selected value do showStroke()
-        on strokeEnabled changed value do editStroke()
-        on strokeErase changed value do editStroke()
-        on strokeRadius changed value do editStroke()
-        on strokeStrength changed value do editStroke()
-        on strokeSoft changed value do editStroke()
-        on deleteStroke pressed do if strokeList.selection>0 do (cyrusBrushDeleteStroke obj.paintDocument strokeList.selection;obj.publishPaint();refreshHistory();status())
-        on resetTarget pressed do if obj!=undefined do (
-            if queryBox "Replace this paint set's saved paint with an empty mask on the shared surface? Undo restores the previous document." title:"Cyrus reset coverage" do try(root.setGroupCoverage obj true reset:true)catch(messageBox (getCurrentException()) title:"Cyrus coverage")
-        )
-        on selected_brushUI rolledUp state do (CyrusContainerPanel root).bindSection selected_brushUI
+        on densitySpin changed value do if not binding and obj!=undefined do (undo "Cyrus area density" on obj.paintDensity=value/100.0;owner.markInputDirty();obj.publishPaint())
+        on overlayMode selected value do if not binding and obj!=undefined do (undo "Cyrus paint feedback" on obj.paintView=(#(2,1,0))[value];saveOptions();redrawViews())
+        on overlayColor changed value do if not binding and obj!=undefined do (undo "Cyrus paint color" on obj.paintColor=value;saveOptions();redrawViews())
+        on fillButton pressed do if obj!=undefined and obj.paintDocument!=undefined do (cyrusBrushFill obj.paintDocument 1.0;obj.publishPaint();status())
+        on emptyButton pressed do if obj!=undefined and obj.paintDocument!=undefined do (cyrusBrushFill obj.paintDocument 0.0;obj.publishPaint();status())
+        on selected_brushUI open do (root=this;controlsReady=false)
+        on selected_brushUI close do (controlsReady=false;CyrusStopBrush())
     )
 
     rollout selected_backgroundUI "Background fill - paint set" width:#cmdPanel category:120 autoLayoutOnResize:true (

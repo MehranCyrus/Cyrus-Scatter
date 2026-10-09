@@ -66,6 +66,13 @@ def port_rows(inventory):
         **{f'layer/separationUI/{name}':[f'layer/spacingUI/{name}'] for name in
            ('boundaryRelaxCheck','finalStrengthSpin','finalIterSpin','finalMoveSpin')},
     }
+    # Retired artist-facing history and old set-specific background controls.
+    replacements.update({f'layer/brushUI/{name}': [] for name in
+        ('strokeList','strokeEnabled','strokeErase','strokeRadius','strokeStrength','strokeSoft','deleteStroke','resetTarget','detailsToggle','coverageMode')})
+    replacements.update({f'layer/backgroundUI/{name}': [] for name in
+        ('backgroundList','referenceList','applyBackground')})
+    replacements.update({f'layer/setsUI/{name}': [] for name in ('weightSpin','visibleCheck','upButton','downButton')})
+    replacements['layer/brushUI/coverageMode']=['layer/setsUI/paintedCheck']
     result=[]
     for row in baseline:
         key=row['control_key']
@@ -99,7 +106,7 @@ def main():
         assert re.search(r'fn '+name+r'\b',text),name
     inventory=json.loads(products[1].read_text())
     current=controls(inventory)
-    assert len(current)==246
+    assert len(current)==232
     layout=json.loads((ROOT/'AminScatter/tools/ui/approved-layout-manifest.json').read_text())
     assert len(layout['sections'])==10
     for section in layout['sections']:

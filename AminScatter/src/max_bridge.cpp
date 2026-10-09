@@ -451,6 +451,24 @@ Value* aminScatterValidArea_cf(Value** args,int count) {
 }
 
 def_visible_primitive(aminScatterSurfaceArea, "aminScatterSurfaceArea");
+// The sampler concatenates every receiver's triangles in this same order.
+// Coverage uses these offsets to resolve a combined anchor to its receiver.
+def_visible_primitive(cyrusReceiverFaceCounts, "cyrusReceiverFaceCounts");
+Value* cyrusReceiverFaceCounts_cf(Value** args,int count) {
+    check_arg_count(cyrusReceiverFaceCounts,1,count);
+    type_check(args[0],Array,_T("receiver nodes"));
+    auto* nodes=static_cast<Array*>(args[0]);
+    one_typed_value_local(Array* result);vl.result=new Array(nodes->size);
+    std::vector<INode*> seen;
+    for(int i=0;i<nodes->size;++i){
+        auto* node=nodes->data[i]->to_node();
+        if(!node||std::find(seen.begin(),seen.end(),node)!=seen.end())throw RuntimeError(_T("Coverage receivers must be valid and unique"));
+        seen.push_back(node);
+        try{vl.result->append(Integer::intern(int(meshOf(node,true).size())));}
+        catch(const std::exception&){throw RuntimeError(_T("Cannot prepare receiver face offsets"));}
+    }
+    return_value(vl.result);
+}
 Value* aminScatterSurfaceArea_cf(Value** args,int count) {
     check_arg_count(aminScatterSurfaceArea,1,count);
     double area=0;

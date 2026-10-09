@@ -105,5 +105,25 @@ int main(int argc,char** argv){
     }
     require(stats.triangles<600*grid.faces.size()/10,"Ray index did not reduce triangle checks");
     for(std::uint64_t i=0;i<10000;++i){require(threshold(42,i)>=0&&threshold(42,i)<1,"Threshold range");require(!accepted(42,i,.25)||accepted(42,i,.75),"Mask nesting failed");require(!accepted(42,i,0)&&accepted(42,i,1),"Empty/full membership failed");}
+    // Repeated opaque paint must not replay every old dab at a covered point.
+    Stroke solid;solid.radius=2;solid.softness=0;solid.strength=1;solid.samples={sample};
+    Document repeated{surface.fingerprint(),std::vector<Stroke>(1000,solid)};
+    Field repeatedField(surface,repeated);QueryStats covered;
+    require(repeatedField.evaluate(sample.anchor,&covered)==1,"Opaque repeated paint lost coverage");
+    require(covered.dabs==1,"Covered point replayed redundant history");
+    QueryStats outside;
+    require(repeatedField.evaluate(at(surface,{5,0,0}),&outside)==0&&outside.dabs==0,"Outside coverage replayed history");
+    repeated.strokes.back().erase=true;Field erasedField(surface,repeated);QueryStats removed;
+    require(erasedField.evaluate(sample.anchor,&removed)==0&&removed.dabs==1,"Opaque erase replayed old paint");
+    // Mixed opacity/order must retain old saved documents' exact semantics.
+    for(unsigned i=0;i<100;++i){
+        repeated.strokes.resize(1+i%31);repeated.base=(i%3)*.5;
+        for(unsigned j=0;j<repeated.strokes.size();++j){auto& edit=repeated.strokes[j];edit=solid;edit.strength=((i+j*7)%11)/10.;edit.erase=(j%3)==0;edit.softness=.6;edit.enabled=(j%5)!=0;}
+        Field mixed(surface,repeated);
+        for(auto x:{0.,.8,1.3,1.9,2.1}){auto anchor=at(surface,{x,0,0});require(close(mixed.evaluate(anchor),mixed.evaluateReference(anchor)),"Reverse composition changed opacity/erase order");}
+    }
+    solid.samples[0].basis={{{2,.7,0},{.2,1,0},{0,0,-1}}};
+    Field sheared(surface,{surface.fingerprint(),{solid}});
+    for(int y=-8;y<=8;++y)for(int x=-8;x<=8;++x){auto anchor=at(surface,{x*.5,y*.5,0});require(close(sheared.evaluate(anchor),sheared.evaluateReference(anchor)),"Footprint bounds lost sheared/reflected coverage");}
     std::cout<<"PASS "<<checks<<" Brush checks: surface picking, footprint, opacity, erase, replay, identity, persistence and validation\n";
 }

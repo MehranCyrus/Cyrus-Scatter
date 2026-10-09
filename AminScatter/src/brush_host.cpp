@@ -472,6 +472,53 @@ Value* cyrusBrushCompositeFilter_cf(Value** a,int n){check_arg_count(cyrusBrushC
     for(std::size_t d=0;d<docs.size();++d)if(docs[d]){docs[d]->queries+=stats[d].fieldQueries;++docs[d]->maskApplications;}
     return_value(vl.result);
 });}
+// Union targeted regions against one layer population. A candidate is admitted
+// once, using its receiver-local face, even when regions overlap or receivers
+// occupy the same world-space position.
+def_visible_primitive(cyrusBrushRegionFilter,"cyrusBrushRegionFilter");
+Value* cyrusBrushRegionFilter_cf(Value** a,int n){check_arg_count(cyrusBrushRegionFilter,6,n);return api([&]()->Value*{
+    for(int i=0;i<5;++i)type_check(a[i],Array,_T("region coverage array"));
+    auto* rows=static_cast<Array*>(a[0]);auto* documents=static_cast<Array*>(a[1]);auto* densities=static_cast<Array*>(a[2]);
+    auto* receivers=static_cast<Array*>(a[3]);auto* counts=static_cast<Array*>(a[4]);
+    if(documents->size>128||documents->size!=densities->size||receivers->size!=counts->size||receivers->size>128)throw std::runtime_error("Invalid bounded region coverage inputs");
+    std::vector<INode*> nodes;std::vector<std::uint64_t> ends;std::uint64_t total=0;
+    for(int i=0;i<receivers->size;++i){
+        auto* node=receivers->data[i]->to_node();const int faces=counts->data[i]->to_int();
+        if(!node||faces<0||std::find(nodes.begin(),nodes.end(),node)!=nodes.end())throw std::runtime_error("Invalid coverage receiver");
+        nodes.push_back(node);total+=std::uint64_t(faces);ends.push_back(total);
+    }
+    struct Region{PaintDocument* doc;const b::Field* field;std::size_t receiver;double density;b::QueryStats stats;};
+    std::vector<Region> regions;
+    for(int i=0;i<documents->size;++i){
+        auto* p=doc(documents->data[i]);const double density=densities->data[i]->to_float();
+        if(!std::isfinite(density)||density<0||density>1)throw std::runtime_error("Invalid region density");
+        auto found=std::find(nodes.begin(),nodes.end(),p->target);
+        if(found==nodes.end())continue; // Removed targets retain their authored documents.
+        if(p->gesture)throw std::runtime_error("Finish painting before evaluating");
+        p->ensureSurface();const auto receiver=std::size_t(found-nodes.begin());
+        if(p->surface->mesh().faces.size()!=std::size_t(counts->data[receiver]->to_int()))throw std::runtime_error("Region receiver topology differs from candidate anchors");
+        regions.push_back({p,&p->fieldForRevision(),receiver,density,{}});
+    }
+    std::uint64_t population=1469598103934665603ULL;const std::wstring identity=a[5]->to_string();
+    for(auto c:identity){population^=static_cast<std::uint16_t>(c);population*=1099511628211ULL;}
+    two_typed_value_locals(Array* result,Array* copy);vl.result=new Array(rows->size);
+    for(int i=0;i<rows->size;++i){
+        type_check(rows->data[i],Array,_T("keyed placement"));auto* row=static_cast<Array*>(rows->data[i]);
+        if(row->size!=5)throw std::runtime_error("Region coverage requires surface anchors");
+        const int face=row->data[3]->to_int()-1;const auto bary=vec(row->data[4]->to_point3());
+        if(face<0||std::uint64_t(face)>=total||!std::isfinite(bary.x)||!std::isfinite(bary.y)||!std::isfinite(bary.z)||std::abs(bary.x+bary.y+bary.z-1)>1e-3||std::min({bary.x,bary.y,bary.z})<-1e-4||std::max({bary.x,bary.y,bary.z})>1.0001)throw std::runtime_error("Region anchor requires projected movement");
+        const auto receiver=std::size_t(std::upper_bound(ends.begin(),ends.end(),std::uint64_t(face))-ends.begin());
+        const auto localFace=unsigned(std::uint64_t(face)-(receiver?ends[receiver-1]:0));double weight=0;
+        for(auto& region:regions)if(region.receiver==receiver)weight=std::max(weight,region.field->evaluate({localFace,bary},&region.stats)*region.density);
+        if(b::accepted(population,std::uint64_t(row->data[2]->to_int64()),weight,1)){
+            vl.copy=new Array(row->size);vl.result->append(vl.copy);vl.copy->append(new Matrix3Value(row->data[0]->to_matrix3()));
+            for(int k=1;k<row->size;++k)vl.copy->append(row->data[k]);
+        }
+    }
+    for(auto& region:regions){region.doc->queries+=region.stats.fieldQueries;++region.doc->maskApplications;}
+    return_value(vl.result);
+});}
+
 Value* cyrusClonePlacementRows_cf(Value** a,int n){check_arg_count(cyrusClonePlacementRows,1,n);type_check(a[0],Array,_T("placement rows"));auto* rows=static_cast<Array*>(a[0]);
     two_typed_value_locals(Array* result,Array* row);vl.result=new Array(rows->size);
     for(int i=0;i<rows->size;++i){type_check(rows->data[i],Array,_T("placement row"));auto* input=static_cast<Array*>(rows->data[i]);if(input->size<2)throw RuntimeError(_T("Invalid placement row"));vl.row=new Array(input->size);vl.result->append(vl.row);vl.row->append(new Matrix3Value(input->data[0]->to_matrix3()));for(int k=1;k<input->size;++k)vl.row->append(input->data[k]);}

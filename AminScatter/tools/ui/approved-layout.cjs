@@ -155,7 +155,7 @@ function page(s,definition,{name=definition.name,category=0,popup=false}={}){
   const arr='#('+p.controls.map(c=>p.names.get(c.name.toLowerCase())).join(',')+')';
   const folds=p.controls.filter(c=>c.name==='detailsToggle'||c.name==='containersToggle').map(c=>p.names.get(c.name.toLowerCase())+'.checked=true').join(';');
   const empty=p.key==='setsUI'?'setsUI_setList.items=#();setsUI_members=#();setsUI_nameEdit.text="";':p.key==='detailsUI'?'detailsUI_info.text="Add a layer to inspect its last completed build.";':'';
-  return `            ${folds?folds+';':''}${ownerRequired?'if owner!=undefined then (':''}${p.hasBind?p.key+'_bind '+(p.setSpecific?'(root.selectedPaintSet owner)':'owner')+';':''}${p.key==='diagnosticsUI'?'diagnosticsUI_refresh();diagnosticsUI_controlsReady=true;':''}${ownerRequired?') else (for c in '+arr+' do c.enabled=false;'+empty+p.key+'_controlsReady=false)':''}`;
+  return `            ${folds?folds+';':''}${ownerRequired?'if owner!=undefined then (':''}${p.hasBind?p.key+'_bind '+(p.setSpecific?(p.key==='brushUI'?'(root.selectedPaintArea owner)':'(root.selectedPaintSet owner)'):'owner')+';':''}${p.key==='diagnosticsUI'?'diagnosticsUI_refresh();diagnosticsUI_controlsReady=true;':''}${ownerRequired?') else (for c in '+arr+' do c.enabled=false;'+empty+p.key+'_controlsReady=false)':''}`;
  }).join('\n');
  const delegates=[];
  for(const method of ['refreshStats','refreshHistory','status','syncRelaxAvailability','syncFinalRelaxAvailability']){
@@ -325,7 +325,7 @@ module.exports=function(s,{check=false}={}){
  const main=fs.readFileSync('tools/ui/templates/approved-main-ui.ms','utf8').replace(/\r/g,'');
  s=s.slice(0,a)+main+'\n'+pages.map(p=>p.text).join('\n\n')+s.slice(b);
  // Optional floating editors use the exact same composed handlers and rows.
- const popupDefs=[...definitions.filter(d=>['modelsUI','populationUI','coverageUI','areasUI','transformsUI','spacingUI','statisticsUI'].includes(d.name)),layouts.popupSets];
+ const popupDefs=[...definitions.filter(d=>['surfacesUI','modelsUI','populationUI','coverageUI','areasUI','transformsUI','spacingUI','statisticsUI'].includes(d.name)),layouts.popupSets];
  const factories=popupDefs.map(d=>`fn CyrusLayerEditor_${d.name}_1 = (\n${page(safeOriginal,d,{name:d.name+'_1',popup:true}).text}\n    ${d.name}_1\n)`);
  const popupStart=s.indexOf('fn CyrusLayerEditor_setsUI_1 = ('),popupEnd=s.indexOf('fn CyrusCreateLayerEditorSection');
  s=s.slice(0,popupStart)+factories.join('\n\n')+'\n'+s.slice(popupEnd);
@@ -334,7 +334,7 @@ module.exports=function(s,{check=false}={}){
  const sections=/^            pageSections=#\(/m.exec(s);
  if(!sections)throw Error('Missing popup topic layout');
  const sectionsEnd=blocks.close(s,s.indexOf('(',sections.index));
- s=s.slice(0,sections.index)+'            pageSections=#(#(#(#(#modelsUI,false)),#(#(#setsUI,false))),#(#(#(#populationUI,false)),#(#(#areasUI,false))),#(#(#(#coverageUI,false)),#()),#(#(#(#transformsUI,false)),#()),#(#(#(#spacingUI,false)),#()),#(#(#(#statisticsUI,false)),#()))'+s.slice(sectionsEnd);
+ s=s.slice(0,sections.index)+'            pageSections=#(#(#(#(#modelsUI,false)),#(#(#surfacesUI,false))),#(#(#(#populationUI,false)),#(#(#areasUI,false))),#(#(#(#coverageUI,false)),#()),#(#(#(#transformsUI,false)),#()),#(#(#(#spacingUI,false)),#()),#(#(#(#statisticsUI,false)),#()))'+s.slice(sectionsEnd);
  s=s.replace('        fn showTopic index rebind:false = (',`        fn layoutPages index = (
             for p=1 to pages.count do (
                 local single=pageSections[p][2].count==0

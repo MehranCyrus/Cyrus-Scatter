@@ -2,7 +2,7 @@
   "schema": "cyrus.feature-catalog/1.0",
   "authority": "Help only. Tool dispatch, closed schema and local approval determine authority.",
   "capability_source_sha256": "7679925c6b0d2f0bcf3a8ec1a1639fec198006a5d81ebb87ba4413ba9efd4332",
-  "control_inventory_sha256": "37170c51b751949d6087f3c4125108cc6da4f4d54072ac8dc913bdc53eb2f1ff",
+  "control_inventory_sha256": "873be7425fca7d0c0f22a5614bda657a0038e03c636c8578d6bfb5d4544689a3",
   "development_version": "0.74",
   "mcp_version": "0.73.0",
   "calculation_model": "CyrusUnified1",
@@ -578,7 +578,7 @@
         "C07"
       ],
       "owner_context": "Controller/global pool",
-      "help": "Add multiple receiving surfaces by name. Existing assignments are kept. Brush still needs one shared surface.",
+      "help": "Add multiple receiving surfaces by name. Existing assignments are kept. Choose the target for each Paint Area under Painting.",
       "view": "Local setup/editor controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -904,7 +904,7 @@
         "C27"
       ],
       "owner_context": "Editor context; action scope named in UI",
-      "help": "Models, source rectangles and paint-set administration.",
+      "help": "Models and receiving surfaces for this layer.",
       "view": "Local setup/editor controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -934,7 +934,7 @@
         "C27"
       ],
       "owner_context": "Editor context; action scope named in UI",
-      "help": "Independent set coverage, strokes and background fill.",
+      "help": "Optional receiver-bound Paint Areas.",
       "view": "Local setup/editor controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -1001,6 +1001,32 @@
     {
       "group": "layer",
       "section": "setsUI",
+      "kind": "checkbox",
+      "name": "paintedCheck",
+      "capabilities": [
+        "C04"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Restrict this layer to its painted areas. Turn off to scatter across all its surfaces.",
+      "view": "Modify selected layer, selected container and optional popup",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "setsUI",
+      "kind": "button",
+      "name": "importButton",
+      "capabilities": [
+        "C04"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Bring this older layer's existing coverage into a named area without changing its paint. Undo restores the old ownership.",
+      "view": "Modify selected layer, selected container and optional popup",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "setsUI",
       "kind": "dropdownlist",
       "name": "setList",
       "capabilities": [
@@ -1020,7 +1046,7 @@
         "C04"
       ],
       "owner_context": "Layer/set administration",
-      "help": "Add another paint set sharing this layer's population and defaults.",
+      "help": "Create a named area. Painting again edits the selected area.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -1033,7 +1059,7 @@
         "C04"
       ],
       "owner_context": "Layer/set administration",
-      "help": "Remove this paint set and its settings. The base set cannot be removed separately.",
+      "help": "Remove the selected area. Undo restores it.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -1046,20 +1072,20 @@
         "C04"
       ],
       "owner_context": "Layer/set administration",
-      "help": "Rename this paint set without changing its identity.",
+      "help": null,
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
       "group": "layer",
       "section": "setsUI",
-      "kind": "spinner",
-      "name": "weightSpin",
+      "kind": "dropdownlist",
+      "name": "targetList",
       "capabilities": [
         "C04"
       ],
-      "owner_context": "Layer/set administration",
-      "help": "Relative share of the layer population among enabled paint sets.",
+      "owner_context": "Selected layer recipe",
+      "help": "Explicit target within this layer. An area with saved paint cannot be silently retargeted.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -1072,46 +1098,7 @@
         "C04"
       ],
       "owner_context": "Layer/set administration",
-      "help": "Include this set in calculation and final output.",
-      "view": "Modify selected layer, selected container and optional popup",
-      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
-    },
-    {
-      "group": "layer",
-      "section": "setsUI",
-      "kind": "checkbox",
-      "name": "visibleCheck",
-      "capabilities": [
-        "C04"
-      ],
-      "owner_context": "Layer/set administration",
-      "help": "Viewport visibility only. Hidden sets still calculate and affect spacing.",
-      "view": "Modify selected layer, selected container and optional popup",
-      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
-    },
-    {
-      "group": "layer",
-      "section": "setsUI",
-      "kind": "button",
-      "name": "upButton",
-      "capabilities": [
-        "C04"
-      ],
-      "owner_context": "Layer/set administration",
-      "help": "Evaluate this set earlier. Earlier sets occupy space first.",
-      "view": "Modify selected layer, selected container and optional popup",
-      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
-    },
-    {
-      "group": "layer",
-      "section": "setsUI",
-      "kind": "button",
-      "name": "downButton",
-      "capabilities": [
-        "C04"
-      ],
-      "owner_context": "Layer/set administration",
-      "help": "Evaluate this set later, after the preceding sets.",
+      "help": null,
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -2027,20 +2014,6 @@
     {
       "group": "layer",
       "section": "brushUI",
-      "kind": "dropdownlist",
-      "name": "coverageMode",
-      "capabilities": [
-        "C14",
-        "C15"
-      ],
-      "owner_context": "Paint-set coverage",
-      "help": "Use the whole receiver or this paint set's saved painted coverage.",
-      "view": "Modify selected layer, selected container and optional popup",
-      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
-    },
-    {
-      "group": "layer",
-      "section": "brushUI",
       "kind": "radiobuttons",
       "name": "modeRadio",
       "capabilities": [
@@ -2062,7 +2035,7 @@
         "C15"
       ],
       "owner_context": "Paint-set coverage",
-      "help": "World-space radius of the next Brush stroke on the receiving surface.",
+      "help": null,
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -2076,7 +2049,7 @@
         "C15"
       ],
       "owner_context": "Paint-set coverage",
-      "help": "Amount of coverage painted or erased by the next stroke.",
+      "help": null,
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -2090,21 +2063,7 @@
         "C15"
       ],
       "owner_context": "Paint-set coverage",
-      "help": "Softness of the next stroke's edge.",
-      "view": "Modify selected layer, selected container and optional popup",
-      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
-    },
-    {
-      "group": "layer",
-      "section": "brushUI",
-      "kind": "spinner",
-      "name": "densitySpin",
-      "capabilities": [
-        "C14",
-        "C15"
-      ],
-      "owner_context": "Paint-set coverage",
-      "help": "Thin plants allowed by the saved mask. Set absolute population on Population.",
+      "help": null,
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -2118,7 +2077,7 @@
         "C15"
       ],
       "owner_context": "Paint-set coverage",
-      "help": "Paint this set on the shared surface. Creates an empty mask when needed.",
+      "help": null,
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -2132,7 +2091,7 @@
         "C15"
       ],
       "owner_context": "Paint-set coverage",
-      "help": "Finish painting and retain the editable stroke history.",
+      "help": null,
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -2146,7 +2105,7 @@
         "C15"
       ],
       "owner_context": "Paint-set coverage",
-      "help": "Fill coverage and reset stroke history. Undo restores the previous field.",
+      "help": null,
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -2160,7 +2119,21 @@
         "C15"
       ],
       "owner_context": "Paint-set coverage",
-      "help": "Empty coverage and reset stroke history. Undo restores the previous field.",
+      "help": null,
+      "view": "Modify selected layer, selected container and optional popup",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "kind": "spinner",
+      "name": "densitySpin",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Paint-set coverage",
+      "help": null,
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -2174,7 +2147,7 @@
         "C15"
       ],
       "owner_context": "Paint-set coverage",
-      "help": "Coverage feedback only; it does not show which plants survive spacing.",
+      "help": null,
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -2188,172 +2161,7 @@
         "C15"
       ],
       "owner_context": "Paint-set coverage",
-      "help": "Viewport color for this paint set's coverage feedback.",
-      "view": "Modify selected layer, selected container and optional popup",
-      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
-    },
-    {
-      "group": "layer",
-      "section": "brushUI",
-      "kind": "listbox",
-      "name": "strokeList",
-      "capabilities": [
-        "C14",
-        "C15"
-      ],
-      "owner_context": "Paint-set coverage",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
-      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
-    },
-    {
-      "group": "layer",
-      "section": "brushUI",
-      "kind": "checkbox",
-      "name": "strokeEnabled",
-      "capabilities": [
-        "C14",
-        "C15"
-      ],
-      "owner_context": "Paint-set coverage",
-      "help": "Enable or disable the highlighted saved stroke without deleting it.",
-      "view": "Modify selected layer, selected container and optional popup",
-      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
-    },
-    {
-      "group": "layer",
-      "section": "brushUI",
-      "kind": "checkbox",
-      "name": "strokeErase",
-      "capabilities": [
-        "C14",
-        "C15"
-      ],
-      "owner_context": "Paint-set coverage",
-      "help": "Change the highlighted saved stroke between paint and erase.",
-      "view": "Modify selected layer, selected container and optional popup",
-      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
-    },
-    {
-      "group": "layer",
-      "section": "brushUI",
-      "kind": "spinner",
-      "name": "strokeRadius",
-      "capabilities": [
-        "C14",
-        "C15"
-      ],
-      "owner_context": "Paint-set coverage",
-      "help": "Change the radius of the highlighted saved stroke.",
-      "view": "Modify selected layer, selected container and optional popup",
-      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
-    },
-    {
-      "group": "layer",
-      "section": "brushUI",
-      "kind": "spinner",
-      "name": "strokeStrength",
-      "capabilities": [
-        "C14",
-        "C15"
-      ],
-      "owner_context": "Paint-set coverage",
-      "help": "Change the strength of the highlighted saved stroke.",
-      "view": "Modify selected layer, selected container and optional popup",
-      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
-    },
-    {
-      "group": "layer",
-      "section": "brushUI",
-      "kind": "spinner",
-      "name": "strokeSoft",
-      "capabilities": [
-        "C14",
-        "C15"
-      ],
-      "owner_context": "Paint-set coverage",
-      "help": "Change the edge softness of the highlighted saved stroke.",
-      "view": "Modify selected layer, selected container and optional popup",
-      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
-    },
-    {
-      "group": "layer",
-      "section": "brushUI",
-      "kind": "button",
-      "name": "deleteStroke",
-      "capabilities": [
-        "C14",
-        "C15"
-      ],
-      "owner_context": "Paint-set coverage",
-      "help": "Delete the highlighted stroke. Undo restores it.",
-      "view": "Modify selected layer, selected container and optional popup",
-      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
-    },
-    {
-      "group": "layer",
-      "section": "brushUI",
-      "kind": "button",
-      "name": "resetTarget",
-      "capabilities": [
-        "C14",
-        "C15"
-      ],
-      "owner_context": "Paint-set coverage",
-      "help": "Confirm before replacing this set's paint with an empty mask on the current receiver.",
-      "view": "Modify selected layer, selected container and optional popup",
-      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
-    },
-    {
-      "group": "layer",
-      "section": "brushUI",
-      "kind": "checkbutton",
-      "name": "detailsToggle",
-      "capabilities": [
-        "C14",
-        "C15"
-      ],
-      "owner_context": "Paint-set coverage",
-      "help": "Show or hide these advanced controls; their saved settings are preserved.",
-      "view": "Modify selected layer, selected container and optional popup",
-      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
-    },
-    {
-      "group": "layer",
-      "section": "backgroundUI",
-      "kind": "dropdownlist",
-      "name": "backgroundList",
-      "capabilities": [
-        "C16"
-      ],
-      "owner_context": "Paint set and earlier siblings",
-      "help": "Exclude earlier painted coverage, fill between plants, combine both, or turn off.",
-      "view": "Modify selected layer, selected container and optional popup",
-      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
-    },
-    {
-      "group": "layer",
-      "section": "backgroundUI",
-      "kind": "multiListBox",
-      "name": "referenceList",
-      "capabilities": [
-        "C16"
-      ],
-      "owner_context": "Paint set and earlier siblings",
-      "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
-      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
-    },
-    {
-      "group": "layer",
-      "section": "backgroundUI",
-      "kind": "button",
-      "name": "applyBackground",
-      "capabilities": [
-        "C16"
-      ],
-      "owner_context": "Paint set and earlier siblings",
-      "help": "Save this background mode and the selected earlier-set references together.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },

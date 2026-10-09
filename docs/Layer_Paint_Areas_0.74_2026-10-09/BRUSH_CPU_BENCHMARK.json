@@ -1,0 +1,84 @@
+{
+  "before": {
+    "library_sha256": "a16cd71b7fb517f29fe71f377dfd0d59062a32e2f11b11a5af529f0da8fa9a1d",
+    "cases": [
+      {
+        "strokes": 1,
+        "build_ms_median": 0.0038,
+        "query_ms_median": 0.7491,
+        "accepted": [
+          316
+        ],
+        "max_error": 0.0
+      },
+      {
+        "strokes": 10,
+        "build_ms_median": 0.0128,
+        "query_ms_median": 4.9219,
+        "accepted": [
+          316
+        ],
+        "max_error": 0.0
+      },
+      {
+        "strokes": 100,
+        "build_ms_median": 0.1154,
+        "query_ms_median": 45.1043,
+        "accepted": [
+          316
+        ],
+        "max_error": 0.0
+      },
+      {
+        "strokes": 1000,
+        "build_ms_median": 0.6758,
+        "query_ms_median": 485.9953,
+        "accepted": [
+          316
+        ],
+        "max_error": 0.0
+      }
+    ]
+  },
+  "after": {
+    "library_sha256": "010526a1dd2ab78d01ccca5de6d89e9b2f055bebfef7542e4a346294ab9be264",
+    "cases": [
+      {
+        "strokes": 1,
+        "build_ms_median": 0.0016,
+        "query_ms_median": 0.4854,
+        "accepted": [
+          316
+        ],
+        "max_error": 0.0
+      },
+      {
+        "strokes": 10,
+        "build_ms_median": 0.0072,
+        "query_ms_median": 0.5144,
+        "accepted": [
+          316
+        ],
+        "max_error": 0.0
+      },
+      {
+        "strokes": 100,
+        "build_ms_median": 0.0702,
+        "query_ms_median": 0.8194,
+        "accepted": [
+          316
+        ],
+        "max_error": 0.0
+      },
+      {
+        "strokes": 1000,
+        "build_ms_median": 0.6847,
+        "query_ms_median": 3.8671,
+        "accepted": [
+          316
+        ],
+        "max_error": 0.0
+      }
+    ]
+  }
+}

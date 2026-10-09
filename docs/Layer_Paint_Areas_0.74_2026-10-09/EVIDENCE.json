@@ -1,0 +1,320 @@
+{
+  "date": "2026-10-09",
+  "baseline_commit": "65cf22e9f4ae38f0e20a8e30dff3189d796b3c3a",
+  "branch": "codex/ui-0.74",
+  "scope": "Layer-owned surfaces, optional receiver-bound Paint Areas, retired stroke editor, exact-result brush query optimizations",
+  "source_sha256": {
+    "AminScatter/include/brush.h": "fc09fe97e9b172febb2d2f92ea46e82516851ccc03ccccf700bba4be4885306f",
+    "AminScatter/scripts/AminScatterObject.ms": "b297d60a2f9d9232f1aa4e859a386e620e69be12137ca2e191d79ef2462e1cfb",
+    "AminScatter/src/brush.cpp": "40f2e1f256250e05b5268f34ff3913641747591e8bd31c83105091faf6037b3c",
+    "AminScatter/src/brush_host.cpp": "b2c742889124070e9f644cfce347a172569c9725a2e371946a706899e1ee0dd0",
+    "AminScatter/src/max_bridge.cpp": "e9794eb23faa48f0a4c9f5f04003934fff5b2300f7838b0d022d56dfc0e0dd4f",
+    "AminScatter/tests/brush_tests.cpp": "c2b4d464aaa45de2be2e9f2a5f983dc56eb7b7dfc4879fa472c39938d564f2ff",
+    "AminScatter/tools/ui/approved-layout-manifest.json": "f39e82cb7c4dc18474d8edb56ce3a3786c9e4578da0a8b0c62ee0c5210395343",
+    "AminScatter/tools/ui/approved-layout-rows.cjs": "e32875c56bbf4287030389197abc9b2b815991c894732b9dbf350794693d5280",
+    "AminScatter/tools/ui/approved-layout.cjs": "1b6dc7c1e1008d40be4bd1a9b16f9cd90b4deed50b50e1399eacba1efd25b46b",
+    "AminScatter/tools/ui/approved-layout.test.cjs": "6f6c754828fe9a382dad7a34b601af608fccdecfc760fd68e04c99ea3616e69d",
+    "AminScatter/tools/ui/inventory.cjs": "3727d2803db29d2a841ec45de5646e470dd011dfece8d367bfa97d09ba6c142c",
+    "AminScatter/tools/ui/layer-editor-tooltips.json": "2b965527ab6ee06937c24e4f797126d2ab50c66db4bd366875943dc8f09aa458",
+    "AminScatter/tools/ui/layers-control-inventory.json": "873be7425fca7d0c0f22a5614bda657a0038e03c636c8578d6bfb5d4544689a3",
+    "AminScatter/tools/ui/templates/approved-main-ui.ms": "45d2248e40f77a5975782f7b5b03422e3cffbdeacd50a562f2008c1247fd8c83",
+    "AminScatter/tools/ui/templates/unified-core.ms": "5fc3e65a23bd8a2e4c7ea16c8cce27d922064f9d09701f2fc1f5f4ecdd4f496d",
+    "CyrusMCP/cyrus_mcp/feature-catalog.json": "dc7690029ab7cb2cbf9e9de85f29cadca34d732c848168e1428f907fd4f9fc77",
+    "CyrusMCP/tests/test_feature_catalog.py": "5f85662810a9fbb35a7839517c39683e0c4582e5c4e1ea072a2332d4fb6b8740",
+    "tools/build_max.py": "01f64dbc83883fbd08b3fd9dfb593b4047633f040366c7feacc699d8bf65bfe3",
+    "tools/procedural_lab/Max_Layer_Regions_074.ms": "c2bb569b7ae63bd05430a3c5d60c6dfeb48bb666eb55cf0c274837324b26ded3",
+    "tools/procedural_lab/Max_Layer_Regions_074_Legacy.ms": "434f3db656e9481f8ac9a43cfb81e3bacfb190807e673587285ce8d1c2b75654",
+    "tools/procedural_lab/brush_region_benchmark.cpp": "1c8d99a4c690064d25e963ff59e4eef98f2a517c3a21cd91e5b2bbaa56223dd5",
+    "tools/procedural_lab/check_generated.py": "140a32ad814f17d7084507f234adbe24c49696d84d1b413cdebbe50c3cf54bb8"
+  },
+  "native_receipt": {
+    "stages": [
+      {
+        "stage": "configure",
+        "exit_code": 0
+      },
+      {
+        "stage": "build",
+        "exit_code": 0
+      },
+      {
+        "stage": "tests",
+        "exit_code": 0
+      }
+    ],
+    "project": "scatter",
+    "max_year": 2027,
+    "host_launched": false,
+    "installed": false,
+    "binaries": {
+      "build/layer-regions-20261009-02/native2027/AminScatter.dlx": "d6df88b6755d8f8552e626f58d7721af5785b979837779b139f1efbeb2f8e8d3",
+      "build/layer-regions-20261009-02/native2027/CyrusBrush.dlx": "e4b7e4e48ef64e441b11c06114aec207b620db79e8f32d91715ea34cce0fa530",
+      "build/layer-regions-20261009-02/native2027/CyrusBrushStorage.dlh": "0201ca4406a5b89b5e8e08437f23d5933f7e6e060ca575305f2976898a5207e2",
+      "build/layer-regions-20261009-02/native2027/CyrusScatterEdit.dlm": "32928902bd28c7b17cada6c08a853cae340a4c09e478543313b7828af5a38bae"
+    },
+    "sources": {
+      "AminScatter/CMakeLists.txt": "7053e506acb4bde99ed7b2891fabae808cf40f6ecedbc426be9288bbab01edc0",
+      "AminScatter/scripts/AminScatterObject.ms": "b297d60a2f9d9232f1aa4e859a386e620e69be12137ca2e191d79ef2462e1cfb",
+      "cmake/CyrusMaxSDK.cmake": "53cf91db75742990b80d1f0a8dc8094d45a2a964094b3785b2f6eb1c8b55248e",
+      "AminScatter/src/analyzer_area_bridge.inc": "90c08d2650c8bea809900fd23f2abc8d3e26272c95d49a315552711aa6ad48bc",
+      "AminScatter/src/authored_revision.inc": "9bdb0aadfa193983d9d18f42ac2e1ffe414bd6a99a5d556553dc2a00c1d8fe1e",
+      "AminScatter/src/boundary_falloff.inc": "a8c2669675dcb853d79c2ceaf90bf092d09c27d09a48991f0ac3cd024737d99f",
+      "AminScatter/src/boundary_falloff_bridge.inc": "4af974149fa2fc6a82a6e2d0401bb88deca0e3cc9441ea6b8757013e7259d555",
+      "AminScatter/src/brush.cpp": "40f2e1f256250e05b5268f34ff3913641747591e8bd31c83105091faf6037b3c",
+      "AminScatter/src/brush_host.cpp": "b2c742889124070e9f644cfce347a172569c9725a2e371946a706899e1ee0dd0",
+      "AminScatter/src/brush_storage_plugin.cpp": "cf3d949ca9695e42c70f0905db41bd24e77d520b7f7a571a72a8bfc69ce995d3",
+      "AminScatter/src/cluster.inc": "e3f7eddd8133e34f91c1e50d5c4d1ac4ca2f4a6dc611728a0848c16f9f3e3680",
+      "AminScatter/src/cyrus_edit.cpp": "df4f69f75a12ddbb83ac925fcb3f3422a4526cde2ac739c71edcfab820a995d4",
+      "AminScatter/src/cyrus_edit.rc": "2ed905b328e04f092f89a4e1e800d9fba724a0c33f9ea3262fe886040f53fb33",
+      "AminScatter/src/cyrus_edit_stack.inc": "83b85de9d8007e20c69fb6d8bc6174c3d99ef2dfa0b0fa6bcc85dfee3e1e9ac9",
+      "AminScatter/src/cyrus_edit_storage.inc": "4e9e9f23845a0d9ee2b0fed5fdba450b176cbbe5b4b04a557cb1963655f43109",
+      "AminScatter/src/diagnostics.cpp": "8f7e61296c0570aa6288e50ae159f041ef449768a00781abbc84ac033febeeb4",
+      "AminScatter/src/diagnostics_bridge.cpp": "ce31a4bed58860076bbbd6deb5a15302890facda98d29e8d3f0e65fe794c2da7",
+      "AminScatter/src/edge_border.inc": "df5f43d5614d1d44a274b9a67c70c659d24964b1ffad665e1956232581951f8c",
+      "AminScatter/src/edit_plugin.cpp": "79f0056899a9c831022e17f12ae35232890e6e21b44b9c7b6f608632f871ac9b",
+      "AminScatter/src/execution.cpp": "b54963d69441d473ed52f76b125c4eb3d0a38c564900f28abd76efa7bcbf1136",
+      "AminScatter/src/final.inc": "ba36be03d08d2af4726b9b44b411e05c191a90bc73db1269f7670722bbf6f5e5",
+      "AminScatter/src/geometry_preview.inc": "3a72c3064fb23f72e042554ad9d2e4ded7b4efaa1b481550f38753b357b8ad65",
+      "AminScatter/src/group_spacing.cpp": "73d973b3d22f51c00dae7f4282d7f8159b19dea0b27f7ddb57c2d06815acc1a1",
+      "AminScatter/src/group_spacing_bridge.inc": "84514cdc7a7d4d9690d5ae179af1d9864897f4a1e56edacf2f4bacd158db77a7",
+      "AminScatter/src/input_validity.cpp": "a65514bdcee3e67d3296768063979ed1c670b020323bc62e757ac7a9c232605d",
+      "AminScatter/src/max_bridge.cpp": "e9794eb23faa48f0a4c9f5f04003934fff5b2300f7838b0d022d56dfc0e0dd4f",
+      "AminScatter/src/mesh_display.inc": "91b694e319d1d5864f1ae6a6dd67c8bb033d44420f770ed0645c4cc4547d8c39",
+      "AminScatter/src/orientation.inc": "d485e2b8ea5c3abf3fc00a7e7b7139ae4b5d3995ee17f3aad7afff8cc4bfcea8",
+      "AminScatter/src/orientation_bridge.inc": "c967d950dfd1308bd989dc3e819b959ae64eb69acdaf728b4c6ba2dd694c639e",
+      "AminScatter/src/placement_identity.inc": "a33f6d19e8bff75b90e2cbbc2f969d00c5982c5301918efddf1108a86ca0a2aa",
+      "AminScatter/src/point_display.cpp": "358c5ff13763542dcc27eb2d8542686a622c051fa35a5161edf3dcb329173c44",
+      "AminScatter/src/prepared_band.inc": "5d01452faed01a630428506cc7ce099ee909ce64204edef5448a03c1a1000cf0",
+      "AminScatter/src/preview.cpp": "6465bf8dcbaaf213ab24f6362c6f92156333008d4585a645f539ba60bd4d8d6c",
+      "AminScatter/src/preview_batches.inc": "a2a7df3d65a6278d49aad80361bffe8db15fae1419feb44e993354f5c31c7acd",
+      "AminScatter/src/procedural.cpp": "3bbdd2ef5463edb51af32a5ff3a7c8d5579d602027dc14738edf63a16185402c",
+      "AminScatter/src/procedural_bridge.inc": "646195da92bc2ce7253b3c409a11594dd2606c842a04b97206a20799480639ed",
+      "AminScatter/src/rollout_flow.cpp": "f1cdf4bb21e5dcb424b01a570c0c001424de3f4fa756638aafb85962bb5b4392",
+      "AminScatter/src/rollout_scroll.cpp": "5573dd56b0ecaa87c6f521abd88b07f6d7e3259174a249ab53275a0bb12fb3a7",
+      "AminScatter/src/scatter.cpp": "4aebe37a65d54a8b9f0c4980de1c391936fe283c3532998dab58bed7b8a14ae6",
+      "AminScatter/src/source_container.cpp": "634208e611a0cf1abffe917dfd5c31e94e7ed7e1e5a1037589786ec84fdba1b4",
+      "AminScatter/src/spacing.inc": "96ef2d89f07cf9e6c67a93f4c91e990da98016f58c6278fce543a7b09e289c77",
+      "AminScatter/src/whole_scale_bridge.inc": "8374345cee715b0ad5c65e5478f191274e1ebdcbc5ffbe861bf450d7793c45d7",
+      "AminScatter/include/brush.h": "fc09fe97e9b172febb2d2f92ea46e82516851ccc03ccccf700bba4be4885306f",
+      "AminScatter/include/diagnostics.h": "e56003670ca92ae26041ea5bf23e6cd2290f1c53921a0a10e828965cfb10a092",
+      "AminScatter/include/execution.h": "e9f2cfdf677366f491dc01cea83301ce53111c5073633333a4adf1db2ad509d2",
+      "AminScatter/include/group_spacing.h": "b04b3e47f0f1d5789f274492ca4d2a0777e5f1b500070ba5ef88426c4cf08502",
+      "AminScatter/include/license_boundary.h": "92f2c3dd89977af053c27a25731246890209e0d2e3d4a1f931d4349dc2088178",
+      "AminScatter/include/point_preview.h": "5dec4890f38338f99baf1d0e163274aa515b455b34d3a8acc51f4e917017edb6",
+      "AminScatter/include/preview_sampling.h": "14e389d96653e861896a133c6efa9a6d42f96e2cc8d3e5e6ee665221b9a4645f",
+      "AminScatter/include/procedural.h": "ef9ce89dce26aa9dafb077c903af73f1b0a71ebc946febabd4bf0a006e546dbd",
+      "AminScatter/include/scatter.h": "632b834f410a06904061df74a10fd8e4e449d918fd2f242f7e369bd4b75184ac",
+      "AminScatter/tests/boundary_falloff_tests.cpp": "ab48b370731b7f667fc39156654d532a0693b3e0a7836a06c759ed478bf3c06a",
+      "AminScatter/tests/brush_tests.cpp": "c2b4d464aaa45de2be2e9f2a5f983dc56eb7b7dfc4879fa472c39938d564f2ff",
+      "AminScatter/tests/compute_benchmark.cpp": "9f59cf70e0511c761d59c1c1b19335bbef0a3d9ddce30b3df93ce94f3adcc4c5",
+      "AminScatter/tests/data/brush_sphere_pole.txt": "3e2bf0a248e2e0539ff4eadce7af0e1f8f12850636aa5d1293c03a5ea78ee819",
+      "AminScatter/tests/diagnostics_tests.cpp": "d883857f6b18f382214c9b7caf40be6c342c873dbed256ce3968fccfb2aa2ff6",
+      "AminScatter/tests/edge_border_tests.cpp": "f85b1c429fc080e94ea7bdc5771286cef066d7979acfe4065caf5bc30f3c49b1",
+      "AminScatter/tests/group_spacing_tests.cpp": "67300e62c679ea27b95784216441af79119668cc3008a3a71dab04b493f75046",
+      "AminScatter/tests/orientation_tests.cpp": "3a49477ce55d03cd342beec23123b581a50a7d8f13626834207661c2f4fa8076",
+      "AminScatter/tests/prepared_band_tests.cpp": "ce1622cbe460eaba14c09a34ed669fcc74bdb08b018c17c754d12b0ddf33769d",
+      "AminScatter/tests/preview_sampling_tests.cpp": "e2eac5bd2ef640e5dc11f8778bb55749033baea4714d5fe2fccbd764f80be819",
+      "AminScatter/tests/procedural_tests.cpp": "12e281b6479576d1f6cd22fb4d4565d68173354ff7c36d49debfc6885bc3ec5b",
+      "AminScatter/tests/scatter_tests.cpp": "c0e0eb48287e008d6f88c4baadd013d183bf49125f607c8c716315237600c402",
+      "AminScatter/tests/spacing_tests.cpp": "9fc18b3e4629b9e9a1b79b67ceb75f21ae671211396a5cfd909239040fc5a2e7",
+      "AminScatter/tests/threading_tests.cpp": "f3336cfd3ffe0c642fd839cf7eb4b6002fd697a04072010f963bf1d020f87507",
+      "AminScatter/tests/weight_tests.cpp": "792203629d369f7476d097c97f3dc8082811a5e5deb8fbc62ff74ab1a7b65df9"
+    },
+    "qualification": "SDK compilation and native executables only; generated MAXScript is hashed, not compiled by Max."
+  },
+  "max_host": {
+    "pid": 45508,
+    "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\layer-regions-20261009-02",
+    "command": [
+      "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+      "-q",
+      "-i",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\layer-regions-20261009-02\\max.ini",
+      "-p",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\layer-regions-20261009-02\\plugins.ini",
+      "-U",
+      "MAXScript",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\layer-regions-20261009-02\\start.ms",
+      "-listenerlog",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\layer-regions-20261009-02\\listener.log"
+    ],
+    "binaries": {
+      "AminScatter.dlx": "d6df88b6755d8f8552e626f58d7721af5785b979837779b139f1efbeb2f8e8d3",
+      "CyrusBrush.dlx": "e4b7e4e48ef64e441b11c06114aec207b620db79e8f32d91715ea34cce0fa530",
+      "CyrusBrushStorage.dlh": "0201ca4406a5b89b5e8e08437f23d5933f7e6e060ca575305f2976898a5207e2",
+      "CyrusScatterEdit.dlm": "32928902bd28c7b17cada6c08a853cae340a4c09e478543313b7828af5a38bae"
+    },
+    "script_sha256": "b297d60a2f9d9232f1aa4e859a386e620e69be12137ca2e191d79ef2462e1cfb",
+    "normal_profile_modified": false,
+    "development_transport": true
+  },
+  "max_version": "2027.1 / 29.1.0.11426",
+  "host_checks": [
+    "Layer has both receivers",
+    "Unpainted layer needs no area",
+    "Areas are not populations",
+    "Selecting areas preserves layer models",
+    "Paint plane",
+    "Paint curved sphere",
+    "One layer paints both targets",
+    "Second gesture accepted",
+    "Second gesture edits same area",
+    "Repeated hard paint retains output",
+    "Overlapping areas union without duplicates",
+    "Removed target is inactive",
+    "Inactive target keeps authored paint",
+    "Restoring target restores paint",
+    "Layer copy owns independent paint",
+    "Layer copy preserves targets",
+    "Layer receivers are independent",
+    "Manual paint keeps last publication",
+    "Update publishes erase",
+    "Brush Undo restores coverage",
+    "Brush Redo restores coverage",
+    "Layers precede surfaces",
+    "Paint Areas listed in Painting",
+    "Per-stroke editing removed",
+    "Plane area selected for brush",
+    "Sphere area selected for brush",
+    "Area selection does not rebuild placements",
+    "Popup painting view mounts",
+    "Saved areas retain targets",
+    "Save/reopen preserves placement result",
+    "Painted area cannot silently change target",
+    "No receivers keeps inactive areas with no placements",
+    "Restoring all receivers restores coverage",
+    "Receiver removal Undo restores target and result",
+    "Whole surfaces retains optional areas",
+    "Re-enabling areas restores coverage",
+    "Start Brush callback uses selected sphere among multiple receivers",
+    "Live area edit reaches its owning layer",
+    "Old single-set scene preserves soft paint and erase",
+    "Older paint has an explicit import action",
+    "Existing paint adopts into area without changing output",
+    "Area adoption Undo preserves older document",
+    "Old multi-set population result remains intact",
+    "Old multi-set population result remains intact",
+    "Old model-owning sets remain distinct"
+  ],
+  "scripted_ui_receipts": {
+    "grips-Container.txt": "PASS: 8 grip controls; down/move/up, stationary point, bounds, hover, right click, capture loss, rebind, paint, contents/selection and placement isolation.\n#(\"container/flow_layersUI_layerList\", \"container/flow_surfaceUI_receiversList\", \"container/flow_surfaceUI_globalContainers\", \"container/sourceContainersUI_containersList\", \"container/sourceUI_plantList\", \"container/diversityUI_strokeChoices\", \"container/diversityUI_strokesList\", \"container/areaUI_areaList\")\n",
+    "grips-lifecycle.txt": "PASS: close while dragging in main/popup; actual dragged height restored after reselection; pending Manual edits retained.",
+    "grips-main.txt": "PASS: 8 grip controls; down/move/up, stationary point, bounds, hover, right click, capture loss, rebind, paint, contents/selection and placement isolation.\n#(\"main/flow_layersUI_layerList\", \"main/flow_surfaceUI_receiversList\", \"main/flow_surfaceUI_globalContainers\", \"main/sourceContainersUI_containersList\", \"main/sourceUI_plantList\", \"main/diversityUI_strokeChoices\", \"main/diversityUI_strokesList\", \"main/areaUI_areaList\")\n",
+    "grips-Popup.txt": "PASS: 7 grip controls; down/move/up, stationary point, bounds, hover, right click, capture loss, rebind, paint, contents/selection and placement isolation.\n#(\"popup1/sourceContainersUI_containersList\", \"popup1/sourceUI_plantList\", \"popup1/diversityUI_strokeChoices\", \"popup1/diversityUI_strokesList\", \"popup1/flow_surfaceUI_receiversList\", \"popup1/flow_surfaceUI_globalContainers\", \"popup2/areaUI_areaList\")\n",
+    "ui074-views.txt": "PASS: colored source/layer selection; Ctrl-add focus; double-click action helper; owner isolation; independent container/setup view state; popup reflow at two sizes."
+  },
+  "python_tests": {
+    "passed": 141,
+    "command": "build/mcp-venv/Scripts/python.exe -m pytest CyrusMCP/tests tools/tests -q"
+  },
+  "generated": {
+    "check": "unified_073_generator_integration",
+    "passed": true,
+    "development_version": "0.74",
+    "baseline": "01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2",
+    "maxscript_compiled": false,
+    "ui_controls_in_inventory": 232,
+    "baseline_controls_accounted": 245,
+    "generated_sha256": "b297d60a2f9d9232f1aa4e859a386e620e69be12137ca2e191d79ef2462e1cfb",
+    "preserved_files": [
+      "AminScatter/src/preview.cpp",
+      "AminScatter/src/point_display.cpp"
+    ],
+    "fixture_delimiters_checked": 26,
+    "interactive_max_run": false
+  },
+  "cpu_benchmark": {
+    "before": {
+      "library_sha256": "a16cd71b7fb517f29fe71f377dfd0d59062a32e2f11b11a5af529f0da8fa9a1d",
+      "cases": [
+        {
+          "strokes": 1,
+          "build_ms_median": 0.0038,
+          "query_ms_median": 0.7491,
+          "accepted": [
+            316
+          ],
+          "max_error": 0.0
+        },
+        {
+          "strokes": 10,
+          "build_ms_median": 0.0128,
+          "query_ms_median": 4.9219,
+          "accepted": [
+            316
+          ],
+          "max_error": 0.0
+        },
+        {
+          "strokes": 100,
+          "build_ms_median": 0.1154,
+          "query_ms_median": 45.1043,
+          "accepted": [
+            316
+          ],
+          "max_error": 0.0
+        },
+        {
+          "strokes": 1000,
+          "build_ms_median": 0.6758,
+          "query_ms_median": 485.9953,
+          "accepted": [
+            316
+          ],
+          "max_error": 0.0
+        }
+      ]
+    },
+    "after": {
+      "library_sha256": "010526a1dd2ab78d01ccca5de6d89e9b2f055bebfef7542e4a346294ab9be264",
+      "cases": [
+        {
+          "strokes": 1,
+          "build_ms_median": 0.0016,
+          "query_ms_median": 0.4854,
+          "accepted": [
+            316
+          ],
+          "max_error": 0.0
+        },
+        {
+          "strokes": 10,
+          "build_ms_median": 0.0072,
+          "query_ms_median": 0.5144,
+          "accepted": [
+            316
+          ],
+          "max_error": 0.0
+        },
+        {
+          "strokes": 100,
+          "build_ms_median": 0.0702,
+          "query_ms_median": 0.8194,
+          "accepted": [
+            316
+          ],
+          "max_error": 0.0
+        },
+        {
+          "strokes": 1000,
+          "build_ms_median": 0.6847,
+          "query_ms_median": 3.8671,
+          "accepted": [
+            316
+          ],
+          "max_error": 0.0
+        }
+      ]
+    }
+  },
+  "benchmark_limit": "10000 fixed plane queries, 1/10/100/1000 identical hard strokes, three warm medians; excludes Max, input latency, drawing and vendor performance",
+  "normal_profile_modified": false,
+  "computer_use_tools_used": false,
+  "remaining": [
+    "canonical final-region storage",
+    "stable per-receiver sampling",
+    "old multi-set ownership conversion",
+    "physical/visual/DPI acceptance",
+    "Max 2026 runtime"
+  ]
+}

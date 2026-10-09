@@ -11,7 +11,7 @@
   "surface": {
     "removeSurfaces": "Remove highlighted assignments from this setup. Scene objects are kept.",
     "sharedPick": "Add a receiving surface without replacing existing assignments.",
-    "surfacesButton": "Add multiple receiving surfaces by name. Existing assignments are kept. Brush still needs one shared surface.",
+    "surfacesButton": "Add multiple receiving surfaces by name. Existing assignments are kept. Choose the target for each Paint Area under Painting.",
     "containersToggle": "Optional shared source pool. Enable Global containers in a layer's Assets tab.",
     "createContainer": "Create a source rectangle shared by owners that explicitly use the global pool.",
     "pickContainer": "Link an existing Cyrus Source Container to the global pool.",
@@ -37,23 +37,20 @@
   },
   "editor": {
     "updateNow": "Recalculate every enabled layer in this setup, in order.",
-    "assetsTab": "Models, source rectangles and paint-set administration.",
+    "assetsTab": "Models and receiving surfaces for this layer.",
     "populationTab": "Shared layer count, density, Area and retry limits.",
-    "paintTab": "Independent set coverage, strokes and background fill.",
+    "paintTab": "Optional receiver-bound Paint Areas.",
     "transformTab": "Layer random transforms and source assignment.",
     "spacingTab": "Self, between-set and layer-pair rules, radii and cleanup.",
     "statisticsTab": "Cached calculation results and workflow help.",
     "refreshButton": "Read current settings and cached counts; does not rebuild placements."
   },
   "setsUI": {
-    "addButton": "Add another paint set sharing this layer's population and defaults.",
-    "removeButton": "Remove this paint set and its settings. The base set cannot be removed separately.",
-    "nameEdit": "Rename this paint set without changing its identity.",
-    "weightSpin": "Relative share of the layer population among enabled paint sets.",
-    "enabledCheck": "Include this set in calculation and final output.",
-    "visibleCheck": "Viewport visibility only. Hidden sets still calculate and affect spacing.",
-    "upButton": "Evaluate this set earlier. Earlier sets occupy space first.",
-    "downButton": "Evaluate this set later, after the preceding sets."
+    "paintedCheck": "Restrict this layer to its painted areas. Turn off to scatter across all its surfaces.",
+    "importButton": "Bring this older layer's existing coverage into a named area without changing its paint. Undo restores the old ownership.",
+    "addButton": "Create a named area. Painting again edits the selected area.",
+    "removeButton": "Remove the selected area. Undo restores it.",
+    "targetList": "Explicit target within this layer. An area with saved paint cannot be silently retargeted."
   },
   "sourceUI": {
     "sourceName": "Label inside Scatter only. Clear it to use the scene object's name.",
@@ -123,31 +120,7 @@
     "fallDensityEdit": "Edit this boundary's density curve.",
     "detailsToggle": "Show or hide these advanced controls; their saved settings are preserved."
   },
-  "brushUI": {
-    "coverageMode": "Use the whole receiver or this paint set's saved painted coverage.",
-    "radiusSpin": "World-space radius of the next Brush stroke on the receiving surface.",
-    "strengthSpin": "Amount of coverage painted or erased by the next stroke.",
-    "softSpin": "Softness of the next stroke's edge.",
-    "densitySpin": "Thin plants allowed by the saved mask. Set absolute population on Population.",
-    "beginButton": "Paint this set on the shared surface. Creates an empty mask when needed.",
-    "stopButton": "Finish painting and retain the editable stroke history.",
-    "fillButton": "Fill coverage and reset stroke history. Undo restores the previous field.",
-    "emptyButton": "Empty coverage and reset stroke history. Undo restores the previous field.",
-    "overlayMode": "Coverage feedback only; it does not show which plants survive spacing.",
-    "overlayColor": "Viewport color for this paint set's coverage feedback.",
-    "strokeEnabled": "Enable or disable the highlighted saved stroke without deleting it.",
-    "strokeErase": "Change the highlighted saved stroke between paint and erase.",
-    "strokeRadius": "Change the radius of the highlighted saved stroke.",
-    "strokeStrength": "Change the strength of the highlighted saved stroke.",
-    "strokeSoft": "Change the edge softness of the highlighted saved stroke.",
-    "deleteStroke": "Delete the highlighted stroke. Undo restores it.",
-    "resetTarget": "Confirm before replacing this set's paint with an empty mask on the current receiver.",
-    "detailsToggle": "Show or hide these advanced controls; their saved settings are preserved."
-  },
-  "backgroundUI": {
-    "backgroundList": "Exclude earlier painted coverage, fill between plants, combine both, or turn off.",
-    "applyBackground": "Save this background mode and the selected earlier-set references together."
-  },
+  "brushUI": {},
   "randomUI": {
     "projectCheck": "Project random movement back onto the receiving surface.",
     "alignCheck": "Align instances to the receiving surface normal.",

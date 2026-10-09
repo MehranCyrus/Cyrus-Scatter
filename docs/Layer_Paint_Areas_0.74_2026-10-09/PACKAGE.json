@@ -1,0 +1,30 @@
+{
+  "date": "2026-10-09",
+  "package": "dist/Layer_Paint_Areas_0.74_2026-10-09/Max2027/CyrusScatter-0.74.0-Max2027.mzp",
+  "sha256": "265313eeeac3bd6c947fd2d8dec138509a6c530c7a96e24a07789d7dbe13d00c",
+  "bytes": 677287,
+  "manifest": {
+    "product": "Cyrus Scatter",
+    "version": "0.74.0",
+    "max_year": 2027,
+    "toolset": "14.38.33130",
+    "windows_sdk": "10.0.19041.0",
+    "configuration": "Release",
+    "native_id": "cb871f35e251",
+    "files": {
+      "AminScatter.dlx": "d6df88b6755d8f8552e626f58d7721af5785b979837779b139f1efbeb2f8e8d3",
+      "CyrusBrush.dlx": "e4b7e4e48ef64e441b11c06114aec207b620db79e8f32d91715ea34cce0fa530",
+      "CyrusBrushStorage.dlh": "0201ca4406a5b89b5e8e08437f23d5933f7e6e060ca575305f2976898a5207e2",
+      "CyrusScatter.mcr": "05dba0d99e78105836157fa1cd403001fa620aa542eb7c7b02b8b33e416ea251",
+      "CyrusScatter.ms": "b297d60a2f9d9232f1aa4e859a386e620e69be12137ca2e191d79ef2462e1cfb",
+      "CyrusScatterEdit.dlm": "32928902bd28c7b17cada6c08a853cae340a4c09e478543313b7828af5a38bae",
+      "CyrusScatterStartup.ms": "fdf38b3bc83187eecb34b833bfff2751e78626e9e3dba41aa20a0ff7ff9e8405",
+      "INSTALL.txt": "e43f46034c85c3ab187b848afee907a1e458b1bad17b283ad63892cdd50b232b",
+      "Uninstall.ms": "59e2b84901fcefaae1dab59886cd2f4079df4f764c789238947e19c514b4ed49",
+      "install.ms": "99d159c8aab751b0226ec80d652d0e122a80d95e6e6212c35b282f3342cd2421",
+      "mzp.run": "8df2fc891a16df4cb46bd46ef94f3fc4b7722e7f7bfc9128f03aa6d392f5c990"
+    }
+  },
+  "verified_against_loaded_host": true,
+  "installed": false
+}

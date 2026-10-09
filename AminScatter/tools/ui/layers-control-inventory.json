@@ -230,6 +230,14 @@
   "layer": {
     "setsUI": [
       {
+        "kind": "checkbox",
+        "name": "paintedCheck"
+      },
+      {
+        "kind": "button",
+        "name": "importButton"
+      },
+      {
         "kind": "dropdownlist",
         "name": "setList"
       },
@@ -246,24 +254,12 @@
         "name": "nameEdit"
       },
       {
-        "kind": "spinner",
-        "name": "weightSpin"
+        "kind": "dropdownlist",
+        "name": "targetList"
       },
       {
         "kind": "checkbox",
         "name": "enabledCheck"
-      },
-      {
-        "kind": "checkbox",
-        "name": "visibleCheck"
-      },
-      {
-        "kind": "button",
-        "name": "upButton"
-      },
-      {
-        "kind": "button",
-        "name": "downButton"
       }
     ],
     "sourceUI": [
@@ -534,10 +530,6 @@
     ],
     "brushUI": [
       {
-        "kind": "dropdownlist",
-        "name": "coverageMode"
-      },
-      {
         "kind": "radiobuttons",
         "name": "modeRadio"
       },
@@ -552,10 +544,6 @@
       {
         "kind": "spinner",
         "name": "softSpin"
-      },
-      {
-        "kind": "spinner",
-        "name": "densitySpin"
       },
       {
         "kind": "button",
@@ -574,62 +562,16 @@
         "name": "emptyButton"
       },
       {
+        "kind": "spinner",
+        "name": "densitySpin"
+      },
+      {
         "kind": "dropdownlist",
         "name": "overlayMode"
       },
       {
         "kind": "colorpicker",
         "name": "overlayColor"
-      },
-      {
-        "kind": "listbox",
-        "name": "strokeList"
-      },
-      {
-        "kind": "checkbox",
-        "name": "strokeEnabled"
-      },
-      {
-        "kind": "checkbox",
-        "name": "strokeErase"
-      },
-      {
-        "kind": "spinner",
-        "name": "strokeRadius"
-      },
-      {
-        "kind": "spinner",
-        "name": "strokeStrength"
-      },
-      {
-        "kind": "spinner",
-        "name": "strokeSoft"
-      },
-      {
-        "kind": "button",
-        "name": "deleteStroke"
-      },
-      {
-        "kind": "button",
-        "name": "resetTarget"
-      },
-      {
-        "kind": "checkbutton",
-        "name": "detailsToggle"
-      }
-    ],
-    "backgroundUI": [
-      {
-        "kind": "dropdownlist",
-        "name": "backgroundList"
-      },
-      {
-        "kind": "multiListBox",
-        "name": "referenceList"
-      },
-      {
-        "kind": "button",
-        "name": "applyBackground"
       }
     ],
     "randomUI": [

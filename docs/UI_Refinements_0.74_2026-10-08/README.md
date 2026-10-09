@@ -1,5 +1,7 @@
 # Cyrus Scatter 0.74 UI refinements
 
+**9 October:** [Layer surfaces and Paint Areas](../Layer_Paint_Areas_0.74_2026-10-09/README.md) supersedes the ownership/brush sections below. This page preserves the October 8 receipts.
+
 **List resize correction, 8 October:** the first installer below is superseded by [the grip fix and corrected installer](GRIP_FIX.md). It fixes the artist-reported Cursor `pos` exceptions and revises the handle design. All 27 mounted list handles passed mouse-event regression checks; physical pointer/DPI acceptance remains pending.
 
 Development source, 8 October 2026. Package/native version **0.74.0**, UI **0.74**, calculation model **CyrusUnified1**, serialization **54**. Analyzer and MCP protocol versions remain independent. No normal-profile installation was performed.

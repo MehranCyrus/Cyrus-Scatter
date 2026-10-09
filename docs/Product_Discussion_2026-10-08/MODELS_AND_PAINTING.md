@@ -1,6 +1,6 @@
 # Models and painting: recommendation for 0.74
 
-8 October 2026. Design recommendation, not an implemented ownership change.
+8 October 2026 historical recommendation. Superseded by the [October 9 implementation and remaining gates](../Layer_Paint_Areas_0.74_2026-10-09/README.md). The implemented areas restrict their layer; they do not own models or add another population.
 
 ## What the references establish
 

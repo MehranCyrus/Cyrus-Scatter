@@ -74,7 +74,7 @@
             if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.74 native plugin and restart Max."
             local context=if classof view==CyrusSourceContainer then CyrusContainerResolve view else undefined
             root=if classof view==CyrusSourceContainer then (if context==undefined then undefined else context[1]) else view
-            editors=#(view.surfacesUI,view.managerUI,view.modelsUI,view.populationUI,view.coverageUI,view.areasUI,view.transformsUI,view.spacingUI,view.displayUI,view.statisticsUI)
+            editors=#(view.managerUI,view.surfacesUI,view.modelsUI,view.populationUI,view.coverageUI,view.areasUI,view.transformsUI,view.spacingUI,view.displayUI,view.statisticsUI)
             if root==undefined do (
                 for r in editors do (r.controlsReady=false;cyrusSetRolloutVisible r.hwnd false 0)
                 if isProperty view #containerUI do view.containerUI.bind()

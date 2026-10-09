@@ -1,6 +1,6 @@
 # Cyrus Scatter discussion backlog
 
-Updated 8 October 2026. The artist authorized a 0.74 implementation pass and Git backup. See [the implementation checklist and acceptance limits](../UI_Refinements_0.74_2026-10-08/README.md). Descriptions below preserve the original 0.73 discussion baseline; the implementation report supersedes those baseline descriptions where marked complete. The layer/set ownership decision remains open; see [the research-backed recommendation](MODELS_AND_PAINTING.md).
+Updated 8 October 2026. The artist authorized a 0.74 implementation pass and Git backup. See [the implementation checklist and acceptance limits](../UI_Refinements_0.74_2026-10-08/README.md). Descriptions below preserve the original 0.73 discussion baseline; the implementation report supersedes those baseline descriptions where marked complete. The October 9 layer/area ownership implementation and its remaining gates are recorded in [the current checklist](../Layer_Paint_Areas_0.74_2026-10-09/README.md); see [the research-backed recommendation](MODELS_AND_PAINTING.md).
 
 | Item | Subject | Status |
 | --- | --- | --- |
@@ -8,7 +8,7 @@ Updated 8 October 2026. The artist authorized a 0.74 implementation pass and Git
 | Issue 2 | Expanded sections reset after deselecting and reselecting Scatter | Implemented; mixed/all-open/all-closed session restoration host checks pass |
 | Issue 3 | Drag handles for resizing list height | [Shared cursor error fixed; flat grip design](../UI_Refinements_0.74_2026-10-08/GRIP_FIX.md); all 27 mounted handles pass event tests; physical pointer/DPI review remains |
 | Issue 4 | Independently collapsible settings groups inside main sections | Implemented for layer/source Properties; folding and reflow host checks pass |
-| Issue 5 | Simple naming and placement of paint-set controls | Painting-only presentation proposed; artist is examining current behavior before deciding |
+| Issue 5 | Simple naming and placement of paint-set controls | Implemented for the new workflow: Layers own receivers/models; Paint Areas are optional and receiver-bound. Old multi-set conversion remains pending. |
 | Issue 6 | Compact action icons and editable names and identification colors | Implemented; label-only rename, independent colors, copy/save and Manual isolation checks pass; visual/DPI acceptance remains |
 | Reference 1 | Separate downloadable library packages | Observation recorded; no addition agreed |
 | Reference 2 | Forest settings and presentation | Comparison recorded; no feature-parity goal agreed |
