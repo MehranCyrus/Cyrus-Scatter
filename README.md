@@ -1,5 +1,7 @@
 # Cyrus Scatter
 
+**0.75 workflow consolidation — 9 October 2026:** [Current workflow, fixes, testing and remaining work](docs/Consolidation_0.75_2026-10-09/README.md). Models come first, containers stay under Advanced, Painting is optional, and ordinary spacing offers within-layer/between-layer choices. Manual Undo no longer publishes pending edits. Brush preparation reuses unchanged strokes. Stable receiver generation and final-region storage remain unfinished.
+
 **Layer surfaces and Paint Areas — 9 October 2026:** [Current workflow, tested changes, compatibility and remaining work](docs/Layer_Paint_Areas_0.74_2026-10-09/README.md). Layers now own receiving surfaces; optional named areas can paint different receivers in one layer. The individual stroke editor is removed. Canonical region storage and stable per-receiver generation remain unfinished.
 
 **0.74 list resize correction — 8 October 2026:** [Fixed cursor errors, revised handles, regression evidence and corrected Max 2027 installer](docs/UI_Refinements_0.74_2026-10-08/GRIP_FIX.md). This supersedes the first 0.74 package.
@@ -20,7 +22,7 @@ Native C++ and MAXScript sources for Cyrus Scatter and Cyrus Surface Analyzer fo
 
 ## Current state
 
-**Cyrus Scatter 0.74 development**, package/native **0.74.0**, serialization **54**, model **`CyrusUnified1`**. [Current UI changes and evidence](docs/UI_Refinements_0.74_2026-10-08/README.md). The [unified implementation](docs/Unified_System_0.73_2026-10-06/README.md) removes unpublished old scene policies/schema compatibility, ports useful Line/Analyzer and constrained Relax features, and adds labelled source-container helpers with linked Modify editing and transactional static source following. [Current layer/painting workflow](docs/Layer_Paint_Areas_0.74_2026-10-09/README.md), [results](docs/Unified_System_0.73_2026-10-06/RESULTS.md), [packages](docs/Unified_System_0.73_2026-10-06/PACKAGE.md) and [remaining roadmap](docs/Unified_System_0.73_2026-10-06/ROADMAP.md).
+**Cyrus Scatter 0.75 development**, package/native **0.75.0**, serialization **54**, model **`CyrusUnified1`**. [Current workflow and evidence](docs/Consolidation_0.75_2026-10-09/README.md). The [unified implementation](docs/Unified_System_0.73_2026-10-06/README.md) removes unpublished old scene policies/schema compatibility, ports useful Line/Analyzer and constrained Relax features, and adds labelled source-container helpers with linked Modify editing and transactional static source following. [Layer/painting ownership](docs/Layer_Paint_Areas_0.74_2026-10-09/README.md) remains; dated results and packages qualify only their exact source/native pairs.
 
 The last packaged 0.73 Max 2027 development test build is in [Layer_Actions_Fix_0.73_2026-10-07](dist/Layer_Actions_Fix_0.73_2026-10-07/Max2027/START_HERE.txt). It pairs the compact workflow and corrected button lifetimes with the verified unchanged native binaries. [Exact build identities](dist/Layer_Actions_Fix_0.73_2026-10-07/BUILD.json) and [known findings](docs/Full_Qualification_0.73_2026-10-07/RESULTS.md) identify this delivery; the version caption alone does not.
 

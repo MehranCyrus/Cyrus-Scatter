@@ -328,7 +328,7 @@ setsUI_1
 )
 global CyrusLayerEditor_sourceUI_1
 fn CyrusLayerEditor_sourceUI_1 = (
-    rollout sourceUI_1 "Models and settings - paint set" width:132 autoLayoutOnResize:true (
+    rollout sourceUI_1 "Models and settings - layer" width:132 autoLayoutOnResize:true (
         local root=CyrusLayerUIRoot,owner=CyrusLayerUIOwner,panel=CyrusLayerUIPanel
         local setSpecific=true
         local binding=false,
@@ -342,8 +342,8 @@ fn CyrusLayerEditor_sourceUI_1 = (
         colorpicker idColor "" color:(color 100 220 120) pos:[4,118] width:22 height:22 modal:true notifyAfterAccept:true tooltip:"Viewport identification color. This does not change clustering or model frequency."
         multiListBox plantList "Sources (Ctrl/Shift)" items:#() pos:[4,8] height:6 width:(sourceUI_1.width-8)
         button selectFromScene "Choose from list..." pos:[4,170] width:((sourceUI_1.width-12)/2) tooltip:"Choose one or more source models by name."
-        pickbutton addPlant "Pick model" pos:[4,140] width:((sourceUI_1.width-12)/2) tooltip:"Pick a scene model for this paint set. The editor stays on its layer."
-        button addSelected "Add selection" pos:[(sourceUI_1.width/2+2),140] width:((sourceUI_1.width-12)/2) tooltip:"Add the currently selected scene objects to this paint set."
+        pickbutton addPlant "Pick model" pos:[4,140] width:((sourceUI_1.width-12)/2) tooltip:"Pick a scene model for this layer. The editor stays on its layer."
+        button addSelected "Add selection" pos:[(sourceUI_1.width/2+2),140] width:((sourceUI_1.width-12)/2) tooltip:"Add the currently selected scene objects to this layer."
         button removePlant "Remove rows" pos:[4,200] width:(sourceUI_1.width-8) tooltip:"Unregister highlighted rows. To keep their settings, park models outside a source rectangle instead."
         button selectPlant "Select sources" pos:[(sourceUI_1.width/2+2),170] width:((sourceUI_1.width-12)/2) tooltip:"Select the highlighted source models in the scene."
         button addPoint "Add Point" pos:[4,460] width:((sourceUI_1.width-12)/2) tooltip:"Add a placeholder source that can later be replaced by a model."
@@ -354,7 +354,7 @@ fn CyrusLayerEditor_sourceUI_1 = (
         colorpicker groupColor "Color: " color:(color 100 220 120) pos:[4,606] width:(sourceUI_1.width-8) modal:true notifyAfterAccept:true tooltip:"Assign a color group to highlighted sources when the color is accepted."
         button applyColor "Apply to selected rows" pos:[4,634] width:(sourceUI_1.width-8) tooltip:"Assign the chosen color group to all highlighted source rows."
         label colorHelp "OK saves the selected color." pos:[4,664] width:(sourceUI_1.width-8)
-        spinner weightSpin "Weight: " range:[0,1,1] scale:0.01 pos:[4,236] width:((sourceUI_1.width-12)/2) fieldWidth:82 tooltip:"Relative source share within this paint set. Zero disables the source."
+        spinner weightSpin "Weight: " range:[0,1,1] scale:0.01 pos:[4,236] width:((sourceUI_1.width-12)/2) fieldWidth:82 tooltip:"Relative model frequency in this layer. Zero disables the model."
         label weightHelp "0 = off; relative share" pos:[4,378] width:(sourceUI_1.width-8)
         spinner sourceZSpin "Z Offset: " range:[-1000000,1000000,0] type:#worldunits pos:[4,266] width:((sourceUI_1.width-12)/2) fieldWidth:82 tooltip:"Offset instances of highlighted models along their placement normal."
         spinner sourceScaleSpin "Scale: " range:[0,10000,1] scale:0.01 pos:[(sourceUI_1.width/2+2),236] width:((sourceUI_1.width-12)/2) fieldWidth:82 tooltip:"Per-model scale multiplier. 1 keeps the model's original scale."
@@ -513,7 +513,7 @@ global CyrusLayerEditor_sourceContainersUI_1
 fn CyrusLayerEditor_sourceContainersUI_1 = (
     rollout sourceContainersUI_1 "Source containers - own / inherited" width:146 autoLayoutOnResize:true (
         local root=CyrusLayerUIRoot,owner=CyrusLayerUIOwner,panel=CyrusLayerUIPanel,controlsReady=false,binding=false,setSpecific=true,modes=#()
-        dropdownlist modeList "Source pool" items:#() pos:[4,8] width:(sourceContainersUI_1.width-8) tooltip:"Use a manual list or an explicit rectangle pool. Other paint sets may inherit the layer pool."
+        dropdownlist modeList "Source pool" items:#() pos:[4,8] width:(sourceContainersUI_1.width-8) tooltip:"Use the model list directly, or optionally collect models from source rectangles."
         listbox containersList "Rectangles" items:#() pos:[4,60] width:(sourceContainersUI_1.width-8) height:4
         button createContainer "Create container" pos:[4,154] width:(sourceContainersUI_1.width-8) tooltip:"Create a Rectangle for this owner. Put source-model pivots inside its local XY bounds."
         pickbutton pickContainer "Pick boundary" filter:CyrusSourceContainerFilter pos:[4,184] width:(sourceContainersUI_1.width-8) tooltip:"Link a Cyrus container, or copy a square-corner Rectangle into a container. The original spline is preserved."
@@ -765,7 +765,7 @@ fn CyrusLayerEditor_areaUI_1 = (
             )
             areaList.selection=#{};obj.markInputDirty();updateAreas();CyrusViewportRedraw()
         )
-        on refreshAreas pressed do if controlsReady and not binding and obj!=undefined do (obj.markInputDirty();obj.refreshPreview();CyrusViewportRedraw())
+        on refreshAreas pressed do if controlsReady and not binding and obj!=undefined do (obj.markInputDirty();(if obj.overlapOwner==undefined then obj else obj.overlapOwner).refreshAll();CyrusViewportRedraw())
 
 
 
@@ -1388,9 +1388,9 @@ fn CyrusLayerEditor_instanceRadiusUI_1 = (
         local root=CyrusLayerUIRoot,owner=CyrusLayerUIOwner,panel=CyrusLayerUIPanel,controlsReady=false,setSpecific=true
         dropdownlist radiusMode "Selected CS Edit instances" items:#("World radius","Radius multiplier") selection:1 pos:[4,8] width:(instanceRadiusUI_1.width-8) tooltip:"Use an absolute world radius or multiply the selected instances' source radius."
         spinner radiusSpin "Value:" range:[0,1e9,1] pos:[4,60] width:(instanceRadiusUI_1.width-8) fieldWidth:82 tooltip:"Value applied only when Set selected radii is pressed."
-        button applyRadius "Set selected radii" pos:[4,88] width:(instanceRadiusUI_1.width-8) tooltip:"Apply radius overrides to selected CS Edit instances in this paint set."
+        button applyRadius "Set selected radii" pos:[4,88] width:(instanceRadiusUI_1.width-8) tooltip:"Apply radius overrides to selected instances in this layer or older model group."
         button resetRadius "Clear selected overrides" pos:[4,116] width:(instanceRadiusUI_1.width-8) tooltip:"Restore the selected instances' inherited source radii."
-        button clearRadius "Clear this set's overrides" pos:[4,144] width:(instanceRadiusUI_1.width-8) tooltip:"Remove every instance-radius override belonging to this paint set."
+        button clearRadius "Clear radius overrides" pos:[4,144] width:(instanceRadiusUI_1.width-8) tooltip:"Remove instance-radius overrides for this layer or older model group."
         label info "Select instances with CS Edit before applying a radius. Overrides follow their stable instance identities." pos:[4,180] width:(instanceRadiusUI_1.width-8) height:54
         fn currentSet = (root.selectedPaintSet owner)
         fn bind layer = (for c in instanceRadiusUI_1.controls do c.enabled=true;controlsReady=true)
@@ -1416,7 +1416,7 @@ fn CyrusLayerEditor_spacingUI_1 = (
         spinner finalStrengthSpin "Strength:" pos:[4,156] width:(spacingUI_1.width-8) fieldWidth:82 range:[0,1,.3]
         spinner finalIterSpin "Iterations:" pos:[4,184] width:(spacingUI_1.width-8) fieldWidth:82 type:#integer range:[0,100,5]
         spinner finalMoveSpin "Max movement:" pos:[4,212] width:(spacingUI_1.width-8) fieldWidth:82 type:#worldUnits range:[0,1e9,10]
-        label orderHint "Candidates move first; Brush, Edit, radii and spacing follow. Each paint set uses the layer recipe." pos:[4,244] width:(spacingUI_1.width-8) height:58
+        label orderHint "Candidates move first; optional Painting, instance edits and spacing follow." pos:[4,244] width:(spacingUI_1.width-8) height:58
         fn bind layer = (
             binding=true;obj=owner
             relaxCheck.checked=obj.relaxEnabled;spacingSpin.value=obj.relaxSpacing;iterationsSpin.value=obj.relaxIterations;strengthSpin.value=obj.relaxStrength*100
@@ -1445,7 +1445,7 @@ global CyrusLayerEditor_separationUI_1
 fn CyrusLayerEditor_separationUI_1 = (
     rollout separationUI_1 "Cleanup - accepted layer" width:146 autoLayoutOnResize:true (
         local root=CyrusLayerUIRoot,owner=CyrusLayerUIOwner,panel=CyrusLayerUIPanel,controlsReady=false,binding=false
-        checkbox cleanCheck "Remove isolated plants" pos:[4,8] width:(separationUI_1.width-8) tooltip:"Clean the accepted union of this layer's paint sets after all three spacing scopes. Protected edits remain."
+        checkbox cleanCheck "Remove isolated plants" pos:[4,8] width:(separationUI_1.width-8) tooltip:"Remove isolated plants after spacing. Protected instance edits remain."
         spinner neighborSpin "Neighbor distance:" type:#worldUnits range:[0.001,1e9,100] pos:[4,36] width:(separationUI_1.width-8) fieldWidth:82
         spinner minNeighborSpin "Minimum neighbors:" type:#integer range:[0,10000,2] pos:[4,64] width:(separationUI_1.width-8) fieldWidth:82
         spinner minIslandSpin "Minimum island size:" type:#integer range:[0,100000,5] pos:[4,92] width:(separationUI_1.width-8) fieldWidth:82
@@ -1505,7 +1505,7 @@ fn CyrusLayerEditor_detailsUI_1 = (
         on detailsUI_1 open do bind owner
         on detailsUI_1 close do controlsReady=false
         on refreshButton pressed do bind owner
-        on helpButton pressed do messageBox (info.text+"\n\nPaint sets own assets and independent stroke history. Population, area, transforms and cleanup belong to the layer. Enabled set weights divide the layer budget.\n\nPoint Cloud uses many samples per plant; Plant centres uses one. Preview budgets affect display. Hidden owners still affect collision and render; disabled owners do not. Manual shows the previous completed build until Update. Paint feedback shows coverage, not accepted instances.\n\n"+"Visible order decides ordinary winners. Self, sibling-set and layer-pair rules are independent. Radius factor x (A + B) + gap, in XY or 3D. Protected edits survive and report conflicts. Background coverage uses earlier siblings. Accepted target retries a bounded prefix. Relax moves candidates before Brush, edits and collisions; each set uses its layer recipe."+"\n\nBase cannot be removed separately; disable or erase it. Capacity: ten populations, including sets. A Point source is an accepted placeholder. Weighted Empty sources are supported in candidate-budget mode.") title:"Cyrus layer help"
+        on helpButton pressed do messageBox (info.text+"\n\nEach layer owns its surfaces, models and amount. Optional Paint Areas restrict where those models appear; areas do not create separate populations.\n\nPoint Cloud samples and viewport budgets control display detail. Manual preserves the previous completed result until Update scatter.\n\nEarlier layers win ordinary spacing conflicts. Radius factor x (radius A + radius B) + extra gap sets the required distance. Protected edits are retained and conflicts reported. Advanced settings offer bounded retries, Relax and cleanup. Older files may retain separate model groups.") title:"Cyrus layer help"
         on detailsUI_1 rolledUp state do (CyrusContainerPanel root).layoutPanels()
     )
 
@@ -1515,8 +1515,8 @@ global CyrusLayerEditor_workflowUI_1
 fn CyrusLayerEditor_workflowUI_1 = (
     rollout workflowUI_1 "Workflow and ownership" width:146 autoLayoutOnResize:true (
         local root=CyrusLayerUIRoot,owner=CyrusLayerUIOwner,panel=CyrusLayerUIPanel,controlsReady=false
-        label steps "1. SETUP\nChoose receiving surfaces in Modify. Add layers in the order they should calculate.\n\n2. ASSETS\nChoose models for each paint set, or place model pivots inside a source rectangle. Move outside to park a model without losing its settings.\n\n3. POPULATION\nSet the layer count or density. Enabled paint-set weights share that population. Accepted target retries within explicit limits.\n\n4. PAINT\nEnable coverage, then paint on the receiving surface. Area limits apply to all sets in this layer. Use earlier sets as explicit background references.\n\n5. TRANSFORM + SPACING\nLayer transforms apply to every set. Set self-spacing, between-set rules and layer pairs separately. Earlier owners occupy space first.\n\n6. UPDATE + INSPECT\nManual keeps the last completed result until Update. Live publishes after edits. Hidden owners still calculate; disabled owners do not. Counts here describe cached results, not an estimate of available room." pos:[4,8] width:(workflowUI_1.width-8) height:500
-        label help "The editor stays on this Scatter when scene selection changes. Use the Layer and Paint set selectors to change ownership. Hover buttons and numeric fields for short explanations.\n\nPoint Cloud samples and viewport budgets affect display. They are not plant counts or a promise of presented FPS." pos:[4,516] width:(workflowUI_1.width-8) height:120
+        label steps "1. LAYER\nAdd a layer for a group of plants, such as Grass or Trees.\n\n2. SURFACES\nAdd the surfaces this layer should cover. Each layer has its own list.\n\n3. MODELS\nAdd scene models. Select a row to edit its label, preview color and Properties. Source containers are optional under Advanced.\n\n4. AMOUNT\nChoose a total count or plants per square meter. Spacing and masks can reduce the final count.\n\n5. UPDATE SCATTER\nManual waits for Update scatter. Live responds to relevant edits.\n\nOPTIONAL PAINTING\nEnable Use Paint Areas to restrict this layer. Add a named area, choose its surface and paint. Further strokes edit the same area. Turn painting off to use the whole surfaces without deleting your paint." pos:[4,8] width:(selected_workflowUI.width-8) height:500
+        label help "Layers own models, amount and surfaces. Paint Areas only control where the layer appears. Advanced settings are optional. Older files may retain separate model groups.\n\nViewport budgets change how much is shown, not the final plant count." pos:[4,516] width:(selected_workflowUI.width-8) height:120
         fn bind layer = (controlsReady=true)
         on workflowUI_1 open do bind owner
         on workflowUI_1 close do controlsReady=false
@@ -1570,7 +1570,7 @@ fn CyrusBindLayerEditor root = (
 fn CyrusOpenLayerEditor root owner = (
     if owner==undefined or findItem root.layerObjects owner==0 do return false
     if CyrusLayerEditor!=undefined then (CyrusLayerEditor.retarget root owner;CyrusLayerEditor.visible=true;return true)
-    rollout editor "Cyrus Scatter 0.74 - Layer Editor" width:920 height:800 autoLayoutOnResize:true (
+    rollout editor "Cyrus Scatter 0.75 - Layer Editor" width:920 height:800 autoLayoutOnResize:true (
         local root=CyrusLayerUIRoot,owner=CyrusLayerUIOwner,ownerNode=undefined,binding=false,controlsReady=false,closing=false
         local clientSize=CyrusLayerEditorSize,layingOut=false
         local editors=#(),pages=#(),pageEditors=#(#(),#(),#(),#(),#(),#()),built=#{},topic=1,members=#(),sets=#(),pageSections=#(),ownerStates=#(),lastSet=undefined
@@ -1621,7 +1621,7 @@ fn CyrusOpenLayerEditor root owner = (
             local unit=if root.viewportMode==1 and not root.groupCenters then " preview samples" else " shown"
             local text=(if root.updateMode==1 then "Manual" else "Live")+" | "+summary[3]+" | "+(CyrusUICount summary[1])+" placed / "+(CyrusUICount summary[2])+unit
             if resultInfo.text!=text do resultInfo.text=text
-            local caption="Cyrus Scatter 0.74 | "+ownerNode.name+" / "+(root.layerCaption owner)
+            local caption="Cyrus Scatter 0.75 | "+ownerNode.name+" / "+(root.layerCaption owner)
             if editor.title!=caption do editor.title=caption
             local setupText="Setup: "+ownerNode.name+"  |  Selecting scene models keeps this editor on its layer"
             if setupInfo.text!=setupText do setupInfo.text=setupText
@@ -2836,7 +2836,7 @@ initialRollupState:0x8
     parameters plantingSettings (
         groupCenters type:#boolean default:false
     )
-    local groupSnapshotKey="",groupSnapshotRows=#(),groupSolving=false,groupDisplayOnly=false
+    local groupSnapshotKey="",groupSnapshotRows=#(),groupSolving=false,groupDisplayOnly=false,procExplicitUpdate=false
     local groupBuilds=0,groupHits=0,groupPrepareKey="",groupPrepareRows=#(),groupPrepareBuilds=0
     local groupEligible=0,groupConflicts=0,groupRemoved=0
     fn sharedSpacing = (overlapOwner!=undefined)
@@ -2975,7 +2975,7 @@ initialRollupState:0x8
     fn uiLayerStats = (
         CyrusLayerStatusData hasResult:(cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
     )
-    fn uiVersion = "0.74"
+    fn uiVersion = "0.75"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified1")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -3174,7 +3174,7 @@ initialRollupState:0x8
         generatedCount=state[5];previewBuildCount=state[6];previewBuildMs=state[7]
         requestedCount=state[8];densityCapped=state[9]
     )
-    fn forcePreviewUpdate = (markInputDirty();previewBuildCount=0)
+    fn forcePreviewUpdate = (markInputDirty();if updateMode==2 or cachedPoints==undefined do previewBuildCount=0)
     fn ensureLayers = layerObjects.count
     fn syncLayerSurface obj targets:undefined layerBudget:undefined = (
         obj.setOverlapOwner this
@@ -3278,7 +3278,10 @@ initialRollupState:0x8
     )
     fn refreshAll = (
         procManualRevision+=1
-        for entry in (layerEntries()) do entry[2].refreshPreview()
+        local previousExplicit=procExplicitUpdate
+        procExplicitUpdate=true
+        try (for entry in (layerEntries()) do entry[2].refreshPreview()) catch(procExplicitUpdate=previousExplicit;throw())
+        procExplicitUpdate=previousExplicit
         if (CyrusContainerPanel this).controlsReady do (CyrusContainerPanel this).refreshStats()
         this.refreshBrushEditors()
         CyrusViewportRedraw()
@@ -3952,14 +3955,14 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This unpublished development scene uses a retired Cyrus settings schema. Create a new 0.74 setup."
+        local message="This unpublished development scene uses a retired Cyrus settings schema. Create a new 0.75 setup."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
     fn procValidate = (
         this.procAssertSchema()
-        if cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined do throw "Cyrus 0.74 requires the matching native plugin binaries. Restart the private test host with the complete matching script/native pair."
+        if cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined do throw "Cyrus 0.75 requires the matching native plugin binaries. Restart the private test host with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -4022,7 +4025,7 @@ initialRollupState:0x8
     fn procRefreshPreview = (
         local root=overlapOwner
         try (
-            if not root.groupDisplayOnly or root.groupSnapshotKey=="" do root.evaluateProcedural()
+            if root.groupSnapshotKey=="" or (not root.groupDisplayOnly and (root.updateMode==2 or root.procExplicitUpdate)) do root.evaluateProcedural()
             local pending=root.groupSnapshotKey!=root.procInputKey()
             root.procEnsureDisplay pending:pending
             dirty=pending;cachedPointCount
@@ -4181,14 +4184,14 @@ initialRollupState:0x8
         CyrusBindLayerEditor this
         true
     )
-    rollout mainUI "Cyrus Scatter 0.74" width:#cmdPanel height:30 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.75" width:#cmdPanel height:30 autoLayoutOnResize:true (
         local root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),owner=undefined,layerPagesVisible=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for this entire Scatter setup."
         timer mountTimer interval:1 active:false
         timer statusTimer interval:1000 active:false
         fn layoutPanels = true
         fn refreshTitles = (
-            if owner!=undefined and root.selected_setsUI!=undefined do root.selected_setsUI.title="Paint sets | "+(root.layerCaption owner)
+            if owner!=undefined and root.selected_setsUI!=undefined do root.selected_setsUI.title="Paint Areas | "+(root.layerCaption owner)
             CyrusContainerRefreshLabels root;CyrusBindLayerEditor root;true
         )
         fn refreshStats = (
@@ -4252,7 +4255,7 @@ initialRollupState:0x8
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.74 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.75 native plugin and restart Max."
             root.syncLayerIdentity()
             roots=#(root.flow_updateUI,root.flow_surfaceUI,root.flow_previewUI,root.flow_layersUI)
             root.updateUI=roots[1];root.surfaceUI=roots[2];root.previewUI=roots[3];root.layersUI=roots[4]
@@ -4455,8 +4458,8 @@ initialRollupState:0x8
         listbox layerList "Layer | placed | status" pos:[8,8] width:(flow_layersUI.width-16) height:6
         button editButton "Edit layer in window..." pos:[8,138] width:(flow_layersUI.width-16) height:28 tooltip:"Optional floating view of the same layer settings. Select a layer to edit it below in Modify."
         button addButton "Add layer" pos:[8,174] width:(flow_layersUI.width-16) tooltip:"Add a layer and edit its controls below. Layers calculate from top to bottom."
-        button copyButton "Copy" pos:[8,204] width:((flow_layersUI.width-22)/2) tooltip:"Copy this layer, its paint sets and their settings."
-        button removeButton "Remove" pos:[(flow_layersUI.width/2+3),204] width:((flow_layersUI.width-22)/2) tooltip:"Remove this layer and its paint sets. Undo restores them."
+        button copyButton "Copy" pos:[8,204] width:((flow_layersUI.width-22)/2) tooltip:"Copy this layer, its models, surfaces and Paint Areas."
+        button removeButton "Remove" pos:[(flow_layersUI.width/2+3),204] width:((flow_layersUI.width-22)/2) tooltip:"Remove this layer and its Paint Areas. Undo restores them."
         colorpicker layerColor "" color:(color 100 220 120) pos:[8,238] width:22 height:22 modal:true notifyAfterAccept:true tooltip:"Identification color for this layer. Choose Layer colors in Viewport & render to display it."
         edittext nameEdit "Name:" pos:[8,236] width:(flow_layersUI.width-16) tooltip:"Rename the selected layer without changing its identity."
         checkbox visibleCheck "Visible in viewport" pos:[8,264] width:(flow_layersUI.width-16) tooltip:"Hide display only. Hidden layers still calculate and affect spacing."
@@ -4585,7 +4588,7 @@ initialRollupState:0x8
         on selected_setsUI close do controlsReady=false
     )
 
-    rollout selected_sourceUI "Models and settings - paint set" width:#cmdPanel category:60 autoLayoutOnResize:true (
+    rollout selected_sourceUI "Models and settings - layer" width:#cmdPanel category:60 autoLayoutOnResize:true (
         local root=undefined,owner=undefined,panel=undefined
         local setSpecific=true
         local binding=false,
@@ -4599,8 +4602,8 @@ initialRollupState:0x8
         colorpicker idColor "" color:(color 100 220 120) pos:[4,118] width:22 height:22 modal:true notifyAfterAccept:true tooltip:"Viewport identification color. This does not change clustering or model frequency."
         multiListBox plantList "Sources (Ctrl/Shift)" items:#() pos:[4,8] height:6 width:(selected_sourceUI.width-8)
         button selectFromScene "Choose from list..." pos:[4,170] width:((selected_sourceUI.width-12)/2) tooltip:"Choose one or more source models by name."
-        pickbutton addPlant "Pick model" pos:[4,140] width:((selected_sourceUI.width-12)/2) tooltip:"Pick a scene model for this paint set. The editor stays on its layer."
-        button addSelected "Add selection" pos:[(selected_sourceUI.width/2+2),140] width:((selected_sourceUI.width-12)/2) tooltip:"Add the currently selected scene objects to this paint set."
+        pickbutton addPlant "Pick model" pos:[4,140] width:((selected_sourceUI.width-12)/2) tooltip:"Pick a scene model for this layer. The editor stays on its layer."
+        button addSelected "Add selection" pos:[(selected_sourceUI.width/2+2),140] width:((selected_sourceUI.width-12)/2) tooltip:"Add the currently selected scene objects to this layer."
         button removePlant "Remove rows" pos:[4,200] width:(selected_sourceUI.width-8) tooltip:"Unregister highlighted rows. To keep their settings, park models outside a source rectangle instead."
         button selectPlant "Select sources" pos:[(selected_sourceUI.width/2+2),170] width:((selected_sourceUI.width-12)/2) tooltip:"Select the highlighted source models in the scene."
         button addPoint "Add Point" pos:[4,460] width:((selected_sourceUI.width-12)/2) tooltip:"Add a placeholder source that can later be replaced by a model."
@@ -4611,7 +4614,7 @@ initialRollupState:0x8
         colorpicker groupColor "Color: " color:(color 100 220 120) pos:[4,606] width:(selected_sourceUI.width-8) modal:true notifyAfterAccept:true tooltip:"Assign a color group to highlighted sources when the color is accepted."
         button applyColor "Apply to selected rows" pos:[4,634] width:(selected_sourceUI.width-8) tooltip:"Assign the chosen color group to all highlighted source rows."
         label colorHelp "OK saves the selected color." pos:[4,664] width:(selected_sourceUI.width-8)
-        spinner weightSpin "Weight: " range:[0,1,1] scale:0.01 pos:[4,236] width:((selected_sourceUI.width-12)/2) fieldWidth:82 tooltip:"Relative source share within this paint set. Zero disables the source."
+        spinner weightSpin "Weight: " range:[0,1,1] scale:0.01 pos:[4,236] width:((selected_sourceUI.width-12)/2) fieldWidth:82 tooltip:"Relative model frequency in this layer. Zero disables the model."
         label weightHelp "0 = off; relative share" pos:[4,378] width:(selected_sourceUI.width-8)
         spinner sourceZSpin "Z Offset: " range:[-1000000,1000000,0] type:#worldunits pos:[4,266] width:((selected_sourceUI.width-12)/2) fieldWidth:82 tooltip:"Offset instances of highlighted models along their placement normal."
         spinner sourceScaleSpin "Scale: " range:[0,10000,1] scale:0.01 pos:[(selected_sourceUI.width/2+2),236] width:((selected_sourceUI.width-12)/2) fieldWidth:82 tooltip:"Per-model scale multiplier. 1 keeps the model's original scale."
@@ -4766,7 +4769,7 @@ initialRollupState:0x8
     )
     rollout selected_sourceContainersUI "Source containers - own / inherited" width:#cmdPanel category:70 autoLayoutOnResize:true (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,setSpecific=true,modes=#()
-        dropdownlist modeList "Source pool" items:#() pos:[4,8] width:(selected_sourceContainersUI.width-8) tooltip:"Use a manual list or an explicit rectangle pool. Other paint sets may inherit the layer pool."
+        dropdownlist modeList "Source pool" items:#() pos:[4,8] width:(selected_sourceContainersUI.width-8) tooltip:"Use the model list directly, or optionally collect models from source rectangles."
         listbox containersList "Rectangles" items:#() pos:[4,60] width:(selected_sourceContainersUI.width-8) height:4
         button createContainer "Create container" pos:[4,154] width:(selected_sourceContainersUI.width-8) tooltip:"Create a Rectangle for this owner. Put source-model pivots inside its local XY bounds."
         pickbutton pickContainer "Pick boundary" filter:CyrusSourceContainerFilter pos:[4,184] width:(selected_sourceContainersUI.width-8) tooltip:"Link a Cyrus container, or copy a square-corner Rectangle into a container. The original spline is preserved."
@@ -5006,7 +5009,7 @@ initialRollupState:0x8
             )
             areaList.selection=#{};obj.markInputDirty();updateAreas();CyrusViewportRedraw()
         )
-        on refreshAreas pressed do if controlsReady and not binding and obj!=undefined do (obj.markInputDirty();obj.refreshPreview();CyrusViewportRedraw())
+        on refreshAreas pressed do if controlsReady and not binding and obj!=undefined do (obj.markInputDirty();(if obj.overlapOwner==undefined then obj else obj.overlapOwner).refreshAll();CyrusViewportRedraw())
 
 
 
@@ -5468,8 +5471,8 @@ initialRollupState:0x8
         on selected_diversityUI rolledUp state do (CyrusContainerPanel root).bindSection selected_diversityUI
     )
     rollout selected_proceduralUI "Spacing rules - selected scope" width:146 category:150 autoLayoutOnResize:true (
-        local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,setSpecific=true,peers=#()
-        dropdownlist scopeList "Spacing scope" items:#("This paint set","Default between sets","Pair of paint sets","Pair of layers","Layer default within sets") pos:[4,12] width:(selected_proceduralUI.width-8) selection:1 tooltip:"Each scope is independent. A set can inherit or override its layer's within-set default."
+        local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,setSpecific=true,peers=#(),scopeRows=#(1,4)
+        dropdownlist scopeList "Spacing scope" items:#("Within this layer","Between layers") pos:[4,12] width:(selected_proceduralUI.width-8) selection:1 tooltip:"Choose spacing within the selected layer or between it and another layer."
         dropdownlist peerList "Other owner" items:#() pos:[4,64] width:(selected_proceduralUI.width-8)
         checkbox enabledCheck "Enable this spacing" pos:[4,118] width:(selected_proceduralUI.width-8)
         spinner multiplierSpin "Radius factor:" range:[0,10000,1] pos:[4,146] width:(selected_proceduralUI.width-8) fieldWidth:82
@@ -5477,9 +5480,10 @@ initialRollupState:0x8
         checkbox planarCheck "XY distance (off = 3D)" pos:[4,202] width:(selected_proceduralUI.width-8)
         label ruleInfo "Factor x (radius A + radius B) + gap" pos:[4,230] width:(selected_proceduralUI.width-8) height:40
         button resetRule "Use inherited / default" pos:[4,274] width:(selected_proceduralUI.width-8)
+        fn currentScope = (if scopeList.selection>0 and scopeList.selection<=scopeRows.count then scopeRows[scopeList.selection] else 1)
         fn currentSet = (root.selectedPaintSet owner)
         fn bindRule resetPeer:false = (
-            local wasBinding=binding,leaf=currentSet(),scope=scopeList.selection,rule,previous=undefined,pair=scope==3 or scope==4
+            local wasBinding=binding,leaf=currentSet(),scope=currentScope(),rule,previous=undefined,pair=scope==3 or scope==4
             if not resetPeer and peerList.selection>0 and peerList.selection<=peers.count do previous=peers[peerList.selection]
             binding=true
             try (
@@ -5501,16 +5505,23 @@ initialRollupState:0x8
                     else if scope==3 do rule=#(owner.procSiblingEnabled,owner.procSiblingMultiplier,owner.procSiblingGap,owner.procSiblingPlanar)
                 )
                 enabledCheck.checked=rule[1];multiplierSpin.value=rule[2];gapSpin.value=rule[3];planarCheck.checked=rule[4]
-                ruleInfo.text=if not editable then "Add another owner for a pair rule." else if scope==1 and not leaf.procSelfOverride then "Using layer default. Edit to override this paint set." else "Factor x (radius A + radius B) + gap. Saves automatically."
+                ruleInfo.text=if not editable then "Add another owner for a pair rule." else if scope==1 and not leaf.procSelfOverride then "Using the saved default. Changing a value creates an override." else "Factor x (radius A + radius B) + gap. Saves automatically."
                 binding=wasBinding
             )catch(binding=wasBinding;throw())
         )
-        fn bind layer = (binding=true;bindRule();controlsReady=true;binding=false)
+        fn bind layer = (
+            binding=true
+            local previous=currentScope(),older=(root.layerSets owner).count>1
+            scopeRows=if older then #(1,2,3,4,5) else #(1,4)
+            scopeList.items=if older then #("Within model group","Between model groups","Pair of model groups","Between layers","Layer default") else #("Within this layer","Between layers")
+            scopeList.selection=amax 1 (findItem scopeRows previous)
+            bindRule();controlsReady=true;binding=false
+        )
         on selected_proceduralUI open do (root=this;controlsReady=false)
         on selected_proceduralUI close do controlsReady=false
         fn saveRule = (
             if binding or not controlsReady do return false
-            local leaf=currentSet(),scope=scopeList.selection,pair=scope==3 or scope==4
+            local leaf=currentSet(),scope=currentScope(),pair=scope==3 or scope==4
             if pair and (peerList.selection<1 or peerList.selection>peers.count) do return false
             try (
                 undo "Cyrus scoped spacing" on case scope of (
@@ -5529,7 +5540,7 @@ initialRollupState:0x8
         on gapSpin changed value do saveRule()
         on planarCheck changed value do saveRule()
         on resetRule pressed do try(
-            local leaf=currentSet(),scope=scopeList.selection
+            local leaf=currentSet(),scope=currentScope()
             undo "Cyrus spacing inheritance" on case scope of (
                 1: leaf.procSelfOverride=false
                 2:(owner.procSiblingEnabled=false;owner.procSiblingMultiplier=1;owner.procSiblingGap=0;owner.procSiblingPlanar=false)
@@ -5546,9 +5557,9 @@ initialRollupState:0x8
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,setSpecific=true
         dropdownlist radiusMode "Selected CS Edit instances" items:#("World radius","Radius multiplier") selection:1 pos:[4,8] width:(selected_instanceRadiusUI.width-8) tooltip:"Use an absolute world radius or multiply the selected instances' source radius."
         spinner radiusSpin "Value:" range:[0,1e9,1] pos:[4,60] width:(selected_instanceRadiusUI.width-8) fieldWidth:82 tooltip:"Value applied only when Set selected radii is pressed."
-        button applyRadius "Set selected radii" pos:[4,88] width:(selected_instanceRadiusUI.width-8) tooltip:"Apply radius overrides to selected CS Edit instances in this paint set."
+        button applyRadius "Set selected radii" pos:[4,88] width:(selected_instanceRadiusUI.width-8) tooltip:"Apply radius overrides to selected instances in this layer or older model group."
         button resetRadius "Clear selected overrides" pos:[4,116] width:(selected_instanceRadiusUI.width-8) tooltip:"Restore the selected instances' inherited source radii."
-        button clearRadius "Clear this set's overrides" pos:[4,144] width:(selected_instanceRadiusUI.width-8) tooltip:"Remove every instance-radius override belonging to this paint set."
+        button clearRadius "Clear radius overrides" pos:[4,144] width:(selected_instanceRadiusUI.width-8) tooltip:"Remove instance-radius overrides for this layer or older model group."
         label info "Select instances with CS Edit before applying a radius. Overrides follow their stable instance identities." pos:[4,180] width:(selected_instanceRadiusUI.width-8) height:54
         fn currentSet = (root.selectedPaintSet owner)
         fn bind layer = (for c in selected_instanceRadiusUI.controls do c.enabled=true;controlsReady=true)
@@ -5570,7 +5581,7 @@ initialRollupState:0x8
         spinner finalStrengthSpin "Strength:" pos:[4,156] width:(selected_spacingUI.width-8) fieldWidth:82 range:[0,1,.3]
         spinner finalIterSpin "Iterations:" pos:[4,184] width:(selected_spacingUI.width-8) fieldWidth:82 type:#integer range:[0,100,5]
         spinner finalMoveSpin "Max movement:" pos:[4,212] width:(selected_spacingUI.width-8) fieldWidth:82 type:#worldUnits range:[0,1e9,10]
-        label orderHint "Candidates move first; Brush, Edit, radii and spacing follow. Each paint set uses the layer recipe." pos:[4,244] width:(selected_spacingUI.width-8) height:58
+        label orderHint "Candidates move first; optional Painting, instance edits and spacing follow." pos:[4,244] width:(selected_spacingUI.width-8) height:58
         fn bind layer = (
             binding=true;obj=owner
             relaxCheck.checked=obj.relaxEnabled;spacingSpin.value=obj.relaxSpacing;iterationsSpin.value=obj.relaxIterations;strengthSpin.value=obj.relaxStrength*100
@@ -5595,7 +5606,7 @@ initialRollupState:0x8
 
     rollout selected_separationUI "Cleanup - accepted layer" width:#cmdPanel category:180 autoLayoutOnResize:true (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false
-        checkbox cleanCheck "Remove isolated plants" pos:[4,8] width:(selected_separationUI.width-8) tooltip:"Clean the accepted union of this layer's paint sets after all three spacing scopes. Protected edits remain."
+        checkbox cleanCheck "Remove isolated plants" pos:[4,8] width:(selected_separationUI.width-8) tooltip:"Remove isolated plants after spacing. Protected instance edits remain."
         spinner neighborSpin "Neighbor distance:" type:#worldUnits range:[0.001,1e9,100] pos:[4,36] width:(selected_separationUI.width-8) fieldWidth:82
         spinner minNeighborSpin "Minimum neighbors:" type:#integer range:[0,10000,2] pos:[4,64] width:(selected_separationUI.width-8) fieldWidth:82
         spinner minIslandSpin "Minimum island size:" type:#integer range:[0,100000,5] pos:[4,92] width:(selected_separationUI.width-8) fieldWidth:82

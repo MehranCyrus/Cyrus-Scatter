@@ -125,5 +125,30 @@ int main(int argc,char** argv){
     solid.samples[0].basis={{{2,.7,0},{.2,1,0},{0,0,-1}}};
     Field sheared(surface,{surface.fingerprint(),{solid}});
     for(int y=-8;y<=8;++y)for(int x=-8;x<=8;++x){auto anchor=at(surface,{x*.5,y*.5,0});require(close(sheared.evaluate(anchor),sheared.evaluateReference(anchor)),"Footprint bounds lost sheared/reflected coverage");}
+    // Incremental preparation must be equivalent to a completely fresh field,
+    // including destructive edits, Undo, base changes and surface replacement.
+    auto current=history;auto prior=std::make_unique<Field>(terrain,current);
+    for(unsigned edit=0;edit<45;++edit){
+        if(edit%5==0)current.strokes.push_back(history.strokes[edit%history.strokes.size()]);
+        if(edit%5==1)current.strokes.back().strength=.17;
+        if(edit%5==2)current.strokes.back().enabled=!current.strokes.back().enabled;
+        if(edit%5==3)current.strokes.pop_back();
+        if(edit%5==4)current.base=current.base==0?.35:0;
+        auto next=std::make_unique<Field>(terrain,current,prior.get());Field fresh(terrain,current);
+        require(next->buildStats().reusedStrokes>=history.strokes.size(),"Unchanged brush history was recompiled");
+        for(unsigned j=0;j<35;++j){Hit h;terrain.hit({{uniform(rng),uniform(rng),100},{0,0,-1}},h);
+            require(close(next->evaluate(h.anchor),fresh.evaluateReference(h.anchor)),"Incremental brush changed ordered coverage");
+        }
+        prior=std::move(next);
+    }
+    auto edited=current;edited.strokes[0].samples[0].basis[0].x+=.25;
+    Field changedBasis(terrain,edited,prior.get());
+    require(changedBasis.buildStats().compiledStrokes==1,"Changed brush basis reused stale preparation");
+    edited.strokes[0].samples[0].view.eye.x+=1;
+    Field changedView(terrain,edited,&changedBasis);
+    require(changedView.buildStats().compiledStrokes==1,"Changed brush visibility reused stale preparation");
+    auto changedMesh=grid;changedMesh.vertices[0].z+=1;Surface otherSurface(changedMesh);edited.surface=otherSurface.fingerprint();
+    Field replaced(otherSurface,edited,&changedView);
+    require(replaced.buildStats().reusedStrokes==0,"Changed mesh reused old brush patches");
     std::cout<<"PASS "<<checks<<" Brush checks: surface picking, footprint, opacity, erase, replay, identity, persistence and validation\n";
 }

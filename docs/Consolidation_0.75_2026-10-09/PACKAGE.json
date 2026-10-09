@@ -1,0 +1,12 @@
+{
+  "package": "dist/Consolidation_0.75_2026-10-09/Max2027/CyrusScatter-0.75.0-Max2027.mzp",
+  "sha256": "79b8f0de4aeaffb092afff71044da6a6113d02a989ac4ce8494e67591814d55b",
+  "script_sha256": "48c702736169748d2b4526cf6439d4cf96997bfc17ddc3a792d50e09e3e4aea8",
+  "native": {
+    "AminScatter.dlx": "df9cbf8de8659194403f4d5cc481cb9a6e258fe69c915a017650426cde6d1693",
+    "CyrusBrush.dlx": "930e9cc1f5fadbd15a933b4dbeae687c2b87ee78ad8b875daeb34f1a58f8963f",
+    "CyrusBrushStorage.dlh": "47134f0a0010b80c38a2e85d11c31075f3c5dfcacbf4e6071bcfd1929656a28f",
+    "CyrusScatterEdit.dlm": "9ae89575140780c0ad21624e4e4db71aeefc4209f2f764cd194f867e4010e2ec"
+  },
+  "source_package_loaded_pair_match": true
+}

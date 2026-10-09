@@ -1,0 +1,1 @@
+PASS older 0.74 area documents and placement fingerprint

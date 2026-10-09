@@ -168,38 +168,69 @@ double influence(const Surface& surface,const Sample& sample,const Stroke& strok
     if(ratio>core&&stroke.softness>0){const double x=(ratio-core)/stroke.softness;falloff=1-x*x*(3-2*x);}
     return falloff*stroke.strength;
 }
+namespace {
+bool sameVector(Vec3 a,Vec3 b){return a.x==b.x&&a.y==b.y&&a.z==b.z;}
+bool sameStroke(const Stroke& a,const Stroke& b){
+    if(a.id!=b.id||a.enabled!=b.enabled||a.erase!=b.erase||a.radius!=b.radius||a.strength!=b.strength||a.softness!=b.softness||a.samples.size()!=b.samples.size())return false;
+    for(std::size_t i=0;i<a.samples.size();++i){const auto& x=a.samples[i];const auto& y=b.samples[i];
+        if(x.anchor.face!=y.anchor.face||!sameVector(x.anchor.bary,y.anchor.bary)||!sameVector(x.view.eye,y.view.eye)||!sameVector(x.view.direction,y.view.direction)||x.view.perspective!=y.view.perspective||!sameVector(x.ray.origin,y.ray.origin)||!sameVector(x.ray.direction,y.ray.direction)||x.screen!=y.screen||x.hasPath!=y.hasPath||x.connected!=y.connected)return false;
+        for(int j=0;j<3;++j)if(!sameVector(x.basis[j],y.basis[j]))return false;
+    }
+    return true;
+}
+}
 struct Field::Impl {
-    Surface surface;Document document;Box influenceBounds;bool hasInfluence=false;
+    Surface surface;double base;Box influenceBounds;bool hasInfluence=false;FieldBuildStats stats;
     struct Link{std::uint32_t stroke,sample;};std::vector<std::vector<Link>> byFace;
-    std::vector<std::vector<std::vector<std::uint32_t>>> patches;
-    std::vector<std::vector<Vec3>> centers;
-    Impl(const Surface& s,const Document& d):surface(s),document(d),byFace(s.mesh().faces.size()){
+    struct CompiledStroke {
+        Stroke original,stroke;
+        std::vector<std::vector<std::uint32_t>> patches;
+        std::vector<Vec3> centers;
+        Box bounds;bool hasInfluence=false;
+    };
+    // Immutable entries can survive append, Undo and changes to another stroke.
+    // They do not retain a chain of previous Field objects.
+    std::vector<std::shared_ptr<const CompiledStroke>> compiled;
+    Impl(const Surface& s,const Document& d,const Impl* previous):surface(s),base(d.base),byFace(s.mesh().faces.size()){
         if(d.surface!=s.fingerprint())throw std::invalid_argument("Brush surface changed; rebind required");
         if(!std::isfinite(d.base)||d.base<0||d.base>1)throw std::invalid_argument("Invalid Brush base density");
         if(d.strokes.size()>10000)throw std::invalid_argument("Too many Brush strokes");
-        patches.resize(d.strokes.size());centers.resize(d.strokes.size());
-        for(std::uint32_t i=0;i<d.strokes.size();++i){document.strokes[i]=resample(s,d.strokes[i]);const auto& stroke=document.strokes[i];patches[i].resize(stroke.samples.size());if(!stroke.enabled)continue;
+        if(previous&&previous->surface.fingerprint()!=s.fingerprint())previous=nullptr;
+        compiled.reserve(d.strokes.size());
+        for(std::uint32_t i=0;i<d.strokes.size();++i){
+            if(previous&&i<previous->compiled.size()&&sameStroke(d.strokes[i],previous->compiled[i]->original)){
+                compiled.push_back(previous->compiled[i]);++stats.reusedStrokes;
+            }else{
+            auto entry=std::make_shared<CompiledStroke>();entry->original=d.strokes[i];entry->stroke=resample(s,d.strokes[i]);
+            const auto& stroke=entry->stroke;entry->patches.resize(stroke.samples.size());++stats.compiledStrokes;
+            if(stroke.enabled)
             for(std::uint32_t j=0;j<stroke.samples.size();++j){
-                const auto& sample=stroke.samples[j];const auto center=s.position(sample.anchor);centers[i].push_back(center);
+                const auto& sample=stroke.samples[j];const auto center=s.position(sample.anchor);entry->centers.push_back(center);
                 // Conservative local bounds of the world-space spherical footprint.
                 // Inverse basis columns handle nonuniform scale, shear and reflection.
                 const auto x=cross(sample.basis[1],sample.basis[2]),y=cross(sample.basis[2],sample.basis[0]),z=cross(sample.basis[0],sample.basis[1]);
                 const double factor=stroke.radius/std::abs(amin::dot(sample.basis[0],x));
                 const Vec3 extent{amin::length(x)*factor,amin::length(y)*factor,amin::length(z)*factor};
-                influenceBounds.add(center-extent);influenceBounds.add(center+extent);hasInfluence=true;
-                auto& patch=patches[i][j];patch=s.patch(sample,stroke.radius);for(auto f:patch)byFace[f].push_back({i,j});
+                entry->bounds.add(center-extent);entry->bounds.add(center+extent);entry->hasInfluence=true;
+                entry->patches[j]=s.patch(sample,stroke.radius);
             }
+            compiled.push_back(std::move(entry));
+            }
+            const auto& entry=*compiled.back();
+            if(entry.hasInfluence){influenceBounds.add(entry.bounds.lo);influenceBounds.add(entry.bounds.hi);hasInfluence=true;}
+            for(std::uint32_t j=0;j<entry.patches.size();++j)for(auto f:entry.patches[j])byFace[f].push_back({i,j});
         }
     }
 };
-Field::Field(const Surface& s,const Document& d):impl(std::make_shared<Impl>(s,d)){}
+Field::Field(const Surface& s,const Document& d,const Field* previous):impl(std::make_shared<Impl>(s,d,previous?previous->impl.get():nullptr)){}
+FieldBuildStats Field::buildStats()const{return impl->stats;}
 
 double Field::previewStep(std::uint32_t face,const std::array<Vec3,3>& bary)const{
     double step=std::numeric_limits<double>::infinity();
     for(auto link:impl->byFace.at(face)){
-        const auto& stroke=impl->document.strokes[link.stroke];const auto& sample=stroke.samples[link.sample];
+        const auto& entry=*impl->compiled[link.stroke];const auto& stroke=entry.stroke;const auto& sample=stroke.samples[link.sample];
         Vec3 lo{INFINITY,INFINITY,INFINITY},hi{-INFINITY,-INFINITY,-INFINITY};
-        for(auto b:bary){auto p=mapped(impl->surface.position({face,b})-impl->centers[link.stroke][link.sample],sample.basis);lo={std::min(lo.x,p.x),std::min(lo.y,p.y),std::min(lo.z,p.z)};hi={std::max(hi.x,p.x),std::max(hi.y,p.y),std::max(hi.z,p.z)};}
+        for(auto b:bary){auto p=mapped(impl->surface.position({face,b})-entry.centers[link.sample],sample.basis);lo={std::min(lo.x,p.x),std::min(lo.y,p.y),std::min(lo.z,p.z)};hi={std::max(hi.x,p.x),std::max(hi.y,p.y),std::max(hi.z,p.z)};}
         const Vec3 nearest{std::clamp(0.,lo.x,hi.x),std::clamp(0.,lo.y,hi.y),std::clamp(0.,lo.z,hi.z)};
         if(amin::dot(nearest,nearest)>stroke.radius*stroke.radius)continue;
         double norm=0;for(auto basis:sample.basis)norm+=amin::dot(basis,basis);
@@ -238,7 +269,7 @@ Coverage coverage(const Surface& surface,const Field& field,std::size_t budget){
 }
 double Field::evaluate(Anchor a,QueryStats* stats)const{
     const auto position=impl->surface.position(a);if(stats)++stats->fieldQueries;
-    if(!impl->hasInfluence||!impl->influenceBounds.contains(position))return impl->document.base;
+    if(!impl->hasInfluence||!impl->influenceBounds.contains(position))return impl->base;
     // Each stroke is affine: paint q+(1-q)*old, erase (1-q)*old.
     // Compose backwards. Opaque coverage makes all older history irrelevant;
     // stop exactly at zero transmission, never at an approximate threshold.
@@ -247,14 +278,14 @@ double Field::evaluate(Anchor a,QueryStats* stats)const{
     std::size_t end=links.size();
     while(end>0 && transmission>0){
         const auto index=links[end-1].stroke;
-        const auto& stroke=impl->document.strokes[index];
+        const auto& entry=*impl->compiled[index];const auto& stroke=entry.stroke;
         double q=0;
         do {
             const auto link=links[--end];
             if(q>=stroke.strength)continue;
             if(stats)++stats->dabs;
             const auto& dab=stroke.samples[link.sample];
-            const double ratio=amin::length(mapped(position-impl->centers[index][link.sample],dab.basis))/stroke.radius;
+            const double ratio=amin::length(mapped(position-entry.centers[link.sample],dab.basis))/stroke.radius;
             if(ratio>=1)continue;
             double candidate=stroke.strength;
             if(stroke.softness>0&&ratio>1-stroke.softness){const double x=(ratio-(1-stroke.softness))/stroke.softness;candidate*=1-x*x*(3-2*x);}
@@ -263,13 +294,13 @@ double Field::evaluate(Anchor a,QueryStats* stats)const{
         if(!stroke.erase)value+=transmission*q;
         transmission*=1-q;
     }
-    return std::clamp(value+transmission*impl->document.base,0.,1.);
+    return std::clamp(value+transmission*impl->base,0.,1.);
 }
 
 double Field::evaluateReference(Anchor a,QueryStats* stats)const{
-    impl->surface.position(a);double value=impl->document.base;
-    for(std::size_t i=0;i<impl->document.strokes.size();++i){const auto& stroke=impl->document.strokes[i];if(!stroke.enabled)continue;double q=0;
-        for(std::size_t j=0;j<stroke.samples.size();++j){const auto& patch=impl->patches[i][j];if(std::binary_search(patch.begin(),patch.end(),a.face))q=std::max(q,influence(impl->surface,stroke.samples[j],stroke,a,stats));}
+    impl->surface.position(a);double value=impl->base;
+    for(const auto& entry:impl->compiled){const auto& stroke=entry->stroke;if(!stroke.enabled)continue;double q=0;
+        for(std::size_t j=0;j<stroke.samples.size();++j){const auto& patch=entry->patches[j];if(std::binary_search(patch.begin(),patch.end(),a.face))q=std::max(q,influence(impl->surface,stroke.samples[j],stroke,a,stats));}
         value=apply(value,q,stroke.erase);
     }return value;
 }

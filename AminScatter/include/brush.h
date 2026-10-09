@@ -28,6 +28,7 @@ struct Stroke {
 };
 struct Document { std::uint64_t surface{}; std::vector<Stroke> strokes; double base=0; };
 struct QueryStats { std::uint64_t triangles=0,fieldQueries=0,dabs=0; };
+struct FieldBuildStats { std::uint64_t compiledStrokes=0,reusedStrokes=0; };
 class Surface {
     struct Impl; std::shared_ptr<const Impl> impl;
 public:
@@ -45,7 +46,8 @@ public:
 class Field {
     struct Impl; std::shared_ptr<const Impl> impl;
 public:
-    Field(const Surface&,const Document&);
+    Field(const Surface&,const Document&,const Field* previous=nullptr);
+    FieldBuildStats buildStats() const;
     double evaluate(Anchor,QueryStats* stats=nullptr) const;
     double evaluateReference(Anchor,QueryStats* stats=nullptr) const;
     // Conservative local refinement step for a subtriangle. Infinity means

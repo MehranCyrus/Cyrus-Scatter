@@ -1,0 +1,131 @@
+{
+  "date": "2026-10-09",
+  "scope": "Source inspection and reanalysis of archived measurements; no new host benchmark",
+  "head": "cedaf78e3c4bd9fe5be39f7e070bac841b6b626d",
+  "sources": {
+    "AminScatter/scripts/AminScatterObject.ms": {
+      "0.59_archive": {
+        "sha256": "3f764c104fc809e2442b351dd1ade0204ff29dc3e4e11f12132b9cf6d99be3cd",
+        "lines": 11734
+      },
+      "0.64_first_git": {
+        "sha256": "a4786c7af20c8f08df93002092f3fce5f9ee9ae38648b036ece8c81e372bfb5f",
+        "lines": 12324
+      },
+      "0.74_current": {
+        "sha256": "b297d60a2f9d9232f1aa4e859a386e620e69be12137ca2e191d79ef2462e1cfb",
+        "lines": 20953
+      }
+    },
+    "AminScatter/src/scatter.cpp": {
+      "0.59_archive": {
+        "sha256": "800eac8c4a5ce4e197b9d9c096012e1e2a258cf22554dc7237b29a4634883529",
+        "lines": 397
+      },
+      "0.64_first_git": {
+        "sha256": "26fbf0222e0e716b78761fe5d63907f6273aaadb497bc70eac78788b9c7fb7ee",
+        "lines": 426
+      },
+      "0.74_current": {
+        "sha256": "4aebe37a65d54a8b9f0c4980de1c391936fe283c3532998dab58bed7b8a14ae6",
+        "lines": 464
+      }
+    },
+    "AminScatter/src/preview.cpp": {
+      "0.59_archive": {
+        "sha256": "e9b610532cdf9403a4dd2452477b71f455981c7f8490897e369a59ac3a732ad0",
+        "lines": 151
+      },
+      "0.64_first_git": {
+        "sha256": "ae9dbd6bc584f65540109a20a50b01a57b457e75139875fa647b5fff4f76852d",
+        "lines": 303
+      },
+      "0.74_current": {
+        "sha256": "6465bf8dcbaaf213ab24f6362c6f92156333008d4585a645f539ba60bd4d8d6c",
+        "lines": 303
+      }
+    }
+  },
+  "packages": {
+    "dist/CyrusScatter-0.59-Max2027.mzp": {
+      "sha256": "6075477049bbaf7b7cd2cd1b0e9d10bffc98cde3e19d7e34585ec532dd91615a",
+      "script_entry": "AminScatterObject.ms",
+      "script_sha256": "3f764c104fc809e2442b351dd1ade0204ff29dc3e4e11f12132b9cf6d99be3cd"
+    },
+    "dist/CyrusScatter-0.59-PrePerformance-Max2027.mzp": {
+      "sha256": "cb64e0a9a9bed5cee95022332c46c9743b2c3ac8ff9ee4d13f9035dc78c599c6",
+      "script_entry": "AminScatterObject.ms",
+      "script_sha256": "8d6b4b8bfb2629a59f81bb06faead7d8b3adf5061f4f37e922dbfb38001ad6d6"
+    },
+    "dist/retained-mesh-0.64/CyrusScatter-0.64-Max2027.mzp": {
+      "sha256": "44139c3a779e3b684baecbd6c8ca931a4d0c84962bdbce5103f7e38f5576e3d8",
+      "script_entry": "AminScatterObject.ms",
+      "script_sha256": "2d1218a5e3bc89ec60947299314000b0cc698973d4f3ee7947bf7f454072464d"
+    },
+    "dist/Layer_Paint_Areas_0.74_2026-10-09/Max2027/CyrusScatter-0.74.0-Max2027.mzp": {
+      "sha256": "265313eeeac3bd6c947fd2d8dec138509a6c530c7a96e24a07789d7dbe13d00c",
+      "script_entry": "CyrusScatter.ms",
+      "script_sha256": "b297d60a2f9d9232f1aa4e859a386e620e69be12137ca2e191d79ef2462e1cfb"
+    }
+  },
+  "timings": {
+    "docs/Retained_Mesh_Preview_2026-10-02/evidence/artist-mesh-200k-frames.csv": {
+      "sha256_verified": "d974a2752c55cf2f21e4fbecf3d1fb094da64900907ef50d4ca1610d0e2aa328",
+      "arms": {
+        "off": {
+          "samples": 60,
+          "median_ms": 14.73004999756813
+        },
+        "gw": {
+          "samples": 60,
+          "median_ms": 278.0714000016451
+        },
+        "retained": {
+          "samples": 60,
+          "median_ms": 15.343950003385544
+        }
+      }
+    },
+    "docs/Retained_Mesh_Preview_2026-10-02/evidence/artist-mesh-2m-frames.csv": {
+      "sha256_verified": "9598e9705895aaa6587ba0580b89caa89a5c73fe69c1732d889b664b41b67291",
+      "arms": {
+        "off": {
+          "samples": 45,
+          "median_ms": 15.451900005340576
+        },
+        "gw": {
+          "samples": 45,
+          "median_ms": 3163.389600008726
+        },
+        "retained": {
+          "samples": 45,
+          "median_ms": 16.940500020980835
+        }
+      }
+    },
+    "docs/Retained_Point_Preview_2026-10-02/evidence/run04/artist-maximized-frames.csv": {
+      "sha256_verified": "bfcb3be1e0451e8f8523b8f95bf6435be7867b71313978ed88f875eb2f92a2c2",
+      "arms": {
+        "off": {
+          "samples": 270,
+          "median_ms": 22.846900016069412
+        },
+        "gw": {
+          "samples": 270,
+          "median_ms": 77.46185000240803
+        },
+        "retained": {
+          "samples": 270,
+          "median_ms": 21.83585000038147
+        }
+      }
+    }
+  },
+  "original_archive_sha256": "2ced1562c9059cf735ca123a8224c875b272968d85d9ea9fa1b4009885920f98",
+  "cpu_reference": {
+    "receipt": "docs/Performance_Evidence_2026-10-01.json",
+    "raw_result_exists": true,
+    "raw_result_sha256_matches": true,
+    "reference_script_sha256": "8d6b4b8bfb2629a59f81bb06faead7d8b3adf5061f4f37e922dbfb38001ad6d6"
+  }
+}

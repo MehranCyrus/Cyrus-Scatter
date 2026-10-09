@@ -1,6 +1,6 @@
 {
   "schema": "cyrus.ui-layout/1",
-  "version": "0.74",
+  "version": "0.75",
   "source": "approved single-file HTML study",
   "sections": [
     {
@@ -170,37 +170,37 @@
           "component": "sourceContainersUI",
           "control": "modeList",
           "presentation": "sourceContainersUI_modeList",
-          "advanced": false
+          "advanced": true
         },
         {
           "component": "sourceContainersUI",
           "control": "containersList",
           "presentation": "sourceContainersUI_containersList",
-          "advanced": false
+          "advanced": true
         },
         {
           "component": "sourceContainersUI",
           "control": "createContainer",
           "presentation": "sourceContainersUI_createContainer",
-          "advanced": false
+          "advanced": true
         },
         {
           "component": "sourceContainersUI",
           "control": "pickContainer",
           "presentation": "sourceContainersUI_pickContainer",
-          "advanced": false
+          "advanced": true
         },
         {
           "component": "sourceContainersUI",
           "control": "removeContainer",
           "presentation": "sourceContainersUI_removeContainer",
-          "advanced": false
+          "advanced": true
         },
         {
           "component": "sourceContainersUI",
           "control": "membershipInfo",
           "presentation": "sourceContainersUI_membershipInfo",
-          "advanced": false
+          "advanced": true
         },
         {
           "component": "sourceContainersUI",
@@ -626,7 +626,7 @@
     },
     {
       "name": "populationUI",
-      "title": "Population",
+      "title": "Amount",
       "scope": "Layer",
       "controls": [
         {

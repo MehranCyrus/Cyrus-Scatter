@@ -169,7 +169,7 @@ public:
         ensureSurface();
         if(!field||fieldIndexRevision!=revision){
             b::Document current=document;if(gesture&&!pending.samples.empty())current.strokes.push_back(pending);
-            field=std::make_unique<b::Field>(*surface,current);fieldIndexRevision=revision;++fieldBuilds;
+            field=std::make_unique<b::Field>(*surface,current,field.get());fieldIndexRevision=revision;++fieldBuilds;
         }
         return *field;
     }

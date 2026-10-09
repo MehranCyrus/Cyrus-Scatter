@@ -1,0 +1,1 @@
+PASS: colored source/layer selection; Ctrl-add focus; double-click action helper; owner isolation; independent container/setup view state; popup reflow at two sizes.

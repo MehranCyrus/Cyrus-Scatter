@@ -1,6 +1,6 @@
 # Cyrus Scatter
 
-**Current development direction: Cyrus Scatter 0.7 pre-release.** See the [repository guide](../README.md) for current Brush, layers, UI and MCP capabilities, and the [versioning decision](../docs/Release_Versioning.md) for the next build label. The current script still reports the historical development label 1.2.3.
+**Current development build: Cyrus Scatter 0.75.** See the [workflow consolidation report](../docs/Consolidation_0.75_2026-10-09/README.md) for changes, exact tests and remaining work, and the [repository guide](../README.md) for engine/MCP boundaries. Historical notes below describe their original versions.
 
 **Historical engine baseline: 0.64.** The notes below describe earlier engine work and are not a complete inventory of today's features. Mesh shares source geometry and exact instance transforms with retained Nitrous GPU buffers. Point Cloud retention, bounded CPU computation, prepared proxy batches and deferred synchronization remain. The [0.64 candidate guide](../docs/Retained_Mesh_Preview_2026-10-02/README.md) records its installation, measurements and Max 2026/2027 qualification limits.
 

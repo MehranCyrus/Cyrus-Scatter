@@ -1,6 +1,8 @@
 # Cyrus Scatter release versioning
 
-**8 October current development label: 0.74**, requested by the artist for UI refinements. Native/package metadata is **0.74.0**; serialization stays **54** and model stays **CyrusUnified1**. Identification metadata is appended after the existing parameter blocks. MCP package/plan and Analyzer versions remain unchanged. [Current implementation and acceptance](UI_Refinements_0.74_2026-10-08/README.md).
+**9 October current development label: 0.75**, requested by the artist for workflow consolidation. Native/package metadata is **0.75.0**; serialization stays **54** and model stays **CyrusUnified1**. MCP protocol/plan and Analyzer versions remain unchanged. [Current implementation and acceptance](Consolidation_0.75_2026-10-09/README.md).
+
+**Historical 8 October label: 0.74**, requested for UI refinements. Identification metadata was appended after existing parameter blocks; October 9 added layer surfaces and Paint Areas. [Dated UI evidence](UI_Refinements_0.74_2026-10-08/README.md).
 
 **Historical 6 October development label: 0.73, explicitly requested by the user.** Native/package metadata is **0.73.0**, MAXScript serialization **54**, calculation model **`CyrusUnified1`**, and MCP package/closed plan **0.73.0 / 0.73**. The [unified campaign](Unified_System_0.73_2026-10-06/README.md) retires unpublished old policies/scene formats/schemas, ports useful features and adds source-container nodes. Internal names/class IDs remain registration identities, not old-scene compatibility promises. Stable-only Edit storage uses a new chunk and rejects old development storage. Analyzer stays **0.14**; 1.0 remains reserved for publication readiness.
 

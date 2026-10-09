@@ -1,0 +1,229 @@
+{
+  "date": "2026-10-09",
+  "baseline_commit": "cedaf78e3c4bd9fe5be39f7e070bac841b6b626d",
+  "version": "0.75.0",
+  "schema": 54,
+  "calculation_model": "CyrusUnified1",
+  "native_build": {
+    "stages": [
+      {
+        "stage": "configure",
+        "exit_code": 0
+      },
+      {
+        "stage": "build",
+        "exit_code": 0
+      },
+      {
+        "stage": "tests",
+        "exit_code": 0
+      }
+    ],
+    "suites_passed": 14,
+    "compiled_inputs_match_final_tree": true,
+    "inputs": {
+      "AminScatter/CMakeLists.txt": "599eac033541b686c0d3babe6e46d546bd6b5c5ae38da448a022cab8d2d2efed",
+      "cmake/CyrusMaxSDK.cmake": "53cf91db75742990b80d1f0a8dc8094d45a2a964094b3785b2f6eb1c8b55248e",
+      "AminScatter/src/analyzer_area_bridge.inc": "90c08d2650c8bea809900fd23f2abc8d3e26272c95d49a315552711aa6ad48bc",
+      "AminScatter/src/authored_revision.inc": "9bdb0aadfa193983d9d18f42ac2e1ffe414bd6a99a5d556553dc2a00c1d8fe1e",
+      "AminScatter/src/boundary_falloff.inc": "a8c2669675dcb853d79c2ceaf90bf092d09c27d09a48991f0ac3cd024737d99f",
+      "AminScatter/src/boundary_falloff_bridge.inc": "4af974149fa2fc6a82a6e2d0401bb88deca0e3cc9441ea6b8757013e7259d555",
+      "AminScatter/src/brush.cpp": "e1c61096296991362ff7a8028887836392102d7290591ef3c6edcc2b873c8cac",
+      "AminScatter/src/brush_host.cpp": "64a61ab0c0093498dac35c7b4603569db41a40ed6a544aeb834ad3e0176644d9",
+      "AminScatter/src/brush_storage_plugin.cpp": "cf3d949ca9695e42c70f0905db41bd24e77d520b7f7a571a72a8bfc69ce995d3",
+      "AminScatter/src/cluster.inc": "e3f7eddd8133e34f91c1e50d5c4d1ac4ca2f4a6dc611728a0848c16f9f3e3680",
+      "AminScatter/src/cyrus_edit.cpp": "df4f69f75a12ddbb83ac925fcb3f3422a4526cde2ac739c71edcfab820a995d4",
+      "AminScatter/src/cyrus_edit.rc": "2ed905b328e04f092f89a4e1e800d9fba724a0c33f9ea3262fe886040f53fb33",
+      "AminScatter/src/cyrus_edit_stack.inc": "83b85de9d8007e20c69fb6d8bc6174c3d99ef2dfa0b0fa6bcc85dfee3e1e9ac9",
+      "AminScatter/src/cyrus_edit_storage.inc": "4e9e9f23845a0d9ee2b0fed5fdba450b176cbbe5b4b04a557cb1963655f43109",
+      "AminScatter/src/diagnostics.cpp": "8f7e61296c0570aa6288e50ae159f041ef449768a00781abbc84ac033febeeb4",
+      "AminScatter/src/diagnostics_bridge.cpp": "ce31a4bed58860076bbbd6deb5a15302890facda98d29e8d3f0e65fe794c2da7",
+      "AminScatter/src/edge_border.inc": "df5f43d5614d1d44a274b9a67c70c659d24964b1ffad665e1956232581951f8c",
+      "AminScatter/src/edit_plugin.cpp": "79f0056899a9c831022e17f12ae35232890e6e21b44b9c7b6f608632f871ac9b",
+      "AminScatter/src/execution.cpp": "b54963d69441d473ed52f76b125c4eb3d0a38c564900f28abd76efa7bcbf1136",
+      "AminScatter/src/final.inc": "ba36be03d08d2af4726b9b44b411e05c191a90bc73db1269f7670722bbf6f5e5",
+      "AminScatter/src/geometry_preview.inc": "3a72c3064fb23f72e042554ad9d2e4ded7b4efaa1b481550f38753b357b8ad65",
+      "AminScatter/src/group_spacing.cpp": "73d973b3d22f51c00dae7f4282d7f8159b19dea0b27f7ddb57c2d06815acc1a1",
+      "AminScatter/src/group_spacing_bridge.inc": "84514cdc7a7d4d9690d5ae179af1d9864897f4a1e56edacf2f4bacd158db77a7",
+      "AminScatter/src/input_validity.cpp": "a65514bdcee3e67d3296768063979ed1c670b020323bc62e757ac7a9c232605d",
+      "AminScatter/src/max_bridge.cpp": "e9794eb23faa48f0a4c9f5f04003934fff5b2300f7838b0d022d56dfc0e0dd4f",
+      "AminScatter/src/mesh_display.inc": "91b694e319d1d5864f1ae6a6dd67c8bb033d44420f770ed0645c4cc4547d8c39",
+      "AminScatter/src/orientation.inc": "d485e2b8ea5c3abf3fc00a7e7b7139ae4b5d3995ee17f3aad7afff8cc4bfcea8",
+      "AminScatter/src/orientation_bridge.inc": "c967d950dfd1308bd989dc3e819b959ae64eb69acdaf728b4c6ba2dd694c639e",
+      "AminScatter/src/placement_identity.inc": "a33f6d19e8bff75b90e2cbbc2f969d00c5982c5301918efddf1108a86ca0a2aa",
+      "AminScatter/src/point_display.cpp": "358c5ff13763542dcc27eb2d8542686a622c051fa35a5161edf3dcb329173c44",
+      "AminScatter/src/prepared_band.inc": "5d01452faed01a630428506cc7ce099ee909ce64204edef5448a03c1a1000cf0",
+      "AminScatter/src/preview.cpp": "6465bf8dcbaaf213ab24f6362c6f92156333008d4585a645f539ba60bd4d8d6c",
+      "AminScatter/src/preview_batches.inc": "a2a7df3d65a6278d49aad80361bffe8db15fae1419feb44e993354f5c31c7acd",
+      "AminScatter/src/procedural.cpp": "3bbdd2ef5463edb51af32a5ff3a7c8d5579d602027dc14738edf63a16185402c",
+      "AminScatter/src/procedural_bridge.inc": "646195da92bc2ce7253b3c409a11594dd2606c842a04b97206a20799480639ed",
+      "AminScatter/src/rollout_flow.cpp": "f1cdf4bb21e5dcb424b01a570c0c001424de3f4fa756638aafb85962bb5b4392",
+      "AminScatter/src/rollout_scroll.cpp": "5573dd56b0ecaa87c6f521abd88b07f6d7e3259174a249ab53275a0bb12fb3a7",
+      "AminScatter/src/scatter.cpp": "4aebe37a65d54a8b9f0c4980de1c391936fe283c3532998dab58bed7b8a14ae6",
+      "AminScatter/src/source_container.cpp": "634208e611a0cf1abffe917dfd5c31e94e7ed7e1e5a1037589786ec84fdba1b4",
+      "AminScatter/src/spacing.inc": "96ef2d89f07cf9e6c67a93f4c91e990da98016f58c6278fce543a7b09e289c77",
+      "AminScatter/src/whole_scale_bridge.inc": "8374345cee715b0ad5c65e5478f191274e1ebdcbc5ffbe861bf450d7793c45d7",
+      "AminScatter/include/brush.h": "2aad6733be27ec6ef2b3b3eb6ec2636e728d73f7d20e11bafdeb3a2ae8bce9eb",
+      "AminScatter/include/diagnostics.h": "e56003670ca92ae26041ea5bf23e6cd2290f1c53921a0a10e828965cfb10a092",
+      "AminScatter/include/execution.h": "e9f2cfdf677366f491dc01cea83301ce53111c5073633333a4adf1db2ad509d2",
+      "AminScatter/include/group_spacing.h": "b04b3e47f0f1d5789f274492ca4d2a0777e5f1b500070ba5ef88426c4cf08502",
+      "AminScatter/include/license_boundary.h": "92f2c3dd89977af053c27a25731246890209e0d2e3d4a1f931d4349dc2088178",
+      "AminScatter/include/point_preview.h": "5dec4890f38338f99baf1d0e163274aa515b455b34d3a8acc51f4e917017edb6",
+      "AminScatter/include/preview_sampling.h": "14e389d96653e861896a133c6efa9a6d42f96e2cc8d3e5e6ee665221b9a4645f",
+      "AminScatter/include/procedural.h": "ef9ce89dce26aa9dafb077c903af73f1b0a71ebc946febabd4bf0a006e546dbd",
+      "AminScatter/include/scatter.h": "632b834f410a06904061df74a10fd8e4e449d918fd2f242f7e369bd4b75184ac",
+      "AminScatter/tests/boundary_falloff_tests.cpp": "ab48b370731b7f667fc39156654d532a0693b3e0a7836a06c759ed478bf3c06a",
+      "AminScatter/tests/brush_tests.cpp": "a6bca6f14b1a2a07827c8ca2b2ff2fcc299c2678c051d8bbdecf47e5c92c00ed",
+      "AminScatter/tests/compute_benchmark.cpp": "9f59cf70e0511c761d59c1c1b19335bbef0a3d9ddce30b3df93ce94f3adcc4c5",
+      "AminScatter/tests/data/brush_sphere_pole.txt": "3e2bf0a248e2e0539ff4eadce7af0e1f8f12850636aa5d1293c03a5ea78ee819",
+      "AminScatter/tests/diagnostics_tests.cpp": "d883857f6b18f382214c9b7caf40be6c342c873dbed256ce3968fccfb2aa2ff6",
+      "AminScatter/tests/edge_border_tests.cpp": "f85b1c429fc080e94ea7bdc5771286cef066d7979acfe4065caf5bc30f3c49b1",
+      "AminScatter/tests/group_spacing_tests.cpp": "67300e62c679ea27b95784216441af79119668cc3008a3a71dab04b493f75046",
+      "AminScatter/tests/orientation_tests.cpp": "3a49477ce55d03cd342beec23123b581a50a7d8f13626834207661c2f4fa8076",
+      "AminScatter/tests/prepared_band_tests.cpp": "ce1622cbe460eaba14c09a34ed669fcc74bdb08b018c17c754d12b0ddf33769d",
+      "AminScatter/tests/preview_sampling_tests.cpp": "e2eac5bd2ef640e5dc11f8778bb55749033baea4714d5fe2fccbd764f80be819",
+      "AminScatter/tests/procedural_tests.cpp": "12e281b6479576d1f6cd22fb4d4565d68173354ff7c36d49debfc6885bc3ec5b",
+      "AminScatter/tests/scatter_tests.cpp": "c0e0eb48287e008d6f88c4baadd013d183bf49125f607c8c716315237600c402",
+      "AminScatter/tests/spacing_tests.cpp": "9fc18b3e4629b9e9a1b79b67ceb75f21ae671211396a5cfd909239040fc5a2e7",
+      "AminScatter/tests/threading_tests.cpp": "f3336cfd3ffe0c642fd839cf7eb4b6002fd697a04072010f963bf1d020f87507",
+      "AminScatter/tests/weight_tests.cpp": "792203629d369f7476d097c97f3dc8082811a5e5deb8fbc62ff74ab1a7b65df9"
+    },
+    "note": "Build receipt predates final UI script edits; native inputs match. Final script independently qualified with these modules in Max."
+  },
+  "python": {
+    "command": "build/mcp-venv/Scripts/python.exe -m pytest CyrusMCP/tests tools/tests -q",
+    "passed": 141,
+    "evidence": "Successful command output in this task; no separate pytest log retained."
+  },
+  "generated": {
+    "check": "unified_073_generator_integration",
+    "passed": true,
+    "development_version": "0.75",
+    "baseline": "01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2",
+    "maxscript_compiled": false,
+    "ui_controls_in_inventory": 232,
+    "baseline_controls_accounted": 245,
+    "generated_sha256": "48c702736169748d2b4526cf6439d4cf96997bfc17ddc3a792d50e09e3e4aea8",
+    "preserved_files": [
+      "AminScatter/src/preview.cpp",
+      "AminScatter/src/point_display.cpp"
+    ],
+    "fixture_delimiters_checked": 27,
+    "interactive_max_run": false
+  },
+  "max2027": {
+    "launch": {
+      "pid": 38044,
+      "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\consolidation075-delivery",
+      "command": [
+        "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+        "-q",
+        "-i",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\consolidation075-delivery\\max.ini",
+        "-p",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\consolidation075-delivery\\plugins.ini",
+        "-U",
+        "MAXScript",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\consolidation075-delivery\\start.ms",
+        "-listenerlog",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\consolidation075-delivery\\listener.log"
+      ],
+      "binaries": {
+        "AminScatter.dlx": "df9cbf8de8659194403f4d5cc481cb9a6e258fe69c915a017650426cde6d1693",
+        "CyrusBrush.dlx": "930e9cc1f5fadbd15a933b4dbeae687c2b87ee78ad8b875daeb34f1a58f8963f",
+        "CyrusBrushStorage.dlh": "47134f0a0010b80c38a2e85d11c31075f3c5dfcacbf4e6071bcfd1929656a28f",
+        "CyrusScatterEdit.dlm": "9ae89575140780c0ad21624e4e4db71aeefc4209f2f764cd194f867e4010e2ec"
+      },
+      "script_sha256": "48c702736169748d2b4526cf6439d4cf96997bfc17ddc3a792d50e09e3e4aea8",
+      "normal_profile_modified": false,
+      "development_transport": true
+    },
+    "new_checks": 22,
+    "layer_paint_checks": 45,
+    "grips_checked": 23,
+    "procedural_acceptance": {
+      "core fixture": [
+        "base generation and warm cache",
+        "presentation and three display adapters",
+        "independent sibling rule and stable reordering",
+        "accepted target and explicit underfill",
+        "transaction rollback and previous viewport retention",
+        "CS Edit clones, zero quota and selected radii"
+      ],
+      "brush and background": [
+        "outside, erase/undo/redo, Whole, disabled, combined, refill",
+        348,
+        1652,
+        [
+          2000,
+          2000
+        ]
+      ],
+      "three spacing scopes and radii": [
+        [
+          119,
+          142,
+          300
+        ]
+      ],
+      "include exclude and stable subset": [
+        643,
+        807
+      ],
+      "copy remove and undo": true,
+      "manual live and atomic error recovery": true,
+      "curved brush and persistence": [
+        123,
+        "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/consolidation075-delivery/Procedural07-Curved.max"
+      ],
+      "complete": true
+    },
+    "older_074_area_fingerprint_preserved": true,
+    "method": "Owned isolated Max profile, scripted file transport on host thread; no computer use."
+  },
+  "brush_preparation": {
+    "triangles": 5000,
+    "existing_strokes": 300,
+    "added_strokes": 1,
+    "warm_repeats": 5,
+    "fresh_median_ms": 7.2561,
+    "reused_median_ms": 1.9192,
+    "sampled_max_coverage_error": 0,
+    "scope": "CPU field preparation only; not presented FPS or end-to-end brush latency."
+  },
+  "package": {
+    "package": "dist/Consolidation_0.75_2026-10-09/Max2027/CyrusScatter-0.75.0-Max2027.mzp",
+    "sha256": "79b8f0de4aeaffb092afff71044da6a6113d02a989ac4ce8494e67591814d55b",
+    "script_sha256": "48c702736169748d2b4526cf6439d4cf96997bfc17ddc3a792d50e09e3e4aea8",
+    "native": {
+      "AminScatter.dlx": "df9cbf8de8659194403f4d5cc481cb9a6e258fe69c915a017650426cde6d1693",
+      "CyrusBrush.dlx": "930e9cc1f5fadbd15a933b4dbeae687c2b87ee78ad8b875daeb34f1a58f8963f",
+      "CyrusBrushStorage.dlh": "47134f0a0010b80c38a2e85d11c31075f3c5dfcacbf4e6071bcfd1929656a28f",
+      "CyrusScatterEdit.dlm": "9ae89575140780c0ad21624e4e4db71aeefc4209f2f764cd194f867e4010e2ec"
+    },
+    "source_package_loaded_pair_match": true
+  },
+  "limitations": [
+    "Stable receiver generation unfinished",
+    "Canonical region storage unfinished",
+    "Physical cold-container Undo gesture unresolved",
+    "No physical UI/tablet/DPI acceptance",
+    "No new Max 2026 or renderer qualification",
+    "Aggregate brush memory not qualified"
+  ],
+  "receipts": {
+    "brush-preparation.csv": "84a9328034062b99f2ace18579fe093553cdd5bb5637bb8ff028794e1e1bccbc",
+    "consolidation075-checks.txt": "9de61fc0a018ff911c964877ce0d0b83b8ae1e9b5bad892e20f19eef6f9a2d50",
+    "grips-Container.txt": "68d8e11449b44f399cde48055259bf6eabf3b8265c38f82cb3d25456b6654c47",
+    "grips-lifecycle.txt": "d3e72353b744f73a505bc5acd4264b55c2376ee9dcce660a8b10eb164eb61827",
+    "grips-main.txt": "85e8d9dc8196bc8f25e43b37de7bb3327417cfcd4e6428c44d97071dc187ff75",
+    "grips-Popup.txt": "b8df53af9cd584c49cb46a3b0c0bf197c676f55216fb4b8e8055a5e23ae64627",
+    "layer-regions-checks.txt": "c91a4ee312601d1faea626d564e7ffeb96e3f050cf2b8d11df33ad728a60aae0",
+    "native-tests.txt": "9988d063b004232fc4d4fdc2fd7fed9d2372e8b260872f505c5ec21f1c9a8df4",
+    "older074-areas.txt": "54ea42248d6faa57216865fae3c2970adf2887e65b0acb8b114c42df68a5965c",
+    "procedural-acceptance.json": "fc37187f24586d8819ddea07efc18e2ab41e5af42a642057cfb66608bac763a0",
+    "regressions.json": "531065f08cf8aa23e400a691326f0989b45d2b8368229b4bd27966521c801506",
+    "results.json": "b646497e5d8b6a8e45e570e91efcd2c383b1b05305297c1c8c2a7af79cf84fd2",
+    "ui074-views.txt": "527b7a564cf0b0d20771dcfa86929136e7d58a50043ca3cc0d6c46f4764996de"
+  }
+}

@@ -3,7 +3,7 @@
   "authority": "Help only. Tool dispatch, closed schema and local approval determine authority.",
   "capability_source_sha256": "7679925c6b0d2f0bcf3a8ec1a1639fec198006a5d81ebb87ba4413ba9efd4332",
   "control_inventory_sha256": "873be7425fca7d0c0f22a5614bda657a0038e03c636c8578d6bfb5d4544689a3",
-  "development_version": "0.74",
+  "development_version": "0.75",
   "mcp_version": "0.73.0",
   "calculation_model": "CyrusUnified1",
   "features": [
@@ -700,7 +700,7 @@
         "C03"
       ],
       "owner_context": "Controller/layer",
-      "help": "Copy this layer, its paint sets and their settings.",
+      "help": "Copy this layer, its models, surfaces and Paint Areas.",
       "view": "Local setup/editor controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -713,7 +713,7 @@
         "C03"
       ],
       "owner_context": "Controller/layer",
-      "help": "Remove this layer and its paint sets. Undo restores them.",
+      "help": "Remove this layer and its Paint Areas. Undo restores them.",
       "view": "Local setup/editor controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -1173,7 +1173,7 @@
         "C08"
       ],
       "owner_context": "Paint-set source row",
-      "help": "Pick a scene model for this paint set. The editor stays on its layer.",
+      "help": "Pick a scene model for this layer. The editor stays on its layer.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -1188,7 +1188,7 @@
         "C08"
       ],
       "owner_context": "Paint-set source row",
-      "help": "Add the currently selected scene objects to this paint set.",
+      "help": "Add the currently selected scene objects to this layer.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -1323,7 +1323,7 @@
         "C08"
       ],
       "owner_context": "Paint-set source row",
-      "help": "Relative source share within this paint set. Zero disables the source.",
+      "help": "Relative model frequency in this layer. Zero disables the model.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -1441,7 +1441,7 @@
         "C07"
       ],
       "owner_context": "Set/layer/global pool selection",
-      "help": "Use a manual list or an explicit rectangle pool. Other paint sets may inherit the layer pool.",
+      "help": "Use the model list directly, or optionally collect models from source rectangles.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -3016,7 +3016,7 @@
         "C20"
       ],
       "owner_context": "Selected self/sibling/layer rule scope",
-      "help": "Each scope is independent. A set can inherit or override its layer's within-set default.",
+      "help": "Choose spacing within the selected layer or between it and another layer.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -3133,7 +3133,7 @@
         "C21"
       ],
       "owner_context": "Set/published instance binding",
-      "help": "Apply radius overrides to selected CS Edit instances in this paint set.",
+      "help": "Apply radius overrides to selected instances in this layer or older model group.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -3159,7 +3159,7 @@
         "C21"
       ],
       "owner_context": "Set/published instance binding",
-      "help": "Remove every instance-radius override belonging to this paint set.",
+      "help": "Remove instance-radius overrides for this layer or older model group.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -3276,7 +3276,7 @@
         "C22"
       ],
       "owner_context": "Legacy pairs/layer union cleanup",
-      "help": "Clean the accepted union of this layer's paint sets after all three spacing scopes. Protected edits remain.",
+      "help": "Remove isolated plants after spacing. Protected instance edits remain.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },

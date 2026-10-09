@@ -20,8 +20,8 @@
   "manager": {
     "editButton": "Optional floating view of the same layer settings. Select a layer to edit it below in Modify.",
     "addButton": "Add a layer and edit its controls below. Layers calculate from top to bottom.",
-    "copyButton": "Copy this layer, its paint sets and their settings.",
-    "removeButton": "Remove this layer and its paint sets. Undo restores them.",
+    "copyButton": "Copy this layer, its models, surfaces and Paint Areas.",
+    "removeButton": "Remove this layer and its Paint Areas. Undo restores them.",
     "layerColor": "Identification color for this layer. Choose Layer colors in Viewport & render to display it.",
     "nameEdit": "Rename the selected layer without changing its identity.",
     "visibleCheck": "Hide display only. Hidden layers still calculate and affect spacing.",
@@ -56,8 +56,8 @@
     "sourceName": "Label inside Scatter only. Clear it to use the scene object's name.",
     "idColor": "Viewport identification color. This does not change clustering or model frequency.",
     "selectFromScene": "Choose one or more source models by name.",
-    "addPlant": "Pick a scene model for this paint set. The editor stays on its layer.",
-    "addSelected": "Add the currently selected scene objects to this paint set.",
+    "addPlant": "Pick a scene model for this layer. The editor stays on its layer.",
+    "addSelected": "Add the currently selected scene objects to this layer.",
     "removePlant": "Unregister highlighted rows. To keep their settings, park models outside a source rectangle instead.",
     "selectPlant": "Select the highlighted source models in the scene.",
     "addPoint": "Add a placeholder source that can later be replaced by a model.",
@@ -66,7 +66,7 @@
     "existingGroups": "Assign highlighted sources to an existing color group for clustering.",
     "groupColor": "Assign a color group to highlighted sources when the color is accepted.",
     "applyColor": "Assign the chosen color group to all highlighted source rows.",
-    "weightSpin": "Relative source share within this paint set. Zero disables the source.",
+    "weightSpin": "Relative model frequency in this layer. Zero disables the model.",
     "sourceZSpin": "Offset instances of highlighted models along their placement normal.",
     "sourceScaleSpin": "Per-model scale multiplier. 1 keeps the model's original scale.",
     "radiusSourceSpin": "Collision footprint radius for highlighted source rows, in scene units.",
@@ -76,7 +76,7 @@
     "detailsToggle": "Show or hide these advanced controls; their saved settings are preserved."
   },
   "sourceContainersUI": {
-    "modeList": "Use a manual list or an explicit rectangle pool. Other paint sets may inherit the layer pool.",
+    "modeList": "Use the model list directly, or optionally collect models from source rectangles.",
     "createContainer": "Create a Rectangle for this owner. Put source-model pivots inside its local XY bounds.",
     "pickContainer": "Link a Cyrus container, or copy a square-corner Rectangle into a container. The original spline is preserved.",
     "removeContainer": "Unlink this rectangle without deleting it or registered source settings."
@@ -141,21 +141,21 @@
     "refreshGroups": "Refresh available source color groups for assignment."
   },
   "proceduralUI": {
-    "scopeList": "Each scope is independent. A set can inherit or override its layer's within-set default."
+    "scopeList": "Choose spacing within the selected layer or between it and another layer."
   },
   "instanceRadiusUI": {
     "radiusMode": "Use an absolute world radius or multiply the selected instances' source radius.",
     "radiusSpin": "Value applied only when Set selected radii is pressed.",
-    "applyRadius": "Apply radius overrides to selected CS Edit instances in this paint set.",
+    "applyRadius": "Apply radius overrides to selected instances in this layer or older model group.",
     "resetRadius": "Restore the selected instances' inherited source radii.",
-    "clearRadius": "Remove every instance-radius override belonging to this paint set."
+    "clearRadius": "Remove instance-radius overrides for this layer or older model group."
   },
   "spacingUI": {
     "relaxCheck": "Separate nearby candidates on the receiving surface before Brush, artist edits and spacing. Fixed anchors stay fixed.",
     "boundaryRelaxCheck": "Smooth candidate neighborhoods with bounded movement. Eligibility is checked before publication; author edits run afterwards."
   },
   "separationUI": {
-    "cleanCheck": "Clean the accepted union of this layer's paint sets after all three spacing scopes. Protected edits remain."
+    "cleanCheck": "Remove isolated plants after spacing. Protected instance edits remain."
   },
   "detailsUI": {
     "refreshButton": "Read the existing calculation statistics without regenerating placements.",
