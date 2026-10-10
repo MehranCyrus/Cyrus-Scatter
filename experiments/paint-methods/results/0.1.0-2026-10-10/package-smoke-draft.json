@@ -1,0 +1,10 @@
+[
+  {
+    "method": "01-vector-regions",
+    "status": "FAIL",
+    "session": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\experiments\\paint-methods\\dist\\0.1.0-tested\\01-vector-regions\\sessions\\20261010-164109-5115d3d2",
+    "pid": 13044,
+    "error": "-- Unknown property: \"addReceiver\" in undefined\n--\tthread data: threadID:25216\n--\t------------------------------------------------------\n--\t[stack level: 0]\n--\tIn anonymous codeblock; filename: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\experiments\\paint-methods\\dist\\0.1.0-tested\\01-vector-regions\\sessions\\20261010-164109-5115d3d2\\start.ms; position: 1065; line: 16\n--\t\tLocals:\n--\t\t\tfound: true\n--\t\t\treceiver: $Plane:PaintLab_Receiver @ [0.000000,0.000000,0.000000]\n--\t\t\tprocess: dotNetObject:System.Diagnostics.Process\n--\t\t\tPL_A: undefined\n--\t\tExternals:\n--\t------------------------------------------------------\n--\t[stack level: 1]\n--\tcalled from top-level\n",
+    "forced_stop_after_script": false
+  }
+]

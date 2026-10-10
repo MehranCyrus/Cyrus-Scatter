@@ -1,4 +1,4 @@
-global CyrusLoadedScriptFingerprint="0195e6ad86e1b4b3eb07b2af38fbcb85a531dcdb812e1e230b2f40234edd2382"
+global CyrusLoadedScriptFingerprint="55b18422561fc12e2a6c24c4060fea3c6a633ea747351eb5d9cc6a518e03bed8"
 -- Only registered Scatter nodes participate in timeline notifications. This
 -- registry is rebuilt at scene boundaries, never by scanning every animation frame.
 global AminScatterObject,CyrusSourceContainer,CyrusContainerRefreshLabels
@@ -141,18 +141,31 @@ fn CyrusOpenFalloffGraph target areaNode density = (
                 )
                 local values=for i=0 to 256 collect (
                     local v=amax 0.0 ((getValue curve 0 (i/256.0))/100.0)
-                    if isDensity then amin 1.0 v else v
+                    if isDensity or obj.isPaintArea then amin 1.0 v else v
                 )
-                cfg[if isDensity then 8 else 5]=values
-                obj.setFallConfig area cfg
-                obj.setFallGraph area isDensity (CyrusFallPack packed)
+                local curveIndex=if isDensity then 8 else 5
+                local oldValues=cfg[curveIndex],samplesChanged=oldValues.count!=values.count
+                if not samplesChanged do for i=1 to values.count where oldValues[i]!=values[i] do samplesChanged=true
+                cfg[curveIndex]=values
+                local packedGraph=CyrusFallPack packed
+                if obj.isPaintArea then (
+                    -- Max can update its sampled values after the point-change event.
+                    -- Apply/Close must also compare samples, even for identical handles.
+                    if samplesChanged or (obj.getFallGraph area isDensity)!=packedGraph do undo "Cyrus vector curve" on (
+                        obj.setFallConfig area cfg
+                        obj.setFallGraph area isDensity packedGraph
+                    )
+                ) else (
+                    obj.setFallConfig area cfg
+                    obj.setFallGraph area isDensity packedGraph
+                )
                 CyrusViewportRedraw()
             )
             true
         )
         on editor open do (
             obj=CyrusFallGraphTarget;area=CyrusFallGraphArea;isDensity=CyrusFallGraphDensity
-            editor.title=(if isDensity then "Area Density Falloff" else "Area Scale Falloff")+" - "+(if area==undefined then "Analyzer Boundary" else area.name)
+            editor.title=(if isDensity then "Area Density Falloff" else "Area Scale Falloff")+" - "+(if area==undefined then (if obj.isPaintArea then obj.paintSetName+" / Vector Border" else "Analyzer Boundary") else area.name)
             local cfg=obj.getFallConfig area
             local packed=CyrusFallUnpack (obj.getFallGraph area isDensity)
             local values=cfg[if isDensity then 8 else 5]
@@ -204,8 +217,8 @@ try(unRegisterRedrawViewsCallback AminScatterObjectDraw)catch()
 
 global AminScatterLayerFields, AminScatterLayerTabs
 global AminScatterCopyLayer, AminScatterRefreshLayerPanels
-AminScatterLayerFields=#(#procOrder,#procSetOrder,#procSamplingSalt,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procBackground,#procBackgroundIDs,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusBinding,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverID,#containerMode,#containerNodes,#logicalParentID,#paintSetName,#paintSetWeight,#paintSetEnabled,#paintSetVisible,#paintView,#paintColor,#paintDocument,#paintEnabled,#paintDensity,#streetTrimStart,#streetTrimEnd,#centerStreetOffset,#areaAnalyzer,#areaUseLine,#areaLineWidth,#areaLineCaps,#areaUsePoints,#areaPointRadius,#wholeScaleMin,#wholeScaleMax,#fallScaleGraph,#fallDensityGraph,#areaFallConfigs,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallAnalyzer,#fallDelete,#fallDeleteWidth,#fallScale,#fallScaleWidth,#fallScaleCurve,#fallDensity,#fallDensityWidth,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeKeepCorners,#edgeCornerAngle,#edgeCornerCount,#edgeFaceOut,#edgeCornerRadius,#edgeOffsets,#edgeAlong,#edgeAcross,#borderFaceOut,#streetFaceOut,#borderCornerRadius,#streetCornerRadius,#sourceForwardAxes,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove,#sourceRadii,#sourceFollowScale,#sourceShowRadius,#streetStraight,#sourcePoint,#sourceEmpty,#cleanupPlanar,#sourceZOffsets,#sourceScales,#sourceWeights,#showCenters,#relaxEnabled,#relaxSpacing,#relaxIterations,#relaxStrength,#sources,#bakedNodes,#amount,#randomSeed,#scaleMinimum,#scaleMaximum,#tiltDegrees,#yawMinimum,#yawMaximum,#movementRange,#alignNormal,#showPoints,#pointsPerPlant,#updateMode,#populationMode,#plantsPerM2,#advancedAxes,#projectMove,#rotXMin,#rotXMax,#rotYMin,#rotYMax,#rotZMin,#rotZMax,#sclXMin,#sclXMax,#sclYMin,#sclYMax,#sclZMin,#sclZMax,#movXMin,#movXMax,#movYMin,#movYMax,#movZMin,#movZMax,#distributionMode,#clusterCount,#clusterRadius,#densityMap,#invertDensity,#diversityMode,#diversitySize,#diversitySeed,#roughness,#blurryEdge,#diversityNoise,#autoRender,#previewBudget,#pointColorMode,#solidPointColor,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths,#patternGroups,#patternRestGroup)
-AminScatterLayerTabs=#(#procBackgroundIDs,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#containerNodes,#areaFallConfigs,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallScaleCurve,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeOffsets,#edgeAlong,#edgeAcross,#sourceForwardAxes,#sourceRadii,#sourceFollowScale,#sourceShowRadius,#sourcePoint,#sourceEmpty,#sourceZOffsets,#sourceScales,#sourceWeights,#sources,#bakedNodes,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths,#patternGroups)
+AminScatterLayerFields=#(#procOrder,#procSetOrder,#procSamplingSalt,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusBinding,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverID,#containerMode,#containerNodes,#logicalParentID,#paintSetName,#paintSetEnabled,#paintSetVisible,#paintView,#paintColor,#paintDocument,#paintEnabled,#paintDensity,#streetTrimStart,#streetTrimEnd,#centerStreetOffset,#areaAnalyzer,#areaUseLine,#areaLineWidth,#areaLineCaps,#areaUsePoints,#areaPointRadius,#wholeScaleMin,#wholeScaleMax,#fallScaleGraph,#fallDensityGraph,#areaFallConfigs,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallAnalyzer,#fallDelete,#fallDeleteWidth,#fallScale,#fallScaleWidth,#fallScaleCurve,#fallDensity,#fallDensityWidth,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeKeepCorners,#edgeCornerAngle,#edgeCornerCount,#edgeFaceOut,#edgeCornerRadius,#edgeOffsets,#edgeAlong,#edgeAcross,#borderFaceOut,#streetFaceOut,#borderCornerRadius,#streetCornerRadius,#sourceForwardAxes,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove,#sourceRadii,#sourceFollowScale,#sourceShowRadius,#streetStraight,#sourcePoint,#sourceEmpty,#cleanupPlanar,#sourceZOffsets,#sourceScales,#sourceWeights,#showCenters,#relaxEnabled,#relaxSpacing,#relaxIterations,#relaxStrength,#sources,#bakedNodes,#amount,#randomSeed,#scaleMinimum,#scaleMaximum,#tiltDegrees,#yawMinimum,#yawMaximum,#movementRange,#alignNormal,#showPoints,#pointsPerPlant,#updateMode,#populationMode,#plantsPerM2,#advancedAxes,#projectMove,#rotXMin,#rotXMax,#rotYMin,#rotYMax,#rotZMin,#rotZMax,#sclXMin,#sclXMax,#sclYMin,#sclYMax,#sclZMin,#sclZMax,#movXMin,#movXMax,#movYMin,#movYMax,#movZMin,#movZMax,#distributionMode,#clusterCount,#clusterRadius,#densityMap,#invertDensity,#diversityMode,#diversitySize,#diversitySeed,#roughness,#blurryEdge,#diversityNoise,#autoRender,#previewBudget,#pointColorMode,#solidPointColor,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths,#patternGroups,#patternRestGroup)
+AminScatterLayerTabs=#(#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#containerNodes,#areaFallConfigs,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallScaleCurve,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeOffsets,#edgeAlong,#edgeAcross,#sourceForwardAxes,#sourceRadii,#sourceFollowScale,#sourceShowRadius,#sourcePoint,#sourceEmpty,#sourceZOffsets,#sourceScales,#sourceWeights,#sources,#bakedNodes,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths,#patternGroups)
 fn AminScatterCopyLayer origin destination = (
     origin.procAssertSchema()
     destination.setLayerTransfer true
@@ -225,13 +238,14 @@ fn AminScatterCopyLayer origin destination = (
         )
         for key in #(#visualSourceNodes,#visualSourceLabels,#visualSourceColors,#visualSourceColorSet) do setProperty destination key ((getProperty origin key) as array)
         destination.layerIDColor=origin.layerIDColor
-        destination.ownsReceivers=origin.ownsReceivers;destination.areaMode=origin.areaMode
+        destination.surfaceNodes=origin.validSurfaces();destination.surface=undefined
         destination.paintAreas=#();destination.uiAreaID=""
         for area in origin.paintAreas do (
             local duplicate=createInstance AminScatterObject
             duplicate.isPaintArea=true;duplicate.layerID=CyrusNewLayerID();duplicate.logicalParentID=destination.layerID
             duplicate.areaTarget=area.areaTarget;duplicate.paintSetName=area.paintSetName
             duplicate.paintSetEnabled=area.paintSetEnabled;duplicate.paintEnabled=true
+            duplicate.fallScaleGraph=area.fallScaleGraph;duplicate.fallDensityGraph=area.fallDensityGraph
             duplicate.paintDensity=area.paintDensity;duplicate.paintView=area.paintView;duplicate.paintColor=area.paintColor
             if area.paintDocument!=undefined do duplicate.paintDocument=copy area.paintDocument
             append destination.paintAreas duplicate
@@ -279,7 +293,6 @@ fn CyrusFlowLayerSummary root parent = (
 )
 
 global CyrusLayerUIRoot,CyrusLayerUIOwner,CyrusLayerUIPanel,CyrusCreateLayerEditorSection
-global CyrusLayerEditor_setsUI_1
 fn CyrusLayerEditor_surfacesUI_1 = (
     rollout surfacesUI_1 "Surfaces" width:146 category:0 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
@@ -439,6 +452,18 @@ fn CyrusLayerEditor_surfacesUI_1 = (
         on flow_surfaceUI_globalContainers_grip MouseUp sender args do (stopListDrag();true)
         on flow_surfaceUI_globalContainers_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
         on flow_surfaceUI_globalContainers_grip Paint sender args do paintListGrip sender args
+        fn fitRadio control available desiredColumns place:false = (
+            local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
+            if buttons.count==0 do return 20
+            local boxes=for handle in buttons collect windows.getWindowPos handle
+            local widest=amax (for box in boxes collect box.w),step=amax 20 ((amax (for box in boxes collect box.h))+5)
+            local columns=amin desiredColumns (amax 1 (floor ((available+4)/(widest+4))))
+            if place do for i=1 to buttons.count do (
+                local data=windows.getHWNDData buttons[i],position=windows.screenToClient data[2] (boxes[1].x+(mod (i-1) columns)*(widest+4)) (boxes[1].y+(floor ((i-1)/columns))*step)
+                windows.setWindowPos buttons[i] position.x position.y boxes[i].w boxes[i].h true
+            )
+            step*(ceil (buttons.count as float/columns))
+        )
         fn fitPairField control available = (
             local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
             for handle in control.hwnd do (
@@ -451,7 +476,12 @@ fn CyrusLayerEditor_surfacesUI_1 = (
             true
         )
         fn fitWidth control available = (
-            if isProperty control #width then control.width=available
+            if classof control==ColorPickerControl then (
+                for handle in control.hwnd where (windows.getHWNDData handle)[4]=="ColorSwatch" do (
+                    local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y (amax 1 (available as integer)) rectangle.h true
+                )
+            ) else if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
@@ -640,7 +670,8 @@ fn CyrusLayerEditor_modelsUI_1 = (
         label sourceUI_groupHeading "Cluster color group" pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58)))))
         dropdownlist sourceUI_existingGroups "" items:#() pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58))))) tooltip:"Assign highlighted sources to an existing color group for clustering."
         label sourceUI_existingGroups_caption "Reuse a group" pos:[6,6] width:(modelsUI_1.width-12) height:18
-        colorpicker sourceUI_groupColor "Color: " color:(color 100 220 120) pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58))))) modal:true notifyAfterAccept:true tooltip:"Assign a color group to highlighted sources when the color is accepted."
+        colorpicker sourceUI_groupColor "" color:(color 100 220 120) pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58))))) modal:true notifyAfterAccept:true tooltip:"Assign a color group to highlighted sources when the color is accepted."
+        label sourceUI_groupColor_caption "Color: " pos:[6,6] width:(modelsUI_1.width-12) height:18
         button sourceUI_applyColor "Apply to selected rows" pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/132.4))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/132.4))))) tooltip:"Assign the chosen color group to all highlighted source rows." height:22
         label sourceUI_colorHelp "OK saves the selected color." pos:[8,8] width:((modelsUI_1.width-16-((amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI_1.width-8)/58)))))
         spinner sourceUI_weightSpin "" range:[0,1,1] scale:0.01 pos:[8,8] width:((modelsUI_1.width-16-((amin 2 (amax 1 (floor ((modelsUI_1.width-8)/123.6))))-1)*4)/(amin 2 (amax 1 (floor ((modelsUI_1.width-8)/123.6))))) fieldWidth:58 tooltip:"Relative model frequency in this layer. Zero disables the model."
@@ -669,7 +700,7 @@ fn CyrusLayerEditor_modelsUI_1 = (
         local sourceContainersUI_bodyHeight=0
         local sourceContainersUI_controlsReady=false
         local sourceContainersUI_root=undefined,sourceContainersUI_owner=undefined,sourceContainersUI_panel=undefined,sourceContainersUI_controlsReady=false,sourceContainersUI_binding=false,sourceContainersUI_setSpecific=true,sourceContainersUI_modes=#()
-        fn sourceContainersUI_currentSet = sourceContainersUI_root.selectedPaintSet sourceContainersUI_owner
+        fn sourceContainersUI_currentSet = sourceContainersUI_owner
         fn sourceContainersUI_bind layer = (
             sourceContainersUI_binding=true
             local leaf=sourceContainersUI_currentSet(),active=true,own=leaf.logicalParentID==""
@@ -993,6 +1024,18 @@ fn CyrusLayerEditor_modelsUI_1 = (
         on sourceUI_plantList_grip MouseUp sender args do (stopListDrag();true)
         on sourceUI_plantList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
         on sourceUI_plantList_grip Paint sender args do paintListGrip sender args
+        fn fitRadio control available desiredColumns place:false = (
+            local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
+            if buttons.count==0 do return 20
+            local boxes=for handle in buttons collect windows.getWindowPos handle
+            local widest=amax (for box in boxes collect box.w),step=amax 20 ((amax (for box in boxes collect box.h))+5)
+            local columns=amin desiredColumns (amax 1 (floor ((available+4)/(widest+4))))
+            if place do for i=1 to buttons.count do (
+                local data=windows.getHWNDData buttons[i],position=windows.screenToClient data[2] (boxes[1].x+(mod (i-1) columns)*(widest+4)) (boxes[1].y+(floor ((i-1)/columns))*step)
+                windows.setWindowPos buttons[i] position.x position.y boxes[i].w boxes[i].h true
+            )
+            step*(ceil (buttons.count as float/columns))
+        )
         fn fitPairField control available = (
             local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
             for handle in control.hwnd do (
@@ -1005,7 +1048,12 @@ fn CyrusLayerEditor_modelsUI_1 = (
             true
         )
         fn fitWidth control available = (
-            if isProperty control #width then control.width=available
+            if classof control==ColorPickerControl then (
+                for handle in control.hwnd where (windows.getHWNDData handle)[4]=="ColorSwatch" do (
+                    local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y (amax 1 (available as integer)) rectangle.h true
+                )
+            ) else if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
@@ -1289,11 +1337,14 @@ fn CyrusLayerEditor_modelsUI_1 = (
             )
             rowControls=#(sourceUI_groupColor);show=(advancedToggle.checked and (true))
             for c in rowControls do c.visible=show
+            sourceUI_groupColor_caption.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                fitLabel sourceUI_groupColor_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(sourceUI_groupColor_caption.height)) (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                sourceUI_groupColor_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];sourceUI_groupColor_caption.width=cellWidth;sourceUI_groupColor_caption.enabled=sourceUI_groupColor.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(sourceUI_applyColor);show=(advancedToggle.checked and (true))
@@ -1325,8 +1376,8 @@ fn CyrusLayerEditor_modelsUI_1 = (
                 obj=owner
                 sourceContainersUI_root=root;sourceContainersUI_owner=owner;sourceContainersUI_panel=panel;sourceContainersUI_controlsReady=controlsReady;sourceContainersUI_binding=binding
             sourceUI_root=root;sourceUI_owner=owner;sourceUI_panel=panel;sourceUI_controlsReady=controlsReady;sourceUI_binding=binding
-            if owner!=undefined then (sourceContainersUI_bind (root.selectedPaintSet owner);) else (for c in #(sourceContainersUI_modeList,sourceContainersUI_containersList,sourceContainersUI_createContainer,sourceContainersUI_pickContainer,sourceContainersUI_removeContainer,sourceContainersUI_membershipInfo,sourceContainersUI_helpInfo) do c.enabled=false;sourceContainersUI_controlsReady=false)
-            sourceUI_detailsToggle.checked=true;if owner!=undefined then (sourceUI_bind (root.selectedPaintSet owner);) else (for c in #(sourceUI_sourceName,sourceUI_idColor,sourceUI_plantList,sourceUI_selectFromScene,sourceUI_addPlant,sourceUI_addSelected,sourceUI_removePlant,sourceUI_selectPlant,sourceUI_addPoint,sourceUI_addEmpty,sourceUI_replacePoint,sourceUI_groupHeading,sourceUI_existingGroups,sourceUI_groupColor,sourceUI_applyColor,sourceUI_colorHelp,sourceUI_weightSpin,sourceUI_weightHelp,sourceUI_sourceZSpin,sourceUI_sourceScaleSpin,sourceUI_sourceTransformHelp,sourceUI_radiusSourceSpin,sourceUI_followRadiusCheck,sourceUI_showRadiusCheck,sourceUI_forwardAxis,sourceUI_detailsToggle) do c.enabled=false;sourceUI_controlsReady=false)
+            if owner!=undefined then (sourceContainersUI_bind owner;) else (for c in #(sourceContainersUI_modeList,sourceContainersUI_containersList,sourceContainersUI_createContainer,sourceContainersUI_pickContainer,sourceContainersUI_removeContainer,sourceContainersUI_membershipInfo,sourceContainersUI_helpInfo) do c.enabled=false;sourceContainersUI_controlsReady=false)
+            sourceUI_detailsToggle.checked=true;if owner!=undefined then (sourceUI_bind owner;) else (for c in #(sourceUI_sourceName,sourceUI_idColor,sourceUI_plantList,sourceUI_selectFromScene,sourceUI_addPlant,sourceUI_addSelected,sourceUI_removePlant,sourceUI_selectPlant,sourceUI_addPoint,sourceUI_addEmpty,sourceUI_replacePoint,sourceUI_groupHeading,sourceUI_existingGroups,sourceUI_groupColor,sourceUI_applyColor,sourceUI_colorHelp,sourceUI_weightSpin,sourceUI_weightHelp,sourceUI_sourceZSpin,sourceUI_sourceScaleSpin,sourceUI_sourceTransformHelp,sourceUI_radiusSourceSpin,sourceUI_followRadiusCheck,sourceUI_showRadiusCheck,sourceUI_forwardAxis,sourceUI_detailsToggle) do c.enabled=false;sourceUI_controlsReady=false)
                 setupGrips();controlsReady=true;binding=false;layout();true
             )catch(binding=false;controlsReady=false;throw())
         )
@@ -1796,6 +1847,18 @@ fn CyrusLayerEditor_layoutUI_1 = (
         on diversityUI_strokeChoices_grip MouseUp sender args do (stopListDrag();true)
         on diversityUI_strokeChoices_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
         on diversityUI_strokeChoices_grip Paint sender args do paintListGrip sender args
+        fn fitRadio control available desiredColumns place:false = (
+            local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
+            if buttons.count==0 do return 20
+            local boxes=for handle in buttons collect windows.getWindowPos handle
+            local widest=amax (for box in boxes collect box.w),step=amax 20 ((amax (for box in boxes collect box.h))+5)
+            local columns=amin desiredColumns (amax 1 (floor ((available+4)/(widest+4))))
+            if place do for i=1 to buttons.count do (
+                local data=windows.getHWNDData buttons[i],position=windows.screenToClient data[2] (boxes[1].x+(mod (i-1) columns)*(widest+4)) (boxes[1].y+(floor ((i-1)/columns))*step)
+                windows.setWindowPos buttons[i] position.x position.y boxes[i].w boxes[i].h true
+            )
+            step*(ceil (buttons.count as float/columns))
+        )
         fn fitPairField control available = (
             local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
             for handle in control.hwnd do (
@@ -1808,7 +1871,12 @@ fn CyrusLayerEditor_layoutUI_1 = (
             true
         )
         fn fitWidth control available = (
-            if isProperty control #width then control.width=available
+            if classof control==ColorPickerControl then (
+                for handle in control.hwnd where (windows.getHWNDData handle)[4]=="ColorSwatch" do (
+                    local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y (amax 1 (available as integer)) rectangle.h true
+                )
+            ) else if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
@@ -1827,8 +1895,9 @@ fn CyrusLayerEditor_layoutUI_1 = (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 fitLabel diversityUI_diversityRadio_caption 18 cellWidth
                 stackedCaption=false;captionHeight=amax (amax #(diversityUI_diversityRadio_caption.height)) (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(80))+2+captionHeight
+                rowHeight=(amax #(fitRadio diversityUI_diversityRadio cellWidth 1 place:false))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                fitRadio diversityUI_diversityRadio cellWidth 1 place:true
                 diversityUI_diversityRadio_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_diversityRadio_caption.width=cellWidth;diversityUI_diversityRadio_caption.enabled=diversityUI_diversityRadio.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
@@ -2014,8 +2083,9 @@ fn CyrusLayerEditor_layoutUI_1 = (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 fitLabel diversityUI_strokeMode_caption 18 cellWidth
                 stackedCaption=false;captionHeight=amax (amax #(diversityUI_strokeMode_caption.height)) (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(40))+2+captionHeight
+                rowHeight=(amax #(fitRadio diversityUI_strokeMode cellWidth 1 place:false))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                fitRadio diversityUI_strokeMode cellWidth 1 place:true
                 diversityUI_strokeMode_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokeMode_caption.width=cellWidth;diversityUI_strokeMode_caption.enabled=diversityUI_strokeMode.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
@@ -2517,6 +2587,18 @@ fn CyrusLayerEditor_populationUI_1 = (
             true
         )
 
+        fn fitRadio control available desiredColumns place:false = (
+            local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
+            if buttons.count==0 do return 20
+            local boxes=for handle in buttons collect windows.getWindowPos handle
+            local widest=amax (for box in boxes collect box.w),step=amax 20 ((amax (for box in boxes collect box.h))+5)
+            local columns=amin desiredColumns (amax 1 (floor ((available+4)/(widest+4))))
+            if place do for i=1 to buttons.count do (
+                local data=windows.getHWNDData buttons[i],position=windows.screenToClient data[2] (boxes[1].x+(mod (i-1) columns)*(widest+4)) (boxes[1].y+(floor ((i-1)/columns))*step)
+                windows.setWindowPos buttons[i] position.x position.y boxes[i].w boxes[i].h true
+            )
+            step*(ceil (buttons.count as float/columns))
+        )
         fn fitPairField control available = (
             local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
             for handle in control.hwnd do (
@@ -2529,7 +2611,12 @@ fn CyrusLayerEditor_populationUI_1 = (
             true
         )
         fn fitWidth control available = (
-            if isProperty control #width then control.width=available
+            if classof control==ColorPickerControl then (
+                for handle in control.hwnd where (windows.getHWNDData handle)[4]=="ColorSwatch" do (
+                    local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y (amax 1 (available as integer)) rectangle.h true
+                )
+            ) else if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
@@ -2559,8 +2646,9 @@ fn CyrusLayerEditor_populationUI_1 = (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 fitLabel distributionUI_populationRadio_caption 18 cellWidth
                 stackedCaption=false;captionHeight=amax (amax #(distributionUI_populationRadio_caption.height)) (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(20))+2+captionHeight
+                rowHeight=(amax #(fitRadio distributionUI_populationRadio cellWidth 2 place:false))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                fitRadio distributionUI_populationRadio cellWidth 2 place:true
                 distributionUI_populationRadio_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_populationRadio_caption.width=cellWidth;distributionUI_populationRadio_caption.enabled=distributionUI_populationRadio.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
@@ -2619,8 +2707,9 @@ fn CyrusLayerEditor_populationUI_1 = (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 fitLabel distributionUI_modeRadio_caption 18 cellWidth
                 stackedCaption=false;captionHeight=amax (amax #(distributionUI_modeRadio_caption.height)) (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(20))+2+captionHeight
+                rowHeight=(amax #(fitRadio distributionUI_modeRadio cellWidth 2 place:false))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                fitRadio distributionUI_modeRadio cellWidth 2 place:true
                 distributionUI_modeRadio_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_modeRadio_caption.width=cellWidth;distributionUI_modeRadio_caption.enabled=distributionUI_modeRadio.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
@@ -2771,7 +2860,6 @@ fn CyrusLayerEditor_coverageUI_1 = (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
         local layout,lastLayoutWidth=0
         checkbox setsUI_paintedCheck "Use Paint Areas" pos:[8,8] width:((coverageUI_1.width-16-((amin 1 (amax 1 (floor ((coverageUI_1.width-8)/104))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI_1.width-8)/104))))) tooltip:"Restrict this layer to its painted areas. Turn off to scatter across all its surfaces."
-        button setsUI_importButton "Use existing paint" pos:[8,8] width:((coverageUI_1.width-16-((amin 1 (amax 1 (floor ((coverageUI_1.width-8)/111.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI_1.width-8)/111.60000000000001))))) tooltip:"Bring this older layer's existing coverage into a named area without changing its paint. Undo restores the old ownership." height:22
         dropdownlist setsUI_setList "" items:#() pos:[8,8] width:((coverageUI_1.width-16-((amin 1 (amax 1 (floor ((coverageUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI_1.width-8)/58)))))
         button setsUI_addButton "+" pos:[8,8] width:60 tooltip:"Create a named area. Painting again edits the selected area." height:22
         button setsUI_removeButton "×" pos:[8,8] width:60 tooltip:"Remove the selected area. Undo restores it." height:22
@@ -2784,12 +2872,8 @@ fn CyrusLayerEditor_coverageUI_1 = (
         label brushUI_targetInfo "Add a Paint Area to begin." pos:[8,8] width:((coverageUI_1.width-16-((amin 1 (amax 1 (floor ((coverageUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI_1.width-8)/58))))) height:36
         radiobuttons brushUI_modeRadio "" labels:#("Paint","Erase") columns:2 pos:[8,8] width:((coverageUI_1.width-16-((amin 1 (amax 1 (floor ((coverageUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI_1.width-8)/58)))))
         label brushUI_modeRadio_caption "Brush" pos:[6,6] width:(coverageUI_1.width-12) height:18
-        spinner brushUI_radiusSpin "" type:#worldunits range:[0.0001,1e9,20] pos:[8,8] width:((coverageUI_1.width-16-((amin 2 (amax 1 (floor ((coverageUI_1.width-8)/139.2))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI_1.width-8)/139.2))))) fieldWidth:58
+        spinner brushUI_radiusSpin "" type:#worldunits range:[0.001,1e7,20] pos:[8,8] width:((coverageUI_1.width-16-((amin 1 (amax 1 (floor ((coverageUI_1.width-8)/118.4))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI_1.width-8)/118.4))))) fieldWidth:58
         label brushUI_radiusSpin_caption "Radius:" pos:[6,6] width:(coverageUI_1.width-12) height:18
-        spinner brushUI_strengthSpin "" range:[0,100,100] pos:[8,8] width:((coverageUI_1.width-16-((amin 2 (amax 1 (floor ((coverageUI_1.width-8)/139.2))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI_1.width-8)/139.2))))) fieldWidth:58
-        label brushUI_strengthSpin_caption "Strength %:" pos:[6,6] width:(coverageUI_1.width-12) height:18
-        spinner brushUI_softSpin "" range:[0,100,0] pos:[8,8] width:((coverageUI_1.width-16-((amin 1 (amax 1 (floor ((coverageUI_1.width-8)/139.2))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI_1.width-8)/139.2))))) fieldWidth:58
-        label brushUI_softSpin_caption "Softness %:" pos:[6,6] width:(coverageUI_1.width-12) height:18
         button brushUI_beginButton "Start Brush" pos:[8,8] width:80 height:22
         button brushUI_stopButton "Stop" pos:[8,8] width:80 height:22
         button brushUI_fillButton "Fill" pos:[8,8] width:80 height:22
@@ -2797,10 +2881,22 @@ fn CyrusLayerEditor_coverageUI_1 = (
         label brushUI_brushState "" pos:[8,8] width:((coverageUI_1.width-16-((amin 1 (amax 1 (floor ((coverageUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI_1.width-8)/58))))) height:54
         spinner brushUI_densitySpin "" range:[0,100,100] pos:[8,8] width:((coverageUI_1.width-16-((amin 1 (amax 1 (floor ((coverageUI_1.width-8)/160))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI_1.width-8)/160))))) fieldWidth:58
         label brushUI_densitySpin_caption "Area density %:" pos:[6,6] width:(coverageUI_1.width-12) height:18
-        dropdownlist brushUI_overlayMode "" items:#("Coverage tint","Coverage samples","Off") pos:[8,8] width:((coverageUI_1.width-16-((amin 1 (amax 1 (floor ((coverageUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI_1.width-8)/58)))))
+        dropdownlist brushUI_overlayMode "" items:#("Vector borders","Coverage samples","Off") pos:[8,8] width:((coverageUI_1.width-16-((amin 1 (amax 1 (floor ((coverageUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI_1.width-8)/58)))))
         label brushUI_overlayMode_caption "Paint feedback" pos:[6,6] width:(coverageUI_1.width-12) height:18
         colorpicker brushUI_overlayColor "" color:(color 100 220 120) pos:[8,8] width:((coverageUI_1.width-16-((amin 1 (amax 1 (floor ((coverageUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI_1.width-8)/58)))))
-        label brushUI_brushHelp "Continue painting to edit the same area. Undo/Redo restores brush actions. Manual mode needs Update." pos:[8,8] width:((coverageUI_1.width-16-((amin 1 (amax 1 (floor ((coverageUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI_1.width-8)/58))))) height:56
+        label brushUI_brushHelp "Paint merges borders; Erase cuts holes. Zero fade = hard edge. Local XY terrain/planes only. Manual mode needs Update." pos:[8,8] width:((coverageUI_1.width-16-((amin 1 (amax 1 (floor ((coverageUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI_1.width-8)/58))))) height:78
+        spinner brushUI_insideSpin "" type:#worldunits range:[0,1e9,0] pos:[8,8] width:((coverageUI_1.width-16-((amin 1 (amax 1 (floor ((coverageUI_1.width-8)/144.4))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI_1.width-8)/144.4))))) fieldWidth:58
+        label brushUI_insideSpin_caption "Inside fade:" pos:[6,6] width:(coverageUI_1.width-12) height:18
+        spinner brushUI_outsideSpin "" type:#worldunits range:[0,1e9,0] pos:[8,8] width:((coverageUI_1.width-16-((amin 1 (amax 1 (floor ((coverageUI_1.width-8)/149.60000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI_1.width-8)/149.60000000000002))))) fieldWidth:58
+        label brushUI_outsideSpin_caption "Outside fade:" pos:[6,6] width:(coverageUI_1.width-12) height:18
+        checkbox brushUI_densityFade "Fade density" checked:true pos:[8,8] width:((coverageUI_1.width-16-((amin 2 (amax 1 (floor ((coverageUI_1.width-8)/101.2))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI_1.width-8)/101.2)))))
+        button brushUI_densityCurve "Density curve..." pos:[8,8] width:((coverageUI_1.width-16-((amin 2 (amax 1 (floor ((coverageUI_1.width-8)/101.2))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI_1.width-8)/101.2))))) height:22
+        checkbox brushUI_scaleFade "Fade scale" checked:false pos:[8,8] width:((coverageUI_1.width-16-((amin 2 (amax 1 (floor ((coverageUI_1.width-8)/90.8))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI_1.width-8)/90.8)))))
+        spinner brushUI_scaleMin "" range:[0,1000,0] pos:[8,8] width:((coverageUI_1.width-16-((amin 2 (amax 1 (floor ((coverageUI_1.width-8)/144.4))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI_1.width-8)/144.4))))) fieldWidth:58
+        label brushUI_scaleMin_caption "Edge scale:" pos:[6,6] width:(coverageUI_1.width-12) height:18
+        spinner brushUI_scaleMax "" range:[0,1000,1] pos:[8,8] width:((coverageUI_1.width-16-((amin 2 (amax 1 (floor ((coverageUI_1.width-8)/144.4))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI_1.width-8)/144.4))))) fieldWidth:58
+        label brushUI_scaleMax_caption "Inner scale:" pos:[6,6] width:(coverageUI_1.width-12) height:18
+        button brushUI_scaleCurve "Scale curve..." pos:[8,8] width:((coverageUI_1.width-16-((amin 2 (amax 1 (floor ((coverageUI_1.width-8)/90.8))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI_1.width-8)/90.8))))) height:22
         label heading_0 "Paint feedback" pos:[6,6] width:(coverageUI_1.width-12) height:18
         checkbutton advancedToggle "Advanced" pos:[6,6] width:(coverageUI_1.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
         local setsUI_bodyHeight=0
@@ -2818,22 +2914,14 @@ fn CyrusLayerEditor_coverageUI_1 = (
             setsUI_nameEdit.text=if area==undefined then "" else area.paintSetName
             setsUI_targetList.selection=if area==undefined then 0 else findItem setsUI_targets area.areaTarget
             setsUI_enabledCheck.checked=area!=undefined and area.paintSetEnabled
-            setsUI_importButton.enabled=setsUI_owner.paintDocument!=undefined and not setsUI_owner.areaMode and (setsUI_root.layerSets setsUI_owner).count==1
-            setsUI_addButton.enabled=setsUI_members.count<128 and (setsUI_root.layerSets setsUI_owner).count==1
-            setsUI_info.text=if (setsUI_root.layerSets setsUI_owner).count>1 then "Older model-owning sets are retained. Conversion is required before adding areas." else if area!=undefined and findItem setsUI_targets area.areaTarget==0 then "Inactive: assign a surface, or restore this area's original surface to the layer. Saved paint is retained." else "Paint and Erase edit this area. Areas share the layer's models; overlaps do not duplicate plants."
+            setsUI_addButton.enabled=setsUI_members.count<128
+            setsUI_info.text=if area!=undefined and findItem setsUI_targets area.areaTarget==0 then "Inactive: assign a surface, or restore this area's original surface to the layer. Saved paint is retained." else "Paint and Erase edit this area. Areas share the layer's models; overlaps do not duplicate plants."
             setsUI_controlsReady=true;setsUI_binding=false
         )
         fn setsUI_selectSet i = (
             if setsUI_binding or i<1 or i>setsUI_members.count do return false
             local controller=setsUI_root,parent=setsUI_owner
             CyrusStopBrush();parent.uiAreaID=setsUI_members[i].layerID;controller.bindNativeUI();true
-        )
-        on setsUI_importButton pressed do if controlsReady and not binding and root!=undefined and setsUI_controlsReady and not setsUI_binding and true do ((
-            local controller=setsUI_root,parent=setsUI_owner
-            undo "Cyrus use existing paint" on controller.adoptPaintArea parent
-            parent.markInputDirty();controller.bindNativeUI();CyrusViewportRedraw()
-        )
-            if controlsReady and root!=undefined do layout()
         )
         on setsUI_setList selected i do if controlsReady and not binding and root!=undefined and setsUI_controlsReady and not setsUI_binding and true do (setsUI_selectSet i
             if controlsReady and root!=undefined do layout()
@@ -2849,7 +2937,7 @@ fn CyrusLayerEditor_coverageUI_1 = (
         )
         on setsUI_paintedCheck changed value do if controlsReady and not binding and root!=undefined and setsUI_controlsReady and not setsUI_binding and true do (if not setsUI_binding do (
             local controller=setsUI_root,parent=setsUI_owner
-            CyrusStopBrush();undo "Cyrus coverage mode" on (controller.adoptPaintArea parent;parent.areaMode=true;parent.paintEnabled=value)
+            CyrusStopBrush();undo "Cyrus coverage mode" on (parent.paintEnabled=value)
             parent.markInputDirty();controller.bindNativeUI();CyrusViewportRedraw()
         )
             if controlsReady and root!=undefined do layout()
@@ -2863,7 +2951,14 @@ fn CyrusLayerEditor_coverageUI_1 = (
         local brushUI_bodyHeight=0
         local brushUI_controlsReady=false
         local brushUI_root=undefined,brushUI_owner=undefined,brushUI_panel=undefined,brushUI_obj=undefined,brushUI_controlsReady=false,brushUI_binding=false,brushUI_setSpecific=true
-        fn brushUI_refreshHistory = (true)
+        fn brushUI_saveFalloff = (
+            if not brushUI_binding and brushUI_obj!=undefined and brushUI_obj.paintDocument!=undefined do (
+                local area=brushUI_obj,cfg=cyrusBrushFalloff brushUI_obj.paintDocument
+                cfg[1]=brushUI_insideSpin.value;cfg[2]=brushUI_outsideSpin.value;cfg[3]=brushUI_densityFade.checked;cfg[4]=brushUI_scaleFade.checked
+                cfg[5]=brushUI_scaleMin.value;cfg[6]=brushUI_scaleMax.value
+                try(cyrusBrushSetFalloff area.paintDocument cfg;area.publishPaint())catch(messageBox (getCurrentException()) title:"Vector feather")
+            )
+        )
         fn brushUI_status = (
             if brushUI_obj==undefined then brushUI_brushState.text="Add or select a Paint Area." else (
                 local state=if brushUI_obj.paintDocument==undefined then undefined else cyrusBrushStats brushUI_obj.paintDocument
@@ -2871,28 +2966,33 @@ fn CyrusLayerEditor_coverageUI_1 = (
                 if brushUI_owner!=undefined and not brushUI_owner.paintEnabled do brushUI_brushState.text+="\nWhole surfaces; areas retained."
             )
         )
+        -- MAXScript resolves rollout function names in declaration order.
+        -- Declare status first; an unbound forward call stops the paint timer.
+        fn brushUI_refreshBrushStatus = (brushUI_status())
         fn brushUI_saveOptions = (
             if not brushUI_binding and brushUI_obj!=undefined and brushUI_obj.paintDocument!=undefined do (
-                cyrusBrushSettings brushUI_obj.paintDocument brushUI_radiusSpin.value (brushUI_strengthSpin.value/100.0) (brushUI_softSpin.value/100.0) (brushUI_modeRadio.state==2) 1.0
+                cyrusBrushSettings brushUI_obj.paintDocument brushUI_radiusSpin.value (brushUI_modeRadio.state==2)
                 cyrusBrushDisplay brushUI_obj.paintDocument brushUI_obj.paintView brushUI_obj.paintColor
             )
         )
         fn brushUI_bind layer = (
             brushUI_binding=true;brushUI_obj=layer
             local has=brushUI_obj!=undefined and brushUI_obj.paintDocument!=undefined
-            for control in #(brushUI_targetInfo,brushUI_modeRadio,brushUI_radiusSpin,brushUI_strengthSpin,brushUI_softSpin,brushUI_beginButton,brushUI_stopButton,brushUI_fillButton,brushUI_emptyButton,brushUI_brushState,brushUI_densitySpin,brushUI_overlayMode,brushUI_overlayColor,brushUI_brushHelp) do control.enabled=brushUI_obj!=undefined
-            for control in #(brushUI_stopButton,brushUI_fillButton,brushUI_emptyButton) do control.enabled=has
+            for control in #(brushUI_targetInfo,brushUI_modeRadio,brushUI_radiusSpin,brushUI_beginButton,brushUI_stopButton,brushUI_fillButton,brushUI_emptyButton,brushUI_brushState,brushUI_densitySpin,brushUI_overlayMode,brushUI_overlayColor,brushUI_brushHelp,brushUI_insideSpin,brushUI_outsideSpin,brushUI_densityFade,brushUI_densityCurve,brushUI_scaleFade,brushUI_scaleMin,brushUI_scaleMax,brushUI_scaleCurve) do control.enabled=brushUI_obj!=undefined
+            for control in #(brushUI_stopButton,brushUI_fillButton,brushUI_emptyButton,brushUI_insideSpin,brushUI_outsideSpin,brushUI_densityFade,brushUI_scaleFade,brushUI_densityCurve,brushUI_scaleCurve,brushUI_scaleMin,brushUI_scaleMax) do control.enabled=has
             local target=if brushUI_obj==undefined then undefined else brushUI_obj.areaTarget
             brushUI_targetInfo.text=if brushUI_obj==undefined then "Add a Paint Area to begin." else brushUI_obj.paintSetName+" / "+(if isValidNode target then target.name else "<choose surface>")
             brushUI_beginButton.enabled=brushUI_obj!=undefined and isValidNode target and findItem (brushUI_owner.validSurfaces()) target>0
             if brushUI_obj!=undefined do (brushUI_densitySpin.value=brushUI_obj.paintDensity*100;brushUI_overlayMode.selection=findItem #(2,1,0) brushUI_obj.paintView;brushUI_overlayColor.color=brushUI_obj.paintColor;brushUI_obj.setOverlapOwner brushUI_root)
-            if has do (local cfg=cyrusBrushOptions brushUI_obj.paintDocument;brushUI_radiusSpin.value=cfg[1];brushUI_strengthSpin.value=cfg[2]*100;brushUI_softSpin.value=cfg[3]*100;brushUI_modeRadio.state=if cfg[5] then 2 else 1)
+            if has do (local cfg=cyrusBrushOptions brushUI_obj.paintDocument;brushUI_radiusSpin.value=cfg[1];brushUI_modeRadio.state=if cfg[2] then 2 else 1
+                local fade=cyrusBrushFalloff brushUI_obj.paintDocument
+                brushUI_insideSpin.value=fade[1];brushUI_outsideSpin.value=fade[2];brushUI_densityFade.checked=fade[3];brushUI_scaleFade.checked=fade[4];brushUI_scaleMin.value=fade[5];brushUI_scaleMax.value=fade[6])
             brushUI_controlsReady=true;brushUI_binding=false;brushUI_status()
         )
         on brushUI_beginButton pressed do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (if brushUI_obj!=undefined do try (
-            local controller=brushUI_root,area=brushUI_obj,options=#(brushUI_radiusSpin.value,brushUI_strengthSpin.value,brushUI_softSpin.value,brushUI_modeRadio.state)
+            local controller=brushUI_root,area=brushUI_obj,options=#(brushUI_radiusSpin.value,brushUI_modeRadio.state)
             controller.setGroupCoverage area true
-            cyrusBrushSettings area.paintDocument options[1] (options[2]/100.0) (options[3]/100.0) (options[4]==2) 1.0
+            cyrusBrushSettings area.paintDocument options[1] (options[2]==2)
             cyrusBrushDisplay area.paintDocument area.paintView area.paintColor
             CyrusStartBrush controller area
         )catch(messageBox (getCurrentException()) title:"Cyrus Brush")
@@ -2907,10 +3007,28 @@ fn CyrusLayerEditor_coverageUI_1 = (
         on brushUI_radiusSpin changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (brushUI_saveOptions()
             if controlsReady and root!=undefined do layout()
         )
-        on brushUI_strengthSpin changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (brushUI_saveOptions()
+        on brushUI_insideSpin changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (brushUI_saveFalloff()
             if controlsReady and root!=undefined do layout()
         )
-        on brushUI_softSpin changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (brushUI_saveOptions()
+        on brushUI_outsideSpin changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (brushUI_saveFalloff()
+            if controlsReady and root!=undefined do layout()
+        )
+        on brushUI_densityFade changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (brushUI_saveFalloff()
+            if controlsReady and root!=undefined do layout()
+        )
+        on brushUI_scaleFade changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (brushUI_saveFalloff()
+            if controlsReady and root!=undefined do layout()
+        )
+        on brushUI_scaleMin changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (brushUI_saveFalloff()
+            if controlsReady and root!=undefined do layout()
+        )
+        on brushUI_scaleMax changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (brushUI_saveFalloff()
+            if controlsReady and root!=undefined do layout()
+        )
+        on brushUI_densityCurve pressed do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (if brushUI_obj!=undefined do CyrusOpenFalloffGraph brushUI_obj undefined true
+            if controlsReady and root!=undefined do layout()
+        )
+        on brushUI_scaleCurve pressed do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (if brushUI_obj!=undefined do CyrusOpenFalloffGraph brushUI_obj undefined false
             if controlsReady and root!=undefined do layout()
         )
         on brushUI_densitySpin changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (if not brushUI_binding and brushUI_obj!=undefined do (undo "Cyrus area density" on brushUI_obj.paintDensity=value/100.0;brushUI_owner.markInputDirty();brushUI_obj.publishPaint())
@@ -2989,6 +3107,18 @@ fn CyrusLayerEditor_coverageUI_1 = (
             true
         )
 
+        fn fitRadio control available desiredColumns place:false = (
+            local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
+            if buttons.count==0 do return 20
+            local boxes=for handle in buttons collect windows.getWindowPos handle
+            local widest=amax (for box in boxes collect box.w),step=amax 20 ((amax (for box in boxes collect box.h))+5)
+            local columns=amin desiredColumns (amax 1 (floor ((available+4)/(widest+4))))
+            if place do for i=1 to buttons.count do (
+                local data=windows.getHWNDData buttons[i],position=windows.screenToClient data[2] (boxes[1].x+(mod (i-1) columns)*(widest+4)) (boxes[1].y+(floor ((i-1)/columns))*step)
+                windows.setWindowPos buttons[i] position.x position.y boxes[i].w boxes[i].h true
+            )
+            step*(ceil (buttons.count as float/columns))
+        )
         fn fitPairField control available = (
             local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
             for handle in control.hwnd do (
@@ -3001,7 +3131,12 @@ fn CyrusLayerEditor_coverageUI_1 = (
             true
         )
         fn fitWidth control available = (
-            if isProperty control #width then control.width=available
+            if classof control==ColorPickerControl then (
+                for handle in control.hwnd where (windows.getHWNDData handle)[4]=="ColorSwatch" do (
+                    local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y (amax 1 (available as integer)) rectangle.h true
+                )
+            ) else if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
@@ -3019,15 +3154,6 @@ fn CyrusLayerEditor_coverageUI_1 = (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/104))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(20))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(setsUI_importButton);show=(true and (setsUI_owner!=undefined and setsUI_owner.paintDocument!=undefined and not setsUI_owner.areaMode))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/111.60000000000001))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
@@ -3109,33 +3235,22 @@ fn CyrusLayerEditor_coverageUI_1 = (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 fitLabel brushUI_modeRadio_caption 18 cellWidth
                 stackedCaption=false;captionHeight=amax (amax #(brushUI_modeRadio_caption.height)) (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(20))+2+captionHeight
+                rowHeight=(amax #(fitRadio brushUI_modeRadio cellWidth 2 place:false))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                fitRadio brushUI_modeRadio cellWidth 2 place:true
                 brushUI_modeRadio_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];brushUI_modeRadio_caption.width=cellWidth;brushUI_modeRadio_caption.enabled=brushUI_modeRadio.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(brushUI_radiusSpin,brushUI_strengthSpin);show=(true and (setsUI_paintedCheck.checked))
+            rowControls=#(brushUI_radiusSpin);show=(true and (setsUI_paintedCheck.checked))
             for c in rowControls do c.visible=show
-            brushUI_radiusSpin_caption.visible=show;brushUI_strengthSpin_caption.visible=show
+            brushUI_radiusSpin_caption.visible=show
             if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/139.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel brushUI_radiusSpin_caption 18 cellWidth;fitLabel brushUI_strengthSpin_caption 18 cellWidth
-                stackedCaption=cellWidth<135.2;captionHeight=amax 0 (if stackedCaption then (amax #(brushUI_radiusSpin_caption.height,brushUI_strengthSpin_caption.height)) else 0)
-                rowHeight=(amax #(22,22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                if not stackedCaption then (brushUI_radiusSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];brushUI_radiusSpin_caption.width=cellWidth-78) else (brushUI_radiusSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];brushUI_radiusSpin_caption.width=cellWidth);brushUI_radiusSpin_caption.enabled=brushUI_radiusSpin.enabled;if not stackedCaption then (brushUI_strengthSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];brushUI_strengthSpin_caption.width=cellWidth-78) else (brushUI_strengthSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];brushUI_strengthSpin_caption.width=cellWidth);brushUI_strengthSpin_caption.enabled=brushUI_strengthSpin.enabled
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(brushUI_softSpin);show=(true and (setsUI_paintedCheck.checked))
-            for c in rowControls do c.visible=show
-            brushUI_softSpin_caption.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/139.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel brushUI_softSpin_caption 18 cellWidth
-                stackedCaption=cellWidth<135.2;captionHeight=amax 0 (if stackedCaption then (amax #(brushUI_softSpin_caption.height)) else 0)
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/118.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel brushUI_radiusSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<114.4;captionHeight=amax 0 (if stackedCaption then (amax #(brushUI_radiusSpin_caption.height)) else 0)
                 rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                if not stackedCaption then (brushUI_softSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];brushUI_softSpin_caption.width=cellWidth-78) else (brushUI_softSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];brushUI_softSpin_caption.width=cellWidth);brushUI_softSpin_caption.enabled=brushUI_softSpin.enabled
+                if not stackedCaption then (brushUI_radiusSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];brushUI_radiusSpin_caption.width=cellWidth-78) else (brushUI_radiusSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];brushUI_radiusSpin_caption.width=cellWidth);brushUI_radiusSpin_caption.enabled=brushUI_radiusSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(brushUI_beginButton,brushUI_stopButton);show=(true and (setsUI_paintedCheck.checked))
@@ -3164,6 +3279,60 @@ fn CyrusLayerEditor_coverageUI_1 = (
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(brushUI_brushState.height))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(brushUI_insideSpin);show=(true and (setsUI_paintedCheck.checked))
+            for c in rowControls do c.visible=show
+            brushUI_insideSpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/144.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel brushUI_insideSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<140.4;captionHeight=amax 0 (if stackedCaption then (amax #(brushUI_insideSpin_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (brushUI_insideSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];brushUI_insideSpin_caption.width=cellWidth-78) else (brushUI_insideSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];brushUI_insideSpin_caption.width=cellWidth);brushUI_insideSpin_caption.enabled=brushUI_insideSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(brushUI_outsideSpin);show=(true and (setsUI_paintedCheck.checked))
+            for c in rowControls do c.visible=show
+            brushUI_outsideSpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/149.60000000000002))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel brushUI_outsideSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<145.60000000000002;captionHeight=amax 0 (if stackedCaption then (amax #(brushUI_outsideSpin_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (brushUI_outsideSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];brushUI_outsideSpin_caption.width=cellWidth-78) else (brushUI_outsideSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];brushUI_outsideSpin_caption.width=cellWidth);brushUI_outsideSpin_caption.enabled=brushUI_outsideSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(brushUI_densityFade,brushUI_densityCurve);show=(true and (setsUI_paintedCheck.checked))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/101.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(20,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(brushUI_scaleFade,brushUI_scaleCurve);show=(true and (setsUI_paintedCheck.checked))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/90.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(20,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(brushUI_scaleMin,brushUI_scaleMax);show=(true and (setsUI_paintedCheck.checked))
+            for c in rowControls do c.visible=show
+            brushUI_scaleMin_caption.visible=show;brushUI_scaleMax_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/144.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel brushUI_scaleMin_caption 18 cellWidth;fitLabel brushUI_scaleMax_caption 18 cellWidth
+                stackedCaption=cellWidth<140.4;captionHeight=amax 0 (if stackedCaption then (amax #(brushUI_scaleMin_caption.height,brushUI_scaleMax_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (brushUI_scaleMin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];brushUI_scaleMin_caption.width=cellWidth-78) else (brushUI_scaleMin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];brushUI_scaleMin_caption.width=cellWidth);brushUI_scaleMin_caption.enabled=brushUI_scaleMin.enabled;if not stackedCaption then (brushUI_scaleMax_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];brushUI_scaleMax_caption.width=cellWidth-78) else (brushUI_scaleMax_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];brushUI_scaleMax_caption.width=cellWidth);brushUI_scaleMax_caption.enabled=brushUI_scaleMax.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
@@ -3231,12 +3400,12 @@ fn CyrusLayerEditor_coverageUI_1 = (
                 obj=owner
                 setsUI_root=root;setsUI_owner=owner;setsUI_panel=panel;setsUI_controlsReady=controlsReady;setsUI_binding=binding
             brushUI_root=root;brushUI_owner=owner;brushUI_panel=panel;brushUI_controlsReady=controlsReady;brushUI_binding=binding
-            if owner!=undefined then (setsUI_bind owner;) else (for c in #(setsUI_paintedCheck,setsUI_importButton,setsUI_setList,setsUI_addButton,setsUI_removeButton,setsUI_nameEdit,setsUI_targetList,setsUI_enabledCheck,setsUI_info) do c.enabled=false;setsUI_setList.items=#();setsUI_members=#();setsUI_nameEdit.text="";setsUI_controlsReady=false)
-            if owner!=undefined then (brushUI_bind (root.selectedPaintArea owner);) else (for c in #(brushUI_targetInfo,brushUI_modeRadio,brushUI_radiusSpin,brushUI_strengthSpin,brushUI_softSpin,brushUI_beginButton,brushUI_stopButton,brushUI_fillButton,brushUI_emptyButton,brushUI_brushState,brushUI_densitySpin,brushUI_overlayMode,brushUI_overlayColor,brushUI_brushHelp) do c.enabled=false;brushUI_controlsReady=false)
+            if owner!=undefined then (setsUI_bind owner;) else (for c in #(setsUI_paintedCheck,setsUI_setList,setsUI_addButton,setsUI_removeButton,setsUI_nameEdit,setsUI_targetList,setsUI_enabledCheck,setsUI_info) do c.enabled=false;setsUI_setList.items=#();setsUI_members=#();setsUI_nameEdit.text="";setsUI_controlsReady=false)
+            if owner!=undefined then (brushUI_bind (root.selectedPaintArea owner);) else (for c in #(brushUI_targetInfo,brushUI_modeRadio,brushUI_radiusSpin,brushUI_beginButton,brushUI_stopButton,brushUI_fillButton,brushUI_emptyButton,brushUI_brushState,brushUI_densitySpin,brushUI_overlayMode,brushUI_overlayColor,brushUI_brushHelp,brushUI_insideSpin,brushUI_outsideSpin,brushUI_densityFade,brushUI_densityCurve,brushUI_scaleFade,brushUI_scaleMin,brushUI_scaleMax,brushUI_scaleCurve) do c.enabled=false;brushUI_controlsReady=false)
                 setupGrips();controlsReady=true;binding=false;layout();true
             )catch(binding=false;controlsReady=false;throw())
         )
-        fn refreshHistory = (if brushUI_controlsReady do brushUI_refreshHistory();if controlsReady do layout();true)
+        fn refreshBrushStatus = (if brushUI_controlsReady do brushUI_refreshBrushStatus();if controlsReady do layout();true)
         fn status = (if brushUI_controlsReady do brushUI_status();true)
 
         on advancedToggle changed value do if controlsReady and not binding and root!=undefined and true do ((layout();true)
@@ -3532,6 +3701,18 @@ fn CyrusLayerEditor_areasUI_1 = (
         on areaUI_areaList_grip MouseUp sender args do (stopListDrag();true)
         on areaUI_areaList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
         on areaUI_areaList_grip Paint sender args do paintListGrip sender args
+        fn fitRadio control available desiredColumns place:false = (
+            local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
+            if buttons.count==0 do return 20
+            local boxes=for handle in buttons collect windows.getWindowPos handle
+            local widest=amax (for box in boxes collect box.w),step=amax 20 ((amax (for box in boxes collect box.h))+5)
+            local columns=amin desiredColumns (amax 1 (floor ((available+4)/(widest+4))))
+            if place do for i=1 to buttons.count do (
+                local data=windows.getHWNDData buttons[i],position=windows.screenToClient data[2] (boxes[1].x+(mod (i-1) columns)*(widest+4)) (boxes[1].y+(floor ((i-1)/columns))*step)
+                windows.setWindowPos buttons[i] position.x position.y boxes[i].w boxes[i].h true
+            )
+            step*(ceil (buttons.count as float/columns))
+        )
         fn fitPairField control available = (
             local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
             for handle in control.hwnd do (
@@ -3544,7 +3725,12 @@ fn CyrusLayerEditor_areasUI_1 = (
             true
         )
         fn fitWidth control available = (
-            if isProperty control #width then control.width=available
+            if classof control==ColorPickerControl then (
+                for handle in control.hwnd where (windows.getHWNDData handle)[4]=="ColorSwatch" do (
+                    local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y (amax 1 (available as integer)) rectangle.h true
+                )
+            ) else if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
@@ -3614,8 +3800,9 @@ fn CyrusLayerEditor_areasUI_1 = (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 fitLabel areaUI_areaMode_caption 18 cellWidth
                 stackedCaption=false;captionHeight=amax (amax #(areaUI_areaMode_caption.height)) (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(40))+2+captionHeight
+                rowHeight=(amax #(fitRadio areaUI_areaMode cellWidth 1 place:false))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                fitRadio areaUI_areaMode cellWidth 1 place:true
                 areaUI_areaMode_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];areaUI_areaMode_caption.width=cellWidth;areaUI_areaMode_caption.enabled=areaUI_areaMode.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
@@ -4153,6 +4340,18 @@ fn CyrusLayerEditor_transformsUI_1 = (
             true
         )
 
+        fn fitRadio control available desiredColumns place:false = (
+            local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
+            if buttons.count==0 do return 20
+            local boxes=for handle in buttons collect windows.getWindowPos handle
+            local widest=amax (for box in boxes collect box.w),step=amax 20 ((amax (for box in boxes collect box.h))+5)
+            local columns=amin desiredColumns (amax 1 (floor ((available+4)/(widest+4))))
+            if place do for i=1 to buttons.count do (
+                local data=windows.getHWNDData buttons[i],position=windows.screenToClient data[2] (boxes[1].x+(mod (i-1) columns)*(widest+4)) (boxes[1].y+(floor ((i-1)/columns))*step)
+                windows.setWindowPos buttons[i] position.x position.y boxes[i].w boxes[i].h true
+            )
+            step*(ceil (buttons.count as float/columns))
+        )
         fn fitPairField control available = (
             local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
             for handle in control.hwnd do (
@@ -4165,7 +4364,12 @@ fn CyrusLayerEditor_transformsUI_1 = (
             true
         )
         fn fitWidth control available = (
-            if isProperty control #width then control.width=available
+            if classof control==ColorPickerControl then (
+                for handle in control.hwnd where (windows.getHWNDData handle)[4]=="ColorSwatch" do (
+                    local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y (amax 1 (available as integer)) rectangle.h true
+                )
+            ) else if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
@@ -4441,9 +4645,9 @@ fn CyrusLayerEditor_spacingUI_1 = (
         label instanceRadiusUI_radiusMode_caption "Selected CS Edit instances" pos:[6,6] width:(spacingUI_1.width-12) height:18
         spinner instanceRadiusUI_radiusSpin "" range:[0,1e9,1] pos:[8,8] width:((spacingUI_1.width-16-((amin 1 (amax 1 (floor ((spacingUI_1.width-8)/113.2))))-1)*4)/(amin 1 (amax 1 (floor ((spacingUI_1.width-8)/113.2))))) fieldWidth:58 tooltip:"Value applied only when Set selected radii is pressed."
         label instanceRadiusUI_radiusSpin_caption "Value:" pos:[6,6] width:(spacingUI_1.width-12) height:18
-        button instanceRadiusUI_applyRadius "Set selected radii" pos:[8,8] width:((spacingUI_1.width-16-((amin 1 (amax 1 (floor ((spacingUI_1.width-8)/111.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((spacingUI_1.width-8)/111.60000000000001))))) tooltip:"Apply radius overrides to selected instances in this layer or older model group." height:22
+        button instanceRadiusUI_applyRadius "Set selected radii" pos:[8,8] width:((spacingUI_1.width-16-((amin 1 (amax 1 (floor ((spacingUI_1.width-8)/111.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((spacingUI_1.width-8)/111.60000000000001))))) tooltip:"Apply radius overrides to selected instances in this layer." height:22
         button instanceRadiusUI_resetRadius "Clear selected overrides" pos:[8,8] width:((spacingUI_1.width-16-((amin 1 (amax 1 (floor ((spacingUI_1.width-8)/142.8))))-1)*4)/(amin 1 (amax 1 (floor ((spacingUI_1.width-8)/142.8))))) tooltip:"Restore the selected instances' inherited source radii." height:22
-        button instanceRadiusUI_clearRadius "Clear radius overrides" pos:[8,8] width:((spacingUI_1.width-16-((amin 1 (amax 1 (floor ((spacingUI_1.width-8)/132.4))))-1)*4)/(amin 1 (amax 1 (floor ((spacingUI_1.width-8)/132.4))))) tooltip:"Remove instance-radius overrides for this layer or older model group." height:22
+        button instanceRadiusUI_clearRadius "Clear radius overrides" pos:[8,8] width:((spacingUI_1.width-16-((amin 1 (amax 1 (floor ((spacingUI_1.width-8)/132.4))))-1)*4)/(amin 1 (amax 1 (floor ((spacingUI_1.width-8)/132.4))))) tooltip:"Remove instance-radius overrides for this layer." height:22
         label instanceRadiusUI_info "Select instances with CS Edit before applying a radius. Overrides follow their stable instance identities." pos:[8,8] width:((spacingUI_1.width-16-((amin 1 (amax 1 (floor ((spacingUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((spacingUI_1.width-8)/58))))) height:54
         checkbox spacingUI_relaxCheck "Point Relax" pos:[8,8] width:((spacingUI_1.width-16-((amin 1 (amax 1 (floor ((spacingUI_1.width-8)/83.2))))-1)*4)/(amin 1 (amax 1 (floor ((spacingUI_1.width-8)/83.2))))) tooltip:"Separate nearby candidates on the receiving surface before Brush, artist edits and spacing. Fixed anchors stay fixed."
         spinner spacingUI_spacingSpin "" pos:[8,8] width:((spacingUI_1.width-16-((amin 1 (amax 1 (floor ((spacingUI_1.width-8)/165.2))))-1)*4)/(amin 1 (amax 1 (floor ((spacingUI_1.width-8)/165.2))))) fieldWidth:58 type:#worldUnits range:[0.00001,1e9,0.2]
@@ -4479,7 +4683,7 @@ fn CyrusLayerEditor_spacingUI_1 = (
         local proceduralUI_controlsReady=false
         local proceduralUI_root=undefined,proceduralUI_owner=undefined,proceduralUI_panel=undefined,proceduralUI_controlsReady=false,proceduralUI_binding=false,proceduralUI_setSpecific=true,proceduralUI_peers=#(),proceduralUI_scopeRows=#(1,4)
         fn proceduralUI_currentScope = (if proceduralUI_scopeList.selection>0 and proceduralUI_scopeList.selection<=proceduralUI_scopeRows.count then proceduralUI_scopeRows[proceduralUI_scopeList.selection] else 1)
-        fn proceduralUI_currentSet = (proceduralUI_root.selectedPaintSet proceduralUI_owner)
+        fn proceduralUI_currentSet = (proceduralUI_owner)
         fn proceduralUI_bindRule resetPeer:false = (
             local wasBinding=proceduralUI_binding,leaf=proceduralUI_currentSet(),scope=proceduralUI_currentScope(),rule,previous=undefined,pair=scope==3 or scope==4
             if not resetPeer and proceduralUI_peerList.selection>0 and proceduralUI_peerList.selection<=proceduralUI_peers.count do previous=proceduralUI_peers[proceduralUI_peerList.selection]
@@ -4509,9 +4713,9 @@ fn CyrusLayerEditor_spacingUI_1 = (
         )
         fn proceduralUI_bind layer = (
             proceduralUI_binding=true
-            local previous=proceduralUI_currentScope(),older=(proceduralUI_root.layerSets proceduralUI_owner).count>1
-            proceduralUI_scopeRows=if older then #(1,2,3,4,5) else #(1,4)
-            proceduralUI_scopeList.items=if older then #("Within model group","Between model groups","Pair of model groups","Between layers","Layer default") else #("Within this layer","Between layers")
+            local previous=proceduralUI_currentScope()
+            proceduralUI_scopeRows=#(1,4)
+            proceduralUI_scopeList.items=#("Within this layer","Between layers")
             proceduralUI_scopeList.selection=amax 1 (findItem proceduralUI_scopeRows previous)
             proceduralUI_bindRule();proceduralUI_controlsReady=true;proceduralUI_binding=false
         )
@@ -4562,7 +4766,7 @@ fn CyrusLayerEditor_spacingUI_1 = (
         local instanceRadiusUI_bodyHeight=0
         local instanceRadiusUI_controlsReady=false,instanceRadiusUI_binding=false
         local instanceRadiusUI_root=undefined,instanceRadiusUI_owner=undefined,instanceRadiusUI_panel=undefined,instanceRadiusUI_controlsReady=false,instanceRadiusUI_setSpecific=true
-        fn instanceRadiusUI_currentSet = (instanceRadiusUI_root.selectedPaintSet instanceRadiusUI_owner)
+        fn instanceRadiusUI_currentSet = (instanceRadiusUI_owner)
         fn instanceRadiusUI_bind layer = (for c in #(instanceRadiusUI_radiusMode,instanceRadiusUI_radiusSpin,instanceRadiusUI_applyRadius,instanceRadiusUI_resetRadius,instanceRadiusUI_clearRadius,instanceRadiusUI_info) do c.enabled=true;instanceRadiusUI_controlsReady=true)
         on instanceRadiusUI_applyRadius pressed do if controlsReady and not binding and root!=undefined and instanceRadiusUI_controlsReady and not instanceRadiusUI_binding and true do (try((instanceRadiusUI_currentSet()).procSelectedRadius instanceRadiusUI_radiusMode.selection instanceRadiusUI_radiusSpin.value;instanceRadiusUI_bind instanceRadiusUI_owner)catch(messageBox (getCurrentException()) title:"Cyrus radius")
             if controlsReady and root!=undefined do layout()
@@ -4695,6 +4899,18 @@ fn CyrusLayerEditor_spacingUI_1 = (
             true
         )
 
+        fn fitRadio control available desiredColumns place:false = (
+            local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
+            if buttons.count==0 do return 20
+            local boxes=for handle in buttons collect windows.getWindowPos handle
+            local widest=amax (for box in boxes collect box.w),step=amax 20 ((amax (for box in boxes collect box.h))+5)
+            local columns=amin desiredColumns (amax 1 (floor ((available+4)/(widest+4))))
+            if place do for i=1 to buttons.count do (
+                local data=windows.getHWNDData buttons[i],position=windows.screenToClient data[2] (boxes[1].x+(mod (i-1) columns)*(widest+4)) (boxes[1].y+(floor ((i-1)/columns))*step)
+                windows.setWindowPos buttons[i] position.x position.y boxes[i].w boxes[i].h true
+            )
+            step*(ceil (buttons.count as float/columns))
+        )
         fn fitPairField control available = (
             local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
             for handle in control.hwnd do (
@@ -4707,7 +4923,12 @@ fn CyrusLayerEditor_spacingUI_1 = (
             true
         )
         fn fitWidth control available = (
-            if isProperty control #width then control.width=available
+            if classof control==ColorPickerControl then (
+                for handle in control.hwnd where (windows.getHWNDData handle)[4]=="ColorSwatch" do (
+                    local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y (amax 1 (available as integer)) rectangle.h true
+                )
+            ) else if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
@@ -5085,8 +5306,8 @@ fn CyrusLayerEditor_spacingUI_1 = (
             instanceRadiusUI_root=root;instanceRadiusUI_owner=owner;instanceRadiusUI_panel=panel;instanceRadiusUI_controlsReady=controlsReady;instanceRadiusUI_binding=binding
             spacingUI_root=root;spacingUI_owner=owner;spacingUI_panel=panel;spacingUI_controlsReady=controlsReady;spacingUI_binding=binding
             separationUI_root=root;separationUI_owner=owner;separationUI_panel=panel;separationUI_controlsReady=controlsReady;separationUI_binding=binding
-            if owner!=undefined then (proceduralUI_bind (root.selectedPaintSet owner);) else (for c in #(proceduralUI_scopeList,proceduralUI_peerList,proceduralUI_enabledCheck,proceduralUI_multiplierSpin,proceduralUI_gapSpin,proceduralUI_planarCheck,proceduralUI_ruleInfo,proceduralUI_resetRule) do c.enabled=false;proceduralUI_controlsReady=false)
-            if owner!=undefined then (instanceRadiusUI_bind (root.selectedPaintSet owner);) else (for c in #(instanceRadiusUI_radiusMode,instanceRadiusUI_radiusSpin,instanceRadiusUI_applyRadius,instanceRadiusUI_resetRadius,instanceRadiusUI_clearRadius,instanceRadiusUI_info) do c.enabled=false;instanceRadiusUI_controlsReady=false)
+            if owner!=undefined then (proceduralUI_bind owner;) else (for c in #(proceduralUI_scopeList,proceduralUI_peerList,proceduralUI_enabledCheck,proceduralUI_multiplierSpin,proceduralUI_gapSpin,proceduralUI_planarCheck,proceduralUI_ruleInfo,proceduralUI_resetRule) do c.enabled=false;proceduralUI_controlsReady=false)
+            if owner!=undefined then (instanceRadiusUI_bind owner;) else (for c in #(instanceRadiusUI_radiusMode,instanceRadiusUI_radiusSpin,instanceRadiusUI_applyRadius,instanceRadiusUI_resetRadius,instanceRadiusUI_clearRadius,instanceRadiusUI_info) do c.enabled=false;instanceRadiusUI_controlsReady=false)
             if owner!=undefined then (spacingUI_bind owner;) else (for c in #(spacingUI_relaxCheck,spacingUI_spacingSpin,spacingUI_iterationsSpin,spacingUI_strengthSpin,spacingUI_boundaryRelaxCheck,spacingUI_finalStrengthSpin,spacingUI_finalIterSpin,spacingUI_finalMoveSpin,spacingUI_orderHint) do c.enabled=false;spacingUI_controlsReady=false)
             if owner!=undefined then (separationUI_bind owner;) else (for c in #(separationUI_cleanCheck,separationUI_neighborSpin,separationUI_minNeighborSpin,separationUI_minIslandSpin,separationUI_planarCheck,separationUI_helpInfo) do c.enabled=false;separationUI_controlsReady=false)
                 setupGrips();controlsReady=true;binding=false;layout();true
@@ -5153,7 +5374,7 @@ fn CyrusLayerEditor_statisticsUI_1 = (
         on detailsUI_refreshButton pressed do if controlsReady and not binding and root!=undefined and detailsUI_controlsReady and not detailsUI_binding and true do (detailsUI_bind detailsUI_owner
             if controlsReady and root!=undefined do layout()
         )
-        on detailsUI_helpButton pressed do if controlsReady and not binding and root!=undefined and detailsUI_controlsReady and not detailsUI_binding and true do (messageBox (detailsUI_info.text+"\n\nPaint sets own assets and independent stroke history. Population, area, transforms and cleanup belong to the layer. Enabled set weights divide the layer budget.\n\nPoint Cloud uses many samples per plant; Plant centres uses one. Preview budgets affect display. Hidden owners still affect collision and render; disabled owners do not. Manual shows the previous completed build until Update. Paint feedback shows coverage, not accepted instances.\n\n"+"Visible order decides ordinary winners. Self, sibling-set and layer-pair rules are independent. Radius factor x (A + B) + gap, in XY or 3D. Protected edits survive and report conflicts. Background coverage uses earlier siblings. Accepted target retries a bounded prefix. Relax moves candidates before Brush, edits and collisions; each set uses its layer recipe."+"\n\nBase cannot be removed separately; disable or erase it. Capacity: ten populations, including sets. A Point source is an accepted placeholder. Weighted Empty sources are supported in candidate-budget mode.") title:"Cyrus layer help"
+        on detailsUI_helpButton pressed do if controlsReady and not binding and root!=undefined and detailsUI_controlsReady and not detailsUI_binding and true do (messageBox (detailsUI_info.text+"\n\nLayers own surfaces, models, population and transforms. Paint Areas bind individual surfaces and union vector coverage. Feather curves control density and multiply random scale. Include/Exclude and collision rules still apply.\n\nManual retains the previous complete build until Update. Live updates relevant edits. Failed builds preserve the last complete result. Vector painting supports local XY terrain and planes; closed or overlapping receivers are rejected.") title:"Cyrus layer help"
             if controlsReady and root!=undefined do layout()
         )
         local workflowUI_bodyHeight=0
@@ -5317,6 +5538,18 @@ fn CyrusLayerEditor_statisticsUI_1 = (
             true
         )
 
+        fn fitRadio control available desiredColumns place:false = (
+            local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
+            if buttons.count==0 do return 20
+            local boxes=for handle in buttons collect windows.getWindowPos handle
+            local widest=amax (for box in boxes collect box.w),step=amax 20 ((amax (for box in boxes collect box.h))+5)
+            local columns=amin desiredColumns (amax 1 (floor ((available+4)/(widest+4))))
+            if place do for i=1 to buttons.count do (
+                local data=windows.getHWNDData buttons[i],position=windows.screenToClient data[2] (boxes[1].x+(mod (i-1) columns)*(widest+4)) (boxes[1].y+(floor ((i-1)/columns))*step)
+                windows.setWindowPos buttons[i] position.x position.y boxes[i].w boxes[i].h true
+            )
+            step*(ceil (buttons.count as float/columns))
+        )
         fn fitPairField control available = (
             local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
             for handle in control.hwnd do (
@@ -5329,7 +5562,12 @@ fn CyrusLayerEditor_statisticsUI_1 = (
             true
         )
         fn fitWidth control available = (
-            if isProperty control #width then control.width=available
+            if classof control==ColorPickerControl then (
+                for handle in control.hwnd where (windows.getHWNDData handle)[4]=="ColorSwatch" do (
+                    local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y (amax 1 (available as integer)) rectangle.h true
+                )
+            ) else if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
@@ -5476,7 +5714,6 @@ fn CyrusLayerEditor_setsUI_1 = (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
         local layout,lastLayoutWidth=0
         checkbox setsUI_paintedCheck "Use Paint Areas" pos:[8,8] width:((setsUI_1.width-16-((amin 1 (amax 1 (floor ((setsUI_1.width-8)/104))))-1)*4)/(amin 1 (amax 1 (floor ((setsUI_1.width-8)/104))))) tooltip:"Restrict this layer to its painted areas. Turn off to scatter across all its surfaces."
-        button setsUI_importButton "Use existing paint" pos:[8,8] width:((setsUI_1.width-16-((amin 1 (amax 1 (floor ((setsUI_1.width-8)/111.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((setsUI_1.width-8)/111.60000000000001))))) tooltip:"Bring this older layer's existing coverage into a named area without changing its paint. Undo restores the old ownership." height:22
         dropdownlist setsUI_setList "" items:#() pos:[8,8] width:((setsUI_1.width-16-((amin 1 (amax 1 (floor ((setsUI_1.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((setsUI_1.width-8)/58)))))
         button setsUI_addButton "+" pos:[8,8] width:60 tooltip:"Create a named area. Painting again edits the selected area." height:22
         button setsUI_removeButton "×" pos:[8,8] width:60 tooltip:"Remove the selected area. Undo restores it." height:22
@@ -5502,22 +5739,14 @@ fn CyrusLayerEditor_setsUI_1 = (
             setsUI_nameEdit.text=if area==undefined then "" else area.paintSetName
             setsUI_targetList.selection=if area==undefined then 0 else findItem setsUI_targets area.areaTarget
             setsUI_enabledCheck.checked=area!=undefined and area.paintSetEnabled
-            setsUI_importButton.enabled=setsUI_owner.paintDocument!=undefined and not setsUI_owner.areaMode and (setsUI_root.layerSets setsUI_owner).count==1
-            setsUI_addButton.enabled=setsUI_members.count<128 and (setsUI_root.layerSets setsUI_owner).count==1
-            setsUI_info.text=if (setsUI_root.layerSets setsUI_owner).count>1 then "Older model-owning sets are retained. Conversion is required before adding areas." else if area!=undefined and findItem setsUI_targets area.areaTarget==0 then "Inactive: assign a surface, or restore this area's original surface to the layer. Saved paint is retained." else "Paint and Erase edit this area. Areas share the layer's models; overlaps do not duplicate plants."
+            setsUI_addButton.enabled=setsUI_members.count<128
+            setsUI_info.text=if area!=undefined and findItem setsUI_targets area.areaTarget==0 then "Inactive: assign a surface, or restore this area's original surface to the layer. Saved paint is retained." else "Paint and Erase edit this area. Areas share the layer's models; overlaps do not duplicate plants."
             setsUI_controlsReady=true;setsUI_binding=false
         )
         fn setsUI_selectSet i = (
             if setsUI_binding or i<1 or i>setsUI_members.count do return false
             local controller=setsUI_root,parent=setsUI_owner
             CyrusStopBrush();parent.uiAreaID=setsUI_members[i].layerID;controller.bindNativeUI();true
-        )
-        on setsUI_importButton pressed do if controlsReady and not binding and root!=undefined and setsUI_controlsReady and not setsUI_binding and true do ((
-            local controller=setsUI_root,parent=setsUI_owner
-            undo "Cyrus use existing paint" on controller.adoptPaintArea parent
-            parent.markInputDirty();controller.bindNativeUI();CyrusViewportRedraw()
-        )
-            if controlsReady and root!=undefined do layout()
         )
         on setsUI_setList selected i do if controlsReady and not binding and root!=undefined and setsUI_controlsReady and not setsUI_binding and true do (setsUI_selectSet i
             if controlsReady and root!=undefined do layout()
@@ -5533,7 +5762,7 @@ fn CyrusLayerEditor_setsUI_1 = (
         )
         on setsUI_paintedCheck changed value do if controlsReady and not binding and root!=undefined and setsUI_controlsReady and not setsUI_binding and true do (if not setsUI_binding do (
             local controller=setsUI_root,parent=setsUI_owner
-            CyrusStopBrush();undo "Cyrus coverage mode" on (controller.adoptPaintArea parent;parent.areaMode=true;parent.paintEnabled=value)
+            CyrusStopBrush();undo "Cyrus coverage mode" on (parent.paintEnabled=value)
             parent.markInputDirty();controller.bindNativeUI();CyrusViewportRedraw()
         )
             if controlsReady and root!=undefined do layout()
@@ -5605,6 +5834,18 @@ fn CyrusLayerEditor_setsUI_1 = (
             true
         )
 
+        fn fitRadio control available desiredColumns place:false = (
+            local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
+            if buttons.count==0 do return 20
+            local boxes=for handle in buttons collect windows.getWindowPos handle
+            local widest=amax (for box in boxes collect box.w),step=amax 20 ((amax (for box in boxes collect box.h))+5)
+            local columns=amin desiredColumns (amax 1 (floor ((available+4)/(widest+4))))
+            if place do for i=1 to buttons.count do (
+                local data=windows.getHWNDData buttons[i],position=windows.screenToClient data[2] (boxes[1].x+(mod (i-1) columns)*(widest+4)) (boxes[1].y+(floor ((i-1)/columns))*step)
+                windows.setWindowPos buttons[i] position.x position.y boxes[i].w boxes[i].h true
+            )
+            step*(ceil (buttons.count as float/columns))
+        )
         fn fitPairField control available = (
             local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
             for handle in control.hwnd do (
@@ -5617,7 +5858,12 @@ fn CyrusLayerEditor_setsUI_1 = (
             true
         )
         fn fitWidth control available = (
-            if isProperty control #width then control.width=available
+            if classof control==ColorPickerControl then (
+                for handle in control.hwnd where (windows.getHWNDData handle)[4]=="ColorSwatch" do (
+                    local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y (amax 1 (available as integer)) rectangle.h true
+                )
+            ) else if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
@@ -5635,15 +5881,6 @@ fn CyrusLayerEditor_setsUI_1 = (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/104))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(20))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(setsUI_importButton);show=(true and (setsUI_owner!=undefined and setsUI_owner.paintDocument!=undefined and not setsUI_owner.areaMode))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/111.60000000000001))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
@@ -5719,7 +5956,7 @@ fn CyrusLayerEditor_setsUI_1 = (
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
                 setsUI_root=root;setsUI_owner=owner;setsUI_panel=panel;setsUI_controlsReady=controlsReady;setsUI_binding=binding
-            if owner!=undefined then (setsUI_bind owner;) else (for c in #(setsUI_paintedCheck,setsUI_importButton,setsUI_setList,setsUI_addButton,setsUI_removeButton,setsUI_nameEdit,setsUI_targetList,setsUI_enabledCheck,setsUI_info) do c.enabled=false;setsUI_setList.items=#();setsUI_members=#();setsUI_nameEdit.text="";setsUI_controlsReady=false)
+            if owner!=undefined then (setsUI_bind owner;) else (for c in #(setsUI_paintedCheck,setsUI_setList,setsUI_addButton,setsUI_removeButton,setsUI_nameEdit,setsUI_targetList,setsUI_enabledCheck,setsUI_info) do c.enabled=false;setsUI_setList.items=#();setsUI_members=#();setsUI_nameEdit.text="";setsUI_controlsReady=false)
                 setupGrips();controlsReady=true;binding=false;layout();true
             )catch(binding=false;controlsReady=false;throw())
         )
@@ -5775,14 +6012,13 @@ fn CyrusBindLayerEditor root = (
 fn CyrusOpenLayerEditor root owner = (
     if owner==undefined or findItem root.layerObjects owner==0 do return false
     if CyrusLayerEditor!=undefined then (CyrusLayerEditor.retarget root owner;CyrusLayerEditor.visible=true;return true)
-    rollout editor "Cyrus Scatter 0.77 - Layer Editor" width:920 height:800 autoLayoutOnResize:true (
+    rollout editor "Cyrus Scatter 0.78.1 - Layer Editor" width:920 height:800 autoLayoutOnResize:true (
         local root=CyrusLayerUIRoot,owner=CyrusLayerUIOwner,ownerNode=undefined,binding=false,controlsReady=false,closing=false
         local clientSize=CyrusLayerEditorSize,layingOut=false
         local editors=#(),pages=#(),pageEditors=#(#(),#(),#(),#(),#(),#()),built=#{},topic=1,members=#(),sets=#(),pageSections=#(),ownerStates=#(),lastSet=undefined
         label setupInfo "" pos:[12,10] width:(clientSize.x-178) height:18
         button updateNow "Update setup" pos:[clientSize.x-158,8] width:146 height:24 tooltip:"Recalculate every enabled layer in this setup, in order."
         dropdownlist layerList "Layer" pos:[12,36] width:((clientSize.x-36)/2)
-        dropdownlist setList "Existing model group" pos:[clientSize.x/2+6,36] width:((clientSize.x-36)/2)
         checkbutton assetsTab "Assets" pos:[12,90] width:((clientSize.x-34)/6) height:26 checked:true tooltip:"Models and receiving surfaces for this layer."
         checkbutton populationTab "Population" pos:[12+(clientSize.x-22)/6,90] width:((clientSize.x-34)/6) height:26 tooltip:"Shared layer count, density, Area and retry limits."
         checkbutton paintTab "Paint" pos:[12+2*(clientSize.x-22)/6,90] width:((clientSize.x-34)/6) height:26 tooltip:"Optional receiver-bound Paint Areas."
@@ -5826,7 +6062,7 @@ fn CyrusOpenLayerEditor root owner = (
             local unit=if root.viewportMode==1 and not root.groupCenters then " preview samples" else " shown"
             local text=(if root.updateMode==1 then "Manual" else "Live")+" | "+summary[3]+" | "+(CyrusUICount summary[1])+" placed / "+(CyrusUICount summary[2])+unit
             if resultInfo.text!=text do resultInfo.text=text
-            local caption="Cyrus Scatter 0.77 | "+ownerNode.name+" / "+(root.layerCaption owner)
+            local caption="Cyrus Scatter 0.78.1 | "+ownerNode.name+" / "+(root.layerCaption owner)
             if editor.title!=caption do editor.title=caption
             local setupText="Setup: "+ownerNode.name+"  |  Selecting scene models keeps this editor on its layer"
             if setupInfo.text!=setupText do setupInfo.text=setupText
@@ -5841,20 +6077,17 @@ fn CyrusOpenLayerEditor root owner = (
             if not validOwner() do return false
             local previous=binding;binding=true
             try (
-                members=root.logicalLayers();sets=root.layerSets owner;setList.visible=sets.count>1
+                members=root.logicalLayers()
                 retainListItems layerList (for m in members collect root.layerCaption m)
                 local layerIndex=findItem members owner
                 if layerList.selection!=layerIndex do layerList.selection=layerIndex
-                retainListItems setList (for m in sets collect m.paintSetName)
-                local setIndex=findItem sets (root.selectedPaintSet owner)
-                if setList.selection!=setIndex do setList.selection=setIndex
                 for r in editors do (
                     local changedOwner=r.root!=root or r.owner!=owner
                     r.root=root;r.owner=owner;r.panel=editor
-                    if findItem (activeEditors()) r>0 then r.bind (if isProperty r #setSpecific and r.setSpecific then root.selectedPaintSet owner else owner)
+                    if findItem (activeEditors()) r>0 then r.bind (if isProperty r #setSpecific and r.setSpecific then owner else owner)
                     else (r.controlsReady=false;if changedOwner and isProperty r #obj do r.obj=undefined)
                 )
-                lastSet=root.selectedPaintSet owner
+                lastSet=owner
                 if (CyrusContainerPanel root).controlsReady and not (CyrusContainerPanel root).binding do (CyrusContainerPanel root).bindEditors()
                 refreshStats();binding=previous;true
             )catch(binding=previous;throw())
@@ -5897,11 +6130,11 @@ fn CyrusOpenLayerEditor root owner = (
                 built[index]=true
             )
             pageInfo.text=(#(
-                "PAINT SET  |  Choose models, adjust their share and radii, or use source rectangles. Each model keeps its saved settings when parked outside.",
-                "LAYER DEFAULTS  |  Set population and limits. All enabled paint sets share this budget, Area and generation seed.",
-                "PAINT SET  |  Paint coverage on the shared surface. Background options reference earlier paint sets; spacing remains independent.",
+                "MODELS  |  Choose layer models and radii, or use source rectangles. Parked models retain their settings.",
+                "AMOUNT  |  Set this layer count, density, seed and work limits.",
+                "VECTOR PAINT  |  Areas bind individual layer surfaces. Paint merges borders; Erase cuts holes. Density and scale curves control edge fading.",
                 "LAYER DEFAULTS  |  Randomize transforms and source assignment. Per-model offsets, scale and forward axes are under Assets.",
-                "LAYER + SET RULES  |  Choose the spacing scope first. Within a set, between sets and between layers are independent rules.",
+                "SPACING  |  Within-layer and between-layer spacing remain independent.",
                 "CACHED RESULTS  |  Last completed calculation. In Manual mode, pending changes appear after Update."
             ))[index]
             bindEditors();true
@@ -5918,9 +6151,6 @@ fn CyrusOpenLayerEditor root owner = (
             showTopic nextTopic rebind:true
             if state!=undefined do for r in editors do for row in state[3] where row[1]==r do r.open=row[2]
             true
-        )
-        fn selectSet index = (
-            if not binding and index>0 and index<=sets.count and (root.selectedPaintSet owner)!=sets[index] do (stopTools();owner.uiPaintSetID=sets[index].layerID;bindEditors())
         )
         on editor open do (
             pages=#(#(assetsLeft,assetsRight),#(populationLeft,populationRight),#(paintLeft,paintRight),#(transformLeft,transformRight),#(spacingLeft,spacingRight),#(statisticsLeft,statisticsRight))
@@ -5957,7 +6187,6 @@ fn CyrusOpenLayerEditor root owner = (
             retarget root next
             if (CyrusContainerPanel root).controlsReady do (CyrusContainerPanel root).bind()
         )
-        on setList selected index do selectSet index
         on updateNow pressed do try(root.refreshAll();CyrusViewportRedraw();bind())catch(messageBox (getCurrentException()) title:"Cyrus update")
         on refreshButton pressed do bind()
         on statusTimer tick do (
@@ -5966,7 +6195,7 @@ fn CyrusOpenLayerEditor root owner = (
             if not validOwner() then CyrusCloseLayerEditor() else if not CyrusInteractionHeld() do (
                 local sourceChanges=false
                 for leaf in root.layerSets owner where leaf.containerUIChanged do (leaf.containerUIChanged=false;sourceChanges=true)
-                if sourceChanges or lastSet!=root.selectedPaintSet owner then bind() else refreshStats()
+                if sourceChanges or lastSet!=owner then bind() else refreshStats()
             )
         )
     )
@@ -5989,7 +6218,7 @@ plugin simpleObject AminScatterObject
 name:"Cyrus Scatter"
 classID:#(0x617d43a1,0x395c2e17)
 category:"Cyrus"
-version:54
+version:55
 initialRollupState:0x8
 (
     local layerTransfer=false
@@ -6088,8 +6317,6 @@ initialRollupState:0x8
         procSiblingMultiplier type:#float default:1.0
         procSiblingGap type:#worldUnits default:0.0
         procSiblingPlanar type:#boolean default:false
-        procBackground type:#integer default:1
-        procBackgroundIDs type:#stringTab tabSize:0 tabSizeVariable:true
         procRadiusIDs type:#stringTab tabSize:0 tabSizeVariable:true
         procRadiusModes type:#intTab tabSize:0 tabSizeVariable:true
         procRadiusValues type:#floatTab tabSize:0 tabSizeVariable:true
@@ -6130,8 +6357,6 @@ initialRollupState:0x8
         on procSiblingMultiplier set value do markInputDirty()
         on procSiblingGap set value do markInputDirty()
         on procSiblingPlanar set value do markInputDirty()
-        on procBackground set value do markInputDirty()
-        on procBackgroundIDs set value index do markInputDirty()
         on procRadiusIDs set value index do markInputDirty()
         on procRadiusModes set value index do markInputDirty()
         on procRadiusValues set value index do markInputDirty()
@@ -6223,7 +6448,7 @@ initialRollupState:0x8
     fn validSurfaces = (
         local result=#()
         local nodes=if surfaceNodes.count>0 then (surfaceNodes as array) else #(surface)
-        if this.layerObjects.count>0 do for layer in this.layerObjects where layer.ownsReceivers do join nodes (layer.validSurfaces())
+        if this.layerObjects.count>0 do for layer in this.layerObjects do join nodes (layer.validSurfaces())
         for n in nodes where isValidNode n and classof n.baseObject!=AminScatterObject and findItem result n==0 do append result n
         result
     )
@@ -6363,6 +6588,10 @@ initialRollupState:0x8
         while areaFallDensityGraphs.count<this.areaNodes.count do append areaFallDensityGraphs ""
     )
     fn getFallConfig areaNode = (
+        if this.isPaintArea do (
+            local cfg=cyrusBrushFalloff paintDocument
+            return #(false,0.0,cfg[4],cfg[1],cfg[8],cfg[3],cfg[1],cfg[7])
+        )
         ensureFallCurves()
         if areaNode==undefined then #(fallDelete,fallDeleteWidth,fallScale,fallScaleWidth,fallScaleCurve as array,fallDensity,fallDensityWidth,fallDensityCurve as array) else (
             local i=findItem this.areaNodes areaNode
@@ -6373,6 +6602,12 @@ initialRollupState:0x8
         )
     )
     fn setFallConfig areaNode cfg = (
+        if this.isPaintArea do (
+            local values=cyrusBrushFalloff paintDocument
+            values[7]=cfg[8];values[8]=cfg[5]
+            cyrusBrushSetFalloff paintDocument values
+            this.publishPaint();return true
+        )
         if areaNode==undefined then (
             fallDelete=cfg[1];fallDeleteWidth=cfg[2];fallScale=cfg[3];fallScaleWidth=cfg[4];fallScaleCurve=cfg[5];fallDensity=cfg[6];fallDensityWidth=cfg[7];fallDensityCurve=cfg[8]
         ) else (
@@ -6915,27 +7150,21 @@ initialRollupState:0x8
     parameters layerOwnership (
         logicalParentID type:#string default:""
         paintSetName type:#string default:"Base"
-        paintSetWeight type:#float default:1.0
         paintSetEnabled type:#boolean default:true
         paintSetVisible type:#boolean default:true
-        uiPaintSetID type:#string default:""
         on logicalParentID set value do markInputDirty()
-        on paintSetWeight set value do markInputDirty()
         on paintSetEnabled set value do markInputDirty()
     )
     fn logicalParent leaf = (
         if leaf.logicalParentID=="" do return leaf
         for candidate in this.layerObjects where candidate.layerID==leaf.logicalParentID and candidate.logicalParentID=="" do return candidate
-        throw "Cyrus paint set has no owning layer. Restore its parent before evaluating."
+        throw "Paint Area has no owning layer."
     )
     fn logicalLayers = (
         local members=for leaf in this.layerObjects where leaf.logicalParentID=="" collect leaf
         this.procSort members
     )
-    fn layerSets parent = (
-        local members=for leaf in this.layerObjects where leaf==parent or leaf.logicalParentID==parent.layerID collect leaf
-        this.procSort members sets:true
-    )
+    fn layerSets parent = (#(parent))
     fn enabledLayer i = (
         if i<1 or i>this.layerObjects.count or not this.layerEnabled[i] do return false
         local leaf=this.layerObjects[i],parent=this.logicalParent leaf,p=findItem this.layerObjects parent
@@ -6946,31 +7175,11 @@ initialRollupState:0x8
         local leaf=this.layerObjects[i],parent=this.logicalParent leaf,p=findItem this.layerObjects parent
         p>0 and (p>this.layerVisible.count or this.layerVisible[p]) and (i>this.layerVisible.count or this.layerVisible[i]) and leaf.paintSetVisible
     )
-    fn selectedPaintSet parent = (
-        local members=this.layerSets parent
-        for leaf in members where leaf.layerID==parent.uiPaintSetID do return leaf
-        parent
-    )
     fn layerCaption parent = (local i=findItem this.layerObjects parent;if i>0 then this.layerNames[i] else "Removed layer")
     fn setCaption leaf = ((this.layerCaption (this.logicalParent leaf))+" / "+leaf.paintSetName)
     fn populationAllocation leaf countOverride:undefined = (
-        local parent=this.logicalParent leaf,members=(for candidate in this.layerObjects where candidate==parent or candidate.logicalParentID==parent.layerID collect candidate),total=0.0,shares=#(),fractions=#()
-        local budget=if countOverride==undefined then parent.amount else countOverride,remaining=budget
-        for member in members do total+=if this.enabledLayer (findItem this.layerObjects member) then amax 0.0 member.paintSetWeight else 0.0
-        if total<=0 do return #(0,0.0)
-        for member in members do (
-            local weight=if this.enabledLayer (findItem this.layerObjects member) then amax 0.0 member.paintSetWeight else 0.0
-            local exact=budget*weight/total,n=(floor exact) as integer
-            append shares n;append fractions (exact-n);remaining-=n
-        )
-        -- Largest remainder; creation order is stable when weights tie.
-        for n=1 to remaining do (
-            local best=0
-            for i=1 to members.count where fractions[i]>=0 do if best==0 or fractions[i]>fractions[best] do best=i
-            if best>0 do (shares[best]+=1;fractions[best]=-1)
-        )
-        local index=findItem members leaf
-        #(shares[index],if this.enabledLayer (findItem this.layerObjects leaf) then parent.plantsPerM2*(amax 0.0 leaf.paintSetWeight)/total else 0.0)
+        if not this.enabledLayer (findItem this.layerObjects leaf) do return #(0,0.0)
+        #(if countOverride==undefined then leaf.amount else countOverride,leaf.plantsPerM2)
     )
     fn effectivePopulation = (if this.overlapOwner==undefined then #(amount,plantsPerM2) else this.overlapOwner.populationAllocation this)
     fn effectiveSeed = (
@@ -6982,44 +7191,6 @@ initialRollupState:0x8
         for leaf in this.overlapOwner.layerSets parent where this.overlapOwner.enabledLayer (findItem this.overlapOwner.layerObjects leaf) and leaf.brushMaskActive() do return true
         false
     )
-    fn syncLogicalSettings = (
-        local own=#(#procOrder,#procSetOrder,#procSamplingSalt,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procBackground,#procBackgroundIDs,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusBinding,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverID,#containerMode,#containerNodes,#sources,#sourceWeights,#sourceColors,#sourceZOffsets,#sourceScales,#sourceForwardAxes,#sourceRadii,#sourceFollowScale,#sourceShowRadius,#sourcePoint,#sourceEmpty,#bakedNodes,#paintDocument,#paintEnabled,#paintDensity,#paintView,#paintColor,#logicalParentID,#paintSetName,#paintSetWeight,#paintSetEnabled,#paintSetVisible,#uiPaintSetID)
-        undo off for leaf in this.layerObjects where leaf.logicalParentID!="" do (
-            local parent=this.logicalParent leaf
-            for key in AminScatterLayerFields where findItem own key==0 do (
-                local value=getProperty parent key,previous=getProperty leaf key
-                local tab=findItem AminScatterLayerTabs key>0,same=false
-                if tab then (
-                    same=previous.count==value.count
-                    if same do for i=1 to value.count where previous[i]!=value[i] do same=false
-                ) else same=previous==value
-                if not same do setProperty leaf key (if tab then value as array else value)
-            )
-            for key in #(#strokeSides,#patternPaths,#strokeModes,#strokeColorRows,#strokeColorKeys,#strokeSourceRows,#strokeSourceNodes,#strokeMin,#strokeMax) do (
-                local value=getProperty parent key
-                local previous=getProperty leaf key,same=previous.count==value.count
-                if same do for i=1 to value.count where previous[i]!=value[i] do same=false
-                if not same do setProperty leaf key (value as array)
-            )
-            if leaf.analyzerNode!=parent.analyzerNode do leaf.analyzerNode=parent.analyzerNode
-        )
-    )
-    fn addPaintSet parent label:"Paint set" = (
-        if findItem this.layerObjects parent==0 or parent.logicalParentID!="" do throw "Choose an owning layer."
-        if this.layerObjects.count>=10 do throw "Cyrus currently supports 10 total populations, including paint sets."
-        local leaf
-        undo "Cyrus add paint set" on (
-            this.newLayer();leaf=this.selectedLayer()
-            leaf.logicalParentID=parent.layerID;leaf.paintSetName=label
-            (leaf.procSamplingSalt=leaf.editLayerKey;leaf.procSetOrder=this.nextEditLayerKey)
-            leaf.paintEnabled=true
-            local targets=this.validSurfaces()
-            if targets.count==1 do leaf.paintDocument=cyrusBrushCreate targets[1]
-            parent.uiPaintSetID=leaf.layerID
-            this.syncLogicalSettings()
-        )
-        this.invalidateGroups();this.bindNativeUI();leaf
-    )
     fn removeLogicalLayer parent = (
         local members=this.layerSets parent
         for member in members where (for node in member.bakedNodes where isValidNode node collect node).count>0 do throw "Remove the layer's baked output before deleting it."
@@ -7028,21 +7199,16 @@ initialRollupState:0x8
         )
         this.invalidateGroups();this.bindNativeUI()
     )
-    fn removePaintSet leaf = (
-        if leaf.logicalParentID=="" do throw "The base set belongs to the layer. Disable it or clear its sources/paint; remove the layer to delete it."
-        undo "Cyrus remove paint set" on (this.activeLayer=findItem this.layerObjects leaf;this.removePopulation())
-        this.invalidateGroups();this.bindNativeUI()
-    )
     fn copyLogicalLayer origin = (
         local members=(for candidate in this.layerObjects where candidate==origin or candidate.logicalParentID==origin.layerID collect candidate),copyParent,copies=#()
         if this.layerObjects.count+members.count>10 do throw "Copy exceeds the 10-population capacity."
-        undo "Cyrus copy layer and paint sets" on (
+        undo "Cyrus copy layer and areas" on (
             for member in members do (
                 this.newLayer();local destination=this.selectedLayer();append copies destination
                 AminScatterCopyLayer member destination
                 destination.bakedNodes=#()
                 if member==origin then (
-                    copyParent=destination;destination.logicalParentID="";destination.uiPaintSetID=""
+                    copyParent=destination;destination.logicalParentID="";destination.uiAreaID=""
                     this.layerNames[this.activeLayer]=(this.layerCaption origin)+" copy"
                 ) else destination.logicalParentID=copyParent.layerID
             )
@@ -7100,28 +7266,15 @@ initialRollupState:0x8
     )
 
     fn setGroupCoverage group painted reset:false = (
-        if group==undefined do return false
-        if group.isPaintArea do (
-            local parent=this.logicalParent group,target=group.areaTarget
-            if not isValidNode target or findItem (parent.validSurfaces()) target==0 do throw "This Paint Area is inactive. Add its target surface back to the layer, or create a new area."
-            CyrusStopBrush()
-            undo "Cyrus painted area" on (
-                if group.paintDocument==undefined or reset do group.paintDocument=cyrusBrushCreate target
-                parent.paintEnabled=painted;group.paintEnabled=true
-            )
-            group.setOverlapOwner this;parent.markInputDirty();this.bindNativeUI();return true
-        )
+        if group==undefined or not group.isPaintArea do throw "Select a Paint Area first."
+        local parent=this.logicalParent group,target=group.areaTarget
+        if not isValidNode target or findItem (parent.validSurfaces()) target==0 do throw "This Paint Area is inactive. Restore its surface or create another area."
         CyrusStopBrush()
-        if painted then (
-            local targets=group.validSurfaces()
-            if targets.count!=1 or not isValidNode targets[1] do throw "Choose one shared receiving surface before painting. Curved meshes are supported."
-            if group.paintDocument!=undefined and cyrusBrushTarget group.paintDocument!=targets[1] and not reset do throw "This group has strokes on another surface. Restore that surface or use Reset coverage to explicitly create an empty mask."
-            undo "Cyrus painted coverage" on (
-                if group.paintDocument==undefined or reset do group.paintDocument=cyrusBrushCreate targets[1]
-                group.paintEnabled=true
-            )
-        ) else undo "Cyrus whole surface coverage" on group.paintEnabled=false
-        this.invalidateGroups();this.bindNativeUI();true
+        undo "Cyrus vector area" on (
+            if group.paintDocument==undefined or reset do group.paintDocument=cyrusBrushCreate target
+            parent.paintEnabled=painted;group.paintEnabled=true
+        )
+        group.setOverlapOwner this;parent.markInputDirty();this.bindNativeUI();true
     )
 
     local paintBaseFaceCounts=#()
@@ -7215,7 +7368,7 @@ initialRollupState:0x8
     fn uiLayerStats = (
         CyrusLayerStatusData hasResult:(cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
     )
-    fn uiVersion = "0.77"
+    fn uiVersion = "0.78.1"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified1")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -7296,8 +7449,6 @@ initialRollupState:0x8
     )
     -- Appended storage keeps earlier 0.74 parameter blocks readable.
     parameters regionSettings (
-        ownsReceivers type:#boolean default:false
-        areaMode type:#boolean default:false
         paintAreas type:#maxObjectTab tabSize:0 tabSizeVariable:true
         areaTarget type:#node
         uiAreaID type:#string default:""
@@ -7308,33 +7459,20 @@ initialRollupState:0x8
         for area in parent.paintAreas where area.layerID==parent.uiAreaID do return area
         if parent.paintAreas.count>0 then parent.paintAreas[1] else undefined
     )
-    fn adoptPaintArea parent = (
-        -- Preserve the old document exactly, including soft paint and erase.
-        if parent.paintDocument==undefined or parent.paintAreas.count>0 do return false
-        local area=createInstance AminScatterObject
-        area.isPaintArea=true;area.layerID=CyrusNewLayerID();area.logicalParentID=parent.layerID
-        area.paintDocument=parent.paintDocument;area.areaTarget=cyrusBrushTarget parent.paintDocument
-        area.paintSetName="Existing paint";area.paintDensity=parent.paintDensity
-        area.paintView=parent.paintView;area.paintColor=parent.paintColor;area.paintEnabled=true
-        area.setOverlapOwner this;parent.areaMode=true;append parent.paintAreas area;parent.uiAreaID=area.layerID
-        true
-    )
     fn addPaintArea parent target:undefined = (
         if parent==undefined or findItem layerObjects parent==0 or parent.logicalParentID!="" do throw "Select an owning layer first."
-        if (this.layerSets parent).count>1 do throw "This older layer has model-owning sets. Its original settings are retained; convert those populations before adding Paint Areas."
         if parent.paintAreas.count>=128 do throw "A layer supports up to 128 Paint Areas."
         local targets=parent.validSurfaces(),area
         if target==undefined and targets.count==1 do target=targets[1]
         if target!=undefined and findItem targets target==0 do throw "Choose a surface assigned to this layer."
         CyrusStopBrush()
         undo "Cyrus add Paint Area" on (
-            this.adoptPaintArea parent
             area=createInstance AminScatterObject
             area.isPaintArea=true;area.layerID=CyrusNewLayerID();area.logicalParentID=parent.layerID
             area.paintSetName="Area "+((parent.paintAreas.count+1) as string)
             area.areaTarget=target;area.paintEnabled=true;area.setOverlapOwner this
             if isValidNode target do area.paintDocument=cyrusBrushCreate target
-            append parent.paintAreas area;parent.areaMode=true;parent.uiAreaID=area.layerID;parent.paintEnabled=true
+            append parent.paintAreas area;parent.uiAreaID=area.layerID;parent.paintEnabled=true
         )
         parent.markInputDirty();this.bindNativeUI();CyrusViewportRedraw();area
     )
@@ -7348,7 +7486,7 @@ initialRollupState:0x8
     fn setPaintAreaTarget parent area target = (
         if findItem parent.paintAreas area==0 or findItem (parent.validSurfaces()) target==0 do throw "Choose a surface in this layer."
         if area.areaTarget==target do return false
-        if area.paintDocument!=undefined and ((cyrusBrushStats area.paintDocument)[2]>0 or (cyrusBrushStats area.paintDocument)[17]!=0) do throw "This area already has paint. Add another area for a different surface; existing paint is preserved."
+        if area.paintDocument!=undefined and ((cyrusBrushStats area.paintDocument)[2]>0) do throw "This area already has paint. Add another area for a different surface; existing paint is preserved."
         CyrusStopBrush()
         undo "Cyrus Paint Area surface" on (area.areaTarget=target;area.paintDocument=cyrusBrushCreate target)
         parent.markInputDirty();this.bindNativeUI();CyrusViewportRedraw();true
@@ -7363,9 +7501,7 @@ initialRollupState:0x8
         if targets.count>128 do throw "A layer supports up to 128 receiving surfaces."
         CyrusStopBrush()
         undo "Cyrus layer surfaces" on (
-            this.adoptPaintArea parent
-            parent.ownsReceivers=true;parent.surfaceNodes=targets;parent.surface=undefined
-            for member in this.layerSets parent where member!=parent do (member.ownsReceivers=true;member.surfaceNodes=targets;member.surface=undefined)
+            parent.surfaceNodes=targets;parent.surface=undefined
         )
         parent.markInputDirty();this.bindNativeUI();CyrusViewportRedraw();true
     )
@@ -7419,9 +7555,7 @@ initialRollupState:0x8
     fn syncLayerSurface obj targets:undefined layerBudget:undefined = (
         obj.setOverlapOwner this
         if obj.showCenters!=this.groupCenters do undo off obj.showCenters=this.groupCenters
-        if obj.ownsReceivers then targets=obj.validSurfaces() else (
-            targets=#();for node in ((this.surfaceNodes as array)+#(this.surface)) where isValidNode node and findItem targets node==0 do append targets node
-        )
+        targets=obj.validSurfaces()
         local equal=obj.surfaceNodes.count==targets.count
         if equal do for i=1 to targets.count where obj.surfaceNodes[i]!=targets[i] do equal=false
         if not equal do undo off (obj.surfaceNodes=targets;obj.surface=undefined)
@@ -7442,7 +7576,6 @@ initialRollupState:0x8
             this.liveTimeChanged()
             this.inputTimeKey();inputTimeObserved=inputTimeStamp
         )
-        this.syncLogicalSettings()
         local key=CyrusEditStackKey this
         if key!=editCacheKey do (
             editCacheKey=key
@@ -7476,7 +7609,7 @@ initialRollupState:0x8
         if layerObjects.count>=10 do throw "A scatter controller supports up to 10 layers."
         undo "Cyrus Scatter add layer" on (
             local obj=createInstance AminScatterObject
-            obj.ownsReceivers=true;obj.surfaceNodes=this.surfaceNodes as array;obj.surface=this.surface
+            obj.surfaceNodes=this.surfaceNodes as array;obj.surface=this.surface
             obj.editLayerKey=nextEditLayerKey;nextEditLayerKey+=1
 
             obj.randomSeed=42+layerObjects.count*101
@@ -7586,7 +7719,7 @@ initialRollupState:0x8
     )
     -- Native rollups: one editor per controller, bound to the selected layer.
     -- UI browsing never rebuilds a rollout or a placement cache.
-    fn brushMaskActive = (paintEnabled and (areaMode or paintDocument!=undefined))
+    fn brushMaskActive = (paintEnabled)
     fn brushRelaxPaused = (false)
     fn checkPaintRevision = (
         for area in paintAreas do (area.setOverlapOwner overlapOwner;area.checkPaintRevision())
@@ -7601,16 +7734,16 @@ initialRollupState:0x8
     fn applyPaint rows = (this.procApplyPaint rows)
     fn paintBaseInputKey plants previewOnly receiverLocal:false = (
         local post=if this.sharedSpacing() then #(#cleanupPlanar,#sourceRadii,#sourceFollowScale,#sourceShowRadius,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove) else #()
-        join post #(#procOrder,#procSetOrder,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procBackground,#procBackgroundIDs,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusBinding,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverID,#containerMode,#containerNodes)
+        join post #(#procOrder,#procSetOrder,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusBinding,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverID,#containerMode,#containerNodes)
         local stream=stringStream ""
         with printAllElements on (
             format "%|%|%|%|%|" (this.inputTimeKey()) (if receiverLocal then 0 else procGeometryRevision) (if receiverLocal then 0 else if overlapOwner!=undefined then overlapOwner.procManualRevision else procManualRevision) (this.containerSourceKey plants) previewOnly to:stream
             format "DensityMap:%|" (if densityMap==undefined then 0 else getHandleByAnim densityMap) to:stream
-            format "Ownership:%:%:%:%:%|" logicalParentID paintSetEnabled paintSetWeight (if receiverLocal then 0 else this.effectivePopulation()) (this.effectiveSeed()) to:stream
+            format "Ownership:%:%:%:%|" logicalParentID paintSetEnabled (if receiverLocal then 0 else this.effectivePopulation()) (this.effectiveSeed()) to:stream
             format "EffectiveRelax:%|" (relaxEnabled and not this.layerPaintActive()) to:stream
             format "FinalRelax:%:%:%:%|" finalRelax finalStrength finalIterations finalMaxMove to:stream
             format "Texture:%|" (this.procWatchDensity()) to:stream
-            for key in AminScatterLayerFields where findItem #(#paintDocument,#paintEnabled,#paintDensity,#bakedNodes,#showPoints,#pointsPerPlant,#updateMode,#autoRender,#previewBudget,#pointColorMode,#solidPointColor) key==0 and findItem post key==0 and findItem #(#paintView,#paintColor,#showCenters,#paintSetName,#paintSetVisible,#uiPaintSetID) key==0 and (not receiverLocal or findItem #(#amount,#plantsPerM2,#populationMode) key==0) do format "%:%|" key (if key==#sources then this.containerSourceKey (sources as array) else getProperty this key) to:stream
+            for key in AminScatterLayerFields where findItem #(#paintDocument,#paintEnabled,#paintDensity,#bakedNodes,#showPoints,#pointsPerPlant,#updateMode,#autoRender,#previewBudget,#pointColorMode,#solidPointColor) key==0 and findItem post key==0 and findItem #(#paintView,#paintColor,#showCenters,#paintSetName,#paintSetVisible) key==0 and (not receiverLocal or findItem #(#amount,#plantsPerM2,#populationMode) key==0) do format "%:%|" key (if key==#sources then this.containerSourceKey (sources as array) else getProperty this key) to:stream
             for n in ((if receiverLocal then #() else this.validSurfaces())+(sources as array)+(areaNodes as array)+(patternLines as array)+#(analyzerNode,areaAnalyzer,fallAnalyzer)) where isValidNode n do (
                 local tm=n.objectTransform
                 if this.containerProvider()!=undefined and findItem sources n>0 do tm.row4=[0,0,0]
@@ -7676,7 +7809,7 @@ initialRollupState:0x8
     fn removeLayer = (
         local leaf=this.selectedLayer()
         if leaf==undefined do return false
-        if leaf.logicalParentID=="" then this.removeLogicalLayer leaf else this.removePaintSet leaf
+        this.removeLogicalLayer leaf
     )
     local updateUI,surfaceUI,previewUI,layersUI,uiRootState=#(),uiPresentationState=#()
 
@@ -7720,13 +7853,7 @@ initialRollupState:0x8
         local members=if sets then this.layerSets (this.logicalParent item) else this.logicalLayers()
         local i=findItem members item,j=i+delta
         if i==0 or j<1 or j>members.count do return false
-        -- Reject a reordering which would turn a background reference forward.
         members[i]=members[j];members[j]=item
-        if sets do for k=1 to members.count do for id in members[k].procBackgroundIDs do (
-            local found=0
-            for p=1 to k-1 where members[p].layerID==id do found=p
-            if found==0 do throw "Move would place a background reference after its consumer. Change the reference first."
-        )
         undo "Cyrus evaluation order" on for k=1 to members.count do setProperty members[k] (if sets then #procSetOrder else #procOrder) k
         this.invalidateGroups();this.bindNativeUI();true
     )
@@ -7804,7 +7931,6 @@ initialRollupState:0x8
     )
     fn procRemoveOwner leaf = (
         for i=procRuleA.count to 1 by -1 where procRuleA[i]==leaf.layerID or procRuleB[i]==leaf.layerID do this.procRemoveRule i
-        for member in layerObjects do member.procBackgroundIDs=for id in member.procBackgroundIDs where id!=leaf.layerID collect id
     )
     fn procCopyRelations originals copies = (
         -- Remap references inside the copy; preserve external layer rules.
@@ -7812,11 +7938,6 @@ initialRollupState:0x8
             for s=1 to copies.count do (
                 local leaf=copies[s]
                 leaf.procRadiusIDs=#();leaf.procRadiusModes=#();leaf.procRadiusValues=#();leaf.procRadiusBinding=""
-                leaf.procBackgroundIDs=for id in originals[s].procBackgroundIDs collect (
-                    local replacement=id
-                    for j=1 to originals.count where originals[j].layerID==id do replacement=copies[j].layerID
-                    replacement
-                )
             )
             local count=procRuleA.count
             for i=1 to count do (
@@ -7877,39 +7998,20 @@ initialRollupState:0x8
         undo "Cyrus clear set radius overrides" on (procRadiusIDs=#();procRadiusModes=#();procRadiusValues=#();procRadiusBinding="")
         if overlapOwner!=undefined do overlapOwner.invalidateGroups()
     )
-    fn procBackgroundMembers = (
-        if overlapOwner==undefined do return #()
-        local members=overlapOwner.layerSets (overlapOwner.logicalParent this),before=#(),found=false
-        for member in members while member!=this do append before member
-        for id in procBackgroundIDs do if (for member in before where member.layerID==id collect member).count!=1 do throw "Background must reference earlier paint sets in the same layer."
-        for member in before where findItem procBackgroundIDs member.layerID>0 and overlapOwner.enabledLayer (findItem overlapOwner.layerObjects member) collect member
-    )
     fn procCoverageKey = (
         local stream=stringStream ""
-        format "%:%:%:%:%:%|" (this.paintKey()) paintEnabled paintDensity procBackground procBackgroundIDs areaMode to:stream
+        format "%:%:%|" (this.paintKey()) paintEnabled paintDensity to:stream
         for area in paintAreas do format "Area:%:%:%:%:%|" area.layerID area.areaTarget area.paintSetEnabled area.paintDensity (area.paintKey()) to:stream
-        if procBackground!=1 do for member in this.procBackgroundMembers() do format "%:%:%|" member.layerID member.paintEnabled (member.paintKey()) to:stream
         stream as string
     )
     fn procApplyPaint rows = (
-        if areaMode do (
-            if not paintEnabled or rows.count==0 do return cyrusClonePlacementRows rows
-            local docs=#(),densities=#(),targets=this.validSurfaces()
-            for area in paintAreas where area.paintSetEnabled and area.paintDocument!=undefined and findItem targets area.areaTarget>0 do (
-                if cyrusBrushTarget area.paintDocument!=area.areaTarget do throw "Paint Area target mismatch; saved paint is preserved."
-                append docs area.paintDocument;append densities area.paintDensity
-            )
-            return cyrusBrushRegionFilter rows docs densities targets paintBaseFaceCounts ("CyrusStableMask1:"+(this.effectiveSeed() as string))
+        if not paintEnabled or rows.count==0 do return cyrusClonePlacementRows rows
+        local docs=#(),densities=#(),targets=this.validSurfaces()
+        for area in paintAreas where area.paintSetEnabled and area.paintDocument!=undefined and findItem targets area.areaTarget>0 do (
+            if cyrusBrushTarget area.paintDocument!=area.areaTarget do throw "Paint Area target mismatch; saved vector borders are preserved."
+            append docs area.paintDocument;append densities area.paintDensity
         )
-        local sampling="CyrusStableMask1:"+(this.effectiveSeed() as string)
-        local outside=procBackground==2 or procBackground==4,refs=if outside then this.procBackgroundMembers() else #()
-        if outside and refs.count>0 then (
-            local targets=this.validSurfaces()
-            if targets.count!=1 do throw "Outside coverage requires one shared receiver."
-            local docs=#(if paintEnabled then paintDocument else undefined)
-            for member in refs do append docs (if member.paintEnabled then member.paintDocument else undefined)
-            cyrusBrushCompositeFilter rows docs (if paintEnabled then paintDensity else 1.0) sampling targets[1]
-        ) else if this.brushMaskActive() then cyrusBrushFilter paintDocument rows sampling paintDensity else cyrusClonePlacementRows rows
+        cyrusBrushRegionFilter rows docs densities targets paintBaseFaceCounts ("CyrusStableMask1:"+(this.effectiveSeed() as string))
     )
     fn procBinding plants rows = (
         local stream=stringStream ""
@@ -8200,10 +8302,6 @@ initialRollupState:0x8
         (overlapOwner.populationAllocation this countOverride:budget)[1]
     )
     fn procPrepare pool plants = (
-        if not areaMode and paintEnabled and paintDocument!=undefined do (
-            local targets=this.validSurfaces()
-            if targets.count!=1 or (cyrusBrushTarget paintDocument)!=targets[1] do throw "Paint target differs from the shared receiver. Saved strokes are preserved."
-        )
         local key=(this.paintBaseInputKey plants true)+"|Texture:"+(this.procWatchDensity() as string)+"|Pool:"+(pool as string)+"|"+(this.procCoverageKey())+"|"+(overlapOwner.procEditKey())
         if key==procPreparedKey do (CyrusDiagnosticEmit "prepare.reused" "engine" layerID procEpoch "key_match";procPreparedHits+=1;return procPreparedRows)
         CyrusDiagnosticEmit "prepare.started" "engine" layerID procEpoch "key_changed"
@@ -8222,32 +8320,19 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This unpublished development scene uses a retired Cyrus settings schema. Create a new 0.77 setup."
+        local message="This unpublished development scene uses a retired Cyrus settings schema. Create a new 0.78.1 setup."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
     fn procValidate = (
         this.procAssertSchema()
-        if cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined do throw "Cyrus 0.77 requires the matching native plugin binaries. Restart the private test host with the complete matching script/native pair."
+        if cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined do throw "Cyrus 0.78.1 requires the matching native plugin binaries. Restart the private test host with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
             for leaf in this.layerSets parent where this.enabledLayer (findItem layerObjects leaf) do (
                 if cyrusEnabled do leaf.requireCurrentAnalyzers()
-                if leaf.procBackground<1 or leaf.procBackground>4 do throw "Unknown background mode."
-                if leaf.procBackground!=1 do leaf.procBackgroundMembers()
-                if leaf.procBackground==3 or leaf.procBackground==4 do for member in leaf.procBackgroundMembers() do (
-                    local pair=this.procPair 1 leaf member
-                    local enabled=if pair>0 then procRuleEnabled[pair] else parent.procSiblingEnabled
-                    local multiplier=if pair>0 then procRuleMultiplier[pair] else parent.procSiblingMultiplier
-                    local gap=if pair>0 then procRuleGap[pair] else parent.procSiblingGap
-                    if not enabled or (multiplier<=0 and gap<=0) do throw "Between plants requires a nonzero applicable set-pair spacing rule. Configure the rule before updating."
-                )
-                if leaf.procBackground==2 or leaf.procBackground==4 do (
-                    if not leaf.projectMove and (leaf.movementRange!=0 or leaf.movXMin!=0 or leaf.movXMax!=0 or leaf.movYMin!=0 or leaf.movYMax!=0 or leaf.movZMin!=0 or leaf.movZMax!=0) do throw "Outside coverage needs projected movement."
-                    for member in leaf.procBackgroundMembers() where member.paintEnabled and member.paintDocument==undefined do throw "A referenced painted set has no coverage document."
-                )
                 if parent.procPopulation==2 do for source in leaf.validSources() do (
                     local index=leaf.sourceRow source
                     if leaf.isEmptySource index and not leaf.isPointSource index and leaf.sourceWeight index>0 do throw "Accepted target does not refill weighted Empty assets. Use candidate budget, Point placeholders, or remove the Empty weight."
@@ -8308,7 +8393,6 @@ initialRollupState:0x8
     fn evaluateProcedural = (
         this.procAssertSchema()
         if groupSolving do throw "Recursive procedural evaluation."
-        this.syncLogicalSettings()
         for leaf in layerObjects do (this.syncLayerSurface leaf;leaf.containerRefresh();leaf.procEnsureSources())
         local key=this.procInputKey()
         if key==groupSnapshotKey do (
@@ -8435,12 +8519,12 @@ initialRollupState:0x8
 
     fn nativeEditors = (for r in #(updateUI,surfaceUI,previewUI,layersUI) where r!=undefined collect r)
     fn brushEditors = (
-        local editors=CyrusLayerEditorSections this method:#refreshHistory
-        if (CyrusContainerPanel this).controlsReady do for r in (CyrusContainerPanel this).editors where isProperty r #refreshHistory and r.controlsReady do appendIfUnique editors r
+        local editors=CyrusLayerEditorSections this method:#refreshBrushStatus
+        if (CyrusContainerPanel this).controlsReady do for r in (CyrusContainerPanel this).editors where isProperty r #refreshBrushStatus and r.controlsReady do appendIfUnique editors r
         editors
     )
-    fn refreshBrushEditors history:false = (for r in this.brushEditors() where r.controlsReady do (if history do r.refreshHistory();r.status()))
-    fn syncBrushCompatibility = (
+    fn refreshBrushEditors = (for r in this.brushEditors() where r.controlsReady do r.refreshBrushStatus())
+    fn syncBrushAvailability = (
         local editors=CyrusLayerEditorSections this
         if (CyrusContainerPanel this).controlsReady do join editors (CyrusContainerPanel this).editors
         for r in editors where r.controlsReady do (
@@ -8453,7 +8537,7 @@ initialRollupState:0x8
         CyrusBindLayerEditor this
         true
     )
-    rollout mainUI "Cyrus Scatter 0.77" width:#cmdPanel height:112 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.78.1" width:#cmdPanel height:112 autoLayoutOnResize:true (
         local view=undefined,root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),owner=undefined,layerPagesVisible=false,pagesArranged=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for the entire setup."
         radiobuttons updateRadio "Viewport update" labels:#("Manual","Live") columns:2 pos:[8,26] width:(mainUI.width-16) tooltip:"Manual waits for Update. Live calculates after relevant edits."
@@ -8472,7 +8556,7 @@ initialRollupState:0x8
             if not controlsReady do return false
             if root.layersUI!=undefined and root.layersUI.controlsReady do root.layersUI.refreshStats()
             if root.surfaceUI!=undefined and root.surfaceUI.controlsReady do root.surfaceUI.refreshStats()
-            root.syncBrushCompatibility();true
+            root.syncBrushAvailability();true
         )
         fn bindSection section = (
             if not controlsReady or root==undefined do return false
@@ -8526,7 +8610,7 @@ initialRollupState:0x8
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.77 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.78.1 native plugin and restart Max."
             local context=if classof view==CyrusSourceContainer then CyrusContainerResolve view else undefined
             root=if classof view==CyrusSourceContainer then (if context==undefined then undefined else context[1]) else view
             editors=#(view.managerUI,view.surfacesUI,view.modelsUI,view.layoutUI,view.populationUI,view.coverageUI,view.areasUI,view.transformsUI,view.spacingUI,view.displayUI,view.statisticsUI)
@@ -8793,6 +8877,18 @@ initialRollupState:0x8
         on flow_layersUI_layerList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
         on flow_layersUI_layerList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
         on flow_layersUI_layerList_grip Paint sender args do paintListGrip sender args
+        fn fitRadio control available desiredColumns place:false = (
+            local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
+            if buttons.count==0 do return 20
+            local boxes=for handle in buttons collect windows.getWindowPos handle
+            local widest=amax (for box in boxes collect box.w),step=amax 20 ((amax (for box in boxes collect box.h))+5)
+            local columns=amin desiredColumns (amax 1 (floor ((available+4)/(widest+4))))
+            if place do for i=1 to buttons.count do (
+                local data=windows.getHWNDData buttons[i],position=windows.screenToClient data[2] (boxes[1].x+(mod (i-1) columns)*(widest+4)) (boxes[1].y+(floor ((i-1)/columns))*step)
+                windows.setWindowPos buttons[i] position.x position.y boxes[i].w boxes[i].h true
+            )
+            step*(ceil (buttons.count as float/columns))
+        )
         fn fitPairField control available = (
             local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
             for handle in control.hwnd do (
@@ -8805,7 +8901,12 @@ initialRollupState:0x8
             true
         )
         fn fitWidth control available = (
-            if isProperty control #width then control.width=available
+            if classof control==ColorPickerControl then (
+                for handle in control.hwnd where (windows.getHWNDData handle)[4]=="ColorSwatch" do (
+                    local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y (amax 1 (available as integer)) rectangle.h true
+                )
+            ) else if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
@@ -9093,6 +9194,18 @@ initialRollupState:0x8
         on flow_surfaceUI_globalContainers_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
         on flow_surfaceUI_globalContainers_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
         on flow_surfaceUI_globalContainers_grip Paint sender args do paintListGrip sender args
+        fn fitRadio control available desiredColumns place:false = (
+            local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
+            if buttons.count==0 do return 20
+            local boxes=for handle in buttons collect windows.getWindowPos handle
+            local widest=amax (for box in boxes collect box.w),step=amax 20 ((amax (for box in boxes collect box.h))+5)
+            local columns=amin desiredColumns (amax 1 (floor ((available+4)/(widest+4))))
+            if place do for i=1 to buttons.count do (
+                local data=windows.getHWNDData buttons[i],position=windows.screenToClient data[2] (boxes[1].x+(mod (i-1) columns)*(widest+4)) (boxes[1].y+(floor ((i-1)/columns))*step)
+                windows.setWindowPos buttons[i] position.x position.y boxes[i].w boxes[i].h true
+            )
+            step*(ceil (buttons.count as float/columns))
+        )
         fn fitPairField control available = (
             local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
             for handle in control.hwnd do (
@@ -9105,7 +9218,12 @@ initialRollupState:0x8
             true
         )
         fn fitWidth control available = (
-            if isProperty control #width then control.width=available
+            if classof control==ColorPickerControl then (
+                for handle in control.hwnd where (windows.getHWNDData handle)[4]=="ColorSwatch" do (
+                    local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y (amax 1 (available as integer)) rectangle.h true
+                )
+            ) else if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
@@ -9291,7 +9409,8 @@ initialRollupState:0x8
         label sourceUI_groupHeading "Cluster color group" pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58)))))
         dropdownlist sourceUI_existingGroups "" items:#() pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))) tooltip:"Assign highlighted sources to an existing color group for clustering."
         label sourceUI_existingGroups_caption "Reuse a group" pos:[6,6] width:(modelsUI.width-12) height:18
-        colorpicker sourceUI_groupColor "Color: " color:(color 100 220 120) pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))) modal:true notifyAfterAccept:true tooltip:"Assign a color group to highlighted sources when the color is accepted."
+        colorpicker sourceUI_groupColor "" color:(color 100 220 120) pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))) modal:true notifyAfterAccept:true tooltip:"Assign a color group to highlighted sources when the color is accepted."
+        label sourceUI_groupColor_caption "Color: " pos:[6,6] width:(modelsUI.width-12) height:18
         button sourceUI_applyColor "Apply to selected rows" pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/132.4))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/132.4))))) tooltip:"Assign the chosen color group to all highlighted source rows." height:22
         label sourceUI_colorHelp "OK saves the selected color." pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58)))))
         spinner sourceUI_weightSpin "" range:[0,1,1] scale:0.01 pos:[8,8] width:((modelsUI.width-16-((amin 2 (amax 1 (floor ((modelsUI.width-8)/123.6))))-1)*4)/(amin 2 (amax 1 (floor ((modelsUI.width-8)/123.6))))) fieldWidth:58 tooltip:"Relative model frequency in this layer. Zero disables the model."
@@ -9320,7 +9439,7 @@ initialRollupState:0x8
         local sourceContainersUI_bodyHeight=0
         local sourceContainersUI_controlsReady=false
         local sourceContainersUI_root=undefined,sourceContainersUI_owner=undefined,sourceContainersUI_panel=undefined,sourceContainersUI_controlsReady=false,sourceContainersUI_binding=false,sourceContainersUI_setSpecific=true,sourceContainersUI_modes=#()
-        fn sourceContainersUI_currentSet = sourceContainersUI_root.selectedPaintSet sourceContainersUI_owner
+        fn sourceContainersUI_currentSet = sourceContainersUI_owner
         fn sourceContainersUI_bind layer = (
             sourceContainersUI_binding=true
             local leaf=sourceContainersUI_currentSet(),active=true,own=leaf.logicalParentID==""
@@ -9644,6 +9763,18 @@ initialRollupState:0x8
         on sourceUI_plantList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
         on sourceUI_plantList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
         on sourceUI_plantList_grip Paint sender args do paintListGrip sender args
+        fn fitRadio control available desiredColumns place:false = (
+            local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
+            if buttons.count==0 do return 20
+            local boxes=for handle in buttons collect windows.getWindowPos handle
+            local widest=amax (for box in boxes collect box.w),step=amax 20 ((amax (for box in boxes collect box.h))+5)
+            local columns=amin desiredColumns (amax 1 (floor ((available+4)/(widest+4))))
+            if place do for i=1 to buttons.count do (
+                local data=windows.getHWNDData buttons[i],position=windows.screenToClient data[2] (boxes[1].x+(mod (i-1) columns)*(widest+4)) (boxes[1].y+(floor ((i-1)/columns))*step)
+                windows.setWindowPos buttons[i] position.x position.y boxes[i].w boxes[i].h true
+            )
+            step*(ceil (buttons.count as float/columns))
+        )
         fn fitPairField control available = (
             local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
             for handle in control.hwnd do (
@@ -9656,7 +9787,12 @@ initialRollupState:0x8
             true
         )
         fn fitWidth control available = (
-            if isProperty control #width then control.width=available
+            if classof control==ColorPickerControl then (
+                for handle in control.hwnd where (windows.getHWNDData handle)[4]=="ColorSwatch" do (
+                    local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y (amax 1 (available as integer)) rectangle.h true
+                )
+            ) else if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
@@ -9940,11 +10076,14 @@ initialRollupState:0x8
             )
             rowControls=#(sourceUI_groupColor);show=(advancedToggle.checked and (true))
             for c in rowControls do c.visible=show
+            sourceUI_groupColor_caption.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                fitLabel sourceUI_groupColor_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(sourceUI_groupColor_caption.height)) (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                sourceUI_groupColor_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];sourceUI_groupColor_caption.width=cellWidth;sourceUI_groupColor_caption.enabled=sourceUI_groupColor.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(sourceUI_applyColor);show=(advancedToggle.checked and (true))
@@ -9976,8 +10115,8 @@ initialRollupState:0x8
                 obj=owner
                 sourceContainersUI_root=root;sourceContainersUI_owner=owner;sourceContainersUI_panel=panel;sourceContainersUI_controlsReady=controlsReady;sourceContainersUI_binding=binding
             sourceUI_root=root;sourceUI_owner=owner;sourceUI_panel=panel;sourceUI_controlsReady=controlsReady;sourceUI_binding=binding
-            if owner!=undefined then (sourceContainersUI_bind (root.selectedPaintSet owner);) else (for c in #(sourceContainersUI_modeList,sourceContainersUI_containersList,sourceContainersUI_createContainer,sourceContainersUI_pickContainer,sourceContainersUI_removeContainer,sourceContainersUI_membershipInfo,sourceContainersUI_helpInfo) do c.enabled=false;sourceContainersUI_controlsReady=false)
-            sourceUI_detailsToggle.checked=true;if owner!=undefined then (sourceUI_bind (root.selectedPaintSet owner);) else (for c in #(sourceUI_sourceName,sourceUI_idColor,sourceUI_plantList,sourceUI_selectFromScene,sourceUI_addPlant,sourceUI_addSelected,sourceUI_removePlant,sourceUI_selectPlant,sourceUI_addPoint,sourceUI_addEmpty,sourceUI_replacePoint,sourceUI_groupHeading,sourceUI_existingGroups,sourceUI_groupColor,sourceUI_applyColor,sourceUI_colorHelp,sourceUI_weightSpin,sourceUI_weightHelp,sourceUI_sourceZSpin,sourceUI_sourceScaleSpin,sourceUI_sourceTransformHelp,sourceUI_radiusSourceSpin,sourceUI_followRadiusCheck,sourceUI_showRadiusCheck,sourceUI_forwardAxis,sourceUI_detailsToggle) do c.enabled=false;sourceUI_controlsReady=false)
+            if owner!=undefined then (sourceContainersUI_bind owner;) else (for c in #(sourceContainersUI_modeList,sourceContainersUI_containersList,sourceContainersUI_createContainer,sourceContainersUI_pickContainer,sourceContainersUI_removeContainer,sourceContainersUI_membershipInfo,sourceContainersUI_helpInfo) do c.enabled=false;sourceContainersUI_controlsReady=false)
+            sourceUI_detailsToggle.checked=true;if owner!=undefined then (sourceUI_bind owner;) else (for c in #(sourceUI_sourceName,sourceUI_idColor,sourceUI_plantList,sourceUI_selectFromScene,sourceUI_addPlant,sourceUI_addSelected,sourceUI_removePlant,sourceUI_selectPlant,sourceUI_addPoint,sourceUI_addEmpty,sourceUI_replacePoint,sourceUI_groupHeading,sourceUI_existingGroups,sourceUI_groupColor,sourceUI_applyColor,sourceUI_colorHelp,sourceUI_weightSpin,sourceUI_weightHelp,sourceUI_sourceZSpin,sourceUI_sourceScaleSpin,sourceUI_sourceTransformHelp,sourceUI_radiusSourceSpin,sourceUI_followRadiusCheck,sourceUI_showRadiusCheck,sourceUI_forwardAxis,sourceUI_detailsToggle) do c.enabled=false;sourceUI_controlsReady=false)
                 setupGrips();controlsReady=true;binding=false;layout();true
             )catch(binding=false;controlsReady=false;throw())
         )
@@ -10444,6 +10583,18 @@ initialRollupState:0x8
         on diversityUI_strokeChoices_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
         on diversityUI_strokeChoices_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
         on diversityUI_strokeChoices_grip Paint sender args do paintListGrip sender args
+        fn fitRadio control available desiredColumns place:false = (
+            local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
+            if buttons.count==0 do return 20
+            local boxes=for handle in buttons collect windows.getWindowPos handle
+            local widest=amax (for box in boxes collect box.w),step=amax 20 ((amax (for box in boxes collect box.h))+5)
+            local columns=amin desiredColumns (amax 1 (floor ((available+4)/(widest+4))))
+            if place do for i=1 to buttons.count do (
+                local data=windows.getHWNDData buttons[i],position=windows.screenToClient data[2] (boxes[1].x+(mod (i-1) columns)*(widest+4)) (boxes[1].y+(floor ((i-1)/columns))*step)
+                windows.setWindowPos buttons[i] position.x position.y boxes[i].w boxes[i].h true
+            )
+            step*(ceil (buttons.count as float/columns))
+        )
         fn fitPairField control available = (
             local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
             for handle in control.hwnd do (
@@ -10456,7 +10607,12 @@ initialRollupState:0x8
             true
         )
         fn fitWidth control available = (
-            if isProperty control #width then control.width=available
+            if classof control==ColorPickerControl then (
+                for handle in control.hwnd where (windows.getHWNDData handle)[4]=="ColorSwatch" do (
+                    local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y (amax 1 (available as integer)) rectangle.h true
+                )
+            ) else if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
@@ -10475,8 +10631,9 @@ initialRollupState:0x8
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 fitLabel diversityUI_diversityRadio_caption 18 cellWidth
                 stackedCaption=false;captionHeight=amax (amax #(diversityUI_diversityRadio_caption.height)) (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(80))+2+captionHeight
+                rowHeight=(amax #(fitRadio diversityUI_diversityRadio cellWidth 1 place:false))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                fitRadio diversityUI_diversityRadio cellWidth 1 place:true
                 diversityUI_diversityRadio_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_diversityRadio_caption.width=cellWidth;diversityUI_diversityRadio_caption.enabled=diversityUI_diversityRadio.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
@@ -10662,8 +10819,9 @@ initialRollupState:0x8
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 fitLabel diversityUI_strokeMode_caption 18 cellWidth
                 stackedCaption=false;captionHeight=amax (amax #(diversityUI_strokeMode_caption.height)) (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(40))+2+captionHeight
+                rowHeight=(amax #(fitRadio diversityUI_strokeMode cellWidth 1 place:false))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                fitRadio diversityUI_strokeMode cellWidth 1 place:true
                 diversityUI_strokeMode_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokeMode_caption.width=cellWidth;diversityUI_strokeMode_caption.enabled=diversityUI_strokeMode.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
@@ -11162,6 +11320,18 @@ initialRollupState:0x8
             true
         )
 
+        fn fitRadio control available desiredColumns place:false = (
+            local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
+            if buttons.count==0 do return 20
+            local boxes=for handle in buttons collect windows.getWindowPos handle
+            local widest=amax (for box in boxes collect box.w),step=amax 20 ((amax (for box in boxes collect box.h))+5)
+            local columns=amin desiredColumns (amax 1 (floor ((available+4)/(widest+4))))
+            if place do for i=1 to buttons.count do (
+                local data=windows.getHWNDData buttons[i],position=windows.screenToClient data[2] (boxes[1].x+(mod (i-1) columns)*(widest+4)) (boxes[1].y+(floor ((i-1)/columns))*step)
+                windows.setWindowPos buttons[i] position.x position.y boxes[i].w boxes[i].h true
+            )
+            step*(ceil (buttons.count as float/columns))
+        )
         fn fitPairField control available = (
             local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
             for handle in control.hwnd do (
@@ -11174,7 +11344,12 @@ initialRollupState:0x8
             true
         )
         fn fitWidth control available = (
-            if isProperty control #width then control.width=available
+            if classof control==ColorPickerControl then (
+                for handle in control.hwnd where (windows.getHWNDData handle)[4]=="ColorSwatch" do (
+                    local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y (amax 1 (available as integer)) rectangle.h true
+                )
+            ) else if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
@@ -11204,8 +11379,9 @@ initialRollupState:0x8
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 fitLabel distributionUI_populationRadio_caption 18 cellWidth
                 stackedCaption=false;captionHeight=amax (amax #(distributionUI_populationRadio_caption.height)) (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(20))+2+captionHeight
+                rowHeight=(amax #(fitRadio distributionUI_populationRadio cellWidth 2 place:false))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                fitRadio distributionUI_populationRadio cellWidth 2 place:true
                 distributionUI_populationRadio_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_populationRadio_caption.width=cellWidth;distributionUI_populationRadio_caption.enabled=distributionUI_populationRadio.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
@@ -11264,8 +11440,9 @@ initialRollupState:0x8
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 fitLabel distributionUI_modeRadio_caption 18 cellWidth
                 stackedCaption=false;captionHeight=amax (amax #(distributionUI_modeRadio_caption.height)) (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(20))+2+captionHeight
+                rowHeight=(amax #(fitRadio distributionUI_modeRadio cellWidth 2 place:false))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                fitRadio distributionUI_modeRadio cellWidth 2 place:true
                 distributionUI_modeRadio_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_modeRadio_caption.width=cellWidth;distributionUI_modeRadio_caption.enabled=distributionUI_modeRadio.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
@@ -11413,7 +11590,6 @@ initialRollupState:0x8
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
         local layout,lastLayoutWidth=0
         checkbox setsUI_paintedCheck "Use Paint Areas" pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/104))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/104))))) tooltip:"Restrict this layer to its painted areas. Turn off to scatter across all its surfaces."
-        button setsUI_importButton "Use existing paint" pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/111.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/111.60000000000001))))) tooltip:"Bring this older layer's existing coverage into a named area without changing its paint. Undo restores the old ownership." height:22
         dropdownlist setsUI_setList "" items:#() pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/58)))))
         button setsUI_addButton "+" pos:[8,8] width:60 tooltip:"Create a named area. Painting again edits the selected area." height:22
         button setsUI_removeButton "×" pos:[8,8] width:60 tooltip:"Remove the selected area. Undo restores it." height:22
@@ -11426,12 +11602,8 @@ initialRollupState:0x8
         label brushUI_targetInfo "Add a Paint Area to begin." pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))) height:36
         radiobuttons brushUI_modeRadio "" labels:#("Paint","Erase") columns:2 pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/58)))))
         label brushUI_modeRadio_caption "Brush" pos:[6,6] width:(coverageUI.width-12) height:18
-        spinner brushUI_radiusSpin "" type:#worldunits range:[0.0001,1e9,20] pos:[8,8] width:((coverageUI.width-16-((amin 2 (amax 1 (floor ((coverageUI.width-8)/139.2))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI.width-8)/139.2))))) fieldWidth:58
+        spinner brushUI_radiusSpin "" type:#worldunits range:[0.001,1e7,20] pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/118.4))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/118.4))))) fieldWidth:58
         label brushUI_radiusSpin_caption "Radius:" pos:[6,6] width:(coverageUI.width-12) height:18
-        spinner brushUI_strengthSpin "" range:[0,100,100] pos:[8,8] width:((coverageUI.width-16-((amin 2 (amax 1 (floor ((coverageUI.width-8)/139.2))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI.width-8)/139.2))))) fieldWidth:58
-        label brushUI_strengthSpin_caption "Strength %:" pos:[6,6] width:(coverageUI.width-12) height:18
-        spinner brushUI_softSpin "" range:[0,100,0] pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/139.2))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/139.2))))) fieldWidth:58
-        label brushUI_softSpin_caption "Softness %:" pos:[6,6] width:(coverageUI.width-12) height:18
         button brushUI_beginButton "Start Brush" pos:[8,8] width:80 height:22
         button brushUI_stopButton "Stop" pos:[8,8] width:80 height:22
         button brushUI_fillButton "Fill" pos:[8,8] width:80 height:22
@@ -11439,10 +11611,22 @@ initialRollupState:0x8
         label brushUI_brushState "" pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))) height:54
         spinner brushUI_densitySpin "" range:[0,100,100] pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/160))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/160))))) fieldWidth:58
         label brushUI_densitySpin_caption "Area density %:" pos:[6,6] width:(coverageUI.width-12) height:18
-        dropdownlist brushUI_overlayMode "" items:#("Coverage tint","Coverage samples","Off") pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/58)))))
+        dropdownlist brushUI_overlayMode "" items:#("Vector borders","Coverage samples","Off") pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/58)))))
         label brushUI_overlayMode_caption "Paint feedback" pos:[6,6] width:(coverageUI.width-12) height:18
         colorpicker brushUI_overlayColor "" color:(color 100 220 120) pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/58)))))
-        label brushUI_brushHelp "Continue painting to edit the same area. Undo/Redo restores brush actions. Manual mode needs Update." pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))) height:56
+        label brushUI_brushHelp "Paint merges borders; Erase cuts holes. Zero fade = hard edge. Local XY terrain/planes only. Manual mode needs Update." pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))) height:78
+        spinner brushUI_insideSpin "" type:#worldunits range:[0,1e9,0] pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/144.4))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/144.4))))) fieldWidth:58
+        label brushUI_insideSpin_caption "Inside fade:" pos:[6,6] width:(coverageUI.width-12) height:18
+        spinner brushUI_outsideSpin "" type:#worldunits range:[0,1e9,0] pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/149.60000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/149.60000000000002))))) fieldWidth:58
+        label brushUI_outsideSpin_caption "Outside fade:" pos:[6,6] width:(coverageUI.width-12) height:18
+        checkbox brushUI_densityFade "Fade density" checked:true pos:[8,8] width:((coverageUI.width-16-((amin 2 (amax 1 (floor ((coverageUI.width-8)/101.2))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI.width-8)/101.2)))))
+        button brushUI_densityCurve "Density curve..." pos:[8,8] width:((coverageUI.width-16-((amin 2 (amax 1 (floor ((coverageUI.width-8)/101.2))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI.width-8)/101.2))))) height:22
+        checkbox brushUI_scaleFade "Fade scale" checked:false pos:[8,8] width:((coverageUI.width-16-((amin 2 (amax 1 (floor ((coverageUI.width-8)/90.8))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI.width-8)/90.8)))))
+        spinner brushUI_scaleMin "" range:[0,1000,0] pos:[8,8] width:((coverageUI.width-16-((amin 2 (amax 1 (floor ((coverageUI.width-8)/144.4))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI.width-8)/144.4))))) fieldWidth:58
+        label brushUI_scaleMin_caption "Edge scale:" pos:[6,6] width:(coverageUI.width-12) height:18
+        spinner brushUI_scaleMax "" range:[0,1000,1] pos:[8,8] width:((coverageUI.width-16-((amin 2 (amax 1 (floor ((coverageUI.width-8)/144.4))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI.width-8)/144.4))))) fieldWidth:58
+        label brushUI_scaleMax_caption "Inner scale:" pos:[6,6] width:(coverageUI.width-12) height:18
+        button brushUI_scaleCurve "Scale curve..." pos:[8,8] width:((coverageUI.width-16-((amin 2 (amax 1 (floor ((coverageUI.width-8)/90.8))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI.width-8)/90.8))))) height:22
         label heading_0 "Paint feedback" pos:[6,6] width:(coverageUI.width-12) height:18
         checkbutton advancedToggle "Advanced" pos:[6,6] width:(coverageUI.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
         local setsUI_bodyHeight=0
@@ -11460,22 +11644,14 @@ initialRollupState:0x8
             setsUI_nameEdit.text=if area==undefined then "" else area.paintSetName
             setsUI_targetList.selection=if area==undefined then 0 else findItem setsUI_targets area.areaTarget
             setsUI_enabledCheck.checked=area!=undefined and area.paintSetEnabled
-            setsUI_importButton.enabled=setsUI_owner.paintDocument!=undefined and not setsUI_owner.areaMode and (setsUI_root.layerSets setsUI_owner).count==1
-            setsUI_addButton.enabled=setsUI_members.count<128 and (setsUI_root.layerSets setsUI_owner).count==1
-            setsUI_info.text=if (setsUI_root.layerSets setsUI_owner).count>1 then "Older model-owning sets are retained. Conversion is required before adding areas." else if area!=undefined and findItem setsUI_targets area.areaTarget==0 then "Inactive: assign a surface, or restore this area's original surface to the layer. Saved paint is retained." else "Paint and Erase edit this area. Areas share the layer's models; overlaps do not duplicate plants."
+            setsUI_addButton.enabled=setsUI_members.count<128
+            setsUI_info.text=if area!=undefined and findItem setsUI_targets area.areaTarget==0 then "Inactive: assign a surface, or restore this area's original surface to the layer. Saved paint is retained." else "Paint and Erase edit this area. Areas share the layer's models; overlaps do not duplicate plants."
             setsUI_controlsReady=true;setsUI_binding=false
         )
         fn setsUI_selectSet i = (
             if setsUI_binding or i<1 or i>setsUI_members.count do return false
             local controller=setsUI_root,parent=setsUI_owner
             CyrusStopBrush();parent.uiAreaID=setsUI_members[i].layerID;controller.bindNativeUI();true
-        )
-        on setsUI_importButton pressed do if controlsReady and not binding and root!=undefined and setsUI_controlsReady and not setsUI_binding and true do ((
-            local controller=setsUI_root,parent=setsUI_owner
-            undo "Cyrus use existing paint" on controller.adoptPaintArea parent
-            parent.markInputDirty();controller.bindNativeUI();CyrusViewportRedraw()
-        )
-            if controlsReady and root!=undefined do layout()
         )
         on setsUI_setList selected i do if controlsReady and not binding and root!=undefined and setsUI_controlsReady and not setsUI_binding and true do (setsUI_selectSet i
             if controlsReady and root!=undefined do layout()
@@ -11491,7 +11667,7 @@ initialRollupState:0x8
         )
         on setsUI_paintedCheck changed value do if controlsReady and not binding and root!=undefined and setsUI_controlsReady and not setsUI_binding and true do (if not setsUI_binding do (
             local controller=setsUI_root,parent=setsUI_owner
-            CyrusStopBrush();undo "Cyrus coverage mode" on (controller.adoptPaintArea parent;parent.areaMode=true;parent.paintEnabled=value)
+            CyrusStopBrush();undo "Cyrus coverage mode" on (parent.paintEnabled=value)
             parent.markInputDirty();controller.bindNativeUI();CyrusViewportRedraw()
         )
             if controlsReady and root!=undefined do layout()
@@ -11505,7 +11681,14 @@ initialRollupState:0x8
         local brushUI_bodyHeight=0
         local brushUI_controlsReady=false
         local brushUI_root=undefined,brushUI_owner=undefined,brushUI_panel=undefined,brushUI_obj=undefined,brushUI_controlsReady=false,brushUI_binding=false,brushUI_setSpecific=true
-        fn brushUI_refreshHistory = (true)
+        fn brushUI_saveFalloff = (
+            if not brushUI_binding and brushUI_obj!=undefined and brushUI_obj.paintDocument!=undefined do (
+                local area=brushUI_obj,cfg=cyrusBrushFalloff brushUI_obj.paintDocument
+                cfg[1]=brushUI_insideSpin.value;cfg[2]=brushUI_outsideSpin.value;cfg[3]=brushUI_densityFade.checked;cfg[4]=brushUI_scaleFade.checked
+                cfg[5]=brushUI_scaleMin.value;cfg[6]=brushUI_scaleMax.value
+                try(cyrusBrushSetFalloff area.paintDocument cfg;area.publishPaint())catch(messageBox (getCurrentException()) title:"Vector feather")
+            )
+        )
         fn brushUI_status = (
             if brushUI_obj==undefined then brushUI_brushState.text="Add or select a Paint Area." else (
                 local state=if brushUI_obj.paintDocument==undefined then undefined else cyrusBrushStats brushUI_obj.paintDocument
@@ -11513,28 +11696,33 @@ initialRollupState:0x8
                 if brushUI_owner!=undefined and not brushUI_owner.paintEnabled do brushUI_brushState.text+="\nWhole surfaces; areas retained."
             )
         )
+        -- MAXScript resolves rollout function names in declaration order.
+        -- Declare status first; an unbound forward call stops the paint timer.
+        fn brushUI_refreshBrushStatus = (brushUI_status())
         fn brushUI_saveOptions = (
             if not brushUI_binding and brushUI_obj!=undefined and brushUI_obj.paintDocument!=undefined do (
-                cyrusBrushSettings brushUI_obj.paintDocument brushUI_radiusSpin.value (brushUI_strengthSpin.value/100.0) (brushUI_softSpin.value/100.0) (brushUI_modeRadio.state==2) 1.0
+                cyrusBrushSettings brushUI_obj.paintDocument brushUI_radiusSpin.value (brushUI_modeRadio.state==2)
                 cyrusBrushDisplay brushUI_obj.paintDocument brushUI_obj.paintView brushUI_obj.paintColor
             )
         )
         fn brushUI_bind layer = (
             brushUI_binding=true;brushUI_obj=layer
             local has=brushUI_obj!=undefined and brushUI_obj.paintDocument!=undefined
-            for control in #(brushUI_targetInfo,brushUI_modeRadio,brushUI_radiusSpin,brushUI_strengthSpin,brushUI_softSpin,brushUI_beginButton,brushUI_stopButton,brushUI_fillButton,brushUI_emptyButton,brushUI_brushState,brushUI_densitySpin,brushUI_overlayMode,brushUI_overlayColor,brushUI_brushHelp) do control.enabled=brushUI_obj!=undefined
-            for control in #(brushUI_stopButton,brushUI_fillButton,brushUI_emptyButton) do control.enabled=has
+            for control in #(brushUI_targetInfo,brushUI_modeRadio,brushUI_radiusSpin,brushUI_beginButton,brushUI_stopButton,brushUI_fillButton,brushUI_emptyButton,brushUI_brushState,brushUI_densitySpin,brushUI_overlayMode,brushUI_overlayColor,brushUI_brushHelp,brushUI_insideSpin,brushUI_outsideSpin,brushUI_densityFade,brushUI_densityCurve,brushUI_scaleFade,brushUI_scaleMin,brushUI_scaleMax,brushUI_scaleCurve) do control.enabled=brushUI_obj!=undefined
+            for control in #(brushUI_stopButton,brushUI_fillButton,brushUI_emptyButton,brushUI_insideSpin,brushUI_outsideSpin,brushUI_densityFade,brushUI_scaleFade,brushUI_densityCurve,brushUI_scaleCurve,brushUI_scaleMin,brushUI_scaleMax) do control.enabled=has
             local target=if brushUI_obj==undefined then undefined else brushUI_obj.areaTarget
             brushUI_targetInfo.text=if brushUI_obj==undefined then "Add a Paint Area to begin." else brushUI_obj.paintSetName+" / "+(if isValidNode target then target.name else "<choose surface>")
             brushUI_beginButton.enabled=brushUI_obj!=undefined and isValidNode target and findItem (brushUI_owner.validSurfaces()) target>0
             if brushUI_obj!=undefined do (brushUI_densitySpin.value=brushUI_obj.paintDensity*100;brushUI_overlayMode.selection=findItem #(2,1,0) brushUI_obj.paintView;brushUI_overlayColor.color=brushUI_obj.paintColor;brushUI_obj.setOverlapOwner brushUI_root)
-            if has do (local cfg=cyrusBrushOptions brushUI_obj.paintDocument;brushUI_radiusSpin.value=cfg[1];brushUI_strengthSpin.value=cfg[2]*100;brushUI_softSpin.value=cfg[3]*100;brushUI_modeRadio.state=if cfg[5] then 2 else 1)
+            if has do (local cfg=cyrusBrushOptions brushUI_obj.paintDocument;brushUI_radiusSpin.value=cfg[1];brushUI_modeRadio.state=if cfg[2] then 2 else 1
+                local fade=cyrusBrushFalloff brushUI_obj.paintDocument
+                brushUI_insideSpin.value=fade[1];brushUI_outsideSpin.value=fade[2];brushUI_densityFade.checked=fade[3];brushUI_scaleFade.checked=fade[4];brushUI_scaleMin.value=fade[5];brushUI_scaleMax.value=fade[6])
             brushUI_controlsReady=true;brushUI_binding=false;brushUI_status()
         )
         on brushUI_beginButton pressed do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (if brushUI_obj!=undefined do try (
-            local controller=brushUI_root,area=brushUI_obj,options=#(brushUI_radiusSpin.value,brushUI_strengthSpin.value,brushUI_softSpin.value,brushUI_modeRadio.state)
+            local controller=brushUI_root,area=brushUI_obj,options=#(brushUI_radiusSpin.value,brushUI_modeRadio.state)
             controller.setGroupCoverage area true
-            cyrusBrushSettings area.paintDocument options[1] (options[2]/100.0) (options[3]/100.0) (options[4]==2) 1.0
+            cyrusBrushSettings area.paintDocument options[1] (options[2]==2)
             cyrusBrushDisplay area.paintDocument area.paintView area.paintColor
             CyrusStartBrush controller area
         )catch(messageBox (getCurrentException()) title:"Cyrus Brush")
@@ -11549,10 +11737,28 @@ initialRollupState:0x8
         on brushUI_radiusSpin changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (brushUI_saveOptions()
             if controlsReady and root!=undefined do layout()
         )
-        on brushUI_strengthSpin changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (brushUI_saveOptions()
+        on brushUI_insideSpin changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (brushUI_saveFalloff()
             if controlsReady and root!=undefined do layout()
         )
-        on brushUI_softSpin changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (brushUI_saveOptions()
+        on brushUI_outsideSpin changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (brushUI_saveFalloff()
+            if controlsReady and root!=undefined do layout()
+        )
+        on brushUI_densityFade changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (brushUI_saveFalloff()
+            if controlsReady and root!=undefined do layout()
+        )
+        on brushUI_scaleFade changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (brushUI_saveFalloff()
+            if controlsReady and root!=undefined do layout()
+        )
+        on brushUI_scaleMin changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (brushUI_saveFalloff()
+            if controlsReady and root!=undefined do layout()
+        )
+        on brushUI_scaleMax changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (brushUI_saveFalloff()
+            if controlsReady and root!=undefined do layout()
+        )
+        on brushUI_densityCurve pressed do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (if brushUI_obj!=undefined do CyrusOpenFalloffGraph brushUI_obj undefined true
+            if controlsReady and root!=undefined do layout()
+        )
+        on brushUI_scaleCurve pressed do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (if brushUI_obj!=undefined do CyrusOpenFalloffGraph brushUI_obj undefined false
             if controlsReady and root!=undefined do layout()
         )
         on brushUI_densitySpin changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (if not brushUI_binding and brushUI_obj!=undefined do (undo "Cyrus area density" on brushUI_obj.paintDensity=value/100.0;brushUI_owner.markInputDirty();brushUI_obj.publishPaint())
@@ -11631,6 +11837,18 @@ initialRollupState:0x8
             true
         )
 
+        fn fitRadio control available desiredColumns place:false = (
+            local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
+            if buttons.count==0 do return 20
+            local boxes=for handle in buttons collect windows.getWindowPos handle
+            local widest=amax (for box in boxes collect box.w),step=amax 20 ((amax (for box in boxes collect box.h))+5)
+            local columns=amin desiredColumns (amax 1 (floor ((available+4)/(widest+4))))
+            if place do for i=1 to buttons.count do (
+                local data=windows.getHWNDData buttons[i],position=windows.screenToClient data[2] (boxes[1].x+(mod (i-1) columns)*(widest+4)) (boxes[1].y+(floor ((i-1)/columns))*step)
+                windows.setWindowPos buttons[i] position.x position.y boxes[i].w boxes[i].h true
+            )
+            step*(ceil (buttons.count as float/columns))
+        )
         fn fitPairField control available = (
             local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
             for handle in control.hwnd do (
@@ -11643,7 +11861,12 @@ initialRollupState:0x8
             true
         )
         fn fitWidth control available = (
-            if isProperty control #width then control.width=available
+            if classof control==ColorPickerControl then (
+                for handle in control.hwnd where (windows.getHWNDData handle)[4]=="ColorSwatch" do (
+                    local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y (amax 1 (available as integer)) rectangle.h true
+                )
+            ) else if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
@@ -11661,15 +11884,6 @@ initialRollupState:0x8
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/104))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(20))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(setsUI_importButton);show=(true and (setsUI_owner!=undefined and setsUI_owner.paintDocument!=undefined and not setsUI_owner.areaMode))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/111.60000000000001))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
@@ -11751,33 +11965,22 @@ initialRollupState:0x8
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 fitLabel brushUI_modeRadio_caption 18 cellWidth
                 stackedCaption=false;captionHeight=amax (amax #(brushUI_modeRadio_caption.height)) (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(20))+2+captionHeight
+                rowHeight=(amax #(fitRadio brushUI_modeRadio cellWidth 2 place:false))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                fitRadio brushUI_modeRadio cellWidth 2 place:true
                 brushUI_modeRadio_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];brushUI_modeRadio_caption.width=cellWidth;brushUI_modeRadio_caption.enabled=brushUI_modeRadio.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(brushUI_radiusSpin,brushUI_strengthSpin);show=(true and (setsUI_paintedCheck.checked))
+            rowControls=#(brushUI_radiusSpin);show=(true and (setsUI_paintedCheck.checked))
             for c in rowControls do c.visible=show
-            brushUI_radiusSpin_caption.visible=show;brushUI_strengthSpin_caption.visible=show
+            brushUI_radiusSpin_caption.visible=show
             if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/139.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel brushUI_radiusSpin_caption 18 cellWidth;fitLabel brushUI_strengthSpin_caption 18 cellWidth
-                stackedCaption=cellWidth<135.2;captionHeight=amax 0 (if stackedCaption then (amax #(brushUI_radiusSpin_caption.height,brushUI_strengthSpin_caption.height)) else 0)
-                rowHeight=(amax #(22,22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                if not stackedCaption then (brushUI_radiusSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];brushUI_radiusSpin_caption.width=cellWidth-78) else (brushUI_radiusSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];brushUI_radiusSpin_caption.width=cellWidth);brushUI_radiusSpin_caption.enabled=brushUI_radiusSpin.enabled;if not stackedCaption then (brushUI_strengthSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];brushUI_strengthSpin_caption.width=cellWidth-78) else (brushUI_strengthSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];brushUI_strengthSpin_caption.width=cellWidth);brushUI_strengthSpin_caption.enabled=brushUI_strengthSpin.enabled
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(brushUI_softSpin);show=(true and (setsUI_paintedCheck.checked))
-            for c in rowControls do c.visible=show
-            brushUI_softSpin_caption.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/139.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel brushUI_softSpin_caption 18 cellWidth
-                stackedCaption=cellWidth<135.2;captionHeight=amax 0 (if stackedCaption then (amax #(brushUI_softSpin_caption.height)) else 0)
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/118.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel brushUI_radiusSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<114.4;captionHeight=amax 0 (if stackedCaption then (amax #(brushUI_radiusSpin_caption.height)) else 0)
                 rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                if not stackedCaption then (brushUI_softSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];brushUI_softSpin_caption.width=cellWidth-78) else (brushUI_softSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];brushUI_softSpin_caption.width=cellWidth);brushUI_softSpin_caption.enabled=brushUI_softSpin.enabled
+                if not stackedCaption then (brushUI_radiusSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];brushUI_radiusSpin_caption.width=cellWidth-78) else (brushUI_radiusSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];brushUI_radiusSpin_caption.width=cellWidth);brushUI_radiusSpin_caption.enabled=brushUI_radiusSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(brushUI_beginButton,brushUI_stopButton);show=(true and (setsUI_paintedCheck.checked))
@@ -11806,6 +12009,60 @@ initialRollupState:0x8
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(brushUI_brushState.height))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(brushUI_insideSpin);show=(true and (setsUI_paintedCheck.checked))
+            for c in rowControls do c.visible=show
+            brushUI_insideSpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/144.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel brushUI_insideSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<140.4;captionHeight=amax 0 (if stackedCaption then (amax #(brushUI_insideSpin_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (brushUI_insideSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];brushUI_insideSpin_caption.width=cellWidth-78) else (brushUI_insideSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];brushUI_insideSpin_caption.width=cellWidth);brushUI_insideSpin_caption.enabled=brushUI_insideSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(brushUI_outsideSpin);show=(true and (setsUI_paintedCheck.checked))
+            for c in rowControls do c.visible=show
+            brushUI_outsideSpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/149.60000000000002))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel brushUI_outsideSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<145.60000000000002;captionHeight=amax 0 (if stackedCaption then (amax #(brushUI_outsideSpin_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (brushUI_outsideSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];brushUI_outsideSpin_caption.width=cellWidth-78) else (brushUI_outsideSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];brushUI_outsideSpin_caption.width=cellWidth);brushUI_outsideSpin_caption.enabled=brushUI_outsideSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(brushUI_densityFade,brushUI_densityCurve);show=(true and (setsUI_paintedCheck.checked))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/101.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(20,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(brushUI_scaleFade,brushUI_scaleCurve);show=(true and (setsUI_paintedCheck.checked))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/90.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(20,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(brushUI_scaleMin,brushUI_scaleMax);show=(true and (setsUI_paintedCheck.checked))
+            for c in rowControls do c.visible=show
+            brushUI_scaleMin_caption.visible=show;brushUI_scaleMax_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/144.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel brushUI_scaleMin_caption 18 cellWidth;fitLabel brushUI_scaleMax_caption 18 cellWidth
+                stackedCaption=cellWidth<140.4;captionHeight=amax 0 (if stackedCaption then (amax #(brushUI_scaleMin_caption.height,brushUI_scaleMax_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (brushUI_scaleMin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];brushUI_scaleMin_caption.width=cellWidth-78) else (brushUI_scaleMin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];brushUI_scaleMin_caption.width=cellWidth);brushUI_scaleMin_caption.enabled=brushUI_scaleMin.enabled;if not stackedCaption then (brushUI_scaleMax_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];brushUI_scaleMax_caption.width=cellWidth-78) else (brushUI_scaleMax_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];brushUI_scaleMax_caption.width=cellWidth);brushUI_scaleMax_caption.enabled=brushUI_scaleMax.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
@@ -11873,12 +12130,12 @@ initialRollupState:0x8
                 obj=owner
                 setsUI_root=root;setsUI_owner=owner;setsUI_panel=panel;setsUI_controlsReady=controlsReady;setsUI_binding=binding
             brushUI_root=root;brushUI_owner=owner;brushUI_panel=panel;brushUI_controlsReady=controlsReady;brushUI_binding=binding
-            if owner!=undefined then (setsUI_bind owner;) else (for c in #(setsUI_paintedCheck,setsUI_importButton,setsUI_setList,setsUI_addButton,setsUI_removeButton,setsUI_nameEdit,setsUI_targetList,setsUI_enabledCheck,setsUI_info) do c.enabled=false;setsUI_setList.items=#();setsUI_members=#();setsUI_nameEdit.text="";setsUI_controlsReady=false)
-            if owner!=undefined then (brushUI_bind (root.selectedPaintArea owner);) else (for c in #(brushUI_targetInfo,brushUI_modeRadio,brushUI_radiusSpin,brushUI_strengthSpin,brushUI_softSpin,brushUI_beginButton,brushUI_stopButton,brushUI_fillButton,brushUI_emptyButton,brushUI_brushState,brushUI_densitySpin,brushUI_overlayMode,brushUI_overlayColor,brushUI_brushHelp) do c.enabled=false;brushUI_controlsReady=false)
+            if owner!=undefined then (setsUI_bind owner;) else (for c in #(setsUI_paintedCheck,setsUI_setList,setsUI_addButton,setsUI_removeButton,setsUI_nameEdit,setsUI_targetList,setsUI_enabledCheck,setsUI_info) do c.enabled=false;setsUI_setList.items=#();setsUI_members=#();setsUI_nameEdit.text="";setsUI_controlsReady=false)
+            if owner!=undefined then (brushUI_bind (root.selectedPaintArea owner);) else (for c in #(brushUI_targetInfo,brushUI_modeRadio,brushUI_radiusSpin,brushUI_beginButton,brushUI_stopButton,brushUI_fillButton,brushUI_emptyButton,brushUI_brushState,brushUI_densitySpin,brushUI_overlayMode,brushUI_overlayColor,brushUI_brushHelp,brushUI_insideSpin,brushUI_outsideSpin,brushUI_densityFade,brushUI_densityCurve,brushUI_scaleFade,brushUI_scaleMin,brushUI_scaleMax,brushUI_scaleCurve) do c.enabled=false;brushUI_controlsReady=false)
                 setupGrips();controlsReady=true;binding=false;layout();true
             )catch(binding=false;controlsReady=false;throw())
         )
-        fn refreshHistory = (if brushUI_controlsReady do brushUI_refreshHistory();if controlsReady do layout();true)
+        fn refreshBrushStatus = (if brushUI_controlsReady do brushUI_refreshBrushStatus();if controlsReady do layout();true)
         fn status = (if brushUI_controlsReady do brushUI_status();true)
 
         on advancedToggle changed value do if controlsReady and not binding and root!=undefined and true do ((layout();if panel!=undefined do panel.rememberViews();true)
@@ -12171,6 +12428,18 @@ initialRollupState:0x8
         on areaUI_areaList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
         on areaUI_areaList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
         on areaUI_areaList_grip Paint sender args do paintListGrip sender args
+        fn fitRadio control available desiredColumns place:false = (
+            local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
+            if buttons.count==0 do return 20
+            local boxes=for handle in buttons collect windows.getWindowPos handle
+            local widest=amax (for box in boxes collect box.w),step=amax 20 ((amax (for box in boxes collect box.h))+5)
+            local columns=amin desiredColumns (amax 1 (floor ((available+4)/(widest+4))))
+            if place do for i=1 to buttons.count do (
+                local data=windows.getHWNDData buttons[i],position=windows.screenToClient data[2] (boxes[1].x+(mod (i-1) columns)*(widest+4)) (boxes[1].y+(floor ((i-1)/columns))*step)
+                windows.setWindowPos buttons[i] position.x position.y boxes[i].w boxes[i].h true
+            )
+            step*(ceil (buttons.count as float/columns))
+        )
         fn fitPairField control available = (
             local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
             for handle in control.hwnd do (
@@ -12183,7 +12452,12 @@ initialRollupState:0x8
             true
         )
         fn fitWidth control available = (
-            if isProperty control #width then control.width=available
+            if classof control==ColorPickerControl then (
+                for handle in control.hwnd where (windows.getHWNDData handle)[4]=="ColorSwatch" do (
+                    local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y (amax 1 (available as integer)) rectangle.h true
+                )
+            ) else if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
@@ -12253,8 +12527,9 @@ initialRollupState:0x8
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 fitLabel areaUI_areaMode_caption 18 cellWidth
                 stackedCaption=false;captionHeight=amax (amax #(areaUI_areaMode_caption.height)) (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(40))+2+captionHeight
+                rowHeight=(amax #(fitRadio areaUI_areaMode cellWidth 1 place:false))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                fitRadio areaUI_areaMode cellWidth 1 place:true
                 areaUI_areaMode_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];areaUI_areaMode_caption.width=cellWidth;areaUI_areaMode_caption.enabled=areaUI_areaMode.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
@@ -12789,6 +13064,18 @@ initialRollupState:0x8
             true
         )
 
+        fn fitRadio control available desiredColumns place:false = (
+            local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
+            if buttons.count==0 do return 20
+            local boxes=for handle in buttons collect windows.getWindowPos handle
+            local widest=amax (for box in boxes collect box.w),step=amax 20 ((amax (for box in boxes collect box.h))+5)
+            local columns=amin desiredColumns (amax 1 (floor ((available+4)/(widest+4))))
+            if place do for i=1 to buttons.count do (
+                local data=windows.getHWNDData buttons[i],position=windows.screenToClient data[2] (boxes[1].x+(mod (i-1) columns)*(widest+4)) (boxes[1].y+(floor ((i-1)/columns))*step)
+                windows.setWindowPos buttons[i] position.x position.y boxes[i].w boxes[i].h true
+            )
+            step*(ceil (buttons.count as float/columns))
+        )
         fn fitPairField control available = (
             local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
             for handle in control.hwnd do (
@@ -12801,7 +13088,12 @@ initialRollupState:0x8
             true
         )
         fn fitWidth control available = (
-            if isProperty control #width then control.width=available
+            if classof control==ColorPickerControl then (
+                for handle in control.hwnd where (windows.getHWNDData handle)[4]=="ColorSwatch" do (
+                    local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y (amax 1 (available as integer)) rectangle.h true
+                )
+            ) else if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
@@ -13074,9 +13366,9 @@ initialRollupState:0x8
         label instanceRadiusUI_radiusMode_caption "Selected CS Edit instances" pos:[6,6] width:(spacingUI.width-12) height:18
         spinner instanceRadiusUI_radiusSpin "" range:[0,1e9,1] pos:[8,8] width:((spacingUI.width-16-((amin 1 (amax 1 (floor ((spacingUI.width-8)/113.2))))-1)*4)/(amin 1 (amax 1 (floor ((spacingUI.width-8)/113.2))))) fieldWidth:58 tooltip:"Value applied only when Set selected radii is pressed."
         label instanceRadiusUI_radiusSpin_caption "Value:" pos:[6,6] width:(spacingUI.width-12) height:18
-        button instanceRadiusUI_applyRadius "Set selected radii" pos:[8,8] width:((spacingUI.width-16-((amin 1 (amax 1 (floor ((spacingUI.width-8)/111.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((spacingUI.width-8)/111.60000000000001))))) tooltip:"Apply radius overrides to selected instances in this layer or older model group." height:22
+        button instanceRadiusUI_applyRadius "Set selected radii" pos:[8,8] width:((spacingUI.width-16-((amin 1 (amax 1 (floor ((spacingUI.width-8)/111.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((spacingUI.width-8)/111.60000000000001))))) tooltip:"Apply radius overrides to selected instances in this layer." height:22
         button instanceRadiusUI_resetRadius "Clear selected overrides" pos:[8,8] width:((spacingUI.width-16-((amin 1 (amax 1 (floor ((spacingUI.width-8)/142.8))))-1)*4)/(amin 1 (amax 1 (floor ((spacingUI.width-8)/142.8))))) tooltip:"Restore the selected instances' inherited source radii." height:22
-        button instanceRadiusUI_clearRadius "Clear radius overrides" pos:[8,8] width:((spacingUI.width-16-((amin 1 (amax 1 (floor ((spacingUI.width-8)/132.4))))-1)*4)/(amin 1 (amax 1 (floor ((spacingUI.width-8)/132.4))))) tooltip:"Remove instance-radius overrides for this layer or older model group." height:22
+        button instanceRadiusUI_clearRadius "Clear radius overrides" pos:[8,8] width:((spacingUI.width-16-((amin 1 (amax 1 (floor ((spacingUI.width-8)/132.4))))-1)*4)/(amin 1 (amax 1 (floor ((spacingUI.width-8)/132.4))))) tooltip:"Remove instance-radius overrides for this layer." height:22
         label instanceRadiusUI_info "Select instances with CS Edit before applying a radius. Overrides follow their stable instance identities." pos:[8,8] width:((spacingUI.width-16-((amin 1 (amax 1 (floor ((spacingUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((spacingUI.width-8)/58))))) height:54
         checkbox spacingUI_relaxCheck "Point Relax" pos:[8,8] width:((spacingUI.width-16-((amin 1 (amax 1 (floor ((spacingUI.width-8)/83.2))))-1)*4)/(amin 1 (amax 1 (floor ((spacingUI.width-8)/83.2))))) tooltip:"Separate nearby candidates on the receiving surface before Brush, artist edits and spacing. Fixed anchors stay fixed."
         spinner spacingUI_spacingSpin "" pos:[8,8] width:((spacingUI.width-16-((amin 1 (amax 1 (floor ((spacingUI.width-8)/165.2))))-1)*4)/(amin 1 (amax 1 (floor ((spacingUI.width-8)/165.2))))) fieldWidth:58 type:#worldUnits range:[0.00001,1e9,0.2]
@@ -13112,7 +13404,7 @@ initialRollupState:0x8
         local proceduralUI_controlsReady=false
         local proceduralUI_root=undefined,proceduralUI_owner=undefined,proceduralUI_panel=undefined,proceduralUI_controlsReady=false,proceduralUI_binding=false,proceduralUI_setSpecific=true,proceduralUI_peers=#(),proceduralUI_scopeRows=#(1,4)
         fn proceduralUI_currentScope = (if proceduralUI_scopeList.selection>0 and proceduralUI_scopeList.selection<=proceduralUI_scopeRows.count then proceduralUI_scopeRows[proceduralUI_scopeList.selection] else 1)
-        fn proceduralUI_currentSet = (proceduralUI_root.selectedPaintSet proceduralUI_owner)
+        fn proceduralUI_currentSet = (proceduralUI_owner)
         fn proceduralUI_bindRule resetPeer:false = (
             local wasBinding=proceduralUI_binding,leaf=proceduralUI_currentSet(),scope=proceduralUI_currentScope(),rule,previous=undefined,pair=scope==3 or scope==4
             if not resetPeer and proceduralUI_peerList.selection>0 and proceduralUI_peerList.selection<=proceduralUI_peers.count do previous=proceduralUI_peers[proceduralUI_peerList.selection]
@@ -13142,9 +13434,9 @@ initialRollupState:0x8
         )
         fn proceduralUI_bind layer = (
             proceduralUI_binding=true
-            local previous=proceduralUI_currentScope(),older=(proceduralUI_root.layerSets proceduralUI_owner).count>1
-            proceduralUI_scopeRows=if older then #(1,2,3,4,5) else #(1,4)
-            proceduralUI_scopeList.items=if older then #("Within model group","Between model groups","Pair of model groups","Between layers","Layer default") else #("Within this layer","Between layers")
+            local previous=proceduralUI_currentScope()
+            proceduralUI_scopeRows=#(1,4)
+            proceduralUI_scopeList.items=#("Within this layer","Between layers")
             proceduralUI_scopeList.selection=amax 1 (findItem proceduralUI_scopeRows previous)
             proceduralUI_bindRule();proceduralUI_controlsReady=true;proceduralUI_binding=false
         )
@@ -13195,7 +13487,7 @@ initialRollupState:0x8
         local instanceRadiusUI_bodyHeight=0
         local instanceRadiusUI_controlsReady=false,instanceRadiusUI_binding=false
         local instanceRadiusUI_root=undefined,instanceRadiusUI_owner=undefined,instanceRadiusUI_panel=undefined,instanceRadiusUI_controlsReady=false,instanceRadiusUI_setSpecific=true
-        fn instanceRadiusUI_currentSet = (instanceRadiusUI_root.selectedPaintSet instanceRadiusUI_owner)
+        fn instanceRadiusUI_currentSet = (instanceRadiusUI_owner)
         fn instanceRadiusUI_bind layer = (for c in #(instanceRadiusUI_radiusMode,instanceRadiusUI_radiusSpin,instanceRadiusUI_applyRadius,instanceRadiusUI_resetRadius,instanceRadiusUI_clearRadius,instanceRadiusUI_info) do c.enabled=true;instanceRadiusUI_controlsReady=true)
         on instanceRadiusUI_applyRadius pressed do if controlsReady and not binding and root!=undefined and instanceRadiusUI_controlsReady and not instanceRadiusUI_binding and true do (try((instanceRadiusUI_currentSet()).procSelectedRadius instanceRadiusUI_radiusMode.selection instanceRadiusUI_radiusSpin.value;instanceRadiusUI_bind instanceRadiusUI_owner)catch(messageBox (getCurrentException()) title:"Cyrus radius")
             if controlsReady and root!=undefined do layout()
@@ -13328,6 +13620,18 @@ initialRollupState:0x8
             true
         )
 
+        fn fitRadio control available desiredColumns place:false = (
+            local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
+            if buttons.count==0 do return 20
+            local boxes=for handle in buttons collect windows.getWindowPos handle
+            local widest=amax (for box in boxes collect box.w),step=amax 20 ((amax (for box in boxes collect box.h))+5)
+            local columns=amin desiredColumns (amax 1 (floor ((available+4)/(widest+4))))
+            if place do for i=1 to buttons.count do (
+                local data=windows.getHWNDData buttons[i],position=windows.screenToClient data[2] (boxes[1].x+(mod (i-1) columns)*(widest+4)) (boxes[1].y+(floor ((i-1)/columns))*step)
+                windows.setWindowPos buttons[i] position.x position.y boxes[i].w boxes[i].h true
+            )
+            step*(ceil (buttons.count as float/columns))
+        )
         fn fitPairField control available = (
             local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
             for handle in control.hwnd do (
@@ -13340,7 +13644,12 @@ initialRollupState:0x8
             true
         )
         fn fitWidth control available = (
-            if isProperty control #width then control.width=available
+            if classof control==ColorPickerControl then (
+                for handle in control.hwnd where (windows.getHWNDData handle)[4]=="ColorSwatch" do (
+                    local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y (amax 1 (available as integer)) rectangle.h true
+                )
+            ) else if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
@@ -13718,8 +14027,8 @@ initialRollupState:0x8
             instanceRadiusUI_root=root;instanceRadiusUI_owner=owner;instanceRadiusUI_panel=panel;instanceRadiusUI_controlsReady=controlsReady;instanceRadiusUI_binding=binding
             spacingUI_root=root;spacingUI_owner=owner;spacingUI_panel=panel;spacingUI_controlsReady=controlsReady;spacingUI_binding=binding
             separationUI_root=root;separationUI_owner=owner;separationUI_panel=panel;separationUI_controlsReady=controlsReady;separationUI_binding=binding
-            if owner!=undefined then (proceduralUI_bind (root.selectedPaintSet owner);) else (for c in #(proceduralUI_scopeList,proceduralUI_peerList,proceduralUI_enabledCheck,proceduralUI_multiplierSpin,proceduralUI_gapSpin,proceduralUI_planarCheck,proceduralUI_ruleInfo,proceduralUI_resetRule) do c.enabled=false;proceduralUI_controlsReady=false)
-            if owner!=undefined then (instanceRadiusUI_bind (root.selectedPaintSet owner);) else (for c in #(instanceRadiusUI_radiusMode,instanceRadiusUI_radiusSpin,instanceRadiusUI_applyRadius,instanceRadiusUI_resetRadius,instanceRadiusUI_clearRadius,instanceRadiusUI_info) do c.enabled=false;instanceRadiusUI_controlsReady=false)
+            if owner!=undefined then (proceduralUI_bind owner;) else (for c in #(proceduralUI_scopeList,proceduralUI_peerList,proceduralUI_enabledCheck,proceduralUI_multiplierSpin,proceduralUI_gapSpin,proceduralUI_planarCheck,proceduralUI_ruleInfo,proceduralUI_resetRule) do c.enabled=false;proceduralUI_controlsReady=false)
+            if owner!=undefined then (instanceRadiusUI_bind owner;) else (for c in #(instanceRadiusUI_radiusMode,instanceRadiusUI_radiusSpin,instanceRadiusUI_applyRadius,instanceRadiusUI_resetRadius,instanceRadiusUI_clearRadius,instanceRadiusUI_info) do c.enabled=false;instanceRadiusUI_controlsReady=false)
             if owner!=undefined then (spacingUI_bind owner;) else (for c in #(spacingUI_relaxCheck,spacingUI_spacingSpin,spacingUI_iterationsSpin,spacingUI_strengthSpin,spacingUI_boundaryRelaxCheck,spacingUI_finalStrengthSpin,spacingUI_finalIterSpin,spacingUI_finalMoveSpin,spacingUI_orderHint) do c.enabled=false;spacingUI_controlsReady=false)
             if owner!=undefined then (separationUI_bind owner;) else (for c in #(separationUI_cleanCheck,separationUI_neighborSpin,separationUI_minNeighborSpin,separationUI_minIslandSpin,separationUI_planarCheck,separationUI_helpInfo) do c.enabled=false;separationUI_controlsReady=false)
                 setupGrips();controlsReady=true;binding=false;layout();true
@@ -13752,7 +14061,8 @@ initialRollupState:0x8
         label flow_previewUI_identificationDrop_caption "Color by" pos:[6,6] width:(displayUI.width-12) height:18
         radiobuttons flow_previewUI_pointColorRadio "" labels:#("Solid Color","Identification Colors") columns:1 pos:[8,8] width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/58)))))
         label flow_previewUI_pointColorRadio_caption "Preview color" pos:[6,6] width:(displayUI.width-12) height:18
-        colorpicker flow_previewUI_solidColorPicker "Solid: " color:(color 100 220 120) pos:[8,8] width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/58)))))
+        colorpicker flow_previewUI_solidColorPicker "" color:(color 100 220 120) pos:[8,8] width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/58)))))
+        label flow_previewUI_solidColorPicker_caption "Solid: " pos:[6,6] width:(displayUI.width-12) height:18
         spinner flow_previewUI_budgetSpin "" range:[1000,500000,20000] type:#integer fieldWidth:58 width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/149.60000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/149.60000000000002))))) pos:[8,8]
         label flow_previewUI_budgetSpin_caption "Point limit: " pos:[6,6] width:(displayUI.width-12) height:18
         spinner flow_previewUI_pointsSpin "" range:[10,10000,80] type:#integer fieldWidth:58 width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/154.8))))) pos:[8,8]
@@ -13902,6 +14212,18 @@ initialRollupState:0x8
             true
         )
 
+        fn fitRadio control available desiredColumns place:false = (
+            local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
+            if buttons.count==0 do return 20
+            local boxes=for handle in buttons collect windows.getWindowPos handle
+            local widest=amax (for box in boxes collect box.w),step=amax 20 ((amax (for box in boxes collect box.h))+5)
+            local columns=amin desiredColumns (amax 1 (floor ((available+4)/(widest+4))))
+            if place do for i=1 to buttons.count do (
+                local data=windows.getHWNDData buttons[i],position=windows.screenToClient data[2] (boxes[1].x+(mod (i-1) columns)*(widest+4)) (boxes[1].y+(floor ((i-1)/columns))*step)
+                windows.setWindowPos buttons[i] position.x position.y boxes[i].w boxes[i].h true
+            )
+            step*(ceil (buttons.count as float/columns))
+        )
         fn fitPairField control available = (
             local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
             for handle in control.hwnd do (
@@ -13914,7 +14236,12 @@ initialRollupState:0x8
             true
         )
         fn fitWidth control available = (
-            if isProperty control #width then control.width=available
+            if classof control==ColorPickerControl then (
+                for handle in control.hwnd where (windows.getHWNDData handle)[4]=="ColorSwatch" do (
+                    local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y (amax 1 (available as integer)) rectangle.h true
+                )
+            ) else if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
@@ -14033,18 +14360,22 @@ initialRollupState:0x8
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 fitLabel flow_previewUI_pointColorRadio_caption 18 cellWidth
                 stackedCaption=false;captionHeight=amax (amax #(flow_previewUI_pointColorRadio_caption.height)) (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(40))+2+captionHeight
+                rowHeight=(amax #(fitRadio flow_previewUI_pointColorRadio cellWidth 1 place:false))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                fitRadio flow_previewUI_pointColorRadio cellWidth 1 place:true
                 flow_previewUI_pointColorRadio_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];flow_previewUI_pointColorRadio_caption.width=cellWidth;flow_previewUI_pointColorRadio_caption.enabled=flow_previewUI_pointColorRadio.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(flow_previewUI_solidColorPicker);show=(advancedToggle.checked and (flow_previewUI_pointColorRadio.state==1))
             for c in rowControls do c.visible=show
+            flow_previewUI_solidColorPicker_caption.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                fitLabel flow_previewUI_solidColorPicker_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(flow_previewUI_solidColorPicker_caption.height)) (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                flow_previewUI_solidColorPicker_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];flow_previewUI_solidColorPicker_caption.width=cellWidth;flow_previewUI_solidColorPicker_caption.enabled=flow_previewUI_solidColorPicker.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(flow_previewUI_budgetSpin);show=(advancedToggle.checked and (true))
@@ -14203,7 +14534,7 @@ initialRollupState:0x8
         on detailsUI_refreshButton pressed do if controlsReady and not binding and root!=undefined and detailsUI_controlsReady and not detailsUI_binding and true do (detailsUI_bind detailsUI_owner
             if controlsReady and root!=undefined do layout()
         )
-        on detailsUI_helpButton pressed do if controlsReady and not binding and root!=undefined and detailsUI_controlsReady and not detailsUI_binding and true do (messageBox (detailsUI_info.text+"\n\nPaint sets own assets and independent stroke history. Population, area, transforms and cleanup belong to the layer. Enabled set weights divide the layer budget.\n\nPoint Cloud uses many samples per plant; Plant centres uses one. Preview budgets affect display. Hidden owners still affect collision and render; disabled owners do not. Manual shows the previous completed build until Update. Paint feedback shows coverage, not accepted instances.\n\n"+"Visible order decides ordinary winners. Self, sibling-set and layer-pair rules are independent. Radius factor x (A + B) + gap, in XY or 3D. Protected edits survive and report conflicts. Background coverage uses earlier siblings. Accepted target retries a bounded prefix. Relax moves candidates before Brush, edits and collisions; each set uses its layer recipe."+"\n\nBase cannot be removed separately; disable or erase it. Capacity: ten populations, including sets. A Point source is an accepted placeholder. Weighted Empty sources are supported in candidate-budget mode.") title:"Cyrus layer help"
+        on detailsUI_helpButton pressed do if controlsReady and not binding and root!=undefined and detailsUI_controlsReady and not detailsUI_binding and true do (messageBox (detailsUI_info.text+"\n\nLayers own surfaces, models, population and transforms. Paint Areas bind individual surfaces and union vector coverage. Feather curves control density and multiply random scale. Include/Exclude and collision rules still apply.\n\nManual retains the previous complete build until Update. Live updates relevant edits. Failed builds preserve the last complete result. Vector painting supports local XY terrain and planes; closed or overlapping receivers are rejected.") title:"Cyrus layer help"
             if controlsReady and root!=undefined do layout()
         )
         local workflowUI_bodyHeight=0
@@ -14367,6 +14698,18 @@ initialRollupState:0x8
             true
         )
 
+        fn fitRadio control available desiredColumns place:false = (
+            local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
+            if buttons.count==0 do return 20
+            local boxes=for handle in buttons collect windows.getWindowPos handle
+            local widest=amax (for box in boxes collect box.w),step=amax 20 ((amax (for box in boxes collect box.h))+5)
+            local columns=amin desiredColumns (amax 1 (floor ((available+4)/(widest+4))))
+            if place do for i=1 to buttons.count do (
+                local data=windows.getHWNDData buttons[i],position=windows.screenToClient data[2] (boxes[1].x+(mod (i-1) columns)*(widest+4)) (boxes[1].y+(floor ((i-1)/columns))*step)
+                windows.setWindowPos buttons[i] position.x position.y boxes[i].w boxes[i].h true
+            )
+            step*(ceil (buttons.count as float/columns))
+        )
         fn fitPairField control available = (
             local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
             for handle in control.hwnd do (
@@ -14379,7 +14722,12 @@ initialRollupState:0x8
             true
         )
         fn fitWidth control available = (
-            if isProperty control #width then control.width=available
+            if classof control==ColorPickerControl then (
+                for handle in control.hwnd where (windows.getHWNDData handle)[4]=="ColorSwatch" do (
+                    local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y (amax 1 (available as integer)) rectangle.h true
+                )
+            ) else if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
@@ -14523,7 +14871,7 @@ initialRollupState:0x8
     on update do (
         -- Max may continue loading after an update-handler exception. Keep a
         -- persisted denial so later redraw/output and re-save cannot qualify it.
-        if version!=54 do procSchemaValid=false
+        if version!=55 do procSchemaValid=false
         this.procAssertSchema()
         syncColors();markInputDirty()
     )
@@ -14969,7 +15317,7 @@ CyrusPointAvailable=try(cyrusRetainedAvailable())catch(false)
 
 CyrusScatterObject=AminScatterObject
 -- Session scheduling observes only the active Brush. Idle viewport drawing
--- does not scan documents, pick meshes, replay strokes or upload buffers.
+-- does not scan documents, pick meshes, evaluate geometry or upload buffers.
 global CyrusBrushSessionRoot,CyrusBrushSessionLayer,CyrusBrushSessionRevision=0,CyrusBrushTimer,CyrusBrushBusy=false
 global CyrusStartBrush,CyrusStopBrush,CyrusBrushTick
 fn CyrusStopBrush = (
@@ -15000,7 +15348,7 @@ fn CyrusBrushTick sender args = (
             cyrusBrushRefreshMask layer.paintDocument
             CyrusBrushSessionRevision=state[1]
             if state[6]==0 then (layer.checkPaintRevision();CyrusViewportRedraw()) else redrawViews()
-            root.refreshBrushEditors history:(state[6]==0)
+            root.refreshBrushEditors()
         )
         if state[5]==0 do (
             layer.checkPaintRevision()
@@ -15160,7 +15508,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         on editLayer pressed do (local context=CyrusContainerResolve view;if context!=undefined and context[2]!=undefined do CyrusOpenLayerEditor context[1] (context[1].logicalParent context[2]))
     )
 
-    rollout mainUI "Cyrus Scatter 0.77" width:#cmdPanel height:112 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.78.1" width:#cmdPanel height:112 autoLayoutOnResize:true (
         local view=undefined,root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),owner=undefined,layerPagesVisible=false,pagesArranged=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for the entire setup."
         radiobuttons updateRadio "Viewport update" labels:#("Manual","Live") columns:2 pos:[8,26] width:(mainUI.width-16) tooltip:"Manual waits for Update. Live calculates after relevant edits."
@@ -15179,7 +15527,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             if not controlsReady do return false
             if root.layersUI!=undefined and root.layersUI.controlsReady do root.layersUI.refreshStats()
             if root.surfaceUI!=undefined and root.surfaceUI.controlsReady do root.surfaceUI.refreshStats()
-            root.syncBrushCompatibility();true
+            root.syncBrushAvailability();true
         )
         fn bindSection section = (
             if not controlsReady or root==undefined do return false
@@ -15233,7 +15581,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.77 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.78.1 native plugin and restart Max."
             local context=if classof view==CyrusSourceContainer then CyrusContainerResolve view else undefined
             root=if classof view==CyrusSourceContainer then (if context==undefined then undefined else context[1]) else view
             editors=#(view.managerUI,view.surfacesUI,view.modelsUI,view.layoutUI,view.populationUI,view.coverageUI,view.areasUI,view.transformsUI,view.spacingUI,view.displayUI,view.statisticsUI)
@@ -15500,6 +15848,18 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         on flow_layersUI_layerList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
         on flow_layersUI_layerList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
         on flow_layersUI_layerList_grip Paint sender args do paintListGrip sender args
+        fn fitRadio control available desiredColumns place:false = (
+            local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
+            if buttons.count==0 do return 20
+            local boxes=for handle in buttons collect windows.getWindowPos handle
+            local widest=amax (for box in boxes collect box.w),step=amax 20 ((amax (for box in boxes collect box.h))+5)
+            local columns=amin desiredColumns (amax 1 (floor ((available+4)/(widest+4))))
+            if place do for i=1 to buttons.count do (
+                local data=windows.getHWNDData buttons[i],position=windows.screenToClient data[2] (boxes[1].x+(mod (i-1) columns)*(widest+4)) (boxes[1].y+(floor ((i-1)/columns))*step)
+                windows.setWindowPos buttons[i] position.x position.y boxes[i].w boxes[i].h true
+            )
+            step*(ceil (buttons.count as float/columns))
+        )
         fn fitPairField control available = (
             local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
             for handle in control.hwnd do (
@@ -15512,7 +15872,12 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             true
         )
         fn fitWidth control available = (
-            if isProperty control #width then control.width=available
+            if classof control==ColorPickerControl then (
+                for handle in control.hwnd where (windows.getHWNDData handle)[4]=="ColorSwatch" do (
+                    local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y (amax 1 (available as integer)) rectangle.h true
+                )
+            ) else if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
@@ -15800,6 +16165,18 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         on flow_surfaceUI_globalContainers_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
         on flow_surfaceUI_globalContainers_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
         on flow_surfaceUI_globalContainers_grip Paint sender args do paintListGrip sender args
+        fn fitRadio control available desiredColumns place:false = (
+            local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
+            if buttons.count==0 do return 20
+            local boxes=for handle in buttons collect windows.getWindowPos handle
+            local widest=amax (for box in boxes collect box.w),step=amax 20 ((amax (for box in boxes collect box.h))+5)
+            local columns=amin desiredColumns (amax 1 (floor ((available+4)/(widest+4))))
+            if place do for i=1 to buttons.count do (
+                local data=windows.getHWNDData buttons[i],position=windows.screenToClient data[2] (boxes[1].x+(mod (i-1) columns)*(widest+4)) (boxes[1].y+(floor ((i-1)/columns))*step)
+                windows.setWindowPos buttons[i] position.x position.y boxes[i].w boxes[i].h true
+            )
+            step*(ceil (buttons.count as float/columns))
+        )
         fn fitPairField control available = (
             local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
             for handle in control.hwnd do (
@@ -15812,7 +16189,12 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             true
         )
         fn fitWidth control available = (
-            if isProperty control #width then control.width=available
+            if classof control==ColorPickerControl then (
+                for handle in control.hwnd where (windows.getHWNDData handle)[4]=="ColorSwatch" do (
+                    local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y (amax 1 (available as integer)) rectangle.h true
+                )
+            ) else if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
@@ -15998,7 +16380,8 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         label sourceUI_groupHeading "Cluster color group" pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58)))))
         dropdownlist sourceUI_existingGroups "" items:#() pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))) tooltip:"Assign highlighted sources to an existing color group for clustering."
         label sourceUI_existingGroups_caption "Reuse a group" pos:[6,6] width:(modelsUI.width-12) height:18
-        colorpicker sourceUI_groupColor "Color: " color:(color 100 220 120) pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))) modal:true notifyAfterAccept:true tooltip:"Assign a color group to highlighted sources when the color is accepted."
+        colorpicker sourceUI_groupColor "" color:(color 100 220 120) pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))) modal:true notifyAfterAccept:true tooltip:"Assign a color group to highlighted sources when the color is accepted."
+        label sourceUI_groupColor_caption "Color: " pos:[6,6] width:(modelsUI.width-12) height:18
         button sourceUI_applyColor "Apply to selected rows" pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/132.4))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/132.4))))) tooltip:"Assign the chosen color group to all highlighted source rows." height:22
         label sourceUI_colorHelp "OK saves the selected color." pos:[8,8] width:((modelsUI.width-16-((amin 1 (amax 1 (floor ((modelsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((modelsUI.width-8)/58)))))
         spinner sourceUI_weightSpin "" range:[0,1,1] scale:0.01 pos:[8,8] width:((modelsUI.width-16-((amin 2 (amax 1 (floor ((modelsUI.width-8)/123.6))))-1)*4)/(amin 2 (amax 1 (floor ((modelsUI.width-8)/123.6))))) fieldWidth:58 tooltip:"Relative model frequency in this layer. Zero disables the model."
@@ -16027,7 +16410,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         local sourceContainersUI_bodyHeight=0
         local sourceContainersUI_controlsReady=false
         local sourceContainersUI_root=undefined,sourceContainersUI_owner=undefined,sourceContainersUI_panel=undefined,sourceContainersUI_controlsReady=false,sourceContainersUI_binding=false,sourceContainersUI_setSpecific=true,sourceContainersUI_modes=#()
-        fn sourceContainersUI_currentSet = sourceContainersUI_root.selectedPaintSet sourceContainersUI_owner
+        fn sourceContainersUI_currentSet = sourceContainersUI_owner
         fn sourceContainersUI_bind layer = (
             sourceContainersUI_binding=true
             local leaf=sourceContainersUI_currentSet(),active=true,own=leaf.logicalParentID==""
@@ -16351,6 +16734,18 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         on sourceUI_plantList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
         on sourceUI_plantList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
         on sourceUI_plantList_grip Paint sender args do paintListGrip sender args
+        fn fitRadio control available desiredColumns place:false = (
+            local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
+            if buttons.count==0 do return 20
+            local boxes=for handle in buttons collect windows.getWindowPos handle
+            local widest=amax (for box in boxes collect box.w),step=amax 20 ((amax (for box in boxes collect box.h))+5)
+            local columns=amin desiredColumns (amax 1 (floor ((available+4)/(widest+4))))
+            if place do for i=1 to buttons.count do (
+                local data=windows.getHWNDData buttons[i],position=windows.screenToClient data[2] (boxes[1].x+(mod (i-1) columns)*(widest+4)) (boxes[1].y+(floor ((i-1)/columns))*step)
+                windows.setWindowPos buttons[i] position.x position.y boxes[i].w boxes[i].h true
+            )
+            step*(ceil (buttons.count as float/columns))
+        )
         fn fitPairField control available = (
             local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
             for handle in control.hwnd do (
@@ -16363,7 +16758,12 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             true
         )
         fn fitWidth control available = (
-            if isProperty control #width then control.width=available
+            if classof control==ColorPickerControl then (
+                for handle in control.hwnd where (windows.getHWNDData handle)[4]=="ColorSwatch" do (
+                    local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y (amax 1 (available as integer)) rectangle.h true
+                )
+            ) else if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
@@ -16647,11 +17047,14 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             )
             rowControls=#(sourceUI_groupColor);show=(advancedToggle.checked and (true))
             for c in rowControls do c.visible=show
+            sourceUI_groupColor_caption.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                fitLabel sourceUI_groupColor_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(sourceUI_groupColor_caption.height)) (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                sourceUI_groupColor_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];sourceUI_groupColor_caption.width=cellWidth;sourceUI_groupColor_caption.enabled=sourceUI_groupColor.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(sourceUI_applyColor);show=(advancedToggle.checked and (true))
@@ -16683,8 +17086,8 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 obj=owner
                 sourceContainersUI_root=root;sourceContainersUI_owner=owner;sourceContainersUI_panel=panel;sourceContainersUI_controlsReady=controlsReady;sourceContainersUI_binding=binding
             sourceUI_root=root;sourceUI_owner=owner;sourceUI_panel=panel;sourceUI_controlsReady=controlsReady;sourceUI_binding=binding
-            if owner!=undefined then (sourceContainersUI_bind (root.selectedPaintSet owner);) else (for c in #(sourceContainersUI_modeList,sourceContainersUI_containersList,sourceContainersUI_createContainer,sourceContainersUI_pickContainer,sourceContainersUI_removeContainer,sourceContainersUI_membershipInfo,sourceContainersUI_helpInfo) do c.enabled=false;sourceContainersUI_controlsReady=false)
-            sourceUI_detailsToggle.checked=true;if owner!=undefined then (sourceUI_bind (root.selectedPaintSet owner);) else (for c in #(sourceUI_sourceName,sourceUI_idColor,sourceUI_plantList,sourceUI_selectFromScene,sourceUI_addPlant,sourceUI_addSelected,sourceUI_removePlant,sourceUI_selectPlant,sourceUI_addPoint,sourceUI_addEmpty,sourceUI_replacePoint,sourceUI_groupHeading,sourceUI_existingGroups,sourceUI_groupColor,sourceUI_applyColor,sourceUI_colorHelp,sourceUI_weightSpin,sourceUI_weightHelp,sourceUI_sourceZSpin,sourceUI_sourceScaleSpin,sourceUI_sourceTransformHelp,sourceUI_radiusSourceSpin,sourceUI_followRadiusCheck,sourceUI_showRadiusCheck,sourceUI_forwardAxis,sourceUI_detailsToggle) do c.enabled=false;sourceUI_controlsReady=false)
+            if owner!=undefined then (sourceContainersUI_bind owner;) else (for c in #(sourceContainersUI_modeList,sourceContainersUI_containersList,sourceContainersUI_createContainer,sourceContainersUI_pickContainer,sourceContainersUI_removeContainer,sourceContainersUI_membershipInfo,sourceContainersUI_helpInfo) do c.enabled=false;sourceContainersUI_controlsReady=false)
+            sourceUI_detailsToggle.checked=true;if owner!=undefined then (sourceUI_bind owner;) else (for c in #(sourceUI_sourceName,sourceUI_idColor,sourceUI_plantList,sourceUI_selectFromScene,sourceUI_addPlant,sourceUI_addSelected,sourceUI_removePlant,sourceUI_selectPlant,sourceUI_addPoint,sourceUI_addEmpty,sourceUI_replacePoint,sourceUI_groupHeading,sourceUI_existingGroups,sourceUI_groupColor,sourceUI_applyColor,sourceUI_colorHelp,sourceUI_weightSpin,sourceUI_weightHelp,sourceUI_sourceZSpin,sourceUI_sourceScaleSpin,sourceUI_sourceTransformHelp,sourceUI_radiusSourceSpin,sourceUI_followRadiusCheck,sourceUI_showRadiusCheck,sourceUI_forwardAxis,sourceUI_detailsToggle) do c.enabled=false;sourceUI_controlsReady=false)
                 setupGrips();controlsReady=true;binding=false;layout();true
             )catch(binding=false;controlsReady=false;throw())
         )
@@ -17151,6 +17554,18 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         on diversityUI_strokeChoices_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
         on diversityUI_strokeChoices_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
         on diversityUI_strokeChoices_grip Paint sender args do paintListGrip sender args
+        fn fitRadio control available desiredColumns place:false = (
+            local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
+            if buttons.count==0 do return 20
+            local boxes=for handle in buttons collect windows.getWindowPos handle
+            local widest=amax (for box in boxes collect box.w),step=amax 20 ((amax (for box in boxes collect box.h))+5)
+            local columns=amin desiredColumns (amax 1 (floor ((available+4)/(widest+4))))
+            if place do for i=1 to buttons.count do (
+                local data=windows.getHWNDData buttons[i],position=windows.screenToClient data[2] (boxes[1].x+(mod (i-1) columns)*(widest+4)) (boxes[1].y+(floor ((i-1)/columns))*step)
+                windows.setWindowPos buttons[i] position.x position.y boxes[i].w boxes[i].h true
+            )
+            step*(ceil (buttons.count as float/columns))
+        )
         fn fitPairField control available = (
             local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
             for handle in control.hwnd do (
@@ -17163,7 +17578,12 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             true
         )
         fn fitWidth control available = (
-            if isProperty control #width then control.width=available
+            if classof control==ColorPickerControl then (
+                for handle in control.hwnd where (windows.getHWNDData handle)[4]=="ColorSwatch" do (
+                    local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y (amax 1 (available as integer)) rectangle.h true
+                )
+            ) else if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
@@ -17182,8 +17602,9 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 fitLabel diversityUI_diversityRadio_caption 18 cellWidth
                 stackedCaption=false;captionHeight=amax (amax #(diversityUI_diversityRadio_caption.height)) (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(80))+2+captionHeight
+                rowHeight=(amax #(fitRadio diversityUI_diversityRadio cellWidth 1 place:false))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                fitRadio diversityUI_diversityRadio cellWidth 1 place:true
                 diversityUI_diversityRadio_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_diversityRadio_caption.width=cellWidth;diversityUI_diversityRadio_caption.enabled=diversityUI_diversityRadio.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
@@ -17369,8 +17790,9 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 fitLabel diversityUI_strokeMode_caption 18 cellWidth
                 stackedCaption=false;captionHeight=amax (amax #(diversityUI_strokeMode_caption.height)) (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(40))+2+captionHeight
+                rowHeight=(amax #(fitRadio diversityUI_strokeMode cellWidth 1 place:false))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                fitRadio diversityUI_strokeMode cellWidth 1 place:true
                 diversityUI_strokeMode_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokeMode_caption.width=cellWidth;diversityUI_strokeMode_caption.enabled=diversityUI_strokeMode.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
@@ -17869,6 +18291,18 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             true
         )
 
+        fn fitRadio control available desiredColumns place:false = (
+            local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
+            if buttons.count==0 do return 20
+            local boxes=for handle in buttons collect windows.getWindowPos handle
+            local widest=amax (for box in boxes collect box.w),step=amax 20 ((amax (for box in boxes collect box.h))+5)
+            local columns=amin desiredColumns (amax 1 (floor ((available+4)/(widest+4))))
+            if place do for i=1 to buttons.count do (
+                local data=windows.getHWNDData buttons[i],position=windows.screenToClient data[2] (boxes[1].x+(mod (i-1) columns)*(widest+4)) (boxes[1].y+(floor ((i-1)/columns))*step)
+                windows.setWindowPos buttons[i] position.x position.y boxes[i].w boxes[i].h true
+            )
+            step*(ceil (buttons.count as float/columns))
+        )
         fn fitPairField control available = (
             local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
             for handle in control.hwnd do (
@@ -17881,7 +18315,12 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             true
         )
         fn fitWidth control available = (
-            if isProperty control #width then control.width=available
+            if classof control==ColorPickerControl then (
+                for handle in control.hwnd where (windows.getHWNDData handle)[4]=="ColorSwatch" do (
+                    local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y (amax 1 (available as integer)) rectangle.h true
+                )
+            ) else if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
@@ -17911,8 +18350,9 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 fitLabel distributionUI_populationRadio_caption 18 cellWidth
                 stackedCaption=false;captionHeight=amax (amax #(distributionUI_populationRadio_caption.height)) (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(20))+2+captionHeight
+                rowHeight=(amax #(fitRadio distributionUI_populationRadio cellWidth 2 place:false))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                fitRadio distributionUI_populationRadio cellWidth 2 place:true
                 distributionUI_populationRadio_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_populationRadio_caption.width=cellWidth;distributionUI_populationRadio_caption.enabled=distributionUI_populationRadio.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
@@ -17971,8 +18411,9 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 fitLabel distributionUI_modeRadio_caption 18 cellWidth
                 stackedCaption=false;captionHeight=amax (amax #(distributionUI_modeRadio_caption.height)) (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(20))+2+captionHeight
+                rowHeight=(amax #(fitRadio distributionUI_modeRadio cellWidth 2 place:false))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                fitRadio distributionUI_modeRadio cellWidth 2 place:true
                 distributionUI_modeRadio_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_modeRadio_caption.width=cellWidth;distributionUI_modeRadio_caption.enabled=distributionUI_modeRadio.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
@@ -18120,7 +18561,6 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
         local layout,lastLayoutWidth=0
         checkbox setsUI_paintedCheck "Use Paint Areas" pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/104))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/104))))) tooltip:"Restrict this layer to its painted areas. Turn off to scatter across all its surfaces."
-        button setsUI_importButton "Use existing paint" pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/111.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/111.60000000000001))))) tooltip:"Bring this older layer's existing coverage into a named area without changing its paint. Undo restores the old ownership." height:22
         dropdownlist setsUI_setList "" items:#() pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/58)))))
         button setsUI_addButton "+" pos:[8,8] width:60 tooltip:"Create a named area. Painting again edits the selected area." height:22
         button setsUI_removeButton "×" pos:[8,8] width:60 tooltip:"Remove the selected area. Undo restores it." height:22
@@ -18133,12 +18573,8 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         label brushUI_targetInfo "Add a Paint Area to begin." pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))) height:36
         radiobuttons brushUI_modeRadio "" labels:#("Paint","Erase") columns:2 pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/58)))))
         label brushUI_modeRadio_caption "Brush" pos:[6,6] width:(coverageUI.width-12) height:18
-        spinner brushUI_radiusSpin "" type:#worldunits range:[0.0001,1e9,20] pos:[8,8] width:((coverageUI.width-16-((amin 2 (amax 1 (floor ((coverageUI.width-8)/139.2))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI.width-8)/139.2))))) fieldWidth:58
+        spinner brushUI_radiusSpin "" type:#worldunits range:[0.001,1e7,20] pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/118.4))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/118.4))))) fieldWidth:58
         label brushUI_radiusSpin_caption "Radius:" pos:[6,6] width:(coverageUI.width-12) height:18
-        spinner brushUI_strengthSpin "" range:[0,100,100] pos:[8,8] width:((coverageUI.width-16-((amin 2 (amax 1 (floor ((coverageUI.width-8)/139.2))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI.width-8)/139.2))))) fieldWidth:58
-        label brushUI_strengthSpin_caption "Strength %:" pos:[6,6] width:(coverageUI.width-12) height:18
-        spinner brushUI_softSpin "" range:[0,100,0] pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/139.2))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/139.2))))) fieldWidth:58
-        label brushUI_softSpin_caption "Softness %:" pos:[6,6] width:(coverageUI.width-12) height:18
         button brushUI_beginButton "Start Brush" pos:[8,8] width:80 height:22
         button brushUI_stopButton "Stop" pos:[8,8] width:80 height:22
         button brushUI_fillButton "Fill" pos:[8,8] width:80 height:22
@@ -18146,10 +18582,22 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         label brushUI_brushState "" pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))) height:54
         spinner brushUI_densitySpin "" range:[0,100,100] pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/160))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/160))))) fieldWidth:58
         label brushUI_densitySpin_caption "Area density %:" pos:[6,6] width:(coverageUI.width-12) height:18
-        dropdownlist brushUI_overlayMode "" items:#("Coverage tint","Coverage samples","Off") pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/58)))))
+        dropdownlist brushUI_overlayMode "" items:#("Vector borders","Coverage samples","Off") pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/58)))))
         label brushUI_overlayMode_caption "Paint feedback" pos:[6,6] width:(coverageUI.width-12) height:18
         colorpicker brushUI_overlayColor "" color:(color 100 220 120) pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/58)))))
-        label brushUI_brushHelp "Continue painting to edit the same area. Undo/Redo restores brush actions. Manual mode needs Update." pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))) height:56
+        label brushUI_brushHelp "Paint merges borders; Erase cuts holes. Zero fade = hard edge. Local XY terrain/planes only. Manual mode needs Update." pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))) height:78
+        spinner brushUI_insideSpin "" type:#worldunits range:[0,1e9,0] pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/144.4))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/144.4))))) fieldWidth:58
+        label brushUI_insideSpin_caption "Inside fade:" pos:[6,6] width:(coverageUI.width-12) height:18
+        spinner brushUI_outsideSpin "" type:#worldunits range:[0,1e9,0] pos:[8,8] width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/149.60000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/149.60000000000002))))) fieldWidth:58
+        label brushUI_outsideSpin_caption "Outside fade:" pos:[6,6] width:(coverageUI.width-12) height:18
+        checkbox brushUI_densityFade "Fade density" checked:true pos:[8,8] width:((coverageUI.width-16-((amin 2 (amax 1 (floor ((coverageUI.width-8)/101.2))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI.width-8)/101.2)))))
+        button brushUI_densityCurve "Density curve..." pos:[8,8] width:((coverageUI.width-16-((amin 2 (amax 1 (floor ((coverageUI.width-8)/101.2))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI.width-8)/101.2))))) height:22
+        checkbox brushUI_scaleFade "Fade scale" checked:false pos:[8,8] width:((coverageUI.width-16-((amin 2 (amax 1 (floor ((coverageUI.width-8)/90.8))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI.width-8)/90.8)))))
+        spinner brushUI_scaleMin "" range:[0,1000,0] pos:[8,8] width:((coverageUI.width-16-((amin 2 (amax 1 (floor ((coverageUI.width-8)/144.4))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI.width-8)/144.4))))) fieldWidth:58
+        label brushUI_scaleMin_caption "Edge scale:" pos:[6,6] width:(coverageUI.width-12) height:18
+        spinner brushUI_scaleMax "" range:[0,1000,1] pos:[8,8] width:((coverageUI.width-16-((amin 2 (amax 1 (floor ((coverageUI.width-8)/144.4))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI.width-8)/144.4))))) fieldWidth:58
+        label brushUI_scaleMax_caption "Inner scale:" pos:[6,6] width:(coverageUI.width-12) height:18
+        button brushUI_scaleCurve "Scale curve..." pos:[8,8] width:((coverageUI.width-16-((amin 2 (amax 1 (floor ((coverageUI.width-8)/90.8))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI.width-8)/90.8))))) height:22
         label heading_0 "Paint feedback" pos:[6,6] width:(coverageUI.width-12) height:18
         checkbutton advancedToggle "Advanced" pos:[6,6] width:(coverageUI.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
         local setsUI_bodyHeight=0
@@ -18167,22 +18615,14 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             setsUI_nameEdit.text=if area==undefined then "" else area.paintSetName
             setsUI_targetList.selection=if area==undefined then 0 else findItem setsUI_targets area.areaTarget
             setsUI_enabledCheck.checked=area!=undefined and area.paintSetEnabled
-            setsUI_importButton.enabled=setsUI_owner.paintDocument!=undefined and not setsUI_owner.areaMode and (setsUI_root.layerSets setsUI_owner).count==1
-            setsUI_addButton.enabled=setsUI_members.count<128 and (setsUI_root.layerSets setsUI_owner).count==1
-            setsUI_info.text=if (setsUI_root.layerSets setsUI_owner).count>1 then "Older model-owning sets are retained. Conversion is required before adding areas." else if area!=undefined and findItem setsUI_targets area.areaTarget==0 then "Inactive: assign a surface, or restore this area's original surface to the layer. Saved paint is retained." else "Paint and Erase edit this area. Areas share the layer's models; overlaps do not duplicate plants."
+            setsUI_addButton.enabled=setsUI_members.count<128
+            setsUI_info.text=if area!=undefined and findItem setsUI_targets area.areaTarget==0 then "Inactive: assign a surface, or restore this area's original surface to the layer. Saved paint is retained." else "Paint and Erase edit this area. Areas share the layer's models; overlaps do not duplicate plants."
             setsUI_controlsReady=true;setsUI_binding=false
         )
         fn setsUI_selectSet i = (
             if setsUI_binding or i<1 or i>setsUI_members.count do return false
             local controller=setsUI_root,parent=setsUI_owner
             CyrusStopBrush();parent.uiAreaID=setsUI_members[i].layerID;controller.bindNativeUI();true
-        )
-        on setsUI_importButton pressed do if controlsReady and not binding and root!=undefined and setsUI_controlsReady and not setsUI_binding and true do ((
-            local controller=setsUI_root,parent=setsUI_owner
-            undo "Cyrus use existing paint" on controller.adoptPaintArea parent
-            parent.markInputDirty();controller.bindNativeUI();CyrusViewportRedraw()
-        )
-            if controlsReady and root!=undefined do layout()
         )
         on setsUI_setList selected i do if controlsReady and not binding and root!=undefined and setsUI_controlsReady and not setsUI_binding and true do (setsUI_selectSet i
             if controlsReady and root!=undefined do layout()
@@ -18198,7 +18638,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         )
         on setsUI_paintedCheck changed value do if controlsReady and not binding and root!=undefined and setsUI_controlsReady and not setsUI_binding and true do (if not setsUI_binding do (
             local controller=setsUI_root,parent=setsUI_owner
-            CyrusStopBrush();undo "Cyrus coverage mode" on (controller.adoptPaintArea parent;parent.areaMode=true;parent.paintEnabled=value)
+            CyrusStopBrush();undo "Cyrus coverage mode" on (parent.paintEnabled=value)
             parent.markInputDirty();controller.bindNativeUI();CyrusViewportRedraw()
         )
             if controlsReady and root!=undefined do layout()
@@ -18212,7 +18652,14 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         local brushUI_bodyHeight=0
         local brushUI_controlsReady=false
         local brushUI_root=undefined,brushUI_owner=undefined,brushUI_panel=undefined,brushUI_obj=undefined,brushUI_controlsReady=false,brushUI_binding=false,brushUI_setSpecific=true
-        fn brushUI_refreshHistory = (true)
+        fn brushUI_saveFalloff = (
+            if not brushUI_binding and brushUI_obj!=undefined and brushUI_obj.paintDocument!=undefined do (
+                local area=brushUI_obj,cfg=cyrusBrushFalloff brushUI_obj.paintDocument
+                cfg[1]=brushUI_insideSpin.value;cfg[2]=brushUI_outsideSpin.value;cfg[3]=brushUI_densityFade.checked;cfg[4]=brushUI_scaleFade.checked
+                cfg[5]=brushUI_scaleMin.value;cfg[6]=brushUI_scaleMax.value
+                try(cyrusBrushSetFalloff area.paintDocument cfg;area.publishPaint())catch(messageBox (getCurrentException()) title:"Vector feather")
+            )
+        )
         fn brushUI_status = (
             if brushUI_obj==undefined then brushUI_brushState.text="Add or select a Paint Area." else (
                 local state=if brushUI_obj.paintDocument==undefined then undefined else cyrusBrushStats brushUI_obj.paintDocument
@@ -18220,28 +18667,33 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 if brushUI_owner!=undefined and not brushUI_owner.paintEnabled do brushUI_brushState.text+="\nWhole surfaces; areas retained."
             )
         )
+        -- MAXScript resolves rollout function names in declaration order.
+        -- Declare status first; an unbound forward call stops the paint timer.
+        fn brushUI_refreshBrushStatus = (brushUI_status())
         fn brushUI_saveOptions = (
             if not brushUI_binding and brushUI_obj!=undefined and brushUI_obj.paintDocument!=undefined do (
-                cyrusBrushSettings brushUI_obj.paintDocument brushUI_radiusSpin.value (brushUI_strengthSpin.value/100.0) (brushUI_softSpin.value/100.0) (brushUI_modeRadio.state==2) 1.0
+                cyrusBrushSettings brushUI_obj.paintDocument brushUI_radiusSpin.value (brushUI_modeRadio.state==2)
                 cyrusBrushDisplay brushUI_obj.paintDocument brushUI_obj.paintView brushUI_obj.paintColor
             )
         )
         fn brushUI_bind layer = (
             brushUI_binding=true;brushUI_obj=layer
             local has=brushUI_obj!=undefined and brushUI_obj.paintDocument!=undefined
-            for control in #(brushUI_targetInfo,brushUI_modeRadio,brushUI_radiusSpin,brushUI_strengthSpin,brushUI_softSpin,brushUI_beginButton,brushUI_stopButton,brushUI_fillButton,brushUI_emptyButton,brushUI_brushState,brushUI_densitySpin,brushUI_overlayMode,brushUI_overlayColor,brushUI_brushHelp) do control.enabled=brushUI_obj!=undefined
-            for control in #(brushUI_stopButton,brushUI_fillButton,brushUI_emptyButton) do control.enabled=has
+            for control in #(brushUI_targetInfo,brushUI_modeRadio,brushUI_radiusSpin,brushUI_beginButton,brushUI_stopButton,brushUI_fillButton,brushUI_emptyButton,brushUI_brushState,brushUI_densitySpin,brushUI_overlayMode,brushUI_overlayColor,brushUI_brushHelp,brushUI_insideSpin,brushUI_outsideSpin,brushUI_densityFade,brushUI_densityCurve,brushUI_scaleFade,brushUI_scaleMin,brushUI_scaleMax,brushUI_scaleCurve) do control.enabled=brushUI_obj!=undefined
+            for control in #(brushUI_stopButton,brushUI_fillButton,brushUI_emptyButton,brushUI_insideSpin,brushUI_outsideSpin,brushUI_densityFade,brushUI_scaleFade,brushUI_densityCurve,brushUI_scaleCurve,brushUI_scaleMin,brushUI_scaleMax) do control.enabled=has
             local target=if brushUI_obj==undefined then undefined else brushUI_obj.areaTarget
             brushUI_targetInfo.text=if brushUI_obj==undefined then "Add a Paint Area to begin." else brushUI_obj.paintSetName+" / "+(if isValidNode target then target.name else "<choose surface>")
             brushUI_beginButton.enabled=brushUI_obj!=undefined and isValidNode target and findItem (brushUI_owner.validSurfaces()) target>0
             if brushUI_obj!=undefined do (brushUI_densitySpin.value=brushUI_obj.paintDensity*100;brushUI_overlayMode.selection=findItem #(2,1,0) brushUI_obj.paintView;brushUI_overlayColor.color=brushUI_obj.paintColor;brushUI_obj.setOverlapOwner brushUI_root)
-            if has do (local cfg=cyrusBrushOptions brushUI_obj.paintDocument;brushUI_radiusSpin.value=cfg[1];brushUI_strengthSpin.value=cfg[2]*100;brushUI_softSpin.value=cfg[3]*100;brushUI_modeRadio.state=if cfg[5] then 2 else 1)
+            if has do (local cfg=cyrusBrushOptions brushUI_obj.paintDocument;brushUI_radiusSpin.value=cfg[1];brushUI_modeRadio.state=if cfg[2] then 2 else 1
+                local fade=cyrusBrushFalloff brushUI_obj.paintDocument
+                brushUI_insideSpin.value=fade[1];brushUI_outsideSpin.value=fade[2];brushUI_densityFade.checked=fade[3];brushUI_scaleFade.checked=fade[4];brushUI_scaleMin.value=fade[5];brushUI_scaleMax.value=fade[6])
             brushUI_controlsReady=true;brushUI_binding=false;brushUI_status()
         )
         on brushUI_beginButton pressed do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (if brushUI_obj!=undefined do try (
-            local controller=brushUI_root,area=brushUI_obj,options=#(brushUI_radiusSpin.value,brushUI_strengthSpin.value,brushUI_softSpin.value,brushUI_modeRadio.state)
+            local controller=brushUI_root,area=brushUI_obj,options=#(brushUI_radiusSpin.value,brushUI_modeRadio.state)
             controller.setGroupCoverage area true
-            cyrusBrushSettings area.paintDocument options[1] (options[2]/100.0) (options[3]/100.0) (options[4]==2) 1.0
+            cyrusBrushSettings area.paintDocument options[1] (options[2]==2)
             cyrusBrushDisplay area.paintDocument area.paintView area.paintColor
             CyrusStartBrush controller area
         )catch(messageBox (getCurrentException()) title:"Cyrus Brush")
@@ -18256,10 +18708,28 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         on brushUI_radiusSpin changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (brushUI_saveOptions()
             if controlsReady and root!=undefined do layout()
         )
-        on brushUI_strengthSpin changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (brushUI_saveOptions()
+        on brushUI_insideSpin changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (brushUI_saveFalloff()
             if controlsReady and root!=undefined do layout()
         )
-        on brushUI_softSpin changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (brushUI_saveOptions()
+        on brushUI_outsideSpin changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (brushUI_saveFalloff()
+            if controlsReady and root!=undefined do layout()
+        )
+        on brushUI_densityFade changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (brushUI_saveFalloff()
+            if controlsReady and root!=undefined do layout()
+        )
+        on brushUI_scaleFade changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (brushUI_saveFalloff()
+            if controlsReady and root!=undefined do layout()
+        )
+        on brushUI_scaleMin changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (brushUI_saveFalloff()
+            if controlsReady and root!=undefined do layout()
+        )
+        on brushUI_scaleMax changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (brushUI_saveFalloff()
+            if controlsReady and root!=undefined do layout()
+        )
+        on brushUI_densityCurve pressed do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (if brushUI_obj!=undefined do CyrusOpenFalloffGraph brushUI_obj undefined true
+            if controlsReady and root!=undefined do layout()
+        )
+        on brushUI_scaleCurve pressed do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (if brushUI_obj!=undefined do CyrusOpenFalloffGraph brushUI_obj undefined false
             if controlsReady and root!=undefined do layout()
         )
         on brushUI_densitySpin changed value do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and true do (if not brushUI_binding and brushUI_obj!=undefined do (undo "Cyrus area density" on brushUI_obj.paintDensity=value/100.0;brushUI_owner.markInputDirty();brushUI_obj.publishPaint())
@@ -18338,6 +18808,18 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             true
         )
 
+        fn fitRadio control available desiredColumns place:false = (
+            local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
+            if buttons.count==0 do return 20
+            local boxes=for handle in buttons collect windows.getWindowPos handle
+            local widest=amax (for box in boxes collect box.w),step=amax 20 ((amax (for box in boxes collect box.h))+5)
+            local columns=amin desiredColumns (amax 1 (floor ((available+4)/(widest+4))))
+            if place do for i=1 to buttons.count do (
+                local data=windows.getHWNDData buttons[i],position=windows.screenToClient data[2] (boxes[1].x+(mod (i-1) columns)*(widest+4)) (boxes[1].y+(floor ((i-1)/columns))*step)
+                windows.setWindowPos buttons[i] position.x position.y boxes[i].w boxes[i].h true
+            )
+            step*(ceil (buttons.count as float/columns))
+        )
         fn fitPairField control available = (
             local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
             for handle in control.hwnd do (
@@ -18350,7 +18832,12 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             true
         )
         fn fitWidth control available = (
-            if isProperty control #width then control.width=available
+            if classof control==ColorPickerControl then (
+                for handle in control.hwnd where (windows.getHWNDData handle)[4]=="ColorSwatch" do (
+                    local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y (amax 1 (available as integer)) rectangle.h true
+                )
+            ) else if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
@@ -18368,15 +18855,6 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/104))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(20))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(setsUI_importButton);show=(true and (setsUI_owner!=undefined and setsUI_owner.paintDocument!=undefined and not setsUI_owner.areaMode))
-            for c in rowControls do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/111.60000000000001))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
@@ -18458,33 +18936,22 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 fitLabel brushUI_modeRadio_caption 18 cellWidth
                 stackedCaption=false;captionHeight=amax (amax #(brushUI_modeRadio_caption.height)) (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(20))+2+captionHeight
+                rowHeight=(amax #(fitRadio brushUI_modeRadio cellWidth 2 place:false))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                fitRadio brushUI_modeRadio cellWidth 2 place:true
                 brushUI_modeRadio_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];brushUI_modeRadio_caption.width=cellWidth;brushUI_modeRadio_caption.enabled=brushUI_modeRadio.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
-            rowControls=#(brushUI_radiusSpin,brushUI_strengthSpin);show=(true and (setsUI_paintedCheck.checked))
+            rowControls=#(brushUI_radiusSpin);show=(true and (setsUI_paintedCheck.checked))
             for c in rowControls do c.visible=show
-            brushUI_radiusSpin_caption.visible=show;brushUI_strengthSpin_caption.visible=show
+            brushUI_radiusSpin_caption.visible=show
             if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/139.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel brushUI_radiusSpin_caption 18 cellWidth;fitLabel brushUI_strengthSpin_caption 18 cellWidth
-                stackedCaption=cellWidth<135.2;captionHeight=amax 0 (if stackedCaption then (amax #(brushUI_radiusSpin_caption.height,brushUI_strengthSpin_caption.height)) else 0)
-                rowHeight=(amax #(22,22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                if not stackedCaption then (brushUI_radiusSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];brushUI_radiusSpin_caption.width=cellWidth-78) else (brushUI_radiusSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];brushUI_radiusSpin_caption.width=cellWidth);brushUI_radiusSpin_caption.enabled=brushUI_radiusSpin.enabled;if not stackedCaption then (brushUI_strengthSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];brushUI_strengthSpin_caption.width=cellWidth-78) else (brushUI_strengthSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];brushUI_strengthSpin_caption.width=cellWidth);brushUI_strengthSpin_caption.enabled=brushUI_strengthSpin.enabled
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(brushUI_softSpin);show=(true and (setsUI_paintedCheck.checked))
-            for c in rowControls do c.visible=show
-            brushUI_softSpin_caption.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/139.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel brushUI_softSpin_caption 18 cellWidth
-                stackedCaption=cellWidth<135.2;captionHeight=amax 0 (if stackedCaption then (amax #(brushUI_softSpin_caption.height)) else 0)
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/118.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel brushUI_radiusSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<114.4;captionHeight=amax 0 (if stackedCaption then (amax #(brushUI_radiusSpin_caption.height)) else 0)
                 rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                if not stackedCaption then (brushUI_softSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];brushUI_softSpin_caption.width=cellWidth-78) else (brushUI_softSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];brushUI_softSpin_caption.width=cellWidth);brushUI_softSpin_caption.enabled=brushUI_softSpin.enabled
+                if not stackedCaption then (brushUI_radiusSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];brushUI_radiusSpin_caption.width=cellWidth-78) else (brushUI_radiusSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];brushUI_radiusSpin_caption.width=cellWidth);brushUI_radiusSpin_caption.enabled=brushUI_radiusSpin.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(brushUI_beginButton,brushUI_stopButton);show=(true and (setsUI_paintedCheck.checked))
@@ -18513,6 +18980,60 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(brushUI_brushState.height))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(brushUI_insideSpin);show=(true and (setsUI_paintedCheck.checked))
+            for c in rowControls do c.visible=show
+            brushUI_insideSpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/144.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel brushUI_insideSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<140.4;captionHeight=amax 0 (if stackedCaption then (amax #(brushUI_insideSpin_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (brushUI_insideSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];brushUI_insideSpin_caption.width=cellWidth-78) else (brushUI_insideSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];brushUI_insideSpin_caption.width=cellWidth);brushUI_insideSpin_caption.enabled=brushUI_insideSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(brushUI_outsideSpin);show=(true and (setsUI_paintedCheck.checked))
+            for c in rowControls do c.visible=show
+            brushUI_outsideSpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/149.60000000000002))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel brushUI_outsideSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<145.60000000000002;captionHeight=amax 0 (if stackedCaption then (amax #(brushUI_outsideSpin_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (brushUI_outsideSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];brushUI_outsideSpin_caption.width=cellWidth-78) else (brushUI_outsideSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];brushUI_outsideSpin_caption.width=cellWidth);brushUI_outsideSpin_caption.enabled=brushUI_outsideSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(brushUI_densityFade,brushUI_densityCurve);show=(true and (setsUI_paintedCheck.checked))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/101.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(20,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(brushUI_scaleFade,brushUI_scaleCurve);show=(true and (setsUI_paintedCheck.checked))
+            for c in rowControls do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/90.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(20,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(brushUI_scaleMin,brushUI_scaleMax);show=(true and (setsUI_paintedCheck.checked))
+            for c in rowControls do c.visible=show
+            brushUI_scaleMin_caption.visible=show;brushUI_scaleMax_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/144.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel brushUI_scaleMin_caption 18 cellWidth;fitLabel brushUI_scaleMax_caption 18 cellWidth
+                stackedCaption=cellWidth<140.4;captionHeight=amax 0 (if stackedCaption then (amax #(brushUI_scaleMin_caption.height,brushUI_scaleMax_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (brushUI_scaleMin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];brushUI_scaleMin_caption.width=cellWidth-78) else (brushUI_scaleMin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];brushUI_scaleMin_caption.width=cellWidth);brushUI_scaleMin_caption.enabled=brushUI_scaleMin.enabled;if not stackedCaption then (brushUI_scaleMax_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];brushUI_scaleMax_caption.width=cellWidth-78) else (brushUI_scaleMax_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];brushUI_scaleMax_caption.width=cellWidth);brushUI_scaleMax_caption.enabled=brushUI_scaleMax.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
@@ -18580,12 +19101,12 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 obj=owner
                 setsUI_root=root;setsUI_owner=owner;setsUI_panel=panel;setsUI_controlsReady=controlsReady;setsUI_binding=binding
             brushUI_root=root;brushUI_owner=owner;brushUI_panel=panel;brushUI_controlsReady=controlsReady;brushUI_binding=binding
-            if owner!=undefined then (setsUI_bind owner;) else (for c in #(setsUI_paintedCheck,setsUI_importButton,setsUI_setList,setsUI_addButton,setsUI_removeButton,setsUI_nameEdit,setsUI_targetList,setsUI_enabledCheck,setsUI_info) do c.enabled=false;setsUI_setList.items=#();setsUI_members=#();setsUI_nameEdit.text="";setsUI_controlsReady=false)
-            if owner!=undefined then (brushUI_bind (root.selectedPaintArea owner);) else (for c in #(brushUI_targetInfo,brushUI_modeRadio,brushUI_radiusSpin,brushUI_strengthSpin,brushUI_softSpin,brushUI_beginButton,brushUI_stopButton,brushUI_fillButton,brushUI_emptyButton,brushUI_brushState,brushUI_densitySpin,brushUI_overlayMode,brushUI_overlayColor,brushUI_brushHelp) do c.enabled=false;brushUI_controlsReady=false)
+            if owner!=undefined then (setsUI_bind owner;) else (for c in #(setsUI_paintedCheck,setsUI_setList,setsUI_addButton,setsUI_removeButton,setsUI_nameEdit,setsUI_targetList,setsUI_enabledCheck,setsUI_info) do c.enabled=false;setsUI_setList.items=#();setsUI_members=#();setsUI_nameEdit.text="";setsUI_controlsReady=false)
+            if owner!=undefined then (brushUI_bind (root.selectedPaintArea owner);) else (for c in #(brushUI_targetInfo,brushUI_modeRadio,brushUI_radiusSpin,brushUI_beginButton,brushUI_stopButton,brushUI_fillButton,brushUI_emptyButton,brushUI_brushState,brushUI_densitySpin,brushUI_overlayMode,brushUI_overlayColor,brushUI_brushHelp,brushUI_insideSpin,brushUI_outsideSpin,brushUI_densityFade,brushUI_densityCurve,brushUI_scaleFade,brushUI_scaleMin,brushUI_scaleMax,brushUI_scaleCurve) do c.enabled=false;brushUI_controlsReady=false)
                 setupGrips();controlsReady=true;binding=false;layout();true
             )catch(binding=false;controlsReady=false;throw())
         )
-        fn refreshHistory = (if brushUI_controlsReady do brushUI_refreshHistory();if controlsReady do layout();true)
+        fn refreshBrushStatus = (if brushUI_controlsReady do brushUI_refreshBrushStatus();if controlsReady do layout();true)
         fn status = (if brushUI_controlsReady do brushUI_status();true)
 
         on advancedToggle changed value do if controlsReady and not binding and root!=undefined and true do ((layout();if panel!=undefined do panel.rememberViews();true)
@@ -18878,6 +19399,18 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         on areaUI_areaList_grip MouseUp sender args do (stopListDrag();if panel!=undefined do panel.rememberViews();true)
         on areaUI_areaList_grip MouseCaptureChanged sender args do if not sender.Capture and dragGrip==sender do stopListDrag()
         on areaUI_areaList_grip Paint sender args do paintListGrip sender args
+        fn fitRadio control available desiredColumns place:false = (
+            local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
+            if buttons.count==0 do return 20
+            local boxes=for handle in buttons collect windows.getWindowPos handle
+            local widest=amax (for box in boxes collect box.w),step=amax 20 ((amax (for box in boxes collect box.h))+5)
+            local columns=amin desiredColumns (amax 1 (floor ((available+4)/(widest+4))))
+            if place do for i=1 to buttons.count do (
+                local data=windows.getHWNDData buttons[i],position=windows.screenToClient data[2] (boxes[1].x+(mod (i-1) columns)*(widest+4)) (boxes[1].y+(floor ((i-1)/columns))*step)
+                windows.setWindowPos buttons[i] position.x position.y boxes[i].w boxes[i].h true
+            )
+            step*(ceil (buttons.count as float/columns))
+        )
         fn fitPairField control available = (
             local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
             for handle in control.hwnd do (
@@ -18890,7 +19423,12 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             true
         )
         fn fitWidth control available = (
-            if isProperty control #width then control.width=available
+            if classof control==ColorPickerControl then (
+                for handle in control.hwnd where (windows.getHWNDData handle)[4]=="ColorSwatch" do (
+                    local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y (amax 1 (available as integer)) rectangle.h true
+                )
+            ) else if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
@@ -18960,8 +19498,9 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 fitLabel areaUI_areaMode_caption 18 cellWidth
                 stackedCaption=false;captionHeight=amax (amax #(areaUI_areaMode_caption.height)) (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(40))+2+captionHeight
+                rowHeight=(amax #(fitRadio areaUI_areaMode cellWidth 1 place:false))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                fitRadio areaUI_areaMode cellWidth 1 place:true
                 areaUI_areaMode_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];areaUI_areaMode_caption.width=cellWidth;areaUI_areaMode_caption.enabled=areaUI_areaMode.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
@@ -19496,6 +20035,18 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             true
         )
 
+        fn fitRadio control available desiredColumns place:false = (
+            local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
+            if buttons.count==0 do return 20
+            local boxes=for handle in buttons collect windows.getWindowPos handle
+            local widest=amax (for box in boxes collect box.w),step=amax 20 ((amax (for box in boxes collect box.h))+5)
+            local columns=amin desiredColumns (amax 1 (floor ((available+4)/(widest+4))))
+            if place do for i=1 to buttons.count do (
+                local data=windows.getHWNDData buttons[i],position=windows.screenToClient data[2] (boxes[1].x+(mod (i-1) columns)*(widest+4)) (boxes[1].y+(floor ((i-1)/columns))*step)
+                windows.setWindowPos buttons[i] position.x position.y boxes[i].w boxes[i].h true
+            )
+            step*(ceil (buttons.count as float/columns))
+        )
         fn fitPairField control available = (
             local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
             for handle in control.hwnd do (
@@ -19508,7 +20059,12 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             true
         )
         fn fitWidth control available = (
-            if isProperty control #width then control.width=available
+            if classof control==ColorPickerControl then (
+                for handle in control.hwnd where (windows.getHWNDData handle)[4]=="ColorSwatch" do (
+                    local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y (amax 1 (available as integer)) rectangle.h true
+                )
+            ) else if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
@@ -19781,9 +20337,9 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         label instanceRadiusUI_radiusMode_caption "Selected CS Edit instances" pos:[6,6] width:(spacingUI.width-12) height:18
         spinner instanceRadiusUI_radiusSpin "" range:[0,1e9,1] pos:[8,8] width:((spacingUI.width-16-((amin 1 (amax 1 (floor ((spacingUI.width-8)/113.2))))-1)*4)/(amin 1 (amax 1 (floor ((spacingUI.width-8)/113.2))))) fieldWidth:58 tooltip:"Value applied only when Set selected radii is pressed."
         label instanceRadiusUI_radiusSpin_caption "Value:" pos:[6,6] width:(spacingUI.width-12) height:18
-        button instanceRadiusUI_applyRadius "Set selected radii" pos:[8,8] width:((spacingUI.width-16-((amin 1 (amax 1 (floor ((spacingUI.width-8)/111.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((spacingUI.width-8)/111.60000000000001))))) tooltip:"Apply radius overrides to selected instances in this layer or older model group." height:22
+        button instanceRadiusUI_applyRadius "Set selected radii" pos:[8,8] width:((spacingUI.width-16-((amin 1 (amax 1 (floor ((spacingUI.width-8)/111.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((spacingUI.width-8)/111.60000000000001))))) tooltip:"Apply radius overrides to selected instances in this layer." height:22
         button instanceRadiusUI_resetRadius "Clear selected overrides" pos:[8,8] width:((spacingUI.width-16-((amin 1 (amax 1 (floor ((spacingUI.width-8)/142.8))))-1)*4)/(amin 1 (amax 1 (floor ((spacingUI.width-8)/142.8))))) tooltip:"Restore the selected instances' inherited source radii." height:22
-        button instanceRadiusUI_clearRadius "Clear radius overrides" pos:[8,8] width:((spacingUI.width-16-((amin 1 (amax 1 (floor ((spacingUI.width-8)/132.4))))-1)*4)/(amin 1 (amax 1 (floor ((spacingUI.width-8)/132.4))))) tooltip:"Remove instance-radius overrides for this layer or older model group." height:22
+        button instanceRadiusUI_clearRadius "Clear radius overrides" pos:[8,8] width:((spacingUI.width-16-((amin 1 (amax 1 (floor ((spacingUI.width-8)/132.4))))-1)*4)/(amin 1 (amax 1 (floor ((spacingUI.width-8)/132.4))))) tooltip:"Remove instance-radius overrides for this layer." height:22
         label instanceRadiusUI_info "Select instances with CS Edit before applying a radius. Overrides follow their stable instance identities." pos:[8,8] width:((spacingUI.width-16-((amin 1 (amax 1 (floor ((spacingUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((spacingUI.width-8)/58))))) height:54
         checkbox spacingUI_relaxCheck "Point Relax" pos:[8,8] width:((spacingUI.width-16-((amin 1 (amax 1 (floor ((spacingUI.width-8)/83.2))))-1)*4)/(amin 1 (amax 1 (floor ((spacingUI.width-8)/83.2))))) tooltip:"Separate nearby candidates on the receiving surface before Brush, artist edits and spacing. Fixed anchors stay fixed."
         spinner spacingUI_spacingSpin "" pos:[8,8] width:((spacingUI.width-16-((amin 1 (amax 1 (floor ((spacingUI.width-8)/165.2))))-1)*4)/(amin 1 (amax 1 (floor ((spacingUI.width-8)/165.2))))) fieldWidth:58 type:#worldUnits range:[0.00001,1e9,0.2]
@@ -19819,7 +20375,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         local proceduralUI_controlsReady=false
         local proceduralUI_root=undefined,proceduralUI_owner=undefined,proceduralUI_panel=undefined,proceduralUI_controlsReady=false,proceduralUI_binding=false,proceduralUI_setSpecific=true,proceduralUI_peers=#(),proceduralUI_scopeRows=#(1,4)
         fn proceduralUI_currentScope = (if proceduralUI_scopeList.selection>0 and proceduralUI_scopeList.selection<=proceduralUI_scopeRows.count then proceduralUI_scopeRows[proceduralUI_scopeList.selection] else 1)
-        fn proceduralUI_currentSet = (proceduralUI_root.selectedPaintSet proceduralUI_owner)
+        fn proceduralUI_currentSet = (proceduralUI_owner)
         fn proceduralUI_bindRule resetPeer:false = (
             local wasBinding=proceduralUI_binding,leaf=proceduralUI_currentSet(),scope=proceduralUI_currentScope(),rule,previous=undefined,pair=scope==3 or scope==4
             if not resetPeer and proceduralUI_peerList.selection>0 and proceduralUI_peerList.selection<=proceduralUI_peers.count do previous=proceduralUI_peers[proceduralUI_peerList.selection]
@@ -19849,9 +20405,9 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         )
         fn proceduralUI_bind layer = (
             proceduralUI_binding=true
-            local previous=proceduralUI_currentScope(),older=(proceduralUI_root.layerSets proceduralUI_owner).count>1
-            proceduralUI_scopeRows=if older then #(1,2,3,4,5) else #(1,4)
-            proceduralUI_scopeList.items=if older then #("Within model group","Between model groups","Pair of model groups","Between layers","Layer default") else #("Within this layer","Between layers")
+            local previous=proceduralUI_currentScope()
+            proceduralUI_scopeRows=#(1,4)
+            proceduralUI_scopeList.items=#("Within this layer","Between layers")
             proceduralUI_scopeList.selection=amax 1 (findItem proceduralUI_scopeRows previous)
             proceduralUI_bindRule();proceduralUI_controlsReady=true;proceduralUI_binding=false
         )
@@ -19902,7 +20458,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         local instanceRadiusUI_bodyHeight=0
         local instanceRadiusUI_controlsReady=false,instanceRadiusUI_binding=false
         local instanceRadiusUI_root=undefined,instanceRadiusUI_owner=undefined,instanceRadiusUI_panel=undefined,instanceRadiusUI_controlsReady=false,instanceRadiusUI_setSpecific=true
-        fn instanceRadiusUI_currentSet = (instanceRadiusUI_root.selectedPaintSet instanceRadiusUI_owner)
+        fn instanceRadiusUI_currentSet = (instanceRadiusUI_owner)
         fn instanceRadiusUI_bind layer = (for c in #(instanceRadiusUI_radiusMode,instanceRadiusUI_radiusSpin,instanceRadiusUI_applyRadius,instanceRadiusUI_resetRadius,instanceRadiusUI_clearRadius,instanceRadiusUI_info) do c.enabled=true;instanceRadiusUI_controlsReady=true)
         on instanceRadiusUI_applyRadius pressed do if controlsReady and not binding and root!=undefined and instanceRadiusUI_controlsReady and not instanceRadiusUI_binding and true do (try((instanceRadiusUI_currentSet()).procSelectedRadius instanceRadiusUI_radiusMode.selection instanceRadiusUI_radiusSpin.value;instanceRadiusUI_bind instanceRadiusUI_owner)catch(messageBox (getCurrentException()) title:"Cyrus radius")
             if controlsReady and root!=undefined do layout()
@@ -20035,6 +20591,18 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             true
         )
 
+        fn fitRadio control available desiredColumns place:false = (
+            local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
+            if buttons.count==0 do return 20
+            local boxes=for handle in buttons collect windows.getWindowPos handle
+            local widest=amax (for box in boxes collect box.w),step=amax 20 ((amax (for box in boxes collect box.h))+5)
+            local columns=amin desiredColumns (amax 1 (floor ((available+4)/(widest+4))))
+            if place do for i=1 to buttons.count do (
+                local data=windows.getHWNDData buttons[i],position=windows.screenToClient data[2] (boxes[1].x+(mod (i-1) columns)*(widest+4)) (boxes[1].y+(floor ((i-1)/columns))*step)
+                windows.setWindowPos buttons[i] position.x position.y boxes[i].w boxes[i].h true
+            )
+            step*(ceil (buttons.count as float/columns))
+        )
         fn fitPairField control available = (
             local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
             for handle in control.hwnd do (
@@ -20047,7 +20615,12 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             true
         )
         fn fitWidth control available = (
-            if isProperty control #width then control.width=available
+            if classof control==ColorPickerControl then (
+                for handle in control.hwnd where (windows.getHWNDData handle)[4]=="ColorSwatch" do (
+                    local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y (amax 1 (available as integer)) rectangle.h true
+                )
+            ) else if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
@@ -20425,8 +20998,8 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             instanceRadiusUI_root=root;instanceRadiusUI_owner=owner;instanceRadiusUI_panel=panel;instanceRadiusUI_controlsReady=controlsReady;instanceRadiusUI_binding=binding
             spacingUI_root=root;spacingUI_owner=owner;spacingUI_panel=panel;spacingUI_controlsReady=controlsReady;spacingUI_binding=binding
             separationUI_root=root;separationUI_owner=owner;separationUI_panel=panel;separationUI_controlsReady=controlsReady;separationUI_binding=binding
-            if owner!=undefined then (proceduralUI_bind (root.selectedPaintSet owner);) else (for c in #(proceduralUI_scopeList,proceduralUI_peerList,proceduralUI_enabledCheck,proceduralUI_multiplierSpin,proceduralUI_gapSpin,proceduralUI_planarCheck,proceduralUI_ruleInfo,proceduralUI_resetRule) do c.enabled=false;proceduralUI_controlsReady=false)
-            if owner!=undefined then (instanceRadiusUI_bind (root.selectedPaintSet owner);) else (for c in #(instanceRadiusUI_radiusMode,instanceRadiusUI_radiusSpin,instanceRadiusUI_applyRadius,instanceRadiusUI_resetRadius,instanceRadiusUI_clearRadius,instanceRadiusUI_info) do c.enabled=false;instanceRadiusUI_controlsReady=false)
+            if owner!=undefined then (proceduralUI_bind owner;) else (for c in #(proceduralUI_scopeList,proceduralUI_peerList,proceduralUI_enabledCheck,proceduralUI_multiplierSpin,proceduralUI_gapSpin,proceduralUI_planarCheck,proceduralUI_ruleInfo,proceduralUI_resetRule) do c.enabled=false;proceduralUI_controlsReady=false)
+            if owner!=undefined then (instanceRadiusUI_bind owner;) else (for c in #(instanceRadiusUI_radiusMode,instanceRadiusUI_radiusSpin,instanceRadiusUI_applyRadius,instanceRadiusUI_resetRadius,instanceRadiusUI_clearRadius,instanceRadiusUI_info) do c.enabled=false;instanceRadiusUI_controlsReady=false)
             if owner!=undefined then (spacingUI_bind owner;) else (for c in #(spacingUI_relaxCheck,spacingUI_spacingSpin,spacingUI_iterationsSpin,spacingUI_strengthSpin,spacingUI_boundaryRelaxCheck,spacingUI_finalStrengthSpin,spacingUI_finalIterSpin,spacingUI_finalMoveSpin,spacingUI_orderHint) do c.enabled=false;spacingUI_controlsReady=false)
             if owner!=undefined then (separationUI_bind owner;) else (for c in #(separationUI_cleanCheck,separationUI_neighborSpin,separationUI_minNeighborSpin,separationUI_minIslandSpin,separationUI_planarCheck,separationUI_helpInfo) do c.enabled=false;separationUI_controlsReady=false)
                 setupGrips();controlsReady=true;binding=false;layout();true
@@ -20459,7 +21032,8 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         label flow_previewUI_identificationDrop_caption "Color by" pos:[6,6] width:(displayUI.width-12) height:18
         radiobuttons flow_previewUI_pointColorRadio "" labels:#("Solid Color","Identification Colors") columns:1 pos:[8,8] width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/58)))))
         label flow_previewUI_pointColorRadio_caption "Preview color" pos:[6,6] width:(displayUI.width-12) height:18
-        colorpicker flow_previewUI_solidColorPicker "Solid: " color:(color 100 220 120) pos:[8,8] width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/58)))))
+        colorpicker flow_previewUI_solidColorPicker "" color:(color 100 220 120) pos:[8,8] width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/58)))))
+        label flow_previewUI_solidColorPicker_caption "Solid: " pos:[6,6] width:(displayUI.width-12) height:18
         spinner flow_previewUI_budgetSpin "" range:[1000,500000,20000] type:#integer fieldWidth:58 width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/149.60000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/149.60000000000002))))) pos:[8,8]
         label flow_previewUI_budgetSpin_caption "Point limit: " pos:[6,6] width:(displayUI.width-12) height:18
         spinner flow_previewUI_pointsSpin "" range:[10,10000,80] type:#integer fieldWidth:58 width:((displayUI.width-16-((amin 1 (amax 1 (floor ((displayUI.width-8)/154.8))))-1)*4)/(amin 1 (amax 1 (floor ((displayUI.width-8)/154.8))))) pos:[8,8]
@@ -20609,6 +21183,18 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             true
         )
 
+        fn fitRadio control available desiredColumns place:false = (
+            local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
+            if buttons.count==0 do return 20
+            local boxes=for handle in buttons collect windows.getWindowPos handle
+            local widest=amax (for box in boxes collect box.w),step=amax 20 ((amax (for box in boxes collect box.h))+5)
+            local columns=amin desiredColumns (amax 1 (floor ((available+4)/(widest+4))))
+            if place do for i=1 to buttons.count do (
+                local data=windows.getHWNDData buttons[i],position=windows.screenToClient data[2] (boxes[1].x+(mod (i-1) columns)*(widest+4)) (boxes[1].y+(floor ((i-1)/columns))*step)
+                windows.setWindowPos buttons[i] position.x position.y boxes[i].w boxes[i].h true
+            )
+            step*(ceil (buttons.count as float/columns))
+        )
         fn fitPairField control available = (
             local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
             for handle in control.hwnd do (
@@ -20621,7 +21207,12 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             true
         )
         fn fitWidth control available = (
-            if isProperty control #width then control.width=available
+            if classof control==ColorPickerControl then (
+                for handle in control.hwnd where (windows.getHWNDData handle)[4]=="ColorSwatch" do (
+                    local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y (amax 1 (available as integer)) rectangle.h true
+                )
+            ) else if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
@@ -20740,18 +21331,22 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 fitLabel flow_previewUI_pointColorRadio_caption 18 cellWidth
                 stackedCaption=false;captionHeight=amax (amax #(flow_previewUI_pointColorRadio_caption.height)) (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(40))+2+captionHeight
+                rowHeight=(amax #(fitRadio flow_previewUI_pointColorRadio cellWidth 1 place:false))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                fitRadio flow_previewUI_pointColorRadio cellWidth 1 place:true
                 flow_previewUI_pointColorRadio_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];flow_previewUI_pointColorRadio_caption.width=cellWidth;flow_previewUI_pointColorRadio_caption.enabled=flow_previewUI_pointColorRadio.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(flow_previewUI_solidColorPicker);show=(advancedToggle.checked and (flow_previewUI_pointColorRadio.state==1))
             for c in rowControls do c.visible=show
+            flow_previewUI_solidColorPicker_caption.visible=show
             if show do (
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                fitLabel flow_previewUI_solidColorPicker_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(flow_previewUI_solidColorPicker_caption.height)) (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                flow_previewUI_solidColorPicker_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];flow_previewUI_solidColorPicker_caption.width=cellWidth;flow_previewUI_solidColorPicker_caption.enabled=flow_previewUI_solidColorPicker.enabled
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             rowControls=#(flow_previewUI_budgetSpin);show=(advancedToggle.checked and (true))
@@ -20910,7 +21505,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         on detailsUI_refreshButton pressed do if controlsReady and not binding and root!=undefined and detailsUI_controlsReady and not detailsUI_binding and true do (detailsUI_bind detailsUI_owner
             if controlsReady and root!=undefined do layout()
         )
-        on detailsUI_helpButton pressed do if controlsReady and not binding and root!=undefined and detailsUI_controlsReady and not detailsUI_binding and true do (messageBox (detailsUI_info.text+"\n\nPaint sets own assets and independent stroke history. Population, area, transforms and cleanup belong to the layer. Enabled set weights divide the layer budget.\n\nPoint Cloud uses many samples per plant; Plant centres uses one. Preview budgets affect display. Hidden owners still affect collision and render; disabled owners do not. Manual shows the previous completed build until Update. Paint feedback shows coverage, not accepted instances.\n\n"+"Visible order decides ordinary winners. Self, sibling-set and layer-pair rules are independent. Radius factor x (A + B) + gap, in XY or 3D. Protected edits survive and report conflicts. Background coverage uses earlier siblings. Accepted target retries a bounded prefix. Relax moves candidates before Brush, edits and collisions; each set uses its layer recipe."+"\n\nBase cannot be removed separately; disable or erase it. Capacity: ten populations, including sets. A Point source is an accepted placeholder. Weighted Empty sources are supported in candidate-budget mode.") title:"Cyrus layer help"
+        on detailsUI_helpButton pressed do if controlsReady and not binding and root!=undefined and detailsUI_controlsReady and not detailsUI_binding and true do (messageBox (detailsUI_info.text+"\n\nLayers own surfaces, models, population and transforms. Paint Areas bind individual surfaces and union vector coverage. Feather curves control density and multiply random scale. Include/Exclude and collision rules still apply.\n\nManual retains the previous complete build until Update. Live updates relevant edits. Failed builds preserve the last complete result. Vector painting supports local XY terrain and planes; closed or overlapping receivers are rejected.") title:"Cyrus layer help"
             if controlsReady and root!=undefined do layout()
         )
         local workflowUI_bodyHeight=0
@@ -21074,6 +21669,18 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             true
         )
 
+        fn fitRadio control available desiredColumns place:false = (
+            local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
+            if buttons.count==0 do return 20
+            local boxes=for handle in buttons collect windows.getWindowPos handle
+            local widest=amax (for box in boxes collect box.w),step=amax 20 ((amax (for box in boxes collect box.h))+5)
+            local columns=amin desiredColumns (amax 1 (floor ((available+4)/(widest+4))))
+            if place do for i=1 to buttons.count do (
+                local data=windows.getHWNDData buttons[i],position=windows.screenToClient data[2] (boxes[1].x+(mod (i-1) columns)*(widest+4)) (boxes[1].y+(floor ((i-1)/columns))*step)
+                windows.setWindowPos buttons[i] position.x position.y boxes[i].w boxes[i].h true
+            )
+            step*(ceil (buttons.count as float/columns))
+        )
         fn fitPairField control available = (
             local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
             for handle in control.hwnd do (
@@ -21086,7 +21693,12 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             true
         )
         fn fitWidth control available = (
-            if isProperty control #width then control.width=available
+            if classof control==ColorPickerControl then (
+                for handle in control.hwnd where (windows.getHWNDData handle)[4]=="ColorSwatch" do (
+                    local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y (amax 1 (available as integer)) rectangle.h true
+                )
+            ) else if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (

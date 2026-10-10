@@ -14,7 +14,7 @@ def source_hashes(project):
     paths = [ROOT/project/"CMakeLists.txt", ROOT/project/"scripts"/script_name, ROOT/"cmake/CyrusMaxSDK.cmake"]
     if project == "CyrusSurfaceAnalyzer":
         paths.append(ROOT/"AminScatter/src/input_validity.cpp")
-    for name in ("src", "include", "tests"):
+    for name in ("src", "include", "tests", "third_party"):
         paths += sorted((ROOT/project/name).rglob("*"))
     return {p.relative_to(ROOT).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in paths if p.is_file()}
 

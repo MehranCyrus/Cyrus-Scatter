@@ -1,0 +1,186 @@
+PASS	Four native APIs loaded
+PASS	M1 hard disk
+PASS	M1 erase hole
+PASS	M1 Undo
+PASS	M1 Redo
+PASS	M1 Cancel
+PASS	M1 Clear
+PASS	M1 external save/load
+PASS	M1 growing island 0
+PASS	M1 growing island 1
+PASS	M1 growing island 2
+PASS	M1 growing island 3
+PASS	M1 growing island 4
+PASS	M1 growing island 5
+PASS	M1 growing island 6
+PASS	M1 growing island 7
+PASS	M1 growing island 8
+PASS	M1 growing island 9
+PASS	M1 growing island 10
+PASS	M1 growing island 11
+PASS	M1 growing island 12
+PASS	M1 growing island 13
+PASS	M1 growing island 14
+PASS	M1 growing island 15
+PASS	M1 growing island 16
+PASS	M1 growing island 17
+PASS	M1 growing island 18
+PASS	M1 growing island 19
+PASS	M1 growing island 20
+PASS	M1 growing island 21
+PASS	M1 growing island 22
+PASS	M1 growing island 23
+PASS	M1 complete boundary/fill/samples
+PASS	M1 redraw consumes cache
+PASS	M1 display limit retains paint
+PASS	M1 Painter SDK radius calibration
+PASS	M1 screen ray callback path
+PASS	M1 callback uses configured radius
+PASS	M1 Painter Start/Stop
+PASS	M1 deleted receiver inactive
+PASS	M2 hard disk
+PASS	M2 erase hole
+PASS	M2 Undo
+PASS	M2 Redo
+PASS	M2 Cancel
+PASS	M2 Clear
+PASS	M2 external save/load
+PASS	M2 growing island 0
+PASS	M2 growing island 1
+PASS	M2 growing island 2
+PASS	M2 growing island 3
+PASS	M2 growing island 4
+PASS	M2 growing island 5
+PASS	M2 growing island 6
+PASS	M2 growing island 7
+PASS	M2 growing island 8
+PASS	M2 growing island 9
+PASS	M2 growing island 10
+PASS	M2 growing island 11
+PASS	M2 growing island 12
+PASS	M2 growing island 13
+PASS	M2 growing island 14
+PASS	M2 growing island 15
+PASS	M2 growing island 16
+PASS	M2 growing island 17
+PASS	M2 growing island 18
+PASS	M2 growing island 19
+PASS	M2 growing island 20
+PASS	M2 growing island 21
+PASS	M2 growing island 22
+PASS	M2 growing island 23
+PASS	M2 complete boundary/fill/samples
+PASS	M2 redraw consumes cache
+PASS	M2 display limit retains paint
+PASS	M2 Painter SDK radius calibration
+PASS	M2 screen ray callback path
+PASS	M2 callback uses configured radius
+PASS	M2 Painter Start/Stop
+PASS	M2 soft density
+PASS	M2 deleted receiver inactive
+PASS	M3 hard disk
+PASS	M3 erase hole
+PASS	M3 Undo
+PASS	M3 Redo
+PASS	M3 Cancel
+PASS	M3 Clear
+PASS	M3 external save/load
+PASS	M3 growing island 0
+PASS	M3 growing island 1
+PASS	M3 growing island 2
+PASS	M3 growing island 3
+PASS	M3 growing island 4
+PASS	M3 growing island 5
+PASS	M3 growing island 6
+PASS	M3 growing island 7
+PASS	M3 growing island 8
+PASS	M3 growing island 9
+PASS	M3 growing island 10
+PASS	M3 growing island 11
+PASS	M3 growing island 12
+PASS	M3 growing island 13
+PASS	M3 growing island 14
+PASS	M3 growing island 15
+PASS	M3 growing island 16
+PASS	M3 growing island 17
+PASS	M3 growing island 18
+PASS	M3 growing island 19
+PASS	M3 growing island 20
+PASS	M3 growing island 21
+PASS	M3 growing island 22
+PASS	M3 growing island 23
+PASS	M3 complete boundary/fill/samples
+PASS	M3 redraw consumes cache
+PASS	M3 display limit retains paint
+PASS	M3 Painter SDK radius calibration
+PASS	M3 screen ray callback path
+PASS	M3 callback uses configured radius
+PASS	M3 Painter Start/Stop
+PASS	M3 soft density
+PASS	M3 deleted receiver inactive
+PASS	M4 hard disk
+PASS	M4 erase hole
+PASS	M4 Undo
+PASS	M4 Redo
+PASS	M4 Cancel
+PASS	M4 Clear
+PASS	M4 external save/load
+PASS	M4 growing island 0
+PASS	M4 growing island 1
+PASS	M4 growing island 2
+PASS	M4 growing island 3
+PASS	M4 growing island 4
+PASS	M4 growing island 5
+PASS	M4 growing island 6
+PASS	M4 growing island 7
+PASS	M4 growing island 8
+PASS	M4 growing island 9
+PASS	M4 growing island 10
+PASS	M4 growing island 11
+PASS	M4 growing island 12
+PASS	M4 growing island 13
+PASS	M4 growing island 14
+PASS	M4 growing island 15
+PASS	M4 growing island 16
+PASS	M4 growing island 17
+PASS	M4 growing island 18
+PASS	M4 growing island 19
+PASS	M4 growing island 20
+PASS	M4 growing island 21
+PASS	M4 growing island 22
+PASS	M4 growing island 23
+PASS	M4 complete boundary/fill/samples
+PASS	M4 redraw consumes cache
+PASS	M4 display limit retains paint
+PASS	M4 Painter SDK radius calibration
+PASS	M4 screen ray callback path
+PASS	M4 callback uses configured radius
+PASS	M4 Painter Start/Stop
+PASS	M4 soft density
+PASS	M4 deleted receiver inactive
+PASS	PL_A UI receiver binding
+PASS	PL_A UI compiled and opened
+PASS	PL_B UI receiver binding
+PASS	PL_B UI compiled and opened
+PASS	PL_C UI receiver binding
+PASS	PL_C UI compiled and opened
+PASS	PL_D UI receiver binding
+PASS	PL_D UI compiled and opened
+PASS	M1 sphere domain rejected explicitly
+PASS	M1 21 independent receivers
+PASS	M1 complete tint exceeds old 32768 limit
+PASS	M1 large tint retains both regions
+PASS	M2 sphere domain rejected explicitly
+PASS	M2 21 independent receivers
+PASS	M2 complete tint exceeds old 32768 limit
+PASS	M2 large tint retains both regions
+PASS	M3 sphere paint
+PASS	M3 sphere erase
+PASS	M3 21 independent receivers
+PASS	M3 complete tint exceeds old 32768 limit
+PASS	M3 large tint retains both regions
+PASS	M4 sphere paint
+PASS	M4 sphere erase
+PASS	M4 21 independent receivers
+PASS	M4 complete tint exceeds old 32768 limit
+PASS	M4 large tint retains both regions

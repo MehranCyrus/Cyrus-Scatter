@@ -1,6 +1,6 @@
 # Procedural Brush laboratory
 
-This preserves the historical M0/M1 interaction harness for static mesh targets. Its source now calls the product's `cyrusBrush*` API and builds `CyrusBrush.dlx`; its separate dialog is not the product UI. Use [the v1 fixtures](../v1/README.md) for current product qualification. The [original implementation report](../../docs/Brush_Tool_2026-10-02/IMPLEMENTATION_2026-10-03.md) retains the prototype's measured scope and limits.
+Historical harness for the retired stroke API, through 0.77. Its scripts and benchmarks require their matching frozen checkout; they do not qualify or build the 0.78 vector brush. Use [the vector campaign](../vector_brush_078/README.md) for current qualification. These files preserve reproducibility of [the original implementation report](../../docs/Brush_Tool_2026-10-02/IMPLEMENTATION_2026-10-03.md); they are not packaged product code.
 
 ## Build and launch
 

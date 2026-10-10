@@ -7,6 +7,24 @@ STAT_FIELDS = ("eligible_pool", "accepted", "protected", "protected_conflicts",
                "not_consumed", "candidate_attempts", "target_shortfall", "neighbor_visits")
 
 
+def read_vector_paint(layer, native_stats, node_reference):
+    """Read bounded saved area identity/revisions without preparing a field."""
+    from .contracts import require
+    areas=list(layer.paintAreas)
+    require(len(areas)<=128,"Paint areas exceed the read budget","BUDGET_EXCEEDED")
+    result=[]
+    for area in areas:
+        stats=native_stats(area.paintDocument) if area.paintDocument is not None else None
+        result.append({"area_id":str(area.layerID),"name":str(area.paintSetName),
+                       "receiver":node_reference(area.areaTarget),"enabled":bool(area.paintSetEnabled),
+                       "density":float(area.paintDensity),"document_present":stats is not None,
+                       "revision":int(stats[0]) if stats is not None else None,
+                       "contour_count":int(stats[1]) if stats is not None else 0,
+                       "vertex_count":int(stats[2]) if stats is not None else 0,
+                       "target_valid_cached":bool(stats[3]) if stats is not None else False})
+    return {"enabled":bool(layer.paintEnabled),"representation":"vector_regions","areas":result}
+
+
 def _container_refs(owner, field):
     # An incomplete inspection fixture reports unavailable fields explicitly;
     # never synthesize membership or evaluate Max from this passive reader.
@@ -111,8 +129,6 @@ def read_procedural(controller, metres_per_unit):
                          "self_rule": {"inherited": not bool(leaf.procSelfOverride), "enabled": bool(self_rule[0]),
                                        "radius_factor": float(self_rule[1]), "gap_m": float(self_rule[2]) * metres_per_unit,
                                        "metric": "xy" if self_rule[3] else "xyz"},
-                         "background": {"mode": int(leaf.procBackground), "earlier_set_ids": list(map(str, leaf.procBackgroundIDs)),
-                                        "domain": "earlier siblings on the shared receiver and layer Area domain"},
                          "source_entry_ids": list(map(str, leaf.procSourceSlots)), "radius_overrides": overrides,
                          "source_pool": _container_pool(leaf),
                          "last_published": last, "prepared_builds": int(stats[2]), "prepared_hits": int(stats[3])})

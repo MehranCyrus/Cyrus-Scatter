@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.20)
+project(CyrusPrivatePaintProbe LANGUAGES CXX)
+include("${CMAKE_CURRENT_LIST_DIR}/../../../cmake/CyrusMaxSDK.cmake")
+add_library(CyrusPrivatePaintProbe MODULE probe.cpp)
+cyrus_max_target(CyrusPrivatePaintProbe)
+target_link_libraries(CyrusPrivatePaintProbe PRIVATE core geom mesh gfx maxutil Maxscrpt paramblk2)
+set_target_properties(CyrusPrivatePaintProbe PROPERTIES SUFFIX ".dlx")

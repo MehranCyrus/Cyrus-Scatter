@@ -7,7 +7,7 @@ from cyrus_mcp.settings import capability_manifest
 
 def fixture_controller():
     leaf=Obj(layerID="set_b",paintSetName="Grass",procSamplingSalt=27,
-             procSelfOverride=True,procBackground=4,procBackgroundIDs=["set_a"],
+             procSelfOverride=True,
              procRadiusIDs=["c:3","clone:9"],procRadiusModes=[1,2],procRadiusValues=[50,1.2],
              procSourceSlots=["source-entry-a"],procSelfRule=lambda:[True,.5,10,True],
              procStatistics=lambda:[[30,10,2,1,4,5,6,3,2,40,10,120],[3,True],4,2,17])

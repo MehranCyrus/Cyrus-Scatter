@@ -1,0 +1,58 @@
+{
+  "benchmark_sha256": "581cb46e09c831429b55d732e24a859c296c6d5f7f5b274245b54d1eb9bb5a2e",
+  "qualification": "Independent CPU process repetitions of 1000-unit plane / resolution 5. Not a physical latency, FPS, common accuracy-tier qualification or warmed host benchmark. History bytes conservatively double-count shared blocks.",
+  "summary": [
+    {
+      "method": 1,
+      "scenario": "growing",
+      "gestures": 1000,
+      "independent_repetitions": 10,
+      "edit_1000_ms_median": 53.5847,
+      "query_100k_ms_median": 18.8966,
+      "query_100k_ms_min": 18.703,
+      "query_100k_ms_max": 20.2193,
+      "state_bytes": 7584,
+      "history_logical_bytes": 6446624,
+      "accepted": 79595
+    },
+    {
+      "method": 2,
+      "scenario": "growing",
+      "gestures": 1000,
+      "independent_repetitions": 10,
+      "edit_1000_ms_median": 12.49195,
+      "query_100k_ms_median": 4.901,
+      "query_100k_ms_min": 4.8103,
+      "query_100k_ms_max": 5.0636,
+      "state_bytes": 150192,
+      "history_logical_bytes": 88225284,
+      "accepted": 79810
+    },
+    {
+      "method": 3,
+      "scenario": "growing",
+      "gestures": 1000,
+      "independent_repetitions": 10,
+      "edit_1000_ms_median": 233.699,
+      "query_100k_ms_median": 57.8489,
+      "query_100k_ms_min": 56.8701,
+      "query_100k_ms_max": 59.678,
+      "state_bytes": 288048,
+      "history_logical_bytes": 147429632,
+      "accepted": 79641
+    },
+    {
+      "method": 4,
+      "scenario": "growing",
+      "gestures": 1000,
+      "independent_repetitions": 10,
+      "edit_1000_ms_median": 14.74785,
+      "query_100k_ms_median": 5.01095,
+      "query_100k_ms_min": 4.8909,
+      "query_100k_ms_max": 5.3382,
+      "state_bytes": 192152,
+      "history_logical_bytes": 112095732,
+      "accepted": 79768
+    }
+  ]
+}

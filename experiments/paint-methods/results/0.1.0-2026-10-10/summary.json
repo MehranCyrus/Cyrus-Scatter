@@ -1,0 +1,160 @@
+{
+  "baseline": "880ea89b654a389191c02e7a373807044ec713f1",
+  "version": "0.1.0",
+  "max_file_version": "29.1.0.11426",
+  "cpu": "AMD Ryzen 5 5600X / 6 cores / 12 threads",
+  "gpu": "NVIDIA GeForce RTX 3090 / driver 32.0.16.1047",
+  "physical_ram_bytes": 102986215424,
+  "native_assertions": 9792,
+  "host_pass_checks": 186,
+  "host_timings": [
+    {
+      "method": 1.0,
+      "phase": "growing_24",
+      "elapsed_ms": 5.3037,
+      "items": 394.0,
+      "state_bytes": 8000.0,
+      "history_logical_bytes": 114832.0,
+      "lines": 50.0,
+      "fill_faces": 0.0,
+      "samples": 186.0
+    },
+    {
+      "method": 1.0,
+      "phase": "preview",
+      "elapsed_ms": 6.8772,
+      "items": 394.0,
+      "state_bytes": 8000.0,
+      "history_logical_bytes": 114832.0,
+      "lines": 394.0,
+      "fill_faces": 382.0,
+      "samples": 382.0
+    },
+    {
+      "method": 2.0,
+      "phase": "growing_24",
+      "elapsed_ms": 4.8947,
+      "items": 77.0,
+      "state_bytes": 321244.0,
+      "history_logical_bytes": 4927130.0,
+      "lines": 108.0,
+      "fill_faces": 0.0,
+      "samples": 186.0
+    },
+    {
+      "method": 2.0,
+      "phase": "preview",
+      "elapsed_ms": 1.458,
+      "items": 77.0,
+      "state_bytes": 321244.0,
+      "history_logical_bytes": 4927130.0,
+      "lines": 448.0,
+      "fill_faces": 370.0,
+      "samples": 370.0
+    },
+    {
+      "method": 3.0,
+      "phase": "growing_24",
+      "elapsed_ms": 3.2608,
+      "items": 26.0,
+      "state_bytes": 7176.0,
+      "history_logical_bytes": 94932.0,
+      "lines": 104.0,
+      "fill_faces": 0.0,
+      "samples": 186.0
+    },
+    {
+      "method": 3.0,
+      "phase": "preview",
+      "elapsed_ms": 4.9369,
+      "items": 26.0,
+      "state_bytes": 7176.0,
+      "history_logical_bytes": 94932.0,
+      "lines": 450.0,
+      "fill_faces": 375.0,
+      "samples": 375.0
+    },
+    {
+      "method": 4.0,
+      "phase": "growing_24",
+      "elapsed_ms": 5.5496,
+      "items": 67.0,
+      "state_bytes": 279764.0,
+      "history_logical_bytes": 4375040.0,
+      "lines": 108.0,
+      "fill_faces": 0.0,
+      "samples": 186.0
+    },
+    {
+      "method": 4.0,
+      "phase": "preview",
+      "elapsed_ms": 1.5213,
+      "items": 67.0,
+      "state_bytes": 279764.0,
+      "history_logical_bytes": 4375040.0,
+      "lines": 448.0,
+      "fill_faces": 370.0,
+      "samples": 370.0
+    },
+    {
+      "method": 1.0,
+      "phase": "large_coverage",
+      "elapsed_ms": 66.7395,
+      "items": 63.0,
+      "state_bytes": 1008.0,
+      "history_logical_bytes": 1008.0,
+      "lines": 63.0,
+      "fill_faces": 125839.0,
+      "samples": 0.0
+    },
+    {
+      "method": 2.0,
+      "phase": "large_coverage",
+      "elapsed_ms": 56.9073,
+      "items": 150.0,
+      "state_bytes": 625800.0,
+      "history_logical_bytes": 625800.0,
+      "lines": 1954.0,
+      "fill_faces": 125964.0,
+      "samples": 0.0
+    },
+    {
+      "method": 3.0,
+      "phase": "large_coverage",
+      "elapsed_ms": 74.9106,
+      "items": 1.0,
+      "state_bytes": 260.0,
+      "history_logical_bytes": 260.0,
+      "lines": 1934.0,
+      "fill_faces": 125976.0,
+      "samples": 0.0
+    },
+    {
+      "method": 4.0,
+      "phase": "large_coverage",
+      "elapsed_ms": 61.7708,
+      "items": 170.0,
+      "state_bytes": 709480.0,
+      "history_logical_bytes": 709720.0,
+      "lines": 1954.0,
+      "fill_faces": 125964.0,
+      "samples": 0.0
+    }
+  ],
+  "binaries": {
+    "PaintLab1.dlx": "99642193f2d93030c6a8967f02a5a5965db6fc744be51489d0d71a25316f6b49",
+    "PaintLab2.dlx": "06854be1f03051450f5b1f4336063341c75204f32f7eb42b2b6f80d9f696420f",
+    "PaintLab3.dlx": "4a6228e2fde6bbbda3dbc1c24991a7d97aaf2861a1d81e9d68ada32c068d61ee",
+    "PaintLab4.dlx": "19aa83502c354b94022633fbf7472d304966f8deb59efe1a58061706b481a442"
+  },
+  "host_run": "experiments\\paint-methods\\build\\hosts\\20261010-165430-5b572c03",
+  "host_process_exited": true,
+  "prototype_data_embedded_in_max_scene": false,
+  "computer_use": false,
+  "production_source_changed": false,
+  "performance_qualification": "Scripted CPU timings; physical input/presentation latency and FPS unmeasured. Artist Max process remained open; not a controlled idle workstation.",
+  "host_fixture_sha256": "910feb7f66401bc2d68e2f197e39a9e9f50a1bda2dc5cda8736301cb0eebfd3d",
+  "painter_radius_calibration": "SDK radius setter/getter and callback inside/outside probes passed for all four; physical cursor and cross-unit tests pending",
+  "independent_package_smoke_passes": 4,
+  "delivery_directory": "experiments/paint-methods/dist/0.1.0-final"
+}

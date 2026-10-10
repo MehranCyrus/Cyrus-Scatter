@@ -3,7 +3,7 @@
     "enabledCheck": "Enable calculation and output for this entire Scatter setup."
   },
   "updateUI": {
-    "updateNow": "Calculate all enabled layers and paint sets in order."
+    "updateNow": "Calculate enabled layers in order."
   },
   "previewUI": {
     "identificationDrop": "Use model or layer identification colors in Points, Proxy and shaded Mesh previews."
@@ -47,7 +47,6 @@
   },
   "setsUI": {
     "paintedCheck": "Restrict this layer to its painted areas. Turn off to scatter across all its surfaces.",
-    "importButton": "Bring this older layer's existing coverage into a named area without changing its paint. Undo restores the old ownership.",
     "addButton": "Create a named area. Painting again edits the selected area.",
     "removeButton": "Remove the selected area. Undo restores it.",
     "targetList": "Explicit target within this layer. An area with saved paint cannot be silently retargeted."
@@ -148,9 +147,9 @@
   "instanceRadiusUI": {
     "radiusMode": "Use an absolute world radius or multiply the selected instances' source radius.",
     "radiusSpin": "Value applied only when Set selected radii is pressed.",
-    "applyRadius": "Apply radius overrides to selected instances in this layer or older model group.",
+    "applyRadius": "Apply radius overrides to selected instances in this layer.",
     "resetRadius": "Restore the selected instances' inherited source radii.",
-    "clearRadius": "Remove instance-radius overrides for this layer or older model group."
+    "clearRadius": "Remove instance-radius overrides for this layer."
   },
   "spacingUI": {
     "relaxCheck": "Separate nearby candidates on the receiving surface before Brush, artist edits and spacing. Fixed anchors stay fixed.",

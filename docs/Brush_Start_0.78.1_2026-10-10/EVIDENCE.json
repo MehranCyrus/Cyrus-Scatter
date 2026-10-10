@@ -1,0 +1,678 @@
+{
+  "schema": "cyrus.brush-start-qualification/1",
+  "version": "0.78.1",
+  "saved_schema": 55,
+  "base_commit": "880ea89b654a389191c02e7a373807044ec713f1",
+  "branch": "codex/workflow-0.75",
+  "script_sha256": "bc58822b92b006350ee47d0435117f9e4a79476f23668998be58c0ed9ab27361",
+  "generated": {
+    "check": "unified_073_generator_integration",
+    "passed": true,
+    "development_version": "0.78.1",
+    "baseline": "01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2",
+    "maxscript_compiled": false,
+    "ui_controls_in_inventory": 238,
+    "baseline_controls_accounted": 245,
+    "generated_sha256": "bc58822b92b006350ee47d0435117f9e4a79476f23668998be58c0ed9ab27361",
+    "preserved_files": [
+      "AminScatter/src/point_display.cpp"
+    ],
+    "fixture_delimiters_checked": 32,
+    "interactive_max_run": false
+  },
+  "python_tests": {
+    "passed": 143,
+    "command": "build/mcp-venv/Scripts/python.exe -m pytest CyrusMCP/tests tools/tests -q"
+  },
+  "computer_use": false,
+  "artist_profiles_modified": false,
+  "installed": false,
+  "hosts": {
+    "2026": {
+      "launch": {
+        "pid": 24748,
+        "max_year": 2026,
+        "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\fix-host2026-02",
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2026/3dsmax.exe",
+          "-q",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\fix-host2026-02\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\fix-host2026-02\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\fix-host2026-02\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\fix-host2026-02\\listener.log"
+        ],
+        "binaries": {
+          "AminScatter.dlx": "65e207c503fdb001c9ed39d17f5900c44f72b4838d0838b87b6801cacca55624",
+          "CyrusBrush.dlx": "fb4f46bfa9de99d4ae5d997d2f12012a1b1c6512e2ca3b7e1f40d95d9dea3a3c",
+          "CyrusBrushStorage.dlh": "287b1b8d857ccf233fb8dddd73daf4677933d25e6cfafe0c3e4145e49f727138",
+          "CyrusScatterEdit.dlm": "431a8088f0fe2a5401e8addef1a99c02917bea81825d7e242f41286d3daf16ab",
+          "CyrusPrivatePaintProbe.dlx": "4045e3e27293227f14a5d436d4f0bf3d1f28497b24affb5896875ef49d1abe7b"
+        },
+        "script_sha256": "bc58822b92b006350ee47d0435117f9e4a79476f23668998be58c0ed9ab27361",
+        "normal_profile_modified": false,
+        "development_transport": true
+      },
+      "native_build": {
+        "stages": [
+          {
+            "stage": "configure",
+            "exit_code": 0
+          },
+          {
+            "stage": "build",
+            "exit_code": 0
+          },
+          {
+            "stage": "tests",
+            "exit_code": 0
+          }
+        ],
+        "project": "scatter",
+        "max_year": 2026,
+        "host_launched": false,
+        "installed": false,
+        "binaries": {
+          "build/vector-brush-078/fix-max2026-01/AminScatter.dlx": "65e207c503fdb001c9ed39d17f5900c44f72b4838d0838b87b6801cacca55624",
+          "build/vector-brush-078/fix-max2026-01/CyrusBrush.dlx": "fb4f46bfa9de99d4ae5d997d2f12012a1b1c6512e2ca3b7e1f40d95d9dea3a3c",
+          "build/vector-brush-078/fix-max2026-01/CyrusBrushStorage.dlh": "287b1b8d857ccf233fb8dddd73daf4677933d25e6cfafe0c3e4145e49f727138",
+          "build/vector-brush-078/fix-max2026-01/CyrusScatterEdit.dlm": "431a8088f0fe2a5401e8addef1a99c02917bea81825d7e242f41286d3daf16ab"
+        },
+        "sources": {
+          "AminScatter/CMakeLists.txt": "bcfc535b333da68c38185bc01f8c6ea7e5e5df04f1ed082c8dc2fc9f75869136",
+          "AminScatter/scripts/AminScatterObject.ms": "dad8a98acc9cbb4932cc5e38d14671539b3cba076814865dc6fd9db2cb1b3b4d",
+          "cmake/CyrusMaxSDK.cmake": "53cf91db75742990b80d1f0a8dc8094d45a2a964094b3785b2f6eb1c8b55248e",
+          "AminScatter/src/analyzer_area_bridge.inc": "90c08d2650c8bea809900fd23f2abc8d3e26272c95d49a315552711aa6ad48bc",
+          "AminScatter/src/authored_revision.inc": "9bdb0aadfa193983d9d18f42ac2e1ffe414bd6a99a5d556553dc2a00c1d8fe1e",
+          "AminScatter/src/boundary_falloff.inc": "a8c2669675dcb853d79c2ceaf90bf092d09c27d09a48991f0ac3cd024737d99f",
+          "AminScatter/src/boundary_falloff_bridge.inc": "4af974149fa2fc6a82a6e2d0401bb88deca0e3cc9441ea6b8757013e7259d555",
+          "AminScatter/src/brush.cpp": "d5244e03bb1ad3748099deea38362f44582187941fc7dc2b85cfe38cd1771c21",
+          "AminScatter/src/brush_host.cpp": "d8b53c92d3eb5369604deaee8d52ae5a5b0f67414ebb69f8e561e9416dde9d86",
+          "AminScatter/src/brush_storage_plugin.cpp": "cf3d949ca9695e42c70f0905db41bd24e77d520b7f7a571a72a8bfc69ce995d3",
+          "AminScatter/src/brush_surface.cpp": "6459e56257d8d6bd695dbebb1e055d6105abdb85ae68e262e4008149968f63ac",
+          "AminScatter/src/cluster.inc": "e3f7eddd8133e34f91c1e50d5c4d1ac4ca2f4a6dc611728a0848c16f9f3e3680",
+          "AminScatter/src/cyrus_edit.cpp": "877cca5c4aee0f7253701bf04873bb6f56fe2113a6d9f4e764698566f3e4b9b2",
+          "AminScatter/src/cyrus_edit.rc": "2ed905b328e04f092f89a4e1e800d9fba724a0c33f9ea3262fe886040f53fb33",
+          "AminScatter/src/cyrus_edit_stack.inc": "5c1875f5e61be1fb96bdef409803ad91d19ea14db25a9fa8c8da45b9aa516965",
+          "AminScatter/src/cyrus_edit_storage.inc": "4e9e9f23845a0d9ee2b0fed5fdba450b176cbbe5b4b04a557cb1963655f43109",
+          "AminScatter/src/diagnostics.cpp": "8f7e61296c0570aa6288e50ae159f041ef449768a00781abbc84ac033febeeb4",
+          "AminScatter/src/diagnostics_bridge.cpp": "ce31a4bed58860076bbbd6deb5a15302890facda98d29e8d3f0e65fe794c2da7",
+          "AminScatter/src/edge_border.inc": "df5f43d5614d1d44a274b9a67c70c659d24964b1ffad665e1956232581951f8c",
+          "AminScatter/src/edit_plugin.cpp": "79f0056899a9c831022e17f12ae35232890e6e21b44b9c7b6f608632f871ac9b",
+          "AminScatter/src/execution.cpp": "b54963d69441d473ed52f76b125c4eb3d0a38c564900f28abd76efa7bcbf1136",
+          "AminScatter/src/final.inc": "ba36be03d08d2af4726b9b44b411e05c191a90bc73db1269f7670722bbf6f5e5",
+          "AminScatter/src/geometry_preview.inc": "7047fa63975747f59f018e8d1b0d76ee3751190643376498a122a084cf731aa0",
+          "AminScatter/src/group_spacing.cpp": "73d973b3d22f51c00dae7f4282d7f8159b19dea0b27f7ddb57c2d06815acc1a1",
+          "AminScatter/src/group_spacing_bridge.inc": "84514cdc7a7d4d9690d5ae179af1d9864897f4a1e56edacf2f4bacd158db77a7",
+          "AminScatter/src/input_validity.cpp": "a65514bdcee3e67d3296768063979ed1c670b020323bc62e757ac7a9c232605d",
+          "AminScatter/src/max_bridge.cpp": "eade14886e49332d3a599a18528b2cadeebb619148658f3391f87e20d8593934",
+          "AminScatter/src/mesh_display.inc": "91b694e319d1d5864f1ae6a6dd67c8bb033d44420f770ed0645c4cc4547d8c39",
+          "AminScatter/src/orientation.inc": "d485e2b8ea5c3abf3fc00a7e7b7139ae4b5d3995ee17f3aad7afff8cc4bfcea8",
+          "AminScatter/src/orientation_bridge.inc": "c967d950dfd1308bd989dc3e819b959ae64eb69acdaf728b4c6ba2dd694c639e",
+          "AminScatter/src/placement_identity.inc": "a33f6d19e8bff75b90e2cbbc2f969d00c5982c5301918efddf1108a86ca0a2aa",
+          "AminScatter/src/point_display.cpp": "358c5ff13763542dcc27eb2d8542686a622c051fa35a5161edf3dcb329173c44",
+          "AminScatter/src/prepared_band.inc": "5d01452faed01a630428506cc7ce099ee909ce64204edef5448a03c1a1000cf0",
+          "AminScatter/src/preview.cpp": "95fe2af278d2a197106fa574dffaebb6b1ad979307369e61f03e911cd84717f9",
+          "AminScatter/src/preview_batches.inc": "a2a7df3d65a6278d49aad80361bffe8db15fae1419feb44e993354f5c31c7acd",
+          "AminScatter/src/procedural.cpp": "3bbdd2ef5463edb51af32a5ff3a7c8d5579d602027dc14738edf63a16185402c",
+          "AminScatter/src/procedural_bridge.inc": "5d0d5ce93df126963e53a771da493d8cd9da3daee1497e9a0a0398ab1cc8ae9e",
+          "AminScatter/src/receiver_binding_host.h": "7260347db91b61d9009fa50a246ddafea0d10940676bcf0a547782a1e972a46b",
+          "AminScatter/src/receiver_bridge.inc": "7aa34ac55782bea094a83a0b6a58edc69bf6d08cfb81e9d27446aecff5c44795",
+          "AminScatter/src/receiver_plan.cpp": "0c3313902dcf27dd06b14a70d6b22cc0d54a1260c6a2a25d6b3e39770bb6ee4c",
+          "AminScatter/src/rollout_flow.cpp": "f1cdf4bb21e5dcb424b01a570c0c001424de3f4fa756638aafb85962bb5b4392",
+          "AminScatter/src/rollout_scroll.cpp": "5573dd56b0ecaa87c6f521abd88b07f6d7e3259174a249ab53275a0bb12fb3a7",
+          "AminScatter/src/scatter.cpp": "6da88d0e4a3828147d8ee352e6affa409ee3138d1d097348882b7d1efcc9f801",
+          "AminScatter/src/source_container.cpp": "634208e611a0cf1abffe917dfd5c31e94e7ed7e1e5a1037589786ec84fdba1b4",
+          "AminScatter/src/spacing.inc": "96ef2d89f07cf9e6c67a93f4c91e990da98016f58c6278fce543a7b09e289c77",
+          "AminScatter/src/whole_scale_bridge.inc": "8374345cee715b0ad5c65e5478f191274e1ebdcbc5ffbe861bf450d7793c45d7",
+          "AminScatter/include/brush.h": "b319260e89a2c845da6e5e228952c8670c814420e35839112189a6a7249f5e98",
+          "AminScatter/include/diagnostics.h": "e56003670ca92ae26041ea5bf23e6cd2290f1c53921a0a10e828965cfb10a092",
+          "AminScatter/include/execution.h": "e9f2cfdf677366f491dc01cea83301ce53111c5073633333a4adf1db2ad509d2",
+          "AminScatter/include/group_spacing.h": "b04b3e47f0f1d5789f274492ca4d2a0777e5f1b500070ba5ef88426c4cf08502",
+          "AminScatter/include/license_boundary.h": "92f2c3dd89977af053c27a25731246890209e0d2e3d4a1f931d4349dc2088178",
+          "AminScatter/include/point_preview.h": "5dec4890f38338f99baf1d0e163274aa515b455b34d3a8acc51f4e917017edb6",
+          "AminScatter/include/preview_sampling.h": "14e389d96653e861896a133c6efa9a6d42f96e2cc8d3e5e6ee665221b9a4645f",
+          "AminScatter/include/procedural.h": "ef9ce89dce26aa9dafb077c903af73f1b0a71ebc946febabd4bf0a006e546dbd",
+          "AminScatter/include/receiver_plan.h": "12888b851abc8e5a1b9ad127758e48490dede2d4030d19bb6696d33798e33339",
+          "AminScatter/include/scatter.h": "800670a71953893cbb65174691c47bb57ba60178ee0555fff1f7d367662838b0",
+          "AminScatter/tests/boundary_falloff_tests.cpp": "ab48b370731b7f667fc39156654d532a0693b3e0a7836a06c759ed478bf3c06a",
+          "AminScatter/tests/brush_feedback_tests.cpp": "1cfc0566a3ac7f5963ced3ae98a14b56a2380303095e2f09f7da0fd87973de02",
+          "AminScatter/tests/brush_tests.cpp": "2414237861d972f5b571dd70dfb059f8c1a88fd77181bbdbc81a0531763692dd",
+          "AminScatter/tests/compute_benchmark.cpp": "9f59cf70e0511c761d59c1c1b19335bbef0a3d9ddce30b3df93ce94f3adcc4c5",
+          "AminScatter/tests/data/brush_sphere_pole.txt": "3e2bf0a248e2e0539ff4eadce7af0e1f8f12850636aa5d1293c03a5ea78ee819",
+          "AminScatter/tests/diagnostics_tests.cpp": "d883857f6b18f382214c9b7caf40be6c342c873dbed256ce3968fccfb2aa2ff6",
+          "AminScatter/tests/edge_border_tests.cpp": "f85b1c429fc080e94ea7bdc5771286cef066d7979acfe4065caf5bc30f3c49b1",
+          "AminScatter/tests/group_spacing_tests.cpp": "67300e62c679ea27b95784216441af79119668cc3008a3a71dab04b493f75046",
+          "AminScatter/tests/orientation_tests.cpp": "3a49477ce55d03cd342beec23123b581a50a7d8f13626834207661c2f4fa8076",
+          "AminScatter/tests/prepared_band_tests.cpp": "ce1622cbe460eaba14c09a34ed669fcc74bdb08b018c17c754d12b0ddf33769d",
+          "AminScatter/tests/preview_sampling_tests.cpp": "e2eac5bd2ef640e5dc11f8778bb55749033baea4714d5fe2fccbd764f80be819",
+          "AminScatter/tests/procedural_tests.cpp": "12e281b6479576d1f6cd22fb4d4565d68173354ff7c36d49debfc6885bc3ec5b",
+          "AminScatter/tests/receiver_tests.cpp": "156ef3f95511f328d20a8e34e6f06dc106147dd69af1b1daa432813b65b59c90",
+          "AminScatter/tests/scatter_tests.cpp": "c0e0eb48287e008d6f88c4baadd013d183bf49125f607c8c716315237600c402",
+          "AminScatter/tests/spacing_tests.cpp": "9fc18b3e4629b9e9a1b79b67ceb75f21ae671211396a5cfd909239040fc5a2e7",
+          "AminScatter/tests/threading_tests.cpp": "f3336cfd3ffe0c642fd839cf7eb4b6002fd697a04072010f963bf1d020f87507",
+          "AminScatter/tests/weight_tests.cpp": "792203629d369f7476d097c97f3dc8082811a5e5deb8fbc62ff74ab1a7b65df9",
+          "AminScatter/third_party/clipper2/include/clipper2/clipper.core.h": "b667c2fe968344252e2c32c0cffc09cf6520164e272fcf63bf46eccc707b138f",
+          "AminScatter/third_party/clipper2/include/clipper2/clipper.engine.h": "e77185eb535cdae22feb85a045b6b90365f0cfd841bd7fb01714fc03a026fa09",
+          "AminScatter/third_party/clipper2/include/clipper2/clipper.export.h": "035e4257f1f127d6a17833331922f2b1b615371b64bb4cd625842102517793b0",
+          "AminScatter/third_party/clipper2/include/clipper2/clipper.h": "145efd001ef2f45ac5655a18e19d8a122efdf665c38d306a1fe91ce9e0d18450",
+          "AminScatter/third_party/clipper2/include/clipper2/clipper.minkowski.h": "6ea4f08d3e2561bdd4d95a548e1b5d7983100e317ed805616b8d602f03d3dbe3",
+          "AminScatter/third_party/clipper2/include/clipper2/clipper.offset.h": "147e5f4694327d62cec31fec55b69537f178e808a715a533bb42c01a85cc435a",
+          "AminScatter/third_party/clipper2/include/clipper2/clipper.rectclip.h": "2970dbe3f91d32e96abc3117240694fc09f354060ff84e4a95014ec510f4d8dd",
+          "AminScatter/third_party/clipper2/include/clipper2/clipper.triangulation.h": "a82d32e65583cce5a6d704796c54de3ddd2963d219057263a0f87f8d14a07d6c",
+          "AminScatter/third_party/clipper2/include/clipper2/clipper.version.h": "0d636f1599b09743496d5c15c7dcb5bc3101bd423d6745bf17e480edbffccdac",
+          "AminScatter/third_party/clipper2/LICENSE": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+          "AminScatter/third_party/clipper2/PROVENANCE.json": "a396deca238f76be6efb163279b064d376e7c0f8f84b204d5e104a7f2dfeeb23",
+          "AminScatter/third_party/clipper2/src/clipper.engine.cpp": "7b2cc17d4debd3b5ee6bd2c592ecda5082253324c7dd514b5593ae1b2c7812b2",
+          "AminScatter/third_party/clipper2/src/clipper.offset.cpp": "ebc01258953212d20fed090a4a740f94926c3c6706a092fec4c5e9cb5292305a",
+          "AminScatter/third_party/clipper2/src/clipper.rectclip.cpp": "79c7d8d90dd3b577db77a152c4739f6f49bfda8727528291250d3d8e8d79e18c"
+        },
+        "qualification": "SDK compilation and native executables only; generated MAXScript is hashed, not compiled by Max."
+      },
+      "button_assertions": 26,
+      "button_checks": [
+        "Patched script version loaded",
+        "Main Start Brush bound to selected area",
+        "Status delegate resolves its rollout function",
+        "Main button starts native and scripted sessions",
+        "Session survives real timer callbacks after Start",
+        "Main status reports active brush",
+        "Actual Painter TestHit and PaintStroke callbacks accept the entire path",
+        "Callback EndStroke commits contours and keeps brush active",
+        "Manual drawing preserves the completed population until Update",
+        "Explicit Update publishes painted plants",
+        "Painting reuses receiver candidate caches",
+        "Erase radio updates native settings",
+        "Erase callbacks cut the committed vector region",
+        "Callback Undo restores exact placements",
+        "Callback Redo restores erase",
+        "Callback cancellation preserves committed region",
+        "Stop button ends session and timer",
+        "Floating editor selects the same native area",
+        "Floating Start Brush survives timer and UI refresh",
+        "Live population publication waits while interaction is held",
+        "Live callback painting publishes new plants automatically",
+        "Live publication preserves active brush",
+        "New receiver area binds to the main brush",
+        "Second receiver paints independently and retains the first",
+        "Button workflow saved",
+        "Layout mode inspection does not publish or regenerate candidates"
+      ],
+      "vector_assertions": 376,
+      "passive_inspection_assertions": 6,
+      "native_layout": {
+        "contexts": 36,
+        "rectangles_checked": 2168,
+        "unique_control_names": 401,
+        "clipped": [],
+        "overlaps": [],
+        "passed": true,
+        "scope": "Native bounds at current display scaling; not font glyph, DPI, visual or pointer qualification"
+      },
+      "playback_assertions": 835,
+      "playback_last_line": "SUCCESS 835 assertions",
+      "suite": [
+        {
+          "fixture": "button_workflow",
+          "exit_code": 0,
+          "output": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vector-brush-078/fix-host2026-02/test-d982deb7b73349dc9399d57486f3c2cb.ms\n"
+        },
+        {
+          "fixture": "layout_diagnostic",
+          "exit_code": 0,
+          "output": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vector-brush-078/fix-host2026-02/test-01520c02317f41748a0561be08d4e046.ms\n"
+        },
+        {
+          "fixture": "layout_modes",
+          "exit_code": 0,
+          "output": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vector-brush-078/fix-host2026-02/test-00354f45dfc6420f8c7c5d28ed230f9c.ms\n"
+        },
+        {
+          "fixture": "acceptance",
+          "exit_code": 0,
+          "output": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vector-brush-078/fix-host2026-02/test-990496ab152642f0ad2aa0d4e56bb715.ms\n"
+        },
+        {
+          "fixture": "extended",
+          "exit_code": 0,
+          "output": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vector-brush-078/fix-host2026-02/test-1593d04e74a04196bd44e29055380274.ms\n"
+        },
+        {
+          "fixture": "inspection",
+          "exit_code": 0,
+          "output": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vector-brush-078/fix-host2026-02/test-f1758278a480414f97192888fd2d3741.ms\n"
+        },
+        {
+          "fixture": "performance",
+          "exit_code": 0,
+          "output": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vector-brush-078/fix-host2026-02/test-be8fc8b1b5254813a92dab24561a243a.ms\n"
+        },
+        {
+          "fixture": "playback",
+          "exit_code": 0,
+          "output": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vector-brush-078/fix-host2026-02/test-fb2cf89c158d418fb6bd3e7b87a384b8.ms\n"
+        }
+      ],
+      "measurements": {
+        "400_edits": {
+          "edit_and_border_ms": {
+            "median": 4.3094,
+            "p95_nearest_rank": 5.8105,
+            "max": 6.5257,
+            "n": 400
+          }
+        },
+        "40_edits": {
+          "author_ms": {
+            "median": 0.58955,
+            "p95_nearest_rank": 0.9433,
+            "max": 1.1788,
+            "n": 40
+          },
+          "border_ms": {
+            "median": 2.2531,
+            "p95_nearest_rank": 2.9123,
+            "max": 2.9974,
+            "n": 40
+          },
+          "update_ms": {
+            "median": 75.83085,
+            "p95_nearest_rank": 105.375,
+            "max": 346.05,
+            "n": 40
+          }
+        }
+      },
+      "cache_counters": "Receiver caches before #(8, 10, 2) after #(8, 90, 2)\nCombined row assembly before #(9, 1, 5000) after #(49, 1, 5000)\n",
+      "receipts": {
+        "launch.json": {
+          "path": "build/vector-brush-078/fix-host2026-02/launch.json",
+          "sha256": "af1b7216a16897440c316f92b97a2be9a711850538abffc4c396561b11799ee6"
+        },
+        "loaded.tsv": {
+          "path": "build/vector-brush-078/fix-host2026-02/loaded.tsv",
+          "sha256": "d43fff728ec6b528bc835fad72ed3d8357e1f16736f8ade31953efe9829eb3f7"
+        },
+        "suite.json": {
+          "path": "build/vector-brush-078/fix-host2026-02/suite.json",
+          "sha256": "17946f19cde3edbff8f9cc99428c1ba0eb9f8143342b02901e8ca4f7114cf95d"
+        },
+        "button-checks.txt": {
+          "path": "build/vector-brush-078/fix-host2026-02/button-checks.txt",
+          "sha256": "614a95de823c3d652e837c0bde8d85e50b99be3ac4feb5463f578e7d834e7518"
+        },
+        "vector-checks.txt": {
+          "path": "build/vector-brush-078/fix-host2026-02/vector-checks.txt",
+          "sha256": "21f56de506cd8393d76b05c852e2b9b3ab67a73e60ab25f0a8cbe860ed524693"
+        },
+        "layout-result.json": {
+          "path": "build/vector-brush-078/fix-host2026-02/layout-result.json",
+          "sha256": "e70e50ac3e7cbe2405bdfdaf481676c15884a1d70a88e4c0149271f7c36b8248"
+        },
+        "layout-measurements.json": {
+          "path": "build/vector-brush-078/fix-host2026-02/layout-measurements.json",
+          "sha256": "5c8ece417741a4fa868ae3fed037304739375eb203b658a0f1af4b955a90f0ac"
+        },
+        "inspection.json": {
+          "path": "build/vector-brush-078/fix-host2026-02/inspection.json",
+          "sha256": "c38538e078e2f63cb4d8a892b2ea374a1a9d03c9f00fecf85faa2131ac09761e"
+        },
+        "vector-timings.csv": {
+          "path": "build/vector-brush-078/fix-host2026-02/vector-timings.csv",
+          "sha256": "425e7ae93e0739281fad8b68713e41f18ed450385a140b25c56cbd5ab897263a"
+        },
+        "population-timings.csv": {
+          "path": "build/vector-brush-078/fix-host2026-02/population-timings.csv",
+          "sha256": "9b33a5a443844d47c6a890049a82de25426411c06ae838dba2c08421854ab2f2"
+        },
+        "cache-counters.txt": {
+          "path": "build/vector-brush-078/fix-host2026-02/cache-counters.txt",
+          "sha256": "577b5b6a6ccc2a92d9bcf93302ebb65772420621748ed70f63747ec3522cf026"
+        },
+        "playback/result.txt": {
+          "path": "build/vector-brush-078/fix-host2026-02/playback/result.txt",
+          "sha256": "10501231494d59985c2c6fec279c7b489127be9cfa1d0efd953c7733433a2b6b"
+        },
+        "playback/loaded-native.txt": {
+          "path": "build/vector-brush-078/fix-host2026-02/playback/loaded-native.txt",
+          "sha256": "b3124a11b8dd7d1c20151cecb40ced6aad4cc15bf278cab816f771abfb372fee"
+        }
+      },
+      "package_receipt": "PACKAGE-2026.json"
+    },
+    "2027": {
+      "launch": {
+        "pid": 17780,
+        "max_year": 2027,
+        "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\fix-host2027-02",
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+          "-q",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\fix-host2027-02\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\fix-host2027-02\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\fix-host2027-02\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\fix-host2027-02\\listener.log"
+        ],
+        "binaries": {
+          "AminScatter.dlx": "19ec7e6a7a0776d9fb5168753347d33130f98b9fb4f2a6406cf4902ad277fb77",
+          "CyrusBrush.dlx": "868eebed7d12da12a171af1160083efc0871678b6e605e58bd0c5a1285f6c61e",
+          "CyrusBrushStorage.dlh": "52e33f9285341f3133ade0f9c3ddeba1ff753808dbb0531efa6c897cf65f8811",
+          "CyrusScatterEdit.dlm": "131a0cee884bd85ebc7680501dece4c9d21c993012714d23e9c2e73ad2ecc694",
+          "CyrusPrivatePaintProbe.dlx": "f8420497842282a73c3ada54460b4d062c2ae4b8d6ba74382eab91c078c62715"
+        },
+        "script_sha256": "bc58822b92b006350ee47d0435117f9e4a79476f23668998be58c0ed9ab27361",
+        "normal_profile_modified": false,
+        "development_transport": true
+      },
+      "native_build": {
+        "stages": [
+          {
+            "stage": "configure",
+            "exit_code": 0
+          },
+          {
+            "stage": "build",
+            "exit_code": 0
+          },
+          {
+            "stage": "tests",
+            "exit_code": 0
+          }
+        ],
+        "project": "scatter",
+        "max_year": 2027,
+        "host_launched": false,
+        "installed": false,
+        "binaries": {
+          "build/vector-brush-078/fix-max2027-01/AminScatter.dlx": "19ec7e6a7a0776d9fb5168753347d33130f98b9fb4f2a6406cf4902ad277fb77",
+          "build/vector-brush-078/fix-max2027-01/CyrusBrush.dlx": "868eebed7d12da12a171af1160083efc0871678b6e605e58bd0c5a1285f6c61e",
+          "build/vector-brush-078/fix-max2027-01/CyrusBrushStorage.dlh": "52e33f9285341f3133ade0f9c3ddeba1ff753808dbb0531efa6c897cf65f8811",
+          "build/vector-brush-078/fix-max2027-01/CyrusScatterEdit.dlm": "131a0cee884bd85ebc7680501dece4c9d21c993012714d23e9c2e73ad2ecc694"
+        },
+        "sources": {
+          "AminScatter/CMakeLists.txt": "bcfc535b333da68c38185bc01f8c6ea7e5e5df04f1ed082c8dc2fc9f75869136",
+          "AminScatter/scripts/AminScatterObject.ms": "dad8a98acc9cbb4932cc5e38d14671539b3cba076814865dc6fd9db2cb1b3b4d",
+          "cmake/CyrusMaxSDK.cmake": "53cf91db75742990b80d1f0a8dc8094d45a2a964094b3785b2f6eb1c8b55248e",
+          "AminScatter/src/analyzer_area_bridge.inc": "90c08d2650c8bea809900fd23f2abc8d3e26272c95d49a315552711aa6ad48bc",
+          "AminScatter/src/authored_revision.inc": "9bdb0aadfa193983d9d18f42ac2e1ffe414bd6a99a5d556553dc2a00c1d8fe1e",
+          "AminScatter/src/boundary_falloff.inc": "a8c2669675dcb853d79c2ceaf90bf092d09c27d09a48991f0ac3cd024737d99f",
+          "AminScatter/src/boundary_falloff_bridge.inc": "4af974149fa2fc6a82a6e2d0401bb88deca0e3cc9441ea6b8757013e7259d555",
+          "AminScatter/src/brush.cpp": "d5244e03bb1ad3748099deea38362f44582187941fc7dc2b85cfe38cd1771c21",
+          "AminScatter/src/brush_host.cpp": "d8b53c92d3eb5369604deaee8d52ae5a5b0f67414ebb69f8e561e9416dde9d86",
+          "AminScatter/src/brush_storage_plugin.cpp": "cf3d949ca9695e42c70f0905db41bd24e77d520b7f7a571a72a8bfc69ce995d3",
+          "AminScatter/src/brush_surface.cpp": "6459e56257d8d6bd695dbebb1e055d6105abdb85ae68e262e4008149968f63ac",
+          "AminScatter/src/cluster.inc": "e3f7eddd8133e34f91c1e50d5c4d1ac4ca2f4a6dc611728a0848c16f9f3e3680",
+          "AminScatter/src/cyrus_edit.cpp": "877cca5c4aee0f7253701bf04873bb6f56fe2113a6d9f4e764698566f3e4b9b2",
+          "AminScatter/src/cyrus_edit.rc": "2ed905b328e04f092f89a4e1e800d9fba724a0c33f9ea3262fe886040f53fb33",
+          "AminScatter/src/cyrus_edit_stack.inc": "5c1875f5e61be1fb96bdef409803ad91d19ea14db25a9fa8c8da45b9aa516965",
+          "AminScatter/src/cyrus_edit_storage.inc": "4e9e9f23845a0d9ee2b0fed5fdba450b176cbbe5b4b04a557cb1963655f43109",
+          "AminScatter/src/diagnostics.cpp": "8f7e61296c0570aa6288e50ae159f041ef449768a00781abbc84ac033febeeb4",
+          "AminScatter/src/diagnostics_bridge.cpp": "ce31a4bed58860076bbbd6deb5a15302890facda98d29e8d3f0e65fe794c2da7",
+          "AminScatter/src/edge_border.inc": "df5f43d5614d1d44a274b9a67c70c659d24964b1ffad665e1956232581951f8c",
+          "AminScatter/src/edit_plugin.cpp": "79f0056899a9c831022e17f12ae35232890e6e21b44b9c7b6f608632f871ac9b",
+          "AminScatter/src/execution.cpp": "b54963d69441d473ed52f76b125c4eb3d0a38c564900f28abd76efa7bcbf1136",
+          "AminScatter/src/final.inc": "ba36be03d08d2af4726b9b44b411e05c191a90bc73db1269f7670722bbf6f5e5",
+          "AminScatter/src/geometry_preview.inc": "7047fa63975747f59f018e8d1b0d76ee3751190643376498a122a084cf731aa0",
+          "AminScatter/src/group_spacing.cpp": "73d973b3d22f51c00dae7f4282d7f8159b19dea0b27f7ddb57c2d06815acc1a1",
+          "AminScatter/src/group_spacing_bridge.inc": "84514cdc7a7d4d9690d5ae179af1d9864897f4a1e56edacf2f4bacd158db77a7",
+          "AminScatter/src/input_validity.cpp": "a65514bdcee3e67d3296768063979ed1c670b020323bc62e757ac7a9c232605d",
+          "AminScatter/src/max_bridge.cpp": "eade14886e49332d3a599a18528b2cadeebb619148658f3391f87e20d8593934",
+          "AminScatter/src/mesh_display.inc": "91b694e319d1d5864f1ae6a6dd67c8bb033d44420f770ed0645c4cc4547d8c39",
+          "AminScatter/src/orientation.inc": "d485e2b8ea5c3abf3fc00a7e7b7139ae4b5d3995ee17f3aad7afff8cc4bfcea8",
+          "AminScatter/src/orientation_bridge.inc": "c967d950dfd1308bd989dc3e819b959ae64eb69acdaf728b4c6ba2dd694c639e",
+          "AminScatter/src/placement_identity.inc": "a33f6d19e8bff75b90e2cbbc2f969d00c5982c5301918efddf1108a86ca0a2aa",
+          "AminScatter/src/point_display.cpp": "358c5ff13763542dcc27eb2d8542686a622c051fa35a5161edf3dcb329173c44",
+          "AminScatter/src/prepared_band.inc": "5d01452faed01a630428506cc7ce099ee909ce64204edef5448a03c1a1000cf0",
+          "AminScatter/src/preview.cpp": "95fe2af278d2a197106fa574dffaebb6b1ad979307369e61f03e911cd84717f9",
+          "AminScatter/src/preview_batches.inc": "a2a7df3d65a6278d49aad80361bffe8db15fae1419feb44e993354f5c31c7acd",
+          "AminScatter/src/procedural.cpp": "3bbdd2ef5463edb51af32a5ff3a7c8d5579d602027dc14738edf63a16185402c",
+          "AminScatter/src/procedural_bridge.inc": "5d0d5ce93df126963e53a771da493d8cd9da3daee1497e9a0a0398ab1cc8ae9e",
+          "AminScatter/src/receiver_binding_host.h": "7260347db91b61d9009fa50a246ddafea0d10940676bcf0a547782a1e972a46b",
+          "AminScatter/src/receiver_bridge.inc": "7aa34ac55782bea094a83a0b6a58edc69bf6d08cfb81e9d27446aecff5c44795",
+          "AminScatter/src/receiver_plan.cpp": "0c3313902dcf27dd06b14a70d6b22cc0d54a1260c6a2a25d6b3e39770bb6ee4c",
+          "AminScatter/src/rollout_flow.cpp": "f1cdf4bb21e5dcb424b01a570c0c001424de3f4fa756638aafb85962bb5b4392",
+          "AminScatter/src/rollout_scroll.cpp": "5573dd56b0ecaa87c6f521abd88b07f6d7e3259174a249ab53275a0bb12fb3a7",
+          "AminScatter/src/scatter.cpp": "6da88d0e4a3828147d8ee352e6affa409ee3138d1d097348882b7d1efcc9f801",
+          "AminScatter/src/source_container.cpp": "634208e611a0cf1abffe917dfd5c31e94e7ed7e1e5a1037589786ec84fdba1b4",
+          "AminScatter/src/spacing.inc": "96ef2d89f07cf9e6c67a93f4c91e990da98016f58c6278fce543a7b09e289c77",
+          "AminScatter/src/whole_scale_bridge.inc": "8374345cee715b0ad5c65e5478f191274e1ebdcbc5ffbe861bf450d7793c45d7",
+          "AminScatter/include/brush.h": "b319260e89a2c845da6e5e228952c8670c814420e35839112189a6a7249f5e98",
+          "AminScatter/include/diagnostics.h": "e56003670ca92ae26041ea5bf23e6cd2290f1c53921a0a10e828965cfb10a092",
+          "AminScatter/include/execution.h": "e9f2cfdf677366f491dc01cea83301ce53111c5073633333a4adf1db2ad509d2",
+          "AminScatter/include/group_spacing.h": "b04b3e47f0f1d5789f274492ca4d2a0777e5f1b500070ba5ef88426c4cf08502",
+          "AminScatter/include/license_boundary.h": "92f2c3dd89977af053c27a25731246890209e0d2e3d4a1f931d4349dc2088178",
+          "AminScatter/include/point_preview.h": "5dec4890f38338f99baf1d0e163274aa515b455b34d3a8acc51f4e917017edb6",
+          "AminScatter/include/preview_sampling.h": "14e389d96653e861896a133c6efa9a6d42f96e2cc8d3e5e6ee665221b9a4645f",
+          "AminScatter/include/procedural.h": "ef9ce89dce26aa9dafb077c903af73f1b0a71ebc946febabd4bf0a006e546dbd",
+          "AminScatter/include/receiver_plan.h": "12888b851abc8e5a1b9ad127758e48490dede2d4030d19bb6696d33798e33339",
+          "AminScatter/include/scatter.h": "800670a71953893cbb65174691c47bb57ba60178ee0555fff1f7d367662838b0",
+          "AminScatter/tests/boundary_falloff_tests.cpp": "ab48b370731b7f667fc39156654d532a0693b3e0a7836a06c759ed478bf3c06a",
+          "AminScatter/tests/brush_feedback_tests.cpp": "1cfc0566a3ac7f5963ced3ae98a14b56a2380303095e2f09f7da0fd87973de02",
+          "AminScatter/tests/brush_tests.cpp": "2414237861d972f5b571dd70dfb059f8c1a88fd77181bbdbc81a0531763692dd",
+          "AminScatter/tests/compute_benchmark.cpp": "9f59cf70e0511c761d59c1c1b19335bbef0a3d9ddce30b3df93ce94f3adcc4c5",
+          "AminScatter/tests/data/brush_sphere_pole.txt": "3e2bf0a248e2e0539ff4eadce7af0e1f8f12850636aa5d1293c03a5ea78ee819",
+          "AminScatter/tests/diagnostics_tests.cpp": "d883857f6b18f382214c9b7caf40be6c342c873dbed256ce3968fccfb2aa2ff6",
+          "AminScatter/tests/edge_border_tests.cpp": "f85b1c429fc080e94ea7bdc5771286cef066d7979acfe4065caf5bc30f3c49b1",
+          "AminScatter/tests/group_spacing_tests.cpp": "67300e62c679ea27b95784216441af79119668cc3008a3a71dab04b493f75046",
+          "AminScatter/tests/orientation_tests.cpp": "3a49477ce55d03cd342beec23123b581a50a7d8f13626834207661c2f4fa8076",
+          "AminScatter/tests/prepared_band_tests.cpp": "ce1622cbe460eaba14c09a34ed669fcc74bdb08b018c17c754d12b0ddf33769d",
+          "AminScatter/tests/preview_sampling_tests.cpp": "e2eac5bd2ef640e5dc11f8778bb55749033baea4714d5fe2fccbd764f80be819",
+          "AminScatter/tests/procedural_tests.cpp": "12e281b6479576d1f6cd22fb4d4565d68173354ff7c36d49debfc6885bc3ec5b",
+          "AminScatter/tests/receiver_tests.cpp": "156ef3f95511f328d20a8e34e6f06dc106147dd69af1b1daa432813b65b59c90",
+          "AminScatter/tests/scatter_tests.cpp": "c0e0eb48287e008d6f88c4baadd013d183bf49125f607c8c716315237600c402",
+          "AminScatter/tests/spacing_tests.cpp": "9fc18b3e4629b9e9a1b79b67ceb75f21ae671211396a5cfd909239040fc5a2e7",
+          "AminScatter/tests/threading_tests.cpp": "f3336cfd3ffe0c642fd839cf7eb4b6002fd697a04072010f963bf1d020f87507",
+          "AminScatter/tests/weight_tests.cpp": "792203629d369f7476d097c97f3dc8082811a5e5deb8fbc62ff74ab1a7b65df9",
+          "AminScatter/third_party/clipper2/include/clipper2/clipper.core.h": "b667c2fe968344252e2c32c0cffc09cf6520164e272fcf63bf46eccc707b138f",
+          "AminScatter/third_party/clipper2/include/clipper2/clipper.engine.h": "e77185eb535cdae22feb85a045b6b90365f0cfd841bd7fb01714fc03a026fa09",
+          "AminScatter/third_party/clipper2/include/clipper2/clipper.export.h": "035e4257f1f127d6a17833331922f2b1b615371b64bb4cd625842102517793b0",
+          "AminScatter/third_party/clipper2/include/clipper2/clipper.h": "145efd001ef2f45ac5655a18e19d8a122efdf665c38d306a1fe91ce9e0d18450",
+          "AminScatter/third_party/clipper2/include/clipper2/clipper.minkowski.h": "6ea4f08d3e2561bdd4d95a548e1b5d7983100e317ed805616b8d602f03d3dbe3",
+          "AminScatter/third_party/clipper2/include/clipper2/clipper.offset.h": "147e5f4694327d62cec31fec55b69537f178e808a715a533bb42c01a85cc435a",
+          "AminScatter/third_party/clipper2/include/clipper2/clipper.rectclip.h": "2970dbe3f91d32e96abc3117240694fc09f354060ff84e4a95014ec510f4d8dd",
+          "AminScatter/third_party/clipper2/include/clipper2/clipper.triangulation.h": "a82d32e65583cce5a6d704796c54de3ddd2963d219057263a0f87f8d14a07d6c",
+          "AminScatter/third_party/clipper2/include/clipper2/clipper.version.h": "0d636f1599b09743496d5c15c7dcb5bc3101bd423d6745bf17e480edbffccdac",
+          "AminScatter/third_party/clipper2/LICENSE": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+          "AminScatter/third_party/clipper2/PROVENANCE.json": "a396deca238f76be6efb163279b064d376e7c0f8f84b204d5e104a7f2dfeeb23",
+          "AminScatter/third_party/clipper2/src/clipper.engine.cpp": "7b2cc17d4debd3b5ee6bd2c592ecda5082253324c7dd514b5593ae1b2c7812b2",
+          "AminScatter/third_party/clipper2/src/clipper.offset.cpp": "ebc01258953212d20fed090a4a740f94926c3c6706a092fec4c5e9cb5292305a",
+          "AminScatter/third_party/clipper2/src/clipper.rectclip.cpp": "79c7d8d90dd3b577db77a152c4739f6f49bfda8727528291250d3d8e8d79e18c"
+        },
+        "qualification": "SDK compilation and native executables only; generated MAXScript is hashed, not compiled by Max."
+      },
+      "button_assertions": 26,
+      "button_checks": [
+        "Patched script version loaded",
+        "Main Start Brush bound to selected area",
+        "Status delegate resolves its rollout function",
+        "Main button starts native and scripted sessions",
+        "Session survives real timer callbacks after Start",
+        "Main status reports active brush",
+        "Actual Painter TestHit and PaintStroke callbacks accept the entire path",
+        "Callback EndStroke commits contours and keeps brush active",
+        "Manual drawing preserves the completed population until Update",
+        "Explicit Update publishes painted plants",
+        "Painting reuses receiver candidate caches",
+        "Erase radio updates native settings",
+        "Erase callbacks cut the committed vector region",
+        "Callback Undo restores exact placements",
+        "Callback Redo restores erase",
+        "Callback cancellation preserves committed region",
+        "Stop button ends session and timer",
+        "Floating editor selects the same native area",
+        "Floating Start Brush survives timer and UI refresh",
+        "Live population publication waits while interaction is held",
+        "Live callback painting publishes new plants automatically",
+        "Live publication preserves active brush",
+        "New receiver area binds to the main brush",
+        "Second receiver paints independently and retains the first",
+        "Button workflow saved",
+        "Layout mode inspection does not publish or regenerate candidates"
+      ],
+      "vector_assertions": 429,
+      "passive_inspection_assertions": 6,
+      "native_layout": {
+        "contexts": 36,
+        "rectangles_checked": 2168,
+        "unique_control_names": 401,
+        "clipped": [],
+        "overlaps": [],
+        "passed": true,
+        "scope": "Native bounds at current display scaling; not font glyph, DPI, visual or pointer qualification"
+      },
+      "playback_assertions": 835,
+      "playback_last_line": "SUCCESS 835 assertions",
+      "suite": [
+        {
+          "fixture": "button_workflow",
+          "exit_code": 0,
+          "output": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vector-brush-078/fix-host2027-02/test-e9e50608983047f7995fa9717cedd52f.ms\n"
+        },
+        {
+          "fixture": "layout_diagnostic",
+          "exit_code": 0,
+          "output": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vector-brush-078/fix-host2027-02/test-3780cec820d945fa8f6586e99e0d9032.ms\n"
+        },
+        {
+          "fixture": "layout_modes",
+          "exit_code": 0,
+          "output": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vector-brush-078/fix-host2027-02/test-fde2e35e5da7450cbffc1d4f452bd039.ms\n"
+        },
+        {
+          "fixture": "acceptance",
+          "exit_code": 0,
+          "output": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vector-brush-078/fix-host2027-02/test-aa135ccfcfc048ea96be6d1ea422489b.ms\n"
+        },
+        {
+          "fixture": "extended",
+          "exit_code": 0,
+          "output": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vector-brush-078/fix-host2027-02/test-39c39eb808a244a6b5f59e824e9ab8b7.ms\n"
+        },
+        {
+          "fixture": "inspection",
+          "exit_code": 0,
+          "output": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vector-brush-078/fix-host2027-02/test-05813bc48a73426d99c7fae42b75bbb0.ms\n"
+        },
+        {
+          "fixture": "performance",
+          "exit_code": 0,
+          "output": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vector-brush-078/fix-host2027-02/test-be2675fab3fd4c2cac0eb61f807418b4.ms\n"
+        },
+        {
+          "fixture": "playback",
+          "exit_code": 0,
+          "output": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vector-brush-078/fix-host2027-02/test-1207feaa6f9a468ea6f902dab418bd0a.ms\n"
+        }
+      ],
+      "measurements": {
+        "400_edits": {
+          "edit_and_border_ms": {
+            "median": 4.3076,
+            "p95_nearest_rank": 6.0822,
+            "max": 8.618,
+            "n": 400
+          }
+        },
+        "40_edits": {
+          "author_ms": {
+            "median": 0.4683,
+            "p95_nearest_rank": 0.8533,
+            "max": 0.9776,
+            "n": 40
+          },
+          "border_ms": {
+            "median": 2.0836,
+            "p95_nearest_rank": 2.8336,
+            "max": 5.7243,
+            "n": 40
+          },
+          "update_ms": {
+            "median": 58.85685,
+            "p95_nearest_rank": 67.1387,
+            "max": 341.79,
+            "n": 40
+          }
+        }
+      },
+      "cache_counters": "Receiver caches before #(8, 10, 2) after #(8, 90, 2)\nCombined row assembly before #(9, 1, 5000) after #(49, 1, 5000)\n",
+      "receipts": {
+        "launch.json": {
+          "path": "build/vector-brush-078/fix-host2027-02/launch.json",
+          "sha256": "cf7079963a91dd33aa6b4d54c1da725fa82c7149d045f6e62d353d61a26bd5f2"
+        },
+        "loaded.tsv": {
+          "path": "build/vector-brush-078/fix-host2027-02/loaded.tsv",
+          "sha256": "fd91fb581837024262bf5bb903f221af96b418c694668032dabf420979d85dd7"
+        },
+        "suite.json": {
+          "path": "build/vector-brush-078/fix-host2027-02/suite.json",
+          "sha256": "798adbd80c402527c19ad847ee80c6751df8203ea5e4adf33fe146aa811f3d38"
+        },
+        "button-checks.txt": {
+          "path": "build/vector-brush-078/fix-host2027-02/button-checks.txt",
+          "sha256": "614a95de823c3d652e837c0bde8d85e50b99be3ac4feb5463f578e7d834e7518"
+        },
+        "vector-checks.txt": {
+          "path": "build/vector-brush-078/fix-host2027-02/vector-checks.txt",
+          "sha256": "466f922dd4c263785b16644079199f355c1e0b582a857377ed7e044ef1dd6d07"
+        },
+        "layout-result.json": {
+          "path": "build/vector-brush-078/fix-host2027-02/layout-result.json",
+          "sha256": "e70e50ac3e7cbe2405bdfdaf481676c15884a1d70a88e4c0149271f7c36b8248"
+        },
+        "layout-measurements.json": {
+          "path": "build/vector-brush-078/fix-host2027-02/layout-measurements.json",
+          "sha256": "3ac5abaef4629f80816870ac64f4b29161e9e7e51762c276d4cb14ddb9b120a2"
+        },
+        "inspection.json": {
+          "path": "build/vector-brush-078/fix-host2027-02/inspection.json",
+          "sha256": "4b59397803b41c99f40cbc8498b5ed96527498e7a62071031a804a06bf9ebc94"
+        },
+        "vector-timings.csv": {
+          "path": "build/vector-brush-078/fix-host2027-02/vector-timings.csv",
+          "sha256": "2193acc06c769453c8c3ddb16d15341d036575986fb2ff88d223c13c4ecd08a5"
+        },
+        "population-timings.csv": {
+          "path": "build/vector-brush-078/fix-host2027-02/population-timings.csv",
+          "sha256": "b0e4885bc4da09fae3857086515f512de12e983133dbbb31b28985c36bb75225"
+        },
+        "cache-counters.txt": {
+          "path": "build/vector-brush-078/fix-host2027-02/cache-counters.txt",
+          "sha256": "577b5b6a6ccc2a92d9bcf93302ebb65772420621748ed70f63747ec3522cf026"
+        },
+        "playback/result.txt": {
+          "path": "build/vector-brush-078/fix-host2027-02/playback/result.txt",
+          "sha256": "4b590f3c1fb8a62e240c5e24ac9f450e1b8fc273b15000c6422d880d7913ea17"
+        },
+        "playback/loaded-native.txt": {
+          "path": "build/vector-brush-078/fix-host2027-02/playback/loaded-native.txt",
+          "sha256": "7e13bf82d5428398d2910c271afb0d527240e7c0f195b1a8bb018a842d8361e8"
+        }
+      },
+      "package_receipt": "PACKAGE-2027.json"
+    }
+  },
+  "baseline_failure": "Before: true | true | Cyrus Scatter | true\nDirect status ERROR: -- Type error: Call needs function or class, got: undefined\n\nAfter button: #(2L, 0L, 0L, 1L, 1L, 0L, 0L, 1L, 0L, 0L, \"\", 0.0, 0.0013, 0L, 0L, 0, 0.0, 0, 0, 1L) | session Cyrus Scatter\nAfter tick: #(2L, 0L, 0L, 1L, 0L, 0L, 0L, 1L, 0L, 0L, \"\", 0.0, 0.0013, 0L, 0L, 0, 0.0, 0, 0, 2L) | session undefined\n",
+  "limitations": [
+    "SDK callbacks are driven through an isolated diagnostic module; no physical mouse/tablet event delivery claim.",
+    "Held/released interaction provider is fixture-controlled and restored; both deferral and release are checked.",
+    "Layout checks cover native rectangles at the current scaling, not glyphs, every DPI or a visual review.",
+    "Timings include concurrent private/artist processes and are not an isolated Max-year performance comparison.",
+    "Installer execution and normal-profile restart were not performed.",
+    "Analyzer 0.14 has matching SDK/core checks, not full renderer requalification."
+  ],
+  "owned_private_hosts_closed": true,
+  "preserved_artist_processes": [
+    37884,
+    33300
+  ]
+}

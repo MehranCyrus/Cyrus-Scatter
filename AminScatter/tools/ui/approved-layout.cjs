@@ -134,7 +134,7 @@ function page(s,definition,{name=definition.name,category=0,popup=false}={}){
   // Radio-group .pos anchors the first option; its native title sits above it.
   // Give that title its own reserved row too, so it cannot overlap the previous
   // control or disappear above the rollout body.
-  if(['spinner','edittext','dropdownlist','listbox','multiListBox','radiobuttons'].includes(c.kind)){
+  if(['spinner','edittext','dropdownlist','listbox','multiListBox','radiobuttons','colorpicker'].includes(c.kind)){
    const match=/^(        \w+ \w+ )("(?:\\.|[^"\\])*"|@"[^"]*")/.exec(line);
    if(match&&match[2]!=='""'){
     c.captionID=c.id+'_caption';
@@ -159,12 +159,12 @@ function page(s,definition,{name=definition.name,category=0,popup=false}={}){
   const arr='#('+p.controls.map(c=>p.names.get(c.name.toLowerCase())).join(',')+')';
   const folds=p.controls.filter(c=>c.name==='detailsToggle'||c.name==='containersToggle').map(c=>p.names.get(c.name.toLowerCase())+'.checked=true').join(';');
   const empty=p.key==='setsUI'?'setsUI_setList.items=#();setsUI_members=#();setsUI_nameEdit.text="";':p.key==='detailsUI'?'detailsUI_info.text="Add a layer to inspect its last completed build.";':'';
-  return `            ${folds?folds+';':''}${ownerRequired?'if owner!=undefined then (':''}${p.hasBind?p.key+'_bind '+(p.setSpecific?(p.key==='brushUI'?'(root.selectedPaintArea owner)':'(root.selectedPaintSet owner)'):'owner')+';':''}${p.key==='diagnosticsUI'?'diagnosticsUI_refresh();diagnosticsUI_controlsReady=true;':''}${ownerRequired?') else (for c in '+arr+' do c.enabled=false;'+empty+p.key+'_controlsReady=false)':''}`;
+  return `            ${folds?folds+';':''}${ownerRequired?'if owner!=undefined then (':''}${p.hasBind?p.key+'_bind '+(p.setSpecific?(p.key==='brushUI'?'(root.selectedPaintArea owner)':'owner'):'owner')+';':''}${p.key==='diagnosticsUI'?'diagnosticsUI_refresh();diagnosticsUI_controlsReady=true;':''}${ownerRequired?') else (for c in '+arr+' do c.enabled=false;'+empty+p.key+'_controlsReady=false)':''}`;
  }).join('\n');
  const delegates=[];
- for(const method of ['refreshStats','refreshHistory','status','syncRelaxAvailability','syncFinalRelaxAvailability']){
+ for(const method of ['refreshStats','refreshBrushStatus','status','syncRelaxAvailability','syncFinalRelaxAvailability']){
   const owners=components.filter(p=>p.names.has(method.toLowerCase()));
-  if(owners.length)delegates.push('        fn '+method+' = ('+owners.map(p=>'if '+p.key+'_controlsReady do '+p.key+'_'+method+'()').join(';')+(['refreshStats','refreshHistory'].includes(method)?';if controlsReady do layout()':'')+';true)');
+  if(owners.length)delegates.push('        fn '+method+' = ('+owners.map(p=>'if '+p.key+'_controlsReady do '+p.key+'_'+method+'()').join(';')+(['refreshStats','refreshBrushStatus'].includes(method)?';if controlsReady do layout()':'')+';true)');
  }
  const rowText=rows.map(r=>{
   // Row conditions use fully qualified generated identifiers, intentionally
@@ -185,7 +185,7 @@ function page(s,definition,{name=definition.name,category=0,popup=false}={}){
    if(c.kind==='radiobuttons'){
     const count=(/labels:#\(([^\n]*?)\)/.exec(c.declaration)?.[1].match(/"(?:\\.|[^"\\])*"/g)||[]).length;
     const columns=Number(/columns:(\d+)/.exec(c.declaration)?.[1]||1);
-    return 20*Math.ceil(count/columns);
+    return `fitRadio ${c.id} cellWidth ${columns} place:false`;
    }
    return c.kind==='checkbox'?20:22;
   });
@@ -211,7 +211,8 @@ function page(s,definition,{name=definition.name,category=0,popup=false}={}){
    : table
    ? `rowControls[1].pos=[6,y];rowControls[1].width=18;for i=2 to 3 do (rowControls[i].pos=[28+(i-2)*(cellWidth+4)+cellWidth-12,y];fitWidth rowControls[i] cellWidth)`
    : `for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)`;
-  return `            rowControls=#(${ids.join(',')});show=${vis}\n            for c in rowControls do c.visible=show\n${captions?'            '+captions+'\n':''}            if show do (\n${r.heading?'                if y>6 do y+=4\n':''}                columns=${columns};cellWidth=${swatch?'widthValue-40':table?'(widthValue-38)/2':'(widthValue-12-(columns-1)*4)/columns'}\n${fitLabels?'                '+fitLabels+'\n':''}${fitCaptions?'                '+fitCaptions+'\n':''}                stackedCaption=${!r.pair&&inline.length?'cellWidth<'+minimum:'false'};captionHeight=amax ${reserved} (if stackedCaption then ${stacked} else 0)\n                rowHeight=${dynamic}+2+captionHeight\n                ${positions}\n${r.pair?'                for c in rowControls do fitPairField c cellWidth\n':''}${captionPositions?'                '+captionPositions+'\n':''}                y+=${table||swatch?'rowHeight':'(ceil (rowControls.count as float/columns))*rowHeight'}\n            )`;
+  const radioPositions=items.filter(c=>c.kind==='radiobuttons').map(c=>`fitRadio ${c.id} cellWidth ${Number(/columns:(\d+)/.exec(c.declaration)?.[1]||1)} place:true`).join(';');
+  return `            rowControls=#(${ids.join(',')});show=${vis}\n            for c in rowControls do c.visible=show\n${captions?'            '+captions+'\n':''}            if show do (\n${r.heading?'                if y>6 do y+=4\n':''}                columns=${columns};cellWidth=${swatch?'widthValue-40':table?'(widthValue-38)/2':'(widthValue-12-(columns-1)*4)/columns'}\n${fitLabels?'                '+fitLabels+'\n':''}${fitCaptions?'                '+fitCaptions+'\n':''}                stackedCaption=${!r.pair&&inline.length?'cellWidth<'+minimum:'false'};captionHeight=amax ${reserved} (if stackedCaption then ${stacked} else 0)\n                rowHeight=${dynamic}+2+captionHeight\n                ${positions}\n${radioPositions?'                '+radioPositions+'\n':''}${r.pair?'                for c in rowControls do fitPairField c cellWidth\n':''}${captionPositions?'                '+captionPositions+'\n':''}                y+=${table||swatch?'rowHeight':'(ceil (rowControls.count as float/columns))*rowHeight'}\n            )`;
  }).join('\n');
  const folded=controls.filter(c=>c.name==='detailsToggle'||c.name==='containersToggle'||(definition.hidden||[]).includes(c.key+'.'+c.name)).map(c=>c.id+'.visible=false').join(';');
  // Insert Advanced between basic rows and advanced rows, never as a page.
@@ -227,7 +228,19 @@ function page(s,definition,{name=definition.name,category=0,popup=false}={}){
  // These two single-window native controls expose no writable width. Their
  // creation width can precede Max's final column allocation, so resize only
  // their own HWND through the documented SDK API during explicit layout.
- const widthHelper=`        fn fitPairField control available = (
+ const widthHelper=`        fn fitRadio control available desiredColumns place:false = (
+            local buttons=for handle in control.hwnd where (windows.getHWNDData handle)[4]=="Button" collect handle
+            if buttons.count==0 do return 20
+            local boxes=for handle in buttons collect windows.getWindowPos handle
+            local widest=amax (for box in boxes collect box.w),step=amax 20 ((amax (for box in boxes collect box.h))+5)
+            local columns=amin desiredColumns (amax 1 (floor ((available+4)/(widest+4))))
+            if place do for i=1 to buttons.count do (
+                local data=windows.getHWNDData buttons[i],position=windows.screenToClient data[2] (boxes[1].x+(mod (i-1) columns)*(widest+4)) (boxes[1].y+(floor ((i-1)/columns))*step)
+                windows.setWindowPos buttons[i] position.x position.y boxes[i].w boxes[i].h true
+            )
+            step*(ceil (buttons.count as float/columns))
+        )
+        fn fitPairField control available = (
             local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
             for handle in control.hwnd do (
                 local data=windows.getHWNDData handle
@@ -239,7 +252,12 @@ function page(s,definition,{name=definition.name,category=0,popup=false}={}){
             true
         )
         fn fitWidth control available = (
-            if isProperty control #width then control.width=available
+            if classof control==ColorPickerControl then (
+                for handle in control.hwnd where (windows.getHWNDData handle)[4]=="ColorSwatch" do (
+                    local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle,position=windows.screenToClient data[2] rectangle.x rectangle.y
+                    windows.setWindowPos handle position.x position.y (amax 1 (available as integer)) rectangle.h true
+                )
+            ) else if isProperty control #width then control.width=available
             else if classof control==CheckBoxControl or classof control==PickerControl do for handle in control.hwnd do (
                 local rectangle=windows.getWindowPos handle,target=amax 1 (available as integer)
                 if rectangle.w!=target do (
@@ -331,7 +349,7 @@ ${lists.map(c=>`        on ${c.id}_grip MouseDown sender args do beginListDrag s
 module.exports=function(s,{check=false}={}){
  const definitions=layouts.pages;
  const pages=definitions.map((d,i)=>page(s,d,{category:(i+1)*10}));
- const manifest={schema:'cyrus.ui-layout/1',version:'0.77',source:'approved single-file HTML study',sections:pages.map(p=>({name:p.name,title:definitions.find(d=>d.name===p.name).title,scope:p.scope,controls:p.controls.map(c=>({component:c.key,control:c.name,presentation:c.id,advanced:!!p.rows.find(r=>r.controls?.some(x=>x.id===c.id))?.advanced}))}))};
+ const manifest={schema:'cyrus.ui-layout/1',version:'0.78.1',source:'approved single-file HTML study',sections:pages.map(p=>({name:p.name,title:definitions.find(d=>d.name===p.name).title,scope:p.scope,controls:p.controls.map(c=>({component:c.key,control:c.name,presentation:c.id,advanced:!!p.rows.find(r=>r.controls?.some(x=>x.id===c.id))?.advanced}))}))};
  const output=JSON.stringify(manifest,null,2)+'\n',path='tools/ui/approved-layout-manifest.json';
  if(check){if(fs.readFileSync(path,'utf8')!==output)throw Error('Layout manifest is stale');}else fs.writeFileSync(path,output);
  // Replace the old native pages as one contiguous UI block, keeping calculation
@@ -343,7 +361,8 @@ module.exports=function(s,{check=false}={}){
  // Optional floating editors use the exact same composed handlers and rows.
  const popupDefs=[...definitions.filter(d=>['surfacesUI','modelsUI','layoutUI','populationUI','coverageUI','areasUI','transformsUI','spacingUI','statisticsUI'].includes(d.name)),layouts.popupSets];
  const factories=popupDefs.map(d=>`fn CyrusLayerEditor_${d.name}_1 = (\n${page(safeOriginal,d,{name:d.name+'_1',popup:true}).text}\n    ${d.name}_1\n)`);
- const popupStart=s.indexOf('fn CyrusLayerEditor_setsUI_1 = ('),popupEnd=s.indexOf('fn CyrusCreateLayerEditorSection');
+ const popupStart=s.indexOf('-- @popup-factories'),popupEnd=s.indexOf('fn CyrusCreateLayerEditorSection');
+ if(popupStart<0||popupEnd<popupStart)throw Error('Missing generated popup factory slot');
  s=s.slice(0,popupStart)+factories.join('\n\n')+'\n'+s.slice(popupEnd);
  const [fa,fb]=blocks.span(s,/^fn CyrusCreateLayerEditorSection\b[^\n]*= \(/m);
  s=s.slice(0,fa)+`fn CyrusCreateLayerEditorSection component root owner panel = (\n    CyrusLayerUIRoot=root;CyrusLayerUIOwner=owner;CyrusLayerUIPanel=panel\n    case component of (\n${popupDefs.map(d=>'        #'+d.name+': CyrusLayerEditor_'+d.name+'_1()').join('\n')}\n        default: throw "Unknown layer UI section."\n    )\n)`+s.slice(fb);

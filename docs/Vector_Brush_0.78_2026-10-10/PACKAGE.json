@@ -1,0 +1,79 @@
+{
+  "qualification": "Development candidate; no artist-profile installation or computer use",
+  "scatter_private_host": "build/vector-brush-078/host-08",
+  "script_sha256": "00250595089391d3966bdab78fdedd45df8cb348144544da44fc96441721c427",
+  "native_build": "build/vector-brush-078/max-06",
+  "native_suites": 15,
+  "host_assertions": 430,
+  "playback_assertions": 835,
+  "passive_inspection_assertions": 6,
+  "analyzer_qualification": "Unchanged 0.14 source; fresh SDK compilation and one core suite only",
+  "clipper2": {
+    "repository": "https://github.com/AngusJohnson/Clipper2",
+    "commit": "f9c5eb6e14a59f6f5d65fbfb3564519a561cf4fd",
+    "files": {
+      "include/clipper2/clipper.core.h": "b667c2fe968344252e2c32c0cffc09cf6520164e272fcf63bf46eccc707b138f",
+      "include/clipper2/clipper.engine.h": "e77185eb535cdae22feb85a045b6b90365f0cfd841bd7fb01714fc03a026fa09",
+      "include/clipper2/clipper.export.h": "035e4257f1f127d6a17833331922f2b1b615371b64bb4cd625842102517793b0",
+      "include/clipper2/clipper.h": "145efd001ef2f45ac5655a18e19d8a122efdf665c38d306a1fe91ce9e0d18450",
+      "include/clipper2/clipper.minkowski.h": "6ea4f08d3e2561bdd4d95a548e1b5d7983100e317ed805616b8d602f03d3dbe3",
+      "include/clipper2/clipper.offset.h": "147e5f4694327d62cec31fec55b69537f178e808a715a533bb42c01a85cc435a",
+      "include/clipper2/clipper.rectclip.h": "2970dbe3f91d32e96abc3117240694fc09f354060ff84e4a95014ec510f4d8dd",
+      "include/clipper2/clipper.triangulation.h": "a82d32e65583cce5a6d704796c54de3ddd2963d219057263a0f87f8d14a07d6c",
+      "include/clipper2/clipper.version.h": "0d636f1599b09743496d5c15c7dcb5bc3101bd423d6745bf17e480edbffccdac",
+      "src/clipper.engine.cpp": "7b2cc17d4debd3b5ee6bd2c592ecda5082253324c7dd514b5593ae1b2c7812b2",
+      "src/clipper.offset.cpp": "ebc01258953212d20fed090a4a740f94926c3c6706a092fec4c5e9cb5292305a",
+      "src/clipper.rectclip.cpp": "79c7d8d90dd3b577db77a152c4739f6f49bfda8727528291250d3d8e8d79e18c",
+      "LICENSE": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566"
+    },
+    "usage": "Boolean engine only; triangulation excluded"
+  },
+  "archives": {
+    "CyrusScatter-0.78.0-Max2027.mzp": {
+      "sha256": "2d91d54bf23669e6323807a280daefb40624baa85e54aa8562e6f99cf78d1d03",
+      "manifest": {
+        "product": "Cyrus Scatter",
+        "version": "0.78.0",
+        "max_year": 2027,
+        "toolset": "14.38.33130",
+        "windows_sdk": "10.0.19041.0",
+        "configuration": "Release",
+        "native_id": "8e8499b3b180",
+        "files": {
+          "AminScatter.dlx": "385cc7e6d12885e68a6b320cb7fb3e1ac1e19794040d344a9f3acc3fa3c166b8",
+          "Clipper2-LICENSE.txt": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+          "CyrusBrush.dlx": "0ba7be1a9b9eaf76d556c33b5bdbeef8b5956a6b312fa89032a4277312ad0463",
+          "CyrusBrushStorage.dlh": "682bb1007fe5180fd6cdddc2ab52f0bb11ffbb1fabe81cb3fe9d598050138375",
+          "CyrusScatter.mcr": "dfc12ff0d6a9a9e734b60b26d036b8392e91bcce41f31d93716fbcf103c67729",
+          "CyrusScatter.ms": "00250595089391d3966bdab78fdedd45df8cb348144544da44fc96441721c427",
+          "CyrusScatterEdit.dlm": "22c1c2800d498f43cd853096255e05b9074444c01f85c607992327c32f41c62b",
+          "CyrusScatterStartup.ms": "fdf38b3bc83187eecb34b833bfff2751e78626e9e3dba41aa20a0ff7ff9e8405",
+          "INSTALL.txt": "32baa588e477c653f501dd6d66e91a1dccbca8a666a1092ba2b0c90446e485ab",
+          "Uninstall.ms": "59e2b84901fcefaae1dab59886cd2f4079df4f764c789238947e19c514b4ed49",
+          "install.ms": "10edf82d5bd24031406a427a7b6136fa263266f7646bb3fd5ca17cf8c44b9549",
+          "mzp.run": "ea37b1a700703746b1d5c7b920a76d990e32abf8f83f862c601fde1c1c2164fd"
+        }
+      }
+    },
+    "CyrusSurfaceAnalyzer-0.14-Max2027.mzp": {
+      "sha256": "28bc1e97a83423ddc0bb76aa6db9a7fbbaf65e4935042133ca8719099416696e",
+      "manifest": {
+        "product": "Cyrus Surface Analyzer",
+        "version": "0.14",
+        "max_year": 2027,
+        "toolset": "14.38.33130",
+        "windows_sdk": "10.0.19041.0",
+        "configuration": "Release",
+        "native_id": "1f4727b909cc",
+        "files": {
+          "CyrusSurfaceAnalyzer.dlx": "1f4727b909cc3d46f88c51f0feba282d5ec51b53731c75f6633da4297f0839a6",
+          "CyrusSurfaceAnalyzer.ms": "716a78868a78ea01842bdfa680baa628316530ca774aea7b537c7fef3db0d7ae",
+          "CyrusSurfaceAnalyzerStartup.ms": "fdef46e54790c5c6d893479a17c6c885e4ff39897d00f1eac6b8567f86c18425",
+          "INSTALL.txt": "b5e0f5c26672c20cf396effda0d25e993b68263789f55b3c112b0e934516eec8",
+          "install.ms": "6445e5cc3f8379ff183f19289340aa62199d02deb753ccf9fc172ebfff32b4b7",
+          "mzp.run": "9a5e8deb72702b1be5214f4f9e99f3e4a12b04fd47d63ceb865f1f5ea28b2660"
+        }
+      }
+    }
+  }
+}

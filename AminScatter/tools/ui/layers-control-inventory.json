@@ -194,10 +194,6 @@
         "name": "layerList"
       },
       {
-        "kind": "dropdownlist",
-        "name": "setList"
-      },
-      {
         "kind": "checkbutton",
         "name": "assetsTab"
       },
@@ -232,10 +228,6 @@
       {
         "kind": "checkbox",
         "name": "paintedCheck"
-      },
-      {
-        "kind": "button",
-        "name": "importButton"
       },
       {
         "kind": "dropdownlist",
@@ -538,14 +530,6 @@
         "name": "radiusSpin"
       },
       {
-        "kind": "spinner",
-        "name": "strengthSpin"
-      },
-      {
-        "kind": "spinner",
-        "name": "softSpin"
-      },
-      {
         "kind": "button",
         "name": "beginButton"
       },
@@ -572,6 +556,38 @@
       {
         "kind": "colorpicker",
         "name": "overlayColor"
+      },
+      {
+        "kind": "spinner",
+        "name": "insideSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "outsideSpin"
+      },
+      {
+        "kind": "checkbox",
+        "name": "densityFade"
+      },
+      {
+        "kind": "button",
+        "name": "densityCurve"
+      },
+      {
+        "kind": "checkbox",
+        "name": "scaleFade"
+      },
+      {
+        "kind": "spinner",
+        "name": "scaleMin"
+      },
+      {
+        "kind": "spinner",
+        "name": "scaleMax"
+      },
+      {
+        "kind": "button",
+        "name": "scaleCurve"
       }
     ],
     "randomUI": [

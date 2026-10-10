@@ -298,11 +298,14 @@ class MaxHost:
                 "ui_version":str(obj.uiVersion())}
 
     def controller_state(self, obj):
+        from .procedural import read_vector_paint
         keys = list(rt.AminScatterLayerFields)
         def params(layer):
             result={str(k):frozen(rt.getProperty(layer,k)) for k in keys}
             result["layer_id"]=str(layer.layerID)
             result["edit_layer_key"]=int(layer.editLayerKey)
+            result["surface_nodes"]=frozen(layer.surfaceNodes)
+            result["vector_paint"]=read_vector_paint(layer,rt.cyrusBrushStats,frozen)
             if layer.paintDocument is not None:
                 stats=rt.cyrusBrushStats(layer.paintDocument)
                 result["paint_revision"]=[int(stats[0]),int(stats[3])]
@@ -315,6 +318,7 @@ class MaxHost:
 
     def configuration(self,cid):
         self.assert_main()
+        from .procedural import read_vector_paint
         from .settings import LAYER_SETTINGS, SOURCE_SETTINGS, DISPLAY_SETTINGS
         obj=self.controllers.get(cid)
         require(obj is not None and rt.isValidNode(obj),"Controller is unavailable","UNKNOWN_REFERENCE")
@@ -344,16 +348,15 @@ class MaxHost:
                 assets.append({"source_id":sid,"entry_id":entry_id,"label":str(node.name)[:80] if valid else "Point" if point else "Empty" if empty else "Missing asset",
                                "kind":"point" if point else "empty" if empty else "mesh" if valid else "missing",
                                "weight":float(leaf.sourceWeights[j]) if j<len(leaf.sourceWeights) else 1.0,"settings":values})
-            paint=rt.cyrusBrushStats(leaf.paintDocument) if leaf.paintDocument is not None else None
-            layers.append({"layer_id":str(leaf.layerID),"parent_id":str(getattr(leaf,"logicalParentID","")) or None,"set_name":str(getattr(leaf,"paintSetName","Base")),
+            layers.append({"layer_id":str(leaf.layerID),
                            "name":str(obj.layerNames[i]),"count":int(parent.amount),"seed":int(parent.randomSeed),"settings":settings,"assets":assets,
                            "base_variation":{"advanced_axes":bool(parent.advancedAxes),"compact_uniform_scale":[float(parent.scaleMinimum),float(parent.scaleMaximum)],"compact_yaw_degrees":[float(parent.yawMinimum),float(parent.yawMaximum)],"whole_scale":[float(parent.wholeScaleMin),float(parent.wholeScaleMax)],"rotation_z_degrees":[float(parent.rotZMin),float(parent.rotZMax)]},
-                           "allocation":{"parent_candidate_budget":int(parent.amount),"count_mode_candidates":int(obj.populationAllocation(leaf)[0]) if hasattr(obj,"populationAllocation") else int(leaf.amount),"population_mode":int(parent.populationMode),"plants_per_m2":float(parent.plantsPerM2),"set_weight":float(getattr(leaf,"paintSetWeight",1)),"set_enabled":bool(getattr(leaf,"paintSetEnabled",True)),"set_visible":bool(getattr(leaf,"paintSetVisible",True))},
-                           "paint":{"enabled":bool(leaf.paintEnabled),"document_present":paint is not None,"stroke_count":int(paint[1]) if paint else 0,"revision":int(paint[0]) if paint else None}})
+                           "allocation":{"parent_candidate_budget":int(parent.amount),"count_mode_candidates":int(obj.populationAllocation(leaf)[0]),"population_mode":int(parent.populationMode),"plants_per_m2":float(parent.plantsPerM2)},
+                           "paint":read_vector_paint(leaf,rt.cyrusBrushStats,frozen)})
         display=read_settings(obj,DISPLAY_SETTINGS)
         display.update(mode="centres" if obj.groupCenters else {1:"point_cloud",2:"proxy",3:"mesh"}[int(obj.viewportMode)],proxy_shape={1:"box",2:"sphere",3:"pyramid"}[int(obj.proxyShape)],update_mode="manual" if obj.updateMode==1 else "real_time")
         from .procedural import read_procedural
-        return {"configuration_schema":"cyrus.configuration/1.0","controller_id":cid,"layers":layers,"display":display,"calculation_model":str(obj.calculationModel()),
+        return {"configuration_schema":"cyrus.configuration/2.0","controller_id":cid,"layers":layers,"display":display,"calculation_model":str(obj.calculationModel()),
                 "procedural":read_procedural(obj,self.metre),
                 "freshness":"current parameter values only; no generation or geometry certification"}
 

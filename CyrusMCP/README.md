@@ -44,7 +44,9 @@ Example: “Read the connected scope. Propose two layers using its assets/region
 | `scatter_read_diagnostic_events` | Exact locally shared bounded trace/session/sequence/health |
 | `scene_capture_viewport` | Expressly shared viewport with generation/camera metadata |
 
-Resources: `cyrus://plan-schema`, `cyrus://plan-schema/0.73`, `cyrus://capabilities`, `cyrus://workflow`, `cyrus://feature-catalog`, `cyrus://agent-workflows`, `cyrus://error-guide`. The generated catalog covers 34 capability families/234 semantic controls and includes current source/inventory hashes. Ordinary help is not a scene-write API. Read-only full recipe inspection and narrower owned-plan mutation are distinct.
+Resources: `cyrus://plan-schema`, `cyrus://plan-schema/0.73`, `cyrus://capabilities`, `cyrus://workflow`, `cyrus://feature-catalog`, `cyrus://agent-workflows`, `cyrus://error-guide`. The generated catalog covers 34 capability families/238 semantic controls and includes current source/inventory hashes. Ordinary help is not a scene-write API. Read-only full recipe inspection and narrower owned-plan mutation are distinct.
+
+Scatter 0.78 uses `cyrus.configuration/2.0` for passive configuration reads: each layer reports its receiver-bound vector Paint Areas, contour/vertex counts and native revision. Obsolete stroke counts and model-owning set allocation fields are removed. Area revisions and per-layer receiver lists participate in freshness checks. This does not expand the closed Plan 0.73 mutation API or authorize painting through MCP.
 
 ## Bounds and supported semantics
 

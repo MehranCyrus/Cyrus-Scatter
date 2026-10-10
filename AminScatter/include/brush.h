@@ -2,38 +2,14 @@
 #include "scatter.h"
 #include <memory>
 #include <limits>
-
-// Host-independent prototype. A document is bound to one static indexed mesh.
-// No Max pointers, UI state, or preview limits are part of the painted field.
+// Canonical vector regions. No stroke history or raster mask is authoritative.
 namespace cyrus::brush {
 using amin::Vec3;
 struct Mesh { std::vector<Vec3> vertices; std::vector<std::array<std::uint32_t,3>> faces; };
 struct Ray { Vec3 origin, direction; };
 struct Anchor { std::uint32_t face{}; Vec3 bary{1,0,0}; };
 struct Hit { Anchor anchor; double distance{}; };
-struct View { Vec3 eye, direction; bool perspective=true; };
-struct Sample {
-    Anchor anchor;
-    std::array<Vec3,3> basis{{{1,0,0},{0,1,0},{0,0,1}}}; // captured local -> world linear map
-    View view;
-    Ray ray{}; // captured unnormalised projection ray, linear in screen coordinates
-    std::array<double,2> screen{};
-    bool hasPath=false,connected=false;
-};
-struct Stroke {
-    std::uint64_t id{};
-    bool enabled=true,erase=false;
-    double radius=10,strength=1,softness=.5;
-    std::vector<Sample> samples;
-};
-struct Document { std::uint64_t surface{}; std::vector<Stroke> strokes; double base=0; };
-struct QueryStats { std::uint64_t triangles=0,fieldQueries=0,dabs=0; };
-struct FieldBuildStats {
-    std::uint64_t compiledStrokes=0,reusedStrokes=0,derivedDabs=0,faceLinks=0,indexBytes=0;
-};
-// Aggregate limits for one prepared document, including reused strokes.
-// Refuse a successor rather than truncate ordered paint/erase coverage.
-struct FieldLimits { std::size_t dabs=1000000,faceLinks=8000000; };
+struct QueryStats { std::uint64_t triangles=0,fieldQueries=0,segments=0; };
 class Surface {
     struct Impl; std::shared_ptr<const Impl> impl;
 public:
@@ -44,54 +20,47 @@ public:
     Vec3 normal(std::uint32_t face) const;
     bool hit(Ray,Hit&,double maxDistance=std::numeric_limits<double>::infinity(),QueryStats* stats=nullptr) const;
     bool hitReference(Ray,Hit&,double maxDistance=std::numeric_limits<double>::infinity()) const;
-    std::vector<std::uint32_t> patch(const Sample&,double radius,std::size_t maxFaces=8000000) const;
-    bool visible(Anchor,const View&,QueryStats* stats=nullptr) const;
 };
-// Index stroke dabs by connected affected faces. Full ordered replay remains the oracle.
+using Point=std::array<double,2>;
+using Contour=std::vector<Point>;
+using Contours=std::vector<Contour>;
+struct Falloff {
+    double inside=0,outside=0,scaleMin=0,scaleMax=1;
+    bool density=true,scale=false;
+    std::vector<double> densityCurve{0,1},scaleCurve{0,1};
+};
+struct Document { std::uint64_t surface=0; Contours contours; Falloff falloff; };
+// Local XY projection. Metric includes object scale/shear; distances use the
+// transformed projection plane. Terrain height does not inflate feather width.
+struct Metric {
+    double xx=1,xy=0,yy=1;
+    static Metric fromBasis(Vec3 x,Vec3 y);
+    Point map(Point p)const;
+    Point unmap(Point p)const;
+};
+constexpr std::size_t maxVertices=200000;
+std::size_t vertexCount(const Document&);
+void validate(const Falloff&);
+void validateProjection(const Surface&);
+Contours domain(const Surface&);
+Document constrain(const Document&,const Contours& receiverDomain);
+// Produces a complete successor or throws, leaving the input unchanged.
+Document paint(const Document&,Point center,double radius,bool erase,Metric={},const Point* previous=nullptr);
+struct Evaluation { double density=0,scale=1; };
 class Field {
     struct Impl; std::shared_ptr<const Impl> impl;
-    friend class CoverageCache;
-    friend class SampleCache;
 public:
-    Field(const Surface&,const Document&,const Field* previous=nullptr,FieldLimits limits={},const Stroke* pending=nullptr);
-    FieldBuildStats buildStats() const;
-    double evaluate(Anchor,QueryStats* stats=nullptr) const;
-    double evaluateReference(Anchor,QueryStats* stats=nullptr) const;
-    // Same membership as threshold < clamp(evaluate(anchor)*density,0,1).
-    // Uncertain floating-point intervals continue through the exact evaluator.
-    bool accepts(Anchor,double threshold,double density=1,QueryStats* stats=nullptr) const;
-    // Conservative local refinement step for a subtriangle. Infinity means
-    // no stroke footprint intersects it; the base field is constant there.
-    double previewStep(std::uint32_t face,const std::array<Vec3,3>& bary) const;
+    Field(const Surface&,const Document&,Metric={});
+    Evaluation query(Anchor,QueryStats* stats=nullptr)const;
+    Evaluation queryPoint(Point,QueryStats* stats=nullptr)const;
+    double evaluate(Anchor a,QueryStats* s=nullptr)const {return query(a,s).density;}
+    bool accepts(Anchor,double threshold,double density=1,QueryStats* stats=nullptr)const;
+    double signedDistance(Point,QueryStats* stats=nullptr)const;
 };
-struct CoverageTriangle { std::array<Vec3,3> vertices;double weight{}; };
-struct Coverage { std::vector<CoverageTriangle> triangles;bool limited=false; };
-Coverage coverage(const Surface&,const Field&,std::size_t budget=32768);
-// Transient feedback caches. Stored strokes and candidate decisions remain
-// authoritative; floating-point forward composition is used only for feedback.
-class CoverageCache {
-    struct Impl; std::unique_ptr<Impl> impl;
-public:
-    CoverageCache(); ~CoverageCache();
-    void clear();
-    Coverage build(const Surface&,const Field&,std::size_t budget=32768);
-    std::size_t size() const;
-};
-class SampleCache {
-    struct Impl; std::unique_ptr<Impl> impl;
-public:
-    SampleCache(); ~SampleCache();
-    void clear();
-    std::vector<double> evaluate(const Field&,const std::vector<Anchor>&);
-};
-double influence(const Surface&,const Sample&,const Stroke&,Anchor,QueryStats* stats=nullptr);
-double apply(double before,double influence,bool erase);
+// Border feedback is prepared separately. Drawing never queries the field.
+std::vector<std::array<Vec3,2>> boundary(const Surface&,const Document&,std::size_t budget=400000);
 double threshold(std::uint64_t population,std::uint64_t candidate);
 bool accepted(std::uint64_t population,std::uint64_t candidate,double mask,double density=1);
 std::vector<std::uint8_t> encode(const Document&);
 Document decode(const std::vector<std::uint8_t>&);
-void validate(const Stroke&);
-// Re-hit interpolated cursor rays at spacing derived from the current radius.
-// Source records remain unchanged so radius edits never reuse old sparse dabs.
-Stroke resample(const Surface&,const Stroke&,std::size_t maxDabs=1000000);
 }

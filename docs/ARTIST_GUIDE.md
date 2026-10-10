@@ -1,4 +1,4 @@
-# Cyrus Scatter 0.77 — current workflow
+# Cyrus Scatter 0.78 — current workflow
 
 Updated 10 October 2026. Use this guide for the current UI and ownership model. Dated 0.73 guides describe the older layout. This guide explains behavior; the qualification checklist separately identifies what has been tested.
 
@@ -18,7 +18,7 @@ The Surfaces list belongs to the selected layer. Use + to pick a receiver, the l
 
 This does not freeze all accepted output. A cap can redistribute quotas; changed masks, spacing, cleanup or protected edits can affect acceptance. Relax can move plants when their own receiver's count or neighborhood changes. Editing the receiver's geometry/topology is outside the unchanged-surface guarantee.
 
-**Upgrading an older scene:** this receiver-local sampler changes placements on the first rebuild of an earlier combined-sampler setup. Work on a copy. Existing paint remains attached to its receiver, but samples change. Old CS Edit identities and individual radius bindings are guarded; explicitly reset them to use the new generation, or restore the original scene with its matching old build. Do not reset edits you still need without retaining that original scene.
+**0.78 uses a new saved schema.** Create a new setup. Earlier development setups and stored stroke payloads are rejected; there is no automatic conversion. Keep the original file and its matching earlier build if you need to revisit it.
 
 Models are source scene objects. Their Scatter label can differ from the scene object name; clearing the label uses the scene name again. The color square is a viewport identification color. Assignment groups use separate colors under Advanced; changing identification color does not change grouping.
 
@@ -43,23 +43,25 @@ For bands, add a guide, add an inside/outside band, set its width, choose source
 
 Amount offers fixed Count or area Density. The seed makes a given recipe reproducible. Sampling can use a texture mask. Candidate budget makes a bounded candidate request; restrictions can leave fewer accepted plants. Accepted target makes additional bounded attempts. A shortfall can be correct when spacing, boundaries or masks leave insufficient room. Increasing retry work cannot make an impossible arrangement fit.
 
-## Painting on multiple receivers
+## Vector painting
 
-Turn on **Use Paint Areas** only when you want to restrict the layer to painted coverage. Add a named Paint Area and choose its Surface from that layer's receiver list. Start Brush and paint. Further strokes edit the selected area; they do not create new populations or new named areas automatically.
+Turn on **Use Paint Areas**, add a named area and choose one of this layer's surfaces. Use **Start Brush**, **Paint / Erase**, **Radius**, **Stop**, **Fill** and **Clear**. Repeated painting merges into the same area. Erasing cuts holes; overlapping areas admit each candidate only once. Undo/Redo restores a complete brush gesture.
 
-In 0.77, feedback reuses the existing drawing while you add strokes or extend a drag. Repeated dabs within one gesture keep that gesture's maximum strength; separate gestures can build opacity, and Erase removes coverage in order. Undo still removes one completed gesture. Feedback follows painting in Manual mode while plant placements wait for Update. Changing older strokes or reopening a scene can require rebuilding the feedback cache.
+Each area targets one receiver. Use separate areas for separate terrain surfaces while retaining the same layer models and population. Vector painting supports terrain and planes that are single-valued in receiver-local XY. Closed spheres, vertical faces, folds and stacked projected sheets are rejected. They remain usable as ordinary scatter receivers without vector painting.
 
-Very long histories or large brushes on dense meshes can reach a preparation limit. Cyrus reports the limit and keeps the last complete scatter; it does not silently simplify or delete your paint. Undo the last change or reduce the offending radius/history, then Update. In 0.76 the limits include all derived dabs and affected-face links within the Paint Area, including reused history.
+**Inside fade** places the transition inside the border; **Outside fade** extends it beyond the border. Set both for a transition across the border. Zero for both gives a hard edge. Distances are in the transformed projection plane, not distance along a slope. A larger outward fade cannot place plants outside the receiver or inside an explicit Exclude area.
 
-For a plane and sphere in one layer, create one area targeting the plane and another targeting the sphere. Selecting an area changes the brush target, while both areas use the layer's model collection. Overlapping areas combine coverage without duplicating the layer's plants. Paint/Erase, radius, strength and softness affect the selected area. Fill and Empty affect that area's coverage. Stop ends the active brush session.
+**Fade density** thins stable candidates using the **Density curve**. **Fade scale** multiplies each plant's existing random scale between **Edge scale** and **Inner scale**, shaped by the **Scale curve**. The graph's left end is the outer edge of the transition, and its right end is the fully interior end. Density and scale can be used independently. With both widths at zero there is no transition: interior plants use the curve's right-end scale. Where areas overlap, the strongest effective density determines scale; equal weights use area order.
 
-Removing a receiver link leaves its area inactive and preserves its paint. Restoring that receiver can reactivate it. An area with existing paint cannot silently switch to a different target. Topology changes can invalidate saved anchors; the system reports this instead of applying strokes to unrelated faces. Reopen painted scenes using the saved scene units; automatic unit rescaling of Brush data is guarded, not supported.
+**Vector borders** is the default feedback. **Coverage samples** provides a bounded diagnostic view of the field. Feedback updates while drawing; in Manual mode plants wait for **Update**. No individual stroke/history controls or strength accumulation remain.
 
-Older files may retain model-owning sets. These are different from current Paint Areas. A supported single-set layer can adopt its existing paint. Multi-set conversion remains unfinished; do not treat an old set selector as a new area selector.
+Removing a receiver link leaves its area inactive with its borders preserved. Relinking the same node restores eligibility. An area with paint cannot silently change target. Changes to target geometry/topology require restoring that geometry or creating a new area; the previous completed scatter remains available after a failed update. Use saved scene units on reopen.
+
+The new engine bounds contour vertices and prepared feedback. A failed edit leaves the preceding region intact; feedback never silently publishes a truncated successor. See [limits and actual qualification](Vector_Brush_0.78_2026-10-10/README.md) before treating scripted results as physical-input certification.
 
 ## Area limits, transforms and spacing
 
-Include/Exclude splines are layer-wide world-XY masks. Include shapes form the allowed domain; Exclude wins in overlaps. Unlinking a shape keeps the scene spline. This is separate from painting directly on a curved receiver.
+Include/Exclude splines are layer-wide world-XY masks. Include shapes form the allowed domain; Exclude wins in overlaps. Unlinking a shape keeps the scene spline. These rules constrain vector painting as well as ordinary scattering.
 
 Advanced Analyzer Area can use a center-line band and/or point-radius discs. Together they form a union. Its Analyzer reference is separate from Layout's Analyzer and from the falloff Analyzer. Width is the full line-band width; point radius is not model collision radius.
 
@@ -67,7 +69,7 @@ Edge falloff can target an Analyzer boundary or one selected area line. Each are
 
 Transforms show X Min/Max, Y Min/Max and Z Min/Max side by side for rotation, scale and movement, plus uniform scale. Reset actions reset their respective controls. Align to normal and Keep on surface affect orientation/projection.
 
-Fresh ordinary layers expose Within this layer and Between layers spacing. Clearance is **factor × (radius A + radius B) + gap**. XY ignores vertical distance; 3D includes it. Each relationship has its own settings. Older model-owning sets retain additional scopes. Per-instance radius overrides belong to stable instance identities; generator changes can require an explicit clear instead of silently rebinding edits.
+Fresh ordinary layers expose Within this layer and Between layers spacing. Clearance is **factor × (radius A + radius B) + gap**. XY ignores vertical distance; 3D includes it. Each relationship has its own settings. Per-instance radius overrides belong to stable instance identities; generator changes can require an explicit clear instead of silently rebinding edits.
 
 Candidate Relax moves candidates within its bounded settings. Cleanup removes unprotected isolated plants or small islands using neighbor distance, minimum neighbors and minimum island size. Protected CS Edit placements can survive generation/cleanup and create reported conflicts. Retry cleanup gaps is a separate population-policy choice.
 
@@ -81,7 +83,7 @@ Automatic final render uses the render bridge; exact output and baking use sourc
 
 Statistics describe the last completed result, including accepted, shown, rejected, protected and shortfall information. Refreshing cached statistics is not proof that a pending recipe has been generated. Diagnostic recording is local, bounded and off by default. Start, Stop and Save report are separate from sending a report anywhere.
 
-Surface Analyzer remains version 0.14 and has its own Manual/Real-time mode. It analyzes supported open planar mesh elements, produces boundaries/paths/points, and can export spline/helper snapshots. It does not support a closed sphere as an ordinary planar analysis input; curved Brush painting is a separate supported feature. Updating a Manual Analyzer does not authorize a pending Manual Scatter publication.
+Surface Analyzer remains version 0.14 and has its own Manual/Real-time mode. It analyzes supported open planar mesh elements, produces boundaries/paths/points, and can export spline/helper snapshots. It does not support a closed sphere as an ordinary planar analysis input; general curved-surface scattering remains separate; the vector brush has the projection limits above. Updating a Manual Analyzer does not authorize a pending Manual Scatter publication.
 
 If linked analysis is out of date, Scatter keeps its previous complete result and names the Analyzer that needs updating. Run **Update Analyzer / Analyze**, then **Update scatter** when Scatter is Manual. This applies to Layout, Analyzer Area and Analyzer falloff dependencies. Freshness is saved with the guides, so reopening does not make pending analysis current. Older Analyzer publications need one explicit Analyze with the matching updated Analyzer script; the new Scatter script must be distributed with that script.
 

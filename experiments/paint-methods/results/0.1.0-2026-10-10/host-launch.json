@@ -1,0 +1,26 @@
+{
+  "pid": 19224,
+  "folder": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\experiments\\paint-methods\\build\\hosts\\20261010-165430-5b572c03",
+  "binaries": {
+    "PaintLab1.dlx": "99642193f2d93030c6a8967f02a5a5965db6fc744be51489d0d71a25316f6b49",
+    "PaintLab2.dlx": "06854be1f03051450f5b1f4336063341c75204f32f7eb42b2b6f80d9f696420f",
+    "PaintLab3.dlx": "4a6228e2fde6bbbda3dbc1c24991a7d97aaf2861a1d81e9d68ada32c068d61ee",
+    "PaintLab4.dlx": "19aa83502c354b94022633fbf7472d304966f8deb59efe1a58061706b481a442"
+  },
+  "command": [
+    "C:\\Program Files\\Autodesk\\3ds Max 2027\\3dsmax.exe",
+    "-q",
+    "-i",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\experiments\\paint-methods\\build\\hosts\\20261010-165430-5b572c03\\max.ini",
+    "-p",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\experiments\\paint-methods\\build\\hosts\\20261010-165430-5b572c03\\plugins.ini",
+    "-U",
+    "MAXScript",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\experiments\\paint-methods\\build\\hosts\\20261010-165430-5b572c03\\start.ms",
+    "-listenerlog",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\experiments\\paint-methods\\build\\hosts\\20261010-165430-5b572c03\\listener.log"
+  ],
+  "normal_profile_modified": false,
+  "visible": false,
+  "test_script_hash": "910feb7f66401bc2d68e2f197e39a9e9f50a1bda2dc5cda8736301cb0eebfd3d"
+}

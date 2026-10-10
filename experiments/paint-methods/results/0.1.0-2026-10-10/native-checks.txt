@@ -1,0 +1,5 @@
+method 1 PASS
+method 2 PASS
+method 3 PASS
+method 4 PASS
+assertions 9792

@@ -1,0 +1,97 @@
+{
+  "recorded_utc": "2026-10-10T12:04:56.7908561Z",
+  "scope": "Planning only: current source inspection, existing local reverse-engineering exports and installed-input hash checks. No new decompilation or Max runtime test.",
+  "head": "880ea89b654a389191c02e7a373807044ec713f1",
+  "branch": "codex/workflow-0.75",
+  "installed_inputs": [
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ForestPackLite2027\\PackageContents.xml",
+      "exists": true,
+      "sha256": "b7020c08adc658afb619ae9f1897161c9fd3ec7d9709da332a10602ad79a343a",
+      "prior_sha256": "b7020c08adc658afb619ae9f1897161c9fd3ec7d9709da332a10602ad79a343a",
+      "matches_prior": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ForestPackLite2027\\Contents\\plugins\\2027\\ForestPackLite.dlo",
+      "exists": true,
+      "sha256": "23b25adf28954a4cd6c3d7fe5f7ea90b6a6e9be480f8a422fa7ef8b99c9a325d",
+      "prior_sha256": "23b25adf28954a4cd6c3d7fe5f7ea90b6a6e9be480f8a422fa7ef8b99c9a325d",
+      "matches_prior": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ForestPackLite2027\\Contents\\scripts\\startup\\forestpack.ms",
+      "exists": true,
+      "sha256": "8f51b8ddc2a79cb29c0cfbcbb35a18364118de2ebc83563e8d37e38ed91122bd",
+      "prior_sha256": "8f51b8ddc2a79cb29c0cfbcbb35a18364118de2ebc83563e8d37e38ed91122bd",
+      "matches_prior": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ChaosScatter3dsMax2027\\PackageContents.xml",
+      "exists": true,
+      "sha256": "b6ef25f1507552311f3523edc7c5b4edea1d6c3a48f41a063e1ec823c8cb7da1",
+      "prior_sha256": "b6ef25f1507552311f3523edc7c5b4edea1d6c3a48f41a063e1ec823c8cb7da1",
+      "matches_prior": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ChaosScatter3dsMax2027\\ChaosScatterMax2027.dlt",
+      "exists": true,
+      "sha256": "eabcb0b258d4a1c4a8435d67deb0cf20bb2d363eb74802df8b2fa308552ed327",
+      "prior_sha256": "eabcb0b258d4a1c4a8435d67deb0cf20bb2d363eb74802df8b2fa308552ed327",
+      "matches_prior": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ChaosScatter3dsMax2027\\ScatterMax_Release-2027.dll",
+      "exists": true,
+      "sha256": "f7fdd25428e8374174501e6bb4ebd3b83e21c5ba2c33fcdc94280c022695b887",
+      "prior_sha256": "f7fdd25428e8374174501e6bb4ebd3b83e21c5ba2c33fcdc94280c022695b887",
+      "matches_prior": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ChaosScatter3dsMax2027\\ScatterCore.ForScatter_Release.dll",
+      "exists": true,
+      "sha256": "069ababd0dbc09218928f24d5bdc860509b237f34af703581e3fd78ed5d3cf86",
+      "prior_sha256": "069ababd0dbc09218928f24d5bdc860509b237f34af703581e3fd78ed5d3cf86",
+      "matches_prior": true
+    }
+  ],
+  "tool_file_checks": [
+    {
+      "path": "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\tools\\ghidra\\ghidra_12.1.4_PUBLIC\\support\\analyzeHeadless.bat",
+      "exists": true
+    },
+    {
+      "path": "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\tools\\java\\jdk-21.0.12.1+1\\bin\\java.exe",
+      "exists": true
+    },
+    {
+      "path": "C:\\Users\\Mehran\\Documents\\ChatGPT\\Play\\tyflow-analysis\\tools\\ghidra-mcp\\GhidraMCP\\lib\\GhidraMCP-6.0.0.jar",
+      "exists": true
+    },
+    {
+      "path": "build/tooling/max2027-sdk/Program Files/Autodesk/3ds Max 2027 SDK/maxsdk/include/IPainterInterface.h",
+      "exists": true
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.38.33130/bin/Hostx64/x64/cl.exe",
+      "exists": true
+    }
+  ],
+  "inspected_file_hashes": [
+    {
+      "path": "AminScatter/src/brush.cpp",
+      "sha256": "776b6d9644cdcefef739996d0ebf8fb4dbeab6026106113fea25b9b59f1a8446"
+    },
+    {
+      "path": "AminScatter/src/brush_host.cpp",
+      "sha256": "f468e2c23b9f0d108c8874743d58bbd4a1fb9ec5c1e984a15b359a844f826790"
+    },
+    {
+      "path": "build/vendor-native-deep-20261009-01/core-batch8/stroke_tube_contains.c",
+      "sha256": "2f9928b3076d8a0f673e12c09e5c01d543077dc42fa2c28ca3812838cc0f649d"
+    },
+    {
+      "path": "build/vendor-native-deep-20261009-01/core-batch3/stroke_bounds_prepare.c",
+      "sha256": "c5846e44e6e74e27f1bf762113381dc417e69ce1f6d25e108432bae9af336bd8"
+    }
+  ]
+}

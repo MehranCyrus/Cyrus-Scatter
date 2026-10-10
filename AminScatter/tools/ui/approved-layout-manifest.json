@@ -1,6 +1,6 @@
 {
   "schema": "cyrus.ui-layout/1",
-  "version": "0.77",
+  "version": "0.78.1",
   "source": "approved single-file HTML study",
   "sections": [
     {
@@ -765,12 +765,6 @@
         },
         {
           "component": "setsUI",
-          "control": "importButton",
-          "presentation": "setsUI_importButton",
-          "advanced": false
-        },
-        {
-          "component": "setsUI",
           "control": "setList",
           "presentation": "setsUI_setList",
           "advanced": false
@@ -831,18 +825,6 @@
         },
         {
           "component": "brushUI",
-          "control": "strengthSpin",
-          "presentation": "brushUI_strengthSpin",
-          "advanced": false
-        },
-        {
-          "component": "brushUI",
-          "control": "softSpin",
-          "presentation": "brushUI_softSpin",
-          "advanced": false
-        },
-        {
-          "component": "brushUI",
           "control": "beginButton",
           "presentation": "brushUI_beginButton",
           "advanced": false
@@ -894,6 +876,54 @@
           "control": "brushHelp",
           "presentation": "brushUI_brushHelp",
           "advanced": true
+        },
+        {
+          "component": "brushUI",
+          "control": "insideSpin",
+          "presentation": "brushUI_insideSpin",
+          "advanced": false
+        },
+        {
+          "component": "brushUI",
+          "control": "outsideSpin",
+          "presentation": "brushUI_outsideSpin",
+          "advanced": false
+        },
+        {
+          "component": "brushUI",
+          "control": "densityFade",
+          "presentation": "brushUI_densityFade",
+          "advanced": false
+        },
+        {
+          "component": "brushUI",
+          "control": "densityCurve",
+          "presentation": "brushUI_densityCurve",
+          "advanced": false
+        },
+        {
+          "component": "brushUI",
+          "control": "scaleFade",
+          "presentation": "brushUI_scaleFade",
+          "advanced": false
+        },
+        {
+          "component": "brushUI",
+          "control": "scaleMin",
+          "presentation": "brushUI_scaleMin",
+          "advanced": false
+        },
+        {
+          "component": "brushUI",
+          "control": "scaleMax",
+          "presentation": "brushUI_scaleMax",
+          "advanced": false
+        },
+        {
+          "component": "brushUI",
+          "control": "scaleCurve",
+          "presentation": "brushUI_scaleCurve",
+          "advanced": false
         }
       ]
     },

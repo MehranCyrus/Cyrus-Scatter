@@ -1,0 +1,82 @@
+[
+  {
+    "method": 1,
+    "folder": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\experiments\\paint-methods\\dist\\0.1.0-final\\01-vector-regions",
+    "archive": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\experiments\\paint-methods\\dist\\0.1.0-final\\01-vector-regions-0.1.0-Max2027.zip",
+    "archive_sha256": "164eff41c985ea725111bd8be0b40d480eee3c58104d725d2e0e56330f489aab",
+    "manifest": {
+      "method": 1,
+      "version": "0.1.0",
+      "max": 2027,
+      "files": {
+        "Clipper2-LICENSE.txt": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+        "Launch.ms": "a9dbe61a5ac33add4ea8efb6ce6a5d38db1c2962cd0135bcb0f90a6f92a3a916",
+        "PaintLab1.dlx": "99642193f2d93030c6a8967f02a5a5965db6fc744be51489d0d71a25316f6b49",
+        "README.txt": "9c944d55272b3800659d6aa200dc2c4db5d91d6a9c75995d729f1e0398ce409a",
+        "trial.py": "d449bd6192ecf961dce970f007e76e17cf829f2c707955f4708816218d65c28b",
+        "Try.cmd": "6307c99dd5994568325a0a4780fb3a419e8250ba7e47576c5bab70fd373a1c5a"
+      },
+      "build_receipt_sha256": "09733d79d01700c92069bb296914a3dd9747633b5b34446e5771ed98ff60aa56"
+    }
+  },
+  {
+    "method": 2,
+    "folder": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\experiments\\paint-methods\\dist\\0.1.0-final\\02-tiled-mask",
+    "archive": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\experiments\\paint-methods\\dist\\0.1.0-final\\02-tiled-mask-0.1.0-Max2027.zip",
+    "archive_sha256": "ca0f816afa414dbbfebed0d66f49ed582a3d03bc9806bc405da1185a3aafbe86",
+    "manifest": {
+      "method": 2,
+      "version": "0.1.0",
+      "max": 2027,
+      "files": {
+        "Clipper2-LICENSE.txt": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+        "Launch.ms": "f99f93cfdba0835ca6ff4bc2a283e6ceebd367951f96b24ae08170e9fd41c80b",
+        "PaintLab2.dlx": "06854be1f03051450f5b1f4336063341c75204f32f7eb42b2b6f80d9f696420f",
+        "README.txt": "0bf8673280e9c62129f21597a96b3ac9f9b04f0722bab8bdd4aef4e6ca678650",
+        "trial.py": "d449bd6192ecf961dce970f007e76e17cf829f2c707955f4708816218d65c28b",
+        "Try.cmd": "6307c99dd5994568325a0a4780fb3a419e8250ba7e47576c5bab70fd373a1c5a"
+      },
+      "build_receipt_sha256": "09733d79d01700c92069bb296914a3dd9747633b5b34446e5771ed98ff60aa56"
+    }
+  },
+  {
+    "method": 3,
+    "folder": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\experiments\\paint-methods\\dist\\0.1.0-final\\03-surface-volumes",
+    "archive": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\experiments\\paint-methods\\dist\\0.1.0-final\\03-surface-volumes-0.1.0-Max2027.zip",
+    "archive_sha256": "dd6b83e8931b94c66c8763a4c44d6c0db9d89e3a575e3700f677a0562993dac7",
+    "manifest": {
+      "method": 3,
+      "version": "0.1.0",
+      "max": 2027,
+      "files": {
+        "Clipper2-LICENSE.txt": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+        "Launch.ms": "22bbca70b45ad2ce1fee6bea67907b5a73c5f3fc0f2f3bf1657ce253aea9a4e7",
+        "PaintLab3.dlx": "4a6228e2fde6bbbda3dbc1c24991a7d97aaf2861a1d81e9d68ada32c068d61ee",
+        "README.txt": "974ce5bdf0677fdc0c75f7c4392b9634d99d86c35d321a65f065ac0f6410d54f",
+        "trial.py": "d449bd6192ecf961dce970f007e76e17cf829f2c707955f4708816218d65c28b",
+        "Try.cmd": "6307c99dd5994568325a0a4780fb3a419e8250ba7e47576c5bab70fd373a1c5a"
+      },
+      "build_receipt_sha256": "09733d79d01700c92069bb296914a3dd9747633b5b34446e5771ed98ff60aa56"
+    }
+  },
+  {
+    "method": 4,
+    "folder": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\experiments\\paint-methods\\dist\\0.1.0-final\\04-surface-field",
+    "archive": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\experiments\\paint-methods\\dist\\0.1.0-final\\04-surface-field-0.1.0-Max2027.zip",
+    "archive_sha256": "9fe7b9eca30fb42f7c2e25fcdbceeee25bf14a2d6c46b1046b4e6afdd589f41a",
+    "manifest": {
+      "method": 4,
+      "version": "0.1.0",
+      "max": 2027,
+      "files": {
+        "Clipper2-LICENSE.txt": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+        "Launch.ms": "5c204398e44b0f1ec40e7dafa3ebab58bb5003a121dc273a4151d197456941cb",
+        "PaintLab4.dlx": "19aa83502c354b94022633fbf7472d304966f8deb59efe1a58061706b481a442",
+        "README.txt": "a2c93bd3aba9c0e3fb0b0cb57c69bbaf20f72c47107808291a55cd14d8077650",
+        "trial.py": "d449bd6192ecf961dce970f007e76e17cf829f2c707955f4708816218d65c28b",
+        "Try.cmd": "6307c99dd5994568325a0a4780fb3a419e8250ba7e47576c5bab70fd373a1c5a"
+      },
+      "build_receipt_sha256": "09733d79d01700c92069bb296914a3dd9747633b5b34446e5771ed98ff60aa56"
+    }
+  }
+]

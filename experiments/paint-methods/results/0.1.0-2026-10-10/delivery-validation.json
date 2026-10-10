@@ -1,0 +1,15 @@
+{
+  "native_checks_sha256": "316295ff5a8a3c7cee1cf3bfc0a1b610a4c5dbd956efcb6d168c42b585d69244",
+  "native_test_executable_sha256": "2c444a8dbf4a8a81bf2b5808df7c27359a7cdb9dc3a053a109c4cc631926fa8f",
+  "all_build_source_hashes_match_current": true,
+  "earlier_cpu_benchmark_kernel_sources_match_final_build": true,
+  "final_host_fixture_sha256": "910feb7f66401bc2d68e2f197e39a9e9f50a1bda2dc5cda8736301cb0eebfd3d",
+  "four_package_file_archive_and_host_identities_match": true,
+  "four_final_independent_package_smokes_pass_and_exit": true,
+  "generated_ui_repeat_is_identical": true,
+  "lab_markdown_local_links_exist": true,
+  "python_tools_compile": true,
+  "production_tracked_diff_empty": true,
+  "native_assertions": 9792,
+  "host_checks": 186
+}

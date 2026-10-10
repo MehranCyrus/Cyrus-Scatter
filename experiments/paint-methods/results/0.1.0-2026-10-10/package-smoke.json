@@ -1,0 +1,34 @@
+[
+  {
+    "method": "01-vector-regions",
+    "status": "PASS",
+    "session": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\experiments\\paint-methods\\dist\\0.1.0-final\\01-vector-regions\\sessions\\20261010-165554-b9da2528",
+    "pid": 36844,
+    "error": null,
+    "forced_stop_after_script": false
+  },
+  {
+    "method": "02-tiled-mask",
+    "status": "PASS",
+    "session": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\experiments\\paint-methods\\dist\\0.1.0-final\\02-tiled-mask\\sessions\\20261010-165637-730fc478",
+    "pid": 41224,
+    "error": null,
+    "forced_stop_after_script": false
+  },
+  {
+    "method": "03-surface-volumes",
+    "status": "PASS",
+    "session": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\experiments\\paint-methods\\dist\\0.1.0-final\\03-surface-volumes\\sessions\\20261010-165720-8f06e971",
+    "pid": 5740,
+    "error": null,
+    "forced_stop_after_script": false
+  },
+  {
+    "method": "04-surface-field",
+    "status": "PASS",
+    "session": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\experiments\\paint-methods\\dist\\0.1.0-final\\04-surface-field\\sessions\\20261010-165802-7b5ba263",
+    "pid": 12200,
+    "error": null,
+    "forced_stop_after_script": false
+  }
+]

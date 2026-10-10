@@ -43,15 +43,8 @@ class PaintRestore:public RestoreObj {
 public:
     explicit PaintRestore(PaintDocument*);
     void Restore(int)override;void Redo()override;
-    MSTR Description()override{return _T("Cyrus Brush stroke");}
-};
-class AppendPaintRestore:public RestoreObj {
-    SingleRefMaker lifetime;PaintDocument* owner;b::Stroke stroke;std::size_t index;bool applied=true;
-public:
-    explicit AppendPaintRestore(PaintDocument*);
-    void Restore(int)override;void Redo()override;
-    int Size()override{return int(std::min<std::size_t>(INT_MAX,sizeof(*this)+stroke.samples.capacity()*sizeof(b::Sample)));}
-    MSTR Description()override{return _T("Cyrus Brush stroke");}
+    int Size()override{return int(std::min<std::size_t>(INT_MAX,sizeof(*this)+(b::vertexCount(before)+b::vertexCount(after))*sizeof(b::Point)));}
+    MSTR Description()override{return _T("Cyrus vector paint");}
 };
 class PaintDocument:public ReferenceTarget,public IPainterCanvasInterface_V5,public IPainterCanvasInterface_V26_1 {
 public:
@@ -62,23 +55,28 @@ public:
     } rightClick{this};
     INode* target=nullptr;
     b::Document document;
+    b::Contours receiverDomain;
     std::unique_ptr<TriObject,TriDelete> snapshot;
     std::unique_ptr<b::Surface> surface;
     std::unique_ptr<b::Field> field;
-    b::CoverageCache coverageCache; b::SampleCache sampleCache;
+    std::vector<std::array<Point3,2>> border;
+    b::Metric metric;
+    b::Point lastPoint{};
     std::uint64_t fieldIndexRevision=0,maskApplications=0;
     Matrix3 objectTM{1};
     IPainterInterface_V14* painter=nullptr;
     bool invalid=true,painting=false,gesture=false,ending=false,pathConnected=false;
-    b::Stroke pending;
+    b::Document pending;
+    bool gestureChanged=false;
 #ifdef CYRUS_NATIVE_LICENSE_EXPERIMENT
     cyrus::licensing::OperationPermit strokePermit;
 #endif
-    double radius=20,strength=1,softness=.5,density=1;
+    double radius=20;
     bool erase=false;
     std::uint64_t revision=1,fieldRevision=0,picks=0,baseBuilds=0,fieldBuilds=0,queries=0;
     std::uint64_t repairedHits=0,overlayDraws=0;
     TimeValue snapshotTime=0;
+    Interval targetValidity=NEVER;
     double maxHitError=0,lastEvaluationMs=0;
     // An independent bounded surface overlay, unrelated to surviving plants.
     unsigned capacity=2048,seed=42;
@@ -88,7 +86,7 @@ public:
     std::vector<std::pair<Point3,float>> overlay;
     int displayMode=2;
     Point3 displayColor{1.f,.65f,.2f};
-    std::array<std::vector<std::array<Point3,3>>,16> tint;
+
     bool tintLimited=false;
     std::size_t tintFaces=0;
     std::string error;
@@ -111,7 +109,7 @@ public:
         return REF_SUCCEED;
     }
     RefTargetHandle Clone(RemapDir& remap)override{
-        auto* copy=new PaintDocument;copy->document=document;copy->radius=radius;copy->strength=strength;copy->softness=softness;copy->density=density;copy->capacity=capacity;copy->seed=seed;copy->erase=erase;
+        auto* copy=new PaintDocument;copy->document=document;copy->radius=radius;copy->capacity=capacity;copy->seed=seed;copy->erase=erase;
         // The surface is an external scene node. Copying a controller alone
         // keeps that reference; cloning both remaps it after all nodes exist.
         copy->ReplaceReference(0,target);remap.AddPostPatchProc(new TargetPatch(copy,target),true);
@@ -128,7 +126,8 @@ public:
     void prepare(INode* node,bool requirePaintable=false){
         if(painting)throw std::runtime_error("End painting before binding the surface");
         if(!node||(requirePaintable&&(node->IsHidden()||node->IsFrozen())))throw std::runtime_error("Choose a visible unfrozen mesh target for painting");
-        const auto t=GetCOREInterface()->GetTime();Object* obj=node->EvalWorldState(t).obj;
+        const auto t=GetCOREInterface()->GetTime();const auto state=node->EvalWorldState(t);Object* obj=state.obj;
+        Interval nextValidity=state.Validity(t);node->GetObjectTM(t,&nextValidity);
         if(!obj||!obj->CanConvertToType(triObjectClassID))throw std::runtime_error("Target cannot be triangulated");
         auto* tri=static_cast<TriObject*>(obj->ConvertToType(t,triObjectClassID));
         if(!tri)throw std::runtime_error("Target triangulation failed");
@@ -139,21 +138,25 @@ public:
         for(int i=0;i<m.numVerts;++i)mesh.vertices.push_back(vec(m.verts[i]));
         for(int i=0;i<m.numFaces;++i)mesh.faces.push_back({m.faces[i].v[0],m.faces[i].v[1],m.faces[i].v[2]});
         auto next=std::make_unique<b::Surface>(std::move(mesh));
-        if(!document.strokes.empty()&&document.surface!=next->fingerprint())throw std::runtime_error("Surface shape/topology changed. Paint preserved; strokes are preserved; restore the original topology or create a new Brush document");
-        objectTM=node->GetObjectTM(t);snapshotTime=t;
+        if(!document.contours.empty()&&document.surface!=next->fingerprint())throw std::runtime_error("Surface shape/topology changed. Vector regions preserved; restore the original shape or create a new Paint Area");
+        const auto nextTM=node->GetObjectTM(t);
+        bool sameTM=true;for(int i=0;i<4;++i)sameTM=sameTM&&(objectTM.GetRow(i)==nextTM.GetRow(i));
+        // Host notifications can be conservative (including a timeline change).
+        // Revalidation of identical input keeps the complete prepared feedback
+        // and field revision; Begin/Bind are not edits to the region.
+        if(surface&&target==node&&sameTM&&surface->fingerprint()==next->fingerprint()){
+            snapshotTime=t;targetValidity=nextValidity;invalid=false;error.clear();return;
+        }
+        auto nextDomain=b::domain(*next);
+        objectTM=nextTM;metric=b::Metric::fromBasis(vec(objectTM.GetRow(0)),vec(objectTM.GetRow(1)));snapshotTime=t;targetValidity=nextValidity;
         if(std::abs(DotProd(objectTM.GetRow(0),CrossProd(objectTM.GetRow(1),objectTM.GetRow(2))))<1e-12)throw std::runtime_error("Singular target transform");
-        ReplaceReference(0,node);snapshot=std::move(owned);surface=std::move(next);document.surface=surface->fingerprint();invalid=false;error.clear();
+        ReplaceReference(0,node);snapshot=std::move(owned);surface=std::move(next);receiverDomain=std::move(nextDomain);document.surface=surface->fingerprint();invalid=false;error.clear();
         rebuildCandidates();changed();
     }
-    void pollTarget(){if(target&&GetCOREInterface()->GetTime()==snapshotTime)return;
+    void pollTarget(){if(target&&targetValidity.InInterval(GetCOREInterface()->GetTime()))return;
         invalid=true;error="Target lifetime or time changed; validate before painting";}
     void valid(bool requirePaintable=true){pollTarget();if(!target||invalid||!surface)throw std::runtime_error("Brush target requires validation");if(requirePaintable&&(target->IsHidden()||target->IsFrozen()))throw std::runtime_error("Painting requires a visible unfrozen target");}
     void ensureSurface(bool requirePaintable=false){pollTarget();if((invalid||!surface)&&!painting)prepare(target,requirePaintable);valid(requirePaintable);}
-    b::View captureView(){
-        auto& view=GetCOREInterface()->GetActiveViewExp();if(!view.IsAlive())throw std::runtime_error("No active viewport");
-        Matrix3 toView;view.GetAffineTM(toView);Matrix3 camera=Inverse(toView),toLocal=Inverse(objectTM);
-        return {vec(camera.GetTrans()*toLocal),vec(VectorTransform(toLocal,-camera.GetRow(2))),view.IsPerspView()!=FALSE};
-    }
     b::Ray ray(IPoint2 mouse){
         auto& view=GetCOREInterface()->GetActiveViewExp();if(!view.IsAlive())throw std::runtime_error("No active viewport");
         ::Ray r;view.MapScreenToWorldRay(float(mouse.x),float(mouse.y),r);
@@ -162,7 +165,6 @@ public:
         if(std::abs(depth)<1e-8f)throw std::runtime_error("Invalid viewport projection");
         r.dir/=depth;const auto inv=Inverse(objectTM);return {vec(r.p*inv),vec(VectorTransform(inv,r.dir))};
     }
-    b::Sample sample(b::Anchor a){b::Sample s;s.anchor=a;for(int i=0;i<3;++i)s.basis[i]=vec(objectTM.GetRow(i));s.view=captureView();return s;}
     void rebuildCandidates(){
         valid(false);std::vector<amin::Triangle> triangles;for(const auto& f:surface->mesh().faces)triangles.push_back({surface->mesh().vertices[f[0]],surface->mesh().vertices[f[1]],surface->mesh().vertices[f[2]]});
         amin::Settings settings;settings.count=capacity;settings.seed=seed;settings.uniformScale={1,1};settings.rotationDegrees={{{0,0},{0,0},{0,360}}};
@@ -172,41 +174,31 @@ public:
             const double y=(d11*d20-d01*d21)/den,z=(d00*d21-d01*d20)/den;b::Anchor a{row.triangle,{1-y-z,y,z}};
             if(amin::length(surface->position(a)-row.position)>1e-6)throw std::runtime_error("Candidate anchor mismatch");next.push_back(a);
         }
-        candidates=std::move(rows);anchors=std::move(next);weights.clear();coverageCache.clear();sampleCache.clear();++baseBuilds;fieldRevision=0;fieldIndexRevision=0;
+        candidates=std::move(rows);anchors=std::move(next);weights.clear();++baseBuilds;fieldRevision=0;fieldIndexRevision=0;
     }
     const b::Field& fieldForRevision(){
         ensureSurface();
         if(!field||fieldIndexRevision!=revision){
-            // Ordinary reads need no full copy of the authored history.
-            if(gesture&&!pending.samples.empty()){
-                field=std::make_unique<b::Field>(*surface,document,field.get(),b::FieldLimits{},&pending);
-            }else field=std::make_unique<b::Field>(*surface,document,field.get());
+            auto next=std::make_unique<b::Field>(*surface,gesture?pending:document,metric);
+            field=std::move(next);
             fieldIndexRevision=revision;++fieldBuilds;
         }
         return *field;
     }
     void evaluate(){
         ensureSurface();if(fieldRevision==revision)return;
-        const auto start=std::chrono::steady_clock::now();const auto& indexed=fieldForRevision();
-        auto next=sampleCache.evaluate(indexed,anchors);
+        const auto start=std::chrono::steady_clock::now();
         std::vector<std::pair<Point3,float>> nextOverlay;
-        for(std::size_t i=0;i<anchors.size();++i)if(next[i]>0)nextOverlay.push_back({point(candidates[i].position)*objectTM,float(next[i])});
-        decltype(tint) nextTint;bool nextLimited=false;std::size_t nextFaces=0;
-        if(displayMode==2){
-            const auto coverage=coverageCache.build(*surface,indexed);nextLimited=coverage.limited;nextFaces=coverage.triangles.size();
-            for(const auto& triangle:coverage.triangles){
-                std::array<Point3,3> vertices;
-                for(int i=0;i<3;++i)vertices[i]=point(triangle.vertices[i])*objectTM;
-                const auto normal=Normalize(CrossProd(vertices[1]-vertices[0],vertices[2]-vertices[0]));
-                const float offset=std::max(1e-5f,Length(vertices[1]-vertices[0])*1e-4f);
-                for(auto& vertex:vertices)vertex+=normal*offset;
-                const auto bucket=std::clamp(int(std::ceil(triangle.weight*16))-1,0,15);nextTint[bucket].push_back(vertices);
-            }
-        }else coverageCache.clear();
-        // Publish the complete successor together. A failed tint build must
-        // not mark this revision complete or destroy the prior visible result.
-        weights=std::move(next);overlay=std::move(nextOverlay);tint=std::move(nextTint);
-        tintLimited=nextLimited;tintFaces=nextFaces;queries+=anchors.size();fieldRevision=revision;
+        std::vector<std::array<Point3,2>> nextBorder;
+        if(displayMode==1){
+            const auto& indexed=fieldForRevision();
+            for(std::size_t i=0;i<anchors.size();++i){const double w=indexed.evaluate(anchors[i]);if(w>0)nextOverlay.push_back({point(candidates[i].position)*objectTM,float(w)});}
+            queries+=anchors.size();
+        } else if(displayMode==2){
+            for(const auto& line:b::boundary(*surface,gesture?pending:document))nextBorder.push_back({point(line[0])*objectTM,point(line[1])*objectTM});
+        }
+        overlay=std::move(nextOverlay);border=std::move(nextBorder);
+        tintFaces=border.size();tintLimited=false;fieldRevision=revision;
         lastEvaluationMs=std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-start).count();
     }
 
@@ -223,8 +215,8 @@ public:
         active=this;painting=true;
         try{
             painter->SetEnablePointGather(FALSE);painter->SetBuildNormalData(FALSE);painter->SetMirrorEnable(FALSE);painter->SetUpdateOnMouseUp(FALSE);painter->SetPressureEnable(FALSE);painter->SetPredefinedSizeEnable(FALSE);painter->SetPredefinedStrEnable(FALSE);painter->SetDrawRing(TRUE);painter->SetDrawNormal(TRUE);painter->SetDrawTrace(FALSE);painter->SetUseSplineConstraint(FALSE);painter->SetLagRate(0);
-            // Painter's size is a diameter (the SDK halves it for its ring).
-            painter->SetMinSize(float(2*radius));painter->SetMaxSize(float(2*radius));painter->SetMinStr(1);painter->SetMaxStr(1);
+            // Painter V14 size is a radius, matching the authored footprint.
+            painter->SetMinSize(float(radius));painter->SetMaxSize(float(radius));painter->SetMinStr(1);painter->SetMaxStr(1);
             if(!painter->InitializeCallback(this))throw std::runtime_error("Painter callback rejected");
             Tab<INode*> nodes;nodes.Append(1,&target);ObjectState state(snapshot.get());Tab<ObjectState> states;states.Append(1,&state);
             if(!painter->InitializeNodesByObjState(0,nodes,states)||!painter->StartPaintSession(&rightClick))throw std::runtime_error("Painter session failed");
@@ -233,28 +225,21 @@ public:
     void stop(){
         if(!painting||ending)return;ending=true;CancelStroke();
         if(painter){painter->EndPaintSession();painter->InitializeCallback(nullptr);Tab<INode*> none;painter->InitializeNodes(0,none);restoreOptions();}
-        painting=false;if(active==this)active=nullptr;ending=false;coverageCache.clear();sampleCache.clear();
+        painting=false;if(active==this)active=nullptr;ending=false;
     }
     BOOL StartStroke()override{try{valid();if(gesture)return TRUE;
 #ifdef CYRUS_NATIVE_LICENSE_EXPERIMENT
         strokePermit=cyrusBoundaryBegin(this);
         if(!strokePermit)throw std::runtime_error("Cyrus authoring license required; completed Brush work is preserved");
 #endif
-        pending={};pending.id=1;for(const auto& s:document.strokes)pending.id=std::max(pending.id,s.id+1);pending.radius=radius;pending.strength=strength;pending.softness=softness;pending.erase=erase;gesture=true;pathConnected=false;return TRUE;}catch(const std::exception& e){error=e.what();return FALSE;}}
-    void add(IPoint2 mouse,b::Anchor anchor){
+        pending=document;gestureChanged=false;gesture=true;pathConnected=false;return TRUE;}catch(const std::exception& e){error=e.what();return FALSE;}}
+    void addPoint(b::Anchor anchor,bool connected){
         requireAuthor();valid();if(!gesture&&!StartStroke())throw std::runtime_error(error);
-        // Store raw cursor input. The core resamples/re-hits it when radius changes.
-        auto s=sample(anchor);s.ray=ray(mouse);s.screen={double(mouse.x),double(mouse.y)};s.hasPath=true;
-        if(!pending.samples.empty()){
-            const auto& last=pending.samples.back();
-            bool same=s.view.perspective==last.view.perspective&&amin::length(s.view.eye-last.view.eye)<1e-8&&amin::length(s.view.direction-last.view.direction)<1e-8;
-            for(int k=0;k<3;++k)same=same&&amin::length(s.basis[k]-last.basis[k])<1e-8;
-            s.connected=pathConnected&&same;
-            if(s.connected&&s.screen==last.screen)return;
-        }
-        if(pending.samples.size()>=100000)throw std::runtime_error("Stroke sample limit reached");
-        pending.samples.push_back(s);pathConnected=true;++revision;
+        const auto p=surface->position(anchor);b::Point center{p.x,p.y};
+        auto next=b::constrain(b::paint(pending,center,radius,erase,metric,connected&&pathConnected?&lastPoint:nullptr),receiverDomain);
+        pending=std::move(next);lastPoint=center;pathConnected=true;gestureChanged=true;++revision;
     }
+    void add(IPoint2,b::Anchor anchor){addPoint(anchor,true);}
     BOOL PaintStroke(BOOL hit,IPoint2 mouse,Point3 world,Point3,Point3,Point3,Point3 bary,int face,BOOL,BOOL,BOOL,float,float,float,INode* node,BOOL,Point3,Point3,Point3,Point3)override{
         try{valid();if(!hit||node!=target){pathConnected=false;return TRUE;}if(face<0||static_cast<std::size_t>(face)>=surface->mesh().faces.size())throw std::runtime_error("Painter face outside supplied snapshot");
             // Painter's screen-space face choice can put barycentrics outside
@@ -269,15 +254,12 @@ public:
     BOOL EndStroke()override{
         if(!gesture)return TRUE;
         bool holding=false;
-        try{valid();if(!pending.samples.empty()){
-            std::size_t total=pending.samples.size();for(const auto& s:document.strokes)total+=s.samples.size();
-            if(document.strokes.size()>=10000||total>1000000)throw std::runtime_error("Brush document capacity reached");
-            b::validate(pending);document.strokes.reserve(document.strokes.size()+1);
-            auto restore=std::make_unique<AppendPaintRestore>(this);
+        try{valid();if(gestureChanged){
+            auto restore=std::make_unique<PaintRestore>(this);
 #ifdef CYRUS_NATIVE_LICENSE_EXPERIMENT
             if(!cyrusBoundaryCommit(strokePermit,this))throw std::runtime_error("Stroke authorization expired before commit; completed Brush work is preserved");
 #endif
-            theHold.Begin();holding=true;theHold.Put(restore.release());document.strokes.push_back(std::move(pending));gesture=false;changed();theHold.Accept(_T("Cyrus Brush stroke"));holding=false;
+            theHold.Begin();holding=true;theHold.Put(restore.release());document=std::move(pending);gesture=false;changed();theHold.Accept(_T("Cyrus Brush stroke"));holding=false;
         }else gesture=false;return TRUE;
         }catch(const std::exception& e){if(holding)theHold.Cancel();CancelStroke();error=e.what();return FALSE;}
     }
@@ -289,7 +271,7 @@ public:
         strokePermit={};
 #endif
         if(gesture){gesture=false;pending={};++revision;}return TRUE;}
-    BOOL SystemEndPaintSession()override{CancelStroke();coverageCache.clear();sampleCache.clear();if(!ending){restoreOptions();painting=false;if(active==this)active=nullptr;}return TRUE;}
+    BOOL SystemEndPaintSession()override{CancelStroke();if(!ending){restoreOptions();painting=false;if(active==this)active=nullptr;}return TRUE;}
     void PainterDisplay(TimeValue,ViewExp*,int)override{}
     void drawOverlay(ViewExp* view){
         // Display consumes completed numeric overlay only; no mesh evaluation,
@@ -298,39 +280,27 @@ public:
         if(displayMode==1){
             gw->startMarkers();for(auto v:overlay){gw->setColor(LINE_COLOR,displayColor*(.3f+.7f*v.second));gw->marker(&v.first,HOLLOW_BOX_MRKR);}gw->endMarkers();
         }else{
-            const Material previous=*gw->getMaterial();Material material;material.Ka=material.Kd=Point3(1,1,1);material.Ks=Point3(0,0,0);material.selfIllum=1;material.dblSided=1;material.opacity=1;
-            gw->setRndLimits((limits|GW_Z_BUFFER|GW_COLOR_VERTS)&~(GW_ILLUM|GW_WIREFRAME|GW_BACKCULL|GW_TEXTURE|GW_SHADE_CVERTS|GW_TRANSPARENCY|GW_TRANSPARENT_PASS));
-            for(int i=0;i<16;++i)if(!tint[i].empty()){
-                gw->setMaterial(material);gw->startTriangles();
-                for(auto& face:tint[i]){const Point3 shade=displayColor*(.2f+.8f*float(i+1)/16);Point3 colors[3]={shade,shade,shade};gw->triangle(face.data(),colors);}gw->endTriangles();
-            }
-            gw->setMaterial(previous);
+            gw->setColor(LINE_COLOR,displayColor);
+            for(auto& line:border){Point3 points[3]={line[0],line[1],line[1]};gw->polyline(2,points,nullptr,nullptr,FALSE,nullptr);}
         }
         gw->setRndLimits(limits);
     }
     IOResult Save(ISave* save)override{
         try{auto bytes=b::encode(document);save->BeginChunk(0x7301);ULONG done=0;auto result=save->Write(bytes.data(),static_cast<ULONG>(bytes.size()),&done);save->EndChunk();if(result!=IO_OK||done!=bytes.size())return IO_ERROR;
-            save->BeginChunk(0x7302);double settings[]={radius,strength,softness,density,double(capacity),double(seed)};result=save->Write(settings,sizeof(settings),&done);save->EndChunk();return result;
+            save->BeginChunk(0x7302);double settings[]={radius,erase?1.:0.};result=save->Write(settings,sizeof(settings),&done);save->EndChunk();return result;
         }catch(...){return IO_ERROR;}
     }
     IOResult Load(ILoad* load)override{
         IOResult result;try{while((result=load->OpenChunk())==IO_OK){const auto id=load->CurChunkID();const auto length=load->CurChunkLength();storageTrace+="Chunk "+std::to_string(id)+" bytes "+std::to_string(length)+"\n";if(length>240000000)throw std::runtime_error("Brush chunk size limit");ULONG done=0;
             if(id==0x7301){std::vector<std::uint8_t> bytes(static_cast<std::size_t>(length));if(load->Read(bytes.data(),static_cast<ULONG>(length),&done)!=IO_OK||done!=length)throw std::runtime_error("Brush payload read failed");document=b::decode(bytes);}
-            if(id==0x7302){double values[6];if(length!=sizeof(values)||load->Read(values,sizeof(values),&done)!=IO_OK||done!=sizeof(values))throw std::runtime_error("Brush settings read failed");for(double v:values)if(!std::isfinite(v))throw std::runtime_error("Non-finite Brush settings");
-                if(values[0]<=0||values[1]<0||values[1]>1||values[2]<0||values[2]>1||values[3]<0||values[3]>1||values[4]<1||values[4]>100000||values[5]<0||values[5]>INT_MAX)throw std::runtime_error("Invalid saved Brush settings");
-                radius=values[0];strength=values[1];softness=values[2];density=values[3];capacity=static_cast<unsigned>(values[4]);seed=static_cast<unsigned>(values[5]);}
+            if(id==0x7302){double values[2];if(length!=sizeof(values)||load->Read(values,sizeof(values),&done)!=IO_OK||done!=sizeof(values))throw std::runtime_error("Brush settings read failed");for(double v:values)if(!std::isfinite(v))throw std::runtime_error("Non-finite Brush settings");
+                if(values[0]<=0.0001||values[0]>1.e7||(values[1]!=0&&values[1]!=1))throw std::runtime_error("Invalid saved vector brush settings");
+                radius=values[0];erase=values[1]!=0;}
             load->CloseChunk();}
         }catch(const std::exception& e){storageTrace+=std::string("ERROR ")+e.what()+"\n";return IO_ERROR;}storageTrace+="Load end "+std::to_string(result)+"\n";return result==IO_END?IO_OK:result;
     }
 };
 int TargetPatch::Proc(RemapDir& remap){auto* mapped=remap.FindMapping(original);copy->ReplaceReference(0,mapped?mapped:original);return 0;}
-AppendPaintRestore::AppendPaintRestore(PaintDocument* p):owner(p),stroke(p->pending),index(p->document.strokes.size()){lifetime.SetRef(p);}
-void AppendPaintRestore::Restore(int){
-    owner->CancelStroke();if(applied){if(index<owner->document.strokes.size())owner->document.strokes.erase(owner->document.strokes.begin()+index);applied=false;owner->changed();}
-}
-void AppendPaintRestore::Redo(){
-    owner->CancelStroke();if(!applied){owner->document.strokes.insert(owner->document.strokes.begin()+std::min(index,owner->document.strokes.size()),stroke);applied=true;owner->changed();}
-}
 PaintRestore::PaintRestore(PaintDocument* p):owner(p),before(p->document){lifetime.SetRef(p);}
 void PaintRestore::Restore(int undo){owner->CancelStroke();if(undo)after=owner->document;owner->document=before;owner->changed();}
 void PaintRestore::Redo(){owner->CancelStroke();owner->document=after;owner->changed();}
@@ -350,7 +320,7 @@ public:
 PaintDocument* doc(Value* value){auto* r=value->to_reftarg();if(!r||r->ClassID()!=documentID)throw RuntimeError(_T("Expected Cyrus Brush document"));return static_cast<PaintDocument*>(r);}
 template<class F> Value* api(F f){try{return f();}catch(const std::exception& e){std::string s=e.what();throw RuntimeError(MSTR(std::wstring(s.begin(),s.end()).c_str()));}}
 }
-extern "C" __declspec(dllexport) const MCHAR* LibDescription(){return _T("Cyrus Scatter 1.0 procedural Brush");}
+extern "C" __declspec(dllexport) const MCHAR* LibDescription(){return _T("Cyrus Scatter 0.78 vector Brush");}
 extern "C" __declspec(dllexport) ULONG LibVersion(){return VERSION_3DSMAX;}
 extern "C" __declspec(dllexport) int LibNumberClasses(){return 1;}
 extern "C" __declspec(dllexport) ClassDesc* LibClassDesc(int i){static DocumentDesc desc;return i==0?&desc:nullptr;}
@@ -368,8 +338,11 @@ Value* cyrusBrushBegin_cf(Value** a,int n){check_arg_count(cyrusBrushBegin,1,n);
 def_visible_primitive(cyrusBrushStop,"cyrusBrushStop");
 Value* cyrusBrushStop_cf(Value**,int n){check_arg_count(cyrusBrushStop,0,n);if(active)active->stop();return &ok;}
 def_visible_primitive(cyrusBrushSettings,"cyrusBrushSettings");
-Value* cyrusBrushSettings_cf(Value** a,int n){check_arg_count(cyrusBrushSettings,6,n);return api([&]()->Value*{auto* p=doc(a[0]);p->requireAuthor();if(p->gesture)throw std::runtime_error("Finish the stroke before changing settings");b::Stroke check;check.radius=a[1]->to_float();check.strength=a[2]->to_float();check.softness=a[3]->to_float();b::validate(check);const auto density=a[5]->to_float();if(!std::isfinite(density)||density<0||density>1)throw std::runtime_error("Density must be 0..1");p->radius=check.radius;p->strength=check.strength;p->softness=check.softness;p->erase=a[4]->to_bool()!=FALSE;p->density=density;if(p->painting){p->painter->SetMinSize(float(2*p->radius));p->painter->SetMaxSize(float(2*p->radius));}p->NotifyDependents(FOREVER,PART_DISPLAY,REFMSG_CHANGE);return &ok;});}
-// Display settings never alter the stored field or its candidate membership.
+Value* cyrusBrushSettings_cf(Value** a,int n){check_arg_count(cyrusBrushSettings,3,n);return api([&]()->Value*{
+    auto* p=doc(a[0]);p->requireAuthor();if(p->gesture)throw std::runtime_error("Finish painting before changing radius/mode");
+    double radius=a[1]->to_float();if(!std::isfinite(radius)||radius<=.0001||radius>1.e7)throw std::runtime_error("Invalid vector brush radius");
+    p->radius=radius;p->erase=a[2]->to_bool()!=FALSE;
+    if(p->painting){p->painter->SetMinSize(float(radius));p->painter->SetMaxSize(float(radius));}return &ok;});}
 def_visible_primitive(cyrusBrushDisplay,"cyrusBrushDisplay");
 Value* cyrusBrushDisplay_cf(Value** a,int n){check_arg_count(cyrusBrushDisplay,3,n);return api([&]()->Value*{
     auto* p=doc(a[0]);const int mode=a[1]->to_int();const auto color=a[2]->to_point3();
@@ -380,22 +353,14 @@ Value* cyrusBrushDisplay_cf(Value** a,int n){check_arg_count(cyrusBrushDisplay,3
     if(p->painting)p->evaluate();return &ok;
 });}
 def_visible_primitive(cyrusBrushStats,"cyrusBrushStats");
-Value* cyrusBrushStats_cf(Value** a,int n){check_arg_count(cyrusBrushStats,1,n);auto* p=doc(a[0]);p->pollTarget();if(p->painting&&(p->invalid||!p->target||p->target->IsHidden()||p->target->IsFrozen()))p->stop();one_typed_value_local(Array* result);vl.result=new Array(20);std::size_t samples=0;for(const auto& s:p->document.strokes)samples+=s.samples.size();for(auto v:{p->revision,std::uint64_t(p->document.strokes.size()),std::uint64_t(samples),std::uint64_t(!p->invalid),std::uint64_t(p->painting),std::uint64_t(p->gesture),p->picks,p->baseBuilds,p->fieldBuilds,p->queries})vl.result->append(Integer64::intern(v));vl.result->append(new String(std::wstring(p->error.begin(),p->error.end()).c_str()));vl.result->append(Float::intern(float(p->maxHitError)));vl.result->append(Float::intern(float(p->lastEvaluationMs)));vl.result->append(Integer64::intern(p->repairedHits));vl.result->append(Integer64::intern(p->maskApplications));vl.result->append(Integer::intern(int(p->overlay.size())));vl.result->append(Float::intern(float(p->document.base)));vl.result->append(Integer::intern(p->tintLimited?1:0));vl.result->append(Integer::intern(int(p->tintFaces)));vl.result->append(Integer64::intern(p->overlayDraws));return_value(vl.result);}
-def_visible_primitive(cyrusBrushRows,"cyrusBrushRows");
-Value* cyrusBrushRows_cf(Value** a,int n){check_arg_count(cyrusBrushRows,1,n);return api([&]()->Value*{auto* p=doc(a[0]);p->evaluate();two_typed_value_locals(Array* result,Array* row);vl.result=new Array(0);
-    const auto population=p->document.surface^p->seed^p->capacity;
-    const auto& field=p->fieldForRevision();
-    for(std::size_t i=0;i<p->candidates.size();++i)if(field.accepts(p->anchors[i],b::threshold(population,i),p->density)){const auto& v=p->candidates[i];Matrix3 tm(1);tm.SetRow(0,point(v.xAxis*v.scale));tm.SetRow(1,point(v.yAxis*v.scale));tm.SetRow(2,point(v.zAxis*v.scale));tm.SetTrans(point(v.position));vl.row=new Array(2);vl.row->append(new Matrix3Value(tm*p->objectTM));vl.row->append(Integer::intern(1));vl.result->append(vl.row);}return_value(vl.result);});}
+Value* cyrusBrushStats_cf(Value** a,int n){check_arg_count(cyrusBrushStats,1,n);auto* p=doc(a[0]);p->pollTarget();if(p->painting&&(p->invalid||!p->target||p->target->IsHidden()||p->target->IsFrozen()))p->stop();one_typed_value_local(Array* result);vl.result=new Array(20);const auto& current=p->gesture?p->pending:p->document;std::size_t samples=b::vertexCount(current);for(auto v:{p->revision,std::uint64_t(current.contours.size()),std::uint64_t(samples),std::uint64_t(!p->invalid),std::uint64_t(p->painting),std::uint64_t(p->gesture),p->picks,p->baseBuilds,p->fieldBuilds,p->queries})vl.result->append(Integer64::intern(v));vl.result->append(new String(std::wstring(p->error.begin(),p->error.end()).c_str()));vl.result->append(Float::intern(float(p->maxHitError)));vl.result->append(Float::intern(float(p->lastEvaluationMs)));vl.result->append(Integer64::intern(p->repairedHits));vl.result->append(Integer64::intern(p->maskApplications));vl.result->append(Integer::intern(int(p->overlay.size())));vl.result->append(Float::intern(0.f));vl.result->append(Integer::intern(p->tintLimited?1:0));vl.result->append(Integer::intern(int(p->tintFaces)));vl.result->append(Integer64::intern(p->overlayDraws));return_value(vl.result);}
 def_visible_primitive(cyrusBrushRefreshMask,"cyrusBrushRefreshMask");
 Value* cyrusBrushRefreshMask_cf(Value** a,int n){check_arg_count(cyrusBrushRefreshMask,1,n);return api([&]()->Value*{doc(a[0])->evaluate();return &ok;});}
-def_visible_primitive(cyrusBrushStroke,"cyrusBrushStroke");
-Value* cyrusBrushStroke_cf(Value** a,int n){if(n!=5&&n!=7)throw RuntimeError(_T("Expected 5 or 7 Brush stroke arguments"));return api([&]()->Value*{auto* p=doc(a[0]);p->requireAuthor();p->ensureSurface();if(p->gesture)throw std::runtime_error("Finish the active stroke");const int i=a[1]->to_int()-1;if(i<0||i>=int(p->document.strokes.size()))throw std::runtime_error("Invalid stroke index");auto s=p->document.strokes[i];s.enabled=a[2]->to_bool()!=FALSE;s.strength=a[3]->to_float();s.radius=a[4]->to_float();if(n==7){s.softness=a[5]->to_float();s.erase=a[6]->to_bool()!=FALSE;}b::validate(s);theHold.Begin();theHold.Put(new PaintRestore(p));p->document.strokes[i]=std::move(s);p->changed();theHold.Accept(_T("Edit Cyrus Brush stroke"));return &ok;});}
 def_visible_primitive(cyrusBrushDab,"cyrusBrushDab");
 Value* cyrusBrushDab_cf(Value** a,int n){check_arg_count(cyrusBrushDab,4,n);return api([&]()->Value*{auto* p=doc(a[0]);
     try {p->requireAuthor();p->valid();b::Hit hit;if(!p->surface->hit({vec(a[1]->to_point3()),vec(a[2]->to_point3())},hit))return &false_value;
         if(!p->gesture&&!p->StartStroke())throw std::runtime_error(p->error);
-        if(p->pending.samples.size()>=100000)throw std::runtime_error("Stroke sample limit reached");
-        p->pending.samples.push_back(p->sample(hit.anchor));++p->revision;
+        p->addPoint(hit.anchor,true);
         if(a[3]->to_bool()&&!p->EndStroke())throw std::runtime_error(p->error);
         return &true_value;
     }catch(...){p->CancelStroke();throw;}});}
@@ -411,11 +376,25 @@ Value* cyrusBrushProbe_cf(Value** a,int n){check_arg_count(cyrusBrushProbe,2,n);
     b::Hit oracle;const bool referenceHit=p->surface->hitReference(p->ray(mouse),oracle);
     if(ownHit!=referenceHit||(ownHit&&(std::abs(ours.distance-oracle.distance)>1e-7||ours.anchor.face!=oracle.anchor.face)))throw std::runtime_error("Brush BVH disagrees with exhaustive snapshot ray query");
     one_typed_value_local(Array* result);vl.result=new Array(6);vl.result->append(Integer::intern(face+1));vl.result->append(Float::intern(delta));vl.result->append(new Point3Value(w));vl.result->append(Float::intern(ownHit?float(Length(point(p->surface->position(ours.anchor))*p->objectTM-w)):-1));vl.result->append(std::min({bary.x,bary.y,bary.z})>=0?&true_value:&false_value);vl.result->append(&true_value);return_value(vl.result);});}
-def_visible_primitive(cyrusBrushHistory,"cyrusBrushHistory");
-Value* cyrusBrushHistory_cf(Value** a,int n){check_arg_count(cyrusBrushHistory,1,n);auto* p=doc(a[0]);two_typed_value_locals(Array* result,Array* row);vl.result=new Array(0);
-    for(const auto& s:p->document.strokes){vl.row=new Array(6);vl.row->append(s.enabled?&true_value:&false_value);vl.row->append(s.erase?&true_value:&false_value);vl.row->append(Float::intern(float(s.radius)));vl.row->append(Float::intern(float(s.strength)));vl.row->append(Float::intern(float(s.softness)));vl.row->append(Integer::intern(int(s.samples.size())));vl.result->append(vl.row);}return_value(vl.result);}
 def_visible_primitive(cyrusBrushOptions,"cyrusBrushOptions");
-Value* cyrusBrushOptions_cf(Value** a,int n){check_arg_count(cyrusBrushOptions,1,n);auto* p=doc(a[0]);one_typed_value_local(Array* result);vl.result=new Array(5);for(auto v:{p->radius,p->strength,p->softness,p->density})vl.result->append(Float::intern(float(v)));vl.result->append(p->erase?&true_value:&false_value);return_value(vl.result);}
+Value* cyrusBrushOptions_cf(Value** a,int n){check_arg_count(cyrusBrushOptions,1,n);auto* p=doc(a[0]);one_typed_value_local(Array* result);vl.result=new Array(2);vl.result->append(Float::intern(float(p->radius)));vl.result->append(p->erase?&true_value:&false_value);return_value(vl.result);}
+def_visible_primitive(cyrusBrushFalloff,"cyrusBrushFalloff");
+Value* cyrusBrushFalloff_cf(Value** a,int n){check_arg_count(cyrusBrushFalloff,1,n);return api([&]()->Value*{
+    const auto& f=doc(a[0])->document.falloff;two_typed_value_locals(Array* result,Array* curve);vl.result=new Array(8);
+    for(double v:{f.inside,f.outside})vl.result->append(Float::intern(float(v)));
+    vl.result->append(f.density?&true_value:&false_value);vl.result->append(f.scale?&true_value:&false_value);
+    for(double v:{f.scaleMin,f.scaleMax})vl.result->append(Float::intern(float(v)));
+    for(const auto* values:{&f.densityCurve,&f.scaleCurve}){vl.curve=new Array(int(values->size()));vl.result->append(vl.curve);for(double v:*values)vl.curve->append(Float::intern(float(v)));}
+    return_value(vl.result);});}
+def_visible_primitive(cyrusBrushSetFalloff,"cyrusBrushSetFalloff");
+Value* cyrusBrushSetFalloff_cf(Value** a,int n){check_arg_count(cyrusBrushSetFalloff,2,n);return api([&]()->Value*{
+    auto* p=doc(a[0]);p->requireAuthor();if(p->gesture)throw std::runtime_error("Finish painting before editing feathering");
+    type_check(a[1],Array,_T("vector feather settings"));auto* cfg=static_cast<Array*>(a[1]);if(cfg->size!=8)throw std::runtime_error("Expected eight vector feather settings");
+    b::Falloff f;f.inside=cfg->data[0]->to_float();f.outside=cfg->data[1]->to_float();f.density=cfg->data[2]->to_bool()!=FALSE;f.scale=cfg->data[3]->to_bool()!=FALSE;f.scaleMin=cfg->data[4]->to_float();f.scaleMax=cfg->data[5]->to_float();
+    int k=6;for(auto* curve:{&f.densityCurve,&f.scaleCurve}){type_check(cfg->data[k],Array,_T("curve samples"));auto* array=static_cast<Array*>(cfg->data[k++]);if(array->size<2||array->size>257)throw std::runtime_error("Curve needs 2..257 samples");curve->clear();for(int i=0;i<array->size;++i)curve->push_back(array->data[i]->to_float());}
+    b::validate(f);const auto& old=p->document.falloff;
+    if(f.inside==old.inside&&f.outside==old.outside&&f.density==old.density&&f.scale==old.scale&&f.scaleMin==old.scaleMin&&f.scaleMax==old.scaleMax&&f.densityCurve==old.densityCurve&&f.scaleCurve==old.scaleCurve)return &ok;
+    const bool ownHold=!theHold.Holding();if(ownHold)theHold.Begin();theHold.Put(new PaintRestore(p));p->document.falloff=std::move(f);p->changed();if(ownHold)theHold.Accept(_T("Vector feather"));return &ok;});}
 def_visible_primitive(cyrusBrushStorageLog,"cyrusBrushStorageLog");
 Value* cyrusBrushStorageLog_cf(Value**,int n){check_arg_count(cyrusBrushStorageLog,0,n);return new String(std::wstring(storageTrace.begin(),storageTrace.end()).c_str());}
 
@@ -425,80 +404,12 @@ Value* cyrusBrushTarget_cf(Value** a,int n){check_arg_count(cyrusBrushTarget,1,n
 def_visible_primitive(cyrusBrushFill,"cyrusBrushFill");
 Value* cyrusBrushFill_cf(Value** a,int n){check_arg_count(cyrusBrushFill,2,n);return api([&]()->Value*{
     auto* p=doc(a[0]);p->requireAuthor();if(p->gesture)throw std::runtime_error("Finish the stroke before resetting the field");
-    const auto value=a[1]->to_float();if(!std::isfinite(value)||value<0||value>1)throw std::runtime_error("Brush fill must be 0..1");
-    theHold.Begin();theHold.Put(new PaintRestore(p));p->document.strokes.clear();p->document.base=value;p->changed();theHold.Accept(_T("Cyrus Brush fill"));return &ok;
-});}
-
-def_visible_primitive(cyrusBrushDeleteStroke,"cyrusBrushDeleteStroke");
-Value* cyrusBrushDeleteStroke_cf(Value** a,int n){check_arg_count(cyrusBrushDeleteStroke,2,n);return api([&]()->Value*{
-    auto* p=doc(a[0]);p->requireAuthor();if(p->gesture)throw std::runtime_error("Finish the stroke before editing history");
-    const int i=a[1]->to_int()-1;if(i<0||i>=int(p->document.strokes.size()))throw std::runtime_error("Invalid stroke index");
-    theHold.Begin();theHold.Put(new PaintRestore(p));p->document.strokes.erase(p->document.strokes.begin()+i);p->changed();theHold.Accept(_T("Cyrus Brush delete stroke"));return &ok;
-});}
-
-// This accepts the layer's actual keyed population, not the independent mask
-// overlay samples. Original transforms/source assignments and IDs are retained.
-def_visible_primitive(cyrusBrushFilter,"cyrusBrushFilter");
-Value* cyrusBrushFilter_cf(Value** a,int n){check_arg_count(cyrusBrushFilter,4,n);return api([&]()->Value*{
-    auto* p=doc(a[0]);if(p->gesture)throw std::runtime_error("Finish the Brush stroke before publishing placements");
-    type_check(a[1],Array,_T("keyed placements"));auto* rows=static_cast<Array*>(a[1]);
-    const auto density=a[3]->to_float();if(!std::isfinite(density)||density<0||density>1)throw std::runtime_error("Brush density must be 0..1");
-    const auto& field=p->fieldForRevision();const std::wstring identity=a[2]->to_string();std::uint64_t population=1469598103934665603ULL;
-    for(const auto c:identity){population^=static_cast<std::uint16_t>(c);population*=1099511628211ULL;}
-    one_typed_value_local(Array* result);vl.result=new Array(rows->size);b::QueryStats stats;
-    for(int i=0;i<rows->size;++i){
-        type_check(rows->data[i],Array,_T("keyed placement"));auto* row=static_cast<Array*>(rows->data[i]);if(row->size!=5)throw std::runtime_error("Brush requires canonical candidate identities and anchors");
-        const auto face=row->data[3]->to_int()-1;const auto bary=vec(row->data[4]->to_point3());
-        if(face<0||static_cast<std::size_t>(face)>=p->surface->mesh().faces.size())throw std::runtime_error("Brush candidate face does not match target snapshot");
-        if(std::min({bary.x,bary.y,bary.z})<-1e-4||std::max({bary.x,bary.y,bary.z})>1.0001)throw std::runtime_error("Brush candidate is outside its receiving face; use projected movement");
-        if(field.accepts({static_cast<unsigned>(face),bary},b::threshold(population,static_cast<std::uint64_t>(row->data[2]->to_int64())),density,&stats)){
-            // Downstream source offsets edit transient matrices in place. Never
-            // expose a matrix owned by the immutable base-population cache.
-            auto* copy=new Array(row->size);vl.result->append(copy);copy->append(new Matrix3Value(row->data[0]->to_matrix3()));for(int k=1;k<row->size;++k)copy->append(row->data[k]);
-        }
-    }
-    p->queries+=stats.fieldQueries;++p->maskApplications;return_value(vl.result);
+    const auto value=a[1]->to_float();if(value!=0&&value!=1)throw std::runtime_error("Vector Fill requires 0 (clear) or 1 (fill)");
+    p->ensureSurface();auto next=p->document;next.contours=value==1?p->receiverDomain:b::Contours{};
+    theHold.Begin();theHold.Put(new PaintRestore(p));p->document=std::move(next);p->changed();theHold.Accept(_T("Cyrus Brush fill"));return &ok;
 });}
 
 def_visible_primitive(cyrusClonePlacementRows,"cyrusClonePlacementRows");
-// Compose a selected set's field and earlier sibling coverage before thinning.
-// All supplied documents use the same indexed receiver; undefined means Whole.
-def_visible_primitive(cyrusBrushCompositeFilter,"cyrusBrushCompositeFilter");
-Value* cyrusBrushCompositeFilter_cf(Value** a,int n){check_arg_count(cyrusBrushCompositeFilter,5,n);return api([&]()->Value*{
-    type_check(a[0],Array,_T("keyed placements"));type_check(a[1],Array,_T("coverage documents"));
-    auto* rows=static_cast<Array*>(a[0]);auto* documents=static_cast<Array*>(a[1]);
-    if(documents->size<1||documents->size>10)throw std::runtime_error("Coverage composition needs 1..10 fields");
-    const double density=a[2]->to_float();if(!std::isfinite(density)||density<0||density>1)throw std::runtime_error("Invalid painted density");
-    const std::wstring identity=a[3]->to_string();std::uint64_t population=1469598103934665603ULL;
-    for(auto c:identity){population^=static_cast<std::uint16_t>(c);population*=1099511628211ULL;}
-    auto* target=a[4]->to_node();if(!target)throw std::runtime_error("Missing coverage receiver");
-    std::vector<PaintDocument*> docs;docs.reserve(documents->size);
-    std::vector<const b::Field*> fields;fields.reserve(documents->size);
-    for(int i=0;i<documents->size;++i){auto* p=documents->data[i]==&undefined?nullptr:doc(documents->data[i]);
-        if(p){if(p->gesture)throw std::runtime_error("Finish painting before evaluating");p->ensureSurface();if(p->target!=target)throw std::runtime_error("Coverage documents use different receivers");p->fieldForRevision();}
-        docs.push_back(p);fields.push_back(p?&p->fieldForRevision():nullptr);
-    }
-    one_typed_value_local(Array* result);vl.result=new Array(rows->size);
-    std::vector<b::QueryStats> stats(docs.size());
-    for(int i=0;i<rows->size;++i){type_check(rows->data[i],Array,_T("keyed placement"));auto* row=static_cast<Array*>(rows->data[i]);
-        if(row->size!=5)throw std::runtime_error("Coverage needs surface anchors");
-        const int face=row->data[3]->to_int()-1;const auto bary=vec(row->data[4]->to_point3());
-        if(face<0||!std::isfinite(bary.x)||!std::isfinite(bary.y)||!std::isfinite(bary.z)||std::abs(bary.x+bary.y+bary.z-1)>1e-3||std::min({bary.x,bary.y,bary.z})<-1e-4||std::max({bary.x,bary.y,bary.z})>1.0001)throw std::runtime_error("Coverage anchor requires projected movement");
-        double own=1,other=0;
-        for(std::size_t d=0;d<docs.size();++d){double weight=1;
-            if(docs[d]){if(std::size_t(face)>=docs[d]->surface->mesh().faces.size())throw std::runtime_error("Coverage face identity mismatch");weight=fields[d]->evaluate({unsigned(face),bary},&stats[d]);}
-            if(d==0)own=weight;else other=std::max(other,weight);
-        }
-        if(b::accepted(population,std::uint64_t(row->data[2]->to_int64()),own*(1-other),density)){
-            auto* copy=new Array(row->size);vl.result->append(copy);copy->append(new Matrix3Value(row->data[0]->to_matrix3()));for(int k=1;k<row->size;++k)copy->append(row->data[k]);
-        }
-    }
-    for(std::size_t d=0;d<docs.size();++d)if(docs[d]){docs[d]->queries+=stats[d].fieldQueries;++docs[d]->maskApplications;}
-    return_value(vl.result);
-});}
-// Union targeted regions against one layer population. A candidate is admitted
-// once, using its receiver-local face, even when regions overlap or receivers
-// occupy the same world-space position.
 def_visible_primitive(cyrusBrushRegionFilter,"cyrusBrushRegionFilter");
 Value* cyrusBrushRegionFilter_cf(Value** a,int n){check_arg_count(cyrusBrushRegionFilter,6,n);return api([&]()->Value*{
     for(int i=0;i<5;++i)type_check(a[i],Array,_T("region coverage array"));
@@ -532,12 +443,16 @@ Value* cyrusBrushRegionFilter_cf(Value** a,int n){check_arg_count(cyrusBrushRegi
         const int face=row->data[3]->to_int()-1;const auto bary=vec(row->data[4]->to_point3());
         if(face<0||std::uint64_t(face)>=total||!std::isfinite(bary.x)||!std::isfinite(bary.y)||!std::isfinite(bary.z)||std::abs(bary.x+bary.y+bary.z-1)>1e-3||std::min({bary.x,bary.y,bary.z})<-1e-4||std::max({bary.x,bary.y,bary.z})>1.0001)throw std::runtime_error("Region anchor requires projected movement");
         const auto receiver=std::size_t(std::upper_bound(ends.begin(),ends.end(),std::uint64_t(face))-ends.begin());
-        const auto localFace=unsigned(std::uint64_t(face)-(receiver?ends[receiver-1]:0));bool keep=false;
+        const auto localFace=unsigned(std::uint64_t(face)-(receiver?ends[receiver-1]:0));double weight=0,scale=1;
         const double u=b::threshold(population,std::uint64_t(row->data[2]->to_int64()));
-        // max(area coverage*density) > u iff any matching area exceeds u.
-        for(auto& region:regions)if(region.receiver==receiver&&region.field->accepts({localFace,bary},u,region.density,&region.stats)){keep=true;break;}
-        if(keep){
-            vl.copy=new Array(row->size);vl.result->append(vl.copy);vl.copy->append(new Matrix3Value(row->data[0]->to_matrix3()));
+        // Union once; strongest effective density controls scale. Equal weights
+        // use saved area order, preserving deterministic overlap behavior.
+        for(auto& region:regions)if(region.receiver==receiver){
+            const auto value=region.field->query({localFace,bary},&region.stats);const double w=std::clamp(value.density*region.density,0.,1.);
+            if(w>weight){weight=w;scale=value.scale;}
+        }
+        if(u<weight){
+            vl.copy=new Array(row->size);vl.result->append(vl.copy);Matrix3 tm=row->data[0]->to_matrix3();for(int k=0;k<3;++k)tm.SetRow(k,tm.GetRow(k)*float(scale));vl.copy->append(new Matrix3Value(tm));
             for(int k=1;k<row->size;++k)vl.copy->append(row->data[k]);
         }
     }

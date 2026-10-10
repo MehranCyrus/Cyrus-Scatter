@@ -19,13 +19,15 @@ def digest(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
-def launch(folder,script,native,extra='',transport=False,visible=False,extra_modules=()):
+def launch(folder,script,native,extra='',transport=False,visible=False,extra_modules=(),max_year=2027):
+    if max_year not in (2026,2027):
+        raise ValueError('Use a supported Max host year')
     folder=Path(folder).resolve();script=Path(script).resolve();native=Path(native).resolve()
     if not folder.is_relative_to(ROOT/'build'):
         raise ValueError('An ignored private build directory is required')
     folder.mkdir(parents=True,exist_ok=False)
     for rel in ['bin',*DIRECTORIES.values()]:(folder/rel).mkdir(parents=True,exist_ok=True)
-    profile=Path(os.environ['LOCALAPPDATA'])/'Autodesk/3dsMax/2027 - 64bit/ENU/3dsMax.ini'
+    profile=Path(os.environ['LOCALAPPDATA'])/f'Autodesk/3dsMax/{max_year} - 64bit/ENU/3dsMax.ini'
     ini=profile.read_text(encoding='utf-16')
     for key,rel in DIRECTORIES.items():
         ini,count=re.subn(r'(?m)^'+re.escape(key)+'=.*$',lambda _:key+'='+str(folder/rel),ini)
@@ -39,7 +41,7 @@ def launch(folder,script,native,extra='',transport=False,visible=False,extra_mod
         destination=folder/'bin'/name;shutil.copy2(native/name,destination)
         modules[name]=digest(destination)
     copied=folder/'scripts/CyrusScatter.ms';shutil.copy2(script,copied)
-    (folder/'plugins.ini').write_text('[Directories]\nAdditional MAX plug-ins=C:/Program Files/Autodesk/3ds Max 2027/PlugIns\nCyrusPrivate='+str(folder/'bin')+'\n[Help]\n')
+    (folder/'plugins.ini').write_text(f'[Directories]\nAdditional MAX plug-ins=C:/Program Files/Autodesk/3ds Max {max_year}/PlugIns\nCyrusPrivate='+str(folder/'bin')+'\n[Help]\n')
     expected=','.join('#(@"'+name+'",@"'+str(folder/'bin'/name)+'")' for name in modules)
     bootstrap='global AminScatterObject,CyrusPerfHeadless=true,MCPFixtureDir=@"'+folder.as_posix()+'/"\n'
     if transport:
@@ -65,10 +67,10 @@ def launch(folder,script,native,extra='',transport=False,visible=False,extra_mod
     )catch((dotNetClass "System.IO.File").WriteAllText (MCPFixtureDir+"startup-error.txt") (getCurrentException()+"\\nSOURCE: "+(getErrorSourceFileName() as string)+" LINE: "+(getErrorSourceFileLine() as string)+"\\n"+getCurrentExceptionStackTrace()))
 '''.replace('__EXPECTED__',expected).replace('__SCRIPT__',copied.as_posix()).replace('__EXTRA__',extra)
     start=folder/'start.ms';start.write_text(bootstrap,encoding='utf-8-sig')
-    command=['C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe','-q','-i',str(folder/'max.ini'),'-p',str(folder/'plugins.ini'),'-U','MAXScript',str(start),'-listenerlog',str(folder/'listener.log')]
+    command=[f'C:/Program Files/Autodesk/3ds Max {max_year}/3dsmax.exe','-q','-i',str(folder/'max.ini'),'-p',str(folder/'plugins.ini'),'-U','MAXScript',str(start),'-listenerlog',str(folder/'listener.log')]
     startup=subprocess.STARTUPINFO();startup.dwFlags|=subprocess.STARTF_USESHOWWINDOW;startup.wShowWindow=1 if visible else 0
     process=subprocess.Popen(command,cwd=folder,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,startupinfo=startup)
-    metadata={'pid':process.pid,'output':str(folder),'command':command,'binaries':modules,
+    metadata={'pid':process.pid,'max_year':max_year,'output':str(folder),'command':command,'binaries':modules,
               'script_sha256':digest(copied),'normal_profile_modified':False,'development_transport':transport}
     (folder/'launch.json').write_text(json.dumps(metadata,indent=2)+'\n')
     return process,metadata

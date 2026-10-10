@@ -1,0 +1,68 @@
+{
+  "utc": "2026-10-10T13:24:22.342045+00:00",
+  "sources": {
+    "src/lab.cpp": "8c3266afc47b02a3706860897edab327b91bc86e2c5db285d8f6a7dfb8e3140e",
+    "src/lab.h": "9d43ad0b2dc759a8807dde711676aea9f15bf218b500a4495ffa909821ba9e88",
+    "src/max_host.cpp": "db48f901595cd53796ab37610e6aa8343f5aa04b378acfb711db85bcbd800817",
+    "src/picker.h": "ea6c9ede663d184488b87185e06142de264a88b6c6e9410db47b5740b6d5ce48",
+    "src/tiles.h": "c0079f93119dcf8ce851b55546db6e3668ca5d94bf6449dd6346e6db443c5e02",
+    "methods/01-vector-regions/scripts/Launch.ms": "a9dbe61a5ac33add4ea8efb6ce6a5d38db1c2962cd0135bcb0f90a6f92a3a916",
+    "methods/01-vector-regions/src/vector.cpp": "9d25da50860396592d0dff1b1a5afb44b6db6bb85155dd3c23fc7f0b86a94772",
+    "methods/02-tiled-mask/scripts/Launch.ms": "f99f93cfdba0835ca6ff4bc2a283e6ceebd367951f96b24ae08170e9fd41c80b",
+    "methods/02-tiled-mask/src/mask.cpp": "e80f0f79b57d4cdf86b71b28092033a66e4bc1d223a77568b7c8516c14b5f7f9",
+    "methods/03-surface-volumes/scripts/Launch.ms": "22bbca70b45ad2ce1fee6bea67907b5a73c5f3fc0f2f3bf1657ce253aea9a4e7",
+    "methods/03-surface-volumes/src/volumes.cpp": "325e38e62f8b90dfa964e4dd10e4c75a19885c1e0331110930a70c7ab28c9b96",
+    "methods/04-surface-field/scripts/Launch.ms": "5c204398e44b0f1ec40e7dafa3ebab58bb5003a121dc273a4151d197456941cb",
+    "methods/04-surface-field/src/field.cpp": "fe783a2d92d4c7f9e1a1425a03084f45f2f2ab06e56c90e24dc9c6040959c3dc",
+    "third_party/clipper2/PROVENANCE.json": "a396deca238f76be6efb163279b064d376e7c0f8f84b204d5e104a7f2dfeeb23",
+    "third_party/clipper2/include/clipper2/clipper.core.h": "b667c2fe968344252e2c32c0cffc09cf6520164e272fcf63bf46eccc707b138f",
+    "third_party/clipper2/include/clipper2/clipper.engine.h": "e77185eb535cdae22feb85a045b6b90365f0cfd841bd7fb01714fc03a026fa09",
+    "third_party/clipper2/include/clipper2/clipper.export.h": "035e4257f1f127d6a17833331922f2b1b615371b64bb4cd625842102517793b0",
+    "third_party/clipper2/include/clipper2/clipper.h": "145efd001ef2f45ac5655a18e19d8a122efdf665c38d306a1fe91ce9e0d18450",
+    "third_party/clipper2/include/clipper2/clipper.minkowski.h": "6ea4f08d3e2561bdd4d95a548e1b5d7983100e317ed805616b8d602f03d3dbe3",
+    "third_party/clipper2/include/clipper2/clipper.offset.h": "147e5f4694327d62cec31fec55b69537f178e808a715a533bb42c01a85cc435a",
+    "third_party/clipper2/include/clipper2/clipper.rectclip.h": "2970dbe3f91d32e96abc3117240694fc09f354060ff84e4a95014ec510f4d8dd",
+    "third_party/clipper2/include/clipper2/clipper.triangulation.h": "a82d32e65583cce5a6d704796c54de3ddd2963d219057263a0f87f8d14a07d6c",
+    "third_party/clipper2/include/clipper2/clipper.version.h": "0d636f1599b09743496d5c15c7dcb5bc3101bd423d6745bf17e480edbffccdac",
+    "third_party/clipper2/src/clipper.engine.cpp": "7b2cc17d4debd3b5ee6bd2c592ecda5082253324c7dd514b5593ae1b2c7812b2",
+    "third_party/clipper2/src/clipper.offset.cpp": "ebc01258953212d20fed090a4a740f94926c3c6706a092fec4c5e9cb5292305a",
+    "third_party/clipper2/src/clipper.rectclip.cpp": "79c7d8d90dd3b577db77a152c4739f6f49bfda8727528291250d3d8e8d79e18c",
+    "tests/benchmark.cpp": "5e203ea04ac9f11ef0f9d5ec5d8c05d9a8f6fc0ab8caf7c5243a687036b66d65",
+    "tests/core_tests.cpp": "8c607b1667367f55adde644bdeead33b56beb673b647541a06348afe04c196d4",
+    "tests/diagnostics.cpp": "856cc287be1c798f679513c5389e0b5221f6adf56dc9a92b1fd18f767027ece4",
+    "tests/fixtures.h": "36160ba1e1238bf91a4ad3eb41deab4a9df4e0014f2b917109df50da49d447c1",
+    "tests/host_tests.ms": "910feb7f66401bc2d68e2f197e39a9e9f50a1bda2dc5cda8736301cb0eebfd3d"
+  },
+  "commands": [
+    [
+      "cmake",
+      "-S",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\experiments\\paint-methods",
+      "-B",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\experiments\\paint-methods\\build\\max-06",
+      "-G",
+      "NMake Makefiles",
+      "-DCMAKE_BUILD_TYPE=Release",
+      "-DPAINTLAB_MAX=ON",
+      "-DMAXSDK_ROOT=F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\tooling\\max2027-sdk\\Program Files\\Autodesk\\3ds Max 2027 SDK\\maxsdk"
+    ],
+    [
+      "cmake",
+      "--build",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\experiments\\paint-methods\\build\\max-06"
+    ],
+    [
+      "ctest",
+      "--test-dir",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\experiments\\paint-methods\\build\\max-06",
+      "--output-on-failure"
+    ]
+  ],
+  "binaries": {
+    "PaintLab1.dlx": "99642193f2d93030c6a8967f02a5a5965db6fc744be51489d0d71a25316f6b49",
+    "PaintLab2.dlx": "06854be1f03051450f5b1f4336063341c75204f32f7eb42b2b6f80d9f696420f",
+    "PaintLab3.dlx": "4a6228e2fde6bbbda3dbc1c24991a7d97aaf2861a1d81e9d68ada32c068d61ee",
+    "PaintLab4.dlx": "19aa83502c354b94022633fbf7472d304966f8deb59efe1a58061706b481a442"
+  },
+  "host_tested": false
+}

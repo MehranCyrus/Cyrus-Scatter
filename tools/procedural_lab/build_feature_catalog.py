@@ -42,9 +42,9 @@ def build():
                 previous=ownership.get((group,section,entry['name']),{})
                 caps=SECTION_CAPS[section] if section in ('spacingUI','separationUI','proceduralUI','properties') else previous.get('capabilities',SECTION_CAPS[section])
                 owner=previous.get('owner_context','Selected layer recipe' if group=='layer' else 'Local container view' if group=='container' else 'Controller / local view')
-                if section=='setsUI':owner='Selected layer / named Paint Area; older model-owning sets are distinct'
+                if section=='setsUI':owner='Selected layer / named Paint Area'
                 elif section=='brushUI':owner='Selected Paint Area and its receiver; shared layer models'
-                elif section in ('sourceUI','sourceContainersUI'):owner='Selected layer model collection; older groups retain independent metadata'
+                elif section in ('sourceUI','sourceContainersUI'):owner='Selected layer model collection'
                 elif section=='surface' and entry['name'] in ('sharedPick','removeSurfaces','surfacesButton','receiversList'):owner='Selected layer receiving surfaces'
                 controls.append(dict(group=group,section=section,**entry,capabilities=caps,owner_context=owner,
                     help=tooltips.get(section,{}).get(entry['name']),
@@ -53,7 +53,7 @@ def build():
     return dict(schema='cyrus.feature-catalog/1.0',authority='Help only. Tool dispatch, closed schema and local approval determine authority.',
                 capability_source_sha256=hashlib.sha256(source.read_bytes()).hexdigest(),
                 control_inventory_sha256=hashlib.sha256(inventory_path.read_bytes()).hexdigest(),
-                development_version='0.77',mcp_version='0.73.0',calculation_model='CyrusUnified1',features=rows,controls=controls)
+                development_version='0.78.1',mcp_version='0.73.0',calculation_model='CyrusUnified1',features=rows,controls=controls)
 
 if __name__=='__main__':
     target=ROOT/'CyrusMCP/cyrus_mcp/feature-catalog.json'

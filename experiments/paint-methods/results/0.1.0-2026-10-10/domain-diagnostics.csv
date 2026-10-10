@@ -1,0 +1,5 @@
+method,case,status,observed
+1,connected_fold,N/A_projection,This projected method requires a consistently facing single-valued surface. Use C or D for spheres/folds.
+2,connected_fold,N/A_projection,This projected method requires a consistently facing single-valued surface. Use C or D for spheres/folds.
+3,connected_fold,FAIL_surface_distance,1
+4,connected_fold,FAIL_surface_distance,1
