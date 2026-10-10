@@ -1,5 +1,7 @@
 # Container selection correction — Cyrus Scatter 0.73
 
+> Historical implementation record. For the current product use [the documentation index](../README.md) and [backlog](../BACKLOG.md). Measurements and instructions below apply to their recorded build.
+
 6 October 2026. This is a corrective development build of **0.73 / 0.73.0**, serialization **54**, model **`CyrusUnified1`**. It supersedes the first delivered `unified-0.73-final-20261006` package. Current 0.73 scenes keep their settings; this correction adds no scene migration or licensing change.
 
 ## Confirmed failure

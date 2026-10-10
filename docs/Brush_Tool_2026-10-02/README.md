@@ -1,5 +1,7 @@
 # Procedural Brush: recommended approach
 
+> Historical implementation record. For the current product use [the documentation index](../README.md) and [backlog](../BACKLOG.md). Measurements and instructions below apply to their recorded build.
+
 <!-- CURRENT_SYSTEM_2026-10-05 -->
 
 Historical Brush research/prototype package. Local integration and later real-asset tests are linked in the [current system guide](../Current_System_2026-10-05/CURRENT_STATE.md). Public MCP Brush authoring is still unavailable; the [new specification](../Current_System_2026-10-05/MCP_EXPANSION_SPEC.md) proposes its separate contract.

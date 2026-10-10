@@ -1,0 +1,55 @@
+{
+  "packages": [
+    {
+      "path": "dist/Courtyard_Fixes_0.75_2026-10-10/Max2027/CyrusScatter-0.75.0-Max2027.mzp",
+      "sha256": "b8631fbdb8d70627d8aa3e55830b20ddee3653668d21d1c9c5cfeaa0e19495af",
+      "manifest": {
+        "product": "Cyrus Scatter",
+        "version": "0.75.0",
+        "max_year": 2027,
+        "toolset": "14.38.33130",
+        "windows_sdk": "10.0.19041.0",
+        "configuration": "Release",
+        "native_id": "551bb42f4fd3",
+        "files": {
+          "AminScatter.dlx": "6a37ebad69e6a32584bb270d98bc17c536f44acae74eab5bc5a54c79c436d4f0",
+          "CyrusBrush.dlx": "10371692b4b30d77f483d27d1d24314b96da47f99734edc76b5c839da470bd8f",
+          "CyrusBrushStorage.dlh": "3924327a354edb5d33feaf9ac5dab93b01bbdcb1bfd9e67623868ea1c002cb82",
+          "CyrusScatter.mcr": "10339a97a75ee693c26cad2d7f90af97f9bf1f700eebeaf607d1d06569c250b7",
+          "CyrusScatter.ms": "04b779f503cffb3c136f0f332e61ef121f7bd3ca2673fd8b9d5172a8a6e9d3d3",
+          "CyrusScatterEdit.dlm": "a7c6c9653fa976321fdc32408063ecda0d07fdec61d8a5503cd24303ec54eb64",
+          "CyrusScatterStartup.ms": "fdf38b3bc83187eecb34b833bfff2751e78626e9e3dba41aa20a0ff7ff9e8405",
+          "INSTALL.txt": "53701383081216ac13b143be92c4cbe49e3706bb486172ab3345dc4b03ed5323",
+          "Uninstall.ms": "59e2b84901fcefaae1dab59886cd2f4079df4f764c789238947e19c514b4ed49",
+          "install.ms": "198f50cf4908a301126b815e620ead06634d3102f509a3011ad56f1bad43a0ff",
+          "mzp.run": "c15bbb904eafd7dc666d5cc528cf802666c8d5147ea7379a83c9157848fa58c3"
+        }
+      }
+    },
+    {
+      "path": "dist/Courtyard_Fixes_0.75_2026-10-10/Max2027/CyrusSurfaceAnalyzer-0.14-Max2027.mzp",
+      "sha256": "3fef53e48ae235d51114df5431e4c35a00214a239b20d5308ce4f4edd064b5d8",
+      "manifest": {
+        "product": "Cyrus Surface Analyzer",
+        "version": "0.14",
+        "max_year": 2027,
+        "toolset": "14.38.33130",
+        "windows_sdk": "10.0.19041.0",
+        "configuration": "Release",
+        "native_id": "3dc35151a817",
+        "files": {
+          "CyrusSurfaceAnalyzer.dlx": "3dc35151a8179a22fb93309e9648a8e7ca7cb76d68a48163a4166c1b77e50582",
+          "CyrusSurfaceAnalyzer.ms": "716a78868a78ea01842bdfa680baa628316530ca774aea7b537c7fef3db0d7ae",
+          "CyrusSurfaceAnalyzerStartup.ms": "fdef46e54790c5c6d893479a17c6c885e4ff39897d00f1eac6b8567f86c18425",
+          "INSTALL.txt": "b5e0f5c26672c20cf396effda0d25e993b68263789f55b3c112b0e934516eec8",
+          "install.ms": "9a59868acc8b20485c5ba21649658a78d657a0f7910800c9327218f6f2167537",
+          "mzp.run": "9a5e8deb72702b1be5214f4f9e99f3e4a12b04fd47d63ceb865f1f5ea28b2660"
+        }
+      }
+    }
+  ],
+  "installed": false,
+  "installer_execution_qualified": false,
+  "host": "build\\mcp-qualification\\courtyard-fixes075-release",
+  "scope": "Max 2027 development candidate; raw runtime-tested payload hashes verified in both archives"
+}

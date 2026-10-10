@@ -1,5 +1,7 @@
 # Cyrus Scatter 0.73 â€” unified system
 
+> Historical implementation record. For the current product use [the documentation index](../README.md) and [backlog](../BACKLOG.md). Measurements and instructions below apply to their recorded build.
+
 **Subsequent approved layout and real-asset qualification:** [approved UI, real scenes, exact evidence and remaining limits](../Full_Qualification_0.73_2026-10-07/README.md). The latest report supersedes older UI/runtime qualification claims; dated implementation and R&D evidence below remains historical. No artist installation or Git operations are part of this campaign.
 
 6 October 2026. Development version **0.73**, package/native **0.73.0**, MAXScript serialization **54**, calculation model **`CyrusUnified1`**. Analyzer remains **0.14**; MCP package/plan are **0.73.0 / 0.73**. Version 1.0 remains publication readiness.

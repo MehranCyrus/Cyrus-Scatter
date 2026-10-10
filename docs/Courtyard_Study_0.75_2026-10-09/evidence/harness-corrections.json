@@ -1,0 +1,7 @@
+{
+  "layout_first_attempt": "MAXScript caller bound L75Run before fileIn made the global available; test not executed",
+  "layout_retry": "SUCCESS probe-b38d2a25215e40a688ba55c64308fc43.ms; explicit global L75Run; see layout075-checks.txt",
+  "final_checks_first_attempt": "fileIn cannot use top-level local declarations; scene_checks was subsequently executed through runtime_driver wrapper",
+  "finish_checks_first_attempt": "used nonexistent areaID property; corrected to actual layerID; final scene checks passed",
+  "initial_scene_error": "shared arrays modified by join; corrected before all final measurements; invalid drafts and timings retained in ignored raw receipts"
+}

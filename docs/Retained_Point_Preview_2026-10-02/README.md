@@ -1,5 +1,7 @@
 # Retained Point Cloud integration — 0.63 candidate
 
+> Historical implementation record. For the current product use [the documentation index](../README.md) and [backlog](../BACKLOG.md). Measurements and instructions below apply to their recorded build.
+
 2 October 2026. This implements the next bounded loop after the [private display experiment](../Heavy_Scene_Viewport_2026-10-02/RESULTS.md). It keeps **Point Cloud / Proxy / Mesh**. No additional Preview / Full Detail toggle is needed for this change.
 
 ## What changed

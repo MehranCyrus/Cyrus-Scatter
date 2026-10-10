@@ -1,5 +1,7 @@
 # Cyrus Scatter — Complete Codebase Documentation
 
+> Historical implementation record. For the current product use [the documentation index](../README.md) and [backlog](../BACKLOG.md). Measurements and instructions below apply to their recorded build.
+
 <!-- CURRENT_SYSTEM_2026-10-05 -->
 
 Historical source reference, dated 27 September. Use the [current system guide](../Current_System_2026-10-05/SYSTEM_GUIDE.md), [capability coverage](../Current_System_2026-10-05/CAPABILITY_MATRIX.md) and [document authority map](../Current_System_2026-10-05/DOCUMENT_AUDIT.md) for later procedural, UI, container and MCP changes.

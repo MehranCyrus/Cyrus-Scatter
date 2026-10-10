@@ -1,5 +1,7 @@
 # Independent review — Cyrus Scatter 0.7
 
+> Historical implementation record. For the current product use [the documentation index](../README.md) and [backlog](../BACKLOG.md). Measurements and instructions below apply to their recorded build.
+
 5 October 2026. This records the **pre-fix** local implementation, not release qualification. The user subsequently authorized fixes, source containers and licensing work. Read [the current outcome](CURRENT_OUTCOME.md), [implementation evidence](IMPLEMENTATION_RESULTS.md) and [remaining roadmap](IMPLEMENTATION_ROADMAP.md) for that continuation; these original findings and receipts are retained.
 
 ## Scope and provenance

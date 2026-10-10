@@ -1,0 +1,77 @@
+{
+  "base_commit": "f5bc9737378d097cd469d20b32d5576cf10dab01",
+  "branch": "codex/workflow-0.75",
+  "original_scene_sha256": "e0f32e1cd041c5e71ad5dc58877ddd493ce0eef7927ba0bc5fff96df3b0c9e32",
+  "original_scene_unchanged": true,
+  "metrics": [
+    {
+      "mode": "box",
+      "shown": 23183,
+      "triangles": 278196,
+      "before_median_ms": 149.84025,
+      "after_median_ms": 125.4308,
+      "before_p95_ms": 191.0692,
+      "after_p95_ms": 135.7951,
+      "before_switch_ms": 1080.6166,
+      "after_switch_ms": 1063.1663
+    },
+    {
+      "mode": "sphere",
+      "shown": 23183,
+      "triangles": 3894744,
+      "before_median_ms": 937.6646499999999,
+      "after_median_ms": 116.25219999999999,
+      "before_p95_ms": 986.1256,
+      "after_p95_ms": 126.8466,
+      "before_switch_ms": 2963.6364,
+      "after_switch_ms": 1116.0827
+    },
+    {
+      "mode": "pyramid",
+      "shown": 23183,
+      "triangles": 139098,
+      "before_median_ms": 130.63760000000002,
+      "after_median_ms": 118.18164999999999,
+      "before_p95_ms": 139.572,
+      "after_p95_ms": 127.9273,
+      "before_switch_ms": 1104.8423,
+      "after_switch_ms": 849.8086
+    },
+    {
+      "mode": "mesh",
+      "shown": 10930,
+      "triangles": 17107129,
+      "before_median_ms": 123.4024,
+      "after_median_ms": 123.05225,
+      "before_p95_ms": 142.7487,
+      "after_p95_ms": 125.6122,
+      "before_switch_ms": 1098.5021,
+      "after_switch_ms": 1148.5129
+    },
+    {
+      "mode": "points",
+      "shown": 127294,
+      "triangles": 0,
+      "before_median_ms": 123.02709999999999,
+      "after_median_ms": 111.07820000000001,
+      "before_p95_ms": 146.6822,
+      "after_p95_ms": 124.3307,
+      "before_switch_ms": 1119.561,
+      "after_switch_ms": 1143.2304
+    }
+  ],
+  "focused_assertions": 84,
+  "playback_assertions": 942,
+  "native_tests": 15,
+  "python_tests": 141,
+  "python_seconds": 11.84,
+  "installed": false,
+  "pushed": false,
+  "normal_profile_modified": false,
+  "computer_use": false,
+  "scene_count": 53520,
+  "native_source_hashes_verified": true,
+  "performance_metric": "20 synchronous camera mutation + completeRedraw + message-pump samples per mode, 843x741 viewport; not presented FPS",
+  "owned_test_process_stopped": true,
+  "final_delivery_verified": true
+}

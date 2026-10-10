@@ -1,5 +1,6 @@
 global CyrusSurfaceAnalyzerDraw
-global CyrusSurfaceAnalyzer,CyrusAnalyzerOwners=#()
+global CyrusSurfaceAnalyzer,CyrusAnalyzerOwners=#(),CyrusAnalyzerRestoring=false
+global CyrusAnalyzerGuardEvents,CyrusAnalyzerFlush,CyrusAnalyzerFlushing=false,CyrusAnalyzerDispatch
 global CyrusAnalyzerRequest,CyrusAnalyzerRegister,CyrusAnalyzerResetOwners,CyrusAnalyzerPruneOwners,CyrusAnalyzerTimeChanged
 global CyrusPerfTraceBegin,CyrusPerfTraceEnd,CyrusPerfTraceInput
 global CyrusStreetEdges,CyrusStreetShapeFilter
@@ -99,6 +100,9 @@ version:13
  )
  fn markLiveDirty schedule:true = (
   liveDirty=true;liveTimeValidity=undefined
+  -- Max replays parameter handlers while restoring saved values. Those writes
+  -- must not overwrite the freshness flag stored alongside the publication.
+  if not CyrusAnalyzerRestoring do this.analysisNeedsUpdate=true
   this.ensureTimeOwner()
   if schedule and CyrusAnalyzerRequest!=undefined do CyrusAnalyzerRequest()
  )
@@ -121,6 +125,9 @@ version:13
   result
  )
  fn inputChanged event handles = (
+  -- Creation/open notifications register nodes; they do not change the
+  -- geometry of a linked input that has already been analyzed.
+  if event==#added do return false
   local dependencies=this.inputHandles()
   if event==#deleted do join dependencies liveInputHandles
   for handle in handles where findItem dependencies handle>0 do return true
@@ -136,7 +143,7 @@ version:13
  fn getLiveStats = (#(analysisRuns,liveTimeQueries,liveDirty,liveBusy,liveTimeValidity))
  parameters activation rollout:enableUI (
   cyrusEnabled type:#boolean default:true ui:enableCheck
-  on cyrusEnabled set v do (this.markLiveDirty();analysisRuns+=1;redrawViews())
+  on cyrusEnabled set v do (this.ensureTimeOwner();CyrusAnalyzerRequest();analysisRuns+=1;redrawViews())
  )
  rollout enableUI "Surface Analyzer" (
   checkbox enableCheck "Enable Surface Analyzer" checked:true
@@ -205,6 +212,23 @@ version:13
   updateMode type:#integer default:1 ui:updateChoice
   on updateMode set value do this.markLiveDirty()
  )
+ -- Persist freshness with the published guides, including a scene saved while
+ -- Manual inputs are pending. Older publications need one explicit Analyze.
+ parameters publicationState (
+  analysisNeedsUpdate type:#boolean default:true
+  analyzedInputKey type:#string default:""
+  analyzedSurface type:#node
+  analyzedStreetLine type:#node
+  analyzedStart type:#integer default:0
+  analyzedEnd type:#integer default:0
+ )
+ fn analysisCurrent = (
+  CyrusAnalyzerFlush()
+  not analysisNeedsUpdate and analyzedInputKey!="" and isValidNode surface and
+  surface==analyzedSurface and streetLine==analyzedStreetLine and
+  analyzedInputKey==this.inputSignature() and
+  (currentTime as integer)>=analyzedStart and (currentTime as integer)<=analyzedEnd
+ )
  fn packedLines verts counts = (
   local result=#(),cursorIndex=1
   for count in counts do (
@@ -238,12 +262,14 @@ version:13
  )
  fn inputSignature = (
   local sig=(analysisMode as string)+"|"+(minimumWidth as string)+"|"+(minimumLength as string)+"|"+(pointRadius as string)+"|"+(minimumPoints as string)+"|"+(resolution as string)+"|"+(ringFraction as string)+"|"+(fitRadius as string)+"|"+(relaxIterations as string)
-  if isValidNode surface then sig+="|"+((getHandleByAnim surface) as string)+"|"+(surface.transform as string) else sig+="|missing"
+  sig+="|"+(pointCount as string)
+  if isValidNode surface then sig+="|"+(surface.objectTransform as string) else sig+="|missing"
   sig+="|"+(streetAngle as string)+"|"+(streetDistance as string)+"|"+(streetSamples as string)+"|"+(streetMinimumWidth as string)
-  if isValidNode streetLine then sig+="|"+((getHandleByAnim streetLine) as string)+"|"+(streetLine.transform as string) else sig+="|no-street"
+  if isValidNode streetLine then sig+="|"+(streetLine.objectTransform as string) else sig+="|no-street"
   sig
  )
  fn cspImpl_runAnalysis = (
+  CyrusAnalyzerFlush()
   if not cyrusEnabled do return false
   if not isValidNode surface do throw "Pick a surface first."
   if pointRadius<=0 do pointRadius=units.decodeValue "1m";if fitRadius<0 do fitRadius=minimumWidth*.5
@@ -266,7 +292,13 @@ version:13
   resultText=(elementModes.count as string)+" elements | "+(samplePoints.count as string)+" points\n"+((timeStamp()-started) as string)+" ms"
   if samplePoints.count==0 do resultText="No region meets the current limits."
   if minimumPoints>0 and (for value in elementPointCounts where value<minimumPoints collect value).count>0 do resultText+="\nFit limit: minimum unmet."
-  this.captureInputTime();liveDirty=false
+  this.captureInputTime()
+  analyzedInputKey=this.inputSignature();analyzedSurface=surface;analyzedStreetLine=streetLine
+  analyzedStart=liveTimeValidity[1];analyzedEnd=liveTimeValidity[2]
+  -- Consume notifications generated before/during this host-thread analysis,
+  -- so their delayed delivery cannot invalidate the result we just computed.
+  CyrusAnalyzerFlush()
+  analysisNeedsUpdate=false;liveDirty=false
   redrawViews()
   result
  )
@@ -447,6 +479,7 @@ registerRedrawViewsCallback CyrusSurfaceAnalyzerDraw
 -- registered owners handle relevant timeline changes without scene polling.
 global CyrusAnalyzerEvents,CyrusAnalyzerChanged,CyrusAnalyzerTimer,CyrusAnalyzerPulse,CyrusAnalyzerRendering=false
 try(CyrusAnalyzerEvents.enabled=false)catch()
+try(CyrusAnalyzerGuardEvents.enabled=false)catch()
 try(CyrusAnalyzerTimer.Stop();CyrusAnalyzerTimer.Dispose())catch()
 try(unRegisterTimeCallback CyrusAnalyzerTimeChanged)catch()
 fn CyrusAnalyzerRegister n = (
@@ -496,7 +529,17 @@ fn CyrusAnalyzerPulse sender args = (
  -- restart the timer; a later real input notification can request another try.
  CyrusAnalyzerRequest()
 )
-CyrusAnalyzerEvents=NodeEventCallback mouseUp:true delay:150 added:CyrusAnalyzerChanged deleted:CyrusAnalyzerChanged geometryChanged:CyrusAnalyzerChanged topologyChanged:CyrusAnalyzerChanged modelStructured:CyrusAnalyzerChanged controllerOtherEvent:CyrusAnalyzerChanged controllerStructured:CyrusAnalyzerChanged linkChanged:CyrusAnalyzerChanged
+fn CyrusAnalyzerFlush = (
+ if CyrusAnalyzerFlushing or CyrusAnalyzerGuardEvents==undefined do return false
+ CyrusAnalyzerFlushing=true
+ try(triggerNodeEventCallback CyrusAnalyzerGuardEvents)catch(CyrusAnalyzerFlushing=false;throw())
+ CyrusAnalyzerFlushing=false;true
+)
+fn CyrusAnalyzerDispatch event handles = (CyrusAnalyzerFlush();CyrusAnalyzerRequest())
+-- One event queue owns invalidation. It can be drained synchronously for
+-- scripted edits/save, while the delayed notifier retains mouse-up scheduling.
+CyrusAnalyzerGuardEvents=NodeEventCallback polling:true added:CyrusAnalyzerChanged deleted:CyrusAnalyzerChanged geometryChanged:CyrusAnalyzerChanged topologyChanged:CyrusAnalyzerChanged modelStructured:CyrusAnalyzerChanged controllerOtherEvent:CyrusAnalyzerChanged controllerStructured:CyrusAnalyzerChanged linkChanged:CyrusAnalyzerChanged
+CyrusAnalyzerEvents=NodeEventCallback mouseUp:true delay:150 added:CyrusAnalyzerDispatch deleted:CyrusAnalyzerDispatch geometryChanged:CyrusAnalyzerDispatch topologyChanged:CyrusAnalyzerDispatch modelStructured:CyrusAnalyzerDispatch controllerOtherEvent:CyrusAnalyzerDispatch controllerStructured:CyrusAnalyzerDispatch linkChanged:CyrusAnalyzerDispatch
 CyrusAnalyzerTimer=dotNetObject "System.Windows.Forms.Timer"
 CyrusAnalyzerTimer.Interval=250
 dotNet.addEventHandler CyrusAnalyzerTimer "Tick" CyrusAnalyzerPulse
@@ -504,10 +547,18 @@ registerTimeCallback CyrusAnalyzerTimeChanged
 
 
 callbacks.removeScripts id:#CyrusAnalyzerRealtime
+callbacks.addScript #filePreOpenProcess "CyrusAnalyzerRestoring=true" id:#CyrusAnalyzerRealtime persistent:false
+callbacks.addScript #filePostOpenProcess "CyrusAnalyzerFlush();CyrusAnalyzerRestoring=false" id:#CyrusAnalyzerRealtime persistent:false
+callbacks.addScript #fileOpenFailed "CyrusAnalyzerRestoring=false" id:#CyrusAnalyzerRealtime persistent:false
+callbacks.addScript #filePreMerge "CyrusAnalyzerRestoring=true" id:#CyrusAnalyzerRealtime persistent:false
+callbacks.addScript #filePostMerge "CyrusAnalyzerFlush();CyrusAnalyzerRestoring=false" id:#CyrusAnalyzerRealtime persistent:false
+callbacks.addScript #filePostMergeProcess "CyrusAnalyzerFlush();CyrusAnalyzerRestoring=false" id:#CyrusAnalyzerRealtime persistent:false
+callbacks.addScript #filePreSaveProcess "CyrusAnalyzerFlush()" id:#CyrusAnalyzerRealtime persistent:false
+callbacks.addScript #systemPostReset "CyrusAnalyzerRestoring=false" id:#CyrusAnalyzerRealtime persistent:false
 callbacks.addScript #preRender "CyrusAnalyzerRendering=true;CyrusAnalyzerTimer.Stop()" id:#CyrusAnalyzerRealtime
 callbacks.addScript #postRender "CyrusAnalyzerRendering=false;CyrusAnalyzerRequest()" id:#CyrusAnalyzerRealtime
-callbacks.addScript #filePostOpen "CyrusAnalyzerResetOwners()" id:#CyrusAnalyzerRealtime persistent:false
-callbacks.addScript #filePostMerge "CyrusAnalyzerResetOwners()" id:#CyrusAnalyzerRealtime persistent:false
+callbacks.addScript #filePostOpen "CyrusAnalyzerResetOwners invalidate:false" id:#CyrusAnalyzerRealtime persistent:false
+callbacks.addScript #filePostMerge "CyrusAnalyzerResetOwners invalidate:false" id:#CyrusAnalyzerRealtime persistent:false
 callbacks.addScript #systemPostReset "CyrusAnalyzerResetOwners()" id:#CyrusAnalyzerRealtime persistent:false
 callbacks.addScript #sceneUndo "CyrusAnalyzerResetOwners invalidate:false" id:#CyrusAnalyzerRealtime persistent:false
 callbacks.addScript #sceneRedo "CyrusAnalyzerResetOwners invalidate:false" id:#CyrusAnalyzerRealtime persistent:false

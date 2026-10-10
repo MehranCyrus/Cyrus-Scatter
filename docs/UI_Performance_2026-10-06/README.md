@@ -1,5 +1,7 @@
 # UI performance focus and next implementation loop
 
+> Historical implementation record. For the current product use [the documentation index](../README.md) and [backlog](../BACKLOG.md). Measurements and instructions below apply to their recorded build.
+
 **Later implementation:** [0.72 results](../Integrated_UI_0.72_2026-10-06/RESULTS.md) implement the integrated selected-layer view, warm popup retarget correction and direct Scatter recorder. Native category/visibility and zero-work invariants have private API evidence; pointer/DPI and presented-FPS qualification remain separate. The requirements and source findings below preserve this earlier planning snapshot.
 
 6 October 2026. This records the user's current direction and the source inspection after the 0.7.1 runtime/package campaign. It is a planning checkpoint; the integrated replacement UI and direct Scatter recording controls are not implemented by this document.

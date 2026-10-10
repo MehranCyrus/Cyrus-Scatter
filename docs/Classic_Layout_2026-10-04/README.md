@@ -1,5 +1,7 @@
 # Cyrus Scatter 1.2.2 — restore the 0.64 layout
 
+> Historical implementation record. For the current product use [the documentation index](../README.md) and [backlog](../BACKLOG.md). Measurements and instructions below apply to their recorded build.
+
 **Follow-up:** [1.2.3 adds wheel and background-drag scrolling](SCROLLING_1.2.3.md). This report and its evidence retain the original 1.2.2 scope; use the current [artist guide](ARTIST_GUIDE.md) for installation and navigation.
 
 The artist rejected the 1.2.1 width patch because its fixed Layers container still changed the workflow. This patch restores the structure inspected in the frozen 0.64 Max 2027 installer while retaining the current planting, Brush, Edit and retained-display engine.

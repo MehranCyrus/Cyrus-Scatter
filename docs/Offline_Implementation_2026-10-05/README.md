@@ -1,5 +1,7 @@
 # Offline implementation campaign — 5 October 2026
 
+> Historical implementation record. For the current product use [the documentation index](../README.md) and [backlog](../BACKLOG.md). Measurements and instructions below apply to their recorded build.
+
 **Later authorized runtime work:** [6 October results](../Live_Runtime_2026-10-06/RESULTS.md) qualify the recorder/readers and relevant UI/IR paths and add event-driven scheduling. The restrictions and unchecked items below describe this original offline campaign; they are not a current prohibition on the user's subsequent private-host testing request. Historical receipts remain unchanged.
 
 The user authorized coding and offline testing while continuing to use the computer. No computer-use tools, Max session interaction, artist-profile installation or runtime scene tests are allowed in this campaign. Runtime qualification will follow separately.

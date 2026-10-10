@@ -1,6 +1,6 @@
 # Guidance for an AI using Cyrus MCP
 
-6 October 2026: Scatter **0.73**, MCP **0.73.0**, model `CyrusUnified1`, closed Plan **0.73**. [Capabilities](CAPABILITY_MATRIX.md), [package guidance](../../CyrusMCP/README.md), and [actual test evidence](../Unified_System_0.73_2026-10-06/RESULTS.md) define the boundary. Old schemas 1/2 are deliberately unsupported. Twelve tools/seven resources are not a general scripting bridge.
+Current native UI: Scatter **0.75**, MCP **0.73.0**, model `CyrusUnified1`, closed Plan **0.73**. [Capabilities](CAPABILITY_MATRIX.md), [package guidance](../../CyrusMCP/README.md), and [actual test evidence](../Unified_System_0.73_2026-10-06/RESULTS.md) define the boundary. Old schemas 1/2 are deliberately unsupported. Twelve tools/seven resources are not a general scripting bridge.
 
 ## Establish authority first
 
@@ -20,7 +20,7 @@ Do not poll every frame, create unlimited retries or re-enroll to evade budgets.
 | Create a simple enrolled layout | Closed Plan 0.73: count/seed, weights, supported source/transforms/self/pair/cleanup/display settings; validate, locally approve, apply | At most three owned layers/mesh assets and 2,000 requested candidates; no full recipe/set/Brush/container authoring |
 | Refine spacing | Explicit bounded refinement of the owned generation, with new review/approval | No hidden seed/count changes, silent unsupported fields or promise of exact accepted count |
 | Explain source rectangles | Cached pool/helper identity, label, context, active/parked rows and status; describe local XY pivot rules | Reading does not rescan, enroll or move models; palette helpers are not receiving surfaces |
-| Paint a curved flower path | Explain the local selected-set Brush workflow and independent grass exclusion/spacing | Public MCP does not author strokes or enroll arbitrary curved design sites |
+| Paint a curved flower path | Explain the local selected-Paint-Area Brush workflow and independent grass exclusion/spacing | Public MCP does not author strokes or enroll arbitrary curved design sites |
 | Compare appearances | Explicitly shared generation-linked viewport capture | Capture is not rendering; failures/missing artifacts cannot be scored as valid designs |
 | Learn artist style | Explain future explicit feedback/provenance workflow | Operational records have training eligibility false; no reference-image model/training loop exists |
 
@@ -34,8 +34,8 @@ Check requested versus emitted slots, renderable mesh instances and viewport sam
 
 ## Explain a control through its owner and effect
 
-- Layer self defaults apply within each set until a set overrides them; sibling defaults and layer pairs are independent scopes.
-- Parking a model keeps its per-set settings and source identity. New eligibility and accepted counts can change after the permitted update.
+- Ordinary layers use within-layer and between-layer spacing. Older model-owning sets retain their own overrides and sibling relationships; Paint Areas are coverage, not separate spacing populations.
+- Parking a model keeps its settings under the owning layer or older model-owning set, and its source identity. New eligibility and accepted counts can change after the permitted update.
 - Outside Coverage uses earlier authored fields; Between Plants uses earlier accepted plants and configured spacing; accepted target adds bounded replacement attempts.
 - Preview caps change drawing, not the complete accepted render population.
 - Point/boundary Relax prepares candidates before final Brush/Area/Edit/spacing, rather than silently moving already accepted plants.
@@ -49,4 +49,4 @@ Stale revision/approval requires a fresh authorized validation. Failed bindings/
 
 Trace reading requires a separate local share of the exact process-wide diagnostic session. Recording is directly in Scatter and remains optional. Log loss is reported; counters alone do not prove causality or aesthetic preference. Do not expose connection secrets or treat reports as training consent.
 
-Full recipe, source-pool/Brush/Edit mutation, render jobs, searchable archives and learning require [separate acceptance loops](../Unified_System_0.73_2026-10-06/ROADMAP.md). Help and future proposals do not add tools. Test schema/client/IPC/host results and resulting scene behavior, rather than only fluent explanations.
+Full recipe, source-pool/Brush/Edit mutation, render jobs, searchable archives and learning remain separate from the [current acceptance backlog](../BACKLOG.md). Help and future proposals do not add tools. Test schema/client/IPC/host results and resulting scene behavior, rather than only fluent explanations.

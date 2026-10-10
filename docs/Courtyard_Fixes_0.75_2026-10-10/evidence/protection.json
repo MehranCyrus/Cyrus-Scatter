@@ -1,0 +1,15 @@
+{
+  "owned_process_id": 19976,
+  "owned_command_line_verified_before_stop": true,
+  "owned_process_stopped": true,
+  "other_processes_targeted": false,
+  "previous_artist_pid_9000_present_at_final_check": false,
+  "artist_pid_note": "PID 9000 was absent at final inventory. No stop or close was issued against it by this task; its continued lifetime is not asserted.",
+  "original_scene_sha256": "e0f32e1cd041c5e71ad5dc58877ddd493ce0eef7927ba0bc5fff96df3b0c9e32",
+  "original_scene_unchanged": true,
+  "normal_profile_install_performed": false,
+  "git_commit_or_push_performed": false,
+  "source_and_binary_hashes_rechecked": 81,
+  "package_payload_hashes_rechecked": true,
+  "maintained_navigation_links_checked": true
+}

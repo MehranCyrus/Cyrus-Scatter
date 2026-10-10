@@ -1,0 +1,27 @@
+SCRIPT_PAYLOAD 775b2a4c7081da057b004d992dc15e5c2152d8b1c6c4dae94394b64ffa115977
+PASS unrelated animation and rewind, policy unified
+PASS parameter edit re-arms validity, policy unified
+PASS animated receiver, unified
+PASS Manual freeze and return to Live, policy unified
+PASS in-place density edit and Manual Update, policy unified
+PASS animated receiver parent, unified
+PASS Manual freeze and return to Live, policy unified
+PASS animated source geometry in Mesh mode
+PASS animated Scatter parameter
+PASS animated density map
+PASS unkeyed script transform and rewind
+PASS disabled layer/controller and hidden controller catch-up
+PASS static playback and repeated retained publication, viewport mode 1
+PASS static playback and repeated retained publication, viewport mode 2
+PASS static playback and repeated retained publication, viewport mode 3
+POINT_CULLING_STATE #(1440L, 1L, 3L, 3L, 3L, 784L, 400221456L, 6747L, 0L, 1L, 17280L, 1L, "15176767000769001674;")
+PASS submitted off-screen point data matches and settles without realization polling
+PASS registry save/reopen/reset/delete
+PASS Analyzer unrelated animation, rewind and settled message-loop idle
+PASS Analyzer real parameter edit and one-shot timer
+PASS Analyzer receiver animation and Manual freeze
+PASS Analyzer parent animation and Manual freeze
+PASS Analyzer failure stops retrying and recovers on a real correction
+PASS Scatter consumes Analyzer publication and preserves Analyzer Manual mode
+PASS Analyzer clone/save/reopen/reset/delete lifecycle
+SUCCESS 942 assertions

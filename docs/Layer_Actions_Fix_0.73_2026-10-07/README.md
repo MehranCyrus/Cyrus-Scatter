@@ -1,5 +1,7 @@
 # Cyrus Scatter 0.73 — Add layer callback correction
 
+> Historical implementation record. For the current product use [the documentation index](../README.md) and [backlog](../BACKLOG.md). Measurements and instructions below apply to their recorded build.
+
 7 October 2026. The artist reported `Unknown property: "invalidateGroups" in undefined` at generated script line 7813. The installed script matched the previous compact-UI package (`53bf85f9…`). The layer remained after dismissing the error because creation completed before the failing UI follow-up.
 
 ## Cause and correction

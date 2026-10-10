@@ -1,5 +1,7 @@
 # Cyrus Scatter 0.73 — approved UI and real-plant qualification
 
+> Historical implementation record. For the current product use [the documentation index](../README.md) and [backlog](../BACKLOG.md). Measurements and instructions below apply to their recorded build.
+
 7 October 2026. This campaign implements the approved HTML workflow in native Modify, linked source containers and the optional editor, then tests a matching script/native pair in isolated Max 2027 profiles. Development version remains **0.73.0**, serialization **54**, calculation model **CyrusUnified1**. The earlier version caption alone does not identify this build.
 
 Read [results and evidence boundaries](RESULTS.md), [measured performance](PERFORMANCE.md), [all 34 capability families](FEATURE_MATRIX.md), [artist workflow](ARTIST_GUIDE.md), [changes](CHANGES.md) and [ordered remaining acceptance work](ROADMAP.md). The evidence index records exact source, binary, scene and package hashes. Results are finalized after the last matching tests; this folder does not certify every possible feature combination or publication readiness.

@@ -1,5 +1,7 @@
 # Unified procedural settings and source containers
 
+> Historical implementation record. For the current product use [the documentation index](../README.md) and [backlog](../BACKLOG.md). Measurements and instructions below apply to their recorded build.
+
 **Implemented successor:** [0.73 unified system](../Unified_System_0.73_2026-10-06/README.md) now records the actual ports, tests, packages and tradeoffs. This folder remains the pre-implementation requirements baseline; its planned checklist and 245-control register are not current status.
 
 6 October 2026. **Requirements and implementation preparation; not an implemented cleanup or a new build.** This records the user's latest decisions after testing 0.72. The preparation pass changes documentation only and uses no computer-use tools.

@@ -1,0 +1,144 @@
+{
+  "completed_local": "2026-10-10",
+  "source_commit": "f5bc9737378d097cd469d20b32d5576cf10dab01",
+  "branch": "codex/workflow-0.75",
+  "preexisting_documentation_changes_preserved": true,
+  "product_code_modified": false,
+  "git_pushed": false,
+  "computer_use": false,
+  "placements": 53520,
+  "layers": 10,
+  "paint_areas": 3,
+  "feature_groups_passed_after_harness_corrections": 15,
+  "control_bindings": 234,
+  "layout_assertions": 94,
+  "scene_assertion_executions": 31,
+  "scene_unique_assertions": 29,
+  "geometry": {
+    "counts": {
+      "1": 184,
+      "2": 299,
+      "3": 131,
+      "4": 1188,
+      "5": 760,
+      "6": 38337,
+      "7": 185,
+      "8": 70,
+      "9": 12000,
+      "10": 366
+    },
+    "plant_pivots_in_paths": {},
+    "bed_layer_pivots_outside_beds": {},
+    "finite": true,
+    "curved_projection": {
+      "checked": 185,
+      "misses": 0,
+      "max_error_cm": 0.001752772179663964,
+      "tolerance_cm": 0.02
+    },
+    "tent_path_overlap": [],
+    "passed": true
+  },
+  "hero_render": {
+    "elapsed_ms": 214857.6158,
+    "resolution": [
+      1400,
+      875
+    ],
+    "pass_limit": 8,
+    "renderer": "15, build timestamp: May 25 2026 16:07:51",
+    "error": "",
+    "placements_preserved": true,
+    "epoch_preserved": true,
+    "counts": [
+      184,
+      299,
+      131,
+      1188,
+      760,
+      38337,
+      185,
+      70,
+      12000,
+      366
+    ]
+  },
+  "overview_render": {
+    "elapsed_ms": 91772.984,
+    "resolution": [
+      1200,
+      900
+    ],
+    "pass_limit": 6,
+    "error": "",
+    "placements_preserved": true,
+    "epoch_preserved": true
+  },
+  "post_render_lifecycle": {
+    "point_owner_valid": true,
+    "retained": [
+      127294,
+      22,
+      1,
+      1,
+      1,
+      1511,
+      828991392,
+      10251,
+      0,
+      66,
+      4582584,
+      1,
+      "2757883447078356053;13995841446095381945;17795506050770112240;8069306398640590588;6156523174359569892;8090749639222749941;7372436155697740783;13085547969782525632;17719384160482126853;3006022241576789953;"
+    ],
+    "pf_transient_nodes": 0,
+    "pf_busy": false,
+    "pf_production": false,
+    "point_error": "",
+    "placements_unchanged": true,
+    "epoch_unchanged": true
+  },
+  "host_closure": {
+    "other_max_pids_after": [
+      9000
+    ],
+    "other_max_pids_before": [
+      9000
+    ],
+    "closed_after_saved_render_and_checks": true,
+    "closed_owned_pid": 676,
+    "command_line_verified": true
+  },
+  "files": [
+    {
+      "path": "F:/Cursor/_Cyrus_Apps/CyrusScatter/Test Scene/Courtyard_Study_075/Courtyard_075.max",
+      "bytes": 111311728,
+      "sha256": "e0f32e1cd041c5e71ad5dc58877ddd493ce0eef7927ba0bc5fff96df3b0c9e32"
+    },
+    {
+      "path": "F:/Cursor/_Cyrus_Apps/CyrusScatter/Test Scene/Courtyard_Study_075/Courtyard_Hero.png",
+      "bytes": 6173523,
+      "sha256": "21562b31af961a49597cd9df54f1e46c25de93905d227ed6fffcbdcb02b3fada"
+    },
+    {
+      "path": "F:/Cursor/_Cyrus_Apps/CyrusScatter/Test Scene/Courtyard_Study_075/Courtyard_Overview.png",
+      "bytes": 5658322,
+      "sha256": "7ad8b7e53c6587fe50e8c7dfe9cbf5ed30dd117b243bcce4012116438ed15a62"
+    },
+    {
+      "path": "F:/Cursor/_Cyrus_Apps/CyrusScatter/Test Scene/Courtyard_Study_075/Placements.tsv",
+      "bytes": 1361305,
+      "sha256": "e0a2029e206e8534e36b344de1970f620379868b8a15fc92085b7dd9768b4111"
+    },
+    {
+      "path": "F:/Cursor/_Cyrus_Apps/CyrusScatter/Test Scene/Courtyard_Study_075/Reference.jpg",
+      "bytes": 8639617,
+      "sha256": "3bf0d36bc183e839e34f6e5e0bc8aa8be8655d77f9ca9318f780131b8569ced0"
+    },
+    {
+      "path": "F:/Cursor/_Cyrus_Apps/CyrusScatter/Test Scene/Courtyard_Study_075/START_HERE.txt",
+      "bytes": 1717,
+      "sha256": "c5ee343a535c91f01c657546a8126b86faa166e29417d311391fbc005c971b87"
+    }
+  ]
+}

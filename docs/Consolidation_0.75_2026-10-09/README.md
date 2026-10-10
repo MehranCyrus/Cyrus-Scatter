@@ -1,5 +1,7 @@
 # Cyrus Scatter 0.75 — workflow consolidation
 
+> Historical implementation record. For the current product use [the documentation index](../README.md) and [backlog](../BACKLOG.md). Measurements and instructions below apply to their recorded build.
+
 9 October 2026. This is a focused consolidation release, following the [0.59/0.64/current comparison](../Historical_Comparison_2026-10-09/README.md). Product/package **0.75.0**, UI **0.75**, saved schema **54**, calculation model **CyrusUnified1**. Analyzer and the MCP protocol/plan versions are unchanged.
 
 ## Artist workflow

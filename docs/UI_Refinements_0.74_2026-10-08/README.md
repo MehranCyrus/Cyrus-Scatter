@@ -1,5 +1,7 @@
 # Cyrus Scatter 0.74 UI refinements
 
+> Historical implementation record. For the current product use [the documentation index](../README.md) and [backlog](../BACKLOG.md). Measurements and instructions below apply to their recorded build.
+
 **9 October:** [Layer surfaces and Paint Areas](../Layer_Paint_Areas_0.74_2026-10-09/README.md) supersedes the ownership/brush sections below. This page preserves the October 8 receipts.
 
 **List resize correction, 8 October:** the first installer below is superseded by [the grip fix and corrected installer](GRIP_FIX.md). It fixes the artist-reported Cursor `pos` exceptions and revises the handle design. All 27 mounted list handles passed mouse-event regression checks; physical pointer/DPI acceptance remains pending.

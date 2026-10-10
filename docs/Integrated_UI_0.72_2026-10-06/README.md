@@ -1,5 +1,7 @@
 # Cyrus Scatter 0.72 — selected-layer UI and runtime qualification
 
+> Historical implementation record. For the current product use [the documentation index](../README.md) and [backlog](../BACKLOG.md). Measurements and instructions below apply to their recorded build.
+
 **Superseded source:** [0.73 unified system](../Unified_System_0.73_2026-10-06/README.md) is the current development model. This 0.72 folder retains its exact original implementation, packages and actual renderer evidence.
 
 **Subsequent independent review:** [0.72 / tyFlow R&D](../TyFlow_CyrusScatter_RnD_2026-10-06/README.md) audits this campaign's source/receipt identities, runs new offline experiments and adds bounded projection/radius/Brush/reporting findings. It changes documentation only. This folder's implementation/package identities and original host results remain frozen.

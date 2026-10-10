@@ -1,5 +1,7 @@
 # Live runtime, diagnostics and MCP qualification
 
+> Historical implementation record. For the current product use [the documentation index](../README.md) and [backlog](../BACKLOG.md). Measurements and instructions below apply to their recorded build.
+
 6 October 2026. The final frozen `final03` candidate passed this runtime campaign in an isolated Max 2027 profile. The fixes, reproduced failures, measurements and remaining limits are in [results](RESULTS.md); the scheduling rules are in [the runtime contract](SCHEDULING.md). This is a development qualification, not publication readiness.
 
 **Subsequent requested delivery:** matching [Max 2027 MZPs](PACKAGE.md) now package this exact runtime pair. Actual MZP installation, automatic startup and courtyard/editor reopening were verified in a separate private profile. This follow-up did not update the artist installation; the original runtime receipts below remain unchanged.

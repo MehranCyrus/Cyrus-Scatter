@@ -1,12 +1,14 @@
 # Cyrus Scatter 0.73 — verified starting point
 
+> Historical implementation record. For the current product use [the documentation index](../README.md) and [backlog](../BACKLOG.md). Measurements and instructions below apply to their recorded build.
+
 7 October 2026. **The compact 0.73 implementation is a useful development baseline for the next phase. It is not a publication-readiness certificate.** This round reconciles source and documentation, reruns offline checks, and develops the combined local website. It makes no production plugin, scene, installer or licensing changes.
 
 ## Start here
 
 - [Current visual website](../../website/index.html): product introduction, artist guide, interactive explanations and development status.
 - [Final website verification](../../website/verification/COMBINED_BROWSER_REVIEW.md): independent design PASS, browser observations and desktop/mobile screenshots.
-- [Fresh-conversation handoff](HANDOFF.md): exact baseline, delivery mismatch, protected files and the recommended next task.
+- [Fresh-conversation handoff](https://github.com/MehranCyrus/Cyrus-Scatter/blob/f5bc9737378d097cd469d20b32d5576cf10dab01/docs/Status_0.73_And_Website_2026-10-07/HANDOFF.md): exact baseline, delivery mismatch, protected files and the recommended next task.
 - [Prioritized roadmap](ROADMAP.md): the next engineering loops and their acceptance criteria.
 - [Code review](CODE_REVIEW.md) and [documentation reconciliation](DOCS_RECONCILIATION.md): source locations, findings and evidence boundaries.
 - [Artist-facing status copy](WEBSITE_STATUS.md): the website's factual starting point.

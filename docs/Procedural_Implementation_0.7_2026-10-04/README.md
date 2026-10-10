@@ -1,5 +1,7 @@
 # Cyrus Scatter 0.7 — procedural implementation
 
+> Historical implementation record. For the current product use [the documentation index](../README.md) and [backlog](../BACKLOG.md). Measurements and instructions below apply to their recorded build.
+
 > **5 October follow-up:** This package describes the previously tested procedural snapshot. The working tree now includes unfinished native-column and automatic-spacing UI changes. Read the [current handoff](../Review_Handoff_2026-10-05/README.md) before loading current source or interpreting the readiness statement below. Existing installers still contain the earlier snapshot.
 
 4 October 2026. Implementation and isolated Max 2027 validation of the [reviewed design](../Procedural_Evaluation_2026-10-04/README.md), based on checkpoint `53bfc5d1c76929958dbeb29f5d4c746b2321d0ac`.

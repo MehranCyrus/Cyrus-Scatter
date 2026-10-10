@@ -1,5 +1,7 @@
 # Cyrus Scatter 0.7.1 — Garden Pavilion
 
+> Historical implementation record. For the current product use [the documentation index](../README.md) and [backlog](../BACKLOG.md). Measurements and instructions below apply to their recorded build.
+
 **6 October follow-up:** the [runtime campaign](../Live_Runtime_2026-10-06/RESULTS.md) uses a separate copy and a newer pinned source/native pair to test stable IR, a real edit, production output and failure cleanup. It preserves this editable master. The delivery and historical failure notes below remain tied to their original builds; no artist-profile upgrade is implied.
 
 <!-- CURRENT_SYSTEM_2026-10-05 -->

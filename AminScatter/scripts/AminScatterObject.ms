@@ -1,4 +1,4 @@
-global CyrusLoadedScriptFingerprint="b60245d754e74ec03527e18d823d9d1fdd208193d9637116cea16732d7d892b0"
+global CyrusLoadedScriptFingerprint="775b2a4c7081da057b004d992dc15e5c2152d8b1c6c4dae94394b64ffa115977"
 -- Only registered Scatter nodes participate in timeline notifications. This
 -- registry is rebuilt at scene boundaries, never by scanning every animation frame.
 global AminScatterObject,CyrusSourceContainer,CyrusContainerRefreshLabels
@@ -1534,7 +1534,7 @@ fn CyrusLayerEditor_layoutUI_1 = (
             diversityUI_selectAnalyzer.enabled=valid;diversityUI_updateAnalyzer.enabled=valid
             diversityUI_analyzerStatus.text=if not valid then "Pick an existing Analyzer. Open planar surfaces only." else (
                 local target=if isValidNode guide.surface then guide.surface.name else "Missing surface"
-                local state=if not guide.cyrusEnabled then "Disabled" else if not isValidNode guide.surface then "Missing surface" else if guide.getAnalysisRuns()==0 then "Not analyzed" else if (guide.getLiveStats())[3] then "Update needed" else "Ready"
+                local state=if not guide.cyrusEnabled then "Disabled" else if not isValidNode guide.surface then "Missing surface" else if not isProperty guide #analysisCurrent then "Update Analyzer script" else if not guide.analysisCurrent() then "Update Analyzer needed" else "Ready"
                 guide.name+"\nSurface: "+target+"\n"+state
             )
         )
@@ -6792,6 +6792,17 @@ initialRollupState:0x8
         ((areaUseLine or areaUsePoints) and analyzerOff areaAnalyzer) or
         ((fallDelete or fallScale or fallDensity) and analyzerOff fallAnalyzer)
     )
+    fn requireCurrentAnalyzers = (
+        local guides=#()
+        if diversityMode==4 do appendIfUnique guides analyzerNode
+        if areaUseLine or areaUsePoints do appendIfUnique guides areaAnalyzer
+        if fallDelete or fallScale or fallDensity do appendIfUnique guides fallAnalyzer
+        for guide in guides where isValidNode guide and not (analyzerOff guide) do (
+            if not isProperty guide #analysisCurrent do throw "Update the Surface Analyzer script to the matching package."
+            if not guide.analysisCurrent() do throw ("Update Surface Analyzer '"+guide.name+"' first, then update Scatter. Its guides are out of date; the previous Scatter result is preserved.")
+        )
+        true
+    )
     parameters streetLayoutSettings (
         streetTrimStart type:#worldunits default:0
         streetTrimEnd type:#worldunits default:0
@@ -7487,7 +7498,12 @@ initialRollupState:0x8
         procManualRevision+=1
         local previousExplicit=procExplicitUpdate
         procExplicitUpdate=true
-        try (for entry in (layerEntries()) do entry[2].refreshPreview()) catch(procExplicitUpdate=previousExplicit;throw())
+        -- One leaf refresh evaluates and atomically installs the entire root.
+        -- Repeating it per leaf only repeats root validation and key building.
+        try (
+            local entries=layerEntries()
+            if entries.count>0 do entries[1][2].refreshPreview()
+        ) catch(procExplicitUpdate=previousExplicit;throw())
         procExplicitUpdate=previousExplicit
         if (CyrusContainerPanel this).controlsReady do (CyrusContainerPanel this).refreshStats()
         this.refreshBrushEditors()
@@ -8174,6 +8190,7 @@ initialRollupState:0x8
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
             for leaf in this.layerSets parent where this.enabledLayer (findItem layerObjects leaf) do (
+                if cyrusEnabled do leaf.requireCurrentAnalyzers()
                 if leaf.procBackground<1 or leaf.procBackground>4 do throw "Unknown background mode."
                 if leaf.procBackground!=1 do leaf.procBackgroundMembers()
                 if leaf.procBackground==3 or leaf.procBackground==4 do for member in leaf.procBackgroundMembers() do (
@@ -8218,7 +8235,8 @@ initialRollupState:0x8
         inputTimeObserved=inputTimeStamp
         CyrusDiagnosticEmit "preview.installed" "engine" layerID procEpoch (if pending then "pending" else "current")
         cachedPoints=state[1];cachedPointCount=state[2];generatedCount=state[3];radiusPreview=state[4];uiPreviewMode=state[5]
-        previewBuildMs=state[6];cachedAreaAnalyzerRun=state[7];cachedFallRun=state[8];cachedAnalyzerRun=-1
+        previewBuildMs=state[6];cachedAreaAnalyzerRun=state[7];cachedFallRun=state[8]
+        cachedAnalyzerRun=if isValidNode analyzerNode then analyzerNode.getAnalysisRuns() else -1
         previewBuildCount+=1;previewError="";dirty=pending
     )
     fn procEnsureDisplay pending:false = (
@@ -8248,7 +8266,6 @@ initialRollupState:0x8
         if groupSolving do throw "Recursive procedural evaluation."
         this.syncLogicalSettings()
         for leaf in layerObjects do (this.syncLayerSurface leaf;leaf.containerRefresh();leaf.procEnsureSources())
-        this.procValidate()
         local key=this.procInputKey()
         if key==groupSnapshotKey do (
             CyrusDiagnosticEmit "publication.reused" "engine" layerID procEpoch "key_match"
@@ -8257,6 +8274,9 @@ initialRollupState:0x8
             for leaf in layerObjects do leaf.previewError=""
             groupHits+=1;return groupSnapshotRows
         )
+        -- A cached read still consumes the last published Analyzer guides.
+        -- Only a successor solve may reject its now-pending dependencies.
+        this.procValidate()
         CyrusDiagnosticEmit "solve.started" "engine" layerID procEpoch "input_changed"
         local mods=this.procModifiers(),active=for m in mods where m.enabled collect m
         local parents=this.logicalLayers(),mapping=#(),layers=#(),admission=0
@@ -10120,7 +10140,7 @@ initialRollupState:0x8
             diversityUI_selectAnalyzer.enabled=valid;diversityUI_updateAnalyzer.enabled=valid
             diversityUI_analyzerStatus.text=if not valid then "Pick an existing Analyzer. Open planar surfaces only." else (
                 local target=if isValidNode guide.surface then guide.surface.name else "Missing surface"
-                local state=if not guide.cyrusEnabled then "Disabled" else if not isValidNode guide.surface then "Missing surface" else if guide.getAnalysisRuns()==0 then "Not analyzed" else if (guide.getLiveStats())[3] then "Update needed" else "Ready"
+                local state=if not guide.cyrusEnabled then "Disabled" else if not isValidNode guide.surface then "Missing surface" else if not isProperty guide #analysisCurrent then "Update Analyzer script" else if not guide.analysisCurrent() then "Update Analyzer needed" else "Ready"
                 guide.name+"\nSurface: "+target+"\n"+state
             )
         )
@@ -14514,7 +14534,7 @@ fn AminScatterObjectDraw = (
             local cache=obj.previewCache interactionHeld:held
             obj.drawRadii()
             if (obj.showPoints or obj.showCenters) and cache!=undefined do (
-                if (obj.viewportMode==1 and CyrusPointEnabled) or (obj.viewportMode==3 and CyrusMeshEnabled) then (append caches cache;append styles #(obj.pointColorMode==1,obj.solidPointColor))
+                if (obj.viewportMode==1 and CyrusPointEnabled) or ((obj.viewportMode==2 or obj.viewportMode==3) and CyrusMeshEnabled) then (append caches cache;append styles #(obj.pointColorMode==1,obj.solidPointColor))
                 else aminScatterDrawPreview cache (obj.pointColorMode==1) obj.solidPointColor
             )
         )
@@ -14850,7 +14870,7 @@ fn CyrusPointSync = (
             local caches=#(),styles=#()
             if CyrusPointAvailable and not n.isHidden do for entry in n.baseObject.viewportLayerEntries false do (
                 local obj=entry[2],cache=obj.previewCache interactionHeld:false
-                if ((obj.viewportMode==1 and CyrusPointEnabled) or (obj.viewportMode==3 and CyrusMeshEnabled)) and (obj.showPoints or obj.showCenters) and cache!=undefined do (
+                if ((obj.viewportMode==1 and CyrusPointEnabled) or ((obj.viewportMode==2 or obj.viewportMode==3) and CyrusMeshEnabled)) and (obj.showPoints or obj.showCenters) and cache!=undefined do (
                     append caches cache;append styles #(obj.pointColorMode==1,obj.solidPointColor)
                 )
             )
@@ -16827,7 +16847,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             diversityUI_selectAnalyzer.enabled=valid;diversityUI_updateAnalyzer.enabled=valid
             diversityUI_analyzerStatus.text=if not valid then "Pick an existing Analyzer. Open planar surfaces only." else (
                 local target=if isValidNode guide.surface then guide.surface.name else "Missing surface"
-                local state=if not guide.cyrusEnabled then "Disabled" else if not isValidNode guide.surface then "Missing surface" else if guide.getAnalysisRuns()==0 then "Not analyzed" else if (guide.getLiveStats())[3] then "Update needed" else "Ready"
+                local state=if not guide.cyrusEnabled then "Disabled" else if not isValidNode guide.surface then "Missing surface" else if not isProperty guide #analysisCurrent then "Update Analyzer script" else if not guide.analysisCurrent() then "Update Analyzer needed" else "Ready"
                 guide.name+"\nSurface: "+target+"\n"+state
             )
         )

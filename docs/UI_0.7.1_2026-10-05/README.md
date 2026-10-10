@@ -1,5 +1,7 @@
 # Cyrus Scatter 0.7.1 — floating Layer Editor
 
+> Historical implementation record. For the current product use [the documentation index](../README.md) and [backlog](../BACKLOG.md). Measurements and instructions below apply to their recorded build.
+
 <!-- CURRENT_SYSTEM_2026-10-05 -->
 
 Current coordination: [system guide and next loops](../Current_System_2026-10-05/README.md). This UI qualification remains valid within its recorded scope; the later [IR restart finding](../Current_System_2026-10-05/CURRENT_STATE.md) is unresolved and was not qualified by the UI pass.

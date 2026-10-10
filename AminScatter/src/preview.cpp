@@ -222,8 +222,9 @@ std::vector<cyrus::PointLayer> retainedLayers(Value* cachesValue,Value* stylesVa
         type_check(styles->data[i],Array,_T("preview style"));
         const auto* cache=static_cast<AminPointCache*>(caches->data[i]);
         auto* style=static_cast<Array*>(styles->data[i]);
-        if((cache->geometryMode!=0 && cache->geometryMode!=4) || !cache->pointSnapshot || style->size!=2)
-            throw RuntimeError(_T("Retained drawing requires a point-cloud or mesh cache"));
+        if(cache->geometryMode<0 || cache->geometryMode>4 || !cache->pointSnapshot ||
+           (cache->geometryMode!=0 && !cache->meshSnapshot) || style->size!=2)
+            throw RuntimeError(_T("Retained drawing requires a point-cloud or geometry cache"));
         layers.push_back({cache->pointSnapshot,style->data[0]->to_bool()!=FALSE,style->data[1]->to_point3()/255.f,cache->meshSnapshot});
     }
     return layers;

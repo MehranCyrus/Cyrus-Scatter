@@ -1,5 +1,7 @@
 # Approved workflow layout â€” Cyrus Scatter 0.73
 
+> Historical implementation record. For the current product use [the documentation index](../README.md) and [backlog](../BACKLOG.md). Measurements and instructions below apply to their recorded build.
+
 **Subsequent integrated qualification:** [approved UI, real scenes, exact evidence and remaining limits](../Full_Qualification_0.73_2026-10-07/README.md). The latest report supersedes older UI/runtime qualification claims; dated implementation and R&D evidence below remains historical. No artist installation or Git operations are part of this campaign.
 
 The artist approved the single-file layout study in `mockups/unified-073-layout/index.html`. This implementation transfers its section order and Advanced disclosures into native Modify, source-container Modify and the optional layer editor. Version remains the development label **0.73.0**; this presentation change does not change serialization 54 or the CyrusUnified1 calculation model.

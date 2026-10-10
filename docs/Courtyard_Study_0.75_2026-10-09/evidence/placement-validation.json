@@ -1,0 +1,25 @@
+{
+  "counts": {
+    "1": 184,
+    "2": 299,
+    "3": 131,
+    "4": 1188,
+    "5": 760,
+    "6": 38337,
+    "7": 185,
+    "8": 70,
+    "9": 12000,
+    "10": 366
+  },
+  "plant_pivots_in_paths": {},
+  "bed_layer_pivots_outside_beds": {},
+  "finite": true,
+  "curved_projection": {
+    "checked": 185,
+    "misses": 0,
+    "max_error_cm": 0.001752772179663964,
+    "tolerance_cm": 0.02
+  },
+  "tent_path_overlap": [],
+  "passed": true
+}

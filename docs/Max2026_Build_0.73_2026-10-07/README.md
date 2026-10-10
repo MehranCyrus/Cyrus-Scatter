@@ -1,5 +1,7 @@
 # Max 2026 — current compact 0.73 build
 
+> Historical implementation record. For the current product use [the documentation index](../README.md) and [backlog](../BACKLOG.md). Measurements and instructions below apply to their recorded build.
+
 7 October 2026. Fresh Release x64 compilation against the Max 2026 SDK, using MSVC 14.38.33130 and Windows SDK 10.0.19041.0. Source baseline: `codex/unified-0.73`, commit `d55dfa88cbeda7af366e4510ac3119a749368958`, with the pre-existing documentation/website worktree changes recorded in the build receipt. No production source changed during this build.
 
 ## Delivery

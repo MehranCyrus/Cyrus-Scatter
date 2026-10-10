@@ -123,8 +123,9 @@ def main():
     report_dir.mkdir(parents=True,exist_ok=True)
     with (report_dir/'CONTROL_PORT_RESULTS.csv').open('w',newline='',encoding='utf-8') as file:
         writer=csv.DictWriter(file,fieldnames=list(ports[0]));writer.writeheader();writer.writerows(ports)
-    # The known retained-display implementation is intentionally unchanged.
-    preserved=['AminScatter/src/preview.cpp','AminScatter/src/point_display.cpp']
+    # Proxy now enters the existing retained geometry path. The retained
+    # resource implementation remains unchanged; host fixtures qualify routing.
+    preserved=['AminScatter/src/point_display.cpp']
     for name in preserved:
         original=subprocess.check_output(['git','show',BASE+':'+name],cwd=ROOT).replace(b'\r\n',b'\n')
         assert (ROOT/name).read_bytes().replace(b'\r\n',b'\n')==original,name

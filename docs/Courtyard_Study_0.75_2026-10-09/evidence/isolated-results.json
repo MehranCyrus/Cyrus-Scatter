@@ -1,0 +1,65 @@
+[
+  {
+    "name": "core",
+    "command": "P07Acceptance()",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/courtyard-study075/probe-f90b077a93c84a2aa671d027374c1290.ms",
+    "passed": true,
+    "elapsed_s": 35.45300000000134
+  },
+  {
+    "name": "regions",
+    "command": "LRSetup();LRRun();LRViews();LRReopen();LRAdditional()",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/courtyard-study075/probe-b491cef91cb047b3bdd0d9999a870394.ms",
+    "passed": true,
+    "elapsed_s": 21.485000000000582
+  },
+  {
+    "name": "manual-spacing",
+    "command": "C75Manual();C75Workflow();C75Spacing()",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/courtyard-study075/probe-20b7db8fefd24161818fc1dbe8c1585a.ms",
+    "passed": true,
+    "elapsed_s": 15.125
+  },
+  {
+    "name": "sources",
+    "command": "Q75Sources()",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/courtyard-study075/probe-657ed5f2a906448d9178996ad7f2bc97.ms",
+    "passed": true,
+    "elapsed_s": 29.57800000000134
+  },
+  {
+    "name": "relax",
+    "command": "U73Advanced()",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/courtyard-study075/probe-c269e727eefd4fb5b7432f518322d5f8.ms",
+    "passed": true,
+    "elapsed_s": 5.812999999998283
+  },
+  {
+    "name": "analyzer",
+    "command": "U73AnalyzerAssignment()",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/courtyard-study075/probe-cd2687957ab3487e987c472a85eee05c.ms",
+    "passed": true,
+    "elapsed_s": 7.25
+  },
+  {
+    "name": "edit",
+    "command": "U73EditPersistence()",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/courtyard-study075/probe-53fb36a9b5804c3488c53065ac7416c4.ms",
+    "passed": true,
+    "elapsed_s": 7.125
+  },
+  {
+    "name": "arrangement",
+    "command": "ARResults=#();ARBasic();ARLine();ARAnalyzer()",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/courtyard-study075/probe-96e8777f12454afea11bc6bea47c3311.ms",
+    "passed": true,
+    "elapsed_s": 9.765999999999622
+  },
+  {
+    "name": "extra",
+    "command": "CYExtra()",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/courtyard-study075/probe-d0699a7d8350499196c20996054bb712.ms",
+    "passed": true,
+    "elapsed_s": 6.140999999999622
+  }
+]

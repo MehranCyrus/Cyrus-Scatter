@@ -1,5 +1,7 @@
 # Cyrus Scatter 1.2.1 — full-width native layers
 
+> Historical implementation record. For the current product use [the documentation index](../README.md) and [backlog](../BACKLOG.md). Measurements and instructions below apply to their recorded build.
+
 4 October 2026. UI-only patch to the [1.2.0 release](../Layers_First_2026-10-03/REPORT.md).
 
 Layout superseded by [1.2.2's classic flowing stack](../Classic_Layout_2026-10-04/README.md). The artist rejected the fixed container arrangement despite the width correction. The measurements below remain evidence for this earlier patch.

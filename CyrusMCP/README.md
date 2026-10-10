@@ -1,6 +1,6 @@
 # Cyrus Automation and MCP 0.73
 
-Separate local MCP server and queued Max host adapter for **Scatter 0.73 / `CyrusUnified1`**. Package is **0.73.0**, closed authoring plan **0.73**, with twelve tools/seven resources. Retired plans 1.0/2.0 fail explicitly; they are not mapped silently to new semantics. [Current capabilities](../docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md), [AI workflow](../docs/Current_System_2026-10-05/AGENT_WORKFLOW_GUIDE.md), [original Plan 0.73 results](../docs/Unified_System_0.73_2026-10-06/RESULTS.md) and [original packages](../docs/Unified_System_0.73_2026-10-06/PACKAGE.md) define that implementation evidence. See the [latest Scatter delivery](../docs/Layer_Actions_Fix_0.73_2026-10-07/README.md), [frozen broader qualification](../docs/Full_Qualification_0.73_2026-10-07/README.md), and [current reconciliation](../docs/Status_0.73_And_Website_2026-10-07/README.md) for later build and test boundaries.
+Separate local MCP server and queued Max host adapter for **Scatter `CyrusUnified1` (current UI 0.75)**. Package is **0.73.0**, closed authoring plan **0.73**, with twelve tools/seven resources. Retired plans 1.0/2.0 fail explicitly; they are not mapped silently to new semantics. [Current capabilities](../docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md), [AI workflow](../docs/Current_System_2026-10-05/AGENT_WORKFLOW_GUIDE.md), [original Plan 0.73 results](../docs/Unified_System_0.73_2026-10-06/RESULTS.md) and [original packages](../docs/Unified_System_0.73_2026-10-06/PACKAGE.md) define that implementation evidence. Use the [current codebase guide](../docs/README.md), [0.75 qualification](../docs/System_Qualification_0.75_2026-10-09/README.md) and [backlog](../docs/BACKLOG.md) for current product status.
 
 The owned-plan subset now uses the sole ordered evaluator: bounded count/seed, asset weights/metadata, supported transforms/self/pair/cleanup and presentation settings. Full recipe, Brush/set-history, container, CS Edit/radius mutation, complex terrain, map enrollment, renderer execution and ML remain outside the public contract. Catalog help for a local control does not grant remote invocation.
 
@@ -44,7 +44,7 @@ Example: “Read the connected scope. Propose two layers using its assets/region
 | `scatter_read_diagnostic_events` | Exact locally shared bounded trace/session/sequence/health |
 | `scene_capture_viewport` | Expressly shared viewport with generation/camera metadata |
 
-Resources: `cyrus://plan-schema`, `cyrus://plan-schema/0.73`, `cyrus://capabilities`, `cyrus://workflow`, `cyrus://feature-catalog`, `cyrus://agent-workflows`, `cyrus://error-guide`. The generated catalog covers 34 capability families/240 semantic controls and includes current source/inventory hashes. Ordinary help is not a scene-write API. Read-only full recipe inspection and narrower owned-plan mutation are distinct.
+Resources: `cyrus://plan-schema`, `cyrus://plan-schema/0.73`, `cyrus://capabilities`, `cyrus://workflow`, `cyrus://feature-catalog`, `cyrus://agent-workflows`, `cyrus://error-guide`. The generated catalog covers 34 capability families/234 semantic controls and includes current source/inventory hashes. Ordinary help is not a scene-write API. Read-only full recipe inspection and narrower owned-plan mutation are distinct.
 
 ## Bounds and supported semantics
 
@@ -66,4 +66,4 @@ Default connection directory is `%USERPROFILE%\.cyrus-scatter\automation`; insta
 
 Current-generation execution export caps exactly **1,500,000 bytes**. Cached publication rows/opaque input signatures are not a complete portable recipe/source-assets package. Operational records have training eligibility false. The separate offline Design Lab remains experimental with no Max render/training endpoint or reference-image model.
 
-Frozen 0.73 real Corona evidence is recorded in [Full Qualification](../docs/Full_Qualification_0.73_2026-10-07/PERFORMANCE.md); later compact/callback changes did not rerun those renderer measurements. Max 2026 runtime, wider renderer/pointer/long-session coverage and commercial licensing remain separate gates. [Next acceptance loops](../docs/Status_0.73_And_Website_2026-10-07/ROADMAP.md) precede broader tools or artistic search.
+The [0.75 system audit](../docs/System_Qualification_0.75_2026-10-09/README.md) records fresh scripted Scatter/Analyzer and actual Corona lifecycle checks. It does not add remote render or Brush authoring. Max 2026 runtime, physical all-control and long-session gates remain in the [backlog](../docs/BACKLOG.md).

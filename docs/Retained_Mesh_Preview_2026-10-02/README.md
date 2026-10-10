@@ -1,5 +1,7 @@
 # Retained instanced Mesh preview
 
+> Historical implementation record. For the current product use [the documentation index](../README.md) and [backlog](../BACKLOG.md). Measurements and instructions below apply to their recorded build.
+
 2 October 2026. Scatter 0.64 candidate, native engine 0.25, Analyzer unchanged at 0.14. This loop addresses the severe Mesh-mode navigation slowdown reported after the successful Point Cloud and Proxy improvements. It preserves the existing geometry selection and viewport limits, and replaces repeated CPU triangle submission with retained GPU instancing through Autodesk's public SDK.
 
 ## What the implementation does

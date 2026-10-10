@@ -1,0 +1,660 @@
+{
+  "scene_checks": {
+    "checks": [
+      [
+        "warm-output",
+        true,
+        "Unchanged evaluation returns identical rows"
+      ],
+      [
+        "manual-pending",
+        true,
+        "Seed edit awaits Update"
+      ],
+      [
+        "manual-update-published",
+        true,
+        "Explicit update published"
+      ],
+      [
+        "live-seed-restored",
+        true,
+        "Seed restored entire output"
+      ],
+      [
+        "paint-manual-pending",
+        true,
+        "Erase preserved published rows before Update"
+      ],
+      [
+        "erase-changes-output",
+        true,
+        [
+          131,
+          122
+        ]
+      ],
+      [
+        "brush-undo",
+        true,
+        "Exact output restored"
+      ],
+      [
+        "brush-redo",
+        true,
+        "Erase reproduced"
+      ],
+      [
+        "stroke-keeps-area",
+        true,
+        "Additional gesture did not create a named area/population"
+      ],
+      [
+        "empty-curved",
+        true,
+        "Empty removes curved layer coverage"
+      ],
+      [
+        "empty-undo",
+        true,
+        "Undo restores curved strokes"
+      ],
+      [
+        "fill-curved",
+        true,
+        "Full curved receiver accepted"
+      ],
+      [
+        "fill-undo",
+        true,
+        "Fill is reversible"
+      ],
+      [
+        "inactive-target-history",
+        true,
+        "East receiver unlinked; paint preserved"
+      ],
+      [
+        "target-restore",
+        true,
+        "Original receiver list restored exact placements"
+      ],
+      [
+        "layer-selection",
+        true,
+        "Browsing layers does not regenerate"
+      ],
+      [
+        "local-source-label",
+        true,
+        "Alias leaves actual scene node name intact"
+      ],
+      [
+        "all-final-layers-valid",
+        true,
+        "No preview errors"
+      ],
+      [
+        "nav-points",
+        true,
+        "Navigation: placements, preparation and retained upload counters"
+      ],
+      [
+        "nav-box",
+        true,
+        "Navigation: placements, preparation and retained upload counters"
+      ],
+      [
+        "nav-sphere",
+        true,
+        "Navigation: placements, preparation and retained upload counters"
+      ],
+      [
+        "nav-pyramid",
+        true,
+        "Navigation: placements, preparation and retained upload counters"
+      ],
+      [
+        "nav-mesh",
+        true,
+        "Navigation: placements, preparation and retained upload counters"
+      ],
+      [
+        "nav-centres",
+        true,
+        "Navigation: placements, preparation and retained upload counters"
+      ],
+      [
+        "nav-box-10k",
+        true,
+        "Navigation: placements, preparation and retained upload counters"
+      ],
+      [
+        "nav-sphere-10k",
+        true,
+        "Navigation: placements, preparation and retained upload counters"
+      ],
+      [
+        "nav-mesh-10k",
+        true,
+        "Navigation: placements, preparation and retained upload counters"
+      ],
+      [
+        "save-reopen-placements",
+        true,
+        "Per-layer identities/models/transforms preserved"
+      ],
+      [
+        "save-reopen-paint",
+        true,
+        "Named target-bound Paint Areas and history preserved"
+      ]
+    ]
+  },
+  "navigation": [
+    {
+      "name": "nav-box-10k",
+      "instance_limit_per_layer": 10000,
+      "drawn_elements": 23035,
+      "faces": 276420,
+      "switch_ms": 838.694,
+      "median_ms": 139.0503,
+      "p95_ms_nearest_rank": 159.1627,
+      "max_ms": 209.081,
+      "samples": 20,
+      "placements_unchanged": true,
+      "preparation_unchanged": true,
+      "retained_unchanged": true
+    },
+    {
+      "name": "nav-box",
+      "instance_limit_per_layer": 1000,
+      "drawn_elements": 4847,
+      "faces": 58164,
+      "switch_ms": 873.3519,
+      "median_ms": 125.10905,
+      "p95_ms_nearest_rank": 140.7832,
+      "max_ms": 144.6356,
+      "samples": 20,
+      "placements_unchanged": true,
+      "preparation_unchanged": true,
+      "retained_unchanged": true
+    },
+    {
+      "name": "nav-centres",
+      "instance_limit_per_layer": 1000,
+      "drawn_elements": 53760,
+      "faces": 0,
+      "switch_ms": 1746.3168,
+      "median_ms": 113.5337,
+      "p95_ms_nearest_rank": 124.6965,
+      "max_ms": 132.2682,
+      "samples": 20,
+      "placements_unchanged": true,
+      "preparation_unchanged": true,
+      "retained_unchanged": true
+    },
+    {
+      "name": "nav-mesh-10k",
+      "instance_limit_per_layer": 10000,
+      "drawn_elements": 10948,
+      "faces": 17107745,
+      "switch_ms": 964.6139,
+      "median_ms": 116.43385,
+      "p95_ms_nearest_rank": 128.772,
+      "max_ms": 128.899,
+      "samples": 20,
+      "placements_unchanged": true,
+      "preparation_unchanged": true,
+      "retained_unchanged": true
+    },
+    {
+      "name": "nav-mesh",
+      "instance_limit_per_layer": 1000,
+      "drawn_elements": 1943,
+      "faces": 16926077,
+      "switch_ms": 875.9443,
+      "median_ms": 117.8937,
+      "p95_ms_nearest_rank": 122.6091,
+      "max_ms": 122.8946,
+      "samples": 20,
+      "placements_unchanged": true,
+      "preparation_unchanged": true,
+      "retained_unchanged": true
+    },
+    {
+      "name": "nav-points",
+      "instance_limit_per_layer": 1000,
+      "drawn_elements": 124630,
+      "faces": 0,
+      "switch_ms": 843.1714,
+      "median_ms": 120.45605,
+      "p95_ms_nearest_rank": 133.3311,
+      "max_ms": 138.3834,
+      "samples": 20,
+      "placements_unchanged": true,
+      "preparation_unchanged": true,
+      "retained_unchanged": true
+    },
+    {
+      "name": "nav-pyramid",
+      "instance_limit_per_layer": 1000,
+      "drawn_elements": 4847,
+      "faces": 29082,
+      "switch_ms": 889.3171,
+      "median_ms": 123.86330000000001,
+      "p95_ms_nearest_rank": 133.1965,
+      "max_ms": 136.755,
+      "samples": 20,
+      "placements_unchanged": true,
+      "preparation_unchanged": true,
+      "retained_unchanged": true
+    },
+    {
+      "name": "nav-sphere-10k",
+      "instance_limit_per_layer": 10000,
+      "drawn_elements": 23035,
+      "faces": 3869880,
+      "switch_ms": 4264.8643,
+      "median_ms": 1050.0878,
+      "p95_ms_nearest_rank": 1206.0771,
+      "max_ms": 1262.6419,
+      "samples": 20,
+      "placements_unchanged": true,
+      "preparation_unchanged": true,
+      "retained_unchanged": true
+    },
+    {
+      "name": "nav-sphere",
+      "instance_limit_per_layer": 1000,
+      "drawn_elements": 4847,
+      "faces": 814296,
+      "switch_ms": 897.7612,
+      "median_ms": 212.06725,
+      "p95_ms_nearest_rank": 228.5511,
+      "max_ms": 236.7808,
+      "samples": 20,
+      "placements_unchanged": true,
+      "preparation_unchanged": true,
+      "retained_unchanged": true
+    }
+  ],
+  "operations": [
+    {
+      "name": "warm-evaluate-1",
+      "elapsed_ms": 5023.282,
+      "prepared_build_deltas": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "working_GiB": 5.0589599609375,
+      "private_GiB": 7.852668762207031
+    },
+    {
+      "name": "warm-evaluate-2",
+      "elapsed_ms": 101.6039,
+      "prepared_build_deltas": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "working_GiB": 5.061225891113281,
+      "private_GiB": 7.852684020996094
+    },
+    {
+      "name": "manual-explicit-update",
+      "elapsed_ms": 5394.8316,
+      "prepared_build_deltas": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "working_GiB": 5.104866027832031,
+      "private_GiB": 7.85504150390625
+    },
+    {
+      "name": "live-seed-edit",
+      "elapsed_ms": 1036.5607,
+      "prepared_build_deltas": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "working_GiB": 5.028419494628906,
+      "private_GiB": 8.69620132446289
+    },
+    {
+      "name": "brush-erase-author",
+      "elapsed_ms": 0.1232,
+      "prepared_build_deltas": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "working_GiB": 5.400707244873047,
+      "private_GiB": 9.00637435913086
+    },
+    {
+      "name": "brush-erase-evaluate",
+      "elapsed_ms": 754.1999,
+      "prepared_build_deltas": [
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "working_GiB": 5.400829315185547,
+      "private_GiB": 8.891952514648438
+    },
+    {
+      "name": "brush-undo-evaluate",
+      "elapsed_ms": 749.4351,
+      "prepared_build_deltas": [
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "working_GiB": 5.374973297119141,
+      "private_GiB": 9.567623138427734
+    },
+    {
+      "name": "reopen-explicit-update",
+      "elapsed_ms": 19066.3238,
+      "prepared_build_deltas": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "working_GiB": 5.189178466796875,
+      "private_GiB": 8.346553802490234
+    },
+    {
+      "name": "final-warm-read-1",
+      "elapsed_ms": 100.284,
+      "prepared_build_deltas": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "working_GiB": 5.189537048339844,
+      "private_GiB": 8.346954345703125
+    },
+    {
+      "name": "final-warm-read-2",
+      "elapsed_ms": 124.3554,
+      "prepared_build_deltas": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "working_GiB": 5.190258026123047,
+      "private_GiB": 8.347816467285156
+    }
+  ],
+  "navigation_scene_placements": 53760,
+  "delivered_scene_placements": 53520,
+  "final_scene_checks": {
+    "checks": [
+      [
+        "warm-output",
+        true,
+        "Unchanged evaluation returns identical rows"
+      ],
+      [
+        "manual-pending",
+        true,
+        "Seed edit awaits Update"
+      ],
+      [
+        "manual-update-published",
+        true,
+        "Explicit update published"
+      ],
+      [
+        "live-seed-restored",
+        true,
+        "Seed restored entire output"
+      ],
+      [
+        "paint-manual-pending",
+        true,
+        "Erase preserved published rows before Update"
+      ],
+      [
+        "erase-changes-output",
+        true,
+        [
+          131,
+          122
+        ]
+      ],
+      [
+        "brush-undo",
+        true,
+        "Exact output restored"
+      ],
+      [
+        "brush-redo",
+        true,
+        "Erase reproduced"
+      ],
+      [
+        "stroke-keeps-area",
+        true,
+        "Additional gesture did not create a named area/population"
+      ],
+      [
+        "empty-curved",
+        true,
+        "Empty removes curved layer coverage"
+      ],
+      [
+        "empty-undo",
+        true,
+        "Undo restores curved strokes"
+      ],
+      [
+        "fill-curved",
+        true,
+        "Full curved receiver accepted"
+      ],
+      [
+        "fill-undo",
+        true,
+        "Fill is reversible"
+      ],
+      [
+        "inactive-target-history",
+        true,
+        "East receiver unlinked; paint preserved"
+      ],
+      [
+        "target-restore",
+        true,
+        "Original receiver list restored exact placements"
+      ],
+      [
+        "layer-selection",
+        true,
+        "Browsing layers does not regenerate"
+      ],
+      [
+        "local-source-label",
+        true,
+        "Alias leaves actual scene node name intact"
+      ],
+      [
+        "all-final-layers-valid",
+        true,
+        "No preview errors"
+      ],
+      [
+        "nav-points",
+        true,
+        "Navigation: placements, preparation and retained upload counters"
+      ],
+      [
+        "nav-box",
+        true,
+        "Navigation: placements, preparation and retained upload counters"
+      ],
+      [
+        "nav-sphere",
+        true,
+        "Navigation: placements, preparation and retained upload counters"
+      ],
+      [
+        "nav-pyramid",
+        true,
+        "Navigation: placements, preparation and retained upload counters"
+      ],
+      [
+        "nav-mesh",
+        true,
+        "Navigation: placements, preparation and retained upload counters"
+      ],
+      [
+        "nav-centres",
+        true,
+        "Navigation: placements, preparation and retained upload counters"
+      ],
+      [
+        "nav-box-10k",
+        true,
+        "Navigation: placements, preparation and retained upload counters"
+      ],
+      [
+        "nav-sphere-10k",
+        true,
+        "Navigation: placements, preparation and retained upload counters"
+      ],
+      [
+        "nav-mesh-10k",
+        true,
+        "Navigation: placements, preparation and retained upload counters"
+      ],
+      [
+        "save-reopen-placements",
+        true,
+        "Per-layer identities/models/transforms preserved"
+      ],
+      [
+        "save-reopen-paint",
+        true,
+        "Named target-bound Paint Areas and history preserved"
+      ],
+      [
+        "save-reopen-placements",
+        true,
+        "Per-layer identities/models/transforms preserved"
+      ],
+      [
+        "save-reopen-paint",
+        true,
+        "Named target-bound Paint Areas and history preserved"
+      ]
+    ]
+  },
+  "final_operations": [
+    {
+      "operation": "final-circulation-update",
+      "elapsed_ms": 7787.3103,
+      "working_GiB": 5.459926605224609,
+      "private_GiB": 8.2965087890625
+    },
+    {
+      "operation": "final-circulation-warm",
+      "elapsed_ms": 102.5256,
+      "working_GiB": 5.459926605224609,
+      "private_GiB": 8.2965087890625
+    },
+    {
+      "operation": "reopen-explicit-update",
+      "elapsed_ms": 20178.8954,
+      "working_GiB": 5.607429504394531,
+      "private_GiB": 8.57442855834961
+    },
+    {
+      "operation": "final-warm-read-1",
+      "elapsed_ms": 120.2584,
+      "working_GiB": 5.610633850097656,
+      "private_GiB": 8.575374603271484
+    },
+    {
+      "operation": "final-warm-read-2",
+      "elapsed_ms": 96.1554,
+      "working_GiB": 5.611785888671875,
+      "private_GiB": 8.574382781982422
+    }
+  ]
+}

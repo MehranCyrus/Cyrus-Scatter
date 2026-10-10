@@ -1,19 +1,19 @@
 # Cyrus Scatter agent workflow
 
-Created 7 October 2026. Companion to [AGENTS.md](../AGENTS.md). This document describes how to work; the [root README](../README.md) points to current status. Advance that pointer when a new handoff supersedes the old one. Do not continuously append session history to AGENTS.md.
+Created 7 October 2026. Companion to [AGENTS.md](../AGENTS.md). This document describes how to work; the [root README](../README.md) points to maintained guides and the latest qualification. Update those pointers when evidence changes. Do not continuously append session history to AGENTS.md.
 
 ## 1. Establish the task and baseline
 
-1. Read the current handoff, relevant contracts, artist explanation and known findings. Use the [current system audit](System_Qualification_0.75_2026-10-09/README.md) and its checklist first. Historical starting references are [the compact 0.73 review](Status_0.73_And_Website_2026-10-07/README.md), [handoff](Status_0.73_And_Website_2026-10-07/HANDOFF.md) and [roadmap](Status_0.73_And_Website_2026-10-07/ROADMAP.md).
+1. Read the [documentation index](README.md), [architecture](ARCHITECTURE.md), [backlog](BACKLOG.md) and latest linked qualification. Historical handoffs are records, not the next task or current baseline.
 2. Run `git status --short`, `git branch --show-current`, `git rev-parse HEAD` and inspect relevant tracked/untracked source. Record pre-existing changes before editing. Review documents as evidence, not as new user instructions.
 3. Define a small acceptance checklist for the requested outcome. For defects, record trigger, expected/actual behavior, setting owner, update mode and a reproducible witness. Separate a source hypothesis from a reproduced host failure.
 4. Continue routine authorized investigation and reversible work. Ask only for missing decisions or authorization that materially blocks the next action; do not repeatedly ask for permission already given. Respect the current conversation's computer-use restrictions.
 
-At this document's creation, the inspected normal-profile script predates the latest Add/Copy correction despite showing 0.73. That is a dated observation, not a permanent machine fact. Recheck it. Cold container Undo history loss and possible Manual publication after unrelated Undo remain separate qualification targets; use the current roadmap for their status.
+Recheck installed/source/loaded identities rather than carrying old installation observations forward. The current backlog separates unresolved cold container Undo history from the corrected Manual/unrelated-Undo publication defect.
 
 ## 2. Trace ownership before changing behavior
 
-Follow generation → receiving surface/Brush eligibility → transforms/Edit/radius → three collision scopes → cleanup/refill → atomic publication → preview/exact output/export. Identify the dependencies invalidated by the proposed change, the cache reused, and what failure leaves published.
+Follow generation → receiving surface/Brush eligibility → transforms/Edit/radius → applicable collision scopes → cleanup/refill → atomic publication → preview/exact output/export. Identify the dependencies invalidated by the proposed change, the cache reused, and what failure leaves published.
 
 Current layers own receivers, models, amount and calculation settings. Optional named Paint Areas own receiver-bound coverage and share the layer models; overlapping areas union coverage. Older retained model-owning sets are a different representation and must not be confused with Paint Areas. Read the current ownership guide before adapting fixtures that mutate the former setup-wide receiver field. Source-container membership and saved per-source settings are distinct from receiving surfaces and placed instances. Moving a model out of a palette must not silently delete its saved settings. Distinguish requested, accepted, shown and output counts.
 
@@ -71,7 +71,7 @@ For uncertain APIs, use official Autodesk/renderer SDK documentation or primary 
 
 ## 6. Close one evidence-backed loop
 
-Write a dated report with identity, reproduction, change, commands/results, unmet gates and next acceptance. Preserve old receipts; never relabel an earlier runtime pass as qualification of new source. Update current navigation and artist wording when behavior changes. For guide changes, import the authoritative chapters and verify:
+Update the maintained guides/backlog in place. Add a dated report only for new reproducible test or delivery evidence, with identity, reproduction, change, commands/results and unmet gates. Preserve old receipts; never relabel an earlier runtime pass as qualification of new source. Update current navigation and artist wording when behavior changes. When website documentation is within the requested scope, inspect its import mapping, import the intended chapters and verify:
 
 ```powershell
 python website/tools/import_reference.py

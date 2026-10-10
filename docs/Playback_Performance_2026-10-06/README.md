@@ -1,5 +1,7 @@
 # Playback invalidation and idle-work fixes
 
+> Historical implementation record. For the current product use [the documentation index](../README.md) and [backlog](../BACKLOG.md). Measurements and instructions below apply to their recorded build.
+
 6 October 2026. This is a new local development candidate on `codex/floating-layer-editor-0.7.1`, based on `147e3f524aa3f4cd9db9bb2bffb7350f9f78de31`. Version remains **0.7.1**, serialization **53**. It is not the existing installed/package snapshot. No computer-use tools, artist scene, artist-profile installation, commit or push were used in this pass.
 
 ## What changed

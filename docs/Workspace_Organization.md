@@ -1,8 +1,8 @@
 # Workspace organization and Git backup scope
 
-Updated 3 October 2026, Asia/Tehran.
+Current workspace policy: 9 October 2026. The dated backup receipts below describe their original snapshots.
 
-Git contains the two plugin source trees, shared CMake configuration, build and test tools, documentation, research briefs, supplied research reports and the selected evidence used by those reports. The original retained-point probe remains a clearly identified private experiment under `tools/performance/native_point_probe`; the subsequent retained Point Cloud and Mesh integrations are now part of the Scatter 0.64 source.
+Git contains Scatter, Surface Analyzer, MCP and the separate licensing foundation, shared build/test tools, documentation and selected evidence. The original retained-point probe remains a private experiment under `tools/performance/native_point_probe`; retained Point Cloud and Mesh are integrated into current Scatter. Start at [the current documentation index](README.md) for product status.
 
 ## Local-only data
 
@@ -27,7 +27,7 @@ The move journal under `_local/maintenance/2026-10-02-git-cleanup/` records sour
 
 ## Documentation rules
 
-- Start with [docs/README.md](README.md), then the current heavy-scene roadmap. Dated reports retain the claims and limits of their original measurement.
+- Start with [docs/README.md](README.md) and [the current backlog](BACKLOG.md). Follow [documentation maintenance](DOCUMENTATION.md) for consolidation and retention. Dated reports retain the claims and limits of their original measurement.
 - Keep decisions, accepted results and reproducible small evidence together. Keep large raw runs, rendered preview scratch and binary outputs in the ignored directories.
 - Do not rewrite historical measurements, recorded absolute paths, source fingerprints or exact submitted recipes to match a later cleanup. The table above is their location mapping.
 - Active source text uses LF line endings across platforms. The dated source-and-evidence packages in `.gitattributes` preserve their original bytes instead; their manifests would be invalidated by automatic newline conversion.

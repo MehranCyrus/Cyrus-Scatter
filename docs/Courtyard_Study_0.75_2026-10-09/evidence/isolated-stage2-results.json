@@ -1,0 +1,37 @@
+[
+  {
+    "name": "container-edges",
+    "command": "U73ContainerEdges()",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/courtyard-study075/probe-d8d6b14ce55f4bc9be925904f43e1d78.ms",
+    "passed": true,
+    "elapsed_s": 26.84400000000096
+  },
+  {
+    "name": "exact-bake",
+    "command": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/build/courtyard-study075/Max_Source_Containers_Output.ms\"",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/courtyard-study075/probe-9bf580589a574281a1f43f098ec932cf.ms",
+    "passed": true,
+    "elapsed_s": 2.4059999999990396
+  },
+  {
+    "name": "bindings",
+    "command": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/docs/System_Qualification_0.75_2026-10-09/Control_Bindings.ms\"",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/courtyard-study075/probe-76450ba2686e4f8bbbe5360e5594ede3.ms",
+    "passed": true,
+    "elapsed_s": 7.139999999999418
+  },
+  {
+    "name": "layout",
+    "command": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/tools/procedural_lab/Max_Layout_075.ms\";L75Run()",
+    "passed": false,
+    "error": "ERROR -- Type error: Call needs function or class, got: undefined\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/courtyard-study075/probe-62952ee111994616ba13fc0c88c26dc7.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\courtyard-study075\\probe-62952ee111994616ba13fc0c88c26dc7.ms LINE: 2P\n",
+    "elapsed_s": 0.3280000000013388
+  },
+  {
+    "name": "output-failure-regressions",
+    "command": "fileIn @\"F:/Cursor/_Cyrus_Apps/CyrusScatter/build/courtyard-study075/Max_Procedural_07_Regression.ms\"",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/courtyard-study075/probe-5d77e87a26b4424391c89057cccc228d.ms",
+    "passed": true,
+    "elapsed_s": 15.032000000002881
+  }
+]

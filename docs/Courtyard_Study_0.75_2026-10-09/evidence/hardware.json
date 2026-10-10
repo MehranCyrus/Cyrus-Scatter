@@ -1,0 +1,17 @@
+{
+  "max_version": "29.1.0.11426",
+  "cpu": [
+    {
+      "Name": "AMD Ryzen 5 5600X 6-Core Processor             ",
+      "NumberOfCores": 6,
+      "NumberOfLogicalProcessors": 12
+    }
+  ],
+  "gpu": [
+    {
+      "Name": "NVIDIA GeForce RTX 3090",
+      "DriverVersion": "32.0.16.1047"
+    }
+  ],
+  "ram_bytes": 102986215424
+}

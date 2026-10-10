@@ -1,5 +1,7 @@
 # Cyrus Scatter 0.7 — independent review handoff
 
+> Historical implementation record. For the current product use [the documentation index](../README.md) and [backlog](../BACKLOG.md). Measurements and instructions below apply to their recorded build.
+
 <!-- CURRENT_SYSTEM_2026-10-05 -->
 
 Preserved handoff snapshot. Later source-container/UI work and the subsequent real-scene IR finding are summarized in the [current system guide](../Current_System_2026-10-05/README.md). The unfinished UI state described below is historical, not the latest local 0.7.1 source.
@@ -12,8 +14,8 @@ Preserved handoff snapshot. Later source-container/UI work and the subsequent re
 
 1. [Current state and evidence boundaries](CURRENT_STATE.md).
 2. [Requirements and review matrix](REQUIREMENTS_REVIEW_MATRIX.md).
-3. [Review and completion plan](REVIEW_PLAN.md).
-4. [Prompt for the new conversation](HANDOFF_PROMPT.md).
+3. [Review and completion plan](https://github.com/MehranCyrus/Cyrus-Scatter/blob/f5bc9737378d097cd469d20b32d5576cf10dab01/docs/Review_Handoff_2026-10-05/REVIEW_PLAN.md).
+4. [Prompt for the new conversation](https://github.com/MehranCyrus/Cyrus-Scatter/blob/f5bc9737378d097cd469d20b32d5576cf10dab01/docs/Review_Handoff_2026-10-05/HANDOFF_PROMPT.md).
 5. [Procedural implementation](../Procedural_Implementation_0.7_2026-10-04/IMPLEMENTATION.md), [runtime report](../Procedural_Implementation_0.7_2026-10-04/RUNTIME_REPORT.md), and [design contracts](../Procedural_Evaluation_2026-10-04/11_OPTION_CONTRACTS.md).
 
 The design contracts describe requirements at their dated baseline. The implementation report identifies what was implemented and deliberately gated. This handoff identifies later changes and remaining validation. Source inspection and reproducible tests must decide whether any implementation claim is correct.

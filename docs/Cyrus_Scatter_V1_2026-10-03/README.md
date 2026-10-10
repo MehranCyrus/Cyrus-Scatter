@@ -1,5 +1,7 @@
 # Cyrus Scatter 1.0 foundation
 
+> Historical implementation record. For the current product use [the documentation index](../README.md) and [backlog](../BACKLOG.md). Measurements and instructions below apply to their recorded build.
+
 3 October 2026. The native Max layer editor and procedural Brush are integrated into the main plugin. The previous retained Mesh / Point Cloud / Proxy paths remain in use. Public product version: **1.0.0**. Analyzer remains **0.14**; MCP remains its separately installed **1.0** service.
 
 | Read | Purpose |

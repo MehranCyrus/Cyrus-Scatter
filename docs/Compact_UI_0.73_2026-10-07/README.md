@@ -1,5 +1,7 @@
 # Cyrus Scatter 0.73 — compact native UI
 
+> Historical implementation record. For the current product use [the documentation index](../README.md) and [backlog](../BACKLOG.md). Measurements and instructions below apply to their recorded build.
+
 7 October 2026. This continuation reduces empty space in the approved workflow after the artist compared it with Chaos Scatter. Version stays **0.73.0**, serialization **54**, calculation model **CyrusUnified1**. The final generated script SHA-256 is **`53bf85f9a2cfe1034468919c408d4c73ca6e865f7e1b9c816cc7375fe12f10fa`**; its loaded payload fingerprint is **`d74672d06df57514d70accd5632bfa187a1546633e6327d6b8360905e202ea94`**. The version caption alone cannot distinguish this UI from previous 0.73 packages.
 
 The ten-section order and folded Advanced options remain. Related layer/container buttons share rows; Enabled/Visible controls sit together; numeric captions sit beside their fields when space permits. Min/max scale fields stay beneath their headers. Buttons use 22-pixel heights and small row gaps. Lists retain their native visible-row counts. Help and feedback wrap to their content instead of reserving large fixed areas. Source-container properties use the same compact spacing.

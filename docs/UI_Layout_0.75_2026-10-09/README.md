@@ -1,5 +1,7 @@
 # Cyrus Scatter 0.75 — Layout and transform UI refinement
 
+> Historical implementation record. For the current product use [the documentation index](../README.md) and [backlog](../BACKLOG.md). Measurements and instructions below apply to their recorded build.
+
 9 October 2026. This UI delivery follows [the Layout investigation](../Arrangement_Research_0.75_2026-10-09/README.md) and supersedes the first 0.75 installer for these controls. Product version stays 0.75.0, UI 0.75, schema 54. Native Scatter and Analyzer binaries are unchanged.
 
 ## Completed changes
