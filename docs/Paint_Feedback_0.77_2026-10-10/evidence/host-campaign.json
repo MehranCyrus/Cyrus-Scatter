@@ -1,0 +1,158 @@
+[
+  {
+    "name": "load-Max_Procedural_07_Acceptance.ms",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/paint077-final/probe-8f6125a9954f4a0ba10841cf823b0f51.ms",
+    "passed": true,
+    "seconds": 0.20300000000133878
+  },
+  {
+    "name": "load-Max_Courtyard_Fixes_075.ms",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/paint077-final/probe-bf8ebf0ebdc8489aac61a34a46de665b.ms",
+    "passed": true,
+    "seconds": 0.20300000000133878
+  },
+  {
+    "name": "load-Max_Unified_073_Advanced.ms",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/paint077-final/probe-5dc35cdb17dd4984a430d5726dd29f7e.ms",
+    "passed": true,
+    "seconds": 0.20399999999790452
+  },
+  {
+    "name": "load-Max_Unified_073_Analyzer_Assignment.ms",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/paint077-final/probe-f3fa41a967d5440d8b4b596ca1aa6463.ms",
+    "passed": true,
+    "seconds": 0.2180000000007567
+  },
+  {
+    "name": "load-Max_Layer_Regions_074.ms",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/paint077-final/probe-c5681b2ccd904c1cb6528b0e2cf5cfba.ms",
+    "passed": true,
+    "seconds": 0.20300000000133878
+  },
+  {
+    "name": "load-Max_System_075.ms",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/paint077-final/probe-17757b3ef8644b42a9801171ab2790e9.ms",
+    "passed": true,
+    "seconds": 0.20399999999790452
+  },
+  {
+    "name": "load-Max_Unified_073_Persistence.ms",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/paint077-final/probe-ba09c9dc7daf4271a35a8bb5f3bdf180.ms",
+    "passed": true,
+    "seconds": 0.20300000000133878
+  },
+  {
+    "name": "load-Max_Brush_076.ms",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/paint077-final/probe-5af9d7bf20924a7cbd48ad4d323cb6ea.ms",
+    "passed": true,
+    "seconds": 0.31199999999807915
+  },
+  {
+    "name": "load-Max_Receiver_Stability_076.ms",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/paint077-final/probe-db43f3054ee749ff995cf5c3369b92d4.ms",
+    "passed": true,
+    "seconds": 0.20300000000133878
+  },
+  {
+    "name": "load-workflow",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/paint077-final/probe-3a32b232f4bc4b1ba753e9e4dce24608.ms",
+    "passed": true,
+    "seconds": 0.20300000000133878
+  },
+  {
+    "name": "receiver-stability",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/paint077-final/probe-4008d1ccdded4ffba1a51d29ded3753b.ms",
+    "passed": true,
+    "seconds": 19.531999999999243
+  },
+  {
+    "name": "brush-limits",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/paint077-final/probe-5914fa21e8fd46c39e67b9518996119f.ms",
+    "passed": true,
+    "seconds": 4.655999999995402
+  },
+  {
+    "name": "regions",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/paint077-final/probe-d9b8c4c76b9541d09f9abec86943218a.ms",
+    "passed": true,
+    "seconds": 17.82800000000134
+  },
+  {
+    "name": "proxy",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/paint077-final/probe-39f6af64c0974691912c3c4ba5e36d2a.ms",
+    "passed": true,
+    "seconds": 6.578000000001339
+  },
+  {
+    "name": "update",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/paint077-final/probe-a38a2878137b45fdb242eb2738cc3b55.ms",
+    "passed": true,
+    "seconds": 5.563000000001921
+  },
+  {
+    "name": "analyzer-freshness",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/paint077-final/probe-374c83487bf640f4881079b8d80fc8db.ms",
+    "passed": true,
+    "seconds": 8.093999999997322
+  },
+  {
+    "name": "core",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/paint077-final/probe-d39d713c29814389a688bf2df514d988.ms",
+    "passed": true,
+    "seconds": 25.81300000000192
+  },
+  {
+    "name": "manual-spacing",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/paint077-final/probe-0016930973744a3b88a8f7659a2eb129.ms",
+    "passed": true,
+    "seconds": 20.35899999999674
+  },
+  {
+    "name": "sources",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/paint077-final/probe-bbcbd58d5e63442c8754e965858d1b0f.ms",
+    "passed": true,
+    "seconds": 29.437000000005355
+  },
+  {
+    "name": "relax",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/paint077-final/probe-b4670546a03a4636996a383528f0e292.ms",
+    "passed": true,
+    "seconds": 4.9689999999973224
+  },
+  {
+    "name": "analyzer-assignment",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/paint077-final/probe-d5b8271928e645cc92a60fe17f2ea782.ms",
+    "passed": true,
+    "seconds": 7.078000000001339
+  },
+  {
+    "name": "edit",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/paint077-final/probe-b8065d4e2b1c47e19f4e01da55f05529.ms",
+    "passed": true,
+    "seconds": 4.3439999999973224
+  },
+  {
+    "name": "Max_Source_Containers_Output.ms",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/paint077-final/probe-15a28574470341ea89303ad6ee16b5cd.ms",
+    "passed": true,
+    "seconds": 2.1410000000032596
+  },
+  {
+    "name": "Max_Procedural_07_Regression.ms",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/paint077-final/probe-c2d9abf5f1884bfb8aa4c7a68c8a3558.ms",
+    "passed": true,
+    "seconds": 14.780999999995402
+  },
+  {
+    "name": "playback",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/paint077-final/probe-9d64ffe790c14c839c972badcfade388.ms",
+    "passed": true,
+    "seconds": 60.062000000005355
+  },
+  {
+    "name": "corona-production",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/paint077-final/probe-bc6bc56b78774088ba4afe24dd332124.ms",
+    "passed": true,
+    "seconds": 4.4539999999979045
+  }
+]

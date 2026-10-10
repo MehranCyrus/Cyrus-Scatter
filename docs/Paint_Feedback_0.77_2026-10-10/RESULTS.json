@@ -1,0 +1,53 @@
+{
+  "baseline_commit": "7ef0e8c264dca5648bbebd7c73a52f8b3031ba54",
+  "branch": "codex/workflow-0.75",
+  "version": "0.77",
+  "package_version": "0.77.0",
+  "schema": 54,
+  "calculation_model": "CyrusUnified1",
+  "native_suites": 16,
+  "native_feedback_assertions": 687313,
+  "python_tests": 141,
+  "python_seconds": 12.4,
+  "host_feedback_assertions": 11,
+  "host_receiver_assertions": 27,
+  "playback_assertions": 942,
+  "host_campaign_steps": 26,
+  "corona_smoke": {
+    "passed": true,
+    "ms": 1641.9758,
+    "renderer": "15, build timestamp: May 25 2026 16:07:51",
+    "count": 100,
+    "error": "",
+    "epoch_preserved": true
+  },
+  "max_same_workload": {
+    "receiver": "200x200 plane, 4x4 segments",
+    "feedback": "Coverage tint, active Painter, 832 triangles",
+    "history": "1000 mixed soft paint/erase strokes; time next 10 same-center paint strokes",
+    "evaluation_median_ms_076": 547.8943481445312,
+    "evaluation_median_ms_077": 1.3557999730110168,
+    "call_median_ms_076": 548.482,
+    "call_median_ms_077": 1.4062999999999999,
+    "same_rows_fingerprint": "8025022206740621175",
+    "speedup_evaluation": 404.11149067051883
+  },
+  "continuous_feedback": {
+    "committed_last30_evaluation_median_ms": 1.34170001745224,
+    "pending_300_dabs_initial_iteration_ms": 243.556,
+    "pending_300_dabs_final_ms": 2.4383,
+    "pending_30_dabs_final_ms": 10.5363,
+    "pending_60_through_300_dabs_median_ms": 2.3307
+  },
+  "physical_input_or_presented_fps_measured": false,
+  "artist_profile_modified": false,
+  "computer_use_used": false,
+  "scope_limits": [
+    "CPU/scripted feedback timing, not physical input or presented FPS",
+    "Per-document count bounds, not scene-wide or Undo byte limits",
+    "Cold/new preview nodes and old history edits may replay history",
+    "Growing strokes still validate/resample and prepare their dab data",
+    "GraphicsWindow tint drawing not retained",
+    "Max 2026 and installer execution not qualified"
+  ]
+}

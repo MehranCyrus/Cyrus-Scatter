@@ -1,4 +1,4 @@
-# Cyrus Scatter 0.76 — current workflow
+# Cyrus Scatter 0.77 — current workflow
 
 Updated 10 October 2026. Use this guide for the current UI and ownership model. Dated 0.73 guides describe the older layout. This guide explains behavior; the qualification checklist separately identifies what has been tested.
 
@@ -46,6 +46,8 @@ Amount offers fixed Count or area Density. The seed makes a given recipe reprodu
 ## Painting on multiple receivers
 
 Turn on **Use Paint Areas** only when you want to restrict the layer to painted coverage. Add a named Paint Area and choose its Surface from that layer's receiver list. Start Brush and paint. Further strokes edit the selected area; they do not create new populations or new named areas automatically.
+
+In 0.77, feedback reuses the existing drawing while you add strokes or extend a drag. Repeated dabs within one gesture keep that gesture's maximum strength; separate gestures can build opacity, and Erase removes coverage in order. Undo still removes one completed gesture. Feedback follows painting in Manual mode while plant placements wait for Update. Changing older strokes or reopening a scene can require rebuilding the feedback cache.
 
 Very long histories or large brushes on dense meshes can reach a preparation limit. Cyrus reports the limit and keeps the last complete scatter; it does not silently simplify or delete your paint. Undo the last change or reduce the offending radius/history, then Update. In 0.76 the limits include all derived dabs and affected-face links within the Paint Area, including reused history.
 

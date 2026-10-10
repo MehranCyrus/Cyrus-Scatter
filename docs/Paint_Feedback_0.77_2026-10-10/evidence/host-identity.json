@@ -1,0 +1,27 @@
+{
+  "pid": 21988,
+  "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\paint077-final",
+  "command": [
+    "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+    "-q",
+    "-i",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\paint077-final\\max.ini",
+    "-p",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\paint077-final\\plugins.ini",
+    "-U",
+    "MAXScript",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\paint077-final\\start.ms",
+    "-listenerlog",
+    "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\paint077-final\\listener.log"
+  ],
+  "binaries": {
+    "AminScatter.dlx": "d426583e75ed2bd70b6eeebf75a6f7a3231443140defb57c21c36cfdb314a0e5",
+    "CyrusBrush.dlx": "3c6a282a5bba3131e0e2b3c3c07b47407f66019fda415556c13c2eda812f269c",
+    "CyrusBrushStorage.dlh": "ceb04eef10b906656e392c115257c0446308048b825cdb4864f11455c40204a1",
+    "CyrusScatterEdit.dlm": "1e428dbfd6adebfe26b0589accfd45139e32b5fae1f0d747cb2aa21780de5001",
+    "CyrusSurfaceAnalyzer.dlx": "3dc35151a8179a22fb93309e9648a8e7ca7cb76d68a48163a4166c1b77e50582"
+  },
+  "script_sha256": "4c7d0345066c2c9f815d37a8cdf4b1a81f11f54c6b41ef50dfef1fc9fc50f0a7",
+  "normal_profile_modified": false,
+  "development_transport": true
+}

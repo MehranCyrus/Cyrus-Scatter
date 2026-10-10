@@ -1,0 +1,1 @@
+{"checks":["Production face-link limit accepts exact boundary","Production aggregate overflow reports a specific error","Overflow retains complete placements, epoch and preview cache","Overflow does not silently delete authored paint","Removing over-budget stroke recovers exact result","Undo rechecks aggregate limits","Redo recovers after limit failure"]}

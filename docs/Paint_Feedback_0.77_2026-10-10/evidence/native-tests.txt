@@ -1,0 +1,38 @@
+Internal ctest changing into directory: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/paint077/release-max2027
+Test project F:/Cursor/_Cyrus_Apps/CyrusScatter/build/paint077/release-max2027
+      Start  1: scatter_receivers
+ 1/16 Test  #1: scatter_receivers ................   Passed    0.05 sec
+      Start  2: scatter_diagnostics
+ 2/16 Test  #2: scatter_diagnostics ..............   Passed    0.03 sec
+      Start  3: scatter_procedural
+ 3/16 Test  #3: scatter_procedural ...............   Passed    0.10 sec
+      Start  4: scatter_group_spacing
+ 4/16 Test  #4: scatter_group_spacing ............   Passed    0.12 sec
+      Start  5: scatter_brush
+ 5/16 Test  #5: scatter_brush ....................   Passed    0.13 sec
+      Start  6: scatter_brush_feedback
+ 6/16 Test  #6: scatter_brush_feedback ...........   Passed    2.90 sec
+      Start  7: scatter_brush_pick_fixture
+ 7/16 Test  #7: scatter_brush_pick_fixture .......   Passed    0.02 sec
+      Start  8: scatter_preview_sampling
+ 8/16 Test  #8: scatter_preview_sampling .........   Passed    0.23 sec
+      Start  9: scatter_threading
+ 9/16 Test  #9: scatter_threading ................   Passed    0.12 sec
+      Start 10: scatter_prepared_bands
+10/16 Test #10: scatter_prepared_bands ...........   Passed    0.07 sec
+      Start 11: scatter_core
+11/16 Test #11: scatter_core .....................   Passed    0.18 sec
+      Start 12: scatter_spacing
+12/16 Test #12: scatter_spacing ..................   Passed    2.91 sec
+      Start 13: scatter_weights
+13/16 Test #13: scatter_weights ..................   Passed    0.35 sec
+      Start 14: scatter_orientation
+14/16 Test #14: scatter_orientation ..............   Passed    0.03 sec
+      Start 15: scatter_edge_border
+15/16 Test #15: scatter_edge_border ..............   Passed    0.03 sec
+      Start 16: scatter_boundary_falloff
+16/16 Test #16: scatter_boundary_falloff .........   Passed    0.07 sec
+
+100% tests passed, 0 tests failed out of 16
+
+Total Test time (real) =   7.37 sec

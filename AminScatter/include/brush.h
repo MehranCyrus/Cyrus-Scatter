@@ -50,11 +50,16 @@ public:
 // Index stroke dabs by connected affected faces. Full ordered replay remains the oracle.
 class Field {
     struct Impl; std::shared_ptr<const Impl> impl;
+    friend class CoverageCache;
+    friend class SampleCache;
 public:
-    Field(const Surface&,const Document&,const Field* previous=nullptr,FieldLimits limits={});
+    Field(const Surface&,const Document&,const Field* previous=nullptr,FieldLimits limits={},const Stroke* pending=nullptr);
     FieldBuildStats buildStats() const;
     double evaluate(Anchor,QueryStats* stats=nullptr) const;
     double evaluateReference(Anchor,QueryStats* stats=nullptr) const;
+    // Same membership as threshold < clamp(evaluate(anchor)*density,0,1).
+    // Uncertain floating-point intervals continue through the exact evaluator.
+    bool accepts(Anchor,double threshold,double density=1,QueryStats* stats=nullptr) const;
     // Conservative local refinement step for a subtriangle. Infinity means
     // no stroke footprint intersects it; the base field is constant there.
     double previewStep(std::uint32_t face,const std::array<Vec3,3>& bary) const;
@@ -62,6 +67,23 @@ public:
 struct CoverageTriangle { std::array<Vec3,3> vertices;double weight{}; };
 struct Coverage { std::vector<CoverageTriangle> triangles;bool limited=false; };
 Coverage coverage(const Surface&,const Field&,std::size_t budget=32768);
+// Transient feedback caches. Stored strokes and candidate decisions remain
+// authoritative; floating-point forward composition is used only for feedback.
+class CoverageCache {
+    struct Impl; std::unique_ptr<Impl> impl;
+public:
+    CoverageCache(); ~CoverageCache();
+    void clear();
+    Coverage build(const Surface&,const Field&,std::size_t budget=32768);
+    std::size_t size() const;
+};
+class SampleCache {
+    struct Impl; std::unique_ptr<Impl> impl;
+public:
+    SampleCache(); ~SampleCache();
+    void clear();
+    std::vector<double> evaluate(const Field&,const std::vector<Anchor>&);
+};
 double influence(const Surface&,const Sample&,const Stroke&,Anchor,QueryStats* stats=nullptr);
 double apply(double before,double influence,bool erase);
 double threshold(std::uint64_t population,std::uint64_t candidate);

@@ -2,7 +2,7 @@
 
 Native C++ and generated MAXScript for Cyrus Scatter and Cyrus Surface Analyzer in 3ds Max.
 
-**Current development: Scatter 0.76 / package 0.76.0 / schema 54 / CyrusUnified1.** Analyzer remains 0.14; MCP package/plan remain 0.73.0/0.73. This is not 1.0 release certification.
+**Current development: Scatter 0.77 / package 0.77.0 / schema 54 / CyrusUnified1.** Analyzer remains 0.14; MCP package/plan remain 0.73.0/0.73. This is not 1.0 release certification.
 
 ## Start here
 
@@ -13,10 +13,10 @@ Native C++ and generated MAXScript for Cyrus Scatter and Cyrus Surface Analyzer 
 | See what needs fixing next | [Current backlog](docs/BACKLOG.md) |
 | Install or rebuild | [Max 2027 installation/build](docs/Max_2027_Installation.md) |
 | Work on the repository | [AGENTS.md](AGENTS.md), [agent workflow](docs/AGENT_WORKFLOW.md) |
-| Find tests and exact results | [Latest 0.76 receiver stability and matched packages](docs/Receiver_Stability_0.76_2026-10-10/README.md), [Brush fixes](docs/Brush_Scaling_0.76_2026-10-10/README.md), [retained Proxy/Analyzer fixes](docs/Courtyard_Fixes_0.75_2026-10-10/README.md), [0.75 system qualification](docs/System_Qualification_0.75_2026-10-09/README.md) and [feature checklist](docs/System_Qualification_0.75_2026-10-09/CHECKLIST.md) |
+| Find tests and exact results | [Latest 0.77 paint feedback and matched packages](docs/Paint_Feedback_0.77_2026-10-10/README.md), [0.76 receiver stability](docs/Receiver_Stability_0.76_2026-10-10/README.md), [Brush fixes](docs/Brush_Scaling_0.76_2026-10-10/README.md), [retained Proxy/Analyzer fixes](docs/Courtyard_Fixes_0.75_2026-10-10/README.md), [0.75 system qualification](docs/System_Qualification_0.75_2026-10-09/README.md) and [feature checklist](docs/System_Qualification_0.75_2026-10-09/CHECKLIST.md) |
 | Other documentation | [Documentation index](docs/README.md) |
 
-The latest candidate adds receiver-local sampling and candidate caches to the Brush, retained Proxy, root Update and Analyzer fixes. Density preserves unchanged receiver candidates below the cap; Fixed Total redistributes quotas while preserving surviving base candidates. The first rebuild of an older combined-sampler scene changes its placements; old individual Edit/radius bindings require an explicit reset. Use a scene copy and read the qualification and transition limits before upgrading. Cold viewport realization, the earlier intermittent display observation, full-scene Brush memory/latency and broader artist acceptance remain open. Version captions alone do not identify a build.
+The latest candidate adds incremental paint feedback, bounded membership decisions and compact stroke Undo on top of receiver-local sampling/caches, retained Proxy, root Update and Analyzer fixes. Density preserves unchanged receiver candidates below the cap; Fixed Total redistributes quotas while preserving surviving base candidates. The first rebuild of an older combined-sampler scene changes its placements; old individual Edit/radius bindings require an explicit reset. Use a scene copy and read the qualification and transition limits before upgrading. Cold viewport realization, the earlier intermittent display observation, full-scene Brush memory/latency and broader artist acceptance remain open. Version captions alone do not identify a build.
 
 ## Repository
 

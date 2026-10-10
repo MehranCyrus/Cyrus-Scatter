@@ -4,7 +4,7 @@ Use this small set for the current codebase. Update it in place instead of creat
 
 | Question | Document |
 | --- | --- |
-| How do I use 0.76? | [Artist guide](ARTIST_GUIDE.md) |
+| How do I use 0.77? | [Artist guide](ARTIST_GUIDE.md) |
 | How do Layout, Analyzer and falloff controls interact? | [Detailed feature reference](LAYOUT_AND_FALLOFF.md) |
 | Who owns data and where is the implementation? | [Architecture](ARCHITECTURE.md) |
 | What is unfinished or next? | [Current backlog](BACKLOG.md) |
@@ -13,7 +13,8 @@ Use this small set for the current codebase. Update it in place instead of creat
 | What was actually tested? | [0.75 results](System_Qualification_0.75_2026-10-09/README.md), [feature checklist](System_Qualification_0.75_2026-10-09/CHECKLIST.md), [234-control register](System_Qualification_0.75_2026-10-09/CONTROL_REGISTER.md) |
 | How did the features work together in a landscape? | [Courtyard scene, painting/layout checklist and performance study](Courtyard_Study_0.75_2026-10-09/README.md) |
 | What did we fix after that study? | [Retained Proxy, Update and Analyzer fixes, measurements and matched packages](Courtyard_Fixes_0.75_2026-10-10/README.md) |
-| What is in the latest 0.76 candidate? | [Receiver stability, research, qualification and matching packages](Receiver_Stability_0.76_2026-10-10/README.md) |
+| What is in the latest 0.77 candidate? | [Paint feedback, long gestures, qualification and packages](Paint_Feedback_0.77_2026-10-10/README.md) |
+| What changed in 0.76 receiver sampling? | [Receiver stability, research, qualification and matching packages](Receiver_Stability_0.76_2026-10-10/README.md) |
 | What preceded receiver stability? | [Bounded Brush preparation and faster history indexing](Brush_Scaling_0.76_2026-10-10/README.md) |
 | What can automation do? | [MCP guide](../CyrusMCP/README.md), [capability matrix](Current_System_2026-10-05/CAPABILITY_MATRIX.md) |
 | How does the separate Analyzer work? | [Analyzer guide](../CyrusSurfaceAnalyzer/README.md) |

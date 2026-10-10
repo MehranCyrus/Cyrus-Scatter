@@ -3,7 +3,7 @@
   "authority": "Help only. Tool dispatch, closed schema and local approval determine authority.",
   "capability_source_sha256": "10057730fc0b65fe76b5e9f760ea273833d1845405306cb3edaeab323e30cfe5",
   "control_inventory_sha256": "ba881f533385202d0a258c150e2b71308575df92e49b6e8fe5c94064895efaf5",
-  "development_version": "0.76",
+  "development_version": "0.77",
   "mcp_version": "0.73.0",
   "calculation_model": "CyrusUnified1",
   "features": [

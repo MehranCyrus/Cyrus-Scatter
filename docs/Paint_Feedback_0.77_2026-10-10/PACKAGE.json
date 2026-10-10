@@ -1,0 +1,55 @@
+{
+  "packages": [
+    {
+      "path": "dist/Paint_Feedback_0.77_2026-10-10/Max2027/CyrusScatter-0.77.0-Max2027.mzp",
+      "sha256": "e58fef88b1f80f0c8dcadba9953e6565611a08cc1fc1fa7bd66c0cd376acaa85",
+      "manifest": {
+        "product": "Cyrus Scatter",
+        "version": "0.77.0",
+        "max_year": 2027,
+        "toolset": "14.38.33130",
+        "windows_sdk": "10.0.19041.0",
+        "configuration": "Release",
+        "native_id": "c9cc8fa0ab37",
+        "files": {
+          "AminScatter.dlx": "d426583e75ed2bd70b6eeebf75a6f7a3231443140defb57c21c36cfdb314a0e5",
+          "CyrusBrush.dlx": "3c6a282a5bba3131e0e2b3c3c07b47407f66019fda415556c13c2eda812f269c",
+          "CyrusBrushStorage.dlh": "ceb04eef10b906656e392c115257c0446308048b825cdb4864f11455c40204a1",
+          "CyrusScatter.mcr": "701eb0aa9b2826e0a5b0d444b73e5053ffc1eb7c06b462a832f97e6c7c8ecb09",
+          "CyrusScatter.ms": "4c7d0345066c2c9f815d37a8cdf4b1a81f11f54c6b41ef50dfef1fc9fc50f0a7",
+          "CyrusScatterEdit.dlm": "1e428dbfd6adebfe26b0589accfd45139e32b5fae1f0d747cb2aa21780de5001",
+          "CyrusScatterStartup.ms": "fdf38b3bc83187eecb34b833bfff2751e78626e9e3dba41aa20a0ff7ff9e8405",
+          "INSTALL.txt": "bb3fd25f90f15adf0164357c113a866e127908639625180df74ad1c62fc6a640",
+          "Uninstall.ms": "59e2b84901fcefaae1dab59886cd2f4079df4f764c789238947e19c514b4ed49",
+          "install.ms": "e935e57a64f83feee355ba8b7daa197261629cdbdbd58150dcafb7992e61ad4c",
+          "mzp.run": "7daa4673563131f0162ef003e0ddfde7f983fc14ff5e18cc91a46faeac02ab2c"
+        }
+      }
+    },
+    {
+      "path": "dist/Paint_Feedback_0.77_2026-10-10/Max2027/CyrusSurfaceAnalyzer-0.14-Max2027.mzp",
+      "sha256": "3fef53e48ae235d51114df5431e4c35a00214a239b20d5308ce4f4edd064b5d8",
+      "manifest": {
+        "product": "Cyrus Surface Analyzer",
+        "version": "0.14",
+        "max_year": 2027,
+        "toolset": "14.38.33130",
+        "windows_sdk": "10.0.19041.0",
+        "configuration": "Release",
+        "native_id": "3dc35151a817",
+        "files": {
+          "CyrusSurfaceAnalyzer.dlx": "3dc35151a8179a22fb93309e9648a8e7ca7cb76d68a48163a4166c1b77e50582",
+          "CyrusSurfaceAnalyzer.ms": "716a78868a78ea01842bdfa680baa628316530ca774aea7b537c7fef3db0d7ae",
+          "CyrusSurfaceAnalyzerStartup.ms": "fdef46e54790c5c6d893479a17c6c885e4ff39897d00f1eac6b8567f86c18425",
+          "INSTALL.txt": "b5e0f5c26672c20cf396effda0d25e993b68263789f55b3c112b0e934516eec8",
+          "install.ms": "9a59868acc8b20485c5ba21649658a78d657a0f7910800c9327218f6f2167537",
+          "mzp.run": "9a5e8deb72702b1be5214f4f9e99f3e4a12b04fd47d63ceb865f1f5ea28b2660"
+        }
+      }
+    }
+  ],
+  "installed": false,
+  "installer_execution_qualified": false,
+  "host": "build\\mcp-qualification\\paint077-final",
+  "scope": "Max 2027 development candidate; raw runtime-tested payload hashes verified in both archives"
+}
