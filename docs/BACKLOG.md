@@ -28,6 +28,8 @@ This is the single maintained Scatter work list. Update it in place when a findi
 
 ## Recently closed within bounded tests
 
+- [x] 0.78.3 rectangle selection: removed retired paint-set callbacks; added saved collection switches with inactive creation, retained source settings, Manual/Live behavior and linked-layer editing contexts. Painting controls are directly visible. Painter Size now receives diameter so its cursor radius matches the authored vector radius. [Focused host evidence, packages and limits](Container_and_Radius_0.78.3_2026-10-10/README.md).
+
 - [x] 0.78.2 drawing lag: unchanged status no longer rearranges the panel; production Painter callbacks prepare intermediate borders without waiting for the script timer. Max 2027's measured combined drawing update fell from 39.59 to 13.32 ms median. [Measurements, qualification and limits](Brush_Responsiveness_0.78.2_2026-10-10/README.md). Physical fast-input and heavy-scene acceptance remain open.
 
 - [x] 0.78.1 Start Brush first-tick failure: reordered the status function binding; button/session/callback regression covers main and floating editors. Responsive radio groups and color swatches now fit their native bounds. [Both-host evidence and limits](Brush_Start_0.78.1_2026-10-10/README.md).

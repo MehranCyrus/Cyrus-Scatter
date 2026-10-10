@@ -322,7 +322,7 @@ fn CyrusBindLayerEditor root = (
 fn CyrusOpenLayerEditor root owner = (
     if owner==undefined or findItem root.layerObjects owner==0 do return false
     if CyrusLayerEditor!=undefined then (CyrusLayerEditor.retarget root owner;CyrusLayerEditor.visible=true;return true)
-    rollout editor "Cyrus Scatter 0.78.2 - Layer Editor" width:920 height:800 autoLayoutOnResize:true (
+    rollout editor "Cyrus Scatter 0.78.3 - Layer Editor" width:920 height:800 autoLayoutOnResize:true (
         local root=CyrusLayerUIRoot,owner=CyrusLayerUIOwner,ownerNode=undefined,binding=false,controlsReady=false,closing=false
         local clientSize=CyrusLayerEditorSize,layingOut=false
         local editors=#(),pages=#(),pageEditors=#(#(),#(),#(),#(),#(),#()),built=#{},topic=1,members=#(),sets=#(),pageSections=#(),ownerStates=#(),lastSet=undefined
@@ -372,7 +372,7 @@ fn CyrusOpenLayerEditor root owner = (
             local unit=if root.viewportMode==1 and not root.groupCenters then " preview samples" else " shown"
             local text=(if root.updateMode==1 then "Manual" else "Live")+" | "+summary[3]+" | "+(CyrusUICount summary[1])+" placed / "+(CyrusUICount summary[2])+unit
             if resultInfo.text!=text do resultInfo.text=text
-            local caption="Cyrus Scatter 0.78.2 | "+ownerNode.name+" / "+(root.layerCaption owner)
+            local caption="Cyrus Scatter 0.78.3 | "+ownerNode.name+" / "+(root.layerCaption owner)
             if editor.title!=caption do editor.title=caption
             local setupText="Setup: "+ownerNode.name+"  |  Selecting scene models keeps this editor on its layer"
             if setupInfo.text!=setupText do setupInfo.text=setupText
@@ -1676,7 +1676,7 @@ initialRollupState:0x8
     fn uiLayerStats = (
         CyrusLayerStatusData hasResult:(cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
     )
-    fn uiVersion = "0.78.2"
+    fn uiVersion = "0.78.3"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified1")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -2374,7 +2374,7 @@ initialRollupState:0x8
     fn containerFrames = (
         local result=#(),nodes=this.effectiveContainers()
         if nodes.count>32 do throw "A source pool supports at most 32 containers."
-        for n in nodes where isValidNode n do (
+        for n in nodes where isValidNode n and n.collectEnabled do (
             if classof n.baseObject!=CyrusSourceContainer or n.modifiers.count>0 do throw "Use a Cyrus Source Container without modifiers."
             local tm=n.objectTransform,volume=(length tm.row1)*(length tm.row2)*(length tm.row3)
             if volume<=0 or abs(dot tm.row1 (cross tm.row2 tm.row3))<=volume*1e-8 do throw "A source container has a singular transform. Restore its scale."
@@ -2425,7 +2425,7 @@ initialRollupState:0x8
             local state=for n in nodes collect (
                 if isValidNode n then (
                     if classof n.baseObject!=CyrusSourceContainer do throw "Use a Cyrus Source Container."
-                    #(n,n.objectTransform,n.width,n.length,n.modifiers.count,if isProperty n #cornerRadius then n.cornerRadius else 0)
+                    #(n,n.objectTransform,n.width,n.length,n.modifiers.count,if isProperty n #cornerRadius then n.cornerRadius else 0,n.collectEnabled)
                 ) else #(undefined)
             )
             local configurationChanged=containerConfigKey=="" or state.count!=containerFrameState.count
@@ -2435,8 +2435,8 @@ initialRollupState:0x8
             )
             if configurationChanged do (containerScan=true;containerCachedFrames=this.containerFrames())
             local frames=containerCachedFrames
-            local candidates=if containerScan then (geometry as array) else containerPending as array
-            if containerScan do containerScans+=1
+            local candidates=if frames.count==0 then #() else if containerScan then (geometry as array) else containerPending as array
+            if containerScan and frames.count>0 do containerScans+=1
             local excluded=#()
             if candidates.count>0 do for controller in objects where classof controller.baseObject==AminScatterObject do (
                 join excluded (controller.baseObject.validSurfaces())
@@ -2628,14 +2628,14 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This unpublished development scene uses a retired Cyrus settings schema. Create a new 0.78.2 setup."
+        local message="This unpublished development scene uses a retired Cyrus settings schema. Create a new 0.78.3 setup."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
     fn procValidate = (
         this.procAssertSchema()
-        if cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined do throw "Cyrus 0.78.2 requires the matching native plugin binaries. Restart the private test host with the complete matching script/native pair."
+        if cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined do throw "Cyrus 0.78.3 requires the matching native plugin binaries. Restart the private test host with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -2845,7 +2845,7 @@ initialRollupState:0x8
         CyrusBindLayerEditor this
         true
     )
-    rollout mainUI "Cyrus Scatter 0.78.2" width:#cmdPanel height:30 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.78.3" width:#cmdPanel height:30 autoLayoutOnResize:true (
         local root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),owner=undefined,layerPagesVisible=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for this entire Scatter setup."
         timer mountTimer interval:1 active:false
@@ -2916,7 +2916,7 @@ initialRollupState:0x8
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.78.2 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.78.3 native plugin and restart Max."
             root.syncLayerIdentity()
             roots=#(root.flow_updateUI,root.flow_surfaceUI,root.flow_previewUI,root.flow_layersUI)
             root.updateUI=roots[1];root.surfaceUI=roots[2];root.previewUI=roots[3];root.layersUI=roots[4]
@@ -3425,20 +3425,31 @@ initialRollupState:0x8
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,setSpecific=true,modes=#()
         dropdownlist modeList "Source pool" items:#() pos:[4,8] width:(selected_sourceContainersUI.width-8) tooltip:"Use the model list directly, or optionally collect models from source rectangles."
         listbox containersList "Rectangles" items:#() pos:[4,60] width:(selected_sourceContainersUI.width-8) height:4
-        button createContainer "Create container" pos:[4,154] width:(selected_sourceContainersUI.width-8) tooltip:"Create a Rectangle for this owner. Put source-model pivots inside its local XY bounds."
+        checkbox enabledCheck "Enable collection" pos:[4,136] width:(selected_sourceContainersUI.width-8) tooltip:"Enable the selected rectangle to collect models. New rectangles start off so you can position them first. Manual mode needs Update."
+        button createContainer "Create container" pos:[4,154] width:(selected_sourceContainersUI.width-8) tooltip:"Create an inactive source rectangle. Position it around model pivots, then enable collection."
         pickbutton pickContainer "Pick boundary" filter:CyrusSourceContainerFilter pos:[4,184] width:(selected_sourceContainersUI.width-8) tooltip:"Link a Cyrus container, or copy a square-corner Rectangle into a container. The original spline is preserved."
         button removeContainer "Unlink selected rectangle" pos:[4,214] width:(selected_sourceContainersUI.width-8) tooltip:"Unlink this rectangle without deleting it or registered source settings."
         label membershipInfo "Manual source list." pos:[4,244] width:(selected_sourceContainersUI.width-8) height:48
         label helpInfo "Pivot inside = active. Height is ignored. Moving out keeps source settings. Manual needs Update." pos:[4,286] width:(selected_sourceContainersUI.width-8) height:44
         fn currentSet = owner
+        fn selectedContainer = (
+            local nodes=(currentSet()).effectiveContainers(),index=containersList.selection
+            if index>0 and index<=nodes.count and isValidNode nodes[index] then nodes[index] else undefined
+        )
+        fn refreshCollection = (
+            local node=selectedContainer()
+            enabledCheck.enabled=node!=undefined;enabledCheck.checked=node!=undefined and node.collectEnabled
+        )
         fn bind layer = (
             binding=true
             local leaf=currentSet(),active=true,own=leaf.logicalParentID==""
             modes=if own then #(1,3,4) else #(1,2,3,4)
             modeList.items=if own then #("Manual sources","Global containers","Layer containers") else #("Manual sources","Layer default","Global containers","This set's containers")
             modeList.selection=amax 1 (findItem modes leaf.containerMode)
-            local nodes=leaf.effectiveContainers()
-            containersList.items=for node in nodes collect (if isValidNode node then node.name else "<deleted rectangle>")
+            local nodes=leaf.effectiveContainers(),selected=containersList.selection
+            containersList.items=for node in nodes collect (if isValidNode node then node.name+(if node.collectEnabled then "" else " [off]") else "<deleted rectangle>")
+            containersList.selection=if nodes.count==0 then 0 else amax 1 (amin selected nodes.count)
+            refreshCollection()
             modeList.enabled=active;containersList.enabled=active
             createContainer.enabled=true;pickContainer.enabled=true;removeContainer.enabled=leaf.containerMode==4
             local registered=leaf.sources.count,count=0
@@ -3448,6 +3459,12 @@ initialRollupState:0x8
         )
         on selected_sourceContainersUI open do (root=this;controlsReady=false)
         on selected_sourceContainersUI close do controlsReady=false
+        on containersList selected index do refreshCollection()
+        on enabledCheck changed value do if not binding do (
+            local node=selectedContainer(),layer=owner
+            if node!=undefined do undo "Cyrus container collection" on node.collectEnabled=value
+            bind layer
+        )
         on modeList selected index do if not binding do try((currentSet()).containerSetMode modes[index];bind owner)catch(messageBox (getCurrentException()) title:"Cyrus source containers")
         on createContainer pressed do try((currentSet()).containerCreate();bind owner)catch(messageBox (getCurrentException()) title:"Cyrus source containers")
         on pickContainer picked node do try((currentSet()).containerAdd node;bind owner)catch(messageBox (getCurrentException()) title:"Cyrus source containers")
@@ -3692,7 +3709,7 @@ initialRollupState:0x8
         local root=undefined,owner=undefined,panel=undefined,obj=undefined,controlsReady=false,binding=false,setSpecific=true
         label targetInfo "Add a Paint Area to begin." pos:[4,8] width:(selected_brushUI.width-8) height:36
         radiobuttons modeRadio "Brush" labels:#("Paint","Erase") columns:2 pos:[4,48] width:(selected_brushUI.width-8)
-        spinner radiusSpin "Radius:" type:#worldunits range:[0.001,1e7,20] pos:[4,94] width:(selected_brushUI.width-8) fieldWidth:82
+        spinner radiusSpin "Radius:" type:#worldunits range:[0.001,1e7,20] pos:[4,94] width:(selected_brushUI.width-8) fieldWidth:82 tooltip:"Distance from the brush center to its edge. A 100 mm radius paints a 200 mm wide stroke."
         button beginButton "Start Brush" pos:[4,178] width:80
         button stopButton "Stop" pos:[88,178] width:80
         button fillButton "Fill" pos:[4,208] width:80

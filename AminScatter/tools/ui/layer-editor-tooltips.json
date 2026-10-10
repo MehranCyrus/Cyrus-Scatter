@@ -76,7 +76,8 @@
   },
   "sourceContainersUI": {
     "modeList": "Use the model list directly, or optionally collect models from source rectangles.",
-    "createContainer": "Create a Rectangle for this owner. Put source-model pivots inside its local XY bounds.",
+    "enabledCheck": "Enable the selected rectangle to collect models. New rectangles start off so you can position them first. Manual mode needs Update.",
+    "createContainer": "Create an inactive source rectangle. Position it around model pivots, then enable collection.",
     "pickContainer": "Link a Cyrus container, or copy a square-corner Rectangle into a container. The original spline is preserved.",
     "removeContainer": "Unlink this rectangle without deleting it or registered source settings."
   },
@@ -119,7 +120,9 @@
     "fallDensityEdit": "Edit this boundary's density curve.",
     "detailsToggle": "Show or hide these advanced controls; their saved settings are preserved."
   },
-  "brushUI": {},
+  "brushUI": {
+    "radiusSpin": "Distance from the brush center to its edge. A 100 mm radius paints a 200 mm wide stroke."
+  },
   "randomUI": {
     "projectCheck": "Project random movement back onto the receiving surface.",
     "alignCheck": "Align instances to the receiving surface normal.",
@@ -164,7 +167,8 @@
   },
   "workflowUI": {},
   "properties": {
-    "consumerList": "Choose a linked setup or paint set. Inactive pools remain editable; this changes the view only.",
+    "enabledCheck": "Collect models whose pivots are inside this rectangle. Off lets you position it without collecting or moving models. Manual mode needs Update.",
+    "consumerList": "Choose a linked setup or layer. Inactive pools remain editable; this changes the view only.",
     "widthSpin": "Resize the boundary. Source models keep their transforms.",
     "assignOwner": "Resolve overlapping movement ownership for the selected source. Its usage and settings in other sets are unchanged.",
     "editLayer": "Open the optional layer editor for the current consumer."

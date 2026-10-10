@@ -53,7 +53,7 @@ def build():
     return dict(schema='cyrus.feature-catalog/1.0',authority='Help only. Tool dispatch, closed schema and local approval determine authority.',
                 capability_source_sha256=hashlib.sha256(source.read_bytes()).hexdigest(),
                 control_inventory_sha256=hashlib.sha256(inventory_path.read_bytes()).hexdigest(),
-                development_version='0.78.2',mcp_version='0.73.0',calculation_model='CyrusUnified1',features=rows,controls=controls)
+                development_version='0.78.3',mcp_version='0.73.0',calculation_model='CyrusUnified1',features=rows,controls=controls)
 
 if __name__=='__main__':
     target=ROOT/'CyrusMCP/cyrus_mcp/feature-catalog.json'

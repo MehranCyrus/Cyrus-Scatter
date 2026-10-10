@@ -231,8 +231,11 @@ public:
         active=this;painting=true;
         try{
             painter->SetEnablePointGather(FALSE);painter->SetBuildNormalData(FALSE);painter->SetMirrorEnable(FALSE);painter->SetUpdateOnMouseUp(FALSE);painter->SetPressureEnable(FALSE);painter->SetPredefinedSizeEnable(FALSE);painter->SetPredefinedStrEnable(FALSE);painter->SetDrawRing(TRUE);painter->SetDrawNormal(TRUE);painter->SetDrawTrace(FALSE);painter->SetUseSplineConstraint(FALSE);painter->SetLagRate(0);
-            // Painter V14 size is a radius, matching the authored footprint.
-            painter->SetMinSize(float(radius));painter->SetMaxSize(float(radius));painter->SetMinStr(1);painter->SetMaxStr(1);
+            // Despite the SDK header's radius wording, Painter halves Size in
+            // both its ring display and stored stroke radii (SDK sample:
+            // PainterInterface::Display / AppendTempList). Supply diameter;
+            // the authored vector footprint remains the requested radius.
+            painter->SetMinSize(float(2*radius));painter->SetMaxSize(float(2*radius));painter->SetMinStr(1);painter->SetMaxStr(1);
             if(!painter->InitializeCallback(this))throw std::runtime_error("Painter callback rejected");
             Tab<INode*> nodes;nodes.Append(1,&target);ObjectState state(snapshot.get());Tab<ObjectState> states;states.Append(1,&state);
             if(!painter->InitializeNodesByObjState(0,nodes,states)||!painter->StartPaintSession(&rightClick))throw std::runtime_error("Painter session failed");
@@ -362,7 +365,7 @@ Value* cyrusBrushSettings_cf(Value** a,int n){check_arg_count(cyrusBrushSettings
     auto* p=doc(a[0]);p->requireAuthor();if(p->gesture)throw std::runtime_error("Finish painting before changing radius/mode");
     double radius=a[1]->to_float();if(!std::isfinite(radius)||radius<=.0001||radius>1.e7)throw std::runtime_error("Invalid vector brush radius");
     p->radius=radius;p->erase=a[2]->to_bool()!=FALSE;
-    if(p->painting){p->painter->SetMinSize(float(radius));p->painter->SetMaxSize(float(radius));}return &ok;});}
+    if(p->painting){p->painter->SetMinSize(float(2*radius));p->painter->SetMaxSize(float(2*radius));}return &ok;});}
 def_visible_primitive(cyrusBrushDisplay,"cyrusBrushDisplay");
 Value* cyrusBrushDisplay_cf(Value** a,int n){check_arg_count(cyrusBrushDisplay,3,n);return api([&]()->Value*{
     auto* p=doc(a[0]);const int mode=a[1]->to_int();const auto color=a[2]->to_point3();

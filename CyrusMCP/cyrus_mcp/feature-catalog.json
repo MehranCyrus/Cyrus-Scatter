@@ -2,8 +2,8 @@
   "schema": "cyrus.feature-catalog/1.0",
   "authority": "Help only. Tool dispatch, closed schema and local approval determine authority.",
   "capability_source_sha256": "de1dee9e0e9746da2392f875bab3126358b79fa569566d282c3398e4a27fa3e9",
-  "control_inventory_sha256": "80c540e59fa6b83e6df128551fef0de4a1a443b957302e6e58343a4f60bed9b4",
-  "development_version": "0.78.2",
+  "control_inventory_sha256": "f6a0469798f605981f721aeb4a9dba124c8d72e41eb1b4f1744e475760617c8d",
+  "development_version": "0.78.3",
   "mcp_version": "0.73.0",
   "calculation_model": "CyrusUnified1",
   "features": [
@@ -1433,13 +1433,26 @@
     {
       "group": "layer",
       "section": "sourceContainersUI",
+      "kind": "checkbox",
+      "name": "enabledCheck",
+      "capabilities": [
+        "C07"
+      ],
+      "owner_context": "Selected layer model collection",
+      "help": "Enable the selected rectangle to collect models. New rectangles start off so you can position them first. Manual mode needs Update.",
+      "view": "Modify selected layer, selected container and optional popup",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "sourceContainersUI",
       "kind": "button",
       "name": "createContainer",
       "capabilities": [
         "C07"
       ],
       "owner_context": "Selected layer model collection",
-      "help": "Create a Rectangle for this owner. Put source-model pivots inside its local XY bounds.",
+      "help": "Create an inactive source rectangle. Position it around model pivots, then enable collection.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -2007,7 +2020,7 @@
         "C15"
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
-      "help": null,
+      "help": "Distance from the brush center to its edge. A 100 mm radius paints a 200 mm wide stroke.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -3445,6 +3458,20 @@
     {
       "group": "container",
       "section": "properties",
+      "kind": "checkbox",
+      "name": "enabledCheck",
+      "capabilities": [
+        "C07",
+        "C26"
+      ],
+      "owner_context": "Local container view",
+      "help": "Collect models whose pivots are inside this rectangle. Off lets you position it without collecting or moving models. Manual mode needs Update.",
+      "view": "Local setup/editor controls",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "container",
+      "section": "properties",
       "kind": "dropdownlist",
       "name": "consumerList",
       "capabilities": [
@@ -3452,7 +3479,7 @@
         "C26"
       ],
       "owner_context": "Local container view",
-      "help": "Choose a linked setup or paint set. Inactive pools remain editable; this changes the view only.",
+      "help": "Choose a linked setup or layer. Inactive pools remain editable; this changes the view only.",
       "view": "Local setup/editor controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },

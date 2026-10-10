@@ -16,6 +16,7 @@ extern "C" __declspec(dllexport) ClassDesc* LibClassDesc(int){return nullptr;}
 BOOL WINAPI DllMain(HINSTANCE,DWORD,LPVOID){return TRUE;}
 def_visible_primitive(cyrusPrivatePaintPath,"cyrusPrivatePaintPath");
 def_visible_primitive(cyrusPrivatePaintContinue,"cyrusPrivatePaintContinue");
+def_visible_primitive(cyrusPrivatePainterSample,"cyrusPrivatePainterSample");
 namespace {
 Value* drive(Value** args,bool finish){
     std::wstring command=GetCommandLineW();std::replace(command.begin(),command.end(),L'\\',L'/');
@@ -51,3 +52,23 @@ Value* drive(Value** args,bool finish){
 }
 Value* cyrusPrivatePaintPath_cf(Value** args,int count){check_arg_count(cyrusPrivatePaintPath,3,count);return drive(args,true);}
 Value* cyrusPrivatePaintContinue_cf(Value** args,int count){check_arg_count(cyrusPrivatePaintContinue,2,count);return drive(args,false);}
+// Measure the installed Painter's own stored radius; no OS mouse messages.
+Value* cyrusPrivatePainterSample_cf(Value** args,int count){
+    check_arg_count(cyrusPrivatePainterSample,2,count);
+    std::wstring command=GetCommandLineW();std::replace(command.begin(),command.end(),L'\\',L'/');
+    if(command.find(L"/build/vector-brush-078/")==std::wstring::npos)throw RuntimeError(_T("Owned vector host required"));
+    auto* document=args[0]->to_reftarg();
+    if(!document||document->ClassID()!=Class_ID(0x5c743810,0x229f3ab6))throw RuntimeError(_T("Expected vector document"));
+    auto* ref=static_cast<ReferenceTarget*>(GetCOREInterface()->CreateInstance(REF_TARGET_CLASS_ID,PAINTERINTERFACE_CLASS_ID));
+    auto* painter=static_cast<IPainterInterface_V14*>(ref->GetInterface(PAINTERINTERFACE_V14));
+    if(!painter||!painter->InPaintMode())throw RuntimeError(_T("Active Painter required"));
+    auto& view=GetCOREInterface()->GetActiveViewExp();auto* gw=view.getGW();
+    if(!view.IsAlive()||!gw)throw RuntimeError(_T("Live viewport required"));
+    Point3 p=args[1]->to_point3();IPoint3 screen;gw->setTransform(Matrix3(1));gw->wTransPoint(&p,&screen);
+    painter->ClearStroke();
+    if(!painter->AddToStroke(IPoint2(screen.x,screen.y),FALSE,FALSE)||painter->GetStrokeCount()!=1)throw RuntimeError(_T("Painter sample missed receiver"));
+    one_typed_value_local(Array* result);vl.result=new Array(4);
+    vl.result->append(Float::intern(painter->GetMinSize()));vl.result->append(Float::intern(painter->GetMaxSize()));
+    vl.result->append(Float::intern(painter->GetStrokeRadius()[0]));vl.result->append(new Point3Value(painter->GetStrokePointWorld()[0]));
+    painter->ClearStroke();return_value(vl.result);
+}

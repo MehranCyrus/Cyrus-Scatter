@@ -14,7 +14,7 @@ if not root.mainUI.controlsReady do root.mainUI.mountTimer.tick()
 local view=root.coverageUI;view.open=true;root.mainUI.bindSection view
 view.brushUI_radiusSpin.value=3;view.brushUI_radiusSpin.changed 3;view.brushUI_beginButton.pressed()
 CyrusBrushTimer.Stop()
-local patched=(root.uiVersion()=="0.78.2")
+local patched=(root.uiVersion()=="0.78.3")
 view.refreshBrushStatus()
 if patched and view.brushUI_refreshBrushStatus()!=false do throw "Unchanged status must not trigger panel layout"
 local watch=dotNetObject "System.Diagnostics.Stopwatch",out=createFile (MCPFixtureDir+"drawing-timings.csv")

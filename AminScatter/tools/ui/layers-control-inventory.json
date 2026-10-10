@@ -354,6 +354,10 @@
         "name": "containersList"
       },
       {
+        "kind": "checkbox",
+        "name": "enabledCheck"
+      },
+      {
         "kind": "button",
         "name": "createContainer"
       },
@@ -972,6 +976,10 @@
   },
   "container": {
     "properties": [
+      {
+        "kind": "checkbox",
+        "name": "enabledCheck"
+      },
       {
         "kind": "dropdownlist",
         "name": "consumerList"

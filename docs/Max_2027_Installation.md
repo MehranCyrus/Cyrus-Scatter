@@ -1,15 +1,15 @@
 # Install and build Cyrus Scatter for Max 2026 and 2027
 
-Use the matching **Scatter 0.78.2 + Analyzer 0.14 development pair** recorded in [the current qualification](Brush_Responsiveness_0.78.2_2026-10-10/README.md). The earlier 0.78.0 package has a Start Brush session defect. Exact payload hashes identify the corrected candidate.
+Use the matching **Scatter 0.78.3 + Analyzer 0.14 development pair** recorded in [the current qualification](Container_and_Radius_0.78.3_2026-10-10/README.md). The earlier 0.78.0 package has a Start Brush session defect. Exact payload hashes identify the corrected candidate.
 
 ## Install
 
 1. Save the scene and use a copy for development-build acceptance.
-2. Choose **Scripting > Run Script** and run the Scatter and Analyzer installers for your Max year from [the delivery links](Brush_Responsiveness_0.78.2_2026-10-10/README.md). A Max 2027 binary cannot be used in Max 2026.
+2. Choose **Scripting > Run Script** and run the Scatter and Analyzer installers for your Max year from [the delivery links](Container_and_Radius_0.78.3_2026-10-10/README.md). A Max 2027 binary cannot be used in Max 2026.
 3. Restart Max so both scripts and their native modules load together. Do not load a loose new script over older DLLs.
 4. Create **Geometry > Cyrus > Cyrus Scatter** and follow the [artist guide](ARTIST_GUIDE.md): Layer → Surfaces → Models → Amount → Update scatter.
 
-[The delivery receipts](Brush_Responsiveness_0.78.2_2026-10-10/README.md) pin each year's local installers. Scatter matches the runtime-tested modules/script. Analyzer uses unchanged 0.14 source with a matching SDK build and core test; full Analyzer renderer qualification was not repeated in this brush campaign. Archive contents and hashes are verified. Installer execution itself was not repeated, and neither package was installed into the artist profile. `dist/` is ignored and is not supplied by a source-only Git clone. If absent, build matching source with the documented toolchain; do not substitute an older package.
+[The delivery receipts](Container_and_Radius_0.78.3_2026-10-10/README.md) pin each year's local installers. Scatter matches the runtime-tested modules/script. Analyzer uses unchanged 0.14 source with a matching SDK build and core test; full Analyzer renderer qualification was not repeated in this brush campaign. Archive contents and hashes are verified. Installer execution itself was not repeated, and neither package was installed into the artist profile. `dist/` is ignored and is not supplied by a source-only Git clone. If absent, build matching source with the documented toolchain; do not substitute an older package.
 
 0.78 keeps receiver-local sampling and replaces painting with a new canonical vector format.
 
@@ -44,4 +44,4 @@ python tools/build_max.py --max-year 2027 --sdk-root "<path-to-the-2027-maxsdk>"
 
 The package builder regenerates owned UI, checks version consistency, builds with the target SDK, runs native tests and produces versioned archives. It does not make an old host qualification apply to newly changed source. SDKs are local build dependencies, not redistributed product files.
 
-The older boss handoff and legacy smoke launchers target frozen builds, not this current acceptance campaign. Use [current test receipts and reproduction](Brush_Responsiveness_0.78.2_2026-10-10/README.md) for the tested Max 2026/2027 scope and remaining physical-input, DPI and renderer gates.
+The older boss handoff and legacy smoke launchers target frozen builds, not this current acceptance campaign. Use [current test receipts and reproduction](Container_and_Radius_0.78.3_2026-10-10/README.md) for the tested Max 2026/2027 scope and remaining physical-input, DPI and renderer gates.

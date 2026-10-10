@@ -34,12 +34,21 @@ def main():
     if 'Unchanged feather settings do not invalidate caches or create edits' not in checks:
         raise SystemExit('Extended vector qualification incomplete')
     playback=(host/'playback/result.txt').read_text()
-    if 'SUCCESS 835 assertions' not in playback:raise SystemExit('Playback qualification incomplete')
+    if 'SUCCESS 838 assertions' not in playback:raise SystemExit('Playback qualification incomplete')
     inspection=json.loads((host/'inspection.json').read_text())
     if len(inspection['checks'])!=6:raise SystemExit('Passive inspection qualification incomplete')
     responsiveness=host/'responsiveness-checks.txt'
-    if scatter_version()=='0.78.2' and (not responsiveness.is_file() or len(responsiveness.read_text().splitlines())!=7 or not all(line.startswith('PASS ') for line in responsiveness.read_text().splitlines())):
+    if scatter_version()=='0.78.3' and (not responsiveness.is_file() or len(responsiveness.read_text().splitlines())!=7 or not all(line.startswith('PASS ') for line in responsiveness.read_text().splitlines())):
         raise SystemExit('Drawing responsiveness qualification incomplete')
+    focused={}
+    if scatter_version()=='0.78.3':
+        for name,minimum,last in (
+            ('container',28,'Saved rectangle selection mounts correctly after reload'),
+            ('radius',10,'100 mm respects system-unit conversion in Painter')):
+            lines=(host/(name+'-checks.txt')).read_text().splitlines()
+            if len(lines)<minimum or not all(line.startswith('PASS ') for line in lines) or lines[-1]!='PASS '+last:
+                raise SystemExit(name+' qualification incomplete')
+            focused[name]=len(lines)
     script=ROOT/'AminScatter/scripts/AminScatterObject.ms'
     if sha(script)!=launch['script_sha256']:raise SystemExit('Generated script differs from the tested script')
     # UI may be revised after compilation; all compiled source must still match.
@@ -78,10 +87,11 @@ def main():
     result={'qualification':'Development candidate; no artist-profile installation or computer use',
             'scatter_private_host':host.relative_to(ROOT).as_posix(),'script_sha256':launch['script_sha256'],
             'native_build':(base/a.native).relative_to(ROOT).as_posix(),'native_suites':15,
-            'host_assertions':len(checks),'playback_assertions':835,
+            'host_assertions':len(checks),'playback_assertions':838,
             'button_workflow_assertions':len(button_checks),'native_layout':layout,'max_year':year,
             'passive_inspection_assertions':len(inspection['checks']),
             'responsiveness_assertions':len(responsiveness.read_text().splitlines()) if responsiveness.is_file() else 0,
+            'focused_assertions':focused,
             'analyzer_qualification':'Unchanged 0.14 source; source-matched SDK build and one core suite only; no new host qualification',
             'clipper2':provenance,'archives':archives}
     a.receipt.parent.mkdir(parents=True,exist_ok=True)

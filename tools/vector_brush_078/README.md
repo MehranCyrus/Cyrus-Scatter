@@ -1,4 +1,4 @@
-# Vector 0.78.2 qualification
+# Vector 0.78.3 qualification
 
 These scripts use owned, hidden Max 2026 or 2027 processes with redirected profile paths. Never run the reset-scene fixtures in an artist process. The launcher refuses an existing host directory, verifies native module paths, copies the generated script, and waits for readiness. Native modules must come from the same fresh build and match the selected host year.
 
@@ -11,6 +11,8 @@ python tools/procedural_lab/offline_build.py --project scatter --year 2027 --out
 python tools/vector_brush_078/callback_probe/build.py --year 2027
 python tools/vector_brush_078/launch.py --host host-new --native native-new --year 2027 --probe
 python tools/vector_brush_078/request.py tools/vector_brush_078/responsiveness.ms --host host-new --timeout 240
+python tools/vector_brush_078/request.py tools/vector_brush_078/containers.ms --host host-new --timeout 240
+python tools/vector_brush_078/request.py tools/vector_brush_078/radius.ms --host host-new --timeout 120
 python tools/vector_brush_078/run_suite.py --host host-new
 ```
 
@@ -36,4 +38,6 @@ Results are `vector-checks.txt`, `vector-timings.csv`, `population-timings.csv`,
 
 `package_tested.py` accepts `--host`, `--native`, `--analyzer`, `--output`, and `--receipt`. It requires completed button, native layout and broader host checks, verifies matching build/host years, current compiled sources, pinned Clipper2 files and tested script/native hashes, then uses the ordinary package builder. It explicitly packages only the four product modules, excluding the private callback probe. It does not install anything. Check the owned process command line against `launch.json` before stopping only its PID; never stop all Max processes.
 
-Coverage and remaining physical-input, heavy-scene and platform gates are recorded in [the current patch report](../../docs/Brush_Responsiveness_0.78.2_2026-10-10/README.md). The [0.78.1 report](../../docs/Brush_Start_0.78.1_2026-10-10/README.md) and [original integration report](../../docs/Vector_Brush_0.78_2026-10-10/README.md) retain their historical results.
+Coverage and remaining physical-input, heavy-scene and platform gates are recorded in [the current patch report](../../docs/Container_and_Radius_0.78.3_2026-10-10/README.md). The [0.78.1 report](../../docs/Brush_Start_0.78.1_2026-10-10/README.md) and [original integration report](../../docs/Vector_Brush_0.78_2026-10-10/README.md) retain their historical results.
+
+`containers.ms` exercises the actual create, selection and collection handlers, Manual/Live, parking, Undo/Redo, global links, unfolded Painting and save/open. `radius.ms` measures the installed Painter’s own stroke radius through its SDK, checks vector inside/outside points under receiver scales, unit conversion and Painter-state restoration. This is numerical host qualification, not physical cursor capture. `container_baseline.ms` and `radius_baseline.ms` record the former failures only when run against their matching prior build.

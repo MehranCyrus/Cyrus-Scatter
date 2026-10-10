@@ -1,6 +1,6 @@
 -- Scene helper and cached presentation. Controller -> container is the only
 -- persistent controller link; reverse editing contexts use durable IDs.
-global CyrusSourceContainer,CyrusContainerConsumers,CyrusContainerLinks,CyrusContainerResolve,CyrusContainerPanel,CyrusContainerRefreshAll,CyrusContainerRefreshPresentation,CyrusContainerInside,CyrusContainerRefreshLabels,CyrusContainerNodes=#()
+global CyrusSourceContainer,CyrusContainerConsumers,CyrusContainerLinks,CyrusContainerResolve,CyrusContainerPanel,CyrusContainerRefreshAll,CyrusContainerRefreshPresentation,CyrusContainerInside,CyrusContainerRefreshLabels,CyrusContainerCollectionChanged,CyrusContainerNodes=#()
 plugin helper CyrusSourceContainer
 name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) extends:CyrusSourceFrame version:1
 (
@@ -13,9 +13,11 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         contextSetID type:#string default:""
         savedSources type:#nodeTab tabSize:0 tabSizeVariable:true
         movementSources type:#nodeTab tabSize:0 tabSizeVariable:true
+        collectEnabled type:#boolean default:false
         on width set value do CyrusContainerRefreshPresentation this
         on length set value do CyrusContainerRefreshPresentation this
         on showLabel set value do CyrusContainerRefreshPresentation this
+        on collectEnabled set value do if CyrusContainerCollectionChanged!=undefined do CyrusContainerCollectionChanged this
     )
     local consumerRows=#(),consumerLabels=#(),cachedLabel="Unlinked source container",cachedActiveCount=0,cachedSavedCount=0,cachedConsumerCount=0,movementUnits=#(),movementStatus="Ready"
     local updateUI,surfaceUI,previewUI,layersUI,uiRootState=#(),uiPresentationState=#()
@@ -24,7 +26,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             movementStatus="Instanced containers cannot carry sources. Make a unique copy."
             cyrusContainerDisable delegate;return false
         )
-        cyrusContainerConfigure delegate node movementUnits width length cachedLabel showLabel (for source in movementSources where isValidNode source collect source)
+        cyrusContainerConfigure delegate node (if collectEnabled then movementUnits else #()) width length cachedLabel showLabel (if collectEnabled then (for source in movementSources where isValidNode source collect source) else #())
     )
     fn movePalette delta = (
         if (refs.dependentNodes this).count!=1 do throw "Make this container unique before moving its sources."
@@ -60,6 +62,7 @@ fn CyrusContainerResolve view = (
 )
 fn CyrusContainerConsumers node = (
     local rows=#()
+    if not node.collectEnabled do return rows
     for controller in CyrusTimeOwners where isValidNode controller do (
         local root=controller.baseObject
         for leaf in root.layerObjects where findItem (leaf.effectiveContainers()) node>0 do append rows #(controller,root,leaf)
@@ -70,16 +73,29 @@ fn CyrusContainerLinks node = (
     local rows=CyrusContainerConsumers node
     for controller in CyrusTimeOwners where isValidNode controller do (
         local root=controller.baseObject
-        for leaf in root.layerObjects where findItem leaf.containerNodes node>0 do (
+        for leaf in root.layerObjects where findItem (leaf.effectiveContainers()) node>0 or findItem leaf.containerNodes node>0 do (
             if (for row in rows where row[1]==controller and row[3]==leaf collect row).count==0 do append rows #(controller,root,leaf)
         )
         if findItem root.containerGlobalNodes node>0 and (for row in rows where row[1]==controller collect row).count==0 do (
             local leaf=root.selectedLayer()
-            if leaf!=undefined do leaf=root.selectedPaintSet (root.logicalParent leaf)
             append rows #(controller,root,leaf)
         )
     )
     rows
+)
+fn CyrusContainerCollectionChanged view = (
+    local nodes=refs.dependentNodes view
+    for controller in CyrusTimeOwners where isValidNode controller do (
+        local root=controller.baseObject,changed=false
+        for leaf in root.layerObjects do (
+            local linked=leaf.effectiveContainers()
+            if (for node in nodes where findItem linked node>0 collect node).count>0 do (
+                leaf.containerConfigKey="";leaf.containerScan=true;leaf.containerUIChanged=true;leaf.markInputDirty();changed=true
+            )
+        )
+        if changed do (CyrusScheduleUI();CyrusScheduleRelease())
+    )
+    CyrusContainerRefreshAll();CyrusViewportRedraw();true
 )
 fn CyrusContainerInside model node = (
     local p=model.transform.row4*(inverse node.objectTransform),epsilon=amax 1e-4 ((amax node.width node.length)*.5e-6)
@@ -92,7 +108,7 @@ fn CyrusContainerRefreshLabels root = (
             local view=node.baseObject,context=CyrusContainerResolve view
             if root==undefined or (context!=undefined and context[1]==root) do (
                 local caption=if context==undefined then (if view.consumerRows.count==0 then "Unlinked" else "Choose context") else if context[2]==undefined then "Global sources" else context[1].setCaption context[2]
-                view.cachedLabel=node.name+" | "+caption+" | "+(view.cachedActiveCount as string)+" active / "+(view.cachedSavedCount as string)+" saved"+(if view.cachedConsumerCount>1 then " | "+(view.cachedConsumerCount as string)+" consumers" else "")
+                view.cachedLabel=node.name+" | "+caption+(if view.collectEnabled then "" else " | Collection off")+" | "+(view.cachedActiveCount as string)+" active / "+(view.cachedSavedCount as string)+" saved"+(if view.cachedConsumerCount>1 then " | "+(view.cachedConsumerCount as string)+" consumers" else "")
                 view.configure node
             )
         )
@@ -144,6 +160,7 @@ fn CyrusContainerRefreshAll = (
     )
     for node in containers do (
         local view=node.baseObject,consumers=CyrusContainerConsumers node,links=CyrusContainerLinks node,labels=#(),rows=#(),saved=#(),active=#(),conflicts=#()
+        if not view.collectEnabled do saved=for model in view.savedSources where isValidNode model collect model
         for row in links do (
             append rows #((getHandleByAnim row[1]),row[2].layerID,if row[3]==undefined then "" else row[3].layerID)
             append labels (row[1].name+" | "+(if row[3]==undefined then "Global pool" else row[2].setCaption row[3]))
@@ -162,7 +179,7 @@ fn CyrusContainerRefreshAll = (
         if same do for i=1 to saved.count where saved[i]!=view.savedSources[i] do same=false
         if not same do undo off view.savedSources=saved
         local units=#(),failure=""
-        for model in view.movementSources where isValidNode model do (
+        for model in view.movementSources where view.collectEnabled and isValidNode model do (
             if CyrusContainerInside model node do (
             local unit=model,parent=model.parent
             if isGroupMember model do while isValidNode parent and isGroupHead parent do (unit=parent;parent=parent.parent)
@@ -190,7 +207,7 @@ fn CyrusContainerRefreshAll = (
         )
         view.movementUnits=if consumers.count==0 then #() else units
         local previous=view.movementStatus
-        view.movementStatus=if conflicts.count>0 then (conflicts.count as string)+" overlapping sources need an owner." else if failure!="" then failure else "Translation follows active static models. Resize changes membership."
+        view.movementStatus=if not view.collectEnabled then "Collection off. Position the rectangle, then enable collection." else if conflicts.count>0 then (conflicts.count as string)+" overlapping sources need an owner." else if failure!="" then failure else "Translation follows active static models. Resize changes membership."
         if previous!=view.movementStatus do CyrusDiagnosticEmit "container.ownership" "source_container" view.containerID 0 view.movementStatus
         view.cachedActiveCount=active.count;view.cachedSavedCount=saved.count;view.cachedConsumerCount=consumers.count
     )

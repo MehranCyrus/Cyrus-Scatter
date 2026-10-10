@@ -29,7 +29,7 @@ select BPlane;max zoomext sel all
 select BNode;max modify mode;modPanel.setCurrentObject BRoot
 if not BRoot.mainUI.controlsReady do BRoot.mainUI.mountTimer.tick()
 BView=BRoot.coverageUI;BView.open=true;BRoot.mainUI.bindSection BView
-BAssert (BRoot.uiVersion()=="0.78.2") "Patched script version loaded"
+BAssert (BRoot.uiVersion()=="0.78.3") "Patched script version loaded"
 BAssert (BView.controlsReady and BView.brushUI_controlsReady and BView.brushUI_obj==BArea and BView.brushUI_beginButton.enabled) "Main Start Brush bound to selected area"
 BView.refreshBrushStatus();BAssert true "Status delegate resolves its rollout function"
 BView.brushUI_radiusSpin.value=12;BView.brushUI_radiusSpin.changed 12

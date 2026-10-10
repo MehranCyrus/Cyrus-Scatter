@@ -1,14 +1,15 @@
     rollout containerUI "Source Container" width:#cmdPanel category:0 autoLayoutOnResize:true (
         local view=undefined,controlsReady=false,binding=false
-        label consumerCaption "Edit linked Scatter context" pos:[6,6] width:(containerUI.width-12) height:18
-        dropdownlist consumerList "" items:#() pos:[6,26] width:(containerUI.width-12) tooltip:"Choose a linked setup or paint set. Inactive pools remain editable; this changes the view only."
-        label widthCaption "Width:" pos:[6,50] width:(containerUI.width-90) height:18
-        spinner widthSpin "" type:#worldUnits range:[.01,1e9,500] pos:[6,50] width:(containerUI.width-12) fieldWidth:66 tooltip:"Resize the boundary. Source models keep their transforms."
-        label lengthCaption "Length:" pos:[6,74] width:(containerUI.width-90) height:18
-        spinner lengthSpin "" type:#worldUnits range:[.01,1e9,300] pos:[6,74] width:(containerUI.width-12) fieldWidth:66
-        checkbox labelCheck "Show viewport label" pos:[6,98] width:(containerUI.width-12)
-        label sourceCaption "Active / parked source models" pos:[6,122] width:(containerUI.width-12) height:18
-        listbox sourceList "" items:#() pos:[6,142] width:(containerUI.width-12) height:5
+        checkbox enabledCheck "Enable collection" pos:[6,6] width:(containerUI.width-12) tooltip:"Collect models whose pivots are inside this rectangle. Off lets you position it without collecting or moving models. Manual mode needs Update."
+        label consumerCaption "Edit linked Scatter layer" pos:[6,30] width:(containerUI.width-12) height:18
+        dropdownlist consumerList "" items:#() pos:[6,50] width:(containerUI.width-12) tooltip:"Choose a linked setup or layer. Inactive pools remain editable; this changes the view only."
+        label widthCaption "Width:" pos:[6,74] width:(containerUI.width-90) height:18
+        spinner widthSpin "" type:#worldUnits range:[.01,1e9,500] pos:[6,74] width:(containerUI.width-12) fieldWidth:66 tooltip:"Resize the boundary. Source models keep their transforms."
+        label lengthCaption "Length:" pos:[6,98] width:(containerUI.width-90) height:18
+        spinner lengthSpin "" type:#worldUnits range:[.01,1e9,300] pos:[6,98] width:(containerUI.width-12) fieldWidth:66
+        checkbox labelCheck "Show viewport label" pos:[6,122] width:(containerUI.width-12)
+        label sourceCaption "Active / parked source models" pos:[6,146] width:(containerUI.width-12) height:18
+        listbox sourceList "" items:#() pos:[6,166] width:(containerUI.width-12) height:5
         button assignOwner "Follow this container" pos:[6,226] width:(containerUI.width-12) height:22 tooltip:"Resolve overlapping movement ownership for the selected source. Its usage and settings in other sets are unchanged."
         label statusInfo "Unlinked source container" pos:[6,252] width:(containerUI.width-12) height:80
         button editLayer "Edit layer..." pos:[6,336] width:(containerUI.width-12) height:22 tooltip:"Open the optional layer editor for the current consumer."
@@ -22,7 +23,7 @@
                     lines+=floor ((amax 0 (size-1))/capacity);occupied=(mod (amax 0 (size-1)) capacity)+1+occupied
                 )
             )
-            widthSpin.pos=[containerUI.width-18,50];lengthSpin.pos=[containerUI.width-18,74]
+            widthSpin.pos=[containerUI.width-18,74];lengthSpin.pos=[containerUI.width-18,98]
             assignOwner.pos=[6,sourceList.pos.y+sourceList.height+4]
             statusInfo.height=amax 18 (lines*14+2);statusInfo.pos=[6,assignOwner.pos.y+26]
             editLayer.pos=[6,statusInfo.pos.y+statusInfo.height+4]
@@ -33,11 +34,11 @@
             consumerList.items=view.consumerLabels
             local chosen=0
             for i=1 to view.consumerRows.count where view.consumerRows[i][2]==view.contextRootID and view.consumerRows[i][3]==view.contextSetID do chosen=i
-            consumerList.selection=chosen;widthSpin.value=view.width;lengthSpin.value=view.length;labelCheck.checked=view.showLabel
+            consumerList.selection=chosen;enabledCheck.checked=view.collectEnabled;widthSpin.value=view.width;lengthSpin.value=view.length;labelCheck.checked=view.showLabel
             local nodes=refs.dependentNodes view,node=if nodes.count==1 then nodes[1] else undefined
             sourceList.items=for model in view.savedSources collect (
                 local active=false
-                if isValidNode model and isValidNode node do active=CyrusContainerInside model node
+                if view.collectEnabled and isValidNode model and isValidNode node do active=CyrusContainerInside model node
                 (if active then "Active | " else "Parked | ")+(if isValidNode model then model.name else "<deleted>")
             )
             statusInfo.text=view.cachedLabel+"\n"+view.movementStatus+"\nLast move: "+(view.movementStats())[5]
@@ -53,6 +54,7 @@
             view.mainUI.mountTimer.active=true;CyrusContainerRefreshAll();bind()
         )
         on consumerList selected index do selectConsumer index
+        on enabledCheck changed value do if controlsReady and not binding do (local container=view;undo "Cyrus container collection" on container.collectEnabled=value;bind())
         on widthSpin changed value do if controlsReady and not binding do (undo "Cyrus container width" on view.width=value;CyrusScheduleRelease())
         on lengthSpin changed value do if controlsReady and not binding do (undo "Cyrus container length" on view.length=value;CyrusScheduleRelease())
         on labelCheck changed value do if controlsReady and not binding do undo "Cyrus container label" on view.showLabel=value

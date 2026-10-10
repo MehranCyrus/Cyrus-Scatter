@@ -1,4 +1,4 @@
-# Cyrus Scatter 0.78.2 — current workflow
+# Cyrus Scatter 0.78.3 — current workflow
 
 Updated 10 October 2026. Use this guide for the current UI and ownership model. Dated 0.73 guides describe the older layout. This guide explains behavior; the qualification checklist separately identifies what has been tested.
 
@@ -26,7 +26,7 @@ Model Properties expose weight, scale, radius, vertical offset, Follow Scale and
 
 Advanced Point and Empty rows are placeholder source kinds. A Point row can be replaced with a model; an Empty row reserves a source choice without visible model geometry. They are different from Analyzer sample points. Verify Point/Empty behavior with the chosen population policy before relying on requested counts as visible-model counts.
 
-Source containers are optional palettes. They collect eligible model pivots inside their footprint; they are not receiving surfaces. Parking a model outside a palette preserves its registered settings. Shared containers can serve multiple consumers with independent settings. The container editing view and optional layer window edit the same records as Modify.
+Source containers are optional palettes. New rectangles start with **Enable collection** off: position and resize the rectangle first, then enable it in Models or in the rectangle�s Modify panel. Inactive rectangles do not scan the scene or carry models. Disabling collection parks existing source rows and preserves their settings; Manual waits for Update, while Live applies the change automatically. The switch is saved per rectangle and shared by its linked layers. Rectangles saved before this switch existed also open with collection off. Enabled rectangles collect eligible model pivots inside their footprint; they are not receiving surfaces. Parking a model outside a palette preserves its registered settings. Shared containers can serve multiple consumers with independent settings. The container editing view and optional layer window edit the same records as Modify.
 
 ## Layout and Amount
 
@@ -45,7 +45,7 @@ Amount offers fixed Count or area Density. The seed makes a given recipe reprodu
 
 ## Vector painting
 
-Turn on **Use Paint Areas**, add a named area and choose one of this layer's surfaces. Use **Start Brush**, **Paint / Erase**, **Radius**, **Stop**, **Fill** and **Clear**. Repeated painting merges into the same area. Erasing cuts holes; overlapping areas admit each candidate only once. Undo/Redo restores a complete brush gesture.
+Turn on **Use Paint Areas**, add a named area and choose one of this layer's surfaces. Use **Start Brush**, **Paint / Erase**, **Radius**, **Stop**, **Fill** and **Clear**. **Radius** is center to edge: 100 mm gives a 200 mm stroke diameter. The Painter cursor now uses that same radius. Area density, fade controls and Paint feedback are directly visible in Painting, with no Advanced disclosure. Repeated painting merges into the same area. Erasing cuts holes; overlapping areas admit each candidate only once. Undo/Redo restores a complete brush gesture.
 
 Each area targets one receiver. Use separate areas for separate terrain surfaces while retaining the same layer models and population. Vector painting supports terrain and planes that are single-valued in receiver-local XY. Closed spheres, vertical faces, folds and stacked projected sheets are rejected. They remain usable as ordinary scatter receivers without vector painting.
 
@@ -55,7 +55,7 @@ Each area targets one receiver. Use separate areas for separate terrain surfaces
 
 **Vector borders** is the default feedback. **Coverage samples** provides a bounded diagnostic view of the field. Feedback updates while drawing; in Manual mode plants wait for **Update**. No individual stroke/history controls or strength accumulation remain.
 
-0.78.2 improves feedback during fast continuous strokes and avoids repeatedly rearranging the painting panel. Existing 0.78 vector regions and curves retain the same format. See [drawing measurements and acceptance limits](Brush_Responsiveness_0.78.2_2026-10-10/README.md); very complex outlines and heavy viewport geometry still add work.
+0.78.3 improves feedback during fast continuous strokes and avoids repeatedly rearranging the painting panel. Existing 0.78 vector regions and curves retain the same format. See [drawing measurements and acceptance limits](Container_and_Radius_0.78.3_2026-10-10/README.md); very complex outlines and heavy viewport geometry still add work.
 
 Removing a receiver link leaves its area inactive with its borders preserved. Relinking the same node restores eligibility. An area with paint cannot silently change target. Changes to target geometry/topology require restoring that geometry or creating a new area; the previous completed scatter remains available after a failed update. Use saved scene units on reopen.
 

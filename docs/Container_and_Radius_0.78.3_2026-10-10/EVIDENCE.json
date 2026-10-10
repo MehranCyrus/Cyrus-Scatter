@@ -1,0 +1,994 @@
+{
+  "version": "0.78.3",
+  "base_commit": "cbd25ffcccbcad4607e5455f678d27b998c1fce4",
+  "script_sha256": "75e7105990052825a86b018649c6b425e6f0ec4ea1cc191ee49e57be327d6f1d",
+  "python_tests": 143,
+  "generator_controls": 240,
+  "computer_use": false,
+  "artist_profile_installation": false,
+  "baseline": {
+    "rectangle": {
+      "host": "containers-baseline2026",
+      "launch": {
+        "pid": 21516,
+        "max_year": 2026,
+        "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\containers-baseline2026",
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2026/3dsmax.exe",
+          "-q",
+          "-silent",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\containers-baseline2026\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\containers-baseline2026\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\containers-baseline2026\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\containers-baseline2026\\listener.log"
+        ],
+        "binaries": {
+          "AminScatter.dlx": "b9d59d9fbc8341ad2e00d56de313842f1f7be47cd28d62a2bc4ec2df5dcc5749",
+          "CyrusBrush.dlx": "80d0a08a249d739489ca29f5c0dec999cb04d6ecd19a773eb4e11eea4d64099a",
+          "CyrusBrushStorage.dlh": "e65859aef5aa39f47eb614035d9bfeda082e925b6362f58f8e610f47c726b81f",
+          "CyrusScatterEdit.dlm": "036a7a2dce70826e32ed7cac3ef3098623f022ec6509c3c975b5ed173e71259a"
+        },
+        "script_sha256": "e7c51732882d99ed01d4a63e1a11900d3a949725d949931ae331bd6faf7d3e97",
+        "normal_profile_modified": false,
+        "development_transport": true,
+        "profile_template": "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2026 - 64bit\\ENU\\3dsMax.ini",
+        "profile_template_sha256": "3f012d596ef0f91bb103abf9cd05f35f2f7137d9f88e542309713011cea1b70f"
+      },
+      "result": "version=0.78.2 registered=1 scans=1 tests=2\nselection=-- Unknown property: \"uiPaintSetID\" in Cyrus Scatter\n"
+    },
+    "radius": {
+      "host": "containers-host2026-01",
+      "launch": {
+        "pid": 28456,
+        "max_year": 2026,
+        "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\containers-host2026-01",
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2026/3dsmax.exe",
+          "-q",
+          "-silent",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\containers-host2026-01\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\containers-host2026-01\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\containers-host2026-01\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\containers-host2026-01\\listener.log"
+        ],
+        "binaries": {
+          "AminScatter.dlx": "14e531eb2daec847b97b665bc7c1bfca5d63edaf11e8f29c6e299fea5e895041",
+          "CyrusBrush.dlx": "c4d75aaaf1a0af04c39554808c47621194b8d6559e5d598894b1689e6ba9ccfd",
+          "CyrusBrushStorage.dlh": "177f359480ae26bf0ed969695c6e666a1fc7e4978aa9869800fd4a5e57c6722e",
+          "CyrusScatterEdit.dlm": "2f3e45bde6281de0a7e9b3ce5e01644dc7ba396cc5d1f0127c88e0e003d2dfa0",
+          "CyrusPrivatePaintProbe.dlx": "9c508fbef31884ee262eca6ebf3848b86f6e5e7b1f1f856fc01ad2ae7c34d593"
+        },
+        "script_sha256": "9803e661da1c90091ea691cec93c8054e76ff4cd1bf6b1d23e1ff0b67c2cc33f",
+        "normal_profile_modified": false,
+        "development_transport": true,
+        "profile_template": "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2026 - 64bit\\ENU\\3dsMax.ini",
+        "profile_template_sha256": "3f012d596ef0f91bb103abf9cd05f35f2f7137d9f88e542309713011cea1b70f"
+      },
+      "result": "Authored radius: 100; Painter min/max size: 100.0/100.0; Painter actual stored radius: 50.0\n"
+    }
+  },
+  "hosts": {
+    "2026": {
+      "launch": {
+        "pid": 19208,
+        "max_year": 2026,
+        "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\containers-host2026-03",
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2026/3dsmax.exe",
+          "-q",
+          "-silent",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\containers-host2026-03\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\containers-host2026-03\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\containers-host2026-03\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\containers-host2026-03\\listener.log"
+        ],
+        "binaries": {
+          "AminScatter.dlx": "34cf81f9ce63ee73c0ef46c1c67b4fb07519b14cec43aea47dce03fe396c433d",
+          "CyrusBrush.dlx": "b7a6f218b7b16fab91644c5e8999ca8ad9b25a5fa7b1a03d30146832335f6218",
+          "CyrusBrushStorage.dlh": "5fe5ada58ceb7a2386df6c290538cf26b36f3daeae8525627329b0c47d2cea77",
+          "CyrusScatterEdit.dlm": "2b614a92ba2d8436f41c2a35ca187ca01b52f0cdc6fff7ec6f5c403f06dc56a5",
+          "CyrusPrivatePaintProbe.dlx": "9c508fbef31884ee262eca6ebf3848b86f6e5e7b1f1f856fc01ad2ae7c34d593"
+        },
+        "script_sha256": "75e7105990052825a86b018649c6b425e6f0ec4ea1cc191ee49e57be327d6f1d",
+        "normal_profile_modified": false,
+        "development_transport": true,
+        "profile_template": "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2026 - 64bit\\ENU\\3dsMax.ini",
+        "profile_template_sha256": "3f012d596ef0f91bb103abf9cd05f35f2f7137d9f88e542309713011cea1b70f"
+      },
+      "suite": [
+        {
+          "fixture": "button_workflow",
+          "exit_code": 0,
+          "output": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vector-brush-078/containers-host2026-03/test-c0891c6754dc4523a5cbe39e4ebaaf38.ms\n"
+        },
+        {
+          "fixture": "layout_diagnostic",
+          "exit_code": 0,
+          "output": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vector-brush-078/containers-host2026-03/test-0f776e2c81b64089b10905f5f3c58da4.ms\n"
+        },
+        {
+          "fixture": "layout_modes",
+          "exit_code": 0,
+          "output": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vector-brush-078/containers-host2026-03/test-b9cea43f018d4ee49f0ce547753b8ad9.ms\n"
+        },
+        {
+          "fixture": "acceptance",
+          "exit_code": 0,
+          "output": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vector-brush-078/containers-host2026-03/test-aba68c11e31d4376ae8e38219002feab.ms\n"
+        },
+        {
+          "fixture": "extended",
+          "exit_code": 0,
+          "output": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vector-brush-078/containers-host2026-03/test-2085d6c88035469399a9a712aff97911.ms\n"
+        },
+        {
+          "fixture": "inspection",
+          "exit_code": 0,
+          "output": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vector-brush-078/containers-host2026-03/test-39adf10c05c248709ceec259b1e1ea17.ms\n"
+        },
+        {
+          "fixture": "performance",
+          "exit_code": 0,
+          "output": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vector-brush-078/containers-host2026-03/test-5f276ae6c11b422bb94e022030c77037.ms\n"
+        },
+        {
+          "fixture": "playback",
+          "exit_code": 0,
+          "output": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vector-brush-078/containers-host2026-03/test-eba7917f20774a9d891fd4264a7915ab.ms\n",
+          "rerun_reason": "Require retained owners in all three modes and isolate desktop held-input state"
+        }
+      ],
+      "checks": {
+        "container": [
+          "PASS Create button starts with collection disabled and no registered models",
+          "PASS Inactive rectangle performs zero scene scans and candidate membership tests",
+          "PASS Models exposes the selected rectangle collection checkbox",
+          "PASS Positioning an inactive rectangle does not collect or carry scene models",
+          "PASS Selecting a layer rectangle mounts its linked Scatter panel without an exception",
+          "PASS Rectangle Modify panel exposes the same disabled collection state",
+          "PASS Rectangle checkbox enables collection",
+          "PASS Enabled rectangle collects the expected source models in one scan",
+          "PASS Update generates the requested population from collected models",
+          "PASS Reselecting a rectangle does not scan or rebuild an unchanged population",
+          "PASS Disabling collection in Manual waits for Update",
+          "PASS Disable parks source rows and preserves their settings",
+          "PASS Disabled rectangle keeps saved source identities but has no active models",
+          "PASS Disabling collection does not scan scene geometry",
+          "PASS Undo restores enabled collection and its population",
+          "PASS Redo restores disabled collection",
+          "PASS Live enabling automatically publishes collected models",
+          "PASS Live disabling automatically parks the population",
+          "PASS Global rectangle selection resolves the layer without retired paint-set calls",
+          "PASS Global collection uses retained layer source settings",
+          "PASS Disabled shared rectangle retains both linked layer editing contexts",
+          "PASS Area density and paint feedback are visible without Advanced",
+          "PASS Painting has no empty Advanced disclosure",
+          "PASS Visible Area density writes to the selected paint area",
+          "PASS Painting-specific controls hide when Paint Areas are disabled",
+          "PASS Save/open preserves each rectangle collection switch independently",
+          "PASS Save/open preserves model registration and source settings",
+          "PASS Saved rectangle selection mounts correctly after reload"
+        ],
+        "radius": [
+          "PASS 100-unit UI radius produces a 100-unit Painter radius on start",
+          "PASS Changing radius during the session updates the Painter footprint",
+          "PASS Stop restores the previous Max Painter settings",
+          "PASS Vector accepts 99 and rejects 101 world units, scale [1,1,1]",
+          "PASS Painter world radius stays 100 under scale [1,1,1]",
+          "PASS Vector accepts 99 and rejects 101 world units, scale [2,2,2]",
+          "PASS Painter world radius stays 100 under scale [2,2,2]",
+          "PASS Vector accepts 99 and rejects 101 world units, scale [2,3,1]",
+          "PASS Painter world radius stays 100 under scale [2,3,1]",
+          "PASS 100 mm respects system-unit conversion in Painter"
+        ],
+        "button": [
+          "Patched script version loaded",
+          "Main Start Brush bound to selected area",
+          "Status delegate resolves its rollout function",
+          "Main button starts native and scripted sessions",
+          "Session survives real timer callbacks after Start",
+          "Main status reports active brush",
+          "Actual Painter TestHit and PaintStroke callbacks accept the entire path",
+          "Callback EndStroke commits contours and keeps brush active",
+          "Manual drawing preserves the completed population until Update",
+          "Explicit Update publishes painted plants",
+          "Painting reuses receiver candidate caches",
+          "Erase radio updates native settings",
+          "Erase callbacks cut the committed vector region",
+          "Callback Undo restores exact placements",
+          "Callback Redo restores erase",
+          "Callback cancellation preserves committed region",
+          "Stop button ends session and timer",
+          "Floating editor selects the same native area",
+          "Floating Start Brush survives timer and UI refresh",
+          "Live population publication waits while interaction is held",
+          "Live callback painting publishes new plants automatically",
+          "Live publication preserves active brush",
+          "New receiver area binds to the main brush",
+          "Second receiver paints independently and retains the first",
+          "Button workflow saved",
+          "Layout mode inspection does not publish or regenerate candidates"
+        ],
+        "responsiveness": [
+          "PASS unchanged status does not layout",
+          "PASS all 1000 callbacks hit",
+          "PASS intermediate borders prepared without timer delivery",
+          "PASS final feedback flushed",
+          "PASS no duplicate feedback preparation",
+          "PASS Manual population and receiver caches unchanged",
+          "PASS continuous erase cancellation preserves placements"
+        ]
+      },
+      "vector_assertions": 447,
+      "playback_assertions": 838,
+      "native_suites": 15,
+      "native_layout": {
+        "contexts": 36,
+        "rectangles_checked": 2170,
+        "unique_control_names": 400,
+        "clipped": [],
+        "overlaps": [],
+        "passed": true,
+        "scope": "Native bounds at current display scaling; not font glyph, DPI, visual or pointer qualification"
+      },
+      "inspection": {
+        "checks": [
+          "Current inspection schema",
+          "Reports receiver-bound vector areas",
+          "Reads native area revision",
+          "Reports contours instead of obsolete strokes",
+          "Freshness includes area revision",
+          "Inspection does not prepare or query the paint field"
+        ],
+        "configuration": {
+          "configuration_schema": "cyrus.configuration/2.0",
+          "controller_id": "vector_test",
+          "layers": [
+            {
+              "layer_id": "4ae609e6-db7a-46f8-809f-1c7979d0cbfc",
+              "name": "Layer_01",
+              "count": 5000,
+              "seed": 42,
+              "settings": {
+                "self_spacing_enabled": false,
+                "self_radius_factor": 1.0,
+                "self_gap_m": 0.0,
+                "self_planar": false,
+                "cleanup_enabled": false,
+                "neighbor_radius_m": 2.539999980621338,
+                "minimum_neighbors": 2,
+                "minimum_island": 5,
+                "planar_cleanup": true,
+                "align_normal": true,
+                "scale_x": [
+                  1.0,
+                  1.0
+                ],
+                "scale_y": [
+                  1.0,
+                  1.0
+                ],
+                "scale_z": [
+                  1.0,
+                  1.0
+                ],
+                "rotation_x_degrees": [
+                  0.0,
+                  0.0
+                ],
+                "rotation_y_degrees": [
+                  0.0,
+                  0.0
+                ],
+                "movement_x_m": [
+                  0.0,
+                  0.0
+                ],
+                "movement_y_m": [
+                  0.0,
+                  0.0
+                ],
+                "enabled": true,
+                "visible": true
+              },
+              "assets": [
+                {
+                  "source_id": "asset_56ae576a1ee1c3fcedcdf6e0",
+                  "entry_id": "d9b80a7d-4200-4838-86f4-78a6cf528c22",
+                  "label": "V_Model",
+                  "kind": "mesh",
+                  "weight": 1.0,
+                  "settings": {
+                    "scale": 1,
+                    "z_offset_m": 0.0,
+                    "radius_m": 0.0,
+                    "radius_follows_scale": true,
+                    "show_radius": false,
+                    "forward_axis": 1
+                  }
+                }
+              ],
+              "base_variation": {
+                "advanced_axes": true,
+                "compact_uniform_scale": [
+                  0.800000011920929,
+                  1.2000000476837158
+                ],
+                "compact_yaw_degrees": [
+                  0.0,
+                  360.0
+                ],
+                "whole_scale": [
+                  1.0,
+                  1.0
+                ],
+                "rotation_z_degrees": [
+                  0.0,
+                  360.0
+                ]
+              },
+              "allocation": {
+                "parent_candidate_budget": 5000,
+                "count_mode_candidates": 5000,
+                "population_mode": 1,
+                "plants_per_m2": 100.0
+              },
+              "paint": {
+                "enabled": true,
+                "representation": "vector_regions",
+                "areas": [
+                  {
+                    "area_id": "565f0515-73c4-4ee8-a451-4a667c9f702e",
+                    "name": "Area 1",
+                    "receiver": {
+                      "node_handle": 81000
+                    },
+                    "enabled": true,
+                    "density": 1.0,
+                    "document_present": true,
+                    "revision": 20,
+                    "contour_count": 1,
+                    "vertex_count": 16,
+                    "target_valid_cached": true
+                  },
+                  {
+                    "area_id": "5cf3cb48-28f1-46aa-bafb-146266a267a6",
+                    "name": "Area 2",
+                    "receiver": {
+                      "node_handle": 81039
+                    },
+                    "enabled": false,
+                    "density": 1.0,
+                    "document_present": true,
+                    "revision": 1,
+                    "contour_count": 1,
+                    "vertex_count": 96,
+                    "target_valid_cached": false
+                  }
+                ]
+              }
+            }
+          ],
+          "display": {
+            "instances_per_population": 2000,
+            "faces_per_population": 2000000,
+            "point_budget": 20000,
+            "points_per_plant": 80,
+            "show_preview": true,
+            "mode": "point_cloud",
+            "proxy_shape": "box",
+            "update_mode": "manual"
+          },
+          "calculation_model": "CyrusUnified1",
+          "procedural": {
+            "schema": "cyrus.procedural-configuration/1.0",
+            "calculation_model": "CyrusUnified1",
+            "global_source_containers": [],
+            "layers_in_order": [
+              {
+                "layer_id": "4ae609e6-db7a-46f8-809f-1c7979d0cbfc",
+                "population": "candidate_budget",
+                "attempt_factor": 8,
+                "round_limit": 8,
+                "retry_cleanup_gaps": true,
+                "default_within_sets": {
+                  "enabled": false,
+                  "radius_factor": 1.0,
+                  "gap_m": 0.0,
+                  "metric": "xyz"
+                },
+                "default_between_sets": {
+                  "enabled": false,
+                  "radius_factor": 1.0,
+                  "gap_m": 0.0,
+                  "metric": "xyz"
+                },
+                "sets_in_order": [
+                  {
+                    "set_id": "4ae609e6-db7a-46f8-809f-1c7979d0cbfc",
+                    "name": "Base",
+                    "sampling_salt": 0,
+                    "self_rule": {
+                      "inherited": true,
+                      "enabled": false,
+                      "radius_factor": 1.0,
+                      "gap_m": 0.0,
+                      "metric": "xyz"
+                    },
+                    "source_entry_ids": [
+                      "d9b80a7d-4200-4838-86f4-78a6cf528c22"
+                    ],
+                    "radius_overrides": [],
+                    "source_pool": {
+                      "mode": "manual",
+                      "own_rectangles": [],
+                      "cached_membership": {
+                        "revision": 0,
+                        "aligned_with_registered_order": false,
+                        "pending_by_cached_flags": true,
+                        "rows": [
+                          {
+                            "registered_row": 0,
+                            "node_handle": 3,
+                            "source_entry_id": null,
+                            "kind": "model",
+                            "cached_status": "manual"
+                          }
+                        ],
+                        "freshness": "Last reconciliation flags; node transforms and rectangle containment are not inspected. No current membership claim."
+                      },
+                      "membership": "Source pivot in rectangle local XY; parked registrations retain settings. Membership is not recomputed by inspection."
+                    },
+                    "last_published": {
+                      "eligible_pool": 480,
+                      "accepted": 480,
+                      "protected": 0,
+                      "protected_conflicts": 0,
+                      "rejected_layer": 0,
+                      "rejected_set": 0,
+                      "rejected_self": 0,
+                      "removed_cleanup": 0,
+                      "not_consumed": 0,
+                      "candidate_attempts": 5000,
+                      "target_shortfall": 0,
+                      "neighbor_visits": 0,
+                      "rounds": 1,
+                      "round_limit_reached": false,
+                      "epoch": 8
+                    },
+                    "prepared_builds": 8,
+                    "prepared_hits": 0
+                  }
+                ]
+              }
+            ],
+            "pair_rules": [],
+            "mutation_supported": false,
+            "freshness": "Recipe values are current; last_published describes the last completed epoch. No solve is performed."
+          },
+          "freshness": "current parameter values only; no generation or geometry certification"
+        }
+      },
+      "drawing_cpu_ms": {
+        "samples": 300,
+        "stages": {
+          "author_ms": {
+            "median": 0.3276,
+            "p95": 0.5994,
+            "max": 0.8578
+          },
+          "border_ms": {
+            "median": 6.7406500000000005,
+            "p95": 12.5679,
+            "max": 14.0334
+          },
+          "editors_ms": {
+            "median": 0.49424999999999997,
+            "p95": 2.2407,
+            "max": 8.3474
+          },
+          "redraw_ms": {
+            "median": 7.23515,
+            "p95": 16.5023,
+            "max": 28.032
+          },
+          "total_ms": {
+            "median": 15.20655,
+            "p95": 30.1601,
+            "max": 45.7748
+          }
+        }
+      },
+      "radius_measurements": "Scale [1,1,1]: vector inside 99/outside 101; Painter radius 100.0; size 200.0\nScale [2,2,2]: vector inside 99/outside 101; Painter radius 100.0; size 200.0\nScale [2,3,1]: vector inside 99/outside 101; Painter radius 100.0; size 200.0\n100 mm decoded system units 3.93701; Painter radius 3.93701\n",
+      "container_measurements": "Create + explicit refresh + 300 ms event pump: 697 ms\nDisabled scan/test counters: 0/0\nModels: 64\nAssertions: 28\n",
+      "package_receipt_sha256": "6369f7f9e7fbc2de462e4311a763862df7bff744e0d7c6817d77e11a1e177b5b",
+      "native_build_receipt_sha256": "f2cbae05a99f82b9fb338cee8af7eb0d03bb1109e60ef51e18d994f49a07884e"
+    },
+    "2027": {
+      "launch": {
+        "pid": 16064,
+        "max_year": 2027,
+        "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\containers-host2027-04",
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+          "-q",
+          "-silent",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\containers-host2027-04\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\containers-host2027-04\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\containers-host2027-04\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\containers-host2027-04\\listener.log"
+        ],
+        "binaries": {
+          "AminScatter.dlx": "bda7148e6fc2762afdcc0149161c8254963c9ea8a391767561856304150abe28",
+          "CyrusBrush.dlx": "defa0b0244f58b4f0cb0e9e7d1eb6436e82cd59f586e3cff6c1156c623b6cf4f",
+          "CyrusBrushStorage.dlh": "2a61c4351f264818ceab654a8fb57615366a07d574b76912b96618792ebc4ab0",
+          "CyrusScatterEdit.dlm": "33ca6e54c4a501f511212af56a18470140afd016c38981ff4774e3969bb3c77e",
+          "CyrusPrivatePaintProbe.dlx": "18623cdac616bfe83c8a4aaf45879fde43c0a1395ee48dc0a06614b275f22ac5"
+        },
+        "script_sha256": "75e7105990052825a86b018649c6b425e6f0ec4ea1cc191ee49e57be327d6f1d",
+        "normal_profile_modified": false,
+        "development_transport": true,
+        "profile_template": "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\3dsMax.ini",
+        "profile_template_sha256": "c05f3ae46982e22b7593799c92bee89fea4829ee9ef474e17b1db1e81284f55e"
+      },
+      "suite": [
+        {
+          "fixture": "button_workflow",
+          "exit_code": 0,
+          "output": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vector-brush-078/containers-host2027-04/test-84caff39ab4641e2ba7aecfb2c7ea00c.ms\n"
+        },
+        {
+          "fixture": "layout_diagnostic",
+          "exit_code": 0,
+          "output": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vector-brush-078/containers-host2027-04/test-af9e02f7c96c4312a7109be47dd06027.ms\n"
+        },
+        {
+          "fixture": "layout_modes",
+          "exit_code": 0,
+          "output": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vector-brush-078/containers-host2027-04/test-9bdb1885b9d949e28a31ef0cf01ee67a.ms\n"
+        },
+        {
+          "fixture": "acceptance",
+          "exit_code": 0,
+          "output": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vector-brush-078/containers-host2027-04/test-019df90830d34613948a551958ec3de9.ms\n"
+        },
+        {
+          "fixture": "extended",
+          "exit_code": 0,
+          "output": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vector-brush-078/containers-host2027-04/test-f655d057a9a74443b8dedc3f79d33dd7.ms\n"
+        },
+        {
+          "fixture": "inspection",
+          "exit_code": 0,
+          "output": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vector-brush-078/containers-host2027-04/test-aec663d94a1f44e2acc0b60ea6ef5bd5.ms\n"
+        },
+        {
+          "fixture": "performance",
+          "exit_code": 0,
+          "output": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vector-brush-078/containers-host2027-04/test-1e53cd115da64a77a58c20ff76da481c.ms\n"
+        },
+        {
+          "fixture": "playback",
+          "exit_code": 0,
+          "output": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vector-brush-078/containers-host2027-04/test-0880b0d4f6cd410fafea698c1c21c923.ms\n",
+          "rerun_reason": "Require retained owners in all three modes and isolate desktop held-input state"
+        }
+      ],
+      "checks": {
+        "container": [
+          "PASS Create button starts with collection disabled and no registered models",
+          "PASS Inactive rectangle performs zero scene scans and candidate membership tests",
+          "PASS Models exposes the selected rectangle collection checkbox",
+          "PASS Positioning an inactive rectangle does not collect or carry scene models",
+          "PASS Selecting a layer rectangle mounts its linked Scatter panel without an exception",
+          "PASS Rectangle Modify panel exposes the same disabled collection state",
+          "PASS Rectangle checkbox enables collection",
+          "PASS Enabled rectangle collects the expected source models in one scan",
+          "PASS Update generates the requested population from collected models",
+          "PASS Reselecting a rectangle does not scan or rebuild an unchanged population",
+          "PASS Disabling collection in Manual waits for Update",
+          "PASS Disable parks source rows and preserves their settings",
+          "PASS Disabled rectangle keeps saved source identities but has no active models",
+          "PASS Disabling collection does not scan scene geometry",
+          "PASS Undo restores enabled collection and its population",
+          "PASS Redo restores disabled collection",
+          "PASS Live enabling automatically publishes collected models",
+          "PASS Live disabling automatically parks the population",
+          "PASS Global rectangle selection resolves the layer without retired paint-set calls",
+          "PASS Global collection uses retained layer source settings",
+          "PASS Disabled shared rectangle retains both linked layer editing contexts",
+          "PASS Area density and paint feedback are visible without Advanced",
+          "PASS Painting has no empty Advanced disclosure",
+          "PASS Visible Area density writes to the selected paint area",
+          "PASS Painting-specific controls hide when Paint Areas are disabled",
+          "PASS Save/open preserves each rectangle collection switch independently",
+          "PASS Save/open preserves model registration and source settings",
+          "PASS Saved rectangle selection mounts correctly after reload"
+        ],
+        "radius": [
+          "PASS 100-unit UI radius produces a 100-unit Painter radius on start",
+          "PASS Changing radius during the session updates the Painter footprint",
+          "PASS Stop restores the previous Max Painter settings",
+          "PASS Vector accepts 99 and rejects 101 world units, scale [1,1,1]",
+          "PASS Painter world radius stays 100 under scale [1,1,1]",
+          "PASS Vector accepts 99 and rejects 101 world units, scale [2,2,2]",
+          "PASS Painter world radius stays 100 under scale [2,2,2]",
+          "PASS Vector accepts 99 and rejects 101 world units, scale [2,3,1]",
+          "PASS Painter world radius stays 100 under scale [2,3,1]",
+          "PASS 100 mm respects system-unit conversion in Painter"
+        ],
+        "button": [
+          "Patched script version loaded",
+          "Main Start Brush bound to selected area",
+          "Status delegate resolves its rollout function",
+          "Main button starts native and scripted sessions",
+          "Session survives real timer callbacks after Start",
+          "Main status reports active brush",
+          "Actual Painter TestHit and PaintStroke callbacks accept the entire path",
+          "Callback EndStroke commits contours and keeps brush active",
+          "Manual drawing preserves the completed population until Update",
+          "Explicit Update publishes painted plants",
+          "Painting reuses receiver candidate caches",
+          "Erase radio updates native settings",
+          "Erase callbacks cut the committed vector region",
+          "Callback Undo restores exact placements",
+          "Callback Redo restores erase",
+          "Callback cancellation preserves committed region",
+          "Stop button ends session and timer",
+          "Floating editor selects the same native area",
+          "Floating Start Brush survives timer and UI refresh",
+          "Live population publication waits while interaction is held",
+          "Live callback painting publishes new plants automatically",
+          "Live publication preserves active brush",
+          "New receiver area binds to the main brush",
+          "Second receiver paints independently and retains the first",
+          "Button workflow saved",
+          "Layout mode inspection does not publish or regenerate candidates"
+        ],
+        "responsiveness": [
+          "PASS unchanged status does not layout",
+          "PASS all 1000 callbacks hit",
+          "PASS intermediate borders prepared without timer delivery",
+          "PASS final feedback flushed",
+          "PASS no duplicate feedback preparation",
+          "PASS Manual population and receiver caches unchanged",
+          "PASS continuous erase cancellation preserves placements"
+        ]
+      },
+      "vector_assertions": 463,
+      "playback_assertions": 838,
+      "native_suites": 15,
+      "native_layout": {
+        "contexts": 36,
+        "rectangles_checked": 2170,
+        "unique_control_names": 400,
+        "clipped": [],
+        "overlaps": [],
+        "passed": true,
+        "scope": "Native bounds at current display scaling; not font glyph, DPI, visual or pointer qualification"
+      },
+      "inspection": {
+        "checks": [
+          "Current inspection schema",
+          "Reports receiver-bound vector areas",
+          "Reads native area revision",
+          "Reports contours instead of obsolete strokes",
+          "Freshness includes area revision",
+          "Inspection does not prepare or query the paint field"
+        ],
+        "configuration": {
+          "configuration_schema": "cyrus.configuration/2.0",
+          "controller_id": "vector_test",
+          "layers": [
+            {
+              "layer_id": "3417ee2d-82e9-4a7b-a742-b4387073b0a5",
+              "name": "Layer_01",
+              "count": 5000,
+              "seed": 42,
+              "settings": {
+                "self_spacing_enabled": false,
+                "self_radius_factor": 1.0,
+                "self_gap_m": 0.0,
+                "self_planar": false,
+                "cleanup_enabled": false,
+                "neighbor_radius_m": 1.0,
+                "minimum_neighbors": 2,
+                "minimum_island": 5,
+                "planar_cleanup": true,
+                "align_normal": true,
+                "scale_x": [
+                  1.0,
+                  1.0
+                ],
+                "scale_y": [
+                  1.0,
+                  1.0
+                ],
+                "scale_z": [
+                  1.0,
+                  1.0
+                ],
+                "rotation_x_degrees": [
+                  0.0,
+                  0.0
+                ],
+                "rotation_y_degrees": [
+                  0.0,
+                  0.0
+                ],
+                "movement_x_m": [
+                  0.0,
+                  0.0
+                ],
+                "movement_y_m": [
+                  0.0,
+                  0.0
+                ],
+                "enabled": true,
+                "visible": true
+              },
+              "assets": [
+                {
+                  "source_id": "asset_42d59b32c80258494b3b3ac8",
+                  "entry_id": "ef4ed6c7-f304-4fab-91d1-cac0f8de87d7",
+                  "label": "V_Model",
+                  "kind": "mesh",
+                  "weight": 1.0,
+                  "settings": {
+                    "scale": 1,
+                    "z_offset_m": 0.0,
+                    "radius_m": 0.0,
+                    "radius_follows_scale": true,
+                    "show_radius": false,
+                    "forward_axis": 1
+                  }
+                }
+              ],
+              "base_variation": {
+                "advanced_axes": true,
+                "compact_uniform_scale": [
+                  0.800000011920929,
+                  1.2000000476837158
+                ],
+                "compact_yaw_degrees": [
+                  0.0,
+                  360.0
+                ],
+                "whole_scale": [
+                  1.0,
+                  1.0
+                ],
+                "rotation_z_degrees": [
+                  0.0,
+                  360.0
+                ]
+              },
+              "allocation": {
+                "parent_candidate_budget": 5000,
+                "count_mode_candidates": 5000,
+                "population_mode": 1,
+                "plants_per_m2": 100.0
+              },
+              "paint": {
+                "enabled": true,
+                "representation": "vector_regions",
+                "areas": [
+                  {
+                    "area_id": "259fe262-6804-428c-8372-c4f67d9bd2b9",
+                    "name": "Area 1",
+                    "receiver": {
+                      "node_handle": 42123
+                    },
+                    "enabled": true,
+                    "density": 1.0,
+                    "document_present": true,
+                    "revision": 20,
+                    "contour_count": 1,
+                    "vertex_count": 16,
+                    "target_valid_cached": true
+                  },
+                  {
+                    "area_id": "c35fbcd0-6c04-4d8a-9e11-17c3bb93019c",
+                    "name": "Area 2",
+                    "receiver": {
+                      "node_handle": 42162
+                    },
+                    "enabled": false,
+                    "density": 1.0,
+                    "document_present": true,
+                    "revision": 1,
+                    "contour_count": 1,
+                    "vertex_count": 96,
+                    "target_valid_cached": false
+                  }
+                ]
+              }
+            }
+          ],
+          "display": {
+            "instances_per_population": 2000,
+            "faces_per_population": 2000000,
+            "point_budget": 20000,
+            "points_per_plant": 80,
+            "show_preview": true,
+            "mode": "point_cloud",
+            "proxy_shape": "box",
+            "update_mode": "manual"
+          },
+          "calculation_model": "CyrusUnified1",
+          "procedural": {
+            "schema": "cyrus.procedural-configuration/1.0",
+            "calculation_model": "CyrusUnified1",
+            "global_source_containers": [],
+            "layers_in_order": [
+              {
+                "layer_id": "3417ee2d-82e9-4a7b-a742-b4387073b0a5",
+                "population": "candidate_budget",
+                "attempt_factor": 8,
+                "round_limit": 8,
+                "retry_cleanup_gaps": true,
+                "default_within_sets": {
+                  "enabled": false,
+                  "radius_factor": 1.0,
+                  "gap_m": 0.0,
+                  "metric": "xyz"
+                },
+                "default_between_sets": {
+                  "enabled": false,
+                  "radius_factor": 1.0,
+                  "gap_m": 0.0,
+                  "metric": "xyz"
+                },
+                "sets_in_order": [
+                  {
+                    "set_id": "3417ee2d-82e9-4a7b-a742-b4387073b0a5",
+                    "name": "Base",
+                    "sampling_salt": 0,
+                    "self_rule": {
+                      "inherited": true,
+                      "enabled": false,
+                      "radius_factor": 1.0,
+                      "gap_m": 0.0,
+                      "metric": "xyz"
+                    },
+                    "source_entry_ids": [
+                      "ef4ed6c7-f304-4fab-91d1-cac0f8de87d7"
+                    ],
+                    "radius_overrides": [],
+                    "source_pool": {
+                      "mode": "manual",
+                      "own_rectangles": [],
+                      "cached_membership": {
+                        "revision": 0,
+                        "aligned_with_registered_order": false,
+                        "pending_by_cached_flags": true,
+                        "rows": [
+                          {
+                            "registered_row": 0,
+                            "node_handle": 3,
+                            "source_entry_id": null,
+                            "kind": "model",
+                            "cached_status": "manual"
+                          }
+                        ],
+                        "freshness": "Last reconciliation flags; node transforms and rectangle containment are not inspected. No current membership claim."
+                      },
+                      "membership": "Source pivot in rectangle local XY; parked registrations retain settings. Membership is not recomputed by inspection."
+                    },
+                    "last_published": {
+                      "eligible_pool": 504,
+                      "accepted": 504,
+                      "protected": 0,
+                      "protected_conflicts": 0,
+                      "rejected_layer": 0,
+                      "rejected_set": 0,
+                      "rejected_self": 0,
+                      "removed_cleanup": 0,
+                      "not_consumed": 0,
+                      "candidate_attempts": 5000,
+                      "target_shortfall": 0,
+                      "neighbor_visits": 0,
+                      "rounds": 1,
+                      "round_limit_reached": false,
+                      "epoch": 8
+                    },
+                    "prepared_builds": 8,
+                    "prepared_hits": 0
+                  }
+                ]
+              }
+            ],
+            "pair_rules": [],
+            "mutation_supported": false,
+            "freshness": "Recipe values are current; last_published describes the last completed epoch. No solve is performed."
+          },
+          "freshness": "current parameter values only; no generation or geometry certification"
+        }
+      },
+      "drawing_cpu_ms": {
+        "samples": 300,
+        "stages": {
+          "author_ms": {
+            "median": 0.26615,
+            "p95": 0.5588,
+            "max": 0.7502
+          },
+          "border_ms": {
+            "median": 5.878550000000001,
+            "p95": 11.0097,
+            "max": 13.067
+          },
+          "editors_ms": {
+            "median": 0.33294999999999997,
+            "p95": 1.3161,
+            "max": 3.1206
+          },
+          "redraw_ms": {
+            "median": 8.897200000000002,
+            "p95": 13.2397,
+            "max": 18.8027
+          },
+          "total_ms": {
+            "median": 15.5335,
+            "p95": 24.124000000000002,
+            "max": 30.787100000000002
+          }
+        }
+      },
+      "radius_measurements": "Scale [1,1,1]: vector inside 99/outside 101; Painter radius 100.0; size 200.0\nScale [2,2,2]: vector inside 99/outside 101; Painter radius 100.0; size 200.0\nScale [2,3,1]: vector inside 99/outside 101; Painter radius 100.0; size 200.0\n100 mm decoded system units 10.0; Painter radius 10.0\n",
+      "container_measurements": "Create + explicit refresh + 300 ms event pump: 719 ms\nDisabled scan/test counters: 0/0\nModels: 64\nAssertions: 28\n",
+      "package_receipt_sha256": "96d3d813775f5f704a3ff445862e450ba4cdb00e5fd3703b9370e643e4ea1ada",
+      "native_build_receipt_sha256": "f439acdd577e66beff18a360fc6a3b229538423ae410e695caf9e5c37ef628ee"
+    }
+  },
+  "sources": {
+    "AminScatter/src/brush_host.cpp": "f1eb93a77bc665560a1f0c1b5092308f9b4b7e0cfc4bfc630c7ad5d58d9be62c",
+    "AminScatter/tools/ui/templates/approved-main-ui.ms": "3e88d4b190db61772d449896cfc84d81067553934aaf22139b794202e028e36b",
+    "AminScatter/tools/ui/templates/container-node.ms": "d93108caebbd7d854342a39b99e2a2ee9cb5be937f28f5b3d38946c6509b83c4",
+    "AminScatter/tools/ui/templates/container-properties-ui.ms": "25ae8cf915e9396f430a714c1ea505327d04021c5a77fb21051246d386c26f48",
+    "AminScatter/tools/ui/templates/unified-core.ms": "428b235172374d9f91ab887e966166cd00447b659d0585f552a5cfb571a4bf8c",
+    "tools/vector_brush_078/acceptance.ms": "e063f3790a28e9135edbd817940cbf9005ebbbebd0ef8d2598854cbf71ba0014",
+    "tools/vector_brush_078/button_diagnostic.ms": "2857d0b93aece3ec59d4ff035ac811cdb9021d71d945c0e8a45d69a7f71a6a98",
+    "tools/vector_brush_078/button_workflow.ms": "fe8fa3c2da93cb5b0e7b15cec4fde82e75aeb2dd5732d6a4231ed5891a8766d6",
+    "tools/vector_brush_078/container_baseline.ms": "251053263a34d7e34fb5646e9039d8d8096e6fa1c3653884a59128cc5e249664",
+    "tools/vector_brush_078/containers.ms": "b8cbfcaaf3c7d8685347d2dc2a102c4a7f47c119e85ffce406329dacbf72c597",
+    "tools/vector_brush_078/extended.ms": "80983f41a53f1ba12520da402ae384778e58bb8f60cb07fd4a903f4d4e4175b2",
+    "tools/vector_brush_078/inspection.ms": "10df29d46de8547c2198062aaadd57e707537772b06c62c3ec574f1b7d8a1263",
+    "tools/vector_brush_078/layout_diagnostic.ms": "9fa7d38b2e29a3698c4629005ac41cfb4fc8cded88778dca05566a9557c56e6a",
+    "tools/vector_brush_078/layout_modes.ms": "cd0ce85ef8a60fa21b62e7802b4bfef9e021451c162ea83fbecd117136ffd96a",
+    "tools/vector_brush_078/performance.ms": "3412c4faaebace73ff2327c79b494a47df09109d14e551786a77e547efde5743",
+    "tools/vector_brush_078/playback.ms": "c13bec4e1ac159b9221a2f6957b4518f9c8d850ed328b5deb9184a3c6f9646fb",
+    "tools/vector_brush_078/radius.ms": "f3556562eb8e5155d2a9297123e25d938c507ab0adaf8dc22f4da9c7842e2373",
+    "tools/vector_brush_078/radius_baseline.ms": "f3cc33949937430a61655fbef7424bcf2edf25a16ef26675a2d03819270c8a83",
+    "tools/vector_brush_078/responsiveness.ms": "025e62764953867f13b55f45b6fa5319f39985de9e842bd6ec7bc5c00250a651",
+    "tools/vector_brush_078/session_diagnostic.ms": "d7d18be3817383c740f5005af58fa7c3412daf6729d9d9b21624e94875a1a9a8",
+    "tools/vector_brush_078/callback_probe/probe.cpp": "6323c1a0f0ed7990f0f43ba1462fd5d0153425da472e3dc59457ab1a3ea700d5"
+  },
+  "limits": [
+    "Numerical/SDK and native-bounds tests; no physical pointer, tablet, glyph or DPI walkthrough",
+    "Drawing CPU measurements during desktop activity; not presented FPS or a controlled speedup comparison",
+    "Native brush payload and vector geometry unchanged",
+    "Older rectangles without the collection flag default off",
+    "Intermediate 2027 private startup exited before bootstrap; final -04 host fully qualified"
+  ]
+}

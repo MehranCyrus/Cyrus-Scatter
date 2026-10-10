@@ -48,7 +48,7 @@ VAssert (after[1]==8 and after[2]==12) "Popup feather controls update native set
 CyrusCloseLayerEditor()
 -- Begin/stop and SDK radius handoff; actual pointer/tablet gestures remain a gate.
 cyrusBrushSettings VD 23 false;cyrusBrushBegin VD
-VAssert (abs(painterInterface.maxSize-23)<.001 and abs(painterInterface.minSize-23)<.001) "Max Painter radius equals UI radius"
+VAssert (abs(painterInterface.maxSize-46)<.001 and abs(painterInterface.minSize-46)<.001) "Painter diameter is twice the authored UI radius"
 cyrusBrushRefreshMask VD
 local beforeStats=cyrusBrushStats VD
 sliderTime=10f;cyrusBrushRefreshMask VD

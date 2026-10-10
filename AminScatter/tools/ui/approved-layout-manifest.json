@@ -1,6 +1,6 @@
 {
   "schema": "cyrus.ui-layout/1",
-  "version": "0.78.2",
+  "version": "0.78.3",
   "source": "approved single-file HTML study",
   "sections": [
     {
@@ -176,6 +176,12 @@
           "component": "sourceContainersUI",
           "control": "containersList",
           "presentation": "sourceContainersUI_containersList",
+          "advanced": true
+        },
+        {
+          "component": "sourceContainersUI",
+          "control": "enabledCheck",
+          "presentation": "sourceContainersUI_enabledCheck",
           "advanced": true
         },
         {
@@ -857,25 +863,25 @@
           "component": "brushUI",
           "control": "densitySpin",
           "presentation": "brushUI_densitySpin",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "brushUI",
           "control": "overlayMode",
           "presentation": "brushUI_overlayMode",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "brushUI",
           "control": "overlayColor",
           "presentation": "brushUI_overlayColor",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "brushUI",
           "control": "brushHelp",
           "presentation": "brushUI_brushHelp",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "brushUI",
