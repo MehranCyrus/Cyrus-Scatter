@@ -1,0 +1,96 @@
+{
+  "baseline_commit": "40c750e",
+  "version": "0.76",
+  "schema": 54,
+  "native_tests": 14,
+  "python_tests": 141,
+  "python_seconds": 12.49,
+  "playback_assertions": 942,
+  "brush_host_assertions": 15,
+  "benchmark": [
+    {
+      "strokes": 100,
+      "faces": 20000,
+      "repetitions": 5,
+      "before_build_ms": 0.8371,
+      "before_append_ms": 0.2362,
+      "before_max_reference_error": 0.0,
+      "after_build_ms": 0.7172,
+      "after_append_ms": 0.1055,
+      "after_max_reference_error": 0.0
+    },
+    {
+      "strokes": 1000,
+      "faces": 20000,
+      "repetitions": 5,
+      "before_build_ms": 8.4058,
+      "before_append_ms": 1.7995,
+      "before_max_reference_error": 2.77556e-17,
+      "after_build_ms": 6.5041,
+      "after_append_ms": 0.2369,
+      "after_max_reference_error": 2.77556e-17
+    },
+    {
+      "strokes": 3000,
+      "faces": 20000,
+      "repetitions": 5,
+      "before_build_ms": 24.5677,
+      "before_append_ms": 5.0396,
+      "before_max_reference_error": 1.11022e-16,
+      "after_build_ms": 19.2458,
+      "after_append_ms": 0.7487,
+      "after_max_reference_error": 1.11022e-16
+    }
+  ],
+  "courtyard_navigation": [
+    {
+      "mode": "box",
+      "median_ms": 113.98535,
+      "p95_ms": 143.7452,
+      "shown": 23183,
+      "triangles": 278196
+    },
+    {
+      "mode": "sphere",
+      "median_ms": 107.20660000000001,
+      "p95_ms": 113.2584,
+      "shown": 23183,
+      "triangles": 3894744
+    },
+    {
+      "mode": "pyramid",
+      "median_ms": 111.1986,
+      "p95_ms": 118.2162,
+      "shown": 23183,
+      "triangles": 139098
+    },
+    {
+      "mode": "mesh",
+      "median_ms": 113.7055,
+      "p95_ms": 120.8091,
+      "shown": 10930,
+      "triangles": 17107129
+    },
+    {
+      "mode": "points",
+      "median_ms": 116.09035,
+      "p95_ms": 166.0949,
+      "shown": 127294,
+      "triangles": 0
+    }
+  ],
+  "courtyard_count": 53520,
+  "courtyard_position_model_fingerprints_unchanged": true,
+  "original_scene_sha256": "e0f32e1cd041c5e71ad5dc58877ddd493ce0eef7927ba0bc5fff96df3b0c9e32",
+  "original_scene_unchanged": true,
+  "normal_profile_installed": false,
+  "computer_use": false,
+  "limitations": [
+    "CPU preparation timings are not input-to-feedback latency",
+    "Per-document count limits are not aggregate scene/Undo/peak-memory limits",
+    "Cold realization and receiver-local stability remain open",
+    "No physical pointer/tablet testing or Max 2026 runtime qualification"
+  ],
+  "owned_test_process_stopped": true,
+  "delivery_verified": true
+}

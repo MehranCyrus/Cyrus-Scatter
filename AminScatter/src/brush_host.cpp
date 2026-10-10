@@ -168,8 +168,12 @@ public:
     const b::Field& fieldForRevision(){
         ensureSurface();
         if(!field||fieldIndexRevision!=revision){
-            b::Document current=document;if(gesture&&!pending.samples.empty())current.strokes.push_back(pending);
-            field=std::make_unique<b::Field>(*surface,current,field.get());fieldIndexRevision=revision;++fieldBuilds;
+            // Ordinary reads need no full copy of the authored history.
+            if(gesture&&!pending.samples.empty()){
+                b::Document current=document;current.strokes.push_back(pending);
+                field=std::make_unique<b::Field>(*surface,current,field.get());
+            }else field=std::make_unique<b::Field>(*surface,document,field.get());
+            fieldIndexRevision=revision;++fieldBuilds;
         }
         return *field;
     }

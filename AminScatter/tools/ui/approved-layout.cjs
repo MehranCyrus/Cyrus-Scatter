@@ -331,7 +331,7 @@ ${lists.map(c=>`        on ${c.id}_grip MouseDown sender args do beginListDrag s
 module.exports=function(s,{check=false}={}){
  const definitions=layouts.pages;
  const pages=definitions.map((d,i)=>page(s,d,{category:(i+1)*10}));
- const manifest={schema:'cyrus.ui-layout/1',version:'0.75',source:'approved single-file HTML study',sections:pages.map(p=>({name:p.name,title:definitions.find(d=>d.name===p.name).title,scope:p.scope,controls:p.controls.map(c=>({component:c.key,control:c.name,presentation:c.id,advanced:!!p.rows.find(r=>r.controls?.some(x=>x.id===c.id))?.advanced}))}))};
+ const manifest={schema:'cyrus.ui-layout/1',version:'0.76',source:'approved single-file HTML study',sections:pages.map(p=>({name:p.name,title:definitions.find(d=>d.name===p.name).title,scope:p.scope,controls:p.controls.map(c=>({component:c.key,control:c.name,presentation:c.id,advanced:!!p.rows.find(r=>r.controls?.some(x=>x.id===c.id))?.advanced}))}))};
  const output=JSON.stringify(manifest,null,2)+'\n',path='tools/ui/approved-layout-manifest.json';
  if(check){if(fs.readFileSync(path,'utf8')!==output)throw Error('Layout manifest is stale');}else fs.writeFileSync(path,output);
  // Replace the old native pages as one contiguous UI block, keeping calculation

@@ -150,5 +150,39 @@ int main(int argc,char** argv){
     auto changedMesh=grid;changedMesh.vertices[0].z+=1;Surface otherSurface(changedMesh);edited.surface=otherSurface.fingerprint();
     Field replaced(otherSurface,edited,&changedView);
     require(replaced.buildStats().reusedStrokes==0,"Changed mesh reused old brush patches");
+    // Aggregate limits include reused history and fail without damaging the
+    // previous immutable publication. Low injected limits avoid huge tests.
+    Stroke bounded;bounded.radius=2;bounded.samples={sample};bounded.strength=.4;
+    Document limited{surface.fingerprint(),{bounded}};
+    Field retained(surface,limited);
+    require(retained.buildStats().derivedDabs==1&&retained.buildStats().faceLinks==2,"Prepared history accounting");
+    require(retained.buildStats().indexBytes==3*sizeof(std::size_t)+2*2*sizeof(std::uint32_t),"Contiguous face-index allocation");
+    Field exact(surface,limited,nullptr,{1,2});
+    require(close(exact.evaluate(sample.anchor),retained.evaluate(sample.anchor)),"Exact preparation limits rejected valid field");
+    rejects([&]{Field tooManyLinks(surface,limited,nullptr,{1,1});});
+    rejects([&]{Field reusedOverLimit(surface,limited,&retained,{1,1});});
+    limited.strokes.push_back(bounded);
+    rejects([&]{Field tooManyDabs(surface,limited,&retained,{1,4});});
+    rejects([&]{Field aggregateLinks(surface,limited,&retained,{2,3});});
+    require(close(retained.evaluate(sample.anchor),.4),"Failed successor damaged previous field");
+    Field recovered(surface,limited,&retained,{2,4});
+    require(recovered.buildStats().reusedStrokes==1&&recovered.buildStats().compiledStrokes==1,"Recovery failed to reuse complete history");
+    require(close(recovered.evaluate(sample.anchor),.64),"Recovery changed paint composition");
+    auto connected=path;connected.samples[1].view=connected.samples[0].view;
+    const auto derived=resample(surface,connected).samples.size();
+    require(derived>connected.samples.size(),"Resampling witness failed");
+    rejects([&]{resample(surface,connected,derived-1);});
+    Document connectedHistory{surface.fingerprint(),{connected,connected}};
+    Field firstConnected(surface,{surface.fingerprint(),{connected}});
+    rejects([&]{Field aggregateDerived(surface,connectedHistory,&firstConnected,{derived*2-1,8000000});});
+    Field enough(surface,connectedHistory,&firstConnected,{derived*2,8000000});
+    require(enough.buildStats().derivedDabs==derived*2,"Derived dabs not counted across strokes");
+    require(close(enough.evaluate(sample.anchor),enough.evaluateReference(sample.anchor)),"Bounded connected replay changed coverage");
+    // Sparse face ranges and disabled histories must not borrow another face's
+    // links, including empty ranges following a nonempty one.
+    auto disabled=limited;for(auto& s:disabled.strokes)s.enabled=false;
+    Field off(surface,disabled,&recovered,{2,0});
+    require(off.buildStats().faceLinks==0&&off.evaluate(sample.anchor)==0,"Disabled stroke acquired links");
+    require(encode(decode(encode(connectedHistory)))==encode(connectedHistory),"Preparation limits changed stored bytes");
     std::cout<<"PASS "<<checks<<" Brush checks: surface picking, footprint, opacity, erase, replay, identity, persistence and validation\n";
 }

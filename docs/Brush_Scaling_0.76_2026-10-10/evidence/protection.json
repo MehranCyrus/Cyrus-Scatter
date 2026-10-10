@@ -1,0 +1,13 @@
+{
+  "owned_process_id": 28336,
+  "owned_command_line_verified_before_stop": true,
+  "owned_process_stopped": true,
+  "other_processes_targeted": false,
+  "original_scene_unchanged": true,
+  "original_scene_sha256": "e0f32e1cd041c5e71ad5dc58877ddd493ce0eef7927ba0bc5fff96df3b0c9e32",
+  "normal_profile_installed": false,
+  "package_hashes_verified": true,
+  "source_hashes_verified": true,
+  "local_links_verified": 121,
+  "website_and_landing_design_unchanged": true
+}

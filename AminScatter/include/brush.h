@@ -28,7 +28,12 @@ struct Stroke {
 };
 struct Document { std::uint64_t surface{}; std::vector<Stroke> strokes; double base=0; };
 struct QueryStats { std::uint64_t triangles=0,fieldQueries=0,dabs=0; };
-struct FieldBuildStats { std::uint64_t compiledStrokes=0,reusedStrokes=0; };
+struct FieldBuildStats {
+    std::uint64_t compiledStrokes=0,reusedStrokes=0,derivedDabs=0,faceLinks=0,indexBytes=0;
+};
+// Aggregate limits for one prepared document, including reused strokes.
+// Refuse a successor rather than truncate ordered paint/erase coverage.
+struct FieldLimits { std::size_t dabs=1000000,faceLinks=8000000; };
 class Surface {
     struct Impl; std::shared_ptr<const Impl> impl;
 public:
@@ -39,14 +44,14 @@ public:
     Vec3 normal(std::uint32_t face) const;
     bool hit(Ray,Hit&,double maxDistance=std::numeric_limits<double>::infinity(),QueryStats* stats=nullptr) const;
     bool hitReference(Ray,Hit&,double maxDistance=std::numeric_limits<double>::infinity()) const;
-    std::vector<std::uint32_t> patch(const Sample&,double radius) const;
+    std::vector<std::uint32_t> patch(const Sample&,double radius,std::size_t maxFaces=8000000) const;
     bool visible(Anchor,const View&,QueryStats* stats=nullptr) const;
 };
 // Index stroke dabs by connected affected faces. Full ordered replay remains the oracle.
 class Field {
     struct Impl; std::shared_ptr<const Impl> impl;
 public:
-    Field(const Surface&,const Document&,const Field* previous=nullptr);
+    Field(const Surface&,const Document&,const Field* previous=nullptr,FieldLimits limits={});
     FieldBuildStats buildStats() const;
     double evaluate(Anchor,QueryStats* stats=nullptr) const;
     double evaluateReference(Anchor,QueryStats* stats=nullptr) const;
@@ -66,5 +71,5 @@ Document decode(const std::vector<std::uint8_t>&);
 void validate(const Stroke&);
 // Re-hit interpolated cursor rays at spacing derived from the current radius.
 // Source records remain unchanged so radius edits never reuse old sparse dabs.
-Stroke resample(const Surface&,const Stroke&);
+Stroke resample(const Surface&,const Stroke&,std::size_t maxDabs=1000000);
 }

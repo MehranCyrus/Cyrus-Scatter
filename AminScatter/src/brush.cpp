@@ -112,13 +112,17 @@ bool Surface::hit(Ray r,Hit& result,double limit,QueryStats* stats)const{
     }return found;
 }
 bool Surface::hitReference(Ray r,Hit& result,double limit)const{bool found=false;for(std::uint32_t f=0;f<mesh().faces.size();++f){Hit h;if(triangleHit(mesh(),f,r,h,limit)&&(!found||h.distance<result.distance)){result=h;limit=h.distance;found=true;}}return found;}
-std::vector<std::uint32_t> Surface::patch(const Sample& s,double radius)const{
+std::vector<std::uint32_t> Surface::patch(const Sample& s,double radius,std::size_t maxFaces)const{
     checkSample(s);if(!std::isfinite(radius)||radius<=0)throw std::invalid_argument("Brush radius must be positive");
+    if(!maxFaces)throw std::invalid_argument("Brush preparation face-link limit: reduce history or brush radius");
     const auto center=position(s.anchor);std::vector<std::uint32_t> result{s.anchor.face};std::vector<bool> visited(mesh().faces.size());visited[s.anchor.face]=true;
     for(std::size_t i=0;i<result.size();++i){const auto f=result[i];const auto ids=mesh().faces[f];
         for(int edge=0;edge<3;++edge){const int next=impl->neighbors[f][edge];if(next<0||visited[next])continue;
             const auto a=mapped(mesh().vertices[ids[edge]]-center,s.basis),b=mapped(mesh().vertices[ids[(edge+1)%3]]-center,s.basis);
-            if(segmentDistance2(a,b)<=radius*radius){visited[next]=true;result.push_back(static_cast<std::uint32_t>(next));}
+            if(segmentDistance2(a,b)<=radius*radius){
+                if(result.size()>=maxFaces)throw std::invalid_argument("Brush preparation face-link limit: reduce history or brush radius");
+                visited[next]=true;result.push_back(static_cast<std::uint32_t>(next));
+            }
         }
     }std::sort(result.begin(),result.end());return result;
 }
@@ -136,8 +140,15 @@ void validate(const Stroke& s){
     if(!std::isfinite(s.radius)||s.radius<=0||!std::isfinite(s.strength)||s.strength<0||s.strength>1||!std::isfinite(s.softness)||s.softness<0||s.softness>1||s.samples.size()>1000000)throw std::invalid_argument("Invalid Brush stroke settings");
     for(const auto& sample:s.samples)checkSample(sample);
 }
-Stroke resample(const Surface& surface,const Stroke& input){
-    validate(input);Stroke out=input;out.samples.clear();
+Stroke resample(const Surface& surface,const Stroke& input,std::size_t maxDabs){
+    validate(input);maxDabs=std::min<std::size_t>(maxDabs,1000000);
+    if(input.samples.size()>maxDabs)throw std::invalid_argument("Brush preparation dab limit: reduce stroke history");
+    Stroke out;out.id=input.id;out.enabled=input.enabled;out.erase=input.erase;
+    out.radius=input.radius;out.strength=input.strength;out.softness=input.softness;
+    auto append=[&](const Sample& dab){
+        if(out.samples.size()>=maxDabs)throw std::invalid_argument("Brush preparation dab limit: reduce stroke history");
+        out.samples.push_back(dab);
+    };
     for(std::size_t i=0;i<input.samples.size();++i){const auto& current=input.samples[i];
         if(i&&current.connected&&input.samples[i-1].hasPath){const auto& previous=input.samples[i-1];
             // A view/transform change breaks the path in the host. Refuse a
@@ -153,11 +164,10 @@ Stroke resample(const Surface& surface,const Stroke& input){
             const auto steps=static_cast<unsigned>(std::max(1.,required));
             for(unsigned j=1;j<steps;++j){const double t=double(j)/steps;Sample dab=current;
                 dab.ray={previous.ray.origin*(1-t)+current.ray.origin*t,previous.ray.direction*(1-t)+current.ray.direction*t};
-                Hit hit;if(!surface.hit(dab.ray,hit))continue;dab.anchor=hit.anchor;dab.hasPath=false;dab.connected=false;out.samples.push_back(dab);
+                Hit hit;if(!surface.hit(dab.ray,hit))continue;dab.anchor=hit.anchor;dab.hasPath=false;dab.connected=false;append(dab);
             }
         }
-        out.samples.push_back(current);
-        if(out.samples.size()>1000000)throw std::invalid_argument("Derived Brush dab limit");
+        append(current);
     }return out;
 }
 double apply(double before,double q,bool erase){q=std::clamp(q,0.,1.);return erase?before*(1-q):before+(1-before)*q;}
@@ -181,27 +191,39 @@ bool sameStroke(const Stroke& a,const Stroke& b){
 }
 struct Field::Impl {
     Surface surface;double base;Box influenceBounds;bool hasInfluence=false;FieldBuildStats stats;
-    struct Link{std::uint32_t stroke,sample;};std::vector<std::vector<Link>> byFace;
+    struct Link{std::uint32_t stroke,sample;};
+    // Exact-size contiguous face ranges avoid per-face allocation and growth
+    // slack. Entries within each face retain original stroke/dab ordering.
+    std::vector<std::size_t> faceOffsets;std::vector<Link> faceLinks;
     struct CompiledStroke {
         Stroke original,stroke;
         std::vector<std::vector<std::uint32_t>> patches;
         std::vector<Vec3> centers;
         Box bounds;bool hasInfluence=false;
+        std::size_t links=0;
     };
     // Immutable entries can survive append, Undo and changes to another stroke.
     // They do not retain a chain of previous Field objects.
     std::vector<std::shared_ptr<const CompiledStroke>> compiled;
-    Impl(const Surface& s,const Document& d,const Impl* previous):surface(s),base(d.base),byFace(s.mesh().faces.size()){
+    Impl(const Surface& s,const Document& d,const Impl* previous,FieldLimits limits):surface(s),base(d.base){
         if(d.surface!=s.fingerprint())throw std::invalid_argument("Brush surface changed; rebind required");
         if(!std::isfinite(d.base)||d.base<0||d.base>1)throw std::invalid_argument("Invalid Brush base density");
         if(d.strokes.size()>10000)throw std::invalid_argument("Too many Brush strokes");
         if(previous&&previous->surface.fingerprint()!=s.fingerprint())previous=nullptr;
+        // A caller may lower the limits for qualification, never bypass them.
+        limits.dabs=std::min<std::size_t>(limits.dabs,1000000);
+        limits.faceLinks=std::min<std::size_t>(limits.faceLinks,8000000);
+        std::size_t storedSamples=0;
+        for(const auto& stroke:d.strokes){
+            if(stroke.samples.size()>limits.dabs-storedSamples)throw std::invalid_argument("Brush document sample limit");
+            storedSamples+=stroke.samples.size();
+        }
         compiled.reserve(d.strokes.size());
         for(std::uint32_t i=0;i<d.strokes.size();++i){
             if(previous&&i<previous->compiled.size()&&sameStroke(d.strokes[i],previous->compiled[i]->original)){
                 compiled.push_back(previous->compiled[i]);++stats.reusedStrokes;
             }else{
-            auto entry=std::make_shared<CompiledStroke>();entry->original=d.strokes[i];entry->stroke=resample(s,d.strokes[i]);
+            auto entry=std::make_shared<CompiledStroke>();entry->stroke=resample(s,d.strokes[i],limits.dabs-stats.derivedDabs);entry->original=d.strokes[i];
             const auto& stroke=entry->stroke;entry->patches.resize(stroke.samples.size());++stats.compiledStrokes;
             if(stroke.enabled)
             for(std::uint32_t j=0;j<stroke.samples.size();++j){
@@ -212,22 +234,35 @@ struct Field::Impl {
                 const double factor=stroke.radius/std::abs(amin::dot(sample.basis[0],x));
                 const Vec3 extent{amin::length(x)*factor,amin::length(y)*factor,amin::length(z)*factor};
                 entry->bounds.add(center-extent);entry->bounds.add(center+extent);entry->hasInfluence=true;
-                entry->patches[j]=s.patch(sample,stroke.radius);
+                entry->patches[j]=s.patch(sample,stroke.radius,limits.faceLinks-stats.faceLinks-entry->links);
+                entry->links+=entry->patches[j].size();
             }
             compiled.push_back(std::move(entry));
             }
             const auto& entry=*compiled.back();
+            if(entry.stroke.samples.size()>limits.dabs-stats.derivedDabs)throw std::invalid_argument("Brush preparation dab limit: reduce stroke history");
+            if(entry.links>limits.faceLinks-stats.faceLinks)throw std::invalid_argument("Brush preparation face-link limit: reduce history or brush radius");
+            stats.derivedDabs+=entry.stroke.samples.size();stats.faceLinks+=entry.links;
             if(entry.hasInfluence){influenceBounds.add(entry.bounds.lo);influenceBounds.add(entry.bounds.hi);hasInfluence=true;}
-            for(std::uint32_t j=0;j<entry.patches.size();++j)for(auto f:entry.patches[j])byFace[f].push_back({i,j});
         }
+        faceOffsets.resize(s.mesh().faces.size()+1);
+        for(const auto& entry:compiled)for(const auto& patch:entry->patches)for(auto f:patch)++faceOffsets[f+1];
+        std::partial_sum(faceOffsets.begin(),faceOffsets.end(),faceOffsets.begin());
+        faceLinks.resize(static_cast<std::size_t>(stats.faceLinks));
+        auto cursor=faceOffsets;
+        for(std::uint32_t i=0;i<compiled.size();++i){const auto& patches=compiled[i]->patches;
+            for(std::uint32_t j=0;j<patches.size();++j)for(auto f:patches[j])faceLinks[cursor[f]++]={i,j};
+        }
+        stats.indexBytes=faceOffsets.capacity()*sizeof(std::size_t)+faceLinks.capacity()*sizeof(Link);
     }
 };
-Field::Field(const Surface& s,const Document& d,const Field* previous):impl(std::make_shared<Impl>(s,d,previous?previous->impl.get():nullptr)){}
+Field::Field(const Surface& s,const Document& d,const Field* previous,FieldLimits limits):impl(std::make_shared<Impl>(s,d,previous?previous->impl.get():nullptr,limits)){}
 FieldBuildStats Field::buildStats()const{return impl->stats;}
 
 double Field::previewStep(std::uint32_t face,const std::array<Vec3,3>& bary)const{
     double step=std::numeric_limits<double>::infinity();
-    for(auto link:impl->byFace.at(face)){
+    for(auto i=impl->faceOffsets.at(face);i<impl->faceOffsets.at(std::size_t(face)+1);++i){
+        const auto link=impl->faceLinks[i];
         const auto& entry=*impl->compiled[link.stroke];const auto& stroke=entry.stroke;const auto& sample=stroke.samples[link.sample];
         Vec3 lo{INFINITY,INFINITY,INFINITY},hi{-INFINITY,-INFINITY,-INFINITY};
         for(auto b:bary){auto p=mapped(impl->surface.position({face,b})-entry.centers[link.sample],sample.basis);lo={std::min(lo.x,p.x),std::min(lo.y,p.y),std::min(lo.z,p.z)};hi={std::max(hi.x,p.x),std::max(hi.y,p.y),std::max(hi.z,p.z)};}
@@ -274,9 +309,9 @@ double Field::evaluate(Anchor a,QueryStats* stats)const{
     // Compose backwards. Opaque coverage makes all older history irrelevant;
     // stop exactly at zero transmission, never at an approximate threshold.
     double value=0,transmission=1;
-    const auto& links=impl->byFace.at(a.face);
-    std::size_t end=links.size();
-    while(end>0 && transmission>0){
+    const auto& links=impl->faceLinks;
+    const auto begin=impl->faceOffsets[a.face];std::size_t end=impl->faceOffsets[std::size_t(a.face)+1];
+    while(end>begin && transmission>0){
         const auto index=links[end-1].stroke;
         const auto& entry=*impl->compiled[index];const auto& stroke=entry.stroke;
         double q=0;
@@ -290,7 +325,7 @@ double Field::evaluate(Anchor a,QueryStats* stats)const{
             double candidate=stroke.strength;
             if(stroke.softness>0&&ratio>1-stroke.softness){const double x=(ratio-(1-stroke.softness))/stroke.softness;candidate*=1-x*x*(3-2*x);}
             if(candidate>q&&impl->surface.visible(a,dab.view,stats))q=candidate;
-        }while(end>0 && links[end-1].stroke==index);
+        }while(end>begin && links[end-1].stroke==index);
         if(!stroke.erase)value+=transmission*q;
         transmission*=1-q;
     }

@@ -2,7 +2,7 @@
 
 Native C++ and generated MAXScript for Cyrus Scatter and Cyrus Surface Analyzer in 3ds Max.
 
-**Current development: Scatter 0.75 / package 0.75.0 / schema 54 / CyrusUnified1.** Analyzer remains 0.14; MCP package/plan remain 0.73.0/0.73. This is not 1.0 release certification.
+**Current development: Scatter 0.76 / package 0.76.0 / schema 54 / CyrusUnified1.** Analyzer remains 0.14; MCP package/plan remain 0.73.0/0.73. This is not 1.0 release certification.
 
 ## Start here
 
@@ -13,10 +13,10 @@ Native C++ and generated MAXScript for Cyrus Scatter and Cyrus Surface Analyzer 
 | See what needs fixing next | [Current backlog](docs/BACKLOG.md) |
 | Install or rebuild | [Max 2027 installation/build](docs/Max_2027_Installation.md) |
 | Work on the repository | [AGENTS.md](AGENTS.md), [agent workflow](docs/AGENT_WORKFLOW.md) |
-| Find tests and exact results | [Latest courtyard fixes and matched packages](docs/Courtyard_Fixes_0.75_2026-10-10/README.md), [0.75 system qualification](docs/System_Qualification_0.75_2026-10-09/README.md) and [feature checklist](docs/System_Qualification_0.75_2026-10-09/CHECKLIST.md) |
+| Find tests and exact results | [Latest 0.76 Brush fixes and matched packages](docs/Brush_Scaling_0.76_2026-10-10/README.md), [retained Proxy/Analyzer fixes](docs/Courtyard_Fixes_0.75_2026-10-10/README.md), [0.75 system qualification](docs/System_Qualification_0.75_2026-10-09/README.md) and [feature checklist](docs/System_Qualification_0.75_2026-10-09/CHECKLIST.md) |
 | Other documentation | [Documentation index](docs/README.md) |
 
-The latest matched candidate fixes retained Proxy drawing, repeated root Update work and Analyzer freshness. Its bounded native, Python, scripted Max and Corona geometry checks pass. Cold viewport realization, the earlier intermittent display observation, receiver stability, Brush scaling and broader artist acceptance remain open. Install the matching Scatter/Analyzer pair linked above; identical version captions alone do not identify a build. See the backlog and exact receipts before treating a feature as qualified.
+The latest matched candidate adds bounded Brush preparation and faster history indexing to the retained Proxy, root Update and Analyzer fixes. Its bounded native, Python, scripted Max and Corona geometry checks pass. Cold viewport realization, the earlier intermittent display observation, receiver stability, full-scene Brush memory/latency and broader artist acceptance remain open. Install the matching Scatter/Analyzer pair linked above; version captions alone do not identify a build. See the backlog and exact receipts before treating a feature as qualified.
 
 ## Repository
 

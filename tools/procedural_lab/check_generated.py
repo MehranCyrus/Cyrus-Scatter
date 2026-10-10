@@ -97,7 +97,7 @@ def main():
     assert all(p.read_bytes()==data for p,data in before.items()),'Generated source/help was stale; inspect and rerun.'
     text=SCRIPT.read_text(encoding='utf-8')
     check_balanced(text)
-    assert re.findall(r'fn uiVersion = "([^"]+)"',text)==['0.75']
+    assert re.findall(r'fn uiVersion = "([^"]+)"',text)==['0.76']
     assert 'version:54\ninitialRollupState' in text and 'CyrusUnified1' in text
     for obsolete in ('groupPolicy','procUpgrade','paintIdentity','Layer priority','legacyUI','if true then','if false then'):
         assert obsolete not in text,obsolete
@@ -132,7 +132,7 @@ def main():
     schema=json.loads((ROOT/'CyrusMCP/cyrus_mcp/plan.schema.json').read_text())
     assert schema['properties']['schema_version']['const']=='0.73'
     catalog=json.loads((ROOT/'CyrusMCP/cyrus_mcp/feature-catalog.json').read_text())
-    assert catalog['development_version']=='0.75' and catalog['calculation_model']=='CyrusUnified1'
+    assert catalog['development_version']=='0.76' and catalog['calculation_model']=='CyrusUnified1'
     assert len(catalog['controls'])==len(current) and len(catalog['features'])==34
     assert catalog['control_inventory_sha256']==hashlib.sha256(products[1].read_bytes()).hexdigest()
     assert catalog['capability_source_sha256']==hashlib.sha256((ROOT/'docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md').read_bytes()).hexdigest()
@@ -141,7 +141,7 @@ def main():
     fixtures += sorted((ROOT/'tools/procedural_lab').glob('Max_*075*.ms'))
     fixtures += [ROOT/'tools/procedural_lab/Max_Procedural_07_Fixture.ms',ROOT/'tools/procedural_lab/Max_Procedural_07_Acceptance.ms']
     for fixture in fixtures:check_balanced(fixture.read_text(encoding='utf-8-sig'))
-    result=dict(check='unified_073_generator_integration',passed=True,development_version='0.75',
+    result=dict(check='unified_073_generator_integration',passed=True,development_version='0.76',
         baseline=BASE,maxscript_compiled=False,ui_controls_in_inventory=len(current),baseline_controls_accounted=245,
         generated_sha256=hashlib.sha256(SCRIPT.read_bytes()).hexdigest(),preserved_files=preserved,
         fixture_delimiters_checked=len(fixtures),interactive_max_run=False)

@@ -9,14 +9,14 @@ This is the single maintained Scatter work list. Update it in place when a findi
 | B01 | Open observation: retained-buffer assertion failed after a mixed UI/legacy sequence; clean and isolated playback pass | Reproduce the sequence with preparation/publication/upload counters, distinguish initial realization from unchanged reuse, then fix the demonstrated cause |
 | B02 | Known limitation: changing receivers can move existing placements | Define receiver-local identity and Fixed Total survivor/quota policy; test 20→21, reorder/remove/restore, Density, Paint Areas, Edit/radii and collision dependencies together |
 | B03 | Fixed within the [courtyard fix campaign](Courtyard_Fixes_0.75_2026-10-10/README.md): Proxy now uses retained instanced geometry; equal-count Sphere synchronous redraw improved 938→116 ms median, with stable Mesh/Points | Continue physical viewport, device-loss and sustained-session qualification; synchronous redraw is not presented FPS |
-| B04 | Incomplete Brush scaling: stroke storage, aggregate derived memory and full feedback latency | Bound dabs/links/bytes and old/new peak memory; measure long soft/erase histories, folded/nearby surfaces and input-to-feedback latency; preserve exact ordered coverage |
+| B04 | Partly fixed in [0.76](Brush_Scaling_0.76_2026-10-10/README.md): aggregate derived-dab/face-link limits, contiguous indexing and ordinary-read copy removal; long-history/overflow/recovery tests pass | Still bound whole-scene bytes and old/new/Undo peak memory; measure physical input-to-feedback latency, long active gestures, folded/nearby surfaces and many Paint Areas; preserve exact ordered coverage |
 | B05 | Unresolved historical observation: first cold physical container Move/Undo lost history | Fresh pointer gesture with preceding Undo entries, cancel, Undo/Redo and exact source/group transforms; scripted movement passes alone do not close it |
 | B06 | Older multi-set conversion is unfinished | Explicit conversion preserving intended models, counts, paint, spacing and identities; no silent reinterpretation as Paint Areas |
 | B07 | Historical Brush BR-01 tiny-coordinate reopen remains unisolated | Signed zero/subnormal/ordinary coordinates, scene units, real topology changes and save/reopen; preserve authored bytes and topology guards |
 | B08 | Geometry stress remains underqualified | Exhaustive-reference projection and extreme-radius collision witnesses, cleanup/refill/protected combinations, bounded work and failure retention |
 | B09 | Diagnostics failure coverage is incomplete | Full/unwritable/damaged storage and secondary export-cleanup failures preserve the primary error; reporting remains passive and bounded |
 | B10 | Some legacy tooltips still describe old groups/UI | Reconcile exact owner and control help with the current generator/catalog without broadening MCP authority |
-| B11 | Cold viewport realization remains expensive: final courtyard cold Update took 16.6 seconds despite removing repeated root work | Separate cold preparation, Max redraw and retained realization across fresh processes; preserve atomic publication and Manual/Live contracts |
+| B11 | Cold viewport realization remains expensive: courtyard cold Update measured 16.6 seconds in 0.75 and 17.2 seconds in 0.76 despite removing repeated root work | Separate cold preparation, Max redraw and retained realization across fresh processes; preserve atomic publication and Manual/Live contracts |
 
 ## Final artist and release gates
 
@@ -28,6 +28,7 @@ This is the single maintained Scatter work list. Update it in place when a findi
 
 ## Recently closed within bounded tests
 
+- [x] 0.76 Brush aggregate count limits and contiguous face indexing: the real 8-million-link boundary, overflow retention and Undo/Redo recovery pass in Max; 1,000-stroke save/reopen passes. Full playback and courtyard fingerprints/cache reuse remain stable. [Exact evidence and limits](Brush_Scaling_0.76_2026-10-10/README.md).
 - [x] Retained Proxy drawing, one root refresh per explicit Update, Analyzer revision reuse, and stale-Analyzer guards including immediate edits/save/reopen/merge. [Final matched-build results](Courtyard_Fixes_0.75_2026-10-10/README.md): 84 focused host checks, 942 playback assertions, native/Python regressions and Corona geometry smoke passed.
 - [x] Manual pending edits no longer publish after unrelated Undo/Redo in the tested scenario.
 - [x] Layer-owned receivers and optional receiver-bound Paint Areas; plane/sphere, inactive targets, shared models and coverage union.

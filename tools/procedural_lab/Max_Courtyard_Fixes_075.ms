@@ -71,7 +71,11 @@ fn F75Analyzer = (
  a.strokeSourceRows=#(1);a.strokeSourceNodes=#(s);a.strokeMin=#(1.0);a.strokeMax=#(1.0)
  r.refreshAll();F75Check (a.generatedCount>0 and a.previewError=="") "Current Analyzer produces a border"
  local old=r.procEpoch,fp=P07Fingerprint r,runs=an.getAnalysisRuns()
- r.updateMode=2;F75Settle();old=r.procEpoch
+ -- Creation/controller notifications are delayed by the host. Drain that
+ -- initial sequence before asserting unchanged steady-state scheduling.
+ r.updateMode=2
+ for settle=1 to 8 do (sleep .05;F75Settle())
+ old=r.procEpoch
  for i=1 to 5 do (a.checkAnalyzerRevision();F75Check (not a.dirty) "Unchanged Analyzer revision leaves Live layer current";F75Settle())
  F75Check (r.procEpoch==old and an.getAnalysisRuns()==runs) "Live redraw neither republishes nor reanalyzes unchanged guides"
  r.updateMode=1;P07Surface.pos.z=10

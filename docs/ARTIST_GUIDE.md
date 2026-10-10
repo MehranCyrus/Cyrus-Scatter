@@ -1,6 +1,6 @@
-# Cyrus Scatter 0.75 — current workflow
+# Cyrus Scatter 0.76 — current workflow
 
-9 October 2026. Use this guide for the current UI and ownership model. Dated 0.73 guides describe the older layout. This guide explains behavior; the qualification checklist separately identifies what has been tested.
+Updated 10 October 2026. Use this guide for the current UI and ownership model. Dated 0.73 guides describe the older layout. This guide explains behavior; the qualification checklist separately identifies what has been tested.
 
 ## Start with a layer
 
@@ -42,6 +42,8 @@ Amount offers fixed Count or area Density. The seed makes a given recipe reprodu
 ## Painting on multiple receivers
 
 Turn on **Use Paint Areas** only when you want to restrict the layer to painted coverage. Add a named Paint Area and choose its Surface from that layer's receiver list. Start Brush and paint. Further strokes edit the selected area; they do not create new populations or new named areas automatically.
+
+Very long histories or large brushes on dense meshes can reach a preparation limit. Cyrus reports the limit and keeps the last complete scatter; it does not silently simplify or delete your paint. Undo the last change or reduce the offending radius/history, then Update. In 0.76 the limits include all derived dabs and affected-face links within the Paint Area, including reused history.
 
 For a plane and sphere in one layer, create one area targeting the plane and another targeting the sphere. Selecting an area changes the brush target, while both areas use the layer's model collection. Overlapping areas combine coverage without duplicating the layer's plants. Paint/Erase, radius, strength and softness affect the selected area. Fill and Empty affect that area's coverage. Stop ends the active brush session.
 

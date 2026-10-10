@@ -4,7 +4,7 @@ Use this small set for the current codebase. Update it in place instead of creat
 
 | Question | Document |
 | --- | --- |
-| How do I use 0.75? | [Artist guide](ARTIST_GUIDE.md) |
+| How do I use 0.76? | [Artist guide](ARTIST_GUIDE.md) |
 | How do Layout, Analyzer and falloff controls interact? | [Detailed feature reference](LAYOUT_AND_FALLOFF.md) |
 | Who owns data and where is the implementation? | [Architecture](ARCHITECTURE.md) |
 | What is unfinished or next? | [Current backlog](BACKLOG.md) |
@@ -13,6 +13,7 @@ Use this small set for the current codebase. Update it in place instead of creat
 | What was actually tested? | [0.75 results](System_Qualification_0.75_2026-10-09/README.md), [feature checklist](System_Qualification_0.75_2026-10-09/CHECKLIST.md), [234-control register](System_Qualification_0.75_2026-10-09/CONTROL_REGISTER.md) |
 | How did the features work together in a landscape? | [Courtyard scene, painting/layout checklist and performance study](Courtyard_Study_0.75_2026-10-09/README.md) |
 | What did we fix after that study? | [Retained Proxy, Update and Analyzer fixes, measurements and matched packages](Courtyard_Fixes_0.75_2026-10-10/README.md) |
+| What is in the latest 0.76 candidate? | [Bounded Brush preparation, faster history indexing and current qualification](Brush_Scaling_0.76_2026-10-10/README.md) |
 | What can automation do? | [MCP guide](../CyrusMCP/README.md), [capability matrix](Current_System_2026-10-05/CAPABILITY_MATRIX.md) |
 | How does the separate Analyzer work? | [Analyzer guide](../CyrusSurfaceAnalyzer/README.md) |
 | What is the version/delivery policy? | [Versioning](Release_Versioning.md), [workspace and backup scope](Workspace_Organization.md) |

@@ -2,8 +2,8 @@
 
 | Domain | Current value | Meaning |
 | --- | --- | --- |
-| Scatter UI | 0.75 | Artist-facing development label |
-| Scatter native/package | 0.75.0 | Build and package metadata |
+| Scatter UI | 0.76 | Artist-facing development label |
+| Scatter native/package | 0.76.0 | Build and package metadata |
 | Saved MAXScript schema | 54 | Serialized object format; independent of UI caption |
 | Calculation model | CyrusUnified1 | Current procedural model |
 | Surface Analyzer | 0.14 | Independently versioned product |
@@ -15,6 +15,6 @@ Preserve internal class IDs and registration names. A caption or matching schema
 
 Current supported older 0.74 single/multi-set retention is bounded by its tested cases. Multi-set conversion remains unfinished. Retired unpublished scene/Edit/plan formats are not promised automatic migration. Preserve original scenes when testing another development build.
 
-Before delivery, regenerate UI, run appropriate offline/native/host checks, package the tested pair, verify archive contents and hashes, and record remaining gates. Installer execution and host restart need their own qualification. SDK coverage does not certify Max runtime. Use [current acceptance](BACKLOG.md), [build instructions](Max_2027_Installation.md), and [the latest matched package receipt](Courtyard_Fixes_0.75_2026-10-10/PACKAGE.json). This candidate retains the development captions but adds Analyzer freshness state; older guides require one explicit Analyze. The dated manifest identifies the actual payload.
+Before delivery, regenerate UI, run appropriate offline/native/host checks, package the tested pair, verify archive contents and hashes, and record remaining gates. Installer execution and host restart need their own qualification. SDK coverage does not certify Max runtime. Use [current acceptance](BACKLOG.md), [build instructions](Max_2027_Installation.md), and [the latest matched package receipt](Brush_Scaling_0.76_2026-10-10/PACKAGE.json). The 0.76 candidate preserves schema 54 and the prior Analyzer freshness state; older guides without that record require one explicit Analyze. The dated manifest identifies the actual payload.
 
 Historical reports and package identities keep their original version labels. New work updates these current documents in place; it does not rewrite old measurements or create another competing version policy.

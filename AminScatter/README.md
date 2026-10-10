@@ -1,13 +1,13 @@
 # Cyrus Scatter native engine and UI
 
-Current development version **0.75.0**, displayed as **0.75**; saved schema **54**, model **CyrusUnified1**. The public name is Cyrus Scatter; internal AminScatter identifiers remain for registration.
+Current development version **0.76.0**, displayed as **0.76**; saved schema **54**, model **CyrusUnified1**. The public name is Cyrus Scatter; internal AminScatter identifiers remain for registration.
 
 - [Current artist workflow](../docs/ARTIST_GUIDE.md)
 - [Architecture and source ownership](../docs/ARCHITECTURE.md)
 - [Layout, Analyzer and falloff details](../docs/LAYOUT_AND_FALLOFF.md)
 - [Build/install instructions](../docs/Max_2027_Installation.md)
 - [Current limits and work](../docs/BACKLOG.md)
-- [Exact qualification](../docs/System_Qualification_0.75_2026-10-09/README.md)
+- [Latest qualification](../docs/Brush_Scaling_0.76_2026-10-10/README.md)
 
 ## Development
 

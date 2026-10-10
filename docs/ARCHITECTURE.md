@@ -1,6 +1,6 @@
 # Current codebase architecture
 
-Applies to Cyrus Scatter 0.75, saved schema 54 and `CyrusUnified1`. Use [the artist guide](ARTIST_GUIDE.md) for controls, [the backlog](BACKLOG.md) for unfinished work, and [qualification](System_Qualification_0.75_2026-10-09/README.md) for measured evidence. This is the maintained architecture reference; dated implementation reports describe their own snapshots.
+Applies to Cyrus Scatter 0.76, saved schema 54 and `CyrusUnified1`. Use [the artist guide](ARTIST_GUIDE.md) for controls, [the backlog](BACKLOG.md) for unfinished work, and [qualification](Brush_Scaling_0.76_2026-10-10/README.md) for measured evidence. This is the maintained architecture reference; dated implementation reports describe their own snapshots.
 
 ## Ownership
 
@@ -20,6 +20,8 @@ Older supported 0.74 model-owning sets retain separate models, shares and collis
 The generated controller prepares geometry and keyed candidates, applies supported candidate Relax, coverage/area/falloff and transforms, resolves Edit/radius information, evaluates ordered spacing and accepted-union cleanup, and stages the complete result. Candidate budget and accepted target have different bounded retry semantics. Earlier accepted owners and protected edits affect later acceptance.
 
 Paint Areas combine coverage by maximum within their layer; a candidate is accepted at most once. Areas do not create additional population quotas. The combined receiving-surface sampler is still used, so stable candidate IDs do **not** guarantee unchanged positions when receivers are added or reordered.
+
+Brush 0.76 prepares at most 1,000,000 derived dabs and 8,000,000 dab-to-face links per document, including reused strokes. It checks connected-patch growth and resampling before exceeding those counts. The face lookup uses contiguous ordered ranges; reverse evaluation and full replay retain the same paint/erase semantics. Failed preparation leaves the previous immutable field and complete Scatter publication available. Authored history remains intact for Undo or reducing the offending radius/history. These are per-document count bounds, not a total process-memory or full-scene budget; authored copies, Undo, old/new fields, mesh acceleration and feedback have separate costs.
 
 Publication commits compatible rows, sources, radii, statistics and display/output state as one complete epoch. Failed successors retain the prior complete publication and report the error. Pending configuration and published output can therefore legitimately differ.
 
