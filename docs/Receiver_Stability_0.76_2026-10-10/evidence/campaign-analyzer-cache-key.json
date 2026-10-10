@@ -1,0 +1,80 @@
+[
+  {
+    "name": "load-Max_Procedural_07_Acceptance.ms",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076/probe-4049ce3550a14bef84320b6c2063d9bf.ms",
+    "passed": true,
+    "seconds": 0.20300000000133878
+  },
+  {
+    "name": "load-Max_Courtyard_Fixes_075.ms",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076/probe-d2af627c173248ea9a3efb9dbdc7d6ca.ms",
+    "passed": true,
+    "seconds": 0.20399999999790452
+  },
+  {
+    "name": "load-Max_Unified_073_Advanced.ms",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076/probe-26f56f5f74bd49d48c9101226420c14a.ms",
+    "passed": true,
+    "seconds": 0.2180000000007567
+  },
+  {
+    "name": "load-Max_Unified_073_Analyzer_Assignment.ms",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076/probe-09c48be083f447fe9c5a9eba23a470ba.ms",
+    "passed": true,
+    "seconds": 0.2969999999986612
+  },
+  {
+    "name": "load-Max_Layer_Regions_074.ms",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076/probe-52159a15c4c949efa6c9d994478bd91f.ms",
+    "passed": true,
+    "seconds": 0.20300000000133878
+  },
+  {
+    "name": "load-Max_System_075.ms",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076/probe-33a4466db170452baf15a071e01d26de.ms",
+    "passed": true,
+    "seconds": 0.21899999999732245
+  },
+  {
+    "name": "load-Max_Unified_073_Persistence.ms",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076/probe-df6e2cb6c819447fa9e6efebe318dbb3.ms",
+    "passed": true,
+    "seconds": 0.20300000000133878
+  },
+  {
+    "name": "load-Max_Brush_076.ms",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076/probe-01865f6e3bd14eeebacd1ce8f6869930.ms",
+    "passed": true,
+    "seconds": 0.20300000000133878
+  },
+  {
+    "name": "load-workflow",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076/probe-0d52b4489536495487ed7ed68b9b8d7b.ms",
+    "passed": true,
+    "seconds": 0.31300000000192085
+  },
+  {
+    "name": "regions",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076/probe-3c34d91f0e1847a185357624c7a1196a.ms",
+    "passed": true,
+    "seconds": 19.218999999997322
+  },
+  {
+    "name": "proxy",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076/probe-003f43b0a28848df9b74234a4e6b4997.ms",
+    "passed": true,
+    "seconds": 9.171000000002095
+  },
+  {
+    "name": "update",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076/probe-ad9b5de369884f678aa515507e6883f1.ms",
+    "passed": true,
+    "seconds": 9.812999999994645
+  },
+  {
+    "name": "analyzer-freshness",
+    "result": "ERROR -- Runtime error: Courtyard fix: Current Analyzer produces a border\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076/probe-8748c4548f584bbc9a4d00aa74b8d391.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\Max_Courtyard_Fixes_075.ms LINE: 4P\n",
+    "passed": false,
+    "seconds": 3.1410000000032596
+  }
+]

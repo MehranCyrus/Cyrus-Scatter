@@ -13,10 +13,10 @@ Native C++ and generated MAXScript for Cyrus Scatter and Cyrus Surface Analyzer 
 | See what needs fixing next | [Current backlog](docs/BACKLOG.md) |
 | Install or rebuild | [Max 2027 installation/build](docs/Max_2027_Installation.md) |
 | Work on the repository | [AGENTS.md](AGENTS.md), [agent workflow](docs/AGENT_WORKFLOW.md) |
-| Find tests and exact results | [Latest 0.76 Brush fixes and matched packages](docs/Brush_Scaling_0.76_2026-10-10/README.md), [retained Proxy/Analyzer fixes](docs/Courtyard_Fixes_0.75_2026-10-10/README.md), [0.75 system qualification](docs/System_Qualification_0.75_2026-10-09/README.md) and [feature checklist](docs/System_Qualification_0.75_2026-10-09/CHECKLIST.md) |
+| Find tests and exact results | [Latest 0.76 receiver stability and matched packages](docs/Receiver_Stability_0.76_2026-10-10/README.md), [Brush fixes](docs/Brush_Scaling_0.76_2026-10-10/README.md), [retained Proxy/Analyzer fixes](docs/Courtyard_Fixes_0.75_2026-10-10/README.md), [0.75 system qualification](docs/System_Qualification_0.75_2026-10-09/README.md) and [feature checklist](docs/System_Qualification_0.75_2026-10-09/CHECKLIST.md) |
 | Other documentation | [Documentation index](docs/README.md) |
 
-The latest matched candidate adds bounded Brush preparation and faster history indexing to the retained Proxy, root Update and Analyzer fixes. Its bounded native, Python, scripted Max and Corona geometry checks pass. Cold viewport realization, the earlier intermittent display observation, receiver stability, full-scene Brush memory/latency and broader artist acceptance remain open. Install the matching Scatter/Analyzer pair linked above; version captions alone do not identify a build. See the backlog and exact receipts before treating a feature as qualified.
+The latest candidate adds receiver-local sampling and candidate caches to the Brush, retained Proxy, root Update and Analyzer fixes. Density preserves unchanged receiver candidates below the cap; Fixed Total redistributes quotas while preserving surviving base candidates. The first rebuild of an older combined-sampler scene changes its placements; old individual Edit/radius bindings require an explicit reset. Use a scene copy and read the qualification and transition limits before upgrading. Cold viewport realization, the earlier intermittent display observation, full-scene Brush memory/latency and broader artist acceptance remain open. Version captions alone do not identify a build.
 
 ## Repository
 

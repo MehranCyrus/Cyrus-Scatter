@@ -28,6 +28,7 @@ struct Settings {
     // Opt-in procedural sampler v1. Legacy streams remain byte-for-byte ordered.
     bool stableCandidates{false};
     std::uint64_t candidateStart{0};
+    std::uint64_t receiverSalt{0}; // Persistent receiver identity; never a list index.
     std::vector<double> sourceWeights; // Empty preserves legacy uniform selection.
     bool collisionEnabled{false}, relaxEnabled{false};
     double collisionRadius{0.1}, relaxSpacing{0.2}, relaxStrength{0.5};

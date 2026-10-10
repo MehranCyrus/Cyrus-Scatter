@@ -1,0 +1,2 @@
+Append 20-to-21 synchronous milliseconds: #(97, 97, 96, 100, 287, 96, 97)
+Counts: 10000 -> 10500; seven warm append runs. Includes allocation, hashing, acceptance and publication; not presented FPS.

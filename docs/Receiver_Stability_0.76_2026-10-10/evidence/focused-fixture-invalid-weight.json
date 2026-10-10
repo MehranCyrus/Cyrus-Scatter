@@ -1,0 +1,20 @@
+[
+  {
+    "name": "load-Max_Receiver_Stability_076.ms",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076/probe-cff83c0708944685ade448ec4b483611.ms",
+    "seconds": 0.11000000000058208,
+    "passed": true
+  },
+  {
+    "name": "load-Max_Layer_Regions_074.ms",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076/probe-18ef27f644744ce0b2931170412d9af6.ms",
+    "seconds": 0.20300000000133878,
+    "passed": true
+  },
+  {
+    "name": "membership",
+    "result": "ERROR -- Runtime error: Receiver 0.76: Density baseline: 20 receivers / 10000 plants\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076/probe-47ca16eb2d4f424bb367f18e791f1123.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\Max_Receiver_Stability_076.ms LINE: 5P\n",
+    "seconds": 1.9219999999986612,
+    "passed": false
+  }
+]

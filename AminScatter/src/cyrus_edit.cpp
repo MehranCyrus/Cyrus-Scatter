@@ -1,5 +1,7 @@
 #include <max.h>
 #include "license_boundary.h"
+#include "receiver_plan.h"
+#include "receiver_binding_host.h"
 #include <iparamb2.h>
 #include <istdplug.h>
 #include <modstack.h>
@@ -13,6 +15,7 @@
 #include <maxscript/maxwrapper/mxsobjects.h>
 #include <map>
 #include <vector>
+#include <array>
 #include <string>
 #include <cstdint>
 #include <unordered_map>

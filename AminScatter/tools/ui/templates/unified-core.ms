@@ -1990,6 +1990,7 @@ initialRollupState:0x8
         on containerGlobalNodes set value index do markInputDirty()
     )
     local procCandidateCount=undefined,procPreparedKey="",procPreparedRows=#(),procBindingKey="",procBoundBase=undefined,procSurfaceKey=""
+    local procReceiverPlanData=#(#(),#(),0,0,false),procReceiverCache=#(),procReceiverGeometry=#(),procReceiverBuilds=0,procReceiverHits=0
     local procLastStats=#(),procLastRounds=#(),procPreparedBuilds=0,procPreparedHits=0,procEpoch=0,procPublishedDisplayKey="",procManualRevision=0
     local procPublishedOwners=#(),procPublishedSources=#(),procPublishedFinalKeep=#()
     local procPublishedRadii=#(),procPublishedInfo=#()
@@ -2998,19 +2999,40 @@ initialRollupState:0x8
             local areas=this.areaInputs(),line=this.lineInputs plants previewOnly:previewOnly
             local groups=if plants.count==0 then #(0) else for n in plants collect colorKey (sourceColor (sourceRow n))
             local shares=if sourceWeights.count==0 or plants.count==0 then #() else for n in plants collect sourceWeight (sourceRow n)
-            local options=#(true,not advancedAxes,scaleMinimum,scaleMaximum,tiltDegrees,yawMinimum,yawMaximum,movementRange,1,0)
-            result=cyrusScatterAdvanced targets requestedCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMin,movYMin,movZMin] [movXMax,movYMax,movZMax] alignNormal projectMove (distributionMode-1) clusterCount clusterRadius weights 128 groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] (populationMode==2) line #(false,0.0,relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares finalPass options
-            if finalPass!=undefined do return result
-            if finalRelax and result.count>0 do (
-                -- Candidate movement cannot cross Area/density/pattern domains.
-                -- Brush is sampled afterwards at the final support anchor.
-                local relaxPass=#(result,#(),(for row in result collect 0.0),#(),false,relaxSpacing,0,1,true,finalStrength,finalIterations,finalMaxMove,0.0,cleanupPlanar)
-                result=cyrusScatterAdvanced targets requestedCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMin,movYMin,movZMin] [movXMax,movYMax,movZMax] alignNormal projectMove (distributionMode-1) clusterCount clusterRadius weights 128 groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] (populationMode==2) line #(false,0.0,relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares relaxPass options
+            if finalPass!=undefined do throw "Use the receiver-local candidate path before final acceptance."
+            local shapeNodes=for node in areaNodes where isValidNode node collect node
+            if diversityMode==3 do join shapeNodes (patternLines as array)
+            local commonKey=(this.paintBaseInputKey plants previewOnly receiverLocal:true)+"|Shapes:"+(cyrusReceiverShapeKey shapeNodes)
+            local nextCache=#(),faceOffset=0
+            result=#();paintBaseFaceCounts=cyrusReceiverFaceCounts targets
+            for receiverIndex=1 to targets.count do (
+                local receiver=targets[receiverIndex],slot=findItem procReceiverNodes receiver,request=undefined,geometryKey=""
+                for entry in procReceiverPlanData[1] where entry[1]==slot do request=entry
+                for entry in procReceiverGeometry where entry[1]==slot do geometryKey=entry[2]
+                if request==undefined do throw "Receiver allocation is missing."
+                local receiverCount=request[4],receiverRows=#()
+                local receiverKey=commonKey+"|"+procReceiverIDs[slot]+"|"+geometryKey+"|"+(receiverCount as string)
+                local cached=undefined
+                for entry in procReceiverCache where entry[1]==slot and entry[2]==receiverKey do cached=entry[3]
+                if cached!=undefined then (receiverRows=cached;procReceiverHits+=1)
+                else if receiverCount>0 do (
+                    local options=#(true,not advancedAxes,scaleMinimum,scaleMaximum,tiltDegrees,yawMinimum,yawMaximum,movementRange,1,0,procReceiverIDs[slot],slot)
+                    receiverRows=cyrusScatterAdvanced #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMin,movYMin,movZMin] [movXMax,movYMax,movZMax] alignNormal projectMove (distributionMode-1) clusterCount clusterRadius weights 128 groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] (populationMode==2) line #(false,0.0,relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares undefined options
+                    if finalRelax and receiverRows.count>0 do (
+                        local relaxPass=#(receiverRows,#(),(for row in receiverRows collect 0.0),#(),false,relaxSpacing,0,1,true,finalStrength,finalIterations,finalMaxMove,0.0,cleanupPlanar)
+                        receiverRows=cyrusScatterAdvanced #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMin,movYMin,movZMin] [movXMax,movYMax,movZMax] alignNormal projectMove (distributionMode-1) clusterCount clusterRadius weights 128 groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] (populationMode==2) line #(false,0.0,relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares relaxPass options
+                    )
+                    if wholeScaleMin!=1.0 or wholeScaleMax!=1.0 do receiverRows=cyrusWholeScale receiverRows wholeScaleMin wholeScaleMax seed true
+                    receiverRows=this.applyAnalyzerArea receiverRows
+                    receiverRows=this.applyFalloff receiverRows
+                    procReceiverBuilds+=1
+                )
+                append nextCache #(slot,receiverKey,receiverRows)
+                join result (cyrusReceiverOffsetRows receiverRows faceOffset)
+                faceOffset+=paintBaseFaceCounts[receiverIndex]
             )
-            if wholeScaleMin!=1.0 or wholeScaleMax!=1.0 do result=cyrusWholeScale result wholeScaleMin wholeScaleMax seed true
-            result=this.applyAnalyzerArea result
-            result=this.applyFalloff result
-            paintBaseFaceCounts=cyrusReceiverFaceCounts targets
+            -- Replace one bounded cache generation after all receiver preparation succeeds.
+            procReceiverCache=nextCache
             paintBaseRows=result;paintBaseKey=baseKey;paintBaseBuilds+=1
         )
         result=this.procApplyPaint result
@@ -3413,18 +3435,19 @@ initialRollupState:0x8
         if paintDocument==undefined then "none" else ((getHandleByAnim paintDocument as string)+":"+((cyrusBrushStats paintDocument)[1] as string)+":"+((cyrusBrushStats paintDocument)[4] as string))
     )
     fn applyPaint rows = (this.procApplyPaint rows)
-    fn paintBaseInputKey plants previewOnly = (
+    fn paintBaseInputKey plants previewOnly receiverLocal:false = (
         local post=if this.sharedSpacing() then #(#cleanupPlanar,#sourceRadii,#sourceFollowScale,#sourceShowRadius,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove) else #()
         join post #(#procOrder,#procSetOrder,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procBackground,#procBackgroundIDs,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusBinding,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverID,#containerMode,#containerNodes)
         local stream=stringStream ""
         with printAllElements on (
-            format "%|%|%|%|%|" (this.inputTimeKey()) procGeometryRevision (if overlapOwner!=undefined then overlapOwner.procManualRevision else procManualRevision) (this.containerSourceKey plants) previewOnly to:stream
+            format "%|%|%|%|%|" (this.inputTimeKey()) (if receiverLocal then 0 else procGeometryRevision) (if receiverLocal then 0 else if overlapOwner!=undefined then overlapOwner.procManualRevision else procManualRevision) (this.containerSourceKey plants) previewOnly to:stream
             format "DensityMap:%|" (if densityMap==undefined then 0 else getHandleByAnim densityMap) to:stream
-            format "Ownership:%:%:%:%:%|" logicalParentID paintSetEnabled paintSetWeight (this.effectivePopulation()) (this.effectiveSeed()) to:stream
+            format "Ownership:%:%:%:%:%|" logicalParentID paintSetEnabled paintSetWeight (if receiverLocal then 0 else this.effectivePopulation()) (this.effectiveSeed()) to:stream
             format "EffectiveRelax:%|" (relaxEnabled and not this.layerPaintActive()) to:stream
+            format "FinalRelax:%:%:%:%|" finalRelax finalStrength finalIterations finalMaxMove to:stream
             format "Texture:%|" (this.procWatchDensity()) to:stream
-            for key in AminScatterLayerFields where findItem #(#paintDocument,#paintEnabled,#paintDensity,#bakedNodes,#showPoints,#pointsPerPlant,#updateMode,#autoRender,#previewBudget,#pointColorMode,#solidPointColor) key==0 and findItem post key==0 and findItem #(#paintView,#paintColor,#showCenters,#paintSetName,#paintSetVisible,#uiPaintSetID) key==0 do format "%:%|" key (if key==#sources then this.containerSourceKey (sources as array) else getProperty this key) to:stream
-            for n in (this.validSurfaces()+(sources as array)+(areaNodes as array)+(patternLines as array)+#(analyzerNode,areaAnalyzer,fallAnalyzer)) where isValidNode n do (
+            for key in AminScatterLayerFields where findItem #(#paintDocument,#paintEnabled,#paintDensity,#bakedNodes,#showPoints,#pointsPerPlant,#updateMode,#autoRender,#previewBudget,#pointColorMode,#solidPointColor) key==0 and findItem post key==0 and findItem #(#paintView,#paintColor,#showCenters,#paintSetName,#paintSetVisible,#uiPaintSetID) key==0 and (not receiverLocal or findItem #(#amount,#plantsPerM2,#populationMode) key==0) do format "%:%|" key (if key==#sources then this.containerSourceKey (sources as array) else getProperty this key) to:stream
+            for n in ((if receiverLocal then #() else this.validSurfaces())+(sources as array)+(areaNodes as array)+(patternLines as array)+#(analyzerNode,areaAnalyzer,fallAnalyzer)) where isValidNode n do (
                 local tm=n.objectTransform
                 if this.containerProvider()!=undefined and findItem sources n>0 do tm.row4=[0,0,0]
                 format "%:%|" (getHandleByAnim n) tm to:stream
@@ -3561,6 +3584,7 @@ initialRollupState:0x8
         true
     )
     fn procEnsureSources = (
+        this.ensureFallCurves();this.ensureAreaFalloffs()
         -- Keep correspondence history so replacing a node and Undo can recover
         -- its original binding. This metadata never becomes an artist Undo step.
         undo off (
@@ -3655,7 +3679,10 @@ initialRollupState:0x8
     )
     fn procRadii rows plants = (
         if rows.count==0 do return #()
-        if procRadiusIDs.count>0 and procRadiusBinding!=procBindingKey do throw "Instance radius overrides belong to a different generation binding. Restore the recipe or explicitly clear this set's overrides."
+        if procRadiusIDs.count>0 do (
+            if procRadiusBinding=="" do throw "Radius overrides have no generation binding. Explicitly clear them before updating."
+            cyrusReceiverMergeBinding procRadiusBinding procBindingKey
+        )
         local radii=if plants.count==0 then #(0.0) else for n in plants collect sourceRadius (sourceRow n)
         local follow=if plants.count==0 then #(false) else for n in plants collect sourceFollows (sourceRow n)
         cyrusProceduralRadii rows radii follow (procRadiusIDs as array) (procRadiusModes as array) (procRadiusValues as array)
@@ -3663,7 +3690,10 @@ initialRollupState:0x8
     fn procSelectedRadius mode value reset:false = (
         if overlapOwner==undefined do throw "Select a paint set using Procedural 0.7."
         if mode<1 or mode>2 or value<0 do throw "Invalid instance radius."
-        if not reset and (procBindingKey=="" or (procRadiusIDs.count>0 and procRadiusBinding!=procBindingKey)) do throw "Update a valid binding or clear old radius overrides before assigning new ones."
+        if not reset do (
+            if procBindingKey=="" do throw "Update a valid binding before assigning radii."
+            if procRadiusIDs.count>0 do cyrusReceiverMergeBinding procRadiusBinding procBindingKey
+        )
         local ids=cyrusEditSelectedIDs (overlapOwner.procModifiers()) editLayerKey
         if ids.count==0 do throw "Select plant instances in CS Edit first."
         undo "Cyrus selected instance radii" on (
@@ -3675,7 +3705,7 @@ initialRollupState:0x8
                 procRadiusModes[i]=mode;procRadiusValues[i]=value
             )
         )
-        procRadiusBinding=if procRadiusIDs.count>0 then procBindingKey else ""
+        procRadiusBinding=if procRadiusIDs.count>0 then cyrusReceiverMergeBinding procRadiusBinding procBindingKey else ""
         )
         overlapOwner.invalidateGroups()
     )
@@ -3718,18 +3748,32 @@ initialRollupState:0x8
         ) else if this.brushMaskActive() then cyrusBrushFilter paintDocument rows sampling paintDensity else cyrusClonePlacementRows rows
     )
     fn procBinding plants rows = (
-        if distributionMode==3 or procBoundBase!=paintBaseRows or procSurfaceKey=="" do (
-            procSurfaceKey=cyrusProceduralSurfaceKey (this.validSurfaces());procBoundBase=paintBaseRows
-        )
         local stream=stringStream ""
         with printAllElements on (
-            format "CyrusBinding1:%:%:%|" procReceiverID procSurfaceKey (this.effectiveSeed()) to:stream
+            format "CyrusBinding2:%|" (this.effectiveSeed()) to:stream
             for n in plants do (local i=sourceRow n;format "%|" (if i>0 and i<=procSourceSlots.count then procSourceSlots[i] else "preview") to:stream)
             for key in #(#distributionMode,#clusterCount,#clusterRadius,#diversityMode,#diversitySize,#diversitySeed,#roughness,#blurryEdge,#diversityNoise,#sourceWeights,#sourceColors,#sourceEmpty,#sourcePoint,#sourceScales,#sourceZOffsets,#advancedAxes,#scaleMinimum,#scaleMaximum,#tiltDegrees,#yawMinimum,#yawMaximum,#movementRange,#sclXMin,#sclXMax,#sclYMin,#sclYMax,#sclZMin,#sclZMax,#rotXMin,#rotXMax,#rotYMin,#rotYMax,#rotZMin,#rotZMax,#movXMin,#movXMax,#movYMin,#movYMax,#movZMin,#movZMax,#wholeScaleMin,#wholeScaleMax,#projectMove,#alignNormal) do format "%:%|" key (getProperty this key) to:stream
             if diversityMode>=3 do for key in #(#patternLines,#patternWidths,#strokeSides,#strokeModes,#strokeColorRows,#strokeColorKeys,#strokeSourceRows,#strokeSourceNodes,#strokeMin,#strokeMax,#analyzerNode,#edgeOffsets,#edgeAlong,#edgeAcross,#edgeKeepCorners,#edgeCornerAngle,#edgeCornerCount,#edgeFaceOut,#edgeCornerRadius,#edgeRotX,#edgeRotY,#edgeRotZ,#borderFaceOut,#streetFaceOut,#borderCornerRadius,#streetCornerRadius,#streetStraight,#streetTrimStart,#streetTrimEnd,#centerStreetOffset) do format "%:%|" key (getProperty this key) to:stream
             if relaxEnabled or finalRelax do for key in #(#relaxEnabled,#relaxSpacing,#relaxIterations,#relaxStrength,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove) do format "%:%|" key (getProperty this key) to:stream
+            format "\nCyrusReceivers2\n" to:stream
+            for entry in procReceiverGeometry do format "%=%\n" procReceiverIDs[entry[1]] entry[2] to:stream
         )
         stream as string
+    )
+
+    fn receiverCacheStats = (#(procReceiverBuilds,procReceiverHits,procReceiverCache.count))
+    fn procPlanReceivers active = (
+        local parent=overlapOwner.logicalParent this,allocation=this.effectivePopulation(),meters=units.decodeValue "1m"
+        local requirements=cyrusEditReceiverRequirements active editLayerKey,inputs=#()
+        procReceiverGeometry=#()
+        for node in this.validSurfaces() do (
+            local slot=findItem procReceiverNodes node
+            append inputs #(slot,procReceiverIDs[slot],(aminScatterSurfaceArea #(node)),requirements[slot])
+            append procReceiverGeometry #(slot,(cyrusProceduralSurfaceKey #(node) (distributionMode==3)))
+        )
+        procReceiverPlanData=cyrusReceiverPlan inputs allocation[1] (if parent.populationMode==2 then allocation[2]/(meters*meters) else -1.0) (if parent.procPopulation==2 then parent.procAttemptFactor else 1) ((overlapOwner.populationAllocation this countOverride:100000)[1])
+        densityCapped=procReceiverPlanData[5]
+        procReceiverPlanData
     )
 
 
@@ -4119,10 +4163,8 @@ initialRollupState:0x8
         local requests=for leaf in layerObjects collect #(0,0,0)
         -- Admit the full bounded candidate pool before any Edit/publication mutation.
         for i=1 to layerObjects.count where cyrusEnabled and this.enabledLayer i do (
-            local leaf=layerObjects[i],parent=this.logicalParent leaf,quota=leaf.procQuota()
-            local attempts=if parent.procPopulation==2 then (amin 100000 (quota*parent.procAttemptFactor)) else quota
-            local required=cyrusEditRequiredCandidates active leaf.editLayerKey
-            local pool=amax attempts required
+            local leaf=layerObjects[i],parent=this.logicalParent leaf,receiverPlan=leaf.procPlanReceivers active
+            local quota=receiverPlan[3],attempts=receiverPlan[4],pool=receiverPlan[2].count
             if pool>100000 do throw "The required candidate pool exceeds 100,000 for a paint set."
             requests[i]=#(quota,attempts,pool);admission+=pool
         )
@@ -4136,7 +4178,7 @@ initialRollupState:0x8
                 for leaf in members do (
                     local i=findItem layerObjects leaf,request=requests[i],plants=leaf.validSources(),rows=#()
                     if cyrusEnabled and this.enabledLayer i do rows=leaf.containerFilter (leaf.procPrepare request[3] plants) plants
-                    append sets #(leaf.layerID,rows,(leaf.procRadii rows plants),(leaf.procSelfRule()),request[1],request[2])
+                    append sets #(leaf.layerID,rows,(leaf.procRadii rows plants),(leaf.procSelfRule()),request[1],request[2],(if cyrusEnabled and this.enabledLayer i then leaf.procReceiverPlanData[2] else #()))
                     append indices i
                 )
                 append layers #(parent.layerID,parent.procPopulation==2,parent.procRepair,parent.procRounds,#(parent.procSiblingEnabled,parent.procSiblingMultiplier,parent.procSiblingGap,parent.procSiblingPlanar),#(parent.finalCleanup,parent.finalNeighborRadius,parent.finalMinNeighbors,parent.finalMinIsland,parent.cleanupPlanar),sets)

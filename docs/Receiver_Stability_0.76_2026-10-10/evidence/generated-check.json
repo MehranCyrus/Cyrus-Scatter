@@ -1,0 +1,15 @@
+{
+  "check": "unified_073_generator_integration",
+  "passed": true,
+  "development_version": "0.76",
+  "baseline": "01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2",
+  "maxscript_compiled": false,
+  "ui_controls_in_inventory": 234,
+  "baseline_controls_accounted": 245,
+  "generated_sha256": "52b4f92f1196b7dc62385dc56a6293b8be24ff0b40d342d95799a063ad49c983",
+  "preserved_files": [
+    "AminScatter/src/point_display.cpp"
+  ],
+  "fixture_delimiters_checked": 32,
+  "interactive_max_run": false
+}

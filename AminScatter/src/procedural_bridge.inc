@@ -38,7 +38,11 @@ Value* cyrusEvaluateProcedural_cf(Value** a,int n){
         layer.cleanup.minNeighbors=unsigned(neighbors);layer.cleanup.minIsland=unsigned(island);layer.cleanup.planar=cleanup->data[4]->to_bool()!=FALSE;
         auto* populations=groupArray(input->data[6]);originals.emplace_back();
         for(int s=0;s<populations->size;++s){auto* set=groupArray(populations->data[s]);
-            if(set->size!=6)throw RuntimeError(_T("Invalid procedural population payload"));
+            if(set->size!=6&&set->size!=7)throw RuntimeError(_T("Invalid procedural population payload"));
+            std::unordered_map<std::string,std::uint64_t> schedule;
+            if(set->size==7){auto* order=groupArray(set->data[6]);if(order->size>100000)throw RuntimeError(_T("Receiver schedule exceeds limit"));
+                for(int k=0;k<order->size;++k){const auto id=order->data[k]->to_int64();unsigned slot=0,local=0;
+                    if(id<0||!cyrus::receivers::decode(std::uint64_t(id),slot,local)||!schedule.emplace("c:"+std::to_string(id),std::uint64_t(k)).second)throw RuntimeError(_T("Invalid receiver candidate schedule"));}}
             cyrus::procedural::Population p;p.id=proceduralID(set->data[0]);auto* rows=groupArray(set->data[1]);
             originals.back().push_back(rows);const auto radii=groupRadii(set->data[2]);
             if(radii.size()!=std::size_t(rows->size))throw RuntimeError(_T("One radius per procedural instance required"));
@@ -46,7 +50,8 @@ Value* cyrusEvaluateProcedural_cf(Value** a,int n){
             if(budget<0||attempts<0)throw RuntimeError(_T("Negative procedural budget"));p.budget=unsigned(budget);p.attemptLimit=unsigned(attempts);
             for(int i=0;i<rows->size;++i){auto* row=groupArray(rows->data[i]);const auto id=proceduralRowID(row);const auto position=row->data[0]->to_matrix3().GetTrans();
                 const bool pin=groupProtected(row);std::uint64_t ordinal=0;
-                if(id.rfind("c:",0)==0){try{std::size_t used=0;ordinal=std::stoull(id.substr(2),&used);if(used!=id.size()-2)throw std::invalid_argument("ordinal");}catch(...){throw RuntimeError(_T("Invalid candidate ordinal"));}}
+                if(set->size==7&&id.rfind("c:",0)==0){const auto found=schedule.find(id);if(found==schedule.end())throw RuntimeError(_T("Candidate missing from receiver schedule"));ordinal=found->second;}
+                else if(id.rfind("c:",0)==0){try{std::size_t used=0;ordinal=std::stoull(id.substr(2),&used);if(used!=id.size()-2)throw std::invalid_argument("ordinal");}catch(...){throw RuntimeError(_T("Invalid candidate ordinal"));}}
                 else if(!pin)throw RuntimeError(_T("Nonprocedural identity is not protected"));
                 p.samples.push_back({{position.x,position.y,position.z},radii[std::size_t(i)],ordinal,id,pin});
             }

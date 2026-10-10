@@ -106,7 +106,10 @@ def package(project, name, version, native_names, script_name, args, build_dir):
            'Resize the editor and scroll each column independently. Hover controls for short explanations.\n'
            'Each layer owns models and count/density. Named Paint Areas target its receivers and combine coverage without duplicate plants.\n'
            'Population, transforms and cleanup belong to the layer. Capacity: 10 populations; area APIs bound each layer to 128 areas/receivers.\n'
-           'CyrusUnified1 remains the calculation model. Tested older 0.74 scenes retain their result; earlier schemas remain unsupported.\n'
+           'CyrusUnified1 and schema 54 remain. Receiver-local sampling changes the first rebuild of older combined-sampler scenes.\n'
+           'Use a scene copy: old combined-sampler CS Edit identities and radius bindings need an explicit reset; saved edits are not silently retargeted.\n'
+           'Density preserves unchanged receiver candidates below the cap. Fixed Total redistributes quotas and preserves surviving base candidates.\n'
+           'Changing local Relax neighborhoods, masks, spacing or geometry can change accepted output; face IDs do not survive arbitrary remeshing.\n'
            'Spacing offers Within this layer and Between layers. Older model-group files retain their additional scopes.\n'
            'The popup retains older model-group selection for existing multi-set scenes; conversion of those populations is not automatic.\n'
            'Existing background/set calculations are retained for older scenes; the new area workflow does not expose background-set authoring.\n'
@@ -137,7 +140,7 @@ def package(project, name, version, native_names, script_name, args, build_dir):
            'Pending geometry events are checked before validation, analysis and saving.\n') +
         'Create > Geometry > Cyrus, then select the tool and use Modify.\n'
         'Use saved test scene copies to compare performance and verify output.\n'
-        + ('Development build: use the accompanying qualification report for this exact script/native pair. Canonical region storage and stable receiver sampling remain unfinished.\n'
+        + ('Development build: use the accompanying qualification report for this exact script/native pair. Receiver stability has bounded coverage; canonical region storage remains unfinished.\n'
            'Cyrus Automation/MCP is separate. Plan 0.73 supports a bounded locally approved authoring subset.\n'
            'Full Brush/container/Edit authoring and ML are outside the closed plan. Old plan schemas are rejected.\n'
            if project == 'AminScatter' else '')

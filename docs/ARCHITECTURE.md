@@ -1,6 +1,6 @@
 # Current codebase architecture
 
-Applies to Cyrus Scatter 0.76, saved schema 54 and `CyrusUnified1`. Use [the artist guide](ARTIST_GUIDE.md) for controls, [the backlog](BACKLOG.md) for unfinished work, and [qualification](Brush_Scaling_0.76_2026-10-10/README.md) for measured evidence. This is the maintained architecture reference; dated implementation reports describe their own snapshots.
+Applies to Cyrus Scatter 0.76, saved schema 54 and `CyrusUnified1`. Use [the artist guide](ARTIST_GUIDE.md) for controls, [the backlog](BACKLOG.md) for unfinished work, and [qualification](Receiver_Stability_0.76_2026-10-10/README.md) for measured evidence. This is the maintained architecture reference; dated implementation reports describe their own snapshots.
 
 ## Ownership
 
@@ -19,7 +19,13 @@ Older supported 0.74 model-owning sets retain separate models, shares and collis
 
 The generated controller prepares geometry and keyed candidates, applies supported candidate Relax, coverage/area/falloff and transforms, resolves Edit/radius information, evaluates ordered spacing and accepted-union cleanup, and stages the complete result. Candidate budget and accepted target have different bounded retry semantics. Earlier accepted owners and protected edits affect later acceptance.
 
-Paint Areas combine coverage by maximum within their layer; a candidate is accepted at most once. Areas do not create additional population quotas. The combined receiving-surface sampler is still used, so stable candidate IDs do **not** guarantee unchanged positions when receivers are added or reordered.
+Paint Areas combine coverage by maximum within their layer; a candidate is accepted at most once. Areas do not create additional population quotas. Each receiver now has a persistent UUID-salted candidate stream. Density rounds independently per receiver below its allocated cap; Fixed Total and capped Density use area/weight-based largest-remainder quotas with saved receiver-slot tie breaking. Removed quotas drop local suffixes. Reorder and rename do not reseed unchanged receivers; unlink/relink retains their identities. A same-name replacement node has a different identity.
+
+Candidate IDs encode an append-only saved receiver slot plus local ordinal, within the owning population's namespace. A separate schedule places initial quotas before refill and protected-only suffixes; rejection does not renumber IDs. Admission includes per-receiver requirements from moved/cloned Edit inputs and stays bounded to 100,000 candidates per population and the existing root limit. Geometry face indices plus barycentric coordinates locate samples and Brush anchors; they are not persistent identities across topology changes. Orientation uses geometric face normals. No rest-pose or arbitrary-remesh correspondence is introduced.
+
+Receiver-local row caches include generation settings, source state, receiver geometry/UV hashes, relevant spline geometry, Analyzer revisions and texture state. Adding a receiver can reuse old candidate rows, but Update still reads geometry/area for validation and runs shared acceptance/publication. This does not claim zero host geometry evaluation or incremental GPU upload. Projection and candidate Relax use the candidate's receiver; changing its own quota/neighborhood can change Relax positions. Shared masks, collision scopes, cleanup and protected edits can change which candidates survive.
+
+Receiver-aware Edit/radius receipts compare common generation settings and known receiver geometry while allowing membership changes. Missing targets remain inactive; geometry changes are guarded. The first rebuild of an older combined-sampler scene changes placements. Old Edit/radius bindings are explicitly rejected and require artist reset or the old matching build; saved records are not silently rebound. Schema 54 is unchanged because the serialized format is retained, not because old generated positions are preserved.
 
 Brush 0.76 prepares at most 1,000,000 derived dabs and 8,000,000 dab-to-face links per document, including reused strokes. It checks connected-patch growth and resampling before exceeding those counts. The face lookup uses contiguous ordered ranges; reverse evaluation and full replay retain the same paint/erase semantics. Failed preparation leaves the previous immutable field and complete Scatter publication available. Authored history remains intact for Undo or reducing the offending radius/history. These are per-document count bounds, not a total process-memory or full-scene budget; authored copies, Undo, old/new fields, mesh acceleration and feedback have separate costs.
 
@@ -38,6 +44,7 @@ Explicit Update enters root evaluation once: that evaluation stages and installs
 | Controller, ownership, scheduling, publication, render bridge | [unified-core.ms](../AminScatter/tools/ui/templates/unified-core.ms) |
 | UI generation and shared layouts | [generate.cjs](../AminScatter/tools/ui/generate.cjs), [approved-layout.cjs](../AminScatter/tools/ui/approved-layout.cjs), [approved-layout-rows.cjs](../AminScatter/tools/ui/approved-layout-rows.cjs) |
 | Sampling and host preparation | [scatter.cpp](../AminScatter/src/scatter.cpp), [max_bridge.cpp](../AminScatter/src/max_bridge.cpp) |
+| Receiver quotas, stable IDs, schedules and binding receipts | [receiver_plan.cpp](../AminScatter/src/receiver_plan.cpp), [receiver_bridge.inc](../AminScatter/src/receiver_bridge.inc) |
 | Ordered acceptance and work limits | [procedural.cpp](../AminScatter/src/procedural.cpp), [group_spacing.cpp](../AminScatter/src/group_spacing.cpp) |
 | Brush storage and host integration | [brush.cpp](../AminScatter/src/brush.cpp), [brush_host.cpp](../AminScatter/src/brush_host.cpp) |
 | Individual Edit | [cyrus_edit.cpp](../AminScatter/src/cyrus_edit.cpp), [cyrus_edit_stack.inc](../AminScatter/src/cyrus_edit_stack.inc) |

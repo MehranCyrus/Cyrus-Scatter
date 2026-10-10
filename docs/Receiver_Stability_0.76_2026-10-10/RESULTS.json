@@ -1,0 +1,57 @@
+{
+  "baseline_commit": "02f9326",
+  "branch": "codex/workflow-0.75",
+  "version": "0.76",
+  "package_version": "0.76.0",
+  "schema": 54,
+  "calculation_model": "CyrusUnified1",
+  "native_test_executables": 15,
+  "native_receiver_assertions": 30101,
+  "python_tests": 141,
+  "python_seconds": 11.901,
+  "package_version_checks_after_install_text_change": 3,
+  "receiver_host_assertions": 51,
+  "playback_assertions": 942,
+  "density": {
+    "before": 10000,
+    "after": 10500,
+    "unchanged_existing": 10000,
+    "changed_existing": 0
+  },
+  "fixed_total": {
+    "before": 10000,
+    "after": 10000,
+    "unchanged_survivors": 9524,
+    "new_receiver": 476,
+    "changed_survivors": 0
+  },
+  "warm_append": {
+    "milliseconds": [
+      97,
+      97,
+      96,
+      100,
+      287,
+      96,
+      97
+    ],
+    "median_ms": 97,
+    "reused_receivers": 20,
+    "prepared_receivers": 1,
+    "scope": "Synchronous 20-to-21 append including hashing/acceptance/publication; no FPS or old-build speedup claim"
+  },
+  "original_scene_sha256": "e0f32e1cd041c5e71ad5dc58877ddd493ce0eef7927ba0bc5fff96df3b0c9e32",
+  "original_scene_unchanged": true,
+  "normal_profile_installed": false,
+  "computer_use": false,
+  "vendor_binaries_modified": false,
+  "owned_test_process_stopped": true,
+  "delivery_verified": true,
+  "limitations": [
+    "First rebuild of older combined-sampler scenes changes placements; old Edit/radius bindings require explicit reset or matching old build",
+    "Caps, local Relax neighborhood changes and shared acceptance can change output",
+    "Geometry/topology edits are outside unchanged-receiver stability; face indices are not persistent across remeshing",
+    "Candidate cache reuse does not prove zero host geometry reads or incremental GPU upload",
+    "No physical pointer/tablet or presented-FPS qualification; no Max 2026 runtime qualification; installer not executed"
+  ]
+}

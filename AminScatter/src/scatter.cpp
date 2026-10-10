@@ -30,8 +30,8 @@ struct Random {
         n=(n^(n>>27))*0x94d049bb133111ebULL;
         return n^(n>>31);
     }
-    void candidate(std::uint32_t seed,std::uint64_t ordinal,std::uint64_t channel) {
-        counterMode=true;counter=mix(ordinal)^mix((std::uint64_t(seed)<<32)^channel);
+    void candidate(std::uint32_t seed,std::uint64_t ordinal,std::uint64_t channel,std::uint64_t receiver=0) {
+        counterMode=true;counter=mix(ordinal)^mix((std::uint64_t(seed)<<32)^channel)^mix(receiver);
     }
     double next() {
         if(counterMode)return double(mix(counter+=0x9e3779b97f4a7c15ULL)>>11)*(1.0/9007199254740992.0);
@@ -307,7 +307,7 @@ std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settin
         clusterCandidates.resize(s.count);
         std::uint64_t ordinal=s.candidateStart;
         for(auto& candidate:clusterCandidates) {
-            if(s.stableCandidates)placement.candidate(s.seed,ordinal++,1);
+            if(s.stableCandidates)placement.candidate(s.seed,ordinal++,1,s.receiverSalt);
             const auto sampled=sampler.sample(placement);
             candidate.position=sampled.first; candidate.triangle=sampled.second;
         }
@@ -328,9 +328,9 @@ std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settin
     for(std::uint64_t i=0;i<end;++i) {
         const auto ordinal=s.candidateStart+i;
         if(s.stableCandidates) {
-            placement.candidate(s.seed,ordinal,1);transforms.candidate(s.seed,ordinal,2);
-            sources.candidate(s.seed,ordinal,3);scales.candidate(s.seed,ordinal,4);
-            distribution.candidate(s.seed,ordinal,5);diversity.candidate(s.clusterSeed,ordinal,6);
+            placement.candidate(s.seed,ordinal,1,s.receiverSalt);transforms.candidate(s.seed,ordinal,2,s.receiverSalt);
+            sources.candidate(s.seed,ordinal,3,s.receiverSalt);scales.candidate(s.seed,ordinal,4,s.receiverSalt);
+            distribution.candidate(s.seed,ordinal,5,s.receiverSalt);diversity.candidate(s.clusterSeed,ordinal,6,s.receiverSalt);
         }
         const bool single=s.stableCandidates?ordinal<anchors.size():i>=limit;
         const auto anchorIndex=static_cast<std::size_t>(s.stableCandidates?ordinal:i-limit);

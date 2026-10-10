@@ -1,0 +1,20 @@
+[
+  {
+    "name": "load-Max_Receiver_Stability_076.ms",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076/probe-95f1bdd5e1a34145afa21e85da2a99b5.ms",
+    "seconds": 0.20300000000133878,
+    "passed": true
+  },
+  {
+    "name": "load-Max_Layer_Regions_074.ms",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076/probe-ca9d467348754061b5c687c2412861da.ms",
+    "seconds": 0.20299999999406282,
+    "passed": true
+  },
+  {
+    "name": "membership",
+    "result": "ERROR -- Runtime error: Receiver 0.76: Append prepares one receiver and reuses twenty candidate caches\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076/probe-97534c96a3904b9a98499ce685193dff.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\Max_Receiver_Stability_076.ms LINE: 5P\n",
+    "seconds": 3.3440000000045984,
+    "passed": false
+  }
+]

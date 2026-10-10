@@ -1,0 +1,26 @@
+[
+  {
+    "name": "variants",
+    "passed": true,
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076-release/probe-bcdff982e9cf4ea4a920afc7ba6a2c34.ms",
+    "seconds": 12.639999999999418
+  },
+  {
+    "name": "live-start",
+    "passed": true,
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076-release/probe-3e10a6a97f344e789e4d747805981c37.ms",
+    "seconds": 2.438000000001921
+  },
+  {
+    "name": "live-end",
+    "passed": true,
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076-release/probe-ee3cbb9a2dd045778c60a9c09173cacf.ms",
+    "seconds": 0.5
+  },
+  {
+    "name": "performance",
+    "passed": true,
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076-release/probe-fe58e5a859724c0f8cd9ce0c032d0bb6.ms",
+    "seconds": 3.6409999999959837
+  }
+]

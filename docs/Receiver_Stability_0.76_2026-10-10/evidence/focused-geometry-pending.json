@@ -1,0 +1,38 @@
+[
+  {
+    "name": "load-Max_Receiver_Stability_076.ms",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076/probe-a06188662f44455fbaba29ad00d5d931.ms",
+    "seconds": 0.11000000000058208,
+    "passed": true
+  },
+  {
+    "name": "load-Max_Layer_Regions_074.ms",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076/probe-595ebeacb6864937b59d4027de9191fa.ms",
+    "seconds": 0.20300000000133878,
+    "passed": true
+  },
+  {
+    "name": "membership",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076/probe-726319fd095b4c53b7b079a87bb7a0e0.ms",
+    "seconds": 5.171999999998661,
+    "passed": true
+  },
+  {
+    "name": "save",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076/probe-4d478ed74540417fa93e1c34d26a0c25.ms",
+    "seconds": 1.514999999999418,
+    "passed": true
+  },
+  {
+    "name": "reopen",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076/probe-cba2863457a14c0ea792bf00d3fbd5fa.ms",
+    "seconds": 2.0310000000026776,
+    "passed": true
+  },
+  {
+    "name": "edit",
+    "result": "ERROR -- Runtime error: Receiver 0.76: Changed bound geometry rejects successor and preserves publication\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076/probe-6be5b91736cc452aa5f566189a92d240.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\Max_Receiver_Stability_076.ms LINE: 5P\n",
+    "seconds": 4.562999999994645,
+    "passed": false
+  }
+]

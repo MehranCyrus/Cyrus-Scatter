@@ -14,7 +14,11 @@ Use the compact Add, Copy, Remove, Up and Down actions. Copy includes surfaces a
 
 The Surfaces list belongs to the selected layer. Use + to pick a receiver, the list action to choose by name, and remove to unlink selected receivers. A plane and sphere can belong to one layer. Another layer can have different receivers or reuse the same ones.
 
-**Adding a receiver can still move existing generated placements.** The current sampler works across the combined receiving domain. Density is not yet a guarantee of stable placements on untouched surfaces. Keep this limitation in mind before changing receivers in a finished composition.
+**Adding a receiver preserves the base placement on unchanged receivers.** In Density mode, below the population cap, the new surface gets its own candidates. In Fixed Total mode, the same total is shared across the surfaces: existing surfaces may lose plants, while surviving base candidates retain their positions, models, rotation and scale. Reordering or renaming a receiver does not reseed it. Unlinking and restoring the same node restores its stream; a replacement with the same name is a new receiver.
+
+This does not freeze all accepted output. A cap can redistribute quotas; changed masks, spacing, cleanup or protected edits can affect acceptance. Relax can move plants when their own receiver's count or neighborhood changes. Editing the receiver's geometry/topology is outside the unchanged-surface guarantee.
+
+**Upgrading an older scene:** this receiver-local sampler changes placements on the first rebuild of an earlier combined-sampler setup. Work on a copy. Existing paint remains attached to its receiver, but samples change. Old CS Edit identities and individual radius bindings are guarded; explicitly reset them to use the new generation, or restore the original scene with its matching old build. Do not reset edits you still need without retaining that original scene.
 
 Models are source scene objects. Their Scatter label can differ from the scene object name; clearing the label uses the scene name again. The color square is a viewport identification color. Assignment groups use separate colors under Advanced; changing identification color does not change grouping.
 

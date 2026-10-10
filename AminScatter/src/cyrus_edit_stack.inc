@@ -8,7 +8,12 @@ static std::vector<EditInput> applyStable(CSEdit* m,int key,const std::vector<Ed
     const std::wstring& signature) {
     auto& l=m->layers[key];l.active=true;l.pending=false;
     if(l.signature.empty())l.signature=signature;
-    if(l.signature!=signature)l.invalid=true; // Real base generation changes still require Reset.
+    if(l.signature!=signature){
+        // Only the receiver-aware format permits membership changes. Keep the
+        // union of receipts so missing/re-added receivers retain their guards.
+        try{l.signature=receiverWide(cyrus::receivers::mergeBinding(receiverUTF8(l.signature),receiverUTF8(signature)));}
+        catch(const std::exception&){l.invalid=true;}
+    }
     l.input.clear();l.sources.clear();
     std::unordered_map<std::wstring,unsigned> incoming;
     for(unsigned i=0;i<input.size();++i){incoming.emplace(input[i].id,i);l.input.push_back(input[i].tm);l.sources.push_back(input[i].source);}
@@ -106,6 +111,19 @@ Value* cyrusEditRequiredCandidates_cf(Value** a,int count){
         }
     }
     return Integer::intern(int(required));
+}
+
+def_visible_primitive(cyrusEditReceiverRequirements,"cyrusEditReceiverRequirements");
+Value* cyrusEditReceiverRequirements_cf(Value** a,int count){
+    check_arg_count(cyrusEditReceiverRequirements,2,count);type_check(a[0],Array,_T("Edit modifiers"));auto* mods=static_cast<Array*>(a[0]);const int key=a[1]->to_int();
+    std::array<unsigned,cyrus::receivers::slots> required{};
+    for(int i=0;i<mods->size;++i){auto* m=edit(mods->data[i]);const auto found=m->layers.find(key);if(found==m->layers.end())continue;
+        for(const auto& row:found->second.rows)if(!row.deleted&&(row.inputId!=row.outputId||hasEditTransform(row.delta))&&row.inputId.rfind(L"c:",0)==0){
+            try{std::size_t used=0;const auto id=std::stoull(row.inputId.substr(2),&used);unsigned slot=0,ordinal=0;
+                if(used!=row.inputId.size()-2||!cyrus::receivers::decode(id,slot,ordinal))throw std::invalid_argument("Old identity");required[slot]=std::max(required[slot],ordinal+1);}
+            catch(...){throw RuntimeError(_T("Old combined-surface Edit identities require an explicit Reset Edits before using receiver-local sampling. Saved edits are preserved."));}}
+    }
+    one_typed_value_local(Array* result);vl.result=new Array(int(required.size()));for(auto value:required)vl.result->append(Integer::intern(int(value)));return_value(vl.result);
 }
 def_visible_primitive(cyrusEditSelectedIDs,"cyrusEditSelectedIDs");
 Value* cyrusEditSelectedIDs_cf(Value** a,int count){

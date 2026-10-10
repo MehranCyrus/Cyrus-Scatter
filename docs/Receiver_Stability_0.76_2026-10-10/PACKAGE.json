@@ -1,0 +1,55 @@
+{
+  "packages": [
+    {
+      "path": "dist/Receiver_Stability_0.76_2026-10-10/Max2027/CyrusScatter-0.76.0-Max2027.mzp",
+      "sha256": "27ab807234cf53317341efb0642fcbef1ac71d7e797e40962819b8cb91e4fc86",
+      "manifest": {
+        "product": "Cyrus Scatter",
+        "version": "0.76.0",
+        "max_year": 2027,
+        "toolset": "14.38.33130",
+        "windows_sdk": "10.0.19041.0",
+        "configuration": "Release",
+        "native_id": "2af00ad0ffeb",
+        "files": {
+          "AminScatter.dlx": "e219e9b2625f386c210bba0b77ceb160726ecbc7b8cd30c5de14068489135e91",
+          "CyrusBrush.dlx": "5fae8c7f09571deb6c472ccde7baae83827e61db1a394086438eac98c42d3e8c",
+          "CyrusBrushStorage.dlh": "3ba6c56cd5db0ab759d8471db089e94de476e8b59671b03f2b46f3ebdf3625d8",
+          "CyrusScatter.mcr": "1ba31e936a5cd9579a02f3bf8447cc7935ba3fb05995138db11e235ffb5e35f6",
+          "CyrusScatter.ms": "52b4f92f1196b7dc62385dc56a6293b8be24ff0b40d342d95799a063ad49c983",
+          "CyrusScatterEdit.dlm": "6965085be0d033b61e8f3f7789c767fde9af6cbdb207e75d4152e7bb6bd7871b",
+          "CyrusScatterStartup.ms": "fdf38b3bc83187eecb34b833bfff2751e78626e9e3dba41aa20a0ff7ff9e8405",
+          "INSTALL.txt": "d184f65a573630ebf482731558e495a28cbd7cfc487417e83abdb43ceefd7e42",
+          "Uninstall.ms": "59e2b84901fcefaae1dab59886cd2f4079df4f764c789238947e19c514b4ed49",
+          "install.ms": "3ae123ef9bcdb9798dbda9676826fa4329d92f4ccf4a8674ff046f5f4a8c717c",
+          "mzp.run": "7479875ba188409737242d08da02019173d809e8c17a7706cfe4adfb94b83b0a"
+        }
+      }
+    },
+    {
+      "path": "dist/Receiver_Stability_0.76_2026-10-10/Max2027/CyrusSurfaceAnalyzer-0.14-Max2027.mzp",
+      "sha256": "3fef53e48ae235d51114df5431e4c35a00214a239b20d5308ce4f4edd064b5d8",
+      "manifest": {
+        "product": "Cyrus Surface Analyzer",
+        "version": "0.14",
+        "max_year": 2027,
+        "toolset": "14.38.33130",
+        "windows_sdk": "10.0.19041.0",
+        "configuration": "Release",
+        "native_id": "3dc35151a817",
+        "files": {
+          "CyrusSurfaceAnalyzer.dlx": "3dc35151a8179a22fb93309e9648a8e7ca7cb76d68a48163a4166c1b77e50582",
+          "CyrusSurfaceAnalyzer.ms": "716a78868a78ea01842bdfa680baa628316530ca774aea7b537c7fef3db0d7ae",
+          "CyrusSurfaceAnalyzerStartup.ms": "fdef46e54790c5c6d893479a17c6c885e4ff39897d00f1eac6b8567f86c18425",
+          "INSTALL.txt": "b5e0f5c26672c20cf396effda0d25e993b68263789f55b3c112b0e934516eec8",
+          "install.ms": "9a59868acc8b20485c5ba21649658a78d657a0f7910800c9327218f6f2167537",
+          "mzp.run": "9a5e8deb72702b1be5214f4f9e99f3e4a12b04fd47d63ceb865f1f5ea28b2660"
+        }
+      }
+    }
+  ],
+  "installed": false,
+  "installer_execution_qualified": false,
+  "host": "build\\mcp-qualification\\receiver076-release",
+  "scope": "Max 2027 development candidate; raw runtime-tested payload hashes verified in both archives"
+}

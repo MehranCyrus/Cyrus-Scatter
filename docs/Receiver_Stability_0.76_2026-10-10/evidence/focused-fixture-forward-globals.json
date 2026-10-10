@@ -1,0 +1,56 @@
+[
+  {
+    "name": "load-Max_Receiver_Stability_076.ms",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076-release/probe-26aa238a7d62401b94246e0643a7ab7d.ms",
+    "seconds": 0.21899999999732245,
+    "passed": true
+  },
+  {
+    "name": "load-Max_Layer_Regions_074.ms",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076-release/probe-a10c1645ae644e8c81c6a47e4eec442e.ms",
+    "seconds": 0.20300000000133878,
+    "passed": true
+  },
+  {
+    "name": "membership",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076-release/probe-d8fbf700de5c4be9a54dd53b701b2a26.ms",
+    "seconds": 6.485000000000582,
+    "passed": true
+  },
+  {
+    "name": "save",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076-release/probe-87155a29ec3d460191b7745fac9d488d.ms",
+    "seconds": 1.514999999999418,
+    "passed": true
+  },
+  {
+    "name": "reopen",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076-release/probe-38bf13c783e8446b90b00c4b842fa142.ms",
+    "seconds": 3.0310000000026776,
+    "passed": true
+  },
+  {
+    "name": "edit",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076-release/probe-0035712fc09644ed820273acd846115e.ms",
+    "seconds": 6.0,
+    "passed": true
+  },
+  {
+    "name": "edit-save",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076-release/probe-9eb68994cec74eeb937ff915a13135e1.ms",
+    "seconds": 0.7039999999979045,
+    "passed": true
+  },
+  {
+    "name": "edit-reopen",
+    "result": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076-release/probe-76bacd9eb1eb423db08d3a0230e74484.ms",
+    "seconds": 2.139999999999418,
+    "passed": true
+  },
+  {
+    "name": "painting",
+    "result": "ERROR -- Unknown property: \"populationMode\" in undefined\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076-release/probe-32c367f6eccc455fa51af13e60344969.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\procedural_lab\\Max_Receiver_Stability_076.ms LINE: 97P\n",
+    "seconds": 6.578000000001339,
+    "passed": false
+  }
+]

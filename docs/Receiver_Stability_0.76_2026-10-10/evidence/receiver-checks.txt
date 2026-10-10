@@ -1,0 +1,51 @@
+Density baseline: 20 receivers / 10000 plants
+Manual receiver addition stays pending
+Density 20 to 21: all 10000 IDs, matrices and models unchanged
+Append prepares one receiver and reuses twenty candidate caches
+Receiver reorder preserves every matrix/model/ID
+Receiver rename preserves every matrix/model/ID
+Removing a middle receiver preserves all remaining plants
+Restoring the same receiver restores its identities and transforms
+Cold receiver recomputation matches cached result
+Fixed Total: 9524 survivors unchanged, 476 new receiver plants
+Unchanged navigation/read does not regenerate
+Unchanged navigation reuses retained resources/uploads
+Unchanged navigation reuses retained resources/uploads
+Unchanged navigation reuses retained resources/uploads
+Unchanged navigation reuses retained resources/uploads
+Unchanged navigation reuses retained resources/uploads
+Save private receiver fixture
+Reopen private receiver fixture
+Save/reopen preserves full matrices, models and stable IDs
+Existing edits/clones survive adding a receiver
+Radius overrides survive receiver addition
+Zero quota retains protected receiver-local candidate suffixes
+Missing receiver makes its edits inactive
+Restoring receiver recovers protected edits
+Changed bound geometry rejects successor and preserves publication
+Restoring geometry recovers the binding without losing edits
+Save private receiver fixture
+Reopen private receiver fixture
+Save/reopen preserves full matrices, models and stable IDs
+Adding unpainted receiver preserves plane/sphere painted plants
+Variant 1 valid baseline
+Variant 1 unchanged receivers stable: clustering / spacing-cleanup / Relax
+Variant 2 valid baseline
+Variant 2 unchanged receivers stable: clustering / spacing-cleanup / Relax
+Variant 3 valid baseline
+Variant 3 unchanged receivers stable: clustering / spacing-cleanup / Relax
+Same-name replacement gets new IDs; other receiver unchanged
+Restoring original node recovers its stream
+Live scheduled receiver addition preserves existing transforms
+Timed append reuses twenty receiver candidate caches
+Timed append reuses twenty receiver candidate caches
+Timed append reuses twenty receiver candidate caches
+Timed append reuses twenty receiver candidate caches
+Timed append reuses twenty receiver candidate caches
+Timed append reuses twenty receiver candidate caches
+Timed append reuses twenty receiver candidate caches
+Fractional plane/sphere coverage has valid output
+Fractional plane/sphere coverage remains stable after receiver addition
+Invalid radius binding preserves authored override and prior publication
+Invalid radius binding preserves authored override and prior publication
+Restoring valid radius binding recovers publication

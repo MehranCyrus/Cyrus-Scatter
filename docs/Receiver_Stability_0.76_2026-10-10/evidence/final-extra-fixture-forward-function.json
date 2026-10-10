@@ -1,0 +1,6 @@
+{
+  "name": "fractional-and-guards",
+  "result": "ERROR -- Type error: Call needs function or class, got: undefined\nREQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/receiver076-release/probe-5bde44eab4834d2aaabe189bb9b14d0f.ms\nSOURCE: F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\receiver076-release\\probe-5bde44eab4834d2aaabe189bb9b14d0f.ms LINE: 2P\n",
+  "passed": false,
+  "seconds": 0.21899999999732245
+}
