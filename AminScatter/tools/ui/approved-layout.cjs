@@ -164,7 +164,12 @@ function page(s,definition,{name=definition.name,category=0,popup=false}={}){
  const delegates=[];
  for(const method of ['refreshStats','refreshBrushStatus','status','syncRelaxAvailability','syncFinalRelaxAvailability']){
   const owners=components.filter(p=>p.names.has(method.toLowerCase()));
-  if(owners.length)delegates.push('        fn '+method+' = ('+owners.map(p=>'if '+p.key+'_controlsReady do '+p.key+'_'+method+'()').join(';')+(['refreshStats','refreshBrushStatus'].includes(method)?';if controlsReady do layout()':'')+';true)');
+  if(owners.length){
+   // Brush revisions arrive at drawing cadence. Only changing status text can
+   // change row height; unchanged text must not reposition the entire panel.
+   if(method==='refreshBrushStatus')delegates.push('        fn '+method+' = (local changed=false;'+owners.map(p=>'if '+p.key+'_controlsReady do (if '+p.key+'_'+method+'() do changed=true)').join(';')+';if changed and controlsReady do layout();true)');
+   else delegates.push('        fn '+method+' = ('+owners.map(p=>'if '+p.key+'_controlsReady do '+p.key+'_'+method+'()').join(';')+(method==='refreshStats'?';if controlsReady do layout()':'')+';true)');
+  }
  }
  const rowText=rows.map(r=>{
   // Row conditions use fully qualified generated identifiers, intentionally
@@ -349,7 +354,7 @@ ${lists.map(c=>`        on ${c.id}_grip MouseDown sender args do beginListDrag s
 module.exports=function(s,{check=false}={}){
  const definitions=layouts.pages;
  const pages=definitions.map((d,i)=>page(s,d,{category:(i+1)*10}));
- const manifest={schema:'cyrus.ui-layout/1',version:'0.78.1',source:'approved single-file HTML study',sections:pages.map(p=>({name:p.name,title:definitions.find(d=>d.name===p.name).title,scope:p.scope,controls:p.controls.map(c=>({component:c.key,control:c.name,presentation:c.id,advanced:!!p.rows.find(r=>r.controls?.some(x=>x.id===c.id))?.advanced}))}))};
+ const manifest={schema:'cyrus.ui-layout/1',version:'0.78.2',source:'approved single-file HTML study',sections:pages.map(p=>({name:p.name,title:definitions.find(d=>d.name===p.name).title,scope:p.scope,controls:p.controls.map(c=>({component:c.key,control:c.name,presentation:c.id,advanced:!!p.rows.find(r=>r.controls?.some(x=>x.id===c.id))?.advanced}))}))};
  const output=JSON.stringify(manifest,null,2)+'\n',path='tools/ui/approved-layout-manifest.json';
  if(check){if(fs.readFileSync(path,'utf8')!==output)throw Error('Layout manifest is stale');}else fs.writeFileSync(path,output);
  // Replace the old native pages as one contiguous UI block, keeping calculation

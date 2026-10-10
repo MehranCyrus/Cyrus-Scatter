@@ -1,6 +1,6 @@
 # Current codebase architecture
 
-Applies to Cyrus Scatter 0.78.1, saved schema 55 and `CyrusUnified1`. Use [the artist guide](ARTIST_GUIDE.md) for controls, [the backlog](BACKLOG.md) for unfinished work, and [current qualification](Brush_Start_0.78.1_2026-10-10/README.md) for measured evidence. This is the maintained architecture reference; dated implementation reports describe their own snapshots.
+Applies to Cyrus Scatter 0.78.2, saved schema 55 and `CyrusUnified1`. Use [the artist guide](ARTIST_GUIDE.md) for controls, [the backlog](BACKLOG.md) for unfinished work, and [current qualification](Brush_Responsiveness_0.78.2_2026-10-10/README.md) for measured evidence. This is the maintained architecture reference; dated implementation reports describe their own snapshots.
 
 ## Ownership
 
@@ -35,7 +35,7 @@ A segment BVH accelerates parity membership and closest-border distance. An obje
 
 Painting prepares a tentative canonical document. Each successful gesture publishes that document under one native Undo record; Cancel discards it. Capacity/Boolean failures retain the previous complete document. Serialization accepts only the new vector payload. The core limits 200,000 contour vertices and one million receiver faces, with 0.0001 local-unit integer precision. These are admission bounds, not whole-process peak-memory guarantees.
 
-Feedback prepares complete line segments lifted onto the receiving surface, or optional bounded coverage samples. A failed successor does not replace the preceding feedback. Drawing consumes cached numeric segments/points and performs no Boolean operations or field queries. The requested timer interval is 33 ms; measured synchronous preparation is not presented FPS or physical cursor latency. During a held gesture normal scatter publication remains deferred. Static target validity avoids treating clock changes as geometry changes.
+Feedback prepares complete line segments lifted onto the receiving surface, or optional bounded coverage samples. A failed successor does not replace the preceding feedback. Drawing consumes cached numeric segments/points and performs no Boolean operations or field queries. Painter callbacks prepare changed feedback after a 16 ms input-processing interval and flush the final border on release. The 33 ms script timer handles idle catch-up and status/publication; it skips duplicate feedback redraws. Unchanged brush status does not rearrange the panel. These scheduling intervals and synchronous preparation timings are not presented FPS or physical cursor latency. During a held gesture normal scatter publication remains deferred. Static target validity avoids treating clock changes as geometry changes.
 
 Publication commits compatible rows, sources, radii, statistics and display/output state as one complete epoch. Failed successors retain the prior complete publication and report the error. Pending configuration and published output can therefore legitimately differ.
 

@@ -6,6 +6,7 @@ The latest audit is [0.75 qualification](System_Qualification_0.75_2026-10-09/RE
 
 | Record | Purpose |
 | --- | --- |
+| [0.78.1 Start Brush and Max 2026/2027](Brush_Start_0.78.1_2026-10-10/README.md) | Frozen button, native layout and package qualification preceding the 0.78.2 drawing patch |
 | [Approved_UI_Layout_0.73_2026-10-06](Approved_UI_Layout_0.73_2026-10-06/README.md) | Dated implementation, qualification and/or delivery record |
 | [Brush_Relax_Reset_2026-10-03](Brush_Relax_Reset_2026-10-03/REPORT.md) | Dated implementation, qualification and/or delivery record |
 | [Brush_Tool_2026-10-02](Brush_Tool_2026-10-02/README.md) | Dated implementation, qualification and/or delivery record |

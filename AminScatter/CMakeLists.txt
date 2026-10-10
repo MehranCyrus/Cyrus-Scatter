@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.24)
-project(CyrusScatter VERSION 0.78.1 LANGUAGES CXX)
+project(CyrusScatter VERSION 0.78.2 LANGUAGES CXX)
 option(AMIN_BUILD_MAX "Build the 3ds Max extension" ON)
 if(AMIN_BUILD_MAX)
   include("${CMAKE_CURRENT_LIST_DIR}/../cmake/CyrusMaxSDK.cmake")

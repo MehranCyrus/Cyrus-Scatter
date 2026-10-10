@@ -32,4 +32,5 @@ const gripMoves=[...script.matchAll(/on (\w+_grip) MouseMove sender args do ([^\
 assert.ok(gripMoves.length>=20,'Both native and popup list grips must be covered');
 for(const [,id,body] of gripMoves)assert.equal(body,'moveListDrag sender args',id+': idle mouse moves must not trigger an unconditional layout');
 assert.ok(script.includes('close do (stopListDrag();'),'Closing a view must release mouse capture');
+assert.equal((script.match(/if changed and controlsReady do layout\(\);true\)/g)||[]).length,3,'All three brush views skip unchanged status layout');
 console.log('PASS: namespaces, declaration scope, complete field mapping, control property guards and cold event guards');

@@ -15,8 +15,9 @@ extern "C" __declspec(dllexport) int LibNumberClasses(){return 0;}
 extern "C" __declspec(dllexport) ClassDesc* LibClassDesc(int){return nullptr;}
 BOOL WINAPI DllMain(HINSTANCE,DWORD,LPVOID){return TRUE;}
 def_visible_primitive(cyrusPrivatePaintPath,"cyrusPrivatePaintPath");
-Value* cyrusPrivatePaintPath_cf(Value** args,int count){
-    check_arg_count(cyrusPrivatePaintPath,3,count);
+def_visible_primitive(cyrusPrivatePaintContinue,"cyrusPrivatePaintContinue");
+namespace {
+Value* drive(Value** args,bool finish){
     std::wstring command=GetCommandLineW();std::replace(command.begin(),command.end(),L'\\',L'/');
     if(command.find(L"/build/vector-brush-078/")==std::wstring::npos)throw RuntimeError(_T("Owned vector host required"));
     auto* document=args[0]->to_reftarg();
@@ -41,7 +42,12 @@ Value* cyrusPrivatePaintPath_cf(Value** args,int count){
             canvas->CancelStroke();throw RuntimeError(_T("PaintStroke failed"));
         }
     }
-    const bool cancel=args[2]->to_bool()!=FALSE;
-    if(!(cancel?canvas->CancelStroke():canvas->EndStroke()))throw RuntimeError(_T("Stroke completion failed"));
+    if(finish){
+        const bool cancel=args[2]->to_bool()!=FALSE;
+        if(!(cancel?canvas->CancelStroke():canvas->EndStroke()))throw RuntimeError(_T("Stroke completion failed"));
+    }
     return Integer::intern(hits);
 }
+}
+Value* cyrusPrivatePaintPath_cf(Value** args,int count){check_arg_count(cyrusPrivatePaintPath,3,count);return drive(args,true);}
+Value* cyrusPrivatePaintContinue_cf(Value** args,int count){check_arg_count(cyrusPrivatePaintContinue,2,count);return drive(args,false);}

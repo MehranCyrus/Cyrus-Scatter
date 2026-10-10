@@ -1,0 +1,279 @@
+{
+  "version": "0.78.2",
+  "schema": 55,
+  "source_base": "6f9449a21607149c07bf341868c56f47fdafb098",
+  "scope": "Working-tree responsiveness patch over source_base; no computer use or artist-profile installation",
+  "python_tests": 143,
+  "native_suites_per_year": 15,
+  "generated_check": "build/vector-brush-078/speed-generated-01",
+  "baseline": {
+    "launch": {
+      "pid": 33440,
+      "max_year": 2027,
+      "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\speed-baseline-2027",
+      "command": [
+        "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+        "-q",
+        "-i",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\speed-baseline-2027\\max.ini",
+        "-p",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\speed-baseline-2027\\plugins.ini",
+        "-U",
+        "MAXScript",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\speed-baseline-2027\\start.ms",
+        "-listenerlog",
+        "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\speed-baseline-2027\\listener.log"
+      ],
+      "binaries": {
+        "AminScatter.dlx": "19ec7e6a7a0776d9fb5168753347d33130f98b9fb4f2a6406cf4902ad277fb77",
+        "CyrusBrush.dlx": "868eebed7d12da12a171af1160083efc0871678b6e605e58bd0c5a1285f6c61e",
+        "CyrusBrushStorage.dlh": "52e33f9285341f3133ade0f9c3ddeba1ff753808dbb0531efa6c897cf65f8811",
+        "CyrusScatterEdit.dlm": "131a0cee884bd85ebc7680501dece4c9d21c993012714d23e9c2e73ad2ecc694",
+        "CyrusPrivatePaintProbe.dlx": "f8420497842282a73c3ada54460b4d062c2ae4b8d6ba74382eab91c078c62715"
+      },
+      "script_sha256": "bc58822b92b006350ee47d0435117f9e4a79476f23668998be58c0ed9ab27361",
+      "normal_profile_modified": false,
+      "development_transport": true
+    },
+    "drawing": {
+      "samples": 300,
+      "stages": {
+        "author_ms": {
+          "median": 0.29195000000000004,
+          "p95": 0.5325,
+          "max": 0.9387
+        },
+        "border_ms": {
+          "median": 5.896,
+          "p95": 11.4536,
+          "max": 16.0871
+        },
+        "editors_ms": {
+          "median": 24.7886,
+          "p95": 34.2212,
+          "max": 49.5245
+        },
+        "redraw_ms": {
+          "median": 8.9459,
+          "p95": 12.4622,
+          "max": 18.9912
+        },
+        "total_ms": {
+          "median": 39.59045,
+          "p95": 55.0624,
+          "max": 76.6871
+        }
+      }
+    },
+    "callback": "hits=1000 elapsed_ms=757.059d0 stats=#(1304L, 1L, 3994L, 1L, 1L, 0L, 1000L, 1L, 1L, 5000L, \"\", 0.0, 0.0193, 115L, 1L, 0, 0.0, 0, 0, 301L)\n"
+  },
+  "hosts": {
+    "2026": {
+      "host": "speed-host2026-04",
+      "launch": {
+        "pid": 42092,
+        "max_year": 2026,
+        "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\speed-host2026-04",
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2026/3dsmax.exe",
+          "-q",
+          "-silent",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\speed-host2026-04\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\speed-host2026-04\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\speed-host2026-04\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\speed-host2026-04\\listener.log"
+        ],
+        "binaries": {
+          "AminScatter.dlx": "b9d59d9fbc8341ad2e00d56de313842f1f7be47cd28d62a2bc4ec2df5dcc5749",
+          "CyrusBrush.dlx": "80d0a08a249d739489ca29f5c0dec999cb04d6ecd19a773eb4e11eea4d64099a",
+          "CyrusBrushStorage.dlh": "e65859aef5aa39f47eb614035d9bfeda082e925b6362f58f8e610f47c726b81f",
+          "CyrusScatterEdit.dlm": "036a7a2dce70826e32ed7cac3ef3098623f022ec6509c3c975b5ed173e71259a",
+          "CyrusPrivatePaintProbe.dlx": "c12898ec464748e3c70a7d41f4987ea4cddcc5a37e18dd8d0f41c5e81e590898"
+        },
+        "script_sha256": "e7c51732882d99ed01d4a63e1a11900d3a949725d949931ae331bd6faf7d3e97",
+        "normal_profile_modified": false,
+        "development_transport": true,
+        "profile_template": "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2026 - 64bit\\ENU\\3dsMax.ini",
+        "profile_template_sha256": "3f012d596ef0f91bb103abf9cd05f35f2f7137d9f88e542309713011cea1b70f"
+      },
+      "runtime": "Max version: #(28000, 68, 0, 28, 3, 2, 30788, 2026, \".3.2 Security Fix\")\nQuiet mode: false\nSilent mode: false\n",
+      "drawing": {
+        "samples": 300,
+        "stages": {
+          "author_ms": {
+            "median": 0.27095,
+            "p95": 0.5474,
+            "max": 0.7239
+          },
+          "border_ms": {
+            "median": 6.2869,
+            "p95": 11.2055,
+            "max": 12.6111
+          },
+          "editors_ms": {
+            "median": 0.3454,
+            "p95": 1.3075,
+            "max": 1.7731
+          },
+          "redraw_ms": {
+            "median": 8.1826,
+            "p95": 12.2704,
+            "max": 15.3691
+          },
+          "total_ms": {
+            "median": 15.2979,
+            "p95": 23.283,
+            "max": 28.134999999999998
+          }
+        }
+      },
+      "callback": "hits=1000 elapsed_ms=1217.78d0 mid_stroke_stats=#(1303L, 1L, 3817L, 1L, 1L, 1L, 1000L, 1L, 1L, 5000L, \"\", 0.0, 14.3018, 91L, 1L, 0, 0.0, 0, 10636, 301L)\n",
+      "responsiveness": [
+        "PASS unchanged status does not layout",
+        "PASS all 1000 callbacks hit",
+        "PASS intermediate borders prepared without timer delivery",
+        "PASS final feedback flushed",
+        "PASS no duplicate feedback preparation",
+        "PASS Manual population and receiver caches unchanged",
+        "PASS continuous erase cancellation preserves placements"
+      ],
+      "button_assertions": 26,
+      "vector_assertions": 408,
+      "native_layout": {
+        "contexts": 36,
+        "rectangles_checked": 2168,
+        "unique_control_names": 401,
+        "clipped": [],
+        "overlaps": [],
+        "passed": true,
+        "scope": "Native bounds at current display scaling; not font glyph, DPI, visual or pointer qualification"
+      },
+      "result_sha256": {
+        "suite.json": "2a5125ff67b655befa014940506457371c27985d1733d5a2ba89271deaa34ab8",
+        "responsiveness-checks.txt": "a9c7970394bb0fc709e51c36dd6c76dedfccee7dfc547d59379628e9399c0b79",
+        "drawing-timings.csv": "cc06a21b1da36b14bcaf36a02c62f861d06ab369a2825bc0d0e4c37c6c62dcd6",
+        "drawing-summary.json": "72f855bbfcdef62f7510166693eff115f1ef16702264f07b3ac976bbb29918cc",
+        "callback-speed.txt": "488d499751c7a7b27d62e56ab25aed170d47ddf60be117f54c6fb9f07e9bb5e4",
+        "button-checks.txt": "614a95de823c3d652e837c0bde8d85e50b99be3ac4feb5463f578e7d834e7518",
+        "vector-checks.txt": "66a63d8b0a97d1d9363dbcc33f095d90e1735ea01d95ffab0541cccbd16bba0d",
+        "layout-result.json": "e70e50ac3e7cbe2405bdfdaf481676c15884a1d70a88e4c0149271f7c36b8248",
+        "inspection.json": "f1ba48151ec0a2d97f229257df039065d3dd78d96b093026270a8db408376488",
+        "playback/result.txt": "6c6a5b68a01b2ce33928138d6f2b3a7238893626824919fed1d755887ad1b817",
+        "loaded.tsv": "24b63bb96b08050029acec414626bc908f3e23c5000819ee5cf26dca0e05e80e",
+        "runtime-info-final.txt": "c40f0a992cbbae927cc0eb2f4df4293e4b94573b2f93a5faec2dc899df0612f2"
+      },
+      "build_receipt_sha256": "d6d28b420835914df5167f10fd8d3dfe877b84b8d82c12091b1c710787f015c9",
+      "package_receipt_sha256": "c1a3eac30e257153113435821e16359a01a23f11ae953eaedd6f524e4a840d14"
+    },
+    "2027": {
+      "host": "speed-host2027-02",
+      "launch": {
+        "pid": 4392,
+        "max_year": 2027,
+        "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\speed-host2027-02",
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+          "-q",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\speed-host2027-02\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\speed-host2027-02\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\speed-host2027-02\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\speed-host2027-02\\listener.log"
+        ],
+        "binaries": {
+          "AminScatter.dlx": "64f2ccceea50069c9b441e83968bf6c9f3c7f7385a7cb715619bff819b4b0b70",
+          "CyrusBrush.dlx": "7eb7be992529f10fe43df27fd41a412ea28629eb153d80ab37b6d4236fd597e6",
+          "CyrusBrushStorage.dlh": "79df6a637f67f20b0334aa3ea3819072d4f00fe1c9b818ce1fa5ef5a02384227",
+          "CyrusScatterEdit.dlm": "13552f2288c27db0663cde1d1c5a3b761a325c2e215683e9a6c22d23872bb6c1",
+          "CyrusPrivatePaintProbe.dlx": "e1ea4243e06973d1eccff21e89168bfd3cc9471ff801290f8fa5bfcac242ac6a"
+        },
+        "script_sha256": "e7c51732882d99ed01d4a63e1a11900d3a949725d949931ae331bd6faf7d3e97",
+        "normal_profile_modified": false,
+        "development_transport": true
+      },
+      "runtime": "Max version: #(29000, 70, 0, 29, 1, 0, 11426, 2027, \".1\")\nQuiet mode: false\nSilent mode: false\n",
+      "drawing": {
+        "samples": 300,
+        "stages": {
+          "author_ms": {
+            "median": 0.25095,
+            "p95": 0.4799,
+            "max": 0.6995
+          },
+          "border_ms": {
+            "median": 5.428100000000001,
+            "p95": 10.4101,
+            "max": 13.8673
+          },
+          "editors_ms": {
+            "median": 0.2732,
+            "p95": 0.9098,
+            "max": 1.6039
+          },
+          "redraw_ms": {
+            "median": 7.30145,
+            "p95": 10.2456,
+            "max": 28.9455
+          },
+          "total_ms": {
+            "median": 13.322949999999999,
+            "p95": 21.3369,
+            "max": 31.1568
+          }
+        }
+      },
+      "callback": "hits=1000 elapsed_ms=1351.01d0 mid_stroke_stats=#(1303L, 1L, 3994L, 1L, 1L, 1L, 1000L, 1L, 1L, 5000L, \"\", 0.0, 14.7926, 115L, 1L, 0, 0.0, 0, 10619, 301L)\n",
+      "responsiveness": [
+        "PASS unchanged status does not layout",
+        "PASS all 1000 callbacks hit",
+        "PASS intermediate borders prepared without timer delivery",
+        "PASS final feedback flushed",
+        "PASS no duplicate feedback preparation",
+        "PASS Manual population and receiver caches unchanged",
+        "PASS continuous erase cancellation preserves placements"
+      ],
+      "button_assertions": 26,
+      "vector_assertions": 416,
+      "native_layout": {
+        "contexts": 36,
+        "rectangles_checked": 2168,
+        "unique_control_names": 401,
+        "clipped": [],
+        "overlaps": [],
+        "passed": true,
+        "scope": "Native bounds at current display scaling; not font glyph, DPI, visual or pointer qualification"
+      },
+      "result_sha256": {
+        "suite.json": "9cde994fec310aa0e0245232a0e0dea44680ed10da6ad628a7d5dd204eab58f7",
+        "responsiveness-checks.txt": "a9c7970394bb0fc709e51c36dd6c76dedfccee7dfc547d59379628e9399c0b79",
+        "drawing-timings.csv": "a48dbd86538875956d1e50ce568234067f74f2e6e31ab8a385e685b82d967d28",
+        "drawing-summary.json": "01458a9bfa3685a163a140b1f29305aac10574708fb4cabe6ce1a50c339a43cc",
+        "callback-speed.txt": "1a579ae92c220d44d2aa9c8ccdeee42a9a60cd89169172eb726ddaff49ec617c",
+        "button-checks.txt": "614a95de823c3d652e837c0bde8d85e50b99be3ac4feb5463f578e7d834e7518",
+        "vector-checks.txt": "3229b0ca8ac975a97e8440ae626cb249ed1d1e35f59078f03416c5f0e8bfbf5b",
+        "layout-result.json": "e70e50ac3e7cbe2405bdfdaf481676c15884a1d70a88e4c0149271f7c36b8248",
+        "inspection.json": "627ec9fd4149a0a40ae5d0cbd7cc2ba9334ee23dc501204777151e372a64a209",
+        "playback/result.txt": "f13689d3d742145c47014895231cb2093af1e84dd4848c6713657c4c69462e73",
+        "loaded.tsv": "69b203fbe6ba5e35ee2d6142637cf12413aa25d91f63e68b4f7a7c90fce0cf84",
+        "runtime-info-final.txt": "fea44af5d9a2466a4225662deb95b92d1dcac030bda4d92d9df6d81148453ae1"
+      },
+      "build_receipt_sha256": "8e8a84d27b3ca26247e1c2acb14fe91efcfb3ab0217c80f4fdffb0bf07a6d574",
+      "package_receipt_sha256": "9f7a3cde762dfc6d9dfae238cb0449cb147c6ef0fe891c6d150c2ebaf1478eb2"
+    }
+  },
+  "limitations": [
+    "CPU stage timings are not presented FPS or physical mouse latency",
+    "One performance workload per build, not a guarantee for all scenes",
+    "Vector painting remains local-XY terrain/planes",
+    "Analyzer matching prior core qualification reused; renderer/installer execution not repeated"
+  ]
+}

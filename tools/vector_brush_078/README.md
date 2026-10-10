@@ -1,4 +1,4 @@
-# Vector 0.78.1 qualification
+# Vector 0.78.2 qualification
 
 These scripts use owned, hidden Max 2026 or 2027 processes with redirected profile paths. Never run the reset-scene fixtures in an artist process. The launcher refuses an existing host directory, verifies native module paths, copies the generated script, and waits for readiness. Native modules must come from the same fresh build and match the selected host year.
 
@@ -10,10 +10,15 @@ build/mcp-venv/Scripts/python.exe -m pytest CyrusMCP/tests tools/tests -q
 python tools/procedural_lab/offline_build.py --project scatter --year 2027 --output build/vector-brush-078/native-new
 python tools/vector_brush_078/callback_probe/build.py --year 2027
 python tools/vector_brush_078/launch.py --host host-new --native native-new --year 2027 --probe
+python tools/vector_brush_078/request.py tools/vector_brush_078/responsiveness.ms --host host-new --timeout 240
 python tools/vector_brush_078/run_suite.py --host host-new
 ```
 
 Use 2026 consistently in both build and launch commands for that host. `run_suite.py` serializes the button/callback fixture, layout measurements/mode coverage, vector fixtures, passive inspection, performance and playback. Native layout validation fails on clipping or overlap. The callback probe is a private SDK test module and must never enter an installer. The button fixture controls the existing interaction-held provider and restores it, so the two artist desktop sessions cannot make a hidden-host release assertion nondeterministic. It verifies both deferral and release.
+
+For a private startup blocked before bootstrap, `--silent-startup` uses Autodesk's documented `-silent` switch and restores normal dialog behavior before the tests. It does not disable security settings or alter the artist profile. The launcher records the source profile's hash before redirecting its paths. This option changes no production code.
+
+The responsiveness fixture separately measures 300 continuous edits, border preparation, unchanged UI status, and synchronous redraw. It then withholds timer delivery and sends 1,000 actual SDK Painter callbacks through `cyrusPrivatePaintContinue`, leaving the gesture open to inspect intermediate feedback. EndStroke, redundant-refresh avoidance, Manual/cache preservation and cancelled erasing are checked. Run `python tools/vector_brush_078/summarize_drawing.py host-new` for medians and p95. Preparation is not physical input latency or presented FPS.
 
 To run the later fixtures individually after the button/layout checks:
 
@@ -31,4 +36,4 @@ Results are `vector-checks.txt`, `vector-timings.csv`, `population-timings.csv`,
 
 `package_tested.py` accepts `--host`, `--native`, `--analyzer`, `--output`, and `--receipt`. It requires completed button, native layout and broader host checks, verifies matching build/host years, current compiled sources, pinned Clipper2 files and tested script/native hashes, then uses the ordinary package builder. It explicitly packages only the four product modules, excluding the private callback probe. It does not install anything. Check the owned process command line against `launch.json` before stopping only its PID; never stop all Max processes.
 
-Coverage and remaining physical-input, heavy-scene and platform gates are recorded in [the current patch report](../../docs/Brush_Start_0.78.1_2026-10-10/README.md). The [original integration report](../../docs/Vector_Brush_0.78_2026-10-10/README.md) retains 0.78.0's historical results and missed button path.
+Coverage and remaining physical-input, heavy-scene and platform gates are recorded in [the current patch report](../../docs/Brush_Responsiveness_0.78.2_2026-10-10/README.md). The [0.78.1 report](../../docs/Brush_Start_0.78.1_2026-10-10/README.md) and [original integration report](../../docs/Vector_Brush_0.78_2026-10-10/README.md) retain their historical results.

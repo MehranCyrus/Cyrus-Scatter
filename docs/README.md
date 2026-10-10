@@ -4,7 +4,7 @@ Use this small set for the current codebase. Update it in place instead of creat
 
 | Question | Document |
 | --- | --- |
-| How do I use 0.78.1? | [Artist guide](ARTIST_GUIDE.md) |
+| How do I use 0.78.2? | [Artist guide](ARTIST_GUIDE.md) |
 | How do Layout, Analyzer and falloff controls interact? | [Detailed feature reference](LAYOUT_AND_FALLOFF.md) |
 | Who owns data and where is the implementation? | [Architecture](ARCHITECTURE.md) |
 | What is unfinished or next? | [Current backlog](BACKLOG.md) |
@@ -15,7 +15,7 @@ Use this small set for the current codebase. Update it in place instead of creat
 | How did the features work together in a landscape? | [Courtyard scene, painting/layout checklist and performance study](Courtyard_Study_0.75_2026-10-09/README.md) |
 | What did we fix after that study? | [Retained Proxy, Update and Analyzer fixes, measurements and matched packages](Courtyard_Fixes_0.75_2026-10-10/README.md) |
 | What is in the 0.78 vector integration? | [Vector brush, clean schema, curves and qualification](Vector_Brush_0.78_2026-10-10/README.md) |
-| What fixes Start Brush and adds Max 2026? | [0.78.1 button, callback and native layout qualification](Brush_Start_0.78.1_2026-10-10/README.md) |
+| What improves drawing responsiveness? | [0.78.2 drawing measurements and qualification](Brush_Responsiveness_0.78.2_2026-10-10/README.md) |
 | What changed in 0.76 receiver sampling? | [Receiver stability, research, qualification and matching packages](Receiver_Stability_0.76_2026-10-10/README.md) |
 | What preceded receiver stability? | [Bounded Brush preparation and faster history indexing](Brush_Scaling_0.76_2026-10-10/README.md) |
 | What can automation do? | [MCP guide](../CyrusMCP/README.md), [capability matrix](Current_System_2026-10-05/CAPABILITY_MATRIX.md) |

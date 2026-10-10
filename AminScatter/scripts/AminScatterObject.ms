@@ -1,4 +1,4 @@
-global CyrusLoadedScriptFingerprint="55b18422561fc12e2a6c24c4060fea3c6a633ea747351eb5d9cc6a518e03bed8"
+global CyrusLoadedScriptFingerprint="7ad7d4ff2a6ec940cb45633c753bd3ba9fd4b44c34fd84164ecf88ea33a972d8"
 -- Only registered Scatter nodes participate in timeline notifications. This
 -- registry is rebuilt at scene boundaries, never by scanning every animation frame.
 global AminScatterObject,CyrusSourceContainer,CyrusContainerRefreshLabels
@@ -2960,11 +2960,13 @@ fn CyrusLayerEditor_coverageUI_1 = (
             )
         )
         fn brushUI_status = (
-            if brushUI_obj==undefined then brushUI_brushState.text="Add or select a Paint Area." else (
+            local text="Add or select a Paint Area."
+            if brushUI_obj!=undefined do (
                 local state=if brushUI_obj.paintDocument==undefined then undefined else cyrusBrushStats brushUI_obj.paintDocument
-                brushUI_brushState.text=if state==undefined then "Choose this area's surface." else (if state[5]==1 then "Brush active" else "Brush stopped")+(if state[11]!="" then "\n"+state[11] else "")
-                if brushUI_owner!=undefined and not brushUI_owner.paintEnabled do brushUI_brushState.text+="\nWhole surfaces; areas retained."
+                text=if state==undefined then "Choose this area's surface." else (if state[5]==1 then "Brush active" else "Brush stopped")+(if state[11]!="" then "\n"+state[11] else "")
+                if brushUI_owner!=undefined and not brushUI_owner.paintEnabled do text+="\nWhole surfaces; areas retained."
             )
+            if brushUI_brushState.text==text then false else (brushUI_brushState.text=text;true)
         )
         -- MAXScript resolves rollout function names in declaration order.
         -- Declare status first; an unbound forward call stops the paint timer.
@@ -3405,7 +3407,7 @@ fn CyrusLayerEditor_coverageUI_1 = (
                 setupGrips();controlsReady=true;binding=false;layout();true
             )catch(binding=false;controlsReady=false;throw())
         )
-        fn refreshBrushStatus = (if brushUI_controlsReady do brushUI_refreshBrushStatus();if controlsReady do layout();true)
+        fn refreshBrushStatus = (local changed=false;if brushUI_controlsReady do (if brushUI_refreshBrushStatus() do changed=true);if changed and controlsReady do layout();true)
         fn status = (if brushUI_controlsReady do brushUI_status();true)
 
         on advancedToggle changed value do if controlsReady and not binding and root!=undefined and true do ((layout();true)
@@ -6012,7 +6014,7 @@ fn CyrusBindLayerEditor root = (
 fn CyrusOpenLayerEditor root owner = (
     if owner==undefined or findItem root.layerObjects owner==0 do return false
     if CyrusLayerEditor!=undefined then (CyrusLayerEditor.retarget root owner;CyrusLayerEditor.visible=true;return true)
-    rollout editor "Cyrus Scatter 0.78.1 - Layer Editor" width:920 height:800 autoLayoutOnResize:true (
+    rollout editor "Cyrus Scatter 0.78.2 - Layer Editor" width:920 height:800 autoLayoutOnResize:true (
         local root=CyrusLayerUIRoot,owner=CyrusLayerUIOwner,ownerNode=undefined,binding=false,controlsReady=false,closing=false
         local clientSize=CyrusLayerEditorSize,layingOut=false
         local editors=#(),pages=#(),pageEditors=#(#(),#(),#(),#(),#(),#()),built=#{},topic=1,members=#(),sets=#(),pageSections=#(),ownerStates=#(),lastSet=undefined
@@ -6062,7 +6064,7 @@ fn CyrusOpenLayerEditor root owner = (
             local unit=if root.viewportMode==1 and not root.groupCenters then " preview samples" else " shown"
             local text=(if root.updateMode==1 then "Manual" else "Live")+" | "+summary[3]+" | "+(CyrusUICount summary[1])+" placed / "+(CyrusUICount summary[2])+unit
             if resultInfo.text!=text do resultInfo.text=text
-            local caption="Cyrus Scatter 0.78.1 | "+ownerNode.name+" / "+(root.layerCaption owner)
+            local caption="Cyrus Scatter 0.78.2 | "+ownerNode.name+" / "+(root.layerCaption owner)
             if editor.title!=caption do editor.title=caption
             local setupText="Setup: "+ownerNode.name+"  |  Selecting scene models keeps this editor on its layer"
             if setupInfo.text!=setupText do setupInfo.text=setupText
@@ -7368,7 +7370,7 @@ initialRollupState:0x8
     fn uiLayerStats = (
         CyrusLayerStatusData hasResult:(cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
     )
-    fn uiVersion = "0.78.1"
+    fn uiVersion = "0.78.2"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified1")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -8320,14 +8322,14 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This unpublished development scene uses a retired Cyrus settings schema. Create a new 0.78.1 setup."
+        local message="This unpublished development scene uses a retired Cyrus settings schema. Create a new 0.78.2 setup."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
     fn procValidate = (
         this.procAssertSchema()
-        if cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined do throw "Cyrus 0.78.1 requires the matching native plugin binaries. Restart the private test host with the complete matching script/native pair."
+        if cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined do throw "Cyrus 0.78.2 requires the matching native plugin binaries. Restart the private test host with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -8537,7 +8539,7 @@ initialRollupState:0x8
         CyrusBindLayerEditor this
         true
     )
-    rollout mainUI "Cyrus Scatter 0.78.1" width:#cmdPanel height:112 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.78.2" width:#cmdPanel height:112 autoLayoutOnResize:true (
         local view=undefined,root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),owner=undefined,layerPagesVisible=false,pagesArranged=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for the entire setup."
         radiobuttons updateRadio "Viewport update" labels:#("Manual","Live") columns:2 pos:[8,26] width:(mainUI.width-16) tooltip:"Manual waits for Update. Live calculates after relevant edits."
@@ -8610,7 +8612,7 @@ initialRollupState:0x8
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.78.1 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.78.2 native plugin and restart Max."
             local context=if classof view==CyrusSourceContainer then CyrusContainerResolve view else undefined
             root=if classof view==CyrusSourceContainer then (if context==undefined then undefined else context[1]) else view
             editors=#(view.managerUI,view.surfacesUI,view.modelsUI,view.layoutUI,view.populationUI,view.coverageUI,view.areasUI,view.transformsUI,view.spacingUI,view.displayUI,view.statisticsUI)
@@ -11690,11 +11692,13 @@ initialRollupState:0x8
             )
         )
         fn brushUI_status = (
-            if brushUI_obj==undefined then brushUI_brushState.text="Add or select a Paint Area." else (
+            local text="Add or select a Paint Area."
+            if brushUI_obj!=undefined do (
                 local state=if brushUI_obj.paintDocument==undefined then undefined else cyrusBrushStats brushUI_obj.paintDocument
-                brushUI_brushState.text=if state==undefined then "Choose this area's surface." else (if state[5]==1 then "Brush active" else "Brush stopped")+(if state[11]!="" then "\n"+state[11] else "")
-                if brushUI_owner!=undefined and not brushUI_owner.paintEnabled do brushUI_brushState.text+="\nWhole surfaces; areas retained."
+                text=if state==undefined then "Choose this area's surface." else (if state[5]==1 then "Brush active" else "Brush stopped")+(if state[11]!="" then "\n"+state[11] else "")
+                if brushUI_owner!=undefined and not brushUI_owner.paintEnabled do text+="\nWhole surfaces; areas retained."
             )
+            if brushUI_brushState.text==text then false else (brushUI_brushState.text=text;true)
         )
         -- MAXScript resolves rollout function names in declaration order.
         -- Declare status first; an unbound forward call stops the paint timer.
@@ -12135,7 +12139,7 @@ initialRollupState:0x8
                 setupGrips();controlsReady=true;binding=false;layout();true
             )catch(binding=false;controlsReady=false;throw())
         )
-        fn refreshBrushStatus = (if brushUI_controlsReady do brushUI_refreshBrushStatus();if controlsReady do layout();true)
+        fn refreshBrushStatus = (local changed=false;if brushUI_controlsReady do (if brushUI_refreshBrushStatus() do changed=true);if changed and controlsReady do layout();true)
         fn status = (if brushUI_controlsReady do brushUI_status();true)
 
         on advancedToggle changed value do if controlsReady and not binding and root!=undefined and true do ((layout();if panel!=undefined do panel.rememberViews();true)
@@ -15345,9 +15349,9 @@ fn CyrusBrushTick sender args = (
     try (
         local layer=CyrusBrushSessionLayer,root=CyrusBrushSessionRoot,state=cyrusBrushStats layer.paintDocument
         if state[1]!=CyrusBrushSessionRevision do (
-            cyrusBrushRefreshMask layer.paintDocument
+            local feedbackChanged=cyrusBrushRefreshMask layer.paintDocument
             CyrusBrushSessionRevision=state[1]
-            if state[6]==0 then (layer.checkPaintRevision();CyrusViewportRedraw()) else redrawViews()
+            if state[6]==0 then (layer.checkPaintRevision();CyrusViewportRedraw()) else if feedbackChanged do redrawViews()
             root.refreshBrushEditors()
         )
         if state[5]==0 do (
@@ -15508,7 +15512,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         on editLayer pressed do (local context=CyrusContainerResolve view;if context!=undefined and context[2]!=undefined do CyrusOpenLayerEditor context[1] (context[1].logicalParent context[2]))
     )
 
-    rollout mainUI "Cyrus Scatter 0.78.1" width:#cmdPanel height:112 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.78.2" width:#cmdPanel height:112 autoLayoutOnResize:true (
         local view=undefined,root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),owner=undefined,layerPagesVisible=false,pagesArranged=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for the entire setup."
         radiobuttons updateRadio "Viewport update" labels:#("Manual","Live") columns:2 pos:[8,26] width:(mainUI.width-16) tooltip:"Manual waits for Update. Live calculates after relevant edits."
@@ -15581,7 +15585,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.78.1 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.78.2 native plugin and restart Max."
             local context=if classof view==CyrusSourceContainer then CyrusContainerResolve view else undefined
             root=if classof view==CyrusSourceContainer then (if context==undefined then undefined else context[1]) else view
             editors=#(view.managerUI,view.surfacesUI,view.modelsUI,view.layoutUI,view.populationUI,view.coverageUI,view.areasUI,view.transformsUI,view.spacingUI,view.displayUI,view.statisticsUI)
@@ -18661,11 +18665,13 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             )
         )
         fn brushUI_status = (
-            if brushUI_obj==undefined then brushUI_brushState.text="Add or select a Paint Area." else (
+            local text="Add or select a Paint Area."
+            if brushUI_obj!=undefined do (
                 local state=if brushUI_obj.paintDocument==undefined then undefined else cyrusBrushStats brushUI_obj.paintDocument
-                brushUI_brushState.text=if state==undefined then "Choose this area's surface." else (if state[5]==1 then "Brush active" else "Brush stopped")+(if state[11]!="" then "\n"+state[11] else "")
-                if brushUI_owner!=undefined and not brushUI_owner.paintEnabled do brushUI_brushState.text+="\nWhole surfaces; areas retained."
+                text=if state==undefined then "Choose this area's surface." else (if state[5]==1 then "Brush active" else "Brush stopped")+(if state[11]!="" then "\n"+state[11] else "")
+                if brushUI_owner!=undefined and not brushUI_owner.paintEnabled do text+="\nWhole surfaces; areas retained."
             )
+            if brushUI_brushState.text==text then false else (brushUI_brushState.text=text;true)
         )
         -- MAXScript resolves rollout function names in declaration order.
         -- Declare status first; an unbound forward call stops the paint timer.
@@ -19106,7 +19112,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 setupGrips();controlsReady=true;binding=false;layout();true
             )catch(binding=false;controlsReady=false;throw())
         )
-        fn refreshBrushStatus = (if brushUI_controlsReady do brushUI_refreshBrushStatus();if controlsReady do layout();true)
+        fn refreshBrushStatus = (local changed=false;if brushUI_controlsReady do (if brushUI_refreshBrushStatus() do changed=true);if changed and controlsReady do layout();true)
         fn status = (if brushUI_controlsReady do brushUI_status();true)
 
         on advancedToggle changed value do if controlsReady and not binding and root!=undefined and true do ((layout();if panel!=undefined do panel.rememberViews();true)

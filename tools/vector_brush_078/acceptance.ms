@@ -18,7 +18,7 @@ VNode=AminScatterObject name:"V_Controller";VRoot=VNode.baseObject
 VRoot.setLayerTransfer true;VRoot.updateMode=1;VRoot.autoRender=false;VRoot.newLayer()
 VLayer=VRoot.selectedLayer();VLayer.sources=#(VSource);VLayer.sourceWeights=#(1.0);VLayer.amount=5000
 VRoot.setLayerTransfer false;VRoot.setLayerSurfaces VLayer #(VPlane,VSecond);VRoot.refreshAll()
-VAssert (VRoot.uiVersion()=="0.78.1") "Current UI version 0.78.1"
+VAssert (VRoot.uiVersion()=="0.78.2") "Current UI version 0.78.2"
 VAssert (VRoot.groupSnapshotRows[1].count==5000) "Two receivers generate without paint"
 VArea=VRoot.addPaintArea VLayer target:VPlane;VD=VArea.paintDocument
 cyrusBrushSettings VD 35 false

@@ -37,6 +37,9 @@ def main():
     if 'SUCCESS 835 assertions' not in playback:raise SystemExit('Playback qualification incomplete')
     inspection=json.loads((host/'inspection.json').read_text())
     if len(inspection['checks'])!=6:raise SystemExit('Passive inspection qualification incomplete')
+    responsiveness=host/'responsiveness-checks.txt'
+    if scatter_version()=='0.78.2' and (not responsiveness.is_file() or len(responsiveness.read_text().splitlines())!=7 or not all(line.startswith('PASS ') for line in responsiveness.read_text().splitlines())):
+        raise SystemExit('Drawing responsiveness qualification incomplete')
     script=ROOT/'AminScatter/scripts/AminScatterObject.ms'
     if sha(script)!=launch['script_sha256']:raise SystemExit('Generated script differs from the tested script')
     # UI may be revised after compilation; all compiled source must still match.
@@ -78,9 +81,10 @@ def main():
             'host_assertions':len(checks),'playback_assertions':835,
             'button_workflow_assertions':len(button_checks),'native_layout':layout,'max_year':year,
             'passive_inspection_assertions':len(inspection['checks']),
-            'analyzer_qualification':'Unchanged 0.14 source; fresh SDK compilation and one core suite only',
+            'responsiveness_assertions':len(responsiveness.read_text().splitlines()) if responsiveness.is_file() else 0,
+            'analyzer_qualification':'Unchanged 0.14 source; source-matched SDK build and one core suite only; no new host qualification',
             'clipper2':provenance,'archives':archives}
     a.receipt.parent.mkdir(parents=True,exist_ok=True)
-    a.receipt.write_text(json.dumps(result,indent=2)+'\n')
+    a.receipt.write_text(json.dumps(result,indent=2)+'\n',newline='\n')
 
 if __name__=='__main__':main()

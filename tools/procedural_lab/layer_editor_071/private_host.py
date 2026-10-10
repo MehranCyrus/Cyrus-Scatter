@@ -19,7 +19,7 @@ def digest(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
-def launch(folder,script,native,extra='',transport=False,visible=False,extra_modules=(),max_year=2027):
+def launch(folder,script,native,extra='',transport=False,visible=False,extra_modules=(),max_year=2027,silent_startup=False):
     if max_year not in (2026,2027):
         raise ValueError('Use a supported Max host year')
     folder=Path(folder).resolve();script=Path(script).resolve();native=Path(native).resolve()
@@ -28,7 +28,8 @@ def launch(folder,script,native,extra='',transport=False,visible=False,extra_mod
     folder.mkdir(parents=True,exist_ok=False)
     for rel in ['bin',*DIRECTORIES.values()]:(folder/rel).mkdir(parents=True,exist_ok=True)
     profile=Path(os.environ['LOCALAPPDATA'])/f'Autodesk/3dsMax/{max_year} - 64bit/ENU/3dsMax.ini'
-    ini=profile.read_text(encoding='utf-16')
+    profile_bytes=profile.read_bytes()
+    ini=profile_bytes.decode('utf-16')
     for key,rel in DIRECTORIES.items():
         ini,count=re.subn(r'(?m)^'+re.escape(key)+'=.*$',lambda _:key+'='+str(folder/rel),ini)
         if count!=1:raise RuntimeError('Private profile key missing or ambiguous: '+key)
@@ -46,6 +47,8 @@ def launch(folder,script,native,extra='',transport=False,visible=False,extra_mod
     bootstrap='global AminScatterObject,CyrusPerfHeadless=true,MCPFixtureDir=@"'+folder.as_posix()+'/"\n'
     if transport:
         bootstrap+='fileIn @"'+(ROOT/'tools/mcp/development_transport.ms').as_posix()+'"\n'
+    if silent_startup:
+        bootstrap+='setSilentMode false\nsetQuietMode false\n' # Restore both flags before qualification.
     bootstrap+='''try (
         local expected=#(__EXPECTED__),p=(dotNetClass "System.Diagnostics.Process").GetCurrentProcess()
         local log=createFile (MCPFixtureDir+"loaded.tsv")
@@ -68,9 +71,11 @@ def launch(folder,script,native,extra='',transport=False,visible=False,extra_mod
 '''.replace('__EXPECTED__',expected).replace('__SCRIPT__',copied.as_posix()).replace('__EXTRA__',extra)
     start=folder/'start.ms';start.write_text(bootstrap,encoding='utf-8-sig')
     command=[f'C:/Program Files/Autodesk/3ds Max {max_year}/3dsmax.exe','-q','-i',str(folder/'max.ini'),'-p',str(folder/'plugins.ini'),'-U','MAXScript',str(start),'-listenerlog',str(folder/'listener.log')]
+    if silent_startup:command.insert(2,'-silent')
     startup=subprocess.STARTUPINFO();startup.dwFlags|=subprocess.STARTF_USESHOWWINDOW;startup.wShowWindow=1 if visible else 0
     process=subprocess.Popen(command,cwd=folder,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,startupinfo=startup)
     metadata={'pid':process.pid,'max_year':max_year,'output':str(folder),'command':command,'binaries':modules,
-              'script_sha256':digest(copied),'normal_profile_modified':False,'development_transport':transport}
+              'script_sha256':digest(copied),'normal_profile_modified':False,'development_transport':transport,
+              'profile_template':str(profile),'profile_template_sha256':hashlib.sha256(profile_bytes).hexdigest()}
     (folder/'launch.json').write_text(json.dumps(metadata,indent=2)+'\n')
     return process,metadata

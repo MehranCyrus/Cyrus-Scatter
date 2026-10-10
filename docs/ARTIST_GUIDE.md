@@ -1,4 +1,4 @@
-# Cyrus Scatter 0.78 — current workflow
+# Cyrus Scatter 0.78.2 — current workflow
 
 Updated 10 October 2026. Use this guide for the current UI and ownership model. Dated 0.73 guides describe the older layout. This guide explains behavior; the qualification checklist separately identifies what has been tested.
 
@@ -54,6 +54,8 @@ Each area targets one receiver. Use separate areas for separate terrain surfaces
 **Fade density** thins stable candidates using the **Density curve**. **Fade scale** multiplies each plant's existing random scale between **Edge scale** and **Inner scale**, shaped by the **Scale curve**. The graph's left end is the outer edge of the transition, and its right end is the fully interior end. Density and scale can be used independently. With both widths at zero there is no transition: interior plants use the curve's right-end scale. Where areas overlap, the strongest effective density determines scale; equal weights use area order.
 
 **Vector borders** is the default feedback. **Coverage samples** provides a bounded diagnostic view of the field. Feedback updates while drawing; in Manual mode plants wait for **Update**. No individual stroke/history controls or strength accumulation remain.
+
+0.78.2 improves feedback during fast continuous strokes and avoids repeatedly rearranging the painting panel. Existing 0.78 vector regions and curves retain the same format. See [drawing measurements and acceptance limits](Brush_Responsiveness_0.78.2_2026-10-10/README.md); very complex outlines and heavy viewport geometry still add work.
 
 Removing a receiver link leaves its area inactive with its borders preserved. Relinking the same node restores eligibility. An area with paint cannot silently change target. Changes to target geometry/topology require restoring that geometry or creating a new area; the previous completed scatter remains available after a failed update. Use saved scene units on reopen.
 

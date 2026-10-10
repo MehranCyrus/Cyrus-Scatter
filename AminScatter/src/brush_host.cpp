@@ -78,6 +78,7 @@ public:
     TimeValue snapshotTime=0;
     Interval targetValidity=NEVER;
     double maxHitError=0,lastEvaluationMs=0;
+    std::chrono::steady_clock::time_point feedbackTime{};
     // An independent bounded surface overlay, unrelated to surviving plants.
     unsigned capacity=2048,seed=42;
     std::vector<amin::Instance> candidates;
@@ -185,8 +186,8 @@ public:
         }
         return *field;
     }
-    void evaluate(){
-        ensureSurface();if(fieldRevision==revision)return;
+    bool evaluate(){
+        ensureSurface();if(fieldRevision==revision)return false;
         const auto start=std::chrono::steady_clock::now();
         std::vector<std::pair<Point3,float>> nextOverlay;
         std::vector<std::array<Point3,2>> nextBorder;
@@ -200,6 +201,21 @@ public:
         overlay=std::move(nextOverlay);border=std::move(nextBorder);
         tintFaces=border.size();tintLimited=false;fieldRevision=revision;
         lastEvaluationMs=std::chrono::duration<double,std::milli>(std::chrono::steady_clock::now()-start).count();
+        feedbackTime=std::chrono::steady_clock::now();return true;
+    }
+
+    void refreshDrawing(bool force=false){
+        // WM_TIMER is low priority: a busy mouse queue can starve the script
+        // timer. Prepare feedback here, outside the redraw callback, at a
+        // bounded cadence just like the isolated vector prototype. Consume all
+        // input points; throttle presentation, never the authored path.
+        if(!painting)return;
+        if(!force&&std::chrono::steady_clock::now()-feedbackTime<std::chrono::milliseconds(16))return;
+        if(evaluate()){
+            GetCOREInterface()->RedrawViews(GetCOREInterface()->GetTime());
+            // Leave an input-processing interval after a costly scene redraw.
+            feedbackTime=std::chrono::steady_clock::now();
+        }
     }
 
     void restoreOptions(){if(!painter)return;
@@ -248,7 +264,7 @@ public:
             b::Hit canonical;if(!surface->hit(ray(mouse),canonical)){pathConnected=false;return TRUE;}
             const double delta=Length(point(surface->position(canonical.anchor))*objectTM-world);maxHitError=std::max(maxHitError,delta);++picks;
             if(canonical.anchor.face!=static_cast<unsigned>(face)||std::min({bary.x,bary.y,bary.z})<0)++repairedHits;
-            add(mouse,canonical.anchor);return TRUE;
+            add(mouse,canonical.anchor);refreshDrawing();return TRUE;
         }catch(const std::exception& e){error=e.what();CancelStroke();return FALSE;}
     }
     BOOL EndStroke()override{
@@ -260,7 +276,11 @@ public:
             if(!cyrusBoundaryCommit(strokePermit,this))throw std::runtime_error("Stroke authorization expired before commit; completed Brush work is preserved");
 #endif
             theHold.Begin();holding=true;theHold.Put(restore.release());document=std::move(pending);gesture=false;changed();theHold.Accept(_T("Cyrus Brush stroke"));holding=false;
-        }else gesture=false;return TRUE;
+        }else gesture=false;
+        // EndStroke must finish publication before feedback: a display error
+        // must never masquerade as a failed Undo transaction.
+        try{refreshDrawing(true);}catch(const std::exception& e){error=e.what();}
+        return TRUE;
         }catch(const std::exception& e){if(holding)theHold.Cancel();CancelStroke();error=e.what();return FALSE;}
     }
     BOOL EndStroke(int n,BOOL* hit,IPoint2* mouse,Point3* world,Point3* normal,Point3* local,Point3* localNormal,Point3* bary,int* index,BOOL* shift,BOOL* ctrl,BOOL* alt,float* size,float* str,float* pressure,INode** nodes,BOOL mirror,Point3* mw,Point3* mn,Point3* ml,Point3* mln)override{
@@ -355,7 +375,7 @@ Value* cyrusBrushDisplay_cf(Value** a,int n){check_arg_count(cyrusBrushDisplay,3
 def_visible_primitive(cyrusBrushStats,"cyrusBrushStats");
 Value* cyrusBrushStats_cf(Value** a,int n){check_arg_count(cyrusBrushStats,1,n);auto* p=doc(a[0]);p->pollTarget();if(p->painting&&(p->invalid||!p->target||p->target->IsHidden()||p->target->IsFrozen()))p->stop();one_typed_value_local(Array* result);vl.result=new Array(20);const auto& current=p->gesture?p->pending:p->document;std::size_t samples=b::vertexCount(current);for(auto v:{p->revision,std::uint64_t(current.contours.size()),std::uint64_t(samples),std::uint64_t(!p->invalid),std::uint64_t(p->painting),std::uint64_t(p->gesture),p->picks,p->baseBuilds,p->fieldBuilds,p->queries})vl.result->append(Integer64::intern(v));vl.result->append(new String(std::wstring(p->error.begin(),p->error.end()).c_str()));vl.result->append(Float::intern(float(p->maxHitError)));vl.result->append(Float::intern(float(p->lastEvaluationMs)));vl.result->append(Integer64::intern(p->repairedHits));vl.result->append(Integer64::intern(p->maskApplications));vl.result->append(Integer::intern(int(p->overlay.size())));vl.result->append(Float::intern(0.f));vl.result->append(Integer::intern(p->tintLimited?1:0));vl.result->append(Integer::intern(int(p->tintFaces)));vl.result->append(Integer64::intern(p->overlayDraws));return_value(vl.result);}
 def_visible_primitive(cyrusBrushRefreshMask,"cyrusBrushRefreshMask");
-Value* cyrusBrushRefreshMask_cf(Value** a,int n){check_arg_count(cyrusBrushRefreshMask,1,n);return api([&]()->Value*{doc(a[0])->evaluate();return &ok;});}
+Value* cyrusBrushRefreshMask_cf(Value** a,int n){check_arg_count(cyrusBrushRefreshMask,1,n);return api([&]()->Value*{return doc(a[0])->evaluate()?&true_value:&false_value;});}
 def_visible_primitive(cyrusBrushDab,"cyrusBrushDab");
 Value* cyrusBrushDab_cf(Value** a,int n){check_arg_count(cyrusBrushDab,4,n);return api([&]()->Value*{auto* p=doc(a[0]);
     try {p->requireAuthor();p->valid();b::Hit hit;if(!p->surface->hit({vec(a[1]->to_point3()),vec(a[2]->to_point3())},hit))return &false_value;
