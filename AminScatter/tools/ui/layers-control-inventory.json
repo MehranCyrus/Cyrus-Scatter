@@ -4,6 +4,10 @@
       {
         "kind": "checkbox",
         "name": "enabledCheck"
+      },
+      {
+        "kind": "button",
+        "name": "licenseButton"
       }
     ],
     "updateUI": [

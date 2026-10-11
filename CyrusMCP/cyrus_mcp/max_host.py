@@ -382,6 +382,11 @@ class MaxHost:
 
     def generate(self, plan, compiled):
         self.assert_main()
+        # Deny before clearing recipes, creating nodes, or opening the Undo hold.
+        license_check=getattr(rt,'cyrusLicenseAllows',None)
+        require(license_check is not None and bool(license_check()),
+                "Cyrus authoring requires an active team license; existing scenes remain renderable",
+                "LICENSE_REQUIRED")
         require(not self.busy(), "Host is busy", "HOST_BUSY")
         require(not rt.isSceneRedrawDisabled(),"Max viewport redraw is suspended; restore it locally before generating","HOST_BUSY")
         before=self.fingerprint()

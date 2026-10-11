@@ -18,6 +18,10 @@ public:
     ActivationRequest requestActivation();
     void activate(std::string_view signed_response);
     void importRenewal(std::string_view license);
+    // Team-file workflow: fixed signed deadline, local clock observations only.
+    // A delayed file is not a fresh authenticated clock-recovery response.
+    void importOfflineLicense(std::string_view license);
+    std::int64_t expires() const noexcept;
     void refresh();
     void checkpoint();
     Decision status(Operation operation=Operation::AuthorScatter);
@@ -33,6 +37,7 @@ private:
     LicenseSession session_;
     ClockTracker clock_;
     std::uint64_t generation_=0;
+    bool clock_anchored_=false;
     // Disk/key/verification operations serialize separately. The clock lock
     // protects only short in-memory decisions and final verified publication.
     std::mutex io_mutex_;

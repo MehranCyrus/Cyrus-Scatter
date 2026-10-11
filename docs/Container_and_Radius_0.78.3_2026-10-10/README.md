@@ -68,3 +68,9 @@ Reproduce the focused checks with [containers.ms](../../tools/vector_brush_078/c
 Test-development corrections: source weights are bounded to 0–1, so the fixture uses 0.25; `intersectRayEx` witnesses use an Editable Mesh receiver; save/open selection checks allow Max's posted mount events to complete. These corrected fixture issues did not require weakening product assertions.
 
 Drawing-stage medians and p95 are preserved in `EVIDENCE.json`. The expanded panel still skips layout for unchanged status. These are synchronous CPU measurements under ordinary desktop activity, not a new controlled speedup comparison or presented FPS.
+
+## Follow-up: point-only Spline bands
+
+The [focused point-only check](SPLINE_POINTS.md) exercises the same unchanged 0.78.3 product with no plant sources or painting. It records the working Color groups route and the missing Point rows in direct Source objects assignment. These additional checks do not change the package or its original qualification receipt.
+
+The [Include/Exclude and radius inspection](AREA_EXAMPLES.md) leaves 25 labeled point-only cases in a saved Max 2026 scene. It covers transformed spline widths, masks, falloff, Analyzer line/point areas, source radii and final save/reopen, with raw diagnostic attempts and physical-input limits retained.

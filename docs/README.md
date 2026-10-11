@@ -4,7 +4,7 @@ Use this small set for the current codebase. Update it in place instead of creat
 
 | Question | Document |
 | --- | --- |
-| How do I use 0.78.3? | [Artist guide](ARTIST_GUIDE.md) |
+| How do I use the current development version? | [Artist guide](ARTIST_GUIDE.md) |
 | How do Layout, Analyzer and falloff controls interact? | [Detailed feature reference](LAYOUT_AND_FALLOFF.md) |
 | Who owns data and where is the implementation? | [Architecture](ARCHITECTURE.md) |
 | What is unfinished or next? | [Current backlog](BACKLOG.md) |
@@ -20,11 +20,12 @@ Use this small set for the current codebase. Update it in place instead of creat
 | What changed in 0.76 receiver sampling? | [Receiver stability, research, qualification and matching packages](Receiver_Stability_0.76_2026-10-10/README.md) |
 | What preceded receiver stability? | [Bounded Brush preparation and faster history indexing](Brush_Scaling_0.76_2026-10-10/README.md) |
 | What can automation do? | [MCP guide](../CyrusMCP/README.md), [capability matrix](Current_System_2026-10-05/CAPABILITY_MATRIX.md) |
+| How should the website describe the product, MCP and ML roadmap? | [Current product and AI direction](PRODUCT_AND_AI_ROADMAP.md) |
 | How does the separate Analyzer work? | [Analyzer guide](../CyrusSurfaceAnalyzer/README.md) |
 | What is the version/delivery policy? | [Versioning](Release_Versioning.md), [workspace and backup scope](Workspace_Organization.md) |
 
-Licensing stays in its [separate module](../CyrusLicensing/README.md) and [existing documentation](licensing/README.md). The offline [Design Lab](Offline_Implementation_2026-10-05/DESIGN_LAB.md) is experimental, not an integrated production learning feature.
+0.79 implements the [offline team licensing pilot](licensing/TEAM_PILOT_0.79_2026-10-11.md), with matched Max 2026/2027 candidates and bounded activation/expiry/render evidence. Read its anti-bypass and host-coverage limits before distribution. The offline [Design Lab](Offline_Implementation_2026-10-05/DESIGN_LAB.md) is experimental, not an integrated production learning feature.
 
 [History and evidence](HISTORY.md) lists prior implementation snapshots. The original paths are retained where test fixtures, frozen manifests, research or the website depend on them. Do not follow their old installation or next-task instructions as current guidance.
 
-Website and research collections were outside this cleanup. They remain available in their existing locations, but are intentionally absent from the everyday reading sequence. See [documentation maintenance](DOCUMENTATION.md) for the retention rules and cleanup record.
+Website and research collections were outside the earlier codebase-documentation cleanup. The [canonical website](../website/README.md) now has its own consolidation workstream using the maintained guides and [product/AI direction](PRODUCT_AND_AI_ROADMAP.md); supplied `Landing Page Design/` variants are design references. Research remains separate from current feature claims. See [documentation maintenance](DOCUMENTATION.md) for the retention rules and cleanup record.

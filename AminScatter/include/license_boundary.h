@@ -1,8 +1,8 @@
 #pragma once
 
-// Deliberately opt-in isolated experiment. The ordinary 0.7 product does not
-// acquire a development issuer or synthetic clock by including this header.
-#ifdef CYRUS_NATIVE_LICENSE_EXPERIMENT
+// Team builds use the real local client; isolated experiments retain their
+// separate authority. No development issuer or synthetic clock is implicit.
+#if defined(CYRUS_NATIVE_LICENSE_EXPERIMENT) || defined(CYRUS_TEAM_LICENSE)
 #include "cyrus/licensing/signed_license.h"
 #ifdef CYRUS_LICENSE_BOUNDARY_IMPORT
 #define CYRUS_BOUNDARY_API __declspec(dllimport)

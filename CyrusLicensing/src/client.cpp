@@ -22,6 +22,7 @@ LocalLicenseClient::LocalLicenseClient(TrustProfile trust,TrustProfile activatio
         if(!state->token.empty())verified(session_.install(state->token));
         generation_=state->generation;
         clock_=ClockTracker(state->highest_utc,systemUtcSeconds(),systemMonotonicMs());
+        clock_anchored_=state->highest_utc>0;
     }
 }
 ClockObservation LocalLicenseClient::clock() { return clock_.observe(systemUtcSeconds(),systemMonotonicMs()); }
@@ -58,6 +59,7 @@ void LocalLicenseClient::activate(std::string_view response) {
     { std::lock_guard stateLock(mutex_);
       session_.adoptVerified(candidate);
       clock_=ClockTracker(next.highest_utc,systemUtcSeconds(),systemMonotonicMs()); }
+    clock_anchored_=true;
 }
 void LocalLicenseClient::importRenewal(std::string_view token) {
     std::lock_guard lock(io_mutex_);
@@ -88,10 +90,53 @@ void LocalLicenseClient::refresh() {
         if(!state->token.empty()) {
             LicenseSession candidate(trust_,host_);verified(candidate.install(state->token));
             std::lock_guard stateLock(mutex_);session_.adoptVerified(candidate);
+            // A team import in another Max process can establish the first
+            // local anchor. Never clear an already observed clock anomaly.
+            if(trust_.token_type=="cyrus-team-license+jwt"&&!clock_anchored_&&state->highest_utc>0) {
+                clock_=ClockTracker(state->highest_utc,systemUtcSeconds(),systemMonotonicMs());
+                clock_anchored_=true;
+            }
         }
         generation_=state->generation;
     }
     // Refresh cannot clear this process's latched clock anomaly.
+}
+void LocalLicenseClient::importOfflineLicense(std::string_view token) {
+    if(trust_.token_type!="cyrus-team-license+jwt")throw std::runtime_error("Offline import requires the team profile");
+    std::lock_guard lock(io_mutex_);
+    const auto before=store_.read();
+    if(before)sameDevice(*before,host_);
+    const auto now=systemUtcSeconds();
+    ClockObservation observed{true,now};
+    if(before&&before->highest_utc>0) {
+        std::lock_guard stateLock(mutex_);observed=clock();
+        if(!observed.trusted||observed.utc_seconds<before->highest_utc-2)
+            throw std::runtime_error("Local clock changed; correct Windows time and restart Max before importing");
+    }
+    LicenseSession candidate(trust_,host_);verified(candidate.install(token));
+    const auto claims=candidate.snapshot();
+    if(claims->expires-claims->not_before>30*24*60*60)
+        throw std::runtime_error("Team license term exceeds 30 days");
+    const auto decision=candidate.decide(Operation::AuthorScatter,observed);
+    if(!decision.allowed)throw std::runtime_error(reasonName(decision.reason));
+    const auto next=store_.update([&](LocalState& state){
+        sameDevice(state,host_);
+        if(observed.utc_seconds<state.highest_utc-2)throw std::runtime_error("Local time predates saved clock evidence");
+        if(!state.token.empty()) {
+            const auto old=verifyLicense(state.token,trust_);verified(old.error);
+            if(claims->expires<old.claims->expires)throw std::runtime_error("Older license would shorten the existing term");
+        }
+        state.device=host_.device;state.token=std::string(token);state.pending_nonce.clear();
+        state.highest_utc=std::max(state.highest_utc,observed.utc_seconds);
+    });
+    generation_=next.generation;
+    { std::lock_guard stateLock(mutex_);
+      session_.adoptVerified(candidate);
+      clock_=ClockTracker(next.highest_utc,systemUtcSeconds(),systemMonotonicMs()); }
+    clock_anchored_=true;
+}
+std::int64_t LocalLicenseClient::expires() const noexcept {
+    const auto claims=session_.snapshot();return claims?claims->expires:0;
 }
 void LocalLicenseClient::checkpoint() {
     std::lock_guard lock(io_mutex_);

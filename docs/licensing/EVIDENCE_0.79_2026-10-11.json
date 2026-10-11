@@ -1,0 +1,385 @@
+{
+  "date": "2026-10-11",
+  "branch_at_start": "codex/workflow-0.75",
+  "head_at_start": "46374194c5dba42d643425e3810390b8ddb3f903",
+  "version": "0.79",
+  "package_version": "0.79.0",
+  "schema": 55,
+  "python_tests_passed": 158,
+  "generator": {
+    "check": "unified_073_generator_integration",
+    "passed": true,
+    "development_version": "0.79",
+    "baseline": "01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2",
+    "maxscript_compiled": false,
+    "ui_controls_in_inventory": 241,
+    "baseline_controls_accounted": 245,
+    "generated_sha256": "7fe77af17f1d3095757910e9333a40a1e37aacc3142591471adcc4b4512a522d",
+    "preserved_files": [
+      "AminScatter/src/point_display.cpp"
+    ],
+    "fixture_delimiters_checked": 32,
+    "interactive_max_run": false
+  },
+  "hosts": {
+    "2026-test05": {
+      "native_tests_passed": 24,
+      "script_sha256": "7fe77af17f1d3095757910e9333a40a1e37aacc3142591471adcc4b4512a522d",
+      "binaries": {
+        "AminScatter.dlx": "e7417c91a842f49f657a37efa5fafeb50046c23fe46bea4d398ff565b327f33c",
+        "CyrusBrush.dlx": "0954b00342bfd1ee700dbf37fd599a0b0149852e37f023768407d0bd5c3d0837",
+        "CyrusBrushStorage.dlh": "ab22045a0c10fe08dbb03a53b0aeb7aba956b8ca20514e6ae074ce32472dc866",
+        "CyrusScatterEdit.dlm": "85520c366f2e0f307660e50ed74457ba02189b9b760cd6f52900ae574a3944fc"
+      },
+      "profile": "build/mcp-qualification/licensing079-2026-test05",
+      "candidate": "build/licensing-079-20261011/max2026-test05",
+      "source_receipt_sha256": "ad6a2fdadc48c568fe2f3004e384b57547d073a4e7ab9f21d855718cb1a877b0",
+      "loaded_paths_verified": true,
+      "artist_ini_unchanged": true,
+      "lifecycle": {
+        "passed": true,
+        "short_test_expiry": 1791703075,
+        "delayed_license_expiry": 1794208680
+      },
+      "checks": [
+        "Missing license denies authoring",
+        "Missing license permits empty host shell but denies scatter creation",
+        "Rejected expired license without unlocking",
+        "Rejected other-device license without unlocking",
+        "Rejected signature license without unlocking",
+        "Native import admits correct installation",
+        "Licensed creation and procedural update",
+        "Licensed vector Brush Fill",
+        "Generated activation button opens panel",
+        "Begin staged stroke before expiry",
+        "Stroke remains staged",
+        "Active stroke over 30 seconds commits",
+        "Long stroke clears staging",
+        "Long stroke reset retains baseline publication",
+        "Authority expires while Max remains open",
+        "Expiry cancels staged stroke without changing completed contours",
+        "Direct scalar assignment denied before mutation",
+        "New layer denied before mutation",
+        "Explicit authoring Update denied",
+        "Native vector Fill denied and contours retained",
+        "Native painting denied",
+        "Expired viewport evaluation preserves exact publication",
+        "Expired save and cold cache reopen preserves exact publication",
+        "Delayed file import renews without fresh online time anchor",
+        "Import preserves signed expiry rather than starting a fresh month",
+        "Renewal restores existing layer editing",
+        "Rejected replacement retains current verified license"
+      ],
+      "render_comparison": {
+        "expired": {
+          "pixel_equal": true,
+          "colors": 1000
+        },
+        "reopened": {
+          "pixel_equal": true,
+          "colors": 1000
+        }
+      },
+      "post_freeze_doc_updates": []
+    },
+    "2026-owner05": {
+      "native_tests_passed": 24,
+      "script_sha256": "7fe77af17f1d3095757910e9333a40a1e37aacc3142591471adcc4b4512a522d",
+      "binaries": {
+        "AminScatter.dlx": "524e89944086719e9c0d9fe6c8a77f3bae37319628a21e16b024a3049a3e2e89",
+        "CyrusBrush.dlx": "daf6e7e783689663a2b90e2a2e434ffca5ab9287c4ba0797eaabb819eb83e8b5",
+        "CyrusBrushStorage.dlh": "e17a1844d11d8dcde9003c5867a9cd001cebfcd2ea93ec4495f11ae3abfe7447",
+        "CyrusScatterEdit.dlm": "304387f818fe59c1f27107e145d540815b610d61981c817e8a67f9d725ec4ed0"
+      },
+      "profile": "build/mcp-qualification/licensing079-2026-owner05",
+      "candidate": "build/licensing-079-20261011/max2026-owner05",
+      "source_receipt_sha256": "22ba02f501bb4f7ca4ed0886ee53d7c67b9f633d35cc6fecd037c61b7e704228",
+      "loaded_paths_verified": true,
+      "artist_ini_unchanged": true,
+      "lifecycle": {
+        "passed": true,
+        "issued": 1791703130,
+        "expires": 1794295130,
+        "term_seconds": 2592000,
+        "initially_licensed": true
+      },
+      "checks": [
+        "Owner build reopens existing valid license",
+        "Owner build cold-opens complete saved scene",
+        "Already-open owner host observes shared activation",
+        "Owner license enables current authoring",
+        "Long stroke begins with valid authority",
+        "Long stroke stays staged before commit",
+        "Stroke over 30 seconds commits with active license",
+        "Long stroke publishes changed region and clears staging",
+        "Rejected replacement retains current verified license"
+      ],
+      "render_comparison": {
+        "pixel_equal": true,
+        "colors": 1000
+      },
+      "post_freeze_doc_updates": [],
+      "long_stroke": {
+        "passed": true,
+        "held_seconds": 32
+      }
+    },
+    "2027-test05": {
+      "native_tests_passed": 24,
+      "script_sha256": "7fe77af17f1d3095757910e9333a40a1e37aacc3142591471adcc4b4512a522d",
+      "binaries": {
+        "AminScatter.dlx": "029ba7cf527cd20761553972bf45262ee1fae16cc9a15fa31ea6da3959ca9e51",
+        "CyrusBrush.dlx": "2d2d3fc223937a2364d861a07eb5dd8de1136e4bddfb672bb863ace9523cf8cb",
+        "CyrusBrushStorage.dlh": "7fb8ed20430cf8909c3976b1c1b82824945547daea8c3bb8c926a45a3d6e4c9b",
+        "CyrusScatterEdit.dlm": "d5fce710e306e9768adc5ba65f0e0c67c82cb13ec9d836bea19d71d09837833c"
+      },
+      "profile": "build/mcp-qualification/licensing079-2027-test05",
+      "candidate": "build/licensing-079-20261011/max2027-test05",
+      "source_receipt_sha256": "318112f50b2bc6dfa30a87e1f22549bf7105b754b62fba72368f567fbbee28ad",
+      "loaded_paths_verified": true,
+      "artist_ini_unchanged": true,
+      "lifecycle": {
+        "passed": true,
+        "short_test_expiry": 1791703076,
+        "delayed_license_expiry": 1794208681
+      },
+      "checks": [
+        "Missing license denies authoring",
+        "Missing license permits empty host shell but denies scatter creation",
+        "Rejected expired license without unlocking",
+        "Rejected other-device license without unlocking",
+        "Rejected signature license without unlocking",
+        "Native import admits correct installation",
+        "Licensed creation and procedural update",
+        "Licensed vector Brush Fill",
+        "Generated activation button opens panel",
+        "Begin staged stroke before expiry",
+        "Stroke remains staged",
+        "Active stroke over 30 seconds commits",
+        "Long stroke clears staging",
+        "Long stroke reset retains baseline publication",
+        "Authority expires while Max remains open",
+        "Expiry cancels staged stroke without changing completed contours",
+        "Direct scalar assignment denied before mutation",
+        "New layer denied before mutation",
+        "Explicit authoring Update denied",
+        "Native vector Fill denied and contours retained",
+        "Native painting denied",
+        "Expired viewport evaluation preserves exact publication",
+        "Expired save and cold cache reopen preserves exact publication",
+        "Delayed file import renews without fresh online time anchor",
+        "Import preserves signed expiry rather than starting a fresh month",
+        "Renewal restores existing layer editing",
+        "Rejected replacement retains current verified license"
+      ],
+      "render_comparison": {
+        "expired": {
+          "pixel_equal": true,
+          "colors": 963
+        },
+        "reopened": {
+          "pixel_equal": true,
+          "colors": 963
+        }
+      },
+      "post_freeze_doc_updates": []
+    },
+    "2027-owner05": {
+      "native_tests_passed": 24,
+      "script_sha256": "7fe77af17f1d3095757910e9333a40a1e37aacc3142591471adcc4b4512a522d",
+      "binaries": {
+        "AminScatter.dlx": "c1fac55e32b2d134cb5fa9b1dd2f8924d06fa50f1d44f305e7962f5255e5684b",
+        "CyrusBrush.dlx": "d4cb0d242a9791acaf9f91fece8561296fb3676cc8f1d849b63f9c0debe3e084",
+        "CyrusBrushStorage.dlh": "f1e9135c7c067d5b2ae53f65ad6934089060712509fd193fc370e8f98d08bc7f",
+        "CyrusScatterEdit.dlm": "9570246226d9630f5d585716a7fd6785a18b0da43732930a90ca272d4317140f"
+      },
+      "profile": "build/mcp-qualification/licensing079-2027-owner05",
+      "candidate": "build/licensing-079-20261011/max2027-owner05",
+      "source_receipt_sha256": "22ba02f501bb4f7ca4ed0886ee53d7c67b9f633d35cc6fecd037c61b7e704228",
+      "loaded_paths_verified": true,
+      "artist_ini_unchanged": true,
+      "lifecycle": {
+        "passed": true,
+        "issued": 1791703130,
+        "expires": 1794295130,
+        "term_seconds": 2592000,
+        "initially_licensed": true
+      },
+      "checks": [
+        "Owner build reopens existing valid license",
+        "Owner build cold-opens complete saved scene",
+        "Owner-issued 30-day license imports and repeats safely",
+        "Owner issuance deadline is preserved",
+        "Already-open owner host observes shared activation",
+        "Owner license enables current authoring",
+        "Long stroke begins with valid authority",
+        "Long stroke stays staged before commit",
+        "Stroke over 30 seconds commits with active license",
+        "Long stroke publishes changed region and clears staging",
+        "Rejected replacement retains current verified license"
+      ],
+      "render_comparison": {
+        "pixel_equal": true,
+        "colors": 963
+      },
+      "post_freeze_doc_updates": [],
+      "long_stroke": {
+        "passed": true,
+        "held_seconds": 32
+      }
+    }
+  },
+  "packages": {
+    "2026": {
+      "path": "dist/licensing-0.79/CyrusScatter-0.79.0-Max2026.mzp",
+      "sha256": "d538e1533ec6345a8f7324e300338c1128e8b75402f25138c8be412628a16b77",
+      "manifest": {
+        "product": "Cyrus Scatter",
+        "version": "0.79.0",
+        "max_year": 2026,
+        "toolset": "14.38.33130",
+        "windows_sdk": "10.0.19041.0",
+        "configuration": "Release",
+        "native_id": "7c81b4b66bba",
+        "files": {
+          "AminScatter.dlx": "524e89944086719e9c0d9fe6c8a77f3bae37319628a21e16b024a3049a3e2e89",
+          "Clipper2-LICENSE.txt": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+          "CyrusBrush.dlx": "daf6e7e783689663a2b90e2a2e434ffca5ab9287c4ba0797eaabb819eb83e8b5",
+          "CyrusBrushStorage.dlh": "e17a1844d11d8dcde9003c5867a9cd001cebfcd2ea93ec4495f11ae3abfe7447",
+          "CyrusScatter.mcr": "00f88c10f464d759ab4061a9cd04a5cda323b939cb4fdc1629db4260c336956d",
+          "CyrusScatter.ms": "7fe77af17f1d3095757910e9333a40a1e37aacc3142591471adcc4b4512a522d",
+          "CyrusScatterEdit.dlm": "304387f818fe59c1f27107e145d540815b610d61981c817e8a67f9d725ec4ed0",
+          "CyrusScatterStartup.ms": "fdf38b3bc83187eecb34b833bfff2751e78626e9e3dba41aa20a0ff7ff9e8405",
+          "INSTALL.txt": "2e145e689bac7436239c8d6e4df99611135cfe60ec132f7533c87f49d4fc86a0",
+          "Uninstall.ms": "59e2b84901fcefaae1dab59886cd2f4079df4f764c789238947e19c514b4ed49",
+          "install.ms": "030cbbd5279bcbf7f422672ac7ff9ebfc380794f5c2808ecab0fea361fd43828",
+          "mzp.run": "5ae73d9585605b9996c0977fb4f829aa5f3a4eada60cd34ee89ad83cacf9c410",
+          "nlohmann-json-LICENSE.txt": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603"
+        },
+        "licensing": {
+          "mode": "offline-team",
+          "key_id": "cyrus-team-a1b79a717a834e459d454a7768ffe205",
+          "term_days": 30
+        }
+      }
+    },
+    "2027": {
+      "path": "dist/licensing-0.79/CyrusScatter-0.79.0-Max2027.mzp",
+      "sha256": "c76078dc79aac9071541282c4814640df83c53785b0298c3e80bc1d12575908f",
+      "manifest": {
+        "product": "Cyrus Scatter",
+        "version": "0.79.0",
+        "max_year": 2027,
+        "toolset": "14.38.33130",
+        "windows_sdk": "10.0.19041.0",
+        "configuration": "Release",
+        "native_id": "da2d4e8da2df",
+        "files": {
+          "AminScatter.dlx": "c1fac55e32b2d134cb5fa9b1dd2f8924d06fa50f1d44f305e7962f5255e5684b",
+          "Clipper2-LICENSE.txt": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+          "CyrusBrush.dlx": "d4cb0d242a9791acaf9f91fece8561296fb3676cc8f1d849b63f9c0debe3e084",
+          "CyrusBrushStorage.dlh": "f1e9135c7c067d5b2ae53f65ad6934089060712509fd193fc370e8f98d08bc7f",
+          "CyrusScatter.mcr": "00f88c10f464d759ab4061a9cd04a5cda323b939cb4fdc1629db4260c336956d",
+          "CyrusScatter.ms": "7fe77af17f1d3095757910e9333a40a1e37aacc3142591471adcc4b4512a522d",
+          "CyrusScatterEdit.dlm": "9570246226d9630f5d585716a7fd6785a18b0da43732930a90ca272d4317140f",
+          "CyrusScatterStartup.ms": "fdf38b3bc83187eecb34b833bfff2751e78626e9e3dba41aa20a0ff7ff9e8405",
+          "INSTALL.txt": "a7a86b53e9abe4ec3f4343902503a77fb593bc272e95e592db3a726a0086fee8",
+          "Uninstall.ms": "59e2b84901fcefaae1dab59886cd2f4079df4f764c789238947e19c514b4ed49",
+          "install.ms": "2c14980c7da00ef8d702f82a7314e7c2fce30e2b0dfdf6177a16cd9b69ed4965",
+          "mzp.run": "d021097380088040874630aa66b5cecaea1950cec2408b9df878ff7dffa60ec7",
+          "nlohmann-json-LICENSE.txt": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603"
+        },
+        "licensing": {
+          "mode": "offline-team",
+          "key_id": "cyrus-team-a1b79a717a834e459d454a7768ffe205",
+          "term_days": 30
+        }
+      }
+    }
+  },
+  "artist_installation": false,
+  "committed": false,
+  "pushed": false,
+  "owner_key_id": "cyrus-team-a1b79a717a834e459d454a7768ffe205",
+  "limitations": [
+    "Team workflow guards, not complete native recipe ownership",
+    "Arbitrary script table mutation and shared evaluation remain outside enforcement",
+    "Offline clock and software-device binding are best effort",
+    "Physical expiry gestures, external dependencies and renderer farm qualification remain open"
+  ],
+  "earlier_owner_initial_activation": {
+    "2026-owner": {
+      "native_tests_passed": 24,
+      "script_sha256": "7fe77af17f1d3095757910e9333a40a1e37aacc3142591471adcc4b4512a522d",
+      "binaries": {
+        "AminScatter.dlx": "df7c3a2fa52635fb8ee9bb1a31ea7a14450f759ba9a020748d9ac946e02239e1",
+        "CyrusBrush.dlx": "187fa433efee4bba33f73eb8a01319001da10feba89aefdd17189469766a9abd",
+        "CyrusBrushStorage.dlh": "47028820c799cc909e8dfa176f84efe6b47c4777de5a990d615cba3cfc8ec5d3",
+        "CyrusScatterEdit.dlm": "9676c1b27550be57508117725457198bee9b97acbe3e0fb784d37a4911ae3893"
+      },
+      "profile": "build/mcp-qualification/licensing079-2026-owner",
+      "candidate": "build/licensing-079-20261011/max2026-owner",
+      "source_receipt_sha256": "68fceb848a8804e45a88e8025a100cad7d0c21fcc4160915fba0bcc6bf164267",
+      "loaded_paths_verified": true,
+      "lifecycle": {
+        "passed": true,
+        "issued": 1791701575,
+        "expires": 1794293575,
+        "term_seconds": 2592000
+      },
+      "checks": [
+        "Owner build starts locked without a license",
+        "Owner build cold-opens complete scene without a license",
+        "Missing owner license prevents direct scalar edit",
+        "Already-open owner host observes shared activation",
+        "Owner license enables current authoring"
+      ],
+      "render_comparison": {
+        "pixel_equal": true,
+        "colors": 1013
+      },
+      "post_freeze_doc_updates": [
+        "AminScatter/README.md",
+        "CyrusLicensing/README.md"
+      ]
+    },
+    "2027-owner": {
+      "native_tests_passed": 24,
+      "script_sha256": "7fe77af17f1d3095757910e9333a40a1e37aacc3142591471adcc4b4512a522d",
+      "binaries": {
+        "AminScatter.dlx": "ac7506e161ea102c35332fc068d421349556338f54959880fa8e0ab735a90c2c",
+        "CyrusBrush.dlx": "f3369eed1c20dd7224a0b8d07a90517968ed159142187af47a119755879d84e7",
+        "CyrusBrushStorage.dlh": "b80e68846b7791ecc055286516b75f78d83a78a84344eecf7d9d19f362cf4a7e",
+        "CyrusScatterEdit.dlm": "4c9d13ecfd8d984f9df4bf341e92e973d1c95df878328fe51f64f04ebadd3868"
+      },
+      "profile": "build/mcp-qualification/licensing079-2027-owner",
+      "candidate": "build/licensing-079-20261011/max2027-owner",
+      "source_receipt_sha256": "68fceb848a8804e45a88e8025a100cad7d0c21fcc4160915fba0bcc6bf164267",
+      "loaded_paths_verified": true,
+      "lifecycle": {
+        "passed": true,
+        "issued": 1791701575,
+        "expires": 1794293575,
+        "term_seconds": 2592000
+      },
+      "checks": [
+        "Owner build starts locked without a license",
+        "Owner build cold-opens complete scene without a license",
+        "Missing owner license prevents direct scalar edit",
+        "Owner-issued 30-day license imports and repeats safely",
+        "Owner issuance deadline is preserved",
+        "Already-open owner host observes shared activation",
+        "Owner license enables current authoring"
+      ],
+      "render_comparison": {
+        "pixel_equal": true,
+        "colors": 1009
+      },
+      "post_freeze_doc_updates": [
+        "AminScatter/README.md",
+        "CyrusLicensing/README.md"
+      ]
+    }
+  },
+  "final_brush_policy": "Authorize staging start, each sample and publication; no 30-second team stroke cap"
+}

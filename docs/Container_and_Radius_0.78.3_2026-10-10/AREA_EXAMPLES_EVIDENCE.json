@@ -1,0 +1,1421 @@
+{
+  "date": "2026-10-11",
+  "product": "0.78.3",
+  "analyzer": "0.14",
+  "max_year": 2026,
+  "branch": "codex/workflow-0.75",
+  "head": "46374194c5dba42d643425e3810390b8ddb3f903",
+  "product_changes": false,
+  "scope": "Point-only Include/Exclude, spline widths and source/Analyzer radius inspection",
+  "host": {
+    "pid": 45404,
+    "max_year": 2026,
+    "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\include-exclude-visible2026-01",
+    "command": [
+      "C:/Program Files/Autodesk/3ds Max 2026/3dsmax.exe",
+      "-q",
+      "-silent",
+      "-i",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\include-exclude-visible2026-01\\max.ini",
+      "-p",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\include-exclude-visible2026-01\\plugins.ini",
+      "-U",
+      "MAXScript",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\include-exclude-visible2026-01\\start.ms",
+      "-listenerlog",
+      "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\include-exclude-visible2026-01\\listener.log"
+    ],
+    "binaries": {
+      "AminScatter.dlx": "34cf81f9ce63ee73c0ef46c1c67b4fb07519b14cec43aea47dce03fe396c433d",
+      "CyrusBrush.dlx": "b7a6f218b7b16fab91644c5e8999ca8ad9b25a5fa7b1a03d30146832335f6218",
+      "CyrusBrushStorage.dlh": "5fe5ada58ceb7a2386df6c290538cf26b36f3daeae8525627329b0c47d2cea77",
+      "CyrusScatterEdit.dlm": "2b614a92ba2d8436f41c2a35ca187ca01b52f0cdc6fff7ec6f5c403f06dc56a5",
+      "CyrusSurfaceAnalyzer.dlx": "e46a3c1822c672108c1a995490872efd88c4da9b7c6c87edd30fc847f5dcb8a7"
+    },
+    "script_sha256": "75e7105990052825a86b018649c6b425e6f0ec4ea1cc191ee49e57be327d6f1d",
+    "normal_profile_modified": false,
+    "development_transport": true,
+    "profile_template": "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2026 - 64bit\\ENU\\3dsMax.ini",
+    "profile_template_sha256": "3f012d596ef0f91bb103abf9cd05f35f2f7137d9f88e542309713011cea1b70f"
+  },
+  "loaded_modules": "AminScatter.dlx\tF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\include-exclude-visible2026-01\\bin\\AminScatter.dlx\nCyrusBrush.dlx\tF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\include-exclude-visible2026-01\\bin\\CyrusBrush.dlx\nCyrusBrushStorage.dlh\tF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\include-exclude-visible2026-01\\bin\\CyrusBrushStorage.dlh\nCyrusScatterEdit.dlm\tF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\include-exclude-visible2026-01\\bin\\CyrusScatterEdit.dlm\nCyrusSurfaceAnalyzer.dlx\tF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\include-exclude-visible2026-01\\bin\\CyrusSurfaceAnalyzer.dlx\n",
+  "current_script_sha256": "75e7105990052825a86b018649c6b425e6f0ec4ea1cc191ee49e57be327d6f1d",
+  "normal_profile_sha256_after": "3f012d596ef0f91bb103abf9cd05f35f2f7137d9f88e542309713011cea1b70f",
+  "results": {
+    "product": "0.78.3",
+    "checks": [
+      {
+        "passed": true,
+        "label": "Inside 200 mm: full receiver candidate reference"
+      },
+      {
+        "passed": true,
+        "label": "Inside 200 mm: exact geometric membership",
+        "accepted": 234,
+        "expected": 234,
+        "unexpected": 0,
+        "missing": 0
+      },
+      {
+        "passed": true,
+        "label": "Inside 200 mm: positions and band source assignment"
+      },
+      {
+        "passed": true,
+        "label": "Inside 200 mm: one visible marker per point"
+      },
+      {
+        "passed": true,
+        "label": "Outside 200 mm: full receiver candidate reference"
+      },
+      {
+        "passed": true,
+        "label": "Outside 200 mm: exact geometric membership",
+        "accepted": 258,
+        "expected": 258,
+        "unexpected": 0,
+        "missing": 0
+      },
+      {
+        "passed": true,
+        "label": "Outside 200 mm: positions and band source assignment"
+      },
+      {
+        "passed": true,
+        "label": "Outside 200 mm: one visible marker per point"
+      },
+      {
+        "passed": true,
+        "label": "Spline scale 40 pct - width 200 mm: full receiver candidate reference"
+      },
+      {
+        "passed": true,
+        "label": "Spline scale 40 pct - width 200 mm: exact geometric membership",
+        "accepted": 137,
+        "expected": 137,
+        "unexpected": 0,
+        "missing": 0
+      },
+      {
+        "passed": true,
+        "label": "Spline scale 40 pct - width 200 mm: positions and band source assignment"
+      },
+      {
+        "passed": true,
+        "label": "Spline scale 40 pct - width 200 mm: one visible marker per point"
+      },
+      {
+        "passed": true,
+        "label": "Nonuniform rotated - width 200 mm: full receiver candidate reference"
+      },
+      {
+        "passed": true,
+        "label": "Nonuniform rotated - width 200 mm: exact geometric membership",
+        "accepted": 296,
+        "expected": 296,
+        "unexpected": 0,
+        "missing": 0
+      },
+      {
+        "passed": true,
+        "label": "Nonuniform rotated - width 200 mm: positions and band source assignment"
+      },
+      {
+        "passed": true,
+        "label": "Nonuniform rotated - width 200 mm: one visible marker per point"
+      },
+      {
+        "passed": true,
+        "label": "Object offset - width 200 mm: full receiver candidate reference"
+      },
+      {
+        "passed": true,
+        "label": "Object offset - width 200 mm: exact geometric membership",
+        "accepted": 335,
+        "expected": 335,
+        "unexpected": 0,
+        "missing": 0
+      },
+      {
+        "passed": true,
+        "label": "Object offset - width 200 mm: positions and band source assignment"
+      },
+      {
+        "passed": true,
+        "label": "Object offset - width 200 mm: one visible marker per point"
+      },
+      {
+        "passed": true,
+        "label": "Two inside bands - 200 plus 200 mm: full receiver candidate reference"
+      },
+      {
+        "passed": true,
+        "label": "Two inside bands - 200 plus 200 mm: exact geometric membership",
+        "accepted": 596,
+        "expected": 596,
+        "unexpected": 0,
+        "missing": 0
+      },
+      {
+        "passed": true,
+        "label": "Two inside bands - 200 plus 200 mm: positions and band source assignment"
+      },
+      {
+        "passed": true,
+        "label": "Two inside bands - 200 plus 200 mm: one visible marker per point"
+      },
+      {
+        "passed": true,
+        "label": "Include only: full receiver candidate reference"
+      },
+      {
+        "passed": true,
+        "label": "Include only: exact geometric membership",
+        "accepted": 568,
+        "expected": 568,
+        "unexpected": 0,
+        "missing": 0
+      },
+      {
+        "passed": true,
+        "label": "Include only: positions and band source assignment"
+      },
+      {
+        "passed": true,
+        "label": "Include only: one visible marker per point"
+      },
+      {
+        "passed": true,
+        "label": "Exclude only: full receiver candidate reference"
+      },
+      {
+        "passed": true,
+        "label": "Exclude only: exact geometric membership",
+        "accepted": 1841,
+        "expected": 1841,
+        "unexpected": 0,
+        "missing": 0
+      },
+      {
+        "passed": true,
+        "label": "Exclude only: positions and band source assignment"
+      },
+      {
+        "passed": true,
+        "label": "Exclude only: one visible marker per point"
+      },
+      {
+        "passed": true,
+        "label": "Include union - overlapping shapes: full receiver candidate reference"
+      },
+      {
+        "passed": true,
+        "label": "Include union - overlapping shapes: exact geometric membership",
+        "accepted": 646,
+        "expected": 646,
+        "unexpected": 0,
+        "missing": 0
+      },
+      {
+        "passed": true,
+        "label": "Include union - overlapping shapes: positions and band source assignment"
+      },
+      {
+        "passed": true,
+        "label": "Include union - overlapping shapes: one visible marker per point"
+      },
+      {
+        "passed": true,
+        "label": "Exclude wins within Include: full receiver candidate reference"
+      },
+      {
+        "passed": true,
+        "label": "Exclude wins within Include: exact geometric membership",
+        "accepted": 684,
+        "expected": 684,
+        "unexpected": 0,
+        "missing": 0
+      },
+      {
+        "passed": true,
+        "label": "Exclude wins within Include: positions and band source assignment"
+      },
+      {
+        "passed": true,
+        "label": "Exclude wins within Include: one visible marker per point"
+      },
+      {
+        "passed": true,
+        "label": "Scaled rotated Include: full receiver candidate reference"
+      },
+      {
+        "passed": true,
+        "label": "Scaled rotated Include: exact geometric membership",
+        "accepted": 271,
+        "expected": 271,
+        "unexpected": 0,
+        "missing": 0
+      },
+      {
+        "passed": true,
+        "label": "Scaled rotated Include: positions and band source assignment"
+      },
+      {
+        "passed": true,
+        "label": "Scaled rotated Include: one visible marker per point"
+      },
+      {
+        "passed": true,
+        "label": "Concave Include plus Exclude: full receiver candidate reference"
+      },
+      {
+        "passed": true,
+        "label": "Concave Include plus Exclude: exact geometric membership",
+        "accepted": 554,
+        "expected": 554,
+        "unexpected": 0,
+        "missing": 0
+      },
+      {
+        "passed": true,
+        "label": "Concave Include plus Exclude: positions and band source assignment"
+      },
+      {
+        "passed": true,
+        "label": "Concave Include plus Exclude: one visible marker per point"
+      },
+      {
+        "passed": true,
+        "label": "One spline with a hole: full receiver candidate reference"
+      },
+      {
+        "passed": true,
+        "label": "One spline with a hole: exact geometric membership",
+        "accepted": 908,
+        "expected": 908,
+        "unexpected": 0,
+        "missing": 0
+      },
+      {
+        "passed": true,
+        "label": "One spline with a hole: positions and band source assignment"
+      },
+      {
+        "passed": true,
+        "label": "One spline with a hole: one visible marker per point"
+      },
+      {
+        "passed": true,
+        "label": "Spline band clipped by Exclude: full receiver candidate reference"
+      },
+      {
+        "passed": true,
+        "label": "Spline band clipped by Exclude: exact geometric membership",
+        "accepted": 537,
+        "expected": 537,
+        "unexpected": 0,
+        "missing": 0
+      },
+      {
+        "passed": true,
+        "label": "Spline band clipped by Exclude: positions and band source assignment"
+      },
+      {
+        "passed": true,
+        "label": "Spline band clipped by Exclude: one visible marker per point"
+      },
+      {
+        "passed": true,
+        "label": "Delete 100 mm then scale 300 mm: full receiver candidate reference"
+      },
+      {
+        "passed": true,
+        "label": "Delete 100 mm then scale 300 mm: exact geometric membership",
+        "accepted": 1049,
+        "expected": 1049,
+        "unexpected": 0,
+        "missing": 0
+      },
+      {
+        "passed": true,
+        "label": "Delete 100 mm then scale 300 mm: positions and band source assignment"
+      },
+      {
+        "passed": true,
+        "label": "Delete 100 mm then scale 300 mm: one visible marker per point"
+      },
+      {
+        "passed": true,
+        "label": "Delete strip: exact 100 mm support distance"
+      },
+      {
+        "passed": true,
+        "label": "Scale ramp starts after deletion and follows curve"
+      },
+      {
+        "passed": true,
+        "label": "Follow Scale multiplies point radius by final ramp scale"
+      },
+      {
+        "passed": true,
+        "label": "Density edge fade 400 mm: full receiver candidate reference"
+      },
+      {
+        "passed": true,
+        "label": "Density edge fade 400 mm: exact geometric membership",
+        "accepted": 1067,
+        "expected": 1067,
+        "unexpected": 0,
+        "missing": 0
+      },
+      {
+        "passed": true,
+        "label": "Density edge fade 400 mm: positions and band source assignment"
+      },
+      {
+        "passed": true,
+        "label": "Density edge fade 400 mm: one visible marker per point"
+      },
+      {
+        "passed": true,
+        "label": "Density curve thins point population"
+      },
+      {
+        "passed": true,
+        "label": "Density curve zero endpoint removes its full edge interval"
+      },
+      {
+        "passed": true,
+        "label": "Density curve full endpoint retains interior candidates"
+      },
+      {
+        "passed": true,
+        "label": "Density thinning is deterministic on unchanged Update"
+      },
+      {
+        "passed": true,
+        "label": "Band scales 0.5 to 1.5 - radius 40 mm: full receiver candidate reference"
+      },
+      {
+        "passed": true,
+        "label": "Band scales 0.5 to 1.5 - radius 40 mm: exact geometric membership",
+        "accepted": 805,
+        "expected": 805,
+        "unexpected": 0,
+        "missing": 0
+      },
+      {
+        "passed": true,
+        "label": "Band scales 0.5 to 1.5 - radius 40 mm: positions and band source assignment"
+      },
+      {
+        "passed": true,
+        "label": "Band scales 0.5 to 1.5 - radius 40 mm: one visible marker per point"
+      },
+      {
+        "passed": true,
+        "label": "Band min/max scales cover configured range"
+      },
+      {
+        "passed": true,
+        "label": "Band scaling and Follow Scale produce correct point radii"
+      },
+      {
+        "passed": true,
+        "label": "Spacing - radius 80 mm plus gap 20 mm: full receiver candidate reference"
+      },
+      {
+        "passed": true,
+        "label": "Point spacing equals radius A plus radius B plus gap",
+        "minimum_m": 0.18057211916684227,
+        "expected_m": 0.18
+      },
+      {
+        "passed": true,
+        "label": "Follow Scale off keeps a fixed 40 mm radius despite band scaling"
+      },
+      {
+        "passed": true,
+        "label": "Radius display changes preserve accepted point identities without spacing"
+      },
+      {
+        "passed": true,
+        "label": "Area selection synchronizes Include radio"
+      },
+      {
+        "passed": true,
+        "label": "Adding the same Area twice does not duplicate its row"
+      },
+      {
+        "passed": true,
+        "label": "Include to Exclude is the exact complementary candidate set"
+      },
+      {
+        "passed": true,
+        "label": "Restoring Include returns the exact original points"
+      },
+      {
+        "passed": false,
+        "label": "Remove Area unlinks it and keeps the scene spline"
+      },
+      {
+        "passed": true,
+        "label": "Relinking the retained Area restores mask and count"
+      },
+      {
+        "passed": true,
+        "label": "Area density graph commits sampled custom curve"
+      },
+      {
+        "passed": true,
+        "label": "Density graph leaves independent scale curve intact"
+      },
+      {
+        "passed": true,
+        "label": "Area scale graph commits its endpoint"
+      },
+      {
+        "passed": true,
+        "label": "Area falloff panel binds the selected line settings"
+      },
+      {
+        "passed": true,
+        "label": "Manual falloff control waits for Update"
+      },
+      {
+        "passed": true,
+        "label": "Refresh areas / preview button applies a wider delete band"
+      },
+      {
+        "passed": true,
+        "label": "Live falloff change restores original accepted points"
+      },
+      {
+        "passed": true,
+        "label": "Analyzer line - flat ends: full receiver candidate reference"
+      },
+      {
+        "passed": true,
+        "label": "Analyzer line - flat ends: Analyzer published paths and points",
+        "paths": 1,
+        "points": 6
+      },
+      {
+        "passed": true,
+        "label": "Analyzer line - flat ends: exact line width, caps and disc-union membership",
+        "accepted": 273,
+        "expected": 273
+      },
+      {
+        "passed": true,
+        "label": "Analyzer line - round ends: full receiver candidate reference"
+      },
+      {
+        "passed": true,
+        "label": "Analyzer line - round ends: Analyzer published paths and points",
+        "paths": 1,
+        "points": 6
+      },
+      {
+        "passed": true,
+        "label": "Analyzer line - round ends: exact line width, caps and disc-union membership",
+        "accepted": 362,
+        "expected": 362
+      },
+      {
+        "passed": true,
+        "label": "Analyzer points - radius 250 mm: full receiver candidate reference"
+      },
+      {
+        "passed": true,
+        "label": "Analyzer points - radius 250 mm: Analyzer published paths and points",
+        "paths": 1,
+        "points": 6
+      },
+      {
+        "passed": true,
+        "label": "Analyzer points - radius 250 mm: exact line width, caps and disc-union membership",
+        "accepted": 206,
+        "expected": 206
+      },
+      {
+        "passed": true,
+        "label": "Analyzer union plus street offset: full receiver candidate reference"
+      },
+      {
+        "passed": true,
+        "label": "Analyzer union plus street offset: Analyzer published paths and points",
+        "paths": 1,
+        "points": 6
+      },
+      {
+        "passed": true,
+        "label": "Analyzer union plus street offset: exact line width, caps and disc-union membership",
+        "accepted": 410,
+        "expected": 410
+      },
+      {
+        "passed": true,
+        "label": "Street offset moves the Area centreline by the configured amount"
+      },
+      {
+        "passed": true,
+        "label": "Remove Area Analyzer disables masks without deleting its node"
+      },
+      {
+        "passed": true,
+        "label": "Curved Include - radius 800 mm: full receiver candidate reference"
+      },
+      {
+        "passed": true,
+        "label": "Curved Include matches analytic circle outside 2 mm tessellation tolerance",
+        "outer_errors": 0,
+        "deep_missing": 0
+      },
+      {
+        "passed": true,
+        "label": "Analyzer boundary - delete and scale: full receiver candidate reference"
+      },
+      {
+        "passed": true,
+        "label": "Analyzer Boundary delete width matches receiver edge distance"
+      },
+      {
+        "passed": false,
+        "label": "Analyzer Boundary scale width and curve match expected distances"
+      },
+      {
+        "passed": true,
+        "label": "Remove falloff Analyzer clears effects and keeps its node"
+      },
+      {
+        "passed": true,
+        "label": "Inside 200 mm: exact saved-scene round trip"
+      },
+      {
+        "passed": true,
+        "label": "Outside 200 mm: exact saved-scene round trip"
+      },
+      {
+        "passed": true,
+        "label": "Spline scale 40 pct - width 200 mm: exact saved-scene round trip"
+      },
+      {
+        "passed": true,
+        "label": "Nonuniform rotated - width 200 mm: exact saved-scene round trip"
+      },
+      {
+        "passed": true,
+        "label": "Object offset - width 200 mm: exact saved-scene round trip"
+      },
+      {
+        "passed": true,
+        "label": "Two inside bands - 200 plus 200 mm: exact saved-scene round trip"
+      },
+      {
+        "passed": true,
+        "label": "Include only: exact saved-scene round trip"
+      },
+      {
+        "passed": true,
+        "label": "Exclude only: exact saved-scene round trip"
+      },
+      {
+        "passed": true,
+        "label": "Include union - overlapping shapes: exact saved-scene round trip"
+      },
+      {
+        "passed": true,
+        "label": "Exclude wins within Include: exact saved-scene round trip"
+      },
+      {
+        "passed": true,
+        "label": "Scaled rotated Include: exact saved-scene round trip"
+      },
+      {
+        "passed": true,
+        "label": "Concave Include plus Exclude: exact saved-scene round trip"
+      },
+      {
+        "passed": true,
+        "label": "One spline with a hole: exact saved-scene round trip"
+      },
+      {
+        "passed": true,
+        "label": "Spline band clipped by Exclude: exact saved-scene round trip"
+      },
+      {
+        "passed": true,
+        "label": "Delete 100 mm then scale 300 mm: exact saved-scene round trip"
+      },
+      {
+        "passed": true,
+        "label": "Density edge fade 400 mm: exact saved-scene round trip"
+      },
+      {
+        "passed": true,
+        "label": "Band scales 0.5 to 1.5 - radius 40 mm: exact saved-scene round trip"
+      },
+      {
+        "passed": true,
+        "label": "Spacing - radius 80 mm plus gap 20 mm: exact saved-scene round trip"
+      },
+      {
+        "passed": true,
+        "label": "Analyzer line - flat ends: exact saved-scene round trip"
+      },
+      {
+        "passed": true,
+        "label": "Analyzer line - round ends: exact saved-scene round trip"
+      },
+      {
+        "passed": true,
+        "label": "Analyzer points - radius 250 mm: exact saved-scene round trip"
+      },
+      {
+        "passed": false,
+        "label": "Analyzer union plus street offset: exact saved-scene round trip"
+      },
+      {
+        "passed": true,
+        "label": "Curved Include - radius 800 mm: exact saved-scene round trip"
+      },
+      {
+        "passed": true,
+        "label": "Analyzer boundary - delete and scale: exact saved-scene round trip"
+      },
+      {
+        "passed": true,
+        "label": "All saved comparison cases reuse placement and receiver caches during five unchanged redraws"
+      },
+      {
+        "passed": true,
+        "label": "Corrected five-sample Analyzer scale ramp matches boundary distances"
+      },
+      {
+        "passed": true,
+        "label": "Exclude - outward delete and scale: full receiver candidate reference"
+      },
+      {
+        "passed": true,
+        "label": "Exclude - outward delete and scale: exact geometric membership",
+        "accepted": 1969,
+        "expected": 1969,
+        "unexpected": 0,
+        "missing": 0
+      },
+      {
+        "passed": true,
+        "label": "Exclude - outward delete and scale: positions and band source assignment"
+      },
+      {
+        "passed": true,
+        "label": "Exclude - outward delete and scale: one visible marker per point"
+      },
+      {
+        "passed": true,
+        "label": "Exclude falloff deletes exactly 100 mm outside its border"
+      },
+      {
+        "passed": true,
+        "label": "Exclude scale ramp follows the outward world-distance curve"
+      },
+      {
+        "passed": true,
+        "label": "Street Analyzer is current after explicit Analyze and message drain"
+      },
+      {
+        "passed": true,
+        "label": "All 25 cases have a complete error-free result before final save"
+      },
+      {
+        "passed": true,
+        "label": "Inside 200 mm: final separate-request save/reopen"
+      },
+      {
+        "passed": true,
+        "label": "Outside 200 mm: final separate-request save/reopen"
+      },
+      {
+        "passed": true,
+        "label": "Spline scale 40 pct - width 200 mm: final separate-request save/reopen"
+      },
+      {
+        "passed": true,
+        "label": "Nonuniform rotated - width 200 mm: final separate-request save/reopen"
+      },
+      {
+        "passed": true,
+        "label": "Object offset - width 200 mm: final separate-request save/reopen"
+      },
+      {
+        "passed": true,
+        "label": "Two inside bands - 200 plus 200 mm: final separate-request save/reopen"
+      },
+      {
+        "passed": true,
+        "label": "Include only: final separate-request save/reopen"
+      },
+      {
+        "passed": true,
+        "label": "Exclude only: final separate-request save/reopen"
+      },
+      {
+        "passed": true,
+        "label": "Include union - overlapping shapes: final separate-request save/reopen"
+      },
+      {
+        "passed": true,
+        "label": "Exclude wins within Include: final separate-request save/reopen"
+      },
+      {
+        "passed": true,
+        "label": "Scaled rotated Include: final separate-request save/reopen"
+      },
+      {
+        "passed": true,
+        "label": "Concave Include plus Exclude: final separate-request save/reopen"
+      },
+      {
+        "passed": true,
+        "label": "One spline with a hole: final separate-request save/reopen"
+      },
+      {
+        "passed": true,
+        "label": "Spline band clipped by Exclude: final separate-request save/reopen"
+      },
+      {
+        "passed": true,
+        "label": "Delete 100 mm then scale 300 mm: final separate-request save/reopen"
+      },
+      {
+        "passed": true,
+        "label": "Density edge fade 400 mm: final separate-request save/reopen"
+      },
+      {
+        "passed": true,
+        "label": "Band scales 0.5 to 1.5 - radius 40 mm: final separate-request save/reopen"
+      },
+      {
+        "passed": true,
+        "label": "Spacing - radius 80 mm plus gap 20 mm: final separate-request save/reopen"
+      },
+      {
+        "passed": true,
+        "label": "Analyzer line - flat ends: final separate-request save/reopen"
+      },
+      {
+        "passed": true,
+        "label": "Analyzer line - round ends: final separate-request save/reopen"
+      },
+      {
+        "passed": true,
+        "label": "Analyzer points - radius 250 mm: final separate-request save/reopen"
+      },
+      {
+        "passed": true,
+        "label": "Analyzer union plus street offset: final separate-request save/reopen"
+      },
+      {
+        "passed": true,
+        "label": "Curved Include - radius 800 mm: final separate-request save/reopen"
+      },
+      {
+        "passed": true,
+        "label": "Analyzer boundary - delete and scale: final separate-request save/reopen"
+      },
+      {
+        "passed": true,
+        "label": "Exclude - outward delete and scale: final separate-request save/reopen"
+      }
+    ],
+    "cases": [
+      {
+        "number": 1,
+        "title": "Inside 200 mm",
+        "center": [
+          6.0,
+          0.0
+        ],
+        "node_name": "CSQA_01_Inside 200 mm",
+        "milliseconds": 94.04,
+        "count": 234
+      },
+      {
+        "number": 2,
+        "title": "Outside 200 mm",
+        "center": [
+          9.4,
+          0.0
+        ],
+        "node_name": "CSQA_02_Outside 200 mm",
+        "milliseconds": 87.1,
+        "count": 258
+      },
+      {
+        "number": 3,
+        "title": "Spline scale 40 pct - width 200 mm",
+        "center": [
+          12.8,
+          0.0
+        ],
+        "node_name": "CSQA_03_Spline scale 40 pct - width 200 mm",
+        "milliseconds": 109.59,
+        "count": 137
+      },
+      {
+        "number": 4,
+        "title": "Nonuniform rotated - width 200 mm",
+        "center": [
+          16.2,
+          0.0
+        ],
+        "node_name": "CSQA_04_Nonuniform rotated - width 200 mm",
+        "milliseconds": 95.53,
+        "count": 296
+      },
+      {
+        "number": 5,
+        "title": "Object offset - width 200 mm",
+        "center": [
+          6.0,
+          -3.6
+        ],
+        "node_name": "CSQA_05_Object offset - width 200 mm",
+        "milliseconds": 104.05,
+        "count": 335
+      },
+      {
+        "number": 6,
+        "title": "Two inside bands - 200 plus 200 mm",
+        "center": [
+          9.4,
+          -3.6
+        ],
+        "node_name": "CSQA_06_Two inside bands - 200 plus 200 mm",
+        "milliseconds": 115.92,
+        "count": 596
+      },
+      {
+        "number": 7,
+        "title": "Include only",
+        "center": [
+          12.8,
+          -3.6
+        ],
+        "node_name": "CSQA_07_Include only",
+        "milliseconds": 144.43,
+        "count": 568
+      },
+      {
+        "number": 8,
+        "title": "Exclude only",
+        "center": [
+          16.2,
+          -3.6
+        ],
+        "node_name": "CSQA_08_Exclude only",
+        "milliseconds": 142.04,
+        "count": 1841
+      },
+      {
+        "number": 9,
+        "title": "Include union - overlapping shapes",
+        "center": [
+          6.0,
+          -7.2
+        ],
+        "node_name": "CSQA_09_Include union - overlapping shapes",
+        "milliseconds": 122.19,
+        "count": 646
+      },
+      {
+        "number": 10,
+        "title": "Exclude wins within Include",
+        "center": [
+          9.4,
+          -7.2
+        ],
+        "node_name": "CSQA_10_Exclude wins within Include",
+        "milliseconds": 147.26,
+        "count": 684
+      },
+      {
+        "number": 11,
+        "title": "Scaled rotated Include",
+        "center": [
+          12.8,
+          -7.2
+        ],
+        "node_name": "CSQA_11_Scaled rotated Include",
+        "milliseconds": 138.32,
+        "count": 271
+      },
+      {
+        "number": 12,
+        "title": "Concave Include plus Exclude",
+        "center": [
+          16.2,
+          -7.2
+        ],
+        "node_name": "CSQA_12_Concave Include plus Exclude",
+        "milliseconds": 137.19,
+        "count": 554
+      },
+      {
+        "number": 13,
+        "title": "One spline with a hole",
+        "center": [
+          6.0,
+          -10.8
+        ],
+        "node_name": "CSQA_13_One spline with a hole",
+        "milliseconds": 153.66,
+        "count": 908
+      },
+      {
+        "number": 14,
+        "title": "Spline band clipped by Exclude",
+        "center": [
+          9.4,
+          -10.8
+        ],
+        "node_name": "CSQA_14_Spline band clipped by Exclude",
+        "milliseconds": 162.31,
+        "count": 537
+      },
+      {
+        "number": 15,
+        "title": "Delete 100 mm then scale 300 mm",
+        "center": [
+          12.8,
+          -10.8
+        ],
+        "node_name": "CSQA_15_Delete 100 mm then scale 300 mm",
+        "milliseconds": 267.69,
+        "count": 867
+      },
+      {
+        "number": 16,
+        "title": "Density edge fade 400 mm",
+        "center": [
+          16.2,
+          -10.8
+        ],
+        "node_name": "CSQA_16_Density edge fade 400 mm",
+        "milliseconds": 176.03,
+        "count": 696
+      },
+      {
+        "number": 17,
+        "title": "Band scales 0.5 to 1.5 - radius 40 mm",
+        "center": [
+          6.0,
+          -14.4
+        ],
+        "node_name": "CSQA_17_Band scales 0.5 to 1.5 - radius 40 mm",
+        "milliseconds": 298.76,
+        "count": 805
+      },
+      {
+        "number": 18,
+        "title": "Spacing - radius 80 mm plus gap 20 mm",
+        "center": [
+          9.4,
+          -14.4
+        ],
+        "node_name": "CSQA_18_Spacing - radius 80 mm plus gap 20 mm",
+        "milliseconds": 193.45,
+        "count": 116
+      },
+      {
+        "number": 19,
+        "title": "Analyzer line - flat ends",
+        "center": [
+          12.8,
+          -14.4
+        ],
+        "node_name": "CSQA_19_Analyzer line - flat ends",
+        "milliseconds": 200.15,
+        "count": 273
+      },
+      {
+        "number": 20,
+        "title": "Analyzer line - round ends",
+        "center": [
+          16.2,
+          -14.4
+        ],
+        "node_name": "CSQA_20_Analyzer line - round ends",
+        "milliseconds": 199.34,
+        "count": 362
+      },
+      {
+        "number": 21,
+        "title": "Analyzer points - radius 250 mm",
+        "center": [
+          6.0,
+          -18.0
+        ],
+        "node_name": "CSQA_21_Analyzer points - radius 250 mm",
+        "milliseconds": 223.29,
+        "count": 206
+      },
+      {
+        "number": 22,
+        "title": "Analyzer union plus street offset",
+        "center": [
+          9.4,
+          -18.0
+        ],
+        "node_name": "CSQA_22_Analyzer union plus street offset",
+        "milliseconds": 456.61,
+        "count": 410
+      },
+      {
+        "number": 23,
+        "title": "Curved Include - radius 800 mm",
+        "center": [
+          12.8,
+          -18.0
+        ],
+        "node_name": "CSQA_23_Curved Include - radius 800 mm",
+        "milliseconds": 225.39,
+        "count": 547
+      },
+      {
+        "number": 24,
+        "title": "Analyzer boundary - delete and scale",
+        "center": [
+          16.2,
+          -18.0
+        ],
+        "node_name": "CSQA_24_Analyzer boundary - delete and scale",
+        "milliseconds": 445.55,
+        "count": 1935
+      },
+      {
+        "number": 25,
+        "title": "Exclude - outward delete and scale",
+        "center": [
+          6.0,
+          -21.6
+        ],
+        "node_name": "CSQA_25_Exclude - outward delete and scale",
+        "milliseconds": 442.98,
+        "count": 1823
+      }
+    ]
+  },
+  "before_save": {
+    "CSQA_01_Inside 200 mm": {
+      "fingerprint": "18352139199554133894",
+      "error": ""
+    },
+    "CSQA_02_Outside 200 mm": {
+      "fingerprint": "16321000309572009169",
+      "error": ""
+    },
+    "CSQA_03_Spline scale 40 pct - width 200 mm": {
+      "fingerprint": "3985920636894015657",
+      "error": ""
+    },
+    "CSQA_04_Nonuniform rotated - width 200 mm": {
+      "fingerprint": "11681762135538461555",
+      "error": ""
+    },
+    "CSQA_05_Object offset - width 200 mm": {
+      "fingerprint": "2390019542153291828",
+      "error": ""
+    },
+    "CSQA_06_Two inside bands - 200 plus 200 mm": {
+      "fingerprint": "1179544625686187684",
+      "error": ""
+    },
+    "CSQA_07_Include only": {
+      "fingerprint": "10320753922355891465",
+      "error": ""
+    },
+    "CSQA_08_Exclude only": {
+      "fingerprint": "11699679109282367870",
+      "error": ""
+    },
+    "CSQA_09_Include union - overlapping shapes": {
+      "fingerprint": "17000406542541690297",
+      "error": ""
+    },
+    "CSQA_10_Exclude wins within Include": {
+      "fingerprint": "6190568602641985487",
+      "error": ""
+    },
+    "CSQA_11_Scaled rotated Include": {
+      "fingerprint": "6481973465163264590",
+      "error": ""
+    },
+    "CSQA_12_Concave Include plus Exclude": {
+      "fingerprint": "5658570455205002261",
+      "error": ""
+    },
+    "CSQA_13_One spline with a hole": {
+      "fingerprint": "628383965353933721",
+      "error": ""
+    },
+    "CSQA_14_Spline band clipped by Exclude": {
+      "fingerprint": "110379033102985285",
+      "error": ""
+    },
+    "CSQA_15_Delete 100 mm then scale 300 mm": {
+      "fingerprint": "3753609909106783109",
+      "error": ""
+    },
+    "CSQA_16_Density edge fade 400 mm": {
+      "fingerprint": "5071063449087974428",
+      "error": ""
+    },
+    "CSQA_17_Band scales 0.5 to 1.5 - radius 40 mm": {
+      "fingerprint": "17117603797443720178",
+      "error": ""
+    },
+    "CSQA_18_Spacing - radius 80 mm plus gap 20 mm": {
+      "fingerprint": "10270591464351992249",
+      "error": ""
+    },
+    "CSQA_19_Analyzer line - flat ends": {
+      "fingerprint": "3964248330551141567",
+      "error": ""
+    },
+    "CSQA_20_Analyzer line - round ends": {
+      "fingerprint": "12579376455123356564",
+      "error": ""
+    },
+    "CSQA_21_Analyzer points - radius 250 mm": {
+      "fingerprint": "3834755739688151635",
+      "error": ""
+    },
+    "CSQA_22_Analyzer union plus street offset": {
+      "fingerprint": "5020336182159113725",
+      "error": ""
+    },
+    "CSQA_23_Curved Include - radius 800 mm": {
+      "fingerprint": "13816179246446742320",
+      "error": ""
+    },
+    "CSQA_24_Analyzer boundary - delete and scale": {
+      "fingerprint": "13149511324850444004",
+      "error": ""
+    },
+    "CSQA_25_Exclude - outward delete and scale": {
+      "fingerprint": "3881752579296472432",
+      "error": ""
+    }
+  },
+  "after_reopen": {
+    "CSQA_01_Inside 200 mm": {
+      "passed": true,
+      "error": "",
+      "fingerprint": "18352139199554133894"
+    },
+    "CSQA_02_Outside 200 mm": {
+      "passed": true,
+      "error": "",
+      "fingerprint": "16321000309572009169"
+    },
+    "CSQA_03_Spline scale 40 pct - width 200 mm": {
+      "passed": true,
+      "error": "",
+      "fingerprint": "3985920636894015657"
+    },
+    "CSQA_04_Nonuniform rotated - width 200 mm": {
+      "passed": true,
+      "error": "",
+      "fingerprint": "11681762135538461555"
+    },
+    "CSQA_05_Object offset - width 200 mm": {
+      "passed": true,
+      "error": "",
+      "fingerprint": "2390019542153291828"
+    },
+    "CSQA_06_Two inside bands - 200 plus 200 mm": {
+      "passed": true,
+      "error": "",
+      "fingerprint": "1179544625686187684"
+    },
+    "CSQA_07_Include only": {
+      "passed": true,
+      "error": "",
+      "fingerprint": "10320753922355891465"
+    },
+    "CSQA_08_Exclude only": {
+      "passed": true,
+      "error": "",
+      "fingerprint": "11699679109282367870"
+    },
+    "CSQA_09_Include union - overlapping shapes": {
+      "passed": true,
+      "error": "",
+      "fingerprint": "17000406542541690297"
+    },
+    "CSQA_10_Exclude wins within Include": {
+      "passed": true,
+      "error": "",
+      "fingerprint": "6190568602641985487"
+    },
+    "CSQA_11_Scaled rotated Include": {
+      "passed": true,
+      "error": "",
+      "fingerprint": "6481973465163264590"
+    },
+    "CSQA_12_Concave Include plus Exclude": {
+      "passed": true,
+      "error": "",
+      "fingerprint": "5658570455205002261"
+    },
+    "CSQA_13_One spline with a hole": {
+      "passed": true,
+      "error": "",
+      "fingerprint": "628383965353933721"
+    },
+    "CSQA_14_Spline band clipped by Exclude": {
+      "passed": true,
+      "error": "",
+      "fingerprint": "110379033102985285"
+    },
+    "CSQA_15_Delete 100 mm then scale 300 mm": {
+      "passed": true,
+      "error": "",
+      "fingerprint": "3753609909106783109"
+    },
+    "CSQA_16_Density edge fade 400 mm": {
+      "passed": true,
+      "error": "",
+      "fingerprint": "5071063449087974428"
+    },
+    "CSQA_17_Band scales 0.5 to 1.5 - radius 40 mm": {
+      "passed": true,
+      "error": "",
+      "fingerprint": "17117603797443720178"
+    },
+    "CSQA_18_Spacing - radius 80 mm plus gap 20 mm": {
+      "passed": true,
+      "error": "",
+      "fingerprint": "10270591464351992249"
+    },
+    "CSQA_19_Analyzer line - flat ends": {
+      "passed": true,
+      "error": "",
+      "fingerprint": "3964248330551141567"
+    },
+    "CSQA_20_Analyzer line - round ends": {
+      "passed": true,
+      "error": "",
+      "fingerprint": "12579376455123356564"
+    },
+    "CSQA_21_Analyzer points - radius 250 mm": {
+      "passed": true,
+      "error": "",
+      "fingerprint": "3834755739688151635"
+    },
+    "CSQA_22_Analyzer union plus street offset": {
+      "passed": true,
+      "error": "",
+      "fingerprint": "5020336182159113725"
+    },
+    "CSQA_23_Curved Include - radius 800 mm": {
+      "passed": true,
+      "error": "",
+      "fingerprint": "13816179246446742320"
+    },
+    "CSQA_24_Analyzer boundary - delete and scale": {
+      "passed": true,
+      "error": "",
+      "fingerprint": "13149511324850444004"
+    },
+    "CSQA_25_Exclude - outward delete and scale": {
+      "passed": true,
+      "error": "",
+      "fingerprint": "3881752579296472432"
+    }
+  },
+  "final_scene_check": "cases=25\ncache_changes=0\npreview_errors=0\nscene_node_sources=0\nshown_points=15905\nselected=$selection\nscene=Include_Exclude_Point_Examples.max\n",
+  "remove_recheck": "Before: areas:#($Editable_Spline:CSQA_7_Include @ [503.937012,-141.732285,0.000000]) selection:#{1}\nAfter: areas:#() valid:true rows:2400 amount:2400\nRestored: areas:#($Editable_Spline:CSQA_7_Include @ [503.937012,-141.732285,0.000000]) rows:568\n",
+  "separate_mode_undo": "Mode #(1)\nUndo #(\"MAXScript\")\nRedo #()\nDepth 2\n",
+  "failed_assertion_resolutions": {
+    "Remove Area unlinks it and keeps the scene spline": "Passed after fully mounting the panel in a separate MAXScript request; see remove_recheck. Rapid physical view switching unqualified.",
+    "Analyzer Boundary scale width and curve match expected distances": "Fixture supplied two samples; ensureFallCurves expanded to five. Correct five-sample linear ramp passed independently.",
+    "Analyzer union plus street offset: exact saved-scene round trip": "Initial inline reopen saw pending stale analysis. Final completed Analyze, drained events and separate-request save/reopen passed with exact fingerprint."
+  },
+  "limits": [
+    "No computer use or physical picker/graph interaction",
+    "No full physical Undo/Redo certification",
+    "No heavy-geometry, render, DPI or FPS qualification",
+    "Source objects assignment omits Point placeholders; use Color groups",
+    "Corrected fixtures were continued from checkpoints; no claim of a fresh full corrected campaign"
+  ],
+  "artifacts": {
+    "Include_Exclude_Point_Examples.max": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\include-exclude-visible2026-01\\Include_Exclude_Point_Examples.max",
+      "sha256": "a7757cb423955b26b5e44de6e46a398656497cf5fcb1a1e988d197bb695265d1",
+      "bytes": 2260992
+    },
+    "Area_Examples_Overview.png": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\include-exclude-visible2026-01\\Area_Examples_Overview.png",
+      "sha256": "a14b11c425e50b007344c87cc7df10a622a6aaf9f2fc5bd984ceba100e8928bf",
+      "bytes": 273177
+    },
+    "Area_Example_14_Closeup.png": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\include-exclude-visible2026-01\\Area_Example_14_Closeup.png",
+      "sha256": "530e5820b86e17041d6bdbbaab908e42078f8e926dae4fba823c96bdbe2e19c4",
+      "bytes": 48284
+    },
+    "area-examples-results.json": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\include-exclude-visible2026-01\\area-examples-results.json",
+      "sha256": "3c27be681e9c94bb414e84bdce56ba2c12c43f2c3fa9c827802e25a7e8d2eda6",
+      "bytes": 28667
+    },
+    "initial-ui-attempt.json": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\include-exclude-visible2026-01\\initial-ui-attempt.json",
+      "sha256": "73b2d3279d439663ddc37ae6d35a55f67c670c3ecab638178ae126930ac9f77a",
+      "bytes": 16205
+    },
+    "street-fixture-attempt.json": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\include-exclude-visible2026-01\\street-fixture-attempt.json",
+      "sha256": "dd6331db2f63a48b1004108f8b0497efbc9b80aa7fc38202b2661dcefe210033",
+      "bytes": 19400
+    },
+    "final-before-save.json": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\include-exclude-visible2026-01\\final-before-save.json",
+      "sha256": "a77608977a4941b0c611513b808964a055a46d9c536f3c9868399e2ab3a38ff8",
+      "bytes": 2774
+    },
+    "final-after-reopen.json": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\include-exclude-visible2026-01\\final-after-reopen.json",
+      "sha256": "3baf664547901d77065c5af29519bd2bf23baadc58bdf7a972fae10824c6fe0b",
+      "bytes": 3299
+    },
+    "remove-recheck.ms": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\include-exclude-visible2026-01\\remove-recheck.ms",
+      "sha256": "4c8fbeee20ac4592b2669366828d1dfedcac46864dd468f565918f41fe79a997",
+      "bytes": 863
+    },
+    "final-scene-check.ms": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\include-exclude-visible2026-01\\final-scene-check.ms",
+      "sha256": "0453532362b7ff8e523616bd3cd1690c72fe38d591a46edfc7db3791cf427f6e",
+      "bytes": 1193
+    },
+    "resume-after-street.py": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\include-exclude-visible2026-01\\resume-after-street.py",
+      "sha256": "91d5226487271888586981b84dca1eaadcf1b75c2add522e873e0624d4866983",
+      "bytes": 8530
+    }
+  },
+  "fixture_sources": {
+    "tools\\vector_brush_078\\area_examples.ms": "bb5b70063cd333ed36a1c0d8ed5514941817823862c1c0322aa79b807af16af5",
+    "tools\\vector_brush_078\\area_examples.py": "0d0435463bb58d8895a7e5df6e610701ed251820a09d5c97ee5fee30299a2cdf",
+    "tools\\vector_brush_078\\area_examples_extra.ms": "77e17ff1cab33f0f937b30e74744856231f3f6d61473d89837583eedbe96b43c",
+    "tools\\vector_brush_078\\area_examples_extra.py": "bcf4885463812bb0f17762367e4dc5bb9acee45791b2b8dba6e60ee7e405bd0c",
+    "tools\\vector_brush_078\\area_examples_finalize.py": "37b7ae639cfee74ce7b0863b030c7ea8b599f4bde0e5924e17c6b4b87f3edcdd",
+    "tools\\vector_brush_078\\area_examples_helpers.ms": "a14e1b0ed80e1ea4895c36b09694d22db540b502a6123c28b4754cdf518f37e8",
+    "tools\\vector_brush_078\\area_examples_prepare.ms": "591a835aa74082ba0bc836a58091552f978444ca8760857abbd3c0f0a3d596bc",
+    "tools\\vector_brush_078\\area_examples_verify.ms": "5f5e3ab4713e7ee2b7b5b8c447a4b8f61048f6cd0d7585b370d220139bd2b38c"
+  }
+}

@@ -1,6 +1,6 @@
 # Cyrus Scatter native engine and UI
 
-Current development version **0.78.3**; saved schema **55**, model **CyrusUnified1**. The public name is Cyrus Scatter; internal AminScatter identifiers remain for registration.
+Current development version **0.79**, package metadata **0.79.0**; saved schema **55**, model **CyrusUnified1**. The [offline team licensing pilot](../docs/licensing/TEAM_PILOT_0.79_2026-10-11.md) is implemented with matched Max 2026/2027 builds and bounded lifecycle/render qualification. Read its security and remaining host-coverage limits. The public name is Cyrus Scatter; internal AminScatter identifiers remain for registration.
 
 - [Current artist workflow](../docs/ARTIST_GUIDE.md)
 - [Architecture and source ownership](../docs/ARCHITECTURE.md)

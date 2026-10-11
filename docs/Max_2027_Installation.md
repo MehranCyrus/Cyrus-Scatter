@@ -1,6 +1,6 @@
 # Install and build Cyrus Scatter for Max 2026 and 2027
 
-Use the matching **Scatter 0.78.3 + Analyzer 0.14 development pair** recorded in [the current qualification](Container_and_Radius_0.78.3_2026-10-10/README.md). The earlier 0.78.0 package has a Start Brush session defect. Exact payload hashes identify the corrected candidate.
+The preceding matched packages are the **Scatter 0.78.3 + Analyzer 0.14 development pair** recorded in [the current qualification](Container_and_Radius_0.78.3_2026-10-10/README.md). New 0.79 offline-team candidates and their exact Max 2026/2027 licensing evidence are in [the team-pilot report](licensing/TEAM_PILOT_0.79_2026-10-11.md); local installers are under `dist/licensing-0.79/`. They require activation; see [owner/teammate instructions](../tools/licensing/README.md). Artist profiles have not been upgraded automatically. The earlier 0.78.0 package has a Start Brush session defect. Exact payload hashes identify the corrected candidate.
 
 ## Install
 

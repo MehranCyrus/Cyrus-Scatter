@@ -1,9 +1,10 @@
-    rollout mainUI "Cyrus Scatter 0.78.3" width:#cmdPanel height:112 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.79" width:#cmdPanel height:140 autoLayoutOnResize:true (
         local view=undefined,root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),owner=undefined,layerPagesVisible=false,pagesArranged=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for the entire setup."
         radiobuttons updateRadio "Viewport update" labels:#("Manual","Live") columns:2 pos:[8,26] width:(mainUI.width-16) tooltip:"Manual waits for Update. Live calculates after relevant edits."
         button updateNow "Update scatter" pos:[8,64] width:(mainUI.width-16) height:22 tooltip:"Generate or refresh the enabled layers using their current surfaces, models and amount."
         label updateHint "" pos:[8,90] width:(mainUI.width-16) height:18
+        button licenseButton "License / activation..." pos:[8,112] width:(mainUI.width-16) height:22 tooltip:"Import a team license or inspect its expiry. Existing scenes remain available after expiry."
         timer mountTimer interval:1 active:false
         timer statusTimer interval:1000 active:false
         fn layoutPanels = (for r in editors where r.controlsReady and r.open do r.layout();true)
@@ -71,7 +72,7 @@
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.78.3 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.79 native plugin and restart Max."
             local context=if classof view==CyrusSourceContainer then CyrusContainerResolve view else undefined
             root=if classof view==CyrusSourceContainer then (if context==undefined then undefined else context[1]) else view
             editors=#(view.managerUI,view.surfacesUI,view.modelsUI,view.layoutUI,view.populationUI,view.coverageUI,view.areasUI,view.transformsUI,view.spacingUI,view.displayUI,view.statisticsUI)
@@ -115,7 +116,8 @@
             if isProperty view #containerUI do view.containerUI.bind()
             if sourceChanges then root.bindNativeUI() else refreshStats()
         )
-        on enabledCheck changed value do if controlsReady and root!=undefined and not binding do (undo "Cyrus enabled" on root.cyrusEnabled=value;root.invalidateGroups();bind())
-        on updateNow pressed do if controlsReady and root!=undefined and not binding do (root.refreshAll();CyrusViewportRedraw())
-        on updateRadio changed value do if controlsReady and root!=undefined and not binding do (root.updateMode=value;root.markInputDirty();bind();CyrusViewportRedraw())
+        on licenseButton pressed do CyrusOpenLicenseDialog()
+        on enabledCheck changed value do if controlsReady and root!=undefined and not binding and CyrusLicenseCanEdit() do (undo "Cyrus enabled" on root.cyrusEnabled=value;root.invalidateGroups();bind())
+        on updateNow pressed do if controlsReady and root!=undefined and not binding and CyrusLicenseCanEdit() do (root.refreshAll();CyrusViewportRedraw())
+        on updateRadio changed value do if controlsReady and root!=undefined and not binding and CyrusLicenseCanEdit() do (root.updateMode=value;root.markInputDirty();bind();CyrusViewportRedraw())
     )

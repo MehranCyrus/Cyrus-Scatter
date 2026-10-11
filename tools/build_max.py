@@ -63,6 +63,15 @@ def reject_development_binary(filename, data):
             raise RuntimeError('Refusing development licensing authority in product package: '+filename)
 
 
+def require_team_authority(data, header):
+    key_ids = re.findall(r'CyrusTeamKeyID\[\]="(cyrus-team-[a-f0-9]{32})"', header.read_text(encoding='utf-8'))
+    if len(key_ids) != 1 or key_ids[0].encode('ascii') not in data:
+        raise RuntimeError('Scatter native module does not contain the selected owner verification key')
+    if not any('cyrusLicenseImport'.encode(enc) in data for enc in ('ascii', 'utf-16le')):
+        raise RuntimeError('Scatter 0.79 requires the native team licensing module')
+    return key_ids[0]
+
+
 def package(project, name, version, native_names, script_name, args, build_dir):
     if project == 'AminScatter' and version != scatter_version():
         raise ValueError('Requested Scatter version differs from generated source. Use a frozen checkout for historical versions.')
@@ -70,6 +79,7 @@ def package(project, name, version, native_names, script_name, args, build_dir):
     for filename in native_names:
         payload[filename] = (build_dir / project / filename).read_bytes()
         reject_development_binary(filename, payload[filename])
+    team_key = require_team_authority(payload['AminScatter.dlx'], args.team_trust_header) if project == 'AminScatter' else None
     native_id = sha(b''.join(payload[n] for n in sorted(payload)))[:12]
     for path in sorted((ROOT / project / 'installer').iterdir()):
         if path.is_file():
@@ -95,10 +105,14 @@ def package(project, name, version, native_names, script_name, args, build_dir):
     payload['CyrusScatter.ms' if project == 'AminScatter' else script_name] = (ROOT / project / 'scripts' / script_name).read_bytes()
     if project == 'AminScatter':
         payload['Clipper2-LICENSE.txt'] = (ROOT / project / 'third_party/clipper2/LICENSE').read_bytes()
+        payload['nlohmann-json-LICENSE.txt'] = (ROOT / 'CyrusLicensing/third_party/nlohmann/LICENSE.MIT').read_bytes()
     payload['INSTALL.txt'] = (
         f'{name} {version} - 3ds Max {args.max_year} x64\n'
         'Run this MZP through Scripting > Run Script, then restart Max.\n'
         + ('Enable, Manual/Live and Update scatter stay together at the top of Modify.\n'
+           'Team licensing: open License / activation, save an activation request and send it to the owner.\n'
+           'Import the returned .cyruslicense file. It expires 30 days after the owner issued it.\n'
+           'Without a valid license, existing scenes remain loadable/renderable; creation/editing are locked.\n'
            'Workflow: Layers > Surfaces > Models > Layout > Amount > Update scatter; Painting is optional.\n'
            'Then Include / exclude areas > Transforms > Spacing & cleanup > Viewport & render > Statistics & diagnostics.\n'
            'Select a layer; its Surfaces and Models are independent of other layers. Paint Areas are optional.\n'
@@ -151,6 +165,8 @@ def package(project, name, version, native_names, script_name, args, build_dir):
                     toolset=args.tools_version, windows_sdk=args.windows_sdk,
                     configuration='Release', native_id=native_id,
                     files={n: sha(data) for n, data in sorted(payload.items())})
+    if team_key:
+        manifest['licensing'] = {'mode': 'offline-team', 'key_id': team_key, 'term_days': 30}
     payload['manifest.json'] = (json.dumps(manifest, indent=2) + '\n').encode('utf-8')
     args.output.mkdir(parents=True, exist_ok=True)
     target = args.output / f'{name.replace(" ", "")}-{version}-Max{args.max_year}.mzp'
@@ -179,7 +195,10 @@ def main():
     parser.add_argument('--windows-sdk', default='10.0.19041.0')
     parser.add_argument('--output', type=Path, default=ROOT / 'dist')
     parser.add_argument('--node', default='node', help='Node.js executable for regenerating the owned Scatter script')
+    parser.add_argument('--team-trust-header', type=Path, default=ROOT / 'CyrusLicensing/team/team_public_key.h')
     args = parser.parse_args()
+    if not args.team_trust_header.is_file():
+        raise SystemExit('Initialize the owner issuer and export its public header; see tools/licensing/README.md')
     env = compiler_environment(args.vs_root, args.tools_version, args.windows_sdk)
     node = shutil.which(args.node, path=env['PATH'])
     if node is None:
@@ -192,6 +211,7 @@ def main():
         run(['cmake', '-S', ROOT / project, '-B', dest, '-G', 'NMake Makefiles',
              '-DCMAKE_BUILD_TYPE=Release', f'-DCYRUS_MAX_YEAR={args.max_year}',
              '-DCYRUS_NATIVE_LICENSE_EXPERIMENT=OFF', '-DCYRUS_LICENSE_INSTALLATION_CONTEXT=OFF',
+             *(['-DCYRUS_TEAM_LICENSE=ON', f'-DCYRUS_TEAM_TRUST_DIR={args.team_trust_header.resolve().parent}'] if project == 'AminScatter' else []),
              f'-DMAXSDK_ROOT={args.sdk_root.resolve()}'], env)
         run(['cmake', '--build', dest], env)
         run(['ctest', '--test-dir', dest, '--output-on-failure'], env)

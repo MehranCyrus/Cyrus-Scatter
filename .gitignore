@@ -93,6 +93,10 @@ private/
 *.pfx
 *.p12
 *.key
+*.dpapi
+*.cyruslicense
+*.cyrusissuer
+issued.sqlite3*
 
 # Code signing
 certificates/

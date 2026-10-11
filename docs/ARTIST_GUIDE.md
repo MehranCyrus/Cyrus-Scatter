@@ -1,6 +1,8 @@
-# Cyrus Scatter 0.78.3 — current workflow
+# Cyrus Scatter 0.79 — current workflow
 
-Updated 10 October 2026. Use this guide for the current UI and ownership model. Dated 0.73 guides describe the older layout. This guide explains behavior; the qualification checklist separately identifies what has been tested.
+0.79 adds the [offline team license](licensing/TEAM_PILOT_0.79_2026-10-11.md) while preserving schema 55. Open **License / activation** in Scatter Modify, save a request for Mehran, then import the returned license file. It expires 30 days after generation. Existing scenes remain loadable/renderable after expiry; creation/editing locks. See [activation and renewal instructions](../tools/licensing/README.md). The underlying artist workflow continues from the [0.78.3 qualification](Container_and_Radius_0.78.3_2026-10-10/README.md).
+
+Updated 11 October 2026. Use this guide for the current UI and ownership model. Dated 0.73 guides describe the older layout. This guide explains behavior; the qualification checklist separately identifies what has been tested.
 
 ## Start with a layer
 
@@ -24,7 +26,9 @@ Models are source scene objects. Their Scatter label can differ from the scene o
 
 Model Properties expose weight, scale, radius, vertical offset, Follow Scale and radius display. Weight controls relative selection frequency. Radius is a simplified collision footprint, not exact mesh collision. Follow Scale makes the footprint follow model scaling. Forward axis controls orientation conventions.
 
-Advanced Point and Empty rows are placeholder source kinds. A Point row can be replaced with a model; an Empty row reserves a source choice without visible model geometry. They are different from Analyzer sample points. Verify Point/Empty behavior with the chosen population policy before relying on requested counts as visible-model counts.
+Advanced Point and Empty rows are distinct placeholder source kinds. A Point row creates accepted placement markers without final rendered geometry; replacing it with a model turns that row into an ordinary model source. An Empty row is an intentional weighted gap in Candidate budget mode. Accepted target rejects positive-weight Empty rows rather than endlessly refilling gaps: use Candidate budget, Point placeholders, or zero/remove the Empty weight. Points are permitted in Accepted target, so accepted counts are not necessarily visible-model counts. These source rows are different from Analyzer sample points.
+
+For point-only Spline bands, add Point rows in Models > Advanced, assign their grouping colors, then select those colors under Layout > Spline bands > Assign by **Color groups**. Use **Plant centres** display for one marker per accepted point. No model or Paint Area is required; a receiver and closed spline still define the placement domain. Point placeholders do not produce final rendered geometry. The **Source objects** band list currently omits Point rows; use Color groups until that limitation is addressed.
 
 Source containers are optional palettes. New rectangles start with **Enable collection** off: position and resize the rectangle first, then enable it in Models or in the rectangle�s Modify panel. Inactive rectangles do not scan the scene or carry models. Disabling collection parks existing source rows and preserves their settings; Manual waits for Update, while Live applies the change automatically. The switch is saved per rectangle and shared by its linked layers. Rectangles saved before this switch existed also open with collection off. Enabled rectangles collect eligible model pivots inside their footprint; they are not receiving surfaces. Parking a model outside a palette preserves its registered settings. Shared containers can serve multiple consumers with independent settings. The container editing view and optional layer window edit the same records as Modify.
 
@@ -39,7 +43,7 @@ Layout is directly after Models. It assigns models to candidate positions:
 | Spline bands | Consecutive inside/outside bands along closed guides | Uses world XY. Raising a guide in Z does not make the bands follow a curved surface. Earlier matching bands have priority. |
 | Surface Analyzer | Assign models to Analyzer border, path, point and edge channels | Consumes a separate Analyzer result. Select Analyzer and Update Analyzer are explicit actions. |
 
-For bands, add a guide, add an inside/outside band, set its width, choose source objects or assignment groups, select choices, and set its scale range. An empty choice list can produce no placements. These bands are not Brush strokes.
+For bands, add a guide, add an inside/outside band, set its width, choose source objects or assignment groups, select choices, and set its scale range. An empty choice list can produce no placements. These bands are not Brush strokes. Band Width stays in world units when you scale a spline: a 200 mm band remains 200 mm. Outside corners round naturally with distance from the border.
 
 Amount offers fixed Count or area Density. The seed makes a given recipe reproducible. Sampling can use a texture mask. Candidate budget makes a bounded candidate request; restrictions can leave fewer accepted plants. Accepted target makes additional bounded attempts. A shortfall can be correct when spacing, boundaries or masks leave insufficient room. Increasing retry work cannot make an impossible arrangement fit.
 
@@ -63,7 +67,7 @@ The new engine bounds contour vertices and prepared feedback. A failed edit leav
 
 ## Area limits, transforms and spacing
 
-Include/Exclude splines are layer-wide world-XY masks. Include shapes form the allowed domain; Exclude wins in overlaps. Unlinking a shape keeps the scene spline. These rules constrain vector painting as well as ordinary scattering.
+Include/Exclude splines are layer-wide world-XY masks. Include shapes form the allowed domain; Exclude wins in overlaps. Unlinking a shape keeps the scene spline. These rules constrain vector painting as well as ordinary scattering. Highlight the Area row before changing Selected area mode; new links default to Include. With no highlighted row, the radio does not change a saved Area.
 
 Advanced Analyzer Area can use a center-line band and/or point-radius discs. Together they form a union. Its Analyzer reference is separate from Layout's Analyzer and from the falloff Analyzer. Width is the full line-band width; point radius is not model collision radius.
 
@@ -79,7 +83,7 @@ Candidate Relax moves candidates within its bounded settings. Cleanup removes un
 
 Point Cloud, Proxy and Mesh serve different preview costs. Layer/model identification colors help identify planting in simplified previews. Display limits can show fewer instances or faces than the accepted population. A displayed count is not the full output count. Box, Sphere and Pyramid proxies now use the retained instanced geometry display path; CPU fallback remains available if retained drawing cannot be used. See the [courtyard fix measurements](Courtyard_Fixes_0.75_2026-10-10/README.md) for the tested workload and remaining limits.
 
-Manual stores edits until explicit Update scatter. Passive browsing, area/layer selection and unrelated animation must not publish pending placements. Live responds to relevant input changes. Display-only changes can refresh presentation without changing placement generation. A failed successor retains the previous complete result and exposes an error.
+Manual stores edits until an explicit calculation action. **Update scatter**, **Refresh preview** and **Refresh areas / preview** update the whole Scatter setup and can publish pending Manual edits. **Read cached statistics**, **Read recording status** and **Refresh fields** only read the existing state. Passive browsing, area/layer selection and unrelated animation must not publish pending placements. Live responds to relevant input changes. Display-only settings can refresh presentation without changing placement generation. A failed successor retains the previous complete result and exposes an error.
 
 Automatic final render uses the render bridge; exact output and baking use source mappings and placement transforms. A successful preview does not certify every renderer/material/export path. Remove baked output removes owned baked nodes, not original sources.
 

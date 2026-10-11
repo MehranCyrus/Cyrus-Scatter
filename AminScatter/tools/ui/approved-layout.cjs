@@ -347,14 +347,21 @@ ${lists.map(c=>`        on ${c.id}_grip MouseDown sender args do beginListDrag s
   const expression=part.slice(event[0].length);
   const component=components.find(p=>event[1].startsWith(p.key+'_'));
   const ready=component?component.key+'_controlsReady and not '+component.key+'_binding and ':'';
-  final=final.replace(part,event[0]+'if controlsReady and not binding and root!=undefined and '+ready+'true do ('+expression+'\n            if controlsReady and root!=undefined do layout()\n        )');
+  // Selection, display and diagnostics remain available with expired authority.
+  // Mutating controls check immediately before their existing transaction.
+  const control=controls.find(c=>c.id===event[1]);
+  const inspect= (['listbox','multiListBox'].includes(control?.kind) && / (selected|selectionEnd|doubleClicked)\b/.test(event[0])) ||
+    ['displayUI','statisticsUI'].includes(name.replace(/_1$/,'')) ||
+    /(?:advancedToggle|_more|_advanced|_toggle)$/.test(event[1]);
+  const license=inspect?'true':'CyrusLicenseCanEdit()';
+  final=final.replace(part,event[0]+'if controlsReady and not binding and root!=undefined and '+ready+license+' do ('+expression+'\n            if controlsReady and root!=undefined do layout()\n        )');
  }
  return {text:final,components,controls,rows,name,scope};
 }
 module.exports=function(s,{check=false}={}){
  const definitions=layouts.pages;
  const pages=definitions.map((d,i)=>page(s,d,{category:(i+1)*10}));
- const manifest={schema:'cyrus.ui-layout/1',version:'0.78.3',source:'approved single-file HTML study',sections:pages.map(p=>({name:p.name,title:definitions.find(d=>d.name===p.name).title,scope:p.scope,controls:p.controls.map(c=>({component:c.key,control:c.name,presentation:c.id,advanced:!!p.rows.find(r=>r.controls?.some(x=>x.id===c.id))?.advanced}))}))};
+ const manifest={schema:'cyrus.ui-layout/1',version:'0.79',source:'approved single-file HTML study',sections:pages.map(p=>({name:p.name,title:definitions.find(d=>d.name===p.name).title,scope:p.scope,controls:p.controls.map(c=>({component:c.key,control:c.name,presentation:c.id,advanced:!!p.rows.find(r=>r.controls?.some(x=>x.id===c.id))?.advanced}))}))};
  const output=JSON.stringify(manifest,null,2)+'\n',path='tools/ui/approved-layout-manifest.json';
  if(check){if(fs.readFileSync(path,'utf8')!==output)throw Error('Layout manifest is stale');}else fs.writeFileSync(path,output);
  // Replace the old native pages as one contiguous UI block, keeping calculation

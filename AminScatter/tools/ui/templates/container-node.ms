@@ -14,10 +14,13 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         savedSources type:#nodeTab tabSize:0 tabSizeVariable:true
         movementSources type:#nodeTab tabSize:0 tabSizeVariable:true
         collectEnabled type:#boolean default:false
-        on width set value do CyrusContainerRefreshPresentation this
-        on length set value do CyrusContainerRefreshPresentation this
+        on width preSet value do (if loading or cyrusLicenseRestoring() or cyrusLicenseAllows() then value else width)
+        on length preSet value do (if loading or cyrusLicenseRestoring() or cyrusLicenseAllows() then value else length)
+        on collectEnabled preSet value do (if loading or cyrusLicenseRestoring() or cyrusLicenseAllows() then value else collectEnabled)
+        on width postSet value do CyrusContainerRefreshPresentation this
+        on length postSet value do CyrusContainerRefreshPresentation this
         on showLabel set value do CyrusContainerRefreshPresentation this
-        on collectEnabled set value do if CyrusContainerCollectionChanged!=undefined do CyrusContainerCollectionChanged this
+        on collectEnabled postSet value do if CyrusContainerCollectionChanged!=undefined do CyrusContainerCollectionChanged this
     )
     local consumerRows=#(),consumerLabels=#(),cachedLabel="Unlinked source container",cachedActiveCount=0,cachedSavedCount=0,cachedConsumerCount=0,movementUnits=#(),movementStatus="Ready"
     local updateUI,surfaceUI,previewUI,layersUI,uiRootState=#(),uiPresentationState=#()
@@ -29,6 +32,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         cyrusContainerConfigure delegate node (if collectEnabled then movementUnits else #()) width length cachedLabel showLabel (if collectEnabled then (for source in movementSources where isValidNode source collect source) else #())
     )
     fn movePalette delta = (
+        CyrusRequireAuthor()
         if (refs.dependentNodes this).count!=1 do throw "Make this container unique before moving its sources."
         cyrusContainerTranslate delegate delta
     )
@@ -45,7 +49,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         configure node
     )
     tool create (
-        on mousePoint click do (if click==1 do nodeTM.translation=gridPoint;if click==2 do #stop)
+        on mousePoint click do (CyrusRequireAuthor();if click==1 do nodeTM.translation=gridPoint;if click==2 do #stop)
         on mouseMove click do (if click==2 do (width=amax .01 (2*abs gridDist.x);length=amax .01 (2*abs gridDist.y)))
     )
 )

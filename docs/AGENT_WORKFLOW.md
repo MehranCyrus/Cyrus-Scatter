@@ -76,12 +76,15 @@ For uncertain APIs, use official Autodesk/renderer SDK documentation or primary 
 Update the maintained guides/backlog in place. Add a dated report only for new reproducible test or delivery evidence, with identity, reproduction, change, commands/results and unmet gates. Preserve old receipts; never relabel an earlier runtime pass as qualification of new source. Update current navigation and artist wording when behavior changes. When website documentation is within the requested scope, inspect its import mapping, import the intended chapters and verify:
 
 ```powershell
-python website/tools/import_reference.py
-python website/tools/verify_reference.py
-node --check website/app.js
+Push-Location website
+try {
+    npm run docs:sync
+    npm run docs:check
+    npm run build
+} finally { Pop-Location }
 ```
 
-Visually test changed website interactions; static link checks do not qualify layout. Concept images and teaching diagrams are not plugin renders. Keep volatile test counts and exact hashes in dated reports, not permanent agent instructions.
+Use the canonical React application under `website/`. The selected landing reference is `Landing Page Design/cyrus-scatter-site/`; the selected documentation design is `Landing Page Design/Design 1/`. Those packages retain historical content and are not alternate current guides. Preserve their source files while adapting their presentation to the maintained product facts. Visually test changed website interactions and reference fidelity; static link checks do not qualify layout. Concept images and teaching diagrams are not plugin renders. Keep volatile test counts and exact hashes in dated reports, not permanent agent instructions.
 
 When subagents are authorized, delegate independent source/docs audits or disjoint files with explicit ownership and expected evidence. Keep edits to shared generated outputs and mutations of a single Max session serialized. Integrate findings and verify the final tree; agent confidence is not evidence.
 

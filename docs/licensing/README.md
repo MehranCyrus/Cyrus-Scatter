@@ -1,8 +1,8 @@
 # Cyrus licensing
 
-**Current plan: 2026-10-05. A native-owned recipe/Edit/Brush slice and real installation-key activation, expiry and renewal now pass private Max tests. Whole-product enforcement, host recovery/lifecycle, customer service and production qualification remain incomplete. Post-expiry rendering is selected; full-term offline use and one-device activation are requested.**
+**Current result: 2026-10-11. Scatter 0.79 implements the offline team pilot: a protected local owner issuer, 30-day signed files, activation UI and current authoring guards. Max 2026/2027 fixtures passed expiry, renewal and saved-scene rendering. See the [implementation report](TEAM_PILOT_0.79_2026-10-11.md) for exact evidence and remaining script-bypass/host-coverage limits. This is not complete commercial enforcement.**
 
-Build and operate Cyrus's own licensing service. Keep Scatter computation and viewport work local, authorize meaningful native operations, and separate product rights from purchases and seat allocation. This is the selected direction. Exact commercial terms are still decisions to make.
+Start with the [0.79 offline team pilot](ROADMAP.md#079-offline-team-pilot); a server is not required for this step. The longer-term direction remains Cyrus's own service. Keep Scatter computation and viewport work local, authorize meaningful native operations, and separate product rights from purchases and seat allocation. Exact commercial terms remain decisions to make.
 
 The user confirmed the subscription behavior: preserve and allow rendering of existing work after expiry, stop new authoring/editing, and restore editing after verified renewal. The foundation must allow supported policies to change without scattered checks or unnecessary redesign. [Decisions D09–D13](DECISIONS.md) record this intent, the request for offline editing through the subscription end, and one authorized device per seat with portal transfers. Exact evaluation/dependency behavior still needs L0 testing. Full-term offline use requires accepting clock/revocation limits; the transfer/overlap policy remains open. A website deactivation cannot instantly revoke a disconnected copy.
 
@@ -12,6 +12,8 @@ This folder is the current authority for licensing. It replaces the provider-fir
 
 | Document | Purpose |
 | --- | --- |
+| [0.79 team pilot result](TEAM_PILOT_0.79_2026-10-11.md) | Implemented issuer/client/UI, exact candidate evidence and limits |
+| [Owner and teammate instructions](../../tools/licensing/README.md) | Generate, import, renew, back up and recover |
 | [Roadmap](ROADMAP.md) | Ordered implementation milestones, deliverables, tests and the next coding packet |
 | [Decisions](DECISIONS.md) | Selected direction, proposed launch scope, unresolved business terms and scene-continuity matrix |
 | [Architecture](ARCHITECTURE.md) | Native/service boundaries, individual/studio accounting, signed permissions, security and operations |
@@ -25,13 +27,15 @@ This folder is the current authority for licensing. It replaces the provider-fir
 | [Document audit](DOCUMENT_AUDIT.md) | What was kept, corrected, retired or preserved from each earlier document |
 | [Sources](SOURCES.md) | Official vendor/standards evidence and its limits |
 
-## What we will build first
+## Current pilot and next boundary
 
-The blocking milestone remains **complete native ownership and a settled continuity contract**. The [October 5 implementation](NATIVE_FOUNDATION_2026-10-05.md) moved beyond wrappers and a signed-message prototype: it owns a bounded recipe, gates actual CS Edit and Brush mutation, uses real installation identity/protected state, and verifies cold rendering and renewal across two Max processes. Full procedural layer settings, source/container transactions, Analyzer dependencies, PFlow/bake continuity and migration still require coverage. B07/B08 were presented with reproduced counterexamples and remain open.
+The implemented pilot scope is recorded in the [0.79 result](TEAM_PILOT_0.79_2026-10-11.md): a persistent protected local issuer, a signed file exchange, activation/status UI and current authoring/continuity coverage. It precedes service development. A random UUID identifies a license but cannot authenticate its rights or deadline; the plugin verifies a digital signature using a pinned public key. The owner's signing private key never enters the plugin or teammate package.
+
+The stronger commercial-enforcement milestone remains **complete native ownership and a settled continuity contract**. The [October 5 implementation](NATIVE_FOUNDATION_2026-10-05.md) moved beyond wrappers and a signed-message prototype: it owns a bounded recipe, gates actual CS Edit and Brush mutation, uses real installation identity/protected state, and verifies cold rendering and renewal across two Max processes. Full procedural layer settings, source/container transactions, Analyzer dependencies, PFlow/bake continuity and migration still require coverage. B07/B08 were presented with reproduced counterexamples and remain open.
 
 The [October 2 static source audit](CODEBASE_AUDIT.md) remains the dated starting map. It identifies shared authoring/evaluation calls, preview and PFlow cleanup before calculation, CS Edit mutation and identity-recovery paths, and runtime/package preparation. Its 37-file snapshot and 38 native declarations are historical scope; the October 4 experiment records 163 source files and 69 declarations after Brush/group/MCP development. An inventory is not complete authorization coverage.
 
-After those pass, build a small owned service with audited manual grants, individual accounts and assigned studio seats. Integrate an isolated Max candidate and recovery UI. Floating pools, automated commerce and public release each have separate acceptance gates. The roadmap is final as the current sequence, not a claim that future experiment results cannot change the design.
+Qualify an isolated offline team candidate before adding the small owned service with audited manual grants, individual accounts and assigned studio seats. Floating pools, automated commerce and public release each have separate acceptance gates. The roadmap records the current sequence; future experiment results can change the design.
 
 ## Keep the scope practical
 

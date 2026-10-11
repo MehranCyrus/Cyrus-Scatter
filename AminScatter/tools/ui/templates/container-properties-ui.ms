@@ -54,11 +54,12 @@
             view.mainUI.mountTimer.active=true;CyrusContainerRefreshAll();bind()
         )
         on consumerList selected index do selectConsumer index
-        on enabledCheck changed value do if controlsReady and not binding do (local container=view;undo "Cyrus container collection" on container.collectEnabled=value;bind())
-        on widthSpin changed value do if controlsReady and not binding do (undo "Cyrus container width" on view.width=value;CyrusScheduleRelease())
-        on lengthSpin changed value do if controlsReady and not binding do (undo "Cyrus container length" on view.length=value;CyrusScheduleRelease())
+        on enabledCheck changed value do if controlsReady and not binding and CyrusLicenseCanEdit() do (local container=view;undo "Cyrus container collection" on container.collectEnabled=value;bind())
+        on widthSpin changed value do if controlsReady and not binding and CyrusLicenseCanEdit() do (undo "Cyrus container width" on view.width=value;CyrusScheduleRelease())
+        on lengthSpin changed value do if controlsReady and not binding and CyrusLicenseCanEdit() do (undo "Cyrus container length" on view.length=value;CyrusScheduleRelease())
         on labelCheck changed value do if controlsReady and not binding do undo "Cyrus container label" on view.showLabel=value
         on assignOwner pressed do if sourceList.selection>0 and sourceList.selection<=view.savedSources.count do (
+            if not CyrusLicenseCanEdit() do return false
             local model=view.savedSources[sourceList.selection],nodes=refs.dependentNodes view
             if isValidNode model and nodes.count==1 do (
                 undo "Cyrus container movement owner" on (

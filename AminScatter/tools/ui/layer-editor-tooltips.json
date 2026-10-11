@@ -1,6 +1,7 @@
 {
   "host": {
-    "enabledCheck": "Enable calculation and output for this entire Scatter setup."
+    "enabledCheck": "Enable calculation and output for this entire Scatter setup.",
+    "licenseButton": "Import a team license or inspect its expiry. Existing scenes remain available after expiry."
   },
   "updateUI": {
     "updateNow": "Calculate enabled layers in order."

@@ -17,6 +17,8 @@ This is the single maintained Scatter work list. Update it in place when a findi
 | B09 | Diagnostics failure coverage is incomplete | Full/unwritable/damaged storage and secondary export-cleanup failures preserve the primary error; reporting remains passive and bounded |
 | B10 | Current painting/editor help, schema and capability catalog reconciled with vector ownership; duplicate discarded popup definitions removed | Continued review of unrelated older terminology can proceed independently |
 | B11 | Cold viewport realization remains expensive: courtyard cold Update measured 16.6 seconds in 0.75 and 17.2 seconds in 0.76 despite removing repeated root work | Separate cold preparation, Max redraw and retained realization across fresh processes; preserve atomic publication and Manual/Live contracts |
+| B12 | Confirmed in 0.78.3: Spline bands' Source objects picker omits Point placeholders; Color groups supports point-only bands | Represent explicit band choices by stable source identity rather than only scene-node references; qualify Point selection, replacement, removal/reorder, copy and save/reopen without dummy geometry. [Current evidence](Container_and_Radius_0.78.3_2026-10-10/SPLINE_POINTS.md) |
+| B13 | Area mode selection can mislead: a newly linked Area defaults to Include without selecting its row; the mode radio can show a different value when no row is selected | Select the new row automatically and disable or explicitly label no-selection mode controls; qualify single/multiple row selection and owner switching. [Inspection evidence](Container_and_Radius_0.78.3_2026-10-10/AREA_EXAMPLES.md) |
 
 ## Final artist and release gates
 

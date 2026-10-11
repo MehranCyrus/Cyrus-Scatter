@@ -1,6 +1,6 @@
 # Licensing decisions
 
-**Updated:** 2026-10-05. This is the current decision register; older worksheets are historical proposals. The user selected post-expiry rendering without editing and requested full-term offline use plus one-device activation and portal transfers. Transfer overlap and clock-recovery policy remain open. No price, subscription term length or sales contract is approved by this document.
+**Updated:** 2026-10-11. This is the current decision register; older worksheets are historical proposals. The user selected a 0.79 offline team pilot with local owner issuance, 30 days from generation, and creation/editing locked without valid authority while existing scenes remain loadable/renderable. Commercial prices, subscription terms, transfer overlap and clock-recovery policy remain open.
 
 The [October 5 native/real-installation tests](NATIVE_FOUNDATION_2026-10-05.md) provide new B07/B08 evidence. Native recipe/Edit/Brush state survives expiry/reopen/renewal, but external source/receiver/animation changes still affect evaluation. Issuing a second installation permission leaves the disconnected first permission valid. B07 dependency-continuity versus frozen-world options and B08 immediate-overlap versus delayed-reuse options have been presented to the user; **no answer has been recorded, so both remain OPEN**. A development fixture is not a commercial policy selection.
 
@@ -21,6 +21,8 @@ The [October 5 native/real-installation tests](NATIVE_FOUNDATION_2026-10-05.md) 
 | D11 | Allow rendering of existing work after subscription expiry while new Cyrus authoring/editing remains locked | SELECTED by the user, 2026-10-04; L0/E15 must prove the distinction; worker deployment, changed dependencies and bake/export remain B07 |
 | D12 | After activation, allow offline authoring through the subscription's calendar end rather than requiring routine online refresh | REQUESTED by the user, 2026-10-04; signed deadline, clock limits, recovery exceptions and transfer consequences need qualification; no term length chosen |
 | D13 | One authorized device per purchased seat, with self-service device transfer through the website | REQUESTED by the user, 2026-10-04; B02/B08 must define counting/recovery and effective transfer; IP or a bare UUID is not sufficient authority |
+| D14 | Start with an owner-operated local license generator for the team, without a server; reserve Scatter 0.79 for this work | SELECTED by the user, 2026-10-11; file issuance and import must be qualified before team distribution |
+| D15 | A team license expires 30 days from generation; missing or expired authority locks creation/editing while existing scenes load and render | CONFIRMED by the user, 2026-10-11; fixed issuance deadline, not first-use countdown; renewal/import/reinstall cannot silently restart it |
 
 ## Confirmed subscription behavior
 
@@ -32,11 +34,15 @@ This selects a subscription behavior, not a subscription-only catalogue or a per
 
 ## Offline use and device transfer
 
-D12 is a request for a signed, device-bound permission whose authoring deadline reaches the purchased term end. A local timer is not proof of purchase or trustworthy calendar time. Normal expiry can be enforced in the unmodified client, including while Max stays open, but offline clock/storage rollback resistance remains best effort. Deleted local state must not restart the term. One-time activation and renewal require authority issued by our service; a file-exchange activation route would be a separate later workflow.
+D12 is a request for a signed, device-bound permission whose authoring deadline reaches the purchased term end. A local timer is not proof of purchase or trustworthy calendar time. Normal expiry can be enforced in the unmodified client, including while Max stays open, but offline clock/storage rollback resistance remains best effort. Deleted local state must not restart the term. For the D14/D15 team pilot, the owner's local issuer supplies signed authority through file exchange; the commercial service is deferred.
 
 D13 separates a purchased seat from its current activation. The portal should record a transfer/deactivation, stop future issuance to the old activation and retain its history and outstanding signed deadline. It must not simply delete the purchase or forget issued authority. Reinstall, hardware replacement and a lost device need recovery rules.
 
 The unresolved tradeoff is explicit: full-term offline authority, immediate transfer to a new device and strict prevention of overlapping offline use cannot all be guaranteed by this desktop design. B08 must choose delayed reuse until old authority ends, controlled transfers with explicitly accepted overlap, or a shorter offline window with periodic refresh. An online deactivation can stop an honest current installation, but does not prove a saved offline copy cannot be replayed. No overlap policy or shorter window is silently selected here.
+
+## Current implementation scope
+
+The [0.79 result](TEAM_PILOT_0.79_2026-10-11.md) implements D14/D15 for the team workflow. It does not silently settle B07/B08: arbitrary script mutation and external dependency changes are not a frozen-scene boundary. The fixed deadline and per-Windows-user installation binding are tested; full native recipe ownership, offline revocation and commercial seat management remain separate work.
 
 ## Business and operating choices
 
@@ -49,7 +55,7 @@ These decisions do not prevent a configurable test harness. Do not substitute ol
 | B03 | Studio allocation | Assigned people first; floating is a later offer unless a pilot specifically requires it | Studio pilot |
 | B04 | Floating reservation unit | Proposed: user + registered installation + product pool, with child Max sessions | L4 implementation contract |
 | B05 | Offline deadline, time confidence and recovery | D12 requests normal offline editing until the subscription end; qualify clock anomalies, restart/restore and any recovery connection; track outstanding authority; no shorter window or extra grace selected | Issuing real customer authority |
-| B06 | Trial | Duration, start event, allowed rights, extensions and recovery; a supervised pilot can precede a public trial | Public trial provisioning |
+| B06 | Trial | D14/D15 settle the team pilot's issuer, 30-day issuance term and missing/expired behavior; public trial provisioning, extension and recovery rules remain separate | Public trial provisioning |
 | B07 | Post-expiry evaluation, worker deployment and bake/export | D11 permits rendering existing work; settle changed dependencies, animation, missing caches, worker proof/deployment and bake/export through L0 | Native enforcement and advertised continuity/render policy |
 | B08 | Transfer, reassignment, lost machine and reductions | D13 requests portal transfer; select delayed reuse, explicitly accepted overlap, or revised offline window; deleting an activation cannot invalidate a disconnected grant | Activation/recovery pilot |
 | B09 | Seat prices and volume discounts | Versioned catalogue; all-units or graduated bands are possible; specify proration, refunds and term alignment | Checkout and sales copy |
@@ -57,11 +63,11 @@ These decisions do not prevent a configurable test harness. Do not substitute ol
 | B11 | Identity, signer, deployment and support ownership | Choose maintained components after compatibility tests; name operators for accounts, keys, backups and incidents | Service pilot using customer data |
 | B12 | Supported hosts/renderers, privacy and support promise | Publish only qualified configurations; define data retention and support coverage | External pilot/release scope |
 
-The old 30-day trial, 12-month maintenance period, 90–365-day offline range and 6–10-week estimate are not approved values. D13 now explicitly requests one device per purchased seat; D12 ties requested offline use to the actual purchased subscription end without choosing a subscription length. Neither confirms every historical package assumption. On-premises servers, file-exchange air-gap deployment, SSO/SCIM, multi-region writers and custom enterprise SLAs remain deferred unless required.
+The newly confirmed 30-day team trial is D15, not approval of the old commercial trial package. The old 12-month maintenance period, 90–365-day offline range and 6–10-week estimate remain unapproved. D13 requests one device per purchased seat; D12 ties commercial offline use to the purchased subscription end without choosing a commercial term length. On-premises servers, managed enterprise air-gap deployment, SSO/SCIM, multi-region writers and custom SLAs remain deferred. The simple D14 file exchange is the immediate team workflow.
 
 ## Operation and scene-continuity contract
 
-D09/D11 select preservation, rendering of existing work, the new-authoring lock and verified-renewal recovery for subscription expiry. A bounded private native slice now implements and tests this lifecycle; the table remains the intended whole-product contract, which is not yet enforced in ordinary builds. Remaining evaluation/worker details and application to other denial causes are proposals to test. Authoring authority must match product, build and operation; its expiry must not automatically disable the selected rendering behavior. “No valid grant” includes absent, expired or rejected authority; a temporary outage alone does not invalidate an unexpired verified grant.
+D09/D11 select preservation, rendering of existing work, the new-authoring lock and verified-renewal recovery for subscription expiry. A bounded private native slice now implements and tests this lifecycle; the table remains the intended whole-product contract, with the bounded 0.79 team implementation and remaining gaps recorded separately. Remaining evaluation/worker details and application to other denial causes are proposals to test. Authoring authority must match product, build and operation; its expiry must not automatically disable the selected rendering behavior. “No valid grant” includes absent, expired or rejected authority; a temporary outage alone does not invalidate an unexpired verified grant.
 
 | Operation | Valid authoring authority | No valid authoring authority | Proposed worker behavior | Unresolved issue or test |
 | --- | --- | --- | --- | --- |

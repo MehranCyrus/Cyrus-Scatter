@@ -1,0 +1,184 @@
+{
+  "product_commit": "46374194c5dba42d643425e3810390b8ddb3f903",
+  "product_modified": false,
+  "fixture": "tools\\vector_brush_078\\spline_points.ms",
+  "fixture_sha256": "ab774e4b44da31a9afc18b75f2f687d9c1dd0c8f71e859c78d6afd285152ff87",
+  "hosts": [
+    {
+      "year": 2026,
+      "launch": {
+        "pid": 9784,
+        "max_year": 2026,
+        "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\spline-points2026-01",
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2026/3dsmax.exe",
+          "-q",
+          "-silent",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\spline-points2026-01\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\spline-points2026-01\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\spline-points2026-01\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\spline-points2026-01\\listener.log"
+        ],
+        "binaries": {
+          "AminScatter.dlx": "34cf81f9ce63ee73c0ef46c1c67b4fb07519b14cec43aea47dce03fe396c433d",
+          "CyrusBrush.dlx": "b7a6f218b7b16fab91644c5e8999ca8ad9b25a5fa7b1a03d30146832335f6218",
+          "CyrusBrushStorage.dlh": "5fe5ada58ceb7a2386df6c290538cf26b36f3daeae8525627329b0c47d2cea77",
+          "CyrusScatterEdit.dlm": "2b614a92ba2d8436f41c2a35ca187ca01b52f0cdc6fff7ec6f5c403f06dc56a5"
+        },
+        "script_sha256": "75e7105990052825a86b018649c6b425e6f0ec4ea1cc191ee49e57be327d6f1d",
+        "normal_profile_modified": false,
+        "development_transport": true,
+        "profile_template": "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2026 - 64bit\\ENU\\3dsMax.ini",
+        "profile_template_sha256": "3f012d596ef0f91bb103abf9cd05f35f2f7137d9f88e542309713011cea1b70f"
+      },
+      "loaded": [
+        {
+          "name": "AminScatter.dlx",
+          "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\spline-points2026-01\\bin\\AminScatter.dlx",
+          "sha256": "34cf81f9ce63ee73c0ef46c1c67b4fb07519b14cec43aea47dce03fe396c433d"
+        },
+        {
+          "name": "CyrusBrush.dlx",
+          "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\spline-points2026-01\\bin\\CyrusBrush.dlx",
+          "sha256": "b7a6f218b7b16fab91644c5e8999ca8ad9b25a5fa7b1a03d30146832335f6218"
+        },
+        {
+          "name": "CyrusBrushStorage.dlh",
+          "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\spline-points2026-01\\bin\\CyrusBrushStorage.dlh",
+          "sha256": "5fe5ada58ceb7a2386df6c290538cf26b36f3daeae8525627329b0c47d2cea77"
+        },
+        {
+          "name": "CyrusScatterEdit.dlm",
+          "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\spline-points2026-01\\bin\\CyrusScatterEdit.dlm",
+          "sha256": "2b614a92ba2d8436f41c2a35ca187ca01b52f0cdc6fff7ec6f5c403f06dc56a5"
+        }
+      ],
+      "request": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vector-brush-078/spline-points2026-01/test-f9df150b82d24fb29ec1e9b7298c5024.ms",
+      "checks": [
+        "PASS Actual Add Point button creates three placeholders without scene models",
+        "PASS All sources use placeholder identities; no geometry source exists",
+        "PASS Point group available for band 1",
+        "PASS Point group available for band 2",
+        "PASS Point group available for band 3",
+        "PASS Actual Layout handlers create two consecutive inside bands and one outside band",
+        "PASS Every accepted point is inside its assigned geometric band and all three groups are present",
+        "PASS Centers preview contains exactly one visible point per accepted placeholder",
+        "PASS Point placeholders produce no final model geometry",
+        "PASS Retained display contains points and zero mesh faces",
+        "PASS Ten unchanged reads/redraws reuse placements and retained point uploads",
+        "PASS Returning to color groups restores exactly the same point assignments",
+        "PASS Manual band-width change preserves the completed points until Update",
+        "PASS Explicit Update expands only the outside band's accepted domain",
+        "PASS Live width change returns automatically to the original point layout",
+        "PASS Scene uses one layer with no Paint Area or brush data",
+        "PASS Point types, band choices and exact placements survive save/reopen",
+        "PASS Point-only scene and viewport artifact saved"
+      ],
+      "observations": "Source objects choice count with three Point sources: 0\nCold explicit Update milliseconds: 145\nCounts by band: #(1029, 708, 1413)\n",
+      "cache_counters": "epoch: 2 -> 2\nreceiver: #(1, 0, 1) -> #(1, 0, 1)\nretained: #(3150L, 3L, 6L, 7L, 8L, 39L, 514572L, 537L, 0L, 3L, 37800L, 1L, \"15955527040456365584;\") -> #(3150L, 3L, 6L, 7L, 8L, 39L, 514572L, 597L, 0L, 3L, 37800L, 1L, \"15955527040456365584;\")\n",
+      "artifacts": {
+        "spline-points-only.max": {
+          "path": "build\\vector-brush-078\\spline-points2026-01\\spline-points-only.max",
+          "sha256": "6f4ad96500ec50e5a68c2bdec1b3e84643a7064be4b40d7742f85eae50bef209"
+        },
+        "spline-points-only.png": {
+          "path": "build\\vector-brush-078\\spline-points2026-01\\spline-points-only.png",
+          "sha256": "9f1ad7f3c3cee7e87aa602a03ef9b5752c652355ba923bcee83f9f58778b54e5"
+        }
+      }
+    },
+    {
+      "year": 2027,
+      "launch": {
+        "pid": 20576,
+        "max_year": 2027,
+        "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\spline-points2027-01",
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+          "-q",
+          "-silent",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\spline-points2027-01\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\spline-points2027-01\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\spline-points2027-01\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\spline-points2027-01\\listener.log"
+        ],
+        "binaries": {
+          "AminScatter.dlx": "bda7148e6fc2762afdcc0149161c8254963c9ea8a391767561856304150abe28",
+          "CyrusBrush.dlx": "defa0b0244f58b4f0cb0e9e7d1eb6436e82cd59f586e3cff6c1156c623b6cf4f",
+          "CyrusBrushStorage.dlh": "2a61c4351f264818ceab654a8fb57615366a07d574b76912b96618792ebc4ab0",
+          "CyrusScatterEdit.dlm": "33ca6e54c4a501f511212af56a18470140afd016c38981ff4774e3969bb3c77e"
+        },
+        "script_sha256": "75e7105990052825a86b018649c6b425e6f0ec4ea1cc191ee49e57be327d6f1d",
+        "normal_profile_modified": false,
+        "development_transport": true,
+        "profile_template": "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\3dsMax.ini",
+        "profile_template_sha256": "c05f3ae46982e22b7593799c92bee89fea4829ee9ef474e17b1db1e81284f55e"
+      },
+      "loaded": [
+        {
+          "name": "AminScatter.dlx",
+          "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\spline-points2027-01\\bin\\AminScatter.dlx",
+          "sha256": "bda7148e6fc2762afdcc0149161c8254963c9ea8a391767561856304150abe28"
+        },
+        {
+          "name": "CyrusBrush.dlx",
+          "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\spline-points2027-01\\bin\\CyrusBrush.dlx",
+          "sha256": "defa0b0244f58b4f0cb0e9e7d1eb6436e82cd59f586e3cff6c1156c623b6cf4f"
+        },
+        {
+          "name": "CyrusBrushStorage.dlh",
+          "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\spline-points2027-01\\bin\\CyrusBrushStorage.dlh",
+          "sha256": "2a61c4351f264818ceab654a8fb57615366a07d574b76912b96618792ebc4ab0"
+        },
+        {
+          "name": "CyrusScatterEdit.dlm",
+          "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\spline-points2027-01\\bin\\CyrusScatterEdit.dlm",
+          "sha256": "33ca6e54c4a501f511212af56a18470140afd016c38981ff4774e3969bb3c77e"
+        }
+      ],
+      "request": "SUCCESS F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vector-brush-078/spline-points2027-01/test-e8d2258e25f34f0094be62578abaaa76.ms",
+      "checks": [
+        "PASS Actual Add Point button creates three placeholders without scene models",
+        "PASS All sources use placeholder identities; no geometry source exists",
+        "PASS Point group available for band 1",
+        "PASS Point group available for band 2",
+        "PASS Point group available for band 3",
+        "PASS Actual Layout handlers create two consecutive inside bands and one outside band",
+        "PASS Every accepted point is inside its assigned geometric band and all three groups are present",
+        "PASS Centers preview contains exactly one visible point per accepted placeholder",
+        "PASS Point placeholders produce no final model geometry",
+        "PASS Retained display contains points and zero mesh faces",
+        "PASS Ten unchanged reads/redraws reuse placements and retained point uploads",
+        "PASS Returning to color groups restores exactly the same point assignments",
+        "PASS Manual band-width change preserves the completed points until Update",
+        "PASS Explicit Update expands only the outside band's accepted domain",
+        "PASS Live width change returns automatically to the original point layout",
+        "PASS Scene uses one layer with no Paint Area or brush data",
+        "PASS Point types, band choices and exact placements survive save/reopen",
+        "PASS Point-only scene and viewport artifact saved"
+      ],
+      "observations": "Source objects choice count with three Point sources: 0\nCold explicit Update milliseconds: 102\nCounts by band: #(1100, 799, 1325)\n",
+      "cache_counters": "epoch: 2 -> 2\nreceiver: #(1, 0, 1) -> #(1, 0, 1)\nretained: #(3224L, 3L, 6L, 7L, 8L, 27L, 360840L, 300L, 0L, 3L, 38688L, 1L, \"11655504666892898570;\") -> #(3224L, 3L, 6L, 7L, 8L, 27L, 360840L, 360L, 0L, 3L, 38688L, 1L, \"11655504666892898570;\")\n",
+      "artifacts": {
+        "spline-points-only.max": {
+          "path": "build\\vector-brush-078\\spline-points2027-01\\spline-points-only.max",
+          "sha256": "337d5745d2ad9f41e485e26bcf86d6e527dc9b1533c23924db71b90aadddab56"
+        },
+        "spline-points-only.png": {
+          "path": "build\\vector-brush-078\\spline-points2027-01\\spline-points-only.png",
+          "sha256": "ef247deb77178e33b421bf5a6b8dbb45b9db03db00e19f4411ff335eef15181c"
+        }
+      }
+    }
+  ]
+}

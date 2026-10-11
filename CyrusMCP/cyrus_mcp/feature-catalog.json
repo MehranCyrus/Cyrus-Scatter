@@ -1,9 +1,9 @@
 {
   "schema": "cyrus.feature-catalog/1.0",
   "authority": "Help only. Tool dispatch, closed schema and local approval determine authority.",
-  "capability_source_sha256": "de1dee9e0e9746da2392f875bab3126358b79fa569566d282c3398e4a27fa3e9",
-  "control_inventory_sha256": "f6a0469798f605981f721aeb4a9dba124c8d72e41eb1b4f1744e475760617c8d",
-  "development_version": "0.78.3",
+  "capability_source_sha256": "f349c9e3887fec04acbfe4b1d09b5980a49a022c354ba2f5cbe71e843db5257a",
+  "control_inventory_sha256": "58af363ea119d49b3a61fc48c4255d32144cc3d1745fd9cb9c70aa03846a6c68",
+  "development_version": "0.79",
   "mcp_version": "0.73.0",
   "calculation_model": "CyrusUnified1",
   "features": [
@@ -45,14 +45,14 @@
     {
       "feature_id": "C06",
       "title": "Point/Empty / source row",
-      "native": "Separate Point placeholders and intentional Empty; accepted-target restrictions remain",
+      "native": "Point placeholders accept placements without final geometry; weighted Empty makes intentional gaps in Candidate budget. Accepted target permits Points but rejects positive-weight Empty",
       "mcp": "Read configuration; plans require mesh assets",
       "qualification_or_extension": "Typed source kinds and distinct slot/geometry count semantics"
     },
     {
       "feature_id": "C07",
-      "title": "Source containers / global/layer/set",
-      "native": "Native helper, cached context/count label, linked Modify controls; pivot-local-XY pools; parking keeps records; validated static translation follows sources",
+      "title": "Source containers / global/layer",
+      "native": "Native helper with collection disabled by default, cached context/count label, linked Modify controls; pivot-local-XY pools; parking keeps records; validated static translation follows sources",
       "mcp": "Read pool references, cached membership and helper label/identity/context/status; no reconciliation",
       "qualification_or_extension": "Remote container authoring remains unavailable. Whole-node Move now has independent tests for combined selection, group/repeated Undo/Redo and cancellation; actual pointer evidence and loaded identities are recorded separately in the 7 October results"
     },
@@ -191,7 +191,7 @@
     },
     {
       "feature_id": "C27",
-      "title": "Statistics / set/controller",
+      "title": "Statistics / layer/controller",
       "native": "Cached attempts/accepted/protected/rejected/cleanup/shortfall/error/epoch; active/saved palette counts separate",
       "mcp": "Cached diagnostics/configuration/publication",
       "qualification_or_extension": "Complete causal/conflict samples and per-field availability/freshness"
@@ -205,17 +205,17 @@
     },
     {
       "feature_id": "C29",
-      "title": "Bake/clear / owned output",
-      "native": "Local exact-output bake and owned cleanup retained",
+      "title": "Output cleanup / owned output",
+      "native": "Remove old baked output is exposed locally. Internal bakeInstances utility remains, with no current artist-facing Bake action",
       "mcp": "No mutation",
-      "qualification_or_extension": "Additional fidelity, output-size, failure and renderer-material cases"
+      "qualification_or_extension": "Do not document a Bake button workflow; additional output fidelity, size, failure and renderer-material qualification remains"
     },
     {
       "feature_id": "C30",
       "title": "Save/load/Undo / scene",
       "native": "Schema 55 with vector payload; stable Edit data, layer surfaces, areas, container UUIDs and source metadata",
       "mcp": "Scoped own-top-Undo/journal recovery; no arbitrary scene save",
-      "qualification_or_extension": "Older development schemas/payloads rejected; Max 2026 runtime remains unqualified"
+      "qualification_or_extension": "Older development schemas/payloads rejected; bounded scripted Max 2026/2027 save/reopen and callback checks exist in 0.78.3. Physical input, DPI and long-session qualification remain open; MCP authoring in Max 2026 is separate"
     },
     {
       "feature_id": "C31",
@@ -257,6 +257,19 @@
       ],
       "owner_context": "Controller",
       "help": "Enable calculation and output for this entire Scatter setup.",
+      "view": "Local setup/editor controls",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "general",
+      "section": "host",
+      "kind": "button",
+      "name": "licenseButton",
+      "capabilities": [
+        "C01"
+      ],
+      "owner_context": "Controller / local view",
+      "help": "Import a team license or inspect its expiry. Existing scenes remain available after expiry.",
       "view": "Local setup/editor controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },

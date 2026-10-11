@@ -68,7 +68,7 @@ public:
     bool invalid=true,painting=false,gesture=false,ending=false,pathConnected=false;
     b::Document pending;
     bool gestureChanged=false;
-#ifdef CYRUS_NATIVE_LICENSE_EXPERIMENT
+#if defined(CYRUS_NATIVE_LICENSE_EXPERIMENT) || defined(CYRUS_TEAM_LICENSE)
     cyrus::licensing::OperationPermit strokePermit;
 #endif
     double radius=20;
@@ -247,9 +247,11 @@ public:
         painting=false;if(active==this)active=nullptr;ending=false;
     }
     BOOL StartStroke()override{try{valid();if(gesture)return TRUE;
-#ifdef CYRUS_NATIVE_LICENSE_EXPERIMENT
+#if defined(CYRUS_NATIVE_LICENSE_EXPERIMENT)
         strokePermit=cyrusBoundaryBegin(this);
         if(!strokePermit)throw std::runtime_error("Cyrus authoring license required; completed Brush work is preserved");
+#elif defined(CYRUS_TEAM_LICENSE)
+        requireAuthor();
 #endif
         pending=document;gestureChanged=false;gesture=true;pathConnected=false;return TRUE;}catch(const std::exception& e){error=e.what();return FALSE;}}
     void addPoint(b::Anchor anchor,bool connected){
@@ -275,8 +277,13 @@ public:
         bool holding=false;
         try{valid();if(gestureChanged){
             auto restore=std::make_unique<PaintRestore>(this);
-#ifdef CYRUS_NATIVE_LICENSE_EXPERIMENT
+#if defined(CYRUS_NATIVE_LICENSE_EXPERIMENT)
             if(!cyrusBoundaryCommit(strokePermit,this))throw std::runtime_error("Stroke authorization expired before commit; completed Brush work is preserved");
+#elif defined(CYRUS_TEAM_LICENSE)
+            // Pending outlines are private staging. Reauthorize publication at
+            // this synchronous commit boundary, without a 30-second gesture cap.
+            // A renewed grant may authorize a new commit; no old permit extends.
+            requireAuthor();
 #endif
             theHold.Begin();holding=true;theHold.Put(restore.release());document=std::move(pending);gesture=false;changed();theHold.Accept(_T("Cyrus Brush stroke"));holding=false;
         }else gesture=false;
@@ -290,7 +297,7 @@ public:
         for(int i=0;i<n;++i)if(!PaintStroke(hit[i],mouse[i],world[i],normal[i],local[i],localNormal[i],bary[i],index[i],shift[i],ctrl[i],alt[i],size[i],str[i],pressure[i],nodes[i],mirror,mw?mw[i]:Point3(0,0,0),mn?mn[i]:Point3(0,0,0),ml?ml[i]:Point3(0,0,0),mln?mln[i]:Point3(0,0,0)))return FALSE;return EndStroke();
     }
     BOOL CancelStroke()override{
-#ifdef CYRUS_NATIVE_LICENSE_EXPERIMENT
+#if defined(CYRUS_NATIVE_LICENSE_EXPERIMENT) || defined(CYRUS_TEAM_LICENSE)
         strokePermit={};
 #endif
         if(gesture){gesture=false;pending={};++revision;}return TRUE;}

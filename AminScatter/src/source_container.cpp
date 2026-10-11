@@ -11,6 +11,7 @@
 #include <maxscript/foundation/3dmath.h>
 #include <maxscript/maxwrapper/mxsobjects.h>
 #include "diagnostics.h"
+#include "license_boundary.h"
 #include <memory>
 #include <vector>
 #include <string>
@@ -141,10 +142,12 @@ public:
     }
     void begin(TimeValue t){
         if(moving)return;
+        if(!cyrusBoundaryAllows(this))throw std::runtime_error("Cyrus container editing requires an active license");
         capture(t);moving=true;++begins;event("container.move.started","frozen_units=",frozen.size());
     }
     void finish(TimeValue t){
         if(!moving)return;
+        if(!cyrusBoundaryAllows(this))throw std::runtime_error("Cyrus license expired; container move cancelled");
         auto* container=node.Get();if(!container)throw std::runtime_error("Container was deleted during movement");
         const auto current=container->GetNodeTM(t);auto expected=start;expected.SetTrans(current.GetTrans());
         if(!finite(current))throw std::runtime_error("Container translation produced an invalid transform");
@@ -298,6 +301,7 @@ Value* cyrusContainerDisable_cf(Value** a,int count){
 def_visible_primitive(cyrusContainerTranslate,"cyrusContainerTranslate");
 Value* cyrusContainerTranslate_cf(Value** a,int count){
     check_arg_count(cyrusContainerTranslate,2,count);auto* f=frame(a[0]);auto* node=f->node.Get();if(!node)throw RuntimeError(_T("Bind the container first"));
+    if(!cyrusBoundaryAllows(f))throw RuntimeError(_T("Cyrus container editing requires an active license"));
     if(f->moving)throw RuntimeError(_T("Finish the current container gesture first"));
     const auto delta=a[1]->to_point3();for(int axis=0;axis<3;++axis)if(!std::isfinite(delta[axis]))throw RuntimeError(_T("Invalid translation"));
     const auto t=MAXScript_time();const bool hold=!theHold.Holding();if(hold)theHold.Begin();

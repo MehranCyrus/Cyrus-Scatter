@@ -6,7 +6,11 @@ Companion to the [current artist guide](ARTIST_GUIDE.md). These settings belong 
 
 Random mix chooses among weighted models. Clusters choose assignment groups across space; grouping colors and viewport identification colors are separate. Spline bands use closed guides in world XY, ordered inside/outside bands, explicit source/group choices and per-band scale ranges. First matching band wins. A selected Paint Area does not supply a different model collection.
 
-Surface Analyzer assignment consumes cached boundary, street-side, centre-line or point data from a separate Analyzer. It does not analyze a sphere as a planar mesh; curved Brush painting is a different operation. Selecting or updating an Analyzer is explicit. Assignment, Analyzer Area masks and boundary falloff have separate Analyzer references. A new Scatter calculation rejects out-of-date linked analysis and retains the previous complete result; Analyze first, then Update scatter in Manual mode. Unchanged cached reads continue to use the prior publication. Older saved guides need one explicit Analyze with the matching updated script.
+Spline bands also accept model-free Point placeholders through **Color groups**. Use Models > Advanced > Add Point, assign the group colors, and choose them for each band. **Plant centres** displays one point per accepted placement. Point-only bands have no final mesh output. Direct **Source objects** assignment currently stores scene-node references and omits placeholder rows; this is an open limitation, not a requirement to add dummy geometry. See the [point-only runtime checks](Container_and_Radius_0.78.3_2026-10-10/SPLINE_POINTS.md).
+
+**Band Width is a world-space distance from the guide**, not its node scale, corner radius or diameter. Scaling a rectangle changes its outline but leaves a 200 mm band 200 mm wide. Nonuniform scale and rotation transform the outline before distance is measured. Outside bands naturally round corners because they use distance to the nearest border segment. Consecutive widths accumulate separately on each side: two 200 mm inside bands occupy successive 0–200 and 200–400 mm strips, subject to earlier matches and other masks.
+
+Surface Analyzer assignment consumes cached boundary, street-side, centre-line or point data from a separate Analyzer. It does not analyze a sphere as a planar mesh. Ordinary scattering on curved receivers is separate: vector painting supports only terrain and planes that are single-valued in receiver-local XY, and rejects closed spheres, folds and vertical faces. Selecting or updating an Analyzer is explicit. Assignment, Analyzer Area masks and boundary falloff have separate Analyzer references. A new Scatter calculation rejects out-of-date linked analysis and retains the previous complete result; Analyze first, then Update scatter in Manual mode. Unchanged cached reads continue to use the prior publication. Older saved guides need one explicit Analyze with the matching updated script.
 
 ## Boundary and street controls
 
@@ -21,6 +25,8 @@ Street Trim start/end shorten connected street chains; traversal direction comes
 ## Masks and falloff
 
 Include/Exclude splines use world XY. Include domains union; Exclude takes precedence. This tests placement support/pivots, not trimmed plant geometry. Analyzer Area can combine centre-line bands and point-radius discs as a union. Full width describes the complete band width; flat/round ends control its caps. Point radius here is independent of model collision radius.
+
+New Area links default to Include. Highlight their rows before changing **Selected area mode** or removing them. With no highlighted row, the mode radio does not change an Area; read the Include/Exclude prefix on the row to confirm the stored setting. The [25 point-only inspection examples](Container_and_Radius_0.78.3_2026-10-10/AREA_EXAMPLES.md) exercise these distances, masks, falloffs and Analyzer combinations in Max 2026.
 
 Choose Analyzer Boundary or exactly one Area spline as a falloff target. Each line retains its own settings. Delete width removes an edge strip. Scale and density ramps start after that strip when deletion is enabled; width and graph shape are separate controls. Density thins rather than promising a full count; accepted-target retries are a separate bounded setting.
 

@@ -29,7 +29,7 @@ Surface area is the sum of world-space triangle areas. Overlapping faces are not
 
 ## Output and persistence
 
-The current 0.14 development script records whether its published guides are current. Relevant edits invalidate that record; Analyze renews it. Current and pending states survive save/reopen. The paired Scatter 0.75 script rejects stale Layout/Area/falloff guides while retaining its last complete result. Use Analyze, then Update scatter in Manual mode. Older saved guides without the freshness record require one explicit Analyze; a version caption alone does not identify the matching script/package.
+The current 0.14 development script records whether its published guides are current. Relevant edits invalidate that record; Analyze renews it. Current and pending states survive save/reopen. The matching current Scatter script rejects stale Layout/Area/falloff guides while retaining its last complete result. Use Analyze, then Update scatter in Manual mode. Older saved guides without the freshness record require one explicit Analyze; a version caption alone does not identify the matching script/package.
 
 Boundary/path/point toggles draw cached results. Explicit spline/helper exports create independent snapshots, not live links. Source meshes are not modified. Cached results, update mode and settings persist in MAX files. Nodes and guides are schematic and non-rendering. Cyrus Scatter can reference Analyzer paths and sample points through its Area controls; that Scatter adapter evaluates path bands and point-radius masks in world XY, even though Analyzer itself supports separately oriented planar elements. See the [artist-zone integration audit](../docs/Artist_Zones_Integration_2026-10-03/CODEBASE_AUDIT.md#a03--analyzer-integration-exists-but-its-geometry-scope-differs) for the current source scope and proposed extensions.
 
@@ -37,6 +37,6 @@ Keep versions' binary folders separate and restart Max after installation. Sourc
 
 ## Build and checks
 
-Build Release x64 with the matching Max SDK and the [current build workflow](../docs/Max_2027_Installation.md#rebuild-for-developers). Run analyzer_tests; Max 2026 runtime qualification remains open. Installer payload consists of the DLL, script, README and installer files.
+Build Release x64 with the matching Max SDK and the [current build workflow](../docs/Max_2027_Installation.md#rebuild-for-developers). Run analyzer_tests. Bounded scripted Max 2026 integration checks now cover Analyzer line/point masks, boundary falloff and save/reopen in the [0.78.3 area examples](../docs/Container_and_Radius_0.78.3_2026-10-10/AREA_EXAMPLES.md); this does not certify every Analyzer control or configuration. Physical input, high DPI, long sessions and the full host/output matrix remain open. Installer payload consists of the DLL, script, README and installer files.
 
 Tests cover attached mixed elements, radius exclusion, minimum overrides, hard Fit radius after Relax and minimum replacement, tilted surfaces, holes, slightly non-orthogonal straight regions and impossible footprints. Real Max tests validate final boundary distances, UI, live updates, idle behavior and saved settings. The supplied three-shape scene is used only in separate test processes and copied preview outputs.
