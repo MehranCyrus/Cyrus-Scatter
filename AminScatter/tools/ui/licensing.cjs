@@ -4,7 +4,7 @@ const blocks=require('./maxscript-blocks.cjs');
 const mutations=[
  'setSourceRadius','setFallConfig','setFallGraph','assignSourceForward','assignSourceTransform',
  'assignWeight','assignLineGroup','assignRestGroup','assignGroup','addEmptySource','addPointSource',
- 'addStroke','removeStroke','setStrokeSelection','removeLogicalLayer','copyLogicalLayer',
+ 'replacePointSource','addStroke','removeStroke','setStrokeSelection','removeLogicalLayer','copyLogicalLayer',
  'setGroupCoverage','addPaintArea','removePaintArea','setPaintAreaTarget','setLayerSurfaces',
  'newLayer','removePopulation','refreshAll','clearAllBaked','clearBaked','bakeInstances',
  'resetRandomization','resetSelectedRandomization','copySelectedLayer','removeLayer',

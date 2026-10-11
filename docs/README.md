@@ -11,6 +11,7 @@ Use this small set for the current codebase. Update it in place instead of creat
 | How are alternative brush architectures being compared? | [Four standalone painting trials](../experiments/paint-methods/README.md) — isolated results and known failures; vector A selected for integration |
 | How do I install/build? | [Max 2026/2027 installation/build](Max_2027_Installation.md) |
 | How should code changes be tested? | [Agent workflow](AGENT_WORKFLOW.md) |
+| What changed in 0.79.1? | [Point workflow, source controls and falloff qualification](Point_Workflow_0.79.1_2026-10-11/README.md) |
 | What was actually tested? | [0.75 results](System_Qualification_0.75_2026-10-09/README.md), [feature checklist](System_Qualification_0.75_2026-10-09/CHECKLIST.md), [234-control register](System_Qualification_0.75_2026-10-09/CONTROL_REGISTER.md) |
 | How did the features work together in a landscape? | [Courtyard scene, painting/layout checklist and performance study](Courtyard_Study_0.75_2026-10-09/README.md) |
 | What did we fix after that study? | [Retained Proxy, Update and Analyzer fixes, measurements and matched packages](Courtyard_Fixes_0.75_2026-10-10/README.md) |

@@ -361,7 +361,7 @@ ${lists.map(c=>`        on ${c.id}_grip MouseDown sender args do beginListDrag s
 module.exports=function(s,{check=false}={}){
  const definitions=layouts.pages;
  const pages=definitions.map((d,i)=>page(s,d,{category:(i+1)*10}));
- const manifest={schema:'cyrus.ui-layout/1',version:'0.79',source:'approved single-file HTML study',sections:pages.map(p=>({name:p.name,title:definitions.find(d=>d.name===p.name).title,scope:p.scope,controls:p.controls.map(c=>({component:c.key,control:c.name,presentation:c.id,advanced:!!p.rows.find(r=>r.controls?.some(x=>x.id===c.id))?.advanced}))}))};
+ const manifest={schema:'cyrus.ui-layout/1',version:'0.79.1',source:'approved single-file HTML study',sections:pages.map(p=>({name:p.name,title:definitions.find(d=>d.name===p.name).title,scope:p.scope,controls:p.controls.map(c=>({component:c.key,control:c.name,presentation:c.id,advanced:!!p.rows.find(r=>r.controls?.some(x=>x.id===c.id))?.advanced}))}))};
  const output=JSON.stringify(manifest,null,2)+'\n',path='tools/ui/approved-layout-manifest.json';
  if(check){if(fs.readFileSync(path,'utf8')!==output)throw Error('Layout manifest is stale');}else fs.writeFileSync(path,output);
  // Replace the old native pages as one contiguous UI block, keeping calculation
@@ -371,7 +371,7 @@ module.exports=function(s,{check=false}={}){
  const main=fs.readFileSync('tools/ui/templates/approved-main-ui.ms','utf8').replace(/\r/g,'');
  s=s.slice(0,a)+main+'\n'+pages.map(p=>p.text).join('\n\n')+s.slice(b);
  // Optional floating editors use the exact same composed handlers and rows.
- const popupDefs=[...definitions.filter(d=>['surfacesUI','modelsUI','layoutUI','populationUI','coverageUI','areasUI','transformsUI','spacingUI','statisticsUI'].includes(d.name)),layouts.popupSets];
+ const popupDefs=[...definitions.filter(d=>['surfacesUI','modelsUI','containersUI','layoutUI','populationUI','coverageUI','areasUI','transformsUI','spacingUI','statisticsUI'].includes(d.name)),layouts.popupSets];
  const factories=popupDefs.map(d=>`fn CyrusLayerEditor_${d.name}_1 = (\n${page(safeOriginal,d,{name:d.name+'_1',popup:true}).text}\n    ${d.name}_1\n)`);
  const popupStart=s.indexOf('-- @popup-factories'),popupEnd=s.indexOf('fn CyrusCreateLayerEditorSection');
  if(popupStart<0||popupEnd<popupStart)throw Error('Missing generated popup factory slot');
@@ -381,7 +381,7 @@ module.exports=function(s,{check=false}={}){
  const sections=/^            pageSections=#\(/m.exec(s);
  if(!sections)throw Error('Missing popup topic layout');
  const sectionsEnd=blocks.close(s,s.indexOf('(',sections.index));
- s=s.slice(0,sections.index)+'            pageSections=#(#(#(#(#modelsUI,false),#(#layoutUI,false)),#(#(#surfacesUI,false))),#(#(#(#populationUI,false)),#(#(#areasUI,false))),#(#(#(#coverageUI,false)),#()),#(#(#(#transformsUI,false)),#()),#(#(#(#spacingUI,false)),#()),#(#(#(#statisticsUI,false)),#()))'+s.slice(sectionsEnd);
+ s=s.slice(0,sections.index)+'            pageSections=#(#(#(#(#modelsUI,false),#(#containersUI,false),#(#layoutUI,false)),#(#(#surfacesUI,false))),#(#(#(#populationUI,false)),#(#(#areasUI,false))),#(#(#(#coverageUI,false)),#()),#(#(#(#transformsUI,false)),#()),#(#(#(#spacingUI,false)),#()),#(#(#(#statisticsUI,false)),#()))'+s.slice(sectionsEnd);
  s=s.replace('        fn showTopic index rebind:false = (',`        fn layoutPages index = (
             for p=1 to pages.count do (
                 local single=pageSections[p][2].count==0

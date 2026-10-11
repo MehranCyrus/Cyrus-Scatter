@@ -2,7 +2,7 @@
 
 Native C++ and generated MAXScript for Cyrus Scatter and Cyrus Surface Analyzer in 3ds Max.
 
-**Current development: Scatter 0.79 / package metadata 0.79.0 / schema 55 / CyrusUnified1.** The [offline team licensing pilot](docs/licensing/TEAM_PILOT_0.79_2026-10-11.md) implements owner-issued 30-day licenses, activation UI and authoring restrictions with tested saved-scene rendering after expiry in Max 2026/2027. See its exact build evidence and anti-bypass limits; this is not commercial security or 1.0 release certification. Analyzer remains 0.14; MCP package/plan remain 0.73.0/0.73.
+**Current development: Scatter 0.79.1 / package metadata 0.79.1 / schema 55 / CyrusUnified1.** The [Point and falloff refinement report](docs/Point_Workflow_0.79.1_2026-10-11/README.md) covers direct Point assignment, source identities, reorganized controls and the copied 25-case scene. The [offline team licensing pilot](docs/licensing/TEAM_PILOT_0.79_2026-10-11.md) implements owner-issued 30-day licenses, activation UI and authoring restrictions with tested saved-scene rendering after expiry in Max 2026/2027. See its exact build evidence and anti-bypass limits; this is not commercial security or 1.0 release certification. Analyzer remains 0.14; MCP package/plan remain 0.73.0/0.73.
 
 ## Start here
 
@@ -13,7 +13,7 @@ Native C++ and generated MAXScript for Cyrus Scatter and Cyrus Surface Analyzer 
 | See what needs fixing next | [Current backlog](docs/BACKLOG.md) |
 | Install or rebuild | [Max 2026/2027 installation/build](docs/Max_2027_Installation.md) |
 | Work on the repository | [AGENTS.md](AGENTS.md), [agent workflow](docs/AGENT_WORKFLOW.md) |
-| Find tests and exact results | [Current UI and brush qualification](docs/Container_and_Radius_0.78.3_2026-10-10/README.md), [vector integration](docs/Vector_Brush_0.78_2026-10-10/README.md), [0.76 receiver stability](docs/Receiver_Stability_0.76_2026-10-10/README.md), [Brush fixes](docs/Brush_Scaling_0.76_2026-10-10/README.md), [retained Proxy/Analyzer fixes](docs/Courtyard_Fixes_0.75_2026-10-10/README.md), [0.75 system qualification](docs/System_Qualification_0.75_2026-10-09/README.md) and [feature checklist](docs/System_Qualification_0.75_2026-10-09/CHECKLIST.md) |
+| Find tests and exact results | [0.79.1 Point/falloff qualification](docs/Point_Workflow_0.79.1_2026-10-11/README.md), [UI and brush qualification](docs/Container_and_Radius_0.78.3_2026-10-10/README.md), [vector integration](docs/Vector_Brush_0.78_2026-10-10/README.md), [0.76 receiver stability](docs/Receiver_Stability_0.76_2026-10-10/README.md), [Brush fixes](docs/Brush_Scaling_0.76_2026-10-10/README.md), [retained Proxy/Analyzer fixes](docs/Courtyard_Fixes_0.75_2026-10-10/README.md), [0.75 system qualification](docs/System_Qualification_0.75_2026-10-09/README.md) and [feature checklist](docs/System_Qualification_0.75_2026-10-09/CHECKLIST.md) |
 | Other documentation | [Documentation index](docs/README.md) |
 | Product website and public roadmap | [Website source and local preview](website/README.md), [product and AI direction](docs/PRODUCT_AND_AI_ROADMAP.md) |
 

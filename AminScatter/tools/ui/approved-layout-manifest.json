@@ -1,6 +1,6 @@
 {
   "schema": "cyrus.ui-layout/1",
-  "version": "0.79",
+  "version": "0.79.1",
   "source": "approved single-file HTML study",
   "sections": [
     {
@@ -163,57 +163,9 @@
     },
     {
       "name": "modelsUI",
-      "title": "Models",
+      "title": "Models & Points",
       "scope": "Layer",
       "controls": [
-        {
-          "component": "sourceContainersUI",
-          "control": "modeList",
-          "presentation": "sourceContainersUI_modeList",
-          "advanced": true
-        },
-        {
-          "component": "sourceContainersUI",
-          "control": "containersList",
-          "presentation": "sourceContainersUI_containersList",
-          "advanced": true
-        },
-        {
-          "component": "sourceContainersUI",
-          "control": "enabledCheck",
-          "presentation": "sourceContainersUI_enabledCheck",
-          "advanced": true
-        },
-        {
-          "component": "sourceContainersUI",
-          "control": "createContainer",
-          "presentation": "sourceContainersUI_createContainer",
-          "advanced": true
-        },
-        {
-          "component": "sourceContainersUI",
-          "control": "pickContainer",
-          "presentation": "sourceContainersUI_pickContainer",
-          "advanced": true
-        },
-        {
-          "component": "sourceContainersUI",
-          "control": "removeContainer",
-          "presentation": "sourceContainersUI_removeContainer",
-          "advanced": true
-        },
-        {
-          "component": "sourceContainersUI",
-          "control": "membershipInfo",
-          "presentation": "sourceContainersUI_membershipInfo",
-          "advanced": true
-        },
-        {
-          "component": "sourceContainersUI",
-          "control": "helpInfo",
-          "presentation": "sourceContainersUI_helpInfo",
-          "advanced": true
-        },
         {
           "component": "sourceUI",
           "control": "sourceName",
@@ -266,49 +218,49 @@
           "component": "sourceUI",
           "control": "addPoint",
           "presentation": "sourceUI_addPoint",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "sourceUI",
           "control": "addEmpty",
           "presentation": "sourceUI_addEmpty",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "sourceUI",
           "control": "replacePoint",
           "presentation": "sourceUI_replacePoint",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "sourceUI",
           "control": "groupHeading",
           "presentation": "sourceUI_groupHeading",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "sourceUI",
           "control": "existingGroups",
           "presentation": "sourceUI_existingGroups",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "sourceUI",
           "control": "groupColor",
           "presentation": "sourceUI_groupColor",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "sourceUI",
           "control": "applyColor",
           "presentation": "sourceUI_applyColor",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "sourceUI",
           "control": "colorHelp",
           "presentation": "sourceUI_colorHelp",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "sourceUI",
@@ -320,7 +272,7 @@
           "component": "sourceUI",
           "control": "weightHelp",
           "presentation": "sourceUI_weightHelp",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "sourceUI",
@@ -338,7 +290,7 @@
           "component": "sourceUI",
           "control": "sourceTransformHelp",
           "presentation": "sourceUI_sourceTransformHelp",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "sourceUI",
@@ -362,12 +314,67 @@
           "component": "sourceUI",
           "control": "forwardAxis",
           "presentation": "sourceUI_forwardAxis",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "sourceUI",
           "control": "detailsToggle",
           "presentation": "sourceUI_detailsToggle",
+          "advanced": false
+        }
+      ]
+    },
+    {
+      "name": "containersUI",
+      "title": "Source containers",
+      "scope": "Layer",
+      "controls": [
+        {
+          "component": "sourceContainersUI",
+          "control": "modeList",
+          "presentation": "sourceContainersUI_modeList",
+          "advanced": false
+        },
+        {
+          "component": "sourceContainersUI",
+          "control": "containersList",
+          "presentation": "sourceContainersUI_containersList",
+          "advanced": false
+        },
+        {
+          "component": "sourceContainersUI",
+          "control": "enabledCheck",
+          "presentation": "sourceContainersUI_enabledCheck",
+          "advanced": false
+        },
+        {
+          "component": "sourceContainersUI",
+          "control": "createContainer",
+          "presentation": "sourceContainersUI_createContainer",
+          "advanced": false
+        },
+        {
+          "component": "sourceContainersUI",
+          "control": "pickContainer",
+          "presentation": "sourceContainersUI_pickContainer",
+          "advanced": false
+        },
+        {
+          "component": "sourceContainersUI",
+          "control": "removeContainer",
+          "presentation": "sourceContainersUI_removeContainer",
+          "advanced": false
+        },
+        {
+          "component": "sourceContainersUI",
+          "control": "membershipInfo",
+          "presentation": "sourceContainersUI_membershipInfo",
+          "advanced": false
+        },
+        {
+          "component": "sourceContainersUI",
+          "control": "helpInfo",
+          "presentation": "sourceContainersUI_helpInfo",
           "advanced": false
         }
       ]
@@ -984,7 +991,7 @@
           "component": "areaUI",
           "control": "refreshAreas",
           "presentation": "areaUI_refreshAreas",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "areaUI",
@@ -1050,79 +1057,79 @@
           "component": "areaUI",
           "control": "fallTarget",
           "presentation": "areaUI_fallTarget",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "areaUI",
           "control": "fallPick",
           "presentation": "areaUI_fallPick",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "areaUI",
           "control": "fallRemove",
           "presentation": "areaUI_fallRemove",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "areaUI",
           "control": "fallTargetName",
           "presentation": "areaUI_fallTargetName",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "areaUI",
           "control": "fallDeleteCheck",
           "presentation": "areaUI_fallDeleteCheck",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "areaUI",
           "control": "fallDeleteSpin",
           "presentation": "areaUI_fallDeleteSpin",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "areaUI",
           "control": "fallScaleCheck",
           "presentation": "areaUI_fallScaleCheck",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "areaUI",
           "control": "fallScaleSpin",
           "presentation": "areaUI_fallScaleSpin",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "areaUI",
           "control": "fallScaleEdit",
           "presentation": "areaUI_fallScaleEdit",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "areaUI",
           "control": "fallDensityCheck",
           "presentation": "areaUI_fallDensityCheck",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "areaUI",
           "control": "fallDensitySpin",
           "presentation": "areaUI_fallDensitySpin",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "areaUI",
           "control": "fallDensityEdit",
           "presentation": "areaUI_fallDensityEdit",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "areaUI",
           "control": "fallHelp",
           "presentation": "areaUI_fallHelp",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "areaUI",

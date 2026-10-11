@@ -1,9 +1,9 @@
 {
   "schema": "cyrus.feature-catalog/1.0",
   "authority": "Help only. Tool dispatch, closed schema and local approval determine authority.",
-  "capability_source_sha256": "f349c9e3887fec04acbfe4b1d09b5980a49a022c354ba2f5cbe71e843db5257a",
+  "capability_source_sha256": "51b2d2c10b505e8c42e9093451db5e072cf8e20191fae1d67ee23f61026f26f7",
   "control_inventory_sha256": "58af363ea119d49b3a61fc48c4255d32144cc3d1745fd9cb9c70aa03846a6c68",
-  "development_version": "0.79",
+  "development_version": "0.79.1",
   "mcp_version": "0.73.0",
   "calculation_model": "CyrusUnified1",
   "features": [
@@ -45,14 +45,14 @@
     {
       "feature_id": "C06",
       "title": "Point/Empty / source row",
-      "native": "Point placeholders accept placements without final geometry; weighted Empty makes intentional gaps in Candidate budget. Accepted target permits Points but rejects positive-weight Empty",
+      "native": "Named Point placeholders support direct Models / Points band choices and replacement with a model without changing the row identity; they accept placements without final geometry; weighted Empty makes intentional gaps in Candidate budget. Accepted target permits Points but rejects positive-weight Empty",
       "mcp": "Read configuration; plans require mesh assets",
       "qualification_or_extension": "Typed source kinds and distinct slot/geometry count semantics"
     },
     {
       "feature_id": "C07",
       "title": "Source containers / global/layer",
-      "native": "Native helper with collection disabled by default, cached context/count label, linked Modify controls; pivot-local-XY pools; parking keeps records; validated static translation follows sources",
+      "native": "Separate Source containers section; Point/Empty rows remain active independently of rectangles. Native helper with collection disabled by default, cached context/count label, linked Modify controls; pivot-local-XY pools; parking keeps records; validated static translation follows sources",
       "mcp": "Read pool references, cached membership and helper label/identity/context/status; no reconciliation",
       "qualification_or_extension": "Remote container authoring remains unavailable. Whole-node Move now has independent tests for combined selection, group/repeated Undo/Redo and cancellation; actual pointer evidence and loaded identities are recorded separately in the 7 October results"
     },
@@ -129,7 +129,7 @@
     {
       "feature_id": "C18",
       "title": "Layout bands / layer",
-      "native": "Main Layout exposes Spline bands and Surface Analyzer channels; world-XY bands, first-match priority, source/group choices and explicit Analyzer update",
+      "native": "Main Layout exposes Spline bands and Surface Analyzer channels; world-XY bands, first-match priority, stable model/Point and assignment-group choices and explicit Analyzer update",
       "mcp": "No assignment mutation",
       "qualification_or_extension": "Artist coverage of all Analyzer channels, corners, multi-set scale and curved combinations"
     },
@@ -234,7 +234,7 @@
     {
       "feature_id": "C33",
       "title": "Licensing / product",
-      "native": "Independent default-off native/local foundation preserved",
+      "native": "0.79 offline team issuer/import and bounded authoring guards; see the current licensing result",
       "mcp": "No licensing-administration authority",
       "qualification_or_extension": "Complete commercial enforcement, service/seat/recovery coverage remain separate"
     },
@@ -1218,7 +1218,7 @@
         "C08"
       ],
       "owner_context": "Selected layer model collection",
-      "help": "Add a placeholder source that can later be replaced by a model.",
+      "help": "Add a named placeholder type. Scatter points now, then replace this row with a model.",
       "view": "Modify selected layer, selected container and optional popup",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },

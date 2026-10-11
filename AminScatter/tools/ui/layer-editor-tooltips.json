@@ -60,7 +60,7 @@
     "addSelected": "Add the currently selected scene objects to this layer.",
     "removePlant": "Unregister highlighted rows. To keep their settings, park models outside a source rectangle instead.",
     "selectPlant": "Select the highlighted source models in the scene.",
-    "addPoint": "Add a placeholder source that can later be replaced by a model.",
+    "addPoint": "Add a named placeholder type. Scatter points now, then replace this row with a model.",
     "addEmpty": "Add a weighted empty source for intentional gaps in candidate-budget mode.",
     "replacePoint": "Replace one highlighted Point row with a scene model.",
     "existingGroups": "Assign highlighted sources to an existing color group for clustering.",

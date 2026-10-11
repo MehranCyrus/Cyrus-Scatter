@@ -1,6 +1,6 @@
 # Current codebase architecture
 
-Applies to Cyrus Scatter 0.78.3, saved schema 55 and `CyrusUnified1`. Use [the artist guide](ARTIST_GUIDE.md) for controls, [the backlog](BACKLOG.md) for unfinished work, and [current qualification](Container_and_Radius_0.78.3_2026-10-10/README.md) for measured evidence. This is the maintained architecture reference; dated implementation reports describe their own snapshots.
+Applies to Cyrus Scatter 0.79.1, saved schema 55 and `CyrusUnified1`. Use [the artist guide](ARTIST_GUIDE.md) for controls, [the backlog](BACKLOG.md) for unfinished work, and [current qualification](Point_Workflow_0.79.1_2026-10-11/README.md) for measured evidence. This is the maintained architecture reference; dated implementation reports describe their own snapshots.
 
 ## Ownership
 
@@ -35,7 +35,7 @@ A segment BVH accelerates parity membership and closest-border distance. An obje
 
 Painting prepares a tentative canonical document. Each successful gesture publishes that document under one native Undo record; Cancel discards it. Capacity/Boolean failures retain the previous complete document. Serialization accepts only the new vector payload. The core limits 200,000 contour vertices and one million receiver faces, with 0.0001 local-unit integer precision. These are admission bounds, not whole-process peak-memory guarantees.
 
-Painter min/max size receives twice the authored radius: Autodesk’s implementation halves Size for cursor drawing and stored stroke radii. Vector authoring continues to use the original radius. Start and in-session radius changes use the same conversion; Stop restores previous Painter settings.
+Painter min/max size receives twice the authored radius: Autodeskâ€™s implementation halves Size for cursor drawing and stored stroke radii. Vector authoring continues to use the original radius. Start and in-session radius changes use the same conversion; Stop restores previous Painter settings.
 
 Feedback prepares complete line segments lifted onto the receiving surface, or optional bounded coverage samples. A failed successor does not replace the preceding feedback. Drawing consumes cached numeric segments/points and performs no Boolean operations or field queries. Painter callbacks prepare changed feedback after a 16 ms input-processing interval and flush the final border on release. The 33 ms script timer handles idle catch-up and status/publication; it skips duplicate feedback redraws. Unchanged brush status does not rearrange the panel. These scheduling intervals and synchronous preparation timings are not presented FPS or physical cursor latency. During a held gesture normal scatter publication remains deferred. Static target validity avoids treating clock changes as geometry changes.
 
@@ -67,4 +67,8 @@ Edit the template/generator and regenerate `AminScatterObject.ms`; never fix onl
 
 ## Independent boundaries
 
-MCP 0.73/Plan 0.73 is a restricted authoring subset, not access to every local control. Full Brush/container/Edit authoring and render jobs remain unavailable. The offline Design Lab is experimental and grants no host authority. Licensing is an independent default-off foundation. See the component guides for those contracts; do not infer new capabilities from historical plans.
+MCP 0.73/Plan 0.73 is a restricted authoring subset, not access to every local control. Full Brush/container/Edit authoring and render jobs remain unavailable. The offline Design Lab is experimental and grants no host authority. Licensing is independent of scene ownership. Scatter 0.79/0.79.1 team candidates enable owner-issued 30-day licenses; saved-scene rendering remains available after expiry. The foundation is default-off in builds that do not opt into team licensing. See the component guides for those contracts; do not infer new capabilities from historical plans.
+
+### Point row identity (0.79.1)
+
+`sourceRowIDs` identify source rows independently of scene nodes. Visual names/colors and explicit band selections use these identities, including Point and Empty rows. `strokeSourceNodes` remains the saved node reference when present; current schema-55 node choices enroll into row IDs on first normalization. This is not restoration of the retired model-owning paint-set format. Existing native candidate/source correspondence and receiver streams remain unchanged. Source removal preserves dormant band IDs for Undo; Point replacement keeps the row ID. Layer copy includes the independent band arrays and guides. Containers admit Point/Empty rows independently of spatial membership; real source nodes retain their existing collection policy.

@@ -68,7 +68,7 @@ def require_team_authority(data, header):
     if len(key_ids) != 1 or key_ids[0].encode('ascii') not in data:
         raise RuntimeError('Scatter native module does not contain the selected owner verification key')
     if not any('cyrusLicenseImport'.encode(enc) in data for enc in ('ascii', 'utf-16le')):
-        raise RuntimeError('Scatter 0.79 requires the native team licensing module')
+        raise RuntimeError('Scatter 0.79.1 requires the native team licensing module')
     return key_ids[0]
 
 

@@ -1,0 +1,4874 @@
+{
+  "version": "0.79.1",
+  "checkpoint": "1f62f82f1fd76fe1961592f420244cb93f94a367",
+  "script_sha256": "ff2bee7e0baa1399d94c0d74b9dc8cad0335e45ef311e982e97225256344de08",
+  "original_scene": {
+    "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\vector-brush-078\\include-exclude-visible2026-01\\Include_Exclude_Point_Examples.max",
+    "sha256": "b7e561c15e942843a1ebd694691fc36a18f9e79c385c31d140b1366cf633fc0b"
+  },
+  "hosts": {
+    "2026": {
+      "profile": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0791-owner2026-02",
+      "launch": {
+        "pid": 78188,
+        "max_year": 2026,
+        "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0791-owner2026-02",
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2026/3dsmax.exe",
+          "-q",
+          "-silent",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0791-owner2026-02\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0791-owner2026-02\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0791-owner2026-02\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0791-owner2026-02\\listener.log"
+        ],
+        "binaries": {
+          "AminScatter.dlx": "64d7c46a90d5f5051ef0bb86921ca6dd26a03068c4b8a40ff2dae9a3972764e6",
+          "CyrusBrush.dlx": "6548ae30f61e8a44e779e7373f63c2ddac003cfa331fa1a5a4b6191bc11265fb",
+          "CyrusBrushStorage.dlh": "d52b605243711bae7d719e4a396b5793c2a8e030ad37ffe6270951776e751c93",
+          "CyrusScatterEdit.dlm": "53b32938f2dd8ef5072f747389a975d3675044925ebac60a05f7f53356127984",
+          "CyrusSurfaceAnalyzer.dlx": "294c32d75f00d4b6ad0ef2a151dd96ea94a87819bb848b78b4f81393648d75b6"
+        },
+        "script_sha256": "ff2bee7e0baa1399d94c0d74b9dc8cad0335e45ef311e982e97225256344de08",
+        "normal_profile_modified": false,
+        "development_transport": true,
+        "profile_template": "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2026 - 64bit\\ENU\\3dsMax.ini",
+        "profile_template_sha256": "e1e8270db58b960c443113c5ff1fe69f523ac3a0285b36be55a899222f2282bf"
+      },
+      "loaded_modules": "AminScatter.dlx\tF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0791-owner2026-02\\bin\\AminScatter.dlx\nCyrusBrush.dlx\tF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0791-owner2026-02\\bin\\CyrusBrush.dlx\nCyrusBrushStorage.dlh\tF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0791-owner2026-02\\bin\\CyrusBrushStorage.dlh\nCyrusScatterEdit.dlm\tF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0791-owner2026-02\\bin\\CyrusScatterEdit.dlm\nCyrusSurfaceAnalyzer.dlx\tF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0791-owner2026-02\\bin\\CyrusSurfaceAnalyzer.dlx\n",
+      "native_tests_passed": 24,
+      "analyzer_core_tests_passed": 1,
+      "feature_assertions": 176,
+      "undo": {
+        "undo_prepare": {
+          "phase": "undo_prepare",
+          "passed": true
+        },
+        "undo_check": {
+          "phase": "undo_check",
+          "passed": true
+        }
+      },
+      "results": {
+        "scene": {
+          "phase": "scene",
+          "checks": [
+            {
+              "passed": true,
+              "label": "Active test authority authorizes normal editing",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 01 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 01 preserves the saved placements",
+              "host_holding": false,
+              "count": 234
+            },
+            {
+              "passed": true,
+              "label": "Case 02 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 02 preserves the saved placements",
+              "host_holding": false,
+              "count": 258
+            },
+            {
+              "passed": true,
+              "label": "Case 03 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 03 preserves the saved placements",
+              "host_holding": false,
+              "count": 137
+            },
+            {
+              "passed": true,
+              "label": "Case 04 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 04 preserves the saved placements",
+              "host_holding": false,
+              "count": 296
+            },
+            {
+              "passed": true,
+              "label": "Case 05 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 05 preserves the saved placements",
+              "host_holding": false,
+              "count": 335
+            },
+            {
+              "passed": true,
+              "label": "Case 06 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 06 preserves the saved placements",
+              "host_holding": false,
+              "count": 596
+            },
+            {
+              "passed": true,
+              "label": "Case 07 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 07 preserves the saved placements",
+              "host_holding": false,
+              "count": 568
+            },
+            {
+              "passed": true,
+              "label": "Case 08 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 08 preserves the saved placements",
+              "host_holding": false,
+              "count": 1841
+            },
+            {
+              "passed": true,
+              "label": "Case 09 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 09 preserves the saved placements",
+              "host_holding": false,
+              "count": 646
+            },
+            {
+              "passed": true,
+              "label": "Case 10 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 10 preserves the saved placements",
+              "host_holding": false,
+              "count": 684
+            },
+            {
+              "passed": true,
+              "label": "Case 11 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 11 preserves the saved placements",
+              "host_holding": false,
+              "count": 271
+            },
+            {
+              "passed": true,
+              "label": "Case 12 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 12 preserves the saved placements",
+              "host_holding": false,
+              "count": 554
+            },
+            {
+              "passed": true,
+              "label": "Case 13 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 13 preserves the saved placements",
+              "host_holding": false,
+              "count": 908
+            },
+            {
+              "passed": true,
+              "label": "Case 14 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 14 preserves the saved placements",
+              "host_holding": false,
+              "count": 537
+            },
+            {
+              "passed": true,
+              "label": "Case 15 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 15 preserves the saved placements",
+              "host_holding": false,
+              "count": 867
+            },
+            {
+              "passed": true,
+              "label": "Case 16 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 16 preserves the saved placements",
+              "host_holding": false,
+              "count": 696
+            },
+            {
+              "passed": true,
+              "label": "Case 17 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 17 preserves the saved placements",
+              "host_holding": false,
+              "count": 805
+            },
+            {
+              "passed": true,
+              "label": "Case 18 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 18 preserves the saved placements",
+              "host_holding": false,
+              "count": 116
+            },
+            {
+              "passed": true,
+              "label": "Case 19 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 19 preserves the saved placements",
+              "host_holding": false,
+              "count": 273
+            },
+            {
+              "passed": true,
+              "label": "Case 20 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 20 preserves the saved placements",
+              "host_holding": false,
+              "count": 362
+            },
+            {
+              "passed": true,
+              "label": "Case 21 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 21 preserves the saved placements",
+              "host_holding": false,
+              "count": 206
+            },
+            {
+              "passed": true,
+              "label": "Case 22 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 22 preserves the saved placements",
+              "host_holding": false,
+              "count": 410
+            },
+            {
+              "passed": true,
+              "label": "Case 23 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 23 preserves the saved placements",
+              "host_holding": false,
+              "count": 547
+            },
+            {
+              "passed": true,
+              "label": "Case 24 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 24 preserves the saved placements",
+              "host_holding": false,
+              "count": 1935
+            },
+            {
+              "passed": true,
+              "label": "Case 25 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 25 preserves the saved placements",
+              "host_holding": false,
+              "count": 1823
+            },
+            {
+              "passed": true,
+              "label": "Case 01 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 02 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 03 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 04 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 05 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 06 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 07 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 08 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 09 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 10 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 11 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 12 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 13 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 14 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 15 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 16 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 17 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 18 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 19 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 20 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 21 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 22 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 23 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 24 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 25 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            }
+          ],
+          "metrics": {
+            "first_update_ms": {
+              "1": 325.4,
+              "2": 282.15,
+              "3": 294.54,
+              "4": 304.33,
+              "5": 283.76,
+              "6": 228.87,
+              "7": 225.55,
+              "8": 226.72,
+              "9": 216.74,
+              "10": 231.83,
+              "11": 222.45,
+              "12": 218.36,
+              "13": 219.55,
+              "14": 231.03,
+              "15": 659.79,
+              "16": 322.38,
+              "17": 424.09,
+              "18": 315.75,
+              "19": 304.55,
+              "20": 301.71,
+              "21": 301.81,
+              "22": 312.55,
+              "23": 294.61,
+              "24": 526.6,
+              "25": 543.68
+            },
+            "warm_all_cases_ms": [
+              475.0916000048164,
+              467.8200999915134,
+              483.4295000182465,
+              514.5536000200082,
+              1310.010700020939
+            ],
+            "warm_median_ms": 483.4295000182465
+          }
+        },
+        "falloff": {
+          "phase": "falloff",
+          "checks": [
+            {
+              "passed": true,
+              "label": "Active test authority authorizes normal editing",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 15: scale falloff matches world distance",
+              "host_holding": false,
+              "max_error": 1.5288172474647865e-06
+            },
+            {
+              "passed": true,
+              "label": "Case 25: scale falloff matches world distance",
+              "host_holding": false,
+              "max_error": 1.5259042058790584e-06
+            },
+            {
+              "passed": true,
+              "label": "Follow Scale off keeps source radius constant",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Follow Scale on includes band scaling",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Radius edits preserve positions when spacing is disabled",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Two 80 mm radii plus 20 mm gap enforce 180 mm separation",
+              "host_holding": false,
+              "minimum_mm": 180.5721162370902
+            },
+            {
+              "passed": true,
+              "label": "Flat zero density curve removes all eligible candidates",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Flat full density curve restores eligible candidates",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Falloff target and curve controls are outside Advanced",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Manual curve-width editing waits for Update",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Explicit Update applies pending width",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Live width editing automatically publishes",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Density graph stores the edited custom midpoint",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Density graph leaves scale curve unchanged",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Scale graph stores its independent custom midpoint",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Scale graph leaves density curve unchanged",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 01 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 02 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 03 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 04 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 05 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 06 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 07 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 08 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 09 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 10 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 11 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 12 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 13 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 14 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 15 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 16 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 17 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 18 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 19 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 20 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 21 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 22 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 23 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 24 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 25 restored exactly after falloff/radius checks",
+              "host_holding": false
+            }
+          ],
+          "metrics": {}
+        },
+        "points": {
+          "phase": "points",
+          "checks": [
+            {
+              "passed": true,
+              "label": "Active test authority authorizes normal editing",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Add Point, scale and radius are directly visible",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Three Point rows keep distinct editable names",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Point identification color is independently editable",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Band 1 exposes all Points as direct choices",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Band 2 exposes all Points as direct choices",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Band 3 exposes all Points as direct choices",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "All three direct Point bands generate placements",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Layer copy retains direct band identities and guides",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Copied layer has exactly the same point layout",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Replace Point preserves exact placements and assignment identity",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Replace Point preserves its label",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Container mode keeps model and Point bands active",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Removing an earlier row preserves the surviving Point identity and name",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Removed direct source leaves its band empty without assigning another Point",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "New Include area is selected with its actual mode",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Area mode edits the highlighted shape",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Mixed area selection has an explicit mixed state",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "No area selection disables mode editing",
+              "host_holding": false
+            }
+          ],
+          "metrics": {}
+        },
+        "reopen": {
+          "phase": "reopen",
+          "checks": [
+            {
+              "passed": true,
+              "label": "Active test authority authorizes normal editing",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Point/model bands preserve exact placements after reopening",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Point identities and names survive reopening",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Saved guide and all three bands are accessible",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 01 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 02 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 03 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 04 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 05 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 06 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 07 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 08 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 09 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 10 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 11 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 12 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 13 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 14 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 15 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 16 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 17 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 18 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 19 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 20 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 21 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 22 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 23 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 24 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 25 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            }
+          ],
+          "metrics": {}
+        },
+        "empty": {
+          "phase": "empty",
+          "checks": [
+            {
+              "passed": true,
+              "label": "Active test authority authorizes normal editing",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Empty contributes intentional gaps, distinct from Point markers",
+              "host_holding": false,
+              "accepted": 491
+            },
+            {
+              "passed": true,
+              "label": "Add Empty keeps its own source type",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Accepted target rejects weighted Empty and preserves the complete prior result",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Zero-weight Empty allows Accepted target to generate 1000 Points",
+              "host_holding": false
+            }
+          ],
+          "metrics": {}
+        },
+        "layout": {
+          "phase": "layout",
+          "checks": [
+            {
+              "passed": true,
+              "label": "Active test authority authorizes normal editing",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "modelsUI: visible native control rectangles do not overlap",
+              "host_holding": false,
+              "collisions": []
+            },
+            {
+              "passed": true,
+              "label": "containersUI: visible native control rectangles do not overlap",
+              "host_holding": false,
+              "collisions": []
+            },
+            {
+              "passed": true,
+              "label": "areasUI: visible native control rectangles do not overlap",
+              "host_holding": false,
+              "collisions": []
+            },
+            {
+              "passed": true,
+              "label": "layoutUI: visible native control rectangles do not overlap",
+              "host_holding": false,
+              "collisions": []
+            }
+          ],
+          "metrics": {}
+        }
+      },
+      "layout": [
+        {
+          "page": "modelsUI",
+          "width": 162,
+          "height": 638,
+          "bounds": [
+            {
+              "name": "ControlAxSourcingSite",
+              "type": "Afx:00007FFA5A6F0000:0",
+              "text": "",
+              "x": 3461,
+              "y": 237,
+              "w": 150,
+              "h": 84
+            },
+            {
+              "name": "sourceUI_sourceName",
+              "type": "Edit",
+              "text": "Point 1",
+              "x": 3503,
+              "y": 357,
+              "w": 80,
+              "h": 17
+            },
+            {
+              "name": "sourceUI_sourceName",
+              "type": "Static",
+              "text": "",
+              "x": 3498,
+              "y": 357,
+              "w": 2,
+              "h": 13
+            },
+            {
+              "name": "sourceUI_sourceName_caption",
+              "type": "Static",
+              "text": "Name:",
+              "x": 3461,
+              "y": 358,
+              "w": 38,
+              "h": 18
+            },
+            {
+              "name": "sourceUI_idColor",
+              "type": "ColorSwatch",
+              "text": "",
+              "x": 3589,
+              "y": 357,
+              "w": 18,
+              "h": 22
+            },
+            {
+              "name": "sourceUI_idColor",
+              "type": "Static",
+              "text": "",
+              "x": 3584,
+              "y": 361,
+              "w": 2,
+              "h": 13
+            },
+            {
+              "name": "sourceUI_plantList_caption",
+              "type": "Static",
+              "text": "Sources (Ctrl/Shift)",
+              "x": 3461,
+              "y": 219,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "sourceUI_selectFromScene",
+              "type": "CustButton",
+              "text": "\u2637",
+              "x": 3499,
+              "y": 333,
+              "w": 34,
+              "h": 22
+            },
+            {
+              "name": "sourceUI_addPlant",
+              "type": "CustButton",
+              "text": "Add Model",
+              "x": 3538,
+              "y": 195,
+              "w": 73,
+              "h": 22
+            },
+            {
+              "name": "sourceUI_addSelected",
+              "type": "CustButton",
+              "text": "\u2295",
+              "x": 3537,
+              "y": 333,
+              "w": 34,
+              "h": 22
+            },
+            {
+              "name": "sourceUI_removePlant",
+              "type": "CustButton",
+              "text": "\u00d7",
+              "x": 3461,
+              "y": 333,
+              "w": 34,
+              "h": 22
+            },
+            {
+              "name": "sourceUI_selectPlant",
+              "type": "CustButton",
+              "text": "\u2316",
+              "x": 3575,
+              "y": 333,
+              "w": 34,
+              "h": 22
+            },
+            {
+              "name": "sourceUI_addPoint",
+              "type": "CustButton",
+              "text": "Add Point",
+              "x": 3461,
+              "y": 195,
+              "w": 73,
+              "h": 22
+            },
+            {
+              "name": "sourceUI_addEmpty",
+              "type": "CustButton",
+              "text": "Add Empty (gap)",
+              "x": 3461,
+              "y": 627,
+              "w": 150,
+              "h": 22
+            },
+            {
+              "name": "sourceUI_groupHeading",
+              "type": "Static",
+              "text": "Assignment group",
+              "x": 3461,
+              "y": 675,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "sourceUI_existingGroups",
+              "type": "ComboBox",
+              "text": "#646464",
+              "x": 3461,
+              "y": 713,
+              "w": 150,
+              "h": 21
+            },
+            {
+              "name": "sourceUI_existingGroups",
+              "type": "Static",
+              "text": "",
+              "x": 3460,
+              "y": 712,
+              "w": 2,
+              "h": 2
+            },
+            {
+              "name": "sourceUI_existingGroups_caption",
+              "type": "Static",
+              "text": "Use group",
+              "x": 3461,
+              "y": 695,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "sourceUI_groupColor",
+              "type": "ColorSwatch",
+              "text": "",
+              "x": 3461,
+              "y": 755,
+              "w": 150,
+              "h": 20
+            },
+            {
+              "name": "sourceUI_groupColor",
+              "type": "Static",
+              "text": "",
+              "x": 3456,
+              "y": 758,
+              "w": 2,
+              "h": 13
+            },
+            {
+              "name": "sourceUI_groupColor_caption",
+              "type": "Static",
+              "text": "Color: ",
+              "x": 3461,
+              "y": 737,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "sourceUI_applyColor",
+              "type": "CustButton",
+              "text": "Apply to selected rows",
+              "x": 3461,
+              "y": 779,
+              "w": 150,
+              "h": 22
+            },
+            {
+              "name": "sourceUI_colorHelp",
+              "type": "Static",
+              "text": "OK saves the selected color.",
+              "x": 3461,
+              "y": 803,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "sourceUI_weightSpin",
+              "type": "SpinnerControl",
+              "text": "",
+              "x": 3599,
+              "y": 405,
+              "w": 12,
+              "h": 16
+            },
+            {
+              "name": "sourceUI_weightSpin",
+              "type": "Static",
+              "text": "",
+              "x": 3541,
+              "y": 405,
+              "w": 2,
+              "h": 13
+            },
+            {
+              "name": "sourceUI_weightSpin",
+              "type": "CustEdit",
+              "text": "",
+              "x": 3544,
+              "y": 405,
+              "w": 55,
+              "h": 16
+            },
+            {
+              "name": "sourceUI_weightSpin_caption",
+              "type": "Static",
+              "text": "Weight:",
+              "x": 3461,
+              "y": 406,
+              "w": 72,
+              "h": 18
+            },
+            {
+              "name": "sourceUI_weightHelp",
+              "type": "Static",
+              "text": "0 = off; relative share",
+              "x": 3461,
+              "y": 587,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "sourceUI_sourceZSpin",
+              "type": "SpinnerControl",
+              "text": "",
+              "x": 3599,
+              "y": 477,
+              "w": 12,
+              "h": 16
+            },
+            {
+              "name": "sourceUI_sourceZSpin",
+              "type": "Static",
+              "text": "",
+              "x": 3541,
+              "y": 477,
+              "w": 2,
+              "h": 13
+            },
+            {
+              "name": "sourceUI_sourceZSpin",
+              "type": "CustEdit",
+              "text": "",
+              "x": 3544,
+              "y": 477,
+              "w": 55,
+              "h": 16
+            },
+            {
+              "name": "sourceUI_sourceZSpin_caption",
+              "type": "Static",
+              "text": "Z Offset: ",
+              "x": 3461,
+              "y": 478,
+              "w": 72,
+              "h": 18
+            },
+            {
+              "name": "sourceUI_sourceScaleSpin",
+              "type": "SpinnerControl",
+              "text": "",
+              "x": 3599,
+              "y": 429,
+              "w": 12,
+              "h": 16
+            },
+            {
+              "name": "sourceUI_sourceScaleSpin",
+              "type": "Static",
+              "text": "",
+              "x": 3541,
+              "y": 429,
+              "w": 2,
+              "h": 13
+            },
+            {
+              "name": "sourceUI_sourceScaleSpin",
+              "type": "CustEdit",
+              "text": "",
+              "x": 3544,
+              "y": 429,
+              "w": 55,
+              "h": 16
+            },
+            {
+              "name": "sourceUI_sourceScaleSpin_caption",
+              "type": "Static",
+              "text": "Scale: ",
+              "x": 3461,
+              "y": 430,
+              "w": 72,
+              "h": 18
+            },
+            {
+              "name": "sourceUI_sourceTransformHelp",
+              "type": "Static",
+              "text": "Scale: 1 = original",
+              "x": 3461,
+              "y": 607,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "sourceUI_radiusSourceSpin",
+              "type": "SpinnerControl",
+              "text": "",
+              "x": 3599,
+              "y": 453,
+              "w": 12,
+              "h": 16
+            },
+            {
+              "name": "sourceUI_radiusSourceSpin",
+              "type": "Static",
+              "text": "",
+              "x": 3541,
+              "y": 453,
+              "w": 2,
+              "h": 13
+            },
+            {
+              "name": "sourceUI_radiusSourceSpin",
+              "type": "CustEdit",
+              "text": "",
+              "x": 3544,
+              "y": 453,
+              "w": 55,
+              "h": 16
+            },
+            {
+              "name": "sourceUI_radiusSourceSpin_caption",
+              "type": "Static",
+              "text": "Radius:",
+              "x": 3461,
+              "y": 454,
+              "w": 72,
+              "h": 18
+            },
+            {
+              "name": "sourceUI_followRadiusCheck",
+              "type": "Button",
+              "text": "Follow Scale",
+              "x": 3461,
+              "y": 501,
+              "w": 150,
+              "h": 15
+            },
+            {
+              "name": "sourceUI_showRadiusCheck",
+              "type": "Button",
+              "text": "Show Radius",
+              "x": 3461,
+              "y": 523,
+              "w": 150,
+              "h": 15
+            },
+            {
+              "name": "sourceUI_forwardAxis",
+              "type": "ComboBox",
+              "text": "+Y",
+              "x": 3461,
+              "y": 563,
+              "w": 150,
+              "h": 21
+            },
+            {
+              "name": "sourceUI_forwardAxis",
+              "type": "Static",
+              "text": "",
+              "x": 3460,
+              "y": 562,
+              "w": 2,
+              "h": 2
+            },
+            {
+              "name": "sourceUI_forwardAxis_caption",
+              "type": "Static",
+              "text": "Forward axis:",
+              "x": 3461,
+              "y": 545,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "heading_0",
+              "type": "Static",
+              "text": "Source settings",
+              "x": 3461,
+              "y": 385,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "groupsToggle",
+              "type": "CustButton",
+              "text": "Assignment groups",
+              "x": 3461,
+              "y": 651,
+              "w": 150,
+              "h": 22
+            },
+            {
+              "name": "ControlAxSourcingSite",
+              "type": "Afx:00007FFA5A6F0000:0",
+              "text": "",
+              "x": 3461,
+              "y": 323,
+              "w": 150,
+              "h": 8
+            }
+          ],
+          "collisions": []
+        },
+        {
+          "page": "containersUI",
+          "width": 162,
+          "height": 292,
+          "bounds": [
+            {
+              "name": "sourceContainersUI_modeList",
+              "type": "ComboBox",
+              "text": "Layer containers",
+              "x": 3461,
+              "y": 210,
+              "w": 150,
+              "h": 21
+            },
+            {
+              "name": "sourceContainersUI_modeList",
+              "type": "Static",
+              "text": "",
+              "x": 3460,
+              "y": 209,
+              "w": 2,
+              "h": 2
+            },
+            {
+              "name": "sourceContainersUI_modeList_caption",
+              "type": "Static",
+              "text": "Model collection",
+              "x": 3461,
+              "y": 192,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "sourceContainersUI_containersList",
+              "type": "ListBox",
+              "text": "",
+              "x": 3461,
+              "y": 276,
+              "w": 150,
+              "h": 58
+            },
+            {
+              "name": "sourceContainersUI_containersList",
+              "type": "Static",
+              "text": "",
+              "x": 3460,
+              "y": 275,
+              "w": 2,
+              "h": 2
+            },
+            {
+              "name": "sourceContainersUI_containersList_caption",
+              "type": "Static",
+              "text": "Rectangles",
+              "x": 3461,
+              "y": 258,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "sourceContainersUI_enabledCheck",
+              "type": "Button",
+              "text": "Enable collection",
+              "x": 3461,
+              "y": 346,
+              "w": 150,
+              "h": 15
+            },
+            {
+              "name": "sourceContainersUI_createContainer",
+              "type": "CustButton",
+              "text": "Create",
+              "x": 3461,
+              "y": 234,
+              "w": 47,
+              "h": 22
+            },
+            {
+              "name": "sourceContainersUI_pickContainer",
+              "type": "CustButton",
+              "text": "Pick",
+              "x": 3512,
+              "y": 234,
+              "w": 47,
+              "h": 22
+            },
+            {
+              "name": "sourceContainersUI_removeContainer",
+              "type": "CustButton",
+              "text": "Unlink",
+              "x": 3563,
+              "y": 234,
+              "w": 47,
+              "h": 22
+            },
+            {
+              "name": "sourceContainersUI_membershipInfo",
+              "type": "Static",
+              "text": "2 active / 2 registered\nShared rectangles: Surface Scatter.",
+              "x": 3461,
+              "y": 368,
+              "w": 150,
+              "h": 44
+            },
+            {
+              "name": "sourceContainersUI_helpInfo",
+              "type": "Static",
+              "text": "Pivot inside = active. Height is ignored. Moving out keeps source settings. Manual needs Update.",
+              "x": 3461,
+              "y": 414,
+              "w": 150,
+              "h": 58
+            },
+            {
+              "name": "ControlAxSourcingSite",
+              "type": "Afx:00007FFA5A6F0000:0",
+              "text": "",
+              "x": 3461,
+              "y": 336,
+              "w": 150,
+              "h": 8
+            }
+          ],
+          "collisions": []
+        },
+        {
+          "page": "areasUI",
+          "width": 162,
+          "height": 780,
+          "bounds": [
+            {
+              "name": "areaUI_areaList",
+              "type": "ListBox",
+              "text": "",
+              "x": 3659,
+              "y": 232,
+              "w": 150,
+              "h": 84
+            },
+            {
+              "name": "areaUI_areaList",
+              "type": "Static",
+              "text": "",
+              "x": 3658,
+              "y": 231,
+              "w": 2,
+              "h": 2
+            },
+            {
+              "name": "areaUI_areaList_caption",
+              "type": "Static",
+              "text": "Closed lines / shapes",
+              "x": 3659,
+              "y": 214,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "areaUI_addAreaScene",
+              "type": "CustButton",
+              "text": "Select From Scene...",
+              "x": 3659,
+              "y": 352,
+              "w": 150,
+              "h": 22
+            },
+            {
+              "name": "areaUI_pickArea",
+              "type": "CustButton",
+              "text": "Add: pick closed line",
+              "x": 3659,
+              "y": 328,
+              "w": 150,
+              "h": 22
+            },
+            {
+              "name": "areaUI_removeArea",
+              "type": "CustButton",
+              "text": "Remove selected rows",
+              "x": 3659,
+              "y": 376,
+              "w": 150,
+              "h": 22
+            },
+            {
+              "name": "areaUI_areaMode",
+              "type": "Button",
+              "text": "Include",
+              "x": 3659,
+              "y": 418,
+              "w": 58,
+              "h": 15
+            },
+            {
+              "name": "areaUI_areaMode",
+              "type": "Button",
+              "text": "Exclude",
+              "x": 3659,
+              "y": 438,
+              "w": 60,
+              "h": 15
+            },
+            {
+              "name": "areaUI_areaMode",
+              "type": "Static",
+              "text": "",
+              "x": 3658,
+              "y": 417,
+              "w": 2,
+              "h": 2
+            },
+            {
+              "name": "areaUI_areaMode_caption",
+              "type": "Static",
+              "text": "Selected area mode",
+              "x": 3659,
+              "y": 400,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "areaUI_areaHint",
+              "type": "Static",
+              "text": "Select an area to edit its mode.",
+              "x": 3659,
+              "y": 460,
+              "w": 150,
+              "h": 30
+            },
+            {
+              "name": "areaUI_refreshAreas",
+              "type": "CustButton",
+              "text": "Refresh areas / preview",
+              "x": 3659,
+              "y": 912,
+              "w": 150,
+              "h": 22
+            },
+            {
+              "name": "areaUI_fallTarget",
+              "type": "ComboBox",
+              "text": "Selected Area line",
+              "x": 3659,
+              "y": 534,
+              "w": 150,
+              "h": 21
+            },
+            {
+              "name": "areaUI_fallTarget",
+              "type": "Static",
+              "text": "",
+              "x": 3658,
+              "y": 533,
+              "w": 2,
+              "h": 2
+            },
+            {
+              "name": "areaUI_fallTarget_caption",
+              "type": "Static",
+              "text": "Edge falloff target",
+              "x": 3659,
+              "y": 516,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "areaUI_fallPick",
+              "type": "CustButton",
+              "text": "Pick Surface Analyzer",
+              "x": 3659,
+              "y": 558,
+              "w": 150,
+              "h": 22
+            },
+            {
+              "name": "areaUI_fallRemove",
+              "type": "CustButton",
+              "text": "Remove Analyzer",
+              "x": 3659,
+              "y": 582,
+              "w": 150,
+              "h": 22
+            },
+            {
+              "name": "areaUI_fallTargetName",
+              "type": "Static",
+              "text": "Select exactly one Area line above.",
+              "x": 3659,
+              "y": 606,
+              "w": 150,
+              "h": 30
+            },
+            {
+              "name": "areaUI_fallDeleteCheck",
+              "type": "Button",
+              "text": "Delete edge band",
+              "x": 3659,
+              "y": 638,
+              "w": 150,
+              "h": 15
+            },
+            {
+              "name": "areaUI_fallDeleteSpin",
+              "type": "SpinnerControl",
+              "text": "",
+              "x": 3797,
+              "y": 662,
+              "w": 12,
+              "h": 16
+            },
+            {
+              "name": "areaUI_fallDeleteSpin",
+              "type": "Static",
+              "text": "",
+              "x": 3739,
+              "y": 662,
+              "w": 2,
+              "h": 13
+            },
+            {
+              "name": "areaUI_fallDeleteSpin",
+              "type": "CustEdit",
+              "text": "",
+              "x": 3742,
+              "y": 662,
+              "w": 55,
+              "h": 16
+            },
+            {
+              "name": "areaUI_fallDeleteSpin_caption",
+              "type": "Static",
+              "text": "Delete width:",
+              "x": 3659,
+              "y": 663,
+              "w": 72,
+              "h": 18
+            },
+            {
+              "name": "areaUI_fallScaleCheck",
+              "type": "Button",
+              "text": "Scale ramp",
+              "x": 3659,
+              "y": 686,
+              "w": 150,
+              "h": 15
+            },
+            {
+              "name": "areaUI_fallScaleSpin",
+              "type": "SpinnerControl",
+              "text": "",
+              "x": 3797,
+              "y": 710,
+              "w": 12,
+              "h": 16
+            },
+            {
+              "name": "areaUI_fallScaleSpin",
+              "type": "Static",
+              "text": "",
+              "x": 3739,
+              "y": 710,
+              "w": 2,
+              "h": 13
+            },
+            {
+              "name": "areaUI_fallScaleSpin",
+              "type": "CustEdit",
+              "text": "",
+              "x": 3742,
+              "y": 710,
+              "w": 55,
+              "h": 16
+            },
+            {
+              "name": "areaUI_fallScaleSpin_caption",
+              "type": "Static",
+              "text": "Scale width:",
+              "x": 3659,
+              "y": 711,
+              "w": 72,
+              "h": 18
+            },
+            {
+              "name": "areaUI_fallScaleEdit",
+              "type": "CustButton",
+              "text": "Edit Scale Graph...",
+              "x": 3659,
+              "y": 734,
+              "w": 150,
+              "h": 22
+            },
+            {
+              "name": "areaUI_fallDensityCheck",
+              "type": "Button",
+              "text": "Density ramp",
+              "x": 3659,
+              "y": 776,
+              "w": 150,
+              "h": 15
+            },
+            {
+              "name": "areaUI_fallDensitySpin",
+              "type": "SpinnerControl",
+              "text": "",
+              "x": 3797,
+              "y": 818,
+              "w": 12,
+              "h": 16
+            },
+            {
+              "name": "areaUI_fallDensitySpin",
+              "type": "Static",
+              "text": "",
+              "x": 3739,
+              "y": 818,
+              "w": 2,
+              "h": 13
+            },
+            {
+              "name": "areaUI_fallDensitySpin",
+              "type": "CustEdit",
+              "text": "",
+              "x": 3742,
+              "y": 818,
+              "w": 55,
+              "h": 16
+            },
+            {
+              "name": "areaUI_fallDensitySpin_caption",
+              "type": "Static",
+              "text": "Density width:",
+              "x": 3659,
+              "y": 800,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "areaUI_fallDensityEdit",
+              "type": "CustButton",
+              "text": "Edit Density Graph...",
+              "x": 3659,
+              "y": 842,
+              "w": 150,
+              "h": 22
+            },
+            {
+              "name": "areaUI_fallHelp",
+              "type": "Static",
+              "text": "Ramps start after delete band. Each Area line has its own settings.",
+              "x": 3659,
+              "y": 866,
+              "w": 150,
+              "h": 44
+            },
+            {
+              "name": "heading_0",
+              "type": "Static",
+              "text": "Area limits - layer",
+              "x": 3659,
+              "y": 194,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "heading_1",
+              "type": "Static",
+              "text": "Boundary falloff",
+              "x": 3659,
+              "y": 496,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "ControlAxSourcingSite",
+              "type": "Afx:00007FFA5A6F0000:0",
+              "text": "",
+              "x": 3659,
+              "y": 318,
+              "w": 150,
+              "h": 8
+            },
+            {
+              "name": "advancedToggle",
+              "type": "CustButton",
+              "text": "Advanced",
+              "x": 3659,
+              "y": 940,
+              "w": 150,
+              "h": 22
+            }
+          ],
+          "collisions": []
+        },
+        {
+          "page": "layoutUI",
+          "width": 162,
+          "height": 705,
+          "bounds": [
+            {
+              "name": "diversityUI_diversityRadio",
+              "type": "Button",
+              "text": "Random mix",
+              "x": 3461,
+              "y": 210,
+              "w": 81,
+              "h": 15
+            },
+            {
+              "name": "diversityUI_diversityRadio",
+              "type": "Button",
+              "text": "Clusters",
+              "x": 3461,
+              "y": 230,
+              "w": 62,
+              "h": 15
+            },
+            {
+              "name": "diversityUI_diversityRadio",
+              "type": "Button",
+              "text": "Spline bands",
+              "x": 3461,
+              "y": 250,
+              "w": 83,
+              "h": 15
+            },
+            {
+              "name": "diversityUI_diversityRadio",
+              "type": "Button",
+              "text": "Surface Analyzer",
+              "x": 3461,
+              "y": 270,
+              "w": 105,
+              "h": 15
+            },
+            {
+              "name": "diversityUI_diversityRadio",
+              "type": "Static",
+              "text": "",
+              "x": 3460,
+              "y": 209,
+              "w": 2,
+              "h": 2
+            },
+            {
+              "name": "diversityUI_diversityRadio_caption",
+              "type": "Static",
+              "text": "Source assignment",
+              "x": 3461,
+              "y": 192,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "diversityUI_layoutHelp",
+              "type": "Static",
+              "text": "Closed spline bands use top-down XY projection.",
+              "x": 3461,
+              "y": 292,
+              "w": 150,
+              "h": 30
+            },
+            {
+              "name": "diversityUI_strokeTitle",
+              "type": "Static",
+              "text": "Spline bands",
+              "x": 3461,
+              "y": 414,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "diversityUI_pathsDrop",
+              "type": "ComboBox",
+              "text": "Rectangle001",
+              "x": 3461,
+              "y": 342,
+              "w": 150,
+              "h": 21
+            },
+            {
+              "name": "diversityUI_pathsDrop",
+              "type": "Static",
+              "text": "",
+              "x": 3460,
+              "y": 341,
+              "w": 2,
+              "h": 2
+            },
+            {
+              "name": "diversityUI_pathsDrop_caption",
+              "type": "Static",
+              "text": "Paths",
+              "x": 3461,
+              "y": 324,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "diversityUI_pickPath",
+              "type": "CustButton",
+              "text": "Add: pick closed line",
+              "x": 3461,
+              "y": 366,
+              "w": 150,
+              "h": 22
+            },
+            {
+              "name": "diversityUI_removePath",
+              "type": "CustButton",
+              "text": "Remove path",
+              "x": 3461,
+              "y": 390,
+              "w": 150,
+              "h": 22
+            },
+            {
+              "name": "diversityUI_strokesList",
+              "type": "ListBox",
+              "text": "",
+              "x": 3461,
+              "y": 452,
+              "w": 150,
+              "h": 58
+            },
+            {
+              "name": "diversityUI_strokesList",
+              "type": "Static",
+              "text": "",
+              "x": 3460,
+              "y": 451,
+              "w": 2,
+              "h": 2
+            },
+            {
+              "name": "diversityUI_strokesList_caption",
+              "type": "Static",
+              "text": "Bands",
+              "x": 3461,
+              "y": 434,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "diversityUI_addOutside",
+              "type": "CustButton",
+              "text": "Add Outside",
+              "x": 3461,
+              "y": 522,
+              "w": 73,
+              "h": 22
+            },
+            {
+              "name": "diversityUI_addInside",
+              "type": "CustButton",
+              "text": "Add Inside",
+              "x": 3538,
+              "y": 522,
+              "w": 73,
+              "h": 22
+            },
+            {
+              "name": "diversityUI_removeStrokeButton",
+              "type": "CustButton",
+              "text": "Remove band",
+              "x": 3461,
+              "y": 546,
+              "w": 150,
+              "h": 22
+            },
+            {
+              "name": "diversityUI_strokeWidth",
+              "type": "SpinnerControl",
+              "text": "",
+              "x": 3599,
+              "y": 570,
+              "w": 12,
+              "h": 16
+            },
+            {
+              "name": "diversityUI_strokeWidth",
+              "type": "Static",
+              "text": "Width:",
+              "x": 3541,
+              "y": 570,
+              "w": 2,
+              "h": 13
+            },
+            {
+              "name": "diversityUI_strokeWidth",
+              "type": "CustEdit",
+              "text": "",
+              "x": 3544,
+              "y": 570,
+              "w": 55,
+              "h": 16
+            },
+            {
+              "name": "diversityUI_strokeWidth_caption",
+              "type": "Static",
+              "text": "Width:",
+              "x": 3461,
+              "y": 571,
+              "w": 72,
+              "h": 18
+            },
+            {
+              "name": "diversityUI_strokeMode",
+              "type": "Button",
+              "text": "Assignment groups",
+              "x": 3461,
+              "y": 612,
+              "w": 114,
+              "h": 15
+            },
+            {
+              "name": "diversityUI_strokeMode",
+              "type": "Button",
+              "text": "Models / Points",
+              "x": 3461,
+              "y": 632,
+              "w": 95,
+              "h": 15
+            },
+            {
+              "name": "diversityUI_strokeMode",
+              "type": "Static",
+              "text": "",
+              "x": 3460,
+              "y": 611,
+              "w": 2,
+              "h": 2
+            },
+            {
+              "name": "diversityUI_strokeMode_caption",
+              "type": "Static",
+              "text": "Assign by",
+              "x": 3461,
+              "y": 594,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "diversityUI_strokeChoices",
+              "type": "ListBox",
+              "text": "",
+              "x": 3461,
+              "y": 672,
+              "w": 150,
+              "h": 71
+            },
+            {
+              "name": "diversityUI_strokeChoices",
+              "type": "Static",
+              "text": "",
+              "x": 3460,
+              "y": 671,
+              "w": 2,
+              "h": 2
+            },
+            {
+              "name": "diversityUI_strokeChoices_caption",
+              "type": "Static",
+              "text": "Ctrl / Shift: select several",
+              "x": 3461,
+              "y": 654,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "diversityUI_strokeScaleMin",
+              "type": "SpinnerControl",
+              "text": "",
+              "x": 3599,
+              "y": 755,
+              "w": 12,
+              "h": 16
+            },
+            {
+              "name": "diversityUI_strokeScaleMin",
+              "type": "Static",
+              "text": "",
+              "x": 3541,
+              "y": 755,
+              "w": 2,
+              "h": 13
+            },
+            {
+              "name": "diversityUI_strokeScaleMin",
+              "type": "CustEdit",
+              "text": "",
+              "x": 3544,
+              "y": 755,
+              "w": 55,
+              "h": 16
+            },
+            {
+              "name": "diversityUI_strokeScaleMin_caption",
+              "type": "Static",
+              "text": "Scale min:",
+              "x": 3461,
+              "y": 756,
+              "w": 72,
+              "h": 18
+            },
+            {
+              "name": "diversityUI_strokeScaleMax",
+              "type": "SpinnerControl",
+              "text": "",
+              "x": 3599,
+              "y": 779,
+              "w": 12,
+              "h": 16
+            },
+            {
+              "name": "diversityUI_strokeScaleMax",
+              "type": "Static",
+              "text": "",
+              "x": 3541,
+              "y": 779,
+              "w": 2,
+              "h": 13
+            },
+            {
+              "name": "diversityUI_strokeScaleMax",
+              "type": "CustEdit",
+              "text": "",
+              "x": 3544,
+              "y": 779,
+              "w": 55,
+              "h": 16
+            },
+            {
+              "name": "diversityUI_strokeScaleMax_caption",
+              "type": "Static",
+              "text": "Scale max:",
+              "x": 3461,
+              "y": 780,
+              "w": 72,
+              "h": 18
+            },
+            {
+              "name": "diversityUI_refreshGroups",
+              "type": "CustButton",
+              "text": "Refresh sources / groups",
+              "x": 3461,
+              "y": 803,
+              "w": 150,
+              "h": 22
+            },
+            {
+              "name": "diversityUI_strokeHelp",
+              "type": "Static",
+              "text": "Outside bands: empty. First match wins.",
+              "x": 3461,
+              "y": 827,
+              "w": 150,
+              "h": 30
+            },
+            {
+              "name": "ControlAxSourcingSite",
+              "type": "Afx:00007FFA5A6F0000:0",
+              "text": "",
+              "x": 3461,
+              "y": 512,
+              "w": 150,
+              "h": 8
+            },
+            {
+              "name": "ControlAxSourcingSite",
+              "type": "Afx:00007FFA5A6F0000:0",
+              "text": "",
+              "x": 3461,
+              "y": 745,
+              "w": 150,
+              "h": 8
+            },
+            {
+              "name": "advancedToggle",
+              "type": "CustButton",
+              "text": "Advanced",
+              "x": 3461,
+              "y": 863,
+              "w": 150,
+              "h": 22
+            }
+          ],
+          "collisions": []
+        }
+      ],
+      "unit_conversion": {
+        "qualified": false,
+        "observation": {
+          "file_units": {
+            "system_type": "inches",
+            "count": 696,
+            "density_width_mm": 399.99920517205896,
+            "scale_width_mm": 399.99920517205896
+          },
+          "converted_cm": {
+            "system_type": "centimeters",
+            "count": 918,
+            "density_width_mm": 157.4799991029501,
+            "scale_width_mm": 157.4799991029501
+          }
+        }
+      },
+      "normal_profile_hash_unchanged": true
+    },
+    "2027": {
+      "profile": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0791-owner2027-03",
+      "launch": {
+        "pid": 73324,
+        "max_year": 2027,
+        "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0791-owner2027-03",
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+          "-q",
+          "-silent",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0791-owner2027-03\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0791-owner2027-03\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0791-owner2027-03\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0791-owner2027-03\\listener.log"
+        ],
+        "binaries": {
+          "AminScatter.dlx": "143bec9aff995a65390d21e657f2f2c10a9b52e31bee7483ab0909ab314eaeed",
+          "CyrusBrush.dlx": "3d421ffbc84613c27034b043669928d3889c7a6db90e19d26cab0ee375e4c465",
+          "CyrusBrushStorage.dlh": "b05ff3474b3ef0c2f4d15486e4ea6683f7d7ef48aa1d577d7882bb189bb029d7",
+          "CyrusScatterEdit.dlm": "dbe5f8ea30d677b82a9e2a9e3c542866e6e09c5092c6ce01f8b72b365e24e25e",
+          "CyrusSurfaceAnalyzer.dlx": "d62714aa6c6657a6ee969bfa70f3a41a09784a275ec8f0d4855347b3eb204e10"
+        },
+        "script_sha256": "ff2bee7e0baa1399d94c0d74b9dc8cad0335e45ef311e982e97225256344de08",
+        "normal_profile_modified": false,
+        "development_transport": true,
+        "profile_template": "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\3dsMax.ini",
+        "profile_template_sha256": "622c285e519064c427970322e79225c33b0107280f86c4569e01daa1518e9d93"
+      },
+      "loaded_modules": "AminScatter.dlx\tF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0791-owner2027-03\\bin\\AminScatter.dlx\nCyrusBrush.dlx\tF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0791-owner2027-03\\bin\\CyrusBrush.dlx\nCyrusBrushStorage.dlh\tF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0791-owner2027-03\\bin\\CyrusBrushStorage.dlh\nCyrusScatterEdit.dlm\tF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0791-owner2027-03\\bin\\CyrusScatterEdit.dlm\nCyrusSurfaceAnalyzer.dlx\tF:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0791-owner2027-03\\bin\\CyrusSurfaceAnalyzer.dlx\n",
+      "native_tests_passed": 24,
+      "analyzer_core_tests_passed": 1,
+      "feature_assertions": 176,
+      "undo": {
+        "undo_prepare": {
+          "phase": "undo_prepare",
+          "passed": true
+        },
+        "undo_check": {
+          "phase": "undo_check",
+          "passed": true
+        }
+      },
+      "results": {
+        "scene": {
+          "phase": "scene",
+          "checks": [
+            {
+              "passed": true,
+              "label": "Active test authority authorizes normal editing",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 01 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 01 preserves the saved placements",
+              "host_holding": false,
+              "count": 234
+            },
+            {
+              "passed": true,
+              "label": "Case 02 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 02 preserves the saved placements",
+              "host_holding": false,
+              "count": 258
+            },
+            {
+              "passed": true,
+              "label": "Case 03 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 03 preserves the saved placements",
+              "host_holding": false,
+              "count": 137
+            },
+            {
+              "passed": true,
+              "label": "Case 04 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 04 preserves the saved placements",
+              "host_holding": false,
+              "count": 296
+            },
+            {
+              "passed": true,
+              "label": "Case 05 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 05 preserves the saved placements",
+              "host_holding": false,
+              "count": 335
+            },
+            {
+              "passed": true,
+              "label": "Case 06 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 06 preserves the saved placements",
+              "host_holding": false,
+              "count": 596
+            },
+            {
+              "passed": true,
+              "label": "Case 07 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 07 preserves the saved placements",
+              "host_holding": false,
+              "count": 568
+            },
+            {
+              "passed": true,
+              "label": "Case 08 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 08 preserves the saved placements",
+              "host_holding": false,
+              "count": 1841
+            },
+            {
+              "passed": true,
+              "label": "Case 09 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 09 preserves the saved placements",
+              "host_holding": false,
+              "count": 646
+            },
+            {
+              "passed": true,
+              "label": "Case 10 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 10 preserves the saved placements",
+              "host_holding": false,
+              "count": 684
+            },
+            {
+              "passed": true,
+              "label": "Case 11 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 11 preserves the saved placements",
+              "host_holding": false,
+              "count": 271
+            },
+            {
+              "passed": true,
+              "label": "Case 12 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 12 preserves the saved placements",
+              "host_holding": false,
+              "count": 554
+            },
+            {
+              "passed": true,
+              "label": "Case 13 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 13 preserves the saved placements",
+              "host_holding": false,
+              "count": 908
+            },
+            {
+              "passed": true,
+              "label": "Case 14 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 14 preserves the saved placements",
+              "host_holding": false,
+              "count": 537
+            },
+            {
+              "passed": true,
+              "label": "Case 15 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 15 preserves the saved placements",
+              "host_holding": false,
+              "count": 867
+            },
+            {
+              "passed": true,
+              "label": "Case 16 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 16 preserves the saved placements",
+              "host_holding": false,
+              "count": 696
+            },
+            {
+              "passed": true,
+              "label": "Case 17 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 17 preserves the saved placements",
+              "host_holding": false,
+              "count": 805
+            },
+            {
+              "passed": true,
+              "label": "Case 18 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 18 preserves the saved placements",
+              "host_holding": false,
+              "count": 116
+            },
+            {
+              "passed": true,
+              "label": "Case 19 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 19 preserves the saved placements",
+              "host_holding": false,
+              "count": 273
+            },
+            {
+              "passed": true,
+              "label": "Case 20 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 20 preserves the saved placements",
+              "host_holding": false,
+              "count": 362
+            },
+            {
+              "passed": true,
+              "label": "Case 21 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 21 preserves the saved placements",
+              "host_holding": false,
+              "count": 206
+            },
+            {
+              "passed": true,
+              "label": "Case 22 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 22 preserves the saved placements",
+              "host_holding": false,
+              "count": 410
+            },
+            {
+              "passed": true,
+              "label": "Case 23 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 23 preserves the saved placements",
+              "host_holding": false,
+              "count": 547
+            },
+            {
+              "passed": true,
+              "label": "Case 24 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 24 preserves the saved placements",
+              "host_holding": false,
+              "count": 1935
+            },
+            {
+              "passed": true,
+              "label": "Case 25 loads 0.79.1",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 25 preserves the saved placements",
+              "host_holding": false,
+              "count": 1823
+            },
+            {
+              "passed": true,
+              "label": "Case 01 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 02 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 03 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 04 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 05 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 06 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 07 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 08 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 09 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 10 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 11 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 12 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 13 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 14 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 15 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 16 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 17 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 18 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 19 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 20 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 21 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 22 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 23 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 24 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 25 unchanged reads reuse publication, receiver cache and point uploads",
+              "host_holding": false
+            }
+          ],
+          "metrics": {
+            "first_update_ms": {
+              "1": 251.28,
+              "2": 227.46,
+              "3": 219.25,
+              "4": 221.37,
+              "5": 219.26,
+              "6": 208.97,
+              "7": 206.31,
+              "8": 214.64,
+              "9": 215.03,
+              "10": 207.83,
+              "11": 220.08,
+              "12": 207.63,
+              "13": 234.43,
+              "14": 208.52,
+              "15": 494.45,
+              "16": 230.49,
+              "17": 305.95,
+              "18": 219.76,
+              "19": 203.21,
+              "20": 206.95,
+              "21": 210.01,
+              "22": 203.82,
+              "23": 203.46,
+              "24": 404.51,
+              "25": 387.19
+            },
+            "warm_all_cases_ms": [
+              334.61950000491925,
+              333.8716000143904,
+              333.9579000021331,
+              337.25179999601096,
+              532.6957000070252
+            ],
+            "warm_median_ms": 334.61950000491925
+          }
+        },
+        "falloff": {
+          "phase": "falloff",
+          "checks": [
+            {
+              "passed": true,
+              "label": "Active test authority authorizes normal editing",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 15: scale falloff matches world distance",
+              "host_holding": false,
+              "max_error": 1.5288172474647865e-06
+            },
+            {
+              "passed": true,
+              "label": "Case 25: scale falloff matches world distance",
+              "host_holding": false,
+              "max_error": 1.5259042058790584e-06
+            },
+            {
+              "passed": true,
+              "label": "Follow Scale off keeps source radius constant",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Follow Scale on includes band scaling",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Radius edits preserve positions when spacing is disabled",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Two 80 mm radii plus 20 mm gap enforce 180 mm separation",
+              "host_holding": false,
+              "minimum_mm": 180.5721162370902
+            },
+            {
+              "passed": true,
+              "label": "Flat zero density curve removes all eligible candidates",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Flat full density curve restores eligible candidates",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Falloff target and curve controls are outside Advanced",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Manual curve-width editing waits for Update",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Explicit Update applies pending width",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Live width editing automatically publishes",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Density graph stores the edited custom midpoint",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Density graph leaves scale curve unchanged",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Scale graph stores its independent custom midpoint",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Scale graph leaves density curve unchanged",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 01 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 02 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 03 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 04 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 05 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 06 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 07 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 08 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 09 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 10 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 11 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 12 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 13 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 14 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 15 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 16 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 17 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 18 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 19 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 20 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 21 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 22 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 23 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 24 restored exactly after falloff/radius checks",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 25 restored exactly after falloff/radius checks",
+              "host_holding": false
+            }
+          ],
+          "metrics": {}
+        },
+        "points": {
+          "phase": "points",
+          "checks": [
+            {
+              "passed": true,
+              "label": "Active test authority authorizes normal editing",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Add Point, scale and radius are directly visible",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Three Point rows keep distinct editable names",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Point identification color is independently editable",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Band 1 exposes all Points as direct choices",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Band 2 exposes all Points as direct choices",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Band 3 exposes all Points as direct choices",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "All three direct Point bands generate placements",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Layer copy retains direct band identities and guides",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Copied layer has exactly the same point layout",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Replace Point preserves exact placements and assignment identity",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Replace Point preserves its label",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Container mode keeps model and Point bands active",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Removing an earlier row preserves the surviving Point identity and name",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Removed direct source leaves its band empty without assigning another Point",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "New Include area is selected with its actual mode",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Area mode edits the highlighted shape",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Mixed area selection has an explicit mixed state",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "No area selection disables mode editing",
+              "host_holding": false
+            }
+          ],
+          "metrics": {}
+        },
+        "reopen": {
+          "phase": "reopen",
+          "checks": [
+            {
+              "passed": true,
+              "label": "Active test authority authorizes normal editing",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Point/model bands preserve exact placements after reopening",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Point identities and names survive reopening",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Saved guide and all three bands are accessible",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 01 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 02 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 03 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 04 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 05 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 06 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 07 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 08 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 09 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 10 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 11 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 12 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 13 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 14 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 15 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 16 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 17 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 18 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 19 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 20 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 21 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 22 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 23 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 24 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Case 25 retains its complete result after 0.79.1 save/reopen",
+              "host_holding": false
+            }
+          ],
+          "metrics": {}
+        },
+        "empty": {
+          "phase": "empty",
+          "checks": [
+            {
+              "passed": true,
+              "label": "Active test authority authorizes normal editing",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Empty contributes intentional gaps, distinct from Point markers",
+              "host_holding": false,
+              "accepted": 487
+            },
+            {
+              "passed": true,
+              "label": "Add Empty keeps its own source type",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Accepted target rejects weighted Empty and preserves the complete prior result",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "Zero-weight Empty allows Accepted target to generate 1000 Points",
+              "host_holding": false
+            }
+          ],
+          "metrics": {}
+        },
+        "layout": {
+          "phase": "layout",
+          "checks": [
+            {
+              "passed": true,
+              "label": "Active test authority authorizes normal editing",
+              "host_holding": false
+            },
+            {
+              "passed": true,
+              "label": "modelsUI: visible native control rectangles do not overlap",
+              "host_holding": false,
+              "collisions": []
+            },
+            {
+              "passed": true,
+              "label": "containersUI: visible native control rectangles do not overlap",
+              "host_holding": false,
+              "collisions": []
+            },
+            {
+              "passed": true,
+              "label": "areasUI: visible native control rectangles do not overlap",
+              "host_holding": false,
+              "collisions": []
+            },
+            {
+              "passed": true,
+              "label": "layoutUI: visible native control rectangles do not overlap",
+              "host_holding": false,
+              "collisions": []
+            }
+          ],
+          "metrics": {}
+        }
+      },
+      "layout": [
+        {
+          "page": "modelsUI",
+          "width": 162,
+          "height": 638,
+          "bounds": [
+            {
+              "name": "ControlAxSourcingSite",
+              "type": "Afx:00007FFB3B570000:0",
+              "text": "",
+              "x": 1341,
+              "y": 277,
+              "w": 150,
+              "h": 84
+            },
+            {
+              "name": "sourceUI_sourceName",
+              "type": "Edit",
+              "text": "Point 1",
+              "x": 1383,
+              "y": 397,
+              "w": 80,
+              "h": 17
+            },
+            {
+              "name": "sourceUI_sourceName",
+              "type": "Static",
+              "text": "",
+              "x": 1378,
+              "y": 397,
+              "w": 2,
+              "h": 13
+            },
+            {
+              "name": "sourceUI_sourceName_caption",
+              "type": "Static",
+              "text": "Name:",
+              "x": 1341,
+              "y": 398,
+              "w": 38,
+              "h": 18
+            },
+            {
+              "name": "sourceUI_idColor",
+              "type": "ColorSwatch",
+              "text": "",
+              "x": 1469,
+              "y": 397,
+              "w": 18,
+              "h": 22
+            },
+            {
+              "name": "sourceUI_idColor",
+              "type": "Static",
+              "text": "",
+              "x": 1464,
+              "y": 401,
+              "w": 2,
+              "h": 13
+            },
+            {
+              "name": "sourceUI_plantList_caption",
+              "type": "Static",
+              "text": "Sources (Ctrl/Shift)",
+              "x": 1341,
+              "y": 259,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "sourceUI_selectFromScene",
+              "type": "CustButton",
+              "text": "\u2637",
+              "x": 1379,
+              "y": 373,
+              "w": 34,
+              "h": 22
+            },
+            {
+              "name": "sourceUI_addPlant",
+              "type": "CustButton",
+              "text": "Add Model",
+              "x": 1418,
+              "y": 235,
+              "w": 73,
+              "h": 22
+            },
+            {
+              "name": "sourceUI_addSelected",
+              "type": "CustButton",
+              "text": "\u2295",
+              "x": 1417,
+              "y": 373,
+              "w": 34,
+              "h": 22
+            },
+            {
+              "name": "sourceUI_removePlant",
+              "type": "CustButton",
+              "text": "\u00d7",
+              "x": 1341,
+              "y": 373,
+              "w": 34,
+              "h": 22
+            },
+            {
+              "name": "sourceUI_selectPlant",
+              "type": "CustButton",
+              "text": "\u2316",
+              "x": 1455,
+              "y": 373,
+              "w": 34,
+              "h": 22
+            },
+            {
+              "name": "sourceUI_addPoint",
+              "type": "CustButton",
+              "text": "Add Point",
+              "x": 1341,
+              "y": 235,
+              "w": 73,
+              "h": 22
+            },
+            {
+              "name": "sourceUI_addEmpty",
+              "type": "CustButton",
+              "text": "Add Empty (gap)",
+              "x": 1341,
+              "y": 667,
+              "w": 150,
+              "h": 22
+            },
+            {
+              "name": "sourceUI_groupHeading",
+              "type": "Static",
+              "text": "Assignment group",
+              "x": 1341,
+              "y": 715,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "sourceUI_existingGroups",
+              "type": "ComboBox",
+              "text": "#646464",
+              "x": 1341,
+              "y": 753,
+              "w": 150,
+              "h": 21
+            },
+            {
+              "name": "sourceUI_existingGroups",
+              "type": "Static",
+              "text": "",
+              "x": 1340,
+              "y": 752,
+              "w": 2,
+              "h": 2
+            },
+            {
+              "name": "sourceUI_existingGroups_caption",
+              "type": "Static",
+              "text": "Use group",
+              "x": 1341,
+              "y": 735,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "sourceUI_groupColor",
+              "type": "ColorSwatch",
+              "text": "",
+              "x": 1341,
+              "y": 795,
+              "w": 150,
+              "h": 20
+            },
+            {
+              "name": "sourceUI_groupColor",
+              "type": "Static",
+              "text": "",
+              "x": 1336,
+              "y": 798,
+              "w": 2,
+              "h": 13
+            },
+            {
+              "name": "sourceUI_groupColor_caption",
+              "type": "Static",
+              "text": "Color: ",
+              "x": 1341,
+              "y": 777,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "sourceUI_applyColor",
+              "type": "CustButton",
+              "text": "Apply to selected rows",
+              "x": 1341,
+              "y": 819,
+              "w": 150,
+              "h": 22
+            },
+            {
+              "name": "sourceUI_colorHelp",
+              "type": "Static",
+              "text": "OK saves the selected color.",
+              "x": 1341,
+              "y": 843,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "sourceUI_weightSpin",
+              "type": "SpinnerControl",
+              "text": "",
+              "x": 1479,
+              "y": 445,
+              "w": 12,
+              "h": 16
+            },
+            {
+              "name": "sourceUI_weightSpin",
+              "type": "Static",
+              "text": "",
+              "x": 1421,
+              "y": 445,
+              "w": 2,
+              "h": 13
+            },
+            {
+              "name": "sourceUI_weightSpin",
+              "type": "CustEdit",
+              "text": "",
+              "x": 1424,
+              "y": 445,
+              "w": 55,
+              "h": 16
+            },
+            {
+              "name": "sourceUI_weightSpin_caption",
+              "type": "Static",
+              "text": "Weight:",
+              "x": 1341,
+              "y": 446,
+              "w": 72,
+              "h": 18
+            },
+            {
+              "name": "sourceUI_weightHelp",
+              "type": "Static",
+              "text": "0 = off; relative share",
+              "x": 1341,
+              "y": 627,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "sourceUI_sourceZSpin",
+              "type": "SpinnerControl",
+              "text": "",
+              "x": 1479,
+              "y": 517,
+              "w": 12,
+              "h": 16
+            },
+            {
+              "name": "sourceUI_sourceZSpin",
+              "type": "Static",
+              "text": "",
+              "x": 1421,
+              "y": 517,
+              "w": 2,
+              "h": 13
+            },
+            {
+              "name": "sourceUI_sourceZSpin",
+              "type": "CustEdit",
+              "text": "",
+              "x": 1424,
+              "y": 517,
+              "w": 55,
+              "h": 16
+            },
+            {
+              "name": "sourceUI_sourceZSpin_caption",
+              "type": "Static",
+              "text": "Z Offset: ",
+              "x": 1341,
+              "y": 518,
+              "w": 72,
+              "h": 18
+            },
+            {
+              "name": "sourceUI_sourceScaleSpin",
+              "type": "SpinnerControl",
+              "text": "",
+              "x": 1479,
+              "y": 469,
+              "w": 12,
+              "h": 16
+            },
+            {
+              "name": "sourceUI_sourceScaleSpin",
+              "type": "Static",
+              "text": "",
+              "x": 1421,
+              "y": 469,
+              "w": 2,
+              "h": 13
+            },
+            {
+              "name": "sourceUI_sourceScaleSpin",
+              "type": "CustEdit",
+              "text": "",
+              "x": 1424,
+              "y": 469,
+              "w": 55,
+              "h": 16
+            },
+            {
+              "name": "sourceUI_sourceScaleSpin_caption",
+              "type": "Static",
+              "text": "Scale: ",
+              "x": 1341,
+              "y": 470,
+              "w": 72,
+              "h": 18
+            },
+            {
+              "name": "sourceUI_sourceTransformHelp",
+              "type": "Static",
+              "text": "Scale: 1 = original",
+              "x": 1341,
+              "y": 647,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "sourceUI_radiusSourceSpin",
+              "type": "SpinnerControl",
+              "text": "",
+              "x": 1479,
+              "y": 493,
+              "w": 12,
+              "h": 16
+            },
+            {
+              "name": "sourceUI_radiusSourceSpin",
+              "type": "Static",
+              "text": "",
+              "x": 1421,
+              "y": 493,
+              "w": 2,
+              "h": 13
+            },
+            {
+              "name": "sourceUI_radiusSourceSpin",
+              "type": "CustEdit",
+              "text": "",
+              "x": 1424,
+              "y": 493,
+              "w": 55,
+              "h": 16
+            },
+            {
+              "name": "sourceUI_radiusSourceSpin_caption",
+              "type": "Static",
+              "text": "Radius:",
+              "x": 1341,
+              "y": 494,
+              "w": 72,
+              "h": 18
+            },
+            {
+              "name": "sourceUI_followRadiusCheck",
+              "type": "Button",
+              "text": "Follow Scale",
+              "x": 1341,
+              "y": 541,
+              "w": 150,
+              "h": 15
+            },
+            {
+              "name": "sourceUI_showRadiusCheck",
+              "type": "Button",
+              "text": "Show Radius",
+              "x": 1341,
+              "y": 563,
+              "w": 150,
+              "h": 15
+            },
+            {
+              "name": "sourceUI_forwardAxis",
+              "type": "ComboBox",
+              "text": "+Y",
+              "x": 1341,
+              "y": 603,
+              "w": 150,
+              "h": 21
+            },
+            {
+              "name": "sourceUI_forwardAxis",
+              "type": "Static",
+              "text": "",
+              "x": 1340,
+              "y": 602,
+              "w": 2,
+              "h": 2
+            },
+            {
+              "name": "sourceUI_forwardAxis_caption",
+              "type": "Static",
+              "text": "Forward axis:",
+              "x": 1341,
+              "y": 585,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "heading_0",
+              "type": "Static",
+              "text": "Source settings",
+              "x": 1341,
+              "y": 425,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "groupsToggle",
+              "type": "CustButton",
+              "text": "Assignment groups",
+              "x": 1341,
+              "y": 691,
+              "w": 150,
+              "h": 22
+            },
+            {
+              "name": "ControlAxSourcingSite",
+              "type": "Afx:00007FFB3B570000:0",
+              "text": "",
+              "x": 1341,
+              "y": 363,
+              "w": 150,
+              "h": 8
+            }
+          ],
+          "collisions": []
+        },
+        {
+          "page": "containersUI",
+          "width": 162,
+          "height": 292,
+          "bounds": [
+            {
+              "name": "sourceContainersUI_modeList",
+              "type": "ComboBox",
+              "text": "Layer containers",
+              "x": 1341,
+              "y": 254,
+              "w": 150,
+              "h": 21
+            },
+            {
+              "name": "sourceContainersUI_modeList",
+              "type": "Static",
+              "text": "",
+              "x": 1340,
+              "y": 253,
+              "w": 2,
+              "h": 2
+            },
+            {
+              "name": "sourceContainersUI_modeList_caption",
+              "type": "Static",
+              "text": "Model collection",
+              "x": 1341,
+              "y": 236,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "sourceContainersUI_containersList",
+              "type": "ListBox",
+              "text": "",
+              "x": 1341,
+              "y": 320,
+              "w": 150,
+              "h": 58
+            },
+            {
+              "name": "sourceContainersUI_containersList",
+              "type": "Static",
+              "text": "",
+              "x": 1340,
+              "y": 319,
+              "w": 2,
+              "h": 2
+            },
+            {
+              "name": "sourceContainersUI_containersList_caption",
+              "type": "Static",
+              "text": "Rectangles",
+              "x": 1341,
+              "y": 302,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "sourceContainersUI_enabledCheck",
+              "type": "Button",
+              "text": "Enable collection",
+              "x": 1341,
+              "y": 390,
+              "w": 150,
+              "h": 15
+            },
+            {
+              "name": "sourceContainersUI_createContainer",
+              "type": "CustButton",
+              "text": "Create",
+              "x": 1341,
+              "y": 278,
+              "w": 47,
+              "h": 22
+            },
+            {
+              "name": "sourceContainersUI_pickContainer",
+              "type": "CustButton",
+              "text": "Pick",
+              "x": 1392,
+              "y": 278,
+              "w": 47,
+              "h": 22
+            },
+            {
+              "name": "sourceContainersUI_removeContainer",
+              "type": "CustButton",
+              "text": "Unlink",
+              "x": 1443,
+              "y": 278,
+              "w": 47,
+              "h": 22
+            },
+            {
+              "name": "sourceContainersUI_membershipInfo",
+              "type": "Static",
+              "text": "2 active / 2 registered\nShared rectangles: Surface Scatter.",
+              "x": 1341,
+              "y": 412,
+              "w": 150,
+              "h": 44
+            },
+            {
+              "name": "sourceContainersUI_helpInfo",
+              "type": "Static",
+              "text": "Pivot inside = active. Height is ignored. Moving out keeps source settings. Manual needs Update.",
+              "x": 1341,
+              "y": 458,
+              "w": 150,
+              "h": 58
+            },
+            {
+              "name": "ControlAxSourcingSite",
+              "type": "Afx:00007FFB3B570000:0",
+              "text": "",
+              "x": 1341,
+              "y": 380,
+              "w": 150,
+              "h": 8
+            }
+          ],
+          "collisions": []
+        },
+        {
+          "page": "areasUI",
+          "width": 162,
+          "height": 780,
+          "bounds": [
+            {
+              "name": "areaUI_areaList",
+              "type": "ListBox",
+              "text": "",
+              "x": 1534,
+              "y": 273,
+              "w": 150,
+              "h": 84
+            },
+            {
+              "name": "areaUI_areaList",
+              "type": "Static",
+              "text": "",
+              "x": 1533,
+              "y": 272,
+              "w": 2,
+              "h": 2
+            },
+            {
+              "name": "areaUI_areaList_caption",
+              "type": "Static",
+              "text": "Closed lines / shapes",
+              "x": 1534,
+              "y": 255,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "areaUI_addAreaScene",
+              "type": "CustButton",
+              "text": "Select From Scene...",
+              "x": 1534,
+              "y": 393,
+              "w": 150,
+              "h": 22
+            },
+            {
+              "name": "areaUI_pickArea",
+              "type": "CustButton",
+              "text": "Add: pick closed line",
+              "x": 1534,
+              "y": 369,
+              "w": 150,
+              "h": 22
+            },
+            {
+              "name": "areaUI_removeArea",
+              "type": "CustButton",
+              "text": "Remove selected rows",
+              "x": 1534,
+              "y": 417,
+              "w": 150,
+              "h": 22
+            },
+            {
+              "name": "areaUI_areaMode",
+              "type": "Button",
+              "text": "Include",
+              "x": 1534,
+              "y": 459,
+              "w": 58,
+              "h": 15
+            },
+            {
+              "name": "areaUI_areaMode",
+              "type": "Button",
+              "text": "Exclude",
+              "x": 1534,
+              "y": 479,
+              "w": 60,
+              "h": 15
+            },
+            {
+              "name": "areaUI_areaMode",
+              "type": "Static",
+              "text": "",
+              "x": 1533,
+              "y": 458,
+              "w": 2,
+              "h": 2
+            },
+            {
+              "name": "areaUI_areaMode_caption",
+              "type": "Static",
+              "text": "Selected area mode",
+              "x": 1534,
+              "y": 441,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "areaUI_areaHint",
+              "type": "Static",
+              "text": "Select an area to edit its mode.",
+              "x": 1534,
+              "y": 501,
+              "w": 150,
+              "h": 30
+            },
+            {
+              "name": "areaUI_refreshAreas",
+              "type": "CustButton",
+              "text": "Refresh areas / preview",
+              "x": 1534,
+              "y": 953,
+              "w": 150,
+              "h": 22
+            },
+            {
+              "name": "areaUI_fallTarget",
+              "type": "ComboBox",
+              "text": "Selected Area line",
+              "x": 1534,
+              "y": 575,
+              "w": 150,
+              "h": 21
+            },
+            {
+              "name": "areaUI_fallTarget",
+              "type": "Static",
+              "text": "",
+              "x": 1533,
+              "y": 574,
+              "w": 2,
+              "h": 2
+            },
+            {
+              "name": "areaUI_fallTarget_caption",
+              "type": "Static",
+              "text": "Edge falloff target",
+              "x": 1534,
+              "y": 557,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "areaUI_fallPick",
+              "type": "CustButton",
+              "text": "Pick Surface Analyzer",
+              "x": 1534,
+              "y": 599,
+              "w": 150,
+              "h": 22
+            },
+            {
+              "name": "areaUI_fallRemove",
+              "type": "CustButton",
+              "text": "Remove Analyzer",
+              "x": 1534,
+              "y": 623,
+              "w": 150,
+              "h": 22
+            },
+            {
+              "name": "areaUI_fallTargetName",
+              "type": "Static",
+              "text": "Select exactly one Area line above.",
+              "x": 1534,
+              "y": 647,
+              "w": 150,
+              "h": 30
+            },
+            {
+              "name": "areaUI_fallDeleteCheck",
+              "type": "Button",
+              "text": "Delete edge band",
+              "x": 1534,
+              "y": 679,
+              "w": 150,
+              "h": 15
+            },
+            {
+              "name": "areaUI_fallDeleteSpin",
+              "type": "SpinnerControl",
+              "text": "",
+              "x": 1672,
+              "y": 703,
+              "w": 12,
+              "h": 16
+            },
+            {
+              "name": "areaUI_fallDeleteSpin",
+              "type": "Static",
+              "text": "",
+              "x": 1614,
+              "y": 703,
+              "w": 2,
+              "h": 13
+            },
+            {
+              "name": "areaUI_fallDeleteSpin",
+              "type": "CustEdit",
+              "text": "",
+              "x": 1617,
+              "y": 703,
+              "w": 55,
+              "h": 16
+            },
+            {
+              "name": "areaUI_fallDeleteSpin_caption",
+              "type": "Static",
+              "text": "Delete width:",
+              "x": 1534,
+              "y": 704,
+              "w": 72,
+              "h": 18
+            },
+            {
+              "name": "areaUI_fallScaleCheck",
+              "type": "Button",
+              "text": "Scale ramp",
+              "x": 1534,
+              "y": 727,
+              "w": 150,
+              "h": 15
+            },
+            {
+              "name": "areaUI_fallScaleSpin",
+              "type": "SpinnerControl",
+              "text": "",
+              "x": 1672,
+              "y": 751,
+              "w": 12,
+              "h": 16
+            },
+            {
+              "name": "areaUI_fallScaleSpin",
+              "type": "Static",
+              "text": "",
+              "x": 1614,
+              "y": 751,
+              "w": 2,
+              "h": 13
+            },
+            {
+              "name": "areaUI_fallScaleSpin",
+              "type": "CustEdit",
+              "text": "",
+              "x": 1617,
+              "y": 751,
+              "w": 55,
+              "h": 16
+            },
+            {
+              "name": "areaUI_fallScaleSpin_caption",
+              "type": "Static",
+              "text": "Scale width:",
+              "x": 1534,
+              "y": 752,
+              "w": 72,
+              "h": 18
+            },
+            {
+              "name": "areaUI_fallScaleEdit",
+              "type": "CustButton",
+              "text": "Edit Scale Graph...",
+              "x": 1534,
+              "y": 775,
+              "w": 150,
+              "h": 22
+            },
+            {
+              "name": "areaUI_fallDensityCheck",
+              "type": "Button",
+              "text": "Density ramp",
+              "x": 1534,
+              "y": 817,
+              "w": 150,
+              "h": 15
+            },
+            {
+              "name": "areaUI_fallDensitySpin",
+              "type": "SpinnerControl",
+              "text": "",
+              "x": 1672,
+              "y": 859,
+              "w": 12,
+              "h": 16
+            },
+            {
+              "name": "areaUI_fallDensitySpin",
+              "type": "Static",
+              "text": "",
+              "x": 1614,
+              "y": 859,
+              "w": 2,
+              "h": 13
+            },
+            {
+              "name": "areaUI_fallDensitySpin",
+              "type": "CustEdit",
+              "text": "",
+              "x": 1617,
+              "y": 859,
+              "w": 55,
+              "h": 16
+            },
+            {
+              "name": "areaUI_fallDensitySpin_caption",
+              "type": "Static",
+              "text": "Density width:",
+              "x": 1534,
+              "y": 841,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "areaUI_fallDensityEdit",
+              "type": "CustButton",
+              "text": "Edit Density Graph...",
+              "x": 1534,
+              "y": 883,
+              "w": 150,
+              "h": 22
+            },
+            {
+              "name": "areaUI_fallHelp",
+              "type": "Static",
+              "text": "Ramps start after delete band. Each Area line has its own settings.",
+              "x": 1534,
+              "y": 907,
+              "w": 150,
+              "h": 44
+            },
+            {
+              "name": "heading_0",
+              "type": "Static",
+              "text": "Area limits - layer",
+              "x": 1534,
+              "y": 235,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "heading_1",
+              "type": "Static",
+              "text": "Boundary falloff",
+              "x": 1534,
+              "y": 537,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "ControlAxSourcingSite",
+              "type": "Afx:00007FFB3B570000:0",
+              "text": "",
+              "x": 1534,
+              "y": 359,
+              "w": 150,
+              "h": 8
+            },
+            {
+              "name": "advancedToggle",
+              "type": "CustButton",
+              "text": "Advanced",
+              "x": 1534,
+              "y": 981,
+              "w": 150,
+              "h": 22
+            }
+          ],
+          "collisions": []
+        },
+        {
+          "page": "layoutUI",
+          "width": 162,
+          "height": 705,
+          "bounds": [
+            {
+              "name": "diversityUI_diversityRadio",
+              "type": "Button",
+              "text": "Random mix",
+              "x": 1341,
+              "y": 251,
+              "w": 81,
+              "h": 15
+            },
+            {
+              "name": "diversityUI_diversityRadio",
+              "type": "Button",
+              "text": "Clusters",
+              "x": 1341,
+              "y": 271,
+              "w": 62,
+              "h": 15
+            },
+            {
+              "name": "diversityUI_diversityRadio",
+              "type": "Button",
+              "text": "Spline bands",
+              "x": 1341,
+              "y": 291,
+              "w": 83,
+              "h": 15
+            },
+            {
+              "name": "diversityUI_diversityRadio",
+              "type": "Button",
+              "text": "Surface Analyzer",
+              "x": 1341,
+              "y": 311,
+              "w": 105,
+              "h": 15
+            },
+            {
+              "name": "diversityUI_diversityRadio",
+              "type": "Static",
+              "text": "",
+              "x": 1340,
+              "y": 250,
+              "w": 2,
+              "h": 2
+            },
+            {
+              "name": "diversityUI_diversityRadio_caption",
+              "type": "Static",
+              "text": "Source assignment",
+              "x": 1341,
+              "y": 233,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "diversityUI_layoutHelp",
+              "type": "Static",
+              "text": "Closed spline bands use top-down XY projection.",
+              "x": 1341,
+              "y": 333,
+              "w": 150,
+              "h": 30
+            },
+            {
+              "name": "diversityUI_strokeTitle",
+              "type": "Static",
+              "text": "Spline bands",
+              "x": 1341,
+              "y": 455,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "diversityUI_pathsDrop",
+              "type": "ComboBox",
+              "text": "Rectangle001",
+              "x": 1341,
+              "y": 383,
+              "w": 150,
+              "h": 21
+            },
+            {
+              "name": "diversityUI_pathsDrop",
+              "type": "Static",
+              "text": "",
+              "x": 1340,
+              "y": 382,
+              "w": 2,
+              "h": 2
+            },
+            {
+              "name": "diversityUI_pathsDrop_caption",
+              "type": "Static",
+              "text": "Paths",
+              "x": 1341,
+              "y": 365,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "diversityUI_pickPath",
+              "type": "CustButton",
+              "text": "Add: pick closed line",
+              "x": 1341,
+              "y": 407,
+              "w": 150,
+              "h": 22
+            },
+            {
+              "name": "diversityUI_removePath",
+              "type": "CustButton",
+              "text": "Remove path",
+              "x": 1341,
+              "y": 431,
+              "w": 150,
+              "h": 22
+            },
+            {
+              "name": "diversityUI_strokesList",
+              "type": "ListBox",
+              "text": "",
+              "x": 1341,
+              "y": 493,
+              "w": 150,
+              "h": 58
+            },
+            {
+              "name": "diversityUI_strokesList",
+              "type": "Static",
+              "text": "",
+              "x": 1340,
+              "y": 492,
+              "w": 2,
+              "h": 2
+            },
+            {
+              "name": "diversityUI_strokesList_caption",
+              "type": "Static",
+              "text": "Bands",
+              "x": 1341,
+              "y": 475,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "diversityUI_addOutside",
+              "type": "CustButton",
+              "text": "Add Outside",
+              "x": 1341,
+              "y": 563,
+              "w": 73,
+              "h": 22
+            },
+            {
+              "name": "diversityUI_addInside",
+              "type": "CustButton",
+              "text": "Add Inside",
+              "x": 1418,
+              "y": 563,
+              "w": 73,
+              "h": 22
+            },
+            {
+              "name": "diversityUI_removeStrokeButton",
+              "type": "CustButton",
+              "text": "Remove band",
+              "x": 1341,
+              "y": 587,
+              "w": 150,
+              "h": 22
+            },
+            {
+              "name": "diversityUI_strokeWidth",
+              "type": "SpinnerControl",
+              "text": "",
+              "x": 1479,
+              "y": 611,
+              "w": 12,
+              "h": 16
+            },
+            {
+              "name": "diversityUI_strokeWidth",
+              "type": "Static",
+              "text": "Width:",
+              "x": 1421,
+              "y": 611,
+              "w": 2,
+              "h": 13
+            },
+            {
+              "name": "diversityUI_strokeWidth",
+              "type": "CustEdit",
+              "text": "",
+              "x": 1424,
+              "y": 611,
+              "w": 55,
+              "h": 16
+            },
+            {
+              "name": "diversityUI_strokeWidth_caption",
+              "type": "Static",
+              "text": "Width:",
+              "x": 1341,
+              "y": 612,
+              "w": 72,
+              "h": 18
+            },
+            {
+              "name": "diversityUI_strokeMode",
+              "type": "Button",
+              "text": "Assignment groups",
+              "x": 1341,
+              "y": 653,
+              "w": 114,
+              "h": 15
+            },
+            {
+              "name": "diversityUI_strokeMode",
+              "type": "Button",
+              "text": "Models / Points",
+              "x": 1341,
+              "y": 673,
+              "w": 95,
+              "h": 15
+            },
+            {
+              "name": "diversityUI_strokeMode",
+              "type": "Static",
+              "text": "",
+              "x": 1340,
+              "y": 652,
+              "w": 2,
+              "h": 2
+            },
+            {
+              "name": "diversityUI_strokeMode_caption",
+              "type": "Static",
+              "text": "Assign by",
+              "x": 1341,
+              "y": 635,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "diversityUI_strokeChoices",
+              "type": "ListBox",
+              "text": "",
+              "x": 1341,
+              "y": 713,
+              "w": 150,
+              "h": 71
+            },
+            {
+              "name": "diversityUI_strokeChoices",
+              "type": "Static",
+              "text": "",
+              "x": 1340,
+              "y": 712,
+              "w": 2,
+              "h": 2
+            },
+            {
+              "name": "diversityUI_strokeChoices_caption",
+              "type": "Static",
+              "text": "Ctrl / Shift: select several",
+              "x": 1341,
+              "y": 695,
+              "w": 150,
+              "h": 18
+            },
+            {
+              "name": "diversityUI_strokeScaleMin",
+              "type": "SpinnerControl",
+              "text": "",
+              "x": 1479,
+              "y": 796,
+              "w": 12,
+              "h": 16
+            },
+            {
+              "name": "diversityUI_strokeScaleMin",
+              "type": "Static",
+              "text": "",
+              "x": 1421,
+              "y": 796,
+              "w": 2,
+              "h": 13
+            },
+            {
+              "name": "diversityUI_strokeScaleMin",
+              "type": "CustEdit",
+              "text": "",
+              "x": 1424,
+              "y": 796,
+              "w": 55,
+              "h": 16
+            },
+            {
+              "name": "diversityUI_strokeScaleMin_caption",
+              "type": "Static",
+              "text": "Scale min:",
+              "x": 1341,
+              "y": 797,
+              "w": 72,
+              "h": 18
+            },
+            {
+              "name": "diversityUI_strokeScaleMax",
+              "type": "SpinnerControl",
+              "text": "",
+              "x": 1479,
+              "y": 820,
+              "w": 12,
+              "h": 16
+            },
+            {
+              "name": "diversityUI_strokeScaleMax",
+              "type": "Static",
+              "text": "",
+              "x": 1421,
+              "y": 820,
+              "w": 2,
+              "h": 13
+            },
+            {
+              "name": "diversityUI_strokeScaleMax",
+              "type": "CustEdit",
+              "text": "",
+              "x": 1424,
+              "y": 820,
+              "w": 55,
+              "h": 16
+            },
+            {
+              "name": "diversityUI_strokeScaleMax_caption",
+              "type": "Static",
+              "text": "Scale max:",
+              "x": 1341,
+              "y": 821,
+              "w": 72,
+              "h": 18
+            },
+            {
+              "name": "diversityUI_refreshGroups",
+              "type": "CustButton",
+              "text": "Refresh sources / groups",
+              "x": 1341,
+              "y": 844,
+              "w": 150,
+              "h": 22
+            },
+            {
+              "name": "diversityUI_strokeHelp",
+              "type": "Static",
+              "text": "Outside bands: empty. First match wins.",
+              "x": 1341,
+              "y": 868,
+              "w": 150,
+              "h": 30
+            },
+            {
+              "name": "ControlAxSourcingSite",
+              "type": "Afx:00007FFB3B570000:0",
+              "text": "",
+              "x": 1341,
+              "y": 553,
+              "w": 150,
+              "h": 8
+            },
+            {
+              "name": "ControlAxSourcingSite",
+              "type": "Afx:00007FFB3B570000:0",
+              "text": "",
+              "x": 1341,
+              "y": 786,
+              "w": 150,
+              "h": 8
+            },
+            {
+              "name": "advancedToggle",
+              "type": "CustButton",
+              "text": "Advanced",
+              "x": 1341,
+              "y": 904,
+              "w": 150,
+              "h": 22
+            }
+          ],
+          "collisions": []
+        }
+      ],
+      "unit_conversion": {
+        "qualified": false,
+        "observation": {
+          "file_units": {
+            "system_type": "inches",
+            "count": 696,
+            "density_width_mm": 399.99920517205896,
+            "scale_width_mm": 399.99920517205896
+          },
+          "converted_cm": {
+            "system_type": "centimeters",
+            "count": 918,
+            "density_width_mm": 157.4799991029501,
+            "scale_width_mm": 157.4799991029501
+          }
+        }
+      },
+      "normal_profile_hash_unchanged": true
+    }
+  },
+  "packages": {
+    "2026": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\refinement-0.79.1\\CyrusScatter-0.79.1-Max2026.mzp",
+      "sha256": "e494830e0fbef57ebd05fee94ccc9f8eefa389b53096921ac6128522f8e3de0d",
+      "matched_loaded_payload": true,
+      "files": [
+        "AminScatter.dlx",
+        "Clipper2-LICENSE.txt",
+        "CyrusBrush.dlx",
+        "CyrusBrushStorage.dlh",
+        "CyrusScatter.mcr",
+        "CyrusScatter.ms",
+        "CyrusScatterEdit.dlm",
+        "CyrusScatterStartup.ms",
+        "INSTALL.txt",
+        "Uninstall.ms",
+        "install.ms",
+        "manifest.json",
+        "mzp.run",
+        "nlohmann-json-LICENSE.txt"
+      ]
+    },
+    "2027": {
+      "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\refinement-0.79.1\\CyrusScatter-0.79.1-Max2027.mzp",
+      "sha256": "94ad3234d80b5abd797e4276d924afa2ddab4762eaa461c4b6298f2782eeab27",
+      "matched_loaded_payload": true,
+      "files": [
+        "AminScatter.dlx",
+        "Clipper2-LICENSE.txt",
+        "CyrusBrush.dlx",
+        "CyrusBrushStorage.dlh",
+        "CyrusScatter.mcr",
+        "CyrusScatter.ms",
+        "CyrusScatterEdit.dlm",
+        "CyrusScatterStartup.ms",
+        "INSTALL.txt",
+        "Uninstall.ms",
+        "install.ms",
+        "manifest.json",
+        "mzp.run",
+        "nlohmann-json-LICENSE.txt"
+      ]
+    }
+  },
+  "generated": {
+    "check": "unified_073_generator_integration",
+    "passed": true,
+    "development_version": "0.79.1",
+    "baseline": "01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2",
+    "maxscript_compiled": false,
+    "ui_controls_in_inventory": 241,
+    "baseline_controls_accounted": 245,
+    "generated_sha256": "ff2bee7e0baa1399d94c0d74b9dc8cad0335e45ef311e982e97225256344de08",
+    "preserved_files": [
+      "AminScatter/src/point_display.cpp"
+    ],
+    "fixture_delimiters_checked": 32,
+    "interactive_max_run": false
+  },
+  "python_tests": {
+    "passed": 158,
+    "path": "build/refine0791-20261011/python02.xml"
+  },
+  "saved_scene_copies": {
+    "Test Scene\\0.79.1-Point-Refinement\\Include_Exclude_Point_Examples_0.79.1.max": "0138f11b9249d0980a3c27033683eb61de1f921c7bbc14dbac48b2870f005fc0",
+    "Test Scene\\0.79.1-Point-Refinement\\Point_Workflow_0.79.1.max": "b0df6675f5b47cefa320d8e8eac2d2de1d55684a7f838f51eb1ff34f430c232e"
+  },
+  "known_failed_startup": {
+    "profile": "build/mcp-qualification/refine0791-owner2027-02",
+    "observation": "Process exited before ready.json/loaded-module verification; fresh profile -03 passed with the same build.",
+    "cause": "unresolved"
+  },
+  "fixtures": {
+    "tools\\refine0791\\host_checks.py": "529ca92c26ab9db4ab2912ee16d303008a681df1500d395876f7a4d6039fe290",
+    "tools\\refine0791\\launch.py": "fbf2586bcf40a1226331741cc496c7ba88344d597c6e6291cc4f3a6787078fc1",
+    "tools\\refine0791\\run_all.py": "220cd3ac43a3ca917e59cd26322984e12a70ea8f0774cd33d3757fe69de4d5c9",
+    "tools\\refine0791\\run_phase.py": "983b5faffc9a60d1838550eef0cedb345baed550992d75be9b631eebab94eade",
+    "tools\\refine0791\\undo_checks.ms": "9f4eb5a7e68641a1a6e694a312417f958c580f92c172403d23ba59e11de31a6d"
+  }
+}
