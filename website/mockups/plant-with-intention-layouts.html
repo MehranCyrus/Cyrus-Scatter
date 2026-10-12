@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Original planting vector layouts</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f8f8f3;color:#344c36;min-height:100svh;display:grid;place-items:center;padding:32px 0;font-family:"Segoe UI",Arial,sans-serif}main{width:min(1120px,calc(100% - 64px));min-width:0}#artwork{width:100%;aspect-ratio:900/560;background:#e8eedf;border:1px solid #cad2c1;border-radius:12px;overflow:hidden}#artwork svg{display:block;width:100%;height:100%;max-width:100%}.layout-selector{display:flex;justify-content:center;gap:8px;margin-top:20px}.layout-selector button{font:600 13px/1 "Segoe UI",Arial,sans-serif;color:#466d43;min-width:44px;min-height:44px;padding:12px;border:1px solid #cad2c1;border-radius:6px;background:transparent;cursor:pointer}.layout-selector button:hover{background:#e8eedf}.layout-selector button[aria-pressed=true]{background:#466d43;border-color:#466d43;color:#fff}.layout-selector button:focus-visible{outline:3px solid #466d43;outline-offset:4px}@media(max-width:600px){body{padding:24px 0}main{width:calc(100% - 32px)}#artwork{border-radius:9px}.layout-selector{margin-top:20px}}@media print{body{display:block;padding:0}main{width:100%}.layout-selector{display:none}#artwork{print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<main aria-label="Original vector composition studies">
+<div id="artwork"></div>
+<div class="layout-selector" role="group" aria-label="Choose a planting layout"><button type="button" data-layout="1" aria-label="Layout 1" aria-controls="artwork" aria-pressed="false" tabindex="-1">1</button><button type="button" data-layout="2" aria-label="Layout 2" aria-controls="artwork" aria-pressed="false" tabindex="-1">2</button><button type="button" data-layout="3" aria-label="Layout 3" aria-controls="artwork" aria-pressed="false" tabindex="-1">3</button><button type="button" data-layout="4" aria-label="Layout 4" aria-controls="artwork" aria-pressed="false" tabindex="-1">4</button><button type="button" data-layout="5" aria-label="Layout 5" aria-controls="artwork" aria-pressed="false" tabindex="-1">5</button></div>
+</main>
+<script>
+const green='#466d43', light='#c6d7ab', yellow='#d9bd78', ink='#344c36', gray='#9ba68c';
+  function random(seed){return()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;};}
+  function tree(x,y,r=15,color=green){return `<g transform="translate(${x} ${y})"><circle cx="3" cy="5" r="${r+1}" fill="#314d3520"/><path d="M0 ${r*.4}v${r*.9}" stroke="#536440" stroke-width="2"/>${[0,1,2,3,4,5].map(i=>{let a=i*Math.PI/3;return `<circle cx="${Math.cos(a)*r*.45}" cy="${Math.sin(a)*r*.45}" r="${r*.58}" fill="${color}" stroke="#365532" stroke-width=".6"/>`;}).join('')}<circle r="${r*.56}" fill="${color}"/><path d="M-${r*.45} 0H${r*.4}M0 -${r*.5}V${r*.4}" stroke="#ffffff25" stroke-width="1"/></g>`;}
+  function grass(x,y,color='#7d925b'){return `<path d="M${x} ${y+4}q-1 -9 -5 -10m5 10q2 -10 6 -11m-6 11v-9" fill="none" stroke="${color}" stroke-width="1.4" stroke-linecap="round"/>`;}
+/* Layout 1: Winding meadow. Original tree/grass primitives are supplied unchanged by base. */
+(function () {
+  window.layoutStudies = window.layoutStudies || {};
+  window.layoutStudies[1] = function (base) {
+    const W = 900, H = 560;
+    const rand = base.random(8114);
+    const trees = [
+      [172, 106, 30, '#81975e'],
+      [250, 93, 35, '#6a8952'],
+      [321, 126, 31, '#81975e'],
+      [197, 169, 39, '#5c7d4c'],
+      [281, 179, 45, '#466d43'],
+      [352, 219, 30, '#6a8952'],
+      [742, 274, 30, '#81975e'],
+      [794, 320, 34, '#5c7d4c'],
+      [711, 350, 27, '#6a8952']
+    ];
+    const path = 'M185 590C210 440 458 465 481 344C510 217 739 215 756 -35';
+    const curves = [
+      [[185,590],[210,440],[458,465],[481,344]],
+      [[481,344],[510,217],[739,215],[756,-35]]
+    ];
+    const walk = [];
+    curves.forEach(c => {
+      for (let i = 0; i <= 80; i++) {
+        const t=i/80, u=1-t;
+        walk.push([
+          u*u*u*c[0][0]+3*u*u*t*c[1][0]+3*u*t*t*c[2][0]+t*t*t*c[3][0],
+          u*u*u*c[0][1]+3*u*u*t*c[1][1]+3*u*t*t*c[2][1]+t*t*t*c[3][1]
+        ]);
+      }
+    });
+    function nearWalk(x,y,gap) {
+      return walk.some(p => Math.hypot(x-p[0],y-p[1]) < gap);
+    }
+    function inEllipse(x,y,cx,cy,rx,ry) {
+      return ((x-cx)/rx)**2 + ((y-cy)/ry)**2 < 1;
+    }
+    let body = base.grid(W,H);
+    body += '<path d="M35 50C155 16 385 29 447 131C493 212 400 321 319 350C206 391 85 292 43 209Z" fill="#d3dfbf"/>';
+    body += '<path d="M398 413C485 351 683 350 801 403C878 437 873 522 792 560H396C343 518 341 455 398 413Z" fill="#d3dcaf"/>';
+    body += '<path d="M676 220C738 189 841 226 868 303C894 384 817 412 737 393C676 376 648 291 676 220Z" fill="#d3dfbf"/>';
+    body += '<path d="'+path+'" fill="none" stroke="#c0cbb0" stroke-width="94" stroke-linecap="round"/>';
+    body += '<path d="'+path+'" fill="none" stroke="#f2f1e5" stroke-width="92" stroke-linecap="round"/>';
+    const marks = [];
+    let grassCount=0, flowerCount=0;
+    for (let i=0; i<520; i++) {
+      const x=36+rand()*828, y=35+rand()*492;
+      const meadow=inEllipse(x,y,619,467,235,119);
+      const grove=inEllipse(x,y,251,179,213,151);
+      const right=inEllipse(x,y,771,306,107,105);
+      const pocket=inEllipse(x,y,139,373,101,92);
+      if (!(meadow||grove||right||pocket) || nearWalk(x,y,61)) continue;
+      if (trees.some(t=>Math.hypot(x-t[0],y-t[1])<t[2]+14)) continue;
+      if (meadow && rand()<.35) {
+        marks.push('<circle cx="'+x.toFixed(2)+'" cy="'+y.toFixed(2)+'" r="'+(2.5+rand()*1.3).toFixed(2)+'" fill="#bfa967"/>');
+        flowerCount++;
+      } else {
+        marks.push(base.grass(+x.toFixed(2),+y.toFixed(2), grove?'#8b9d6c':'#7d925b'));
+        grassCount++;
+      }
+    }
+    body += marks.join('');
+    body += trees.slice().sort((a,b)=>a[1]-b[1]).map(t=>base.tree(...t)).join('');
+    return '<svg viewBox="0 0 900 560" role="img" aria-label="A winding walk between a flowering meadow and two loose tree groves" xmlns="http://www.w3.org/2000/svg">'+body+'</svg>';
+  };
+})();
+
+
+(() => {
+  window.layoutStudies = window.layoutStudies || {};
+  window.layoutStudies[2] = function (base) {
+    const trees = [
+      [132, 148, 34, '#466d43'],
+      [211, 129, 25, '#82965d'],
+      [390, 177, 31, '#466d43'],
+      [649, 126, 35, '#466d43'],
+      [705, 181, 24, '#82965d'],
+      [215, 425, 34, '#466d43'],
+      [285, 385, 23, '#82965d'],
+      [459, 425, 29, '#82965d'],
+      [670, 393, 35, '#466d43'],
+      [759, 436, 25, '#82965d']
+    ];
+    const beds = [
+      { x: 88, y: 78, w: 650, h: 160 },
+      { x: 162, y: 330, w: 650, h: 152 }
+    ];
+    const rand = base.random(202);
+    let planting = '';
+    let sprigCount = 0;
+    let flowerCount = 0;
+    for (const bed of beds) {
+      let placed = 0;
+      let attempts = 0;
+      while (placed < 62 && attempts++ < 600) {
+        const x = bed.x + 17 + rand() * (bed.w - 34);
+        const y = bed.y + 16 + rand() * (bed.h - 32);
+        if (trees.some(([tx, ty, radius]) => Math.hypot(x - tx, y - ty) < radius * 1.1 + 7)) continue;
+        if (placed % 4 === 0) {
+          planting += `<circle cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="3.4" fill="#bfa967"/>`;
+          flowerCount++;
+        } else {
+          planting += base.grass(Number(x.toFixed(2)), Number(y.toFixed(2)));
+          sprigCount++;
+        }
+        placed++;
+      }
+    }
+    const body = `${base.grid(900, 560)}
+      <rect x="64" y="54" width="772" height="452" rx="5" fill="#f2f1e5" stroke="#c0cbb0" stroke-width=".8"/>
+      ${beds.map(bed => `<rect x="${bed.x}" y="${bed.y}" width="${bed.w}" height="${bed.h}" rx="3" fill="#d5e1c2" stroke="#849d6b" stroke-width=".8"/>`).join('')}
+      ${planting}
+      ${trees.map(([x, y, radius, color]) => base.tree(x, y, radius, color)).join('')}`;
+    return `<svg viewBox="0 0 900 560" role="img" aria-label="Two offset planted beds with grouped trees framing an open garden court" xmlns="http://www.w3.org/2000/svg" data-layout="2" data-trees="${trees.length}" data-grass="${sprigCount}" data-flowers="${flowerCount}">${body}</svg>`;
+  };
+})();
+
+
+/* Layout 3: Original shallow garden platform; exact original tree/grass helpers. */
+(function () {
+  window.layoutStudies = window.layoutStudies || {};
+  window.layoutStudies[3] = function (base) {
+    const footprint = 'M130 200L570 100L790 335L350 435Z';
+    const project = (x, y) => [130 + x + y * (220 / 235), 200 - x * (100 / 440) + y];
+    const random = base.random(7303);
+    const trees = [
+      [45, 57, 31, '#81975e'], [107, 40, 36, '#6a8952'], [84, 100, 42, '#5c7d4c'],
+      [226, 33, 32, '#6a8952'], [280, 39, 39, '#5c7d4c'], [324, 61, 28, '#81975e'],
+      [358, 166, 31, '#6a8952'], [390, 205, 35, '#5c7d4c']
+    ];
+    const path = 'M-20 137C66 146 103 72 166 80C247 91 249 179 327 153C377 136 418 107 463 124';
+    const curves = [
+      [[-20,137],[66,146],[103,72],[166,80]],
+      [[166,80],[247,91],[249,179],[327,153]],
+      [[327,153],[377,136],[418,107],[463,124]]
+    ];
+    const walk = [];
+    curves.forEach(c => {
+      for (let i = 0; i <= 60; i++) {
+        const t=i/60, s=1-t;
+        walk.push([s*s*s*c[0][0]+3*s*s*t*c[1][0]+3*s*t*t*c[2][0]+t*t*t*c[3][0], s*s*s*c[0][1]+3*s*s*t*c[1][1]+3*s*t*t*c[2][1]+t*t*t*c[3][1]]);
+      }
+    });
+    let body = base.grid(900, 560);
+    body += '<defs><clipPath id="layout-3-platform"><path d="'+footprint+'"/></clipPath></defs>';
+    body += '<path d="'+footprint+'" fill="#557b3930" transform="translate(5 12)"/>';
+    body += '<path d="M130 200L350 435V447L130 212Z" fill="#a9bb93"/><path d="M350 435L790 335V347L350 447Z" fill="#bacba2"/>';
+    body += '<path d="'+footprint+'" fill="#d3dfbf" stroke="#96ad80" stroke-width="1.1"/>';
+    body += '<g clip-path="url(#layout-3-platform)"><g transform="matrix(1 '+(-100/440)+' '+(220/235)+' 1 130 200)">';
+    body += '<path d="M0 15C80 0 152 16 169 64C174 104 107 119 61 116L0 101Z" fill="#c6d7ab"/>';
+    body += '<path d="M189 8C233 5 327 9 356 41C378 77 314 113 262 92C219 74 204 55 189 8Z" fill="#c6d7ab"/>';
+    body += '<path d="M232 183C286 152 380 145 440 168V235H225C201 223 207 197 232 183Z" fill="#d3dcaf"/>';
+    body += '<path d="'+path+'" fill="none" stroke="#c0cbb0" stroke-width="34" stroke-linecap="round"/>';
+    body += '<path d="'+path+'" fill="none" stroke="#f2f1e5" stroke-width="32" stroke-linecap="round"/>';
+    body += '</g>';
+    let grassCount=0, flowers=0;
+    for (let i=0; i<270; i++) {
+      const x=12+random()*416, y=12+random()*211;
+      if (walk.some(p=>Math.hypot(x-p[0], y-p[1])<24)) continue;
+      const [px,py]=project(x,y);
+      if (trees.some(([tx,ty,r])=>{const [sx,sy]=project(tx,ty);return Math.hypot(px-sx,py-sy)<r+13})) continue;
+      if (x>200 && y>167 && random()<.38) {
+        body += '<circle cx="'+px.toFixed(2)+'" cy="'+py.toFixed(2)+'" r="3.1" fill="#d8c87e"/>';
+        flowers++;
+      } else {
+        body += base.grass(+px.toFixed(2),+py.toFixed(2),'#8b9d6c');
+        grassCount++;
+      }
+    }
+    body += '</g>';
+    body += trees.slice().sort((a,b)=>project(a[0],a[1])[1]-project(b[0],b[1])[1]).map(([x,y,r,color])=>{const [px,py]=project(x,y);return base.tree(px,py,r,color)}).join('');
+    return '<svg viewBox="0 0 900 560" role="img" aria-label="A shallow raised garden with a curved gravel walk and three grouped planting islands" xmlns="http://www.w3.org/2000/svg" data-layout="3" data-grass="'+grassCount+'" data-flowers="'+flowers+'">'+body+'</svg>';
+  };
+})();
+
+
+(() => {
+  window.layoutStudies = window.layoutStudies || {};
+  window.layoutStudies[4] = function (base) {
+    const rnd = base.random(414);
+    let body = base.grid(900, 560).replaceAll('lab-grid', 'layout-4-grid').replaceAll('hero-grid', 'layout-4-grid');
+
+    // Broad connected beds leave two quiet gravel channels between them.
+    body += `<path d="M48 97C167 47 253 47 359 83S556 151 670 123S795 67 852 92L852 174C763 152 713 190 620 191S435 154 329 138S155 121 48 167Z" fill="#d5e1c2" stroke="#96ad80" stroke-width="1.1"/>
+      <path d="M48 257C160 213 244 239 343 275S535 298 647 254S790 222 852 248L852 331C763 295 707 332 622 352S444 372 341 337S144 302 48 333Z" fill="#d3dcaf"/>
+      <path d="M48 429C153 386 249 414 349 438S535 459 633 416S795 394 852 418L852 514C757 478 701 488 622 512S450 532 343 502S142 473 48 500Z" fill="#d7e2c8" stroke="#96ad80" stroke-width="1.1"/>`;
+
+    const canopies = [
+      [145,96,32,'#466d43'], [207,85,25,'#6a8952'], [257,109,36,'#81975e'],
+      [595,153,23,'#6a8952'], [681,139,36,'#466d43'], [737,111,28,'#81975e'],
+      [126,436,30,'#6a8952'], [181,452,37,'#466d43'], [238,442,23,'#81975e'],
+      [713,444,31,'#6a8952'], [775,453,35,'#466d43']
+    ];
+    const occupied = (x,y,pad=13) => canopies.some(t => Math.hypot(x-t[0],y-t[1]) < t[2]+pad);
+
+    const bedCenter = (x, stations) => {
+      for (let i=1;i<stations.length;i++) {
+        if (x<=stations[i][0]) {
+          const a=stations[i-1], b=stations[i];
+          return a[1]+(b[1]-a[1])*(x-a[0])/(b[0]-a[0]);
+        }
+      }
+      return stations[stations.length-1][1];
+    };
+    // Keep the source sprigs and flower dots at their familiar original scale.
+    for (let i=0;i<83;i++) {
+      const x=68+rnd()*763;
+      const center=bedCenter(x,[[48,132],[160,102],[260,97],[360,114],[460,140],[560,160],[650,158],[740,132],[852,133]]);
+      const y=center + (rnd()-.5)*41;
+      if (!occupied(x,y,10)) body+=base.grass(x,y);
+    }
+    for (let i=0;i<114;i++) {
+      const x=69+rnd()*763;
+      const center=bedCenter(x,[[48,295],[160,274],[260,281],[360,311],[460,332],[560,324],[660,294],[760,272],[852,290]]);
+      const y=center + (rnd()-.5)*50;
+      body+=base.grass(x,y);
+    }
+    [[337,306],[655,295]].forEach(([cx,cy])=>{
+      for (let i=0;i<19;i++) {
+        const x=cx+(rnd()-.5)*100, y=cy+(rnd()-.5)*39;
+        body+=`<circle cx="${x}" cy="${y}" r="4" fill="#bfa967"/>`;
+      }
+    });
+    for (let i=0;i<77;i++) {
+      const x=68+rnd()*764;
+      const center=bedCenter(x,[[48,464],[160,440],[260,452],[360,479],[460,495],[560,490],[660,459],[760,444],[852,466]]);
+      const y=center + (rnd()-.5)*37;
+      if (!occupied(x,y,12)) body+=base.grass(x,y);
+    }
+    canopies.sort((a,b)=>a[1]-b[1]).forEach(t=>{body+=base.tree(...t);});
+    return `<svg viewBox="0 0 900 560" role="img" aria-label="Three broad curving planting beds with original shrub canopies, meadow sprigs and ochre flowers, separated by open gravel channels" xmlns="http://www.w3.org/2000/svg">${body}</svg>`;
+  };
+})();
+
+
+(() => {
+  window.layoutStudies = window.layoutStudies || {};
+  window.layoutStudies[5] = function (base) {
+    const tree = base.tree;
+    const grass = base.grass;
+    const inside = (x, y, polygon) => {
+      let hit = false;
+      for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+        const a = polygon[i], b = polygon[j];
+        if ((a[1] > y) !== (b[1] > y) && x < (b[0] - a[0]) * (y - a[1]) / (b[1] - a[1]) + a[0]) hit = !hit;
+      }
+      return hit;
+    };
+    const pockets = [
+      {
+        path: 'M119 138C119 99 152 69 201 65C246 62 281 81 286 116C291 145 267 173 229 181C181 192 126 177 119 138Z',
+        polygon: [[122,138],[139,94],[181,70],[222,67],[268,87],[283,123],[262,156],[225,178],[174,178],[135,162]],
+        bounds: [125,75,278,174], count: 28, seed: 815
+      },
+      {
+        path: 'M466 104C492 58 568 43 627 64C682 82 705 128 684 171C669 204 620 218 577 204C540 193 525 178 499 166C468 152 452 132 466 104Z',
+        polygon: [[470,104],[501,71],[554,57],[610,61],[660,84],[686,119],[686,158],[658,187],[616,207],[574,200],[530,179],[495,161],[465,135]],
+        bounds: [470,66,680,198], count: 39, seed: 238
+      },
+      {
+        path: 'M683 262C708 233 757 222 793 239C830 257 840 294 819 322C796 353 743 366 707 348C673 332 660 290 683 262Z',
+        polygon: [[685,265],[713,241],[751,232],[785,240],[813,260],[829,289],[817,317],[788,341],[746,354],[710,342],[683,319],[673,288]],
+        bounds: [679,237,825,347], count: 32, seed: 891
+      },
+      {
+        path: 'M479 440C510 412 560 401 608 412C643 420 679 433 693 457C708 483 680 508 639 512C601 516 582 502 549 502C514 502 475 500 463 478C455 465 463 453 479 440Z',
+        polygon: [[479,440],[517,417],[561,409],[609,417],[653,430],[683,450],[695,475],[673,500],[635,509],[591,500],[550,498],[502,498],[469,480],[465,457]],
+        bounds: [467,415,688,506], count: 36, seed: 437
+      },
+      {
+        path: 'M100 389C115 358 150 346 183 356C215 366 230 381 264 378C305 375 343 397 344 432C346 463 312 481 271 479C235 477 212 461 184 463C147 466 107 453 97 427C92 414 94 403 100 389Z',
+        polygon: [[102,389],[127,364],[159,354],[183,361],[223,381],[264,382],[301,385],[330,405],[341,433],[322,459],[281,476],[242,471],[206,459],[176,459],[136,455],[106,434],[97,408]],
+        bounds: [101,360,338,473], count: 43, seed: 572
+      }
+    ];
+    let body = base.grid(900, 560).replace(/lab-grid/g, 'layout-5-grid').replace(/hero-grid/g, 'layout-5-grid');
+    body += '<path d="M180 278C171 219 199 172 257 153C307 137 363 156 412 161C470 167 511 201 525 248C543 307 510 350 457 370C412 387 375 381 330 386C266 394 205 364 186 319C181 306 179 291 180 278Z" fill="#f2f1e5"/>';
+    body += '<path d="M916 561C818 522 762 459 684 421C618 389 557 364 514 321C491 298 473 273 455 254" fill="none" stroke="#f2f1e5" stroke-width="73"/>';
+    pockets.forEach((pocket) => {
+      body += `<path d="${pocket.path}" fill="#d5e1c2" stroke="#96ad80" stroke-width=".8"/>`;
+      const rand = base.random(pocket.seed);
+      const [x1, y1, x2, y2] = pocket.bounds;
+      let placed = 0;
+      for (let attempt = 0; attempt < 800 && placed < pocket.count; attempt++) {
+        const x = x1 + rand() * (x2 - x1);
+        const y = y1 + rand() * (y2 - y1);
+        if (!inside(x, y, pocket.polygon)) continue;
+        if (placed % 4 === 0) body += `<circle cx="${x}" cy="${y}" r="3.4" fill="#bfa967"/>`;
+        else body += grass(x, y);
+        placed++;
+      }
+    });
+    [
+      [544,108,39,'#466d43'], [611,116,31,'#82965d'],
+      [572,165,34,'#6a8952'], [644,169,24,'#81975e'],
+      [154,394,34,'#6a8952'], [213,412,39,'#466d43'],
+      [278,433,28,'#82965d']
+    ].sort((a,b) => a[1] - b[1]).forEach(([x,y,r,color]) => { body += tree(x,y,r,color); });
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" role="img" aria-label="A quiet garden clearing enclosed by five planted pockets, with a curved path entering from the lower right">${body}</svg>`;
+  };
+})();
+
+
+let currentLayout=1;
+function grid(width,height){const id='layout-'+currentLayout+'-grid';return `<defs><pattern id="${id}" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="#dce3d1" stroke-width=".6"/></pattern></defs><rect width="${width}" height="${height}" fill="#e8eedf"/><rect width="${width}" height="${height}" fill="url(#${id})"/>`;}
+const base={tree,grass,random,grid};
+const artwork=document.getElementById('artwork');
+const controls=Array.from(document.querySelectorAll('.layout-selector button'));
+function requestedLayout(){const n=Number(new URLSearchParams(location.search).get('layout'));return Number.isInteger(n)&&n>=1&&n<=5?n:1;}
+function selectLayout(n,{focus=false,updateUrl=true}={}){
+ currentLayout=n;
+ artwork.innerHTML=window.layoutStudies[n](base);
+ artwork.querySelector('svg').setAttribute('data-layout',String(n));
+ controls.forEach(button=>{const active=Number(button.dataset.layout)===n;button.setAttribute('aria-pressed',String(active));button.tabIndex=active?0:-1});
+ if(updateUrl){const url=new URL(location.href);url.searchParams.set('layout',String(n));history.replaceState(null,'',url)}
+ if(focus)controls[n-1].focus();
+}
+controls.forEach(button=>{
+ button.addEventListener('click',()=>selectLayout(Number(button.dataset.layout)));
+ button.addEventListener('keydown',event=>{
+  let next;
+  if(event.key==='ArrowRight'||event.key==='ArrowDown')next=currentLayout%5+1;
+  else if(event.key==='ArrowLeft'||event.key==='ArrowUp')next=(currentLayout+3)%5+1;
+  else if(event.key==='Home')next=1;
+  else if(event.key==='End')next=5;
+  else return;
+  event.preventDefault();selectLayout(next,{focus:true});
+ });
+});
+window.addEventListener('popstate',()=>selectLayout(requestedLayout(),{updateUrl:false}));
+selectLayout(requestedLayout(),{updateUrl:false});
+</script>
+</body>
+</html>

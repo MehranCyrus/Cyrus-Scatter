@@ -15,7 +15,7 @@ def fixture_controller():
                procLayerSelfEnabled=False,procLayerSelfMultiplier=1,procLayerSelfGap=0,procLayerSelfPlanar=False,procSiblingEnabled=True,procSiblingMultiplier=1,procSiblingGap=20,procSiblingPlanar=False)
     controller=Obj(calculationModel=lambda:"CyrusUnified1",logicalLayers=lambda:[parent],layerSets=lambda _:[leaf],
                    procRuleScope=[2],procRuleA=["layer_a"],procRuleB=["layer_b"],procRuleEnabled=[True],
-                   procRuleMultiplier=[.8],procRuleGap=[100],procRulePlanar=[True])
+                   procRuleMultiplier=[.8],procRuleGapWU=[100],procRulePlanar=[True])
     return controller,leaf
 
 

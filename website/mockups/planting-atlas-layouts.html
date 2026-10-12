@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Cyrus — planting composition studies</title>
+<style>
+*{box-sizing:border-box}html{background:#f7f8f2}body{margin:0;min-height:100svh;display:grid;place-items:center;padding:32px 0;color:#314b3b;font-family:"Segoe UI",Arial,sans-serif}main{width:min(1200px,calc(100% - 48px));min-width:0}.canvas{width:100%;aspect-ratio:1000/650;position:relative;background:#fafbf6;border:1px solid #dce2d4;border-radius:10px;overflow:hidden;box-shadow:0 16px 60px #344d3d06}svg{display:block;width:100%;height:100%}.choices{display:flex;justify-content:center;gap:9px;margin-top:22px}.choices button{min-height:44px;min-width:44px;border:1px solid #d7decf;border-radius:50%;background:transparent;color:#53694e;font:500 13px/1 "Segoe UI",Arial,sans-serif;cursor:pointer;transition:background .12s,color .12s}.choices button:hover{background:#e7eddf}.choices button[aria-pressed=true]{color:#f7f8f2;background:#365b42;border-color:#365b42}.choices button:focus-visible{outline:2px solid #365b42;outline-offset:4px}@media(max-width:600px){body{padding:24px 0}main{width:calc(100% - 24px)}.canvas{border-radius:7px}.choices{margin-top:18px;gap:8px}}@media(prefers-reduced-motion:reduce){.choices button{transition:none}}@media print{body{display:block;padding:0}main{width:100%}.choices{display:none}.canvas{box-shadow:none;border:0;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<main aria-label="Five garden composition studies">
+<div class="canvas" id="artwork"></div>
+<nav class="choices" aria-label="Choose a composition">
+<button type="button" data-layout="1" aria-controls="artwork" aria-label="Composition 1" aria-pressed="false">1</button>
+<button type="button" data-layout="2" aria-controls="artwork" aria-label="Composition 2" aria-pressed="false">2</button>
+<button type="button" data-layout="3" aria-controls="artwork" aria-label="Composition 3" aria-pressed="false">3</button>
+<button type="button" data-layout="4" aria-controls="artwork" aria-label="Composition 4" aria-pressed="false">4</button>
+<button type="button" data-layout="5" aria-controls="artwork" aria-label="Composition 5" aria-pressed="false">5</button>
+</nav>
+</main>
+<script>
+'use strict';
+const f = number => Number(number.toFixed(2));
+const rng = seed => () => { let t = seed += 0x6D2B79F5; t = Math.imul(t ^ t >>> 15, t | 1); t ^= t + Math.imul(t ^ t >>> 7, t | 61); return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+/* Original botanical symbol library from the selected cyrus-scatter-site design.
+   Illustration only; these studies do not execute the Scatter plugin. */
+function botanicalSymbols() {
+    let symbols = `<radialGradient id="leaf-light" cx="35%" cy="25%" r="76%"><stop offset="0" stop-color="#9ca47a"/><stop offset=".58" stop-color="#778b61"/><stop offset="1" stop-color="#476347"/></radialGradient><radialGradient id="leaf-deep" cx="30%" cy="20%" r="85%"><stop offset="0" stop-color="#839777"/><stop offset=".6" stop-color="#526f50"/><stop offset="1" stop-color="#324f3c"/></radialGradient><radialGradient id="leaf-silver" cx="30%" cy="20%" r="80%"><stop offset="0" stop-color="#b2b79a"/><stop offset=".56" stop-color="#939f7a"/><stop offset="1" stop-color="#647b57"/></radialGradient><pattern id="stone-hatch" width="7" height="7" patternUnits="userSpaceOnUse"><path d="M0 7 7 0" stroke="#738065" stroke-width=".4" opacity=".12"/></pattern>`;
+    ['a','b','c'].forEach((name, i) => {
+      const random = rng(16+i*202);
+      const colors = i === 0 ? ['#79936c','#68845d','#95a380','#849b74','#486549'] : i === 1 ? ['#909e6f','#b0b587','#86935f','#a0a673','#6b814f'] : ['#778b6d','#9da990','#6c8264','#b3b99a','#8c9c7d'];
+      const radius = i === 1 ? 23 : 28;
+      const canopyY = i === 1 ? -53 : -48;
+      symbols += `<g id="tree-${name}"><ellipse cx="13" cy="5" rx="29" ry="9" fill="#223321" opacity=".105" transform="rotate(-15 13 5)"/><path d="M0 1Q-2-18 1-38M0-14-15-40M0-17 17-40M0-24 8-49" stroke="#796f51" stroke-width="2.8" stroke-linecap="round" fill="none"/><path d="M1 0Q2-15 2-37" stroke="#a69a70" stroke-width=".85" fill="none"/><ellipse cx="0" cy="${canopyY}" rx="${radius}" ry="${i===1?32:24}" fill="url(#${i===0?'leaf-deep':i===1?'leaf-light':'leaf-silver'})"/>`;
+      for(let j=0;j<35;j++){
+        const angle=random()*Math.PI*2, dist=Math.sqrt(random());
+        const x=Math.cos(angle)*radius*dist, y=canopyY+Math.sin(angle)*(i===1?31:23)*dist;
+        symbols+=`<circle cx="${f(x)}" cy="${f(y)}" r="${f(3+random()*5)}" fill="${colors[j%colors.length]}" opacity="${f(.5+random()*.4)}"/>`;
+      }
+      for(let j=0;j<40;j++){
+        const angle=random()*Math.PI*2, dist=Math.sqrt(random());
+        const x=f(Math.cos(angle)*radius*dist),y=f(canopyY+Math.sin(angle)*25*dist);
+        symbols+=`<ellipse cx="${x}" cy="${y}" rx="${f(.6+random()*1.5)}" ry=".7" fill="${j%3===0?'#d6d2a3':colors[j%colors.length]}" opacity=".7" transform="rotate(${f(random()*65)} ${x} ${y})"/>`;
+      }
+      symbols+='</g>';
+    });
+    symbols+=`<g id="shrub-a"><ellipse cy="2" rx="11" ry="4" fill="#334a2d" opacity=".14"/><ellipse cy="-4" rx="10" ry="8" fill="#7e9362"/><circle cx="-5" cy="-6" r="5.5" fill="#9aaa79"/><circle cx="5" cy="-5" r="6" fill="#738957"/><circle cx="0" cy="-10" r="5" fill="#99a976"/><path d="m-5-6 2-2m4 4 2-2m-3-5 1-1m-7 11 2-1m9-3 1-1" stroke="#c1c49b" stroke-width="1"/></g>`;
+    symbols+=`<g id="shrub-b"><ellipse cy="3" rx="12" ry="4" fill="#334a2d" opacity=".12"/><ellipse cy="-3" rx="11" ry="7" fill="#a6aa7b"/><circle cx="-5" cy="-6" r="5" fill="#b7b788"/><circle cx="6" cy="-6" r="5" fill="#8e9b68"/><circle cy="-9" r="5.5" fill="#b8ba89"/><path d="M-5-6h2m5-2h2M1-11h2m3 9h2" stroke="#e0d6b0" stroke-width="1"/></g>`;
+    symbols+=`<g id="grass-a"><ellipse cy="2" rx="7" ry="2.5" fill="#627147" opacity=".16"/><path d="M0 1Q-3-8-7-10M1 1Q0-8-2-15M1 1Q4-8 7-12M0 1Q-5-4-8-4M1 1Q6-5 10-4M0 1Q1-10 3-16" fill="none" stroke="#858f5e" stroke-width="1"/><path d="M0 1Q0-7-1-12M0 1Q3-7 6-9M0 1Q-4-4-5-7" fill="none" stroke="#b0af79" stroke-width="1.2"/><ellipse cx="-2" cy="-15" rx="1" ry="2.8" fill="#c3b58a" transform="rotate(-9 -2 -15)"/><ellipse cx="3" cy="-16" rx="1" ry="3" fill="#ccc09a" transform="rotate(9 3 -16)"/></g>`;
+    symbols+=`<g id="grass-b"><ellipse cy="2" rx="6" ry="2" fill="#627147" opacity=".15"/><path d="M0 1Q-4-8-7-8M0 1Q1-7 2-13M0 1Q4-5 7-6M0 1Q-1-8-3-11M0 1Q2-10 5-13" fill="none" stroke="#a2a47e" stroke-width="1.5"/><circle cx="-3" cy="-12" r="1.6" fill="#cbc1b7"/><circle cx="2" cy="-14" r="1.8" fill="#cfc5b9"/><circle cx="5" cy="-13" r="1.3" fill="#cbc1b7"/></g>`;
+    return symbols;
+  }
+
+function extraSymbols(){return `<g id="rock"><ellipse cy="3" cx="5" rx="14" ry="5" fill="#415037" opacity=".12"/><path d="M-15 0l4-12 10-5 13 6 5 11-11 5-14-1Z" fill="#b6b8a3" stroke="#919883" stroke-width=".5"/><path d="m-11-12 11 4 12-3-13-6Z" fill="#d3d2be"/><path d="m0-8 6 13 11-5-5-11Z" fill="#a6ad97"/><path d="m-15 0 15-8 6 13-14-1Z" fill="#c5c6af"/><path d="m-8-7 6-5m5 1 6 2" stroke="#ebeadc" stroke-width=".8"/></g><g id="flowers"><ellipse cy="3" rx="8" ry="3" fill="#7d8d63" opacity=".14"/><path d="M0 2Q-3-7-5-13M0 2Q4-9 6-16M0 2V-18M0 1Q-7-2-9-8M0 1Q6-3 9-8" fill="none" stroke="#84956a" stroke-width=".75"/><path d="m-2-2-5-2m10-2 5-2m-7-1-4-3" stroke="#a0ae82" stroke-width="1.2"/><g fill="#e9e5cd"><circle cx="-5" cy="-13" r="2.2"/><circle cx="6" cy="-16" r="2"/><circle cy="-18" r="2.5"/><circle cx="-9" cy="-8" r="1.7"/><circle cx="9" cy="-8" r="1.7"/></g><g fill="#c3b57d"><circle cy="-18" r=".7"/><circle cx="6" cy="-16" r=".6"/><circle cx="-5" cy="-13" r=".7"/></g></g><g id="spires"><ellipse cy="2" rx="7" ry="2.5" fill="#6f805d" opacity=".13"/><path d="M0 2-4-21M0 2 4-25M0 2 8-16M0 2-8-14" stroke="#768a65" fill="none" stroke-width=".8"/><g fill="#afa3b2"><ellipse cx="-4" cy="-18" rx="1.4" ry="5.5" transform="rotate(-10 -4 -18)"/><ellipse cx="4" cy="-23" rx="1.4" ry="5.7" transform="rotate(8 4 -23)"/><ellipse cx="8" cy="-15" rx="1.2" ry="4"/><ellipse cx="-8" cy="-12" rx="1.2" ry="3.3"/></g><path d="M0 1Q-6-7-8-6M0 1Q5-7 7-6" stroke="#a0ad83" fill="none" stroke-width="1.1"/></g>`;}
+const definitions = `<defs>${botanicalSymbols()}${extraSymbols()}<filter id="ground-shadow" x="-30%" y="-50%" width="180%" height="220%"><feGaussianBlur stdDeviation="8"/></filter></defs>`;
+
+function scene(number){
+ const rand=rng(711+number*341), plants=[];
+ let out='', sx=3.1, sy=1.48, ox=500, oy=155;
+ if(number===2){sx=3.3;sy=1.5;oy=176;ox=518}
+ if(number===3){sx=3.3;sy=1.58;oy=206;ox=506}
+ if(number===4){sx=3.35;sy=1.5;oy=153;ox=506}
+ if(number===5){sx=3.25;sy=1.5;oy=168;ox=500}
+ const p=(x,y,z=0)=>[f(ox+(x-y)*sx),f(oy+(x+y)*sy-z)];
+ const points=rows=>rows.map(row=>p(...row).join(',')).join(' ');
+ const poly=(rows,attrs)=>`<polygon points="${points(rows)}" ${attrs}/>`;
+ const line=(a,b,attrs)=>`<path d="M${p(...a)}L${p(...b)}" fill="none" ${attrs}/>`;
+ const curve=rows=>rows.map((q,i)=>(i?'L':'M')+p(...q)).join(' ');
+ const worldRect=(x,y,w,h,z=0)=>[[x,y,z],[x+w,y,z],[x+w,y+h,z],[x,y+h,z]];
+ const slab=(x,y,w,h,z=0,depth=3,fill='#dce1cf')=>{
+   out+=poly([[x,y+h,z],[x+w,y+h,z],[x+w,y+h,z-depth],[x,y+h,z-depth]],'fill="#bbc4ae"');
+   out+=poly([[x+w,y,z],[x+w,y+h,z],[x+w,y+h,z-depth],[x+w,y,z-depth]],'fill="#aebba2"');
+   out+=poly(worldRect(x,y,w,h,z),`fill="${fill}" stroke="#a5b499" stroke-width=".65"`);
+ };
+ const outline=(rows,fill='#c6d0b4',stroke='#acb99b')=>{out+=`<path d="${curve(rows)}Z" fill="${fill}" stroke="${stroke}" stroke-width=".65"/>`};
+ const ellipseWorld=(cx,cy,rx,ry,z=0)=>Array.from({length:65},(_,i)=>{const a=i/64*Math.PI*2;return[cx+Math.cos(a)*rx,cy+Math.sin(a)*ry,z]});
+ function path(rows,width,z=0){
+   const d=curve(rows.map(q=>[q[0],q[1],z]));
+   out+=`<path d="${d}" stroke="#c0c5b0" stroke-width="${width*sx*.7+1.3}" fill="none" stroke-linejoin="round" stroke-linecap="butt"/><path d="${d}" stroke="#eceadd" stroke-width="${width*sx*.7}" fill="none" stroke-linejoin="round" stroke-linecap="butt"/>`;
+ }
+ function add(type,x,y,scale=1,z=0,variant=0){plants.push({type,x,y,scale,z,variant,depth:x+y})}
+ function scatter(count,inside,z=0,seed=0){
+   const r=rng(1991+number*511+seed), occupied=[];
+   let n=0;
+   for(let i=0;i<count*50&&n<count;i++){
+     const x=4+r()*102,y=4+r()*102;
+     if(!inside(x,y)||occupied.some(q=>(q[0]-x)**2+(q[1]-y)**2<4))continue;
+     occupied.push([x,y]);const v=r(),type=v<.24?'shrub':v<.42?'flowers':v<.58?'spires':'grass';
+     add(type,x,y,.62+r()*.56,z,Math.floor(r()*3));n++;
+   }
+ }
+ function trees(rows,z=0){rows.forEach(([x,y,s,v],i)=>add('tree',x,y,s||1.18,z,v??i%3))}
+ function rocks(rows,z=0){rows.forEach(([x,y,s])=>add('rock',x,y,s||.85,z))}
+ function bench(x,y,z=0){
+   out+=poly(worldRect(x,y,14,3,z+8),'fill="#a2a38b" stroke="#818c76" stroke-width=".65"');
+   for(let k=1;k<3;k++)out+=line([x,y+k,z+8],[x+14,y+k,z+8],'stroke="#d3cfb6" stroke-width=".5"');
+   out+=line([x+1,y,z+8],[x+1,y,z+1],'stroke="#737f6d" stroke-width="1.6"')+line([x+13,y,z+8],[x+13,y,z+1],'stroke="#737f6d" stroke-width="1.6"');
+ }
+ // A quiet drafting grid, kept beneath the garden rather than across the page.
+ for(let n=-20;n<=130;n+=10){out+=line([n,-20],[n,130],'stroke="#dce2d4" stroke-width=".55" opacity=".58"');out+=line([-20,n],[130,n],'stroke="#dce2d4" stroke-width=".55" opacity=".58"')}
+ out+=`<path d="${curve(worldRect(0,0,110,110,-5))}Z" transform="translate(12 10)" fill="#4f6340" opacity=".12" filter="url(#ground-shadow)"/>`;
+
+ if(number===1){
+   slab(0,0,110,110,0,4,'#c5cfb2');
+   const center=y=>50+Math.sin((y/110-.15)*Math.PI*1.65)*14;
+   const walk=Array.from({length:70},(_,i)=>{const y=i/69*110;return[center(y),y]});
+   path(walk,13);
+   scatter(300,(x,y)=>Math.abs(x-center(y))>9&&x>3&&x<107&&y>3&&y<107);
+   trees([[15,18,1.37,0],[28,35,1.62,1],[15,58,1.1,2],[81,20,1.35,1],[96,42,1.17,0],[84,84,1.02,2]]);
+   rocks([[36,76,1.05],[88,61,.8],[19,90,.8],[74,102,.65]]);
+ }
+ if(number===2){
+   slab(0,4,108,100,0,4,'#e4e4d7');
+   const beds=[[5,9,35,88],[71,9,32,41],[70,74,33,23]];
+   beds.forEach(([x,y,w,h],i)=>slab(x,y,w,h,3,4,i===0?'#c6d0b6':'#ced4b8'));
+   outline(ellipseWorld(60,61,16,16),'#dadfca','#bbc6ac');
+   scatter(260,(x,y)=>beds.some(([a,b,w,h])=>x>a+2&&x<a+w-2&&y>b+2&&y<b+h-2),3);
+   trees([[18,22,1.5,1],[24,45,1.28,0],[15,82,1.05,2],[86,21,1.33,0],[90,85,.98,1]],3);
+   rocks([[29,64,.9],[77,34,.65],[86,91,.6]],3);
+   bench(73,57);bench(45,90);
+   for(let n=0;n<5;n++)out+=poly(worldRect(48+n*7,37,5,3), 'fill="#d7d8c6" stroke="#c1c6b5" stroke-width=".45"');
+ }
+ if(number===3){
+   slab(0,0,110,110,-8,4,'#e4e5d9');
+   slab(2,2,106,28,25,7,'#c7cfb2');
+   slab(2,39,106,28,10,6,'#c0ccb0');
+   slab(2,77,106,31,-4,5,'#ccd2b4');
+   const opening=(x,y)=>Math.abs(x-(y<35?67:y<72?44:72))>7;
+   for(const [a,b,z] of [[2,30,25],[39,67,10],[77,108,-4]]){
+     path([[a<10?67:a<50?44:72,a],[a<10?67:a<50?44:72,b]],10,z);
+     scatter(95,(x,y)=>y>a+2&&y<b-2&&x>4&&x<105&&opening(x,y),z,a);
+   }
+   for(let k=0;k<5;k++)slab(60-k*3.2,31+k*1.5,14,1.7,23-k*2.7,2,'#e9e8da');
+   for(let k=0;k<5;k++)slab(46+k*4.3,68+k*1.5,14,1.7,8-k*2.6,2,'#e9e8da');
+   trees([[14,14,1.32,0],[31,17,1.25,1],[91,16,1.21,2]],25);
+   trees([[18,53,.9,2],[88,53,1.05,1]],10);
+   rocks([[35,93,.9],[95,91,.8]],-4);
+ }
+ if(number===4){
+   slab(0,0,110,110,0,4,'#e9e8dc');
+   const pockets=[{cx:23,cy:23,rx:20,ry:18},{cx:83,cy:26,rx:21,ry:20},{cx:22,cy:79,rx:19,ry:25},{cx:82,cy:83,rx:23,ry:21}];
+   pockets.forEach((b,i)=>outline(ellipseWorld(b.cx,b.cy,b.rx,b.ry),i===3?'#d2d6b9':'#c8d2b7'));
+   const inside=(x,y)=>pockets.some(b=>((x-b.cx)/b.rx)**2+((y-b.cy)/b.ry)**2<.88);
+   scatter(290,inside);
+   trees([[18,16,1.48,1],[32,29,1.14,0],[80,17,1.2,2],[91,37,1.13,0],[14,69,1.23,1],[29,91,.9,2]]);
+   rocks([[22,82,.8],[74,77,1.1],[92,93,.8]]);
+   outline(ellipseWorld(55,56,11,10),'#dedfcd','#c4c9b6');
+   for(let i=0;i<7;i++)out+=poly(worldRect(42+i*3.6,41+i*3.8,3,2), 'fill="#dbddcd" stroke="#bfc6b3" stroke-width=".5"');
+ }
+ if(number===5){
+   slab(0,0,110,110,0,4,'#c3cdb1');
+   const cx=59,cy=59;
+   outline(ellipseWorld(cx,cy,36,32),'#e9e8dc','#c0c7b0');
+   outline(ellipseWorld(cx,cy,25,21),'#d5dcc5','#becbab');
+   path([[76,84],[84,95],[92,110]],11);
+   scatter(275,(x,y)=>((x-cx)/39)**2+((y-cy)/35)**2>1&&x>3&&x<107&&y>3&&y<107&&!(y>83&&x>74&&x<101));
+   scatter(42,(x,y)=>((x-59)/22)**2+((y-59)/18)**2<.9,0,101);
+   trees([[13,20,1.42,0],[31,15,1.48,1],[73,13,1.29,2],[94,26,1.2,0],[14,57,1.32,1],[20,91,.95,2],[97,66,.93,1]]);
+   rocks([[41,55,1.05],[66,69,.75],[35,94,.65]]);
+   bench(56,86);
+ }
+
+ // World-depth sorting makes every plant sit in its bed and behind nearer plants.
+ plants.sort((a,b)=>a.depth-b.depth||(a.type==='tree'?1:-1));
+ for(const q of plants){
+   const [x,y]=p(q.x,q.y,q.z);
+   const symbol=q.type==='tree'?'tree-'+['a','b','c'][q.variant%3]:q.type==='shrub'?'shrub-'+(q.variant===1?'b':'a'):q.type==='grass'?'grass-'+(q.variant===2?'b':'a'):q.type;
+   const scale=q.scale*(q.type==='tree'?1.17:q.type==='shrub'?.95:1.03);
+   out+=`<use href="#${symbol}" transform="translate(${x} ${y}) scale(${f(scale)})"/>`;
+ }
+ // Sparse edge ticks share the restrained drafting language of the reference.
+ out+=line([-3,113],[113,113],'stroke="#9aa98e" stroke-width=".65"');
+ out+=line([-3,111],[-3,115],'stroke="#9aa98e" stroke-width=".65"');
+ out+=line([113,111],[113,115],'stroke="#9aa98e" stroke-width=".65"');
+ return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 650" role="img" aria-label="Garden composition ${number}: botanical illustration inspired by the supplied feature atlas">${definitions}${out}</svg>`;
+}
+const stage=document.getElementById('artwork'), controls=[...document.querySelectorAll('button[data-layout]')];
+const rendered=new Map();let current=1;
+function initial(){const n=Number(new URLSearchParams(location.search).get('layout'));return n>=1&&n<=5&&Number.isInteger(n)?n:1}
+function select(n,focus=false,update=true){
+ current=n;if(!rendered.has(n))rendered.set(n,scene(n));stage.innerHTML=rendered.get(n);
+ controls.forEach(b=>{const active=Number(b.dataset.layout)===n;b.setAttribute('aria-pressed',String(active));b.tabIndex=active?0:-1});
+ if(update){const url=new URL(location.href);url.searchParams.set('layout',String(n));history.replaceState(null,'',url)}
+ if(focus)controls[n-1].focus();
+}
+controls.forEach(b=>{b.onclick=()=>select(Number(b.dataset.layout));b.onkeydown=e=>{let n;if(e.key==='ArrowRight'||e.key==='ArrowDown')n=current%5+1;else if(e.key==='ArrowLeft'||e.key==='ArrowUp')n=(current+3)%5+1;else if(e.key==='Home')n=1;else if(e.key==='End')n=5;else return;e.preventDefault();select(n,true)}});
+window.addEventListener('popstate',()=>select(initial(),false,false));
+select(initial(),false,false);
+</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+{
+  "package": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\refinement-0.79.5\\CyrusScatter-0.79.5-Max2026.mzp",
+  "sha256": "7f58b446be180697115c85c01fba76a64d4074c154fe7ec92834c9645fc78de8",
+  "manifest": {
+    "product": "Cyrus Scatter",
+    "version": "0.79.5",
+    "max_year": 2026,
+    "toolset": "14.38.33130",
+    "windows_sdk": "10.0.19041.0",
+    "configuration": "Release",
+    "native_id": "4307e83dd69f",
+    "files": {
+      "AminScatter.dlx": "5bc1d810f914881033764aa042f68d58a6c9e04594e8b527c77460b914acb4ce",
+      "Clipper2-LICENSE.txt": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+      "CyrusBrush.dlx": "c829b8526f24bc05989930e93f4a446764893740bdef30e49fd5f92afeea357b",
+      "CyrusBrushStorage.dlh": "3e32e8ce5abdb52ed84c84b291cf7d9c0ad6cee6878cab5ae7fe3d5762381481",
+      "CyrusScatter.mcr": "c18be72856b1d853941aac679af8aebfe5a57177ba509b2e03592fb72fc5d085",
+      "CyrusScatter.ms": "47ed50ed18aab79da76f511cc74b95a81f1d518fa9fd02b2fa647ec5eba3a100",
+      "CyrusScatterEdit.dlm": "73ef0be420f319d1c5d70ad90b6a98b187d468fe5b6319af435bcf940a5fbbdf",
+      "CyrusScatterStartup.ms": "fdf38b3bc83187eecb34b833bfff2751e78626e9e3dba41aa20a0ff7ff9e8405",
+      "INSTALL.txt": "cb045b9714a62aa0946e954d6fa0d03954595cd8cdbcd931d5772cd65935c34d",
+      "Uninstall.ms": "59e2b84901fcefaae1dab59886cd2f4079df4f764c789238947e19c514b4ed49",
+      "install.ms": "c7faac995dde66a59586134da6f462f47c6b7bdc135381bbb722f13b4c4b3ce3",
+      "mzp.run": "f64354bbc36612f068414c4d1183c6e595a9e315a0d92780f774f4267c53bccd",
+      "nlohmann-json-LICENSE.txt": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603"
+    },
+    "licensing": {
+      "mode": "offline-team",
+      "key_id": "cyrus-team-a1b79a717a834e459d454a7768ffe205",
+      "term_days": 30
+    }
+  },
+  "host": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0795-final-2026-01",
+  "candidate": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\refine0795-20261011\\max2026-02",
+  "installed": false,
+  "qualification": [
+    "display0792",
+    "invalidation0792",
+    "layer-lifecycle",
+    "reuse-checks",
+    "endurance",
+    "navigation0792",
+    "scene-results",
+    "falloff-results",
+    "points-results",
+    "reopen-results",
+    "empty-results",
+    "layout-results",
+    "workflow"
+  ]
+}

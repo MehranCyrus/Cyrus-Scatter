@@ -25,13 +25,13 @@ LAYER_SETTINGS = {
     "scale_z": ("range", [1, 1], (.01, 10), ("sclZMin", "sclZMax")),
     "rotation_x_degrees": ("range", [0, 0], (-360, 360), ("rotXMin", "rotXMax")),
     "rotation_y_degrees": ("range", [0, 0], (-360, 360), ("rotYMin", "rotYMax")),
-    "movement_x_m": ("range", [0, 0], (-100, 100), ("movXMin", "movXMax")),
-    "movement_y_m": ("range", [0, 0], (-100, 100), ("movYMin", "movYMax")),
+    "movement_x_m": ("range", [0, 0], (-100, 100), ("movXMinWU", "movXMaxWU")),
+    "movement_y_m": ("range", [0, 0], (-100, 100), ("movYMinWU", "movYMaxWU")),
 }
 SOURCE_SETTINGS = {
     "scale": ("number", 1, (.01, 10), "sourceScales"),
-    "z_offset_m": ("number", 0, (-100, 100), "sourceZOffsets"),
-    "radius_m": ("number", 0, (0, 100), "sourceRadii"),
+    "z_offset_m": ("number", 0, (-100, 100), "sourceZOffsetsWU"),
+    "radius_m": ("number", 0, (0, 100), "sourceRadiiWU"),
     "radius_follows_scale": ("bool", True, (), "sourceFollowScale"),
     "show_radius": ("bool", False, (), "sourceShowRadius"),
     "forward_axis": ("int", 1, (1, 4), "sourceForwardAxes"),

@@ -1,0 +1,15 @@
+{
+  "schema": "cyrus.terminology/1",
+  "version": "1.0-candidate",
+  "review_status": "Agent source review; human review pending",
+  "max_applied_entries": 8,
+  "max_added_terms": 16,
+  "entries": [
+    {"concept": "historical-applicability", "aliases": ["historical", "historical report"], "terms": ["recorded", "snapshot"]},
+    {"concept": "bounded-authoring", "aliases": ["authoring"], "terms": ["mutation"]},
+    {"concept": "license", "aliases": ["لایسنس", "لایسنـس", "license"], "terms": ["license", "licensing"]},
+    {"concept": "import-inflections", "aliases": ["import", "importing", "reimport"], "terms": ["import", "importing", "reimporting"]},
+    {"concept": "expiry-inflections", "aliases": ["expiry", "expiration", "expire", "انقضا"], "terms": ["expiry", "expired"]},
+    {"concept": "saved-scene", "aliases": ["صحنه ذخیره شده", "saved scene"], "terms": ["saved", "reopen"]}
+  ]
+}

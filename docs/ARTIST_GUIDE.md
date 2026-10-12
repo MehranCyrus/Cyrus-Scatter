@@ -1,12 +1,14 @@
-# Cyrus Scatter 0.79.1 — current workflow
+# Cyrus Scatter 0.79.6 — current source workflow
 
 0.79 adds the [offline team license](licensing/TEAM_PILOT_0.79_2026-10-11.md) while preserving schema 55. Open **License / activation** in Scatter Modify, save a request for Mehran, then import the returned license file. It expires 30 days after generation. Existing scenes remain loadable/renderable after expiry; creation/editing locks. See [activation and renewal instructions](../tools/licensing/README.md). The [0.79.1 refinement report](Point_Workflow_0.79.1_2026-10-11/README.md) qualifies the current Point, source-container and falloff controls.
 
-Updated 11 October 2026. Use this guide for the current UI and ownership model. Dated 0.73 guides describe the older layout. This guide explains behavior; the qualification checklist separately identifies what has been tested.
+Updated 12 October 2026. Current source adds [publication recovery and typed distances](Foundation_0.79.6_2026-10-12/README.md); the last packaged delivery remains 0.79.5. Use this guide for the current UI and ownership model. This guide explains behavior; the qualification evidence separately identifies what has been tested.
 
 ## Start with a layer
 
 Create a Scatter object, add a layer, add its receiving surfaces, and add its models. Set Amount, then press **Update scatter** in Manual mode. Live mode responds to relevant changes. Select another layer to edit a different planting recipe.
+
+In **Geometry > Cyrus > Cyrus Scatter**, click to place the controller, move to size its icon, then click to finish. Right-click to leave Create mode; another placement click starts another controller. The corrected 0.79.5 package draws the icon before any layer or plant cache exists; see the [creation fix](Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md).
 
 Each layer owns its surfaces, models, amount, layout, transforms, area limits, and cleanup. The layer list controls evaluation order. Earlier layers normally occupy space first when between-layer spacing is enabled. Visibility hides viewport display; disabling a layer removes its calculation/output contribution. Names and identification colors do not change layer identity.
 
@@ -20,9 +22,11 @@ The Surfaces list belongs to the selected layer. Use + to pick a receiver, the l
 
 This does not freeze all accepted output. A cap can redistribute quotas; changed masks, spacing, cleanup or protected edits can affect acceptance. Relax can move plants when their own receiver's count or neighborhood changes. Editing the receiver's geometry/topology is outside the unchanged-surface guarantee.
 
-**Current schema-55 scenes work in 0.79.1.** Earlier development setups and stored stroke payloads are rejected; there is no automatic conversion. Keep the original file and its matching earlier build if you need to revisit it.
+**0.79.6 reads schema 55 and saves schema 56.** The immediately preceding format migrates distance values to unit-aware storage. Older model-set/stroke formats remain rejected. Keep original scene files; use their saved system units when Paint or CS Edit is bound to receiver geometry. Unsupported conversion is rejected rather than clearing authored edits.
 
 Models are source scene objects. Their Scatter label can differ from the scene object name; clearing the label uses the scene name again. The color square is a viewport identification color. Assignment groups use separate colors in their own disclosure; changing identification color does not change grouping.
+
+0.79.5 limits a local preview edit to the affected layers and reuses unchanged native display buffers. Changing one source identification color leaves other layers' prepared previews intact. It does not change plant positions or apply pending Manual population edits. Heavy changed layers and cold scene loading can still take time; see the [measured garden workflow](Terrace_Workflow_0.79.5_2026-10-11/README.md).
 
 Visible Source settings expose weight, scale, radius, vertical offset, Follow Scale and radius display. Weight controls relative selection frequency. Radius is a simplified collision footprint, not exact mesh collision. Follow Scale makes the footprint follow model scaling. Forward axis controls orientation conventions.
 
@@ -84,6 +88,8 @@ Candidate Relax moves candidates within its bounded settings. Cleanup removes un
 Point Cloud, Proxy and Mesh serve different preview costs. Layer/model identification colors help identify planting in simplified previews. Display limits can show fewer instances or faces than the accepted population. A displayed count is not the full output count. Box, Sphere and Pyramid proxies now use the retained instanced geometry display path; CPU fallback remains available if retained drawing cannot be used. See the [courtyard fix measurements](Courtyard_Fixes_0.75_2026-10-10/README.md) for the tested workload and remaining limits.
 
 Manual stores edits until an explicit calculation action. **Update scatter**, **Refresh preview** and **Refresh areas / preview** update the whole Scatter setup and can publish pending Manual edits. **Read cached statistics**, **Read recording status** and **Refresh fields** only read the existing state. Passive browsing, area/layer selection and unrelated animation must not publish pending placements. Live responds to relevant input changes. Display-only settings can refresh presentation without changing placement generation. A failed successor retains the previous complete result and exposes an error.
+
+In 0.79.2, **Radii / layer**, **Show All Radii** and per-source **Show Radius** refresh only the preview. Their Undo/Redo also leaves pending Manual population/radius edits unapplied. Radius circles describe the published footprint until Update. Circles use cached native line buffers, so navigating does not redraw thousands of scripted polylines. See the [layer/navigation results](Layer_Navigation_0.79.2_2026-10-11/README.md) for measured limits.
 
 Automatic final render uses the render bridge; exact output and baking use source mappings and placement transforms. A successful preview does not certify every renderer/material/export path. Remove baked output removes owned baked nodes, not original sources.
 

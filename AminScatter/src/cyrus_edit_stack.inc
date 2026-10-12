@@ -95,8 +95,14 @@ Value* cyrusEditTransaction_cf(Value** a,int count){
         proceduralEditTransaction=std::move(next);
     }else if(command==1||command==2){
         if(!proceduralEditTransaction)throw RuntimeError(_T("No procedural Edit transaction"));
-        if(command==2)for(auto& entry:proceduralEditTransaction->before){entry.first->layers.swap(entry.second);entry.first->status();}
-        proceduralEditTransaction.reset();
+        auto finished=std::move(proceduralEditTransaction);
+        // Restore every owner before updating any allocating UI status text.
+        // A display failure must neither strand the transaction nor leave a
+        // mixture of restored and successor maps across Edit modifiers.
+        if(command==2){
+            for(auto& entry:finished->before)entry.first->layers.swap(entry.second);
+            for(auto& entry:finished->before)try{entry.first->status();}catch(...){/* Data is restored; the next UI refresh can retry. */}
+        }
     }else throw RuntimeError(_T("Unknown procedural Edit transaction command"));
     return &ok;
 }

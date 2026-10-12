@@ -49,3 +49,28 @@
 /CyrusLicensing/third_party/nlohmann/LICENSE.MIT -text -whitespace
 
 *.pdf binary
+
+# Retain the bundled upstream SIL licenses verbatim.
+/website/public/assets/fonts/*-OFL.txt -text -whitespace
+
+# Exact-byte maintained knowledge inputs
+# Their reviewed catalog/corpus hashes must survive a source-only checkout.
+# Keep normal diff/whitespace checks; only automatic newline conversion is disabled.
+/CyrusMCP/cyrus_mcp/feature-catalog.json -text whitespace=cr-at-eol
+/README.md -text whitespace=cr-at-eol
+/docs/ARCHITECTURE.md -text whitespace=cr-at-eol
+/docs/ARTIST_GUIDE.md -text whitespace=cr-at-eol
+/docs/BACKLOG.md -text whitespace=cr-at-eol
+/docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md -text whitespace=cr-at-eol
+/docs/LAYOUT_AND_FALLOFF.md -text whitespace=cr-at-eol
+/docs/Layer_Paint_Areas_0.74_2026-10-09/README.md -text whitespace=cr-at-eol
+/docs/Point_Workflow_0.79.1_2026-10-11/README.md -text whitespace=cr-at-eol
+/docs/Release_Versioning.md -text whitespace=cr-at-eol
+/docs/System_Qualification_0.75_2026-10-09/README.md -text whitespace=cr-at-eol
+/docs/Vector_Brush_0.78_2026-10-10/README.md -text whitespace=cr-at-eol
+/docs/Viewport_Performance_Implementation_2026-10-01.md -text whitespace=cr-at-eol
+/docs/Viewport_Performance_Round2_2026-10-01.md -text whitespace=cr-at-eol
+/docs/licensing/TEAM_PILOT_0.79_2026-10-11.md -text whitespace=cr-at-eol
+/tools/rag/adapter-requirements.lock.txt -text whitespace=cr-at-eol
+/website/README.md -text whitespace=cr-at-eol
+/website/content/README.md -text whitespace=cr-at-eol

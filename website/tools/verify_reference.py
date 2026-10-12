@@ -1,7 +1,6 @@
-"""Meaningful offline checks for complete content, deep links and local assets.
+"""Verify current sources, complete semantic controls, resolved links and local assets.
 
-This verifies the website, not any 3ds Max/plugin behavior. It needs Python 3
-only and writes a small report under website/verification/.
+This checks the website contract; it does not qualify any Max runtime behavior.
 """
 from pathlib import Path
 from html.parser import HTMLParser
@@ -11,111 +10,155 @@ import re
 import subprocess
 import sys
 
-ROOT=Path(__file__).resolve().parents[1]
-
+SITE=Path(__file__).resolve().parents[1]
+REPO=SITE.parent
 
 class Markup(HTMLParser):
     def __init__(self):
-        super().__init__()
-        self.ids=[]
-        self.links=[]
-        self.assets=[]
+        super().__init__();self.ids=[];self.links=[]
     def handle_starttag(self,tag,attrs):
-        values=dict(attrs)
-        if 'id' in values: self.ids.append(values['id'])
-        if tag=='a' and 'href' in values: self.links.append(values['href'])
-        if tag in ('script','img') and 'src' in values: self.assets.append(values['src'])
-        if tag=='link' and 'href' in values: self.assets.append(values['href'])
+        attrs=dict(attrs)
+        if 'id' in attrs:self.ids.append(attrs['id'])
+        if tag=='a':self.links.append(attrs.get('href',''))
 
+def sha(data):return hashlib.sha256(data).hexdigest()
 
 def main():
-    subprocess.run([sys.executable,str(ROOT/'tools/import_reference.py'),'--check'],check=True)
-    text=(ROOT/'content/reference.js').read_text(encoding='utf-8')
-    data=json.loads(text.split('window.CYRUS_GUIDE = ',1)[1].rstrip().removesuffix(';'))
-    coverage=json.loads((ROOT/'content/coverage.json').read_text(encoding='utf-8'))
+    subprocess.run([sys.executable,str(SITE/'tools/import_reference.py'),'--check'],check=True)
+    manifest=json.loads((SITE/'content/source-manifest.json').read_text(encoding='utf-8'))
+    data=json.loads((SITE/'src/content/reference.json').read_text(encoding='utf-8'))
+    catalog_bytes=(REPO/manifest['catalog']).read_bytes();catalog=json.loads(catalog_bytes)
+    editorial_bytes=(SITE/'content/control-explanations.json').read_bytes();editorial=json.loads(editorial_bytes)
+    for path, fingerprint in manifest['reviewedSourceHashes'].items():
+        assert sha((REPO/path).read_bytes())==fingerprint,'Source changed; review public wording: '+path
+    release_text=(REPO/'docs/Release_Versioning.md').read_text(encoding='utf-8')
+    release_ui=re.search(r'\| Scatter UI \| ([0-9.]+) \|',release_text).group(1)
+    assert data['developmentVersion']==catalog['development_version']==release_ui
+    assert len(data['documents'])==len(manifest['documents'])==5
+    assert len(data['controls'])==len(catalog['controls'])==len(editorial)
+    assert len(data['features'])==len(catalog['features'])==34
+    assert len({c['id'] for c in data['controls']})==len(catalog['controls'])
+    assert len({c['sourceKey'] for c in data['controls']})==len(catalog['controls'])
+    feature_ids={f['feature_id'] for f in data['features']}
+    for raw,current in zip(catalog['controls'],data['controls']):
+        assert all(current[k]==v for k,v in raw.items()),current['sourceKey']
+        assert current['id']=='control-'+re.sub(r'[^a-z0-9]+','-',current['sourceKey'].lower()).strip('-')
+        assert current['label'] and current['description'] and current['displayOwner']
+        assert 'explanationEvidence' not in current
+        assert set(current['capabilities']).issubset(feature_ids)
+        for evidence in editorial[current['sourceKey']]['evidence']:
+            path,_,line=evidence.rpartition(':')
+            assert (REPO/path).is_file(),evidence
+            assert 0<int(line)<=len((REPO/path).read_bytes().splitlines()),evidence
     docs={d['id']:d for d in data['documents']}
-    parsed={}
-    for key,doc in docs.items():
-        parsed[key]=Markup();parsed[key].feed(doc['html'])
-        assert len(set(parsed[key].ids))==len(parsed[key].ids),f'Duplicate anchors in {key}'
-    links=0
-    for doc in parsed.values():
-        for href in doc.links:
-            if href.startswith('#/doc/'):
-                parts=href.split('/')
-                assert parts[2] in docs,href
-                if len(parts)>3: assert parts[3] in parsed[parts[2]].ids,href
-                links+=1
-    for entry in data['inventory']:
-        assert entry['anchor'] in parsed[entry['doc']].ids,entry
-    for source in coverage['sources']:
-        assert hashlib.sha256((ROOT/'sources'/source['file']).read_bytes()).hexdigest()==source['sha256']
-    assert len(data['inventory'])==240
-    assert coverage['walkthroughSteps']==28
-    assert len(docs)==16
-    assert all(e['scope']=='Layer' for e in data['inventory'] if e['section']=='Layers')
-    assert all(e['scope']=='Paint set' for e in data['inventory'] if e['section']=='Paint sets')
-    assert all(e['scope']=='Session' for e in data['inventory'] if e['section']=='Local recording')
-    # Distinct same-label Analyzer links must not collapse to the same target.
-    analyzers=[e for e in data['inventory'] if e['section']=='Areas and falloff' and e['label']=='Pick Surface Analyzer']
-    assert len({e['anchor'] for e in analyzers})==2
-    index=Markup();index.feed((ROOT/'index.html').read_text(encoding='utf-8'))
-    assets=index.assets[:]
-    for url in re.findall(r'url\([\'\"]?([^\)\'\"]+)',(ROOT/'styles.css').read_text(encoding='utf-8')):
-        assets.append(url)
-    for asset in assets:
-        assert not asset.startswith(('http:','https:','//')),'Remote runtime dependency: '+asset
-        assert (ROOT/asset).is_file(),'Missing asset: '+asset
-    for asset in (ROOT/'assets/fonts').glob('*.woff2'):
-        assert asset.read_bytes()[:4]==b'wOF2',asset
-    manifests=json.loads((ROOT/'assets/image-manifest.json').read_text(encoding='utf-8'))
-    for image in manifests:
-        file=ROOT/'assets'/(image['name']+'.webp')
-        assert hashlib.sha256(file.read_bytes()).hexdigest()==image['webp_sha256']
-        assert file.read_bytes()[:4]==b'RIFF' and file.read_bytes()[8:12]==b'WEBP'
-    script=(ROOT/'app.js').read_text(encoding='utf-8')
-    authored=0
-    for match in re.finditer(r"route\('([^']+)'(?:,\s*'([^']+)')?\)",script):
-        doc,anchor=match.groups()
-        assert doc in docs,doc
-        if anchor: assert anchor in parsed[doc].ids,(doc,anchor)
-        authored+=1
-    # The first-planting workflow also stores route pairs inside its step records.
-    steps=script.split('const workflowSteps=[',1)[1].split('];',1)[0]
-    for doc,anchor in re.findall(r",'([^']+)','([^']+)'\]",steps):
-        assert doc in docs and anchor in parsed[doc].ids,(doc,anchor)
-        authored+=1
-    # Authored routes and the small feature map sit outside generated Markdown.
-    demos={'shares','containers','coverage','spacing','updates','output'}
-    families=script.split('const families=[',1)[1].split('];',1)[0]
-    family_links=re.findall(r",'([^']+)','([^']+)'\]",families)
-    assert len(family_links)==6
-    for doc,demo in family_links:
-        assert doc in docs and demo in demos,(doc,demo)
-    routes={'workflow','controls','visuals','walkthrough','about','status'}
-    for path in re.findall(r'''href=["'](\#/[^"'${} ]*)["']''',script):
-        parts=path[2:].split('/')
-        if parts[0]: assert parts[0] in routes,path
-        if parts[0]=='visuals' and len(parts)>1: assert parts[1] in demos,path
-    status=ROOT/'content/WEBSITE_STATUS.md'
-    assert status.is_file(),'Missing local status source'
-    status_original=ROOT.parent/'docs/Status_0.73_And_Website_2026-10-07/WEBSITE_STATUS.md'
-    if status_original.is_file(): assert status.read_bytes()==status_original.read_bytes(),'Status source snapshot needs deliberate refresh'
-    report={
-        'date':'2026-10-07','scope':'Offline website checks only; no Max qualification.',
-        'result':'passed','sourceDocuments':len(docs),'inventoryEntries':240,'walkthroughSteps':28,
-        'sourceLinksChecked':links,'authoredChapterLinksChecked':authored,
-        'uniqueDeepLinksChecked':sum(len(p.ids) for p in parsed.values()),
-        'localShellAssetsChecked':len(assets),'generatedImagesChecked':len(manifests),
-        'authoredFeatureFamiliesChecked':len(family_links),'visualStudyRoutesChecked':len(demos),
-        'websiteRevision':'final combined landing, guide and status iteration',
-        'fileHashes':{name:hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in ['index.html','app.js','styles.css','content/reference.js','content/WEBSITE_STATUS.md']},
-        'checks':['Reference regeneration exactly matches checked-in website data','All source snapshots retain original hashes','Every inventory entry has an existing explanatory anchor','Same-label controls preserve section and owner context','All rendered source links resolve','All authored chapter/anchor links resolve','No duplicate IDs within a chapter','Walkthrough contains all 28 source steps','Main shell and fonts use local assets','Generated-image hashes match the supplied manifest','WOFF2 and WebP file signatures are correct'],
-        'notChecked':['Browser layout and interaction need a browser run','3ds Max, plugin behavior, rendering and performance are not tested by this script']
-    }
-    (ROOT/'verification').mkdir(exist_ok=True)
-    (ROOT/'verification/final-static-checks.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
+    checked_links=0
+    for doc in data['documents']:
+        assert not {'path','snapshot','sha256'}.intersection(doc)
+        parsed=Markup();parsed.feed(doc['html'])
+        assert len(parsed.ids)==len(set(parsed.ids))
+        assert doc['search'] and doc['headings'] and len(doc['html'])>1000
+        for link in parsed.links:
+            if link.startswith(('https://','http://','mailto:')):continue
+            assert link.startswith('#/'),link
+            parts=link[2:].split('?')[0].split('/')
+            if parts[0]=='guide':
+                assert parts[1] in docs,link
+                if len(parts)>2:assert parts[2] in {h['anchor'] for h in docs[parts[1]]['headings']},link
+            else:assert parts[0] in ('controls','changelog','checklist','troubleshooting'),link
+            checked_links+=1
+    assert 'references' not in data
+    assert not (SITE/'public/sources').exists()
+    assert not list((SITE/'public').rglob('*.md')),'No Markdown belongs in the public website.'
+    history=json.loads((SITE/'content/changelog.json').read_text(encoding='utf-8'))
+    assert len(data['changelog'])==len(history['entries'])>=53
+    assert data['changelog'][0]['version']==data['developmentVersion']
+    assert len({e['version'] for e in data['changelog']})==len(data['changelog'])
+    for private,public in zip(history['entries'],data['changelog']):
+        assert 'evidence' not in public
+        assert private['evidence'] and public['changes']
+        for path in private['evidence']:assert path in manifest['reviewedSourceHashes']
+        assert all(c['kind'] in ('Added','Fixed','Improved','Changed') and c['text'] for c in public['changes'])
+        if public['era']=='early':assert public['date'] is None
+    for path in (SITE/'src').rglob('*.tsx'):
+        text=path.read_text(encoding='utf-8')
+        for link in re.findall(r'href="(#/guide/[^"{]+)"',text):
+            parts=link[2:].split('?')[0].split('/');assert parts[1] in docs,link
+            if len(parts)>2:assert parts[2] in {h['anchor'] for h in docs[parts[1]]['headings']},link
+        for asset in re.findall(r"asset\('([^']+)'\)",text):
+            path=SITE/'public/assets'/asset
+            # Responsive srcSet builders also pass a shared filename prefix to asset().
+            assert path.is_file() or (not path.suffix and any(path.parent.glob(path.name+'*'))),asset
+    stories=(SITE/'src/content/featureStories.ts').read_text(encoding='utf-8')
+    for doc,anchor in re.findall(r"guide:'([^']+)',anchor:'([^']+)'",stories):assert anchor in {h['anchor'] for h in docs[doc]['headings']},(doc,anchor)
+    for collection in ('concepts', 'hero-studies'):
+        for image in json.loads((SITE/'public/assets'/collection/'manifest.json').read_text(encoding='utf-8')):
+            raw=(SITE/'public/assets'/collection/image['file']).read_bytes()
+            assert raw[:4]==b'RIFF' and raw[8:12]==b'WEBP' and sha(raw)==image['sha256']
+    brand=json.loads((SITE/'public/assets/brand/manifest.json').read_text(encoding='utf-8'))
+    assert sha((SITE/brand['source']).read_bytes())==brand['originalSha256']
+    for icon in brand['assets']:
+        raw=(SITE/'public/assets/brand'/icon['file']).read_bytes()
+        assert sha(raw)==icon['sha256']
+        assert raw.startswith(b'\x00\x00\x01\x00') if icon['file'].endswith('.ico') else raw.startswith(b'\x89PNG\r\n\x1a\n')
+    for image in json.loads((SITE/'public/assets/captures/manifest.json').read_text(encoding='utf-8')):
+        raw=(SITE/'public/assets/captures'/image['file']).read_bytes()
+        if image['file'].endswith('.png'):assert raw[:8]==b'\x89PNG\r\n\x1a\n'
+        else:
+            assert raw[:4]==b'RIFF' and raw[8:12]==b'WEBP'
+            assert len(raw)<=1_500_000 and image['encoding']['alpha']=='preserved'
+            assert len(image['originalSha256'])==64
+            assert not (SITE/'public/assets/captures/garden-study-075.png').exists()
+        assert sha(raw)==image['sha256']
+        assert image['kind'] and image['source'] and image['scatterVersion']
+    for name in ['instrument-serif-latin.woff2','instrument-serif-italic-latin.woff2','manrope-latin.woff2']:
+        assert (SITE/'public/assets/fonts'/name).read_bytes()[:4]==b'wOF2'
+    gallery=json.loads((SITE/'content/gallery-reading-notes.json').read_text(encoding='utf-8'))
+    poster_manifest=json.loads((SITE/'public/assets/posters/manifest.json').read_text(encoding='utf-8'))
+    assert gallery['developmentVersion']==data['artistWorkflowVersion']==manifest['artistWorkflowVersion'] and len(gallery['posters'])==len(poster_manifest)==19
+    for image in poster_manifest:
+        raw=(SITE/'public/assets/posters'/image['file']).read_bytes()
+        assert raw[:4]==b'RIFF' and raw[8:12]==b'WEBP' and sha(raw)==image['sha256']
+    for poster in gallery['posters'].values():
+        assert poster['note'] and poster['provenance'] and poster['recommendation']
+        for evidence in poster['evidence']:
+            assert (REPO/evidence['path']).is_file()
+            assert 0<evidence['line']<=len((REPO/evidence['path']).read_bytes().splitlines())
+        for link in poster['guideLinks']:
+            parts=link['href'][2:].split('/')
+            assert parts[0]=='guide' and parts[1] in docs
+            if len(parts)>2:assert parts[2] in {h['anchor'] for h in docs[parts[1]]['headings']},link
+    known_routes={'home','features','guide','workflow','visuals','gallery','examples','checklist','glossary','troubleshooting','controls','roadmap','status','about','changelog'}
+    nav_links=set()
+    for path in list((SITE/'src').rglob('*.tsx'))+list((SITE/'src').rglob('*.html')):
+        for link in re.findall(r'''["'](#/[^"'{}\s<>]*)["']''',path.read_text(encoding='utf-8')):
+            nav_links.add(link)
+            route,*tail=link[2:].split('?')[0].split('/')
+            if not route:continue
+            assert route in known_routes,link
+            if route=='guide' and tail:
+                assert tail[0] in docs,link
+                if len(tail)>1:assert tail[1] in {h['anchor'] for h in docs[tail[0]]['headings']},link
+            if route=='controls' and '?' in link:
+                from urllib.parse import parse_qs
+                params=parse_qs(link.split('?',1)[1])
+                candidates=data['controls']
+                for key in ('group','section','owner','feature','q'):
+                    if key not in params:continue
+                    value=params[key][0]
+                    if key=='feature':candidates=[c for c in candidates if value in c['capabilities']]
+                    elif key=='owner':candidates=[c for c in candidates if c['displayOwner']==value]
+                    elif key=='q':candidates=[c for c in candidates if value.lower() in str(c).lower()]
+                    else:candidates=[c for c in candidates if c[key]==value]
+                assert candidates,link
+    # Named destinations must use the matching semantic family, not merely a nonempty one.
+    for cap,title in [('C19','Rotation/scale/movement'),('C21','Edit/instance radius'),('C27','Statistics')]:
+        assert next(f for f in data['features'] if f['feature_id']==cap)['title'].startswith(title)
+    for retired in ['app.js','styles.css','content/reference.js']:assert not (SITE/retired).exists()
+    report={'scope':'Website static/content verification only; no plugin qualification','development_version':data['developmentVersion'],'documents':len(docs),'semantic_controls':len(data['controls']),'capability_families_including_retired_and_experimental':len(data['features']),'bundled_supporting_references':0,'public_markdown_files':0,'changelog_versions':len(data['changelog']),'reviewed_local_sources':len(manifest['reviewedSourceHashes']),'resolved_generated_local_links':checked_links,'source_catalog_sha256':sha(catalog_bytes),'editorial_sha256':sha(editorial_bytes),'status':'PASS'}
+    target=SITE/'verification/react-static-checks.json';target.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
+    report['concept_posters_with_current_notes']=len(poster_manifest)
+    report['resolved_static_navigation_destinations']=len(nav_links)
+    target.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
     print(json.dumps(report,indent=2))
-
 
 if __name__=='__main__':main()

@@ -2,9 +2,11 @@
 
 Native C++ and generated MAXScript for Cyrus Scatter and Cyrus Surface Analyzer in 3ds Max.
 
-**Current development: Scatter 0.79.1 / package metadata 0.79.1 / schema 55 / CyrusUnified1.** The [Point and falloff refinement report](docs/Point_Workflow_0.79.1_2026-10-11/README.md) covers direct Point assignment, source identities, reorganized controls and the copied 25-case scene. The [offline team licensing pilot](docs/licensing/TEAM_PILOT_0.79_2026-10-11.md) implements owner-issued 30-day licenses, activation UI and authoring restrictions with tested saved-scene rendering after expiry in Max 2026/2027. See its exact build evidence and anti-bypass limits; this is not commercial security or 1.0 release certification. Analyzer remains 0.14; MCP package/plan remain 0.73.0/0.73.
+**Current development source: Scatter 0.79.6 / schema 56 / CyrusUnified1.** The [foundation correction handoff](docs/Foundation_0.79.6_2026-10-12/README.md) records atomic publication recovery and typed distance migration tested in Max 2026/2027. The last packaged delivery remains 0.79.5; source validation does not install or certify a new release. The [terraced garden workflow report](docs/Terrace_Workflow_0.79.5_2026-10-11/README.md) records the preceding layer-local preview and native buffer reuse work. The [offline team licensing pilot](docs/licensing/TEAM_PILOT_0.79_2026-10-11.md) describes activation, expiry and its anti-bypass limits. Analyzer remains 0.14; MCP package/plan remain 0.73.0/0.73.
 
 ## Start here
+
+Start with the [engineering foundation](docs/ENGINEERING_FOUNDATION.md) for the relevant behavioral contracts and the [current correction handoff](docs/Foundation_0.79.6_2026-10-12/README.md) for their measured limits. The preceding 0.79.5 [creation-icon correction](docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md) remains the latest packaged witness.
 
 | Need | Maintained document |
 | --- | --- |
@@ -13,11 +15,11 @@ Native C++ and generated MAXScript for Cyrus Scatter and Cyrus Surface Analyzer 
 | See what needs fixing next | [Current backlog](docs/BACKLOG.md) |
 | Install or rebuild | [Max 2026/2027 installation/build](docs/Max_2027_Installation.md) |
 | Work on the repository | [AGENTS.md](AGENTS.md), [agent workflow](docs/AGENT_WORKFLOW.md) |
-| Find tests and exact results | [0.79.1 Point/falloff qualification](docs/Point_Workflow_0.79.1_2026-10-11/README.md), [UI and brush qualification](docs/Container_and_Radius_0.78.3_2026-10-10/README.md), [vector integration](docs/Vector_Brush_0.78_2026-10-10/README.md), [0.76 receiver stability](docs/Receiver_Stability_0.76_2026-10-10/README.md), [Brush fixes](docs/Brush_Scaling_0.76_2026-10-10/README.md), [retained Proxy/Analyzer fixes](docs/Courtyard_Fixes_0.75_2026-10-10/README.md), [0.75 system qualification](docs/System_Qualification_0.75_2026-10-09/README.md) and [feature checklist](docs/System_Qualification_0.75_2026-10-09/CHECKLIST.md) |
+| Find tests and exact results | [0.79.5 campaign](docs/Terrace_Workflow_0.79.5_2026-10-11/README.md), [current coverage](docs/Terrace_Workflow_0.79.5_2026-10-11/COVERAGE.md), [control register](docs/Terrace_Workflow_0.79.5_2026-10-11/CONTROL_REGISTER.md), [0.79.1 Point/falloff qualification](docs/Point_Workflow_0.79.1_2026-10-11/README.md), [vector integration](docs/Vector_Brush_0.78_2026-10-10/README.md) and [0.75 system qualification](docs/System_Qualification_0.75_2026-10-09/README.md) |
 | Other documentation | [Documentation index](docs/README.md) |
 | Product website and public roadmap | [Website source and local preview](website/README.md), [product and AI direction](docs/PRODUCT_AND_AI_ROADMAP.md) |
 
-The current candidate replaces stroke replay with receiver-bound vector regions, cached border feedback, inward/outward feathering and independent density/scale curves. Paint unions outlines; Erase cuts holes. Layers retain their models, population, stable candidates and receiver caches. Schema 55 explicitly rejects older development setups; there is no conversion or legacy brush fallback. Start a new setup and preserve old scenes with their matching build.
+The current candidate uses receiver-bound vector regions, cached border feedback, inward/outward feathering and independent density/scale curves. Paint unions outlines; Erase cuts holes. Layers retain their models, population, stable candidates and receiver caches. Schema 56 migrates the immediately preceding schema 55 to typed distance storage. Earlier model-set/stroke setups remain rejected. Preserve original scenes; native Paint/Edit bindings still require saved scene units when conversion changes receiver geometry.
 
 Vector painting supports single-valued local-XY terrain and planes, including transformed receivers. Closed, vertical, folded or overlapping projected receivers are explicitly rejected. General scattering on curved receivers remains supported. Physical artist input, sustained heavy scenes and renderer/platform release qualification are still acceptance gates; version captions alone do not identify a build.
 

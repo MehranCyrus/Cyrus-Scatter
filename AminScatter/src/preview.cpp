@@ -6,6 +6,7 @@
 #include <maxscript/foundation/colors.h>
 
 #include <vector>
+#include <algorithm>
 #include <cstdint>
 #include <triobj.h>
 #include <maxscript/maxwrapper/mxsobjects.h>
@@ -138,6 +139,38 @@ Value* aminScatterPreviewCount_cf(Value** args,int count) {
     return Integer::intern(static_cast<AminPointCache*>(args[0])->size);
 }
 
+// Radius rings share the immutable retained-buffer path with points. Conversion
+// occurs when the display snapshot changes, never on the viewport draw thread.
+def_visible_primitive(cyrusBuildRadiusPreview,"cyrusBuildRadiusPreview");
+Value* cyrusBuildRadiusPreview_cf(Value** args,int count) {
+    check_arg_count(cyrusBuildRadiusPreview,1,count);
+    type_check(args[0],Array,_T("radius rings"));
+    auto* rings=static_cast<Array*>(args[0]);
+    constexpr std::size_t vertexLimit=64*1024*1024/sizeof(Point3);
+    std::size_t vertices=0;
+    std::vector<AminPointCache::Group> groups;
+    for(int i=0;i<rings->size;++i) {
+        type_check(rings->data[i],Array,_T("radius ring"));
+        auto* ring=static_cast<Array*>(rings->data[i]);
+        if(ring->size!=2) throw RuntimeError(_T("Invalid radius ring"));
+        type_check(ring->data[0],Array,_T("radius vertices"));
+        auto* points=static_cast<Array*>(ring->data[0]);
+        if(points->size<3 || std::size_t(points->size)>(vertexLimit-vertices)/2)
+            throw RuntimeError(_T("Radius display exceeds the 64 MiB cache limit. Reduce Radii / layer."));
+        vertices+=std::size_t(points->size)*2;
+        const Point3 color=ring->data[1]->to_point3()/255.f;
+        auto group=std::find_if(groups.begin(),groups.end(),[&](const auto& g){return g.color==color;});
+        if(group==groups.end()) { groups.push_back({color,{}});group=groups.end()-1; }
+        for(int j=0;j<points->size;++j) {
+            group->points.push_back(points->data[j]->to_point3());
+            group->points.push_back(points->data[(j+1)%points->size]->to_point3());
+        }
+    }
+    auto snapshot=std::make_shared<cyrus::PointSnapshot>(std::move(groups),true);
+    auto* result=new AminPointCache();result->pointSnapshot=std::move(snapshot);result->size=rings->size;
+    return result;
+}
+
 def_visible_primitive(aminScatterDrawPreview,"aminScatterDrawPreview");
 Value* aminScatterDrawPreview_cf(Value** args,int count) {
     check_arg_count(aminScatterDrawPreview,3,count);
@@ -186,6 +219,13 @@ Value* aminScatterDrawPreview_cf(Value** args,int count) {
     for(const auto& group:cache->pointGroups()) {
         if(group.points.empty()) continue;
         gw->setColor(LINE_COLOR,solid?color:group.color);
+        if(cache->pointSnapshot && cache->pointSnapshot->lines) {
+            for(std::size_t i=0;i<group.points.size();i+=2) {
+                Point3 line[2]={group.points[i],group.points[i+1]};
+                gw->polyline(2,line,nullptr,nullptr,FALSE,nullptr);
+            }
+            continue;
+        }
         gw->startMarkers();
         for(const auto& p:group.points) { auto marker=p;gw->marker(&marker,POINT_MRKR); }
         gw->endMarkers();
@@ -215,7 +255,8 @@ std::vector<cyrus::PointLayer> retainedLayers(Value* cachesValue,Value* stylesVa
     type_check(cachesValue,Array,_T("preview caches"));
     type_check(stylesValue,Array,_T("preview styles"));
     auto* caches=static_cast<Array*>(cachesValue);auto* styles=static_cast<Array*>(stylesValue);
-    if(caches->size!=styles->size || caches->size>10) throw RuntimeError(_T("Invalid retained preview layers"));
+    // At most ten populations, each with one preview and one radius overlay.
+    if(caches->size!=styles->size || caches->size>20) throw RuntimeError(_T("Invalid retained preview layers"));
     std::vector<cyrus::PointLayer> layers;layers.reserve(caches->size);
     for(int i=0;i<caches->size;++i) {
         type_check(caches->data[i],AminPointCache,_T("point cache"));

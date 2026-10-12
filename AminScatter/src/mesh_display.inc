@@ -44,9 +44,20 @@ class MeshItem final : public ICustomRenderItem {
     std::atomic<bool> ready{false};
     std::mutex realizeMutex;
 public:
-    MeshItem(std::shared_ptr<Generation> value,std::size_t layer,std::size_t group)
-        :generation(std::move(value)),layerIndex(layer),groupIndex(group) { ++liveItems; }
+    MeshItem(std::shared_ptr<Generation> value,std::size_t layer,std::size_t group,const MeshItem* previous=nullptr)
+        :generation(std::move(value)),layerIndex(layer),groupIndex(group) {
+        if(previous) {
+            buffers=previous->buffers;format=previous->format;material=previous->material;
+            ready.store(true,std::memory_order_release);++generation->ready;
+        }
+        ++liveItems;
+    }
     ~MeshItem() override { --liveItems; }
+    bool reusable(const PointLayer& next,std::size_t group) const {
+        const auto& previous=generation->layers[layerIndex];
+        return ready.load(std::memory_order_acquire) && !generation->failed.load() && groupIndex==group &&
+            previous.mesh==next.mesh && previous.solid==next.solid && (!next.solid || previous.color==next.color);
+    }
     void Realize(DrawContext& dc) override {
         if(ready.load(std::memory_order_acquire) || generation->failed.load()) return;
         std::lock_guard<std::mutex> lock(realizeMutex);

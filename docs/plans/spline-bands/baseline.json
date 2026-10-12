@@ -1,0 +1,305 @@
+{
+  "document_version": 1,
+  "status": "Research baseline, not implementation or release certification",
+  "research_date": "2026-10-12",
+  "workspace": "F:/Cursor/_Cyrus_Apps/CyrusScatter",
+  "authorization": "Research and English planning documents only",
+  "checkout": {
+    "branch": "codex/workflow-0.75",
+    "head": "15957a66de0480679dea6c533c7c5d09d9598d54",
+    "tracked_diff_sha256": "f658ce9bb174fce81b24126df82885fd898b35efabcab8f0f73739752a2a9b86",
+    "preexisting_status": [
+      " M AGENTS.md",
+      " M AminScatter/CMakeLists.txt",
+      " M AminScatter/include/point_preview.h",
+      " M AminScatter/scripts/AminScatterObject.ms",
+      " M AminScatter/src/mesh_display.inc",
+      " M AminScatter/src/point_display.cpp",
+      " M AminScatter/src/preview.cpp",
+      " M AminScatter/tools/ui/approved-layout-manifest.json",
+      " M AminScatter/tools/ui/approved-layout.cjs",
+      " M AminScatter/tools/ui/templates/approved-main-ui.ms",
+      " M AminScatter/tools/ui/templates/licensing.ms",
+      " M AminScatter/tools/ui/templates/unified-core.ms",
+      " M CyrusMCP/cyrus_mcp/feature-catalog.json",
+      " M CyrusMCP/tests/test_feature_catalog.py",
+      " M README.md",
+      " M docs/ARCHITECTURE.md",
+      " M docs/ARTIST_GUIDE.md",
+      " M docs/BACKLOG.md",
+      " M docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md",
+      " M docs/Max_2027_Installation.md",
+      " M docs/PRODUCT_AND_AI_ROADMAP.md",
+      " M docs/Point_Workflow_0.79.1_2026-10-11/README.md",
+      " M docs/README.md",
+      " M docs/Release_Versioning.md",
+      " M tools/build_max.py",
+      " M tools/procedural_lab/build_feature_catalog.py",
+      " M tools/procedural_lab/check_generated.py",
+      " M tools/refine0791/host_checks.py",
+      " M website/README.md",
+      " M website/TASKS.md",
+      " D website/app.js",
+      " D website/content/reference.js",
+      " M website/index.html",
+      " D website/styles.css",
+      " M website/tools/import_reference.py",
+      " M website/tools/verify_reference.py",
+      "?? .codex/",
+      "?? LOGO.psd",
+      "?? \"Landing Page Design/\"",
+      "?? docs/Layer_Navigation_0.79.2_2026-10-11/",
+      "?? docs/Point_Workflow_0.79.1_2026-10-11/LAYER_INVESTIGATION.md",
+      "?? docs/Point_Workflow_0.79.1_2026-10-11/NAVIGATION_PERFORMANCE.md",
+      "?? docs/Point_Workflow_0.79.1_2026-10-11/layer-investigation-evidence.json",
+      "?? docs/Point_Workflow_0.79.1_2026-10-11/layer-investigation-images/",
+      "?? docs/Point_Workflow_0.79.1_2026-10-11/navigation-evidence.json",
+      "?? docs/Point_Workflow_0.79.1_2026-10-11/navigation-images/",
+      "?? docs/Terrace_Workflow_0.79.5_2026-10-11/",
+      "?? tools/rag/",
+      "?? tools/refine0791/artist_layer_probe.py",
+      "?? tools/refine0791/layer_cache_probe.py",
+      "?? tools/refine0791/layer_lifecycle.py",
+      "?? tools/refine0791/layer_undo_probe.ms",
+      "?? tools/refine0791/navigation_probe.ms",
+      "?? tools/refine0791/navigation_probe.py",
+      "?? tools/refine0791/point_model_probe.py",
+      "?? tools/refine0791/summarize_layers.py",
+      "?? tools/refine0791/summarize_navigation.py",
+      "?? tools/refine0791/watch_layer_sources.ms",
+      "?? tools/refine0792/",
+      "?? tools/refine0795/",
+      "?? website/.gitignore",
+      "?? website/CPANEL_UPLOAD.md",
+      "?? website/artwork/",
+      "?? website/content/README.md",
+      "?? website/content/changelog.json",
+      "?? website/content/control-explanations.json",
+      "?? website/content/gallery-reading-notes.json",
+      "?? website/content/guide-chapters.json",
+      "?? website/content/source-manifest.json",
+      "?? website/mockups/",
+      "?? website/package-lock.json",
+      "?? website/package.json",
+      "?? website/public/",
+      "?? website/src/",
+      "?? website/tools/check_control_reference.py",
+      "?? website/tools/check_dropdowns.py",
+      "?? website/tools/check_selected_interactions.py",
+      "?? website/tools/check_selected_routes.py",
+      "?? website/tools/check_static_upload.py",
+      "?? website/tools/extract_design_assets.py",
+      "?? website/tools/package_site.py",
+      "?? website/tools/prepare_brand_assets.py",
+      "?? website/tools/prepare_concept_assets.py",
+      "?? website/tools/prepare_hero_studies.py",
+      "?? website/tools/prepare_study_assets.py",
+      "?? website/tools/requirements-assets.txt",
+      "?? website/tsconfig.json",
+      "?? website/verification/CONTROL_REFERENCE_ORDER.md",
+      "?? website/verification/CPANEL_PACKAGE.md",
+      "?? website/verification/DROPDOWN_REFINEMENT.md",
+      "?? website/verification/LANDING_IMAGE_REFRESH.md",
+      "?? website/verification/LAYER_STUDY_INTEGRATION.md",
+      "?? website/verification/PUBLIC_CONTENT_HISTORY.md",
+      "?? website/verification/REACT_BROWSER_REVIEW.md",
+      "?? website/verification/REACT_IMPLEMENTATION_REVIEW.md",
+      "?? website/verification/README.md",
+      "?? website/verification/SELECTED_DESIGNS_REVIEW.md",
+      "?? website/verification/SELECTED_DESIGN_IMPLEMENTATION.md",
+      "?? website/verification/SELECTED_LOGO.md",
+      "?? website/verification/VISUAL_LESSONS_REFINEMENT.md",
+      "?? website/verification/react-desktop.png",
+      "?? website/verification/react-features.png",
+      "?? website/verification/react-mobile.png",
+      "?? website/verification/react-responsive-checks.json",
+      "?? website/verification/react-static-checks.json",
+      "?? website/verification/react-study-image-checks.json",
+      "?? website/verification/selected-docs-desktop.png",
+      "?? website/verification/selected-docs-mobile.png",
+      "?? website/verification/selected-interaction-checks.json",
+      "?? website/verification/selected-landing-desktop.png",
+      "?? website/verification/selected-landing-mobile.png",
+      "?? website/verification/selected-responsive-checks.json",
+      "?? website/verification/selected-root-checks.json",
+      "?? website/verification/selected-root-docs-desktop.png",
+      "?? website/verification/selected-root-docs-mobile.png",
+      "?? website/verification/selected-root-landing-desktop.png",
+      "?? website/verification/selected-root-landing-mobile.png",
+      "?? website/vite.config.ts"
+    ],
+    "capture_note": "The first plan README existed when this baseline was captured; the planned docs/plans/ entry is excluded from preexisting_status."
+  },
+  "inspected_file_hashes": [
+    {
+      "path": "AminScatter/include/scatter.h",
+      "sha256": "800670a71953893cbb65174691c47bb57ba60178ee0555fff1f7d367662838b0"
+    },
+    {
+      "path": "AminScatter/include/point_preview.h",
+      "sha256": "56a030d795bd19610306a3e810cd190e6a6ce1f01e735aa29b10135195f2c2d0"
+    },
+    {
+      "path": "AminScatter/src/scatter.cpp",
+      "sha256": "6da88d0e4a3828147d8ee352e6affa409ee3138d1d097348882b7d1efcc9f801"
+    },
+    {
+      "path": "AminScatter/src/final.inc",
+      "sha256": "ba36be03d08d2af4726b9b44b411e05c191a90bc73db1269f7670722bbf6f5e5"
+    },
+    {
+      "path": "AminScatter/src/procedural.cpp",
+      "sha256": "3bbdd2ef5463edb51af32a5ff3a7c8d5579d602027dc14738edf63a16185402c"
+    },
+    {
+      "path": "AminScatter/src/receiver_plan.cpp",
+      "sha256": "0c3313902dcf27dd06b14a70d6b22cc0d54a1260c6a2a25d6b3e39770bb6ee4c"
+    },
+    {
+      "path": "AminScatter/src/max_bridge.cpp",
+      "sha256": "eade14886e49332d3a599a18528b2cadeebb619148658f3391f87e20d8593934"
+    },
+    {
+      "path": "AminScatter/src/procedural_bridge.inc",
+      "sha256": "5d0d5ce93df126963e53a771da493d8cd9da3daee1497e9a0a0398ab1cc8ae9e"
+    },
+    {
+      "path": "AminScatter/src/placement_identity.inc",
+      "sha256": "a33f6d19e8bff75b90e2cbbc2f969d00c5982c5301918efddf1108a86ca0a2aa"
+    },
+    {
+      "path": "AminScatter/src/group_spacing.cpp",
+      "sha256": "73d973b3d22f51c00dae7f4282d7f8159b19dea0b27f7ddb57c2d06815acc1a1"
+    },
+    {
+      "path": "AminScatter/src/preview.cpp",
+      "sha256": "38fa5c75bc620f9aacc60c69e225346f73555565f2ec3f22a34b696f311538e2"
+    },
+    {
+      "path": "AminScatter/src/point_display.cpp",
+      "sha256": "e38f6177382124e485799a199f0ab6fe067514b2174901e7faa769fddfb009ac"
+    },
+    {
+      "path": "AminScatter/src/mesh_display.inc",
+      "sha256": "9c68b5f60d86baecba17993ab182ce6243fd5e324251096f6cd06c9302817267"
+    },
+    {
+      "path": "AminScatter/src/brush.cpp",
+      "sha256": "d5244e03bb1ad3748099deea38362f44582187941fc7dc2b85cfe38cd1771c21"
+    },
+    {
+      "path": "AminScatter/src/input_validity.cpp",
+      "sha256": "a65514bdcee3e67d3296768063979ed1c670b020323bc62e757ac7a9c232605d"
+    },
+    {
+      "path": "AminScatter/src/boundary_falloff.inc",
+      "sha256": "a8c2669675dcb853d79c2ceaf90bf092d09c27d09a48991f0ac3cd024737d99f"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/unified-core.ms",
+      "sha256": "2bce94b320f0537b3b978e7def57cb21e2a67baa34624302a7828fca3dd8b887"
+    },
+    {
+      "path": "AminScatter/tools/ui/approved-layout-rows.cjs",
+      "sha256": "e55961a73f16f7c8c8c4542456cf80f367164b08f7fb014afb254c732b52388a"
+    },
+    {
+      "path": "AminScatter/tests/scatter_tests.cpp",
+      "sha256": "c0e0eb48287e008d6f88c4baadd013d183bf49125f607c8c716315237600c402"
+    },
+    {
+      "path": "tools/refine0791/host_checks.py",
+      "sha256": "c28a595944ee781c49c04e32f6bea2a84f8b8bc8ad5120c23687e399fdf4d3b8"
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "sha256": "f440d995bb9a49369cc2355e14966a7f9e442526c656e229c3fa58959dbd1715"
+    },
+    {
+      "path": "docs/BACKLOG.md",
+      "sha256": "1ec0ee5934d8c5661e63fd4dc2655efe5e3125314636cd9ff5b8e13f22ae5f61"
+    },
+    {
+      "path": "docs/Vendor_Native_Deep_Research_2026-10-09/EVIDENCE.json",
+      "sha256": "3171b585d412ee699c2e2be897be3ab6a867e03f2c6bc3108cf21b138a396ace"
+    }
+  ],
+  "vendor_identity_checks": [
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ForestPackLite2027\\PackageContents.xml",
+      "recorded_sha256": "b7020c08adc658afb619ae9f1897161c9fd3ec7d9709da332a10602ad79a343a",
+      "actual_sha256": "b7020c08adc658afb619ae9f1897161c9fd3ec7d9709da332a10602ad79a343a",
+      "matches": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ForestPackLite2027\\Contents\\plugins\\2027\\ForestPackLite.dlo",
+      "recorded_sha256": "23b25adf28954a4cd6c3d7fe5f7ea90b6a6e9be480f8a422fa7ef8b99c9a325d",
+      "actual_sha256": "23b25adf28954a4cd6c3d7fe5f7ea90b6a6e9be480f8a422fa7ef8b99c9a325d",
+      "matches": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ForestPackLite2027\\Contents\\scripts\\startup\\forestpack.ms",
+      "recorded_sha256": "8f51b8ddc2a79cb29c0cfbcbb35a18364118de2ebc83563e8d37e38ed91122bd",
+      "actual_sha256": "8f51b8ddc2a79cb29c0cfbcbb35a18364118de2ebc83563e8d37e38ed91122bd",
+      "matches": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ChaosScatter3dsMax2027\\PackageContents.xml",
+      "recorded_sha256": "b6ef25f1507552311f3523edc7c5b4edea1d6c3a48f41a063e1ec823c8cb7da1",
+      "actual_sha256": "b6ef25f1507552311f3523edc7c5b4edea1d6c3a48f41a063e1ec823c8cb7da1",
+      "matches": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ChaosScatter3dsMax2027\\ChaosScatterMax2027.dlt",
+      "recorded_sha256": "eabcb0b258d4a1c4a8435d67deb0cf20bb2d363eb74802df8b2fa308552ed327",
+      "actual_sha256": "eabcb0b258d4a1c4a8435d67deb0cf20bb2d363eb74802df8b2fa308552ed327",
+      "matches": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ChaosScatter3dsMax2027\\ScatterMax_Release-2027.dll",
+      "recorded_sha256": "f7fdd25428e8374174501e6bb4ebd3b83e21c5ba2c33fcdc94280c022695b887",
+      "actual_sha256": "f7fdd25428e8374174501e6bb4ebd3b83e21c5ba2c33fcdc94280c022695b887",
+      "matches": true
+    },
+    {
+      "path": "C:\\ProgramData\\Autodesk\\ApplicationPlugins\\ChaosScatter3dsMax2027\\ScatterCore.ForScatter_Release.dll",
+      "recorded_sha256": "069ababd0dbc09218928f24d5bdc860509b237f34af703581e3fd78ed5d3cf86",
+      "actual_sha256": "069ababd0dbc09218928f24d5bdc860509b237f34af703581e3fd78ed5d3cf86",
+      "matches": true
+    }
+  ],
+  "reviews": [
+    {
+      "agent": "design_review",
+      "model": "gpt-6-astra",
+      "scope": "Design, dual-radius decision and final written-plan consistency"
+    },
+    {
+      "agent": "astra_correctness_audit",
+      "model": "gpt-6-astra",
+      "scope": "Independent native geometry, density, identity, range and movement source audit"
+    },
+    {
+      "agent": "astra_viewport_audit",
+      "model": "gpt-6-astra",
+      "scope": "Independent viewport, Manual state, resource lifetime, Auto Radius and UI source audit"
+    }
+  ],
+  "evidence_limits": [
+    "Initial Luna research superseded by source-checked Astra audits; review is not an empirical product pass.",
+    "No new product tests, builds, Max scenes, installations, GPU benchmarks, rendering probes or vendor decompilation performed.",
+    "Historical vendor inputs were freshly hash checked; this does not rerun historical experiments.",
+    "Ghidra and knowledge search tools were not exposed in this session.",
+    "Implementation requires the P0–P6 evidence gates."
+  ],
+  "scope_verification": {
+    "source_hashes_checked": 23,
+    "changed_inspected_sources": [],
+    "tracked_diff_unchanged": true,
+    "status_added_outside_plan": [],
+    "status_removed_outside_plan": [],
+    "local_markdown_link_check": "passed; repeated after final README edits",
+    "json_parse": "passed",
+    "product_actions_performed": []
+  }
+}

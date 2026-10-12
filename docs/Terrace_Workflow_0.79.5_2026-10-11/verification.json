@@ -1,0 +1,1524 @@
+{
+  "checks": [
+    {
+      "passed": true,
+      "label": "2026 tested script unchanged"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/CMakeLists.txt"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/include/brush.h"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/include/diagnostics.h"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/include/execution.h"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/include/group_spacing.h"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/include/license_boundary.h"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/include/point_preview.h"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/include/preview_sampling.h"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/include/procedural.h"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/include/receiver_plan.h"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/include/scatter.h"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/analyzer_area_bridge.inc"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/authored_revision.inc"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/boundary_falloff.inc"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/boundary_falloff_bridge.inc"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/brush.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/brush_host.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/brush_storage_plugin.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/brush_surface.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/cluster.inc"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/cyrus_edit.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/cyrus_edit_stack.inc"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/cyrus_edit_storage.inc"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/diagnostics.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/diagnostics_bridge.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/edge_border.inc"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/edit_plugin.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/execution.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/final.inc"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/geometry_preview.inc"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/group_spacing.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/group_spacing_bridge.inc"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/input_validity.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/max_bridge.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/mesh_display.inc"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/orientation.inc"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/orientation_bridge.inc"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/placement_identity.inc"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/point_display.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/prepared_band.inc"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/preview.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/preview_batches.inc"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/procedural.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/procedural_bridge.inc"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/receiver_binding_host.h"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/receiver_bridge.inc"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/receiver_plan.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/rollout_flow.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/rollout_scroll.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/scatter.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/source_container.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/spacing.inc"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/team_license.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/src/whole_scale_bridge.inc"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/tests/boundary_falloff_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/tests/brush_feedback_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/tests/brush_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/tests/compute_benchmark.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/tests/diagnostics_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/tests/edge_border_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/tests/group_spacing_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/tests/orientation_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/tests/prepared_band_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/tests/preview_sampling_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/tests/procedural_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/tests/receiver_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/tests/scatter_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/tests/spacing_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/tests/threading_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/tests/weight_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/third_party/clipper2/include/clipper2/clipper.core.h"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/third_party/clipper2/include/clipper2/clipper.engine.h"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/third_party/clipper2/include/clipper2/clipper.export.h"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/third_party/clipper2/include/clipper2/clipper.h"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/third_party/clipper2/include/clipper2/clipper.minkowski.h"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/third_party/clipper2/include/clipper2/clipper.offset.h"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/third_party/clipper2/include/clipper2/clipper.rectclip.h"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/third_party/clipper2/include/clipper2/clipper.triangulation.h"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/third_party/clipper2/include/clipper2/clipper.version.h"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/third_party/clipper2/src/clipper.engine.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/third_party/clipper2/src/clipper.offset.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source AminScatter/third_party/clipper2/src/clipper.rectclip.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source CyrusLicensing/CMakeLists.txt"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source CyrusLicensing/include/cyrus/licensing/client.h"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source CyrusLicensing/include/cyrus/licensing/local_state.h"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source CyrusLicensing/include/cyrus/licensing/policy.h"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source CyrusLicensing/include/cyrus/licensing/signed_license.h"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source CyrusLicensing/src/client.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source CyrusLicensing/src/cng_signature.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source CyrusLicensing/src/cng_signature.h"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source CyrusLicensing/src/installation_key.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source CyrusLicensing/src/local_clock.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source CyrusLicensing/src/local_store.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source CyrusLicensing/src/operation_permit.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source CyrusLicensing/src/policy.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source CyrusLicensing/src/signed_license.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source CyrusLicensing/team/team_public_key.h"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source CyrusLicensing/tests/local_state_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source CyrusLicensing/tests/policy_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source CyrusLicensing/tests/signed_license_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source cmake/CyrusMaxSDK.cmake"
+    },
+    {
+      "passed": true,
+      "label": "2026 frozen source team_public_key.h"
+    },
+    {
+      "passed": true,
+      "label": "2026 raw receipt regressions"
+    },
+    {
+      "passed": true,
+      "label": "2026 passing regressions"
+    },
+    {
+      "passed": true,
+      "label": "2026 raw receipt display0792"
+    },
+    {
+      "passed": true,
+      "label": "2026 passing display0792"
+    },
+    {
+      "passed": true,
+      "label": "2026 raw receipt invalidation0792"
+    },
+    {
+      "passed": true,
+      "label": "2026 passing invalidation0792"
+    },
+    {
+      "passed": true,
+      "label": "2026 raw receipt layer-lifecycle"
+    },
+    {
+      "passed": true,
+      "label": "2026 passing layer-lifecycle"
+    },
+    {
+      "passed": true,
+      "label": "2026 raw receipt point-model-probe"
+    },
+    {
+      "passed": true,
+      "label": "2026 passing point-model-probe"
+    },
+    {
+      "passed": true,
+      "label": "2026 raw receipt scene-results"
+    },
+    {
+      "passed": true,
+      "label": "2026 passing scene-results"
+    },
+    {
+      "passed": true,
+      "label": "2026 raw receipt falloff-results"
+    },
+    {
+      "passed": true,
+      "label": "2026 passing falloff-results"
+    },
+    {
+      "passed": true,
+      "label": "2026 raw receipt points-results"
+    },
+    {
+      "passed": true,
+      "label": "2026 passing points-results"
+    },
+    {
+      "passed": true,
+      "label": "2026 raw receipt reopen-results"
+    },
+    {
+      "passed": true,
+      "label": "2026 passing reopen-results"
+    },
+    {
+      "passed": true,
+      "label": "2026 raw receipt empty-results"
+    },
+    {
+      "passed": true,
+      "label": "2026 passing empty-results"
+    },
+    {
+      "passed": true,
+      "label": "2026 raw receipt layout-results"
+    },
+    {
+      "passed": true,
+      "label": "2026 passing layout-results"
+    },
+    {
+      "passed": true,
+      "label": "2026 raw receipt reuse-checks"
+    },
+    {
+      "passed": true,
+      "label": "2026 passing reuse-checks"
+    },
+    {
+      "passed": true,
+      "label": "2026 raw receipt endurance"
+    },
+    {
+      "passed": true,
+      "label": "2026 passing endurance"
+    },
+    {
+      "passed": true,
+      "label": "2026 raw receipt navigation0792"
+    },
+    {
+      "passed": true,
+      "label": "2026 passing navigation0792"
+    },
+    {
+      "passed": true,
+      "label": "2026 raw receipt workflow"
+    },
+    {
+      "passed": true,
+      "label": "2026 passing workflow"
+    },
+    {
+      "passed": true,
+      "label": "2026 raw receipt ui-timing"
+    },
+    {
+      "passed": true,
+      "label": "2026 passing ui-timing"
+    },
+    {
+      "passed": true,
+      "label": "2026 raw receipt layer-undo-prepare"
+    },
+    {
+      "passed": true,
+      "label": "2026 passing layer-undo-prepare"
+    },
+    {
+      "passed": true,
+      "label": "2026 Undo phase layer-undo-prepare"
+    },
+    {
+      "passed": true,
+      "label": "2026 raw receipt layer-undo-delete"
+    },
+    {
+      "passed": true,
+      "label": "2026 passing layer-undo-delete"
+    },
+    {
+      "passed": true,
+      "label": "2026 Undo phase layer-undo-delete"
+    },
+    {
+      "passed": true,
+      "label": "2026 raw receipt layer-undo-undo"
+    },
+    {
+      "passed": true,
+      "label": "2026 passing layer-undo-undo"
+    },
+    {
+      "passed": true,
+      "label": "2026 Undo phase layer-undo-undo"
+    },
+    {
+      "passed": true,
+      "label": "2026 raw receipt layer-undo-redo"
+    },
+    {
+      "passed": true,
+      "label": "2026 passing layer-undo-redo"
+    },
+    {
+      "passed": true,
+      "label": "2026 Undo phase layer-undo-redo"
+    },
+    {
+      "passed": true,
+      "label": "2026 raw receipt radius-undo-prepare"
+    },
+    {
+      "passed": true,
+      "label": "2026 passing radius-undo-prepare"
+    },
+    {
+      "passed": true,
+      "label": "2026 Undo phase radius-undo-prepare"
+    },
+    {
+      "passed": true,
+      "label": "2026 raw receipt radius-undo-edit"
+    },
+    {
+      "passed": true,
+      "label": "2026 passing radius-undo-edit"
+    },
+    {
+      "passed": true,
+      "label": "2026 Undo phase radius-undo-edit"
+    },
+    {
+      "passed": true,
+      "label": "2026 raw receipt radius-undo-undo"
+    },
+    {
+      "passed": true,
+      "label": "2026 passing radius-undo-undo"
+    },
+    {
+      "passed": true,
+      "label": "2026 Undo phase radius-undo-undo"
+    },
+    {
+      "passed": true,
+      "label": "2026 raw receipt radius-undo-redo"
+    },
+    {
+      "passed": true,
+      "label": "2026 passing radius-undo-redo"
+    },
+    {
+      "passed": true,
+      "label": "2026 Undo phase radius-undo-redo"
+    },
+    {
+      "passed": true,
+      "label": "2026 package hash"
+    },
+    {
+      "passed": true,
+      "label": "2026 archive AminScatter.dlx"
+    },
+    {
+      "passed": true,
+      "label": "2026 archive Clipper2-LICENSE.txt"
+    },
+    {
+      "passed": true,
+      "label": "2026 archive CyrusBrush.dlx"
+    },
+    {
+      "passed": true,
+      "label": "2026 archive CyrusBrushStorage.dlh"
+    },
+    {
+      "passed": true,
+      "label": "2026 archive CyrusScatter.mcr"
+    },
+    {
+      "passed": true,
+      "label": "2026 archive CyrusScatter.ms"
+    },
+    {
+      "passed": true,
+      "label": "2026 archive CyrusScatterEdit.dlm"
+    },
+    {
+      "passed": true,
+      "label": "2026 archive CyrusScatterStartup.ms"
+    },
+    {
+      "passed": true,
+      "label": "2026 archive INSTALL.txt"
+    },
+    {
+      "passed": true,
+      "label": "2026 archive Uninstall.ms"
+    },
+    {
+      "passed": true,
+      "label": "2026 archive install.ms"
+    },
+    {
+      "passed": true,
+      "label": "2026 archive mzp.run"
+    },
+    {
+      "passed": true,
+      "label": "2026 archive nlohmann-json-LICENSE.txt"
+    },
+    {
+      "passed": true,
+      "label": "2026 no diagnostic transport"
+    },
+    {
+      "passed": true,
+      "label": "2026 original example file matches preserved input"
+    },
+    {
+      "passed": true,
+      "label": "2027 tested script unchanged"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/CMakeLists.txt"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/include/brush.h"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/include/diagnostics.h"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/include/execution.h"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/include/group_spacing.h"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/include/license_boundary.h"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/include/point_preview.h"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/include/preview_sampling.h"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/include/procedural.h"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/include/receiver_plan.h"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/include/scatter.h"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/analyzer_area_bridge.inc"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/authored_revision.inc"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/boundary_falloff.inc"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/boundary_falloff_bridge.inc"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/brush.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/brush_host.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/brush_storage_plugin.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/brush_surface.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/cluster.inc"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/cyrus_edit.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/cyrus_edit_stack.inc"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/cyrus_edit_storage.inc"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/diagnostics.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/diagnostics_bridge.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/edge_border.inc"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/edit_plugin.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/execution.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/final.inc"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/geometry_preview.inc"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/group_spacing.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/group_spacing_bridge.inc"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/input_validity.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/max_bridge.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/mesh_display.inc"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/orientation.inc"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/orientation_bridge.inc"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/placement_identity.inc"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/point_display.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/prepared_band.inc"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/preview.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/preview_batches.inc"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/procedural.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/procedural_bridge.inc"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/receiver_binding_host.h"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/receiver_bridge.inc"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/receiver_plan.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/rollout_flow.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/rollout_scroll.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/scatter.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/source_container.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/spacing.inc"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/team_license.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/src/whole_scale_bridge.inc"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/tests/boundary_falloff_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/tests/brush_feedback_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/tests/brush_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/tests/compute_benchmark.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/tests/diagnostics_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/tests/edge_border_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/tests/group_spacing_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/tests/orientation_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/tests/prepared_band_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/tests/preview_sampling_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/tests/procedural_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/tests/receiver_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/tests/scatter_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/tests/spacing_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/tests/threading_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/tests/weight_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/third_party/clipper2/include/clipper2/clipper.core.h"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/third_party/clipper2/include/clipper2/clipper.engine.h"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/third_party/clipper2/include/clipper2/clipper.export.h"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/third_party/clipper2/include/clipper2/clipper.h"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/third_party/clipper2/include/clipper2/clipper.minkowski.h"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/third_party/clipper2/include/clipper2/clipper.offset.h"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/third_party/clipper2/include/clipper2/clipper.rectclip.h"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/third_party/clipper2/include/clipper2/clipper.triangulation.h"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/third_party/clipper2/include/clipper2/clipper.version.h"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/third_party/clipper2/src/clipper.engine.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/third_party/clipper2/src/clipper.offset.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source AminScatter/third_party/clipper2/src/clipper.rectclip.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source CyrusLicensing/CMakeLists.txt"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source CyrusLicensing/include/cyrus/licensing/client.h"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source CyrusLicensing/include/cyrus/licensing/local_state.h"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source CyrusLicensing/include/cyrus/licensing/policy.h"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source CyrusLicensing/include/cyrus/licensing/signed_license.h"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source CyrusLicensing/src/client.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source CyrusLicensing/src/cng_signature.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source CyrusLicensing/src/cng_signature.h"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source CyrusLicensing/src/installation_key.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source CyrusLicensing/src/local_clock.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source CyrusLicensing/src/local_store.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source CyrusLicensing/src/operation_permit.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source CyrusLicensing/src/policy.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source CyrusLicensing/src/signed_license.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source CyrusLicensing/team/team_public_key.h"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source CyrusLicensing/tests/local_state_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source CyrusLicensing/tests/policy_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source CyrusLicensing/tests/signed_license_tests.cpp"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source cmake/CyrusMaxSDK.cmake"
+    },
+    {
+      "passed": true,
+      "label": "2027 frozen source team_public_key.h"
+    },
+    {
+      "passed": true,
+      "label": "2027 raw receipt regressions"
+    },
+    {
+      "passed": true,
+      "label": "2027 passing regressions"
+    },
+    {
+      "passed": true,
+      "label": "2027 raw receipt display0792"
+    },
+    {
+      "passed": true,
+      "label": "2027 passing display0792"
+    },
+    {
+      "passed": true,
+      "label": "2027 raw receipt invalidation0792"
+    },
+    {
+      "passed": true,
+      "label": "2027 passing invalidation0792"
+    },
+    {
+      "passed": true,
+      "label": "2027 raw receipt layer-lifecycle"
+    },
+    {
+      "passed": true,
+      "label": "2027 passing layer-lifecycle"
+    },
+    {
+      "passed": true,
+      "label": "2027 raw receipt point-model-probe"
+    },
+    {
+      "passed": true,
+      "label": "2027 passing point-model-probe"
+    },
+    {
+      "passed": true,
+      "label": "2027 raw receipt scene-results"
+    },
+    {
+      "passed": true,
+      "label": "2027 passing scene-results"
+    },
+    {
+      "passed": true,
+      "label": "2027 raw receipt falloff-results"
+    },
+    {
+      "passed": true,
+      "label": "2027 passing falloff-results"
+    },
+    {
+      "passed": true,
+      "label": "2027 raw receipt points-results"
+    },
+    {
+      "passed": true,
+      "label": "2027 passing points-results"
+    },
+    {
+      "passed": true,
+      "label": "2027 raw receipt reopen-results"
+    },
+    {
+      "passed": true,
+      "label": "2027 passing reopen-results"
+    },
+    {
+      "passed": true,
+      "label": "2027 raw receipt empty-results"
+    },
+    {
+      "passed": true,
+      "label": "2027 passing empty-results"
+    },
+    {
+      "passed": true,
+      "label": "2027 raw receipt layout-results"
+    },
+    {
+      "passed": true,
+      "label": "2027 passing layout-results"
+    },
+    {
+      "passed": true,
+      "label": "2027 raw receipt reuse-checks"
+    },
+    {
+      "passed": true,
+      "label": "2027 passing reuse-checks"
+    },
+    {
+      "passed": true,
+      "label": "2027 raw receipt endurance"
+    },
+    {
+      "passed": true,
+      "label": "2027 passing endurance"
+    },
+    {
+      "passed": true,
+      "label": "2027 raw receipt navigation0792"
+    },
+    {
+      "passed": true,
+      "label": "2027 passing navigation0792"
+    },
+    {
+      "passed": true,
+      "label": "2027 raw receipt garden-checks"
+    },
+    {
+      "passed": true,
+      "label": "2027 passing garden-checks"
+    },
+    {
+      "passed": true,
+      "label": "2027 raw receipt garden-reopen"
+    },
+    {
+      "passed": true,
+      "label": "2027 passing garden-reopen"
+    },
+    {
+      "passed": true,
+      "label": "2027 raw receipt controls"
+    },
+    {
+      "passed": true,
+      "label": "2027 passing controls"
+    },
+    {
+      "passed": true,
+      "label": "2027 raw receipt render"
+    },
+    {
+      "passed": true,
+      "label": "2027 passing render"
+    },
+    {
+      "passed": true,
+      "label": "2027 raw receipt benchmark"
+    },
+    {
+      "passed": true,
+      "label": "2027 passing benchmark"
+    },
+    {
+      "passed": true,
+      "label": "2027 raw receipt garden-refinement"
+    },
+    {
+      "passed": true,
+      "label": "2027 passing garden-refinement"
+    },
+    {
+      "passed": true,
+      "label": "2027 raw receipt final-scene"
+    },
+    {
+      "passed": true,
+      "label": "2027 passing final-scene"
+    },
+    {
+      "passed": true,
+      "label": "2027 raw receipt final-render"
+    },
+    {
+      "passed": true,
+      "label": "2027 passing final-render"
+    },
+    {
+      "passed": true,
+      "label": "2027 raw receipt layer-undo-prepare"
+    },
+    {
+      "passed": true,
+      "label": "2027 passing layer-undo-prepare"
+    },
+    {
+      "passed": true,
+      "label": "2027 Undo phase layer-undo-prepare"
+    },
+    {
+      "passed": true,
+      "label": "2027 raw receipt layer-undo-delete"
+    },
+    {
+      "passed": true,
+      "label": "2027 passing layer-undo-delete"
+    },
+    {
+      "passed": true,
+      "label": "2027 Undo phase layer-undo-delete"
+    },
+    {
+      "passed": true,
+      "label": "2027 raw receipt layer-undo-undo"
+    },
+    {
+      "passed": true,
+      "label": "2027 passing layer-undo-undo"
+    },
+    {
+      "passed": true,
+      "label": "2027 Undo phase layer-undo-undo"
+    },
+    {
+      "passed": true,
+      "label": "2027 raw receipt layer-undo-redo"
+    },
+    {
+      "passed": true,
+      "label": "2027 passing layer-undo-redo"
+    },
+    {
+      "passed": true,
+      "label": "2027 Undo phase layer-undo-redo"
+    },
+    {
+      "passed": true,
+      "label": "2027 raw receipt radius-undo-prepare"
+    },
+    {
+      "passed": true,
+      "label": "2027 passing radius-undo-prepare"
+    },
+    {
+      "passed": true,
+      "label": "2027 Undo phase radius-undo-prepare"
+    },
+    {
+      "passed": true,
+      "label": "2027 raw receipt radius-undo-edit"
+    },
+    {
+      "passed": true,
+      "label": "2027 passing radius-undo-edit"
+    },
+    {
+      "passed": true,
+      "label": "2027 Undo phase radius-undo-edit"
+    },
+    {
+      "passed": true,
+      "label": "2027 raw receipt radius-undo-undo"
+    },
+    {
+      "passed": true,
+      "label": "2027 passing radius-undo-undo"
+    },
+    {
+      "passed": true,
+      "label": "2027 Undo phase radius-undo-undo"
+    },
+    {
+      "passed": true,
+      "label": "2027 raw receipt radius-undo-redo"
+    },
+    {
+      "passed": true,
+      "label": "2027 passing radius-undo-redo"
+    },
+    {
+      "passed": true,
+      "label": "2027 Undo phase radius-undo-redo"
+    },
+    {
+      "passed": true,
+      "label": "2027 package hash"
+    },
+    {
+      "passed": true,
+      "label": "2027 archive AminScatter.dlx"
+    },
+    {
+      "passed": true,
+      "label": "2027 archive Clipper2-LICENSE.txt"
+    },
+    {
+      "passed": true,
+      "label": "2027 archive CyrusBrush.dlx"
+    },
+    {
+      "passed": true,
+      "label": "2027 archive CyrusBrushStorage.dlh"
+    },
+    {
+      "passed": true,
+      "label": "2027 archive CyrusScatter.mcr"
+    },
+    {
+      "passed": true,
+      "label": "2027 archive CyrusScatter.ms"
+    },
+    {
+      "passed": true,
+      "label": "2027 archive CyrusScatterEdit.dlm"
+    },
+    {
+      "passed": true,
+      "label": "2027 archive CyrusScatterStartup.ms"
+    },
+    {
+      "passed": true,
+      "label": "2027 archive INSTALL.txt"
+    },
+    {
+      "passed": true,
+      "label": "2027 archive Uninstall.ms"
+    },
+    {
+      "passed": true,
+      "label": "2027 archive install.ms"
+    },
+    {
+      "passed": true,
+      "label": "2027 archive mzp.run"
+    },
+    {
+      "passed": true,
+      "label": "2027 archive nlohmann-json-LICENSE.txt"
+    },
+    {
+      "passed": true,
+      "label": "2027 no diagnostic transport"
+    },
+    {
+      "passed": true,
+      "label": "2027 original example file matches preserved input"
+    },
+    {
+      "passed": true,
+      "label": "Document link CONTROL_REGISTER.md"
+    },
+    {
+      "passed": true,
+      "label": "Document link COVERAGE.md"
+    },
+    {
+      "passed": true,
+      "label": "Document link ../../Test%20Scene/Terraced_Garden_0795/Terraced_Garden_0795.max"
+    },
+    {
+      "passed": true,
+      "label": "Document link ../../Test%20Scene/Terraced_Garden_0795/Terraced_Garden_0795.png"
+    },
+    {
+      "passed": true,
+      "label": "Document link ../../Test%20Scene/Terraced_Garden_0795/README.md"
+    },
+    {
+      "passed": true,
+      "label": "Document link ../../dist/refinement-0.79.5/CyrusScatter-0.79.5-Max2027.mzp"
+    },
+    {
+      "passed": true,
+      "label": "Document link package-2027.json"
+    },
+    {
+      "passed": true,
+      "label": "Document link ../../dist/refinement-0.79.5/CyrusScatter-0.79.5-Max2026.mzp"
+    },
+    {
+      "passed": true,
+      "label": "Document link package-2026.json"
+    },
+    {
+      "passed": true,
+      "label": "Document link evidence.json"
+    },
+    {
+      "passed": true,
+      "label": "Document link ../BACKLOG.md"
+    },
+    {
+      "passed": true,
+      "label": "Document link evidence.json"
+    },
+    {
+      "passed": true,
+      "label": "Document link CONTROL_REGISTER.md"
+    },
+    {
+      "passed": true,
+      "label": "Document link COVERAGE.md"
+    },
+    {
+      "passed": true,
+      "label": "Scene artifact README.md"
+    },
+    {
+      "passed": true,
+      "label": "Scene artifact Reference.png"
+    },
+    {
+      "passed": true,
+      "label": "Scene artifact Terraced_Garden_0795.max"
+    },
+    {
+      "passed": true,
+      "label": "Scene artifact Terraced_Garden_0795.png"
+    }
+  ]
+}

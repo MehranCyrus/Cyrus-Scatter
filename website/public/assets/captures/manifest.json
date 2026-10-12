@@ -1,0 +1,39 @@
+[
+  {
+    "file": "spline-exclude-0783.png",
+    "sha256": "530e5820b86e17041d6bdbbaab908e42078f8e926dae4fba823c96bdbe2e19c4",
+    "source": "build/vector-brush-078/include-exclude-visible2026-01/Area_Example_14_Closeup.png",
+    "kind": "Actual Max 2026 viewport capture of point-only inspection example 14",
+    "scatterVersion": "0.78.3",
+    "width": 937,
+    "height": 783
+  },
+  {
+    "file": "garden-study-075.webp",
+    "sha256": "27d6ceeaa141023d045c4589bbec30d4487a67e568b2a89e27ed549e6cd7999a",
+    "source": "Test Scene/Reference_Garden_075/Garden_Final.png",
+    "kind": "Historical 0.75 Corona garden render · optimized display derivative",
+    "scatterVersion": "0.75",
+    "width": 1200,
+    "height": 1500,
+    "progressivePassLimit": 16,
+    "renderProvenance": [
+      "build/reference-garden075/final_render.ms:23-32"
+    ],
+    "scope": "Historical composition render; not a current benchmark or statement of final product quality",
+    "bytes": 848774,
+    "originalSha256": "41c3b76150366372230259063202c97ac997c79678dfbeb247c0f0be853ad8f1",
+    "originalBytes": 9596603,
+    "originalWidth": 1200,
+    "originalHeight": 1500,
+    "encoding": {
+      "format": "WebP",
+      "quality": 95,
+      "method": 6,
+      "alpha": "preserved",
+      "resize": "Lanczos",
+      "library": "Pillow 12.3.0",
+      "encoder": "libwebp 1.6.0"
+    }
+  }
+]

@@ -1,0 +1,27 @@
+{
+  "tool": "Built-in image_gen",
+  "generatedOn": "2026-10-11",
+  "nativeDimensions": [
+    1448,
+    1086
+  ],
+  "requestedDimensions": [
+    3840,
+    2880
+  ],
+  "note": "Tool returned 1448 x 1086 native images; no upscaling. Prompt resolution is an intent, not delivered dimensions.",
+  "briefs": [
+    {
+      "name": "courtyard",
+      "prompt": "Use case: ads-marketing. Asset: high-resolution landscape architecture photograph for Cyrus Scatter website hero and environment gallery. Generate ONE photorealistic image, landscape 4:3 composition, ideally 3840 x 2880 pixels, the highest native resolution available. A beautifully designed quiet contemporary courtyard: broad pale limestone steps lead from the foreground toward an elegant low pavilion with warm limestone walls and tall dark glass windows in the right background. Mature sculptural multi-stem trees, dense layers of fine grasses, silver-green foliage, delicate white perennial flowers, restrained lavender, varied shrubs frame the steps. Show sophisticated deliberate planting, airy varied forms and convincing leaf detail. Balanced composition, path centrally located, architecture on the right, planting visible across frame. Foreground stone texture and flower heads exceptionally crisp; realistic individual leaves, finely detailed bark, subtle worn limestone, no repeated cloned trees. Soft warm morning sunlight, natural highlights, no fog, no overexposure, no mist or artificial blur. High-end editorial landscape photography, 35mm lens, f/8 deep focus, natural sage/olive and warm ivory palette. No people, no writing, no logos, no border, no website interface, no typography, no collage. Do not bake in gradient or text space; website supplies its own gradient. All parts of the image should retain photographic detail and clean edges."
+    },
+    {
+      "name": "coastal",
+      "prompt": "Use case: ads-marketing. Asset: high-resolution environment gallery landscape photograph, matching a refined sage/ivory landscape architecture website. Generate ONE photorealistic image, landscape 4:3 composition, ideally 3840 x 2880 pixels at highest native resolution available. A natural Mediterranean coastal hillside meeting a calm deep blue sea, pale weathered limestone boulders, wind-shaped pines and olive trees, clumps of ornamental grasses, low silvery shrubs and small white wildflowers. Organic layered vegetation with deliberate visual rhythm, convincing species forms and botanical diversity. Foreground boulders and grasses detailed, central irregular planted slope, sea and quiet distant coastline on left, taller wind-sculpted trees framing upper right. Camera looking diagonally along coast, human eye-level view, no buildings or roads. Editorial fine landscape photography, 35mm lens, f/8 deep depth of field, intricate foliage, readable fine needles and stone pores, natural clear warm morning illumination, sophisticated muted olive/sage vegetation contrasting with pale stone and blue water. No fog, no cinematic haze, no fake tilt-shift blur, no oversharpening, no crushed blacks, no people, text, logos, graphic overlays or collage."
+    },
+    {
+      "name": "perennial",
+      "prompt": "Use case: ads-marketing. Asset: high-resolution botanical garden detail photograph for environment image viewer. Generate ONE photorealistic image, landscape 4:3 composition, ideally 3840 x 2880 pixels at highest native resolution available. An exquisitely designed naturalistic perennial border alongside a warm pale limestone garden path: airy blonde feather grasses, lavender-blue flowering spires, ivory umbels, small soft pink coneflowers, layered silver-green low foliage and darker green shrubs beyond. View at low human eye-level across the lush planting, path bends gently along the right into garden. Finely resolved individual petals, leaves and seed heads, convincing diverse botanical structure and subtle imperfect plant forms. Soft warm morning sidelight, natural colors, sage/olive/ivory with restrained lavender and blush. High-end editorial garden photography, 50mm lens, f/8, foreground and midground detailed, only naturally softer far background, no artificial blur, no fog or washed-out haze. No people, furniture, buildings, text, logos, UI, borders or collage."
+    }
+  ]
+}

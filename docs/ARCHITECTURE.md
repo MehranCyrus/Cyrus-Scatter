@@ -1,6 +1,6 @@
 # Current codebase architecture
 
-Applies to Cyrus Scatter 0.79.1, saved schema 55 and `CyrusUnified1`. Use [the artist guide](ARTIST_GUIDE.md) for controls, [the backlog](BACKLOG.md) for unfinished work, and [current qualification](Point_Workflow_0.79.1_2026-10-11/README.md) for measured evidence. This is the maintained architecture reference; dated implementation reports describe their own snapshots.
+Applies to Cyrus Scatter 0.79.6, saved schema 56 and `CyrusUnified1`. Use [the artist guide](ARTIST_GUIDE.md) for controls, [the backlog](BACKLOG.md) for unfinished work, and [current foundation qualification](Foundation_0.79.6_2026-10-12/README.md) for measured evidence. Read the relevant [F01–F12 contract](ENGINEERING_FOUNDATION.md) with its limits. Dated implementation reports describe their own snapshots.
 
 ## Ownership
 
@@ -25,7 +25,7 @@ Candidate IDs encode an append-only saved receiver slot plus local ordinal, with
 
 Receiver-local row caches include generation settings, source state, receiver geometry/UV hashes, relevant spline geometry, Analyzer revisions and texture state. Adding a receiver can reuse old candidate rows, but Update still reads geometry/area for validation and runs shared acceptance/publication. This does not claim zero host geometry evaluation or incremental GPU upload. Projection and candidate Relax use the candidate's receiver; changing its own quota/neighborhood can change Relax positions. Shared masks, collision scopes, cleanup and protected edits can change which candidates survive.
 
-Receiver-aware Edit/radius receipts compare common generation settings and known receiver geometry while allowing membership changes. Missing targets remain inactive; geometry changes are guarded. New schema 55 scenes begin with current receiver identities; earlier development scenes require their matching old build.
+Receiver-aware Edit/radius receipts compare common generation settings and known receiver geometry while allowing membership changes. Missing targets remain inactive; geometry changes are guarded. Schema 56 reads immediately preceding schema 55 and preserves same-unit binding labels; earlier model-set/stroke formats require their matching old build.
 
 ### Vector field and feedback
 
@@ -44,6 +44,16 @@ Publication commits compatible rows, sources, radii, statistics and display/outp
 Manual edits wait for explicit Update. Passive browsing, cached inspection and unrelated animation must not publish pending recipes. Cold reconstruction of a missing initial publication is distinct from evaluating warm pending edits. Live invalidation follows relevant dependencies, including relevant animation. Mouse-held interaction can defer scheduled work.
 
 Host geometry access, scene mutation and publication belong on the Max thread. Native workers use copied input. Point Cloud, Mesh and all three Proxy shapes use retained buffers to avoid unchanged uploads. Proxy shares Mesh's immutable source faces and instance transforms, without expanding per-instance proxy triangles in normal operation. The GraphicsWindow fallback reads the same snapshots. Retained drawing uses GPU graphics, not GPU placement computation.
+
+0.79.2 adds retained radius line lists. Each ring keeps the previous 24-segment world-XY geometry and color; immutable buffers are built when the display snapshot changes. Point-count telemetry excludes line vertices, while reservation/upload accounting includes them. Up to ten populations can publish twenty point/mesh-plus-radius caches under the existing retained memory limits. The CPU fallback consumes the same line coordinates.
+
+Steady redraw traverses cached controller/display records, without resolving layer entries, checking full recipes or walking the scene. Relevant input, membership, visibility, display, publication and scene-lifecycle events invalidate the records. A compact unique Analyzer revision watch preserves its separate update contract. Held interaction defers synchronization until release. Cold realization and relevant edits still do work.
+
+Controller icons draw separately from the registered Scatter nodes, including new empty controllers during a held sizing gesture. They must not depend on a published placement record. Icon paths cache by size; no placement evaluation is required. Delete prunes the shared node registry, while scene restoration and Undo/Redo restore it. The [0.79.5 creation fix](Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md) records the regression and host evidence.
+
+Display reconstruction resolves each current layer against `procPublishedOwners`, using that owner's published rows, sources and radii. New unpublished Manual layers have empty output; deleting/reordering layers cannot borrow another owner's snapshot. All successor previews are staged before installation. Manual dirty refresh can rebuild presentation, including Undo/Redo, but placement evaluation remains gated by explicit Update. Radius visibility is excluded from placement preparation keys.
+
+In 0.79.5 each preview also retains a layer display key: publication epoch, owner, colors and display settings. Display refresh enters root evaluation once and prepares only changed layer snapshots. All changed snapshots stage before any installation; a failed successor preserves the complete old publication. Successful recovery clears errors on reused siblings without consuming pending Manual settings. Exact unchanged native snapshot/group/style matches share ready SDK buffer and material handles through new generation-owned render items. Failed or unrealized resources are not reused. Memory admission remains conservative; this is reuse between display publications, not incremental placement solving or color-only vertex updates inside a changed layer.
 
 Explicit Update enters root evaluation once: that evaluation stages and installs every layer atomically. Installed previews remember their Analyzer publication revision. Scatter validates enabled Analyzer dependencies before a successor solve and preserves its last complete publication on stale-input failure. An unchanged cached read continues to consume the published guides even when the Manual Analyzer has pending edits. Analyzer stores publication freshness, linked input references, a settings/transform signature and the published time-validity interval; a drainable source-event queue invalidates the saved freshness flag. Validation, Analyze and save drain pending geometry notifications; delayed notification still schedules Live work after mouse release. Parameter replay during scene loading/merging must not overwrite the saved flag. Older guides without a freshness record require explicit Analyze.
 
@@ -64,6 +74,12 @@ Explicit Update enters root evaluation once: that evaluation stages and installs
 | Bounded automation | [MCP guide](../CyrusMCP/README.md), [capability matrix](Current_System_2026-10-05/CAPABILITY_MATRIX.md) |
 
 Edit the template/generator and regenerate `AminScatterObject.ms`; never fix only that generated file. Installation is a separate authorized step. Preserve internal registration identities. Stable-only Edit storage rejects retired development formats rather than guessing a correspondence.
+
+## Distance storage and publication failures
+
+Schema 56 stores source radii/Z offsets, edge distances, six movement bounds and pair gaps in typed world-unit fields. Area falloff flags/curves retain their saved string format, but widths live in three aligned world-unit tabs. Per-instance absolute radii have a distance tab; multipliers stay dimensionless. The schema-55 update handler copies values and animation controllers into new fields while leaving old parameter types intact. No earlier stroke/model-set conversion is provided. Native Paint/Edit geometry bindings remain guarded under rescale; see [F10 and F11](ENGINEERING_FOUNDATION.md).
+
+The script stages preview input timestamps/Analyzer revisions and retains complete root/leaf publication snapshots until the native Edit transaction commits. A failed install restores every owner and cache, then rolls back native Edit maps. Post-commit observers are guarded separately. Native PointDisplay prepares a successor generation and CPU point/mesh items while the old generation is alive; it disables and swaps the old ownership only after staging succeeds. Admission includes temporary coexistence. This is bounded CPU publication recovery, not blanket GPU/device-loss atomicity; see [the tested failure sites](Foundation_0.79.6_2026-10-12/README.md).
 
 ## Independent boundaries
 

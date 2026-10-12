@@ -1,0 +1,1078 @@
+{
+  "reviewed": "2026-10-12",
+  "notes": "Entries are ordered by documented development chronology, not numeric label. Missing versions and unknown dates are not invented. Local evidence is stripped before publication. 0.79.2 and 0.79.5 are current uncommitted working-tree campaigns at this review, not new Git releases. Analyzer/MCP have independent version domains.",
+  "entries": [
+    {
+      "version": "0.79.6",
+      "date": "2026-10-12",
+      "title": "Safer recovery. Unit-aware distances.",
+      "era": "recent",
+      "legacy": false,
+      "note": "Source validation in Max 2026/2027; no new installer. Native Paint/Edit rescaling and physical release acceptance remain guarded or pending.",
+      "changes": [
+        {"kind": "Fixed", "text": "Publication failures retain the previous complete result across native allocation and scripted installation checks."},
+        {"kind": "Fixed", "text": "Schema 56 stores distances in unit-aware fields and migrates the immediately preceding schema 55 while keeping multipliers dimensionless."}
+      ],
+      "evidence": ["docs/Foundation_0.79.6_2026-10-12/README.md"]
+    },
+    {
+      "version": "0.79.5",
+      "date": "2026-10-11",
+      "title": "More focused previews. Clearer creation.",
+      "era": "recent",
+      "legacy": false,
+      "note": "First panel construction and physical creation-input acceptance remain open.",
+      "changes": [
+        {
+          "kind": "Improved",
+          "text": "Local color edits prepare only affected layers and reuse unchanged sibling display buffers."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Failed preview staging retains the complete previous result and clears recovered sibling errors."
+        },
+        {
+          "kind": "Fixed",
+          "text": "New controller icons appear during placement and sizing, before a plant cache exists, and return correctly after Undo."
+        }
+      ],
+      "evidence": [
+        "docs/Terrace_Workflow_0.79.5_2026-10-11/README.md",
+        "docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md"
+      ]
+    },
+    {
+      "version": "0.79.2",
+      "date": "2026-10-11",
+      "title": "Keep layers and navigation in sync.",
+      "era": "recent",
+      "legacy": false,
+      "note": "The reported physical Live picker disappearance remains unresolved.",
+      "changes": [
+        {
+          "kind": "Fixed",
+          "text": "Manual layer removal and display switching keep each preview attached to its published owner."
+        },
+        {
+          "kind": "Improved",
+          "text": "Cached viewport records and retained radius lines reduce repeated work during navigation."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Radius display toggles and their Undo/Redo preserve pending Manual placement edits."
+        }
+      ],
+      "evidence": [
+        "docs/Layer_Navigation_0.79.2_2026-10-11/README.md"
+      ]
+    },
+    {
+      "version": "0.79.1",
+      "date": "2026-10-11",
+      "title": "Points, palettes and softer boundaries.",
+      "era": "recent",
+      "legacy": false,
+      "note": "Cross-system-unit conversion of per-area falloff distances remains unresolved.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Assign Point sources directly to Spline bands; replace a Point with a model while retaining its row identity."
+        },
+        {
+          "kind": "Improved",
+          "text": "Models & Points, Source containers and boundary density/scale controls are easier to reach."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Layer copy includes band choices and guides; area selection reflects Include, Exclude and mixed selections."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Add Point Undo restores the correct source type and identity."
+        }
+      ],
+      "evidence": [
+        "docs/Point_Workflow_0.79.1_2026-10-11/README.md"
+      ]
+    },
+    {
+      "version": "0.79",
+      "date": "2026-10-11",
+      "title": "Offline team-pilot activation.",
+      "era": "recent",
+      "legacy": false,
+      "note": "A development team pilot, not a completed commercial licensing release.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Owner-issued offline activation and renewal for team testing, with a 30-day license from issuance."
+        },
+        {
+          "kind": "Changed",
+          "text": "Expired pilot licenses lock creation/editing while existing saved scenes remain loadable and renderable."
+        }
+      ],
+      "evidence": [
+        "docs/licensing/TEAM_PILOT_0.79_2026-10-11.md"
+      ]
+    },
+    {
+      "version": "0.78.3",
+      "date": "2026-10-10",
+      "title": "Safer source rectangles. Matching brush radius.",
+      "era": "recent",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Fixed",
+          "text": "Selecting a source rectangle no longer calls removed paint-set properties."
+        },
+        {
+          "kind": "Added",
+          "text": "Enable collection switches start off, allowing rectangles to be positioned without collecting scene geometry."
+        },
+        {
+          "kind": "Fixed",
+          "text": "The Painter cursor now matches the authored radius, including transformed receivers."
+        },
+        {
+          "kind": "Improved",
+          "text": "Area density and paint feedback are directly available in Painting."
+        }
+      ],
+      "evidence": [
+        "docs/Container_and_Radius_0.78.3_2026-10-10/README.md"
+      ]
+    },
+    {
+      "version": "0.78.2",
+      "date": "2026-10-10",
+      "title": "Quicker border feedback while drawing.",
+      "era": "recent",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Improved",
+          "text": "Unchanged brush status skips panel layout; active Painter callbacks prepare intermediate borders without waiting for the script timer."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Final stroke completion flushes remaining border feedback while preserving Manual publication behavior."
+        }
+      ],
+      "evidence": [
+        "docs/Brush_Responsiveness_0.78.2_2026-10-10/README.md"
+      ]
+    },
+    {
+      "version": "0.78.1",
+      "date": "2026-10-10",
+      "title": "Start Brush stays active.",
+      "era": "recent",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Fixed",
+          "text": "Corrected the first status-timer callback that immediately stopped a newly started brush session."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Narrow Amount radio groups, color captions and resized editor swatches fit their native control bounds."
+        },
+        {
+          "kind": "Added",
+          "text": "Matching Max 2026 and Max 2027 vector-brush packages and focused button/callback checks."
+        }
+      ],
+      "evidence": [
+        "docs/Brush_Start_0.78.1_2026-10-10/README.md"
+      ]
+    },
+    {
+      "version": "0.78",
+      "date": "2026-10-10",
+      "title": "The vector Paint Area foundation.",
+      "era": "recent",
+      "legacy": false,
+      "note": "New saved format: older stroke setups are rejected without conversion. The initial Start Brush failure was corrected in 0.78.1.",
+      "changes": [
+        {
+          "kind": "Changed",
+          "text": "Replaced saved stroke replay with receiver-bound vector regions: Paint unions coverage and Erase cuts holes."
+        },
+        {
+          "kind": "Added",
+          "text": "Cached borders, inward/outward feathering and separate density and scale curves."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Oversized circular gestures clip to receiver boundaries and retain visible borders."
+        }
+      ],
+      "evidence": [
+        "docs/Vector_Brush_0.78_2026-10-10/README.md"
+      ]
+    },
+    {
+      "version": "0.77",
+      "date": "2026-10-10",
+      "title": "A faster feedback experiment.",
+      "era": "recent",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Improved",
+          "text": "Cached incremental feedback and smaller gesture Undo records reduced repeated work in the former stroke brush."
+        },
+        {
+          "kind": "Changed",
+          "text": "This stroke-based implementation was later replaced by vector Paint Areas in 0.78."
+        }
+      ],
+      "evidence": [
+        "docs/Paint_Feedback_0.77_2026-10-10/README.md"
+      ]
+    },
+    {
+      "version": "0.76",
+      "date": "2026-10-10",
+      "title": "Independent receiver streams.",
+      "era": "recent",
+      "legacy": false,
+      "note": "The first rebuild changes older combined-sampler placements. Caps, count redistribution, geometry edits and shared spacing still affect output; old Edit bindings need explicit handling.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Persistent receiver-local random sequences and plant identities preserve unchanged base candidates when surfaces are added or reordered."
+        },
+        {
+          "kind": "Improved",
+          "text": "Reuse prepared receiver candidates and prepare only new or changed receivers."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Bound aggregate Brush preparation and accelerate historical face-to-dab indexing."
+        }
+      ],
+      "evidence": [
+        "docs/Receiver_Stability_0.76_2026-10-10/README.md",
+        "docs/Brush_Scaling_0.76_2026-10-10/README.md"
+      ]
+    },
+    {
+      "version": "0.75",
+      "date": "2026-10-09",
+      "title": "A simpler workflow and retained proxies.",
+      "era": "recent",
+      "legacy": false,
+      "note": "Includes the documented 10 October follow-up under the same version.",
+      "changes": [
+        {
+          "kind": "Improved",
+          "text": "Established Layer → Surfaces → Models → Amount → Update scatter, optional Painting, and direct Layout controls."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Paired transform fields and captions replace overlapping axis/min/max layouts."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Unrelated Undo/Redo no longer publishes pending Manual edits."
+        },
+        {
+          "kind": "Improved",
+          "text": "Box, Sphere and Pyramid Proxy use retained instanced geometry; explicit Update refreshes the root once."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Stale Analyzer guides are detected, including immediate edits and saved pending state."
+        }
+      ],
+      "evidence": [
+        "docs/Consolidation_0.75_2026-10-09/README.md",
+        "docs/UI_Layout_0.75_2026-10-09/README.md",
+        "docs/Courtyard_Fixes_0.75_2026-10-10/README.md"
+      ]
+    },
+    {
+      "version": "0.74",
+      "date": "2026-10-08",
+      "title": "Layer-owned surfaces and optional painting.",
+      "era": "recent",
+      "legacy": false,
+      "note": "Includes the 9 October ownership update. Its stroke authoring was later replaced in 0.78.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Each layer owns receivers; named Paint Areas target one receiver while sharing the layer models and population."
+        },
+        {
+          "kind": "Improved",
+          "text": "Receiver lists, resizable lists, per-object view state, labels and identification colors clarify editing."
+        },
+        {
+          "kind": "Fixed",
+          "text": "List drag grips no longer trigger cursor-position exceptions."
+        }
+      ],
+      "evidence": [
+        "docs/UI_Refinements_0.74_2026-10-08/README.md",
+        "docs/UI_Refinements_0.74_2026-10-08/GRIP_FIX.md",
+        "docs/Layer_Paint_Areas_0.74_2026-10-09/README.md"
+      ]
+    },
+    {
+      "version": "0.73",
+      "date": "2026-10-06",
+      "title": "One evaluator and a compact shared UI.",
+      "era": "recent",
+      "legacy": false,
+      "note": "Includes the 7 October UI and callback corrections.",
+      "changes": [
+        {
+          "kind": "Changed",
+          "text": "Unified procedural generation replaced earlier development policies and migration paths."
+        },
+        {
+          "kind": "Improved",
+          "text": "Modify, linked-container editing and the optional layer editor bind the same records; compact sections reduce empty space."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Container startup and Add/Copy layer callbacks retain valid owners across panel refreshes."
+        },
+        {
+          "kind": "Improved",
+          "text": "Retained previews and ordered publication were exercised with real plants and stress scenes."
+        }
+      ],
+      "evidence": [
+        "docs/Unified_System_0.73_2026-10-06/README.md",
+        "docs/Container_Selection_Fix_0.73_2026-10-06/README.md",
+        "docs/Compact_UI_0.73_2026-10-07/README.md",
+        "docs/Layer_Actions_Fix_0.73_2026-10-07/README.md",
+        "docs/Full_Qualification_0.73_2026-10-07/README.md"
+      ]
+    },
+    {
+      "version": "0.72",
+      "date": "2026-10-06",
+      "title": "Selected-layer controls in Modify.",
+      "era": "recent",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Improved",
+          "text": "Integrated the selected-layer editor into native Modify while keeping the popup optional."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Warm popup topic changes bind edits to the correct layer and controller."
+        },
+        {
+          "kind": "Added",
+          "text": "Local Start/Stop/Save/Status diagnostics controls without an MCP requirement."
+        }
+      ],
+      "evidence": [
+        "docs/Integrated_UI_0.72_2026-10-06/README.md"
+      ]
+    },
+    {
+      "version": "0.7.1",
+      "date": "2026-10-05",
+      "title": "Real scenes and relevant Live updates.",
+      "era": "recent",
+      "legacy": false,
+      "note": "Includes 6 October runtime follow-ups. Development numbering replaced the earlier 1.x labels.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "An editable pavilion workflow and optional floating layer editor."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Unrelated animation stops rebuilding static placements; relevant source, receiver and map changes still invalidate dependent results."
+        },
+        {
+          "kind": "Improved",
+          "text": "Settled idle work and retained Point Cloud publication behavior were refined."
+        }
+      ],
+      "evidence": [
+        "docs/Real_Scene_0.7.1_2026-10-05/README.md",
+        "docs/UI_0.7.1_2026-10-05/README.md",
+        "docs/Playback_Performance_2026-10-06/README.md",
+        "docs/Live_Runtime_2026-10-06/README.md"
+      ]
+    },
+    {
+      "version": "0.7",
+      "date": "2026-10-04",
+      "title": "A procedural placement model.",
+      "era": "recent",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "A new deterministic candidate/acceptance pipeline with explicit spacing ownership, protected edits and bounded publication."
+        },
+        {
+          "kind": "Changed",
+          "text": "Introduced development numbering; earlier 1.x checkpoints are not newer supported releases."
+        }
+      ],
+      "evidence": [
+        "docs/Procedural_Implementation_0.7_2026-10-04/README.md",
+        "docs/Release_Versioning.md"
+      ]
+    },
+    {
+      "version": "1.2.3",
+      "date": "2026-10-04",
+      "title": "Native scrolling correction.",
+      "era": "archive",
+      "legacy": true,
+      "note": "Historical development label, subsequently superseded. This is not a commercial 1.0 release.",
+      "changes": [
+        {
+          "kind": "Fixed",
+          "text": "Wheel and blank-background drag navigate the nested native panel without changing control input behavior."
+        }
+      ],
+      "evidence": [
+        "docs/Classic_Layout_2026-10-04/SCROLLING_1.2.3.md"
+      ]
+    },
+    {
+      "version": "1.2.2",
+      "date": "2026-10-04",
+      "title": "A flowing native panel.",
+      "era": "archive",
+      "legacy": true,
+      "note": "Historical development label, subsequently superseded. This is not a commercial 1.0 release.",
+      "changes": [
+        {
+          "kind": "Changed",
+          "text": "Restored a flowing classic rollout stack after the fixed layers container was rejected."
+        }
+      ],
+      "evidence": [
+        "docs/Classic_Layout_2026-10-04/README.md"
+      ]
+    },
+    {
+      "version": "1.2.1",
+      "date": "2026-10-04",
+      "title": "Wider layer controls.",
+      "era": "archive",
+      "legacy": true,
+      "note": "Historical development label, subsequently superseded. This is not a commercial 1.0 release.",
+      "changes": [
+        {
+          "kind": "Fixed",
+          "text": "Native layer containers and paired fields use their available panel width."
+        }
+      ],
+      "evidence": [
+        "docs/Layer_Width_2026-10-04/README.md"
+      ]
+    },
+    {
+      "version": "1.2.0",
+      "date": "2026-10-04",
+      "title": "Independent layers and paint sets.",
+      "era": "archive",
+      "legacy": true,
+      "note": "Historical development label, subsequently superseded. This is not a commercial 1.0 release.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Independent expandable layers, model-owning paint sets and a bounded MCP authoring expansion."
+        }
+      ],
+      "evidence": [
+        "docs/Layers_First_2026-10-03/REPORT.md"
+      ]
+    },
+    {
+      "version": "1.1.0",
+      "date": "2026-10-03",
+      "title": "Shared planting groups.",
+      "era": "archive",
+      "legacy": true,
+      "note": "Historical development label, subsequently superseded. This is not a commercial 1.0 release.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Native group selection, separate coverage feedback and a one-marker-per-placement centres mode."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Final-placement spacing and reporting distinguish coverage, accepted plants and preview dots."
+        }
+      ],
+      "evidence": [
+        "docs/Planting_Groups_2026-10-03/REPORT.md"
+      ]
+    },
+    {
+      "version": "1.0.1",
+      "date": "2026-10-03",
+      "title": "Brush-aware Relax and resets.",
+      "era": "archive",
+      "legacy": true,
+      "note": "Historical development label, subsequently superseded. This is not a commercial 1.0 release.",
+      "changes": [
+        {
+          "kind": "Fixed",
+          "text": "Active Brush masks pause unsupported Relax combinations while preserving stored settings."
+        },
+        {
+          "kind": "Added",
+          "text": "Separate rotation, XYZ scale, whole-scale and movement reset buttons."
+        }
+      ],
+      "evidence": [
+        "docs/Brush_Relax_Reset_2026-10-03/REPORT.md"
+      ]
+    },
+    {
+      "version": "1.0.0",
+      "date": "2026-10-03",
+      "title": "Native Brush and layer editing.",
+      "era": "archive",
+      "legacy": true,
+      "note": "Historical development label, subsequently superseded. This is not a commercial 1.0 release.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Integrated the initial procedural Brush and native layer editor over the retained preview foundation."
+        }
+      ],
+      "evidence": [
+        "docs/Cyrus_Scatter_V1_2026-10-03/README.md"
+      ]
+    },
+    {
+      "version": "0.64",
+      "date": "2026-10-02",
+      "title": "Retained Mesh preview.",
+      "era": "archive",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Improved",
+          "text": "Source-local mesh geometry and placement matrices use retained GPU instancing during navigation."
+        }
+      ],
+      "evidence": [
+        "docs/Retained_Mesh_Preview_2026-10-02/README.md"
+      ]
+    },
+    {
+      "version": "0.63",
+      "date": "2026-10-02",
+      "title": "Retained Point Cloud preview.",
+      "era": "archive",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Improved",
+          "text": "Completed point positions stay in graphics buffers while the camera moves."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Display-only point budgets choose the intended bounded subset instead of undershooting through integer strides."
+        }
+      ],
+      "evidence": [
+        "docs/Retained_Point_Preview_2026-10-02/README.md"
+      ]
+    },
+    {
+      "version": "0.62",
+      "date": "2026-10-01",
+      "title": "Less work while navigating.",
+      "era": "archive",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Improved",
+          "text": "Held mouse navigation avoids repeated layer synchronization without changing the shown population."
+        }
+      ],
+      "evidence": [
+        "docs/Viewport_Performance_Round2_2026-10-01.md"
+      ]
+    },
+    {
+      "version": "0.61",
+      "date": "2026-10-01",
+      "title": "Prepared proxy batches.",
+      "era": "archive",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Improved",
+          "text": "Prepared transformed proxy triangles and batched CPU submission reduce repeated redraw work."
+        }
+      ],
+      "evidence": [
+        "docs/Viewport_Performance_Implementation_2026-10-01.md"
+      ]
+    },
+    {
+      "version": "0.60",
+      "date": "2026-10-01",
+      "title": "Native preparation and CPU queries.",
+      "era": "archive",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Improved",
+          "text": "Native source filtering/transforms, prepared boundary queries, bounded clustering workers and coalesced redraw requests preserve ordered output."
+        }
+      ],
+      "evidence": [
+        "docs/Performance_Implementation_2026-10-01.md"
+      ]
+    },
+    {
+      "version": "0.59",
+      "date": null,
+      "title": "Selection-only stall correction.",
+      "era": "early",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Fixed",
+          "text": "Removed selection-only stalls and refreshed Analyzer revisions before dependency propagation."
+        }
+      ],
+      "evidence": [
+        "docs/CyrusScatter_Complete_Codebase_Documentation_2026-09-27/17_Development_History_and_Evolution.md"
+      ]
+    },
+    {
+      "version": "0.58",
+      "date": null,
+      "title": "Lazy editing and prepared blockers.",
+      "era": "early",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Improved",
+          "text": "Added lazy layer UI, drag suppression, blocker caching and coalesced interactive-render updates."
+        }
+      ],
+      "evidence": [
+        "docs/CyrusScatter_Complete_Codebase_Documentation_2026-09-27/17_Development_History_and_Evolution.md"
+      ]
+    },
+    {
+      "version": "0.56",
+      "date": null,
+      "title": "Street trimming and offsets.",
+      "era": "early",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Added Street Side end trimming and centre-line street offsets."
+        }
+      ],
+      "evidence": [
+        "docs/CyrusScatter_Complete_Codebase_Documentation_2026-09-27/17_Development_History_and_Evolution.md"
+      ]
+    },
+    {
+      "version": "0.54",
+      "date": null,
+      "title": "Analyzer masks.",
+      "era": "early",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Added centre-line and point masks for Analyzer Areas."
+        }
+      ],
+      "evidence": [
+        "docs/CyrusScatter_Complete_Codebase_Documentation_2026-09-27/17_Development_History_and_Evolution.md"
+      ]
+    },
+    {
+      "version": "0.51",
+      "date": null,
+      "title": "Per-area curves.",
+      "era": "early",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Added per-Area falloff and editable curve graphs."
+        }
+      ],
+      "evidence": [
+        "docs/CyrusScatter_Complete_Codebase_Documentation_2026-09-27/17_Development_History_and_Evolution.md"
+      ]
+    },
+    {
+      "version": "0.50",
+      "date": null,
+      "title": "Analyzer boundary falloff.",
+      "era": "early",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Added boundary deletion, scale and density falloff."
+        }
+      ],
+      "evidence": [
+        "docs/CyrusScatter_Complete_Codebase_Documentation_2026-09-27/17_Development_History_and_Evolution.md"
+      ]
+    },
+    {
+      "version": "0.49",
+      "date": null,
+      "title": "Source selection and folded panels.",
+      "era": "early",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Fixed",
+          "text": "Refined source-selection refresh and collapsed UI behavior."
+        }
+      ],
+      "evidence": [
+        "docs/CyrusScatter_Complete_Codebase_Documentation_2026-09-27/17_Development_History_and_Evolution.md"
+      ]
+    },
+    {
+      "version": "0.48",
+      "date": null,
+      "title": "Blended border facing.",
+      "era": "early",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Added Edge Border blend radius."
+        }
+      ],
+      "evidence": [
+        "docs/CyrusScatter_Complete_Codebase_Documentation_2026-09-27/17_Development_History_and_Evolution.md"
+      ]
+    },
+    {
+      "version": "0.47",
+      "date": null,
+      "title": "Local row rotation.",
+      "era": "early",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Added per-row local XYZ rotation for Edge Border."
+        }
+      ],
+      "evidence": [
+        "docs/CyrusScatter_Complete_Codebase_Documentation_2026-09-27/17_Development_History_and_Evolution.md"
+      ]
+    },
+    {
+      "version": "0.46",
+      "date": null,
+      "title": "Protected corners.",
+      "era": "early",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Added protected corner-point generation."
+        }
+      ],
+      "evidence": [
+        "docs/CyrusScatter_Complete_Codebase_Documentation_2026-09-27/17_Development_History_and_Evolution.md"
+      ]
+    },
+    {
+      "version": "0.45",
+      "date": null,
+      "title": "Ordered border rows.",
+      "era": "early",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Added ordered Edge Border rows with offsets and jitter."
+        }
+      ],
+      "evidence": [
+        "docs/CyrusScatter_Complete_Codebase_Documentation_2026-09-27/17_Development_History_and_Evolution.md"
+      ]
+    },
+    {
+      "version": "0.44",
+      "date": null,
+      "title": "Edge Border binding.",
+      "era": "early",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Fixed",
+          "text": "Corrected Edge Border UI binding."
+        }
+      ],
+      "evidence": [
+        "docs/CyrusScatter_Complete_Codebase_Documentation_2026-09-27/17_Development_History_and_Evolution.md"
+      ]
+    },
+    {
+      "version": "0.43",
+      "date": null,
+      "title": "Three preview representations.",
+      "era": "early",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Added Point Cloud, Proxy and Mesh viewport display."
+        }
+      ],
+      "evidence": [
+        "docs/CyrusScatter_Complete_Codebase_Documentation_2026-09-27/17_Development_History_and_Evolution.md"
+      ]
+    },
+    {
+      "version": "0.41",
+      "date": null,
+      "title": "Boundary orientation.",
+      "era": "early",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Added outward boundary/Street orientation and source forward-axis conventions."
+        }
+      ],
+      "evidence": [
+        "docs/CyrusScatter_Complete_Codebase_Documentation_2026-09-27/17_Development_History_and_Evolution.md"
+      ]
+    },
+    {
+      "version": "0.40",
+      "date": null,
+      "title": "Stable instance editing.",
+      "era": "early",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Changed",
+          "text": "Moved CS Edit to stable identities with historical migration handling."
+        }
+      ],
+      "evidence": [
+        "docs/CyrusScatter_Complete_Codebase_Documentation_2026-09-27/17_Development_History_and_Evolution.md"
+      ]
+    },
+    {
+      "version": "0.39",
+      "date": null,
+      "title": "Early instance editing.",
+      "era": "early",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Documented the earlier index-based CS Edit persistence model."
+        }
+      ],
+      "evidence": [
+        "docs/CyrusScatter_Complete_Codebase_Documentation_2026-09-27/17_Development_History_and_Evolution.md"
+      ]
+    },
+    {
+      "version": "0.23",
+      "date": null,
+      "title": "Native spacing and relaxation.",
+      "era": "early",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Added native spacing, collision and Relax with spatial acceleration."
+        }
+      ],
+      "evidence": [
+        "docs/CyrusScatter_Complete_Codebase_Documentation_2026-09-27/17_Development_History_and_Evolution.md"
+      ]
+    },
+    {
+      "version": "0.20",
+      "date": null,
+      "title": "Layer switches and sided strokes.",
+      "era": "early",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Added inside/outside strokes and per-layer enable controls."
+        }
+      ],
+      "evidence": [
+        "docs/CyrusScatter_Complete_Codebase_Documentation_2026-09-27/17_Development_History_and_Evolution.md"
+      ]
+    },
+    {
+      "version": "0.19",
+      "date": null,
+      "title": "Stroke-only output.",
+      "era": "early",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Added stroke-only output outside configured bands."
+        }
+      ],
+      "evidence": [
+        "docs/CyrusScatter_Complete_Codebase_Documentation_2026-09-27/17_Development_History_and_Evolution.md"
+      ]
+    },
+    {
+      "version": "0.18",
+      "date": null,
+      "title": "Consecutive line strokes.",
+      "era": "early",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Added consecutive line-stroke layout."
+        }
+      ],
+      "evidence": [
+        "docs/CyrusScatter_Complete_Codebase_Documentation_2026-09-27/17_Development_History_and_Evolution.md"
+      ]
+    },
+    {
+      "version": "0.14",
+      "date": null,
+      "title": "Line Pattern diversity.",
+      "era": "early",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Added source diversity for Line Pattern."
+        }
+      ],
+      "evidence": [
+        "docs/CyrusScatter_Complete_Codebase_Documentation_2026-09-27/17_Development_History_and_Evolution.md"
+      ]
+    },
+    {
+      "version": "0.13",
+      "date": null,
+      "title": "Cached native point preview.",
+      "era": "early",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Added native cached Point Cloud preview."
+        }
+      ],
+      "evidence": [
+        "docs/CyrusScatter_Complete_Codebase_Documentation_2026-09-27/17_Development_History_and_Evolution.md"
+      ]
+    },
+    {
+      "version": "0.12",
+      "date": null,
+      "title": "Receivers, density and updates.",
+      "era": "early",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Added multiple surfaces, update modes and plants-per-square-metre controls."
+        }
+      ],
+      "evidence": [
+        "docs/CyrusScatter_Complete_Codebase_Documentation_2026-09-27/17_Development_History_and_Evolution.md"
+      ]
+    },
+    {
+      "version": "0.11",
+      "date": null,
+      "title": "Area limits.",
+      "era": "early",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Raised limits and added Area Include/Exclude."
+        }
+      ],
+      "evidence": [
+        "docs/CyrusScatter_Complete_Codebase_Documentation_2026-09-27/17_Development_History_and_Evolution.md"
+      ]
+    },
+    {
+      "version": "0.10",
+      "date": null,
+      "title": "Compact layout correction.",
+      "era": "early",
+      "legacy": false,
+      "note": "",
+      "changes": [
+        {
+          "kind": "Fixed",
+          "text": "Corrected the compact UI layout."
+        }
+      ],
+      "evidence": [
+        "docs/CyrusScatter_Complete_Codebase_Documentation_2026-09-27/17_Development_History_and_Evolution.md"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.24)
+project(CyrusPrivateCreateProbe LANGUAGES CXX)
+include("${CMAKE_CURRENT_LIST_DIR}/../../../cmake/CyrusMaxSDK.cmake")
+add_library(CyrusPrivateCreateProbe MODULE probe.cpp)
+cyrus_max_target(CyrusPrivateCreateProbe)
+target_link_libraries(CyrusPrivateCreateProbe PRIVATE core geom maxutil Maxscrpt)
+set_target_properties(CyrusPrivateCreateProbe PROPERTIES SUFFIX ".dlx")

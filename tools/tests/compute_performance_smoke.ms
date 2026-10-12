@@ -55,7 +55,7 @@
         layer.sources=#(source);layer.addEmptySource();layer.addPointSource()
         layer.amount=6000;layer.sourceWeights=#(.2,1.0,.4);layer.sourceColors=#(red,blue,green)
         layer.diversityMode=2;layer.roughness=50;layer.blurryEdge=35;layer.diversityNoise=20
-        layer.sourceScales=#(2.3,1,1);layer.sourceZOffsets=#(17,0,3)
+        layer.sourceScales=#(2.3,1,1);layer.sourceZOffsetsWU=#(17,0,3)
         controller.syncLayerSurface layer
         local plants=layer.validSources()
         cyrusScatterCPUThreads 1

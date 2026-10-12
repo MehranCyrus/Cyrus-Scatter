@@ -1,0 +1,78 @@
+[
+  {
+    "gardenCaption": "Historical 0.75 Corona garden render. Sixteen passes at 1200 × 1500, using the artist’s models. A composition study with its original context, rather than a current benchmark or final product-quality claim.",
+    "images": [
+      {
+        "height": 783,
+        "loaded": true,
+        "source": "./assets/captures/spline-exclude-0783.png",
+        "width": 937
+      },
+      {
+        "height": 1125,
+        "loaded": true,
+        "source": "./assets/captures/garden-study-075.webp",
+        "width": 900
+      }
+    ],
+    "overflow": false,
+    "width": 320
+  },
+  {
+    "gardenCaption": "Historical 0.75 Corona garden render. Sixteen passes at 1200 × 1500, using the artist’s models. A composition study with its original context, rather than a current benchmark or final product-quality claim.",
+    "images": [
+      {
+        "height": 783,
+        "loaded": true,
+        "source": "./assets/captures/spline-exclude-0783.png",
+        "width": 937
+      },
+      {
+        "height": 1125,
+        "loaded": true,
+        "source": "./assets/captures/garden-study-075.webp",
+        "width": 900
+      }
+    ],
+    "overflow": false,
+    "width": 390
+  },
+  {
+    "gardenCaption": "Historical 0.75 Corona garden render. Sixteen passes at 1200 × 1500, using the artist’s models. A composition study with its original context, rather than a current benchmark or final product-quality claim.",
+    "images": [
+      {
+        "height": 783,
+        "loaded": true,
+        "source": "./assets/captures/spline-exclude-0783.png",
+        "width": 937
+      },
+      {
+        "height": 1125,
+        "loaded": true,
+        "source": "./assets/captures/garden-study-075.webp",
+        "width": 900
+      }
+    ],
+    "overflow": false,
+    "width": 768
+  },
+  {
+    "gardenCaption": "Historical 0.75 Corona garden render. Sixteen passes at 1200 × 1500, using the artist’s models. A composition study with its original context, rather than a current benchmark or final product-quality claim.",
+    "images": [
+      {
+        "height": 783,
+        "loaded": true,
+        "source": "./assets/captures/spline-exclude-0783.png",
+        "width": 937
+      },
+      {
+        "height": 1125,
+        "loaded": true,
+        "source": "./assets/captures/garden-study-075.webp",
+        "width": 900
+      }
+    ],
+    "overflow": false,
+    "width": 1440
+  }
+]

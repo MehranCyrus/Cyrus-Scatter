@@ -1,7 +1,7 @@
 """Read-only unified recipe/last-publication export; no host evaluation calls."""
 
 RULE_FIELDS = ("procRuleScope", "procRuleA", "procRuleB", "procRuleEnabled",
-               "procRuleMultiplier", "procRuleGap", "procRulePlanar")
+               "procRuleMultiplier", "procRuleGapWU", "procRulePlanar")
 STAT_FIELDS = ("eligible_pool", "accepted", "protected", "protected_conflicts",
                "rejected_layer", "rejected_set", "rejected_self", "removed_cleanup",
                "not_consumed", "candidate_attempts", "target_shortfall", "neighbor_visits")
@@ -143,7 +143,7 @@ def read_procedural(controller, metres_per_unit):
     pairs = [{"scope": "paint_sets" if int(controller.procRuleScope[i]) == 1 else "layers",
               "a": str(controller.procRuleA[i]), "b": str(controller.procRuleB[i]),
               "enabled": bool(controller.procRuleEnabled[i]), "radius_factor": float(controller.procRuleMultiplier[i]),
-              "gap_m": float(controller.procRuleGap[i]) * metres_per_unit,
+              "gap_m": float(controller.procRuleGapWU[i]) * metres_per_unit,
               "metric": "xy" if controller.procRulePlanar[i] else "xyz"} for i in range(len(controller.procRuleA))]
     return {"schema": "cyrus.procedural-configuration/1.0", "calculation_model": "CyrusUnified1",
             "global_source_containers": _container_refs(controller, "containerGlobalNodes"),

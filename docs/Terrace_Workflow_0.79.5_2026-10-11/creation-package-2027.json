@@ -1,0 +1,43 @@
+{
+  "package": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\refinement-0.79.5-creation\\CyrusScatter-0.79.5-Max2027.mzp",
+  "sha256": "437b3a5367611256abba8a6956decab9a19850b92b7372fa44653080ad992764",
+  "manifest": {
+    "product": "Cyrus Scatter",
+    "version": "0.79.5",
+    "max_year": 2027,
+    "toolset": "14.38.33130",
+    "windows_sdk": "10.0.19041.0",
+    "configuration": "Release",
+    "native_id": "ec627defe73b",
+    "files": {
+      "AminScatter.dlx": "8742f4f7c4a73a3b9ad1895a881c0679744125ee1f76e4eae3c36f8baa7470dc",
+      "Clipper2-LICENSE.txt": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+      "CyrusBrush.dlx": "b72358708d89d053356a713fdfee7ce603dbb9b615366dbfd60216f953c114ec",
+      "CyrusBrushStorage.dlh": "139fd957bd8968e8e4bf086f190633bab6362b740eaa9457022f48e674e0fe3c",
+      "CyrusScatter.mcr": "c18be72856b1d853941aac679af8aebfe5a57177ba509b2e03592fb72fc5d085",
+      "CyrusScatter.ms": "cacf3e6b1af8796d96bca7ed2698cfb762d3baff7f90bc35a507b100ee0af4b4",
+      "CyrusScatterEdit.dlm": "d0714d4f984155b43f93304c376422fb6ae06146e289490233bcd99508884bdd",
+      "CyrusScatterStartup.ms": "fdf38b3bc83187eecb34b833bfff2751e78626e9e3dba41aa20a0ff7ff9e8405",
+      "INSTALL.txt": "c98007add1eac94dbbbed43e751dcaa1eb6f038c79d5331e95b14dad84990560",
+      "Uninstall.ms": "59e2b84901fcefaae1dab59886cd2f4079df4f764c789238947e19c514b4ed49",
+      "install.ms": "884bd6ba0a6f0e4b9eb4dcc400f094ea6e90163cc63b706c10e2b2b72f9d8487",
+      "mzp.run": "f6863774b387198569ddce080538da56bf0a63b09f466ea4fe0e6fd5b91b4f2e",
+      "nlohmann-json-LICENSE.txt": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603"
+    },
+    "licensing": {
+      "mode": "offline-team",
+      "key_id": "cyrus-team-a1b79a717a834e459d454a7768ffe205",
+      "term_days": 30
+    }
+  },
+  "host": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0795-create-fixed-2027-02",
+  "candidate": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\refine0795-20261011\\max2027-02",
+  "installed": false,
+  "qualification": [
+    "create-callbacks",
+    "create-visibility",
+    "create-existing",
+    "workflow",
+    "navigation0792"
+  ]
+}

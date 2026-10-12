@@ -1,0 +1,392 @@
+[
+  {
+    "file": "01-meadow-ribbons-640.webp",
+    "title": "Meadow ribbons",
+    "kind": "AI-generated concept artwork; not Cyrus output",
+    "source": "artwork/hero-studies-20261011/01-meadow-ribbons.png",
+    "originalSha256": "8185c0bf27fd2ab4b58cfe66234614323b06e9210b8ff046aaa1b78b039afd0a",
+    "sha256": "7915dbd4f4ba3d96910c6c902f58b0f3c713dbd70e13f4983f2f94f38fe7184a",
+    "dimensions": [
+      640,
+      360
+    ],
+    "nativeDimensions": [
+      1672,
+      941
+    ],
+    "bytes": 167694,
+    "encoding": {
+      "format": "WebP",
+      "quality": 96,
+      "method": 6,
+      "upscaled": false
+    },
+    "generator": "Built-in image_gen",
+    "prompts": "artwork/hero-studies-20261011/prompts.json",
+    "selectedForHero": false
+  },
+  {
+    "file": "01-meadow-ribbons-1100.webp",
+    "title": "Meadow ribbons",
+    "kind": "AI-generated concept artwork; not Cyrus output",
+    "source": "artwork/hero-studies-20261011/01-meadow-ribbons.png",
+    "originalSha256": "8185c0bf27fd2ab4b58cfe66234614323b06e9210b8ff046aaa1b78b039afd0a",
+    "sha256": "d11c2a014cc6a3429ca49065b4e7b7bc4ed2341fa7c9b0d76118f00f94276eff",
+    "dimensions": [
+      1100,
+      619
+    ],
+    "nativeDimensions": [
+      1672,
+      941
+    ],
+    "bytes": 501214,
+    "encoding": {
+      "format": "WebP",
+      "quality": 96,
+      "method": 6,
+      "upscaled": false
+    },
+    "generator": "Built-in image_gen",
+    "prompts": "artwork/hero-studies-20261011/prompts.json",
+    "selectedForHero": false
+  },
+  {
+    "file": "01-meadow-ribbons.webp",
+    "title": "Meadow ribbons",
+    "kind": "AI-generated concept artwork; not Cyrus output",
+    "source": "artwork/hero-studies-20261011/01-meadow-ribbons.png",
+    "originalSha256": "8185c0bf27fd2ab4b58cfe66234614323b06e9210b8ff046aaa1b78b039afd0a",
+    "sha256": "fdfb96e00d5e71b01683623e2d79bdf926f7bf183dd0003dd856420cec3b8ea7",
+    "dimensions": [
+      1672,
+      941
+    ],
+    "nativeDimensions": [
+      1672,
+      941
+    ],
+    "bytes": 1059894,
+    "encoding": {
+      "format": "WebP",
+      "quality": 96,
+      "method": 6,
+      "upscaled": false
+    },
+    "generator": "Built-in image_gen",
+    "prompts": "artwork/hero-studies-20261011/prompts.json",
+    "selectedForHero": false
+  },
+  {
+    "file": "02-courtyard-islands-640.webp",
+    "title": "Courtyard islands",
+    "kind": "AI-generated concept artwork; not Cyrus output",
+    "source": "artwork/hero-studies-20261011/02-courtyard-islands.png",
+    "originalSha256": "4fb97fd53f665b27e0c5ef6e791e202ab06a21735cc5d47dcb6d2bdfba02dd7e",
+    "sha256": "221b2b21743d54482f7b56fe20d6f863af38ca15884e752f83a5d00b54d06c76",
+    "dimensions": [
+      640,
+      360
+    ],
+    "nativeDimensions": [
+      1672,
+      941
+    ],
+    "bytes": 153306,
+    "encoding": {
+      "format": "WebP",
+      "quality": 96,
+      "method": 6,
+      "upscaled": false
+    },
+    "generator": "Built-in image_gen",
+    "prompts": "artwork/hero-studies-20261011/prompts.json",
+    "selectedForHero": false
+  },
+  {
+    "file": "02-courtyard-islands-1100.webp",
+    "title": "Courtyard islands",
+    "kind": "AI-generated concept artwork; not Cyrus output",
+    "source": "artwork/hero-studies-20261011/02-courtyard-islands.png",
+    "originalSha256": "4fb97fd53f665b27e0c5ef6e791e202ab06a21735cc5d47dcb6d2bdfba02dd7e",
+    "sha256": "4ea07d38d6f6b5fe281a913180817aac23b0ee10f8dff8d1e2a5c8ce1de173a3",
+    "dimensions": [
+      1100,
+      619
+    ],
+    "nativeDimensions": [
+      1672,
+      941
+    ],
+    "bytes": 445392,
+    "encoding": {
+      "format": "WebP",
+      "quality": 96,
+      "method": 6,
+      "upscaled": false
+    },
+    "generator": "Built-in image_gen",
+    "prompts": "artwork/hero-studies-20261011/prompts.json",
+    "selectedForHero": false
+  },
+  {
+    "file": "02-courtyard-islands.webp",
+    "title": "Courtyard islands",
+    "kind": "AI-generated concept artwork; not Cyrus output",
+    "source": "artwork/hero-studies-20261011/02-courtyard-islands.png",
+    "originalSha256": "4fb97fd53f665b27e0c5ef6e791e202ab06a21735cc5d47dcb6d2bdfba02dd7e",
+    "sha256": "39960e583cb74165a21bd671a9438d68a9fcab8b2e39f993963f9e2b0d86e7d7",
+    "dimensions": [
+      1672,
+      941
+    ],
+    "nativeDimensions": [
+      1672,
+      941
+    ],
+    "bytes": 968928,
+    "encoding": {
+      "format": "WebP",
+      "quality": 96,
+      "method": 6,
+      "upscaled": false
+    },
+    "generator": "Built-in image_gen",
+    "prompts": "artwork/hero-studies-20261011/prompts.json",
+    "selectedForHero": false
+  },
+  {
+    "file": "03-contour-terraces-640.webp",
+    "title": "Contour terraces",
+    "kind": "AI-generated concept artwork; not Cyrus output",
+    "source": "artwork/hero-studies-20261011/03-contour-terraces.png",
+    "originalSha256": "ba57930acd71ed58a7d14bdf83fa4ceb7ff7b360ecf8f0aae14109213ce872e4",
+    "sha256": "5e527c20e58e7e16dcfdbcda05fd5dda28915f79bd77a45492a63e5f13592a32",
+    "dimensions": [
+      640,
+      360
+    ],
+    "nativeDimensions": [
+      1672,
+      941
+    ],
+    "bytes": 173504,
+    "encoding": {
+      "format": "WebP",
+      "quality": 96,
+      "method": 6,
+      "upscaled": false
+    },
+    "generator": "Built-in image_gen",
+    "prompts": "artwork/hero-studies-20261011/prompts.json",
+    "selectedForHero": true
+  },
+  {
+    "file": "03-contour-terraces-1100.webp",
+    "title": "Contour terraces",
+    "kind": "AI-generated concept artwork; not Cyrus output",
+    "source": "artwork/hero-studies-20261011/03-contour-terraces.png",
+    "originalSha256": "ba57930acd71ed58a7d14bdf83fa4ceb7ff7b360ecf8f0aae14109213ce872e4",
+    "sha256": "5b0d83103f0594cbb5d99f6ee59a3e403bbd835e1b9f9f5acad863000464bec2",
+    "dimensions": [
+      1100,
+      619
+    ],
+    "nativeDimensions": [
+      1672,
+      941
+    ],
+    "bytes": 511962,
+    "encoding": {
+      "format": "WebP",
+      "quality": 96,
+      "method": 6,
+      "upscaled": false
+    },
+    "generator": "Built-in image_gen",
+    "prompts": "artwork/hero-studies-20261011/prompts.json",
+    "selectedForHero": true
+  },
+  {
+    "file": "03-contour-terraces.webp",
+    "title": "Contour terraces",
+    "kind": "AI-generated concept artwork; not Cyrus output",
+    "source": "artwork/hero-studies-20261011/03-contour-terraces.png",
+    "originalSha256": "ba57930acd71ed58a7d14bdf83fa4ceb7ff7b360ecf8f0aae14109213ce872e4",
+    "sha256": "9073d922fcc70216b3ed6326200557bec90a97235575eb5aeb2b6848da578cf6",
+    "dimensions": [
+      1672,
+      941
+    ],
+    "nativeDimensions": [
+      1672,
+      941
+    ],
+    "bytes": 1061590,
+    "encoding": {
+      "format": "WebP",
+      "quality": 96,
+      "method": 6,
+      "upscaled": false
+    },
+    "generator": "Built-in image_gen",
+    "prompts": "artwork/hero-studies-20261011/prompts.json",
+    "selectedForHero": true
+  },
+  {
+    "file": "04-reflection-garden-640.webp",
+    "title": "Reflection garden",
+    "kind": "AI-generated concept artwork; not Cyrus output",
+    "source": "artwork/hero-studies-20261011/04-reflection-garden.png",
+    "originalSha256": "3d32a9e69fd6ad56c47f28118809fc7034b75b23f6515f4803621f6390ec8be7",
+    "sha256": "104bb9dbc8c63358f32a8d1153acbbf611bdab326472185e848bd4d1fe02cfe1",
+    "dimensions": [
+      640,
+      360
+    ],
+    "nativeDimensions": [
+      1672,
+      941
+    ],
+    "bytes": 169828,
+    "encoding": {
+      "format": "WebP",
+      "quality": 96,
+      "method": 6,
+      "upscaled": false
+    },
+    "generator": "Built-in image_gen",
+    "prompts": "artwork/hero-studies-20261011/prompts.json",
+    "selectedForHero": false
+  },
+  {
+    "file": "04-reflection-garden-1100.webp",
+    "title": "Reflection garden",
+    "kind": "AI-generated concept artwork; not Cyrus output",
+    "source": "artwork/hero-studies-20261011/04-reflection-garden.png",
+    "originalSha256": "3d32a9e69fd6ad56c47f28118809fc7034b75b23f6515f4803621f6390ec8be7",
+    "sha256": "72c5771510a30c6b4f8231e9244bdc2066c449b47b9f883b6c00236766cee7bc",
+    "dimensions": [
+      1100,
+      619
+    ],
+    "nativeDimensions": [
+      1672,
+      941
+    ],
+    "bytes": 496160,
+    "encoding": {
+      "format": "WebP",
+      "quality": 96,
+      "method": 6,
+      "upscaled": false
+    },
+    "generator": "Built-in image_gen",
+    "prompts": "artwork/hero-studies-20261011/prompts.json",
+    "selectedForHero": false
+  },
+  {
+    "file": "04-reflection-garden.webp",
+    "title": "Reflection garden",
+    "kind": "AI-generated concept artwork; not Cyrus output",
+    "source": "artwork/hero-studies-20261011/04-reflection-garden.png",
+    "originalSha256": "3d32a9e69fd6ad56c47f28118809fc7034b75b23f6515f4803621f6390ec8be7",
+    "sha256": "1e6716be26cf4ab4cbf31d0ca5a1964a2c8f23a0528e697cccf2644d24bc2af3",
+    "dimensions": [
+      1672,
+      941
+    ],
+    "nativeDimensions": [
+      1672,
+      941
+    ],
+    "bytes": 1019454,
+    "encoding": {
+      "format": "WebP",
+      "quality": 96,
+      "method": 6,
+      "upscaled": false
+    },
+    "generator": "Built-in image_gen",
+    "prompts": "artwork/hero-studies-20261011/prompts.json",
+    "selectedForHero": false
+  },
+  {
+    "file": "05-park-brushstrokes-640.webp",
+    "title": "Park brushstrokes",
+    "kind": "AI-generated concept artwork; not Cyrus output",
+    "source": "artwork/hero-studies-20261011/05-park-brushstrokes.png",
+    "originalSha256": "50c9a49c4590fb94d0b11e6b075593c22447b199de1e2775f4d6d4b2a84fd080",
+    "sha256": "7dc4630d1a9930356ebdd881a86093492ecd1279da6697c32c1ec165bf59bb19",
+    "dimensions": [
+      640,
+      360
+    ],
+    "nativeDimensions": [
+      1672,
+      941
+    ],
+    "bytes": 170724,
+    "encoding": {
+      "format": "WebP",
+      "quality": 96,
+      "method": 6,
+      "upscaled": false
+    },
+    "generator": "Built-in image_gen",
+    "prompts": "artwork/hero-studies-20261011/prompts.json",
+    "selectedForHero": false
+  },
+  {
+    "file": "05-park-brushstrokes-1100.webp",
+    "title": "Park brushstrokes",
+    "kind": "AI-generated concept artwork; not Cyrus output",
+    "source": "artwork/hero-studies-20261011/05-park-brushstrokes.png",
+    "originalSha256": "50c9a49c4590fb94d0b11e6b075593c22447b199de1e2775f4d6d4b2a84fd080",
+    "sha256": "9c6ba15f602f6a98812823b205448b56e381447125642876b97deaa5bdcb0bfc",
+    "dimensions": [
+      1100,
+      619
+    ],
+    "nativeDimensions": [
+      1672,
+      941
+    ],
+    "bytes": 487168,
+    "encoding": {
+      "format": "WebP",
+      "quality": 96,
+      "method": 6,
+      "upscaled": false
+    },
+    "generator": "Built-in image_gen",
+    "prompts": "artwork/hero-studies-20261011/prompts.json",
+    "selectedForHero": false
+  },
+  {
+    "file": "05-park-brushstrokes.webp",
+    "title": "Park brushstrokes",
+    "kind": "AI-generated concept artwork; not Cyrus output",
+    "source": "artwork/hero-studies-20261011/05-park-brushstrokes.png",
+    "originalSha256": "50c9a49c4590fb94d0b11e6b075593c22447b199de1e2775f4d6d4b2a84fd080",
+    "sha256": "f74584363b515e9cd1e96bf6df4a32fa81fa730c125cc443914b210c81c9e029",
+    "dimensions": [
+      1672,
+      941
+    ],
+    "nativeDimensions": [
+      1672,
+      941
+    ],
+    "bytes": 1012316,
+    "encoding": {
+      "format": "WebP",
+      "quality": 96,
+      "method": 6,
+      "upscaled": false
+    },
+    "generator": "Built-in image_gen",
+    "prompts": "artwork/hero-studies-20261011/prompts.json",
+    "selectedForHero": false
+  }
+]

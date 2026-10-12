@@ -1,0 +1,201 @@
+# First matching rule wins. Paths retain spelling; matching is case-insensitive.
+schema_version = 1
+max_hash_bytes = 67108864 # 64 MiB; stream reads use at most 1 MiB.
+max_control_bytes = 2097152
+inventory = "docs/documentation-inventory.csv"
+readme = "README.md"
+source_manifests = ["website/content/source-manifest.json"]
+# Only documents[] in these explicitly maintained manifests supplies authority.
+# Supporting hashes/catalog references supply provenance, not current status.
+maintained_source_manifests = ["website/content/source-manifest.json"]
+known_decisions = ["maintained", "maintained-interface", "retained-history", "preserved-excluded", "preserved-data", "preserved-tool-guide", "consolidated", "removed"]
+
+[inspection]
+skip_directory_names = [".git", "build", "dist", "_local", "node_modules", "__pycache__", ".pytest_cache", ".venv", "venv", ".vs", ".vite", "bin", "obj", "debug", "release", "x64", "x86", "artifacts", "out", "output", "tmp", "temp", "autoback", ".mypy_cache", ".ruff_cache", ".cache", ".test-output", "test-results", ".downloads", "secrets", "private", "certificates", "signing", ".ssh", ".aws", ".kube"]
+skip_path_patterns = ["experiments/paint-methods/scenes/**", "experiments/paint-methods/results/raw/**"]
+sensitive_file_patterns = [".env", ".env.*", "*.pem", "*.pfx", "*.p12", "*.key", "*.dpapi", "*.cyruslicense", "*.cyrusissuer", "issued.sqlite3*", "*.local.json", "config.local.*", "settings.local.*", "credentials*", ".netrc", "id_rsa*", "id_ed25519*"]
+safe_file_exceptions = [".env.example"]
+metadata_directory_prefixes = ["Test Scene"]
+# Explicit root patterns complement nested patterns; directory segments are exact.
+metadata_path_patterns = ["textures/**", "maps/**", "**/textures/**", "**/maps/**"]
+metadata_extensions = [".psd", ".psb", ".max", ".cgeo", ".mzp", ".dlx", ".dlm", ".dlo", ".dlh", ".dll", ".exe", ".lib", ".obj", ".pdb", ".msi", ".msix", ".zip", ".7z", ".rar", ".tar", ".gz", ".bz2", ".xz", ".whl"]
+
+[parser]
+version_regex = '(?<![0-9.])(?P<value>[0-9]+\.[0-9]+(?:\.[0-9]+)*)(?![0-9.])'
+version_candidate_regex = '(?<![0-9.])[0-9]+\.[0-9][0-9A-Za-z.]*'
+date_regex = '(?<![0-9])(?P<value>[0-9]{4}-[0-9]{2}-[0-9]{2})(?![0-9])'
+date_candidate_regex = '(?<![0-9])[0-9]{4}-[0-9]{1,2}-[0-9]{1,2}(?![0-9])'
+
+[[components]]
+id = "scatter"
+regex = '^AminScatter/'
+value = "Scatter"
+[[components]]
+id = "analyzer"
+regex = '^CyrusSurfaceAnalyzer/'
+value = "Analyzer"
+[[components]]
+id = "mcp"
+regex = '^CyrusMCP/'
+value = "MCP"
+[[components]]
+id = "licensing"
+regex = '^CyrusLicensing/'
+value = "Licensing"
+[[components]]
+id = "website"
+regex = '^website/'
+value = "website"
+[[components]]
+id = "design"
+regex = '^Landing Page Design/'
+value = "landing_design"
+[[components]]
+id = "docs"
+regex = '^docs/'
+value = "docs"
+[[components]]
+id = "tools"
+regex = '^tools/'
+value = "tools"
+[[components]]
+id = "root"
+regex = '^[^/]+$'
+value = "root"
+[[components]]
+id = "other"
+regex = '.'
+value = "other"
+
+[[kinds]]
+id = "binary"
+regex = '\.(psd|psb|max|cgeo|mzp|dlx|dlm|dlo|dlh|dll|exe|lib|obj|pdb|msi|msix|zip|7z|rar|tar|gz|bz2|xz|whl)$'
+value = "binary_asset"
+[[kinds]]
+id = "texture"
+regex = '(?:^|/)(?:maps|textures)/.*\.(jpg|jpeg|png|tif|tiff|tga|bmp|exr|hdr|dds|tx)$|\.(exr|hdr|dds|tx)$'
+value = "texture"
+[[kinds]]
+id = "website-image"
+regex = '^website/.*\.(png|jpg|jpeg|webp|gif|svg|ico|avif|tif|tiff|bmp)$'
+value = "website_image"
+[[kinds]]
+id = "design-image"
+regex = '^Landing Page Design/.*\.(png|jpg|jpeg|webp|gif|svg|ico|avif|tif|tiff|bmp)$'
+value = "design_image"
+[[kinds]]
+id = "evidence-image"
+regex = '\.(png|jpg|jpeg|webp|gif|svg|ico|avif|tif|tiff|bmp)$'
+value = "evidence_image"
+[[kinds]]
+id = "test"
+regex = '(?:^|/)(?:tests?|fixtures)/|(?:^|/)(?:test_[^/]+|[^/]+[._-]test\.[^/]+)$'
+value = "test"
+[[kinds]]
+id = "config"
+regex = '(?:^|/)(?:CMakeLists\.txt|Makefile|\.gitignore|\.gitattributes|package(?:-lock)?\.json|tsconfig\.json|requirements[^/]*\.txt)$|\.(toml|ini|cfg|yaml|yml|vcxproj|sln|props|targets)$'
+value = "config"
+[[kinds]]
+id = "doc"
+regex = '\.(md|mdx|rst|txt|pdf|docx?|pptx?)$|(?:^|/)(?:LICENSE|NOTICE)(?:\.[^/]+)?$'
+value = "doc"
+[[kinds]]
+id = "code"
+regex = '\.(cpp|c|cc|cxx|h|hpp|inc|ms|mcr|py|js|cjs|mjs|ts|tsx|jsx|html|css|scss|ps1|bat|cmd|sh)$'
+value = "code"
+[[kinds]]
+id = "data"
+regex = '\.(json|jsonl|csv|tsv|xml|sqlite3?|db|log|dat)$'
+value = "data"
+[[kinds]]
+id = "other"
+regex = '.'
+value = "other"
+
+[[knowledge_rules]]
+id = "maintained-entrypoints"
+regex = '^(?:AGENTS\.md|README\.md|(?:AminScatter|CyrusSurfaceAnalyzer|CyrusMCP|CyrusLicensing|website)/README\.md|docs/(?:README|DOCUMENTATION|Workspace_Organization|AGENT_WORKFLOW|ENGINEERING_FOUNDATION|ARTIST_GUIDE|ARCHITECTURE|BACKLOG|LAYOUT_AND_FALLOFF|HISTORY|Release_Versioning|Max_2027_Installation|PRODUCT_AND_AI_ROADMAP)\.md)$'
+value = "current"
+evidence = "docs/DOCUMENTATION.md; README.md; docs/Workspace_Organization.md"
+[[knowledge_rules]]
+id = "maintained-interface"
+regex = '^docs/Current_System_2026-10-05/(?:CAPABILITY_MATRIX|AGENT_WORKFLOW_GUIDE)\.md$'
+value = "current"
+evidence = "docs/DOCUMENTATION.md#authority"
+[[knowledge_rules]]
+id = "maintained-website-content"
+regex = '^website/content/(?:README\.md|source-manifest\.json|guide-chapters\.json|changelog\.json|control-explanations\.json|gallery-reading-notes\.json)$|^website/src/content/reference\.json$'
+value = "current"
+evidence = "website/content/README.md"
+[[knowledge_rules]]
+id = "selected-design-references"
+regex = '^Landing Page Design/'
+value = "unknown"
+evidence = "docs/DOCUMENTATION.md#website-and-public-roadmap: reference packages, not current guides"
+[[knowledge_rules]]
+id = "explicit-archive-directory"
+regex = '^docs/archives/'
+value = "archive"
+evidence = "explicit archive directory convention (provisional path rule)"
+
+[inventory_status]
+maintained = "current"
+maintained-interface = "current"
+retained-history = "historical"
+preserved-excluded = "unknown"
+preserved-data = "unknown"
+preserved-tool-guide = "unknown"
+consolidated = "unknown"
+removed = "unknown"
+
+[[generated_rules]]
+id = "generated-maxscript"
+regex = '^AminScatter/scripts/AminScatterObject\.ms$'
+source = "AminScatter/tools/ui/generate.cjs; AminScatter/tools/ui/templates/unified-core.ms"
+[[generated_rules]]
+id = "generated-controls"
+regex = '^AminScatter/tools/ui/(?:layers-control-inventory|layer-editor-tooltips)\.json$'
+source = "AminScatter/tools/ui/inventory.cjs (called by generate.cjs)"
+[[generated_rules]]
+id = "generated-layout"
+regex = '^AminScatter/tools/ui/approved-layout-manifest\.json$'
+source = "AminScatter/tools/ui/approved-layout.cjs (called by generate.cjs)"
+[[generated_rules]]
+id = "generated-feature-catalog"
+regex = '^CyrusMCP/cyrus_mcp/feature-catalog\.json$'
+source = "tools/procedural_lab/build_feature_catalog.py; docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md"
+[[generated_rules]]
+id = "generated-website-content"
+regex = '^website/src/content/reference\.json$'
+source = "website/tools/import_reference.py; website/content/README.md"
+
+[[version_observations]]
+id = "scatter-development"
+source = "README.md"
+component = "Scatter"
+regex = 'Current development: Scatter ([0-9]+(?:\.[0-9]+)+)'
+[[version_observations]]
+id = "scatter-package"
+source = "README.md"
+component = "Scatter package metadata"
+regex = 'package metadata ([0-9]+(?:\.[0-9]+)+)'
+[[version_observations]]
+id = "scatter-schema"
+source = "README.md"
+component = "Scatter schema"
+regex = 'schema ([0-9]+)'
+[[version_observations]]
+id = "analyzer"
+source = "CyrusSurfaceAnalyzer/README.md"
+component = "Analyzer"
+regex = '^# Cyrus Surface Analyzer ([0-9]+(?:\.[0-9]+)+)'
+[[version_observations]]
+id = "mcp-package"
+source = "CyrusMCP/README.md"
+component = "MCP package"
+regex = 'Package is \*\*([0-9]+(?:\.[0-9]+)+)'
+[[version_observations]]
+id = "mcp-plan"
+source = "CyrusMCP/README.md"
+component = "MCP plan"
+regex = 'closed authoring plan \*\*([0-9]+(?:\.[0-9]+)+)'

@@ -1,5 +1,11 @@
 # Point workflow and falloff refinement — 0.79.1
 
+Current follow-up: [0.79.2](../Layer_Navigation_0.79.2_2026-10-11/README.md) fixes the confirmed Manual cache/radius issues and navigation overhead. This report preserves the preceding build's evidence; the physical Live/picker report remains open.
+
+Follow-up: the [layer and Point investigation](LAYER_INVESTIGATION.md) confirms a Manual display-cache ownership defect in this build. The reported Live/picker disappearance remains open; the original qualification below does not certify those interactions.
+
+The [point-scene navigation study](NAVIGATION_PERFORMANCE.md) separates unchanged-cache reuse from expensive radius drawing and repeated layer checks. It also confirms that the radius display controls apply pending Manual placement edits through a full Update. These findings describe 0.79.1 and are addressed by the follow-up above.
+
 11 October 2026. This is a focused development qualification, not a claim that every control, renderer or scene is release-ready. The existing 0.79 licensing/source checkpoint was committed and pushed first as `1f62f82` on `codex/workflow-0.75`. The refinement retains schema 55, the current team licensing authority and unchanged native calculation/display code. Analyzer remains 0.14; MCP remains 0.73.0.
 
 ## What changed

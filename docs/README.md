@@ -7,12 +7,18 @@ Use this small set for the current codebase. Update it in place instead of creat
 | How do I use the current development version? | [Artist guide](ARTIST_GUIDE.md) |
 | How do Layout, Analyzer and falloff controls interact? | [Detailed feature reference](LAYOUT_AND_FALLOFF.md) |
 | Who owns data and where is the implementation? | [Architecture](ARCHITECTURE.md) |
+| Which principles guide behavior and engineering decisions? | [Engineering foundation](ENGINEERING_FOUNDATION.md) |
+| What did the latest publication/units correction establish? | [0.79.6 bounded foundation evidence](Foundation_0.79.6_2026-10-12/README.md) |
 | What is unfinished or next? | [Current backlog](BACKLOG.md) |
 | How are alternative brush architectures being compared? | [Four standalone painting trials](../experiments/paint-methods/README.md) — isolated results and known failures; vector A selected for integration |
 | How do I install/build? | [Max 2026/2027 installation/build](Max_2027_Installation.md) |
 | How should code changes be tested? | [Agent workflow](AGENT_WORKFLOW.md) |
+| What changed in 0.79.5? | [Latest creation-icon correction](Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md); [terraced garden, partial preview reuse and original host results](Terrace_Workflow_0.79.5_2026-10-11/README.md) |
+| What changed in 0.79.2? | [Layer cache ownership, navigation and Manual radius fixes](Layer_Navigation_0.79.2_2026-10-11/README.md) |
 | What changed in 0.79.1? | [Point workflow, source controls and falloff qualification](Point_Workflow_0.79.1_2026-10-11/README.md) |
-| What was actually tested? | [0.75 results](System_Qualification_0.75_2026-10-09/README.md), [feature checklist](System_Qualification_0.75_2026-10-09/CHECKLIST.md), [234-control register](System_Qualification_0.75_2026-10-09/CONTROL_REGISTER.md) |
+| What happened to layers and Point/model sources? | [0.79.1 layer investigation](Point_Workflow_0.79.1_2026-10-11/LAYER_INVESTIGATION.md): confirmed Manual display-cache defect; Live picker report remains open |
+| Why can the point-example scene navigate slowly? | [0.79.1 navigation measurements](Point_Workflow_0.79.1_2026-10-11/NAVIGATION_PERFORMANCE.md): radius overlays and layer checks, with unchanged placement/upload caches |
+| What was actually tested? | [0.79.5 coverage](Terrace_Workflow_0.79.5_2026-10-11/COVERAGE.md), [241-control register](Terrace_Workflow_0.79.5_2026-10-11/CONTROL_REGISTER.md), and historical [0.75 results](System_Qualification_0.75_2026-10-09/README.md) |
 | How did the features work together in a landscape? | [Courtyard scene, painting/layout checklist and performance study](Courtyard_Study_0.75_2026-10-09/README.md) |
 | What did we fix after that study? | [Retained Proxy, Update and Analyzer fixes, measurements and matched packages](Courtyard_Fixes_0.75_2026-10-10/README.md) |
 | What is in the 0.78 vector integration? | [Vector brush, clean schema, curves and qualification](Vector_Brush_0.78_2026-10-10/README.md) |

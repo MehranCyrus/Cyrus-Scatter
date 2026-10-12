@@ -1,0 +1,251 @@
+{
+  "scope": "Headless selected React design interaction checks, not plugin qualification",
+  "checks": [
+    {
+      "name": "Workflow roving stage keys",
+      "status": "PASS",
+      "evidence": "true"
+    },
+    {
+      "name": "Density keeps a stable subset",
+      "status": "PASS",
+      "evidence": {
+        "low": 46,
+        "high": 316
+      }
+    },
+    {
+      "name": "Layer visibility changes the illustration",
+      "status": "PASS",
+      "evidence": {
+        "before": "218 illustrative placements",
+        "after": "212 illustrative placements"
+      }
+    },
+    {
+      "name": "Source character switch",
+      "status": "PASS",
+      "evidence": "Uniform selected"
+    },
+    {
+      "name": "Composition reset",
+      "status": "PASS",
+      "evidence": "218 illustrative placements"
+    },
+    {
+      "name": "Boundary inset filters points",
+      "status": "PASS",
+      "evidence": {
+        "near": "498 STUDY POINTS",
+        "far": "307 STUDY POINTS"
+      }
+    },
+    {
+      "name": "Analyzer elements",
+      "status": "PASS",
+      "evidence": "Work with the distinct parts that make up a surface."
+    },
+    {
+      "name": "Analyzer boundaries",
+      "status": "PASS",
+      "evidence": "Let the outline of a surface inform the planting."
+    },
+    {
+      "name": "Analyzer guides",
+      "status": "PASS",
+      "evidence": "Use extracted paths to introduce direction and rhythm."
+    },
+    {
+      "name": "Local edit keyboard move/rotate/reset",
+      "status": "PASS",
+      "evidence": {
+        "moved": "translate(307 223)",
+        "rotated": "scale(1.4) rotate(15 0 -35)",
+        "reset": "translate(302 223)"
+      }
+    },
+    {
+      "name": "Environment viewer next",
+      "status": "PASS",
+      "evidence": "A looser rhythm"
+    },
+    {
+      "name": "Environment viewer Escape/focus",
+      "status": "PASS",
+      "evidence": "Closed and restored focus to courtyard opener"
+    },
+    {
+      "name": "Current ownership illustration",
+      "status": "PASS",
+      "evidence": "Current Paint Area label, not model-owning set"
+    },
+    {
+      "name": "Container collection begins off",
+      "status": "PASS",
+      "evidence": "Collection is disabled. No models are collected."
+    },
+    {
+      "name": "Container inside membership",
+      "status": "PASS",
+      "evidence": "Inside \u2192 eligible source"
+    },
+    {
+      "name": "Container outside parking",
+      "status": "PASS",
+      "evidence": "Outside \u2192 parked source"
+    },
+    {
+      "name": "Coverage radius alters accepted result",
+      "status": "PASS",
+      "evidence": {
+        "small": "Explanatory coverage: 40 candidates within coverage, 31 accepted by the toy spacing rule.",
+        "large": "Explanatory coverage: 40 candidates within coverage, 5 accepted by the toy spacing rule."
+      }
+    },
+    {
+      "name": "Independent spacing scopes",
+      "status": "PASS",
+      "evidence": {
+        "betweenEnabled": "false",
+        "withinFactor": "2"
+      }
+    },
+    {
+      "name": "Manual retains completed drawing",
+      "status": "PASS",
+      "evidence": "Last completed: 40\nCurrent request: 100\nPending edit: this picture has not changed yet.\n\nExplanatory drawing \u00b7 fixed illustrative data \u00b7 not engine output"
+    },
+    {
+      "name": "Explicit update publishes",
+      "status": "PASS",
+      "evidence": "Last completed drawing is current"
+    },
+    {
+      "name": "Live publishes relevant edit",
+      "status": "PASS",
+      "evidence": "Last completed: 10\nCurrent request: 10\nThe picture reflects the last completed example update.\n\nExplanatory drawing \u00b7 fixed illustrative data \u00b7 not engine output"
+    },
+    {
+      "name": "Preview cap preserves accepted count",
+      "status": "PASS",
+      "evidence": "64 accepted model instances \u00b7 0 shown"
+    },
+    {
+      "name": "Display mode Plant centres",
+      "status": "PASS",
+      "evidence": "Plant centres"
+    },
+    {
+      "name": "Display mode Point Cloud",
+      "status": "PASS",
+      "evidence": "Point Cloud"
+    },
+    {
+      "name": "Display mode Proxy",
+      "status": "PASS",
+      "evidence": "Proxy"
+    },
+    {
+      "name": "Display mode Mesh",
+      "status": "PASS",
+      "evidence": "Mesh"
+    },
+    {
+      "name": "All 19 posters",
+      "status": "PASS",
+      "evidence": "19 concept cards"
+    },
+    {
+      "name": "Poster viewer current reading",
+      "status": "PASS",
+      "evidence": "Historical workflow sketch"
+    },
+    {
+      "name": "Poster Escape/focus",
+      "status": "PASS",
+      "evidence": "Closed and restored focus"
+    },
+    {
+      "name": "Poster series filter",
+      "status": "PASS",
+      "evidence": "10"
+    },
+    {
+      "name": "Semantic family C19",
+      "status": "PASS",
+      "evidence": "26 of 240 entries\nLocal control reference"
+    },
+    {
+      "name": "Semantic family C21",
+      "status": "PASS",
+      "evidence": "5 of 240 entries\nLocal control reference"
+    },
+    {
+      "name": "Semantic family C27",
+      "status": "PASS",
+      "evidence": "11 of 240 entries\nLocal control reference"
+    },
+    {
+      "name": "Exact editor section filter",
+      "status": "PASS",
+      "evidence": "9 of 240 entries\nLocal control reference"
+    },
+    {
+      "name": "Search empty-state then Enter",
+      "status": "PASS",
+      "evidence": "http://127.0.0.1:5178/?interaction-review=selected#/visuals/updates"
+    },
+    {
+      "name": "Local checklist persistence",
+      "status": "PASS",
+      "evidence": "1 / 24\nsteps attempted\n\nNotes live in this browser only. Export them for a lasting copy."
+    },
+    {
+      "name": "Native file-save export",
+      "status": "PASS",
+      "evidence": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\website-react-implementation-20261011\\downloads\\cyrus-artist-walkthrough.md"
+    },
+    {
+      "name": "Reset cancellation retains notes",
+      "status": "PASS",
+      "evidence": "1 / 24\nsteps attempted\n\nNotes live in this browser only. Export them for a lasting copy."
+    },
+    {
+      "name": "Confirmed local reset",
+      "status": "PASS",
+      "evidence": "0 / 24\nsteps attempted\n\nNotes live in this browser only. Export them for a lasting copy."
+    },
+    {
+      "name": "Mobile drawer opens",
+      "status": "PASS",
+      "evidence": "Modal drawer"
+    },
+    {
+      "name": "Mobile drawer Escape/focus",
+      "status": "PASS",
+      "evidence": "Focus returned to trigger"
+    },
+    {
+      "name": "Mobile link closes drawer",
+      "status": "PASS",
+      "evidence": "http://127.0.0.1:5178/?interaction-review=selected#/workflow"
+    },
+    {
+      "name": "Landing mobile menu opens",
+      "status": "PASS",
+      "evidence": "Expanded"
+    },
+    {
+      "name": "Landing mobile menu Escape",
+      "status": "PASS",
+      "evidence": "Collapsed"
+    },
+    {
+      "name": "No browser runtime errors",
+      "status": "PASS",
+      "evidence": "None"
+    }
+  ],
+  "count": 45,
+  "status": "PASS"
+}

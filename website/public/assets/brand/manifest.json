@@ -1,0 +1,78 @@
+{
+  "source": "artwork/brand/cyrus-scatter-original.png",
+  "originalFilename": "Layer 13 copy 2.png",
+  "originalSha256": "954cca98cbdcaffce1f5e8c1cae7a973c3c458f4ddcc8e6ee4705f7372f3cecc",
+  "originalDimensions": [
+    714,
+    713
+  ],
+  "kind": "User-selected supplied Cyrus Scatter logo",
+  "processing": "Lossless PNG encoding; aspect-preserving downscales with original alpha; no artwork changes",
+  "assets": [
+    {
+      "file": "logo-96.png",
+      "dimensions": [
+        96,
+        96
+      ],
+      "bytes": 13274,
+      "sha256": "1587775626b26d018526b07d643d3d208557ed7cc3d97f53f644c10cd8f6f10a"
+    },
+    {
+      "file": "logo-192.png",
+      "dimensions": [
+        192,
+        192
+      ],
+      "bytes": 46444,
+      "sha256": "25fd39b8e4abd7bf2cb420c74109bd4710983f2a6a14f5153fc2a1c45aa7835d"
+    },
+    {
+      "file": "favicon-16.png",
+      "dimensions": [
+        16,
+        16
+      ],
+      "bytes": 878,
+      "sha256": "f5da42cf8813d31881642af353f156a1534b6a44963bdfd44355a6c74e014909"
+    },
+    {
+      "file": "favicon-32.png",
+      "dimensions": [
+        32,
+        32
+      ],
+      "bytes": 2419,
+      "sha256": "5382e029b5c6e29aa03a7add5369e2bad4f911a84e446632ebf333cfba9c88af"
+    },
+    {
+      "file": "apple-touch-icon.png",
+      "dimensions": [
+        180,
+        180
+      ],
+      "bytes": 40837,
+      "sha256": "951edc1dcd2305aaa87fcdc415d9267476a85e708ce588e764a529c062710ed7"
+    },
+    {
+      "file": "icon-512.png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "bytes": 348735,
+      "sha256": "813ff3024615e5dff20c469777af661f57d26f0d2564d48726174f5eba270e59"
+    },
+    {
+      "file": "../../favicon.ico",
+      "sizes": [
+        16,
+        32,
+        48,
+        64
+      ],
+      "bytes": 15458,
+      "sha256": "b66a8569a269819fd9077c247fbac54741af1d9ce5453489c5a2401ea18d3f6c"
+    }
+  ]
+}

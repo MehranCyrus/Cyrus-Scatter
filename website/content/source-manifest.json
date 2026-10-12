@@ -1,0 +1,89 @@
+{
+  "schema": "cyrus.public-sources/3.0",
+  "reviewed": "2026-10-12",
+  "documents": [
+    {
+      "id": "artist-guide",
+      "title": "The artistâ€™s guide",
+      "path": "docs/ARTIST_GUIDE.md",
+      "description": "Your complete workflow, from the first surface to the final refinement."
+    },
+    {
+      "id": "layout-falloff",
+      "title": "Layout & soft boundaries",
+      "path": "docs/LAYOUT_AND_FALLOFF.md",
+      "description": "Assignment, spline bands, Analyzer guides and the details of falloff."
+    },
+    {
+      "id": "surface-analyzer",
+      "title": "Surface Analyzer",
+      "path": "CyrusSurfaceAnalyzer/README.md",
+      "description": "Understand boundaries, paths, point spacing and planar analysis."
+    },
+    {
+      "id": "product-roadmap",
+      "title": "Product & AI direction",
+      "path": "docs/PRODUCT_AND_AI_ROADMAP.md",
+      "description": "What works today, what is experimental and what comes next."
+    },
+    {
+      "id": "mcp",
+      "title": "The MCP foundation",
+      "path": "CyrusMCP/README.md",
+      "description": "The separate, bounded assistant interface and its current limits."
+    }
+  ],
+  "catalog": "CyrusMCP/cyrus_mcp/feature-catalog.json",
+  "artistWorkflowVersion": "0.78.3",
+  "reviewedSourceHashes": {
+    "CyrusMCP/README.md": "ade16c0ae74dbce660b58c8f6ef96c1cb5fcdc02c20e7f1a3896eb99b4b3bef0",
+    "CyrusSurfaceAnalyzer/README.md": "899909b52cb6c0617dab1b5c4f46321202806018f659a69038658d4913708611",
+    "docs/ARTIST_GUIDE.md": "a135777ffbf4ffc37d0ca33178654da16586ed3d91c1fa14e726508c563a12e2",
+    "docs/Brush_Relax_Reset_2026-10-03/REPORT.md": "3f4c658fa35733f9a9c08503639454338e2dd87c322058661263d028942e8867",
+    "docs/Brush_Responsiveness_0.78.2_2026-10-10/README.md": "7faa2a41f400952244834bf59034471fe7b0ae3487347edaca1c6598cb872928",
+    "docs/Brush_Scaling_0.76_2026-10-10/README.md": "db05af1cf6230e88075be2d235adf916196a5e203f6c1b07d6a070e977306379",
+    "docs/Brush_Start_0.78.1_2026-10-10/README.md": "d443119758a005d217c55e5599a385a52f702c6cc15fa7c2d3b08f1a3be8158e",
+    "docs/Classic_Layout_2026-10-04/README.md": "59062729b80675e5fd96d5196586e69b798ef0df9f14716dc855ea87e96c7347",
+    "docs/Classic_Layout_2026-10-04/SCROLLING_1.2.3.md": "55c4593f4c97e411a2c8f47ecca6f2adfdb1090927a364f3677f4d3f511f8d1b",
+    "docs/Compact_UI_0.73_2026-10-07/README.md": "b1bf2bb0a4d312d420a4f24d893262ac420b16beb3f716cd6e91e0726845f551",
+    "docs/Consolidation_0.75_2026-10-09/README.md": "38d00ed6d5f78375137a627a98516c314639510ae107885accdf5b5d8eba59e4",
+    "docs/Container_Selection_Fix_0.73_2026-10-06/README.md": "4fc3c7da7de221d0ec61ed49f61c037494a68c126459d65b8d01fcc77f710074",
+    "docs/Container_and_Radius_0.78.3_2026-10-10/README.md": "4b70b5f3611781494bec5b80960bce5df09693bce47adfd4b913ac0ed2a5836e",
+    "docs/Courtyard_Fixes_0.75_2026-10-10/README.md": "2d8e02beffef372d51da409609968b1a1fdeebe083b397db61dd38a51c4db0a3",
+    "docs/CyrusScatter_Complete_Codebase_Documentation_2026-09-27/17_Development_History_and_Evolution.md": "4479e872de56ff3911244cb4364b604abad71ee7b75c449e710b2c6b56b91443",
+    "docs/Cyrus_Scatter_V1_2026-10-03/README.md": "78c446d399fccee7b08da451eefde4320c659fbf689ceb4c8a4ffb6f926f43a6",
+    "docs/Full_Qualification_0.73_2026-10-07/README.md": "1aee182588d4811501eae0c7583af847f06eff0913b2195deeea69fbab84492e",
+    "docs/Integrated_UI_0.72_2026-10-06/README.md": "d980880fd1d28647bce2f954b8a03d3abf59ed363d598d8d508bbb54b6d8218e",
+    "docs/LAYOUT_AND_FALLOFF.md": "e63c469526df906a2cb635f710b8e778849d7de444bd71c312a8421d621b2ee3",
+    "docs/Layer_Actions_Fix_0.73_2026-10-07/README.md": "a91dc06ebc5cabd61ea20774241a29b2f9237e594e2470391c5326b68b6fcbe4",
+    "docs/Layer_Navigation_0.79.2_2026-10-11/README.md": "f8f1b6b274bd18c41a8d3498f184eb7fb6953bba20796f504cfb5b51599b0e5a",
+    "docs/Layer_Paint_Areas_0.74_2026-10-09/README.md": "a477bd87b25433584f4733c07fe5de7bf0af70b227cbc9649899e7eb42f32096",
+    "docs/Layer_Width_2026-10-04/README.md": "9d00dcff612b7ab2220654dd1e450b80e3f90f9b4026c73398b0503122953107",
+    "docs/Layers_First_2026-10-03/REPORT.md": "d5250597285c6fc2ca50fbf55531635e55cdc4546d7a3be2421f9d533ed052c8",
+    "docs/Live_Runtime_2026-10-06/README.md": "46dff3cb1e995b062a1f93fc40eacab208fb03db6f3ab969de5ad7b6145c75dc",
+    "docs/PRODUCT_AND_AI_ROADMAP.md": "1dfbf4f12105ca929aadc3438a2a57365435420f5f6815af9ccf1f3eb002362f",
+    "docs/Paint_Feedback_0.77_2026-10-10/README.md": "7a007653a3534745b90571d52874cddc6fe89621dbf428232adce67148b578e8",
+    "docs/Performance_Implementation_2026-10-01.md": "29035504928485d6c8018b20969c06ce87b4c6d3bbf87d3199c2a5781df15059",
+    "docs/Planting_Groups_2026-10-03/REPORT.md": "518e7f9f9c747adca158919db40796f2c4af0d993733a291c8c9506c28ceac74",
+    "docs/Playback_Performance_2026-10-06/README.md": "8157790143fe8369e5fedf07a46f35ae3c54c0537f3c21bd7a14c03d0200f3d9",
+    "docs/Point_Workflow_0.79.1_2026-10-11/README.md": "d1f2f90781f543b271af6dd452486ec723ea14bba9e3d7103fe90f1730896f06",
+    "docs/Procedural_Implementation_0.7_2026-10-04/README.md": "4285f5e0e2015068d491a6061ac09d4c6a9b9140ab7a9950296869cc10057fd0",
+    "docs/Real_Scene_0.7.1_2026-10-05/README.md": "ec6af73ecce9bc1eaed82b41bbf7b0c3c5464ab376c72f82a715c661a17fab1d",
+    "docs/Receiver_Stability_0.76_2026-10-10/README.md": "857f754b7e4b8ccdbd1ad7889fdaf56b41c7ec47f7d1e769b922380b9fef2594",
+    "docs/Release_Versioning.md": "61e879edd67350f6b2024fd8a70b422e36eda1533535fa654496919dd99abaf4",
+    "docs/Retained_Mesh_Preview_2026-10-02/README.md": "2bb5dee3a692a63bbd7aa2c59795e5b9f9fc9cf158a164c25b6da68f7a11c1df",
+    "docs/Retained_Point_Preview_2026-10-02/README.md": "87044c6a35764de85806a4f8b158c036ca1c1374cf46e13a199c1a502989dc9b",
+    "docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md": "c53d14bb1e0c0e41cc49b60b4c57054f4c8872e44ffd19db5827fd17dd799092",
+    "docs/Terrace_Workflow_0.79.5_2026-10-11/README.md": "800b03009760efa6268769d47de4143fe527219f26219be9ce2eb5251761a8bf",
+    "docs/UI_0.7.1_2026-10-05/README.md": "8a688f211bf76916b32f8f28fa442438949b3fda35fa0e7f87fc5dd901084292",
+    "docs/UI_Layout_0.75_2026-10-09/README.md": "3a66bd713fc1969be6cfe22f1073225d4012a27fcb06a9b4a5337311f5f9ee30",
+    "docs/UI_Refinements_0.74_2026-10-08/GRIP_FIX.md": "fbbc2d73d007d17ba2e1bfa0e795910ae1e0468ac381e38f332b16119bcc3cdf",
+    "docs/UI_Refinements_0.74_2026-10-08/README.md": "36a8f829f6629613abe83138b7886a6f84f7325ffcecc6842385bac8e1e298c3",
+    "docs/Unified_System_0.73_2026-10-06/README.md": "7da58db68918823e58f1dedba86df3dd7b1aacb53f6344a680da6e53d1d82b8a",
+    "docs/Vector_Brush_0.78_2026-10-10/README.md": "d6bdb807ed88c333ef8df33adeb1d6e0b6b0510ab83d9690ae18e54d2a8f63ee",
+    "docs/Viewport_Performance_Implementation_2026-10-01.md": "e403043c43fae1b6b5d28e230e20caf990924057915f99a3c8de93f1c381da14",
+    "docs/Viewport_Performance_Round2_2026-10-01.md": "f189c3c3e0bdeeed181e375ae2ca4c03b3b57b4be4857b90e66853774be27a67",
+    "docs/licensing/TEAM_PILOT_0.79_2026-10-11.md": "c95ee0387e76aacbc6ca829ab5f0b4e46a3a093cff1a50084d1eab663662bf3f",
+    "docs/Foundation_0.79.6_2026-10-12/README.md": "9bbe9750e62c5d8e66c7812c84087478d840a0732116f61dc50f23d5ef59f140"
+  }
+}

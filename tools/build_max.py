@@ -68,7 +68,7 @@ def require_team_authority(data, header):
     if len(key_ids) != 1 or key_ids[0].encode('ascii') not in data:
         raise RuntimeError('Scatter native module does not contain the selected owner verification key')
     if not any('cyrusLicenseImport'.encode(enc) in data for enc in ('ascii', 'utf-16le')):
-        raise RuntimeError('Scatter 0.79.1 requires the native team licensing module')
+        raise RuntimeError('Scatter 0.79.6 requires the native team licensing module')
     return key_ids[0]
 
 
@@ -122,7 +122,7 @@ def package(project, name, version, native_names, script_name, args, build_dir):
            'Resize the editor and scroll each column independently. Hover controls for short explanations.\n'
            'Each layer owns models and count/density. Named Paint Areas target its receivers and combine coverage without duplicate plants.\n'
            'Population, transforms and cleanup belong to the layer. Capacity: 10 populations; area APIs bound each layer to 128 areas/receivers.\n'
-           'CyrusUnified1, schema 55: create new setups. Older development schemas and stroke payloads are rejected.\n'
+           'CyrusUnified1, schema 56: schema-55 settings migrate to typed distances. Earlier schemas and retired stroke payloads are rejected.\n'
            'Preserve old scenes with their matching build. No vector conversion or legacy brush fallback is included.\n'
            'Density preserves unchanged receiver candidates below the cap. Fixed Total redistributes quotas and preserves surviving base candidates.\n'
            'Changing local Relax neighborhoods, masks, spacing or geometry can change accepted output; face IDs do not survive arbitrary remeshing.\n'

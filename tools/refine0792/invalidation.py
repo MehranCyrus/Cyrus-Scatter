@@ -1,0 +1,37 @@
+"""Cached drawables still respond to relevant animation and enable/disable."""
+from pathlib import Path
+import json,traceback
+from pymxs import runtime as r
+ROOT=Path(__file__).resolve().parents[2];OUT=Path(str(r.MCPFixtureDir)).resolve()
+if OUT.parent!=ROOT/'build/mcp-qualification' or not OUT.name.startswith('refine0791-layer0792-'):raise RuntimeError('Owned host required')
+report=dict(assertions=[],errors=[])
+def write():(OUT/'invalidation0792.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
+def check(value,label):report['assertions'].append(dict(passed=bool(value),label=label));write()
+def settle():r.execute('(local end=timeStamp()+450;while timeStamp()<end do (windows.processPostedMessages();sleep .01));completeRedraw()')
+def fp():return str(r.cyrusEditFingerprint(root.groupSnapshotRows[0],'areas'))
+def shown():return int(r.cyrusRetainedStats(r.CyrusPointOwner(node))[0])
+try:
+    r.resetMaxFile(r.Name('noPrompt'))
+    surface=r.plane(name='R792_TimeSurface',width=300,length=300)
+    other=r.box(name='R792_UnrelatedBox')
+    node=r.AminScatterObject(name='R792_TimeController');root=node.baseObject;root.autoRender=False;root.updateMode=1
+    root.newLayer();leaf=root.selectedLayer();leaf.amount=60;leaf.addPointSource();root.setLayerSurfaces(leaf,r.Array(surface));root.setGroupDisplay(4)
+    r.execute('with animate on (at time 0f $R792_UnrelatedBox.pos=[0,0,0];at time 20f $R792_UnrelatedBox.pos=[100,0,0]);sliderTime=0f')
+    root.refreshAll();root.updateMode=2;settle();epoch=int(root.procEpoch);saved=fp()
+    r.execute('sliderTime=10f');settle()
+    check(int(root.procEpoch)==epoch and fp()==saved,'Unrelated animation does not republish static Point placements')
+    r.execute('sliderTime=0f;with animate on (at time 0f $R792_TimeSurface.pos=[0,0,0];at time 20f $R792_TimeSurface.pos=[100,0,0])')
+    root.refreshAll();settle();epoch=int(root.procEpoch);saved=fp()
+    r.execute('sliderTime=10f');settle()
+    check(int(root.procEpoch)>epoch and fp()!=saved,'Relevant receiver animation invalidates Live cached display')
+    root.updateMode=1;epoch=int(root.procEpoch);saved=fp()
+    r.execute('sliderTime=20f');settle()
+    check(int(root.procEpoch)==epoch and fp()==saved,'Manual animation waits for explicit Update')
+    root.refreshAll();settle();check(fp()!=saved,'Update publishes the new Manual receiver time')
+    epoch=int(root.procEpoch);saved=fp();root.layerEnabled[0]=False;settle()
+    check(shown()==0 and int(root.procEpoch)==epoch,'Disabling a Manual layer hides output without publishing pending recipe')
+    root.layerEnabled[0]=True;settle();check(shown()==60 and fp()==saved,'Re-enabling Manual layer restores its published output')
+    root.cyrusEnabled=False;settle();check(shown()==0,'Disabling controller clears cached drawables')
+    root.cyrusEnabled=True;settle();check(shown()==60 and fp()==saved,'Re-enabling controller restores published Point output')
+except Exception:report['errors'].append(traceback.format_exc())
+finally:write()

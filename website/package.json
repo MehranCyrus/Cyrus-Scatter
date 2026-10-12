@@ -1,0 +1,26 @@
+{
+  "name": "cyrus-scatter-field-guide",
+  "private": true,
+  "version": "0.79.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc -b && vite build",
+    "package:cpanel": "npm run docs:check && npm run build && python tools/package_site.py",
+    "typecheck": "tsc -b",
+    "preview": "vite preview --host 127.0.0.1",
+    "docs:sync": "python tools/import_reference.py",
+    "docs:check": "python tools/import_reference.py --check && python tools/verify_reference.py"
+  },
+  "dependencies": {
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "6.1.2",
+    "typescript": "7.0.2",
+    "vite": "8.3.4"
+  }
+}

@@ -1,7 +1,7 @@
-global CyrusLoadedScriptFingerprint="521107c08dd14d61520127ee7200d437eb6ef76bb18f92c240dbde567e2f4647"
+global CyrusLoadedScriptFingerprint="56b7b2b5875d5e6a67ff0113eecfac227179f63b8a085377d385f3ec3a6a1dae"
 global CyrusOpenLicenseDialog,CyrusLicenseDialog,CyrusRequireAuthor,CyrusLicenseCanEdit
 fn CyrusRequireAuthor = (
-    if cyrusLicenseAllows==undefined do throw "Load the matching licensed Cyrus 0.79.1 native modules and restart Max."
+    if cyrusLicenseAllows==undefined do throw "Load the matching licensed Cyrus 0.79.6 native modules and restart Max."
     if not cyrusLicenseAllows() do throw "Cyrus creation and editing require an active team license. Existing work can still load and render. Open Cyrus > License to activate or renew."
     true
 )
@@ -10,7 +10,7 @@ fn CyrusLicenseCanEdit = (
 )
 fn CyrusOpenLicenseDialog = (
     if CyrusLicenseDialog!=undefined do try(destroyDialog CyrusLicenseDialog)catch()
-    rollout licenseUI "Cyrus 0.79.1 - Team License" width:480 height:240 (
+    rollout licenseUI "Cyrus 0.79.6 - Team License" width:480 height:240 (
         label statusLabel "" pos:[16,16] width:448 height:70
         button requestButton "1. Save activation request..." pos:[16,98] width:218 height:30
         button importButton "2. Import license..." pos:[246,98] width:218 height:30
@@ -18,7 +18,7 @@ fn CyrusOpenLicenseDialog = (
         button refreshButton "Refresh status" pos:[16,205] width:218 height:25
         button closeButton "Close" pos:[246,205] width:218 height:25
         fn refresh = (
-            if cyrusLicenseStatus==undefined then statusLabel.text="The licensed native modules are not loaded. Restart with the matching 0.79.1 package."
+            if cyrusLicenseStatus==undefined then statusLabel.text="The licensed native modules are not loaded. Restart with the matching 0.79.6 package."
             else (
                 local state=cyrusLicenseStatus(),expiry=""
                 if state[4]>0 do (
@@ -168,6 +168,7 @@ fn CyrusUILayerState stats enabled controllerEnabled previewVisible = (
 
 global CyrusPointOwner,CyrusPointSync,CyrusViewportRedraw,CyrusPointClear,CyrusPointAfterSave
 global CyrusPointOwners,CyrusPointEnabled=true,CyrusMeshEnabled=true,CyrusPointAvailable=false,CyrusPointBusy=false,CyrusPointPending=false,CyrusPointSuspended=false,CyrusPointLastError="",CyrusPointDeletedHandles=#()
+global CyrusViewportRecords=#(),CyrusViewportAnalyzers=#(),CyrusViewportRecordsDirty=true
 try(CyrusPointClear())catch()
 CyrusPointOwners=#()
 global cyrusFilterSourceRows,cyrusApplySourceTransforms
@@ -272,8 +273,8 @@ try(unRegisterRedrawViewsCallback AminScatterObjectDraw)catch()
 
 global AminScatterLayerFields, AminScatterLayerTabs
 global AminScatterCopyLayer, AminScatterRefreshLayerPanels
-AminScatterLayerFields=#(#procOrder,#procSetOrder,#procSamplingSalt,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusBinding,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverID,#containerMode,#containerNodes,#logicalParentID,#paintSetName,#paintSetEnabled,#paintSetVisible,#paintView,#paintColor,#paintDocument,#paintEnabled,#paintDensity,#streetTrimStart,#streetTrimEnd,#centerStreetOffset,#areaAnalyzer,#areaUseLine,#areaLineWidth,#areaLineCaps,#areaUsePoints,#areaPointRadius,#wholeScaleMin,#wholeScaleMax,#fallScaleGraph,#fallDensityGraph,#areaFallConfigs,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallAnalyzer,#fallDelete,#fallDeleteWidth,#fallScale,#fallScaleWidth,#fallScaleCurve,#fallDensity,#fallDensityWidth,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeKeepCorners,#edgeCornerAngle,#edgeCornerCount,#edgeFaceOut,#edgeCornerRadius,#edgeOffsets,#edgeAlong,#edgeAcross,#borderFaceOut,#streetFaceOut,#borderCornerRadius,#streetCornerRadius,#sourceForwardAxes,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove,#sourceRadii,#sourceFollowScale,#sourceShowRadius,#streetStraight,#sourcePoint,#sourceEmpty,#cleanupPlanar,#sourceZOffsets,#sourceScales,#sourceWeights,#showCenters,#relaxEnabled,#relaxSpacing,#relaxIterations,#relaxStrength,#sources,#bakedNodes,#amount,#randomSeed,#scaleMinimum,#scaleMaximum,#tiltDegrees,#yawMinimum,#yawMaximum,#movementRange,#alignNormal,#showPoints,#pointsPerPlant,#updateMode,#populationMode,#plantsPerM2,#advancedAxes,#projectMove,#rotXMin,#rotXMax,#rotYMin,#rotYMax,#rotZMin,#rotZMax,#sclXMin,#sclXMax,#sclYMin,#sclYMax,#sclZMin,#sclZMax,#movXMin,#movXMax,#movYMin,#movYMax,#movZMin,#movZMax,#distributionMode,#clusterCount,#clusterRadius,#densityMap,#invertDensity,#diversityMode,#diversitySize,#diversitySeed,#roughness,#blurryEdge,#diversityNoise,#autoRender,#previewBudget,#pointColorMode,#solidPointColor,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths,#patternGroups,#patternRestGroup)
-AminScatterLayerTabs=#(#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#containerNodes,#areaFallConfigs,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallScaleCurve,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeOffsets,#edgeAlong,#edgeAcross,#sourceForwardAxes,#sourceRadii,#sourceFollowScale,#sourceShowRadius,#sourcePoint,#sourceEmpty,#sourceZOffsets,#sourceScales,#sourceWeights,#sources,#bakedNodes,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths,#patternGroups)
+AminScatterLayerFields=#(#procOrder,#procSetOrder,#procSamplingSalt,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procRadiusBinding,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverID,#containerMode,#containerNodes,#logicalParentID,#paintSetName,#paintSetEnabled,#paintSetVisible,#paintView,#paintColor,#paintDocument,#paintEnabled,#paintDensity,#streetTrimStart,#streetTrimEnd,#centerStreetOffset,#areaAnalyzer,#areaUseLine,#areaLineWidth,#areaLineCaps,#areaUsePoints,#areaPointRadius,#wholeScaleMin,#wholeScaleMax,#fallScaleGraph,#fallDensityGraph,#areaFallConfigs,#areaFallDeleteWidths,#areaFallScaleWidths,#areaFallDensityWidths,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallAnalyzer,#fallDelete,#fallDeleteWidth,#fallScale,#fallScaleWidth,#fallScaleCurve,#fallDensity,#fallDensityWidth,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeKeepCorners,#edgeCornerAngle,#edgeCornerCount,#edgeFaceOut,#edgeCornerRadius,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#borderFaceOut,#streetFaceOut,#borderCornerRadius,#streetCornerRadius,#sourceForwardAxes,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove,#sourceRadiiWU,#sourceFollowScale,#sourceShowRadius,#streetStraight,#sourcePoint,#sourceEmpty,#cleanupPlanar,#sourceZOffsetsWU,#sourceScales,#sourceWeights,#showCenters,#relaxEnabled,#relaxSpacing,#relaxIterations,#relaxStrength,#sources,#bakedNodes,#amount,#randomSeed,#scaleMinimum,#scaleMaximum,#tiltDegrees,#yawMinimum,#yawMaximum,#movementRange,#alignNormal,#showPoints,#pointsPerPlant,#updateMode,#populationMode,#plantsPerM2,#advancedAxes,#projectMove,#rotXMin,#rotXMax,#rotYMin,#rotYMax,#rotZMin,#rotZMax,#sclXMin,#sclXMax,#sclYMin,#sclYMax,#sclZMin,#sclZMax,#movXMinWU,#movXMaxWU,#movYMinWU,#movYMaxWU,#movZMinWU,#movZMaxWU,#distributionMode,#clusterCount,#clusterRadius,#densityMap,#invertDensity,#diversityMode,#diversitySize,#diversitySeed,#roughness,#blurryEdge,#diversityNoise,#autoRender,#previewBudget,#pointColorMode,#solidPointColor,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths,#patternGroups,#patternRestGroup)
+AminScatterLayerTabs=#(#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#containerNodes,#areaFallConfigs,#areaFallDeleteWidths,#areaFallScaleWidths,#areaFallDensityWidths,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallScaleCurve,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#sourceForwardAxes,#sourceRadiiWU,#sourceFollowScale,#sourceShowRadius,#sourcePoint,#sourceEmpty,#sourceZOffsetsWU,#sourceScales,#sourceWeights,#sources,#bakedNodes,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths,#patternGroups)
 fn AminScatterCopyLayer origin destination = (
     origin.procAssertSchema()
     destination.setLayerTransfer true
@@ -770,7 +771,7 @@ fn CyrusLayerEditor_modelsUI_1 = (
         fn sourceUI_addSource n = (
             if sourceUI_obj.usableSource n and (findItem sourceUI_obj.sources n)==0 do (
                 sourceUI_obj.ensureSourceRows()
-                sourceUI_obj.syncColors();while sourceUI_obj.sourceEmpty.count<sourceUI_obj.sources.count do append sourceUI_obj.sourceEmpty false;append sourceUI_obj.sourceEmpty false;append sourceUI_obj.sources n;append sourceUI_obj.sourceRowIDs (CyrusNewLayerID());append sourceUI_obj.sourceColors sourceUI_groupColor.color;if sourceUI_obj.sourceWeights.count>0 do append sourceUI_obj.sourceWeights 1.0;if sourceUI_obj.sourceZOffsets.count>0 do append sourceUI_obj.sourceZOffsets 0.0;if sourceUI_obj.sourceScales.count>0 do append sourceUI_obj.sourceScales 1.0;sourceUI_obj.markInputDirty()
+                sourceUI_obj.syncColors();while sourceUI_obj.sourceEmpty.count<sourceUI_obj.sources.count do append sourceUI_obj.sourceEmpty false;append sourceUI_obj.sourceEmpty false;append sourceUI_obj.sources n;append sourceUI_obj.sourceRowIDs (CyrusNewLayerID());append sourceUI_obj.sourceColors sourceUI_groupColor.color;if sourceUI_obj.sourceWeights.count>0 do append sourceUI_obj.sourceWeights 1.0;if sourceUI_obj.sourceZOffsetsWU.count>0 do append sourceUI_obj.sourceZOffsetsWU 0.0;if sourceUI_obj.sourceScales.count>0 do append sourceUI_obj.sourceScales 1.0;sourceUI_obj.markInputDirty()
             )
         )
         fn sourceUI_showSelectedColor = (
@@ -833,7 +834,10 @@ fn CyrusLayerEditor_modelsUI_1 = (
         on sourceUI_followRadiusCheck changed v do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do if not sourceUI_loadingColor do (sourceUI_obj.setSourceRadius sourceUI_plantList.selection v kind:2;CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
-        on sourceUI_showRadiusCheck changed v do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do if not sourceUI_loadingColor do (sourceUI_obj.setSourceRadius sourceUI_plantList.selection v kind:3;CyrusViewportRedraw())
+        on sourceUI_showRadiusCheck changed v do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do if not sourceUI_loadingColor do (
+            local controller=if sourceUI_obj.overlapOwner==undefined then sourceUI_obj else sourceUI_obj.overlapOwner
+            sourceUI_obj.setSourceRadius sourceUI_plantList.selection v kind:3;controller.refreshDisplay()
+        )
             if controlsReady and root!=undefined do layout()
         )
         on sourceUI_forwardAxis selected v do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do if not sourceUI_loadingColor do (sourceUI_obj.assignSourceForward sourceUI_plantList.selection v;CyrusViewportRedraw())
@@ -898,10 +902,10 @@ fn CyrusLayerEditor_modelsUI_1 = (
             undo "Cyrus Scatter remove sources" on (
                 for k=rows.count to 1 by -1 do (
                     deleteItem sourceUI_obj.sourceRowIDs rows[k]
-                    for key in #(#sourceRadii,#sourceFollowScale,#sourceShowRadius) do (local tab=getProperty sourceUI_obj key;if rows[k]<=tab.count do deleteItem tab rows[k])
+                    for key in #(#sourceRadiiWU,#sourceFollowScale,#sourceShowRadius) do (local tab=getProperty sourceUI_obj key;if rows[k]<=tab.count do deleteItem tab rows[k])
                     if rows[k]<=sourceUI_obj.sourcePoint.count do deleteItem sourceUI_obj.sourcePoint rows[k]
                     if rows[k]<=sourceUI_obj.sourceEmpty.count do deleteItem sourceUI_obj.sourceEmpty rows[k]
-                    if rows[k]<=sourceUI_obj.sourceZOffsets.count do deleteItem sourceUI_obj.sourceZOffsets rows[k]
+                    if rows[k]<=sourceUI_obj.sourceZOffsetsWU.count do deleteItem sourceUI_obj.sourceZOffsetsWU rows[k]
                     if rows[k]<=sourceUI_obj.sourceScales.count do deleteItem sourceUI_obj.sourceScales rows[k]
                     if rows[k]<=sourceUI_obj.sourceForwardAxes.count do deleteItem sourceUI_obj.sourceForwardAxes rows[k]
                     if rows[k]<=sourceUI_obj.sourceWeights.count do deleteItem sourceUI_obj.sourceWeights rows[k]
@@ -1722,7 +1726,7 @@ fn CyrusLayerEditor_layoutUI_1 = (
                 diversityUI_edgeRotXSpin.value=diversityUI_obj.edgeRotX[row]
                 diversityUI_edgeRotYSpin.value=diversityUI_obj.edgeRotY[row]
                 diversityUI_edgeRotZSpin.value=diversityUI_obj.edgeRotZ[row]
-                diversityUI_edgeOffsetSpin.value=diversityUI_obj.edgeOffsets[row];diversityUI_edgeAlongSpin.value=diversityUI_obj.edgeAlong[row];diversityUI_edgeAcrossSpin.value=diversityUI_obj.edgeAcross[row]
+                diversityUI_edgeOffsetSpin.value=diversityUI_obj.edgeOffsetsWU[row];diversityUI_edgeAlongSpin.value=diversityUI_obj.edgeAlongWU[row];diversityUI_edgeAcrossSpin.value=diversityUI_obj.edgeAcrossWU[row]
                 diversityUI_strokeWidth.value=diversityUI_obj.patternWidths[row];diversityUI_strokeMode.state=diversityUI_obj.strokeModes[row]
                 diversityUI_strokeWidth.enabled=diversityUI_obj.strokeSides[row]!=5
                 diversityUI_strokeScaleMin.value=diversityUI_obj.strokeMin[row];diversityUI_strokeScaleMax.value=diversityUI_obj.strokeMax[row]
@@ -1887,13 +1891,13 @@ fn CyrusLayerEditor_layoutUI_1 = (
         on diversityUI_removeStrokeButton pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.removeStroke row;diversityUI_showPath();CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
-        on diversityUI_edgeOffsetSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeOffsets[row]=v;CyrusViewportRedraw())
+        on diversityUI_edgeOffsetSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeOffsetsWU[row]=v;CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
-        on diversityUI_edgeAlongSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeAlong[row]=v;CyrusViewportRedraw())
+        on diversityUI_edgeAlongSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeAlongWU[row]=v;CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
-        on diversityUI_edgeAcrossSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeAcross[row]=v;CyrusViewportRedraw())
+        on diversityUI_edgeAcrossSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeAcrossWU[row]=v;CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
         on diversityUI_keepCornerCheck changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.edgeKeepCorners=v;diversityUI_cornerAngleSpin.enabled=v;diversityUI_cornerCountSpin.enabled=v;CyrusViewportRedraw())
@@ -3801,7 +3805,7 @@ fn CyrusLayerEditor_areasUI_1 = (
             local rows=areaUI_areaList.selection as array
             undo "Cyrus Scatter remove areas" on (
                 areaUI_obj.ensureAreaFalloffs()
-                for i=rows.count to 1 by -1 do (deleteItem areaUI_obj.areaNodes rows[i];deleteItem areaUI_obj.areaModes rows[i];deleteItem areaUI_obj.areaFallConfigs rows[i];deleteItem areaUI_obj.areaFallScaleGraphs rows[i];deleteItem areaUI_obj.areaFallDensityGraphs rows[i])
+                for i=rows.count to 1 by -1 do (deleteItem areaUI_obj.areaNodes rows[i];deleteItem areaUI_obj.areaModes rows[i];deleteItem areaUI_obj.areaFallConfigs rows[i];deleteItem areaUI_obj.areaFallDeleteWidths rows[i];deleteItem areaUI_obj.areaFallScaleWidths rows[i];deleteItem areaUI_obj.areaFallDensityWidths rows[i];deleteItem areaUI_obj.areaFallScaleGraphs rows[i];deleteItem areaUI_obj.areaFallDensityGraphs rows[i])
             )
             areaUI_areaList.selection=#{};areaUI_obj.markInputDirty();areaUI_updateAreas();CyrusViewportRedraw()
         )
@@ -4375,7 +4379,7 @@ fn CyrusLayerEditor_transformsUI_1 = (
         on randomUI_resetMovement pressed do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (randomUI_resetBoundRandomization #movement
             if controlsReady and root!=undefined do layout()
         )
-        fn randomUI_syncControls = (randomUI_projectCheck.checked=randomUI_obj.projectMove;randomUI_rotXMinSpin.value=randomUI_obj.rotXMin;randomUI_rotXMaxSpin.value=randomUI_obj.rotXMax;randomUI_rotYMinSpin.value=randomUI_obj.rotYMin;randomUI_rotYMaxSpin.value=randomUI_obj.rotYMax;randomUI_rotZMinSpin.value=randomUI_obj.rotZMin;randomUI_rotZMaxSpin.value=randomUI_obj.rotZMax;randomUI_sclXMinSpin.value=randomUI_obj.sclXMin;randomUI_sclXMaxSpin.value=randomUI_obj.sclXMax;randomUI_sclYMinSpin.value=randomUI_obj.sclYMin;randomUI_sclYMaxSpin.value=randomUI_obj.sclYMax;randomUI_sclZMinSpin.value=randomUI_obj.sclZMin;randomUI_sclZMaxSpin.value=randomUI_obj.sclZMax;randomUI_movXMinSpin.value=randomUI_obj.movXMin;randomUI_movXMaxSpin.value=randomUI_obj.movXMax;randomUI_movYMinSpin.value=randomUI_obj.movYMin;randomUI_movYMaxSpin.value=randomUI_obj.movYMax;randomUI_movZMinSpin.value=randomUI_obj.movZMin;randomUI_movZMaxSpin.value=randomUI_obj.movZMax;)
+        fn randomUI_syncControls = (randomUI_projectCheck.checked=randomUI_obj.projectMove;randomUI_rotXMinSpin.value=randomUI_obj.rotXMin;randomUI_rotXMaxSpin.value=randomUI_obj.rotXMax;randomUI_rotYMinSpin.value=randomUI_obj.rotYMin;randomUI_rotYMaxSpin.value=randomUI_obj.rotYMax;randomUI_rotZMinSpin.value=randomUI_obj.rotZMin;randomUI_rotZMaxSpin.value=randomUI_obj.rotZMax;randomUI_sclXMinSpin.value=randomUI_obj.sclXMin;randomUI_sclXMaxSpin.value=randomUI_obj.sclXMax;randomUI_sclYMinSpin.value=randomUI_obj.sclYMin;randomUI_sclYMaxSpin.value=randomUI_obj.sclYMax;randomUI_sclZMinSpin.value=randomUI_obj.sclZMin;randomUI_sclZMaxSpin.value=randomUI_obj.sclZMax;randomUI_movXMinSpin.value=randomUI_obj.movXMinWU;randomUI_movXMaxSpin.value=randomUI_obj.movXMaxWU;randomUI_movYMinSpin.value=randomUI_obj.movYMinWU;randomUI_movYMaxSpin.value=randomUI_obj.movYMaxWU;randomUI_movZMinSpin.value=randomUI_obj.movZMinWU;randomUI_movZMaxSpin.value=randomUI_obj.movZMaxWU;)
         on randomUI_alignCheck changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.alignNormal=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
@@ -4418,22 +4422,22 @@ fn CyrusLayerEditor_transformsUI_1 = (
         on randomUI_sclZMaxSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.sclZMax=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
-        on randomUI_movXMinSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movXMin=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
+        on randomUI_movXMinSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movXMinWU=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
-        on randomUI_movXMaxSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movXMax=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
+        on randomUI_movXMaxSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movXMaxWU=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
-        on randomUI_movYMinSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movYMin=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
+        on randomUI_movYMinSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movYMinWU=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
-        on randomUI_movYMaxSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movYMax=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
+        on randomUI_movYMaxSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movYMaxWU=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
-        on randomUI_movZMinSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movZMin=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
+        on randomUI_movZMinSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movZMinWU=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
-        on randomUI_movZMaxSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movZMax=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
+        on randomUI_movZMaxSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movZMaxWU=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
         fn randomUI_bind layer = (
@@ -4442,7 +4446,7 @@ fn CyrusLayerEditor_transformsUI_1 = (
             if randomUI_obj!=next do ()
             randomUI_obj=next;randomUI_parentView=(CyrusContainerPanel randomUI_root)
             for c in #(randomUI_rotTitle,randomUI_rotMinTitle,randomUI_rotMaxTitle,randomUI_rotXLabel,randomUI_rotXMinSpin,randomUI_rotXMaxSpin,randomUI_rotYLabel,randomUI_rotYMinSpin,randomUI_rotYMaxSpin,randomUI_rotZLabel,randomUI_rotZMinSpin,randomUI_rotZMaxSpin,randomUI_sclTitle,randomUI_sclMinTitle,randomUI_sclMaxTitle,randomUI_sclXLabel,randomUI_sclXMinSpin,randomUI_sclXMaxSpin,randomUI_sclYLabel,randomUI_sclYMinSpin,randomUI_sclYMaxSpin,randomUI_sclZLabel,randomUI_sclZMinSpin,randomUI_sclZMaxSpin,randomUI_wholeTitle,randomUI_wholeMinTitle,randomUI_wholeMaxTitle,randomUI_wholeMinSpin,randomUI_wholeMaxSpin,randomUI_movTitle,randomUI_movMinTitle,randomUI_movMaxTitle,randomUI_movXLabel,randomUI_movXMinSpin,randomUI_movXMaxSpin,randomUI_movYLabel,randomUI_movYMinSpin,randomUI_movYMaxSpin,randomUI_movZLabel,randomUI_movZMinSpin,randomUI_movZMaxSpin,randomUI_projectCheck,randomUI_alignCheck,randomUI_resetRotation,randomUI_resetScale,randomUI_resetWholeScale,randomUI_resetMovement) do c.enabled=layer!=undefined
-            try (undo off ((randomUI_wholeMinSpin.value=randomUI_obj.wholeScaleMin;randomUI_wholeMaxSpin.value=randomUI_obj.wholeScaleMax;randomUI_projectCheck.checked=randomUI_obj.projectMove;randomUI_rotXMinSpin.value=randomUI_obj.rotXMin;randomUI_rotXMaxSpin.value=randomUI_obj.rotXMax;randomUI_rotYMinSpin.value=randomUI_obj.rotYMin;randomUI_rotYMaxSpin.value=randomUI_obj.rotYMax;randomUI_rotZMinSpin.value=randomUI_obj.rotZMin;randomUI_rotZMaxSpin.value=randomUI_obj.rotZMax;randomUI_sclXMinSpin.value=randomUI_obj.sclXMin;randomUI_sclXMaxSpin.value=randomUI_obj.sclXMax;randomUI_sclYMinSpin.value=randomUI_obj.sclYMin;randomUI_sclYMaxSpin.value=randomUI_obj.sclYMax;randomUI_sclZMinSpin.value=randomUI_obj.sclZMin;randomUI_sclZMaxSpin.value=randomUI_obj.sclZMax;randomUI_movXMinSpin.value=randomUI_obj.movXMin;randomUI_movXMaxSpin.value=randomUI_obj.movXMax;randomUI_movYMinSpin.value=randomUI_obj.movYMin;randomUI_movYMaxSpin.value=randomUI_obj.movYMax;randomUI_movZMinSpin.value=randomUI_obj.movZMin;randomUI_movZMaxSpin.value=randomUI_obj.movZMax;randomUI_controlsReady=true;randomUI_alignCheck.checked=randomUI_obj.alignNormal))) catch(randomUI_binding=false;randomUI_controlsReady=true;throw())
+            try (undo off ((randomUI_wholeMinSpin.value=randomUI_obj.wholeScaleMin;randomUI_wholeMaxSpin.value=randomUI_obj.wholeScaleMax;randomUI_projectCheck.checked=randomUI_obj.projectMove;randomUI_rotXMinSpin.value=randomUI_obj.rotXMin;randomUI_rotXMaxSpin.value=randomUI_obj.rotXMax;randomUI_rotYMinSpin.value=randomUI_obj.rotYMin;randomUI_rotYMaxSpin.value=randomUI_obj.rotYMax;randomUI_rotZMinSpin.value=randomUI_obj.rotZMin;randomUI_rotZMaxSpin.value=randomUI_obj.rotZMax;randomUI_sclXMinSpin.value=randomUI_obj.sclXMin;randomUI_sclXMaxSpin.value=randomUI_obj.sclXMax;randomUI_sclYMinSpin.value=randomUI_obj.sclYMin;randomUI_sclYMaxSpin.value=randomUI_obj.sclYMax;randomUI_sclZMinSpin.value=randomUI_obj.sclZMin;randomUI_sclZMaxSpin.value=randomUI_obj.sclZMax;randomUI_movXMinSpin.value=randomUI_obj.movXMinWU;randomUI_movXMaxSpin.value=randomUI_obj.movXMaxWU;randomUI_movYMinSpin.value=randomUI_obj.movYMinWU;randomUI_movYMaxSpin.value=randomUI_obj.movYMaxWU;randomUI_movZMinSpin.value=randomUI_obj.movZMinWU;randomUI_movZMaxSpin.value=randomUI_obj.movZMaxWU;randomUI_controlsReady=true;randomUI_alignCheck.checked=randomUI_obj.alignNormal))) catch(randomUI_binding=false;randomUI_controlsReady=true;throw())
             randomUI_controlsReady=true;randomUI_binding=false
         )
         fn fitLabel control minimum available = (
@@ -4869,7 +4873,7 @@ fn CyrusLayerEditor_spacingUI_1 = (
                 )
                 if pair and proceduralUI_peerList.selection>0 do (
                     local i=proceduralUI_root.procPair (scope-2) (if scope==3 then leaf else proceduralUI_owner) proceduralUI_peers[proceduralUI_peerList.selection]
-                    if i>0 then rule=#(proceduralUI_root.procRuleEnabled[i],proceduralUI_root.procRuleMultiplier[i],proceduralUI_root.procRuleGap[i],proceduralUI_root.procRulePlanar[i])
+                    if i>0 then rule=#(proceduralUI_root.procRuleEnabled[i],proceduralUI_root.procRuleMultiplier[i],proceduralUI_root.procRuleGapWU[i],proceduralUI_root.procRulePlanar[i])
                     else if scope==3 do rule=#(proceduralUI_owner.procSiblingEnabled,proceduralUI_owner.procSiblingMultiplier,proceduralUI_owner.procSiblingGap,proceduralUI_owner.procSiblingPlanar)
                 )
                 proceduralUI_enabledCheck.checked=rule[1];proceduralUI_multiplierSpin.value=rule[2];proceduralUI_gapSpin.value=rule[3];proceduralUI_planarCheck.checked=rule[4]
@@ -6179,7 +6183,7 @@ fn CyrusBindLayerEditor root = (
 fn CyrusOpenLayerEditor root owner = (
     if owner==undefined or findItem root.layerObjects owner==0 do return false
     if CyrusLayerEditor!=undefined then (CyrusLayerEditor.retarget root owner;CyrusLayerEditor.visible=true;return true)
-    rollout editor "Cyrus Scatter 0.79.1 - Layer Editor" width:920 height:800 autoLayoutOnResize:true (
+    rollout editor "Cyrus Scatter 0.79.6 - Layer Editor" width:920 height:800 autoLayoutOnResize:true (
         local root=CyrusLayerUIRoot,owner=CyrusLayerUIOwner,ownerNode=undefined,binding=false,controlsReady=false,closing=false
         local clientSize=CyrusLayerEditorSize,layingOut=false
         local editors=#(),pages=#(),pageEditors=#(#(),#(),#(),#(),#(),#()),built=#{},topic=1,members=#(),sets=#(),pageSections=#(),ownerStates=#(),lastSet=undefined
@@ -6229,7 +6233,7 @@ fn CyrusOpenLayerEditor root owner = (
             local unit=if root.viewportMode==1 and not root.groupCenters then " preview samples" else " shown"
             local text=(if root.updateMode==1 then "Manual" else "Live")+" | "+summary[3]+" | "+(CyrusUICount summary[1])+" placed / "+(CyrusUICount summary[2])+unit
             if resultInfo.text!=text do resultInfo.text=text
-            local caption="Cyrus Scatter 0.79.1 | "+ownerNode.name+" / "+(root.layerCaption owner)
+            local caption="Cyrus Scatter 0.79.6 | "+ownerNode.name+" / "+(root.layerCaption owner)
             if editor.title!=caption do editor.title=caption
             local setupText="Setup: "+ownerNode.name+"  |  Selecting scene models keeps this editor on its layer"
             if setupInfo.text!=setupText do setupInfo.text=setupText
@@ -6385,7 +6389,7 @@ plugin simpleObject AminScatterObject
 name:"Cyrus Scatter"
 classID:#(0x617d43a1,0x395c2e17)
 category:"Cyrus"
-version:55
+version:56
 initialRollupState:0x8
 (
     local layerTransfer=false
@@ -6404,7 +6408,7 @@ initialRollupState:0x8
             )
         )
     )
-    fn markInputDirty = (inputTimeValidity=undefined;dirty=true)
+    fn markInputDirty = (inputTimeValidity=undefined;dirty=true;CyrusViewportRecordsDirty=true)
     fn inputTimeExpired = (
         if inputTimeValidity==undefined do return false
         local tick=currentTime as integer
@@ -6487,6 +6491,7 @@ initialRollupState:0x8
         procRadiusIDs type:#stringTab tabSize:0 tabSizeVariable:true
         procRadiusModes type:#intTab tabSize:0 tabSizeVariable:true
         procRadiusValues type:#floatTab tabSize:0 tabSizeVariable:true
+        procRadiusDistances type:#worldUnitsTab tabSize:0 tabSizeVariable:true
         procRadiusBinding type:#string default:""
         procSourceNodes type:#nodeTab tabSize:0 tabSizeVariable:true
         procSourceIDs type:#stringTab tabSize:0 tabSizeVariable:true
@@ -6499,7 +6504,8 @@ initialRollupState:0x8
         procRuleB type:#stringTab tabSize:0 tabSizeVariable:true
         procRuleEnabled type:#boolTab tabSize:0 tabSizeVariable:true
         procRuleMultiplier type:#floatTab tabSize:0 tabSizeVariable:true
-        procRuleGap type:#floatTab tabSize:0 tabSizeVariable:true
+        procRuleGap type:#floatTab tabSize:0 tabSizeVariable:true invisibleInTV:true
+        procRuleGapWU type:#worldUnitsTab tabSize:0 tabSizeVariable:true
         procRulePlanar type:#boolTab tabSize:0 tabSizeVariable:true
         containerMode type:#integer default:1
         containerNodes type:#nodeTab tabSize:0 tabSizeVariable:true useNodeTmValidity:true useNodeOsValidity:true
@@ -6527,6 +6533,7 @@ initialRollupState:0x8
         on procRadiusIDs set value index do markInputDirty()
         on procRadiusModes set value index do markInputDirty()
         on procRadiusValues set value index do markInputDirty()
+        on procRadiusDistances set value index do markInputDirty()
         on procRadiusBinding set value do markInputDirty()
         on procSourceNodes set value index do markInputDirty()
         on procSourceIDs set value index do markInputDirty()
@@ -6539,7 +6546,7 @@ initialRollupState:0x8
         on procRuleB set value index do markInputDirty()
         on procRuleEnabled set value index do markInputDirty()
         on procRuleMultiplier set value index do markInputDirty()
-        on procRuleGap set value index do markInputDirty()
+        on procRuleGapWU set value index do markInputDirty()
         on procRulePlanar set value index do markInputDirty()
         on containerMode postSet value do markInputDirty()
         on containerNodes set value index do markInputDirty()
@@ -6672,7 +6679,7 @@ initialRollupState:0x8
     )
     fn setOverlapOwner root = (overlapOwner=root)
     fn overlapStats = (#(overlapBefore,overlapBefore-overlapAfter,overlapAfter))
-    local radiusPreview=#()
+    local radiusPreview=#(),radiusCache=undefined
     parameters finalSettings (
         finalCleanup type:#boolean default:false
         finalNeighborRadius type:#worldunits default:100
@@ -6721,24 +6728,25 @@ initialRollupState:0x8
 
     )
     parameters radiusSettings (
-        sourceRadii type:#floatTab tabSize:0 tabSizeVariable:true
+        sourceRadii type:#floatTab tabSize:0 tabSizeVariable:true invisibleInTV:true
+        sourceRadiiWU type:#worldUnitsTab tabSize:0 tabSizeVariable:true
         sourceFollowScale type:#boolTab tabSize:0 tabSizeVariable:true
         sourceShowRadius type:#boolTab tabSize:0 tabSizeVariable:true
-        on sourceRadii set v i do markInputDirty()
+        on sourceRadiiWU set v i do markInputDirty()
         on sourceFollowScale set v i do markInputDirty()
         on sourceShowRadius set v i do markInputDirty()
 
 
     )
-    fn sourceRadius i = (if i>0 and i<=sourceRadii.count then sourceRadii[i] else 0.0)
+    fn sourceRadius i = (if i>0 and i<=sourceRadiiWU.count then sourceRadiiWU[i] else 0.0)
     fn sourceFollows i = (i>0 and i<=sourceFollowScale.count and sourceFollowScale[i])
     fn sourceShows i = (i>0 and i<=sourceShowRadius.count and sourceShowRadius[i])
     fn setSourceRadius rows value kind:1 = (CyrusRequireAuthor();
         undo "Source collision radius" on (
-            while sourceRadii.count<sources.count do append sourceRadii 0.0
+            while sourceRadiiWU.count<sources.count do append sourceRadiiWU 0.0
             while sourceFollowScale.count<sources.count do append sourceFollowScale false
             while sourceShowRadius.count<sources.count do append sourceShowRadius false
-            for i in rows do case kind of (1: (sourceRadii[i]=value); 2: (sourceFollowScale[i]=value); 3: (sourceShowRadius[i]=value))
+            for i in rows do case kind of (1: (sourceRadiiWU[i]=value); 2: (sourceFollowScale[i]=value); 3: (sourceShowRadius[i]=value))
         )
         markInputDirty()
     )
@@ -6827,15 +6835,24 @@ initialRollupState:0x8
         fallScaleGraph type:#string default:""
         fallDensityGraph type:#string default:""
         areaFallConfigs type:#stringTab tabSize:0 tabSizeVariable:true
+        areaFallDeleteWidths type:#worldUnitsTab tabSize:0 tabSizeVariable:true
+        areaFallScaleWidths type:#worldUnitsTab tabSize:0 tabSizeVariable:true
+        areaFallDensityWidths type:#worldUnitsTab tabSize:0 tabSizeVariable:true
         areaFallScaleGraphs type:#stringTab tabSize:0 tabSizeVariable:true
         areaFallDensityGraphs type:#stringTab tabSize:0 tabSizeVariable:true
         on areaFallConfigs set v i do markInputDirty()
+        on areaFallDeleteWidths set v i do markInputDirty()
+        on areaFallScaleWidths set v i do markInputDirty()
+        on areaFallDensityWidths set v i do markInputDirty()
 
         on fallScaleGraph preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=fallScaleGraph and not (cyrusLicenseAllows()) then fallScaleGraph else value)
         on fallDensityGraph preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=fallDensityGraph and not (cyrusLicenseAllows()) then fallDensityGraph else value)
     )
     fn ensureAreaFalloffs = (
         while areaFallConfigs.count<this.areaNodes.count do append areaFallConfigs ""
+        while areaFallDeleteWidths.count<this.areaNodes.count do append areaFallDeleteWidths 0.0
+        while areaFallScaleWidths.count<this.areaNodes.count do append areaFallScaleWidths 100.0
+        while areaFallDensityWidths.count<this.areaNodes.count do append areaFallDensityWidths 100.0
         while areaFallScaleGraphs.count<this.areaNodes.count do append areaFallScaleGraphs ""
         while areaFallDensityGraphs.count<this.areaNodes.count do append areaFallDensityGraphs ""
     )
@@ -6850,7 +6867,7 @@ initialRollupState:0x8
             if i==0 do throw "Area line was removed. Close this graph."
             ensureAreaFalloffs()
             local parts=filterString areaFallConfigs[i] "|"
-            if parts.count==8 then #((parts[1] as integer)==1,parts[2] as float,(parts[3] as integer)==1,parts[4] as float,CyrusFallUnpack parts[5],(parts[6] as integer)==1,parts[7] as float,CyrusFallUnpack parts[8]) else #(false,0.0,false,100.0,#(0.0,1.0),false,100.0,#(0.0,1.0))
+            if parts.count==8 then #((parts[1] as integer)==1,areaFallDeleteWidths[i],(parts[3] as integer)==1,areaFallScaleWidths[i],CyrusFallUnpack parts[5],(parts[6] as integer)==1,areaFallDensityWidths[i],CyrusFallUnpack parts[8]) else #(false,areaFallDeleteWidths[i],false,areaFallScaleWidths[i],#(0.0,1.0),false,areaFallDensityWidths[i],#(0.0,1.0))
         )
     )
     fn setFallConfig areaNode cfg = (CyrusRequireAuthor();
@@ -6867,7 +6884,9 @@ initialRollupState:0x8
             if i==0 do throw "Area line was removed. Close this graph."
             ensureAreaFalloffs()
             local s=stringStream ""
-            format "%|%|%|%|%|%|%|%" (if cfg[1] then 1 else 0) cfg[2] (if cfg[3] then 1 else 0) cfg[4] (CyrusFallPack cfg[5]) (if cfg[6] then 1 else 0) cfg[7] (CyrusFallPack cfg[8]) to:s
+            -- The string owns flags/curves only. Distances use Max unit scaling.
+            format "%|0|%|0|%|%|0|%" (if cfg[1] then 1 else 0) (if cfg[3] then 1 else 0) (CyrusFallPack cfg[5]) (if cfg[6] then 1 else 0) (CyrusFallPack cfg[8]) to:s
+            areaFallDeleteWidths[i]=cfg[2];areaFallScaleWidths[i]=cfg[4];areaFallDensityWidths[i]=cfg[7]
             areaFallConfigs[i]=s as string
         )
         markInputDirty()
@@ -6913,14 +6932,17 @@ initialRollupState:0x8
         on edgeKeepCorners postSet v do markInputDirty()
         on edgeCornerAngle postSet v do markInputDirty()
         on edgeCornerCount postSet v do markInputDirty()
-        edgeOffsets type:#floatTab tabSize:0 tabSizeVariable:true
-        edgeAlong type:#floatTab tabSize:0 tabSizeVariable:true
-        edgeAcross type:#floatTab tabSize:0 tabSizeVariable:true
+        edgeOffsets type:#floatTab tabSize:0 tabSizeVariable:true invisibleInTV:true
+        edgeOffsetsWU type:#worldUnitsTab tabSize:0 tabSizeVariable:true
+        edgeAlong type:#floatTab tabSize:0 tabSizeVariable:true invisibleInTV:true
+        edgeAlongWU type:#worldUnitsTab tabSize:0 tabSizeVariable:true
+        edgeAcross type:#floatTab tabSize:0 tabSizeVariable:true invisibleInTV:true
+        edgeAcrossWU type:#worldUnitsTab tabSize:0 tabSizeVariable:true
         edgeFaceOut type:#boolean default:true
         edgeCornerRadius type:#worldunits default:10.0
-        on edgeOffsets set v i do markInputDirty()
-        on edgeAlong set v i do markInputDirty()
-        on edgeAcross set v i do markInputDirty()
+        on edgeOffsetsWU set v i do markInputDirty()
+        on edgeAlongWU set v i do markInputDirty()
+        on edgeAcrossWU set v i do markInputDirty()
         on edgeFaceOut postSet v do markInputDirty()
         on edgeCornerRadius postSet v do markInputDirty()
 
@@ -6956,14 +6978,15 @@ initialRollupState:0x8
         markInputDirty()
     )
     parameters sourceTransformSettings (
-        sourceZOffsets type:#floatTab tabSize:0 tabSizeVariable:true
+        sourceZOffsets type:#floatTab tabSize:0 tabSizeVariable:true invisibleInTV:true
+        sourceZOffsetsWU type:#worldUnitsTab tabSize:0 tabSizeVariable:true
         sourceScales type:#floatTab tabSize:0 tabSizeVariable:true
-        on sourceZOffsets set v i do markInputDirty()
+        on sourceZOffsetsWU set v i do markInputDirty()
         on sourceScales set v i do markInputDirty()
 
 
     )
-    fn sourceZOffset i = (if i>0 and i<=sourceZOffsets.count then sourceZOffsets[i] else 0.0)
+    fn sourceZOffset i = (if i>0 and i<=sourceZOffsetsWU.count then sourceZOffsetsWU[i] else 0.0)
     fn sourceScale i = (if i>0 and i<=sourceScales.count then sourceScales[i] else 1.0)
     fn assignSourceTransform rows value scaling:false = (CyrusRequireAuthor();
         undo "Cyrus Scatter source transform" on (
@@ -6971,8 +6994,8 @@ initialRollupState:0x8
                 while sourceScales.count<sources.count do append sourceScales 1.0
                 for i in rows where i>0 and i<=sources.count do sourceScales[i]=amax 0.0 value
             ) else (
-                while sourceZOffsets.count<sources.count do append sourceZOffsets 0.0
-                for i in rows where i>0 and i<=sources.count do sourceZOffsets[i]=value
+                while sourceZOffsetsWU.count<sources.count do append sourceZOffsetsWU 0.0
+                for i in rows where i>0 and i<=sources.count do sourceZOffsetsWU[i]=value
             )
         )
         markInputDirty()
@@ -7027,12 +7050,18 @@ initialRollupState:0x8
         sclYMax type:#float default:1
         sclZMin type:#float default:1
         sclZMax type:#float default:1
-        movXMin type:#float default:0
-        movXMax type:#float default:0
-        movYMin type:#float default:0
-        movYMax type:#float default:0
-        movZMin type:#float default:0
-        movZMax type:#float default:0
+        movXMin type:#float default:0 invisibleInTV:true
+        movXMinWU type:#worldUnits default:0
+        movXMax type:#float default:0 invisibleInTV:true
+        movXMaxWU type:#worldUnits default:0
+        movYMin type:#float default:0 invisibleInTV:true
+        movYMinWU type:#worldUnits default:0
+        movYMax type:#float default:0 invisibleInTV:true
+        movYMaxWU type:#worldUnits default:0
+        movZMin type:#float default:0 invisibleInTV:true
+        movZMinWU type:#worldUnits default:0
+        movZMax type:#float default:0 invisibleInTV:true
+        movZMaxWU type:#worldUnits default:0
         on projectMove postSet v do markInputDirty()
         on rotXMin postSet v do (if not layerTransfer and v>rotXMax do rotXMax=v;markInputDirty())
         on rotXMax postSet v do (if not layerTransfer and v<rotXMin do rotXMin=v;markInputDirty())
@@ -7046,12 +7075,12 @@ initialRollupState:0x8
         on sclYMax postSet v do (if not layerTransfer and v<sclYMin do sclYMin=v;markInputDirty())
         on sclZMin postSet v do (if not layerTransfer and v>sclZMax do sclZMax=v;markInputDirty())
         on sclZMax postSet v do (if not layerTransfer and v<sclZMin do sclZMin=v;markInputDirty())
-        on movXMin postSet v do (if not layerTransfer and v>movXMax do movXMax=v;markInputDirty())
-        on movXMax postSet v do (if not layerTransfer and v<movXMin do movXMin=v;markInputDirty())
-        on movYMin postSet v do (if not layerTransfer and v>movYMax do movYMax=v;markInputDirty())
-        on movYMax postSet v do (if not layerTransfer and v<movYMin do movYMin=v;markInputDirty())
-        on movZMin postSet v do (if not layerTransfer and v>movZMax do movZMax=v;markInputDirty())
-        on movZMax postSet v do (if not layerTransfer and v<movZMin do movZMin=v;markInputDirty())
+        on movXMinWU postSet v do (if not layerTransfer and v>movXMaxWU do movXMaxWU=v;markInputDirty())
+        on movXMaxWU postSet v do (if not layerTransfer and v<movXMinWU do movXMinWU=v;markInputDirty())
+        on movYMinWU postSet v do (if not layerTransfer and v>movYMaxWU do movYMaxWU=v;markInputDirty())
+        on movYMaxWU postSet v do (if not layerTransfer and v<movYMinWU do movYMinWU=v;markInputDirty())
+        on movZMinWU postSet v do (if not layerTransfer and v>movZMaxWU do movZMaxWU=v;markInputDirty())
+        on movZMaxWU postSet v do (if not layerTransfer and v<movZMinWU do movZMinWU=v;markInputDirty())
 
         on advancedAxes preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=advancedAxes and not (cyrusLicenseAllows()) then advancedAxes else value)
         on projectMove preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=projectMove and not (cyrusLicenseAllows()) then projectMove else value)
@@ -7068,11 +7097,17 @@ initialRollupState:0x8
         on sclZMin preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=sclZMin and not (cyrusLicenseAllows()) then sclZMin else value)
         on sclZMax preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=sclZMax and not (cyrusLicenseAllows()) then sclZMax else value)
         on movXMin preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=movXMin and not (cyrusLicenseAllows()) then movXMin else value)
+        on movXMinWU preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=movXMinWU and not (cyrusLicenseAllows()) then movXMinWU else value)
         on movXMax preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=movXMax and not (cyrusLicenseAllows()) then movXMax else value)
+        on movXMaxWU preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=movXMaxWU and not (cyrusLicenseAllows()) then movXMaxWU else value)
         on movYMin preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=movYMin and not (cyrusLicenseAllows()) then movYMin else value)
+        on movYMinWU preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=movYMinWU and not (cyrusLicenseAllows()) then movYMinWU else value)
         on movYMax preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=movYMax and not (cyrusLicenseAllows()) then movYMax else value)
+        on movYMaxWU preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=movYMaxWU and not (cyrusLicenseAllows()) then movYMaxWU else value)
         on movZMin preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=movZMin and not (cyrusLicenseAllows()) then movZMin else value)
+        on movZMinWU preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=movZMinWU and not (cyrusLicenseAllows()) then movZMinWU else value)
         on movZMax preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=movZMax and not (cyrusLicenseAllows()) then movZMax else value)
+        on movZMaxWU preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=movZMaxWU and not (cyrusLicenseAllows()) then movZMaxWU else value)
     )
     parameters distributionSettings (
         distributionMode type:#integer default:1
@@ -7239,7 +7274,7 @@ initialRollupState:0x8
             sources.count=sources.count+1;append sourceEmpty true;append sourceWeights 1.0
             append sourceRowIDs (CyrusNewLayerID())
             append sourceColors (color 100 100 100)
-            if sourceZOffsets.count>0 do append sourceZOffsets 0.0
+            if sourceZOffsetsWU.count>0 do append sourceZOffsetsWU 0.0
             if sourceScales.count>0 do append sourceScales 1.0
         )
         markInputDirty();sources.count
@@ -7258,10 +7293,10 @@ initialRollupState:0x8
         markInputDirty();previewBuildCount=0;true
     )
     fn placementRadii rows plants = (this.procRadii rows plants)
-    fn cacheRadii rows plants = (
+    fn cacheRadii rows plants values:undefined = (
         radiusPreview=#()
         if plants.count>0 and (findItem (sourceShowRadius as array) true)>0 do (
-            local radii=placementRadii rows plants
+            local radii=if values==undefined then placementRadii rows plants else values
             local eligible=for j=1 to rows.count where (sourceShows (sourceRow plants[rows[j][2]])) and radii[j]>0 collect j
             local count=if radiusDisplayAll then eligible.count else amin (amax 0 radiusDisplayLimit) eligible.count
             for k=1 to count do (
@@ -7276,7 +7311,7 @@ initialRollupState:0x8
         )
     )
     fn radiusDisplayCount = radiusPreview.count
-    fn drawRadii = (for ring in radiusPreview do (gw.setColor #line ring[2];gw.polyline ring[1] true))
+    fn drawRadii = (if radiusCache!=undefined do aminScatterDrawPreview radiusCache false white)
     fn validSources = (for i=1 to sources.count where (isEmptySource i) or (usableSource sources[i]) collect (if isEmptySource i then -i else sources[i]))
     parameters strokeSettings (
         streetStraight type:#boolean default:false
@@ -7307,9 +7342,9 @@ initialRollupState:0x8
         while edgeRotX.count<patternLines.count do append edgeRotX 0.0
         while edgeRotY.count<patternLines.count do append edgeRotY 0.0
         while edgeRotZ.count<patternLines.count do append edgeRotZ 0.0
-        while edgeOffsets.count<patternLines.count do append edgeOffsets 0.0
-        while edgeAlong.count<patternLines.count do append edgeAlong 0.0
-        while edgeAcross.count<patternLines.count do append edgeAcross 0.0
+        while edgeOffsetsWU.count<patternLines.count do append edgeOffsetsWU 0.0
+        while edgeAlongWU.count<patternLines.count do append edgeAlongWU 0.0
+        while edgeAcrossWU.count<patternLines.count do append edgeAcrossWU 0.0
         while strokeSides.count<patternLines.count do append strokeSides 1
         for n in patternLines where isValidNode n and findItem patternPaths n==0 do append patternPaths n
         while strokeModes.count<patternLines.count do append strokeModes 1
@@ -7333,7 +7368,7 @@ initialRollupState:0x8
                 else if rows[i]>row do rows[i]-=1
             )
         )
-        for key in #(#edgeRotX,#edgeRotY,#edgeRotZ,#edgeOffsets,#edgeAlong,#edgeAcross,#strokeSides,#patternLines,#patternWidths,#patternGroups,#strokeModes,#strokeMin,#strokeMax) do deleteItem (getProperty this key) row
+        for key in #(#edgeRotX,#edgeRotY,#edgeRotZ,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#strokeSides,#patternLines,#patternWidths,#patternGroups,#strokeModes,#strokeMin,#strokeMax) do deleteItem (getProperty this key) row
         markInputDirty()
     )
     fn setStrokeSelection row mode values = (CyrusRequireAuthor();
@@ -7492,7 +7527,7 @@ initialRollupState:0x8
                     )
                     local mask=if side==6 then streetEdgeMask path else if (side<=2 or side==7) and isProperty path #includeStreetBoundary then path.boundaryEdgeMask() else #()
                     if side==6 do (local trimmed=trimmedStreetData path;data=trimmed[1];mask=trimmed[2])
-                    append bands #(data,(if side==7 then patternWidths[i] else totals[pathIndex][side]),rest,choices,strokeMin[i],strokeMax[i],(side==2 or side==6),(if side==7 then 6 else if side==6 then 2 else side),(if side==7 then 0 else start),mask,(side==6 and streetStraight),#((if side==7 then edgeFaceOut else if side==6 then streetFaceOut else if side<=2 then borderFaceOut else false),(if side==7 then edgeCornerRadius else if side==6 then streetCornerRadius else borderCornerRadius)),#(edgeOffsets[i],edgeAlong[i],edgeAcross[i],edgeKeepCorners,edgeCornerAngle,edgeCornerCount,edgeRotX[i],edgeRotY[i],edgeRotZ[i]))
+                    append bands #(data,(if side==7 then patternWidths[i] else totals[pathIndex][side]),rest,choices,strokeMin[i],strokeMax[i],(side==2 or side==6),(if side==7 then 6 else if side==6 then 2 else side),(if side==7 then 0 else start),mask,(side==6 and streetStraight),#((if side==7 then edgeFaceOut else if side==6 then streetFaceOut else if side<=2 then borderFaceOut else false),(if side==7 then edgeCornerRadius else if side==6 then streetCornerRadius else borderCornerRadius)),#(edgeOffsetsWU[i],edgeAlongWU[i],edgeAcrossWU[i],edgeKeepCorners,edgeCornerAngle,edgeCornerCount,edgeRotX[i],edgeRotY[i],edgeRotZ[i]))
                 ) else append bands #(path,totals[pathIndex][side],rest,choices,strokeMin[i],strokeMax[i],side==2)
                 )
             )
@@ -7652,7 +7687,7 @@ initialRollupState:0x8
         this.procAssertSchema()
         if not rawOnly and finalPass==undefined and overlapOwner!=undefined do return overlapOwner.groupPlacements this plants previewOnly
         if not cyrusEnabled or disabledAnalyzerInput() do return #()
-        if this.brushMaskActive() and not projectMove and (movXMin!=0 or movXMax!=0 or movYMin!=0 or movYMax!=0 or movZMin!=0 or movZMax!=0 or movementRange!=0) do throw "Brush requires projected movement."
+        if this.brushMaskActive() and not projectMove and (movXMinWU!=0 or movXMaxWU!=0 or movYMinWU!=0 or movYMaxWU!=0 or movZMinWU!=0 or movZMaxWU!=0 or movementRange!=0) do throw "Brush requires projected movement."
         local targets=this.validSurfaces(),seed=this.effectiveSeed(),sourceCount=amax 1 plants.count
         if targets.count==0 do return #()
         if plants.count==0 and not previewOnly do throw "Add a plant model."
@@ -7695,10 +7730,10 @@ initialRollupState:0x8
                 if cached!=undefined then (receiverRows=cached;procReceiverHits+=1)
                 else if receiverCount>0 do (
                     local options=#(true,not advancedAxes,scaleMinimum,scaleMaximum,tiltDegrees,yawMinimum,yawMaximum,movementRange,1,0,procReceiverIDs[slot],slot)
-                    receiverRows=cyrusScatterAdvanced #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMin,movYMin,movZMin] [movXMax,movYMax,movZMax] alignNormal projectMove (distributionMode-1) clusterCount clusterRadius weights 128 groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] (populationMode==2) line #(false,0.0,relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares undefined options
+                    receiverRows=cyrusScatterAdvanced #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMinWU,movYMinWU,movZMinWU] [movXMaxWU,movYMaxWU,movZMaxWU] alignNormal projectMove (distributionMode-1) clusterCount clusterRadius weights 128 groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] (populationMode==2) line #(false,0.0,relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares undefined options
                     if finalRelax and receiverRows.count>0 do (
                         local relaxPass=#(receiverRows,#(),(for row in receiverRows collect 0.0),#(),false,relaxSpacing,0,1,true,finalStrength,finalIterations,finalMaxMove,0.0,cleanupPlanar)
-                        receiverRows=cyrusScatterAdvanced #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMin,movYMin,movZMin] [movXMax,movYMax,movZMax] alignNormal projectMove (distributionMode-1) clusterCount clusterRadius weights 128 groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] (populationMode==2) line #(false,0.0,relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares relaxPass options
+                        receiverRows=cyrusScatterAdvanced #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMinWU,movYMinWU,movZMinWU] [movXMaxWU,movYMaxWU,movZMaxWU] alignNormal projectMove (distributionMode-1) clusterCount clusterRadius weights 128 groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] (populationMode==2) line #(false,0.0,relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares relaxPass options
                     )
                     if wholeScaleMin!=1.0 or wholeScaleMax!=1.0 do receiverRows=cyrusWholeScale receiverRows wholeScaleMin wholeScaleMax seed true
                     receiverRows=this.applyAnalyzerArea receiverRows
@@ -7715,7 +7750,7 @@ initialRollupState:0x8
         )
         result=this.procApplyPaint result
         if plants.count>0 and sourceEmpty.count>0 do result=this.filterSourceRowsByPolicy result (for n in plants collect not (isEmptySource (sourceRow n)) or isPointSource (sourceRow n))
-        if plants.count>0 and (sourceZOffsets.count>0 or sourceScales.count>0) do result=cyrusApplySourceTransforms result (for n in plants collect sourceZOffset (sourceRow n)) (for n in plants collect sourceScale (sourceRow n))
+        if plants.count>0 and (sourceZOffsetsWU.count>0 or sourceScales.count>0) do result=cyrusApplySourceTransforms result (for n in plants collect sourceZOffset (sourceRow n)) (for n in plants collect sourceScale (sourceRow n))
         result
     )
 
@@ -7729,7 +7764,7 @@ initialRollupState:0x8
     fn uiLayerStats = (
         CyrusLayerStatusData hasResult:(cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
     )
-    fn uiVersion = "0.79.1"
+    fn uiVersion = "0.79.6"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified1")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -7778,7 +7813,10 @@ initialRollupState:0x8
         )
         checkAnalyzerRevision()
         if updateMode==2 do this.invalidateInputTime()
-        if dirty and (updateMode==2 or previewBuildCount==0) do refreshPreview()
+        -- Manual refresh reconstructs display from the last published owners;
+        -- procRefreshPreview still gates placement evaluation on explicit Update.
+        -- This also applies display-only Undo/Redo while recipes remain pending.
+        if dirty do refreshPreview()
         cachedPoints
     )
     fn previewPoints = (
@@ -7792,7 +7830,7 @@ initialRollupState:0x8
     parameters layerSettings (
         layerID type:#string default:""
         layerVisible type:#boolTab tabSize:0 tabSizeVariable:true
-        on layerVisible set value index do (global CyrusPointPending;(CyrusPointPending=true;CyrusScheduleRelease()))
+        on layerVisible set value index do (global CyrusPointPending;CyrusViewportRecordsDirty=true;(CyrusPointPending=true;CyrusScheduleRelease()))
         layerObjects type:#maxObjectTab tabSize:0 tabSizeVariable:true
         layerNames type:#stringTab tabSize:0 tabSizeVariable:true
         layerEnabled type:#boolTab tabSize:0 tabSizeVariable:true
@@ -8023,7 +8061,12 @@ initialRollupState:0x8
     fn refreshDisplay = (
         local entries=layerEntries(),pending=true and groupSnapshotKey!="" and groupSnapshotKey!=this.groupInputKey()
         groupDisplayOnly=true and updateMode==1
-        try (for entry in entries do (entry[2].refreshPreview();if pending and updateMode==1 do entry[2].markInputDirty())) catch(groupDisplayOnly=false;throw())
+        -- One leaf stages the controller's complete display publication.
+        -- Repeating it per leaf repeats the same input/owner validation.
+        try (
+            if entries.count>0 do entries[1][2].refreshPreview()
+            if pending and updateMode==1 do for entry in entries do entry[2].markInputDirty()
+        ) catch(groupDisplayOnly=false;throw())
         groupDisplayOnly=false;CyrusViewportRedraw()
     )
     fn refreshAll = (CyrusRequireAuthor();
@@ -8110,8 +8153,8 @@ initialRollupState:0x8
     )
     fn applyPaint rows = (this.procApplyPaint rows)
     fn paintBaseInputKey plants previewOnly receiverLocal:false = (
-        local post=if this.sharedSpacing() then #(#cleanupPlanar,#sourceRadii,#sourceFollowScale,#sourceShowRadius,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove) else #()
-        join post #(#procOrder,#procSetOrder,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusBinding,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverID,#containerMode,#containerNodes)
+        local post=if this.sharedSpacing() then #(#cleanupPlanar,#sourceRadiiWU,#sourceFollowScale,#sourceShowRadius,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove) else #()
+        join post #(#procOrder,#procSetOrder,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procRadiusBinding,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverID,#containerMode,#containerNodes)
         local stream=stringStream ""
         with printAllElements on (
             format "%|%|%|%|%|" (this.inputTimeKey()) (if receiverLocal then 0 else procGeometryRevision) (if receiverLocal then 0 else if overlapOwner!=undefined then overlapOwner.procManualRevision else procManualRevision) (this.containerSourceKey plants) previewOnly to:stream
@@ -8120,7 +8163,7 @@ initialRollupState:0x8
             format "EffectiveRelax:%|" (relaxEnabled and not this.layerPaintActive()) to:stream
             format "FinalRelax:%:%:%:%|" finalRelax finalStrength finalIterations finalMaxMove to:stream
             format "Texture:%|" (this.procWatchDensity()) to:stream
-            for key in AminScatterLayerFields where findItem #(#paintDocument,#paintEnabled,#paintDensity,#bakedNodes,#showPoints,#pointsPerPlant,#updateMode,#autoRender,#previewBudget,#pointColorMode,#solidPointColor) key==0 and findItem post key==0 and findItem #(#paintView,#paintColor,#showCenters,#paintSetName,#paintSetVisible) key==0 and (not receiverLocal or findItem #(#amount,#plantsPerM2,#populationMode) key==0) do format "%:%|" key (if key==#sources then this.containerSourceKey (sources as array) else getProperty this key) to:stream
+            for key in AminScatterLayerFields where findItem #(#paintDocument,#paintEnabled,#paintDensity,#bakedNodes,#showPoints,#pointsPerPlant,#updateMode,#autoRender,#previewBudget,#pointColorMode,#solidPointColor) key==0 and findItem post key==0 and findItem #(#paintView,#paintColor,#showCenters,#sourceShowRadius,#paintSetName,#paintSetVisible) key==0 and (not receiverLocal or findItem #(#amount,#plantsPerM2,#populationMode) key==0) do format "%:%|" key (if key==#sources then this.containerSourceKey (sources as array) else getProperty this key) to:stream
             for n in ((if receiverLocal then #() else this.validSurfaces())+(sources as array)+(areaNodes as array)+(patternLines as array)+#(analyzerNode,areaAnalyzer,fallAnalyzer)) where isValidNode n do (
                 local tm=n.objectTransform
                 if this.containerProvider()!=undefined and findItem sources n>0 do tm.row4=[0,0,0]
@@ -8143,7 +8186,7 @@ initialRollupState:0x8
             #rotation: #(#(#rotXMin,0.0),#(#rotXMax,0.0),#(#rotYMin,0.0),#(#rotYMax,0.0),#(#rotZMin,0.0),#(#rotZMax,0.0),#(#tiltDegrees,0.0),#(#yawMinimum,0.0),#(#yawMaximum,0.0))
             #scale: #(#(#sclXMin,1.0),#(#sclXMax,1.0),#(#sclYMin,1.0),#(#sclYMax,1.0),#(#sclZMin,1.0),#(#sclZMax,1.0),#(#scaleMinimum,1.0),#(#scaleMaximum,1.0))
             #wholeScale: #(#(#wholeScaleMin,1.0),#(#wholeScaleMax,1.0))
-            #movement: #(#(#movXMin,0.0),#(#movXMax,0.0),#(#movYMin,0.0),#(#movYMax,0.0),#(#movZMin,0.0),#(#movZMax,0.0),#(#movementRange,0.0))
+            #movement: #(#(#movXMinWU,0.0),#(#movXMaxWU,0.0),#(#movYMinWU,0.0),#(#movYMaxWU,0.0),#(#movZMinWU,0.0),#(#movZMaxWU,0.0),#(#movementRange,0.0))
             default: undefined
         )
         if values==undefined do return false
@@ -8298,14 +8341,14 @@ initialRollupState:0x8
             local i=this.procPair scope a b
             if i==0 do (
                 append procRuleScope scope;append procRuleA a.layerID;append procRuleB b.layerID
-                append procRuleEnabled false;append procRuleMultiplier 1.0;append procRuleGap 0.0;append procRulePlanar false;i=procRuleA.count
+                append procRuleEnabled false;append procRuleMultiplier 1.0;append procRuleGapWU 0.0;append procRulePlanar false;i=procRuleA.count
             )
-            procRuleEnabled[i]=enabled;procRuleMultiplier[i]=multiplier;procRuleGap[i]=gap;procRulePlanar[i]=planar
+            procRuleEnabled[i]=enabled;procRuleMultiplier[i]=multiplier;procRuleGapWU[i]=gap;procRulePlanar[i]=planar
         )
         this.invalidateGroups()
     )
     fn procRemoveRule i = (CyrusRequireAuthor();
-        if i>0 do for key in #(#procRuleScope,#procRuleA,#procRuleB,#procRuleEnabled,#procRuleMultiplier,#procRuleGap,#procRulePlanar) do deleteItem (getProperty this key) i
+        if i>0 do for key in #(#procRuleScope,#procRuleA,#procRuleB,#procRuleEnabled,#procRuleMultiplier,#procRuleGapWU,#procRulePlanar) do deleteItem (getProperty this key) i
     )
     fn procRemoveOwner leaf = (CyrusRequireAuthor();
         for i=procRuleA.count to 1 by -1 where procRuleA[i]==leaf.layerID or procRuleB[i]==leaf.layerID do this.procRemoveRule i
@@ -8315,7 +8358,7 @@ initialRollupState:0x8
         (
             for s=1 to copies.count do (
                 local leaf=copies[s]
-                leaf.procRadiusIDs=#();leaf.procRadiusModes=#();leaf.procRadiusValues=#();leaf.procRadiusBinding=""
+                leaf.procRadiusIDs=#();leaf.procRadiusModes=#();leaf.procRadiusValues=#();leaf.procRadiusDistances=#();leaf.procRadiusBinding=""
             )
             local count=procRuleA.count
             for i=1 to count do (
@@ -8327,7 +8370,7 @@ initialRollupState:0x8
                 if changed do (
                     if a==undefined do for leaf in layerObjects where leaf.layerID==procRuleA[i] do a=leaf
                     if b==undefined do for leaf in layerObjects where leaf.layerID==procRuleB[i] do b=leaf
-                    if a!=undefined and b!=undefined do this.procSetPair procRuleScope[i] a b procRuleEnabled[i] procRuleMultiplier[i] procRuleGap[i] procRulePlanar[i]
+                    if a!=undefined and b!=undefined do this.procSetPair procRuleScope[i] a b procRuleEnabled[i] procRuleMultiplier[i] procRuleGapWU[i] procRulePlanar[i]
                 )
             )
             if copies.count>0 do copies[1].procOrder=nextEditLayerKey
@@ -8348,7 +8391,9 @@ initialRollupState:0x8
         )
         local radii=if plants.count==0 then #(0.0) else for n in plants collect sourceRadius (sourceRow n)
         local follow=if plants.count==0 then #(false) else for n in plants collect sourceFollows (sourceRow n)
-        cyrusProceduralRadii rows radii follow (procRadiusIDs as array) (procRadiusModes as array) (procRadiusValues as array)
+        if procRadiusDistances.count!=procRadiusIDs.count do throw "Instance distance metadata is incomplete."
+        local values=for i=1 to procRadiusIDs.count collect (if procRadiusModes[i]==1 then procRadiusDistances[i] else procRadiusValues[i])
+        cyrusProceduralRadii rows radii follow (procRadiusIDs as array) (procRadiusModes as array) values
     )
     fn procSelectedRadius mode value reset:false = (CyrusRequireAuthor();
         if overlapOwner==undefined do throw "Select a paint set using Procedural 0.7."
@@ -8362,10 +8407,11 @@ initialRollupState:0x8
         undo "Cyrus selected instance radii" on (
         for id in ids do (
             local i=findItem procRadiusIDs id
-            if reset then (if i>0 do (deleteItem procRadiusIDs i;deleteItem procRadiusModes i;deleteItem procRadiusValues i))
+            if reset then (if i>0 do (deleteItem procRadiusIDs i;deleteItem procRadiusModes i;deleteItem procRadiusValues i;deleteItem procRadiusDistances i))
             else (
-                if i==0 do (append procRadiusIDs id;append procRadiusModes mode;append procRadiusValues value;i=procRadiusIDs.count)
-                procRadiusModes[i]=mode;procRadiusValues[i]=value
+                if i==0 do (append procRadiusIDs id;append procRadiusModes mode;append procRadiusValues 1.0;append procRadiusDistances 0.0;i=procRadiusIDs.count)
+                procRadiusModes[i]=mode
+                if mode==1 then procRadiusDistances[i]=value else procRadiusValues[i]=value
             )
         )
         procRadiusBinding=if procRadiusIDs.count>0 then cyrusReceiverMergeBinding procRadiusBinding procBindingKey else ""
@@ -8373,7 +8419,7 @@ initialRollupState:0x8
         overlapOwner.invalidateGroups()
     )
     fn procClearRadii = (CyrusRequireAuthor();
-        undo "Cyrus clear set radius overrides" on (procRadiusIDs=#();procRadiusModes=#();procRadiusValues=#();procRadiusBinding="")
+        undo "Cyrus clear set radius overrides" on (procRadiusIDs=#();procRadiusModes=#();procRadiusValues=#();procRadiusDistances=#();procRadiusBinding="")
         if overlapOwner!=undefined do overlapOwner.invalidateGroups()
     )
     fn procCoverageKey = (
@@ -8391,14 +8437,16 @@ initialRollupState:0x8
         )
         cyrusBrushRegionFilter rows docs densities targets paintBaseFaceCounts ("CyrusStableMask1:"+(this.effectiveSeed() as string))
     )
+    -- Keep same-unit schema-55 Edit binding labels while storage gains units.
+    fn procBindingName key = (local field=key as string;if matchPattern field pattern:"*WU" do field=substring field 1 (field.count-2);field as name)
     fn procBinding plants rows = (
         local stream=stringStream ""
         with printAllElements on (
             format "CyrusBinding2:%|" (this.effectiveSeed()) to:stream
             for n in plants do (local i=sourceRow n;format "%|" (if i>0 and i<=procSourceSlots.count then procSourceSlots[i] else "preview") to:stream)
-            for key in #(#distributionMode,#clusterCount,#clusterRadius,#diversityMode,#diversitySize,#diversitySeed,#roughness,#blurryEdge,#diversityNoise,#sourceWeights,#sourceColors,#sourceEmpty,#sourcePoint,#sourceScales,#sourceZOffsets,#advancedAxes,#scaleMinimum,#scaleMaximum,#tiltDegrees,#yawMinimum,#yawMaximum,#movementRange,#sclXMin,#sclXMax,#sclYMin,#sclYMax,#sclZMin,#sclZMax,#rotXMin,#rotXMax,#rotYMin,#rotYMax,#rotZMin,#rotZMax,#movXMin,#movXMax,#movYMin,#movYMax,#movZMin,#movZMax,#wholeScaleMin,#wholeScaleMax,#projectMove,#alignNormal) do format "%:%|" key (getProperty this key) to:stream
-            if diversityMode>=3 do for key in #(#patternLines,#patternWidths,#strokeSides,#strokeModes,#strokeColorRows,#strokeColorKeys,#strokeSourceRows,#strokeSourceNodes,#strokeSourceIDs,#sourceRowIDs,#strokeMin,#strokeMax,#analyzerNode,#edgeOffsets,#edgeAlong,#edgeAcross,#edgeKeepCorners,#edgeCornerAngle,#edgeCornerCount,#edgeFaceOut,#edgeCornerRadius,#edgeRotX,#edgeRotY,#edgeRotZ,#borderFaceOut,#streetFaceOut,#borderCornerRadius,#streetCornerRadius,#streetStraight,#streetTrimStart,#streetTrimEnd,#centerStreetOffset) do format "%:%|" key (getProperty this key) to:stream
-            if relaxEnabled or finalRelax do for key in #(#relaxEnabled,#relaxSpacing,#relaxIterations,#relaxStrength,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove) do format "%:%|" key (getProperty this key) to:stream
+            for key in #(#distributionMode,#clusterCount,#clusterRadius,#diversityMode,#diversitySize,#diversitySeed,#roughness,#blurryEdge,#diversityNoise,#sourceWeights,#sourceColors,#sourceEmpty,#sourcePoint,#sourceScales,#sourceZOffsetsWU,#advancedAxes,#scaleMinimum,#scaleMaximum,#tiltDegrees,#yawMinimum,#yawMaximum,#movementRange,#sclXMin,#sclXMax,#sclYMin,#sclYMax,#sclZMin,#sclZMax,#rotXMin,#rotXMax,#rotYMin,#rotYMax,#rotZMin,#rotZMax,#movXMinWU,#movXMaxWU,#movYMinWU,#movYMaxWU,#movZMinWU,#movZMaxWU,#wholeScaleMin,#wholeScaleMax,#projectMove,#alignNormal) do format "%:%|" (this.procBindingName key) (getProperty this key) to:stream
+            if diversityMode>=3 do for key in #(#patternLines,#patternWidths,#strokeSides,#strokeModes,#strokeColorRows,#strokeColorKeys,#strokeSourceRows,#strokeSourceNodes,#strokeSourceIDs,#sourceRowIDs,#strokeMin,#strokeMax,#analyzerNode,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#edgeKeepCorners,#edgeCornerAngle,#edgeCornerCount,#edgeFaceOut,#edgeCornerRadius,#edgeRotX,#edgeRotY,#edgeRotZ,#borderFaceOut,#streetFaceOut,#borderCornerRadius,#streetCornerRadius,#streetStraight,#streetTrimStart,#streetTrimEnd,#centerStreetOffset) do format "%:%|" (this.procBindingName key) (getProperty this key) to:stream
+            if relaxEnabled or finalRelax do for key in #(#relaxEnabled,#relaxSpacing,#relaxIterations,#relaxStrength,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove) do format "%:%|" (this.procBindingName key) (getProperty this key) to:stream
             format "\nCyrusReceivers2\n" to:stream
             for entry in procReceiverGeometry do format "%=%\n" procReceiverIDs[entry[1]] entry[2] to:stream
         )
@@ -8478,7 +8526,7 @@ initialRollupState:0x8
         -- a prior row's sparse setting. Automatic registration survives parking.
         undo off (
             syncColors()
-            for spec in #(#(#sourceWeights,1.0),#(#sourceZOffsets,0.0),#(#sourceScales,1.0),#(#sourceForwardAxes,1),#(#sourceRadii,0.0),#(#sourceFollowScale,false),#(#sourceShowRadius,false),#(#sourcePoint,false),#(#sourceEmpty,false)) do (
+            for spec in #(#(#sourceWeights,1.0),#(#sourceZOffsetsWU,0.0),#(#sourceScales,1.0),#(#sourceForwardAxes,1),#(#sourceRadiiWU,0.0),#(#sourceFollowScale,false),#(#sourceShowRadius,false),#(#sourcePoint,false),#(#sourceEmpty,false)) do (
                 local values=getProperty this spec[1]
                 while values.count<sources.count do append values spec[2]
                 append values spec[2]
@@ -8661,13 +8709,13 @@ initialRollupState:0x8
         local stream=stringStream ""
         with printAllElements on (
             format "Proc1:%:%:%:%:%:%:%:%|" (this.inputTimeKey()) 0 procManualRevision cyrusEnabled layerEnabled (this.procEditKey()) procRuleScope procRuleA to:stream
-            format "%:%:%:%:%|" procRuleB procRuleEnabled procRuleMultiplier procRuleGap procRulePlanar to:stream
+            format "%:%:%:%:%|" procRuleB procRuleEnabled procRuleMultiplier procRuleGapWU procRulePlanar to:stream
             for parent in this.logicalLayers() do for leaf in this.layerSets parent do (
                 leaf.containerRefresh()
                 format "Membership:%|" leaf.containerMembershipKey to:stream
                 format "Texture:%|" (leaf.procWatchDensity()) to:stream
                 format "%:%:%:%:%:%|" leaf.layerID leaf.logicalParentID leaf.procReceiverID leaf.procRadiusBinding (leaf.paintBaseInputKey (leaf.validSources()) true) (leaf.procCoverageKey()) to:stream
-                for key in #(#procOrder,#procSetOrder,#procSamplingSalt,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procSourceIDs,#sourceRadii,#sourceFollowScale,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#cleanupPlanar) do format "%:%|" key (getProperty leaf key) to:stream
+                for key in #(#procOrder,#procSetOrder,#procSamplingSalt,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procSourceIDs,#sourceRadiiWU,#sourceFollowScale,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#cleanupPlanar) do format "%:%|" key (getProperty leaf key) to:stream
             )
         )
         stream as string
@@ -8699,14 +8747,14 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This unpublished development scene uses a retired Cyrus settings schema. Create a new 0.79.1 setup."
+        local message="This unpublished development scene uses a retired Cyrus settings schema. Create a new 0.79.6 setup."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
     fn procValidate = (
         this.procAssertSchema()
-        if cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined do throw "Cyrus 0.79.1 requires the matching native plugin binaries. Restart the private test host with the complete matching script/native pair."
+        if cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusBuildRadiusPreview==undefined do throw "Cyrus 0.79.6 requires the matching native plugin binaries. Restart the private test host with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -8720,39 +8768,83 @@ initialRollupState:0x8
         )
         true
     )
-    fn procDisplayInputKey epoch:undefined = (
+    local procPreviewDisplayKey=""
+    fn procDisplayLayerKey leaf epoch:undefined = (
         local stream=stringStream ""
         with printAllElements on (
             format "Display:%:%|" (if epoch==undefined then procEpoch else epoch) identificationMode to:stream
-            for leaf in layerObjects do format "%:%|" (for i=1 to leaf.sources.count collect leaf.sourceIDColor i) (this.logicalParent leaf).layerIDColor to:stream
-            for leaf in layerObjects do for key in #(#viewportMode,#proxyShape,#viewportInstances,#viewportFaces,#previewBudget,#showCenters,#pointsPerPlant,#pointColorMode,#solidPointColor,#sourceShowRadius,#radiusDisplayLimit,#radiusDisplayAll) do format "%:%|" key (getProperty leaf key) to:stream
+            format "%:%:%|" leaf.layerID (for i=1 to leaf.sources.count collect leaf.sourceIDColor i) (this.logicalParent leaf).layerIDColor to:stream
+            for key in #(#viewportMode,#proxyShape,#viewportInstances,#viewportFaces,#previewBudget,#showCenters,#pointsPerPlant,#pointColorMode,#solidPointColor,#sourceShowRadius,#radiusDisplayLimit,#radiusDisplayAll) do format "%:%|" key (getProperty leaf key) to:stream
         )
         stream as string
     )
-    fn procStagePreview data plants:undefined = (
+    fn procDisplayInputKey epoch:undefined = (
+        local stream=stringStream ""
+        for leaf in layerObjects do format "%|" (this.procDisplayLayerKey leaf epoch:epoch) to:stream
+        stream as string
+    )
+    fn procStagePreview data plants:undefined placementRadiusValues:undefined displayEpoch:undefined = (
         local start=timeStamp(),previousRadius=radiusPreview,radii
         if plants==undefined do plants=this.validSources()
-        try(cacheRadii data plants;radii=radiusPreview;radiusPreview=previousRadius)catch(radiusPreview=previousRadius;throw())
+        try(cacheRadii data plants values:placementRadiusValues;radii=radiusPreview;radiusPreview=previousRadius)catch(radiusPreview=previousRadius;throw())
         local samples=if viewportMode!=1 then #() else if showCenters then (for i=1 to (amax 1 plants.count) collect #([0,0,0])) else (for n in plants collect (if classof n==Integer then (for p=1 to pointsPerPlant collect [0,0,0]) else pointSourceSamples n))
         local controller=if overlapOwner==undefined then this else overlapOwner,parent=controller.logicalParent this
         local colors=if plants.count==0 then #(solidPointColor) else for n in plants collect (if controller.identificationMode==2 then parent.layerIDColor else this.sourceIDColor (sourceRow n))
         local cache=if data.count==0 then aminScatterBuildPreview #() #() #() 1 else if viewportMode==1 then aminScatterBuildPreview data samples colors (if showCenters then 500000 else previewBudget) else cyrusBuildGeometryPreview data (if plants.count==0 then #(-1) else plants) colors (if viewportMode==2 then proxyShape else 4) viewportInstances viewportFaces
-        #(cache,(aminScatterPreviewCount cache),data.count,radii,(if viewportMode==1 and showCenters then 4 else viewportMode),timeStamp()-start,(if isValidNode areaAnalyzer then areaAnalyzer.getAnalysisRuns() else -1),(if isValidNode fallAnalyzer then fallAnalyzer.getAnalysisRuns() else -1))
+        local circles=if radii.count==0 then undefined else cyrusBuildRadiusPreview radii
+        #(cache,(aminScatterPreviewCount cache),data.count,radii,(if viewportMode==1 and showCenters then 4 else viewportMode),timeStamp()-start,(if isValidNode areaAnalyzer then areaAnalyzer.getAnalysisRuns() else -1),(if isValidNode fallAnalyzer then fallAnalyzer.getAnalysisRuns() else -1),circles,(controller.procDisplayLayerKey this epoch:displayEpoch),(if isValidNode analyzerNode then analyzerNode.getAnalysisRuns() else -1),inputTimeStamp)
+    )
+    -- Publication snapshots retain references to immutable staged rows/caches.
+    -- No host queries or copies of large point arrays run in the install tail.
+    fn procPreviewState = (#(inputTimeObserved,cachedPoints,cachedPointCount,generatedCount,radiusPreview,uiPreviewMode,radiusCache,procPreviewDisplayKey,previewBuildMs,cachedAreaAnalyzerRun,cachedFallRun,cachedAnalyzerRun,previewBuildCount,previewError,dirty))
+    fn procRestorePreview state = (
+        inputTimeObserved=state[1];cachedPoints=state[2];cachedPointCount=state[3];generatedCount=state[4];radiusPreview=state[5]
+        uiPreviewMode=state[6];radiusCache=state[7];procPreviewDisplayKey=state[8];previewBuildMs=state[9]
+        cachedAreaAnalyzerRun=state[10];cachedFallRun=state[11];cachedAnalyzerRun=state[12];previewBuildCount=state[13];previewError=state[14];dirty=state[15]
+    )
+    fn procResultState = (#(this.procPreviewState(),procLastStats,procLastRounds,procEpoch,requestedCount,groupEligible,groupRemoved,groupConflicts,overlapBefore,overlapAfter))
+    fn procRestoreResult state = (
+        this.procRestorePreview state[1];procLastStats=state[2];procLastRounds=state[3];procEpoch=state[4];requestedCount=state[5]
+        groupEligible=state[6];groupRemoved=state[7];groupConflicts=state[8];overlapBefore=state[9];overlapAfter=state[10]
     )
     fn procInstallPreview state pending = (
-        inputTimeObserved=inputTimeStamp
-        CyrusDiagnosticEmit "preview.installed" "engine" layerID procEpoch (if pending then "pending" else "current")
-        cachedPoints=state[1];cachedPointCount=state[2];generatedCount=state[3];radiusPreview=state[4];uiPreviewMode=state[5]
+        inputTimeObserved=state[12]
+        cachedPoints=state[1];cachedPointCount=state[2];generatedCount=state[3];radiusPreview=state[4];uiPreviewMode=state[5];radiusCache=state[9]
+        procPreviewDisplayKey=state[10]
+        CyrusViewportRecordsDirty=true
         previewBuildMs=state[6];cachedAreaAnalyzerRun=state[7];cachedFallRun=state[8]
-        cachedAnalyzerRun=if isValidNode analyzerNode then analyzerNode.getAnalysisRuns() else -1
+        cachedAnalyzerRun=state[11]
         previewBuildCount+=1;previewError="";dirty=pending
     )
     fn procEnsureDisplay pending:false = (
         local key=this.procDisplayInputKey()
         if key!=procPublishedDisplayKey do (
-            local stage=for i=1 to layerObjects.count collect layerObjects[i].procStagePreview groupSnapshotRows[i] plants:procPublishedSources[i]
-            for i=1 to layerObjects.count do layerObjects[i].procInstallPreview stage[i] pending
-            procPublishedDisplayKey=key
+            local before=for leaf in layerObjects collect leaf.procPreviewState(),previousKey=procPublishedDisplayKey,previousDirty=CyrusViewportRecordsDirty
+            -- Pending Manual topology can differ from the last publication.
+            -- Resolve by owner, including an empty preview for unpublished layers.
+            local stage=for leaf in layerObjects collect (
+                if leaf.procPreviewDisplayKey==(this.procDisplayLayerKey leaf) then undefined
+                else (
+                    local slot=findItem procPublishedOwners leaf
+                    if slot==0 then leaf.procStagePreview #() plants:#() placementRadiusValues:#()
+                    else leaf.procStagePreview groupSnapshotRows[slot] plants:procPublishedSources[slot] placementRadiusValues:procPublishedRadii[slot]
+                )
+            )
+            -- Preserve atomic failure retention: stage every changed layer
+            -- before installing any successor. Unchanged snapshots stay shared.
+            try (
+                for i=1 to layerObjects.count where stage[i]!=undefined do layerObjects[i].procInstallPreview stage[i] pending
+                -- Recovery also clears failure status on reused siblings.
+                for i=1 to layerObjects.count where stage[i]==undefined do (
+                    layerObjects[i].previewError="";layerObjects[i].dirty=pending
+                )
+                procPublishedDisplayKey=key
+            ) catch (
+                local failure=getCurrentException()
+                for i=1 to layerObjects.count do layerObjects[i].procRestorePreview before[i]
+                procPublishedDisplayKey=previousKey;CyrusViewportRecordsDirty=previousDirty
+                throw()
+            )
         )
     )
     fn procRefreshPreview = (
@@ -8796,8 +8888,10 @@ initialRollupState:0x8
             requests[i]=#(quota,attempts,pool);admission+=pool
         )
         if admission>1000000 do throw "Procedural candidate admission exceeds 1,000,000. Reduce population or attempt limits."
-        groupSolving=true
         local transaction=false,previousBindings=for leaf in layerObjects collect leaf.procBindingKey
+        local previousResults=for leaf in layerObjects collect leaf.procResultState()
+        local previousPublication=#(procEpoch,procPublishedOwners,procPublishedSources,procPublishedFinalKeep,procPublishedRadii,procPublishedInfo,groupSnapshotRows,groupSnapshotKey,procPublishedDisplayKey,groupBuilds,CyrusViewportRecordsDirty)
+        groupSolving=true
         try (
             cyrusEditTransaction mods 0;transaction=true
             for parent in parents do (
@@ -8811,7 +8905,7 @@ initialRollupState:0x8
                 append layers #(parent.layerID,parent.procPopulation==2,parent.procRepair,parent.procRounds,#(parent.procSiblingEnabled,parent.procSiblingMultiplier,parent.procSiblingGap,parent.procSiblingPlanar),#(parent.finalCleanup,parent.finalNeighborRadius,parent.finalMinNeighbors,parent.finalMinIsland,parent.cleanupPlanar),sets)
                 append mapping indices
             )
-            local pairs=for i=1 to procRuleA.count collect #(procRuleScope[i],procRuleA[i],procRuleB[i],#(procRuleEnabled[i],procRuleMultiplier[i],procRuleGap[i],procRulePlanar[i]))
+            local pairs=for i=1 to procRuleA.count collect #(procRuleScope[i],procRuleA[i],procRuleB[i],#(procRuleEnabled[i],procRuleMultiplier[i],procRuleGapWU[i],procRulePlanar[i]))
             local resolved=cyrusEvaluateProcedural layers pairs 1000000
             local accepted=for leaf in layerObjects collect #(),stats=for leaf in layerObjects collect #(),rounds=for leaf in layerObjects collect #(),radii=for leaf in layerObjects collect #()
             for l=1 to mapping.count do for s=1 to mapping[l].count do (
@@ -8819,7 +8913,7 @@ initialRollupState:0x8
                 accepted[i]=resolved[1][l][s];stats[i]=resolved[2][l][s];rounds[i]=resolved[3][l]
                 radii[i]=resolved[4][l][s]
             )
-            local display=for i=1 to layerObjects.count collect layerObjects[i].procStagePreview accepted[i]
+            local display=for i=1 to layerObjects.count collect layerObjects[i].procStagePreview accepted[i] placementRadiusValues:radii[i] displayEpoch:(procEpoch+1)
             local displayKey=this.procDisplayInputKey epoch:(procEpoch+1)
             local publishedOwners=layerObjects as array,publishedSources=for leaf in layerObjects collect leaf.validSources()
             local finalKeep=for i=1 to layerObjects.count collect (for n in publishedSources[i] collect not (layerObjects[i].isPointSource (layerObjects[i].sourceRow n)))
@@ -8828,7 +8922,6 @@ initialRollupState:0x8
             this.publishGroupEdits accepted
             this.procSyncEditVisibility()
             local finishedKey=this.procInputKey()
-            cyrusEditTransaction mods 1;transaction=false
             procEpoch+=1
             for i=1 to layerObjects.count do (
                 local leaf=layerObjects[i]
@@ -8841,16 +8934,26 @@ initialRollupState:0x8
             procPublishedOwners=publishedOwners;procPublishedSources=publishedSources;procPublishedFinalKeep=finalKeep
             procPublishedRadii=radii;procPublishedInfo=publicationInfo
             groupSnapshotRows=accepted;groupSnapshotKey=finishedKey;procPublishedDisplayKey=displayKey;groupBuilds+=1
-            CyrusScheduleUI();CyrusPFRequestCheck()
-            CyrusDiagnosticEmit "publication.committed" "engine" layerID procEpoch "complete"
-            groupSolving=false;accepted
+            -- Keep native Edit rollback alive until every script owner agrees.
+            cyrusEditTransaction mods 1;transaction=false
         ) catch (
             local failure=getCurrentException()
-            if transaction do cyrusEditTransaction mods 2
+            for i=1 to layerObjects.count do layerObjects[i].procRestoreResult previousResults[i]
+            procEpoch=previousPublication[1];procPublishedOwners=previousPublication[2];procPublishedSources=previousPublication[3];procPublishedFinalKeep=previousPublication[4]
+            procPublishedRadii=previousPublication[5];procPublishedInfo=previousPublication[6];groupSnapshotRows=previousPublication[7]
+            groupSnapshotKey=previousPublication[8];procPublishedDisplayKey=previousPublication[9];groupBuilds=previousPublication[10];CyrusViewportRecordsDirty=previousPublication[11]
             for i=1 to layerObjects.count do (layerObjects[i].procPreparedKey="";layerObjects[i].procCandidateCount=undefined;layerObjects[i].procBindingKey=previousBindings[i])
-            CyrusDiagnosticEmit "publication.retained" "engine" layerID procEpoch "successor_failed"
-            groupSolving=false;throw()
+            groupSolving=false
+            if transaction do cyrusEditTransaction mods 2
+            try(CyrusDiagnosticEmit "publication.retained" "engine" layerID procEpoch "successor_failed")catch()
+            throw()
         )
+        groupSolving=false
+        -- Observer failures do not relabel an already committed result as retained.
+        try(CyrusScheduleUI())catch()
+        try(CyrusPFRequestCheck())catch()
+        try(CyrusDiagnosticEmit "publication.committed" "engine" layerID procEpoch "complete")catch()
+        groupSnapshotRows
     )
 
     -- Private transient publication metadata. All values are captured before
@@ -8870,7 +8973,7 @@ initialRollupState:0x8
         )
         -- Rule values are retained in system units; the snapshot contains the
         -- unit conversion that was effective for this publication.
-        local pairs=for i=1 to procRuleA.count collect #(procRuleScope[i],procRuleA[i],procRuleB[i],procRuleEnabled[i],procRuleMultiplier[i],procRuleGap[i],procRulePlanar[i])
+        local pairs=for i=1 to procRuleA.count collect #(procRuleScope[i],procRuleA[i],procRuleB[i],procRuleEnabled[i],procRuleMultiplier[i],procRuleGapWU[i],procRulePlanar[i])
         #(CyrusNewLayerID(),procEpoch+1,(currentTime as integer),1.0/(units.decodeValue "1m"),count,sets,pairs,CyrusLoadedScriptFingerprint)
     )
     fn procPublicationInfo = (
@@ -8916,7 +9019,7 @@ initialRollupState:0x8
         CyrusBindLayerEditor this
         true
     )
-    rollout mainUI "Cyrus Scatter 0.79.1" width:#cmdPanel height:140 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.79.6" width:#cmdPanel height:140 autoLayoutOnResize:true (
         local view=undefined,root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),owner=undefined,layerPagesVisible=false,pagesArranged=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for the entire setup."
         radiobuttons updateRadio "Viewport update" labels:#("Manual","Live") columns:2 pos:[8,26] width:(mainUI.width-16) tooltip:"Manual waits for Update. Live calculates after relevant edits."
@@ -8990,7 +9093,7 @@ initialRollupState:0x8
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.79.1 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.79.6 native plugin and restart Max."
             local context=if classof view==CyrusSourceContainer then CyrusContainerResolve view else undefined
             root=if classof view==CyrusSourceContainer then (if context==undefined then undefined else context[1]) else view
             editors=#(view.managerUI,view.surfacesUI,view.modelsUI,view.containersUI,view.layoutUI,view.populationUI,view.coverageUI,view.areasUI,view.transformsUI,view.spacingUI,view.displayUI,view.statisticsUI)
@@ -9833,7 +9936,7 @@ initialRollupState:0x8
         fn sourceUI_addSource n = (
             if sourceUI_obj.usableSource n and (findItem sourceUI_obj.sources n)==0 do (
                 sourceUI_obj.ensureSourceRows()
-                sourceUI_obj.syncColors();while sourceUI_obj.sourceEmpty.count<sourceUI_obj.sources.count do append sourceUI_obj.sourceEmpty false;append sourceUI_obj.sourceEmpty false;append sourceUI_obj.sources n;append sourceUI_obj.sourceRowIDs (CyrusNewLayerID());append sourceUI_obj.sourceColors sourceUI_groupColor.color;if sourceUI_obj.sourceWeights.count>0 do append sourceUI_obj.sourceWeights 1.0;if sourceUI_obj.sourceZOffsets.count>0 do append sourceUI_obj.sourceZOffsets 0.0;if sourceUI_obj.sourceScales.count>0 do append sourceUI_obj.sourceScales 1.0;sourceUI_obj.markInputDirty()
+                sourceUI_obj.syncColors();while sourceUI_obj.sourceEmpty.count<sourceUI_obj.sources.count do append sourceUI_obj.sourceEmpty false;append sourceUI_obj.sourceEmpty false;append sourceUI_obj.sources n;append sourceUI_obj.sourceRowIDs (CyrusNewLayerID());append sourceUI_obj.sourceColors sourceUI_groupColor.color;if sourceUI_obj.sourceWeights.count>0 do append sourceUI_obj.sourceWeights 1.0;if sourceUI_obj.sourceZOffsetsWU.count>0 do append sourceUI_obj.sourceZOffsetsWU 0.0;if sourceUI_obj.sourceScales.count>0 do append sourceUI_obj.sourceScales 1.0;sourceUI_obj.markInputDirty()
             )
         )
         fn sourceUI_showSelectedColor = (
@@ -9896,7 +9999,10 @@ initialRollupState:0x8
         on sourceUI_followRadiusCheck changed v do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do if not sourceUI_loadingColor do (sourceUI_obj.setSourceRadius sourceUI_plantList.selection v kind:2;CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
-        on sourceUI_showRadiusCheck changed v do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do if not sourceUI_loadingColor do (sourceUI_obj.setSourceRadius sourceUI_plantList.selection v kind:3;CyrusViewportRedraw())
+        on sourceUI_showRadiusCheck changed v do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do if not sourceUI_loadingColor do (
+            local controller=if sourceUI_obj.overlapOwner==undefined then sourceUI_obj else sourceUI_obj.overlapOwner
+            sourceUI_obj.setSourceRadius sourceUI_plantList.selection v kind:3;controller.refreshDisplay()
+        )
             if controlsReady and root!=undefined do layout()
         )
         on sourceUI_forwardAxis selected v do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do if not sourceUI_loadingColor do (sourceUI_obj.assignSourceForward sourceUI_plantList.selection v;CyrusViewportRedraw())
@@ -9961,10 +10067,10 @@ initialRollupState:0x8
             undo "Cyrus Scatter remove sources" on (
                 for k=rows.count to 1 by -1 do (
                     deleteItem sourceUI_obj.sourceRowIDs rows[k]
-                    for key in #(#sourceRadii,#sourceFollowScale,#sourceShowRadius) do (local tab=getProperty sourceUI_obj key;if rows[k]<=tab.count do deleteItem tab rows[k])
+                    for key in #(#sourceRadiiWU,#sourceFollowScale,#sourceShowRadius) do (local tab=getProperty sourceUI_obj key;if rows[k]<=tab.count do deleteItem tab rows[k])
                     if rows[k]<=sourceUI_obj.sourcePoint.count do deleteItem sourceUI_obj.sourcePoint rows[k]
                     if rows[k]<=sourceUI_obj.sourceEmpty.count do deleteItem sourceUI_obj.sourceEmpty rows[k]
-                    if rows[k]<=sourceUI_obj.sourceZOffsets.count do deleteItem sourceUI_obj.sourceZOffsets rows[k]
+                    if rows[k]<=sourceUI_obj.sourceZOffsetsWU.count do deleteItem sourceUI_obj.sourceZOffsetsWU rows[k]
                     if rows[k]<=sourceUI_obj.sourceScales.count do deleteItem sourceUI_obj.sourceScales rows[k]
                     if rows[k]<=sourceUI_obj.sourceForwardAxes.count do deleteItem sourceUI_obj.sourceForwardAxes rows[k]
                     if rows[k]<=sourceUI_obj.sourceWeights.count do deleteItem sourceUI_obj.sourceWeights rows[k]
@@ -10779,7 +10885,7 @@ initialRollupState:0x8
                 diversityUI_edgeRotXSpin.value=diversityUI_obj.edgeRotX[row]
                 diversityUI_edgeRotYSpin.value=diversityUI_obj.edgeRotY[row]
                 diversityUI_edgeRotZSpin.value=diversityUI_obj.edgeRotZ[row]
-                diversityUI_edgeOffsetSpin.value=diversityUI_obj.edgeOffsets[row];diversityUI_edgeAlongSpin.value=diversityUI_obj.edgeAlong[row];diversityUI_edgeAcrossSpin.value=diversityUI_obj.edgeAcross[row]
+                diversityUI_edgeOffsetSpin.value=diversityUI_obj.edgeOffsetsWU[row];diversityUI_edgeAlongSpin.value=diversityUI_obj.edgeAlongWU[row];diversityUI_edgeAcrossSpin.value=diversityUI_obj.edgeAcrossWU[row]
                 diversityUI_strokeWidth.value=diversityUI_obj.patternWidths[row];diversityUI_strokeMode.state=diversityUI_obj.strokeModes[row]
                 diversityUI_strokeWidth.enabled=diversityUI_obj.strokeSides[row]!=5
                 diversityUI_strokeScaleMin.value=diversityUI_obj.strokeMin[row];diversityUI_strokeScaleMax.value=diversityUI_obj.strokeMax[row]
@@ -10944,13 +11050,13 @@ initialRollupState:0x8
         on diversityUI_removeStrokeButton pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.removeStroke row;diversityUI_showPath();CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
-        on diversityUI_edgeOffsetSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeOffsets[row]=v;CyrusViewportRedraw())
+        on diversityUI_edgeOffsetSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeOffsetsWU[row]=v;CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
-        on diversityUI_edgeAlongSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeAlong[row]=v;CyrusViewportRedraw())
+        on diversityUI_edgeAlongSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeAlongWU[row]=v;CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
-        on diversityUI_edgeAcrossSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeAcross[row]=v;CyrusViewportRedraw())
+        on diversityUI_edgeAcrossSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeAcrossWU[row]=v;CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
         on diversityUI_keepCornerCheck changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.edgeKeepCorners=v;diversityUI_cornerAngleSpin.enabled=v;diversityUI_cornerCountSpin.enabled=v;CyrusViewportRedraw())
@@ -12849,7 +12955,7 @@ initialRollupState:0x8
             local rows=areaUI_areaList.selection as array
             undo "Cyrus Scatter remove areas" on (
                 areaUI_obj.ensureAreaFalloffs()
-                for i=rows.count to 1 by -1 do (deleteItem areaUI_obj.areaNodes rows[i];deleteItem areaUI_obj.areaModes rows[i];deleteItem areaUI_obj.areaFallConfigs rows[i];deleteItem areaUI_obj.areaFallScaleGraphs rows[i];deleteItem areaUI_obj.areaFallDensityGraphs rows[i])
+                for i=rows.count to 1 by -1 do (deleteItem areaUI_obj.areaNodes rows[i];deleteItem areaUI_obj.areaModes rows[i];deleteItem areaUI_obj.areaFallConfigs rows[i];deleteItem areaUI_obj.areaFallDeleteWidths rows[i];deleteItem areaUI_obj.areaFallScaleWidths rows[i];deleteItem areaUI_obj.areaFallDensityWidths rows[i];deleteItem areaUI_obj.areaFallScaleGraphs rows[i];deleteItem areaUI_obj.areaFallDensityGraphs rows[i])
             )
             areaUI_areaList.selection=#{};areaUI_obj.markInputDirty();areaUI_updateAreas();CyrusViewportRedraw()
         )
@@ -13420,7 +13526,7 @@ initialRollupState:0x8
         on randomUI_resetMovement pressed do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (randomUI_resetBoundRandomization #movement
             if controlsReady and root!=undefined do layout()
         )
-        fn randomUI_syncControls = (randomUI_projectCheck.checked=randomUI_obj.projectMove;randomUI_rotXMinSpin.value=randomUI_obj.rotXMin;randomUI_rotXMaxSpin.value=randomUI_obj.rotXMax;randomUI_rotYMinSpin.value=randomUI_obj.rotYMin;randomUI_rotYMaxSpin.value=randomUI_obj.rotYMax;randomUI_rotZMinSpin.value=randomUI_obj.rotZMin;randomUI_rotZMaxSpin.value=randomUI_obj.rotZMax;randomUI_sclXMinSpin.value=randomUI_obj.sclXMin;randomUI_sclXMaxSpin.value=randomUI_obj.sclXMax;randomUI_sclYMinSpin.value=randomUI_obj.sclYMin;randomUI_sclYMaxSpin.value=randomUI_obj.sclYMax;randomUI_sclZMinSpin.value=randomUI_obj.sclZMin;randomUI_sclZMaxSpin.value=randomUI_obj.sclZMax;randomUI_movXMinSpin.value=randomUI_obj.movXMin;randomUI_movXMaxSpin.value=randomUI_obj.movXMax;randomUI_movYMinSpin.value=randomUI_obj.movYMin;randomUI_movYMaxSpin.value=randomUI_obj.movYMax;randomUI_movZMinSpin.value=randomUI_obj.movZMin;randomUI_movZMaxSpin.value=randomUI_obj.movZMax;)
+        fn randomUI_syncControls = (randomUI_projectCheck.checked=randomUI_obj.projectMove;randomUI_rotXMinSpin.value=randomUI_obj.rotXMin;randomUI_rotXMaxSpin.value=randomUI_obj.rotXMax;randomUI_rotYMinSpin.value=randomUI_obj.rotYMin;randomUI_rotYMaxSpin.value=randomUI_obj.rotYMax;randomUI_rotZMinSpin.value=randomUI_obj.rotZMin;randomUI_rotZMaxSpin.value=randomUI_obj.rotZMax;randomUI_sclXMinSpin.value=randomUI_obj.sclXMin;randomUI_sclXMaxSpin.value=randomUI_obj.sclXMax;randomUI_sclYMinSpin.value=randomUI_obj.sclYMin;randomUI_sclYMaxSpin.value=randomUI_obj.sclYMax;randomUI_sclZMinSpin.value=randomUI_obj.sclZMin;randomUI_sclZMaxSpin.value=randomUI_obj.sclZMax;randomUI_movXMinSpin.value=randomUI_obj.movXMinWU;randomUI_movXMaxSpin.value=randomUI_obj.movXMaxWU;randomUI_movYMinSpin.value=randomUI_obj.movYMinWU;randomUI_movYMaxSpin.value=randomUI_obj.movYMaxWU;randomUI_movZMinSpin.value=randomUI_obj.movZMinWU;randomUI_movZMaxSpin.value=randomUI_obj.movZMaxWU;)
         on randomUI_alignCheck changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.alignNormal=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
@@ -13463,22 +13569,22 @@ initialRollupState:0x8
         on randomUI_sclZMaxSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.sclZMax=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
-        on randomUI_movXMinSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movXMin=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
+        on randomUI_movXMinSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movXMinWU=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
-        on randomUI_movXMaxSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movXMax=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
+        on randomUI_movXMaxSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movXMaxWU=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
-        on randomUI_movYMinSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movYMin=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
+        on randomUI_movYMinSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movYMinWU=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
-        on randomUI_movYMaxSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movYMax=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
+        on randomUI_movYMaxSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movYMaxWU=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
-        on randomUI_movZMinSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movZMin=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
+        on randomUI_movZMinSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movZMinWU=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
-        on randomUI_movZMaxSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movZMax=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
+        on randomUI_movZMaxSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movZMaxWU=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
         fn randomUI_bind layer = (
@@ -13487,7 +13593,7 @@ initialRollupState:0x8
             if randomUI_obj!=next do ()
             randomUI_obj=next;randomUI_parentView=(CyrusContainerPanel randomUI_root)
             for c in #(randomUI_rotTitle,randomUI_rotMinTitle,randomUI_rotMaxTitle,randomUI_rotXLabel,randomUI_rotXMinSpin,randomUI_rotXMaxSpin,randomUI_rotYLabel,randomUI_rotYMinSpin,randomUI_rotYMaxSpin,randomUI_rotZLabel,randomUI_rotZMinSpin,randomUI_rotZMaxSpin,randomUI_sclTitle,randomUI_sclMinTitle,randomUI_sclMaxTitle,randomUI_sclXLabel,randomUI_sclXMinSpin,randomUI_sclXMaxSpin,randomUI_sclYLabel,randomUI_sclYMinSpin,randomUI_sclYMaxSpin,randomUI_sclZLabel,randomUI_sclZMinSpin,randomUI_sclZMaxSpin,randomUI_wholeTitle,randomUI_wholeMinTitle,randomUI_wholeMaxTitle,randomUI_wholeMinSpin,randomUI_wholeMaxSpin,randomUI_movTitle,randomUI_movMinTitle,randomUI_movMaxTitle,randomUI_movXLabel,randomUI_movXMinSpin,randomUI_movXMaxSpin,randomUI_movYLabel,randomUI_movYMinSpin,randomUI_movYMaxSpin,randomUI_movZLabel,randomUI_movZMinSpin,randomUI_movZMaxSpin,randomUI_projectCheck,randomUI_alignCheck,randomUI_resetRotation,randomUI_resetScale,randomUI_resetWholeScale,randomUI_resetMovement) do c.enabled=layer!=undefined
-            try (undo off ((randomUI_wholeMinSpin.value=randomUI_obj.wholeScaleMin;randomUI_wholeMaxSpin.value=randomUI_obj.wholeScaleMax;randomUI_projectCheck.checked=randomUI_obj.projectMove;randomUI_rotXMinSpin.value=randomUI_obj.rotXMin;randomUI_rotXMaxSpin.value=randomUI_obj.rotXMax;randomUI_rotYMinSpin.value=randomUI_obj.rotYMin;randomUI_rotYMaxSpin.value=randomUI_obj.rotYMax;randomUI_rotZMinSpin.value=randomUI_obj.rotZMin;randomUI_rotZMaxSpin.value=randomUI_obj.rotZMax;randomUI_sclXMinSpin.value=randomUI_obj.sclXMin;randomUI_sclXMaxSpin.value=randomUI_obj.sclXMax;randomUI_sclYMinSpin.value=randomUI_obj.sclYMin;randomUI_sclYMaxSpin.value=randomUI_obj.sclYMax;randomUI_sclZMinSpin.value=randomUI_obj.sclZMin;randomUI_sclZMaxSpin.value=randomUI_obj.sclZMax;randomUI_movXMinSpin.value=randomUI_obj.movXMin;randomUI_movXMaxSpin.value=randomUI_obj.movXMax;randomUI_movYMinSpin.value=randomUI_obj.movYMin;randomUI_movYMaxSpin.value=randomUI_obj.movYMax;randomUI_movZMinSpin.value=randomUI_obj.movZMin;randomUI_movZMaxSpin.value=randomUI_obj.movZMax;randomUI_controlsReady=true;randomUI_alignCheck.checked=randomUI_obj.alignNormal))) catch(randomUI_binding=false;randomUI_controlsReady=true;throw())
+            try (undo off ((randomUI_wholeMinSpin.value=randomUI_obj.wholeScaleMin;randomUI_wholeMaxSpin.value=randomUI_obj.wholeScaleMax;randomUI_projectCheck.checked=randomUI_obj.projectMove;randomUI_rotXMinSpin.value=randomUI_obj.rotXMin;randomUI_rotXMaxSpin.value=randomUI_obj.rotXMax;randomUI_rotYMinSpin.value=randomUI_obj.rotYMin;randomUI_rotYMaxSpin.value=randomUI_obj.rotYMax;randomUI_rotZMinSpin.value=randomUI_obj.rotZMin;randomUI_rotZMaxSpin.value=randomUI_obj.rotZMax;randomUI_sclXMinSpin.value=randomUI_obj.sclXMin;randomUI_sclXMaxSpin.value=randomUI_obj.sclXMax;randomUI_sclYMinSpin.value=randomUI_obj.sclYMin;randomUI_sclYMaxSpin.value=randomUI_obj.sclYMax;randomUI_sclZMinSpin.value=randomUI_obj.sclZMin;randomUI_sclZMaxSpin.value=randomUI_obj.sclZMax;randomUI_movXMinSpin.value=randomUI_obj.movXMinWU;randomUI_movXMaxSpin.value=randomUI_obj.movXMaxWU;randomUI_movYMinSpin.value=randomUI_obj.movYMinWU;randomUI_movYMaxSpin.value=randomUI_obj.movYMaxWU;randomUI_movZMinSpin.value=randomUI_obj.movZMinWU;randomUI_movZMaxSpin.value=randomUI_obj.movZMaxWU;randomUI_controlsReady=true;randomUI_alignCheck.checked=randomUI_obj.alignNormal))) catch(randomUI_binding=false;randomUI_controlsReady=true;throw())
             randomUI_controlsReady=true;randomUI_binding=false
         )
         fn fitLabel control minimum available = (
@@ -13911,7 +14017,7 @@ initialRollupState:0x8
                 )
                 if pair and proceduralUI_peerList.selection>0 do (
                     local i=proceduralUI_root.procPair (scope-2) (if scope==3 then leaf else proceduralUI_owner) proceduralUI_peers[proceduralUI_peerList.selection]
-                    if i>0 then rule=#(proceduralUI_root.procRuleEnabled[i],proceduralUI_root.procRuleMultiplier[i],proceduralUI_root.procRuleGap[i],proceduralUI_root.procRulePlanar[i])
+                    if i>0 then rule=#(proceduralUI_root.procRuleEnabled[i],proceduralUI_root.procRuleMultiplier[i],proceduralUI_root.procRuleGapWU[i],proceduralUI_root.procRulePlanar[i])
                     else if scope==3 do rule=#(proceduralUI_owner.procSiblingEnabled,proceduralUI_owner.procSiblingMultiplier,proceduralUI_owner.procSiblingGap,proceduralUI_owner.procSiblingPlanar)
                 )
                 proceduralUI_enabledCheck.checked=rule[1];proceduralUI_multiplierSpin.value=rule[2];proceduralUI_gapSpin.value=rule[3];proceduralUI_planarCheck.checked=rule[4]
@@ -14580,10 +14686,10 @@ initialRollupState:0x8
             flow_previewUI_budgetSpin.enabled=flow_previewUI_obj.viewportMode==1;flow_previewUI_pointsSpin.enabled=flow_previewUI_obj.viewportMode==1 and not flow_previewUI_obj.groupCenters
         )
         fn flow_previewUI_syncControls = (flow_previewUI_syncDisplay();flow_previewUI_identificationDrop.selection=flow_previewUI_obj.identificationMode;flow_previewUI_radiusLimitSpin.value=flow_previewUI_obj.radiusDisplayLimit;flow_previewUI_radiusAllCheck.checked=flow_previewUI_obj.radiusDisplayAll;flow_previewUI_radiusLimitSpin.enabled=not flow_previewUI_obj.radiusDisplayAll;flow_previewUI_autoRenderCheck.checked=flow_previewUI_obj.autoRender;flow_previewUI_budgetSpin.value=flow_previewUI_obj.previewBudget;flow_previewUI_pointColorRadio.state=flow_previewUI_obj.pointColorMode;flow_previewUI_solidColorPicker.color=flow_previewUI_obj.solidPointColor;)
-        on flow_previewUI_radiusLimitSpin changed v do if controlsReady and not binding and root!=undefined and flow_previewUI_controlsReady and not flow_previewUI_binding and true do (if flow_previewUI_controlsReady and not flow_previewUI_binding and flow_previewUI_obj!=undefined do (flow_previewUI_obj.radiusDisplayLimit=v;flow_previewUI_obj.refreshAll();flow_previewUI_syncControls();CyrusViewportRedraw())
+        on flow_previewUI_radiusLimitSpin changed v do if controlsReady and not binding and root!=undefined and flow_previewUI_controlsReady and not flow_previewUI_binding and true do (if flow_previewUI_controlsReady and not flow_previewUI_binding and flow_previewUI_obj!=undefined do (flow_previewUI_obj.radiusDisplayLimit=v;flow_previewUI_obj.refreshDisplay();flow_previewUI_syncControls();CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
-        on flow_previewUI_radiusAllCheck changed v do if controlsReady and not binding and root!=undefined and flow_previewUI_controlsReady and not flow_previewUI_binding and true do (if flow_previewUI_controlsReady and not flow_previewUI_binding and flow_previewUI_obj!=undefined do (flow_previewUI_obj.radiusDisplayAll=v;flow_previewUI_obj.refreshAll();flow_previewUI_syncControls();CyrusViewportRedraw())
+        on flow_previewUI_radiusAllCheck changed v do if controlsReady and not binding and root!=undefined and flow_previewUI_controlsReady and not flow_previewUI_binding and true do (if flow_previewUI_controlsReady and not flow_previewUI_binding and flow_previewUI_obj!=undefined do (flow_previewUI_obj.radiusDisplayAll=v;flow_previewUI_obj.refreshDisplay();flow_previewUI_syncControls();CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
         on flow_previewUI_displayModeDrop selected v do if controlsReady and not binding and root!=undefined and flow_previewUI_controlsReady and not flow_previewUI_binding and true do (if flow_previewUI_controlsReady and not flow_previewUI_binding and flow_previewUI_obj!=undefined do (flow_previewUI_obj.setGroupDisplay v;flow_previewUI_syncControls();flow_previewUI_status.text=flow_previewUI_obj.allStatus();CyrusViewportRedraw())
@@ -15355,10 +15461,36 @@ initialRollupState:0x8
     )
 
 
+    fn migrateDistanceSettings55 = (
+        -- Read the immediately preceding authored format only. Max calls this
+        -- before its file-unit rescale; the new typed fields then scale normally.
+        -- A failed conversion stays denied even if Max continues loading.
+        procSchemaValid=false
+        for field in #(#procRuleGap,#sourceRadii,#sourceZOffsets,#edgeOffsets,#edgeAlong,#edgeAcross) do (
+            local old=getProperty this field,nextName=((field as string)+"WU") as name
+            setProperty this nextName (old as array)
+            local next=getProperty this nextName
+            for i=1 to old.count where old[i].controller!=undefined do next[i].controller=copy old[i].controller
+        )
+        for field in #(#movXMin,#movXMax,#movYMin,#movYMax,#movZMin,#movZMax) do (
+            local nextName=((field as string)+"WU") as name,controller=getPropertyController this field
+            setProperty this nextName (getProperty this field)
+            if controller!=undefined do setPropertyController this nextName (copy controller)
+        )
+        ensureAreaFalloffs()
+        for i=1 to areaFallConfigs.count do (
+            local parts=filterString areaFallConfigs[i] "|"
+            if parts.count!=0 and parts.count!=8 do throw "Saved Area falloff metadata is incomplete."
+            if parts.count==8 do (areaFallDeleteWidths[i]=parts[2] as float;areaFallScaleWidths[i]=parts[4] as float;areaFallDensityWidths[i]=parts[7] as float)
+        )
+        if procRadiusIDs.count!=procRadiusModes.count or procRadiusIDs.count!=procRadiusValues.count do throw "Saved radius metadata is incomplete."
+        procRadiusDistances=for i=1 to procRadiusIDs.count collect (if procRadiusModes[i]==1 then procRadiusValues[i] else 0.0)
+        procSchemaValid=true
+    )
     on update do (
         -- Max may continue loading after an update-handler exception. Keep a
         -- persisted denial so later redraw/output and re-save cannot qualify it.
-        if version!=55 do procSchemaValid=false
+        if version==55 and procSchemaValid then this.migrateDistanceSettings55() else if version!=56 do procSchemaValid=false
         this.procAssertSchema()
         syncColors();markInputDirty()
     )
@@ -15401,22 +15533,25 @@ initialRollupState:0x8
 )
 fn AminScatterObjectDraw = (
     local held=CyrusInteractionHeld()
+    if not held do for watch in CyrusViewportAnalyzers do (
+        if not isValidNode watch[1] or watch[1].getAnalysisRuns()!=watch[2] do CyrusViewportRecordsDirty=true
+    )
+    if CyrusViewportRecordsDirty and not CyrusPointBusy do (
+        if held then (CyrusWasDragging=true;CyrusScheduleRelease()) else CyrusPointSync()
+    )
     gw.setTransform (matrix3 1)
-    for n in objects where (classof n.baseObject==AminScatterObject and not n.isHidden) do (
+    -- Empty/new controllers have no published placement record yet. Draw their
+    -- lightweight icons from the node registry, including during mouse sizing;
+    -- discovering an icon must not rebuild or publish any layer's scatter.
+    for n in CyrusTimeOwners where isValidNode n and not n.isHidden do (
         gw.setTransform n.objectTransform;gw.setColor #line red
         for path in n.baseObject.iconLines() do gw.polyline path false
-        gw.setTransform (matrix3 1)
-        local caches=#(),styles=#()
-        for entry in n.baseObject.viewportLayerEntries held do (
-            local obj=entry[2]
-            local cache=obj.previewCache interactionHeld:held
-            obj.drawRadii()
-            if (obj.showPoints or obj.showCenters) and cache!=undefined do (
-                if (obj.viewportMode==1 and CyrusPointEnabled) or ((obj.viewportMode==2 or obj.viewportMode==3) and CyrusMeshEnabled) then (append caches cache;append styles #(obj.pointColorMode==1,obj.solidPointColor))
-                else aminScatterDrawPreview cache (obj.pointColorMode==1) obj.solidPointColor
-            )
-        )
-        local ready=false,owner=CyrusPointOwner n
+    )
+    gw.setTransform (matrix3 1)
+    for record in CyrusViewportRecords where isValidNode record[1] and not record[1].isHidden do (
+        local n=record[1],owner=record[2],caches=record[3],styles=record[4]
+        for fallback in record[5] do aminScatterDrawPreview fallback[1] fallback[2] fallback[3]
+        local ready=false
         if (CyrusPointEnabled or CyrusMeshEnabled) and isValidNode owner do try(ready=cyrusRetainedMatches owner caches styles)catch(CyrusPointLastError=getCurrentException())
         if not ready do (
             for i=1 to caches.count do aminScatterDrawPreview caches[i] styles[i][1] styles[i][2]
@@ -15689,6 +15824,8 @@ registerTimeCallback AminScatterLiveTime
 
 global AminScatterLayerUndo
 fn AminScatterLayerUndo = (
+    -- Restored controllers may have been pruned from the registry on deletion.
+    CyrusResetTimeOwners()
     for n in objects where classof n.baseObject==AminScatterObject do (
         for entry in (n.baseObject.layerEntries includeDisabled:true) do entry[2].forcePreviewUpdate()
         if (modPanel.getCurrentObject())==n.baseObject do AminScatterRefreshLayerPanels n.baseObject
@@ -15730,6 +15867,7 @@ fn CyrusPointDelete nodes = (
 )
 fn CyrusPointClear = (
     CyrusPointPending=false
+    CyrusViewportRecords=#();CyrusViewportAnalyzers=#();CyrusViewportRecordsDirty=true
     local old=CyrusPointOwners;CyrusPointOwners=#()
     if old!=undefined do CyrusPointDelete (for pair in old collect pair[2])
 )
@@ -15737,7 +15875,7 @@ fn CyrusPointSync = (
     if CyrusPointBusy or CyrusPointSuspended or AminScatterRenderRedrawHeld==true or CyrusInteractionHeld() do return false
     CyrusPointBusy=true
     try (
-        local publishError=""
+        local publishError="",records=#(),analyzers=#()
         local surviving=#()
         for pair in CyrusPointOwners do (
             if isValidNode pair[1] and classof pair[1].baseObject==AminScatterObject and isValidNode pair[2] then append surviving pair
@@ -15745,11 +15883,19 @@ fn CyrusPointSync = (
         )
         CyrusPointOwners=surviving
         for n in (for node in objects where classof node.baseObject==AminScatterObject collect node) do (
-            local caches=#(),styles=#()
-            if CyrusPointAvailable and not n.isHidden do for entry in n.baseObject.viewportLayerEntries false do (
+            local caches=#(),styles=#(),fallback=#()
+            if not n.isHidden do for entry in n.baseObject.viewportLayerEntries false do (
                 local obj=entry[2],cache=obj.previewCache interactionHeld:false
-                if ((obj.viewportMode==1 and CyrusPointEnabled) or ((obj.viewportMode==2 or obj.viewportMode==3) and CyrusMeshEnabled)) and (obj.showPoints or obj.showCenters) and cache!=undefined do (
-                    append caches cache;append styles #(obj.pointColorMode==1,obj.solidPointColor)
+                for analyzer in #(obj.analyzerNode,obj.areaAnalyzer,obj.fallAnalyzer) where isValidNode analyzer do appendIfUnique analyzers analyzer
+                if (obj.showPoints or obj.showCenters) and cache!=undefined do (
+                    if CyrusPointAvailable and ((obj.viewportMode==1 and CyrusPointEnabled) or ((obj.viewportMode==2 or obj.viewportMode==3) and CyrusMeshEnabled)) then (
+                        append caches cache;append styles #(obj.pointColorMode==1,obj.solidPointColor)
+                    ) else append fallback #(cache,obj.pointColorMode==1,obj.solidPointColor)
+                )
+                if obj.radiusCache!=undefined and not obj.disabledAnalyzerInput() do (
+                    if CyrusPointAvailable and (CyrusPointEnabled or CyrusMeshEnabled) then (
+                        append caches obj.radiusCache;append styles #(false,white)
+                    ) else append fallback #(obj.radiusCache,false,white)
                 )
             )
             local owner=CyrusPointOwner n
@@ -15762,13 +15908,18 @@ fn CyrusPointSync = (
             if isValidNode owner do (
                 if not cyrusRetainedPublish owner n caches styles do publishError="Retained preview unavailable; using the CPU preview. Refresh preview to retry."
             )
+            append records #(n,owner,caches,styles,fallback)
         )
+        CyrusViewportRecords=records
+        CyrusViewportAnalyzers=for analyzer in analyzers collect #(analyzer,analyzer.getAnalysisRuns())
+        CyrusViewportRecordsDirty=false
         CyrusPointLastError=publishError
     )catch(CyrusPointLastError=getCurrentException())
     CyrusPointBusy=false
     true
 )
 fn CyrusViewportRedraw = (
+    CyrusViewportRecordsDirty=true
     CyrusScheduleUI()
     CyrusPFRequestCheck()
     if not CyrusPointBusy do CyrusPointSync()
@@ -16005,7 +16156,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         on editLayer pressed do (local context=CyrusContainerResolve view;if context!=undefined and context[2]!=undefined do CyrusOpenLayerEditor context[1] (context[1].logicalParent context[2]))
     )
 
-    rollout mainUI "Cyrus Scatter 0.79.1" width:#cmdPanel height:140 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.79.6" width:#cmdPanel height:140 autoLayoutOnResize:true (
         local view=undefined,root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),owner=undefined,layerPagesVisible=false,pagesArranged=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for the entire setup."
         radiobuttons updateRadio "Viewport update" labels:#("Manual","Live") columns:2 pos:[8,26] width:(mainUI.width-16) tooltip:"Manual waits for Update. Live calculates after relevant edits."
@@ -16079,7 +16230,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.79.1 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.79.6 native plugin and restart Max."
             local context=if classof view==CyrusSourceContainer then CyrusContainerResolve view else undefined
             root=if classof view==CyrusSourceContainer then (if context==undefined then undefined else context[1]) else view
             editors=#(view.managerUI,view.surfacesUI,view.modelsUI,view.containersUI,view.layoutUI,view.populationUI,view.coverageUI,view.areasUI,view.transformsUI,view.spacingUI,view.displayUI,view.statisticsUI)
@@ -16922,7 +17073,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         fn sourceUI_addSource n = (
             if sourceUI_obj.usableSource n and (findItem sourceUI_obj.sources n)==0 do (
                 sourceUI_obj.ensureSourceRows()
-                sourceUI_obj.syncColors();while sourceUI_obj.sourceEmpty.count<sourceUI_obj.sources.count do append sourceUI_obj.sourceEmpty false;append sourceUI_obj.sourceEmpty false;append sourceUI_obj.sources n;append sourceUI_obj.sourceRowIDs (CyrusNewLayerID());append sourceUI_obj.sourceColors sourceUI_groupColor.color;if sourceUI_obj.sourceWeights.count>0 do append sourceUI_obj.sourceWeights 1.0;if sourceUI_obj.sourceZOffsets.count>0 do append sourceUI_obj.sourceZOffsets 0.0;if sourceUI_obj.sourceScales.count>0 do append sourceUI_obj.sourceScales 1.0;sourceUI_obj.markInputDirty()
+                sourceUI_obj.syncColors();while sourceUI_obj.sourceEmpty.count<sourceUI_obj.sources.count do append sourceUI_obj.sourceEmpty false;append sourceUI_obj.sourceEmpty false;append sourceUI_obj.sources n;append sourceUI_obj.sourceRowIDs (CyrusNewLayerID());append sourceUI_obj.sourceColors sourceUI_groupColor.color;if sourceUI_obj.sourceWeights.count>0 do append sourceUI_obj.sourceWeights 1.0;if sourceUI_obj.sourceZOffsetsWU.count>0 do append sourceUI_obj.sourceZOffsetsWU 0.0;if sourceUI_obj.sourceScales.count>0 do append sourceUI_obj.sourceScales 1.0;sourceUI_obj.markInputDirty()
             )
         )
         fn sourceUI_showSelectedColor = (
@@ -16985,7 +17136,10 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         on sourceUI_followRadiusCheck changed v do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do if not sourceUI_loadingColor do (sourceUI_obj.setSourceRadius sourceUI_plantList.selection v kind:2;CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
-        on sourceUI_showRadiusCheck changed v do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do if not sourceUI_loadingColor do (sourceUI_obj.setSourceRadius sourceUI_plantList.selection v kind:3;CyrusViewportRedraw())
+        on sourceUI_showRadiusCheck changed v do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do if not sourceUI_loadingColor do (
+            local controller=if sourceUI_obj.overlapOwner==undefined then sourceUI_obj else sourceUI_obj.overlapOwner
+            sourceUI_obj.setSourceRadius sourceUI_plantList.selection v kind:3;controller.refreshDisplay()
+        )
             if controlsReady and root!=undefined do layout()
         )
         on sourceUI_forwardAxis selected v do if controlsReady and not binding and root!=undefined and sourceUI_controlsReady and not sourceUI_binding and CyrusLicenseCanEdit() do (if sourceUI_controlsReady and not sourceUI_binding and sourceUI_obj!=undefined do if not sourceUI_loadingColor do (sourceUI_obj.assignSourceForward sourceUI_plantList.selection v;CyrusViewportRedraw())
@@ -17050,10 +17204,10 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             undo "Cyrus Scatter remove sources" on (
                 for k=rows.count to 1 by -1 do (
                     deleteItem sourceUI_obj.sourceRowIDs rows[k]
-                    for key in #(#sourceRadii,#sourceFollowScale,#sourceShowRadius) do (local tab=getProperty sourceUI_obj key;if rows[k]<=tab.count do deleteItem tab rows[k])
+                    for key in #(#sourceRadiiWU,#sourceFollowScale,#sourceShowRadius) do (local tab=getProperty sourceUI_obj key;if rows[k]<=tab.count do deleteItem tab rows[k])
                     if rows[k]<=sourceUI_obj.sourcePoint.count do deleteItem sourceUI_obj.sourcePoint rows[k]
                     if rows[k]<=sourceUI_obj.sourceEmpty.count do deleteItem sourceUI_obj.sourceEmpty rows[k]
-                    if rows[k]<=sourceUI_obj.sourceZOffsets.count do deleteItem sourceUI_obj.sourceZOffsets rows[k]
+                    if rows[k]<=sourceUI_obj.sourceZOffsetsWU.count do deleteItem sourceUI_obj.sourceZOffsetsWU rows[k]
                     if rows[k]<=sourceUI_obj.sourceScales.count do deleteItem sourceUI_obj.sourceScales rows[k]
                     if rows[k]<=sourceUI_obj.sourceForwardAxes.count do deleteItem sourceUI_obj.sourceForwardAxes rows[k]
                     if rows[k]<=sourceUI_obj.sourceWeights.count do deleteItem sourceUI_obj.sourceWeights rows[k]
@@ -17868,7 +18022,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 diversityUI_edgeRotXSpin.value=diversityUI_obj.edgeRotX[row]
                 diversityUI_edgeRotYSpin.value=diversityUI_obj.edgeRotY[row]
                 diversityUI_edgeRotZSpin.value=diversityUI_obj.edgeRotZ[row]
-                diversityUI_edgeOffsetSpin.value=diversityUI_obj.edgeOffsets[row];diversityUI_edgeAlongSpin.value=diversityUI_obj.edgeAlong[row];diversityUI_edgeAcrossSpin.value=diversityUI_obj.edgeAcross[row]
+                diversityUI_edgeOffsetSpin.value=diversityUI_obj.edgeOffsetsWU[row];diversityUI_edgeAlongSpin.value=diversityUI_obj.edgeAlongWU[row];diversityUI_edgeAcrossSpin.value=diversityUI_obj.edgeAcrossWU[row]
                 diversityUI_strokeWidth.value=diversityUI_obj.patternWidths[row];diversityUI_strokeMode.state=diversityUI_obj.strokeModes[row]
                 diversityUI_strokeWidth.enabled=diversityUI_obj.strokeSides[row]!=5
                 diversityUI_strokeScaleMin.value=diversityUI_obj.strokeMin[row];diversityUI_strokeScaleMax.value=diversityUI_obj.strokeMax[row]
@@ -18033,13 +18187,13 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         on diversityUI_removeStrokeButton pressed do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.removeStroke row;diversityUI_showPath();CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
-        on diversityUI_edgeOffsetSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeOffsets[row]=v;CyrusViewportRedraw())
+        on diversityUI_edgeOffsetSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeOffsetsWU[row]=v;CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
-        on diversityUI_edgeAlongSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeAlong[row]=v;CyrusViewportRedraw())
+        on diversityUI_edgeAlongSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeAlongWU[row]=v;CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
-        on diversityUI_edgeAcrossSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeAcross[row]=v;CyrusViewportRedraw())
+        on diversityUI_edgeAcrossSpin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.edgeAcrossWU[row]=v;CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
         on diversityUI_keepCornerCheck changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (diversityUI_obj.edgeKeepCorners=v;diversityUI_cornerAngleSpin.enabled=v;diversityUI_cornerCountSpin.enabled=v;CyrusViewportRedraw())
@@ -19938,7 +20092,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             local rows=areaUI_areaList.selection as array
             undo "Cyrus Scatter remove areas" on (
                 areaUI_obj.ensureAreaFalloffs()
-                for i=rows.count to 1 by -1 do (deleteItem areaUI_obj.areaNodes rows[i];deleteItem areaUI_obj.areaModes rows[i];deleteItem areaUI_obj.areaFallConfigs rows[i];deleteItem areaUI_obj.areaFallScaleGraphs rows[i];deleteItem areaUI_obj.areaFallDensityGraphs rows[i])
+                for i=rows.count to 1 by -1 do (deleteItem areaUI_obj.areaNodes rows[i];deleteItem areaUI_obj.areaModes rows[i];deleteItem areaUI_obj.areaFallConfigs rows[i];deleteItem areaUI_obj.areaFallDeleteWidths rows[i];deleteItem areaUI_obj.areaFallScaleWidths rows[i];deleteItem areaUI_obj.areaFallDensityWidths rows[i];deleteItem areaUI_obj.areaFallScaleGraphs rows[i];deleteItem areaUI_obj.areaFallDensityGraphs rows[i])
             )
             areaUI_areaList.selection=#{};areaUI_obj.markInputDirty();areaUI_updateAreas();CyrusViewportRedraw()
         )
@@ -20509,7 +20663,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         on randomUI_resetMovement pressed do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (randomUI_resetBoundRandomization #movement
             if controlsReady and root!=undefined do layout()
         )
-        fn randomUI_syncControls = (randomUI_projectCheck.checked=randomUI_obj.projectMove;randomUI_rotXMinSpin.value=randomUI_obj.rotXMin;randomUI_rotXMaxSpin.value=randomUI_obj.rotXMax;randomUI_rotYMinSpin.value=randomUI_obj.rotYMin;randomUI_rotYMaxSpin.value=randomUI_obj.rotYMax;randomUI_rotZMinSpin.value=randomUI_obj.rotZMin;randomUI_rotZMaxSpin.value=randomUI_obj.rotZMax;randomUI_sclXMinSpin.value=randomUI_obj.sclXMin;randomUI_sclXMaxSpin.value=randomUI_obj.sclXMax;randomUI_sclYMinSpin.value=randomUI_obj.sclYMin;randomUI_sclYMaxSpin.value=randomUI_obj.sclYMax;randomUI_sclZMinSpin.value=randomUI_obj.sclZMin;randomUI_sclZMaxSpin.value=randomUI_obj.sclZMax;randomUI_movXMinSpin.value=randomUI_obj.movXMin;randomUI_movXMaxSpin.value=randomUI_obj.movXMax;randomUI_movYMinSpin.value=randomUI_obj.movYMin;randomUI_movYMaxSpin.value=randomUI_obj.movYMax;randomUI_movZMinSpin.value=randomUI_obj.movZMin;randomUI_movZMaxSpin.value=randomUI_obj.movZMax;)
+        fn randomUI_syncControls = (randomUI_projectCheck.checked=randomUI_obj.projectMove;randomUI_rotXMinSpin.value=randomUI_obj.rotXMin;randomUI_rotXMaxSpin.value=randomUI_obj.rotXMax;randomUI_rotYMinSpin.value=randomUI_obj.rotYMin;randomUI_rotYMaxSpin.value=randomUI_obj.rotYMax;randomUI_rotZMinSpin.value=randomUI_obj.rotZMin;randomUI_rotZMaxSpin.value=randomUI_obj.rotZMax;randomUI_sclXMinSpin.value=randomUI_obj.sclXMin;randomUI_sclXMaxSpin.value=randomUI_obj.sclXMax;randomUI_sclYMinSpin.value=randomUI_obj.sclYMin;randomUI_sclYMaxSpin.value=randomUI_obj.sclYMax;randomUI_sclZMinSpin.value=randomUI_obj.sclZMin;randomUI_sclZMaxSpin.value=randomUI_obj.sclZMax;randomUI_movXMinSpin.value=randomUI_obj.movXMinWU;randomUI_movXMaxSpin.value=randomUI_obj.movXMaxWU;randomUI_movYMinSpin.value=randomUI_obj.movYMinWU;randomUI_movYMaxSpin.value=randomUI_obj.movYMaxWU;randomUI_movZMinSpin.value=randomUI_obj.movZMinWU;randomUI_movZMaxSpin.value=randomUI_obj.movZMaxWU;)
         on randomUI_alignCheck changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.alignNormal=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
@@ -20552,22 +20706,22 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         on randomUI_sclZMaxSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.sclZMax=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
-        on randomUI_movXMinSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movXMin=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
+        on randomUI_movXMinSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movXMinWU=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
-        on randomUI_movXMaxSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movXMax=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
+        on randomUI_movXMaxSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movXMaxWU=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
-        on randomUI_movYMinSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movYMin=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
+        on randomUI_movYMinSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movYMinWU=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
-        on randomUI_movYMaxSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movYMax=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
+        on randomUI_movYMaxSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movYMaxWU=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
-        on randomUI_movZMinSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movZMin=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
+        on randomUI_movZMinSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movZMinWU=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
-        on randomUI_movZMaxSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movZMax=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
+        on randomUI_movZMaxSpin changed v do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (if randomUI_controlsReady and not randomUI_binding and randomUI_obj!=undefined do (randomUI_obj.movZMaxWU=v;randomUI_obj.markInputDirty();randomUI_syncControls();CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
         fn randomUI_bind layer = (
@@ -20576,7 +20730,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             if randomUI_obj!=next do ()
             randomUI_obj=next;randomUI_parentView=(CyrusContainerPanel randomUI_root)
             for c in #(randomUI_rotTitle,randomUI_rotMinTitle,randomUI_rotMaxTitle,randomUI_rotXLabel,randomUI_rotXMinSpin,randomUI_rotXMaxSpin,randomUI_rotYLabel,randomUI_rotYMinSpin,randomUI_rotYMaxSpin,randomUI_rotZLabel,randomUI_rotZMinSpin,randomUI_rotZMaxSpin,randomUI_sclTitle,randomUI_sclMinTitle,randomUI_sclMaxTitle,randomUI_sclXLabel,randomUI_sclXMinSpin,randomUI_sclXMaxSpin,randomUI_sclYLabel,randomUI_sclYMinSpin,randomUI_sclYMaxSpin,randomUI_sclZLabel,randomUI_sclZMinSpin,randomUI_sclZMaxSpin,randomUI_wholeTitle,randomUI_wholeMinTitle,randomUI_wholeMaxTitle,randomUI_wholeMinSpin,randomUI_wholeMaxSpin,randomUI_movTitle,randomUI_movMinTitle,randomUI_movMaxTitle,randomUI_movXLabel,randomUI_movXMinSpin,randomUI_movXMaxSpin,randomUI_movYLabel,randomUI_movYMinSpin,randomUI_movYMaxSpin,randomUI_movZLabel,randomUI_movZMinSpin,randomUI_movZMaxSpin,randomUI_projectCheck,randomUI_alignCheck,randomUI_resetRotation,randomUI_resetScale,randomUI_resetWholeScale,randomUI_resetMovement) do c.enabled=layer!=undefined
-            try (undo off ((randomUI_wholeMinSpin.value=randomUI_obj.wholeScaleMin;randomUI_wholeMaxSpin.value=randomUI_obj.wholeScaleMax;randomUI_projectCheck.checked=randomUI_obj.projectMove;randomUI_rotXMinSpin.value=randomUI_obj.rotXMin;randomUI_rotXMaxSpin.value=randomUI_obj.rotXMax;randomUI_rotYMinSpin.value=randomUI_obj.rotYMin;randomUI_rotYMaxSpin.value=randomUI_obj.rotYMax;randomUI_rotZMinSpin.value=randomUI_obj.rotZMin;randomUI_rotZMaxSpin.value=randomUI_obj.rotZMax;randomUI_sclXMinSpin.value=randomUI_obj.sclXMin;randomUI_sclXMaxSpin.value=randomUI_obj.sclXMax;randomUI_sclYMinSpin.value=randomUI_obj.sclYMin;randomUI_sclYMaxSpin.value=randomUI_obj.sclYMax;randomUI_sclZMinSpin.value=randomUI_obj.sclZMin;randomUI_sclZMaxSpin.value=randomUI_obj.sclZMax;randomUI_movXMinSpin.value=randomUI_obj.movXMin;randomUI_movXMaxSpin.value=randomUI_obj.movXMax;randomUI_movYMinSpin.value=randomUI_obj.movYMin;randomUI_movYMaxSpin.value=randomUI_obj.movYMax;randomUI_movZMinSpin.value=randomUI_obj.movZMin;randomUI_movZMaxSpin.value=randomUI_obj.movZMax;randomUI_controlsReady=true;randomUI_alignCheck.checked=randomUI_obj.alignNormal))) catch(randomUI_binding=false;randomUI_controlsReady=true;throw())
+            try (undo off ((randomUI_wholeMinSpin.value=randomUI_obj.wholeScaleMin;randomUI_wholeMaxSpin.value=randomUI_obj.wholeScaleMax;randomUI_projectCheck.checked=randomUI_obj.projectMove;randomUI_rotXMinSpin.value=randomUI_obj.rotXMin;randomUI_rotXMaxSpin.value=randomUI_obj.rotXMax;randomUI_rotYMinSpin.value=randomUI_obj.rotYMin;randomUI_rotYMaxSpin.value=randomUI_obj.rotYMax;randomUI_rotZMinSpin.value=randomUI_obj.rotZMin;randomUI_rotZMaxSpin.value=randomUI_obj.rotZMax;randomUI_sclXMinSpin.value=randomUI_obj.sclXMin;randomUI_sclXMaxSpin.value=randomUI_obj.sclXMax;randomUI_sclYMinSpin.value=randomUI_obj.sclYMin;randomUI_sclYMaxSpin.value=randomUI_obj.sclYMax;randomUI_sclZMinSpin.value=randomUI_obj.sclZMin;randomUI_sclZMaxSpin.value=randomUI_obj.sclZMax;randomUI_movXMinSpin.value=randomUI_obj.movXMinWU;randomUI_movXMaxSpin.value=randomUI_obj.movXMaxWU;randomUI_movYMinSpin.value=randomUI_obj.movYMinWU;randomUI_movYMaxSpin.value=randomUI_obj.movYMaxWU;randomUI_movZMinSpin.value=randomUI_obj.movZMinWU;randomUI_movZMaxSpin.value=randomUI_obj.movZMaxWU;randomUI_controlsReady=true;randomUI_alignCheck.checked=randomUI_obj.alignNormal))) catch(randomUI_binding=false;randomUI_controlsReady=true;throw())
             randomUI_controlsReady=true;randomUI_binding=false
         )
         fn fitLabel control minimum available = (
@@ -21000,7 +21154,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 )
                 if pair and proceduralUI_peerList.selection>0 do (
                     local i=proceduralUI_root.procPair (scope-2) (if scope==3 then leaf else proceduralUI_owner) proceduralUI_peers[proceduralUI_peerList.selection]
-                    if i>0 then rule=#(proceduralUI_root.procRuleEnabled[i],proceduralUI_root.procRuleMultiplier[i],proceduralUI_root.procRuleGap[i],proceduralUI_root.procRulePlanar[i])
+                    if i>0 then rule=#(proceduralUI_root.procRuleEnabled[i],proceduralUI_root.procRuleMultiplier[i],proceduralUI_root.procRuleGapWU[i],proceduralUI_root.procRulePlanar[i])
                     else if scope==3 do rule=#(proceduralUI_owner.procSiblingEnabled,proceduralUI_owner.procSiblingMultiplier,proceduralUI_owner.procSiblingGap,proceduralUI_owner.procSiblingPlanar)
                 )
                 proceduralUI_enabledCheck.checked=rule[1];proceduralUI_multiplierSpin.value=rule[2];proceduralUI_gapSpin.value=rule[3];proceduralUI_planarCheck.checked=rule[4]
@@ -21669,10 +21823,10 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
             flow_previewUI_budgetSpin.enabled=flow_previewUI_obj.viewportMode==1;flow_previewUI_pointsSpin.enabled=flow_previewUI_obj.viewportMode==1 and not flow_previewUI_obj.groupCenters
         )
         fn flow_previewUI_syncControls = (flow_previewUI_syncDisplay();flow_previewUI_identificationDrop.selection=flow_previewUI_obj.identificationMode;flow_previewUI_radiusLimitSpin.value=flow_previewUI_obj.radiusDisplayLimit;flow_previewUI_radiusAllCheck.checked=flow_previewUI_obj.radiusDisplayAll;flow_previewUI_radiusLimitSpin.enabled=not flow_previewUI_obj.radiusDisplayAll;flow_previewUI_autoRenderCheck.checked=flow_previewUI_obj.autoRender;flow_previewUI_budgetSpin.value=flow_previewUI_obj.previewBudget;flow_previewUI_pointColorRadio.state=flow_previewUI_obj.pointColorMode;flow_previewUI_solidColorPicker.color=flow_previewUI_obj.solidPointColor;)
-        on flow_previewUI_radiusLimitSpin changed v do if controlsReady and not binding and root!=undefined and flow_previewUI_controlsReady and not flow_previewUI_binding and true do (if flow_previewUI_controlsReady and not flow_previewUI_binding and flow_previewUI_obj!=undefined do (flow_previewUI_obj.radiusDisplayLimit=v;flow_previewUI_obj.refreshAll();flow_previewUI_syncControls();CyrusViewportRedraw())
+        on flow_previewUI_radiusLimitSpin changed v do if controlsReady and not binding and root!=undefined and flow_previewUI_controlsReady and not flow_previewUI_binding and true do (if flow_previewUI_controlsReady and not flow_previewUI_binding and flow_previewUI_obj!=undefined do (flow_previewUI_obj.radiusDisplayLimit=v;flow_previewUI_obj.refreshDisplay();flow_previewUI_syncControls();CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
-        on flow_previewUI_radiusAllCheck changed v do if controlsReady and not binding and root!=undefined and flow_previewUI_controlsReady and not flow_previewUI_binding and true do (if flow_previewUI_controlsReady and not flow_previewUI_binding and flow_previewUI_obj!=undefined do (flow_previewUI_obj.radiusDisplayAll=v;flow_previewUI_obj.refreshAll();flow_previewUI_syncControls();CyrusViewportRedraw())
+        on flow_previewUI_radiusAllCheck changed v do if controlsReady and not binding and root!=undefined and flow_previewUI_controlsReady and not flow_previewUI_binding and true do (if flow_previewUI_controlsReady and not flow_previewUI_binding and flow_previewUI_obj!=undefined do (flow_previewUI_obj.radiusDisplayAll=v;flow_previewUI_obj.refreshDisplay();flow_previewUI_syncControls();CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
         on flow_previewUI_displayModeDrop selected v do if controlsReady and not binding and root!=undefined and flow_previewUI_controlsReady and not flow_previewUI_binding and true do (if flow_previewUI_controlsReady and not flow_previewUI_binding and flow_previewUI_obj!=undefined do (flow_previewUI_obj.setGroupDisplay v;flow_previewUI_syncControls();flow_previewUI_status.text=flow_previewUI_obj.allStatus();CyrusViewportRedraw())

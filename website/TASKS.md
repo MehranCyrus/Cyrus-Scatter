@@ -1,49 +1,57 @@
-# Website delivery checklist
+# Selected landing and visual guide — delivery checklist
 
-7 October 2026. This checklist concerns the website only.
+## Landing image refinement — 11 October 2026
 
-## Final combined iteration
+- [x] Generate three detailed environment concepts and five aerial hero options; preserve original PNGs, exact prompts and source hashes.
+- [x] Integrate the user-selected Contour terraces hero and responsive high-quality WebP variants.
+- [x] Fit the full-width desktop hero below navigation within the viewport; reduce headline size and move copy left.
+- [x] Remove the “Consider every layer” overlay and obsolete bracket styles.
+- [x] Update environment gallery, full-size viewers, Sources page, credits and asset verification.
+- [x] Production build, 50 focused checks and 45 final interaction assertions; see `verification/LANDING_IMAGE_REFRESH.md`.
 
-- [x] Simplify the landing message and use the existing concept courtyard.
-- [x] Group reference navigation and retain every complete source chapter.
-- [x] Add six linked feature families and a consistent seven-stage courtyard lesson.
-- [x] Add Topic and Common/Advanced filters while preserving owner and query routes.
-- [x] Extend to six studies: independent spacing scopes and preview versus accepted/output.
-- [x] Add reconciled development status and four future stages with acceptance conditions.
-- [x] Preserve source hashes, local assets, walkthrough progress and provenance access.
-- [x] Run fresh offline verification; save separately with website file hashes.
-- [x] Independent design evaluation: **PASS** for the final combined site.
-- [x] Order Topic filters to follow the reference/sidebar reading sequence; rerun syntax and offline validation.
-- [x] Root agent: fresh browser evidence and final screenshots saved in `verification/COMBINED_BROWSER_REVIEW.md`.
+## Visual lessons and practical examples — 11 October 2026
 
-## Earlier visual-guide baseline
+- [x] Fix slider style inheritance and verify pointer/keyboard connections.
+- [x] Share one coverage boundary between drawing and candidate evaluation; display live counts.
+- [x] Connect layer amount/visibility, spacing gauge, independent scopes and Manual/Live state.
+- [x] Rebuild all six lessons and four example illustrations with shared botanical SVG; show complete frames with unique definition IDs.
+- [x] Connect example lessons/workflows and full-size image sources.
+- [x] Encode the native 1200 × 1500 garden render at quality 95; verify unchanged original and manifest hashes.
+- [x] Production build, 45 interaction assertions and 57 focused browser checks.
+- [ ] Resolve newly linked internal licensing report enrollment before claiming a fresh full product-document import.
+- [ ] User visual acceptance.
 
-The checks below predate the final combined iteration. Its browser evidence is historical and does not validate later changes.
+## Guide hero layer study — 11 October 2026
 
-- [x] Read all 16 authoritative artist-reference documents.
-- [x] Preserve the original documentation and plugin files.
-- [x] Create an independent `website/` folder with local web components.
-- [x] Import complete reference content and exact Markdown source snapshots.
-- [x] Map all 240 inventory entries to contextual explanation anchors.
-- [x] Include the separate Analyzer, automation, falloff and instance-editing explanations.
-- [x] Build overview, first workflow, chapter reading views and contextual control finder.
-- [x] Implement whole-guide search, useful aliases, owner filtering and clear empty states.
-- [x] Implement browser routes, back/forward and automatic Advanced reveal for deep links.
-- [x] Generate three cohesive feature concept images; inspect, optimize and record prompts.
-- [x] Include all local fonts and their licenses.
-- [x] Implement four interactive educational examples with reset controls.
-- [x] Include the 28-step walkthrough, explicitly unperformed, with personal review progress.
-- [x] Add keyboard access, mobile navigation, reduced motion and print behavior.
-- [x] Add a reproducible importer, source coverage manifest and offline validation tool.
-- [x] Complete independent desktop/mobile browser QA and a separate design evaluation.
-- [x] Record final browser verification and address the reproduced issues; see `verification/BROWSER_REVIEW.md`.
+- [x] Integrate the accepted fifth garden direction into the real `#/guide` two-column hero.
+- [x] Keep a compact Garden / Layers / Build up toolbar; remove individual layer selectors and tighten plane spacing.
+- [x] Garden / Layers and staged build-up; stopping playback restores the complete planting.
+- [x] Preserve plant identities and positions across visibility and view changes.
+- [x] Production build; original 25-check integration receipt retained, followed by focused checks for the simplified controls and compact layout.
+- [x] Inspect desktop and mobile screenshots; record scope in `verification/LAYER_STUDY_INTEGRATION.md`.
+- [ ] User visual acceptance of the integrated composition.
 
-## Boundaries for a next round
+## Earlier selected-design iteration
 
-The current website is a local static deliverable. Hosting, public navigation integration and content-maintenance ownership can be decided separately. No deployment, commit, push or plugin change is part of this delivery.
+- [x] Preserve both supplied design packages and the previous rejected React receipts.
+- [x] One canonical React/Vite/TypeScript application with the exact selected landing and documentation shells.
+- [x] Blended image hero, dotted brand, original type scale and editorial planting chapters.
+- [x] Five-stage courtyard, density, three layer switches, source character, reset/playback, boundary inset, Analyzer views and local instance editing.
+- [x] Landing gallery viewer with keyboard navigation and restored focus.
+- [x] Fixed documentation rail, sticky breadcrumb/search topbar, mobile drawer and right chapter TOC.
+- [x] Illustrated overview, five core ideas, first workflow, six interactive lessons, practical examples and glossary.
+- [x] All 19 unchanged optimized posters with corrected current reading notes and historical warnings.
+- [x] Local 24-item artist checklist, persistent notes, export and confirmed reset; starts unreviewed.
+- [x] Preserve five complete maintained documents, 240 semantic records, 34 status-aware families and stable deep links.
+- [x] Current layer/Paint Area ownership, vector-domain limits, Manual/Live behavior, Point/Empty semantics and bounded AI status.
+- [x] All source metadata remains explicit; no proprietary implementation bodies are publicly shipped.
+- [x] Exact source-section filter and semantically verified family/navigation links.
+- [x] Local licensed fonts/concept assets, two honestly captioned Max studies, no external requests or fake purchase/signup endpoints.
+- [x] Source/content/asset checks and TypeScript production build.
+- [x] 76-case responsive sweep across 19 routes at 320/390/768/1440, with no overflow, broken visible images or runtime errors.
+- [x] 45 interaction assertions, saved local Markdown export and final desktop/mobile implementation screenshots.
+- [x] Root independent selected-design evaluation and production-browser review; see `verification/SELECTED_DESIGNS_REVIEW.md`.
+- [ ] Optional human assistive-technology/target-browser acceptance.
+- [ ] Publishing/hosting and release distribution, requiring a real product decision.
 
-The walkthrough checkboxes mean **reviewed by you**; they are not test-result storage. A future test-report system would need scene identity, exact build identity, expected/actual outcomes and evidence.
-
-Concept images are useful for orientation, while precise behavior comes from the reference and schematic diagrams. Real qualified plugin screenshots and artist-authored scene renders could supplement the guide later without rewriting its content structure.
-
-Any improvement to the source documentation should be made in its own reviewed documentation task, then imported. This website does not resolve the recorded plugin limitations.
+This is website/documentation work. It does not change or requalify the plugin, Max installation, MCP authoring scope or ML runtime. No deploy or Git push is part of this work.

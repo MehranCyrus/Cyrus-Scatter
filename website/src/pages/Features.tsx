@@ -1,0 +1,7 @@
+import { Arrow } from '../components/Icons'
+import { Eyebrow, PageHeading } from '../components/Shell'
+import { featureStories } from '../content/featureStories'
+import { asset } from '../content'
+import PracticalStudies from '../components/PracticalStudies'
+
+export default function Features(){return <><PageHeading eyebrow="The artist’s toolkit" title="Simple beginnings." emphasis="Considered possibilities." description="A connected set of controls for building landscapes from your own models. Choose the tools that serve the composition."/><div className="wrap feature-index">{featureStories.map(f=><a key={f.id} href={`#/features/${f.id}`}><span>{f.number}</span>{f.subtitle}</a>)}</div><figure className="wide-feature-image wrap"><img src={asset('concepts/coastal.webp')} alt="Loose coastal planting with wind-shaped trees and pale rocks. Supplied concept artwork."/><figcaption>A looser rhythm, the same considered process. · Concept artwork</figcaption></figure><div className="wrap feature-stories">{featureStories.map(f=><section className="feature-story" id={f.id} key={f.id}><div><Eyebrow number={`${f.number} /`}>{f.subtitle}</Eyebrow><h2>{f.title}</h2></div><div><p className="feature-intro">{f.body}</p><ul>{f.details.map(d=><li key={d}>{d}</li>)}</ul><a className="text-link" href={`#/guide/${f.guide}/${f.anchor}`}>Read the details <Arrow/></a></div></section>)}</div><PracticalStudies/><div className="wrap closing-line"><h2>Ready to make it <em>your own?</em></h2><a href="#/guide" className="button">Start with the guide <Arrow diagonal/></a></div></>}

@@ -18,8 +18,9 @@ struct PointSnapshot {
     std::vector<Box3> groupBounds;
     Box3 bounds;
     std::size_t count = 0;
+    bool lines = false;
     std::uint64_t fingerprint = 1469598103934665603ULL;
-    explicit PointSnapshot(std::vector<PointGroup> value);
+    explicit PointSnapshot(std::vector<PointGroup> value, bool lineList = false);
 };
 struct PointLayer {
     std::shared_ptr<const PointSnapshot> snapshot;

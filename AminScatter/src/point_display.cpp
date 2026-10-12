@@ -47,13 +47,14 @@ MeshSnapshot::MeshSnapshot(std::vector<PreviewGeometry> value):groups(std::move(
         groupBounds.push_back(world);
     }
 }
-PointSnapshot::PointSnapshot(std::vector<PointGroup> value) : groups(std::move(value)) {
+PointSnapshot::PointSnapshot(std::vector<PointGroup> value,bool lineList) : groups(std::move(value)),lines(lineList) {
     bounds.Init();
     auto hash=[this](const Point3& p) {
         const auto* bytes=reinterpret_cast<const unsigned char*>(&p);
         for(std::size_t i=0;i<sizeof(Point3);++i) { fingerprint^=bytes[i];fingerprint*=1099511628211ULL; }
     };
     for(const auto& group:groups) {
+        if(lines && group.points.size()%2) throw RuntimeError(_T("Incomplete preview line segment"));
         Box3 box;box.Init();
         for(int axis=0;axis<3;++axis) if(!std::isfinite(group.color[axis])) throw RuntimeError(_T("Non-finite preview color"));
         for(const auto& p:group.points) {
@@ -80,8 +81,10 @@ struct Generation {
     Box3 bounds;
     explicit Generation(std::vector<PointLayer> value):layers(std::move(value)) {
         bounds.Init();
+        std::size_t vertices=0;
         for(const auto& layer:layers) {
-            count+=layer.snapshot->count;
+            vertices+=layer.snapshot->count;
+            if(!layer.snapshot->lines) count+=layer.snapshot->count;
             if(layer.snapshot->count) bounds+=layer.snapshot->bounds;
             for(const auto& group:layer.snapshot->groups) if(!group.points.empty()) ++groups;
             if(layer.mesh) {
@@ -90,7 +93,7 @@ struct Generation {
                 for(const auto& group:layer.mesh->groups) if(!group.faces.empty() && !group.instances.empty()) ++groups;
             }
         }
-        const auto bytes=count*sizeof(Point3);
+        const auto bytes=vertices*sizeof(Point3);
         const auto meshBytes=meshReservation;meshReservation=0;
         if(bytes>ownerByteLimit || meshBytes>meshOwnerByteLimit || groups>1024) { failed=true;++failures;return; }
         auto used=reservedBytes.load();
@@ -123,9 +126,22 @@ class PointItem : public ICustomRenderItem {
     std::atomic<bool> ready{false};
     std::mutex realizeMutex;
 public:
-    PointItem(std::shared_ptr<Generation> value,std::size_t layer,std::size_t group)
-        :generation(std::move(value)),layerIndex(layer),groupIndex(group) { ++liveItems; }
+    PointItem(std::shared_ptr<Generation> value,std::size_t layer,std::size_t group,const PointItem* previous=nullptr)
+        :generation(std::move(value)),layerIndex(layer),groupIndex(group) {
+        if(previous) {
+            // SDK handles retain their resources. A new item owns the new
+            // generation; no old item/controller pointer survives publication.
+            buffers=previous->buffers;format=previous->format;material=previous->material;
+            ready.store(true,std::memory_order_release);++generation->ready;
+        }
+        ++liveItems;
+    }
     ~PointItem() override { --liveItems; }
+    bool reusable(const PointLayer& next,std::size_t group) const {
+        const auto& previous=generation->layers[layerIndex];
+        return ready.load(std::memory_order_acquire) && !generation->failed.load() && groupIndex==group &&
+            previous.snapshot==next.snapshot && previous.solid==next.solid && (!next.solid || previous.color==next.color);
+    }
     void Realize(DrawContext& dc) override {
         if(ready.load(std::memory_order_acquire) || generation->failed.load()) return;
         std::lock_guard<std::mutex> lock(realizeMutex);
@@ -160,12 +176,16 @@ public:
         for(unsigned int pass=0;pass<material.GetPassCount(dc);++pass) {
             material.ActivatePass(dc,pass);device.SetDepthStencilState(depth);
             device.SetStreamFormat(format);device.SetVertexStreams(buffers);device.SetIndexBuffer(noIndices);
-            device.Draw(PrimitivePointList,0,int(generation->layers[layerIndex].snapshot->groups[groupIndex].points.size()));++draws;
+            const auto& snapshot=*generation->layers[layerIndex].snapshot;
+            device.Draw(snapshot.lines?PrimitiveLineList:PrimitivePointList,0,int(GetPrimitiveCount()));++draws;
         }
         material.PassesFinished(dc);material.Terminate();
         device.SetDepthStencilState(originalDepth);dc.SetWorldMatrix(originalWorld);
     }
-    std::size_t GetPrimitiveCount() const override { return generation->layers[layerIndex].snapshot->groups[groupIndex].points.size(); }
+    std::size_t GetPrimitiveCount() const override {
+        const auto& snapshot=*generation->layers[layerIndex].snapshot;
+        return snapshot.groups[groupIndex].points.size()/(snapshot.lines?2:1);
+    }
     // Picking remains on the existing controller icon / CS Edit tool.
     void HitTest(HitTestContext&,DrawContext&) override {}
 };
@@ -192,7 +212,6 @@ public:
 class PointDisplay final : public HelperObject {
     std::vector<RefPtr<ICustomRenderItem>> items;
     std::vector<Box3> itemBounds;
-    bool itemsDirty=true;
 public:
     ControllerWatch controller;
     std::shared_ptr<Generation> generation;
@@ -228,22 +247,8 @@ public:
     unsigned long GetObjectDisplayRequirement() const override { return 0; }
     bool PrepareDisplay(const UpdateDisplayContext&) override {
         ++prepares;
-        if(itemsDirty) {
-            items.clear();itemBounds.clear();
-            if(generation && !generation->failed.load())
-                for(std::size_t l=0;l<generation->layers.size();++l) {
-                    const auto& layer=generation->layers[l];
-                    for(std::size_t g=0;g<layer.snapshot->groups.size();++g)
-                        if(!layer.snapshot->groups[g].points.empty()) {
-                            items.emplace_back(new PointItem(generation,l,g));itemBounds.push_back(layer.snapshot->groupBounds[g]);
-                        }
-                    if(layer.mesh) for(std::size_t g=0;g<layer.mesh->groups.size();++g)
-                        if(!layer.mesh->groups[g].faces.empty() && !layer.mesh->groups[g].instances.empty()) {
-                            items.emplace_back(new MeshItem(generation,l,g));itemBounds.push_back(layer.mesh->groupBounds[g]);
-                        }
-                }
-            itemsDirty=false;
-        }
+        // CPU item/container allocation is staged by publish(), while the old
+        // generation is still owned. Nitrous realizes the staged SDK items.
         return true;
     }
     bool UpdatePerNodeItems(const UpdateDisplayContext&,UpdateNodeContext&,IRenderItemContainer& target) override {
@@ -258,16 +263,7 @@ public:
         }
         return true;
     }
-    bool publish(INode* node,std::vector<PointLayer> layers) {
-        controller.SetRef(node);
-        if(generation && sameLayers(generation->layers,layers)) { controller.update();return !generation->failed.load(); }
-        if(generation) generation->enabled=false;
-        items.clear();generation.reset();
-        generation=std::make_shared<Generation>(std::move(layers));
-        controller.generation=generation;controller.update();++revision;itemsDirty=true;
-        NotifyDependents(FOREVER,PART_GEOM|PART_DISPLAY,REFMSG_CHANGE);
-        return !generation->failed.load();
-    }
+#include "point_publication.inc"
 };
 
 PointDisplay* owner(INode* node) {

@@ -103,6 +103,7 @@ certificates/
 signing/
 
 # Local configuration
+/.codex/config.toml
 *.local.json
 config.local.*
 settings.local.*

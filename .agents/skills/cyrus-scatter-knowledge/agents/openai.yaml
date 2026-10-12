@@ -1,0 +1,4 @@
+interface:
+  display_name: "Cyrus Scatter Knowledge"
+  short_description: "Verify project evidence and preserve useful lessons"
+  default_prompt: "Use $cyrus-scatter-knowledge to investigate this CyrusScatter task, verify relevant evidence, and distinguish observations from assumptions."

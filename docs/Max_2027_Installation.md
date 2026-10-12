@@ -1,21 +1,21 @@
 # Install and build Cyrus Scatter for Max 2026 and 2027
 
-Current Scatter development packages are **0.79.1**, with **Analyzer 0.14** independently versioned. The [Point/falloff qualification](Point_Workflow_0.79.1_2026-10-11/README.md) records exact Max 2026/2027 sources, loaded binaries, installers and limitations. Local Scatter installers are under `dist/refinement-0.79.1/`. They retain the 0.79 offline team activation requirement; see [owner/teammate instructions](../tools/licensing/README.md). Artist profiles have not been upgraded automatically.
+Current Scatter development packages are **0.79.5**, with **Analyzer 0.14** independently versioned. The latest [creation-icon correction](Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md) records the corrected script, matching Max 2026/2027 binaries and focused tests. Use local Scatter installers under `dist/refinement-0.79.5-creation/`; the earlier `dist/refinement-0.79.5/` packages remain historical. They retain the 0.79 offline team activation requirement; see [owner/teammate instructions](../tools/licensing/README.md). Artist profiles have not been upgraded automatically.
 
 ## Install
 
 1. Save the scene and use a copy for development-build acceptance.
-2. Choose **Scripting > Run Script** and run the Scatter and Analyzer installers for your Max year from the [Scatter delivery links](Point_Workflow_0.79.1_2026-10-11/README.md) and [unchanged Analyzer 0.14 delivery](Container_and_Radius_0.78.3_2026-10-10/README.md). A Max 2027 binary cannot be used in Max 2026.
+2. Choose **Scripting > Run Script** and run the Scatter and Analyzer installers for your Max year from the [corrected Scatter delivery links](Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md) and [unchanged Analyzer 0.14 delivery](Container_and_Radius_0.78.3_2026-10-10/README.md). A Max 2027 binary cannot be used in Max 2026.
 3. Restart Max so both scripts and their native modules load together. Do not load a loose new script over older DLLs.
 4. Create **Geometry > Cyrus > Cyrus Scatter** and follow the [artist guide](ARTIST_GUIDE.md): Layer → Surfaces → Models → Amount → Update scatter.
 
-[The Scatter delivery receipts](Point_Workflow_0.79.1_2026-10-11/README.md) pin each year's local installers. Scatter matches the runtime-tested modules/script. Analyzer uses unchanged 0.14 source with a matching SDK build and core test; full Analyzer renderer qualification was not repeated in this brush campaign. Archive contents and hashes are verified. Installer execution itself was not repeated, and neither package was installed into the artist profile. `dist/` is ignored and is not supplied by a source-only Git clone. If absent, build matching source with the documented toolchain; do not substitute an older package.
+[The Scatter delivery receipts](Terrace_Workflow_0.79.5_2026-10-11/README.md) pin each year's local installers. Scatter matches the runtime-tested modules/script. Analyzer reuses unchanged 0.14 modules from the matching SDK candidates; its core build was not repeated in this campaign. Archive contents and hashes are verified. Installer execution itself was not repeated, and neither package was installed into the artist profile. `dist/` is ignored and is not supplied by a source-only Git clone. If absent, build matching source with the documented toolchain; do not substitute an older package.
 
 0.78 keeps receiver-local sampling and replaces painting with a new canonical vector format.
 
-**Current schema-55 scenes can be opened in 0.79.1.** Schema 55 rejects older development setups and stroke payloads; it does not convert them. Preserve the original scene and its old matching build. Vector painting supports single-valued local-XY terrain/planes; spheres, vertical/folded/stacked receivers are not supported for this brush.
+**Current schema-55 scenes can be opened in 0.79.5.** Schema 55 rejects older development setups and stroke payloads; it does not convert them. Preserve the original scene and its old matching build. Vector painting supports single-valued local-XY terrain/planes; spheres, vertical/folded/stacked receivers are not supported for this brush.
 
-Keep the file's system units when opening the 25-case examples. Cross-unit conversion of serialized area falloff distances is an open issue recorded in the refinement report.
+Keep the file's system units when opening the packaged 25-case examples. Source 0.79.6 repairs typed Area/source/movement distances and introduces schema 56, with [bounded migration and host evidence](Foundation_0.79.6_2026-10-12/README.md). That source is not a new installer. Native Paint/Edit geometry bindings still reject unsupported unit conversion; preserve original scenes.
 
 Existing Analyzer guides without the new saved freshness record need one explicit **Analyze / Update Analyzer**, followed by **Update scatter** when Scatter is Manual. The previous complete Scatter result is preserved if a successor encounters a stale guide. Analyzer's [guide](../CyrusSurfaceAnalyzer/README.md) explains supported planar inputs; ordinary scattering on curved receivers is separate from the projected vector brush.
 

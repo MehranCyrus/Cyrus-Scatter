@@ -1,0 +1,775 @@
+{
+  "schema": 1,
+  "developmentVersion": "0.78.3",
+  "reviewed": "2026-10-11",
+  "source": "Landing Page Design/Design 1/website/content/gallery.json",
+  "policy": "Keep original artwork unchanged. Prefer replacements for superseded diagrams; current reading notes do not endorse baked labels. Source-verified explanation does not certify every runtime combination.",
+  "posters": {
+    "layer-setup-guide": {
+      "title": "Layered planting study",
+      "originalTitle": "Layered planting study",
+      "series": 1,
+      "file": "layer-setup-guide.webp",
+      "original": "cyrus_scatter_visual_guide.png",
+      "note": "A composition study: dimensions, species, proportions and scene assets are illustrative. Each current layer owns receiving surfaces, models, amount and rules. Named Paint Areas choose regions on one receiver and share that layer’s models and population. This image establishes neither defaults, a built-in plant library nor a supplied scene.",
+      "guideLinks": [
+        {
+          "label": "Start with a layer",
+          "href": "#/guide/artist-guide/start-with-a-layer"
+        },
+        {
+          "label": "Paint Areas",
+          "href": "#/guide/artist-guide/vector-painting"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 9
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 50
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 52
+        }
+      ],
+      "recommendation": "context-only",
+      "provenance": "Generated concept artwork. Not a plugin screenshot, runtime result or performance measurement."
+    },
+    "workflow-overview": {
+      "title": "Historical workflow sketch",
+      "originalTitle": "Five core ideas",
+      "series": 1,
+      "file": "workflow-overview.webp",
+      "original": "cyrus_scatter_workflow_overview.png",
+      "note": "The historical ownership sketch needs correction: layers own surfaces, models, amount, layout, transforms and masks. Model-owning Paint sets and share weights are retired. Paint Areas bind to one receiver and share layer models/population. A built-in plant library, season/age controls and automatic material changes are not established by this artwork.",
+      "guideLinks": [
+        {
+          "label": "Current ownership",
+          "href": "#/guide/artist-guide/start-with-a-layer"
+        },
+        {
+          "label": "Current painting",
+          "href": "#/guide/artist-guide/vector-painting"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 9
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 50
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 52
+        }
+      ],
+      "recommendation": "replace-current-teaching-diagram",
+      "provenance": "Generated concept artwork. Not a plugin screenshot, runtime result or performance measurement."
+    },
+    "layers-and-paint-sets": {
+      "title": "Historical layer/set allocation diagram",
+      "originalTitle": "Layers and population shares",
+      "series": 1,
+      "file": "layers-and-paint-sets.webp",
+      "original": "cyrus_layered_planting_infographic.png",
+      "note": "Historical diagram: first/last annotations are reversed, and paint-set/share allocation no longer applies. Current layers evaluate in list order; earlier layers normally occupy space first when the relevant between-layer spacing rule is enabled. Receiver-bound Paint Areas share layer models/amount and union eligible coverage without allocating separate populations.",
+      "guideLinks": [
+        {
+          "label": "Layer order and ownership",
+          "href": "#/guide/artist-guide/start-with-a-layer"
+        },
+        {
+          "label": "Paint Area union",
+          "href": "#/guide/artist-guide/vector-painting"
+        },
+        {
+          "label": "Spacing rules",
+          "href": "#/guide/artist-guide/area-limits-transforms-and-spacing"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 9
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 50
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 52
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 76
+        }
+      ],
+      "recommendation": "replace-current-teaching-diagram",
+      "provenance": "Generated concept artwork. Not a plugin screenshot, runtime result or performance measurement."
+    },
+    "source-containers": {
+      "title": "Container membership",
+      "originalTitle": "Container membership",
+      "series": 1,
+      "file": "source-containers.webp",
+      "original": "source_containers_plant_model_workflow.png",
+      "note": "A source rectangle is an optional model palette, not a receiver or physical planter. New rectangles start with Enable collection off. Enabled collection tests eligible model pivots inside its local footprint, ignoring height. Parking/disabling preserves registered settings; linked layers can consume one palette with independent source settings. Those settings belong to the consuming layer, not a paint set.",
+      "guideLinks": [
+        {
+          "label": "Models and optional containers",
+          "href": "#/guide/artist-guide/surfaces-models-and-optional-containers"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 23
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 25
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 31
+        }
+      ],
+      "recommendation": "context-only",
+      "provenance": "Generated concept artwork. Not a plugin screenshot, runtime result or performance measurement."
+    },
+    "coverage-vs-accepted": {
+      "title": "Coverage versus accepted plants",
+      "originalTitle": "Coverage versus accepted plants",
+      "series": 1,
+      "file": "coverage-vs-accepted.webp",
+      "original": "coverage_versus_accepted_plants.png",
+      "note": "Painted permission differs from accepted plants. Paint/Erase edits vector regions; multiple areas in one layer admit each candidate once. Amount, model eligibility, masks and spacing can leave painted space empty. Cleanup later removes unprotected isolated plants and small islands. This image is an explanatory composition, not an engine trace or guaranteed count.",
+      "guideLinks": [
+        {
+          "label": "Vector painting",
+          "href": "#/guide/artist-guide/vector-painting"
+        },
+        {
+          "label": "Amount and bounded targets",
+          "href": "#/guide/artist-guide/layout-and-amount"
+        },
+        {
+          "label": "Spacing and cleanup",
+          "href": "#/guide/artist-guide/area-limits-transforms-and-spacing"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 46
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 50
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 76
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 78
+        }
+      ],
+      "recommendation": "context-only",
+      "provenance": "Generated concept artwork. Not a plugin screenshot, runtime result or performance measurement."
+    },
+    "spacing-relationships": {
+      "title": "Historical spacing-scope diagram",
+      "originalTitle": "Three spacing relationships",
+      "series": 1,
+      "file": "spacing-relationships.webp",
+      "original": "cyrus_three_spacing_relationships.png",
+      "note": "The historical between-set scope and vertical-growth story are not current controls. Fresh ordinary layers expose Within this layer and Between layers, independently. Simplified centre clearance is factor × (radius A + radius B) + gap, in XY or 3D. Radii are footprints rather than exact mesh/canopy collision; protected edits can retain reported conflicts.",
+      "guideLinks": [
+        {
+          "label": "Current spacing scopes",
+          "href": "#/guide/artist-guide/area-limits-transforms-and-spacing"
+        },
+        {
+          "label": "Edit and radius distinctions",
+          "href": "#/guide/layout-falloff/edit-and-preview-distinctions"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 25
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 76
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 78
+        },
+        {
+          "path": "docs/LAYOUT_AND_FALLOFF.md",
+          "line": 39
+        }
+      ],
+      "recommendation": "replace-current-teaching-diagram",
+      "provenance": "Generated concept artwork. Not a plugin screenshot, runtime result or performance measurement."
+    },
+    "manual-vs-live": {
+      "title": "Manual versus Live",
+      "originalTitle": "Manual versus Live",
+      "series": 1,
+      "file": "manual-vs-live.webp",
+      "original": "manual_vs._live_garden_updates.png",
+      "note": "The current main button is Update scatter. Manual retains the completed result while storing recipe edits; Live responds to relevant changes. Refresh preview and Refresh areas / preview are explicit whole-Scatter updates and can publish pending Manual edits. Cached statistics, field refreshes and passive browsing do not. Poster timestamps and earlier button wording are illustrative, not measured latency.",
+      "guideLinks": [
+        {
+          "label": "Preview and update behavior",
+          "href": "#/guide/artist-guide/preview-updates-output-and-diagnostics"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 7
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 84
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 88
+        }
+      ],
+      "recommendation": "context-only",
+      "provenance": "Generated concept artwork. Not a plugin screenshot, runtime result or performance measurement."
+    },
+    "viewport-vs-final": {
+      "title": "Preview and accepted output",
+      "originalTitle": "Preview and accepted output",
+      "series": 1,
+      "file": "viewport-vs-final.webp",
+      "original": "viewport_vs_final_planting_design.png",
+      "note": "Modes include Point Cloud, Proxy, Mesh and Plant centres. Preview budgets reduce shown instances/faces/samples, not the accepted population. Plant centres gives one marker per accepted placement; a Point placeholder has no final source mesh. Automatic final render uses the render bridge; missing source materials/maps and renderer qualification are separate concerns. The image measures no speed or fidelity.",
+      "guideLinks": [
+        {
+          "label": "Point placeholders",
+          "href": "#/guide/artist-guide/surfaces-models-and-optional-containers"
+        },
+        {
+          "label": "Preview and final output",
+          "href": "#/guide/artist-guide/preview-updates-output-and-diagnostics"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 27
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 29
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 82
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 86
+        },
+        {
+          "path": "docs/LAYOUT_AND_FALLOFF.md",
+          "line": 41
+        }
+      ],
+      "recommendation": "context-only",
+      "provenance": "Generated concept artwork. Not a plugin screenshot, runtime result or performance measurement."
+    },
+    "companion-workflows": {
+      "title": "Companion workflow study",
+      "originalTitle": "Companion workflow study",
+      "series": 1,
+      "file": "companion-workflows.webp",
+      "original": "companion_workflows_from_analysis_to_detail.png",
+      "note": "Analyzer 0.14 derives geometric boundaries, paths and points from supported open planar mesh elements, not moisture/climate/ecological zones. Layout consumes its published guides. Analyzer freshness and Scatter publication are separate: analyze stale inputs first, then Update scatter in Manual. CS Edit and instance radii use stable identities; the illustrated species/variation dropdown is not an established control.",
+      "guideLinks": [
+        {
+          "label": "Analyzer geometry and results",
+          "href": "#/guide/surface-analyzer/elements-geometry-and-results"
+        },
+        {
+          "label": "Analyzer freshness",
+          "href": "#/guide/artist-guide/preview-updates-output-and-diagnostics"
+        },
+        {
+          "label": "CS Edit identities",
+          "href": "#/guide/layout-falloff/edit-and-preview-distinctions"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "CyrusSurfaceAnalyzer/README.md",
+          "line": 22
+        },
+        {
+          "path": "CyrusSurfaceAnalyzer/README.md",
+          "line": 24
+        },
+        {
+          "path": "CyrusSurfaceAnalyzer/README.md",
+          "line": 32
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 92
+        },
+        {
+          "path": "docs/LAYOUT_AND_FALLOFF.md",
+          "line": 39
+        }
+      ],
+      "recommendation": "context-only",
+      "provenance": "Generated concept artwork. Not a plugin screenshot, runtime result or performance measurement."
+    },
+    "feature-atlas": {
+      "title": "Cyrus Scatter feature atlas",
+      "originalTitle": "Cyrus Scatter feature atlas",
+      "series": 2,
+      "file": "feature-atlas.webp",
+      "original": "cyrus_scatter_feature_atlas.png",
+      "note": "This is a concept atlas, not a current feature matrix or screenshot. Layers own surfaces, models, amount, layout and rules; vector Paint Areas share those models/population. Statistics describe completed cached results and diagnostics record bounded local activity. Biological growth, a built-in species library and guaranteed collision-free output are not established by the artwork. Read current controls for exact behavior.",
+      "guideLinks": [
+        {
+          "label": "Layer ownership",
+          "href": "#/guide/artist-guide/start-with-a-layer"
+        },
+        {
+          "label": "Vector painting",
+          "href": "#/guide/artist-guide/vector-painting"
+        },
+        {
+          "label": "Statistics and diagnostics",
+          "href": "#/guide/artist-guide/preview-updates-output-and-diagnostics"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 9
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 50
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 76
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 88
+        }
+      ],
+      "recommendation": "context-only",
+      "provenance": "Generated concept artwork. Not a plugin screenshot, runtime result or performance measurement."
+    },
+    "setup-receivers": {
+      "title": "Historical receiver setup sketch",
+      "originalTitle": "Setup and receiving surfaces",
+      "series": 2,
+      "file": "setup-receivers.webp",
+      "original": "cyrus_scatter_setup_receiving_surfaces.png",
+      "note": "Per-surface Density/Constraints/Display panels and globally shared receivers are historical/invented UI. Each current layer owns its surface list, amount and rules. Ordinary scattering accepts planes and spheres together. Each Paint Area targets one receiver; vector painting supports single-valued receiver-local-XY terrain and rejects closed spheres, folds, vertical faces and stacked projections. Splines are masks/guides, not ordinary receivers.",
+      "guideLinks": [
+        {
+          "label": "Layer receivers and stable candidates",
+          "href": "#/guide/artist-guide/surfaces-models-and-optional-containers"
+        },
+        {
+          "label": "Supported vector painting",
+          "href": "#/guide/artist-guide/vector-painting"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 9
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 15
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 17
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 52
+        },
+        {
+          "path": "docs/LAYOUT_AND_FALLOFF.md",
+          "line": 7
+        }
+      ],
+      "recommendation": "replace-current-teaching-diagram",
+      "provenance": "Generated concept artwork. Not a plugin screenshot, runtime result or performance measurement."
+    },
+    "layers-paint-sets": {
+      "title": "Historical paint-set ownership diagram",
+      "originalTitle": "Layers and paint sets",
+      "series": 2,
+      "file": "layers-paint-sets.webp",
+      "original": "layers_paint_sets_visual_guide.png",
+      "note": "This depicts retired model-owning Paint sets/share weights, with reversed placement-order arrows. Current layers run in list order; relevant spacing rules determine whether earlier layers occupy space first. Each layer owns surfaces, models, amount and rules. Receiver-bound Paint Areas union painted eligibility without multiplying candidates or supplying independent model collections. It is historical artwork rather than current setup instructions.",
+      "guideLinks": [
+        {
+          "label": "Layers now",
+          "href": "#/guide/artist-guide/start-with-a-layer"
+        },
+        {
+          "label": "Paint Areas now",
+          "href": "#/guide/artist-guide/vector-painting"
+        },
+        {
+          "label": "Assignment ownership",
+          "href": "#/guide/layout-falloff/assignment-and-guides"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 9
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 50
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 52
+        },
+        {
+          "path": "docs/LAYOUT_AND_FALLOFF.md",
+          "line": 7
+        }
+      ],
+      "recommendation": "replace-current-teaching-diagram",
+      "provenance": "Generated concept artwork. Not a plugin screenshot, runtime result or performance measurement."
+    },
+    "sources-containers": {
+      "title": "Sources and source containers",
+      "originalTitle": "Sources and source containers",
+      "series": 2,
+      "file": "sources-containers.webp",
+      "original": "sources_source_containers_guide.png",
+      "note": "Source rectangles collect eligible pivots in their local footprint when Enable collection is on; they are not planters. New rectangles start disabled. Model settings include weight, scale, radius, vertical offset, Follow Scale, radius display and forward axis. Scatter labels/identification colors differ from assignment-group colors. Species/Variation menus and flowering changes in the image are not documented source features.",
+      "guideLinks": [
+        {
+          "label": "Source models and optional palettes",
+          "href": "#/guide/artist-guide/surfaces-models-and-optional-containers"
+        },
+        {
+          "label": "Assignment groups",
+          "href": "#/guide/layout-falloff/assignment-and-guides"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 23
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 25
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 31
+        },
+        {
+          "path": "docs/LAYOUT_AND_FALLOFF.md",
+          "line": 7
+        }
+      ],
+      "recommendation": "context-only",
+      "provenance": "Generated concept artwork. Not a plugin screenshot, runtime result or performance measurement."
+    },
+    "coverage-painting": {
+      "title": "Vector painting — historical artwork",
+      "originalTitle": "Coverage and painting",
+      "series": 2,
+      "file": "coverage-painting.webp",
+      "original": "coverage_accepted_planting_results.png",
+      "note": "Current brushing edits named vector Paint Areas, not saved stroke histories or model-owning sets. Repeated Paint merges into one area; Erase cuts holes. Each area targets one receiver, overlaps admit candidates once, and areas share layer models/amount. Inside/Outside fade and independent density/scale curves shape edges. Terrain projection limits apply. Separate layer Include/Exclude masks also constrain painted results.",
+      "guideLinks": [
+        {
+          "label": "Vector Paint Areas and feathering",
+          "href": "#/guide/artist-guide/vector-painting"
+        },
+        {
+          "label": "Layer Include/Exclude",
+          "href": "#/guide/artist-guide/area-limits-transforms-and-spacing"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 50
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 52
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 54
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 56
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 58
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 68
+        }
+      ],
+      "recommendation": "replace-current-teaching-diagram",
+      "provenance": "Generated concept artwork. Not a plugin screenshot, runtime result or performance measurement."
+    },
+    "areas-falloff": {
+      "title": "Areas and falloff",
+      "originalTitle": "Areas and falloff",
+      "series": 2,
+      "file": "areas-falloff.webp",
+      "original": "include_exclude_masks_falloff_guide.png",
+      "note": "Layer Include/Exclude masks use world XY: Includes union and Exclude wins. They test placement support/pivots, not trimmed plant meshes; decorative objects in an excluded patch do not prove this layer placed them. Selected area lines retain delete strips plus density/scale ramps, which start after deletion. Graph edits save immediately; the pictured curve is not a default. Paint Area fades are separate.",
+      "guideLinks": [
+        {
+          "label": "Masks and falloff",
+          "href": "#/guide/layout-falloff/masks-and-falloff"
+        },
+        {
+          "label": "Paint Area fades",
+          "href": "#/guide/artist-guide/vector-painting"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "docs/LAYOUT_AND_FALLOFF.md",
+          "line": 27
+        },
+        {
+          "path": "docs/LAYOUT_AND_FALLOFF.md",
+          "line": 31
+        },
+        {
+          "path": "docs/LAYOUT_AND_FALLOFF.md",
+          "line": 33
+        },
+        {
+          "path": "docs/LAYOUT_AND_FALLOFF.md",
+          "line": 35
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 54
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 56
+        }
+      ],
+      "recommendation": "context-only",
+      "provenance": "Generated concept artwork. Not a plugin screenshot, runtime result or performance measurement."
+    },
+    "transforms-variation": {
+      "title": "Transforms and variation",
+      "originalTitle": "Transforms and variation",
+      "series": 2,
+      "file": "transforms-variation.webp",
+      "original": "cyrus_scatter_natural_variation_guide.png",
+      "note": "Changed species, added rocks and flowering differences are artistic embellishments, not transform effects. Layer transforms vary rotation, scale and movement with per-axis ranges and uniform scale; they do not create models. Align to normal controls orientation, while Keep on surface controls projection. Collision footprints are separate. Numeric ranges and layout in the poster are illustrative; follow current labeled controls.",
+      "guideLinks": [
+        {
+          "label": "Transforms and footprint rules",
+          "href": "#/guide/artist-guide/area-limits-transforms-and-spacing"
+        },
+        {
+          "label": "Preview and radius distinctions",
+          "href": "#/guide/layout-falloff/edit-and-preview-distinctions"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 25
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 74
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 76
+        },
+        {
+          "path": "docs/LAYOUT_AND_FALLOFF.md",
+          "line": 41
+        }
+      ],
+      "recommendation": "context-only",
+      "provenance": "Generated concept artwork. Not a plugin screenshot, runtime result or performance measurement."
+    },
+    "spacing-cleanup": {
+      "title": "Spacing and cleanup",
+      "originalTitle": "Spacing and cleanup",
+      "series": 2,
+      "file": "spacing-cleanup.webp",
+      "original": "spacing_cleanup_visual_guide.png",
+      "note": "The vertical-clearance/growth panel is not biological/canopy simulation. Within-layer and between-layer rules use centre clearance = factor × (radius A + radius B) + gap, in XY or 3D. Cleanup later removes unprotected isolated plants/small islands using neighbor distance, count and island size. Protected edits can retain conflicts. Relax separately moves candidates within bounded settings. Illustrated distances are not defaults or guarantees.",
+      "guideLinks": [
+        {
+          "label": "Spacing, Relax and cleanup",
+          "href": "#/guide/artist-guide/area-limits-transforms-and-spacing"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 25
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 76
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 78
+        }
+      ],
+      "recommendation": "context-only",
+      "provenance": "Generated concept artwork. Not a plugin screenshot, runtime result or performance measurement."
+    },
+    "viewport-output": {
+      "title": "Viewport and final output",
+      "originalTitle": "Viewport and final output",
+      "series": 2,
+      "file": "viewport-output.webp",
+      "original": "viewport_preview_to_final_garden_output.png",
+      "note": "Modes are Point Cloud, Proxy, Mesh and Plant centres. Box/Sphere/Pyramid proxies are preview geometry, not renderer proxy files; they use retained instanced drawing when available, with CPU fallback. Display limits reduce what is shown. Counts 642/2,486 and FPS/render-readiness implications are invented illustration values. Renderer/material behavior needs separate evidence; Point placeholders have no final mesh.",
+      "guideLinks": [
+        {
+          "label": "Preview and output",
+          "href": "#/guide/artist-guide/preview-updates-output-and-diagnostics"
+        },
+        {
+          "label": "Point placeholder semantics",
+          "href": "#/guide/artist-guide/surfaces-models-and-optional-containers"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 27
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 29
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 82
+        },
+        {
+          "path": "docs/ARTIST_GUIDE.md",
+          "line": 86
+        }
+      ],
+      "recommendation": "context-only",
+      "provenance": "Generated concept artwork. Not a plugin screenshot, runtime result or performance measurement."
+    },
+    "companion-automation": {
+      "title": "Companion tools and bounded automation",
+      "originalTitle": "Companion tools and automation",
+      "series": 2,
+      "file": "companion-automation.webp",
+      "original": "companion_workflows_analyze_assign_refine.png",
+      "note": "Analyzer outputs geometric guides, not ecological zones; the CS Edit species dropdown is not established. MCP authoring is an approved owned-plan workflow for supported static horizontal convex sites, up to 3 mesh sources, 3 regions/layers and 2,000 aggregate candidates. Full brush/container/Spline-band/Analyzer authoring, individual edits and renderer jobs are not public mutations. Max 2027 authoring is documented. Broader AI/ML is future or experimental; recording/sharing require separate choices.",
+      "guideLinks": [
+        {
+          "label": "Assistant access today",
+          "href": "#/guide/product-roadmap/assistant-access-today"
+        },
+        {
+          "label": "MCP authoring bounds",
+          "href": "#/guide/mcp/bounds-and-supported-semantics"
+        },
+        {
+          "label": "Learning foundations",
+          "href": "#/guide/product-roadmap/learning-foundations-today"
+        },
+        {
+          "label": "Analyzer geometry",
+          "href": "#/guide/surface-analyzer/elements-geometry-and-results"
+        }
+      ],
+      "evidence": [
+        {
+          "path": "CyrusSurfaceAnalyzer/README.md",
+          "line": 22
+        },
+        {
+          "path": "docs/PRODUCT_AND_AI_ROADMAP.md",
+          "line": 31
+        },
+        {
+          "path": "docs/PRODUCT_AND_AI_ROADMAP.md",
+          "line": 33
+        },
+        {
+          "path": "docs/PRODUCT_AND_AI_ROADMAP.md",
+          "line": 35
+        },
+        {
+          "path": "docs/PRODUCT_AND_AI_ROADMAP.md",
+          "line": 41
+        },
+        {
+          "path": "docs/PRODUCT_AND_AI_ROADMAP.md",
+          "line": 43
+        },
+        {
+          "path": "CyrusMCP/README.md",
+          "line": 53
+        },
+        {
+          "path": "CyrusMCP/README.md",
+          "line": 59
+        },
+        {
+          "path": "CyrusMCP/README.md",
+          "line": 63
+        }
+      ],
+      "recommendation": "replace-current-teaching-diagram",
+      "provenance": "Generated concept artwork. Not a plugin screenshot, runtime result or performance measurement."
+    }
+  }
+}

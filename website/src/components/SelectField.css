@@ -1,0 +1,24 @@
+.select-field{position:relative;min-width:0;width:100%}
+.select-field__label{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+.docs-shell .select-field__trigger{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;min-height:44px;padding:11px 13px;border:1px solid #d6dece;border-radius:7px;background:#fff;color:#2d4739;font:inherit;font-size:13px;line-height:1.5;text-align:left;cursor:pointer;transition:border-color .16s,box-shadow .16s,background .16s}
+.select-field__value{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.select-field__trigger svg{flex:none;fill:none;stroke:#60755c;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;transition:transform .16s}
+.docs-shell .select-field__trigger:hover{background:#f8faf4;border-color:#9aac90}
+.docs-shell .select-field__trigger[aria-expanded=true]{border-color:#638363;box-shadow:0 0 0 3px #75966c18;background:#f8faf4}
+.select-field__trigger[aria-expanded=true] svg{transform:rotate(180deg)}
+.docs-shell .select-field__trigger:focus-visible{outline:2px solid #52734f;outline-offset:3px}
+.select-menu,.select-menu *{box-sizing:border-box}
+.select-menu{position:fixed;z-index:1100;padding:5px;background:#fffffc;border:1px solid #d4ddca;border-radius:10px;box-shadow:0 16px 40px -12px #263d3033,0 3px 8px #263d3008;color:#2d4739;font:13px/1.5 Inter,"Segoe UI",Arial,sans-serif;animation:select-appear .13s ease-out}
+.select-menu__heading{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:9px 10px 11px;color:#7a8774;font-size:9px;letter-spacing:1.3px;text-transform:uppercase;border-bottom:1px solid #e9ede2;margin-bottom:4px}
+.select-menu__heading span:last-child{font-variant-numeric:tabular-nums;letter-spacing:.5px}
+.select-menu__list{max-height:var(--select-list-height,304px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#c5d0bc transparent;scroll-padding:4px}
+.select-menu__option{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:11px 10px;min-height:42px;border-radius:5px;cursor:pointer;touch-action:pan-y;overflow-wrap:anywhere}
+.select-menu__option svg{flex:none;fill:none;stroke:#315643;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;visibility:hidden}
+.select-menu__option[aria-selected=true]{color:#294c36;font-weight:600;background:#f1f5e9}
+.select-menu__option[aria-selected=true] svg{visibility:visible}
+.select-menu__option.is-active{background:#e7efdd;box-shadow:inset 2px 0 #6c8959}
+.docs-shell .control-filter-field{display:flex;flex-direction:column;gap:8px;margin-bottom:20px;min-width:0}
+.docs-shell .control-filter-field .field-label{margin:0!important;align-self:stretch}
+@media(max-width:600px){.docs-shell .control-filters .control-filter-field{grid-column:1/-1;margin-bottom:8px}.docs-shell .control-filters .select-field__trigger{font-size:13px}.docs-shell .control-filters .reset-filters{grid-column:1/-1}}
+@keyframes select-appear{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.select-menu{animation:none}.select-field__trigger,.select-field__trigger svg{transition:none}}

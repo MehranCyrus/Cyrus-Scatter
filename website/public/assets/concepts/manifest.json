@@ -1,0 +1,283 @@
+[
+  {
+    "file": "courtyard-mobile.webp",
+    "sha256": "f6a5ee8104fe164d2bea76a28615e2e2e4d4ec820a49c6e7b17f52ad8f1c0159",
+    "source": "Landing Page Design/Cyrus_Scatter_Landing_Page (2).html",
+    "kind": "Supplied generated concept artwork; not Cyrus output",
+    "bytes": 45604
+  },
+  {
+    "file": "courtyard.webp",
+    "sha256": "5bb02bf65e498a8685e3413e96b68a490413bf77f8215074ac27a30f1f525965",
+    "source": "Landing Page Design/Cyrus_Scatter_Landing_Page (2).html",
+    "kind": "Supplied generated concept artwork; not Cyrus output",
+    "bytes": 137682
+  },
+  {
+    "file": "courtyard-480.webp",
+    "sha256": "0ae976bd0fd4ca26c4d5b5a4bfb79535a38c8756139d28d4fc457d335a925129",
+    "source": "Landing Page Design/Cyrus_Scatter_Landing_Page (2).html",
+    "kind": "Supplied generated concept artwork; not Cyrus output",
+    "bytes": 63230
+  },
+  {
+    "file": "coastal-mobile.webp",
+    "sha256": "e0f22958dd9ee5bfc6f4cdf5e1d607100b177d53861a9981338b78940ff3c136",
+    "source": "Landing Page Design/Cyrus_Scatter_Landing_Page (2).html",
+    "kind": "Supplied generated concept artwork; not Cyrus output",
+    "bytes": 25140
+  },
+  {
+    "file": "coastal.webp",
+    "sha256": "ce4ffadea59a4acc2bf84f818c4162cbde238ce086f28126d930430134db5761",
+    "source": "Landing Page Design/Cyrus_Scatter_Landing_Page (2).html",
+    "kind": "Supplied generated concept artwork; not Cyrus output",
+    "bytes": 75972
+  },
+  {
+    "file": "coastal-480.webp",
+    "sha256": "d1fde4f5dc63d1ae876f936b76ccb56c1fa38ee0c36833e7fce7484d95a5c508",
+    "source": "Landing Page Design/Cyrus_Scatter_Landing_Page (2).html",
+    "kind": "Supplied generated concept artwork; not Cyrus output",
+    "bytes": 34642
+  },
+  {
+    "file": "perennial.webp",
+    "sha256": "02ae001f6a514072e43bf3a70ff546ca4c85be3e57e95788b694a1542f65544a",
+    "source": "Landing Page Design/Cyrus_Scatter_Landing_Page (2).html",
+    "kind": "Supplied generated concept artwork; not Cyrus output",
+    "bytes": 84776
+  },
+  {
+    "file": "perennial-480.webp",
+    "sha256": "11e03d7c573d4c9bd6a002fb1b89ed671eb40a32dd01dfb5acfa013953459b72",
+    "source": "Landing Page Design/Cyrus_Scatter_Landing_Page (2).html",
+    "kind": "Supplied generated concept artwork; not Cyrus output",
+    "bytes": 41606
+  },
+  {
+    "file": "courtyard-20261011-480.webp",
+    "sha256": "da494129c58449ce9821d910141601bb37adfb23d59c933d46500296e29f3335",
+    "source": "artwork/landing-20261011/courtyard.png",
+    "originalSha256": "28892838623bf0fb8a9828bbb70d5c6d8e9ab9b539612919587093ccb82aabd1",
+    "kind": "AI-generated concept artwork; not Cyrus output",
+    "generator": "Built-in image_gen",
+    "generatedOn": "2026-10-11",
+    "bytes": 105138,
+    "dimensions": [
+      480,
+      360
+    ],
+    "nativeDimensions": [
+      1448,
+      1086
+    ],
+    "encoding": {
+      "format": "WebP",
+      "quality": 96,
+      "method": 6,
+      "upscaled": false
+    },
+    "prompts": "artwork/landing-20261011/prompts.json"
+  },
+  {
+    "file": "courtyard-20261011-960.webp",
+    "sha256": "b20d077830306caa0df61ec6e319cd83935ccbb192ade5f37540c64bea655c85",
+    "source": "artwork/landing-20261011/courtyard.png",
+    "originalSha256": "28892838623bf0fb8a9828bbb70d5c6d8e9ab9b539612919587093ccb82aabd1",
+    "kind": "AI-generated concept artwork; not Cyrus output",
+    "generator": "Built-in image_gen",
+    "generatedOn": "2026-10-11",
+    "bytes": 405968,
+    "dimensions": [
+      960,
+      720
+    ],
+    "nativeDimensions": [
+      1448,
+      1086
+    ],
+    "encoding": {
+      "format": "WebP",
+      "quality": 96,
+      "method": 6,
+      "upscaled": false
+    },
+    "prompts": "artwork/landing-20261011/prompts.json"
+  },
+  {
+    "file": "courtyard-20261011.webp",
+    "sha256": "b1fcc624ed24a42eaf10d3b659b6494a1a246af8cb39a465437884b3cc876e0b",
+    "source": "artwork/landing-20261011/courtyard.png",
+    "originalSha256": "28892838623bf0fb8a9828bbb70d5c6d8e9ab9b539612919587093ccb82aabd1",
+    "kind": "AI-generated concept artwork; not Cyrus output",
+    "generator": "Built-in image_gen",
+    "generatedOn": "2026-10-11",
+    "bytes": 868270,
+    "dimensions": [
+      1448,
+      1086
+    ],
+    "nativeDimensions": [
+      1448,
+      1086
+    ],
+    "encoding": {
+      "format": "WebP",
+      "quality": 96,
+      "method": 6,
+      "upscaled": false
+    },
+    "prompts": "artwork/landing-20261011/prompts.json"
+  },
+  {
+    "file": "coastal-20261011-480.webp",
+    "sha256": "6fa32af947e9924e0b9eb2d3aac48154c4a993854117d62c1e3a8c8cf2723562",
+    "source": "artwork/landing-20261011/coastal.png",
+    "originalSha256": "346d459353b76645ee2b0e1ce61789402d9c7d4413dd7867a8a3b5c38488e494",
+    "kind": "AI-generated concept artwork; not Cyrus output",
+    "generator": "Built-in image_gen",
+    "generatedOn": "2026-10-11",
+    "bytes": 102284,
+    "dimensions": [
+      480,
+      360
+    ],
+    "nativeDimensions": [
+      1448,
+      1086
+    ],
+    "encoding": {
+      "format": "WebP",
+      "quality": 96,
+      "method": 6,
+      "upscaled": false
+    },
+    "prompts": "artwork/landing-20261011/prompts.json"
+  },
+  {
+    "file": "coastal-20261011-960.webp",
+    "sha256": "05a48d04fe625aa01d05a88366a577687de0f35605258e3335337a335d6e4292",
+    "source": "artwork/landing-20261011/coastal.png",
+    "originalSha256": "346d459353b76645ee2b0e1ce61789402d9c7d4413dd7867a8a3b5c38488e494",
+    "kind": "AI-generated concept artwork; not Cyrus output",
+    "generator": "Built-in image_gen",
+    "generatedOn": "2026-10-11",
+    "bytes": 400720,
+    "dimensions": [
+      960,
+      720
+    ],
+    "nativeDimensions": [
+      1448,
+      1086
+    ],
+    "encoding": {
+      "format": "WebP",
+      "quality": 96,
+      "method": 6,
+      "upscaled": false
+    },
+    "prompts": "artwork/landing-20261011/prompts.json"
+  },
+  {
+    "file": "coastal-20261011.webp",
+    "sha256": "eb2195921e170950b0c03122c3aa66394fd5b1d4cc4f33973309efee34fc769c",
+    "source": "artwork/landing-20261011/coastal.png",
+    "originalSha256": "346d459353b76645ee2b0e1ce61789402d9c7d4413dd7867a8a3b5c38488e494",
+    "kind": "AI-generated concept artwork; not Cyrus output",
+    "generator": "Built-in image_gen",
+    "generatedOn": "2026-10-11",
+    "bytes": 858350,
+    "dimensions": [
+      1448,
+      1086
+    ],
+    "nativeDimensions": [
+      1448,
+      1086
+    ],
+    "encoding": {
+      "format": "WebP",
+      "quality": 96,
+      "method": 6,
+      "upscaled": false
+    },
+    "prompts": "artwork/landing-20261011/prompts.json"
+  },
+  {
+    "file": "perennial-20261011-480.webp",
+    "sha256": "550b75ac1a83e94177b37c124971876c4fb593912ba73c0032c4fa97dc3778f3",
+    "source": "artwork/landing-20261011/perennial.png",
+    "originalSha256": "4c08967951b98e4d321a64e10b8b8bf07b479a87ff2a0ad1790eb67fcad6b158",
+    "kind": "AI-generated concept artwork; not Cyrus output",
+    "generator": "Built-in image_gen",
+    "generatedOn": "2026-10-11",
+    "bytes": 131394,
+    "dimensions": [
+      480,
+      360
+    ],
+    "nativeDimensions": [
+      1448,
+      1086
+    ],
+    "encoding": {
+      "format": "WebP",
+      "quality": 96,
+      "method": 6,
+      "upscaled": false
+    },
+    "prompts": "artwork/landing-20261011/prompts.json"
+  },
+  {
+    "file": "perennial-20261011-960.webp",
+    "sha256": "d276e59d610cff51a95655ccfd13eb5efe4ae87b767a6012351bf7e4ba2af054",
+    "source": "artwork/landing-20261011/perennial.png",
+    "originalSha256": "4c08967951b98e4d321a64e10b8b8bf07b479a87ff2a0ad1790eb67fcad6b158",
+    "kind": "AI-generated concept artwork; not Cyrus output",
+    "generator": "Built-in image_gen",
+    "generatedOn": "2026-10-11",
+    "bytes": 458250,
+    "dimensions": [
+      960,
+      720
+    ],
+    "nativeDimensions": [
+      1448,
+      1086
+    ],
+    "encoding": {
+      "format": "WebP",
+      "quality": 96,
+      "method": 6,
+      "upscaled": false
+    },
+    "prompts": "artwork/landing-20261011/prompts.json"
+  },
+  {
+    "file": "perennial-20261011.webp",
+    "sha256": "e66db8976c528789badbdc87dae2eb462df48d2728da1d957ed9405a12e645e1",
+    "source": "artwork/landing-20261011/perennial.png",
+    "originalSha256": "4c08967951b98e4d321a64e10b8b8bf07b479a87ff2a0ad1790eb67fcad6b158",
+    "kind": "AI-generated concept artwork; not Cyrus output",
+    "generator": "Built-in image_gen",
+    "generatedOn": "2026-10-11",
+    "bytes": 930496,
+    "dimensions": [
+      1448,
+      1086
+    ],
+    "nativeDimensions": [
+      1448,
+      1086
+    ],
+    "encoding": {
+      "format": "WebP",
+      "quality": 96,
+      "method": 6,
+      "upscaled": false
+    },
+    "prompts": "artwork/landing-20261011/prompts.json"
+  }
+]

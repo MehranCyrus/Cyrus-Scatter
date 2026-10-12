@@ -22,6 +22,8 @@ def bits(*values):return r.execute('#{'+','.join(map(str,values))+'}')
 def pump(ms=300):mx(f'local finish=timeStamp()+{ms};while timeStamp()<finish do (windows.processPostedMessages();sleep .01)')
 def activate(node,page):
     r.select(node);mx('max modify mode');r.modPanel.setCurrentObject(node.baseObject)
+    # Allow Max to create rollout HWNDs before invoking a timer manually.
+    pump(200)
     root=node.baseObject
     if not root.mainUI.controlsReady:root.mainUI.mountTimer.tick()
     panel=getattr(root,page);panel.open=True;root.mainUI.bindSection(panel);panel.layout()
@@ -40,8 +42,8 @@ def clone_cfg(leaf,node):
     cfg=leaf.getFallConfig(node)
     return arr([arr(list(v)) if i in (4,7) else v for i,v in enumerate(cfg)])
 cases=json.loads((ROOT/'build/vector-brush-078/include-exclude-visible2026-01/area-examples-results.json').read_text())['cases']
-previous=r.CyrusInteractionHeld
-mx('fn CyrusInteractionHeld = false')
+mx('global R791ExpectedVersion,R791PreviousHeld=CyrusInteractionHeld;fn CyrusInteractionHeld = false')
+expected_version=str(r.R791ExpectedVersion) if r.R791ExpectedVersion is not None else '0.79.1'
 try:
     check(bool(r.cyrusLicenseAllows()),'Active test authority authorizes normal editing')
     if phase=='scene':
@@ -51,7 +53,7 @@ try:
         for item in cases:
             node,root,leaf=case(item['number']);started=time.perf_counter();update(root)
             measured[item['number']]=round((time.perf_counter()-started)*1000,2)
-            check(str(root.uiVersion())=='0.79.1','Case %02d loads 0.79.1'%item['number'])
+            check(str(root.uiVersion())==expected_version,'Case %02d loads %s'%(item['number'],expected_version))
             check(fp(root)==saved[item['node_name']]['fingerprint'],'Case %02d preserves the saved placements'%item['number'],count=len(root.groupSnapshotRows[0]))
             baseline[item['node_name']]=fp(root)
         r.CyrusPointSync();r.redrawViews();pump(500)
@@ -252,4 +254,4 @@ try:
     write()
 except Exception:
     (OUT/(phase+'-error.txt')).write_text(traceback.format_exc());raise
-finally:r.CyrusInteractionHeld=previous
+finally:mx('CyrusInteractionHeld=R791PreviousHeld')

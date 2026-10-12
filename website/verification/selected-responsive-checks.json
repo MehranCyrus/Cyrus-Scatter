@@ -1,0 +1,768 @@
+{
+  "scope": "Selected React design browser DOM sweep; not plugin testing",
+  "cases": [
+    {
+      "title": "Cyrus Scatter \u2014 Scatter with intention.",
+      "heading": "Scatter withintention.",
+      "width": 320,
+      "scrollWidth": 305,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/"
+    },
+    {
+      "title": "Visual guide \u2014 Cyrus Scatter",
+      "heading": "Plant with intention.",
+      "width": 320,
+      "scrollWidth": 305,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/guide"
+    },
+    {
+      "title": "First planting workflow \u2014 Cyrus Scatter",
+      "heading": "Make a small scene. Understand the whole system.",
+      "width": 320,
+      "scrollWidth": 305,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/workflow"
+    },
+    {
+      "title": "Visual explanations \u2014 Cyrus Scatter",
+      "heading": "See the relationships.",
+      "width": 320,
+      "scrollWidth": 305,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/visuals/layers"
+    },
+    {
+      "title": "Visual explanations \u2014 Cyrus Scatter",
+      "heading": "See the relationships.",
+      "width": 320,
+      "scrollWidth": 305,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/visuals/containers"
+    },
+    {
+      "title": "Visual explanations \u2014 Cyrus Scatter",
+      "heading": "See the relationships.",
+      "width": 320,
+      "scrollWidth": 305,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/visuals/coverage"
+    },
+    {
+      "title": "Visual explanations \u2014 Cyrus Scatter",
+      "heading": "See the relationships.",
+      "width": 320,
+      "scrollWidth": 305,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/visuals/spacing"
+    },
+    {
+      "title": "Visual explanations \u2014 Cyrus Scatter",
+      "heading": "See the relationships.",
+      "width": 320,
+      "scrollWidth": 305,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/visuals/updates"
+    },
+    {
+      "title": "Visual explanations \u2014 Cyrus Scatter",
+      "heading": "See the relationships.",
+      "width": 320,
+      "scrollWidth": 305,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/visuals/viewport"
+    },
+    {
+      "title": "Feature posters \u2014 Cyrus Scatter",
+      "heading": "The feature posters.",
+      "width": 320,
+      "scrollWidth": 305,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/gallery"
+    },
+    {
+      "title": "Practical examples \u2014 Cyrus Scatter",
+      "heading": "Four useful starting points.",
+      "width": 320,
+      "scrollWidth": 305,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/examples"
+    },
+    {
+      "title": "Your testing walkthrough \u2014 Cyrus Scatter",
+      "heading": "Try it. Observe it. Keep a record.",
+      "width": 320,
+      "scrollWidth": 305,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/checklist"
+    },
+    {
+      "title": "Glossary \u2014 Cyrus Scatter",
+      "heading": "The ideas behind the labels.",
+      "width": 320,
+      "scrollWidth": 305,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/glossary"
+    },
+    {
+      "title": "Troubleshooting & limits \u2014 Cyrus Scatter",
+      "heading": "When the picture surprises you.",
+      "width": 320,
+      "scrollWidth": 305,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/troubleshooting"
+    },
+    {
+      "title": "Visual guide \u2014 Cyrus Scatter",
+      "heading": "The artist\u2019s guide",
+      "width": 320,
+      "scrollWidth": 305,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/guide/artist-guide/vector-painting"
+    },
+    {
+      "title": "Control reference \u2014 Cyrus Scatter",
+      "heading": "Find the control. Understand the context.",
+      "width": 320,
+      "scrollWidth": 305,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/controls?feature=C19"
+    },
+    {
+      "title": "Features \u2014 Cyrus Scatter",
+      "heading": "Simple beginnings. Considered possibilities.",
+      "width": 320,
+      "scrollWidth": 305,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/features/painting"
+    },
+    {
+      "title": "Roadmap \u2014 Cyrus Scatter",
+      "heading": "Built for the artist. Open to what\u2019s next.",
+      "width": 320,
+      "scrollWidth": 305,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/roadmap"
+    },
+    {
+      "title": "Sources & credits \u2014 Cyrus Scatter",
+      "heading": "A field guide. With a clear provenance.",
+      "width": 320,
+      "scrollWidth": 305,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/about"
+    },
+    {
+      "title": "Cyrus Scatter \u2014 Scatter with intention.",
+      "heading": "Scatter withintention.",
+      "width": 390,
+      "scrollWidth": 375,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/"
+    },
+    {
+      "title": "Visual guide \u2014 Cyrus Scatter",
+      "heading": "Plant with intention.",
+      "width": 390,
+      "scrollWidth": 375,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/guide"
+    },
+    {
+      "title": "First planting workflow \u2014 Cyrus Scatter",
+      "heading": "Make a small scene. Understand the whole system.",
+      "width": 390,
+      "scrollWidth": 375,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/workflow"
+    },
+    {
+      "title": "Visual explanations \u2014 Cyrus Scatter",
+      "heading": "See the relationships.",
+      "width": 390,
+      "scrollWidth": 375,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/visuals/layers"
+    },
+    {
+      "title": "Visual explanations \u2014 Cyrus Scatter",
+      "heading": "See the relationships.",
+      "width": 390,
+      "scrollWidth": 375,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/visuals/containers"
+    },
+    {
+      "title": "Visual explanations \u2014 Cyrus Scatter",
+      "heading": "See the relationships.",
+      "width": 390,
+      "scrollWidth": 375,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/visuals/coverage"
+    },
+    {
+      "title": "Visual explanations \u2014 Cyrus Scatter",
+      "heading": "See the relationships.",
+      "width": 390,
+      "scrollWidth": 375,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/visuals/spacing"
+    },
+    {
+      "title": "Visual explanations \u2014 Cyrus Scatter",
+      "heading": "See the relationships.",
+      "width": 390,
+      "scrollWidth": 375,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/visuals/updates"
+    },
+    {
+      "title": "Visual explanations \u2014 Cyrus Scatter",
+      "heading": "See the relationships.",
+      "width": 390,
+      "scrollWidth": 375,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/visuals/viewport"
+    },
+    {
+      "title": "Feature posters \u2014 Cyrus Scatter",
+      "heading": "The feature posters.",
+      "width": 390,
+      "scrollWidth": 375,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/gallery"
+    },
+    {
+      "title": "Practical examples \u2014 Cyrus Scatter",
+      "heading": "Four useful starting points.",
+      "width": 390,
+      "scrollWidth": 375,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/examples"
+    },
+    {
+      "title": "Your testing walkthrough \u2014 Cyrus Scatter",
+      "heading": "Try it. Observe it. Keep a record.",
+      "width": 390,
+      "scrollWidth": 375,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/checklist"
+    },
+    {
+      "title": "Glossary \u2014 Cyrus Scatter",
+      "heading": "The ideas behind the labels.",
+      "width": 390,
+      "scrollWidth": 375,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/glossary"
+    },
+    {
+      "title": "Troubleshooting & limits \u2014 Cyrus Scatter",
+      "heading": "When the picture surprises you.",
+      "width": 390,
+      "scrollWidth": 375,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/troubleshooting"
+    },
+    {
+      "title": "Visual guide \u2014 Cyrus Scatter",
+      "heading": "The artist\u2019s guide",
+      "width": 390,
+      "scrollWidth": 375,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/guide/artist-guide/vector-painting"
+    },
+    {
+      "title": "Control reference \u2014 Cyrus Scatter",
+      "heading": "Find the control. Understand the context.",
+      "width": 390,
+      "scrollWidth": 375,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/controls?feature=C19"
+    },
+    {
+      "title": "Features \u2014 Cyrus Scatter",
+      "heading": "Simple beginnings. Considered possibilities.",
+      "width": 390,
+      "scrollWidth": 375,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/features/painting"
+    },
+    {
+      "title": "Roadmap \u2014 Cyrus Scatter",
+      "heading": "Built for the artist. Open to what\u2019s next.",
+      "width": 390,
+      "scrollWidth": 375,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/roadmap"
+    },
+    {
+      "title": "Sources & credits \u2014 Cyrus Scatter",
+      "heading": "A field guide. With a clear provenance.",
+      "width": 390,
+      "scrollWidth": 375,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/about"
+    },
+    {
+      "title": "Cyrus Scatter \u2014 Scatter with intention.",
+      "heading": "Scatter withintention.",
+      "width": 768,
+      "scrollWidth": 753,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/"
+    },
+    {
+      "title": "Visual guide \u2014 Cyrus Scatter",
+      "heading": "Plant with intention.",
+      "width": 768,
+      "scrollWidth": 753,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/guide"
+    },
+    {
+      "title": "First planting workflow \u2014 Cyrus Scatter",
+      "heading": "Make a small scene. Understand the whole system.",
+      "width": 768,
+      "scrollWidth": 753,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/workflow"
+    },
+    {
+      "title": "Visual explanations \u2014 Cyrus Scatter",
+      "heading": "See the relationships.",
+      "width": 768,
+      "scrollWidth": 753,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/visuals/layers"
+    },
+    {
+      "title": "Visual explanations \u2014 Cyrus Scatter",
+      "heading": "See the relationships.",
+      "width": 768,
+      "scrollWidth": 753,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/visuals/containers"
+    },
+    {
+      "title": "Visual explanations \u2014 Cyrus Scatter",
+      "heading": "See the relationships.",
+      "width": 768,
+      "scrollWidth": 753,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/visuals/coverage"
+    },
+    {
+      "title": "Visual explanations \u2014 Cyrus Scatter",
+      "heading": "See the relationships.",
+      "width": 768,
+      "scrollWidth": 753,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/visuals/spacing"
+    },
+    {
+      "title": "Visual explanations \u2014 Cyrus Scatter",
+      "heading": "See the relationships.",
+      "width": 768,
+      "scrollWidth": 753,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/visuals/updates"
+    },
+    {
+      "title": "Visual explanations \u2014 Cyrus Scatter",
+      "heading": "See the relationships.",
+      "width": 768,
+      "scrollWidth": 753,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/visuals/viewport"
+    },
+    {
+      "title": "Feature posters \u2014 Cyrus Scatter",
+      "heading": "The feature posters.",
+      "width": 768,
+      "scrollWidth": 753,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/gallery"
+    },
+    {
+      "title": "Practical examples \u2014 Cyrus Scatter",
+      "heading": "Four useful starting points.",
+      "width": 768,
+      "scrollWidth": 753,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/examples"
+    },
+    {
+      "title": "Your testing walkthrough \u2014 Cyrus Scatter",
+      "heading": "Try it. Observe it. Keep a record.",
+      "width": 768,
+      "scrollWidth": 753,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/checklist"
+    },
+    {
+      "title": "Glossary \u2014 Cyrus Scatter",
+      "heading": "The ideas behind the labels.",
+      "width": 768,
+      "scrollWidth": 753,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/glossary"
+    },
+    {
+      "title": "Troubleshooting & limits \u2014 Cyrus Scatter",
+      "heading": "When the picture surprises you.",
+      "width": 768,
+      "scrollWidth": 753,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/troubleshooting"
+    },
+    {
+      "title": "Visual guide \u2014 Cyrus Scatter",
+      "heading": "The artist\u2019s guide",
+      "width": 768,
+      "scrollWidth": 753,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/guide/artist-guide/vector-painting"
+    },
+    {
+      "title": "Control reference \u2014 Cyrus Scatter",
+      "heading": "Find the control. Understand the context.",
+      "width": 768,
+      "scrollWidth": 753,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/controls?feature=C19"
+    },
+    {
+      "title": "Features \u2014 Cyrus Scatter",
+      "heading": "Simple beginnings. Considered possibilities.",
+      "width": 768,
+      "scrollWidth": 753,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/features/painting"
+    },
+    {
+      "title": "Roadmap \u2014 Cyrus Scatter",
+      "heading": "Built for the artist. Open to what\u2019s next.",
+      "width": 768,
+      "scrollWidth": 753,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/roadmap"
+    },
+    {
+      "title": "Sources & credits \u2014 Cyrus Scatter",
+      "heading": "A field guide. With a clear provenance.",
+      "width": 768,
+      "scrollWidth": 753,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/about"
+    },
+    {
+      "title": "Cyrus Scatter \u2014 Scatter with intention.",
+      "heading": "Scatter withintention.",
+      "width": 1440,
+      "scrollWidth": 1425,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/"
+    },
+    {
+      "title": "Visual guide \u2014 Cyrus Scatter",
+      "heading": "Plant with intention.",
+      "width": 1440,
+      "scrollWidth": 1425,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/guide"
+    },
+    {
+      "title": "First planting workflow \u2014 Cyrus Scatter",
+      "heading": "Make a small scene. Understand the whole system.",
+      "width": 1440,
+      "scrollWidth": 1425,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/workflow"
+    },
+    {
+      "title": "Visual explanations \u2014 Cyrus Scatter",
+      "heading": "See the relationships.",
+      "width": 1440,
+      "scrollWidth": 1425,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/visuals/layers"
+    },
+    {
+      "title": "Visual explanations \u2014 Cyrus Scatter",
+      "heading": "See the relationships.",
+      "width": 1440,
+      "scrollWidth": 1425,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/visuals/containers"
+    },
+    {
+      "title": "Visual explanations \u2014 Cyrus Scatter",
+      "heading": "See the relationships.",
+      "width": 1440,
+      "scrollWidth": 1425,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/visuals/coverage"
+    },
+    {
+      "title": "Visual explanations \u2014 Cyrus Scatter",
+      "heading": "See the relationships.",
+      "width": 1440,
+      "scrollWidth": 1425,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/visuals/spacing"
+    },
+    {
+      "title": "Visual explanations \u2014 Cyrus Scatter",
+      "heading": "See the relationships.",
+      "width": 1440,
+      "scrollWidth": 1425,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/visuals/updates"
+    },
+    {
+      "title": "Visual explanations \u2014 Cyrus Scatter",
+      "heading": "See the relationships.",
+      "width": 1440,
+      "scrollWidth": 1425,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/visuals/viewport"
+    },
+    {
+      "title": "Feature posters \u2014 Cyrus Scatter",
+      "heading": "The feature posters.",
+      "width": 1440,
+      "scrollWidth": 1425,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/gallery"
+    },
+    {
+      "title": "Practical examples \u2014 Cyrus Scatter",
+      "heading": "Four useful starting points.",
+      "width": 1440,
+      "scrollWidth": 1425,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/examples"
+    },
+    {
+      "title": "Your testing walkthrough \u2014 Cyrus Scatter",
+      "heading": "Try it. Observe it. Keep a record.",
+      "width": 1440,
+      "scrollWidth": 1425,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/checklist"
+    },
+    {
+      "title": "Glossary \u2014 Cyrus Scatter",
+      "heading": "The ideas behind the labels.",
+      "width": 1440,
+      "scrollWidth": 1425,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/glossary"
+    },
+    {
+      "title": "Troubleshooting & limits \u2014 Cyrus Scatter",
+      "heading": "When the picture surprises you.",
+      "width": 1440,
+      "scrollWidth": 1425,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/troubleshooting"
+    },
+    {
+      "title": "Visual guide \u2014 Cyrus Scatter",
+      "heading": "The artist\u2019s guide",
+      "width": 1440,
+      "scrollWidth": 1425,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/guide/artist-guide/vector-painting"
+    },
+    {
+      "title": "Control reference \u2014 Cyrus Scatter",
+      "heading": "Find the control. Understand the context.",
+      "width": 1440,
+      "scrollWidth": 1425,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/controls?feature=C19"
+    },
+    {
+      "title": "Features \u2014 Cyrus Scatter",
+      "heading": "Simple beginnings. Considered possibilities.",
+      "width": 1440,
+      "scrollWidth": 1425,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/features/painting"
+    },
+    {
+      "title": "Roadmap \u2014 Cyrus Scatter",
+      "heading": "Built for the artist. Open to what\u2019s next.",
+      "width": 1440,
+      "scrollWidth": 1425,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/roadmap"
+    },
+    {
+      "title": "Sources & credits \u2014 Cyrus Scatter",
+      "heading": "A field guide. With a clear provenance.",
+      "width": 1440,
+      "scrollWidth": 1425,
+      "overflow": false,
+      "brokenVisibleImages": [],
+      "replacementCharacters": false,
+      "route": "/about"
+    }
+  ],
+  "caseCount": 76,
+  "errors": "",
+  "status": "PASS"
+}

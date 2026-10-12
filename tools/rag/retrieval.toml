@@ -1,0 +1,11 @@
+schema_version = 1
+max_source_bytes = 16777216
+max_corpus_bytes = 33554432
+max_sources = 64
+max_chunks = 20000
+max_chunk_chars = 1800
+max_chunk_lines = 40
+overlap_lines = 3
+max_query_chars = 1024
+max_query_terms = 64
+max_top_k = 100

@@ -1,0 +1,825 @@
+{
+  "version": "0.79.5",
+  "schema": 55,
+  "script_sha256": "cacf3e6b1af8796d96bca7ed2698cfb762d3baff7f90bc35a507b100ee0af4b4",
+  "hosts": {
+    "2026": {
+      "launch": {
+        "pid": 89516,
+        "max_year": 2026,
+        "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0795-create-fixed-2026-01",
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2026/3dsmax.exe",
+          "-q",
+          "-silent",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0795-create-fixed-2026-01\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0795-create-fixed-2026-01\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0795-create-fixed-2026-01\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0795-create-fixed-2026-01\\listener.log"
+        ],
+        "binaries": {
+          "AminScatter.dlx": "5bc1d810f914881033764aa042f68d58a6c9e04594e8b527c77460b914acb4ce",
+          "CyrusBrush.dlx": "c829b8526f24bc05989930e93f4a446764893740bdef30e49fd5f92afeea357b",
+          "CyrusBrushStorage.dlh": "3e32e8ce5abdb52ed84c84b291cf7d9c0ad6cee6878cab5ae7fe3d5762381481",
+          "CyrusScatterEdit.dlm": "73ef0be420f319d1c5d70ad90b6a98b187d468fe5b6319af435bcf940a5fbbdf",
+          "CyrusSurfaceAnalyzer.dlx": "46ea4b65c8824940e8aa9a157003a7620670d83a1890e0674ae0f4b947669de1"
+        },
+        "script_sha256": "cacf3e6b1af8796d96bca7ed2698cfb762d3baff7f90bc35a507b100ee0af4b4",
+        "normal_profile_modified": false,
+        "development_transport": true,
+        "profile_template": "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2026 - 64bit\\ENU\\3dsMax.ini",
+        "profile_template_sha256": "77254e9e7ae2cbff93aba6ddf19dc9492df2c4ed45c0bee17e0ac0ea3df6da99"
+      },
+      "assertions": 60,
+      "receipts": {
+        "create-callbacks": {
+          "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0795-create-fixed-2026-01\\create-callbacks.json",
+          "sha256": "0745e86535aa9a80a4fcda9199cb4f19915fd6527e9d26e76ac5e7d83ac4de2e",
+          "checks": [
+            {
+              "passed": true,
+              "label": "One completed two-click object"
+            }
+          ]
+        },
+        "create-visibility": {
+          "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0795-create-fixed-2026-01\\create-visibility.json",
+          "sha256": "705f32931ae834652eb1c167102d26ba9f0467b29e74c9b8f8e868f5f24b9f1c",
+          "checks": [
+            {
+              "passed": true,
+              "label": "Creation witness contains one controller"
+            },
+            {
+              "passed": true,
+              "label": "Old draw function reproduces missing new icon with an empty display cache"
+            },
+            {
+              "passed": true,
+              "label": "New icon submits all three polylines at size 10 while held"
+            },
+            {
+              "passed": true,
+              "label": "Drawn ring reflects size 10"
+            },
+            {
+              "passed": true,
+              "label": "New icon submits all three polylines at size 30 while held"
+            },
+            {
+              "passed": true,
+              "label": "Drawn ring reflects size 30"
+            },
+            {
+              "passed": true,
+              "label": "New icon submits all three polylines at size 60 while held"
+            },
+            {
+              "passed": true,
+              "label": "Drawn ring reflects size 60"
+            },
+            {
+              "passed": true,
+              "label": "Icon sizing does not publish placements"
+            },
+            {
+              "passed": true,
+              "label": "Drawing icons does not require a display publication"
+            },
+            {
+              "passed": true,
+              "label": "Hidden controller does not draw"
+            },
+            {
+              "passed": true,
+              "label": "Unhidden controller draws again"
+            },
+            {
+              "passed": true,
+              "label": "Deleted controller does not draw"
+            },
+            {
+              "passed": true,
+              "label": "Undo restores the controller"
+            },
+            {
+              "passed": true,
+              "label": "Undo restores icon registration"
+            },
+            {
+              "passed": true,
+              "label": "Redo removes icon submission"
+            },
+            {
+              "passed": true,
+              "label": "Saved and reopened empty controller draws"
+            }
+          ]
+        },
+        "create-existing": {
+          "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0795-create-fixed-2026-01\\create-existing.json",
+          "sha256": "8ca745665257cc64773aa150d776ad10f23cb413fdbc5ab038013837087ffe26",
+          "checks": [
+            {
+              "passed": true,
+              "label": "Populated workflow prerequisite"
+            },
+            {
+              "passed": true,
+              "label": "Second click finishes the sizing sequence"
+            },
+            {
+              "passed": true,
+              "label": "Two-click sequence adds exactly one controller"
+            },
+            {
+              "passed": true,
+              "label": "Workflow Scatter: creation preserves placements and layer caches"
+            },
+            {
+              "passed": true,
+              "label": "Workflow Scatter: creation does not upload unchanged buffers"
+            },
+            {
+              "passed": true,
+              "label": "A deliberate next placement starts a second object"
+            },
+            {
+              "passed": true,
+              "label": "Abort removes only the unfinished object"
+            }
+          ]
+        },
+        "workflow": {
+          "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0795-create-fixed-2026-01\\workflow.json",
+          "sha256": "fbd4022731d6522ea6fba473a4dcd999aa34ef52c4ba45e118af95a92ee6cff1",
+          "checks": [
+            {
+              "passed": true,
+              "label": "First Point layer produces requested candidates"
+            },
+            {
+              "passed": true,
+              "label": "Point replacement preserves placement identity and transforms"
+            },
+            {
+              "passed": true,
+              "label": "Point layer preserves first geometry layer"
+            },
+            {
+              "passed": true,
+              "label": "Removing second layer restores exact first-layer publication"
+            },
+            {
+              "passed": true,
+              "label": "Include clips all positions"
+            },
+            {
+              "passed": true,
+              "label": "Exclude hole remains empty"
+            },
+            {
+              "passed": true,
+              "label": "Scale falloff reaches transforms"
+            },
+            {
+              "passed": true,
+              "label": "Repeated paint unions coverage without extra instances"
+            },
+            {
+              "passed": true,
+              "label": "Erase creates a real unplanted pocket"
+            },
+            {
+              "passed": true,
+              "label": "Browsing retains exact placements"
+            },
+            {
+              "passed": true,
+              "label": "Browsing does not republish placements"
+            }
+          ]
+        },
+        "navigation0792": {
+          "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0795-create-fixed-2026-01\\navigation0792.json",
+          "sha256": "36dbc58d72bb979406108f648c459b420b886bd358335241144806db77785f72",
+          "checks": [
+            {
+              "passed": true,
+              "label": "All 18,759 displayed points retained"
+            },
+            {
+              "passed": true,
+              "label": "All 5,546 radius circles retained"
+            },
+            {
+              "passed": true,
+              "label": "Native line coordinates/colors exactly match all five scripted ring arrays"
+            },
+            {
+              "passed": true,
+              "label": "orbit: no placement/preparation/publication/upload changes"
+            },
+            {
+              "passed": true,
+              "label": "orbit: no Analyzer/render-bridge/live-event work"
+            },
+            {
+              "passed": true,
+              "label": "pan: no placement/preparation/publication/upload changes"
+            },
+            {
+              "passed": true,
+              "label": "pan: no Analyzer/render-bridge/live-event work"
+            },
+            {
+              "passed": true,
+              "label": "zoom: no placement/preparation/publication/upload changes"
+            },
+            {
+              "passed": true,
+              "label": "zoom: no Analyzer/render-bridge/live-event work"
+            },
+            {
+              "passed": true,
+              "label": "static: no placement/preparation/publication/upload changes"
+            },
+            {
+              "passed": true,
+              "label": "static: no Analyzer/render-bridge/live-event work"
+            },
+            {
+              "passed": true,
+              "label": "orbit-repeat: no placement/preparation/publication/upload changes"
+            },
+            {
+              "passed": true,
+              "label": "orbit-repeat: no Analyzer/render-bridge/live-event work"
+            },
+            {
+              "passed": true,
+              "label": "orbit held: no placement/preparation/publication/upload changes"
+            },
+            {
+              "passed": true,
+              "label": "orbit held: no Analyzer/render-bridge/live-event work"
+            },
+            {
+              "passed": true,
+              "label": "pan held: no placement/preparation/publication/upload changes"
+            },
+            {
+              "passed": true,
+              "label": "pan held: no Analyzer/render-bridge/live-event work"
+            },
+            {
+              "passed": true,
+              "label": "zoom held: no placement/preparation/publication/upload changes"
+            },
+            {
+              "passed": true,
+              "label": "zoom held: no Analyzer/render-bridge/live-event work"
+            },
+            {
+              "passed": true,
+              "label": "static held: no placement/preparation/publication/upload changes"
+            },
+            {
+              "passed": true,
+              "label": "static held: no Analyzer/render-bridge/live-event work"
+            },
+            {
+              "passed": true,
+              "label": "orbit-repeat held: no placement/preparation/publication/upload changes"
+            },
+            {
+              "passed": true,
+              "label": "orbit-repeat held: no Analyzer/render-bridge/live-event work"
+            },
+            {
+              "passed": true,
+              "label": "All 26 controllers cached without native error"
+            }
+          ]
+        }
+      },
+      "metrics": {
+        "create_entry_ms": 1992.812300013611,
+        "sizing_callback_median_ms": 7.464599999366328,
+        "navigation": [
+          {
+            "label": "orbit",
+            "held": false,
+            "median_ms": 16.1144
+          },
+          {
+            "label": "pan",
+            "held": false,
+            "median_ms": 15.1359
+          },
+          {
+            "label": "zoom",
+            "held": false,
+            "median_ms": 15.2895
+          },
+          {
+            "label": "static",
+            "held": false,
+            "median_ms": 15.286100000000001
+          },
+          {
+            "label": "orbit-repeat",
+            "held": false,
+            "median_ms": 15.7951
+          },
+          {
+            "label": "orbit",
+            "held": true,
+            "median_ms": 20.43755
+          },
+          {
+            "label": "pan",
+            "held": true,
+            "median_ms": 21.5343
+          },
+          {
+            "label": "zoom",
+            "held": true,
+            "median_ms": 20.19125
+          },
+          {
+            "label": "static",
+            "held": true,
+            "median_ms": 20.29755
+          },
+          {
+            "label": "orbit-repeat",
+            "held": true,
+            "median_ms": 18.79055
+          }
+        ]
+      }
+    },
+    "2027": {
+      "launch": {
+        "pid": 64232,
+        "max_year": 2027,
+        "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0795-create-fixed-2027-02",
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+          "-q",
+          "-silent",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0795-create-fixed-2027-02\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0795-create-fixed-2027-02\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0795-create-fixed-2027-02\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0795-create-fixed-2027-02\\listener.log"
+        ],
+        "binaries": {
+          "AminScatter.dlx": "8742f4f7c4a73a3b9ad1895a881c0679744125ee1f76e4eae3c36f8baa7470dc",
+          "CyrusBrush.dlx": "b72358708d89d053356a713fdfee7ce603dbb9b615366dbfd60216f953c114ec",
+          "CyrusBrushStorage.dlh": "139fd957bd8968e8e4bf086f190633bab6362b740eaa9457022f48e674e0fe3c",
+          "CyrusScatterEdit.dlm": "d0714d4f984155b43f93304c376422fb6ae06146e289490233bcd99508884bdd",
+          "CyrusSurfaceAnalyzer.dlx": "39ae7757525401f1f99f4ee6a57400d18a2b83b23e72a8d77b72108d20d0f4fc"
+        },
+        "script_sha256": "cacf3e6b1af8796d96bca7ed2698cfb762d3baff7f90bc35a507b100ee0af4b4",
+        "normal_profile_modified": false,
+        "development_transport": true,
+        "profile_template": "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\3dsMax.ini",
+        "profile_template_sha256": "3420bd2f37a1e90a24980260de94d8ff115627ccb51864cb1055e118cd57090b"
+      },
+      "assertions": 60,
+      "receipts": {
+        "create-callbacks": {
+          "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0795-create-fixed-2027-02\\create-callbacks.json",
+          "sha256": "6e5bb2281cc7b9b405bc67ad116afafaf209debd9d06f602226f01f1980e7f03",
+          "checks": [
+            {
+              "passed": true,
+              "label": "One completed two-click object"
+            }
+          ]
+        },
+        "create-visibility": {
+          "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0795-create-fixed-2027-02\\create-visibility.json",
+          "sha256": "705f32931ae834652eb1c167102d26ba9f0467b29e74c9b8f8e868f5f24b9f1c",
+          "checks": [
+            {
+              "passed": true,
+              "label": "Creation witness contains one controller"
+            },
+            {
+              "passed": true,
+              "label": "Old draw function reproduces missing new icon with an empty display cache"
+            },
+            {
+              "passed": true,
+              "label": "New icon submits all three polylines at size 10 while held"
+            },
+            {
+              "passed": true,
+              "label": "Drawn ring reflects size 10"
+            },
+            {
+              "passed": true,
+              "label": "New icon submits all three polylines at size 30 while held"
+            },
+            {
+              "passed": true,
+              "label": "Drawn ring reflects size 30"
+            },
+            {
+              "passed": true,
+              "label": "New icon submits all three polylines at size 60 while held"
+            },
+            {
+              "passed": true,
+              "label": "Drawn ring reflects size 60"
+            },
+            {
+              "passed": true,
+              "label": "Icon sizing does not publish placements"
+            },
+            {
+              "passed": true,
+              "label": "Drawing icons does not require a display publication"
+            },
+            {
+              "passed": true,
+              "label": "Hidden controller does not draw"
+            },
+            {
+              "passed": true,
+              "label": "Unhidden controller draws again"
+            },
+            {
+              "passed": true,
+              "label": "Deleted controller does not draw"
+            },
+            {
+              "passed": true,
+              "label": "Undo restores the controller"
+            },
+            {
+              "passed": true,
+              "label": "Undo restores icon registration"
+            },
+            {
+              "passed": true,
+              "label": "Redo removes icon submission"
+            },
+            {
+              "passed": true,
+              "label": "Saved and reopened empty controller draws"
+            }
+          ]
+        },
+        "create-existing": {
+          "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0795-create-fixed-2027-02\\create-existing.json",
+          "sha256": "bdc7f6223374a1d495d61043cf7b084625476d26be73a9b88443c1b5189bdbfa",
+          "checks": [
+            {
+              "passed": true,
+              "label": "Populated workflow prerequisite"
+            },
+            {
+              "passed": true,
+              "label": "Second click finishes the sizing sequence"
+            },
+            {
+              "passed": true,
+              "label": "Two-click sequence adds exactly one controller"
+            },
+            {
+              "passed": true,
+              "label": "Workflow Scatter: creation preserves placements and layer caches"
+            },
+            {
+              "passed": true,
+              "label": "Workflow Scatter: creation does not upload unchanged buffers"
+            },
+            {
+              "passed": true,
+              "label": "A deliberate next placement starts a second object"
+            },
+            {
+              "passed": true,
+              "label": "Abort removes only the unfinished object"
+            }
+          ]
+        },
+        "workflow": {
+          "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0795-create-fixed-2027-02\\workflow.json",
+          "sha256": "091e4922dcbaef2fbe1512e6ffe1b16db9f8ac80812baa34ce0d01d4860ef58f",
+          "checks": [
+            {
+              "passed": true,
+              "label": "First Point layer produces requested candidates"
+            },
+            {
+              "passed": true,
+              "label": "Point replacement preserves placement identity and transforms"
+            },
+            {
+              "passed": true,
+              "label": "Point layer preserves first geometry layer"
+            },
+            {
+              "passed": true,
+              "label": "Removing second layer restores exact first-layer publication"
+            },
+            {
+              "passed": true,
+              "label": "Include clips all positions"
+            },
+            {
+              "passed": true,
+              "label": "Exclude hole remains empty"
+            },
+            {
+              "passed": true,
+              "label": "Scale falloff reaches transforms"
+            },
+            {
+              "passed": true,
+              "label": "Repeated paint unions coverage without extra instances"
+            },
+            {
+              "passed": true,
+              "label": "Erase creates a real unplanted pocket"
+            },
+            {
+              "passed": true,
+              "label": "Browsing retains exact placements"
+            },
+            {
+              "passed": true,
+              "label": "Browsing does not republish placements"
+            }
+          ]
+        },
+        "navigation0792": {
+          "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0795-create-fixed-2027-02\\navigation0792.json",
+          "sha256": "e138c9a35b8ff53ac1aa4433eed7e7ccf8c36db77c18501f28794958f7c556ec",
+          "checks": [
+            {
+              "passed": true,
+              "label": "All 18,759 displayed points retained"
+            },
+            {
+              "passed": true,
+              "label": "All 5,546 radius circles retained"
+            },
+            {
+              "passed": true,
+              "label": "Native line coordinates/colors exactly match all five scripted ring arrays"
+            },
+            {
+              "passed": true,
+              "label": "orbit: no placement/preparation/publication/upload changes"
+            },
+            {
+              "passed": true,
+              "label": "orbit: no Analyzer/render-bridge/live-event work"
+            },
+            {
+              "passed": true,
+              "label": "pan: no placement/preparation/publication/upload changes"
+            },
+            {
+              "passed": true,
+              "label": "pan: no Analyzer/render-bridge/live-event work"
+            },
+            {
+              "passed": true,
+              "label": "zoom: no placement/preparation/publication/upload changes"
+            },
+            {
+              "passed": true,
+              "label": "zoom: no Analyzer/render-bridge/live-event work"
+            },
+            {
+              "passed": true,
+              "label": "static: no placement/preparation/publication/upload changes"
+            },
+            {
+              "passed": true,
+              "label": "static: no Analyzer/render-bridge/live-event work"
+            },
+            {
+              "passed": true,
+              "label": "orbit-repeat: no placement/preparation/publication/upload changes"
+            },
+            {
+              "passed": true,
+              "label": "orbit-repeat: no Analyzer/render-bridge/live-event work"
+            },
+            {
+              "passed": true,
+              "label": "orbit held: no placement/preparation/publication/upload changes"
+            },
+            {
+              "passed": true,
+              "label": "orbit held: no Analyzer/render-bridge/live-event work"
+            },
+            {
+              "passed": true,
+              "label": "pan held: no placement/preparation/publication/upload changes"
+            },
+            {
+              "passed": true,
+              "label": "pan held: no Analyzer/render-bridge/live-event work"
+            },
+            {
+              "passed": true,
+              "label": "zoom held: no placement/preparation/publication/upload changes"
+            },
+            {
+              "passed": true,
+              "label": "zoom held: no Analyzer/render-bridge/live-event work"
+            },
+            {
+              "passed": true,
+              "label": "static held: no placement/preparation/publication/upload changes"
+            },
+            {
+              "passed": true,
+              "label": "static held: no Analyzer/render-bridge/live-event work"
+            },
+            {
+              "passed": true,
+              "label": "orbit-repeat held: no placement/preparation/publication/upload changes"
+            },
+            {
+              "passed": true,
+              "label": "orbit-repeat held: no Analyzer/render-bridge/live-event work"
+            },
+            {
+              "passed": true,
+              "label": "All 26 controllers cached without native error"
+            }
+          ]
+        }
+      },
+      "metrics": {
+        "create_entry_ms": 2359.6171000099275,
+        "sizing_callback_median_ms": 8.686649991432205,
+        "navigation": [
+          {
+            "label": "orbit",
+            "held": false,
+            "median_ms": 16.01605
+          },
+          {
+            "label": "pan",
+            "held": false,
+            "median_ms": 16.7879
+          },
+          {
+            "label": "zoom",
+            "held": false,
+            "median_ms": 17.01575
+          },
+          {
+            "label": "static",
+            "held": false,
+            "median_ms": 15.78735
+          },
+          {
+            "label": "orbit-repeat",
+            "held": false,
+            "median_ms": 16.326050000000002
+          },
+          {
+            "label": "orbit",
+            "held": true,
+            "median_ms": 14.35435
+          },
+          {
+            "label": "pan",
+            "held": true,
+            "median_ms": 13.972249999999999
+          },
+          {
+            "label": "zoom",
+            "held": true,
+            "median_ms": 14.4115
+          },
+          {
+            "label": "static",
+            "held": true,
+            "median_ms": 14.60415
+          },
+          {
+            "label": "orbit-repeat",
+            "held": true,
+            "median_ms": 14.78285
+          }
+        ]
+      }
+    }
+  },
+  "packages": {
+    "2026": {
+      "package": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\refinement-0.79.5-creation\\CyrusScatter-0.79.5-Max2026.mzp",
+      "sha256": "2b69e9ce5e0e8fd4dfdcc1351f3113f93c3793942b034cfc362f151b3c114854",
+      "manifest": {
+        "product": "Cyrus Scatter",
+        "version": "0.79.5",
+        "max_year": 2026,
+        "toolset": "14.38.33130",
+        "windows_sdk": "10.0.19041.0",
+        "configuration": "Release",
+        "native_id": "4307e83dd69f",
+        "files": {
+          "AminScatter.dlx": "5bc1d810f914881033764aa042f68d58a6c9e04594e8b527c77460b914acb4ce",
+          "Clipper2-LICENSE.txt": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+          "CyrusBrush.dlx": "c829b8526f24bc05989930e93f4a446764893740bdef30e49fd5f92afeea357b",
+          "CyrusBrushStorage.dlh": "3e32e8ce5abdb52ed84c84b291cf7d9c0ad6cee6878cab5ae7fe3d5762381481",
+          "CyrusScatter.mcr": "c18be72856b1d853941aac679af8aebfe5a57177ba509b2e03592fb72fc5d085",
+          "CyrusScatter.ms": "cacf3e6b1af8796d96bca7ed2698cfb762d3baff7f90bc35a507b100ee0af4b4",
+          "CyrusScatterEdit.dlm": "73ef0be420f319d1c5d70ad90b6a98b187d468fe5b6319af435bcf940a5fbbdf",
+          "CyrusScatterStartup.ms": "fdf38b3bc83187eecb34b833bfff2751e78626e9e3dba41aa20a0ff7ff9e8405",
+          "INSTALL.txt": "cb045b9714a62aa0946e954d6fa0d03954595cd8cdbcd931d5772cd65935c34d",
+          "Uninstall.ms": "59e2b84901fcefaae1dab59886cd2f4079df4f764c789238947e19c514b4ed49",
+          "install.ms": "c7faac995dde66a59586134da6f462f47c6b7bdc135381bbb722f13b4c4b3ce3",
+          "mzp.run": "f64354bbc36612f068414c4d1183c6e595a9e315a0d92780f774f4267c53bccd",
+          "nlohmann-json-LICENSE.txt": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603"
+        },
+        "licensing": {
+          "mode": "offline-team",
+          "key_id": "cyrus-team-a1b79a717a834e459d454a7768ffe205",
+          "term_days": 30
+        }
+      },
+      "host": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0795-create-fixed-2026-01",
+      "candidate": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\refine0795-20261011\\max2026-02",
+      "installed": false,
+      "qualification": [
+        "create-callbacks",
+        "create-visibility",
+        "create-existing",
+        "workflow",
+        "navigation0792"
+      ]
+    },
+    "2027": {
+      "package": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\refinement-0.79.5-creation\\CyrusScatter-0.79.5-Max2027.mzp",
+      "sha256": "437b3a5367611256abba8a6956decab9a19850b92b7372fa44653080ad992764",
+      "manifest": {
+        "product": "Cyrus Scatter",
+        "version": "0.79.5",
+        "max_year": 2027,
+        "toolset": "14.38.33130",
+        "windows_sdk": "10.0.19041.0",
+        "configuration": "Release",
+        "native_id": "ec627defe73b",
+        "files": {
+          "AminScatter.dlx": "8742f4f7c4a73a3b9ad1895a881c0679744125ee1f76e4eae3c36f8baa7470dc",
+          "Clipper2-LICENSE.txt": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+          "CyrusBrush.dlx": "b72358708d89d053356a713fdfee7ce603dbb9b615366dbfd60216f953c114ec",
+          "CyrusBrushStorage.dlh": "139fd957bd8968e8e4bf086f190633bab6362b740eaa9457022f48e674e0fe3c",
+          "CyrusScatter.mcr": "c18be72856b1d853941aac679af8aebfe5a57177ba509b2e03592fb72fc5d085",
+          "CyrusScatter.ms": "cacf3e6b1af8796d96bca7ed2698cfb762d3baff7f90bc35a507b100ee0af4b4",
+          "CyrusScatterEdit.dlm": "d0714d4f984155b43f93304c376422fb6ae06146e289490233bcd99508884bdd",
+          "CyrusScatterStartup.ms": "fdf38b3bc83187eecb34b833bfff2751e78626e9e3dba41aa20a0ff7ff9e8405",
+          "INSTALL.txt": "c98007add1eac94dbbbed43e751dcaa1eb6f038c79d5331e95b14dad84990560",
+          "Uninstall.ms": "59e2b84901fcefaae1dab59886cd2f4079df4f764c789238947e19c514b4ed49",
+          "install.ms": "884bd6ba0a6f0e4b9eb4dcc400f094ea6e90163cc63b706c10e2b2b72f9d8487",
+          "mzp.run": "f6863774b387198569ddce080538da56bf0a63b09f466ea4fe0e6fd5b91b4f2e",
+          "nlohmann-json-LICENSE.txt": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603"
+        },
+        "licensing": {
+          "mode": "offline-team",
+          "key_id": "cyrus-team-a1b79a717a834e459d454a7768ffe205",
+          "term_days": 30
+        }
+      },
+      "host": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\refine0795-create-fixed-2027-02",
+      "candidate": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\refine0795-20261011\\max2027-02",
+      "installed": false,
+      "qualification": [
+        "create-callbacks",
+        "create-visibility",
+        "create-existing",
+        "workflow",
+        "navigation0792"
+      ]
+    }
+  },
+  "limitations": [
+    "SDK callbacks and traced geometry submission are not physical mouse input or presented pixels.",
+    "Scripted navigation times are not presented FPS.",
+    "Initial settings-panel mounting remains B21; no UI speedup is claimed.",
+    "No artist installation, normal-profile mutation, Git push, or website change."
+  ]
+}

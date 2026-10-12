@@ -1,0 +1,242 @@
+{
+  "artist-guide": {
+    "sections": [
+      {
+        "title": "Start with a layer",
+        "paragraphs": [
+          "Create a Cyrus Scatter controller, add a layer, assign its receiving surfaces and add models or Points. Set Amount, then press **Update scatter** in Manual mode. Live responds to relevant edits.",
+          "In Geometry > Cyrus > Cyrus Scatter, click to place, move to size the icon, and click to finish. Right-click to exit Create mode. Each layer owns its surfaces, sources, amount, layout, transforms and spacing. Layer order matters when between-layer spacing is enabled.",
+          "Use Add, Copy, Remove, Up and Down to organize layers. Copy includes independent Paint Areas. Visible controls viewport display; Enabled controls the layer contribution. Removing an assignment does not delete the source scene object."
+        ]
+      },
+      {
+        "title": "Surfaces, models and optional containers",
+        "paragraphs": [
+          "Add receivers to the selected layer. Unchanged receivers retain their base random streams when another receiver is added, renamed or reordered. Density gives each receiver its own count below the cap; Fixed Total redistributes the same total, so some existing candidates may be removed. Geometry changes, Relax, masks and shared spacing can change accepted output.",
+          "Add Point makes placement markers without final model geometry. Replace Point keeps its source row identity. An Empty choice creates weighted gaps in Candidate budget mode; positive-weight Empty is rejected by Accepted target. A Point and an Empty are different source kinds.",
+          "Source controls include label, identification color, weight, scale, radius, vertical offset, Follow Scale and forward axis. Labels do not rename scene objects. Radius is a simplified footprint. Assignment-group colors are separate from identification colors.",
+          "Source containers are optional palettes. New rectangles start with **Enable collection** off. Position and resize first, then enable collection to collect eligible source pivots. Disabling collection parks models while retaining settings. Manual waits for Update; Live applies relevant membership changes."
+        ]
+      },
+      {
+        "title": "Layout and Amount",
+        "paragraphs": [
+          "Random mix chooses weighted sources. Clusters choose assignment groups across space. Spline bands assign sources in consecutive inside/outside strips around closed guides; the first matching band wins. Surface Analyzer consumes separately analyzed boundary, path and point channels.",
+          "Spline bands accept Points directly under Models / Points. Width is a world-space distance from the guide: scaling a rectangle changes its outline, not its band width. Bands and Include/Exclude masks use world XY.",
+          "Amount supports fixed Count or area Density. Candidate budget can underfill after restrictions. Accepted target makes extra bounded attempts; it cannot guarantee an impossible count. Use a fixed seed for repeatable comparisons."
+        ]
+      },
+      {
+        "title": "Vector painting",
+        "paragraphs": [
+          "Turn on **Use Paint Areas**, add a named area and choose one receiver from the layer. Select Paint or Erase, set Radius and press Start Brush. Paint joins circular footprints into a vector region; Erase cuts coverage and holes. Stop ends the session.",
+          "Areas share the layer models and population. Overlap contributes coverage once per candidate. Turning Paint Areas off retains the areas and uses the full receiver. Fill and Clear operate on the selected area; keep a saved copy before major edits.",
+          "Inward/outward feather widths and separate density/scale curves shape the edge. Density changes acceptance; scale multiplies model size. A 100 mm radius has a 200 mm diameter. Borders describe coverage, not guaranteed accepted plants.",
+          "Vector painting supports planes and terrain single-valued in receiver-local XY, including transformed receivers. Closed, vertical, folded and overlapping projected receivers are rejected. General scattering on curved receivers is a separate supported workflow.",
+          "The vector format introduced in 0.78 does not convert earlier stroke setups. Preserve older scenes with their matching build and create a new setup for the vector workflow."
+        ]
+      },
+      {
+        "title": "Area limits, transforms and spacing",
+        "paragraphs": [
+          "Closed Include shapes union their eligible domains. Exclude takes precedence. Area masks test placement support rather than trimming model geometry. [Layout & soft boundaries](#/guide/layout-falloff) explains guide widths and edge curves.",
+          "Rotation, XYZ scale, whole scale and movement have independent ranges and reset buttons. Projection and orientation settings affect final placement. Within-layer and between-layer spacing are independent rules; radius, factor, gap and Follow Scale determine simplified clearance.",
+          "CS Edit uses stable instance identities. Generation changes can invalidate bindings; preserve the scene before clearing edits. Radius overlays are inspection aids, not exact mesh collision volumes."
+        ]
+      },
+      {
+        "title": "Preview, updates, output and diagnostics",
+        "paragraphs": [
+          "Plant centres shows one marker per accepted placement. Point Cloud, Proxy and Mesh have their own display budgets, so shown counts can be lower than accepted output. Mesh uses evaluated viewport geometry and preview coloring; renderer materials are a separate output concern.",
+          "Manual retains the last completed result until Update scatter. Live updates relevant dependencies. A failed successor retains the previous complete result and reports the failure. If an Analyzer is stale, Analyze it first and then update Manual Scatter.",
+          "Local identification-color edits retain unchanged sibling previews. Unchanged navigation reuses prepared display data. Heavy changed layers, cold loading and first panel construction can still take time.",
+          "Statistics distinguish requested, accepted, shown and output counts. Optional diagnostics record local bounded events; recording is separate from sharing or permission to train."
+        ]
+      },
+      {
+        "title": "Final artist acceptance",
+        "paragraphs": [
+          "Use the installer for your Max year through Scripting > Run Script, then restart Max so the script and native modules match. Current development packages target Max 2026 and 2027; renderer and physical-input coverage varies by workflow.",
+          "Team-pilot builds expose License / activation. Export an activation request and import the returned license. The pilot license lasts 30 days from issuance; expiry locks authoring while existing scenes remain loadable/renderable.",
+          "Test on a scene copy: receivers, Points/models, paint/erase, Include/Exclude, curves, Manual/Live, Undo/Redo, save/reopen and intended renderer. Source 0.79.6 corrects typed distance conversion; the last packaged 0.79.5 delivery retains the earlier limitation. Use saved scene units for receiver-bound Paint/Edit data. Physical picker/DPI/tablet and long-session acceptance remain open.",
+          "[View the changelog](#/changelog) for additions and fixes, or use the [testing walkthrough](#/checklist) to record your own observations."
+        ]
+      }
+    ]
+  },
+  "layout-falloff": {
+    "sections": [
+      {
+        "title": "Assignment and guides",
+        "paragraphs": [
+          "Random mix uses model weights; Clusters chooses assignment groups. Spline bands use closed world-XY guides, ordered inside/outside widths and explicit Models / Points or assignment-group choices. First matching band wins.",
+          "Consecutive widths accumulate separately on each side. Two 200 mm inside bands form 0-200 and 200-400 mm strips. Scaling or rotating a spline transforms its outline before distance is measured; it does not scale the width setting.",
+          "Analyzer assignment consumes cached boundary, street, centre-line or point data. Assignment, Analyzer Area masks and boundary falloff have separate Analyzer references. Analyze stale inputs before updating Scatter."
+        ]
+      },
+      {
+        "title": "Boundary and street controls",
+        "paragraphs": [
+          "Face outward uses the source Forward axis. Corner blending changes facing near adjacent edges; hole boundaries face into the hole. Edge Border supports ordered rows, row spacing, jitter, protected corner samples and local XYZ rotation.",
+          "Local offsets follow the resulting orientation. They do not resample an inset boundary or guarantee the entire model stays inside. Keep on surface has its own role.",
+          "Street Trim shortens connected chains in their traversal direction. Closed loops have no ends to trim. Centre-line Street offset shifts in world XY: positive away, negative toward the nearest street. It requires street data."
+        ]
+      },
+      {
+        "title": "Masks and falloff",
+        "paragraphs": [
+          "Include domains union; Exclude overrides. Analyzer centre-line bands and point discs may union as a mask. Full width is the complete band width. Point radius here differs from source collision radius.",
+          "New area rows start as Include. Multi-row selection shows mixed modes explicitly. Choose exactly one Area spline or an Analyzer boundary as the falloff target. Delete width removes an edge strip; density and scale ramps follow that strip when deletion is enabled.",
+          "The curve graph uses normalized distance on X and percentage on Y. Density thins acceptance; scale can exceed 100%. Endpoint values apply beyond the ramp. Multiple falloffs can multiply scale and accumulate deletion. Graph edits commit immediately; Close is not Cancel.",
+          "Use the scene saved system units. Cross-system-unit conversion of serialized per-area fade distances remains a known limitation."
+        ]
+      },
+      {
+        "title": "Edit and preview distinctions",
+        "paragraphs": [
+          "CS Edit binds stable instance identities rather than row order. Missing or suspended identities are not silently reassigned. Preserve edits before changing generation settings.",
+          "Preview budgets and representation do not reduce the accepted population. Point placeholders have no final model geometry until replaced. Empty sources represent weighted gaps. [Review source and radius controls](#/controls?topic=models)."
+        ]
+      }
+    ]
+  },
+  "surface-analyzer": {
+    "sections": [
+      {
+        "title": "Controls",
+        "paragraphs": [
+          "Surface Analyzer is a separately versioned companion (0.14). Assign a supported planar mesh and use Analyze to publish boundary, centre-line, street and sample-point guides.",
+          "Choose Auto or a method override; configure fit radius, point spacing, count limits, relaxation and analysis resolution. Higher resolution increases precision and work. Manual waits for Analyze; Real-time responds to relevant changes."
+        ]
+      },
+      {
+        "title": "Elements, geometry and results",
+        "paragraphs": [
+          "Edge-connected mesh elements are analyzed independently. Separate planar elements may have different orientations or heights; holes remain part of their element. Weld vertices to join topology. Nonplanar elements, closed solids and invalid boundaries are rejected.",
+          "Auto chooses a straight region, radial ring or branched path heuristically. Raster resolution can miss narrow features; eligible regions need not receive complete coverage. Fit radius limits point-centre clearance and spacing can leave branches empty.",
+          "Surface area sums world-space triangle areas rather than unioning overlaps. Region area is a mode-dependent feasible-area estimate. Path is total guide length."
+        ]
+      },
+      {
+        "title": "Output and persistence",
+        "paragraphs": [
+          "Relevant edits mark guides pending. Analyze refreshes them. Current/pending state and settings survive save/reopen. Matching Scatter rejects stale linked guides while retaining its last completed output.",
+          "Exported splines/helpers are independent snapshots. Cached overlay toggles do not rerun analysis. Analyzer supports separately oriented planar elements; the Scatter adapter for path bands and point masks evaluates in world XY."
+        ]
+      },
+      {
+        "title": "Build and checks",
+        "paragraphs": [
+          "Install the matching Max-year package and restart Max. Source meshes remain unchanged. Large meshes, many elements or high analysis resolution can still pause the UI because analysis is synchronous.",
+          "Test holes, attached elements, narrow branches, fit radius, Manual/Real-time and save/reopen on a copy. [Read troubleshooting & limits](#/troubleshooting) before interpreting an empty result."
+        ]
+      }
+    ]
+  },
+  "product-roadmap": {
+    "sections": [
+      {
+        "title": "The product today",
+        "paragraphs": [
+          "The main product is artist-controlled scattering in 3ds Max: layers, receivers, models and Points, optional vector Paint Areas, layouts, area limits, transforms, spacing, previews and exact output. AI is optional and separate.",
+          "Current development source is Scatter 0.79.6 / schema 56, with publication recovery and typed distance migration checked in Max 2026/2027. The last packaged delivery remains 0.79.5. Physical input, sustained heavy scenes, full renderer/platform coverage and commercial release readiness remain separate acceptance work."
+        ]
+      },
+      {
+        "title": "Assistant access today",
+        "paragraphs": [
+          "The separate MCP foundation supports cached inspection and a smaller approved authoring subset. A feature appearing in the local control catalog does not mean an assistant can invoke it.",
+          "Current MCP does not provide full vector painting, arbitrary artist-scene editing or automatic renderer execution. [Read the MCP guide](#/guide/mcp) for scope and approval boundaries."
+        ]
+      },
+      {
+        "title": "Learning foundations today",
+        "paragraphs": [
+          "An offline experimental ranker explores bounded alternatives. It is not a production reference-image designer or a personal artist-trained model. Local diagnostic recording, assistant sharing and training consent are separate choices."
+        ]
+      },
+      {
+        "title": "Roadmap",
+        "paragraphs": [
+          "The stages below describe direction, not delivery dates or promises. Each stage needs a useful artist workflow and independent acceptance."
+        ]
+      },
+      {
+        "title": "1. Qualify the everyday artist workflow",
+        "paragraphs": [
+          "Complete physical picker, brush, curve, DPI and tablet testing; strengthen system-unit conversion, long sessions, renderer lifecycle and install/recovery coverage."
+        ]
+      },
+      {
+        "title": "2. Broaden MCP through complete artist tasks",
+        "paragraphs": [
+          "Expand supported tasks with explicit units, settings ownership, bounded work, local approval and reliable recovery. Keep ordinary artist controls available."
+        ]
+      },
+      {
+        "title": "3. Build a recipe library and artist review companion",
+        "paragraphs": [
+          "Let artists map plant roles to their own assets, compare deterministic variations and save approved editable recipes. Begin with curated examples."
+        ]
+      },
+      {
+        "title": "4. Prove personal learning and reference assistance",
+        "paragraphs": [
+          "Evaluate consented learning and reference-image suggestions against artist decisions and useful scene results before product integration."
+        ]
+      },
+      {
+        "title": "5. Qualify studio workflows and wider delivery",
+        "paragraphs": [
+          "Validate representative hardware, renderers, deployment, recovery and licensing workflows before expanding supported delivery."
+        ]
+      },
+      {
+        "title": "Reading the status labels",
+        "paragraphs": [
+          "Current means implemented within documented limits. Experimental means a bounded prototype. Planned means future work. A development version or successful test count is not general release certification."
+        ]
+      }
+    ]
+  },
+  "mcp": {
+    "sections": [
+      {
+        "title": "Install a matching offline package",
+        "paragraphs": [
+          "MCP is a separate optional service. Install its matching offline package and the matching Scatter plugin, restart Max and run the supplied automation startup script. Scatter works without an assistant connection.",
+          "The MCP foundation remains independently versioned at 0.73.0. Its qualified authoring host is Max 2027; Scatter Max 2026 tests do not automatically qualify MCP on that host."
+        ]
+      },
+      {
+        "title": "Enroll, review and apply",
+        "paragraphs": [
+          "Enroll an allowed site, mesh sources and planting regions. Read context, propose a supported plan, validate it and review the normalized settings in Max. Apply only the exact locally approved proposal.",
+          "Read-only inspection of an existing Scatter setup does not grant edit authority. Relevant scene changes require fresh context. Saving a result does not preserve permission for a later connection."
+        ]
+      },
+      {
+        "title": "Tools and resources",
+        "paragraphs": [
+          "The interface supports connection/context inspection, plan validation, approved application, operation status, cached diagnostics/configuration/publication and bounded row reads. Viewport capture requires explicit sharing.",
+          "The control catalog describes more than the write API. Vector Paint Area authoring, containers, CS Edit mutation, complex terrain, map enrollment, renderer execution and ML are outside the current public authoring contract."
+        ]
+      },
+      {
+        "title": "Bounds and supported semantics",
+        "paragraphs": [
+          "Design scopes allow up to three mesh sources, three regions/layers and 2,000 aggregate requested candidates. The supported site geometry is static, horizontal and convex; arbitrary modifiers and renderer proxies are not admitted design sources.",
+          "Lengths are metres, rotations degrees and scales multipliers. A request is a candidate budget, so spacing and masks can produce a shortfall. Unsupported fields fail explicitly.",
+          "Automation owns the objects it creates and cannot rewrite arbitrary artist objects. Local approval, scene freshness, ownership and bounded work apply to every supported mutation."
+        ]
+      },
+      {
+        "title": "Diagnostics and recovery",
+        "paragraphs": [
+          "After an unknown operation outcome, query the existing operation rather than assume failure and retry blindly. Incomplete recovery blocks further writes.",
+          "Local recording is off by default and bounded. Recording does not grant sharing or training permission. Keep connection credentials private. The website itself does not connect to Max or collect scene telemetry."
+        ]
+      }
+    ]
+  }
+}

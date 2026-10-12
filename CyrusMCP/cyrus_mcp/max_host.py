@@ -412,7 +412,7 @@ class MaxHost:
                 obj.setLayerTransfer(True)
                 # One evaluator; versioned plans cannot select retired policies.
                 obj.cyrusEnabled=True
-                for field in ("procRuleScope","procRuleA","procRuleB","procRuleEnabled","procRuleGap","procRuleMultiplier","procRulePlanar"):
+                for field in ("procRuleScope","procRuleA","procRuleB","procRuleEnabled","procRuleGapWU","procRuleMultiplier","procRulePlanar"):
                     rt.setProperty(obj,rt.Name(field),rt.Array())
                 obj.updateMode=1
                 obj.surfaceNodes=rt.Array(self.site)
@@ -462,7 +462,7 @@ class MaxHost:
                     layer.rotZMin,layer.rotZMax=spec["yaw_degrees"]
                     layer.wholeScaleMin=layer.wholeScaleMax=1.0
                     layer.sourceWeights=rt.Array(*(s["weight"] for s in spec["sources"]))
-                    for field,default in (("sourceZOffsets",0.0),("sourceScales",1.0),("sourceRadii",0.0),("sourceFollowScale",False),("sourceShowRadius",False),("sourcePoint",False),("sourceEmpty",False),("sourceForwardAxes",1)):
+                    for field,default in (("sourceZOffsetsWU",0.0),("sourceScales",1.0),("sourceRadiiWU",0.0),("sourceFollowScale",False),("sourceShowRadius",False),("sourcePoint",False),("sourceEmpty",False),("sourceForwardAxes",1)):
                         rt.setProperty(layer,rt.Name(field),rt.Array(*(default for _ in sources)))
                     layer.sourceColors=rt.Array(*(rt.color(65+45*i,175,110) for i in range(len(sources))))
                     layer.areaNodes=rt.Array(shape)

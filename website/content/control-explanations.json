@@ -1,0 +1,2005 @@
+{
+  "general.host.enabledCheck": {
+    "label": "Enable Cyrus Scatter",
+    "help": "Enable calculation and output for this entire Scatter setup.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:2850",
+      "AminScatter/tools/ui/templates/unified-core.ms:2950"
+    ]
+  },
+  "general.updateUI.updateRadio": {
+    "label": "Viewport update",
+    "help": "Manual keeps the last complete planting until an explicit Update. Live schedules a new result after relevant changes; browsing and unrelated scene changes should not generate placements.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:2960",
+      "AminScatter/tools/ui/templates/unified-core.ms:2966"
+    ]
+  },
+  "general.updateUI.updateNow": {
+    "label": "Update scatter",
+    "help": "Calculate enabled layers in order.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:2961",
+      "AminScatter/tools/ui/templates/unified-core.ms:2964"
+    ]
+  },
+  "general.previewUI.previewCheck": {
+    "label": "Show preview",
+    "help": "Show or hide the Scatter viewport preview. This display switch does not delete accepted plants or disable the layer recipe.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3056",
+      "AminScatter/tools/ui/templates/unified-core.ms:3089"
+    ]
+  },
+  "general.previewUI.displayModeDrop": {
+    "label": "Display mode",
+    "help": "Choose Point Cloud samples, a simplified Proxy, source Mesh, or one Plant centres marker per shown placement. Representation and display budgets are separate from accepted and final-output counts.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3057",
+      "AminScatter/tools/ui/templates/unified-core.ms:3085"
+    ]
+  },
+  "general.previewUI.proxyShapeDrop": {
+    "label": "Proxy shape",
+    "help": "Choose Box, Sphere or Pyramid for Proxy display. These are simplified viewport shapes, not replacement render models or a collision-mesh setting.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3058",
+      "AminScatter/tools/ui/templates/unified-core.ms:3086"
+    ]
+  },
+  "general.previewUI.instancesLimitSpin": {
+    "label": "Instances/layer",
+    "help": "Limit the number of instances shown per layer in Proxy and Mesh display. It is a preview budget, not the requested or accepted population.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3059",
+      "AminScatter/tools/ui/templates/unified-core.ms:3087"
+    ]
+  },
+  "general.previewUI.faceLimitSpin": {
+    "label": "Faces/layer",
+    "help": "Limit preview faces per layer in geometry display. A budget can show only a subset of accepted planting; it does not lower the final population.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3060",
+      "AminScatter/tools/ui/templates/unified-core.ms:3088"
+    ]
+  },
+  "general.previewUI.identificationDrop": {
+    "label": "Color by",
+    "help": "Use model or layer identification colors in Points, Proxy and shaded Mesh previews.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3061",
+      "AminScatter/tools/ui/templates/unified-core.ms:3098"
+    ]
+  },
+  "general.previewUI.pointColorRadio": {
+    "label": "Preview color",
+    "help": "Choose one Solid Color or model/layer Identification Colors for the preview. Assignment-group colors and source weights remain separate.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3062",
+      "AminScatter/tools/ui/templates/unified-core.ms:3099"
+    ]
+  },
+  "general.previewUI.solidColorPicker": {
+    "label": "Solid preview color",
+    "help": "Choose the preview color used when Solid Color is selected. This does not edit source materials or assignment groups.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3063",
+      "AminScatter/tools/ui/templates/unified-core.ms:3100"
+    ]
+  },
+  "general.previewUI.budgetSpin": {
+    "label": "Point limit",
+    "help": "Cap the viewport point-sample budget. This is a presentation limit rather than a planting count or a collision setting.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3064",
+      "AminScatter/tools/ui/templates/unified-core.ms:3096"
+    ]
+  },
+  "general.previewUI.pointsSpin": {
+    "label": "Points/plant",
+    "help": "Set the number of source-geometry samples used to represent each plant in Point Cloud mode. Plant centres uses one centre marker instead; neither setting creates more plants.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3065",
+      "AminScatter/tools/ui/templates/unified-core.ms:3090"
+    ]
+  },
+  "general.previewUI.radiusLimitSpin": {
+    "label": "Radii / layer",
+    "help": "Limit how many enabled source-radius overlays are shown per layer. Zero hides these overlays; this display limit does not change collision radii.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3066",
+      "AminScatter/tools/ui/templates/unified-core.ms:3083"
+    ]
+  },
+  "general.previewUI.radiusAllCheck": {
+    "label": "Show All Radii",
+    "help": "Show all enabled radius overlays instead of applying the Radii / layer limit. The collision settings are unchanged.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3067",
+      "AminScatter/tools/ui/templates/unified-core.ms:3084"
+    ]
+  },
+  "general.previewUI.iconSpin": {
+    "label": "Icon size",
+    "help": "Set the world-space size of the Scatter controller icon. This changes its scene helper, not plant scale or brush size.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3069",
+      "AminScatter/tools/ui/templates/unified-core.ms:3091"
+    ]
+  },
+  "general.previewUI.refreshButton": {
+    "label": "Refresh preview",
+    "help": "Explicitly refresh enabled layers and their preview from current settings. This calls the setup update, so it can publish pending edits in Manual mode; it is not a passive statistics read.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3070",
+      "AminScatter/tools/ui/templates/unified-core.ms:3092"
+    ]
+  },
+  "general.previewUI.autoRenderCheck": {
+    "label": "Automatic final render",
+    "help": "Enable the automatic final-render bridge for the completed planting. Viewport representation and budgets remain separate; renderer and material combinations still require qualification.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3071",
+      "AminScatter/tools/ui/templates/unified-core.ms:3095"
+    ]
+  },
+  "general.previewUI.clearBakedButton": {
+    "label": "Remove old baked output",
+    "help": "Delete this setup's owned baked scene output while preserving original sources. The action re-enables preview and automatic final rendering; it is an output-cleanup action, not a Bake button.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3072",
+      "AminScatter/tools/ui/templates/unified-core.ms:3093",
+      "AminScatter/tools/ui/templates/unified-core.ms:1983",
+      "AminScatter/tools/ui/templates/unified-core.ms:1989"
+    ]
+  },
+  "general.surface.receiversList": {
+    "label": "Surfaces",
+    "help": "List the selected layer's linked receiving surfaces. Highlight rows to unlink them; the list is distinct from source models and Paint Area targets.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:2985",
+      "AminScatter/tools/ui/templates/unified-core.ms:3038"
+    ]
+  },
+  "general.surface.removeSurfaces": {
+    "label": "Remove selected surfaces",
+    "help": "Unlink highlighted receivers from the selected layer without deleting scene objects. Paint Areas targeting a removed receiver remain inactive with saved borders until that same node is restored.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:2986",
+      "AminScatter/tools/ui/templates/unified-core.ms:3039"
+    ]
+  },
+  "general.surface.sharedPick": {
+    "label": "Pick receiving surface",
+    "help": "Add a receiving surface without replacing existing assignments.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:2987",
+      "AminScatter/tools/ui/templates/unified-core.ms:3037"
+    ]
+  },
+  "general.surface.surfacesButton": {
+    "label": "Receiving surfaces...",
+    "help": "Add multiple receiving surfaces by name. Existing assignments are kept. Choose the target for each Paint Area under Painting.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:2989",
+      "AminScatter/tools/ui/templates/unified-core.ms:3040"
+    ]
+  },
+  "general.surface.containersToggle": {
+    "label": "Global source containers",
+    "help": "Show or hide the setup's optional global source-palette controls. A consuming layer must choose Global containers in its Models source-pool control (Assets in the optional layer editor); this disclosure does not enable rectangle collection.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:2991",
+      "AminScatter/tools/ui/templates/unified-core.ms:3036"
+    ]
+  },
+  "general.surface.globalContainers": {
+    "label": "Global source containers",
+    "help": "List rectangles linked to the setup's global source pool. Select one before unlinking it. Layers use the pool only when their source-pool mode is Global containers.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:2992"
+    ]
+  },
+  "general.surface.createContainer": {
+    "label": "Create source rectangle",
+    "help": "Create and link a global source rectangle with collection disabled. Position it first, then enable collection; only layers using the global pool consume its eligible models.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:2993",
+      "AminScatter/tools/ui/templates/unified-core.ms:3044"
+    ]
+  },
+  "general.surface.pickContainer": {
+    "label": "Pick source rectangle",
+    "help": "Link an existing Cyrus Source Container to the global pool.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:2994",
+      "AminScatter/tools/ui/templates/unified-core.ms:3045"
+    ]
+  },
+  "general.surface.removeContainer": {
+    "label": "Unlink selected rectangle",
+    "help": "Unlink the rectangle while keeping its scene node and registered model settings.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:2995",
+      "AminScatter/tools/ui/templates/unified-core.ms:3046"
+    ]
+  },
+  "general.manager.layerList": {
+    "label": "Layer | placed | status",
+    "help": "Select the layer whose surfaces, models, amount and rules are being edited. The listed order controls evaluation; selecting a layer alone does not request new planting.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3119",
+      "AminScatter/tools/ui/templates/unified-core.ms:3162"
+    ]
+  },
+  "general.manager.editButton": {
+    "label": "Edit layer in window...",
+    "help": "Optional floating view of the same layer settings. Select a layer to edit it below in Modify.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3120",
+      "AminScatter/tools/ui/templates/unified-core.ms:3164"
+    ]
+  },
+  "general.manager.addButton": {
+    "label": "Add layer",
+    "help": "Add a layer and edit its controls below. Layers calculate from top to bottom.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3121",
+      "AminScatter/tools/ui/templates/unified-core.ms:3165"
+    ]
+  },
+  "general.manager.copyButton": {
+    "label": "Copy",
+    "help": "Copy this layer, its models, surfaces and Paint Areas.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3122",
+      "AminScatter/tools/ui/templates/unified-core.ms:3175"
+    ]
+  },
+  "general.manager.removeButton": {
+    "label": "Remove",
+    "help": "Remove this layer and its Paint Areas. Undo restores them.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3123",
+      "AminScatter/tools/ui/templates/unified-core.ms:3180"
+    ]
+  },
+  "general.manager.layerColor": {
+    "label": "Layer identification color",
+    "help": "Identification color for this layer. Choose Layer colors in Viewport & render to display it.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3124",
+      "AminScatter/tools/ui/templates/unified-core.ms:3159"
+    ]
+  },
+  "general.manager.nameEdit": {
+    "label": "Layer name",
+    "help": "Rename the selected layer without changing its identity.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3125",
+      "AminScatter/tools/ui/templates/unified-core.ms:3181"
+    ]
+  },
+  "general.manager.visibleCheck": {
+    "label": "Visible in viewport",
+    "help": "Hide display only. Hidden layers still calculate and affect spacing.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3126",
+      "AminScatter/tools/ui/templates/unified-core.ms:3185"
+    ]
+  },
+  "general.manager.enabledCheck": {
+    "label": "Enabled in output",
+    "help": "Include this layer in calculation and final output.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3127",
+      "AminScatter/tools/ui/templates/unified-core.ms:3189"
+    ]
+  },
+  "general.manager.upButton": {
+    "label": "Move up",
+    "help": "Evaluate earlier; earlier layers occupy space first.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3128",
+      "AminScatter/tools/ui/templates/unified-core.ms:3193"
+    ]
+  },
+  "general.manager.downButton": {
+    "label": "Move down",
+    "help": "Evaluate after the preceding layers.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3129",
+      "AminScatter/tools/ui/templates/unified-core.ms:3194"
+    ]
+  },
+  "general.diagnostics.startButton": {
+    "label": "Start recording",
+    "help": "Record engineering events in this Max process. Off by default; at most ten minutes, 4,096 events and 4 MiB.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4394",
+      "AminScatter/tools/ui/templates/unified-core.ms:4481"
+    ],
+    "owner_context": "Local Max process diagnostic session"
+  },
+  "general.diagnostics.stopButton": {
+    "label": "Stop",
+    "help": "Stop recording and retain the bounded history in memory.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4395",
+      "AminScatter/tools/ui/templates/unified-core.ms:4482"
+    ],
+    "owner_context": "Local Max process diagnostic session"
+  },
+  "general.diagnostics.saveButton": {
+    "label": "Save report...",
+    "help": "Choose a local JSON file, stop recording and save its retained pages. No MCP or upload is required.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4396",
+      "AminScatter/tools/ui/templates/unified-core.ms:4483"
+    ],
+    "owner_context": "Local Max process diagnostic session"
+  },
+  "general.diagnostics.refreshButton": {
+    "label": "Read recording status",
+    "help": "Read recorder state without evaluating the scene. Status has no polling timer.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4397",
+      "AminScatter/tools/ui/templates/unified-core.ms:4487"
+    ],
+    "owner_context": "Local Max process diagnostic session"
+  },
+  "general.editor.updateNow": {
+    "label": "Update setup",
+    "help": "Recalculate every enabled layer in this setup, in order.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:330",
+      "AminScatter/tools/ui/templates/unified-core.ms:498"
+    ]
+  },
+  "general.editor.layerList": {
+    "label": "Layer",
+    "help": "Choose the owning layer shown in the floating editor. This changes editing context and stops tools before rebinding; scene-object selection does not silently switch this editor to another layer.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:331",
+      "AminScatter/tools/ui/templates/unified-core.ms:491"
+    ]
+  },
+  "general.editor.assetsTab": {
+    "label": "Assets",
+    "help": "Models and receiving surfaces for this layer.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:332",
+      "AminScatter/tools/ui/templates/unified-core.ms:485"
+    ]
+  },
+  "general.editor.populationTab": {
+    "label": "Population",
+    "help": "Show this layer's count or density, area constraints and bounded retry settings. Paint Areas do not own separate source collections or population quotas.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:333",
+      "AminScatter/tools/ui/templates/unified-core.ms:486"
+    ]
+  },
+  "general.editor.paintTab": {
+    "label": "Paint",
+    "help": "Optional receiver-bound Paint Areas.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:334",
+      "AminScatter/tools/ui/templates/unified-core.ms:487"
+    ]
+  },
+  "general.editor.transformTab": {
+    "label": "Transform",
+    "help": "Layer random transforms and source assignment.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:335",
+      "AminScatter/tools/ui/templates/unified-core.ms:488"
+    ]
+  },
+  "general.editor.spacingTab": {
+    "label": "Spacing",
+    "help": "Show within-layer and between-layer spacing, instance-radius overrides, candidate Relax and accepted-layer cleanup. Model-owning paint-set spacing is retired.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:336",
+      "AminScatter/tools/ui/templates/unified-core.ms:489"
+    ]
+  },
+  "general.editor.statisticsTab": {
+    "label": "Statistics",
+    "help": "Cached calculation results and workflow help.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:337",
+      "AminScatter/tools/ui/templates/unified-core.ms:490"
+    ]
+  },
+  "general.editor.refreshButton": {
+    "label": "Refresh fields",
+    "help": "Read current settings and cached counts; does not rebuild placements.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:352",
+      "AminScatter/tools/ui/templates/unified-core.ms:499"
+    ]
+  },
+  "layer.setsUI.paintedCheck": {
+    "label": "Use Paint Areas",
+    "help": "Restrict this layer to its painted areas. Turn off to scatter across all its surfaces.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3201",
+      "AminScatter/tools/ui/templates/unified-core.ms:3234"
+    ],
+    "owner_context": "Selected layer coverage"
+  },
+  "layer.setsUI.setList": {
+    "label": "Selected Paint Area",
+    "help": "Choose the named Paint Area to edit. Each area targets one receiver and shares its layer's models and amount; selection alone does not add plants or create another quota.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3202",
+      "AminScatter/tools/ui/templates/unified-core.ms:3230"
+    ],
+    "owner_context": "Selected Paint Area of the layer"
+  },
+  "layer.setsUI.addButton": {
+    "label": "Add Paint Area (+)",
+    "help": "Create a named area. Painting again edits the selected area.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3203",
+      "AminScatter/tools/ui/templates/unified-core.ms:3231"
+    ],
+    "owner_context": "Selected layer coverage"
+  },
+  "layer.setsUI.removeButton": {
+    "label": "Remove",
+    "help": "Remove the selected area. Undo restores it.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3204",
+      "AminScatter/tools/ui/templates/unified-core.ms:3232"
+    ],
+    "owner_context": "Selected Paint Area of the layer"
+  },
+  "layer.setsUI.nameEdit": {
+    "label": "Paint Area name",
+    "help": "Rename the selected Paint Area without changing its identity, target or vector borders.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3205",
+      "AminScatter/tools/ui/templates/unified-core.ms:3233"
+    ],
+    "owner_context": "Selected Paint Area of the layer"
+  },
+  "layer.setsUI.targetList": {
+    "label": "Surface",
+    "help": "Explicit target within this layer. An area with saved paint cannot be silently retargeted.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3206",
+      "AminScatter/tools/ui/templates/unified-core.ms:3240"
+    ],
+    "owner_context": "Selected Paint Area of the layer"
+  },
+  "layer.setsUI.enabledCheck": {
+    "label": "Enable Paint Area",
+    "help": "Include or exclude the selected Paint Area's coverage while preserving its saved borders. Enabled overlapping areas union coverage within the layer, so overlap does not duplicate candidates.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3207",
+      "AminScatter/tools/ui/templates/unified-core.ms:3239"
+    ],
+    "owner_context": "Selected Paint Area of the layer"
+  },
+  "layer.sourceUI.sourceName": {
+    "label": "Source label",
+    "help": "Label inside Scatter only. Clear it to use the scene object's name.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3255",
+      "AminScatter/tools/ui/templates/unified-core.ms:3331"
+    ],
+    "owner_context": "Selected source rows of the layer"
+  },
+  "layer.sourceUI.idColor": {
+    "label": "Model identification color",
+    "help": "Viewport identification color. This does not change clustering or model frequency.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3256",
+      "AminScatter/tools/ui/templates/unified-core.ms:3332"
+    ],
+    "owner_context": "Selected source rows of the layer"
+  },
+  "layer.sourceUI.plantList": {
+    "label": "Sources (Ctrl/Shift)",
+    "help": "Select one or more registered source rows with Ctrl/Shift. Source properties affect these rows; scene selection and assignment-group selection are separate.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3257",
+      "AminScatter/tools/ui/templates/unified-core.ms:3352"
+    ],
+    "owner_context": "Selected source rows of the layer"
+  },
+  "layer.sourceUI.selectFromScene": {
+    "label": "Choose from list...",
+    "help": "Choose one or more source models by name.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3258",
+      "AminScatter/tools/ui/templates/unified-core.ms:3373"
+    ],
+    "owner_context": "Selected source rows of the layer"
+  },
+  "layer.sourceUI.addPlant": {
+    "label": "Pick model",
+    "help": "Pick a scene model for this layer. The editor stays on its layer.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3259",
+      "AminScatter/tools/ui/templates/unified-core.ms:3377"
+    ],
+    "owner_context": "Selected source rows of the layer"
+  },
+  "layer.sourceUI.addSelected": {
+    "label": "Add selection",
+    "help": "Add the currently selected scene objects to this layer.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3260",
+      "AminScatter/tools/ui/templates/unified-core.ms:3378"
+    ],
+    "owner_context": "Selected source rows of the layer"
+  },
+  "layer.sourceUI.removePlant": {
+    "label": "Remove rows",
+    "help": "Unregister highlighted rows. To keep their settings, park models outside a source rectangle instead.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3261",
+      "AminScatter/tools/ui/templates/unified-core.ms:3379"
+    ],
+    "owner_context": "Selected source rows of the layer"
+  },
+  "layer.sourceUI.selectPlant": {
+    "label": "Select sources",
+    "help": "Select the highlighted source models in the scene.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3262",
+      "AminScatter/tools/ui/templates/unified-core.ms:3396"
+    ],
+    "owner_context": "Selected source rows of the layer"
+  },
+  "layer.sourceUI.addPoint": {
+    "label": "Add Point",
+    "help": "Add a Point placeholder that can accept placements without final model geometry and can later be replaced by a model. Candidate budget and Accepted target both support Points; use Plant centres to inspect point-only layouts.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3263",
+      "AminScatter/tools/ui/templates/unified-core.ms:3333",
+      "AminScatter/tools/ui/templates/unified-core.ms:1230",
+      "AminScatter/tools/ui/templates/unified-core.ms:2754"
+    ],
+    "owner_context": "Selected source rows of the layer"
+  },
+  "layer.sourceUI.addEmpty": {
+    "label": "Add Empty",
+    "help": "Add a weighted Empty choice for intentional gaps in Candidate budget mode. Accepted target rejects positive-weight Empty rows instead of refilling those gaps; Point is a different source kind.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3264",
+      "AminScatter/tools/ui/templates/unified-core.ms:3342",
+      "AminScatter/tools/ui/templates/unified-core.ms:2644"
+    ],
+    "owner_context": "Selected source rows of the layer"
+  },
+  "layer.sourceUI.replacePoint": {
+    "label": "Replace Point: pick object",
+    "help": "Replace one highlighted Point row with a scene model.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3265",
+      "AminScatter/tools/ui/templates/unified-core.ms:3336"
+    ],
+    "owner_context": "Selected source rows of the layer"
+  },
+  "layer.sourceUI.existingGroups": {
+    "label": "Reuse a group",
+    "help": "Assign highlighted sources to an existing color group for clustering.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3267",
+      "AminScatter/tools/ui/templates/unified-core.ms:3356"
+    ],
+    "owner_context": "Selected source rows of the layer"
+  },
+  "layer.sourceUI.groupColor": {
+    "label": "Assignment-group color",
+    "help": "Assign a color group to highlighted sources when the color is accepted.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3268",
+      "AminScatter/tools/ui/templates/unified-core.ms:3363"
+    ],
+    "owner_context": "Selected source rows of the layer"
+  },
+  "layer.sourceUI.applyColor": {
+    "label": "Apply to selected rows",
+    "help": "Assign the chosen color group to all highlighted source rows.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3269",
+      "AminScatter/tools/ui/templates/unified-core.ms:3369"
+    ],
+    "owner_context": "Selected source rows of the layer"
+  },
+  "layer.sourceUI.weightSpin": {
+    "label": "Weight",
+    "help": "Relative model frequency in this layer. Zero disables the model.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3271",
+      "AminScatter/tools/ui/templates/unified-core.ms:3351"
+    ],
+    "owner_context": "Selected source rows of the layer"
+  },
+  "layer.sourceUI.sourceZSpin": {
+    "label": "Z Offset",
+    "help": "Offset instances of highlighted models along their placement normal.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3273",
+      "AminScatter/tools/ui/templates/unified-core.ms:3349"
+    ],
+    "owner_context": "Selected source rows of the layer"
+  },
+  "layer.sourceUI.sourceScaleSpin": {
+    "label": "Scale",
+    "help": "Per-model scale multiplier. 1 keeps the model's original scale.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3274",
+      "AminScatter/tools/ui/templates/unified-core.ms:3350"
+    ],
+    "owner_context": "Selected source rows of the layer"
+  },
+  "layer.sourceUI.radiusSourceSpin": {
+    "label": "Radius",
+    "help": "Collision footprint radius for highlighted source rows, in scene units.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3276",
+      "AminScatter/tools/ui/templates/unified-core.ms:3345"
+    ],
+    "owner_context": "Selected source rows of the layer"
+  },
+  "layer.sourceUI.followRadiusCheck": {
+    "label": "Follow Scale",
+    "help": "Scale this source's collision footprint with its instance scale.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3277",
+      "AminScatter/tools/ui/templates/unified-core.ms:3346"
+    ],
+    "owner_context": "Selected source rows of the layer"
+  },
+  "layer.sourceUI.showRadiusCheck": {
+    "label": "Show Radius",
+    "help": "Show this source's radius in the viewport; does not change collision rules.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3278",
+      "AminScatter/tools/ui/templates/unified-core.ms:3347"
+    ],
+    "owner_context": "Selected source rows of the layer"
+  },
+  "layer.sourceUI.forwardAxis": {
+    "label": "Forward axis",
+    "help": "The model's local forward direction, used for orientation.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3279",
+      "AminScatter/tools/ui/templates/unified-core.ms:3348"
+    ],
+    "owner_context": "Selected source rows of the layer"
+  },
+  "layer.sourceUI.detailsToggle": {
+    "label": "Point / Empty sources and color groups",
+    "help": "Show or hide these advanced controls; their saved settings are preserved.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3413",
+      "AminScatter/tools/ui/templates/unified-core.ms:3419"
+    ],
+    "owner_context": "Selected source rows of the layer"
+  },
+  "layer.sourceContainersUI.modeList": {
+    "label": "Source pool",
+    "help": "Use the model list directly, or optionally collect models from source rectangles.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3426",
+      "AminScatter/tools/ui/templates/unified-core.ms:3468"
+    ],
+    "owner_context": "Selected layer source pool / linked rectangle"
+  },
+  "layer.sourceContainersUI.containersList": {
+    "label": "Rectangles",
+    "help": "List rectangles linked directly to this layer. Select a rectangle to change its collection switch or unlink it. Global-container mode uses the separate setup pool.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3427",
+      "AminScatter/tools/ui/templates/unified-core.ms:3462"
+    ],
+    "owner_context": "Selected layer source pool / linked rectangle"
+  },
+  "layer.sourceContainersUI.enabledCheck": {
+    "label": "Enable collection",
+    "help": "Enable the selected rectangle to collect models. New rectangles start off so you can position them first. Manual mode needs Update.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3428",
+      "AminScatter/tools/ui/templates/unified-core.ms:3463"
+    ],
+    "owner_context": "Selected layer source pool / linked rectangle"
+  },
+  "layer.sourceContainersUI.createContainer": {
+    "label": "Create container",
+    "help": "Create an inactive source rectangle. Position it around model pivots, then enable collection.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3429",
+      "AminScatter/tools/ui/templates/unified-core.ms:3469"
+    ],
+    "owner_context": "Selected layer source pool / linked rectangle"
+  },
+  "layer.sourceContainersUI.pickContainer": {
+    "label": "Pick boundary",
+    "help": "Link a Cyrus container, or copy a square-corner Rectangle into a container. The original spline is preserved.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3430",
+      "AminScatter/tools/ui/templates/unified-core.ms:3470"
+    ],
+    "owner_context": "Selected layer source pool / linked rectangle"
+  },
+  "layer.sourceContainersUI.removeContainer": {
+    "label": "Unlink selected rectangle",
+    "help": "Unlink this rectangle without deleting it or registered source settings.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3431",
+      "AminScatter/tools/ui/templates/unified-core.ms:3471"
+    ],
+    "owner_context": "Selected layer source pool / linked rectangle"
+  },
+  "layer.distributionUI.modeRadio": {
+    "label": "Method",
+    "help": "Choose Random eligibility or Texture Density. Texture Density samples a selected map through receiver UV channel 1; it is independent of Random mix/Clusters/Spline bands model assignment in Layout.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3482",
+      "AminScatter/tools/ui/templates/unified-core.ms:3500"
+    ]
+  },
+  "layer.distributionUI.populationRadio": {
+    "label": "Population",
+    "help": "Choose a fixed requested Count shared across receivers or Plants per m2 density. Counts are bounded requests before masks, spacing and cleanup, so accepted output can be smaller.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3483",
+      "AminScatter/tools/ui/templates/unified-core.ms:3504"
+    ]
+  },
+  "layer.distributionUI.countSpin": {
+    "label": "Requested count",
+    "help": "Layer population before eligibility. Accepted target can retry up to its limits.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3484",
+      "AminScatter/tools/ui/templates/unified-core.ms:3501"
+    ]
+  },
+  "layer.distributionUI.densitySpin": {
+    "label": "Per m2",
+    "help": "Requested plants per square metre of receiving surface; capped at 100,000.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3485",
+      "AminScatter/tools/ui/templates/unified-core.ms:3505"
+    ]
+  },
+  "layer.distributionUI.seedSpin": {
+    "label": "Seed",
+    "help": "Deterministic generation seed. Changing it can invalidate existing Edit bindings.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3486",
+      "AminScatter/tools/ui/templates/unified-core.ms:3502"
+    ]
+  },
+  "layer.distributionUI.densityButton": {
+    "label": "Choose density map",
+    "help": "Use UV channel 1: white permits candidates; black excludes them.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3488",
+      "AminScatter/tools/ui/templates/unified-core.ms:3506"
+    ]
+  },
+  "layer.distributionUI.invertCheck": {
+    "label": "Invert density",
+    "help": "Reverse the density map's white and black eligibility.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3489",
+      "AminScatter/tools/ui/templates/unified-core.ms:3507"
+    ]
+  },
+  "layer.populationPolicyUI.populationList": {
+    "label": "Layer population",
+    "help": "Budget evaluates the generated candidates; target makes bounded replacement attempts.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3527",
+      "AminScatter/tools/ui/templates/unified-core.ms:3543"
+    ]
+  },
+  "layer.populationPolicyUI.attemptSpin": {
+    "label": "Attempt factor",
+    "help": "Maximum candidate attempts as a multiple of the requested population.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3528",
+      "AminScatter/tools/ui/templates/unified-core.ms:3544"
+    ]
+  },
+  "layer.populationPolicyUI.roundSpin": {
+    "label": "Max rounds",
+    "help": "Maximum rounds of eligibility, collision and cleanup. A shortfall can remain.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3529",
+      "AminScatter/tools/ui/templates/unified-core.ms:3545"
+    ]
+  },
+  "layer.populationPolicyUI.repairCheck": {
+    "label": "Retry cleanup gaps",
+    "help": "Allow bounded retries for plants removed by final cleanup.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3530",
+      "AminScatter/tools/ui/templates/unified-core.ms:3546"
+    ]
+  },
+  "layer.areaUI.areaList": {
+    "label": "Closed lines / shapes",
+    "help": "Select linked Include/Exclude shapes. Their row prefixes show the stored modes. One selected line can also expose its independent falloff settings; selecting an area is not painting.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3557",
+      "AminScatter/tools/ui/templates/unified-core.ms:3665"
+    ]
+  },
+  "layer.areaUI.addAreaScene": {
+    "label": "Select From Scene...",
+    "help": "Choose closed Area shapes by name.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3558",
+      "AminScatter/tools/ui/templates/unified-core.ms:3660"
+    ]
+  },
+  "layer.areaUI.pickArea": {
+    "label": "Add: pick closed line",
+    "help": "Link a closed shape as a layer-wide world-XY mask. New links default to Include; select the row before changing its mode. All Paint Areas and ordinary planting in this layer obey these limits.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3559",
+      "AminScatter/tools/ui/templates/unified-core.ms:3659"
+    ]
+  },
+  "layer.areaUI.removeArea": {
+    "label": "Remove selected rows",
+    "help": "Unlink highlighted Areas and their falloff settings; keep the scene shapes.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3560",
+      "AminScatter/tools/ui/templates/unified-core.ms:3674"
+    ]
+  },
+  "layer.areaUI.areaMode": {
+    "label": "Selected area mode",
+    "help": "Set the highlighted area rows to Include or Exclude. Include domains union and Exclude wins; with no selected row, changing the radio changes no saved area.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3561",
+      "AminScatter/tools/ui/templates/unified-core.ms:3670"
+    ]
+  },
+  "layer.areaUI.refreshAreas": {
+    "label": "Refresh areas / preview",
+    "help": "Explicitly update current area geometry and recalculate the owning setup's enabled layers. This can publish pending Manual edits; it is not a passive redraw.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3564",
+      "AminScatter/tools/ui/templates/unified-core.ms:3683"
+    ]
+  },
+  "layer.areaUI.aaPick": {
+    "label": "Pick Surface Analyzer",
+    "help": "Choose an existing Cyrus Surface Analyzer for line or point masks.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3567",
+      "AminScatter/tools/ui/templates/unified-core.ms:3585"
+    ]
+  },
+  "layer.areaUI.aaRemove": {
+    "label": "Remove Area Analyzer",
+    "help": "Disable and unlink the layer's Analyzer Area mask.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3568",
+      "AminScatter/tools/ui/templates/unified-core.ms:3586"
+    ]
+  },
+  "layer.areaUI.aaLine": {
+    "label": "Center Line",
+    "help": "Use the Analyzer centre line as an XY mask; unions with its point mask.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3569",
+      "AminScatter/tools/ui/templates/unified-core.ms:3587"
+    ]
+  },
+  "layer.areaUI.aaWidth": {
+    "label": "Full width",
+    "help": "Full width of the Analyzer centre-line Area mask.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3570",
+      "AminScatter/tools/ui/templates/unified-core.ms:3590"
+    ]
+  },
+  "layer.areaUI.aaCaps": {
+    "label": "Line ends",
+    "help": "Flat or round ends for the line mask.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3571",
+      "AminScatter/tools/ui/templates/unified-core.ms:3592"
+    ]
+  },
+  "layer.areaUI.aaStreetOffset": {
+    "label": "Street offset",
+    "help": "Shift the Analyzer centre-line mask in world XY relative to the nearest street segment: positive away, negative toward. A nonzero value requires street data; Layout shares this layer setting.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3572",
+      "AminScatter/tools/ui/templates/unified-core.ms:3589"
+    ]
+  },
+  "layer.areaUI.aaPoints": {
+    "label": "Points",
+    "help": "Use discs around Analyzer points as an XY mask.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3573",
+      "AminScatter/tools/ui/templates/unified-core.ms:3588"
+    ]
+  },
+  "layer.areaUI.aaRadius": {
+    "label": "Radius",
+    "help": "Radius of each Analyzer point mask.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3574",
+      "AminScatter/tools/ui/templates/unified-core.ms:3591"
+    ]
+  },
+  "layer.areaUI.fallTarget": {
+    "label": "Edge falloff target",
+    "help": "Edit Analyzer boundary falloff or one highlighted Area's independent falloff.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3595",
+      "AminScatter/tools/ui/templates/unified-core.ms:3632"
+    ]
+  },
+  "layer.areaUI.fallPick": {
+    "label": "Pick Surface Analyzer",
+    "help": "Choose the Analyzer whose boundary drives this falloff.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3596",
+      "AminScatter/tools/ui/templates/unified-core.ms:3633"
+    ]
+  },
+  "layer.areaUI.fallRemove": {
+    "label": "Remove Analyzer",
+    "help": "Unlink the falloff Analyzer and disable its falloff effects.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3597",
+      "AminScatter/tools/ui/templates/unified-core.ms:3634"
+    ]
+  },
+  "layer.areaUI.fallDeleteCheck": {
+    "label": "Delete edge band",
+    "help": "Exclude an edge band before scale and density ramps begin.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3599",
+      "AminScatter/tools/ui/templates/unified-core.ms:3635"
+    ]
+  },
+  "layer.areaUI.fallDeleteSpin": {
+    "label": "Delete width",
+    "help": "Width of the excluded edge band in scene units.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3600",
+      "AminScatter/tools/ui/templates/unified-core.ms:3636"
+    ]
+  },
+  "layer.areaUI.fallScaleCheck": {
+    "label": "Scale ramp",
+    "help": "Vary instance scale with distance from this boundary.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3601",
+      "AminScatter/tools/ui/templates/unified-core.ms:3637"
+    ]
+  },
+  "layer.areaUI.fallScaleSpin": {
+    "label": "Scale width",
+    "help": "Distance over which the scale curve is evaluated.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3602",
+      "AminScatter/tools/ui/templates/unified-core.ms:3638"
+    ]
+  },
+  "layer.areaUI.fallScaleEdit": {
+    "label": "Edit Scale Graph...",
+    "help": "Edit this boundary's scale curve.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3603",
+      "AminScatter/tools/ui/templates/unified-core.ms:3641"
+    ]
+  },
+  "layer.areaUI.fallDensityCheck": {
+    "label": "Density ramp",
+    "help": "Vary candidate eligibility with distance from this boundary.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3604",
+      "AminScatter/tools/ui/templates/unified-core.ms:3639"
+    ]
+  },
+  "layer.areaUI.fallDensitySpin": {
+    "label": "Density width",
+    "help": "Distance over which the density curve is evaluated.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3605",
+      "AminScatter/tools/ui/templates/unified-core.ms:3640"
+    ]
+  },
+  "layer.areaUI.fallDensityEdit": {
+    "label": "Edit Density Graph...",
+    "help": "Edit this boundary's density curve.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3606",
+      "AminScatter/tools/ui/templates/unified-core.ms:3642"
+    ]
+  },
+  "layer.areaUI.detailsToggle": {
+    "label": "Analyzer masks and edge falloff",
+    "help": "Show or hide these advanced controls; their saved settings are preserved.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3697",
+      "AminScatter/tools/ui/templates/unified-core.ms:3703"
+    ]
+  },
+  "layer.brushUI.modeRadio": {
+    "label": "Brush",
+    "help": "Paint unions a swept region into the selected area; Erase subtracts coverage and can cut holes. Repeated gestures edit the same vector document rather than adding a stroke-history stack.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3711",
+      "AminScatter/tools/ui/templates/unified-core.ms:3778"
+    ]
+  },
+  "layer.brushUI.radiusSpin": {
+    "label": "Radius",
+    "help": "Distance from the brush center to its edge. A 100 mm radius paints a 200 mm wide stroke.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3712",
+      "AminScatter/tools/ui/templates/unified-core.ms:3779"
+    ]
+  },
+  "layer.brushUI.beginButton": {
+    "label": "Start Brush",
+    "help": "Start painting the selected area on its explicit receiver and enable painted coverage for the layer. The receiver must be linked to this layer and supported single-valued local-XY terrain; Manual planting still waits for Update.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3713",
+      "AminScatter/tools/ui/templates/unified-core.ms:3770"
+    ]
+  },
+  "layer.brushUI.stopButton": {
+    "label": "Stop",
+    "help": "End the active brush session and keep completed vector edits. This stops authoring; it does not clear the area.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3714",
+      "AminScatter/tools/ui/templates/unified-core.ms:3777"
+    ]
+  },
+  "layer.brushUI.fillButton": {
+    "label": "Fill",
+    "help": "Fill the selected area's supported receiver footprint. Layer masks, spacing and other acceptance constraints still apply to planting; Manual mode needs Update.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3715",
+      "AminScatter/tools/ui/templates/unified-core.ms:3791"
+    ]
+  },
+  "layer.brushUI.emptyButton": {
+    "label": "Clear",
+    "help": "Clear the selected area's vector coverage while keeping the area, target and other settings. Other areas remain independent; Manual mode needs Update.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3716",
+      "AminScatter/tools/ui/templates/unified-core.ms:3792"
+    ]
+  },
+  "layer.brushUI.densitySpin": {
+    "label": "Area density %",
+    "help": "Multiply this area's candidate eligibility by Area density percentage. It does not create a separate population; overlapping areas use the strongest effective density and admit a candidate only once.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3718",
+      "AminScatter/tools/ui/templates/unified-core.ms:3788"
+    ]
+  },
+  "layer.brushUI.overlayMode": {
+    "label": "Paint feedback",
+    "help": "Choose cached Vector borders, bounded Coverage samples or Off for painting feedback. Feedback is a diagnostic/display choice and does not change the allowed planting region.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3719",
+      "AminScatter/tools/ui/templates/unified-core.ms:3789"
+    ]
+  },
+  "layer.brushUI.overlayColor": {
+    "label": "Paint feedback color",
+    "help": "Choose the selected area's painting-feedback color. This is independent of source identification colors, grouping colors and render materials.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3720",
+      "AminScatter/tools/ui/templates/unified-core.ms:3790"
+    ]
+  },
+  "layer.brushUI.insideSpin": {
+    "label": "Inside fade",
+    "help": "Set how far the feather transition extends inside the vector border. Combined with Outside fade it defines the transition span; both zero gives a hard edge. Widths use the transformed projection plane, not slope distance.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3722",
+      "AminScatter/tools/ui/templates/unified-core.ms:3780"
+    ]
+  },
+  "layer.brushUI.outsideSpin": {
+    "label": "Outside fade",
+    "help": "Set how far the feather transition extends outside the vector border. It cannot plant beyond the receiver or defeat an Exclude mask; both fade widths zero gives a hard edge.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3723",
+      "AminScatter/tools/ui/templates/unified-core.ms:3781"
+    ]
+  },
+  "layer.brushUI.densityFade": {
+    "label": "Fade density",
+    "help": "Apply the Density curve across the inside/outside feather transition to thin stable candidates. This can be enabled independently of Fade scale.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3724",
+      "AminScatter/tools/ui/templates/unified-core.ms:3782"
+    ]
+  },
+  "layer.brushUI.densityCurve": {
+    "label": "Density curve...",
+    "help": "Edit the selected Paint Area's normalized feather-density curve. Left is the outer transition edge; right is fully interior. Graph edits save immediately; closing the graph is not Cancel.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3725",
+      "AminScatter/tools/ui/templates/unified-core.ms:3786"
+    ]
+  },
+  "layer.brushUI.scaleFade": {
+    "label": "Fade scale",
+    "help": "Apply the Scale curve between Edge scale and Inner scale as a multiplier on existing instance scale. This can be enabled independently of Fade density.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3726",
+      "AminScatter/tools/ui/templates/unified-core.ms:3783"
+    ]
+  },
+  "layer.brushUI.scaleMin": {
+    "label": "Edge scale",
+    "help": "Set the instance-scale multiplier at the outer end of the feather transition. It combines with existing random/model scale when Fade scale is enabled; it is not a radius setting.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3727",
+      "AminScatter/tools/ui/templates/unified-core.ms:3784"
+    ]
+  },
+  "layer.brushUI.scaleMax": {
+    "label": "Inner scale",
+    "help": "Set the instance-scale multiplier at the interior end of the feather transition. With both fade widths zero, interior plants use the curve's right-end scale.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3728",
+      "AminScatter/tools/ui/templates/unified-core.ms:3785"
+    ]
+  },
+  "layer.brushUI.scaleCurve": {
+    "label": "Scale curve...",
+    "help": "Edit the separate normalized curve that blends Edge scale to Inner scale across the feather transition. Graph edits commit as edited; it does not replace the Density curve.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3729",
+      "AminScatter/tools/ui/templates/unified-core.ms:3787"
+    ]
+  },
+  "layer.randomUI.rotXMinSpin": {
+    "label": "X rotation min",
+    "help": "Set the lower limit of the layer's random X-axis rotation in degrees. Equal minimum and maximum give a fixed value; normal alignment and model forward-axis settings affect final orientation.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3808",
+      "AminScatter/tools/ui/templates/unified-core.ms:3866"
+    ]
+  },
+  "layer.randomUI.rotXMaxSpin": {
+    "label": "X rotation max",
+    "help": "Set the upper limit of the layer's random X-axis rotation in degrees. Equal minimum and maximum give a fixed value; normal alignment and model forward-axis settings affect final orientation.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3809",
+      "AminScatter/tools/ui/templates/unified-core.ms:3867"
+    ]
+  },
+  "layer.randomUI.rotYMinSpin": {
+    "label": "Y rotation min",
+    "help": "Set the lower limit of the layer's random Y-axis rotation in degrees. Equal minimum and maximum give a fixed value; normal alignment and model forward-axis settings affect final orientation.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3811",
+      "AminScatter/tools/ui/templates/unified-core.ms:3868"
+    ]
+  },
+  "layer.randomUI.rotYMaxSpin": {
+    "label": "Y rotation max",
+    "help": "Set the upper limit of the layer's random Y-axis rotation in degrees. Equal minimum and maximum give a fixed value; normal alignment and model forward-axis settings affect final orientation.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3812",
+      "AminScatter/tools/ui/templates/unified-core.ms:3869"
+    ]
+  },
+  "layer.randomUI.rotZMinSpin": {
+    "label": "Z rotation min",
+    "help": "Set the lower limit of the layer's random Z-axis rotation in degrees. Equal minimum and maximum give a fixed value; normal alignment and model forward-axis settings affect final orientation.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3814",
+      "AminScatter/tools/ui/templates/unified-core.ms:3870"
+    ]
+  },
+  "layer.randomUI.rotZMaxSpin": {
+    "label": "Z rotation max",
+    "help": "Set the upper limit of the layer's random Z-axis rotation in degrees. Equal minimum and maximum give a fixed value; normal alignment and model forward-axis settings affect final orientation.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3815",
+      "AminScatter/tools/ui/templates/unified-core.ms:3871"
+    ]
+  },
+  "layer.randomUI.sclXMinSpin": {
+    "label": "X scale min",
+    "help": "Set the lower limit of the layer's random X-axis scale multiplier. 1 is unchanged; per-model, whole-scale and enabled falloff multipliers also contribute.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3820",
+      "AminScatter/tools/ui/templates/unified-core.ms:3872"
+    ]
+  },
+  "layer.randomUI.sclXMaxSpin": {
+    "label": "X scale max",
+    "help": "Set the upper limit of the layer's random X-axis scale multiplier. 1 is unchanged; per-model, whole-scale and enabled falloff multipliers also contribute.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3821",
+      "AminScatter/tools/ui/templates/unified-core.ms:3873"
+    ]
+  },
+  "layer.randomUI.sclYMinSpin": {
+    "label": "Y scale min",
+    "help": "Set the lower limit of the layer's random Y-axis scale multiplier. 1 is unchanged; per-model, whole-scale and enabled falloff multipliers also contribute.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3823",
+      "AminScatter/tools/ui/templates/unified-core.ms:3874"
+    ]
+  },
+  "layer.randomUI.sclYMaxSpin": {
+    "label": "Y scale max",
+    "help": "Set the upper limit of the layer's random Y-axis scale multiplier. 1 is unchanged; per-model, whole-scale and enabled falloff multipliers also contribute.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3824",
+      "AminScatter/tools/ui/templates/unified-core.ms:3875"
+    ]
+  },
+  "layer.randomUI.sclZMinSpin": {
+    "label": "Z scale min",
+    "help": "Set the lower limit of the layer's random Z-axis scale multiplier. 1 is unchanged; per-model, whole-scale and enabled falloff multipliers also contribute.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3826",
+      "AminScatter/tools/ui/templates/unified-core.ms:3876"
+    ]
+  },
+  "layer.randomUI.sclZMaxSpin": {
+    "label": "Z scale max",
+    "help": "Set the upper limit of the layer's random Z-axis scale multiplier. 1 is unchanged; per-model, whole-scale and enabled falloff multipliers also contribute.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3827",
+      "AminScatter/tools/ui/templates/unified-core.ms:3877"
+    ]
+  },
+  "layer.randomUI.wholeMinSpin": {
+    "label": "Uniform scale minimum",
+    "help": "Set the lower limit of an additional uniform scale multiplier applied equally to all axes. 1 is unchanged; this does not reset separate XYZ or per-model scale.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3831",
+      "AminScatter/tools/ui/templates/unified-core.ms:3833"
+    ]
+  },
+  "layer.randomUI.wholeMaxSpin": {
+    "label": "Uniform scale maximum",
+    "help": "Set the upper limit of an additional uniform scale multiplier applied equally to all axes. Matching limits give a fixed multiplier.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3832",
+      "AminScatter/tools/ui/templates/unified-core.ms:3834"
+    ]
+  },
+  "layer.randomUI.movXMinSpin": {
+    "label": "X movement min",
+    "help": "Set the lower limit of the layer's random X-axis translation in scene world units. Keep on surface can project moved candidates back to their receiver; painting requires projected movement when movement is nonzero.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3839",
+      "AminScatter/tools/ui/templates/unified-core.ms:3878"
+    ]
+  },
+  "layer.randomUI.movXMaxSpin": {
+    "label": "X movement max",
+    "help": "Set the upper limit of the layer's random X-axis translation in scene world units. Keep on surface can project moved candidates back to their receiver; painting requires projected movement when movement is nonzero.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3840",
+      "AminScatter/tools/ui/templates/unified-core.ms:3879"
+    ]
+  },
+  "layer.randomUI.movYMinSpin": {
+    "label": "Y movement min",
+    "help": "Set the lower limit of the layer's random Y-axis translation in scene world units. Keep on surface can project moved candidates back to their receiver; painting requires projected movement when movement is nonzero.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3842",
+      "AminScatter/tools/ui/templates/unified-core.ms:3880"
+    ]
+  },
+  "layer.randomUI.movYMaxSpin": {
+    "label": "Y movement max",
+    "help": "Set the upper limit of the layer's random Y-axis translation in scene world units. Keep on surface can project moved candidates back to their receiver; painting requires projected movement when movement is nonzero.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3843",
+      "AminScatter/tools/ui/templates/unified-core.ms:3881"
+    ]
+  },
+  "layer.randomUI.movZMinSpin": {
+    "label": "Z movement min",
+    "help": "Set the lower limit of the layer's random Z-axis translation in scene world units. Keep on surface can project moved candidates back to their receiver; painting requires projected movement when movement is nonzero.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3845",
+      "AminScatter/tools/ui/templates/unified-core.ms:3882"
+    ]
+  },
+  "layer.randomUI.movZMaxSpin": {
+    "label": "Z movement max",
+    "help": "Set the upper limit of the layer's random Z-axis translation in scene world units. Keep on surface can project moved candidates back to their receiver; painting requires projected movement when movement is nonzero.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3846",
+      "AminScatter/tools/ui/templates/unified-core.ms:3883"
+    ]
+  },
+  "layer.randomUI.projectCheck": {
+    "label": "Keep on surface",
+    "help": "Project random movement back onto the receiving surface.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3847",
+      "AminScatter/tools/ui/templates/unified-core.ms:3865"
+    ]
+  },
+  "layer.randomUI.alignCheck": {
+    "label": "Align to normal",
+    "help": "Align instances to the receiving surface normal.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3848",
+      "AminScatter/tools/ui/templates/unified-core.ms:3863"
+    ]
+  },
+  "layer.randomUI.resetRotation": {
+    "label": "Reset rotation",
+    "help": "Reset only this layer's random rotation limits. Undo is available.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3850",
+      "AminScatter/tools/ui/templates/unified-core.ms:3858"
+    ]
+  },
+  "layer.randomUI.resetScale": {
+    "label": "Reset XYZ scale",
+    "help": "Reset only this layer's separate X, Y and Z scale limits.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3851",
+      "AminScatter/tools/ui/templates/unified-core.ms:3859"
+    ]
+  },
+  "layer.randomUI.resetWholeScale": {
+    "label": "Reset whole scale",
+    "help": "Reset only this layer's uniform scale multiplier.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3852",
+      "AminScatter/tools/ui/templates/unified-core.ms:3860"
+    ]
+  },
+  "layer.randomUI.resetMovement": {
+    "label": "Reset movement",
+    "help": "Reset only this layer's random translation limits.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3853",
+      "AminScatter/tools/ui/templates/unified-core.ms:3861"
+    ]
+  },
+  "layer.diversityUI.diversityRadio": {
+    "label": "Source assignment",
+    "help": "Choose weighted Random mix, assignment-group Clusters, closed Spline bands or published Surface Analyzer guides. Layout chooses source assignment and supported guide anchors; it is separate from Amount and Texture Density.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3908",
+      "AminScatter/tools/ui/templates/unified-core.ms:4161"
+    ]
+  },
+  "layer.diversityUI.selectAnalyzer": {
+    "label": "Select",
+    "help": "Select the linked Surface Analyzer in the scene.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3911",
+      "AminScatter/tools/ui/templates/unified-core.ms:4051"
+    ]
+  },
+  "layer.diversityUI.updateAnalyzer": {
+    "label": "Update Analyzer",
+    "help": "Analyze the linked guide. In Manual mode, use Update scatter afterwards to publish placements.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3912",
+      "AminScatter/tools/ui/templates/unified-core.ms:4055"
+    ]
+  },
+  "layer.diversityUI.sizeSpin": {
+    "label": "Size",
+    "help": "Spatial size of source-color clusters.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3913",
+      "AminScatter/tools/ui/templates/unified-core.ms:4164"
+    ]
+  },
+  "layer.diversityUI.divSeedSpin": {
+    "label": "Seed",
+    "help": "Change source assignment randomness without changing the generation seed.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3914",
+      "AminScatter/tools/ui/templates/unified-core.ms:4165"
+    ]
+  },
+  "layer.diversityUI.roughSpin": {
+    "label": "Roughness %",
+    "help": "Warp the spatial assignment-group field to make cluster boundaries more irregular. This changes model-group choice, not a mesh surface or material texture.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3915",
+      "AminScatter/tools/ui/templates/unified-core.ms:4166",
+      "AminScatter/src/cluster.inc:14"
+    ]
+  },
+  "layer.diversityUI.blurSpin": {
+    "label": "Blur edge %",
+    "help": "Mix assignments near neighboring cluster boundaries by probabilistically choosing the adjacent group. This is source-assignment blending, not geometric or image blur.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3916",
+      "AminScatter/tools/ui/templates/unified-core.ms:4167",
+      "AminScatter/src/cluster.inc:29"
+    ]
+  },
+  "layer.diversityUI.noiseSpin": {
+    "label": "Noise %",
+    "help": "Allow a percentage of clustered assignments to choose a weighted group independently of the local cluster. It changes model choice rather than adding candidate-position jitter.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3917",
+      "AminScatter/tools/ui/templates/unified-core.ms:4168",
+      "AminScatter/src/cluster.inc:33"
+    ]
+  },
+  "layer.diversityUI.pathsDrop": {
+    "label": "Paths",
+    "help": "Choose a linked closed spline whose bands are shown below. Switching the path changes the settings being edited without deleting any scene spline.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3926",
+      "AminScatter/tools/ui/templates/unified-core.ms:4106"
+    ]
+  },
+  "layer.diversityUI.analyzerChannel": {
+    "label": "Analyzer data",
+    "help": "Choose Border, Centerline, Points, Street Side or Edge Border. Available band/row actions change by channel; Analyzer guides must be current before Scatter can calculate a successor.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3927",
+      "AminScatter/tools/ui/templates/unified-core.ms:4107"
+    ]
+  },
+  "layer.diversityUI.pickAnalyzer": {
+    "label": "Pick Surface Analyzer",
+    "help": "Use Surface Analyzer output for bands, rows and fixed anchors.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3928",
+      "AminScatter/tools/ui/templates/unified-core.ms:4108"
+    ]
+  },
+  "layer.diversityUI.pickPath": {
+    "label": "Add: pick closed line",
+    "help": "Link a closed spline for Spline bands using top-down world-XY projection. It is an assignment guide, not a Paint Area or receiving surface.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3929",
+      "AminScatter/tools/ui/templates/unified-core.ms:4112"
+    ]
+  },
+  "layer.diversityUI.removePath": {
+    "label": "Remove path",
+    "help": "Remove the selected assignment path while keeping the scene spline.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3930",
+      "AminScatter/tools/ui/templates/unified-core.ms:4116"
+    ]
+  },
+  "layer.diversityUI.strokesList": {
+    "label": "Bands / Analyzer rows",
+    "help": "Select an ordered assignment band or Analyzer row to edit. These records are layout bands, not brush strokes; consecutive widths accumulate per side and earlier matching bands have priority.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3931",
+      "AminScatter/tools/ui/templates/unified-core.ms:4111"
+    ]
+  },
+  "layer.diversityUI.addOutside": {
+    "label": "Add Outside / Analyzer band or radius",
+    "help": "For Spline bands, add the next outside strip. Analyzer Centerline uses Add band and Points uses Add Radius; applicable Border, Street Side and Edge Border channels use their inside/row action instead.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3932",
+      "AminScatter/tools/ui/templates/unified-core.ms:4123",
+      "AminScatter/tools/ui/templates/unified-core.ms:4092"
+    ]
+  },
+  "layer.diversityUI.addInside": {
+    "label": "Add Inside / Analyzer row or single anchor",
+    "help": "For Spline bands, add the next inside strip. In Analyzer mode this creates the applicable inside band, Street Side band, Edge Border row, or a Single fixed placement at each Analyzer point.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3933",
+      "AminScatter/tools/ui/templates/unified-core.ms:4130"
+    ]
+  },
+  "layer.diversityUI.removeStrokeButton": {
+    "label": "Remove band",
+    "help": "Remove the selected band and its settings.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3934",
+      "AminScatter/tools/ui/templates/unified-core.ms:4135"
+    ]
+  },
+  "layer.diversityUI.strokeWidth": {
+    "label": "Band width / Edge Border spacing",
+    "help": "Set the selected spline band's world-space strip width, independent of spline node scale. Analyzer bands use the displayed channel width/spread; Edge Border changes this field to row Spacing, while Single point anchors have no editable width.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3935",
+      "AminScatter/tools/ui/templates/unified-core.ms:4145"
+    ]
+  },
+  "layer.diversityUI.strokeMode": {
+    "label": "Assign by",
+    "help": "Choose assignment Color groups or explicit Source objects for the selected band. Identification colors are separate; Point placeholders currently require Color groups because Source objects stores scene-node links.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3936",
+      "AminScatter/tools/ui/templates/unified-core.ms:4146"
+    ]
+  },
+  "layer.diversityUI.strokeChoices": {
+    "label": "Ctrl / Shift: select several",
+    "help": "Choose one or more assignment groups or source objects for this band with Ctrl/Shift. A band without eligible choices emits no placements; candidates outside every matching band are empty.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3937",
+      "AminScatter/tools/ui/templates/unified-core.ms:4147"
+    ]
+  },
+  "layer.diversityUI.strokeScaleMin": {
+    "label": "Scale min",
+    "help": "Set the lower limit of the selected band's scale multiplier. It combines with the instance's other scale settings; it does not change the band width.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3938",
+      "AminScatter/tools/ui/templates/unified-core.ms:4152"
+    ]
+  },
+  "layer.diversityUI.strokeScaleMax": {
+    "label": "Scale max",
+    "help": "Set the upper limit of the selected band's scale multiplier. Matching limits make its band-scale contribution fixed.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3939",
+      "AminScatter/tools/ui/templates/unified-core.ms:4153"
+    ]
+  },
+  "layer.diversityUI.refreshGroups": {
+    "label": "Refresh sources / groups",
+    "help": "Refresh available source color groups for assignment.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3940",
+      "AminScatter/tools/ui/templates/unified-core.ms:4154"
+    ]
+  },
+  "layer.diversityUI.edgeOffsetSpin": {
+    "label": "Offset inward",
+    "help": "Offset the selected Edge Border row along its final local facing. Positive inward moves backward along the model's chosen forward axis; this translates placements rather than resampling an inset contour.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3942",
+      "AminScatter/tools/ui/templates/unified-core.ms:4136",
+      "AminScatter/src/orientation.inc:122"
+    ]
+  },
+  "layer.diversityUI.edgeAlongSpin": {
+    "label": "Jitter along",
+    "help": "Add bounded jitter along the selected Edge Border row. Zero keeps its generated along-boundary positions exact; spacing still controls row count.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3943",
+      "AminScatter/tools/ui/templates/unified-core.ms:4137"
+    ]
+  },
+  "layer.diversityUI.edgeAcrossSpin": {
+    "label": "Jitter across",
+    "help": "Add bounded jitter across the selected Edge Border row. Zero removes this variation; later receiver and area eligibility still apply.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3944",
+      "AminScatter/tools/ui/templates/unified-core.ms:4138"
+    ]
+  },
+  "layer.diversityUI.keepCornerCheck": {
+    "label": "Keep corner points",
+    "help": "Add and preserve qualifying corners during Edge Border base-row generation. This does not exempt those placements from later masks, spacing or cleanup.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3946",
+      "AminScatter/tools/ui/templates/unified-core.ms:4139"
+    ]
+  },
+  "layer.diversityUI.cornerAngleSpin": {
+    "label": "Min turn",
+    "help": "Set the minimum change in boundary direction, in degrees, for a qualifying Edge Border corner. Straight is zero; the control is used when Keep corner points is enabled.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3947",
+      "AminScatter/tools/ui/templates/unified-core.ms:4140"
+    ]
+  },
+  "layer.diversityUI.cornerCountSpin": {
+    "label": "Points/corner",
+    "help": "Set the bounded number of added samples for each qualifying Edge Border corner. It does not guarantee that all samples survive later acceptance rules.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3948",
+      "AminScatter/tools/ui/templates/unified-core.ms:4141"
+    ]
+  },
+  "layer.diversityUI.edgeRotXSpin": {
+    "label": "Local X (deg)",
+    "help": "Apply an additional local X rotation, in degrees, to the selected Edge Border row's final orientation.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3950",
+      "AminScatter/tools/ui/templates/unified-core.ms:4142"
+    ]
+  },
+  "layer.diversityUI.edgeRotYSpin": {
+    "label": "Local Y (deg)",
+    "help": "Apply an additional local Y rotation, in degrees, to the selected Edge Border row's final orientation.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3951",
+      "AminScatter/tools/ui/templates/unified-core.ms:4143"
+    ]
+  },
+  "layer.diversityUI.edgeRotZSpin": {
+    "label": "Local Z (deg)",
+    "help": "Apply an additional local Z rotation, in degrees, to the selected Edge Border row's final orientation.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3952",
+      "AminScatter/tools/ui/templates/unified-core.ms:4144"
+    ]
+  },
+  "layer.diversityUI.streetStartSpin": {
+    "label": "Trim start",
+    "help": "Trim this distance from the start of connected Street Side chains. Start follows Analyzer traversal direction, not screen left; closed loops have no endpoints to trim.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3953",
+      "AminScatter/tools/ui/templates/unified-core.ms:3969",
+      "AminScatter/tools/ui/templates/unified-core.ms:1398"
+    ]
+  },
+  "layer.diversityUI.streetEndSpin": {
+    "label": "Trim end",
+    "help": "Trim this distance from the end of connected Street Side chains. End follows Analyzer traversal direction, not screen right; closed loops have no endpoints to trim.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3954",
+      "AminScatter/tools/ui/templates/unified-core.ms:3970",
+      "AminScatter/tools/ui/templates/unified-core.ms:1398"
+    ]
+  },
+  "layer.diversityUI.centerStreetSpin": {
+    "label": "Street offset",
+    "help": "Shift the centre-line guide in world XY relative to the nearest street: positive away, negative toward. Nonzero offset requires street data; the Analyzer Area mask shares this layer setting.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3955",
+      "AminScatter/tools/ui/templates/unified-core.ms:3971"
+    ]
+  },
+  "layer.diversityUI.faceOutCheck": {
+    "label": "Face outward",
+    "help": "Orient applicable Analyzer Border, Street Side or Edge Border models outward using each model's Forward axis. Hole boundaries face into the hole; this is orientation, not a new allowed domain.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3957",
+      "AminScatter/tools/ui/templates/unified-core.ms:3961"
+    ]
+  },
+  "layer.diversityUI.cornerRadiusSpin": {
+    "label": "Corner radius / Blend radius",
+    "help": "Blend outward facing near adjacent Analyzer edges. Edge Border labels this Blend radius. It changes orientation rather than the spline outline; a local offset can therefore move final positions as facing changes.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3958",
+      "AminScatter/tools/ui/templates/unified-core.ms:3965"
+    ]
+  },
+  "layer.diversityUI.straightStreet": {
+    "label": "Straight ends (Street Side)",
+    "help": "Restrict Street Side bands to the projected extents of their selected segments, producing straight ends rather than extending beyond endpoints. It does not trim the Analyzer publication itself.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3959",
+      "AminScatter/tools/ui/templates/unified-core.ms:3972",
+      "AminScatter/src/scatter.cpp:160"
+    ]
+  },
+  "layer.proceduralUI.scopeList": {
+    "label": "Spacing scope",
+    "help": "Choose spacing within the selected layer or between it and another layer.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4187",
+      "AminScatter/tools/ui/templates/unified-core.ms:4248"
+    ],
+    "owner_context": "Selected within-layer or layer-pair spacing rule"
+  },
+  "layer.proceduralUI.peerList": {
+    "label": "Other owner",
+    "help": "Choose the other layer for a Between layers spacing rule. Within this layer has no peer; pair rules require another owning layer.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4188",
+      "AminScatter/tools/ui/templates/unified-core.ms:4249"
+    ],
+    "owner_context": "Selected within-layer or layer-pair spacing rule"
+  },
+  "layer.proceduralUI.enabledCheck": {
+    "label": "Enable this spacing",
+    "help": "Enable the selected within-layer or layer-pair clearance rule. Each relationship has independent settings; earlier accepted layers normally reserve their space first.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4189",
+      "AminScatter/tools/ui/templates/unified-core.ms:4250"
+    ],
+    "owner_context": "Selected within-layer or layer-pair spacing rule"
+  },
+  "layer.proceduralUI.multiplierSpin": {
+    "label": "Radius factor",
+    "help": "Multiply the sum of the two effective collision radii in this rule: clearance = factor × (radius A + radius B) + gap. These are simplified footprints, not exact mesh intersections.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4190",
+      "AminScatter/tools/ui/templates/unified-core.ms:4251"
+    ],
+    "owner_context": "Selected within-layer or layer-pair spacing rule"
+  },
+  "layer.proceduralUI.gapSpin": {
+    "label": "Extra gap",
+    "help": "Add an extra world-space gap after the radius contribution for the selected spacing relationship. This does not alter the saved source radii.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4191",
+      "AminScatter/tools/ui/templates/unified-core.ms:4252"
+    ],
+    "owner_context": "Selected within-layer or layer-pair spacing rule"
+  },
+  "layer.proceduralUI.planarCheck": {
+    "label": "XY distance (off = 3D)",
+    "help": "Use XY distance for the selected spacing rule, ignoring height separation. Off uses full 3D centre distance; this setting is independent of cleanup neighborhoods.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4192",
+      "AminScatter/tools/ui/templates/unified-core.ms:4253"
+    ],
+    "owner_context": "Selected within-layer or layer-pair spacing rule"
+  },
+  "layer.proceduralUI.resetRule": {
+    "label": "Use inherited / default",
+    "help": "For Within this layer, remove the explicit self-rule override and restore the saved default. For Between layers, remove the selected explicit pair rule. Other rules remain unchanged.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4194",
+      "AminScatter/tools/ui/templates/unified-core.ms:4254"
+    ],
+    "owner_context": "Selected within-layer or layer-pair spacing rule"
+  },
+  "layer.instanceRadiusUI.radiusMode": {
+    "label": "Selected CS Edit instances",
+    "help": "Use an absolute world radius or multiply the selected instances' source radius.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4270"
+    ],
+    "owner_context": "Selected layer / stable published instance binding"
+  },
+  "layer.instanceRadiusUI.radiusSpin": {
+    "label": "Selected instance-radius value",
+    "help": "Value applied only when Set selected radii is pressed.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4271"
+    ],
+    "owner_context": "Selected layer / stable published instance binding"
+  },
+  "layer.instanceRadiusUI.applyRadius": {
+    "label": "Set selected radii",
+    "help": "Apply radius overrides to selected instances in this layer.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4272",
+      "AminScatter/tools/ui/templates/unified-core.ms:4280"
+    ],
+    "owner_context": "Selected layer / stable published instance binding"
+  },
+  "layer.instanceRadiusUI.resetRadius": {
+    "label": "Clear selected overrides",
+    "help": "Restore the selected instances' inherited source radii.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4273",
+      "AminScatter/tools/ui/templates/unified-core.ms:4281"
+    ],
+    "owner_context": "Selected layer / stable published instance binding"
+  },
+  "layer.instanceRadiusUI.clearRadius": {
+    "label": "Clear radius overrides",
+    "help": "Remove instance-radius overrides for this layer.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4274",
+      "AminScatter/tools/ui/templates/unified-core.ms:4282"
+    ],
+    "owner_context": "Selected layer / stable published instance binding"
+  },
+  "layer.spacingUI.relaxCheck": {
+    "label": "Point Relax",
+    "help": "Separate nearby candidates on the receiving surface before Brush, artist edits and spacing. Fixed anchors stay fixed.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4288",
+      "AminScatter/tools/ui/templates/unified-core.ms:4309"
+    ],
+    "owner_context": "Selected layer candidate preparation"
+  },
+  "layer.spacingUI.spacingSpin": {
+    "label": "Desired spacing",
+    "help": "Set the desired candidate separation for Point Relax, in scene units. Relax is bounded candidate movement, not a guarantee of final accepted plant clearance.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4289",
+      "AminScatter/tools/ui/templates/unified-core.ms:4310"
+    ],
+    "owner_context": "Selected layer candidate preparation"
+  },
+  "layer.spacingUI.iterationsSpin": {
+    "label": "Iterations",
+    "help": "Set the number of bounded Point Relax iterations. More iterations can add calculation work; masks, painting, artist edits and collision acceptance still follow.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4290",
+      "AminScatter/tools/ui/templates/unified-core.ms:4311"
+    ],
+    "owner_context": "Selected layer candidate preparation"
+  },
+  "layer.spacingUI.strengthSpin": {
+    "label": "Strength %",
+    "help": "Set Point Relax movement strength as a percentage. This adjusts the relaxation step rather than a source weight or paint density.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4291",
+      "AminScatter/tools/ui/templates/unified-core.ms:4312"
+    ],
+    "owner_context": "Selected layer candidate preparation"
+  },
+  "layer.spacingUI.boundaryRelaxCheck": {
+    "label": "Boundary Relax",
+    "help": "Smooth candidate neighborhoods with bounded movement. Eligibility is checked before publication; author edits run afterwards.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4292",
+      "AminScatter/tools/ui/templates/unified-core.ms:4313"
+    ],
+    "owner_context": "Selected layer candidate preparation"
+  },
+  "layer.spacingUI.finalStrengthSpin": {
+    "label": "Strength",
+    "help": "Set the 0–1 smoothing strength for Boundary Relax. This acts on candidate neighborhoods before final eligibility and artist edits.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4293",
+      "AminScatter/tools/ui/templates/unified-core.ms:4314"
+    ],
+    "owner_context": "Selected layer candidate preparation"
+  },
+  "layer.spacingUI.finalIterSpin": {
+    "label": "Iterations",
+    "help": "Set the bounded Boundary Relax iteration count. Zero disables its iterations; this is separate from Point Relax iterations.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4294",
+      "AminScatter/tools/ui/templates/unified-core.ms:4315"
+    ],
+    "owner_context": "Selected layer candidate preparation"
+  },
+  "layer.spacingUI.finalMoveSpin": {
+    "label": "Max movement",
+    "help": "Limit Boundary Relax displacement with a world-space maximum movement. It does not override later surface/area eligibility or collision rules.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4295",
+      "AminScatter/tools/ui/templates/unified-core.ms:4316"
+    ],
+    "owner_context": "Selected layer candidate preparation"
+  },
+  "layer.separationUI.cleanCheck": {
+    "label": "Remove isolated plants",
+    "help": "Remove isolated plants after spacing. Protected instance edits remain.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4321",
+      "AminScatter/tools/ui/templates/unified-core.ms:4337"
+    ],
+    "owner_context": "Accepted layer cleanup"
+  },
+  "layer.separationUI.neighborSpin": {
+    "label": "Neighbor distance",
+    "help": "Set the neighborhood-search distance for cleanup after spacing. This determines which plants count as neighbors or connected islands; it is not a collision radius.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4322",
+      "AminScatter/tools/ui/templates/unified-core.ms:4338"
+    ],
+    "owner_context": "Accepted layer cleanup"
+  },
+  "layer.separationUI.minNeighborSpin": {
+    "label": "Minimum neighbors",
+    "help": "Remove unprotected plants with fewer than this many nearby neighbors. Zero disables the minimum-neighbor requirement; protected artist edits remain.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4323",
+      "AminScatter/tools/ui/templates/unified-core.ms:4339"
+    ],
+    "owner_context": "Accepted layer cleanup"
+  },
+  "layer.separationUI.minIslandSpin": {
+    "label": "Minimum island size",
+    "help": "Remove unprotected connected planting islands smaller than this many plants. Zero disables the minimum-island requirement; Retry cleanup gaps is a separate bounded population option.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4324",
+      "AminScatter/tools/ui/templates/unified-core.ms:4340"
+    ],
+    "owner_context": "Accepted layer cleanup"
+  },
+  "layer.separationUI.planarCheck": {
+    "label": "XY neighborhoods (off = 3D)",
+    "help": "Measure cleanup neighborhoods in world XY, ignoring height. Off uses 3D distance. This choice is independent of each spacing rule's XY/3D setting.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4325",
+      "AminScatter/tools/ui/templates/unified-core.ms:4341"
+    ],
+    "owner_context": "Accepted layer cleanup"
+  },
+  "layer.detailsUI.refreshButton": {
+    "label": "Read cached statistics",
+    "help": "Read the existing calculation statistics without regenerating placements.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4348",
+      "AminScatter/tools/ui/templates/unified-core.ms:4376"
+    ]
+  },
+  "layer.detailsUI.helpButton": {
+    "label": "Layer / display help",
+    "help": "Explain settings ownership, display budgets, evaluation order and policy limits.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4349",
+      "AminScatter/tools/ui/templates/unified-core.ms:4377"
+    ]
+  },
+  "container.properties.enabledCheck": {
+    "label": "Enable collection",
+    "help": "Collect models whose pivots are inside this rectangle. Off lets you position it without collecting or moving models. Manual mode needs Update.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/container-properties-ui.ms:3",
+      "AminScatter/tools/ui/templates/container-properties-ui.ms:57"
+    ]
+  },
+  "container.properties.consumerList": {
+    "label": "Edit linked Scatter layer",
+    "help": "Choose a linked setup or layer. Inactive pools remain editable; this changes the view only.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/container-properties-ui.ms:5",
+      "AminScatter/tools/ui/templates/container-properties-ui.ms:56"
+    ]
+  },
+  "container.properties.widthSpin": {
+    "label": "Container width",
+    "help": "Resize the boundary. Source models keep their transforms.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/container-properties-ui.ms:7",
+      "AminScatter/tools/ui/templates/container-properties-ui.ms:58"
+    ]
+  },
+  "container.properties.lengthSpin": {
+    "label": "Container length",
+    "help": "Resize the source rectangle's length in scene units. This changes its collection footprint without scaling or translating source models.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/container-properties-ui.ms:9",
+      "AminScatter/tools/ui/templates/container-properties-ui.ms:59"
+    ]
+  },
+  "container.properties.labelCheck": {
+    "label": "Show viewport label",
+    "help": "Show or hide the rectangle's cached viewport label. It does not enable collection or recalculate the Scatter result.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/container-properties-ui.ms:10",
+      "AminScatter/tools/ui/templates/container-properties-ui.ms:60"
+    ]
+  },
+  "container.properties.sourceList": {
+    "label": "Active / parked source models",
+    "help": "List saved source models as Active or Parked. Active requires enabled collection and a pivot inside the rectangle; select a row before assigning movement ownership.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/container-properties-ui.ms:12"
+    ]
+  },
+  "container.properties.assignOwner": {
+    "label": "Follow this container",
+    "help": "Make the highlighted model follow this container when supported container movement occurs, resolving overlapping movement ownership. Its use and per-layer settings in other consumers remain unchanged.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/container-properties-ui.ms:13",
+      "AminScatter/tools/ui/templates/container-properties-ui.ms:61"
+    ]
+  },
+  "container.properties.editLayer": {
+    "label": "Edit layer...",
+    "help": "Open the optional layer editor for the current consumer.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/container-properties-ui.ms:15",
+      "AminScatter/tools/ui/templates/container-properties-ui.ms:74"
+    ]
+  },
+  "general.host.licenseButton": {
+    "label": "License / activation…",
+    "help": "Open the local team-license activation and status dialog. Import a returned license or inspect its expiry. Existing scenes remain loadable and renderable after expiry; supported creation and editing require a valid license.",
+    "owner_context": "Controller / local view",
+    "evidence": [
+      "AminScatter/tools/ui/templates/approved-main-ui.ms:7",
+      "AminScatter/tools/ui/templates/approved-main-ui.ms:119",
+      "docs/ARTIST_GUIDE.md:3"
+    ]
+  }
+}
