@@ -6,9 +6,9 @@
 using namespace amin;
 void near(Vec3 a,Vec3 b){if(length(a-b)>1e-7)throw std::runtime_error("orientation mismatch");}
 Instance sample(Vec3 p){return {p,{2,0,0},{0,3,0},{0,0,4},1,0,0};}
-Vec3 direction(Vec3 p,LineBand b,int axis=1){std::vector<Instance> rows{sample(p)};orientBoundary(rows,{b},{axis});near(rows[0].position,p);if(std::abs(length(rows[0].xAxis)-2)>1e-8||std::abs(length(rows[0].yAxis)-3)>1e-8)throw std::runtime_error("scale changed");return axis<=2?rows[0].yAxis*(axis==1?1.0/3:-1.0/3):rows[0].xAxis*(axis==3?.5:-.5);}
+Vec3 direction(Vec3 p,AnalyzerBand b,int axis=1){std::vector<Instance> rows{sample(p)};orientBoundary(rows,{b},{axis});near(rows[0].position,p);if(std::abs(length(rows[0].xAxis)-2)>1e-8||std::abs(length(rows[0].yAxis)-3)>1e-8)throw std::runtime_error("scale changed");return axis<=2?rows[0].yAxis*(axis==1?1.0/3:-1.0/3):rows[0].xAxis*(axis==3?.5:-.5);}
 int main(){try{
- LineBand b;b.kind=2;b.width=3;b.faceOutward=true;b.cornerRadius=2;b.boundary.loops={{{0,0,0},{10,0,0},{10,10,0},{0,10,0}}};
+ AnalyzerBand b;b.kind=2;b.width=3;b.faceOutward=true;b.cornerRadius=2;b.boundary.loops={{{0,0,0},{10,0,0},{10,10,0},{0,10,0}}};
  for(int axis=1;axis<=4;++axis)near(direction({5,.5,0},b,axis),{0,-1,0});
  near(direction({5,-0.000001,0},b),{0,-1,0});
  double h=std::sqrt(.5);near(direction({0,0,0},b),{-h,-h,0});near(direction({.1,.1,0},b),{-h,-h,0});

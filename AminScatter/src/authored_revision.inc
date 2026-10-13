@@ -50,7 +50,7 @@ public:
         if(!state.amount||!surface_)throw RuntimeError(_T("No admitted Cyrus recipe or receiver"));
         amin::Settings settings;
         settings.count=state.amount;settings.seed=state.seed;
-        settings.uniformScale={1,1};settings.stableCandidates=true;
+        settings.uniformScale={1,1};
         return amin::scatter(meshOf(surface_,true),settings);
     }
     std::vector<amin::Instance> evaluate() const { return evaluate(state_); }

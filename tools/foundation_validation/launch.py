@@ -38,7 +38,7 @@ def main():
         raise ValueError('Expected one native binary directory')
     folder = ROOT / 'build/mcp-qualification' / args.name
     process, metadata = launch(folder, args.script, directories.pop(), transport=True,
-                               max_year=year, silent_startup=True)
+                               max_year=year, silent_startup=True,preview_fault_lab=receipt.get('preview_fault_lab',False))
     print(json.dumps(metadata), flush=True)
     deadline = time.monotonic() + 240
     while time.monotonic() < deadline:

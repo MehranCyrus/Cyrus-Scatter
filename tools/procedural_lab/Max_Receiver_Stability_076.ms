@@ -79,7 +79,7 @@ fn R76Edit = (
     r.refreshAll();a.procSelectedRadius 1 3.0;r.refreshAll();local before=R76Snapshot r
     r.setLayerSurfaces a R76Surfaces;r.refreshAll();local comparison=R76Compare before (R76Snapshot r)
     R76Assert (comparison[1]==before.count and comparison[2]==0) "Existing edits/clones survive adding a receiver"
-    R76Assert (a.procRadiusIDs.count>0 and (amax r.procPublishedRadii[1])==3.0) "Radius overrides survive receiver addition"
+    R76Assert (a.procRadiusIDs.count>0 and (amax (for pair in r.procPublishedRadii[1] collect pair[1]))==3.0) "Radius overrides survive receiver addition"
     a.populationMode=1;a.amount=0;r.refreshAll()
     R76Assert ((R76Snapshot r).count==before.count) "Zero quota retains protected receiver-local candidate suffixes"
     local protectedRows=R76Snapshot r
@@ -182,6 +182,6 @@ fn R76FractionalAndGuards = (
         R76Assert (a.previewError!="" and r.procEpoch==epoch and r.groupSnapshotRows[1]==published and a.procRadiusIDs.count==1) "Invalid radius binding preserves authored override and prior publication"
     )
     a.procRadiusBinding=binding;r.refreshAll()
-    R76Assert (a.previewError=="" and (amax r.procPublishedRadii[1])==3) "Restoring valid radius binding recovers publication"
+    R76Assert (a.previewError=="" and (amax (for pair in r.procPublishedRadii[1] collect pair[1]))==3) "Restoring valid radius binding recovers publication"
     true
 )

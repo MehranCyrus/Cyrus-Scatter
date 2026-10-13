@@ -15,7 +15,7 @@
         hide MINativeNodes
     )
     local cache=layer.previewCache()
-    local tri=cyrusPreviewTriangles cache false 1
+    local tri=cyrusPreviewTriangles cache 1
     local mesh=snapshotAsMesh MINativeNodes[1],face=getFace mesh 1
     -- snapshotAsMesh evaluates this node in world coordinates.
     for corner=1 to 3 do RIAssert (distance (getVert mesh face[corner]) tri[1][corner]<0.01) "Native control geometry or placement mismatch"

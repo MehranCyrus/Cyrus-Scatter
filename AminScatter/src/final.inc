@@ -26,18 +26,20 @@ std::vector<Instance> finalize(const std::vector<Triangle>& surface,const Settin
  if(!f.relax||points.empty()||f.maxMove==0||f.strength==0)return points;
  SurfaceTree tree(surface);
  std::vector<AreaMask> masks;bool hasInclude=false;for(const auto& a:s.areas){masks.emplace_back(a);hasInclude|=a.include;}
- const auto bandAt=[&](Vec3 p){for(std::size_t j=0;j<s.lineBands.size();++j){const auto& b=s.lineBands[j];
+ const auto bandAt=[&](Vec3 p){for(std::size_t j=0;j<s.analyzerBands.size();++j){const auto& b=s.analyzerBands[j];
   if(b.kind==5){for(const auto& path:b.boundary.loops)for(auto q:path)if(length(p-q)<1e-4)return int(j);}
-  else if(b.kind==0?AreaMask(b.boundary).strokeBand(p,b.width,b.inside):analyzerBand(p,b))return int(j);
+  else if(analyzerBand(p,b))return int(j);
  }return -1;};
  std::vector<Vec3> origins,offsets;std::vector<int> originalBands;
- for(auto& p:points){auto [q,t]=tree.project(p.position,0);p.triangle=t;origins.push_back(p.position);offsets.push_back(p.position-q);originalBands.push_back(s.linePattern?bandAt(q):-1);}
+ for(auto& p:points){auto [q,t]=tree.project(p.position,0);p.triangle=t;origins.push_back(p.position);offsets.push_back(p.position-q);originalBands.push_back(s.analyzerPattern?bandAt(q):-1);}
  double maxOwn=0,maxOther=0;for(auto r:own)maxOwn=std::max(maxOwn,r);for(auto r:blockerRadii)maxOther=std::max(maxOther,r);
  const double reach=maxOwn+maxOther+f.gap;
  PointGrid obstacles(std::max(reach,1e-6));for(std::size_t j=0;j<blockers.size();++j)obstacles.add(flat(blockers[j].position),j);
  const auto valid=[&](std::size_t i,Vec3 q,std::uint32_t tri){
   bool include=!hasInclude;for(const auto& m:masks)if(m.contains(q)){if(!m.area.include)return false;include=true;}if(!include)return false;
-  if(s.linePattern&&(originalBands[i]<0||s.lineBands[originalBands[i]].kind==5||bandAt(q)!=originalBands[i]))return false;
+  if(s.splineField){const auto chosen=s.splineField->sample(q,s.seed,points[i].candidateKey,s.receiverSalt);
+   if(!chosen.emitted||chosen.band!=points[i].bandOwner||chosen.source!=points[i].source)return false;}
+  if(s.analyzerPattern&&(originalBands[i]<0||s.analyzerBands[originalBands[i]].kind==5||bandAt(q)!=originalBands[i]))return false;
   if(s.distribution==2){const auto& t=surface[tri];auto ab=t.b-t.a,ac=t.c-t.a,ap=q-t.a;double aa=dot(ab,ab),bb=dot(ac,ac),cc=dot(ab,ac),d=aa*bb-cc*cc;
    if(d<=0)return false;double u=(bb*dot(ap,ab)-cc*dot(ap,ac))/d,v=(aa*dot(ap,ac)-cc*dot(ap,ab))/d;auto uv=t.uvA*(1-u-v)+t.uvB*u+t.uvC*v;
    auto x=std::uint32_t(std::clamp(uv.x,0.0,1.0)*(s.densityWidth-1)),y=std::uint32_t((1-std::clamp(uv.y,0.0,1.0))*(s.densityHeight-1));if(s.density[y*s.densityWidth+x]<=0)return false;
@@ -46,8 +48,6 @@ std::vector<Instance> finalize(const std::vector<Triangle>& surface,const Settin
  };
  for(unsigned iteration=0;iteration<f.iterations;++iteration){
   PointGrid grid(f.radius+2*f.maxMove);for(std::size_t i=0;i<points.size();++i)grid.add(flat(points[i].position),i);
-  PointGrid collisionGrid(std::max(1e-6,2*s.collisionRadius+2*f.maxMove));
-  if(s.collisionEnabled)for(std::size_t i=0;i<points.size();++i)collisionGrid.add(points[i].position,i);
   double moved=0;
   // Sequential acceptance keeps the already accepted moves collision-safe.
   for(std::size_t i=0;i<points.size();++i){Vec3 mean{},direction{};std::size_t n=0;
@@ -63,8 +63,7 @@ std::vector<Instance> finalize(const std::vector<Triangle>& surface,const Settin
    bool ok=true;auto start=points[i].position-offsets[i];
    for(int k=1;k<=8&&ok;++k){auto p=start+(q-start)*(k/8.0);auto [on,t]=tree.project(p,points[i].triangle);if(length(on-p)>1e-4||!valid(i,on,t))ok=false;}
    if(!ok)continue;
-   if(s.collisionEnabled)collisionGrid.visit(q+offsets[i],[&](std::size_t j){if(i!=j&&length(q+offsets[i]-points[j].position)<s.collisionRadius*2)ok=false;return ok;});
-   if(!ok)continue;moved=std::max(moved,length(q+offsets[i]-points[i].position));points[i].position=q+offsets[i];points[i].triangle=tri;
+   moved=std::max(moved,length(q+offsets[i]-points[i].position));points[i].position=q+offsets[i];points[i].triangle=tri;
   }
   if(moved<1e-8)break;
  }

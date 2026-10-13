@@ -45,7 +45,7 @@ The user's earlier mixed-source screenshots do not prove width coupling. Per-ban
 Current source distinguishes two failure stages:
 
 1. Script/CPU preparation stages changed layer previews before installation. A failed preparation can retain the preceding complete publication.
-2. Native `PointDisplay::publish` disables/resets the old generation before constructing a successor; GPU `Realize` occurs later and can fail. Existing fallback and lifetime behavior need explicit allocation/realization tests. Do not describe atomic GPU replacement or device-loss recovery as already proven.
+2. At the original research baseline, native `PointDisplay::publish` disabled/reset the old generation before constructing a successor. Source 0.79.6 has since corrected CPU generation/item staging in `src/point_publication.inc`, with production-body failure tests and host script rollback evidence. Preserve that correction. GPU `Realize` occurs later and can fail; new resource fallback/lifetime behavior still needs explicit allocation/realization tests. Do not describe atomic GPU replacement or device-loss recovery as already proven.
 
 Current native reuse checks snapshot identity, group index, and style. Rebuilding a colored snapshot loses reuse within the changed layer even when triangles match. The plan therefore addresses geometry/transform/color resource separation only where band coloring requires it. It does not promise a general renderer rewrite.
 
@@ -88,7 +88,7 @@ Fresh vendor disassembly is not a dependency for this implementation. A future n
 - Require movement to recheck the retained occupancy and owner decisions, not just nonzero support.
 - Preserve copied random recipe keys while giving the copied layer a distinct address namespace.
 - Bound aggregate Sharp contribution error across overlaps; per-Band error alone does not bound combined occupancy. Certify intermediate-contour bracketing as well as support boundaries.
-- Pin sampled linear curve semantics, current-schema-55 initialization and Auto's empty/degenerate/required-source rules rather than leaving them to interpretation during coding.
+- Pin sampled linear curve semantics and Auto's empty/degenerate/required-source rules rather than leaving them to interpretation during coding. The original schema-55 initialization proposal is superseded by the schema-56 baseline and typed-distance preservation in DESIGN.
 
 ## Remaining empirical questions
 

@@ -1,6 +1,6 @@
 # Implementation sequence
 
-This is a proposed sequence, not authorization to start coding. Read [DESIGN.md](DESIGN.md) for the behavioral contract and [VALIDATION.md](VALIDATION.md) for test definitions. Keep each milestone reviewable; do not combine UI, sampling, transport and retained display changes into one unqualified release.
+Implementation is authorized and in progress; see [PROGRESS.md](PROGRESS.md) for actual acceptance. Read [DESIGN.md](DESIGN.md) for the behavioral contract and [VALIDATION.md](VALIDATION.md) for test definitions. Keep each milestone reviewable; passing one stage does not qualify the later display and radius stages.
 
 ## Requirement coverage
 
@@ -44,7 +44,7 @@ Dependencies: P0 transport and units decisions.
 - Propagate selected Band ownership through native Instances, stage transport, receiver operations, transformations, Brush/falloff filtering, Edit/protected/cloned output, spacing, publication and preview samples. Keep candidate identity distinct from Band identity.
 - Include provenance with complete publication metadata. Retain Analyzer behavior; audit its shared row consumers without adding an ordinary-spline orientation feature.
 - Correct the Z Offset explanation to world Z. Preserve calculation behavior.
-- Introduce the selected schema/payload version once; update generators and native/script consumers as one matched development package. Implement and qualify only the bounded current-schema-55 field initialization described in DESIGN; older retired formats stay rejected.
+- Introduce the selected schema/payload version once; update generators and native/script consumers as one matched development package. Per the subsequent user instruction, remove retired schema migrations and transport adapters. Qualify schema-57 creation, units, copy, Undo and reopen; earlier scenes are explicitly unsupported.
 
 Primary files under `AminScatter/`: `include/scatter.h`, `include/procedural.h`, `src/scatter.cpp`, `src/placement_identity.inc`, `src/receiver_bridge.inc`, `src/boundary_falloff_bridge.inc`, `src/whole_scale_bridge.inc`, `src/brush_host.cpp`, `src/orientation_bridge.inc`, `src/cyrus_edit_stack.inc`, `src/group_spacing_bridge.inc`, `src/procedural_bridge.inc`, `tools/ui/templates/unified-core.ms`. All subsequent source paths also use this project root. Verify actual symbol locations against the P0 inventory; generated consumers may add files to this list.
 
@@ -131,4 +131,4 @@ python tools/procedural_lab/offline_build.py --project scatter --output build/<f
 
 Follow `docs/AGENT_WORKFLOW.md` for focused native tests, host launch and matching package verification. `<fresh-run>` is a placeholder, not an existing output directory to overwrite. Build/install/package/publish actions still require the implementation session's scope; this document does not grant them.
 
-Completion: every required acceptance family has a receipt or an explicit blocking failure. No release/package/commit is implied by plan completion. The next authorized engineering step should be P0, not a large simultaneous UI-and-engine rewrite.
+Completion: every required acceptance family has a receipt or an explicit blocking failure. No release/package/commit is implied by plan completion. Follow the outstanding milestones in PROGRESS rather than restarting completed experiments.

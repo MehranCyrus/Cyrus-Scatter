@@ -8,7 +8,8 @@ Use this small set for the current codebase. Update it in place instead of creat
 | How do Layout, Analyzer and falloff controls interact? | [Detailed feature reference](LAYOUT_AND_FALLOFF.md) |
 | Who owns data and where is the implementation? | [Architecture](ARCHITECTURE.md) |
 | Which principles guide behavior and engineering decisions? | [Engineering foundation](ENGINEERING_FOUNDATION.md) |
-| What did the latest publication/units correction establish? | [0.79.6 bounded foundation evidence](Foundation_0.79.6_2026-10-12/README.md) |
+| What is changing in current source 0.81.1/schema 58? | [Spline Bands plan](plans/spline-bands/README.md), [implementation and acceptance evidence](plans/spline-bands/PROGRESS.md) |
+| What did the preceding publication/units correction establish? | [0.79.6 bounded historical foundation evidence](Foundation_0.79.6_2026-10-12/README.md); old-schema migration is retired in 0.80.0 |
 | What is unfinished or next? | [Current backlog](BACKLOG.md) |
 | How are alternative brush architectures being compared? | [Four standalone painting trials](../experiments/paint-methods/README.md) — isolated results and known failures; vector A selected for integration |
 | How do I install/build? | [Max 2026/2027 installation/build](Max_2027_Installation.md) |

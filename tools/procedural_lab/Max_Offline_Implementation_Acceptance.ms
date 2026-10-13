@@ -5,7 +5,7 @@ global CyrusOfflineImplementationFixture,CyrusOfflineFixtureNode
 fn CyrusOfflineImplementationFixture expectedPayloadSHA = (
     if objects.count!=0 do throw "Use an empty disposable scene; this fixture will create test objects."
     if CyrusLoadedScriptFingerprint!=expectedPayloadSHA do throw "Loaded script fingerprint mismatch."
-    if cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=1 do throw "Matching publication native API required."
+    if cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 do throw "Matching publication native API required."
     fn check condition message = (if not condition do throw ("Offline handoff fixture: "+message);true)
     local surface=plane length:1000 width:1000 lengthsegs:1 widthsegs:1 name:"CS_Offline_Surface"
     local source=box length:8 width:8 height:20 pos:[1200,0,0] name:"CS_Offline_Source"

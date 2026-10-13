@@ -6,6 +6,7 @@
 #include <stdexcept>
 #include <utility>
 #include <vector>
+#include "../include/preview_budget.h"
 
 namespace {
 void require(bool value,const char* why) { if(!value) throw std::runtime_error(why); }
@@ -161,6 +162,15 @@ void failedResourceRetryAndEmpty() {
 }
 int main() {
     try {
+        cyrus::PreviewBudget budget(100);
+        {
+            cyrus::PreviewMemory old(budget,60);
+            bool denied=false;try { cyrus::PreviewMemory next(budget,41); }catch(const std::exception&){denied=true;}
+            require(denied&&budget.used()==60&&budget.highWater()==60,"failed resource admission lost the old reservation or leaked staging");
+            { cyrus::PreviewMemory exact(budget,40);require(budget.used()==100,"exact resource boundary not admitted"); }
+            require(budget.used()==60&&budget.highWater()==100,"temporary resource reservation did not release");
+        }
+        require(budget.used()==0,"resource cache lifetime leaked a reservation");
         allocationFailure();itemFailures();admissionAndReuse();failedResourceRetryAndEmpty();
         require(liveItems==0 && reserved==0,"publication fixture leaked resources");
         std::cout<<"PASS production publication: allocation, point/mesh preparation, peak admission, unchanged reuse, retry and empty successor\n";

@@ -54,9 +54,9 @@ fn HVPBuild pointCount sourceCount = (
             local y=((floor(i/columns as float))+0.5)*spacing-4000.0
             local tm=rotateZMatrix (random 0.0 359.9)
             tm.translation=[x+(random -0.3 0.3)*spacing,y+(random -0.3 0.3)*spacing,0]
-            #(tm,1+mod i sourceCount)
+            #(tm,1+mod i sourceCount,(i as integer64),1,[1,0,0],0,false,2)
         )
-        local cache=aminScatterBuildPreview rows samples colors 500000
+        local cache=aminScatterBuildPreview rows samples #(1,1,colors,#(),false) 500000
         append HVPCaches cache
         total+=aminScatterPreviewCount cache
         join exported (aminScatterPreviewPoints cache)

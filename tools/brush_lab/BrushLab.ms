@@ -19,7 +19,8 @@ fn BLPublish = (
     if not isValidNode source do throw "Brush lab source is missing"
     -- Capacity is 10,000 and this preview publishes every survivor. No unstable
     -- percentage thinning or regenerated random population during painting.
-    local nextCache=cyrusBuildGeometryPreview rows #(source) #((color 90 185 105)) 4 10000 2000000
+    local palette=#(1,1,#((color 90 185 105)),#(),false)
+    local nextCache=cyrusBuildGeometryPreview rows #(source) palette 4 10000 2000000
     if not isValidNode BLPreviewOwner do BLPreviewOwner=cyrusRetainedCreate()
     cyrusRetainedPublish BLPreviewOwner BLController #(nextCache) #(#(true,(color 90 185 105)))
     BLCache=nextCache

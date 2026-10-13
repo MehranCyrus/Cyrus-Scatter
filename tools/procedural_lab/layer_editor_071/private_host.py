@@ -19,12 +19,16 @@ def digest(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
-def launch(folder,script,native,extra='',transport=False,visible=False,extra_modules=(),max_year=2027,silent_startup=False):
+def launch(folder,script,native,extra='',transport=False,visible=False,extra_modules=(),max_year=2027,silent_startup=False,preview_fault_lab=False):
     if max_year not in (2026,2027):
         raise ValueError('Use a supported Max host year')
     folder=Path(folder).resolve();script=Path(script).resolve();native=Path(native).resolve()
     if not folder.is_relative_to(ROOT/'build'):
         raise ValueError('An ignored private build directory is required')
+    if preview_fault_lab:
+        receipt=json.loads((native/'receipt.json').read_text(encoding='utf-8'))
+        if folder.parent!=ROOT/'build/mcp-qualification' or not folder.name.startswith('foundation-spline-') or not receipt.get('preview_fault_lab'):
+            raise ValueError('Preview failure builds require a recorded build and an owned spline profile')
     folder.mkdir(parents=True,exist_ok=False)
     for rel in ['bin',*DIRECTORIES.values()]:(folder/rel).mkdir(parents=True,exist_ok=True)
     profile=Path(os.environ['LOCALAPPDATA'])/f'Autodesk/3dsMax/{max_year} - 64bit/ENU/3dsMax.ini'
@@ -38,7 +42,7 @@ def launch(folder,script,native,extra='',transport=False,visible=False,extra_mod
     for name in ['AminScatter.dlx','CyrusBrush.dlx','CyrusBrushStorage.dlh','CyrusScatterEdit.dlm',*extra_modules]:
         if Path(name).name!=name:
             raise ValueError('Extra module must be a filename in the staged native directory')
-        reject_development_binary(name,(native/name).read_bytes())
+        reject_development_binary(name,(native/name).read_bytes(),allow_owned_preview=preview_fault_lab)
         destination=folder/'bin'/name;shutil.copy2(native/name,destination)
         modules[name]=digest(destination)
     copied=folder/'scripts/CyrusScatter.ms';shutil.copy2(script,copied)
@@ -75,7 +79,7 @@ def launch(folder,script,native,extra='',transport=False,visible=False,extra_mod
     startup=subprocess.STARTUPINFO();startup.dwFlags|=subprocess.STARTF_USESHOWWINDOW;startup.wShowWindow=1 if visible else 0
     process=subprocess.Popen(command,cwd=folder,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,startupinfo=startup)
     metadata={'pid':process.pid,'max_year':max_year,'output':str(folder),'command':command,'binaries':modules,
-              'script_sha256':digest(copied),'normal_profile_modified':False,'development_transport':transport,
+              'script_sha256':digest(copied),'normal_profile_modified':False,'development_transport':transport,'preview_fault_lab':preview_fault_lab,
               'profile_template':str(profile),'profile_template_sha256':hashlib.sha256(profile_bytes).hexdigest()}
     (folder/'launch.json').write_text(json.dumps(metadata,indent=2)+'\n')
     return process,metadata

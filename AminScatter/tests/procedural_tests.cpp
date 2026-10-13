@@ -9,12 +9,12 @@
 using namespace cyrus::procedural;
 void check(bool yes,const char* message){if(!yes)throw std::runtime_error(message);}
 template<class F> void rejects(F fn){bool rejected=false;try{fn();}catch(const std::invalid_argument&){rejected=true;}check(rejected,"Expected validation rejection");}
-Sample sample(double x,double y,std::uint64_t ordinal,double radius=0,bool pin=false){return {{x,y,0},radius,ordinal,"c:"+std::to_string(ordinal),pin};}
+Sample sample(double x,double y,std::uint64_t ordinal,double radius=0,bool pin=false){return {{x,y,0},{radius,radius},ordinal,"c:"+std::to_string(ordinal),pin};}
 Population population(const char* id,unsigned budget){Population p;p.id=id;p.budget=p.attemptLimit=budget;return p;}
 Layer layer(const char* id){Layer l;l.id=id;return l;}
 void stableSampler(){
     const std::vector<amin::Triangle> mesh={{{-10,-10,0},{10,-10,0},{10,10,0}},{{-10,-10,0},{10,10,0},{-10,10,0}}};
-    amin::Settings s;s.stableCandidates=true;s.count=256;s.sourceCount=3;s.uniformScale={.5,1.5};
+    amin::Settings s;s.count=256;s.sourceCount=3;s.uniformScale={.5,1.5};
     const auto all=amin::scatter(mesh,s);
     s.areas.push_back({{{{-10,-10,0},{0,-10,0},{0,10,0},{-10,10,0}}},false});
     const auto masked=amin::scatter(mesh,s);check(!masked.empty()&&masked.size()<all.size(),"Mask did not filter");
@@ -25,14 +25,14 @@ void stableSampler(){
     for(std::size_t i=0;i<part.size();++i){const auto& p=part[i];const auto& a=all[i+93];
         check(p.candidateKey==i+93&&p.source==a.source&&p.scale==a.scale&&amin::length(p.position-a.position)==0,"Candidate range changed prefix");
     }
-    s.collisionEnabled=true;s.collisionRadius=1;rejects([&]{amin::scatter(mesh,s);});
+    s.distribution=1;rejects([&]{amin::scatter(mesh,s);});
 }
 void stablePatternAndRelax(){
     const std::vector<amin::Triangle> mesh={{{-10,-10,0},{10,-10,0},{10,10,0}},{{-10,-10,0},{10,10,0},{-10,10,0}}};
-    amin::Settings s;s.stableCandidates=true;s.count=2;s.sourceCount=1;s.linePattern=true;
-    amin::LineBand anchors;anchors.kind=5;anchors.width=1;anchors.sources={0};
+    amin::Settings s;s.count=2;s.sourceCount=1;s.analyzerPattern=true;
+    amin::AnalyzerBand anchors;anchors.kind=5;anchors.width=1;anchors.sources={0};
     anchors.scaleMin=.5;anchors.scaleMax=1.5;anchors.boundary.loops={{{0,0,0},{2,2,0},{4,4,0},{30,30,0}}};
-    s.lineBands={anchors};auto prefix=amin::scatter(mesh,s);
+    s.analyzerBands={anchors};auto prefix=amin::scatter(mesh,s);
     check(prefix.size()==2&&prefix[0].candidateKey==0&&prefix[1].candidateKey==1,"Anchors exceeded canonical quota");
     s.count=8;auto all=amin::scatter(mesh,s);
     check(all.size()==3,"Anchor outside receiver was accepted or anchors were repeated");
@@ -40,9 +40,9 @@ void stablePatternAndRelax(){
     s.candidateStart=1;s.count=1;auto range=amin::scatter(mesh,s);
     check(range.size()==1&&range[0].candidateKey==1&&range[0].scale==all[1].scale,"Anchor range changed identity or stroke scale");
     s.candidateStart=0;s.count=128;
-    amin::LineBand band;band.kind=0;band.width=2;band.sources={0};band.inside=true;
+    amin::AnalyzerBand band;band.kind=2;band.width=2;band.sources={0};
     band.boundary.loops={{{-8,-8,0},{8,-8,0},{8,8,0},{-8,8,0}}};
-    s.lineBands.push_back(band);auto mixed=amin::scatter(mesh,s);
+    s.analyzerBands.push_back(band);auto mixed=amin::scatter(mesh,s);
     check(mixed.size()>3&&mixed.size()<=s.count,"Mixed pattern did not use bounded population");
     s.relaxEnabled=true;s.relaxSpacing=1;s.relaxStrength=.5;s.relaxIterations=3;
     const auto relaxed=amin::scatter(mesh,s),repeat=amin::scatter(mesh,s);
@@ -140,10 +140,29 @@ void cleanupWorkLimit(){
     for(unsigned i=0;i<16000;++i)dense.samples.push_back(sample(0,0,i));
     p.maxNeighborVisits=100;rejects([&]{evaluate(p);});
 }
+void mixedRadiusMetrics(){
+    Plan p;auto first=layer("first"),second=layer("second");
+    auto a=population("A",1),b=population("B",2),c=population("C",1);
+    a.samples={sample(0,0,0)};a.samples[0].radii={.1,10};
+    b.samples={sample(1,0,0),sample(1.5,0,1)};for(auto& v:b.samples)v.radii={.1,10};
+    b.self={true,1,0,false};first.siblings={true,1,0,true};first.sets={a,b};
+    c.samples={sample(2,0,0)};c.samples[0].radii={.1,10};second.sets={c};p.layers={first,second};
+    p.rules={{Scope::Layers,"first","second",{true,1,0,true}}};auto r=evaluate(p);
+    check(r.layers[0].sets[1].kept==std::vector<std::size_t>{0},"3D self radius leaked into XY sibling scope");
+    check(r.layers[1].sets[0].kept.size()==1,"XY external rule borrowed a blocker's 3D self radius");
+    p.rules[0].distance.planar=false;r=evaluate(p);
+    check(r.layers[1].sets[0].kept.empty(),"3D cross-layer rule reused XY own/blocker radii");
+    p.layers[0].sets[1].self.planar=true;r=evaluate(p);
+    check(r.layers[0].sets[1].kept.size()==2,"XY self spacing used 3D source extent");
+    p.layers[0].sets[0].samples[0].radii.spatial=-1;rejects([&]{evaluate(p);});
+    const std::array<amin::Vec3,3> zero={amin::Vec3{},amin::Vec3{},amin::Vec3{}};
+    const auto collapsed=transformedBounds({-1,-2,-3},{2,3,4},zero);
+    check(collapsed.xy==0&&collapsed.spatial==0,"Finite collapsed placement basis was rejected");
+}
 void stableFalloff(){
     std::vector<amin::Instance> full,filtered;
     for(unsigned i=0;i<1000;++i){amin::Instance row{};row.candidateKey=i;row.position={5,5,0};full.push_back(row);if(i%3)filtered.push_back(row);}
-    amin::BoundaryFalloff f;f.density=true;f.densityCurve={.4,.4};f.stableCandidates=true;
+    amin::BoundaryFalloff f;f.density=true;f.densityCurve={.4,.4};
     const std::vector<std::vector<amin::Vec3>> paths={{{0,0,0},{10,0,0},{10,10,0},{0,10,0}}};
     const auto a=amin::boundaryFalloff(full,paths,f,42),b=amin::boundaryFalloff(filtered,paths,f,42);
     std::vector<std::uint64_t> expected,actual;
@@ -156,7 +175,7 @@ void stableThreadsAndDensity(){
     const std::vector<amin::Triangle> mesh={
         {{0,0,0},{100,0,0},{0,100,0},{0,0,0},{1,0,0},{0,1,0}},
         {{100,0,0},{100,100,0},{0,100,0},{1,0,0},{1,1,0},{0,1,0}}};
-    amin::Settings s;s.stableCandidates=true;s.count=5000;s.sourceCount=3;s.clusterEnabled=true;
+    amin::Settings s;s.count=5000;s.sourceCount=3;s.clusterEnabled=true;
     s.sourceGroups={1,2,3};s.clusterSize=15;s.clusterNoise=.2;
     amin::setComputeThreads(1);const auto serial=amin::scatter(mesh,s);
     for(unsigned workers:{2u,4u}){amin::setComputeThreads(workers);const auto parallel=amin::scatter(mesh,s);
@@ -177,7 +196,7 @@ void exhaustive(){
         for(unsigned l=0;l<2;++l){auto group=layer(l?"B":"A");group.siblings={true,.5,.1,trial%2==0};
             for(unsigned s=0;s<2;++s){auto set=population((std::string(l?"B":"A")+std::to_string(s)).c_str(),18);
                 set.self={true,1,.05,trial%3==0};
-                for(unsigned i=0;i<18;++i){auto row=sample(double(rng()%50)/10,double(rng()%50)/10,i,double(rng()%9)/10,i%13==0);row.position.z=double(rng()%20)/10;set.samples.push_back(row);}
+                for(unsigned i=0;i<18;++i){auto row=sample(double(rng()%50)/10,double(rng()%50)/10,i,double(rng()%9)/10,i%13==0);row.radii.spatial+=double(rng()%30)/10;row.position.z=double(rng()%20)/10;set.samples.push_back(row);}
                 group.sets.push_back(set);
             }
             p.layers.push_back(group);
@@ -186,7 +205,7 @@ void exhaustive(){
         const auto actual=evaluate(p);
         std::vector<std::pair<std::pair<unsigned,unsigned>,unsigned>> kept;
         const auto collides=[&](const Sample& a,const Sample& b,const DistanceRule& d){
-            const auto v=a.position-b.position;const double reach=d.multiplier*(a.radius+b.radius)+d.gap;
+            const auto v=a.position-b.position;const double reach=d.multiplier*(d.planar?a.radii.xy+b.radii.xy:a.radii.spatial+b.radii.spatial)+d.gap;
             return d.enabled&&(v.x*v.x+v.y*v.y+(d.planar?0:v.z*v.z))<reach*reach;
         };
         for(unsigned l=0;l<2;++l)for(unsigned s=0;s<2;++s){const auto& set=p.layers[l].sets[s];std::vector<std::size_t> expected;
@@ -206,4 +225,4 @@ void exhaustive(){
         }
     }
 }
-int main(){try{stableSampler();stablePatternAndRelax();distances();refill();targetAndOrdering();scaleBounds();cleanupWorkLimit();stableFalloff();stableThreadsAndDensity();exhaustive();std::cout<<"Procedural: stable/parallel sampler, bounded anchors and pattern/Relax, falloff, scopes, protected edits, bounded cleanup/replay and 240 exhaustive comparisons passed\n";return 0;}catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}
+int main(){try{stableSampler();stablePatternAndRelax();distances();refill();targetAndOrdering();scaleBounds();mixedRadiusMetrics();cleanupWorkLimit();stableFalloff();stableThreadsAndDensity();exhaustive();std::cout<<"Procedural: stable/parallel sampler, bounded anchors and pattern/Relax, falloff, scopes, protected edits, bounded cleanup/replay and 240 exhaustive comparisons passed\n";return 0;}catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}

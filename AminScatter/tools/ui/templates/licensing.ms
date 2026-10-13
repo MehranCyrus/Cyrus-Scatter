@@ -1,6 +1,6 @@
 global CyrusOpenLicenseDialog,CyrusLicenseDialog,CyrusRequireAuthor,CyrusLicenseCanEdit
 fn CyrusRequireAuthor = (
-    if cyrusLicenseAllows==undefined do throw "Load the matching licensed Cyrus 0.79.6 native modules and restart Max."
+    if cyrusLicenseAllows==undefined do throw "Load the matching licensed Cyrus 0.80.0 native modules and restart Max."
     if not cyrusLicenseAllows() do throw "Cyrus creation and editing require an active team license. Existing work can still load and render. Open Cyrus > License to activate or renew."
     true
 )
@@ -9,7 +9,7 @@ fn CyrusLicenseCanEdit = (
 )
 fn CyrusOpenLicenseDialog = (
     if CyrusLicenseDialog!=undefined do try(destroyDialog CyrusLicenseDialog)catch()
-    rollout licenseUI "Cyrus 0.79.6 - Team License" width:480 height:240 (
+    rollout licenseUI "Cyrus 0.80.0 - Team License" width:480 height:240 (
         label statusLabel "" pos:[16,16] width:448 height:70
         button requestButton "1. Save activation request..." pos:[16,98] width:218 height:30
         button importButton "2. Import license..." pos:[246,98] width:218 height:30
@@ -17,7 +17,7 @@ fn CyrusOpenLicenseDialog = (
         button refreshButton "Refresh status" pos:[16,205] width:218 height:25
         button closeButton "Close" pos:[246,205] width:218 height:25
         fn refresh = (
-            if cyrusLicenseStatus==undefined then statusLabel.text="The licensed native modules are not loaded. Restart with the matching 0.79.6 package."
+            if cyrusLicenseStatus==undefined then statusLabel.text="The licensed native modules are not loaded. Restart with the matching 0.80.0 package."
             else (
                 local state=cyrusLicenseStatus(),expiry=""
                 if state[4]>0 do (

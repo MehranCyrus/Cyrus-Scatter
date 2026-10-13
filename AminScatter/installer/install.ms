@@ -18,7 +18,7 @@
                     if (convert.ToBase64String (io.ReadAllBytes target))!=(convert.ToBase64String (io.ReadAllBytes source)) do throw ("Native package identity mismatch: "+name)
                 ) else if not copyFile source target do throw ("Could not copy "+name)
             )
-            for name in #("CyrusScatter.ms","Uninstall.ms","manifest.json","INSTALL.txt") do io.Copy (pathConfig.appendPath packageDir name) (pathConfig.appendPath destination name) true
+            for name in #("CyrusScatter.ms","Uninstall.ms","manifest.json","INSTALL.txt","Clipper2-LICENSE.txt","nlohmann-json-LICENSE.txt") do io.Copy (pathConfig.appendPath packageDir name) (pathConfig.appendPath destination name) true
             io.Copy (packageDir+"CyrusScatter.mcr") (pathConfig.appendPath (getDir #userMacros) "CyrusScatter.mcr") true
             io.Copy (packageDir+"CyrusScatterStartup.ms") (pathConfig.appendPath (getDir #userStartupScripts) "CyrusScatterStartup.ms") true
             if not setINISetting pluginIni "Directories" "CyrusScatter__MAX_YEAR__" binaries do throw "Could not register the Cyrus plugin path."
@@ -27,7 +27,7 @@
             for key in #("AminScatter2026","AminScatter2027") do delINISetting pluginIni "Directories" key
             deleteFile (pathConfig.appendPath (getDir #userStartupScripts) "AminScatterStartup.ms")
             for name in #("AminScatter.mcr","Cyrus-AminScatterOpen.mcr") do deleteFile (pathConfig.appendPath (getDir #userMacros) name)
-            messageBox "Cyrus Scatter __VERSION__ is installed. Restart 3ds Max __MAX_YEAR__ to load the matching native engine.\n\nCreate > Geometry > Cyrus > Cyrus Scatter, then use Modify.\nChoose a receiving surface in Receiving surfaces. Select a layer in Layers & paint sets to edit its native sections below. Edit layer in window... is an optional floating view of the same settings.\nPaint sets keep separate assets and Brush histories; population, area and transforms share layer defaults. Spacing saves automatically. Statistics & diagnostics > Advanced provides local Start, Stop and Save controls without MCP.\n\nReopen a saved copy of your scene after restarting Max." title:"Cyrus Scatter __VERSION__"
+            messageBox "Cyrus Scatter __VERSION__ is installed. Restart 3ds Max __MAX_YEAR__ to load the matching native engine.\n\nCreate > Geometry > Cyrus > Cyrus Scatter, then use Modify.\nSelect a layer, add Surfaces and Models, choose Layout and Amount, then Update scatter. Paint Areas are optional receiver-bound coverage.\nSpline Bands support explicit ranges, density curves and viewport feedback. Manual changes publish plants when Update is pressed.\n\nThis build uses schema 58. Create fresh setups; earlier development scenes are not migrated. Keep original scenes and their matching older build for recovery." title:"Cyrus Scatter __VERSION__"
         ) catch (messageBox (getCurrentException()) title:"Cyrus Scatter installation")
     )
 )

@@ -1,6 +1,6 @@
 # Cyrus Scatter engineering foundation
 
-Maintained contracts, established 12 October 2026 and updated for source 0.79.6/schema 56. **Required behavior is not implementation compliance or release acceptance.** The [portable correction handoff](Foundation_0.79.6_2026-10-12/README.md) records bounded Max 2026/2027 publication and units evidence. Earlier failures remain in the [local audit receipt](../_local/foundation-audit/20261012-3f4f69a4/AUDIT.md); that ignored receipt is not supplied by a source-only clone.
+Maintained contracts, established 12 October 2026 and aligned to development source 0.81.1/schema 58 on 13 October. **Required behavior is not implementation compliance or release acceptance.** The [current implementation record](plans/spline-bands/PROGRESS.md) records scoped native and Max 2026/2027 evidence and remaining gates. The [0.79.6 correction handoff](Foundation_0.79.6_2026-10-12/README.md) is historical publication/units evidence; its old-schema migration is retired. Earlier failures remain in the [local audit receipt](../_local/foundation-audit/20261012-3f4f69a4/AUDIT.md); that ignored receipt is not supplied by a source-only clone.
 
 The [architecture](ARCHITECTURE.md) owns implementation detail, the [backlog](BACKLOG.md) owns unresolved work, and the [workflow](AGENT_WORKFLOW.md) owns execution and host isolation. After required startup, read relevant sections without recursively loading history. F01–F09 retain their original meanings; F10–F12 make units, persistence and Analyzer boundaries explicit.
 
@@ -54,7 +54,7 @@ Editing independent B preserves A's IDs/transforms. Coverage affects eligibility
 
 **Contract:** F04 Evaluation — Established
 
-Warm Manual edits wait for explicit calculation: Update scatter, Refresh preview and Refresh areas / preview. Cached reads, browsing, selection and display-only edits must not consume them. Live follows relevant dependencies/animation. Artists control when costly changes take effect.
+Warm Manual placement edits wait for explicit calculation: Update scatter, Refresh preview and Refresh areas / preview. Cached reads, browsing, selection and display-only edits must not consume them. An explicitly enabled Band field view can follow authored changes and relevant animation while plants/radii remain frozen; it must say **Pending field; plants from last Update** when its field inputs differ. Live follows relevant dependencies/animation. Artists control when costly placement changes take effect.
 
 **Limits:** 0.79.6 fault/recovery verifies pending Manual rows/epoch under display-only changes in both hosts; other physical callbacks remain pending. Cold missing-publication reconstruction and held-interaction deferral are explicit exceptions. Changed publication rows/epoch after an unrelated action with a warm pending recipe falsify the rule.
 
@@ -68,11 +68,11 @@ Warm Manual edits wait for explicit calculation: Update scatter, Refresh preview
 
 Publish compatible rows, sources, radii, statistics and display/output together, or retain the last complete result and report failure. Failed preparation/admission must not destroy artist work.
 
-**Limits:** CPU generation/item staging and six commit sites/occurrences plus display rollback are tested. GPU/device-loss and exceptional SDK notifications remain unqualified. A failed install exposing mixed owner epochs or losing the prior complete result falsifies this rule.
+**Limits:** CPU generation/item staging, script commit sites and display rollback are tested. Scoped private Max 2027 fault probes also cover later-group shader/buffer failure, complete fallback, retained generations and recovery; this does not qualify true device loss or exceptional SDK notifications. A failed install exposing mixed owner epochs or losing the prior complete result falsifies this rule.
 
 **Implementation:** U: evaluateProcedural, procStagePreview, procRestoreResult, procEnsureDisplay; [native publication](../AminScatter/src/point_publication.inc); [Edit rollback](../AminScatter/src/cyrus_edit_stack.inc).
 
-**Evidence:** [0.79.6 evidence](Foundation_0.79.6_2026-10-12/README.md): direct production-body allocation/item faults; 42 actual script assertions in each Max year; native admission/reuse scenario. Edit commits last, after all owner/root installs.
+**Evidence:** [Current 0.80.0 evidence](plans/spline-bands/PROGRESS.md) records the exact native/script identities and bounded GPU, publication and retained-display scenarios. [0.79.6 evidence](Foundation_0.79.6_2026-10-12/README.md) preserves the original production-body allocation/item faults and 42 script assertions per Max year. Edit commits last, after all owner/root installs.
 
 ### F06 Bounded work, memory admission and underfill
 
@@ -130,21 +130,21 @@ Distances and density retain physical meaning across supported conversions; dime
 
 **Limits:** Old six-digit Area precision is unrecoverable. Native Paint/Edit geometry bindings still guard unsupported rescaling; saved-unit reopen recovers the tested result. Extreme vector scales remain B07. Physical-distance/density drift within the qualified conversion scope falsifies this requirement.
 
-**Implementation:** U: migrateDistanceSettings55, world-unit fields/tabs, typed Area widths, procRadiusDistances, procRadii; procPlanReceivers converts density by squared units-per-meter.
+**Implementation:** U: world-unit fields/tabs, typed Area widths and Band ranges, procRadiusDistances, procRadii; procPlanReceivers converts density by squared units-per-meter. Schema-55/56 migration and obsolete untyped fields have been removed.
 
 **Evidence:** [0.79.6 host evidence](Foundation_0.79.6_2026-10-12/README.md): Max 2026/2027 load, merge, save/reopen, rescale, animation and density/physical placement checks. The historical B14 raw-string failure motivated the repair.
 
-### F11 Saved state and schema migration
+### F11 Saved state and schema boundaries
 
 **Contract:** F11 Persistence — Established
 
 Save authored identities/coverage/settings; distinguish derived candidates, transient caches and published receipts. Incompatible schema/missing dependencies need explicit recovery, not guessed correspondence. Preserve original files.
 
-**Limits:** Only immediately preceding schema 55 migrates; retired stroke/model-set formats remain rejected. Physical cold Undo B05, arbitrary duplicate repair and native-document rescaling are separate gates. Silent same-name replacement or wrong-owner restored data falsifies this rule.
+**Limits:** Current schema 58 only; earlier development scenes are rejected without modifying their contents. Current-schema roundtrip, copy, merge and Undo remain requirements. Physical cold Undo B05, arbitrary duplicate repair and native-document rescaling are separate gates. Silent same-name replacement or wrong-owner restored data falsifies this rule.
 
-**Implementation:** U: migrateDistanceSettings55, procAssertSchema, procEnsureSources, procBindingName; Brush encode/decode; receiver mergeBinding.
+**Implementation:** U: procAssertSchema, procEnsureSources, syncStrokes, copyLogicalLayer, procBindingName; Brush encode/decode; receiver mergeBinding. No implicit membership or old-placement conversion is permitted.
 
-**Evidence:** Native canonical vector roundtrip/malformed rejection; [0.79.6 migration](Foundation_0.79.6_2026-10-12/README.md) preserves same-unit edited and painted results from schema 55 and tests load/merge/roundtrip.
+**Evidence:** Native canonical vector roundtrip/malformed rejection; [current implementation evidence](plans/spline-bands/PROGRESS.md) retains historical schema-57 save/reopen/copy/merge and native Undo events; schema-58 save/reopen/copy, captured-owner and native Undo checks are recorded separately. Schema-57 rejection preserves the original witness bytes. Historical 0.79.6 migration tests do not authorize restoring that code path.
 
 ### F12 Analyzer ownership and freshness
 

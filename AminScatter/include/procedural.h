@@ -5,9 +5,16 @@
 namespace cyrus::procedural {
 using DistanceRule=groups::DistanceRule;
 using Reason=groups::Reason;
+struct Radii {
+    double xy=0,spatial=0;
+    double forMetric(bool planar) const { return planar?xy:spatial; }
+};
+// Pivot-local bounds already include object offsets. Apply only the final
+// instance basis: no translation and no second Follow Scale multiplication.
+Radii transformedBounds(amin::Vec3 minimum,amin::Vec3 maximum,const std::array<amin::Vec3,3>& basis);
 struct Sample {
     amin::Vec3 position;
-    double radius=0;
+    Radii radii;
     std::uint64_t ordinal=0;
     std::string id;
     bool protectedEdit=false;

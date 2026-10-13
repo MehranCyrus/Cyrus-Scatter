@@ -1,6 +1,6 @@
 # Proposed behavior and implementation contracts
 
-Status: recommended design, not implemented. Decisions below consolidate the user requirements and independent Astra audits. Numerical admission values are proposed starting limits that must pass the validation gates; they are not measured capabilities.
+Status: behavioral contract under implementation; see PROGRESS for qualified scope. Decisions below consolidate the user requirements and independent Astra audits. Admission limits are implementation bounds, not promises of total host memory or latency.
 
 ## 1. Ownership and scope
 
@@ -8,7 +8,7 @@ Status: recommended design, not implemented. Decisions below consolidate the use
 |---|---|---|
 | Layer | Existing amount, seed, receivers, sources, spacing; one Spline Band arrangement mode | Candidate schedule, prepared fields, complete publication |
 | Path | Stable local ID, node reference, Rounded/Sharp setting | Sampled world-XY geometry, topology, offset/index caches |
-| Band | Stable local ID, path ID, side, width or independent start/end, source-selection mode and selections, density strength, curve enable/data, scale min/max, identification color | Resolved interval, active/empty status, source membership, field contribution |
+| Band | Stable local ID, path ID, side, width or independent start/end, source-selection mode and selections, density strength, density curve enable/data, scale min/max, scale profile mode and independent scale curve/graph, identification color | Resolved interval, active/empty status, source membership, field contribution |
 | Source row | Existing stable ID, weight, base scale, Z Offset, group membership; Manual/Auto radius mode and Manual settings | Validated geometry bounds, effective XY/3D radii |
 | Editor/display | Selected identities, Color by choice, Preview Falloff and Show Boundaries, radius display metric | Cached labels, palette, overlay snapshots; no placement ownership |
 
@@ -26,7 +26,7 @@ Consecutive classification retains the existing global authored-band precedence 
 
 Switching Consecutive to Independent copies the current resolved intervals. Switching back is lossless only for ordered, contiguous intervals. Otherwise show the proposed consecutive intervals before an explicit conversion action, with one Undo operation; never silently discard offsets/overlap during a radio change.
 
-New Bands use direct Models/Points with an explicit empty selection and a visible “Choose models” state. Changing assignment mode is not model selection. Preserve the user's stored direct and group selections when switching modes. Explicit source membership must distinguish empty from legacy group fallback. Missing sources and zero-weight selections have zero contribution. An intentional Empty/gap source with positive weight remains a lottery outcome that removes the chosen placement without redistributing its probability.
+New Bands use direct Models/Points with an explicit empty selection and a visible “Choose models” state. Changing assignment mode is not model selection. Preserve the user's stored direct and group selections when switching modes. Source membership is always explicit; empty never selects a fallback group. Missing sources and zero-weight selections have zero contribution. An intentional Empty/gap source with positive weight remains a lottery outcome that removes the chosen placement without redistributing its probability.
 
 Missing Path nodes retain their authored records and display “Missing / inactive”; no same-name auto-rebinding. Explicit Update removes their contribution. In Manual mode, the last published plants remain until Update. Invalid geometry in a still-active Path is a preparation failure, not permission to publish an unrelated or partially valid result.
 
@@ -54,7 +54,7 @@ Below saturation each Band contributes its specified probability. Above saturati
 
 Consecutive mode first resolves its single geometric owner, including empty intervals, then applies that owner's density. It does not fall through after density rejection.
 
-Random channels for occupancy, owner, source, and scale are independent and use the existing effective seed (including population sampling salt), receiver salt and canonical candidate key. Address namespaces are not random recipe keys. Source sampling order uses stable source IDs for the new independent path. Preserve the existing flat Consecutive decisions where required by the baseline oracle; document intentional changes separately. Increasing the candidate budget must retain common candidates' positions/transforms and keyed decisions before shared spacing effects. A change in a competing Band's contribution may legitimately change the selected source while leaving position and candidate identity stable.
+Random channels for occupancy, owner, source, and scale are independent and use the existing effective seed (including population sampling salt), receiver salt and canonical candidate key. Address namespaces are not random recipe keys. Both arrangements use canonical source IDs and dedicated channels 101/102/103/104. This intentionally changes pre-0.80 ordinary Band source/scale draws; there is one current recipe, with no old-scene sampler. Candidate positions and parent transform streams retain their current keyed contracts. Increasing the candidate budget must retain common candidates' positions/transforms and keyed decisions before shared spacing effects. A change in a competing Band's contribution may legitimately change the selected source while leaving position and candidate identity stable.
 
 **Population rule for this delivery:** Candidate budget supports both Count and plants/m². Existing masks, density maps, Paint Areas, and Area falloff remain separate gates and apply once at their documented pipeline stages. New Band density is an additional deterministic thinning factor. No refill may compensate for it.
 
@@ -105,7 +105,7 @@ Automatic Relax/final movement retains the selected owner. At the proposed desti
 
 - Paths becomes a compact scrolling list. Show name, Band count and inactive/missing state; restore selection by ID. Place Add closed line and Remove adjacent, with icon, tooltip, keyboard name and enabled state.
 - Keep the Band list. Each row shows its swatch, side/index, resolved range and empty/inactive status. Add Outside, Add Inside and Remove share one row. The selected Band exposes its range/width, density and model selection clearly.
-- Models/Points remains the main source-editing location. Extend the existing owner-drawn swatch list to `Name | Weight | Out 1`. Use compact multiple-membership text and a tooltip with Path, full range and direct/group origin. Do not add RGB/color names. Clicking a membership navigates to its Path/Band without changing assignment; ambiguous multiple memberships get a chooser.
+- Models/Points remains the main source-editing location. Extend the existing owner-drawn swatch list to `Name | Weight | Out 1`. Use compact multiple-membership text and a tooltip with Path, full range and direct/group origin. Do not add RGB/color names. Membership labels and tooltips are informational. The 0.81.0 simplification removes membership navigation and the floating layer editor; select Paths/Bands directly in Layout.
 - Label assignment as “Models used by this Band.” Direct Models/Points is the default for new Bands; Groups remains available for reusable source sets. Group edits update every dependent Band. Group-key colors remain distinct from identification colors.
 - Band scale min/max remains an additional per-placement multiplier. Put it in an Advanced disclosure with an explanation; do not add a new per-source scale-range feature in this workstream. Source base Scale and Weight remain where they are.
 - The existing curve editor is reused with an explicit Band target adapter. Capture controller/layer/path/band IDs when opening; resolve that target on every write. Deletion, Undo, scene reset/open, or owner changes must not redirect edits to the currently selected row. Define Apply/Done/Close and coalesce a drag into one understandable Undo transaction; closing a stale editor performs no write.
@@ -162,8 +162,38 @@ Auto is a conservative bound, not mesh-to-mesh collision. An asymmetric source o
 
 Include saved fields in parameter/tab registries, copy/removal functions, Undo, scene serialization, dirty signatures, diagnostics and publication metadata. Cache-only contours, indices and derived bounds are reconstructed from versioned inputs, not treated as authored data. Display colors/selections are excluded from placement keys; assignment-group changes remain solver dependencies.
 
-The current schema is 55. Select the next unused schema/payload versions when implementation begins and update generated scripts/native bridge as one matched package. Provide a narrow, validated initialization from current schema 55: preserve existing source/group selections, widths, ordering, scales, seeds and Manual radii; assign stable Path/Band IDs once; default to Consecutive, Rounded, density 100% with the curve disabled, Manual radius and hidden overlays. Preserve node/row identities and do not overwrite the original scene. Empty-interval correction is an explicit behavior fix, not a promise of identical buggy output. Conversion must pass the units, copy and reopen oracles before it is enabled. Malformed 55 records fail without guessed assignments. Earlier retired development formats remain rejected and require their matching old build; no general compatibility layer is introduced.
+The user subsequently required a current-only implementation with no legacy compatibility. Development 0.80.0 uses scene schema 57 and one eight-field internal placement contract. Remove schema-55/56 migration handlers, obsolete untyped distance parameters, older row readers and superseded native call signatures. Earlier development scenes are rejected with an actionable create-new-setup message; never reinterpret or overwrite their contents. New records default to Consecutive, Rounded, density 100% with the curve disabled, direct empty membership, Manual radius and hidden overlays. Qualify new-schema save/reopen, merge, copy, Undo and unit scaling. Preserve historical receipts and user scenes as evidence, not as executable compatibility paths.
 
-Resolve the existing B14 units issue for all touched distances: widths/start/end, Auto bounds, Manual radii, world radius overrides and Z offset. A world-unit spinner over a serialized float does not establish unit safety. Curve X is dimensionless normalized progress. Saved physical distances must survive supported load/merge/rescale paths with explicit conversion exactly once.
+Preserve the bounded B14 repair delivered in 0.79.6 and extend its typed-distance convention to all new distances: widths/start/end and Auto bounds. Retain typed Manual radii, world radius overrides and Z offset, including animation controllers. A world-unit spinner over a serialized float does not establish unit safety. Curve X is dimensionless normalized progress. Saved physical distances must survive supported load/merge/rescale paths with explicit conversion exactly once. Existing native Paint/Edit rescale guards remain explicit limits.
 
 Validation or bounded-work failure leaves the last complete calculation/publication intact and provides a cause tied to the affected Path/Band/source. Missing optional inactive records are not malformed active geometry. No partial layer result, silent precision downgrade, automatic reset, or hidden setting substitution is acceptable.
+
+## 0.81.1 scale profile extension
+
+
+Open **Layout > Advanced > Scale**. Min/Max remains the random Band size range.
+**Scale profile** selects **Off**, **Follow Density** or **Custom**; Custom enables
+**Edit scale curve**. X runs across the Band from Start to End, not along the Path.
+Y is a size percentage: 100% is unchanged, 50% halves size and 200% doubles it.
+The profile multiplies the existing random Band size, source scale and layer
+transforms once. Density and scale retain separate saved curves and Bezier handles.
+
+Follow Density uses the effective density curve shape, excluding the Density %
+strength. Disabling the density curve makes this scale mode flat 100%. Switching
+modes preserves the stored Custom graph. Zero scale collapses the instance without
+removing its candidate; use density to remove placements. Scale traces are bounded
+to 2–257 samples, at most 64 authored graph points and 0–10000% size.
+
+Scale-only changes retain base candidates and source/owner random channels.
+Size-dependent spacing, protected edits and cleanup can change accepted output.
+Auto Radius follows the final instance basis; Manual radius follows size only when
+Follow Scale is enabled. A drawn radius does not enable its spacing rule.
+Manual retains published plants and radii until Update scatter; Live schedules
+relevant changes. Opening an unchanged graph does not alter the recipe.
+
+Rounded Bands use the existing distance coordinate. Sharp Bands reuse density's
+prepared coordinate, so scale edits cannot perturb its density lottery. Away from
+reported boundary uncertainty, scale-profile error is bounded to 0.005 multiplier
+before the other scale factors. A curve too steep for that coordinate fails with a
+specific error and retains the previous complete result; simplify the curve or use
+Rounded corners. No unbounded geometry refinement is triggered by size editing.

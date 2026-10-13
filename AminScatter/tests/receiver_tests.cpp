@@ -12,7 +12,7 @@ template<class F>void rejected(F f){bool failed=false;try{f();}catch(const std::
 static std::vector<amin::Triangle> mesh(unsigned slot){const double x=slot*3.0;return {{{x,0,0},{x+1,0,0},{x,1,0}},{{x+1,0,0},{x+1,1,0},{x,1,0}}};}
 static std::map<std::uint64_t,amin::Instance> generate(const Plan& p){
     std::map<std::uint64_t,amin::Instance> result;
-    for(const auto& r:p.receivers)if(r.pool){amin::Settings s;s.stableCandidates=true;s.receiverSalt=salt("receiver-"+std::to_string(r.slot));s.count=r.pool;s.sourceCount=3;
+    for(const auto& r:p.receivers)if(r.pool){amin::Settings s;s.receiverSalt=salt("receiver-"+std::to_string(r.slot));s.count=r.pool;s.sourceCount=3;
         s.rotationDegrees[0]={-15,15};s.axisScale[0]={.8,1.4};s.movement[0]={-.02,.02};
         for(const auto& row:amin::scatter(mesh(r.slot),s))result.emplace(identity(r.slot,unsigned(row.candidateKey)),row);}
     return result;
@@ -45,7 +45,7 @@ int main(){try{
     const auto merged=mergeBinding(key,extra);check(merged=="settings\nCyrusReceivers2\na=mesh1\nb=mesh2\n");check(mergeBinding(merged,key)==merged);
     rejected([&]{mergeBinding(merged,"settings\nCyrusReceivers2\na=changed\n");});rejected([&]{mergeBinding("old sampler",key);});
     rejected([&]{mergeBinding(key,"new settings\nCyrusReceivers2\na=mesh1\n");});
-    amin::Settings s;s.stableCandidates=true;s.count=100;s.receiverSalt=salt("sphere");const auto original=amin::scatter(mesh(0),s);
+    amin::Settings s;s.count=100;s.receiverSalt=salt("sphere");const auto original=amin::scatter(mesh(0),s);
     s.uniformScale={2,2};const auto scale=amin::scatter(mesh(0),s);for(std::size_t i=0;i<original.size();++i)check(amin::length(original[i].position-scale[i].position)==0);
     std::cout<<checks<<" receiver assertions passed\n";return 0;
 }catch(const std::exception& e){std::cerr<<e.what()<<"\n";return 1;}}

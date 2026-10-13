@@ -1,5 +1,5 @@
 // The sole supported product model is maintained in unified-core.ms.
-// Container and popup views bind those same owners; generation adds no engine.
+// Container views bind those same owners; generation adds no engine.
 const fs=require('fs');
 const crypto=require('crypto');
 let text=fs.readFileSync('tools/ui/templates/unified-core.ms','utf8').replace(/\r/g,'');

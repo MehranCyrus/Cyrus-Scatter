@@ -28,8 +28,8 @@ try:
         r.enableSceneRedraw()
     check(not r.isSceneRedrawDisabled(),'Owned host redraw enabled before the scenario')
     r.execute('''fn FoundationPointCache groups = (
-      local data=for i=1 to groups collect #((transMatrix [(mod i 20)*2.,(floor (i/20.))*2.,0]),i)
-      aminScatterBuildPreview data (for i=1 to groups collect #([0,0,0])) (for i=1 to groups collect white) 500000
+      local data=for i=1 to groups collect #((transMatrix [(mod i 20)*2.,(floor (i/20.))*2.,0]),i,(i as integer64),1,[1,0,0],0,false,2)
+      aminScatterBuildPreview data (for i=1 to groups collect #([0,0,0])) #(1,1,(for i=1 to groups collect white),#(),false) 500000
     )''')
     controller=r.box(name='Native publication controller',width=100.,length=100.,height=1.)
     owner=r.cyrusRetainedCreate();check(owner is not None,'Retained API available')
@@ -61,7 +61,7 @@ try:
     check(r.cyrusRetainedPublish(owner,controller,arr([changed,sibling]),two_styles),'One changed native layer publishes')
     redraw();after=stats(owner)
     report['partial_uploads']=int(after[5])-int(before[5])
-    check(report['partial_uploads']==2,'Only the two changed point groups upload; sibling buffers reuse')
+    check(report['partial_uploads']==4,'Only positions/owners for the two changed point groups upload; sibling buffers reuse')
     check(r.cyrusRetainedPublish(owner,controller,arr([changed,sibling]),two_styles),'Unchanged generation reuse succeeds')
     r.completeRedraw();check(stats(owner)[2]==after[2] and stats(owner)[5]==after[5],'Unchanged inputs add no publication or upload')
     check(not r.isSceneRedrawDisabled(),'Scenario leaves redraw enabled')

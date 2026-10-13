@@ -73,7 +73,7 @@ int main(int argc,char** argv) {
         };
         Settings s;s.seed=244;s.sourceCount=2;s.sourceWeights={.05,1};s.sourceGroups={0xff0000,0x646464};
         s.clusterEnabled=true;s.clusterSize=30;s.clusterRoughness=.5;s.clusterSeed=42;
-        s.uniformScale={1,1};s.preserveDensity=true;
+        s.uniformScale={1,1};
         for(unsigned count:{200u,4095u,4096u,32000u,64000u,100000u}) {
             s.count=count;run("clover_"+std::to_string(count),s);
         }
@@ -81,23 +81,21 @@ int main(int argc,char** argv) {
         s.clusterBlur=.7;s.clusterNoise=.23;s.rotationDegrees={{{-20,30},{-10,50},{0,360}}};
         s.axisScale={{{.5,2},{.6,3},{1,4}}};run("blur_noise_weights",s);
         s.sourceWeights.clear();run("uniform_groups",s);
-        s.distribution=1;s.clusterRadius=50;run("legacy_cluster",s);
         s.distribution=0;s.movement={{{-3,3},{-2,2},{0,0}}};run("projected_movement",s);
         s.movement={};s.areas={{{{{-300,-250,0},{300,-250,0},{300,350,0},{-300,350,0}}},true}};
-        run("area_thinning",s);s.preserveDensity=false;run("area_refill",s);
+        run("area_thinning",s);
         s.areas.clear();s.distribution=2;s.densityWidth=s.densityHeight=4;s.density.assign(16,.37);
         run("density_rejection",s);
-        s.distribution=0;s.count=8000;s.collisionEnabled=true;s.collisionRadius=2;run("ordered_collision",s);
-        s.collisionEnabled=false;s.count=2000;s.relaxEnabled=true;s.relaxSpacing=15;s.relaxIterations=5;
+        s.distribution=0;s.count=2000;s.relaxEnabled=true;s.relaxSpacing=15;s.relaxIterations=5;
         run("ordered_relax",s);
-        s.relaxEnabled=false;s.count=64000;s.linePattern=true;s.lineBands.clear();
-        LineBand band;band.kind=2;band.width=50;band.group=1;
+        s.relaxEnabled=false;s.count=64000;s.analyzerPattern=true;s.analyzerBands.clear();
+        AnalyzerBand band;band.kind=2;band.width=50;for(unsigned i=0;i<s.sourceGroups.size();++i)if(s.sourceGroups[i]==1)band.sources.push_back(i);
         band.boundary.loops={{{-450,-400,0},{500,-400,0},{500,600,0},{-450,600,0}}};
-        s.lineBands.push_back(band);run("analyzer_inner_border",s);
-        s.lineBands[0].boundary.loops.push_back({{-20,-10,0},{-20,40,0},{40,40,0},{40,-10,0}});
-        s.lineBands[0].boundaryMask={true,false,true,true,false,true,true,false};
-        s.lineBands[0].straightEnds=true;run("analyzer_masked_hole",s);
-        s.linePattern=false;s.lineBands.clear();s.count=8000;s.clusterSize=1e-10;
+        s.analyzerBands.push_back(band);run("analyzer_inner_border",s);
+        s.analyzerBands[0].boundary.loops.push_back({{-20,-10,0},{-20,40,0},{40,40,0},{40,-10,0}});
+        s.analyzerBands[0].boundaryMask={true,false,true,true,false,true,true,false};
+        s.analyzerBands[0].straightEnds=true;run("analyzer_masked_hole",s);
+        s.analyzerPattern=false;s.analyzerBands.clear();s.count=8000;s.clusterSize=1e-10;
         try{scatter(surface,s);throw std::runtime_error("Invalid coordinates accepted");}
         catch(const std::invalid_argument& e){std::cout<<"{\"error_case\":\"tiny_cluster\",\"message\":\""<<e.what()<<"\"}\n";}
     } catch(const std::exception& e) {std::cerr<<e.what()<<'\n';return 1;}

@@ -49,13 +49,13 @@ int main() {
     advanced.movement={{{0,0},{0,0},{5,5}}};advanced.projectMovement=false;
     auto xyz=scatter(surface,advanced);
     check(near(length(xyz[0].xAxis),2)&&near(length(xyz[0].yAxis),3)&&near(length(xyz[0].zAxis),4)&&near(xyz[0].position.z,5),"independent XYZ scale or free movement failed");
-    advanced.movement={};advanced.distribution=1;advanced.clusterCount=1;advanced.clusterRadius=0.2;
+    advanced.movement={};
     const std::vector<Triangle> square{{{0,0,0},{1,0,0},{0,1,0},{0,0,0},{1,0,0},{0,1,0}},{{1,0,0},{1,1,0},{0,1,0},{1,0,0},{1,1,0},{0,1,0}}};
     advanced.distribution=2;advanced.densityWidth=advanced.densityHeight=4;advanced.density.assign(16,0);
     check(scatter(square,advanced).empty(),"black texture produced points");
     advanced.density.assign(16,1);check(scatter(square,advanced).size()==2000,"white texture dropped points");
     for(int y=0;y<4;++y) for(int x=0;x<4;++x) advanced.density[y*4+x]=x<2?0:1;
-    const auto masked=scatter(square,advanced);check(masked.size()==2000,"mask did not fill");
+    const auto masked=scatter(square,advanced);check(masked.size()>850&&masked.size()<1150,"UV mask did not thin the bounded candidate population");
     double meanX=0;for(const auto& v:masked) {check(v.position.x>1.0/3,"point in zero-density UV region");meanX+=v.position.x;}
     check(meanX/masked.size()>0.68,"UV density bias missing");
     Settings grouped;grouped.count=2000;grouped.sourceCount=9;grouped.clusterSize=0.15;
@@ -101,11 +101,11 @@ int main() {
     Area left{{{{0,0,0},{0.7,0,0},{0.7,1,0},{0,1,0}}},true};
     Area cut{{{{0.2,0.2,0},{0.5,0.2,0},{0.5,0.8,0},{0.2,0.8,0}}},false};
     areas.areas={left,cut};auto clipped=scatter(square,areas);
-    check(clipped.size()==1000,"area didn't fill target");
+    check(clipped.size()>450&&clipped.size()<600,"Include/exclude did not thin the bounded candidate population");
     for(auto v:clipped) check(v.position.x<=0.7 && !(v.position.x>=0.2&&v.position.x<=0.5&&v.position.y>=0.2&&v.position.y<=0.8),"include/exclude violation");
     areas.movement={{{0.2,0.2},{0,0},{0,0}}};areas.projectMovement=false;
     for(auto v:scatter(square,areas)) check(v.position.x<=0.7,"movement escaped area");
-    areas.movement={};areas.areas={cut};check(scatter(square,areas).size()==1000,"exclude-only failed");
+    areas.movement={};areas.areas={cut};check(scatter(square,areas).size()>750&&scatter(square,areas).size()<900,"Exclude-only candidate thinning failed");
     Area right{{{{0.8,0,0},{1,0,0},{1,1,0},{0.8,1,0}}},true};areas.areas={left,right};
     for(auto v:scatter(square,areas)) check(v.position.x<=0.7||v.position.x>=0.8,"include union failed");
     areas.areas={Area{{{{0,0,0},{1,0,0},{1,1,0},{0,1,0}}},false}};
@@ -114,7 +114,7 @@ int main() {
     for(auto v:scatter(square,areas)) check(!(v.position.x>0.2&&v.position.x<0.5&&v.position.y>0.2&&v.position.y<0.8),"compound shape hole failed");
     areas.areas={Area{{{{0,0,0},{1,0,0},{2,0,0}}},true}};rejects([&]{scatter(square,areas);});
     areas.areas={Area{{{{0,0,0},{0.5,0,0},{0.5,1,0},{0,1,0}}},true}};
-    areas.preserveDensity=true;areas.count=10000;
+    areas.count=10000;
     auto population=scatter(square,areas);
     check(population.size()>4700&&population.size()<5300,"area changed density by refilling points");
     areas.areas.clear();areas.distribution=2;areas.densityWidth=areas.densityHeight=2;areas.density.assign(4,0.5);
@@ -124,9 +124,9 @@ int main() {
     const std::vector<Triangle> field{{{-5,-5,0},{5,-5,0},{5,5,0}},{{-5,-5,0},{5,5,0},{-5,5,0}}};
     Settings line;line.count=10000;line.sourceCount=3;line.sourceGroups={10,20,20};
     auto original=scatter(field,line);
-    line.linePattern=true;line.restGroup=10;
+    line.analyzerPattern=true;
     Area boundary;boundary.loops={{{-1,-1,0},{1,-1,0},{1,1,0},{-1,1,0}}};
-    line.lineBands.push_back({boundary,1,20});
+    line.analyzerBands.push_back({boundary,1,{1,2}});
     auto banded=scatter(field,line);int member1=0,member2=0;
     const auto distance=[](Vec3 p) {return std::hypot(std::max(0.0,std::abs(p.x)-1),std::max(0.0,std::abs(p.y)-1));};
     std::size_t next=0;
@@ -139,9 +139,9 @@ int main() {
         }
     }
     check(next==banded.size()&&member1>400&&member2>400,"outside stroke points leaked or members missing");
-    line.lineBands.push_back({boundary,2,10});
-    line.lineBands[0].sources={1,2};line.lineBands[0].scaleMin=1.25;line.lineBands[0].scaleMax=1.75;
-    line.lineBands[1].sources={0};line.lineBands[1].scaleMin=line.lineBands[1].scaleMax=2;
+    line.analyzerBands.push_back({boundary,2,{0}});
+    line.analyzerBands[0].sources={1,2};line.analyzerBands[0].scaleMin=1.25;line.analyzerBands[0].scaleMax=1.75;
+    line.analyzerBands[1].sources={0};line.analyzerBands[1].scaleMin=line.analyzerBands[1].scaleMax=2;
     auto strokes=scatter(field,line);next=0;int outer=0;
     for(const auto& baseline:original) {
         const double d=distance(baseline.position);
@@ -153,17 +153,17 @@ int main() {
         }
     }
     check(next==strokes.size()&&outer>500,"outside final stroke leaked");
-    line.restGroup=99;check(scatter(field,line).size()==strokes.size(),"legacy rest group still affects output");
-    line.lineBands[0].sources={99};rejects([&]{scatter(field,line);});line.lineBands[0].sources={1};
-    line.lineBands[0].scaleMin=0;rejects([&]{scatter(field,line);});line.lineBands[0].scaleMin=1;
-    line.lineBands[0].scaleMax=0.5;rejects([&]{scatter(field,line);});line.lineBands[0].scaleMax=1;
-    line.lineBands[0].width=0;rejects([&]{scatter(field,line);});
-    line.lineBands.clear();check(scatter(field,line).empty(),"no strokes must produce zero objects");
-    Settings sides;sides.count=10000;sides.sourceCount=3;sides.sourceGroups={10,20,30};sides.linePattern=true;
-    LineBand outerBand{boundary,0.5,10};
-    LineBand innerBand{boundary,0.25,20};innerBand.inside=true;
-    LineBand innerNext{boundary,0.6,30};innerNext.inside=true;
-    sides.lineBands={outerBand,innerBand,innerNext};
+    line.analyzerBands[0].sources={99};rejects([&]{scatter(field,line);});line.analyzerBands[0].sources={1};
+    line.analyzerBands[0].scaleMin=0;rejects([&]{scatter(field,line);});line.analyzerBands[0].scaleMin=1;
+    line.analyzerBands[0].scaleMax=0.5;rejects([&]{scatter(field,line);});line.analyzerBands[0].scaleMax=1;
+    line.analyzerBands[0].kind=0;rejects([&]{scatter(field,line);});line.analyzerBands[0].kind=1;
+    line.analyzerBands[0].width=0;rejects([&]{scatter(field,line);});
+    line.analyzerBands.clear();check(scatter(field,line).empty(),"no strokes must produce zero objects");
+    Settings sides;sides.count=10000;sides.sourceCount=3;sides.sourceGroups={10,20,30};sides.analyzerPattern=true;
+    AnalyzerBand outerBand{boundary,0.5,{0}};
+    AnalyzerBand innerBand{boundary,0.25,{1}};innerBand.kind=2;
+    AnalyzerBand innerNext{boundary,0.6,{2}};innerNext.kind=2;
+    sides.analyzerBands={outerBand,innerBand,innerNext};
     auto both=scatter(field,sides);std::array<int,3> sideCounts{};
     for(const auto& v:both) {
         const auto p=v.position;const double inward=1-std::max(std::abs(p.x),std::abs(p.y));
@@ -174,36 +174,37 @@ int main() {
         ++sideCounts[v.source];
     }
     check(sideCounts[0]>100&&sideCounts[1]>100&&sideCounts[2]>100,"missing inside/outside band");
-    for(auto& band:sides.lineBands) std::reverse(band.boundary.loops[0].begin(),band.boundary.loops[0].end());
+    for(auto& band:sides.analyzerBands) std::reverse(band.boundary.loops[0].begin(),band.boundary.loops[0].end());
     auto reversed=scatter(field,sides);check(reversed.size()==both.size(),"winding changed stroke side");
     for(std::size_t i=0;i<both.size();++i) check(reversed[i].source==both[i].source&&length(reversed[i].position-both[i].position)<1e-12,"winding changed stroke assignment");
-    Settings analysis;analysis.count=10000;analysis.sourceCount=2;analysis.linePattern=true;
-    LineBand center;center.kind=3;center.width=.25;center.sources={0};center.boundary.loops={{{-2,0,0},{2,0,0}}};
-    LineBand nextBand=center;nextBand.start=.25;nextBand.width=.5;nextBand.sources={1};
-    analysis.lineBands={center,nextBand};auto centered=scatter(field,analysis);int sideNegative=0,sidePositive=0;
+    Settings analysis;analysis.count=10000;analysis.sourceCount=2;analysis.analyzerPattern=true;
+    AnalyzerBand center;center.kind=3;center.width=.25;center.sources={0};center.boundary.loops={{{-2,0,0},{2,0,0}}};
+    AnalyzerBand nextBand=center;nextBand.start=.25;nextBand.width=.5;nextBand.sources={1};
+    analysis.analyzerBands={center,nextBand};auto centered=scatter(field,analysis);int sideNegative=0,sidePositive=0;
     for(const auto& v:centered) {const double d=std::hypot(std::max(0.0,std::abs(v.position.x)-2),v.position.y);check(d<=.5,"center spread leaked");check(v.source==(d<.25?0u:1u),"center cumulative source");if(v.position.y<0)++sideNegative;else++sidePositive;}
     check(sideNegative>100&&sidePositive>100,"center is not bilateral");
-    LineBand patch;patch.kind=4;patch.width=.4;patch.sources={1};patch.boundary.loops={{{0,0,0}}};analysis.lineBands={patch};
+    AnalyzerBand patch;patch.kind=4;patch.width=.4;patch.sources={1};patch.boundary.loops={{{0,0,0}}};analysis.analyzerBands={patch};
     for(const auto& v:scatter(field,analysis)) check(length(v.position)<=.4&&v.source==1,"radius leaked");
-    patch.kind=5;patch.boundary.loops={{{0,0,0},{.5,.5,0},{100,100,0}}};analysis.lineBands={patch};analysis.count=0;
-    auto singles=scatter(field,analysis);check(singles.size()==2,"single anchors ignored surface membership/count independence");
+    patch.kind=5;patch.boundary.loops={{{0,0,0},{.5,.5,0},{100,100,0}}};analysis.analyzerBands={patch};analysis.count=0;
+    check(scatter(field,analysis).empty(),"Zero candidate budget emitted anchors");analysis.count=3;
+    auto singles=scatter(field,analysis);check(singles.size()==2,"Single anchors ignored surface membership or candidate budget");
     check(length(singles[0].position)<1e-10&&length(singles[1].position-Vec3{.5,.5,0})<1e-10,"single anchor moved");
-    analysis.count=10000;outerBand.kind=1;innerBand.kind=2;outerBand.sources={0};innerBand.sources={1};analysis.lineBands={outerBand,innerBand};
+    analysis.count=10000;outerBand.kind=1;innerBand.kind=2;outerBand.sources={0};innerBand.sources={1};analysis.analyzerBands={outerBand,innerBand};
     auto analyzedBorder=scatter(field,analysis);check(!analyzedBorder.empty(),"Analyzer border empty");
     for(const auto& v:analyzedBorder) {const double d=1-std::max(std::abs(v.position.x),std::abs(v.position.y));check(v.source==(d>=0?1u:0u),"Analyzer border side");}
     auto verticalField=field;for(auto& t:verticalField) for(auto* p:{&t.a,&t.b,&t.c}) std::swap(p->y,p->z);
-    for(auto& band:analysis.lineBands) for(auto& path:band.boundary.loops) for(auto& p:path) std::swap(p.y,p.z);
+    for(auto& band:analysis.analyzerBands) for(auto& path:band.boundary.loops) for(auto& p:path) std::swap(p.y,p.z);
     auto verticalBorder=scatter(verticalField,analysis);check(verticalBorder.size()==analyzedBorder.size(),"Tilt changed Analyzer border");
     for(std::size_t i=0;i<verticalBorder.size();++i) check(verticalBorder[i].source==analyzedBorder[i].source,"Tilt changed border assignment");
     std::cout<<"PASS: existing scatter tests plus Analyzer bilateral bands, radius, single anchors and border sides\n";
-    Settings ends;ends.count=10000;ends.sourceCount=1;ends.linePattern=true;
-    LineBand street;street.kind=2;street.width=.5;street.sources={0};
+    Settings ends;ends.count=10000;ends.sourceCount=1;ends.analyzerPattern=true;
+    AnalyzerBand street;street.kind=2;street.width=.5;street.sources={0};
     street.boundary.loops={{{0,-1,0},{2,-1,0},{2,2,0},{-1,2,0},{-1,1,0},{0,1,0}}};
-    street.boundaryMask={false,false,false,false,false,true};ends.lineBands={street};
-    auto round=scatter(field,ends);ends.lineBands[0].straightEnds=true;auto straight=scatter(field,ends);
+    street.boundaryMask={false,false,false,false,false,true};ends.analyzerBands={street};
+    auto round=scatter(field,ends);ends.analyzerBands[0].straightEnds=true;auto straight=scatter(field,ends);
     check(!straight.empty()&&round.size()>straight.size(),"Straight cap did not remove rounded extension");
     for(const auto& p:straight)check(p.position.y>=-1&&p.position.y<=1&&p.position.x>=0&&p.position.x<=.5,"Straight rectangle bounds");
-    for(auto& path:ends.lineBands[0].boundary.loops)for(auto& p:path)std::swap(p.y,p.z);
+    for(auto& path:ends.analyzerBands[0].boundary.loops)for(auto& p:path)std::swap(p.y,p.z);
     auto straightTilt=scatter(verticalField,ends);check(straightTilt.size()==straight.size(),"Tilt changed straight cap");
     std::cout<<"PASS: straight Street rectangle, round extension and rotated plane\n";
     std::vector<Instance> finalInput;

@@ -65,10 +65,9 @@
   },
   "general.previewUI.identificationDrop": {
     "label": "Color by",
-    "help": "Use model or layer identification colors in Points, Proxy and shaded Mesh previews.",
+    "help": "Use model, layer or accepted Band identification colors in Points, Proxy and Mesh previews. These colors do not replace source render materials.",
     "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:3061",
-      "AminScatter/tools/ui/templates/unified-core.ms:3098"
+      "AminScatter/tools/ui/templates/unified-core.ms:3688"
     ]
   },
   "general.previewUI.pointColorRadio": {
@@ -187,7 +186,7 @@
   },
   "general.surface.containersToggle": {
     "label": "Global source containers",
-    "help": "Show or hide the setup's optional global source-palette controls. A consuming layer must choose Global containers in its Models source-pool control (Assets in the optional layer editor); this disclosure does not enable rectangle collection.",
+    "help": "Show or hide the setup's optional global source-palette controls. A consuming layer must choose Global containers in its Models source-pool control; this disclosure does not enable rectangle collection.",
     "evidence": [
       "AminScatter/tools/ui/templates/unified-core.ms:2991",
       "AminScatter/tools/ui/templates/unified-core.ms:3036"
@@ -230,14 +229,6 @@
     "evidence": [
       "AminScatter/tools/ui/templates/unified-core.ms:3119",
       "AminScatter/tools/ui/templates/unified-core.ms:3162"
-    ]
-  },
-  "general.manager.editButton": {
-    "label": "Edit layer in window...",
-    "help": "Optional floating view of the same layer settings. Select a layer to edit it below in Modify.",
-    "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:3120",
-      "AminScatter/tools/ui/templates/unified-core.ms:3164"
     ]
   },
   "general.manager.addButton": {
@@ -348,78 +339,6 @@
     ],
     "owner_context": "Local Max process diagnostic session"
   },
-  "general.editor.updateNow": {
-    "label": "Update setup",
-    "help": "Recalculate every enabled layer in this setup, in order.",
-    "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:330",
-      "AminScatter/tools/ui/templates/unified-core.ms:498"
-    ]
-  },
-  "general.editor.layerList": {
-    "label": "Layer",
-    "help": "Choose the owning layer shown in the floating editor. This changes editing context and stops tools before rebinding; scene-object selection does not silently switch this editor to another layer.",
-    "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:331",
-      "AminScatter/tools/ui/templates/unified-core.ms:491"
-    ]
-  },
-  "general.editor.assetsTab": {
-    "label": "Assets",
-    "help": "Models and receiving surfaces for this layer.",
-    "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:332",
-      "AminScatter/tools/ui/templates/unified-core.ms:485"
-    ]
-  },
-  "general.editor.populationTab": {
-    "label": "Population",
-    "help": "Show this layer's count or density, area constraints and bounded retry settings. Paint Areas do not own separate source collections or population quotas.",
-    "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:333",
-      "AminScatter/tools/ui/templates/unified-core.ms:486"
-    ]
-  },
-  "general.editor.paintTab": {
-    "label": "Paint",
-    "help": "Optional receiver-bound Paint Areas.",
-    "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:334",
-      "AminScatter/tools/ui/templates/unified-core.ms:487"
-    ]
-  },
-  "general.editor.transformTab": {
-    "label": "Transform",
-    "help": "Layer random transforms and source assignment.",
-    "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:335",
-      "AminScatter/tools/ui/templates/unified-core.ms:488"
-    ]
-  },
-  "general.editor.spacingTab": {
-    "label": "Spacing",
-    "help": "Show within-layer and between-layer spacing, instance-radius overrides, candidate Relax and accepted-layer cleanup. Model-owning paint-set spacing is retired.",
-    "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:336",
-      "AminScatter/tools/ui/templates/unified-core.ms:489"
-    ]
-  },
-  "general.editor.statisticsTab": {
-    "label": "Statistics",
-    "help": "Cached calculation results and workflow help.",
-    "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:337",
-      "AminScatter/tools/ui/templates/unified-core.ms:490"
-    ]
-  },
-  "general.editor.refreshButton": {
-    "label": "Refresh fields",
-    "help": "Read current settings and cached counts; does not rebuild placements.",
-    "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:352",
-      "AminScatter/tools/ui/templates/unified-core.ms:499"
-    ]
-  },
   "layer.setsUI.paintedCheck": {
     "label": "Use Paint Areas",
     "help": "Restrict this layer to its painted areas. Turn off to scatter across all its surfaces.",
@@ -521,7 +440,7 @@
   },
   "layer.sourceUI.addPlant": {
     "label": "Pick model",
-    "help": "Pick a scene model for this layer. The editor stays on its layer.",
+    "help": "Pick a scene model for this layer. The settings apply to the selected layer.",
     "evidence": [
       "AminScatter/tools/ui/templates/unified-core.ms:3259",
       "AminScatter/tools/ui/templates/unified-core.ms:3377"
@@ -577,13 +496,12 @@
     "owner_context": "Selected source rows of the layer"
   },
   "layer.sourceUI.replacePoint": {
-    "label": "Replace Point: pick object",
-    "help": "Replace one highlighted Point row with a scene model.",
+    "label": "Pick object",
+    "help": "Use a scene model for one selected Point, preserving the row identity, settings and Band assignments. You may restore its registered model or choose another unused model.",
     "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:3265",
-      "AminScatter/tools/ui/templates/unified-core.ms:3336"
-    ],
-    "owner_context": "Selected source rows of the layer"
+      "AminScatter/tools/ui/templates/unified-core.ms:1123",
+      "AminScatter/tools/ui/templates/unified-core.ms:3722"
+    ]
   },
   "layer.sourceUI.existingGroups": {
     "label": "Reuse a group",
@@ -641,19 +559,17 @@
   },
   "layer.sourceUI.radiusSourceSpin": {
     "label": "Radius",
-    "help": "Collision footprint radius for highlighted source rows, in scene units.",
+    "help": "Saved Manual collision radius for highlighted source rows, in scene units. Auto disables this control and preserves its value for returning to Manual.",
     "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:3276",
-      "AminScatter/tools/ui/templates/unified-core.ms:3345"
+      "AminScatter/tools/ui/templates/unified-core.ms:3907"
     ],
     "owner_context": "Selected source rows of the layer"
   },
   "layer.sourceUI.followRadiusCheck": {
     "label": "Follow Scale",
-    "help": "Scale this source's collision footprint with its instance scale.",
+    "help": "Apply instance scaling to the saved Manual radius. Auto already uses the final basis once, so this setting is disabled but preserved in Auto.",
     "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:3277",
-      "AminScatter/tools/ui/templates/unified-core.ms:3346"
+      "AminScatter/tools/ui/templates/unified-core.ms:3910"
     ],
     "owner_context": "Selected source rows of the layer"
   },
@@ -1445,14 +1361,6 @@
       "AminScatter/src/cluster.inc:33"
     ]
   },
-  "layer.diversityUI.pathsDrop": {
-    "label": "Paths",
-    "help": "Choose a linked closed spline whose bands are shown below. Switching the path changes the settings being edited without deleting any scene spline.",
-    "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:3926",
-      "AminScatter/tools/ui/templates/unified-core.ms:4106"
-    ]
-  },
   "layer.diversityUI.analyzerChannel": {
     "label": "Analyzer data",
     "help": "Choose Border, Centerline, Points, Street Side or Edge Border. Available band/row actions change by channel; Analyzer guides must be current before Scatter can calculate a successor.",
@@ -1487,10 +1395,9 @@
   },
   "layer.diversityUI.strokesList": {
     "label": "Bands / Analyzer rows",
-    "help": "Select an ordered assignment band or Analyzer row to edit. These records are layout bands, not brush strokes; consecutive widths accumulate per side and earlier matching bands have priority.",
+    "help": "Select a saved Band or Analyzer row. Consecutive Bands reserve ordered intervals; Independent Bands combine eligible density contributions. These are layout records, not Brush strokes.",
     "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:3931",
-      "AminScatter/tools/ui/templates/unified-core.ms:4111"
+      "AminScatter/tools/ui/templates/unified-core.ms:4593"
     ]
   },
   "layer.diversityUI.addOutside": {
@@ -1984,14 +1891,6 @@
       "AminScatter/tools/ui/templates/container-properties-ui.ms:61"
     ]
   },
-  "container.properties.editLayer": {
-    "label": "Edit layer...",
-    "help": "Open the optional layer editor for the current consumer.",
-    "evidence": [
-      "AminScatter/tools/ui/templates/container-properties-ui.ms:15",
-      "AminScatter/tools/ui/templates/container-properties-ui.ms:74"
-    ]
-  },
   "general.host.licenseButton": {
     "label": "License / activation…",
     "help": "Open the local team-license activation and status dialog. Import a returned license or inspect its expiry. Existing scenes remain loadable and renderable after expiry; supported creation and editing require a valid license.",
@@ -2000,6 +1899,149 @@
       "AminScatter/tools/ui/templates/approved-main-ui.ms:7",
       "AminScatter/tools/ui/templates/approved-main-ui.ms:119",
       "docs/ARTIST_GUIDE.md:3"
+    ]
+  },
+  "general.previewUI.radiusMetricDrop": {
+    "label": "Radius display metric",
+    "help": "Inspect the published XY radius as one ring or the 3D radius as three perpendicular rings. This display choice does not change spacing rules.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3694"
+    ]
+  },
+  "layer.sourceUI.radiusModeDrop": {
+    "label": "Radius mode",
+    "help": "Manual preserves your radius and Follow Scale settings. Auto derives conservative pivot-centered XY/3D bounds from supported source geometry after final scale and orientation. Points, Empty and unqualified source types use Manual.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3908"
+    ]
+  },
+  "layer.diversityUI.pathsList": {
+    "label": "Paths",
+    "help": "Select a saved Path to inspect its Bands. Missing Paths stay visible as inactive references; identical names do not merge their identities.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4586"
+    ]
+  },
+  "layer.diversityUI.cornerMode": {
+    "label": "Path corners",
+    "help": "Rounded uses distance to the original border segments. Sharp uses bounded miter offsets; acute corners are limited and overly complex Paths can require simplification.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4587"
+    ]
+  },
+  "layer.diversityUI.arrangementMode": {
+    "label": "Band ranges",
+    "help": "Consecutive accumulates widths and reserves empty intervals. Independent uses each Band's Start/End and allows shared density contributions. Independent and nontrivial density require Candidate budget.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4588"
+    ]
+  },
+  "layer.diversityUI.bandStart": {
+    "label": "Start",
+    "help": "Near boundary of this Independent Band, measured as a physical distance from its Path on the chosen side.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4598"
+    ]
+  },
+  "layer.diversityUI.bandEnd": {
+    "label": "End",
+    "help": "Far boundary of this Independent Band. End must be greater than Start; other Bands can overlap this interval.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4599"
+    ]
+  },
+  "layer.diversityUI.bandStrength": {
+    "label": "Density",
+    "help": "Scale this Band's contribution before other masks and spacing. Independent contributions combine up to 100% occupancy and share one candidate population.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4600"
+    ]
+  },
+  "layer.diversityUI.bandCurveCheck": {
+    "label": "Use density curve",
+    "help": "Multiply Band density by its saved sampled curve, progressing from the Start boundary to End.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4601"
+    ]
+  },
+  "layer.diversityUI.bandCurveEdit": {
+    "label": "Edit density curve",
+    "help": "Edit the captured Band's density curve. The applied sampled trace is the calculation input; edits apply on drag release, Apply or Close.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4602"
+    ]
+  },
+  "layer.diversityUI.bandColor": {
+    "label": "Band color",
+    "help": "Identification color for this Band. Color by Bands uses the accepted owner; changing the color does not change placements or source render materials.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4603"
+    ]
+  },
+  "layer.diversityUI.fieldFalloffCheck": {
+    "label": "Preview Falloff",
+    "help": "Show bounded density samples on receiver surfaces before other masks, spacing and cleanup. Blue is zero and red is 100%; samples are approximate coverage, not the final plant count.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4604"
+    ]
+  },
+  "layer.diversityUI.fieldBoundaryCheck": {
+    "label": "Show Boundaries",
+    "help": "Show white admitted start/end contours clipped to receiver surfaces, including stacked elevations and vertical faces. Lines remain separate from render output.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4605"
+    ]
+  },
+  "layer.diversityUI.fieldView": {
+    "label": "Field view",
+    "help": "Selected Band shows its contribution; Combined density shows capped total occupancy. Manual pending feedback is labeled separately from plants at the last Update.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4606"
+    ]
+  },
+  "layer.diversityUI.fieldSampleSpin": {
+    "label": "Field samples",
+    "help": "Use 1–20,000 bounded visualization samples. Sparse samples can miss narrow intervals; Show Boundaries displays admitted outlines independently.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4607"
+    ]
+  },
+  "layer.diversityUI.bandUp": {
+    "label": "Move Band up",
+    "help": "Move the selected Band earlier on its Path. Consecutive ranges and first-match priority follow authored order.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4610"
+    ]
+  },
+  "layer.diversityUI.bandDown": {
+    "label": "Move Band down",
+    "help": "Move the selected Band later on its Path. Independent decisions retain stable Band identities.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4611"
+    ]
+  },
+  "layer.sourceUI.makePoint": {
+    "label": "Make point",
+    "help": "Use one selected model row as a Point without deleting the scene object. Retain its identity, settings and Band assignments, and its source registration so container scans cannot duplicate it. Auto radius is inactive while the row is a Point.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:1132",
+      "AminScatter/tools/ui/templates/unified-core.ms:3728"
+    ]
+  },
+  "layer.diversityUI.bandScaleMode": {
+    "label": "Scale profile",
+    "help": "Off retains random Band sizing. Follow Density multiplies size by the effective density curve shape, excluding Density %. Custom uses an independent scale graph. Stored Custom curves survive mode changes.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4371",
+      "docs/LAYOUT_AND_FALLOFF.md:23"
+    ]
+  },
+  "layer.diversityUI.bandScaleEdit": {
+    "label": "Edit scale curve",
+    "help": "Edit the selected Band size profile. X runs from Start to End; Y is size percent. 100% preserves size, 50% halves it. Manual waits for Update scatter. The editor retains its captured Band identity across selection changes.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4372",
+      "docs/LAYOUT_AND_FALLOFF.md:23"
     ]
   }
 }

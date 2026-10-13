@@ -66,6 +66,10 @@
         "name": "radiusLimitSpin"
       },
       {
+        "kind": "dropdownlist",
+        "name": "radiusMetricDrop"
+      },
+      {
         "kind": "checkbox",
         "name": "radiusAllCheck"
       },
@@ -131,10 +135,6 @@
       },
       {
         "kind": "button",
-        "name": "editButton"
-      },
-      {
-        "kind": "button",
         "name": "addButton"
       },
       {
@@ -182,44 +182,6 @@
       {
         "kind": "button",
         "name": "saveButton"
-      },
-      {
-        "kind": "button",
-        "name": "refreshButton"
-      }
-    ],
-    "editor": [
-      {
-        "kind": "button",
-        "name": "updateNow"
-      },
-      {
-        "kind": "dropdownlist",
-        "name": "layerList"
-      },
-      {
-        "kind": "checkbutton",
-        "name": "assetsTab"
-      },
-      {
-        "kind": "checkbutton",
-        "name": "populationTab"
-      },
-      {
-        "kind": "checkbutton",
-        "name": "paintTab"
-      },
-      {
-        "kind": "checkbutton",
-        "name": "transformTab"
-      },
-      {
-        "kind": "checkbutton",
-        "name": "spacingTab"
-      },
-      {
-        "kind": "checkbutton",
-        "name": "statisticsTab"
       },
       {
         "kind": "button",
@@ -304,6 +266,10 @@
         "name": "replacePoint"
       },
       {
+        "kind": "button",
+        "name": "makePoint"
+      },
+      {
         "kind": "dropdownlist",
         "name": "existingGroups"
       },
@@ -330,6 +296,10 @@
       {
         "kind": "spinner",
         "name": "radiusSourceSpin"
+      },
+      {
+        "kind": "dropdownlist",
+        "name": "radiusModeDrop"
       },
       {
         "kind": "checkbox",
@@ -738,8 +708,16 @@
         "name": "noiseSpin"
       },
       {
+        "kind": "listbox",
+        "name": "pathsList"
+      },
+      {
         "kind": "dropdownlist",
-        "name": "pathsDrop"
+        "name": "cornerMode"
+      },
+      {
+        "kind": "dropdownlist",
+        "name": "arrangementMode"
       },
       {
         "kind": "dropdownlist",
@@ -776,6 +754,62 @@
       {
         "kind": "spinner",
         "name": "strokeWidth"
+      },
+      {
+        "kind": "spinner",
+        "name": "bandStart"
+      },
+      {
+        "kind": "spinner",
+        "name": "bandEnd"
+      },
+      {
+        "kind": "spinner",
+        "name": "bandStrength"
+      },
+      {
+        "kind": "checkbox",
+        "name": "bandCurveCheck"
+      },
+      {
+        "kind": "dropdownlist",
+        "name": "bandScaleMode"
+      },
+      {
+        "kind": "button",
+        "name": "bandScaleEdit"
+      },
+      {
+        "kind": "button",
+        "name": "bandCurveEdit"
+      },
+      {
+        "kind": "colorpicker",
+        "name": "bandColor"
+      },
+      {
+        "kind": "checkbox",
+        "name": "fieldFalloffCheck"
+      },
+      {
+        "kind": "checkbox",
+        "name": "fieldBoundaryCheck"
+      },
+      {
+        "kind": "dropdownlist",
+        "name": "fieldView"
+      },
+      {
+        "kind": "spinner",
+        "name": "fieldSampleSpin"
+      },
+      {
+        "kind": "button",
+        "name": "bandUp"
+      },
+      {
+        "kind": "button",
+        "name": "bandDown"
       },
       {
         "kind": "radiobuttons",
@@ -1007,10 +1041,6 @@
       {
         "kind": "button",
         "name": "assignOwner"
-      },
-      {
-        "kind": "button",
-        "name": "editLayer"
       }
     ]
   },

@@ -1,4 +1,5 @@
 #include "scatter.h"
+#include "spline_bands.h"
 #include "execution.h"
 #include <algorithm>
 #include <cmath>
@@ -125,20 +126,8 @@ struct AreaMask {
         }
         return inside;
     }
-    bool strokeBand(Vec3 p,double width,bool inside) const {
-        if(p.x<x0-width||p.x>x1+width||p.y<y0-width||p.y>y1+width||contains(p)!=inside) return false;
-        const double limit=width*width;
-        for(const auto& loop:area.loops) for(std::size_t i=0,j=loop.size()-1;i<loop.size();j=i++) {
-            const auto a=loop[j],b=loop[i];
-            const double dx=b.x-a.x,dy=b.y-a.y,den=dx*dx+dy*dy;
-            const double u=den>0?std::clamp(((p.x-a.x)*dx+(p.y-a.y)*dy)/den,0.0,1.0):0;
-            const double x=p.x-a.x-u*dx,y=p.y-a.y-u*dy;
-            if(x*x+y*y<=limit) return true;
-        }
-        return false;
-    }
 };
-bool analyzerBand(Vec3 p,const LineBand& band,double tolerance=0,int kindOverride=-1) {
+bool analyzerBand(Vec3 p,const AnalyzerBand& band,double tolerance=0,int kindOverride=-1) {
     const int kind=kindOverride<0?band.kind:kindOverride;
     if(kind==5) return false;
     double nearest=INFINITY; bool inside=false;std::size_t edgeIndex=0;
@@ -189,29 +178,28 @@ std::size_t weightedIndex(const std::vector<double>& cumulative,double u) {
 #include "boundary_falloff.inc"
 #include "edge_border.inc"
 Vec3 Instance::transformPoint(Vec3 p) const { return position+(xAxis*p.x+yAxis*p.y+zAxis*p.z)*scale; }
-double stableUnit(std::uint32_t seed,std::uint64_t ordinal,std::uint64_t channel){
-    const auto counter=Random::mix(ordinal)^Random::mix((std::uint64_t(seed)<<32)^channel);
+double stableUnit(std::uint32_t seed,std::uint64_t ordinal,std::uint64_t channel,std::uint64_t receiver){
+    const auto counter=Random::mix(ordinal)^Random::mix((std::uint64_t(seed)<<32)^channel)^Random::mix(receiver);
     return double(Random::mix(counter+0x9e3779b97f4a7c15ULL)>>11)*(1.0/9007199254740992.0);
 }
 std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settings& s) {
     detail::recordComputeStats({});
-    if(s.stableCandidates&&s.collisionEnabled)
-        throw std::invalid_argument("Procedural collision rules must be resolved by the ordered evaluator");
+    if(s.splineField&&s.analyzerPattern)
+        throw std::invalid_argument("Prepared spline fields cannot mix with Analyzer rows");
     if(s.candidateStart>std::numeric_limits<std::uint64_t>::max()-s.count)
         throw std::invalid_argument("Candidate ordinal overflow");
-    if(s.linePattern&&std::any_of(s.lineBands.begin(),s.lineBands.end(),[](const LineBand& b){return b.kind==6;}))return scatter(surface,prepareEdgeRows(s));
-    if((s.collisionEnabled&&(!std::isfinite(s.collisionRadius)||s.collisionRadius<=0)) ||
-       (s.relaxEnabled&&(!std::isfinite(s.relaxSpacing)||s.relaxSpacing<=0||!std::isfinite(s.relaxStrength)||s.relaxStrength<0||s.relaxStrength>1||s.relaxIterations>100)))
-        throw std::invalid_argument("Invalid collision / relax controls");
+    if(s.analyzerPattern&&std::any_of(s.analyzerBands.begin(),s.analyzerBands.end(),[](const AnalyzerBand& b){return b.kind==6;}))return scatter(surface,prepareEdgeRows(s));
+    if(s.relaxEnabled&&(!std::isfinite(s.relaxSpacing)||s.relaxSpacing<=0||!std::isfinite(s.relaxStrength)||s.relaxStrength<0||s.relaxStrength>1||s.relaxIterations>100))
+        throw std::invalid_argument("Invalid relax controls");
     validate(s.uniformScale);
     if(s.uniformScale.min<=0||s.sourceCount==0) throw std::invalid_argument("Positive scale and at least one source required");
     for(auto r:s.rotationDegrees) validate(r);
     for(auto r:s.movement) validate(r);
     for(auto r:s.axisScale) {validate(r);if(r.min<=0) throw std::invalid_argument("Positive axis scale required");}
-    if(s.distribution<0||s.distribution>2) throw std::invalid_argument("Unknown distribution");
-    const bool clustered=!s.linePattern&&(s.clusterEnabled||s.distribution==1);
+    if(s.distribution!=0&&s.distribution!=2) throw std::invalid_argument("Unknown distribution");
+    const bool clustered=!s.analyzerPattern&&s.clusterEnabled;
     if(clustered) {
-        const double size=s.distribution==1?s.clusterRadius:s.clusterSize;
+        const double size=s.clusterSize;
         if(!std::isfinite(size)||size<=0) throw std::invalid_argument("Invalid cluster size");
         for(auto value:{s.clusterRoughness,s.clusterBlur,s.clusterNoise}) if(!std::isfinite(value)||value<0||value>1) throw std::invalid_argument("Invalid cluster controls");
     }
@@ -236,7 +224,6 @@ std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settin
         if(found==groupKeys.end()) {groupKeys.push_back(key);groupMembers.push_back({source});}
         else groupMembers[static_cast<std::size_t>(found-groupKeys.begin())].push_back(source);
     }
-    std::vector<std::unique_ptr<AreaMask>> bands;
     std::vector<double> groupCDF;
     if(!s.sourceWeights.empty()) {
         double total=0;
@@ -244,6 +231,7 @@ std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settin
         if(total==0) return {};
     }
     const auto choose=[&](const std::vector<std::uint32_t>& members,double u,std::uint32_t& source) {
+        if(members.empty()) return false;
         if(s.sourceWeights.empty()) {source=members[static_cast<std::size_t>(u*members.size())];return true;}
         double total=0;for(auto i:members) total+=s.sourceWeights[i];
         if(total==0) return false;
@@ -255,38 +243,31 @@ std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settin
     std::vector<std::uint32_t> allSources(s.sourceCount);std::iota(allSources.begin(),allSources.end(),0u);
     std::vector<std::vector<std::uint32_t>> bandMembers;
 
-    if(s.linePattern) {
-        const auto groupIndex=[&](std::uint32_t key) {
-            auto found=std::find(groupKeys.begin(),groupKeys.end(),key);
-            if(found==groupKeys.end()) throw std::invalid_argument("Line pattern group has no source");
-            return static_cast<std::size_t>(found-groupKeys.begin());
-        };
-
-        for(const auto& band:s.lineBands) {
+    if(s.analyzerPattern) {
+        for(const auto& band:s.analyzerBands) {
             if(!std::isfinite(band.width)||band.width<=0) throw std::invalid_argument("Invalid line band width");
             if(!std::isfinite(band.scaleMin)||!std::isfinite(band.scaleMax)||band.scaleMin<=0||band.scaleMax<band.scaleMin) throw std::invalid_argument("Invalid stroke scale");
-            auto members=band.sources.empty()?groupMembers[groupIndex(band.group)]:band.sources;
+            const auto& members=band.sources;
             for(auto source:members) if(source>=s.sourceCount) throw std::invalid_argument("Invalid stroke source");
-            if(band.kind<0||band.kind>5||!std::isfinite(band.start)||band.start<0||band.start>band.width) throw std::invalid_argument("Invalid Analyzer band");
+            if(band.kind<1||band.kind>5||!std::isfinite(band.start)||band.start<0||band.start>band.width) throw std::invalid_argument("Invalid Analyzer band");
             for(const auto& path:band.boundary.loops) for(auto p:path) if(!finite(p)) throw std::invalid_argument("Invalid Analyzer point");
-            bands.push_back(band.kind==0?std::make_unique<AreaMask>(band.boundary):nullptr);bandMembers.push_back(std::move(members));
+            bandMembers.push_back(members);
         }
     }
     std::vector<Instance> result; result.reserve(s.count);
     const bool moved=std::any_of(s.movement.begin(),s.movement.end(),[](Range r){return r.min!=0||r.max!=0;});
     Random distribution(s.seed^0xc2b2ae35u), scales(s.seed^0x27d4eb2fu), diversity(s.clusterSeed^0xa341316cu);
-    const bool population=!s.linePattern||std::any_of(s.lineBands.begin(),s.lineBands.end(),[](const LineBand& b){return b.kind!=5;});
-    const std::uint64_t limit=population?static_cast<std::uint64_t>(s.count)*(!s.stableCandidates&&!s.preserveDensity&&(s.distribution==2||!masks.empty())?100:1):0;
+    const bool population=!s.analyzerPattern||std::any_of(s.analyzerBands.begin(),s.analyzerBands.end(),[](const AnalyzerBand& b){return b.kind!=5;});
     std::vector<std::pair<Vec3,std::size_t>> anchors;
-    for(std::size_t j=0;j<s.lineBands.size();++j) if(s.lineBands[j].kind==5)
-        for(const auto& path:s.lineBands[j].boundary.loops) for(auto p:path) anchors.emplace_back(p,j);
+    for(std::size_t j=0;j<s.analyzerBands.size();++j) if(s.analyzerBands[j].kind==5)
+        for(const auto& path:s.analyzerBands[j].boundary.loops) for(auto p:path) anchors.emplace_back(p,j);
     // Anchors occupy the beginning of the canonical candidate stream. They
     // consume its bounded quota; a larger prefix cannot change their IDs.
-    const auto end=s.stableCandidates?static_cast<std::uint64_t>(s.count):limit+anchors.size();
+    const auto end=static_cast<std::uint64_t>(s.count);
     // Lazy and evaluation-owned: an unused band is never additionally prepared.
-    std::vector<std::unique_ptr<PreparedAnalyzerBand>> preparedBands(bands.size());
+    std::vector<std::unique_ptr<PreparedAnalyzerBand>> preparedBands(s.analyzerBands.size());
     const auto inBand=[&](Vec3 p,std::size_t j) {
-        const auto& band=s.lineBands[j];
+        const auto& band=s.analyzerBands[j];
         if(band.kind!=1 && band.kind!=2) return analyzerBand(p,band);
         if(!preparedBands[j]) preparedBands[j]=std::make_unique<PreparedAnalyzerBand>(band);
         return preparedBands[j]->contains(p);
@@ -307,7 +288,7 @@ std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settin
         clusterCandidates.resize(s.count);
         std::uint64_t ordinal=s.candidateStart;
         for(auto& candidate:clusterCandidates) {
-            if(s.stableCandidates)placement.candidate(s.seed,ordinal++,1,s.receiverSalt);
+            placement.candidate(s.seed,ordinal++,1,s.receiverSalt);
             const auto sampled=sampler.sample(placement);
             candidate.position=sampled.first; candidate.triangle=sampled.second;
         }
@@ -324,18 +305,14 @@ std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settin
             computeStats.clusterQueries+=rangeStats[slot].clusterQueries;
         }
     }
-    std::uint32_t accepted=0;
     for(std::uint64_t i=0;i<end;++i) {
         const auto ordinal=s.candidateStart+i;
-        if(s.stableCandidates) {
-            placement.candidate(s.seed,ordinal,1,s.receiverSalt);transforms.candidate(s.seed,ordinal,2,s.receiverSalt);
-            sources.candidate(s.seed,ordinal,3,s.receiverSalt);scales.candidate(s.seed,ordinal,4,s.receiverSalt);
-            distribution.candidate(s.seed,ordinal,5,s.receiverSalt);diversity.candidate(s.clusterSeed,ordinal,6,s.receiverSalt);
-        }
-        const bool single=s.stableCandidates?ordinal<anchors.size():i>=limit;
-        const auto anchorIndex=static_cast<std::size_t>(s.stableCandidates?ordinal:i-limit);
-        if(s.stableCandidates&&!population&&!single) break;
-        if(!single&&accepted>=s.count) {i=limit-1;continue;}
+        placement.candidate(s.seed,ordinal,1,s.receiverSalt);transforms.candidate(s.seed,ordinal,2,s.receiverSalt);
+        sources.candidate(s.seed,ordinal,3,s.receiverSalt);scales.candidate(s.seed,ordinal,4,s.receiverSalt);
+        distribution.candidate(s.seed,ordinal,5,s.receiverSalt);diversity.candidate(s.clusterSeed,ordinal,6,s.receiverSalt);
+        const bool single=ordinal<anchors.size();
+        const auto anchorIndex=static_cast<std::size_t>(ordinal);
+        if(!population&&!single) break;
         auto [p,id]=batchClusters ? std::make_pair(clusterCandidates[static_cast<std::size_t>(i)].position,
                                                  clusterCandidates[static_cast<std::size_t>(i)].triangle) : sampler.sample(placement);
         if(single) {
@@ -358,29 +335,30 @@ std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settin
             const double weight=(at(x,y)*(1-a)+at(x1,y)*a)*(1-b)+(at(x,y1)*(1-a)+at(x1,y1)*a)*b;
             return distribution.next()<weight;
         };
-        if(!s.stableCandidates&&!densityAccepts())continue;
         const Vec3 offset{transforms.range(s.movement[0]),transforms.range(s.movement[1]),transforms.range(s.movement[2])};
         if(moved && s.projectMovement) {
             const Vec3 target=p+offset; double best=std::numeric_limits<double>::infinity();
             for(auto j:sampler.indices) { const auto q=closest(target,surface[j]); const double d=dot(q-target,q-target); if(d<best) {best=d;p=q;id=j;} }
         }
         else if(moved) p=p+offset;
-        if(s.stableCandidates&&!densityAccepts())continue;
+        if(!densityAccepts())continue;
         bool allowed=!hasInclude,excluded=false;
         for(const auto& mask:masks) if(mask.contains(p)) {
             if(mask.area.include) allowed=true;else {excluded=true;break;}
         }
         if(!allowed||excluded) continue;
-        ++accepted;
-        std::uint32_t source=0; double strokeScale=1; bool emit=true;
-        if(s.linePattern) {
+        std::uint32_t source=0; double strokeScale=1; bool emit=true;std::uint64_t bandOwner=0;
+        if(s.splineField) {
+            const auto chosen=s.splineField->sample(p,s.seed,ordinal,s.receiverSalt);
+            emit=chosen.emitted;source=chosen.source;strokeScale=chosen.scale;bandOwner=chosen.band;
+            if(emit&&source>=s.sourceCount)throw std::invalid_argument("Prepared Band source is outside the current source table");
+        } else if(s.analyzerPattern) {
             const std::vector<std::uint32_t>* members=nullptr;
-            for(std::size_t j=0;j<bands.size();++j) if(single ? j==anchors[anchorIndex].second :
-                (bands[j]?bands[j]->strokeBand(p,s.lineBands[j].width,s.lineBands[j].inside):inBand(p,j))) {
+            for(std::size_t j=0;j<s.analyzerBands.size();++j) if(single ? j==anchors[anchorIndex].second : inBand(p,j)) {
                 members=&bandMembers[j];
                 // Separate RNG: stroke sizing never shifts placements or the XYZ random stream.
-                Random strokeRandom(s.seed ^ static_cast<std::uint32_t>((s.stableCandidates?ordinal:i)*2654435761u) ^ 0x9e3779b9u);
-                strokeScale=strokeRandom.range({s.lineBands[j].scaleMin,s.lineBands[j].scaleMax});break;
+                Random strokeRandom(s.seed ^ static_cast<std::uint32_t>(ordinal*2654435761u) ^ 0x9e3779b9u);
+                strokeScale=strokeRandom.range({s.analyzerBands[j].scaleMin,s.analyzerBands[j].scaleMax});break;
             }
             const double sourceRandom=sources.next();
             if(members) emit=choose(*members,sourceRandom,source);
@@ -399,25 +377,28 @@ std::vector<Instance> scatter(const std::vector<Triangle>& surface, const Settin
         const Vec3 angles{transforms.range(s.rotationDegrees[0])*toRadians,transforms.range(s.rotationDegrees[1])*toRadians,transforms.range(s.rotationDegrees[2])*toRadians};
         const auto basis=[&](Vec3 axis) { const auto v=rotate(axis,angles); return x*v.x+y*v.y+normal*v.z; };
         Instance instance{p,basis({1,0,0})*scales.range(s.axisScale[0]),basis({0,1,0})*scales.range(s.axisScale[1]),basis({0,0,1})*scales.range(s.axisScale[2]),transforms.range(s.uniformScale)*strokeScale,source,id};
-        instance.candidateKey=s.stableCandidates?ordinal:i;
+        instance.candidateKey=ordinal;
+        instance.bandOwner=bandOwner;
         if(emit) result.push_back(instance);
     }
-    if(s.collisionEnabled||s.relaxEnabled) {
+    if(s.relaxEnabled) {
         const auto bandAt=[&](Vec3 p) {
-            for(std::size_t j=0;j<bands.size();++j) {
-                if(s.lineBands[j].kind==5) {
-                    for(const auto& path:s.lineBands[j].boundary.loops) for(auto anchor:path)
+            for(std::size_t j=0;j<s.analyzerBands.size();++j) {
+                if(s.analyzerBands[j].kind==5) {
+                    for(const auto& path:s.analyzerBands[j].boundary.loops) for(auto anchor:path)
                         if(length(p-anchor)<1e-7) return static_cast<int>(j);
-                } else if(bands[j]?bands[j]->strokeBand(p,s.lineBands[j].width,s.lineBands[j].inside):inBand(p,j)) return static_cast<int>(j);
+                } else if(inBand(p,j)) return static_cast<int>(j);
             }
             return -1;
         };
-        std::vector<int> originalBands;for(const auto& p:result) originalBands.push_back(s.linePattern?bandAt(p.position):-1);
+        std::vector<int> originalBands;for(const auto& p:result) originalBands.push_back(s.analyzerPattern?bandAt(p.position):-1);
         const auto allowed=[&](std::size_t i,Vec3 p,std::uint32_t tri) {
             bool included=!hasInclude;
             for(const auto& mask:masks) if(mask.contains(p)) {if(!mask.area.include) return false;included=true;}
             if(!included) return false;
-            if(s.linePattern&&bandAt(p)!=originalBands[i]) return false;
+            if(s.splineField){const auto chosen=s.splineField->sample(p,s.seed,result[i].candidateKey,s.receiverSalt);
+                if(!chosen.emitted||chosen.band!=result[i].bandOwner||chosen.source!=result[i].source)return false;}
+            if(s.analyzerPattern&&bandAt(p)!=originalBands[i]) return false;
             if(s.distribution==2) {
                 const auto& t=surface[tri];const auto ab=t.b-t.a,ac=t.c-t.a,ap=p-t.a;
                 const double aa=dot(ab,ab),bb=dot(ac,ac),cc=dot(ab,ac),den=aa*bb-cc*cc;
@@ -456,7 +437,7 @@ std::vector<PreviewPoint> pointCloud(const std::vector<Instance>& instances,
         const std::uint64_t flat=i*(total/count)+(i*(total%count))/count;
         const auto index=static_cast<std::size_t>(std::upper_bound(ends.begin(),ends.end(),flat)-ends.begin());
         const auto& instance=instances[index]; const auto local=static_cast<std::size_t>(flat-(index?ends[index-1]:0));
-        result.push_back({instance.transformPoint(samples[instance.source][local]),instance.source});
+        result.push_back({instance.transformPoint(samples[instance.source][local]),instance.source,instance.bandOwner});
     }
     return result;
 }

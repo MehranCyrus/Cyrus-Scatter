@@ -1,6 +1,6 @@
 # Current codebase architecture
 
-Applies to Cyrus Scatter 0.79.6, saved schema 56 and `CyrusUnified1`. Use [the artist guide](ARTIST_GUIDE.md) for controls, [the backlog](BACKLOG.md) for unfinished work, and [current foundation qualification](Foundation_0.79.6_2026-10-12/README.md) for measured evidence. Read the relevant [F01–F12 contract](ENGINEERING_FOUNDATION.md) with its limits. Dated implementation reports describe their own snapshots.
+Applies to development source Cyrus Scatter 0.81.1, saved schema 58 and `CyrusUnified1`. Use [the artist guide](ARTIST_GUIDE.md) for controls, [the backlog](BACKLOG.md) for unrelated unfinished work, and [current implementation evidence](plans/spline-bands/PROGRESS.md) for measured acceptance and remaining gates. Read the relevant [F01–F12 contract](ENGINEERING_FOUNDATION.md) with its limits. Dated reports describe their own snapshots.
 
 ## Ownership
 
@@ -10,10 +10,11 @@ Applies to Cyrus Scatter 0.79.6, saved schema 56 and `CyrusUnified1`. Use [the a
 | Ordinary layer | Receiving surfaces, models, amount/seed, assignment layout, transforms, masks, spacing defaults, candidate Relax and accepted-union cleanup |
 | Paint Area | Named coverage document and one explicit receiver target; shares its layer's models and population |
 | Source row | Stable source identity, local alias, identification color, assignment group, weight, scale/lift, forward axis and radius settings |
+| Spline Path / Band | Stable local identities, Path corner policy, Band ranges, density/curve, membership, scale multiplier and identification color |
 | Source container | Saved collection-enable flag (off by default), palette boundary and cached consumer/ownership presentation; optional guarded static source movement |
 | Surface Analyzer | Independently updated boundary/path/point results; Scatter consumes its published output |
 
-The current scene model has owning layers and receiver-bound Paint Areas. Model-owning paint sets, shared-receiver inheritance, old paint adoption and stroke-history evaluation have been removed. Schema 55 and vector payload version 1 reject earlier saved development data; no conversion or fallback is installed. Removing a receiver preserves its inactive area; a replacement node with the same name is a different identity.
+The current scene model has owning layers and receiver-bound Paint Areas. Model-owning paint sets, shared-receiver inheritance, old paint adoption and stroke-history evaluation have been removed. Schema 57 and vector payload version 1 reject unsupported saved data. Schema-55/56 migration and old internal placement readers are removed. Removing a receiver preserves its inactive area; a replacement node with the same name is a different identity.
 
 ## Evaluation and publication
 
@@ -25,7 +26,15 @@ Candidate IDs encode an append-only saved receiver slot plus local ordinal, with
 
 Receiver-local row caches include generation settings, source state, receiver geometry/UV hashes, relevant spline geometry, Analyzer revisions and texture state. Adding a receiver can reuse old candidate rows, but Update still reads geometry/area for validation and runs shared acceptance/publication. This does not claim zero host geometry evaluation or incremental GPU upload. Projection and candidate Relax use the candidate's receiver; changing its own quota/neighborhood can change Relax positions. Shared masks, collision scopes, cleanup and protected edits can change which candidates survive.
 
-Receiver-aware Edit/radius receipts compare common generation settings and known receiver geometry while allowing membership changes. Missing targets remain inactive; geometry changes are guarded. Schema 56 reads immediately preceding schema 55 and preserves same-unit binding labels; earlier model-set/stroke formats require their matching old build.
+Receiver-aware Edit/radius receipts compare common generation settings and known receiver geometry while allowing membership changes. Missing targets remain inactive; geometry changes are guarded. Current-schema save/reopen/copy/merge remain supported within the documented binding limits. Earlier scenes require recreation; current source never guesses a migration.
+
+### Spline fields, provenance and radii
+
+One prepared native field supplies ordinary Band generation, movement eligibility and inspection. Consecutive intervals reserve empty gaps and use ordered first-match ownership. Independent ranges use separately keyed occupancy, owner, source and scale choices; density is applied once. Accepted target rejects Independent/nontrivial density before publication. Rounded queries use original segments; Sharp uses bounded shared contours and a declared aggregate error budget. See [design](plans/spline-bands/DESIGN.md) for the numerical contract.
+
+All internal placement readers consume one exact eight-field version-2 record carrying transform, source, candidate identity, receiver correspondence, barycentric anchor, Band owner and protection. Native publication version 2 includes `(XY, 3D)` radius pairs. [Transport](plans/spline-bands/TRANSPORT.md) defines exact fields and primitive versions. Owner provenance survives transforms, Edit, spacing, cleanup, output filtering and display; it is not reconstructed from position or source color.
+
+Auto Radius uses finite face-referenced pivot-local source bounds and each final instance basis once. Manual values remain separately saved. Each spacing relation selects its own XY/3D metric for both participants. A bounded weak-reference source cache invalidates synchronously and observes animation validity; required invalid sources reject the successor before sampling. Unsupported source families expose Manual rather than guessed bounds.
 
 ### Vector field and feedback
 
@@ -45,7 +54,9 @@ Manual edits wait for explicit Update. Passive browsing, cached inspection and u
 
 Host geometry access, scene mutation and publication belong on the Max thread. Native workers use copied input. Point Cloud, Mesh and all three Proxy shapes use retained buffers to avoid unchanged uploads. Proxy shares Mesh's immutable source faces and instance transforms, without expanding per-instance proxy triangles in normal operation. The GraphicsWindow fallback reads the same snapshots. Retained drawing uses GPU graphics, not GPU placement computation.
 
-0.79.2 adds retained radius line lists. Each ring keeps the previous 24-segment world-XY geometry and color; immutable buffers are built when the display snapshot changes. Point-count telemetry excludes line vertices, while reservation/upload accounting includes them. Up to ten populations can publish twenty point/mesh-plus-radius caches under the existing retained memory limits. The CPU fallback consumes the same line coordinates.
+Each population publishes a primary Point/Mesh cache and one inspection bundle combining radius rings, field samples and clipped boundaries. XY radii use one 24-segment ring; 3D uses three perpendicular rings. Field glyphs sample actual receiver triangles through the generation evaluator; zero density remains visible. White boundaries intersect receiver geometry at its actual elevation. Selected contribution and combined occupancy share the same field logic. Ten populations retain the existing twenty-cache and 1,024-group limits. Field preparation, staged copies, buffers and old/new generations consume bounded reservations; diagnostic payload counts do not measure all driver/allocator overhead.
+
+Main geometry, identification palette and inspection keys are separate. Display-only field settings do not enter placement keys. Manual field feedback follows current relevant inputs while published plants/radii and field metadata remain frozen; labels distinguish pending feedback from the last Update. A bounded weak dependency key observes receiver/Path notifications and validity without extracting geometry during unchanged refresh. Uncached source-dependent representations verify published source revisions before consuming geometry. Failed display staging restores all cache references, keys and labels.
 
 Steady redraw traverses cached controller/display records, without resolving layer entries, checking full recipes or walking the scene. Relevant input, membership, visibility, display, publication and scene-lifecycle events invalidate the records. A compact unique Analyzer revision watch preserves its separate update contract. Held interaction defers synchronization until release. Cold realization and relevant edits still do work.
 
@@ -77,7 +88,7 @@ Edit the template/generator and regenerate `AminScatterObject.ms`; never fix onl
 
 ## Distance storage and publication failures
 
-Schema 56 stores source radii/Z offsets, edge distances, six movement bounds and pair gaps in typed world-unit fields. Area falloff flags/curves retain their saved string format, but widths live in three aligned world-unit tabs. Per-instance absolute radii have a distance tab; multipliers stay dimensionless. The schema-55 update handler copies values and animation controllers into new fields while leaving old parameter types intact. No earlier stroke/model-set conversion is provided. Native Paint/Edit geometry bindings remain guarded under rescale; see [F10 and F11](ENGINEERING_FOUNDATION.md).
+Schema 57 stores source radii/Z offsets, Band ranges, edge distances, six movement bounds and pair gaps in typed world-unit fields. Area falloff flags/curves retain their current string format, but widths live in three aligned world-unit tabs. Per-instance absolute radii have a distance tab; multipliers stay dimensionless. Obsolete untyped parameters and schema update handlers are removed. Native Paint/Edit geometry bindings remain guarded under rescale; see [F10 and F11](ENGINEERING_FOUNDATION.md).
 
 The script stages preview input timestamps/Analyzer revisions and retains complete root/leaf publication snapshots until the native Edit transaction commits. A failed install restores every owner and cache, then rolls back native Edit maps. Post-commit observers are guarded separately. Native PointDisplay prepares a successor generation and CPU point/mesh items while the old generation is alive; it disables and swaps the old ownership only after staging succeeds. Admission includes temporary coexistence. This is bounded CPU publication recovery, not blanket GPU/device-loss atomicity; see [the tested failure sites](Foundation_0.79.6_2026-10-12/README.md).
 
@@ -87,4 +98,13 @@ MCP 0.73/Plan 0.73 is a restricted authoring subset, not access to every local c
 
 ### Point row identity (0.79.1)
 
-`sourceRowIDs` identify source rows independently of scene nodes. Visual names/colors and explicit band selections use these identities, including Point and Empty rows. `strokeSourceNodes` remains the saved node reference when present; current schema-55 node choices enroll into row IDs on first normalization. This is not restoration of the retired model-owning paint-set format. Existing native candidate/source correspondence and receiver streams remain unchanged. Source removal preserves dormant band IDs for Undo; Point replacement keeps the row ID. Layer copy includes the independent band arrays and guides. Containers admit Point/Empty rows independently of spatial membership; real source nodes retain their existing collection policy.
+`sourceRowIDs` identify source rows independently of scene nodes. Visual names/colors and explicit Band selections use these identities, including Point and Empty rows. Duplicate node-based Band membership storage has been removed. Source removal preserves dormant Band memberships for Undo; Point replacement keeps the row ID. Layer copy includes independent Band arrays, Path references and display settings. Containers admit Point/Empty rows independently of spatial membership; real source nodes retain their collection policy. Source-row IDs, receiver/candidate identities and published native source correspondence are distinct namespaces.
+
+Band scale profiles add authored per-Band mode, sampled Custom trace and graph
+handles. Stable Band IDs govern editor writes across reorder/copy/view changes.
+All three arrays participate in copy/remove/reorder/current-schema validation;
+numeric mode/samples enter preparation and publication keys, while graph-only
+metadata does not. The host resolves Off/Follow Density/Custom into one effective
+trace in the 15-field Band record (native interface 9). The immutable numeric field
+validates it and multiplies the separately keyed random scale after selecting its
+owner. Published transform/radius computation therefore consumes the factor once.

@@ -4,6 +4,8 @@
 constexpr const char* meshShader=R"fx(
 float4x4 CyrusViewProjection : WORLDVIEWPROJ;
 float3 CyrusColor;
+bool CyrusUseBands;
+float4 CyrusPalette[65];
 struct Input {
     float3 p : POSITION;
     float3 a : TEXCOORD0;
@@ -12,6 +14,7 @@ struct Input {
     float3 r1 : TEXCOORD3;
     float3 r2 : TEXCOORD4;
     float3 r3 : TEXCOORD5;
+    float owner : TEXCOORD6;
 };
 struct Output { float4 p : SV_POSITION; float4 color : COLOR0; };
 float3 vectorTransform(float3 v,Input i) { return v.x*i.r0+v.y*i.r1+v.z*i.r2; }
@@ -22,7 +25,8 @@ Output meshVS(Input i) {
     float len=length(n);
     n=len>0?n/len:float3(0,0,0);
     float shade=.35+.65*abs(dot(n,normalize(float3(.3,-.5,.8))));
-    o.color=float4(CyrusColor*shade,1);
+    float3 color=CyrusUseBands?CyrusPalette[(int)i.owner].rgb:CyrusColor;
+    o.color=float4(color*shade,1);
     return o;
 }
 float4 meshPS(Output i) : SV_Target { return i.color; }
@@ -41,14 +45,17 @@ class MeshItem final : public ICustomRenderItem {
     VertexBufferHandleArray buffers;
     MaterialRequiredStreams format;
     HLSLMaterialHandle material;
+    bool sharedBuffers=false;
     std::atomic<bool> ready{false};
     std::mutex realizeMutex;
 public:
     MeshItem(std::shared_ptr<Generation> value,std::size_t layer,std::size_t group,const MeshItem* previous=nullptr)
         :generation(std::move(value)),layerIndex(layer),groupIndex(group) {
         if(previous) {
-            buffers=previous->buffers;format=previous->format;material=previous->material;
-            ready.store(true,std::memory_order_release);++generation->ready;
+            buffers=previous->buffers;format=previous->format;sharedBuffers=true;++bufferReuses;
+            if(sameStyle(previous->generation->layers[previous->layerIndex],generation->layers[layerIndex])) {
+                material=previous->material;ready.store(true,std::memory_order_release);++generation->ready;
+            }
         }
         ++liveItems;
     }
@@ -56,7 +63,7 @@ public:
     bool reusable(const PointLayer& next,std::size_t group) const {
         const auto& previous=generation->layers[layerIndex];
         return ready.load(std::memory_order_acquire) && !generation->failed.load() && groupIndex==group &&
-            previous.mesh==next.mesh && previous.solid==next.solid && (!next.solid || previous.color==next.color);
+            previous.mesh==next.mesh;
     }
     void Realize(DrawContext& dc) override {
         if(ready.load(std::memory_order_acquire) || generation->failed.load()) return;
@@ -66,9 +73,11 @@ public:
             const auto& layer=generation->layers[layerIndex];
             const auto& group=layer.mesh->groups[groupIndex];
             DeviceCaps caps;GetIDisplayManager()->GetDeviceCaps(caps);
+            previewFault(3);
             if(caps.FeatureLevel!=Level5_0 || !material.InitializeWithString(CStr(meshShader)))
                 throw std::runtime_error("Mesh shader unavailable");
-            material.SetFloat3Parameter(_T("CyrusColor"),layer.solid?layer.color:group.color);
+            setIdentification(material,layer,groupIndex,group.color);
+            if(!sharedBuffers) {
             auto addField=[&](MeshChannelCategory category,int usage,int stream,int offset,bool instance) {
                 MaterialRequiredStreamElement field;
                 field.SetChannelCategory(category);field.SetType(VertexFieldFloat3);
@@ -90,12 +99,26 @@ public:
                 for(const auto& face:group.faces) for(int corner=0;corner<3;++corner)
                     stream[vertex++]=field==0?face[corner]:(face[field]-face[0]);
                 upload(sizeof(Point3),vertices,stream.data());
+                geometryUploadBytes+=sizeof(Point3)*vertices;
                 addField(field==0?MeshChannelPosition:MeshChannelTexcoord,field==0?0:field-1,field,0,false);
             }
-            std::vector<std::array<Point3,4>> instances;instances.reserve(group.instances.size());
-            for(const auto& tm:group.instances) instances.push_back({tm.GetRow(0),tm.GetRow(1),tm.GetRow(2),tm.GetRow(3)});
+            // Nitrous permits instance data in the final vertex buffer only.
+            // Ownership is a separate logical field in that immutable payload.
+            struct InstanceData { std::array<Point3,4> rows;float owner; };
+            static_assert(sizeof(InstanceData)==4*sizeof(Point3)+sizeof(float));
+            std::vector<InstanceData> instances;instances.reserve(group.instances.size());
+            for(std::size_t i=0;i<group.instances.size();++i) {
+                const auto& tm=group.instances[i];
+                instances.push_back({{tm.GetRow(0),tm.GetRow(1),tm.GetRow(2),tm.GetRow(3)},float(group.bandSlots[i])});
+            }
+            previewFault(4);
             upload(sizeof(instances[0]),instances.size(),instances.data());
+            transformUploadBytes+=4*sizeof(Point3)*instances.size();ownerUploadBytes+=sizeof(float)*instances.size();
             for(int row=0;row<4;++row) addField(MeshChannelTexcoord,2+row,3,row*sizeof(Point3),true);
+            MaterialRequiredStreamElement owner;
+            owner.SetChannelCategory(MeshChannelTexcoord);owner.SetType(VertexFieldFloat1);owner.SetUsageIndex(6);
+            owner.SetStreamIndex(3);owner.SetOffset(4*sizeof(Point3));owner.SetIsInstanceStream(true);format.AddStream(owner);
+            }
             ready.store(true,std::memory_order_release);++generation->ready;
         } catch(...) { generation->failed=true;++failures; }
     }

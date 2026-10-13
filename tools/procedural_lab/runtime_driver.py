@@ -62,11 +62,10 @@ def _run_single(folder,script,timeout):
         result = folder / 'dev-result.txt'
         if result.exists():
             text = result.read_text(encoding='utf-8-sig')
-            # Current errors include the request path. Older private hosts only
-            # expose a timestamp; the client lock still guarantees one caller.
+            # Both outcomes must identify this exact request. A timestamp alone
+            # cannot establish correspondence with an error from another call.
             matching=text.startswith('SUCCESS '+path.as_posix()) or ('REQUEST: '+path.as_posix()) in text
-            legacy_error=text.startswith('ERROR ') and 'REQUEST: ' not in text
-            if result.stat().st_mtime_ns >= request.stat().st_mtime_ns and (matching or legacy_error):
+            if result.stat().st_mtime_ns >= request.stat().st_mtime_ns and matching:
                 return text
         time.sleep(.1)
     raise TimeoutError(f'Private Max fixture did not complete: {name}')

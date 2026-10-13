@@ -8,29 +8,27 @@
         require ((maxVersion())[1]==29000) "Wrong host version"
         -- Native extensions must be loaded at startup via the test plugin INI.
         -- loadDllsFromDir uses the ordinary class-plugin loader, not DLX startup.
-        require (aminScatterTransforms!=undefined and cyrusAnalyzeSurface!=undefined) "Native primitives missing"
+        require (cyrusScatterAdvanced!=undefined and cyrusSplineBandVersion()!=undefined and cyrusAnalyzeSurface!=undefined) "Native primitives missing"
         format "PASS native loading\n" to:log;flush log
         fileIn (root+"CyrusSurfaceAnalyzer/scripts/CyrusSurfaceAnalyzer.ms")
         fileIn (root+"AminScatter/scripts/AminScatterObject.ms")
         format "PASS script registration\n" to:log;flush log
         local surfaceNode=plane name:"Cyrus_Test_Surface" length:1000 width:1000 lengthsegs:2 widthsegs:2
         local sourceNode=box name:"Cyrus_Test_Source" length:10 width:10 height:30 pos:[1500,0,0]
-        local rows=aminScatterTransforms surfaceNode 200 42 1 1.0 1.0 [0,0,0] [0,0,0] [0,0,0] true
-        local again=aminScatterTransforms surfaceNode 200 42 1 1.0 1.0 [0,0,0] [0,0,0] [0,0,0] true
-        require (rows.count==200) "Wrong native scatter count"
-        require ((cyrusEditFingerprint rows "smoke")==(cyrusEditFingerprint again "smoke")) "Nonrepeatable placements"
         local controller=AminScatterObject name:"Cyrus_Test_Controller"
-        controller.surfaceNodes=#(surfaceNode)
-        controller.updateMode=2
-        controller.newLayer()
+        controller.updateMode=1;controller.autoRender=false;controller.newLayer()
         local layer=controller.layerObjects[1]
+        controller.setLayerSurfaces layer #(surfaceNode)
         layer.sources=#(sourceNode);layer.amount=200
-        controller.syncLayerSurface layer
+        controller.evaluateProcedural()
         local actual=layer.placements (layer.validSources())
-        require (actual.count==200) "Wrong controller placement count"
-        local cache=aminScatterBuildPreview actual #(#([0,0,0],[0,0,10])) #([100,220,120]) 1000
+        local again=layer.placements (layer.validSources())
+        require (actual.count==200 and (for row in actual where row.count==8 and row[8]==2 collect row).count==200) "Wrong current transport"
+        require ((cyrusEditFingerprint actual "smoke")==(cyrusEditFingerprint again "smoke")) "Nonrepeatable placements"
+        local palette=#(1,1,#([100,220,120]),#(),false)
+        local cache=aminScatterBuildPreview actual #(#([0,0,0],[0,0,10])) palette 1000
         require ((aminScatterPreviewCount cache)==400) "Wrong point preview count"
-        local geometry=cyrusBuildGeometryPreview actual #(sourceNode) #([100,220,120]) 1 100 20000
+        local geometry=cyrusBuildGeometryPreview actual #(sourceNode) palette 1 100 20000
         require ((cyrusPreviewFaces geometry)==1200) "Wrong box proxy face count"
         format "PASS scatter repeatability, controller and previews\n" to:log;flush log
         local modifier=execute "CyrusScatterEdit()"

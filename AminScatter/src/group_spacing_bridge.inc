@@ -2,10 +2,10 @@ namespace {
 Array* groupArray(Value* v){type_check(v,Array,_T("planting array"));return static_cast<Array*>(v);}
 std::vector<amin::Vec3> groupPositions(Array* rows){
     std::vector<amin::Vec3> out;out.reserve(rows->size);
-    for(int i=0;i<rows->size;++i){auto* r=groupArray(rows->data[i]);if(r->size<2)throw RuntimeError(_T("Invalid planting row"));auto p=r->data[0]->to_matrix3().GetTrans();out.push_back({p.x,p.y,p.z});}return out;
+    for(int i=0;i<rows->size;++i){auto* r=groupArray(rows->data[i]);cyrus::rows::edited(r);auto p=r->data[0]->to_matrix3().GetTrans();out.push_back({p.x,p.y,p.z});}return out;
 }
 std::vector<double> groupRadii(Value* value){auto* a=groupArray(value);std::vector<double> out;out.reserve(a->size);for(int i=0;i<a->size;++i)out.push_back(a->data[i]->to_float());return out;}
-bool groupProtected(Value* value){auto* row=groupArray(value);return row->size==4&&row->data[3]==&true_value;}
+bool groupProtected(Value* value){return cyrus::rows::protectedEdit(groupArray(value));}
 }
 def_visible_primitive(cyrusResolveGroup,"cyrusResolveGroup");
 Value* cyrusResolveGroup_cf(Value** a,int n){

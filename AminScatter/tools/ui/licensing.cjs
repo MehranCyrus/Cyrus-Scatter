@@ -3,8 +3,8 @@
 const blocks=require('./maxscript-blocks.cjs');
 const mutations=[
  'setSourceRadius','setFallConfig','setFallGraph','assignSourceForward','assignSourceTransform',
- 'assignWeight','assignLineGroup','assignRestGroup','assignGroup','addEmptySource','addPointSource',
- 'replacePointSource','addStroke','removeStroke','setStrokeSelection','removeLogicalLayer','copyLogicalLayer',
+ 'assignWeight','assignGroup','addEmptySource','addPointSource',
+ 'replacePointSource','makePointSource','addStroke','removeStroke','setStrokeSelection','removeLogicalLayer','copyLogicalLayer',
  'setGroupCoverage','addPaintArea','removePaintArea','setPaintAreaTarget','setLayerSurfaces',
  'newLayer','removePopulation','refreshAll','clearAllBaked','clearBaked','bakeInstances',
  'resetRandomization','resetSelectedRandomization','copySelectedLayer','removeLayer',
@@ -15,7 +15,8 @@ const mutations=[
 const continuity=new Set(`procSchemaValid procSourceNodes procSourceIDs procSourceSlots
  procReceiverNodes procReceiverIDs procReceiverID procRadiusBinding editLayerKey nextEditLayerKey
  layerID activeLayer uiAreaID bakedNodes paintView paintColor showPoints pointsPerPlant iconSize
- viewportMode proxyShape viewportInstances viewportFaces radiusDisplayLimit radiusDisplayAll
+ viewportMode proxyShape viewportInstances viewportFaces radiusDisplayLimit radiusDisplayAll radiusDisplayMetric
+ fieldFalloff fieldBoundaries fieldCombined fieldSamples fieldBandID
  sourceShowRadius showCenters previewBudget pointColorMode solidPointColor layerVisible
  paintSetVisible groupCenters visualSourceNodes visualSourceLabels visualSourceColors
  visualSourceColorSet layerIDColor identificationMode`.split(/\s+/));

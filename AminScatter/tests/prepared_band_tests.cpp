@@ -7,7 +7,7 @@ int main() {
         std::mt19937 random(917);
         const auto number=[&] {return static_cast<double>(random())/4294967296.0;};
         for(int variant=0;variant<8;++variant) for(int kind:{1,2}) for(bool straight:{false,true}) {
-            amin::LineBand band;band.kind=kind;band.start=3;band.width=30;band.straightEnds=straight;
+            amin::AnalyzerBand band;band.kind=kind;band.start=3;band.width=30;band.straightEnds=straight;
             band.boundary.loops={{{-100,-80,0},{140,-80,0},{140,120,0},{-100,120,0}},
                                  {{-20,-10,0},{-20,40,0},{40,40,0},{40,-10,0}}};
             if(variant==1) band.boundary.loops.push_back({{-100,-80,10},{140,-80,10},{140,120,10},{-100,120,10}});

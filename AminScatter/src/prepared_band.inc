@@ -3,10 +3,10 @@
 class PreparedAnalyzerBand {
     struct Edge { Vec3 a,b,v; double denominator; std::size_t maskIndex; };
     struct Path { Vec3 origin,normal,x,y; bool valid; std::vector<Edge> edges; };
-    const LineBand& band;
+    const AnalyzerBand& band;
     std::vector<Path> paths;
 public:
-    explicit PreparedAnalyzerBand(const LineBand& input):band(input) {
+    explicit PreparedAnalyzerBand(const AnalyzerBand& input):band(input) {
         std::size_t edgeIndex=0;
         for(const auto& points:band.boundary.loops) {
             if(points.empty()) continue;

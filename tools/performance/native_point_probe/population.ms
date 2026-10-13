@@ -13,10 +13,10 @@ global HVPExactRows
         HVPExactRows=for i=0 to (plantCount-1) collect (
             local tm=rotateZMatrix (random 0.0 359.9)
             tm.translation=[((mod i columns)+0.5+random -0.3 0.3)*spacing-4000.0,((floor(i/columns as float))+0.5+random -0.3 0.3)*spacing-4000.0,0]
-            #(tm,1+mod i 3)
+            #(tm,1+mod i 3,(i as integer64),1,[1,0,0],0,false,2)
         )
         local rowsReady=clock.Elapsed.TotalMilliseconds
-        local cache=aminScatterBuildPreview HVPExactRows samples colors 250000
+        local cache=aminScatterBuildPreview HVPExactRows samples #(1,1,colors,#(),false) 250000
         HVPCaches=#(cache)
         local nativeReady=clock.Elapsed.TotalMilliseconds
         local exported=aminScatterPreviewPoints cache

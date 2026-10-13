@@ -55,12 +55,14 @@ def scatter_version():
     return version
 
 
-def reject_development_binary(filename, data):
+def reject_development_binary(filename, data, *, allow_owned_preview=False):
     for marker in ('CYRUS_LICENSE_EXPERIMENT_NEVER_SHIP', 'NEVER SHIP',
                    'cyrusOwnedLabClock', 'cyrusOwnedLabActivate',
                    'cyrusOwnedLabBrushEnd', 'cyrusSignedLabInstall'):
         if marker.encode('utf-16le') in data or marker.encode('ascii') in data:
             raise RuntimeError('Refusing development licensing authority in product package: '+filename)
+    if not allow_owned_preview and any('cyrusOwnedPreviewFault'.encode(encoding) in data for encoding in ('ascii','utf-16le')):
+        raise RuntimeError('Refusing development preview fault injection in product package: '+filename)
 
 
 def require_team_authority(data, header):
@@ -68,7 +70,7 @@ def require_team_authority(data, header):
     if len(key_ids) != 1 or key_ids[0].encode('ascii') not in data:
         raise RuntimeError('Scatter native module does not contain the selected owner verification key')
     if not any('cyrusLicenseImport'.encode(enc) in data for enc in ('ascii', 'utf-16le')):
-        raise RuntimeError('Scatter 0.79.6 requires the native team licensing module')
+        raise RuntimeError('Scatter requires the native team licensing module')
     return key_ids[0]
 
 
@@ -116,13 +118,13 @@ def package(project, name, version, native_names, script_name, args, build_dir):
            'Workflow: Layers > Surfaces > Models > Layout > Amount > Update scatter; Painting is optional.\n'
            'Then Include / exclude areas > Transforms > Spacing & cleanup > Viewport & render > Statistics & diagnostics.\n'
            'Select a layer; its Surfaces and Models are independent of other layers. Paint Areas are optional.\n'
-           'Edit layer in window... opens an optional floating view of the same settings.\n'
-           'The optional editor and linked container use the same ten-section order and setting handlers.\n'
+           'Edit layers in the Scatter Modify panel or through a linked source container.\n'
+           'Both Modify views share the same ordered sections and setting handlers.\n'
            'Advanced options start collapsed inside each section; opening them does not regenerate placements.\n'
-           'Resize the editor and scroll each column independently. Hover controls for short explanations.\n'
+           'Hover controls for short explanations. Models & Points offers Pick object and Make point.\n'
            'Each layer owns models and count/density. Named Paint Areas target its receivers and combine coverage without duplicate plants.\n'
            'Population, transforms and cleanup belong to the layer. Capacity: 10 populations; area APIs bound each layer to 128 areas/receivers.\n'
-           'CyrusUnified1, schema 56: schema-55 settings migrate to typed distances. Earlier schemas and retired stroke payloads are rejected.\n'
+           'CyrusUnified1, schema 58: create fresh current setups. Earlier development scenes and retired payloads are rejected without migration.\n'
            'Preserve old scenes with their matching build. No vector conversion or legacy brush fallback is included.\n'
            'Density preserves unchanged receiver candidates below the cap. Fixed Total redistributes quotas and preserves surviving base candidates.\n'
            'Changing local Relax neighborhoods, masks, spacing or geometry can change accepted output; face IDs do not survive arbitrary remeshing.\n'
@@ -135,7 +137,12 @@ def package(project, name, version, native_names, script_name, args, build_dir):
            'Inside/outside fade widths and independent density/scale curves operate on the final border.\n'
            'Removing a receiver keeps its area inactive; restoring the same node restores eligibility.\n'
            'Manual mode updates the mask immediately and publishes plants when Update is pressed.\n'
-           'Random/Clusters and stable Line/Analyzer assignment share the same ordered pipeline.\n'
+           'Random/Clusters, prepared spline Bands and Analyzer assignment share the same ordered pipeline.\n'
+             'Spline Bands > Advanced > Scale: Off, Follow Density, or Custom with Edit scale curve.\n'
+             'The profile multiplies Band Min/Max size; Follow Density links the curve shape, not Density %.\n'
+           'Bands have stable identities, Consecutive/Independent ranges, Rounded/Sharp corners, density curves and display colors.\n'
+           'Manual field previews can show pending inputs while plants and radii remain from the last Update.\n'
+           'Auto Radius uses conservative XY/3D bounds for explicitly supported source types; other source types retain Manual radius.\n'
            'Point and constrained boundary Relax prepare ordinary candidates before eligibility and protected Edit.\n'
            'Source containers are labelled helpers. Create/Pick selects an own pool automatically.\n'
            'Select a linked container to edit its Scatter context in Modify; parked sources retain their metadata.\n'
@@ -150,7 +157,7 @@ def package(project, name, version, native_names, script_name, args, build_dir):
            'Statistics & diagnostics > Advanced records bounded process-wide events. Start, Stop and Save work without MCP.\n'
            'Read recording status explicitly; the diagnostic controls have no polling timer or background disk writes.\n'
            'Box, Sphere and Pyramid proxies use retained instanced geometry; CPU fallback remains available.\n'
-           'Use the paired updated Surface Analyzer package for Analyzer Layout, Area and falloff.\n'
+           'Surface Analyzer 0.14 is independently installed; this Scatter package does not change it.\n'
            'Outdated guides retain the last complete scatter. Analyze first, then Update scatter in Manual mode.\n'
            if project == 'AminScatter' else 'Published guide freshness is saved. Older guides need one explicit Analyze.\n'
            'Pending geometry events are checked before validation, analysis and saving.\n') +

@@ -26,7 +26,16 @@
 extern HINSTANCE CyrusEditInstance;
 using namespace MaxSDK::Graphics;
 namespace cyrus {
+PreviewBudget pointPreviewBudget(pointPreviewProcessLimit),meshPreviewBudget(meshPreviewProcessLimit);
+std::shared_ptr<PreviewMemory> reservePreviewMemory(PreviewBudget& budget,std::size_t bytes) {
+    try { return std::make_shared<PreviewMemory>(budget,bytes); }
+    catch(const std::exception&) { throw RuntimeError(_T("Preview resource allocation failed or exceeded its process allowance. Reduce display limits or release older caches.")); }
+}
 MeshSnapshot::MeshSnapshot(std::vector<PreviewGeometry> value):groups(std::move(value)) {
+    cpuBytes=sizeof(*this)+groups.capacity()*sizeof(PreviewGeometry)+groups.size()*sizeof(Box3);
+    for(const auto& group:groups)cpuBytes+=group.faces.capacity()*sizeof(group.faces[0])+group.instances.capacity()*sizeof(Matrix3)+group.bandSlots.capacity();
+    if(cpuBytes>meshPreviewOwnerLimit)throw RuntimeError(_T("Mesh CPU cache exceeds its resource allowance"));
+    memory=reservePreviewMemory(meshPreviewBudget,cpuBytes);
     bounds.Init();
     auto hash=[this](const Point3& p) {
         for(int axis=0;axis<3;++axis) if(!std::isfinite(p[axis])) throw RuntimeError(_T("Non-finite mesh preview data"));
@@ -34,6 +43,8 @@ MeshSnapshot::MeshSnapshot(std::vector<PreviewGeometry> value):groups(std::move(
         for(std::size_t i=0;i<sizeof(Point3);++i) { fingerprint^=bytes[i];fingerprint*=1099511628211ULL; }
     };
     for(const auto& group:groups) {
+        if(group.bandSlots.size()!=group.instances.size())throw RuntimeError(_T("Mesh Band provenance count mismatch"));
+        for(auto slot:group.bandSlots){if(slot>64)throw RuntimeError(_T("Invalid mesh Band palette slot"));fingerprint^=slot;fingerprint*=1099511628211ULL;}
         Box3 local,world;local.Init();world.Init();hash(group.color);
         for(const auto& face:group.faces) for(const auto& p:face) { local+=p;hash(p); }
         if(!group.faces.empty() && !group.instances.empty()) {
@@ -42,18 +53,25 @@ MeshSnapshot::MeshSnapshot(std::vector<PreviewGeometry> value):groups(std::move(
                 world+=local*tm;
             }
             bounds+=world;faces+=group.faces.size()*group.instances.size();instances+=group.instances.size();
-            bufferBytes+=group.faces.size()*9*sizeof(Point3)+group.instances.size()*4*sizeof(Point3);
+            bufferBytes+=group.faces.size()*9*sizeof(Point3)+group.instances.size()*(4*sizeof(Point3)+sizeof(float));
+            scratchBytes+=group.faces.size()*3*sizeof(Point3)+group.instances.size()*(4*sizeof(Point3)+sizeof(float));
         }
         groupBounds.push_back(world);
     }
 }
 PointSnapshot::PointSnapshot(std::vector<PointGroup> value,bool lineList) : groups(std::move(value)),lines(lineList) {
+    cpuBytes=sizeof(*this)+groups.capacity()*sizeof(PointGroup)+groups.size()*sizeof(Box3);
+    for(const auto& group:groups)cpuBytes+=group.points.capacity()*sizeof(Point3)+group.bandSlots.capacity();
+    if(cpuBytes>pointPreviewOwnerLimit)throw RuntimeError(_T("Point CPU cache exceeds its resource allowance"));
+    memory=reservePreviewMemory(pointPreviewBudget,cpuBytes);
     bounds.Init();
     auto hash=[this](const Point3& p) {
         const auto* bytes=reinterpret_cast<const unsigned char*>(&p);
         for(std::size_t i=0;i<sizeof(Point3);++i) { fingerprint^=bytes[i];fingerprint*=1099511628211ULL; }
     };
     for(const auto& group:groups) {
+        if(group.bandSlots.size()!=group.points.size())throw RuntimeError(_T("Point Band provenance count mismatch"));
+        for(auto slot:group.bandSlots){if(slot>64)throw RuntimeError(_T("Invalid point Band palette slot"));fingerprint^=slot;fingerprint*=1099511628211ULL;}
         if(lines && group.points.size()%2) throw RuntimeError(_T("Incomplete preview line segment"));
         Box3 box;box.Init();
         for(int axis=0;axis<3;++axis) if(!std::isfinite(group.color[axis])) throw RuntimeError(_T("Non-finite preview color"));
@@ -66,46 +84,59 @@ PointSnapshot::PointSnapshot(std::vector<PointGroup> value,bool lineList) : grou
 }
 namespace {
 const Class_ID displayID(0x471d60ab,0x67ca238e);
-constexpr std::size_t ownerByteLimit=64*1024*1024,processByteLimit=128*1024*1024;
-constexpr std::size_t meshOwnerByteLimit=512ull*1024*1024,meshProcessByteLimit=1024ull*1024*1024;
+constexpr std::size_t ownerByteLimit=pointPreviewOwnerLimit,processByteLimit=pointPreviewProcessLimit;
+constexpr std::size_t meshOwnerByteLimit=meshPreviewOwnerLimit,meshProcessByteLimit=meshPreviewProcessLimit;
 std::atomic<std::size_t> reservedBytes{0},liveItems{0};
 std::atomic<std::size_t> meshReservedBytes{0};
 std::atomic<std::uint64_t> uploads{0},uploadBytes{0},draws{0},failures{0};
+// Vertex upload payloads and SDK material parameter payloads are distinct.
+// These are submitted bytes, not a measurement of driver/VRAM traffic.
+std::atomic<std::uint64_t> geometryUploadBytes{0},transformUploadBytes{0},ownerUploadBytes{0},styleParameterBytes{0},bufferReuses{0};
+#ifdef CYRUS_PREVIEW_TEST_FAULTS
+std::atomic<int> previewFaultStage{0},previewFaultOccurrence{0},previewFaultHits{0};
+void previewFault(int stage) {
+    if(previewFaultStage.load()==stage&&++previewFaultHits>=previewFaultOccurrence.load())
+        throw std::runtime_error("Injected owned preview resource failure");
+}
+#else
+inline void previewFault(int) {}
+#endif
 
 struct Generation {
     const std::vector<PointLayer> layers;
     std::atomic<bool> enabled{true},failed{false},submitted{false};
     std::atomic<std::size_t> ready{0};
     std::size_t count=0,groups=0,reservation=0,meshReservation=0;
+    std::shared_ptr<PreviewMemory> pointMemory,meshMemory;
     bool hasMesh=false;
     Box3 bounds;
     explicit Generation(std::vector<PointLayer> value):layers(std::move(value)) {
         bounds.Init();
-        std::size_t vertices=0;
+        std::size_t vertices=0,pointCPU=0,meshCPU=0,meshScratch=0,pointGroups=0,meshGroups=0,paletteBytes=0;
         for(const auto& layer:layers) {
             vertices+=layer.snapshot->count;
+            pointCPU+=layer.snapshot->cpuBytes;
+            if(layer.palette)paletteBytes+=sizeof(PreviewPalette)+layer.palette->sourceColors.capacity()*sizeof(Point3)+layer.palette->bandIDs.capacity()*sizeof(std::uint64_t);
             if(!layer.snapshot->lines) count+=layer.snapshot->count;
             if(layer.snapshot->count) bounds+=layer.snapshot->bounds;
-            for(const auto& group:layer.snapshot->groups) if(!group.points.empty()) ++groups;
+            for(const auto& group:layer.snapshot->groups) if(!group.points.empty()) {++groups;++pointGroups;}
             if(layer.mesh) {
-                hasMesh=true;meshReservation+=layer.mesh->bufferBytes;
+                hasMesh=true;meshReservation+=layer.mesh->bufferBytes;meshCPU+=layer.mesh->cpuBytes;meshScratch+=layer.mesh->scratchBytes;
                 if(layer.mesh->faces) bounds+=layer.mesh->bounds;
-                for(const auto& group:layer.mesh->groups) if(!group.faces.empty() && !group.instances.empty()) ++groups;
+                for(const auto& group:layer.mesh->groups) if(!group.faces.empty() && !group.instances.empty()) {++groups;++meshGroups;}
             }
         }
-        const auto bytes=vertices*sizeof(Point3);
-        const auto meshBytes=meshReservation;meshReservation=0;
-        if(bytes>ownerByteLimit || meshBytes>meshOwnerByteLimit || groups>1024) { failed=true;++failures;return; }
-        auto used=reservedBytes.load();
-        do {
-            if(bytes>processByteLimit-used) { failed=true;++failures;return; }
-        } while(!reservedBytes.compare_exchange_weak(used,used+bytes));
-        reservation=bytes;
-        used=meshReservedBytes.load();
-        do {
-            if(meshBytes>meshProcessByteLimit-used) { failed=true;++failures;return; }
-        } while(!meshReservedBytes.compare_exchange_weak(used,used+meshBytes));
-        meshReservation=meshBytes;
+        // Hardware + SDK system copies + simultaneous upload temporaries. Item
+        // and palette allowances also cover fallback bookkeeping; fallback
+        // faces are streamed from the shared CPU snapshot, never expanded.
+        const auto bytes=vertices*(2*(sizeof(Point3)+sizeof(float))+sizeof(float))+pointGroups*4096+paletteBytes;
+        const auto meshBytes=2*meshReservation+meshScratch+meshGroups*4096;meshReservation=0;
+        if(pointCPU+bytes>ownerByteLimit || meshCPU+meshBytes>meshOwnerByteLimit || groups>1024) { failed=true;++failures;return; }
+        try {
+            pointMemory=std::make_shared<PreviewMemory>(pointPreviewBudget,bytes);
+            meshMemory=std::make_shared<PreviewMemory>(meshPreviewBudget,meshBytes);
+        } catch(...) { pointMemory.reset();meshMemory.reset();failed=true;++failures;return; }
+        reservation=bytes;meshReservation=meshBytes;reservedBytes+=bytes;meshReservedBytes+=meshBytes;
     }
     ~Generation() { reservedBytes-=reservation;meshReservedBytes-=meshReservation; }
 };
@@ -113,8 +144,43 @@ struct Generation {
 bool sameLayers(const std::vector<PointLayer>& a,const std::vector<PointLayer>& b) {
     if(a.size()!=b.size()) return false;
     for(std::size_t i=0;i<a.size();++i)
-        if(a[i].snapshot!=b[i].snapshot || a[i].mesh!=b[i].mesh || a[i].solid!=b[i].solid || (a[i].solid && a[i].color!=b[i].color)) return false;
+        if(a[i].snapshot!=b[i].snapshot || a[i].mesh!=b[i].mesh || a[i].solid!=b[i].solid || (a[i].solid && a[i].color!=b[i].color) || !samePalette(a[i].palette,b[i].palette)) return false;
     return true;
+}
+
+constexpr const char* pointShader=R"fx(
+float4x4 CyrusViewProjection : WORLDVIEWPROJ;
+float3 CyrusColor;
+bool CyrusUseBands;
+float4 CyrusPalette[65];
+struct Input { float3 p : POSITION; float owner : TEXCOORD0; };
+struct Output { float4 p : SV_POSITION; float4 color : COLOR0; };
+Output pointVS(Input i) {
+    Output o;o.p=mul(float4(i.p,1),CyrusViewProjection);
+    o.color=CyrusUseBands?CyrusPalette[(int)i.owner]:float4(CyrusColor,1);return o;
+}
+float4 pointPS(Output i) : SV_Target { return i.color; }
+technique11 CyrusPoints { pass P0 {
+    SetVertexShader(CompileShader(vs_5_0,pointVS()));
+    SetGeometryShader(NULL);
+    SetPixelShader(CompileShader(ps_5_0,pointPS()));
+} }
+)fx";
+
+bool sameStyle(const PointLayer& a,const PointLayer& b) {
+    return a.solid==b.solid&&(!a.solid||a.color==b.color)&&samePalette(a.palette,b.palette);
+}
+void setIdentification(HLSLMaterialHandle& material,const PointLayer& layer,std::size_t source,Point3 fallback) {
+    const bool bands=!layer.solid&&layer.palette&&layer.palette->mode==3;
+    material.SetFloat3Parameter(_T("CyrusColor"),layer.solid?layer.color:previewColor(layer.palette.get(),source,0,fallback));
+    material.SetBoolParameter(_T("CyrusUseBands"),bands?TRUE:FALSE);
+    styleParameterBytes+=sizeof(Point3)+sizeof(BOOL);
+    if(bands) {
+        std::array<Point4,65> colors;
+        for(std::size_t i=0;i<colors.size();++i){const auto c=layer.palette->bandColors[i];colors[i]=Point4(c.x,c.y,c.z,1.f);}
+        material.SetFloat4ArrayParameter(_T("CyrusPalette"),colors.data(),unsigned(colors.size()));
+        styleParameterBytes+=sizeof(colors);
+    }
 }
 
 class PointItem : public ICustomRenderItem {
@@ -122,7 +188,8 @@ class PointItem : public ICustomRenderItem {
     const std::size_t layerIndex,groupIndex;
     VertexBufferHandleArray buffers;
     MaterialRequiredStreams format;
-    SolidColorMaterialHandle material;
+    HLSLMaterialHandle material;
+    bool sharedBuffers=false;
     std::atomic<bool> ready{false};
     std::mutex realizeMutex;
 public:
@@ -131,8 +198,10 @@ public:
         if(previous) {
             // SDK handles retain their resources. A new item owns the new
             // generation; no old item/controller pointer survives publication.
-            buffers=previous->buffers;format=previous->format;material=previous->material;
-            ready.store(true,std::memory_order_release);++generation->ready;
+            buffers=previous->buffers;format=previous->format;sharedBuffers=true;++bufferReuses;
+            if(sameStyle(previous->generation->layers[previous->layerIndex],generation->layers[layerIndex])) {
+                material=previous->material;ready.store(true,std::memory_order_release);++generation->ready;
+            }
         }
         ++liveItems;
     }
@@ -140,7 +209,7 @@ public:
     bool reusable(const PointLayer& next,std::size_t group) const {
         const auto& previous=generation->layers[layerIndex];
         return ready.load(std::memory_order_acquire) && !generation->failed.load() && groupIndex==group &&
-            previous.snapshot==next.snapshot && previous.solid==next.solid && (!next.solid || previous.color==next.color);
+            previous.snapshot==next.snapshot;
     }
     void Realize(DrawContext& dc) override {
         if(ready.load(std::memory_order_acquire) || generation->failed.load()) return;
@@ -149,9 +218,10 @@ public:
         try {
             const auto& layer=generation->layers[layerIndex];
             const auto& group=layer.snapshot->groups[groupIndex];
-            if(!material.Initialize()) throw std::runtime_error("Point material initialization failed");
-            const auto color=layer.solid?layer.color:group.color;
-            material.SetColor(AColor(color.x,color.y,color.z,1.f));
+            previewFault(1);
+            if(!material.InitializeWithString(CStr(pointShader))) throw std::runtime_error("Point material initialization failed");
+            setIdentification(material,layer,groupIndex,group.color);
+            if(!sharedBuffers) {
             MaterialRequiredStreamElement position;
             position.SetChannelCategory(MeshChannelPosition);position.SetType(VertexFieldFloat3);format.AddStream(position);
             VertexBufferHandle buffer;
@@ -159,7 +229,16 @@ public:
             // Hardware resource management remains with Nitrous; no device pointer is retained.
             if(!buffer.Initialize(sizeof(Point3),group.points.size(),const_cast<Point3*>(group.points.data())) || !buffer.RealizeToHWMemory(true))
                 throw std::runtime_error("Point buffer allocation failed");
-            buffers.append(buffer);++uploads;uploadBytes+=group.points.size()*sizeof(Point3);
+            buffers.append(buffer);++uploads;uploadBytes+=group.points.size()*sizeof(Point3);geometryUploadBytes+=group.points.size()*sizeof(Point3);
+            std::vector<float> slots(group.bandSlots.begin(),group.bandSlots.end());
+            VertexBufferHandle owners;
+            previewFault(2);
+            if(!owners.Initialize(sizeof(float),slots.size(),slots.data())||!owners.RealizeToHWMemory(true))
+                throw std::runtime_error("Point owner buffer allocation failed");
+            buffers.append(owners);++uploads;uploadBytes+=slots.size()*sizeof(float);ownerUploadBytes+=slots.size()*sizeof(float);
+            MaterialRequiredStreamElement owner;
+            owner.SetChannelCategory(MeshChannelTexcoord);owner.SetType(VertexFieldFloat1);owner.SetUsageIndex(0);owner.SetStreamIndex(1);format.AddStream(owner);
+            }
             ready.store(true,std::memory_order_release);++generation->ready;
         } catch(...) { generation->failed=true;++failures; }
     }
@@ -345,3 +424,38 @@ Value* cyrusRetainedMeshStats_cf(Value** args,int count) {
         vl.result->append(Integer64::intern(value));
     return_value(vl.result);
 }
+
+// Version 1: position/source-geometry, transforms, owners, material parameters,
+// reused item buffers. Parameter bytes are not claimed as physical GPU uploads.
+def_visible_primitive(cyrusRetainedStreamStats,"cyrusRetainedStreamStats");
+Value* cyrusRetainedStreamStats_cf(Value**,int count) {
+    check_arg_count(cyrusRetainedStreamStats,0,count);
+    one_typed_value_local(Array* result);vl.result=new Array(6);
+    vl.result->append(Integer::intern(1));
+    for(auto value:{cyrus::geometryUploadBytes.load(),cyrus::transformUploadBytes.load(),cyrus::ownerUploadBytes.load(),
+                    cyrus::styleParameterBytes.load(),cyrus::bufferReuses.load()})vl.result->append(Integer64::intern(value));
+    return_value(vl.result);
+}
+
+// Version 1: point live/peak/limit, mesh live/peak/limit. Includes CPU snapshots,
+// palette data, staging payloads and conservative GPU/SDK-copy reservations.
+def_visible_primitive(cyrusPreviewResourceStats,"cyrusPreviewResourceStats");
+Value* cyrusPreviewResourceStats_cf(Value**,int count) {
+    check_arg_count(cyrusPreviewResourceStats,0,count);
+    one_typed_value_local(Array* result);vl.result=new Array(7);vl.result->append(Integer::intern(1));
+    for(auto value:{cyrus::pointPreviewBudget.used(),cyrus::pointPreviewBudget.highWater(),cyrus::pointPreviewProcessLimit,
+        cyrus::meshPreviewBudget.used(),cyrus::meshPreviewBudget.highWater(),cyrus::meshPreviewProcessLimit})
+        vl.result->append(Integer64::intern(value));
+    return_value(vl.result);
+}
+
+#ifdef CYRUS_PREVIEW_TEST_FAULTS
+def_visible_primitive(cyrusOwnedPreviewFault,"cyrusOwnedPreviewFault");
+Value* cyrusOwnedPreviewFault_cf(Value** args,int count) {
+    check_arg_count(cyrusOwnedPreviewFault,2,count);
+    const auto stage=args[0]->to_int(),occurrence=args[1]->to_int();
+    if(stage<0||stage>4||occurrence<0)throw RuntimeError(_T("Invalid owned preview fault"));
+    cyrus::previewFaultStage=stage;cyrus::previewFaultOccurrence=occurrence;cyrus::previewFaultHits=0;
+    return &ok;
+}
+#endif

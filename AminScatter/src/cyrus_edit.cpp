@@ -12,6 +12,7 @@
 #include <maxscript/foundation/numbers.h>
 #include <maxscript/foundation/strings.h>
 #include <maxscript/foundation/3dmath.h>
+#include "placement_transport.h"
 #include <maxscript/maxwrapper/mxsobjects.h>
 #include <map>
 #include <vector>
@@ -28,7 +29,7 @@
 static unsigned editRevision=0;
 static std::wstring pointId(){GUID id{};if(FAILED(CoCreateGuid(&id)))throw RuntimeError(_T("Cannot allocate instance identity"));wchar_t text[40];StringFromGUID2(id,text,40);return text;}
 struct EditRow { std::wstring inputId,outputId;unsigned source=0; Matrix3 delta{1}; bool deleted=false,selected=false; };
-struct EditLayer { std::wstring signature; bool invalid=false,active=true,pending=false;std::vector<EditRow> rows;std::vector<Matrix3> input;std::vector<int> sources;bool published=false,viewportVisible=true;std::unordered_set<std::wstring> publishedIDs;bool shown(const EditRow& r)const{return viewportVisible&&!r.deleted&&r.source<input.size()&&(!published||publishedIDs.count(r.outputId)>0);} };
+struct EditLayer { std::wstring signature; bool invalid=false,active=true;std::vector<EditRow> rows;std::vector<Matrix3> input;std::vector<int> sources;bool published=false,viewportVisible=true;std::unordered_set<std::wstring> publishedIDs;bool shown(const EditRow& r)const{return viewportVisible&&!r.deleted&&r.source<input.size()&&(!published||publishedIDs.count(r.outputId)>0);} };
 class CSEdit;
 class EditRestore:public RestoreObj { CSEdit* mod;std::map<int,EditLayer> before,after;public:EditRestore(CSEdit*);void Restore(int)override;void Redo()override;void EndHold()override;MSTR Description()override{return _T("CS Edit");}};
 class CSEdit:public Modifier,public EventUser {
@@ -53,10 +54,10 @@ public:
  int NumSubObjTypes()override{return 1;}
  ISubObjType* GetSubObjType(int i)override{static GenSubObjType type(1);type.SetName(_T("Instances"));return i==-1||i==0?&type:nullptr;}
  void status(){
-  if(!panel)return;bool invalid=false,pending=false;unsigned selected=0,total=0,suspended=0;
-  for(auto& [k,l]:layers){if(!l.active)continue;invalid|=l.invalid;pending|=l.pending;
+  if(!panel)return;bool invalid=false;unsigned selected=0,total=0,suspended=0;
+  for(auto& [k,l]:layers){if(!l.active)continue;invalid|=l.invalid;
    for(auto& r:l.rows)if(!r.deleted){if(r.source>=l.input.size()){++suspended;continue;}if(l.shown(r)){++total;if(r.selected)++selected;}}}
-  std::wstring text=pending?L"Legacy edits: restore lower modifier states to recover.":invalid?L"Layout / Seed changed. Reset Edits required.":std::to_wstring(selected)+L" selected / "+std::to_wstring(total)+L" instances; "+std::to_wstring(suspended)+L" suspended";
+  std::wstring text=invalid?L"Layout / Seed changed. Reset Edits required.":std::to_wstring(selected)+L" selected / "+std::to_wstring(total)+L" instances; "+std::to_wstring(suspended)+L" suspended";
   if(text!=lastStatus){lastStatus=text;SetDlgItemText(panel,1001,text.c_str());}
  }
  void changed(bool geometry=true){if(geometry){++editRevision;++localRevision;}NotifyDependents(FOREVER,geometry?PART_GEOM:PART_SELECT,REFMSG_CHANGE);status();if(ip)ip->RedrawViews(ip->GetTime());}
@@ -106,7 +107,7 @@ class EditDesc:public ClassDesc2 {public:int IsPublic()override{return TRUE;}voi
 extern "C" __declspec(dllexport) ClassDesc* CyrusEditDesc(){static EditDesc desc;return &desc;}
 static CSEdit* edit(Value* v){auto* p=v->to_reftarg();if(!p||p->ClassID()!=CS_EDIT_ID)throw RuntimeError(_T("Expected Cyrus Scatter Edit"));return static_cast<CSEdit*>(p);}
 def_visible_primitive(cyrusEditRevision,"cyrusEditRevision");Value* cyrusEditRevision_cf(Value**,int){return Integer::intern(editRevision);}
-def_visible_primitive(cyrusEditFingerprint,"cyrusEditFingerprint");Value* cyrusEditFingerprint_cf(Value** a,int count){check_arg_count(cyrusEditFingerprint,2,count);type_check(a[0],Array,_T("rows"));auto* rows=static_cast<Array*>(a[0]);std::uint64_t h=1469598103934665603ULL;auto add=[&](const void* p,std::size_t n){auto* b=static_cast<const unsigned char*>(p);for(std::size_t i=0;i<n;++i){h^=b[i];h*=1099511628211ULL;}};for(int i=0;i<rows->size;++i){type_check(rows->data[i],Array,_T("instance row"));auto* r=static_cast<Array*>(rows->data[i]);if(r->size<2)throw RuntimeError(_T("Expected transform and source index"));Point3 p=r->data[0]->to_matrix3().GetTrans();add(&p,sizeof(p));int src=r->data[1]->to_int();add(&src,sizeof(src));}std::wstring text=a[1]->to_string();add(text.data(),text.size()*sizeof(wchar_t));return new String(std::to_wstring(h).c_str());}
+def_visible_primitive(cyrusEditFingerprint,"cyrusEditFingerprint");Value* cyrusEditFingerprint_cf(Value** a,int count){check_arg_count(cyrusEditFingerprint,2,count);type_check(a[0],Array,_T("rows"));auto* rows=static_cast<Array*>(a[0]);std::uint64_t h=1469598103934665603ULL;auto add=[&](const void* p,std::size_t n){auto* b=static_cast<const unsigned char*>(p);for(std::size_t i=0;i<n;++i){h^=b[i];h*=1099511628211ULL;}};for(int i=0;i<rows->size;++i){type_check(rows->data[i],Array,_T("instance row"));auto* r=static_cast<Array*>(rows->data[i]);cyrus::rows::current(r);Point3 p=r->data[0]->to_matrix3().GetTrans();add(&p,sizeof(p));int src=r->data[1]->to_int();add(&src,sizeof(src));}std::wstring text=a[1]->to_string();add(text.data(),text.size()*sizeof(wchar_t));return new String(std::to_wstring(h).c_str());}
 #include "cyrus_edit_stack.inc"
 
 #ifdef CYRUS_NATIVE_LICENSE_EXPERIMENT

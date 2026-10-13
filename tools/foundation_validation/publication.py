@@ -20,19 +20,21 @@ def check(condition, label):
 def arr(values):
     return r.Array(*values)
 def rows(root):
-    return [[(tuple(tuple(float(v) for v in axis) for axis in (row[0].row1, row[0].row2, row[0].row3, row[0].row4)), int(row[1]), str(row[2]), bool(row[3])) for row in layer] for layer in root.groupSnapshotRows]
+    return [[(tuple(tuple(float(v) for v in axis) for axis in (row[0].row1, row[0].row2, row[0].row3, row[0].row4)), int(row[1]), str(row[2]), int(row[3]), tuple(map(float, row[4])), int(row[5]), bool(row[6]), int(row[7])) for row in layer] for layer in root.groupSnapshotRows]
 def state(root, modifier):
     return dict(rows=rows(root), epoch=int(root.procEpoch), builds=int(root.groupBuilds),
         key=str(root.groupSnapshotKey), display_key=str(root.procPublishedDisplayKey),
+        metadata=str(r.execute('with printAllElements on ((for entry in (getNodeByName "Foundation publication").baseObject.procPublishedMetadata collect entry) as string)')),
         visible=int(r.cyrusEditVisibleCount(modifier)),
         owner_ids=[str(x.layerID) for x in root.procPublishedOwners],
         source_ids=[[int(r.getHandleByAnim(n)) for n in group] for group in root.procPublishedSources],
         final_keep=[list(map(bool, group)) for group in root.procPublishedFinalKeep],
-        radii=[list(map(float, group)) for group in root.procPublishedRadii],
+        radii=[[list(map(float, pair)) for pair in group] for group in root.procPublishedRadii],
         layers=[dict(epoch=int(x.procEpoch), stats=list(map(str, x.procLastStats)), rounds=list(map(str, x.procLastRounds)),
             group_stats=list(map(int, x.groupStats())), overlap=(int(x.overlapBefore), int(x.overlapAfter)),
             requested=int(x.requestedCount), generated=int(x.generatedCount), shown=int(x.cachedPointCount),
-            previews=int(x.previewBuildCount), display_key=str(x.procPreviewDisplayKey),
+            previews=int(x.previewBuildCount), display_key=str(x.procPreviewDisplayKey), geometry_key=str(x.procPreviewGeometryKey),
+            inspection_key=str(x.procPreviewInspectionKey), field_key=str(x.procFieldCacheKey), field_status=str(x.procFieldStatus),
             observed=str(x.inputTimeObserved), pending=bool(x.dirty)) for x in root.layerObjects])
 
 try:
@@ -83,7 +85,7 @@ fn CyrusFoundationCheckpoint label = (
     for target, occurrence in [('edit-publish', 1), ('leaf-install', 1), ('leaf-install', 2), ('leaf-install', 3), ('root-install', 1), ('before-commit', 1)]:
         root.layerObjects[0].amount += 7
         before=state(root, modifier)
-        caches=[(x.cachedPoints,x.radiusCache) for x in root.layerObjects]
+        caches=[(x.cachedPoints,x.inspectionCache) for x in root.layerObjects]
         r.CyrusFoundationTarget=target; r.CyrusFoundationAt=occurrence; r.CyrusFoundationHit=0
         failed=False
         try:
@@ -93,7 +95,7 @@ fn CyrusFoundationCheckpoint label = (
         r.CyrusFoundationTarget=''
         check(failed, f'{target}/{occurrence}: fault reached actual method')
         check(state(root, modifier)==before, f'{target}/{occurrence}: complete previous publication and Edit visibility retained')
-        check(all(x.cachedPoints==a and x.radiusCache==b for x,(a,b) in zip(root.layerObjects,caches)), f'{target}/{occurrence}: cache objects retained')
+        check(all(x.cachedPoints==a and x.inspectionCache==b for x,(a,b) in zip(root.layerObjects,caches)), f'{target}/{occurrence}: cache objects retained')
         check(not root.groupSolving, f'{target}/{occurrence}: solve guard released')
         root.evaluateProcedural()
         check(int(root.procEpoch)==before['epoch']+1 and len(root.groupSnapshotRows[0])==int(root.layerObjects[0].amount), f'{target}/{occurrence}: same-input retry commits once')
@@ -106,7 +108,7 @@ fn CyrusFoundationCheckpoint label = (
     root.procPublishedDisplayKey='fixture: invalidated display'
     root.layerObjects[0].procPreviewDisplayKey='fixture: invalidated owner'
     root.layerObjects[1].procPreviewDisplayKey='fixture: invalidated owner'
-    before=state(root, modifier); caches=[(x.cachedPoints,x.radiusCache) for x in root.layerObjects]
+    before=state(root, modifier); caches=[(x.cachedPoints,x.inspectionCache) for x in root.layerObjects]
     r.CyrusFoundationTarget='display-install'; r.CyrusFoundationAt=2; r.CyrusFoundationHit=0
     failed=False
     try:
@@ -118,11 +120,67 @@ fn CyrusFoundationCheckpoint label = (
     report['display_hits']=int(r.CyrusFoundationHit)
     check(failed, 'Display fault occurs after second actual owner install')
     check(state(root, modifier)==before, 'Display rollback restores all owners and root display key')
-    check(all(x.cachedPoints==a and x.radiusCache==b for x,(a,b) in zip(root.layerObjects,caches)), 'Display rollback preserves cache objects')
+    check(all(x.cachedPoints==a and x.inspectionCache==b for x,(a,b) in zip(root.layerObjects,caches)), 'Display rollback preserves cache objects')
     root.procEnsureDisplay(pending=True)
     check(rows(root)==before['rows'] and int(root.procEpoch)==before['epoch'], 'Display recovery does not consume pending Manual recipe')
     root.evaluateProcedural()
     check(len(root.groupSnapshotRows[2])==int(root.layerObjects[2].amount), 'Explicit Update consumes pending recipe')
+    # Exercise the same publication tail with the new inspection bundle active.
+    path_node=r.rectangle(width=400.,length=400.)
+    for leaf in root.layerObjects:
+        leaf.diversityMode=3;leaf.addStroke(path_node);leaf.setStrokeSelection(1,2,arr([model]))
+        leaf.patternWidths=arr([60.]);leaf.fieldFalloff=True;leaf.fieldBoundaries=True
+        leaf.fieldSamples=250;leaf.sourceShowRadius=arr([True])
+    # This owned fixture intentionally changes the generation binding from
+    # ordinary random scattering to Bands, so explicitly reset its Edit map.
+    r.cyrusEditCommand(modifier,0,r.Matrix3(1))
+    root.evaluateProcedural()
+    def inspection_caches():
+        return [(x.cachedPoints,x.inspectionCache,x.procFieldCache) for x in root.layerObjects]
+    def same_caches(saved):
+        return all(x.cachedPoints==a and x.inspectionCache==b and x.procFieldCache==c for x,(a,b,c) in zip(root.layerObjects,saved))
+    check(all(x.procFieldCache!=r.undefined and x.inspectionCache!=x.procFieldCache for x in root.layerObjects),
+          'Three populations have complete field and radius inspection bundles')
+    root.layerObjects[0].strokeStrengths=arr([.7]);root.layerObjects[1].strokeStrengths=arr([.8])
+    root.procPublishedDisplayKey='fixture: field display pending'
+    for leaf in root.layerObjects:leaf.procPreviewDisplayKey='fixture: field display pending'
+    before=state(root,modifier);caches=inspection_caches()
+    r.CyrusFoundationTarget='display-install';r.CyrusFoundationAt=2;r.CyrusFoundationHit=0
+    failed=False
+    try:root.procEnsureDisplay(pending=True)
+    except Exception as error:failed='Injected foundation failure' in str(error)
+    r.CyrusFoundationTarget=''
+    check(failed and int(r.CyrusFoundationHit)==2, 'Field display failure reaches the second installed owner')
+    check(state(root,modifier)==before and same_caches(caches), 'Field display rollback restores all caches, keys, labels and published metadata')
+    root.procEnsureDisplay(pending=True)
+    check(rows(root)==before['rows'] and int(root.procEpoch)==before['epoch']
+          and all('Pending field' in str(x.procFieldStatus) for x in list(root.layerObjects)[:2]),
+          'Field display retry publishes feedback only and keeps pending labels')
+    root.layerObjects[2].fieldSamples=20001
+    before=state(root,modifier);caches=inspection_caches();failed=False
+    try:root.procEnsureDisplay(pending=True)
+    except Exception as error:failed='Field sample limit' in str(error)
+    check(failed and state(root,modifier)==before and same_caches(caches),
+          'A later field preparation rejection retains the complete preceding display')
+    root.layerObjects[2].fieldSamples=250
+    # Density edits deliberately replace this binding. Reset the disposable
+    # Edit map before testing the new generation's installation boundary.
+    r.cyrusEditCommand(modifier,0,r.Matrix3(1))
+    before=state(root,modifier);caches=inspection_caches()
+    r.CyrusFoundationTarget='leaf-install';r.CyrusFoundationAt=2;r.CyrusFoundationHit=0;failed=False
+    try:root.evaluateProcedural()
+    except Exception as error:
+        report['field_publication_exception']=str(error)
+        failed='Injected foundation failure' in str(error)
+    r.CyrusFoundationTarget=''
+    after=state(root,modifier)
+    report['field_publication_differences']={key:{'before':before[key],'after':after[key]} for key in before if before[key]!=after[key]}
+    report['field_publication_caches_retained']=same_caches(caches)
+    check(failed and state(root,modifier)==before and same_caches(caches),
+          'Failed plant successor also restores its paired field/inspection metadata and caches')
+    root.evaluateProcedural()
+    check(int(root.procEpoch)==before['epoch']+1 and all('Field from last Update' in str(x.procFieldStatus) for x in root.layerObjects),
+          'Successful retry publishes plants, radii and field metadata as one epoch')
     report['passed']=True
 except Exception:
     report['errors'].append(traceback.format_exc()); report['passed']=False

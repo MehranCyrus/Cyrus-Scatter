@@ -13,7 +13,7 @@ int main(){try{
  f.scale=true;f.scaleWidth=20;auto scaled=boundaryFalloff(rows,loops,f,42);need(scaled.size()==3&&length(scaled[0].xAxis)==0&&length(scaled[1].xAxis)==1&&length(scaled[2].xAxis)==2);
  f.scaleCurve={1,.75,.5,.25,0};scaled=boundaryFalloff(rows,loops,f,42);need(length(scaled[0].xAxis)==2&&length(scaled[2].xAxis)==0);
  f.remove=false;f.scale=false;f.density=true;f.densityCurve={0,0,0,0,0};need(boundaryFalloff(rows,loops,f,42).empty());f.densityCurve={1,1,1,1,1};need(boundaryFalloff(rows,loops,f,42).size()==5);
- std::vector<Instance> many;for(int i=0;i<100000;++i)many.push_back(row({.001+(i%1000)*.099, .001+(i/1000)*.99,0}));
+ std::vector<Instance> many;for(int i=0;i<100000;++i){auto point=row({.001+(i%1000)*.099, .001+(i/1000)*.99,0});point.candidateKey=i;many.push_back(point);}
  f.densityCurve={.2,.2,.2,.2,.2};auto low=boundaryFalloff(many,loops,f,42);auto repeat=boundaryFalloff(many,loops,f,42);need(low.size()==repeat.size());for(std::size_t i=0;i<low.size();++i)need(length(low[i].position-repeat[i].position)==0);
  f.densityCurve={.6,.6,.6,.6,.6};auto high=boundaryFalloff(many,loops,f,42);need(high.size()>low.size());std::size_t k=0;for(auto r:high)if(k<low.size()&&length(r.position-low[k].position)==0)++k;need(k==low.size());
  loops.push_back({{40,40,0},{60,40,0},{60,60,0},{40,60,0}});f.density=false;f.remove=true;f.removeWidth=3;need(boundaryFalloff({row({39,50,0})},loops,f,42).empty());

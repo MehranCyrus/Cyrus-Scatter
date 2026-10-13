@@ -2,11 +2,11 @@
 
 Native C++ and generated MAXScript for Cyrus Scatter and Cyrus Surface Analyzer in 3ds Max.
 
-**Current development source: Scatter 0.79.6 / schema 56 / CyrusUnified1.** The [foundation correction handoff](docs/Foundation_0.79.6_2026-10-12/README.md) records atomic publication recovery and typed distance migration tested in Max 2026/2027. The last packaged delivery remains 0.79.5; source validation does not install or certify a new release. The [terraced garden workflow report](docs/Terrace_Workflow_0.79.5_2026-10-11/README.md) records the preceding layer-local preview and native buffer reuse work. The [offline team licensing pilot](docs/licensing/TEAM_PILOT_0.79_2026-10-11.md) describes activation, expiry and its anti-bypass limits. Analyzer remains 0.14; MCP package/plan remain 0.73.0/0.73.
+**Current development source and installed local delivery: Scatter 0.81.1 / schema 58 / CyrusUnified1.** The [spline Bands workstream](docs/plans/spline-bands/README.md) and its [implementation evidence](docs/plans/spline-bands/PROGRESS.md) track current behavior, validation and remaining acceptance. The 0.81.1 source adds Off / Follow Density / Custom Band scale profiles with an independent graph, retaining the earlier Modify-only workflow and Make point controls; matched Max 2026/2027 packages are installed on disk. [Max 2026/2027 packages and installation](docs/plans/spline-bands/INSTALLATION.md) include the UI simplification and earlier Models/Points hover and Layout refresh corrections, verified on disk; restart normal Max sessions to load them. Fresh normal-profile acceptance remains pending. This is ongoing development, not release certification. The [offline team licensing pilot](docs/licensing/TEAM_PILOT_0.79_2026-10-11.md) describes activation, expiry and its anti-bypass limits. Analyzer remains 0.14; MCP package/plan remain 0.73.0/0.73.
 
 ## Start here
 
-Start with the [engineering foundation](docs/ENGINEERING_FOUNDATION.md) for the relevant behavioral contracts and the [current correction handoff](docs/Foundation_0.79.6_2026-10-12/README.md) for their measured limits. The preceding 0.79.5 [creation-icon correction](docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md) remains the latest packaged witness.
+Start with the [engineering foundation](docs/ENGINEERING_FOUNDATION.md) for the relevant behavioral contracts and the [current implementation evidence](docs/plans/spline-bands/PROGRESS.md) for their measured limits. The [0.79.6 foundation correction](docs/Foundation_0.79.6_2026-10-12/README.md) and 0.79.5 [creation-icon correction](docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md) are historical source/package witnesses.
 
 | Need | Maintained document |
 | --- | --- |
@@ -19,7 +19,9 @@ Start with the [engineering foundation](docs/ENGINEERING_FOUNDATION.md) for the 
 | Other documentation | [Documentation index](docs/README.md) |
 | Product website and public roadmap | [Website source and local preview](website/README.md), [product and AI direction](docs/PRODUCT_AND_AI_ROADMAP.md) |
 
-The current candidate uses receiver-bound vector regions, cached border feedback, inward/outward feathering and independent density/scale curves. Paint unions outlines; Erase cuts holes. Layers retain their models, population, stable candidates and receiver caches. Schema 56 migrates the immediately preceding schema 55 to typed distance storage. Earlier model-set/stroke setups remain rejected. Preserve original scenes; native Paint/Edit bindings still require saved scene units when conversion changes receiver geometry.
+The current candidate uses receiver-bound vector regions, cached border feedback, inward/outward feathering and independent density/scale curves. Paint unions outlines; Erase cuts holes. Layers retain their models, population, stable candidates and receiver caches. Spline Bands add persistent ownership, Consecutive/Independent ranges, Rounded/Sharp joins, independent density/scale curves and bounded field feedback; Auto Radius uses conservative XY/3D source bounds. Consult the current evidence for qualified scenarios and open gates.
+
+**Current schema only:** create fresh schema-58 setups. Earlier development scenes are rejected; migration handlers and old placement formats have been removed. Preserve original scene files. Current setups retain typed distances and current-schema save/reopen, copy and unit handling; native Paint/Edit bindings still require saved scene units when conversion changes receiver geometry.
 
 Vector painting supports single-valued local-XY terrain and planes, including transformed receivers. Closed, vertical, folded or overlapping projected receivers are explicitly rejected. General scattering on curved receivers remains supported. Physical artist input, sustained heavy scenes and renderer/platform release qualification are still acceptance gates; version captions alone do not identify a build.
 

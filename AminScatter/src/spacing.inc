@@ -129,16 +129,5 @@ void spacePoints(std::vector<Instance>& points,const std::vector<Triangle>& surf
             if(maximumMove<s.relaxSpacing*1e-5) break;
         }
     }
-    if(s.collisionEnabled) {
-        const double separation=2*s.collisionRadius;
-        PointGrid grid(separation);grid.cells.reserve(points.size());
-        std::vector<Instance> kept;kept.reserve(points.size());
-        for(const auto& p:points) {
-            bool collision=false;
-            grid.visit(p.position,[&](std::size_t j){collision=length(p.position-kept[j].position)<separation;return !collision;});
-            if(!collision) {grid.add(p.position,kept.size());kept.push_back(p);}
-        }
-        points.swap(kept);
-    }
 }
 }

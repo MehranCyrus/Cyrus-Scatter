@@ -1,4 +1,4 @@
-std::vector<Vec3> edgeBorderPoints(const LineBand& band,std::uint32_t seed) {
+std::vector<Vec3> edgeBorderPoints(const AnalyzerBand& band,std::uint32_t seed) {
     if(!std::isfinite(band.width)||band.width<=0)throw std::invalid_argument("Positive edge spacing required");
     if(!std::isfinite(band.edgeOffset))throw std::invalid_argument("Invalid edge offset");
     for(double x:{band.edgeAlongJitter,band.edgeAcrossJitter})if(!std::isfinite(x)||x<0)throw std::invalid_argument("Invalid edge row controls");
@@ -51,7 +51,7 @@ std::vector<Vec3> edgeBorderPoints(const LineBand& band,std::uint32_t seed) {
 }
 Settings prepareEdgeRows(const Settings& s){
     Settings out=s;
-    for(std::size_t i=0;i<out.lineBands.size();++i){auto& b=out.lineBands[i];if(b.kind==6){auto points=edgeBorderPoints(b,s.seed^static_cast<std::uint32_t>(i*2654435761u));b.kind=5;b.boundary.loops={std::move(points)};}}
+    for(std::size_t i=0;i<out.analyzerBands.size();++i){auto& b=out.analyzerBands[i];if(b.kind==6){auto points=edgeBorderPoints(b,s.seed^static_cast<std::uint32_t>(i*2654435761u));b.kind=5;b.boundary.loops={std::move(points)};}}
     return out;
 }
 

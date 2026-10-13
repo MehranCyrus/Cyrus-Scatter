@@ -12,7 +12,6 @@
         listbox sourceList "" items:#() pos:[6,166] width:(containerUI.width-12) height:5
         button assignOwner "Follow this container" pos:[6,226] width:(containerUI.width-12) height:22 tooltip:"Resolve overlapping movement ownership for the selected source. Its usage and settings in other sets are unchanged."
         label statusInfo "Unlinked source container" pos:[6,252] width:(containerUI.width-12) height:80
-        button editLayer "Edit layer..." pos:[6,336] width:(containerUI.width-12) height:22 tooltip:"Open the optional layer editor for the current consumer."
         fn layout = (
             local available=amax 128 (containerUI.width-12),capacity=amax 1 (floor ((available-4)/5.2)),lines=0
             for paragraph in filterString statusInfo.text "\n" splitEmptyTokens:true do (
@@ -26,8 +25,7 @@
             widthSpin.pos=[containerUI.width-18,74];lengthSpin.pos=[containerUI.width-18,98]
             assignOwner.pos=[6,sourceList.pos.y+sourceList.height+4]
             statusInfo.height=amax 18 (lines*14+2);statusInfo.pos=[6,assignOwner.pos.y+26]
-            editLayer.pos=[6,statusInfo.pos.y+statusInfo.height+4]
-            containerUI.height=editLayer.pos.y+26;true
+            containerUI.height=statusInfo.pos.y+statusInfo.height+6;true
         )
         fn bind = (
             binding=true
@@ -43,7 +41,6 @@
             )
             statusInfo.text=view.cachedLabel+"\n"+view.movementStatus+"\nLast move: "+(view.movementStats())[5]
             local context=CyrusContainerResolve view
-            editLayer.enabled=context!=undefined and context[2]!=undefined
             controlsReady=true;binding=false;layout()
         )
         on containerUI open do (view=this;bind())
@@ -72,5 +69,4 @@
                 CyrusContainerRefreshAll();bind()
             )
         )
-        on editLayer pressed do (local context=CyrusContainerResolve view;if context!=undefined and context[2]!=undefined do CyrusOpenLayerEditor context[1] (context[1].logicalParent context[2]))
     )

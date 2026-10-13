@@ -3,21 +3,52 @@ def_visible_primitive(cyrusBuildGeometryPreview,"cyrusBuildGeometryPreview");
 Value* cyrusBuildGeometryPreview_cf(Value** args,int count){
  check_arg_count(cyrusBuildGeometryPreview,6,count);
  for(int i=0;i<3;++i)type_check(args[i],Array,_T("geometry preview"));
- auto* rows=static_cast<Array*>(args[0]);auto* sources=static_cast<Array*>(args[1]);auto* colors=static_cast<Array*>(args[2]);
+ auto* rows=static_cast<Array*>(args[0]);auto* sources=static_cast<Array*>(args[1]);
+ const auto palette=previewPalette(args[2],sources->size);
  int mode=args[3]->to_int(),limit=args[4]->to_int(),budget=args[5]->to_int();
- if(mode<1||mode>4||limit<1||limit>100000||budget<12||budget>20000000||sources->size!=colors->size)throw RuntimeError(_T("Invalid geometry display settings"));
+ if(mode<1||mode>4||limit<1||limit>100000||budget<12||budget>20000000)throw RuntimeError(_T("Invalid geometry display settings"));
+ if(rows->size>1000000||sources->size>512)throw RuntimeError(_T("Mesh preview input exceeds 1,000,000 placements or 512 sources"));
+ const int wanted=std::min(limit,int(rows->size));
+ auto staging=cyrus::reservePreviewMemory(cyrus::meshPreviewBudget,rows->size+std::size_t(wanted)*2*(sizeof(Matrix3)+1)+sources->size*512+4096);
+ auto markerStaging=cyrus::reservePreviewMemory(cyrus::pointPreviewBudget,std::size_t(wanted)*2*(sizeof(Point3)+1)+sources->size*256+4096);
+ std::vector<std::shared_ptr<cyrus::PreviewMemory>> sourceStaging;
+ std::size_t retainedFaces=0,inspectedFaces=0;
+ std::vector<std::uint8_t> bandSlots;bandSlots.reserve(rows->size);
+ for(int i=0;i<rows->size;++i){type_check(rows->data[i],Array,_T("placement"));auto* row=static_cast<Array*>(rows->data[i]);bandSlots.push_back(previewBandSlot(row,*palette));if(row->data[1]->to_int()>sources->size)throw RuntimeError(_T("Invalid preview source"));}
  std::vector<AminPointCache::Geometry> geometry(sources->size);std::vector<AminPointCache::Group> markers(sources->size);
+ std::vector<bool> used(sources->size,false);
+ for(int k=0;k<wanted;++k){const int i=static_cast<int>(static_cast<std::int64_t>(k)*rows->size/wanted);used[static_cast<Array*>(rows->data[i])->data[1]->to_int()-1]=true;}
  const auto time=GetCOREInterface()->GetTime();
- for(int i=0;i<sources->size;++i){auto& dst=geometry[i];dst.color=colors->data[i]->to_point3()/255.f;markers[i].color=dst.color;
+ for(int i=0;i<sources->size;++i){auto& dst=geometry[i];dst.color=palette->sourceColors[i];markers[i].color=dst.color;
+  if(!used[i])continue;
   if(sources->data[i]->is_kind_of(class_tag(Integer))){dst.placeholder=true;continue;}
   INode* node=sources->data[i]->to_node();if(!node)continue;
   auto* object=node->EvalWorldState(time).obj;if(!object||!object->CanConvertToType(Class_ID(TRIOBJ_CLASS_ID,0)))continue;
   auto* tri=static_cast<TriObject*>(object->ConvertToType(time,Class_ID(TRIOBJ_CLASS_ID,0)));if(!tri)continue;
   auto cleanup=[object](TriObject* p){if(p!=object)p->DeleteThis();};std::unique_ptr<TriObject,decltype(cleanup)> owned(tri,cleanup);
   const auto tm=node->GetObjectTM(time)*Inverse(node->GetNodeTM(time));auto& mesh=tri->GetMesh();
-  if(mesh.getNumVerts()==0)continue;
-  if(mode==4){if(mesh.getNumFaces()>budget)continue;dst.faces.reserve(mesh.getNumFaces());for(int f=0;f<mesh.getNumFaces();++f){auto& face=mesh.faces[f];dst.faces.push_back({mesh.verts[face.v[0]]*tm,mesh.verts[face.v[1]]*tm,mesh.verts[face.v[2]]*tm});}continue;}
-  Box3 bounds;bounds.Init();for(int v=0;v<mesh.getNumVerts();++v)bounds+=mesh.verts[v]*tm;
+  if(mesh.getNumVerts()==0||mesh.getNumFaces()==0)continue;
+  if(std::size_t(mesh.getNumFaces())>sourceInspectionFaceLimit-inspectedFaces)throw RuntimeError(_T("Preview source inspection exceeds 2,000,000 faces; simplify the sources"));
+  inspectedFaces+=mesh.getNumFaces();
+  if(mode==4&&mesh.getNumFaces()>budget)continue;
+  const auto nextFaces=mode==4?mesh.getNumFaces():mode==1?12:mode==2?168:6;
+  if(std::size_t(nextFaces)>sourceInspectionFaceLimit-retainedFaces)throw RuntimeError(_T("Preview retained source geometry exceeds its aggregate face allowance"));
+  retainedFaces+=nextFaces;
+  sourceStaging.push_back(cyrus::reservePreviewMemory(cyrus::meshPreviewBudget,std::size_t(nextFaces)*sizeof(std::array<Point3,3>)));
+  dst.faces.reserve(nextFaces);
+  Box3 bounds;bounds.Init();
+  for(int f=0;f<mesh.getNumFaces();++f) {
+   std::array<Point3,3> points;
+   for(int corner=0;corner<3;++corner) {
+    const auto vertex=mesh.faces[f].v[corner];
+    if(vertex>=unsigned(mesh.getNumVerts()))throw RuntimeError(_T("Preview source has an invalid face vertex"));
+    points[corner]=mesh.verts[vertex]*tm;
+    for(int axis=0;axis<3;++axis)if(!std::isfinite(points[corner][axis]))throw RuntimeError(_T("Preview source has non-finite geometry"));
+    bounds+=points[corner];
+   }
+   if(mode==4)dst.faces.push_back(points);
+  }
+  if(mode==4)continue;
   auto lo=bounds.Min(),hi=bounds.Max(),center=(lo+hi)*.5f,half=(hi-lo)*.5f;
   auto add=[&](Point3 a,Point3 b,Point3 c){dst.faces.push_back({a,b,c});};
   if(mode==1){Point3 v[8];for(int k=0;k<8;++k)v[k]=Point3(k&1?hi.x:lo.x,k&2?hi.y:lo.y,k&4?hi.z:lo.z);
@@ -34,11 +65,11 @@ Value* cyrusBuildGeometryPreview_cf(Value** args,int count){
    add(v[0],v[2],v[1]);add(v[0],v[3],v[2]);
   }
  }
- int shown=0,faces=0;const int wanted=std::min(limit,int(rows->size));
- for(int k=0;k<wanted;++k){int i=static_cast<int>(static_cast<std::int64_t>(k)*rows->size/wanted);type_check(rows->data[i],Array,_T("placement"));auto* row=static_cast<Array*>(rows->data[i]);if(row->size<2)throw RuntimeError(_T("Invalid placement"));int src=row->data[1]->to_int()-1;if(src<0||src>=sources->size)throw RuntimeError(_T("Invalid preview source"));auto tm=row->data[0]->to_matrix3();auto& group=geometry[src];
-  if(group.faces.empty()){if(group.placeholder){markers[src].points.push_back(tm.GetTrans());++shown;}continue;}
+ int shown=0,faces=0;
+ for(int k=0;k<wanted;++k){int i=static_cast<int>(static_cast<std::int64_t>(k)*rows->size/wanted);auto* row=static_cast<Array*>(rows->data[i]);int src=row->data[1]->to_int()-1;auto tm=row->data[0]->to_matrix3();auto& group=geometry[src];
+  if(group.faces.empty()){if(group.placeholder){markers[src].points.push_back(tm.GetTrans());markers[src].bandSlots.push_back(bandSlots[i]);++shown;}continue;}
   if(group.faces.size()>static_cast<std::size_t>(budget-faces))continue;
-  group.instances.push_back(tm);faces+=static_cast<int>(group.faces.size());++shown;
+  group.instances.push_back(tm);group.bandSlots.push_back(bandSlots[i]);faces+=static_cast<int>(group.faces.size());++shown;
  }
  auto out=std::make_unique<AminPointCache>();
  // Proxy shapes use the same immutable source geometry and instance transforms
@@ -46,7 +77,7 @@ Value* cyrusBuildGeometryPreview_cf(Value** args,int count){
  // GraphicsWindow fallback can still read these snapshots through the accessors.
  out->meshSnapshot=std::make_shared<cyrus::MeshSnapshot>(std::move(geometry));
  out->pointSnapshot=std::make_shared<cyrus::PointSnapshot>(std::move(markers));
- out->size=shown;out->faceCount=faces;out->geometryMode=mode;return out.release();
+ out->palette=palette;out->size=shown;out->faceCount=faces;out->geometryMode=mode;return out.release();
 }
 def_visible_primitive(cyrusPreviewFaces,"cyrusPreviewFaces");
 Value* cyrusPreviewFaces_cf(Value** args,int count){check_arg_count(cyrusPreviewFaces,1,count);type_check(args[0],AminPointCache,_T("cache"));return Integer::intern(static_cast<AminPointCache*>(args[0])->faceCount);}

@@ -7,7 +7,8 @@
     "updateNow": "Calculate enabled layers in order."
   },
   "previewUI": {
-    "identificationDrop": "Use model or layer identification colors in Points, Proxy and shaded Mesh previews."
+    "identificationDrop": "Use Model, Layer or published Band ownership in Points, Proxy and shaded Mesh. Non-Band layouts use neutral gray (Unbanded). Render materials are unchanged.",
+    "radiusMetricDrop": "Inspect the published radius pair. This display choice does not change any spacing rule. 3D uses three orthogonal rings."
   },
   "surface": {
     "removeSurfaces": "Remove highlighted assignments from this setup. Scene objects are kept.",
@@ -19,7 +20,6 @@
     "removeContainer": "Unlink the rectangle while keeping its scene node and registered model settings."
   },
   "manager": {
-    "editButton": "Optional floating view of the same layer settings. Select a layer to edit it below in Modify.",
     "addButton": "Add a layer and edit its controls below. Layers calculate from top to bottom.",
     "copyButton": "Copy this layer, its models, surfaces and Paint Areas.",
     "removeButton": "Remove this layer and its Paint Areas. Undo restores them.",
@@ -36,16 +36,6 @@
     "saveButton": "Choose a local JSON file, stop recording and save its retained pages. No MCP or upload is required.",
     "refreshButton": "Read recorder state without evaluating the scene. Status has no polling timer."
   },
-  "editor": {
-    "updateNow": "Recalculate every enabled layer in this setup, in order.",
-    "assetsTab": "Models and receiving surfaces for this layer.",
-    "populationTab": "Shared layer count, density, Area and retry limits.",
-    "paintTab": "Optional receiver-bound Paint Areas.",
-    "transformTab": "Layer random transforms and source assignment.",
-    "spacingTab": "Self, between-set and layer-pair rules, radii and cleanup.",
-    "statisticsTab": "Cached calculation results and workflow help.",
-    "refreshButton": "Read current settings and cached counts; does not rebuild placements."
-  },
   "setsUI": {
     "paintedCheck": "Restrict this layer to its painted areas. Turn off to scatter across all its surfaces.",
     "addButton": "Create a named area. Painting again edits the selected area.",
@@ -56,20 +46,22 @@
     "sourceName": "Label inside Scatter only. Clear it to use the scene object's name.",
     "idColor": "Viewport identification color. This does not change clustering or model frequency.",
     "selectFromScene": "Choose one or more source models by name.",
-    "addPlant": "Pick a scene model for this layer. The editor stays on its layer.",
+    "addPlant": "Pick a scene model for this layer.",
     "addSelected": "Add the currently selected scene objects to this layer.",
     "removePlant": "Unregister highlighted rows. To keep their settings, park models outside a source rectangle instead.",
     "selectPlant": "Select the highlighted source models in the scene.",
     "addPoint": "Add a named placeholder type. Scatter points now, then replace this row with a model.",
     "addEmpty": "Add a weighted empty source for intentional gaps in candidate-budget mode.",
-    "replacePoint": "Replace one highlighted Point row with a scene model.",
+    "replacePoint": "Use a scene model for the selected Point; keep its identity, settings and Band assignments.",
+    "makePoint": "Use the selected model row as a Point. Keep its settings and registration; do not delete the scene object.",
     "existingGroups": "Assign highlighted sources to an existing color group for clustering.",
     "groupColor": "Assign a color group to highlighted sources when the color is accepted.",
     "applyColor": "Assign the chosen color group to all highlighted source rows.",
     "weightSpin": "Relative model frequency in this layer. Zero disables the model.",
-    "sourceZSpin": "Offset instances of highlighted models along their placement normal.",
+    "sourceZSpin": "Offset instances of highlighted models along world Z.",
     "sourceScaleSpin": "Per-model scale multiplier. 1 keeps the model's original scale.",
     "radiusSourceSpin": "Collision footprint radius for highlighted source rows, in scene units.",
+    "radiusModeDrop": "Auto bounds supported model geometry around its pivot after final instance scale and orientation. This is conservative spacing, not mesh collision or Band containment.",
     "followRadiusCheck": "Scale this source's collision footprint with its instance scale.",
     "showRadiusCheck": "Show this source's radius in the viewport; does not change collision rules.",
     "forwardAxis": "The model's local forward direction, used for orientation.",
@@ -137,12 +129,30 @@
     "updateAnalyzer": "Analyze the linked guide. In Manual mode, use Update scatter afterwards to publish placements.",
     "sizeSpin": "Spatial size of source-color clusters.",
     "divSeedSpin": "Change source assignment randomness without changing the generation seed.",
+    "cornerMode": "Rounded uses Euclidean distance. Sharp uses bounded miter offsets; complex Paths may require simplification.",
+    "arrangementMode": "Consecutive accumulates widths. Independent permits overlapping Start/End ranges and uses a shared candidate population.",
     "pickAnalyzer": "Use Surface Analyzer output for bands, rows and fixed anchors.",
     "pickPath": "Pick a spline for Line Pattern assignment.",
     "removePath": "Remove the selected assignment path while keeping the scene spline.",
     "addOutside": "Add a source-assignment band outside the selected path.",
     "addInside": "Add a source-assignment band inside the selected path.",
     "removeStrokeButton": "Remove the selected band and its settings.",
+    "bandStart": "Independent range starts at this physical distance from its Path.",
+    "bandEnd": "Independent range must end after Start.",
+    "bandStrength": "Band contribution before other masks and spacing. Independent overlaps share one candidate population.",
+    "bandCurveCheck": "Use the saved sampled density curve from Start to End.",
+    "bandScaleMode": "Multiply the random Band size by the effective density curve shape or an independent Custom scale curve. Density % is not a size multiplier.",
+    "bandScaleEdit": "Size multiplier across this Band. 100% preserves size; zero collapses size without deleting the placement. Edit in Custom mode.",
+    "bandCurveEdit": "Edit this Band by its captured identity. Changes apply on drag release, Apply or Close.",
+    "bandColor": "Identification color belongs to this Band. It never changes placements or source materials.",
+    "fieldFalloffCheck": "Sample Band density on receiver surfaces before other masks, spacing and cleanup. This never changes plant counts.",
+    "fieldBoundaryCheck": "Show admitted start/end contours clipped to every receiver surface, including stacked and vertical receivers.",
+    "fieldView": "Selected Band shows its contribution. Combined shows capped total occupancy.",
+    "fieldSampleSpin": "Bounded visualization samples; sparse coverage can miss narrow intervals. Show Boundaries preserves admitted outlines.",
+    "bandUp": "Move the selected Band up on its Path. Consecutive priority and ranges follow authored order.",
+    "bandDown": "Move the selected Band down on its Path. Independent decisions keep stable Band identities.",
+    "strokeScaleMin": "Additional Band multiplier, combined once with source, layer and transform scale.",
+    "strokeScaleMax": "Additional Band multiplier; it does not change the source asset or its base Scale setting.",
     "refreshGroups": "Refresh available source color groups for assignment."
   },
   "proceduralUI": {
@@ -171,7 +181,6 @@
     "enabledCheck": "Collect models whose pivots are inside this rectangle. Off lets you position it without collecting or moving models. Manual mode needs Update.",
     "consumerList": "Choose a linked setup or layer. Inactive pools remain editable; this changes the view only.",
     "widthSpin": "Resize the boundary. Source models keep their transforms.",
-    "assignOwner": "Resolve overlapping movement ownership for the selected source. Its usage and settings in other sets are unchanged.",
-    "editLayer": "Open the optional layer editor for the current consumer."
+    "assignOwner": "Resolve overlapping movement ownership for the selected source. Its usage and settings in other sets are unchanged."
   }
 }

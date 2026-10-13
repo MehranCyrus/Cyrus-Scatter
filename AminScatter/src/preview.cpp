@@ -9,18 +9,31 @@
 #include <algorithm>
 #include <cstdint>
 #include <triobj.h>
+#include <SingleWeakRefMaker.h>
 #include <maxscript/maxwrapper/mxsobjects.h>
 #include <array>
 #include <cmath>
 #include <memory>
 #include <atomic>
 #include <new>
+#include <string>
 #include "point_preview.h"
 #include "preview_sampling.h"
+#include "placement_transport.h"
+#include "spline_overlay.h"
+#include "spline_field_value.h"
 #include <maxscript/macros/define_instantiation_functions.h>
 #undef ScripterExport
 #define ScripterExport __declspec(dllexport)
-#include "preview_batches.inc"
+#include "preview_palette.inc"
+#include "source_geometry.inc"
+namespace { std::atomic<std::uint64_t> fallbackCalls{0},fallbackPointVertices{0},fallbackFaces{0}; }
+struct FieldPreviewDetails {
+    std::shared_ptr<cyrus::PreviewMemory> memory;
+    cyrus::bands::OverlayStats stats;
+    std::vector<cyrus::bands::OverlaySample> samples;
+    std::size_t sampleCount=0,lineCount=0,reservedBytes=0;
+};
 
 // Immutable transient MAXScript value: ownership follows the controller's local
 // cache through GC. No global handles, stale node pointers or per-frame conversion.
@@ -28,59 +41,26 @@ visible_class_debug_ok(AminPointCache)
 class AminPointCache : public Value {
 public:
     using Group = cyrus::PointGroup;
-    std::vector<Group> groups;
     std::shared_ptr<const cyrus::PointSnapshot> pointSnapshot;
-    const std::vector<Group>& pointGroups() const { return pointSnapshot ? pointSnapshot->groups : groups; }
+    const std::vector<Group>& pointGroups() const { return pointSnapshot->groups; }
     using Geometry=cyrus::PreviewGeometry;
-    std::vector<Geometry> geometry;
     std::shared_ptr<const cyrus::MeshSnapshot> meshSnapshot;
-    const std::vector<Geometry>& geometryGroups() const { return meshSnapshot?meshSnapshot->groups:geometry; }
+    std::shared_ptr<const cyrus::PreviewPalette> palette;
+    std::shared_ptr<const FieldPreviewDetails> fieldDetails;
+    const std::vector<Geometry>& geometryGroups() const { static const std::vector<Geometry> empty;return meshSnapshot?meshSnapshot->groups:empty; }
     int faceCount=0;
     int size=0;
     int geometryMode=0;
-    // One allocation for triangles and one for source-preserving chunks. Their
-    // exact payload sizes are reserved before allocation and released with GC.
-    ProxyBatchReservation batchReservation;
-    std::unique_ptr<ProxyTriangle[]> batchTriangles;
-    std::unique_ptr<ProxyBatch[]> batches;
-    std::size_t batchCount=0;
     AminPointCache() { tag=class_tag(AminPointCache); }
     classof_methods(AminPointCache,Value);
     void collect() override { delete this; }
     void sprin1(CharStream* s) override { s->printf(_T("<AminPointCache:%d>"),size); }
     Value* deep_copy(HashTable*) override { return this; }
-    void prepareProxyBatches() {
-        if (geometryMode < 1 || geometryMode > 3 || faceCount == 0) return;
-        std::size_t chunks=0;
-        for (const auto& group:geometry) {
-            const auto count=group.faces.size()*group.instances.size();
-            chunks+=(count+proxyBatchFaceLimit-1)/proxyBatchFaceLimit;
-        }
-        const auto bytes=std::size_t(faceCount)*sizeof(ProxyTriangle)+chunks*sizeof(ProxyBatch);
-        if (!batchReservation.acquire(bytes)) return;
-        try {
-            auto triangles=std::make_unique<ProxyTriangle[]>(faceCount);
-            auto prepared=std::make_unique<ProxyBatch[]>(chunks);
-            std::size_t faceIndex=0,chunkIndex=0;
-            for (const auto& group:geometry) {
-                const auto first=faceIndex;
-                for (const auto& tm:group.instances) for (const auto& face:group.faces) {
-                    auto& out=triangles[faceIndex++];
-                    out.vertices={face[0]*tm,face[1]*tm,face[2]*tm};
-                    out.shade=proxyFaceShade(face,tm);
-                }
-                for (auto offset=first;offset<faceIndex;offset+=proxyBatchFaceLimit)
-                    prepared[chunkIndex++]={offset,std::min(proxyBatchFaceLimit,faceIndex-offset),group.color};
-            }
-            batchTriangles=std::move(triangles);batches=std::move(prepared);batchCount=chunks;
-        } catch (const std::bad_alloc&) {
-            // An optimization allocation failure must not hide a valid preview.
-            batchReservation.release();
-        }
-    }
+
 };
 visible_class_instance(AminPointCache,"AminPointCache");
 #include "geometry_preview.inc"
+#include "spline_overlay_bridge.inc"
 
 def_visible_primitive(aminScatterBuildPreview,"aminScatterBuildPreview");
 Value* aminScatterBuildPreview_cf(Value** args,int count) {
@@ -88,10 +68,24 @@ Value* aminScatterBuildPreview_cf(Value** args,int count) {
     for(int i=0;i<3;++i) type_check(args[i],Array,_T("preview inputs"));
     auto* data=static_cast<Array*>(args[0]);
     auto* sources=static_cast<Array*>(args[1]);
-    auto* colors=static_cast<Array*>(args[2]);
+    const auto palette=previewPalette(args[2],sources->size);
     const int budget=args[3]->to_int();
-    if(budget<1||budget>500000||sources->size!=colors->size)
+    if(budget<1||budget>500000)
         throw RuntimeError(_T("Invalid preview budget or source colors."));
+    if(data->size>1000000)throw RuntimeError(_T("Preview input exceeds 1,000,000 placements"));
+    std::size_t inputSamples=0;
+    for(int i=0;i<sources->size;++i) {
+        type_check(sources->data[i],Array,_T("source samples"));
+        const auto samples=static_cast<Array*>(sources->data[i])->size;
+        if(samples>10000||inputSamples+samples>1000000)throw RuntimeError(_T("Preview source samples exceed the bounded inspection allowance"));
+        inputSamples+=samples;
+    }
+    const auto perSource=sources->size?static_cast<Array*>(sources->data[0])->size:0;
+    const auto outputLimit=std::min<std::size_t>(budget,std::size_t(data->size)*perSource);
+    const auto stagingBytes=std::size_t(data->size)*(sizeof(Matrix3)+sizeof(int)+sizeof(std::uint8_t))+
+        inputSamples*sizeof(Point3)+outputLimit*2*(sizeof(Point3)+sizeof(std::uint8_t))+sources->size*256+4096;
+    if(stagingBytes>cyrus::pointPreviewOwnerLimit)throw RuntimeError(_T("Point preparation exceeds the 64 MiB allowance"));
+    auto staging=cyrus::reservePreviewMemory(cyrus::pointPreviewBudget,stagingBytes);
     std::vector<std::vector<Point3>> samples;
     std::vector<Point3> rgb;
     int pointsPerPlant=0;
@@ -102,15 +96,16 @@ Value* aminScatterBuildPreview_cf(Value** args,int count) {
         if(src->size!=pointsPerPlant) throw RuntimeError(_T("Inconsistent source sample count."));
         samples.emplace_back();samples.back().reserve(src->size);
         for(int j=0;j<src->size;++j) samples.back().push_back(src->data[j]->to_point3());
-        rgb.push_back(colors->data[i]->to_point3()/255.0f);
+        rgb.push_back(palette->sourceColors[i]);
     }
     // Validate and unpack before allocating the GC value; exceptions cannot leak it.
     std::vector<Matrix3> transforms;std::vector<int> indices;
+    std::vector<std::uint8_t> bandSlots;bandSlots.reserve(data->size);
     transforms.reserve(data->size);indices.reserve(data->size);
     for(int i=0;i<data->size;++i) {
         type_check(data->data[i],Array,_T("placement"));
         auto* row=static_cast<Array*>(data->data[i]);
-        if(row->size<2) throw RuntimeError(_T("Invalid placement."));
+        bandSlots.push_back(previewBandSlot(row,*palette));
         const int index=row->data[1]->to_int()-1;
         if(index<0||index>=sources->size) throw RuntimeError(_T("Invalid source index."));
         transforms.push_back(row->data[0]->to_matrix3());indices.push_back(index);
@@ -125,11 +120,28 @@ Value* aminScatterBuildPreview_cf(Value** args,int count) {
         const auto plant=static_cast<std::size_t>(flat/pointsPerPlant);
         const auto source=indices[plant];
         groups[source].points.push_back(samples[source][flat%pointsPerPlant]*transforms[plant]);
+        groups[source].bandSlots.push_back(bandSlots[plant]);
         ++size;
     }
     auto snapshot=std::make_shared<cyrus::PointSnapshot>(std::move(groups));
-    auto* result=new AminPointCache();result->pointSnapshot=std::move(snapshot);result->size=size;
+    auto* result=new AminPointCache();result->pointSnapshot=std::move(snapshot);result->palette=palette;result->size=size;
     return result;
+}
+
+def_visible_primitive(cyrusRecolorPreview,"cyrusRecolorPreview");
+Value* cyrusRecolorPreview_cf(Value** args,int count) {
+    check_arg_count(cyrusRecolorPreview,2,count);
+    type_check(args[0],AminPointCache,_T("preview cache"));
+    auto* cache=static_cast<AminPointCache*>(args[0]);
+    if(!cache->palette)throw RuntimeError(_T("This overlay has no identification palette"));
+    auto palette=previewPalette(args[1],cache->palette->sourceColors.size());
+    if(palette->bandIDs!=cache->palette->bandIDs||palette->requireBand!=cache->palette->requireBand)
+        throw RuntimeError(_T("Recolor must preserve the published Band dictionary"));
+    if(cyrus::samePalette(cache->palette,palette))return args[0];
+    auto result=std::make_unique<AminPointCache>();
+    result->pointSnapshot=cache->pointSnapshot;result->meshSnapshot=cache->meshSnapshot;result->palette=std::move(palette);
+    result->size=cache->size;result->faceCount=cache->faceCount;result->geometryMode=cache->geometryMode;
+    return result.release();
 }
 
 def_visible_primitive(aminScatterPreviewCount,"aminScatterPreviewCount");
@@ -141,14 +153,29 @@ Value* aminScatterPreviewCount_cf(Value** args,int count) {
 
 // Radius rings share the immutable retained-buffer path with points. Conversion
 // occurs when the display snapshot changes, never on the viewport draw thread.
-def_visible_primitive(cyrusBuildRadiusPreview,"cyrusBuildRadiusPreview");
-Value* cyrusBuildRadiusPreview_cf(Value** args,int count) {
-    check_arg_count(cyrusBuildRadiusPreview,1,count);
+def_visible_primitive(cyrusBuildInspectionPreview,"cyrusBuildInspectionPreview");
+Value* cyrusBuildInspectionPreview_cf(Value** args,int count) {
+    check_arg_count(cyrusBuildInspectionPreview,2,count);
     type_check(args[0],Array,_T("radius rings"));
     auto* rings=static_cast<Array*>(args[0]);
-    constexpr std::size_t vertexLimit=64*1024*1024/sizeof(Point3);
-    std::size_t vertices=0;
-    std::vector<AminPointCache::Group> groups;
+    AminPointCache* field=nullptr;
+    if(args[1]!=&undefined){type_check(args[1],AminPointCache,_T("field preview"));field=static_cast<AminPointCache*>(args[1]);
+        if(!field->fieldDetails||!field->pointSnapshot->lines)throw RuntimeError(_T("Inspection expects a field overlay cache"));}
+    if(rings->size==0&&field)return args[1];
+    constexpr std::size_t vertexLimit=cyrus::pointPreviewOwnerLimit/(2*(sizeof(Point3)+sizeof(std::uint8_t)));
+    std::size_t vertices=field?field->pointSnapshot->count:0;
+    if(vertices>vertexLimit)throw RuntimeError(_T("Field and radius display exceed the vertex allowance"));
+    if(rings->size>10000)throw RuntimeError(_T("Radius display exceeds 10,000 rings"));
+    for(int i=0;i<rings->size;++i) {
+        type_check(rings->data[i],Array,_T("radius ring"));auto* ring=static_cast<Array*>(rings->data[i]);
+        if(ring->size!=2)throw RuntimeError(_T("Invalid radius ring"));
+        type_check(ring->data[0],Array,_T("radius vertices"));auto* points=static_cast<Array*>(ring->data[0]);
+        if(points->size<3||std::size_t(points->size)>(vertexLimit-vertices)/2)throw RuntimeError(_T("Radius display exceeds its bounded vertex allowance"));
+        vertices+=std::size_t(points->size)*2;
+    }
+    auto staging=cyrus::reservePreviewMemory(cyrus::pointPreviewBudget,vertices*2*(sizeof(Point3)+sizeof(std::uint8_t))+rings->size*256+4096);
+    vertices=field?field->pointSnapshot->count:0;
+    std::vector<AminPointCache::Group> groups=field?field->pointGroups():std::vector<AminPointCache::Group>{};
     for(int i=0;i<rings->size;++i) {
         type_check(rings->data[i],Array,_T("radius ring"));
         auto* ring=static_cast<Array*>(rings->data[i]);
@@ -164,10 +191,12 @@ Value* cyrusBuildRadiusPreview_cf(Value** args,int count) {
         for(int j=0;j<points->size;++j) {
             group->points.push_back(points->data[j]->to_point3());
             group->points.push_back(points->data[(j+1)%points->size]->to_point3());
+            group->bandSlots.push_back(0);group->bandSlots.push_back(0);
         }
     }
     auto snapshot=std::make_shared<cyrus::PointSnapshot>(std::move(groups),true);
     auto* result=new AminPointCache();result->pointSnapshot=std::move(snapshot);result->size=rings->size;
+    if(field)result->fieldDetails=field->fieldDetails;
     return result;
 }
 
@@ -191,47 +220,51 @@ Value* aminScatterDrawPreview_cf(Value** args,int count) {
         preview.Ka=preview.Kd=Point3(1,1,1);preview.Ks=Point3(0,0,0);preview.selfIllum=1;preview.opacity=1;preview.dblSided=1;
         gw->setMaterial(preview);
         gw->setRndLimits((limits|GW_Z_BUFFER|GW_COLOR_VERTS)&~(GW_ILLUM|GW_WIREFRAME|GW_BACKCULL|GW_TEXTURE|GW_SHADE_CVERTS));
-        if(proxyBatchDrawing && cache->batchCount) {
-            // GraphicsWindow stays in identity/world space for the entire cache.
-            for(std::size_t i=0;i<cache->batchCount;++i) {
-                const auto& batch=cache->batches[i];
-                const auto baseColor=solid?color:batch.color;
-                gw->startTriangles();
-                for(std::size_t j=batch.first;j<batch.first+batch.count;++j) {
-                    auto& face=cache->batchTriangles[j];
-                    Point3 rgb=baseColor*face.shade,colors[3]={rgb,rgb,rgb};
-                    gw->triangle(face.vertices.data(),colors);
+        for(std::size_t source=0;source<cache->geometryGroups().size();++source) {
+            const auto& group=cache->geometryGroups()[source];
+            for(std::size_t i=0;i<group.instances.size();++i) {
+                const auto& tm=group.instances[i];
+                const auto base=solid?color:cyrus::previewColor(cache->palette.get(),source,group.bandSlots[i],group.color);
+                gw->setTransform(tm);gw->startTriangles();
+                for(const auto& face:group.faces) {
+                    const auto a=VectorTransform(tm,face[1]-face[0]),b=VectorTransform(tm,face[2]-face[0]);
+                    const float shade=.35f+.65f*std::abs(DotProd(Normalize(CrossProd(a,b)),Normalize(Point3(.3f,-.5f,.8f))));
+                    const auto rgb=base*shade;Point3 colors[3]={rgb,rgb,rgb};gw->triangle(const_cast<Point3*>(face.data()),colors);
                 }
                 gw->endTriangles();
             }
-        } else for(const auto& group:cache->geometryGroups())for(const auto& tm:group.instances){
-            gw->setTransform(tm);gw->startTriangles();
-            for(const auto& face:group.faces){
-                auto a=VectorTransform(tm,face[1]-face[0]),b=VectorTransform(tm,face[2]-face[0]);auto normal=Normalize(CrossProd(a,b));
-                float shade=.35f+.65f*std::abs(DotProd(normal,Normalize(Point3(.3f,-.5f,.8f))));
-                Point3 rgb=(solid?color:group.color)*shade;Point3 colors[3]={rgb,rgb,rgb};gw->triangle(const_cast<Point3*>(face.data()),colors);
-            }
-            gw->endTriangles();
         }
         gw->setTransform(Matrix3(1));
         gw->setMaterial(previous);
     }
-    for(const auto& group:cache->pointGroups()) {
+    for(std::size_t source=0;source<cache->pointGroups().size();++source) {
+        const auto& group=cache->pointGroups()[source];
         if(group.points.empty()) continue;
-        gw->setColor(LINE_COLOR,solid?color:group.color);
-        if(cache->pointSnapshot && cache->pointSnapshot->lines) {
+        if(cache->pointSnapshot->lines) {
             for(std::size_t i=0;i<group.points.size();i+=2) {
-                Point3 line[2]={group.points[i],group.points[i+1]};
-                gw->polyline(2,line,nullptr,nullptr,FALSE,nullptr);
+                gw->setColor(LINE_COLOR,solid?color:cyrus::previewColor(cache->palette.get(),source,group.bandSlots[i],group.color));
+                Point3 line[2]={group.points[i],group.points[i+1]};gw->polyline(2,line,nullptr,nullptr,FALSE,nullptr);
             }
-            continue;
+        } else {
+            gw->startMarkers();
+            for(std::size_t i=0;i<group.points.size();++i) {
+                gw->setColor(LINE_COLOR,solid?color:cyrus::previewColor(cache->palette.get(),source,group.bandSlots[i],group.color));
+                auto marker=group.points[i];gw->marker(&marker,POINT_MRKR);
+            }
+            gw->endMarkers();
         }
-        gw->startMarkers();
-        for(const auto& p:group.points) { auto marker=p;gw->marker(&marker,POINT_MRKR); }
-        gw->endMarkers();
     }
     gw->setRndLimits(limits);
+    ++fallbackCalls;fallbackPointVertices+=cache->pointSnapshot->count;fallbackFaces+=cache->faceCount;
     return &ok;
+}
+
+def_visible_primitive(cyrusPreviewFallbackStats,"cyrusPreviewFallbackStats");
+Value* cyrusPreviewFallbackStats_cf(Value**,int count) {
+    check_arg_count(cyrusPreviewFallbackStats,0,count);
+    one_typed_value_local(Array* result);vl.result=new Array(4);vl.result->append(Integer::intern(1));
+    for(auto value:{fallbackCalls.load(),fallbackPointVertices.load(),fallbackFaces.load()})vl.result->append(Integer64::intern(value));
+    return_value(vl.result);
 }
 
 // Diagnostic export only; normal viewport redraw never allocates MAXScript rows.
@@ -242,10 +275,14 @@ Value* aminScatterPreviewPoints_cf(Value** args,int count) {
     auto* cache=static_cast<AminPointCache*>(args[0]);
     two_typed_value_locals(Array* result,Array* row);
     vl.result=new Array(cache->size);
-    for(const auto& group:cache->pointGroups()) for(const auto& p:group.points) {
+    for(std::size_t source=0;source<cache->pointGroups().size();++source) {
+      const auto& group=cache->pointGroups()[source];
+      for(std::size_t i=0;i<group.points.size();++i) {
+        const auto p=group.points[i],color=cyrus::previewColor(cache->palette.get(),source,group.bandSlots[i],group.color);
         vl.row=new Array(2);vl.result->append(vl.row);
         vl.row->append(new Point3Value(p));
-        vl.row->append(new ColorValue(AColor(group.color.x,group.color.y,group.color.z)));
+        vl.row->append(new ColorValue(AColor(color.x,color.y,color.z)));
+      }
     }
     return_value(vl.result);
 }
@@ -266,7 +303,7 @@ std::vector<cyrus::PointLayer> retainedLayers(Value* cachesValue,Value* stylesVa
         if(cache->geometryMode<0 || cache->geometryMode>4 || !cache->pointSnapshot ||
            (cache->geometryMode!=0 && !cache->meshSnapshot) || style->size!=2)
             throw RuntimeError(_T("Retained drawing requires a point-cloud or geometry cache"));
-        layers.push_back({cache->pointSnapshot,style->data[0]->to_bool()!=FALSE,style->data[1]->to_point3()/255.f,cache->meshSnapshot});
+        layers.push_back({cache->pointSnapshot,style->data[0]->to_bool()!=FALSE,style->data[1]->to_point3()/255.f,cache->meshSnapshot,cache->palette});
     }
     return layers;
 }
@@ -283,40 +320,14 @@ Value* cyrusRetainedMatches_cf(Value** args,int count) {
     return cyrus::pointsMatch(args[0]->to_node(),retainedLayers(args[1],args[2])) ? &true_value : &false_value;
 }
 
-// Read-only cache accounting. Array: mode, old batches, prepared batches,
-// prepared faces, cache payload bytes, process bytes, cache/process byte caps.
-def_visible_primitive(cyrusPreviewDrawStats,"cyrusPreviewDrawStats");
-Value* cyrusPreviewDrawStats_cf(Value** args,int count) {
-    check_arg_count(cyrusPreviewDrawStats,1,count);
-    type_check(args[0],AminPointCache,_T("preview cache"));
-    auto* cache=static_cast<AminPointCache*>(args[0]);
-    std::size_t oldBatches=0;
-    for(const auto& group:cache->geometryGroups()) oldBatches+=group.instances.size();
-    one_typed_value_local(Array* result);vl.result=new Array(8);
-    for(auto n:{std::size_t(cache->geometryMode),oldBatches,cache->batchCount,
-        cache->batchCount?std::size_t(cache->faceCount):0,cache->batchReservation.bytes,
-        proxyReservedBytes.load(std::memory_order_relaxed),proxyCacheByteLimit,proxyProcessByteLimit})
-        vl.result->append(Integer64::intern(static_cast<INT64>(n)));
-    return_value(vl.result);
-}
-
-// A/B diagnosis only: optional Boolean changes drawing, never cache/output data.
-def_visible_primitive(cyrusPreviewBatchDrawing,"cyrusPreviewBatchDrawing");
-Value* cyrusPreviewBatchDrawing_cf(Value** args,int count) {
-    if(count>1) throw RuntimeError(_T("Expected zero or one batch-drawing Boolean"));
-    if(count==1) proxyBatchDrawing=args[0]->to_bool()!=FALSE;
-    return proxyBatchDrawing?&true_value:&false_value;
-}
-
 // Bounded diagnostic export for transform, shading and source-color parity.
 // Each row is #(vertex1, vertex2, vertex3, scalarShade, sourceColor01).
 def_visible_primitive(cyrusPreviewTriangles,"cyrusPreviewTriangles");
 Value* cyrusPreviewTriangles_cf(Value** args,int count) {
-    check_arg_count(cyrusPreviewTriangles,3,count);
+    check_arg_count(cyrusPreviewTriangles,2,count);
     type_check(args[0],AminPointCache,_T("preview cache"));
     auto* cache=static_cast<AminPointCache*>(args[0]);
-    const bool prepared=args[1]->to_bool()!=FALSE;
-    const int limit=args[2]->to_int();
+    const int limit=args[1]->to_int();
     if(limit<0 || limit>100000) throw RuntimeError(_T("Diagnostic triangle limit must be 0..100000"));
     two_typed_value_locals(Array* result,Array* row);
     vl.result=new Array(std::min(limit,cache->faceCount));
@@ -325,19 +336,14 @@ Value* cyrusPreviewTriangles_cf(Value** args,int count) {
         for(auto p:face) vl.row->append(new Point3Value(p));
         vl.row->append(Float::intern(shade));vl.row->append(new Point3Value(color));
     };
-    if(prepared) {
-        for(std::size_t i=0;i<cache->batchCount && vl.result->size<limit;++i) {
-            const auto& batch=cache->batches[i];
-            for(std::size_t j=batch.first;j<batch.first+batch.count && vl.result->size<limit;++j)
-                append(cache->batchTriangles[j].vertices,cache->batchTriangles[j].shade,batch.color);
-        }
-    } else {
-        for(const auto& group:cache->geometryGroups()) for(const auto& tm:group.instances) for(const auto& face:group.faces) {
+    for(std::size_t source=0;source<cache->geometryGroups().size();++source) {
+        const auto& group=cache->geometryGroups()[source];
+        for(std::size_t i=0;i<group.instances.size();++i)for(const auto& face:group.faces) {
             if(vl.result->size>=limit) goto complete;
-            // Re-evaluate the previous draw formula independently of preparation.
+            const auto& tm=group.instances[i];
             auto a=VectorTransform(tm,face[1]-face[0]),b=VectorTransform(tm,face[2]-face[0]);
             const auto shade=.35f+.65f*std::abs(DotProd(Normalize(CrossProd(a,b)),Normalize(Point3(.3f,-.5f,.8f))));
-            append({face[0]*tm,face[1]*tm,face[2]*tm},shade,group.color);
+            append({face[0]*tm,face[1]*tm,face[2]*tm},shade,cyrus::previewColor(cache->palette.get(),source,group.bandSlots[i],group.color));
         }
     }
 complete:

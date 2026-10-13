@@ -1,8 +1,10 @@
-# Cyrus Scatter 0.79.6 — current source workflow
+# Cyrus Scatter 0.81.1 — current source workflow
 
-0.79 adds the [offline team license](licensing/TEAM_PILOT_0.79_2026-10-11.md) while preserving schema 55. Open **License / activation** in Scatter Modify, save a request for Mehran, then import the returned license file. It expires 30 days after generation. Existing scenes remain loadable/renderable after expiry; creation/editing locks. See [activation and renewal instructions](../tools/licensing/README.md). The [0.79.1 refinement report](Point_Workflow_0.79.1_2026-10-11/README.md) qualifies the current Point, source-container and falloff controls.
+The [offline team license](licensing/TEAM_PILOT_0.79_2026-10-11.md) is independent of scene format. Open **License / activation** in Scatter Modify, save a request for Mehran, then import the returned license file. It expires 30 days after generation. Supported scenes remain loadable/renderable after expiry; creation/editing locks. See [activation and renewal instructions](../tools/licensing/README.md).
 
-Updated 12 October 2026. Current source adds [publication recovery and typed distances](Foundation_0.79.6_2026-10-12/README.md); the last packaged delivery remains 0.79.5. Use this guide for the current UI and ownership model. This guide explains behavior; the qualification evidence separately identifies what has been tested.
+Updated 13 October 2026. Current source adds spline Band ranges, density, identification and field previews, plus Auto Radius. The [implementation record](plans/spline-bands/PROGRESS.md) distinguishes completed tests from remaining acceptance. Current local Max 2026/2027 packages and their exact identities are listed in the [installation guide](plans/spline-bands/INSTALLATION.md).
+
+Panels show controls, counts and actionable status. Detailed explanations live in this guide, the website and control tooltips. For example, hover over Radius mode to see why Auto is unavailable for a selected source. Pending updates, Analyzer errors and brush status remain visible.
 
 ## Start with a layer
 
@@ -22,19 +24,21 @@ The Surfaces list belongs to the selected layer. Use + to pick a receiver, the l
 
 This does not freeze all accepted output. A cap can redistribute quotas; changed masks, spacing, cleanup or protected edits can affect acceptance. Relax can move plants when their own receiver's count or neighborhood changes. Editing the receiver's geometry/topology is outside the unchanged-surface guarantee.
 
-**0.79.6 reads schema 55 and saves schema 56.** The immediately preceding format migrates distance values to unit-aware storage. Older model-set/stroke formats remain rejected. Keep original scene files; use their saved system units when Paint or CS Edit is bound to receiver geometry. Unsupported conversion is rejected rather than clearing authored edits.
+**Create fresh schema-58 setups.** Earlier development formats are unsupported and are not migrated. Preserve original scene files. Current settings use unit-aware distances; use saved system units when Paint or CS Edit is bound to receiver geometry. Unsupported binding conversion is rejected rather than clearing authored edits.
 
 Models are source scene objects. Their Scatter label can differ from the scene object name; clearing the label uses the scene name again. The color square is a viewport identification color. Assignment groups use separate colors in their own disclosure; changing identification color does not change grouping.
 
 0.79.5 limits a local preview edit to the affected layers and reuses unchanged native display buffers. Changing one source identification color leaves other layers' prepared previews intact. It does not change plant positions or apply pending Manual population edits. Heavy changed layers and cold scene loading can still take time; see the [measured garden workflow](Terrace_Workflow_0.79.5_2026-10-11/README.md).
 
-Visible Source settings expose weight, scale, radius, vertical offset, Follow Scale and radius display. Weight controls relative selection frequency. Radius is a simplified collision footprint, not exact mesh collision. Follow Scale makes the footprint follow model scaling. Forward axis controls orientation conventions.
+Visible Source settings expose weight, scale, radius mode, vertical offset, Follow Scale and radius display. Weight controls relative selection frequency. **Manual** uses your saved radius and optional Follow Scale. **Auto** bounds supported model geometry around its pivot after final instance scale and orientation, computing both XY and 3D radii. It can be conservative for tall, asymmetric or off-center geometry. Follow Scale is disabled in Auto because final scaling is already included; returning to Manual restores its settings. Points, Empty rows and unqualified source types expose Manual only. Neither mode is exact mesh collision or whole-model containment inside a Band. Forward axis controls orientation conventions.
 
-**Models & Points** starts with Add Point and Add Model. Names, identification colors, weight, scale, collision radius, Follow Scale and orientation are visible in this section. Replace Point is enabled for one selected Point; Assignment groups has its own disclosure. Point and Empty rows are distinct placeholder source kinds. A Point row creates accepted placement markers without final rendered geometry; replacing it with a model turns that row into an ordinary model source. An Empty row is an intentional weighted gap in Candidate budget mode. Accepted target rejects positive-weight Empty rows rather than endlessly refilling gaps: use Candidate budget, Point placeholders, or zero/remove the Empty weight. Points are permitted in Accepted target, so accepted counts are not necessarily visible-model counts. These source rows are different from Analyzer sample points.
+**Models & Points** starts with Add Point and Add Model. Names, identification colors, weight, scale, collision radius, Follow Scale and orientation are visible in this section. **Pick object** is enabled for one selected Point; **Make point** is enabled for one selected model. Both keep the source row identity, labels, colors, weights, transforms and Band assignments. Make point retains the registered scene object reference to prevent automatic containers from registering a duplicate; the Point uses no model geometry, and the scene object is not deleted. Stored Auto settings are inactive for Points; Manual radius remains editable. Pick object can restore the same registered model or choose another unused model. Assignment groups has its own disclosure. Point and Empty rows are distinct placeholder source kinds. A Point row creates accepted placement markers without final rendered geometry; replacing it with a model turns that row into an ordinary model source. An Empty row is an intentional weighted gap in Candidate budget mode. Accepted target rejects positive-weight Empty rows rather than endlessly refilling gaps: use Candidate budget, Point placeholders, or zero/remove the Empty weight. Points are permitted in Accepted target, so accepted counts are not necessarily visible-model counts. These source rows are different from Analyzer sample points.
 
 For point-only Spline bands, add and name Point rows in Models & Points, then select them under Layout > Spline bands > Assign by **Models / Points**. Assignment groups remain available for choosing several source types together. Use **Plant centres** display for one marker per accepted point. No model or Paint Area is required; a receiver and closed spline still define the placement domain. Point placeholders do not produce final rendered geometry. Point names, identification colors and explicit band choices use saved row identities. Replacing a Point preserves its row; removing another row cannot redirect the choice. Copying a layer includes its band settings and explicit choices.
 
-**Source containers** is a separate collapsible section. Choose Manual models, Layer containers or Shared containers. Containers are optional palettes. Point and Empty rows stay active independently of rectangles; actual models are activated by their pivots. Collection is distinct from layout assignment groups. New rectangles start with **Enable collection** off: position and resize the rectangle first, then enable it in Source containers or in the rectangle’s Modify panel. Inactive rectangles do not scan the scene or carry models. Disabling collection parks existing source rows and preserves their settings; Manual waits for Update, while Live applies the change automatically. The switch is saved per rectangle and shared by its linked layers. Rectangles saved before this switch existed also open with collection off. Enabled rectangles collect eligible model pivots inside their footprint; they are not receiving surfaces. Parking a model outside a palette preserves its registered settings. Shared containers can serve multiple consumers with independent settings. The container editing view and optional layer window edit the same records as Modify.
+**Source containers** is a separate collapsible section. Choose Manual models, Layer containers or Shared containers. Containers are optional palettes. Point and Empty rows stay active independently of rectangles; actual models are activated by their pivots. Collection is distinct from layout assignment groups. New rectangles start with **Enable collection** off: position and resize the rectangle first, then enable it in Source containers or in the rectangle’s Modify panel. Inactive rectangles do not scan the scene or carry models. Disabling collection parks existing source rows and preserves their settings; Manual waits for Update, while Live applies the change automatically. The switch is saved per rectangle and shared by its linked layers. Rectangles saved before this switch existed also open with collection off. Enabled rectangles collect eligible model pivots inside their footprint; they are not receiving surfaces. Parking a model outside a palette preserves its registered settings. Shared containers can serve multiple consumers with independent settings. The selected-container Modify view edits the same records as the Scatter Modify panel. The floating layer editor and source-to-Band navigation button have been removed. Band membership labels and tooltips remain informational.
+
+In a Band, choose **Models used by this Band** directly below its width/range, before density and field settings. Advanced contains a **Scale** heading with **Min** and **Max** on the same row.
 
 ## Layout and Amount
 
@@ -44,10 +48,16 @@ Layout is directly after Models. It assigns models to candidate positions:
 | --- | --- | --- |
 | Random mix | Weighted model choices | The seed and all placement constraints still apply. |
 | Clusters | Patches of assignment groups | This changes model choice, not necessarily candidate positions. Group weight derives from member model weights. |
-| Spline bands | Consecutive inside/outside bands along closed guides | Uses world XY. Raising a guide in Z does not make the bands follow a curved surface. Earlier matching bands have priority. |
+| Spline bands | Consecutive or independently overlapping inside/outside Bands along closed Paths | Uses world XY. Receivers supply placement elevation. Consecutive gives earlier matching Bands priority; Independent combines eligible contributions. |
 | Surface Analyzer | Assign models to Analyzer border, path, point and edge channels | Consumes a separate Analyzer result. Select Analyzer and Update Analyzer are explicit actions. |
 
-For bands, add a guide, add an inside/outside band, set its width, choose source objects or assignment groups, select choices, and set its scale range. An empty choice list can produce no placements. These bands are not Brush strokes. Band Width stays in world units when you scale a spline: a 200 mm band remains 200 mm. Outside corners round naturally with distance from the border.
+For Bands, add a closed Path, add an inside/outside Band, and explicitly choose its **Models / Points** or **Assignment groups**. New Bands start unassigned. The list and **Models used by this Band** show membership; a source can belong to several Bands. Per-Band scale range is an additional multiplier under Advanced. These Bands are separate from Brush strokes.
+
+**Consecutive** accumulates widths separately on each Path and side. An unassigned or zero-weight Band still reserves its interval, leaving a gap; later Bands do not move inward to fill it. **Independent** exposes Start/End distances for each Band, allowing overlap. Switching to Independent initializes those ranges from the consecutive intervals; switching back requires a contiguous, representable proposal. Both conversions are undoable.
+
+**Density** and the optional density curve control contribution within a Band. Curve X runs from its Start boundary to its End boundary, including inward for Inside Bands. Independent contributions add up to a maximum occupancy of 100%, then choose an owner proportionally. For example, 100% Sphere plus 25% Box yields approximately 80% Sphere and 20% Box in the overlap, before other masks/spacing. Where only the Box contributes, occupancy is 25%. Use **Candidate budget** for Independent ranges or nontrivial Band density; Accepted target is rejected because refill would erase the fade.
+
+Distances remain world-space widths when the Path is scaled. **Rounded** uses distance to the original border segments. **Sharp** uses bounded miter offsets; acute corners have a miter limit, and overly narrow or complex requests may require simplification. The preview shows the admitted contours rather than promising unlimited corner precision.
 
 Amount offers fixed Count or area Density. The seed makes a given recipe reproducible. Sampling can use a texture mask. Candidate budget makes a bounded candidate request; restrictions can leave fewer accepted plants. Accepted target makes additional bounded attempts. A shortfall can be correct when spacing, boundaries or masks leave insufficient room. Increasing retry work cannot make an impossible arrangement fit.
 
@@ -85,11 +95,15 @@ Candidate Relax moves candidates within its bounded settings. Cleanup removes un
 
 ## Preview, updates, output and diagnostics
 
-Point Cloud, Proxy and Mesh serve different preview costs. Layer/model identification colors help identify planting in simplified previews. Display limits can show fewer instances or faces than the accepted population. A displayed count is not the full output count. Box, Sphere and Pyramid proxies now use the retained instanced geometry display path; CPU fallback remains available if retained drawing cannot be used. See the [courtyard fix measurements](Courtyard_Fixes_0.75_2026-10-10/README.md) for the tested workload and remaining limits.
+Point Cloud, Proxy and Mesh serve different preview costs. Layer/model/Band identification colors help identify planting in simplified previews. **Color by Bands** uses the accepted Band owner, including when one source belongs to several Bands. These identification colors do not replace source render materials. Display limits can show fewer instances or faces than the accepted population. A displayed count is not the full output count. Box, Sphere and Pyramid proxies use retained instanced geometry; CPU fallback remains available if retained drawing fails.
+
+Within Spline Bands, **Preview Falloff** shows bounded density samples on the receiving surfaces; blue is 0% and red is 100%. **Show Boundaries** independently draws white contour lines. **Field view** selects the highlighted Band's contribution or **Combined density**. The label reports sample/face counts: this is approximate coverage, not a fully shaded receiver or the final plant count. It describes the Band stage before other masks, spacing and cleanup. These samples and lines never become render output.
+
+In Manual mode, field feedback can follow edited or animated Paths/receivers while plants and collision radii stay at the last Update. The label then reads **Pending field; plants from last Update**. Toggling feedback or selecting another Band does not publish placements. An uncached Mesh/Point Cloud mode cannot consume changed source geometry alongside the old publication; it retains the previous display and requests Update.
 
 Manual stores edits until an explicit calculation action. **Update scatter**, **Refresh preview** and **Refresh areas / preview** update the whole Scatter setup and can publish pending Manual edits. **Read cached statistics**, **Read recording status** and **Refresh fields** only read the existing state. Passive browsing, area/layer selection and unrelated animation must not publish pending placements. Live responds to relevant input changes. Display-only settings can refresh presentation without changing placement generation. A failed successor retains the previous complete result and exposes an error.
 
-In 0.79.2, **Radii / layer**, **Show All Radii** and per-source **Show Radius** refresh only the preview. Their Undo/Redo also leaves pending Manual population/radius edits unapplied. Radius circles describe the published footprint until Update. Circles use cached native line buffers, so navigating does not redraw thousands of scripted polylines. See the [layer/navigation results](Layer_Navigation_0.79.2_2026-10-11/README.md) for measured limits.
+**Radii / layer**, **Show All Radii**, per-source **Show Radius** and the XY/3D display choice refresh only the preview. Their Undo/Redo leaves pending Manual population/radius edits unapplied. XY draws a circle; 3D draws three perpendicular circles using the published spatial radius. Radius and field lines share a bounded cached display bundle. The display metric does not change the independently chosen metric of a spacing rule.
 
 Automatic final render uses the render bridge; exact output and baking use source mappings and placement transforms. A successful preview does not certify every renderer/material/export path. Remove baked output removes owned baked nodes, not original sources.
 
@@ -101,4 +115,34 @@ If linked analysis is out of date, Scatter keeps its previous complete result an
 
 ## Final artist acceptance
 
-Use the [feature checklist](System_Qualification_0.75_2026-10-09/CHECKLIST.md) and [complete control register](System_Qualification_0.75_2026-10-09/CONTROL_REGISTER.md). Scripted host checks and native calculations are recorded separately from physical picking, brush gestures, curve handles, high DPI, docking, long sessions, heavy assets and final render inspection. This is a development build, not 1.0 certification.
+Use the [current validation matrix](plans/spline-bands/VALIDATION.md) and [implementation evidence](plans/spline-bands/PROGRESS.md). Scripted host checks, captured images and native calculations are recorded separately from physical picking, brush gestures, curve handles, high DPI, docking, long sessions, heavy assets and final render inspection. This is a development build, not 1.0 certification.
+
+
+### Band scale profiles
+
+Open **Layout > Advanced > Scale**. Min/Max remains the random Band size range.
+**Scale profile** selects **Off**, **Follow Density** or **Custom**; Custom enables
+**Edit scale curve**. X runs across the Band from Start to End, not along the Path.
+Y is a size percentage: 100% is unchanged, 50% halves size and 200% doubles it.
+The profile multiplies the existing random Band size, source scale and layer
+transforms once. Density and scale retain separate saved curves and Bezier handles.
+
+Follow Density uses the effective density curve shape, excluding the Density %
+strength. Disabling the density curve makes this scale mode flat 100%. Switching
+modes preserves the stored Custom graph. Zero scale collapses the instance without
+removing its candidate; use density to remove placements. Scale traces are bounded
+to 2–257 samples, at most 64 authored graph points and 0–10000% size.
+
+Scale-only changes retain base candidates and source/owner random channels.
+Size-dependent spacing, protected edits and cleanup can change accepted output.
+Auto Radius follows the final instance basis; Manual radius follows size only when
+Follow Scale is enabled. A drawn radius does not enable its spacing rule.
+Manual retains published plants and radii until Update scatter; Live schedules
+relevant changes. Opening an unchanged graph does not alter the recipe.
+
+Rounded Bands use the existing distance coordinate. Sharp Bands reuse density's
+prepared coordinate, so scale edits cannot perturb its density lottery. Away from
+reported boundary uncertainty, scale-profile error is bounded to 0.005 multiplier
+before the other scale factors. A curve too steep for that coordinate fails with a
+specific error and retains the previous complete result; simplify the curve or use
+Rounded corners. No unbounded geometry refinement is triggered by size editing.

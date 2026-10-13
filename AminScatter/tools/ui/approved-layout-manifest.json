@@ -1,6 +1,6 @@
 {
   "schema": "cyrus.ui-layout/1",
-  "version": "0.79.6",
+  "version": "0.81.0",
   "source": "approved single-file HTML study",
   "sections": [
     {
@@ -12,12 +12,6 @@
           "component": "flow_layersUI",
           "control": "layerList",
           "presentation": "flow_layersUI_layerList",
-          "advanced": false
-        },
-        {
-          "component": "flow_layersUI",
-          "control": "editButton",
-          "presentation": "flow_layersUI_editButton",
           "advanced": false
         },
         {
@@ -157,7 +151,7 @@
           "component": "flow_surfaceUI",
           "control": "containerInfo",
           "presentation": "flow_surfaceUI_containerInfo",
-          "advanced": true
+          "advanced": false
         }
       ]
     },
@@ -234,6 +228,12 @@
         },
         {
           "component": "sourceUI",
+          "control": "makePoint",
+          "presentation": "sourceUI_makePoint",
+          "advanced": false
+        },
+        {
+          "component": "sourceUI",
           "control": "groupHeading",
           "presentation": "sourceUI_groupHeading",
           "advanced": false
@@ -296,6 +296,18 @@
           "component": "sourceUI",
           "control": "radiusSourceSpin",
           "presentation": "sourceUI_radiusSourceSpin",
+          "advanced": false
+        },
+        {
+          "component": "sourceUI",
+          "control": "radiusModeDrop",
+          "presentation": "sourceUI_radiusModeDrop",
+          "advanced": false
+        },
+        {
+          "component": "sourceUI",
+          "control": "radiusModeHelp",
+          "presentation": "sourceUI_radiusModeHelp",
           "advanced": false
         },
         {
@@ -454,7 +466,7 @@
           "component": "diversityUI",
           "control": "fixedHint",
           "presentation": "diversityUI_fixedHint",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "diversityUI",
@@ -464,8 +476,20 @@
         },
         {
           "component": "diversityUI",
-          "control": "pathsDrop",
-          "presentation": "diversityUI_pathsDrop",
+          "control": "pathsList",
+          "presentation": "diversityUI_pathsList",
+          "advanced": false
+        },
+        {
+          "component": "diversityUI",
+          "control": "cornerMode",
+          "presentation": "diversityUI_cornerMode",
+          "advanced": false
+        },
+        {
+          "component": "diversityUI",
+          "control": "arrangementMode",
+          "presentation": "diversityUI_arrangementMode",
           "advanced": false
         },
         {
@@ -524,6 +548,108 @@
         },
         {
           "component": "diversityUI",
+          "control": "bandStart",
+          "presentation": "diversityUI_bandStart",
+          "advanced": false
+        },
+        {
+          "component": "diversityUI",
+          "control": "bandEnd",
+          "presentation": "diversityUI_bandEnd",
+          "advanced": false
+        },
+        {
+          "component": "diversityUI",
+          "control": "bandStrength",
+          "presentation": "diversityUI_bandStrength",
+          "advanced": false
+        },
+        {
+          "component": "diversityUI",
+          "control": "bandCurveCheck",
+          "presentation": "diversityUI_bandCurveCheck",
+          "advanced": false
+        },
+        {
+          "component": "diversityUI",
+          "control": "bandScaleMode",
+          "presentation": "diversityUI_bandScaleMode",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "bandScaleEdit",
+          "presentation": "diversityUI_bandScaleEdit",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "bandCurveEdit",
+          "presentation": "diversityUI_bandCurveEdit",
+          "advanced": false
+        },
+        {
+          "component": "diversityUI",
+          "control": "bandColor",
+          "presentation": "diversityUI_bandColor",
+          "advanced": false
+        },
+        {
+          "component": "diversityUI",
+          "control": "fieldFalloffCheck",
+          "presentation": "diversityUI_fieldFalloffCheck",
+          "advanced": false
+        },
+        {
+          "component": "diversityUI",
+          "control": "fieldBoundaryCheck",
+          "presentation": "diversityUI_fieldBoundaryCheck",
+          "advanced": false
+        },
+        {
+          "component": "diversityUI",
+          "control": "fieldView",
+          "presentation": "diversityUI_fieldView",
+          "advanced": false
+        },
+        {
+          "component": "diversityUI",
+          "control": "fieldSampleSpin",
+          "presentation": "diversityUI_fieldSampleSpin",
+          "advanced": false
+        },
+        {
+          "component": "diversityUI",
+          "control": "fieldLegend",
+          "presentation": "diversityUI_fieldLegend",
+          "advanced": false
+        },
+        {
+          "component": "diversityUI",
+          "control": "fieldInfo",
+          "presentation": "diversityUI_fieldInfo",
+          "advanced": false
+        },
+        {
+          "component": "diversityUI",
+          "control": "bandUp",
+          "presentation": "diversityUI_bandUp",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "bandDown",
+          "presentation": "diversityUI_bandDown",
+          "advanced": true
+        },
+        {
+          "component": "diversityUI",
+          "control": "bandAssignmentHelp",
+          "presentation": "diversityUI_bandAssignmentHelp",
+          "advanced": false
+        },
+        {
+          "component": "diversityUI",
           "control": "strokeMode",
           "presentation": "diversityUI_strokeMode",
           "advanced": false
@@ -538,13 +664,13 @@
           "component": "diversityUI",
           "control": "strokeScaleMin",
           "presentation": "diversityUI_strokeScaleMin",
-          "advanced": false
+          "advanced": true
         },
         {
           "component": "diversityUI",
           "control": "strokeScaleMax",
           "presentation": "diversityUI_strokeScaleMax",
-          "advanced": false
+          "advanced": true
         },
         {
           "component": "diversityUI",
@@ -580,7 +706,7 @@
           "component": "diversityUI",
           "control": "edgeRowHelp",
           "presentation": "diversityUI_edgeRowHelp",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "diversityUI",
@@ -604,7 +730,7 @@
           "component": "diversityUI",
           "control": "cornerHelp",
           "presentation": "diversityUI_cornerHelp",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "diversityUI",
@@ -646,7 +772,7 @@
           "component": "diversityUI",
           "control": "streetLayoutHelp",
           "presentation": "diversityUI_streetLayoutHelp",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "diversityUI",
@@ -725,13 +851,13 @@
           "component": "distributionUI",
           "control": "uvHint",
           "presentation": "distributionUI_uvHint",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "distributionUI",
           "control": "mapHint",
           "presentation": "distributionUI_mapHint",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "populationPolicyUI",
@@ -761,7 +887,7 @@
           "component": "populationPolicyUI",
           "control": "info",
           "presentation": "populationPolicyUI_info",
-          "advanced": true
+          "advanced": false
         }
       ]
     },
@@ -985,7 +1111,7 @@
           "component": "areaUI",
           "control": "projectionHint",
           "presentation": "areaUI_projectionHint",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "areaUI",
@@ -1051,7 +1177,7 @@
           "component": "areaUI",
           "control": "aaHelp",
           "presentation": "areaUI_aaHelp",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "areaUI",
@@ -1515,7 +1641,7 @@
           "component": "instanceRadiusUI",
           "control": "info",
           "presentation": "instanceRadiusUI_info",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "spacingUI",
@@ -1569,7 +1695,7 @@
           "component": "spacingUI",
           "control": "orderHint",
           "presentation": "spacingUI_orderHint",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "separationUI",
@@ -1605,7 +1731,7 @@
           "component": "separationUI",
           "control": "helpInfo",
           "presentation": "separationUI_helpInfo",
-          "advanced": true
+          "advanced": false
         }
       ]
     },
@@ -1682,6 +1808,12 @@
         },
         {
           "component": "flow_previewUI",
+          "control": "radiusMetricDrop",
+          "presentation": "flow_previewUI_radiusMetricDrop",
+          "advanced": true
+        },
+        {
+          "component": "flow_previewUI",
           "control": "radiusAllCheck",
           "presentation": "flow_previewUI_radiusAllCheck",
           "advanced": true
@@ -1690,7 +1822,7 @@
           "component": "flow_previewUI",
           "control": "radiusHint",
           "presentation": "flow_previewUI_radiusHint",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "flow_previewUI",
@@ -1751,13 +1883,13 @@
           "component": "workflowUI",
           "control": "steps",
           "presentation": "workflowUI_steps",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "workflowUI",
           "control": "help",
           "presentation": "workflowUI_help",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "diagnosticsUI",
@@ -1793,7 +1925,7 @@
           "component": "diagnosticsUI",
           "control": "scopeInfo",
           "presentation": "diagnosticsUI_scopeInfo",
-          "advanced": true
+          "advanced": false
         }
       ]
     }

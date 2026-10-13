@@ -1,6 +1,6 @@
 # Cyrus Scatter — selected landing and visual guide
 
-The one maintained public frontend for the artist plugin, its documentation and the separate future direction for MCP/learning. Curated guide content records **Scatter 0.79.5 development**, **Surface Analyzer 0.14** and **MCP package 0.73.0 / plan 0.73**. These identify the imported reference edition; the [root README](../README.md) owns the latest product build and host qualification. The maintained source import and verification now pass, with internal report/source records excluded from public output. This website is not a public-release certification or deployment.
+The one maintained public frontend for the artist plugin, its documentation and the separate future direction for MCP/learning. Curated guide content records **Scatter 0.81.1 development**, **Surface Analyzer 0.14** and **MCP package 0.73.0 / plan 0.73**. These identify the imported reference edition; the [root README](../README.md) owns the latest product build and host qualification. Local content includes the Band/falloff workflow, Auto Radius, first-click/hover fixes, panel-help cleanup and the subsequent single-panel/Point-conversion workflow and independent Band scale profiles. The maintained source import and verification pass, with internal report/source records excluded from public output. These source updates do not establish a rebuilt upload package, live deployment or public-release certification.
 
 ## Run locally
 
@@ -43,8 +43,8 @@ The catalog filters and visual lessons share one minimal dropdown component, wit
 - All 19 supplied feature posters, with current source-verified reading notes that visibly identify obsolete baked-in ownership labels.
 - Artist features, exact behavior boundaries and two actual Max studies with version/context captions.
 - Five complete maintained source documents, a fixed documentation sidebar, section links, printing and global search (`Ctrl+K` / `Command+K`).
-- **241 semantic catalog entries**, with exact source keys, readable source-verified labels, explanations, ownership, local/MCP context and implementation-evidence paths. These are not 241 distinct visible buttons or individually qualified features.
-- All **34 capability families** are discoverable through the finder, including retired composition, the default-off licensing foundation and experimental learning. They are not marketed as 34 available product features.
+- The complete current semantic catalog, with exact source keys, readable source-verified labels, explanations, ownership, local/MCP context and implementation-evidence paths. Entries do not each represent a distinct visible button or an individually qualified feature; current counts are in the [static verification receipt](verification/react-static-checks.json).
+- All **34 capability families** are discoverable through the finder, including retired and experimental records. They are not marketed as 34 available product features.
 - Explicit **Current**, **Experimental** and **Planned** distinctions, plus the five dependent roadmap stages from the maintained public summary.
 - Native-dialog search with Escape/focus restoration, keyboard result navigation, empty states, mobile navigation, reduced-motion support and meaningful unknown-route/source-loading/error states.
 
@@ -62,7 +62,7 @@ There is no backend, signup, payment, telemetry, live Max connection or assistan
 | `src/pages/` | Illustrated guide, six lessons, workflow, poster library, examples, local checklist, glossary, full references and roadmap. |
 | `src/styles.css`, `landing.css`, `docs-design.css`, `selected-refinements.css` | Local typography, preserved reference geometry, scoped shell styles, responsive states and print. |
 | `content/source-manifest.json` | Explicit five-document manifest, catalog and selected supporting-doc/source-provenance enrollment. |
-| `content/control-explanations.json` | Source-verified editorial metadata for all 241 exact semantic keys. |
+| `content/control-explanations.json` | Source-verified editorial metadata for every current exact semantic key. |
 | `content/gallery-reading-notes.json` | Current reading notes, source evidence and guide links for every supplied poster. |
 | `src/content/reference.json` | Deterministically generated current content and complete source fingerprints. |
 | `content/guide-chapters.json` | Curated customer-facing chapters rendered into HTML and search data. |
@@ -95,7 +95,6 @@ The public roadmap is curated against `docs/PRODUCT_AND_AI_ROADMAP.md`. Root/doc
 | `#/examples` / `#/checklist` / `#/glossary` | Practical studies, local artist review and vocabulary. |
 | `#/guide/artist-guide/vector-painting` | Exact chapter/section link. |
 | `#/controls?q=radius&feature=C14` | Search and capability filters. |
-| `#/controls?section=editor` | Exact source section filter for the optional layer window. |
 | `#/controls?id=control-layer-brushui-beginbutton` | Semantic-key destination, independent of catalog order. |
 | `#/roadmap` | Current/experimental/planned direction. |
 | `#/about` | Versions, source provenance and image credits. |
@@ -115,7 +114,7 @@ The current visual lessons, complete practical-example artwork, connected contro
 
 The current guide hero integration is recorded in [LAYER_STUDY_INTEGRATION.md](verification/LAYER_STUDY_INTEGRATION.md). Earlier selected-design screenshots precede this hero replacement.
 
-The selected-design implementation is recorded in [SELECTED_DESIGN_IMPLEMENTATION.md](verification/SELECTED_DESIGN_IMPLEMENTATION.md). Reproducible headless scripts are `tools/check_selected_routes.py` and `tools/check_selected_interactions.py`; CLI logs/screenshots are in the owned `build/website-react-implementation-20261011/` run. The current static check covers five curated chapters, 241 controls, 34 families, 53 changelog versions, 48 local source fingerprints, 19 poster assets/reading notes and 43 static navigation destinations. No raw Markdown or supporting-report snapshots are public.
+The selected-design implementation is recorded in [SELECTED_DESIGN_IMPLEMENTATION.md](verification/SELECTED_DESIGN_IMPLEMENTATION.md). Reproducible headless scripts are `tools/check_selected_routes.py` and `tools/check_selected_interactions.py`; CLI logs/screenshots are in the owned `build/website-react-implementation-20261011/` run. The current static check covers curated chapters, semantic controls, capability families, changelog versions, local source fingerprints, poster assets/reading notes and static navigation destinations. See the [current static verification receipt](verification/react-static-checks.json) for measured counts. No raw Markdown or supporting-report snapshots are public.
 
 The [independent selected-design review](verification/SELECTED_DESIGNS_REVIEW.md) records the production-browser checks, reference preservation and final screenshots.
 

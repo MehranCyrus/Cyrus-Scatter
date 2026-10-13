@@ -20,7 +20,7 @@ fn F75Proxy = (
   local owner=CyrusPointOwner n,before=cyrusRetainedStats owner,mesh=cyrusRetainedMeshStats owner,cache=a.cachedPoints
   F75Check (mesh[2]==3000 and mesh[1]==3000*#(12,168,6)[shape]) ("Proxy shape "+shape as string+": correct instanced faces and population")
   F75Check (before[12]==1 and CyrusPointLastError=="") "Proxy retained publication accepted"
-  F75Check ((cyrusPreviewDrawStats cache)[5]==0) "No expanded proxy triangle allocation"
+  F75Check (mesh[3]==#(12,168,6)[shape]) "One source geometry is shared by all proxy instances"
   local builds=a.previewBuildCount,base=viewport.getTM()
   for i=1 to 8 do (viewport.setTM ((rotateZMatrix (i as float))*base);completeRedraw())
   local after=cyrusRetainedStats owner

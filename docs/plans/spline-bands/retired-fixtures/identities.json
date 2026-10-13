@@ -1,0 +1,37 @@
+[
+  {
+    "archive_file": "CompareViewport.ms",
+    "sha256": "1f07150297bc92af311b75deda5b81d4a6e19681eb1b7c60bc6932c85351bcb0",
+    "original_path": "tools/performance/CompareViewport.ms"
+  },
+  {
+    "archive_file": "test_viewport_performance.py",
+    "sha256": "38757b7e3a3f6ab9d205b492c12903e3b7e02bbac8e29bf423226ab2c88341e4",
+    "original_path": "tools/test_viewport_performance.py"
+  },
+  {
+    "archive_file": "viewport_performance_smoke.ms",
+    "sha256": "94b1c75679455462fd892f25299c780105817bcca86bfd38c7a0d7edf54682b8",
+    "original_path": "tools/tests/viewport_performance_smoke.ms"
+  },
+  {
+    "archive_file": "units.py",
+    "sha256": "0fffd825c0de5bfc3a1b8a72f4d8500d9cbe6a3265d4e34a72809ecdbe5976ab",
+    "original_path": "tools/foundation_validation/units.py"
+  },
+  {
+    "archive_file": "units_guards.py",
+    "sha256": "6b6b85af346b50f70cf4b2345d1694b0b7e47a1277939b6b9bb494418007761e",
+    "original_path": "tools/foundation_validation/units_guards.py"
+  },
+  {
+    "archive_file": "capture_schema56.py",
+    "sha256": "ca31285873f593c4f053d73adc0fcb18b9fa61b501a6a688ffb683845296fb2c",
+    "original_path": "tools/spline_bands/capture_schema56.py"
+  },
+  {
+    "archive_file": "baseline_benchmark.cpp",
+    "sha256": "be1d442f2c3ad94718dda2211dc4c80e1e73c198c5ebacbe798715b85d02cce6",
+    "original_path": "tools/spline_bands/baseline_benchmark.cpp"
+  }
+]

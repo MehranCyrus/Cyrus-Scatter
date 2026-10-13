@@ -23,8 +23,11 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--year", type=int, choices=(2026, 2027))
     parser.add_argument("--project", choices=("scatter", "analyzer"), default="scatter")
+    parser.add_argument("--preview-fault-lab", action="store_true", help="NEVER SHIP: isolated Scatter SDK preview fault injection")
     parser.add_argument("--output", type=Path, help="Private build directory; defaults to the dated implementation lab")
     args = parser.parse_args()
+    if args.preview_fault_lab and (args.project!="scatter" or not args.year):
+        parser.error("Preview fault qualification requires a Scatter SDK build")
     spec = importlib.util.spec_from_file_location("build_max", ROOT / "tools/build_max.py")
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
@@ -36,6 +39,7 @@ def main():
     enable_flag = "AMIN_BUILD_MAX" if args.project == "scatter" else "CYRUS_ANALYZER_BUILD_MAX"
     (folder / "receipt.json").write_text(json.dumps({"status": "pending", "project": args.project, "max_year": args.year}) + "\n", encoding="utf-8")
     command = ["cmake", "-S", str(ROOT / project), "-B", str(folder), "-G", "NMake Makefiles", "-DCMAKE_BUILD_TYPE=Release"]
+    if args.preview_fault_lab: command += ["-DCYRUS_PREVIEW_TEST_FAULTS=ON"]
     if args.year:
         sdk = ROOT / f"build/tooling/max{args.year}-sdk/Program Files/Autodesk/3ds Max {args.year} SDK/maxsdk"
         command += [f"-D{enable_flag}=ON", f"-DCYRUS_MAX_YEAR={args.year}", f"-DMAXSDK_ROOT={sdk}"]
@@ -59,7 +63,7 @@ def main():
     if source_hashes(project) != sources:
         raise SystemExit("Build sources changed while building/testing; receipt stays pending. Rebuild the frozen source.")
     (folder / "receipt.json").write_text(json.dumps({"stages": results, "project": args.project, "max_year": args.year,
-        "host_launched": False, "installed": False,"binaries":binaries,"sources":sources,
+        "host_launched": False, "installed": False,"binaries":binaries,"sources":sources,"preview_fault_lab":args.preview_fault_lab,
         "qualification":"SDK compilation and native executables only; generated MAXScript is hashed, not compiled by Max."}, indent=2) + "\n", encoding="utf-8")
 
 

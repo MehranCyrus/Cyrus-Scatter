@@ -1,4 +1,4 @@
-struct EditInput { Matrix3 tm;int source;std::wstring id;bool protectedEdit=false; };
+struct EditInput { Matrix3 tm;int source;std::wstring id;bool protectedEdit=false;int face=0;Point3 bary{1,0,0};std::uint64_t owner=0; };
 static bool hasEditTransform(const Matrix3& m){
     const Matrix3 identity(1);
     for(int i=0;i<4;++i)if(m.GetRow(i)!=identity.GetRow(i))return true;
@@ -6,7 +6,7 @@ static bool hasEditTransform(const Matrix3& m){
 }
 static std::vector<EditInput> applyStable(CSEdit* m,int key,const std::vector<EditInput>& input,
     const std::wstring& signature) {
-    auto& l=m->layers[key];l.active=true;l.pending=false;
+    auto& l=m->layers[key];l.active=true;
     if(l.signature.empty())l.signature=signature;
     if(l.signature!=signature){
         // Only the receiver-aware format permits membership changes. Keep the
@@ -28,38 +28,40 @@ static std::vector<EditInput> applyStable(CSEdit* m,int key,const std::vector<Ed
         EditRow r;r.source=i;r.inputId=r.outputId=input[i].id;l.rows.push_back(std::move(r));
     }
     std::vector<EditInput> output;output.reserve(l.rows.size());
-    for(auto& r:l.rows)if(!r.deleted&&r.source<input.size())output.push_back({input[r.source].tm*r.delta,input[r.source].source,r.outputId,input[r.source].protectedEdit||r.inputId!=r.outputId||hasEditTransform(r.delta)});
+    for(auto& r:l.rows)if(!r.deleted&&r.source<input.size()){
+        auto next=input[r.source];next.tm=next.tm*r.delta;next.id=r.outputId;next.protectedEdit=next.protectedEdit||r.inputId!=r.outputId||hasEditTransform(r.delta);output.push_back(std::move(next));
+    }
     m->status();return output;
 }
-// Keyed rows use immutable candidate IDs and a base-population signature,
-// independent of current Brush membership. The generic two-column adapter is
-// retained for direct diagnostic calls, not as an older scene-model reader.
+// Candidate IDs and a base-population signature are independent of coverage.
 def_visible_primitive(cyrusEditStack,"cyrusEditStack");
 Value* cyrusEditStack_cf(Value** a,int count) {
-    if(count!=4&&count!=5&&count!=6)throw RuntimeError(_T("Expected 4, 5 or 6 CS Edit stack arguments"));
-    const bool keyed=count>=5&&a[4]->to_bool()!=FALSE;
-    const bool annotated=count==6&&a[5]->to_bool()!=FALSE;
+    check_arg_count(cyrusEditStack,4,count);
     type_check(a[0],Array,_T("modifiers"));type_check(a[1],Array,_T("rows"));
     auto* mods=static_cast<Array*>(a[0]);auto* rows=static_cast<Array*>(a[1]);
     const int key=a[2]->to_int();const std::wstring signature=a[3]->to_string();
     std::vector<EditInput> input;input.reserve(rows->size);
     for(int i=0;i<rows->size;++i) {
         type_check(rows->data[i],Array,_T("instance row"));auto* row=static_cast<Array*>(rows->data[i]);
-        if(row->size<2||(keyed&&row->size<3))throw RuntimeError(_T("Expected transform, source and candidate identity"));
-        const auto id=keyed?L"c:"+std::to_wstring(row->data[2]->to_int64()):L"b:"+std::to_wstring(i);
-        input.push_back({row->data[0]->to_matrix3(),row->data[1]->to_int(),id});
+        cyrus::rows::raw(row);
+        const auto id=L"c:"+std::to_wstring(row->data[2]->to_int64());
+        EditInput entry{row->data[0]->to_matrix3(),row->data[1]->to_int(),id};
+        entry.face=row->data[3]->to_int();entry.bary=row->data[4]->to_point3();entry.owner=cyrus::rows::owner(row);
+        input.push_back(std::move(entry));
     }
     for(int i=mods->size-1;i>=0;--i) {
         auto* m=edit(mods->data[i]);
-        // Capture the old topology before conversion remaps transient input indices.
-        auto it=m->layers.find(key);
         input=applyStable(m,key,input,signature);
-        if(annotated&&m->layers[key].invalid)throw RuntimeError(_T("CS Edit base changed. Restore the generation settings or explicitly Reset Edits before updating this planting setup."));
-        if(!annotated){m->layers[key].published=false;m->layers[key].publishedIDs.clear();}
+        if(m->layers[key].invalid)throw RuntimeError(_T("CS Edit base changed. Restore the generation settings or explicitly Reset Edits before updating this planting setup."));
     }
     two_typed_value_locals(Array* result,Array* row);
     vl.result=new Array(0);
-    for(auto& r:input){vl.row=new Array(2);vl.row->append(new Matrix3Value(r.tm));vl.row->append(Integer::intern(r.source));if(keyed)vl.row->append(new String(r.id.c_str()));if(annotated)vl.row->append(r.protectedEdit?&true_value:&false_value);vl.result->append(vl.row);}
+    for(auto& r:input){
+        vl.row=new Array(8);vl.result->append(vl.row);vl.row->append(new Matrix3Value(r.tm));vl.row->append(Integer::intern(r.source));
+        vl.row->append(new String(r.id.c_str()));
+        vl.row->append(Integer::intern(r.face));vl.row->append(new Point3Value(r.bary));vl.row->append(Integer64::intern(r.owner));
+        vl.row->append(r.protectedEdit?&true_value:&false_value);vl.row->append(Integer::intern(2));
+    }
     return_value(vl.result);
 }
 
@@ -69,7 +71,7 @@ Value* cyrusEditPublish_cf(Value** a,int count){
     check_arg_count(cyrusEditPublish,3,count);type_check(a[0],Array,_T("modifiers"));type_check(a[2],Array,_T("final rows"));
     auto* mods=static_cast<Array*>(a[0]);auto* rows=static_cast<Array*>(a[2]);const int key=a[1]->to_int();
     std::unordered_set<std::wstring> ids;
-    for(int i=0;i<rows->size;++i){type_check(rows->data[i],Array,_T("final row"));auto* row=static_cast<Array*>(rows->data[i]);if(row->size<3)throw RuntimeError(_T("Expected keyed final rows"));ids.insert(row->data[2]->to_string());}
+    for(int i=0;i<rows->size;++i){type_check(rows->data[i],Array,_T("final row"));auto* row=static_cast<Array*>(rows->data[i]);cyrus::rows::edited(row);ids.insert(row->data[2]->to_string());}
     for(int i=0;i<mods->size;++i){auto* m=edit(mods->data[i]);auto found=m->layers.find(key);if(found==m->layers.end())continue;auto& l=found->second;l.published=true;l.publishedIDs=ids;m->status();}
     return &ok;
 }

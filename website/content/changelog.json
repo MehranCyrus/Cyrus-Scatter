@@ -1,7 +1,99 @@
 {
-  "reviewed": "2026-10-12",
+  "reviewed": "2026-10-13",
   "notes": "Entries are ordered by documented development chronology, not numeric label. Missing versions and unknown dates are not invented. Local evidence is stripped before publication. 0.79.2 and 0.79.5 are current uncommitted working-tree campaigns at this review, not new Git releases. Analyzer/MCP have independent version domains.",
   "entries": [
+    {
+      "version": "0.81.1",
+      "date": "2026-10-13",
+      "title": "Independent Band scale curves.",
+      "era": "recent",
+      "legacy": false,
+      "note": "User-selected development patch label. Schema 58 requires fresh setups; prior scenes need their matching build. See local evidence for qualification limits.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Band scale profiles: Off, Follow Density and Custom, with an independent editable size curve and preserved random Min/Max variation."
+        },
+        {
+          "kind": "Changed",
+          "text": "Saved scale graphs retain Band ownership through reorder, copy and reopen. Manual keeps published plants and radii until Update."
+        }
+      ],
+      "evidence": [
+        "docs/ARTIST_GUIDE.md",
+        "docs/plans/spline-bands/PROGRESS.md"
+      ]
+    },
+    {
+      "version": "0.81.0",
+      "date": "2026-10-13",
+      "title": "One editing workflow. Reversible source types.",
+      "era": "recent",
+      "legacy": false,
+      "note": "Development source; automated checks are recorded in the implementation evidence. New installers, physical artist acceptance and publication remain pending.",
+      "changes": [
+        {
+          "kind": "Changed",
+          "text": "Removed the floating layer editor and Go to assigned Band navigation. Edit through the Scatter or source-container Modify panel."
+        },
+        {
+          "kind": "Added",
+          "text": "Compact Pick object and Make point actions preserve source row identity, settings and Band assignments. Points use Manual radius; supported model geometry can use Auto."
+        },
+        {
+          "kind": "Changed",
+          "text": "Band model assignments appear below width/range and before density. Advanced Scale has adjacent Min and Max fields."
+        }
+      ],
+      "evidence": [
+        "docs/ARTIST_GUIDE.md",
+        "docs/plans/spline-bands/PROGRESS.md"
+      ]
+    },
+    {
+      "version": "0.80.0",
+      "date": "2026-10-13",
+      "title": "Explicit Bands. Faithful field feedback.",
+      "era": "recent",
+      "legacy": false,
+      "note": "Local Max 2026/2027 development delivery with bounded validation. Heavy-scene performance, complete physical artist and renderer acceptance remain open.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Stable Path/Band controls, Independent ranges, density curves, Rounded/Sharp corners and accepted-owner identification colors."
+        },
+        {
+          "kind": "Added",
+          "text": "Selected/combined field previews, clipped boundaries and saved Auto Radius with independent XY/3D spacing metrics."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Empty Consecutive Bands reserve their intervals. Manual field feedback preserves published plants/radii and labels pending inputs."
+        },
+        {
+          "kind": "Changed",
+          "text": "Fresh current-schema setups only; old scene migration, placement readers and obsolete prototype paths are removed."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Models & Points hover no longer triggers a full panel layout. Layout mode switches avoid reflowing unrelated sections and rewriting unchanged controls."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Hidden Band list hosts no longer cover Clusters and Spline bands on first opening Layout."
+        },
+        {
+          "kind": "Changed",
+          "text": "Removed permanent help paragraphs from settings panels; controls, counts, pending states and errors remain visible. Detailed guidance remains in the website and tooltips."
+        }
+      ],
+      "evidence": [
+        "docs/ARTIST_GUIDE.md",
+        "docs/LAYOUT_AND_FALLOFF.md",
+        "docs/plans/spline-bands/PROGRESS.md",
+        "docs/plans/spline-bands/INSTALLATION.md"
+      ]
+    },
     {
       "version": "0.79.6",
       "date": "2026-10-12",
@@ -10,10 +102,18 @@
       "legacy": false,
       "note": "Source validation in Max 2026/2027; no new installer. Native Paint/Edit rescaling and physical release acceptance remain guarded or pending.",
       "changes": [
-        {"kind": "Fixed", "text": "Publication failures retain the previous complete result across native allocation and scripted installation checks."},
-        {"kind": "Fixed", "text": "Schema 56 stores distances in unit-aware fields and migrates the immediately preceding schema 55 while keeping multipliers dimensionless."}
+        {
+          "kind": "Fixed",
+          "text": "Publication failures retain the previous complete result across native allocation and scripted installation checks."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Schema 56 stores distances in unit-aware fields and migrates the immediately preceding schema 55 while keeping multipliers dimensionless."
+        }
       ],
-      "evidence": ["docs/Foundation_0.79.6_2026-10-12/README.md"]
+      "evidence": [
+        "docs/Foundation_0.79.6_2026-10-12/README.md"
+      ]
     },
     {
       "version": "0.79.5",
@@ -273,7 +373,7 @@
       "changes": [
         {
           "kind": "Improved",
-          "text": "Established Layer → Surfaces → Models → Amount → Update scatter, optional Painting, and direct Layout controls."
+          "text": "Established Layer â†’ Surfaces â†’ Models â†’ Amount â†’ Update scatter, optional Painting, and direct Layout controls."
         },
         {
           "kind": "Fixed",

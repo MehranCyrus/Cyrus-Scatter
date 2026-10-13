@@ -106,7 +106,7 @@ Use independent transformed mesh vertices as an enclosure oracle, with analytic 
 
 Save/reopen disposable scenes containing mixed Paths, modes, assignments, curves, colors, radii and instance overrides. Exercise copy/remove/Undo/Redo and the supported scene merge/rescale paths. Test physical equivalence in millimetres, centimetres and metres; changing display units alone must not change geometry. Include nonzero Z Offset and explicit world-radius overrides, since float storage behind a world-unit spinner is insufficient evidence.
 
-Verify schema/native payload agreement and new-default behavior. Upgrade a disposable current-schema-55 scene through the narrow field initialization in DESIGN, then save/reopen the new schema; assert preserved selections, order, scales, seeds, Manual radii and physical distances. Contrast new Bands' direct-empty default with upgraded Bands' existing assignment mode. Earlier retired schemas stay rejected. If current-55 conversion cannot preserve intended data, it is a failed gate, not permission to reset controls. Capture actual parameter values and identities, not only UI captions.
+Verify schema/native payload agreement and new-default behavior. Current-schema-57 save/reopen, merge, copy and Undo must preserve selections, order, IDs, scales, seeds, typed Manual radii, physical distances and animation controllers. New Bands default to direct-empty. Earlier development scenes are unsupported under the user's current-only requirement: test actionable rejection and preserve their original bytes. No migration handlers or older row formats remain in the product. Capture actual parameter values and identities, not only UI captions.
 
 ## F — Failure, cancellation and retention
 

@@ -13,6 +13,17 @@ void require(bool ok,const char* message){if(!ok)throw std::invalid_argument(mes
 void validate(const DistanceRule& r){
     require(std::isfinite(r.multiplier)&&r.multiplier>=0&&std::isfinite(r.gap)&&r.gap>=0,"Invalid procedural rule");
 }
+bool finite(amin::Vec3 v){return std::isfinite(v.x)&&std::isfinite(v.y)&&std::isfinite(v.z);}
+}
+Radii transformedBounds(amin::Vec3 minimum,amin::Vec3 maximum,const std::array<amin::Vec3,3>& basis) {
+    require(finite(minimum)&&finite(maximum)&&minimum.x<=maximum.x&&minimum.y<=maximum.y&&minimum.z<=maximum.z,"Invalid source bounds");
+    for(auto v:basis)require(finite(v),"Invalid Auto radius basis");Radii result;
+    for(double x:{minimum.x,maximum.x})for(double y:{minimum.y,maximum.y})for(double z:{minimum.z,maximum.z}) {
+        const auto p=basis[0]*x+basis[1]*y+basis[2]*z;
+        require(finite(p),"Auto radius transformed corner overflow");
+        result.xy=std::max(result.xy,std::hypot(p.x,p.y));result.spatial=std::max(result.spatial,std::hypot(p.x,p.y,p.z));
+    }
+    require(std::isfinite(result.xy)&&std::isfinite(result.spatial),"Auto radius overflow");return result;
 }
 double transformScaleBound(const std::array<amin::Vec3,3>& rows){
     for(const auto& row:rows)require(std::isfinite(row.x)&&std::isfinite(row.y)&&std::isfinite(row.z),"Non-finite radius transform");
@@ -38,7 +49,7 @@ Result evaluate(const Plan& plan){
             std::set<std::string> ids;std::set<std::uint64_t> ordinaryOrdinals;
             for(const auto& p:set.samples){
                 require(!p.id.empty()&&ids.insert(p.id).second,"Duplicate or empty instance identity");
-                require(std::isfinite(p.radius)&&p.radius>=0&&std::isfinite(p.position.x)&&std::isfinite(p.position.y)&&std::isfinite(p.position.z),"Non-finite or negative procedural sample");
+                require(std::isfinite(p.radii.xy)&&p.radii.xy>=0&&std::isfinite(p.radii.spatial)&&p.radii.spatial>=0&&finite(p.position),"Non-finite or negative procedural sample");
                 if(!p.protectedEdit)require(ordinaryOrdinals.insert(p.ordinal).second,"Duplicate ordinary candidate ordinal");
             }
             count+=set.samples.size();require(count<=plan.maxSamples,"Procedural candidate memory admission limit exceeded");
@@ -82,7 +93,7 @@ Result evaluate(const Plan& plan){
                 }
                 std::stable_sort(active.begin(),active.end(),[&](auto a,auto b){return set.samples[a].ordinal<set.samples[b].ordinal;});
                 std::vector<amin::Vec3> positions;std::vector<double> radii;std::vector<bool> pins;
-                for(auto i:active){const auto& p=set.samples[i];positions.push_back(p.position);radii.push_back(p.radius);pins.push_back(p.protectedEdit);}
+                for(auto i:active){const auto& p=set.samples[i];positions.push_back(p.position);radii.push_back(p.radii.forMetric(set.self.planar));pins.push_back(p.protectedEdit);}
                 std::vector<groups::ScopedRule> external;
                 // Diagnostic priority: layer, sibling, self. It never changes the
                 // winner or applies a scope twice to the same pair.
@@ -94,8 +105,9 @@ Result evaluate(const Plan& plan){
                         const auto& other=plan.layers[ol].sets[os];
                         groups::ScopedRule rule;rule.multiplier=distance.multiplier;
                         rule.reason=ol==l?Reason::SetSpacing:Reason::LayerSpacing;
-                        rule.values.gap=distance.gap;rule.values.planar=distance.planar;rule.values.ownRadii=radii;
-                        const auto append=[&](std::size_t i){rule.values.blockers.push_back(other.samples[i].position);rule.values.blockerRadii.push_back(other.samples[i].radius);};
+                        rule.values.gap=distance.gap;rule.values.planar=distance.planar;
+                        for(auto i:active)rule.values.ownRadii.push_back(set.samples[i].radii.forMetric(distance.planar));
+                        const auto append=[&](std::size_t i){rule.values.blockers.push_back(other.samples[i].position);rule.values.blockerRadii.push_back(other.samples[i].radii.forMetric(distance.planar));};
                         if(ol<l||(ol==l&&os<s))for(auto i:output.layers[ol].sets[os].kept)append(i);
                         else for(std::size_t i=0;i<other.samples.size();++i)if(other.samples[i].protectedEdit)append(i);
                         if(!rule.values.blockers.empty())external.push_back(std::move(rule));

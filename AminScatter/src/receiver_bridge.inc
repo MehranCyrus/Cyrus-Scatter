@@ -33,9 +33,9 @@ def_visible_primitive(cyrusReceiverOffsetRows,"cyrusReceiverOffsetRows");
 Value* cyrusReceiverOffsetRows_cf(Value** a,int n){
     check_arg_count(cyrusReceiverOffsetRows,2,n);auto* rows=groupArray(a[0]);const int offset=a[1]->to_int();if(offset<0)throw RuntimeError(_T("Invalid receiver face offset"));
     two_typed_value_locals(Array* result,Array* row);vl.result=new Array(rows->size);
-    for(int i=0;i<rows->size;++i){auto* r=groupArray(rows->data[i]);if(r->size!=5)throw RuntimeError(_T("Receiver rows require local anchors"));
+    for(int i=0;i<rows->size;++i){auto* r=groupArray(rows->data[i]);cyrus::rows::raw(r);
         const auto face=std::int64_t(r->data[3]->to_int())+offset;if(face<1||face>INT_MAX)throw RuntimeError(_T("Receiver face offset overflow"));
-        vl.row=new Array(5);vl.result->append(vl.row);for(int k=0;k<5;++k)vl.row->append(k==3?Integer::intern(int(face)):r->data[k]);}
+        vl.row=new Array(r->size);vl.result->append(vl.row);for(int k=0;k<r->size;++k)vl.row->append(k==3?Integer::intern(int(face)):r->data[k]);}
     return_value(vl.result);
 }
 def_visible_primitive(cyrusReceiverMergeBinding,"cyrusReceiverMergeBinding");

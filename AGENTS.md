@@ -34,6 +34,8 @@ Use owned disposable profiles/scenes for tests. Preserve `Test Scene/`, artist p
 
 Keep current navigation and artist docs aligned with proven changes; preserve historical receipts. Do not restore retired unpublished compatibility or add abstraction/GPU work without a demonstrated need. Keep internal registration identities intact. Reserve 1.0 for publication readiness.
 
+Before choosing or changing a version, follow [the version policy](docs/Release_Versioning.md#choosing-the-next-version). Assess the full delivery's user-visible impact and contract changes, record the reason, and keep independently versioned products separate. Distinguish updated website sources from built or published content.
+
 Commit, push, package, install and deploy only within the user's authorized scope. Report what changed, exact evidence, limitations and next acceptance criteria. Git excludes ignored scenes, binaries and installers.
 
 ## Local knowledge tools

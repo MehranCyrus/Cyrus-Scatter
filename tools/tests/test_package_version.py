@@ -28,3 +28,15 @@ def test_mismatched_native_metadata_cannot_be_packaged(tmp_path,monkeypatch):
     monkeypatch.setattr(builder,'ROOT',tmp_path)
     with pytest.raises(ValueError,match='metadata differs'):
         builder.scatter_version()
+
+
+@pytest.mark.parametrize('encoding',['ascii','utf-16le'])
+def test_preview_fault_build_cannot_enter_a_package(encoding):
+    with pytest.raises(RuntimeError,match='Refusing development'):
+        builder.reject_development_binary('AminScatter.dlx',b'prefix'+'cyrusOwnedPreviewFault'.encode(encoding))
+
+
+def test_owned_preview_exception_does_not_allow_licensing_lab_authority():
+    builder.reject_development_binary('AminScatter.dlx',b'cyrusOwnedPreviewFault',allow_owned_preview=True)
+    with pytest.raises(RuntimeError):
+        builder.reject_development_binary('AminScatter.dlx',b'cyrusOwnedPreviewFault cyrusOwnedLabClock',allow_owned_preview=True)

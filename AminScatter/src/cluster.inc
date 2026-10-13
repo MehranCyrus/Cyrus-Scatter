@@ -7,7 +7,7 @@ struct ClusterField { std::size_t first{}, second{}; double edgeChance{}; };
 template<bool fieldOnly,bool uniformGroups>
 auto clusterQuery(Vec3 p,const Settings& s,std::size_t groups,
                   const std::vector<double>& groupCDF,Random* rng) {
-    p=p*(1.0/(s.distribution==1?s.clusterRadius:s.clusterSize));
+    p=p*(1.0/s.clusterSize);
     if(!finite(p)||std::abs(p.x)>1e8||std::abs(p.y)>1e8||std::abs(p.z)>1e8)
         throw std::invalid_argument("Cluster size too small for world coordinates");
     const Vec3 q=p*2;

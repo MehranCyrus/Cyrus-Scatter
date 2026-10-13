@@ -20,7 +20,7 @@ int main(){try{
  }
  s.sourceCount=3;s.sourceGroups={1,1,2};s.sourceWeights={.2,.5,.3};auto p=scatter(plane,s);std::size_t counts[3]{};
  for(auto v:p)++counts[v.source];for(int i=0;i<3;++i)check(std::abs(static_cast<double>(counts[i])/p.size()-s.sourceWeights[i])<.03,"Group/member weights incorrect");
- s.linePattern=true;LineBand band;band.kind=3;band.width=1000;band.boundary.loops={{{0,500,0},{1000,500,0}}};band.sources={0,2};s.lineBands={band};
+ s.analyzerPattern=true;AnalyzerBand band;band.kind=3;band.width=1000;band.boundary.loops={{{0,500,0},{1000,500,0}}};band.sources={0,2};s.analyzerBands={band};
  p=scatter(plane,s);std::size_t first=0;for(auto v:p){check(v.source!=1,"Stroke source restriction lost");first+=v.source==0;}check(std::abs(static_cast<double>(first)/p.size()-.4)<.02,"Stroke weights incorrect");
  s.sourceWeights={1,-.1,0};bool failed=false;try{scatter(plane,s);}catch(const std::invalid_argument&){failed=true;}check(failed,"Negative weight accepted");
  std::cout<<"PASS weights, groups, zero, strokes, fixed positions and transforms\n";return 0;

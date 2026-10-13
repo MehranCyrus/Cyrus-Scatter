@@ -1,9 +1,9 @@
 {
   "schema": "cyrus.feature-catalog/1.0",
   "authority": "Help only. Tool dispatch, closed schema and local approval determine authority.",
-  "capability_source_sha256": "4c92673dea068d3ab5f8aa6aede973132e1de5c4ce3c4cf9bfcd71e99c56c393",
-  "control_inventory_sha256": "58af363ea119d49b3a61fc48c4255d32144cc3d1745fd9cb9c70aa03846a6c68",
-  "development_version": "0.79.6",
+  "capability_source_sha256": "9314c39f5c766928909144735d5f3d0a6750da6040cd1f9dced0566fe024fcce",
+  "control_inventory_sha256": "f8c4b2d9f875e3ece4a83880b860991deab13269e96397819ccdf4f3459ff804",
+  "development_version": "0.81.1",
   "mcp_version": "0.73.0",
   "calculation_model": "CyrusUnified1",
   "features": [
@@ -59,9 +59,9 @@
     {
       "feature_id": "C08",
       "title": "Source transforms/radii / model row",
-      "native": "Scale, lift, forward axis and radius/follow-scale are saved independently per model row; layer metadata remains independent",
-      "mcp": "Plan 0.73 typed source metadata; read current assets",
-      "qualification_or_extension": "Complete recipe parity and explanations of effective scaled radius"
+      "native": "Saved Manual radius/Follow Scale and optional Auto bounds for supported geometry; final-basis XY/3D pairs, source scale/lift and forward axis",
+      "mcp": "Plan 0.73 typed Manual source metadata; no new Auto-mode mutation",
+      "qualification_or_extension": "Auto is conservative pivot-centered spacing, not mesh collision. Unqualified source families remain Manual; full remote parity is separate"
     },
     {
       "feature_id": "C09",
@@ -129,9 +129,9 @@
     {
       "feature_id": "C18",
       "title": "Layout bands / layer",
-      "native": "Main Layout exposes Spline bands and Surface Analyzer channels; world-XY bands, first-match priority, stable model/Point and assignment-group choices and explicit Analyzer update",
-      "mcp": "No assignment mutation",
-      "qualification_or_extension": "Artist coverage of all Analyzer channels, corners, multi-set scale and curved combinations"
+      "native": "Stable Paths/Bands, empty interval reservation, Consecutive/Independent ranges, Rounded/Sharp joins, density curves and explicit model/Point/group membership; separate Analyzer channels",
+      "mcp": "No Band/range/density/assignment mutation",
+      "qualification_or_extension": "Bounded geometry/host oracles pass; remaining physical, workload and renderer gates are tracked in the current implementation record"
     },
     {
       "feature_id": "C19",
@@ -171,21 +171,21 @@
     {
       "feature_id": "C24",
       "title": "Manual/Live / controller",
-      "native": "Manual retains previous complete publication; Live reacts to relevant edits; idle timers stop",
+      "native": "Manual retains published plants/radii; enabled field feedback can follow current inputs with a pending label. Live reacts to relevant edits/animation; idle timers stop",
       "mcp": "Plan 0.73 display/update subset; reads do not Update",
-      "qualification_or_extension": "Broader pending/current freshness scenarios and long artist sessions"
+      "qualification_or_extension": "Broader long-session and physical acceptance remain separate from bounded Manual/Live host checks"
     },
     {
       "feature_id": "C25",
       "title": "Preview / setup/layer",
-      "native": "Retained Point Cloud/Mesh unchanged; Proxy/centres and budgets remain; unchanged buffers reused",
-      "mcp": "Typed display subset, cached metrics and shared viewport capture",
-      "qualification_or_extension": "100k mixed-plant ETW playback and resource samples now exist; Proxy shapes now use retained instanced geometry; cold realization still needs further work. Mesh triangle admission displays a bounded subset; this is not full-population Mesh timing"
+      "native": "Retained Point Cloud/Proxy/Mesh/centres, owner-based Band colors and one field/radius inspection bundle per population; unchanged main/sibling buffers reused",
+      "mcp": "Existing typed display subset, cached metrics and viewport capture; new Band/field controls remain local",
+      "qualification_or_extension": "Current image/fallback and allocation witnesses are scoped evidence. Cold realization, representative costs, device loss and physical presentation remain separate gates"
     },
     {
       "feature_id": "C26",
       "title": "UI / editor",
-      "native": "Twelve main sections, optional popup and linked container view; direct Layer controls, paired XYZ fields, list grips and separate radio captions",
+      "native": "Twelve main sections and linked container Modify view; direct Layer controls, paired XYZ fields, list grips and separate radio captions",
       "mcp": "Catalog/workflow help; no remote UI invocation",
       "qualification_or_extension": "Current scripted bounds/bindings and handler evidence in system audit; historical pointer results do not certify current DPI, docking, tablet or every control"
     },
@@ -213,9 +213,9 @@
     {
       "feature_id": "C30",
       "title": "Save/load/Undo / scene",
-      "native": "Schema 55 with vector payload; stable Edit data, layer surfaces, areas, container UUIDs and source metadata",
+      "native": "Current schema 58 with vector payload, stable Edit/Path/Band/source identities, typed distances and saved display controls; no earlier-scene migration",
       "mcp": "Scoped own-top-Undo/journal recovery; no arbitrary scene save",
-      "qualification_or_extension": "Older development schemas/payloads rejected; bounded scripted Max 2026/2027 save/reopen and callback checks exist in 0.78.3. Physical input, DPI and long-session qualification remain open; MCP authoring in Max 2026 is separate"
+      "qualification_or_extension": "Current native Undo, save/reopen/copy/merge and retired-format rejection pass in Max 2026/2027. Physical input, DPI, native binding rescale and long-session qualification remain separate"
     },
     {
       "feature_id": "C31",
@@ -257,7 +257,7 @@
       ],
       "owner_context": "Controller",
       "help": "Enable calculation and output for this entire Scatter setup.",
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -270,7 +270,7 @@
       ],
       "owner_context": "Controller / local view",
       "help": "Import a team license or inspect its expiry. Existing scenes remain available after expiry.",
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -283,7 +283,7 @@
       ],
       "owner_context": "Controller",
       "help": null,
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -296,7 +296,7 @@
       ],
       "owner_context": "Controller",
       "help": "Calculate enabled layers in order.",
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -311,7 +311,7 @@
       ],
       "owner_context": "Setup display/output",
       "help": null,
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -326,7 +326,7 @@
       ],
       "owner_context": "Setup display/output",
       "help": null,
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -341,7 +341,7 @@
       ],
       "owner_context": "Setup display/output",
       "help": null,
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -356,7 +356,7 @@
       ],
       "owner_context": "Setup display/output",
       "help": null,
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -371,7 +371,7 @@
       ],
       "owner_context": "Setup display/output",
       "help": null,
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -385,8 +385,8 @@
         "C29"
       ],
       "owner_context": "Controller / local view",
-      "help": "Use model or layer identification colors in Points, Proxy and shaded Mesh previews.",
-      "view": "Local setup/editor controls",
+      "help": "Use Model, Layer or published Band ownership in Points, Proxy and shaded Mesh. Non-Band layouts use neutral gray (Unbanded). Render materials are unchanged.",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -401,7 +401,7 @@
       ],
       "owner_context": "Setup display/output",
       "help": null,
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -416,7 +416,7 @@
       ],
       "owner_context": "Setup display/output",
       "help": null,
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -431,7 +431,7 @@
       ],
       "owner_context": "Setup display/output",
       "help": null,
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -446,7 +446,7 @@
       ],
       "owner_context": "Setup display/output",
       "help": null,
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -461,7 +461,22 @@
       ],
       "owner_context": "Setup display/output",
       "help": null,
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
+      "kind": "dropdownlist",
+      "name": "radiusMetricDrop",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Controller / local view",
+      "help": "Inspect the published radius pair. This display choice does not change any spacing rule. 3D uses three orthogonal rings.",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -476,7 +491,7 @@
       ],
       "owner_context": "Setup display/output",
       "help": null,
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -491,7 +506,7 @@
       ],
       "owner_context": "Setup display/output",
       "help": null,
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -506,7 +521,7 @@
       ],
       "owner_context": "Setup display/output",
       "help": null,
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -521,7 +536,7 @@
       ],
       "owner_context": "Setup display/output",
       "help": null,
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -536,7 +551,7 @@
       ],
       "owner_context": "Setup display/output",
       "help": null,
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -550,7 +565,7 @@
       ],
       "owner_context": "Selected layer receiving surfaces",
       "help": null,
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -564,7 +579,7 @@
       ],
       "owner_context": "Selected layer receiving surfaces",
       "help": "Remove highlighted assignments from this setup. Scene objects are kept.",
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -578,7 +593,7 @@
       ],
       "owner_context": "Selected layer receiving surfaces",
       "help": "Add a receiving surface without replacing existing assignments.",
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -592,7 +607,7 @@
       ],
       "owner_context": "Selected layer receiving surfaces",
       "help": "Add multiple receiving surfaces by name. Existing assignments are kept. Choose the target for each Paint Area under Painting.",
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -606,7 +621,7 @@
       ],
       "owner_context": "Controller/global pool",
       "help": "Optional shared source pool. Enable Global containers in a layer's Assets tab.",
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -620,7 +635,7 @@
       ],
       "owner_context": "Controller/global pool",
       "help": null,
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -634,7 +649,7 @@
       ],
       "owner_context": "Controller/global pool",
       "help": "Create a source rectangle shared by owners that explicitly use the global pool.",
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -648,7 +663,7 @@
       ],
       "owner_context": "Controller/global pool",
       "help": "Link an existing Cyrus Source Container to the global pool.",
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -662,7 +677,7 @@
       ],
       "owner_context": "Controller/global pool",
       "help": "Unlink the rectangle while keeping its scene node and registered model settings.",
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -675,20 +690,7 @@
       ],
       "owner_context": "Controller/layer",
       "help": null,
-      "view": "Local setup/editor controls",
-      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
-    },
-    {
-      "group": "general",
-      "section": "manager",
-      "kind": "button",
-      "name": "editButton",
-      "capabilities": [
-        "C03"
-      ],
-      "owner_context": "Controller/layer",
-      "help": "Optional floating view of the same layer settings. Select a layer to edit it below in Modify.",
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -701,7 +703,7 @@
       ],
       "owner_context": "Controller/layer",
       "help": "Add a layer and edit its controls below. Layers calculate from top to bottom.",
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -714,7 +716,7 @@
       ],
       "owner_context": "Controller/layer",
       "help": "Copy this layer, its models, surfaces and Paint Areas.",
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -727,7 +729,7 @@
       ],
       "owner_context": "Controller/layer",
       "help": "Remove this layer and its Paint Areas. Undo restores them.",
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -741,7 +743,7 @@
       ],
       "owner_context": "Controller / local view",
       "help": "Identification color for this layer. Choose Layer colors in Viewport & render to display it.",
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -754,7 +756,7 @@
       ],
       "owner_context": "Controller/layer",
       "help": "Rename the selected layer without changing its identity.",
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -767,7 +769,7 @@
       ],
       "owner_context": "Controller/layer",
       "help": "Hide display only. Hidden layers still calculate and affect spacing.",
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -780,7 +782,7 @@
       ],
       "owner_context": "Controller/layer",
       "help": "Include this layer in calculation and final output.",
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -793,7 +795,7 @@
       ],
       "owner_context": "Controller/layer",
       "help": "Evaluate earlier; earlier layers occupy space first.",
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -806,7 +808,7 @@
       ],
       "owner_context": "Controller/layer",
       "help": "Evaluate after the preceding layers.",
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -819,7 +821,7 @@
       ],
       "owner_context": "Controller / local view",
       "help": "Record engineering events in this Max process. Off by default; at most ten minutes, 4,096 events and 4 MiB.",
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -832,7 +834,7 @@
       ],
       "owner_context": "Controller / local view",
       "help": "Stop recording and retain the bounded history in memory.",
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -845,7 +847,7 @@
       ],
       "owner_context": "Controller / local view",
       "help": "Choose a local JSON file, stop recording and save its retained pages. No MCP or upload is required.",
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -858,142 +860,7 @@
       ],
       "owner_context": "Controller / local view",
       "help": "Read recorder state without evaluating the scene. Status has no polling timer.",
-      "view": "Local setup/editor controls",
-      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
-    },
-    {
-      "group": "general",
-      "section": "editor",
-      "kind": "button",
-      "name": "updateNow",
-      "capabilities": [
-        "C24",
-        "C26",
-        "C27"
-      ],
-      "owner_context": "Editor context; action scope named in UI",
-      "help": "Recalculate every enabled layer in this setup, in order.",
-      "view": "Local setup/editor controls",
-      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
-    },
-    {
-      "group": "general",
-      "section": "editor",
-      "kind": "dropdownlist",
-      "name": "layerList",
-      "capabilities": [
-        "C24",
-        "C26",
-        "C27"
-      ],
-      "owner_context": "Editor context; action scope named in UI",
-      "help": null,
-      "view": "Local setup/editor controls",
-      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
-    },
-    {
-      "group": "general",
-      "section": "editor",
-      "kind": "checkbutton",
-      "name": "assetsTab",
-      "capabilities": [
-        "C24",
-        "C26",
-        "C27"
-      ],
-      "owner_context": "Editor context; action scope named in UI",
-      "help": "Models and receiving surfaces for this layer.",
-      "view": "Local setup/editor controls",
-      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
-    },
-    {
-      "group": "general",
-      "section": "editor",
-      "kind": "checkbutton",
-      "name": "populationTab",
-      "capabilities": [
-        "C24",
-        "C26",
-        "C27"
-      ],
-      "owner_context": "Editor context; action scope named in UI",
-      "help": "Shared layer count, density, Area and retry limits.",
-      "view": "Local setup/editor controls",
-      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
-    },
-    {
-      "group": "general",
-      "section": "editor",
-      "kind": "checkbutton",
-      "name": "paintTab",
-      "capabilities": [
-        "C24",
-        "C26",
-        "C27"
-      ],
-      "owner_context": "Editor context; action scope named in UI",
-      "help": "Optional receiver-bound Paint Areas.",
-      "view": "Local setup/editor controls",
-      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
-    },
-    {
-      "group": "general",
-      "section": "editor",
-      "kind": "checkbutton",
-      "name": "transformTab",
-      "capabilities": [
-        "C24",
-        "C26",
-        "C27"
-      ],
-      "owner_context": "Editor context; action scope named in UI",
-      "help": "Layer random transforms and source assignment.",
-      "view": "Local setup/editor controls",
-      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
-    },
-    {
-      "group": "general",
-      "section": "editor",
-      "kind": "checkbutton",
-      "name": "spacingTab",
-      "capabilities": [
-        "C24",
-        "C26",
-        "C27"
-      ],
-      "owner_context": "Editor context; action scope named in UI",
-      "help": "Self, between-set and layer-pair rules, radii and cleanup.",
-      "view": "Local setup/editor controls",
-      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
-    },
-    {
-      "group": "general",
-      "section": "editor",
-      "kind": "checkbutton",
-      "name": "statisticsTab",
-      "capabilities": [
-        "C24",
-        "C26",
-        "C27"
-      ],
-      "owner_context": "Editor context; action scope named in UI",
-      "help": "Cached calculation results and workflow help.",
-      "view": "Local setup/editor controls",
-      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
-    },
-    {
-      "group": "general",
-      "section": "editor",
-      "kind": "button",
-      "name": "refreshButton",
-      "capabilities": [
-        "C24",
-        "C26",
-        "C27"
-      ],
-      "owner_context": "Editor context; action scope named in UI",
-      "help": "Read current settings and cached counts; does not rebuild placements.",
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1006,7 +873,7 @@
       ],
       "owner_context": "Selected layer / named Paint Area",
       "help": "Restrict this layer to its painted areas. Turn off to scatter across all its surfaces.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1019,7 +886,7 @@
       ],
       "owner_context": "Selected layer / named Paint Area",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1032,7 +899,7 @@
       ],
       "owner_context": "Selected layer / named Paint Area",
       "help": "Create a named area. Painting again edits the selected area.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1045,7 +912,7 @@
       ],
       "owner_context": "Selected layer / named Paint Area",
       "help": "Remove the selected area. Undo restores it.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1058,7 +925,7 @@
       ],
       "owner_context": "Selected layer / named Paint Area",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1071,7 +938,7 @@
       ],
       "owner_context": "Selected layer / named Paint Area",
       "help": "Explicit target within this layer. An area with saved paint cannot be silently retargeted.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1084,7 +951,7 @@
       ],
       "owner_context": "Selected layer / named Paint Area",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1099,7 +966,7 @@
       ],
       "owner_context": "Selected layer model collection",
       "help": "Label inside Scatter only. Clear it to use the scene object's name.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1114,7 +981,7 @@
       ],
       "owner_context": "Selected layer model collection",
       "help": "Viewport identification color. This does not change clustering or model frequency.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1129,7 +996,7 @@
       ],
       "owner_context": "Selected layer model collection",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1144,7 +1011,7 @@
       ],
       "owner_context": "Selected layer model collection",
       "help": "Choose one or more source models by name.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1158,8 +1025,8 @@
         "C08"
       ],
       "owner_context": "Selected layer model collection",
-      "help": "Pick a scene model for this layer. The editor stays on its layer.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "help": "Pick a scene model for this layer.",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1174,7 +1041,7 @@
       ],
       "owner_context": "Selected layer model collection",
       "help": "Add the currently selected scene objects to this layer.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1189,7 +1056,7 @@
       ],
       "owner_context": "Selected layer model collection",
       "help": "Unregister highlighted rows. To keep their settings, park models outside a source rectangle instead.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1204,7 +1071,7 @@
       ],
       "owner_context": "Selected layer model collection",
       "help": "Select the highlighted source models in the scene.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1219,7 +1086,7 @@
       ],
       "owner_context": "Selected layer model collection",
       "help": "Add a named placeholder type. Scatter points now, then replace this row with a model.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1234,7 +1101,7 @@
       ],
       "owner_context": "Selected layer model collection",
       "help": "Add a weighted empty source for intentional gaps in candidate-budget mode.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1248,8 +1115,23 @@
         "C08"
       ],
       "owner_context": "Selected layer model collection",
-      "help": "Replace one highlighted Point row with a scene model.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "help": "Use a scene model for the selected Point; keep its identity, settings and Band assignments.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "kind": "button",
+      "name": "makePoint",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Selected layer model collection",
+      "help": "Use the selected model row as a Point. Keep its settings and registration; do not delete the scene object.",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1264,7 +1146,7 @@
       ],
       "owner_context": "Selected layer model collection",
       "help": "Assign highlighted sources to an existing color group for clustering.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1279,7 +1161,7 @@
       ],
       "owner_context": "Selected layer model collection",
       "help": "Assign a color group to highlighted sources when the color is accepted.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1294,7 +1176,7 @@
       ],
       "owner_context": "Selected layer model collection",
       "help": "Assign the chosen color group to all highlighted source rows.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1309,7 +1191,7 @@
       ],
       "owner_context": "Selected layer model collection",
       "help": "Relative model frequency in this layer. Zero disables the model.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1323,8 +1205,8 @@
         "C08"
       ],
       "owner_context": "Selected layer model collection",
-      "help": "Offset instances of highlighted models along their placement normal.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "help": "Offset instances of highlighted models along world Z.",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1339,7 +1221,7 @@
       ],
       "owner_context": "Selected layer model collection",
       "help": "Per-model scale multiplier. 1 keeps the model's original scale.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1354,7 +1236,22 @@
       ],
       "owner_context": "Selected layer model collection",
       "help": "Collision footprint radius for highlighted source rows, in scene units.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "sourceUI",
+      "kind": "dropdownlist",
+      "name": "radiusModeDrop",
+      "capabilities": [
+        "C05",
+        "C06",
+        "C08"
+      ],
+      "owner_context": "Selected layer model collection",
+      "help": "Auto bounds supported model geometry around its pivot after final instance scale and orientation. This is conservative spacing, not mesh collision or Band containment.",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1369,7 +1266,7 @@
       ],
       "owner_context": "Selected layer model collection",
       "help": "Scale this source's collision footprint with its instance scale.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1384,7 +1281,7 @@
       ],
       "owner_context": "Selected layer model collection",
       "help": "Show this source's radius in the viewport; does not change collision rules.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1399,7 +1296,7 @@
       ],
       "owner_context": "Selected layer model collection",
       "help": "The model's local forward direction, used for orientation.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1414,7 +1311,7 @@
       ],
       "owner_context": "Selected layer model collection",
       "help": "Show or hide these advanced controls; their saved settings are preserved.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1427,7 +1324,7 @@
       ],
       "owner_context": "Selected layer model collection",
       "help": "Use the model list directly, or optionally collect models from source rectangles.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1440,7 +1337,7 @@
       ],
       "owner_context": "Selected layer model collection",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1453,7 +1350,7 @@
       ],
       "owner_context": "Selected layer model collection",
       "help": "Enable the selected rectangle to collect models. New rectangles start off so you can position them first. Manual mode needs Update.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1466,7 +1363,7 @@
       ],
       "owner_context": "Selected layer model collection",
       "help": "Create an inactive source rectangle. Position it around model pivots, then enable collection.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1479,7 +1376,7 @@
       ],
       "owner_context": "Selected layer model collection",
       "help": "Link a Cyrus container, or copy a square-corner Rectangle into a container. The original spline is preserved.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1492,7 +1389,7 @@
       ],
       "owner_context": "Selected layer model collection",
       "help": "Unlink this rectangle without deleting it or registered source settings.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1506,7 +1403,7 @@
       ],
       "owner_context": "Layer defaults",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1520,7 +1417,7 @@
       ],
       "owner_context": "Layer defaults",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1534,7 +1431,7 @@
       ],
       "owner_context": "Layer defaults",
       "help": "Layer population before eligibility. Accepted target can retry up to its limits.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1548,7 +1445,7 @@
       ],
       "owner_context": "Layer defaults",
       "help": "Requested plants per square metre of receiving surface; capped at 100,000.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1562,7 +1459,7 @@
       ],
       "owner_context": "Layer defaults",
       "help": "Deterministic generation seed. Changing it can invalidate existing Edit bindings.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1576,7 +1473,7 @@
       ],
       "owner_context": "Layer defaults",
       "help": "Use UV channel 1: white permits candidates; black excludes them.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1590,7 +1487,7 @@
       ],
       "owner_context": "Layer defaults",
       "help": "Reverse the density map's white and black eligibility.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1603,7 +1500,7 @@
       ],
       "owner_context": "Layer work limits",
       "help": "Budget evaluates the generated candidates; target makes bounded replacement attempts.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1616,7 +1513,7 @@
       ],
       "owner_context": "Layer work limits",
       "help": "Maximum candidate attempts as a multiple of the requested population.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1629,7 +1526,7 @@
       ],
       "owner_context": "Layer work limits",
       "help": "Maximum rounds of eligibility, collision and cleanup. A shortfall can remain.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1642,7 +1539,7 @@
       ],
       "owner_context": "Layer work limits",
       "help": "Allow bounded retries for plants removed by final cleanup.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1656,7 +1553,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1670,7 +1567,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Choose closed Area shapes by name.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1684,7 +1581,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Pick a closed shape as an include/exclude Area shared by all sets in this layer.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1698,7 +1595,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Unlink highlighted Areas and their falloff settings; keep the scene shapes.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1712,7 +1609,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1726,7 +1623,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Refresh Area geometry and recalculate the layer preview.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1740,7 +1637,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Choose an existing Cyrus Surface Analyzer for line or point masks.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1754,7 +1651,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Disable and unlink the layer's Analyzer Area mask.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1768,7 +1665,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Use the Analyzer centre line as an XY mask; unions with its point mask.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1782,7 +1679,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Full width of the Analyzer centre-line Area mask.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1796,7 +1693,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Flat or round ends for the line mask.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1810,7 +1707,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Lateral offset from the Analyzer centre line.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1824,7 +1721,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Use discs around Analyzer points as an XY mask.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1838,7 +1735,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Radius of each Analyzer point mask.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1852,7 +1749,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Edit Analyzer boundary falloff or one highlighted Area's independent falloff.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1866,7 +1763,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Choose the Analyzer whose boundary drives this falloff.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1880,7 +1777,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Unlink the falloff Analyzer and disable its falloff effects.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1894,7 +1791,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Exclude an edge band before scale and density ramps begin.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1908,7 +1805,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Width of the excluded edge band in scene units.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1922,7 +1819,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Vary instance scale with distance from this boundary.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1936,7 +1833,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Distance over which the scale curve is evaluated.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1950,7 +1847,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Edit this boundary's scale curve.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1964,7 +1861,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Vary candidate eligibility with distance from this boundary.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1978,7 +1875,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Distance over which the density curve is evaluated.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -1992,7 +1889,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Edit this boundary's density curve.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2006,7 +1903,7 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Show or hide these advanced controls; their saved settings are preserved.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2020,7 +1917,7 @@
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2034,7 +1931,7 @@
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
       "help": "Distance from the brush center to its edge. A 100 mm radius paints a 200 mm wide stroke.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2048,7 +1945,7 @@
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2062,7 +1959,7 @@
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2076,7 +1973,7 @@
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2090,7 +1987,7 @@
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2104,7 +2001,7 @@
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2118,7 +2015,7 @@
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2132,7 +2029,7 @@
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2146,7 +2043,7 @@
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2160,7 +2057,7 @@
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2174,7 +2071,7 @@
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2188,7 +2085,7 @@
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2202,7 +2099,7 @@
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2216,7 +2113,7 @@
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2230,7 +2127,7 @@
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2244,7 +2141,7 @@
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2257,7 +2154,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2270,7 +2167,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2283,7 +2180,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2296,7 +2193,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2309,7 +2206,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2322,7 +2219,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2335,7 +2232,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2348,7 +2245,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2361,7 +2258,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2374,7 +2271,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2387,7 +2284,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2400,7 +2297,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2413,7 +2310,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2426,7 +2323,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2439,7 +2336,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2452,7 +2349,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2465,7 +2362,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2478,7 +2375,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2491,7 +2388,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2504,7 +2401,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2517,7 +2414,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": "Project random movement back onto the receiving surface.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2530,7 +2427,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": "Align instances to the receiving surface normal.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2543,7 +2440,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": "Reset only this layer's random rotation limits. Undo is available.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2556,7 +2453,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": "Reset only this layer's separate X, Y and Z scale limits.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2569,7 +2466,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": "Reset only this layer's uniform scale multiplier.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2582,7 +2479,7 @@
       ],
       "owner_context": "Layer transforms",
       "help": "Reset only this layer's random translation limits.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2596,7 +2493,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2610,7 +2507,7 @@
       ],
       "owner_context": "Selected layer recipe",
       "help": "Select the linked Surface Analyzer in the scene.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2624,7 +2521,7 @@
       ],
       "owner_context": "Selected layer recipe",
       "help": "Analyze the linked guide. In Manual mode, use Update scatter afterwards to publish placements.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2638,7 +2535,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": "Spatial size of source-color clusters.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2652,7 +2549,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": "Change source assignment randomness without changing the generation seed.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2666,7 +2563,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2680,7 +2577,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2694,21 +2591,49 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "kind": "listbox",
+      "name": "pathsList",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": null,
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
       "group": "layer",
       "section": "diversityUI",
       "kind": "dropdownlist",
-      "name": "pathsDrop",
+      "name": "cornerMode",
       "capabilities": [
         "C17",
         "C18"
       ],
-      "owner_context": "Layer assignment",
-      "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "owner_context": "Selected layer recipe",
+      "help": "Rounded uses Euclidean distance. Sharp uses bounded miter offsets; complex Paths may require simplification.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "kind": "dropdownlist",
+      "name": "arrangementMode",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Consecutive accumulates widths. Independent permits overlapping Start/End ranges and uses a shared candidate population.",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2722,7 +2647,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2736,7 +2661,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": "Use Surface Analyzer output for bands, rows and fixed anchors.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2750,7 +2675,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": "Pick a spline for Line Pattern assignment.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2764,7 +2689,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": "Remove the selected assignment path while keeping the scene spline.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2778,7 +2703,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2792,7 +2717,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": "Add a source-assignment band outside the selected path.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2806,7 +2731,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": "Add a source-assignment band inside the selected path.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2820,7 +2745,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": "Remove the selected band and its settings.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2834,7 +2759,203 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "kind": "spinner",
+      "name": "bandStart",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Independent range starts at this physical distance from its Path.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "kind": "spinner",
+      "name": "bandEnd",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Independent range must end after Start.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "kind": "spinner",
+      "name": "bandStrength",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Band contribution before other masks and spacing. Independent overlaps share one candidate population.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "kind": "checkbox",
+      "name": "bandCurveCheck",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Use the saved sampled density curve from Start to End.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "kind": "dropdownlist",
+      "name": "bandScaleMode",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Multiply the random Band size by the effective density curve shape or an independent Custom scale curve. Density % is not a size multiplier.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "kind": "button",
+      "name": "bandScaleEdit",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Size multiplier across this Band. 100% preserves size; zero collapses size without deleting the placement. Edit in Custom mode.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "kind": "button",
+      "name": "bandCurveEdit",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Edit this Band by its captured identity. Changes apply on drag release, Apply or Close.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "kind": "colorpicker",
+      "name": "bandColor",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Identification color belongs to this Band. It never changes placements or source materials.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "kind": "checkbox",
+      "name": "fieldFalloffCheck",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Sample Band density on receiver surfaces before other masks, spacing and cleanup. This never changes plant counts.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "kind": "checkbox",
+      "name": "fieldBoundaryCheck",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Show admitted start/end contours clipped to every receiver surface, including stacked and vertical receivers.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "kind": "dropdownlist",
+      "name": "fieldView",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Selected Band shows its contribution. Combined shows capped total occupancy.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "kind": "spinner",
+      "name": "fieldSampleSpin",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Bounded visualization samples; sparse coverage can miss narrow intervals. Show Boundaries preserves admitted outlines.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "kind": "button",
+      "name": "bandUp",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Move the selected Band up on its Path. Consecutive priority and ranges follow authored order.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "diversityUI",
+      "kind": "button",
+      "name": "bandDown",
+      "capabilities": [
+        "C17",
+        "C18"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Move the selected Band down on its Path. Independent decisions keep stable Band identities.",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2848,7 +2969,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2862,7 +2983,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2875,8 +2996,8 @@
         "C18"
       ],
       "owner_context": "Layer assignment",
-      "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "help": "Additional Band multiplier, combined once with source, layer and transform scale.",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2889,8 +3010,8 @@
         "C18"
       ],
       "owner_context": "Layer assignment",
-      "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "help": "Additional Band multiplier; it does not change the source asset or its base Scale setting.",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2904,7 +3025,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": "Refresh available source color groups for assignment.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2918,7 +3039,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2932,7 +3053,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2946,7 +3067,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2960,7 +3081,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2974,7 +3095,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -2988,7 +3109,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3002,7 +3123,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3016,7 +3137,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3030,7 +3151,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3044,7 +3165,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3058,7 +3179,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3072,7 +3193,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3086,7 +3207,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3100,7 +3221,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3114,7 +3235,7 @@
       ],
       "owner_context": "Layer assignment",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3127,7 +3248,7 @@
       ],
       "owner_context": "Selected self/sibling/layer rule scope",
       "help": "Choose spacing within the selected layer or between it and another layer.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3140,7 +3261,7 @@
       ],
       "owner_context": "Selected self/sibling/layer rule scope",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3153,7 +3274,7 @@
       ],
       "owner_context": "Selected self/sibling/layer rule scope",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3166,7 +3287,7 @@
       ],
       "owner_context": "Selected self/sibling/layer rule scope",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3179,7 +3300,7 @@
       ],
       "owner_context": "Selected self/sibling/layer rule scope",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3192,7 +3313,7 @@
       ],
       "owner_context": "Selected self/sibling/layer rule scope",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3205,7 +3326,7 @@
       ],
       "owner_context": "Selected self/sibling/layer rule scope",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3218,7 +3339,7 @@
       ],
       "owner_context": "Set/published instance binding",
       "help": "Use an absolute world radius or multiply the selected instances' source radius.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3231,7 +3352,7 @@
       ],
       "owner_context": "Set/published instance binding",
       "help": "Value applied only when Set selected radii is pressed.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3244,7 +3365,7 @@
       ],
       "owner_context": "Set/published instance binding",
       "help": "Apply radius overrides to selected instances in this layer.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3257,7 +3378,7 @@
       ],
       "owner_context": "Set/published instance binding",
       "help": "Restore the selected instances' inherited source radii.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3270,7 +3391,7 @@
       ],
       "owner_context": "Set/published instance binding",
       "help": "Remove instance-radius overrides for this layer.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3283,7 +3404,7 @@
       ],
       "owner_context": "Self-spacing inheritance or legacy layer",
       "help": "Separate nearby candidates on the receiving surface before Brush, artist edits and spacing. Fixed anchors stay fixed.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3296,7 +3417,7 @@
       ],
       "owner_context": "Self-spacing inheritance or legacy layer",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3309,7 +3430,7 @@
       ],
       "owner_context": "Self-spacing inheritance or legacy layer",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3322,7 +3443,7 @@
       ],
       "owner_context": "Self-spacing inheritance or legacy layer",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3335,7 +3456,7 @@
       ],
       "owner_context": "Selected layer recipe",
       "help": "Smooth candidate neighborhoods with bounded movement. Eligibility is checked before publication; author edits run afterwards.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3348,7 +3469,7 @@
       ],
       "owner_context": "Selected layer recipe",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3361,7 +3482,7 @@
       ],
       "owner_context": "Selected layer recipe",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3374,7 +3495,7 @@
       ],
       "owner_context": "Selected layer recipe",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3387,7 +3508,7 @@
       ],
       "owner_context": "Legacy pairs/layer union cleanup",
       "help": "Remove isolated plants after spacing. Protected instance edits remain.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3400,7 +3521,7 @@
       ],
       "owner_context": "Legacy pairs/layer union cleanup",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3413,7 +3534,7 @@
       ],
       "owner_context": "Legacy pairs/layer union cleanup",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3426,7 +3547,7 @@
       ],
       "owner_context": "Legacy pairs/layer union cleanup",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3439,7 +3560,7 @@
       ],
       "owner_context": "Legacy pairs/layer union cleanup",
       "help": null,
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3452,7 +3573,7 @@
       ],
       "owner_context": "Cached statistics/help",
       "help": "Read the existing calculation statistics without regenerating placements.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3465,7 +3586,7 @@
       ],
       "owner_context": "Cached statistics/help",
       "help": "Explain settings ownership, display budgets, evaluation order and policy limits.",
-      "view": "Modify selected layer, selected container and optional popup",
+      "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3479,7 +3600,7 @@
       ],
       "owner_context": "Local container view",
       "help": "Collect models whose pivots are inside this rectangle. Off lets you position it without collecting or moving models. Manual mode needs Update.",
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3493,7 +3614,7 @@
       ],
       "owner_context": "Local container view",
       "help": "Choose a linked setup or layer. Inactive pools remain editable; this changes the view only.",
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3507,7 +3628,7 @@
       ],
       "owner_context": "Local container view",
       "help": "Resize the boundary. Source models keep their transforms.",
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3521,7 +3642,7 @@
       ],
       "owner_context": "Local container view",
       "help": null,
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3535,7 +3656,7 @@
       ],
       "owner_context": "Local container view",
       "help": null,
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3549,7 +3670,7 @@
       ],
       "owner_context": "Local container view",
       "help": null,
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
     {
@@ -3563,21 +3684,7 @@
       ],
       "owner_context": "Local container view",
       "help": "Resolve overlapping movement ownership for the selected source. Its usage and settings in other sets are unchanged.",
-      "view": "Local setup/editor controls",
-      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
-    },
-    {
-      "group": "container",
-      "section": "properties",
-      "kind": "button",
-      "name": "editLayer",
-      "capabilities": [
-        "C07",
-        "C26"
-      ],
-      "owner_context": "Local container view",
-      "help": "Open the optional layer editor for the current consumer.",
-      "view": "Local setup/editor controls",
+      "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     }
   ]

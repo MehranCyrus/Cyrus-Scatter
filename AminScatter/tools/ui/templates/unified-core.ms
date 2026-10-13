@@ -23,7 +23,7 @@ global CyrusPerfTraceBegin,CyrusPerfTraceEnd,CyrusPerfTraceInput
 -- Callbacks only request deferred work. No idle signature/scene polling.
 global CyrusScheduleRelease,CyrusScheduleUI,CyrusPFRequestCheck,CyrusRenderNodeChanged
 global CyrusPFCheckPending=false,CyrusPFResumeMode=3,CyrusPFTicking=false
-global CyrusReleaseTimer,CyrusPFTimer,CyrusPFBusy,CyrusLayerEditor,CyrusPointPending,AminScatterObject
+global CyrusReleaseTimer,CyrusPFTimer,CyrusPFBusy,CyrusPointPending,AminScatterObject
 global CyrusPFStopIR,CyrusPFLastError
 -- Corona stop can pump messages and deliver nested host callbacks. Keep bridge
 -- mutation excluded through the stop, and verify the resulting render state.
@@ -52,7 +52,6 @@ fn CyrusScheduleRelease = (
     if CyrusReleaseTimer!=undefined do CyrusReleaseTimer.Start()
 )
 fn CyrusScheduleUI = (
-    if CyrusLayerEditor!=undefined do CyrusLayerEditor.statusTimer.active=true
     local obj=try(modPanel.getCurrentObject())catch(undefined)
     if obj!=undefined and (classof obj==AminScatterObject or classof obj==CyrusSourceContainer) and obj.mainUI.controlsReady do obj.mainUI.statusTimer.active=true
 )
@@ -113,6 +112,7 @@ fn CyrusUILayerState stats enabled controllerEnabled previewVisible = (
 global CyrusPointOwner,CyrusPointSync,CyrusViewportRedraw,CyrusPointClear,CyrusPointAfterSave
 global CyrusPointOwners,CyrusPointEnabled=true,CyrusMeshEnabled=true,CyrusPointAvailable=false,CyrusPointBusy=false,CyrusPointPending=false,CyrusPointSuspended=false,CyrusPointLastError="",CyrusPointDeletedHandles=#()
 global CyrusViewportRecords=#(),CyrusViewportAnalyzers=#(),CyrusViewportRecordsDirty=true
+global CyrusPointSceneOwners=#()
 try(CyrusPointClear())catch()
 CyrusPointOwners=#()
 global cyrusFilterSourceRows,cyrusApplySourceTransforms
@@ -121,34 +121,84 @@ fn CyrusInteractionHeld = (try((dotNetClass "System.Windows.Forms.Control").Mous
 global CyrusFallPack,CyrusFallUnpack,CyrusOpenFalloffGraph
 fn CyrusFallPack values = (local s=stringStream "";for i=1 to values.count do format "% %" values[i] (if i<values.count then "," else "") to:s;s as string)
 fn CyrusFallUnpack data = (for v in filterString data "," collect (v as float))
-global CyrusFalloffGraph,CyrusFallGraphTarget,CyrusFallGraphArea,CyrusFallGraphDensity
-fn CyrusOpenFalloffGraph target areaNode density = (
+global CyrusFalloffGraph,CyrusFallGraphTarget,CyrusFallGraphArea,CyrusFallGraphDensity,CyrusFallGraphBandID=0
+global CyrusFallGraphOwnerRoot,CyrusFallGraphOwnerNode
+fn CyrusOpenFalloffGraph target areaNode density bandID:0 = (
+    local bandRoot=undefined,bandNode=undefined
+    if bandID>0 do (
+        if findItem target.strokeIDs bandID==0 do throw "The selected Band no longer exists."
+        -- Resolve the saved dependency, including immediately after reopen,
+        -- before transient preview ownership has been rebound.
+        for node in refs.dependentNodes target where isValidNode node and classof node.baseObject==AminScatterObject and findItem node.baseObject.layerObjects target>0 do (
+            if bandRoot!=undefined and bandRoot!=node.baseObject do throw "A Band layer cannot belong to multiple Scatter controllers."
+            bandRoot=node.baseObject
+            if bandNode==undefined do bandNode=node
+        )
+        if bandRoot==undefined do throw "The Band controller is no longer in this scene."
+    )
     if CyrusFalloffGraph!=undefined do try(destroyDialog CyrusFalloffGraph)catch()
     rollout editor "Area Falloff - Edit Graph" width:760 height:470 (
-        local obj,area,isDensity=false,loading=true
+        local obj,area,isDensity=false,loading=true,ownerRoot=undefined,ownerNode=undefined,ownerLayerID="",ownerBandID=0,ownerPathID=0,invalidated=false,curveTimer=undefined,pendingCurve=false,lastGraphTrace=""
         curveControl graph "" pos:[8,8] width:744 height:396 numCurves:1 x_range:[0,1] y_range:[0,100] commandMode:#move_xy asPopup:false
         button applyButton "Apply" pos:[538,424] width:100
         button doneButton "Close" pos:[648,424] width:100
         label help "X: distance along ramp (0 to 1). Y: percent. Drag points / edit Bezier handles." pos:[12,424] width:510 height:36
+        fn bandTargetRow = (
+            if ownerBandID==0 do return 0
+            if invalidated do return 0
+            local row=0,valid=false
+            try (
+                row=findItem obj.strokeIDs ownerBandID
+                valid=isValidNode ownerNode and ownerNode.baseObject==ownerRoot and findItem ownerRoot.layerObjects obj>0 and obj.layerID==ownerLayerID and row>0
+                if valid do valid=obj.strokePathIDs[row]==ownerPathID
+            )catch(valid=false)
+            if not valid do (invalidated=true;applyButton.enabled=false;help.text="This Band target is no longer available. Close and reopen its graph.")
+            if valid then row else 0
+        )
+        fn bandSamples = (if isDensity then obj.strokeCurveSamples else obj.strokeScaleSamples)
+        fn bandGraphs = (if isDensity then obj.strokeCurveGraphs else obj.strokeScaleGraphs)
+        fn curveTrace = (
+            local curve=graph.curves[1],packed=#()
+            if curve.numPoints<2 do return undefined
+            if ownerBandID>0 and curve.numPoints>64 do (help.text="Band graphs support at most 64 control points. Remove excess points before Apply.";return undefined)
+            for i=1 to curve.numPoints do (
+                local p=curve.points[i]
+                join packed #(p.value.x,p.value.y,p.inTangent.x,p.inTangent.y,p.outTangent.x,p.outTangent.y,(if p.bezier then 1 else 0),(if p.corner then 1 else 0))
+            )
+            local values=for i=0 to 256 collect (
+                local v=amax 0.0 ((getValue curve 0 (i/256.0))/100.0)
+                if ownerBandID>0 and not isDensity and (v>100 or v!=v) do throw "Band scale curve exceeds 10000% or is non-finite."
+                if isDensity or obj.isPaintArea then amin 1.0 v else v
+            )
+            #(values,CyrusFallPack values,CyrusFallPack packed)
+        )
         fn storeCurve = (
+            pendingCurve=false
+            if curveTimer!=undefined do curveTimer.Stop()
             if not loading do (
-                local cfg=obj.getFallConfig area
-                local curve=graph.curves[1],packed=#()
-                if curve.numPoints<2 do return false
-                for i=1 to curve.numPoints do (
-                    local p=curve.points[i]
-                    join packed #(p.value.x,p.value.y,p.inTangent.x,p.inTangent.y,p.outTangent.x,p.outTangent.y,(if p.bezier then 1 else 0),(if p.corner then 1 else 0))
-                )
-                local values=for i=0 to 256 collect (
-                    local v=amax 0.0 ((getValue curve 0 (i/256.0))/100.0)
-                    if isDensity or obj.isPaintArea then amin 1.0 v else v
-                )
+                local bandRow=bandTargetRow()
+                if ownerBandID>0 and bandRow==0 do return false
+                local trace=curveTrace()
+                if trace==undefined do return false
+                local values=trace[1],packedValues=trace[2],packedGraph=trace[3],identity=trace[3]
+                -- Compare the canonical saved representation, not rounded
+                -- control geometry, not the SDK's deferred sample cache.
+                -- A close after external Undo must not reapply an unchanged UI.
+                if ownerBandID>0 and identity==lastGraphTrace do return true
+                local cfg=if ownerBandID>0 then undefined else obj.getFallConfig area
                 local curveIndex=if isDensity then 8 else 5
-                local oldValues=cfg[curveIndex],samplesChanged=oldValues.count!=values.count
+                local oldValues=if ownerBandID>0 then CyrusFallUnpack ((bandSamples())[bandRow]) else cfg[curveIndex]
+                local samplesChanged=oldValues.count!=values.count
                 if not samplesChanged do for i=1 to values.count where oldValues[i]!=values[i] do samplesChanged=true
-                cfg[curveIndex]=values
-                local packedGraph=CyrusFallPack packed
-                if obj.isPaintArea then (
+                if ownerBandID==0 do cfg[curveIndex]=values
+                if ownerBandID>0 then (
+                    local samples=bandSamples(),graphs=bandGraphs()
+                    if samples[bandRow]!=packedValues or graphs[bandRow]!=packedGraph do undo "Cyrus Band curve" on (
+                        if isDensity then (obj.strokeCurveSamples[bandRow]=packedValues;obj.strokeCurveGraphs[bandRow]=packedGraph)
+                        else (obj.strokeScaleSamples[bandRow]=packedValues;obj.strokeScaleGraphs[bandRow]=packedGraph)
+                    )
+                    lastGraphTrace=identity
+                ) else if obj.isPaintArea then (
                     -- Max can update its sampled values after the point-change event.
                     -- Apply/Close must also compare samples, even for identical handles.
                     if samplesChanged or (obj.getFallGraph area isDensity)!=packedGraph do undo "Cyrus vector curve" on (
@@ -164,13 +214,32 @@ fn CyrusOpenFalloffGraph target areaNode density = (
             true
         )
         on editor open do (
-            obj=CyrusFallGraphTarget;area=CyrusFallGraphArea;isDensity=CyrusFallGraphDensity
+            obj=CyrusFallGraphTarget;area=CyrusFallGraphArea;isDensity=CyrusFallGraphDensity;ownerBandID=CyrusFallGraphBandID
+            if ownerBandID>0 do (
+                ownerRoot=CyrusFallGraphOwnerRoot;ownerNode=CyrusFallGraphOwnerNode
+                ownerLayerID=obj.layerID
+                local row=findItem obj.strokeIDs ownerBandID
+                if row==0 do throw "The selected Band no longer exists."
+                ownerPathID=obj.strokePathIDs[row]
+            )
             editor.title=(if isDensity then "Area Density Falloff" else "Area Scale Falloff")+" - "+(if area==undefined then (if obj.isPaintArea then obj.paintSetName+" / Vector Border" else "Analyzer Boundary") else area.name)
-            local cfg=obj.getFallConfig area
-            local packed=CyrusFallUnpack (obj.getFallGraph area isDensity)
-            local values=cfg[if isDensity then 8 else 5]
+            local row=bandTargetRow(),cfg=if ownerBandID>0 then undefined else obj.getFallConfig area
+            if ownerBandID>0 do (editor.title=(if isDensity then "Band Density - " else "Band Scale - ")+obj.bandName row;help.text="Band "+(ownerBandID as string)+". X: normalized Start to End. Y: "+(if isDensity then "density 0-100%." else "size percent; 100% = unchanged.")+" Drag applies on release.")
+            local packed=CyrusFallUnpack (if ownerBandID>0 then (bandGraphs())[row] else obj.getFallGraph area isDensity)
+            local values=if ownerBandID>0 then CyrusFallUnpack ((bandSamples())[row]) else cfg[if isDensity then 8 else 5]
             local c=graph.curves[1];c.color=red
-            graph.y_range=[0,(if isDensity then 100 else amax 100.0 ((amax values)*100))]
+            graph.y_range=[0,(if isDensity then 100 else amax 200.0 ((amax values)*100))]
+            -- Fit the full density domain before loading the authored curve.
+            -- Zoom extents on a constant curve hides almost all of 0–100%.
+            local densityZoom=undefined,densityScroll=undefined
+            if ownerBandID>0 do (
+                c.numPoints=2
+                local low=c.points[1],high=c.points[2]
+                low.value=[0,0];high.value=[1,(if isDensity then 100 else amax 200.0 ((amax values)*100))]
+                c.points[1]=low;c.points[2]=high
+                zoom graph #all
+                densityZoom=graph.zoomValues;densityScroll=graph.scrollValues
+            )
             if packed.count>=16 and mod packed.count 8==0 then (
                 c.numPoints=packed.count/8
                 for i=1 to c.numPoints do (
@@ -185,20 +254,41 @@ fn CyrusOpenFalloffGraph target areaNode density = (
                     local p=c.points[i];p.value=[(i-1.0)/(c.numPoints-1),values[i]*100];p.bezier=false;p.corner=true;p.lock_x=(i==1 or i==c.numPoints);c.points[i]=p
                 )
             )
-            zoom graph #all;loading=false
+            if ownerBandID>0 then (graph.zoomValues=densityZoom;graph.scrollValues=densityScroll) else zoom graph #all
+            if ownerBandID>0 do (local trace=curveTrace();if trace!=undefined do lastGraphTrace=trace[3])
+            loading=false
         )
-        on graph ptChanged ci val do storeCurve()
-        on graph tangentChanged ci val kind do storeCurve()
-        on graph ptInserted ci val do storeCurve()
-        on graph deleted ci val do storeCurve()
-        on graph reset ci do storeCurve()
+        fn flushCurve sender args = (
+            if pendingCurve and not (CyrusInteractionHeld()) do (pendingCurve=false;if curveTimer!=undefined do curveTimer.Stop();storeCurve())
+        )
+        fn queueCurve = (
+            if loading do return false
+            if ownerBandID==0 then storeCurve() else (
+                pendingCurve=true
+                if curveTimer==undefined do (curveTimer=dotNetObject "System.Windows.Forms.Timer";curveTimer.Interval=100;dotNet.addEventHandler curveTimer "Tick" flushCurve)
+                -- Point-change callbacks can precede the control's sampled
+                -- curve update. Commit in the next timer event, after release.
+                curveTimer.Start()
+            )
+        )
+        on graph ptChanged ci val do queueCurve()
+        on graph tangentChanged ci val kind do queueCurve()
+        on graph ptInserted ci val do queueCurve()
+        on graph deleted ci val do queueCurve()
+        on graph reset ci do queueCurve()
         on applyButton pressed do storeCurve()
         on doneButton pressed do (storeCurve();destroyDialog editor)
-        on editor close do (storeCurve();CyrusFalloffGraph=undefined)
+        on editor close do (if curveTimer!=undefined do (curveTimer.Stop();dotNet.removeEventHandler curveTimer "Tick" flushCurve;curveTimer.Dispose();curveTimer=undefined);pendingCurve=false;storeCurve();CyrusFalloffGraph=undefined)
     )
-    CyrusFallGraphTarget=target;CyrusFallGraphArea=areaNode;CyrusFallGraphDensity=density
+    CyrusFallGraphTarget=target;CyrusFallGraphArea=areaNode;CyrusFallGraphDensity=density;CyrusFallGraphBandID=bandID
     CyrusFalloffGraph=editor
-    createDialog editor style:#(#style_titlebar,#style_sysmenu,#style_minimizebox) pos:[200,160]
+    CyrusFallGraphOwnerRoot=bandRoot;CyrusFallGraphOwnerNode=bandNode
+    try(createDialog editor style:#(#style_titlebar,#style_sysmenu,#style_minimizebox) pos:[200,160])catch(
+        editor.loading=true
+        try(destroyDialog editor)catch()
+        if CyrusFalloffGraph==editor do CyrusFalloffGraph=undefined
+        throw()
+    )
     editor
 )
 
@@ -217,8 +307,8 @@ try(unRegisterRedrawViewsCallback AminScatterObjectDraw)catch()
 
 global AminScatterLayerFields, AminScatterLayerTabs
 global AminScatterCopyLayer, AminScatterRefreshLayerPanels
-AminScatterLayerFields=#(#procOrder,#procSetOrder,#procSamplingSalt,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procRadiusBinding,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverID,#containerMode,#containerNodes,#logicalParentID,#paintSetName,#paintSetEnabled,#paintSetVisible,#paintView,#paintColor,#paintDocument,#paintEnabled,#paintDensity,#streetTrimStart,#streetTrimEnd,#centerStreetOffset,#areaAnalyzer,#areaUseLine,#areaLineWidth,#areaLineCaps,#areaUsePoints,#areaPointRadius,#wholeScaleMin,#wholeScaleMax,#fallScaleGraph,#fallDensityGraph,#areaFallConfigs,#areaFallDeleteWidths,#areaFallScaleWidths,#areaFallDensityWidths,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallAnalyzer,#fallDelete,#fallDeleteWidth,#fallScale,#fallScaleWidth,#fallScaleCurve,#fallDensity,#fallDensityWidth,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeKeepCorners,#edgeCornerAngle,#edgeCornerCount,#edgeFaceOut,#edgeCornerRadius,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#borderFaceOut,#streetFaceOut,#borderCornerRadius,#streetCornerRadius,#sourceForwardAxes,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove,#sourceRadiiWU,#sourceFollowScale,#sourceShowRadius,#streetStraight,#sourcePoint,#sourceEmpty,#cleanupPlanar,#sourceZOffsetsWU,#sourceScales,#sourceWeights,#showCenters,#relaxEnabled,#relaxSpacing,#relaxIterations,#relaxStrength,#sources,#bakedNodes,#amount,#randomSeed,#scaleMinimum,#scaleMaximum,#tiltDegrees,#yawMinimum,#yawMaximum,#movementRange,#alignNormal,#showPoints,#pointsPerPlant,#updateMode,#populationMode,#plantsPerM2,#advancedAxes,#projectMove,#rotXMin,#rotXMax,#rotYMin,#rotYMax,#rotZMin,#rotZMax,#sclXMin,#sclXMax,#sclYMin,#sclYMax,#sclZMin,#sclZMax,#movXMinWU,#movXMaxWU,#movYMinWU,#movYMaxWU,#movZMinWU,#movZMaxWU,#distributionMode,#clusterCount,#clusterRadius,#densityMap,#invertDensity,#diversityMode,#diversitySize,#diversitySeed,#roughness,#blurryEdge,#diversityNoise,#autoRender,#previewBudget,#pointColorMode,#solidPointColor,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths,#patternGroups,#patternRestGroup)
-AminScatterLayerTabs=#(#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#containerNodes,#areaFallConfigs,#areaFallDeleteWidths,#areaFallScaleWidths,#areaFallDensityWidths,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallScaleCurve,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#sourceForwardAxes,#sourceRadiiWU,#sourceFollowScale,#sourceShowRadius,#sourcePoint,#sourceEmpty,#sourceZOffsetsWU,#sourceScales,#sourceWeights,#sources,#bakedNodes,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths,#patternGroups)
+AminScatterLayerFields=#(#procOrder,#procSetOrder,#procSamplingSalt,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procRadiusBinding,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverID,#containerMode,#containerNodes,#logicalParentID,#paintSetName,#paintSetEnabled,#paintSetVisible,#paintView,#paintColor,#paintDocument,#paintEnabled,#paintDensity,#streetTrimStart,#streetTrimEnd,#centerStreetOffset,#areaAnalyzer,#areaUseLine,#areaLineWidth,#areaLineCaps,#areaUsePoints,#areaPointRadius,#wholeScaleMin,#wholeScaleMax,#fallScaleGraph,#fallDensityGraph,#areaFallConfigs,#areaFallDeleteWidths,#areaFallScaleWidths,#areaFallDensityWidths,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallAnalyzer,#fallDelete,#fallDeleteWidth,#fallScale,#fallScaleWidth,#fallScaleCurve,#fallDensity,#fallDensityWidth,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeKeepCorners,#edgeCornerAngle,#edgeCornerCount,#edgeFaceOut,#edgeCornerRadius,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#borderFaceOut,#streetFaceOut,#borderCornerRadius,#streetCornerRadius,#sourceForwardAxes,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius,#streetStraight,#sourcePoint,#sourceEmpty,#cleanupPlanar,#sourceZOffsetsWU,#sourceScales,#sourceWeights,#showCenters,#relaxEnabled,#relaxSpacing,#relaxIterations,#relaxStrength,#sources,#bakedNodes,#amount,#randomSeed,#scaleMinimum,#scaleMaximum,#tiltDegrees,#yawMinimum,#yawMaximum,#movementRange,#alignNormal,#showPoints,#pointsPerPlant,#updateMode,#populationMode,#plantsPerM2,#advancedAxes,#projectMove,#rotXMin,#rotXMax,#rotYMin,#rotYMax,#rotZMin,#rotZMax,#sclXMin,#sclXMax,#sclYMin,#sclYMax,#sclZMin,#sclZMax,#movXMinWU,#movXMaxWU,#movYMinWU,#movYMaxWU,#movZMinWU,#movZMaxWU,#distributionMode,#densityMap,#invertDensity,#diversityMode,#diversitySize,#diversitySeed,#roughness,#blurryEdge,#diversityNoise,#autoRender,#previewBudget,#pointColorMode,#solidPointColor,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths,#fieldFalloff,#fieldBoundaries,#fieldCombined,#fieldSamples,#fieldBandID)
+AminScatterLayerTabs=#(#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#containerNodes,#areaFallConfigs,#areaFallDeleteWidths,#areaFallScaleWidths,#areaFallDensityWidths,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallScaleCurve,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#sourceForwardAxes,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius,#sourcePoint,#sourceEmpty,#sourceZOffsetsWU,#sourceScales,#sourceWeights,#sources,#bakedNodes,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths)
 fn AminScatterCopyLayer origin destination = (
     origin.procAssertSchema()
     destination.setLayerTransfer true
@@ -237,7 +327,9 @@ fn AminScatterCopyLayer origin destination = (
             )
         )
         origin.syncStrokes()
-        for key in #(#sourceRowIDs,#visualSourceKeys,#visualSourceNodes,#visualSourceLabels,#visualSourceColors,#visualSourceColorSet,#strokeSides,#strokeModes,#strokeColorRows,#strokeColorKeys,#strokeSourceRows,#strokeSourceNodes,#strokeSourceIDs,#strokeMin,#strokeMax,#patternPaths) do setProperty destination key ((getProperty origin key) as array)
+        for key in #(#sourceRowIDs,#visualSourceKeys,#visualSourceLabels,#visualSourceColors,#visualSourceColorSet,#strokeSides,#strokeModes,#strokeColorRows,#strokeColorKeys,#strokeSourceRows,#strokeSourceIDs,#strokeMin,#strokeMax,#patternPaths,#pathIDs,#pathJoins,#strokeIDs,#strokePathIDs,#strokeStarts,#strokeEnds,#strokeStrengths,#strokeCurveEnabled,#strokeScaleModes,#strokeScaleSamples,#strokeCurveSamples,#strokeScaleGraphs,#strokeCurveGraphs,#strokeDisplayColors) do setProperty destination key ((getProperty origin key) as array)
+        destination.nextPathID=origin.nextPathID;destination.nextBandID=origin.nextBandID
+        destination.bandArrangement=origin.bandArrangement
         destination.analyzerNode=origin.analyzerNode
         destination.layerIDColor=origin.layerIDColor
         destination.surfaceNodes=origin.validSurfaces();destination.surface=undefined
@@ -259,15 +351,12 @@ fn AminScatterRefreshLayerPanels obj reopen:true = (obj.bindNativeUI())
 global CyrusEditStackKey,CyrusEditApplyLayer
 fn CyrusEditStackKey root = (root.procEditKey())
 fn CyrusEditApplyLayer root layer rows = (
- if root==undefined do return rows
- local owners=for n in refs.dependentNodes root where n.baseObject==root collect n
- if owners.count==0 do return rows
- local mods=owners[1].modifiers
+ local owners=if root==undefined then #() else (for n in refs.dependentNodes root where n.baseObject==root collect n)
+ local mods=if owners.count==0 then #() else owners[1].modifiers
  local active=for m in mods where classof m==CyrusScatterEdit and m.enabled collect m
- if active.count==0 do return rows
- local index=if layer.editLayerKey>0 then layer.editLayerKey else findItem root.layerObjects layer
+ local index=if layer.editLayerKey>0 then layer.editLayerKey else if root==undefined then 0 else findItem root.layerObjects layer
  local signature=layer.procBindingKey
- cyrusEditStack active rows index signature true true
+ cyrusEditStack active rows index signature
 )
 
 global CyrusFlowRolloutExtent,CyrusFlowLayerSummary
@@ -294,242 +383,13 @@ fn CyrusFlowLayerSummary root parent = (
     #(placed,shown,status)
 )
 
-global CyrusLayerUIRoot,CyrusLayerUIOwner,CyrusLayerUIPanel,CyrusCreateLayerEditorSection
--- @popup-factories
--- The generator inserts popup factories using the current component handlers.
--- @popup-factory-end
-fn CyrusCreateLayerEditorSection component root owner panel = (
-    throw "Generate the current UI before loading Cyrus."
-)
--- One modeless editor; each topic is built on first use and retained. Binding
--- changes only owner references and controls, never calculation parameters.
-global CyrusLayerEditor,CyrusOpenLayerEditor,CyrusBindLayerEditor,CyrusCloseLayerEditor,CyrusLayerEditorSections
-global CyrusLayerEditorSize,CyrusLayerEditorPosition
 global CyrusBrushSessionRoot,CyrusStopBrush
-if CyrusCloseLayerEditor!=undefined do CyrusCloseLayerEditor()
-if CyrusLayerEditorSize==undefined do CyrusLayerEditorSize=[920,800]
-if CyrusLayerEditorPosition==undefined do CyrusLayerEditorPosition=[80,80]
-fn CyrusLayerEditorSections root method:undefined = (
-    if CyrusLayerEditor==undefined or CyrusLayerEditor.root!=root then #()
-    else for r in CyrusLayerEditor.activeEditors() where method==undefined or isProperty r method collect r
-)
-fn CyrusCloseLayerEditor = (
-    if CyrusLayerEditor!=undefined do destroyDialog CyrusLayerEditor
-    CyrusLayerEditor=undefined
-    true
-)
-fn CyrusBindLayerEditor root = (
-    if CyrusLayerEditor!=undefined and CyrusLayerEditor.root==root and not CyrusLayerEditor.binding do CyrusLayerEditor.bind()
-    true
-)
-fn CyrusOpenLayerEditor root owner = (
-    if owner==undefined or findItem root.layerObjects owner==0 do return false
-    if CyrusLayerEditor!=undefined then (CyrusLayerEditor.retarget root owner;CyrusLayerEditor.visible=true;return true)
-    rollout editor "Cyrus Scatter 0.79.6 - Layer Editor" width:920 height:800 autoLayoutOnResize:true (
-        local root=CyrusLayerUIRoot,owner=CyrusLayerUIOwner,ownerNode=undefined,binding=false,controlsReady=false,closing=false
-        local clientSize=CyrusLayerEditorSize,layingOut=false
-        local editors=#(),pages=#(),pageEditors=#(#(),#(),#(),#(),#(),#()),built=#{},topic=1,members=#(),sets=#(),pageSections=#(),ownerStates=#(),lastSet=undefined
-        label setupInfo "" pos:[12,10] width:(clientSize.x-178) height:18
-        button updateNow "Update setup" pos:[clientSize.x-158,8] width:146 height:24 tooltip:"Recalculate every enabled layer in this setup, in order."
-        dropdownlist layerList "Layer" pos:[12,36] width:((clientSize.x-36)/2)
-        checkbutton assetsTab "Assets" pos:[12,90] width:((clientSize.x-34)/6) height:26 checked:true tooltip:"Models and receiving surfaces for this layer."
-        checkbutton populationTab "Population" pos:[12+(clientSize.x-22)/6,90] width:((clientSize.x-34)/6) height:26 tooltip:"Shared layer count, density, Area and retry limits."
-        checkbutton paintTab "Paint" pos:[12+2*(clientSize.x-22)/6,90] width:((clientSize.x-34)/6) height:26 tooltip:"Optional receiver-bound Paint Areas."
-        checkbutton transformTab "Transform" pos:[12+3*(clientSize.x-22)/6,90] width:((clientSize.x-34)/6) height:26 tooltip:"Layer random transforms and source assignment."
-        checkbutton spacingTab "Spacing" pos:[12+4*(clientSize.x-22)/6,90] width:((clientSize.x-34)/6) height:26 tooltip:"Self, between-set and layer-pair rules, radii and cleanup."
-        checkbutton statisticsTab "Statistics" pos:[12+5*(clientSize.x-22)/6,90] width:((clientSize.x-34)/6) height:26 tooltip:"Cached calculation results and workflow help."
-        label pageInfo "" pos:[12,122] width:(clientSize.x-24) height:34
-        subrollout assetsLeft "" pos:[8,162] width:((clientSize.x-24)/2) height:(clientSize.y-204) scrollBar:#asNeeded autoLayoutOnResize:true
-        subrollout assetsRight "" pos:[clientSize.x/2+4,162] width:((clientSize.x-24)/2) height:(clientSize.y-204) scrollBar:#asNeeded autoLayoutOnResize:true
-        subrollout populationLeft "" pos:[8,162] width:((clientSize.x-24)/2) height:(clientSize.y-204) scrollBar:#asNeeded autoLayoutOnResize:true
-        subrollout populationRight "" pos:[clientSize.x/2+4,162] width:((clientSize.x-24)/2) height:(clientSize.y-204) scrollBar:#asNeeded autoLayoutOnResize:true
-        subrollout paintLeft "" pos:[8,162] width:((clientSize.x-24)/2) height:(clientSize.y-204) scrollBar:#asNeeded autoLayoutOnResize:true
-        subrollout paintRight "" pos:[clientSize.x/2+4,162] width:((clientSize.x-24)/2) height:(clientSize.y-204) scrollBar:#asNeeded autoLayoutOnResize:true
-        subrollout transformLeft "" pos:[8,162] width:((clientSize.x-24)/2) height:(clientSize.y-204) scrollBar:#asNeeded autoLayoutOnResize:true
-        subrollout transformRight "" pos:[clientSize.x/2+4,162] width:((clientSize.x-24)/2) height:(clientSize.y-204) scrollBar:#asNeeded autoLayoutOnResize:true
-        subrollout spacingLeft "" pos:[8,162] width:((clientSize.x-24)/2) height:(clientSize.y-204) scrollBar:#asNeeded autoLayoutOnResize:true
-        subrollout spacingRight "" pos:[clientSize.x/2+4,162] width:((clientSize.x-24)/2) height:(clientSize.y-204) scrollBar:#asNeeded autoLayoutOnResize:true
-        subrollout statisticsLeft "" pos:[8,162] width:((clientSize.x-24)/2) height:(clientSize.y-204) scrollBar:#asNeeded autoLayoutOnResize:true
-        subrollout statisticsRight "" pos:[clientSize.x/2+4,162] width:((clientSize.x-24)/2) height:(clientSize.y-204) scrollBar:#asNeeded autoLayoutOnResize:true
-        label resultInfo "" pos:[12,clientSize.y-32] width:(clientSize.x-170) height:22
-        button refreshButton "Refresh fields" pos:[clientSize.x-148,clientSize.y-34] width:136 height:24 tooltip:"Read current settings and cached counts; does not rebuild placements."
-        timer statusTimer interval:1000 active:false
-        fn validOwner = (isValidNode ownerNode and ownerNode.baseObject==root and findItem root.layerObjects owner>0 and owner.logicalParentID=="")
-        fn activeEditors = pageEditors[topic]
-        fn stopTools = (
-            if CyrusBrushSessionRoot==root do CyrusStopBrush()
-            -- End Max's pick mode before the same controls acquire a new owner.
-            max select
-        )
-        fn rememberOwner = (
-            if owner!=undefined do (
-                local row=0
-                for i=1 to ownerStates.count where ownerStates[i][1]==owner.layerID do row=i
-                local state=#(owner.layerID,topic,for r in editors collect #(r,r.open))
-                if row==0 then append ownerStates state else ownerStates[row]=state
-            )
-        )
-        fn refreshStats = (
-            if not controlsReady or not validOwner() do return false
-            local summary=CyrusFlowLayerSummary root owner
-            local unit=if root.viewportMode==1 and not root.groupCenters then " preview samples" else " shown"
-            local text=(if root.updateMode==1 then "Manual" else "Live")+" | "+summary[3]+" | "+(CyrusUICount summary[1])+" placed / "+(CyrusUICount summary[2])+unit
-            if resultInfo.text!=text do resultInfo.text=text
-            local caption="Cyrus Scatter 0.79.6 | "+ownerNode.name+" / "+(root.layerCaption owner)
-            if editor.title!=caption do editor.title=caption
-            local setupText="Setup: "+ownerNode.name+"  |  Selecting scene models keeps this editor on its layer"
-            if setupInfo.text!=setupText do setupInfo.text=setupText
-            true
-        )
-        fn retainListItems control values = (
-            local existing=control.items,changed=existing.count!=values.count
-            if not changed do for i=1 to values.count while not changed do changed=existing[i]!=values[i]
-            if changed do control.items=values
-        )
-        fn bindEditors = (
-            if not validOwner() do return false
-            local previous=binding;binding=true
-            try (
-                members=root.logicalLayers()
-                retainListItems layerList (for m in members collect root.layerCaption m)
-                local layerIndex=findItem members owner
-                if layerList.selection!=layerIndex do layerList.selection=layerIndex
-                for r in editors do (
-                    local changedOwner=r.root!=root or r.owner!=owner
-                    r.root=root;r.owner=owner;r.panel=editor
-                    if findItem (activeEditors()) r>0 then r.bind (if isProperty r #setSpecific and r.setSpecific then owner else owner)
-                    else (r.controlsReady=false;if changedOwner and isProperty r #obj do r.obj=undefined)
-                )
-                lastSet=owner
-                if (CyrusContainerPanel root).controlsReady and not (CyrusContainerPanel root).binding do (CyrusContainerPanel root).bindEditors()
-                refreshStats();binding=previous;true
-            )catch(binding=previous;throw())
-        )
-        fn bind = (
-            if binding or closing do return false
-            if not validOwner() then (CyrusCloseLayerEditor();false) else bindEditors()
-        )
-        fn showTopic index rebind:false = (
-            if index<1 or index>6 do return false
-            if topic==index and built[index] do (
-                local tabs=#(assetsTab,populationTab,paintTab,transformTab,spacingTab,statisticsTab)
-                local previous=binding;binding=true;tabs[index].checked=true;binding=previous
-                if rebind then bindEditors() else refreshStats()
-                return true
-            )
-            if topic!=index do stopTools()
-            topic=index
-            local tabs=#(assetsTab,populationTab,paintTab,transformTab,spacingTab,statisticsTab)
-            for i=1 to tabs.count do tabs[i].checked=i==index
-            -- Create native controls only after their parent is visible. Max
-            -- can otherwise retain empty child pages after a height change.
-            for p=1 to pages.count do for c in pages[p] do c.visible=p==index
-            if not built[index] do (
-                for col=1 to 2 do for spec in pageSections[index][col] do (
-                    local r=CyrusCreateLayerEditorSection spec[1] root owner editor
-                    append editors r
-                    append pageEditors[index] r
-                    addSubRollout pages[index][col] r rolledUp:spec[2]
-                )
-                built[index]=true
-            )
-            pageInfo.text=(#(
-                "MODELS  |  Choose layer models and radii, or use source rectangles. Parked models retain their settings.",
-                "AMOUNT  |  Set this layer count, density, seed and work limits.",
-                "VECTOR PAINT  |  Areas bind individual layer surfaces. Paint merges borders; Erase cuts holes. Density and scale curves control edge fading.",
-                "LAYER DEFAULTS  |  Randomize transforms and source assignment. Per-model offsets, scale and forward axes are under Assets.",
-                "SPACING  |  Within-layer and between-layer spacing remain independent.",
-                "CACHED RESULTS  |  Last completed calculation. In Manual mode, pending changes appear after Update."
-            ))[index]
-            bindEditors();true
-        )
-        fn retarget nextRoot nextOwner = (
-            if root==nextRoot and owner==nextOwner do return bind()
-            stopTools();rememberOwner()
-            if root!=nextRoot do ownerStates=#()
-            root=nextRoot;owner=nextOwner;ownerNode=undefined
-            for node in refs.dependentNodes root where isValidNode node and node.baseObject==root do if ownerNode==undefined do ownerNode=node
-            if not validOwner() do (CyrusCloseLayerEditor();return false)
-            local nextTopic=1,state=undefined
-            for row in ownerStates where row[1]==owner.layerID do (nextTopic=row[2];state=row)
-            showTopic nextTopic rebind:true
-            if state!=undefined do for r in editors do for row in state[3] where row[1]==r do r.open=row[2]
-            true
-        )
-        on editor open do (
-            pages=#(#(assetsLeft,assetsRight),#(populationLeft,populationRight),#(paintLeft,paintRight),#(transformLeft,transformRight),#(spacingLeft,spacingRight),#(statisticsLeft,statisticsRight))
-            pageSections=#(
-                #(#(#(#sourceUI,false)),#(#(#sourceContainersUI,false),#(#setsUI,true))),
-                #(#(#(#distributionUI,false),#(#populationPolicyUI,false)),#(#(#areaUI,false))),
-                #(#(#(#brushUI,false)),#()),
-                #(#(#(#randomUI,false)),#(#(#diversityUI,false))),
-                #(#(#(#proceduralUI,false),#(#instanceRadiusUI,true)),#(#(#spacingUI,false),#(#separationUI,false))),
-                #(#(#(#detailsUI,false)),#(#(#workflowUI,false)))
-            )
-            for node in refs.dependentNodes root where isValidNode node and node.baseObject==root do if ownerNode==undefined do ownerNode=node
-            controlsReady=true;showTopic 1
-        )
-        on editor resized size do if not layingOut do (
-            local target=[amax size.x 720,amax size.y 500]
-            if target!=size then setDialogSize editor target else (
-                -- The rollout's intrinsic height can differ from the dialog's
-                -- client area. Base scroll viewports and footer on this event.
-                layingOut=true;clientSize=size
-                try(updateRolloutLayout editor forceUpdate:true)catch(layingOut=false;throw())
-                layingOut=false
-            )
-        )
-        on editor close do (
-            closing=true;statusTimer.active=false;stopTools()
-            CyrusLayerEditorSize=getDialogSize editor;CyrusLayerEditorPosition=getDialogPos editor
-            editors=#();ownerStates=#();owner=undefined;root=undefined;ownerNode=undefined;controlsReady=false
-            CyrusLayerEditor=undefined
-        )
-        on assetsTab changed value do if not binding do showTopic 1
-        on populationTab changed value do if not binding do showTopic 2
-        on paintTab changed value do if not binding do showTopic 3
-        on transformTab changed value do if not binding do showTopic 4
-        on spacingTab changed value do if not binding do showTopic 5
-        on statisticsTab changed value do if not binding do showTopic 6
-        on layerList selected index do if not binding and index>0 do (
-            local next=members[index]
-            if next==owner do return false
-            undo off root.selectLayer (findItem root.layerObjects next)
-            retarget root next
-            if (CyrusContainerPanel root).controlsReady do (CyrusContainerPanel root).bind()
-        )
-        on updateNow pressed do try(root.refreshAll();CyrusViewportRedraw();bind())catch(messageBox (getCurrentException()) title:"Cyrus update")
-        on refreshButton pressed do bind()
-        on statusTimer tick do (
-            statusTimer.active=false
-            if CyrusInteractionHeld() do (statusTimer.active=true;return false)
-            if not validOwner() then CyrusCloseLayerEditor() else if not CyrusInteractionHeld() do (
-                local sourceChanges=false
-                for leaf in root.layerSets owner where leaf.containerUIChanged do (leaf.containerUIChanged=false;sourceChanges=true)
-                if sourceChanges or lastSet!=owner then bind() else refreshStats()
-            )
-        )
-    )
-    CyrusLayerUIRoot=root;CyrusLayerUIOwner=owner
-    CyrusLayerEditor=editor
-    try (
-        createDialog editor width:CyrusLayerEditorSize.x height:CyrusLayerEditorSize.y pos:CyrusLayerEditorPosition style:#(#style_titlebar,#style_sysmenu,#style_resizing) autoLayoutOnResize:false escapeEnable:false
-        true
-    )catch(CyrusCloseLayerEditor();throw())
-)
-callbacks.removeScripts id:#CyrusLayerEditorLifecycle
-callbacks.addScript #filePreOpen "CyrusCloseLayerEditor()" id:#CyrusLayerEditorLifecycle persistent:false
-callbacks.addScript #systemPreReset "CyrusCloseLayerEditor()" id:#CyrusLayerEditorLifecycle persistent:false
-callbacks.addScript #nodePreDelete "if CyrusLayerEditor!=undefined and callbacks.notificationParam()==CyrusLayerEditor.ownerNode do CyrusCloseLayerEditor()" id:#CyrusLayerEditorLifecycle persistent:false
-callbacks.addScript #sceneUndo "if CyrusLayerEditor!=undefined do CyrusLayerEditor.bind()" id:#CyrusLayerEditorLifecycle persistent:false
-callbacks.addScript #sceneRedo "if CyrusLayerEditor!=undefined do CyrusLayerEditor.bind()" id:#CyrusLayerEditorLifecycle persistent:false
-
 
 plugin simpleObject AminScatterObject
 name:"Cyrus Scatter"
 classID:#(0x617d43a1,0x395c2e17)
 category:"Cyrus"
-version:56
+version:58
 initialRollupState:0x8
 (
     local layerTransfer=false
@@ -586,7 +446,17 @@ initialRollupState:0x8
         this.markInputDirty();true
     )
     fn liveTimeChanged = (
-        if this.updateMode!=2 or not this.cyrusEnabled do return false
+        if not this.cyrusEnabled do return false
+        if this.updateMode!=2 do (
+            -- Manual placements remain frozen, but an explicitly enabled field
+            -- view follows animated inputs and labels them as pending.
+            local changed=false
+            for i=1 to this.layerObjects.count where this.enabledLayer i do (
+                local leaf=this.layerObjects[i]
+                if leaf.fieldPreviewEnabled() and leaf.invalidateInputTime() do changed=true
+            )
+            return changed
+        )
         local rootChanged=this.invalidateInputTime(),changed=rootChanged
         for i=1 to this.layerObjects.count where this.enabledLayer i do (
             local leaf=this.layerObjects[i]
@@ -644,7 +514,6 @@ initialRollupState:0x8
         procRuleB type:#stringTab tabSize:0 tabSizeVariable:true
         procRuleEnabled type:#boolTab tabSize:0 tabSizeVariable:true
         procRuleMultiplier type:#floatTab tabSize:0 tabSizeVariable:true
-        procRuleGap type:#floatTab tabSize:0 tabSizeVariable:true invisibleInTV:true
         procRuleGapWU type:#worldUnitsTab tabSize:0 tabSizeVariable:true
         procRulePlanar type:#boolTab tabSize:0 tabSizeVariable:true
         containerMode type:#integer default:1
@@ -697,6 +566,7 @@ initialRollupState:0x8
     local procLastStats=#(),procLastRounds=#(),procPreparedBuilds=0,procPreparedHits=0,procEpoch=0,procPublishedDisplayKey="",procManualRevision=0
     local procPublishedOwners=#(),procPublishedSources=#(),procPublishedFinalKeep=#()
     local procPublishedRadii=#(),procPublishedInfo=#()
+    local procPublishedMetadata=#(),procDisplayFailure=false
     local procDensityMap=undefined,procDensityWatch=undefined,procDensityRevision=0
     local procGeometryRevision=0,containerConfigKey="",containerPending=#(),containerScan=true,containerScans=0,containerTests=0
     local containerMembershipKey="",containerActive=#(),containerReconciling=false
@@ -773,7 +643,7 @@ initialRollupState:0x8
     )
     fn setOverlapOwner root = (overlapOwner=root)
     fn overlapStats = (#(overlapBefore,overlapBefore-overlapAfter,overlapAfter))
-    local radiusPreview=#(),radiusCache=undefined
+    local radiusPreview=#(),inspectionCache=undefined
     parameters finalSettings (
         finalCleanup type:#boolean default:false
         finalNeighborRadius type:#worldunits default:100
@@ -805,27 +675,34 @@ initialRollupState:0x8
     parameters radiusDisplaySettings (
         radiusDisplayLimit type:#integer default:2000
         radiusDisplayAll type:#boolean default:false
+        radiusDisplayMetric type:#integer default:1
         on radiusDisplayLimit set v do markInputDirty()
         on radiusDisplayAll set v do markInputDirty()
+        on radiusDisplayMetric set v do markInputDirty()
     )
     parameters radiusSettings (
-        sourceRadii type:#floatTab tabSize:0 tabSizeVariable:true invisibleInTV:true
         sourceRadiiWU type:#worldUnitsTab tabSize:0 tabSizeVariable:true
         sourceFollowScale type:#boolTab tabSize:0 tabSizeVariable:true
         sourceShowRadius type:#boolTab tabSize:0 tabSizeVariable:true
+        sourceAutoRadius type:#boolTab tabSize:0 tabSizeVariable:true
         on sourceRadiiWU set v i do markInputDirty()
         on sourceFollowScale set v i do markInputDirty()
         on sourceShowRadius set v i do markInputDirty()
+        on sourceAutoRadius set v i do markInputDirty()
     )
     fn sourceRadius i = (if i>0 and i<=sourceRadiiWU.count then sourceRadiiWU[i] else 0.0)
     fn sourceFollows i = (i>0 and i<=sourceFollowScale.count and sourceFollowScale[i])
     fn sourceShows i = (i>0 and i<=sourceShowRadius.count and sourceShowRadius[i])
+    fn sourceUsesAuto i = (i>0 and i<=sourceAutoRadius.count and sourceAutoRadius[i] and not this.isPointSource i and not this.isEmptySource i)
+    fn sourceCanAuto i = (i>0 and i<=sources.count and isValidNode sources[i] and not this.isPointSource i and not this.isEmptySource i and cyrusSourceSupportsAuto sources[i])
     fn setSourceRadius rows value kind:1 = (
+        if kind==4 and value do for i in rows where not this.sourceCanAuto i do throw "Auto Radius is unavailable for a selected source. Point, Empty and unqualified source types use Manual radius."
         undo "Source collision radius" on (
             while sourceRadiiWU.count<sources.count do append sourceRadiiWU 0.0
             while sourceFollowScale.count<sources.count do append sourceFollowScale false
             while sourceShowRadius.count<sources.count do append sourceShowRadius false
-            for i in rows do case kind of (1: (sourceRadiiWU[i]=value); 2: (sourceFollowScale[i]=value); 3: (sourceShowRadius[i]=value))
+            while sourceAutoRadius.count<sources.count do append sourceAutoRadius false
+            for i in rows do case kind of (1: (sourceRadiiWU[i]=value); 2: (sourceFollowScale[i]=value); 3: (sourceShowRadius[i]=value); 4: (sourceAutoRadius[i]=value))
         )
         markInputDirty()
     )
@@ -965,11 +842,11 @@ initialRollupState:0x8
             if not (CyrusAnalyzerFilter fallAnalyzer) do throw "Area Edge Falloff: pick a Surface Analyzer."
             local paths=fallAnalyzer.packedLines fallAnalyzer.boundaryVertices fallAnalyzer.boundaryCounts
             if paths.count==0 do throw "Area Edge Falloff: Analyzer has no Boundary. Run Analyze first."
-            rows=cyrusBoundaryFalloff rows paths cfg (this.effectiveSeed()) true
+            rows=cyrusBoundaryFalloff rows paths cfg (this.effectiveSeed())
         )
         for i=1 to this.areaNodes.count where isValidNode this.areaNodes[i] do (
             cfg=getFallConfig this.areaNodes[i]
-            if cfg[1] or cfg[3] or cfg[6] do rows=cyrusAreaFalloff rows this.areaNodes[i] cfg (((mod ((this.effectiveSeed() as integer64)+i*1009) 2147483647)) as integer) (if i<=this.areaModes.count then this.areaModes[i] else 1) true
+            if cfg[1] or cfg[3] or cfg[6] do rows=cyrusAreaFalloff rows this.areaNodes[i] cfg (((mod ((this.effectiveSeed() as integer64)+i*1009) 2147483647)) as integer) (if i<=this.areaModes.count then this.areaModes[i] else 1)
         )
         rows
     )
@@ -988,11 +865,8 @@ initialRollupState:0x8
         on edgeKeepCorners set v do markInputDirty()
         on edgeCornerAngle set v do markInputDirty()
         on edgeCornerCount set v do markInputDirty()
-        edgeOffsets type:#floatTab tabSize:0 tabSizeVariable:true invisibleInTV:true
         edgeOffsetsWU type:#worldUnitsTab tabSize:0 tabSizeVariable:true
-        edgeAlong type:#floatTab tabSize:0 tabSizeVariable:true invisibleInTV:true
         edgeAlongWU type:#worldUnitsTab tabSize:0 tabSizeVariable:true
-        edgeAcross type:#floatTab tabSize:0 tabSizeVariable:true invisibleInTV:true
         edgeAcrossWU type:#worldUnitsTab tabSize:0 tabSizeVariable:true
         edgeFaceOut type:#boolean default:true
         edgeCornerRadius type:#worldunits default:10.0
@@ -1023,7 +897,6 @@ initialRollupState:0x8
         markInputDirty()
     )
     parameters sourceTransformSettings (
-        sourceZOffsets type:#floatTab tabSize:0 tabSizeVariable:true invisibleInTV:true
         sourceZOffsetsWU type:#worldUnitsTab tabSize:0 tabSizeVariable:true
         sourceScales type:#floatTab tabSize:0 tabSizeVariable:true
         on sourceZOffsetsWU set v i do markInputDirty()
@@ -1084,17 +957,11 @@ initialRollupState:0x8
         sclYMax type:#float default:1
         sclZMin type:#float default:1
         sclZMax type:#float default:1
-        movXMin type:#float default:0 invisibleInTV:true
         movXMinWU type:#worldUnits default:0
-        movXMax type:#float default:0 invisibleInTV:true
         movXMaxWU type:#worldUnits default:0
-        movYMin type:#float default:0 invisibleInTV:true
         movYMinWU type:#worldUnits default:0
-        movYMax type:#float default:0 invisibleInTV:true
         movYMaxWU type:#worldUnits default:0
-        movZMin type:#float default:0 invisibleInTV:true
         movZMinWU type:#worldUnits default:0
-        movZMax type:#float default:0 invisibleInTV:true
         movZMaxWU type:#worldUnits default:0
         on projectMove set v do markInputDirty()
         on rotXMin set v do (if not layerTransfer and v>rotXMax do rotXMax=v;markInputDirty())
@@ -1118,13 +985,9 @@ initialRollupState:0x8
     )
     parameters distributionSettings (
         distributionMode type:#integer default:1
-        clusterCount type:#integer default:12
-        clusterRadius type:#worldUnits default:10
         densityMap type:#textureMap
         invertDensity type:#boolean default:false
         on distributionMode set v do markInputDirty()
-        on clusterCount set v do markInputDirty()
-        on clusterRadius set v do markInputDirty()
         on densityMap set v do markInputDirty()
         on invertDensity set v do markInputDirty()
     )
@@ -1173,18 +1036,9 @@ initialRollupState:0x8
     parameters lineSettings (
         patternLines type:#nodeTab tabSize:0 tabSizeVariable:true useNodeTmValidity:true useNodeOsValidity:true
         patternWidths type:#worldUnitsTab tabSize:0 tabSizeVariable:true
-        patternGroups type:#intTab tabSize:0 tabSizeVariable:true
-        patternRestGroup type:#integer default:-1
         on patternLines set v i do markInputDirty()
         on patternWidths set v i do markInputDirty()
-        on patternGroups set v i do markInputDirty()
-        on patternRestGroup set v do markInputDirty()
     )
-    fn assignLineGroup rows key = (
-        undo "Cyrus Scatter band group" on (for i in rows where i>0 and i<=patternGroups.count do patternGroups[i]=key)
-        markInputDirty()
-    )
-    fn assignRestGroup key = (patternRestGroup=key;markInputDirty())
     fn cspImpl_externalChanged changedNodes = (
         if updateMode!=2 then false else (
             local affected=false
@@ -1271,11 +1125,26 @@ initialRollupState:0x8
         markInputDirty();i
     )
     fn replacePointSource row node = (
-        if not (isPointSource row) or not (usableSource node) or findItem sources node>0 do return false
+        if not (isPointSource row) or not (usableSource node) or (findItem sources node>0 and findItem sources node!=row) do return false
         this.ensureSourceRows()
         undo "Cyrus Scatter replace point" on (
             sources[row]=node;sourcePoint[row]=false;sourceEmpty[row]=false
         )
+        containerConfigKey="";containerUIChanged=true
+        markInputDirty();previewBuildCount=0;true
+    )
+    fn makePointSource row = (
+        if row<1 or row>sources.count or this.isEmptySource row or not this.usableSource sources[row] do return false
+        this.ensureSourceRows()
+        undo "Cyrus Scatter make Point" on (
+            while sourcePoint.count<sources.count do append sourcePoint false
+            while sourceEmpty.count<sources.count do append sourceEmpty false
+            sourcePoint[row]=true;sourceEmpty[row]=true
+        )
+        -- Retain the registered node so an automatic container scan cannot
+        -- add it again. validSources resolves this row to a Point token; the
+        -- scene object, row identity and stored Manual/Auto settings survive.
+        containerConfigKey="";containerUIChanged=true
         markInputDirty();previewBuildCount=0;true
     )
     fn placementRadii rows plants = (this.procRadii rows plants)
@@ -1283,22 +1152,48 @@ initialRollupState:0x8
         radiusPreview=#()
         if plants.count>0 and (findItem (sourceShowRadius as array) true)>0 do (
             local radii=if values==undefined then placementRadii rows plants else values
-            local eligible=for j=1 to rows.count where (sourceShows (sourceRow plants[rows[j][2]])) and radii[j]>0 collect j
+            if radiusDisplayMetric<1 or radiusDisplayMetric>2 do throw "Radius display metric must be XY or 3D."
+            local eligible=for j=1 to rows.count where (sourceShows (sourceRow plants[rows[j][2]])) and radii[j][radiusDisplayMetric]>0 collect j
             local count=if radiusDisplayAll then eligible.count else amin (amax 0 radiusDisplayLimit) eligible.count
+            local ringsPerRadius=if radiusDisplayMetric==1 then 1 else 3
+            if count*ringsPerRadius>10000 do throw "Radius display exceeds 10,000 rings. Reduce Radii / layer (at most 3,333 in 3D)."
             for k=1 to count do (
                 local j=eligible[1+(floor((k-1.0)*eligible.count/(amax 1 count)) as integer)]
                 local i=sourceRow plants[rows[j][2]]
-                if sourceShows i and radii[j]>0 do (
-                    local center=rows[j][1].row4,r=radii[j]
-                    local points=for k=0 to 23 collect center+[r*cos(k*15),r*sin(k*15),0]
-                    append radiusPreview #(points,sourceColor i)
+                if sourceShows i and radii[j][radiusDisplayMetric]>0 do (
+                    local center=rows[j][1].row4,r=radii[j][radiusDisplayMetric]
+                    for axis=1 to ringsPerRadius do (
+                        local points=#()
+                        for segment=0 to 23 do (
+                            local a=r*cos(segment*15),b=r*sin(segment*15)
+                            local offset=case axis of (
+                                1: [a,b,0]
+                                2: [a,0,b]
+                                default: [0,a,b]
+                            )
+                            append points (center+offset)
+                        )
+                        append radiusPreview #(points,sourceColor i)
+                    )
                 )
             )
         )
     )
     fn radiusDisplayCount = radiusPreview.count
-    fn drawRadii = (if radiusCache!=undefined do aminScatterDrawPreview radiusCache false white)
+    fn drawInspection = (if inspectionCache!=undefined do aminScatterDrawPreview inspectionCache false white)
     fn validSources = (for i=1 to sources.count where (isEmptySource i) or (usableSource sources[i]) collect (if isEmptySource i then -i else sources[i]))
+    parameters fieldDisplaySettings (
+        fieldFalloff type:#boolean default:false animatable:false
+        fieldBoundaries type:#boolean default:false animatable:false
+        fieldCombined type:#boolean default:false animatable:false
+        fieldSamples type:#integer default:4000 animatable:false
+        fieldBandID type:#integer default:0 animatable:false
+        on fieldFalloff set v do markInputDirty()
+        on fieldBoundaries set v do markInputDirty()
+        on fieldCombined set v do markInputDirty()
+        on fieldSamples set v do markInputDirty()
+        on fieldBandID set v do markInputDirty()
+    )
     parameters strokeSettings (
         streetStraight type:#boolean default:false
         on streetStraight set v do markInputDirty()
@@ -1308,68 +1203,233 @@ initialRollupState:0x8
         strokeColorRows type:#intTab tabSize:0 tabSizeVariable:true
         strokeColorKeys type:#intTab tabSize:0 tabSizeVariable:true
         strokeSourceRows type:#intTab tabSize:0 tabSizeVariable:true
-        strokeSourceNodes type:#nodeTab tabSize:0 tabSizeVariable:true
         strokeSourceIDs type:#stringTab tabSize:0 tabSizeVariable:true
         strokeMin type:#floatTab tabSize:0 tabSizeVariable:true
         strokeMax type:#floatTab tabSize:0 tabSizeVariable:true
         analyzerNode type:#node useNodeTmValidity:true useNodeOsValidity:true
         on analyzerNode set v do markInputDirty()
     )
-    fn syncStrokes = (
-        this.ensureSourceRows()
-        -- Enroll node-based choices already saved in current schema-55 scenes.
-        undo off while strokeSourceIDs.count<strokeSourceRows.count do (
-            local j=strokeSourceIDs.count+1,k=if j<=strokeSourceNodes.count then findItem sources strokeSourceNodes[j] else 0
-            append strokeSourceIDs (if k>0 then sourceRowIDs[k] else "")
-        )
-        while edgeRotX.count<patternLines.count do append edgeRotX 0.0
-        while edgeRotY.count<patternLines.count do append edgeRotY 0.0
-        while edgeRotZ.count<patternLines.count do append edgeRotZ 0.0
-        while edgeOffsetsWU.count<patternLines.count do append edgeOffsetsWU 0.0
-        while edgeAlongWU.count<patternLines.count do append edgeAlongWU 0.0
-        while edgeAcrossWU.count<patternLines.count do append edgeAcrossWU 0.0
-        while strokeSides.count<patternLines.count do append strokeSides 1
-        for n in patternLines where isValidNode n and findItem patternPaths n==0 do append patternPaths n
-        while strokeModes.count<patternLines.count do append strokeModes 1
-        while strokeMin.count<patternLines.count do append strokeMin 1.0
-        while strokeMax.count<patternLines.count do append strokeMax 1.0
+    -- Schema 58: IDs are local to the existing layer namespace, never RNG seeds.
+    parameters splineBandSettings (
+        nextPathID type:#integer default:1
+        nextBandID type:#integer default:1
+        pathIDs type:#intTab tabSize:0 tabSizeVariable:true
+        pathJoins type:#intTab tabSize:0 tabSizeVariable:true
+        strokeIDs type:#intTab tabSize:0 tabSizeVariable:true
+        strokePathIDs type:#intTab tabSize:0 tabSizeVariable:true
+        bandArrangement type:#integer default:1
+        strokeStarts type:#worldUnitsTab tabSize:0 tabSizeVariable:true
+        strokeEnds type:#worldUnitsTab tabSize:0 tabSizeVariable:true
+        strokeStrengths type:#floatTab tabSize:0 tabSizeVariable:true
+        strokeCurveEnabled type:#boolTab tabSize:0 tabSizeVariable:true
+        strokeCurveSamples type:#stringTab tabSize:0 tabSizeVariable:true
+        strokeCurveGraphs type:#stringTab tabSize:0 tabSizeVariable:true
+        strokeScaleModes type:#intTab tabSize:0 tabSizeVariable:true
+        strokeScaleSamples type:#stringTab tabSize:0 tabSizeVariable:true
+        strokeScaleGraphs type:#stringTab tabSize:0 tabSizeVariable:true
+        strokeDisplayColors type:#colorTab tabSize:0 tabSizeVariable:true
+        on bandArrangement set v do markInputDirty()
+        on pathJoins set v i do markInputDirty()
+        on strokeStarts set v i do markInputDirty()
+        on strokeEnds set v i do markInputDirty()
+        on strokeStrengths set v i do markInputDirty()
+        on strokeCurveEnabled set v i do markInputDirty()
+        on strokeCurveSamples set v i do markInputDirty()
+        on strokeScaleModes set v i do markInputDirty()
+        on strokeScaleSamples set v i do markInputDirty()
     )
+    fn allocatePathID = (
+        if nextPathID<1 or nextPathID>=2147483647 do throw "Path identity space exhausted."
+        local result=nextPathID;nextPathID+=1;result
+    )
+    fn allocateBandID = (
+        if nextBandID<1 or nextBandID>=2147483647 do throw "Band identity space exhausted."
+        local result=nextBandID;nextBandID+=1;result
+    )
+    fn syncBandRecords = (
+        if pathIDs.count!=patternPaths.count or pathJoins.count!=pathIDs.count do throw "Saved Path records are incomplete; this scene requires complete schema-58 records."
+        for key in #(#patternWidths,#strokeSides,#strokeModes,#strokeMin,#strokeMax,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#strokeIDs,#strokePathIDs,#strokeStarts,#strokeEnds,#strokeStrengths,#strokeCurveEnabled,#strokeScaleModes,#strokeScaleSamples,#strokeCurveSamples,#strokeScaleGraphs,#strokeCurveGraphs,#strokeDisplayColors) where (getProperty this key).count!=patternLines.count do throw ("Incomplete Band records: "+(key as string))
+        if strokeSourceRows.count!=strokeSourceIDs.count or strokeColorRows.count!=strokeColorKeys.count do throw "Incomplete Band assignment records."
+        if pathIDs.count>32 or strokeIDs.count>64 do throw "A layer supports at most 32 Paths and 64 Bands."
+        local seen=#(),largest=0
+        for id in pathIDs do (if id<1 or findItem seen id>0 do throw "Saved Path identities must be positive and unique.";append seen id;largest=amax largest id)
+        if nextPathID<=largest do throw "Saved Path identity counter is invalid."
+        seen=#();largest=0
+        for id in strokeIDs do (if id<1 or findItem seen id>0 do throw "Saved Band identities must be positive and unique.";append seen id;largest=amax largest id)
+        if nextBandID<=largest do throw "Saved Band identity counter is invalid."
+        for i=1 to strokePathIDs.count do (
+            local p=findItem pathIDs strokePathIDs[i]
+            if p==0 or (isValidNode patternLines[i] and patternPaths[p]!=patternLines[i]) do throw "Saved Band-to-Path identity is inconsistent."
+        )
+        for mode in strokeScaleModes where mode<1 or mode>3 do throw "Unknown saved Band scale profile."
+        for rows in #(strokeSourceRows,strokeColorRows) do for row in rows where row<1 or row>strokeIDs.count do throw "Band assignment refers to a missing row."
+        true
+    )
+    fn addBandPath node = (
+        if not isValidNode node do throw "Choose an active closed Path."
+        local slot=findItem patternPaths node
+        if slot>0 do return pathIDs[slot]
+        if patternPaths.count>=32 do throw "A layer supports at most 32 Paths."
+        local id=this.allocatePathID()
+        append patternPaths node;append pathIDs id;append pathJoins 1
+        markInputDirty();id
+    )
+    fn bandInterval row = (
+        if bandArrangement==2 do return #(strokeStarts[row],strokeEnds[row])
+        local first=0.0
+        for i=1 to row-1 where strokePathIDs[i]==strokePathIDs[row] and strokeSides[i]==strokeSides[row] do first+=patternWidths[i]
+        #(first,first+patternWidths[row])
+    )
+    fn bandName row = (
+        local ordinal=0
+        for i=1 to row where strokePathIDs[i]==strokePathIDs[row] and strokeSides[i]==strokeSides[row] do ordinal+=1
+        local prefix=#("Out ","In ","Both ","Radius ","Single ","Street ","Edge ")
+        prefix[strokeSides[row]]+(ordinal as string)
+    )
+    fn sourceBandRows sourceIndex = (
+        if diversityMode!=3 or sourceIndex<1 or sourceIndex>sourceRowIDs.count do return #()
+        local id=sourceRowIDs[sourceIndex],group=this.colorKey (this.sourceColor sourceIndex),result=#()
+        for row=1 to strokeIDs.count do (
+            local selected=false
+            if strokeModes[row]==1 then (for j=1 to strokeColorRows.count where strokeColorRows[j]==row and strokeColorKeys[j]==group do selected=true)
+            else (for j=1 to strokeSourceRows.count where strokeSourceRows[j]==row and strokeSourceIDs[j]==id do selected=true)
+            if selected do append result row
+        )
+        result
+    )
+    fn sourceBandLabel sourceIndex = (
+        local rows=this.sourceBandRows sourceIndex
+        if rows.count==0 then "Unassigned" else if rows.count==1 then this.bandName rows[1] else (rows.count as string)+" Bands"
+    )
+    fn bandAssignmentCount row = (
+        local count=0
+        for i=1 to sources.count where findItem (this.sourceBandRows i) row>0 do count+=1
+        count
+    )
+    fn sourceBandDetails sourceIndex = (
+        local rows=this.sourceBandRows sourceIndex,stream=stringStream ""
+        for row in rows do (
+            local slot=findItem pathIDs strokePathIDs[row],node=if slot>0 then patternPaths[slot] else undefined,interval=this.bandInterval row
+            format "% #% / %: % - % (%)\n" (if isValidNode node then node.name else "Missing Path") strokePathIDs[row] (this.bandName row) (units.formatValue interval[1]) (units.formatValue interval[2]) (if strokeModes[row]==1 then "group" else "direct") to:stream
+        )
+        if rows.count==0 then "No authored Band assignment." else stream as string
+    )
+    fn consecutiveBandProposal = (
+        local result=#(),keys=#(),totals=#(),lossless=true
+        for i=1 to strokeIDs.count do (
+            local key=(strokePathIDs[i] as string)+":"+(strokeSides[i] as string),slot=findItem keys key
+            if slot==0 do (append keys key;append totals 0.0;slot=keys.count)
+            local first=totals[slot],width=strokeEnds[i]-strokeStarts[i]
+            if width<=0 do throw "Independent Bands require Start < End."
+            local last=first+width,tolerance=amax (units.decodeValue "0.0001mm") (width*0.000001)
+            if abs(first-strokeStarts[i])>tolerance or abs(last-strokeEnds[i])>tolerance do lossless=false
+            append result #(strokeIDs[i],first,last);totals[slot]=last
+        )
+        #(lossless,result)
+    )
+    fn convertBandArrangement mode acceptChanges:false = (
+        if mode!=1 and mode!=2 do throw "Unknown Band arrangement."
+        if mode==bandArrangement do return true
+        this.syncStrokes()
+        local intervals=if mode==2 then (for i=1 to strokeIDs.count collect this.bandInterval i) else (this.consecutiveBandProposal())[2]
+        if mode==1 and not acceptChanges and not (this.consecutiveBandProposal())[1] do throw "Review and confirm the proposed consecutive ranges before conversion."
+        undo "Cyrus Band arrangement" on (
+            for i=1 to strokeIDs.count do (
+                if mode==2 then (strokeStarts[i]=intervals[i][1];strokeEnds[i]=intervals[i][2])
+                else patternWidths[i]=intervals[i][3]-intervals[i][2]
+            )
+            bandArrangement=mode
+        )
+        true
+    )
+    fn bandCurve row = (
+        if not strokeCurveEnabled[row] then #(1.0,1.0) else (
+            local parts=filterString strokeCurveSamples[row] ","
+            if parts.count<2 or parts.count>257 do throw "Band density requires 2 to 257 bounded samples."
+            for part in parts collect (local v=part as float;if v<0 or v>1 or v!=v do throw "Band density samples must be finite and between zero and one.";v)
+        )
+    )
+    fn bandScaleCurve row = (
+        case strokeScaleModes[row] of (
+            1: #(1.0,1.0)
+            2: this.bandCurve row
+            3: (
+                local parts=filterString strokeScaleSamples[row] ","
+                if parts.count<2 or parts.count>257 do throw "Band scale requires 2 to 257 bounded samples."
+                for part in parts collect (local v=part as float;if v<0 or v>100 or v!=v do throw "Band scale samples must be finite and between zero and 100 (10000%).";v)
+            )
+            default: throw "Unknown Band scale profile."
+        )
+    )
+    fn syncStrokes = (this.ensureSourceRows();this.syncBandRecords())
     fn addStroke path side:1 = (
-        syncStrokes()
-        append patternLines path;append patternWidths (units.decodeValue "1m")
-        local key=if sources.count>0 then colorKey(sourceColor 1) else 0
-        append strokeSides side;append patternGroups key;append strokeModes 1;append strokeMin 1.0;append strokeMax 1.0
-        syncStrokes();markInputDirty();patternLines.count
+        if not isValidNode path do throw "Choose an active Path before adding a Band."
+        this.syncStrokes()
+        if patternLines.count>=64 or side<1 or side>7 do throw "Invalid Band side or 64-Band limit reached."
+        local pathID=this.addBandPath path,id=this.allocateBandID(),first=0.0,width=units.decodeValue "1m"
+        for i=1 to strokeIDs.count where strokePathIDs[i]==pathID and strokeSides[i]==side do first+=patternWidths[i]
+        append patternLines path;append patternWidths width
+        append strokeSides side;append strokeModes (if diversityMode==4 then 1 else 2);append strokeMin 1.0;append strokeMax 1.0
+        for key in #(#edgeRotX,#edgeRotY,#edgeRotZ,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU) do append (getProperty this key) 0.0
+        append strokeIDs id;append strokePathIDs pathID;append strokeStarts first;append strokeEnds (first+width)
+        append strokeStrengths 1.0;append strokeCurveEnabled false;append strokeCurveSamples "1,1";append strokeCurveGraphs "";append strokeScaleModes 1;append strokeScaleSamples "1,1";append strokeScaleGraphs ""
+        append strokeDisplayColors (color (64+mod((mod pathID 160)*53) 160) (64+mod((mod id 160)*97) 160) (64+mod((mod id 160)*29) 160))
+        if fieldBandID==0 do fieldBandID=id
+        if diversityMode==4 and sources.count>0 do this.setStrokeSelection patternLines.count 1 #((this.colorKey (this.sourceColor 1)))
+        this.syncStrokes();markInputDirty();patternLines.count
     )
     fn removeStroke row = (
         syncStrokes()
         for pair in #(#strokeColorRows,#strokeSourceRows) do (
             local rows=getProperty this pair
-            local values=getProperty this (if pair==#strokeColorRows then #strokeColorKeys else #strokeSourceNodes)
+            local values=getProperty this (if pair==#strokeColorRows then #strokeColorKeys else #strokeSourceIDs)
             for i=rows.count to 1 by -1 do (
-                if rows[i]==row then (deleteItem rows i;deleteItem values i;if pair==#strokeSourceRows do deleteItem strokeSourceIDs i)
+                if rows[i]==row then (deleteItem rows i;deleteItem values i)
                 else if rows[i]>row do rows[i]-=1
             )
         )
-        for key in #(#edgeRotX,#edgeRotY,#edgeRotZ,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#strokeSides,#patternLines,#patternWidths,#patternGroups,#strokeModes,#strokeMin,#strokeMax) do deleteItem (getProperty this key) row
+        for key in #(#edgeRotX,#edgeRotY,#edgeRotZ,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#strokeSides,#patternLines,#patternWidths,#strokeModes,#strokeMin,#strokeMax,#strokeIDs,#strokePathIDs,#strokeStarts,#strokeEnds,#strokeStrengths,#strokeCurveEnabled,#strokeScaleModes,#strokeScaleSamples,#strokeCurveSamples,#strokeScaleGraphs,#strokeCurveGraphs,#strokeDisplayColors) do deleteItem (getProperty this key) row
         markInputDirty()
+    )
+    fn removeBandPath id = (
+        this.syncStrokes();local slot=findItem pathIDs id
+        if slot==0 do return false
+        undo "Cyrus remove Path" on (
+            for i=strokeIDs.count to 1 by -1 where strokePathIDs[i]==id do this.removeStroke i
+            deleteItem patternPaths slot;deleteItem pathIDs slot;deleteItem pathJoins slot
+        )
+        markInputDirty();true
+    )
+    fn moveBand id target = (
+        this.syncStrokes();local row=findItem strokeIDs id
+        if row==0 or target<1 or target>strokeIDs.count do throw "Invalid Band move."
+        if row==target do return false
+        local previous=strokeIDs as array
+        undo "Cyrus reorder Band" on (
+            for key in #(#edgeRotX,#edgeRotY,#edgeRotZ,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#strokeSides,#patternLines,#patternWidths,#strokeModes,#strokeMin,#strokeMax,#strokeIDs,#strokePathIDs,#strokeStarts,#strokeEnds,#strokeStrengths,#strokeCurveEnabled,#strokeScaleModes,#strokeScaleSamples,#strokeCurveSamples,#strokeScaleGraphs,#strokeCurveGraphs,#strokeDisplayColors) do (
+                local values=(getProperty this key) as array,value=values[row]
+                deleteItem values row;insertItem value values target;setProperty this key values
+            )
+            for key in #(#strokeColorRows,#strokeSourceRows) do (
+                local rows=getProperty this key
+                for i=1 to rows.count do rows[i]=findItem strokeIDs previous[rows[i]]
+            )
+        )
+        this.syncStrokes();markInputDirty();true
     )
     fn setStrokeSelection row mode values = (
         syncStrokes()
         local rows=if mode==1 then strokeColorRows else strokeSourceRows
-        local targets=if mode==1 then strokeColorKeys else strokeSourceNodes
-        for i=rows.count to 1 by -1 where rows[i]==row do (deleteItem rows i;deleteItem targets i;if mode==2 do deleteItem strokeSourceIDs i)
+        local targets=if mode==1 then strokeColorKeys else strokeSourceIDs
+        for i=rows.count to 1 by -1 where rows[i]==row do (deleteItem rows i;deleteItem targets i)
         for value in values do (
             if mode==1 then (append rows row;append targets value) else (
                 local index=if classof value==String then findItem sourceRowIDs value else findItem sources value
                 if index>0 do (
-                    append rows row;targets.count=targets.count+1
-                    if isValidNode sources[index] do targets[targets.count]=sources[index]
-                    append strokeSourceIDs sourceRowIDs[index]
+                    append rows row;append targets sourceRowIDs[index]
                 )
             )
         )
-        if mode==1 do patternGroups[row]=if values.count>0 then values[1] else -1
         markInputDirty()
     )
     fn streetEdgeMask path = (
@@ -1466,12 +1526,13 @@ initialRollupState:0x8
         )
     )
 
+    local procSplineField=undefined,procSplineKey="",procSplineBuilds=0,procSplineHits=0
+    fn splineFieldStats = (#(procSplineBuilds,procSplineHits,(if procSplineField==undefined then #() else cyrusSplineFieldStats procSplineField)))
     fn lineInputs plants previewOnly:false = (
-        if diversityMode!=3 and diversityMode!=4 then #(false,0,#()) else (
+        if diversityMode!=3 and diversityMode!=4 then #(false,#()) else (
             syncStrokes()
             if diversityMode==4 and not isValidNode analyzerNode do throw "Pick a Surface Analyzer."
             local keys=for n in plants collect colorKey(sourceColor(sourceRow n))
-            local rest=0 -- retained wire format; outside strokes is always empty
             local bands=#();local paths=#();local totals=#()
             for i=1 to patternLines.count where isValidNode patternLines[i] and (if diversityMode==4 then patternLines[i]==analyzerNode else not isProperty patternLines[i] #samplePoints) do (
                 local path=patternLines[i];local pathIndex=findItem paths path
@@ -1482,7 +1543,6 @@ initialRollupState:0x8
                 local choices=#()
                 if strokeModes[i]==1 then (
                     local groups=for j=1 to strokeColorRows.count where strokeColorRows[j]==i collect strokeColorKeys[j]
-                    if groups.count==0 do groups=#(patternGroups[i])
                     choices=for j=1 to plants.count where findItem groups keys[j]>0 collect j
                 ) else (
                     for j=1 to strokeSourceRows.count where strokeSourceRows[j]==i do (
@@ -1491,8 +1551,8 @@ initialRollupState:0x8
                         if k>0 and findItem choices k==0 do append choices k
                     )
                 )
-                if previewOnly and plants.count==0 do choices=#(1)
-                if choices.count>0 do (
+                if previewOnly and plants.count==0 and diversityMode==4 do choices=#(1)
+                if choices.count>0 or diversityMode==3 do (
                 if diversityMode==4 then (
                     local data=case side of (
                         1: (path.packedLines path.boundaryVertices path.boundaryCounts)
@@ -1504,14 +1564,75 @@ initialRollupState:0x8
                     )
                     local mask=if side==6 then streetEdgeMask path else if (side<=2 or side==7) and isProperty path #includeStreetBoundary then path.boundaryEdgeMask() else #()
                     if side==6 do (local trimmed=trimmedStreetData path;data=trimmed[1];mask=trimmed[2])
-                    append bands #(data,(if side==7 then patternWidths[i] else totals[pathIndex][side]),rest,choices,strokeMin[i],strokeMax[i],(side==2 or side==6),(if side==7 then 6 else if side==6 then 2 else side),(if side==7 then 0 else start),mask,(side==6 and streetStraight),#((if side==7 then edgeFaceOut else if side==6 then streetFaceOut else if side<=2 then borderFaceOut else false),(if side==7 then edgeCornerRadius else if side==6 then streetCornerRadius else borderCornerRadius)),#(edgeOffsetsWU[i],edgeAlongWU[i],edgeAcrossWU[i],edgeKeepCorners,edgeCornerAngle,edgeCornerCount,edgeRotX[i],edgeRotY[i],edgeRotZ[i]))
-                ) else append bands #(path,totals[pathIndex][side],rest,choices,strokeMin[i],strokeMax[i],side==2)
+                    append bands #(data,(if side==7 then patternWidths[i] else totals[pathIndex][side]),choices,strokeMin[i],strokeMax[i],(if side==7 then 6 else if side==6 then 2 else side),(if side==7 then 0 else start),mask,(side==6 and streetStraight),#((if side==7 then edgeFaceOut else if side==6 then streetFaceOut else if side<=2 then borderFaceOut else false),(if side==7 then edgeCornerRadius else if side==6 then streetCornerRadius else borderCornerRadius)),#(edgeOffsetsWU[i],edgeAlongWU[i],edgeAcrossWU[i],edgeKeepCorners,edgeCornerAngle,edgeCornerCount,edgeRotX[i],edgeRotY[i],edgeRotZ[i]))
+                ) else (
+                    local savedPath=findItem pathIDs strokePathIDs[i]
+                    if savedPath==0 do throw "Band refers to a missing Path identity."
+                    local sourceIDs=for k in choices collect sourceRowIDs[sourceRow plants[k]]
+                    local empties=for k in choices collect (isEmptySource(sourceRow plants[k]) and not isPointSource(sourceRow plants[k]))
+                    local first=if bandArrangement==1 then start else strokeStarts[i]
+                    local last=if bandArrangement==1 then totals[pathIndex][side] else strokeEnds[i]
+                    append bands #(path,strokePathIDs[i],strokeIDs[i],side==2,first,last,pathJoins[savedPath],strokeStrengths[i],this.bandCurve i,choices,sourceIDs,empties,strokeMin[i],strokeMax[i],this.bandScaleCurve i)
+                )
                 )
             )
-            #(true,rest,bands)
+            #(true,bands)
         )
     )
 
+
+    fn preparedSplineField records weights = (
+        local nodes=#(),stream=stringStream "",quantum=units.decodeValue "0.0001mm"
+        for row in records do appendIfUnique nodes row[1]
+        with printAllElements on format "%|%|%|%|%" records weights bandArrangement quantum (cyrusReceiverShapeKey nodes) to:stream
+        local key=stream as string
+        if procSplineField!=undefined and key==procSplineKey do (procSplineHits+=1;return procSplineField)
+        local successor=cyrusPrepareSplineField records weights bandArrangement quantum
+        procSplineField=successor;procSplineKey=key;procSplineBuilds+=1
+        successor
+    )
+
+
+    fn fieldSelectedID = (if findItem strokeIDs fieldBandID>0 then fieldBandID else 0)
+    fn fieldPreviewEnabled = (diversityMode==3 and (fieldFalloff or fieldBoundaries) and (fieldCombined or this.fieldSelectedID()>0))
+    local procFieldCache=undefined,procFieldCacheKey="",procFieldStatus="Preview hidden."
+    fn fieldPreviewStatus = (
+        if previewError!="" and this.fieldPreviewEnabled() then "Previous preview retained. "+previewError
+        else if not (fieldFalloff or fieldBoundaries) then "Preview hidden."
+        else if not fieldCombined and this.fieldSelectedID()==0 then "Select a Band to preview."
+        else procFieldStatus
+    )
+    fn procFieldInputKey = (
+        if diversityMode!=3 do return ""
+        local stream=stringStream "",plants=this.validSources(),nodes=this.validSurfaces()
+        for node in patternPaths where isValidNode node do appendIfUnique nodes node
+        with printAllElements on (
+            format "Field1:%:%|" (units.decodeValue "0.0001mm") (cyrusFieldDependencyKey nodes) to:stream
+            for key in #(#bandArrangement,#pathIDs,#pathJoins,#patternLines,#patternWidths,#strokeIDs,#strokePathIDs,#strokeSides,#strokeStarts,#strokeEnds,#strokeStrengths,#strokeCurveEnabled,#strokeScaleModes,#strokeScaleSamples,#strokeCurveSamples,#strokeModes,#strokeColorRows,#strokeColorKeys,#strokeSourceRows,#strokeSourceIDs,#sourceRowIDs,#strokeMin,#strokeMax) do format "%:%|" key (getProperty this key) to:stream
+            for node in plants do (local row=this.sourceRow node;format "%:%:%:%|" node (this.sourceWeight row) (this.sourceColor row) (this.isEmptySource row and not this.isPointSource row) to:stream)
+        )
+        stream as string
+    )
+    fn procStageField publishedKey = (
+        if not this.fieldPreviewEnabled() do return #(undefined,"","Preview hidden.")
+        if fieldSamples<1 or fieldSamples>20000 do throw "Field sample limit must be 1..20,000."
+        local recipe=this.procFieldInputKey(),selected=if fieldCombined then 0 else this.fieldSelectedID()
+        local stream=stringStream ""
+        format "%|%:%:%:%" recipe selected fieldFalloff fieldBoundaries fieldSamples to:stream
+        local key=stream as string,cache=procFieldCache
+        if cache==undefined or key!=procFieldCacheKey do (
+            local plants=this.validSources(),records=(this.lineInputs plants)[2]
+            local shares=for node in plants collect this.sourceWeight (this.sourceRow node)
+            local field=this.preparedSplineField records shares
+            cache=cyrusBuildFieldPreview field (this.validSurfaces()) #(selected,fieldFalloff,fieldBoundaries,fieldSamples,(units.decodeValue "0.05mm"))
+        )
+        local stats=cyrusFieldPreviewInfo cache 0
+        local mode=if fieldCombined then "Combined density" else this.bandName (findItem strokeIDs selected)
+        local status=mode+"\n"+(if recipe==publishedKey then "Field from last Update" else "Pending field; plants from last Update")
+        status+="\n"+(if fieldFalloff then ((CyrusUICount stats[2])+" samples / "+(CyrusUICount stats[5])+" faces; approximate coverage") else "Boundaries only")
+        if fieldBoundaries do status+="\n"+(CyrusUICount stats[4])+" clipped boundary segments"
+        #(cache,key,status)
+    )
 
     -- Logical layers own policy; population objects are stable, independent sets.
     parameters layerOwnership (
@@ -1649,8 +1770,7 @@ initialRollupState:0x8
 
     fn blockerCacheStats = (#(blockerCacheBuilds,blockerCacheHits))
     fn filterSourceRowsByPolicy rows keep = (
-        if cyrusFilterSourceRows!=undefined then cyrusFilterSourceRows rows keep
-        else (for row in rows where keep[row[2]] collect row)
+        cyrusFilterSourceRows rows keep
     )
     -- One generation path. Eligibility follows candidate movement; author edits
     -- and the three collision scopes run later in the ordered publication pass.
@@ -1682,10 +1802,11 @@ initialRollupState:0x8
             )
             local areas=this.areaInputs(),line=this.lineInputs plants previewOnly:previewOnly
             local groups=if plants.count==0 then #(0) else for n in plants collect colorKey (sourceColor (sourceRow n))
-            local shares=if sourceWeights.count==0 or plants.count==0 then #() else for n in plants collect sourceWeight (sourceRow n)
+            local shares=if plants.count==0 then #(1.0) else for n in plants collect sourceWeight (sourceRow n)
+            if diversityMode==3 do line=this.preparedSplineField line[2] shares
             if finalPass!=undefined do throw "Use the receiver-local candidate path before final acceptance."
             local shapeNodes=for node in areaNodes where isValidNode node collect node
-            if diversityMode==3 do join shapeNodes (patternLines as array)
+            if diversityMode==3 do for node in patternLines where isValidNode node do appendIfUnique shapeNodes node
             local commonKey=(this.paintBaseInputKey plants previewOnly receiverLocal:true)+"|Shapes:"+(cyrusReceiverShapeKey shapeNodes)
             local nextCache=#(),faceOffset=0
             result=#();paintBaseFaceCounts=cyrusReceiverFaceCounts targets
@@ -1700,13 +1821,13 @@ initialRollupState:0x8
                 for entry in procReceiverCache where entry[1]==slot and entry[2]==receiverKey do cached=entry[3]
                 if cached!=undefined then (receiverRows=cached;procReceiverHits+=1)
                 else if receiverCount>0 do (
-                    local options=#(true,not advancedAxes,scaleMinimum,scaleMaximum,tiltDegrees,yawMinimum,yawMaximum,movementRange,1,0,procReceiverIDs[slot],slot)
-                    receiverRows=cyrusScatterAdvanced #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMinWU,movYMinWU,movZMinWU] [movXMaxWU,movYMaxWU,movZMaxWU] alignNormal projectMove (distributionMode-1) clusterCount clusterRadius weights 128 groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] (populationMode==2) line #(false,0.0,relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares undefined options
+                    local options=#(not advancedAxes,scaleMinimum,scaleMaximum,tiltDegrees,yawMinimum,yawMaximum,movementRange,1,0,procReceiverIDs[slot],slot)
+                    receiverRows=cyrusScatterAdvanced #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMinWU,movYMinWU,movZMinWU] [movXMaxWU,movYMaxWU,movZMaxWU] alignNormal projectMove (distributionMode-1) weights 128 groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] line #(relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares undefined options
                     if finalRelax and receiverRows.count>0 do (
                         local relaxPass=#(receiverRows,#(),(for row in receiverRows collect 0.0),#(),false,relaxSpacing,0,1,true,finalStrength,finalIterations,finalMaxMove,0.0,cleanupPlanar)
-                        receiverRows=cyrusScatterAdvanced #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMinWU,movYMinWU,movZMinWU] [movXMaxWU,movYMaxWU,movZMaxWU] alignNormal projectMove (distributionMode-1) clusterCount clusterRadius weights 128 groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] (populationMode==2) line #(false,0.0,relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares relaxPass options
+                        receiverRows=cyrusScatterAdvanced #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMinWU,movYMinWU,movZMinWU] [movXMaxWU,movYMaxWU,movZMaxWU] alignNormal projectMove (distributionMode-1) weights 128 groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] line #(relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares relaxPass options
                     )
-                    if wholeScaleMin!=1.0 or wholeScaleMax!=1.0 do receiverRows=cyrusWholeScale receiverRows wholeScaleMin wholeScaleMax seed true
+                    if wholeScaleMin!=1.0 or wholeScaleMax!=1.0 do receiverRows=cyrusWholeScale receiverRows wholeScaleMin wholeScaleMax seed
                     receiverRows=this.applyAnalyzerArea receiverRows
                     receiverRows=this.applyFalloff receiverRows
                     procReceiverBuilds+=1
@@ -1735,7 +1856,7 @@ initialRollupState:0x8
     fn uiLayerStats = (
         CyrusLayerStatusData hasResult:(cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
     )
-    fn uiVersion = "0.79.6"
+    fn uiVersion = "0.81.1"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified1")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -1773,21 +1894,21 @@ initialRollupState:0x8
         )
     )
     local cachedDisabledInput=false,cachedDisabledPreview=undefined
-    fn previewCache interactionHeld:undefined = (
+    fn previewCache interactionHeld:undefined allowRefresh:true = (
         local held=if interactionHeld==undefined then CyrusInteractionHeld() else interactionHeld
         if held do ((CyrusWasDragging=true;CyrusScheduleRelease());return cachedPoints)
         local inputOff=disabledAnalyzerInput()
         if inputOff!=cachedDisabledInput do (markInputDirty();cachedDisabledInput=inputOff)
         if inputOff do (
-            if cachedDisabledPreview==undefined do cachedDisabledPreview=aminScatterBuildPreview #() #() #() 1
+            if cachedDisabledPreview==undefined do cachedDisabledPreview=aminScatterBuildPreview #() #() #(1,1,#(),#(),false) 1
             return cachedDisabledPreview
         )
         checkAnalyzerRevision()
-        if updateMode==2 do this.invalidateInputTime()
+        if updateMode==2 or this.fieldPreviewEnabled() do this.invalidateInputTime()
         -- Manual refresh reconstructs display from the last published owners;
         -- procRefreshPreview still gates placement evaluation on explicit Update.
         -- This also applies display-only Undo/Redo while recipes remain pending.
-        if dirty do refreshPreview()
+        if dirty and allowRefresh do refreshPreview()
         cachedPoints
     )
     fn previewPoints = (
@@ -1810,7 +1931,6 @@ initialRollupState:0x8
     )
     -- Saved identification metadata never enters placement keys.
     parameters identificationSettings (
-        visualSourceNodes type:#nodeTab tabSize:0 tabSizeVariable:true
         visualSourceKeys type:#stringTab tabSize:0 tabSizeVariable:true
         visualSourceLabels type:#stringTab tabSize:0 tabSizeVariable:true
         visualSourceColors type:#colorTab tabSize:0 tabSizeVariable:true
@@ -1818,7 +1938,7 @@ initialRollupState:0x8
         layerIDColor type:#color default:(color 100 220 120)
         identificationMode type:#integer default:1
     )
-    -- Appended storage keeps earlier 0.74 parameter blocks readable.
+    -- Current per-layer Paint Area ownership.
     parameters regionSettings (
         paintAreas type:#maxObjectTab tabSize:0 tabSizeVariable:true
         areaTarget type:#node
@@ -1879,18 +1999,13 @@ initialRollupState:0x8
     fn sourceVisualIndex row create:false = (
         if row<1 or row>this.sources.count do return 0
         this.ensureSourceRows()
-        undo off while visualSourceKeys.count<visualSourceNodes.count do (
-            local k=findItem sources visualSourceNodes[visualSourceKeys.count+1]
-            append visualSourceKeys (if k>0 then sourceRowIDs[k] else "")
-        )
+        for values in #(visualSourceLabels,visualSourceColors,visualSourceColorSet) where values.count!=visualSourceKeys.count do throw "Incomplete current source presentation records."
         local index=findItem visualSourceKeys sourceRowIDs[row]
         if index==0 and create do (
-            visualSourceNodes.count=visualSourceNodes.count+1
-            if isValidNode this.sources[row] do visualSourceNodes[visualSourceNodes.count]=this.sources[row]
             append visualSourceLabels ""
             append visualSourceKeys sourceRowIDs[row]
             append visualSourceColors (this.sourceColor row);append visualSourceColorSet false
-            index=visualSourceNodes.count
+            index=visualSourceKeys.count
         )
         index
     )
@@ -1909,6 +2024,7 @@ initialRollupState:0x8
         true
     )
     fn setSourceIDColor rows value = (
+        if classof value!=Color and classof value!=Point3 do throw "Source identification color requires a Color or Point3 value."
         undo "Cyrus source identification color" on for row in rows do (
             local index=this.sourceVisualIndex row create:true
             if index>0 do (visualSourceColors[index]=value;visualSourceColorSet[index]=true)
@@ -1944,7 +2060,7 @@ initialRollupState:0x8
         )
         if obj.previewBudget!=layerBudget do undo off obj.previewBudget=layerBudget
         -- These settings belong to the controller, not an individual layer.
-        undo off for key in #(#viewportMode,#proxyShape,#viewportInstances,#viewportFaces,#radiusDisplayLimit,#radiusDisplayAll,#updateMode,#showPoints,#pointsPerPlant,#pointColorMode,#solidPointColor,#autoRender) do (
+        undo off for key in #(#viewportMode,#proxyShape,#viewportInstances,#viewportFaces,#radiusDisplayLimit,#radiusDisplayAll,#radiusDisplayMetric,#updateMode,#showPoints,#pointsPerPlant,#pointColorMode,#solidPointColor,#autoRender) do (
             if getProperty obj key != getProperty this key do setProperty obj key (getProperty this key)
         )
     )
@@ -1970,7 +2086,7 @@ initialRollupState:0x8
             append entries #(i,obj)
         )
         if (for e in entries where this.enabledLayer e[1] and e[2].dirty collect e).count>0 do
-            for e in entries where this.enabledLayer e[1] and not e[2].dirty and (true ) do e[2].markInputDirty()
+            for e in entries where this.enabledLayer e[1] and not e[2].dirty do e[2].markInputDirty()
         entries
     )
     fn viewportLayerEntries held = (
@@ -2023,8 +2139,8 @@ initialRollupState:0x8
         activeLayer
     )
     fn refreshDisplay = (
-        local entries=layerEntries(),pending=true and groupSnapshotKey!="" and groupSnapshotKey!=this.groupInputKey()
-        groupDisplayOnly=true and updateMode==1
+        local entries=layerEntries(),pending=groupSnapshotKey!="" and groupSnapshotKey!=this.groupInputKey()
+        groupDisplayOnly=updateMode==1
         -- One leaf stages the controller's complete display publication.
         -- Repeating it per leaf repeats the same input/owner validation.
         try (
@@ -2117,7 +2233,7 @@ initialRollupState:0x8
     )
     fn applyPaint rows = (this.procApplyPaint rows)
     fn paintBaseInputKey plants previewOnly receiverLocal:false = (
-        local post=if this.sharedSpacing() then #(#cleanupPlanar,#sourceRadiiWU,#sourceFollowScale,#sourceShowRadius,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove) else #()
+        local post=if this.sharedSpacing() then #(#cleanupPlanar,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove) else #()
         join post #(#procOrder,#procSetOrder,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procRadiusBinding,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverID,#containerMode,#containerNodes)
         local stream=stringStream ""
         with printAllElements on (
@@ -2127,14 +2243,16 @@ initialRollupState:0x8
             format "EffectiveRelax:%|" (relaxEnabled and not this.layerPaintActive()) to:stream
             format "FinalRelax:%:%:%:%|" finalRelax finalStrength finalIterations finalMaxMove to:stream
             format "Texture:%|" (this.procWatchDensity()) to:stream
-            for key in AminScatterLayerFields where findItem #(#paintDocument,#paintEnabled,#paintDensity,#bakedNodes,#showPoints,#pointsPerPlant,#updateMode,#autoRender,#previewBudget,#pointColorMode,#solidPointColor) key==0 and findItem post key==0 and findItem #(#paintView,#paintColor,#showCenters,#sourceShowRadius,#paintSetName,#paintSetVisible) key==0 and (not receiverLocal or findItem #(#amount,#plantsPerM2,#populationMode) key==0) do format "%:%|" key (if key==#sources then this.containerSourceKey (sources as array) else getProperty this key) to:stream
+            for key in AminScatterLayerFields where findItem #(#paintDocument,#paintEnabled,#paintDensity,#bakedNodes,#showPoints,#pointsPerPlant,#updateMode,#autoRender,#previewBudget,#pointColorMode,#solidPointColor) key==0 and findItem post key==0 and findItem #(#paintView,#paintColor,#showCenters,#sourceShowRadius,#paintSetName,#paintSetVisible,#fieldFalloff,#fieldBoundaries,#fieldCombined,#fieldSamples,#fieldBandID) key==0 and (not receiverLocal or findItem #(#amount,#plantsPerM2,#populationMode) key==0) do format "%:%|" key (if key==#sources then this.containerSourceKey (sources as array) else getProperty this key) to:stream
             for n in ((if receiverLocal then #() else this.validSurfaces())+(sources as array)+(areaNodes as array)+(patternLines as array)+#(analyzerNode,areaAnalyzer,fallAnalyzer)) where isValidNode n do (
                 local tm=n.objectTransform
                 if this.containerProvider()!=undefined and findItem sources n>0 do tm.row4=[0,0,0]
                 format "%:%|" (getHandleByAnim n) tm to:stream
             )
             for n in #(analyzerNode,areaAnalyzer,fallAnalyzer) where isValidNode n do format "%|" (n.getAnalysisRuns()) to:stream
-            format "%|%|%|%|%|%|%|%|%|%|" strokeSides strokeModes strokeColorRows strokeColorKeys strokeSourceRows strokeSourceNodes strokeMin strokeMax strokeSourceIDs sourceRowIDs to:stream
+            format "%|%|%|%|%|%|%|%|%|" strokeSides strokeModes strokeColorRows strokeColorKeys strokeSourceRows strokeMin strokeMax strokeSourceIDs sourceRowIDs to:stream
+            if diversityMode==3 do format "Bands2:%|%|%|%|%|%|%|%|%|%|" bandArrangement pathIDs pathJoins strokeIDs strokePathIDs strokeStarts strokeEnds strokeStrengths strokeCurveEnabled strokeCurveSamples to:stream
+            if diversityMode==3 do format "BandScale:%|%|" strokeScaleModes strokeScaleSamples to:stream
         )
         stream as string
     )
@@ -2347,17 +2465,57 @@ initialRollupState:0x8
             #(parent.procLayerSelfEnabled,parent.procLayerSelfMultiplier,parent.procLayerSelfGap,parent.procLayerSelfPlanar)
         )
     )
-    fn procRadii rows plants = (
-        if rows.count==0 do return #()
+    fn procAutoRequired i = (
+        if not this.sourceUsesAuto i or this.sourceWeight i<=0 do return false
+        if this.containerProvider()!=undefined and (i>containerActive.count or not containerActive[i]) do return false
+        if diversityMode!=3 and diversityMode!=4 do return true
+        this.syncStrokes()
+        for band=1 to patternLines.count where isValidNode patternLines[band] do (
+            local active=if diversityMode==3 then not isProperty patternLines[band] #samplePoints else patternLines[band]==analyzerNode
+            if active and diversityMode==3 do active=(strokeStrengths[band]>0 and (amax (this.bandCurve band))>0 and (if bandArrangement==1 then patternWidths[band]>0 else strokeEnds[band]>strokeStarts[band]))
+            if active do (
+                if strokeModes[band]==1 then (
+                    for k=1 to strokeColorRows.count where strokeColorRows[k]==band and strokeColorKeys[k]==colorKey(this.sourceColor i) do return true
+                ) else (
+                    for k=1 to strokeSourceRows.count where strokeSourceRows[k]==band and strokeSourceIDs[k]==sourceRowIDs[i] do return true
+                )
+            )
+        )
+        false
+    )
+    fn procRadiusGeometry plants rows:#() enabled:true = (
+        -- Validate the whole active lottery before sampling, including missing
+        -- original rows which validSources deliberately omits from transport.
+        local required=for i=1 to sources.count collect (enabled and this.procAutoRequired i)
+        for i=1 to required.count where required[i] and not this.sourceCanAuto i do throw ("Auto Radius: "+this.sourceLabel i+" is missing or has an unqualified source type. Restore supported geometry or choose Manual.")
+        local used=#{}
+        for row in rows do used[row[2]]=true
+        local inputs=for k=1 to plants.count collect (
+            local i=this.sourceRow plants[k]
+            if used[k] or (i>0 and required[i]) then plants[k] else 0
+        )
+        local info=cyrusSourceGeometryInfo inputs
+        for k=1 to plants.count do (
+            local i=this.sourceRow plants[k]
+            if this.sourceUsesAuto i and (used[k] or required[i]) do (
+                if info[k][1]!=1 or not info[k][6] do throw ("Auto Radius: "+this.sourceLabel i+". "+info[k][7]+". The previous result is retained; repair the source or choose Manual.")
+            )
+        )
+        info
+    )
+    fn procRadii rows plants geometry:undefined = (
+        if geometry==undefined do geometry=this.procRadiusGeometry plants rows:rows
         if procRadiusIDs.count>0 do (
             if procRadiusBinding=="" do throw "Radius overrides have no generation binding. Explicitly clear them before updating."
             cyrusReceiverMergeBinding procRadiusBinding procBindingKey
         )
-        local radii=if plants.count==0 then #(0.0) else for n in plants collect sourceRadius (sourceRow n)
-        local follow=if plants.count==0 then #(false) else for n in plants collect sourceFollows (sourceRow n)
+        local specs=if plants.count==0 then #(#(1,0.0,false,[0,0,0],[0,0,0])) else for k=1 to plants.count collect (
+            local i=this.sourceRow plants[k],info=geometry[k]
+            #(if this.sourceUsesAuto i and info[1]==1 then 2 else 1,this.sourceRadius i,this.sourceFollows i,info[4],info[5])
+        )
         if procRadiusDistances.count!=procRadiusIDs.count do throw "Instance distance metadata is incomplete."
         local values=for i=1 to procRadiusIDs.count collect (if procRadiusModes[i]==1 then procRadiusDistances[i] else procRadiusValues[i])
-        cyrusProceduralRadii rows radii follow (procRadiusIDs as array) (procRadiusModes as array) values
+        cyrusProceduralRadii rows specs (procRadiusIDs as array) (procRadiusModes as array) values
     )
     fn procSelectedRadius mode value reset:false = (
         if overlapOwner==undefined do throw "Select a paint set using Procedural 0.7."
@@ -2401,16 +2559,14 @@ initialRollupState:0x8
         )
         cyrusBrushRegionFilter rows docs densities targets paintBaseFaceCounts ("CyrusStableMask1:"+(this.effectiveSeed() as string))
     )
-    -- Keep same-unit schema-55 Edit binding labels while storage gains units.
-    fn procBindingName key = (local field=key as string;if matchPattern field pattern:"*WU" do field=substring field 1 (field.count-2);field as name)
     fn procBinding plants rows = (
         local stream=stringStream ""
         with printAllElements on (
             format "CyrusBinding2:%|" (this.effectiveSeed()) to:stream
             for n in plants do (local i=sourceRow n;format "%|" (if i>0 and i<=procSourceSlots.count then procSourceSlots[i] else "preview") to:stream)
-            for key in #(#distributionMode,#clusterCount,#clusterRadius,#diversityMode,#diversitySize,#diversitySeed,#roughness,#blurryEdge,#diversityNoise,#sourceWeights,#sourceColors,#sourceEmpty,#sourcePoint,#sourceScales,#sourceZOffsetsWU,#advancedAxes,#scaleMinimum,#scaleMaximum,#tiltDegrees,#yawMinimum,#yawMaximum,#movementRange,#sclXMin,#sclXMax,#sclYMin,#sclYMax,#sclZMin,#sclZMax,#rotXMin,#rotXMax,#rotYMin,#rotYMax,#rotZMin,#rotZMax,#movXMinWU,#movXMaxWU,#movYMinWU,#movYMaxWU,#movZMinWU,#movZMaxWU,#wholeScaleMin,#wholeScaleMax,#projectMove,#alignNormal) do format "%:%|" (this.procBindingName key) (getProperty this key) to:stream
-            if diversityMode>=3 do for key in #(#patternLines,#patternWidths,#strokeSides,#strokeModes,#strokeColorRows,#strokeColorKeys,#strokeSourceRows,#strokeSourceNodes,#strokeSourceIDs,#sourceRowIDs,#strokeMin,#strokeMax,#analyzerNode,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#edgeKeepCorners,#edgeCornerAngle,#edgeCornerCount,#edgeFaceOut,#edgeCornerRadius,#edgeRotX,#edgeRotY,#edgeRotZ,#borderFaceOut,#streetFaceOut,#borderCornerRadius,#streetCornerRadius,#streetStraight,#streetTrimStart,#streetTrimEnd,#centerStreetOffset) do format "%:%|" (this.procBindingName key) (getProperty this key) to:stream
-            if relaxEnabled or finalRelax do for key in #(#relaxEnabled,#relaxSpacing,#relaxIterations,#relaxStrength,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove) do format "%:%|" (this.procBindingName key) (getProperty this key) to:stream
+            for key in #(#distributionMode,#diversityMode,#diversitySize,#diversitySeed,#roughness,#blurryEdge,#diversityNoise,#sourceWeights,#sourceColors,#sourceEmpty,#sourcePoint,#sourceScales,#sourceZOffsetsWU,#advancedAxes,#scaleMinimum,#scaleMaximum,#tiltDegrees,#yawMinimum,#yawMaximum,#movementRange,#sclXMin,#sclXMax,#sclYMin,#sclYMax,#sclZMin,#sclZMax,#rotXMin,#rotXMax,#rotYMin,#rotYMax,#rotZMin,#rotZMax,#movXMinWU,#movXMaxWU,#movYMinWU,#movYMaxWU,#movZMinWU,#movZMaxWU,#wholeScaleMin,#wholeScaleMax,#projectMove,#alignNormal) do format "%:%|" key (getProperty this key) to:stream
+            if diversityMode>=3 do for key in #(#patternLines,#patternWidths,#strokeSides,#strokeModes,#strokeColorRows,#strokeColorKeys,#strokeSourceRows,#strokeSourceIDs,#sourceRowIDs,#pathIDs,#pathJoins,#strokeIDs,#strokePathIDs,#bandArrangement,#strokeStarts,#strokeEnds,#strokeStrengths,#strokeCurveEnabled,#strokeScaleModes,#strokeScaleSamples,#strokeCurveSamples,#strokeMin,#strokeMax,#analyzerNode,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#edgeKeepCorners,#edgeCornerAngle,#edgeCornerCount,#edgeFaceOut,#edgeCornerRadius,#edgeRotX,#edgeRotY,#edgeRotZ,#borderFaceOut,#streetFaceOut,#borderCornerRadius,#streetCornerRadius,#streetStraight,#streetTrimStart,#streetTrimEnd,#centerStreetOffset) do format "%:%|" key (getProperty this key) to:stream
+            if relaxEnabled or finalRelax do for key in #(#relaxEnabled,#relaxSpacing,#relaxIterations,#relaxStrength,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove) do format "%:%|" key (getProperty this key) to:stream
             format "\nCyrusReceivers2\n" to:stream
             for entry in procReceiverGeometry do format "%=%\n" procReceiverIDs[entry[1]] entry[2] to:stream
         )
@@ -2490,7 +2646,7 @@ initialRollupState:0x8
         -- a prior row's sparse setting. Automatic registration survives parking.
         undo off (
             syncColors()
-            for spec in #(#(#sourceWeights,1.0),#(#sourceZOffsetsWU,0.0),#(#sourceScales,1.0),#(#sourceForwardAxes,1),#(#sourceRadiiWU,0.0),#(#sourceFollowScale,false),#(#sourceShowRadius,false),#(#sourcePoint,false),#(#sourceEmpty,false)) do (
+            for spec in #(#(#sourceWeights,1.0),#(#sourceZOffsetsWU,0.0),#(#sourceScales,1.0),#(#sourceForwardAxes,1),#(#sourceRadiiWU,0.0),#(#sourceAutoRadius,false),#(#sourceFollowScale,false),#(#sourceShowRadius,false),#(#sourcePoint,false),#(#sourceEmpty,false)) do (
                 local values=getProperty this spec[1]
                 while values.count<sources.count do append values spec[2]
                 append values spec[2]
@@ -2679,7 +2835,7 @@ initialRollupState:0x8
                 format "Membership:%|" leaf.containerMembershipKey to:stream
                 format "Texture:%|" (leaf.procWatchDensity()) to:stream
                 format "%:%:%:%:%:%|" leaf.layerID leaf.logicalParentID leaf.procReceiverID leaf.procRadiusBinding (leaf.paintBaseInputKey (leaf.validSources()) true) (leaf.procCoverageKey()) to:stream
-                for key in #(#procOrder,#procSetOrder,#procSamplingSalt,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procSourceIDs,#sourceRadiiWU,#sourceFollowScale,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#cleanupPlanar) do format "%:%|" key (getProperty leaf key) to:stream
+                for key in #(#procOrder,#procSetOrder,#procSamplingSalt,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procSourceIDs,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#cleanupPlanar) do format "%:%|" key (getProperty leaf key) to:stream
             )
         )
         stream as string
@@ -2711,19 +2867,27 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This unpublished development scene uses a retired Cyrus settings schema. Create a new 0.79.6 setup."
+        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.81.1 setup; earlier schemas are unsupported."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
     fn procValidate = (
         this.procAssertSchema()
-        if cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusBuildRadiusPreview==undefined do throw "Cyrus 0.79.6 requires the matching native plugin binaries. Restart the private test host with the complete matching script/native pair."
+        if cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=9 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined do throw "Cyrus 0.81.1 requires the matching native plugin binaries. Restart the private test host with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
             for leaf in this.layerSets parent where this.enabledLayer (findItem layerObjects leaf) do (
                 if cyrusEnabled do leaf.requireCurrentAnalyzers()
+                if parent.procPopulation==2 and leaf.diversityMode==3 do (
+                    leaf.syncStrokes()
+                    if leaf.bandArrangement==2 do throw "Independent Bands require Candidate budget. Accepted target would refill their density."
+                    for i=1 to leaf.strokeIDs.count do (
+                        if leaf.strokeStrengths[i]!=1.0 do throw "Band density requires Candidate budget. Accepted target would refill its density."
+                        for value in (leaf.bandCurve i) where value!=1.0 do throw "Band density curves require Candidate budget."
+                    )
+                )
                 if parent.procPopulation==2 do for source in leaf.validSources() do (
                     local index=leaf.sourceRow source
                     if leaf.isEmptySource index and not leaf.isPointSource index and leaf.sourceWeight index>0 do throw "Accepted target does not refill weighted Empty assets. Use candidate budget, Point placeholders, or remove the Empty weight."
@@ -2732,13 +2896,23 @@ initialRollupState:0x8
         )
         true
     )
-    local procPreviewDisplayKey=""
+    local procPreviewDisplayKey="",procPreviewGeometryKey="",procPreviewInspectionKey=""
+    fn procDisplayGeometryKey leaf epoch:undefined = (
+        local stream=stringStream ""
+        with printAllElements on (
+            format "Geometry:%:%|" (if epoch==undefined then procEpoch else epoch) leaf.layerID to:stream
+            for key in #(#viewportMode,#proxyShape,#viewportInstances,#viewportFaces,#previewBudget,#showCenters,#pointsPerPlant) do format "%:%|" key (getProperty leaf key) to:stream
+        )
+        stream as string
+    )
     fn procDisplayLayerKey leaf epoch:undefined = (
         local stream=stringStream ""
         with printAllElements on (
             format "Display:%:%|" (if epoch==undefined then procEpoch else epoch) identificationMode to:stream
             format "%:%:%|" leaf.layerID (for i=1 to leaf.sources.count collect leaf.sourceIDColor i) (this.logicalParent leaf).layerIDColor to:stream
-            for key in #(#viewportMode,#proxyShape,#viewportInstances,#viewportFaces,#previewBudget,#showCenters,#pointsPerPlant,#pointColorMode,#solidPointColor,#sourceShowRadius,#radiusDisplayLimit,#radiusDisplayAll) do format "%:%|" key (getProperty leaf key) to:stream
+            format "%:%|" leaf.strokeIDs leaf.strokeDisplayColors to:stream
+            format "Field:%:%:%:%:%:%|" leaf.fieldFalloff leaf.fieldBoundaries leaf.fieldCombined leaf.fieldSamples (leaf.fieldSelectedID()) (if leaf.fieldPreviewEnabled() then leaf.procFieldInputKey() else "") to:stream
+            for key in #(#viewportMode,#proxyShape,#viewportInstances,#viewportFaces,#previewBudget,#showCenters,#pointsPerPlant,#pointColorMode,#solidPointColor,#sourceShowRadius,#radiusDisplayLimit,#radiusDisplayAll,#radiusDisplayMetric) do format "%:%|" key (getProperty leaf key) to:stream
         )
         stream as string
     )
@@ -2747,24 +2921,85 @@ initialRollupState:0x8
         for leaf in layerObjects do format "%|" (this.procDisplayLayerKey leaf epoch:epoch) to:stream
         stream as string
     )
-    fn procStagePreview data plants:undefined placementRadiusValues:undefined displayEpoch:undefined = (
+    fn procPreviewMetadata plants geometry:undefined = (
+        local sourceEntries=for n in plants collect (
+            local row=this.sourceRow n
+            if row<1 or row>sourceRowIDs.count do throw "Preview source correspondence is missing."
+            #(sourceRowIDs[row],this.sourceIDColor row)
+        )
+        local bands=if diversityMode==3 then (for i=1 to strokeIDs.count collect #(strokeIDs[i],strokeDisplayColors[i],this.bandName i,strokePathIDs[i])) else #()
+        #(sourceEntries,bands,diversityMode==3,(if geometry==undefined then cyrusSourceGeometryInfo plants else geometry),(this.procFieldInputKey()))
+    )
+    fn procPreviewPalette metadata = (
+        local controller=if overlapOwner==undefined then this else overlapOwner,parent=controller.logicalParent this
+        local colors=for entry in metadata[1] collect (
+            local row=findItem sourceRowIDs entry[1]
+            if controller.identificationMode==2 then parent.layerIDColor else if row>0 then this.sourceIDColor row else entry[2]
+        )
+        local bands=for entry in metadata[2] collect (
+            local row=findItem strokeIDs entry[1]
+            #(entry[1],if row>0 then strokeDisplayColors[row] else entry[2])
+        )
+        #(1,controller.identificationMode,colors,bands,metadata[3])
+    )
+    fn procRefreshPreviewMetadata metadata = (
+        local result=deepCopy metadata
+        for entry in result[1] do (local row=findItem sourceRowIDs entry[1];if row>0 do entry[2]=this.sourceIDColor row)
+        for entry in result[2] do (local row=findItem strokeIDs entry[1];if row>0 do entry[2]=strokeDisplayColors[row])
+        result
+    )
+    fn procCheckPublishedGeometry plants metadata = (
+        local previous=metadata[4]
+        local current=cyrusSourceGeometryInfo (for i=1 to plants.count collect (if i<=previous.count and previous[i][1]!=0 then plants[i] else 0))
+        if current.count!=previous.count do throw "Source correspondence changed. Use Update before changing the display mode."
+        for i=1 to current.count do for field=1 to 3 where current[i][field]!=previous[i][field] do throw "Source geometry is pending. Use Update before changing to an uncached display representation. The complete previous preview is retained."
+        true
+    )
+    fn procStagePreview data plants:undefined placementRadiusValues:undefined displayEpoch:undefined metadata:undefined = (
         local start=timeStamp(),previousRadius=radiusPreview,radii
         if plants==undefined do plants=this.validSources()
-        try(cacheRadii data plants values:placementRadiusValues;radii=radiusPreview;radiusPreview=previousRadius)catch(radiusPreview=previousRadius;throw())
-        local samples=if viewportMode!=1 then #() else if showCenters then (for i=1 to (amax 1 plants.count) collect #([0,0,0])) else (for n in plants collect (if classof n==Integer then (for p=1 to pointsPerPlant collect [0,0,0]) else pointSourceSamples n))
-        local controller=if overlapOwner==undefined then this else overlapOwner,parent=controller.logicalParent this
-        local colors=if plants.count==0 then #(solidPointColor) else for n in plants collect (if controller.identificationMode==2 then parent.layerIDColor else this.sourceIDColor (sourceRow n))
-        local cache=if data.count==0 then aminScatterBuildPreview #() #() #() 1 else if viewportMode==1 then aminScatterBuildPreview data samples colors (if showCenters then 500000 else previewBudget) else cyrusBuildGeometryPreview data (if plants.count==0 then #(-1) else plants) colors (if viewportMode==2 then proxyShape else 4) viewportInstances viewportFaces
-        local circles=if radii.count==0 then undefined else cyrusBuildRadiusPreview radii
-        #(cache,(aminScatterPreviewCount cache),data.count,radii,(if viewportMode==1 and showCenters then 4 else viewportMode),timeStamp()-start,(if isValidNode areaAnalyzer then areaAnalyzer.getAnalysisRuns() else -1),(if isValidNode fallAnalyzer then fallAnalyzer.getAnalysisRuns() else -1),circles,(controller.procDisplayLayerKey this epoch:displayEpoch),(if isValidNode analyzerNode then analyzerNode.getAnalysisRuns() else -1),inputTimeStamp)
+        if metadata==undefined do metadata=this.procPreviewMetadata plants
+        metadata=this.procRefreshPreviewMetadata metadata
+        local controller=if overlapOwner==undefined then this else overlapOwner
+        local geometryKey=controller.procDisplayGeometryKey this epoch:displayEpoch,palette=this.procPreviewPalette metadata
+        local cache=cachedPoints
+        if cache!=undefined and procPreviewGeometryKey==geometryKey then cache=cyrusRecolorPreview cache palette
+        else (
+            -- An inspection-only change never reads pending source geometry.
+            -- A new Mesh/Point Cloud representation still verifies its epoch.
+            if displayEpoch==undefined and data.count>0 and (viewportMode!=1 or not showCenters) do this.procCheckPublishedGeometry plants metadata
+            local used=#{}
+            for row in data do used[row[2]]=true
+            local samples=if viewportMode!=1 then #() else if showCenters then (for i=1 to (amax 1 plants.count) collect #([0,0,0])) else (for i=1 to plants.count collect (if not used[i] or classof plants[i]==Integer then (for p=1 to pointsPerPlant collect [0,0,0]) else pointSourceSamples plants[i]))
+            cache=if viewportMode==1 or data.count==0 then aminScatterBuildPreview data (if data.count==0 then for n in plants collect #([0,0,0]) else samples) palette (if showCenters then 500000 else previewBudget) else cyrusBuildGeometryPreview data plants palette (if viewportMode==2 then proxyShape else 4) viewportInstances viewportFaces
+        )
+        local field=this.procStageField metadata[5],inspection=inspectionCache,inspectionStream=stringStream ""
+        with printAllElements on format "%:%:%:%:%:%:%|%" (if displayEpoch==undefined then controller.procEpoch else displayEpoch) sourceShowRadius radiusDisplayLimit radiusDisplayAll radiusDisplayMetric (for i=1 to sources.count collect this.sourceColor i) plants field[2] to:inspectionStream
+        local inspectionKey=inspectionStream as string
+        if procPreviewInspectionKey==inspectionKey then radii=radiusPreview
+        else (
+            try(cacheRadii data plants values:placementRadiusValues;radii=radiusPreview;radiusPreview=previousRadius)catch(radiusPreview=previousRadius;throw())
+            inspection=if radii.count==0 and field[1]==undefined then undefined else cyrusBuildInspectionPreview radii field[1]
+        )
+        #(cache,(aminScatterPreviewCount cache),data.count,radii,(if viewportMode==1 and showCenters then 4 else viewportMode),timeStamp()-start,(if isValidNode areaAnalyzer then areaAnalyzer.getAnalysisRuns() else -1),(if isValidNode fallAnalyzer then fallAnalyzer.getAnalysisRuns() else -1),inspection,(controller.procDisplayLayerKey this epoch:displayEpoch),(if isValidNode analyzerNode then analyzerNode.getAnalysisRuns() else -1),inputTimeStamp,geometryKey,metadata,inspectionKey,field[1],field[2],field[3])
     )
     -- Publication snapshots retain references to immutable staged rows/caches.
     -- No host queries or copies of large point arrays run in the install tail.
-    fn procPreviewState = (#(inputTimeObserved,cachedPoints,cachedPointCount,generatedCount,radiusPreview,uiPreviewMode,radiusCache,procPreviewDisplayKey,previewBuildMs,cachedAreaAnalyzerRun,cachedFallRun,cachedAnalyzerRun,previewBuildCount,previewError,dirty))
+    fn procPreviewState = (#(inputTimeObserved,cachedPoints,cachedPointCount,generatedCount,radiusPreview,uiPreviewMode,inspectionCache,procPreviewDisplayKey,previewBuildMs,cachedAreaAnalyzerRun,cachedFallRun,cachedAnalyzerRun,previewBuildCount,previewError,dirty,procPreviewGeometryKey,procPreviewInspectionKey,procFieldCache,procFieldCacheKey,procFieldStatus))
+    fn procReleaseRetiredDisplay = (
+        -- Max can retain detached scripted objects after scene reset. These
+        -- transient resources belong to the departed scene, not its saved data.
+        cachedPoints=undefined;inspectionCache=undefined;cachedDisabledPreview=undefined
+        procSplineField=undefined;procPreparedRows=#();radiusPreview=#();procFieldCache=undefined;procFieldCacheKey="";procFieldStatus="Preview hidden.";procPreviewInspectionKey=""
+        procPreviewDisplayKey="";procPreviewGeometryKey="";procPublishedDisplayKey=""
+        true
+    )
     fn procRestorePreview state = (
         inputTimeObserved=state[1];cachedPoints=state[2];cachedPointCount=state[3];generatedCount=state[4];radiusPreview=state[5]
-        uiPreviewMode=state[6];radiusCache=state[7];procPreviewDisplayKey=state[8];previewBuildMs=state[9]
+        uiPreviewMode=state[6];inspectionCache=state[7];procPreviewDisplayKey=state[8];previewBuildMs=state[9]
         cachedAreaAnalyzerRun=state[10];cachedFallRun=state[11];cachedAnalyzerRun=state[12];previewBuildCount=state[13];previewError=state[14];dirty=state[15]
+        procPreviewGeometryKey=state[16]
+        procPreviewInspectionKey=state[17];procFieldCache=state[18];procFieldCacheKey=state[19];procFieldStatus=state[20]
     )
     fn procResultState = (#(this.procPreviewState(),procLastStats,procLastRounds,procEpoch,requestedCount,groupEligible,groupRemoved,groupConflicts,overlapBefore,overlapAfter))
     fn procRestoreResult state = (
@@ -2773,8 +3008,10 @@ initialRollupState:0x8
     )
     fn procInstallPreview state pending = (
         inputTimeObserved=state[12]
-        cachedPoints=state[1];cachedPointCount=state[2];generatedCount=state[3];radiusPreview=state[4];uiPreviewMode=state[5];radiusCache=state[9]
+        cachedPoints=state[1];cachedPointCount=state[2];generatedCount=state[3];radiusPreview=state[4];uiPreviewMode=state[5];inspectionCache=state[9]
         procPreviewDisplayKey=state[10]
+        procPreviewGeometryKey=state[13]
+        procPreviewInspectionKey=state[15];procFieldCache=state[16];procFieldCacheKey=state[17];procFieldStatus=state[18]
         CyrusViewportRecordsDirty=true
         previewBuildMs=state[6];cachedAreaAnalyzerRun=state[7];cachedFallRun=state[8]
         cachedAnalyzerRun=state[11]
@@ -2783,16 +3020,24 @@ initialRollupState:0x8
     fn procEnsureDisplay pending:false = (
         local key=this.procDisplayInputKey()
         if key!=procPublishedDisplayKey do (
-            local before=for leaf in layerObjects collect leaf.procPreviewState(),previousKey=procPublishedDisplayKey,previousDirty=CyrusViewportRecordsDirty
+            local before=for leaf in layerObjects collect leaf.procPreviewState(),previousKey=procPublishedDisplayKey,previousDirty=CyrusViewportRecordsDirty,previousMetadata=procPublishedMetadata
+            local nextMetadata=procPublishedMetadata as array
             -- Pending Manual topology can differ from the last publication.
             -- Resolve by owner, including an empty preview for unpublished layers.
             local stage=for leaf in layerObjects collect (
                 if leaf.procPreviewDisplayKey==(this.procDisplayLayerKey leaf) then undefined
                 else (
                     local slot=findItem procPublishedOwners leaf
-                    if slot==0 then leaf.procStagePreview #() plants:#() placementRadiusValues:#()
-                    else leaf.procStagePreview groupSnapshotRows[slot] plants:procPublishedSources[slot] placementRadiusValues:procPublishedRadii[slot]
+                    -- An unpublished layer has no published owner dictionary.
+                    -- Pending authoring/copy callbacks may change its Bands
+                    -- while this empty cache remains at the same epoch.
+                    if slot==0 then leaf.procStagePreview #() plants:#() placementRadiusValues:#() metadata:#(#(),#(),false,#(),"")
+                    else leaf.procStagePreview groupSnapshotRows[slot] plants:procPublishedSources[slot] placementRadiusValues:procPublishedRadii[slot] metadata:procPublishedMetadata[slot]
                 )
+            )
+            for i=1 to layerObjects.count where stage[i]!=undefined do (
+                local slot=findItem procPublishedOwners layerObjects[i]
+                if slot>0 do nextMetadata[slot]=stage[i][14]
             )
             -- Preserve atomic failure retention: stage every changed layer
             -- before installing any successor. Unchanged snapshots stay shared.
@@ -2803,24 +3048,30 @@ initialRollupState:0x8
                     layerObjects[i].previewError="";layerObjects[i].dirty=pending
                 )
                 procPublishedDisplayKey=key
+                procPublishedMetadata=nextMetadata
             ) catch (
                 local failure=getCurrentException()
                 for i=1 to layerObjects.count do layerObjects[i].procRestorePreview before[i]
                 procPublishedDisplayKey=previousKey;CyrusViewportRecordsDirty=previousDirty
+                procPublishedMetadata=previousMetadata
                 throw()
             )
+            try(CyrusScheduleUI())catch()
         )
     )
     fn procRefreshPreview = (
-        local root=overlapOwner
+        local root=overlapOwner,displayPhase=false
         try (
             if root.groupSnapshotKey=="" or (not root.groupDisplayOnly and (root.updateMode==2 or root.procExplicitUpdate)) do root.evaluateProcedural()
             local pending=root.groupSnapshotKey!=root.procInputKey()
+            displayPhase=true
             root.procEnsureDisplay pending:pending
+            if root.procDisplayFailure do (for leaf in root.layerObjects do leaf.previewError="";root.procDisplayFailure=false)
             dirty=pending;cachedPointCount
         ) catch (
             -- A failed successor cannot erase the preceding complete viewport.
             local failure=getCurrentException()
+            root.procDisplayFailure=displayPhase
             for leaf in root.layerObjects do (leaf.previewError=failure;leaf.dirty=false)
             cachedPointCount
         )
@@ -2852,9 +3103,11 @@ initialRollupState:0x8
             requests[i]=#(quota,attempts,pool);admission+=pool
         )
         if admission>1000000 do throw "Procedural candidate admission exceeds 1,000,000. Reduce population or attempt limits."
+        for i=1 to layerObjects.count where cyrusEnabled and this.enabledLayer i do layerObjects[i].procRadiusGeometry (layerObjects[i].validSources())
+        local publishedMetadata=for leaf in layerObjects collect undefined
         local transaction=false,previousBindings=for leaf in layerObjects collect leaf.procBindingKey
         local previousResults=for leaf in layerObjects collect leaf.procResultState()
-        local previousPublication=#(procEpoch,procPublishedOwners,procPublishedSources,procPublishedFinalKeep,procPublishedRadii,procPublishedInfo,groupSnapshotRows,groupSnapshotKey,procPublishedDisplayKey,groupBuilds,CyrusViewportRecordsDirty)
+        local previousPublication=#(procEpoch,procPublishedOwners,procPublishedSources,procPublishedFinalKeep,procPublishedRadii,procPublishedInfo,groupSnapshotRows,groupSnapshotKey,procPublishedDisplayKey,groupBuilds,CyrusViewportRecordsDirty,procPublishedMetadata)
         groupSolving=true
         try (
             cyrusEditTransaction mods 0;transaction=true
@@ -2863,7 +3116,9 @@ initialRollupState:0x8
                 for leaf in members do (
                     local i=findItem layerObjects leaf,request=requests[i],plants=leaf.validSources(),rows=#()
                     if cyrusEnabled and this.enabledLayer i do rows=leaf.containerFilter (leaf.procPrepare request[3] plants) plants
-                    append sets #(leaf.layerID,rows,(leaf.procRadii rows plants),(leaf.procSelfRule()),request[1],request[2],(if cyrusEnabled and this.enabledLayer i then leaf.procReceiverPlanData[2] else #()))
+                    local geometry=leaf.procRadiusGeometry plants rows:rows enabled:(cyrusEnabled and this.enabledLayer i)
+                    publishedMetadata[i]=leaf.procPreviewMetadata plants geometry:geometry
+                    append sets #(leaf.layerID,rows,(leaf.procRadii rows plants geometry:geometry),(leaf.procSelfRule()),request[1],request[2],(if cyrusEnabled and this.enabledLayer i then leaf.procReceiverPlanData[2] else #()))
                     append indices i
                 )
                 append layers #(parent.layerID,parent.procPopulation==2,parent.procRepair,parent.procRounds,#(parent.procSiblingEnabled,parent.procSiblingMultiplier,parent.procSiblingGap,parent.procSiblingPlanar),#(parent.finalCleanup,parent.finalNeighborRadius,parent.finalMinNeighbors,parent.finalMinIsland,parent.cleanupPlanar),sets)
@@ -2877,7 +3132,7 @@ initialRollupState:0x8
                 accepted[i]=resolved[1][l][s];stats[i]=resolved[2][l][s];rounds[i]=resolved[3][l]
                 radii[i]=resolved[4][l][s]
             )
-            local display=for i=1 to layerObjects.count collect layerObjects[i].procStagePreview accepted[i] placementRadiusValues:radii[i] displayEpoch:(procEpoch+1)
+            local display=for i=1 to layerObjects.count collect layerObjects[i].procStagePreview accepted[i] placementRadiusValues:radii[i] displayEpoch:(procEpoch+1) metadata:publishedMetadata[i]
             local displayKey=this.procDisplayInputKey epoch:(procEpoch+1)
             local publishedOwners=layerObjects as array,publishedSources=for leaf in layerObjects collect leaf.validSources()
             local finalKeep=for i=1 to layerObjects.count collect (for n in publishedSources[i] collect not (layerObjects[i].isPointSource (layerObjects[i].sourceRow n)))
@@ -2897,6 +3152,7 @@ initialRollupState:0x8
             )
             procPublishedOwners=publishedOwners;procPublishedSources=publishedSources;procPublishedFinalKeep=finalKeep
             procPublishedRadii=radii;procPublishedInfo=publicationInfo
+            procPublishedMetadata=publishedMetadata
             groupSnapshotRows=accepted;groupSnapshotKey=finishedKey;procPublishedDisplayKey=displayKey;groupBuilds+=1
             -- Keep native Edit rollback alive until every script owner agrees.
             cyrusEditTransaction mods 1;transaction=false
@@ -2906,6 +3162,7 @@ initialRollupState:0x8
             procEpoch=previousPublication[1];procPublishedOwners=previousPublication[2];procPublishedSources=previousPublication[3];procPublishedFinalKeep=previousPublication[4]
             procPublishedRadii=previousPublication[5];procPublishedInfo=previousPublication[6];groupSnapshotRows=previousPublication[7]
             groupSnapshotKey=previousPublication[8];procPublishedDisplayKey=previousPublication[9];groupBuilds=previousPublication[10];CyrusViewportRecordsDirty=previousPublication[11]
+            procPublishedMetadata=previousPublication[12]
             for i=1 to layerObjects.count do (layerObjects[i].procPreparedKey="";layerObjects[i].procCandidateCount=undefined;layerObjects[i].procBindingKey=previousBindings[i])
             groupSolving=false
             if transaction do cyrusEditTransaction mods 2
@@ -2956,7 +3213,9 @@ initialRollupState:0x8
             if first<=last do for j=first to last do (
                 local row=rows[j],id=if classof row[3]==String then row[3] else ("c:"+(row[3] as string))
                 local keep=row[2]<=procPublishedFinalKeep[i].count and procPublishedFinalKeep[i][row[2]]
-                append result #(i,(copy row[1]),row[2],id,(row.count==4 and row[4]==true),procPublishedRadii[i][j],keep)
+                if row.count!=8 or row[8]!=2 do throw "Invalid published placement transport."
+                local protectedEdit=row[7]
+                append result #(i,(copy row[1]),row[2],id,protectedEdit,procPublishedRadii[i][j],keep)
             )
             base+=rows.count
         )
@@ -2965,13 +3224,13 @@ initialRollupState:0x8
 
     fn nativeEditors = (for r in #(updateUI,surfaceUI,previewUI,layersUI) where r!=undefined collect r)
     fn brushEditors = (
-        local editors=CyrusLayerEditorSections this method:#refreshBrushStatus
+        local editors=#()
         if (CyrusContainerPanel this).controlsReady do for r in (CyrusContainerPanel this).editors where isProperty r #refreshBrushStatus and r.controlsReady do appendIfUnique editors r
         editors
     )
     fn refreshBrushEditors = (for r in this.brushEditors() where r.controlsReady do r.refreshBrushStatus())
     fn syncBrushAvailability = (
-        local editors=CyrusLayerEditorSections this
+        local editors=#()
         if (CyrusContainerPanel this).controlsReady do join editors (CyrusContainerPanel this).editors
         for r in editors where r.controlsReady do (
             if isProperty r #syncRelaxAvailability do r.syncRelaxAvailability()
@@ -2980,10 +3239,9 @@ initialRollupState:0x8
     )
     fn bindNativeUI = (
         if (CyrusContainerPanel this).controlsReady do (CyrusContainerPanel this).bind()
-        CyrusBindLayerEditor this
         true
     )
-    rollout mainUI "Cyrus Scatter 0.79.6" width:#cmdPanel height:30 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.81.1" width:#cmdPanel height:30 autoLayoutOnResize:true (
         local root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),owner=undefined,layerPagesVisible=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for this entire Scatter setup."
         button licenseButton "License / activation..." pos:[8,112] width:(mainUI.width-16) height:22 tooltip:"Import a team license or inspect its expiry. Existing scenes remain available after expiry."
@@ -2992,7 +3250,7 @@ initialRollupState:0x8
         fn layoutPanels = true
         fn refreshTitles = (
             if owner!=undefined and root.selected_setsUI!=undefined do root.selected_setsUI.title="Paint Areas | "+(root.layerCaption owner)
-            CyrusContainerRefreshLabels root;CyrusBindLayerEditor root;true
+            CyrusContainerRefreshLabels root;true
         )
         fn refreshStats = (
             if not controlsReady do return false
@@ -3039,15 +3297,13 @@ initialRollupState:0x8
                 bindEditors();binding=false;refreshStats();true
             )catch(binding=false;throw())
         )
-        fn rebuild = (bind();CyrusBindLayerEditor root)
+        fn rebuild = bind()
         fn rebuildLayers = rebuild()
-        fn selectLayerView layer expand:false = (
+        fn selectLayerView layer = (
             if layer==undefined do return false
             local parent=root.logicalParent layer
             if root.selectedLayer()!=parent do undo off root.selectLayer (findItem root.layerObjects parent)
             bindEditors()
-            if expand then CyrusOpenLayerEditor root parent
-            else if CyrusLayerEditor!=undefined and CyrusLayerEditor.root==root do CyrusLayerEditor.retarget root parent
             if root.layersUI!=undefined and root.layersUI.controlsReady do root.layersUI.bind undefined
             true
         )
@@ -3055,7 +3311,7 @@ initialRollupState:0x8
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.79.6 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.81.1 native plugin and restart Max."
             root.syncLayerIdentity()
             roots=#(root.flow_updateUI,root.flow_surfaceUI,root.flow_previewUI,root.flow_layersUI)
             root.updateUI=roots[1];root.surfaceUI=roots[2];root.previewUI=roots[3];root.layersUI=roots[4]
@@ -3197,12 +3453,13 @@ initialRollupState:0x8
         dropdownlist proxyShapeDrop "Proxy shape" items:#("Box","Sphere","Pyramid") pos:[6,82] width:(flow_previewUI.width-12)
         spinner instancesLimitSpin "Instances/layer:" range:[1,100000,2000] type:#integer fieldWidth:58 pos:[6,138] width:(flow_previewUI.width-12)
         spinner faceLimitSpin "Faces/layer:" range:[12,20000000,2000000] type:#integer fieldWidth:58 pos:[6,166] width:(flow_previewUI.width-12)
-        dropdownlist identificationDrop "Color by" items:#("Model","Layer") pos:[6,208] width:(flow_previewUI.width-12) tooltip:"Use model or layer identification colors in Points, Proxy and shaded Mesh previews."
+        dropdownlist identificationDrop "Color by" items:#("Model","Layer","Bands") pos:[6,208] width:(flow_previewUI.width-12) tooltip:"Use Model, Layer or published Band ownership in Points, Proxy and shaded Mesh. Non-Band layouts use neutral gray (Unbanded). Render materials are unchanged."
         radiobuttons pointColorRadio "Preview color" labels:#("Solid Color","Identification Colors") columns:1 pos:[6,194] width:(flow_previewUI.width-12)
         colorpicker solidColorPicker "Solid: " color:(color 100 220 120) pos:[6,264] width:(flow_previewUI.width-12)
         spinner budgetSpin "Point limit: " range:[1000,500000,20000] type:#integer fieldWidth:58 width:(flow_previewUI.width-12) pos:[6,292]
         spinner pointsSpin "Points/plant: " range:[10,10000,80] type:#integer fieldWidth:58 width:(flow_previewUI.width-12) pos:[6,318]
         spinner radiusLimitSpin "Radii / layer:" range:[0,1000000,2000] type:#integer fieldWidth:58 width:(flow_previewUI.width-12) pos:[6,344]
+        dropdownlist radiusMetricDrop "Radius display" items:#("XY footprint","3D bound") pos:[6,346] width:(flow_previewUI.width-12) tooltip:"Inspect the published radius pair. This display choice does not change any spacing rule. 3D uses three orthogonal rings."
         checkbox radiusAllCheck "Show All Radii" pos:[6,370] width:(flow_previewUI.width-12)
         label radiusHint "Display only; 0 = hide radii" pos:[6,396] width:(flow_previewUI.width-12)
         spinner iconSpin "Icon size: " range:[0.1,10000,10] type:#worldUnits fieldWidth:58 width:(flow_previewUI.width-12) pos:[6,422]
@@ -3212,6 +3469,7 @@ initialRollupState:0x8
         label status "Ready" pos:[6,572] width:(flow_previewUI.width-12) height:60
 
         fn syncDisplay = (
+            radiusMetricDrop.selection=obj.radiusDisplayMetric
             displayModeDrop.selection=if obj.groupCenters then 4 else obj.viewportMode;proxyShapeDrop.selection=obj.proxyShape
             proxyShapeDrop.visible=obj.viewportMode==2
             instancesLimitSpin.visible=obj.viewportMode!=1;faceLimitSpin.visible=obj.viewportMode!=1
@@ -3220,6 +3478,7 @@ initialRollupState:0x8
         )
         fn syncControls = (syncDisplay();identificationDrop.selection=obj.identificationMode;radiusLimitSpin.value=obj.radiusDisplayLimit;radiusAllCheck.checked=obj.radiusDisplayAll;radiusLimitSpin.enabled=not obj.radiusDisplayAll;autoRenderCheck.checked=obj.autoRender;budgetSpin.value=obj.previewBudget;pointColorRadio.state=obj.pointColorMode;solidColorPicker.color=obj.solidPointColor;)
         on radiusLimitSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.radiusDisplayLimit=v;obj.refreshDisplay();syncControls();CyrusViewportRedraw())
+        on radiusMetricDrop selected v do if controlsReady and not binding and obj!=undefined do (obj.radiusDisplayMetric=v;obj.refreshDisplay();syncControls();CyrusViewportRedraw())
         on radiusAllCheck changed v do if controlsReady and not binding and obj!=undefined do (obj.radiusDisplayAll=v;obj.refreshDisplay();syncControls();CyrusViewportRedraw())
         on displayModeDrop selected v do if controlsReady and not binding and obj!=undefined do (obj.setGroupDisplay v;syncControls();status.text=obj.allStatus();CyrusViewportRedraw())
         on proxyShapeDrop selected v do if controlsReady and not binding and obj!=undefined do (obj.proxyShape=v;obj.refreshDisplay();syncControls();status.text=obj.allStatus();CyrusViewportRedraw())
@@ -3235,7 +3494,7 @@ initialRollupState:0x8
         on budgetSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.previewBudget=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
         fn selectIdentification value = (obj.identificationMode=value;identificationDrop.selection=value;obj.refreshIdentification())
         on identificationDrop selected v do selectIdentification v
-        on pointColorRadio changed v do if controlsReady and not binding and obj!=undefined do (obj.pointColorMode=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on pointColorRadio changed v do if controlsReady and not binding and obj!=undefined do (obj.pointColorMode=v;syncControls();CyrusViewportRedraw())
         on solidColorPicker changed v do if controlsReady and not binding and obj!=undefined do (obj.solidPointColor=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
 
 
@@ -3256,7 +3515,6 @@ initialRollupState:0x8
     rollout flow_layersUI "Layer Manager" width:162 category:40 autoLayoutOnResize:true (
         local root=undefined,controlsReady=false,binding=false,members=#()
         listbox layerList "Layer | placed | status" pos:[8,8] width:(flow_layersUI.width-16) height:6
-        button editButton "Edit layer in window..." pos:[8,138] width:(flow_layersUI.width-16) height:28 tooltip:"Optional floating view of the same layer settings. Select a layer to edit it below in Modify."
         button addButton "Add layer" pos:[8,174] width:(flow_layersUI.width-16) tooltip:"Add a layer and edit its controls below. Layers calculate from top to bottom."
         button copyButton "Copy" pos:[8,204] width:((flow_layersUI.width-22)/2) tooltip:"Copy this layer, its models, surfaces and Paint Areas."
         button removeButton "Remove" pos:[(flow_layersUI.width/2+3),204] width:((flow_layersUI.width-22)/2) tooltip:"Remove this layer and its Paint Areas. Undo restores them."
@@ -3279,14 +3537,14 @@ initialRollupState:0x8
             binding=true
             if layerList.items as string!=rows as string do layerList.items=rows
             layerList.selection=findItem members selected
-            local text=if selectedSummary==undefined then "Select a layer." else "Placed: "+(CyrusUICount selectedSummary[1])+" | Shown: "+(CyrusUICount selectedSummary[2])+"\n"+selectedSummary[3]+"\nCounts describe the last build."
+            local text=if selectedSummary==undefined then "Select a layer." else "Placed: "+(CyrusUICount selectedSummary[1])+" | Shown: "+(CyrusUICount selectedSummary[2])+"\n"+selectedSummary[3]
             if countInfo.text!=text do countInfo.text=text
             binding=false
         )
         fn bind layer = (
             binding=true;members=root.logicalLayers()
             local selected=currentLayer(),index=findItem root.layerObjects selected,valid=index>0
-            for c in #(editButton,copyButton,removeButton,nameEdit,visibleCheck,enabledCheck) do c.enabled=valid
+            for c in #(copyButton,removeButton,nameEdit,visibleCheck,enabledCheck) do c.enabled=valid
             nameEdit.text=if valid then root.layerNames[index] else ""
             layerColor.enabled=valid;layerColor.color=if valid then selected.layerIDColor else (color 100 220 120)
             visibleCheck.checked=valid and root.layerVisible[index]
@@ -3299,8 +3557,7 @@ initialRollupState:0x8
         on flow_layersUI open do (root=this;bind undefined)
         on flow_layersUI close do controlsReady=false
         on layerList selected i do if not binding and i>0 do ((CyrusContainerPanel root).selectLayerView members[i];bind undefined)
-        on layerList doubleClicked i do if not binding and i>0 do (CyrusContainerPanel root).selectLayerView members[i] expand:true
-        on editButton pressed do (CyrusContainerPanel root).selectLayerView (currentLayer()) expand:true
+        on layerList doubleClicked i do if not binding and i>0 do (CyrusContainerPanel root).selectLayerView members[i]
         on addButton pressed do (
             -- Max can close/recreate this rollout during the refresh. The
             -- command owns its controller reference until the action ends.
@@ -3395,13 +3652,14 @@ initialRollupState:0x8
         colorpicker idColor "" color:(color 100 220 120) pos:[4,118] width:22 height:22 modal:true notifyAfterAccept:true tooltip:"Viewport identification color. This does not change clustering or model frequency."
         multiListBox plantList "Sources (Ctrl/Shift)" items:#() pos:[4,8] height:6 width:(selected_sourceUI.width-8)
         button selectFromScene "Choose from list..." pos:[4,170] width:((selected_sourceUI.width-12)/2) tooltip:"Choose one or more source models by name."
-        pickbutton addPlant "Pick model" pos:[4,140] width:((selected_sourceUI.width-12)/2) tooltip:"Pick a scene model for this layer. The editor stays on its layer."
+        pickbutton addPlant "Pick model" pos:[4,140] width:((selected_sourceUI.width-12)/2) tooltip:"Pick a scene model for this layer."
         button addSelected "Add selection" pos:[(selected_sourceUI.width/2+2),140] width:((selected_sourceUI.width-12)/2) tooltip:"Add the currently selected scene objects to this layer."
         button removePlant "Remove rows" pos:[4,200] width:(selected_sourceUI.width-8) tooltip:"Unregister highlighted rows. To keep their settings, park models outside a source rectangle instead."
         button selectPlant "Select sources" pos:[(selected_sourceUI.width/2+2),170] width:((selected_sourceUI.width-12)/2) tooltip:"Select the highlighted source models in the scene."
         button addPoint "Add Point" pos:[4,460] width:((selected_sourceUI.width-12)/2) tooltip:"Add a named placeholder type. Scatter points now, then replace this row with a model."
         button addEmpty "Add Empty" pos:[(selected_sourceUI.width/2+2),460] width:((selected_sourceUI.width-12)/2) tooltip:"Add a weighted empty source for intentional gaps in candidate-budget mode."
-        pickbutton replacePoint "Replace Point: pick object" filter:AminScatterSourceFilter pos:[4,490] width:(selected_sourceUI.width-8) tooltip:"Replace one highlighted Point row with a scene model."
+        pickbutton replacePoint "Pick object" filter:AminScatterSourceFilter pos:[4,490] width:(selected_sourceUI.width-8) tooltip:"Use a scene model for the selected Point; keep its identity, settings and Band assignments."
+        button makePoint "Make point" pos:[4,514] width:(selected_sourceUI.width-8) tooltip:"Use the selected model row as a Point. Keep its settings and registration; do not delete the scene object."
         label groupHeading "Assignment group" pos:[4,530] width:(selected_sourceUI.width-8)
         dropdownlist existingGroups "Reuse a group" items:#() pos:[4,552] width:(selected_sourceUI.width-8) tooltip:"Assign highlighted sources to an existing color group for clustering."
         colorpicker groupColor "Color: " color:(color 100 220 120) pos:[4,606] width:(selected_sourceUI.width-8) modal:true notifyAfterAccept:true tooltip:"Assign a color group to highlighted sources when the color is accepted."
@@ -3409,18 +3667,19 @@ initialRollupState:0x8
         label colorHelp "OK saves the selected color." pos:[4,664] width:(selected_sourceUI.width-8)
         spinner weightSpin "Weight: " range:[0,1,1] scale:0.01 pos:[4,236] width:((selected_sourceUI.width-12)/2) fieldWidth:82 tooltip:"Relative model frequency in this layer. Zero disables the model."
         label weightHelp "0 = off; relative share" pos:[4,378] width:(selected_sourceUI.width-8)
-        spinner sourceZSpin "Z Offset: " range:[-1000000,1000000,0] type:#worldunits pos:[4,266] width:((selected_sourceUI.width-12)/2) fieldWidth:82 tooltip:"Offset instances of highlighted models along their placement normal."
+        spinner sourceZSpin "Z Offset: " range:[-1000000,1000000,0] type:#worldunits pos:[4,266] width:((selected_sourceUI.width-12)/2) fieldWidth:82 tooltip:"Offset instances of highlighted models along world Z."
         spinner sourceScaleSpin "Scale: " range:[0,10000,1] scale:0.01 pos:[(selected_sourceUI.width/2+2),236] width:((selected_sourceUI.width-12)/2) fieldWidth:82 tooltip:"Per-model scale multiplier. 1 keeps the model's original scale."
         label sourceTransformHelp "Scale: 1 = original" pos:[4,398] width:(selected_sourceUI.width-8)
         spinner radiusSourceSpin "Radius:" type:#worldunits range:[0,1e9,0] pos:[(selected_sourceUI.width/2+2),266] width:((selected_sourceUI.width-12)/2) fieldWidth:82 tooltip:"Collision footprint radius for highlighted source rows, in scene units."
+        dropdownlist radiusModeDrop "Radius mode" items:#("Manual","Auto") pos:[4,268] width:(selected_sourceUI.width-8) tooltip:"Auto bounds supported model geometry around its pivot after final instance scale and orientation. This is conservative spacing, not mesh collision or Band containment."
+        label radiusModeHelp "Manual radius in scene units" pos:[4,272] width:(selected_sourceUI.width-8) height:32
         checkbox followRadiusCheck "Follow Scale" pos:[4,294] width:((selected_sourceUI.width-12)/2) tooltip:"Scale this source's collision footprint with its instance scale."
         checkbox showRadiusCheck "Show Radius" pos:[(selected_sourceUI.width/2+2),294] width:((selected_sourceUI.width-12)/2) tooltip:"Show this source's radius in the viewport; does not change collision rules."
         dropdownlist forwardAxis "Forward axis:" items:#("+Y","-Y","+X","-X") pos:[4,326] width:(selected_sourceUI.width-8) tooltip:"The model's local forward direction, used for orientation."
-        fn colorLabel c = ("#"+(formattedPrint (obj.colorKey c) format:"06X"))
         fn updateList = (
             local selectedRows=plantList.selection
             if selectedRows.numberSet==0 and obj.sources.count>0 do selectedRows=#{1}
-            plantList.items=for i=1 to obj.sources.count collect ((obj.sourceLabel i)+" | "+(formattedPrint (obj.sourceWeight i) format:".2f"))
+            plantList.items=for i=1 to obj.sources.count collect ((obj.sourceLabel i)+" | "+(formattedPrint (obj.sourceWeight i) format:".2f")+(if obj.diversityMode==3 then " | "+obj.sourceBandLabel i else ""))
             plantList.selection=selectedRows
             groupPalette=#()
             local keys=#()
@@ -3429,7 +3688,7 @@ initialRollupState:0x8
                 local k=obj.colorKey c
                 if findItem keys k==0 do (append keys k;append groupPalette c)
             )
-            existingGroups.items=for c in groupPalette collect (colorLabel c)
+            existingGroups.items=for i=1 to groupPalette.count collect ("Group "+(i as string))
         )
         fn addSource n = (
             if obj.usableSource n and (findItem obj.sources n)==0 do (
@@ -3449,13 +3708,22 @@ initialRollupState:0x8
                 groupColor.color=obj.sourceColor focusedRow
                 weightSpin.enabled=true;weightSpin.value=obj.sourceWeight focusedRow
                 radiusSourceSpin.value=obj.sourceRadius focusedRow;followRadiusCheck.checked=obj.sourceFollows focusedRow;showRadiusCheck.checked=obj.sourceShows focusedRow;sourceZSpin.value=obj.sourceZOffset focusedRow;sourceScaleSpin.value=obj.sourceScale focusedRow;forwardAxis.selection=obj.sourceForward focusedRow
+                local auto=obj.sourceUsesAuto focusedRow,allSupported=true,anyAuto=false
+                for i in rows do (if not obj.sourceCanAuto i do allSupported=false;if obj.sourceUsesAuto i do anyAuto=true)
+                radiusModeDrop.items=if allSupported then #("Manual","Auto") else if anyAuto then #("Manual","Auto (unavailable)") else #("Manual")
+                radiusModeDrop.selection=if auto then 2 else 1
+                radiusModeDrop.enabled=true;radiusSourceSpin.enabled=not anyAuto;followRadiusCheck.enabled=not anyAuto;showRadiusCheck.enabled=true
+                radiusModeHelp.text=if obj.isPointSource focusedRow then "Points have no model geometry to measure. Use Manual radius." else if not allSupported then "Auto unavailable for this selection. Manual radius remains available." else if anyAuto then "Auto follows instance size. Manual settings are saved." else "Manual radius in scene units; Follow Scale is optional."
                 existingGroups.selection=findItem groupPalette (obj.sourceColor focusedRow)
                 loadingColor=false
             ) else (
                 sourceName.text="";sourceName.enabled=false;idColor.enabled=false
+                radiusModeDrop.enabled=false;radiusSourceSpin.enabled=false;followRadiusCheck.enabled=false;showRadiusCheck.enabled=false;radiusModeHelp.text="Select a source to edit its radius."
                 loadingColor=true;groupColor.color=obj.sourceColor 1;existingGroups.selection=0;focusedRow=0;loadingColor=false
             )
+            radiusModeDrop.tooltip=radiusModeHelp.text
             replacePoint.enabled=rows.numberSet==1 and obj.isPointSource focusedRow
+            makePoint.enabled=rows.numberSet==1 and focusedRow>0 and not obj.isEmptySource focusedRow and obj.usableSource obj.sources[focusedRow]
         )
 
         fn addSources nodes = (
@@ -3478,12 +3746,20 @@ initialRollupState:0x8
             local rows=plantList.selection as array
             if rows.count!=1 then messageBox "Select one Point row to replace." title:"Cyrus Scatter"
             else if not (obj.replacePointSource rows[1] n) do messageBox "Select a Point row and an object that is not already in this set's source list." title:"Cyrus Scatter"
-            replacePoint.text="Replace Point: pick object";updateList();showSelectedColor();CyrusViewportRedraw()
+            replacePoint.text="Pick object";updateList();showSelectedColor();CyrusViewportRedraw()
+        )
+        on makePoint pressed do if controlsReady and not binding and obj!=undefined do (
+            local rows=plantList.selection as array
+            if rows.count==1 and obj.makePointSource rows[1] do (updateList();showSelectedColor();CyrusViewportRedraw())
         )
         on addEmpty pressed do if controlsReady and not binding and obj!=undefined do (
             local i=obj.addEmptySource();updateList();plantList.selection=#{i};focusedRow=i;showSelectedColor();CyrusViewportRedraw()
         )
         on radiusSourceSpin changed v do if controlsReady and not binding and obj!=undefined do if not loadingColor do (obj.setSourceRadius plantList.selection v;CyrusViewportRedraw())
+        on radiusModeDrop selected v do if controlsReady and not binding and obj!=undefined and not loadingColor do (
+            try(obj.setSourceRadius plantList.selection (v==2) kind:4)catch(messageBox (getCurrentException()) title:"Cyrus Scatter")
+            showSelectedColor();CyrusViewportRedraw()
+        )
         on followRadiusCheck changed v do if controlsReady and not binding and obj!=undefined do if not loadingColor do (obj.setSourceRadius plantList.selection v kind:2;CyrusViewportRedraw())
         on showRadiusCheck changed v do if controlsReady and not binding and obj!=undefined do if not loadingColor do (
             local controller=if obj.overlapOwner==undefined then obj else obj.overlapOwner
@@ -3527,7 +3803,7 @@ initialRollupState:0x8
             undo "Cyrus Scatter remove sources" on (
                 for k=rows.count to 1 by -1 do (
                     deleteItem obj.sourceRowIDs rows[k]
-                    for key in #(#sourceRadiiWU,#sourceFollowScale,#sourceShowRadius) do (local tab=getProperty obj key;if rows[k]<=tab.count do deleteItem tab rows[k])
+                    for key in #(#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius) do (local tab=getProperty obj key;if rows[k]<=tab.count do deleteItem tab rows[k])
                     if rows[k]<=obj.sourcePoint.count do deleteItem obj.sourcePoint rows[k]
                     if rows[k]<=obj.sourceEmpty.count do deleteItem obj.sourceEmpty rows[k]
                     if rows[k]<=obj.sourceZOffsetsWU.count do deleteItem obj.sourceZOffsetsWU rows[k]
@@ -3558,7 +3834,7 @@ initialRollupState:0x8
         )
         checkbutton detailsToggle "Point / Empty sources and color groups" pos:[4,426] width:(selected_sourceUI.width-8) height:26 tooltip:"Show or hide these advanced controls; their saved settings are preserved."
         fn arrangeDetails = (
-            for c in #(addPoint,addEmpty,replacePoint,groupHeading,existingGroups,groupColor,applyColor,colorHelp) do c.visible=detailsToggle.checked
+            for c in #(addPoint,addEmpty,replacePoint,makePoint,groupHeading,existingGroups,groupColor,applyColor,colorHelp) do c.visible=detailsToggle.checked
             selected_sourceUI.height=if detailsToggle.checked then 692 else 460
         )
         fn bind layer = (bindFeatures layer;arrangeDetails())
@@ -4056,7 +4332,7 @@ initialRollupState:0x8
         local binding=false,
         obj=undefined,parentView=undefined
         local boundaryOnly=false
-        local controlsReady=false,strokeExpandedHeight=0
+        local controlsReady=false
 
         radiobuttons diversityRadio "Source assignment" labels:#("Random mix","Clusters","Spline bands","Surface Analyzer") columns:1 pos:[4,8] width:(selected_diversityUI.width-8)
         label layoutHelp "" pos:[4,90] width:(selected_diversityUI.width-8) height:36
@@ -4074,9 +4350,11 @@ initialRollupState:0x8
 
 
 
-        local pathRows=#(),strokeRows=#(),choiceValues=#(),restKeys=#(),loadingStroke=false
+        local pathRows=#(),strokeRows=#(),choiceValues=#(),loadingStroke=false,selectedPathID=0,selectedBandID=0
         label strokeTitle "Spline bands" pos:[4,118] width:(selected_diversityUI.width-8)
-        dropdownlist pathsDrop "Paths" items:#() pos:[4,142] width:(selected_diversityUI.width-8)
+        listbox pathsList "Paths" items:#() pos:[4,142] width:(selected_diversityUI.width-8) height:3
+        dropdownlist cornerMode "Path corners" items:#("Rounded","Sharp") pos:[4,150] width:(selected_diversityUI.width-8) tooltip:"Rounded uses Euclidean distance. Sharp uses bounded miter offsets; complex Paths may require simplification."
+        dropdownlist arrangementMode "Band ranges" items:#("Consecutive","Independent") pos:[4,160] width:(selected_diversityUI.width-8) tooltip:"Consecutive accumulates widths. Independent permits overlapping Start/End ranges and uses a shared candidate population."
         dropdownlist analyzerChannel "Analyzer data" items:#("Border","Centerline","Points","Street Side","Edge Border") pos:[4,142] width:(selected_diversityUI.width-8)
         pickbutton pickAnalyzer "Pick Surface Analyzer" filter:CyrusAnalyzerFilter pos:[4,192] width:(selected_diversityUI.width-8) tooltip:"Use Surface Analyzer output for bands, rows and fixed anchors."
         pickbutton pickPath "Add: pick closed line" filter:AminScatterAreaFilter pos:[4,192] width:(selected_diversityUI.width-8) tooltip:"Pick a spline for Line Pattern assignment."
@@ -4086,10 +4364,27 @@ initialRollupState:0x8
         button addInside "Add Inside" pos:[(if boundaryOnly then 4 else selected_diversityUI.width/2+2),346] width:(if boundaryOnly then selected_diversityUI.width-8 else (selected_diversityUI.width-12)/2) tooltip:"Add a source-assignment band inside the selected path."
         button removeStrokeButton "Remove band" pos:[4,372] width:(selected_diversityUI.width-8) tooltip:"Remove the selected band and its settings."
         spinner strokeWidth "Width:" range:[0.001,100000,1] type:#worldUnits pos:[4,406] width:(selected_diversityUI.width-8) fieldWidth:82
-        radiobuttons strokeMode "Assign by" labels:#("Assignment groups","Models / Points") columns:1 pos:[4,434] width:(selected_diversityUI.width-8)
+        spinner bandStart "Start:" range:[0,100000,0] type:#worldUnits pos:[4,410] width:(selected_diversityUI.width-8) fieldWidth:82 tooltip:"Independent range starts at this physical distance from its Path."
+        spinner bandEnd "End:" range:[0.001,100000,1] type:#worldUnits pos:[4,412] width:(selected_diversityUI.width-8) fieldWidth:82 tooltip:"Independent range must end after Start."
+        spinner bandStrength "Density %:" range:[0,100,100] pos:[4,414] width:(selected_diversityUI.width-8) fieldWidth:82 tooltip:"Band contribution before other masks and spacing. Independent overlaps share one candidate population."
+        checkbox bandCurveCheck "Density curve" pos:[4,416] width:(selected_diversityUI.width-8) tooltip:"Use the saved sampled density curve from Start to End."
+        dropdownlist bandScaleMode "Scale profile" items:#("Off","Follow Density","Custom") selection:1 pos:[4,646] width:(selected_diversityUI.width-8) tooltip:"Multiply the random Band size by the effective density curve shape or an independent Custom scale curve. Density % is not a size multiplier."
+        button bandScaleEdit "Edit scale curve" pos:[4,674] width:(selected_diversityUI.width-8) tooltip:"Size multiplier across this Band. 100% preserves size; zero collapses size without deleting the placement. Edit in Custom mode."
+        button bandCurveEdit "Edit curve" pos:[4,418] width:(selected_diversityUI.width-8) tooltip:"Edit this Band by its captured identity. Changes apply on drag release, Apply or Close."
+        colorpicker bandColor "Band color:" color:white pos:[4,420] width:(selected_diversityUI.width-8) tooltip:"Identification color belongs to this Band. It never changes placements or source materials."
+        checkbox fieldFalloffCheck "Preview Falloff" pos:[4,422] width:(selected_diversityUI.width-8) tooltip:"Sample Band density on receiver surfaces before other masks, spacing and cleanup. This never changes plant counts."
+        checkbox fieldBoundaryCheck "Show Boundaries" pos:[4,424] width:(selected_diversityUI.width-8) tooltip:"Show admitted start/end contours clipped to every receiver surface, including stacked and vertical receivers."
+        dropdownlist fieldView "Field view" items:#("Selected Band","Combined density") pos:[4,426] width:(selected_diversityUI.width-8) tooltip:"Selected Band shows its contribution. Combined shows capped total occupancy."
+        spinner fieldSampleSpin "Field samples:" range:[1,20000,4000] type:#integer pos:[4,428] width:(selected_diversityUI.width-8) fieldWidth:72 tooltip:"Bounded visualization samples; sparse coverage can miss narrow intervals. Show Boundaries preserves admitted outlines."
+        label fieldLegend "Band density before masks/spacing/cleanup\n0% blue | 100% red | boundaries white" pos:[4,430] width:(selected_diversityUI.width-8) height:40
+        label fieldInfo "Preview hidden." pos:[4,432] width:(selected_diversityUI.width-8) height:88
+        button bandUp "Move up" pos:[4,422] width:65 tooltip:"Move the selected Band up on its Path. Consecutive priority and ranges follow authored order."
+        button bandDown "Move down" pos:[72,422] width:65 tooltip:"Move the selected Band down on its Path. Independent decisions keep stable Band identities."
+        label bandAssignmentHelp "Models used by this Band" pos:[4,430] width:(selected_diversityUI.width-8) height:18
+        radiobuttons strokeMode "Select from" labels:#("Assignment groups","Models / Points") columns:1 pos:[4,434] width:(selected_diversityUI.width-8)
         multiListBox strokeChoices "Ctrl / Shift: select several" items:#() pos:[4,506] width:(selected_diversityUI.width-8) height:5
-        spinner strokeScaleMin "Scale min:" range:[0.001,100,1] pos:[4,618] width:(selected_diversityUI.width-8) fieldWidth:82
-        spinner strokeScaleMax "Scale max:" range:[0.001,100,1] pos:[4,644] width:(selected_diversityUI.width-8) fieldWidth:82
+        spinner strokeScaleMin "Scale min:" tooltip:"Additional Band multiplier, combined once with source, layer and transform scale." range:[0.001,100,1] pos:[4,618] width:(selected_diversityUI.width-8) fieldWidth:82
+        spinner strokeScaleMax "Scale max:" tooltip:"Additional Band multiplier; it does not change the source asset or its base Scale setting." range:[0.001,100,1] pos:[4,644] width:(selected_diversityUI.width-8) fieldWidth:82
         button refreshGroups "Refresh sources / groups" pos:[4,676] width:(selected_diversityUI.width-8) tooltip:"Refresh available source color groups for assignment."
         label strokeHelp "Outside bands: empty. First match wins." pos:[4,704] width:(selected_diversityUI.width-8)
         spinner edgeOffsetSpin "Offset inward:" range:[-1000000,1000000,0] type:#worldunits pos:[4,814] width:(selected_diversityUI.width-8) fieldWidth:82
@@ -4123,7 +4418,28 @@ initialRollupState:0x8
         on streetEndSpin changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (obj.streetTrimEnd=v;CyrusViewportRedraw())
         on centerStreetSpin changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (obj.centerStreetOffset=v;CyrusViewportRedraw())
         on straightStreet changed v do if controlsReady and not binding and obj!=undefined do (obj.streetStraight=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
-        fn selectedStroke = (if strokesList.selection>0 and strokesList.selection<=strokeRows.count then strokeRows[strokesList.selection] else 0)
+        fn selectedPathSlot = (findItem obj.pathIDs selectedPathID)
+        fn selectedPathNode = (local slot=selectedPathSlot();if slot>0 then obj.patternPaths[slot] else undefined)
+        fn selectedStroke = (findItem obj.strokeIDs selectedBandID)
+        fn refreshFieldInfo = (if obj!=undefined do fieldInfo.text=obj.fieldPreviewStatus())
+        fn changeFieldDisplay key value = (
+            local savedOwner=obj,controller=if obj.overlapOwner==undefined then obj else obj.overlapOwner
+            undo "Cyrus field display" on setProperty savedOwner key value
+            controller.refreshDisplay()
+            if obj==savedOwner do refreshFieldInfo()
+        )
+        fn choiceColor index = (
+            if index<1 or index>choiceValues.count do return (color 128 128 128)
+            local row=selectedStroke()
+            if row>0 and obj.strokeModes[row]==1 then (
+                local key=choiceValues[index]
+                for i=1 to obj.sources.count where obj.colorKey(obj.sourceColor i)==key do return obj.sourceColor i
+            ) else (
+                local source=findItem obj.sourceRowIDs choiceValues[index]
+                if source>0 do return obj.sourceIDColor source
+            )
+            color 128 128 128
+        )
         fn showStroke = (
             loadingStroke=true
             obj.syncStrokes()
@@ -4135,7 +4451,25 @@ initialRollupState:0x8
             cornerAngleSpin.enabled=obj.edgeKeepCorners;cornerCountSpin.enabled=obj.edgeKeepCorners
             strokeWidth.text=if edgeVisible then "Spacing:" else "Width:"
             local row=selectedStroke();local active=row>0
-            for c in #(strokeWidth,strokeMode,strokeChoices,strokeScaleMin,strokeScaleMax,removeStrokeButton) do c.enabled=active
+            for c in #(strokeWidth,strokeMode,strokeChoices,strokeScaleMin,strokeScaleMax,removeStrokeButton,bandStart,bandEnd,bandStrength,bandCurveCheck,bandCurveEdit,bandScaleMode,bandScaleEdit,bandColor,bandUp,bandDown) do c.enabled=active
+            local ordinary=obj.diversityMode==3
+            for c in #(bandStart,bandEnd) do c.visible=ordinary and obj.bandArrangement==2
+            strokeWidth.visible=not ordinary or obj.bandArrangement==1
+            for c in #(bandStrength,bandCurveCheck,bandCurveEdit,bandScaleMode,bandScaleEdit,bandColor,bandUp,bandDown) do c.visible=ordinary
+            bandAssignmentHelp.visible=ordinary
+            for c in #(fieldFalloffCheck,fieldBoundaryCheck,fieldView,fieldSampleSpin,fieldLegend,fieldInfo) do c.visible=ordinary
+            fieldFalloffCheck.checked=obj.fieldFalloff;fieldBoundaryCheck.checked=obj.fieldBoundaries
+            fieldView.selection=if obj.fieldCombined then 2 else 1;fieldSampleSpin.value=obj.fieldSamples
+            fieldView.enabled=ordinary;fieldSampleSpin.enabled=ordinary and obj.fieldFalloff
+            if ordinary and not binding and obj.fieldBandID!=selectedBandID do undo off obj.fieldBandID=selectedBandID
+            refreshFieldInfo()
+            if active and ordinary do (
+                bandStart.value=obj.strokeStarts[row];bandEnd.value=obj.strokeEnds[row]
+                bandStrength.value=obj.strokeStrengths[row]*100;bandCurveCheck.checked=obj.strokeCurveEnabled[row];bandCurveEdit.enabled=bandCurveCheck.checked
+                bandScaleMode.selection=obj.strokeScaleModes[row];bandScaleEdit.enabled=obj.strokeScaleModes[row]==3
+                bandColor.color=obj.strokeDisplayColors[row]
+                local rank=findItem strokeRows row;bandUp.enabled=rank>1;bandDown.enabled=rank>0 and rank<strokeRows.count
+            )
             choiceValues=#();strokeChoices.items=#()
             for c in #(edgeOffsetSpin,edgeAlongSpin,edgeAcrossSpin,edgeRotXSpin,edgeRotYSpin,edgeRotZSpin) do c.enabled=active
             if active do (
@@ -4150,10 +4484,9 @@ initialRollupState:0x8
                 if obj.strokeModes[row]==1 then (
                     for i=1 to obj.sources.count do (
                         local key=obj.colorKey(obj.sourceColor i)
-                        if findItem choiceValues key==0 do (append choiceValues key;append labels ("#"+(formattedPrint key format:"06X")))
+                        if findItem choiceValues key==0 do (append choiceValues key;append labels ("Group "+(choiceValues.count as string)))
                     )
                     local keys=for i=1 to obj.strokeColorRows.count where obj.strokeColorRows[i]==row collect obj.strokeColorKeys[i]
-                    if keys.count==0 do keys=#(obj.patternGroups[row])
                     for i=1 to choiceValues.count where findItem keys choiceValues[i]>0 do selectedRows[i]=true
                 ) else (
                     for i=1 to obj.sources.count where obj.isEmptySource i or obj.usableSource obj.sources[i] do (append choiceValues obj.sourceRowIDs[i];append labels (obj.sourceLabel i))
@@ -4166,8 +4499,8 @@ initialRollupState:0x8
             loadingStroke=false
             if obj.diversityMode>=3 do (
                 local analyzed=obj.diversityMode==4
-                strokeHelp.text=if analyzed then "Width is spread per side; spacing and masks still apply." else "Outside bands: empty. First match wins."
-                local guideReady=if analyzed then isValidNode obj.analyzerNode else pathsDrop.selection>0
+                strokeHelp.text=if analyzed then "Width is spread per side; spacing and masks still apply." else if obj.bandArrangement==2 then "Overlaps combine density; each candidate chooses at most one Band." else "Empty Bands reserve their intervals. First geometric match wins."
+                local guideReady=if analyzed then isValidNode obj.analyzerNode else isValidNode (selectedPathNode())
                 if not guideReady then strokeHelp.text=if analyzed then "Pick an Analyzer to begin." else "Pick a closed spline to begin."
                 else if strokeRows.count==0 then strokeHelp.text=if analyzed and analyzerChannel.selection==5 then "Add an edge row, then choose models." else "Add a band, then choose models."
                 else if selectedStroke()>0 and strokeChoices.selection.numberSet==0 then strokeHelp.text="Choose models or groups for this band."
@@ -4177,19 +4510,26 @@ initialRollupState:0x8
         )
         fn showPath = (
             loadingStroke=true
-            local old=strokesList.selection;strokeRows=#();local labels=#();local total=#(0.0,0.0,0.0,0.0,0.0,0.0,0.0)
-            local analyzed=obj.diversityMode==4
-            local path=if analyzed then obj.analyzerNode else (if pathsDrop.selection>0 then pathRows[pathsDrop.selection] else undefined)
-            if isValidNode path do (
-                for i=1 to obj.patternLines.count where obj.patternLines[i]==path and (not analyzed or (analyzerChannel.selection==1 and obj.strokeSides[i]<=2) or (analyzerChannel.selection==2 and obj.strokeSides[i]==3) or (analyzerChannel.selection==3 and (obj.strokeSides[i]==4 or obj.strokeSides[i]==5)) or (analyzerChannel.selection==4 and obj.strokeSides[i]==6) or (analyzerChannel.selection==5 and obj.strokeSides[i]==7)) do (
-                    append strokeRows i
-                    local side=obj.strokeSides[i];local start=total[side];total[side]+=obj.patternWidths[i]
-                    local prefixes=#("Out ","In ","Both ","Radius ","Single ","Street ","Edge ")
-                    append labels (if side==7 then ("Edge "+(strokeRows.count as string)+": spacing "+units.formatValue obj.patternWidths[i]) else (prefixes[side]+(strokeRows.count as string)+": "+units.formatValue start+" - "+units.formatValue total[side]))
-                )
+            strokeRows=#();local labels=#(),analyzed=obj.diversityMode==4,path=if obj.diversityMode==4 then obj.analyzerNode else selectedPathNode()
+            local pathSlot=selectedPathSlot()
+            if not analyzed and pathSlot>0 do cornerMode.selection=obj.pathJoins[pathSlot]
+            cornerMode.enabled=not analyzed and pathSlot>0
+            arrangementMode.selection=obj.bandArrangement
+            for i=1 to obj.patternLines.count where (if analyzed then isValidNode path and obj.patternLines[i]==path else obj.strokePathIDs[i]==selectedPathID) and (not analyzed or (analyzerChannel.selection==1 and obj.strokeSides[i]<=2) or (analyzerChannel.selection==2 and obj.strokeSides[i]==3) or (analyzerChannel.selection==3 and (obj.strokeSides[i]==4 or obj.strokeSides[i]==5)) or (analyzerChannel.selection==4 and obj.strokeSides[i]==6) or (analyzerChannel.selection==5 and obj.strokeSides[i]==7)) do (
+                append strokeRows i
+                local interval=obj.bandInterval i,label=obj.bandName i
+                label+=if obj.strokeSides[i]==7 then ": spacing "+units.formatValue obj.patternWidths[i] else ": "+units.formatValue interval[1]+" - "+units.formatValue interval[2]
+                if not analyzed and obj.bandAssignmentCount i==0 do label+=" | empty"
+                if not isValidNode path do label+=" | inactive"
+                append labels label
             )
-            strokesList.items=labels;strokesList.selection=amin (amax 1 old) labels.count
-            addOutside.enabled=isValidNode path;addInside.enabled=isValidNode path and (not analyzed or analyzerChannel.selection!=2);removePath.enabled=isValidNode path
+            strokesList.items=labels
+            local rank=0
+            for j=1 to strokeRows.count where obj.strokeIDs[strokeRows[j]]==selectedBandID do rank=j
+            if rank==0 and strokeRows.count>0 do rank=1
+            strokesList.selection=rank;selectedBandID=if rank>0 then obj.strokeIDs[strokeRows[rank]] else 0
+            addOutside.enabled=isValidNode path and (not analyzed or analyzerChannel.selection==2 or analyzerChannel.selection==3);addInside.enabled=isValidNode path and (not analyzed or analyzerChannel.selection!=2)
+            removePath.enabled=if analyzed then isValidNode path else pathSlot>0
             loadingStroke=false;showStroke()
         )
         fn updateAnalyzerStatus = (
@@ -4232,60 +4572,120 @@ initialRollupState:0x8
             streetLayoutHelp.visible=streetStartSpin.visible or centerStreetSpin.visible
             streetStartSpin.value=obj.streetTrimStart;streetEndSpin.value=obj.streetTrimEnd;centerStreetSpin.value=obj.centerStreetOffset
             straightStreet.checked=obj.streetStraight;straightStreet.visible=obj.diversityMode==4 and analyzerChannel.selection==4
-            obj.syncStrokes();local old=pathsDrop.selection
+            obj.syncStrokes()
             local analyzed=obj.diversityMode==4
-            pathRows=for n in obj.patternPaths where isValidNode n and not isProperty n #samplePoints collect n
-            pathsDrop.items=for n in pathRows collect n.name
-            pathsDrop.selection=amin (amax 1 old) pathRows.count
-            pathsDrop.visible=obj.diversityMode==3;pickPath.visible=obj.diversityMode==3
+            pathRows=for i=1 to obj.patternPaths.count where not isValidNode obj.patternPaths[i] or not isProperty obj.patternPaths[i] #samplePoints collect obj.pathIDs[i]
+            pathsList.items=for id in pathRows collect (
+                local slot=findItem obj.pathIDs id,node=obj.patternPaths[slot],count=0
+                for value in obj.strokePathIDs where value==id do count+=1
+                (if isValidNode node then node.name else "Missing / inactive Path #"+(id as string))+" | "+(count as string)+(if count==1 then " Band" else " Bands")
+            )
+            local selected=findItem pathRows selectedPathID
+            if selected==0 and pathRows.count>0 do selected=1
+            pathsList.selection=selected;selectedPathID=if selected>0 then pathRows[selected] else 0
+            for control in #(pathsList,pickPath,cornerMode,arrangementMode) do control.visible=obj.diversityMode==3
             analyzerChannel.visible=analyzed;pickAnalyzer.visible=analyzed
             pickAnalyzer.text=if isValidNode obj.analyzerNode then obj.analyzerNode.name else "Pick Surface Analyzer"
-            removePath.text=if analyzed then "Remove Analyzer" else "Remove path"
+            removePath.text="×";removePath.tooltip=if analyzed then "Remove the linked Analyzer assignment." else "Remove the selected Path and its Bands; keep the scene spline."
+            pickPath.enabled=not analyzed
             strokeTitle.text=if analyzed then "Analyzer bands / rows" else "Spline bands"
-            addOutside.text=if not analyzed or analyzerChannel.selection==1 then "Add Outside" else (if analyzerChannel.selection==2 then "Add band" else "Add Radius")
-            addInside.text=if analyzed and analyzerChannel.selection==3 then "Add Single" else "Add Inside"
+            addOutside.text="↗";addOutside.tooltip=if not analyzed then "Add Outside Band." else if analyzerChannel.selection==2 then "Add Centerline Band." else "Add Radius Band."
+            addInside.text="↙";addInside.tooltip=if analyzed and analyzerChannel.selection==3 then "Add Single anchor assignment." else "Add Inside Band."
             boundaryOnly=analyzed and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5)
             addOutside.visible=(obj.diversityMode==3 or analyzed) and not boundaryOnly
             addInside.pos=[if boundaryOnly then 4 else selected_diversityUI.width/2+2,addOutside.pos.y]
             addInside.width=if boundaryOnly then selected_diversityUI.width-8 else (selected_diversityUI.width-12)/2
-            if boundaryOnly do addInside.text=if analyzerChannel.selection==5 then "Add Edge Row" else "Add band inside"
-            strokeHelp.text=if analyzed and analyzerChannel.selection==5 then "One row along the boundary." else if analyzed then "Width = spread per side." else "Outside bands: empty. First match wins."
-            restKeys=#()
-            for i=1 to obj.sources.count do (local key=obj.colorKey(obj.sourceColor i);if findItem restKeys key==0 do append restKeys key)
+            if boundaryOnly do addInside.tooltip=if analyzerChannel.selection==5 then "Add Edge Row." else "Add Band inside."
+            strokeHelp.text=if analyzed and analyzerChannel.selection==5 then "One row along the boundary." else if analyzed then "Width = spread per side." else if obj.bandArrangement==2 then "Overlaps combine density; each candidate chooses at most one Band." else "Empty Bands reserve their intervals. First geometric match wins."
             showPath()
 
         )
 
-        on pathsDrop selected i do if controlsReady and not binding and obj!=undefined do showPath()
+        on pathsList selected i do if controlsReady and not binding and not loadingStroke and obj!=undefined do (selectedPathID=if i>0 and i<=pathRows.count then pathRows[i] else 0;selectedBandID=0;showPath();CyrusViewportRedraw())
         on analyzerChannel selected i do if controlsReady and not binding and obj!=undefined do updatePattern()
         on pickAnalyzer picked n do if controlsReady and not binding and obj!=undefined do (
             if CyrusAnalyzerFilter n do (obj.analyzerNode=n;obj.markInputDirty();updatePattern();CyrusViewportRedraw())
         )
-        on strokesList selected i do if controlsReady and not binding and obj!=undefined do showStroke()
-        on pickPath picked n do if controlsReady and not binding and obj!=undefined do (
-            if isValidNode n and findItem obj.patternPaths n==0 do append obj.patternPaths n
-            updatePattern();pathsDrop.selection=findItem pathRows n;showPath()
+        on strokesList selected i do if controlsReady and not binding and not loadingStroke and obj!=undefined do (selectedBandID=if i>0 and i<=strokeRows.count then obj.strokeIDs[strokeRows[i]] else 0;showStroke();CyrusViewportRedraw())
+        on pickPath picked n do if controlsReady and not binding and obj!=undefined and obj.diversityMode==3 do (
+            local savedOwner=obj,id=0
+            if isValidNode n do undo "Cyrus add Path" on (id=savedOwner.addBandPath n)
+            if controlsReady and obj==savedOwner do (selectedPathID=id;selectedBandID=0;updatePattern())
         )
         on removePath pressed do if controlsReady and not binding and obj!=undefined do (
-            local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
-            for i=obj.patternLines.count to 1 by -1 where obj.patternLines[i]==path do obj.removeStroke i
-            local k=findItem obj.patternPaths path;if k>0 do deleteItem obj.patternPaths k
-            if obj.diversityMode==4 do obj.analyzerNode=undefined
-            updatePattern();obj.markInputDirty();syncControls();CyrusViewportRedraw()
+            local savedOwner=obj,id=selectedPathID
+            if savedOwner.diversityMode==4 then (
+                local path=savedOwner.analyzerNode
+                undo "Cyrus remove Analyzer assignment" on (
+                    for i=savedOwner.patternLines.count to 1 by -1 where savedOwner.patternLines[i]==path do savedOwner.removeStroke i
+                    savedOwner.analyzerNode=undefined
+                )
+            ) else savedOwner.removeBandPath id
+            if controlsReady and obj==savedOwner do (selectedPathID=0;selectedBandID=0;updatePattern();syncControls())
+            savedOwner.markInputDirty();CyrusViewportRedraw()
         )
         on addOutside pressed do if controlsReady and not binding and obj!=undefined do (
             if obj.diversityMode==4 and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5) do return false
-            local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
+            local path=if obj.diversityMode==4 then obj.analyzerNode else selectedPathNode()
             local types=#(1,3,4)
             local side=if obj.diversityMode==4 then types[analyzerChannel.selection] else 1
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
+            local savedOwner=obj,row=0;undo "Cyrus add Band" on (row=savedOwner.addStroke path side:side);if controlsReady and obj==savedOwner do (selectedBandID=savedOwner.strokeIDs[row];updatePattern());CyrusViewportRedraw()
         )
         on addInside pressed do if controlsReady and not binding and obj!=undefined do (
-            local path=if obj.diversityMode==4 then obj.analyzerNode else pathRows[pathsDrop.selection]
+            local path=if obj.diversityMode==4 then obj.analyzerNode else selectedPathNode()
             local side=if obj.diversityMode==4 and analyzerChannel.selection==5 then 7 else if obj.diversityMode==4 and analyzerChannel.selection==4 then 6 else if obj.diversityMode==4 and analyzerChannel.selection==3 then 5 else 2
-            obj.addStroke path side:side;showPath();strokesList.selection=strokeRows.count;showStroke();CyrusViewportRedraw()
+            local savedOwner=obj,row=0;undo "Cyrus add Band" on (row=savedOwner.addStroke path side:side);if controlsReady and obj==savedOwner do (selectedBandID=savedOwner.strokeIDs[row];updatePattern());CyrusViewportRedraw()
         )
-        on removeStrokeButton pressed do if controlsReady and not binding and obj!=undefined do (local row=selectedStroke();if row>0 do obj.removeStroke row;showPath();CyrusViewportRedraw())
+        on removeStrokeButton pressed do if controlsReady and not binding and obj!=undefined do (
+            local savedOwner=obj,row=selectedStroke()
+            if row>0 do undo "Cyrus remove Band" on (savedOwner.removeStroke row)
+            if controlsReady and obj==savedOwner do (selectedBandID=0;updatePattern())
+            CyrusViewportRedraw()
+        )
+        on cornerMode selected v do if controlsReady and not binding and not loadingStroke and obj!=undefined do (local slot=selectedPathSlot();if slot>0 do undo "Cyrus Path corners" on (obj.pathJoins[slot]=v);CyrusViewportRedraw())
+        on arrangementMode selected v do if controlsReady and not binding and not loadingStroke and obj!=undefined do (
+            local savedOwner=obj,approved=true
+            if v==1 and savedOwner.bandArrangement==2 do (
+                local proposal=savedOwner.consecutiveBandProposal()
+                if not proposal[1] do (
+                    local message="Consecutive mode removes independent offsets/overlap. Proposed ranges:\n"
+                    for row in proposal[2] do message+=("Band #"+(row[1] as string)+": "+units.formatValue row[2]+" - "+units.formatValue row[3]+"\n")
+                    approved=queryBox message title:"Convert Band ranges"
+                )
+            )
+            if approved do savedOwner.convertBandArrangement v acceptChanges:true
+            if controlsReady and obj==savedOwner do updatePattern()
+            CyrusViewportRedraw()
+        )
+        on bandStart changed v do if controlsReady and not binding and not loadingStroke and obj!=undefined do (local row=selectedStroke();if row>0 do (obj.strokeStarts[row]=v;showPath());CyrusViewportRedraw())
+        on bandEnd changed v do if controlsReady and not binding and not loadingStroke and obj!=undefined do (local row=selectedStroke();if row>0 do (obj.strokeEnds[row]=v;showPath());CyrusViewportRedraw())
+        on bandStrength changed v do if controlsReady and not binding and not loadingStroke and obj!=undefined do (local row=selectedStroke();if row>0 do obj.strokeStrengths[row]=v/100.0;CyrusViewportRedraw())
+        on bandCurveCheck changed v do if controlsReady and not binding and not loadingStroke and obj!=undefined do (local row=selectedStroke();if row>0 do obj.strokeCurveEnabled[row]=v;showStroke();CyrusViewportRedraw())
+        fn setBandScaleProfile v = (
+            if not controlsReady or binding or loadingStroke or obj==undefined do return false
+            if v<1 or v>3 do throw "Unknown Band scale profile."
+            local row=selectedStroke();if row<1 do return false
+            CyrusRequireAuthor()
+            undo "Cyrus Band scale profile" on obj.strokeScaleModes[row]=v
+            showStroke();CyrusViewportRedraw();true
+        )
+        on bandScaleMode selected v do setBandScaleProfile v
+        on bandScaleEdit pressed do if controlsReady and not binding and obj!=undefined and selectedStroke()>0 and obj.strokeScaleModes[selectedStroke()]==3 do CyrusOpenFalloffGraph obj undefined false bandID:selectedBandID
+        on bandCurveEdit pressed do if controlsReady and not binding and obj!=undefined and selectedStroke()>0 do CyrusOpenFalloffGraph obj undefined true bandID:selectedBandID
+        on bandColor changed v do if controlsReady and not binding and not loadingStroke and obj!=undefined do (local row=selectedStroke();if row>0 do obj.strokeDisplayColors[row]=v;CyrusViewportRedraw())
+        on fieldFalloffCheck changed v do if controlsReady and not binding and not loadingStroke and obj!=undefined do changeFieldDisplay #fieldFalloff v
+        on fieldBoundaryCheck changed v do if controlsReady and not binding and not loadingStroke and obj!=undefined do changeFieldDisplay #fieldBoundaries v
+        on fieldView selected v do if controlsReady and not binding and not loadingStroke and obj!=undefined do changeFieldDisplay #fieldCombined (v==2)
+        on fieldSampleSpin changed v do if controlsReady and not binding and not loadingStroke and obj!=undefined do changeFieldDisplay #fieldSamples v
+        fn moveSelectedBand direction = (
+            local row=selectedStroke(),rank=findItem strokeRows row,savedOwner=obj
+            if rank+direction<1 or rank+direction>strokeRows.count do return false
+            savedOwner.moveBand selectedBandID strokeRows[rank+direction]
+            if controlsReady and obj==savedOwner do updatePattern()
+            CyrusViewportRedraw();true
+        )
+        on bandUp pressed do if controlsReady and not binding and obj!=undefined do moveSelectedBand -1
+        on bandDown pressed do if controlsReady and not binding and obj!=undefined do moveSelectedBand 1
         on edgeOffsetSpin changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeOffsetsWU[row]=v;CyrusViewportRedraw())
         on edgeAlongSpin changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAlongWU[row]=v;CyrusViewportRedraw())
         on edgeAcrossSpin changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeAcrossWU[row]=v;CyrusViewportRedraw())
@@ -4305,13 +4705,9 @@ initialRollupState:0x8
         on strokeScaleMin changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.markInputDirty();syncControls();CyrusViewportRedraw())
         on strokeScaleMax changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.markInputDirty();syncControls();CyrusViewportRedraw())
         on refreshGroups pressed do if controlsReady and not binding and obj!=undefined do updatePattern()
-                fn updateControls = (
-            for c in #(sizeSpin,divSeedSpin,roughSpin,blurSpin,noiseSpin,groupHint,fixedHint) do c.visible=obj.diversityMode==2
-            for c in #(strokeTitle,pathsDrop,analyzerChannel,pickAnalyzer,pickPath,removePath,strokesList,addOutside,addInside,removeStrokeButton,strokeWidth,strokeMode,strokeChoices,strokeScaleMin,strokeScaleMax,refreshGroups,strokeHelp) do c.visible=(obj.diversityMode==3 or obj.diversityMode==4)
-            if strokeExpandedHeight>0 do selected_diversityUI.height=if obj.diversityMode>=3 then strokeExpandedHeight else (if obj.diversityMode==2 then 310 else 124)*1.0
-            (CyrusContainerPanel root).layoutPanels()
-        )
-        on diversityRadio changed v do if controlsReady and not binding and obj!=undefined do (obj.diversityMode=v;updateControls();updatePattern();obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        -- The composed page owns mode visibility and lays out once after this
+        -- event. Do not show/hide obsolete component rows or reflow other pages.
+        on diversityRadio changed v do if controlsReady and not binding and obj!=undefined do (obj.diversityMode=v;updatePattern();obj.markInputDirty();syncControls();CyrusViewportRedraw())
 
 
         on sizeSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.diversitySize=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
@@ -4325,10 +4721,19 @@ initialRollupState:0x8
         fn bind layer = (
             local next=layer
             binding=true;controlsReady=false
-            if obj!=next do (strokesList.selection=0;strokeChoices.selection=0;)
+            if obj!=next do (
+                selectedBandID=if next==undefined then 0 else next.fieldSelectedID()
+                local row=if next==undefined then 0 else findItem next.strokeIDs selectedBandID
+                selectedPathID=if row>0 then next.strokePathIDs[row] else 0
+                strokesList.selection=0;strokeChoices.selection=0
+            )
+            if next!=undefined and next.fieldSelectedID()>0 do (
+                selectedBandID=next.fieldSelectedID()
+                selectedPathID=next.strokePathIDs[findItem next.strokeIDs selectedBandID]
+            )
             obj=next;parentView=(CyrusContainerPanel root)
             for c in selected_diversityUI.controls do c.enabled=layer!=undefined
-            try (undo off ((diversityRadio.state=obj.diversityMode;sizeSpin.value=obj.diversitySize;divSeedSpin.value=obj.diversitySeed;roughSpin.value=obj.roughness;blurSpin.value=obj.blurryEdge;noiseSpin.value=obj.diversityNoise;controlsReady=true;strokeExpandedHeight=selected_diversityUI.height;updateControls();updatePattern()))) catch(binding=false;controlsReady=true;throw())
+            try (undo off ((diversityRadio.state=obj.diversityMode;sizeSpin.value=obj.diversitySize;divSeedSpin.value=obj.diversitySeed;roughSpin.value=obj.roughness;blurSpin.value=obj.blurryEdge;noiseSpin.value=obj.diversityNoise;controlsReady=true;updatePattern()))) catch(binding=false;controlsReady=true;throw())
             controlsReady=true;binding=false
         )
         on selected_diversityUI open do (root=this;controlsReady=false)
@@ -4534,7 +4939,7 @@ initialRollupState:0x8
     rollout selected_workflowUI "Workflow and ownership" width:#cmdPanel category:200 autoLayoutOnResize:true (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false
         label steps "1. SETUP\nChoose receiving surfaces in Modify. Add layers in the order they should calculate.\n\n2. ASSETS\nChoose models for each paint set, or place model pivots inside a source rectangle. Move outside to park a model without losing its settings.\n\n3. POPULATION\nSet the layer count or density. Enabled paint-set weights share that population. Accepted target retries within explicit limits.\n\n4. PAINT\nEnable coverage, then paint on the receiving surface. Area limits apply to all sets in this layer. Use earlier sets as explicit background references.\n\n5. TRANSFORM + SPACING\nLayer transforms apply to every set. Set self-spacing, between-set rules and layer pairs separately. Earlier owners occupy space first.\n\n6. UPDATE + INSPECT\nManual keeps the last completed result until Update. Live publishes after edits. Hidden owners still calculate; disabled owners do not. Counts here describe cached results, not an estimate of available room." pos:[4,8] width:(selected_workflowUI.width-8) height:500
-        label help "The editor stays on this Scatter when scene selection changes. Use the Layer and Paint set selectors to change ownership. Hover buttons and numeric fields for short explanations.\n\nPoint Cloud samples and viewport budgets affect display. They are not plant counts or a promise of presented FPS." pos:[4,516] width:(selected_workflowUI.width-8) height:120
+        label help "The editor stays on this Scatter when scene selection changes. Use the Layer selector to change the recipe and the Paint Area selector to edit its coverage. Hover buttons and numeric fields for short explanations.\n\nPoint Cloud samples and viewport budgets affect display. They are not plant counts or a promise of presented FPS." pos:[4,516] width:(selected_workflowUI.width-8) height:120
         fn bind layer = (controlsReady=true)
         on selected_workflowUI open do (root=this;controlsReady=false)
         on selected_workflowUI close do controlsReady=false
@@ -4641,36 +5046,10 @@ initialRollupState:0x8
     )
 
 
-    fn migrateDistanceSettings55 = (
-        -- Read the immediately preceding authored format only. Max calls this
-        -- before its file-unit rescale; the new typed fields then scale normally.
-        -- A failed conversion stays denied even if Max continues loading.
-        procSchemaValid=false
-        for field in #(#procRuleGap,#sourceRadii,#sourceZOffsets,#edgeOffsets,#edgeAlong,#edgeAcross) do (
-            local old=getProperty this field,nextName=((field as string)+"WU") as name
-            setProperty this nextName (old as array)
-            local next=getProperty this nextName
-            for i=1 to old.count where old[i].controller!=undefined do next[i].controller=copy old[i].controller
-        )
-        for field in #(#movXMin,#movXMax,#movYMin,#movYMax,#movZMin,#movZMax) do (
-            local nextName=((field as string)+"WU") as name,controller=getPropertyController this field
-            setProperty this nextName (getProperty this field)
-            if controller!=undefined do setPropertyController this nextName (copy controller)
-        )
-        ensureAreaFalloffs()
-        for i=1 to areaFallConfigs.count do (
-            local parts=filterString areaFallConfigs[i] "|"
-            if parts.count!=0 and parts.count!=8 do throw "Saved Area falloff metadata is incomplete."
-            if parts.count==8 do (areaFallDeleteWidths[i]=parts[2] as float;areaFallScaleWidths[i]=parts[4] as float;areaFallDensityWidths[i]=parts[7] as float)
-        )
-        if procRadiusIDs.count!=procRadiusModes.count or procRadiusIDs.count!=procRadiusValues.count do throw "Saved radius metadata is incomplete."
-        procRadiusDistances=for i=1 to procRadiusIDs.count collect (if procRadiusModes[i]==1 then procRadiusValues[i] else 0.0)
-        procSchemaValid=true
-    )
     on update do (
         -- Max may continue loading after an update-handler exception. Keep a
         -- persisted denial so later redraw/output and re-save cannot qualify it.
-        if version==55 and procSchemaValid then this.migrateDistanceSettings55() else if version!=56 do procSchemaValid=false
+        if version!=58 do procSchemaValid=false
         this.procAssertSchema()
         syncColors();markInputDirty()
     )
@@ -4781,9 +5160,7 @@ fn CyrusPFKey = (
   format "%|%|%|" 0 CyrusPFRevision CyrusPFManualRevision to:s
   for n in objects where classof n.baseObject==AminScatterObject do (
    local r=n.baseObject
-   if r.updateMode==2 and false do format "InputTime:%|" (r.publishedInputTime()) to:s
    format "Enabled:%|" r.cyrusEnabled to:s
-   for key in #() do format "%:%|" key (getProperty r key) to:s
    for layer in r.layerObjects do format "Brush:%:%:%|" layer.paintEnabled layer.paintDensity (layer.paintKey()) to:s
    format "|Edit:%|" (CyrusEditStackKey r) to:s
    format "%|%|%|%|%|" n.handle n.isHidden r.autoRender r.layerEnabled r.updateMode to:s
@@ -4792,19 +5169,7 @@ fn CyrusPFKey = (
     format "Procedural:%|" r.procEpoch to:s
     for plants in r.procPublishedSources do for src in plants where isValidNode src do format "%:%|" (getHandleByAnim src) (if src.material==undefined then 0 else getHandleByAnim src.material) to:s
    )
-   if r.updateMode==2 and false do (
-    format "%|" r.surfaceNodes to:s
-    -- Signature polling must never synchronize parameters or invalidate preview.
-    for obj in r.layerObjects do (
-     format "InputTime:%|Texture:%|" (obj.publishedInputTime()) obj.procDensityRevision to:s
-     format "DensityMap:%|" (if obj.densityMap==undefined then 0 else getHandleByAnim obj.densityMap) to:s
-     if isValidNode obj.areaAnalyzer and (obj.areaUseLine or obj.areaUsePoints) do format "|AnalyzerArea:%|" (obj.areaAnalyzer.getAnalysisRuns()) to:s
-     if isValidNode obj.fallAnalyzer and (obj.fallDelete or obj.fallScale or obj.fallDensity) do format "|Falloff:%|" (obj.fallAnalyzer.getAnalysisRuns()) to:s
-     if obj.diversityMode==4 and isValidNode obj.analyzerNode do format "|Analyzer:%|" (obj.analyzerNode.getAnalysisRuns()) to:s
-     for key in (AminScatterLayerFields+#(#strokeSides,#strokeModes,#strokeColorRows,#strokeColorKeys,#strokeSourceRows,#strokeSourceNodes,#strokeSourceIDs,#sourceRowIDs,#strokeMin,#strokeMax,#analyzerNode)) where isProperty obj key do format "%|" (getProperty obj key) to:s
-     for src in obj.sources where isValidNode src do format "%|%|" src.transform src.material to:s
-    )
-   )
+
   )
  )
  s as string
@@ -4826,7 +5191,7 @@ fn CyrusPFBuild = (
       append AminScatterRenderRestore #(old,old.renderable);old.renderable=false
      )
      local sources=obj.outputSources()
-     if enabled and obj.autoRender and sources.count>0 and (true or (obj.validSurfaces()).count>0) do (
+     if enabled and obj.autoRender and sources.count>0 do (
       local rows=obj.placements sources
       local groups=for src in sources collect #()
       for row in rows do append groups[row[2]] row[1]
@@ -5064,18 +5429,28 @@ fn CyrusPointSync = (
         CyrusPointOwners=surviving
         for n in (for node in objects where classof node.baseObject==AminScatterObject collect node) do (
             local caches=#(),styles=#(),fallback=#()
-            if not n.isHidden do for entry in n.baseObject.viewportLayerEntries false do (
-                local obj=entry[2],cache=obj.previewCache interactionHeld:false
+            local entries=if n.isHidden then #() else n.baseObject.viewportLayerEntries false,refreshLeaf=undefined
+            -- Observe every visible dependency before staging the root once.
+            -- A Manual pending flag survives display preparation; checking it
+            -- separately on each leaf repeats whole-controller validation.
+            for entry in entries do (
+                local obj=entry[2]
+                obj.previewCache interactionHeld:false allowRefresh:false
+                if obj.dirty and not obj.cachedDisabledInput do refreshLeaf=obj
+            )
+            if refreshLeaf!=undefined do refreshLeaf.refreshPreview()
+            for entry in entries do (
+                local obj=entry[2],cache=if obj.cachedDisabledInput then obj.cachedDisabledPreview else obj.cachedPoints
                 for analyzer in #(obj.analyzerNode,obj.areaAnalyzer,obj.fallAnalyzer) where isValidNode analyzer do appendIfUnique analyzers analyzer
                 if (obj.showPoints or obj.showCenters) and cache!=undefined do (
                     if CyrusPointAvailable and ((obj.viewportMode==1 and CyrusPointEnabled) or ((obj.viewportMode==2 or obj.viewportMode==3) and CyrusMeshEnabled)) then (
                         append caches cache;append styles #(obj.pointColorMode==1,obj.solidPointColor)
                     ) else append fallback #(cache,obj.pointColorMode==1,obj.solidPointColor)
                 )
-                if obj.radiusCache!=undefined and not obj.disabledAnalyzerInput() do (
+                if obj.inspectionCache!=undefined and not obj.disabledAnalyzerInput() do (
                     if CyrusPointAvailable and (CyrusPointEnabled or CyrusMeshEnabled) then (
-                        append caches obj.radiusCache;append styles #(false,white)
-                    ) else append fallback #(obj.radiusCache,false,white)
+                        append caches obj.inspectionCache;append styles #(false,white)
+                    ) else append fallback #(obj.inspectionCache,false,white)
                 )
             )
             local owner=CyrusPointOwner n
@@ -5107,8 +5482,21 @@ fn CyrusViewportRedraw = (
 )
 fn CyrusPointBeforeSave = (CyrusPointSuspended=true;CyrusPointClear())
 fn CyrusPointAfterSave = (CyrusPointSuspended=false;(CyrusPointPending=true;CyrusScheduleRelease()))
-fn CyrusPointBeforeScene = (CyrusPointSuspended=true;CyrusPointClear())
-fn CyrusPointAfterScene = (CyrusPointSuspended=false;CyrusPointDeletedHandles=#();(CyrusPointPending=true;CyrusScheduleRelease()))
+fn CyrusPointBeforeScene = (
+    for node in objects where classof node.baseObject==AminScatterObject do appendIfUnique CyrusPointSceneOwners node.baseObject
+    CyrusPointSuspended=true;CyrusPointClear()
+)
+fn CyrusPointAfterScene = (
+    local retired=CyrusPointSceneOwners;CyrusPointSceneOwners=#()
+    for root in retired do (
+        local live=for node in refs.dependentNodes root where isValidNode node and node.baseObject==root collect node
+        if live.count==0 do (
+            for leaf in root.layerObjects do leaf.procReleaseRetiredDisplay()
+            root.procReleaseRetiredDisplay()
+        )
+    )
+    CyrusPointSuspended=false;CyrusPointDeletedHandles=#();(CyrusPointPending=true;CyrusScheduleRelease())
+)
 -- Session-only A/B switch. Scene data and placement caches are unchanged.
 fn CyrusRetainedPointDrawing enabled = (
     CyrusPointEnabled=enabled;CyrusPointLastError=""

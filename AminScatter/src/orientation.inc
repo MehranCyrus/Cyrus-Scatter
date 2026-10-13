@@ -18,7 +18,7 @@ double segmentDistance(Vec3 p,Vec3 a,Vec3 b) {
     Vec3 v=b-a;double den=dot(v,v);
     return length(p-(a+v*(den>1e-20?std::clamp(dot(p-a,v)/den,0.0,1.0):0)));
 }
-std::vector<FacingLoop> facingLoops(const LineBand& band) {
+std::vector<FacingLoop> facingLoops(const AnalyzerBand& band) {
     std::vector<FacingLoop> loops;std::size_t start=0;
     for(const auto& path:band.boundary.loops) {
         auto n=pathNormal(path);if(length(n)<.5){start+=path.size();continue;}
@@ -33,7 +33,7 @@ std::vector<FacingLoop> facingLoops(const LineBand& band) {
     }
     return loops;
 }
-bool outwardAt(Vec3 p,const LineBand& band,const std::vector<FacingLoop>& loops,Vec3& direction,Vec3& up) {
+bool outwardAt(Vec3 p,const AnalyzerBand& band,const std::vector<FacingLoop>& loops,Vec3& direction,Vec3& up) {
     const FacingLoop* nearest=nullptr;std::size_t edge=0;double best=INFINITY;Vec3 projected{};
     for(const auto& loop:loops) {
         Vec3 q=p-loop.normal*dot(p-loop.points[0],loop.normal);
@@ -89,9 +89,9 @@ bool outwardAt(Vec3 p,const LineBand& band,const std::vector<FacingLoop>& loops,
     return true;
 }
 }
-void orientBoundary(std::vector<Instance>& rows,const std::vector<LineBand>& bands,const std::vector<int>& axes,const std::vector<double>& offsets) {
+void orientBoundary(std::vector<Instance>& rows,const std::vector<AnalyzerBand>& bands,const std::vector<int>& axes,const std::vector<double>& offsets) {
     std::vector<std::vector<FacingLoop>> prepared;
-    for(const auto& band:bands){if(!std::isfinite(band.cornerRadius)||band.cornerRadius<0)throw std::invalid_argument("Invalid corner radius");prepared.push_back(band.kind==1||band.kind==2||band.kind==6?facingLoops(band):std::vector<FacingLoop>{});}
+    for(const auto& band:bands){if(band.kind<1||band.kind>6)throw std::invalid_argument("Invalid Analyzer mode");if(!std::isfinite(band.cornerRadius)||band.cornerRadius<0)throw std::invalid_argument("Invalid corner radius");prepared.push_back(band.kind==1||band.kind==2||band.kind==6?facingLoops(band):std::vector<FacingLoop>{});}
     for(auto& row:rows) {
         if(row.source>=axes.size()||axes[row.source]<1||axes[row.source]>4)throw std::invalid_argument("Invalid source forward axis");
         Vec3 p=row.position;if(row.source<offsets.size())p.z-=offsets[row.source];

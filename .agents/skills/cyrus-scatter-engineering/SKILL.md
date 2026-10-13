@@ -1,6 +1,6 @@
 ---
 name: cyrus-scatter-engineering
-description: "Design, implement or audit CyrusScatter behavior using explicit contracts and scoped evidence. Use for ownership, randomness, dependencies, publication, persistence, geometry and performance; skip trivial wording and knowledge-pipeline-only work."
+description: "Design, implement or audit CyrusScatter behavior using explicit contracts and scoped evidence. Use for ownership, randomness, dependencies, publication, persistence, geometry, performance and release version selection; skip trivial wording and knowledge-pipeline-only work."
 ---
 
 # Cyrus Scatter engineering
@@ -49,6 +49,9 @@ Relax, acceptance and topology. Test failures on both sides of publication;
 pre-commit rejection alone does not prove atomicity.
 
 Use the [workflow](../../../docs/AGENT_WORKFLOW.md) for test levels and host isolation.
+Before choosing a delivery version, apply the [version policy](../../../docs/Release_Versioning.md#choosing-the-next-version).
+Assess the full change since the last delivery, record the proposed version and its
+impact-based reason, and keep version labels separate from qualification claims.
 Offline passes do not qualify Max callbacks, physical interaction, renderers or loaded
 builds. Record actual results and open acceptance in the existing maintained location;
 preserve historical receipts. No activation, installation, compatibility framework

@@ -13,6 +13,7 @@
 #include <maxscript/macros/define_instantiation_functions.h>
 #include "brush.h"
 #include "license_boundary.h"
+#include "placement_transport.h"
 #include <algorithm>
 #include <cmath>
 #include <memory>
@@ -469,7 +470,7 @@ Value* cyrusBrushRegionFilter_cf(Value** a,int n){check_arg_count(cyrusBrushRegi
     two_typed_value_locals(Array* result,Array* copy);vl.result=new Array(rows->size);
     for(int i=0;i<rows->size;++i){
         type_check(rows->data[i],Array,_T("keyed placement"));auto* row=static_cast<Array*>(rows->data[i]);
-        if(row->size!=5)throw std::runtime_error("Region coverage requires surface anchors");
+        cyrus::rows::raw(row);
         const int face=row->data[3]->to_int()-1;const auto bary=vec(row->data[4]->to_point3());
         if(face<0||std::uint64_t(face)>=total||!std::isfinite(bary.x)||!std::isfinite(bary.y)||!std::isfinite(bary.z)||std::abs(bary.x+bary.y+bary.z-1)>1e-3||std::min({bary.x,bary.y,bary.z})<-1e-4||std::max({bary.x,bary.y,bary.z})>1.0001)throw std::runtime_error("Region anchor requires projected movement");
         const auto receiver=std::size_t(std::upper_bound(ends.begin(),ends.end(),std::uint64_t(face))-ends.begin());
@@ -492,7 +493,7 @@ Value* cyrusBrushRegionFilter_cf(Value** a,int n){check_arg_count(cyrusBrushRegi
 
 Value* cyrusClonePlacementRows_cf(Value** a,int n){check_arg_count(cyrusClonePlacementRows,1,n);type_check(a[0],Array,_T("placement rows"));auto* rows=static_cast<Array*>(a[0]);
     two_typed_value_locals(Array* result,Array* row);vl.result=new Array(rows->size);
-    for(int i=0;i<rows->size;++i){type_check(rows->data[i],Array,_T("placement row"));auto* input=static_cast<Array*>(rows->data[i]);if(input->size<2)throw RuntimeError(_T("Invalid placement row"));vl.row=new Array(input->size);vl.result->append(vl.row);vl.row->append(new Matrix3Value(input->data[0]->to_matrix3()));for(int k=1;k<input->size;++k)vl.row->append(input->data[k]);}
+    for(int i=0;i<rows->size;++i){type_check(rows->data[i],Array,_T("placement row"));auto* input=static_cast<Array*>(rows->data[i]);cyrus::rows::current(input);vl.row=new Array(input->size);vl.result->append(vl.row);vl.row->append(new Matrix3Value(input->data[0]->to_matrix3()));for(int k=1;k<input->size;++k)vl.row->append(input->data[k]);}
     return_value(vl.result);
 }
 

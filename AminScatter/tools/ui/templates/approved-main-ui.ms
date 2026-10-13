@@ -1,4 +1,4 @@
-    rollout mainUI "Cyrus Scatter 0.79.6" width:#cmdPanel height:140 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.81.1" width:#cmdPanel height:140 autoLayoutOnResize:true (
         local view=undefined,root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),owner=undefined,layerPagesVisible=false,pagesArranged=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for the entire setup."
         radiobuttons updateRadio "Viewport update" labels:#("Manual","Live") columns:2 pos:[8,26] width:(mainUI.width-16) tooltip:"Manual waits for Update. Live calculates after relevant edits."
@@ -13,7 +13,7 @@
             view.uiPresentationState=for r in editors collect r.captureView()
             true
         )
-        fn refreshTitles = (CyrusContainerRefreshLabels root;CyrusBindLayerEditor root;true)
+        fn refreshTitles = (CyrusContainerRefreshLabels root;true)
         fn refreshStats = (
             if not controlsReady do return false
             if root.layersUI!=undefined and root.layersUI.controlsReady do root.layersUI.refreshStats()
@@ -57,22 +57,20 @@
                 true
             )catch(binding=false;throw())
         )
-        fn rebuild = (bind();CyrusBindLayerEditor root)
+        fn rebuild = bind()
         fn rebuildLayers = rebuild()
-        fn selectLayerView layer expand:false = (
+        fn selectLayerView layer = (
             if layer==undefined do return false
             local parent=root.logicalParent layer
             if root.selectedLayer()!=parent do undo off root.selectLayer (findItem root.layerObjects parent)
             bindEditors()
-            if expand then CyrusOpenLayerEditor root parent
-            else if CyrusLayerEditor!=undefined and CyrusLayerEditor.root==root do CyrusLayerEditor.retarget root parent
             true
         )
         on mainUI open do (view=this;controlsReady=false;mountTimer.active=true)
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.79.6 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.81.1 native plugin and restart Max."
             local context=if classof view==CyrusSourceContainer then CyrusContainerResolve view else undefined
             root=if classof view==CyrusSourceContainer then (if context==undefined then undefined else context[1]) else view
             editors=#(view.managerUI,view.surfacesUI,view.modelsUI,view.containersUI,view.layoutUI,view.populationUI,view.coverageUI,view.areasUI,view.transformsUI,view.spacingUI,view.displayUI,view.statisticsUI)
