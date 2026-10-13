@@ -15,7 +15,7 @@ matched historical/current hosts; it checks navigation, Manual/Live behavior and
 same-version save/reload. Run comparison hosts serially. Its synchronous timings
 are diagnostic measurements, not presented FPS or a release performance claim.
 
-These tools qualify source 0.81.1 / schema 58. The current implementation,
+These tools qualify source 0.81.2 / schema 58. The current implementation,
 exact receipts and open acceptance gates are in
 [PROGRESS](../../docs/plans/spline-bands/PROGRESS.md). Historical benchmark and
 scene-migration sources are archived under `docs/plans/spline-bands/retired-fixtures`;
@@ -66,3 +66,5 @@ the normal-profile hash.
 `scale_curve_host.py` checks independent Band scale/Follow Density, actual graph buttons, Manual retention, relevant Live updates, unrelated-edit stability, analytic size and radii, invalid-successor retention and saved/captured ownership. `scale_curve_undo.ms` must run each phase in a separate native event outside pymxs holds. Use fresh `foundation-spline-scale-*` profiles.
 
 `retired_scale_scene_host.py` reads the preserved schema-57 source-conversion witness, verifies persistent rejection under schema 58 and rechecks the original bytes. It never saves that witness.
+
+`band_selection_host.py` verifies click-to-toggle control policy, empty model/Point/group assignments, both Modify views, basic scale layout, Manual retention, copy and save/reopen. `band_selection_undo.ms` runs prepare/clear/undo/redo/refresh as separate native events in a disposable host.

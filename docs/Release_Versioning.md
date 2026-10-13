@@ -2,8 +2,8 @@
 
 | Domain | Current value | Meaning |
 | --- | --- | --- |
-| Scatter UI | 0.81.1 | Current source development label; automated qualification only |
-| Scatter native/package | 0.81.1 | Matched Max 2026/2027 packages installed on disk; restart and fresh normal-profile acceptance pending |
+| Scatter UI | 0.81.2 | Current source development label; automated qualification only |
+| Scatter native/package | 0.81.2 | Matched Max 2026/2027 packages installed on disk; restart and fresh normal-profile acceptance pending |
 | Saved MAXScript schema | 58 | Independent saved Band scale profiles; current-only scenes, no earlier-schema migration |
 | Calculation model | CyrusUnified1 | Current procedural model |
 | Surface Analyzer | 0.14 | Independently versioned product |
@@ -32,6 +32,12 @@ Before changing version metadata, record the current and proposed versions, a sh
 When a bump is within the authorized task, align the Scatter UI template and generated script, native/package metadata, installer labels, coupled catalog assertions, current navigation and changelog. Follow the [agent workflow](AGENT_WORKFLOW.md) for generation and proportionate checks; do not bump unrelated products mechanically. For artist-visible changes, keep the guide, relevant website chapters/control explanations and changelog aligned with proven behavior and run the website import checks when those sources change. Report local source updates, built website artifacts and live deployment separately. Version selection itself does not authorize packaging, installation or publication.
 
 ## Current and historical evidence
+
+0.81.2 is the requested bounded UI/assignment correction: Scale moves directly
+below density and Band membership supports click-to-toggle, including none.
+Saved schema 58 and native Band interface 9 remain unchanged. Existing 0.81.1
+setups retain their authored records; no migration or compatibility path is added.
+
 
 0.81.1 is explicitly selected by the user for Band scale profiles. This feature
 would ordinarily qualify for a minor bump under the default policy; the requested

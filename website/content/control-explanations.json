@@ -1442,11 +1442,11 @@
     ]
   },
   "layer.diversityUI.strokeChoices": {
-    "label": "Ctrl / Shift: select several",
-    "help": "Choose one or more assignment groups or source objects for this band with Ctrl/Shift. A band without eligible choices emits no placements; candidates outside every matching band are empty.",
+    "label": "Click to toggle",
+    "help": "Click a model, Point or assignment group to add it to this Band; click it again to remove it. Clearing the last selection leaves the Band empty and preserves its interval. Manual applies the change on Update.",
     "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:3937",
-      "AminScatter/tools/ui/templates/unified-core.ms:4147"
+      "AminScatter/tools/ui/templates/unified-core.ms:4385",
+      "docs/ARTIST_GUIDE.md:41"
     ]
   },
   "layer.diversityUI.strokeScaleMin": {

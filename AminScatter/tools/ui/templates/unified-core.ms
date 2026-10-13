@@ -1856,7 +1856,7 @@ initialRollupState:0x8
     fn uiLayerStats = (
         CyrusLayerStatusData hasResult:(cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
     )
-    fn uiVersion = "0.81.1"
+    fn uiVersion = "0.81.2"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified1")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -2867,14 +2867,14 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.81.1 setup; earlier schemas are unsupported."
+        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.81.2 setup; earlier schemas are unsupported."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
     fn procValidate = (
         this.procAssertSchema()
-        if cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=9 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined do throw "Cyrus 0.81.1 requires the matching native plugin binaries. Restart the private test host with the complete matching script/native pair."
+        if cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=9 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined do throw "Cyrus 0.81.2 requires the matching native plugin binaries. Restart the private test host with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -3241,7 +3241,7 @@ initialRollupState:0x8
         if (CyrusContainerPanel this).controlsReady do (CyrusContainerPanel this).bind()
         true
     )
-    rollout mainUI "Cyrus Scatter 0.81.1" width:#cmdPanel height:30 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.81.2" width:#cmdPanel height:30 autoLayoutOnResize:true (
         local root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),owner=undefined,layerPagesVisible=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for this entire Scatter setup."
         button licenseButton "License / activation..." pos:[8,112] width:(mainUI.width-16) height:22 tooltip:"Import a team license or inspect its expiry. Existing scenes remain available after expiry."
@@ -3311,7 +3311,7 @@ initialRollupState:0x8
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.81.1 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.81.2 native plugin and restart Max."
             root.syncLayerIdentity()
             roots=#(root.flow_updateUI,root.flow_surfaceUI,root.flow_previewUI,root.flow_layersUI)
             root.updateUI=roots[1];root.surfaceUI=roots[2];root.previewUI=roots[3];root.layersUI=roots[4]
@@ -4382,7 +4382,7 @@ initialRollupState:0x8
         button bandDown "Move down" pos:[72,422] width:65 tooltip:"Move the selected Band down on its Path. Independent decisions keep stable Band identities."
         label bandAssignmentHelp "Models used by this Band" pos:[4,430] width:(selected_diversityUI.width-8) height:18
         radiobuttons strokeMode "Select from" labels:#("Assignment groups","Models / Points") columns:1 pos:[4,434] width:(selected_diversityUI.width-8)
-        multiListBox strokeChoices "Ctrl / Shift: select several" items:#() pos:[4,506] width:(selected_diversityUI.width-8) height:5
+        multiListBox strokeChoices "Click to toggle" items:#() pos:[4,506] width:(selected_diversityUI.width-8) height:5
         spinner strokeScaleMin "Scale min:" tooltip:"Additional Band multiplier, combined once with source, layer and transform scale." range:[0.001,100,1] pos:[4,618] width:(selected_diversityUI.width-8) fieldWidth:82
         spinner strokeScaleMax "Scale max:" tooltip:"Additional Band multiplier; it does not change the source asset or its base Scale setting." range:[0.001,100,1] pos:[4,644] width:(selected_diversityUI.width-8) fieldWidth:82
         button refreshGroups "Refresh sources / groups" pos:[4,676] width:(selected_diversityUI.width-8) tooltip:"Refresh available source color groups for assignment."
@@ -4697,11 +4697,16 @@ initialRollupState:0x8
         on edgeRotZSpin changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.edgeRotZ[row]=v;CyrusViewportRedraw())
         on strokeWidth changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.patternWidths[row]=v;obj.markInputDirty();showPath();CyrusViewportRedraw())
         on strokeMode changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (local row=selectedStroke();if row>0 do obj.strokeModes[row]=v;showStroke();obj.markInputDirty();syncControls();CyrusViewportRedraw())
-        on strokeChoices selectionEnd do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (
-            local row=selectedStroke()
-            if row>0 do obj.setStrokeSelection row obj.strokeModes[row] (for i in strokeChoices.selection collect choiceValues[i])
-            CyrusViewportRedraw()
+        fn setBandChoices indices = (
+            if not controlsReady or binding or loadingStroke or obj==undefined do return false
+            local savedOwner=obj,row=selectedStroke()
+            if row<1 do return false
+            CyrusRequireAuthor()
+            local values=for i in indices where i>0 and i<=choiceValues.count collect choiceValues[i]
+            undo "Cyrus Band assignment" on savedOwner.setStrokeSelection row savedOwner.strokeModes[row] values
+            CyrusViewportRedraw();true
         )
+        on strokeChoices selectionEnd do setBandChoices strokeChoices.selection
         on strokeScaleMin changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (local row=selectedStroke();obj.strokeMin[row]=v;if v>obj.strokeMax[row] do obj.strokeMax[row]=v;showStroke();obj.markInputDirty();syncControls();CyrusViewportRedraw())
         on strokeScaleMax changed v do if controlsReady and not binding and obj!=undefined do if not loadingStroke do (local row=selectedStroke();obj.strokeMax[row]=v;if v<obj.strokeMin[row] do obj.strokeMin[row]=v;showStroke();obj.markInputDirty();syncControls();CyrusViewportRedraw())
         on refreshGroups pressed do if controlsReady and not binding and obj!=undefined do updatePattern()

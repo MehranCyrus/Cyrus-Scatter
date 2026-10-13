@@ -68,6 +68,9 @@ const scaleRow=bandRows[rowFor('strokeScaleMin')];
 assert.deepEqual(scaleRow.controls,['diversityUI.strokeScaleMin','diversityUI.strokeScaleMax']);
 assert.equal(scaleRow.pair,true);
 assert.equal(bandRows[rowFor('strokeScaleMin')-1].heading,'Scale');
+assert.equal(rowFor('strokeScaleMin'),rowFor('bandCurveEdit')+2);
+for(const key of ['strokeScaleMin','bandScaleMode','bandScaleEdit'])assert.ok(!bandRows[rowFor(key)].advanced,key+': scale must not require Advanced');
+assert.ok(rowFor('bandScaleEdit')<rowFor('bandColor'));
 console.log('PASS: retired editor/navigation absence, source conversion controls and Band layout');
 
 assert.ok(rowFor('bandScaleMode')>rowFor('strokeScaleMin'));
@@ -76,3 +79,6 @@ assert.equal(inventory.layer.diversityUI.find(c=>c.name==='bandScaleMode').kind,
 assert.equal(inventory.layer.diversityUI.find(c=>c.name==='bandScaleEdit').kind,'button');
 assert.ok(script.includes('CyrusOpenFalloffGraph diversityUI_obj undefined false bandID:diversityUI_selectedBandID'));
 console.log('PASS: independent Band scale profile controls and captured scale graph channel');
+assert.equal((script.match(/diversityUI_strokeChoices_colored.SelectionMode=\(dotNetClass "System.Windows.Forms.SelectionMode"\).MultiSimple/g)||[]).length,2,'Both Band assignment views use click-to-toggle');
+assert.equal((script.match(/sourceUI_plantList_colored.SelectionMode=\(dotNetClass "System.Windows.Forms.SelectionMode"\).MultiExtended/g)||[]).length,2,'Main source-list selection keeps its existing modifiers');
+assert.equal((script.match(/undo "Cyrus Band assignment" on savedOwner.setStrokeSelection/g)||[]).length,2,'Each assignment edit has one native Undo transaction');

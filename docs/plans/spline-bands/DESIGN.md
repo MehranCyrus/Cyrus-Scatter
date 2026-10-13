@@ -171,7 +171,7 @@ Validation or bounded-work failure leaves the last complete calculation/publicat
 ## 0.81.1 scale profile extension
 
 
-Open **Layout > Advanced > Scale**. Min/Max remains the random Band size range.
+In **Layout**, find **Scale** directly below the density curve. Min/Max remains the random Band size range.
 **Scale profile** selects **Off**, **Follow Density** or **Custom**; Custom enables
 **Edit scale curve**. X runs across the Band from Start to End, not along the Path.
 Y is a size percentage: 100% is unchanged, 50% halves size and 200% doubles it.

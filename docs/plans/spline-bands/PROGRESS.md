@@ -727,3 +727,48 @@ of 4,159 pre-existing files unchanged, 45 intended feature/generated/doc changes
 and no missing files; it does not certify unobserved workspace contents. New
 scale fixtures are separately included in the source delivery. Unrelated design
 assets and knowledge-curation drafts remain outside the product commit.
+
+
+## Band assignment and Scale layout correction — 0.81.2, 13 October 2026
+
+Requested patch: Scale controls move below the density-curve row, with Min/Max
+paired and the profile/editor visible without Advanced. Band source/group rows
+use click-to-toggle selection; deselecting the last model, Point or group leaves
+an empty Band. Widths, stable IDs and neighboring assignments remain intact.
+Assignment writes share one captured-owner handler with an explicit Undo block.
+Schema 58 and native Band interface 9 are unchanged; this adds no migration path.
+
+The 0.81.1 baseline probe proved both direct empty writes and programmatic visible
+list deselection already worked. The visible list used MultiExtended, which needs
+modifier-key selection; the user-facing correction changes only the Band choice
+list to MultiSimple. The main source list retains its Ctrl/Shift behavior.
+[Microsoft's selection-mode contract](https://learn.microsoft.com/en-us/dotnet/api/system.windows.forms.listbox.selectionmode?view=netframework-4.8.1)
+specifies click/Space toggling in MultiSimple. Scripted checks exercise actual
+SelectedIndexChanged write-back, not physical pointer input.
+
+| Final check | Result |
+| --- | --- |
+| Fresh Max 2026 / 2027 SDK builds | 27/27 native suites per year, 9.13 / 7.11 s |
+| Repository Python tests | 161 passed, 14.49 s; final catalog/package subset 7 passed |
+| Generator and layout assertions | Passed, 249 controls; correct order/basic visibility and list modes in both generated views |
+| Band selection/layout fixture | 19 checks per year: direct/group emptiness, main/container views, Manual retention, copy and save/reopen |
+| Native assignment Undo/Redo | Five separate events per year, including refresh after Redo |
+| Existing scale-curve integration | 29 checks per year, including relevant Live changes and unrelated-edit stability |
+| Prior 0.81.1 schema-58 reopen | Passed both years under UI 0.81.2; old scene bytes unchanged |
+| Packages and installed payloads | Both years match tested source/native identities and were rehashed |
+
+Final script SHA256: `c4a60a37c09a4aff8daafb465a53c199ff5fb3bbdbb5abe020092b6f78f35c41`.
+Build, baseline and delivery evidence:
+`build/band-ui-0.81.2-20261013-01/`. Baseline reproduction:
+`build/mcp-qualification/foundation-spline-band-clear-2027-baseline-01/`.
+Final matched hosts: `build/mcp-qualification/foundation-spline-band-ui-{2026,2027}-01/`.
+The knowledge status check reported stale generation `44bb5752…dfa0d3`; source
+inspection and host evidence were used without changing knowledge registration.
+
+[Installers and recovery](INSTALLATION.md) retain the earlier deliveries. Restart
+normal Max to load the installed patch; physical artist/DPI/renderer acceptance
+remains separate. No computer-use tools, artist-scene commands or website
+publication were used.
+
+Website import/content checks and the TypeScript/Vite production build pass locally
+for 0.81.2. No live website deployment was performed.

@@ -1,6 +1,6 @@
 # Current codebase architecture
 
-Applies to development source Cyrus Scatter 0.81.1, saved schema 58 and `CyrusUnified1`. Use [the artist guide](ARTIST_GUIDE.md) for controls, [the backlog](BACKLOG.md) for unrelated unfinished work, and [current implementation evidence](plans/spline-bands/PROGRESS.md) for measured acceptance and remaining gates. Read the relevant [F01–F12 contract](ENGINEERING_FOUNDATION.md) with its limits. Dated reports describe their own snapshots.
+Applies to development source Cyrus Scatter 0.81.2, saved schema 58 and `CyrusUnified1`. Use [the artist guide](ARTIST_GUIDE.md) for controls, [the backlog](BACKLOG.md) for unrelated unfinished work, and [current implementation evidence](plans/spline-bands/PROGRESS.md) for measured acceptance and remaining gates. Read the relevant [F01–F12 contract](ENGINEERING_FOUNDATION.md) with its limits. Dated reports describe their own snapshots.
 
 ## Ownership
 
@@ -14,7 +14,7 @@ Applies to development source Cyrus Scatter 0.81.1, saved schema 58 and `CyrusUn
 | Source container | Saved collection-enable flag (off by default), palette boundary and cached consumer/ownership presentation; optional guarded static source movement |
 | Surface Analyzer | Independently updated boundary/path/point results; Scatter consumes its published output |
 
-The current scene model has owning layers and receiver-bound Paint Areas. Model-owning paint sets, shared-receiver inheritance, old paint adoption and stroke-history evaluation have been removed. Schema 57 and vector payload version 1 reject unsupported saved data. Schema-55/56 migration and old internal placement readers are removed. Removing a receiver preserves its inactive area; a replacement node with the same name is a different identity.
+The current scene model has owning layers and receiver-bound Paint Areas. Model-owning paint sets, shared-receiver inheritance, old paint adoption and stroke-history evaluation have been removed. Schema 58 and vector payload version 1 reject unsupported saved data. Schema-55/56 migration and old internal placement readers are removed. Removing a receiver preserves its inactive area; a replacement node with the same name is a different identity.
 
 ## Evaluation and publication
 

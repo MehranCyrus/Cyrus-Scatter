@@ -31,7 +31,7 @@
       {
         "title": "Band scale profiles",
         "paragraphs": [
-          "In Layout > Advanced > Scale, Min/Max supplies random size variation. Scale profile selects Off, Follow Density or Custom. Custom enables Edit scale curve. X runs from Band Start to End; Y is size percent, where 100% preserves size.",
+          "In Layout, Scale sits directly below the density curve. Min/Max supplies random size variation. Scale profile selects Off, Follow Density or Custom. Custom enables Edit scale curve. X runs from Band Start to End; Y is size percent, where 100% preserves size.",
           "Density and scale have independent curves. Follow Density uses the effective density curve shape, without the Density % strength; disabling that density curve gives a flat 100% scale profile. Switching modes keeps the Custom graph. Zero size does not remove a candidate.",
           "Scale curves multiply existing source, Band and layer size once. Auto Radius follows final size; Manual radius needs Follow Scale. Size-dependent spacing can change accepted counts. Manual requires Update scatter. Steep Sharp profiles can exceed the bounded precision and retain the previous result; simplify the curve or choose Rounded."
         ]
@@ -70,7 +70,7 @@
         "paragraphs": [
           "Use the installer for your Max year through Scripting > Run Script, then restart Max so the script and native modules match. Current development packages target Max 2026 and 2027; renderer and physical-input coverage varies by workflow.",
           "Team-pilot builds expose License / activation. Export an activation request and import the returned license. The pilot license lasts 30 days from issuance; expiry locks authoring while existing scenes remain loadable/renderable.",
-          "Development source 0.81.1 uses schema 58; earlier schemas are rejected without migration. Use the latest matched installer for Max 2026 or 2027; restart after installation. Preserve earlier scenes with their matching build. Current settings use typed distances. Preserve originals and use saved units for receiver-bound Paint/Edit data. Test receivers, Points/models, Bands, painting, Manual/Live, Undo/Redo, save/reopen and the intended renderer on a copy. Physical picker/DPI/tablet and long-session acceptance remain open.",
+          "Development source 0.81.2 uses schema 58; earlier schemas are rejected without migration. Use the latest matched installer for Max 2026 or 2027; restart after installation. Preserve earlier scenes with their matching build. Current settings use typed distances. Preserve originals and use saved units for receiver-bound Paint/Edit data. Test receivers, Points/models, Bands, painting, Manual/Live, Undo/Redo, save/reopen and the intended renderer on a copy. Physical picker/DPI/tablet and long-session acceptance remain open.",
           "[View the changelog](#/changelog) for additions and fixes, or use the [testing walkthrough](#/checklist) to record your own observations."
         ]
       }

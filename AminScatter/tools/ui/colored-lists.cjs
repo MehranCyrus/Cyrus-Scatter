@@ -6,7 +6,7 @@ module.exports=function(text,components){
  if(components.some(p=>p.key==='flow_layersUI'))specs.push({id:'flow_layersUI_layerList',multi:false,color:'flow_layersUI_members[args.Index+1].layerIDColor',select:'if view.SelectedIndex>=0 do panel.selectLayerView flow_layersUI_members[view.SelectedIndex+1]',open:'if view.SelectedIndex>=0 do panel.selectLayerView flow_layersUI_members[view.SelectedIndex+1] expand:true'});
  if(components.some(p=>p.key==='diversityUI')){
   specs.push({id:'diversityUI_strokesList',multi:false,color:'diversityUI_obj.strokeDisplayColors[diversityUI_strokeRows[args.Index+1]]',select:'diversityUI_selectedBandID=if view.SelectedIndex>=0 then diversityUI_obj.strokeIDs[diversityUI_strokeRows[view.SelectedIndex+1]] else 0;diversityUI_showStroke()'});
-  specs.push({id:'diversityUI_strokeChoices',multi:true,color:'diversityUI_choiceColor (args.Index+1)',select:'local row=diversityUI_selectedStroke();if row>0 and CyrusLicenseCanEdit() do diversityUI_obj.setStrokeSelection row diversityUI_obj.strokeModes[row] (for i in diversityUI_strokeChoices.selection collect diversityUI_choiceValues[i]);CyrusViewportRedraw()'});
+  specs.push({id:'diversityUI_strokeChoices',multi:true,toggle:true,color:'diversityUI_choiceColor (args.Index+1)',select:'diversityUI_setBandChoices indices'});
  }
  if(!specs.length)return text;
  let declarations='        local syncingColorLists=false\n',methods='';
@@ -51,7 +51,7 @@ ${specs.map(s=>{const id=s.id+'_colored';return `                setHostedVisibl
                 ${id}.pos=${s.id}.pos;${id}.width=${s.id}.width;${id}.height=${s.id}.height
                 ${s.id}.visible=false
                 ${id}.DrawMode=(dotNetClass "System.Windows.Forms.DrawMode").OwnerDrawFixed
-                ${id}.SelectionMode=(dotNetClass "System.Windows.Forms.SelectionMode").${s.multi?'MultiExtended':'One'}
+                ${id}.SelectionMode=(dotNetClass "System.Windows.Forms.SelectionMode").${s.multi?(s.toggle?'MultiSimple':'MultiExtended'):'One'}
                 ${id}.IntegralHeight=false;${id}.ItemHeight=16
                 ${id}.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
                 ${id}.ForeColor=(dotNetClass "System.Drawing.Color").FromArgb 230 230 230

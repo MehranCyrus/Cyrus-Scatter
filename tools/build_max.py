@@ -138,7 +138,7 @@ def package(project, name, version, native_names, script_name, args, build_dir):
            'Removing a receiver keeps its area inactive; restoring the same node restores eligibility.\n'
            'Manual mode updates the mask immediately and publishes plants when Update is pressed.\n'
            'Random/Clusters, prepared spline Bands and Analyzer assignment share the same ordered pipeline.\n'
-             'Spline Bands > Advanced > Scale: Off, Follow Density, or Custom with Edit scale curve.\n'
+             'Spline Bands > Scale (below density): Off, Follow Density, or Custom with Edit scale curve.\n'
              'The profile multiplies Band Min/Max size; Follow Density links the curve shape, not Density %.\n'
            'Bands have stable identities, Consecutive/Independent ranges, Rounded/Sharp corners, density curves and display colors.\n'
            'Manual field previews can show pending inputs while plants and radii remain from the last Update.\n'

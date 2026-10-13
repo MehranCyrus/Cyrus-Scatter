@@ -1,6 +1,6 @@
 # Native and MCP capability coverage
 
-Reconciled 13 October 2026 for **Scatter development source 0.81.1 / MCP 0.73.0**, calculation model CyrusUnified1, saved schema 58. The [artist guide](../ARTIST_GUIDE.md) describes current ownership; [implementation evidence](../plans/spline-bands/PROGRESS.md) records qualified scenarios and remaining gates. Earlier dated reports remain evidence for their exact builds, not blanket qualification of this candidate.
+Reconciled 13 October 2026 for **Scatter development source 0.81.2 / MCP 0.73.0**, calculation model CyrusUnified1, saved schema 58. The [artist guide](../ARTIST_GUIDE.md) describes current ownership; [implementation evidence](../plans/spline-bands/PROGRESS.md) records qualified scenarios and remaining gates. Earlier dated reports remain evidence for their exact builds, not blanket qualification of this candidate.
 
 There is one procedural model. Old scene policies and MCP plans 1/2 are retired and rejected, rather than reinterpreted. The **closed plan 0.73** ports the previously useful bounded authoring subset into that model. It does not expose every native field. Native availability, catalog help and cached inspection do not grant remote mutation authority. Current [server registrations](../../CyrusMCP/cyrus_mcp/server.py), [settings](../../CyrusMCP/cyrus_mcp/settings.py), [schema](../../CyrusMCP/cyrus_mcp/plan.schema.json) and [passive recipe reader](../../CyrusMCP/cyrus_mcp/procedural.py) define the actual boundary.
 

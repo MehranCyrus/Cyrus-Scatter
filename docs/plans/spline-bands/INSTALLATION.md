@@ -1,6 +1,37 @@
 # Scatter local installations
 
-## Latest: Band scale profiles, 0.81.1, 13 October 2026
+## Latest: Band selection and scale layout, 0.81.2, 13 October 2026
+
+**0.81.2 is packaged and installed on disk for Max 2026 and 2027.**
+Save work and restart Max to load it. Open artist sessions were preserved.
+
+Scale Min/Max, profile and graph controls sit directly below the density curve.
+Click a model, Point or assignment group again to remove it, including the last
+selection. Empty Bands keep their intervals. Manual applies changes on Update.
+
+Saved schema 58 and native Band interface 9 are unchanged. Previous 0.81.1
+schema-58 scenes reopen in both tested hosts. Earlier schemas still require their
+matching build. Analyzer and licensing are unchanged.
+
+- [Max 2026 MZP](../../../dist/CyrusScatter-0.81.2-20261013/CyrusScatter-0.81.2-Max2026.mzp)
+  - SHA256 `d1b52b487f181ec3011e24a6b486b47a77634c298039c66dbc547af78adc416b`
+- [Max 2027 MZP](../../../dist/CyrusScatter-0.81.2-20261013/CyrusScatter-0.81.2-Max2027.mzp)
+  - SHA256 `de99d4e0d5f84666470312ce1cc3e6c07176c95eb362c961f149b4743696fe9b`
+
+Script SHA256: `c4a60a37c09a4aff8daafb465a53c199ff5fb3bbdbb5abe020092b6f78f35c41`.
+
+[Delivery receipt](../../../build/band-ui-0.81.2-20261013-01/installation.json)
+records verified installed hashes, package/source identities and backups under
+`backup/Max2026` and `backup/Max2027`. Previous native directories, normal Max
+settings and Analyzer files were preserved; only owned Scatter registration
+values changed. Installation used verified payloads without running the interactive
+installer dialog or restarting an artist session.
+
+[Validation](PROGRESS.md) includes both Modify views, empty assignments, Manual
+retention, Undo/Redo, persistence and scale regressions. Physical pointer/DPI and
+fresh normal-profile acceptance remain pending.
+
+## Earlier: Band scale profiles, 0.81.1, 13 October 2026
 
 **Scatter 0.81.1 is packaged and installed on disk for Max 2026 and 2027.**
 Save work and restart each Max session to load the matched script/native pair.

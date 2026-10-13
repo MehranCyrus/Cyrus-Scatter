@@ -3,6 +3,28 @@
   "notes": "Entries are ordered by documented development chronology, not numeric label. Missing versions and unknown dates are not invented. Local evidence is stripped before publication. 0.79.2 and 0.79.5 are current uncommitted working-tree campaigns at this review, not new Git releases. Analyzer/MCP have independent version domains.",
   "entries": [
     {
+      "version": "0.81.2",
+      "date": "2026-10-13",
+      "title": "Direct scale controls and clearable Band assignments.",
+      "era": "recent",
+      "legacy": false,
+      "note": "Bounded UI correction. Saved schema 58 and native interface 9 are unchanged; physical artist acceptance remains separate.",
+      "changes": [
+        {
+          "kind": "Changed",
+          "text": "Scale controls appear directly below the density curve without opening Advanced."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Band models, Points and assignment groups toggle on and off with a click, including an empty selection. Assignment edits support Undo/Redo."
+        }
+      ],
+      "evidence": [
+        "docs/ARTIST_GUIDE.md",
+        "docs/plans/spline-bands/PROGRESS.md"
+      ]
+    },
+    {
       "version": "0.81.1",
       "date": "2026-10-13",
       "title": "Independent Band scale curves.",

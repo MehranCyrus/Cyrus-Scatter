@@ -1,4 +1,4 @@
-# Cyrus Scatter 0.81.1 — current source workflow
+# Cyrus Scatter 0.81.2 — current source workflow
 
 The [offline team license](licensing/TEAM_PILOT_0.79_2026-10-11.md) is independent of scene format. Open **License / activation** in Scatter Modify, save a request for Mehran, then import the returned license file. It expires 30 days after generation. Supported scenes remain loadable/renderable after expiry; creation/editing locks. See [activation and renewal instructions](../tools/licensing/README.md).
 
@@ -38,7 +38,7 @@ For point-only Spline bands, add and name Point rows in Models & Points, then se
 
 **Source containers** is a separate collapsible section. Choose Manual models, Layer containers or Shared containers. Containers are optional palettes. Point and Empty rows stay active independently of rectangles; actual models are activated by their pivots. Collection is distinct from layout assignment groups. New rectangles start with **Enable collection** off: position and resize the rectangle first, then enable it in Source containers or in the rectangle’s Modify panel. Inactive rectangles do not scan the scene or carry models. Disabling collection parks existing source rows and preserves their settings; Manual waits for Update, while Live applies the change automatically. The switch is saved per rectangle and shared by its linked layers. Rectangles saved before this switch existed also open with collection off. Enabled rectangles collect eligible model pivots inside their footprint; they are not receiving surfaces. Parking a model outside a palette preserves its registered settings. Shared containers can serve multiple consumers with independent settings. The selected-container Modify view edits the same records as the Scatter Modify panel. The floating layer editor and source-to-Band navigation button have been removed. Band membership labels and tooltips remain informational.
 
-In a Band, choose **Models used by this Band** directly below its width/range, before density and field settings. Advanced contains a **Scale** heading with **Min** and **Max** on the same row.
+In a Band, choose **Models used by this Band** directly below its width/range, before density and field settings. The **Scale** controls sit directly below the density curve, with **Min** and **Max** on one row. Click a selected model, Point or assignment group again to remove it from the Band. Clearing the last selection leaves an empty Band and preserves its interval.
 
 ## Layout and Amount
 
@@ -120,7 +120,7 @@ Use the [current validation matrix](plans/spline-bands/VALIDATION.md) and [imple
 
 ### Band scale profiles
 
-Open **Layout > Advanced > Scale**. Min/Max remains the random Band size range.
+In **Layout**, find **Scale** directly below the density curve. Min/Max remains the random Band size range.
 **Scale profile** selects **Off**, **Follow Density** or **Custom**; Custom enables
 **Edit scale curve**. X runs across the Band from Start to End, not along the Path.
 Y is a size percentage: 100% is unchanged, 50% halves size and 200% doubles it.

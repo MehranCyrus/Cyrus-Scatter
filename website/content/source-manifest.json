@@ -38,7 +38,7 @@
   "reviewedSourceHashes": {
     "CyrusMCP/README.md": "ade16c0ae74dbce660b58c8f6ef96c1cb5fcdc02c20e7f1a3896eb99b4b3bef0",
     "CyrusSurfaceAnalyzer/README.md": "899909b52cb6c0617dab1b5c4f46321202806018f659a69038658d4913708611",
-    "docs/ARTIST_GUIDE.md": "040d0a88b6c996ae0a89bec2a2b8182aa63cb1641c94cf8581522b394f0ba679",
+    "docs/ARTIST_GUIDE.md": "15f9d29745f68cccecabcdfdd7371dce0e921d7f286ecb55384e915b7e8f458e",
     "docs/Brush_Relax_Reset_2026-10-03/REPORT.md": "3f4c658fa35733f9a9c08503639454338e2dd87c322058661263d028942e8867",
     "docs/Brush_Responsiveness_0.78.2_2026-10-10/README.md": "7faa2a41f400952244834bf59034471fe7b0ae3487347edaca1c6598cb872928",
     "docs/Brush_Scaling_0.76_2026-10-10/README.md": "db05af1cf6230e88075be2d235adf916196a5e203f6c1b07d6a070e977306379",
@@ -54,7 +54,7 @@
     "docs/Cyrus_Scatter_V1_2026-10-03/README.md": "78c446d399fccee7b08da451eefde4320c659fbf689ceb4c8a4ffb6f926f43a6",
     "docs/Full_Qualification_0.73_2026-10-07/README.md": "1aee182588d4811501eae0c7583af847f06eff0913b2195deeea69fbab84492e",
     "docs/Integrated_UI_0.72_2026-10-06/README.md": "d980880fd1d28647bce2f954b8a03d3abf59ed363d598d8d508bbb54b6d8218e",
-    "docs/LAYOUT_AND_FALLOFF.md": "211a53fdfb757618060fdb15e74fec542fc688014b6d79c7a48c518359f5a8c0",
+    "docs/LAYOUT_AND_FALLOFF.md": "64a947f17f3a737dac1d4a2a707f08530a50d7c45e11daec615f39ce9f9e1655",
     "docs/Layer_Actions_Fix_0.73_2026-10-07/README.md": "a91dc06ebc5cabd61ea20774241a29b2f9237e594e2470391c5326b68b6fcbe4",
     "docs/Layer_Navigation_0.79.2_2026-10-11/README.md": "f8f1b6b274bd18c41a8d3498f184eb7fb6953bba20796f504cfb5b51599b0e5a",
     "docs/Layer_Paint_Areas_0.74_2026-10-09/README.md": "a477bd87b25433584f4733c07fe5de7bf0af70b227cbc9649899e7eb42f32096",
@@ -70,7 +70,7 @@
     "docs/Procedural_Implementation_0.7_2026-10-04/README.md": "4285f5e0e2015068d491a6061ac09d4c6a9b9140ab7a9950296869cc10057fd0",
     "docs/Real_Scene_0.7.1_2026-10-05/README.md": "ec6af73ecce9bc1eaed82b41bbf7b0c3c5464ab376c72f82a715c661a17fab1d",
     "docs/Receiver_Stability_0.76_2026-10-10/README.md": "857f754b7e4b8ccdbd1ad7889fdaf56b41c7ec47f7d1e769b922380b9fef2594",
-    "docs/Release_Versioning.md": "c8367ddc1451fd391731354705d12f6e5d31fb2cad3b2e0572f56c58edf0fa92",
+    "docs/Release_Versioning.md": "d9b6d3cda9e63fbc4320cd5a149388bc80385a8849c7978c4334f83ef68f8891",
     "docs/Retained_Mesh_Preview_2026-10-02/README.md": "2bb5dee3a692a63bbd7aa2c59795e5b9f9fc9cf158a164c25b6da68f7a11c1df",
     "docs/Retained_Point_Preview_2026-10-02/README.md": "87044c6a35764de85806a4f8b158c036ca1c1374cf46e13a199c1a502989dc9b",
     "docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md": "c53d14bb1e0c0e41cc49b60b4c57054f4c8872e44ffd19db5827fd17dd799092",
@@ -85,7 +85,7 @@
     "docs/Viewport_Performance_Round2_2026-10-01.md": "f189c3c3e0bdeeed181e375ae2ca4c03b3b57b4be4857b90e66853774be27a67",
     "docs/licensing/TEAM_PILOT_0.79_2026-10-11.md": "c95ee0387e76aacbc6ca829ab5f0b4e46a3a093cff1a50084d1eab663662bf3f",
     "docs/Foundation_0.79.6_2026-10-12/README.md": "9bbe9750e62c5d8e66c7812c84087478d840a0732116f61dc50f23d5ef59f140",
-    "docs/plans/spline-bands/PROGRESS.md": "f05803d7dda65049f1f2787151137f5763ee6c20633a229227d681ed25862209",
-    "docs/plans/spline-bands/INSTALLATION.md": "1abe04371a183f9bf5007d9f1c1b8243b9e1bfb4c508a79762002fcfd6fa294b"
+    "docs/plans/spline-bands/PROGRESS.md": "5b7089315dc402ead0e33f9b06221a98b25f2dea710b956e17de098cc87db57e",
+    "docs/plans/spline-bands/INSTALLATION.md": "d660395cc3622575e4523e3a5e4b2af7dbc8c786016a01f5b505fc44fd53acd0"
   }
 }

@@ -1,8 +1,8 @@
 # Spline bands implementation plan
 
-Status: implemented in development source 0.81.1/schema 58, with bounded engineering qualification and remaining acceptance gates. Updated 13 October 2026. Start with [PROGRESS.md](PROGRESS.md) for current checks, failures and outstanding acceptance; the design documents below retain the implementation plan and do not certify a release. English is the working language for this workstream.
+Status: implemented in development source 0.81.2/schema 58, with bounded engineering qualification and remaining acceptance gates. Updated 13 October 2026. Start with [PROGRESS.md](PROGRESS.md) for current checks, failures and outstanding acceptance; the design documents below retain the implementation plan and do not certify a release. English is the working language for this workstream.
 
-The user subsequently authorized implementation, testing and removal of retired compatibility paths. Later requests authorized the local Max 2026/2027 deliveries and the 0.81.1 source commit/push; see [installation](INSTALLATION.md) and [evidence](PROGRESS.md). Live website deployment and public release remain outside this work. The maintained project backlog remains authoritative for unrelated work.
+The user subsequently authorized implementation, testing and removal of retired compatibility paths. Later requests authorized the local Max 2026/2027 deliveries and the 0.81.2 source commit/push; see [installation](INSTALLATION.md) and [evidence](PROGRESS.md). Live website deployment and public release remain outside this work. The maintained project backlog remains authoritative for unrelated work.
 
 ## Objective
 

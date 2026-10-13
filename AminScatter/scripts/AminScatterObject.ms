@@ -1,4 +1,4 @@
-global CyrusLoadedScriptFingerprint="996f67fc534e90a5a1c38232697761ebc3fb617a0c981f61cde28ca06958dadf"
+global CyrusLoadedScriptFingerprint="402c6c672d850b02fc87a104ea2f7974390b801cd848e80ae1bce9b941a7b282"
 global CyrusOpenLicenseDialog,CyrusLicenseDialog,CyrusRequireAuthor,CyrusLicenseCanEdit
 fn CyrusRequireAuthor = (
     if cyrusLicenseAllows==undefined do throw "Load the matching licensed Cyrus 0.80.0 native modules and restart Max."
@@ -2079,7 +2079,7 @@ initialRollupState:0x8
     fn uiLayerStats = (
         CyrusLayerStatusData hasResult:(cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
     )
-    fn uiVersion = "0.81.1"
+    fn uiVersion = "0.81.2"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified1")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -3097,14 +3097,14 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.81.1 setup; earlier schemas are unsupported."
+        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.81.2 setup; earlier schemas are unsupported."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
     fn procValidate = (
         this.procAssertSchema()
-        if cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=9 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined do throw "Cyrus 0.81.1 requires the matching native plugin binaries. Restart the private test host with the complete matching script/native pair."
+        if cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=9 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined do throw "Cyrus 0.81.2 requires the matching native plugin binaries. Restart the private test host with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -3471,7 +3471,7 @@ initialRollupState:0x8
         if (CyrusContainerPanel this).controlsReady do (CyrusContainerPanel this).bind()
         true
     )
-    rollout mainUI "Cyrus Scatter 0.81.1" width:#cmdPanel height:140 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.81.2" width:#cmdPanel height:140 autoLayoutOnResize:true (
         local view=undefined,root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),owner=undefined,layerPagesVisible=false,pagesArranged=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for the entire setup."
         radiobuttons updateRadio "Viewport update" labels:#("Manual","Live") columns:2 pos:[8,26] width:(mainUI.width-16) tooltip:"Manual waits for Update. Live calculates after relevant edits."
@@ -3543,7 +3543,7 @@ initialRollupState:0x8
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.81.1 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.81.2 native plugin and restart Max."
             local context=if classof view==CyrusSourceContainer then CyrusContainerResolve view else undefined
             root=if classof view==CyrusSourceContainer then (if context==undefined then undefined else context[1]) else view
             editors=#(view.managerUI,view.surfacesUI,view.modelsUI,view.containersUI,view.layoutUI,view.populationUI,view.coverageUI,view.areasUI,view.transformsUI,view.spacingUI,view.displayUI,view.statisticsUI)
@@ -5272,7 +5272,7 @@ initialRollupState:0x8
         radiobuttons diversityUI_strokeMode "" labels:#("Assignment groups","Models / Points") columns:1 pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58)))))
         label diversityUI_strokeMode_caption "Select from" pos:[6,6] width:(layoutUI.width-12) height:18
         multiListBox diversityUI_strokeChoices "" items:#() pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))) height:5
-        label diversityUI_strokeChoices_caption "Ctrl / Shift: select several" pos:[6,6] width:(layoutUI.width-12) height:18
+        label diversityUI_strokeChoices_caption "Click to toggle" pos:[6,6] width:(layoutUI.width-12) height:18
         spinner diversityUI_strokeScaleMin "" tooltip:"Additional Band multiplier, combined once with source, layer and transform scale." range:[0.001,100,1] pos:[8,8] width:((layoutUI.width-16-((amin 2 (amax 1 (floor ((layoutUI.width-8)/102.8))))-1)*4)/(amin 2 (amax 1 (floor ((layoutUI.width-8)/102.8))))) fieldWidth:58
         label diversityUI_strokeScaleMin_caption "Min:" pos:[6,6] width:(layoutUI.width-12) height:18
         spinner diversityUI_strokeScaleMax "" tooltip:"Additional Band multiplier; it does not change the source asset or its base Scale setting." range:[0.001,100,1] pos:[8,8] width:((layoutUI.width-16-((amin 2 (amax 1 (floor ((layoutUI.width-8)/102.8))))-1)*4)/(amin 2 (amax 1 (floor ((layoutUI.width-8)/102.8))))) fieldWidth:58
@@ -5702,11 +5702,16 @@ initialRollupState:0x8
         on diversityUI_strokeMode changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.strokeModes[row]=v;diversityUI_showStroke();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
-        on diversityUI_strokeChoices selectionEnd do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (
-            local row=diversityUI_selectedStroke()
-            if row>0 do diversityUI_obj.setStrokeSelection row diversityUI_obj.strokeModes[row] (for i in diversityUI_strokeChoices.selection collect diversityUI_choiceValues[i])
-            CyrusViewportRedraw()
+        fn diversityUI_setBandChoices indices = (
+            if not diversityUI_controlsReady or diversityUI_binding or diversityUI_loadingStroke or diversityUI_obj==undefined do return false
+            local savedOwner=diversityUI_obj,row=diversityUI_selectedStroke()
+            if row<1 do return false
+            CyrusRequireAuthor()
+            local values=for i in indices where i>0 and i<=diversityUI_choiceValues.count collect diversityUI_choiceValues[i]
+            undo "Cyrus Band assignment" on savedOwner.setStrokeSelection row savedOwner.strokeModes[row] values
+            CyrusViewportRedraw();true
         )
+        on diversityUI_strokeChoices selectionEnd do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (diversityUI_setBandChoices diversityUI_strokeChoices.selection
             if controlsReady and root!=undefined do layout()
         )
         on diversityUI_strokeScaleMin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();diversityUI_obj.strokeMin[row]=v;if v>diversityUI_obj.strokeMax[row] do diversityUI_obj.strokeMax[row]=v;diversityUI_showStroke();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
@@ -5791,7 +5796,7 @@ initialRollupState:0x8
         )
         on diversityUI_strokeChoices_colored SelectedIndexChanged view args do if controlsReady and not binding and root!=undefined and not syncingColorLists do (
             local indices=#{},newFocus=0;for i=0 to view.SelectedIndices.Count-1 do (local row=view.SelectedIndices.Item[i]+1;indices[row]=true;if not diversityUI_strokeChoices.selection[row] do newFocus=row);diversityUI_strokeChoices.selection=indices
-            local row=diversityUI_selectedStroke();if row>0 and CyrusLicenseCanEdit() do diversityUI_obj.setStrokeSelection row diversityUI_obj.strokeModes[row] (for i in diversityUI_strokeChoices.selection collect diversityUI_choiceValues[i]);CyrusViewportRedraw()
+            diversityUI_setBandChoices indices
             if controlsReady and root!=undefined do layout()
         )
         on diversityUI_strokeChoices_colored DrawItem view args do if controlsReady and root!=undefined and args.Index>=0 and args.Index<view.Items.Count do (
@@ -5827,7 +5832,7 @@ initialRollupState:0x8
                 diversityUI_strokeChoices_colored.pos=diversityUI_strokeChoices.pos;diversityUI_strokeChoices_colored.width=diversityUI_strokeChoices.width;diversityUI_strokeChoices_colored.height=diversityUI_strokeChoices.height
                 diversityUI_strokeChoices.visible=false
                 diversityUI_strokeChoices_colored.DrawMode=(dotNetClass "System.Windows.Forms.DrawMode").OwnerDrawFixed
-                diversityUI_strokeChoices_colored.SelectionMode=(dotNetClass "System.Windows.Forms.SelectionMode").MultiExtended
+                diversityUI_strokeChoices_colored.SelectionMode=(dotNetClass "System.Windows.Forms.SelectionMode").MultiSimple
                 diversityUI_strokeChoices_colored.IntegralHeight=false;diversityUI_strokeChoices_colored.ItemHeight=16
                 diversityUI_strokeChoices_colored.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
                 diversityUI_strokeChoices_colored.ForeColor=(dotNetClass "System.Drawing.Color").FromArgb 230 230 230
@@ -6221,6 +6226,51 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
+            rowControls=#(heading_0);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                if y>6 do y+=4
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel heading_0 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(heading_0.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_strokeScaleMin,diversityUI_strokeScaleMax);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if diversityUI_strokeScaleMin_caption.visible!=show do diversityUI_strokeScaleMin_caption.visible=show;if diversityUI_strokeScaleMax_caption.visible!=show do diversityUI_strokeScaleMax_caption.visible=show
+            if show do (
+                columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel diversityUI_strokeScaleMin_caption 18 cellWidth;fitLabel diversityUI_strokeScaleMax_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then (amax #(diversityUI_strokeScaleMin_caption.height,diversityUI_strokeScaleMax_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                for c in rowControls do fitPairField c cellWidth
+                if not stackedCaption then (diversityUI_strokeScaleMin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_strokeScaleMin_caption.width=32) else (diversityUI_strokeScaleMin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokeScaleMin_caption.width=cellWidth);diversityUI_strokeScaleMin_caption.enabled=diversityUI_strokeScaleMin.enabled;if not stackedCaption then (diversityUI_strokeScaleMax_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];diversityUI_strokeScaleMax_caption.width=32) else (diversityUI_strokeScaleMax_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];diversityUI_strokeScaleMax_caption.width=cellWidth);diversityUI_strokeScaleMax_caption.enabled=diversityUI_strokeScaleMax.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_bandScaleMode);show=(true and (diversityUI_diversityRadio.state==3))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if diversityUI_bandScaleMode_caption.visible!=show do diversityUI_bandScaleMode_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel diversityUI_bandScaleMode_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(diversityUI_bandScaleMode_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                diversityUI_bandScaleMode_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_bandScaleMode_caption.width=cellWidth;diversityUI_bandScaleMode_caption.enabled=diversityUI_bandScaleMode.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_bandScaleEdit);show=(true and (diversityUI_diversityRadio.state==3))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/101.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
             rowControls=#(diversityUI_bandColor);show=(true and (diversityUI_diversityRadio.state==3))
             for c in rowControls where c.visible!=show do c.visible=show
             if diversityUI_bandColor_caption.visible!=show do diversityUI_bandColor_caption.visible=show
@@ -6283,51 +6333,6 @@ initialRollupState:0x8
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/23.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(22,22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(heading_0);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls where c.visible!=show do c.visible=show
-            if show do (
-                if y>6 do y+=4
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel heading_0 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(heading_0.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_strokeScaleMin,diversityUI_strokeScaleMax);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls where c.visible!=show do c.visible=show
-            if diversityUI_strokeScaleMin_caption.visible!=show do diversityUI_strokeScaleMin_caption.visible=show;if diversityUI_strokeScaleMax_caption.visible!=show do diversityUI_strokeScaleMax_caption.visible=show
-            if show do (
-                columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel diversityUI_strokeScaleMin_caption 18 cellWidth;fitLabel diversityUI_strokeScaleMax_caption 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then (amax #(diversityUI_strokeScaleMin_caption.height,diversityUI_strokeScaleMax_caption.height)) else 0)
-                rowHeight=(amax #(22,22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                for c in rowControls do fitPairField c cellWidth
-                if not stackedCaption then (diversityUI_strokeScaleMin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_strokeScaleMin_caption.width=32) else (diversityUI_strokeScaleMin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokeScaleMin_caption.width=cellWidth);diversityUI_strokeScaleMin_caption.enabled=diversityUI_strokeScaleMin.enabled;if not stackedCaption then (diversityUI_strokeScaleMax_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];diversityUI_strokeScaleMax_caption.width=32) else (diversityUI_strokeScaleMax_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];diversityUI_strokeScaleMax_caption.width=cellWidth);diversityUI_strokeScaleMax_caption.enabled=diversityUI_strokeScaleMax.enabled
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_bandScaleMode);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==3))
-            for c in rowControls where c.visible!=show do c.visible=show
-            if diversityUI_bandScaleMode_caption.visible!=show do diversityUI_bandScaleMode_caption.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel diversityUI_bandScaleMode_caption 18 cellWidth
-                stackedCaption=false;captionHeight=amax (amax #(diversityUI_bandScaleMode_caption.height)) (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                diversityUI_bandScaleMode_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_bandScaleMode_caption.width=cellWidth;diversityUI_bandScaleMode_caption.enabled=diversityUI_bandScaleMode.enabled
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_bandScaleEdit);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==3))
-            for c in rowControls where c.visible!=show do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/101.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
@@ -10727,7 +10732,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         )
     )
 
-    rollout mainUI "Cyrus Scatter 0.81.1" width:#cmdPanel height:140 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.81.2" width:#cmdPanel height:140 autoLayoutOnResize:true (
         local view=undefined,root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),owner=undefined,layerPagesVisible=false,pagesArranged=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for the entire setup."
         radiobuttons updateRadio "Viewport update" labels:#("Manual","Live") columns:2 pos:[8,26] width:(mainUI.width-16) tooltip:"Manual waits for Update. Live calculates after relevant edits."
@@ -10799,7 +10804,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.81.1 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.81.2 native plugin and restart Max."
             local context=if classof view==CyrusSourceContainer then CyrusContainerResolve view else undefined
             root=if classof view==CyrusSourceContainer then (if context==undefined then undefined else context[1]) else view
             editors=#(view.managerUI,view.surfacesUI,view.modelsUI,view.containersUI,view.layoutUI,view.populationUI,view.coverageUI,view.areasUI,view.transformsUI,view.spacingUI,view.displayUI,view.statisticsUI)
@@ -12528,7 +12533,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         radiobuttons diversityUI_strokeMode "" labels:#("Assignment groups","Models / Points") columns:1 pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58)))))
         label diversityUI_strokeMode_caption "Select from" pos:[6,6] width:(layoutUI.width-12) height:18
         multiListBox diversityUI_strokeChoices "" items:#() pos:[8,8] width:((layoutUI.width-16-((amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((layoutUI.width-8)/58))))) height:5
-        label diversityUI_strokeChoices_caption "Ctrl / Shift: select several" pos:[6,6] width:(layoutUI.width-12) height:18
+        label diversityUI_strokeChoices_caption "Click to toggle" pos:[6,6] width:(layoutUI.width-12) height:18
         spinner diversityUI_strokeScaleMin "" tooltip:"Additional Band multiplier, combined once with source, layer and transform scale." range:[0.001,100,1] pos:[8,8] width:((layoutUI.width-16-((amin 2 (amax 1 (floor ((layoutUI.width-8)/102.8))))-1)*4)/(amin 2 (amax 1 (floor ((layoutUI.width-8)/102.8))))) fieldWidth:58
         label diversityUI_strokeScaleMin_caption "Min:" pos:[6,6] width:(layoutUI.width-12) height:18
         spinner diversityUI_strokeScaleMax "" tooltip:"Additional Band multiplier; it does not change the source asset or its base Scale setting." range:[0.001,100,1] pos:[8,8] width:((layoutUI.width-16-((amin 2 (amax 1 (floor ((layoutUI.width-8)/102.8))))-1)*4)/(amin 2 (amax 1 (floor ((layoutUI.width-8)/102.8))))) fieldWidth:58
@@ -12958,11 +12963,16 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         on diversityUI_strokeMode changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();if row>0 do diversityUI_obj.strokeModes[row]=v;diversityUI_showStroke();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
-        on diversityUI_strokeChoices selectionEnd do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (
-            local row=diversityUI_selectedStroke()
-            if row>0 do diversityUI_obj.setStrokeSelection row diversityUI_obj.strokeModes[row] (for i in diversityUI_strokeChoices.selection collect diversityUI_choiceValues[i])
-            CyrusViewportRedraw()
+        fn diversityUI_setBandChoices indices = (
+            if not diversityUI_controlsReady or diversityUI_binding or diversityUI_loadingStroke or diversityUI_obj==undefined do return false
+            local savedOwner=diversityUI_obj,row=diversityUI_selectedStroke()
+            if row<1 do return false
+            CyrusRequireAuthor()
+            local values=for i in indices where i>0 and i<=diversityUI_choiceValues.count collect diversityUI_choiceValues[i]
+            undo "Cyrus Band assignment" on savedOwner.setStrokeSelection row savedOwner.strokeModes[row] values
+            CyrusViewportRedraw();true
         )
+        on diversityUI_strokeChoices selectionEnd do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and true do (diversityUI_setBandChoices diversityUI_strokeChoices.selection
             if controlsReady and root!=undefined do layout()
         )
         on diversityUI_strokeScaleMin changed v do if controlsReady and not binding and root!=undefined and diversityUI_controlsReady and not diversityUI_binding and CyrusLicenseCanEdit() do (if diversityUI_controlsReady and not diversityUI_binding and diversityUI_obj!=undefined do if not diversityUI_loadingStroke do (local row=diversityUI_selectedStroke();diversityUI_obj.strokeMin[row]=v;if v>diversityUI_obj.strokeMax[row] do diversityUI_obj.strokeMax[row]=v;diversityUI_showStroke();diversityUI_obj.markInputDirty();diversityUI_syncControls();CyrusViewportRedraw())
@@ -13047,7 +13057,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
         )
         on diversityUI_strokeChoices_colored SelectedIndexChanged view args do if controlsReady and not binding and root!=undefined and not syncingColorLists do (
             local indices=#{},newFocus=0;for i=0 to view.SelectedIndices.Count-1 do (local row=view.SelectedIndices.Item[i]+1;indices[row]=true;if not diversityUI_strokeChoices.selection[row] do newFocus=row);diversityUI_strokeChoices.selection=indices
-            local row=diversityUI_selectedStroke();if row>0 and CyrusLicenseCanEdit() do diversityUI_obj.setStrokeSelection row diversityUI_obj.strokeModes[row] (for i in diversityUI_strokeChoices.selection collect diversityUI_choiceValues[i]);CyrusViewportRedraw()
+            diversityUI_setBandChoices indices
             if controlsReady and root!=undefined do layout()
         )
         on diversityUI_strokeChoices_colored DrawItem view args do if controlsReady and root!=undefined and args.Index>=0 and args.Index<view.Items.Count do (
@@ -13083,7 +13093,7 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 diversityUI_strokeChoices_colored.pos=diversityUI_strokeChoices.pos;diversityUI_strokeChoices_colored.width=diversityUI_strokeChoices.width;diversityUI_strokeChoices_colored.height=diversityUI_strokeChoices.height
                 diversityUI_strokeChoices.visible=false
                 diversityUI_strokeChoices_colored.DrawMode=(dotNetClass "System.Windows.Forms.DrawMode").OwnerDrawFixed
-                diversityUI_strokeChoices_colored.SelectionMode=(dotNetClass "System.Windows.Forms.SelectionMode").MultiExtended
+                diversityUI_strokeChoices_colored.SelectionMode=(dotNetClass "System.Windows.Forms.SelectionMode").MultiSimple
                 diversityUI_strokeChoices_colored.IntegralHeight=false;diversityUI_strokeChoices_colored.ItemHeight=16
                 diversityUI_strokeChoices_colored.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
                 diversityUI_strokeChoices_colored.ForeColor=(dotNetClass "System.Drawing.Color").FromArgb 230 230 230
@@ -13477,6 +13487,51 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
+            rowControls=#(heading_0);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                if y>6 do y+=4
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel heading_0 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(heading_0.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_strokeScaleMin,diversityUI_strokeScaleMax);show=(true and (diversityUI_diversityRadio.state>=3))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if diversityUI_strokeScaleMin_caption.visible!=show do diversityUI_strokeScaleMin_caption.visible=show;if diversityUI_strokeScaleMax_caption.visible!=show do diversityUI_strokeScaleMax_caption.visible=show
+            if show do (
+                columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel diversityUI_strokeScaleMin_caption 18 cellWidth;fitLabel diversityUI_strokeScaleMax_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then (amax #(diversityUI_strokeScaleMin_caption.height,diversityUI_strokeScaleMax_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                for c in rowControls do fitPairField c cellWidth
+                if not stackedCaption then (diversityUI_strokeScaleMin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_strokeScaleMin_caption.width=32) else (diversityUI_strokeScaleMin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokeScaleMin_caption.width=cellWidth);diversityUI_strokeScaleMin_caption.enabled=diversityUI_strokeScaleMin.enabled;if not stackedCaption then (diversityUI_strokeScaleMax_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];diversityUI_strokeScaleMax_caption.width=32) else (diversityUI_strokeScaleMax_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];diversityUI_strokeScaleMax_caption.width=cellWidth);diversityUI_strokeScaleMax_caption.enabled=diversityUI_strokeScaleMax.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_bandScaleMode);show=(true and (diversityUI_diversityRadio.state==3))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if diversityUI_bandScaleMode_caption.visible!=show do diversityUI_bandScaleMode_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel diversityUI_bandScaleMode_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(diversityUI_bandScaleMode_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                diversityUI_bandScaleMode_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_bandScaleMode_caption.width=cellWidth;diversityUI_bandScaleMode_caption.enabled=diversityUI_bandScaleMode.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(diversityUI_bandScaleEdit);show=(true and (diversityUI_diversityRadio.state==3))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/101.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
             rowControls=#(diversityUI_bandColor);show=(true and (diversityUI_diversityRadio.state==3))
             for c in rowControls where c.visible!=show do c.visible=show
             if diversityUI_bandColor_caption.visible!=show do diversityUI_bandColor_caption.visible=show
@@ -13539,51 +13594,6 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
                 columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/23.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(22,22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(heading_0);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls where c.visible!=show do c.visible=show
-            if show do (
-                if y>6 do y+=4
-                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel heading_0 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(heading_0.height))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_strokeScaleMin,diversityUI_strokeScaleMax);show=(advancedToggle.checked and (diversityUI_diversityRadio.state>=3))
-            for c in rowControls where c.visible!=show do c.visible=show
-            if diversityUI_strokeScaleMin_caption.visible!=show do diversityUI_strokeScaleMin_caption.visible=show;if diversityUI_strokeScaleMax_caption.visible!=show do diversityUI_strokeScaleMax_caption.visible=show
-            if show do (
-                columns=2;cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel diversityUI_strokeScaleMin_caption 18 cellWidth;fitLabel diversityUI_strokeScaleMax_caption 18 cellWidth
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then (amax #(diversityUI_strokeScaleMin_caption.height,diversityUI_strokeScaleMax_caption.height)) else 0)
-                rowHeight=(amax #(22,22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                for c in rowControls do fitPairField c cellWidth
-                if not stackedCaption then (diversityUI_strokeScaleMin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];diversityUI_strokeScaleMin_caption.width=32) else (diversityUI_strokeScaleMin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_strokeScaleMin_caption.width=cellWidth);diversityUI_strokeScaleMin_caption.enabled=diversityUI_strokeScaleMin.enabled;if not stackedCaption then (diversityUI_strokeScaleMax_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];diversityUI_strokeScaleMax_caption.width=32) else (diversityUI_strokeScaleMax_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];diversityUI_strokeScaleMax_caption.width=cellWidth);diversityUI_strokeScaleMax_caption.enabled=diversityUI_strokeScaleMax.enabled
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_bandScaleMode);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==3))
-            for c in rowControls where c.visible!=show do c.visible=show
-            if diversityUI_bandScaleMode_caption.visible!=show do diversityUI_bandScaleMode_caption.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                fitLabel diversityUI_bandScaleMode_caption 18 cellWidth
-                stackedCaption=false;captionHeight=amax (amax #(diversityUI_bandScaleMode_caption.height)) (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
-                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
-                diversityUI_bandScaleMode_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];diversityUI_bandScaleMode_caption.width=cellWidth;diversityUI_bandScaleMode_caption.enabled=diversityUI_bandScaleMode.enabled
-                y+=(ceil (rowControls.count as float/columns))*rowHeight
-            )
-            rowControls=#(diversityUI_bandScaleEdit);show=(advancedToggle.checked and (diversityUI_diversityRadio.state==3))
-            for c in rowControls where c.visible!=show do c.visible=show
-            if show do (
-                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/101.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
-                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
-                rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
