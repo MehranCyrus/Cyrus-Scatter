@@ -1,4 +1,4 @@
-global CyrusLoadedScriptFingerprint="c29dcf31717d3fc0d8738eee96cc1db1f95eafd72f4de030c8a4424fdd6d9597"
+global CyrusLoadedScriptFingerprint="388f8da43497590d24a27dd401bea363f2c0df3b657ce25a2dc7759a55dc368f"
 global CyrusOpenLicenseDialog,CyrusLicenseDialog,CyrusRequireAuthor,CyrusLicenseCanEdit
 fn CyrusRequireAuthor = (
     if cyrusLicenseAllows==undefined do throw "Load the matching licensed Cyrus 0.80.0 native modules and restart Max."
@@ -768,6 +768,9 @@ initialRollupState:0x8
     -- Session-only validity. Scene identities and publication records are unchanged.
     local inputTimeValidity=undefined,inputTimeStamp=0,inputTimeObserved=0
     local inputTimeQueries=0,inputTimeInvalidations=0
+    -- Deleted nodes may no longer resolve from the callback's handles. Retain
+    -- only the dependency handles of the complete published result, not nodes.
+    local procDependencyHandles=#()
     local timeOwnerRegistered=false
     fn ensureTimeOwner = (
         if not timeOwnerRegistered do (
@@ -2395,7 +2398,7 @@ initialRollupState:0x8
         -- Only a committed calculation epoch establishes its first result.
         CyrusLayerStatusData hasResult:(procEpoch>0 and cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
     )
-    fn uiVersion = "0.84.0"
+    fn uiVersion = "0.85.0"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified1")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -2593,6 +2596,24 @@ initialRollupState:0x8
             parent.surfaceNodes=targets;parent.surface=undefined
         )
         parent.markInputDirty();this.bindNativeUI();CyrusViewportRedraw();true
+    )
+    fn validatePaintConversion area = (
+        if cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 do throw "Paint/spline conversion requires the matching Cyrus native plugins. Restart Max with the complete pair."
+        local parent=if area==undefined then undefined else this.logicalParent area
+        if parent==undefined or findItem layerObjects parent==0 or findItem parent.paintAreas area==0 do throw "Select a Paint Area owned by this setup."
+        if area.paintDocument==undefined or not isValidNode area.areaTarget or findItem (parent.validSurfaces()) area.areaTarget==0 do throw "Choose a valid receiving surface for this Paint Area."
+        if cyrusBrushTarget area.paintDocument!=area.areaTarget do throw "Paint Area and stored receiver do not match."
+        true
+    )
+    fn exportPaintSpline area = (
+        this.validatePaintConversion area
+        cyrusBrushExportSpline area.paintDocument ((substring area.paintSetName 1 90)+"_Paint_Snapshot")
+    )
+    fn importPaintSpline area node add:false tolerance:0.1 = (
+        this.validatePaintConversion area
+        local changed=cyrusBrushImportSpline area.paintDocument node add tolerance
+        if changed do area.publishPaint()
+        changed
     )
     fn sourceVisualIndex row create:false = (
         if row<1 or row>this.sources.count do return 0
@@ -3406,7 +3427,21 @@ initialRollupState:0x8
         )
         interested
     )
-    fn procExternalChanged event nodes = (
+    fn procStageDependencyHandles = (
+        local inputs=this.validSurfaces(),handles=#()
+        join inputs (sources as array);join inputs (areaNodes as array);join inputs (patternLines as array)
+        join inputs #(analyzerNode,areaAnalyzer,fallAnalyzer)
+        for input in inputs where isValidNode input do (
+            local dep=input
+            while isValidNode dep do (
+                local handle=getHandleByAnim dep
+                if findItem handles handle>0 then exit
+                append handles handle;dep=dep.parent
+            )
+        )
+        handles
+    )
+    fn procExternalChanged event nodes deletedHandles:undefined = (
         local inputs=this.validSurfaces(),affected=false
         local staging=this.containerProvider()!=undefined and findItem #(#controllerOtherEvent,#controllerStructured,#linkChanged) event>0
         if not staging then join inputs (sources as array)
@@ -3420,7 +3455,13 @@ initialRollupState:0x8
                 dep=dep.parent
             )
         )
-        if event==#deleted do affected=true
+        if event==#deleted do (
+            -- Direct callers without the original handles remain conservative.
+            -- New/pending dependencies are already dirty; published dependencies
+            -- survive failed successors until a complete replacement commits.
+            if deletedHandles==undefined then affected=true
+            else for handle in deletedHandles while not affected do if findItem procDependencyHandles handle>0 do affected=true
+        )
         if affected do (procGeometryRevision+=1;markInputDirty())
         CyrusDiagnosticEmit "input.classified" "host_callback" layerID procEpoch (if affected then "geometry_dependency" else "unrelated")
         affected
@@ -3514,14 +3555,14 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.84.0 setup; earlier schemas are unsupported."
+        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.85.0 setup; earlier schemas are unsupported."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
     fn procValidate = (
         this.procAssertSchema()
-        if cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=1 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.84.0 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
+        if cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=1 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.85.0 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -3693,10 +3734,11 @@ initialRollupState:0x8
         procPreviewInspectionKey=state[17];procFieldCache=state[18];procFieldCacheKey=state[19];procFieldStatus=state[20]
         procPreviewModes=state[21];procPreviewModesEpoch=state[22]
     )
-    fn procResultState = (#(this.procPreviewState(),procLastStats,procLastRounds,procEpoch,requestedCount,groupEligible,groupRemoved,groupConflicts,overlapBefore,overlapAfter,procLastSurfaceStats))
+    fn procResultState = (#(this.procPreviewState(),procLastStats,procLastRounds,procEpoch,requestedCount,groupEligible,groupRemoved,groupConflicts,overlapBefore,overlapAfter,procLastSurfaceStats,procDependencyHandles))
     fn procRestoreResult state = (
         this.procRestorePreview state[1];procLastStats=state[2];procLastRounds=state[3];procEpoch=state[4];requestedCount=state[5]
         groupEligible=state[6];groupRemoved=state[7];groupConflicts=state[8];overlapBefore=state[9];overlapAfter=state[10];procLastSurfaceStats=state[11]
+        procDependencyHandles=state[12]
     )
     fn procInstallPreview state pending = (
         inputTimeObserved=state[12]
@@ -3832,6 +3874,7 @@ initialRollupState:0x8
             local publishedOwners=layerObjects as array,publishedSources=for leaf in layerObjects collect leaf.validSources()
             local finalKeep=for i=1 to layerObjects.count collect (for n in publishedSources[i] collect not (layerObjects[i].isPointSource (layerObjects[i].sourceRow n)))
             local publicationInfo=this.procStagePublication accepted requests publishedSources finalKeep
+            local dependencyHandles=for leaf in layerObjects collect leaf.procStageDependencyHandles()
             -- Allocation and computation have finished; publish one coherent epoch.
             this.publishGroupEdits accepted
             this.procSyncEditVisibility()
@@ -3840,6 +3883,7 @@ initialRollupState:0x8
             for i=1 to layerObjects.count do (
                 local leaf=layerObjects[i]
                 leaf.procLastStats=stats[i];leaf.procLastRounds=rounds[i];leaf.procEpoch=procEpoch
+                leaf.procDependencyHandles=dependencyHandles[i]
                 leaf.procLastSurfaceStats=if cyrusEnabled and this.enabledLayer i then leaf.procPreparedSurfaceStats as array else #(0,0,0)
                 leaf.requestedCount=requests[i][1]
                 -- Unconsumed refill capacity is not a rejected plant.
@@ -3937,7 +3981,7 @@ initialRollupState:0x8
         if (CyrusContainerPanel this).controlsReady do (CyrusContainerPanel this).bind()
         true
     )
-    rollout mainUI "Cyrus Scatter 0.84.0" width:#cmdPanel height:140 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.85.0" width:#cmdPanel height:140 autoLayoutOnResize:true (
         local view=undefined,root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),owner=undefined,layerPagesVisible=false,pagesArranged=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for the entire setup."
         radiobuttons updateRadio "Viewport update" labels:#("Manual","Live") columns:2 pos:[8,26] width:(mainUI.width-16) tooltip:"Manual waits for Update. Live calculates after relevant edits."
@@ -4010,7 +4054,7 @@ initialRollupState:0x8
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.84.0 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.85.0 native plugin and restart Max."
             root=view
             editors=#(view.managerUI,view.surfacesUI,view.modelsUI,view.containersUI,view.layoutUI,view.populationUI,view.coverageUI,view.areasUI,view.transformsUI,view.spacingUI,view.displayUI,view.statisticsUI)
             if root==undefined do (
@@ -7507,6 +7551,12 @@ initialRollupState:0x8
         spinner brushUI_scaleMax "" range:[0,1000,1] pos:[8,8] width:((coverageUI.width-16-((amin 2 (amax 1 (floor ((coverageUI.width-8)/144.4))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI.width-8)/144.4))))) fieldWidth:58
         label brushUI_scaleMax_caption "Inner scale:" pos:[6,6] width:(coverageUI.width-12) height:18
         button brushUI_scaleCurve "Scale curve..." pos:[8,8] width:((coverageUI.width-16-((amin 2 (amax 1 (floor ((coverageUI.width-8)/90.8))))-1)*4)/(amin 2 (amax 1 (floor ((coverageUI.width-8)/90.8))))) height:22
+        button brushUI_exportSpline "Export spline" width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/85.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/85.60000000000001))))) tooltip:"Export this area's closed contours and holes as an independent editable spline on the receiver's local XY plane (local Z=0). Keeps the Paint Area; selects the snapshot. Stop the brush first." height:22
+        radiobuttons brushUI_importMode "" labels:#("Replace","Add") columns:2 width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/58))))) tooltip:"Replace this area's coverage, or union imported coverage with it. Closed loops use even-odd fill and project along receiver-local Z. Source spline is preserved."
+        label brushUI_importMode_caption "Spline import" pos:[6,6] width:(coverageUI.width-12) height:18
+        spinner brushUI_splineTolerance "" type:#worldunits range:[1e-9,1e9,0.1] fieldWidth:58 width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/165.2))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/165.2))))) tooltip:"Maximum projected curve approximation error in world units. Smaller values create more vertices; import is limited to 8,192 samples. The receiver's Paint precision also sets a minimum."
+        label brushUI_splineTolerance_caption "Curve tolerance:" pos:[6,6] width:(coverageUI.width-12) height:18
+        button brushUI_importSpline "Pick spline..." width:((coverageUI.width-16-((amin 1 (amax 1 (floor ((coverageUI.width-8)/90.8))))-1)*4)/(amin 1 (amax 1 (floor ((coverageUI.width-8)/90.8))))) tooltip:"Pick one closed spline shape to apply to this Paint Area using Replace or Add. One Undo; Manual waits for Update. Stop the brush first." height:22
         checkbutton advancedToggle "Advanced" pos:[6,6] width:(coverageUI.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
         local setsUI_bodyHeight=0
         local setsUI_controlsReady=false
@@ -7560,6 +7610,7 @@ initialRollupState:0x8
         local brushUI_bodyHeight=0
         local brushUI_controlsReady=false
         local brushUI_root=undefined,brushUI_owner=undefined,brushUI_panel=undefined,brushUI_obj=undefined,brushUI_controlsReady=false,brushUI_binding=false,brushUI_setSpecific=true
+        local brushUI_toleranceInitialized=false
         fn brushUI_saveFalloff = (
             if not brushUI_binding and brushUI_obj!=undefined and brushUI_obj.paintDocument!=undefined do (
                 local area=brushUI_obj,cfg=cyrusBrushFalloff brushUI_obj.paintDocument
@@ -7589,8 +7640,9 @@ initialRollupState:0x8
         fn brushUI_bind layer = (
             brushUI_binding=true;brushUI_obj=layer
             local has=brushUI_obj!=undefined and brushUI_obj.paintDocument!=undefined
-            for control in #(brushUI_targetInfo,brushUI_modeRadio,brushUI_radiusSpin,brushUI_beginButton,brushUI_stopButton,brushUI_fillButton,brushUI_emptyButton,brushUI_brushState,brushUI_densitySpin,brushUI_overlayMode,brushUI_overlayColor,brushUI_brushHelp,brushUI_insideSpin,brushUI_outsideSpin,brushUI_densityFade,brushUI_densityCurve,brushUI_scaleFade,brushUI_scaleMin,brushUI_scaleMax,brushUI_scaleCurve) do control.enabled=brushUI_obj!=undefined
-            for control in #(brushUI_stopButton,brushUI_fillButton,brushUI_emptyButton,brushUI_insideSpin,brushUI_outsideSpin,brushUI_densityFade,brushUI_scaleFade,brushUI_densityCurve,brushUI_scaleCurve,brushUI_scaleMin,brushUI_scaleMax) do control.enabled=has
+            for control in #(brushUI_targetInfo,brushUI_modeRadio,brushUI_radiusSpin,brushUI_beginButton,brushUI_stopButton,brushUI_fillButton,brushUI_emptyButton,brushUI_brushState,brushUI_densitySpin,brushUI_overlayMode,brushUI_overlayColor,brushUI_brushHelp,brushUI_insideSpin,brushUI_outsideSpin,brushUI_densityFade,brushUI_densityCurve,brushUI_scaleFade,brushUI_scaleMin,brushUI_scaleMax,brushUI_scaleCurve,brushUI_exportSpline,brushUI_importMode,brushUI_splineTolerance,brushUI_importSpline) do control.enabled=brushUI_obj!=undefined
+            for control in #(brushUI_stopButton,brushUI_fillButton,brushUI_emptyButton,brushUI_insideSpin,brushUI_outsideSpin,brushUI_densityFade,brushUI_scaleFade,brushUI_densityCurve,brushUI_scaleCurve,brushUI_scaleMin,brushUI_scaleMax,brushUI_exportSpline,brushUI_importSpline,brushUI_importMode,brushUI_splineTolerance) do control.enabled=has
+            if not brushUI_toleranceInitialized do (brushUI_splineTolerance.value=units.decodeValue "1mm";brushUI_toleranceInitialized=true)
             local target=if brushUI_obj==undefined then undefined else brushUI_obj.areaTarget
             brushUI_targetInfo.text=if brushUI_obj==undefined then "Add a Paint Area to begin." else brushUI_obj.paintSetName+" / "+(if isValidNode target then target.name else "<choose surface>")
             brushUI_beginButton.enabled=brushUI_obj!=undefined and isValidNode target and findItem (brushUI_owner.validSurfaces()) target>0
@@ -7655,6 +7707,22 @@ initialRollupState:0x8
             if controlsReady and root!=undefined do layout()
         )
         on brushUI_emptyButton pressed do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and CyrusLicenseCanEdit() do (if brushUI_obj!=undefined and brushUI_obj.paintDocument!=undefined do (cyrusBrushFill brushUI_obj.paintDocument 0.0;brushUI_obj.publishPaint();brushUI_status())
+            if controlsReady and root!=undefined do layout()
+        )
+        on brushUI_exportSpline pressed do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and CyrusLicenseCanEdit() do (if brushUI_controlsReady and not brushUI_binding and brushUI_obj!=undefined do (
+            local controller=brushUI_root,area=brushUI_obj
+            try(controller.exportPaintSpline area)catch(messageBox (getCurrentException()) title:"Paint to spline")
+        )
+            if controlsReady and root!=undefined do layout()
+        )
+        on brushUI_importSpline pressed do if controlsReady and not binding and root!=undefined and brushUI_controlsReady and not brushUI_binding and CyrusLicenseCanEdit() do (if brushUI_controlsReady and not brushUI_binding and brushUI_obj!=undefined do (
+            local controller=brushUI_root,area=brushUI_obj,add=(brushUI_importMode.state==2),tolerance=brushUI_splineTolerance.value
+            try (
+                controller.validatePaintConversion area
+                local node=pickObject prompt:("Import spline into "+area.paintSetName) filter:AminScatterAreaFilter
+                if isValidNode node do controller.importPaintSpline area node add:add tolerance:tolerance
+            )catch(messageBox (getCurrentException()) title:"Spline to Paint")
+        )
         -- A dotNetControl has both a managed child and a native rollout host.
         -- Hiding only the child leaves its host over other controls on first open.
             if controlsReady and root!=undefined do layout()
@@ -7894,6 +7962,49 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
+            rowControls=#(brushUI_exportSpline);show=(true and (setsUI_paintedCheck.checked))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/85.60000000000001))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(brushUI_importMode);show=(true and (setsUI_paintedCheck.checked))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if brushUI_importMode_caption.visible!=show do brushUI_importMode_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel brushUI_importMode_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(brushUI_importMode_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(fitRadio brushUI_importMode cellWidth 2 place:false))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                fitRadio brushUI_importMode cellWidth 2 place:true
+                brushUI_importMode_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];brushUI_importMode_caption.width=cellWidth;brushUI_importMode_caption.enabled=brushUI_importMode.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(brushUI_splineTolerance);show=(true and (setsUI_paintedCheck.checked))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if brushUI_splineTolerance_caption.visible!=show do brushUI_splineTolerance_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/165.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel brushUI_splineTolerance_caption 18 cellWidth
+                stackedCaption=cellWidth<161.2;captionHeight=amax 0 (if stackedCaption then (amax #(brushUI_splineTolerance_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (brushUI_splineTolerance_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];brushUI_splineTolerance_caption.width=cellWidth-78) else (brushUI_splineTolerance_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];brushUI_splineTolerance_caption.width=cellWidth);brushUI_splineTolerance_caption.enabled=brushUI_splineTolerance.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(brushUI_importSpline);show=(true and (setsUI_paintedCheck.checked))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/90.8))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
             rowControls=#(brushUI_brushState);show=(true and (setsUI_paintedCheck.checked))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
@@ -7992,7 +8103,7 @@ initialRollupState:0x8
                 setsUI_root=root;setsUI_owner=owner;setsUI_panel=panel;setsUI_controlsReady=controlsReady;setsUI_binding=binding
             brushUI_root=root;brushUI_owner=owner;brushUI_panel=panel;brushUI_controlsReady=controlsReady;brushUI_binding=binding
             if owner!=undefined then (setsUI_bind owner;) else (for c in #(setsUI_paintedCheck,setsUI_setList,setsUI_addButton,setsUI_removeButton,setsUI_nameEdit,setsUI_targetList,setsUI_enabledCheck,setsUI_info) do c.enabled=false;setsUI_setList.items=#();setsUI_members=#();setsUI_nameEdit.text="";setsUI_controlsReady=false)
-            if owner!=undefined then (brushUI_bind (root.selectedPaintArea owner);) else (for c in #(brushUI_targetInfo,brushUI_modeRadio,brushUI_radiusSpin,brushUI_beginButton,brushUI_stopButton,brushUI_fillButton,brushUI_emptyButton,brushUI_brushState,brushUI_densitySpin,brushUI_overlayMode,brushUI_overlayColor,brushUI_brushHelp,brushUI_insideSpin,brushUI_outsideSpin,brushUI_densityFade,brushUI_densityCurve,brushUI_scaleFade,brushUI_scaleMin,brushUI_scaleMax,brushUI_scaleCurve) do c.enabled=false;brushUI_controlsReady=false)
+            if owner!=undefined then (brushUI_bind (root.selectedPaintArea owner);) else (for c in #(brushUI_targetInfo,brushUI_modeRadio,brushUI_radiusSpin,brushUI_beginButton,brushUI_stopButton,brushUI_fillButton,brushUI_emptyButton,brushUI_brushState,brushUI_densitySpin,brushUI_overlayMode,brushUI_overlayColor,brushUI_brushHelp,brushUI_insideSpin,brushUI_outsideSpin,brushUI_densityFade,brushUI_densityCurve,brushUI_scaleFade,brushUI_scaleMin,brushUI_scaleMax,brushUI_scaleCurve,brushUI_exportSpline,brushUI_importMode,brushUI_splineTolerance,brushUI_importSpline) do c.enabled=false;brushUI_controlsReady=false)
                 setsUI_binding=false;brushUI_binding=false;setupGrips();controlsReady=true;binding=false;layout();true
             )catch(binding=false;controlsReady=false;throw())
         )
@@ -11120,7 +11231,7 @@ fn AminScatterLiveChanged event handles = (
         for n in objects where classof n.baseObject==AminScatterObject do (
             if n.baseObject.containerNote event nodes do redraw=true
             for entry in (n.baseObject.layerEntries includeDisabled:true) do (
-                if entry[2].procExternalChanged event nodes do redraw=true
+                if entry[2].procExternalChanged event nodes deletedHandles:handles do redraw=true
             )
             if findItem nodes n>0 do (
                 CyrusScheduleUI()

@@ -2,6 +2,7 @@
 #include <max.h>
 #include <iparamb2.h>
 #include <triobj.h>
+#include <splshape.h>
 #include <IPainterInterface.h>
 #include <notify.h>
 #include <maxscript/maxscript.h>
@@ -12,6 +13,7 @@
 #include <maxscript/maxwrapper/mxsobjects.h>
 #include <maxscript/macros/define_instantiation_functions.h>
 #include "brush.h"
+#include "spline_bands.h"
 #include "license_boundary.h"
 #include "placement_transport.h"
 #include <algorithm>
@@ -438,6 +440,98 @@ Value* cyrusBrushFill_cf(Value** a,int n){check_arg_count(cyrusBrushFill,2,n);re
     const auto value=a[1]->to_float();if(value!=0&&value!=1)throw std::runtime_error("Vector Fill requires 0 (clear) or 1 (fill)");
     p->ensureSurface();auto next=p->document;next.contours=value==1?p->receiverDomain:b::Contours{};
     theHold.Begin();theHold.Put(new PaintRestore(p));p->document=std::move(next);p->changed();theHold.Accept(_T("Cyrus Brush fill"));return &ok;
+});}
+
+def_visible_primitive(cyrusBrushConversionVersion,"cyrusBrushConversionVersion");
+Value* cyrusBrushConversionVersion_cf(Value**,int n){check_arg_count(cyrusBrushConversionVersion,0,n);return Integer::intern(1);}
+
+def_visible_primitive(cyrusBrushExportSpline,"cyrusBrushExportSpline");
+Value* cyrusBrushExportSpline_cf(Value** a,int n){check_arg_count(cyrusBrushExportSpline,2,n);return api([&]()->Value*{
+    auto* p=doc(a[0]);p->requireAuthor();if(p->painting||p->gesture)throw std::runtime_error("Stop the brush before exporting a spline snapshot");
+    p->ensureSurface();if(p->document.contours.empty())throw std::runtime_error("This Paint Area is empty; paint or import coverage first");
+    type_check(a[1],String,_T("snapshot name"));MSTR name(a[1]->to_string());
+    if(name.Length()<1||name.Length()>128)throw std::runtime_error("Spline snapshot name must contain 1..128 characters");
+    auto* ip=GetCOREInterface();ip->MakeNameUnique(name);
+    const auto cleanup=[](SplineShape* value){if(value)value->DeleteThis();};
+    std::unique_ptr<SplineShape,decltype(cleanup)> shape(static_cast<SplineShape*>(ip->CreateInstance(SHAPE_CLASS_ID,Class_ID(SPLINESHAPE_CLASS_ID,0))),cleanup);
+    if(!shape)throw std::runtime_error("Could not create an editable spline snapshot");
+    shape->shape.NewShape();
+    for(const auto& contour:p->document.contours){
+        auto* spline=shape->shape.NewSpline();
+        for(auto xy:contour){
+            Point3 q(float(xy[0]),float(xy[1]),0.f);
+            // Max knots are single precision. Reject lossy large-coordinate
+            // snapshots rather than quietly losing canonical boundary detail.
+            if(std::hypot(double(q.x)-xy[0],double(q.y)-xy[1])>.0001)
+                throw std::runtime_error("Paint coordinates are too large for an accurate Max spline; move geometry nearer its local origin");
+            if(!spline->AddKnot(SplineKnot(KTYPE_CORNER,LTYPE_LINE,q,q,q)))throw std::runtime_error("Spline knot allocation failed");
+        }
+        spline->SetClosed();spline->ComputeBezPoints();
+    }
+    shape->shape.UpdateSels();shape->shape.InvalidateGeomCache();
+    const bool ownHold=!theHold.Holding();if(ownHold)theHold.Begin();
+    INode* node=nullptr;
+    try{
+        node=ip->CreateObjectNode(shape.get());if(!node)throw std::runtime_error("Could not publish the spline snapshot");
+        shape.release();node->SetName(name);node->SetNodeTM(ip->GetTime(),p->objectTM);
+        if(ownHold)theHold.Accept(_T("Cyrus Paint to spline"));
+    }catch(...){if(ownHold)theHold.Cancel();else if(node)ip->DeleteNode(node,FALSE);throw;}
+    ip->SelectNode(node);ip->RedrawViews(ip->GetTime());return MAXNode::intern(node);
+});}
+
+def_visible_primitive(cyrusBrushImportSpline,"cyrusBrushImportSpline");
+Value* cyrusBrushImportSpline_cf(Value** a,int n){check_arg_count(cyrusBrushImportSpline,4,n);return api([&]()->Value*{
+    auto* p=doc(a[0]);p->requireAuthor();if(p->painting||p->gesture)throw std::runtime_error("Stop the brush before importing spline coverage");
+    if(a[2]!=&true_value&&a[2]!=&false_value)throw std::runtime_error("Spline import Add must be Boolean");
+    const double tolerance=a[3]->to_float();
+    if(!std::isfinite(tolerance)||tolerance<=0)throw std::runtime_error("Curve tolerance must be finite and positive in scene units");
+    p->ensureSurface();
+    const auto& m=p->metric;
+    const double quantization=.0001*std::max(std::hypot(m.xx+m.xy,m.yy),std::hypot(m.xx-m.xy,m.yy));
+    if(tolerance<=quantization)throw std::runtime_error("Curve tolerance is below the transformed Paint precision; increase tolerance or rescale receiver geometry");
+    auto* node=a[1]->to_node();const auto time=GetCOREInterface()->GetTime();auto* object=node?node->EvalWorldState(time).obj:nullptr;
+    if(!object||object->SuperClassID()!=SHAPE_CLASS_ID)throw std::runtime_error("Pick a closed spline shape to import into this Paint Area");
+    auto* shape=static_cast<ShapeObject*>(object);constexpr std::size_t budget=8192;
+    const int curves=shape->NumberOfCurves(time);if(curves<1||curves>int(budget/3))throw std::runtime_error("Spline import needs bounded closed contours (8,192 total knots/samples)");
+    std::size_t pieces=0;
+    for(int i=0;i<curves;++i){
+        if(!shape->CurveClosed(time,i))throw std::runtime_error("Every imported spline must be closed; close open contours first");
+        const int count=shape->NumberOfPieces(time,i);
+        if(count<1||std::size_t(count)>budget-pieces)throw std::runtime_error("Spline input exceeds 8,192 total knots; simplify the shape");pieces+=count;
+    }
+    if(!shape->CanMakeBezier())throw std::runtime_error("This shape cannot provide Bezier geometry; convert a copy to Editable Spline");
+    BezierShape bezier;shape->MakeBezier(time,bezier);
+    if(bezier.SplineCount()!=curves)throw std::runtime_error("Spline conversion changed contour topology");
+    const auto tm=node->GetObjectTM(time),receiver=p->objectTM;
+    const auto x=vec(receiver.GetRow(0)),y=vec(receiver.GetRow(1)),z=vec(receiver.GetRow(2));
+    const auto cross=[](amin::Vec3 a,amin::Vec3 b)->amin::Vec3{return {a.y*b.z-a.z*b.y,a.z*b.x-a.x*b.z,a.x*b.y-a.y*b.x};};
+    const auto yz=cross(y,z),zx=cross(z,x);const double determinant=amin::dot(x,yz);
+    const auto sx=vec(tm.GetRow(0)),sy=vec(tm.GetRow(1)),sz=vec(tm.GetRow(2)),offset=vec(tm.GetTrans())-vec(receiver.GetTrans());
+    const auto projected=[&](Point3 q)->amin::Vec3{
+        const auto delta=sx*double(q.x)+sy*double(q.y)+sz*double(q.z)+offset;
+        if(!std::isfinite(delta.x)||!std::isfinite(delta.y)||!std::isfinite(delta.z))throw std::runtime_error("Spline has nonfinite geometry or transform");
+        b::Point local{amin::dot(delta,yz)/determinant,amin::dot(delta,zx)/determinant};
+        if(!std::isfinite(local[0])||!std::isfinite(local[1])||std::max(std::abs(local[0]),std::abs(local[1]))>1.e9)throw std::runtime_error("Projected spline coordinates are outside the Paint range");
+        const auto mapped=m.map(local);return {mapped[0],mapped[1],0};
+    };
+    b::Contours contours;std::size_t knots=0,vertices=0;
+    for(int i=0;i<curves;++i){
+        auto* spline=bezier.GetSpline(i);const int count=spline?spline->KnotCount():0;
+        if(!spline||!spline->Closed()||count<1||std::size_t(count)>budget-knots)throw std::runtime_error("Invalid or oversized closed spline");knots+=count;
+        std::vector<cyrus::bands::Cubic> controls;controls.reserve(count);
+        for(int k=0;k<count;++k){
+            const int next=(k+1)%count;const auto first=projected(spline->GetKnotPoint(k)),last=projected(spline->GetKnotPoint(next));
+            const bool linear=spline->GetLineType(k)==LTYPE_LINE;
+            controls.push_back({first,linear?first:projected(spline->GetOutVec(k)),linear?last:projected(spline->GetInVec(next)),last});
+        }
+        // Reserve half the tolerance for canonical quantization and host precision.
+        auto samples=cyrus::bands::tessellate(controls,tolerance*.5,budget-vertices);vertices+=samples.size();
+        b::Contour contour;contour.reserve(samples.size());for(auto q:samples)contour.push_back(m.unmap({q.x,q.y}));contours.push_back(std::move(contour));
+    }
+    auto next=b::importContours(p->document,contours,p->receiverDomain,a[2]==&true_value);
+    if(next.contours==p->document.contours)return &false_value;
+    auto restore=std::make_unique<PaintRestore>(p);const bool ownHold=!theHold.Holding();if(ownHold)theHold.Begin();
+    theHold.Put(restore.release());p->document=std::move(next);p->changed();if(ownHold)theHold.Accept(_T("Cyrus spline to Paint"));return &true_value;
 });}
 
 def_visible_primitive(cyrusClonePlacementRows,"cyrusClonePlacementRows");

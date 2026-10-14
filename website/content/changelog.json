@@ -3,6 +3,31 @@
   "notes": "Entries are ordered by documented development chronology, not numeric label. Missing versions and unknown dates are not invented. Local evidence is stripped before publication. 0.79.2 and 0.79.5 are current uncommitted working-tree campaigns at this review, not new Git releases. Analyzer/MCP have independent version domains.",
   "entries": [
     {
+      "version": "0.85.0",
+      "date": "2026-10-14",
+      "title": "Editable Paint borders through spline snapshots.",
+      "era": "recent",
+      "legacy": false,
+      "note": "Development source; artist acceptance and normal installation remain separate.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Export Paint contours and holes as an independent planar Editable Spline; import closed shapes with Replace or Add and a world-unit curve tolerance."
+        },
+        {
+          "kind": "Improved",
+          "text": "Bounded conversion preserves area settings, supports Undo and follows Manual/Live. Detached spline edits and deletion leave the imported snapshot unchanged."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Deleting an unrelated object no longer forces ordinary layers to rebuild; real dependency deletions still invalidate the affected result."
+        }
+      ],
+      "evidence": [
+        "docs/plans/eleven-phase-roadmap/P05.md"
+      ]
+    },
+    {
       "version": "0.84.0",
       "date": "2026-10-14",
       "title": "Density mapping controls and sample reuse.",

@@ -44,6 +44,9 @@ void validate(const Falloff&);
 void validateProjection(const Surface&);
 Contours domain(const Surface&);
 Document constrain(const Document&,const Contours& receiverDomain);
+// Closed imported loops use even-odd fill, then clip to the receiver. Add cannot
+// erase previous coverage. All validation/normalization precedes publication.
+Document importContours(const Document&,const Contours&,const Contours& receiverDomain,bool add);
 // Produces a complete successor or throws, leaving the input unchanged.
 Document paint(const Document&,Point center,double radius,bool erase,Metric={},const Point* previous=nullptr);
 struct Evaluation { double density=0,scale=1; };

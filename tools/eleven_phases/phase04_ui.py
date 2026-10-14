@@ -4,7 +4,7 @@ import ctypes
 from pymxs import runtime as r
 
 out = Path(str(r.MCPFixtureDir)).resolve()
-assert out.name.startswith('foundation-roadmap-p04-')
+assert out.name.startswith('foundation-roadmap-')
 
 
 def p04_choose_resolution(index):

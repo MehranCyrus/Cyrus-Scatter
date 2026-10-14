@@ -630,6 +630,22 @@
       {
         "kind": "button",
         "name": "scaleCurve"
+      },
+      {
+        "kind": "button",
+        "name": "exportSpline"
+      },
+      {
+        "kind": "radiobuttons",
+        "name": "importMode"
+      },
+      {
+        "kind": "spinner",
+        "name": "splineTolerance"
+      },
+      {
+        "kind": "button",
+        "name": "importSpline"
       }
     ],
     "randomUI": [

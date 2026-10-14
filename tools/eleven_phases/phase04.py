@@ -7,7 +7,7 @@ from pymxs import runtime as r
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = Path(str(r.MCPFixtureDir)).resolve()
-assert OUT.parent == ROOT / 'build/mcp-qualification' and OUT.name.startswith('foundation-roadmap-p04-')
+assert OUT.parent == ROOT / 'build/mcp-qualification' and OUT.name.startswith('foundation-roadmap-')
 data = {'status': 'started', 'checks': [], 'script': str(r.CyrusLoadedScriptFingerprint), 'timings': []}
 
 

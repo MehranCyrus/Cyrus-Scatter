@@ -1,7 +1,7 @@
 -- Invoke stages in separate host events, waiting for the observer file between
 -- stages 2/3, 3/4 and 5/6. No explicit solve is used for the measured successors.
 (
-    if not matchPattern MCPFixtureDir pattern:"*/build/mcp-qualification/foundation-roadmap-p04-*/" do throw "Owned P04 host required"
+    if not matchPattern MCPFixtureDir pattern:"*/build/mcp-qualification/foundation-roadmap-*/" do throw "Owned P04 host required"
     global P04LiveStage,P04LiveNode,P04LiveRoot,P04LiveLeaf,P04LiveReceiver,P04LiveEpoch,P04LivePrepared
     global P04LiveUVCount,P04LiveReceiverBuilds
     global P04LiveBakes

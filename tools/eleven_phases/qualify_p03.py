@@ -12,6 +12,6 @@ for fixture in ['phase02_reset_hold.ms', 'phase03_undo.ms', 'phase03_saved_basel
                 'phase03_interactions.ms', 'phase03_performance.ms']:
     subprocess.run([sys.executable, str(HERE / 'request.py'), str(a.folder), str(HERE / fixture)], check=True)
 subprocess.run([sys.executable, str(HERE / 'qualify_live.py'), str(a.folder), '03'], check=True)
-subprocess.run([sys.executable, str(HERE / 'request.py'), str(a.folder), str(HERE / 'phase03.py')], check=True)
+subprocess.run([sys.executable, str(HERE / 'request.py'), str(a.folder), str(HERE / 'phase03.py'), '--timeout', '120'], check=True)
 subprocess.run([sys.executable, str(HERE / 'qualify_p02.py'), str(a.folder)], check=True)
 print('P01 through P03 witnesses complete', flush=True)

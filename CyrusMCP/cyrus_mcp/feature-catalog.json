@@ -1,9 +1,9 @@
 {
   "schema": "cyrus.feature-catalog/1.0",
   "authority": "Help only. Tool dispatch, closed schema and local approval determine authority.",
-  "capability_source_sha256": "9a70ba9bd98a260d6ba90fd3fbf20d965828d3773c2dd280436bb40161798f4f",
-  "control_inventory_sha256": "6a3a14a2f4ade007306e6d8a85b6e0cee8b35493dc673c8451c6bfecd6a0df09",
-  "development_version": "0.84.0",
+  "capability_source_sha256": "10d98dd2bec074bc140f304df950e5ea30d4657a1ff50e482413e6c6853ef409",
+  "control_inventory_sha256": "c395c41a1e71e226fb13e6f6a969f69532b0a8ded091933c8477519ee36d9a1b",
+  "development_version": "0.85.0",
   "mcp_version": "0.73.0",
   "calculation_model": "CyrusUnified1",
   "features": [
@@ -108,9 +108,9 @@
     {
       "feature_id": "C15",
       "title": "Vector persistence / Paint Area",
-      "native": "Gesture Undo/Redo and new contour payload; no stroke history, replay backend or conversion",
+      "native": "Gesture and conversion Undo/Redo; independent planar spline snapshots and bounded closed-spline Replace/Add import; no stroke history or live spline links",
       "mcp": "No history import or mutation",
-      "qualification_or_extension": "Current save/reopen and failure evidence in 0.78 report; scene units and geometry guards apply"
+      "qualification_or_extension": "P05 conversion, physical picker/export and saved-unit persistence evidence; scene units and geometry guards apply"
     },
     {
       "feature_id": "C16",
@@ -2371,6 +2371,62 @@
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
       "help": null,
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "kind": "button",
+      "name": "exportSpline",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Selected Paint Area and its receiver; shared layer models",
+      "help": "Export this area's closed contours and holes as an independent editable spline on the receiver's local XY plane (local Z=0). Keeps the Paint Area; selects the snapshot. Stop the brush first.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "kind": "radiobuttons",
+      "name": "importMode",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Selected Paint Area and its receiver; shared layer models",
+      "help": "Replace this area's coverage, or union imported coverage with it. Closed loops use even-odd fill and project along receiver-local Z. Source spline is preserved.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "kind": "spinner",
+      "name": "splineTolerance",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Selected Paint Area and its receiver; shared layer models",
+      "help": "Maximum projected curve approximation error in world units. Smaller values create more vertices; import is limited to 8,192 samples. The receiver's Paint precision also sets a minimum.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "brushUI",
+      "kind": "button",
+      "name": "importSpline",
+      "capabilities": [
+        "C14",
+        "C15"
+      ],
+      "owner_context": "Selected Paint Area and its receiver; shared layer models",
+      "help": "Pick one closed spline shape to apply to this Paint Area using Replace or Add. One Undo; Manual waits for Update. Stop the brush first.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },

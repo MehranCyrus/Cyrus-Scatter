@@ -127,7 +127,11 @@
     "detailsToggle": "Show or hide these advanced controls; their saved settings are preserved."
   },
   "brushUI": {
-    "radiusSpin": "Distance from the brush center to its edge. A 100 mm radius paints a 200 mm wide stroke."
+    "radiusSpin": "Distance from the brush center to its edge. A 100 mm radius paints a 200 mm wide stroke.",
+    "exportSpline": "Export this area's closed contours and holes as an independent editable spline on the receiver's local XY plane (local Z=0). Keeps the Paint Area; selects the snapshot. Stop the brush first.",
+    "importMode": "Replace this area's coverage, or union imported coverage with it. Closed loops use even-odd fill and project along receiver-local Z. Source spline is preserved.",
+    "splineTolerance": "Maximum projected curve approximation error in world units. Smaller values create more vertices; import is limited to 8,192 samples. The receiver's Paint precision also sets a minimum.",
+    "importSpline": "Pick one closed spline shape to apply to this Paint Area using Replace or Add. One Undo; Manual waits for Update. Stop the brush first."
   },
   "randomUI": {
     "presetsButton": "Save or apply named transforms settings. Assets and receiver references are preserved.",

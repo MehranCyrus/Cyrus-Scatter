@@ -525,6 +525,9 @@ initialRollupState:0x8
     -- Session-only validity. Scene identities and publication records are unchanged.
     local inputTimeValidity=undefined,inputTimeStamp=0,inputTimeObserved=0
     local inputTimeQueries=0,inputTimeInvalidations=0
+    -- Deleted nodes may no longer resolve from the callback's handles. Retain
+    -- only the dependency handles of the complete published result, not nodes.
+    local procDependencyHandles=#()
     local timeOwnerRegistered=false
     fn ensureTimeOwner = (
         if not timeOwnerRegistered do (
@@ -1983,7 +1986,7 @@ initialRollupState:0x8
         -- Only a committed calculation epoch establishes its first result.
         CyrusLayerStatusData hasResult:(procEpoch>0 and cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
     )
-    fn uiVersion = "0.84.0"
+    fn uiVersion = "0.85.0"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified1")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -2163,6 +2166,24 @@ initialRollupState:0x8
             parent.surfaceNodes=targets;parent.surface=undefined
         )
         parent.markInputDirty();this.bindNativeUI();CyrusViewportRedraw();true
+    )
+    fn validatePaintConversion area = (
+        if cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 do throw "Paint/spline conversion requires the matching Cyrus native plugins. Restart Max with the complete pair."
+        local parent=if area==undefined then undefined else this.logicalParent area
+        if parent==undefined or findItem layerObjects parent==0 or findItem parent.paintAreas area==0 do throw "Select a Paint Area owned by this setup."
+        if area.paintDocument==undefined or not isValidNode area.areaTarget or findItem (parent.validSurfaces()) area.areaTarget==0 do throw "Choose a valid receiving surface for this Paint Area."
+        if cyrusBrushTarget area.paintDocument!=area.areaTarget do throw "Paint Area and stored receiver do not match."
+        true
+    )
+    fn exportPaintSpline area = (
+        this.validatePaintConversion area
+        cyrusBrushExportSpline area.paintDocument ((substring area.paintSetName 1 90)+"_Paint_Snapshot")
+    )
+    fn importPaintSpline area node add:false tolerance:0.1 = (
+        this.validatePaintConversion area
+        local changed=cyrusBrushImportSpline area.paintDocument node add tolerance
+        if changed do area.publishPaint()
+        changed
     )
     fn sourceVisualIndex row create:false = (
         if row<1 or row>this.sources.count do return 0
@@ -2976,7 +2997,21 @@ initialRollupState:0x8
         )
         interested
     )
-    fn procExternalChanged event nodes = (
+    fn procStageDependencyHandles = (
+        local inputs=this.validSurfaces(),handles=#()
+        join inputs (sources as array);join inputs (areaNodes as array);join inputs (patternLines as array)
+        join inputs #(analyzerNode,areaAnalyzer,fallAnalyzer)
+        for input in inputs where isValidNode input do (
+            local dep=input
+            while isValidNode dep do (
+                local handle=getHandleByAnim dep
+                if findItem handles handle>0 then exit
+                append handles handle;dep=dep.parent
+            )
+        )
+        handles
+    )
+    fn procExternalChanged event nodes deletedHandles:undefined = (
         local inputs=this.validSurfaces(),affected=false
         local staging=this.containerProvider()!=undefined and findItem #(#controllerOtherEvent,#controllerStructured,#linkChanged) event>0
         if not staging then join inputs (sources as array)
@@ -2990,7 +3025,13 @@ initialRollupState:0x8
                 dep=dep.parent
             )
         )
-        if event==#deleted do affected=true
+        if event==#deleted do (
+            -- Direct callers without the original handles remain conservative.
+            -- New/pending dependencies are already dirty; published dependencies
+            -- survive failed successors until a complete replacement commits.
+            if deletedHandles==undefined then affected=true
+            else for handle in deletedHandles while not affected do if findItem procDependencyHandles handle>0 do affected=true
+        )
         if affected do (procGeometryRevision+=1;markInputDirty())
         CyrusDiagnosticEmit "input.classified" "host_callback" layerID procEpoch (if affected then "geometry_dependency" else "unrelated")
         affected
@@ -3084,14 +3125,14 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.84.0 setup; earlier schemas are unsupported."
+        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.85.0 setup; earlier schemas are unsupported."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
     fn procValidate = (
         this.procAssertSchema()
-        if cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=1 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.84.0 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
+        if cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=1 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.85.0 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -3263,10 +3304,11 @@ initialRollupState:0x8
         procPreviewInspectionKey=state[17];procFieldCache=state[18];procFieldCacheKey=state[19];procFieldStatus=state[20]
         procPreviewModes=state[21];procPreviewModesEpoch=state[22]
     )
-    fn procResultState = (#(this.procPreviewState(),procLastStats,procLastRounds,procEpoch,requestedCount,groupEligible,groupRemoved,groupConflicts,overlapBefore,overlapAfter,procLastSurfaceStats))
+    fn procResultState = (#(this.procPreviewState(),procLastStats,procLastRounds,procEpoch,requestedCount,groupEligible,groupRemoved,groupConflicts,overlapBefore,overlapAfter,procLastSurfaceStats,procDependencyHandles))
     fn procRestoreResult state = (
         this.procRestorePreview state[1];procLastStats=state[2];procLastRounds=state[3];procEpoch=state[4];requestedCount=state[5]
         groupEligible=state[6];groupRemoved=state[7];groupConflicts=state[8];overlapBefore=state[9];overlapAfter=state[10];procLastSurfaceStats=state[11]
+        procDependencyHandles=state[12]
     )
     fn procInstallPreview state pending = (
         inputTimeObserved=state[12]
@@ -3402,6 +3444,7 @@ initialRollupState:0x8
             local publishedOwners=layerObjects as array,publishedSources=for leaf in layerObjects collect leaf.validSources()
             local finalKeep=for i=1 to layerObjects.count collect (for n in publishedSources[i] collect not (layerObjects[i].isPointSource (layerObjects[i].sourceRow n)))
             local publicationInfo=this.procStagePublication accepted requests publishedSources finalKeep
+            local dependencyHandles=for leaf in layerObjects collect leaf.procStageDependencyHandles()
             -- Allocation and computation have finished; publish one coherent epoch.
             this.publishGroupEdits accepted
             this.procSyncEditVisibility()
@@ -3410,6 +3453,7 @@ initialRollupState:0x8
             for i=1 to layerObjects.count do (
                 local leaf=layerObjects[i]
                 leaf.procLastStats=stats[i];leaf.procLastRounds=rounds[i];leaf.procEpoch=procEpoch
+                leaf.procDependencyHandles=dependencyHandles[i]
                 leaf.procLastSurfaceStats=if cyrusEnabled and this.enabledLayer i then leaf.procPreparedSurfaceStats as array else #(0,0,0)
                 leaf.requestedCount=requests[i][1]
                 -- Unconsumed refill capacity is not a rejected plant.
@@ -3507,7 +3551,7 @@ initialRollupState:0x8
         if (CyrusContainerPanel this).controlsReady do (CyrusContainerPanel this).bind()
         true
     )
-    rollout mainUI "Cyrus Scatter 0.84.0" width:#cmdPanel height:30 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.85.0" width:#cmdPanel height:30 autoLayoutOnResize:true (
         local root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),owner=undefined,layerPagesVisible=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for this entire Scatter setup."
         button licenseButton "License / activation..." pos:[8,112] width:(mainUI.width-16) height:22 tooltip:"Import a team license or inspect its expiry. Existing scenes remain available after expiry."
@@ -3577,7 +3621,7 @@ initialRollupState:0x8
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.84.0 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.85.0 native plugin and restart Max."
             root.syncLayerIdentity()
             roots=#(root.flow_updateUI,root.flow_surfaceUI,root.flow_previewUI,root.flow_layersUI)
             root.updateUI=roots[1];root.surfaceUI=roots[2];root.previewUI=roots[3];root.layersUI=roots[4]
@@ -4492,6 +4536,11 @@ initialRollupState:0x8
         spinner scaleMin "Edge scale:" range:[0,1000,0] pos:[4,638] width:(selected_brushUI.width-8) fieldWidth:74
         spinner scaleMax "Inner scale:" range:[0,1000,1] pos:[4,668] width:(selected_brushUI.width-8) fieldWidth:74
         button scaleCurve "Scale curve..." pos:[4,698] width:(selected_brushUI.width-8)
+        button exportSpline "Export spline" width:(selected_brushUI.width-8) tooltip:"Export this area's closed contours and holes as an independent editable spline on the receiver's local XY plane (local Z=0). Keeps the Paint Area; selects the snapshot. Stop the brush first."
+        radiobuttons importMode "Spline import" labels:#("Replace","Add") columns:2 width:(selected_brushUI.width-8) tooltip:"Replace this area's coverage, or union imported coverage with it. Closed loops use even-odd fill and project along receiver-local Z. Source spline is preserved."
+        spinner splineTolerance "Curve tolerance:" type:#worldunits range:[1e-9,1e9,0.1] fieldWidth:74 width:(selected_brushUI.width-8) tooltip:"Maximum projected curve approximation error in world units. Smaller values create more vertices; import is limited to 8,192 samples. The receiver's Paint precision also sets a minimum."
+        button importSpline "Pick spline..." width:(selected_brushUI.width-8) tooltip:"Pick one closed spline shape to apply to this Paint Area using Replace or Add. One Undo; Manual waits for Update. Stop the brush first."
+        local toleranceInitialized=false
         fn saveFalloff = (
             if not binding and obj!=undefined and obj.paintDocument!=undefined do (
                 local area=obj,cfg=cyrusBrushFalloff obj.paintDocument
@@ -4522,7 +4571,8 @@ initialRollupState:0x8
             binding=true;obj=layer
             local has=obj!=undefined and obj.paintDocument!=undefined
             for control in selected_brushUI.controls do control.enabled=obj!=undefined
-            for control in #(stopButton,fillButton,emptyButton,insideSpin,outsideSpin,densityFade,scaleFade,densityCurve,scaleCurve,scaleMin,scaleMax) do control.enabled=has
+            for control in #(stopButton,fillButton,emptyButton,insideSpin,outsideSpin,densityFade,scaleFade,densityCurve,scaleCurve,scaleMin,scaleMax,exportSpline,importSpline,importMode,splineTolerance) do control.enabled=has
+            if not toleranceInitialized do (splineTolerance.value=units.decodeValue "1mm";toleranceInitialized=true)
             local target=if obj==undefined then undefined else obj.areaTarget
             targetInfo.text=if obj==undefined then "Add a Paint Area to begin." else obj.paintSetName+" / "+(if isValidNode target then target.name else "<choose surface>")
             beginButton.enabled=obj!=undefined and isValidNode target and findItem (owner.validSurfaces()) target>0
@@ -4555,6 +4605,18 @@ initialRollupState:0x8
         on overlayColor changed value do if not binding and obj!=undefined do (undo "Cyrus paint color" on obj.paintColor=value;saveOptions();redrawViews())
         on fillButton pressed do if obj!=undefined and obj.paintDocument!=undefined do (cyrusBrushFill obj.paintDocument 1.0;obj.publishPaint();status())
         on emptyButton pressed do if obj!=undefined and obj.paintDocument!=undefined do (cyrusBrushFill obj.paintDocument 0.0;obj.publishPaint();status())
+        on exportSpline pressed do if controlsReady and not binding and obj!=undefined do (
+            local controller=root,area=obj
+            try(controller.exportPaintSpline area)catch(messageBox (getCurrentException()) title:"Paint to spline")
+        )
+        on importSpline pressed do if controlsReady and not binding and obj!=undefined do (
+            local controller=root,area=obj,add=(importMode.state==2),tolerance=splineTolerance.value
+            try (
+                controller.validatePaintConversion area
+                local node=pickObject prompt:("Import spline into "+area.paintSetName) filter:AminScatterAreaFilter
+                if isValidNode node do controller.importPaintSpline area node add:add tolerance:tolerance
+            )catch(messageBox (getCurrentException()) title:"Spline to Paint")
+        )
         on selected_brushUI open do (root=this;controlsReady=false)
         on selected_brushUI close do (controlsReady=false;CyrusStopBrush())
     )
@@ -5683,7 +5745,7 @@ fn AminScatterLiveChanged event handles = (
         for n in objects where classof n.baseObject==AminScatterObject do (
             if n.baseObject.containerNote event nodes do redraw=true
             for entry in (n.baseObject.layerEntries includeDisabled:true) do (
-                if entry[2].procExternalChanged event nodes do redraw=true
+                if entry[2].procExternalChanged event nodes deletedHandles:handles do redraw=true
             )
             if findItem nodes n>0 do (
                 CyrusScheduleUI()

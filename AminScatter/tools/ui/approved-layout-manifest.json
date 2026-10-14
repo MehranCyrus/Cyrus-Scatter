@@ -1081,6 +1081,30 @@
           "control": "scaleCurve",
           "presentation": "brushUI_scaleCurve",
           "advanced": false
+        },
+        {
+          "component": "brushUI",
+          "control": "exportSpline",
+          "presentation": "brushUI_exportSpline",
+          "advanced": false
+        },
+        {
+          "component": "brushUI",
+          "control": "importMode",
+          "presentation": "brushUI_importMode",
+          "advanced": false
+        },
+        {
+          "component": "brushUI",
+          "control": "splineTolerance",
+          "presentation": "brushUI_splineTolerance",
+          "advanced": false
+        },
+        {
+          "component": "brushUI",
+          "control": "importSpline",
+          "presentation": "brushUI_importSpline",
+          "advanced": false
         }
       ]
     },

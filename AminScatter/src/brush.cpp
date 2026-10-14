@@ -88,6 +88,24 @@ Contours domain(const Surface& s){validateProjection(s);return unpack(combine(Cl
 Document constrain(const Document& d,const Contours& receiverDomain){
     Document next=d;next.contours=unpack(combine(ClipType::Intersection,pack(d.contours),pack(receiverDomain)));return next;
 }
+Document importContours(const Document& d,const Contours& contours,const Contours& receiverDomain,bool add){
+    if(contours.empty())throw std::invalid_argument("Import needs at least one closed spline contour");
+    // Normalize all loops together: winding and ordering do not determine holes.
+    auto packed=pack(contours);
+    for(const auto& path:packed){
+        Clipper64 single;single.AddSubject({path});Paths64 filled;
+        if(!single.Execute(ClipType::Union,FillRule::EvenOdd,filled)||filled.empty())throw std::invalid_argument("An imported spline has no filled projected region; remove degenerate contours");
+    }
+    Clipper64 engine;engine.AddSubject(packed);Paths64 normalized;
+    if(!engine.Execute(ClipType::Union,FillRule::EvenOdd,normalized))throw std::runtime_error("Spline normalization failed; previous paint retained");
+    if(normalized.empty())throw std::invalid_argument("Spline projection has no filled region; check degenerate or duplicate contours");
+    auto clipped=combine(ClipType::Intersection,normalized,pack(receiverDomain));
+    auto previous=pack(d.contours);auto result=add?combine(ClipType::Union,previous,clipped):std::move(clipped);
+    // Clipper may reorder contours/start vertices. Equal coverage is a no-op,
+    // including export/import round trips and adding an already covered shape.
+    if(combine(ClipType::Xor,previous,result).empty())return d;
+    Document next=d;next.contours=unpack(result);return next;
+}
 Document paint(const Document& d,Point center,double radius,bool erase,Metric metric,const Point* previous){
     check(center);if(!std::isfinite(radius)||radius<=quantum||radius>1.e7)throw std::invalid_argument("Vector brush radius outside supported range");
     if(!std::isfinite(metric.xx)||!std::isfinite(metric.xy)||!std::isfinite(metric.yy)||metric.xx<=0||metric.yy<=0)throw std::invalid_argument("Invalid vector metric");

@@ -6,11 +6,11 @@ entire phase passed. Existing defect IDs stay in [BACKLOG](../../BACKLOG.md).
 
 ## Current action
 
-**P04 — density mapping qualification passed (0.84.0); Git checkpoint pending.**
-P01, P02 and P03 were committed and pushed; the latest verified remote checkpoint
-is `a509e2e08d1e01f8b624872026d17fc5532eee84`. Agent-run testing continues each phase.
-The user's artist acceptance is at the end; unavailable Computer Use evidence
-is carried explicitly rather than blocking implementation. See [P04](P04.md).
+**P05 — Paint/spline conversion qualified (0.85.0); Git checkpoint next.**
+P01 through P04 were committed and pushed; the latest verified remote checkpoint
+is `df917ad89857d49a037d995d988f93475642c83a`. Agent-run testing continues each phase.
+The user's artist acceptance is at the end. Computer Use recovered during P05;
+physical conversion controls passed in both Max versions. See [P05](P05.md).
 
 ## Enrollment / shared preparation
 
@@ -68,16 +68,16 @@ Preparatory [source/format research](P02_PREFLIGHT.md) is recorded. Implementati
 - [x] Add precise missing/invalid-channel errors with previous-result retention.
 - [x] Test multiple channels, resolutions, animated maps, invalid geometry and Manual/Live.
 - [x] Measure map bake/receiver cache reuse and peak memory; run regressions.
-- [ ] Update version/docs; commit, push and verify.
+- [x] Update version/docs; commit, push and verify.
 
 ## P05 — Paint/spline conversion
 
-- [ ] Freeze contour fill/nesting, sampling tolerance and projection rules.
-- [ ] Implement non-destructive vector-to-spline snapshot export with holes/transforms.
-- [ ] Implement validated Replace/Add spline import into an explicit Paint Area.
-- [ ] Integrate one-Undo ownership, Manual/Live and bounded geometry handling.
-- [ ] Test coverage equivalence, self-intersections, transforms/units, failures and persistence.
-- [ ] Qualify actual conversion controls and unchanged other layers.
+- [x] Freeze contour fill/nesting, sampling tolerance and projection rules.
+- [x] Implement non-destructive vector-to-spline snapshot export with holes/transforms.
+- [x] Implement validated Replace/Add spline import into an explicit Paint Area.
+- [x] Integrate one-Undo ownership, Manual/Live and bounded geometry handling.
+- [x] Test coverage equivalence, self-intersections, transforms/units, failures and persistence.
+- [x] Qualify actual conversion controls and unchanged other layers.
 - [ ] Update version/docs; commit, push and verify.
 
 ## P06 — grid layouts

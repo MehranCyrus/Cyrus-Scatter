@@ -67,6 +67,15 @@
         ]
       },
       {
+        "title": "Paint and spline snapshots",
+        "paragraphs": [
+          "Stop the brush and select a Paint Area. Export spline creates and selects an independent Editable Spline with its closed contours and holes. Edit the border in Max, reselect the Scatter and Paint Area, choose Replace or Add, then press Pick spline... and choose the shape. Escape cancels picking.",
+          "Export uses the receiver's local XY plane at local Z=0 with its scene transform. On terrain the spline is a planar editing guide. Import projects along receiver-local Z, clips to the receiver and requires every contour to be closed. Nested loops and self-intersections use even-odd fill regardless of winding or order.",
+          "Replace sets coverage; Add unions it with the existing region without erasing paint. Density, fades, models and area identity stay unchanged. A changed import and each export are one Undo. Manual waits for Update; Live follows changed coverage. There is no live source link: later spline edits require another import.",
+          "Curve tolerance is a world-unit approximation distance, initially 1 mm. Smaller values need more samples. A shape is limited to 8,192 input knots and 8,192 sampled vertices. Paint precision imposes a minimum tolerance; very large local coordinates can prevent accurate Max spline export. Invalid conversion retains existing paint. Reopen using the saved scene units; native Paint geometry conversion guards still apply."
+        ]
+      },
+      {
         "title": "Area limits, transforms and spacing",
         "paragraphs": [
           "Closed Include shapes union their eligible domains. Exclude takes precedence. Area masks test placement support rather than trimming model geometry. [Layout & soft boundaries](#/guide/layout-falloff) explains guide widths and edge curves.",

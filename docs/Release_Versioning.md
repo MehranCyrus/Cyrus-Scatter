@@ -2,8 +2,8 @@
 
 | Domain | Current value | Meaning |
 | --- | --- | --- |
-| Scatter UI | 0.84.0 | Selectable density mapping; qualification in P04 |
-| Scatter native/package | 0.84.0 native candidate / 0.81.6 installed | Matched private P04 builds; no new package or normal installation |
+| Scatter UI | 0.85.0 | Paint/spline conversion; qualification in P05 |
+| Scatter native/package | 0.85.0 native candidate / 0.81.6 installed | Matched private P05 builds; no new package or normal installation |
 | Saved MAXScript schema | 58 | Independent saved Band scale profiles; current-only scenes, no earlier-schema migration |
 | Calculation model | CyrusUnified1 | Current procedural model |
 | Surface Analyzer | 0.14 | Independently versioned product |
@@ -32,6 +32,13 @@ Before changing version metadata, record the current and proposed versions, a sh
 When a bump is within the authorized task, align the Scatter UI template and generated script, native/package metadata, installer labels, coupled catalog assertions, current navigation and changelog. Follow the [agent workflow](AGENT_WORKFLOW.md) for generation and proportionate checks; do not bump unrelated products mechanically. For artist-visible changes, keep the guide, relevant website chapters/control explanations and changelog aligned with proven behavior and run the website import checks when those sources change. Report local source updates, built website artifacts and live deployment separately. Version selection itself does not authorize packaging, installation or publication.
 
 ## Current and historical evidence
+
+0.85.0 adds Paint-to-spline snapshots and closed-spline Replace/Add import. This
+new editing workflow warrants the next minor. Brush conversion capability 1
+requires the matching script/native pair; schema 58 and saved vector payloads
+are unchanged. Detached snapshot deletion no longer invalidates ordinary layers;
+published dependency handles preserve real deletion and failure behavior.
+See [P05](plans/eleven-phase-roadmap/P05.md).
 
 0.84.0 adds selectable UV channels and density-map resolution with per-layer bake
 reuse. This new artist feature warrants a minor version. Schema 58 keeps channel 1

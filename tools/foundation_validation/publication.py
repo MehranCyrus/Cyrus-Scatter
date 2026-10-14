@@ -35,7 +35,8 @@ def state(root, modifier):
             requested=int(x.requestedCount), generated=int(x.generatedCount), shown=int(x.cachedPointCount),
             previews=int(x.previewBuildCount), display_key=str(x.procPreviewDisplayKey), geometry_key=str(x.procPreviewGeometryKey),
             inspection_key=str(x.procPreviewInspectionKey), field_key=str(x.procFieldCacheKey), field_status=str(x.procFieldStatus),
-            observed=str(x.inputTimeObserved), pending=bool(x.dirty)) for x in root.layerObjects])
+            observed=str(x.inputTimeObserved), pending=bool(x.dirty),
+            dependency_handles=list(map(int, x.procDependencyHandles))) for x in root.layerObjects])
 
 try:
     r.CyrusStopBrush(); r.resetMaxFile(r.Name('noPrompt'))
@@ -84,6 +85,8 @@ fn CyrusFoundationCheckpoint label = (
     check([len(x) for x in root.groupSnapshotRows] == [100, 120, 140], 'Three complete initial populations')
     for target, occurrence in [('edit-publish', 1), ('leaf-install', 1), ('leaf-install', 2), ('leaf-install', 3), ('root-install', 1), ('before-commit', 1)]:
         root.layerObjects[0].amount += 7
+        dependency_parent = r.Dummy(name='Pending publication dependency')
+        model.parent = dependency_parent
         before=state(root, modifier)
         caches=[(x.cachedPoints,x.inspectionCache) for x in root.layerObjects]
         r.CyrusFoundationTarget=target; r.CyrusFoundationAt=occurrence; r.CyrusFoundationHit=0
@@ -99,6 +102,8 @@ fn CyrusFoundationCheckpoint label = (
         check(not root.groupSolving, f'{target}/{occurrence}: solve guard released')
         root.evaluateProcedural()
         check(int(root.procEpoch)==before['epoch']+1 and len(root.groupSnapshotRows[0])==int(root.layerObjects[0].amount), f'{target}/{occurrence}: same-input retry commits once')
+        check(all(int(r.getHandleByAnim(dependency_parent)) in list(map(int, x.procDependencyHandles)) for x in root.layerObjects),
+              f'{target}/{occurrence}: successful retry publishes new dependency handles')
     # Two display-only owners change while a third recipe remains pending.
     root.layerObjects[2].amount += 20
     root.layerObjects[0].solidPointColor=r.color(10,220,10)

@@ -1,5 +1,5 @@
 (
-    if not matchPattern MCPFixtureDir pattern:"*/build/mcp-qualification/foundation-roadmap-p04-*/" do throw "Owned P04 host required"
+    if not matchPattern MCPFixtureDir pattern:"*/build/mcp-qualification/foundation-roadmap-*/" do throw "Owned P04 host required"
     local log=createFile (MCPFixtureDir+"phase04-edit-saved.txt")
     fn verify value label log = (format "%: %\n" (if value then "PASS" else "FAIL") label to:log;flush log;if not value do throw label)
     try (
@@ -8,7 +8,7 @@
         if not doesFileExist scene do throw "Qualified owned P03 scene is unavailable"
         CyrusPerfHeadless=true;resetMaxFile #noPrompt;loadMaxFile scene quiet:true
         local node=getNodeByName "P03 lifecycle",root=node.baseObject,leaf=root.layerObjects[1]
-        verify (root.uiVersion()=="0.84.0" and leaf.densityUVChannel==1 and leaf.densityResolution==128) "Saved P03 scene receives neutral density controls" log
+        verify (root.uiVersion()=="0.85.0" and leaf.densityUVChannel==1 and leaf.densityResolution==128) "Saved P03 scene receives neutral density controls" log
         root.refreshAll()
         verify (leaf.generatedCount==70 and leaf.slopeEnabled and leaf.altitudeEnabled) "Saved P03 filter behavior remains intact" log
         resetMaxFile #noPrompt

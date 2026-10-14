@@ -1,8 +1,8 @@
-# Cyrus Scatter 0.84.0 — current source workflow
+# Cyrus Scatter 0.85.0 — current source workflow
 
 The [offline team license](licensing/TEAM_PILOT_0.79_2026-10-11.md) is independent of scene format. Open **License / activation** in Scatter Modify, save a request for Mehran, then import the returned license file. It expires 30 days after generation. Supported scenes remain loadable/renderable after expiry; creation/editing locks. See [activation and renewal instructions](../tools/licensing/README.md).
 
-Updated 14 October 2026. 0.84.0 adds UV-channel and map-resolution controls with map-bake reuse; [Phase 4 evidence](plans/eleven-phase-roadmap/P04.md) records current qualification. Earlier phases added cached feedback, named presets, and slope/altitude eligibility. Artist acceptance is at the end of the eleven-phase program. The preceding source corrects zero-limit Point Cloud preparation and reuses representations across mode switches; see the [0.81.7 record](plans/terrace-0815/VIEWPORT_0817.md). Earlier 0.81.6 source added independent navigating/idle viewport limits and a lightweight Mesh fallback. The [adaptive viewport record](plans/terrace-0815/VIEWPORT_0816.md) records exact test scope. Earlier changes include larger bounded populations, compact source-rectangle properties and consistent viewport/render source sizing. The [terrace implementation record](plans/terrace-0815/PROGRESS.md) distinguishes tested behavior from remaining acceptance. The [Bands record](plans/spline-bands/PROGRESS.md) preserves preceding feature evidence. Installed local package identities remain listed separately in the [installation guide](plans/spline-bands/INSTALLATION.md).
+Updated 14 October 2026. 0.85.0 adds Paint/spline snapshot conversion; [Phase 5 evidence](plans/eleven-phase-roadmap/P05.md) records current qualification. The preceding [Phase 4](plans/eleven-phase-roadmap/P04.md) added UV-channel and map-resolution controls with map-bake reuse. Earlier phases added cached feedback, named presets, and slope/altitude eligibility. Artist acceptance is at the end of the eleven-phase program. The preceding source corrects zero-limit Point Cloud preparation and reuses representations across mode switches; see the [0.81.7 record](plans/terrace-0815/VIEWPORT_0817.md). Earlier 0.81.6 source added independent navigating/idle viewport limits and a lightweight Mesh fallback. The [adaptive viewport record](plans/terrace-0815/VIEWPORT_0816.md) records exact test scope. Earlier changes include larger bounded populations, compact source-rectangle properties and consistent viewport/render source sizing. The [terrace implementation record](plans/terrace-0815/PROGRESS.md) distinguishes tested behavior from remaining acceptance. The [Bands record](plans/spline-bands/PROGRESS.md) preserves preceding feature evidence. Installed local package identities remain listed separately in the [installation guide](plans/spline-bands/INSTALLATION.md).
 
 Panels show controls, counts and actionable status. Detailed explanations live in this guide, the website and control tooltips. For example, hover over Radius mode to see why Auto is unavailable for a selected source. Pending updates, Analyzer errors and brush status remain visible.
 
@@ -112,6 +112,29 @@ Curve presets preserve the selected curve's samples and editable handles without
 Manual mode retains the last complete plants until **Update scatter**. Live applies the completed settings through its normal update callbacks. Saving, browsing and renaming do not calculate plants. The user library is **CyrusScatter/Presets** inside Max's per-user PlugCFG directory; copy the `.cspreset.json` files to share these settings. The browser admits 512 files, 64 KiB per file and names up to 80 characters. Invalid files are skipped with a count; file errors are reported without replacing the previous valid file. Complete multi-layer recipes and asset substitution are planned for Phase 10.
 
 ## Vector painting
+
+**Paint and splines:** select a Paint Area and stop the brush. **Export spline**
+creates and selects an independent Editable Spline with the area's contours and
+holes. Edit it with Max's spline tools, reselect the Scatter and Paint Area, then
+choose **Replace** or **Add** and press **Pick spline...**. Replace sets that area's
+coverage; Add unions the imported region with existing paint. Escape cancels the
+pick. Each changed import and each export is one Undo. Manual waits for Update;
+Live applies the changed coverage. Neither operation links Paint to the source
+spline, so later spline edits require another import.
+
+Export uses the receiver's local XY plane at local Z=0, including its scene
+transform. On terrain this is a planar border guide. Import projects the chosen
+shape along receiver-local Z and clips it to the receiver. Every contour must be
+closed. Nested contours alternate filled regions and holes regardless of winding
+or order; self-intersections use the same even-odd fill. Add does not erase paint.
+Area density, fades, identity and model assignments are preserved.
+
+**Curve tolerance** is a world-unit approximation distance, initially 1 mm.
+Smaller values require more samples. One import allows up to 8,192 input knots
+and 8,192 sampled vertices; simplify the shape or increase tolerance when needed.
+Paint's local coordinate precision also imposes a minimum tolerance. Very large
+local coordinates can exceed Max spline precision and cause export rejection.
+Invalid conversion retains the preceding area. See [Phase 5 evidence](plans/eleven-phase-roadmap/P05.md).
 
 Turn on **Use Paint Areas**, add a named area and choose one of this layer's surfaces. Use **Start Brush**, **Paint / Erase**, **Radius**, **Stop**, **Fill** and **Clear**. **Radius** is center to edge: 100 mm gives a 200 mm stroke diameter. The Painter cursor now uses that same radius. Area density, fade controls and Paint feedback are directly visible in Painting, with no Advanced disclosure. Repeated painting merges into the same area. Erasing cuts holes; overlapping areas admit each candidate only once. Undo/Redo restores a complete brush gesture.
 

@@ -2185,5 +2185,37 @@
     "evidence": [
       "AminScatter/tools/ui/templates/unified-core.ms:4190"
     ]
+  },
+  "layer.brushUI.exportSpline": {
+    "label": "Export spline",
+    "help": "Create and select an independent closed Editable Spline with this Paint Area's contours and holes. Uses receiver-local XY at Z=0, so terrain exports a planar guide. Stop the brush first; area coverage is preserved.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4539",
+      "docs/plans/eleven-phase-roadmap/P05.md:1"
+    ]
+  },
+  "layer.brushUI.importMode": {
+    "label": "Spline import",
+    "help": "Replace sets the selected area's coverage. Add unions the imported region with existing paint. Closed contours use even-odd fill, project along receiver-local Z and clip to the receiver.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4540",
+      "docs/plans/eleven-phase-roadmap/P05.md:1"
+    ]
+  },
+  "layer.brushUI.splineTolerance": {
+    "label": "Curve tolerance:",
+    "help": "World-unit approximation distance, initially 1 mm. Smaller values need more samples; at most 8,192 knots and sampled vertices. Transformed Paint precision sets a minimum.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4541",
+      "docs/plans/eleven-phase-roadmap/P05.md:1"
+    ]
+  },
+  "layer.brushUI.importSpline": {
+    "label": "Pick spline...",
+    "help": "Pick one closed shape for the captured Paint Area. Escape cancels. A changed import is one Undo; Manual waits for Update. The source is preserved, with no live link.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4542",
+      "docs/plans/eleven-phase-roadmap/P05.md:1"
+    ]
   }
 }
