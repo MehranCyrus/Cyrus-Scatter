@@ -37,6 +37,15 @@
         ]
       },
       {
+        "title": "Slope and altitude filters",
+        "paragraphs": [
+          "Enable Filter slope or Filter altitude in Include / exclude areas → Surface eligibility. Slope is measured from world up using the evaluated geometric normal: 0° upward, 90° vertical, 180° downward. Altitude is world Z at the final receiver anchor, before source pivot offsets.",
+          "Lower and Upper fade soften density inside the range. For a 0–35° slope interval, a 10° upper fade thins between 25° and 35°. Zero fade includes the endpoint. Fades cannot overlap; invalid settings retain the previous complete result.",
+          "Filters preserve surviving candidate IDs, model choices and transforms. Paint overlap still uses max-union density; explicitly moved or cloned CS Edit plants bypass these filters. Spacing and cleanup follow filtering. Use Candidate budget to retain the visible density fade; Accepted target can refill within its finite work budget.",
+          "Manual waits for Update; Live follows relevant edits and receiver animation. The status describes the last calculated prepared pool, separately from accepted plants. Heights use scene units and survive scene-unit conversion."
+        ]
+      },
+      {
         "title": "Named settings and curve presets",
         "paragraphs": [
           "Use Presets... in Amount, Transforms or Spacing & cleanup. Curve presets are available from the existing density/scale graph. Save new captures a named item; selecting it is passive, and Apply changes the target shown in the dialog. Reopen the browser to target a different layer.",

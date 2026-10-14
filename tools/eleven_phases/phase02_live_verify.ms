@@ -1,5 +1,5 @@
 (
-    if not matchPattern MCPFixtureDir pattern:"*/build/mcp-qualification/foundation-roadmap-p02-*/" do throw "Owned P02 host required"
+    if not matchPattern MCPFixtureDir pattern:"*/build/mcp-qualification/foundation-roadmap-*/" do throw "Owned P02 host required"
     local log=createFile (MCPFixtureDir+"phase02-live.txt")
     fn verify value label log = (
         format "%: %\n" (if value then "PASS" else "FAIL") label to:log;flush log

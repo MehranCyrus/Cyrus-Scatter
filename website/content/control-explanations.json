@@ -2091,5 +2091,85 @@
       "AminScatter/tools/ui/templates/presets.ms:38",
       "docs/plans/eleven-phase-roadmap/P02.md:20"
     ]
+  },
+  "layer.areaUI.slopeCheck": {
+    "label": "Filter slope",
+    "help": "Eligibility from world up: 0 degrees upward, 90 vertical, 180 underside. Protected Edit plants are retained.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4252",
+      "docs/plans/eleven-phase-roadmap/P03.md:1"
+    ]
+  },
+  "layer.areaUI.slopeMinSpin": {
+    "label": "Min slope:",
+    "help": "Minimum slope in degrees. Zero inside fade includes this endpoint.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4253",
+      "docs/plans/eleven-phase-roadmap/P03.md:1"
+    ]
+  },
+  "layer.areaUI.slopeMaxSpin": {
+    "label": "Max slope:",
+    "help": "Maximum slope in degrees; plant alignment does not affect surface slope.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4254",
+      "docs/plans/eleven-phase-roadmap/P03.md:1"
+    ]
+  },
+  "layer.areaUI.slopeLowerSpin": {
+    "label": "Lower fade:",
+    "help": "Inside fade above the minimum, in degrees. Fades must not overlap.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4255",
+      "docs/plans/eleven-phase-roadmap/P03.md:1"
+    ]
+  },
+  "layer.areaUI.slopeUpperSpin": {
+    "label": "Upper fade:",
+    "help": "Inside fade below the maximum, in degrees. Fades must not overlap.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4256",
+      "docs/plans/eleven-phase-roadmap/P03.md:1"
+    ]
+  },
+  "layer.areaUI.altitudeCheck": {
+    "label": "Filter altitude",
+    "help": "World Z eligibility. Fades reduce density inside the range; source Z offsets do not change eligibility.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4261",
+      "docs/plans/eleven-phase-roadmap/P03.md:1"
+    ]
+  },
+  "layer.areaUI.altitudeMinSpin": {
+    "label": "Min height:",
+    "help": "Minimum world Z of the final receiver anchor, before source offsets.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4257",
+      "docs/plans/eleven-phase-roadmap/P03.md:1"
+    ]
+  },
+  "layer.areaUI.altitudeMaxSpin": {
+    "label": "Max height:",
+    "help": "Maximum world Z of the final receiver anchor, in scene units.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4258",
+      "docs/plans/eleven-phase-roadmap/P03.md:1"
+    ]
+  },
+  "layer.areaUI.altitudeLowerSpin": {
+    "label": "Lower fade:",
+    "help": "Inside fade above minimum height. Zero keeps the hard endpoint.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4259",
+      "docs/plans/eleven-phase-roadmap/P03.md:1"
+    ]
+  },
+  "layer.areaUI.altitudeUpperSpin": {
+    "label": "Upper fade:",
+    "help": "Inside fade below maximum height. Fades must not overlap.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4260",
+      "docs/plans/eleven-phase-roadmap/P03.md:1"
+    ]
   }
 }

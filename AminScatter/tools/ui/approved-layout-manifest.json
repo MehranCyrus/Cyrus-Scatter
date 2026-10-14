@@ -1187,6 +1187,72 @@
         },
         {
           "component": "areaUI",
+          "control": "slopeCheck",
+          "presentation": "areaUI_slopeCheck",
+          "advanced": false
+        },
+        {
+          "component": "areaUI",
+          "control": "slopeMinSpin",
+          "presentation": "areaUI_slopeMinSpin",
+          "advanced": false
+        },
+        {
+          "component": "areaUI",
+          "control": "slopeMaxSpin",
+          "presentation": "areaUI_slopeMaxSpin",
+          "advanced": false
+        },
+        {
+          "component": "areaUI",
+          "control": "slopeLowerSpin",
+          "presentation": "areaUI_slopeLowerSpin",
+          "advanced": false
+        },
+        {
+          "component": "areaUI",
+          "control": "slopeUpperSpin",
+          "presentation": "areaUI_slopeUpperSpin",
+          "advanced": false
+        },
+        {
+          "component": "areaUI",
+          "control": "altitudeMinSpin",
+          "presentation": "areaUI_altitudeMinSpin",
+          "advanced": false
+        },
+        {
+          "component": "areaUI",
+          "control": "altitudeMaxSpin",
+          "presentation": "areaUI_altitudeMaxSpin",
+          "advanced": false
+        },
+        {
+          "component": "areaUI",
+          "control": "altitudeLowerSpin",
+          "presentation": "areaUI_altitudeLowerSpin",
+          "advanced": false
+        },
+        {
+          "component": "areaUI",
+          "control": "altitudeUpperSpin",
+          "presentation": "areaUI_altitudeUpperSpin",
+          "advanced": false
+        },
+        {
+          "component": "areaUI",
+          "control": "altitudeCheck",
+          "presentation": "areaUI_altitudeCheck",
+          "advanced": false
+        },
+        {
+          "component": "areaUI",
+          "control": "filterInfo",
+          "presentation": "areaUI_filterInfo",
+          "advanced": false
+        },
+        {
+          "component": "areaUI",
           "control": "fallTarget",
           "presentation": "areaUI_fallTarget",
           "advanced": false

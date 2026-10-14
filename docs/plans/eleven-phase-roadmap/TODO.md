@@ -40,8 +40,7 @@ is carried explicitly rather than blocking implementation. See [P02](P02.md).
 
 ## P02 — settings and curve presets
 
-Preparatory [source/format research](P02_PREFLIGHT.md) is recorded. Implementation
-is in progress; the following acceptance tasks remain open.
+Preparatory [source/format research](P02_PREFLIGHT.md) is recorded. Implementation and scoped Max qualification passed; see the phase receipt.
 
 - [x] Freeze allowed setting categories, typed format and application semantics.
 - [x] Implement validated capture/atomic persistence and curve round trips.
@@ -49,16 +48,16 @@ is in progress; the following acceptance tasks remain open.
 - [x] Add a compact preset list and clear storage/error feedback.
 - [x] Test units, missing/corrupt/oversized/unwritable files and unchanged browsing.
 - [x] Validate host lifecycle and inherited P01 behavior.
-- [ ] Commit/push qualified 0.82.0 and verify the remote hash (version/docs updated).
+- [x] Commit/push qualified 0.82.0 and verify the remote hash (version/docs updated).
 
 ## P03 — slope and altitude
 
-- [ ] Freeze coordinates, normal/up convention, endpoint and soft-transition functions.
-- [ ] Implement settings, independent eligibility channel and receiver dependencies.
-- [ ] Integrate at the correct candidate/Edit/acceptance stages.
-- [ ] Add controls, explanatory feedback and bounded rejection diagnostics.
-- [ ] Test analytic slopes/heights, transforms/units, Paint/Bands/maps/refill/protected edits.
-- [ ] Measure disabled overhead and cold/warm reuse; run host lifecycle/regressions.
+- [x] Freeze coordinates, normal/up convention, endpoint and soft-transition functions.
+- [x] Implement settings, independent eligibility channel and receiver dependencies.
+- [x] Integrate at the correct candidate/Edit/acceptance stages.
+- [x] Add controls, explanatory feedback and bounded rejection diagnostics.
+- [x] Test analytic slopes/heights, transforms/units, Paint/Bands/maps/refill/protected edits.
+- [x] Measure disabled overhead and cold/warm reuse; run host lifecycle/regressions.
 - [ ] Update version/docs; commit, push and verify.
 
 ## P04 — map controls

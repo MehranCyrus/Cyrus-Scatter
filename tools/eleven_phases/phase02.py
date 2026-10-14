@@ -2,6 +2,7 @@
 from pathlib import Path
 import hashlib
 import json
+import re
 import time
 import traceback
 import pymxs
@@ -9,7 +10,7 @@ from pymxs import runtime as r
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = Path(str(r.MCPFixtureDir)).resolve()
-assert OUT.parent == ROOT / 'build/mcp-qualification' and OUT.name.startswith('foundation-roadmap-p02-')
+assert OUT.parent == ROOT / 'build/mcp-qualification' and OUT.name.startswith('foundation-roadmap-')
 data = {'status': 'started', 'checks': [], 'runtime': json.loads((OUT / 'runtime.json').read_text()) if (OUT / 'runtime.json').exists() else json.loads((OUT / 'launch.json').read_text())}
 run = Path(str(r.MCPFixtureLast)).stem
 
@@ -74,7 +75,7 @@ try:
         root = node.baseObject
         root.updateMode = 1
         root.autoRender = False
-        check(str(root.uiVersion()) == '0.82.0' and r.cyrusPresetVersion() == 1, 'Matched development version and codec')
+        check(str(root.uiVersion()) == re.search(r'fn uiVersion = "([^"]+)"', (ROOT / 'AminScatter/tools/ui/templates/unified-core.ms').read_text(encoding='utf-8'))[1] and r.cyrusPresetVersion() == 1, 'Matched development version and codec')
         receiver = r.plane(name='P02 receiver', length=30, width=30, lengthsegs=1, widthsegs=1)
         source = r.box(name='P02 source', length=.1, width=.1, height=.3, pos=r.Point3(-100, -100, 0))
         for amount in (40, 60):

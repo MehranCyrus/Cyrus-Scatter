@@ -466,6 +466,46 @@
         "name": "aaRadius"
       },
       {
+        "kind": "checkbox",
+        "name": "slopeCheck"
+      },
+      {
+        "kind": "spinner",
+        "name": "slopeMinSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "slopeMaxSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "slopeLowerSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "slopeUpperSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "altitudeMinSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "altitudeMaxSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "altitudeLowerSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "altitudeUpperSpin"
+      },
+      {
+        "kind": "checkbox",
+        "name": "altitudeCheck"
+      },
+      {
         "kind": "dropdownlist",
         "name": "fallTarget"
       },

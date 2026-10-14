@@ -1,5 +1,5 @@
 (
-    if not matchPattern MCPFixtureDir pattern:"*/build/mcp-qualification/foundation-roadmap-p02-*/" do throw "Owned P02 host required"
+    if not matchPattern MCPFixtureDir pattern:"*/build/mcp-qualification/foundation-roadmap-*/" do throw "Owned P02 host required"
     global P02LiveNode,P02LiveRoot,P02LiveLeaf,P02LiveEpoch,P02LiveTarget,P02LiveBefore,P02LiveProposal
     deleteFile (MCPFixtureDir+"phase02-live-ready.txt")
     CyrusPerfHeadless=true;resetMaxFile #noPrompt

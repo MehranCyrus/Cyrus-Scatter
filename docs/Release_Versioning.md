@@ -2,8 +2,8 @@
 
 | Domain | Current value | Meaning |
 | --- | --- | --- |
-| Scatter UI | 0.82.0 | Named settings and curve presets; scoped qualification recorded in P02 |
-| Scatter native/package | 0.82.0 native candidate / 0.81.6 installed | Matched private P02 builds; no new package or normal installation |
+| Scatter UI | 0.83.0 | Slope and altitude eligibility; scoped qualification recorded in P03 |
+| Scatter native/package | 0.83.0 native candidate / 0.81.6 installed | Matched private P03 builds; no new package or normal installation |
 | Saved MAXScript schema | 58 | Independent saved Band scale profiles; current-only scenes, no earlier-schema migration |
 | Calculation model | CyrusUnified1 | Current procedural model |
 | Surface Analyzer | 0.14 | Independently versioned product |
@@ -113,3 +113,12 @@ Before delivery, regenerate UI, run appropriate offline/native/host checks, pack
 0.78.2 removed repeated brush panel layout and refreshed borders from Painter input callbacks. 0.78.3 preserves those changes, corrects cursor radius, repairs source-container selection, adds collection switches and unfolds Painting controls. Schema 55 and the vector payload remain unchanged. The new source-container flag defaults off, including in older saved rectangles without that flag. Separate Max 2026 and 2027 binaries/installers are required.
 
 - **0.79.1**: Point identities and direct spline assignment, separate source-container section, accessible source/falloff controls and area-selection fixes. Retains schema 55 and the 0.79 team licensing authority; Analyzer 0.14 and MCP 0.73.0 are independently versioned. See the [focused qualification](Point_Workflow_0.79.1_2026-10-11/README.md).
+
+## P03 development decision — 14 October 2026
+
+0.82.0 to 0.83.0 adds per-layer slope/altitude eligibility and inside fades, with
+protected Edit behavior and independent random thinning. This coherent feature
+warrants a minor version. Saved schema 58 and existing interfaces retain their
+meaning; new neutral fields and native surface-filter capability 1 are added.
+Independent products and the normal installed 0.81.6 package are unchanged.
+See [P03](plans/eleven-phase-roadmap/P03.md) for exact evidence and limits.

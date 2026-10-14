@@ -1,9 +1,9 @@
 {
   "schema": "cyrus.feature-catalog/1.0",
   "authority": "Help only. Tool dispatch, closed schema and local approval determine authority.",
-  "capability_source_sha256": "d4f0258028dd35991826a2855fc76162700a4889c826b90b9b626df04769047e",
-  "control_inventory_sha256": "04cd5be65a084377ba63f7e816e4201d8830488799a5f23c6d48aaec18e16ad6",
-  "development_version": "0.82.0",
+  "capability_source_sha256": "0562c387e45866efcef0572c64e18454c5efddd559cbe29f393bbb8bc3e6869c",
+  "control_inventory_sha256": "a85f9e77d497289171b9b606dd5e9344a8e46cc48668ccaf3f19a91f25a58d35",
+  "development_version": "0.83.0",
   "mcp_version": "0.73.0",
   "calculation_model": "CyrusUnified1",
   "features": [
@@ -251,6 +251,13 @@
       "native": "Local typed population, transforms, effective spacing rules, density/scale curves; atomic user-library files, unit conversion, single Undo Apply and passive browsing",
       "mcp": "Catalog help only; no preset filesystem or application tool",
       "qualification_or_extension": "Current Max qualification is recorded in the eleven-phase P02 handoff; full planting recipes belong to P10"
+    },
+    {
+      "feature_id": "C36",
+      "title": "Slope and altitude eligibility",
+      "native": "Development implementation: per-layer world-up geometric slope, world-Z anchors, inside fades, protected Edit bypass",
+      "mcp": "No authoring write; documentation only",
+      "qualification_or_extension": "P03 scoped Max qualification passed; independent eligibility channel, post-Relax/Edit placement, atomic cached diagnostics"
     }
   ],
   "controls": [
@@ -1800,6 +1807,136 @@
       ],
       "owner_context": "Layer Area/falloff",
       "help": "Radius of each Analyzer point mask.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "kind": "checkbox",
+      "name": "slopeCheck",
+      "capabilities": [
+        "C36"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Eligibility from world up: 0 degrees upward, 90 vertical, 180 underside. Protected Edit plants are retained.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "kind": "spinner",
+      "name": "slopeMinSpin",
+      "capabilities": [
+        "C36"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Minimum slope in degrees. Zero inside fade includes this endpoint.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "kind": "spinner",
+      "name": "slopeMaxSpin",
+      "capabilities": [
+        "C36"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Maximum slope in degrees; plant alignment does not affect surface slope.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "kind": "spinner",
+      "name": "slopeLowerSpin",
+      "capabilities": [
+        "C36"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Inside fade above the minimum, in degrees. Fades must not overlap.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "kind": "spinner",
+      "name": "slopeUpperSpin",
+      "capabilities": [
+        "C36"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Inside fade below the maximum, in degrees. Fades must not overlap.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "kind": "spinner",
+      "name": "altitudeMinSpin",
+      "capabilities": [
+        "C36"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Minimum world Z of the final receiver anchor, before source offsets.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "kind": "spinner",
+      "name": "altitudeMaxSpin",
+      "capabilities": [
+        "C36"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Maximum world Z of the final receiver anchor, in scene units.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "kind": "spinner",
+      "name": "altitudeLowerSpin",
+      "capabilities": [
+        "C36"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Inside fade above minimum height. Zero keeps the hard endpoint.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "kind": "spinner",
+      "name": "altitudeUpperSpin",
+      "capabilities": [
+        "C36"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Inside fade below maximum height. Fades must not overlap.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "areaUI",
+      "kind": "checkbox",
+      "name": "altitudeCheck",
+      "capabilities": [
+        "C36"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "World Z eligibility. Fades reduce density inside the range; source Z offsets do not change eligibility.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },

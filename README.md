@@ -2,13 +2,13 @@
 
 Native C++ and generated MAXScript for Cyrus Scatter and Cyrus Surface Analyzer in 3ds Max.
 
-**Current development source: Scatter 0.82.0 / schema 58 / CyrusUnified1.** The [Phase 2 preset record](docs/plans/eleven-phase-roadmap/P02.md) tracks typed settings/curve presets, their Max qualification and remaining acceptance. Phase 1 feedback is committed and pushed. The eleven-phase program continues with agent-run testing; artist acceptance follows the complete program.
+**Current development source: Scatter 0.83.0 / schema 58 / CyrusUnified1.** The [Phase 3 surface-filter record](docs/plans/eleven-phase-roadmap/P03.md) tracks slope/altitude eligibility, its Max qualification and remaining acceptance. Phases 1 and 2 are committed and pushed. The eleven-phase program continues with agent-run testing; artist acceptance follows the complete program.
 
 **Preceding 0.81.7 baseline:** The [viewport correction record](docs/plans/terrace-0815/VIEWPORT_0817.md) is the current handoff for zero-limit Point Cloud preparation and mode-cache reuse. The preceding [adaptive viewport record](docs/plans/terrace-0815/VIEWPORT_0816.md) covers Mesh fallback and independent navigating/idle limits. The preceding [terrace work](docs/plans/terrace-0815/PROGRESS.md) covers: expanded bounded populations, compact source-rectangle selection, cheaper palette refreshes, bounded point preparation and viewport/render source-frame parity. It records exact source/build identities, successful checks, failed iterations and remaining acceptance. The [spline Bands record](docs/plans/spline-bands/PROGRESS.md) preserves preceding feature evidence. **0.81.6 is packaged and installed on disk for Max 2026 and 2027**; the [installation record](docs/plans/terrace-0815/INSTALLATION_0816.md) pins packages, backups and the subsequent Max 2027 loaded-module check. Artist terrace acceptance remains pending. This is ongoing development, not release certification. The [offline team licensing pilot](docs/licensing/TEAM_PILOT_0.79_2026-10-11.md) describes unchanged activation and expiry behavior. Analyzer remains 0.14; MCP package/plan remain 0.73.0/0.73.
 
 ## Start here
 
-Start with the [engineering foundation](docs/ENGINEERING_FOUNDATION.md) for the relevant behavioral contracts and the [current implementation evidence](docs/plans/eleven-phase-roadmap/P02.md) for their measured limits. The [0.79.6 foundation correction](docs/Foundation_0.79.6_2026-10-12/README.md) and 0.79.5 [creation-icon correction](docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md) are historical source/package witnesses.
+Start with the [engineering foundation](docs/ENGINEERING_FOUNDATION.md) for the relevant behavioral contracts and the [current implementation evidence](docs/plans/eleven-phase-roadmap/P03.md) for their measured limits. The [0.79.6 foundation correction](docs/Foundation_0.79.6_2026-10-12/README.md) and 0.79.5 [creation-icon correction](docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md) are historical source/package witnesses.
 
 | Need | Maintained document |
 | --- | --- |

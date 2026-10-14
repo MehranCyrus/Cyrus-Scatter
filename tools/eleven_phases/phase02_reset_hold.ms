@@ -1,6 +1,6 @@
 -- Recovery of this disposable qualification scene after failed nested-hold tests.
 (
- if not matchPattern MCPFixtureDir pattern:"*/build/mcp-qualification/foundation-roadmap-p02-*/" do throw "Owned P02 host required"
+ if not matchPattern MCPFixtureDir pattern:"*/build/mcp-qualification/foundation-roadmap-*/" do throw "Owned P02 host required"
  local count=0
  if CyrusPresetBrowser!=undefined do destroyDialog CyrusPresetBrowser
  if CyrusFalloffGraph!=undefined do (CyrusFalloffGraph.loading=true;destroyDialog CyrusFalloffGraph)

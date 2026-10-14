@@ -1,4 +1,4 @@
-global CyrusLoadedScriptFingerprint="b7145658f441c47213466b68f88aa73c6c163dffe25fd9b1ce0d43e355231555"
+global CyrusLoadedScriptFingerprint="8687d9bf4b287eb2eac1a1223b4363dd38c6e9847a761243624bf6f60b7976c4"
 global CyrusOpenLicenseDialog,CyrusLicenseDialog,CyrusRequireAuthor,CyrusLicenseCanEdit
 fn CyrusRequireAuthor = (
     if cyrusLicenseAllows==undefined do throw "Load the matching licensed Cyrus 0.80.0 native modules and restart Max."
@@ -676,9 +676,10 @@ fn AminScatterSourceFilter n = (
 )
 try(unRegisterRedrawViewsCallback AminScatterObjectDraw)catch()
 
+global AminScatterSurfaceFilterFields=#(#slopeEnabled,#slopeMinimum,#slopeMaximum,#slopeLowerFade,#slopeUpperFade,#altitudeEnabled,#altitudeMinimum,#altitudeMaximum,#altitudeLowerFade,#altitudeUpperFade)
 global AminScatterLayerFields, AminScatterLayerTabs
 global AminScatterCopyLayer, AminScatterRefreshLayerPanels
-AminScatterLayerFields=#(#procOrder,#procSetOrder,#procSamplingSalt,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procRadiusBinding,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverID,#containerMode,#containerNodes,#logicalParentID,#paintSetName,#paintSetEnabled,#paintSetVisible,#paintView,#paintColor,#paintDocument,#paintEnabled,#paintDensity,#streetTrimStart,#streetTrimEnd,#centerStreetOffset,#areaAnalyzer,#areaUseLine,#areaLineWidth,#areaLineCaps,#areaUsePoints,#areaPointRadius,#wholeScaleMin,#wholeScaleMax,#fallScaleGraph,#fallDensityGraph,#areaFallConfigs,#areaFallDeleteWidths,#areaFallScaleWidths,#areaFallDensityWidths,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallAnalyzer,#fallDelete,#fallDeleteWidth,#fallScale,#fallScaleWidth,#fallScaleCurve,#fallDensity,#fallDensityWidth,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeKeepCorners,#edgeCornerAngle,#edgeCornerCount,#edgeFaceOut,#edgeCornerRadius,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#borderFaceOut,#streetFaceOut,#borderCornerRadius,#streetCornerRadius,#sourceForwardAxes,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius,#streetStraight,#sourcePoint,#sourceEmpty,#cleanupPlanar,#sourceZOffsetsWU,#sourceScales,#sourceWeights,#showCenters,#relaxEnabled,#relaxSpacing,#relaxIterations,#relaxStrength,#sources,#bakedNodes,#amount,#randomSeed,#scaleMinimum,#scaleMaximum,#tiltDegrees,#yawMinimum,#yawMaximum,#movementRange,#alignNormal,#showPoints,#pointsPerPlant,#updateMode,#populationMode,#plantsPerM2,#advancedAxes,#projectMove,#rotXMin,#rotXMax,#rotYMin,#rotYMax,#rotZMin,#rotZMax,#sclXMin,#sclXMax,#sclYMin,#sclYMax,#sclZMin,#sclZMax,#movXMinWU,#movXMaxWU,#movYMinWU,#movYMaxWU,#movZMinWU,#movZMaxWU,#distributionMode,#densityMap,#invertDensity,#diversityMode,#diversitySize,#diversitySeed,#roughness,#blurryEdge,#diversityNoise,#autoRender,#previewBudget,#pointColorMode,#solidPointColor,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths,#fieldFalloff,#fieldBoundaries,#fieldCombined,#fieldSamples,#fieldBandID)
+AminScatterLayerFields=#(#slopeEnabled,#slopeMinimum,#slopeMaximum,#slopeLowerFade,#slopeUpperFade,#altitudeEnabled,#altitudeMinimum,#altitudeMaximum,#altitudeLowerFade,#altitudeUpperFade,#procOrder,#procSetOrder,#procSamplingSalt,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procRadiusBinding,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverID,#containerMode,#containerNodes,#logicalParentID,#paintSetName,#paintSetEnabled,#paintSetVisible,#paintView,#paintColor,#paintDocument,#paintEnabled,#paintDensity,#streetTrimStart,#streetTrimEnd,#centerStreetOffset,#areaAnalyzer,#areaUseLine,#areaLineWidth,#areaLineCaps,#areaUsePoints,#areaPointRadius,#wholeScaleMin,#wholeScaleMax,#fallScaleGraph,#fallDensityGraph,#areaFallConfigs,#areaFallDeleteWidths,#areaFallScaleWidths,#areaFallDensityWidths,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallAnalyzer,#fallDelete,#fallDeleteWidth,#fallScale,#fallScaleWidth,#fallScaleCurve,#fallDensity,#fallDensityWidth,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeKeepCorners,#edgeCornerAngle,#edgeCornerCount,#edgeFaceOut,#edgeCornerRadius,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#borderFaceOut,#streetFaceOut,#borderCornerRadius,#streetCornerRadius,#sourceForwardAxes,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius,#streetStraight,#sourcePoint,#sourceEmpty,#cleanupPlanar,#sourceZOffsetsWU,#sourceScales,#sourceWeights,#showCenters,#relaxEnabled,#relaxSpacing,#relaxIterations,#relaxStrength,#sources,#bakedNodes,#amount,#randomSeed,#scaleMinimum,#scaleMaximum,#tiltDegrees,#yawMinimum,#yawMaximum,#movementRange,#alignNormal,#showPoints,#pointsPerPlant,#updateMode,#populationMode,#plantsPerM2,#advancedAxes,#projectMove,#rotXMin,#rotXMax,#rotYMin,#rotYMax,#rotZMin,#rotZMax,#sclXMin,#sclXMax,#sclYMin,#sclYMax,#sclZMin,#sclZMax,#movXMinWU,#movXMaxWU,#movYMinWU,#movYMaxWU,#movZMinWU,#movZMaxWU,#distributionMode,#densityMap,#invertDensity,#diversityMode,#diversitySize,#diversitySeed,#roughness,#blurryEdge,#diversityNoise,#autoRender,#previewBudget,#pointColorMode,#solidPointColor,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths,#fieldFalloff,#fieldBoundaries,#fieldCombined,#fieldSamples,#fieldBandID)
 AminScatterLayerTabs=#(#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#containerNodes,#areaFallConfigs,#areaFallDeleteWidths,#areaFallScaleWidths,#areaFallDensityWidths,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallScaleCurve,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#sourceForwardAxes,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius,#sourcePoint,#sourceEmpty,#sourceZOffsetsWU,#sourceScales,#sourceWeights,#sources,#bakedNodes,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths)
 fn AminScatterCopyLayer origin destination = (
     origin.procAssertSchema()
@@ -2398,7 +2399,7 @@ initialRollupState:0x8
         -- Only a committed calculation epoch establishes its first result.
         CyrusLayerStatusData hasResult:(procEpoch>0 and cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
     )
-    fn uiVersion = "0.82.0"
+    fn uiVersion = "0.83.0"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified1")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -2460,6 +2461,58 @@ initialRollupState:0x8
     fn previewStats = (#(previewBuildCount,previewBuildMs,cachedPointCount))
     fn statusText = (
         if previewError!="" then previewError else (generatedCount as string)+" / "+(requestedCount as string)+" plants; "+(cachedPointCount as string)+(if viewportMode==1 then " points" else " shown instances")+(if densityCapped then " (density capped at 1,000,000)" else "")
+    )
+    -- Eligibility is separate from candidate generation and Edit binding.
+    parameters surfaceFilterSettings (
+        slopeEnabled type:#boolean default:false
+        slopeMinimum type:#float default:0
+        slopeMaximum type:#float default:180
+        slopeLowerFade type:#float default:0
+        slopeUpperFade type:#float default:0
+        altitudeEnabled type:#boolean default:false
+        altitudeMinimum type:#worldUnits default:0
+        altitudeMaximum type:#worldUnits default:1000
+        altitudeLowerFade type:#worldUnits default:0
+        altitudeUpperFade type:#worldUnits default:0
+        on slopeEnabled postSet value do markInputDirty()
+        on slopeMinimum postSet value do markInputDirty()
+        on slopeMaximum postSet value do markInputDirty()
+        on slopeLowerFade postSet value do markInputDirty()
+        on slopeUpperFade postSet value do markInputDirty()
+        on altitudeEnabled postSet value do markInputDirty()
+        on altitudeMinimum postSet value do markInputDirty()
+        on altitudeMaximum postSet value do markInputDirty()
+        on altitudeLowerFade postSet value do markInputDirty()
+        on altitudeUpperFade postSet value do markInputDirty()
+
+        on slopeEnabled preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=slopeEnabled and not (cyrusLicenseAllows()) then slopeEnabled else value)
+        on slopeMinimum preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=slopeMinimum and not (cyrusLicenseAllows()) then slopeMinimum else value)
+        on slopeMaximum preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=slopeMaximum and not (cyrusLicenseAllows()) then slopeMaximum else value)
+        on slopeLowerFade preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=slopeLowerFade and not (cyrusLicenseAllows()) then slopeLowerFade else value)
+        on slopeUpperFade preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=slopeUpperFade and not (cyrusLicenseAllows()) then slopeUpperFade else value)
+        on altitudeEnabled preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=altitudeEnabled and not (cyrusLicenseAllows()) then altitudeEnabled else value)
+        on altitudeMinimum preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=altitudeMinimum and not (cyrusLicenseAllows()) then altitudeMinimum else value)
+        on altitudeMaximum preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=altitudeMaximum and not (cyrusLicenseAllows()) then altitudeMaximum else value)
+        on altitudeLowerFade preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=altitudeLowerFade and not (cyrusLicenseAllows()) then altitudeLowerFade else value)
+        on altitudeUpperFade preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=altitudeUpperFade and not (cyrusLicenseAllows()) then altitudeUpperFade else value)
+    )
+    fn surfaceFilterPayload = (for key in AminScatterSurfaceFilterFields collect getProperty this key)
+    fn surfaceFilterKey = (
+        if not slopeEnabled and not altitudeEnabled then "off" else (
+            local stream=stringStream ""
+            with printAllElements on (format "%|%" (if slopeEnabled then #(slopeMinimum,slopeMaximum,slopeLowerFade,slopeUpperFade) else #()) (if altitudeEnabled then #(altitudeMinimum,altitudeMaximum,altitudeLowerFade,altitudeUpperFade) else #()) to:stream)
+            stream as string
+        )
+    )
+    local procPreparedSurfaceStats=#(0,0,0),procLastSurfaceStats=#(0,0,0)
+    fn surfaceFilterStats = (procLastSurfaceStats as array)
+    fn applySurfaceFilter rows = (
+        if not slopeEnabled and not altitudeEnabled then (procPreparedSurfaceStats=#(-1,0,0);rows) else (
+            local targets=this.validSurfaces()
+            local keys=for target in targets collect (local slot=findItem procReceiverNodes target;#(slot,procReceiverIDs[slot]))
+            local filtered=cyrusSurfaceFilter rows targets keys (this.effectiveSeed()) (this.surfaceFilterPayload())
+            procPreparedSurfaceStats=filtered[2];filtered[1]
+        )
     )
     parameters layerSettings (
         layerID type:#string default:""
@@ -2810,7 +2863,7 @@ initialRollupState:0x8
             format "EffectiveRelax:%|" (relaxEnabled and not this.layerPaintActive()) to:stream
             format "FinalRelax:%:%:%:%|" finalRelax finalStrength finalIterations finalMaxMove to:stream
             format "Texture:%|" (this.procWatchDensity()) to:stream
-            for key in AminScatterLayerFields where findItem #(#paintDocument,#paintEnabled,#paintDensity,#bakedNodes,#showPoints,#pointsPerPlant,#updateMode,#autoRender,#previewBudget,#pointColorMode,#solidPointColor) key==0 and findItem post key==0 and findItem #(#paintView,#paintColor,#showCenters,#sourceShowRadius,#paintSetName,#paintSetVisible,#fieldFalloff,#fieldBoundaries,#fieldCombined,#fieldSamples,#fieldBandID) key==0 and (not receiverLocal or findItem #(#amount,#plantsPerM2,#populationMode) key==0) do format "%:%|" key (if key==#sources then this.containerSourceKey (sources as array) else getProperty this key) to:stream
+            for key in AminScatterLayerFields where findItem AminScatterSurfaceFilterFields key==0 and findItem #(#paintDocument,#paintEnabled,#paintDensity,#bakedNodes,#showPoints,#pointsPerPlant,#updateMode,#autoRender,#previewBudget,#pointColorMode,#solidPointColor) key==0 and findItem post key==0 and findItem #(#paintView,#paintColor,#showCenters,#sourceShowRadius,#paintSetName,#paintSetVisible,#fieldFalloff,#fieldBoundaries,#fieldCombined,#fieldSamples,#fieldBandID) key==0 and (not receiverLocal or findItem #(#amount,#plantsPerM2,#populationMode) key==0) do format "%:%|" key (if key==#sources then this.containerSourceKey (sources as array) else getProperty this key) to:stream
             for n in ((if receiverLocal then #() else this.validSurfaces())+(sources as array)+(areaNodes as array)+(patternLines as array)+#(analyzerNode,areaAnalyzer,fallAnalyzer)) where isValidNode n do (
                 local tm=n.objectTransform
                 if this.containerProvider()!=undefined and findItem sources n>0 do tm.row4=[0,0,0]
@@ -3399,7 +3452,7 @@ initialRollupState:0x8
             format "%:%:%:%:%|" procRuleB procRuleEnabled procRuleMultiplier procRuleGapWU procRulePlanar to:stream
             for parent in this.logicalLayers() do for leaf in this.layerSets parent do (
                 leaf.containerRefresh()
-                format "Membership:%|" leaf.containerMembershipKey to:stream
+                format "Membership:%|Filter:%|" leaf.containerMembershipKey (leaf.surfaceFilterKey()) to:stream
                 format "Texture:%|" (leaf.procWatchDensity()) to:stream
                 format "%:%:%:%:%:%|" leaf.layerID leaf.logicalParentID leaf.procReceiverID leaf.procRadiusBinding (leaf.paintBaseInputKey (leaf.validSources()) true) (leaf.procCoverageKey()) to:stream
                 for key in #(#procOrder,#procSetOrder,#procSamplingSalt,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procSourceIDs,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#cleanupPlanar) do format "%:%|" key (getProperty leaf key) to:stream
@@ -3416,7 +3469,7 @@ initialRollupState:0x8
         (overlapOwner.populationAllocation this countOverride:budget)[1]
     )
     fn procPrepare pool plants = (
-        local key=(this.paintBaseInputKey plants true)+"|Texture:"+(this.procWatchDensity() as string)+"|Pool:"+(pool as string)+"|"+(this.procCoverageKey())+"|"+(overlapOwner.procEditKey())
+        local key=(this.paintBaseInputKey plants true)+"|Texture:"+(this.procWatchDensity() as string)+"|Pool:"+(pool as string)+"|"+(this.procCoverageKey())+"|"+(overlapOwner.procEditKey())+"|Filter:"+(this.surfaceFilterKey())
         if key==procPreparedKey do (CyrusDiagnosticEmit "prepare.reused" "engine" layerID procEpoch "key_match";procPreparedHits+=1;return procPreparedRows)
         CyrusDiagnosticEmit "prepare.started" "engine" layerID procEpoch "key_changed"
         local rows
@@ -3430,23 +3483,24 @@ initialRollupState:0x8
         )
         procBindingKey=this.procBinding plants rows
         rows=CyrusEditApplyLayer overlapOwner this rows
+        rows=this.applySurfaceFilter rows
         procPreparedRows=rows;procPreparedKey=key;procPreparedBuilds+=1
         rows
     )
     fn procAssertSchema = (
-        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.82.0 setup; earlier schemas are unsupported."
+        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.83.0 setup; earlier schemas are unsupported."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
     fn procValidate = (
         this.procAssertSchema()
-        if cyrusPresetVersion==undefined or cyrusPresetVersion()!=1 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.82.0 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
+        if cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=1 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.83.0 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
             for leaf in this.layerSets parent where this.enabledLayer (findItem layerObjects leaf) do (
-                if cyrusEnabled do leaf.requireCurrentAnalyzers()
+                if cyrusEnabled do (leaf.requireCurrentAnalyzers();cyrusValidateSurfaceFilter (leaf.surfaceFilterPayload()))
                 if parent.procPopulation==2 and leaf.diversityMode==3 do (
                     leaf.syncStrokes()
                     if leaf.bandArrangement==2 do throw "Independent Bands require Candidate budget. Accepted target would refill their density."
@@ -3613,10 +3667,10 @@ initialRollupState:0x8
         procPreviewInspectionKey=state[17];procFieldCache=state[18];procFieldCacheKey=state[19];procFieldStatus=state[20]
         procPreviewModes=state[21];procPreviewModesEpoch=state[22]
     )
-    fn procResultState = (#(this.procPreviewState(),procLastStats,procLastRounds,procEpoch,requestedCount,groupEligible,groupRemoved,groupConflicts,overlapBefore,overlapAfter))
+    fn procResultState = (#(this.procPreviewState(),procLastStats,procLastRounds,procEpoch,requestedCount,groupEligible,groupRemoved,groupConflicts,overlapBefore,overlapAfter,procLastSurfaceStats))
     fn procRestoreResult state = (
         this.procRestorePreview state[1];procLastStats=state[2];procLastRounds=state[3];procEpoch=state[4];requestedCount=state[5]
-        groupEligible=state[6];groupRemoved=state[7];groupConflicts=state[8];overlapBefore=state[9];overlapAfter=state[10]
+        groupEligible=state[6];groupRemoved=state[7];groupConflicts=state[8];overlapBefore=state[9];overlapAfter=state[10];procLastSurfaceStats=state[11]
     )
     fn procInstallPreview state pending = (
         inputTimeObserved=state[12]
@@ -3760,6 +3814,7 @@ initialRollupState:0x8
             for i=1 to layerObjects.count do (
                 local leaf=layerObjects[i]
                 leaf.procLastStats=stats[i];leaf.procLastRounds=rounds[i];leaf.procEpoch=procEpoch
+                leaf.procLastSurfaceStats=if cyrusEnabled and this.enabledLayer i then leaf.procPreparedSurfaceStats as array else #(0,0,0)
                 leaf.requestedCount=requests[i][1]
                 -- Unconsumed refill capacity is not a rejected plant.
                 leaf.setGroupResult (stats[i][1]-stats[i][9]) stats[i][2] stats[i][4]
@@ -3856,7 +3911,7 @@ initialRollupState:0x8
         if (CyrusContainerPanel this).controlsReady do (CyrusContainerPanel this).bind()
         true
     )
-    rollout mainUI "Cyrus Scatter 0.82.0" width:#cmdPanel height:140 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.83.0" width:#cmdPanel height:140 autoLayoutOnResize:true (
         local view=undefined,root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),owner=undefined,layerPagesVisible=false,pagesArranged=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for the entire setup."
         radiobuttons updateRadio "Viewport update" labels:#("Manual","Live") columns:2 pos:[8,26] width:(mainUI.width-16) tooltip:"Manual waits for Update. Live calculates after relevant edits."
@@ -3929,7 +3984,7 @@ initialRollupState:0x8
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.82.0 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.83.0 native plugin and restart Max."
             root=view
             editors=#(view.managerUI,view.surfacesUI,view.modelsUI,view.containersUI,view.layoutUI,view.populationUI,view.coverageUI,view.areasUI,view.transformsUI,view.spacingUI,view.displayUI,view.statisticsUI)
             if root==undefined do (
@@ -7912,6 +7967,25 @@ initialRollupState:0x8
         spinner areaUI_aaRadius "" range:[0,1e9,100] type:#worldunits pos:[8,8] width:((areasUI.width-16-((amin 1 (amax 1 (floor ((areasUI.width-8)/118.4))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI.width-8)/118.4))))) fieldWidth:58 tooltip:"Radius of each Analyzer point mask."
         label areaUI_aaRadius_caption "Radius:" pos:[6,6] width:(areasUI.width-12) height:18
         label areaUI_aaHelp "XY mask. Both enabled = union. Works with Random / Clusters." pos:[8,8] width:((areasUI.width-16-((amin 1 (amax 1 (floor ((areasUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI.width-8)/58))))) height:40
+        checkbox areaUI_slopeCheck "Filter slope" pos:[8,8] width:180 tooltip:"Eligibility from world up: 0 degrees upward, 90 vertical, 180 underside. Protected Edit plants are retained."
+        spinner areaUI_slopeMinSpin "" type:#float range:[0,180,0] pos:[8,8] width:((areasUI.width-16-((amin 2 (amax 1 (floor ((areasUI.width-8)/134))))-1)*4)/(amin 2 (amax 1 (floor ((areasUI.width-8)/134))))) fieldWidth:58 tooltip:"Minimum slope in degrees. Zero inside fade includes this endpoint."
+        label areaUI_slopeMinSpin_caption "Min slope:" pos:[6,6] width:(areasUI.width-12) height:18
+        spinner areaUI_slopeMaxSpin "" type:#float range:[0,180,180] pos:[8,8] width:((areasUI.width-16-((amin 2 (amax 1 (floor ((areasUI.width-8)/134))))-1)*4)/(amin 2 (amax 1 (floor ((areasUI.width-8)/134))))) fieldWidth:58 tooltip:"Maximum slope in degrees; plant alignment does not affect surface slope."
+        label areaUI_slopeMaxSpin_caption "Max slope:" pos:[6,6] width:(areasUI.width-12) height:18
+        spinner areaUI_slopeLowerSpin "" type:#float range:[0,180,0] pos:[8,8] width:((areasUI.width-16-((amin 2 (amax 1 (floor ((areasUI.width-8)/139.2))))-1)*4)/(amin 2 (amax 1 (floor ((areasUI.width-8)/139.2))))) fieldWidth:58 tooltip:"Inside fade above the minimum, in degrees. Fades must not overlap."
+        label areaUI_slopeLowerSpin_caption "Lower fade:" pos:[6,6] width:(areasUI.width-12) height:18
+        spinner areaUI_slopeUpperSpin "" type:#float range:[0,180,0] pos:[8,8] width:((areasUI.width-16-((amin 2 (amax 1 (floor ((areasUI.width-8)/139.2))))-1)*4)/(amin 2 (amax 1 (floor ((areasUI.width-8)/139.2))))) fieldWidth:58 tooltip:"Inside fade below the maximum, in degrees. Fades must not overlap."
+        label areaUI_slopeUpperSpin_caption "Upper fade:" pos:[6,6] width:(areasUI.width-12) height:18
+        spinner areaUI_altitudeMinSpin "" type:#worldunits range:[-1000000000.0,1000000000.0,0] pos:[8,8] width:((areasUI.width-16-((amin 2 (amax 1 (floor ((areasUI.width-8)/139.2))))-1)*4)/(amin 2 (amax 1 (floor ((areasUI.width-8)/139.2))))) fieldWidth:58 tooltip:"Minimum world Z of the final receiver anchor, before source offsets."
+        label areaUI_altitudeMinSpin_caption "Min height:" pos:[6,6] width:(areasUI.width-12) height:18
+        spinner areaUI_altitudeMaxSpin "" type:#worldunits range:[-1000000000.0,1000000000.0,1000] pos:[8,8] width:((areasUI.width-16-((amin 2 (amax 1 (floor ((areasUI.width-8)/139.2))))-1)*4)/(amin 2 (amax 1 (floor ((areasUI.width-8)/139.2))))) fieldWidth:58 tooltip:"Maximum world Z of the final receiver anchor, in scene units."
+        label areaUI_altitudeMaxSpin_caption "Max height:" pos:[6,6] width:(areasUI.width-12) height:18
+        spinner areaUI_altitudeLowerSpin "" type:#worldunits range:[0,1000000000.0,0] pos:[8,8] width:((areasUI.width-16-((amin 2 (amax 1 (floor ((areasUI.width-8)/139.2))))-1)*4)/(amin 2 (amax 1 (floor ((areasUI.width-8)/139.2))))) fieldWidth:58 tooltip:"Inside fade above minimum height. Zero keeps the hard endpoint."
+        label areaUI_altitudeLowerSpin_caption "Lower fade:" pos:[6,6] width:(areasUI.width-12) height:18
+        spinner areaUI_altitudeUpperSpin "" type:#worldunits range:[0,1000000000.0,0] pos:[8,8] width:((areasUI.width-16-((amin 2 (amax 1 (floor ((areasUI.width-8)/139.2))))-1)*4)/(amin 2 (amax 1 (floor ((areasUI.width-8)/139.2))))) fieldWidth:58 tooltip:"Inside fade below maximum height. Fades must not overlap."
+        label areaUI_altitudeUpperSpin_caption "Upper fade:" pos:[6,6] width:(areasUI.width-12) height:18
+        checkbox areaUI_altitudeCheck "Filter altitude" pos:[8,8] width:180 tooltip:"World Z eligibility. Fades reduce density inside the range; source Z offsets do not change eligibility."
+        label areaUI_filterInfo "Surface filters are off by default." pos:[8,8] width:((areasUI.width-16-((amin 1 (amax 1 (floor ((areasUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI.width-8)/58))))) height:54
         dropdownlist areaUI_fallTarget "" items:#("Analyzer Boundary","Selected Area line") selection:2 pos:[8,8] width:((areasUI.width-16-((amin 1 (amax 1 (floor ((areasUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI.width-8)/58))))) tooltip:"Edit Analyzer boundary falloff or one highlighted Area's independent falloff."
         label areaUI_fallTarget_caption "Edge falloff target" pos:[6,6] width:(areasUI.width-12) height:18
         pickbutton areaUI_fallPick "Pick Surface Analyzer" filter:CyrusAnalyzerFilter pos:[8,8] width:((areasUI.width-16-((amin 2 (amax 1 (floor ((areasUI.width-8)/127.2))))-1)*4)/(amin 2 (amax 1 (floor ((areasUI.width-8)/127.2))))) tooltip:"Choose the Analyzer whose boundary drives this falloff." height:22
@@ -7931,7 +8005,8 @@ initialRollupState:0x8
         label areaUI_fallHelp "Ramps start after delete band. Each Area line has its own settings." pos:[8,8] width:((areasUI.width-16-((amin 1 (amax 1 (floor ((areasUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI.width-8)/58))))) height:56
         checkbutton areaUI_detailsToggle "Analyzer masks and edge falloff" pos:[8,8] width:((areasUI.width-16-((amin 1 (amax 1 (floor ((areasUI.width-8)/179.20000000000002))))-1)*4)/(amin 1 (amax 1 (floor ((areasUI.width-8)/179.20000000000002))))) height:22 tooltip:"Show or hide these advanced controls; their saved settings are preserved."
         label heading_0 "Area limits - layer" pos:[6,6] width:(areasUI.width-12) height:18
-        label heading_1 "Boundary falloff" pos:[6,6] width:(areasUI.width-12) height:18
+        label heading_1 "Surface eligibility" pos:[6,6] width:(areasUI.width-12) height:18
+        label heading_2 "Boundary falloff" pos:[6,6] width:(areasUI.width-12) height:18
         dotNetControl areaUI_areaList_grip "System.Windows.Forms.Panel" pos:[6,6] width:100 height:8
         checkbutton advancedToggle "Advanced" pos:[6,6] width:(areasUI.width-12) height:22 tooltip:"Show less-used controls. Expanding this section does not calculate or change saved settings."
         local areaUI_bodyHeight=0
@@ -7943,6 +8018,61 @@ initialRollupState:0x8
         local areaUI_controlsReady=false
         local areaUI_loadingAnalyzerArea=false
         local areaUI_loadingFall=false
+        fn areaUI_syncSurfaceFilters = (
+            if areaUI_obj!=undefined do (
+                areaUI_slopeCheck.checked=areaUI_obj.slopeEnabled
+                areaUI_slopeMinSpin.value=areaUI_obj.slopeMinimum
+                areaUI_slopeMaxSpin.value=areaUI_obj.slopeMaximum
+                areaUI_slopeLowerSpin.value=areaUI_obj.slopeLowerFade
+                areaUI_slopeUpperSpin.value=areaUI_obj.slopeUpperFade
+                areaUI_altitudeCheck.checked=areaUI_obj.altitudeEnabled
+                areaUI_altitudeMinSpin.value=areaUI_obj.altitudeMinimum
+                areaUI_altitudeMaxSpin.value=areaUI_obj.altitudeMaximum
+                areaUI_altitudeLowerSpin.value=areaUI_obj.altitudeLowerFade
+                areaUI_altitudeUpperSpin.value=areaUI_obj.altitudeUpperFade
+                for c in #(areaUI_slopeMinSpin,areaUI_slopeMaxSpin,areaUI_slopeLowerSpin,areaUI_slopeUpperSpin) do c.enabled=areaUI_obj.slopeEnabled
+                for c in #(areaUI_altitudeMinSpin,areaUI_altitudeMaxSpin,areaUI_altitudeLowerSpin,areaUI_altitudeUpperSpin) do c.enabled=areaUI_obj.altitudeEnabled
+                local stats=areaUI_obj.surfaceFilterStats()
+                areaUI_filterInfo.text=if areaUI_obj.procEpoch==0 then "No calculated filter result yet." else if stats[1]<0 then "Filters off at last Update." else "Last Update: "+(stats[2] as string)+" of "+(stats[1] as string)+" prepared rows filtered; "+(stats[3] as string)+" protected."
+            )
+        )
+        fn areaUI_setSurfaceFilter key value = (
+            if areaUI_controlsReady and not areaUI_binding and areaUI_obj!=undefined do (
+                local target=areaUI_obj
+                undo "Cyrus surface filter" on (setProperty target key value)
+                areaUI_syncSurfaceFilters();CyrusViewportRedraw()
+            )
+        )
+        on areaUI_slopeCheck changed value do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (areaUI_setSurfaceFilter #slopeEnabled value
+            if controlsReady and root!=undefined do layout()
+        )
+        on areaUI_slopeMinSpin changed value do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (areaUI_setSurfaceFilter #slopeMinimum value
+            if controlsReady and root!=undefined do layout()
+        )
+        on areaUI_slopeMaxSpin changed value do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (areaUI_setSurfaceFilter #slopeMaximum value
+            if controlsReady and root!=undefined do layout()
+        )
+        on areaUI_slopeLowerSpin changed value do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (areaUI_setSurfaceFilter #slopeLowerFade value
+            if controlsReady and root!=undefined do layout()
+        )
+        on areaUI_slopeUpperSpin changed value do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (areaUI_setSurfaceFilter #slopeUpperFade value
+            if controlsReady and root!=undefined do layout()
+        )
+        on areaUI_altitudeCheck changed value do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (areaUI_setSurfaceFilter #altitudeEnabled value
+            if controlsReady and root!=undefined do layout()
+        )
+        on areaUI_altitudeMinSpin changed value do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (areaUI_setSurfaceFilter #altitudeMinimum value
+            if controlsReady and root!=undefined do layout()
+        )
+        on areaUI_altitudeMaxSpin changed value do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (areaUI_setSurfaceFilter #altitudeMaximum value
+            if controlsReady and root!=undefined do layout()
+        )
+        on areaUI_altitudeLowerSpin changed value do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (areaUI_setSurfaceFilter #altitudeLowerFade value
+            if controlsReady and root!=undefined do layout()
+        )
+        on areaUI_altitudeUpperSpin changed value do if controlsReady and not binding and root!=undefined and areaUI_controlsReady and not areaUI_binding and CyrusLicenseCanEdit() do (areaUI_setSurfaceFilter #altitudeUpperFade value
+            if controlsReady and root!=undefined do layout()
+        )
         fn areaUI_syncAnalyzerArea = (
             areaUI_loadingAnalyzerArea=true
             areaUI_aaPick.text=if isValidNode areaUI_obj.areaAnalyzer then areaUI_obj.areaAnalyzer.name else "Pick Surface Analyzer"
@@ -8096,8 +8226,8 @@ initialRollupState:0x8
             areaUI_binding=true;areaUI_controlsReady=false
             if areaUI_obj!=next do (areaUI_areaList.selection=#{};)
             areaUI_obj=next;areaUI_parentView=(CyrusContainerPanel areaUI_root)
-            for c in #(areaUI_areaList,areaUI_addAreaScene,areaUI_pickArea,areaUI_removeArea,areaUI_areaMode,areaUI_areaHint,areaUI_projectionHint,areaUI_refreshAreas,areaUI_aaTitle,areaUI_aaPick,areaUI_aaRemove,areaUI_aaLine,areaUI_aaWidth,areaUI_aaCaps,areaUI_aaStreetOffset,areaUI_aaPoints,areaUI_aaRadius,areaUI_aaHelp,areaUI_fallTarget,areaUI_fallPick,areaUI_fallRemove,areaUI_fallTargetName,areaUI_fallDeleteCheck,areaUI_fallDeleteSpin,areaUI_fallScaleCheck,areaUI_fallScaleSpin,areaUI_fallScaleEdit,areaUI_fallDensityCheck,areaUI_fallDensitySpin,areaUI_fallDensityEdit,areaUI_fallHelp,areaUI_detailsToggle) do c.enabled=layer!=undefined
-            try (undo off ((areaUI_syncAnalyzerArea();areaUI_syncFalloff();areaUI_controlsReady=true;areaUI_updateAreas()))) catch(areaUI_binding=false;areaUI_controlsReady=true;throw())
+            for c in #(areaUI_areaList,areaUI_addAreaScene,areaUI_pickArea,areaUI_removeArea,areaUI_areaMode,areaUI_areaHint,areaUI_projectionHint,areaUI_refreshAreas,areaUI_aaTitle,areaUI_aaPick,areaUI_aaRemove,areaUI_aaLine,areaUI_aaWidth,areaUI_aaCaps,areaUI_aaStreetOffset,areaUI_aaPoints,areaUI_aaRadius,areaUI_aaHelp,areaUI_slopeCheck,areaUI_slopeMinSpin,areaUI_slopeMaxSpin,areaUI_slopeLowerSpin,areaUI_slopeUpperSpin,areaUI_altitudeMinSpin,areaUI_altitudeMaxSpin,areaUI_altitudeLowerSpin,areaUI_altitudeUpperSpin,areaUI_altitudeCheck,areaUI_filterInfo,areaUI_fallTarget,areaUI_fallPick,areaUI_fallRemove,areaUI_fallTargetName,areaUI_fallDeleteCheck,areaUI_fallDeleteSpin,areaUI_fallScaleCheck,areaUI_fallScaleSpin,areaUI_fallScaleEdit,areaUI_fallDensityCheck,areaUI_fallDensitySpin,areaUI_fallDensityEdit,areaUI_fallHelp,areaUI_detailsToggle) do c.enabled=layer!=undefined
+            try (undo off ((areaUI_syncAnalyzerArea();areaUI_syncFalloff();areaUI_syncSurfaceFilters();areaUI_controlsReady=true;areaUI_updateAreas()))) catch(areaUI_binding=false;areaUI_controlsReady=true;throw())
             areaUI_controlsReady=true;areaUI_binding=false
         )
         fn areaUI_arrangeDetails = (
@@ -8299,6 +8429,93 @@ initialRollupState:0x8
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
+            rowControls=#(areaUI_slopeCheck);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/88.4))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(20))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(areaUI_slopeMinSpin,areaUI_slopeMaxSpin);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if areaUI_slopeMinSpin_caption.visible!=show do areaUI_slopeMinSpin_caption.visible=show;if areaUI_slopeMaxSpin_caption.visible!=show do areaUI_slopeMaxSpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/134))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel areaUI_slopeMinSpin_caption 18 cellWidth;fitLabel areaUI_slopeMaxSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<130;captionHeight=amax 0 (if stackedCaption then (amax #(areaUI_slopeMinSpin_caption.height,areaUI_slopeMaxSpin_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (areaUI_slopeMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];areaUI_slopeMinSpin_caption.width=cellWidth-78) else (areaUI_slopeMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];areaUI_slopeMinSpin_caption.width=cellWidth);areaUI_slopeMinSpin_caption.enabled=areaUI_slopeMinSpin.enabled;if not stackedCaption then (areaUI_slopeMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];areaUI_slopeMaxSpin_caption.width=cellWidth-78) else (areaUI_slopeMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];areaUI_slopeMaxSpin_caption.width=cellWidth);areaUI_slopeMaxSpin_caption.enabled=areaUI_slopeMaxSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(areaUI_slopeLowerSpin,areaUI_slopeUpperSpin);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if areaUI_slopeLowerSpin_caption.visible!=show do areaUI_slopeLowerSpin_caption.visible=show;if areaUI_slopeUpperSpin_caption.visible!=show do areaUI_slopeUpperSpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/139.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel areaUI_slopeLowerSpin_caption 18 cellWidth;fitLabel areaUI_slopeUpperSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<135.2;captionHeight=amax 0 (if stackedCaption then (amax #(areaUI_slopeLowerSpin_caption.height,areaUI_slopeUpperSpin_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (areaUI_slopeLowerSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];areaUI_slopeLowerSpin_caption.width=cellWidth-78) else (areaUI_slopeLowerSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];areaUI_slopeLowerSpin_caption.width=cellWidth);areaUI_slopeLowerSpin_caption.enabled=areaUI_slopeLowerSpin.enabled;if not stackedCaption then (areaUI_slopeUpperSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];areaUI_slopeUpperSpin_caption.width=cellWidth-78) else (areaUI_slopeUpperSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];areaUI_slopeUpperSpin_caption.width=cellWidth);areaUI_slopeUpperSpin_caption.enabled=areaUI_slopeUpperSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(areaUI_altitudeCheck);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/104))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(20))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(areaUI_altitudeMinSpin,areaUI_altitudeMaxSpin);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if areaUI_altitudeMinSpin_caption.visible!=show do areaUI_altitudeMinSpin_caption.visible=show;if areaUI_altitudeMaxSpin_caption.visible!=show do areaUI_altitudeMaxSpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/139.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel areaUI_altitudeMinSpin_caption 18 cellWidth;fitLabel areaUI_altitudeMaxSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<135.2;captionHeight=amax 0 (if stackedCaption then (amax #(areaUI_altitudeMinSpin_caption.height,areaUI_altitudeMaxSpin_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (areaUI_altitudeMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];areaUI_altitudeMinSpin_caption.width=cellWidth-78) else (areaUI_altitudeMinSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];areaUI_altitudeMinSpin_caption.width=cellWidth);areaUI_altitudeMinSpin_caption.enabled=areaUI_altitudeMinSpin.enabled;if not stackedCaption then (areaUI_altitudeMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];areaUI_altitudeMaxSpin_caption.width=cellWidth-78) else (areaUI_altitudeMaxSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];areaUI_altitudeMaxSpin_caption.width=cellWidth);areaUI_altitudeMaxSpin_caption.enabled=areaUI_altitudeMaxSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(areaUI_altitudeLowerSpin,areaUI_altitudeUpperSpin);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if areaUI_altitudeLowerSpin_caption.visible!=show do areaUI_altitudeLowerSpin_caption.visible=show;if areaUI_altitudeUpperSpin_caption.visible!=show do areaUI_altitudeUpperSpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/139.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel areaUI_altitudeLowerSpin_caption 18 cellWidth;fitLabel areaUI_altitudeUpperSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<135.2;captionHeight=amax 0 (if stackedCaption then (amax #(areaUI_altitudeLowerSpin_caption.height,areaUI_altitudeUpperSpin_caption.height)) else 0)
+                rowHeight=(amax #(22,22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (areaUI_altitudeLowerSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];areaUI_altitudeLowerSpin_caption.width=cellWidth-78) else (areaUI_altitudeLowerSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];areaUI_altitudeLowerSpin_caption.width=cellWidth);areaUI_altitudeLowerSpin_caption.enabled=areaUI_altitudeLowerSpin.enabled;if not stackedCaption then (areaUI_altitudeUpperSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight+1];areaUI_altitudeUpperSpin_caption.width=cellWidth-78) else (areaUI_altitudeUpperSpin_caption.pos=[6+(mod 1 columns)*(cellWidth+4),y+(floor (1/columns))*rowHeight];areaUI_altitudeUpperSpin_caption.width=cellWidth);areaUI_altitudeUpperSpin_caption.enabled=areaUI_altitudeUpperSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(areaUI_filterInfo);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel areaUI_filterInfo 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(areaUI_filterInfo.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(heading_2);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                if y>6 do y+=4
+                columns=1;cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel heading_2 18 cellWidth
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(heading_2.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
             rowControls=#(areaUI_fallTarget);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
             if areaUI_fallTarget_caption.visible!=show do areaUI_fallTarget_caption.visible=show
@@ -8497,7 +8714,7 @@ initialRollupState:0x8
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
                 areaUI_root=root;areaUI_owner=owner;areaUI_panel=panel;areaUI_controlsReady=controlsReady;areaUI_binding=binding
-            areaUI_detailsToggle.checked=true;if owner!=undefined then (areaUI_bind owner;) else (for c in #(areaUI_areaList,areaUI_addAreaScene,areaUI_pickArea,areaUI_removeArea,areaUI_areaMode,areaUI_areaHint,areaUI_projectionHint,areaUI_refreshAreas,areaUI_aaTitle,areaUI_aaPick,areaUI_aaRemove,areaUI_aaLine,areaUI_aaWidth,areaUI_aaCaps,areaUI_aaStreetOffset,areaUI_aaPoints,areaUI_aaRadius,areaUI_aaHelp,areaUI_fallTarget,areaUI_fallPick,areaUI_fallRemove,areaUI_fallTargetName,areaUI_fallDeleteCheck,areaUI_fallDeleteSpin,areaUI_fallScaleCheck,areaUI_fallScaleSpin,areaUI_fallScaleEdit,areaUI_fallDensityCheck,areaUI_fallDensitySpin,areaUI_fallDensityEdit,areaUI_fallHelp,areaUI_detailsToggle) do c.enabled=false;areaUI_controlsReady=false)
+            areaUI_detailsToggle.checked=true;if owner!=undefined then (areaUI_bind owner;) else (for c in #(areaUI_areaList,areaUI_addAreaScene,areaUI_pickArea,areaUI_removeArea,areaUI_areaMode,areaUI_areaHint,areaUI_projectionHint,areaUI_refreshAreas,areaUI_aaTitle,areaUI_aaPick,areaUI_aaRemove,areaUI_aaLine,areaUI_aaWidth,areaUI_aaCaps,areaUI_aaStreetOffset,areaUI_aaPoints,areaUI_aaRadius,areaUI_aaHelp,areaUI_slopeCheck,areaUI_slopeMinSpin,areaUI_slopeMaxSpin,areaUI_slopeLowerSpin,areaUI_slopeUpperSpin,areaUI_altitudeMinSpin,areaUI_altitudeMaxSpin,areaUI_altitudeLowerSpin,areaUI_altitudeUpperSpin,areaUI_altitudeCheck,areaUI_filterInfo,areaUI_fallTarget,areaUI_fallPick,areaUI_fallRemove,areaUI_fallTargetName,areaUI_fallDeleteCheck,areaUI_fallDeleteSpin,areaUI_fallScaleCheck,areaUI_fallScaleSpin,areaUI_fallScaleEdit,areaUI_fallDensityCheck,areaUI_fallDensitySpin,areaUI_fallDensityEdit,areaUI_fallHelp,areaUI_detailsToggle) do c.enabled=false;areaUI_controlsReady=false)
                 areaUI_binding=false;setupGrips();controlsReady=true;binding=false;layout();true
             )catch(binding=false;controlsReady=false;throw())
         )

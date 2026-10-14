@@ -7,6 +7,7 @@
 #include <maxscript/foundation/3dmath.h>
 #include <maxscript/maxwrapper/mxsobjects.h>
 #include "scatter.h"
+#include "surface_filter.h"
 #include "spline_bands.h"
 #include "execution.h"
 #include "group_spacing.h"
@@ -127,7 +128,7 @@ namespace {
 amin::Vec3 vec(Point3 p) { return {p.x,p.y,p.z}; }
 Point3 point(amin::Vec3 p) { return {static_cast<float>(p.x),static_cast<float>(p.y),static_cast<float>(p.z)}; }
 #include "placement_identity.inc"
-std::vector<amin::Triangle> meshOf(INode* node, bool world, bool requireUv=false) {
+std::vector<amin::Triangle> meshOf(INode* node, bool world, bool requireUv=false, std::size_t faceLimit=std::numeric_limits<std::size_t>::max()) {
     if(!node) throw std::invalid_argument("Missing node");
     const auto t=GetCOREInterface()->GetTime();
     auto* object=node->EvalWorldState(t).obj;
@@ -140,6 +141,7 @@ std::vector<amin::Triangle> meshOf(INode* node, bool world, bool requireUv=false
     Matrix3 tm=node->GetObjectTM(t);
     if(!world) tm=tm*Inverse(node->GetNodeTM(t));
     Mesh& mesh=tri->GetMesh();
+    if(std::size_t(mesh.getNumFaces())>faceLimit)throw std::invalid_argument("Evaluated receiver exceeds the surface filter face limit");
     if(requireUv && (!mesh.mapSupport(1)||!mesh.mapVerts(1)||!mesh.mapFaces(1))) {
         const std::wstring message=std::wstring(L"Texture Density: receiver '")+node->GetName()+L"' requires UV channel 1. Add UV mapping to this surface or choose another Layout mode. The previous result is retained.";
         throw RuntimeError(message.c_str());
@@ -324,6 +326,7 @@ def_visible_primitive(cyrusScatterAdvanced, "cyrusScatterAdvanced");
 Value* cyrusScatterAdvanced_cf(Value** args,int count){return scatterAdvanced(args,count);}
 #include "procedural_bridge.inc"
 #include "receiver_bridge.inc"
+#include "surface_filter_bridge.inc"
 def_visible_primitive(cyrusProceduralSurfaceKey,"cyrusProceduralSurfaceKey");
 Value* cyrusProceduralSurfaceKey_cf(Value** a,int n){
     if(n!=1&&n!=2)throw RuntimeError(_T("Surface key expects surfaces and optional UV flag"));std::uint64_t hash=1469598103934665603ULL;

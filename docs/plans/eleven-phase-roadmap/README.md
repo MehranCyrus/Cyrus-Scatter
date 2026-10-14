@@ -66,8 +66,8 @@ fixes before a phase checkpoint. Do not invent a passing visual result.
 | Phase | Outcome | Effort | Entry dependencies | Current state |
 | --- | --- | --- | --- | --- |
 | P01 | Clear workflow, ownership, cached/pending state and useful feedback | Small–medium | Freeze current baseline and inspect actual generated UI | Committed and pushed; physical artist acceptance at program end |
-| P02 | Named settings and curve presets | Medium | P01; typed settings capture/apply | Implemented; closing Max qualification and checkpoint |
-| P03 | Slope/altitude filters with soft transitions | Medium | P02; existing eligibility and units contracts | Planned |
+| P02 | Named settings and curve presets | Medium | P01; typed settings capture/apply | Committed and pushed; scoped qualification passed |
+| P03 | Slope/altitude filters with soft transitions | Medium | P02; existing eligibility and units contracts | Implemented candidate; Max qualification in progress |
 | P04 | Selectable UV channel and density-map resolution | Medium | P03; map dependency/coordinate contract | Planned |
 | P05 | Paint-to-spline export and spline-to-Paint import | Medium | P04; current vector regions and units | Planned |
 | P06 | Rectangular, staggered and hexagonal placement | Medium | P05; stable layout identities | Planned |

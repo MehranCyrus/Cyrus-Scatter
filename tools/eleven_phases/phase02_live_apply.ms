@@ -1,5 +1,5 @@
 (
- if not matchPattern MCPFixtureDir pattern:"*/build/mcp-qualification/foundation-roadmap-p02-*/" do throw "Owned P02 host required"
+ if not matchPattern MCPFixtureDir pattern:"*/build/mcp-qualification/foundation-roadmap-*/" do throw "Owned P02 host required"
  global P02LiveReadyTimer,P02LiveReadyTick,P02LiveStarted
  try(P02LiveReadyTimer.Stop();P02LiveReadyTimer.Dispose())catch()
  fn P02LiveReadyTick sender args = (

@@ -3,6 +3,31 @@
   "notes": "Entries are ordered by documented development chronology, not numeric label. Missing versions and unknown dates are not invented. Local evidence is stripped before publication. 0.79.2 and 0.79.5 are current uncommitted working-tree campaigns at this review, not new Git releases. Analyzer/MCP have independent version domains.",
   "entries": [
     {
+      "version": "0.83.0",
+      "date": "2026-10-14",
+      "title": "Slope and altitude eligibility.",
+      "era": "recent",
+      "legacy": false,
+      "note": "Development source checkpoint; final artist acceptance and normal installation remain separate.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Per-layer world-up slope and world-Z altitude limits, with independent inside fades."
+        },
+        {
+          "kind": "Improved",
+          "text": "Filtering preserves surviving candidate identities and transforms, reuses candidate generation and retains protected CS Edit plants."
+        },
+        {
+          "kind": "Added",
+          "text": "Prepared-pool filter statistics follow the same atomic Manual/Live publication as placements."
+        }
+      ],
+      "evidence": [
+        "docs/plans/eleven-phase-roadmap/P03.md"
+      ]
+    },
+    {
       "version": "0.82.0",
       "date": "2026-10-14",
       "title": "Reusable settings and curve presets.",

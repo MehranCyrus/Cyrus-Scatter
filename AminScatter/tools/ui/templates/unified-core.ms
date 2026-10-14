@@ -433,9 +433,10 @@ fn AminScatterSourceFilter n = (
 )
 try(unRegisterRedrawViewsCallback AminScatterObjectDraw)catch()
 
+global AminScatterSurfaceFilterFields=#(#slopeEnabled,#slopeMinimum,#slopeMaximum,#slopeLowerFade,#slopeUpperFade,#altitudeEnabled,#altitudeMinimum,#altitudeMaximum,#altitudeLowerFade,#altitudeUpperFade)
 global AminScatterLayerFields, AminScatterLayerTabs
 global AminScatterCopyLayer, AminScatterRefreshLayerPanels
-AminScatterLayerFields=#(#procOrder,#procSetOrder,#procSamplingSalt,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procRadiusBinding,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverID,#containerMode,#containerNodes,#logicalParentID,#paintSetName,#paintSetEnabled,#paintSetVisible,#paintView,#paintColor,#paintDocument,#paintEnabled,#paintDensity,#streetTrimStart,#streetTrimEnd,#centerStreetOffset,#areaAnalyzer,#areaUseLine,#areaLineWidth,#areaLineCaps,#areaUsePoints,#areaPointRadius,#wholeScaleMin,#wholeScaleMax,#fallScaleGraph,#fallDensityGraph,#areaFallConfigs,#areaFallDeleteWidths,#areaFallScaleWidths,#areaFallDensityWidths,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallAnalyzer,#fallDelete,#fallDeleteWidth,#fallScale,#fallScaleWidth,#fallScaleCurve,#fallDensity,#fallDensityWidth,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeKeepCorners,#edgeCornerAngle,#edgeCornerCount,#edgeFaceOut,#edgeCornerRadius,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#borderFaceOut,#streetFaceOut,#borderCornerRadius,#streetCornerRadius,#sourceForwardAxes,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius,#streetStraight,#sourcePoint,#sourceEmpty,#cleanupPlanar,#sourceZOffsetsWU,#sourceScales,#sourceWeights,#showCenters,#relaxEnabled,#relaxSpacing,#relaxIterations,#relaxStrength,#sources,#bakedNodes,#amount,#randomSeed,#scaleMinimum,#scaleMaximum,#tiltDegrees,#yawMinimum,#yawMaximum,#movementRange,#alignNormal,#showPoints,#pointsPerPlant,#updateMode,#populationMode,#plantsPerM2,#advancedAxes,#projectMove,#rotXMin,#rotXMax,#rotYMin,#rotYMax,#rotZMin,#rotZMax,#sclXMin,#sclXMax,#sclYMin,#sclYMax,#sclZMin,#sclZMax,#movXMinWU,#movXMaxWU,#movYMinWU,#movYMaxWU,#movZMinWU,#movZMaxWU,#distributionMode,#densityMap,#invertDensity,#diversityMode,#diversitySize,#diversitySeed,#roughness,#blurryEdge,#diversityNoise,#autoRender,#previewBudget,#pointColorMode,#solidPointColor,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths,#fieldFalloff,#fieldBoundaries,#fieldCombined,#fieldSamples,#fieldBandID)
+AminScatterLayerFields=#(#slopeEnabled,#slopeMinimum,#slopeMaximum,#slopeLowerFade,#slopeUpperFade,#altitudeEnabled,#altitudeMinimum,#altitudeMaximum,#altitudeLowerFade,#altitudeUpperFade,#procOrder,#procSetOrder,#procSamplingSalt,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procRadiusBinding,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverID,#containerMode,#containerNodes,#logicalParentID,#paintSetName,#paintSetEnabled,#paintSetVisible,#paintView,#paintColor,#paintDocument,#paintEnabled,#paintDensity,#streetTrimStart,#streetTrimEnd,#centerStreetOffset,#areaAnalyzer,#areaUseLine,#areaLineWidth,#areaLineCaps,#areaUsePoints,#areaPointRadius,#wholeScaleMin,#wholeScaleMax,#fallScaleGraph,#fallDensityGraph,#areaFallConfigs,#areaFallDeleteWidths,#areaFallScaleWidths,#areaFallDensityWidths,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallAnalyzer,#fallDelete,#fallDeleteWidth,#fallScale,#fallScaleWidth,#fallScaleCurve,#fallDensity,#fallDensityWidth,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeKeepCorners,#edgeCornerAngle,#edgeCornerCount,#edgeFaceOut,#edgeCornerRadius,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#borderFaceOut,#streetFaceOut,#borderCornerRadius,#streetCornerRadius,#sourceForwardAxes,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius,#streetStraight,#sourcePoint,#sourceEmpty,#cleanupPlanar,#sourceZOffsetsWU,#sourceScales,#sourceWeights,#showCenters,#relaxEnabled,#relaxSpacing,#relaxIterations,#relaxStrength,#sources,#bakedNodes,#amount,#randomSeed,#scaleMinimum,#scaleMaximum,#tiltDegrees,#yawMinimum,#yawMaximum,#movementRange,#alignNormal,#showPoints,#pointsPerPlant,#updateMode,#populationMode,#plantsPerM2,#advancedAxes,#projectMove,#rotXMin,#rotXMax,#rotYMin,#rotYMax,#rotZMin,#rotZMax,#sclXMin,#sclXMax,#sclYMin,#sclYMax,#sclZMin,#sclZMax,#movXMinWU,#movXMaxWU,#movYMinWU,#movYMaxWU,#movZMinWU,#movZMaxWU,#distributionMode,#densityMap,#invertDensity,#diversityMode,#diversitySize,#diversitySeed,#roughness,#blurryEdge,#diversityNoise,#autoRender,#previewBudget,#pointColorMode,#solidPointColor,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths,#fieldFalloff,#fieldBoundaries,#fieldCombined,#fieldSamples,#fieldBandID)
 AminScatterLayerTabs=#(#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#containerNodes,#areaFallConfigs,#areaFallDeleteWidths,#areaFallScaleWidths,#areaFallDensityWidths,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallScaleCurve,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#sourceForwardAxes,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius,#sourcePoint,#sourceEmpty,#sourceZOffsetsWU,#sourceScales,#sourceWeights,#sources,#bakedNodes,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths)
 fn AminScatterCopyLayer origin destination = (
     origin.procAssertSchema()
@@ -1988,7 +1989,7 @@ initialRollupState:0x8
         -- Only a committed calculation epoch establishes its first result.
         CyrusLayerStatusData hasResult:(procEpoch>0 and cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
     )
-    fn uiVersion = "0.82.0"
+    fn uiVersion = "0.83.0"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified1")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -2050,6 +2051,47 @@ initialRollupState:0x8
     fn previewStats = (#(previewBuildCount,previewBuildMs,cachedPointCount))
     fn statusText = (
         if previewError!="" then previewError else (generatedCount as string)+" / "+(requestedCount as string)+" plants; "+(cachedPointCount as string)+(if viewportMode==1 then " points" else " shown instances")+(if densityCapped then " (density capped at 1,000,000)" else "")
+    )
+    -- Eligibility is separate from candidate generation and Edit binding.
+    parameters surfaceFilterSettings (
+        slopeEnabled type:#boolean default:false
+        slopeMinimum type:#float default:0
+        slopeMaximum type:#float default:180
+        slopeLowerFade type:#float default:0
+        slopeUpperFade type:#float default:0
+        altitudeEnabled type:#boolean default:false
+        altitudeMinimum type:#worldUnits default:0
+        altitudeMaximum type:#worldUnits default:1000
+        altitudeLowerFade type:#worldUnits default:0
+        altitudeUpperFade type:#worldUnits default:0
+        on slopeEnabled set value do markInputDirty()
+        on slopeMinimum set value do markInputDirty()
+        on slopeMaximum set value do markInputDirty()
+        on slopeLowerFade set value do markInputDirty()
+        on slopeUpperFade set value do markInputDirty()
+        on altitudeEnabled set value do markInputDirty()
+        on altitudeMinimum set value do markInputDirty()
+        on altitudeMaximum set value do markInputDirty()
+        on altitudeLowerFade set value do markInputDirty()
+        on altitudeUpperFade set value do markInputDirty()
+    )
+    fn surfaceFilterPayload = (for key in AminScatterSurfaceFilterFields collect getProperty this key)
+    fn surfaceFilterKey = (
+        if not slopeEnabled and not altitudeEnabled then "off" else (
+            local stream=stringStream ""
+            with printAllElements on (format "%|%" (if slopeEnabled then #(slopeMinimum,slopeMaximum,slopeLowerFade,slopeUpperFade) else #()) (if altitudeEnabled then #(altitudeMinimum,altitudeMaximum,altitudeLowerFade,altitudeUpperFade) else #()) to:stream)
+            stream as string
+        )
+    )
+    local procPreparedSurfaceStats=#(0,0,0),procLastSurfaceStats=#(0,0,0)
+    fn surfaceFilterStats = (procLastSurfaceStats as array)
+    fn applySurfaceFilter rows = (
+        if not slopeEnabled and not altitudeEnabled then (procPreparedSurfaceStats=#(-1,0,0);rows) else (
+            local targets=this.validSurfaces()
+            local keys=for target in targets collect (local slot=findItem procReceiverNodes target;#(slot,procReceiverIDs[slot]))
+            local filtered=cyrusSurfaceFilter rows targets keys (this.effectiveSeed()) (this.surfaceFilterPayload())
+            procPreparedSurfaceStats=filtered[2];filtered[1]
+        )
     )
     parameters layerSettings (
         layerID type:#string default:""
@@ -2393,7 +2435,7 @@ initialRollupState:0x8
             format "EffectiveRelax:%|" (relaxEnabled and not this.layerPaintActive()) to:stream
             format "FinalRelax:%:%:%:%|" finalRelax finalStrength finalIterations finalMaxMove to:stream
             format "Texture:%|" (this.procWatchDensity()) to:stream
-            for key in AminScatterLayerFields where findItem #(#paintDocument,#paintEnabled,#paintDensity,#bakedNodes,#showPoints,#pointsPerPlant,#updateMode,#autoRender,#previewBudget,#pointColorMode,#solidPointColor) key==0 and findItem post key==0 and findItem #(#paintView,#paintColor,#showCenters,#sourceShowRadius,#paintSetName,#paintSetVisible,#fieldFalloff,#fieldBoundaries,#fieldCombined,#fieldSamples,#fieldBandID) key==0 and (not receiverLocal or findItem #(#amount,#plantsPerM2,#populationMode) key==0) do format "%:%|" key (if key==#sources then this.containerSourceKey (sources as array) else getProperty this key) to:stream
+            for key in AminScatterLayerFields where findItem AminScatterSurfaceFilterFields key==0 and findItem #(#paintDocument,#paintEnabled,#paintDensity,#bakedNodes,#showPoints,#pointsPerPlant,#updateMode,#autoRender,#previewBudget,#pointColorMode,#solidPointColor) key==0 and findItem post key==0 and findItem #(#paintView,#paintColor,#showCenters,#sourceShowRadius,#paintSetName,#paintSetVisible,#fieldFalloff,#fieldBoundaries,#fieldCombined,#fieldSamples,#fieldBandID) key==0 and (not receiverLocal or findItem #(#amount,#plantsPerM2,#populationMode) key==0) do format "%:%|" key (if key==#sources then this.containerSourceKey (sources as array) else getProperty this key) to:stream
             for n in ((if receiverLocal then #() else this.validSurfaces())+(sources as array)+(areaNodes as array)+(patternLines as array)+#(analyzerNode,areaAnalyzer,fallAnalyzer)) where isValidNode n do (
                 local tm=n.objectTransform
                 if this.containerProvider()!=undefined and findItem sources n>0 do tm.row4=[0,0,0]
@@ -2982,7 +3024,7 @@ initialRollupState:0x8
             format "%:%:%:%:%|" procRuleB procRuleEnabled procRuleMultiplier procRuleGapWU procRulePlanar to:stream
             for parent in this.logicalLayers() do for leaf in this.layerSets parent do (
                 leaf.containerRefresh()
-                format "Membership:%|" leaf.containerMembershipKey to:stream
+                format "Membership:%|Filter:%|" leaf.containerMembershipKey (leaf.surfaceFilterKey()) to:stream
                 format "Texture:%|" (leaf.procWatchDensity()) to:stream
                 format "%:%:%:%:%:%|" leaf.layerID leaf.logicalParentID leaf.procReceiverID leaf.procRadiusBinding (leaf.paintBaseInputKey (leaf.validSources()) true) (leaf.procCoverageKey()) to:stream
                 for key in #(#procOrder,#procSetOrder,#procSamplingSalt,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procSourceIDs,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#cleanupPlanar) do format "%:%|" key (getProperty leaf key) to:stream
@@ -2999,7 +3041,7 @@ initialRollupState:0x8
         (overlapOwner.populationAllocation this countOverride:budget)[1]
     )
     fn procPrepare pool plants = (
-        local key=(this.paintBaseInputKey plants true)+"|Texture:"+(this.procWatchDensity() as string)+"|Pool:"+(pool as string)+"|"+(this.procCoverageKey())+"|"+(overlapOwner.procEditKey())
+        local key=(this.paintBaseInputKey plants true)+"|Texture:"+(this.procWatchDensity() as string)+"|Pool:"+(pool as string)+"|"+(this.procCoverageKey())+"|"+(overlapOwner.procEditKey())+"|Filter:"+(this.surfaceFilterKey())
         if key==procPreparedKey do (CyrusDiagnosticEmit "prepare.reused" "engine" layerID procEpoch "key_match";procPreparedHits+=1;return procPreparedRows)
         CyrusDiagnosticEmit "prepare.started" "engine" layerID procEpoch "key_changed"
         local rows
@@ -3013,23 +3055,24 @@ initialRollupState:0x8
         )
         procBindingKey=this.procBinding plants rows
         rows=CyrusEditApplyLayer overlapOwner this rows
+        rows=this.applySurfaceFilter rows
         procPreparedRows=rows;procPreparedKey=key;procPreparedBuilds+=1
         rows
     )
     fn procAssertSchema = (
-        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.82.0 setup; earlier schemas are unsupported."
+        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.83.0 setup; earlier schemas are unsupported."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
     fn procValidate = (
         this.procAssertSchema()
-        if cyrusPresetVersion==undefined or cyrusPresetVersion()!=1 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.82.0 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
+        if cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=1 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.83.0 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
             for leaf in this.layerSets parent where this.enabledLayer (findItem layerObjects leaf) do (
-                if cyrusEnabled do leaf.requireCurrentAnalyzers()
+                if cyrusEnabled do (leaf.requireCurrentAnalyzers();cyrusValidateSurfaceFilter (leaf.surfaceFilterPayload()))
                 if parent.procPopulation==2 and leaf.diversityMode==3 do (
                     leaf.syncStrokes()
                     if leaf.bandArrangement==2 do throw "Independent Bands require Candidate budget. Accepted target would refill their density."
@@ -3196,10 +3239,10 @@ initialRollupState:0x8
         procPreviewInspectionKey=state[17];procFieldCache=state[18];procFieldCacheKey=state[19];procFieldStatus=state[20]
         procPreviewModes=state[21];procPreviewModesEpoch=state[22]
     )
-    fn procResultState = (#(this.procPreviewState(),procLastStats,procLastRounds,procEpoch,requestedCount,groupEligible,groupRemoved,groupConflicts,overlapBefore,overlapAfter))
+    fn procResultState = (#(this.procPreviewState(),procLastStats,procLastRounds,procEpoch,requestedCount,groupEligible,groupRemoved,groupConflicts,overlapBefore,overlapAfter,procLastSurfaceStats))
     fn procRestoreResult state = (
         this.procRestorePreview state[1];procLastStats=state[2];procLastRounds=state[3];procEpoch=state[4];requestedCount=state[5]
-        groupEligible=state[6];groupRemoved=state[7];groupConflicts=state[8];overlapBefore=state[9];overlapAfter=state[10]
+        groupEligible=state[6];groupRemoved=state[7];groupConflicts=state[8];overlapBefore=state[9];overlapAfter=state[10];procLastSurfaceStats=state[11]
     )
     fn procInstallPreview state pending = (
         inputTimeObserved=state[12]
@@ -3343,6 +3386,7 @@ initialRollupState:0x8
             for i=1 to layerObjects.count do (
                 local leaf=layerObjects[i]
                 leaf.procLastStats=stats[i];leaf.procLastRounds=rounds[i];leaf.procEpoch=procEpoch
+                leaf.procLastSurfaceStats=if cyrusEnabled and this.enabledLayer i then leaf.procPreparedSurfaceStats as array else #(0,0,0)
                 leaf.requestedCount=requests[i][1]
                 -- Unconsumed refill capacity is not a rejected plant.
                 leaf.setGroupResult (stats[i][1]-stats[i][9]) stats[i][2] stats[i][4]
@@ -3439,7 +3483,7 @@ initialRollupState:0x8
         if (CyrusContainerPanel this).controlsReady do (CyrusContainerPanel this).bind()
         true
     )
-    rollout mainUI "Cyrus Scatter 0.82.0" width:#cmdPanel height:30 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.83.0" width:#cmdPanel height:30 autoLayoutOnResize:true (
         local root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),owner=undefined,layerPagesVisible=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for this entire Scatter setup."
         button licenseButton "License / activation..." pos:[8,112] width:(mainUI.width-16) height:22 tooltip:"Import a team license or inspect its expiry. Existing scenes remain available after expiry."
@@ -3509,7 +3553,7 @@ initialRollupState:0x8
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.82.0 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.83.0 native plugin and restart Max."
             root.syncLayerIdentity()
             roots=#(root.flow_updateUI,root.flow_surfaceUI,root.flow_previewUI,root.flow_layersUI)
             root.updateUI=roots[1];root.surfaceUI=roots[2];root.previewUI=roots[3];root.layersUI=roots[4]
@@ -4205,6 +4249,52 @@ initialRollupState:0x8
         checkbox aaPoints "Points" pos:[4,638] width:(selected_areaUI.width-8) tooltip:"Use discs around Analyzer points as an XY mask."
         spinner aaRadius "Radius:" range:[0,1e9,100] type:#worldunits pos:[4,664] width:(selected_areaUI.width-8) fieldWidth:62 tooltip:"Radius of each Analyzer point mask."
         label aaHelp "XY mask. Both enabled = union. Works with Random / Clusters." pos:[4,694] width:(selected_areaUI.width-8) height:40
+        checkbox slopeCheck "Filter slope" pos:[4,1220] width:180 tooltip:"Eligibility from world up: 0 degrees upward, 90 vertical, 180 underside. Protected Edit plants are retained."
+        spinner slopeMinSpin "Min slope:" type:#float range:[0,180,0] pos:[4,1250] width:(selected_areaUI.width-8) fieldWidth:82 tooltip:"Minimum slope in degrees. Zero inside fade includes this endpoint."
+        spinner slopeMaxSpin "Max slope:" type:#float range:[0,180,180] pos:[4,1280] width:(selected_areaUI.width-8) fieldWidth:82 tooltip:"Maximum slope in degrees; plant alignment does not affect surface slope."
+        spinner slopeLowerSpin "Lower fade:" type:#float range:[0,180,0] pos:[4,1310] width:(selected_areaUI.width-8) fieldWidth:82 tooltip:"Inside fade above the minimum, in degrees. Fades must not overlap."
+        spinner slopeUpperSpin "Upper fade:" type:#float range:[0,180,0] pos:[4,1340] width:(selected_areaUI.width-8) fieldWidth:82 tooltip:"Inside fade below the maximum, in degrees. Fades must not overlap."
+        spinner altitudeMinSpin "Min height:" type:#worldunits range:[-1000000000.0,1000000000.0,0] pos:[4,1370] width:(selected_areaUI.width-8) fieldWidth:82 tooltip:"Minimum world Z of the final receiver anchor, before source offsets."
+        spinner altitudeMaxSpin "Max height:" type:#worldunits range:[-1000000000.0,1000000000.0,1000] pos:[4,1400] width:(selected_areaUI.width-8) fieldWidth:82 tooltip:"Maximum world Z of the final receiver anchor, in scene units."
+        spinner altitudeLowerSpin "Lower fade:" type:#worldunits range:[0,1000000000.0,0] pos:[4,1430] width:(selected_areaUI.width-8) fieldWidth:82 tooltip:"Inside fade above minimum height. Zero keeps the hard endpoint."
+        spinner altitudeUpperSpin "Upper fade:" type:#worldunits range:[0,1000000000.0,0] pos:[4,1460] width:(selected_areaUI.width-8) fieldWidth:82 tooltip:"Inside fade below maximum height. Fades must not overlap."
+        checkbox altitudeCheck "Filter altitude" pos:[4,1500] width:180 tooltip:"World Z eligibility. Fades reduce density inside the range; source Z offsets do not change eligibility."
+        label filterInfo "Surface filters are off by default." pos:[4,1530] width:(selected_areaUI.width-8) height:54
+        fn syncSurfaceFilters = (
+            if obj!=undefined do (
+                slopeCheck.checked=obj.slopeEnabled
+                slopeMinSpin.value=obj.slopeMinimum
+                slopeMaxSpin.value=obj.slopeMaximum
+                slopeLowerSpin.value=obj.slopeLowerFade
+                slopeUpperSpin.value=obj.slopeUpperFade
+                altitudeCheck.checked=obj.altitudeEnabled
+                altitudeMinSpin.value=obj.altitudeMinimum
+                altitudeMaxSpin.value=obj.altitudeMaximum
+                altitudeLowerSpin.value=obj.altitudeLowerFade
+                altitudeUpperSpin.value=obj.altitudeUpperFade
+                for c in #(slopeMinSpin,slopeMaxSpin,slopeLowerSpin,slopeUpperSpin) do c.enabled=obj.slopeEnabled
+                for c in #(altitudeMinSpin,altitudeMaxSpin,altitudeLowerSpin,altitudeUpperSpin) do c.enabled=obj.altitudeEnabled
+                local stats=obj.surfaceFilterStats()
+                filterInfo.text=if obj.procEpoch==0 then "No calculated filter result yet." else if stats[1]<0 then "Filters off at last Update." else "Last Update: "+(stats[2] as string)+" of "+(stats[1] as string)+" prepared rows filtered; "+(stats[3] as string)+" protected."
+            )
+        )
+        fn setSurfaceFilter key value = (
+            if controlsReady and not binding and obj!=undefined do (
+                local target=obj
+                undo "Cyrus surface filter" on (setProperty target key value)
+                syncSurfaceFilters();CyrusViewportRedraw()
+            )
+        )
+        on slopeCheck changed value do setSurfaceFilter #slopeEnabled value
+        on slopeMinSpin changed value do setSurfaceFilter #slopeMinimum value
+        on slopeMaxSpin changed value do setSurfaceFilter #slopeMaximum value
+        on slopeLowerSpin changed value do setSurfaceFilter #slopeLowerFade value
+        on slopeUpperSpin changed value do setSurfaceFilter #slopeUpperFade value
+        on altitudeCheck changed value do setSurfaceFilter #altitudeEnabled value
+        on altitudeMinSpin changed value do setSurfaceFilter #altitudeMinimum value
+        on altitudeMaxSpin changed value do setSurfaceFilter #altitudeMaximum value
+        on altitudeLowerSpin changed value do setSurfaceFilter #altitudeLowerFade value
+        on altitudeUpperSpin changed value do setSurfaceFilter #altitudeUpperFade value
         fn syncAnalyzerArea = (
             loadingAnalyzerArea=true
             aaPick.text=if isValidNode obj.areaAnalyzer then obj.areaAnalyzer.name else "Pick Surface Analyzer"
@@ -4330,7 +4420,7 @@ initialRollupState:0x8
             if obj!=next do (areaList.selection=#{};)
             obj=next;parentView=(CyrusContainerPanel root)
             for c in selected_areaUI.controls do c.enabled=layer!=undefined
-            try (undo off ((syncAnalyzerArea();syncFalloff();controlsReady=true;updateAreas()))) catch(binding=false;controlsReady=true;throw())
+            try (undo off ((syncAnalyzerArea();syncFalloff();syncSurfaceFilters();controlsReady=true;updateAreas()))) catch(binding=false;controlsReady=true;throw())
             controlsReady=true;binding=false
         )
         checkbutton detailsToggle "Analyzer masks and edge falloff" pos:[4,378] width:(selected_areaUI.width-8) height:26 tooltip:"Show or hide these advanced controls; their saved settings are preserved."
