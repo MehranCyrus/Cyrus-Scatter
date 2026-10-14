@@ -388,6 +388,14 @@
       {
         "kind": "checkbox",
         "name": "invertCheck"
+      },
+      {
+        "kind": "spinner",
+        "name": "uvChannelSpin"
+      },
+      {
+        "kind": "dropdownlist",
+        "name": "resolutionList"
       }
     ],
     "populationPolicyUI": [

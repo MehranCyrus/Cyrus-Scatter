@@ -1067,7 +1067,7 @@
       "section": "Population and sampling",
       "doc": "population",
       "anchor": "control-choose-density-map",
-      "description": "Selects the map. White permits planting; black excludes it; intermediate values thin the planting. It reads the receiver's UV channel 1.",
+      "description": "Selects the map. White permits planting; black excludes it; intermediate values thin the planting. It reads the selected receiver UV channel (1..99; default 1). Sample resolution is 64/128/256/512, default 128.",
       "scope": "Layer",
       "advanced": true,
       "indexAnchor": "control-choose-density-map",

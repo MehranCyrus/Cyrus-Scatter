@@ -1,7 +1,7 @@
 -- Invoke stages in separate host events, waiting for the observer file between
 -- stages 2/3, 3/4 and 5/6. No explicit solve is used for the measured successors.
 (
-    if not matchPattern MCPFixtureDir pattern:"*/build/mcp-qualification/foundation-roadmap-p03-*/" do throw "Owned P03 host required"
+    if not matchPattern MCPFixtureDir pattern:"*/build/mcp-qualification/foundation-roadmap-*/" do throw "Owned P03 host required"
     global P03LiveStage,P03LiveNode,P03LiveRoot,P03LiveLeaf,P03LiveReceiver,P03LiveEpoch,P03LivePrepared
     global P03LiveTimer,P03LiveTicks,P03LiveExpected,P03LiveReadyTick,P03LiveStart,P03LiveArm
     if P03LiveStage==undefined do P03LiveStage=0

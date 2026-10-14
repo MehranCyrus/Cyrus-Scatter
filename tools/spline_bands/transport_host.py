@@ -71,7 +71,7 @@ try:
             r.Point3(0,0,0), r.Point3(0,0,0), False, True, 0, arr([]), 128,
             arr([0]), False, 100., 1, 0., 0., 0., arr([]), arr([]),
             arr([True, arr([row])]), arr([False, 1., 1, .5]), arr([1.]), r.undefined,
-            arr([True, 1., 1., 0., 0., 0., 0., 1, 0, 'analyzer-contract', 1]))
+            arr([True, 1., 1., 0., 0., 0., 0., 1, 0, 'analyzer-contract', 1, 1]))
     analyzer_rows = generate_analyzer(analyzer_row)
     check(len(analyzer_rows)>0 and all(int(row[5])==0 for row in analyzer_rows),
           'Current 11-field Analyzer generates unbanded placements')

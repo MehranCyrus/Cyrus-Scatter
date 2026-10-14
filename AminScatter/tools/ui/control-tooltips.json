@@ -79,8 +79,10 @@
     "countSpin": "Layer population before eligibility, up to 1,000,000. All layers and retries share the Scatter's 1,000,000 candidate limit.",
     "densitySpin": "Requested plants per square metre; capped at 1,000,000 per layer. All layers and retries share the Scatter's 1,000,000 candidate limit.",
     "seedSpin": "Deterministic generation seed. Changing it can invalidate existing Edit bindings.",
-    "densityButton": "Use UV channel 1: white permits candidates; black excludes them.",
-    "invertCheck": "Reverse the density map's white and black eligibility."
+    "densityButton": "Use the selected receiver UV channel: white permits candidates; black excludes them. UVs clamp to 0..1.",
+    "invertCheck": "Reverse the density map's white and black eligibility.",
+    "uvChannelSpin": "Receiver texture coordinates, channels 1..99. Missing or invalid mapping retains the previous complete result.",
+    "resolutionList": "Sampled map detail. Higher resolutions cost more time and memory; tiny features may need more samples. Default: 128 x 128."
   },
   "populationPolicyUI": {
     "populationList": "Budget evaluates the generated candidates; target makes bounded replacement attempts.",

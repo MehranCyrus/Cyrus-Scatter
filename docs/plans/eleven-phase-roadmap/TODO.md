@@ -6,11 +6,11 @@ entire phase passed. Existing defect IDs stay in [BACKLOG](../../BACKLOG.md).
 
 ## Current action
 
-**P02 — settings and curve presets in progress (0.82.0 candidate).**
-P01 was committed and pushed as `50ea0a6037ea641298e8d9007931ee3bec2a5ed9`;
-the remote branch hash was verified. Agent-run testing continues each phase.
+**P04 — density mapping qualification passed (0.84.0); Git checkpoint pending.**
+P01, P02 and P03 were committed and pushed; the latest verified remote checkpoint
+is `a509e2e08d1e01f8b624872026d17fc5532eee84`. Agent-run testing continues each phase.
 The user's artist acceptance is at the end; unavailable Computer Use evidence
-is carried explicitly rather than blocking implementation. See [P02](P02.md).
+is carried explicitly rather than blocking implementation. See [P04](P04.md).
 
 ## Enrollment / shared preparation
 
@@ -58,16 +58,16 @@ Preparatory [source/format research](P02_PREFLIGHT.md) is recorded. Implementati
 - [x] Add controls, explanatory feedback and bounded rejection diagnostics.
 - [x] Test analytic slopes/heights, transforms/units, Paint/Bands/maps/refill/protected edits.
 - [x] Measure disabled overhead and cold/warm reuse; run host lifecycle/regressions.
-- [ ] Update version/docs; commit, push and verify.
+- [x] Update version/docs; commit, push and verify.
 
 ## P04 — map controls
 
-- [ ] Verify SDK UV-channel ranges and freeze addressing/interpolation/color semantics.
-- [ ] Add saved UV-channel and 64/128/256/512 resolution choices with current defaults.
-- [ ] Update native receiver transport, bake dimensions and keyed map/UV caches.
-- [ ] Add precise missing/invalid-channel errors with previous-result retention.
-- [ ] Test multiple channels, resolutions, animated maps, invalid geometry and Manual/Live.
-- [ ] Measure map bake/receiver cache reuse and peak memory; run regressions.
+- [x] Verify SDK UV-channel ranges and freeze addressing/interpolation/color semantics.
+- [x] Add saved UV-channel and 64/128/256/512 resolution choices with current defaults.
+- [x] Update native receiver transport, bake dimensions and keyed map/UV caches.
+- [x] Add precise missing/invalid-channel errors with previous-result retention.
+- [x] Test multiple channels, resolutions, animated maps, invalid geometry and Manual/Live.
+- [x] Measure map bake/receiver cache reuse and peak memory; run regressions.
 - [ ] Update version/docs; commit, push and verify.
 
 ## P05 — Paint/spline conversion

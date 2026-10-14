@@ -128,7 +128,7 @@ namespace {
 amin::Vec3 vec(Point3 p) { return {p.x,p.y,p.z}; }
 Point3 point(amin::Vec3 p) { return {static_cast<float>(p.x),static_cast<float>(p.y),static_cast<float>(p.z)}; }
 #include "placement_identity.inc"
-std::vector<amin::Triangle> meshOf(INode* node, bool world, bool requireUv=false, std::size_t faceLimit=std::numeric_limits<std::size_t>::max()) {
+std::vector<amin::Triangle> meshOf(INode* node, bool world, bool requireUv=false, std::size_t faceLimit=std::numeric_limits<std::size_t>::max(), int uvChannel=1) {
     if(!node) throw std::invalid_argument("Missing node");
     const auto t=GetCOREInterface()->GetTime();
     auto* object=node->EvalWorldState(t).obj;
@@ -142,26 +142,39 @@ std::vector<amin::Triangle> meshOf(INode* node, bool world, bool requireUv=false
     if(!world) tm=tm*Inverse(node->GetNodeTM(t));
     Mesh& mesh=tri->GetMesh();
     if(std::size_t(mesh.getNumFaces())>faceLimit)throw std::invalid_argument("Evaluated receiver exceeds the surface filter face limit");
-    if(requireUv && (!mesh.mapSupport(1)||!mesh.mapVerts(1)||!mesh.mapFaces(1))) {
-        const std::wstring message=std::wstring(L"Texture Density: receiver '")+node->GetName()+L"' requires UV channel 1. Add UV mapping to this surface or choose another Layout mode. The previous result is retained.";
+    const auto uvError=[&](const wchar_t* reason) {
+        const std::wstring message=std::wstring(L"Texture Density: receiver '")+node->GetName()+L"', UV channel "+std::to_wstring(uvChannel)+L": "+reason+L". Repair this channel or select a valid channel. The previous result is retained.";
         throw RuntimeError(message.c_str());
+    };
+    if(requireUv) {
+        if(uvChannel<1||uvChannel>=MAX_MESHMAPS)uvError(L"supported channels are 1..99");
+        if(!mesh.mapSupport(uvChannel)||!mesh.mapVerts(uvChannel)||!mesh.mapFaces(uvChannel)||mesh.getNumMapVerts(uvChannel)<1||mesh.getNumMapFaces(uvChannel)!=mesh.getNumFaces())
+            uvError(L"missing or incomplete mapping");
+        // Validate before indexed reads; malformed map faces must never reach the sampler.
+        const auto* uv=mesh.mapVerts(uvChannel);const auto* faces=mesh.mapFaces(uvChannel);
+        for(int i=0;i<mesh.getNumFaces();++i)for(int k=0;k<3;++k) {
+            const auto index=faces[i].t[k];
+            if(index>=static_cast<DWORD>(mesh.getNumMapVerts(uvChannel)))uvError(L"map face references an invalid vertex");
+            const auto& p=uv[index];
+            if(!std::isfinite(p.x)||!std::isfinite(p.y)||!std::isfinite(p.z))uvError(L"nonfinite mapping coordinates");
+        }
     }
     std::vector<amin::Triangle> result;result.reserve(mesh.getNumFaces());
     for(int i=0;i<mesh.getNumFaces();++i) {
         const auto& f=mesh.faces[i];
         result.push_back({vec(mesh.verts[f.v[0]]*tm),vec(mesh.verts[f.v[1]]*tm),vec(mesh.verts[f.v[2]]*tm)});
-        if(requireUv) {const auto& uvf=mesh.mapFaces(1)[i];auto* uv=mesh.mapVerts(1);result.back().uvA=vec(uv[uvf.t[0]]);result.back().uvB=vec(uv[uvf.t[1]]);result.back().uvC=vec(uv[uvf.t[2]]);}
+        if(requireUv) {const auto& uvf=mesh.mapFaces(uvChannel)[i];auto* uv=mesh.mapVerts(uvChannel);result.back().uvA=vec(uv[uvf.t[0]]);result.back().uvB=vec(uv[uvf.t[1]]);result.back().uvC=vec(uv[uvf.t[2]]);}
     }
     return result;
 }
-std::vector<amin::Triangle> surfaceMeshes(Value* input,bool requireUv=false) {
-    if(!is_array(input)) return meshOf(input->to_node(),true,requireUv);
+std::vector<amin::Triangle> surfaceMeshes(Value* input,bool requireUv=false,int uvChannel=1) {
+    if(!is_array(input)) return meshOf(input->to_node(),true,requireUv,std::numeric_limits<std::size_t>::max(),uvChannel);
     auto* nodes=static_cast<Array*>(input);std::vector<amin::Triangle> result;
     std::vector<INode*> seen;
     for(int i=0;i<nodes->size;++i) {
         auto* node=nodes->data[i]->to_node();
         if(std::find(seen.begin(),seen.end(),node)!=seen.end()) continue;
-        seen.push_back(node);auto mesh=meshOf(node,true,requireUv);
+        seen.push_back(node);auto mesh=meshOf(node,true,requireUv,std::numeric_limits<std::size_t>::max(),uvChannel);
         result.insert(result.end(),mesh.begin(),mesh.end());
     }
     return result;
@@ -170,7 +183,9 @@ Value* scatterAdvanced(Value** args,int count) {
     if(count!=29) throw RuntimeError(_T("Cyrus generation requires its current 29-field contract."));
     type_check(args[28],Array,_T("generation options"));
     auto* v1=static_cast<Array*>(args[28]);
-    if(v1->size!=11)throw RuntimeError(_T("Expected current keyed generation options"));
+    if(v1->size!=12)throw RuntimeError(_T("Expected current keyed generation options including density UV channel"));
+    const int uvChannel=v1->data[11]->to_int();
+    if(uvChannel<1||uvChannel>=MAX_MESHMAPS)throw RuntimeError(_T("Density UV channel must be 1..99"));
     amin::Settings s;
     {
         if(v1->data[7]->to_int()!=1)throw RuntimeError(_T("Unsupported procedural sampler version"));
@@ -290,7 +305,7 @@ Value* scatterAdvanced(Value** args,int count) {
     }
     std::vector<amin::Instance> instances;
     try {
-        const auto mesh=surfaceMeshes(args[0],s.distribution==2);
+        const auto mesh=surfaceMeshes(args[0],s.distribution==2,uvChannel);
         if(args[27]!=&undefined) {
             type_check(args[27],Array,_T("final pass"));auto* f=static_cast<Array*>(args[27]);
             if(f->size!=14)throw RuntimeError(_T("Invalid final pass payload"));
@@ -327,11 +342,13 @@ Value* cyrusScatterAdvanced_cf(Value** args,int count){return scatterAdvanced(ar
 #include "procedural_bridge.inc"
 #include "receiver_bridge.inc"
 #include "surface_filter_bridge.inc"
+def_visible_primitive(cyrusDensityMapVersion,"cyrusDensityMapVersion");
+Value* cyrusDensityMapVersion_cf(Value** a,int n){check_arg_count(cyrusDensityMapVersion,0,n);return Integer::intern(1);}
 def_visible_primitive(cyrusProceduralSurfaceKey,"cyrusProceduralSurfaceKey");
 Value* cyrusProceduralSurfaceKey_cf(Value** a,int n){
-    if(n!=1&&n!=2)throw RuntimeError(_T("Surface key expects surfaces and optional UV flag"));std::uint64_t hash=1469598103934665603ULL;
+    if(n<1||n>3)throw RuntimeError(_T("Surface key expects surfaces, optional UV flag and channel"));std::uint64_t hash=1469598103934665603ULL;
     try{
-        const bool uv=n==2&&a[1]->to_bool()!=FALSE;const auto triangles=surfaceMeshes(a[0],uv);
+        const bool uv=n>=2&&a[1]->to_bool()!=FALSE;const auto triangles=surfaceMeshes(a[0],uv,n==3?a[2]->to_int():1);
         for(const auto& t:triangles){const std::array<amin::Vec3,6> vertices{{t.a,t.b,t.c,t.uvA,t.uvB,t.uvC}};
         for(unsigned k=0;k<(uv?6u:3u);++k)for(double value:{vertices[k].x,vertices[k].y,vertices[k].z}){
             std::uint64_t bits=0;std::memcpy(&bits,&value,sizeof(bits));

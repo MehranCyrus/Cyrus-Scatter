@@ -1,4 +1,4 @@
-global CyrusLoadedScriptFingerprint="8687d9bf4b287eb2eac1a1223b4363dd38c6e9847a761243624bf6f60b7976c4"
+global CyrusLoadedScriptFingerprint="c29dcf31717d3fc0d8738eee96cc1db1f95eafd72f4de030c8a4424fdd6d9597"
 global CyrusOpenLicenseDialog,CyrusLicenseDialog,CyrusRequireAuthor,CyrusLicenseCanEdit
 fn CyrusRequireAuthor = (
     if cyrusLicenseAllows==undefined do throw "Load the matching licensed Cyrus 0.80.0 native modules and restart Max."
@@ -679,7 +679,7 @@ try(unRegisterRedrawViewsCallback AminScatterObjectDraw)catch()
 global AminScatterSurfaceFilterFields=#(#slopeEnabled,#slopeMinimum,#slopeMaximum,#slopeLowerFade,#slopeUpperFade,#altitudeEnabled,#altitudeMinimum,#altitudeMaximum,#altitudeLowerFade,#altitudeUpperFade)
 global AminScatterLayerFields, AminScatterLayerTabs
 global AminScatterCopyLayer, AminScatterRefreshLayerPanels
-AminScatterLayerFields=#(#slopeEnabled,#slopeMinimum,#slopeMaximum,#slopeLowerFade,#slopeUpperFade,#altitudeEnabled,#altitudeMinimum,#altitudeMaximum,#altitudeLowerFade,#altitudeUpperFade,#procOrder,#procSetOrder,#procSamplingSalt,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procRadiusBinding,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverID,#containerMode,#containerNodes,#logicalParentID,#paintSetName,#paintSetEnabled,#paintSetVisible,#paintView,#paintColor,#paintDocument,#paintEnabled,#paintDensity,#streetTrimStart,#streetTrimEnd,#centerStreetOffset,#areaAnalyzer,#areaUseLine,#areaLineWidth,#areaLineCaps,#areaUsePoints,#areaPointRadius,#wholeScaleMin,#wholeScaleMax,#fallScaleGraph,#fallDensityGraph,#areaFallConfigs,#areaFallDeleteWidths,#areaFallScaleWidths,#areaFallDensityWidths,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallAnalyzer,#fallDelete,#fallDeleteWidth,#fallScale,#fallScaleWidth,#fallScaleCurve,#fallDensity,#fallDensityWidth,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeKeepCorners,#edgeCornerAngle,#edgeCornerCount,#edgeFaceOut,#edgeCornerRadius,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#borderFaceOut,#streetFaceOut,#borderCornerRadius,#streetCornerRadius,#sourceForwardAxes,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius,#streetStraight,#sourcePoint,#sourceEmpty,#cleanupPlanar,#sourceZOffsetsWU,#sourceScales,#sourceWeights,#showCenters,#relaxEnabled,#relaxSpacing,#relaxIterations,#relaxStrength,#sources,#bakedNodes,#amount,#randomSeed,#scaleMinimum,#scaleMaximum,#tiltDegrees,#yawMinimum,#yawMaximum,#movementRange,#alignNormal,#showPoints,#pointsPerPlant,#updateMode,#populationMode,#plantsPerM2,#advancedAxes,#projectMove,#rotXMin,#rotXMax,#rotYMin,#rotYMax,#rotZMin,#rotZMax,#sclXMin,#sclXMax,#sclYMin,#sclYMax,#sclZMin,#sclZMax,#movXMinWU,#movXMaxWU,#movYMinWU,#movYMaxWU,#movZMinWU,#movZMaxWU,#distributionMode,#densityMap,#invertDensity,#diversityMode,#diversitySize,#diversitySeed,#roughness,#blurryEdge,#diversityNoise,#autoRender,#previewBudget,#pointColorMode,#solidPointColor,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths,#fieldFalloff,#fieldBoundaries,#fieldCombined,#fieldSamples,#fieldBandID)
+AminScatterLayerFields=#(#slopeEnabled,#slopeMinimum,#slopeMaximum,#slopeLowerFade,#slopeUpperFade,#altitudeEnabled,#altitudeMinimum,#altitudeMaximum,#altitudeLowerFade,#altitudeUpperFade,#procOrder,#procSetOrder,#procSamplingSalt,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procRadiusBinding,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverID,#containerMode,#containerNodes,#logicalParentID,#paintSetName,#paintSetEnabled,#paintSetVisible,#paintView,#paintColor,#paintDocument,#paintEnabled,#paintDensity,#streetTrimStart,#streetTrimEnd,#centerStreetOffset,#areaAnalyzer,#areaUseLine,#areaLineWidth,#areaLineCaps,#areaUsePoints,#areaPointRadius,#wholeScaleMin,#wholeScaleMax,#fallScaleGraph,#fallDensityGraph,#areaFallConfigs,#areaFallDeleteWidths,#areaFallScaleWidths,#areaFallDensityWidths,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallAnalyzer,#fallDelete,#fallDeleteWidth,#fallScale,#fallScaleWidth,#fallScaleCurve,#fallDensity,#fallDensityWidth,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeKeepCorners,#edgeCornerAngle,#edgeCornerCount,#edgeFaceOut,#edgeCornerRadius,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#borderFaceOut,#streetFaceOut,#borderCornerRadius,#streetCornerRadius,#sourceForwardAxes,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius,#streetStraight,#sourcePoint,#sourceEmpty,#cleanupPlanar,#sourceZOffsetsWU,#sourceScales,#sourceWeights,#showCenters,#relaxEnabled,#relaxSpacing,#relaxIterations,#relaxStrength,#sources,#bakedNodes,#amount,#randomSeed,#scaleMinimum,#scaleMaximum,#tiltDegrees,#yawMinimum,#yawMaximum,#movementRange,#alignNormal,#showPoints,#pointsPerPlant,#updateMode,#populationMode,#plantsPerM2,#advancedAxes,#projectMove,#rotXMin,#rotXMax,#rotYMin,#rotYMax,#rotZMin,#rotZMax,#sclXMin,#sclXMax,#sclYMin,#sclYMax,#sclZMin,#sclZMax,#movXMinWU,#movXMaxWU,#movYMinWU,#movYMaxWU,#movZMinWU,#movZMaxWU,#distributionMode,#densityMap,#invertDensity,#densityUVChannel,#densityResolution,#diversityMode,#diversitySize,#diversitySeed,#roughness,#blurryEdge,#diversityNoise,#autoRender,#previewBudget,#pointColorMode,#solidPointColor,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths,#fieldFalloff,#fieldBoundaries,#fieldCombined,#fieldSamples,#fieldBandID)
 AminScatterLayerTabs=#(#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#containerNodes,#areaFallConfigs,#areaFallDeleteWidths,#areaFallScaleWidths,#areaFallDensityWidths,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallScaleCurve,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#sourceForwardAxes,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius,#sourcePoint,#sourceEmpty,#sourceZOffsetsWU,#sourceScales,#sourceWeights,#sources,#bakedNodes,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths)
 fn AminScatterCopyLayer origin destination = (
     origin.procAssertSchema()
@@ -958,6 +958,7 @@ initialRollupState:0x8
     local procPublishedRadii=#(),procPublishedInfo=#()
     local procPublishedMetadata=#(),procDisplayFailure=false
     local procDensityMap=undefined,procDensityWatch=undefined,procDensityRevision=0
+    local procDensityCache=#(),procDensityBakes=0,procDensityHits=0,procDensityInversions=0,procDensityBakeMs=0
     local procGeometryRevision=0,containerConfigKey="",containerPending=#(),containerScan=true,containerScans=0,containerTests=0
     local containerMembershipKey="",containerActive=#(),containerReconciling=false
     local containerTrackedSources=#(),containerTrackedPivots=#(),containerCachedFrames=#(),containerFrameState=#(),containerMembershipBuilds=0
@@ -1488,6 +1489,10 @@ initialRollupState:0x8
         distributionMode type:#integer default:1
         densityMap type:#textureMap
         invertDensity type:#boolean default:false
+        densityUVChannel type:#integer default:1
+        densityResolution type:#integer default:128
+        on densityUVChannel postSet v do markInputDirty()
+        on densityResolution postSet v do markInputDirty()
         on distributionMode postSet v do markInputDirty()
         on densityMap postSet v do markInputDirty()
         on invertDensity postSet v do markInputDirty()
@@ -1495,6 +1500,8 @@ initialRollupState:0x8
         on distributionMode preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=distributionMode and not (cyrusLicenseAllows()) then distributionMode else value)
         on densityMap preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=densityMap and not (cyrusLicenseAllows()) then densityMap else value)
         on invertDensity preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=invertDensity and not (cyrusLicenseAllows()) then invertDensity else value)
+        on densityUVChannel preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=densityUVChannel and not (cyrusLicenseAllows()) then densityUVChannel else value)
+        on densityResolution preSet value do (if not loading and not (cyrusLicenseRestoring()) and value!=densityResolution and not (cyrusLicenseAllows()) then densityResolution else value)
     )
     parameters diversitySettings (
         diversityMode type:#integer default:1
@@ -2329,18 +2336,7 @@ initialRollupState:0x8
         local result
         if finalPass==undefined and baseKey==paintBaseKey and paintBaseRows!=undefined then (result=paintBaseRows;paintBaseHits+=1)
         else (
-            local weights=#(),image=undefined
-            if distributionMode==3 do (
-                if densityMap==undefined do throw "Choose a density texture map."
-                try (
-                    image=renderMap densityMap size:[128,128]
-                    for y=0 to 127 do for c in (getPixels image [0,y] 128) do (
-                        local w=amin 1.0 (amax 0.0 ((c.r*0.2126+c.g*0.7152+c.b*0.0722)/255.0))
-                        append weights (if invertDensity then 1-w else w)
-                    )
-                    close image;image=undefined
-                )catch(if image!=undefined do try(close image)catch();throw())
-            )
+            local weights=if distributionMode==3 then this.procDensityWeights() else #()
             local areas=this.areaInputs(),line=this.lineInputs plants previewOnly:previewOnly
             local groups=if plants.count==0 then #(0) else for n in plants collect colorKey (sourceColor (sourceRow n))
             local shares=if plants.count==0 then #(1.0) else for n in plants collect sourceWeight (sourceRow n)
@@ -2362,11 +2358,11 @@ initialRollupState:0x8
                 for entry in procReceiverCache where entry[1]==slot and entry[2]==receiverKey do cached=entry[3]
                 if cached!=undefined then (receiverRows=cached;procReceiverHits+=1)
                 else if receiverCount>0 do (
-                    local options=#(not advancedAxes,scaleMinimum,scaleMaximum,tiltDegrees,yawMinimum,yawMaximum,movementRange,1,0,procReceiverIDs[slot],slot)
-                    receiverRows=cyrusScatterAdvanced #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMinWU,movYMinWU,movZMinWU] [movXMaxWU,movYMaxWU,movZMaxWU] alignNormal projectMove (distributionMode-1) weights 128 groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] line #(relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares undefined options
+                    local options=#(not advancedAxes,scaleMinimum,scaleMaximum,tiltDegrees,yawMinimum,yawMaximum,movementRange,1,0,procReceiverIDs[slot],slot,(if distributionMode==3 then densityUVChannel else 1))
+                    receiverRows=cyrusScatterAdvanced #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMinWU,movYMinWU,movZMinWU] [movXMaxWU,movYMaxWU,movZMaxWU] alignNormal projectMove (distributionMode-1) weights densityResolution groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] line #(relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares undefined options
                     if finalRelax and receiverRows.count>0 do (
                         local relaxPass=#(receiverRows,#(),(for row in receiverRows collect 0.0),#(),false,relaxSpacing,0,1,true,finalStrength,finalIterations,finalMaxMove,0.0,cleanupPlanar)
-                        receiverRows=cyrusScatterAdvanced #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMinWU,movYMinWU,movZMinWU] [movXMaxWU,movYMaxWU,movZMaxWU] alignNormal projectMove (distributionMode-1) weights 128 groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] line #(relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares relaxPass options
+                        receiverRows=cyrusScatterAdvanced #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMinWU,movYMinWU,movZMinWU] [movXMaxWU,movYMaxWU,movZMaxWU] alignNormal projectMove (distributionMode-1) weights densityResolution groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] line #(relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares relaxPass options
                     )
                     if wholeScaleMin!=1.0 or wholeScaleMax!=1.0 do receiverRows=cyrusWholeScale receiverRows wholeScaleMin wholeScaleMax seed
                     receiverRows=this.applyAnalyzerArea receiverRows
@@ -2399,7 +2395,7 @@ initialRollupState:0x8
         -- Only a committed calculation epoch establishes its first result.
         CyrusLayerStatusData hasResult:(procEpoch>0 and cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
     )
-    fn uiVersion = "0.83.0"
+    fn uiVersion = "0.84.0"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified1")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -2863,7 +2859,7 @@ initialRollupState:0x8
             format "EffectiveRelax:%|" (relaxEnabled and not this.layerPaintActive()) to:stream
             format "FinalRelax:%:%:%:%|" finalRelax finalStrength finalIterations finalMaxMove to:stream
             format "Texture:%|" (this.procWatchDensity()) to:stream
-            for key in AminScatterLayerFields where findItem AminScatterSurfaceFilterFields key==0 and findItem #(#paintDocument,#paintEnabled,#paintDensity,#bakedNodes,#showPoints,#pointsPerPlant,#updateMode,#autoRender,#previewBudget,#pointColorMode,#solidPointColor) key==0 and findItem post key==0 and findItem #(#paintView,#paintColor,#showCenters,#sourceShowRadius,#paintSetName,#paintSetVisible,#fieldFalloff,#fieldBoundaries,#fieldCombined,#fieldSamples,#fieldBandID) key==0 and (not receiverLocal or findItem #(#amount,#plantsPerM2,#populationMode) key==0) do format "%:%|" key (if key==#sources then this.containerSourceKey (sources as array) else getProperty this key) to:stream
+            for key in AminScatterLayerFields where (distributionMode==3 or findItem #(#densityUVChannel,#densityResolution) key==0) and findItem AminScatterSurfaceFilterFields key==0 and findItem #(#paintDocument,#paintEnabled,#paintDensity,#bakedNodes,#showPoints,#pointsPerPlant,#updateMode,#autoRender,#previewBudget,#pointColorMode,#solidPointColor) key==0 and findItem post key==0 and findItem #(#paintView,#paintColor,#showCenters,#sourceShowRadius,#paintSetName,#paintSetVisible,#fieldFalloff,#fieldBoundaries,#fieldCombined,#fieldSamples,#fieldBandID) key==0 and (not receiverLocal or findItem #(#amount,#plantsPerM2,#populationMode) key==0) do format "%:%|" key (if key==#sources then this.containerSourceKey (sources as array) else getProperty this key) to:stream
             for n in ((if receiverLocal then #() else this.validSurfaces())+(sources as array)+(areaNodes as array)+(patternLines as array)+#(analyzerNode,areaAnalyzer,fallAnalyzer)) where isValidNode n do (
                 local tm=n.objectTransform
                 if this.containerProvider()!=undefined and findItem sources n>0 do tm.row4=[0,0,0]
@@ -2935,12 +2931,42 @@ initialRollupState:0x8
     )
     local updateUI,surfaceUI,previewUI,layersUI,uiRootState=#(),uiPresentationState=#()
 
+    -- One bounded map-only bake, independent of receiver geometry and selected UVs.
+    -- A failed successor never replaces a complete sampled image.
+    fn densityCacheStats = (#(procDensityBakes,procDensityHits,procDensityInversions,procDensityBakeMs,if procDensityCache.count==0 then 0 else procDensityCache[5].count+(if procDensityCache[6]==undefined then 0 else procDensityCache[6].count)))
+    fn procDensityWeights = (
+        if densityMap==undefined do throw "Choose a density texture map."
+        if densityUVChannel<1 or densityUVChannel>99 do throw "Density UV channel must be 1..99."
+        if findItem #(64,128,256,512) densityResolution==0 do throw "Density resolution must be 64, 128, 256 or 512."
+        local revision=this.procWatchDensity(),tick=currentTime as integer,cached=procDensityCache
+        local reusable=cached.count==6 and cached[1]==densityMap and cached[2]==revision and cached[3]==densityResolution
+        if reusable do reusable=tick>=cached[4][1] and tick<=cached[4][2]
+        if reusable then procDensityHits+=1
+        else (
+            local image=undefined,weights=#(),started=timeStamp(),interval=cyrusScatterInputValidity #() #() #(densityMap)
+            try (
+                image=renderMap densityMap size:[densityResolution,densityResolution]
+                if image==undefined do throw "Density map could not be sampled."
+                weights.count=densityResolution*densityResolution
+                local index=1
+                for y=0 to densityResolution-1 do for c in (getPixels image [0,y] densityResolution) do (
+                    weights[index]=amin 1.0 (amax 0.0 ((c.r*0.2126+c.g*0.7152+c.b*0.0722)/255.0));index+=1
+                )
+                close image;image=undefined
+            )catch(if image!=undefined do try(close image)catch();throw())
+            cached=#(densityMap,revision,densityResolution,interval,weights,undefined)
+            procDensityCache=cached;procDensityBakes+=1;procDensityBakeMs=timeStamp()-started
+        )
+        if not invertDensity do return cached[5]
+        if cached[6]==undefined do (cached[6]=for weight in cached[5] collect (1-weight);procDensityInversions+=1)
+        cached[6]
+    )
     fn procWatchDensity = (
         global CyrusDensityMapChanged
         local watched=if distributionMode==3 then densityMap else undefined
         if procDensityMap!=watched do (
             if procDensityWatch!=undefined do deleteChangeHandler procDensityWatch
-            procDensityWatch=undefined;procDensityMap=watched;procDensityRevision+=1
+            procDensityWatch=undefined;procDensityMap=watched;procDensityRevision+=1;procDensityCache=#()
             if watched!=undefined do procDensityWatch=when parameters watched changes id:#CyrusDensityMap affected do (CyrusDensityMapChanged affected)
         )
         procDensityRevision
@@ -3201,7 +3227,7 @@ initialRollupState:0x8
         for node in this.validSurfaces() do (
             local slot=findItem procReceiverNodes node
             append inputs #(slot,procReceiverIDs[slot],(aminScatterSurfaceArea #(node)),requirements[slot])
-            append procReceiverGeometry #(slot,(cyrusProceduralSurfaceKey #(node) (distributionMode==3)))
+            append procReceiverGeometry #(slot,(cyrusProceduralSurfaceKey #(node) (distributionMode==3) densityUVChannel))
         )
         procReceiverPlanData=cyrusReceiverPlan inputs allocation[1] (if parent.populationMode==2 then allocation[2]/(meters*meters) else -1.0) (if parent.procPopulation==2 then parent.procAttemptFactor else 1) ((overlapOwner.populationAllocation this countOverride:1000000)[1])
         densityCapped=procReceiverPlanData[5]
@@ -3488,14 +3514,14 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.83.0 setup; earlier schemas are unsupported."
+        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.84.0 setup; earlier schemas are unsupported."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
     fn procValidate = (
         this.procAssertSchema()
-        if cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=1 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.83.0 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
+        if cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=1 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.84.0 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -3911,7 +3937,7 @@ initialRollupState:0x8
         if (CyrusContainerPanel this).controlsReady do (CyrusContainerPanel this).bind()
         true
     )
-    rollout mainUI "Cyrus Scatter 0.83.0" width:#cmdPanel height:140 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.84.0" width:#cmdPanel height:140 autoLayoutOnResize:true (
         local view=undefined,root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),owner=undefined,layerPagesVisible=false,pagesArranged=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for the entire setup."
         radiobuttons updateRadio "Viewport update" labels:#("Manual","Live") columns:2 pos:[8,26] width:(mainUI.width-16) tooltip:"Manual waits for Update. Live calculates after relevant edits."
@@ -3984,7 +4010,7 @@ initialRollupState:0x8
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.83.0 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.84.0 native plugin and restart Max."
             root=view
             editors=#(view.managerUI,view.surfacesUI,view.modelsUI,view.containersUI,view.layoutUI,view.populationUI,view.coverageUI,view.areasUI,view.transformsUI,view.spacingUI,view.displayUI,view.statisticsUI)
             if root==undefined do (
@@ -7018,9 +7044,13 @@ initialRollupState:0x8
         spinner distributionUI_seedSpin "" range:[0,2147483647,42] type:#integer fieldWidth:58 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/113.2))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/113.2))))) pos:[8,8] tooltip:"Deterministic generation seed. Changing it can invalidate existing Edit bindings."
         label distributionUI_seedSpin_caption "Seed: " pos:[6,6] width:(populationUI.width-12) height:18
         label distributionUI_densityHeading "Texture density" pos:[8,8] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58)))))
-        mapbutton distributionUI_densityButton "Choose density map" pos:[8,8] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/111.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/111.60000000000001))))) tooltip:"Use UV channel 1: white permits candidates; black excludes them." height:22
+        mapbutton distributionUI_densityButton "Choose density map" pos:[8,8] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/111.60000000000001))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/111.60000000000001))))) tooltip:"Use the selected receiver UV channel: white permits candidates; black excludes them. UVs clamp to 0..1." height:22
         checkbox distributionUI_invertCheck "Invert density" pos:[8,8] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/98.8))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/98.8))))) tooltip:"Reverse the density map's white and black eligibility."
-        label distributionUI_uvHint "UV channel 1; 0..1" pos:[8,8] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58)))))
+        spinner distributionUI_uvChannelSpin "" type:#integer range:[1,99,1] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/139.2))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/139.2))))) fieldWidth:58 tooltip:"Receiver texture coordinates, channels 1..99. Missing or invalid mapping retains the previous complete result."
+        label distributionUI_uvChannelSpin_caption "UV channel:" pos:[6,6] width:(populationUI.width-12) height:18
+        dropdownlist distributionUI_resolutionList "" items:#("64 x 64","128 x 128","256 x 256","512 x 512") selection:2 width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58))))) tooltip:"Sampled map detail. Higher resolutions cost more time and memory; tiny features may need more samples. Default: 128 x 128."
+        label distributionUI_resolutionList_caption "Map resolution" pos:[6,6] width:(populationUI.width-12) height:18
+        label distributionUI_uvHint "UVs clamp to 0..1" pos:[8,8] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58)))))
         label distributionUI_mapHint "White: dense / Black: empty" pos:[8,8] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58)))))
         dropdownlist populationPolicyUI_populationList "" items:#("Candidate budget","Accepted target") pos:[8,8] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58))))) tooltip:"Budget evaluates the generated candidates; target makes bounded replacement attempts."
         label populationPolicyUI_populationList_caption "Layer population" pos:[6,6] width:(populationUI.width-12) height:18
@@ -7042,10 +7072,10 @@ initialRollupState:0x8
         fn distributionUI_arrangePopulation = (
             local textured=distributionUI_obj.distributionMode==3
             distributionUI_countSpin.visible=distributionUI_obj.populationMode==1;distributionUI_densitySpin.visible=distributionUI_obj.populationMode==2
-            for c in #(distributionUI_densityHeading,distributionUI_densityButton,distributionUI_invertCheck,distributionUI_uvHint,distributionUI_mapHint) do c.visible=textured
+            for c in #(distributionUI_densityHeading,distributionUI_densityButton,distributionUI_invertCheck,distributionUI_uvChannelSpin,distributionUI_resolutionList,distributionUI_uvHint,distributionUI_mapHint) do c.visible=textured
             distributionUI_bodyHeight=if distributionUI_obj.sharedSpacing() then (if textured then 308 else 184) else (if textured then 340 else 208)
         )
-        fn distributionUI_syncControls = (distributionUI_populationRadio.state=distributionUI_obj.populationMode;distributionUI_densitySpin.value=distributionUI_obj.plantsPerM2;distributionUI_densityButton.map=distributionUI_obj.densityMap;distributionUI_invertCheck.checked=distributionUI_obj.invertDensity;;distributionUI_arrangePopulation())
+        fn distributionUI_syncControls = (distributionUI_populationRadio.state=distributionUI_obj.populationMode;distributionUI_densitySpin.value=distributionUI_obj.plantsPerM2;distributionUI_densityButton.map=distributionUI_obj.densityMap;distributionUI_invertCheck.checked=distributionUI_obj.invertDensity;distributionUI_uvChannelSpin.value=distributionUI_obj.densityUVChannel;distributionUI_resolutionList.selection=findItem #(64,128,256,512) distributionUI_obj.densityResolution;;distributionUI_arrangePopulation())
         on distributionUI_modeRadio changed v do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (if distributionUI_controlsReady and not distributionUI_binding and distributionUI_obj!=undefined do undo "Cyrus layer population" on (distributionUI_obj.distributionMode=if v==2 then 3 else 1;distributionUI_obj.markInputDirty();distributionUI_syncControls();CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
@@ -7067,13 +7097,27 @@ initialRollupState:0x8
         on distributionUI_invertCheck changed v do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (if distributionUI_controlsReady and not distributionUI_binding and distributionUI_obj!=undefined do undo "Cyrus layer population" on (distributionUI_obj.invertDensity=v;distributionUI_obj.markInputDirty();distributionUI_syncControls();CyrusViewportRedraw())
             if controlsReady and root!=undefined do layout()
         )
+        on distributionUI_uvChannelSpin changed v do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (if distributionUI_controlsReady and not distributionUI_binding and distributionUI_obj!=undefined do (
+            local target=distributionUI_obj
+            undo "Cyrus density UV channel" on (target.densityUVChannel=v;target.markInputDirty())
+            distributionUI_syncControls();CyrusViewportRedraw()
+        )
+            if controlsReady and root!=undefined do layout()
+        )
+        on distributionUI_resolutionList selected v do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (if distributionUI_controlsReady and not distributionUI_binding and distributionUI_obj!=undefined and v>=1 and v<=4 do (
+            local target=distributionUI_obj,value=#(64,128,256,512)[v]
+            undo "Cyrus density resolution" on (target.densityResolution=value;target.markInputDirty())
+            distributionUI_syncControls();CyrusViewportRedraw()
+        )
+            if controlsReady and root!=undefined do layout()
+        )
         fn distributionUI_bindFeatures layer = (
             local next=layer
             distributionUI_binding=true;distributionUI_controlsReady=false
             if distributionUI_obj!=next do ()
             distributionUI_obj=next;distributionUI_parentView=(CyrusContainerPanel distributionUI_root)
-            for c in #(distributionUI_presetsButton,distributionUI_modeRadio,distributionUI_populationRadio,distributionUI_countSpin,distributionUI_densitySpin,distributionUI_seedSpin,distributionUI_densityHeading,distributionUI_densityButton,distributionUI_invertCheck,distributionUI_uvHint,distributionUI_mapHint) do c.enabled=layer!=undefined
-            try (undo off ((distributionUI_populationRadio.state=distributionUI_obj.populationMode;distributionUI_densitySpin.value=distributionUI_obj.plantsPerM2;distributionUI_densityButton.map=distributionUI_obj.densityMap;distributionUI_invertCheck.checked=distributionUI_obj.invertDensity;distributionUI_controlsReady=true;(distributionUI_countSpin.value=distributionUI_obj.amount;distributionUI_seedSpin.value=distributionUI_obj.randomSeed;distributionUI_modeRadio.state=if distributionUI_obj.distributionMode==3 then 2 else 1)))) catch(distributionUI_binding=false;distributionUI_controlsReady=true;throw())
+            for c in #(distributionUI_presetsButton,distributionUI_modeRadio,distributionUI_populationRadio,distributionUI_countSpin,distributionUI_densitySpin,distributionUI_seedSpin,distributionUI_densityHeading,distributionUI_densityButton,distributionUI_invertCheck,distributionUI_uvChannelSpin,distributionUI_resolutionList,distributionUI_uvHint,distributionUI_mapHint) do c.enabled=layer!=undefined
+            try (undo off ((distributionUI_populationRadio.state=distributionUI_obj.populationMode;distributionUI_densitySpin.value=distributionUI_obj.plantsPerM2;distributionUI_densityButton.map=distributionUI_obj.densityMap;distributionUI_invertCheck.checked=distributionUI_obj.invertDensity;distributionUI_uvChannelSpin.value=distributionUI_obj.densityUVChannel;distributionUI_resolutionList.selection=findItem #(64,128,256,512) distributionUI_obj.densityResolution;distributionUI_controlsReady=true;(distributionUI_countSpin.value=distributionUI_obj.amount;distributionUI_seedSpin.value=distributionUI_obj.randomSeed;distributionUI_modeRadio.state=if distributionUI_obj.distributionMode==3 then 2 else 1)))) catch(distributionUI_binding=false;distributionUI_controlsReady=true;throw())
             distributionUI_controlsReady=true;distributionUI_binding=false
         )
         fn distributionUI_bind layer = (distributionUI_bindFeatures layer;distributionUI_arrangePopulation())
@@ -7286,6 +7330,30 @@ initialRollupState:0x8
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
             advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28
+            rowControls=#(distributionUI_uvChannelSpin);show=(advancedToggle.checked and (distributionUI_modeRadio.state==2))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if distributionUI_uvChannelSpin_caption.visible!=show do distributionUI_uvChannelSpin_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/139.2))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel distributionUI_uvChannelSpin_caption 18 cellWidth
+                stackedCaption=cellWidth<135.2;captionHeight=amax 0 (if stackedCaption then (amax #(distributionUI_uvChannelSpin_caption.height)) else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                if not stackedCaption then (distributionUI_uvChannelSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight+1];distributionUI_uvChannelSpin_caption.width=cellWidth-78) else (distributionUI_uvChannelSpin_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_uvChannelSpin_caption.width=cellWidth);distributionUI_uvChannelSpin_caption.enabled=distributionUI_uvChannelSpin.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(distributionUI_resolutionList);show=(advancedToggle.checked and (distributionUI_modeRadio.state==2))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if distributionUI_resolutionList_caption.visible!=show do distributionUI_resolutionList_caption.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/58))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                fitLabel distributionUI_resolutionList_caption 18 cellWidth
+                stackedCaption=false;captionHeight=amax (amax #(distributionUI_resolutionList_caption.height)) (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                distributionUI_resolutionList_caption.pos=[6+(mod 0 columns)*(cellWidth+4),y+(floor (0/columns))*rowHeight];distributionUI_resolutionList_caption.width=cellWidth;distributionUI_resolutionList_caption.enabled=distributionUI_resolutionList.enabled
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
             rowControls=#(distributionUI_modeRadio);show=(advancedToggle.checked and (true))
             for c in rowControls where c.visible!=show do c.visible=show
             if distributionUI_modeRadio_caption.visible!=show do distributionUI_modeRadio_caption.visible=show
@@ -7382,7 +7450,7 @@ initialRollupState:0x8
                 obj=owner
                 distributionUI_root=root;distributionUI_owner=owner;distributionUI_panel=panel;distributionUI_controlsReady=controlsReady;distributionUI_binding=binding
             populationPolicyUI_root=root;populationPolicyUI_owner=owner;populationPolicyUI_panel=panel;populationPolicyUI_controlsReady=controlsReady;populationPolicyUI_binding=binding
-            if owner!=undefined then (distributionUI_bind owner;) else (for c in #(distributionUI_presetsButton,distributionUI_modeRadio,distributionUI_populationRadio,distributionUI_countSpin,distributionUI_densitySpin,distributionUI_seedSpin,distributionUI_densityHeading,distributionUI_densityButton,distributionUI_invertCheck,distributionUI_uvHint,distributionUI_mapHint) do c.enabled=false;distributionUI_controlsReady=false)
+            if owner!=undefined then (distributionUI_bind owner;) else (for c in #(distributionUI_presetsButton,distributionUI_modeRadio,distributionUI_populationRadio,distributionUI_countSpin,distributionUI_densitySpin,distributionUI_seedSpin,distributionUI_densityHeading,distributionUI_densityButton,distributionUI_invertCheck,distributionUI_uvChannelSpin,distributionUI_resolutionList,distributionUI_uvHint,distributionUI_mapHint) do c.enabled=false;distributionUI_controlsReady=false)
             if owner!=undefined then (populationPolicyUI_bind owner;) else (for c in #(populationPolicyUI_populationList,populationPolicyUI_attemptSpin,populationPolicyUI_roundSpin,populationPolicyUI_repairCheck,populationPolicyUI_info) do c.enabled=false;populationPolicyUI_controlsReady=false)
                 distributionUI_binding=false;populationPolicyUI_binding=false;setupGrips();controlsReady=true;binding=false;layout();true
             )catch(binding=false;controlsReady=false;throw())

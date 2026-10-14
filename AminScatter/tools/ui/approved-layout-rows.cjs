@@ -28,7 +28,7 @@ module.exports={
   'flow_previewUI.instancesLimitSpin':'flow_previewUI.displayModeDrop.selection==2','flow_previewUI.faceLimitSpin':'flow_previewUI.displayModeDrop.selection==3',
   'flow_previewUI.navigationInstancesSpin':'flow_previewUI.displayModeDrop.selection==2','flow_previewUI.navigationFacesSpin':'flow_previewUI.displayModeDrop.selection==3',
   'flow_previewUI.navigationPointsSpin':'flow_previewUI.displayModeDrop.selection==1 or flow_previewUI.displayModeDrop.selection==4','flow_previewUI.budgetSpin':'flow_previewUI.displayModeDrop.selection==1 or flow_previewUI.displayModeDrop.selection==4',
-  ...Object.fromEntries(['densityHeading','densityButton','invertCheck','uvHint','mapHint'].map(n=>['distributionUI.'+n,'distributionUI.modeRadio.state==2'])),
+  ...Object.fromEntries(['densityHeading','densityButton','invertCheck','uvChannelSpin','resolutionList','uvHint','mapHint'].map(n=>['distributionUI.'+n,'distributionUI.modeRadio.state==2'])),
   'flow_previewUI.solidColorPicker':'flow_previewUI.pointColorRadio.state==1',
   ...Object.fromEntries(['sizeSpin','divSeedSpin','roughSpin','blurSpin','noiseSpin','groupHint','fixedHint'].map(n=>['diversityUI.'+n,'diversityUI.diversityRadio.state==2'])),
   ...Object.fromEntries(['pathsList','cornerMode','arrangementMode','bandStrength','bandCurveCheck','bandCurveEdit','bandScaleMode','bandScaleEdit','bandColor','fieldFalloffCheck','fieldBoundaryCheck','fieldView','fieldSampleSpin','fieldLegend','fieldInfo','bandAssignmentHelp','bandUp','bandDown'].map(n=>['diversityUI.'+n,'diversityUI.diversityRadio.state==3'])),

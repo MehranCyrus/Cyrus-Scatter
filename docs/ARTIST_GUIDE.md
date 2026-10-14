@@ -1,8 +1,8 @@
-# Cyrus Scatter 0.83.0 — current source workflow
+# Cyrus Scatter 0.84.0 — current source workflow
 
 The [offline team license](licensing/TEAM_PILOT_0.79_2026-10-11.md) is independent of scene format. Open **License / activation** in Scatter Modify, save a request for Mehran, then import the returned license file. It expires 30 days after generation. Supported scenes remain loadable/renderable after expiry; creation/editing locks. See [activation and renewal instructions](../tools/licensing/README.md).
 
-Updated 14 October 2026. 0.83.0 adds named settings and curve presets; [Phase 2 evidence](plans/eleven-phase-roadmap/P02.md) records the scoped qualification. Phase 1 cached feedback is committed. Artist acceptance is at the end of the eleven-phase program. The preceding source corrects zero-limit Point Cloud preparation and reuses representations across mode switches; see the [0.81.7 record](plans/terrace-0815/VIEWPORT_0817.md). Earlier 0.81.6 source added independent navigating/idle viewport limits and a lightweight Mesh fallback. The [adaptive viewport record](plans/terrace-0815/VIEWPORT_0816.md) records exact test scope. Earlier changes include larger bounded populations, compact source-rectangle properties and consistent viewport/render source sizing. The [terrace implementation record](plans/terrace-0815/PROGRESS.md) distinguishes tested behavior from remaining acceptance. The [Bands record](plans/spline-bands/PROGRESS.md) preserves preceding feature evidence. Installed local package identities remain listed separately in the [installation guide](plans/spline-bands/INSTALLATION.md).
+Updated 14 October 2026. 0.84.0 adds UV-channel and map-resolution controls with map-bake reuse; [Phase 4 evidence](plans/eleven-phase-roadmap/P04.md) records current qualification. Earlier phases added cached feedback, named presets, and slope/altitude eligibility. Artist acceptance is at the end of the eleven-phase program. The preceding source corrects zero-limit Point Cloud preparation and reuses representations across mode switches; see the [0.81.7 record](plans/terrace-0815/VIEWPORT_0817.md). Earlier 0.81.6 source added independent navigating/idle viewport limits and a lightweight Mesh fallback. The [adaptive viewport record](plans/terrace-0815/VIEWPORT_0816.md) records exact test scope. Earlier changes include larger bounded populations, compact source-rectangle properties and consistent viewport/render source sizing. The [terrace implementation record](plans/terrace-0815/PROGRESS.md) distinguishes tested behavior from remaining acceptance. The [Bands record](plans/spline-bands/PROGRESS.md) preserves preceding feature evidence. Installed local package identities remain listed separately in the [installation guide](plans/spline-bands/INSTALLATION.md).
 
 Panels show controls, counts and actionable status. Detailed explanations live in this guide, the website and control tooltips. For example, hover over Radius mode to see why Auto is unavailable for a selected source. Pending updates, Analyzer errors and brush status remain visible.
 
@@ -63,7 +63,27 @@ Distances remain world-space widths when the Path is scaled. **Rounded** uses di
 
 Amount offers fixed Count or area Density. The seed makes a given recipe reproducible. Sampling can use a texture mask. Candidate budget makes a bounded candidate request; restrictions can leave fewer accepted plants. Accepted target makes additional bounded attempts. A shortfall can be correct when spacing, boundaries or masks leave insufficient room. Increasing retry work cannot make an impossible arrangement fit.
 
-Count accepts up to **1,000,000** per population. All populations on one controller share a **1,000,000-candidate work limit**, including retry and protected-edit requirements. Exceeding the shared limit reports an error and keeps the preceding complete result. This limit is separate from the viewport display budget. Texture Density requires UV channel 1 on every receiver; an error identifies the surface that needs mapping.
+Count accepts up to **1,000,000** per population. All populations on one controller share a **1,000,000-candidate work limit**, including retry and protected-edit requirements. Exceeding the shared limit reports an error and keeps the preceding complete result. This limit is separate from the viewport display budget. Texture Density requires valid mapping in the selected UV channel on every receiver; errors identify the receiver and channel.
+
+In Amount > Advanced, Texture Density exposes **UV channel** (1..99, default 1)
+and **Map resolution** (64/128/256/512 pixels per side, default 128). Match the
+channel to your receiver's UVs. Increase resolution for small mask details;
+512 uses sixteen times as many samples as 128 and can take longer to prepare.
+White permits a candidate, black excludes it, and gray thins the result. Invert
+reverses that permission. Coordinates outside 0..1 clamp to the edge; this is not
+UDIM or repeat addressing. Initial placement uses bilinear sampling; the existing
+Relax nonzero mask check retains its nearest-pixel behavior.
+Texture Density runs before CS Edit. A masked edited candidate keeps its saved
+edit dormant; restoring eligibility restores that edit. Resolution changes alone
+preserve Edit bindings.
+
+Map samples are reused while the map, its resolution and its evaluation interval
+remain valid. Receiver/UV changes can reuse the bake. Invert derives its own
+bounded sample array. Editing or animating the map refreshes its samples when an
+update is needed. Manual holds the preceding plants until Update scatter; invalid
+mapping or a failed update keeps the previous complete result. Cache reuse does
+not make a high-resolution map free, and coarse maps can miss narrow features.
+
 
 ## Slope and altitude filters
 

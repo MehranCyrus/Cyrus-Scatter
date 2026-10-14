@@ -855,6 +855,18 @@
         },
         {
           "component": "distributionUI",
+          "control": "uvChannelSpin",
+          "presentation": "distributionUI_uvChannelSpin",
+          "advanced": true
+        },
+        {
+          "component": "distributionUI",
+          "control": "resolutionList",
+          "presentation": "distributionUI_resolutionList",
+          "advanced": true
+        },
+        {
+          "component": "distributionUI",
           "control": "uvHint",
           "presentation": "distributionUI_uvHint",
           "advanced": false

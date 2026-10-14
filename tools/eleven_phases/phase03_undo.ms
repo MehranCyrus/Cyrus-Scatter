@@ -1,6 +1,6 @@
 -- Native generated control Undo, persistent typed fields and ownership.
 (
-    if not matchPattern MCPFixtureDir pattern:"*/build/mcp-qualification/foundation-roadmap-p03-*/" do throw "Owned P03 host required"
+    if not matchPattern MCPFixtureDir pattern:"*/build/mcp-qualification/foundation-roadmap-*/" do throw "Owned P03 host required"
     local log=createFile (MCPFixtureDir+"phase03-undo.txt")
     fn verify value label log = (
         format "%: %\n" (if value then "PASS" else "FAIL") label to:log;flush log

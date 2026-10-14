@@ -1,9 +1,9 @@
 {
   "schema": "cyrus.feature-catalog/1.0",
   "authority": "Help only. Tool dispatch, closed schema and local approval determine authority.",
-  "capability_source_sha256": "0562c387e45866efcef0572c64e18454c5efddd559cbe29f393bbb8bc3e6869c",
-  "control_inventory_sha256": "a85f9e77d497289171b9b606dd5e9344a8e46cc48668ccaf3f19a91f25a58d35",
-  "development_version": "0.83.0",
+  "capability_source_sha256": "9a70ba9bd98a260d6ba90fd3fbf20d965828d3773c2dd280436bb40161798f4f",
+  "control_inventory_sha256": "6a3a14a2f4ade007306e6d8a85b6e0cee8b35493dc673c8451c6bfecd6a0df09",
+  "development_version": "0.84.0",
   "mcp_version": "0.73.0",
   "calculation_model": "CyrusUnified1",
   "features": [
@@ -80,7 +80,7 @@
     {
       "feature_id": "C11",
       "title": "Density map / layer",
-      "native": "Texture/UV density, inversion and relevant nested-map invalidation",
+      "native": "UV channels 1..99; 64/128/256/512 density samples; bounded map-only bake reuse, inversion and nested-map invalidation",
       "mcp": "No map enrollment/write contract",
       "qualification_or_extension": "Bounded enrolled map references and qualified evaluation"
     },
@@ -1544,7 +1544,7 @@
         "C11"
       ],
       "owner_context": "Layer defaults",
-      "help": "Use UV channel 1: white permits candidates; black excludes them.",
+      "help": "Use the selected receiver UV channel: white permits candidates; black excludes them. UVs clamp to 0..1.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -1559,6 +1559,34 @@
       ],
       "owner_context": "Layer defaults",
       "help": "Reverse the density map's white and black eligibility.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "spinner",
+      "name": "uvChannelSpin",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Receiver texture coordinates, channels 1..99. Missing or invalid mapping retains the previous complete result.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "dropdownlist",
+      "name": "resolutionList",
+      "capabilities": [
+        "C09",
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Sampled map detail. Higher resolutions cost more time and memory; tiny features may need more samples. Default: 128 x 128.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },

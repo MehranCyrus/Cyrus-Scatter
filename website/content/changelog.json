@@ -3,6 +3,31 @@
   "notes": "Entries are ordered by documented development chronology, not numeric label. Missing versions and unknown dates are not invented. Local evidence is stripped before publication. 0.79.2 and 0.79.5 are current uncommitted working-tree campaigns at this review, not new Git releases. Analyzer/MCP have independent version domains.",
   "entries": [
     {
+      "version": "0.84.0",
+      "date": "2026-10-14",
+      "title": "Density mapping controls and sample reuse.",
+      "era": "recent",
+      "legacy": false,
+      "note": "Development source; final artist acceptance and normal installation remain separate.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Select receiver UV channels 1..99 and density resolutions 64, 128, 256 or 512; defaults remain 1 and 128."
+        },
+        {
+          "kind": "Improved",
+          "text": "Map-only bake reuse avoids resampling unchanged textures during receiver edits and derives inversion without rebaking."
+        },
+        {
+          "kind": "Improved",
+          "text": "Missing, incomplete or invalid UV data names the affected receiver/channel and preserves the preceding complete planting."
+        }
+      ],
+      "evidence": [
+        "docs/plans/eleven-phase-roadmap/P04.md"
+      ]
+    },
+    {
       "version": "0.83.0",
       "date": "2026-10-14",
       "title": "Slope and altitude eligibility.",

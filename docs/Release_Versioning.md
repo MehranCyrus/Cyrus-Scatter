@@ -2,8 +2,8 @@
 
 | Domain | Current value | Meaning |
 | --- | --- | --- |
-| Scatter UI | 0.83.0 | Slope and altitude eligibility; scoped qualification recorded in P03 |
-| Scatter native/package | 0.83.0 native candidate / 0.81.6 installed | Matched private P03 builds; no new package or normal installation |
+| Scatter UI | 0.84.0 | Selectable density mapping; qualification in P04 |
+| Scatter native/package | 0.84.0 native candidate / 0.81.6 installed | Matched private P04 builds; no new package or normal installation |
 | Saved MAXScript schema | 58 | Independent saved Band scale profiles; current-only scenes, no earlier-schema migration |
 | Calculation model | CyrusUnified1 | Current procedural model |
 | Surface Analyzer | 0.14 | Independently versioned product |
@@ -32,6 +32,11 @@ Before changing version metadata, record the current and proposed versions, a sh
 When a bump is within the authorized task, align the Scatter UI template and generated script, native/package metadata, installer labels, coupled catalog assertions, current navigation and changelog. Follow the [agent workflow](AGENT_WORKFLOW.md) for generation and proportionate checks; do not bump unrelated products mechanically. For artist-visible changes, keep the guide, relevant website chapters/control explanations and changelog aligned with proven behavior and run the website import checks when those sources change. Report local source updates, built website artifacts and live deployment separately. Version selection itself does not authorize packaging, installation or publication.
 
 ## Current and historical evidence
+
+0.84.0 adds selectable UV channels and density-map resolution with per-layer bake
+reuse. This new artist feature warrants a minor version. Schema 58 keeps channel 1
+and 128-square defaults. Density capability 1 and the twelve-field generation
+options require matching native/script bytes. See [P04](plans/eleven-phase-roadmap/P04.md).
 
 0.82.0 is the next minor for named population, transform, spacing and curve
 presets. Format/codec 1 is new; schema 58 and the existing native interfaces are

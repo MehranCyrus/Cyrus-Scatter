@@ -656,7 +656,7 @@
   },
   "layer.distributionUI.modeRadio": {
     "label": "Method",
-    "help": "Choose Random eligibility or Texture Density. Texture Density samples a selected map through receiver UV channel 1; it is independent of Random mix/Clusters/Spline bands model assignment in Layout.",
+    "help": "Choose Random eligibility or Texture Density. Texture Density samples a selected map through the selected receiver UV channel; it is independent of Random mix/Clusters/Spline bands model assignment in Layout.",
     "evidence": [
       "AminScatter/tools/ui/templates/unified-core.ms:3482",
       "AminScatter/tools/ui/templates/unified-core.ms:3500"
@@ -696,7 +696,7 @@
   },
   "layer.distributionUI.densityButton": {
     "label": "Choose density map",
-    "help": "Use UV channel 1: white permits candidates; black excludes them.",
+    "help": "Use the selected receiver UV channel: white permits candidates, black excludes them, and gray thins them. UVs clamp to 0..1.",
     "evidence": [
       "AminScatter/tools/ui/templates/unified-core.ms:3488",
       "AminScatter/tools/ui/templates/unified-core.ms:3506"
@@ -2170,6 +2170,20 @@
     "evidence": [
       "AminScatter/tools/ui/templates/unified-core.ms:4260",
       "docs/plans/eleven-phase-roadmap/P03.md:1"
+    ]
+  },
+  "layer.distributionUI.uvChannelSpin": {
+    "label": "UV channel",
+    "help": "Choose receiver texture channel 1..99, default 1. Every receiver must have valid mapping in that channel. Errors retain the preceding complete planting.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4189"
+    ]
+  },
+  "layer.distributionUI.resolutionList": {
+    "label": "Map resolution",
+    "help": "Choose 64, 128, 256 or 512 samples per side. Default 128. Higher resolution can capture narrow features but increases preparation time and memory. Valid sampled maps are reused across receiver edits.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4190"
     ]
   }
 }
