@@ -48,19 +48,19 @@
     ]
   },
   "general.previewUI.instancesLimitSpin": {
-    "label": "Instances/layer",
-    "help": "Limit the number of instances shown per layer in Proxy and Mesh display. It is a preview budget, not the requested or accepted population.",
+    "label": "Idle instances",
+    "help": "Maximum proxy instances when the view settles, across visible layers. Zero removes the display cap.",
     "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:3059",
-      "AminScatter/tools/ui/templates/unified-core.ms:3087"
+      "AminScatter/tools/ui/templates/unified-core.ms:3501",
+      "docs/ARTIST_GUIDE.md:102"
     ]
   },
   "general.previewUI.faceLimitSpin": {
-    "label": "Faces/layer",
-    "help": "Limit preview faces per layer in geometry display. A budget can show only a subset of accepted planting; it does not lower the final population.",
+    "label": "Idle triangles",
+    "help": "Maximum Mesh triangles when the view settles, across visible layers. Expensive sources may use cached boxes. Zero removes the display cap; resource safeguards still apply.",
     "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:3060",
-      "AminScatter/tools/ui/templates/unified-core.ms:3088"
+      "AminScatter/tools/ui/templates/unified-core.ms:3502",
+      "docs/ARTIST_GUIDE.md:102"
     ]
   },
   "general.previewUI.identificationDrop": {
@@ -87,11 +87,11 @@
     ]
   },
   "general.previewUI.budgetSpin": {
-    "label": "Point limit",
-    "help": "Cap the viewport point-sample budget. This is a presentation limit rather than a planting count or a collision setting.",
+    "label": "Idle points",
+    "help": "Maximum Point Cloud or centre markers when the view settles, across visible layers. Zero removes the display cap.",
     "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:3064",
-      "AminScatter/tools/ui/templates/unified-core.ms:3096"
+      "AminScatter/tools/ui/templates/unified-core.ms:3506",
+      "docs/ARTIST_GUIDE.md:102"
     ]
   },
   "general.previewUI.pointsSpin": {
@@ -672,18 +672,18 @@
   },
   "layer.distributionUI.countSpin": {
     "label": "Requested count",
-    "help": "Layer population before eligibility. Accepted target can retry up to its limits.",
+    "help": "Layer population before eligibility, up to 1,000,000 within the shared controller candidate budget. Accepted target can retry up to its limits.",
     "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:3484",
-      "AminScatter/tools/ui/templates/unified-core.ms:3501"
+      "AminScatter/tools/ui/templates/unified-core.ms:3939",
+      "AminScatter/tools/ui/templates/unified-core.ms:3956"
     ]
   },
   "layer.distributionUI.densitySpin": {
     "label": "Per m2",
-    "help": "Requested plants per square metre of receiving surface; capped at 100,000.",
+    "help": "Requested plants per square metre of receiving surface. Each population and the shared controller candidate budget are bounded at 1,000,000, including retries.",
     "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:3485",
-      "AminScatter/tools/ui/templates/unified-core.ms:3505"
+      "AminScatter/tools/ui/templates/unified-core.ms:3940",
+      "AminScatter/tools/ui/templates/unified-core.ms:3960"
     ]
   },
   "layer.distributionUI.seedSpin": {
@@ -1822,7 +1822,7 @@
   },
   "layer.detailsUI.refreshButton": {
     "label": "Read cached statistics",
-    "help": "Read the existing calculation statistics without regenerating placements.",
+    "help": "Read the named layer's last completed calculation and prepared preview counts without regenerating placements. Pending Manual settings remain unapplied.",
     "evidence": [
       "AminScatter/tools/ui/templates/unified-core.ms:4348",
       "AminScatter/tools/ui/templates/unified-core.ms:4376"
@@ -1897,7 +1897,7 @@
     "owner_context": "Controller / local view",
     "evidence": [
       "AminScatter/tools/ui/templates/approved-main-ui.ms:7",
-      "AminScatter/tools/ui/templates/approved-main-ui.ms:119",
+      "AminScatter/tools/ui/templates/approved-main-ui.ms:112",
       "docs/ARTIST_GUIDE.md:3"
     ]
   },
@@ -2042,6 +2042,30 @@
     "evidence": [
       "AminScatter/tools/ui/templates/unified-core.ms:4372",
       "docs/LAYOUT_AND_FALLOFF.md:23"
+    ]
+  },
+  "general.previewUI.navigationPointsSpin": {
+    "label": "Navigating points",
+    "help": "Maximum Point Cloud or centre markers while navigating, across visible layers. Zero removes the display cap.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3507",
+      "docs/ARTIST_GUIDE.md:102"
+    ]
+  },
+  "general.previewUI.navigationInstancesSpin": {
+    "label": "Navigating instances",
+    "help": "Maximum proxy instances while navigating, across visible layers. Zero removes the display cap.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3508",
+      "docs/ARTIST_GUIDE.md:102"
+    ]
+  },
+  "general.previewUI.navigationFacesSpin": {
+    "label": "Navigating triangles",
+    "help": "Maximum Mesh triangles while navigating, across visible layers. Expensive sources may use cached boxes. Zero removes the display cap.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:3509",
+      "docs/ARTIST_GUIDE.md:102"
     ]
   }
 }

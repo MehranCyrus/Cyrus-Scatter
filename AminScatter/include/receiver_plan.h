@@ -7,7 +7,9 @@ namespace cyrus::receivers {
 // A saved append-only receiver slot and local candidate ordinal form an ID.
 // Scheduling rank is deliberately separate and can change with quotas.
 constexpr std::uint64_t marker=1ULL<<32;
-constexpr unsigned stride=131072, limit=100000, slots=128;
+constexpr unsigned stride=131072, limit=1000000, slots=128;
+// Ordinal pages follow all receiver slots. The first page keeps every existing
+// saved candidate ID; growth beyond 131072 cannot alias the next receiver.
 std::uint64_t identity(unsigned slot,unsigned ordinal);
 bool decode(std::uint64_t id,unsigned& slot,unsigned& ordinal);
 std::uint64_t salt(const std::string& persistentID);

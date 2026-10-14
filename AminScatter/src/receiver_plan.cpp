@@ -34,11 +34,15 @@ Binding parse(const std::string& text){
 }
 }
 std::uint64_t identity(unsigned slot,unsigned ordinal){
-    require(slot<slots&&ordinal<limit,"Receiver candidate identity exceeds limits");return marker+std::uint64_t(slot)*stride+ordinal;
+    require(slot<slots&&ordinal<limit,"Receiver candidate identity exceeds limits");
+    return marker+(std::uint64_t(ordinal/stride)*slots+slot)*stride+ordinal%stride;
 }
 bool decode(std::uint64_t id,unsigned& slot,unsigned& ordinal){
-    if(id<marker||id>=marker+std::uint64_t(slots)*stride)return false;
-    slot=unsigned((id-marker)/stride);ordinal=unsigned((id-marker)%stride);return ordinal<limit;
+    constexpr std::uint64_t page=std::uint64_t(slots)*stride;
+    if(id<marker||id>=marker+((limit+stride-1)/stride)*page)return false;
+    const auto offset=id-marker;
+    slot=unsigned((offset/stride)%slots);ordinal=unsigned((offset/page)*stride+offset%stride);
+    return ordinal<limit;
 }
 std::uint64_t salt(const std::string& id){
     require(!id.empty()&&id.size()<=256,"Invalid persistent receiver identity");std::uint64_t value=1469598103934665603ULL;
@@ -62,7 +66,8 @@ Plan plan(std::vector<Input> input,unsigned total,double density,unsigned factor
     std::size_t pool=0;
     for(std::size_t i=0;i<input.size();++i){const unsigned count=std::max(attempts[i],input[i].required);
         out.receivers.push_back({input[i].slot,budgets[i],attempts[i],count});pool+=count;}
-    require(pool<=limit,"Receiver candidate admission exceeds 100000 including protected edits");
+    require(pool<=limit,"Receiver candidate admission exceeds 1,000,000 including protected edits");
+    out.order.reserve(pool);
     // Initial quotas first, then refill capacity, then protected-only suffix.
     // Stable receiver slot order means appending a surface cannot change the
     // relative collision priority of existing candidates within each phase.

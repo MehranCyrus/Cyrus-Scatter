@@ -2,8 +2,8 @@
 
 | Domain | Current value | Meaning |
 | --- | --- | --- |
-| Scatter UI | 0.81.2 | Current source development label; automated qualification only |
-| Scatter native/package | 0.81.2 | Matched Max 2026/2027 packages installed on disk; restart and fresh normal-profile acceptance pending |
+| Scatter UI | 0.81.8 | Development candidate: named-owner statistics, prepared-preview units and callback/status corrections; acceptance in progress |
+| Scatter native/package | 0.81.8 native candidate / 0.81.6 installed | Matched private builds for Phase 1; no new package or normal installation |
 | Saved MAXScript schema | 58 | Independent saved Band scale profiles; current-only scenes, no earlier-schema migration |
 | Calculation model | CyrusUnified1 | Current procedural model |
 | Surface Analyzer | 0.14 | Independently versioned product |
@@ -32,6 +32,46 @@ Before changing version metadata, record the current and proposed versions, a sh
 When a bump is within the authorized task, align the Scatter UI template and generated script, native/package metadata, installer labels, coupled catalog assertions, current navigation and changelog. Follow the [agent workflow](AGENT_WORKFLOW.md) for generation and proportionate checks; do not bump unrelated products mechanically. For artist-visible changes, keep the guide, relevant website chapters/control explanations and changelog aligned with proven behavior and run the website import checks when those sources change. Report local source updates, built website artifacts and live deployment separately. Version selection itself does not authorize packaging, installation or publication.
 
 ## Current and historical evidence
+
+0.81.8 is a patch for workflow and cached-result feedback. It distinguishes
+accepted placements from prepared display samples, identifies the named layer,
+and corrects the generated callback guard and first-result status. Placement
+policy, schema 58 and native interfaces remain unchanged. The [Phase 1 record](plans/eleven-phase-roadmap/P01.md)
+tracks exact iterations, passing evidence and remaining acceptance. This source
+version does not establish phase completion, a package or installation.
+
+0.81.7 is a patch for zero-limit Point Cloud transitions and memory accumulation
+during repeated display-mode changes. Saved schema 58, placement policy, Band
+interface 10 and publication interface 2 are unchanged. Native viewport policy
+capability 2 exposes the resource-derived point preparation capacity. See the
+[investigation and qualification](plans/terrace-0815/VIEWPORT_0817.md); package
+and normal installation remain the preceding 0.81.6 delivery.
+
+0.81.6 is explicitly selected by the user for navigating/idle display limits and
+Mesh fallback correction. The new viewport capability would ordinarily warrant
+a minor version; the requested label takes precedence. Additive settings retain
+schema 58, Band interface 10 and publication interface 2. Matched scripts require
+viewport policy capability 1. Analyzer and MCP versions remain unchanged. See the
+[viewport implementation and scoped evidence](plans/terrace-0815/VIEWPORT_0816.md).
+The subsequent authorized [package and installation record](plans/terrace-0815/INSTALLATION_0816.md)
+pins the same tested bytes, normal-profile backups and loaded native paths.
+
+0.81.5 is explicitly selected by the user for the terrace production-scene work.
+The expanded candidate/identity bound would ordinarily warrant a minor change;
+the requested label takes precedence. Existing receiver IDs remain stable through
+paged ordinals; schema 58 and publication interface 2 remain unchanged, and the
+Band/native requirement advances to 10 for the larger supported candidate range.
+Compact rectangle selection, bounded point staging and the render source-frame
+correction are included. See the [current evidence](plans/terrace-0815/PROGRESS.md)
+for exact builds and acceptance. Analyzer and MCP versions remain independent.
+
+0.81.3 is the requested patch for unchanged-layer preview reuse, prepared density
+curve evaluation and scale-profile memory accounting. Placement policy, saved
+schema 58, Band interface 9 and publication interface 2 remain unchanged. The
+script also requires the new preview-comparison primitives from its matched
+native package. Build/package/install are authorized; tests and Max execution
+are explicitly deferred to the user's manual acceptance. Earlier test results
+do not qualify this patch.
 
 0.81.2 is the requested bounded UI/assignment correction: Scale moves directly
 below density and Band membership supports click-to-toggle, including none.

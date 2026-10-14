@@ -5,6 +5,7 @@
 #include <vector>
 #include <array>
 #include "preview_budget.h"
+#include "viewport_policy.h"
 
 namespace cyrus {
 extern PreviewBudget pointPreviewBudget,meshPreviewBudget;
@@ -53,6 +54,8 @@ struct PointLayer {
     Point3 color;
     std::shared_ptr<const struct MeshSnapshot> mesh;
     std::shared_ptr<const PreviewPalette> palette;
+    int geometryMode=0;
+    ViewportLimits limits;
 };
 
 struct PreviewGeometry {
@@ -60,6 +63,7 @@ struct PreviewGeometry {
     std::vector<Matrix3> instances;
     Point3 color;
     bool placeholder=false;
+    bool reducedBox=false;
     std::vector<std::uint8_t> bandSlots;
 };
 // Source-local triangles and exact accepted placement transforms are shared
@@ -68,6 +72,7 @@ struct MeshSnapshot {
     std::shared_ptr<PreviewMemory> memory;
     std::vector<PreviewGeometry> groups;
     std::vector<Box3> groupBounds;
+    std::vector<Box3> localBounds;
     Box3 bounds;
     std::size_t faces=0,instances=0,bufferBytes=0,cpuBytes=0,scratchBytes=0;
     std::uint64_t fingerprint=1469598103934665603ULL;

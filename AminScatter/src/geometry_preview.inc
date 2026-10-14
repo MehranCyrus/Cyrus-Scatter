@@ -6,9 +6,9 @@ Value* cyrusBuildGeometryPreview_cf(Value** args,int count){
  auto* rows=static_cast<Array*>(args[0]);auto* sources=static_cast<Array*>(args[1]);
  const auto palette=previewPalette(args[2],sources->size);
  int mode=args[3]->to_int(),limit=args[4]->to_int(),budget=args[5]->to_int();
- if(mode<1||mode>4||limit<1||limit>100000||budget<12||budget>20000000)throw RuntimeError(_T("Invalid geometry display settings"));
+ if(mode<1||mode>4||limit<0||budget<0)throw RuntimeError(_T("Invalid geometry display settings"));
  if(rows->size>1000000||sources->size>512)throw RuntimeError(_T("Mesh preview input exceeds 1,000,000 placements or 512 sources"));
- const int wanted=std::min(limit,int(rows->size));
+ const int wanted=limit?std::min(limit,int(rows->size)):int(rows->size);
  auto staging=cyrus::reservePreviewMemory(cyrus::meshPreviewBudget,rows->size+std::size_t(wanted)*2*(sizeof(Matrix3)+1)+sources->size*512+4096);
  auto markerStaging=cyrus::reservePreviewMemory(cyrus::pointPreviewBudget,std::size_t(wanted)*2*(sizeof(Point3)+1)+sources->size*256+4096);
  std::vector<std::shared_ptr<cyrus::PreviewMemory>> sourceStaging;
@@ -30,8 +30,9 @@ Value* cyrusBuildGeometryPreview_cf(Value** args,int count){
   if(mesh.getNumVerts()==0||mesh.getNumFaces()==0)continue;
   if(std::size_t(mesh.getNumFaces())>sourceInspectionFaceLimit-inspectedFaces)throw RuntimeError(_T("Preview source inspection exceeds 2,000,000 faces; simplify the sources"));
   inspectedFaces+=mesh.getNumFaces();
-  if(mode==4&&mesh.getNumFaces()>budget)continue;
-  const auto nextFaces=mode==4?mesh.getNumFaces():mode==1?12:mode==2?168:6;
+  const bool fullSource=mode==4 && (!budget||mesh.getNumFaces()<=budget);
+  dst.reducedBox=mode==4&&!fullSource;
+  const auto nextFaces=fullSource?mesh.getNumFaces():(mode==1||mode==4)?12:mode==2?168:6;
   if(std::size_t(nextFaces)>sourceInspectionFaceLimit-retainedFaces)throw RuntimeError(_T("Preview retained source geometry exceeds its aggregate face allowance"));
   retainedFaces+=nextFaces;
   sourceStaging.push_back(cyrus::reservePreviewMemory(cyrus::meshPreviewBudget,std::size_t(nextFaces)*sizeof(std::array<Point3,3>)));
@@ -46,12 +47,12 @@ Value* cyrusBuildGeometryPreview_cf(Value** args,int count){
     for(int axis=0;axis<3;++axis)if(!std::isfinite(points[corner][axis]))throw RuntimeError(_T("Preview source has non-finite geometry"));
     bounds+=points[corner];
    }
-   if(mode==4)dst.faces.push_back(points);
+   if(fullSource)dst.faces.push_back(points);
   }
-  if(mode==4)continue;
+  if(fullSource)continue;
   auto lo=bounds.Min(),hi=bounds.Max(),center=(lo+hi)*.5f,half=(hi-lo)*.5f;
   auto add=[&](Point3 a,Point3 b,Point3 c){dst.faces.push_back({a,b,c});};
-  if(mode==1){Point3 v[8];for(int k=0;k<8;++k)v[k]=Point3(k&1?hi.x:lo.x,k&2?hi.y:lo.y,k&4?hi.z:lo.z);
+  if(mode==1||mode==4){Point3 v[8];for(int k=0;k<8;++k)v[k]=Point3(k&1?hi.x:lo.x,k&2?hi.y:lo.y,k&4?hi.z:lo.z);
    const int quads[6][4]={{0,2,3,1},{4,5,7,6},{0,1,5,4},{2,6,7,3},{0,4,6,2},{1,3,7,5}};
    for(auto& q:quads){add(v[q[0]],v[q[1]],v[q[2]]);add(v[q[0]],v[q[2]],v[q[3]]);}
   }else if(mode==2){const int sectors=12,rings=8;
@@ -65,11 +66,12 @@ Value* cyrusBuildGeometryPreview_cf(Value** args,int count){
    add(v[0],v[2],v[1]);add(v[0],v[3],v[2]);
   }
  }
- int shown=0,faces=0;
+ int shown=0;std::size_t faces=0;
  for(int k=0;k<wanted;++k){int i=static_cast<int>(static_cast<std::int64_t>(k)*rows->size/wanted);auto* row=static_cast<Array*>(rows->data[i]);int src=row->data[1]->to_int()-1;auto tm=row->data[0]->to_matrix3();auto& group=geometry[src];
   if(group.faces.empty()){if(group.placeholder){markers[src].points.push_back(tm.GetTrans());markers[src].bandSlots.push_back(bandSlots[i]);++shown;}continue;}
-  if(group.faces.size()>static_cast<std::size_t>(budget-faces))continue;
-  group.instances.push_back(tm);group.bandSlots.push_back(bandSlots[i]);faces+=static_cast<int>(group.faces.size());++shown;
+  // Retain the bounded instance stream. Controller-wide draw admission chooses
+  // full meshes or boxes without erasing an entire source from the preview.
+  group.instances.push_back(tm);group.bandSlots.push_back(bandSlots[i]);faces+=group.faces.size();++shown;
  }
  auto out=std::make_unique<AminPointCache>();
  // Proxy shapes use the same immutable source geometry and instance transforms
@@ -80,5 +82,5 @@ Value* cyrusBuildGeometryPreview_cf(Value** args,int count){
  out->palette=palette;out->size=shown;out->faceCount=faces;out->geometryMode=mode;return out.release();
 }
 def_visible_primitive(cyrusPreviewFaces,"cyrusPreviewFaces");
-Value* cyrusPreviewFaces_cf(Value** args,int count){check_arg_count(cyrusPreviewFaces,1,count);type_check(args[0],AminPointCache,_T("cache"));return Integer::intern(static_cast<AminPointCache*>(args[0])->faceCount);}
+Value* cyrusPreviewFaces_cf(Value** args,int count){check_arg_count(cyrusPreviewFaces,1,count);type_check(args[0],AminPointCache,_T("cache"));return Integer64::intern(static_cast<AminPointCache*>(args[0])->faceCount);}
 

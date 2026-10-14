@@ -59,6 +59,18 @@
       },
       {
         "kind": "spinner",
+        "name": "navigationPointsSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "navigationInstancesSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "navigationFacesSpin"
+      },
+      {
+        "kind": "spinner",
         "name": "pointsSpin"
       },
       {

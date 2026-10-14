@@ -8,9 +8,11 @@ Use this small set for the current codebase. Update it in place instead of creat
 | How do Layout, Analyzer and falloff controls interact? | [Detailed feature reference](LAYOUT_AND_FALLOFF.md) |
 | Who owns data and where is the implementation? | [Architecture](ARCHITECTURE.md) |
 | Which principles guide behavior and engineering decisions? | [Engineering foundation](ENGINEERING_FOUNDATION.md) |
-| What is changing in current source 0.81.2/schema 58? | [Spline Bands plan](plans/spline-bands/README.md), [implementation and acceptance evidence](plans/spline-bands/PROGRESS.md) |
+| What is changing in current source 0.81.8/schema 58? | [Phase 1 feedback and acceptance](plans/eleven-phase-roadmap/P01.md); preceding [Zero-limit points and mode switching](plans/terrace-0815/VIEWPORT_0817.md); preceding [Adaptive viewport limits and fallback](plans/terrace-0815/VIEWPORT_0816.md); preceding [Terrace scene, capacity and performance evidence](plans/terrace-0815/PROGRESS.md); preceding [Spline Bands implementation evidence](plans/spline-bands/PROGRESS.md) |
 | What did the preceding publication/units correction establish? | [0.79.6 bounded historical foundation evidence](Foundation_0.79.6_2026-10-12/README.md); old-schema migration is retired in 0.80.0 |
 | What is unfinished or next? | [Current backlog](BACKLOG.md) |
+| What is the authorized eleven-phase improvement program? | [Implementation roadmap](plans/eleven-phase-roadmap/README.md), [phase specifications](plans/eleven-phase-roadmap/IMPLEMENTATION.md), [validation](plans/eleven-phase-roadmap/VALIDATION.md) and [live TODO](plans/eleven-phase-roadmap/TODO.md) |
+| Why were source rectangles slow to create or select? | [0.81.3 investigation](Source_Containers_Performance_2026-10-13.md) and [0.81.5 compact-panel correction and measured limits](plans/terrace-0815/PROGRESS.md) |
 | How are alternative brush architectures being compared? | [Four standalone painting trials](../experiments/paint-methods/README.md) — isolated results and known failures; vector A selected for integration |
 | How do I install/build? | [Max 2026/2027 installation/build](Max_2027_Installation.md) |
 | How should code changes be tested? | [Agent workflow](AGENT_WORKFLOW.md) |

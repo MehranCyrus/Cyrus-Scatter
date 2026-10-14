@@ -279,7 +279,11 @@ Value* cyrusContainerConfigure_cf(Value** a,int count){
     if(sameUnits)for(int i=0;i<input->size;++i)if(f->units[i]->Get()!=input->data[i]->to_node())sameUnits=false;
     if(f->members.size()!=static_cast<std::size_t>(members->size))sameUnits=false;
     if(sameUnits)for(int i=0;i<members->size;++i)if(f->members[i]->Get()!=members->data[i]->to_node())sameUnits=false;
-    if(sameUnits&&f->node.Get()==node&&!presentation){f->cache(MAXScript_time());return &ok;}
+    if(sameUnits&&f->node.Get()==node){
+        f->width=w;f->length=l;f->label=label;f->show=show;
+        f->cache(MAXScript_time());
+        if(presentation)f->NotifyDependents(FOREVER,PART_DISPLAY,REFMSG_CHANGE);return &ok;
+    }
     HoldSuspend hold;
     std::vector<std::unique_ptr<WeakNode>> units;units.reserve(input->size);
     for(int i=0;i<input->size;++i)units.push_back(std::make_unique<WeakNode>(input->data[i]->to_node()));
@@ -288,6 +292,16 @@ Value* cyrusContainerConfigure_cf(Value** a,int count){
     f->node.Set(node);f->units=std::move(units);f->members=std::move(authorized);f->width=w;f->length=l;f->label=label;f->show=show;
     f->cache(MAXScript_time());
     if(presentation)f->NotifyDependents(FOREVER,PART_DISPLAY,REFMSG_CHANGE);return &ok;
+}
+
+// Browsing owners and changing their captions cannot change movement ownership.
+// Keep that presentation path independent from hierarchy capture/revalidation.
+def_visible_primitive(cyrusContainerPresentation,"cyrusContainerPresentation");
+Value* cyrusContainerPresentation_cf(Value** a,int count){
+    check_arg_count(cyrusContainerPresentation,3,count);auto* f=frame(a[0]);
+    const std::wstring label=a[1]->to_string();const bool show=a[2]->to_bool()!=FALSE;
+    if(f->label==label&&f->show==show)return &ok;
+    f->label=label;f->show=show;f->NotifyDependents(FOREVER,PART_DISPLAY,REFMSG_CHANGE);return &ok;
 }
 def_visible_primitive(cyrusContainerMovable,"cyrusContainerMovable");
 Value* cyrusContainerMovable_cf(Value** a,int count){check_arg_count(cyrusContainerMovable,1,count);return CyrusContainerStaticNode(a[0]->to_node())?&true_value:&false_value;}

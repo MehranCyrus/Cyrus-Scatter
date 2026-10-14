@@ -1,6 +1,43 @@
 # Scatter local installations
 
-## Latest: Band selection and scale layout, 0.81.2, 13 October 2026
+## Latest: Adaptive viewport, 0.81.6, 13 October 2026
+
+See the [0.81.6 installation record](../terrace-0815/INSTALLATION_0816.md) for
+the current Max 2026/2027 packages, installed hashes and backups. The receipts
+below retain their original historical scope.
+
+## Earlier: Performance corrections, 0.81.3, 13 October 2026
+
+**0.81.3 is compiled, packaged and installed on disk for Max 2026 and 2027.**
+Save work and restart Max before running the new script, so native modules and
+script load together. No tests were run and Max was not opened or controlled.
+Runtime and viewport acceptance are pending the user's manual testing.
+
+Changes: reuse unchanged layer preview geometry and radius overlays across
+calculation publications; avoid repeated validation of prepared density curves;
+include scale curves and scale slopes in retained-memory accounting. Staging,
+rollback, placement policy and schema 58 remain intact. Native Band interface 9
+and publication interface 2 are unchanged; new preview-comparison primitives
+require this matched native/script pair. Analyzer, licensing and MCP versions
+are unchanged.
+
+- [Max 2026 MZP](../../../dist/CyrusScatter-0.81.3-20261013/CyrusScatter-0.81.3-Max2026.mzp)
+  - SHA256 `fa123a0e66645eceb91bfa65ed9a06045f56586b240a31f610e74d122583d88a`
+
+- [Max 2027 MZP](../../../dist/CyrusScatter-0.81.3-20261013/CyrusScatter-0.81.3-Max2027.mzp)
+  - SHA256 `5010fb86e521eaa7353a14169ea5565f25d400765f5ca5c4705ef15a33493cc6`
+
+Script SHA256: `803df45bb17ec88e9d15fcf42b130d5e5b55df93c1f7621131cfb2497f604d32`.
+
+[Installation receipt](../../../build/performance-0.81.3-20261013-01/installation.json)
+records package identities, installed-file hashes and previous-file backups in
+`backup/Max2026` and `backup/Max2027`. All installed hashes were verified.
+Previous native directories and normal settings were preserved; only the owned
+Scatter registration value changed in each plugin INI. The interactive installer
+dialog was not executed. [Implementation details and manual acceptance](PROGRESS.md)
+separate compile/file verification from runtime qualification.
+
+## Earlier: Band selection and scale layout, 0.81.2, 13 October 2026
 
 **0.81.2 is packaged and installed on disk for Max 2026 and 2027.**
 Save work and restart Max to load it. Open artist sessions were preserved.

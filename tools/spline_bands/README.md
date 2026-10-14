@@ -15,7 +15,8 @@ matched historical/current hosts; it checks navigation, Manual/Live behavior and
 same-version save/reload. Run comparison hosts serially. Its synchronous timings
 are diagnostic measurements, not presented FPS or a release performance claim.
 
-These tools qualify source 0.81.2 / schema 58. The current implementation,
+These tools last qualified source 0.81.2 / schema 58. They have not been run for
+the 0.81.3 performance corrections, as requested by the user. The current implementation,
 exact receipts and open acceptance gates are in
 [PROGRESS](../../docs/plans/spline-bands/PROGRESS.md). Historical benchmark and
 scene-migration sources are archived under `docs/plans/spline-bands/retired-fixtures`;

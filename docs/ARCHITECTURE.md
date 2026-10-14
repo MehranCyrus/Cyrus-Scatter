@@ -1,6 +1,6 @@
 # Current codebase architecture
 
-Applies to development source Cyrus Scatter 0.81.2, saved schema 58 and `CyrusUnified1`. Use [the artist guide](ARTIST_GUIDE.md) for controls, [the backlog](BACKLOG.md) for unrelated unfinished work, and [current implementation evidence](plans/spline-bands/PROGRESS.md) for measured acceptance and remaining gates. Read the relevant [F01–F12 contract](ENGINEERING_FOUNDATION.md) with its limits. Dated reports describe their own snapshots.
+Applies to development source Cyrus Scatter 0.81.8, saved schema 58 and `CyrusUnified1`. Use [the artist guide](ARTIST_GUIDE.md) for controls, [the backlog](BACKLOG.md) for unrelated unfinished work, and [current feedback evidence](plans/eleven-phase-roadmap/P01.md) for measured acceptance and remaining gates. The [preceding viewport evidence](plans/terrace-0815/VIEWPORT_0817.md) and [Bands record](plans/spline-bands/PROGRESS.md) preserve their own qualification. Read the relevant [F01–F12 contract](ENGINEERING_FOUNDATION.md) with its limits. Dated reports describe their own snapshots.
 
 ## Ownership
 
@@ -22,7 +22,7 @@ The generated controller prepares geometry and keyed candidates, applies support
 
 Paint Areas combine coverage by maximum within their layer; a candidate is accepted at most once. Areas do not create additional population quotas. Each receiver now has a persistent UUID-salted candidate stream. Density rounds independently per receiver below its allocated cap; Fixed Total and capped Density use area/weight-based largest-remainder quotas with saved receiver-slot tie breaking. Removed quotas drop local suffixes. Reorder and rename do not reseed unchanged receivers; unlink/relink retains their identities. A same-name replacement node has a different identity.
 
-Candidate IDs encode an append-only saved receiver slot plus local ordinal, within the owning population's namespace. A separate schedule places initial quotas before refill and protected-only suffixes; rejection does not renumber IDs. Admission includes per-receiver requirements from moved/cloned Edit inputs and stays bounded to 100,000 candidates per population and the existing root limit. Geometry face indices plus barycentric coordinates locate samples and Brush anchors; they are not persistent identities across topology changes. Orientation uses geometric face normals. No rest-pose or arbitrary-remesh correspondence is introduced.
+Candidate IDs encode an append-only saved receiver slot plus local ordinal, within the owning population's namespace. A separate schedule places initial quotas before refill and protected-only suffixes; rejection does not renumber IDs. Ordinal pages in 0.81.5 preserve existing IDs and prevent ordinals above 131,071 from overlapping another receiver slot. Admission includes moved/cloned Edit requirements and stays bounded to 1,000,000 candidates per population and 1,000,000 across the root, including retry/protected requirements. Geometry face indices plus barycentric coordinates locate samples and Brush anchors; they are not persistent identities across topology changes. Orientation uses geometric face normals. No rest-pose or arbitrary-remesh correspondence is introduced.
 
 Receiver-local row caches include generation settings, source state, receiver geometry/UV hashes, relevant spline geometry, Analyzer revisions and texture state. Adding a receiver can reuse old candidate rows, but Update still reads geometry/area for validation and runs shared acceptance/publication. This does not claim zero host geometry evaluation or incremental GPU upload. Projection and candidate Relax use the candidate's receiver; changing its own quota/neighborhood can change Relax positions. Shared masks, collision scopes, cleanup and protected edits can change which candidates survive.
 
@@ -50,11 +50,23 @@ Feedback prepares complete line segments lifted onto the receiving surface, or o
 
 Publication commits compatible rows, sources, radii, statistics and display/output state as one complete epoch. Failed successors retain the prior complete publication and report the error. Pending configuration and published output can therefore legitimately differ.
 
+0.81.3 keeps this shared epoch but permits unchanged layer snapshots to survive
+a new calculation. Staging compares ordered transforms/source indices/Band owners
+against the last committed owner, plus source identities, geometry signatures,
+Band dictionary, display settings and the published Point Cloud sampling seed.
+Radius overlays additionally compare both published radius metrics and inspection
+settings. Palette replacement shares immutable snapshots. Comparisons do not
+install state; existing commit/rollback retains ownership of all cache keys and
+metadata. The original 0.81.3 delivery deferred tests and Max execution. The
+combined 0.81.5 source now has scoped two-host retained/publication witnesses and
+a nine-layer garden campaign; see the current report for exact limits rather than
+treating these as exhaustive Band/renderer acceptance.
+
 Manual edits wait for explicit Update. Passive browsing, cached inspection and unrelated animation must not publish pending recipes. Cold reconstruction of a missing initial publication is distinct from evaluating warm pending edits. Live invalidation follows relevant dependencies, including relevant animation. Mouse-held interaction can defer scheduled work.
 
-Host geometry access, scene mutation and publication belong on the Max thread. Native workers use copied input. Point Cloud, Mesh and all three Proxy shapes use retained buffers to avoid unchanged uploads. Proxy shares Mesh's immutable source faces and instance transforms, without expanding per-instance proxy triangles in normal operation. The GraphicsWindow fallback reads the same snapshots. Retained drawing uses GPU graphics, not GPU placement computation.
+Host geometry access, scene mutation and publication belong on the Max thread. Native workers use copied input. Point Cloud, Mesh and all three Proxy shapes use retained buffers to avoid unchanged uploads. Proxy shares Mesh's immutable source faces and instance transforms, without expanding per-instance proxy triangles in normal operation. Mesh keeps source geometry independently of draw limits. Controller-owned idle/navigating caps choose stable prefixes across visible source groups; zero removes the artist cap. Mesh groups that cannot fit their triangle share use cached boxes, and memory admission may reduce all Mesh groups to boxes. The active view/projection and a settling timer switch precomputed quotas without rebuilding snapshots or uploading unchanged buffers. GraphicsWindow emergency fallback submits at most 2,048 centre markers per cache and no source triangles. Inspection lines retain their separate bounded policy. Retained drawing uses GPU graphics, not GPU placement computation.
 
-Each population publishes a primary Point/Mesh cache and one inspection bundle combining radius rings, field samples and clipped boundaries. XY radii use one 24-segment ring; 3D uses three perpendicular rings. Field glyphs sample actual receiver triangles through the generation evaluator; zero density remains visible. White boundaries intersect receiver geometry at its actual elevation. Selected contribution and combined occupancy share the same field logic. Ten populations retain the existing twenty-cache and 1,024-group limits. Field preparation, staged copies, buffers and old/new generations consume bounded reservations; diagnostic payload counts do not measure all driver/allocator overhead.
+Each population publishes a primary Point/Mesh cache and one inspection bundle combining radius rings, field samples and clipped boundaries. It may retain up to six current-publication CPU representations: Point Cloud, Centres, Mesh and the three proxy shapes. Mode switches reuse those immutable snapshots; a new publication or scene retirement clears the representation table, which participates in display rollback. Point preparation uses a conservative controller capacity before dividing work between populations, independently of artist draw caps. Large zero-limit requests therefore sample points and report reduction instead of failing back to the previous mode. XY radii use one 24-segment ring; 3D uses three perpendicular rings. Field glyphs sample actual receiver triangles through the generation evaluator; zero density remains visible. White boundaries intersect receiver geometry at its actual elevation. Selected contribution and combined occupancy share the same field logic. Ten populations retain the existing twenty-published-cache and 1,024-group limits. Retained CPU representations, field preparation, staged copies, buffers and old/new generations consume bounded reservations; diagnostic payload counts do not measure all driver/allocator overhead.
 
 Main geometry, identification palette and inspection keys are separate. Display-only field settings do not enter placement keys. Manual field feedback follows current relevant inputs while published plants/radii and field metadata remain frozen; labels distinguish pending feedback from the last Update. A bounded weak dependency key observes receiver/Path notifications and validity without extracting geometry during unchanged refresh. Uncached source-dependent representations verify published source revisions before consuming geometry. Failed display staging restores all cache references, keys and labels.
 
@@ -68,7 +80,32 @@ In 0.79.5 each preview also retains a layer display key: publication epoch, owne
 
 Explicit Update enters root evaluation once: that evaluation stages and installs every layer atomically. Installed previews remember their Analyzer publication revision. Scatter validates enabled Analyzer dependencies before a successor solve and preserves its last complete publication on stale-input failure. An unchanged cached read continues to consume the published guides even when the Manual Analyzer has pending edits. Analyzer stores publication freshness, linked input references, a settings/transform signature and the published time-validity interval; a drainable source-event queue invalidates the saved freshness flag. Validation, Analyze and save drain pending geometry notifications; delayed notification still schedules Live work after mouse release. Parameter replay during scene loading/merging must not overwrite the saved flag. Older guides without a freshness record require explicit Analyze.
 
+## Cached feedback
+
+The 0.81.8 presentation reads existing owner/result snapshots. A completed
+calculation epoch distinguishes a result from an empty preview staged for a new
+Manual layer. The cached dirty flag is labelled Marked for Update; the passive
+reader does not compute input hashes. Named-owner feedback distinguishes accepted
+placements from representation-specific prepared counts. Generated page binding
+releases every component event guard after the successful parent bind. The main
+status callback only relayouts Statistics when its displayed text changes. See
+[Phase 1 evidence](plans/eleven-phase-roadmap/P01.md) for runtime results and the
+remaining visual acceptance.
+
 ## Source map
+
+Source rectangles in 0.81.5 instantiate only their compact properties rollout.
+The controller owns the full Scatter editor. Presentation-only label updates do
+not recapture movement hierarchies; full ownership reconciliation still validates
+movement inputs. Point preparation validates all placement rows but copies only
+the bounded displayed samples into its immutable snapshot.
+
+The Particle Flow bridge freezes evaluated source geometry before normalizing
+its node frame, matching pivot-local native preview and instance output. It
+reuses one transient prototype per distinct source and preserves original source
+objects. Proxy geometry is resolved before snapshotting. This corrects the extra
+source-node scaling previously applied by Shape Instance; third-party geometry
+and renderer coverage retain their explicit acceptance limits.
 
 | Area | Maintained source |
 | --- | --- |

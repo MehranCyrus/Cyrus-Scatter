@@ -45,7 +45,7 @@ extern "C" __declspec(dllexport) ClassDesc* LibClassDesc(int i){return i==0?Cyru
 BOOL WINAPI DllMain(HINSTANCE instance, DWORD reason, LPVOID) { if(reason==DLL_PROCESS_ATTACH)CyrusEditInstance=instance;return TRUE; }
 static_assert(MAX_PRODUCT_YEAR_NUMBER == CYRUS_MAX_YEAR, "SDK year must match the configured host year");
 def_visible_primitive(cyrusSplineBandVersion,"cyrusSplineBandVersion");
-Value* cyrusSplineBandVersion_cf(Value** args,int count){check_arg_count(cyrusSplineBandVersion,0,count);return Integer::intern(9);}
+Value* cyrusSplineBandVersion_cf(Value** args,int count){check_arg_count(cyrusSplineBandVersion,0,count);return Integer::intern(10);}
 #include "group_spacing_bridge.inc"
 
 // Diagnostic/session controls. Scene evaluation and MAXScript values stay on
@@ -140,7 +140,10 @@ std::vector<amin::Triangle> meshOf(INode* node, bool world, bool requireUv=false
     Matrix3 tm=node->GetObjectTM(t);
     if(!world) tm=tm*Inverse(node->GetNodeTM(t));
     Mesh& mesh=tri->GetMesh();
-    if(requireUv && (!mesh.mapSupport(1)||!mesh.mapVerts(1)||!mesh.mapFaces(1))) throw std::invalid_argument("Surface requires UV channel 1");
+    if(requireUv && (!mesh.mapSupport(1)||!mesh.mapVerts(1)||!mesh.mapFaces(1))) {
+        const std::wstring message=std::wstring(L"Texture Density: receiver '")+node->GetName()+L"' requires UV channel 1. Add UV mapping to this surface or choose another Layout mode. The previous result is retained.";
+        throw RuntimeError(message.c_str());
+    }
     std::vector<amin::Triangle> result;result.reserve(mesh.getNumFaces());
     for(int i=0;i<mesh.getNumFaces();++i) {
         const auto& f=mesh.faces[i];
@@ -226,7 +229,8 @@ Value* scatterAdvanced(Value** args,int count) {
         }
     }
     const int n=args[1]->to_int(), ns=args[3]->to_int();
-    if(n<0||n>100000||ns<1) throw RuntimeError(_T("Count must be 0..100000 and sources nonempty."));
+    if(n<0||n>cyrus::receivers::limit||s.candidateStart>cyrus::receivers::limit-static_cast<unsigned>(n)||ns<1)
+        throw RuntimeError(_T("Candidate range must stay within 0..1,000,000 and sources must be nonempty."));
     s.count=n;s.seed=args[2]->to_int();s.sourceCount=ns;s.uniformScale={1,1};
     {
         type_check(args[15],Array,_T("source groups"));

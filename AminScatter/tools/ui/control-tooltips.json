@@ -75,8 +75,8 @@
     "removeContainer": "Unlink this rectangle without deleting it or registered source settings."
   },
   "distributionUI": {
-    "countSpin": "Layer population before eligibility. Accepted target can retry up to its limits.",
-    "densitySpin": "Requested plants per square metre of receiving surface; capped at 100,000.",
+    "countSpin": "Layer population before eligibility, up to 1,000,000. All layers and retries share the Scatter's 1,000,000 candidate limit.",
+    "densitySpin": "Requested plants per square metre; capped at 1,000,000 per layer. All layers and retries share the Scatter's 1,000,000 candidate limit.",
     "seedSpin": "Deterministic generation seed. Changing it can invalidate existing Edit bindings.",
     "densityButton": "Use UV channel 1: white permits candidates; black excludes them.",
     "invertCheck": "Reverse the density map's white and black eligibility."

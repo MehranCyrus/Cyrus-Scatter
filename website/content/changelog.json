@@ -1,7 +1,138 @@
 {
-  "reviewed": "2026-10-13",
+  "reviewed": "2026-10-14",
   "notes": "Entries are ordered by documented development chronology, not numeric label. Missing versions and unknown dates are not invented. Local evidence is stripped before publication. 0.79.2 and 0.79.5 are current uncommitted working-tree campaigns at this review, not new Git releases. Analyzer/MCP have independent version domains.",
   "entries": [
+    {
+      "version": "0.81.8",
+      "date": "2026-10-14",
+      "title": "Clearer layer and calculated-result feedback.",
+      "era": "recent",
+      "legacy": false,
+      "note": "Development candidate under Phase 1 qualification; no package or normal-profile installation.",
+      "changes": [
+        {
+          "kind": "Improved",
+          "text": "Statistics uses the selected layer name and separates accepted placements from prepared preview samples and pending updates."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Generated component callbacks are released after binding so cached-statistics actions work."
+        },
+        {
+          "kind": "Fixed",
+          "text": "An empty preview cache for a new Manual layer is distinguished from a completed calculation."
+        }
+      ],
+      "evidence": [
+        "docs/plans/eleven-phase-roadmap/P01.md"
+      ]
+    },
+    {
+      "version": "0.81.7",
+      "date": "2026-10-14",
+      "title": "Reliable zero-limit Point Cloud and display-mode reuse.",
+      "era": "recent",
+      "legacy": false,
+      "note": "Development correction requiring matched native modules. Installed 0.81.6 packages remain separate from this candidate.",
+      "changes": [
+        {
+          "kind": "Fixed",
+          "text": "Point Cloud requests above the preview memory allowance use a bounded sample with an explicit status, including when both artist limits are zero."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Current-publication Point Cloud, Mesh and proxy-shape snapshots are reused across display-mode switches, avoiding repeated Mesh cache allocations before garbage collection."
+        }
+      ],
+      "evidence": [
+        "docs/plans/terrace-0815/VIEWPORT_0817.md"
+      ]
+    },
+    {
+      "version": "0.81.6",
+      "date": "2026-10-13",
+      "title": "Adaptive viewport limits and lighter Mesh fallback.",
+      "era": "recent",
+      "legacy": false,
+      "note": "User-selected development version. Requires matched native modules; scene and host acceptance are scoped separately from release certification.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Independent navigating and idle limits for points, proxy instances and Mesh triangles, shared across visible layers. Zero means unlimited display budget."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Mesh admission uses cached boxes when geometry cannot fit the preview allowance. Emergency drawing uses bounded centre markers instead of CPU source triangles."
+        },
+        {
+          "kind": "Improved",
+          "text": "Camera movement switches prepared draw quotas without recalculating planting or uploading unchanged geometry. Mesh limit changes retain source geometry."
+        }
+      ],
+      "evidence": [
+        "docs/plans/terrace-0815/VIEWPORT_0816.md"
+      ]
+    },
+    {
+      "version": "0.81.5",
+      "date": "2026-10-13",
+      "title": "Larger planting populations and faster source rectangles.",
+      "era": "recent",
+      "legacy": false,
+      "note": "User-selected development version. Schema 58 remains; matched native modules are required. Scoped tests and an actual terrace-scene workflow are recorded separately from release certification.",
+      "changes": [
+        {
+          "kind": "Improved",
+          "text": "Count accepts up to one million per population while retaining a shared one-million controller work limit and stable existing candidate identities."
+        },
+        {
+          "kind": "Improved",
+          "text": "Source rectangles open compact properties, and label updates avoid rebuilding their movement setup. Full planting settings remain on the Scatter controller."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Point preview preparation copies only bounded displayed samples, allowing larger populations without staging every placement transform."
+        },
+        {
+          "kind": "Fixed",
+          "text": "The render bridge uses the same pivot-local source frame as native preview, correcting extra source-node scaling in Particle Flow."
+        },
+        {
+          "kind": "Improved",
+          "text": "Texture Density errors identify receivers missing UV channel 1 and explain how to repair the input."
+        }
+      ],
+      "evidence": [
+        "docs/plans/terrace-0815/PROGRESS.md",
+        "docs/Source_Containers_Performance_2026-10-13.md"
+      ]
+    },
+    {
+      "version": "0.81.3",
+      "date": "2026-10-13",
+      "title": "Retained preview reuse and bounded field evaluation.",
+      "era": "recent",
+      "legacy": false,
+      "note": "Bounded corrections preserving schema 58 and publication policy. Prepared for manual acceptance; tests and Max execution are deferred for this delivery.",
+      "changes": [
+        {
+          "kind": "Fixed",
+          "text": "Unchanged layers can retain geometry and radius-overlay buffers across calculation publications after comparing their published display inputs."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Prepared density curves interpolate without repeatedly validating their complete sample arrays."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Spline field memory reservations include scale curves and scale-slope storage."
+        }
+      ],
+      "evidence": [
+        "docs/plans/spline-bands/PROGRESS.md",
+        "docs/ARCHITECTURE.md"
+      ]
+    },
     {
       "version": "0.81.2",
       "date": "2026-10-13",

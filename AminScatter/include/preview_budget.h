@@ -36,6 +36,12 @@ public:
 };
 inline constexpr std::size_t pointPreviewOwnerLimit=64ull*1024*1024;
 inline constexpr std::size_t pointPreviewProcessLimit=128ull*1024*1024;
+// Per-controller preparation capacity, separate from either artist draw cap.
+// Per point: doubled CPU vector capacity (26 bytes), retained HW/system/upload
+// copies (48), and simultaneous preparation (26). Leave 8 MiB for groups,
+// palettes, source samples and inspection bookkeeping. Zero draw caps still
+// remove only the artist cap; preparation must fit a complete display successor.
+inline constexpr std::size_t pointPreviewPreparationLimit=(pointPreviewOwnerLimit-8ull*1024*1024)/100;
 inline constexpr std::size_t meshPreviewOwnerLimit=512ull*1024*1024;
 inline constexpr std::size_t meshPreviewProcessLimit=1024ull*1024*1024;
 }

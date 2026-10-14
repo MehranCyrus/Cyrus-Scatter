@@ -1,0 +1,152 @@
+# Eleven-phase Cyrus Scatter implementation roadmap
+
+Created 14 October 2026. This is the execution plan requested in the Forest / Chaos
+comparison conversation. It covers feature-table items **1 through 11**, treated
+as eleven sequential deliveries. It replaces the tentative ordering in that
+conversation; it does not replace the engineering foundation or current backlog.
+
+## Scope and authorization
+
+The user authorized implementation, proportionate testing, documentation, version
+selection, and a commit/push after each successfully validated phase. Continue to
+the next phase after its predecessor meets its acceptance criteria and its push
+is verified. Fix a failed required check before declaring that phase complete.
+Do not substitute a passing test count for the artist behavior being tested.
+
+Packaging, normal-profile installation, public release and website deployment are
+separate delivery actions. Existing authorization does cover private, disposable
+Max test hosts. Preserve original scenes, profiles, assets and unrelated work.
+On 14 October the user clarified that agent-run Max/automated testing should
+continue through all eleven phases; their own artist testing happens at the end.
+Attempt Computer Use when available, but its infrastructure failure is not a
+per-phase stop or request for user acceptance. Record unperformed physical/visual
+checks for the final artist session. Actual product/runtime failures still require
+fixes before a phase checkpoint. Do not invent a passing visual result.
+
+## Enrollment baseline
+
+- Source: **0.81.7**, schema **58**, calculation model **CyrusUnified1**.
+- Branch at enrollment: `codex/workflow-0.75`.
+- HEAD at enrollment: `2b9ad12b24f9d91241db4567037f64db71fe9726`.
+- The working tree contains substantial pre-existing 0.81.3–0.81.7 changes,
+  qualification tools/reports, research and unrelated website/knowledge work.
+  A clean checkout of HEAD alone is not this baseline. Inspect and preserve the
+  baseline diff before forming a reproducible phase commit.
+- Documentation records **0.81.6 installed**, with 0.81.7 privately qualified.
+  Recheck actual installed/loaded hashes before any host-specific claim.
+- [Current viewport handoff](../terrace-0815/VIEWPORT_0817.md) records 28 native
+  suites per Max year, 161 Python tests and 357 scoped host assertions. These are
+  historical receipts for their exact input bytes, not passes for future edits.
+- General curved-surface scattering exists; vector Paint Areas remain restricted
+  to single-valued receiver-local XY terrain. Layers, clusters, Bands, independent
+  density/scale curves, Point/Empty source roles, protected Edit, independent
+  spacing scopes, retained display and PFlow output already exist.
+- **Phase 11 is partially implemented already:** 0.81.6 adds navigating/idle
+  budgets and Mesh fallback; 0.81.7 adds resource-bounded Point preparation and
+  current-publication representation-cache reuse. Audit and extend this behavior.
+- Knowledge generation `44bb57523e1286764c655754ce79ed3e4299bce12c0c71b7c49b212258dfa0d3`
+  rejected current-source retrieval as stale on 14 October. Direct current-source
+  inspection is authoritative for this plan; no index refresh was performed.
+
+## Documents and status
+
+- [P01 implementation and evidence](P01.md): current **0.81.8** candidate;
+  runtime checks pass. The user deferred their visual acceptance until the end
+  of the program; the phase Git checkpoint is being finalized.
+- [Implementation specifications](IMPLEMENTATION.md): outcome, ownership, staged
+  delivery, cache dependencies, edge cases and acceptance for each phase.
+- [Validation and performance](VALIDATION.md): common checks, fixtures, metrics,
+  evidence levels and phase completion requirements.
+- [TODO and progress](TODO.md): the operational checklist, current action, results,
+  version decisions and Git checkpoints. Update this after every meaningful step.
+- [Current backlog](../../BACKLOG.md): existing defect/acceptance IDs remain the
+  authority for those issues; this plan links them rather than closing them by
+  implication.
+
+| Phase | Outcome | Effort | Entry dependencies | Current state |
+| --- | --- | --- | --- | --- |
+| P01 | Clear workflow, ownership, cached/pending state and useful feedback | Small–medium | Freeze current baseline and inspect actual generated UI | Runtime passed; Git checkpoint in progress |
+| P02 | Named settings and curve presets | Medium | P01; typed settings capture/apply | Planned |
+| P03 | Slope/altitude filters with soft transitions | Medium | P02; existing eligibility and units contracts | Planned |
+| P04 | Selectable UV channel and density-map resolution | Medium | P03; map dependency/coordinate contract | Planned |
+| P05 | Paint-to-spline export and spline-to-Paint import | Medium | P04; current vector regions and units | Planned |
+| P06 | Rectangular, staggered and hexagonal placement | Medium | P05; stable layout identities | Planned |
+| P07 | Target/direction orientation controls | Medium | P06; final-transform and radius contracts | Planned |
+| P08 | True path spacing, sequences and reference placement | Medium–large | P07; shared candidate/transform services | Planned |
+| P09 | Transform maps and color-based source assignment | Medium–large | P04, P07, P08 | Planned |
+| P10 | Complete planting recipes, substitution and browser | Medium–large | P02 plus settled P03–P09 authored settings | Planned |
+| P11 | Adaptive viewport completion and production performance | Medium–large | P01–P10; existing 0.81.6/0.81.7 viewport policy | Partial baseline; new acceptance pending |
+
+Execution is sequential. Performance and correctness work are continuous inside
+each phase. A necessary foundational fix can be a tracked subtask of the phase
+that exposes it; do not silently reorder or broaden the eleven product outcomes.
+
+## Per-phase delivery loop
+
+1. Recheck current branch, HEAD, relevant dirty/untracked changes and latest
+   handoff. Review existing evidence once, then read the relevant original source.
+2. Freeze the phase's behavior and acceptance table. Resolve important semantics
+   before coding; record design decisions and remaining uncertainty.
+3. Implement in authoritative native/template/generator sources. Update generated
+   outputs, inventory and closed catalog contracts together where affected.
+4. Validate the intended action, important unaffected cases, failure retention,
+   persistence and relevant performance. Iterate on actual failures.
+5. Review the complete candidate diff and evidence. Update current artist docs,
+   backlog and website source imports for proven artist-visible changes.
+6. Select the version using the [version policy](../../Release_Versioning.md),
+   freeze source identities, and run the necessary final checks for those bytes.
+7. Commit the coherent phase plus its necessary reviewed prerequisites; exclude
+   unrelated assets/work. Push to the existing intended branch without force and
+   verify the remote commit. Record hashes and outstanding acceptance limits.
+8. Mark the phase complete only if required acceptance and push verification are
+   complete. Start the next phase using that checkpoint.
+
+An earlier phase's runtime receipt is reusable only for unchanged relevant inputs
+and dependencies. Changed shared pipeline code requires the corresponding prior
+phase regressions. A source-only Git checkpoint must contain the tracked/untracked
+source dependencies needed to regenerate and build; ignored SDKs/assets/binaries
+need separately recorded local provenance.
+
+## Version approach
+
+Use `0.MINOR.PATCH`, keeping schema and native capabilities independent. P01's
+bounded feedback/wording corrections are provisionally **0.81.8** from current
+0.81.7. Confirm this against concurrent changes before altering metadata.
+New coherent features normally take the next minor version, so P02 could become
+0.82.0 if that is still the next available feature version. Do not preassign all
+eleven versions or interpret 0.81.9 as a decimal before 0.82.0. Record any explicit
+user-selected override. Documentation/planning alone does not bump the product.
+
+## Research discipline
+
+Use vendor documentation, SDK/API references, vendor-owned public repositories,
+readable installed scripts and controlled behavior experiments when available.
+Record product version, source URL/path, observation, inference and chosen Cyrus
+behavior separately. Public APIs and visible behavior do not reveal all private
+engine decisions. A generic GitHub search on 14 October returned third-party
+installer/activation repositories, not verified engine source; none was adopted.
+Do not treat a repository name as evidence of vendor provenance.
+
+Existing research and the four AI plans under `docs/How_Forest_Works/` are design
+inputs. Their stroke-authoritative painting proposals, old ownership models,
+fixed-radius incremental assumptions and speculative renderer paths must be
+reconciled with current source before use. Preserve current vector authority,
+ordered acceptance and existing PFlow output.
+
+Primary references to revisit for decision-critical details:
+
+- [Forest library browser](https://docs.itoosoft.com/forestpack/forest-library/library-browser)
+  and [library authoring](https://docs.itoosoft.com/forestpack/forest-library/editing-a-library): P02/P10.
+- [Forest surfaces](https://docs.itoosoft.com/forestpack/forest-plugin/surfaces)
+  and [image distribution](https://docs.itoosoft.com/forestpack/forest-plugin/distribution/image-mode): P03/P04/P09.
+- [Forest areas](https://docs.itoosoft.com/forestpack/forest-plugin/areas): P05.
+- [Forest path mode](https://docs.itoosoft.com/forestpack/forest-plugin/distribution/path-mode)
+  and [reference mode](https://docs.itoosoft.com/forestpack/forest-plugin/distribution/reference-mode): P08.
+- [Chaos advanced features](https://support.chaos.com/hc/en-us/articles/4953359913617-How-to-use-Chaos-Scatter-with-Corona-for-3ds-Max-Advanced-Features): P03/P06/P07/P09.
+- [Chaos performance guidance](https://support.chaos.com/hc/en-us/articles/4953457092625-How-to-use-Chaos-Scatter-with-Corona-for-3ds-Max-Performance-and-Troubleshooting): P11.
+- [Forest export/MAXScript tools](https://docs.itoosoft.com/forestpack/instantiating-and-exporting/forest-tools): documented interoperability and bounded observations.
+
+Features 12–18 of the comparison remain outside this program: broader linked
+planting, a new advanced Edit system, renderer/material expansion, edge trimming,
+animation/geometry LOD, general curved-surface painting and an Effects framework.
+Do not make them hidden prerequisites for finishing phases 1–11.

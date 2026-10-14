@@ -32,7 +32,7 @@ std::shared_ptr<PreviewMemory> reservePreviewMemory(PreviewBudget& budget,std::s
     catch(const std::exception&) { throw RuntimeError(_T("Preview resource allocation failed or exceeded its process allowance. Reduce display limits or release older caches.")); }
 }
 MeshSnapshot::MeshSnapshot(std::vector<PreviewGeometry> value):groups(std::move(value)) {
-    cpuBytes=sizeof(*this)+groups.capacity()*sizeof(PreviewGeometry)+groups.size()*sizeof(Box3);
+    cpuBytes=sizeof(*this)+groups.capacity()*sizeof(PreviewGeometry)+groups.size()*2*sizeof(Box3);
     for(const auto& group:groups)cpuBytes+=group.faces.capacity()*sizeof(group.faces[0])+group.instances.capacity()*sizeof(Matrix3)+group.bandSlots.capacity();
     if(cpuBytes>meshPreviewOwnerLimit)throw RuntimeError(_T("Mesh CPU cache exceeds its resource allowance"));
     memory=reservePreviewMemory(meshPreviewBudget,cpuBytes);
@@ -56,7 +56,7 @@ MeshSnapshot::MeshSnapshot(std::vector<PreviewGeometry> value):groups(std::move(
             bufferBytes+=group.faces.size()*9*sizeof(Point3)+group.instances.size()*(4*sizeof(Point3)+sizeof(float));
             scratchBytes+=group.faces.size()*3*sizeof(Point3)+group.instances.size()*(4*sizeof(Point3)+sizeof(float));
         }
-        groupBounds.push_back(world);
+        groupBounds.push_back(world);localBounds.push_back(local);
     }
 }
 PointSnapshot::PointSnapshot(std::vector<PointGroup> value,bool lineList) : groups(std::move(value)),lines(lineList) {
@@ -92,6 +92,25 @@ std::atomic<std::uint64_t> uploads{0},uploadBytes{0},draws{0},failures{0};
 // Vertex upload payloads and SDK material parameter payloads are distinct.
 // These are submitted bytes, not a measurement of driver/VRAM traffic.
 std::atomic<std::uint64_t> geometryUploadBytes{0},transformUploadBytes{0},ownerUploadBytes{0},styleParameterBytes{0},bufferReuses{0};
+std::atomic<bool> interactionHeld{false};
+std::atomic<std::uint64_t> navigationDraws{0},idleDraws{0};
+// Drawing observes only graphics-context matrices. No scene traversal/evaluation.
+bool navigating(DrawContext& dc) {
+    struct ViewState { const void* key=nullptr;Matrix44 view,projection;ULONGLONG changed=0; };
+    static std::array<ViewState,32> views;
+    static std::size_t next=0;
+    static std::mutex mutex;
+    std::lock_guard<std::mutex> lock(mutex);
+    const void* key=dc.GetViewExp();const auto now=GetTickCount64();
+    auto it=std::find_if(views.begin(),views.end(),[key](const auto& v){return v.key==key;});
+    if(it==views.end()) {
+        it=views.begin()+next;next=(next+1)%views.size();
+        *it={key,dc.GetViewMatrix(),dc.GetProjectionMatrix(),0};
+    } else if(it->view!=dc.GetViewMatrix() || it->projection!=dc.GetProjectionMatrix()) {
+        it->view=dc.GetViewMatrix();it->projection=dc.GetProjectionMatrix();it->changed=now;
+    }
+    return interactionHeld.load() || (it->changed && now-it->changed<350);
+}
 #ifdef CYRUS_PREVIEW_TEST_FAULTS
 std::atomic<int> previewFaultStage{0},previewFaultOccurrence{0},previewFaultHits{0};
 void previewFault(int stage) {
@@ -109,10 +128,49 @@ struct Generation {
     std::size_t count=0,groups=0,reservation=0,meshReservation=0;
     std::shared_ptr<PreviewMemory> pointMemory,meshMemory;
     bool hasMesh=false;
+    bool memoryReduced=false;
+    struct DrawGroup { ViewportQuota idle,navigation;bool full=false; };
+    std::vector<std::vector<DrawGroup>> pointPlan,meshPlan;
     Box3 bounds;
+    void plan(bool boxes) {
+        pointPlan.clear();meshPlan.clear();
+        pointPlan.resize(layers.size());meshPlan.resize(layers.size());
+        for(std::size_t l=0;l<layers.size();++l) {
+            pointPlan[l].resize(layers[l].snapshot->groups.size());
+            if(layers[l].mesh)meshPlan[l].resize(layers[l].mesh->groups.size());
+        }
+        for(int mode=0;mode<3;++mode) {
+            std::vector<ViewportDemand> input;std::vector<std::pair<std::size_t,std::size_t>> owners;
+            ViewportLimits limits;
+            for(std::size_t l=0;l<layers.size();++l) {
+                const auto& layer=layers[l];if(layer.snapshot->lines)continue;
+                limits=layer.limits;
+                if(mode==0) for(std::size_t g=0;g<layer.snapshot->groups.size();++g) {
+                    input.push_back({layer.snapshot->groups[g].points.size(),1});owners.emplace_back(l,g);
+                }
+                if(layer.mesh && ((mode==2 && layer.geometryMode==4)||(mode==1 && layer.geometryMode!=4)))
+                    for(std::size_t g=0;g<layer.mesh->groups.size();++g) {
+                        const auto& group=layer.mesh->groups[g];
+                        input.push_back({group.faces.empty()?0:group.instances.size(),mode==2?group.faces.size():1});owners.emplace_back(l,g);
+                    }
+            }
+            auto idle=viewportQuotas(input,limits.values[mode*2],mode==2,boxes);
+            auto active=viewportQuotas(input,limits.values[mode*2+1],mode==2,boxes);
+            for(std::size_t i=0;i<owners.size();++i) {
+                const auto [l,g]=owners[i];auto& p=mode==0?pointPlan[l][g]:meshPlan[l][g];
+                if(mode==2 && layers[l].mesh->groups[g].reducedBox)idle[i].box=active[i].box=true;
+                p={idle[i],active[i],mode!=0 && ((!idle[i].box && idle[i].count)||(!active[i].box && active[i].count))};
+            }
+        }
+        for(std::size_t l=0;l<layers.size();++l)if(layers[l].snapshot->lines)
+            for(std::size_t g=0;g<pointPlan[l].size();++g) {
+                const auto n=layers[l].snapshot->groups[g].points.size()/2;
+                pointPlan[l][g]={{n,1,false},{n,1,false},false};
+            }
+    }
     explicit Generation(std::vector<PointLayer> value):layers(std::move(value)) {
         bounds.Init();
-        std::size_t vertices=0,pointCPU=0,meshCPU=0,meshScratch=0,pointGroups=0,meshGroups=0,paletteBytes=0;
+        std::size_t vertices=0,pointCPU=0,meshCPU=0,pointGroups=0,meshGroups=0,paletteBytes=0;
         for(const auto& layer:layers) {
             vertices+=layer.snapshot->count;
             pointCPU+=layer.snapshot->cpuBytes;
@@ -121,16 +179,32 @@ struct Generation {
             if(layer.snapshot->count) bounds+=layer.snapshot->bounds;
             for(const auto& group:layer.snapshot->groups) if(!group.points.empty()) {++groups;++pointGroups;}
             if(layer.mesh) {
-                hasMesh=true;meshReservation+=layer.mesh->bufferBytes;meshCPU+=layer.mesh->cpuBytes;meshScratch+=layer.mesh->scratchBytes;
+                hasMesh=true;meshCPU+=layer.mesh->cpuBytes;
                 if(layer.mesh->faces) bounds+=layer.mesh->bounds;
                 for(const auto& group:layer.mesh->groups) if(!group.faces.empty() && !group.instances.empty()) {++groups;++meshGroups;}
             }
         }
         // Hardware + SDK system copies + simultaneous upload temporaries. Item
-        // and palette allowances also cover fallback bookkeeping; fallback
-        // faces are streamed from the shared CPU snapshot, never expanded.
-        const auto bytes=vertices*(2*(sizeof(Point3)+sizeof(float))+sizeof(float))+pointGroups*4096+paletteBytes;
-        const auto meshBytes=2*meshReservation+meshScratch+meshGroups*4096;meshReservation=0;
+        // and palette allowances cover fallback bookkeeping. Emergency drawing
+        // submits only bounded centre markers, never CPU source triangles.
+        const auto bytes=vertices*(3*(sizeof(Point3)+sizeof(float)))+pointGroups*4096+paletteBytes;
+        meshReservation=0;plan(false);
+        auto meshBytesForPlan=[&]() {
+            std::size_t buffer=0,scratch=0;
+            for(std::size_t l=0;l<layers.size();++l)if(layers[l].mesh)
+                for(std::size_t g=0;g<meshPlan[l].size();++g) {
+                    const auto& group=layers[l].mesh->groups[g];if(group.instances.empty()||group.faces.empty())continue;
+                    const auto faces=meshPlan[l][g].full?group.faces.size():0;
+                    // Full and inexpensive box streams share one transform buffer.
+                    buffer+=(faces+12)*9*sizeof(Point3)+group.instances.size()*(4*sizeof(Point3)+sizeof(float));
+                    scratch+=std::max<std::size_t>(faces,12)*3*sizeof(Point3)+group.instances.size()*(4*sizeof(Point3)+sizeof(float));
+                }
+            return 2*buffer+scratch+meshGroups*4096;
+        };
+        auto meshBytes=meshBytesForPlan();
+        if(meshCPU+meshBytes>meshOwnerByteLimit || meshBytes>meshProcessByteLimit-std::min(meshProcessByteLimit,meshPreviewBudget.used())) {
+            memoryReduced=true;plan(true);meshBytes=meshBytesForPlan();
+        }
         if(pointCPU+bytes>ownerByteLimit || meshCPU+meshBytes>meshOwnerByteLimit || groups>1024) { failed=true;++failures;return; }
         try {
             pointMemory=std::make_shared<PreviewMemory>(pointPreviewBudget,bytes);
@@ -144,7 +218,7 @@ struct Generation {
 bool sameLayers(const std::vector<PointLayer>& a,const std::vector<PointLayer>& b) {
     if(a.size()!=b.size()) return false;
     for(std::size_t i=0;i<a.size();++i)
-        if(a[i].snapshot!=b[i].snapshot || a[i].mesh!=b[i].mesh || a[i].solid!=b[i].solid || (a[i].solid && a[i].color!=b[i].color) || !samePalette(a[i].palette,b[i].palette)) return false;
+        if(a[i].snapshot!=b[i].snapshot || a[i].mesh!=b[i].mesh || a[i].geometryMode!=b[i].geometryMode || a[i].limits!=b[i].limits || a[i].solid!=b[i].solid || (a[i].solid && a[i].color!=b[i].color) || !samePalette(a[i].palette,b[i].palette)) return false;
     return true;
 }
 
@@ -227,10 +301,16 @@ public:
             VertexBufferHandle buffer;
             // Keep the SDK system copy as well as the immutable CPU snapshot.
             // Hardware resource management remains with Nitrous; no device pointer is retained.
-            if(!buffer.Initialize(sizeof(Point3),group.points.size(),const_cast<Point3*>(group.points.data())) || !buffer.RealizeToHWMemory(true))
+            std::vector<Point3> positions;positions.reserve(group.points.size());
+            std::vector<float> slots;slots.reserve(group.points.size());
+            const auto stride=viewportStride(group.points.size());
+            for(std::size_t k=0;k<group.points.size();++k) {
+                const auto i=layer.snapshot->lines?k:k*stride%group.points.size();
+                positions.push_back(group.points[i]);slots.push_back(float(group.bandSlots[i]));
+            }
+            if(!buffer.Initialize(sizeof(Point3),positions.size(),positions.data()) || !buffer.RealizeToHWMemory(true))
                 throw std::runtime_error("Point buffer allocation failed");
             buffers.append(buffer);++uploads;uploadBytes+=group.points.size()*sizeof(Point3);geometryUploadBytes+=group.points.size()*sizeof(Point3);
-            std::vector<float> slots(group.bandSlots.begin(),group.bandSlots.end());
             VertexBufferHandle owners;
             previewFault(2);
             if(!owners.Initialize(sizeof(float),slots.size(),slots.data())||!owners.RealizeToHWMemory(true))
@@ -256,7 +336,10 @@ public:
             material.ActivatePass(dc,pass);device.SetDepthStencilState(depth);
             device.SetStreamFormat(format);device.SetVertexStreams(buffers);device.SetIndexBuffer(noIndices);
             const auto& snapshot=*generation->layers[layerIndex].snapshot;
-            device.Draw(snapshot.lines?PrimitiveLineList:PrimitivePointList,0,int(GetPrimitiveCount()));++draws;
+            const bool active=navigating(dc);const auto& plan=generation->pointPlan[layerIndex][groupIndex];
+            const auto count=active?plan.navigation.count:plan.idle.count;
+            if(count){device.Draw(snapshot.lines?PrimitiveLineList:PrimitivePointList,0,int(count));++draws;}
+            if(active)++navigationDraws;else ++idleDraws;
         }
         material.PassesFinished(dc);material.Terminate();
         device.SetDepthStencilState(originalDepth);dc.SetWorldMatrix(originalWorld);
@@ -394,6 +477,42 @@ def_visible_primitive(cyrusRetainedAvailable,"cyrusRetainedAvailable");
 Value* cyrusRetainedAvailable_cf(Value**,int count) {
     check_arg_count(cyrusRetainedAvailable,0,count);
     return IsRetainedModeEnabled()?&true_value:&false_value;
+}
+
+def_visible_primitive(cyrusViewportPolicyVersion,"cyrusViewportPolicyVersion");
+Value* cyrusViewportPolicyVersion_cf(Value**,int count) {
+    check_arg_count(cyrusViewportPolicyVersion,0,count);return Integer::intern(2);
+}
+def_visible_primitive(cyrusViewportPointCapacity,"cyrusViewportPointCapacity");
+Value* cyrusViewportPointCapacity_cf(Value**,int count) {
+    check_arg_count(cyrusViewportPointCapacity,0,count);
+    return Integer::intern(static_cast<int>(cyrus::pointPreviewPreparationLimit));
+}
+def_visible_primitive(cyrusRetainedInteraction,"cyrusRetainedInteraction");
+Value* cyrusRetainedInteraction_cf(Value** args,int count) {
+    check_arg_count(cyrusRetainedInteraction,1,count);cyrus::interactionHeld=args[0]->to_bool()!=FALSE;return &ok;
+}
+// Version, idle/nav points, idle/nav proxies, idle/nav mesh triangles,
+// idle/nav box instances, memory-reduced, idle/nav draw calls.
+def_visible_primitive(cyrusRetainedViewportStats,"cyrusRetainedViewportStats");
+Value* cyrusRetainedViewportStats_cf(Value** args,int count) {
+    check_arg_count(cyrusRetainedViewportStats,1,count);
+    const auto* display=cyrus::owner(args[0]->to_node());const auto& gen=display->generation;
+    std::array<std::uint64_t,12> values{};values[0]=1;
+    if(gen) {
+        values[9]=gen->memoryReduced;
+        for(std::size_t l=0;l<gen->layers.size();++l) {
+            if(!gen->layers[l].snapshot->lines)for(const auto& p:gen->pointPlan[l]){values[1]+=p.idle.count;values[2]+=p.navigation.count;}
+            for(const auto& p:gen->meshPlan[l]) {
+                if(gen->layers[l].geometryMode==4){values[5]+=p.idle.count*p.idle.cost;values[6]+=p.navigation.count*p.navigation.cost;}
+                else {values[3]+=p.idle.count;values[4]+=p.navigation.count;}
+                if(p.idle.box)values[7]+=p.idle.count;if(p.navigation.box)values[8]+=p.navigation.count;
+            }
+        }
+    }
+    values[10]=cyrus::idleDraws.load();values[11]=cyrus::navigationDraws.load();
+    one_typed_value_local(Array* result);vl.result=new Array(12);
+    for(auto value:values)vl.result->append(Integer64::intern(value));return_value(vl.result);
 }
 def_visible_primitive(cyrusRetainedStats,"cyrusRetainedStats");
 Value* cyrusRetainedStats_cf(Value** args,int count) {

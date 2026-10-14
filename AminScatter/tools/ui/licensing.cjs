@@ -15,7 +15,7 @@ const mutations=[
 const continuity=new Set(`procSchemaValid procSourceNodes procSourceIDs procSourceSlots
  procReceiverNodes procReceiverIDs procReceiverID procRadiusBinding editLayerKey nextEditLayerKey
  layerID activeLayer uiAreaID bakedNodes paintView paintColor showPoints pointsPerPlant iconSize
- viewportMode proxyShape viewportInstances viewportFaces radiusDisplayLimit radiusDisplayAll radiusDisplayMetric
+ viewportMode proxyShape viewportInstances viewportFaces viewportNavigationPoints viewportNavigationInstances viewportNavigationFaces radiusDisplayLimit radiusDisplayAll radiusDisplayMetric
  fieldFalloff fieldBoundaries fieldCombined fieldSamples fieldBandID
  sourceShowRadius showCenters previewBudget pointColorMode solidPointColor layerVisible
  paintSetVisible groupCenters visualSourceNodes visualSourceLabels visualSourceColors

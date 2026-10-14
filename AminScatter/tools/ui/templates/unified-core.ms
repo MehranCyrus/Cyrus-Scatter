@@ -53,7 +53,10 @@ fn CyrusScheduleRelease = (
 )
 fn CyrusScheduleUI = (
     local obj=try(modPanel.getCurrentObject())catch(undefined)
-    if obj!=undefined and (classof obj==AminScatterObject or classof obj==CyrusSourceContainer) and obj.mainUI.controlsReady do obj.mainUI.statusTimer.active=true
+    if obj!=undefined do (
+        local panel=if classof obj==CyrusSourceContainer then obj.containerUI else if classof obj==AminScatterObject then obj.mainUI else undefined
+        if panel!=undefined and panel.controlsReady do panel.statusTimer.active=true
+    )
 )
 fn CyrusPFRequestCheck = (
     if CyrusPFBusy!=true do (
@@ -81,7 +84,7 @@ fn CyrusRenderNodeChanged event handles = (
 global CyrusStartBrush,CyrusStopBrush,CyrusBrushSessionRoot,CyrusBrushSessionLayer
 global CyrusScatterObject,CyrusNewLayerID
 fn CyrusNewLayerID = (local value=(dotNetClass "System.Guid").NewGuid();value.ToString())
-global CyrusLayerStatusData,CyrusUICount,CyrusUILayerState
+global CyrusLayerStatusData,CyrusUICount,CyrusUILayerState,CyrusUIPreviewLabel,CyrusUIResultText
 struct CyrusLayerStatusData (
     hasResult=false,placements=0,previewCount=0,mode=0,buildMs=0,
     needsUpdate=true,errorText="",densityCapped=false,inputOff=false
@@ -100,23 +103,69 @@ fn CyrusUILayerState stats enabled controllerEnabled previewVisible = (
     if not controllerEnabled do return #("Off","Controller disabled")
     if not enabled do return #("Off","Layer disabled")
     if stats.inputOff do return #("Off","Analyzer input disabled")
-    if stats.errorText!="" do return #("Error","Preview error")
+    if stats.errorText!="" do return #("Error",if stats.hasResult then "Update / preview failed; previous result retained" else "Update / preview failed; no calculated result")
     if not previewVisible do return #("Hidden",if stats.needsUpdate then "Preview hidden; needs Update" else "Preview hidden")
-    if not stats.hasResult do return #("--","Not built")
-    if stats.needsUpdate do return #("Stale","Needs update")
-    if stats.mode>1 and stats.previewCount<stats.placements do return #("Limited","Preview displays a subset")
-    if stats.placements==0 do return #("Empty","Empty")
-    #("OK","Cached")
+    if not stats.hasResult do return #("--","No calculated result")
+    if stats.needsUpdate do return #("Pending","Marked for Update")
+    if stats.mode>1 and stats.previewCount<stats.placements do return #("Limited","Prepared preview is sampled")
+    if stats.placements==0 do return #("Empty","Last calculation accepted no placements")
+    #("OK","Last completed result")
+)
+fn CyrusUIPreviewLabel mode = (
+    case mode of (
+        1:"Prepared cloud points"
+        2:"Prepared proxy instances"
+        3:"Prepared mesh instances"
+        4:"Prepared centres"
+        default:"Prepared preview samples"
+    )
+)
+-- Passive presentation: only read already published counts and cached status.
+-- In particular, procReadSnapshot/validSources can realize or scan input state
+-- and are intentionally not used by this statistics/help path.
+fn CyrusUIResultText root owner = (
+    if root==undefined or owner==undefined do return "Select a layer to inspect its last calculated result."
+    local index=findItem root.layerObjects owner
+    if index==0 do return "Select a layer to inspect its last calculated result."
+    local state=owner.uiLayerStats(),enabled=root.enabledLayer index,visible=root.visibleLayer index
+    local status=CyrusUILayerState state enabled root.cyrusEnabled visible
+    local text="Layer: "+(root.layerCaption owner)+"\n"+status[2]
+    if not root.cyrusEnabled then text+="\nEnable Cyrus Scatter to calculate."
+    else if not enabled then text+="\nEnable this layer to include it in calculation."
+    else if state.inputOff then text+="\nEnable the linked Analyzer input before updating."
+    else if state.errorText!="" then text+="\nResolve the error below, then retry Update scatter."
+    else if not state.hasResult then text+="\nChoose surfaces and models or Points, then Update scatter."
+    else if state.needsUpdate then text+=(if root.updateMode==1 then "\nManual: press Update scatter to apply pending settings." else "\nLive: a relevant update is pending.")
+    else if state.placements==0 then text+="\nCheck Amount, coverage, source weights and spacing."
+    if not visible do text+="\nEnable Visible in Layers to show this layer."
+    if state.hasResult do (
+        local stats=owner.groupStats(),cache=owner.cacheSnapshot(),detail=owner.procStatistics()
+        text+="\n\nLast calculation\nRequested: "+(CyrusUICount cache[8])
+        text+="\nConsidered for spacing: "+(CyrusUICount stats[1])
+        text+="\nAccepted placements: "+(CyrusUICount state.placements)+" | Removed: "+(CyrusUICount stats[2])
+        if stats[3]>0 do text+="\nProtected edit conflicts: "+(CyrusUICount stats[3])
+        if detail[1].count==12 do (
+            text+="\nSpacing rejected, between layers: "+(CyrusUICount detail[1][5])+" | Within layer: "+(CyrusUICount (detail[1][6]+detail[1][7]))
+            text+="\nCleanup removed: "+(CyrusUICount detail[1][8])+" | Target shortfall: "+(CyrusUICount detail[1][11])
+            text+="\nAttempts: "+(CyrusUICount detail[1][10])+" | Rounds: "+(detail[2][1] as string)
+        )
+        text+="\n\n"+(CyrusUIPreviewLabel state.mode)+": "+(CyrusUICount state.previewCount)
+        text+="\nLast preview preparation: "+(state.buildMs as string)+" ms\nDraw limits can display fewer without changing accepted placements."
+        if state.densityCapped do text+="\nDensity limited to 1,000,000 candidates."
+    )
+    if state.errorText!="" do text+="\n\n"+state.errorText
+    text
 )
 
 global CyrusPointOwner,CyrusPointSync,CyrusViewportRedraw,CyrusPointClear,CyrusPointAfterSave
-global CyrusPointOwners,CyrusPointEnabled=true,CyrusMeshEnabled=true,CyrusPointAvailable=false,CyrusPointBusy=false,CyrusPointPending=false,CyrusPointSuspended=false,CyrusPointLastError="",CyrusPointDeletedHandles=#()
+global CyrusPointOwners,CyrusPointEnabled=true,CyrusMeshEnabled=true,CyrusPointAvailable=false,CyrusPointBusy=false,CyrusPointPending=false,CyrusPointSuspended=false,CyrusPointLastError="",CyrusPointDetailStatus="",CyrusPointDeletedHandles=#()
 global CyrusViewportRecords=#(),CyrusViewportAnalyzers=#(),CyrusViewportRecordsDirty=true
 global CyrusPointSceneOwners=#()
 try(CyrusPointClear())catch()
 CyrusPointOwners=#()
 global cyrusFilterSourceRows,cyrusApplySourceTransforms
 global CyrusInteractionHeld,CyrusWasDragging=false,CyrusReleaseTimer,CyrusReleaseTick
+ global CyrusPreviewActivity,CyrusPreviewIdleTimer,CyrusPreviewView=undefined,CyrusPreviewProjection=undefined,CyrusPreviewViewID=undefined
 fn CyrusInteractionHeld = (try((dotNetClass "System.Windows.Forms.Control").MouseButtons != (dotNetClass "System.Windows.Forms.MouseButtons").None)catch(false))
 global CyrusFallPack,CyrusFallUnpack,CyrusOpenFalloffGraph
 fn CyrusFallPack values = (local s=stringStream "";for i=1 to values.count do format "% %" values[i] (if i<values.count then "," else "") to:s;s as string)
@@ -373,14 +422,10 @@ fn CyrusSourceContainerFilter node = (isValidNode node and (classof node.baseObj
 -- Body heights remain MAXScript logical units; automatic layout applies DPI.
 fn CyrusFlowRolloutExtent r = (23+(if r.open then r.height else 0))
 fn CyrusFlowLayerSummary root parent = (
-    local placed=0,shown=0,pending=false,failed=false,index=findItem root.layerObjects parent
-    for leaf in root.layerSets parent do (
-        local state=leaf.uiLayerStats()
-        if state.hasResult do (placed+=state.placements;shown+=state.previewCount)
-        pending=pending or state.needsUpdate;failed=failed or state.errorText!=""
-    )
-    local status=if failed then "Error" else if index==0 or not root.layerEnabled[index] then "Disabled" else if not root.layerVisible[index] then "Hidden" else if pending then "Pending" else "Cached"
-    #(placed,shown,status)
+    local index=findItem root.layerObjects parent
+    if index==0 do return #(0,0,"Removed")
+    local state=parent.uiLayerStats(),status=CyrusUILayerState state (root.enabledLayer index) root.cyrusEnabled (root.visibleLayer index)
+    #((if state.hasResult then state.placements else 0),(if state.hasResult then state.previewCount else 0),status[1])
 )
 
 global CyrusBrushSessionRoot,CyrusStopBrush
@@ -667,8 +712,14 @@ initialRollupState:0x8
         proxyShape type:#integer default:1
         viewportInstances type:#integer default:2000
         viewportFaces type:#integer default:2000000
+        viewportNavigationPoints type:#integer default:10000
+        viewportNavigationInstances type:#integer default:500
+        viewportNavigationFaces type:#integer default:500000
         on viewportMode set v do markInputDirty()
         on proxyShape set v do markInputDirty()
+        on viewportNavigationPoints set v do markInputDirty()
+        on viewportNavigationInstances set v do markInputDirty()
+        on viewportNavigationFaces set v do markInputDirty()
         on viewportInstances set v do markInputDirty()
         on viewportFaces set v do markInputDirty()
     )
@@ -1846,17 +1897,19 @@ initialRollupState:0x8
         result
     )
 
-    fn pointSourceSamples n = (
+    fn pointSourceSamples n sampleSeed:undefined = (
         local result=undefined,reason=""
-        try(result=aminScatterSourcePoints n pointsPerPlant randomSeed)catch(reason=getCurrentException())
+        try(result=aminScatterSourcePoints n pointsPerPlant (if sampleSeed==undefined then randomSeed else sampleSeed))catch(reason=getCurrentException())
         if reason!="" do throw ("Point Cloud source "+n.name+": "+reason)
         result
     )
     local uiPreviewMode=0
     fn uiLayerStats = (
-        CyrusLayerStatusData hasResult:(cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
+        -- Display can stage an empty cache for a newly authored Manual layer.
+        -- Only a committed calculation epoch establishes its first result.
+        CyrusLayerStatusData hasResult:(procEpoch>0 and cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
     )
-    fn uiVersion = "0.81.2"
+    fn uiVersion = "0.81.8"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified1")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -1917,7 +1970,7 @@ initialRollupState:0x8
     )
     fn previewStats = (#(previewBuildCount,previewBuildMs,cachedPointCount))
     fn statusText = (
-        if previewError!="" then previewError else (generatedCount as string)+" / "+(requestedCount as string)+" plants; "+(cachedPointCount as string)+(if viewportMode==1 then " points" else " shown instances")+(if densityCapped then " (density capped at 100000)" else "")
+        if previewError!="" then previewError else (generatedCount as string)+" / "+(requestedCount as string)+" plants; "+(cachedPointCount as string)+(if viewportMode==1 then " points" else " shown instances")+(if densityCapped then " (density capped at 1,000,000)" else "")
     )
     parameters layerSettings (
         layerID type:#string default:""
@@ -2047,6 +2100,21 @@ initialRollupState:0x8
     )
     fn forcePreviewUpdate = (markInputDirty();if updateMode==2 or cachedPoints==undefined do previewBuildCount=0)
     fn ensureLayers = layerObjects.count
+    fn viewportPreparationLimit idle navigating = (if idle==0 or navigating==0 then 0 else amax idle navigating)
+    fn viewportPointPreparationBudget = (
+        local wanted=viewportPreparationLimit previewBudget viewportNavigationPoints,capacity=cyrusViewportPointCapacity()
+        if wanted==0 then capacity else amin wanted capacity
+    )
+    fn viewportPointMemoryReduced = (
+        local wanted=viewportPreparationLimit previewBudget viewportNavigationPoints,capacity=cyrusViewportPointCapacity()
+        if wanted!=0 and wanted<=capacity do return false
+        local total=0L
+        for i=1 to procPublishedOwners.count where findItem layerObjects procPublishedOwners[i]>0 do (
+            local slot=findItem layerObjects procPublishedOwners[i]
+            if this.enabledLayer slot and this.visibleLayer slot do total+=(groupSnapshotRows[i].count as integer64)*(if groupCenters then 1 else pointsPerPlant)
+        )
+        total>capacity
+    )
     fn syncLayerSurface obj targets:undefined layerBudget:undefined = (
         obj.setOverlapOwner this
         if obj.showCenters!=this.groupCenters do undo off obj.showCenters=this.groupCenters
@@ -2056,11 +2124,12 @@ initialRollupState:0x8
         if not equal do undo off (obj.surfaceNodes=targets;obj.surface=undefined)
         if layerBudget==undefined do (
             local enabledCount=(for i=1 to layerObjects.count where this.enabledLayer i collect i).count
-            layerBudget=amax 1 (floor(previewBudget/(amax 1 enabledCount)))
+            layerBudget=this.viewportPointPreparationBudget()
+            layerBudget=if layerBudget==0 then 0 else amax 1 (ceil(layerBudget as float/(amax 1 enabledCount)))
         )
         if obj.previewBudget!=layerBudget do undo off obj.previewBudget=layerBudget
         -- These settings belong to the controller, not an individual layer.
-        undo off for key in #(#viewportMode,#proxyShape,#viewportInstances,#viewportFaces,#radiusDisplayLimit,#radiusDisplayAll,#radiusDisplayMetric,#updateMode,#showPoints,#pointsPerPlant,#pointColorMode,#solidPointColor,#autoRender) do (
+        undo off for key in #(#viewportMode,#proxyShape,#viewportInstances,#viewportFaces,#viewportNavigationInstances,#viewportNavigationFaces,#radiusDisplayLimit,#radiusDisplayAll,#radiusDisplayMetric,#updateMode,#showPoints,#pointsPerPlant,#pointColorMode,#solidPointColor,#autoRender) do (
             if getProperty obj key != getProperty this key do setProperty obj key (getProperty this key)
         )
     )
@@ -2078,7 +2147,8 @@ initialRollupState:0x8
         )
         local entries=#(),targets=validSurfaces()
         local enabledCount=(for i=1 to layerObjects.count where this.enabledLayer i collect i).count
-        local layerBudget=amax 1 (floor(previewBudget/(amax 1 enabledCount)))
+        local layerBudget=this.viewportPointPreparationBudget()
+            layerBudget=if layerBudget==0 then 0 else amax 1 (ceil(layerBudget as float/(amax 1 enabledCount)))
         for i=1 to layerObjects.count where includeDisabled or (cyrusEnabled and this.enabledLayer i) do (
             local obj=layerObjects[i]
             syncLayerSurface obj targets:targets layerBudget:layerBudget
@@ -2170,7 +2240,7 @@ initialRollupState:0x8
             local state=entry[2].cacheSnapshot()
             plants+=state[5];points+=state[2];if state[4]!="" do errors+=1
         )
-        (layerObjects.count as string)+" groups; "+(plants as string)+" plants; "+(points as string)+(if viewportMode==1 then " points" else " shown instances (display limits apply)")+(if errors>0 then "; "+(errors as string)+" group(s) have a preview error" else "")+(if CyrusPointLastError!="" then "; native preview fallback" else "")
+        (layerObjects.count as string)+" groups; "+(plants as string)+" plants; "+(points as string)+(if viewportMode==1 then " cached points" else " cached instances (draw limits apply)")+(if errors>0 then "; "+(errors as string)+" group(s) have a preview error" else "")+(if CyrusPointLastError!="" then "; "+CyrusPointLastError else if CyrusPointDetailStatus!="" then "; "+CyrusPointDetailStatus else "")
     )
     fn clearAllBaked = (
         local owners=refs.dependentNodes this
@@ -2583,7 +2653,7 @@ initialRollupState:0x8
             append inputs #(slot,procReceiverIDs[slot],(aminScatterSurfaceArea #(node)),requirements[slot])
             append procReceiverGeometry #(slot,(cyrusProceduralSurfaceKey #(node) (distributionMode==3)))
         )
-        procReceiverPlanData=cyrusReceiverPlan inputs allocation[1] (if parent.populationMode==2 then allocation[2]/(meters*meters) else -1.0) (if parent.procPopulation==2 then parent.procAttemptFactor else 1) ((overlapOwner.populationAllocation this countOverride:100000)[1])
+        procReceiverPlanData=cyrusReceiverPlan inputs allocation[1] (if parent.populationMode==2 then allocation[2]/(meters*meters) else -1.0) (if parent.procPopulation==2 then parent.procAttemptFactor else 1) ((overlapOwner.populationAllocation this countOverride:1000000)[1])
         densityCapped=procReceiverPlanData[5]
         procReceiverPlanData
     )
@@ -2822,7 +2892,7 @@ initialRollupState:0x8
             if not globalPool do this.containerMode=4
             this.containerAdd node globalPool:globalPool
         )
-        CyrusContainerRefreshAll();node
+        node
     )
 
     fn procInputKey = (
@@ -2844,7 +2914,7 @@ initialRollupState:0x8
         local parent=overlapOwner.logicalParent this,budget=parent.amount
         if parent.populationMode==2 do (
             local meters=units.decodeValue "1m",wanted=(aminScatterSurfaceArea (this.validSurfaces()))/(meters*meters)*parent.plantsPerM2
-            densityCapped=wanted>100000;budget=(amin 100000 (floor(wanted+0.5))) as integer
+            densityCapped=wanted>1000000;budget=(amin 1000000 (floor(wanted+0.5))) as integer
         )
         (overlapOwner.populationAllocation this countOverride:budget)[1]
     )
@@ -2867,14 +2937,14 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.81.2 setup; earlier schemas are unsupported."
+        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.81.8 setup; earlier schemas are unsupported."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
     fn procValidate = (
         this.procAssertSchema()
-        if cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=9 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined do throw "Cyrus 0.81.2 requires the matching native plugin binaries. Restart the private test host with the complete matching script/native pair."
+        if cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.81.8 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -2897,11 +2967,19 @@ initialRollupState:0x8
         true
     )
     local procPreviewDisplayKey="",procPreviewGeometryKey="",procPreviewInspectionKey=""
+    -- One current-publication CPU snapshot per representation (points, centres,
+    -- Mesh, and each proxy shape). Warm switching must not duplicate snapshots
+    -- that MAXScript would otherwise retain until its next garbage collection.
+    local procPreviewModes=#(),procPreviewModesEpoch=-1
     fn procDisplayGeometryKey leaf epoch:undefined = (
         local stream=stringStream ""
         with printAllElements on (
             format "Geometry:%:%|" (if epoch==undefined then procEpoch else epoch) leaf.layerID to:stream
-            for key in #(#viewportMode,#proxyShape,#viewportInstances,#viewportFaces,#previewBudget,#showCenters,#pointsPerPlant) do format "%:%|" key (getProperty leaf key) to:stream
+            format "%:%|" leaf.viewportMode leaf.showCenters to:stream
+            if leaf.viewportMode==1 then format "%:%|" leaf.previewBudget leaf.pointsPerPlant to:stream
+            else if leaf.viewportMode==2 do format "%:%|" leaf.proxyShape (viewportPreparationLimit leaf.viewportInstances leaf.viewportNavigationInstances) to:stream
+            -- Mesh retains source geometry independently of draw limits. Changing
+            -- either phase must not duplicate the complete CPU source snapshot.
         )
         stream as string
     )
@@ -2912,7 +2990,7 @@ initialRollupState:0x8
             format "%:%:%|" leaf.layerID (for i=1 to leaf.sources.count collect leaf.sourceIDColor i) (this.logicalParent leaf).layerIDColor to:stream
             format "%:%|" leaf.strokeIDs leaf.strokeDisplayColors to:stream
             format "Field:%:%:%:%:%:%|" leaf.fieldFalloff leaf.fieldBoundaries leaf.fieldCombined leaf.fieldSamples (leaf.fieldSelectedID()) (if leaf.fieldPreviewEnabled() then leaf.procFieldInputKey() else "") to:stream
-            for key in #(#viewportMode,#proxyShape,#viewportInstances,#viewportFaces,#previewBudget,#showCenters,#pointsPerPlant,#pointColorMode,#solidPointColor,#sourceShowRadius,#radiusDisplayLimit,#radiusDisplayAll,#radiusDisplayMetric) do format "%:%|" key (getProperty leaf key) to:stream
+            for key in #(#viewportMode,#proxyShape,#viewportInstances,#viewportFaces,#viewportNavigationInstances,#viewportNavigationFaces,#previewBudget,#showCenters,#pointsPerPlant,#pointColorMode,#solidPointColor,#sourceShowRadius,#radiusDisplayLimit,#radiusDisplayAll,#radiusDisplayMetric) do format "%:%|" key (getProperty leaf key) to:stream
         )
         stream as string
     )
@@ -2928,7 +3006,7 @@ initialRollupState:0x8
             #(sourceRowIDs[row],this.sourceIDColor row)
         )
         local bands=if diversityMode==3 then (for i=1 to strokeIDs.count collect #(strokeIDs[i],strokeDisplayColors[i],this.bandName i,strokePathIDs[i])) else #()
-        #(sourceEntries,bands,diversityMode==3,(if geometry==undefined then cyrusSourceGeometryInfo plants else geometry),(this.procFieldInputKey()))
+        #(sourceEntries,bands,diversityMode==3,(if geometry==undefined then cyrusSourceGeometryInfo plants else geometry),(this.procFieldInputKey()),randomSeed)
     )
     fn procPreviewPalette metadata = (
         local controller=if overlapOwner==undefined then this else overlapOwner,parent=controller.logicalParent this
@@ -2955,6 +3033,27 @@ initialRollupState:0x8
         for i=1 to current.count do for field=1 to 3 where current[i][field]!=previous[i][field] do throw "Source geometry is pending. Use Update before changing to an uncached display representation. The complete previous preview is retained."
         true
     )
+    fn procPublishedPreviewMatches leaf data plants metadata = (
+        local slot=findItem procPublishedOwners leaf
+        if slot==0 do return false
+        local previous=procPublishedMetadata[slot],oldPlants=procPublishedSources[slot]
+        if plants.count!=oldPlants.count or metadata[1].count!=previous[1].count or metadata[2].count!=previous[2].count or metadata[3]!=previous[3] or metadata[4].count!=previous[4].count do return false
+        -- Geometry uses source correspondence and the sorted Band dictionary;
+        -- colors/names remain independently replaceable palette metadata.
+        for i=1 to plants.count do (
+            if plants[i]!=oldPlants[i] or metadata[1][i][1]!=previous[1][i][1] do return false
+            for field=1 to 3 where metadata[4][i][field]!=previous[4][i][field] do return false
+        )
+        local bands=sort (for entry in metadata[2] collect entry[1]),oldBands=sort (for entry in previous[2] collect entry[1])
+        for i=1 to bands.count where bands[i]!=oldBands[i] do return false
+        if leaf.viewportMode==1 and not leaf.showCenters and metadata[6]!=previous[6] do return false
+        cyrusPreviewPlacementsEqual data groupSnapshotRows[slot]
+    )
+    fn procInspectionKey plants fieldKey epoch = (
+        local stream=stringStream ""
+        with printAllElements on format "%:%:%:%:%:%:%|%" epoch sourceShowRadius radiusDisplayLimit radiusDisplayAll radiusDisplayMetric (for i=1 to sources.count collect this.sourceColor i) plants fieldKey to:stream
+        stream as string
+    )
     fn procStagePreview data plants:undefined placementRadiusValues:undefined displayEpoch:undefined metadata:undefined = (
         local start=timeStamp(),previousRadius=radiusPreview,radii
         if plants==undefined do plants=this.validSources()
@@ -2962,34 +3061,49 @@ initialRollupState:0x8
         metadata=this.procRefreshPreviewMetadata metadata
         local controller=if overlapOwner==undefined then this else overlapOwner
         local geometryKey=controller.procDisplayGeometryKey this epoch:displayEpoch,palette=this.procPreviewPalette metadata
+        local geometryEpoch=if displayEpoch==undefined then controller.procEpoch else displayEpoch
+        local modeSlot=if viewportMode==2 then proxyShape+4 else if viewportMode==1 and showCenters then 4 else viewportMode
         local cache=cachedPoints
-        if cache!=undefined and procPreviewGeometryKey==geometryKey then cache=cyrusRecolorPreview cache palette
+        local reuseGeometry=cache!=undefined and procPreviewGeometryKey==geometryKey
+        if not reuseGeometry and procPreviewModesEpoch==geometryEpoch do (
+            for entry in procPreviewModes where entry[1]==modeSlot and entry[2]==geometryKey do (cache=entry[3];reuseGeometry=true)
+        )
+        -- A new publication may share an unchanged layer's immutable buffers.
+        -- Compare against the committed owner, never pending/prepared rows; do
+        -- not change any cache key or owner until the normal atomic install.
+        if cache!=undefined and not reuseGeometry and displayEpoch!=undefined and procPreviewGeometryKey==(controller.procDisplayGeometryKey this) do reuseGeometry=controller.procPublishedPreviewMatches this data plants metadata
+        if reuseGeometry then cache=cyrusRecolorPreview cache palette
         else (
             -- An inspection-only change never reads pending source geometry.
             -- A new Mesh/Point Cloud representation still verifies its epoch.
             if displayEpoch==undefined and data.count>0 and (viewportMode!=1 or not showCenters) do this.procCheckPublishedGeometry plants metadata
             local used=#{}
             for row in data do used[row[2]]=true
-            local samples=if viewportMode!=1 then #() else if showCenters then (for i=1 to (amax 1 plants.count) collect #([0,0,0])) else (for i=1 to plants.count collect (if not used[i] or classof plants[i]==Integer then (for p=1 to pointsPerPlant collect [0,0,0]) else pointSourceSamples plants[i]))
-            cache=if viewportMode==1 or data.count==0 then aminScatterBuildPreview data (if data.count==0 then for n in plants collect #([0,0,0]) else samples) palette (if showCenters then 500000 else previewBudget) else cyrusBuildGeometryPreview data plants palette (if viewportMode==2 then proxyShape else 4) viewportInstances viewportFaces
+            local samples=if viewportMode!=1 then #() else if showCenters then (for i=1 to (amax 1 plants.count) collect #([0,0,0])) else (for i=1 to plants.count collect (if not used[i] or classof plants[i]==Integer then (for p=1 to pointsPerPlant collect [0,0,0]) else pointSourceSamples plants[i] sampleSeed:metadata[6]))
+            cache=if viewportMode==1 or data.count==0 then aminScatterBuildPreview data (if data.count==0 then for n in plants collect #([0,0,0]) else samples) palette previewBudget else cyrusBuildGeometryPreview data plants palette (if viewportMode==2 then proxyShape else 4) (if viewportMode==2 then viewportPreparationLimit viewportInstances viewportNavigationInstances else 0) 0
         )
-        local field=this.procStageField metadata[5],inspection=inspectionCache,inspectionStream=stringStream ""
-        with printAllElements on format "%:%:%:%:%:%:%|%" (if displayEpoch==undefined then controller.procEpoch else displayEpoch) sourceShowRadius radiusDisplayLimit radiusDisplayAll radiusDisplayMetric (for i=1 to sources.count collect this.sourceColor i) plants field[2] to:inspectionStream
-        local inspectionKey=inspectionStream as string
-        if procPreviewInspectionKey==inspectionKey then radii=radiusPreview
+        local field=this.procStageField metadata[5],inspection=inspectionCache
+        local inspectionKey=this.procInspectionKey plants field[2] (if displayEpoch==undefined then controller.procEpoch else displayEpoch)
+        local reuseInspection=procPreviewInspectionKey==inspectionKey
+        if not reuseInspection and reuseGeometry and displayEpoch!=undefined and placementRadiusValues!=undefined and procPreviewInspectionKey==(this.procInspectionKey plants field[2] controller.procEpoch) do (
+            local slot=findItem controller.procPublishedOwners this
+            if slot>0 do reuseInspection=cyrusPreviewRadiiEqual placementRadiusValues controller.procPublishedRadii[slot]
+        )
+        if reuseInspection then radii=radiusPreview
         else (
             try(cacheRadii data plants values:placementRadiusValues;radii=radiusPreview;radiusPreview=previousRadius)catch(radiusPreview=previousRadius;throw())
             inspection=if radii.count==0 and field[1]==undefined then undefined else cyrusBuildInspectionPreview radii field[1]
         )
-        #(cache,(aminScatterPreviewCount cache),data.count,radii,(if viewportMode==1 and showCenters then 4 else viewportMode),timeStamp()-start,(if isValidNode areaAnalyzer then areaAnalyzer.getAnalysisRuns() else -1),(if isValidNode fallAnalyzer then fallAnalyzer.getAnalysisRuns() else -1),inspection,(controller.procDisplayLayerKey this epoch:displayEpoch),(if isValidNode analyzerNode then analyzerNode.getAnalysisRuns() else -1),inputTimeStamp,geometryKey,metadata,inspectionKey,field[1],field[2],field[3])
+        #(cache,(aminScatterPreviewCount cache),data.count,radii,(if viewportMode==1 and showCenters then 4 else viewportMode),timeStamp()-start,(if isValidNode areaAnalyzer then areaAnalyzer.getAnalysisRuns() else -1),(if isValidNode fallAnalyzer then fallAnalyzer.getAnalysisRuns() else -1),inspection,(controller.procDisplayLayerKey this epoch:displayEpoch),(if isValidNode analyzerNode then analyzerNode.getAnalysisRuns() else -1),inputTimeStamp,geometryKey,metadata,inspectionKey,field[1],field[2],field[3],geometryEpoch,modeSlot)
     )
     -- Publication snapshots retain references to immutable staged rows/caches.
     -- No host queries or copies of large point arrays run in the install tail.
-    fn procPreviewState = (#(inputTimeObserved,cachedPoints,cachedPointCount,generatedCount,radiusPreview,uiPreviewMode,inspectionCache,procPreviewDisplayKey,previewBuildMs,cachedAreaAnalyzerRun,cachedFallRun,cachedAnalyzerRun,previewBuildCount,previewError,dirty,procPreviewGeometryKey,procPreviewInspectionKey,procFieldCache,procFieldCacheKey,procFieldStatus))
+    fn procPreviewState = (#(inputTimeObserved,cachedPoints,cachedPointCount,generatedCount,radiusPreview,uiPreviewMode,inspectionCache,procPreviewDisplayKey,previewBuildMs,cachedAreaAnalyzerRun,cachedFallRun,cachedAnalyzerRun,previewBuildCount,previewError,dirty,procPreviewGeometryKey,procPreviewInspectionKey,procFieldCache,procFieldCacheKey,procFieldStatus,procPreviewModes,procPreviewModesEpoch))
     fn procReleaseRetiredDisplay = (
         -- Max can retain detached scripted objects after scene reset. These
         -- transient resources belong to the departed scene, not its saved data.
         cachedPoints=undefined;inspectionCache=undefined;cachedDisabledPreview=undefined
+        procPreviewModes=#();procPreviewModesEpoch=-1
         procSplineField=undefined;procPreparedRows=#();radiusPreview=#();procFieldCache=undefined;procFieldCacheKey="";procFieldStatus="Preview hidden.";procPreviewInspectionKey=""
         procPreviewDisplayKey="";procPreviewGeometryKey="";procPublishedDisplayKey=""
         true
@@ -3000,6 +3114,7 @@ initialRollupState:0x8
         cachedAreaAnalyzerRun=state[10];cachedFallRun=state[11];cachedAnalyzerRun=state[12];previewBuildCount=state[13];previewError=state[14];dirty=state[15]
         procPreviewGeometryKey=state[16]
         procPreviewInspectionKey=state[17];procFieldCache=state[18];procFieldCacheKey=state[19];procFieldStatus=state[20]
+        procPreviewModes=state[21];procPreviewModesEpoch=state[22]
     )
     fn procResultState = (#(this.procPreviewState(),procLastStats,procLastRounds,procEpoch,requestedCount,groupEligible,groupRemoved,groupConflicts,overlapBefore,overlapAfter))
     fn procRestoreResult state = (
@@ -3015,6 +3130,9 @@ initialRollupState:0x8
         CyrusViewportRecordsDirty=true
         previewBuildMs=state[6];cachedAreaAnalyzerRun=state[7];cachedFallRun=state[8]
         cachedAnalyzerRun=state[11]
+        local modes=if procPreviewModesEpoch==state[19] then (for entry in procPreviewModes where entry[1]!=state[20] collect entry) else #()
+        append modes #(state[20],state[13],state[1])
+        procPreviewModes=modes;procPreviewModesEpoch=state[19]
         previewBuildCount+=1;previewError="";dirty=pending
     )
     fn procEnsureDisplay pending:false = (
@@ -3031,7 +3149,7 @@ initialRollupState:0x8
                     -- An unpublished layer has no published owner dictionary.
                     -- Pending authoring/copy callbacks may change its Bands
                     -- while this empty cache remains at the same epoch.
-                    if slot==0 then leaf.procStagePreview #() plants:#() placementRadiusValues:#() metadata:#(#(),#(),false,#(),"")
+                    if slot==0 then leaf.procStagePreview #() plants:#() placementRadiusValues:#() metadata:#(#(),#(),false,#(),"",leaf.randomSeed)
                     else leaf.procStagePreview groupSnapshotRows[slot] plants:procPublishedSources[slot] placementRadiusValues:procPublishedRadii[slot] metadata:procPublishedMetadata[slot]
                 )
             )
@@ -3099,10 +3217,10 @@ initialRollupState:0x8
         for i=1 to layerObjects.count where cyrusEnabled and this.enabledLayer i do (
             local leaf=layerObjects[i],parent=this.logicalParent leaf,receiverPlan=leaf.procPlanReceivers active
             local quota=receiverPlan[3],attempts=receiverPlan[4],pool=receiverPlan[2].count
-            if pool>100000 do throw "The required candidate pool exceeds 100,000 for a paint set."
+            if pool>1000000 do throw "This population requires more than 1,000,000 candidates, including protected edits. Reduce its Amount or retry budget."
             requests[i]=#(quota,attempts,pool);admission+=pool
         )
-        if admission>1000000 do throw "Procedural candidate admission exceeds 1,000,000. Reduce population or attempt limits."
+        if admission>1000000 do throw ("This Scatter requests "+(admission as string)+" candidates across its layers; the total limit is 1,000,000 including retries. Reduce Amount or retry limits. The previous result is retained.")
         for i=1 to layerObjects.count where cyrusEnabled and this.enabledLayer i do layerObjects[i].procRadiusGeometry (layerObjects[i].validSources())
         local publishedMetadata=for leaf in layerObjects collect undefined
         local transaction=false,previousBindings=for leaf in layerObjects collect leaf.procBindingKey
@@ -3241,7 +3359,7 @@ initialRollupState:0x8
         if (CyrusContainerPanel this).controlsReady do (CyrusContainerPanel this).bind()
         true
     )
-    rollout mainUI "Cyrus Scatter 0.81.2" width:#cmdPanel height:30 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.81.8" width:#cmdPanel height:30 autoLayoutOnResize:true (
         local root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),owner=undefined,layerPagesVisible=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for this entire Scatter setup."
         button licenseButton "License / activation..." pos:[8,112] width:(mainUI.width-16) height:22 tooltip:"Import a team license or inspect its expiry. Existing scenes remain available after expiry."
@@ -3311,7 +3429,7 @@ initialRollupState:0x8
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.81.2 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.81.8 native plugin and restart Max."
             root.syncLayerIdentity()
             roots=#(root.flow_updateUI,root.flow_surfaceUI,root.flow_previewUI,root.flow_layersUI)
             root.updateUI=roots[1];root.surfaceUI=roots[2];root.previewUI=roots[3];root.layersUI=roots[4]
@@ -3396,7 +3514,7 @@ initialRollupState:0x8
         fn refreshStats = (
             local total=0,pending=0
             for leaf in root.layerObjects do (local state=leaf.uiLayerStats();if state.hasResult do total+=state.placements;if state.needsUpdate do pending+=1)
-            local text=((root.logicalLayers()).count as string)+" layers | "+(CyrusUICount total)+" cached plants\n"+(root.layerObjects.count as string)+" / 10 populations"+(if pending>0 then " | Pending update" else "")
+            local text=((root.logicalLayers()).count as string)+" layers | "+(CyrusUICount total)+" cached placements\n"+(root.layerObjects.count as string)+" / 10 populations"+(if pending>0 then " | Pending update" else "")
             if countInfo.text!=text do countInfo.text=text
         )
         fn bind layer = (
@@ -3451,12 +3569,16 @@ initialRollupState:0x8
         checkbox previewCheck "Show preview" pos:[6,8] width:(flow_previewUI.width-12)
         dropdownlist displayModeDrop "Display mode" items:#("Point Cloud","Proxy","Mesh","Plant centres") pos:[6,34] width:(flow_previewUI.width-12)
         dropdownlist proxyShapeDrop "Proxy shape" items:#("Box","Sphere","Pyramid") pos:[6,82] width:(flow_previewUI.width-12)
-        spinner instancesLimitSpin "Instances/layer:" range:[1,100000,2000] type:#integer fieldWidth:58 pos:[6,138] width:(flow_previewUI.width-12)
-        spinner faceLimitSpin "Faces/layer:" range:[12,20000000,2000000] type:#integer fieldWidth:58 pos:[6,166] width:(flow_previewUI.width-12)
+        spinner instancesLimitSpin "Idle instances:" range:[0,2147483647,2000] type:#integer fieldWidth:58 pos:[6,138] width:(flow_previewUI.width-12)
+        spinner faceLimitSpin "Idle triangles:" range:[0,2147483647,2000000] type:#integer fieldWidth:58 pos:[6,166] width:(flow_previewUI.width-12)
         dropdownlist identificationDrop "Color by" items:#("Model","Layer","Bands") pos:[6,208] width:(flow_previewUI.width-12) tooltip:"Use Model, Layer or published Band ownership in Points, Proxy and shaded Mesh. Non-Band layouts use neutral gray (Unbanded). Render materials are unchanged."
         radiobuttons pointColorRadio "Preview color" labels:#("Solid Color","Identification Colors") columns:1 pos:[6,194] width:(flow_previewUI.width-12)
         colorpicker solidColorPicker "Solid: " color:(color 100 220 120) pos:[6,264] width:(flow_previewUI.width-12)
-        spinner budgetSpin "Point limit: " range:[1000,500000,20000] type:#integer fieldWidth:58 width:(flow_previewUI.width-12) pos:[6,292]
+        spinner budgetSpin "Idle points: " range:[0,2147483647,20000] type:#integer fieldWidth:58 width:(flow_previewUI.width-12) pos:[6,292]
+        spinner navigationPointsSpin "Navigating points:" range:[0,2147483647,10000] type:#integer fieldWidth:58 width:(flow_previewUI.width-12) pos:[6,300]
+        spinner navigationInstancesSpin "Navigating instances:" range:[0,2147483647,500] type:#integer fieldWidth:58 width:(flow_previewUI.width-12) pos:[6,302]
+        spinner navigationFacesSpin "Navigating triangles:" range:[0,2147483647,500000] type:#integer fieldWidth:58 width:(flow_previewUI.width-12) pos:[6,304]
+        label limitsHint "Controller totals; 0 = unlimited" pos:[6,306] width:(flow_previewUI.width-12)
         spinner pointsSpin "Points/plant: " range:[10,10000,80] type:#integer fieldWidth:58 width:(flow_previewUI.width-12) pos:[6,318]
         spinner radiusLimitSpin "Radii / layer:" range:[0,1000000,2000] type:#integer fieldWidth:58 width:(flow_previewUI.width-12) pos:[6,344]
         dropdownlist radiusMetricDrop "Radius display" items:#("XY footprint","3D bound") pos:[6,346] width:(flow_previewUI.width-12) tooltip:"Inspect the published radius pair. This display choice does not change any spacing rule. 3D uses three orthogonal rings."
@@ -3472,7 +3594,10 @@ initialRollupState:0x8
             radiusMetricDrop.selection=obj.radiusDisplayMetric
             displayModeDrop.selection=if obj.groupCenters then 4 else obj.viewportMode;proxyShapeDrop.selection=obj.proxyShape
             proxyShapeDrop.visible=obj.viewportMode==2
-            instancesLimitSpin.visible=obj.viewportMode!=1;faceLimitSpin.visible=obj.viewportMode!=1
+            instancesLimitSpin.visible=obj.viewportMode==2;faceLimitSpin.visible=obj.viewportMode==3
+            navigationPointsSpin.visible=obj.viewportMode==1;navigationInstancesSpin.visible=obj.viewportMode==2;navigationFacesSpin.visible=obj.viewportMode==3
+            navigationPointsSpin.value=obj.viewportNavigationPoints;navigationInstancesSpin.value=obj.viewportNavigationInstances;navigationFacesSpin.value=obj.viewportNavigationFaces
+            budgetSpin.visible=obj.viewportMode==1
             instancesLimitSpin.value=obj.viewportInstances;faceLimitSpin.value=obj.viewportFaces
             budgetSpin.enabled=obj.viewportMode==1;pointsSpin.enabled=obj.viewportMode==1 and not obj.groupCenters
         )
@@ -3482,6 +3607,9 @@ initialRollupState:0x8
         on radiusAllCheck changed v do if controlsReady and not binding and obj!=undefined do (obj.radiusDisplayAll=v;obj.refreshDisplay();syncControls();CyrusViewportRedraw())
         on displayModeDrop selected v do if controlsReady and not binding and obj!=undefined do (obj.setGroupDisplay v;syncControls();status.text=obj.allStatus();CyrusViewportRedraw())
         on proxyShapeDrop selected v do if controlsReady and not binding and obj!=undefined do (obj.proxyShape=v;obj.refreshDisplay();syncControls();status.text=obj.allStatus();CyrusViewportRedraw())
+        on navigationPointsSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.viewportNavigationPoints=v;obj.refreshDisplay();CyrusViewportRedraw())
+        on navigationInstancesSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.viewportNavigationInstances=v;obj.refreshDisplay();CyrusViewportRedraw())
+        on navigationFacesSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.viewportNavigationFaces=v;obj.refreshDisplay();CyrusViewportRedraw())
         on instancesLimitSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.viewportInstances=v;obj.refreshDisplay();syncControls();status.text=obj.allStatus();CyrusViewportRedraw())
         on faceLimitSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.viewportFaces=v;obj.refreshDisplay();syncControls();status.text=obj.allStatus();CyrusViewportRedraw())
         on previewCheck changed v do if controlsReady and not binding and obj!=undefined do (obj.showPoints=v;CyrusViewportRedraw())
@@ -3537,7 +3665,7 @@ initialRollupState:0x8
             binding=true
             if layerList.items as string!=rows as string do layerList.items=rows
             layerList.selection=findItem members selected
-            local text=if selectedSummary==undefined then "Select a layer." else "Placed: "+(CyrusUICount selectedSummary[1])+" | Shown: "+(CyrusUICount selectedSummary[2])+"\n"+selectedSummary[3]
+            local text=if selectedSummary==undefined then "Select a layer." else "Accepted: "+(CyrusUICount selectedSummary[1])+"\n"+(CyrusUIPreviewLabel (selected.uiLayerStats()).mode)+": "+(CyrusUICount selectedSummary[2])+" | "+selectedSummary[3]
             if countInfo.text!=text do countInfo.text=text
             binding=false
         )
@@ -3903,8 +4031,8 @@ initialRollupState:0x8
 
         radiobuttons modeRadio "Method" labels:#("Random","Texture Density") columns:2 pos:[4,130] width:(selected_distributionUI.width-8)
         radiobuttons populationRadio "Population" labels:#("Count","Plants per m2") columns:2 pos:[4,8] width:(selected_distributionUI.width-8)
-        spinner countSpin "Requested count: " range:[1,100000,200] type:#integer fieldWidth:82 width:(selected_distributionUI.width-8) pos:[4,62] tooltip:"Layer population before eligibility. Accepted target can retry up to its limits."
-        spinner densitySpin "Per m2: " range:[0,1000000,100] fieldWidth:82 width:(selected_distributionUI.width-8) pos:[4,62] tooltip:"Requested plants per square metre of receiving surface; capped at 100,000."
+        spinner countSpin "Requested count: " range:[1,1000000,200] type:#integer fieldWidth:82 width:(selected_distributionUI.width-8) pos:[4,62] tooltip:"Layer population before eligibility, up to 1,000,000. All layers and retries share the Scatter's 1,000,000 candidate limit."
+        spinner densitySpin "Per m2: " range:[0,1000000,100] fieldWidth:82 width:(selected_distributionUI.width-8) pos:[4,62] tooltip:"Requested plants per square metre; capped at 1,000,000 per layer. All layers and retries share the Scatter's 1,000,000 candidate limit."
         spinner seedSpin "Seed: " range:[0,2147483647,42] type:#integer fieldWidth:82 width:(selected_distributionUI.width-8) pos:[4,92] tooltip:"Deterministic generation seed. Changing it can invalidate existing Edit bindings."
         label densityHeading "Texture density" pos:[4,180] width:(selected_distributionUI.width-8)
         mapbutton densityButton "Choose density map" pos:[4,204] width:(selected_distributionUI.width-8) tooltip:"Use UV channel 1: white permits candidates; black excludes them."
@@ -4910,30 +5038,12 @@ initialRollupState:0x8
         label info "Statistics describe the last build." pos:[4,74] width:(selected_detailsUI.width-8) height:300
         button refreshButton "Read cached statistics" pos:[4,8] width:(selected_detailsUI.width-8) tooltip:"Read the existing calculation statistics without regenerating placements."
         button helpButton "Layer / display help" pos:[4,38] width:(selected_detailsUI.width-8) tooltip:"Explain settings ownership, display budgets, evaluation order and policy limits."
-        fn bind layer = (
-            local text="Last completed build\n"
-            for leaf in root.layerSets owner do (
-                local state=leaf.uiLayerStats(),stats=leaf.groupStats(),cache=leaf.cacheSnapshot(),index=findItem root.layerObjects leaf
-                local status=CyrusUILayerState state (root.enabledLayer index) root.cyrusEnabled (root.visibleLayer index)
-                text+="\n"+leaf.paintSetName+" | "+status[2]
-                local eligible=CyrusUICount stats[1],removed=CyrusUICount stats[2]
-                text+="\nRequested: "+(CyrusUICount cache[8])+" | Eligible: "+eligible
-                text+="\nPlaced: "+(CyrusUICount state.placements)+" | Removed: "+removed
-                text+="\nShown: "+(CyrusUICount state.previewCount)+" | "+(state.buildMs as string)+" ms"
-                if stats[3]>0 do text+="\nManual conflicts: "+(CyrusUICount stats[3])
-                (
-                    local detail=leaf.procStatistics()
-                    if detail[1].count==12 do (
-                        text+="\nRejected layer / set / self: "+(detail[1][5] as string)+" / "+(detail[1][6] as string)+" / "+(detail[1][7] as string)
-                        text+="\nCleanup: "+(detail[1][8] as string)+" | Shortfall: "+(detail[1][11] as string)
-                        text+="\nEpoch: "+(detail[5] as string)+" | Rounds: "+(detail[2][1] as string)
-                    )
-                )
-                if state.densityCapped do text+="\nDensity limited to 100,000 candidates."
-                if state.errorText!="" do text+="\n"+state.errorText
-            )
-            info.text=text;info.height=amax 300 ((filterString text "\n").count*17+20);selected_detailsUI.height=info.height+86;controlsReady=true
+        fn refreshStats = (
+            local text=CyrusUIResultText root owner
+            if info.text==text do return false
+            info.text=text;info.height=amax 300 ((filterString text "\n").count*17+20);selected_detailsUI.height=info.height+86;true
         )
+        fn bind layer = (refreshStats();controlsReady=true)
         on selected_detailsUI open do (root=this;controlsReady=false)
         on selected_detailsUI close do controlsReady=false
         on refreshButton pressed do bind owner
@@ -4943,7 +5053,7 @@ initialRollupState:0x8
 
     rollout selected_workflowUI "Workflow and ownership" width:#cmdPanel category:200 autoLayoutOnResize:true (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false
-        label steps "1. SETUP\nChoose receiving surfaces in Modify. Add layers in the order they should calculate.\n\n2. ASSETS\nChoose models for each paint set, or place model pivots inside a source rectangle. Move outside to park a model without losing its settings.\n\n3. POPULATION\nSet the layer count or density. Enabled paint-set weights share that population. Accepted target retries within explicit limits.\n\n4. PAINT\nEnable coverage, then paint on the receiving surface. Area limits apply to all sets in this layer. Use earlier sets as explicit background references.\n\n5. TRANSFORM + SPACING\nLayer transforms apply to every set. Set self-spacing, between-set rules and layer pairs separately. Earlier owners occupy space first.\n\n6. UPDATE + INSPECT\nManual keeps the last completed result until Update. Live publishes after edits. Hidden owners still calculate; disabled owners do not. Counts here describe cached results, not an estimate of available room." pos:[4,8] width:(selected_workflowUI.width-8) height:500
+        label steps "1. LAYERS + SURFACES\nChoose a layer and its receiving surfaces. Layers calculate in their listed order.\n\n2. MODELS + POINTS\nAdd models or Points to the layer. Source rectangles can collect models; parked models keep their saved settings.\n\n3. LAYOUT + AMOUNT\nChoose the layout and the layer's count or density. Paint Areas share this population. Accepted target retries within explicit limits.\n\n4. OPTIONAL PAINTING\nEach Paint Area belongs to one receiver. Painted regions combine coverage without duplicating placements. Include/Exclude limits still apply.\n\n5. TRANSFORMS + SPACING\nLayer transforms apply to its placements. Configure Within this layer and Between layers independently. Protected edits reserve space.\n\n6. UPDATE + INSPECT\nManual keeps the last completed result until Update scatter. Live follows relevant edits. Hidden layers still calculate; disabled layers do not. Statistics separate accepted placements from prepared preview samples." pos:[4,8] width:(selected_workflowUI.width-8) height:500
         label help "The editor stays on this Scatter when scene selection changes. Use the Layer selector to change the recipe and the Paint Area selector to edit its coverage. Hover buttons and numeric fields for short explanations.\n\nPoint Cloud samples and viewport budgets affect display. They are not plant counts or a promise of presented FPS." pos:[4,516] width:(selected_workflowUI.width-8) height:120
         fn bind layer = (controlsReady=true)
         on selected_workflowUI open do (root=this;controlsReady=false)
@@ -5097,6 +5207,7 @@ initialRollupState:0x8
 )
 fn AminScatterObjectDraw = (
     local held=CyrusInteractionHeld()
+    if CyrusPreviewActivity!=undefined do CyrusPreviewActivity held
     if not held do for watch in CyrusViewportAnalyzers do (
         if not isValidNode watch[1] or watch[1].getAnalysisRuns()!=watch[2] do CyrusViewportRecordsDirty=true
     )
@@ -5122,7 +5233,7 @@ fn AminScatterObjectDraw = (
             if caches.count>0 and CyrusPointAvailable and not CyrusPointSuspended do (
                 local failed=false
                 if isValidNode owner do try(failed=(cyrusRetainedStats owner)[12]==2)catch()
-                if failed do CyrusPointLastError="Retained preview unavailable; using the CPU preview. Refresh preview to retry."
+                if failed do CyrusPointLastError="GPU preview unavailable; showing bounded centre markers. Refresh preview to retry."
                 if not failed do (CyrusPointPending=true;CyrusScheduleRelease())
             )
         )
@@ -5183,7 +5294,7 @@ fn CyrusPFBuild = (
  CyrusDiagnosticEmit "bridge.build_requested" "renderer" "" 0 (if CyrusPFBusy then "busy" else "admitted")
  if CyrusPFBusy do return false
  CyrusPFClear();CyrusPFBusy=true;AminScatterRenderRedrawHeld=true
- local before=objects as array;local links=#()
+ local before=objects as array;local links=#(),prototypeSources=#(),prototypeNodes=#()
  disableSceneRedraw()
  try (
   undo off (
@@ -5202,12 +5313,22 @@ fn CyrusPFBuild = (
       for row in rows do append groups[row[2]] row[1]
       for k=1 to sources.count where groups[k].count>0 do (
        append CyrusPFData groups[k];local slot=CyrusPFData.count
-       local prototype=sources[k]
-       -- PFlow reads the viewport mesh. Resolve a Corona proxy once per source group,
-       -- without changing the user's original proxy display or material settings.
-       if (try(classof prototype==CProxy)catch(false)) do (
-        prototype=copy prototype;prototype.name="Cyrus_Render_ProxyPrototype"
-        prototype.previzType=3;prototype.renderable=false;hide prototype
+       local prototypeIndex=findItem prototypeSources sources[k],prototype
+       if prototypeIndex>0 then prototype=prototypeNodes[prototypeIndex]
+       else (
+        local resolved=sources[k]
+        -- Resolve the evaluated geometry before changing its frame. Shape Instance
+        -- otherwise incorporates source-node scale a second time relative to the
+        -- pivot-local geometry used by preview, Auto Radius and baked instances.
+        -- Snapshot also freezes world-dependent modifiers at the source location.
+        if (try(classof resolved==CProxy)catch(false)) do (
+         resolved=copy resolved;resolved.name="Cyrus_Render_ProxyPrototype"
+         resolved.previzType=3;resolved.renderable=false;hide resolved
+        )
+        prototype=snapshot resolved
+        prototype.name="Cyrus_Render_SourcePrototype";prototype.parent=undefined
+        prototype.transform=matrix3 1;prototype.renderable=false;hide prototype
+        append prototypeSources sources[k];append prototypeNodes prototype
        )
        local pf=PF_Source name:("Cyrus_Render_"+(owner.handle as string)+"_"+(slot as string)) Quantity_Viewport:100 Quantity_Render:100 Particle_Amount_Limit:(groups[k].count+1) Show_Logo:false Show_Emitter:false
        -- Create PF_Source before beginEdit: otherwise PFlow does not create its PFEngine.
@@ -5392,6 +5513,26 @@ callbacks.removeScripts id:#CyrusScatterIconColor
 callbacks.addScript #filePostOpen "CyrusScatterRedIcons()" id:#CyrusScatterIconColor
 CyrusScatterRedIcons()
 
+try(CyrusPreviewIdleTimer.Stop();CyrusPreviewIdleTimer.Dispose())catch()
+fn CyrusPreviewActivity held = (
+    if CyrusViewportRecords.count==0 do return false
+    local tm=viewport.getTM(),fov=viewport.getFOV(),viewID=viewport.activeViewport
+    local changed=CyrusPreviewView!=undefined and (tm!=CyrusPreviewView or fov!=CyrusPreviewProjection or viewID!=CyrusPreviewViewID)
+    CyrusPreviewView=tm;CyrusPreviewProjection=fov;CyrusPreviewViewID=viewID
+    if held or changed do (cyrusRetainedInteraction true;CyrusPreviewIdleTimer.Stop();CyrusPreviewIdleTimer.Start())
+    true
+)
+fn CyrusPreviewIdleTick sender args = (
+    if not (CyrusInteractionHeld()) do (
+        CyrusPreviewIdleTimer.Stop();cyrusRetainedInteraction false
+        -- Draw the already prepared idle buffers; never schedule a solve/sync.
+        redrawViews()
+    )
+)
+CyrusPreviewIdleTimer=dotNetObject "System.Windows.Forms.Timer"
+CyrusPreviewIdleTimer.Interval=400
+dotNet.addEventHandler CyrusPreviewIdleTimer "Tick" CyrusPreviewIdleTick
+
 try(CyrusReleaseTimer.Stop();CyrusReleaseTimer.Dispose())catch()
 fn CyrusReleaseTick sender args = (
  CyrusReleaseTimer.Stop()
@@ -5425,7 +5566,7 @@ fn CyrusPointSync = (
     if CyrusPointBusy or CyrusPointSuspended or AminScatterRenderRedrawHeld==true or CyrusInteractionHeld() do return false
     CyrusPointBusy=true
     try (
-        local publishError="",records=#(),analyzers=#()
+        local publishError="",detailStatus="",records=#(),analyzers=#()
         local surviving=#()
         for pair in CyrusPointOwners do (
             if isValidNode pair[1] and classof pair[1].baseObject==AminScatterObject and isValidNode pair[2] then append surviving pair
@@ -5434,6 +5575,7 @@ fn CyrusPointSync = (
         CyrusPointOwners=surviving
         for n in (for node in objects where classof node.baseObject==AminScatterObject collect node) do (
             local caches=#(),styles=#(),fallback=#()
+            local limits=#(n.baseObject.previewBudget,n.baseObject.viewportNavigationPoints,n.baseObject.viewportInstances,n.baseObject.viewportNavigationInstances,n.baseObject.viewportFaces,n.baseObject.viewportNavigationFaces)
             local entries=if n.isHidden then #() else n.baseObject.viewportLayerEntries false,refreshLeaf=undefined
             -- Observe every visible dependency before staging the root once.
             -- A Manual pending flag survives display preparation; checking it
@@ -5449,7 +5591,7 @@ fn CyrusPointSync = (
                 for analyzer in #(obj.analyzerNode,obj.areaAnalyzer,obj.fallAnalyzer) where isValidNode analyzer do appendIfUnique analyzers analyzer
                 if (obj.showPoints or obj.showCenters) and cache!=undefined do (
                     if CyrusPointAvailable and ((obj.viewportMode==1 and CyrusPointEnabled) or ((obj.viewportMode==2 or obj.viewportMode==3) and CyrusMeshEnabled)) then (
-                        append caches cache;append styles #(obj.pointColorMode==1,obj.solidPointColor)
+                        append caches cache;append styles (join #(obj.pointColorMode==1,obj.solidPointColor) limits)
                     ) else append fallback #(cache,obj.pointColorMode==1,obj.solidPointColor)
                 )
                 if obj.inspectionCache!=undefined and not obj.disabledAnalyzerInput() do (
@@ -5466,14 +5608,20 @@ fn CyrusPointSync = (
                 if not wasDirty do setSaveRequired false
             )
             if isValidNode owner do (
-                if not cyrusRetainedPublish owner n caches styles do publishError="Retained preview unavailable; using the CPU preview. Refresh preview to retry."
+                if not cyrusRetainedPublish owner n caches styles then publishError="GPU preview unavailable; showing bounded centre markers. Refresh preview to retry."
+                else if n.baseObject.viewportMode==1 and n.baseObject.viewportPointMemoryReduced() then detailStatus="Point Cloud sampled to fit the preview memory allowance; draw limits still apply."
+                else if n.baseObject.viewportMode==3 do (
+                    local detail=cyrusRetainedViewportStats owner
+                    if detail[10]!=0 then detailStatus="Preview memory allowance reached; showing cached boxes."
+                    else if detail[8]>0 do detailStatus="Mesh preview uses cached boxes to fit the triangle limit."
+                )
             )
             append records #(n,owner,caches,styles,fallback)
         )
         CyrusViewportRecords=records
         CyrusViewportAnalyzers=for analyzer in analyzers collect #(analyzer,analyzer.getAnalysisRuns())
         CyrusViewportRecordsDirty=false
-        CyrusPointLastError=publishError
+        CyrusPointLastError=publishError;CyrusPointDetailStatus=detailStatus
     )catch(CyrusPointLastError=getCurrentException())
     CyrusPointBusy=false
     true

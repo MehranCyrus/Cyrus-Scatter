@@ -128,7 +128,7 @@ void validateScaleCurve(const std::vector<double>& values) {
     for(double x:values)require(std::isfinite(x)&&x>=0&&x<=100,"Band scale curve must be finite and in 0..100 (0..10000 percent)");
 }
 // Fields validate stored traces once at construction, outside candidate loops.
-double sampleScale(const std::vector<double>& values,double progress) {
+double sampleValidatedCurve(const std::vector<double>& values,double progress) {
     const double x=std::clamp(progress,0.,1.)*double(values.size()-1);
     const auto i=std::min(values.size()-2,std::size_t(x));
     return values[i]+(values[i+1]-values[i])*(x-double(i));
@@ -137,9 +137,7 @@ double sampleScale(const std::vector<double>& values,double progress) {
 
 double curveValue(const std::vector<double>& values,double progress) {
     require(std::isfinite(progress),"Invalid Band progress");validateCurve(values);
-    const double x=std::clamp(progress,0.,1.)*double(values.size()-1);
-    const auto i=std::min(values.size()-2,std::size_t(x));
-    return values[i]+(values[i+1]-values[i])*(x-double(i));
+    return sampleValidatedCurve(values,progress);
 }
 std::vector<amin::Vec3> tessellate(const std::vector<Cubic>& segments,double tolerance,std::size_t maxVertices) {
     require(std::isfinite(tolerance)&&tolerance>0,"Spline tessellation tolerance must be finite and positive");
@@ -301,10 +299,10 @@ Field::Field(std::vector<Path> inputs,std::vector<Band> bands,Arrangement arrang
     }
     // Retain actual container capacities, not just element counts. Temporary
     // preparation containers are covered by the larger construction reservation.
-    std::size_t retained=sizeof(Data)+128+data->paths.capacity()*sizeof(PreparedPath)+data->bands.capacity()*sizeof(Band)+data->pathIndices.capacity()*sizeof(std::size_t)+(data->slopes.capacity()+data->weights.capacity())*sizeof(double);
+    std::size_t retained=sizeof(Data)+128+data->paths.capacity()*sizeof(PreparedPath)+data->bands.capacity()*sizeof(Band)+data->pathIndices.capacity()*sizeof(std::size_t)+(data->slopes.capacity()+data->scaleSlopes.capacity()+data->weights.capacity())*sizeof(double);
     const auto regionBytes=[](const Region& r){std::size_t bytes=r.loops.capacity()*sizeof(std::vector<Point>);for(const auto& loop:r.loops)bytes+=loop.capacity()*sizeof(Point);return bytes;};
     for(const auto& path:data->paths){retained+=regionBytes(path.original);for(const auto& side:path.levels){retained+=side.capacity()*sizeof(Level);for(const auto& level:side)retained+=regionBytes(level.region);}}
-    for(const auto& band:data->bands){retained+=band.curve.capacity()*sizeof(double)+band.sources.capacity()*sizeof(Source);for(const auto& source:band.sources)retained+=source.id.capacity()+1;}
+    for(const auto& band:data->bands){retained+=(band.curve.capacity()+band.scaleCurve.capacity())*sizeof(double)+band.sources.capacity()*sizeof(Source);for(const auto& source:band.sources)retained+=source.id.capacity()+1;}
     require(retained<=limits.bytes,"Spline retained capacity exceeds its memory allowance");data->stats.bytes=retained;
     std::vector<Path>().swap(inputs);std::vector<Band>().swap(bands);decltype(offsets)().swap(offsets);pathIds.clear();bandIds.clear();
     data->reservation.retain(retained);data_=std::move(data);
@@ -435,7 +433,7 @@ Inspection Field::inspect(amin::Vec3 position,std::size_t visitLimit) const {
             require(error<=data.limits.aggregateError/double(std::max<std::size_t>(1,data.bands.size())),"Sharp density error budget exceeded");
             require(data.scaleSlopes[i]*c.error/width<=data.limits.scaleError,"Sharp scale error budget exceeded");
         }
-        const double value=data.weights[i]>0?band.strength*curveValue(band.curve,t):0;
+        const double value=data.weights[i]>0?band.strength*sampleValidatedCurve(band.curve,t):0;
         result.contributions.push_back({band.id,value,t,data.weights[i]>0?error:0,boundary});result.occupancy+=value;result.error+=data.weights[i]>0?error:0;
         if(data.arrangement==Arrangement::Consecutive)break; // Empty owner reserves its interval.
     }
@@ -454,7 +452,7 @@ Decision Field::select(amin::Vec3 position,double occupancy,double owner,double 
     for(const auto& s:found->sources)if(s.weight>0) {model=&s;cursor-=s.weight;if(cursor<0)break;}
     if(!model)return result;
     result.band=found->id;result.source=model->index;result.sourceId=model->id;result.emitted=!model->empty;
-    result.scale=(found->scale.min+(found->scale.max-found->scale.min)*scale)*sampleScale(found->scaleCurve,selected->progress);return result;
+    result.scale=(found->scale.min+(found->scale.max-found->scale.min)*scale)*sampleValidatedCurve(found->scaleCurve,selected->progress);return result;
 }
 const Stats& Field::stats() const { return data_->stats; }
 Decision Field::sample(amin::Vec3 position,std::uint32_t seed,std::uint64_t ordinal,std::uint64_t receiver) const {

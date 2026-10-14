@@ -2,6 +2,15 @@
 
 This is the single maintained Scatter work list. Update it in place when a finding is resolved. The [dated 0.75 checklist](System_Qualification_0.75_2026-10-09/CHECKLIST.md) records the completed audit; an old unchecked roadmap item is not automatically a current defect or an instruction to implement it.
 
+## Authorized feature program
+
+The [eleven-phase implementation roadmap](plans/eleven-phase-roadmap/README.md)
+tracks the user-authorized workflow, presets, filters, maps, conversion, layouts,
+recipes and adaptive-preview program. Its [TODO](plans/eleven-phase-roadmap/TODO.md)
+records per-phase implementation, validation and Git checkpoints. Existing defect
+IDs and release gates below retain their independent status; creating the roadmap
+does not close them.
+
 ## Next engineering work
 
 | ID | Status and problem | Acceptance needed |
@@ -16,7 +25,7 @@ This is the single maintained Scatter work list. Update it in place when a findi
 | B08 | Geometry stress remains underqualified | Exhaustive-reference projection and extreme-radius collision witnesses, cleanup/refill/protected combinations, bounded work and failure retention |
 | B09 | Diagnostics failure coverage is incomplete | Full/unwritable/damaged storage and secondary export-cleanup failures preserve the primary error; reporting remains passive and bounded |
 | B10 | Current painting/editor help, schema and capability catalog reconciled with vector ownership; duplicate discarded popup definitions removed | Continued review of unrelated older terminology can proceed independently |
-| B11 | Cold viewport realization remains expensive: courtyard cold Update measured 16.6 seconds in 0.75 and 17.2 seconds in 0.76 despite removing repeated root work | Separate cold preparation, Max redraw and retained realization across fresh processes; preserve atomic publication and Manual/Live contracts |
+| B11 | Cold viewport realization remains expensive (0.81.6 terrace first whole-scene redraw: 21.41 seconds): courtyard cold Update measured 16.6 seconds in 0.75 and 17.2 seconds in 0.76 despite removing repeated root work | Separate cold preparation, Max redraw and retained realization across fresh processes; preserve atomic publication and Manual/Live contracts |
 | B12 | Fixed in [0.79.1](Point_Workflow_0.79.1_2026-10-11/README.md): named Point rows appear in direct Models / Points band selection; choices use saved row identities | Replacement, removal of another row, layer copy and save/reopen are covered. No source-row reordering UI is introduced; arbitrary script array permutations are not a supported reorder operation. |
 | B13 | Fixed in [0.79.1](Point_Workflow_0.79.1_2026-10-11/README.md): new Area selection, mixed-state mode and disabled no-selection controls | Preserve physical picker, DPI and rapid owner-switch acceptance gates. |
 | B14 | Typed distance repair introduced in [0.79.6](Foundation_0.79.6_2026-10-12/README.md) is retained in schema 57; Band ranges and Auto Radius have current Max 2026/2027 unit/load/merge/rescale witnesses in [implementation progress](plans/spline-bands/PROGRESS.md) | Earlier formats are no longer migrated. Native Paint/Edit geometry binding rescale remains explicitly guarded; saved-unit reopen recovers the tested result. B07 extreme vector units and artist acceptance remain separate |
@@ -26,11 +35,37 @@ This is the single maintained Scatter work list. Update it in place when a findi
 | B18 | Fixed in [0.79.2](Layer_Navigation_0.79.2_2026-10-11/README.md): radius limit, Show All and per-source Show Radius use display-only refresh; Manual display Undo/Redo reconstructs the published snapshot | Both hosts preserve pending amount/footprint edits, publication epochs and positions while correctly changing/restoring circle counts. Explicit Update applies the pending recipe |
 | B19 | Fixed in [0.79.5](Terrace_Workflow_0.79.5_2026-10-11/README.md): a local identification-color change rebuilt all eight garden layer previews | Layer-local keys and one root refresh retain unchanged previews. Both hosts pass failure retention/recovery and Manual pending-edit checks |
 | B20 | Fixed in [0.79.5](Terrace_Workflow_0.79.5_2026-10-11/README.md): native display re-uploaded unchanged sibling snapshots after a local display edit | Exact unchanged snapshots share ready SDK handles in new generation-owned items. Garden upload volume falls 304.1→150.7 MB per tested heavy-layer edit; 48 edit cycles on each host keep native reservations constant. Device loss and long sessions remain open |
-| B21 | Measured 0.79.5 UI cost: one isolated full Modify mount took 5.38 s; 15 warm section binds had an 84.95 ms median with no placement publication | Profile rollout construction/binding and compare fresh vs warm hosts/DPI. Earlier repeated-reselection fixture timings include complete remounts and must not be labeled ordinary panel-expansion latency. No causal UI fix yet |
+| B21 | Rectangle portion corrected in the [0.81.5 candidate](plans/terrace-0815/PROGRESS.md): selection constructs compact properties only, after the user explicitly removed full Scatter editing from rectangles. The preceding [0.81.3 investigation](Source_Containers_Performance_2026-10-13.md) measured 5.91 s median full remounts; the compact witness measured 169 ms | Full Scatter-controller construction cost remains separate. Preserve cold/warm, native upload and actual-scene distinctions; scripted compact-selection tests do not certify every physical gesture/DPI combination |
 | B22 | Fixed in the [0.79.5 creation correction](Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md): a new controller's icon was absent from cached placement/display records, making sizing look frozen | Icons now draw from registered nodes without placement publication, including held sizing. Creation, abort, visibility, Undo/Redo, reopen and navigation are covered by the focused host receipts. Physical artist acceptance remains required; this does not resolve B21 |
 | B23 | Corrected in [0.79.6](Foundation_0.79.6_2026-10-12/README.md): native allocation/item preparation could release the prior generation, and the script committed Edit before finishing the publication tail | Production-body failures plus actual Max 2026/2027 script fault/recovery checks pass. GPU/device loss, notification exceptions and physical long-session acceptance remain distinct limits |
+| B24 | Reduced in the [0.81.5 candidate](plans/terrace-0815/PROGRESS.md): labels use a presentation-only native update, unchanged memberships retain weak references and creation removes a redundant full refresh. Initial layer/global Create medians fell from 353/410 ms to 160/176 ms in bounded fixtures | Full reconciliation still validates movement ownership and can cost more with large hierarchies. Keep membership/Manual/Live and native movement/Undo witnesses; cold physical Undo B05 and broad heavy-asset/DPI acceptance remain separate |
+
+## Adaptive viewport follow-up
+
+[0.81.6](plans/terrace-0815/VIEWPORT_0816.md) fixes the CPU Mesh triangle fallback
+and adds controller-wide navigating/idle caps with zero unlimited. Scoped two-host
+checks and the terrace memory-recovery/navigation campaign pass. Presented FPS,
+device-loss recovery, long sessions and other machines remain open; cold scene
+initialization is still separate from warm retained drawing.
+
+[0.81.7](plans/terrace-0815/VIEWPORT_0817.md) corrects zero-limit Point Cloud
+preparation failures that retained the previous Proxy/Mesh view, and reuses
+current-publication snapshots instead of accumulating Mesh copies on mode
+switches. The actual Max 2027 terrace dropdown campaign passes with stable
+resources and unchanged placements. Zero Mesh limits still admit against fixed
+preview memory allowances; all-source Mesh needs more memory than the current
+terrace controller allowance and therefore shows boxes. Full-source admission
+and the observed cold whole-scene redraw uncertainty remain separate follow-up
+work. The installed package remains 0.81.6 until a new delivery is authorized.
 
 ## Final artist and release gates
+
+- [ ] Broad acceptance of the 0.81.3 source corrections remains separate from the
+  [0.81.5 scoped campaign](plans/terrace-0815/REPORT.md), which compiles/tests the
+  combined source on both Max versions and exercises retained/publication paths
+  and an actual nine-layer garden. Do not infer exhaustive Band scale, physical
+  interaction or renderer qualification from those passing witnesses. The earlier
+  [implementation record](plans/spline-bands/PROGRESS.md) retains its deferred status.
 
 - [ ] Physical all-control, picker, graph, keyboard, docking, DPI and tablet walkthrough against the current [control register](Terrace_Workflow_0.79.5_2026-10-11/CONTROL_REGISTER.md). Current mapping/binding checks do not certify physical operation.
 - [ ] Long sessions and representative heavy plant/material/proxy assets; complete material fidelity rather than merely a successful render.

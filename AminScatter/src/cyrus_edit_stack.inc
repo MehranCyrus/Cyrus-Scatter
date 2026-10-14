@@ -115,7 +115,7 @@ Value* cyrusEditRequiredCandidates_cf(Value** a,int count){
     check_arg_count(cyrusEditRequiredCandidates,2,count);type_check(a[0],Array,_T("Edit modifiers"));auto* mods=static_cast<Array*>(a[0]);const int key=a[1]->to_int();std::uint64_t required=0;
     for(int i=0;i<mods->size;++i){auto* m=edit(mods->data[i]);const auto found=m->layers.find(key);if(found==m->layers.end())continue;
         for(const auto& row:found->second.rows)if(!row.deleted&&(row.inputId!=row.outputId||hasEditTransform(row.delta))&&row.inputId.rfind(L"c:",0)==0){
-            try{std::size_t used=0;const auto ordinal=std::stoull(row.inputId.substr(2),&used);if(used!=row.inputId.size()-2||ordinal>=100000)throw std::invalid_argument("ordinal");required=std::max(required,ordinal+1);}catch(...){throw RuntimeError(_T("Saved Edit candidate exceeds the procedural pool limit"));}
+            try{std::size_t used=0;const auto ordinal=std::stoull(row.inputId.substr(2),&used);if(used!=row.inputId.size()-2||ordinal>=cyrus::receivers::limit)throw std::invalid_argument("ordinal");required=std::max(required,ordinal+1);}catch(...){throw RuntimeError(_T("Saved Edit candidate exceeds the procedural pool limit"));}
         }
     }
     return Integer::intern(int(required));

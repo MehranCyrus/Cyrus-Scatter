@@ -48,7 +48,7 @@ public:
     std::shared_ptr<const cyrus::PreviewPalette> palette;
     std::shared_ptr<const FieldPreviewDetails> fieldDetails;
     const std::vector<Geometry>& geometryGroups() const { static const std::vector<Geometry> empty;return meshSnapshot?meshSnapshot->groups:empty; }
-    int faceCount=0;
+    std::size_t faceCount=0;
     int size=0;
     int geometryMode=0;
     AminPointCache() { tag=class_tag(AminPointCache); }
@@ -70,7 +70,7 @@ Value* aminScatterBuildPreview_cf(Value** args,int count) {
     auto* sources=static_cast<Array*>(args[1]);
     const auto palette=previewPalette(args[2],sources->size);
     const int budget=args[3]->to_int();
-    if(budget<1||budget>500000)
+    if(budget<0)
         throw RuntimeError(_T("Invalid preview budget or source colors."));
     if(data->size>1000000)throw RuntimeError(_T("Preview input exceeds 1,000,000 placements"));
     std::size_t inputSamples=0;
@@ -81,9 +81,9 @@ Value* aminScatterBuildPreview_cf(Value** args,int count) {
         inputSamples+=samples;
     }
     const auto perSource=sources->size?static_cast<Array*>(sources->data[0])->size:0;
-    const auto outputLimit=std::min<std::size_t>(budget,std::size_t(data->size)*perSource);
-    const auto stagingBytes=std::size_t(data->size)*(sizeof(Matrix3)+sizeof(int)+sizeof(std::uint8_t))+
-        inputSamples*sizeof(Point3)+outputLimit*2*(sizeof(Point3)+sizeof(std::uint8_t))+sources->size*256+4096;
+    const auto requested=std::size_t(data->size)*perSource;
+    const auto outputLimit=budget?std::min<std::size_t>(budget,requested):requested;
+    const auto stagingBytes=inputSamples*sizeof(Point3)+outputLimit*2*(sizeof(Point3)+sizeof(std::uint8_t))+sources->size*256+4096;
     if(stagingBytes>cyrus::pointPreviewOwnerLimit)throw RuntimeError(_T("Point preparation exceeds the 64 MiB allowance"));
     auto staging=cyrus::reservePreviewMemory(cyrus::pointPreviewBudget,stagingBytes);
     std::vector<std::vector<Point3>> samples;
@@ -98,34 +98,72 @@ Value* aminScatterBuildPreview_cf(Value** args,int count) {
         for(int j=0;j<src->size;++j) samples.back().push_back(src->data[j]->to_point3());
         rgb.push_back(palette->sourceColors[i]);
     }
-    // Validate and unpack before allocating the GC value; exceptions cannot leak it.
-    std::vector<Matrix3> transforms;std::vector<int> indices;
-    std::vector<std::uint8_t> bandSlots;bandSlots.reserve(data->size);
-    transforms.reserve(data->size);indices.reserve(data->size);
+    // Validate every input, including unshown rows, without copying the entire
+    // placement stream. Conversion stays on the host thread; only the bounded
+    // displayed samples enter the immutable snapshot used by draw workers.
     for(int i=0;i<data->size;++i) {
         type_check(data->data[i],Array,_T("placement"));
         auto* row=static_cast<Array*>(data->data[i]);
-        bandSlots.push_back(previewBandSlot(row,*palette));
+        previewBandSlot(row,*palette);
         const int index=row->data[1]->to_int()-1;
         if(index<0||index>=sources->size) throw RuntimeError(_T("Invalid source index."));
-        transforms.push_back(row->data[0]->to_matrix3());indices.push_back(index);
     }
     std::vector<AminPointCache::Group> groups;
     for(auto c:rgb) groups.push_back({c,{}});
     const std::uint64_t total=static_cast<std::uint64_t>(data->size)*pointsPerPlant;
-    const auto shown=std::min<std::uint64_t>(total,static_cast<std::uint64_t>(budget));
+    const auto shown=budget?std::min<std::uint64_t>(total,static_cast<std::uint64_t>(budget)):total;
     int size=0;
     for(std::uint64_t sample=0;sample<shown;++sample) {
         const auto flat=amin::previewPointIndex(sample,total,shown);
         const auto plant=static_cast<std::size_t>(flat/pointsPerPlant);
-        const auto source=indices[plant];
-        groups[source].points.push_back(samples[source][flat%pointsPerPlant]*transforms[plant]);
-        groups[source].bandSlots.push_back(bandSlots[plant]);
+        auto* row=static_cast<Array*>(data->data[plant]);
+        const auto source=row->data[1]->to_int()-1;
+        groups[source].points.push_back(samples[source][flat%pointsPerPlant]*row->data[0]->to_matrix3());
+        groups[source].bandSlots.push_back(previewBandSlot(row,*palette));
         ++size;
     }
     auto snapshot=std::make_shared<cyrus::PointSnapshot>(std::move(groups));
     auto* result=new AminPointCache();result->pointSnapshot=std::move(snapshot);result->palette=palette;result->size=size;
     return result;
+}
+
+// Compare the ordered display inputs without allocating snapshots or touching
+// published state. Candidate/anchor/protection changes still publish normally;
+// only transform, source and Band owner contribute to the retained geometry.
+def_visible_primitive(cyrusPreviewPlacementsEqual,"cyrusPreviewPlacementsEqual");
+Value* cyrusPreviewPlacementsEqual_cf(Value** args,int count) {
+    check_arg_count(cyrusPreviewPlacementsEqual,2,count);
+    for(int i=0;i<2;++i)type_check(args[i],Array,_T("preview placements"));
+    auto* a=static_cast<Array*>(args[0]);auto* b=static_cast<Array*>(args[1]);
+    if(a->size>1000000||b->size>1000000)throw RuntimeError(_T("Preview comparison exceeds 1,000,000 placements"));
+    if(a->size!=b->size)return &false_value;
+    for(int i=0;i<a->size;++i) {
+        type_check(a->data[i],Array,_T("preview placement"));type_check(b->data[i],Array,_T("preview placement"));
+        auto* left=static_cast<Array*>(a->data[i]);auto* right=static_cast<Array*>(b->data[i]);
+        cyrus::rows::current(left);cyrus::rows::current(right);
+        if(left->data[1]->to_int()!=right->data[1]->to_int()||left->data[5]->to_int64()!=right->data[5]->to_int64())return &false_value;
+        const auto x=left->data[0]->to_matrix3(),y=right->data[0]->to_matrix3();
+        for(int row=0;row<4;++row)for(int axis=0;axis<3;++axis)
+            if(x.GetRow(row)[axis]!=y.GetRow(row)[axis])return &false_value;
+    }
+    return &true_value;
+}
+
+def_visible_primitive(cyrusPreviewRadiiEqual,"cyrusPreviewRadiiEqual");
+Value* cyrusPreviewRadiiEqual_cf(Value** args,int count) {
+    check_arg_count(cyrusPreviewRadiiEqual,2,count);
+    for(int i=0;i<2;++i)type_check(args[i],Array,_T("preview radii"));
+    auto* a=static_cast<Array*>(args[0]);auto* b=static_cast<Array*>(args[1]);
+    if(a->size>1000000||b->size>1000000)throw RuntimeError(_T("Radius comparison exceeds 1,000,000 placements"));
+    if(a->size!=b->size)return &false_value;
+    for(int i=0;i<a->size;++i) {
+        type_check(a->data[i],Array,_T("radius pair"));type_check(b->data[i],Array,_T("radius pair"));
+        auto* left=static_cast<Array*>(a->data[i]);auto* right=static_cast<Array*>(b->data[i]);
+        if(left->size!=2||right->size!=2)throw RuntimeError(_T("Expected XY and 3D radius pairs"));
+        for(int metric=0;metric<2;++metric)
+            if(left->data[metric]->to_double()!=right->data[metric]->to_double())return &false_value;
+    }
+    return &true_value;
 }
 
 def_visible_primitive(cyrusRecolorPreview,"cyrusRecolorPreview");
@@ -215,27 +253,20 @@ Value* aminScatterDrawPreview_cf(Value** args,int count) {
     const auto limits=gw->getRndLimits();
     gw->setRndLimits(limits & ~GW_Z_BUFFER);
     gw->setTransform(Matrix3(1));
-    if(!cache->geometryGroups().empty()) {
-        Material previous=*gw->getMaterial(),preview;
-        preview.Ka=preview.Kd=Point3(1,1,1);preview.Ks=Point3(0,0,0);preview.selfIllum=1;preview.opacity=1;preview.dblSided=1;
-        gw->setMaterial(preview);
-        gw->setRndLimits((limits|GW_Z_BUFFER|GW_COLOR_VERTS)&~(GW_ILLUM|GW_WIREFRAME|GW_BACKCULL|GW_TEXTURE|GW_SHADE_CVERTS));
-        for(std::size_t source=0;source<cache->geometryGroups().size();++source) {
-            const auto& group=cache->geometryGroups()[source];
-            for(std::size_t i=0;i<group.instances.size();++i) {
-                const auto& tm=group.instances[i];
-                const auto base=solid?color:cyrus::previewColor(cache->palette.get(),source,group.bandSlots[i],group.color);
-                gw->setTransform(tm);gw->startTriangles();
-                for(const auto& face:group.faces) {
-                    const auto a=VectorTransform(tm,face[1]-face[0]),b=VectorTransform(tm,face[2]-face[0]);
-                    const float shade=.35f+.65f*std::abs(DotProd(Normalize(CrossProd(a,b)),Normalize(Point3(.3f,-.5f,.8f))));
-                    const auto rgb=base*shade;Point3 colors[3]={rgb,rgb,rgb};gw->triangle(const_cast<Point3*>(face.data()),colors);
-                }
-                gw->endTriangles();
-            }
+    // Emergency representation only. GPU failure/admission must never turn
+    // camera movement into a faces-times-instances CPU submission loop.
+    std::size_t remaining=2048,submitted=0;
+    for(std::size_t source=0;source<cache->geometryGroups().size() && remaining;++source) {
+        const auto& group=cache->geometryGroups()[source];
+        const auto shown=std::min(remaining,group.instances.size());
+        const auto stride=cyrus::viewportStride(group.instances.size());
+        gw->startMarkers();
+        for(std::size_t k=0;k<shown;++k) {
+            const auto i=k*stride%group.instances.size();
+            gw->setColor(LINE_COLOR,solid?color:cyrus::previewColor(cache->palette.get(),source,group.bandSlots[i],group.color));
+            auto marker=group.instances[i].GetTrans();gw->marker(&marker,PLUS_SIGN_MRKR);
         }
-        gw->setTransform(Matrix3(1));
-        gw->setMaterial(previous);
+        gw->endMarkers();remaining-=shown;submitted+=shown;
     }
     for(std::size_t source=0;source<cache->pointGroups().size();++source) {
         const auto& group=cache->pointGroups()[source];
@@ -247,15 +278,18 @@ Value* aminScatterDrawPreview_cf(Value** args,int count) {
             }
         } else {
             gw->startMarkers();
-            for(std::size_t i=0;i<group.points.size();++i) {
+            const auto shown=std::min(remaining,group.points.size());
+            const auto stride=cyrus::viewportStride(group.points.size());
+            for(std::size_t k=0;k<shown;++k) {
+                const auto i=k*stride%group.points.size();
                 gw->setColor(LINE_COLOR,solid?color:cyrus::previewColor(cache->palette.get(),source,group.bandSlots[i],group.color));
                 auto marker=group.points[i];gw->marker(&marker,POINT_MRKR);
             }
-            gw->endMarkers();
+            gw->endMarkers();remaining-=shown;submitted+=shown;
         }
     }
     gw->setRndLimits(limits);
-    ++fallbackCalls;fallbackPointVertices+=cache->pointSnapshot->count;fallbackFaces+=cache->faceCount;
+    ++fallbackCalls;fallbackPointVertices+=submitted;
     return &ok;
 }
 
@@ -301,9 +335,15 @@ std::vector<cyrus::PointLayer> retainedLayers(Value* cachesValue,Value* stylesVa
         const auto* cache=static_cast<AminPointCache*>(caches->data[i]);
         auto* style=static_cast<Array*>(styles->data[i]);
         if(cache->geometryMode<0 || cache->geometryMode>4 || !cache->pointSnapshot ||
-           (cache->geometryMode!=0 && !cache->meshSnapshot) || style->size!=2)
+           (cache->geometryMode!=0 && !cache->meshSnapshot) || (style->size!=2 && style->size!=8))
             throw RuntimeError(_T("Retained drawing requires a point-cloud or geometry cache"));
         layers.push_back({cache->pointSnapshot,style->data[0]->to_bool()!=FALSE,style->data[1]->to_point3()/255.f,cache->meshSnapshot,cache->palette});
+        layers.back().geometryMode=cache->geometryMode;
+        if(style->size==8)for(int setting=0;setting<6;++setting) {
+            const auto limit=style->data[setting+2]->to_int64();
+            if(limit<0 || limit>2147483647)throw RuntimeError(_T("Viewport limits must be nonnegative integers"));
+            layers.back().limits.values[setting]=static_cast<std::uint64_t>(limit);
+        }
     }
     return layers;
 }
@@ -330,7 +370,7 @@ Value* cyrusPreviewTriangles_cf(Value** args,int count) {
     const int limit=args[1]->to_int();
     if(limit<0 || limit>100000) throw RuntimeError(_T("Diagnostic triangle limit must be 0..100000"));
     two_typed_value_locals(Array* result,Array* row);
-    vl.result=new Array(std::min(limit,cache->faceCount));
+    vl.result=new Array(int(std::min<std::size_t>(limit,cache->faceCount)));
     auto append=[&](const std::array<Point3,3>& face,float shade,Point3 color) {
         vl.row=new Array(5);vl.result->append(vl.row);
         for(auto p:face) vl.row->append(new Point3Value(p));

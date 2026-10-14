@@ -331,7 +331,10 @@ ${lists.map(c=>`        on ${c.id}_grip MouseDown sender args do beginListDrag s
 `;
  let final=require('./colored-lists.cjs')(out,components).replace('        fn layout = (',presentation+widthHelper+'        fn layout = (').replace('        on advancedToggle changed value do layout()',disclosures.map(r=>'        on '+r.toggle+' changed value do (layout();'+remember+'true)').join('\n')+'\n        on advancedToggle changed value do (layout();'+remember+'true)');
  final=final.replace('            binding=true;controlsReady=false','            stopListDrag();binding=true;controlsReady=false').replace('on '+name+' close do (','on '+name+' close do (stopListDrag();');
- final=final.replace('                controlsReady=true;binding=false;layout();true','                setupGrips();controlsReady=true;binding=false;layout();true');
+ // The parent blocks all events throughout bind. Release each copied guard
+ // afterwards as well: components without their own binding local otherwise
+ // inherit true forever, leaving visible buttons inert after a successful bind.
+ final=final.replace('                controlsReady=true;binding=false;layout();true','                '+components.map(p=>p.key+'_binding=false;').join('')+'setupGrips();controlsReady=true;binding=false;layout();true');
  final=final.replace('do panel.bindSection '+name,'do (panel.bindSection '+name+';panel.rememberViews())');
  // Max may allocate a scrollbar after the parent layout finishes. Reflow
  // only on a real width change; our own height update must not recurse.

@@ -1,4 +1,5 @@
 #include "procedural.h"
+#include "receiver_plan.h"
 #include <algorithm>
 #include <cmath>
 #include <limits>
@@ -44,7 +45,7 @@ Result evaluate(const Plan& plan){
         require(!layer.cleanup.relax,"Procedural cleanup cannot move points");
         for(std::size_t s=0;s<layer.sets.size();++s){const auto& set=layer.sets[s];++sets;
             require(!set.id.empty()&&setIDs.emplace(set.id,std::make_pair(l,s)).second,"Duplicate or empty set identity");
-            validate(set.self);require(set.budget<=100000&&set.attemptLimit<=100000,"Population budget/attempt limit exceeds 100000");
+            validate(set.self);require(set.budget<=receivers::limit&&set.attemptLimit<=receivers::limit,"Population budget/attempt limit exceeds 1,000,000");
             require(set.attemptLimit>=set.budget,"Attempt limit is below initial budget");
             std::set<std::string> ids;std::set<std::uint64_t> ordinaryOrdinals;
             for(const auto& p:set.samples){

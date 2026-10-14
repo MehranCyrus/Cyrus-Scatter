@@ -2,8 +2,8 @@
   "schema": "cyrus.feature-catalog/1.0",
   "authority": "Help only. Tool dispatch, closed schema and local approval determine authority.",
   "capability_source_sha256": "8213bafaffe1ffe07837b7a21692ae77d092d11b89d6b8effaff35cf89cecc75",
-  "control_inventory_sha256": "f8c4b2d9f875e3ece4a83880b860991deab13269e96397819ccdf4f3459ff804",
-  "development_version": "0.81.2",
+  "control_inventory_sha256": "4ab5c37b319e1ac534702602baf6c43eb558ad696b5c2da33e67f58aaca1a030",
+  "development_version": "0.81.8",
   "mcp_version": "0.73.0",
   "calculation_model": "CyrusUnified1",
   "features": [
@@ -430,6 +430,51 @@
         "C29"
       ],
       "owner_context": "Setup display/output",
+      "help": null,
+      "view": "Local setup controls",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
+      "kind": "spinner",
+      "name": "navigationPointsSpin",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Controller / local view",
+      "help": null,
+      "view": "Local setup controls",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
+      "kind": "spinner",
+      "name": "navigationInstancesSpin",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Controller / local view",
+      "help": null,
+      "view": "Local setup controls",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "general",
+      "section": "previewUI",
+      "kind": "spinner",
+      "name": "navigationFacesSpin",
+      "capabilities": [
+        "C25",
+        "C28",
+        "C29"
+      ],
+      "owner_context": "Controller / local view",
       "help": null,
       "view": "Local setup controls",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
@@ -1430,7 +1475,7 @@
         "C11"
       ],
       "owner_context": "Layer defaults",
-      "help": "Layer population before eligibility. Accepted target can retry up to its limits.",
+      "help": "Layer population before eligibility, up to 1,000,000. All layers and retries share the Scatter's 1,000,000 candidate limit.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -1444,7 +1489,7 @@
         "C11"
       ],
       "owner_context": "Layer defaults",
-      "help": "Requested plants per square metre of receiving surface; capped at 100,000.",
+      "help": "Requested plants per square metre; capped at 1,000,000 per layer. All layers and retries share the Scatter's 1,000,000 candidate limit.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },

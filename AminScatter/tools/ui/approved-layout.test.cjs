@@ -21,8 +21,8 @@ assert.ok(!/\bupdateControls\(\);diversityUI_updatePattern\(\)/.test(script));
 assert.ok(script.includes('if isProperty control #width then (if control.width!=(available as integer) do control.width=available)'));
 assert.ok(script.includes('windows.showWindow handle (if visibleState then #showNoActivate else #hide)'), 'Hidden .NET children must also hide their native rollout hosts');
 assert.ok(script.includes('(bit.get (windows.getWindowLong handle #style) 29)!=visibleState'),'Use the host visibility style, including under a collapsed parent, and skip unchanged window messages');
-assert.equal((script.match(/setHostedVisible diversityUI_strokesList_colored diversityUI_strokesList.visible/g)||[]).length,2);
-assert.equal((script.match(/setHostedVisible diversityUI_strokeChoices_colored diversityUI_strokeChoices.visible/g)||[]).length,2);
+assert.equal((script.match(/setHostedVisible diversityUI_strokesList_colored diversityUI_strokesList.visible/g)||[]).length,1);
+assert.equal((script.match(/setHostedVisible diversityUI_strokeChoices_colored diversityUI_strokeChoices.visible/g)||[]).length,1);
 assert.ok(script.includes('setHostedVisible diversityUI_strokesList_grip show'));
 const presentation=require('./approved-layout-rows.cjs');
 for(const page of presentation.pages){
@@ -40,10 +40,10 @@ assert.equal(layout.sections[1].name,'surfacesUI');
 assert.ok(script.includes('label sourceContainersUI_containersList_caption "Rectangles"'),'List captions must keep their own layout row');
 assert.ok(!script.includes('(dotNetClass "System.Windows.Forms.Cursor").Position'),'MAXScript aliases Position to pos; drag must use event coordinates');
 const gripMoves=[...script.matchAll(/on (\w+_grip) MouseMove sender args do ([^\n]+)/g)];
-assert.equal(gripMoves.length,18,'Nine list grips must exist in each of the two Modify views');
+assert.equal(gripMoves.length,9,'Nine list grips belong to the Scatter editor');
 for(const [,id,body] of gripMoves)assert.equal(body,'moveListDrag sender args',id+': idle mouse moves must not trigger an unconditional layout');
 assert.ok(script.includes('close do (stopListDrag();'),'Closing a view must release mouse capture');
-assert.equal((script.match(/if changed and controlsReady do layout\(\);true\)/g)||[]).length,2,'Both Modify views skip unchanged status layout');
+assert.equal((script.match(/if changed and controlsReady do layout\(\);true\)/g)||[]).length,1,'The Scatter editor skip unchanged status layout');
 assert.ok(!script.includes('uiPaintSetID'),'Container selection targets a layer, not retired paint-set selection state');
 assert.ok(!script.includes('.selectedPaintSet '),'Global containers resolve their selected layer directly');
 assert.ok(layout.sections.find(s=>s.name==='coverageUI').controls.every(c=>!c.advanced),'All painting controls are directly accessible');
@@ -79,6 +79,9 @@ assert.equal(inventory.layer.diversityUI.find(c=>c.name==='bandScaleMode').kind,
 assert.equal(inventory.layer.diversityUI.find(c=>c.name==='bandScaleEdit').kind,'button');
 assert.ok(script.includes('CyrusOpenFalloffGraph diversityUI_obj undefined false bandID:diversityUI_selectedBandID'));
 console.log('PASS: independent Band scale profile controls and captured scale graph channel');
-assert.equal((script.match(/diversityUI_strokeChoices_colored.SelectionMode=\(dotNetClass "System.Windows.Forms.SelectionMode"\).MultiSimple/g)||[]).length,2,'Both Band assignment views use click-to-toggle');
-assert.equal((script.match(/sourceUI_plantList_colored.SelectionMode=\(dotNetClass "System.Windows.Forms.SelectionMode"\).MultiExtended/g)||[]).length,2,'Main source-list selection keeps its existing modifiers');
-assert.equal((script.match(/undo "Cyrus Band assignment" on savedOwner.setStrokeSelection/g)||[]).length,2,'Each assignment edit has one native Undo transaction');
+assert.equal((script.match(/diversityUI_strokeChoices_colored.SelectionMode=\(dotNetClass "System.Windows.Forms.SelectionMode"\).MultiSimple/g)||[]).length,1,'Band assignment use click-to-toggle');
+assert.equal((script.match(/sourceUI_plantList_colored.SelectionMode=\(dotNetClass "System.Windows.Forms.SelectionMode"\).MultiExtended/g)||[]).length,1,'Main source-list selection keeps its existing modifiers');
+assert.equal((script.match(/undo "Cyrus Band assignment" on savedOwner.setStrokeSelection/g)||[]).length,1,'An assignment edit has one native Undo transaction');
+
+const container=script.slice(script.indexOf('plugin helper CyrusSourceContainer'));
+assert.deepEqual([...container.matchAll(/rollout (\w+) "/g)].map(m=>m[1]),['containerUI'],'Selecting a rectangle must not build the Scatter pages');

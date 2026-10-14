@@ -772,3 +772,59 @@ publication were used.
 
 Website import/content checks and the TypeScript/Vite production build pass locally
 for 0.81.2. No live website deployment was performed.
+
+## Bounded performance corrections — 0.81.3, 13 October 2026
+
+Version decision before implementation: advance delivered 0.81.2 to requested
+0.81.3 for three bounded corrections preserving placement behavior and saved
+schema 58: unchanged-layer preview reuse across calculation publications,
+constant-time evaluation of prepared density curves, and complete scale-profile
+retained-memory accounting. Native Band interface 9 and independently versioned
+Analyzer, licensing and MCP products stay unchanged. New preview-comparison
+primitives require a matched script/native package.
+
+Scope: F02/F03 preserve candidates and collision results; F04/F08 preserve Manual
+state and unchanged buffers; F05 retains staging and atomic rollback; F06 accounts
+for retained scale storage. User authorization includes build, package and local
+installation for manual acceptance, but explicitly excludes test execution and
+opening Max. No automated/runtime qualification is claimed for this patch.
+
+Implementation:
+
+- Preview reuse compares the new accepted rows with the committed owner's rows
+  using bounded native exact comparisons of ordered transforms, source indices
+  and Band owners. Source node/row correspondence, source-geometry signatures,
+  Band dictionary and display settings must also match. Changed content still
+  rebuilds normally. Candidate/protection metadata publishes even when its visual
+  geometry is unchanged; no placement decisions or random channels change.
+- Radius overlays additionally compare both radius values and their inspection
+  settings/field key. Point Cloud sampling retains the published seed, including
+  a display-mode switch with pending Manual recipe edits. All reuse decisions
+  happen in staging; no mutation was added to the publication/rollback tail.
+- Immutable fields use the same interpolation arithmetic after construction
+  validation. The public checked density helper still rejects malformed inputs.
+- Retained bytes now include scale-curve capacities and scale-slope storage.
+  Near-limit fields can correctly fail admission earlier; the existing failure
+  path retains the previous complete publication.
+
+Manual acceptance should cover two independent layers (change only one), source
+geometry and Band-owner changes, Mesh/Point Cloud/Proxy and radius displays,
+pending Manual seed/recipe edits, Live updates, and failed successor recovery.
+Compare buffers/preparation separately from unchanged placement identities.
+These scenarios are not claimed as executed by this delivery.
+
+Delivery evidence: `build/performance-0.81.3-20261013-01/`. The owned build helper
+invoked CMake configure and only the four product-module targets for each SDK;
+it did not invoke ctest or build/run test executables. Both Max 2026 and Max 2027
+compilations succeeded. UI and catalog were regenerated; generated/native source
+hashes were frozen across compilation and packaging. The normal test-running
+build wrappers were not executed. Package payloads and installed files match
+their manifests. [Installation details and recovery](INSTALLATION.md) record both
+profiles and preserved previous files. No Max launch, restart, runtime test,
+commit/push, knowledge-index refresh or website deployment occurred.
+
+Source diff inspection covers staged reuse, unchanged rollback ownership,
+changed geometry/source/Band/seed invalidation and radius-only changes. This is
+reasoning from source, not executed regression evidence. Website reference data
+is regenerated from the updated guide/changelog; the website is not built or
+published by this delivery.

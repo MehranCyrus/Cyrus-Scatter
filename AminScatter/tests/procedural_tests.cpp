@@ -225,4 +225,14 @@ void exhaustive(){
         }
     }
 }
-int main(){try{stableSampler();stablePatternAndRelax();distances();refill();targetAndOrdering();scaleBounds();mixedRadiusMetrics();cleanupWorkLimit();stableFalloff();stableThreadsAndDensity();exhaustive();std::cout<<"Procedural: stable/parallel sampler, bounded anchors and pattern/Relax, falloff, scopes, protected edits, bounded cleanup/replay and 240 exhaustive comparisons passed\n";return 0;}catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}
+void largePopulation(){
+    Plan p;auto garden=layer("large");auto set=population("ground",150001);
+    set.samples.reserve(set.budget);
+    for(unsigned i=0;i<set.budget;++i)set.samples.push_back(sample(i%1000,i/1000,i));
+    garden.sets.push_back(std::move(set));p.layers.push_back(std::move(garden));
+    auto result=evaluate(p);check(result.layers[0].sets[0].kept.size()==150001,"Large population was truncated at 100000");
+    p.maxSamples=150000;rejects([&]{evaluate(p);});
+    p.maxSamples=1000000;p.layers[0].sets[0].budget=p.layers[0].sets[0].attemptLimit=1000001;
+    rejects([&]{evaluate(p);});
+}
+int main(){try{stableSampler();stablePatternAndRelax();distances();refill();targetAndOrdering();scaleBounds();mixedRadiusMetrics();cleanupWorkLimit();stableFalloff();stableThreadsAndDensity();exhaustive();largePopulation();std::cout<<"Procedural: stable/parallel sampler, bounded anchors and pattern/Relax, falloff, scopes, protected edits, bounded cleanup/replay, expanded capacity and 240 exhaustive comparisons passed\n";return 0;}catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}

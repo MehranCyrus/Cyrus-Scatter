@@ -1,6 +1,6 @@
 # Cyrus Scatter engineering foundation
 
-Maintained contracts, established 12 October 2026 and aligned to development source 0.81.2/schema 58 on 13 October. **Required behavior is not implementation compliance or release acceptance.** The [current implementation record](plans/spline-bands/PROGRESS.md) records scoped native and Max 2026/2027 evidence and remaining gates. The [0.79.6 correction handoff](Foundation_0.79.6_2026-10-12/README.md) is historical publication/units evidence; its old-schema migration is retired. Earlier failures remain in the [local audit receipt](../_local/foundation-audit/20261012-3f4f69a4/AUDIT.md); that ignored receipt is not supplied by a source-only clone.
+Maintained contracts, established 12 October 2026 and aligned to development source 0.81.5/schema 58 on 13 October. **Required behavior is not implementation compliance or release acceptance.** The [current terrace record](plans/terrace-0815/PROGRESS.md) and preceding [Bands implementation record](plans/spline-bands/PROGRESS.md) record scoped native and Max 2026/2027 evidence and remaining gates. The [0.79.6 correction handoff](Foundation_0.79.6_2026-10-12/README.md) is historical publication/units evidence; its old-schema migration is retired. Earlier failures remain in the [local audit receipt](../_local/foundation-audit/20261012-3f4f69a4/AUDIT.md); that ignored receipt is not supplied by a source-only clone.
 
 The [architecture](ARCHITECTURE.md) owns implementation detail, the [backlog](BACKLOG.md) owns unresolved work, and the [workflow](AGENT_WORKFLOW.md) owns execution and host isolation. After required startup, read relevant sections without recursively loading history. F01–F09 retain their original meanings; F10–F12 make units, persistence and Analyzer boundaries explicit.
 
@@ -80,7 +80,7 @@ Publish compatible rows, sources, radii, statistics and display/output together,
 
 Admit finite work and report underfill/failure. Candidate pools, attempts, cleanup visits, geometry and retained resources have separate bounds. Protected zero-quota edits still consume admission.
 
-**Limits:** 100,000 candidates/population, ten populations/root admission 1,000,000, attempt factor up to 32 and rounds up to 16 are not peak RAM/VRAM or latency guarantees. Shared exhaustion can reject independent edits while retaining old output. Nontermination, hidden shortfall or partial publication on rejection falsifies this rule. Extreme geometry/allocation remain gates.
+**Limits:** 0.81.5 admits up to 1,000,000 candidates/population, with ten populations and a shared root admission of 1,000,000 including retry/protected requirements. Attempt factor up to 32 and rounds up to 16 are not peak RAM/VRAM or latency guarantees. Shared exhaustion can reject independent edits while retaining old output. Nontermination, hidden shortfall or partial publication on rejection falsifies this rule. Extreme geometry/allocation remain gates. See [current capacity evidence](plans/terrace-0815/PROGRESS.md); the preceding population ceiling was 100,000.
 
 **Implementation:** [receiver plan](../AminScatter/src/receiver_plan.cpp), [procedural validation](../AminScatter/src/procedural.cpp), [Brush](../AminScatter/src/brush.cpp), native display; U: procValidate.
 

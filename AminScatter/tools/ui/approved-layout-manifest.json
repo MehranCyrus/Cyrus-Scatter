@@ -1762,13 +1762,13 @@
           "component": "flow_previewUI",
           "control": "instancesLimitSpin",
           "presentation": "flow_previewUI_instancesLimitSpin",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "flow_previewUI",
           "control": "faceLimitSpin",
           "presentation": "flow_previewUI_faceLimitSpin",
-          "advanced": true
+          "advanced": false
         },
         {
           "component": "flow_previewUI",
@@ -1792,7 +1792,31 @@
           "component": "flow_previewUI",
           "control": "budgetSpin",
           "presentation": "flow_previewUI_budgetSpin",
-          "advanced": true
+          "advanced": false
+        },
+        {
+          "component": "flow_previewUI",
+          "control": "navigationPointsSpin",
+          "presentation": "flow_previewUI_navigationPointsSpin",
+          "advanced": false
+        },
+        {
+          "component": "flow_previewUI",
+          "control": "navigationInstancesSpin",
+          "presentation": "flow_previewUI_navigationInstancesSpin",
+          "advanced": false
+        },
+        {
+          "component": "flow_previewUI",
+          "control": "navigationFacesSpin",
+          "presentation": "flow_previewUI_navigationFacesSpin",
+          "advanced": false
+        },
+        {
+          "component": "flow_previewUI",
+          "control": "limitsHint",
+          "presentation": "flow_previewUI_limitsHint",
+          "advanced": false
         },
         {
           "component": "flow_previewUI",

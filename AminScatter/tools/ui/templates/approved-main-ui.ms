@@ -1,4 +1,4 @@
-    rollout mainUI "Cyrus Scatter 0.81.2" width:#cmdPanel height:140 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.81.8" width:#cmdPanel height:140 autoLayoutOnResize:true (
         local view=undefined,root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),owner=undefined,layerPagesVisible=false,pagesArranged=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for the entire setup."
         radiobuttons updateRadio "Viewport update" labels:#("Manual","Live") columns:2 pos:[8,26] width:(mainUI.width-16) tooltip:"Manual waits for Update. Live calculates after relevant edits."
@@ -18,6 +18,7 @@
             if not controlsReady do return false
             if root.layersUI!=undefined and root.layersUI.controlsReady do root.layersUI.refreshStats()
             if root.surfaceUI!=undefined and root.surfaceUI.controlsReady do root.surfaceUI.refreshStats()
+            if root.statisticsUI.controlsReady and root.statisticsUI.open do if root.statisticsUI.detailsUI_refreshStats() do root.statisticsUI.layout()
             root.syncBrushAvailability();true
         )
         fn bindSection section = (
@@ -70,16 +71,13 @@
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.81.2 native plugin and restart Max."
-            local context=if classof view==CyrusSourceContainer then CyrusContainerResolve view else undefined
-            root=if classof view==CyrusSourceContainer then (if context==undefined then undefined else context[1]) else view
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.81.8 native plugin and restart Max."
+            root=view
             editors=#(view.managerUI,view.surfacesUI,view.modelsUI,view.containersUI,view.layoutUI,view.populationUI,view.coverageUI,view.areasUI,view.transformsUI,view.spacingUI,view.displayUI,view.statisticsUI)
             if root==undefined do (
                 for r in editors do (r.controlsReady=false;cyrusSetRolloutVisible r.hwnd false 0)
-                if isProperty view #containerUI do view.containerUI.bind()
                 return false
             )
-            if context!=undefined and context[2]!=undefined do undo off root.selectLayer (findItem root.layerObjects (root.logicalParent context[2]))
             root.syncLayerIdentity()
             roots=#(view.surfacesUI,view.displayUI,view.managerUI)
             root.updateUI=undefined;root.surfaceUI=roots[1];root.previewUI=roots[2];root.layersUI=roots[3]
@@ -93,7 +91,6 @@
             )
             cyrusSetRolloutVisible mainUI.hwnd true 0
             controlsReady=true;bind();rememberViews()
-            if isProperty view #containerUI do view.containerUI.bind()
             -- Max measured these pages before bind assigned their final heights.
             -- Reflow once after all bodies, including the container, are ready.
             cyrusSetRolloutVisible mainUI.hwnd true 0
@@ -111,7 +108,6 @@
             if CyrusInteractionHeld() do (statusTimer.active=true;return false)
             local sourceChanges=false
             for leaf in root.layerObjects where leaf.containerUIChanged do (leaf.containerUIChanged=false;sourceChanges=true)
-            if isProperty view #containerUI do view.containerUI.bind()
             if sourceChanges then root.bindNativeUI() else refreshStats()
         )
         on licenseButton pressed do CyrusOpenLicenseDialog()

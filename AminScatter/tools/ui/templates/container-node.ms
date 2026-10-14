@@ -24,7 +24,8 @@ name:"Cyrus Source Container" category:"Cyrus" classID:#(0x51732c41,0x42cf0973) 
     )
     local consumerRows=#(),consumerLabels=#(),cachedLabel="Unlinked source container",cachedActiveCount=0,cachedSavedCount=0,cachedConsumerCount=0,movementUnits=#(),movementStatus="Ready"
     local updateUI,surfaceUI,previewUI,layersUI,uiRootState=#(),uiPresentationState=#()
-    fn configure node = (
+    fn configure node movement:true = (
+        if not movement do return cyrusContainerPresentation delegate cachedLabel showLabel
         if (refs.dependentNodes this).count!=1 do (
             movementStatus="Instanced containers cannot carry sources. Make a unique copy."
             cyrusContainerDisable delegate;return false
@@ -113,7 +114,7 @@ fn CyrusContainerRefreshLabels root = (
             if root==undefined or (context!=undefined and context[1]==root) do (
                 local caption=if context==undefined then (if view.consumerRows.count==0 then "Unlinked" else "Choose context") else if context[2]==undefined then "Global sources" else context[1].setCaption context[2]
                 view.cachedLabel=node.name+" | "+caption+(if view.collectEnabled then "" else " | Collection off")+" | "+(view.cachedActiveCount as string)+" active / "+(view.cachedSavedCount as string)+" saved"+(if view.cachedConsumerCount>1 then " | "+(view.cachedConsumerCount as string)+" consumers" else "")
-                view.configure node
+                view.configure node movement:false
             )
         )
     )
@@ -127,7 +128,7 @@ fn CyrusContainerPanel root = (
     local active=try(modPanel.getCurrentObject())catch(undefined)
     if active!=undefined and classof active==CyrusSourceContainer then (
         local context=CyrusContainerResolve active
-        if context!=undefined and context[1]==root and active.mainUI.controlsReady do return active.mainUI
+        if context!=undefined and context[1]==root and active.containerUI.controlsReady do return active.containerUI
     )
     root.mainUI
 )
@@ -214,6 +215,7 @@ fn CyrusContainerRefreshAll = (
         view.movementStatus=if not view.collectEnabled then "Collection off. Position the rectangle, then enable collection." else if conflicts.count>0 then (conflicts.count as string)+" overlapping sources need an owner." else if failure!="" then failure else "Translation follows active static models. Resize changes membership."
         if previous!=view.movementStatus do CyrusDiagnosticEmit "container.ownership" "source_container" view.containerID 0 view.movementStatus
         view.cachedActiveCount=active.count;view.cachedSavedCount=saved.count;view.cachedConsumerCount=consumers.count
+        view.configure node
     )
     CyrusContainerRefreshLabels undefined
     true
