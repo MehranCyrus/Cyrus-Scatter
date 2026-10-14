@@ -36,7 +36,7 @@ def main():
     assert data['developmentVersion']==catalog['development_version']==release_ui
     assert len(data['documents'])==len(manifest['documents'])==5
     assert len(data['controls'])==len(catalog['controls'])==len(editorial)
-    assert len(data['features'])==len(catalog['features'])==34
+    assert len(data['features'])==len(catalog['features'])==35
     assert len({c['id'] for c in data['controls']})==len(catalog['controls'])
     assert len({c['sourceKey'] for c in data['controls']})==len(catalog['controls'])
     feature_ids={f['feature_id'] for f in data['features']}

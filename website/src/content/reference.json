@@ -1,6 +1,6 @@
 {
   "schema": "cyrus.public-guide/3.0",
-  "developmentVersion": "0.81.8",
+  "developmentVersion": "0.82.0",
   "artistWorkflowVersion": "0.78.3",
   "analyzerVersion": "0.14",
   "mcpVersion": "0.73.0",
@@ -10,7 +10,7 @@
       "id": "artist-guide",
       "title": "The artist's guide",
       "description": "Your complete workflow, from the first surface to the final refinement.",
-      "html": "<h2 id=\"start-with-a-layer\">Start with a layer<a class=\"heading-permalink\" href=\"#/guide/artist-guide/start-with-a-layer\" aria-label=\"Link to Start with a layer\">#</a></h2>\n<p>Create a Cyrus Scatter controller, add a layer, assign its receiving surfaces and add models or Points. Set Amount, then press <strong>Update scatter</strong> in Manual mode. Live responds to relevant edits.</p>\n<p>In Geometry &gt; Cyrus &gt; Cyrus Scatter, click to place, move to size the icon, and click to finish. Right-click to exit Create mode. Each layer owns its surfaces, sources, amount, layout, transforms and spacing. Layer order matters when between-layer spacing is enabled.</p>\n<p>Use Add, Copy, Remove, Up and Down to organize layers. Copy includes independent Paint Areas. Visible controls viewport display; Enabled controls the layer contribution. Removing an assignment does not delete the source scene object.</p>\n<h2 id=\"surfaces-models-and-optional-containers\">Surfaces, models and optional containers<a class=\"heading-permalink\" href=\"#/guide/artist-guide/surfaces-models-and-optional-containers\" aria-label=\"Link to Surfaces, models and optional containers\">#</a></h2>\n<p>Add receivers to the selected layer. Unchanged receivers retain their base random streams when another receiver is added, renamed or reordered. Density gives each receiver its own count below the cap; Fixed Total redistributes the same total, so some existing candidates may be removed. Geometry changes, Relax, masks and shared spacing can change accepted output.</p>\n<p>Add Point makes placement markers without final model geometry. Pick object turns a selected Point into a model. Make point turns a selected model into a Point while preserving its registration, settings and Band assignments; the scene model is not deleted. Both actions preserve the source row identity. An Empty choice creates weighted gaps in Candidate budget mode; positive-weight Empty is rejected by Accepted target. A Point and an Empty are different source kinds.</p>\n<p>Source controls include label, identification color, weight, scale, Manual/Auto radius, vertical offset and forward axis. Manual preserves its radius and optional Follow Scale. Auto bounds supported geometry around the pivot after final instance scale and orientation; it is conservative spacing, not exact mesh collision. Points, Empty and unqualified source families remain Manual. Assignment-group colors are separate from identification colors.</p>\n<p>Source containers are optional palettes. New rectangles start with <strong>Enable collection</strong> off. Position and resize first, then enable collection to collect eligible source pivots. Selecting a rectangle opens compact collection and dimension controls; select the Scatter controller for full planting settings. Moving an enabled rectangle carries its owned models; resizing its boundary leaves their transforms unchanged. Disabling collection parks models while retaining settings. Manual waits for Update; Live applies relevant membership changes.</p>\n<h2 id=\"layout-and-amount\">Layout and Amount<a class=\"heading-permalink\" href=\"#/guide/artist-guide/layout-and-amount\" aria-label=\"Link to Layout and Amount\">#</a></h2>\n<p>Random mix chooses weighted sources. Clusters choose assignment groups across space. Spline Bands use closed world-XY Paths, explicit Models / Points or Assignment groups, and Consecutive or Independent ranges. Surface Analyzer consumes separately analyzed boundary, path and point channels.</p>\n<p>Consecutive accumulates widths separately on each Path/side and preserves unassigned intervals as gaps. Independent exposes each Band&#x27;s Start/End and combines eligible contributions. New Bands start unassigned. Scaling a Path changes its outline, not its world-space Band distances.</p>\n<p>Density and its optional curve shape a Band&#x27;s contribution from Start to End. Independent contributions cap total occupancy at 100%, then choose the Band proportionally. A 100% Sphere plus 25% Box gives approximately 80% Sphere/20% Box in the overlap and 25% occupancy where only Box contributes, before other masks/spacing.</p>\n<p>Rounded uses distance to original border segments. Sharp uses bounded miter offsets; acute corners have limits and narrow/complex requests can require simplification. The preview shows admitted geometry.</p>\n<p>Amount supports Count or area Density, up to 1,000,000 per population. A controller shares a 1,000,000-candidate work limit across its populations, including retry and protected-edit requirements. Exceeding that limit reports an error and retains the preceding result. Candidate budget can underfill after restrictions. Independent ranges and nontrivial Band density require Candidate budget; Accepted target is rejected so retries cannot erase the fade. Use a fixed seed for repeatable comparisons. Texture Density needs UV channel 1 on each receiver; errors identify the surface requiring mapping.</p>\n<h2 id=\"band-scale-profiles\">Band scale profiles<a class=\"heading-permalink\" href=\"#/guide/artist-guide/band-scale-profiles\" aria-label=\"Link to Band scale profiles\">#</a></h2>\n<p>In Layout, Scale sits directly below the density curve. Min/Max supplies random size variation. Scale profile selects Off, Follow Density or Custom. Custom enables Edit scale curve. X runs from Band Start to End; Y is size percent, where 100% preserves size.</p>\n<p>Density and scale have independent curves. Follow Density uses the effective density curve shape, without the Density % strength; disabling that density curve gives a flat 100% scale profile. Switching modes keeps the Custom graph. Zero size does not remove a candidate.</p>\n<p>Scale curves multiply existing source, Band and layer size once. Auto Radius follows final size; Manual radius needs Follow Scale. Size-dependent spacing can change accepted counts. Manual requires Update scatter. Steep Sharp profiles can exceed the bounded precision and retain the previous result; simplify the curve or choose Rounded.</p>\n<h2 id=\"vector-painting\">Vector painting<a class=\"heading-permalink\" href=\"#/guide/artist-guide/vector-painting\" aria-label=\"Link to Vector painting\">#</a></h2>\n<p>Turn on <strong>Use Paint Areas</strong>, add a named area and choose one receiver from the layer. Select Paint or Erase, set Radius and press Start Brush. Paint joins circular footprints into a vector region; Erase cuts coverage and holes. Stop ends the session.</p>\n<p>Areas share the layer models and population. Overlap contributes coverage once per candidate. Turning Paint Areas off retains the areas and uses the full receiver. Fill and Clear operate on the selected area; keep a saved copy before major edits.</p>\n<p>Inward/outward feather widths and separate density/scale curves shape the edge. Density changes acceptance; scale multiplies model size. A 100 mm radius has a 200 mm diameter. Borders describe coverage, not guaranteed accepted plants.</p>\n<p>Vector painting supports planes and terrain single-valued in receiver-local XY, including transformed receivers. Closed, vertical, folded and overlapping projected receivers are rejected. General scattering on curved receivers is a separate supported workflow.</p>\n<p>The vector format introduced in 0.78 does not convert earlier stroke setups. Preserve older scenes with their matching build and create a new setup for the vector workflow.</p>\n<h2 id=\"area-limits-transforms-and-spacing\">Area limits, transforms and spacing<a class=\"heading-permalink\" href=\"#/guide/artist-guide/area-limits-transforms-and-spacing\" aria-label=\"Link to Area limits, transforms and spacing\">#</a></h2>\n<p>Closed Include shapes union their eligible domains. Exclude takes precedence. Area masks test placement support rather than trimming model geometry. <a href=\"#/guide/layout-falloff\">Layout &amp; soft boundaries</a> explains guide widths and edge curves.</p>\n<p>Rotation, XYZ scale, whole scale and movement have independent ranges and reset buttons. Projection and orientation settings affect final placement. Within-layer and between-layer spacing are independent rules; radius, factor, gap and Follow Scale determine simplified clearance.</p>\n<p>CS Edit uses stable instance identities. Generation changes can invalidate bindings; preserve the scene before clearing edits. Radius overlays are inspection aids, not exact mesh collision volumes.</p>\n<h2 id=\"preview-updates-output-and-diagnostics\">Preview, updates, output and diagnostics<a class=\"heading-permalink\" href=\"#/guide/artist-guide/preview-updates-output-and-diagnostics\" aria-label=\"Link to Preview, updates, output and diagnostics\">#</a></h2>\n<p>Plant centres shows one marker per accepted placement. Point Cloud, Proxy and Mesh have their own display budgets, so shown counts can be lower than accepted output. Mesh uses evaluated viewport geometry and preview coloring; renderer materials are a separate output concern.</p>\n<p>Color by Bands follows the accepted owner even when Bands share a model. Preview Falloff shows selected contribution or Combined density on receiver surfaces: blue is zero and red is 100%. Show Boundaries adds white contours. Sample/face counts describe approximate coverage at the Band stage before other masks, spacing and cleanup. These overlays are not final plants or render output.</p>\n<p>Manual retains the last completed result until Update scatter. Live updates relevant dependencies. A failed successor retains the previous complete result and reports the failure. If an Analyzer is stale, Analyze it first and then update Manual Scatter.</p>\n<p>In Manual, enabled field feedback follows relevant authored/animated inputs while published plants and radii stay frozen. The label reads <strong>Pending field; plants from last Update</strong>. Field toggles, selection and XY/3D radius display do not solve placements. An uncached display mode cannot use changed source geometry alongside the preceding publication; Update is required.</p>\n<p>Local identification-color edits retain unchanged sibling previews. Unchanged navigation reuses prepared display data. Heavy changed layers, cold loading and first panel construction can still take time.</p>\n<p>Statistics identifies the selected layer and its last completed calculation. Requested and accepted placements are separate from prepared cloud points, centres or preview instances. Prepared samples are not current-frame draw counts. Marked for Update reports pending invalidation; Read cached statistics does not apply Manual edits. Empty successful results and failed updates have separate feedback. Optional diagnostics record local bounded events; recording is separate from sharing or permission to train.</p>\n<p>In Viewport &amp; render, Navigating and Idle set separate limits for Point Cloud points, Proxy instances or Mesh triangles across visible layers. Use 0 for unlimited. A short pause restores Idle detail; final rendering retains the full accepted planting. Expensive Mesh sources can use cached boxes to fit the triangle or memory allowance. Oversized Point Cloud requests use a bounded sample and report the memory reduction, including at zero limits; switching modes reuses the current planting snapshots. Zero removes artist draw caps but keeps memory safeguards. Graphics failure uses bounded centre markers. Display changes preserve pending Manual edits.</p>\n<h2 id=\"final-artist-acceptance\">Final artist acceptance<a class=\"heading-permalink\" href=\"#/guide/artist-guide/final-artist-acceptance\" aria-label=\"Link to Final artist acceptance\">#</a></h2>\n<p>Use the installer for your Max year through Scripting &gt; Run Script, then restart Max so the script and native modules match. Current development packages target Max 2026 and 2027; renderer and physical-input coverage varies by workflow.</p>\n<p>Team-pilot builds expose License / activation. Export an activation request and import the returned license. The pilot license lasts 30 days from issuance; expiry locks authoring while existing scenes remain loadable/renderable.</p>\n<p>Development source 0.81.5 uses schema 58; earlier schemas are rejected without migration. Use the latest matched installer for Max 2026 or 2027; restart after installation. Preserve earlier scenes with their matching build. Current settings use typed distances. Preserve originals and use saved units for receiver-bound Paint/Edit data. Test receivers, Points/models, Bands, painting, Manual/Live, Undo/Redo, save/reopen and the intended renderer on a copy. Physical picker/DPI/tablet and long-session acceptance remain open.</p>\n<p><a href=\"#/changelog\">View the changelog</a> for additions and fixes, or use the <a href=\"#/checklist\">testing walkthrough</a> to record your own observations.</p>",
+      "html": "<h2 id=\"start-with-a-layer\">Start with a layer<a class=\"heading-permalink\" href=\"#/guide/artist-guide/start-with-a-layer\" aria-label=\"Link to Start with a layer\">#</a></h2>\n<p>Create a Cyrus Scatter controller, add a layer, assign its receiving surfaces and add models or Points. Set Amount, then press <strong>Update scatter</strong> in Manual mode. Live responds to relevant edits.</p>\n<p>In Geometry &gt; Cyrus &gt; Cyrus Scatter, click to place, move to size the icon, and click to finish. Right-click to exit Create mode. Each layer owns its surfaces, sources, amount, layout, transforms and spacing. Layer order matters when between-layer spacing is enabled.</p>\n<p>Use Add, Copy, Remove, Up and Down to organize layers. Copy includes independent Paint Areas. Visible controls viewport display; Enabled controls the layer contribution. Removing an assignment does not delete the source scene object.</p>\n<h2 id=\"surfaces-models-and-optional-containers\">Surfaces, models and optional containers<a class=\"heading-permalink\" href=\"#/guide/artist-guide/surfaces-models-and-optional-containers\" aria-label=\"Link to Surfaces, models and optional containers\">#</a></h2>\n<p>Add receivers to the selected layer. Unchanged receivers retain their base random streams when another receiver is added, renamed or reordered. Density gives each receiver its own count below the cap; Fixed Total redistributes the same total, so some existing candidates may be removed. Geometry changes, Relax, masks and shared spacing can change accepted output.</p>\n<p>Add Point makes placement markers without final model geometry. Pick object turns a selected Point into a model. Make point turns a selected model into a Point while preserving its registration, settings and Band assignments; the scene model is not deleted. Both actions preserve the source row identity. An Empty choice creates weighted gaps in Candidate budget mode; positive-weight Empty is rejected by Accepted target. A Point and an Empty are different source kinds.</p>\n<p>Source controls include label, identification color, weight, scale, Manual/Auto radius, vertical offset and forward axis. Manual preserves its radius and optional Follow Scale. Auto bounds supported geometry around the pivot after final instance scale and orientation; it is conservative spacing, not exact mesh collision. Points, Empty and unqualified source families remain Manual. Assignment-group colors are separate from identification colors.</p>\n<p>Source containers are optional palettes. New rectangles start with <strong>Enable collection</strong> off. Position and resize first, then enable collection to collect eligible source pivots. Selecting a rectangle opens compact collection and dimension controls; select the Scatter controller for full planting settings. Moving an enabled rectangle carries its owned models; resizing its boundary leaves their transforms unchanged. Disabling collection parks models while retaining settings. Manual waits for Update; Live applies relevant membership changes.</p>\n<h2 id=\"layout-and-amount\">Layout and Amount<a class=\"heading-permalink\" href=\"#/guide/artist-guide/layout-and-amount\" aria-label=\"Link to Layout and Amount\">#</a></h2>\n<p>Random mix chooses weighted sources. Clusters choose assignment groups across space. Spline Bands use closed world-XY Paths, explicit Models / Points or Assignment groups, and Consecutive or Independent ranges. Surface Analyzer consumes separately analyzed boundary, path and point channels.</p>\n<p>Consecutive accumulates widths separately on each Path/side and preserves unassigned intervals as gaps. Independent exposes each Band&#x27;s Start/End and combines eligible contributions. New Bands start unassigned. Scaling a Path changes its outline, not its world-space Band distances.</p>\n<p>Density and its optional curve shape a Band&#x27;s contribution from Start to End. Independent contributions cap total occupancy at 100%, then choose the Band proportionally. A 100% Sphere plus 25% Box gives approximately 80% Sphere/20% Box in the overlap and 25% occupancy where only Box contributes, before other masks/spacing.</p>\n<p>Rounded uses distance to original border segments. Sharp uses bounded miter offsets; acute corners have limits and narrow/complex requests can require simplification. The preview shows admitted geometry.</p>\n<p>Amount supports Count or area Density, up to 1,000,000 per population. A controller shares a 1,000,000-candidate work limit across its populations, including retry and protected-edit requirements. Exceeding that limit reports an error and retains the preceding result. Candidate budget can underfill after restrictions. Independent ranges and nontrivial Band density require Candidate budget; Accepted target is rejected so retries cannot erase the fade. Use a fixed seed for repeatable comparisons. Texture Density needs UV channel 1 on each receiver; errors identify the surface requiring mapping.</p>\n<h2 id=\"band-scale-profiles\">Band scale profiles<a class=\"heading-permalink\" href=\"#/guide/artist-guide/band-scale-profiles\" aria-label=\"Link to Band scale profiles\">#</a></h2>\n<p>In Layout, Scale sits directly below the density curve. Min/Max supplies random size variation. Scale profile selects Off, Follow Density or Custom. Custom enables Edit scale curve. X runs from Band Start to End; Y is size percent, where 100% preserves size.</p>\n<p>Density and scale have independent curves. Follow Density uses the effective density curve shape, without the Density % strength; disabling that density curve gives a flat 100% scale profile. Switching modes keeps the Custom graph. Zero size does not remove a candidate.</p>\n<p>Scale curves multiply existing source, Band and layer size once. Auto Radius follows final size; Manual radius needs Follow Scale. Size-dependent spacing can change accepted counts. Manual requires Update scatter. Steep Sharp profiles can exceed the bounded precision and retain the previous result; simplify the curve or choose Rounded.</p>\n<h2 id=\"named-settings-and-curve-presets\">Named settings and curve presets<a class=\"heading-permalink\" href=\"#/guide/artist-guide/named-settings-and-curve-presets\" aria-label=\"Link to Named settings and curve presets\">#</a></h2>\n<p>Use Presets... in Amount, Transforms or Spacing &amp; cleanup. Curve presets are available from the existing density/scale graph. Save new captures a named item; selecting it is passive, and Apply changes the target shown in the dialog. Reopen the browser to target a different layer.</p>\n<p>Population includes amount, density, seed and retry policy. Transforms include the layer rotation, scale, movement, normal alignment and projection. Assets, surfaces, IDs, maps and layout remain linked to the scene. Physical distances convert across system units; density stays per square metre.</p>\n<p>Spacing stores the effective rule and applies an explicit override in the chosen Within this layer or Between layers scope. It does not store peer identities or change Relax/cleanup. Reset inheritance remains a separate control.</p>\n<p>Curve presets preserve samples and editable handles while retaining enable flags, widths and scale ranges. Density and Paint scale use zero-to-one values; other scale curves support multipliers. Invalid or incompatible curves are rejected. One Undo/Redo restores Apply, and closing a graph after Undo does not reapply the preset.</p>\n<p>Manual waits for Update scatter; Live follows normal update callbacks. Browsing, saving and renaming do not calculate plants. Animated or expression-controlled targets are rejected. Static shared controllers are detached so another owner is preserved.</p>\n<p>The local library is CyrusScatter/Presets inside the per-user Max PlugCFG directory. Share the .cspreset.json files. Limits are 512 files, 64 KiB per file and 80-character names. Rename changes the library name; Delete confirms removal of the selected file. Invalid files and failed writes report errors. Complete planting recipes and asset substitution are a later feature.</p>\n<h2 id=\"vector-painting\">Vector painting<a class=\"heading-permalink\" href=\"#/guide/artist-guide/vector-painting\" aria-label=\"Link to Vector painting\">#</a></h2>\n<p>Turn on <strong>Use Paint Areas</strong>, add a named area and choose one receiver from the layer. Select Paint or Erase, set Radius and press Start Brush. Paint joins circular footprints into a vector region; Erase cuts coverage and holes. Stop ends the session.</p>\n<p>Areas share the layer models and population. Overlap contributes coverage once per candidate. Turning Paint Areas off retains the areas and uses the full receiver. Fill and Clear operate on the selected area; keep a saved copy before major edits.</p>\n<p>Inward/outward feather widths and separate density/scale curves shape the edge. Density changes acceptance; scale multiplies model size. A 100 mm radius has a 200 mm diameter. Borders describe coverage, not guaranteed accepted plants.</p>\n<p>Vector painting supports planes and terrain single-valued in receiver-local XY, including transformed receivers. Closed, vertical, folded and overlapping projected receivers are rejected. General scattering on curved receivers is a separate supported workflow.</p>\n<p>The vector format introduced in 0.78 does not convert earlier stroke setups. Preserve older scenes with their matching build and create a new setup for the vector workflow.</p>\n<h2 id=\"area-limits-transforms-and-spacing\">Area limits, transforms and spacing<a class=\"heading-permalink\" href=\"#/guide/artist-guide/area-limits-transforms-and-spacing\" aria-label=\"Link to Area limits, transforms and spacing\">#</a></h2>\n<p>Closed Include shapes union their eligible domains. Exclude takes precedence. Area masks test placement support rather than trimming model geometry. <a href=\"#/guide/layout-falloff\">Layout &amp; soft boundaries</a> explains guide widths and edge curves.</p>\n<p>Rotation, XYZ scale, whole scale and movement have independent ranges and reset buttons. Projection and orientation settings affect final placement. Within-layer and between-layer spacing are independent rules; radius, factor, gap and Follow Scale determine simplified clearance.</p>\n<p>CS Edit uses stable instance identities. Generation changes can invalidate bindings; preserve the scene before clearing edits. Radius overlays are inspection aids, not exact mesh collision volumes.</p>\n<h2 id=\"preview-updates-output-and-diagnostics\">Preview, updates, output and diagnostics<a class=\"heading-permalink\" href=\"#/guide/artist-guide/preview-updates-output-and-diagnostics\" aria-label=\"Link to Preview, updates, output and diagnostics\">#</a></h2>\n<p>Plant centres shows one marker per accepted placement. Point Cloud, Proxy and Mesh have their own display budgets, so shown counts can be lower than accepted output. Mesh uses evaluated viewport geometry and preview coloring; renderer materials are a separate output concern.</p>\n<p>Color by Bands follows the accepted owner even when Bands share a model. Preview Falloff shows selected contribution or Combined density on receiver surfaces: blue is zero and red is 100%. Show Boundaries adds white contours. Sample/face counts describe approximate coverage at the Band stage before other masks, spacing and cleanup. These overlays are not final plants or render output.</p>\n<p>Manual retains the last completed result until Update scatter. Live updates relevant dependencies. A failed successor retains the previous complete result and reports the failure. If an Analyzer is stale, Analyze it first and then update Manual Scatter.</p>\n<p>In Manual, enabled field feedback follows relevant authored/animated inputs while published plants and radii stay frozen. The label reads <strong>Pending field; plants from last Update</strong>. Field toggles, selection and XY/3D radius display do not solve placements. An uncached display mode cannot use changed source geometry alongside the preceding publication; Update is required.</p>\n<p>Local identification-color edits retain unchanged sibling previews. Unchanged navigation reuses prepared display data. Heavy changed layers, cold loading and first panel construction can still take time.</p>\n<p>Statistics identifies the selected layer and its last completed calculation. Requested and accepted placements are separate from prepared cloud points, centres or preview instances. Prepared samples are not current-frame draw counts. Marked for Update reports pending invalidation; Read cached statistics does not apply Manual edits. Empty successful results and failed updates have separate feedback. Optional diagnostics record local bounded events; recording is separate from sharing or permission to train.</p>\n<p>In Viewport &amp; render, Navigating and Idle set separate limits for Point Cloud points, Proxy instances or Mesh triangles across visible layers. Use 0 for unlimited. A short pause restores Idle detail; final rendering retains the full accepted planting. Expensive Mesh sources can use cached boxes to fit the triangle or memory allowance. Oversized Point Cloud requests use a bounded sample and report the memory reduction, including at zero limits; switching modes reuses the current planting snapshots. Zero removes artist draw caps but keeps memory safeguards. Graphics failure uses bounded centre markers. Display changes preserve pending Manual edits.</p>\n<h2 id=\"final-artist-acceptance\">Final artist acceptance<a class=\"heading-permalink\" href=\"#/guide/artist-guide/final-artist-acceptance\" aria-label=\"Link to Final artist acceptance\">#</a></h2>\n<p>Use the installer for your Max year through Scripting &gt; Run Script, then restart Max so the script and native modules match. Current development packages target Max 2026 and 2027; renderer and physical-input coverage varies by workflow.</p>\n<p>Team-pilot builds expose License / activation. Export an activation request and import the returned license. The pilot license lasts 30 days from issuance; expiry locks authoring while existing scenes remain loadable/renderable.</p>\n<p>Development source 0.81.5 uses schema 58; earlier schemas are rejected without migration. Use the latest matched installer for Max 2026 or 2027; restart after installation. Preserve earlier scenes with their matching build. Current settings use typed distances. Preserve originals and use saved units for receiver-bound Paint/Edit data. Test receivers, Points/models, Bands, painting, Manual/Live, Undo/Redo, save/reopen and the intended renderer on a copy. Physical picker/DPI/tablet and long-session acceptance remain open.</p>\n<p><a href=\"#/changelog\">View the changelog</a> for additions and fixes, or use the <a href=\"#/checklist\">testing walkthrough</a> to record your own observations.</p>",
       "headings": [
         {
           "title": "Start with a layer",
@@ -30,6 +30,11 @@
         {
           "title": "Band scale profiles",
           "anchor": "band-scale-profiles",
+          "level": 2
+        },
+        {
+          "title": "Named settings and curve presets",
+          "anchor": "named-settings-and-curve-presets",
           "level": 2
         },
         {
@@ -146,6 +151,42 @@
         },
         {
           "doc": "artist-guide",
+          "anchor": "named-settings-and-curve-presets",
+          "title": "Named settings and curve presets",
+          "text": "Use Presets... in Amount, Transforms or Spacing & cleanup. Curve presets are available from the existing density/scale graph. Save new captures a named item; selecting it is passive, and Apply changes the target shown in the dialog. Reopen the browser to target a different layer."
+        },
+        {
+          "doc": "artist-guide",
+          "anchor": "named-settings-and-curve-presets",
+          "title": "Named settings and curve presets",
+          "text": "Population includes amount, density, seed and retry policy. Transforms include the layer rotation, scale, movement, normal alignment and projection. Assets, surfaces, IDs, maps and layout remain linked to the scene. Physical distances convert across system units; density stays per square metre."
+        },
+        {
+          "doc": "artist-guide",
+          "anchor": "named-settings-and-curve-presets",
+          "title": "Named settings and curve presets",
+          "text": "Spacing stores the effective rule and applies an explicit override in the chosen Within this layer or Between layers scope. It does not store peer identities or change Relax/cleanup. Reset inheritance remains a separate control."
+        },
+        {
+          "doc": "artist-guide",
+          "anchor": "named-settings-and-curve-presets",
+          "title": "Named settings and curve presets",
+          "text": "Curve presets preserve samples and editable handles while retaining enable flags, widths and scale ranges. Density and Paint scale use zero-to-one values; other scale curves support multipliers. Invalid or incompatible curves are rejected. One Undo/Redo restores Apply, and closing a graph after Undo does not reapply the preset."
+        },
+        {
+          "doc": "artist-guide",
+          "anchor": "named-settings-and-curve-presets",
+          "title": "Named settings and curve presets",
+          "text": "Manual waits for Update scatter; Live follows normal update callbacks. Browsing, saving and renaming do not calculate plants. Animated or expression-controlled targets are rejected. Static shared controllers are detached so another owner is preserved."
+        },
+        {
+          "doc": "artist-guide",
+          "anchor": "named-settings-and-curve-presets",
+          "title": "Named settings and curve presets",
+          "text": "The local library is CyrusScatter/Presets inside the per-user Max PlugCFG directory. Share the .cspreset.json files. Limits are 512 files, 64 KiB per file and 80-character names. Rename changes the library name; Delete confirms removal of the selected file. Invalid files and failed writes report errors. Complete planting recipes and asset substitution are a later feature."
+        },
+        {
+          "doc": "artist-guide",
           "anchor": "vector-painting",
           "title": "Vector painting",
           "text": "Turn on Use Paint Areas, add a named area and choose one receiver from the layer. Select Paint or Erase, set Radius and press Start Brush. Paint joins circular footprints into a vector region; Erase cuts coverage and holes. Stop ends the session."
@@ -259,7 +300,7 @@
           "text": "View the changelog for additions and fixes, or use the testing walkthrough to record your own observations."
         }
       ],
-      "words": 1583
+      "words": 1847
     },
     {
       "id": "layout-falloff",
@@ -699,12 +740,38 @@
   ],
   "changelog": [
     {
+      "version": "0.82.0",
+      "date": "2026-10-14",
+      "title": "Reusable settings and curve presets.",
+      "era": "recent",
+      "legacy": false,
+      "note": "Development source checkpoint; final artist acceptance and normal installation remain separate.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Save, apply, rename and delete named population, transform, spacing and curve presets in a compact local browser."
+        },
+        {
+          "kind": "Added",
+          "text": "Typed data preserves physical distances across scene units and leaves models, receivers and identities intact."
+        },
+        {
+          "kind": "Improved",
+          "text": "Preset Apply supports one Undo, respects Manual/Live updates and protects shared or animated controllers."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Closing a curve graph after undoing a preset does not reapply the undone curve."
+        }
+      ]
+    },
+    {
       "version": "0.81.8",
       "date": "2026-10-14",
       "title": "Clearer layer and calculated-result feedback.",
       "era": "recent",
       "legacy": false,
-      "note": "Development candidate under Phase 1 qualification; no package or normal-profile installation.",
+      "note": "Committed source checkpoint with scoped Max tests; final physical artist acceptance remains pending.",
       "changes": [
         {
           "kind": "Improved",
@@ -2051,6 +2118,13 @@
       "native": "Offline study/preference records and experimental ranker preserved",
       "mcp": "No inference/training/reference-image tools",
       "qualification_or_extension": "Generation-linked artifacts, explicit artist labels and held-out evaluation; ML remains future product work"
+    },
+    {
+      "feature_id": "C35",
+      "title": "Named settings presets / captured layer or curve",
+      "native": "Local typed population, transforms, effective spacing rules, density/scale curves; atomic user-library files, unit conversion, single Undo Apply and passive browsing",
+      "mcp": "Catalog help only; no preset filesystem or application tool",
+      "qualification_or_extension": "Current Max qualification is recorded in the eleven-phase P02 handoff; full planting recipes belong to P10"
     }
   ],
   "controls": [
@@ -3667,6 +3741,24 @@
     {
       "group": "layer",
       "section": "distributionUI",
+      "kind": "button",
+      "name": "presetsButton",
+      "capabilities": [
+        "C35"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Save or apply named population settings. Assets and receiver references are preserved.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
+      "id": "control-layer-distributionui-presetsbutton",
+      "sourceKey": "layer.distributionUI.presetsButton",
+      "label": "Presets...",
+      "description": "Save or apply named population settings to the captured layer or spacing scope. Selecting a library item is passive. Apply preserves assets and receiver references, supports one Undo, and respects Manual/Live updates.",
+      "displayOwner": "Selected layer recipe"
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
       "kind": "radiobuttons",
       "name": "modeRadio",
       "capabilities": [
@@ -4685,6 +4777,24 @@
       "label": "Scale curve...",
       "description": "Edit the separate normalized curve that blends Edge scale to Inner scale across the feather transition. Graph edits commit as edited; it does not replace the Density curve.",
       "displayOwner": "Selected Paint Area and its receiver; shared layer models"
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "kind": "button",
+      "name": "presetsButton",
+      "capabilities": [
+        "C35"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Save or apply named transforms settings. Assets and receiver references are preserved.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
+      "id": "control-layer-randomui-presetsbutton",
+      "sourceKey": "layer.randomUI.presetsButton",
+      "label": "Presets...",
+      "description": "Save or apply named transforms settings to the captured layer or spacing scope. Selecting a library item is passive. Apply preserves assets and receiver references, supports one Undo, and respects Manual/Live updates.",
+      "displayOwner": "Selected layer recipe"
     },
     {
       "group": "layer",
@@ -6179,6 +6289,24 @@
       "label": "Straight ends (Street Side)",
       "description": "Restrict Street Side bands to the projected extents of their selected segments, producing straight ends rather than extending beyond endpoints. It does not trim the Analyzer publication itself.",
       "displayOwner": "Layer assignment"
+    },
+    {
+      "group": "layer",
+      "section": "proceduralUI",
+      "kind": "button",
+      "name": "presetsButton",
+      "capabilities": [
+        "C35"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Save or apply named spacing settings. Assets and receiver references are preserved.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset.",
+      "id": "control-layer-proceduralui-presetsbutton",
+      "sourceKey": "layer.proceduralUI.presetsButton",
+      "label": "Presets...",
+      "description": "Save or apply named spacing settings to the captured layer or spacing scope. Selecting a library item is passive. Apply preserves assets and receiver references, supports one Undo, and respects Manual/Live updates.",
+      "displayOwner": "Selected layer recipe"
     },
     {
       "group": "layer",

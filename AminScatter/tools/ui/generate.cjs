@@ -9,6 +9,7 @@ const check=process.argv.includes('--check');
 require('./inventory.cjs')(text+'\n'+fs.readFileSync('tools/ui/templates/container-properties-ui.ms','utf8').replace(/\r/g,''),{check});
 text=require('./approved-layout.cjs')(text,{check});
 text=require('./container-system.cjs')(text);
+text=fs.readFileSync('tools/ui/templates/presets.ms','utf8').replace(/\r/g,'')+'\n'+text;
 text=fs.readFileSync('tools/ui/templates/licensing.ms','utf8').replace(/\r/g,'')+'\n'+text;
 text=text.replace(/\r\n/g,'\n').replace(/^[ \t]+$/gm,'');
 const hash=crypto.createHash('sha256').update(text,'utf8').digest('hex');

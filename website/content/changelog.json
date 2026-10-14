@@ -3,12 +3,41 @@
   "notes": "Entries are ordered by documented development chronology, not numeric label. Missing versions and unknown dates are not invented. Local evidence is stripped before publication. 0.79.2 and 0.79.5 are current uncommitted working-tree campaigns at this review, not new Git releases. Analyzer/MCP have independent version domains.",
   "entries": [
     {
+      "version": "0.82.0",
+      "date": "2026-10-14",
+      "title": "Reusable settings and curve presets.",
+      "era": "recent",
+      "legacy": false,
+      "note": "Development source checkpoint; final artist acceptance and normal installation remain separate.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Save, apply, rename and delete named population, transform, spacing and curve presets in a compact local browser."
+        },
+        {
+          "kind": "Added",
+          "text": "Typed data preserves physical distances across scene units and leaves models, receivers and identities intact."
+        },
+        {
+          "kind": "Improved",
+          "text": "Preset Apply supports one Undo, respects Manual/Live updates and protects shared or animated controllers."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Closing a curve graph after undoing a preset does not reapply the undone curve."
+        }
+      ],
+      "evidence": [
+        "docs/plans/eleven-phase-roadmap/P02.md"
+      ]
+    },
+    {
       "version": "0.81.8",
       "date": "2026-10-14",
       "title": "Clearer layer and calculated-result feedback.",
       "era": "recent",
       "legacy": false,
-      "note": "Development candidate under Phase 1 qualification; no package or normal-profile installation.",
+      "note": "Committed source checkpoint with scoped Max tests; final physical artist acceptance remains pending.",
       "changes": [
         {
           "kind": "Improved",

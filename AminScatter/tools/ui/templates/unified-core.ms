@@ -174,21 +174,20 @@ global CyrusFalloffGraph,CyrusFallGraphTarget,CyrusFallGraphArea,CyrusFallGraphD
 global CyrusFallGraphOwnerRoot,CyrusFallGraphOwnerNode
 fn CyrusOpenFalloffGraph target areaNode density bandID:0 = (
     local bandRoot=undefined,bandNode=undefined
-    if bandID>0 do (
-        if findItem target.strokeIDs bandID==0 do throw "The selected Band no longer exists."
-        -- Resolve the saved dependency, including immediately after reopen,
-        -- before transient preview ownership has been rebound.
-        for node in refs.dependentNodes target where isValidNode node and classof node.baseObject==AminScatterObject and findItem node.baseObject.layerObjects target>0 do (
-            if bandRoot!=undefined and bandRoot!=node.baseObject do throw "A Band layer cannot belong to multiple Scatter controllers."
-            bandRoot=node.baseObject
-            if bandNode==undefined do bandNode=node
+    if bandID>0 and findItem target.strokeIDs bandID==0 do throw "The selected Band no longer exists."
+    for node in refs.dependentNodes target where isValidNode node and classof node.baseObject==AminScatterObject do (
+        local candidate=node.baseObject,parent=try(candidate.logicalParent target)catch(undefined)
+        if parent!=undefined and findItem candidate.layerObjects parent>0 do (
+            if bandNode!=undefined and bandNode!=node do throw "The curve owner must belong to one Scatter controller."
+            bandRoot=candidate;bandNode=node
         )
-        if bandRoot==undefined do throw "The Band controller is no longer in this scene."
     )
+    if bandRoot==undefined do throw "The curve controller is no longer in this scene."
     if CyrusFalloffGraph!=undefined do try(destroyDialog CyrusFalloffGraph)catch()
-    rollout editor "Area Falloff - Edit Graph" width:760 height:470 (
-        local obj,area,isDensity=false,loading=true,ownerRoot=undefined,ownerNode=undefined,ownerLayerID="",ownerBandID=0,ownerPathID=0,invalidated=false,curveTimer=undefined,pendingCurve=false,lastGraphTrace=""
+    rollout editor "Area Falloff - Edit Graph" width:760 height:505 (
+        local obj,area,isDensity=false,loading=true,ownerRoot=undefined,ownerNode=undefined,ownerLayerID="",ownerBandID=0,ownerPathID=0,invalidated=false,curveTimer=undefined,pendingCurve=false,lastGraphTrace="",lastPresetTrace="",presetStoredValues=undefined,presetStoredGraph=""
         curveControl graph "" pos:[8,8] width:744 height:396 numCurves:1 x_range:[0,1] y_range:[0,100] commandMode:#move_xy asPopup:false
+        button presetsButton "Presets..." pos:[12,464] width:120
         button applyButton "Apply" pos:[538,424] width:100
         button doneButton "Close" pos:[648,424] width:100
         label help "X: distance along ramp (0 to 1). Y: percent. Drag points / edit Bezier handles." pos:[12,424] width:510 height:36
@@ -209,7 +208,7 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 = (
         fn curveTrace = (
             local curve=graph.curves[1],packed=#()
             if curve.numPoints<2 do return undefined
-            if ownerBandID>0 and curve.numPoints>64 do (help.text="Band graphs support at most 64 control points. Remove excess points before Apply.";return undefined)
+            if curve.numPoints>257 do (help.text="Curves support at most 257 control points. Remove excess points before Apply.";return undefined)
             for i=1 to curve.numPoints do (
                 local p=curve.points[i]
                 join packed #(p.value.x,p.value.y,p.inTangent.x,p.inTangent.y,p.outTangent.x,p.outTangent.y,(if p.bezier then 1 else 0),(if p.corner then 1 else 0))
@@ -224,6 +223,7 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 = (
         fn storeCurve = (
             pendingCurve=false
             if curveTimer!=undefined do curveTimer.Stop()
+            if invalidated do return false
             if not loading do (
                 local bandRow=bandTargetRow()
                 if ownerBandID>0 and bandRow==0 do return false
@@ -233,10 +233,18 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 = (
                 -- Compare the canonical saved representation, not rounded
                 -- control geometry, not the SDK's deferred sample cache.
                 -- A close after external Undo must not reapply an unchanged UI.
-                if ownerBandID>0 and identity==lastGraphTrace do return true
                 local cfg=if ownerBandID>0 then undefined else obj.getFallConfig area
                 local curveIndex=if isDensity then 8 else 5
                 local oldValues=if ownerBandID>0 then CyrusFallUnpack ((bandSamples())[bandRow]) else cfg[curveIndex]
+                local oldGraph=if ownerBandID>0 then (bandGraphs())[bandRow] else obj.getFallGraph area isDensity
+                if presetStoredValues!=undefined and ((CyrusFallPack oldValues)!=presetStoredValues or oldGraph!=presetStoredGraph) do (
+                    invalidated=true;applyButton.enabled=false;presetsButton.enabled=false
+                    help.text="This curve changed outside the graph. Close and reopen it to continue."
+                    return false
+                )
+                if identity==lastPresetTrace do return true
+                lastPresetTrace="";presetStoredValues=undefined
+                if ownerBandID>0 and identity==lastGraphTrace do return true
                 local samplesChanged=oldValues.count!=values.count
                 if not samplesChanged do for i=1 to values.count where oldValues[i]!=values[i] do samplesChanged=true
                 if ownerBandID==0 do cfg[curveIndex]=values
@@ -262,11 +270,82 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 = (
             )
             true
         )
+        fn presetTargetValid = (
+            if invalidated do return false
+            local valid=isValidNode ownerNode and ownerNode.baseObject==ownerRoot and obj.layerID==ownerLayerID
+            if valid do (
+                local parent=try(ownerRoot.logicalParent obj)catch(undefined)
+                valid=parent!=undefined and findItem ownerRoot.layerObjects parent>0
+                if valid and obj.isPaintArea do valid=findItem parent.paintAreas obj>0
+                if valid and area!=undefined do valid=isValidNode area and findItem obj.areaNodes area>0
+                if valid and ownerBandID>0 do valid=bandTargetRow()>0
+            )
+            valid
+        )
+        fn presetEnabled = (
+            if not presetTargetValid() do return false
+            if ownerBandID>0 then (local row=bandTargetRow();if isDensity then obj.strokeCurveEnabled[row] else obj.strokeScaleModes[row]==3)
+            else (obj.getFallConfig area)[if isDensity then 6 else 3]
+        )
+        fn presetValues = (
+            if not presetTargetValid() do throw "The curve target was removed or replaced."
+            local trace=curveTrace()
+            if trace==undefined do throw "The curve has no valid editable representation."
+            #(trace[1],CyrusFallUnpack trace[3],not isDensity and not obj.isPaintArea)
+        )
+        fn presetLoadGraph values = (
+            local c=graph.curves[1],samples=values[1],packed=values[2]
+            graph.y_range=[0,(if isDensity or obj.isPaintArea then 100 else amax 200.0 ((amax samples)*100))]
+            c.numPoints=if packed.count>0 then packed.count/8 else samples.count
+            for i=1 to c.numPoints do (
+                local point=c.points[i],j=(i-1)*8
+                if packed.count>0 then (
+                    point.value=[packed[j+1],packed[j+2]];point.inTangent=[packed[j+3],packed[j+4]];point.outTangent=[packed[j+5],packed[j+6]]
+                    point.bezier=packed[j+7]>0;point.corner=packed[j+8]>0
+                ) else (point.value=[(i-1.0)/(samples.count-1),samples[i]*100];point.bezier=false;point.corner=true)
+                point.lock_x=(i==1 or i==c.numPoints);c.points[i]=point
+            )
+            zoom graph #all
+        )
+        fn presetRestore state = (
+            loading=true
+            undo off (presetLoadGraph state[1])
+            lastGraphTrace=state[2];lastPresetTrace=state[3];presetStoredValues=state[4];presetStoredGraph=state[5]
+            loading=false;true
+        )
+        fn presetPrepare values = (
+            if not presetTargetValid() do throw "The curve target was removed or replaced."
+            if values[3] and (isDensity or obj.isPaintArea) do throw "This target requires a unit-range curve."
+            local state=#(presetValues(),lastGraphTrace,lastPresetTrace,presetStoredValues,presetStoredGraph)
+            if curveTimer!=undefined do curveTimer.Stop()
+            pendingCurve=false;loading=true
+            try (
+                undo off (presetLoadGraph values)
+                local trace=curveTrace(),samples=values[1]
+                if trace==undefined do throw "Cannot reconstruct the preset graph."
+                for i=1 to trace[1].count do (
+                    local position=(i-1.0)*(samples.count-1)/256.0,lo=(floor position) as integer,hi=amin (samples.count-1) (lo+1)
+                    local expected=samples[lo+1]+(samples[hi+1]-samples[lo+1])*(position-lo)
+                    if abs (trace[1][i]-expected)>0.0001*(amax 1.0 (abs expected)) do throw "Preset handles do not match its sampled curve."
+                )
+                loading=false
+            )catch(presetRestore state;throw())
+            state
+        )
+        fn presetApply values = (
+            lastGraphTrace="";lastPresetTrace="";presetStoredValues=undefined
+            if not storeCurve() do throw "The curve could not be stored."
+            local trace=curveTrace(),row=bandTargetRow()
+            lastPresetTrace=trace[3]
+            presetStoredValues=if ownerBandID>0 then (bandSamples())[row] else CyrusFallPack ((obj.getFallConfig area)[if isDensity then 8 else 5])
+            presetStoredGraph=if ownerBandID>0 then (bandGraphs())[row] else obj.getFallGraph area isDensity
+            true
+        )
+        on presetsButton pressed do try(CyrusOpenPresets ownerRoot obj (if isDensity then "density_curve" else "scale_curve") editor:editor)catch(messageBox (getCurrentException()) title:"Cyrus presets")
         on editor open do (
             obj=CyrusFallGraphTarget;area=CyrusFallGraphArea;isDensity=CyrusFallGraphDensity;ownerBandID=CyrusFallGraphBandID
+            ownerRoot=CyrusFallGraphOwnerRoot;ownerNode=CyrusFallGraphOwnerNode;ownerLayerID=obj.layerID
             if ownerBandID>0 do (
-                ownerRoot=CyrusFallGraphOwnerRoot;ownerNode=CyrusFallGraphOwnerNode
-                ownerLayerID=obj.layerID
                 local row=findItem obj.strokeIDs ownerBandID
                 if row==0 do throw "The selected Band no longer exists."
                 ownerPathID=obj.strokePathIDs[row]
@@ -1909,7 +1988,7 @@ initialRollupState:0x8
         -- Only a committed calculation epoch establishes its first result.
         CyrusLayerStatusData hasResult:(procEpoch>0 and cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
     )
-    fn uiVersion = "0.81.8"
+    fn uiVersion = "0.82.0"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified1")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -2089,6 +2168,7 @@ initialRollupState:0x8
         if controller.groupSnapshotKey!="" do controller.procEnsureDisplay pending:(controller.groupSnapshotKey!=controller.procInputKey())
         CyrusViewportRedraw();true
     )
+    fn getLayerTransfer = layerTransfer
     fn setLayerTransfer state = (layerTransfer=state)
     fn performanceTraceVersion = 1
     fn cacheSnapshot = (#(cachedPoints,cachedPointCount,dirty,previewError,generatedCount,previewBuildCount,previewBuildMs,requestedCount,densityCapped))
@@ -2937,14 +3017,14 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.81.8 setup; earlier schemas are unsupported."
+        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.82.0 setup; earlier schemas are unsupported."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
     fn procValidate = (
         this.procAssertSchema()
-        if cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.81.8 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
+        if cyrusPresetVersion==undefined or cyrusPresetVersion()!=1 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.82.0 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -3359,7 +3439,7 @@ initialRollupState:0x8
         if (CyrusContainerPanel this).controlsReady do (CyrusContainerPanel this).bind()
         true
     )
-    rollout mainUI "Cyrus Scatter 0.81.8" width:#cmdPanel height:30 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.82.0" width:#cmdPanel height:30 autoLayoutOnResize:true (
         local root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),owner=undefined,layerPagesVisible=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for this entire Scatter setup."
         button licenseButton "License / activation..." pos:[8,112] width:(mainUI.width-16) height:22 tooltip:"Import a team license or inspect its expiry. Existing scenes remain available after expiry."
@@ -3429,7 +3509,7 @@ initialRollupState:0x8
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.81.8 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.82.0 native plugin and restart Max."
             root.syncLayerIdentity()
             roots=#(root.flow_updateUI,root.flow_surfaceUI,root.flow_previewUI,root.flow_layersUI)
             root.updateUI=roots[1];root.surfaceUI=roots[2];root.previewUI=roots[3];root.layersUI=roots[4]
@@ -4029,6 +4109,7 @@ initialRollupState:0x8
         obj=undefined,parentView=undefined
         local controlsReady=false
 
+        button presetsButton "Presets..." width:130 height:22 tooltip:"Save or apply named population settings. Assets and receiver references are preserved."
         radiobuttons modeRadio "Method" labels:#("Random","Texture Density") columns:2 pos:[4,130] width:(selected_distributionUI.width-8)
         radiobuttons populationRadio "Population" labels:#("Count","Plants per m2") columns:2 pos:[4,8] width:(selected_distributionUI.width-8)
         spinner countSpin "Requested count: " range:[1,1000000,200] type:#integer fieldWidth:82 width:(selected_distributionUI.width-8) pos:[4,62] tooltip:"Layer population before eligibility, up to 1,000,000. All layers and retries share the Scatter's 1,000,000 candidate limit."
@@ -4068,6 +4149,7 @@ initialRollupState:0x8
             controlsReady=true;binding=false
         )
         fn bind layer = (bindFeatures layer;arrangePopulation())
+        on presetsButton pressed do try(CyrusOpenPresets root owner "population")catch(messageBox (getCurrentException()) title:"Cyrus presets")
         on selected_distributionUI open do (root=this;controlsReady=false)
         on selected_distributionUI close do controlsReady=false
         on selected_distributionUI rolledUp state do (CyrusContainerPanel root).bindSection selected_distributionUI
@@ -4358,6 +4440,7 @@ initialRollupState:0x8
         obj=undefined,parentView=undefined
         local controlsReady=false
 
+        button presetsButton "Presets..." width:130 height:22 tooltip:"Save or apply named transforms settings. Assets and receiver references are preserved."
         label rotTitle "Rotation (degrees)" pos:[4,8] width:(selected_randomUI.width-8)
         label rotMinTitle "Min" pos:[24,30] width:((selected_randomUI.width-38)/2)
         label rotMaxTitle "Max" pos:[((selected_randomUI.width+18)/2),30] width:((selected_randomUI.width-38)/2)
@@ -4450,6 +4533,7 @@ initialRollupState:0x8
             try (undo off ((wholeMinSpin.value=obj.wholeScaleMin;wholeMaxSpin.value=obj.wholeScaleMax;projectCheck.checked=obj.projectMove;rotXMinSpin.value=obj.rotXMin;rotXMaxSpin.value=obj.rotXMax;rotYMinSpin.value=obj.rotYMin;rotYMaxSpin.value=obj.rotYMax;rotZMinSpin.value=obj.rotZMin;rotZMaxSpin.value=obj.rotZMax;sclXMinSpin.value=obj.sclXMin;sclXMaxSpin.value=obj.sclXMax;sclYMinSpin.value=obj.sclYMin;sclYMaxSpin.value=obj.sclYMax;sclZMinSpin.value=obj.sclZMin;sclZMaxSpin.value=obj.sclZMax;movXMinSpin.value=obj.movXMinWU;movXMaxSpin.value=obj.movXMaxWU;movYMinSpin.value=obj.movYMinWU;movYMaxSpin.value=obj.movYMaxWU;movZMinSpin.value=obj.movZMinWU;movZMaxSpin.value=obj.movZMaxWU;controlsReady=true;alignCheck.checked=obj.alignNormal))) catch(binding=false;controlsReady=true;throw())
             controlsReady=true;binding=false
         )
+        on presetsButton pressed do try(CyrusOpenPresets root owner "transforms")catch(messageBox (getCurrentException()) title:"Cyrus presets")
         on selected_randomUI open do (root=this;controlsReady=false)
         on selected_randomUI close do controlsReady=false
         on selected_randomUI rolledUp state do (CyrusContainerPanel root).bindSection selected_randomUI
@@ -4875,6 +4959,7 @@ initialRollupState:0x8
     )
     rollout selected_proceduralUI "Spacing rules - selected scope" width:146 category:150 autoLayoutOnResize:true (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,setSpecific=true,peers=#(),scopeRows=#(1,4)
+        button presetsButton "Presets..." width:130 height:22 tooltip:"Save or apply named spacing settings. Assets and receiver references are preserved."
         dropdownlist scopeList "Spacing scope" items:#("Within this layer","Between layers") pos:[4,12] width:(selected_proceduralUI.width-8) selection:1 tooltip:"Choose spacing within the selected layer or between it and another layer."
         dropdownlist peerList "Other owner" items:#() pos:[4,64] width:(selected_proceduralUI.width-8)
         checkbox enabledCheck "Enable this spacing" pos:[4,118] width:(selected_proceduralUI.width-8)
@@ -4920,6 +5005,14 @@ initialRollupState:0x8
             scopeList.selection=amax 1 (findItem scopeRows previous)
             bindRule();controlsReady=true;binding=false
         )
+        on presetsButton pressed do try(
+            local peer=undefined
+            if currentScope()==4 do (
+                if peerList.selection<1 or peerList.selection>peers.count do throw "Select another layer for the spacing pair."
+                peer=peers[peerList.selection]
+            )
+            CyrusOpenPresets root owner "spacing" peer:peer
+        )catch(messageBox (getCurrentException()) title:"Cyrus presets")
         on selected_proceduralUI open do (root=this;controlsReady=false)
         on selected_proceduralUI close do controlsReady=false
         fn saveRule = (

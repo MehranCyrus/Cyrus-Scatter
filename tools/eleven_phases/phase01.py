@@ -2,6 +2,7 @@
 from pathlib import Path
 import hashlib
 import json
+import re
 import statistics
 import time
 import traceback
@@ -10,7 +11,7 @@ from pymxs import runtime as r
 ROOT = Path(__file__).resolve().parents[2]
 OUT = Path(str(r.MCPFixtureDir)).resolve()
 assert OUT.parent == ROOT / 'build/mcp-qualification'
-assert OUT.name.startswith(('foundation-roadmap-p01-', 'foundation-viewport0817-phase01-'))
+assert OUT.name.startswith(('foundation-roadmap-', 'foundation-viewport0817-phase01-'))
 data = {'status': 'started', 'checks': [], 'cases': []}
 RUN = Path(str(r.MCPFixtureLast)).stem
 
@@ -70,10 +71,12 @@ try:
     root.updateMode = 1
     root.autoRender = False
     version = str(root.uiVersion())
-    candidate = version == '0.81.8'
+    expected = re.search(r'fn uiVersion = "([^"]+)"', (ROOT / 'AminScatter/tools/ui/templates/unified-core.ms').read_text(encoding='utf-8'))[1]
+    candidate = version == expected
     check(candidate or version == '0.81.7', 'Expected matched baseline or candidate')
     data['version'] = version
-    data['script_sha256'] = hashlib.sha256((OUT / 'scripts/CyrusScatter.ms').read_bytes()).hexdigest()
+    data['loaded_script_fingerprint'] = str(r.CyrusLoadedScriptFingerprint)
+    data['runtime'] = json.loads((OUT / ('runtime.json' if (OUT / 'runtime.json').exists() else 'launch.json')).read_text())
     receiver = r.plane(name='P01 receiver', length=1000, width=1000, lengthsegs=1, widthsegs=1)
     source = r.box(length=2, width=2, height=6, pos=r.Point3(-2000, -2000, 0))
     for count in [400, 600]:

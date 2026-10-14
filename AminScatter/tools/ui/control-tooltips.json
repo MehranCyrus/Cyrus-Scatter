@@ -75,6 +75,7 @@
     "removeContainer": "Unlink this rectangle without deleting it or registered source settings."
   },
   "distributionUI": {
+    "presetsButton": "Save or apply named population settings. Assets and receiver references are preserved.",
     "countSpin": "Layer population before eligibility, up to 1,000,000. All layers and retries share the Scatter's 1,000,000 candidate limit.",
     "densitySpin": "Requested plants per square metre; capped at 1,000,000 per layer. All layers and retries share the Scatter's 1,000,000 candidate limit.",
     "seedSpin": "Deterministic generation seed. Changing it can invalidate existing Edit bindings.",
@@ -117,6 +118,7 @@
     "radiusSpin": "Distance from the brush center to its edge. A 100 mm radius paints a 200 mm wide stroke."
   },
   "randomUI": {
+    "presetsButton": "Save or apply named transforms settings. Assets and receiver references are preserved.",
     "projectCheck": "Project random movement back onto the receiving surface.",
     "alignCheck": "Align instances to the receiving surface normal.",
     "resetRotation": "Reset only this layer's random rotation limits. Undo is available.",
@@ -156,6 +158,7 @@
     "refreshGroups": "Refresh available source color groups for assignment."
   },
   "proceduralUI": {
+    "presetsButton": "Save or apply named spacing settings. Assets and receiver references are preserved.",
     "scopeList": "Choose spacing within the selected layer or between it and another layer."
   },
   "instanceRadiusUI": {

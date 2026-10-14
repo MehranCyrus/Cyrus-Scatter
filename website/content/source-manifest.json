@@ -38,7 +38,7 @@
   "reviewedSourceHashes": {
     "CyrusMCP/README.md": "ade16c0ae74dbce660b58c8f6ef96c1cb5fcdc02c20e7f1a3896eb99b4b3bef0",
     "CyrusSurfaceAnalyzer/README.md": "899909b52cb6c0617dab1b5c4f46321202806018f659a69038658d4913708611",
-    "docs/ARTIST_GUIDE.md": "b1f4da2834341dc13167d7749dcc5131df7ad43561563c2f1f5b4e406501d2c6",
+    "docs/ARTIST_GUIDE.md": "37717277d643864c5069b9bef1cef9c2bd55a087d688a938dc5f907d2e9bff3f",
     "docs/Brush_Relax_Reset_2026-10-03/REPORT.md": "3f4c658fa35733f9a9c08503639454338e2dd87c322058661263d028942e8867",
     "docs/Brush_Responsiveness_0.78.2_2026-10-10/README.md": "7faa2a41f400952244834bf59034471fe7b0ae3487347edaca1c6598cb872928",
     "docs/Brush_Scaling_0.76_2026-10-10/README.md": "db05af1cf6230e88075be2d235adf916196a5e203f6c1b07d6a070e977306379",
@@ -70,7 +70,7 @@
     "docs/Procedural_Implementation_0.7_2026-10-04/README.md": "4285f5e0e2015068d491a6061ac09d4c6a9b9140ab7a9950296869cc10057fd0",
     "docs/Real_Scene_0.7.1_2026-10-05/README.md": "ec6af73ecce9bc1eaed82b41bbf7b0c3c5464ab376c72f82a715c661a17fab1d",
     "docs/Receiver_Stability_0.76_2026-10-10/README.md": "857f754b7e4b8ccdbd1ad7889fdaf56b41c7ec47f7d1e769b922380b9fef2594",
-    "docs/Release_Versioning.md": "2c01d3fab4510cd7c99eb15e242d280fe6081b7b1805871b8e25ad2db3987f47",
+    "docs/Release_Versioning.md": "dbc3fb4566dbeb46731089dc1d051428dbe8ea95adb2c5e00b7cd60b107cf5fe",
     "docs/Retained_Mesh_Preview_2026-10-02/README.md": "2bb5dee3a692a63bbd7aa2c59795e5b9f9fc9cf158a164c25b6da68f7a11c1df",
     "docs/Retained_Point_Preview_2026-10-02/README.md": "87044c6a35764de85806a4f8b158c036ca1c1374cf46e13a199c1a502989dc9b",
     "docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md": "c53d14bb1e0c0e41cc49b60b4c57054f4c8872e44ffd19db5827fd17dd799092",
@@ -93,6 +93,7 @@
     "docs/ARCHITECTURE.md": "e61797dd654ca4452c176a3dea1da2d30150fbd7aa7f2ba9a608df7e376a4df6",
     "docs/plans/terrace-0815/VIEWPORT_0816.md": "d1e2997b1ebe688768b6ef4c0c35748b19b1a87f148e212e7cb644eef63fe18e",
     "docs/plans/terrace-0815/VIEWPORT_0817.md": "8877e014e4edb0ce88fd8375528e2b0921f4bb521f7672d709d6282274057c6a",
-    "docs/plans/eleven-phase-roadmap/P01.md": "045c56cc86290aedee9a5becc240aed0d6294a059e0ccdfafd828c5ef94c0fa8"
+    "docs/plans/eleven-phase-roadmap/P01.md": "76bc7d66a54e8a0c346a3a7bc4c33337526944ddd2f16d7e223226b276636e13",
+    "docs/plans/eleven-phase-roadmap/P02.md": "d69cb9ed46b2fd6099cf1f8e449b573aab4023c1ca5631bdcaee9bbcdabc37b3"
   }
 }

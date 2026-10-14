@@ -2,8 +2,8 @@
 
 | Domain | Current value | Meaning |
 | --- | --- | --- |
-| Scatter UI | 0.81.8 | Development candidate: named-owner statistics, prepared-preview units and callback/status corrections; acceptance in progress |
-| Scatter native/package | 0.81.8 native candidate / 0.81.6 installed | Matched private builds for Phase 1; no new package or normal installation |
+| Scatter UI | 0.82.0 | Named settings and curve presets; scoped qualification recorded in P02 |
+| Scatter native/package | 0.82.0 native candidate / 0.81.6 installed | Matched private P02 builds; no new package or normal installation |
 | Saved MAXScript schema | 58 | Independent saved Band scale profiles; current-only scenes, no earlier-schema migration |
 | Calculation model | CyrusUnified1 | Current procedural model |
 | Surface Analyzer | 0.14 | Independently versioned product |
@@ -32,6 +32,13 @@ Before changing version metadata, record the current and proposed versions, a sh
 When a bump is within the authorized task, align the Scatter UI template and generated script, native/package metadata, installer labels, coupled catalog assertions, current navigation and changelog. Follow the [agent workflow](AGENT_WORKFLOW.md) for generation and proportionate checks; do not bump unrelated products mechanically. For artist-visible changes, keep the guide, relevant website chapters/control explanations and changelog aligned with proven behavior and run the website import checks when those sources change. Report local source updates, built website artifacts and live deployment separately. Version selection itself does not authorize packaging, installation or publication.
 
 ## Current and historical evidence
+
+0.82.0 is the next minor for named population, transform, spacing and curve
+presets. Format/codec 1 is new; schema 58 and the existing native interfaces are
+unchanged. Typed local files, physical-unit conversion and one-Undo Apply are
+covered by the [P02 record](plans/eleven-phase-roadmap/P02.md). This is a source
+checkpoint, with final artist acceptance pending and no new installation.
+
 
 0.81.8 is a patch for workflow and cached-result feedback. It distinguishes
 accepted placements from prepared display samples, identifies the named layer,

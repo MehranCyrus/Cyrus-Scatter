@@ -6,13 +6,11 @@ entire phase passed. Existing defect IDs stay in [BACKLOG](../../BACKLOG.md).
 
 ## Current action
 
-**P01 — runtime verified; completing its Git checkpoint (0.81.8).**
-The user clarified that their own testing is at the end of all eleven phases.
-Continue agent-run Max/automated testing and implementation without waiting for
-that acceptance. Computer Use remains unavailable; physical checks are recorded
-for the final session. The 130 scoped Max assertions, 28 native suites per year,
-161 Python tests, source review and checkpoint scope remain verified.
-See [P01 evidence](P01.md). P02 coding follows the verified P01 push.
+**P02 — settings and curve presets in progress (0.82.0 candidate).**
+P01 was committed and pushed as `50ea0a6037ea641298e8d9007931ee3bec2a5ed9`;
+the remote branch hash was verified. Agent-run testing continues each phase.
+The user's artist acceptance is at the end; unavailable Computer Use evidence
+is carried explicitly rather than blocking implementation. See [P02](P02.md).
 
 ## Enrollment / shared preparation
 
@@ -38,20 +36,20 @@ See [P01 evidence](P01.md). P02 coding follows the verified P01 push.
 - [x] Run focused host/state/Manual/Live/failure/Undo/reopen checks and relevant regressions.
 - [x] Record unavailable physical/visual checks for final artist acceptance, as explicitly directed by the user on 14 October; no visual pass is claimed.
 - [x] Select/record final version, update docs and review final diff; recheck identities before delivery.
-- [ ] Commit coherent P01/prerequisite source; push and verify remote hash.
+- [x] Commit coherent P01/prerequisite source; push and verify remote hash.
 
 ## P02 — settings and curve presets
 
 Preparatory [source/format research](P02_PREFLIGHT.md) is recorded. Implementation
-has not started; the following acceptance tasks remain open.
+is in progress; the following acceptance tasks remain open.
 
-- [ ] Freeze allowed setting categories, typed format and application semantics.
-- [ ] Implement validated capture/atomic persistence and curve round trips.
-- [ ] Implement one-Undo apply with proper owner and Manual/Live invalidation.
-- [ ] Add a compact preset list and clear storage/error feedback.
-- [ ] Test units, missing/corrupt/oversized/unwritable files and unchanged browsing.
-- [ ] Validate host lifecycle and inherited P01 behavior.
-- [ ] Update version/docs; commit, push and verify.
+- [x] Freeze allowed setting categories, typed format and application semantics.
+- [x] Implement validated capture/atomic persistence and curve round trips.
+- [x] Implement one-Undo apply with proper owner and Manual/Live invalidation.
+- [x] Add a compact preset list and clear storage/error feedback.
+- [x] Test units, missing/corrupt/oversized/unwritable files and unchanged browsing.
+- [x] Validate host lifecycle and inherited P01 behavior.
+- [ ] Commit/push qualified 0.82.0 and verify the remote hash (version/docs updated).
 
 ## P03 — slope and altitude
 

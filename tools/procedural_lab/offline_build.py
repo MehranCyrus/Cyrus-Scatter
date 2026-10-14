@@ -12,6 +12,8 @@ ROOT = Path(__file__).resolve().parents[2]
 def source_hashes(project):
     script_name = "AminScatterObject.ms" if project == "AminScatter" else "CyrusSurfaceAnalyzer.ms"
     paths = [ROOT/project/"CMakeLists.txt", ROOT/project/"scripts"/script_name, ROOT/"cmake/CyrusMaxSDK.cmake"]
+    if project == "AminScatter":
+        paths += [ROOT/"CyrusLicensing/third_party/nlohmann/json.hpp", ROOT/"CyrusLicensing/third_party/nlohmann/LICENSE.MIT"]
     if project == "CyrusSurfaceAnalyzer":
         paths.append(ROOT/"AminScatter/src/input_validity.cpp")
     for name in ("src", "include", "tests", "third_party"):

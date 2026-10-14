@@ -1,10 +1,10 @@
 # Native and MCP capability coverage
 
-Reconciled 13 October 2026 for **Scatter development source 0.81.2 / MCP 0.73.0**, calculation model CyrusUnified1, saved schema 58. The [artist guide](../ARTIST_GUIDE.md) describes current ownership; [implementation evidence](../plans/spline-bands/PROGRESS.md) records qualified scenarios and remaining gates. Earlier dated reports remain evidence for their exact builds, not blanket qualification of this candidate.
+Reconciled 14 October 2026 for **Scatter development source 0.82.0 / MCP 0.73.0**, calculation model CyrusUnified1, saved schema 58. The [artist guide](../ARTIST_GUIDE.md) describes current ownership; [implementation evidence](../plans/spline-bands/PROGRESS.md) records qualified scenarios and remaining gates. Earlier dated reports remain evidence for their exact builds, not blanket qualification of this candidate.
 
 There is one procedural model. Old scene policies and MCP plans 1/2 are retired and rejected, rather than reinterpreted. The **closed plan 0.73** ports the previously useful bounded authoring subset into that model. It does not expose every native field. Native availability, catalog help and cached inspection do not grant remote mutation authority. Current [server registrations](../../CyrusMCP/cyrus_mcp/server.py), [settings](../../CyrusMCP/cyrus_mcp/settings.py), [schema](../../CyrusMCP/cyrus_mcp/plan.schema.json) and [passive recipe reader](../../CyrusMCP/cyrus_mcp/procedural.py) define the actual boundary.
 
-The [generated semantic inventory](../../AminScatter/tools/ui/layers-control-inventory.json) has **249 controls**: 44 setup, 198 selected-layer definitions and 7 container controls. Scatter Modify and selected-container Modify reuse these definitions. The historical [CONTROL_PORT_RESULTS.csv](../Unified_System_0.73_2026-10-06/CONTROL_PORT_RESULTS.csv) accounts for the earlier 245 controls, including merges and moves. Counts are source coverage, not exhaustive behavioral qualification.
+The [generated semantic inventory](../../AminScatter/tools/ui/layers-control-inventory.json) has **255 controls**: 47 setup, 201 selected-layer definitions and 7 container controls. Scatter Modify and selected-container Modify reuse these definitions. The historical [CONTROL_PORT_RESULTS.csv](../Unified_System_0.73_2026-10-06/CONTROL_PORT_RESULTS.csv) accounts for the earlier 245 controls, including merges and moves. Counts are source coverage, not exhaustive behavioral qualification.
 
 ## Feature families
 
@@ -46,6 +46,8 @@ The [generated semantic inventory](../../AminScatter/tools/ui/layers-control-inv
 | C32 | Diagnostics / session | Opt-in bounded recorder; direct Start/Stop/Save/status; summarized container movement/ownership events | Exact locally shared cached trace pages and operation journal; no remote recording/sharing control | Full causal archive, searchable database and more damaged-storage/export-cleanup failure tests |
 | C33 | Licensing / product | 0.79 offline team issuer/import and bounded authoring guards; see the current licensing result | No licensing-administration authority | Complete commercial enforcement, service/seat/recovery coverage remain separate |
 | C34 | Style/learning / companion | Offline study/preference records and experimental ranker preserved | No inference/training/reference-image tools | Generation-linked artifacts, explicit artist labels and held-out evaluation; ML remains future product work |
+
+| C35 | Named settings presets / captured layer or curve | Local typed population, transforms, effective spacing rules, density/scale curves; atomic user-library files, unit conversion, single Undo Apply and passive browsing | Catalog help only; no preset filesystem or application tool | Current Max qualification is recorded in the eleven-phase P02 handoff; full planting recipes belong to P10 |
 
 ## Public surface
 

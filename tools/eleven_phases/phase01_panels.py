@@ -5,7 +5,7 @@ import traceback
 from pymxs import runtime as r
 ROOT = Path(__file__).resolve().parents[2]
 OUT = Path(str(r.MCPFixtureDir)).resolve()
-assert OUT.parent == ROOT / 'build/mcp-qualification' and OUT.name.startswith('foundation-roadmap-p01-')
+assert OUT.parent == ROOT / 'build/mcp-qualification' and OUT.name.startswith('foundation-roadmap-')
 data = {'status': 'started', 'checks': [], 'pages': []}
 def save():
     (OUT / 'phase01-panels.json').write_text(json.dumps(data, indent=2) + '\n')

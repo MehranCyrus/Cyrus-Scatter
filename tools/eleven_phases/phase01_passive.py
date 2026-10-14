@@ -6,7 +6,7 @@ import traceback
 from pymxs import runtime as r
 ROOT = Path(__file__).resolve().parents[2]
 OUT = Path(str(r.MCPFixtureDir)).resolve()
-assert OUT.parent == ROOT / 'build/mcp-qualification' and OUT.name.startswith('foundation-roadmap-p01-')
+assert OUT.parent == ROOT / 'build/mcp-qualification' and OUT.name.startswith('foundation-roadmap-')
 data = {'status': 'started', 'checks': []}
 def check(ok, label):
     data['checks'].append({'passed': bool(ok), 'label': label})

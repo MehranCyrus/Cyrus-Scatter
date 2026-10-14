@@ -358,6 +358,10 @@
     ],
     "distributionUI": [
       {
+        "kind": "button",
+        "name": "presetsButton"
+      },
+      {
         "kind": "radiobuttons",
         "name": "modeRadio"
       },
@@ -581,6 +585,10 @@
       }
     ],
     "randomUI": [
+      {
+        "kind": "button",
+        "name": "presetsButton"
+      },
       {
         "kind": "spinner",
         "name": "rotXMinSpin"
@@ -905,6 +913,10 @@
       }
     ],
     "proceduralUI": [
+      {
+        "kind": "button",
+        "name": "presetsButton"
+      },
       {
         "kind": "dropdownlist",
         "name": "scopeList"

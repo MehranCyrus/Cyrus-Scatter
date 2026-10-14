@@ -2067,5 +2067,29 @@
       "AminScatter/tools/ui/templates/unified-core.ms:3509",
       "docs/ARTIST_GUIDE.md:102"
     ]
+  },
+  "layer.distributionUI.presetsButton": {
+    "label": "Presets...",
+    "help": "Save or apply named population settings to the captured layer or spacing scope. Selecting a library item is passive. Apply preserves assets and receiver references, supports one Undo, and respects Manual/Live updates.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/presets.ms:38",
+      "docs/plans/eleven-phase-roadmap/P02.md:20"
+    ]
+  },
+  "layer.randomUI.presetsButton": {
+    "label": "Presets...",
+    "help": "Save or apply named transforms settings to the captured layer or spacing scope. Selecting a library item is passive. Apply preserves assets and receiver references, supports one Undo, and respects Manual/Live updates.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/presets.ms:38",
+      "docs/plans/eleven-phase-roadmap/P02.md:20"
+    ]
+  },
+  "layer.proceduralUI.presetsButton": {
+    "label": "Presets...",
+    "help": "Save or apply named spacing settings to the captured layer or spacing scope. Selecting a library item is passive. Apply preserves assets and receiver references, supports one Undo, and respects Manual/Live updates.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/presets.ms:38",
+      "docs/plans/eleven-phase-roadmap/P02.md:20"
+    ]
   }
 }

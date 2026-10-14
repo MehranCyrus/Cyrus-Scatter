@@ -1,6 +1,6 @@
 -- Keep real Undo/Redo outside Python's enclosing execution hold.
 (
-    if not matchPattern MCPFixtureDir pattern:"*/build/mcp-qualification/foundation-roadmap-p01-*/" do throw "Owned P01 host required"
+    if not matchPattern MCPFixtureDir pattern:"*/build/mcp-qualification/foundation-roadmap-*/" do throw "Owned P01 host required"
     local log=createFile (MCPFixtureDir+"phase01-undo-native.txt")
     fn verify value label log = (
         format "%: %\n" (if value then "PASS" else "FAIL") label to:log

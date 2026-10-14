@@ -52,7 +52,7 @@ fixes before a phase checkpoint. Do not invent a passing visual result.
 
 - [P01 implementation and evidence](P01.md): current **0.81.8** candidate;
   runtime checks pass. The user deferred their visual acceptance until the end
-  of the program; the phase Git checkpoint is being finalized.
+  of the program; P01 was pushed as `50ea0a6037ea641298e8d9007931ee3bec2a5ed9`.
 - [Implementation specifications](IMPLEMENTATION.md): outcome, ownership, staged
   delivery, cache dependencies, edge cases and acceptance for each phase.
 - [Validation and performance](VALIDATION.md): common checks, fixtures, metrics,
@@ -65,8 +65,8 @@ fixes before a phase checkpoint. Do not invent a passing visual result.
 
 | Phase | Outcome | Effort | Entry dependencies | Current state |
 | --- | --- | --- | --- | --- |
-| P01 | Clear workflow, ownership, cached/pending state and useful feedback | Small–medium | Freeze current baseline and inspect actual generated UI | Runtime passed; Git checkpoint in progress |
-| P02 | Named settings and curve presets | Medium | P01; typed settings capture/apply | Planned |
+| P01 | Clear workflow, ownership, cached/pending state and useful feedback | Small–medium | Freeze current baseline and inspect actual generated UI | Committed and pushed; physical artist acceptance at program end |
+| P02 | Named settings and curve presets | Medium | P01; typed settings capture/apply | Implemented; closing Max qualification and checkpoint |
 | P03 | Slope/altitude filters with soft transitions | Medium | P02; existing eligibility and units contracts | Planned |
 | P04 | Selectable UV channel and density-map resolution | Medium | P03; map dependency/coordinate contract | Planned |
 | P05 | Paint-to-spline export and spline-to-Paint import | Medium | P04; current vector regions and units | Planned |

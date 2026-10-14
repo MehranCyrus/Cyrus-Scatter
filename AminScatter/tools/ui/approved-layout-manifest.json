@@ -801,6 +801,12 @@
       "controls": [
         {
           "component": "distributionUI",
+          "control": "presetsButton",
+          "presentation": "distributionUI_presetsButton",
+          "advanced": false
+        },
+        {
+          "component": "distributionUI",
           "control": "modeRadio",
           "presentation": "distributionUI_modeRadio",
           "advanced": true
@@ -1272,6 +1278,12 @@
       "controls": [
         {
           "component": "randomUI",
+          "control": "presetsButton",
+          "presentation": "randomUI_presetsButton",
+          "advanced": false
+        },
+        {
+          "component": "randomUI",
           "control": "rotTitle",
           "presentation": "randomUI_rotTitle",
           "advanced": false
@@ -1559,6 +1571,12 @@
       "title": "Spacing & cleanup",
       "scope": "Layer",
       "controls": [
+        {
+          "component": "proceduralUI",
+          "control": "presetsButton",
+          "presentation": "proceduralUI_presetsButton",
+          "advanced": false
+        },
         {
           "component": "proceduralUI",
           "control": "scopeList",

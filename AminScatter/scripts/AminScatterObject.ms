@@ -1,4 +1,4 @@
-global CyrusLoadedScriptFingerprint="e318c6919777e7a96c8ca5cea893d12baed1138ce9876fe7bed3f51e0e13a0a2"
+global CyrusLoadedScriptFingerprint="b7145658f441c47213466b68f88aa73c6c163dffe25fd9b1ce0d43e355231555"
 global CyrusOpenLicenseDialog,CyrusLicenseDialog,CyrusRequireAuthor,CyrusLicenseCanEdit
 fn CyrusRequireAuthor = (
     if cyrusLicenseAllows==undefined do throw "Load the matching licensed Cyrus 0.80.0 native modules and restart Max."
@@ -52,6 +52,193 @@ fn CyrusOpenLicenseDialog = (
 )
 macroScript CyrusTeamLicense category:"Cyrus" buttonText:"Cyrus License" tooltip:"Activate or renew Cyrus Scatter" (
     on execute do CyrusOpenLicenseDialog()
+)
+
+global CyrusFalloffGraph,CyrusPointSuspended,CyrusViewportRedraw,CyrusNewLayerID
+-- Named data presets. Scene bindings are captured here, never stored in files.
+global CyrusPresetBinding,CyrusPresetBrowser,CyrusPresetOpenBinding,CyrusOpenPresets
+global CyrusPresetMakeBinding,CyrusPresetCheckBinding,CyrusPresetCapture,CyrusPresetApply
+global CyrusPresetDirectory,CyrusPresetRead,CyrusPresetWrite,CyrusPresetEntries
+struct CyrusPresetBinding (root,node,owner,ownerID,category,peer=undefined,peerID="",editor=undefined)
+
+fn CyrusPresetMakeBinding root owner category peer:undefined editor:undefined = (
+    if root==undefined or owner==undefined do throw "Select a layer before opening presets."
+    local nodes=for n in refs.dependentNodes root where isValidNode n and n.baseObject==root collect n
+    if nodes.count!=1 do throw "Presets require one unambiguous Scatter controller."
+    CyrusPresetBinding root:root node:nodes[1] owner:owner ownerID:owner.layerID category:category peer:peer peerID:(if peer==undefined then "" else peer.layerID) editor:editor
+)
+fn CyrusPresetCheckBinding target = (
+    if target==undefined or not isValidNode target.node or target.node.baseObject!=target.root do throw "The preset controller was removed or replaced."
+    if target.owner.layerID!=target.ownerID do throw "The preset layer identity changed."
+    local parent=target.root.logicalParent target.owner
+    if findItem target.root.layerObjects parent==0 do throw "The preset layer was removed."
+    if target.owner.isPaintArea and findItem parent.paintAreas target.owner==0 do throw "The preset Paint Area was removed."
+    if target.peer!=undefined and (findItem target.root.layerObjects target.peer==0 or target.peer.layerID!=target.peerID) do throw "The other spacing layer was removed or replaced."
+    if target.editor!=undefined and (target.editor!=CyrusFalloffGraph or not target.editor.presetTargetValid()) do throw "The curve target is no longer available. Reopen its graph."
+    true
+)
+fn CyrusPresetCapture target = (
+    CyrusPresetCheckBinding target
+    if target.editor!=undefined do return target.editor.presetValues()
+    local meters=units.decodeValue "1m",schema=cyrusPresetSchema target.category
+    if target.category=="spacing" do (
+        local values=target.owner.procSelfRule()
+        if target.peer!=undefined do (
+            local i=target.root.procPair 2 target.owner target.peer
+            values=if i==0 then #(false,1.0,0.0,false) else #(target.root.procRuleEnabled[i],target.root.procRuleMultiplier[i],target.root.procRuleGapWU[i],target.root.procRulePlanar[i])
+        )
+        values[3]/=meters;return values
+    )
+    for field in schema collect (local v=getProperty target.owner (field[1] as name);if field[3] then v/meters else v)
+)
+fn CyrusPresetApply target document = (
+    CyrusRequireAuthor();CyrusPresetCheckBinding target
+    if theHold.Holding() do throw "Finish the current undoable operation before applying a preset."
+    -- Revalidate the entire typed proposal even for callers that bypass the browser.
+    document=cyrusPresetDecode (cyrusPresetEncode document[1] document[2] document[3])
+    if document[1]!=target.category do throw "This preset belongs to a different category."
+    local schema=cyrusPresetSchema target.category,values=deepCopy document[3],owner=target.owner,meters=units.decodeValue "1m"
+    local fields=for f in schema collect (f[1] as name)
+    if target.category=="spacing" then (
+        fields=if target.peer==undefined then #(#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar) else #()
+        values[3]*=meters
+    ) else if target.editor==undefined do for i=1 to fields.count where schema[i][3] do values[i]*=meters
+    if target.editor==undefined do for v in values where classof v!=BooleanClass do if v!=v or abs v>1e30 do throw "Preset units exceed the scene's supported numeric range."
+    local controllers=#()
+    for field in fields do (
+        local control=getPropertyController owner field
+        if control!=undefined do (
+            if findItem #(Bezier_Float,Linear_Float,TCB_Float) (classof control)==0 or (numKeys control)!=0 do throw "Apply requires static numeric settings. Animated or wired target parameters are preserved."
+            append controllers #(field,control)
+        )
+    )
+    -- Reconstruct and validate editor-only data before starting authored Undo.
+    local curveRollback=if target.editor==undefined then undefined else target.editor.presetPrepare values
+    local priorTransfer=owner.getLayerTransfer(),priorSuspended=CyrusPointSuspended
+    theHold.Begin();CyrusPointSuspended=true;owner.setLayerTransfer true
+    try (
+        with animate off (
+            -- Detach static controllers before changing their values, preserving
+            -- other owners that shared the original controller.
+            for pair in controllers do setPropertyController owner pair[1] (copy pair[2])
+            if target.editor!=undefined then target.editor.presetApply values
+            else if target.category=="spacing" and target.peer!=undefined then target.root.procSetPair 2 owner target.peer values[1] values[2] values[3] values[4]
+            else (
+                if target.category=="spacing" do owner.procSelfOverride=true
+                for i=1 to fields.count do setProperty owner fields[i] values[i]
+            )
+        )
+        owner.setLayerTransfer priorTransfer;CyrusPointSuspended=priorSuspended
+        theHold.Accept "Cyrus apply preset"
+    )catch(
+        local failure=getCurrentException()
+        theHold.Cancel();owner.setLayerTransfer priorTransfer;CyrusPointSuspended=priorSuspended
+        if target.editor!=undefined do target.editor.presetRestore curveRollback
+        throw()
+    )
+    owner.markInputDirty();target.root.bindNativeUI();CyrusViewportRedraw();true
+)
+fn CyrusPresetDirectory = (pathConfig.appendPath (getDir #plugcfg) "CyrusScatter\\Presets")
+fn CyrusPresetRead path = (
+    local file=dotNetObject "System.IO.FileInfo" path
+    if not file.Exists do throw "The preset file no longer exists. Refresh the list."
+    if file.Length>65536 do throw "Preset files are limited to 64 KiB."
+    local stream=dotNetObject "System.IO.FileStream" path (dotNetClass "System.IO.FileMode").Open (dotNetClass "System.IO.FileAccess").Read (dotNetClass "System.IO.FileShare").Read
+    local reader=undefined,text=""
+    try (
+        if stream.Length>65536 do throw "Preset files are limited to 64 KiB."
+        reader=dotNetObject "System.IO.StreamReader" stream (dotNetObject "System.Text.UTF8Encoding" false true) false
+        text=reader.ReadToEnd();reader.Close()
+    )catch(local failure=getCurrentException();if reader!=undefined do reader.Close();stream.Close();throw())
+    cyrusPresetDecode text
+)
+fn CyrusPresetWrite path document replace:false = (
+    local text=cyrusPresetEncode document[1] document[2] document[3],io=dotNetClass "System.IO.File",dir=dotNetClass "System.IO.Path"
+    local directory=dir.GetDirectoryName path
+    (dotNetClass "System.IO.Directory").CreateDirectory directory
+    local temp=pathConfig.appendPath directory (CyrusNewLayerID()+".tmp")
+    local backup=temp+".bak"
+    try (
+        io.WriteAllText temp text (dotNetObject "System.Text.UTF8Encoding" false true)
+        CyrusPresetRead temp
+        if replace then io.Replace temp path backup else io.Move temp path
+    )catch(local failure=getCurrentException();if io.Exists temp do io.Delete temp;throw())
+    -- Replacement is already committed; backup cleanup cannot undo that success.
+    if io.Exists backup do try(io.Delete backup)catch()
+    true
+)
+fn CyrusPresetEntries directory category = (
+    if not (dotNetClass "System.IO.Directory").Exists directory do return #(#(),0)
+    local files=getFiles (pathConfig.appendPath directory "*.cspreset.json"),items=#(),invalid=0
+    if files.count>512 do throw "The preset folder contains more than 512 items. Move unused files to another folder."
+    for path in files do try (
+        local document=CyrusPresetRead path
+        if document[1]==category do append items #(path,document[2])
+    )catch(invalid+=1)
+    #(items,invalid)
+)
+fn CyrusOpenPresets root owner category peer:undefined editor:undefined = (
+    if cyrusPresetVersion==undefined or cyrusPresetVersion()!=1 do throw "Load the matching Cyrus preset native module."
+    local target=CyrusPresetMakeBinding root owner category peer:peer editor:editor
+    CyrusPresetCheckBinding target
+    if CyrusPresetBrowser!=undefined do try(destroyDialog CyrusPresetBrowser)catch()
+    rollout browser "Cyrus presets" width:420 height:345 (
+        local target=undefined,entries=#(),directory=""
+        label targetInfo "" pos:[12,10] width:396 height:38
+        listbox presets "Saved presets" pos:[12,50] width:396 height:8
+        edittext presetName "Name:" pos:[12,190] width:396
+        button saveNew "Save new" pos:[12,220] width:90
+        button applyPreset "Apply" pos:[112,220] width:90
+        button renamePreset "Rename" pos:[212,220] width:90
+        button deletePreset "Delete" pos:[312,220] width:96
+        button refreshList "Refresh" pos:[12,255] width:90
+        button closeButton "Close" pos:[312,255] width:96
+        label status "Selecting a preset does not change the scene." pos:[12,290] width:396 height:44
+        fn refresh selectPath:undefined = (
+            if selectPath==undefined and presets.selection>0 and presets.selection<=entries.count do selectPath=entries[presets.selection][1]
+            local result=CyrusPresetEntries directory target.category
+            entries=result[1];presets.items=for item in entries collect item[2]
+            local selected=0
+            for i=1 to entries.count where entries[i][1]==selectPath do selected=i
+            presets.selection=if selected>0 then selected else if entries.count>0 then 1 else 0
+            presetName.text=if presets.selection>0 then entries[presets.selection][2] else ""
+            status.text=(entries.count as string)+" saved; "+(result[2] as string)+" invalid files skipped. Select, then Apply."
+        )
+        fn selectedPath = (if presets.selection<1 or presets.selection>entries.count then throw "Select a saved preset." else entries[presets.selection][1])
+        fn enteredName = (local value=trimRight (trimLeft presetName.text);if value=="" do throw "Enter a preset name.";value)
+        on browser open do (
+            target=CyrusPresetOpenBinding;directory=CyrusPresetDirectory()
+            targetInfo.text=(target.root.layerCaption (target.root.logicalParent target.owner))+" / "+target.category+(if target.peer!=undefined then " / "+target.root.layerCaption target.peer else "")
+            if target.editor!=undefined do targetInfo.text+=("\nCurve is "+(if target.editor.presetEnabled() then "enabled" else "disabled")+". Apply preserves this state.")
+            try(refresh())catch(status.text=getCurrentException())
+        )
+        on presets selected i do if i>0 and i<=entries.count do presetName.text=entries[i][2]
+        on saveNew pressed do try(
+            if (getFiles (pathConfig.appendPath directory "*.cspreset.json")).count>=512 do throw "The preset library is full (512 files)."
+            local document=#(target.category,enteredName(),CyrusPresetCapture target)
+            local path=pathConfig.appendPath directory (CyrusNewLayerID()+".cspreset.json")
+            CyrusPresetWrite path document;refresh selectPath:path;status.text="Preset saved. Scene settings are unchanged."
+        )catch(status.text=getCurrentException())
+        on applyPreset pressed do try(
+            local document=CyrusPresetRead (selectedPath())
+            CyrusPresetApply target document
+            status.text=if target.root.updateMode==1 then "Applied. Manual mode: use Update scatter." else "Applied. Live update follows the normal dependency rules."
+        )catch(status.text=getCurrentException())
+        on renamePreset pressed do try(
+            local path=selectedPath(),document=CyrusPresetRead path
+            document[2]=enteredName();CyrusPresetWrite path document replace:true;refresh selectPath:path
+        )catch(status.text=getCurrentException())
+        on deletePreset pressed do try(
+            local path=selectedPath()
+            if queryBox ("Delete preset '"+entries[presets.selection][2]+"'?") title:"Cyrus presets" do ((dotNetClass "System.IO.File").Delete path;refresh())
+        )catch(status.text=getCurrentException())
+        on refreshList pressed do try(refresh())catch(status.text=getCurrentException())
+        on closeButton pressed do destroyDialog browser
+        on browser close do CyrusPresetBrowser=undefined
+    )
+    CyrusPresetOpenBinding=target;CyrusPresetBrowser=browser
+    createDialog browser style:#(#style_titlebar,#style_sysmenu,#style_toolwindow)
+    true
 )
 
 -- Only registered Scatter nodes participate in timeline notifications. This
@@ -230,21 +417,20 @@ global CyrusFalloffGraph,CyrusFallGraphTarget,CyrusFallGraphArea,CyrusFallGraphD
 global CyrusFallGraphOwnerRoot,CyrusFallGraphOwnerNode
 fn CyrusOpenFalloffGraph target areaNode density bandID:0 = (
     local bandRoot=undefined,bandNode=undefined
-    if bandID>0 do (
-        if findItem target.strokeIDs bandID==0 do throw "The selected Band no longer exists."
-        -- Resolve the saved dependency, including immediately after reopen,
-        -- before transient preview ownership has been rebound.
-        for node in refs.dependentNodes target where isValidNode node and classof node.baseObject==AminScatterObject and findItem node.baseObject.layerObjects target>0 do (
-            if bandRoot!=undefined and bandRoot!=node.baseObject do throw "A Band layer cannot belong to multiple Scatter controllers."
-            bandRoot=node.baseObject
-            if bandNode==undefined do bandNode=node
+    if bandID>0 and findItem target.strokeIDs bandID==0 do throw "The selected Band no longer exists."
+    for node in refs.dependentNodes target where isValidNode node and classof node.baseObject==AminScatterObject do (
+        local candidate=node.baseObject,parent=try(candidate.logicalParent target)catch(undefined)
+        if parent!=undefined and findItem candidate.layerObjects parent>0 do (
+            if bandNode!=undefined and bandNode!=node do throw "The curve owner must belong to one Scatter controller."
+            bandRoot=candidate;bandNode=node
         )
-        if bandRoot==undefined do throw "The Band controller is no longer in this scene."
     )
+    if bandRoot==undefined do throw "The curve controller is no longer in this scene."
     if CyrusFalloffGraph!=undefined do try(destroyDialog CyrusFalloffGraph)catch()
-    rollout editor "Area Falloff - Edit Graph" width:760 height:470 (
-        local obj,area,isDensity=false,loading=true,ownerRoot=undefined,ownerNode=undefined,ownerLayerID="",ownerBandID=0,ownerPathID=0,invalidated=false,curveTimer=undefined,pendingCurve=false,lastGraphTrace=""
+    rollout editor "Area Falloff - Edit Graph" width:760 height:505 (
+        local obj,area,isDensity=false,loading=true,ownerRoot=undefined,ownerNode=undefined,ownerLayerID="",ownerBandID=0,ownerPathID=0,invalidated=false,curveTimer=undefined,pendingCurve=false,lastGraphTrace="",lastPresetTrace="",presetStoredValues=undefined,presetStoredGraph=""
         curveControl graph "" pos:[8,8] width:744 height:396 numCurves:1 x_range:[0,1] y_range:[0,100] commandMode:#move_xy asPopup:false
+        button presetsButton "Presets..." pos:[12,464] width:120
         button applyButton "Apply" pos:[538,424] width:100
         button doneButton "Close" pos:[648,424] width:100
         label help "X: distance along ramp (0 to 1). Y: percent. Drag points / edit Bezier handles." pos:[12,424] width:510 height:36
@@ -265,7 +451,7 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 = (
         fn curveTrace = (
             local curve=graph.curves[1],packed=#()
             if curve.numPoints<2 do return undefined
-            if ownerBandID>0 and curve.numPoints>64 do (help.text="Band graphs support at most 64 control points. Remove excess points before Apply.";return undefined)
+            if curve.numPoints>257 do (help.text="Curves support at most 257 control points. Remove excess points before Apply.";return undefined)
             for i=1 to curve.numPoints do (
                 local p=curve.points[i]
                 join packed #(p.value.x,p.value.y,p.inTangent.x,p.inTangent.y,p.outTangent.x,p.outTangent.y,(if p.bezier then 1 else 0),(if p.corner then 1 else 0))
@@ -280,6 +466,7 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 = (
         fn storeCurve = (
             pendingCurve=false
             if curveTimer!=undefined do curveTimer.Stop()
+            if invalidated do return false
             if not loading do (
                 local bandRow=bandTargetRow()
                 if ownerBandID>0 and bandRow==0 do return false
@@ -289,10 +476,18 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 = (
                 -- Compare the canonical saved representation, not rounded
                 -- control geometry, not the SDK's deferred sample cache.
                 -- A close after external Undo must not reapply an unchanged UI.
-                if ownerBandID>0 and identity==lastGraphTrace do return true
                 local cfg=if ownerBandID>0 then undefined else obj.getFallConfig area
                 local curveIndex=if isDensity then 8 else 5
                 local oldValues=if ownerBandID>0 then CyrusFallUnpack ((bandSamples())[bandRow]) else cfg[curveIndex]
+                local oldGraph=if ownerBandID>0 then (bandGraphs())[bandRow] else obj.getFallGraph area isDensity
+                if presetStoredValues!=undefined and ((CyrusFallPack oldValues)!=presetStoredValues or oldGraph!=presetStoredGraph) do (
+                    invalidated=true;applyButton.enabled=false;presetsButton.enabled=false
+                    help.text="This curve changed outside the graph. Close and reopen it to continue."
+                    return false
+                )
+                if identity==lastPresetTrace do return true
+                lastPresetTrace="";presetStoredValues=undefined
+                if ownerBandID>0 and identity==lastGraphTrace do return true
                 local samplesChanged=oldValues.count!=values.count
                 if not samplesChanged do for i=1 to values.count where oldValues[i]!=values[i] do samplesChanged=true
                 if ownerBandID==0 do cfg[curveIndex]=values
@@ -318,11 +513,82 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 = (
             )
             true
         )
+        fn presetTargetValid = (
+            if invalidated do return false
+            local valid=isValidNode ownerNode and ownerNode.baseObject==ownerRoot and obj.layerID==ownerLayerID
+            if valid do (
+                local parent=try(ownerRoot.logicalParent obj)catch(undefined)
+                valid=parent!=undefined and findItem ownerRoot.layerObjects parent>0
+                if valid and obj.isPaintArea do valid=findItem parent.paintAreas obj>0
+                if valid and area!=undefined do valid=isValidNode area and findItem obj.areaNodes area>0
+                if valid and ownerBandID>0 do valid=bandTargetRow()>0
+            )
+            valid
+        )
+        fn presetEnabled = (
+            if not presetTargetValid() do return false
+            if ownerBandID>0 then (local row=bandTargetRow();if isDensity then obj.strokeCurveEnabled[row] else obj.strokeScaleModes[row]==3)
+            else (obj.getFallConfig area)[if isDensity then 6 else 3]
+        )
+        fn presetValues = (
+            if not presetTargetValid() do throw "The curve target was removed or replaced."
+            local trace=curveTrace()
+            if trace==undefined do throw "The curve has no valid editable representation."
+            #(trace[1],CyrusFallUnpack trace[3],not isDensity and not obj.isPaintArea)
+        )
+        fn presetLoadGraph values = (
+            local c=graph.curves[1],samples=values[1],packed=values[2]
+            graph.y_range=[0,(if isDensity or obj.isPaintArea then 100 else amax 200.0 ((amax samples)*100))]
+            c.numPoints=if packed.count>0 then packed.count/8 else samples.count
+            for i=1 to c.numPoints do (
+                local point=c.points[i],j=(i-1)*8
+                if packed.count>0 then (
+                    point.value=[packed[j+1],packed[j+2]];point.inTangent=[packed[j+3],packed[j+4]];point.outTangent=[packed[j+5],packed[j+6]]
+                    point.bezier=packed[j+7]>0;point.corner=packed[j+8]>0
+                ) else (point.value=[(i-1.0)/(samples.count-1),samples[i]*100];point.bezier=false;point.corner=true)
+                point.lock_x=(i==1 or i==c.numPoints);c.points[i]=point
+            )
+            zoom graph #all
+        )
+        fn presetRestore state = (
+            loading=true
+            undo off (presetLoadGraph state[1])
+            lastGraphTrace=state[2];lastPresetTrace=state[3];presetStoredValues=state[4];presetStoredGraph=state[5]
+            loading=false;true
+        )
+        fn presetPrepare values = (
+            if not presetTargetValid() do throw "The curve target was removed or replaced."
+            if values[3] and (isDensity or obj.isPaintArea) do throw "This target requires a unit-range curve."
+            local state=#(presetValues(),lastGraphTrace,lastPresetTrace,presetStoredValues,presetStoredGraph)
+            if curveTimer!=undefined do curveTimer.Stop()
+            pendingCurve=false;loading=true
+            try (
+                undo off (presetLoadGraph values)
+                local trace=curveTrace(),samples=values[1]
+                if trace==undefined do throw "Cannot reconstruct the preset graph."
+                for i=1 to trace[1].count do (
+                    local position=(i-1.0)*(samples.count-1)/256.0,lo=(floor position) as integer,hi=amin (samples.count-1) (lo+1)
+                    local expected=samples[lo+1]+(samples[hi+1]-samples[lo+1])*(position-lo)
+                    if abs (trace[1][i]-expected)>0.0001*(amax 1.0 (abs expected)) do throw "Preset handles do not match its sampled curve."
+                )
+                loading=false
+            )catch(presetRestore state;throw())
+            state
+        )
+        fn presetApply values = (
+            lastGraphTrace="";lastPresetTrace="";presetStoredValues=undefined
+            if not storeCurve() do throw "The curve could not be stored."
+            local trace=curveTrace(),row=bandTargetRow()
+            lastPresetTrace=trace[3]
+            presetStoredValues=if ownerBandID>0 then (bandSamples())[row] else CyrusFallPack ((obj.getFallConfig area)[if isDensity then 8 else 5])
+            presetStoredGraph=if ownerBandID>0 then (bandGraphs())[row] else obj.getFallGraph area isDensity
+            true
+        )
+        on presetsButton pressed do try(CyrusOpenPresets ownerRoot obj (if isDensity then "density_curve" else "scale_curve") editor:editor)catch(messageBox (getCurrentException()) title:"Cyrus presets")
         on editor open do (
             obj=CyrusFallGraphTarget;area=CyrusFallGraphArea;isDensity=CyrusFallGraphDensity;ownerBandID=CyrusFallGraphBandID
+            ownerRoot=CyrusFallGraphOwnerRoot;ownerNode=CyrusFallGraphOwnerNode;ownerLayerID=obj.layerID
             if ownerBandID>0 do (
-                ownerRoot=CyrusFallGraphOwnerRoot;ownerNode=CyrusFallGraphOwnerNode
-                ownerLayerID=obj.layerID
                 local row=findItem obj.strokeIDs ownerBandID
                 if row==0 do throw "The selected Band no longer exists."
                 ownerPathID=obj.strokePathIDs[row]
@@ -2132,7 +2398,7 @@ initialRollupState:0x8
         -- Only a committed calculation epoch establishes its first result.
         CyrusLayerStatusData hasResult:(procEpoch>0 and cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
     )
-    fn uiVersion = "0.81.8"
+    fn uiVersion = "0.82.0"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified1")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -2319,6 +2585,7 @@ initialRollupState:0x8
         if controller.groupSnapshotKey!="" do controller.procEnsureDisplay pending:(controller.groupSnapshotKey!=controller.procInputKey())
         CyrusViewportRedraw();true
     )
+    fn getLayerTransfer = layerTransfer
     fn setLayerTransfer state = (layerTransfer=state)
     fn performanceTraceVersion = 1
     fn cacheSnapshot = (#(cachedPoints,cachedPointCount,dirty,previewError,generatedCount,previewBuildCount,previewBuildMs,requestedCount,densityCapped))
@@ -3167,14 +3434,14 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.81.8 setup; earlier schemas are unsupported."
+        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.82.0 setup; earlier schemas are unsupported."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
     fn procValidate = (
         this.procAssertSchema()
-        if cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.81.8 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
+        if cyrusPresetVersion==undefined or cyrusPresetVersion()!=1 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.82.0 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -3589,7 +3856,7 @@ initialRollupState:0x8
         if (CyrusContainerPanel this).controlsReady do (CyrusContainerPanel this).bind()
         true
     )
-    rollout mainUI "Cyrus Scatter 0.81.8" width:#cmdPanel height:140 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.82.0" width:#cmdPanel height:140 autoLayoutOnResize:true (
         local view=undefined,root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),owner=undefined,layerPagesVisible=false,pagesArranged=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for the entire setup."
         radiobuttons updateRadio "Viewport update" labels:#("Manual","Live") columns:2 pos:[8,26] width:(mainUI.width-16) tooltip:"Manual waits for Update. Live calculates after relevant edits."
@@ -3662,7 +3929,7 @@ initialRollupState:0x8
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.81.8 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.82.0 native plugin and restart Max."
             root=view
             editors=#(view.managerUI,view.surfacesUI,view.modelsUI,view.containersUI,view.layoutUI,view.populationUI,view.coverageUI,view.areasUI,view.transformsUI,view.spacingUI,view.displayUI,view.statisticsUI)
             if root==undefined do (
@@ -6684,6 +6951,7 @@ initialRollupState:0x8
     rollout populationUI "Amount" width:#cmdPanel category:60 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
         local layout,lastLayoutWidth=0
+        button distributionUI_presetsButton "Presets..." width:130 height:22 tooltip:"Save or apply named population settings. Assets and receiver references are preserved."
         radiobuttons distributionUI_modeRadio "" labels:#("Random","Texture Density") columns:2 pos:[8,8] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58)))))
         label distributionUI_modeRadio_caption "Method" pos:[6,6] width:(populationUI.width-12) height:18
         radiobuttons distributionUI_populationRadio "" labels:#("Count","Plants per m2") columns:2 pos:[8,8] width:((populationUI.width-16-((amin 1 (amax 1 (floor ((populationUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((populationUI.width-8)/58)))))
@@ -6749,11 +7017,14 @@ initialRollupState:0x8
             distributionUI_binding=true;distributionUI_controlsReady=false
             if distributionUI_obj!=next do ()
             distributionUI_obj=next;distributionUI_parentView=(CyrusContainerPanel distributionUI_root)
-            for c in #(distributionUI_modeRadio,distributionUI_populationRadio,distributionUI_countSpin,distributionUI_densitySpin,distributionUI_seedSpin,distributionUI_densityHeading,distributionUI_densityButton,distributionUI_invertCheck,distributionUI_uvHint,distributionUI_mapHint) do c.enabled=layer!=undefined
+            for c in #(distributionUI_presetsButton,distributionUI_modeRadio,distributionUI_populationRadio,distributionUI_countSpin,distributionUI_densitySpin,distributionUI_seedSpin,distributionUI_densityHeading,distributionUI_densityButton,distributionUI_invertCheck,distributionUI_uvHint,distributionUI_mapHint) do c.enabled=layer!=undefined
             try (undo off ((distributionUI_populationRadio.state=distributionUI_obj.populationMode;distributionUI_densitySpin.value=distributionUI_obj.plantsPerM2;distributionUI_densityButton.map=distributionUI_obj.densityMap;distributionUI_invertCheck.checked=distributionUI_obj.invertDensity;distributionUI_controlsReady=true;(distributionUI_countSpin.value=distributionUI_obj.amount;distributionUI_seedSpin.value=distributionUI_obj.randomSeed;distributionUI_modeRadio.state=if distributionUI_obj.distributionMode==3 then 2 else 1)))) catch(distributionUI_binding=false;distributionUI_controlsReady=true;throw())
             distributionUI_controlsReady=true;distributionUI_binding=false
         )
         fn distributionUI_bind layer = (distributionUI_bindFeatures layer;distributionUI_arrangePopulation())
+        on distributionUI_presetsButton pressed do if controlsReady and not binding and root!=undefined and distributionUI_controlsReady and not distributionUI_binding and CyrusLicenseCanEdit() do (try(CyrusOpenPresets distributionUI_root distributionUI_owner "population")catch(messageBox (getCurrentException()) title:"Cyrus presets")
+            if controlsReady and root!=undefined do layout()
+        )
         local populationPolicyUI_bodyHeight=0
         local populationPolicyUI_controlsReady=false
         local populationPolicyUI_root=undefined,populationPolicyUI_owner=undefined,populationPolicyUI_panel=undefined,populationPolicyUI_controlsReady=false,populationPolicyUI_binding=false,populationPolicyUI_setSpecific=false
@@ -6898,6 +7169,15 @@ initialRollupState:0x8
                 fitLabel heading_0 18 cellWidth
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(heading_0.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(distributionUI_presetsButton);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/70))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
@@ -7047,7 +7327,7 @@ initialRollupState:0x8
                 obj=owner
                 distributionUI_root=root;distributionUI_owner=owner;distributionUI_panel=panel;distributionUI_controlsReady=controlsReady;distributionUI_binding=binding
             populationPolicyUI_root=root;populationPolicyUI_owner=owner;populationPolicyUI_panel=panel;populationPolicyUI_controlsReady=controlsReady;populationPolicyUI_binding=binding
-            if owner!=undefined then (distributionUI_bind owner;) else (for c in #(distributionUI_modeRadio,distributionUI_populationRadio,distributionUI_countSpin,distributionUI_densitySpin,distributionUI_seedSpin,distributionUI_densityHeading,distributionUI_densityButton,distributionUI_invertCheck,distributionUI_uvHint,distributionUI_mapHint) do c.enabled=false;distributionUI_controlsReady=false)
+            if owner!=undefined then (distributionUI_bind owner;) else (for c in #(distributionUI_presetsButton,distributionUI_modeRadio,distributionUI_populationRadio,distributionUI_countSpin,distributionUI_densitySpin,distributionUI_seedSpin,distributionUI_densityHeading,distributionUI_densityButton,distributionUI_invertCheck,distributionUI_uvHint,distributionUI_mapHint) do c.enabled=false;distributionUI_controlsReady=false)
             if owner!=undefined then (populationPolicyUI_bind owner;) else (for c in #(populationPolicyUI_populationList,populationPolicyUI_attemptSpin,populationPolicyUI_roundSpin,populationPolicyUI_repairCheck,populationPolicyUI_info) do c.enabled=false;populationPolicyUI_controlsReady=false)
                 distributionUI_binding=false;populationPolicyUI_binding=false;setupGrips();controlsReady=true;binding=false;layout();true
             )catch(binding=false;controlsReady=false;throw())
@@ -8235,6 +8515,7 @@ initialRollupState:0x8
     rollout transformsUI "Transforms" width:#cmdPanel category:90 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
         local layout,lastLayoutWidth=0
+        button randomUI_presetsButton "Presets..." width:130 height:22 tooltip:"Save or apply named transforms settings. Assets and receiver references are preserved."
         label randomUI_rotTitle "Rotation (degrees)" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/58)))))
         label randomUI_rotMinTitle "Min" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/58)))))
         label randomUI_rotMaxTitle "Max" pos:[8,8] width:((transformsUI.width-16-((amin 1 (amax 1 (floor ((transformsUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((transformsUI.width-8)/58)))))
@@ -8398,12 +8679,15 @@ initialRollupState:0x8
             randomUI_binding=true;randomUI_controlsReady=false
             if randomUI_obj!=next do ()
             randomUI_obj=next;randomUI_parentView=(CyrusContainerPanel randomUI_root)
-            for c in #(randomUI_rotTitle,randomUI_rotMinTitle,randomUI_rotMaxTitle,randomUI_rotXLabel,randomUI_rotXMinSpin,randomUI_rotXMaxSpin,randomUI_rotYLabel,randomUI_rotYMinSpin,randomUI_rotYMaxSpin,randomUI_rotZLabel,randomUI_rotZMinSpin,randomUI_rotZMaxSpin,randomUI_sclTitle,randomUI_sclMinTitle,randomUI_sclMaxTitle,randomUI_sclXLabel,randomUI_sclXMinSpin,randomUI_sclXMaxSpin,randomUI_sclYLabel,randomUI_sclYMinSpin,randomUI_sclYMaxSpin,randomUI_sclZLabel,randomUI_sclZMinSpin,randomUI_sclZMaxSpin,randomUI_wholeTitle,randomUI_wholeMinTitle,randomUI_wholeMaxTitle,randomUI_wholeMinSpin,randomUI_wholeMaxSpin,randomUI_movTitle,randomUI_movMinTitle,randomUI_movMaxTitle,randomUI_movXLabel,randomUI_movXMinSpin,randomUI_movXMaxSpin,randomUI_movYLabel,randomUI_movYMinSpin,randomUI_movYMaxSpin,randomUI_movZLabel,randomUI_movZMinSpin,randomUI_movZMaxSpin,randomUI_projectCheck,randomUI_alignCheck,randomUI_resetRotation,randomUI_resetScale,randomUI_resetWholeScale,randomUI_resetMovement) do c.enabled=layer!=undefined
+            for c in #(randomUI_presetsButton,randomUI_rotTitle,randomUI_rotMinTitle,randomUI_rotMaxTitle,randomUI_rotXLabel,randomUI_rotXMinSpin,randomUI_rotXMaxSpin,randomUI_rotYLabel,randomUI_rotYMinSpin,randomUI_rotYMaxSpin,randomUI_rotZLabel,randomUI_rotZMinSpin,randomUI_rotZMaxSpin,randomUI_sclTitle,randomUI_sclMinTitle,randomUI_sclMaxTitle,randomUI_sclXLabel,randomUI_sclXMinSpin,randomUI_sclXMaxSpin,randomUI_sclYLabel,randomUI_sclYMinSpin,randomUI_sclYMaxSpin,randomUI_sclZLabel,randomUI_sclZMinSpin,randomUI_sclZMaxSpin,randomUI_wholeTitle,randomUI_wholeMinTitle,randomUI_wholeMaxTitle,randomUI_wholeMinSpin,randomUI_wholeMaxSpin,randomUI_movTitle,randomUI_movMinTitle,randomUI_movMaxTitle,randomUI_movXLabel,randomUI_movXMinSpin,randomUI_movXMaxSpin,randomUI_movYLabel,randomUI_movYMinSpin,randomUI_movYMaxSpin,randomUI_movZLabel,randomUI_movZMinSpin,randomUI_movZMaxSpin,randomUI_projectCheck,randomUI_alignCheck,randomUI_resetRotation,randomUI_resetScale,randomUI_resetWholeScale,randomUI_resetMovement) do c.enabled=layer!=undefined
             try (undo off ((randomUI_wholeMinSpin.value=randomUI_obj.wholeScaleMin;randomUI_wholeMaxSpin.value=randomUI_obj.wholeScaleMax;randomUI_projectCheck.checked=randomUI_obj.projectMove;randomUI_rotXMinSpin.value=randomUI_obj.rotXMin;randomUI_rotXMaxSpin.value=randomUI_obj.rotXMax;randomUI_rotYMinSpin.value=randomUI_obj.rotYMin;randomUI_rotYMaxSpin.value=randomUI_obj.rotYMax;randomUI_rotZMinSpin.value=randomUI_obj.rotZMin;randomUI_rotZMaxSpin.value=randomUI_obj.rotZMax;randomUI_sclXMinSpin.value=randomUI_obj.sclXMin;randomUI_sclXMaxSpin.value=randomUI_obj.sclXMax;randomUI_sclYMinSpin.value=randomUI_obj.sclYMin;randomUI_sclYMaxSpin.value=randomUI_obj.sclYMax;randomUI_sclZMinSpin.value=randomUI_obj.sclZMin;randomUI_sclZMaxSpin.value=randomUI_obj.sclZMax;randomUI_movXMinSpin.value=randomUI_obj.movXMinWU;randomUI_movXMaxSpin.value=randomUI_obj.movXMaxWU;randomUI_movYMinSpin.value=randomUI_obj.movYMinWU;randomUI_movYMaxSpin.value=randomUI_obj.movYMaxWU;randomUI_movZMinSpin.value=randomUI_obj.movZMinWU;randomUI_movZMaxSpin.value=randomUI_obj.movZMaxWU;randomUI_controlsReady=true;randomUI_alignCheck.checked=randomUI_obj.alignNormal))) catch(randomUI_binding=false;randomUI_controlsReady=true;throw())
             randomUI_controlsReady=true;randomUI_binding=false
         )
+        on randomUI_presetsButton pressed do if controlsReady and not binding and root!=undefined and randomUI_controlsReady and not randomUI_binding and CyrusLicenseCanEdit() do (try(CyrusOpenPresets randomUI_root randomUI_owner "transforms")catch(messageBox (getCurrentException()) title:"Cyrus presets")
         -- A dotNetControl has both a managed child and a native rollout host.
         -- Hiding only the child leaves its host over other controls on first open.
+            if controlsReady and root!=undefined do layout()
+        )
         fn setHostedVisible control visibleState = (
             if control.visible!=visibleState do control.visible=visibleState
             for handle in control.hwnd where handle!=0 do (if (bit.get (windows.getWindowLong handle #style) 29)!=visibleState do windows.showWindow handle (if visibleState then #showNoActivate else #hide))
@@ -8514,6 +8798,15 @@ initialRollupState:0x8
         fn layout = (
             local widthValue=amax 140 transformsUI.width,y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false
             randomUI_rotMinTitle.visible=false;randomUI_rotMaxTitle.visible=false;randomUI_rotXLabel.visible=false;randomUI_rotYLabel.visible=false;randomUI_rotZLabel.visible=false;randomUI_sclMinTitle.visible=false;randomUI_sclMaxTitle.visible=false;randomUI_sclXLabel.visible=false;randomUI_sclYLabel.visible=false;randomUI_sclZLabel.visible=false;randomUI_wholeMinTitle.visible=false;randomUI_wholeMaxTitle.visible=false;randomUI_movMinTitle.visible=false;randomUI_movMaxTitle.visible=false;randomUI_movXLabel.visible=false;randomUI_movYLabel.visible=false;randomUI_movZLabel.visible=false
+            rowControls=#(randomUI_presetsButton);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/70))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
             rowControls=#(randomUI_rotTitle);show=(true and (true))
             for c in rowControls where c.visible!=show do c.visible=show
             if show do (
@@ -8740,7 +9033,7 @@ initialRollupState:0x8
                 if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)
                 obj=owner
                 randomUI_root=root;randomUI_owner=owner;randomUI_panel=panel;randomUI_controlsReady=controlsReady;randomUI_binding=binding
-            if owner!=undefined then (randomUI_bind owner;) else (for c in #(randomUI_rotTitle,randomUI_rotMinTitle,randomUI_rotMaxTitle,randomUI_rotXLabel,randomUI_rotXMinSpin,randomUI_rotXMaxSpin,randomUI_rotYLabel,randomUI_rotYMinSpin,randomUI_rotYMaxSpin,randomUI_rotZLabel,randomUI_rotZMinSpin,randomUI_rotZMaxSpin,randomUI_sclTitle,randomUI_sclMinTitle,randomUI_sclMaxTitle,randomUI_sclXLabel,randomUI_sclXMinSpin,randomUI_sclXMaxSpin,randomUI_sclYLabel,randomUI_sclYMinSpin,randomUI_sclYMaxSpin,randomUI_sclZLabel,randomUI_sclZMinSpin,randomUI_sclZMaxSpin,randomUI_wholeTitle,randomUI_wholeMinTitle,randomUI_wholeMaxTitle,randomUI_wholeMinSpin,randomUI_wholeMaxSpin,randomUI_movTitle,randomUI_movMinTitle,randomUI_movMaxTitle,randomUI_movXLabel,randomUI_movXMinSpin,randomUI_movXMaxSpin,randomUI_movYLabel,randomUI_movYMinSpin,randomUI_movYMaxSpin,randomUI_movZLabel,randomUI_movZMinSpin,randomUI_movZMaxSpin,randomUI_projectCheck,randomUI_alignCheck,randomUI_resetRotation,randomUI_resetScale,randomUI_resetWholeScale,randomUI_resetMovement) do c.enabled=false;randomUI_controlsReady=false)
+            if owner!=undefined then (randomUI_bind owner;) else (for c in #(randomUI_presetsButton,randomUI_rotTitle,randomUI_rotMinTitle,randomUI_rotMaxTitle,randomUI_rotXLabel,randomUI_rotXMinSpin,randomUI_rotXMaxSpin,randomUI_rotYLabel,randomUI_rotYMinSpin,randomUI_rotYMaxSpin,randomUI_rotZLabel,randomUI_rotZMinSpin,randomUI_rotZMaxSpin,randomUI_sclTitle,randomUI_sclMinTitle,randomUI_sclMaxTitle,randomUI_sclXLabel,randomUI_sclXMinSpin,randomUI_sclXMaxSpin,randomUI_sclYLabel,randomUI_sclYMinSpin,randomUI_sclYMaxSpin,randomUI_sclZLabel,randomUI_sclZMinSpin,randomUI_sclZMaxSpin,randomUI_wholeTitle,randomUI_wholeMinTitle,randomUI_wholeMaxTitle,randomUI_wholeMinSpin,randomUI_wholeMaxSpin,randomUI_movTitle,randomUI_movMinTitle,randomUI_movMaxTitle,randomUI_movXLabel,randomUI_movXMinSpin,randomUI_movXMaxSpin,randomUI_movYLabel,randomUI_movYMinSpin,randomUI_movYMaxSpin,randomUI_movZLabel,randomUI_movZMinSpin,randomUI_movZMaxSpin,randomUI_projectCheck,randomUI_alignCheck,randomUI_resetRotation,randomUI_resetScale,randomUI_resetWholeScale,randomUI_resetMovement) do c.enabled=false;randomUI_controlsReady=false)
                 randomUI_binding=false;setupGrips();controlsReady=true;binding=false;layout();true
             )catch(binding=false;controlsReady=false;throw())
         )
@@ -8758,6 +9051,7 @@ initialRollupState:0x8
     rollout spacingUI "Spacing & cleanup" width:#cmdPanel category:100 autoLayoutOnResize:false (
         local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=true,setSpecific=false
         local layout,lastLayoutWidth=0
+        button proceduralUI_presetsButton "Presets..." width:130 height:22 tooltip:"Save or apply named spacing settings. Assets and receiver references are preserved."
         dropdownlist proceduralUI_scopeList "" items:#("Within this layer","Between layers") pos:[8,8] width:(spacingUI.width-8) selection:1 tooltip:"Choose spacing within the selected layer or between it and another layer."
         label proceduralUI_scopeList_caption "Spacing scope" pos:[6,6] width:(spacingUI.width-12) height:18
         dropdownlist proceduralUI_peerList "" items:#() pos:[8,8] width:((spacingUI.width-16-((amin 1 (amax 1 (floor ((spacingUI.width-8)/58))))-1)*4)/(amin 1 (amax 1 (floor ((spacingUI.width-8)/58)))))
@@ -8843,6 +9137,16 @@ initialRollupState:0x8
             proceduralUI_scopeList.items=#("Within this layer","Between layers")
             proceduralUI_scopeList.selection=amax 1 (findItem proceduralUI_scopeRows previous)
             proceduralUI_bindRule();proceduralUI_controlsReady=true;proceduralUI_binding=false
+        )
+        on proceduralUI_presetsButton pressed do if controlsReady and not binding and root!=undefined and proceduralUI_controlsReady and not proceduralUI_binding and CyrusLicenseCanEdit() do (try(
+            local peer=undefined
+            if proceduralUI_currentScope()==4 do (
+                if proceduralUI_peerList.selection<1 or proceduralUI_peerList.selection>proceduralUI_peers.count do throw "Select another layer for the spacing pair."
+                peer=proceduralUI_peers[proceduralUI_peerList.selection]
+            )
+            CyrusOpenPresets proceduralUI_root proceduralUI_owner "spacing" peer:peer
+        )catch(messageBox (getCurrentException()) title:"Cyrus presets")
+            if controlsReady and root!=undefined do layout()
         )
         fn proceduralUI_saveRule = (
             if proceduralUI_binding or not proceduralUI_controlsReady do return false
@@ -9083,6 +9387,15 @@ initialRollupState:0x8
                 fitLabel heading_0 18 cellWidth
                 stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
                 rowHeight=(amax #(heading_0.height))+2+captionHeight
+                for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
+                y+=(ceil (rowControls.count as float/columns))*rowHeight
+            )
+            rowControls=#(proceduralUI_presetsButton);show=(true and (true))
+            for c in rowControls where c.visible!=show do c.visible=show
+            if show do (
+                columns=(amin rowControls.count (amax 1 (floor ((widthValue-8)/70))));cellWidth=(widthValue-12-(columns-1)*4)/columns
+                stackedCaption=false;captionHeight=amax 0 (if stackedCaption then 0 else 0)
+                rowHeight=(amax #(22))+2+captionHeight
                 for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)
                 y+=(ceil (rowControls.count as float/columns))*rowHeight
             )
@@ -9357,7 +9670,7 @@ initialRollupState:0x8
             instanceRadiusUI_root=root;instanceRadiusUI_owner=owner;instanceRadiusUI_panel=panel;instanceRadiusUI_controlsReady=controlsReady;instanceRadiusUI_binding=binding
             spacingUI_root=root;spacingUI_owner=owner;spacingUI_panel=panel;spacingUI_controlsReady=controlsReady;spacingUI_binding=binding
             separationUI_root=root;separationUI_owner=owner;separationUI_panel=panel;separationUI_controlsReady=controlsReady;separationUI_binding=binding
-            if owner!=undefined then (proceduralUI_bind owner;) else (for c in #(proceduralUI_scopeList,proceduralUI_peerList,proceduralUI_enabledCheck,proceduralUI_multiplierSpin,proceduralUI_gapSpin,proceduralUI_planarCheck,proceduralUI_ruleInfo,proceduralUI_resetRule) do c.enabled=false;proceduralUI_controlsReady=false)
+            if owner!=undefined then (proceduralUI_bind owner;) else (for c in #(proceduralUI_presetsButton,proceduralUI_scopeList,proceduralUI_peerList,proceduralUI_enabledCheck,proceduralUI_multiplierSpin,proceduralUI_gapSpin,proceduralUI_planarCheck,proceduralUI_ruleInfo,proceduralUI_resetRule) do c.enabled=false;proceduralUI_controlsReady=false)
             if owner!=undefined then (instanceRadiusUI_bind owner;) else (for c in #(instanceRadiusUI_radiusMode,instanceRadiusUI_radiusSpin,instanceRadiusUI_applyRadius,instanceRadiusUI_resetRadius,instanceRadiusUI_clearRadius,instanceRadiusUI_info) do c.enabled=false;instanceRadiusUI_controlsReady=false)
             if owner!=undefined then (spacingUI_bind owner;) else (for c in #(spacingUI_relaxCheck,spacingUI_spacingSpin,spacingUI_iterationsSpin,spacingUI_strengthSpin,spacingUI_boundaryRelaxCheck,spacingUI_finalStrengthSpin,spacingUI_finalIterSpin,spacingUI_finalMoveSpin,spacingUI_orderHint) do c.enabled=false;spacingUI_controlsReady=false)
             if owner!=undefined then (separationUI_bind owner;) else (for c in #(separationUI_cleanCheck,separationUI_neighborSpin,separationUI_minNeighborSpin,separationUI_minIslandSpin,separationUI_planarCheck,separationUI_helpInfo) do c.enabled=false;separationUI_controlsReady=false)

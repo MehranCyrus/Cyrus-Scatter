@@ -37,6 +37,17 @@
         ]
       },
       {
+        "title": "Named settings and curve presets",
+        "paragraphs": [
+          "Use Presets... in Amount, Transforms or Spacing & cleanup. Curve presets are available from the existing density/scale graph. Save new captures a named item; selecting it is passive, and Apply changes the target shown in the dialog. Reopen the browser to target a different layer.",
+          "Population includes amount, density, seed and retry policy. Transforms include the layer rotation, scale, movement, normal alignment and projection. Assets, surfaces, IDs, maps and layout remain linked to the scene. Physical distances convert across system units; density stays per square metre.",
+          "Spacing stores the effective rule and applies an explicit override in the chosen Within this layer or Between layers scope. It does not store peer identities or change Relax/cleanup. Reset inheritance remains a separate control.",
+          "Curve presets preserve samples and editable handles while retaining enable flags, widths and scale ranges. Density and Paint scale use zero-to-one values; other scale curves support multipliers. Invalid or incompatible curves are rejected. One Undo/Redo restores Apply, and closing a graph after Undo does not reapply the preset.",
+          "Manual waits for Update scatter; Live follows normal update callbacks. Browsing, saving and renaming do not calculate plants. Animated or expression-controlled targets are rejected. Static shared controllers are detached so another owner is preserved.",
+          "The local library is CyrusScatter/Presets inside the per-user Max PlugCFG directory. Share the .cspreset.json files. Limits are 512 files, 64 KiB per file and 80-character names. Rename changes the library name; Delete confirms removal of the selected file. Invalid files and failed writes report errors. Complete planting recipes and asset substitution are a later feature."
+        ]
+      },
+      {
         "title": "Vector painting",
         "paragraphs": [
           "Turn on **Use Paint Areas**, add a named area and choose one receiver from the layer. Select Paint or Erase, set Radius and press Start Brush. Paint joins circular footprints into a vector region; Erase cuts coverage and holes. Stop ends the session.",
