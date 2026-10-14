@@ -6,9 +6,11 @@ entire phase passed. Existing defect IDs stay in [BACKLOG](../../BACKLOG.md).
 
 ## Current action
 
-**P05 — Paint/spline conversion qualified (0.85.0); Git checkpoint next.**
-P01 through P04 were committed and pushed; the latest verified remote checkpoint
-is `df917ad89857d49a037d995d988f93475642c83a`. Agent-run testing continues each phase.
+**Paused after completed P05 (0.85.0), at the user's request for discussion.**
+P01 through P05 were committed and pushed; the latest verified implementation
+checkpoint is `8985e040831813d02f61c863983fe1afc4b1f4b1`.
+P06 has had preliminary source inspection only; implementation has not started.
+Do not start another phase until the user resumes the program.
 The user's artist acceptance is at the end. Computer Use recovered during P05;
 physical conversion controls passed in both Max versions. See [P05](P05.md).
 
@@ -78,7 +80,7 @@ Preparatory [source/format research](P02_PREFLIGHT.md) is recorded. Implementati
 - [x] Integrate one-Undo ownership, Manual/Live and bounded geometry handling.
 - [x] Test coverage equivalence, self-intersections, transforms/units, failures and persistence.
 - [x] Qualify actual conversion controls and unchanged other layers.
-- [ ] Update version/docs; commit, push and verify.
+- [x] Update version/docs; commit, push and verify.
 
 ## P06 — grid layouts
 
