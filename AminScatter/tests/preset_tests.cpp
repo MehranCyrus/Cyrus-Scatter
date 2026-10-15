@@ -1,4 +1,5 @@
 #include "presets.h"
+#include <nlohmann/json.hpp>
 #include <iostream>
 #include <stdexcept>
 using namespace cyrus::presets;
@@ -7,7 +8,7 @@ template<class F>void rejected(F f){bool failed=false;try{f();}catch(const std::
 int main(){try{
     Document a;a.category="population";a.name="Trees \xe2\x80\x94 12 / m2";a.values={300,2,12,57,1,8,4,1};
     const auto text=serialize(a);const auto b=parse(text);check(b.values==a.values&&b.name==a.name&&b.category==a.category);
-    auto changed=text;const auto at=changed.find("\"version\": 1");check(at!=std::string::npos);changed.replace(at,12,"\"version\": 2");rejected([&]{parse(changed);});
+    auto changed=text;const auto at=changed.find("\"version\": 2");check(at!=std::string::npos);changed.replace(at,12,"\"version\": 3");rejected([&]{parse(changed);});
     rejected([&]{parse(text+"{}");});rejected([&]{parse(std::string(maxBytes+1,' '));});
     changed=text;changed.insert(changed.find('{')+1,"\"version\":1,");rejected([&]{parse(changed);});
     changed=text;const auto count=changed.find("\"amount\": 300");changed.replace(count,13,"\"amount\": 3.0");rejected([&]{parse(changed);});
@@ -19,7 +20,14 @@ int main(){try{
     c.multiplier=true;c.graph[1][0]=0;rejected([&]{serialize(c);});c.graph.clear();check(parse(serialize(c)).graph.empty());
     Document transforms;transforms.category="transforms";transforms.name="Static axes";
     for(const auto& f:fields(transforms.category))transforms.values.push_back(f.minimum);
-    check(parse(serialize(transforms)).values==transforms.values);transforms.values[3]=36001;rejected([&]{serialize(transforms);});
+    check(parse(serialize(transforms)).values==transforms.values);
+    auto old=nlohmann::json::parse(serialize(transforms));old["version"]=1;
+    for(const auto& name:{"orientationMode","orientationBlend","orientationX","orientationY","orientationZ"})old["values"].erase(name);
+    auto upgraded=parse(old.dump());check(upgraded.values[29]==1&&upgraded.values[30]==100&&upgraded.values[32]==1);
+    old["values"]["orientationMode"]=1;rejected([&]{parse(old.dump());});
+    upgraded.values[29]=2;upgraded.values[31]=0;upgraded.values[32]=0;upgraded.values[33]=0;rejected([&]{serialize(upgraded);});
+    upgraded.values[33]=1;check(parse(serialize(upgraded)).values==upgraded.values);
+    transforms.values[3]=36001;rejected([&]{serialize(transforms);});
     transforms.values[3]=10;transforms.values[4]=5;rejected([&]{serialize(transforms);});
     a.name=std::string(81,'a');rejected([&]{serialize(a);});
     a.name="Trees";a.values[0]=1000001;rejected([&]{serialize(a);});

@@ -14,6 +14,8 @@ struct Field { const char* name; const char* type; bool distance; };
 const std::vector<Field>& fields();
 // Closed, complete static settings. Host references are role IDs, never handles.
 void validateSettings(const Json& settings);
+// Narrow v1 -> v2 read conversion with original closed keys and neutral defaults.
+Json currentDocument(const Json& document);
 void validate(const Json& document, bool hydrated=true);
 Json parse(const std::string& text);
 std::string serialize(const Json& document);

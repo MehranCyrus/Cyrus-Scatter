@@ -49,7 +49,7 @@ Value* recipeValue(const r::Json& value){
 template<class F>Value* recipeAPI(F f){try{return f();}catch(const std::exception& e){throw RuntimeError(_T("Recipe: "),recipeString(e.what()));}}
 }
 def_visible_primitive(cyrusRecipeVersion,"cyrusRecipeVersion");
-Value* cyrusRecipeVersion_cf(Value**,int n){check_arg_count(cyrusRecipeVersion,0,n);return Integer::intern(1);}
+Value* cyrusRecipeVersion_cf(Value**,int n){check_arg_count(cyrusRecipeVersion,0,n);return Integer::intern(2);}
 def_visible_primitive(cyrusRecipeCheckStatic,"cyrusRecipeCheckStatic");
 Value* cyrusRecipeCheckStatic_cf(Value** a,int n){check_arg_count(cyrusRecipeCheckStatic,1,n);auto* owner=a[0]->to_reftarg();if(!owner)throw RuntimeError(_T("Recipe owner is missing"));
     for(int b=0;b<owner->NumParamBlocks();++b){auto* block=owner->GetParamBlock(b);if(!block)continue;for(int p=0;p<block->NumParams();++p){const auto id=block->IndextoID(p);const int entries=is_tab(block->GetParameterType(id))?block->Count(id):1;for(int i=0;i<entries;++i){auto* control=block->GetControllerByIndex(p,i);if(!control)continue;const auto type=control->ClassID();bool supported=false;if(type.PartB()==0&&control->NumKeys()==0)switch(type.PartA()){case LININTERP_FLOAT_CLASS_ID:case HYBRIDINTERP_FLOAT_CLASS_ID:case TCBINTERP_FLOAT_CLASS_ID:case HYBRIDINTERP_POINT3_CLASS_ID:case HYBRIDINTERP_COLOR_CLASS_ID:case TCBINTERP_POINT3_CLASS_ID:supported=true;break;default:break;}if(!supported){const auto* name=block->GetParamDef(id).int_name;throw RuntimeError(_T("Save Everything requires a supported static parameter controller: "),new String(name?name:_T("unnamed parameter")));}}}}

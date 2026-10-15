@@ -1256,10 +1256,11 @@
   },
   "layer.randomUI.alignCheck": {
     "label": "Align to normal",
-    "help": "Align instances to the receiving surface normal.",
+    "help": "Blend the preferred up axis from world Z toward the surface normal. Direction modes use it to control roll. Slope eligibility is independent.",
+    "owner_context": "Selected layer",
     "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:3848",
-      "AminScatter/tools/ui/templates/unified-core.ms:3863"
+      "docs/plans/improvement-program/I04_ORIENTATION.md:7",
+      "AminScatter/tools/ui/templates/unified-core.ms:4892"
     ]
   },
   "layer.randomUI.resetRotation": {
@@ -2306,6 +2307,69 @@
       "AminScatter/tools/ui/templates/recipes.ms:81",
       "AminScatter/tools/ui/templates/recipes.ms:200",
       "AminScatter/tools/ui/templates/recipes.ms:291"
+    ]
+  },
+  "layer.randomUI.orientationList": {
+    "label": "Orientation mode",
+    "help": "Random keeps the usual random rotation frame. World direction or Look at target sets the heading before local random rotations. Models use local +Z up and their Source Forward axis.",
+    "owner_context": "Selected layer",
+    "evidence": [
+      "docs/plans/improvement-program/I04_ORIENTATION.md:7",
+      "AminScatter/tools/ui/templates/unified-core.ms:4893"
+    ]
+  },
+  "layer.randomUI.normalBlendSpin": {
+    "label": "Normal %",
+    "help": "0 keeps world +Z as preferred up; 100 follows the geometric face normal. Between them uses an angular blend. In direction modes this controls roll.",
+    "owner_context": "Selected layer",
+    "evidence": [
+      "docs/plans/improvement-program/I04_ORIENTATION.md:7",
+      "AminScatter/tools/ui/templates/unified-core.ms:4894"
+    ]
+  },
+  "layer.randomUI.directionXSpin": {
+    "label": "World direction X",
+    "help": "World direction X component. The vector needs at least one nonzero component. Its length does not affect the result.",
+    "owner_context": "Selected layer",
+    "evidence": [
+      "docs/plans/improvement-program/I04_ORIENTATION.md:7",
+      "AminScatter/tools/ui/templates/unified-core.ms:4895"
+    ]
+  },
+  "layer.randomUI.directionYSpin": {
+    "label": "World direction Y",
+    "help": "World direction Y component. This is a direction, not a position or distance.",
+    "owner_context": "Selected layer",
+    "evidence": [
+      "docs/plans/improvement-program/I04_ORIENTATION.md:7",
+      "AminScatter/tools/ui/templates/unified-core.ms:4896"
+    ]
+  },
+  "layer.randomUI.directionZSpin": {
+    "label": "World direction Z",
+    "help": "World direction Z component. Nonzero values can aim models above or below the horizon.",
+    "owner_context": "Selected layer",
+    "evidence": [
+      "docs/plans/improvement-program/I04_ORIENTATION.md:7",
+      "AminScatter/tools/ui/templates/unified-core.ms:4897"
+    ]
+  },
+  "layer.randomUI.targetPickButton": {
+    "label": "Pick orientation target",
+    "help": "Aim each plant at a scene object's pivot. Its transform is used; its geometry is not read. Relevant target or parent motion updates Live.",
+    "owner_context": "Selected layer",
+    "evidence": [
+      "docs/plans/improvement-program/I04_ORIENTATION.md:7",
+      "AminScatter/tools/ui/templates/unified-core.ms:4898"
+    ]
+  },
+  "layer.randomUI.targetClearButton": {
+    "label": "Clear orientation target",
+    "help": "Clear this layer's target reference. Look at target needs a valid target before Update can publish.",
+    "owner_context": "Selected layer",
+    "evidence": [
+      "docs/plans/improvement-program/I04_ORIENTATION.md:7",
+      "AminScatter/tools/ui/templates/unified-core.ms:4899"
     ]
   }
 }

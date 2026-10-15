@@ -1,6 +1,6 @@
 # Cyrus planting examples
 
-Four editable examples for Cyrus Scatter 0.82.6.1 and 3ds Max 2027. They use
+Four editable examples originally captured for Cyrus Scatter 0.82.6.1, requalified for 0.83.0 and 3ds Max 2027. Their original format-1 recipe bytes, compatible scenes and thumbnails are retained; format 2 reads them with neutral orientation defaults. They use
 procedural pyramids as groundcover, shrubs, flowers and trees. Replace these model
 roles with your own assets; no third-party vegetation library is required.
 

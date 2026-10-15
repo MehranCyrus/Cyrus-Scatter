@@ -36,7 +36,9 @@ const std::vector<Field>& fields(const std::string& category){
         {"wholeScaleMin",K::number,0,10000},{"wholeScaleMax",K::number,0,10000},
         {"scaleMinimum",K::number,0,10000},{"scaleMaximum",K::number,0,10000},
         {"tiltDegrees",K::number,0,36000},{"yawMinimum",K::number,-36000,36000},
-        {"yawMaximum",K::number,-36000,36000},{"movementRange",K::number,0,1e9,true}};
+        {"yawMaximum",K::number,-36000,36000},{"movementRange",K::number,0,1e9,true},
+        {"orientationMode",K::integer,1,3},{"orientationBlend",K::number,0,100},
+        {"orientationX",K::number,-1e6,1e6},{"orientationY",K::number,-1e6,1e6},{"orientationZ",K::number,-1e6,1e6}};
     static const std::vector<Field> spacing={{"enabled",K::boolean,0,1},{"multiplier",K::number,0,10000},{"gap",K::number,0,1e9,true},{"planar",K::boolean,0,1}};
     static const std::vector<Field> empty;
     if(category=="population")return population;
@@ -60,6 +62,7 @@ void validate(const Document& d){
     if(d.category=="transforms"){
         for(std::size_t i=3;i<=23;i+=2)require(d.values[i]<=d.values[i+1],"Transform minimum exceeds maximum");
         require(d.values[26]<=d.values[27],"Yaw minimum exceeds maximum");
+        if(d.values[29]==2)require(d.values[31]!=0||d.values[32]!=0||d.values[33]!=0,"World direction must be nonzero");
     }
     if(!curve(d.category)){require(d.samples.empty()&&d.graph.empty()&&!d.multiplier,"Unexpected curve data");return;}
     require(d.category=="scale_curve"||!d.multiplier,"Density curves cannot use multiplier units");
@@ -86,11 +89,18 @@ Document parse(const std::string& text){
         if(event==Json::parse_event_t::object_end)objectKeys.pop_back();
         return true;
     };
-    const auto json=Json::parse(text,callback);
+    auto json=Json::parse(text,callback);
     keys(json,{"format","version","category","name","values"});
-    require(json["format"]=="cyrus.settings-preset"&&json["version"].is_number_integer()&&json["version"]==1,"Unsupported preset format/version");
+    require(json["format"]=="cyrus.settings-preset"&&json["version"].is_number_integer()&&(json["version"]==1||json["version"]==2),"Unsupported preset format/version");
     require(json["category"].is_string()&&json["name"].is_string(),"Invalid preset metadata");
     Document d;d.category=json["category"].get<std::string>();d.name=json["name"].get<std::string>();
+    if(json["version"]==1&&d.category=="transforms"){
+        // Only the just-delivered v1 numeric contract is extended. Closed keys
+        // below still reject missing/unknown old fields; never alter input files.
+        auto& values=json["values"];require(values.is_object(),"Invalid transform values");
+        for(const auto& name:{"orientationMode","orientationBlend","orientationX","orientationY","orientationZ"})require(!values.contains(name),"Orientation fields require preset version 2");
+        values["orientationMode"]=1;values["orientationBlend"]=100.;values["orientationX"]=0.;values["orientationY"]=1.;values["orientationZ"]=0.;
+    }
     const auto& spec=fields(d.category);const auto& values=json["values"];
     if(curve(d.category)){
         keys(values,{"domain","samples","graph"});
@@ -119,7 +129,7 @@ std::string serialize(const Document& d){
         else if(spec[i].kind==K::integer)values[spec[i].name]=static_cast<std::int64_t>(d.values[i]);
         else values[spec[i].name]=d.values[i];
     }}
-    const auto text=Json{{"format","cyrus.settings-preset"},{"version",1},{"category",d.category},{"name",d.name},{"values",values}}.dump(2)+"\n";
+    const auto text=Json{{"format","cyrus.settings-preset"},{"version",2},{"category",d.category},{"name",d.name},{"values",values}}.dump(2)+"\n";
     require(text.size()<=maxBytes,"Preset exceeds 64 KiB");return text;
 }
 }

@@ -28,7 +28,7 @@ bool presetBoolean(Value* v){if(v!=&true_value&&v!=&false_value)throw RuntimeErr
 }
 
 def_visible_primitive(cyrusPresetVersion,"cyrusPresetVersion");
-Value* cyrusPresetVersion_cf(Value**,int count){check_arg_count(cyrusPresetVersion,0,count);return Integer::intern(1);}
+Value* cyrusPresetVersion_cf(Value**,int count){check_arg_count(cyrusPresetVersion,0,count);return Integer::intern(2);}
 def_visible_primitive(cyrusPresetSchema,"cyrusPresetSchema");
 Value* cyrusPresetSchema_cf(Value** args,int count){
     check_arg_count(cyrusPresetSchema,1,count);

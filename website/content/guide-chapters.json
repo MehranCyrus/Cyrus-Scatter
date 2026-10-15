@@ -112,9 +112,9 @@
       {
         "title": "Final artist acceptance",
         "paragraphs": [
-          "Run the 0.82.6.1 Max 2027 installer through Scripting > Run Script, then restart Max so the script and native modules match. This delivery is tested in Max 2027 only. Renderer and physical-input coverage remains specific to the documented workflow.",
+          "Run the 0.83.0 Max 2027 installer through Scripting > Run Script, then restart Max so the script and native modules match. This delivery is tested in Max 2027 only. Renderer and physical-input coverage remains specific to the documented workflow.",
           "Team-pilot builds expose License / activation. Export an activation request and import the returned license. The pilot license lasts 30 days from issuance; expiry locks authoring while existing scenes remain loadable/renderable.",
-          "Development source 0.82.6.1 uses schema 58; earlier schemas are rejected without migration. Preserve earlier scenes with their matching build. Current settings use typed distances. Preserve originals and use saved units for receiver-bound Paint/Edit data. Test receivers, Points/models, Bands, painting, mesh-channel masks, Manual/Live, Undo/Redo, save/reopen and the intended renderer on a copy. Physical picker/DPI/tablet and long-session acceptance remain open.",
+          "Development source 0.83.0 uses schema 58; earlier schemas are rejected without migration. Preserve earlier scenes with their matching build. Current settings use typed distances. Preserve originals and use saved units for receiver-bound Paint/Edit data. Test receivers, Points/models, Bands, painting, mesh-channel masks, Manual/Live, Undo/Redo, save/reopen and the intended renderer on a copy. Physical picker/DPI/tablet and long-session acceptance remain open.",
           "[View the changelog](#/changelog) for additions and fixes, or use the [testing walkthrough](#/checklist) to record your own observations."
         ]
       },
@@ -127,6 +127,15 @@
           "Choose My recipes (Documents/CyrusScatter/Library), Bundled examples, or Custom folder. Search matches names, layers, tags, categories and descriptions. The summary shows layers, Paint and external roles. Refresh explicitly rereads disk changes; Cancel stops a scan. Up to 10,000 recipes are indexed with 128 visible rows. Browsing does not evaluate terrain or hydrate Paint attachments.",
           "Choose an optional PNG before Save Everything: at most 1024 pixels per axis and 2 MiB. Thumbnails are stored and reused, never regenerated on selection. Keep the optional .library.json and thumbnail PNG with the recipe and Paint payload when sharing. Saving from Bundled examples writes into My recipes.",
           "The four initial examples are layered meadow, trees with understory, mountain planting and painted garden with spline borders. They include permitted procedural geometry, actual-result thumbnails and matching editable Max scenes in the versioned Library folder under Max user scripts. Open a copy of a matching scene to test compatible Paint bindings. Artist model substitution remains explicit."
+        ]
+      },
+      {
+        "title": "Direction and normal blending",
+        "paragraphs": [
+          "In Transforms > Orientation, choose Random, World direction or Look at target. World direction aims along a nonzero XYZ vector. Look at target aims toward a picked object’s world pivot. Models use local +Z up and the Forward axis set in Models & Points. Local random rotations still apply; zero their ranges to check exact aim.",
+          "Align to normal and Normal % set preferred up: disabled or 0% uses world +Z; 100% uses the geometric face normal, with angular blending between. Direction modes use this to control roll while preserving heading. Slope eligibility is independent. Coincident targets and parallel heading/up use deterministic fallbacks.",
+          "Manual waits for Update. Live follows relevant target/parent or orientation animation. Missing targets and zero vectors retain the last complete plants and report failure. Editing the target’s shape or rotating it around an unchanged pivot does not calculate scatter.",
+          "Complete recipes bind orientation targets as external roles. Numeric Transform presets preserve the destination target and require it for Look at target. New saves use format 2; the preceding format 1 reads with neutral orientation defaults without rewriting Paint or files. Physical picker, 4K and mixed-monitor testing remains artist acceptance."
         ]
       }
     ]
@@ -208,7 +217,7 @@
         "title": "The product today",
         "paragraphs": [
           "The main product is artist-controlled scattering in 3ds Max: layers, receivers, models and Points, optional vector Paint Areas, layouts, area limits, transforms, spacing, previews and exact output. AI is optional and separate.",
-          "Current development/package is Scatter 0.82.6.1 / schema 58, with searchable complete recipes, stored thumbnails and four procedural examples. Native Paint, explicit scene roles and transactional import are preserved. Current qualification uses Max 2027 only. The active program resumes Phase 6; remaining features and the final EXE are incomplete. Physical input, sustained heavy scenes, full renderer/platform coverage and commercial release readiness remain separate acceptance work."
+          "Current development/package is Scatter 0.83.0 / schema 58, with direction/target controls and angular normal blending, retaining searchable complete recipes, stored thumbnails and four procedural examples. Native Paint, explicit scene roles and transactional import are preserved. Current qualification uses Max 2027 only. The active program resumes Phase 6; remaining features and the final EXE are incomplete. Physical input, sustained heavy scenes, full renderer/platform coverage and commercial release readiness remain separate acceptance work."
         ]
       },
       {

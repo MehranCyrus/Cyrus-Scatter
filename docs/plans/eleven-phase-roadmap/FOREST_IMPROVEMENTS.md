@@ -107,7 +107,7 @@ Recommended priorities after a future implementation authorization: establish I0
 
 **Tests:** flat/tilted/vertical faces, opposed normals, zero-length target vector, coincident/deleted target, nonuniform/mirrored transforms, axis conventions, 0/1 blend endpoints and animated target versus unrelated animation. Check complete matrices, finite orthogonal orientation where intended, final radii, Undo and reopen.
 
-**Exit:** orientation follows the declared convention and leaves unrelated sampling stable. P07 remains planned; difficulty ranking is not permission to skip paused P06. F02/F03/F07/F09/F10.
+**Exit:** orientation follows the declared convention and leaves unrelated sampling stable. I04/P07 is implemented and scoped-qualified as [0.83.0](../improvement-program/I04_0830.md) under the active goal, which explicitly resumes P06 and permits dependency-aware sequencing. F02/F03/F07/F09/F10.
 
 ## I05 — explicit variation policy for copy and import
 
@@ -353,3 +353,5 @@ These links point to local research evidence, which is outside the Cyrus Git rep
 | [Latest research validation](<F:/Cursor/_Cyrus_Apps/Forest Reverse/evidence/validation-library-20261015-08.json>) | Research artifact integrity; no vendor execution or performance parity |
 
 For the existing Cyrus recipe architecture, retain the [research contract](../../Scatter_Data_Recipes_Research_2026-10-15/PRESET_CONTRACT.md) as broader design and the [0.82.5 format](../recipes-0825/FORMAT.md) as the implemented wire contract. For the original phase outcomes, retain [IMPLEMENTATION](IMPLEMENTATION.md) and [VALIDATION](VALIDATION.md). Planning is complete. I01/I02 implementation and scoped acceptance are recorded in the [0.82.6 handoff](../panel-performance-0826/PROGRESS.md); later steps and their acceptance gates remain pending. Phase 6 stays paused.
+
+Current successor: [I04/P07 0.83.0 direction and normal blending](../improvement-program/I04_0830.md). I05 variation policy follows; P06 grids and the remaining program stay open. Historical version proposals above do not select future delivery numbers.

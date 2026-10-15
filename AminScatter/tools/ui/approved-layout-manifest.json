@@ -1710,6 +1710,60 @@
         },
         {
           "component": "randomUI",
+          "control": "orientationList",
+          "presentation": "randomUI_orientationList",
+          "advanced": false
+        },
+        {
+          "component": "randomUI",
+          "control": "normalBlendSpin",
+          "presentation": "randomUI_normalBlendSpin",
+          "advanced": false
+        },
+        {
+          "component": "randomUI",
+          "control": "directionXSpin",
+          "presentation": "randomUI_directionXSpin",
+          "advanced": false
+        },
+        {
+          "component": "randomUI",
+          "control": "directionYSpin",
+          "presentation": "randomUI_directionYSpin",
+          "advanced": false
+        },
+        {
+          "component": "randomUI",
+          "control": "directionZSpin",
+          "presentation": "randomUI_directionZSpin",
+          "advanced": false
+        },
+        {
+          "component": "randomUI",
+          "control": "targetPickButton",
+          "presentation": "randomUI_targetPickButton",
+          "advanced": false
+        },
+        {
+          "component": "randomUI",
+          "control": "targetClearButton",
+          "presentation": "randomUI_targetClearButton",
+          "advanced": false
+        },
+        {
+          "component": "randomUI",
+          "control": "targetInfo",
+          "presentation": "randomUI_targetInfo",
+          "advanced": false
+        },
+        {
+          "component": "randomUI",
+          "control": "orientationHelp",
+          "presentation": "randomUI_orientationHelp",
+          "advanced": false
+        },
+        {
+          "component": "randomUI",
           "control": "resetRotation",
           "presentation": "randomUI_resetRotation",
           "advanced": false

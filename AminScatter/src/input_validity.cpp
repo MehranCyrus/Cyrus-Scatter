@@ -68,7 +68,13 @@ void controllerValidity(Control* control, TimeValue t, Interval& valid) {
     valid &= local;
 }
 
-void settingsValidity(ReferenceTarget* owner, TimeValue t, Interval& valid) {
+bool orientationField(const MCHAR* name){
+    if(!name)return false;
+    for(const auto* field:{_T("alignNormal"),_T("orientationMode"),_T("orientationBlend"),_T("orientationX"),_T("orientationY"),_T("orientationZ"),_T("orientationTarget"),_T("sourceForwardAxes")})
+        if(_tcscmp(name,field)==0)return true;
+    return false;
+}
+void settingsValidity(ReferenceTarget* owner, TimeValue t, Interval& valid,bool excludeOrientation=false) {
     for (int b = 0; b < owner->NumParamBlocks(); ++b) {
         auto* block = owner->GetParamBlock(b);
         if (!block) continue;
@@ -76,6 +82,7 @@ void settingsValidity(ReferenceTarget* owner, TimeValue t, Interval& valid) {
         // whole block would import the node/PRS one-frame cache intervals.
         for (int p = 0; p < block->NumParams(); ++p) {
             const auto id = block->IndextoID(p);
+            if(excludeOrientation&&orientationField(block->GetParamDef(id).int_name))continue;
             const int entries = is_tab(block->GetParameterType(id)) ? block->Count(id) : 1;
             for (int i = 0; i < entries; ++i)
                 controllerValidity(block->GetControllerByIndex(p, i), t, valid);
@@ -106,15 +113,8 @@ Value* cyrusSourceWorldDependent_cf(Value** args,int count) {
 // Called on the Max thread when an input changes or its cached interval expires.
 // Never copies meshes, generates placements, or keeps scene references in C++.
 // The script owns the interval and discards it on actual input notifications.
-#ifdef CYRUS_ANALYZER_INPUT_VALIDITY
-def_visible_primitive(cyrusAnalyzerInputValidity, "cyrusAnalyzerInputValidity");
-Value* cyrusAnalyzerInputValidity_cf(Value** args, int count) {
-    check_arg_count(cyrusAnalyzerInputValidity, 3, count);
-#else
-def_visible_primitive(cyrusScatterInputValidity, "cyrusScatterInputValidity");
-Value* cyrusScatterInputValidity_cf(Value** args, int count) {
-    check_arg_count(cyrusScatterInputValidity, 3, count);
-#endif
+static Value* inputValidity(Value** args,int count,bool excludeOrientation=false){
+    if(count!=3)throw RuntimeError(_T("Input validity requires settings, nodes and maps"));
     for (int i = 0; i < 3; ++i) type_check(args[i], Array, _T("input validity dependencies"));
     auto* settings = static_cast<Array*>(args[0]);
     auto* nodes = static_cast<Array*>(args[1]);
@@ -124,7 +124,7 @@ Value* cyrusScatterInputValidity_cf(Value** args, int count) {
     for (int i = 0; i < settings->size; ++i) {
         auto* owner = settings->data[i]->to_reftarg();
         if (!owner) throw RuntimeError(_T("Missing Cyrus settings dependency"));
-        settingsValidity(owner, t, valid);
+        settingsValidity(owner, t, valid,excludeOrientation);
     }
     for (int i = 0; i < nodes->size; ++i) {
         auto* node = nodes->data[i]->to_node();
@@ -161,3 +161,43 @@ Value* cyrusScatterInputValidity_cf(Value** args, int count) {
     vl.result->append(valid == FOREVER ? &true_value : &false_value);
     return_value(vl.result);
 }
+#ifdef CYRUS_ANALYZER_INPUT_VALIDITY
+def_visible_primitive(cyrusAnalyzerInputValidity,"cyrusAnalyzerInputValidity");
+Value* cyrusAnalyzerInputValidity_cf(Value** a,int n){return inputValidity(a,n);}
+#else
+def_visible_primitive(cyrusScatterInputValidity,"cyrusScatterInputValidity");
+Value* cyrusScatterInputValidity_cf(Value** a,int n){return inputValidity(a,n);}
+def_visible_primitive(cyrusCandidateInputValidity,"cyrusCandidateInputValidity");
+Value* cyrusCandidateInputValidity_cf(Value** a,int n){return inputValidity(a,n,true);}
+def_visible_primitive(cyrusOrientationInputValidity,"cyrusOrientationInputValidity");
+Value* cyrusOrientationInputValidity_cf(Value** a,int n){
+    check_arg_count(cyrusOrientationInputValidity,3,n);auto* owner=a[0]->to_reftarg();
+    if(!owner)throw RuntimeError(_T("Orientation settings owner is missing"));
+    type_check(a[1],Array,_T("orientation parameter names"));auto* names=static_cast<Array*>(a[1]);
+    if(names->size>16)throw RuntimeError(_T("Orientation parameter limit exceeded"));
+    const auto t=MAXScript_time();Interval valid=FOREVER;
+    for(int f=0;f<names->size;++f){
+        type_check(names->data[f],String,_T("orientation parameter name"));const auto* name=names->data[f]->to_string();
+        if(!orientationField(name))throw RuntimeError(_T("Unsupported orientation parameter"));bool found=false;
+        for(int b=0;b<owner->NumParamBlocks();++b){auto* block=owner->GetParamBlock(b);if(!block)continue;
+            for(int p=0;p<block->NumParams();++p){const auto id=block->IndextoID(p);const auto* field=block->GetParamDef(id).int_name;
+                if(field&&_tcscmp(name,field)==0){found=true;const int entries=is_tab(block->GetParameterType(id))?block->Count(id):1;
+                    for(int k=0;k<entries;++k)controllerValidity(block->GetControllerByIndex(p,k),t,valid);}
+            }
+        }
+        if(!found)throw RuntimeError(_T("Orientation parameter is missing from the owner"));
+    }
+    if(a[2]!=&undefined){
+        auto* node=a[2]->to_node();if(!node)throw RuntimeError(_T("Orientation target is missing"));
+        auto* root=GetCOREInterface()->GetRootNode();bool constant=true;std::unordered_set<INode*> seen;
+        for(auto* parent=node;parent&&parent!=root;parent=parent->GetParentNode()){
+            if(!seen.insert(parent).second||seen.size()>4096)throw RuntimeError(_T("Orientation parent chain exceeds bounds"));
+            if(!constantController(parent->GetTMController()))constant=false;
+        }
+        if(!constant){Interval transform=FOREVER;node->GetNodeTM(t,&transform);valid&=transform;}
+    }
+    if(!valid.InInterval(t))valid.Set(t,t);
+    one_typed_value_local(Array* result);vl.result=new Array(3);
+    vl.result->append(Integer::intern(valid.Start()));vl.result->append(Integer::intern(valid.End()));vl.result->append(valid==FOREVER?&true_value:&false_value);return_value(vl.result);
+}
+#endif

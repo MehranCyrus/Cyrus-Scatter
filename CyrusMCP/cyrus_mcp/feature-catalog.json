@@ -1,9 +1,9 @@
 {
   "schema": "cyrus.feature-catalog/1.0",
   "authority": "Help only. Tool dispatch, closed schema and local approval determine authority.",
-  "capability_source_sha256": "cb3cdd6155d09599e8f961a813465ff974d3e2659fd5081e14749f35b3fdd266",
-  "control_inventory_sha256": "f1bc2bed09365f2becd9edc06e90a26da387e7cdccd13d4d328d8c6438b151a9",
-  "development_version": "0.82.6.1",
+  "capability_source_sha256": "590c28d7d511ece776cdcc3101b324cb3fbd842c32424d372a2fa08cdd33e902",
+  "control_inventory_sha256": "4675f07aca4dc979041258b3ee44d18ff5a0c7d276a4fadef84de8a84653a79a",
+  "development_version": "0.83.0",
   "mcp_version": "0.73.0",
   "calculation_model": "CyrusUnified1",
   "features": [
@@ -136,9 +136,9 @@
     {
       "feature_id": "C19",
       "title": "Rotation/scale/movement / layer",
-      "native": "XYZ/whole scale/rotation, normal alignment, projected movement and resets",
+      "native": "XYZ/whole scale/rotation, Random/World direction/Look at target, geometric-normal angular blend, projected movement and resets",
       "mcp": "Plan 0.73 bounded uniform/XYZ scale, yaw, XY tilt/projected movement subset",
-      "qualification_or_extension": "Full native-axis/mode parity; brute-force projection scaling remains open"
+      "qualification_or_extension": "I04 Max 2027 frame/target animation/Auto Radius and 100%/150% UI checks passed; MCP orientation writes and smooth normals remain outside scope; brute-force projection scaling remains open"
     },
     {
       "feature_id": "C20",
@@ -248,9 +248,9 @@
     {
       "feature_id": "C35",
       "title": "Settings presets and complete static recipes",
-      "native": "Named category/curve presets plus 0.82.5 multi-layer Save Everything, including native Paint, explicit dependency roles, fresh identities, one-Undo Add/new setup and bounded local browser",
+      "native": "Named category/curve presets plus multi-layer Save Everything including native Paint, explicit dependency roles, fresh identities and one-Undo Add/new setup. 0.82.6.1 adds bounded asynchronous search/categories/tags, stored thumbnails and four procedural examples",
       "mcp": "Catalog help only; no preset/recipe filesystem or application tool",
-      "qualification_or_extension": "Recipe format/capability 1; compatible Paint only; unsupported Edit/radius/controller data blocks full save. See the recipe handoff. Asset packaging, search/thumbnails, blending and future-layout fields remain separate"
+      "qualification_or_extension": "Recipe/settings format/capability 2 with strict neutral-default read of preceding format 1; orientation target role supported; library presentation capability 1; compatible Paint only; unsupported Edit/radius/controller data blocks full save. See the I03/I04 handoffs. Asset import, blending and future-layout fields remain separate"
     },
     {
       "feature_id": "C36",
@@ -2855,7 +2855,98 @@
         "C19"
       ],
       "owner_context": "Layer transforms",
-      "help": "Align instances to the receiving surface normal.",
+      "help": "Blend the preferred up axis from world Z toward the surface normal. Direction modes use it to control roll. Slope eligibility is independent.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "kind": "dropdownlist",
+      "name": "orientationList",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Random keeps the usual random rotation frame. World direction or Look at target sets the heading before local random rotations. Models use local +Z up and their Source Forward axis.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "kind": "spinner",
+      "name": "normalBlendSpin",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "0 keeps world +Z as preferred up; 100 follows the geometric face normal. Between them uses an angular blend. In direction modes this controls roll.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "kind": "spinner",
+      "name": "directionXSpin",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "World direction X component. The vector needs at least one nonzero component. Its length does not affect the result.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "kind": "spinner",
+      "name": "directionYSpin",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "World direction Y component. This is a direction, not a position or distance.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "kind": "spinner",
+      "name": "directionZSpin",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "World direction Z component. Nonzero values can aim models above or below the horizon.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "kind": "button",
+      "name": "targetPickButton",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Aim each plant at a scene object's pivot. Its transform is used; its geometry is not read. Relevant target or parent motion updates Live.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "randomUI",
+      "kind": "button",
+      "name": "targetClearButton",
+      "capabilities": [
+        "C19"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Clear this layer's target reference. Look at target needs a valid target before Update can publish.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },

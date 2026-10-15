@@ -1,5 +1,7 @@
 # Implemented recipe wire contract, version 1
 
+Current successor: [format 2 in Scatter 0.83.0](../improvement-program/FORMAT_2.md) adds orientation and a strict read conversion from this version. The original format-1 contract below is preserved.
+
 This describes Scatter 0.82.5, not the earlier illustrative semantic example. Normative validation is in `AminScatter/src/recipes.cpp`; the explicit setting list is `recipe_fields.inc`, and host capture/import is `tools/ui/templates/recipes.ms`. Scope and qualification are in [PROGRESS](PROGRESS.md).
 
 ## Manifest

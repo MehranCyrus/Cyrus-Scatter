@@ -782,6 +782,34 @@
         "name": "alignCheck"
       },
       {
+        "kind": "dropdownlist",
+        "name": "orientationList"
+      },
+      {
+        "kind": "spinner",
+        "name": "normalBlendSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "directionXSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "directionYSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "directionZSpin"
+      },
+      {
+        "kind": "button",
+        "name": "targetPickButton"
+      },
+      {
+        "kind": "button",
+        "name": "targetClearButton"
+      },
+      {
         "kind": "button",
         "name": "resetRotation"
       },

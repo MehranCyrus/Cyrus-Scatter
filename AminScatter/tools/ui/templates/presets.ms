@@ -48,6 +48,10 @@ fn CyrusPresetApply target document = (
         values[3]*=meters
     ) else if target.editor==undefined do for i=1 to fields.count where schema[i][3] do values[i]*=meters
     if target.editor==undefined do for v in values where classof v!=BooleanClass do if v!=v or abs v>1e30 do throw "Preset units exceed the scene's supported numeric range."
+    if target.category=="transforms" do (
+        local modeIndex=findItem fields #orientationMode
+        if values[modeIndex]==3 and not isValidNode owner.orientationTarget do throw "Pick a destination target before applying Look at target settings, or import a complete recipe with its target binding."
+    )
     local controllers=#()
     for field in fields do (
         local control=getPropertyController owner field
@@ -122,7 +126,7 @@ fn CyrusPresetEntries directory category = (
     #(items,invalid)
 )
 fn CyrusOpenPresets root owner category peer:undefined editor:undefined = (
-    if cyrusPresetVersion==undefined or cyrusPresetVersion()!=1 do throw "Load the matching Cyrus preset native module."
+    if cyrusPresetVersion==undefined or cyrusPresetVersion()!=2 do throw "Load the matching Cyrus preset native module."
     local target=CyrusPresetMakeBinding root owner category peer:peer editor:editor
     CyrusPresetCheckBinding target
     if CyrusPresetBrowser!=undefined do try(destroyDialog CyrusPresetBrowser)catch()

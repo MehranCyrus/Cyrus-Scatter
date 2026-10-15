@@ -502,7 +502,8 @@ global AminScatterSurfaceFilterFields=#(#slopeEnabled,#slopeMinimum,#slopeMaximu
 global AminScatterLayerFields, AminScatterLayerTabs
 global AminScatterCopyLayer, AminScatterRefreshLayerPanels
 global AminScatterMeshMaskFields=#(#meshMaskEnabled,#meshMaskChannel,#meshMaskComponent,#meshMaskMinimum,#meshMaskMaximum,#meshMaskInvert,#meshMaskSamples,#meshMaskGraph)
-AminScatterLayerFields=#(#meshMaskEnabled,#meshMaskChannel,#meshMaskComponent,#meshMaskMinimum,#meshMaskMaximum,#meshMaskInvert,#meshMaskSamples,#meshMaskGraph,#slopeEnabled,#slopeMinimum,#slopeMaximum,#slopeLowerFade,#slopeUpperFade,#altitudeEnabled,#altitudeMinimum,#altitudeMaximum,#altitudeLowerFade,#altitudeUpperFade,#procOrder,#procSetOrder,#procSamplingSalt,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procRadiusBinding,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverID,#containerMode,#containerNodes,#logicalParentID,#paintSetName,#paintSetEnabled,#paintSetVisible,#paintView,#paintColor,#paintDocument,#paintEnabled,#paintDensity,#streetTrimStart,#streetTrimEnd,#centerStreetOffset,#areaAnalyzer,#areaUseLine,#areaLineWidth,#areaLineCaps,#areaUsePoints,#areaPointRadius,#wholeScaleMin,#wholeScaleMax,#fallScaleGraph,#fallDensityGraph,#areaFallConfigs,#areaFallDeleteWidths,#areaFallScaleWidths,#areaFallDensityWidths,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallAnalyzer,#fallDelete,#fallDeleteWidth,#fallScale,#fallScaleWidth,#fallScaleCurve,#fallDensity,#fallDensityWidth,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeKeepCorners,#edgeCornerAngle,#edgeCornerCount,#edgeFaceOut,#edgeCornerRadius,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#borderFaceOut,#streetFaceOut,#borderCornerRadius,#streetCornerRadius,#sourceForwardAxes,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius,#streetStraight,#sourcePoint,#sourceEmpty,#cleanupPlanar,#sourceZOffsetsWU,#sourceScales,#sourceWeights,#showCenters,#relaxEnabled,#relaxSpacing,#relaxIterations,#relaxStrength,#sources,#bakedNodes,#amount,#randomSeed,#scaleMinimum,#scaleMaximum,#tiltDegrees,#yawMinimum,#yawMaximum,#movementRange,#alignNormal,#showPoints,#pointsPerPlant,#updateMode,#populationMode,#plantsPerM2,#advancedAxes,#projectMove,#rotXMin,#rotXMax,#rotYMin,#rotYMax,#rotZMin,#rotZMax,#sclXMin,#sclXMax,#sclYMin,#sclYMax,#sclZMin,#sclZMax,#movXMinWU,#movXMaxWU,#movYMinWU,#movYMaxWU,#movZMinWU,#movZMaxWU,#distributionMode,#densityMap,#invertDensity,#densityUVChannel,#densityResolution,#diversityMode,#diversitySize,#diversitySeed,#roughness,#blurryEdge,#diversityNoise,#autoRender,#previewBudget,#pointColorMode,#solidPointColor,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths,#fieldFalloff,#fieldBoundaries,#fieldCombined,#fieldSamples,#fieldBandID)
+AminScatterOrientationFields=#(#alignNormal,#orientationMode,#orientationBlend,#orientationX,#orientationY,#orientationZ,#orientationTarget,#sourceForwardAxes)
+AminScatterLayerFields=#(#orientationMode,#orientationBlend,#orientationX,#orientationY,#orientationZ,#orientationTarget,#meshMaskEnabled,#meshMaskChannel,#meshMaskComponent,#meshMaskMinimum,#meshMaskMaximum,#meshMaskInvert,#meshMaskSamples,#meshMaskGraph,#slopeEnabled,#slopeMinimum,#slopeMaximum,#slopeLowerFade,#slopeUpperFade,#altitudeEnabled,#altitudeMinimum,#altitudeMaximum,#altitudeLowerFade,#altitudeUpperFade,#procOrder,#procSetOrder,#procSamplingSalt,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procRadiusBinding,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverID,#containerMode,#containerNodes,#logicalParentID,#paintSetName,#paintSetEnabled,#paintSetVisible,#paintView,#paintColor,#paintDocument,#paintEnabled,#paintDensity,#streetTrimStart,#streetTrimEnd,#centerStreetOffset,#areaAnalyzer,#areaUseLine,#areaLineWidth,#areaLineCaps,#areaUsePoints,#areaPointRadius,#wholeScaleMin,#wholeScaleMax,#fallScaleGraph,#fallDensityGraph,#areaFallConfigs,#areaFallDeleteWidths,#areaFallScaleWidths,#areaFallDensityWidths,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallAnalyzer,#fallDelete,#fallDeleteWidth,#fallScale,#fallScaleWidth,#fallScaleCurve,#fallDensity,#fallDensityWidth,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeKeepCorners,#edgeCornerAngle,#edgeCornerCount,#edgeFaceOut,#edgeCornerRadius,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#borderFaceOut,#streetFaceOut,#borderCornerRadius,#streetCornerRadius,#sourceForwardAxes,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius,#streetStraight,#sourcePoint,#sourceEmpty,#cleanupPlanar,#sourceZOffsetsWU,#sourceScales,#sourceWeights,#showCenters,#relaxEnabled,#relaxSpacing,#relaxIterations,#relaxStrength,#sources,#bakedNodes,#amount,#randomSeed,#scaleMinimum,#scaleMaximum,#tiltDegrees,#yawMinimum,#yawMaximum,#movementRange,#alignNormal,#showPoints,#pointsPerPlant,#updateMode,#populationMode,#plantsPerM2,#advancedAxes,#projectMove,#rotXMin,#rotXMax,#rotYMin,#rotYMax,#rotZMin,#rotZMax,#sclXMin,#sclXMax,#sclYMin,#sclYMax,#sclZMin,#sclZMax,#movXMinWU,#movXMaxWU,#movYMinWU,#movYMaxWU,#movZMinWU,#movZMaxWU,#distributionMode,#densityMap,#invertDensity,#densityUVChannel,#densityResolution,#diversityMode,#diversitySize,#diversitySeed,#roughness,#blurryEdge,#diversityNoise,#autoRender,#previewBudget,#pointColorMode,#solidPointColor,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths,#fieldFalloff,#fieldBoundaries,#fieldCombined,#fieldSamples,#fieldBandID)
 AminScatterLayerTabs=#(#meshMaskSamples,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#containerNodes,#areaFallConfigs,#areaFallDeleteWidths,#areaFallScaleWidths,#areaFallDensityWidths,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallScaleCurve,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#sourceForwardAxes,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius,#sourcePoint,#sourceEmpty,#sourceZOffsetsWU,#sourceScales,#sourceWeights,#sources,#bakedNodes,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths)
 fn AminScatterCopyLayer origin destination = (
     origin.procAssertSchema()
@@ -590,6 +591,8 @@ initialRollupState:0x8
     local dirty = true
     local diagnosticCauseID=0L
     -- Session-only validity. Scene identities and publication records are unchanged.
+    local procOrientationReceivers=#()
+    local orientationTimeValidity=undefined,orientationTimeStamp=0,orientationTimeObserved=0,orientationTargetObserved=undefined
     local inputTimeValidity=undefined,inputTimeStamp=0,inputTimeObserved=0
     local inputTimeQueries=0,inputTimeInvalidations=0
     -- Deleted nodes may no longer resolve from the callback's handles. Retain
@@ -610,7 +613,7 @@ initialRollupState:0x8
             controller.diagnosticCauseID=diagnosticCauseID
             CyrusDiagnosticEmit "input.invalidated" "setting" this.layerID this.procEpoch "authored_or_dependency_edit" correlation:diagnosticCauseID
         )catch()
-        inputTimeValidity=undefined;dirty=true;CyrusViewportRecordsDirty=true
+        inputTimeValidity=undefined;orientationTimeValidity=undefined;dirty=true;CyrusViewportRecordsDirty=true
     )
     fn inputTimeExpired = (
         if inputTimeValidity==undefined do return false
@@ -631,7 +634,7 @@ initialRollupState:0x8
             if this.overlapOwner==undefined do join settings (this.procModifiers())
             this.procWatchDensity()
             if this.densityMap!=undefined and this.distributionMode==3 do append maps this.densityMap
-            local interval=cyrusScatterInputValidity settings nodes maps
+            local interval=cyrusCandidateInputValidity settings nodes maps
             inputTimeQueries+=1
             -- Keep one key throughout a validity interval, including stepped keys.
             -- FOREVER has no time component. A dirty notification re-arms the
@@ -665,11 +668,50 @@ initialRollupState:0x8
             local leaf=this.layerObjects[i]
             if rootChanged then leaf.markInputDirty()
             else if leaf.invalidateInputTime() do changed=true
+            if leaf.invalidateOrientationTime() do changed=true
         )
         changed
     )
     fn inputTimeStats = (#(inputTimeQueries,inputTimeInvalidations,inputTimeStamp,inputTimeObserved,inputTimeValidity))
     fn publishedInputTime = inputTimeObserved
+    fn orientationTimeKey = (
+        local tick=currentTime as integer
+        if orientationTimeValidity==undefined or tick<orientationTimeValidity[1] or tick>orientationTimeValidity[2] do (
+            local fields=#("orientationMode","alignNormal","sourceForwardAxes"),target=undefined
+            if this.alignNormal do append fields "orientationBlend"
+            if this.orientationMode==2 do join fields #("orientationX","orientationY","orientationZ")
+            if this.orientationMode==3 and isValidNode this.orientationTarget do target=this.orientationTarget
+            orientationTimeValidity=cyrusOrientationInputValidity this fields target
+            orientationTimeStamp=if orientationTimeValidity[3] then 0 else tick
+        )
+        orientationTimeStamp
+    )
+    fn invalidateOrientationTime = (
+        if orientationTimeValidity==undefined do return false
+        local tick=currentTime as integer
+        if tick>=orientationTimeValidity[1] and tick<=orientationTimeValidity[2] and orientationTimeStamp==orientationTimeObserved do return false
+        this.markInputDirty();true
+    )
+    fn orientationPayload = (
+        local direction=[0,1,0],target=[0,0,0]
+        if this.orientationMode==2 do direction=[this.orientationX,this.orientationY,this.orientationZ]
+        if this.orientationMode==3 do (
+            if not isValidNode this.orientationTarget do throw "Look at target needs a valid target. Pick another target or choose Random orientation. The previous result is retained."
+            target=this.orientationTarget.transform.row4
+        )
+        #(this.orientationMode,this.alignNormal,(if this.alignNormal then this.orientationBlend/100.0 else 0.0),direction,target)
+    )
+    fn orientationKey = (
+        this.orientationTimeKey()
+        local payload=this.orientationPayload(),targetID=if this.orientationMode==3 then getHandleByAnim this.orientationTarget else 0
+        orientationTargetObserved=if targetID==0 then undefined else #(targetID,payload[5])
+        (cyrusOrientationKey payload (this.sourceForwardAxes as array))+":"+(targetID as string)
+    )
+    fn applyOrientation rows plants = (
+        if rows.count==0 do return rows
+        local axes=if plants.count==0 then #(1) else for n in plants collect this.sourceForward (this.sourceRow n)
+        cyrusOrientSurfaceRows rows procOrientationReceivers (this.orientationPayload()) axes
+    )
 
     local previewError=""
     local generatedCount=0
@@ -2031,24 +2073,25 @@ initialRollupState:0x8
             local shapeNodes=for node in areaNodes where isValidNode node collect node
             if diversityMode==3 do for node in patternLines where isValidNode node do appendIfUnique shapeNodes node
             local commonKey=(this.paintBaseInputKey plants previewOnly receiverLocal:true)+"|Shapes:"+(cyrusReceiverShapeKey shapeNodes)
-            local nextCache=#(),faceOffset=0
+            local nextCache=#(),nextNormals=#(),faceOffset=0
             result=#();paintBaseFaceCounts=cyrusReceiverFaceCounts targets
             for receiverIndex=1 to targets.count do (
                 local receiver=targets[receiverIndex],slot=findItem procReceiverNodes receiver,request=undefined,geometryKey=""
                 for entry in procReceiverPlanData[1] where entry[1]==slot do request=entry
                 for entry in procReceiverGeometry where entry[1]==slot do geometryKey=entry[2]+"|MeshMask:"+entry[3]
                 if request==undefined do throw "Receiver allocation is missing."
-                local receiverCount=request[4],receiverRows=#()
+                local receiverCount=request[4],receiverRows=#(),receiverNormals=undefined
                 local receiverKey=commonKey+"|"+procReceiverIDs[slot]+"|"+geometryKey+"|"+(receiverCount as string)
                 local cached=undefined
-                for entry in procReceiverCache where entry[1]==slot and entry[2]==receiverKey do cached=entry[3]
-                if cached!=undefined then (receiverRows=cached;procReceiverHits+=1)
+                for entry in procReceiverCache where entry[1]==slot and entry[2]==receiverKey do cached=entry
+                if cached!=undefined then (receiverRows=cached[3];receiverNormals=cached[4];procReceiverHits+=1)
                 else if receiverCount>0 do (
                     local options=#(not advancedAxes,scaleMinimum,scaleMaximum,tiltDegrees,yawMinimum,yawMaximum,movementRange,1,0,procReceiverIDs[slot],slot,(if distributionMode==3 then densityUVChannel else 1))
-                    receiverRows=cyrusScatterAdvanced #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMinWU,movYMinWU,movZMinWU] [movXMaxWU,movYMaxWU,movZMaxWU] alignNormal projectMove (distributionMode-1) weights densityResolution groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] line #(relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares undefined options
+                    local generated=cyrusScatterCanonical #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMinWU,movYMinWU,movZMinWU] [movXMaxWU,movYMaxWU,movZMaxWU] false projectMove (distributionMode-1) weights densityResolution groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] line #(relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares undefined options
+                    receiverRows=generated[1];receiverNormals=generated[2]
                     if finalRelax and receiverRows.count>0 do (
                         local relaxPass=#(receiverRows,#(),(for row in receiverRows collect 0.0),#(),false,relaxSpacing,0,1,true,finalStrength,finalIterations,finalMaxMove,0.0,cleanupPlanar)
-                        receiverRows=cyrusScatterAdvanced #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMinWU,movYMinWU,movZMinWU] [movXMaxWU,movYMaxWU,movZMaxWU] alignNormal projectMove (distributionMode-1) weights densityResolution groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] line #(relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares relaxPass options
+                        receiverRows=cyrusScatterAdvanced #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMinWU,movYMinWU,movZMinWU] [movXMaxWU,movYMaxWU,movZMaxWU] false projectMove (distributionMode-1) weights densityResolution groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] line #(relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares relaxPass options
                     )
                     if wholeScaleMin!=1.0 or wholeScaleMax!=1.0 do receiverRows=cyrusWholeScale receiverRows wholeScaleMin wholeScaleMax seed
                     if meshMaskEnabled do receiverRows=cyrusMeshDensityFilter receiverRows receiver (this.meshMaskPayload()) seed procReceiverIDs[slot]
@@ -2056,15 +2099,17 @@ initialRollupState:0x8
                     receiverRows=this.applyFalloff receiverRows
                     procReceiverBuilds+=1
                 )
-                append nextCache #(slot,receiverKey,receiverRows)
+                append nextCache #(slot,receiverKey,receiverRows,receiverNormals)
+                if receiverNormals!=undefined do append nextNormals #(slot,faceOffset,receiverNormals)
                 join result (cyrusReceiverOffsetRows receiverRows faceOffset)
                 faceOffset+=paintBaseFaceCounts[receiverIndex]
             )
             -- Replace one bounded cache generation after all receiver preparation succeeds.
-            procReceiverCache=nextCache
+            procReceiverCache=nextCache;procOrientationReceivers=nextNormals
             paintBaseRows=result;paintBaseKey=baseKey;paintBaseBuilds+=1
         )
         result=this.procApplyPaint result
+        result=this.applyOrientation result plants
         if plants.count>0 and sourceEmpty.count>0 do result=this.filterSourceRowsByPolicy result (for n in plants collect not (isEmptySource (sourceRow n)) or isPointSource (sourceRow n))
         if plants.count>0 and (sourceZOffsetsWU.count>0 or sourceScales.count>0) do result=cyrusApplySourceTransforms result (for n in plants collect sourceZOffset (sourceRow n)) (for n in plants collect sourceScale (sourceRow n))
         result
@@ -2082,7 +2127,7 @@ initialRollupState:0x8
         -- Only a committed calculation epoch establishes its first result.
         CyrusLayerStatusData hasResult:(procEpoch>0 and cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
     )
-    fn uiVersion = "0.82.6.1"
+    fn uiVersion = "0.83.0"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified1")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -2104,6 +2149,7 @@ initialRollupState:0x8
             this.inputTimeKey()
             local answer=cspImpl_refreshPreview()
             inputTimeObserved=inputTimeStamp
+            this.orientationTimeKey();orientationTimeObserved=orientationTimeStamp
             if token!=undefined and CyrusPerfTraceEnd!=undefined do try(CyrusPerfTraceEnd token #(previewError,generatedCount,cachedPointCount,previewBuildCount))catch()
             answer
         )catch(
@@ -2212,6 +2258,21 @@ initialRollupState:0x8
         uiAreaID type:#string default:""
         isPaintArea type:#boolean default:false
     )
+    parameters directionSettings (
+        orientationMode type:#integer default:1
+        orientationBlend type:#float default:100.0
+        orientationX type:#float default:0.0
+        orientationY type:#float default:1.0
+        orientationZ type:#float default:0.0
+        orientationTarget type:#node
+        on orientationMode set v do markInputDirty()
+        on orientationBlend set v do markInputDirty()
+        on orientationX set v do markInputDirty()
+        on orientationY set v do markInputDirty()
+        on orientationZ set v do markInputDirty()
+        on orientationTarget set v do markInputDirty()
+    )
+
     fn selectedPaintArea parent = (
         if parent==undefined do return undefined
         for area in parent.paintAreas where area.layerID==parent.uiAreaID do return area
@@ -2264,7 +2325,7 @@ initialRollupState:0x8
         parent.markInputDirty();this.bindNativeUI();CyrusViewportRedraw();true
     )
     fn validatePaintConversion area = (
-        if cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=1 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 do throw "Paint/spline conversion requires the matching Cyrus native plugins. Restart Max with the complete pair."
+        if cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=2 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 do throw "Paint/spline conversion requires the matching Cyrus native plugins. Restart Max with the complete pair."
         local parent=if area==undefined then undefined else this.logicalParent area
         if parent==undefined or findItem layerObjects parent==0 or findItem parent.paintAreas area==0 do throw "Select a Paint Area owned by this setup."
         if area.paintDocument==undefined or not isValidNode area.areaTarget or findItem (parent.validSurfaces()) area.areaTarget==0 do throw "Choose a valid receiving surface for this Paint Area."
@@ -2372,6 +2433,7 @@ initialRollupState:0x8
         if cyrusEnabled and updateMode==2 do (
             this.liveTimeChanged()
             this.inputTimeKey();inputTimeObserved=inputTimeStamp
+            this.orientationTimeKey();orientationTimeObserved=orientationTimeStamp
         )
         local key=CyrusEditStackKey this
         if key!=editCacheKey do (
@@ -2547,7 +2609,7 @@ initialRollupState:0x8
             format "FinalRelax:%:%:%:%|" finalRelax finalStrength finalIterations finalMaxMove to:stream
             format "Texture:%|" (this.procWatchDensity()) to:stream
             format "MeshMask:%|" (if meshMaskEnabled then this.meshMaskPayload() else #(false)) to:stream
-            for key in AminScatterLayerFields where (distributionMode==3 or findItem #(#densityUVChannel,#densityResolution) key==0) and findItem AminScatterSurfaceFilterFields key==0 and findItem AminScatterMeshMaskFields key==0 and findItem #(#paintDocument,#paintEnabled,#paintDensity,#bakedNodes,#showPoints,#pointsPerPlant,#updateMode,#autoRender,#previewBudget,#pointColorMode,#solidPointColor) key==0 and findItem post key==0 and findItem #(#paintView,#paintColor,#showCenters,#sourceShowRadius,#paintSetName,#paintSetVisible,#fieldFalloff,#fieldBoundaries,#fieldCombined,#fieldSamples,#fieldBandID) key==0 and (not receiverLocal or findItem #(#amount,#plantsPerM2,#populationMode) key==0) do format "%:%|" key (if key==#sources then this.containerSourceKey (sources as array) else getProperty this key) to:stream
+            for key in AminScatterLayerFields where (distributionMode==3 or findItem #(#densityUVChannel,#densityResolution) key==0) and findItem AminScatterOrientationFields key==0 and findItem AminScatterSurfaceFilterFields key==0 and findItem AminScatterMeshMaskFields key==0 and findItem #(#paintDocument,#paintEnabled,#paintDensity,#bakedNodes,#showPoints,#pointsPerPlant,#updateMode,#autoRender,#previewBudget,#pointColorMode,#solidPointColor) key==0 and findItem post key==0 and findItem #(#paintView,#paintColor,#showCenters,#sourceShowRadius,#paintSetName,#paintSetVisible,#fieldFalloff,#fieldBoundaries,#fieldCombined,#fieldSamples,#fieldBandID) key==0 and (not receiverLocal or findItem #(#amount,#plantsPerM2,#populationMode) key==0) do format "%:%|" key (if key==#sources then this.containerSourceKey (sources as array) else getProperty this key) to:stream
             for n in ((if receiverLocal then #() else this.validSurfaces())+(sources as array)+(areaNodes as array)+(patternLines as array)+#(analyzerNode,areaAnalyzer,fallAnalyzer)) where isValidNode n do (
                 local tm=n.objectTransform
                 if this.containerProvider()!=undefined and findItem sources n>0 do tm.row4=[0,0,0]
@@ -2902,7 +2964,7 @@ initialRollupState:0x8
         with printAllElements on (
             format "CyrusBinding2:%|" (this.effectiveSeed()) to:stream
             for n in plants do (local i=sourceRow n;format "%|" (if i>0 and i<=procSourceSlots.count then procSourceSlots[i] else "preview") to:stream)
-            for key in #(#distributionMode,#diversityMode,#diversitySize,#diversitySeed,#roughness,#blurryEdge,#diversityNoise,#sourceWeights,#sourceColors,#sourceEmpty,#sourcePoint,#sourceScales,#sourceZOffsetsWU,#advancedAxes,#scaleMinimum,#scaleMaximum,#tiltDegrees,#yawMinimum,#yawMaximum,#movementRange,#sclXMin,#sclXMax,#sclYMin,#sclYMax,#sclZMin,#sclZMax,#rotXMin,#rotXMax,#rotYMin,#rotYMax,#rotZMin,#rotZMax,#movXMinWU,#movXMaxWU,#movYMinWU,#movYMaxWU,#movZMinWU,#movZMaxWU,#wholeScaleMin,#wholeScaleMax,#projectMove,#alignNormal) do format "%:%|" key (getProperty this key) to:stream
+            for key in #(#distributionMode,#diversityMode,#diversitySize,#diversitySeed,#roughness,#blurryEdge,#diversityNoise,#sourceWeights,#sourceColors,#sourceEmpty,#sourcePoint,#sourceScales,#sourceZOffsetsWU,#advancedAxes,#scaleMinimum,#scaleMaximum,#tiltDegrees,#yawMinimum,#yawMaximum,#movementRange,#sclXMin,#sclXMax,#sclYMin,#sclYMax,#sclZMin,#sclZMax,#rotXMin,#rotXMax,#rotYMin,#rotYMax,#rotZMin,#rotZMax,#movXMinWU,#movXMaxWU,#movYMinWU,#movYMaxWU,#movZMinWU,#movZMaxWU,#wholeScaleMin,#wholeScaleMax,#projectMove) do format "%:%|" key (getProperty this key) to:stream
             if diversityMode>=3 do for key in #(#patternLines,#patternWidths,#strokeSides,#strokeModes,#strokeColorRows,#strokeColorKeys,#strokeSourceRows,#strokeSourceIDs,#sourceRowIDs,#pathIDs,#pathJoins,#strokeIDs,#strokePathIDs,#bandArrangement,#strokeStarts,#strokeEnds,#strokeStrengths,#strokeCurveEnabled,#strokeScaleModes,#strokeScaleSamples,#strokeCurveSamples,#strokeMin,#strokeMax,#analyzerNode,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#edgeKeepCorners,#edgeCornerAngle,#edgeCornerCount,#edgeFaceOut,#edgeCornerRadius,#edgeRotX,#edgeRotY,#edgeRotZ,#borderFaceOut,#streetFaceOut,#borderCornerRadius,#streetCornerRadius,#streetStraight,#streetTrimStart,#streetTrimEnd,#centerStreetOffset) do format "%:%|" key (getProperty this key) to:stream
             if relaxEnabled or finalRelax do for key in #(#relaxEnabled,#relaxSpacing,#relaxIterations,#relaxStrength,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove) do format "%:%|" key (getProperty this key) to:stream
             format "\nCyrusReceivers2\n" to:stream
@@ -3102,6 +3164,7 @@ initialRollupState:0x8
         local inputs=this.validSurfaces(),handles=#()
         join inputs (sources as array);join inputs (areaNodes as array);join inputs (patternLines as array)
         join inputs #(analyzerNode,areaAnalyzer,fallAnalyzer)
+        if orientationMode==3 and isValidNode orientationTarget do appendIfUnique inputs orientationTarget
         for input in inputs where isValidNode input do (
             local dep=input
             while isValidNode dep do (
@@ -3133,9 +3196,22 @@ initialRollupState:0x8
             if deletedHandles==undefined then affected=true
             else for handle in deletedHandles while not affected do if findItem procDependencyHandles handle>0 do affected=true
         )
-        if affected do (CyrusClearMeshMaskPreview this;procGeometryRevision+=1;markInputDirty())
-        CyrusDiagnosticEmit "input.classified" "host_callback" layerID procEpoch (if affected then "geometry_dependency" else "unrelated") correlation:(if affected then diagnosticCauseID else 0L)
-        affected
+        local targetAffected=false
+        if not affected and orientationMode==3 and isValidNode orientationTarget do (
+            local dep=orientationTarget
+            while isValidNode dep and not targetAffected do (if findItem nodes dep>0 do targetAffected=true;dep=dep.parent)
+            -- Key/controller changes can leave today's pivot unchanged while
+            -- making future frames animated. Re-arm only transform validity;
+            -- an unchanged pivot still does not dirty candidate/placement data.
+            if targetAffected do (orientationTimeValidity=undefined;this.orientationTimeKey())
+            if targetAffected and orientationTargetObserved!=undefined do (
+                if orientationTargetObserved[1]==getHandleByAnim orientationTarget and orientationTargetObserved[2]==orientationTarget.transform.row4 do targetAffected=false
+            )
+        )
+        if affected then (CyrusClearMeshMaskPreview this;procGeometryRevision+=1;markInputDirty())
+        else if targetAffected do markInputDirty()
+        CyrusDiagnosticEmit "input.classified" "host_callback" layerID procEpoch (if affected then "geometry_dependency" else if targetAffected then "orientation_target" else "unrelated") correlation:(if affected or targetAffected then diagnosticCauseID else 0L)
+        affected or targetAffected
     )
     fn containerSetMode mode = (
         if mode<1 or mode>4 do throw "Unknown source-container mode."
@@ -3190,7 +3266,7 @@ initialRollupState:0x8
             format "%:%:%:%:%|" procRuleB procRuleEnabled procRuleMultiplier procRuleGapWU procRulePlanar to:stream
             for parent in this.logicalLayers() do for leaf in this.layerSets parent do (
                 leaf.containerRefresh()
-                format "Membership:%|Filter:%|" leaf.containerMembershipKey (leaf.surfaceFilterKey()) to:stream
+                format "Membership:%|Filter:%|Orientation:%|" leaf.containerMembershipKey (leaf.surfaceFilterKey()) (leaf.orientationKey()) to:stream
                 format "Texture:%|" (leaf.procWatchDensity()) to:stream
                 format "%:%:%:%:%:%|" leaf.layerID leaf.logicalParentID leaf.procReceiverID leaf.procRadiusBinding (leaf.paintBaseInputKey (leaf.validSources()) true) (leaf.procCoverageKey()) to:stream
                 for key in #(#procOrder,#procSetOrder,#procSamplingSalt,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procSourceIDs,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#cleanupPlanar) do format "%:%|" key (getProperty leaf key) to:stream
@@ -3207,14 +3283,14 @@ initialRollupState:0x8
         (overlapOwner.populationAllocation this countOverride:budget)[1]
     )
     fn procPrepare pool plants = (
-        local key=(this.paintBaseInputKey plants true)+"|Texture:"+(this.procWatchDensity() as string)+"|Pool:"+(pool as string)+"|"+(this.procCoverageKey())+"|"+(overlapOwner.procEditKey())+"|Filter:"+(this.surfaceFilterKey())
+        local key=(this.paintBaseInputKey plants true)+"|Texture:"+(this.procWatchDensity() as string)+"|Pool:"+(pool as string)+"|"+(this.procCoverageKey())+"|"+(overlapOwner.procEditKey())+"|Filter:"+(this.surfaceFilterKey())+"|"+(this.orientationKey())
         if key==procPreparedKey do (CyrusDiagnosticEmit "prepare.reused" "engine" layerID procEpoch "key_match" correlation:diagnosticCauseID;procPreparedHits+=1;return procPreparedRows)
         CyrusDiagnosticEmit "prepare.started" "engine" layerID procEpoch "key_changed" correlation:diagnosticCauseID
         local rows
         procCandidateCount=pool
         try(rows=this.cspImpl_placements plants previewOnly:true rawOnly:true)catch(procCandidateCount=undefined;throw())
         procCandidateCount=undefined
-        if diversityMode==4 and (borderFaceOut or streetFaceOut or (findItem strokeSides 7>0)) and rows.count>0 do (
+        if orientationMode==1 and diversityMode==4 and (borderFaceOut or streetFaceOut or (findItem strokeSides 7>0)) and rows.count>0 do (
             local forward=if plants.count==0 then #(1) else for n in plants collect sourceForward (sourceRow n)
             local offsets=if plants.count==0 then #(0.0) else for n in plants collect sourceZOffset (sourceRow n)
             rows=cyrusOrientRows rows (this.lineInputs plants previewOnly:true) forward offsets
@@ -3226,19 +3302,19 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.82.6.1 setup; earlier schemas are unsupported."
+        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.83.0 setup; earlier schemas are unsupported."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
     fn procValidate = (
         this.procAssertSchema()
-        if cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=1 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=1 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.82.6.1 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
+        if cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=2 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=2 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.83.0 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
             for leaf in this.layerSets parent where this.enabledLayer (findItem layerObjects leaf) do (
-                if cyrusEnabled do (leaf.requireCurrentAnalyzers();cyrusValidateSurfaceFilter (leaf.surfaceFilterPayload());cyrusValidateMeshDensity (leaf.meshMaskPayload()))
+                if cyrusEnabled do (leaf.requireCurrentAnalyzers();cyrusValidateOrientation (leaf.orientationPayload());cyrusValidateSurfaceFilter (leaf.surfaceFilterPayload());cyrusValidateMeshDensity (leaf.meshMaskPayload()))
                 if parent.procPopulation==2 and leaf.diversityMode==3 do (
                     leaf.syncStrokes()
                     if leaf.bandArrangement==2 do throw "Independent Bands require Candidate budget. Accepted target would refill their density."
@@ -3383,16 +3459,17 @@ initialRollupState:0x8
             try(cacheRadii data plants values:placementRadiusValues;radii=radiusPreview;radiusPreview=previousRadius)catch(radiusPreview=previousRadius;throw())
             inspection=if radii.count==0 and field[1]==undefined then undefined else cyrusBuildInspectionPreview radii field[1]
         )
-        #(cache,(aminScatterPreviewCount cache),data.count,radii,(if viewportMode==1 and showCenters then 4 else viewportMode),timeStamp()-start,(if isValidNode areaAnalyzer then areaAnalyzer.getAnalysisRuns() else -1),(if isValidNode fallAnalyzer then fallAnalyzer.getAnalysisRuns() else -1),inspection,(controller.procDisplayLayerKey this epoch:displayEpoch),(if isValidNode analyzerNode then analyzerNode.getAnalysisRuns() else -1),inputTimeStamp,geometryKey,metadata,inspectionKey,field[1],field[2],field[3],geometryEpoch,modeSlot)
+        #(cache,(aminScatterPreviewCount cache),data.count,radii,(if viewportMode==1 and showCenters then 4 else viewportMode),timeStamp()-start,(if isValidNode areaAnalyzer then areaAnalyzer.getAnalysisRuns() else -1),(if isValidNode fallAnalyzer then fallAnalyzer.getAnalysisRuns() else -1),inspection,(controller.procDisplayLayerKey this epoch:displayEpoch),(if isValidNode analyzerNode then analyzerNode.getAnalysisRuns() else -1),inputTimeStamp,geometryKey,metadata,inspectionKey,field[1],field[2],field[3],geometryEpoch,modeSlot,orientationTimeStamp)
     )
     -- Publication snapshots retain references to immutable staged rows/caches.
     -- No host queries or copies of large point arrays run in the install tail.
-    fn procPreviewState = (#(inputTimeObserved,cachedPoints,cachedPointCount,generatedCount,radiusPreview,uiPreviewMode,inspectionCache,procPreviewDisplayKey,previewBuildMs,cachedAreaAnalyzerRun,cachedFallRun,cachedAnalyzerRun,previewBuildCount,previewError,dirty,procPreviewGeometryKey,procPreviewInspectionKey,procFieldCache,procFieldCacheKey,procFieldStatus,procPreviewModes,procPreviewModesEpoch))
+    fn procPreviewState = (#(inputTimeObserved,cachedPoints,cachedPointCount,generatedCount,radiusPreview,uiPreviewMode,inspectionCache,procPreviewDisplayKey,previewBuildMs,cachedAreaAnalyzerRun,cachedFallRun,cachedAnalyzerRun,previewBuildCount,previewError,dirty,procPreviewGeometryKey,procPreviewInspectionKey,procFieldCache,procFieldCacheKey,procFieldStatus,procPreviewModes,procPreviewModesEpoch,orientationTimeObserved))
     fn procReleaseRetiredDisplay = (
         -- Max can retain detached scripted objects after scene reset. These
         -- transient resources belong to the departed scene, not its saved data.
         cachedPoints=undefined;inspectionCache=undefined;cachedDisabledPreview=undefined
         procPreviewModes=#();procPreviewModesEpoch=-1
+        procReceiverCache=#();procOrientationReceivers=#();paintBaseRows=#();paintBaseKey=""
         procSplineField=undefined;procPreparedRows=#();radiusPreview=#();procFieldCache=undefined;procFieldCacheKey="";procFieldStatus="Preview hidden.";procPreviewInspectionKey=""
         procPreviewDisplayKey="";procPreviewGeometryKey="";procPublishedDisplayKey=""
         true
@@ -3403,7 +3480,7 @@ initialRollupState:0x8
         cachedAreaAnalyzerRun=state[10];cachedFallRun=state[11];cachedAnalyzerRun=state[12];previewBuildCount=state[13];previewError=state[14];dirty=state[15]
         procPreviewGeometryKey=state[16]
         procPreviewInspectionKey=state[17];procFieldCache=state[18];procFieldCacheKey=state[19];procFieldStatus=state[20]
-        procPreviewModes=state[21];procPreviewModesEpoch=state[22]
+        procPreviewModes=state[21];procPreviewModesEpoch=state[22];orientationTimeObserved=state[23]
     )
     fn procResultState = (#(this.procPreviewState(),procLastStats,procLastRounds,procEpoch,requestedCount,groupEligible,groupRemoved,groupConflicts,overlapBefore,overlapAfter,procLastSurfaceStats,procDependencyHandles))
     fn procRestoreResult state = (
@@ -3412,7 +3489,7 @@ initialRollupState:0x8
         procDependencyHandles=state[12]
     )
     fn procInstallPreview state pending = (
-        inputTimeObserved=state[12]
+        inputTimeObserved=state[12];orientationTimeObserved=state[21]
         cachedPoints=state[1];cachedPointCount=state[2];generatedCount=state[3];radiusPreview=state[4];uiPreviewMode=state[5];inspectionCache=state[9]
         procPreviewDisplayKey=state[10]
         procPreviewGeometryKey=state[13]
@@ -4812,7 +4889,16 @@ initialRollupState:0x8
         spinner movZMinSpin "" range:[-100000,100000,0] type:#worldUnits pos:[24,512] fieldWidth:((selected_randomUI.width-38)/2) width:((selected_randomUI.width-38)/2)
         spinner movZMaxSpin "" range:[-100000,100000,0] type:#worldUnits pos:[((selected_randomUI.width+18)/2),512] fieldWidth:((selected_randomUI.width-38)/2) width:((selected_randomUI.width-38)/2)
         checkbox projectCheck "Keep on surface" pos:[4,576] width:(selected_randomUI.width-8) tooltip:"Project random movement back onto the receiving surface."
-        checkbox alignCheck "Align to normal" pos:[4,600] width:(selected_randomUI.width-8) tooltip:"Align instances to the receiving surface normal."
+        checkbox alignCheck "Align to normal" pos:[4,600] width:(selected_randomUI.width-8) tooltip:"Blend the preferred up axis from world Z toward the surface normal. Direction modes use it to control roll. Slope eligibility is independent."
+        dropdownlist orientationList "Mode:" items:#("Random", "World direction", "Look at target") selection:1 width:156 tooltip:"Random keeps the usual random rotation frame. World direction or Look at target sets the heading before local random rotations. Models use local +Z up and their Source Forward axis."
+        spinner normalBlendSpin "Normal %:" range:[0,100,100] fieldWidth:60 width:156 tooltip:"0 keeps world +Z as preferred up; 100 follows the geometric face normal. Between them uses an angular blend. In direction modes this controls roll."
+        spinner directionXSpin "Direction X:" range:[-1000000,1000000,0] fieldWidth:60 width:156 tooltip:"World direction X component. The vector needs at least one nonzero component. Its length does not affect the result."
+        spinner directionYSpin "Direction Y:" range:[-1000000,1000000,1] fieldWidth:60 width:156 tooltip:"World direction Y component. This is a direction, not a position or distance."
+        spinner directionZSpin "Direction Z:" range:[-1000000,1000000,0] fieldWidth:60 width:156 tooltip:"World direction Z component. Nonzero values can aim models above or below the horizon."
+        button targetPickButton "Pick target..." width:100 height:22 tooltip:"Aim each plant at a scene object's pivot. Its transform is used; its geometry is not read. Relevant target or parent motion updates Live."
+        button targetClearButton "Clear" width:56 height:22 tooltip:"Clear this layer's target reference. Look at target needs a valid target before Update can publish."
+        label targetInfo "Target: none" width:156 height:32
+        label orientationHelp "Model up: +Z. Set Forward axis under Models & Points. Random rotations remain local." width:156 height:48
 
         button resetRotation "Reset rotation" pos:[4,124] width:(selected_randomUI.width-8) height:20 tooltip:"Reset only this layer's random rotation limits. Undo is available."
         button resetScale "Reset XYZ scale" pos:[4,278] width:(selected_randomUI.width-8) height:20 tooltip:"Reset only this layer's separate X, Y and Z scale limits."
@@ -4826,8 +4912,39 @@ initialRollupState:0x8
         on resetScale pressed do resetBoundRandomization #scale
         on resetWholeScale pressed do resetBoundRandomization #wholeScale
         on resetMovement pressed do resetBoundRandomization #movement
+        fn bindOrientation = (
+            if obj==undefined do return false
+            orientationList.selection=obj.orientationMode;normalBlendSpin.value=obj.orientationBlend
+            directionXSpin.value=obj.orientationX;directionYSpin.value=obj.orientationY;directionZSpin.value=obj.orientationZ
+            normalBlendSpin.enabled=obj.alignNormal
+            for c in #(directionXSpin,directionYSpin,directionZSpin) do c.enabled=obj.orientationMode==2
+            targetPickButton.enabled=obj.orientationMode==3;targetClearButton.enabled=obj.orientationMode==3
+            targetInfo.text=if isValidNode obj.orientationTarget then "Target: "+obj.orientationTarget.name else "Target: none"
+            true
+        )
+        fn changeOrientation field value = (
+            if not controlsReady or binding or obj==undefined do return false
+            local controller=root,layer=obj
+            undo "Cyrus orientation" on (setProperty layer field value)
+            selected_randomUI.bind layer;controller.invalidateGroups();CyrusViewportRedraw();true
+        )
+        on orientationList selected v do changeOrientation #orientationMode v
+        on normalBlendSpin changed v do changeOrientation #orientationBlend v
+        on directionXSpin changed v do changeOrientation #orientationX v
+        on directionYSpin changed v do changeOrientation #orientationY v
+        on directionZSpin changed v do changeOrientation #orientationZ v
+        on targetClearButton pressed do changeOrientation #orientationTarget undefined
+        on targetPickButton pressed do if controlsReady and not binding and obj!=undefined do try (
+            local captured=CyrusPresetMakeBinding root obj "transforms"
+            local target=pickObject message:"Pick the orientation target pivot"
+            if isValidNode target do (
+                CyrusPresetCheckBinding captured
+                undo "Cyrus orientation target" on (captured.owner.orientationTarget=target)
+                captured.root.invalidateGroups();captured.root.bindNativeUI();CyrusViewportRedraw()
+            )
+        )catch(messageBox (getCurrentException()) title:"Cyrus orientation")
         fn syncControls = (projectCheck.checked=obj.projectMove;rotXMinSpin.value=obj.rotXMin;rotXMaxSpin.value=obj.rotXMax;rotYMinSpin.value=obj.rotYMin;rotYMaxSpin.value=obj.rotYMax;rotZMinSpin.value=obj.rotZMin;rotZMaxSpin.value=obj.rotZMax;sclXMinSpin.value=obj.sclXMin;sclXMaxSpin.value=obj.sclXMax;sclYMinSpin.value=obj.sclYMin;sclYMaxSpin.value=obj.sclYMax;sclZMinSpin.value=obj.sclZMin;sclZMaxSpin.value=obj.sclZMax;movXMinSpin.value=obj.movXMinWU;movXMaxSpin.value=obj.movXMaxWU;movYMinSpin.value=obj.movYMinWU;movYMaxSpin.value=obj.movYMaxWU;movZMinSpin.value=obj.movZMinWU;movZMaxSpin.value=obj.movZMaxWU;)
-        on alignCheck changed v do if controlsReady and not binding and obj!=undefined do (obj.alignNormal=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
+        on alignCheck changed v do changeOrientation #alignNormal v
 
         on projectCheck changed v do if controlsReady and not binding and obj!=undefined do (obj.projectMove=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
         on rotXMinSpin changed v do if controlsReady and not binding and obj!=undefined do (obj.rotXMin=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
@@ -4858,7 +4975,7 @@ initialRollupState:0x8
             obj=next;parentView=(CyrusContainerPanel root)
             for c in selected_randomUI.controls do c.enabled=layer!=undefined
             try (undo off ((wholeMinSpin.value=obj.wholeScaleMin;wholeMaxSpin.value=obj.wholeScaleMax;projectCheck.checked=obj.projectMove;rotXMinSpin.value=obj.rotXMin;rotXMaxSpin.value=obj.rotXMax;rotYMinSpin.value=obj.rotYMin;rotYMaxSpin.value=obj.rotYMax;rotZMinSpin.value=obj.rotZMin;rotZMaxSpin.value=obj.rotZMax;sclXMinSpin.value=obj.sclXMin;sclXMaxSpin.value=obj.sclXMax;sclYMinSpin.value=obj.sclYMin;sclYMaxSpin.value=obj.sclYMax;sclZMinSpin.value=obj.sclZMin;sclZMaxSpin.value=obj.sclZMax;movXMinSpin.value=obj.movXMinWU;movXMaxSpin.value=obj.movXMaxWU;movYMinSpin.value=obj.movYMinWU;movYMaxSpin.value=obj.movYMaxWU;movZMinSpin.value=obj.movZMinWU;movZMaxSpin.value=obj.movZMaxWU;controlsReady=true;alignCheck.checked=obj.alignNormal))) catch(binding=false;controlsReady=true;throw())
-            controlsReady=true;binding=false
+            bindOrientation();controlsReady=true;binding=false
         )
         on presetsButton pressed do try(CyrusOpenPresets root owner "transforms")catch(messageBox (getCurrentException()) title:"Cyrus presets")
         on selected_randomUI open do (root=this;controlsReady=false)

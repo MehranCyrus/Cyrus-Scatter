@@ -94,7 +94,7 @@ fixes before a phase checkpoint. Do not invent a passing visual result.
 | P04 | 0.82.1 | Selectable UV channel and density-map resolution | Medium | P03; map dependency/coordinate contract | Implemented, qualified and pushed under original label |
 | P05 | 0.82.2 | Paint-to-spline export and spline-to-Paint import | Medium | P04; current vector regions and units | Implemented, qualified and pushed under original label; corrected 0.82.2 label compiled for Max 2027 |
 | P06 | 0.82.7 | Rectangular, staggered and hexagonal placement | Medium | P05; stable layout identities | Planned; paused before implementation |
-| P07 | 0.82.8 | Target/direction orientation controls | Medium | P06; final-transform and radius contracts | Planned |
+| P07 | 0.83.0 | Target/direction orientation controls | Medium | Final-transform and radius contracts; active-goal sequencing | Delivered in I04; scoped qualification |
 | P08 | 0.82.9 | True path spacing, sequences and reference placement | Medium–large | P07; shared candidate/transform services | Planned |
 | P09 | 0.83.0 | Transform maps and color-based source assignment | Medium–large | P04, P07, P08 | Planned |
 | P10 | 0.82.5 core; follow-up TBD | Complete planting recipes, substitution and browser | Medium–large | P02 plus settled P03–P09 authored settings | Static core delivered separately; later layouts/maps and browser follow-ups remain |
@@ -174,3 +174,5 @@ Features 12–18 of the comparison remain outside this program: broader linked
 planting, a new advanced Edit system, renderer/material expansion, edge trimming,
 animation/geometry LOD, general curved-surface painting and an Effects framework.
 Do not make them hidden prerequisites for finishing phases 1–11.
+
+Current successor: [I04/P07 0.83.0 direction and normal blending](../improvement-program/I04_0830.md). I05 variation policy follows; P06 grids and the remaining program stay open. Historical version proposals above do not select future delivery numbers.

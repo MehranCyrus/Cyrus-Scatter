@@ -137,15 +137,15 @@ Preparatory [source/format research](P02_PREFLIGHT.md) is recorded. Implementati
 - [ ] Measure bounded large-grid preparation/cache reuse; run host lifecycle/regressions.
 - [ ] Update version/docs; commit, push and verify.
 
-## P07 — direction controls (0.82.7)
+## P07 — direction controls (delivered as I04 / 0.83.0)
 
-- [ ] Freeze direction/target/up/roll and random-rotation composition semantics.
-- [ ] Implement fixed direction and Look At, including degenerate cases.
-- [ ] Include final basis in bounds/radii before acceptance.
-- [ ] Add relevant target animation/deletion dependencies and UI.
-- [ ] Test known axes, transformed sources, collisions, Manual/Live and persistence.
-- [ ] Measure unrelated-animation reuse; run regressions.
-- [ ] Update version/docs; commit, push and verify.
+- [x] Freeze direction/target/up/roll and random-rotation composition semantics.
+- [x] Implement fixed direction and Look At, including degenerate cases.
+- [x] Include final basis in bounds/radii before acceptance.
+- [x] Add relevant target animation/deletion dependencies and UI.
+- [x] Test known axes, transformed sources, collisions, Manual/Live and persistence.
+- [x] Measure unrelated-animation reuse; run regressions.
+- [ ] Update version/docs; commit, push and verify. — docs/package complete; Git checkpoint pending.
 
 ## P08 — paths, sequences and references (0.82.8)
 
@@ -225,3 +225,5 @@ Preparatory [source/format research](P02_PREFLIGHT.md) is recorded. Implementati
 For each subsequent entry record the exact change, evidence/receipt, failures,
 version decision, commit/remote hash and next action. Keep detailed raw outputs
 in the owned ignored run directory; link only evidence that actually exists.
+
+Current successor: [I04/P07 0.83.0 direction and normal blending](../improvement-program/I04_0830.md). I05 variation policy follows; P06 grids and the remaining program stay open. Historical version proposals above do not select future delivery numbers.

@@ -82,7 +82,7 @@ const std::vector<Field>& fields(){static const std::vector<Field> result={
 };return result;}
 
 void validateSettings(const Json& s){
-    require(s.is_object()&&s.size()==fields().size(),"complete settings field count differs from recipe v1");
+    require(s.is_object()&&s.size()==fields().size(),"complete settings field count differs from recipe v2");
     for(const auto& f:fields()){
         require(s.contains(f.name),std::string("missing authored field ")+f.name);const auto& v=s.at(f.name);std::string kind=f.type;
         if(kind.size()>3&&kind.substr(kind.size()-3)=="tab"){
@@ -130,11 +130,32 @@ void validateSettings(const Json& s){
     cyrus::surface_filter::Settings filter;
     filter.slope={s["slopeEnabled"].get<bool>(),number(s["slopeMinimum"]),number(s["slopeMaximum"]),number(s["slopeLowerFade"]),number(s["slopeUpperFade"])};
     filter.altitude={s["altitudeEnabled"].get<bool>(),number(s["altitudeMinimum"]),number(s["altitudeMaximum"]),number(s["altitudeLowerFade"]),number(s["altitudeUpperFade"])};cyrus::surface_filter::validate(filter);
+    require(s["orientationMode"]!=3||!s["orientationTarget"].is_null(),"Look at target requires an explicit target role");
+}
+
+Json currentDocument(const Json& input){
+    Json result=input;
+    if(!result.is_object()||!result.contains("formatVersion")||result["formatVersion"]!=1)return result;
+    require(result["formatVersion"].is_number_integer(),"recipe version must be an integer");
+    // Access through at() so incomplete structure cannot be silently repaired.
+    const auto extend=[](Json& s){
+        require(s.is_object()&&s.size()+6==fields().size(),"incomplete recipe v1 settings");
+        for(const auto& name:{"orientationMode","orientationBlend","orientationX","orientationY","orientationZ","orientationTarget"})require(!s.contains(name),"orientation fields require recipe format 2");
+        s["orientationMode"]=1;s["orientationBlend"]=100.;s["orientationX"]=0.;s["orientationY"]=1.;s["orientationZ"]=0.;s["orientationTarget"]=nullptr;
+    };
+    extend(result.at("rootSettings"));
+    require(result.at("layers").is_array()&&result.at("layers").size()<=10,"invalid layers");
+    for(auto& layer:result.at("layers")){
+        extend(layer.at("settings"));require(layer.at("areas").is_array()&&layer.at("areas").size()<=128,"invalid Paint Areas");
+        for(auto& area:layer.at("areas"))extend(area.at("settings"));
+    }
+    result["formatVersion"]=2;return result;
 }
 
 void validate(const Json& d,bool hydrated){
+    if(d.is_object()&&d.contains("formatVersion")&&d["formatVersion"]==1){validate(currentDocument(d),hydrated);return;}
     keys(d,{"format","formatVersion","evaluationContract","sceneSchema","hostYear","id","name","unitsPerMetre","exportScope","rootSettings","roles","layers","spacingRelationships"});
-    require(d["format"]=="cyrus.planting-recipe"&&d["formatVersion"]==1&&d["evaluationContract"]=="CyrusUnified1"&&d["sceneSchema"]==58&&d["hostYear"]==2027,"unsupported recipe version/engine/host");
+    require(d["format"]=="cyrus.planting-recipe"&&d["formatVersion"].is_number_integer()&&d["formatVersion"]==2&&d["evaluationContract"]=="CyrusUnified1"&&d["sceneSchema"]==58&&d["hostYear"]==2027,"unsupported recipe version/engine/host");
     id(d["id"]);const auto name=text(d["name"],320);require(!name.empty(),"empty name");require(number(d["unitsPerMetre"])>0,"invalid saved unit scale");require(d["exportScope"]=="complete-setup","only complete authored recipes are supported");validateSettings(d["rootSettings"]);
     require(d["roles"].is_array()&&d["roles"].size()<=4096,"too many roles");std::map<std::string,std::string> roles;
     for(const auto& r:d["roles"]){keys(r,{"id","kind","name","purposes","requirements"});const auto key=id(r["id"]),kind=text(r["kind"],16);require(kind=="node"||kind=="texture"||kind=="layer","unknown role kind");require(roles.emplace(key,kind).second,"duplicate role");text(r["name"],1024);require(r["purposes"].is_array()&&r["purposes"].size()<=256,"role purposes limit");for(const auto& purpose:r["purposes"])text(purpose,128);if(!r["requirements"].is_null()){const auto& q=r["requirements"];keys(q,{"width","length","collectEnabled","showLabel","savedSources"});require(kind=="node"&&number(q["width"])>0&&number(q["length"])>0&&q["collectEnabled"].is_boolean()&&q["showLabel"].is_boolean()&&q["savedSources"].is_array()&&q["savedSources"].size()<=1024,"invalid container requirements");}}
@@ -167,7 +188,7 @@ Json parse(const std::string& input){
     auto callback=[&](int depth,Json::parse_event_t event,Json& value){require(depth<=32,"nesting exceeds 32");if(event==Json::parse_event_t::object_start)names.emplace_back();if(event==Json::parse_event_t::key)require(!names.empty()&&names.back().insert(value.get<std::string>()).second,"duplicate JSON key");if(event==Json::parse_event_t::object_end)names.pop_back();return true;};
     return Json::parse(input,callback);
 }
-std::string serialize(const Json& d){validate(d,false);const auto out=d.dump(2);require(out.size()<=maxManifestBytes,"manifest exceeds 8 MiB");return out;}
+std::string serialize(const Json& d){validate(d,false);const auto out=currentDocument(d).dump(2);require(out.size()<=maxManifestBytes,"manifest exceeds 8 MiB");return out;}
 std::string hex(const std::vector<unsigned char>& bytes){static const char* digits="0123456789abcdef";std::string s;s.reserve(bytes.size()*2);for(auto v:bytes){s+=digits[v>>4];s+=digits[v&15];}return s;}
 std::vector<unsigned char> unhex(const std::string& s){require(s.size()%2==0&&s.size()<=maxPaintBytes*2,"invalid Paint hex length");std::vector<unsigned char> bytes;bytes.reserve(s.size()/2);auto nibble=[](char c){if(c>='0'&&c<='9')return c-'0';if(c>='a'&&c<='f')return c-'a'+10;throw std::invalid_argument("Recipe: invalid Paint hex");};for(std::size_t i=0;i<s.size();i+=2)bytes.push_back(static_cast<unsigned char>((nibble(s[i])<<4)|nibble(s[i+1])));return bytes;}
 std::string digest(const std::vector<unsigned char>& bytes){
@@ -183,7 +204,7 @@ void writeNew(const std::filesystem::path& path,const Json& hydrated){
     std::filesystem::create_directories(path.parent_path());const auto token=id(hydrated["id"]);const auto folderName="paint-"+token+".payload";
     const auto finalFolder=path.parent_path()/pathFromUTF8(folderName),staged=std::filesystem::path(finalFolder.wstring()+L".tmp"),temp=std::filesystem::path(path.wstring()+L"."+pathFromUTF8(token).wstring()+L".tmp");
     require(!std::filesystem::exists(finalFolder)&&!std::filesystem::exists(staged)&&!std::filesystem::exists(temp),"staging path already exists");
-    Json output=hydrated;bool stagedCreated=false,folderPublished=false;std::size_t index=0;
+    Json output=currentDocument(hydrated);bool stagedCreated=false,folderPublished=false;std::size_t index=0;
     try{
         paints(output,[&](Json& p){const auto bytes=unhex(p["payload"].get<std::string>());if(!stagedCreated){require(std::filesystem::create_directory(staged),"cannot create attachment staging folder");stagedCreated=true;}const auto name="paint-"+std::to_string(++index)+".cspaint";saveBytes(staged/name,std::string(bytes.begin(),bytes.end()));const auto saved=loadText(staged/name,maxPaintBytes);require(std::vector<unsigned char>(saved.begin(),saved.end())==bytes,"attachment readback mismatch");p["payload"]={{"file",folderName+"/"+name},{"sha256",digest(bytes)},{"bytes",bytes.size()}};});
         const auto manifest=serialize(output);saveBytes(temp,manifest);validate(parse(loadText(temp,maxManifestBytes)),false);
@@ -192,7 +213,7 @@ void writeNew(const std::filesystem::path& path,const Json& hydrated){
     }catch(...){std::error_code ec;std::filesystem::remove(temp,ec);if(stagedCreated)std::filesystem::remove_all(folderPublished?finalFolder:staged,ec);throw;}
 }
 Json read(const std::filesystem::path& path,bool hydrate,std::string* manifestSHA256){
-    const auto input=loadText(path,maxManifestBytes);auto d=parse(input);validate(d,false);
+    const auto input=loadText(path,maxManifestBytes);auto d=parse(input);validate(d,false);d=currentDocument(d);
     if(manifestSHA256)*manifestSHA256=digest(std::vector<unsigned char>(input.begin(),input.end()));
     if(!hydrate)return d;
     paints(d,[&](Json& p){const auto record=p["payload"];const auto file=checkedAttachment(path,record["file"].get<std::string>());const auto data=loadText(file,maxPaintBytes);const std::vector<unsigned char> bytes(data.begin(),data.end());require(bytes.size()==record["bytes"].get<std::size_t>()&&digest(bytes)==record["sha256"].get<std::string>(),"Paint attachment integrity mismatch");p["payload"]=hex(bytes);});validate(d,true);return d;

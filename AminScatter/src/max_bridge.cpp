@@ -18,6 +18,9 @@
 #include "receiver_binding_host.h"
 #include "license_boundary.h"
 #include "placement_transport.h"
+#include "orientation.h"
+#include <sstream>
+#include <locale>
 #include <memory>
 #include <stdexcept>
 #include <map>
@@ -31,6 +34,7 @@
 #undef ScripterExport
 #define ScripterExport __declspec(dllexport)
 #include "spline_field_bridge.inc"
+#include "direction_orientation_value.inc"
 
 extern "C" __declspec(dllexport) const TCHAR* LibDescription() {
 #ifdef CYRUS_NATIVE_LICENSE_EXPERIMENT
@@ -183,7 +187,7 @@ std::vector<amin::Triangle> surfaceMeshes(Value* input,bool requireUv=false,int 
     }
     return result;
 }
-Value* scatterAdvanced(Value** args,int count) {
+Value* scatterAdvanced(Value** args,int count,bool canonical=false) {
     if(count!=29) throw RuntimeError(_T("Cyrus generation requires its current 29-field contract."));
     type_check(args[28],Array,_T("generation options"));
     auto* v1=static_cast<Array*>(args[28]);
@@ -291,7 +295,7 @@ Value* scatterAdvanced(Value** args,int count) {
     }
     const auto sl=args[4]->to_point3(),sh=args[5]->to_point3(),rl=args[6]->to_point3(),rh=args[7]->to_point3(),ml=args[8]->to_point3(),mh=args[9]->to_point3();
     for(int i=0;i<3;++i) {s.axisScale[i]={sl[i],sh[i]};s.rotationDegrees[i]={rl[i],rh[i]};s.movement[i]={ml[i],mh[i]};}
-    s.alignToNormal=args[10]->to_bool()!=FALSE;s.projectMovement=args[11]->to_bool()!=FALSE;
+    s.alignToNormal=!canonical&&args[10]->to_bool()!=FALSE;s.projectMovement=args[11]->to_bool()!=FALSE;
     s.distribution=args[12]->to_int();
     if(s.distribution==2) {
         type_check(args[13],Array,_T("density array"));
@@ -307,9 +311,10 @@ Value* scatterAdvanced(Value** args,int count) {
         const auto tilt=v1->data[3]->to_float(),lo=v1->data[4]->to_float(),hi=v1->data[5]->to_float(),move=v1->data[6]->to_float();
         s.rotationDegrees={{{-tilt,tilt},{-tilt,tilt},{lo,hi}}};s.movement={{{-move,move},{-move,move},{-move,move}}};
     }
-    std::vector<amin::Instance> instances;
+    std::vector<amin::Instance> instances;std::vector<amin::Vec3> orientationNormals;
     try {
         const auto mesh=surfaceMeshes(args[0],s.distribution==2,uvChannel);
+        if(canonical)orientationNormals=cyrus::orientation::normals(mesh);
         if(args[27]!=&undefined) {
             type_check(args[27],Array,_T("final pass"));auto* f=static_cast<Array*>(args[27]);
             if(f->size!=14)throw RuntimeError(_T("Invalid final pass payload"));
@@ -332,20 +337,27 @@ Value* scatterAdvanced(Value** args,int count) {
         }
     }
     catch(const std::exception& error) {const std::string message=error.what();throw RuntimeError(MSTR(std::wstring(message.begin(),message.end()).c_str()));}
-    two_typed_value_locals(Array* result,Array* row);vl.result=new Array(static_cast<int>(instances.size()));
+    three_typed_value_locals(Array* result,Array* row,Array* pair);vl.result=new Array(static_cast<int>(instances.size()));
     for(const auto& v:instances) {
         vl.row=new Array(2);vl.result->append(vl.row);
         vl.row->append(new Matrix3Value(Matrix3(point(v.xAxis*v.scale),point(v.yAxis*v.scale),point(v.zAxis*v.scale),point(v.position))));
         vl.row->append(Integer::intern(v.source+1));
         appendIdentity(vl.row,v);
     }
+    if(canonical){
+        vl.pair=new Array(2);vl.pair->append(vl.result);vl.pair->append(new CyrusOrientationNormals(std::move(orientationNormals)));
+        ++orientationSnapshotBuilds;return_value(vl.pair);
+    }
     return_value(vl.result);
 }
 }
 def_visible_primitive(cyrusScatterAdvanced, "cyrusScatterAdvanced");
 Value* cyrusScatterAdvanced_cf(Value** args,int count){return scatterAdvanced(args,count);}
+def_visible_primitive(cyrusScatterCanonical,"cyrusScatterCanonical");
+Value* cyrusScatterCanonical_cf(Value** args,int count){return scatterAdvanced(args,count,true);}
 #include "procedural_bridge.inc"
 #include "receiver_bridge.inc"
+#include "direction_orientation_bridge.inc"
 #include "surface_filter_bridge.inc"
 #include "mesh_density_bridge.inc"
 def_visible_primitive(cyrusDensityMapVersion,"cyrusDensityMapVersion");

@@ -3,6 +3,31 @@
   "notes": "Entries are ordered by documented development chronology, not numeric label. Missing versions and unknown dates are not invented. Local evidence is stripped before publication. 0.79.2 and 0.79.5 are current uncommitted working-tree campaigns at this review, not new Git releases. Analyzer/MCP have independent version domains.",
   "entries": [
     {
+      "version": "0.83.0",
+      "date": "2026-10-16",
+      "title": "Direction, target aiming and angular normal blending.",
+      "era": "recent",
+      "legacy": false,
+      "note": "Scoped Max 2027 qualification and MZP; no artist installation. Remaining program and EXE stay open.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "World direction and Look at target modes, explicit source forward axes and 0–100% geometric-normal blending."
+        },
+        {
+          "kind": "Improved",
+          "text": "Direction-only changes reuse candidates and copied normals. Relevant animation updates orientation; idle, inactive targets and target geometry changes avoid scatter work."
+        },
+        {
+          "kind": "Added",
+          "text": "Format-2 recipes and numeric Transform presets preserve orientation, with strict neutral-default reads of the preceding format-1 examples."
+        }
+      ],
+      "evidence": [
+        "docs/plans/improvement-program/I04_0830.md"
+      ]
+    },
+    {
       "version": "0.82.6.1",
       "date": "2026-10-16",
       "title": "Searchable recipes, stored thumbnails and four planting examples.",
