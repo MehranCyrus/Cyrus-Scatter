@@ -30,12 +30,40 @@ fn CyrusResetTimeOwners = (
     CyrusTimeOwners=for node in objects where classof node.baseObject==AminScatterObject collect node
 )
 
-global CyrusDiagnosticEmit
-fn CyrusDiagnosticEmit event origin owner epoch detail = (
+global CyrusDiagnosticEmit,CyrusActiveActionID=0L,CyrusActionSequence=0L,CyrusBeginAction,CyrusEndAction
+fn CyrusDiagnosticEmit event origin owner epoch detail correlation:undefined = (
     if cyrusDiagnosticActive!=undefined do try (
-        if cyrusDiagnosticActive() do cyrusDiagnosticEvent event origin owner epoch detail
+        if cyrusDiagnosticActive() do cyrusDiagnosticEvent event origin owner epoch detail (if correlation==undefined then CyrusActiveActionID else correlation)
     )catch()
     undefined
+)
+fn CyrusBeginAction root detail = (
+    if not cyrusDiagnosticActive() do return undefined
+    if CyrusActiveActionID>0 do return #(CyrusActiveActionID,CyrusActiveActionID)
+    local previous=CyrusActiveActionID
+    CyrusActionSequence+=1;CyrusActiveActionID=CyrusActionSequence
+    CyrusDiagnosticEmit "ui.action" "panel" root.layerID root.procEpoch detail
+    #(CyrusActiveActionID,previous)
+)
+fn CyrusEndAction token = (if token!=undefined do CyrusActiveActionID=token[2];undefined)
+global CyrusMeasureBegin,CyrusMeasureEnd,CyrusDiagnosticState
+fn CyrusMeasureBegin stage = (try(if cyrusDiagnosticBegin!=undefined then cyrusDiagnosticBegin stage CyrusActiveActionID else undefined)catch(undefined))
+fn CyrusMeasureEnd token owner epoch detail failed:false = (
+    if token!=undefined do try(cyrusDiagnosticEnd token owner epoch detail failed)catch()
+    undefined
+)
+-- Snapshot only already-published values and invalidation flags. Never build an
+-- input key, inspect source geometry, bake a map or request a viewport refresh.
+fn CyrusDiagnosticState root = (
+    if root==undefined do return "null"
+    local stream=stringStream ""
+    format "{\"epoch\":%,\"solves\":%,\"mode\":%,\"layers\":[" root.procEpoch root.groupBuilds root.updateMode to:stream
+    for i=1 to root.layerObjects.count do (
+        local leaf=root.layerObjects[i]
+        format "%{\"id\":\"%\",\"published_requested\":%,\"accepted\":%,\"prepared_preview\":%,\"dirty\":%,\"prepare_builds\":%,\"preview_builds\":%,\"map_bakes\":%}" (if i==1 then "" else ",") leaf.layerID leaf.requestedCount leaf.generatedCount leaf.cachedPointCount (if leaf.dirty then "true" else "false") leaf.procPreparedBuilds leaf.previewBuildCount leaf.procDensityBakes to:stream
+    )
+    format "]}" to:stream
+    stream as string
 )
 global CyrusPerfTraceBegin,CyrusPerfTraceEnd,CyrusPerfTraceInput
 -- Callbacks only request deferred work. No idle signature/scene polling.
@@ -395,7 +423,7 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 meshMask:false = (
             local c=graph.curves[1];c.color=red
             graph.y_range=[0,(if isDensity then 100 else amax 200.0 ((amax values)*100))]
             -- Fit the full density domain before loading the authored curve.
-            -- Zoom extents on a constant curve hides almost all of 0â€“100%.
+            -- Zoom extents on a constant curve hides almost all of 0-100%.
             local densityZoom=undefined,densityScroll=undefined
             if ownerBandID>0 or isMeshMask do (
                 c.numPoints=2
@@ -560,6 +588,7 @@ initialRollupState:0x8
     local cachedAnalyzerRun=-1
     local cachedPointCount=0
     local dirty = true
+    local diagnosticCauseID=0L
     -- Session-only validity. Scene identities and publication records are unchanged.
     local inputTimeValidity=undefined,inputTimeStamp=0,inputTimeObserved=0
     local inputTimeQueries=0,inputTimeInvalidations=0
@@ -574,7 +603,15 @@ initialRollupState:0x8
             )
         )
     )
-    fn markInputDirty = (inputTimeValidity=undefined;dirty=true;CyrusViewportRecordsDirty=true)
+    fn markInputDirty = (
+        if cyrusDiagnosticActive() do try (
+            if CyrusActiveActionID>0 or not dirty do diagnosticCauseID=CyrusActiveActionID
+            local controller=if this.overlapOwner==undefined then this else this.overlapOwner
+            controller.diagnosticCauseID=diagnosticCauseID
+            CyrusDiagnosticEmit "input.invalidated" "setting" this.layerID this.procEpoch "authored_or_dependency_edit" correlation:diagnosticCauseID
+        )catch()
+        inputTimeValidity=undefined;dirty=true;CyrusViewportRecordsDirty=true
+    )
     fn inputTimeExpired = (
         if inputTimeValidity==undefined do return false
         local tick=currentTime as integer
@@ -2045,7 +2082,7 @@ initialRollupState:0x8
         -- Only a committed calculation epoch establishes its first result.
         CyrusLayerStatusData hasResult:(procEpoch>0 and cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
     )
-    fn uiVersion = "0.82.5"
+    fn uiVersion = "0.82.6"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified1")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -2227,7 +2264,7 @@ initialRollupState:0x8
         parent.markInputDirty();this.bindNativeUI();CyrusViewportRedraw();true
     )
     fn validatePaintConversion area = (
-        if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=1 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 do throw "Paint/spline conversion requires the matching Cyrus native plugins. Restart Max with the complete pair."
+        if cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=1 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 do throw "Paint/spline conversion requires the matching Cyrus native plugins. Restart Max with the complete pair."
         local parent=if area==undefined then undefined else this.logicalParent area
         if parent==undefined or findItem layerObjects parent==0 or findItem parent.paintAreas area==0 do throw "Select a Paint Area owned by this setup."
         if area.paintDocument==undefined or not isValidNode area.areaTarget or findItem (parent.validSurfaces()) area.areaTarget==0 do throw "Choose a valid receiving surface for this Paint Area."
@@ -2594,7 +2631,7 @@ initialRollupState:0x8
         if reusable do reusable=tick>=cached[4][1] and tick<=cached[4][2]
         if reusable then procDensityHits+=1
         else (
-            local image=undefined,weights=#(),started=timeStamp(),interval=cyrusScatterInputValidity #() #() #(densityMap)
+            local image=undefined,weights=#(),started=timeStamp(),interval=cyrusScatterInputValidity #() #() #(densityMap),measurement=CyrusMeasureBegin 11
             try (
                 image=renderMap densityMap size:[densityResolution,densityResolution]
                 if image==undefined do throw "Density map could not be sampled."
@@ -2604,7 +2641,8 @@ initialRollupState:0x8
                     weights[index]=amin 1.0 (amax 0.0 ((c.r*0.2126+c.g*0.7152+c.b*0.0722)/255.0));index+=1
                 )
                 close image;image=undefined
-            )catch(if image!=undefined do try(close image)catch();throw())
+            )catch(CyrusMeasureEnd measurement layerID procEpoch "map_bake_failed" failed:true;if image!=undefined do try(close image)catch();throw())
+            CyrusMeasureEnd measurement layerID procEpoch "map_baked"
             cached=#(densityMap,revision,densityResolution,interval,weights,undefined)
             procDensityCache=cached;procDensityBakes+=1;procDensityBakeMs=timeStamp()-started
         )
@@ -2854,7 +2892,10 @@ initialRollupState:0x8
             if cyrusBrushTarget area.paintDocument!=area.areaTarget do throw "Paint Area target mismatch; saved vector borders are preserved."
             append docs area.paintDocument;append densities area.paintDensity
         )
-        cyrusBrushRegionFilter rows docs densities targets paintBaseFaceCounts ("CyrusStableMask1:"+(this.effectiveSeed() as string))
+        local measurement=CyrusMeasureBegin 4,result
+        try(result=cyrusBrushRegionFilter rows docs densities targets paintBaseFaceCounts ("CyrusStableMask1:"+(this.effectiveSeed() as string)))catch(CyrusMeasureEnd measurement layerID procEpoch "paint_mask" failed:true;throw())
+        CyrusMeasureEnd measurement layerID procEpoch "paint_mask"
+        result
     )
     fn procBinding plants rows = (
         local stream=stringStream ""
@@ -3093,7 +3134,7 @@ initialRollupState:0x8
             else for handle in deletedHandles while not affected do if findItem procDependencyHandles handle>0 do affected=true
         )
         if affected do (CyrusClearMeshMaskPreview this;procGeometryRevision+=1;markInputDirty())
-        CyrusDiagnosticEmit "input.classified" "host_callback" layerID procEpoch (if affected then "geometry_dependency" else "unrelated")
+        CyrusDiagnosticEmit "input.classified" "host_callback" layerID procEpoch (if affected then "geometry_dependency" else "unrelated") correlation:(if affected then diagnosticCauseID else 0L)
         affected
     )
     fn containerSetMode mode = (
@@ -3167,8 +3208,8 @@ initialRollupState:0x8
     )
     fn procPrepare pool plants = (
         local key=(this.paintBaseInputKey plants true)+"|Texture:"+(this.procWatchDensity() as string)+"|Pool:"+(pool as string)+"|"+(this.procCoverageKey())+"|"+(overlapOwner.procEditKey())+"|Filter:"+(this.surfaceFilterKey())
-        if key==procPreparedKey do (CyrusDiagnosticEmit "prepare.reused" "engine" layerID procEpoch "key_match";procPreparedHits+=1;return procPreparedRows)
-        CyrusDiagnosticEmit "prepare.started" "engine" layerID procEpoch "key_changed"
+        if key==procPreparedKey do (CyrusDiagnosticEmit "prepare.reused" "engine" layerID procEpoch "key_match" correlation:diagnosticCauseID;procPreparedHits+=1;return procPreparedRows)
+        CyrusDiagnosticEmit "prepare.started" "engine" layerID procEpoch "key_changed" correlation:diagnosticCauseID
         local rows
         procCandidateCount=pool
         try(rows=this.cspImpl_placements plants previewOnly:true rawOnly:true)catch(procCandidateCount=undefined;throw())
@@ -3185,14 +3226,14 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.82.5 setup; earlier schemas are unsupported."
+        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.82.6 setup; earlier schemas are unsupported."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
     fn procValidate = (
         this.procAssertSchema()
-        if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=1 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=1 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.82.5 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
+        if cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=1 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=1 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.82.6 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -3453,7 +3494,7 @@ initialRollupState:0x8
         for leaf in layerObjects do (this.syncLayerSurface leaf;leaf.containerRefresh();leaf.procEnsureSources())
         local key=this.procInputKey()
         if key==groupSnapshotKey do (
-            CyrusDiagnosticEmit "publication.reused" "engine" layerID procEpoch "key_match"
+            CyrusDiagnosticEmit "publication.reused" "engine" layerID procEpoch "key_match" correlation:diagnosticCauseID
             -- A correction may restore the exact last successful recipe.
             -- Reusing its publication is success; clear a prior failure status.
             for leaf in layerObjects do leaf.previewError=""
@@ -3462,7 +3503,7 @@ initialRollupState:0x8
         -- A cached read still consumes the last published Analyzer guides.
         -- Only a successor solve may reject its now-pending dependencies.
         this.procValidate()
-        CyrusDiagnosticEmit "solve.started" "engine" layerID procEpoch "input_changed"
+        CyrusDiagnosticEmit "solve.started" "engine" layerID procEpoch "input_changed" correlation:diagnosticCauseID
         local mods=this.procModifiers(),active=for m in mods where m.enabled collect m
         local parents=this.logicalLayers(),mapping=#(),layers=#(),admission=0
         local requests=for leaf in layerObjects collect #(0,0,0)
@@ -3540,14 +3581,14 @@ initialRollupState:0x8
             for i=1 to layerObjects.count do (layerObjects[i].procPreparedKey="";layerObjects[i].procCandidateCount=undefined;layerObjects[i].procBindingKey=previousBindings[i])
             groupSolving=false
             if transaction do cyrusEditTransaction mods 2
-            try(CyrusDiagnosticEmit "publication.retained" "engine" layerID procEpoch "successor_failed")catch()
+            try(CyrusDiagnosticEmit "publication.retained" "engine" layerID procEpoch "successor_failed" correlation:diagnosticCauseID)catch()
             throw()
         )
         groupSolving=false
         -- Observer failures do not relabel an already committed result as retained.
         try(CyrusScheduleUI())catch()
         try(CyrusPFRequestCheck())catch()
-        try(CyrusDiagnosticEmit "publication.committed" "engine" layerID procEpoch "complete")catch()
+        try(CyrusDiagnosticEmit "publication.committed" "engine" layerID procEpoch "complete" correlation:diagnosticCauseID)catch()
         groupSnapshotRows
     )
 
@@ -3777,11 +3818,11 @@ initialRollupState:0x8
             binding=true
             local targets=if owner==undefined then #() else owner.validSurfaces(),selected=for i in receiversList.selection where i<=receiverRows.count collect receiverRows[i]
             receiverRows=targets
-            receiversList.items=for node in receiverRows collect node.name
+            CyrusRetainListItems receiversList (for node in receiverRows collect node.name)
             receiversList.selection=for node in selected where findItem receiverRows node>0 collect findItem receiverRows node
             removeSurfaces.enabled=receiversList.selection.numberSet>0
             sharedInfo.text=if targets.count==1 then targets[1].name else (targets.count as string)+" surfaces in this layer"
-            globalContainers.items=for node in root.containerGlobalNodes collect (if isValidNode node then node.name else "<deleted rectangle>")
+            CyrusRetainListItems globalContainers (for node in root.containerGlobalNodes collect (if isValidNode node then node.name else "<deleted rectangle>"))
             for control in #(globalContainers,createContainer,pickContainer,removeContainer) do control.enabled=true
             controlsReady=true;binding=false;refreshStats();arrangeContainers()
         )
@@ -3993,9 +4034,9 @@ initialRollupState:0x8
             binding=true;members=owner.paintAreas as array;targets=owner.validSurfaces()
             local area=currentSet()
             paintedCheck.checked=owner.paintEnabled
-            setList.items=for item in members collect (item.paintSetName+(if findItem targets item.areaTarget==0 then " (inactive)" else ""))
+            CyrusRetainListItems setList (for item in members collect (item.paintSetName+(if findItem targets item.areaTarget==0 then " (inactive)" else "")))
             setList.selection=findItem members area
-            targetList.items=for node in targets collect node.name
+            CyrusRetainListItems targetList (for node in targets collect node.name)
             for control in #(removeButton,nameEdit,targetList,enabledCheck) do control.enabled=area!=undefined
             nameEdit.text=if area==undefined then "" else area.paintSetName
             targetList.selection=if area==undefined then 0 else findItem targets area.areaTarget
@@ -4065,7 +4106,7 @@ initialRollupState:0x8
         fn updateList = (
             local selectedRows=plantList.selection
             if selectedRows.numberSet==0 and obj.sources.count>0 do selectedRows=#{1}
-            plantList.items=for i=1 to obj.sources.count collect ((obj.sourceLabel i)+" | "+(formattedPrint (obj.sourceWeight i) format:".2f")+(if obj.diversityMode==3 then " | "+obj.sourceBandLabel i else ""))
+            CyrusRetainListItems plantList (for i=1 to obj.sources.count collect ((obj.sourceLabel i)+" | "+(formattedPrint (obj.sourceWeight i) format:".2f")+(if obj.diversityMode==3 then " | "+obj.sourceBandLabel i else "")))
             plantList.selection=selectedRows
             groupPalette=#()
             local keys=#()
@@ -4074,7 +4115,7 @@ initialRollupState:0x8
                 local k=obj.colorKey c
                 if findItem keys k==0 do (append keys k;append groupPalette c)
             )
-            existingGroups.items=for i=1 to groupPalette.count collect ("Group "+(i as string))
+            CyrusRetainListItems existingGroups (for i=1 to groupPalette.count collect ("Group "+(i as string)))
         )
         fn addSource n = (
             if obj.usableSource n and (findItem obj.sources n)==0 do (
@@ -4252,10 +4293,10 @@ initialRollupState:0x8
             binding=true
             local leaf=currentSet(),active=true,own=leaf.logicalParentID==""
             modes=if own then #(1,3,4) else #(1,2,3,4)
-            modeList.items=if own then #("Manual models","Shared containers","Layer containers") else #("Manual sources","Layer default","Global containers","This set's containers")
+            CyrusRetainListItems modeList (if own then #("Manual models","Shared containers","Layer containers") else #("Manual sources","Layer default","Global containers","This set's containers"))
             modeList.selection=amax 1 (findItem modes leaf.containerMode)
             local nodes=leaf.effectiveContainers(),selected=containersList.selection
-            containersList.items=for node in nodes collect (if isValidNode node then node.name+(if node.collectEnabled then "" else " [off]") else "<deleted rectangle>")
+            CyrusRetainListItems containersList (for node in nodes collect (if isValidNode node then node.name+(if node.collectEnabled then "" else " [off]") else "<deleted rectangle>"))
             containersList.selection=if nodes.count==0 then 0 else amax 1 (amin selected nodes.count)
             refreshCollection()
             modeList.enabled=active;containersList.enabled=active
@@ -5021,7 +5062,7 @@ initialRollupState:0x8
                 if not isValidNode path do label+=" | inactive"
                 append labels label
             )
-            strokesList.items=labels
+            CyrusRetainListItems strokesList (labels)
             local rank=0
             for j=1 to strokeRows.count where obj.strokeIDs[strokeRows[j]]==selectedBandID do rank=j
             if rank==0 and strokeRows.count>0 do rank=1
@@ -5084,11 +5125,11 @@ initialRollupState:0x8
             for control in #(pathsList,pickPath,cornerMode,arrangementMode) do control.visible=obj.diversityMode==3
             analyzerChannel.visible=analyzed;pickAnalyzer.visible=analyzed
             pickAnalyzer.text=if isValidNode obj.analyzerNode then obj.analyzerNode.name else "Pick Surface Analyzer"
-            removePath.text="Ã—";removePath.tooltip=if analyzed then "Remove the linked Analyzer assignment." else "Remove the selected Path and its Bands; keep the scene spline."
+            removePath.text="×";removePath.tooltip=if analyzed then "Remove the linked Analyzer assignment." else "Remove the selected Path and its Bands; keep the scene spline."
             pickPath.enabled=not analyzed
             strokeTitle.text=if analyzed then "Analyzer bands / rows" else "Spline bands"
-            addOutside.text="â†—";addOutside.tooltip=if not analyzed then "Add Outside Band." else if analyzerChannel.selection==2 then "Add Centerline Band." else "Add Radius Band."
-            addInside.text="â†™";addInside.tooltip=if analyzed and analyzerChannel.selection==3 then "Add Single anchor assignment." else "Add Inside Band."
+            addOutside.text="↗";addOutside.tooltip=if not analyzed then "Add Outside Band." else if analyzerChannel.selection==2 then "Add Centerline Band." else "Add Radius Band."
+            addInside.text="↙";addInside.tooltip=if analyzed and analyzerChannel.selection==3 then "Add Single anchor assignment." else "Add Inside Band."
             boundaryOnly=analyzed and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5)
             addOutside.visible=(obj.diversityMode==3 or analyzed) and not boundaryOnly
             addInside.pos=[if boundaryOnly then 4 else selected_diversityUI.width/2+2,addOutside.pos.y]
@@ -5262,7 +5303,7 @@ initialRollupState:0x8
             binding=true
             try (
                 peers=case scope of (3:(for p in root.layerSets owner where p!=leaf collect p);4:(for p in root.logicalLayers() where p!=owner collect p);default:#())
-                peerList.items=for p in peers collect (if scope==4 then root.layerCaption p else p.paintSetName)
+                CyrusRetainListItems peerList (for p in peers collect (if scope==4 then root.layerCaption p else p.paintSetName))
                 peerList.selection=if peers.count==0 then 0 else amax 1 (findItem peers previous)
                 local editable=not pair or peers.count>0
                 peerList.enabled=pair and editable
@@ -5287,7 +5328,7 @@ initialRollupState:0x8
             binding=true
             local previous=currentScope()
             scopeRows=#(1,4)
-            scopeList.items=#("Within this layer","Between layers")
+            CyrusRetainListItems scopeList (#("Within this layer","Between layers"))
             scopeList.selection=amax 1 (findItem scopeRows previous)
             bindRule();controlsReady=true;binding=false
         )
@@ -5492,7 +5533,7 @@ initialRollupState:0x8
             local identifier=(dotNetClass "System.Guid").NewGuid(),temporary=path+"."+(identifier.ToString "N")+".tmp",stream=undefined
             try (
                 stream=dotNetObject "System.IO.StreamWriter" temporary false (dotNetObject "System.Text.UTF8Encoding" false)
-                local header="{\"schema\":\"cyrus.diagnostic-bundle/1.0\",\"training_eligible\":false,\"development_version\":\""+root.uiVersion()+"\",\"script_payload_sha256\":\""+CyrusLoadedScriptFingerprint+"\",\"native_file_sha256\":"+(nativeIdentity())+",\"pages\":["
+                local header="{\"schema\":\"cyrus.diagnostic-bundle/1.0\",\"training_eligible\":false,\"development_version\":\""+root.uiVersion()+"\",\"script_payload_sha256\":\""+CyrusLoadedScriptFingerprint+"\",\"native_file_sha256\":"+(nativeIdentity())+",\"selected_setup\":"+(CyrusDiagnosticState root)+",\"timing_scope\":\"Opt-in inclusive stage timings; do not sum nested stages. Counts are completed calls, not plant counts. Unchanged zero counts establish avoided work only during the recorded interval.\",\"pages\":["
                 stream.Write header
                 local cursor=0L,pageCount=0,bytes=header.count,finished=false,last=undefined,retained=undefined
                 while not finished do (

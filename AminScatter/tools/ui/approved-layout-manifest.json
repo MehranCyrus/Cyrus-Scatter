@@ -1176,7 +1176,7 @@
     },
     {
       "name": "areasUI",
-      "title": "Include / exclude areas",
+      "title": "Include / exclude",
       "scope": "Layer",
       "controls": [
         {
@@ -2068,7 +2068,7 @@
     },
     {
       "name": "statisticsUI",
-      "title": "Statistics & diagnostics",
+      "title": "Stats & diagnostics",
       "scope": "Setup",
       "controls": [
         {

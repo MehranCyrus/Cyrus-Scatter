@@ -18,6 +18,7 @@
 #include <new>
 #include <string>
 #include "point_preview.h"
+#include "diagnostics.h"
 #include "preview_sampling.h"
 #include "placement_transport.h"
 #include "spline_overlay.h"
@@ -64,6 +65,7 @@ visible_class_instance(AminPointCache,"AminPointCache");
 
 def_visible_primitive(aminScatterBuildPreview,"aminScatterBuildPreview");
 Value* aminScatterBuildPreview_cf(Value** args,int count) {
+    amin::diagnostics::StageTimer measurement(amin::diagnostics::Stage::Preview);
     check_arg_count(aminScatterBuildPreview,4,count);
     for(int i=0;i<3;++i) type_check(args[i],Array,_T("preview inputs"));
     auto* data=static_cast<Array*>(args[0]);
@@ -193,6 +195,7 @@ Value* aminScatterPreviewCount_cf(Value** args,int count) {
 // occurs when the display snapshot changes, never on the viewport draw thread.
 def_visible_primitive(cyrusBuildInspectionPreview,"cyrusBuildInspectionPreview");
 Value* cyrusBuildInspectionPreview_cf(Value** args,int count) {
+    amin::diagnostics::StageTimer measurement(amin::diagnostics::Stage::Preview);
     check_arg_count(cyrusBuildInspectionPreview,2,count);
     type_check(args[0],Array,_T("radius rings"));
     auto* rings=static_cast<Array*>(args[0]);
@@ -350,6 +353,7 @@ std::vector<cyrus::PointLayer> retainedLayers(Value* cachesValue,Value* stylesVa
 }
 def_visible_primitive(cyrusRetainedPublish,"cyrusRetainedPublish");
 Value* cyrusRetainedPublish_cf(Value** args,int count) {
+    amin::diagnostics::StageTimer measurement(amin::diagnostics::Stage::Publication);
     check_arg_count(cyrusRetainedPublish,4,count);
     auto layers=retainedLayers(args[2],args[3]);
     return cyrus::publishPoints(args[0]->to_node(),args[1]->to_node(),std::move(layers)) ? &true_value : &false_value;

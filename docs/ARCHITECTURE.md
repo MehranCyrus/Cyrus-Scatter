@@ -92,6 +92,23 @@ status callback only relayouts Statistics when its displayed text changes. See
 [Phase 1 evidence](plans/eleven-phase-roadmap/P01.md) for runtime results and the
 remaining visual acceptance.
 
+## Panel lifecycle and diagnostics (0.82.6)
+
+The full Scatter editor uses twelve lightweight native slots. Each section creates
+its controls on first opening and retains them while Max keeps the Modify panel
+mounted. Rebinding changes the explicit setup/layer owner; it does not apply
+pending Manual edits. Unmounting ends that control lifetime. Unchanged list rows
+and managed styling are retained; wrapped text measurements are cached by
+control, text and width. Layout converts logical control coordinates to physical
+rollout heights and uses the visible slot width to avoid clipping.
+
+The opt-in recorder adds 15 bounded inclusive stage totals and edit action IDs.
+Disabled timers avoid clocks, allocations and locks; recording-generation tokens
+reject completions from older sessions. Cached status export does not evaluate
+geometry or placements. Timing totals are nested scopes, not additive wall time
+or presented FPS. See the [0.82.6 handoff](plans/panel-performance-0826/PROGRESS.md)
+for exact sources, measured improvement and remaining physical-display limits.
+
 ## Source map
 
 Source rectangles in 0.81.5 instantiate only their compact properties rollout.
@@ -111,6 +128,8 @@ and renderer coverage retain their explicit acceptance limits.
 | --- | --- |
 | Controller, ownership, scheduling, publication, render bridge | [unified-core.ms](../AminScatter/tools/ui/templates/unified-core.ms) |
 | UI generation and shared layouts | [generate.cjs](../AminScatter/tools/ui/generate.cjs), [approved-layout.cjs](../AminScatter/tools/ui/approved-layout.cjs), [approved-layout-rows.cjs](../AminScatter/tools/ui/approved-layout-rows.cjs) |
+| Lazy panel lifetime and scaling | [lazy-pages.cjs](../AminScatter/tools/ui/lazy-pages.cjs), [approved-main-ui.ms](../AminScatter/tools/ui/templates/approved-main-ui.ms), [colored-lists.cjs](../AminScatter/tools/ui/colored-lists.cjs), [rollout_flow.cpp](../AminScatter/src/rollout_flow.cpp) |
+| Bounded stage diagnostics | [diagnostics.h](../AminScatter/include/diagnostics.h), [diagnostics.cpp](../AminScatter/src/diagnostics.cpp), [diagnostics_bridge.cpp](../AminScatter/src/diagnostics_bridge.cpp) |
 | Sampling and host preparation | [scatter.cpp](../AminScatter/src/scatter.cpp), [max_bridge.cpp](../AminScatter/src/max_bridge.cpp) |
 | Receiver quotas, stable IDs, schedules and binding receipts | [receiver_plan.cpp](../AminScatter/src/receiver_plan.cpp), [receiver_bridge.inc](../AminScatter/src/receiver_bridge.inc) |
 | Ordered acceptance and work limits | [procedural.cpp](../AminScatter/src/procedural.cpp), [group_spacing.cpp](../AminScatter/src/group_spacing.cpp) |

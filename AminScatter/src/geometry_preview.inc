@@ -1,6 +1,7 @@
 // Source meshes are copied once per cache rebuild, never as scene nodes.
 def_visible_primitive(cyrusBuildGeometryPreview,"cyrusBuildGeometryPreview");
 Value* cyrusBuildGeometryPreview_cf(Value** args,int count){
+    amin::diagnostics::StageTimer measurement(amin::diagnostics::Stage::Preview);
  check_arg_count(cyrusBuildGeometryPreview,6,count);
  for(int i=0;i<3;++i)type_check(args[i],Array,_T("geometry preview"));
  auto* rows=static_cast<Array*>(args[0]);auto* sources=static_cast<Array*>(args[1]);

@@ -6,7 +6,8 @@
         "paragraphs": [
           "Create a Cyrus Scatter controller, add a layer, assign its receiving surfaces and add models or Points. Set Amount, then press **Update scatter** in Manual mode. Live responds to relevant edits.",
           "In Geometry > Cyrus > Cyrus Scatter, click to place, move to size the icon, and click to finish. Right-click to exit Create mode. Each layer owns its surfaces, sources, amount, layout, transforms and spacing. Layer order matters when between-layer spacing is enabled.",
-          "Use Add, Copy, Remove, Up and Down to organize layers. Copy includes independent Paint Areas. Visible controls viewport display; Enabled controls the layer contribution. Removing an assignment does not delete the source scene object."
+          "Use Add, Copy, Remove, Up and Down to organize layers. Copy includes independent Paint Areas. Visible controls viewport display; Enabled controls the layer contribution. Removing an assignment does not delete the source scene object.",
+          "In 0.82.6, closed sections create controls on first opening and reuse them while the command panel remains mounted. Switching layers rebinds those controls. Browsing does not apply pending Manual edits."
         ]
       },
       {
@@ -104,15 +105,16 @@
           "In Manual, enabled field feedback follows relevant authored/animated inputs while published plants and radii stay frozen. The label reads **Pending field; plants from last Update**. Field toggles, selection and XY/3D radius display do not solve placements. An uncached display mode cannot use changed source geometry alongside the preceding publication; Update is required.",
           "Local identification-color edits retain unchanged sibling previews. Unchanged navigation reuses prepared display data. Heavy changed layers, cold loading and first panel construction can still take time.",
           "Statistics identifies the selected layer and its last completed calculation. Requested and accepted placements are separate from prepared cloud points, centres or preview instances. Prepared samples are not current-frame draw counts. Marked for Update reports pending invalidation; Read cached statistics does not apply Manual edits. Empty successful results and failed updates have separate feedback. Optional diagnostics record local bounded events; recording is separate from sharing or permission to train.",
-          "In Viewport & render, Navigating and Idle set separate limits for Point Cloud points, Proxy instances or Mesh triangles across visible layers. Use 0 for unlimited. A short pause restores Idle detail; final rendering retains the full accepted planting. Expensive Mesh sources can use cached boxes to fit the triangle or memory allowance. Oversized Point Cloud requests use a bounded sample and report the memory reduction, including at zero limits; switching modes reuses the current planting snapshots. Zero removes artist draw caps but keeps memory safeguards. Graphics failure uses bounded centre markers. Display changes preserve pending Manual edits."
+          "In Viewport & render, Navigating and Idle set separate limits for Point Cloud points, Proxy instances or Mesh triangles across visible layers. Use 0 for unlimited. A short pause restores Idle detail; final rendering retains the full accepted planting. Expensive Mesh sources can use cached boxes to fit the triangle or memory allowance. Oversized Point Cloud requests use a bounded sample and report the memory reduction, including at zero limits; switching modes reuses the current planting snapshots. Zero removes artist draw caps but keeps memory safeguards. Graphics failure uses bounded centre markers. Display changes preserve pending Manual edits.",
+          "From 0.82.6, saved reports include call counts, total time, longest time and failed-stage counts for input extraction, candidates, masks, transforms/radii, spacing, preview preparation, uploads, publication and panel work. Times are inclusive: a parent can contain another measured stage, so do not add all totals together. Action IDs connect an edit to invalidation and its deferred publication; unrelated host activity can have no action ID. The selected-setup snapshot reads cached requested/accepted/prepared counts and pending flags without evaluating the scene. These timings do not measure presented viewport FPS."
         ]
       },
       {
         "title": "Final artist acceptance",
         "paragraphs": [
-          "Run the 0.82.5 Max 2027 installer through Scripting > Run Script, then restart Max so the script and native modules match. This delivery is tested in Max 2027 only. Renderer and physical-input coverage remains specific to the documented workflow.",
+          "Run the 0.82.6 Max 2027 installer through Scripting > Run Script, then restart Max so the script and native modules match. This delivery is tested in Max 2027 only. Renderer and physical-input coverage remains specific to the documented workflow.",
           "Team-pilot builds expose License / activation. Export an activation request and import the returned license. The pilot license lasts 30 days from issuance; expiry locks authoring while existing scenes remain loadable/renderable.",
-          "Development source 0.82.5 uses schema 58; earlier schemas are rejected without migration. Preserve earlier scenes with their matching build. Current settings use typed distances. Preserve originals and use saved units for receiver-bound Paint/Edit data. Test receivers, Points/models, Bands, painting, mesh-channel masks, Manual/Live, Undo/Redo, save/reopen and the intended renderer on a copy. Physical picker/DPI/tablet and long-session acceptance remain open.",
+          "Development source 0.82.6 uses schema 58; earlier schemas are rejected without migration. Preserve earlier scenes with their matching build. Current settings use typed distances. Preserve originals and use saved units for receiver-bound Paint/Edit data. Test receivers, Points/models, Bands, painting, mesh-channel masks, Manual/Live, Undo/Redo, save/reopen and the intended renderer on a copy. Physical picker/DPI/tablet and long-session acceptance remain open.",
           "[View the changelog](#/changelog) for additions and fixes, or use the [testing walkthrough](#/checklist) to record your own observations."
         ]
       },
@@ -203,7 +205,7 @@
         "title": "The product today",
         "paragraphs": [
           "The main product is artist-controlled scattering in 3ds Max: layers, receivers, models and Points, optional vector Paint Areas, layouts, area limits, transforms, spacing, previews and exact output. AI is optional and separate.",
-          "Current development/package is Scatter 0.82.5 / schema 58, with complete static recipes including native Paint, explicit scene roles and transactional import. Current qualification uses Max 2027 only; Phase 6 remains paused. Physical input, sustained heavy scenes, full renderer/platform coverage and commercial release readiness remain separate acceptance work."
+          "Current development/package is Scatter 0.82.6 / schema 58, with complete static recipes including native Paint, explicit scene roles and transactional import. Current qualification uses Max 2027 only; Phase 6 remains paused. Physical input, sustained heavy scenes, full renderer/platform coverage and commercial release readiness remain separate acceptance work."
         ]
       },
       {

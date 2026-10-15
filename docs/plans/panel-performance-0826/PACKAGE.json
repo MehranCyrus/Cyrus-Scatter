@@ -1,0 +1,45 @@
+{
+  "version": "0.82.6",
+  "max_year": 2027,
+  "package": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\dist\\CyrusScatter-0.82.6-20261015\\CyrusScatter-0.82.6-Max2027.mzp",
+  "sha256": "7b70913dca6d1454a7762d7a88a4ee0076fcf48434abd68dc38a8c6c8a9b7c90",
+  "bytes": 996405,
+  "manifest": {
+    "product": "Cyrus Scatter",
+    "version": "0.82.6",
+    "max_year": 2027,
+    "toolset": "14.38.33130",
+    "windows_sdk": "10.0.19041.0",
+    "configuration": "Release",
+    "native_id": "1bff9cce8882",
+    "files": {
+      "AminScatter.dlx": "dc05102836bd6dc1bc2178c92974bc97323940d177b94d7179fdfb1219149d10",
+      "Clipper2-LICENSE.txt": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+      "CyrusBrush.dlx": "38b1a11ab0516889b99dce8b702d974e7abe629f381209ecb710760f9bb487cd",
+      "CyrusBrushStorage.dlh": "abe0390715d4bc1bd188154463a6d467e0fe2e2e694b682fc95dea763a4eafff",
+      "CyrusScatter.mcr": "c4a65dc1579c2d359f991cbc6135c2fb242d4c7397de482ac2501f5b471da78d",
+      "CyrusScatter.ms": "c1be0c5f7f8c83113d096394d289ed37b9a315044c7984a69dcfb627ad161c7a",
+      "CyrusScatterEdit.dlm": "2288271e7796b2a2a752a290e8253bc9bf2b8a794e571e490e040faec439f8d8",
+      "CyrusScatterStartup.ms": "fdf38b3bc83187eecb34b833bfff2751e78626e9e3dba41aa20a0ff7ff9e8405",
+      "INSTALL.txt": "7c0a35bb7e87f66573ca5b81ef3a91bf774a176a31c55542e6a291911576fdd7",
+      "Uninstall.ms": "59e2b84901fcefaae1dab59886cd2f4079df4f764c789238947e19c514b4ed49",
+      "install.ms": "0e411a86918c9f20039a962fe253093d4b236ccb098083a533b374ebd8932bbb",
+      "mzp.run": "cf2c6b5a738a0cff6d5994311facb54c86e5d62c7cc72165418a99df6d187811",
+      "nlohmann-json-LICENSE.txt": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603"
+    },
+    "licensing": {
+      "mode": "offline-team",
+      "key_id": "cyrus-team-a1b79a717a834e459d454a7768ffe205",
+      "term_days": 30
+    }
+  },
+  "native_build": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\panel-0826-20261015-01\\script-delivery-final",
+  "native_build_receipt_sha256": "d6a998e95233ca941a6b25c5c039a49ad415465bd60fbce4a479a76503fe681e",
+  "qualification_receipt": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\panel-0826-20261015-01\\final-receipt.json",
+  "qualification_receipt_sha256": "7ca445f2918ef27b2b9bdffcfd48e0a8f5aa5c72407a83856d63bd66c3f2c915",
+  "source_packager_sha256": "68cc7c64e0435f1942e4df03d848be81a4a8ece249cce704da67972631d7bc78",
+  "qualification": "Exact qualified script/native pair; archive verification does not execute the installer.",
+  "installed": false,
+  "normal_profile_modified": false,
+  "phase6": "paused"
+}

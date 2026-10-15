@@ -49,6 +49,8 @@ Recording is built into Scatter. **You do not need MCP to use it.** It starts of
 
 The recorder keeps at most ten minutes, 4,096 events and 4 MiB. It is a bounded troubleshooting history, not a permanent database of every user action. It does not record a full video, reconstruct every click, or automatically become AI training material.
 
+From 0.82.6, saved reports include call counts, total time, longest time and failed-stage counts for input extraction, candidates, masks, transforms/radii, spacing, preview preparation, uploads, publication and panel work. Times are inclusive: a parent can contain another measured stage, so do not add all totals together. Action IDs connect an edit to invalidation and its deferred publication; unrelated host activity can have no action ID. The selected-setup snapshot reads cached requested/accepted/prepared counts and pending flags without evaluating the scene. These timings do not measure presented viewport FPS.
+
 ## Report a problem usefully
 
 1. Save a test copy of the scene.

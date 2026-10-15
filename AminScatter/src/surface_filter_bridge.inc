@@ -23,6 +23,7 @@ Value* cyrusValidateSurfaceFilter_cf(Value** a,int n){
 }
 def_visible_primitive(cyrusSurfaceFilter,"cyrusSurfaceFilter");
 Value* cyrusSurfaceFilter_cf(Value** a,int n){
+    amin::diagnostics::StageTimer measurement(amin::diagnostics::Stage::SurfaceFilter);
     check_arg_count(cyrusSurfaceFilter,5,n);
     auto* rows=groupArray(a[0]);auto* targets=groupArray(a[1]);auto* keys=groupArray(a[2]);
     if(rows->size>1000000||targets->size>128||targets->size!=keys->size)

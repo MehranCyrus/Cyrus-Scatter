@@ -1,4 +1,5 @@
 #include "point_preview.h"
+#include "diagnostics.h"
 #include <iparamb2.h>
 #include <SingleWeakRefMaker.h>
 #include <Graphics/CustomRenderItemHandle.h>
@@ -296,6 +297,7 @@ public:
             if(!material.InitializeWithString(CStr(pointShader))) throw std::runtime_error("Point material initialization failed");
             setIdentification(material,layer,groupIndex,group.color);
             if(!sharedBuffers) {
+            amin::diagnostics::StageTimer measurement(amin::diagnostics::Stage::Upload);
             MaterialRequiredStreamElement position;
             position.SetChannelCategory(MeshChannelPosition);position.SetType(VertexFieldFloat3);format.AddStream(position);
             VertexBufferHandle buffer;

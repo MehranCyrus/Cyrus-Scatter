@@ -79,6 +79,17 @@ assert.equal(inventory.layer.diversityUI.find(c=>c.name==='bandScaleMode').kind,
 assert.equal(inventory.layer.diversityUI.find(c=>c.name==='bandScaleEdit').kind,'button');
 assert.ok(script.includes('CyrusOpenFalloffGraph diversityUI_obj undefined false bandID:diversityUI_selectedBandID'));
 console.log('PASS: independent Band scale profile controls and captured scale graph channel');
+for(const page of presentation.pages){
+ assert.ok(script.includes('fn create'+page.name+' = ('),page.name+': body is constructed by a factory');
+ assert.ok(script.includes('rollout '+page.name+'Slot '),page.name+': native slot stays lightweight');
+}
+const main=script.slice(script.indexOf('    rollout mainUI "Cyrus Scatter'));
+const addition=main.indexOf('addSubRollout slots[index].body section rolledUp:false');
+assert.ok(addition>=0 && main.indexOf('section.root=root;section.owner=owner;section.panel=mainUI',addition)>addition,'First opening binds owners after Max initializes body locals');
+assert.ok(script.includes('CyrusEndAction action;throw()'),'Exceptions release the UI action context');
+assert.ok(script.includes('(CyrusEndAction action;return false)'),'Early-return handlers release the UI action context');
+assert.ok(script.includes('_configured=true'),'Managed list styles are initialized once per control lifetime');
+console.log('PASS: lazy page factories, first-open ownership and action cleanup');
 assert.equal((script.match(/diversityUI_strokeChoices_colored.SelectionMode=\(dotNetClass "System.Windows.Forms.SelectionMode"\).MultiSimple/g)||[]).length,1,'Band assignment use click-to-toggle');
 assert.equal((script.match(/sourceUI_plantList_colored.SelectionMode=\(dotNetClass "System.Windows.Forms.SelectionMode"\).MultiExtended/g)||[]).length,1,'Main source-list selection keeps its existing modifiers');
 assert.equal((script.match(/undo "Cyrus Band assignment" on savedOwner.setStrokeSelection/g)||[]).length,1,'An assignment edit has one native Undo transaction');

@@ -3,6 +3,31 @@
   "notes": "Entries are ordered by documented development chronology, not numeric label. Missing versions and unknown dates are not invented. Local evidence is stripped before publication. 0.79.2 and 0.79.5 are current uncommitted working-tree campaigns at this review, not new Git releases. Analyzer/MCP have independent version domains.",
   "entries": [
     {
+      "version": "0.82.6",
+      "date": "2026-10-15",
+      "title": "Faster panel opening and clearer performance diagnostics.",
+      "era": "recent",
+      "legacy": false,
+      "note": "Scoped Max 2027 qualification. Installer supplied without installation; Phase 6 remains paused.",
+      "changes": [
+        {
+          "kind": "Improved",
+          "text": "Closed sections create controls on first opening and retain them while mounted. Unchanged list rows and styling are reused; layer callbacks retain explicit owners."
+        },
+        {
+          "kind": "Added",
+          "text": "Bounded opt-in stage totals, edit action IDs and passive cached setup snapshots distinguish panel work from calculation, preparation and uploads."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Narrow and scaled panels reflow controls, wrap long text, retain full page height and keep paired fields readable. Managed lists use the native Max font."
+        }
+      ],
+      "evidence": [
+        "docs/plans/panel-performance-0826/PROGRESS.md"
+      ]
+    },
+    {
       "version": "0.82.5",
       "date": "2026-10-15",
       "title": "Save and reuse complete static planting recipes, including Paint.",
@@ -705,7 +730,7 @@
       "changes": [
         {
           "kind": "Improved",
-          "text": "Established Layer \u00e2\u2020\u2019 Surfaces \u00e2\u2020\u2019 Models \u00e2\u2020\u2019 Amount \u00e2\u2020\u2019 Update scatter, optional Painting, and direct Layout controls."
+          "text": "Established Layer → Surfaces → Models → Amount → Update scatter, optional Painting, and direct Layout controls."
         },
         {
           "kind": "Fixed",

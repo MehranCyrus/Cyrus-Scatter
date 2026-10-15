@@ -2,8 +2,8 @@
 
 | Domain | Current value | Meaning |
 | --- | --- | --- |
-| Scatter UI | 0.82.5 | User-selected complete static recipes, including Paint; Phase 6 remains paused |
-| Scatter native/package | 0.82.5 packaged for Max 2027; historical installation receipts preserved | Exact pair, package hashes and scoped Max 2027 qualification are in the recipe handoff; manual installation is separate |
+| Scatter UI | 0.82.6 | I01/I02 bounded diagnostics and lazy panels; Phase 6 remains paused |
+| Scatter native/package | 0.82.6 packaged for Max 2027; historical installation receipts preserved | Exact pair, package hashes and scoped Max 2027 qualification are in the I01/I02 handoff; manual installation is separate |
 | Recipe format / native capability | 1 / 1 | Closed data-only static recipe, native Paint sidecars and explicit dependency roles |
 | Saved MAXScript schema | 58 | Independent saved Band scale profiles; current-only scenes, no earlier-schema migration |
 | Calculation model | CyrusUnified1 | Current procedural model |
@@ -42,7 +42,9 @@ When a bump is within the authorized task, align the Scatter UI template and gen
 
 ## Current and historical evidence
 
-The user selected **0.82.5** on 15 October for complete authored multi-layer recipes, including Paint, reviewed role substitution and one-Undo Add/new setup. This is a separate delivery of the current P10 core while Phase 6 remains paused. It retains scene schema 58, CyrusUnified1 and all registration identities. Native Paint gains an additive receiver-frame chunk; the canonical coverage codec is unchanged. Unknown frames in older orphan documents remain unknown. Recipe format/capability are 1. Analyzer, MCP and website package versions stay independent. See the [recipe handoff](plans/recipes-0825/PROGRESS.md). P06-P09 now plan 0.82.6-0.82.9; P10 follow-ups are unassigned, and P11 provisionally remains 0.83.0. No normal-profile installation is included.
+**0.82.6** follows the user-authorized I01/I02 diagnostics and panel work. It is the next small-step delivery after 0.82.5: no planting algorithm, scene schema, recipe format or registration identity changes. Closed panel controls are constructed on first opening, reused while mounted, and bind explicit owners. Diagnostic reports gain bounded inclusive stage totals and action IDs. See the [scoped Max 2027 handoff](plans/panel-performance-0826/PROGRESS.md). The user requested the installer without installation; Phase 6 remains paused. P06-P09 now provisionally plan 0.82.7-0.83.0 and P11 0.83.1.
+
+The user selected **0.82.5** on 15 October for complete authored multi-layer recipes, including Paint, reviewed role substitution and one-Undo Add/new setup. This is a separate delivery of the current P10 core while Phase 6 remains paused. It retains scene schema 58, CyrusUnified1 and all registration identities. Native Paint gains an additive receiver-frame chunk; the canonical coverage codec is unchanged. Unknown frames in older orphan documents remain unknown. Recipe format/capability are 1. Analyzer, MCP and website package versions stay independent. See the [recipe handoff](plans/recipes-0825/PROGRESS.md). At the recipe delivery P06-P09 planned 0.82.6-0.82.9; P10 follow-ups are unassigned, and P11 provisionally remains 0.83.0. No normal-profile installation is included.
 
 The user selected **0.82.4** on 15 October for mesh channel density and Paint
 tooltips. This is a separate feature delivery while Phase 6 stays paused. It adds
@@ -75,12 +77,12 @@ feature scopes and schema 58 remain unchanged. See the mapping below and
 | P03 | 0.82.0 | Slope and altitude | 0.83.0; implemented |
 | P04 | 0.82.1 | Density map controls | 0.84.0; implemented |
 | P05 | 0.82.2 | Paint/spline conversion | 0.85.0; implemented |
-| P06 | 0.82.6 | Regular grids | Planned; implementation paused |
-| P07 | 0.82.7 | Direction controls | Planned |
-| P08 | 0.82.8 | Paths, sequences and references | Planned |
-| P09 | 0.82.9 | Transform and assignment maps | Planned |
+| P06 | 0.82.7 | Regular grids | Planned; implementation paused |
+| P07 | 0.82.8 | Direction controls | Planned |
+| P08 | 0.82.9 | Paths, sequences and references | Planned |
+| P09 | 0.83.0 | Transform and assignment maps | Planned |
 | P10 | 0.82.5 core; follow-up TBD | Recipes and browser | Current static core implemented; wider phase follow-ups remain |
-| P11 | 0.83.0 | Adaptive viewport completion | Planned |
+| P11 | 0.83.1 | Adaptive viewport completion | Planned |
 
 Future labels are planned checkpoints, not completed releases. Record a revised
 schedule if an additional delivery consumes a step. Original qualified labels

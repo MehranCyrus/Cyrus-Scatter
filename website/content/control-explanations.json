@@ -323,7 +323,7 @@
   },
   "general.diagnostics.saveButton": {
     "label": "Save report...",
-    "help": "Choose a local JSON file, stop recording and save its retained pages. No MCP or upload is required.",
+    "help": "Choose a local JSON file, stop recording and save retained events, inclusive stage totals, action IDs and a passive cached setup snapshot. Stage times can overlap; they are not viewport FPS. No MCP or upload is required.",
     "evidence": [
       "AminScatter/tools/ui/templates/unified-core.ms:4396",
       "AminScatter/tools/ui/templates/unified-core.ms:4483"

@@ -28,6 +28,7 @@ bool sourceSupportsAuto(INode* node) {
     return false;
 }
 SourceGeometryInfo extractSourceGeometry(INode* node,TimeValue time,std::size_t allowance) {
+    amin::diagnostics::StageTimer measurement(amin::diagnostics::Stage::Geometry);
     SourceGeometryInfo result;
     result.handle=node->GetHandle();result.status=2;
     result.autoSupported=sourceSupportsAuto(node);

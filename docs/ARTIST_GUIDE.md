@@ -1,8 +1,8 @@
-# Cyrus Scatter 0.82.5 — current source workflow
+# Cyrus Scatter 0.82.6 — current source workflow
 
 The [offline team license](licensing/TEAM_PILOT_0.79_2026-10-11.md) is independent of scene format. Open **License / activation** in Scatter Modify, save a request for Mehran, then import the returned license file. It expires 30 days after generation. Supported scenes remain loadable/renderable after expiry; creation/editing locks. See [activation and renewal instructions](../tools/licensing/README.md).
 
-Updated 15 October 2026. Source 0.82.5 adds complete static multi-layer recipes, including Paint; see the [current evidence and test checklist](plans/recipes-0825/PROGRESS.md). It retains the [0.82.4 mesh channel density and Paint help](plans/eleven-phase-roadmap/MESH_MASK_0824.md). It retains the [0.82.3 performance correction](plans/eleven-phase-roadmap/PERFORMANCE_0823.md), the [first five phases](plans/eleven-phase-roadmap/ARTIST_ACCEPTANCE_0822.md), and the existing viewport limits/cache reuse. The exact pair is qualified in isolated Max 2027 profiles and packaged for the user to install. Normal-profile artist acceptance remains separate, and Phase 6 stays paused. Historical phase labels, builds and installation receipts remain unchanged.
+Updated 15 October 2026. Source 0.82.6 improves panel responsiveness and adds diagnostic stage timings; see the [current evidence and test checklist](plans/panel-performance-0826/PROGRESS.md). Closed sections create controls on first opening and reuse them while the command panel remains mounted. Browsing preserves Manual pending work. Narrow panels reflow controls and paired Min/Max fields; scaled layouts retain their full height and wrap long help or checkbox text. Source 0.82.5 added complete static multi-layer recipes, including Paint; see the [recipe evidence and test checklist](plans/recipes-0825/PROGRESS.md). It retains the [0.82.4 mesh channel density and Paint help](plans/eleven-phase-roadmap/MESH_MASK_0824.md). It retains the [0.82.3 performance correction](plans/eleven-phase-roadmap/PERFORMANCE_0823.md), the [first five phases](plans/eleven-phase-roadmap/ARTIST_ACCEPTANCE_0822.md), and the existing viewport limits/cache reuse. The exact pair is qualified in isolated Max 2027 profiles and packaged for the user to install. Normal-profile artist acceptance remains separate, and Phase 6 stays paused. Historical phase labels, builds and installation receipts remain unchanged.
 
 Panels show controls, counts and actionable status. Detailed explanations live in this guide, the website and control tooltips. For example, hover over Radius mode to see why Auto is unavailable for a selected source. Pending updates, Analyzer errors and brush status remain visible.
 
@@ -283,3 +283,7 @@ reported boundary uncertainty, scale-profile error is bounded to 0.005 multiplie
 before the other scale factors. A curve too steep for that coordinate fails with a
 specific error and retains the previous complete result; simplify the curve or use
 Rounded corners. No unbounded geometry refinement is triggered by size editing.
+
+## Diagnostic timings in 0.82.6
+
+From 0.82.6, saved reports include call counts, total time, longest time and failed-stage counts for input extraction, candidates, masks, transforms/radii, spacing, preview preparation, uploads, publication and panel work. Times are inclusive: a parent can contain another measured stage, so do not add all totals together. Action IDs connect an edit to invalidation and its deferred publication; unrelated host activity can have no action ID. The selected-setup snapshot reads cached requested/accepted/prepared counts and pending flags without evaluating the scene. These timings do not measure presented viewport FPS.

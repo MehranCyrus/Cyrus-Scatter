@@ -81,6 +81,7 @@ public:
                 throw std::runtime_error("Mesh shader unavailable");
             setIdentification(material,layer,groupIndex,group.color);
             if(!sharedBuffers) {
+            amin::diagnostics::StageTimer measurement(amin::diagnostics::Stage::Upload);
             auto addField=[&](MeshChannelCategory category,int usage,int stream,int offset,bool instance) {
                 MaterialRequiredStreamElement field;
                 field.SetChannelCategory(category);field.SetType(VertexFieldFloat3);

@@ -7,6 +7,7 @@
 #include <maxscript/foundation/3dmath.h>
 #include <maxscript/maxwrapper/mxsobjects.h>
 #include "scatter.h"
+#include "diagnostics.h"
 #include "surface_filter.h"
 #include "mesh_density.h"
 #include "spline_bands.h"
@@ -99,6 +100,7 @@ Value* cyrusFilterSourceRows_cf(Value** args,int count) {
 
 def_visible_primitive(cyrusApplySourceTransforms, "cyrusApplySourceTransforms");
 Value* cyrusApplySourceTransforms_cf(Value** args,int count) {
+    amin::diagnostics::StageTimer measurement(amin::diagnostics::Stage::Attributes);
     check_arg_count(cyrusApplySourceTransforms,3,count);
     for(int i=0;i<3;++i) type_check(args[i],Array,_T("source transform inputs"));
     auto* rows=static_cast<Array*>(args[0]);auto* offsets=static_cast<Array*>(args[1]);auto* scales=static_cast<Array*>(args[2]);
@@ -130,6 +132,7 @@ amin::Vec3 vec(Point3 p) { return {p.x,p.y,p.z}; }
 Point3 point(amin::Vec3 p) { return {static_cast<float>(p.x),static_cast<float>(p.y),static_cast<float>(p.z)}; }
 #include "placement_identity.inc"
 std::vector<amin::Triangle> meshOf(INode* node, bool world, bool requireUv=false, std::size_t faceLimit=std::numeric_limits<std::size_t>::max(), int uvChannel=1) {
+    amin::diagnostics::StageTimer measurement(amin::diagnostics::Stage::Geometry);
     if(!node) throw std::invalid_argument("Missing node");
     const auto t=GetCOREInterface()->GetTime();
     auto* object=node->EvalWorldState(t).obj;
@@ -322,6 +325,7 @@ Value* scatterAdvanced(Value** args,int count) {
             for(auto& p:instances)p.candidateKey=cyrus::receivers::identity(receiverSlot,unsigned(p.candidateKey));
             for(auto& p:instances)anchorInstance(p,mesh);
         } else {
+            amin::diagnostics::StageTimer measurement(amin::diagnostics::Stage::Candidates);
             instances=amin::scatter(mesh,s);
             for(auto& p:instances)p.candidateKey=cyrus::receivers::identity(receiverSlot,unsigned(p.candidateKey));
             for(auto& p:instances)anchorInstance(p,mesh);

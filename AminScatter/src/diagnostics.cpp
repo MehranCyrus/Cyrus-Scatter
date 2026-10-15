@@ -3,8 +3,19 @@
 #include <chrono>
 #include <sstream>
 #include <stdexcept>
+#include <exception>
 
 namespace amin::diagnostics {
+const char* stageName(Stage stage) noexcept {
+    static constexpr const char* names[]={"geometry_extract","mesh_channel_extract","candidates","mask_filter","surface_filter",
+        "attributes_radii","spacing","preview_prepare","buffer_upload","publication","map_bake","ui_create","ui_bind","ui_layout","ui_lists"};
+    const auto index=static_cast<std::size_t>(stage);
+    return index<static_cast<std::size_t>(Stage::Count)?names[index]:"invalid";
+}
+std::uint64_t steadyMicroseconds() noexcept {
+    return static_cast<std::uint64_t>(std::chrono::duration_cast<std::chrono::microseconds>(
+        std::chrono::steady_clock::now().time_since_epoch()).count());
+}
 namespace {
 std::uint64_t steadyMs() {
     return static_cast<std::uint64_t>(std::chrono::duration_cast<std::chrono::milliseconds>(
@@ -42,6 +53,7 @@ void Recorder::start(const std::string& session, Limits limits) {
     ++generation_;
     events_.clear(); session_ = session; limits_ = limits; bytes_ = highWater_ = 0;
     sequence_ = evicted_ = truncated_ = 0; lockDrops_ = 0; failures_ = 0; expired_ = false;
+    measurements_={};
     started_ = clock_(); stoppedElapsed_ = 0;
     deadline_.store(started_ + limits_.durationMs);
     startedUnixMs_ = static_cast<std::uint64_t>(std::chrono::duration_cast<std::chrono::milliseconds>(
@@ -63,10 +75,32 @@ bool Recorder::active() const noexcept {
     try { return enabled_.load() && clock_() < deadline_.load(); }
     catch (...) { return false; }
 }
+std::uint64_t Recorder::token() const noexcept {
+    return active()?generation_.load():0;
+}
+bool Recorder::measure(Stage stage, std::uint64_t microseconds, std::uint64_t generation, bool failed) noexcept {
+    if (!generation || !enabled_.load()) return false;
+    try {
+        std::unique_lock<std::mutex> lock(mutex_,std::try_to_lock);
+        if (!lock.owns_lock()) { ++lockDrops_; return false; }
+        if (!enabled_.load() || generation!=generation_.load() || clock_()>=deadline_.load()) return false;
+        const auto index=static_cast<std::size_t>(stage);
+        if(index>=measurements_.size() || microseconds>600000000ULL) { ++failures_; return false; }
+        auto& value=measurements_[index];
+        ++value.calls;value.microseconds+=microseconds;value.maximum=std::max(value.maximum,microseconds);value.failed+=failed?1:0;
+        return true;
+    } catch (...) { ++failures_;return false; }
+}
+StageTimer::StageTimer(Stage stage) noexcept : stage_(stage),generation_(recorder().token()) {
+    if(generation_) { started_=steadyMicroseconds();exceptions_=std::uncaught_exceptions(); }
+}
+StageTimer::~StageTimer() noexcept {
+    if(generation_) recorder().measure(stage_,steadyMicroseconds()-started_,generation_,std::uncaught_exceptions()>exceptions_);
+}
 
 bool Recorder::record(const std::string& name, const std::string& origin,
                       const std::string& owner, std::uint64_t epoch,
-                      const std::string& detail) noexcept {
+                      const std::string& detail, std::uint64_t action) noexcept {
     const auto generation = generation_.load();
     if (!enabled_.load()) return false;
     try {
@@ -76,7 +110,7 @@ bool Recorder::record(const std::string& name, const std::string& origin,
         const auto elapsed = clock_() - started_;
         if (elapsed >= limits_.durationMs) { expired_ = true; stoppedElapsed_ = limits_.durationMs; enabled_.store(false); return false; }
         bool trimmed = false;
-        Event event{sequence_ + 1, elapsed, epoch, bounded(name, 64, trimmed), bounded(origin, 32, trimmed),
+        Event event{sequence_ + 1, elapsed, epoch, action, bounded(name, 64, trimmed), bounded(origin, 32, trimmed),
                     bounded(owner, 96, trimmed), bounded(detail, 512, trimmed), 0};
         // Include owned string capacities and event storage. Container overhead is
         // separately bounded by the event count; this is not a process-RSS claim.
@@ -105,13 +139,19 @@ std::string Recorder::snapshot(std::uint64_t after, std::size_t limit) const {
         << ",\"health\":{\"retained\":" << events_.size() << ",\"retained_bytes\":" << bytes_ << ",\"high_water_bytes\":" << highWater_
         << ",\"evicted\":" << evicted_ << ",\"lock_drops\":" << lockDrops_.load() << ",\"failures\":" << failures_.load()
         << ",\"truncated\":" << truncated_ << "},\"oldest_sequence\":" << (events_.empty() ? 0 : events_.front().sequence)
-        << ",\"last_sequence\":" << sequence_ << ",\"events\":[";
+        << ",\"last_sequence\":" << sequence_ << ",\"measurements\":{\"units\":\"microseconds\",\"inclusive\":true,\"stages\":[";
+    for(std::size_t i=0;i<measurements_.size();++i) {
+        const auto& value=measurements_[i];if(i)out<<',';
+        out<<"{\"stage\":"<<quote(stageName(static_cast<Stage>(i)))<<",\"calls\":"<<value.calls
+           <<",\"total_us\":"<<value.microseconds<<",\"max_us\":"<<value.maximum<<",\"failed\":"<<value.failed<<'}';
+    }
+    out << "]},\"events\":[";
     std::size_t returned = 0; auto next = after;
     for (const auto& event : events_) {
         if (event.sequence <= after || returned >= limit) continue;
         if (returned++) out << ',';
         out << "{\"sequence\":" << event.sequence << ",\"elapsed_ms\":" << event.elapsed << ",\"epoch\":" << event.epoch
-            << ",\"name\":" << quote(event.name) << ",\"origin\":" << quote(event.origin)
+            << ",\"action_id\":" << event.action << ",\"name\":" << quote(event.name) << ",\"origin\":" << quote(event.origin)
             << ",\"owner_id\":" << quote(event.owner) << ",\"detail\":" << quote(event.detail) << '}';
         next = event.sequence;
     }

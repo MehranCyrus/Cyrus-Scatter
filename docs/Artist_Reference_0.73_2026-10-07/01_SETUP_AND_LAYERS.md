@@ -81,3 +81,7 @@ A setup currently allows **ten total populations**, counting Base sets and addit
 New sets start with share weight 1. Sharing population does not guarantee the same final ratio: coverage, spacing and other restrictions can reject different numbers in each set.
 
 **Example:** use one layer for a meadow, Base for grass and another painted set for flowers. Changing the layer's count changes the meadow budget. Changing the flowers' share changes how much of that budget they receive. Painting changes where that share is allowed.
+
+## Panel responsiveness in 0.82.6
+
+Closed command-panel sections create their controls when first opened, then reuse them while this panel remains mounted. Switching layers binds those controls to the selected layer. Opening sections and reading cached status do not apply pending Manual edits.

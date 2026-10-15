@@ -14,7 +14,8 @@ text=fs.readFileSync('tools/ui/templates/recipes.ms','utf8').replace(/\r/g,'')+'
 text=fs.readFileSync('tools/ui/templates/licensing.ms','utf8').replace(/\r/g,'')+'\n'+text;
 text=text.replace(/\r\n/g,'\n').replace(/^[ \t]+$/gm,'');
 const hash=crypto.createHash('sha256').update(text,'utf8').digest('hex');
-const source='global CyrusLoadedScriptFingerprint="'+hash+'"\n'+text;
+// Explicit UTF-8 prevents localized Windows code pages from corrupting glyphs.
+const source='\uFEFFglobal CyrusLoadedScriptFingerprint="'+hash+'"\n'+text;
 if(check){
  if(fs.readFileSync('scripts/AminScatterObject.ms','utf8')!==source)throw new Error('Generated MAXScript is stale');
 }else fs.writeFileSync('scripts/AminScatterObject.ms',source);

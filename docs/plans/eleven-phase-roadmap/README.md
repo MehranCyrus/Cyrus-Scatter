@@ -5,6 +5,13 @@ comparison conversation. It covers feature-table items **1 through 11**, treated
 as eleven sequential deliveries. It replaces the tentative ordering in that
 conversation; it does not replace the engineering foundation or current backlog.
 
+**15 October planning supplement:** [Forest-informed improvements, easiest to hardest](FOREST_IMPROVEMENTS.md)
+maps the recorded reverse-engineering findings to current Cyrus 0.82.5, with
+performance gates, tests and dependencies for 18 proposed improvements. It does
+not reorder this execution program or authorize later implementation. The subsequent user-authorized [I01/I02 delivery](../panel-performance-0826/PROGRESS.md) is 0.82.6. **Phase 6 remains
+paused.** Additional effects, UV, asset and renderer work is identified separately
+from the original eleven phases.
+
 ## Scope and authorization
 
 The user authorized implementation, proportionate testing, documentation, version
@@ -50,7 +57,9 @@ fixes before a phase checkpoint. Do not invent a passing visual result.
 
 ## Documents and status
 
-- [0.82.5 complete static recipes](../recipes-0825/PROGRESS.md): current P10 core, including native Paint, roles, transactional import and bounded browsing. P06 remains paused; its next planned step is 0.82.6. P10 search/thumbnails, asset packaging and future-layout fields remain separate work.
+- [0.82.6 panel performance and diagnostics](../panel-performance-0826/PROGRESS.md): I01/I02 implementation, scoped Max 2027 checks and installer. P06 remains paused; next provisional label 0.82.7.
+
+- [0.82.5 complete static recipes](../recipes-0825/PROGRESS.md): current P10 core, including native Paint, roles, transactional import and bounded browsing. P06 remains paused; the later panel delivery moves its provisional label to 0.82.7. P10 search/thumbnails, asset packaging and future-layout fields remain separate work.
 - [0.82.4 mesh channel density and Paint help](MESH_MASK_0824.md): preceding source, Max 2027 evidence and runnable installer.
 - [0.82.3 performance correction](PERFORMANCE_0823.md): preceding idle, interaction
   and panel latency evidence, preserved with its original hashes.
@@ -78,12 +87,12 @@ fixes before a phase checkpoint. Do not invent a passing visual result.
 | P03 | 0.82.0 | Slope/altitude filters with soft transitions | Medium | P02; existing eligibility and units contracts | Implemented, qualified and pushed under original label |
 | P04 | 0.82.1 | Selectable UV channel and density-map resolution | Medium | P03; map dependency/coordinate contract | Implemented, qualified and pushed under original label |
 | P05 | 0.82.2 | Paint-to-spline export and spline-to-Paint import | Medium | P04; current vector regions and units | Implemented, qualified and pushed under original label; corrected 0.82.2 label compiled for Max 2027 |
-| P06 | 0.82.6 | Rectangular, staggered and hexagonal placement | Medium | P05; stable layout identities | Planned; paused before implementation |
-| P07 | 0.82.7 | Target/direction orientation controls | Medium | P06; final-transform and radius contracts | Planned |
-| P08 | 0.82.8 | True path spacing, sequences and reference placement | Medium–large | P07; shared candidate/transform services | Planned |
-| P09 | 0.82.9 | Transform maps and color-based source assignment | Medium–large | P04, P07, P08 | Planned |
+| P06 | 0.82.7 | Rectangular, staggered and hexagonal placement | Medium | P05; stable layout identities | Planned; paused before implementation |
+| P07 | 0.82.8 | Target/direction orientation controls | Medium | P06; final-transform and radius contracts | Planned |
+| P08 | 0.82.9 | True path spacing, sequences and reference placement | Medium–large | P07; shared candidate/transform services | Planned |
+| P09 | 0.83.0 | Transform maps and color-based source assignment | Medium–large | P04, P07, P08 | Planned |
 | P10 | 0.82.5 core; follow-up TBD | Complete planting recipes, substitution and browser | Medium–large | P02 plus settled P03–P09 authored settings | Static core delivered separately; later layouts/maps and browser follow-ups remain |
-| P11 | 0.83.0 | Adaptive viewport completion and production performance | Medium–large | P01–P10; existing 0.81.6/0.81.7 viewport policy | Partial baseline; new acceptance pending |
+| P11 | 0.83.1 | Adaptive viewport completion and production performance | Medium–large | P01–P10; existing 0.81.6/0.81.7 viewport policy | Partial baseline; new acceptance pending |
 
 Execution is sequential. Performance and correctness work are continuous inside
 each phase. A necessary foundational fix can be a tracked subtask of the phase

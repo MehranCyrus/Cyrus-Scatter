@@ -3,7 +3,7 @@
 module.exports=function(text,components){
  const specs=[];
  if(components.some(p=>p.key==='sourceUI'))specs.push({id:'sourceUI_plantList',multi:true,color:'sourceUI_obj.sourceIDColor (args.Index+1)',select:'if newFocus>0 do sourceUI_focusedRow=newFocus;sourceUI_showSelectedColor()',tip:'sourceUI_obj.sourceBandDetails (row+1)'});
- if(components.some(p=>p.key==='flow_layersUI'))specs.push({id:'flow_layersUI_layerList',multi:false,color:'flow_layersUI_members[args.Index+1].layerIDColor',select:'if view.SelectedIndex>=0 do panel.selectLayerView flow_layersUI_members[view.SelectedIndex+1]',open:'if view.SelectedIndex>=0 do panel.selectLayerView flow_layersUI_members[view.SelectedIndex+1] expand:true'});
+ if(components.some(p=>p.key==='flow_layersUI'))specs.push({id:'flow_layersUI_layerList',multi:false,color:'flow_layersUI_members[args.Index+1].layerIDColor',select:'if view.SelectedIndex>=0 do panel.selectLayerView flow_layersUI_members[view.SelectedIndex+1]',open:'if view.SelectedIndex>=0 do panel.selectLayerView flow_layersUI_members[view.SelectedIndex+1]'});
  if(components.some(p=>p.key==='diversityUI')){
   specs.push({id:'diversityUI_strokesList',multi:false,color:'diversityUI_obj.strokeDisplayColors[diversityUI_strokeRows[args.Index+1]]',select:'diversityUI_selectedBandID=if view.SelectedIndex>=0 then diversityUI_obj.strokeIDs[diversityUI_strokeRows[view.SelectedIndex+1]] else 0;diversityUI_showStroke()'});
   specs.push({id:'diversityUI_strokeChoices',multi:true,toggle:true,color:'diversityUI_choiceColor (args.Index+1)',select:'diversityUI_setBandChoices indices'});
@@ -13,6 +13,7 @@ module.exports=function(text,components){
  for(const s of specs){
   const id=s.id+'_colored';
   declarations+=`        dotNetControl ${id} "System.Windows.Forms.ListBox" pos:[6,6] width:100 height:100\n`;
+  declarations+=`        local ${id}_configured=false,${id}_colors=#(),${id}_scale=1.0\n`;
   if(s.open)methods+=`        on ${id} DoubleClick view args do if controlsReady and not binding and root!=undefined do (${s.open})\n`;
   if(s.tip){
    declarations+=`        local ${id}_tip=undefined,${id}_tipRow=-1\n`;
@@ -28,43 +29,67 @@ module.exports=function(text,components){
 `;
   }
   methods+=`        on ${id} SelectedIndexChanged view args do if controlsReady and not binding and root!=undefined and not syncingColorLists do (
+            local action=CyrusBeginAction root "${id}.selection"
+            try (
             ${s.multi?`local indices=#{},newFocus=0;for i=0 to view.SelectedIndices.Count-1 do (local row=view.SelectedIndices.Item[i]+1;indices[row]=true;if not ${s.id}.selection[row] do newFocus=row);${s.id}.selection=indices`:`${s.id}.selection=view.SelectedIndex+1`}
             ${s.select}
             if controlsReady and root!=undefined do layout()
+            CyrusEndAction action
+            )catch(CyrusEndAction action;throw())
         )
         on ${id} DrawItem view args do if controlsReady and root!=undefined and args.Index>=0 and args.Index<view.Items.Count do (
             args.DrawBackground()
-            local shade=${s.color},rectangle=args.Bounds
+            local shade=if args.Index<${id}_colors.count then ${id}_colors[args.Index+1] else (color 100 100 100),rectangle=args.Bounds
             local ink=dotNetObject "System.Drawing.SolidBrush" ((dotNetClass "System.Drawing.Color").FromArgb (shade.r as integer) (shade.g as integer) (shade.b as integer))
-            args.Graphics.FillRectangle ink (rectangle.X+3) (rectangle.Y+3) 10 (amax 1 (rectangle.Height-6))
+            local inset=(ceil (3*${id}_scale)) as integer,swatch=(ceil (10*${id}_scale)) as integer
+            args.Graphics.FillRectangle ink (rectangle.X+inset) (rectangle.Y+inset) swatch (amax 1 (rectangle.Height-2*inset))
             ink.Dispose()
-            (dotNetClass "System.Windows.Forms.TextRenderer").DrawText args.Graphics (view.Items.Item[args.Index] as string) view.Font (dotNetObject "System.Drawing.Point" (rectangle.X+17) rectangle.Y) args.ForeColor
+            (dotNetClass "System.Windows.Forms.TextRenderer").DrawText args.Graphics (view.Items.Item[args.Index] as string) view.Font (dotNetObject "System.Drawing.Point" (rectangle.X+(ceil (17*${id}_scale))) rectangle.Y) args.ForeColor
             args.DrawFocusRectangle()
         )
 `;
  }
  methods+=`        fn syncColorLists = (
             if syncingColorLists do return false
+            local measurement=CyrusMeasureBegin 15,measuredOwner=if owner==undefined then "" else owner.layerID,measuredEpoch=if root==undefined then 0 else root.procEpoch
             syncingColorLists=true
             try (
 ${specs.map(s=>{const id=s.id+'_colored';return `                setHostedVisible ${id} ${s.id}.visible;${id}.enabled=${s.id}.enabled
-                ${id}.pos=${s.id}.pos;${id}.width=${s.id}.width;${id}.height=${s.id}.height
+                if ${id}.pos!=${s.id}.pos do ${id}.pos=${s.id}.pos
+                if ${id}.width!=${s.id}.width do ${id}.width=${s.id}.width
+                if ${id}.height!=${s.id}.height do ${id}.height=${s.id}.height
                 ${s.id}.visible=false
+                if not ${id}_configured do (
                 ${id}.DrawMode=(dotNetClass "System.Windows.Forms.DrawMode").OwnerDrawFixed
                 ${id}.SelectionMode=(dotNetClass "System.Windows.Forms.SelectionMode").${s.multi?(s.toggle?'MultiSimple':'MultiExtended'):'One'}
-                ${id}.IntegralHeight=false;${id}.ItemHeight=16
+                ${id}_scale=GetUIScaleFactor()
+                -- Match the host control's actual font. Multiplying point size
+                -- by UI scale again double-scales managed text on some profiles.
+                local nativeFont=windows.sendMessage ${s.id}.hwnd[1] 0x0031 0 0
+                if nativeFont!=0 do ${id}.Font=(dotNetClass "System.Drawing.Font").FromHfont (dotNetObject "System.IntPtr" nativeFont)
+                ${id}.IntegralHeight=false;${id}.ItemHeight=amax ((ceil (16*${id}_scale)) as integer) (${id}.Font.Height+((ceil (4*${id}_scale)) as integer))
                 ${id}.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
                 ${id}.ForeColor=(dotNetClass "System.Drawing.Color").FromArgb 230 230 230
+                ${id}_configured=true
+                )
                 local itemsChanged=${id}.Items.Count!=${s.id}.items.count
                 if not itemsChanged do for i=1 to ${s.id}.items.count where (${id}.Items.Item[i-1] as string)!=${s.id}.items[i] do itemsChanged=true
-                if itemsChanged do (${id}.BeginUpdate();${id}.Items.Clear();for value in ${s.id}.items do ${id}.Items.Add value;${id}.EndUpdate())
+                if itemsChanged do (
+                    ${id}.BeginUpdate()
+                    try(${id}.Items.Clear();for value in ${s.id}.items do ${id}.Items.Add value)catch(${id}.EndUpdate();throw())
+                    ${id}.EndUpdate()
+                )
+                local colors=for row=1 to ${s.id}.items.count collect (${s.color.replaceAll('args.Index+1','row')})
+                local colorsChanged=colors.count!=${id}_colors.count
+                if not colorsChanged do for row=1 to colors.count while not colorsChanged do colorsChanged=colors[row]!=${id}_colors[row]
+                if colorsChanged do ${id}_colors=colors
                 for i=0 to ${id}.Items.Count-1 do (
                     local selected=${s.multi?`${s.id}.selection[i+1]`:`${s.id}.selection==i+1`}
                     if (${id}.GetSelected i)!=selected do ${id}.SetSelected i selected
                 )
-                ${s.tip?`${id}_tipRow=-1;`:''}${id}.Invalidate()`;}).join('\n')}
-                syncingColorLists=false;true
-            )catch(syncingColorLists=false;throw())
+                if colorsChanged or itemsChanged do (${s.tip?`${id}_tipRow=-1;`:''}${id}.Invalidate())`;}).join('\n')}
+                syncingColorLists=false;CyrusMeasureEnd measurement measuredOwner measuredEpoch "color_lists";true
+            )catch(syncingColorLists=false;CyrusMeasureEnd measurement measuredOwner measuredEpoch "color_lists" failed:true;throw())
         )
 `;
  return text.replace('        local layout\n','        local layout\n'+declarations)

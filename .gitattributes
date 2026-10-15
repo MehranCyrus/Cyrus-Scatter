@@ -74,3 +74,18 @@
 /tools/rag/adapter-requirements.lock.txt -text whitespace=cr-at-eol
 /website/README.md -text whitespace=cr-at-eol
 /website/content/README.md -text whitespace=cr-at-eol
+
+# Preserve reviewed documentation and 0.82.6 receipts byte-for-byte in Git.
+/docs/PRODUCT_AND_AI_ROADMAP.md -text whitespace=cr-at-eol
+/docs/plans/spline-bands/PROGRESS.md -text whitespace=cr-at-eol
+/docs/plans/spline-bands/INSTALLATION.md -text whitespace=cr-at-eol
+/docs/plans/terrace-0815/PROGRESS.md -text whitespace=cr-at-eol
+/docs/plans/terrace-0815/VIEWPORT_0816.md -text whitespace=cr-at-eol
+/docs/plans/terrace-0815/VIEWPORT_0817.md -text whitespace=cr-at-eol
+/docs/plans/eleven-phase-roadmap/P04.md -text whitespace=cr-at-eol
+/docs/plans/eleven-phase-roadmap/P05.md -text whitespace=cr-at-eol
+/docs/plans/eleven-phase-roadmap/PERFORMANCE_0823.md -text whitespace=cr-at-eol
+/docs/plans/recipes-0825/PROGRESS.md -text whitespace=cr-at-eol
+/docs/plans/panel-performance-0826/PROGRESS.md -text whitespace=cr-at-eol
+/docs/plans/panel-performance-0826/PACKAGE.json -text whitespace=cr-at-eol
+/docs/plans/panel-performance-0826/QUALIFICATION.json -text whitespace=cr-at-eol

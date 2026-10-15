@@ -6,7 +6,11 @@ entire phase passed. Existing defect IDs stay in [BACKLOG](../../BACKLOG.md).
 
 ## Current action
 
-**0.82.5 complete static recipes**, including Paint, are implemented in the [recipe handoff](../recipes-0825/PROGRESS.md). This separate delivery implements the current P10 core; it does not resume P06 or complete future layout/map extensions, asset packaging, search or thumbnails. P06-P09 now plan 0.82.6-0.82.9, P10 follow-ups are unassigned and P11 provisionally remains 0.83.0. No normal-profile installation is included.
+**0.82.6 I01/I02** implements lazy panels, retained controls/lists and bounded diagnostic stage timings/action correlation. See the [handoff, performance receipts and installer](../panel-performance-0826/PROGRESS.md). Phase 6 stays paused; P06-P09 provisionally plan 0.82.7-0.83.0 and P11 0.83.1. Later Forest improvements remain unstarted.
+
+Preceding delivery:
+
+**0.82.5 complete static recipes**, including Paint, are implemented in the [recipe handoff](../recipes-0825/PROGRESS.md). This separate delivery implements the current P10 core; it does not resume P06 or complete future layout/map extensions, asset packaging, search or thumbnails. At that delivery P06-P09 planned 0.82.6-0.82.9, P10 follow-ups are unassigned and P11 provisionally remains 0.83.0. No normal-profile installation is included.
 
 Preceding delivery: **0.82.4 mesh channel density and Paint help** are implemented and qualified in
 Max 2027, including an isolated copy of the user's mountain. See

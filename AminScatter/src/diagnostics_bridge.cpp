@@ -2,6 +2,7 @@
 #include <maxscript/maxscript.h>
 #include <maxscript/foundation/numbers.h>
 #include <maxscript/foundation/strings.h>
+#include <maxscript/foundation/arrays.h>
 #include <maxscript/macros/define_instantiation_functions.h>
 #include "diagnostics.h"
 #include <stdexcept>
@@ -45,14 +46,14 @@ Value* cyrusDiagnosticStop_cf(Value**, int count) {
 }
 def_visible_primitive(cyrusDiagnosticEvent, "cyrusDiagnosticEvent");
 Value* cyrusDiagnosticEvent_cf(Value** args, int count) {
-    check_arg_count(cyrusDiagnosticEvent, 5, count);
+    if(count!=5 && count!=6)throw RuntimeError(_T("Expected five event fields and an optional action ID"));
     auto& recorder = amin::diagnostics::recorder();
     if (!recorder.active()) return &false_value;
     try {
         const auto epoch = args[3]->to_int64();
         if (epoch < 0) return &false_value;
         return recorder.record(utf8(args[0]->to_string()), utf8(args[1]->to_string()), utf8(args[2]->to_string()),
-            static_cast<std::uint64_t>(epoch), utf8(args[4]->to_string())) ? &true_value : &false_value;
+            static_cast<std::uint64_t>(epoch), utf8(args[4]->to_string()),count==6?static_cast<std::uint64_t>(args[5]->to_int64()):0) ? &true_value : &false_value;
     } catch (...) { return &false_value; } // Diagnostics never abort scene work.
 }
 def_visible_primitive(cyrusDiagnosticSnapshot, "cyrusDiagnosticSnapshot");
@@ -61,4 +62,35 @@ Value* cyrusDiagnosticSnapshot_cf(Value** args, int count) {
     const auto after = args[0]->to_int64(); const int limit = args[1]->to_int();
     if (after < 0 || limit < 0 || limit > 500) throw RuntimeError(_T("Invalid diagnostic page bounds"));
     return textResult(amin::diagnostics::recorder().snapshot(static_cast<std::uint64_t>(after), static_cast<std::size_t>(limit)));
+}
+
+def_visible_primitive(cyrusDiagnosticBegin, "cyrusDiagnosticBegin");
+Value* cyrusDiagnosticBegin_cf(Value** args,int count) {
+    if(count!=1 && count!=2)throw RuntimeError(_T("Expected a stage and optional action ID"));
+    const auto generation=amin::diagnostics::recorder().token();
+    if(!generation)return &undefined;
+    const int stage=args[0]->to_int();
+    if(stage<1 || stage>static_cast<int>(amin::diagnostics::Stage::Count))return &undefined;
+    one_typed_value_local(Array* result);vl.result=new Array(4);
+    vl.result->append(Integer::intern(stage));vl.result->append(Integer64::intern(generation));
+    vl.result->append(Integer64::intern(amin::diagnostics::steadyMicroseconds()));
+    vl.result->append(count==2?args[1]:Integer64::intern(0));
+    return_value(vl.result);
+}
+def_visible_primitive(cyrusDiagnosticEnd, "cyrusDiagnosticEnd");
+Value* cyrusDiagnosticEnd_cf(Value** args,int count) {
+    check_arg_count(cyrusDiagnosticEnd,5,count);
+    auto& recorder=amin::diagnostics::recorder();
+    if(!recorder.active() || !is_array(args[0]))return &false_value;
+    try {
+        auto* token=static_cast<Array*>(args[0]);if(token->size!=4)return &false_value;
+        const int stage=token->data[0]->to_int();if(stage<1 || stage>static_cast<int>(amin::diagnostics::Stage::Count))return &false_value;
+        const auto now=amin::diagnostics::steadyMicroseconds();const auto start=token->data[2]->to_int64();
+        if(start<0 || static_cast<std::uint64_t>(start)>now)return &false_value;
+        const auto elapsed=now-start;const auto id=static_cast<amin::diagnostics::Stage>(stage-1);
+        if(!recorder.measure(id,elapsed,token->data[1]->to_int64(),args[4]->to_bool()!=FALSE))return &false_value;
+        recorder.record(amin::diagnostics::stageName(id),"stage",utf8(args[1]->to_string()),args[2]->to_int64(),
+            "duration_us="+std::to_string(elapsed)+"; "+utf8(args[3]->to_string()),token->data[3]->to_int64());
+        return &true_value;
+    }catch(...){return &false_value;}
 }

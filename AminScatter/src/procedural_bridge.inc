@@ -32,6 +32,7 @@ void appendProceduralRadii(Array* result,cyrus::procedural::Radii r){
 // reconstructed from a compacted output position.
 def_visible_primitive(cyrusEvaluateProcedural,"cyrusEvaluateProcedural");
 Value* cyrusEvaluateProcedural_cf(Value** a,int n){
+    amin::diagnostics::StageTimer measurement(amin::diagnostics::Stage::Spacing);
     check_arg_count(cyrusEvaluateProcedural,3,n);
     auto* layers=groupArray(a[0]);auto* pairs=groupArray(a[1]);
     const int cap=a[2]->to_int();if(cap<1||cap>1000000)throw RuntimeError(_T("Candidate admission cap must be 1..1000000"));
@@ -107,6 +108,7 @@ Value* cyrusProceduralPublicationVersion_cf(Value**,int n){
 
 def_visible_primitive(cyrusProceduralRadii,"cyrusProceduralRadii");
 Value* cyrusProceduralRadii_cf(Value** a,int n){
+    amin::diagnostics::StageTimer measurement(amin::diagnostics::Stage::Attributes);
     check_arg_count(cyrusProceduralRadii,5,n);auto* rows=groupArray(a[0]);auto* input=groupArray(a[1]);
     auto* ids=groupArray(a[2]);auto* modes=groupArray(a[3]);const auto values=groupRadii(a[4]);
     if(rows->size>1000000||input->size>512)throw RuntimeError(_T("Radius input exceeds 1,000,000 placements or 512 sources"));

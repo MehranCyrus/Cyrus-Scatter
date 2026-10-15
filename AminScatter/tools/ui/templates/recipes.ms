@@ -84,7 +84,7 @@ fn CyrusRecipeCapturePaint context owner = (
 )
 fn CyrusRecipeCapture root selected name = (
     CyrusRequireAuthor()
-    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=1 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.82.5 script/native pair and restart Max."
+    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=1 or cyrusBrushRecipeExport==undefined do throw "Load the complete Cyrus 0.82.6 script/native pair and restart Max."
     local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
     if root.paintDocument!=undefined or root.paintAreas.count>0 or root.procRadiusIDs.count>0 do throw "This setup contains root-owned authored Paint/radius data outside the current layer contract. Save Everything was cancelled; the scene is preserved."
@@ -296,7 +296,7 @@ fn CyrusRecipeSuggestBindings root document = (
 fn CyrusOpenRecipeLibrary root = (
     local node=CyrusRecipeOwnerNode root
     CyrusRecipeCheckRoot root node
-    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=1 do throw "Restart Max with the complete Cyrus 0.82.5 package."
+    if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=1 do throw "Restart Max with the complete Cyrus 0.82.6 package."
     if CyrusRecipeBrowser!=undefined do try(destroyDialog CyrusRecipeBrowser)catch()
     rollout browser "Cyrus library - complete recipes" width:530 height:690 (
         local root=undefined,node=undefined,owners=#(),directory="",entries=#(),files=#(),page=1,document=undefined,bindings=#(),layerChoices=#(),metadataCache=#(),metadataIndex=dotNetObject "System.Collections.Hashtable",metadataNext=1,bindingControls=false

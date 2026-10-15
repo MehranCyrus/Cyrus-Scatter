@@ -21,6 +21,7 @@ struct MeshDensitySnapshot {
     std::uint64_t hash=1469598103934665603ULL;
 };
 MeshDensitySnapshot meshDensitySnapshot(INode* node,const cyrus::mesh_density::Settings& s,std::size_t budget=0) {
+    amin::diagnostics::StageTimer measurement(amin::diagnostics::Stage::MeshChannel);
     if(!node)throw RuntimeError(_T("Mesh density receiver is missing"));
     const auto fail=[&](const wchar_t* reason){
         const std::wstring message=std::wstring(L"Mesh density: receiver '")+node->GetName()+L"', channel "+std::to_wstring(s.channel)+L": "+reason+L". Repair/select the channel or disable the mask. The previous result is retained.";
@@ -69,6 +70,7 @@ Value* cyrusMeshDensityKey_cf(Value** a,int n){check_arg_count(cyrusMeshDensityK
     }catch(const std::exception& e){throw RuntimeError(MSTR::FromACP(e.what()));}}
 def_visible_primitive(cyrusMeshDensityFilter,"cyrusMeshDensityFilter");
 Value* cyrusMeshDensityFilter_cf(Value** a,int n){check_arg_count(cyrusMeshDensityFilter,5,n);
+    amin::diagnostics::StageTimer measurement(amin::diagnostics::Stage::Mask);
     auto* rows=groupArray(a[0]);if(rows->size>1000000)throw RuntimeError(_T("Mesh density exceeds candidate limit"));
     one_typed_value_local(Array* result);vl.result=new Array(rows->size);
     try{const auto s=meshDensitySettings(a[2]);

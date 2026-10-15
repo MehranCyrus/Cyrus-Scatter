@@ -197,7 +197,7 @@ function page(s,definition,{name=definition.name,category=0}={}){
     const columns=Number(/columns:(\d+)/.exec(c.declaration)?.[1]||1);
     return `fitRadio ${c.id} cellWidth ${columns} place:false`;
    }
-   return c.kind==='checkbox'?20:22;
+   return c.kind==='checkbox'?'fitCheck '+c.id+' cellWidth':22;
   });
   const dynamic=r.height||'(amax #('+heights.join(',')+'))';
   const table=items.length===3&&items[0].kind==='label';
@@ -222,7 +222,7 @@ function page(s,definition,{name=definition.name,category=0}={}){
    ? `rowControls[1].pos=[6,y];rowControls[1].width=18;for i=2 to 3 do (rowControls[i].pos=[28+(i-2)*(cellWidth+4)+cellWidth-12,y];fitWidth rowControls[i] cellWidth)`
    : `for i=1 to rowControls.count do (rowControls[i].pos=[6+(mod (i-1) columns)*(cellWidth+4)+(if classof rowControls[i]==SpinnerControl then cellWidth-12 else 0),y+(floor ((i-1)/columns))*rowHeight+captionHeight];fitWidth rowControls[i] cellWidth)`;
   const radioPositions=items.filter(c=>c.kind==='radiobuttons').map(c=>`fitRadio ${c.id} cellWidth ${Number(/columns:(\d+)/.exec(c.declaration)?.[1]||1)} place:true`).join(';');
-  return `            rowControls=#(${ids.join(',')});show=${vis}\n            for c in rowControls where c.visible!=show do c.visible=show\n${items.filter(c=>c.kind==='dotNetControl').map(c=>'            setHostedVisible '+c.id+' show\n').join('')}${captions?'            '+captions+'\n':''}            if show do (\n${r.heading?'                if y>6 do y+=4\n':''}                columns=${columns};cellWidth=${swatch?'widthValue-40':table?'(widthValue-38)/2':'(widthValue-12-(columns-1)*4)/columns'}\n${fitLabels?'                '+fitLabels+'\n':''}${fitCaptions?'                '+fitCaptions+'\n':''}                stackedCaption=${!r.pair&&inline.length?'cellWidth<'+minimum:'false'};captionHeight=amax ${reserved} (if stackedCaption then ${stacked} else 0)\n                rowHeight=${dynamic}+2+captionHeight\n                ${positions}\n${radioPositions?'                '+radioPositions+'\n':''}${r.pair?'                for c in rowControls do fitPairField c cellWidth\n':''}${captionPositions?'                '+captionPositions+'\n':''}                y+=${table||swatch?'rowHeight':'(ceil (rowControls.count as float/columns))*rowHeight'}\n            )`;
+  return `            rowControls=#(${ids.join(',')});show=${vis}\n            for c in rowControls where c.visible!=show do c.visible=show\n${items.filter(c=>c.kind==='dotNetControl').map(c=>'            setHostedVisible '+c.id+' show\n').join('')}${captions?'            '+captions+'\n':''}            if show do (\n${r.heading?'                if y>6 do y+=4\n':''}                columns=${columns};cellWidth=${swatch?'widthValue-40':table?'(widthValue-38)/2':'(widthValue-12-(columns-1)*4)/columns'}\n${fitLabels?'                '+fitLabels+'\n':''}${fitCaptions?'                '+fitCaptions+'\n':''}                stackedCaption=${r.pair?'cellWidth<70':inline.length?'cellWidth<'+minimum:'false'};captionHeight=amax ${reserved} (if stackedCaption then ${stacked} else 0)\n                rowHeight=${dynamic}+2+captionHeight\n                ${positions}\n${radioPositions?'                '+radioPositions+'\n':''}${r.pair?'                for c in rowControls do fitPairField c cellWidth stacked:stackedCaption\n':''}${captionPositions?'                '+captionPositions+'\n':''}                y+=${table||swatch?'rowHeight':'(ceil (rowControls.count as float/columns))*rowHeight'}\n            )`;
  }).join('\n');
  const folded=controls.filter(c=>c.name==='detailsToggle'||c.name==='containersToggle'||(definition.hidden||[]).includes(c.key+'.'+c.name)).map(c=>c.id+'.visible=false').join(';');
  // Insert Advanced between basic rows and advanced rows, never as a page.
@@ -232,7 +232,7 @@ function page(s,definition,{name=definition.name,category=0}={}){
  if(basicEnd>=0)parts.splice(basicEnd,0,`            advancedToggle.visible=true;advancedToggle.pos=[6,y+4];advancedToggle.width=widthValue-12;y+=28\n`);
  else parts.push('\n            advancedToggle.visible=false\n');
  const scope=definition.layerPage?'Layer':'Setup';
- const out=`    rollout ${name} ${JSON.stringify(definition.title)} width:#cmdPanel category:${category} autoLayoutOnResize:false (\n        local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=${definition.layerPage?'true':'false'},setSpecific=false\n        local layout\n${declarations}\n${code}\n        -- A dotNetControl has both a managed child and a native rollout host.\n        -- Hiding only the child leaves its host over other controls on first open.\n        fn setHostedVisible control visibleState = (\n            if control.visible!=visibleState do control.visible=visibleState\n            for handle in control.hwnd where handle!=0 do (if (bit.get (windows.getWindowLong handle #style) 29)!=visibleState do windows.showWindow handle (if visibleState then #showNoActivate else #hide))\n            true\n        )\n        fn fitLabel control minimum available = (\n            local capacity=amax 1 (floor ((available-4)/5.2)),lines=0\n            for paragraph in filterString control.text "\\n" splitEmptyTokens:true do (\n                local occupied=0;lines+=1\n                for word in filterString paragraph " " do (\n                    local size=word.count+(if occupied==0 then 0 else 1)\n                    if occupied>0 and occupied+size>capacity do (lines+=1;occupied=0;size=word.count)\n                    lines+=floor ((amax 0 (size-1))/capacity);occupied=(mod (amax 0 (size-1)) capacity)+1+occupied\n                )\n            )\n            control.height=amax minimum (lines*14+2);true\n        )\n        fn layout = (\n            local widthValue=amax 140 ${name}.width,y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false\n${folded?'            '+folded+'\n':''}${parts.join('')}\n            ${name}.height=y+4;true\n        )\n        fn bind layer = (\n            if root==undefined do return false\n            binding=true;controlsReady=false\n            try (\n                if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)\n                obj=owner\n                ${reset}\n${binding}\n                controlsReady=true;binding=false;layout();true\n            )catch(binding=false;controlsReady=false;throw())\n        )\n${delegates.join('\n')}\n        on advancedToggle changed value do layout()\n        on ${name} open do (panel=this.mainUI;root=undefined;controlsReady=false)\n        on ${name} close do (controlsReady=false;root=undefined;owner=undefined;obj=undefined;${components.map(p=>p.key+'_controlsReady=false;'+p.key+'_root=undefined;'+p.key+'_owner=undefined'+(p.names.has('obj')?';'+p.key+'_obj=undefined':'')).join(';')})\n        on ${name} rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do panel.bindSection ${name})\n    )`;
+ const out=`    rollout ${name} ${JSON.stringify(definition.title)} width:#cmdPanel category:${category} autoLayoutOnResize:false (\n        local root=undefined,owner=undefined,panel=undefined,controlsReady=false,binding=false,obj=undefined,layerPage=${definition.layerPage?'true':'false'},setSpecific=false\n        local layout\n${declarations}\n${code}\n        -- A dotNetControl has both a managed child and a native rollout host.\n        -- Hiding only the child leaves its host over other controls on first open.\n        fn setHostedVisible control visibleState = (\n            if control.visible!=visibleState do control.visible=visibleState\n            for handle in control.hwnd where handle!=0 do (if (bit.get (windows.getWindowLong handle #style) 29)!=visibleState do windows.showWindow handle (if visibleState then #showNoActivate else #hide))\n            true\n        )\n        local textMetrics=#()\n        fn textHeight control available = (\n            local key=findItem (for row in textMetrics collect row[1]) control\n            local text=control.text,scale=GetUIScaleFactor(),pixels=amax 1 (floor (available*scale))\n            if key>0 and textMetrics[key][2]==text and textMetrics[key][3]==pixels do return textMetrics[key][4]\n            local measured=ceil ((cyrusMeasureWrappedText control.hwnd[1] text pixels)/scale)+2\n            local entry=#(control,text,pixels,measured)\n            if key>0 then textMetrics[key]=entry else append textMetrics entry\n            measured\n        )\n        fn fitLabel control minimum available = (control.height=amax minimum (textHeight control (available-2));true)\n        fn fitCheck control available = (\n            local height=amax 20 (textHeight control (available-26))\n            for handle in control.hwnd do (\n                local style=windows.getWindowLong handle #style\n                if not bit.get style 14 do windows.setWindowLong handle #style (bit.set style 14 true)\n                local rectangle=windows.getWindowPos handle,data=windows.getHWNDData handle\n                local position=windows.screenToClient data[2] rectangle.x rectangle.y\n                if rectangle.h!=height do windows.setWindowPos handle position.x position.y available height true\n            )\n            height\n        )\n        fn layout = (\n            local widthValue=amax 140 ${name}.width,y=6,rowControls=#(),show=false,cellWidth=0,columns=1,rowHeight=0,captionHeight=0,stackedCaption=false\n${folded?'            '+folded+'\n':''}${parts.join('')}\n            ${name}.height=y+4;true\n        )\n        fn bind layer = (\n            if root==undefined do return false\n            binding=true;controlsReady=false\n            try (\n                if owner==undefined do (local leaf=root.selectedLayer();if leaf!=undefined do owner=root.logicalParent leaf)\n                obj=owner\n                ${reset}\n${binding}\n                controlsReady=true;binding=false;layout();true\n            )catch(binding=false;controlsReady=false;throw())\n        )\n${delegates.join('\n')}\n        on advancedToggle changed value do layout()\n        on ${name} open do (panel=this.mainUI;root=undefined;controlsReady=false)\n        on ${name} close do (controlsReady=false;root=undefined;owner=undefined;obj=undefined;${components.map(p=>p.key+'_controlsReady=false;'+p.key+'_root=undefined;'+p.key+'_owner=undefined'+(p.names.has('obj')?';'+p.key+'_obj=undefined':'')).join(';')})\n        on ${name} rolledUp state do (if panel!=undefined and panel.controlsReady and not panel.binding and not panel.layerBinding do panel.bindSection ${name})\n    )`;
  // Visibility-changing component handlers must re-apply the presentation fold.
  // Bind/sync helpers are also callable directly by Brush callbacks.
  // These two single-window native controls expose no writable width. Their
@@ -251,8 +251,8 @@ function page(s,definition,{name=definition.name,category=0}={}){
             )
             step*(ceil (buttons.count as float/columns))
         )
-        fn fitPairField control available = (
-            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-46)
+        fn fitPairField control available stacked:false = (
+            local arrow=windows.getWindowPos control.hwnd[1],fieldWidth=amax 14 (available-(if stacked then 12 else 46))
             for handle in control.hwnd do (
                 local data=windows.getHWNDData handle
                 if data[4]=="CustEdit" do (
@@ -281,7 +281,7 @@ function page(s,definition,{name=definition.name,category=0}={}){
         )\n`;
  const remember='if panel!=undefined do panel.rememberViews();';
  const toggles=['advancedToggle',...disclosures.map(r=>r.toggle)];
- const presentation=`        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0
+ const presentation=`        local dragList=undefined,dragGrip=undefined,dragStartY=0,dragStartHeight=0,gripsReady=false
         fn captureView = #(${name}.open,#(${toggles.map(id=>id+'.checked').join(',')}),#(${lists.map(c=>c.id+'.height').join(',')}))
         fn restoreView state = (
             ${name}.open=state[1]
@@ -321,13 +321,14 @@ function page(s,definition,{name=definition.name,category=0}={}){
             pen.Dispose()
         )
         fn setupGrips = (
+            if gripsReady do return true
             for grip in #(${lists.map(c=>c.id+'_grip').join(',')}) do (
                 grip.Cursor=(dotNetClass "System.Windows.Forms.Cursors").SizeNS
                 grip.BorderStyle=(dotNetClass "System.Windows.Forms.BorderStyle").None
                 grip.BackColor=(dotNetClass "System.Drawing.Color").FromArgb 65 65 65
                 grip.TabStop=false
             )
-            true
+            gripsReady=true;true
         )
 ${lists.map(c=>`        on ${c.id}_grip MouseDown sender args do beginListDrag sender args ${c.id}
         on ${c.id}_grip MouseMove sender args do moveListDrag sender args
@@ -357,7 +358,8 @@ ${lists.map(c=>`        on ${c.id}_grip MouseDown sender args do beginListDrag s
   // trigger an edit gate or relayout (which invalidates the hovered row again).
   // HandleDestroyed must also dispose its tooltip after the rollout closes.
   if(!event||event[1]===name||event[1].endsWith('_grip')||/ (?:DrawItem|SelectedIndexChanged|MouseMove|HandleDestroyed) /.test(event[0]))continue;
-  const expression=part.slice(event[0].length);
+  // A guarded early return must also restore the outer action context.
+  const expression=part.slice(event[0].length).replace(/\breturn false\b/g,'(CyrusEndAction action;return false)');
   const component=components.find(p=>event[1].startsWith(p.key+'_'));
   const ready=component?component.key+'_controlsReady and not '+component.key+'_binding and ':'';
   // Selection, display and diagnostics remain available with expired authority.
@@ -367,7 +369,7 @@ ${lists.map(c=>`        on ${c.id}_grip MouseDown sender args do beginListDrag s
     ['displayUI','statisticsUI'].includes(name) ||
     /(?:advancedToggle|_more|_advanced|_toggle)$/.test(event[1]);
   const license=inspect?'true':'CyrusLicenseCanEdit()';
-  final=final.replace(part,event[0]+'if controlsReady and not binding and root!=undefined and '+ready+license+' do ('+expression+'\n            if controlsReady and root!=undefined do layout()\n        )');
+  final=final.replace(part,event[0]+'if controlsReady and not binding and root!=undefined and '+ready+license+' do (\n            local action=CyrusBeginAction root "'+event[1]+'"\n            try ('+expression+'\n                if controlsReady and root!=undefined do layout()\n                CyrusEndAction action\n            )catch(CyrusEndAction action;throw())\n        )');
  }
  return {text:final,components,controls,rows,name,scope};
 }
@@ -382,7 +384,9 @@ module.exports=function(s,{check=false}={}){
  const [a]=blocks.span(s,/^    rollout mainUI "[^"\n]+"[^\n]*\(/m);
  const [,b]=blocks.span(s,/^    rollout diagnosticsUI "[^"\n]+"[^\n]*\(/m);
  const main=fs.readFileSync('tools/ui/templates/approved-main-ui.ms','utf8').replace(/\r/g,'');
- s=s.slice(0,a)+main+'\n'+pages.map(p=>p.text).join('\n\n')+s.slice(b);
+ const lazy=pages.map((p,i)=>require('./lazy-pages.cjs')({...p,title:definitions[i].title},i+1));
+ s=s.slice(0,a)+lazy.map(p=>p.declaration).join('\n')+'\n'+lazy.map(p=>p.factory).join('\n\n')+'\n'+main+'\n'+lazy.map(p=>p.shell).join('\n\n')+s.slice(b);
+
  return s;
 };
 module.exports.statements=statements;
