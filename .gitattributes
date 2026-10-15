@@ -89,3 +89,8 @@
 /docs/plans/panel-performance-0826/PROGRESS.md -text whitespace=cr-at-eol
 /docs/plans/panel-performance-0826/PACKAGE.json -text whitespace=cr-at-eol
 /docs/plans/panel-performance-0826/QUALIFICATION.json -text whitespace=cr-at-eol
+
+# Hash-pinned bundled recipes/thumbnails and delivery receipts retain exact bytes.
+/AminScatter/library/** -text whitespace=cr-at-eol
+/docs/plans/improvement-program/I03_08261.md -text whitespace=cr-at-eol
+/docs/plans/improvement-program/*_08261.json -text whitespace=cr-at-eol

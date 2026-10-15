@@ -1,0 +1,19 @@
+{
+  "format": "cyrus.recipe-library",
+  "metadata": {
+    "category": "Woodland",
+    "description": "Upright canopy above normal-aligned shrubs and groundcover, with independent layer settings.",
+    "tags": [
+      "trees",
+      "shrubs",
+      "groundcover"
+    ]
+  },
+  "recipeSHA256": "0832ad393a28115d93b65b6310b69b2592d38f04d882d3ee851dde543a39a1ee",
+  "thumbnail": {
+    "bytes": 281631,
+    "file": "thumbnail-0832ad393a28115d93b65b6310b69b2592d38f04d882d3ee851dde543a39a1ee.png",
+    "sha256": "fbd845b0287aad49e73d4636b8e60b44fd1fd1417f0b8478a70372acd96a6524"
+  },
+  "version": 1
+}

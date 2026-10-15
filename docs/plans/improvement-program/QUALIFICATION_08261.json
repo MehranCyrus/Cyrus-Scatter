@@ -1,0 +1,3805 @@
+{
+  "version": "0.82.6.1",
+  "max_year": 2027,
+  "native_receipt": {
+    "stages": [
+      {
+        "stage": "configure",
+        "exit_code": 0
+      },
+      {
+        "stage": "build",
+        "exit_code": 0
+      },
+      {
+        "stage": "tests",
+        "exit_code": 0
+      }
+    ],
+    "project": "scatter",
+    "max_year": 2027,
+    "host_launched": false,
+    "installed": false,
+    "binaries": {
+      "build/library-08261-20261016-01/native-02/AminScatter.dlx": "6b9f5109b567b96d54b5f963ba9a6826d049e68c6cb628956edb092eaf48b844",
+      "build/library-08261-20261016-01/native-02/CyrusBrush.dlx": "bf610e00e2e345a6adc70d0d4c60fccf6eeaf3060d8b99f8ff806569f9649abc",
+      "build/library-08261-20261016-01/native-02/CyrusBrushStorage.dlh": "c0b25af35c21bb28d0a82a8f15393a76296e03ac1dbbe612c954f1310b1294c4",
+      "build/library-08261-20261016-01/native-02/CyrusScatterEdit.dlm": "c3fdf7947846cd64a01b8b218c58b13748b523f5373b964c1f9e098f73bec780"
+    },
+    "sources": {
+      "AminScatter/CMakeLists.txt": "dbc049840280feadc37ae9ce7833f19248b7ec39b2766a30fc7bbdf7132e5077",
+      "AminScatter/scripts/AminScatterObject.ms": "9015dbf23cca93104a2ff837215c862f976c1db5096e9151c0f52cc0e9baf22e",
+      "cmake/CyrusMaxSDK.cmake": "53cf91db75742990b80d1f0a8dc8094d45a2a964094b3785b2f6eb1c8b55248e",
+      "CyrusLicensing/third_party/nlohmann/json.hpp": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+      "CyrusLicensing/third_party/nlohmann/LICENSE.MIT": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603",
+      "AminScatter/src/analyzer_area_bridge.inc": "f0cff418f0d97ae8adf49376260577402e2e00665fb03c0004323ffbd71f12a6",
+      "AminScatter/src/authored_revision.inc": "095939f08836cbb8c741578780528560156bd657a1d190af5695b36badd71de9",
+      "AminScatter/src/boundary_falloff.inc": "cbf155f7a0005f2bf2d7d13108afa72295e4efa7da49aea7cff7c8c562f01508",
+      "AminScatter/src/boundary_falloff_bridge.inc": "4e1876d060fef368160899c855ef584cd111f57e0eceb118493c5169884225fa",
+      "AminScatter/src/brush.cpp": "8c77ddb4706fc5fc1c8f06e728f98705e1720658c962b466da1b8acad52c4f12",
+      "AminScatter/src/brush_host.cpp": "34bfdb1b7872b44b0eef8bc41afede51ee87462e6965dd4a6e2a2fcff3238f84",
+      "AminScatter/src/brush_storage_plugin.cpp": "cf3d949ca9695e42c70f0905db41bd24e77d520b7f7a571a72a8bfc69ce995d3",
+      "AminScatter/src/brush_surface.cpp": "6459e56257d8d6bd695dbebb1e055d6105abdb85ae68e262e4008149968f63ac",
+      "AminScatter/src/cluster.inc": "7df8d7495d4b1e2fa3a3099ff2e83bd896a87e3ceecb605b3e0547a84ec7a858",
+      "AminScatter/src/cyrus_edit.cpp": "b768d63dbed92253778bc16b3d77854e08f6eb3b5980611b385062c9549395d0",
+      "AminScatter/src/cyrus_edit.rc": "2ed905b328e04f092f89a4e1e800d9fba724a0c33f9ea3262fe886040f53fb33",
+      "AminScatter/src/cyrus_edit_stack.inc": "50a69846b33a6ed3d864b05149e76554fb5bf7601b9527e65d7b9b76771a6e70",
+      "AminScatter/src/cyrus_edit_storage.inc": "4e9e9f23845a0d9ee2b0fed5fdba450b176cbbe5b4b04a557cb1963655f43109",
+      "AminScatter/src/diagnostics.cpp": "87a27c1248b14a9feda3134df035ca08e02f3a992a73dd73bfa059bb519654c4",
+      "AminScatter/src/diagnostics_bridge.cpp": "5c5a07481a024ae7ca88d7665e7d483ec9c97c855615a49a942481f9fe8eec53",
+      "AminScatter/src/edge_border.inc": "bb8439a193cc8312ae06abaee6909c822aa14391a9a1039bfdeb34b9e8c3b4d9",
+      "AminScatter/src/edit_plugin.cpp": "79f0056899a9c831022e17f12ae35232890e6e21b44b9c7b6f608632f871ac9b",
+      "AminScatter/src/execution.cpp": "b54963d69441d473ed52f76b125c4eb3d0a38c564900f28abd76efa7bcbf1136",
+      "AminScatter/src/final.inc": "886781a53f9ac3611bfe0e97cc239914d2cad6421be09acc3c09133c62886366",
+      "AminScatter/src/geometry_preview.inc": "8c9e83bac16cd39665567974d468fe30bb606b1d0cfa3c5491ecee1e6ba6641f",
+      "AminScatter/src/group_spacing.cpp": "73d973b3d22f51c00dae7f4282d7f8159b19dea0b27f7ddb57c2d06815acc1a1",
+      "AminScatter/src/group_spacing_bridge.inc": "bdd6fd9c16e037b29fba8424e3245b452d5dea3fa34c2e0d2154e5e750497459",
+      "AminScatter/src/input_validity.cpp": "a65514bdcee3e67d3296768063979ed1c670b020323bc62e757ac7a9c232605d",
+      "AminScatter/src/max_bridge.cpp": "e806c44523d2155a69d97f7247be973bde3ce2815e62058107a91b1f1d1cc9bc",
+      "AminScatter/src/mesh_density.cpp": "5bbdeabbf0192c70fbe6a22c596f7cd25d71bbf2cba5d0fda1df833c1e3261fc",
+      "AminScatter/src/mesh_density_bridge.inc": "bb6a1136b6dce992c32f4777777a54a9dfbedd706d543b4242b348ac9188e219",
+      "AminScatter/src/mesh_display.inc": "bdc14729b6871e35accafc6586c42a3ed71ec8a97fd442a44e0b8c6ceb469c8c",
+      "AminScatter/src/orientation.inc": "e1359367753532bde8a3f39148e930a5a0912c41a86da2a63fbc484fe09a87d2",
+      "AminScatter/src/orientation_bridge.inc": "f3ac20fe49f3a8180f61616f02a25476e50b5258ad976d7edb0fde6c0ee3f040",
+      "AminScatter/src/placement_identity.inc": "5127bcf87d9baf77f02bdad0f63423a2be3ca78b1c06378a6598c24eb0b3e831",
+      "AminScatter/src/point_display.cpp": "9c3b52dae34011af886aba7108cb882a354dabf0f8edec6aa2588f318ece416a",
+      "AminScatter/src/point_publication.inc": "93694232c2386804e1c1a8187e7e789aac125dff52b1165263948129ad0f6178",
+      "AminScatter/src/prepared_band.inc": "a93e56cb3b08491adf8a7f2a767ca48efb10891b5d3203bd50fdce56e30f1819",
+      "AminScatter/src/presets.cpp": "d6664b2ef8f35e450c707c4bdbefe926d459bc86ab24194821528324721072df",
+      "AminScatter/src/presets_bridge.cpp": "00c0d92b69bc17f08f1601213fffcdde956e0bb0b7adb43258cbcfe98644087d",
+      "AminScatter/src/preview.cpp": "7520542056413651cab2ba98c4621ba795407e3d773e0c09294ab75864b995bf",
+      "AminScatter/src/preview_palette.inc": "151abdd16a665c65be6917dca1cc27f5cc055aad970ece320defcc3158645dc8",
+      "AminScatter/src/procedural.cpp": "d42b868638f4d036b7050d947e89a53ca84997cb86ffd7a3addad2a5497a9f78",
+      "AminScatter/src/procedural_bridge.inc": "43f784cbdbe49ac4c4dd0114637fcead9dfb56ef5f19a51c0e3280d37a995a61",
+      "AminScatter/src/receiver_binding_host.h": "7260347db91b61d9009fa50a246ddafea0d10940676bcf0a547782a1e972a46b",
+      "AminScatter/src/receiver_bridge.inc": "efd8201130550ad5d05929abaecbe330e4492ab7fb644f9a6cf5b5fd1292e571",
+      "AminScatter/src/receiver_plan.cpp": "ff971e7179ceeaa9544983169e6feb1ab61279f3b082702a33b1117f547e79a0",
+      "AminScatter/src/recipe_fields.inc": "5853c39682d2cc34c9c669f82a4815042388fa33a0cdb7abeede4edd5a42c918",
+      "AminScatter/src/recipe_library.cpp": "9ee2da93e8b91515c6260ecee08525d6b3c3c2768f86429b0e011f548177cf1b",
+      "AminScatter/src/recipes.cpp": "9bc306cbee97bf5278365f9f73d87bc47cc7b7d84c04db2d001fa3336d268f25",
+      "AminScatter/src/recipes_bridge.cpp": "c83e3f928285fdd058262d8be098f1699a572a1bbf9d1570bde11d37441a529d",
+      "AminScatter/src/rollout_flow.cpp": "df77caf015fea6cc8486cf7abf602e0e310078e573c0c80dce916ad75aa15418",
+      "AminScatter/src/rollout_scroll.cpp": "5573dd56b0ecaa87c6f521abd88b07f6d7e3259174a249ab53275a0bb12fb3a7",
+      "AminScatter/src/scatter.cpp": "7b6c07ecb6b39c3b24213b88f0684dd3f2df31e647b00a37837ab4615c9fc4f6",
+      "AminScatter/src/source_container.cpp": "e7112aa77a10de744d01fc95ab0eaf25da6966a30ba2e902b7622fb5803401b3",
+      "AminScatter/src/source_geometry.inc": "b0fa2e885909f7736af45f7b406cbc29032be183f9ac4a73b6fd7fa206f09f10",
+      "AminScatter/src/spacing.inc": "e52daaa33abf322d33a554dea9bad727edc8da71510c3320d9b14a9c6eba3a8c",
+      "AminScatter/src/spline_bands.cpp": "1e313368f4e3e6715eb4bd4943c50232687f53a991987b828068dc0bf886e7e2",
+      "AminScatter/src/spline_field_bridge.inc": "1388c5d31457b67369397a0112f7f15b9b81b298b3153257ec6bb41035c88b0b",
+      "AminScatter/src/spline_overlay.cpp": "93789f6df3acdbffb7d03641a2503cbe412de33c8358d63704fe3240c761133d",
+      "AminScatter/src/spline_overlay_bridge.inc": "abddd2c86c3c84671899949c1907eb7c308df46295d916f7bc247d95a6511aed",
+      "AminScatter/src/surface_filter.cpp": "008adf45b1a5edf06a17799ac7155c66545bf9b98c3b7ecb91700a3a56718e27",
+      "AminScatter/src/surface_filter_bridge.inc": "ce67c9f8838ff6f9e27a913de684f40dc6d3c4eab2177497c4faad98336005c9",
+      "AminScatter/src/team_license.cpp": "0b81a104c55d2d9e4289e8a299ee799b520603c48960e2d7278956ae613606b5",
+      "AminScatter/src/whole_scale_bridge.inc": "c8db7bdba6d03af4b717434666a50883fdf3e32b7bb1535cd8dba845d4baa1ea",
+      "AminScatter/include/brush.h": "a774997530d739e17a4fcbf739e14eb0aa21c8ec9a3614927d8aad5c898e1266",
+      "AminScatter/include/diagnostics.h": "d6934a3d13a9b9a082070e02faad998ebf9ce38d133f3842261fb1e077df8d10",
+      "AminScatter/include/execution.h": "e9f2cfdf677366f491dc01cea83301ce53111c5073633333a4adf1db2ad509d2",
+      "AminScatter/include/group_spacing.h": "b04b3e47f0f1d5789f274492ca4d2a0777e5f1b500070ba5ef88426c4cf08502",
+      "AminScatter/include/license_boundary.h": "a1ce0cc1b3f83a2170d8eb3c3089774bd1b915d043e6d69f762aa4afa12281bc",
+      "AminScatter/include/mesh_density.h": "11ebeb5d7842396bb00bee80051be08e2fad5a7e440a8b97f539036c9d42cedf",
+      "AminScatter/include/placement_transport.h": "a363be74e8b21dc53eade3b0b3d1e07f08b21494d23efe1feac6d5123e72c2ec",
+      "AminScatter/include/point_preview.h": "104396bf346307f32569243cf0fb8ce59819ffab92ab80d88ee710063e3a1f1d",
+      "AminScatter/include/presets.h": "7de4211ed563523c1957df24f50edd2c0d49d70bd761051d49ae6bc756ff9195",
+      "AminScatter/include/preview_budget.h": "f17020e3e03bce90acf5d5285a09ea0fbb2f68872e2b1d6b661993be435e04b9",
+      "AminScatter/include/preview_sampling.h": "14e389d96653e861896a133c6efa9a6d42f96e2cc8d3e5e6ee665221b9a4645f",
+      "AminScatter/include/procedural.h": "24600188b2a8c0714736d81688c82a68fab5f0ddaf0c20c7dc6357fcd83201ee",
+      "AminScatter/include/receiver_plan.h": "411a12f26f107a18324a280b48859b2494b03ab2137f1868ae7aec766b53a6c0",
+      "AminScatter/include/recipe_library.h": "fb143cc9e5766eeb89f299bf43c67c8bae105f69ae9ccaa35c727b4279141f1b",
+      "AminScatter/include/recipes.h": "b3b1e55e027b8870ee0213a7f8c2d2ca12978e37eb91f86c8db82f3f16d20712",
+      "AminScatter/include/scatter.h": "eccf36f4a08b5d7f81f5b77f5d71dce1d9720b918421ecfbc387df984b2fb918",
+      "AminScatter/include/spline_bands.h": "cf2f6dd00247e83bb8c0772bc07dab15ce8aaee78706d21b7c0d828505e2fe8a",
+      "AminScatter/include/spline_field_value.h": "a1348f12457f9b2a871e1fbaf5093a3d7229f0889d7a9627a5895c39dc5a8e19",
+      "AminScatter/include/spline_overlay.h": "524770f8df87ccb0be0ba2d4f9a0ab34718dd3fb880f3b751ab677e65212b83b",
+      "AminScatter/include/surface_filter.h": "3b86db024c4fafed5c6a79d62ad1555e5e2ae08057b1ad56fa4d6d2e890d0292",
+      "AminScatter/include/viewport_policy.h": "47141d931a9e63ed1ff66cdafd6b5c282c3fea3d692c8ac5752ec8f7d68c188b",
+      "AminScatter/tests/boundary_falloff_tests.cpp": "ce9fdc0d584bafff5ecef2929c8e29cc0424f41a12c762fc40ae0d8448be7fbb",
+      "AminScatter/tests/brush_conversion_tests.cpp": "dc98173534c1529382eca2c5318705eac2a9be5353eda8e83cddecf1f141aeb8",
+      "AminScatter/tests/brush_feedback_tests.cpp": "1cfc0566a3ac7f5963ced3ae98a14b56a2380303095e2f09f7da0fd87973de02",
+      "AminScatter/tests/brush_tests.cpp": "2414237861d972f5b571dd70dfb059f8c1a88fd77181bbdbc81a0531763692dd",
+      "AminScatter/tests/compute_benchmark.cpp": "cce8d13d58ae38c1452d841e3ebcc1553e94682cdfc2bccf4bc2f1a930fc586f",
+      "AminScatter/tests/data/brush_sphere_pole.txt": "3e2bf0a248e2e0539ff4eadce7af0e1f8f12850636aa5d1293c03a5ea78ee819",
+      "AminScatter/tests/data/recipe_v1_defaults.json": "87ee56c576574330120ff26643746ae1fc5263c33fbae4e8ea702470723a3aff",
+      "AminScatter/tests/diagnostics_tests.cpp": "18a30e2b8953d47ffe76440bd7fb8054c1661f663413774c08086fb77d28cd6d",
+      "AminScatter/tests/edge_border_tests.cpp": "b2abfc1af8b8e8fa1676a1ec9fbaa4672e8e7abcc912876f4000eef2da32f2b1",
+      "AminScatter/tests/group_spacing_tests.cpp": "67300e62c679ea27b95784216441af79119668cc3008a3a71dab04b493f75046",
+      "AminScatter/tests/mesh_density_tests.cpp": "da7c0eba89f865ef4076aeb8f681accac6eed3221b85dce9fe8ca8977b86a586",
+      "AminScatter/tests/orientation_tests.cpp": "1e0455081252900be70d344bde920c47565d159abf104528624f0b1ea1058d2b",
+      "AminScatter/tests/prepared_band_tests.cpp": "bc59abb900ee4bf249702f327d92c3bd820cb628a12534d911faaccbf63e7909",
+      "AminScatter/tests/preset_tests.cpp": "b41266cd597ab9c65febb8f1bbf5b10abc29311b191c0aed001c68f0c79b405d",
+      "AminScatter/tests/preview_sampling_tests.cpp": "e2eac5bd2ef640e5dc11f8778bb55749033baea4714d5fe2fccbd764f80be819",
+      "AminScatter/tests/procedural_tests.cpp": "8922e68682e29000c5b79fd2e1975761c2af47f47d229a18164cffbfd1a1695b",
+      "AminScatter/tests/publication_tests.cpp": "4c0b8d1356293cd742a2ae4085e6bf1e6dab892dc6d1465b98d05db79d4e2e39",
+      "AminScatter/tests/receiver_tests.cpp": "0b3e6648161f9ebd6668551155e3e2417b614da1762d59b6eb293b2ce1993a4f",
+      "AminScatter/tests/recipe_library_tests.cpp": "6ac10630855a7ede988b3adfe69396fde182c53856fcbfa1442438bf64b1a791",
+      "AminScatter/tests/recipe_tests.cpp": "0594b45a3afc3177a215bdadb7798fa3e3562ca5c11084c89ac907dce0ccdb07",
+      "AminScatter/tests/scatter_tests.cpp": "f21d3156ac11e7179952b0c7917f620fb771ea718189d927a1592e7490b27041",
+      "AminScatter/tests/spacing_tests.cpp": "1dd54122f40c4aa661c5008032b1a3945d41d3ca7803cd914803a1d12daca730",
+      "AminScatter/tests/spline_band_tests.cpp": "7429620312f84100119d8c08c4c65d577cc9a2c2363d023c939dc459933e9150",
+      "AminScatter/tests/spline_overlay_tests.cpp": "fee16bd620adb849a7761e790bde0764874a9ed291ed25368bcc2a6b760a610c",
+      "AminScatter/tests/surface_filter_tests.cpp": "f4e1f9d0c012529a156a57faaeeced9e5195239df12fec7c56c95d41960b9610",
+      "AminScatter/tests/threading_tests.cpp": "f3336cfd3ffe0c642fd839cf7eb4b6002fd697a04072010f963bf1d020f87507",
+      "AminScatter/tests/viewport_policy_tests.cpp": "764e39613dc2b6a76028b33031606a39b07d6d5f6a50d3de3b7983d31e2f19a8",
+      "AminScatter/tests/weight_tests.cpp": "2a765dfec328c99b934e69b655d9c28715faa0a2c72b7fa23be395b013894d9b",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.core.h": "b667c2fe968344252e2c32c0cffc09cf6520164e272fcf63bf46eccc707b138f",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.engine.h": "e77185eb535cdae22feb85a045b6b90365f0cfd841bd7fb01714fc03a026fa09",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.export.h": "035e4257f1f127d6a17833331922f2b1b615371b64bb4cd625842102517793b0",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.h": "145efd001ef2f45ac5655a18e19d8a122efdf665c38d306a1fe91ce9e0d18450",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.minkowski.h": "6ea4f08d3e2561bdd4d95a548e1b5d7983100e317ed805616b8d602f03d3dbe3",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.offset.h": "147e5f4694327d62cec31fec55b69537f178e808a715a533bb42c01a85cc435a",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.rectclip.h": "2970dbe3f91d32e96abc3117240694fc09f354060ff84e4a95014ec510f4d8dd",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.triangulation.h": "a82d32e65583cce5a6d704796c54de3ddd2963d219057263a0f87f8d14a07d6c",
+      "AminScatter/third_party/clipper2/include/clipper2/clipper.version.h": "0d636f1599b09743496d5c15c7dcb5bc3101bd423d6745bf17e480edbffccdac",
+      "AminScatter/third_party/clipper2/LICENSE": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+      "AminScatter/third_party/clipper2/PROVENANCE.json": "a396deca238f76be6efb163279b064d376e7c0f8f84b204d5e104a7f2dfeeb23",
+      "AminScatter/third_party/clipper2/src/clipper.engine.cpp": "7b2cc17d4debd3b5ee6bd2c592ecda5082253324c7dd514b5593ae1b2c7812b2",
+      "AminScatter/third_party/clipper2/src/clipper.offset.cpp": "ebc01258953212d20fed090a4a740f94926c3c6706a092fec4c5e9cb5292305a",
+      "AminScatter/third_party/clipper2/src/clipper.rectclip.cpp": "79c7d8d90dd3b577db77a152c4739f6f49bfda8727528291250d3d8e8d79e18c"
+    },
+    "preview_fault_lab": false,
+    "qualification": "SDK compilation and native executables only; generated MAXScript is hashed, not compiled by Max."
+  },
+  "native_receipt_sha256": "eedd6d049162e6b54ed0a9732412d1359b687e6c82bb9e2cfed6d4d7df3c9e5a",
+  "source_identity": {
+    "AminScatter/CMakeLists.txt": {
+      "build_input_sha256": "dbc049840280feadc37ae9ce7833f19248b7ec39b2766a30fc7bbdf7132e5077",
+      "current_sha256": "dbc049840280feadc37ae9ce7833f19248b7ec39b2766a30fc7bbdf7132e5077",
+      "lf_sha256": "e77be48570a11fdf92c6b6b3490aca1b7cf7ddb0288d70efc7d0a29ebb99ba40"
+    },
+    "AminScatter/scripts/AminScatterObject.ms": {
+      "build_input_sha256": "9015dbf23cca93104a2ff837215c862f976c1db5096e9151c0f52cc0e9baf22e",
+      "current_sha256": "580d3446773c85d91fd276a70d8e10e2e0c5de1bcc95b1deb056bc82c62be56b",
+      "lf_sha256": "580d3446773c85d91fd276a70d8e10e2e0c5de1bcc95b1deb056bc82c62be56b"
+    },
+    "cmake/CyrusMaxSDK.cmake": {
+      "build_input_sha256": "53cf91db75742990b80d1f0a8dc8094d45a2a964094b3785b2f6eb1c8b55248e",
+      "current_sha256": "53cf91db75742990b80d1f0a8dc8094d45a2a964094b3785b2f6eb1c8b55248e",
+      "lf_sha256": "53cf91db75742990b80d1f0a8dc8094d45a2a964094b3785b2f6eb1c8b55248e"
+    },
+    "CyrusLicensing/third_party/nlohmann/json.hpp": {
+      "build_input_sha256": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+      "current_sha256": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63",
+      "lf_sha256": "aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63"
+    },
+    "CyrusLicensing/third_party/nlohmann/LICENSE.MIT": {
+      "build_input_sha256": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603",
+      "current_sha256": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603",
+      "lf_sha256": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603"
+    },
+    "AminScatter/src/analyzer_area_bridge.inc": {
+      "build_input_sha256": "f0cff418f0d97ae8adf49376260577402e2e00665fb03c0004323ffbd71f12a6",
+      "current_sha256": "f0cff418f0d97ae8adf49376260577402e2e00665fb03c0004323ffbd71f12a6",
+      "lf_sha256": "f0cff418f0d97ae8adf49376260577402e2e00665fb03c0004323ffbd71f12a6"
+    },
+    "AminScatter/src/authored_revision.inc": {
+      "build_input_sha256": "095939f08836cbb8c741578780528560156bd657a1d190af5695b36badd71de9",
+      "current_sha256": "095939f08836cbb8c741578780528560156bd657a1d190af5695b36badd71de9",
+      "lf_sha256": "095939f08836cbb8c741578780528560156bd657a1d190af5695b36badd71de9"
+    },
+    "AminScatter/src/boundary_falloff.inc": {
+      "build_input_sha256": "cbf155f7a0005f2bf2d7d13108afa72295e4efa7da49aea7cff7c8c562f01508",
+      "current_sha256": "cbf155f7a0005f2bf2d7d13108afa72295e4efa7da49aea7cff7c8c562f01508",
+      "lf_sha256": "cbf155f7a0005f2bf2d7d13108afa72295e4efa7da49aea7cff7c8c562f01508"
+    },
+    "AminScatter/src/boundary_falloff_bridge.inc": {
+      "build_input_sha256": "4e1876d060fef368160899c855ef584cd111f57e0eceb118493c5169884225fa",
+      "current_sha256": "4e1876d060fef368160899c855ef584cd111f57e0eceb118493c5169884225fa",
+      "lf_sha256": "4e1876d060fef368160899c855ef584cd111f57e0eceb118493c5169884225fa"
+    },
+    "AminScatter/src/brush.cpp": {
+      "build_input_sha256": "8c77ddb4706fc5fc1c8f06e728f98705e1720658c962b466da1b8acad52c4f12",
+      "current_sha256": "8c77ddb4706fc5fc1c8f06e728f98705e1720658c962b466da1b8acad52c4f12",
+      "lf_sha256": "8c77ddb4706fc5fc1c8f06e728f98705e1720658c962b466da1b8acad52c4f12"
+    },
+    "AminScatter/src/brush_host.cpp": {
+      "build_input_sha256": "34bfdb1b7872b44b0eef8bc41afede51ee87462e6965dd4a6e2a2fcff3238f84",
+      "current_sha256": "34bfdb1b7872b44b0eef8bc41afede51ee87462e6965dd4a6e2a2fcff3238f84",
+      "lf_sha256": "aecfdb5a4e57676d6a1a692faed5f4f793de8fb3a8ff753b7b9d8dfb5233f267"
+    },
+    "AminScatter/src/brush_storage_plugin.cpp": {
+      "build_input_sha256": "cf3d949ca9695e42c70f0905db41bd24e77d520b7f7a571a72a8bfc69ce995d3",
+      "current_sha256": "cf3d949ca9695e42c70f0905db41bd24e77d520b7f7a571a72a8bfc69ce995d3",
+      "lf_sha256": "cf3d949ca9695e42c70f0905db41bd24e77d520b7f7a571a72a8bfc69ce995d3"
+    },
+    "AminScatter/src/brush_surface.cpp": {
+      "build_input_sha256": "6459e56257d8d6bd695dbebb1e055d6105abdb85ae68e262e4008149968f63ac",
+      "current_sha256": "6459e56257d8d6bd695dbebb1e055d6105abdb85ae68e262e4008149968f63ac",
+      "lf_sha256": "5620c22414bbf4d2a0c9ba97abb623a168685360ff4e064af333b06191eabe37"
+    },
+    "AminScatter/src/cluster.inc": {
+      "build_input_sha256": "7df8d7495d4b1e2fa3a3099ff2e83bd896a87e3ceecb605b3e0547a84ec7a858",
+      "current_sha256": "7df8d7495d4b1e2fa3a3099ff2e83bd896a87e3ceecb605b3e0547a84ec7a858",
+      "lf_sha256": "7df8d7495d4b1e2fa3a3099ff2e83bd896a87e3ceecb605b3e0547a84ec7a858"
+    },
+    "AminScatter/src/cyrus_edit.cpp": {
+      "build_input_sha256": "b768d63dbed92253778bc16b3d77854e08f6eb3b5980611b385062c9549395d0",
+      "current_sha256": "b768d63dbed92253778bc16b3d77854e08f6eb3b5980611b385062c9549395d0",
+      "lf_sha256": "b768d63dbed92253778bc16b3d77854e08f6eb3b5980611b385062c9549395d0"
+    },
+    "AminScatter/src/cyrus_edit.rc": {
+      "build_input_sha256": "2ed905b328e04f092f89a4e1e800d9fba724a0c33f9ea3262fe886040f53fb33",
+      "current_sha256": "2ed905b328e04f092f89a4e1e800d9fba724a0c33f9ea3262fe886040f53fb33",
+      "lf_sha256": "e8c3e77f2c32e35e2d691e5f519a5c67276d9ff93ea78009e5f1187067126fc3"
+    },
+    "AminScatter/src/cyrus_edit_stack.inc": {
+      "build_input_sha256": "50a69846b33a6ed3d864b05149e76554fb5bf7601b9527e65d7b9b76771a6e70",
+      "current_sha256": "50a69846b33a6ed3d864b05149e76554fb5bf7601b9527e65d7b9b76771a6e70",
+      "lf_sha256": "50a69846b33a6ed3d864b05149e76554fb5bf7601b9527e65d7b9b76771a6e70"
+    },
+    "AminScatter/src/cyrus_edit_storage.inc": {
+      "build_input_sha256": "4e9e9f23845a0d9ee2b0fed5fdba450b176cbbe5b4b04a557cb1963655f43109",
+      "current_sha256": "4e9e9f23845a0d9ee2b0fed5fdba450b176cbbe5b4b04a557cb1963655f43109",
+      "lf_sha256": "4e9e9f23845a0d9ee2b0fed5fdba450b176cbbe5b4b04a557cb1963655f43109"
+    },
+    "AminScatter/src/diagnostics.cpp": {
+      "build_input_sha256": "87a27c1248b14a9feda3134df035ca08e02f3a992a73dd73bfa059bb519654c4",
+      "current_sha256": "87a27c1248b14a9feda3134df035ca08e02f3a992a73dd73bfa059bb519654c4",
+      "lf_sha256": "87a27c1248b14a9feda3134df035ca08e02f3a992a73dd73bfa059bb519654c4"
+    },
+    "AminScatter/src/diagnostics_bridge.cpp": {
+      "build_input_sha256": "5c5a07481a024ae7ca88d7665e7d483ec9c97c855615a49a942481f9fe8eec53",
+      "current_sha256": "5c5a07481a024ae7ca88d7665e7d483ec9c97c855615a49a942481f9fe8eec53",
+      "lf_sha256": "5c5a07481a024ae7ca88d7665e7d483ec9c97c855615a49a942481f9fe8eec53"
+    },
+    "AminScatter/src/edge_border.inc": {
+      "build_input_sha256": "bb8439a193cc8312ae06abaee6909c822aa14391a9a1039bfdeb34b9e8c3b4d9",
+      "current_sha256": "bb8439a193cc8312ae06abaee6909c822aa14391a9a1039bfdeb34b9e8c3b4d9",
+      "lf_sha256": "7814c7432d4ccac3aec11b6e358409134100a04a3c73bd4350e73ea67563db76"
+    },
+    "AminScatter/src/edit_plugin.cpp": {
+      "build_input_sha256": "79f0056899a9c831022e17f12ae35232890e6e21b44b9c7b6f608632f871ac9b",
+      "current_sha256": "79f0056899a9c831022e17f12ae35232890e6e21b44b9c7b6f608632f871ac9b",
+      "lf_sha256": "79f0056899a9c831022e17f12ae35232890e6e21b44b9c7b6f608632f871ac9b"
+    },
+    "AminScatter/src/execution.cpp": {
+      "build_input_sha256": "b54963d69441d473ed52f76b125c4eb3d0a38c564900f28abd76efa7bcbf1136",
+      "current_sha256": "b54963d69441d473ed52f76b125c4eb3d0a38c564900f28abd76efa7bcbf1136",
+      "lf_sha256": "b54963d69441d473ed52f76b125c4eb3d0a38c564900f28abd76efa7bcbf1136"
+    },
+    "AminScatter/src/final.inc": {
+      "build_input_sha256": "886781a53f9ac3611bfe0e97cc239914d2cad6421be09acc3c09133c62886366",
+      "current_sha256": "886781a53f9ac3611bfe0e97cc239914d2cad6421be09acc3c09133c62886366",
+      "lf_sha256": "c60aea4f44f77cd36e7c577fc1601db299d0e1803db54fdbb98a3ae8859d2b42"
+    },
+    "AminScatter/src/geometry_preview.inc": {
+      "build_input_sha256": "8c9e83bac16cd39665567974d468fe30bb606b1d0cfa3c5491ecee1e6ba6641f",
+      "current_sha256": "8c9e83bac16cd39665567974d468fe30bb606b1d0cfa3c5491ecee1e6ba6641f",
+      "lf_sha256": "dcc6cebd887b899f3c7228c587e82884d7be316c4e7265a963b1baa298d75582"
+    },
+    "AminScatter/src/group_spacing.cpp": {
+      "build_input_sha256": "73d973b3d22f51c00dae7f4282d7f8159b19dea0b27f7ddb57c2d06815acc1a1",
+      "current_sha256": "73d973b3d22f51c00dae7f4282d7f8159b19dea0b27f7ddb57c2d06815acc1a1",
+      "lf_sha256": "73d973b3d22f51c00dae7f4282d7f8159b19dea0b27f7ddb57c2d06815acc1a1"
+    },
+    "AminScatter/src/group_spacing_bridge.inc": {
+      "build_input_sha256": "bdd6fd9c16e037b29fba8424e3245b452d5dea3fa34c2e0d2154e5e750497459",
+      "current_sha256": "bdd6fd9c16e037b29fba8424e3245b452d5dea3fa34c2e0d2154e5e750497459",
+      "lf_sha256": "bdd6fd9c16e037b29fba8424e3245b452d5dea3fa34c2e0d2154e5e750497459"
+    },
+    "AminScatter/src/input_validity.cpp": {
+      "build_input_sha256": "a65514bdcee3e67d3296768063979ed1c670b020323bc62e757ac7a9c232605d",
+      "current_sha256": "a65514bdcee3e67d3296768063979ed1c670b020323bc62e757ac7a9c232605d",
+      "lf_sha256": "a65514bdcee3e67d3296768063979ed1c670b020323bc62e757ac7a9c232605d"
+    },
+    "AminScatter/src/max_bridge.cpp": {
+      "build_input_sha256": "e806c44523d2155a69d97f7247be973bde3ce2815e62058107a91b1f1d1cc9bc",
+      "current_sha256": "e806c44523d2155a69d97f7247be973bde3ce2815e62058107a91b1f1d1cc9bc",
+      "lf_sha256": "e806c44523d2155a69d97f7247be973bde3ce2815e62058107a91b1f1d1cc9bc"
+    },
+    "AminScatter/src/mesh_density.cpp": {
+      "build_input_sha256": "5bbdeabbf0192c70fbe6a22c596f7cd25d71bbf2cba5d0fda1df833c1e3261fc",
+      "current_sha256": "5bbdeabbf0192c70fbe6a22c596f7cd25d71bbf2cba5d0fda1df833c1e3261fc",
+      "lf_sha256": "5bbdeabbf0192c70fbe6a22c596f7cd25d71bbf2cba5d0fda1df833c1e3261fc"
+    },
+    "AminScatter/src/mesh_density_bridge.inc": {
+      "build_input_sha256": "bb6a1136b6dce992c32f4777777a54a9dfbedd706d543b4242b348ac9188e219",
+      "current_sha256": "bb6a1136b6dce992c32f4777777a54a9dfbedd706d543b4242b348ac9188e219",
+      "lf_sha256": "bb6a1136b6dce992c32f4777777a54a9dfbedd706d543b4242b348ac9188e219"
+    },
+    "AminScatter/src/mesh_display.inc": {
+      "build_input_sha256": "bdc14729b6871e35accafc6586c42a3ed71ec8a97fd442a44e0b8c6ceb469c8c",
+      "current_sha256": "bdc14729b6871e35accafc6586c42a3ed71ec8a97fd442a44e0b8c6ceb469c8c",
+      "lf_sha256": "bdc14729b6871e35accafc6586c42a3ed71ec8a97fd442a44e0b8c6ceb469c8c"
+    },
+    "AminScatter/src/orientation.inc": {
+      "build_input_sha256": "e1359367753532bde8a3f39148e930a5a0912c41a86da2a63fbc484fe09a87d2",
+      "current_sha256": "e1359367753532bde8a3f39148e930a5a0912c41a86da2a63fbc484fe09a87d2",
+      "lf_sha256": "e1359367753532bde8a3f39148e930a5a0912c41a86da2a63fbc484fe09a87d2"
+    },
+    "AminScatter/src/orientation_bridge.inc": {
+      "build_input_sha256": "f3ac20fe49f3a8180f61616f02a25476e50b5258ad976d7edb0fde6c0ee3f040",
+      "current_sha256": "f3ac20fe49f3a8180f61616f02a25476e50b5258ad976d7edb0fde6c0ee3f040",
+      "lf_sha256": "b5fd66a5d4bc0306922daa69a482e6149c333f58f981156ab4146393e08b4e9d"
+    },
+    "AminScatter/src/placement_identity.inc": {
+      "build_input_sha256": "5127bcf87d9baf77f02bdad0f63423a2be3ca78b1c06378a6598c24eb0b3e831",
+      "current_sha256": "5127bcf87d9baf77f02bdad0f63423a2be3ca78b1c06378a6598c24eb0b3e831",
+      "lf_sha256": "5127bcf87d9baf77f02bdad0f63423a2be3ca78b1c06378a6598c24eb0b3e831"
+    },
+    "AminScatter/src/point_display.cpp": {
+      "build_input_sha256": "9c3b52dae34011af886aba7108cb882a354dabf0f8edec6aa2588f318ece416a",
+      "current_sha256": "9c3b52dae34011af886aba7108cb882a354dabf0f8edec6aa2588f318ece416a",
+      "lf_sha256": "60cae64fd46153d39ba2063b889465f9b5c1db483b94eaae066e0c69d6ddb9b4"
+    },
+    "AminScatter/src/point_publication.inc": {
+      "build_input_sha256": "93694232c2386804e1c1a8187e7e789aac125dff52b1165263948129ad0f6178",
+      "current_sha256": "93694232c2386804e1c1a8187e7e789aac125dff52b1165263948129ad0f6178",
+      "lf_sha256": "93694232c2386804e1c1a8187e7e789aac125dff52b1165263948129ad0f6178"
+    },
+    "AminScatter/src/prepared_band.inc": {
+      "build_input_sha256": "a93e56cb3b08491adf8a7f2a767ca48efb10891b5d3203bd50fdce56e30f1819",
+      "current_sha256": "a93e56cb3b08491adf8a7f2a767ca48efb10891b5d3203bd50fdce56e30f1819",
+      "lf_sha256": "a93e56cb3b08491adf8a7f2a767ca48efb10891b5d3203bd50fdce56e30f1819"
+    },
+    "AminScatter/src/presets.cpp": {
+      "build_input_sha256": "d6664b2ef8f35e450c707c4bdbefe926d459bc86ab24194821528324721072df",
+      "current_sha256": "d6664b2ef8f35e450c707c4bdbefe926d459bc86ab24194821528324721072df",
+      "lf_sha256": "d6664b2ef8f35e450c707c4bdbefe926d459bc86ab24194821528324721072df"
+    },
+    "AminScatter/src/presets_bridge.cpp": {
+      "build_input_sha256": "00c0d92b69bc17f08f1601213fffcdde956e0bb0b7adb43258cbcfe98644087d",
+      "current_sha256": "00c0d92b69bc17f08f1601213fffcdde956e0bb0b7adb43258cbcfe98644087d",
+      "lf_sha256": "a2942bb7766be95c046663f12d310c8ed67e09454b1fb4f48aeb22807948d567"
+    },
+    "AminScatter/src/preview.cpp": {
+      "build_input_sha256": "7520542056413651cab2ba98c4621ba795407e3d773e0c09294ab75864b995bf",
+      "current_sha256": "7520542056413651cab2ba98c4621ba795407e3d773e0c09294ab75864b995bf",
+      "lf_sha256": "3c9c91dfca6ead85989311fead5ae0c4c4631433ccc300ad8f50e1333800de2d"
+    },
+    "AminScatter/src/preview_palette.inc": {
+      "build_input_sha256": "151abdd16a665c65be6917dca1cc27f5cc055aad970ece320defcc3158645dc8",
+      "current_sha256": "151abdd16a665c65be6917dca1cc27f5cc055aad970ece320defcc3158645dc8",
+      "lf_sha256": "151abdd16a665c65be6917dca1cc27f5cc055aad970ece320defcc3158645dc8"
+    },
+    "AminScatter/src/procedural.cpp": {
+      "build_input_sha256": "d42b868638f4d036b7050d947e89a53ca84997cb86ffd7a3addad2a5497a9f78",
+      "current_sha256": "d42b868638f4d036b7050d947e89a53ca84997cb86ffd7a3addad2a5497a9f78",
+      "lf_sha256": "d42b868638f4d036b7050d947e89a53ca84997cb86ffd7a3addad2a5497a9f78"
+    },
+    "AminScatter/src/procedural_bridge.inc": {
+      "build_input_sha256": "43f784cbdbe49ac4c4dd0114637fcead9dfb56ef5f19a51c0e3280d37a995a61",
+      "current_sha256": "43f784cbdbe49ac4c4dd0114637fcead9dfb56ef5f19a51c0e3280d37a995a61",
+      "lf_sha256": "43f784cbdbe49ac4c4dd0114637fcead9dfb56ef5f19a51c0e3280d37a995a61"
+    },
+    "AminScatter/src/receiver_binding_host.h": {
+      "build_input_sha256": "7260347db91b61d9009fa50a246ddafea0d10940676bcf0a547782a1e972a46b",
+      "current_sha256": "7260347db91b61d9009fa50a246ddafea0d10940676bcf0a547782a1e972a46b",
+      "lf_sha256": "7260347db91b61d9009fa50a246ddafea0d10940676bcf0a547782a1e972a46b"
+    },
+    "AminScatter/src/receiver_bridge.inc": {
+      "build_input_sha256": "efd8201130550ad5d05929abaecbe330e4492ab7fb644f9a6cf5b5fd1292e571",
+      "current_sha256": "efd8201130550ad5d05929abaecbe330e4492ab7fb644f9a6cf5b5fd1292e571",
+      "lf_sha256": "efd8201130550ad5d05929abaecbe330e4492ab7fb644f9a6cf5b5fd1292e571"
+    },
+    "AminScatter/src/receiver_plan.cpp": {
+      "build_input_sha256": "ff971e7179ceeaa9544983169e6feb1ab61279f3b082702a33b1117f547e79a0",
+      "current_sha256": "ff971e7179ceeaa9544983169e6feb1ab61279f3b082702a33b1117f547e79a0",
+      "lf_sha256": "ff971e7179ceeaa9544983169e6feb1ab61279f3b082702a33b1117f547e79a0"
+    },
+    "AminScatter/src/recipe_fields.inc": {
+      "build_input_sha256": "5853c39682d2cc34c9c669f82a4815042388fa33a0cdb7abeede4edd5a42c918",
+      "current_sha256": "5853c39682d2cc34c9c669f82a4815042388fa33a0cdb7abeede4edd5a42c918",
+      "lf_sha256": "09a0f21d6608077d76a36d83afc92fb1589b45e0e168b875e292f3e5f9d50f27"
+    },
+    "AminScatter/src/recipe_library.cpp": {
+      "build_input_sha256": "9ee2da93e8b91515c6260ecee08525d6b3c3c2768f86429b0e011f548177cf1b",
+      "current_sha256": "9ee2da93e8b91515c6260ecee08525d6b3c3c2768f86429b0e011f548177cf1b",
+      "lf_sha256": "f681989b086dacec2961d0f1c1b70d8118888e9fd747f0139f1942dc3c22ab43"
+    },
+    "AminScatter/src/recipes.cpp": {
+      "build_input_sha256": "9bc306cbee97bf5278365f9f73d87bc47cc7b7d84c04db2d001fa3336d268f25",
+      "current_sha256": "9bc306cbee97bf5278365f9f73d87bc47cc7b7d84c04db2d001fa3336d268f25",
+      "lf_sha256": "9bc306cbee97bf5278365f9f73d87bc47cc7b7d84c04db2d001fa3336d268f25"
+    },
+    "AminScatter/src/recipes_bridge.cpp": {
+      "build_input_sha256": "c83e3f928285fdd058262d8be098f1699a572a1bbf9d1570bde11d37441a529d",
+      "current_sha256": "c83e3f928285fdd058262d8be098f1699a572a1bbf9d1570bde11d37441a529d",
+      "lf_sha256": "f545485c4e6516381f3bae3ddc3d170b4747874e431de508ccd01f3df25d9da5"
+    },
+    "AminScatter/src/rollout_flow.cpp": {
+      "build_input_sha256": "df77caf015fea6cc8486cf7abf602e0e310078e573c0c80dce916ad75aa15418",
+      "current_sha256": "df77caf015fea6cc8486cf7abf602e0e310078e573c0c80dce916ad75aa15418",
+      "lf_sha256": "5574b148957c6f50746e085fde2016809dde19e532a70b76e8b7708f7b8091f1"
+    },
+    "AminScatter/src/rollout_scroll.cpp": {
+      "build_input_sha256": "5573dd56b0ecaa87c6f521abd88b07f6d7e3259174a249ab53275a0bb12fb3a7",
+      "current_sha256": "5573dd56b0ecaa87c6f521abd88b07f6d7e3259174a249ab53275a0bb12fb3a7",
+      "lf_sha256": "5573dd56b0ecaa87c6f521abd88b07f6d7e3259174a249ab53275a0bb12fb3a7"
+    },
+    "AminScatter/src/scatter.cpp": {
+      "build_input_sha256": "7b6c07ecb6b39c3b24213b88f0684dd3f2df31e647b00a37837ab4615c9fc4f6",
+      "current_sha256": "7b6c07ecb6b39c3b24213b88f0684dd3f2df31e647b00a37837ab4615c9fc4f6",
+      "lf_sha256": "81f50a1cd34b193cb935163701f020fcbdf7e915876d0d7c3a38a7802e210621"
+    },
+    "AminScatter/src/source_container.cpp": {
+      "build_input_sha256": "e7112aa77a10de744d01fc95ab0eaf25da6966a30ba2e902b7622fb5803401b3",
+      "current_sha256": "e7112aa77a10de744d01fc95ab0eaf25da6966a30ba2e902b7622fb5803401b3",
+      "lf_sha256": "e7112aa77a10de744d01fc95ab0eaf25da6966a30ba2e902b7622fb5803401b3"
+    },
+    "AminScatter/src/source_geometry.inc": {
+      "build_input_sha256": "b0fa2e885909f7736af45f7b406cbc29032be183f9ac4a73b6fd7fa206f09f10",
+      "current_sha256": "b0fa2e885909f7736af45f7b406cbc29032be183f9ac4a73b6fd7fa206f09f10",
+      "lf_sha256": "b0fa2e885909f7736af45f7b406cbc29032be183f9ac4a73b6fd7fa206f09f10"
+    },
+    "AminScatter/src/spacing.inc": {
+      "build_input_sha256": "e52daaa33abf322d33a554dea9bad727edc8da71510c3320d9b14a9c6eba3a8c",
+      "current_sha256": "e52daaa33abf322d33a554dea9bad727edc8da71510c3320d9b14a9c6eba3a8c",
+      "lf_sha256": "e52daaa33abf322d33a554dea9bad727edc8da71510c3320d9b14a9c6eba3a8c"
+    },
+    "AminScatter/src/spline_bands.cpp": {
+      "build_input_sha256": "1e313368f4e3e6715eb4bd4943c50232687f53a991987b828068dc0bf886e7e2",
+      "current_sha256": "1e313368f4e3e6715eb4bd4943c50232687f53a991987b828068dc0bf886e7e2",
+      "lf_sha256": "1e313368f4e3e6715eb4bd4943c50232687f53a991987b828068dc0bf886e7e2"
+    },
+    "AminScatter/src/spline_field_bridge.inc": {
+      "build_input_sha256": "1388c5d31457b67369397a0112f7f15b9b81b298b3153257ec6bb41035c88b0b",
+      "current_sha256": "1388c5d31457b67369397a0112f7f15b9b81b298b3153257ec6bb41035c88b0b",
+      "lf_sha256": "1388c5d31457b67369397a0112f7f15b9b81b298b3153257ec6bb41035c88b0b"
+    },
+    "AminScatter/src/spline_overlay.cpp": {
+      "build_input_sha256": "93789f6df3acdbffb7d03641a2503cbe412de33c8358d63704fe3240c761133d",
+      "current_sha256": "93789f6df3acdbffb7d03641a2503cbe412de33c8358d63704fe3240c761133d",
+      "lf_sha256": "93789f6df3acdbffb7d03641a2503cbe412de33c8358d63704fe3240c761133d"
+    },
+    "AminScatter/src/spline_overlay_bridge.inc": {
+      "build_input_sha256": "abddd2c86c3c84671899949c1907eb7c308df46295d916f7bc247d95a6511aed",
+      "current_sha256": "abddd2c86c3c84671899949c1907eb7c308df46295d916f7bc247d95a6511aed",
+      "lf_sha256": "abddd2c86c3c84671899949c1907eb7c308df46295d916f7bc247d95a6511aed"
+    },
+    "AminScatter/src/surface_filter.cpp": {
+      "build_input_sha256": "008adf45b1a5edf06a17799ac7155c66545bf9b98c3b7ecb91700a3a56718e27",
+      "current_sha256": "008adf45b1a5edf06a17799ac7155c66545bf9b98c3b7ecb91700a3a56718e27",
+      "lf_sha256": "008adf45b1a5edf06a17799ac7155c66545bf9b98c3b7ecb91700a3a56718e27"
+    },
+    "AminScatter/src/surface_filter_bridge.inc": {
+      "build_input_sha256": "ce67c9f8838ff6f9e27a913de684f40dc6d3c4eab2177497c4faad98336005c9",
+      "current_sha256": "ce67c9f8838ff6f9e27a913de684f40dc6d3c4eab2177497c4faad98336005c9",
+      "lf_sha256": "ce67c9f8838ff6f9e27a913de684f40dc6d3c4eab2177497c4faad98336005c9"
+    },
+    "AminScatter/src/team_license.cpp": {
+      "build_input_sha256": "0b81a104c55d2d9e4289e8a299ee799b520603c48960e2d7278956ae613606b5",
+      "current_sha256": "0b81a104c55d2d9e4289e8a299ee799b520603c48960e2d7278956ae613606b5",
+      "lf_sha256": "0b81a104c55d2d9e4289e8a299ee799b520603c48960e2d7278956ae613606b5"
+    },
+    "AminScatter/src/whole_scale_bridge.inc": {
+      "build_input_sha256": "c8db7bdba6d03af4b717434666a50883fdf3e32b7bb1535cd8dba845d4baa1ea",
+      "current_sha256": "c8db7bdba6d03af4b717434666a50883fdf3e32b7bb1535cd8dba845d4baa1ea",
+      "lf_sha256": "c8db7bdba6d03af4b717434666a50883fdf3e32b7bb1535cd8dba845d4baa1ea"
+    },
+    "AminScatter/include/brush.h": {
+      "build_input_sha256": "a774997530d739e17a4fcbf739e14eb0aa21c8ec9a3614927d8aad5c898e1266",
+      "current_sha256": "a774997530d739e17a4fcbf739e14eb0aa21c8ec9a3614927d8aad5c898e1266",
+      "lf_sha256": "cc9b75b207a41d153572f674b994428de18cc8217a89a9a75cb23fd89d2bc611"
+    },
+    "AminScatter/include/diagnostics.h": {
+      "build_input_sha256": "d6934a3d13a9b9a082070e02faad998ebf9ce38d133f3842261fb1e077df8d10",
+      "current_sha256": "d6934a3d13a9b9a082070e02faad998ebf9ce38d133f3842261fb1e077df8d10",
+      "lf_sha256": "d6934a3d13a9b9a082070e02faad998ebf9ce38d133f3842261fb1e077df8d10"
+    },
+    "AminScatter/include/execution.h": {
+      "build_input_sha256": "e9f2cfdf677366f491dc01cea83301ce53111c5073633333a4adf1db2ad509d2",
+      "current_sha256": "e9f2cfdf677366f491dc01cea83301ce53111c5073633333a4adf1db2ad509d2",
+      "lf_sha256": "e9f2cfdf677366f491dc01cea83301ce53111c5073633333a4adf1db2ad509d2"
+    },
+    "AminScatter/include/group_spacing.h": {
+      "build_input_sha256": "b04b3e47f0f1d5789f274492ca4d2a0777e5f1b500070ba5ef88426c4cf08502",
+      "current_sha256": "b04b3e47f0f1d5789f274492ca4d2a0777e5f1b500070ba5ef88426c4cf08502",
+      "lf_sha256": "b04b3e47f0f1d5789f274492ca4d2a0777e5f1b500070ba5ef88426c4cf08502"
+    },
+    "AminScatter/include/license_boundary.h": {
+      "build_input_sha256": "a1ce0cc1b3f83a2170d8eb3c3089774bd1b915d043e6d69f762aa4afa12281bc",
+      "current_sha256": "a1ce0cc1b3f83a2170d8eb3c3089774bd1b915d043e6d69f762aa4afa12281bc",
+      "lf_sha256": "a1ce0cc1b3f83a2170d8eb3c3089774bd1b915d043e6d69f762aa4afa12281bc"
+    },
+    "AminScatter/include/mesh_density.h": {
+      "build_input_sha256": "11ebeb5d7842396bb00bee80051be08e2fad5a7e440a8b97f539036c9d42cedf",
+      "current_sha256": "11ebeb5d7842396bb00bee80051be08e2fad5a7e440a8b97f539036c9d42cedf",
+      "lf_sha256": "11ebeb5d7842396bb00bee80051be08e2fad5a7e440a8b97f539036c9d42cedf"
+    },
+    "AminScatter/include/placement_transport.h": {
+      "build_input_sha256": "a363be74e8b21dc53eade3b0b3d1e07f08b21494d23efe1feac6d5123e72c2ec",
+      "current_sha256": "a363be74e8b21dc53eade3b0b3d1e07f08b21494d23efe1feac6d5123e72c2ec",
+      "lf_sha256": "a363be74e8b21dc53eade3b0b3d1e07f08b21494d23efe1feac6d5123e72c2ec"
+    },
+    "AminScatter/include/point_preview.h": {
+      "build_input_sha256": "104396bf346307f32569243cf0fb8ce59819ffab92ab80d88ee710063e3a1f1d",
+      "current_sha256": "104396bf346307f32569243cf0fb8ce59819ffab92ab80d88ee710063e3a1f1d",
+      "lf_sha256": "9f2603e7200a7b811b8b17830f1d93840c8afea1a90e8c84cc015691b8746d8f"
+    },
+    "AminScatter/include/presets.h": {
+      "build_input_sha256": "7de4211ed563523c1957df24f50edd2c0d49d70bd761051d49ae6bc756ff9195",
+      "current_sha256": "7de4211ed563523c1957df24f50edd2c0d49d70bd761051d49ae6bc756ff9195",
+      "lf_sha256": "7de4211ed563523c1957df24f50edd2c0d49d70bd761051d49ae6bc756ff9195"
+    },
+    "AminScatter/include/preview_budget.h": {
+      "build_input_sha256": "f17020e3e03bce90acf5d5285a09ea0fbb2f68872e2b1d6b661993be435e04b9",
+      "current_sha256": "f17020e3e03bce90acf5d5285a09ea0fbb2f68872e2b1d6b661993be435e04b9",
+      "lf_sha256": "f17020e3e03bce90acf5d5285a09ea0fbb2f68872e2b1d6b661993be435e04b9"
+    },
+    "AminScatter/include/preview_sampling.h": {
+      "build_input_sha256": "14e389d96653e861896a133c6efa9a6d42f96e2cc8d3e5e6ee665221b9a4645f",
+      "current_sha256": "14e389d96653e861896a133c6efa9a6d42f96e2cc8d3e5e6ee665221b9a4645f",
+      "lf_sha256": "14e389d96653e861896a133c6efa9a6d42f96e2cc8d3e5e6ee665221b9a4645f"
+    },
+    "AminScatter/include/procedural.h": {
+      "build_input_sha256": "24600188b2a8c0714736d81688c82a68fab5f0ddaf0c20c7dc6357fcd83201ee",
+      "current_sha256": "24600188b2a8c0714736d81688c82a68fab5f0ddaf0c20c7dc6357fcd83201ee",
+      "lf_sha256": "24600188b2a8c0714736d81688c82a68fab5f0ddaf0c20c7dc6357fcd83201ee"
+    },
+    "AminScatter/include/receiver_plan.h": {
+      "build_input_sha256": "411a12f26f107a18324a280b48859b2494b03ab2137f1868ae7aec766b53a6c0",
+      "current_sha256": "411a12f26f107a18324a280b48859b2494b03ab2137f1868ae7aec766b53a6c0",
+      "lf_sha256": "411a12f26f107a18324a280b48859b2494b03ab2137f1868ae7aec766b53a6c0"
+    },
+    "AminScatter/include/recipe_library.h": {
+      "build_input_sha256": "fb143cc9e5766eeb89f299bf43c67c8bae105f69ae9ccaa35c727b4279141f1b",
+      "current_sha256": "fb143cc9e5766eeb89f299bf43c67c8bae105f69ae9ccaa35c727b4279141f1b",
+      "lf_sha256": "fb143cc9e5766eeb89f299bf43c67c8bae105f69ae9ccaa35c727b4279141f1b"
+    },
+    "AminScatter/include/recipes.h": {
+      "build_input_sha256": "b3b1e55e027b8870ee0213a7f8c2d2ca12978e37eb91f86c8db82f3f16d20712",
+      "current_sha256": "b3b1e55e027b8870ee0213a7f8c2d2ca12978e37eb91f86c8db82f3f16d20712",
+      "lf_sha256": "b3b1e55e027b8870ee0213a7f8c2d2ca12978e37eb91f86c8db82f3f16d20712"
+    },
+    "AminScatter/include/scatter.h": {
+      "build_input_sha256": "eccf36f4a08b5d7f81f5b77f5d71dce1d9720b918421ecfbc387df984b2fb918",
+      "current_sha256": "eccf36f4a08b5d7f81f5b77f5d71dce1d9720b918421ecfbc387df984b2fb918",
+      "lf_sha256": "c4c0ffbea3f46bc6aac2b75b77b32df9c4fbc7025fe7737d31cad14999bec7f7"
+    },
+    "AminScatter/include/spline_bands.h": {
+      "build_input_sha256": "cf2f6dd00247e83bb8c0772bc07dab15ce8aaee78706d21b7c0d828505e2fe8a",
+      "current_sha256": "cf2f6dd00247e83bb8c0772bc07dab15ce8aaee78706d21b7c0d828505e2fe8a",
+      "lf_sha256": "cf2f6dd00247e83bb8c0772bc07dab15ce8aaee78706d21b7c0d828505e2fe8a"
+    },
+    "AminScatter/include/spline_field_value.h": {
+      "build_input_sha256": "a1348f12457f9b2a871e1fbaf5093a3d7229f0889d7a9627a5895c39dc5a8e19",
+      "current_sha256": "a1348f12457f9b2a871e1fbaf5093a3d7229f0889d7a9627a5895c39dc5a8e19",
+      "lf_sha256": "a1348f12457f9b2a871e1fbaf5093a3d7229f0889d7a9627a5895c39dc5a8e19"
+    },
+    "AminScatter/include/spline_overlay.h": {
+      "build_input_sha256": "524770f8df87ccb0be0ba2d4f9a0ab34718dd3fb880f3b751ab677e65212b83b",
+      "current_sha256": "524770f8df87ccb0be0ba2d4f9a0ab34718dd3fb880f3b751ab677e65212b83b",
+      "lf_sha256": "524770f8df87ccb0be0ba2d4f9a0ab34718dd3fb880f3b751ab677e65212b83b"
+    },
+    "AminScatter/include/surface_filter.h": {
+      "build_input_sha256": "3b86db024c4fafed5c6a79d62ad1555e5e2ae08057b1ad56fa4d6d2e890d0292",
+      "current_sha256": "3b86db024c4fafed5c6a79d62ad1555e5e2ae08057b1ad56fa4d6d2e890d0292",
+      "lf_sha256": "3b86db024c4fafed5c6a79d62ad1555e5e2ae08057b1ad56fa4d6d2e890d0292"
+    },
+    "AminScatter/include/viewport_policy.h": {
+      "build_input_sha256": "47141d931a9e63ed1ff66cdafd6b5c282c3fea3d692c8ac5752ec8f7d68c188b",
+      "current_sha256": "47141d931a9e63ed1ff66cdafd6b5c282c3fea3d692c8ac5752ec8f7d68c188b",
+      "lf_sha256": "47141d931a9e63ed1ff66cdafd6b5c282c3fea3d692c8ac5752ec8f7d68c188b"
+    },
+    "AminScatter/tests/boundary_falloff_tests.cpp": {
+      "build_input_sha256": "ce9fdc0d584bafff5ecef2929c8e29cc0424f41a12c762fc40ae0d8448be7fbb",
+      "current_sha256": "ce9fdc0d584bafff5ecef2929c8e29cc0424f41a12c762fc40ae0d8448be7fbb",
+      "lf_sha256": "ce9fdc0d584bafff5ecef2929c8e29cc0424f41a12c762fc40ae0d8448be7fbb"
+    },
+    "AminScatter/tests/brush_conversion_tests.cpp": {
+      "build_input_sha256": "dc98173534c1529382eca2c5318705eac2a9be5353eda8e83cddecf1f141aeb8",
+      "current_sha256": "dc98173534c1529382eca2c5318705eac2a9be5353eda8e83cddecf1f141aeb8",
+      "lf_sha256": "dc98173534c1529382eca2c5318705eac2a9be5353eda8e83cddecf1f141aeb8"
+    },
+    "AminScatter/tests/brush_feedback_tests.cpp": {
+      "build_input_sha256": "1cfc0566a3ac7f5963ced3ae98a14b56a2380303095e2f09f7da0fd87973de02",
+      "current_sha256": "1cfc0566a3ac7f5963ced3ae98a14b56a2380303095e2f09f7da0fd87973de02",
+      "lf_sha256": "1cfc0566a3ac7f5963ced3ae98a14b56a2380303095e2f09f7da0fd87973de02"
+    },
+    "AminScatter/tests/brush_tests.cpp": {
+      "build_input_sha256": "2414237861d972f5b571dd70dfb059f8c1a88fd77181bbdbc81a0531763692dd",
+      "current_sha256": "2414237861d972f5b571dd70dfb059f8c1a88fd77181bbdbc81a0531763692dd",
+      "lf_sha256": "2414237861d972f5b571dd70dfb059f8c1a88fd77181bbdbc81a0531763692dd"
+    },
+    "AminScatter/tests/compute_benchmark.cpp": {
+      "build_input_sha256": "cce8d13d58ae38c1452d841e3ebcc1553e94682cdfc2bccf4bc2f1a930fc586f",
+      "current_sha256": "cce8d13d58ae38c1452d841e3ebcc1553e94682cdfc2bccf4bc2f1a930fc586f",
+      "lf_sha256": "cce8d13d58ae38c1452d841e3ebcc1553e94682cdfc2bccf4bc2f1a930fc586f"
+    },
+    "AminScatter/tests/data/brush_sphere_pole.txt": {
+      "build_input_sha256": "3e2bf0a248e2e0539ff4eadce7af0e1f8f12850636aa5d1293c03a5ea78ee819",
+      "current_sha256": "3e2bf0a248e2e0539ff4eadce7af0e1f8f12850636aa5d1293c03a5ea78ee819",
+      "lf_sha256": "ab6e35b0434554fcf2656dae5810881ca4688ca2b5068ec31358e15a08883e40"
+    },
+    "AminScatter/tests/data/recipe_v1_defaults.json": {
+      "build_input_sha256": "87ee56c576574330120ff26643746ae1fc5263c33fbae4e8ea702470723a3aff",
+      "current_sha256": "87ee56c576574330120ff26643746ae1fc5263c33fbae4e8ea702470723a3aff",
+      "lf_sha256": "9723223ae7c18439f6b056115fde8f4b5bf66ae45c83ced3cb5c45ef6582c218"
+    },
+    "AminScatter/tests/diagnostics_tests.cpp": {
+      "build_input_sha256": "18a30e2b8953d47ffe76440bd7fb8054c1661f663413774c08086fb77d28cd6d",
+      "current_sha256": "18a30e2b8953d47ffe76440bd7fb8054c1661f663413774c08086fb77d28cd6d",
+      "lf_sha256": "18a30e2b8953d47ffe76440bd7fb8054c1661f663413774c08086fb77d28cd6d"
+    },
+    "AminScatter/tests/edge_border_tests.cpp": {
+      "build_input_sha256": "b2abfc1af8b8e8fa1676a1ec9fbaa4672e8e7abcc912876f4000eef2da32f2b1",
+      "current_sha256": "b2abfc1af8b8e8fa1676a1ec9fbaa4672e8e7abcc912876f4000eef2da32f2b1",
+      "lf_sha256": "b2abfc1af8b8e8fa1676a1ec9fbaa4672e8e7abcc912876f4000eef2da32f2b1"
+    },
+    "AminScatter/tests/group_spacing_tests.cpp": {
+      "build_input_sha256": "67300e62c679ea27b95784216441af79119668cc3008a3a71dab04b493f75046",
+      "current_sha256": "67300e62c679ea27b95784216441af79119668cc3008a3a71dab04b493f75046",
+      "lf_sha256": "67300e62c679ea27b95784216441af79119668cc3008a3a71dab04b493f75046"
+    },
+    "AminScatter/tests/mesh_density_tests.cpp": {
+      "build_input_sha256": "da7c0eba89f865ef4076aeb8f681accac6eed3221b85dce9fe8ca8977b86a586",
+      "current_sha256": "da7c0eba89f865ef4076aeb8f681accac6eed3221b85dce9fe8ca8977b86a586",
+      "lf_sha256": "da7c0eba89f865ef4076aeb8f681accac6eed3221b85dce9fe8ca8977b86a586"
+    },
+    "AminScatter/tests/orientation_tests.cpp": {
+      "build_input_sha256": "1e0455081252900be70d344bde920c47565d159abf104528624f0b1ea1058d2b",
+      "current_sha256": "1e0455081252900be70d344bde920c47565d159abf104528624f0b1ea1058d2b",
+      "lf_sha256": "1e0455081252900be70d344bde920c47565d159abf104528624f0b1ea1058d2b"
+    },
+    "AminScatter/tests/prepared_band_tests.cpp": {
+      "build_input_sha256": "bc59abb900ee4bf249702f327d92c3bd820cb628a12534d911faaccbf63e7909",
+      "current_sha256": "bc59abb900ee4bf249702f327d92c3bd820cb628a12534d911faaccbf63e7909",
+      "lf_sha256": "bc59abb900ee4bf249702f327d92c3bd820cb628a12534d911faaccbf63e7909"
+    },
+    "AminScatter/tests/preset_tests.cpp": {
+      "build_input_sha256": "b41266cd597ab9c65febb8f1bbf5b10abc29311b191c0aed001c68f0c79b405d",
+      "current_sha256": "b41266cd597ab9c65febb8f1bbf5b10abc29311b191c0aed001c68f0c79b405d",
+      "lf_sha256": "b41266cd597ab9c65febb8f1bbf5b10abc29311b191c0aed001c68f0c79b405d"
+    },
+    "AminScatter/tests/preview_sampling_tests.cpp": {
+      "build_input_sha256": "e2eac5bd2ef640e5dc11f8778bb55749033baea4714d5fe2fccbd764f80be819",
+      "current_sha256": "e2eac5bd2ef640e5dc11f8778bb55749033baea4714d5fe2fccbd764f80be819",
+      "lf_sha256": "e2eac5bd2ef640e5dc11f8778bb55749033baea4714d5fe2fccbd764f80be819"
+    },
+    "AminScatter/tests/procedural_tests.cpp": {
+      "build_input_sha256": "8922e68682e29000c5b79fd2e1975761c2af47f47d229a18164cffbfd1a1695b",
+      "current_sha256": "8922e68682e29000c5b79fd2e1975761c2af47f47d229a18164cffbfd1a1695b",
+      "lf_sha256": "8922e68682e29000c5b79fd2e1975761c2af47f47d229a18164cffbfd1a1695b"
+    },
+    "AminScatter/tests/publication_tests.cpp": {
+      "build_input_sha256": "4c0b8d1356293cd742a2ae4085e6bf1e6dab892dc6d1465b98d05db79d4e2e39",
+      "current_sha256": "4c0b8d1356293cd742a2ae4085e6bf1e6dab892dc6d1465b98d05db79d4e2e39",
+      "lf_sha256": "4c0b8d1356293cd742a2ae4085e6bf1e6dab892dc6d1465b98d05db79d4e2e39"
+    },
+    "AminScatter/tests/receiver_tests.cpp": {
+      "build_input_sha256": "0b3e6648161f9ebd6668551155e3e2417b614da1762d59b6eb293b2ce1993a4f",
+      "current_sha256": "0b3e6648161f9ebd6668551155e3e2417b614da1762d59b6eb293b2ce1993a4f",
+      "lf_sha256": "0b3e6648161f9ebd6668551155e3e2417b614da1762d59b6eb293b2ce1993a4f"
+    },
+    "AminScatter/tests/recipe_library_tests.cpp": {
+      "build_input_sha256": "6ac10630855a7ede988b3adfe69396fde182c53856fcbfa1442438bf64b1a791",
+      "current_sha256": "6ac10630855a7ede988b3adfe69396fde182c53856fcbfa1442438bf64b1a791",
+      "lf_sha256": "6ac10630855a7ede988b3adfe69396fde182c53856fcbfa1442438bf64b1a791"
+    },
+    "AminScatter/tests/recipe_tests.cpp": {
+      "build_input_sha256": "0594b45a3afc3177a215bdadb7798fa3e3562ca5c11084c89ac907dce0ccdb07",
+      "current_sha256": "0594b45a3afc3177a215bdadb7798fa3e3562ca5c11084c89ac907dce0ccdb07",
+      "lf_sha256": "492bcf363a0e2b5a75b816c57262c17bb7cae424f7216c98bc2868e7fc2a7d48"
+    },
+    "AminScatter/tests/scatter_tests.cpp": {
+      "build_input_sha256": "f21d3156ac11e7179952b0c7917f620fb771ea718189d927a1592e7490b27041",
+      "current_sha256": "f21d3156ac11e7179952b0c7917f620fb771ea718189d927a1592e7490b27041",
+      "lf_sha256": "f21d3156ac11e7179952b0c7917f620fb771ea718189d927a1592e7490b27041"
+    },
+    "AminScatter/tests/spacing_tests.cpp": {
+      "build_input_sha256": "1dd54122f40c4aa661c5008032b1a3945d41d3ca7803cd914803a1d12daca730",
+      "current_sha256": "1dd54122f40c4aa661c5008032b1a3945d41d3ca7803cd914803a1d12daca730",
+      "lf_sha256": "1dd54122f40c4aa661c5008032b1a3945d41d3ca7803cd914803a1d12daca730"
+    },
+    "AminScatter/tests/spline_band_tests.cpp": {
+      "build_input_sha256": "7429620312f84100119d8c08c4c65d577cc9a2c2363d023c939dc459933e9150",
+      "current_sha256": "7429620312f84100119d8c08c4c65d577cc9a2c2363d023c939dc459933e9150",
+      "lf_sha256": "7429620312f84100119d8c08c4c65d577cc9a2c2363d023c939dc459933e9150"
+    },
+    "AminScatter/tests/spline_overlay_tests.cpp": {
+      "build_input_sha256": "fee16bd620adb849a7761e790bde0764874a9ed291ed25368bcc2a6b760a610c",
+      "current_sha256": "fee16bd620adb849a7761e790bde0764874a9ed291ed25368bcc2a6b760a610c",
+      "lf_sha256": "fee16bd620adb849a7761e790bde0764874a9ed291ed25368bcc2a6b760a610c"
+    },
+    "AminScatter/tests/surface_filter_tests.cpp": {
+      "build_input_sha256": "f4e1f9d0c012529a156a57faaeeced9e5195239df12fec7c56c95d41960b9610",
+      "current_sha256": "f4e1f9d0c012529a156a57faaeeced9e5195239df12fec7c56c95d41960b9610",
+      "lf_sha256": "f4e1f9d0c012529a156a57faaeeced9e5195239df12fec7c56c95d41960b9610"
+    },
+    "AminScatter/tests/threading_tests.cpp": {
+      "build_input_sha256": "f3336cfd3ffe0c642fd839cf7eb4b6002fd697a04072010f963bf1d020f87507",
+      "current_sha256": "f3336cfd3ffe0c642fd839cf7eb4b6002fd697a04072010f963bf1d020f87507",
+      "lf_sha256": "f3336cfd3ffe0c642fd839cf7eb4b6002fd697a04072010f963bf1d020f87507"
+    },
+    "AminScatter/tests/viewport_policy_tests.cpp": {
+      "build_input_sha256": "764e39613dc2b6a76028b33031606a39b07d6d5f6a50d3de3b7983d31e2f19a8",
+      "current_sha256": "764e39613dc2b6a76028b33031606a39b07d6d5f6a50d3de3b7983d31e2f19a8",
+      "lf_sha256": "764e39613dc2b6a76028b33031606a39b07d6d5f6a50d3de3b7983d31e2f19a8"
+    },
+    "AminScatter/tests/weight_tests.cpp": {
+      "build_input_sha256": "2a765dfec328c99b934e69b655d9c28715faa0a2c72b7fa23be395b013894d9b",
+      "current_sha256": "2a765dfec328c99b934e69b655d9c28715faa0a2c72b7fa23be395b013894d9b",
+      "lf_sha256": "2a765dfec328c99b934e69b655d9c28715faa0a2c72b7fa23be395b013894d9b"
+    },
+    "AminScatter/third_party/clipper2/include/clipper2/clipper.core.h": {
+      "build_input_sha256": "b667c2fe968344252e2c32c0cffc09cf6520164e272fcf63bf46eccc707b138f",
+      "current_sha256": "b667c2fe968344252e2c32c0cffc09cf6520164e272fcf63bf46eccc707b138f",
+      "lf_sha256": "b667c2fe968344252e2c32c0cffc09cf6520164e272fcf63bf46eccc707b138f"
+    },
+    "AminScatter/third_party/clipper2/include/clipper2/clipper.engine.h": {
+      "build_input_sha256": "e77185eb535cdae22feb85a045b6b90365f0cfd841bd7fb01714fc03a026fa09",
+      "current_sha256": "e77185eb535cdae22feb85a045b6b90365f0cfd841bd7fb01714fc03a026fa09",
+      "lf_sha256": "e77185eb535cdae22feb85a045b6b90365f0cfd841bd7fb01714fc03a026fa09"
+    },
+    "AminScatter/third_party/clipper2/include/clipper2/clipper.export.h": {
+      "build_input_sha256": "035e4257f1f127d6a17833331922f2b1b615371b64bb4cd625842102517793b0",
+      "current_sha256": "035e4257f1f127d6a17833331922f2b1b615371b64bb4cd625842102517793b0",
+      "lf_sha256": "035e4257f1f127d6a17833331922f2b1b615371b64bb4cd625842102517793b0"
+    },
+    "AminScatter/third_party/clipper2/include/clipper2/clipper.h": {
+      "build_input_sha256": "145efd001ef2f45ac5655a18e19d8a122efdf665c38d306a1fe91ce9e0d18450",
+      "current_sha256": "145efd001ef2f45ac5655a18e19d8a122efdf665c38d306a1fe91ce9e0d18450",
+      "lf_sha256": "145efd001ef2f45ac5655a18e19d8a122efdf665c38d306a1fe91ce9e0d18450"
+    },
+    "AminScatter/third_party/clipper2/include/clipper2/clipper.minkowski.h": {
+      "build_input_sha256": "6ea4f08d3e2561bdd4d95a548e1b5d7983100e317ed805616b8d602f03d3dbe3",
+      "current_sha256": "6ea4f08d3e2561bdd4d95a548e1b5d7983100e317ed805616b8d602f03d3dbe3",
+      "lf_sha256": "6ea4f08d3e2561bdd4d95a548e1b5d7983100e317ed805616b8d602f03d3dbe3"
+    },
+    "AminScatter/third_party/clipper2/include/clipper2/clipper.offset.h": {
+      "build_input_sha256": "147e5f4694327d62cec31fec55b69537f178e808a715a533bb42c01a85cc435a",
+      "current_sha256": "147e5f4694327d62cec31fec55b69537f178e808a715a533bb42c01a85cc435a",
+      "lf_sha256": "147e5f4694327d62cec31fec55b69537f178e808a715a533bb42c01a85cc435a"
+    },
+    "AminScatter/third_party/clipper2/include/clipper2/clipper.rectclip.h": {
+      "build_input_sha256": "2970dbe3f91d32e96abc3117240694fc09f354060ff84e4a95014ec510f4d8dd",
+      "current_sha256": "2970dbe3f91d32e96abc3117240694fc09f354060ff84e4a95014ec510f4d8dd",
+      "lf_sha256": "2970dbe3f91d32e96abc3117240694fc09f354060ff84e4a95014ec510f4d8dd"
+    },
+    "AminScatter/third_party/clipper2/include/clipper2/clipper.triangulation.h": {
+      "build_input_sha256": "a82d32e65583cce5a6d704796c54de3ddd2963d219057263a0f87f8d14a07d6c",
+      "current_sha256": "a82d32e65583cce5a6d704796c54de3ddd2963d219057263a0f87f8d14a07d6c",
+      "lf_sha256": "a82d32e65583cce5a6d704796c54de3ddd2963d219057263a0f87f8d14a07d6c"
+    },
+    "AminScatter/third_party/clipper2/include/clipper2/clipper.version.h": {
+      "build_input_sha256": "0d636f1599b09743496d5c15c7dcb5bc3101bd423d6745bf17e480edbffccdac",
+      "current_sha256": "0d636f1599b09743496d5c15c7dcb5bc3101bd423d6745bf17e480edbffccdac",
+      "lf_sha256": "0d636f1599b09743496d5c15c7dcb5bc3101bd423d6745bf17e480edbffccdac"
+    },
+    "AminScatter/third_party/clipper2/LICENSE": {
+      "build_input_sha256": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+      "current_sha256": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+      "lf_sha256": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566"
+    },
+    "AminScatter/third_party/clipper2/PROVENANCE.json": {
+      "build_input_sha256": "a396deca238f76be6efb163279b064d376e7c0f8f84b204d5e104a7f2dfeeb23",
+      "current_sha256": "a396deca238f76be6efb163279b064d376e7c0f8f84b204d5e104a7f2dfeeb23",
+      "lf_sha256": "e05d630463a28c06ead16103a4f5e67b47a0e1d7ceb2186d845645dcb344a174"
+    },
+    "AminScatter/third_party/clipper2/src/clipper.engine.cpp": {
+      "build_input_sha256": "7b2cc17d4debd3b5ee6bd2c592ecda5082253324c7dd514b5593ae1b2c7812b2",
+      "current_sha256": "7b2cc17d4debd3b5ee6bd2c592ecda5082253324c7dd514b5593ae1b2c7812b2",
+      "lf_sha256": "7b2cc17d4debd3b5ee6bd2c592ecda5082253324c7dd514b5593ae1b2c7812b2"
+    },
+    "AminScatter/third_party/clipper2/src/clipper.offset.cpp": {
+      "build_input_sha256": "ebc01258953212d20fed090a4a740f94926c3c6706a092fec4c5e9cb5292305a",
+      "current_sha256": "ebc01258953212d20fed090a4a740f94926c3c6706a092fec4c5e9cb5292305a",
+      "lf_sha256": "ebc01258953212d20fed090a4a740f94926c3c6706a092fec4c5e9cb5292305a"
+    },
+    "AminScatter/third_party/clipper2/src/clipper.rectclip.cpp": {
+      "build_input_sha256": "79c7d8d90dd3b577db77a152c4739f6f49bfda8727528291250d3d8e8d79e18c",
+      "current_sha256": "79c7d8d90dd3b577db77a152c4739f6f49bfda8727528291250d3d8e8d79e18c",
+      "lf_sha256": "79c7d8d90dd3b577db77a152c4739f6f49bfda8727528291250d3d8e8d79e18c"
+    }
+  },
+  "source_identity_note": "Native receipt pins raw build-input bytes. Git uses LF normalization for source text; lf_sha256 permits comparing that equivalent committed source. The final generated script and loaded native payload hashes are exact. The earlier native-build script hash is superseded only by the independently host-qualified final script.",
+  "evidence": {
+    "build/mcp-qualification/foundation-roadmap-library08261-final100-20261016-04/qualification-setup.json": {
+      "sha256": "7daaa208cf11e74a22e34462bc0d3d441f33de900c0e903c91b20fd36b593190",
+      "result": {
+        "operation": "setup",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "Exact current source version loaded"
+          },
+          {
+            "passed": true,
+            "assertion": "Actual Recipes dialog opens"
+          }
+        ],
+        "status": "passed",
+        "baseline_counters": {
+          "epoch": 2,
+          "builds": 2,
+          "prepared": [
+            2,
+            1,
+            1
+          ],
+          "previews": [
+            6,
+            5,
+            3
+          ],
+          "map_bakes": [
+            0,
+            0,
+            0
+          ],
+          "receiver_cache": [
+            [
+              1,
+              0,
+              1
+            ],
+            [
+              1,
+              0,
+              1
+            ],
+            [
+              1,
+              0,
+              1
+            ]
+          ],
+          "mesh_density": [
+            0,
+            0,
+            0
+          ],
+          "source_geometry": [
+            3,
+            1,
+            2,
+            1
+          ],
+          "retained_prepare": 1,
+          "uploads": 6,
+          "upload_bytes": 96000
+        },
+        "baseline_rows": [
+          "a5ba555487bb0bc4b30300018ff09347d94cb5e3956af1108748f353322c0c78",
+          "e28f2ef513e5ae6b9cdd66fd1939465bd9a1008faee7f12ddcfc45b4586b12b2",
+          "f799c88b40caee6ee2326ce65c637b7031ed7e1af2694c89e11143bb58581b5e"
+        ]
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final100-20261016-04/qualification-save.json": {
+      "sha256": "62e3ef9c089db5a64b9edc5cb6c1f98a15198b05d1244e8c5b853c78d4e564a8",
+      "result": {
+        "operation": "save",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "Actual Save Everything writes one recipe"
+          },
+          {
+            "passed": true,
+            "assertion": "Actual Save creates presentation metadata"
+          },
+          {
+            "passed": true,
+            "assertion": "No partial metadata save warning"
+          }
+        ],
+        "status": "passed",
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-library08261-final100-20261016-04\\library\\1f965371-f407-440d-ba04-3918a35d3086.csrecipe.json",
+        "message": "Saved all supported settings and Paint without Update. External assets require binding."
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final100-20261016-04/qualification-browse.json": {
+      "sha256": "6078132b03373609c9a3f6b2d1596aba0ed578029d964819e1bf70f600179f4f",
+      "result": {
+        "operation": "browse",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "Asynchronous scan completed"
+          },
+          {
+            "passed": true,
+            "assertion": "One valid recipe visible"
+          },
+          {
+            "passed": true,
+            "assertion": "Case-insensitive tag search uses indexed metadata"
+          },
+          {
+            "passed": true,
+            "assertion": "Search with no matches is empty"
+          },
+          {
+            "passed": true,
+            "assertion": "Category filter finds woodland"
+          },
+          {
+            "passed": true,
+            "assertion": "Actual Review hydrates the selected recipe"
+          },
+          {
+            "passed": true,
+            "assertion": "Explicit unique-name suggestions bind roles"
+          },
+          {
+            "passed": true,
+            "assertion": "Actual Add imports three layers"
+          },
+          {
+            "passed": true,
+            "assertion": "Manual import preserves prior published rows"
+          }
+        ],
+        "status": "passed"
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final100-20261016-04/qualification-library128-complete.json": {
+      "sha256": "a0582fdb6220cd4dda7f2f1f3bc13a3b709090c82d11b1003da5c63a0e613300",
+      "result": {
+        "operation": "large_observe",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "Large library scan finished"
+          },
+          {
+            "passed": true,
+            "assertion": "Large filesystem scan preserves all placement/preparation/upload counters and complete rows"
+          },
+          {
+            "passed": true,
+            "assertion": "Visible page bounded to 128 rows"
+          },
+          {
+            "passed": true,
+            "assertion": "Thirty search changes do not calculate or upload scatter"
+          },
+          {
+            "passed": true,
+            "assertion": "No library polling remains when scan is complete"
+          }
+        ],
+        "status": "passed",
+        "page_info": "Page 1 / 1; 128 matches",
+        "status_text": "Ready: 128 indexed; 1 invalid.",
+        "count": 128,
+        "start_ms": 16.841900011058897,
+        "search_ms": {
+          "values": [
+            3.256099997088313,
+            22.500399994896725,
+            5.864599981578067,
+            12.453400006052107,
+            5.29230001848191,
+            8.152099995641038,
+            4.152499983320013,
+            8.938599989051,
+            6.588999996893108,
+            13.05149999097921,
+            32.73490001447499,
+            4.683700011810288,
+            14.398699975572526,
+            6.347799993818626,
+            1.4164000167511404,
+            1.3040000048931688,
+            1.4054999919608235,
+            1.044799981173128,
+            1.2749999877996743,
+            1.4538000104948878,
+            1.2318000080995262,
+            1.0642999841365963,
+            8.871700003510341,
+            3.296399983810261,
+            2.315899997483939,
+            1.3176999927964061,
+            10.674399993149564,
+            1.3629000168293715,
+            1.8350000027567148,
+            5.894700007047504
+          ],
+          "median": 4.41809999756515,
+          "p95": 22.500399994896725
+        }
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final100-20261016-04/qualification-library2000-complete.json": {
+      "sha256": "23ff70b1fd1fdd4571d22abf0ab7428b9348f6f2858834e5c49219cbc148c953",
+      "result": {
+        "operation": "large_observe",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "Large library scan finished"
+          },
+          {
+            "passed": true,
+            "assertion": "Large filesystem scan preserves all placement/preparation/upload counters and complete rows"
+          },
+          {
+            "passed": true,
+            "assertion": "Visible page bounded to 128 rows"
+          },
+          {
+            "passed": true,
+            "assertion": "Thirty search changes do not calculate or upload scatter"
+          },
+          {
+            "passed": true,
+            "assertion": "No library polling remains when scan is complete"
+          }
+        ],
+        "status": "passed",
+        "page_info": "Page 1 / 16; 2000 matches",
+        "status_text": "Ready: 2000 indexed; 1 invalid.",
+        "count": 2000,
+        "start_ms": 4.452499997569248,
+        "search_ms": {
+          "values": [
+            4.878999985521659,
+            42.842800001380965,
+            79.43049998721108,
+            78.77190000726841,
+            44.94329998851754,
+            43.07879999396391,
+            51.271399977849796,
+            42.54419999779202,
+            48.62010001670569,
+            43.92899997765198,
+            49.03779999585822,
+            42.77939998428337,
+            43.580800003837794,
+            48.85140000260435,
+            37.8206999739632,
+            37.71529998630285,
+            43.16380000091158,
+            37.10720001254231,
+            51.4547000057064,
+            41.35049998876639,
+            5.179600004339591,
+            12.249399995198473,
+            4.65519999852404,
+            5.9717000112868845,
+            5.5284999834839255,
+            10.985200002323836,
+            6.065499997930601,
+            4.519399983109906,
+            4.442000004928559,
+            4.030999989481643
+          ],
+          "median": 41.947349993279204,
+          "p95": 78.77190000726841
+        }
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final100-20261016-04/qualification-library10000-complete.json": {
+      "sha256": "e596755da5719edfc9a1f354ecbf2892ba67fc407f5af2ad7bcc9a6373bd5f4f",
+      "result": {
+        "operation": "large_observe",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "Large library scan finished"
+          },
+          {
+            "passed": true,
+            "assertion": "Large filesystem scan preserves all placement/preparation/upload counters and complete rows"
+          },
+          {
+            "passed": true,
+            "assertion": "Visible page bounded to 128 rows"
+          },
+          {
+            "passed": true,
+            "assertion": "Thirty search changes do not calculate or upload scatter"
+          },
+          {
+            "passed": true,
+            "assertion": "No library polling remains when scan is complete"
+          }
+        ],
+        "status": "passed",
+        "page_info": "Page 1 / 79; 10000 matches",
+        "status_text": "Ready: 10000 indexed; 0 invalid. Library limit reached; choose a smaller folder.",
+        "count": 10000,
+        "start_ms": 18.340099981287494,
+        "search_ms": {
+          "values": [
+            3.844899998512119,
+            55.381699989084154,
+            56.67279998306185,
+            47.894899995299056,
+            58.63549999776296,
+            57.76920000789687,
+            61.473900015698746,
+            81.21120001305826,
+            48.80429999320768,
+            59.65479998849332,
+            51.471699989633635,
+            80.95189998857677,
+            83.76730000600219,
+            52.276200003689155,
+            51.04390002088621,
+            40.52010001032613,
+            49.09479999332689,
+            41.35789998690598,
+            43.89820000506006,
+            49.05260002124123,
+            40.572900004917756,
+            48.14369999803603,
+            53.735599998617545,
+            48.66319999564439,
+            45.14790000393987,
+            58.845599996857345,
+            55.29019999084994,
+            41.278100019553676,
+            45.22279999218881,
+            48.782699974253774
+          ],
+          "median": 50.06935000710655,
+          "p95": 81.21120001305826
+        }
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final100-20261016-04/qualification-thumbnail_observe.json": {
+      "sha256": "8834ca7f1712a607ee17bbaae4bce35086e3f5fdd3ea9e199990b757f686bdf9",
+      "result": {
+        "operation": "thumbnail_observe",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "Thumbnail recipe indexed"
+          },
+          {
+            "passed": true,
+            "assertion": "Actual PictureBox decodes saved 512-pixel PNG"
+          },
+          {
+            "passed": true,
+            "assertion": "Repeated selection retains the decoded image"
+          },
+          {
+            "passed": true,
+            "assertion": "Thumbnail selection does not calculate or upload scatter"
+          },
+          {
+            "passed": true,
+            "assertion": "Corrupt thumbnail reports a fallback without losing recipe"
+          },
+          {
+            "passed": true,
+            "assertion": "Corrupt thumbnail does not remove authored recipe"
+          }
+        ],
+        "status": "passed",
+        "thumbnail": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-library08261-final100-20261016-04\\thumbnails\\thumbnail-b8fb13f62ee6bf1cea1f36ac629c670ce30d92b3483810a433b88a806e732342.png"
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final100-20261016-04/qualification-cancel_observe.json": {
+      "sha256": "cb10ac144ddc1e295af728a3f34d6c208532871e378b0c8198d9b4d5a9d38c9a",
+      "result": {
+        "operation": "cancel_observe",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "Actual Cancel stops scan and its timer"
+          },
+          {
+            "passed": true,
+            "assertion": "Cancellation preserves scatter work and full rows"
+          }
+        ],
+        "status": "passed"
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final100-20261016-04/qualification-close_scan.json": {
+      "sha256": "e4c77089c40346911cdf11ecbd4de682300ad3d2eec0fb2d0c40cbebbf676116",
+      "result": {
+        "operation": "close_scan",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "Closing during scan disposes dialog and cancels worker"
+          }
+        ],
+        "status": "passed",
+        "close_ms": 67.88440002128482
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final100-20261016-04/qualification-reopen.json": {
+      "sha256": "372cad7658d62254508e1c1c845b967dbb65c03e48ce309efd90ee61efa0f2c6",
+      "result": {
+        "operation": "reopen",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "Library reopens after cancellation"
+          }
+        ],
+        "status": "passed"
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final100-20261016-04/qualification-failures-final.json": {
+      "sha256": "b99d0327fa4819146dbc1505e15a7baa1a97a18686d98ed96977aed262fc2341",
+      "result": {
+        "operation": "failures",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "Preflight names both unsupported controller and owning layer"
+          },
+          {
+            "passed": true,
+            "assertion": "Unsupported-save preflight preserves all publication/work counters"
+          },
+          {
+            "passed": true,
+            "assertion": "Review still works after rejected preflight"
+          },
+          {
+            "passed": true,
+            "assertion": "Actual Import explains missing bindings"
+          },
+          {
+            "passed": true,
+            "assertion": "Missing bindings preserve authored graph and published rows"
+          }
+        ],
+        "status": "passed",
+        "preflight_message": "-- Runtime error: Cannot save Layer_01: -- Runtime error: Save Everything requires a supported static parameter controller: \"rotZMin\"",
+        "import_message": "-- Runtime error: Missing dependency: Library pyramid"
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final100-20261016-04/qualification-owner_deleted.json": {
+      "sha256": "f182cbba3f65c376b71f289e85927ec5d1309783d8c4b0c32fc17ffeeec8451e",
+      "result": {
+        "operation": "owner_deleted",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "Open browser detects deleted destination"
+          }
+        ],
+        "status": "passed",
+        "message": "-- Runtime error: The recipe controller was removed or replaced."
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final150-20261016-04/qualification-setup.json": {
+      "sha256": "e023ee9e07747d4fbd9dff8a28acd3ab3b23b1b6c416c11733c2f80f6e062589",
+      "result": {
+        "operation": "setup",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "Exact current source version loaded"
+          },
+          {
+            "passed": true,
+            "assertion": "Actual Recipes dialog opens"
+          }
+        ],
+        "status": "passed",
+        "baseline_counters": {
+          "epoch": 2,
+          "builds": 2,
+          "prepared": [
+            2,
+            1,
+            1
+          ],
+          "previews": [
+            6,
+            5,
+            3
+          ],
+          "map_bakes": [
+            0,
+            0,
+            0
+          ],
+          "receiver_cache": [
+            [
+              1,
+              0,
+              1
+            ],
+            [
+              1,
+              0,
+              1
+            ],
+            [
+              1,
+              0,
+              1
+            ]
+          ],
+          "mesh_density": [
+            0,
+            0,
+            0
+          ],
+          "source_geometry": [
+            3,
+            1,
+            2,
+            1
+          ],
+          "retained_prepare": 1,
+          "uploads": 6,
+          "upload_bytes": 96000
+        },
+        "baseline_rows": [
+          "f3380a5367e56dbd927295af36f841aaf474521a0aef5349505eed0de7b35d78",
+          "f12d4a42db2834591d1818ed3cebee4abe7bbb945b4f4c9d237e3acf4667d811",
+          "89659bad445d7cb460eaeb0467b3a658d545b68f1ea21d6e138a037a6969d958"
+        ]
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final150-20261016-04/qualification-save.json": {
+      "sha256": "3dc8d2254151732a88593148b19c1267af6e97e5213bc859643d15a2c971c45b",
+      "result": {
+        "operation": "save",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "Actual Save Everything writes one recipe"
+          },
+          {
+            "passed": true,
+            "assertion": "Actual Save creates presentation metadata"
+          },
+          {
+            "passed": true,
+            "assertion": "No partial metadata save warning"
+          }
+        ],
+        "status": "passed",
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-library08261-final150-20261016-04\\library\\75dadd7b-4daf-4aa5-9d45-d03d21222984.csrecipe.json",
+        "message": "Saved all supported settings and Paint without Update. External assets require binding."
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final150-20261016-04/qualification-browse.json": {
+      "sha256": "6078132b03373609c9a3f6b2d1596aba0ed578029d964819e1bf70f600179f4f",
+      "result": {
+        "operation": "browse",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "Asynchronous scan completed"
+          },
+          {
+            "passed": true,
+            "assertion": "One valid recipe visible"
+          },
+          {
+            "passed": true,
+            "assertion": "Case-insensitive tag search uses indexed metadata"
+          },
+          {
+            "passed": true,
+            "assertion": "Search with no matches is empty"
+          },
+          {
+            "passed": true,
+            "assertion": "Category filter finds woodland"
+          },
+          {
+            "passed": true,
+            "assertion": "Actual Review hydrates the selected recipe"
+          },
+          {
+            "passed": true,
+            "assertion": "Explicit unique-name suggestions bind roles"
+          },
+          {
+            "passed": true,
+            "assertion": "Actual Add imports three layers"
+          },
+          {
+            "passed": true,
+            "assertion": "Manual import preserves prior published rows"
+          }
+        ],
+        "status": "passed"
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final150-20261016-04/qualification-bundled_observe.json": {
+      "sha256": "5675c928347ee5fc5daf67ff32e3e9ab3ca874a676481a22e541cf19c02bc86a",
+      "result": {
+        "operation": "bundled_observe",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "All four shipped recipes are discoverable"
+          },
+          {
+            "passed": true,
+            "assertion": "Bundled recipe thumbnail displays"
+          },
+          {
+            "passed": true,
+            "assertion": "Bundled navigation preserves terrain/scatter/preparation/upload counters and full rows"
+          },
+          {
+            "passed": true,
+            "assertion": "Actual committed category selection filters a mixed library"
+          },
+          {
+            "passed": true,
+            "assertion": "All categories restores the mixed library"
+          },
+          {
+            "passed": true,
+            "assertion": "Paint corruption fixture remains owned"
+          },
+          {
+            "passed": true,
+            "assertion": "Passive summary lists Paint without reading its damaged attachment"
+          },
+          {
+            "passed": true,
+            "assertion": "Explicit Review/full read rejects the corrupt Paint attachment"
+          }
+        ],
+        "status": "passed",
+        "library_dir": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-library08261-final150-20261016-04\\scripts\\CyrusScatter\\Library-0.82.6.1"
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final150-20261016-04/qualification-unicode_observe.json": {
+      "sha256": "8a8aea5e9d74b15c26beae8751d0140caa0f86dd78dd80d473cd554ded18cdba",
+      "result": {
+        "operation": "unicode_observe",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "Duplicate Unicode names and uppercase recipe suffix remain separate entries"
+          },
+          {
+            "passed": true,
+            "assertion": "Unicode case-insensitive query matches accented names"
+          },
+          {
+            "passed": true,
+            "assertion": "Farsi name search matches both distinct entries"
+          },
+          {
+            "passed": true,
+            "assertion": "Unicode queries preserve scatter work and complete rows"
+          }
+        ],
+        "status": "passed"
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final150-20261016-04/qualification-offline_observe.json": {
+      "sha256": "5a964c15a58c46b9ea9751747c408b44bdce70c1df0649c72f423ad289e1aac3",
+      "result": {
+        "operation": "offline_observe",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "Unavailable localhost share settles after explicit cancellation"
+          },
+          {
+            "passed": true,
+            "assertion": "Offline root/cancellation leaves scatter work and rows unchanged"
+          }
+        ],
+        "status": "passed",
+        "state": "cancelled",
+        "message": "Cancelled: 0 indexed; 0 invalid. directory_iterator::directory_iterator: The I/O operation has been aborted because of either a thread exit or an application request.: \"\\\\127.0.0.1\\CyrusScatter_qualification_missing_share_08261\""
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final150-20261016-04/qualification-lifecycle-02.json": {
+      "sha256": "ddf7fe70435820959bb9bdbd5d0c6f1ed5c36414e1947b26c56c26cb25f01661",
+      "result": {
+        "operation": "lifecycle",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 0"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 0"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 1"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 1"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 2"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 2"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 3"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 3"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 4"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 4"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 5"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 5"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 6"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 6"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 7"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 7"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 8"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 8"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 9"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 9"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 10"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 10"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 11"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 11"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 12"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 12"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 13"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 13"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 14"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 14"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 15"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 15"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 16"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 16"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 17"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 17"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 18"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 18"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 19"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 19"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 20"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 20"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 21"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 21"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 22"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 22"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 23"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 23"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 24"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 24"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 25"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 25"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 26"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 26"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 27"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 27"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 28"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 28"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 29"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 29"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 30"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 30"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 31"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 31"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 32"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 32"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 33"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 33"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 34"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 34"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 35"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 35"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 36"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 36"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 37"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 37"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 38"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 38"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 39"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 39"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 40"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 40"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 41"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 41"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 42"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 42"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 43"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 43"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 44"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 44"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 45"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 45"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 46"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 46"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 47"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 47"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 48"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 48"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 49"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 49"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 50"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 50"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 51"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 51"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 52"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 52"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 53"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 53"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 54"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 54"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 55"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 55"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 56"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 56"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 57"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 57"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 58"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 58"
+          },
+          {
+            "passed": true,
+            "assertion": "Owned local scan settles for cycle 59"
+          },
+          {
+            "passed": true,
+            "assertion": "Four examples and a decoded thumbnail for cycle 59"
+          },
+          {
+            "passed": true,
+            "assertion": "Sixty Live browser open/scan/thumbnail/close cycles preserve work counters and complete rows"
+          },
+          {
+            "passed": true,
+            "assertion": "No sustained GDI/USER handle growth across the final fifty cycles"
+          },
+          {
+            "passed": true,
+            "assertion": "Final fifty cycles remain within 32 MiB transient memory budget after collection"
+          }
+        ],
+        "status": "passed",
+        "samples": [
+          {
+            "cycles": 10,
+            "private_bytes": 5418733568,
+            "handles": 4702,
+            "gdi": 1240,
+            "user": 1295
+          },
+          {
+            "cycles": 30,
+            "private_bytes": 5420851200,
+            "handles": 4704,
+            "gdi": 1240,
+            "user": 1295
+          },
+          {
+            "cycles": 60,
+            "private_bytes": 5426511872,
+            "handles": 4704,
+            "gdi": 1240,
+            "user": 1295
+          }
+        ],
+        "open_scan_close_ms": {
+          "median": 288.4368999948492,
+          "p95": 354.28140001022257
+        },
+        "before": {
+          "epoch": 5,
+          "builds": 5,
+          "prepared": [
+            5,
+            4,
+            4,
+            3,
+            3,
+            3
+          ],
+          "previews": [
+            10,
+            9,
+            7,
+            4,
+            4,
+            4
+          ],
+          "map_bakes": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "receiver_cache": [
+            [
+              1,
+              3,
+              1
+            ],
+            [
+              1,
+              3,
+              1
+            ],
+            [
+              1,
+              3,
+              1
+            ],
+            [
+              1,
+              2,
+              1
+            ],
+            [
+              1,
+              2,
+              1
+            ],
+            [
+              1,
+              2,
+              1
+            ]
+          ],
+          "mesh_density": [
+            0,
+            0,
+            0
+          ],
+          "source_geometry": [
+            24,
+            1,
+            23,
+            1
+          ],
+          "retained_prepare": 4,
+          "uploads": 18,
+          "upload_bytes": 288000
+        },
+        "rows": [
+          "f3380a5367e56dbd927295af36f841aaf474521a0aef5349505eed0de7b35d78",
+          "f12d4a42db2834591d1818ed3cebee4abe7bbb945b4f4c9d237e3acf4667d811",
+          "89659bad445d7cb460eaeb0467b3a658d545b68f1ea21d6e138a037a6969d958",
+          "6ec6b6e7afe541ae030fc5258460174bae425322ec11516a72557f9222f4222e",
+          "178da66cfcfe03a04cf312aa1eb522fab71789ac8fe279c3fc565381b5fd1745",
+          "925b2e7daddb0a46bf22117da4a4cedb5fa0e34eb7a3520d079f9ba7a30bb05f"
+        ],
+        "idle_started": 1792100340.767493
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final150-20261016-04/qualification-idle_observe.json": {
+      "sha256": "18724b6c0eceeed40db915c5de81b96e43fa43b511d9768c4991056a528c2346",
+      "result": {
+        "operation": "idle_observe",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "Live idle observation spans at least thirty seconds"
+          },
+          {
+            "passed": true,
+            "assertion": "Live idle preserves all recorded work counters and full placement rows"
+          },
+          {
+            "passed": true,
+            "assertion": "No recipe scan timer runs during idle"
+          }
+        ],
+        "status": "passed",
+        "seconds": 30.747320890426636
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final100-20261016-05/qualification-setup.json": {
+      "sha256": "10be47db576924d3d7b2fab021b30b70b562d2fdedd7f15c95a3629e03a3a555",
+      "result": {
+        "operation": "setup",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "Exact current source version loaded"
+          },
+          {
+            "passed": true,
+            "assertion": "Actual Recipes dialog opens"
+          }
+        ],
+        "status": "passed",
+        "baseline_counters": {
+          "epoch": 2,
+          "builds": 2,
+          "prepared": [
+            2,
+            1,
+            1
+          ],
+          "previews": [
+            6,
+            5,
+            3
+          ],
+          "map_bakes": [
+            0,
+            0,
+            0
+          ],
+          "receiver_cache": [
+            [
+              1,
+              0,
+              1
+            ],
+            [
+              1,
+              0,
+              1
+            ],
+            [
+              1,
+              0,
+              1
+            ]
+          ],
+          "mesh_density": [
+            0,
+            0,
+            0
+          ],
+          "source_geometry": [
+            3,
+            1,
+            2,
+            1
+          ],
+          "retained_prepare": 1,
+          "uploads": 6,
+          "upload_bytes": 96000
+        },
+        "baseline_rows": [
+          "6e1cd78f902f73eb53f3711a2adc73b08971e770b10ccfec879a97ef5227a9b4",
+          "c585a1f8b12f455fb0fb32b1c1d1767e9651aa2fa692a25f7dbc5f37c6fa77a4",
+          "b125d66641b045b518c3b49f2250bf3291b22c0001d93b81c3b729a03a6a0cd4"
+        ]
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final100-20261016-05/qualification-bundled_observe.json": {
+      "sha256": "4fc061b1c70550f62e76dbc1306e6c08557360706a61d96dff2ebde36d8f369d",
+      "result": {
+        "operation": "bundled_observe",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "All four shipped recipes are discoverable"
+          },
+          {
+            "passed": true,
+            "assertion": "Bundled recipe thumbnail displays"
+          },
+          {
+            "passed": true,
+            "assertion": "Bundled navigation preserves terrain/scatter/preparation/upload counters and full rows"
+          },
+          {
+            "passed": true,
+            "assertion": "Actual committed category selection filters a mixed library"
+          },
+          {
+            "passed": true,
+            "assertion": "All categories restores the mixed library"
+          },
+          {
+            "passed": true,
+            "assertion": "Paint corruption fixture remains owned"
+          },
+          {
+            "passed": true,
+            "assertion": "Passive summary lists Paint without reading its damaged attachment"
+          },
+          {
+            "passed": true,
+            "assertion": "Explicit Review/full read rejects the corrupt Paint attachment"
+          }
+        ],
+        "status": "passed",
+        "library_dir": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-library08261-final100-20261016-05\\scripts\\CyrusScatter\\Library-0.82.6.1"
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final100-20261016-05/qualification-save.json": {
+      "sha256": "1ffbc596b2ffb8b5f8b362cd6583dc24d4946c1e8b090af33f57b84c1e03aa41",
+      "result": {
+        "operation": "save",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "Actual Save Everything writes one recipe"
+          },
+          {
+            "passed": true,
+            "assertion": "Actual Save creates presentation metadata"
+          },
+          {
+            "passed": true,
+            "assertion": "No partial metadata save warning"
+          }
+        ],
+        "status": "passed",
+        "path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-library08261-final100-20261016-05\\library\\e56c98b4-eb31-4441-a66d-d66aaeb3dffd.csrecipe.json",
+        "message": "Saved all supported settings and Paint without Update. External assets require binding."
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final100-20261016-05/qualification-browse.json": {
+      "sha256": "6078132b03373609c9a3f6b2d1596aba0ed578029d964819e1bf70f600179f4f",
+      "result": {
+        "operation": "browse",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "Asynchronous scan completed"
+          },
+          {
+            "passed": true,
+            "assertion": "One valid recipe visible"
+          },
+          {
+            "passed": true,
+            "assertion": "Case-insensitive tag search uses indexed metadata"
+          },
+          {
+            "passed": true,
+            "assertion": "Search with no matches is empty"
+          },
+          {
+            "passed": true,
+            "assertion": "Category filter finds woodland"
+          },
+          {
+            "passed": true,
+            "assertion": "Actual Review hydrates the selected recipe"
+          },
+          {
+            "passed": true,
+            "assertion": "Explicit unique-name suggestions bind roles"
+          },
+          {
+            "passed": true,
+            "assertion": "Actual Add imports three layers"
+          },
+          {
+            "passed": true,
+            "assertion": "Manual import preserves prior published rows"
+          }
+        ],
+        "status": "passed"
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final100-20261016-05/qualification-readonly-observe-02.json": {
+      "sha256": "e2b84ca3672d539cb0296a3e0fd3e1a6757240add972e9d14c48990d1a9a8f2d",
+      "result": {
+        "operation": "readonly_observe",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "Read-only folder remains browseable"
+          },
+          {
+            "passed": true,
+            "assertion": "Denied write reports a staged-file creation error"
+          },
+          {
+            "passed": true,
+            "assertion": "Read-only save failure preserves complete scene and work counters"
+          }
+        ],
+        "status": "passed",
+        "message": "-- Runtime error: Recipe: \"Recipe: cannot create staged file\""
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final100-20261016-05/qualification-readonly_finalize.json": {
+      "sha256": "f595c1538bbb40d7b719353b9ef021ac519ac4c95b6a44d252c956640e2d4a39",
+      "result": {
+        "operation": "readonly_finalize",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "After ACL restoration, failed save has published no recipe"
+          },
+          {
+            "passed": true,
+            "assertion": "Existing recipe bytes preserved after denied save"
+          }
+        ],
+        "status": "passed"
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final150-20261016-04/layout-bundled150.json": {
+      "sha256": "6f1d92781c6e5c5214003ca0df28241e62e6900bad10881a55d13cd776b49ce5",
+      "result": {
+        "status": "passed",
+        "scale": 1.5,
+        "controls": [
+          {
+            "name": "LabelControl:saveTitle",
+            "rect": [
+              340,
+              55,
+              790,
+              103
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "MultiListBoxControl:saveLayers",
+            "rect": [
+              340,
+              124,
+              790,
+              187
+            ],
+            "class": "ListBox"
+          },
+          {
+            "name": "MultiListBoxControl:saveLayers",
+            "rect": [
+              340,
+              106,
+              462,
+              120
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "EditTextControl:recipeName",
+            "rect": [
+              378,
+              232,
+              791,
+              252
+            ],
+            "class": "Edit"
+          },
+          {
+            "name": "EditTextControl:recipeName",
+            "rect": [
+              340,
+              232,
+              372,
+              246
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "EditTextControl:recipeCategory",
+            "rect": [
+              396,
+              274,
+              791,
+              294
+            ],
+            "class": "Edit"
+          },
+          {
+            "name": "EditTextControl:recipeCategory",
+            "rect": [
+              340,
+              274,
+              390,
+              288
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "EditTextControl:recipeTags",
+            "rect": [
+              372,
+              316,
+              791,
+              336
+            ],
+            "class": "Edit"
+          },
+          {
+            "name": "EditTextControl:recipeTags",
+            "rect": [
+              340,
+              316,
+              366,
+              330
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "EditTextControl:recipeDescription",
+            "rect": [
+              403,
+              358,
+              790,
+              445
+            ],
+            "class": "Edit"
+          },
+          {
+            "name": "EditTextControl:recipeDescription",
+            "rect": [
+              340,
+              358,
+              397,
+              372
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "ButtonControl:chooseThumbnail",
+            "rect": [
+              340,
+              463,
+              610,
+              489
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:clearThumbnail",
+            "rect": [
+              625,
+              463,
+              790,
+              489
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "LabelControl:thumbnailInfo",
+            "rect": [
+              340,
+              511,
+              790,
+              559
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "dotNetControl:thumbnailView:System.Windows.Forms.PictureBox",
+            "rect": [
+              340,
+              568,
+              790,
+              820
+            ],
+            "class": "Afx:00007FFAD9880000:0"
+          },
+          {
+            "name": "LabelControl:previewTitle",
+            "rect": [
+              340,
+              829,
+              790,
+              859
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "ButtonControl:saveRecipe",
+            "rect": [
+              340,
+              871,
+              558,
+              897
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:preflightButton",
+            "rect": [
+              573,
+              871,
+              791,
+              897
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ComboBoxControl:settingsCategory",
+            "rect": [
+              340,
+              916,
+              558,
+              937
+            ],
+            "class": "ComboBox"
+          },
+          {
+            "name": "ButtonControl:settingsPresets",
+            "rect": [
+              573,
+              916,
+              791,
+              942
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "LabelControl:directoryInfo",
+            "rect": [
+              817,
+              55,
+              1579,
+              103
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "ComboBoxControl:libraryLocation",
+            "rect": [
+              817,
+              109,
+              1035,
+              130
+            ],
+            "class": "ComboBox"
+          },
+          {
+            "name": "ButtonControl:chooseFolder",
+            "rect": [
+              1050,
+              109,
+              1245,
+              135
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:refreshButton",
+            "rect": [
+              1260,
+              109,
+              1388,
+              135
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:cancelButton",
+            "rect": [
+              1402,
+              109,
+              1579,
+              135
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "EditTextControl:searchText",
+            "rect": [
+              861,
+              160,
+              1298,
+              180
+            ],
+            "class": "Edit"
+          },
+          {
+            "name": "EditTextControl:searchText",
+            "rect": [
+              817,
+              160,
+              855,
+              174
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "ComboBoxControl:categoryFilter",
+            "rect": [
+              1312,
+              160,
+              1579,
+              181
+            ],
+            "class": "ComboBox"
+          },
+          {
+            "name": "ListBoxControl:recipes",
+            "rect": [
+              817,
+              229,
+              1579,
+              333
+            ],
+            "class": "ListBox"
+          },
+          {
+            "name": "ListBoxControl:recipes",
+            "rect": [
+              817,
+              211,
+              900,
+              225
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "ButtonControl:previousButton",
+            "rect": [
+              817,
+              427,
+              952,
+              453
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:nextButton",
+            "rect": [
+              967,
+              427,
+              1102,
+              453
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "LabelControl:pageInfo",
+            "rect": [
+              1120,
+              430,
+              1579,
+              460
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "dotNetControl:contentInfo:System.Windows.Forms.TextBox",
+            "rect": [
+              817,
+              475,
+              1579,
+              580
+            ],
+            "class": "Afx:00007FFAD9880000:0"
+          },
+          {
+            "name": "ButtonControl:reviewButton",
+            "rect": [
+              817,
+              592,
+              1057,
+              618
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:suggestButton",
+            "rect": [
+              1084,
+              592,
+              1579,
+              618
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ListBoxControl:roleList",
+            "rect": [
+              817,
+              661,
+              1579,
+              724
+            ],
+            "class": "ListBox"
+          },
+          {
+            "name": "ListBoxControl:roleList",
+            "rect": [
+              817,
+              643,
+              1032,
+              657
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "PickerControl:bindNode",
+            "rect": [
+              817,
+              769,
+              1042,
+              795
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "MapButtonControl:bindMap",
+            "rect": [
+              1057,
+              769,
+              1282,
+              795
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ComboBoxControl:bindLayer",
+            "rect": [
+              1297,
+              784,
+              1579,
+              805
+            ],
+            "class": "ComboBox"
+          },
+          {
+            "name": "ComboBoxControl:bindLayer",
+            "rect": [
+              1297,
+              763,
+              1329,
+              777
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "CheckBoxControl:newSetupCheck",
+            "rect": [
+              817,
+              823,
+              1579,
+              840
+            ],
+            "class": "Button",
+            "text_height": 13
+          },
+          {
+            "name": "ButtonControl:importButton",
+            "rect": [
+              817,
+              871,
+              1132,
+              897
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:closeButton",
+            "rect": [
+              1444,
+              871,
+              1579,
+              897
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "LabelControl:Status",
+            "rect": [
+              340,
+              967,
+              1579,
+              1009
+            ],
+            "class": "Static",
+            "text_height": 13
+          }
+        ],
+        "clipped": [],
+        "overlaps": [],
+        "dialog": [
+          314,
+          9,
+          1605,
+          1023
+        ]
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final100-20261016-05/layout-bundled100.json": {
+      "sha256": "562a12e4e0a7a51600a646bdbebbf33f1277bc2c89db44fb9474b99276c72055",
+      "result": {
+        "status": "passed",
+        "scale": 1.0,
+        "controls": [
+          {
+            "name": "LabelControl:saveTitle",
+            "rect": [
+              547,
+              212,
+              847,
+              244
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "MultiListBoxControl:saveLayers",
+            "rect": [
+              547,
+              262,
+              847,
+              320
+            ],
+            "class": "ListBox"
+          },
+          {
+            "name": "MultiListBoxControl:saveLayers",
+            "rect": [
+              547,
+              246,
+              668,
+              259
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "EditTextControl:recipeName",
+            "rect": [
+              582,
+              330,
+              847,
+              347
+            ],
+            "class": "Edit"
+          },
+          {
+            "name": "EditTextControl:recipeName",
+            "rect": [
+              547,
+              330,
+              578,
+              343
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "EditTextControl:recipeCategory",
+            "rect": [
+              600,
+              358,
+              847,
+              375
+            ],
+            "class": "Edit"
+          },
+          {
+            "name": "EditTextControl:recipeCategory",
+            "rect": [
+              547,
+              358,
+              596,
+              371
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "EditTextControl:recipeTags",
+            "rect": [
+              576,
+              386,
+              847,
+              403
+            ],
+            "class": "Edit"
+          },
+          {
+            "name": "EditTextControl:recipeTags",
+            "rect": [
+              547,
+              386,
+              572,
+              399
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "EditTextControl:recipeDescription",
+            "rect": [
+              608,
+              414,
+              847,
+              472
+            ],
+            "class": "Edit"
+          },
+          {
+            "name": "EditTextControl:recipeDescription",
+            "rect": [
+              547,
+              414,
+              604,
+              427
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "ButtonControl:chooseThumbnail",
+            "rect": [
+              547,
+              484,
+              727,
+              505
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:clearThumbnail",
+            "rect": [
+              737,
+              484,
+              847,
+              505
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "LabelControl:thumbnailInfo",
+            "rect": [
+              547,
+              516,
+              847,
+              548
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "dotNetControl:thumbnailView:System.Windows.Forms.PictureBox",
+            "rect": [
+              547,
+              554,
+              847,
+              722
+            ],
+            "class": "Afx:00007FFAD9880000:0"
+          },
+          {
+            "name": "LabelControl:previewTitle",
+            "rect": [
+              547,
+              728,
+              847,
+              748
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "ButtonControl:saveRecipe",
+            "rect": [
+              547,
+              756,
+              692,
+              777
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:preflightButton",
+            "rect": [
+              702,
+              756,
+              847,
+              777
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ComboBoxControl:settingsCategory",
+            "rect": [
+              547,
+              786,
+              692,
+              807
+            ],
+            "class": "ComboBox"
+          },
+          {
+            "name": "ButtonControl:settingsPresets",
+            "rect": [
+              702,
+              786,
+              847,
+              807
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "LabelControl:directoryInfo",
+            "rect": [
+              865,
+              212,
+              1373,
+              244
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "ComboBoxControl:libraryLocation",
+            "rect": [
+              865,
+              248,
+              1010,
+              269
+            ],
+            "class": "ComboBox"
+          },
+          {
+            "name": "ButtonControl:chooseFolder",
+            "rect": [
+              1020,
+              248,
+              1150,
+              269
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:refreshButton",
+            "rect": [
+              1160,
+              248,
+              1245,
+              269
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:cancelButton",
+            "rect": [
+              1255,
+              248,
+              1373,
+              269
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "EditTextControl:searchText",
+            "rect": [
+              906,
+              282,
+              1185,
+              299
+            ],
+            "class": "Edit"
+          },
+          {
+            "name": "EditTextControl:searchText",
+            "rect": [
+              865,
+              282,
+              902,
+              295
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "ComboBoxControl:categoryFilter",
+            "rect": [
+              1195,
+              282,
+              1373,
+              303
+            ],
+            "class": "ComboBox"
+          },
+          {
+            "name": "ListBoxControl:recipes",
+            "rect": [
+              865,
+              332,
+              1373,
+              429
+            ],
+            "class": "ListBox"
+          },
+          {
+            "name": "ListBoxControl:recipes",
+            "rect": [
+              865,
+              316,
+              947,
+              329
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "ButtonControl:previousButton",
+            "rect": [
+              865,
+              460,
+              955,
+              481
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:nextButton",
+            "rect": [
+              965,
+              460,
+              1055,
+              481
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "LabelControl:pageInfo",
+            "rect": [
+              1067,
+              462,
+              1373,
+              482
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "dotNetControl:contentInfo:System.Windows.Forms.TextBox",
+            "rect": [
+              865,
+              492,
+              1373,
+              562
+            ],
+            "class": "Afx:00007FFAD9880000:0"
+          },
+          {
+            "name": "ButtonControl:reviewButton",
+            "rect": [
+              865,
+              570,
+              1025,
+              591
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:suggestButton",
+            "rect": [
+              1043,
+              570,
+              1373,
+              591
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ListBoxControl:roleList",
+            "rect": [
+              865,
+              620,
+              1373,
+              678
+            ],
+            "class": "ListBox"
+          },
+          {
+            "name": "ListBoxControl:roleList",
+            "rect": [
+              865,
+              604,
+              1079,
+              617
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "PickerControl:bindNode",
+            "rect": [
+              865,
+              688,
+              1015,
+              709
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "MapButtonControl:bindMap",
+            "rect": [
+              1025,
+              688,
+              1175,
+              709
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ComboBoxControl:bindLayer",
+            "rect": [
+              1185,
+              702,
+              1373,
+              723
+            ],
+            "class": "ComboBox"
+          },
+          {
+            "name": "ComboBoxControl:bindLayer",
+            "rect": [
+              1185,
+              684,
+              1216,
+              697
+            ],
+            "class": "Static",
+            "text_height": 13
+          },
+          {
+            "name": "CheckBoxControl:newSetupCheck",
+            "rect": [
+              865,
+              724,
+              1373,
+              739
+            ],
+            "class": "Button",
+            "text_height": 13
+          },
+          {
+            "name": "ButtonControl:importButton",
+            "rect": [
+              865,
+              756,
+              1075,
+              777
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "ButtonControl:closeButton",
+            "rect": [
+              1283,
+              756,
+              1373,
+              777
+            ],
+            "class": "CustButton"
+          },
+          {
+            "name": "LabelControl:Status",
+            "rect": [
+              547,
+              820,
+              1373,
+              848
+            ],
+            "class": "Static",
+            "text_height": 13
+          }
+        ],
+        "clipped": [],
+        "overlaps": [],
+        "dialog": [
+          527,
+          171,
+          1393,
+          860
+        ]
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final100-20261016-04/demo-meadow.json": {
+      "sha256": "da673ce0ad60645639226855dc039078557ca4cb6d829ab4334b5e63552def9a",
+      "result": {
+        "status": "passed",
+        "demo": "meadow",
+        "title": "Layered meadow",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "Every example layer publishes placements"
+          },
+          {
+            "passed": true,
+            "assertion": "Saved example validates and hydrates Paint"
+          },
+          {
+            "passed": true,
+            "assertion": "Editable demonstration scene saved"
+          },
+          {
+            "passed": true,
+            "assertion": "Stored thumbnail verifies its PNG bounds and exact hash"
+          }
+        ],
+        "counts": [
+          2600,
+          140,
+          350
+        ],
+        "rows": [
+          "2aadd854dddc5a12fefb56987afe3dbf608c02ca5978260183998b94319c9757",
+          "c8e511559bc8c1927c0b45427c4c8f0c36f9b67d710a07f5864267034f378f60",
+          "d12913e8bd4a0f5ab3b4320b9842e9dfc08e676e6f4b62d80e686242fc99088f"
+        ],
+        "recipe": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-library08261-final100-20261016-04\\bundled\\meadow.csrecipe.json",
+        "scene": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-library08261-final100-20261016-04\\bundled\\meadow.max",
+        "thumbnail": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-library08261-final100-20261016-04\\bundled\\thumbnail-813a51e5850e5366527a7985b79446a63e387c409532aa3cd633ab05525bd8f5.png",
+        "files": {
+          "meadow.csrecipe.json": "813a51e5850e5366527a7985b79446a63e387c409532aa3cd633ab05525bd8f5",
+          "meadow.max": "2307155f5a9a55cc0967c6dd46d28f3d80e01836105edf9fd4d9b507f01288b9",
+          "thumbnail-813a51e5850e5366527a7985b79446a63e387c409532aa3cd633ab05525bd8f5.png": "60c8074b9424646b72a4448dfbe2a981e2fa17a83024d2128fd297db7844ecc9",
+          "meadow.csrecipe.json.library.json": "2ba09952910ac638a3fe1b17fb38c1eac252b2e4b18f8b5c00f3f58815a40d5c"
+        }
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final100-20261016-04/demo-meadow-prepare.json": {
+      "sha256": "e7a5e6fec0612661e30a2b3d186708fc81e63a185930d276d6ba9315c7807e61",
+      "result": {
+        "status": "passed",
+        "demo": "meadow",
+        "operation": "prepare",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "Matching editable demonstration scene reopens"
+          },
+          {
+            "passed": true,
+            "assertion": "Reopened scene reproduces every complete placement row"
+          },
+          {
+            "passed": true,
+            "assertion": "Actual Save Everything creates exactly one complete recipe"
+          },
+          {
+            "passed": true,
+            "assertion": "Every saved authored field, role, Band and Paint byte survives scene reopen and UI save"
+          },
+          {
+            "passed": true,
+            "assertion": "Save Everything does not calculate the pending Manual recipe"
+          }
+        ]
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final100-20261016-04/demo-meadow-apply.txt": {
+      "sha256": "0a34ddb3973d215aa17d5b0dc8e19bbb80d2be065964982c6f5cd63538adcab2",
+      "text": "TRACE: initial hold=false\nTRACE: cancelled hold=false\nTRACE: loaded hold=false\nTRACE: refreshed hold=false\nTRACE: opened hold=false\nTRACE: bound hold=false\nPASS: Native UI transaction begins outside an enclosing hold\nPASS: All demo roles explicitly matched\nPASS: Actual New setup creates one separate controller\nPASS: New setup restores layers and exact native Paint\nPASS: Import preserves original complete publication\nPASS: One Undo removes the complete imported setup\nPASS: One Redo restores complete Paint-bearing setup\nPASS: Explicit Update calculates every imported layer\nPASS: Transaction leaves no stranded hold\nPASS: complete\n"
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final100-20261016-04/demo-woodland.json": {
+      "sha256": "c843b68253d1b6167d2c2a282c652b521fdd5a5e4968f64041317d9b4ab6796a",
+      "result": {
+        "status": "passed",
+        "demo": "woodland",
+        "title": "Trees and understory",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "Every example layer publishes placements"
+          },
+          {
+            "passed": true,
+            "assertion": "Saved example validates and hydrates Paint"
+          },
+          {
+            "passed": true,
+            "assertion": "Editable demonstration scene saved"
+          },
+          {
+            "passed": true,
+            "assertion": "Stored thumbnail verifies its PNG bounds and exact hash"
+          }
+        ],
+        "counts": [
+          90,
+          340,
+          1500
+        ],
+        "rows": [
+          "72798954b304aa5d071bc117496ea74f7662147228e5b7120a52315c26d1dc9d",
+          "07859a96a43b78dc56ebed564c067f582ab4906e4e2630a7a0a1c9766890d80b",
+          "5277e9c8aa3709ab60a19e98390b0e78569e829a0642c7cb85efc6279b42e1b8"
+        ],
+        "recipe": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-library08261-final100-20261016-04\\bundled\\woodland.csrecipe.json",
+        "scene": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-library08261-final100-20261016-04\\bundled\\woodland.max",
+        "thumbnail": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-library08261-final100-20261016-04\\bundled\\thumbnail-0832ad393a28115d93b65b6310b69b2592d38f04d882d3ee851dde543a39a1ee.png",
+        "files": {
+          "woodland.csrecipe.json": "0832ad393a28115d93b65b6310b69b2592d38f04d882d3ee851dde543a39a1ee",
+          "woodland.max": "0a66ce79146a515903cbe50bcb4a6f33b6a3a14a2517945ab013971ff0903ffc",
+          "thumbnail-0832ad393a28115d93b65b6310b69b2592d38f04d882d3ee851dde543a39a1ee.png": "fbd845b0287aad49e73d4636b8e60b44fd1fd1417f0b8478a70372acd96a6524",
+          "woodland.csrecipe.json.library.json": "b7ed854064e98e5a5c0ef38fc4c184999f5ea69271903633b5ec8de1d1959d58"
+        }
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final100-20261016-04/demo-woodland-prepare.json": {
+      "sha256": "a97f6b89b42393c66411f8c5f38e6b6c581409566e0b47f9cc3a81d0b1485042",
+      "result": {
+        "status": "passed",
+        "demo": "woodland",
+        "operation": "prepare",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "Matching editable demonstration scene reopens"
+          },
+          {
+            "passed": true,
+            "assertion": "Reopened scene reproduces every complete placement row"
+          },
+          {
+            "passed": true,
+            "assertion": "Actual Save Everything creates exactly one complete recipe"
+          },
+          {
+            "passed": true,
+            "assertion": "Every saved authored field, role, Band and Paint byte survives scene reopen and UI save"
+          },
+          {
+            "passed": true,
+            "assertion": "Save Everything does not calculate the pending Manual recipe"
+          }
+        ]
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final100-20261016-04/demo-woodland-apply.txt": {
+      "sha256": "0a34ddb3973d215aa17d5b0dc8e19bbb80d2be065964982c6f5cd63538adcab2",
+      "text": "TRACE: initial hold=false\nTRACE: cancelled hold=false\nTRACE: loaded hold=false\nTRACE: refreshed hold=false\nTRACE: opened hold=false\nTRACE: bound hold=false\nPASS: Native UI transaction begins outside an enclosing hold\nPASS: All demo roles explicitly matched\nPASS: Actual New setup creates one separate controller\nPASS: New setup restores layers and exact native Paint\nPASS: Import preserves original complete publication\nPASS: One Undo removes the complete imported setup\nPASS: One Redo restores complete Paint-bearing setup\nPASS: Explicit Update calculates every imported layer\nPASS: Transaction leaves no stranded hold\nPASS: complete\n"
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final100-20261016-04/demo-mountain.json": {
+      "sha256": "3a9d7e6585bb991812c77859b1eda6614ff44c2c431d298e6581b73f07303c7a",
+      "result": {
+        "status": "passed",
+        "demo": "mountain",
+        "title": "Mountain planting",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "Every example layer publishes placements"
+          },
+          {
+            "passed": true,
+            "assertion": "Saved example validates and hydrates Paint"
+          },
+          {
+            "passed": true,
+            "assertion": "Editable demonstration scene saved"
+          },
+          {
+            "passed": true,
+            "assertion": "Stored thumbnail verifies its PNG bounds and exact hash"
+          }
+        ],
+        "counts": [
+          454,
+          3230
+        ],
+        "rows": [
+          "85b650aa97c09fc91c1565c15f4bea5dfc4efd8347fe9aa1e5bca485a4d4c28e",
+          "a27fbdcb4f510e1bb08bee0e722032b9101938ea8d0f5a35c83df913b3bd1c72"
+        ],
+        "recipe": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-library08261-final100-20261016-04\\bundled\\mountain.csrecipe.json",
+        "scene": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-library08261-final100-20261016-04\\bundled\\mountain.max",
+        "thumbnail": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-library08261-final100-20261016-04\\bundled\\thumbnail-180b2926700b1471b0d964ba732d2d581cc3933b9909f3d07095f6518c549ac8.png",
+        "files": {
+          "mountain.csrecipe.json": "180b2926700b1471b0d964ba732d2d581cc3933b9909f3d07095f6518c549ac8",
+          "mountain.max": "3850e1587a89ddb11c8b61346595dc5c76240451c8c8644c46f1c1cfa614005a",
+          "thumbnail-180b2926700b1471b0d964ba732d2d581cc3933b9909f3d07095f6518c549ac8.png": "503569b06b3eed53fa8c2144e05f67c0c3b620ae5326d400a9eb887c784878d0",
+          "mountain.csrecipe.json.library.json": "00bfe79d25d11feaf3748bb6dbd39d39bcccd121b8852bf1b324bbfbf63ad918"
+        }
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final100-20261016-04/demo-mountain-prepare.json": {
+      "sha256": "5b0c4c6dbc70360fb84c326e46c74d012ec7ff9283af47f919a8a0b320e70bff",
+      "result": {
+        "status": "passed",
+        "demo": "mountain",
+        "operation": "prepare",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "Matching editable demonstration scene reopens"
+          },
+          {
+            "passed": true,
+            "assertion": "Reopened scene reproduces every complete placement row"
+          },
+          {
+            "passed": true,
+            "assertion": "Actual Save Everything creates exactly one complete recipe"
+          },
+          {
+            "passed": true,
+            "assertion": "Every saved authored field, role, Band and Paint byte survives scene reopen and UI save"
+          },
+          {
+            "passed": true,
+            "assertion": "Save Everything does not calculate the pending Manual recipe"
+          }
+        ]
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final100-20261016-04/demo-mountain-apply.txt": {
+      "sha256": "0a34ddb3973d215aa17d5b0dc8e19bbb80d2be065964982c6f5cd63538adcab2",
+      "text": "TRACE: initial hold=false\nTRACE: cancelled hold=false\nTRACE: loaded hold=false\nTRACE: refreshed hold=false\nTRACE: opened hold=false\nTRACE: bound hold=false\nPASS: Native UI transaction begins outside an enclosing hold\nPASS: All demo roles explicitly matched\nPASS: Actual New setup creates one separate controller\nPASS: New setup restores layers and exact native Paint\nPASS: Import preserves original complete publication\nPASS: One Undo removes the complete imported setup\nPASS: One Redo restores complete Paint-bearing setup\nPASS: Explicit Update calculates every imported layer\nPASS: Transaction leaves no stranded hold\nPASS: complete\n"
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final100-20261016-04/demo-borders.json": {
+      "sha256": "9c939eef5879533f2d3d394bcd5d9c55c3afc805cae11d59584e4b9dfbe22b4f",
+      "result": {
+        "status": "passed",
+        "demo": "borders",
+        "title": "Painted garden and spline borders",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "Every example layer publishes placements"
+          },
+          {
+            "passed": true,
+            "assertion": "Saved example validates and hydrates Paint"
+          },
+          {
+            "passed": true,
+            "assertion": "Editable demonstration scene saved"
+          },
+          {
+            "passed": true,
+            "assertion": "Stored thumbnail verifies its PNG bounds and exact hash"
+          }
+        ],
+        "counts": [
+          1740,
+          218
+        ],
+        "rows": [
+          "b47da1001db529ab3d7e95c9f3d00f552d5473b641008b028881d452dc2908cc",
+          "20a883405f1dab363989eb5227d739968d72003296d9bfa8570e8d88df16b04f"
+        ],
+        "recipe": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-library08261-final100-20261016-04\\bundled\\borders.csrecipe.json",
+        "scene": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-library08261-final100-20261016-04\\bundled\\borders.max",
+        "thumbnail": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-library08261-final100-20261016-04\\bundled\\thumbnail-12c6c8927713f3b43de4dc37feb926bd15b1748924d324ca5836bfdd8b322750.png",
+        "files": {
+          "borders.csrecipe.json": "12c6c8927713f3b43de4dc37feb926bd15b1748924d324ca5836bfdd8b322750",
+          "borders.max": "bcd1d9d48288a4d5fa8f7ee020a0d0f53f6daf84f0f6a58cf7b649313d1dccab",
+          "thumbnail-12c6c8927713f3b43de4dc37feb926bd15b1748924d324ca5836bfdd8b322750.png": "068824e24e5f93fc298520b6e231b17e7a09cf02f3775b96eea79c66927a41be",
+          "borders.csrecipe.json.library.json": "61217c04ea1832e7923d1ae7155b0d3180bd1f5637f6a15f8ab05feb2284dcd6"
+        }
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final100-20261016-04/demo-borders-prepare.json": {
+      "sha256": "92a617903aaa9731549b5a32ee202d5a2caacd3baad3bc0e5ce56053ae532531",
+      "result": {
+        "status": "passed",
+        "demo": "borders",
+        "operation": "prepare",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "Matching editable demonstration scene reopens"
+          },
+          {
+            "passed": true,
+            "assertion": "Reopened scene reproduces every complete placement row"
+          },
+          {
+            "passed": true,
+            "assertion": "Actual Save Everything creates exactly one complete recipe"
+          },
+          {
+            "passed": true,
+            "assertion": "Every saved authored field, role, Band and Paint byte survives scene reopen and UI save"
+          },
+          {
+            "passed": true,
+            "assertion": "Save Everything does not calculate the pending Manual recipe"
+          }
+        ]
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final100-20261016-04/demo-borders-apply.txt": {
+      "sha256": "ab4906e37372f75844eee9a052f71be8a808501caf1b72679e769f64bfcff0a7",
+      "text": "REQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/foundation-roadmap-library08261-final100-20261016-04/request-7fdff190d3c0402ab10614ab354da272.ms\nDEMO: borders\nTRACE: initial hold=false\nTRACE: cancelled hold=false\nTRACE: loaded hold=false\nTRACE: refreshed hold=false\nTRACE: opened hold=false\nTRACE: bound hold=false\nPASS: Native UI transaction begins outside an enclosing hold\nPASS: All demo roles explicitly matched\nPASS: Actual New setup creates one separate controller\nPASS: New setup restores layers and exact native Paint\nPASS: Import preserves original complete publication\nPASS: One Undo removes the complete imported setup\nPASS: One Redo restores complete Paint-bearing setup\nPASS: Explicit Update calculates every imported layer\nPASS: Transaction leaves no stranded hold\nPASS: complete\n"
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final150-20261016-04/demo-borders-prepare.json": {
+      "sha256": "92a617903aaa9731549b5a32ee202d5a2caacd3baad3bc0e5ce56053ae532531",
+      "result": {
+        "status": "passed",
+        "demo": "borders",
+        "operation": "prepare",
+        "checks": [
+          {
+            "passed": true,
+            "assertion": "Matching editable demonstration scene reopens"
+          },
+          {
+            "passed": true,
+            "assertion": "Reopened scene reproduces every complete placement row"
+          },
+          {
+            "passed": true,
+            "assertion": "Actual Save Everything creates exactly one complete recipe"
+          },
+          {
+            "passed": true,
+            "assertion": "Every saved authored field, role, Band and Paint byte survives scene reopen and UI save"
+          },
+          {
+            "passed": true,
+            "assertion": "Save Everything does not calculate the pending Manual recipe"
+          }
+        ]
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final150-20261016-04/demo-borders-apply.txt": {
+      "sha256": "27bae893530fb567d0e6cfd18979fce690a8d238faf464f97ac18574073a1158",
+      "text": "REQUEST: F:/Cursor/_Cyrus_Apps/CyrusScatter/build/mcp-qualification/foundation-roadmap-library08261-final150-20261016-04/request-7e291cd289f849d4880998b73b9c62ad.ms\nDEMO: borders\nTRACE: initial hold=true\nFIXTURE: cancel Python preparation hold before reloading owned scene\nTRACE: cancelled hold=false\nTRACE: loaded hold=false\nTRACE: refreshed hold=false\nTRACE: opened hold=false\nTRACE: bound hold=false\nPASS: Native UI transaction begins outside an enclosing hold\nPASS: All demo roles explicitly matched\nPASS: Actual New setup creates one separate controller\nPASS: New setup restores layers and exact native Paint\nPASS: Import preserves original complete publication\nPASS: One Undo removes the complete imported setup\nPASS: One Redo restores complete Paint-bearing setup\nPASS: Explicit Update calculates every imported layer\nPASS: Transaction leaves no stranded hold\nPASS: complete\n"
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final150-20261016-04/installer-compile.json": {
+      "sha256": "6fe34ff1fadf5fac914d63a104be8d6004be22c1c88f7ab02b412d25d488c8bc",
+      "result": {
+        "status": "passed",
+        "installer_sha256": "cadaaf415530168f74467f806ce001357140427630d8d9c55952178cb2954684",
+        "bundled_file_count": 19,
+        "installed": false,
+        "scope": "Actual Max compilation, function never invoked; inventory array evaluated as data only."
+      }
+    },
+    "build/library-08261-20261016-01/generated-final/generated-check.json": {
+      "sha256": "1c96695b6dac66adaffddca3e9001ee7f572c34fae9d34a80ee6e6f3293c0185",
+      "result": {
+        "check": "unified_073_generator_integration",
+        "passed": true,
+        "development_version": "0.82.6.1",
+        "baseline": "01a04b296247d2c1f4c2c36d0a2cd87fb188c2b2",
+        "maxscript_compiled": false,
+        "ui_controls_in_inventory": 281,
+        "baseline_controls_accounted": 245,
+        "generated_sha256": "580d3446773c85d91fd276a70d8e10e2e0c5de1bcc95b1deb056bc82c62be56b",
+        "preserved_files": [],
+        "fixture_delimiters_checked": 32,
+        "interactive_max_run": false
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final100-20261016-04/shutdown-result.json": {
+      "sha256": "ad7b408678ea46311f8810b8a27b38fbc39e4cef3aa870e41bdd5052ca1476d8",
+      "result": {
+        "exited": true,
+        "exit_code": null,
+        "pid": 30840,
+        "seconds": 5.2804206,
+        "active_scan_marker": true
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final150-20261016-04/launch.json": {
+      "sha256": "caa17a4aeb6bf6500c44a7c5cdc8955753dae8fbfe37e78eda3286f8460cafd1",
+      "result": {
+        "pid": 44208,
+        "max_year": 2027,
+        "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-library08261-final150-20261016-04",
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+          "-q",
+          "-silent",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-library08261-final150-20261016-04\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-library08261-final150-20261016-04\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-library08261-final150-20261016-04\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-library08261-final150-20261016-04\\listener.log"
+        ],
+        "binaries": {
+          "AminScatter.dlx": "6b9f5109b567b96d54b5f963ba9a6826d049e68c6cb628956edb092eaf48b844",
+          "CyrusBrush.dlx": "bf610e00e2e345a6adc70d0d4c60fccf6eeaf3060d8b99f8ff806569f9649abc",
+          "CyrusBrushStorage.dlh": "c0b25af35c21bb28d0a82a8f15393a76296e03ac1dbbe612c954f1310b1294c4",
+          "CyrusScatterEdit.dlm": "c3fdf7947846cd64a01b8b218c58b13748b523f5373b964c1f9e098f73bec780"
+        },
+        "script_sha256": "580d3446773c85d91fd276a70d8e10e2e0c5de1bcc95b1deb056bc82c62be56b",
+        "normal_profile_modified": false,
+        "development_transport": true,
+        "preview_fault_lab": false,
+        "profile_template": "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\3dsMax.ini",
+        "profile_template_sha256": "38d5088e0bb8fdcd1579d1dec49ee16a4de4a761ab78534a221e5f89da638ca4",
+        "native_receipt_sha256": "eedd6d049162e6b54ed0a9732412d1359b687e6c82bb9e2cfed6d4d7df3c9e5a",
+        "scale": 1.5
+      }
+    },
+    "build/mcp-qualification/foundation-roadmap-library08261-final100-20261016-05/launch.json": {
+      "sha256": "17a97067fefe0c08eb3fe479c4b2d69461e47181417b5e1f939b91a938ef75d4",
+      "result": {
+        "pid": 49052,
+        "max_year": 2027,
+        "output": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-library08261-final100-20261016-05",
+        "command": [
+          "C:/Program Files/Autodesk/3ds Max 2027/3dsmax.exe",
+          "-q",
+          "-silent",
+          "-i",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-library08261-final100-20261016-05\\max.ini",
+          "-p",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-library08261-final100-20261016-05\\plugins.ini",
+          "-U",
+          "MAXScript",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-library08261-final100-20261016-05\\start.ms",
+          "-listenerlog",
+          "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\build\\mcp-qualification\\foundation-roadmap-library08261-final100-20261016-05\\listener.log"
+        ],
+        "binaries": {
+          "AminScatter.dlx": "6b9f5109b567b96d54b5f963ba9a6826d049e68c6cb628956edb092eaf48b844",
+          "CyrusBrush.dlx": "bf610e00e2e345a6adc70d0d4c60fccf6eeaf3060d8b99f8ff806569f9649abc",
+          "CyrusBrushStorage.dlh": "c0b25af35c21bb28d0a82a8f15393a76296e03ac1dbbe612c954f1310b1294c4",
+          "CyrusScatterEdit.dlm": "c3fdf7947846cd64a01b8b218c58b13748b523f5373b964c1f9e098f73bec780"
+        },
+        "script_sha256": "580d3446773c85d91fd276a70d8e10e2e0c5de1bcc95b1deb056bc82c62be56b",
+        "normal_profile_modified": false,
+        "development_transport": true,
+        "preview_fault_lab": false,
+        "profile_template": "C:\\Users\\Mehran\\AppData\\Local\\Autodesk\\3dsMax\\2027 - 64bit\\ENU\\3dsMax.ini",
+        "profile_template_sha256": "38d5088e0bb8fdcd1579d1dec49ee16a4de4a761ab78534a221e5f89da638ca4",
+        "native_receipt_sha256": "eedd6d049162e6b54ed0a9732412d1359b687e6c82bb9e2cfed6d4d7df3c9e5a",
+        "scale": 1.0
+      }
+    }
+  },
+  "limits": [
+    "No normal-profile installation or EXE yet",
+    "Physical 4K/mixed-monitor DPI and broad renderer/FPS qualification remain open",
+    "Localhost unavailable-share cancellation is not arbitrary network latency qualification",
+    "Sixty cycles and thirty seconds idle do not establish multi-hour memory stability",
+    "Initial four examples; eight-preset goal remains incomplete"
+  ]
+}

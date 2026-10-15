@@ -1,5 +1,11 @@
 # Eleven-phase Cyrus Scatter implementation roadmap
 
+**Active execution update, 16 October 2026:** the [user's improvement goal](../improvement-program/OBJECTIVE.md)
+resumes P06 and authorizes the remaining P06–P11 and I03–I18 work. Presets are
+first, implemented and scoped-tested as [0.82.6.1](../improvement-program/I03_08261.md). Follow the [current execution ledger](../improvement-program/PROGRESS.md).
+Older pause statements and provisional version assignments below describe prior
+checkpoints; the active version-policy override governs new deliveries.
+
 Created 14 October 2026. This is the execution plan requested in the Forest / Chaos
 comparison conversation. It covers feature-table items **1 through 11**, treated
 as eleven sequential deliveries. It replaces the tentative ordering in that

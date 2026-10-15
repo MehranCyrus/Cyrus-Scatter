@@ -9,6 +9,18 @@
         local pluginIni=pathConfig.appendPath (getFilenamePath (getMAXIniFile())) "Plugin.UserSettings.ini"
         local io=dotNetClass "System.IO.File",convert=dotNetClass "System.Convert"
         try (
+            -- Bundled content is versioned and immutable. Reinstall accepts only
+            -- identical bytes; user recipes in Documents are never overwritten.
+            local libraryFiles=fileIn (pathConfig.appendPath packageDir "LibraryFiles.ms")
+            local libraryDestination=pathConfig.appendPath destination "Library-__VERSION__"
+            for relative in libraryFiles do (
+                if findString relative ".."!=undefined or findString relative ":"!=undefined or substring relative 1 1=="\\" or substring relative 1 1=="/" do throw "Invalid bundled library path."
+                local target=pathConfig.appendPath libraryDestination relative,source=pathConfig.appendPath (pathConfig.appendPath packageDir "Library") relative
+                makeDir (getFilenamePath target) all:true
+                if doesFileExist target then (
+                    if (convert.ToBase64String (io.ReadAllBytes target))!=(convert.ToBase64String (io.ReadAllBytes source)) do throw ("Bundled example was changed: "+target+". Preserve it in your own library before reinstalling.")
+                ) else if not copyFile source target do throw ("Could not copy bundled example: "+relative)
+            )
             makeDir binaries all:true
             makeDir (getDir #userStartupScripts) all:true
             makeDir (getDir #userMacros) all:true

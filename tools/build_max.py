@@ -45,10 +45,10 @@ def sha(data):
 
 def scatter_version():
     script = (ROOT / 'AminScatter/scripts/AminScatterObject.ms').read_text(encoding='utf-8')
-    versions = re.findall(r'fn uiVersion\s*=\s*"(\d+\.\d+(?:\.\d+)?)"', script)
+    versions = re.findall(r'fn uiVersion\s*=\s*"(\d+\.\d+(?:\.\d+){0,2})"', script)
     if len(versions) != 1:
-        raise ValueError('Generate one SemVer-versioned Scatter script before packaging.')
-    version = versions[0] if versions[0].count('.') == 2 else versions[0] + '.0'
+        raise ValueError('Generate one development-versioned Scatter script before packaging.')
+    version = versions[0] + '.0' if versions[0].count('.') == 1 else versions[0]
     cmake = (ROOT / 'AminScatter/CMakeLists.txt').read_text(encoding='utf-8')
     if re.findall(r'project\(CyrusScatter VERSION ([0-9.]+) LANGUAGES CXX\)', cmake) != [version]:
         raise ValueError('Scatter native/package metadata differs from the displayed development version.')
@@ -72,6 +72,32 @@ def require_team_authority(data, header):
     if not any('cyrusLicenseImport'.encode(enc) in data for enc in ('ascii', 'utf-16le')):
         raise RuntimeError('Scatter requires the native team licensing module')
     return key_ids[0]
+
+
+def library_payload(folder, version):
+    """Only ship the explicitly qualified, hash-pinned example inventory."""
+    inventory = json.loads((folder / 'inventory.json').read_text(encoding='utf-8'))
+    if inventory.get('version') != version or inventory.get('max_year') != 2027:
+        raise ValueError('Bundled examples require the matching qualified version/host inventory.')
+    files = inventory.get('files', {})
+    if not files or len(files) > 1000:
+        raise ValueError('Invalid bundled example inventory.')
+    result = {}
+    total = 0
+    for name, expected in files.items():
+        if not re.fullmatch(r'[A-Za-z0-9_.\-/]+', name) or '..' in name or name.startswith('/'):
+            raise ValueError('Unsafe bundled example path: '+name)
+        path = (folder / name).resolve()
+        if not path.is_relative_to(folder.resolve()) or path.suffix.lower() not in ('.json', '.png', '.cspaint', '.max', '.md', '.txt'):
+            raise ValueError('Unsupported bundled example: '+name)
+        data = path.read_bytes();total += len(data)
+        if total > 128*1024*1024 or sha(data) != expected:
+            raise ValueError('Bundled example bounds/hash mismatch: '+name)
+        result['Library/'+name] = data
+    result['Library/inventory.json'] = (folder/'inventory.json').read_bytes()
+    names = sorted(name.removeprefix('Library/') for name in result)
+    result['LibraryFiles.ms'] = ('#('+','.join('@"'+name+'"' for name in names)+')\n').encode('utf-8')
+    return result
 
 
 def package(project, name, version, native_names, script_name, args, build_dir):
@@ -108,6 +134,7 @@ def package(project, name, version, native_names, script_name, args, build_dir):
     if project == 'AminScatter':
         payload['Clipper2-LICENSE.txt'] = (ROOT / project / 'third_party/clipper2/LICENSE').read_bytes()
         payload['nlohmann-json-LICENSE.txt'] = (ROOT / 'CyrusLicensing/third_party/nlohmann/LICENSE.MIT').read_bytes()
+        payload.update(library_payload(Path(getattr(args, 'library_dir', None) or ROOT / project / 'library'), version))
     payload['INSTALL.txt'] = (
         f'{name} {version} - 3ds Max {args.max_year} x64\n'
         'Run this MZP through Scripting > Run Script, then restart Max.\n'
@@ -123,7 +150,10 @@ def package(project, name, version, native_names, script_name, args, build_dir):
            'Density mapping selects UV channel 1..99 and 64/128/256/512 samples per side; defaults are 1 and 128.\n'
            'Layers > Recipes saves complete static multi-layer settings including Paint. Review external scene roles, then Add layers or import a new setup as one Undo.\n'
            'Keep each .csrecipe.json and its paint-<id>.payload folder together. Models/maps/receivers remain external; Paint needs compatible terrain, frame and saved system units.\n'
-           'Unsupported authored Scatter Edit/radius overrides or nonstatic parameter controllers block Save Everything. Phase 6 remains paused.\n'
+           'Recipes offers search, categories, tags and stored PNG thumbnails. Browse My recipes, Bundled examples or an explicit custom folder.\n'
+           'Bundled examples live in the versioned Library folder beside the installed script. Open an example .max scene, select its Scatter and review the recipe bindings.\n'
+           'User recipes remain in Documents/CyrusScatter/Library, separate from versioned bundled content.\n'
+           'Unsupported authored Scatter Edit/radius overrides or nonstatic parameter controllers block Save Everything.\n'
            'Amount > Mesh channel density reads vertex colors (0) or map channels (1..99), with component, range, invert and Density curve controls.\n'
            'Use Data Channel Curvature > Vertex Output or VertexPaint to author values. White permits plants; black excludes them.\n'
            'Preview mask is an explicit cached snapshot of at most 2,048 grayscale face-centre markers; refresh after edits.\n'

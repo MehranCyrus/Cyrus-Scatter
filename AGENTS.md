@@ -42,12 +42,13 @@ Keep current navigation and artist docs aligned with proven changes; preserve hi
 
 Before choosing or changing a version, follow [the version policy](docs/Release_Versioning.md#choosing-the-next-version). Assess the full delivery's user-visible impact and contract changes, record the reason, and keep independently versioned products separate. Distinguish updated website sources from built or published content.
 
-Use the user's small-step Scatter numbering: `0.81.8 → 0.81.9 → 0.82.0`,
-advancing PATCH through 9 before carrying into MINOR. Features do not automatically
-trigger a larger jump. Phase 5 is 0.82.2; the performance correction is 0.82.3,
-the mesh channel density delivery is 0.82.4, and complete static recipes are
-0.82.5; the I01/I02 diagnostics and panel delivery is 0.82.6. Phase 6 remains paused; its next provisional step is 0.82.7.
-Preserve original qualification labels/hashes when documenting corrected numbers.
+The active [improvement goal](docs/plans/improvement-program/OBJECTIVE.md) explicitly
+resumes Phase 6, starting with I03 preset/browser work. Track execution in its
+[ledger](docs/plans/improvement-program/PROGRESS.md). The user superseded the former
+small-step rule for this program: first preset delivery 0.82.6.1; subsequent
+substantial deliveries 0.83.0, 0.84.0, etc.; smaller follow-ups use patch steps.
+Keep build/parser/package identities consistent with three- or four-part labels.
+Preserve original qualification labels/hashes and independent product versions.
 
 Each new Scatter version delivered for user testing must include a runnable
 Max 2027 `.mzp` installer built from its exact qualified script/native pair.

@@ -2,8 +2,8 @@
 
 | Domain | Current value | Meaning |
 | --- | --- | --- |
-| Scatter UI | 0.82.6 | I01/I02 bounded diagnostics and lazy panels; Phase 6 remains paused |
-| Scatter native/package | 0.82.6 packaged for Max 2027; historical installation receipts preserved | Exact pair, package hashes and scoped Max 2027 qualification are in the I01/I02 handoff; manual installation is separate |
+| Scatter UI | 0.82.6.1 | I03 searchable recipe library, stored thumbnails and four examples; remaining program resumes Phase 6 |
+| Scatter native/package | 0.82.6.1 packaged for Max 2027; historical installation receipts preserved | Exact pair, package hashes and scoped Max 2027 qualification are in the I03 handoff; manual installation is separate |
 | Recipe format / native capability | 1 / 1 | Closed data-only static recipe, native Paint sidecars and explicit dependency roles |
 | Saved MAXScript schema | 58 | Independent saved Band scale profiles; current-only scenes, no earlier-schema migration |
 | Calculation model | CyrusUnified1 | Current procedural model |
@@ -13,6 +13,19 @@
 **Reserve 1.0 for publication readiness.** Earlier artifacts labeled 1.0.x, 1.1.x and 1.2.x were development checkpoints, later relabeled 0.7 onward. A larger-looking historical version is not a newer supported release.
 
 ## Choosing the next version
+
+**Active program override, 15 October 2026:** the user explicitly authorizes
+0.82.6.1 for the preset/browser delivery, followed by substantial deliveries
+0.83.0, 0.84.0, etc., and smaller patch follow-ups. Three- and four-part labels
+are development delivery identifiers. This overrides the earlier small-step
+selection table below for the [active goal](plans/improvement-program/OBJECTIVE.md).
+Phase 6 is resumed within that goal; preset work is first. Current packaged
+delivery is [0.82.6.1](plans/improvement-program/I03_08261.md). The four-part label
+is user-selected for this preset follow-up; scene schema 58 and recipe format 1
+are unchanged. Library presentation has its own capability/version 1. The next
+substantial direction/normal-blending delivery is provisionally 0.83.0.
+
+The preceding small-step policy is retained as historical context:
 
 Use three integer components, `0.MINOR.PATCH`, with the user's **small-step
 development sequence**. Advance PATCH by one through 9; after PATCH 9, advance

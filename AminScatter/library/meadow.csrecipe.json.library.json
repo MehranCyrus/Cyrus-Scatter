@@ -1,0 +1,19 @@
+{
+  "format": "cyrus.recipe-library",
+  "metadata": {
+    "category": "Meadows",
+    "description": "Three grass and flower layers. Replace the procedural pyramids and flower shapes with your own vegetation.",
+    "tags": [
+      "grass",
+      "flowers",
+      "three layers"
+    ]
+  },
+  "recipeSHA256": "813a51e5850e5366527a7985b79446a63e387c409532aa3cd633ab05525bd8f5",
+  "thumbnail": {
+    "bytes": 292818,
+    "file": "thumbnail-813a51e5850e5366527a7985b79446a63e387c409532aa3cd633ab05525bd8f5.png",
+    "sha256": "60c8074b9424646b72a4448dfbe2a981e2fa17a83024d2128fd297db7844ecc9"
+  },
+  "version": 1
+}

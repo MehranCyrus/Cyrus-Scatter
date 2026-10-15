@@ -1,6 +1,8 @@
 #include "recipes.h" // Parse JSON before MAXScript type-test macros.
+#include "recipe_library.h"
 #include <max.h>
 #include <iparamb2.h>
+#include <notify.h>
 #include <maxscript/maxscript.h>
 #include <maxscript/foundation/arrays.h>
 #include <maxscript/foundation/numbers.h>
@@ -62,4 +64,48 @@ Value* cyrusRecipeWrite_cf(Value** a,int n){check_arg_count(cyrusRecipeWrite,2,n
 def_visible_primitive(cyrusRecipeRead,"cyrusRecipeRead");
 Value* cyrusRecipeRead_cf(Value** a,int n){check_arg_count(cyrusRecipeRead,1,n);return recipeAPI([&]()->Value*{type_check(a[0],String,_T("recipe filename"));return recipeValue(r::read(std::filesystem::path(a[0]->to_string())));});}
 def_visible_primitive(cyrusRecipeInfo,"cyrusRecipeInfo");
-Value* cyrusRecipeInfo_cf(Value** a,int n){check_arg_count(cyrusRecipeInfo,1,n);return recipeAPI([&]()->Value*{type_check(a[0],String,_T("recipe filename"));const auto d=r::read(std::filesystem::path(a[0]->to_string()),false);std::size_t paint=0;for(const auto& l:d["layers"]){if(!l["paint"].is_null())++paint;for(const auto& area:l["areas"])if(!area["paint"].is_null())++paint;}return recipeValue(r::Json::array({d["name"],d["layers"].size(),paint,d["id"]}));});}
+Value* cyrusRecipeInfo_cf(Value** a,int n){check_arg_count(cyrusRecipeInfo,1,n);return recipeAPI([&]()->Value*{type_check(a[0],String,_T("recipe filename"));return recipeValue(r::summary(std::filesystem::path(a[0]->to_string())));});}
+
+namespace {
+// Destroy the worker before Max unloads DLLs; joining a thread from a static
+// destructor under the Windows loader lock can deadlock its thread teardown.
+r::Library* libraryValue=nullptr;
+bool libraryShuttingDown=false;
+void libraryShutdown(void*,NotifyInfo*) {
+    libraryShuttingDown=true;delete libraryValue;libraryValue=nullptr;
+}
+r::Library& recipeLibrary(){
+    if(libraryShuttingDown)throw std::runtime_error("The library is shutting down.");
+    if(!libraryValue){
+        auto value=std::make_unique<r::Library>();
+        if(!RegisterNotification(libraryShutdown,nullptr,NOTIFY_SYSTEM_SHUTDOWN))throw std::runtime_error("Cannot register library shutdown.");
+        libraryValue=value.release();
+    }
+    return *libraryValue;
+}
+}
+void cyrusRecipeLibraryShutdown(){
+    libraryShutdown(nullptr,nullptr);
+    UnRegisterNotification(libraryShutdown,nullptr,NOTIFY_SYSTEM_SHUTDOWN);
+}
+#ifndef CYRUS_TEAM_LICENSE
+extern "C" __declspec(dllexport) int LibShutdown(){cyrusRecipeLibraryShutdown();return TRUE;}
+#endif
+def_visible_primitive(cyrusRecipeLibraryVersion,"cyrusRecipeLibraryVersion");
+Value* cyrusRecipeLibraryVersion_cf(Value**,int n){check_arg_count(cyrusRecipeLibraryVersion,0,n);return Integer::intern(1);}
+def_visible_primitive(cyrusRecipeLibraryStart,"cyrusRecipeLibraryStart");
+Value* cyrusRecipeLibraryStart_cf(Value** a,int n){check_arg_count(cyrusRecipeLibraryStart,1,n);return recipeAPI([&]()->Value*{
+    type_check(a[0],Array,_T("library folders"));auto* rows=static_cast<Array*>(a[0]);if(rows->size<1||rows->size>4)throw RuntimeError(_T("Choose one to four library folders"));
+    std::vector<std::filesystem::path> paths;for(int i=0;i<rows->size;++i){type_check(rows->data[i],String,_T("library folder"));paths.emplace_back(rows->data[i]->to_string());}
+    return Integer64::intern(recipeLibrary().start(std::move(paths)));});}
+def_visible_primitive(cyrusRecipeLibraryPage,"cyrusRecipeLibraryPage");
+Value* cyrusRecipeLibraryPage_cf(Value** a,int n){check_arg_count(cyrusRecipeLibraryPage,4,n);return recipeAPI([&]()->Value*{
+    return recipeValue(recipeLibrary().page(a[0]->to_int64(),recipeUTF8(a[1],1024),recipeUTF8(a[2],96),a[3]->to_int()));});}
+def_visible_primitive(cyrusRecipeLibraryCancel,"cyrusRecipeLibraryCancel");
+Value* cyrusRecipeLibraryCancel_cf(Value** a,int n){check_arg_count(cyrusRecipeLibraryCancel,1,n);return recipeAPI([&]()->Value*{recipeLibrary().cancel(a[0]->to_int64());return &ok;});}
+def_visible_primitive(cyrusRecipePresentationWrite,"cyrusRecipePresentationWrite");
+Value* cyrusRecipePresentationWrite_cf(Value** a,int n){check_arg_count(cyrusRecipePresentationWrite,3,n);return recipeAPI([&]()->Value*{
+    type_check(a[0],String,_T("recipe filename"));type_check(a[2],String,_T("thumbnail filename"));r::writePresentation(std::filesystem::path(a[0]->to_string()),recipeTree(a[1]),std::filesystem::path(a[2]->to_string()));return &ok;});}
+def_visible_primitive(cyrusRecipeThumbnail,"cyrusRecipeThumbnail");
+Value* cyrusRecipeThumbnail_cf(Value** a,int n){check_arg_count(cyrusRecipeThumbnail,1,n);return recipeAPI([&]()->Value*{
+    type_check(a[0],String,_T("recipe filename"));return new String(r::thumbnail(std::filesystem::path(a[0]->to_string())).c_str());});}

@@ -1,0 +1,74 @@
+{
+  "version": "0.82.6.1",
+  "max_year": 2027,
+  "source_host": "foundation-roadmap-library08261-final100-20261016-04",
+  "source_script_sha256": "de6ca0f3097b15e3437c58b91ac9ee80fead0ae4d772bc7736ae234aa2275711",
+  "entries": [
+    {
+      "id": "meadow",
+      "name": "Layered meadow",
+      "recipe": "meadow.csrecipe.json",
+      "scene": "meadow.max",
+      "thumbnail": "thumbnail-813a51e5850e5366527a7985b79446a63e387c409532aa3cd633ab05525bd8f5.png",
+      "counts": [
+        2600,
+        140,
+        350
+      ]
+    },
+    {
+      "id": "woodland",
+      "name": "Trees and understory",
+      "recipe": "woodland.csrecipe.json",
+      "scene": "woodland.max",
+      "thumbnail": "thumbnail-0832ad393a28115d93b65b6310b69b2592d38f04d882d3ee851dde543a39a1ee.png",
+      "counts": [
+        90,
+        340,
+        1500
+      ]
+    },
+    {
+      "id": "mountain",
+      "name": "Mountain planting",
+      "recipe": "mountain.csrecipe.json",
+      "scene": "mountain.max",
+      "thumbnail": "thumbnail-180b2926700b1471b0d964ba732d2d581cc3933b9909f3d07095f6518c549ac8.png",
+      "counts": [
+        454,
+        3230
+      ]
+    },
+    {
+      "id": "borders",
+      "name": "Painted garden and spline borders",
+      "recipe": "borders.csrecipe.json",
+      "scene": "borders.max",
+      "thumbnail": "thumbnail-12c6c8927713f3b43de4dc37feb926bd15b1748924d324ca5836bfdd8b322750.png",
+      "counts": [
+        1740,
+        218
+      ]
+    }
+  ],
+  "files": {
+    "README.md": "a76349699c8bddbb75cc46499c3e66e43cc08ba4bf575f3e91e549ecc2afa7d7",
+    "borders.csrecipe.json": "12c6c8927713f3b43de4dc37feb926bd15b1748924d324ca5836bfdd8b322750",
+    "borders.csrecipe.json.library.json": "61217c04ea1832e7923d1ae7155b0d3180bd1f5637f6a15f8ab05feb2284dcd6",
+    "borders.max": "bcd1d9d48288a4d5fa8f7ee020a0d0f53f6daf84f0f6a58cf7b649313d1dccab",
+    "meadow.csrecipe.json": "813a51e5850e5366527a7985b79446a63e387c409532aa3cd633ab05525bd8f5",
+    "meadow.csrecipe.json.library.json": "2ba09952910ac638a3fe1b17fb38c1eac252b2e4b18f8b5c00f3f58815a40d5c",
+    "meadow.max": "2307155f5a9a55cc0967c6dd46d28f3d80e01836105edf9fd4d9b507f01288b9",
+    "mountain.csrecipe.json": "180b2926700b1471b0d964ba732d2d581cc3933b9909f3d07095f6518c549ac8",
+    "mountain.csrecipe.json.library.json": "00bfe79d25d11feaf3748bb6dbd39d39bcccd121b8852bf1b324bbfbf63ad918",
+    "mountain.max": "3850e1587a89ddb11c8b61346595dc5c76240451c8c8644c46f1c1cfa614005a",
+    "paint-68e28fee-6e72-4dd7-9f0d-3aebe8110ff0.payload/paint-1.cspaint": "de23637359e59378389154387462da1bacc57ff2c5b39c66602d81257f1c931d",
+    "thumbnail-0832ad393a28115d93b65b6310b69b2592d38f04d882d3ee851dde543a39a1ee.png": "fbd845b0287aad49e73d4636b8e60b44fd1fd1417f0b8478a70372acd96a6524",
+    "thumbnail-12c6c8927713f3b43de4dc37feb926bd15b1748924d324ca5836bfdd8b322750.png": "068824e24e5f93fc298520b6e231b17e7a09cf02f3775b96eea79c66927a41be",
+    "thumbnail-180b2926700b1471b0d964ba732d2d581cc3933b9909f3d07095f6518c549ac8.png": "503569b06b3eed53fa8c2144e05f67c0c3b620ae5326d400a9eb887c784878d0",
+    "thumbnail-813a51e5850e5366527a7985b79446a63e387c409532aa3cd633ab05525bd8f5.png": "60c8074b9424646b72a4448dfbe2a981e2fa17a83024d2128fd297db7844ecc9",
+    "woodland.csrecipe.json": "0832ad393a28115d93b65b6310b69b2592d38f04d882d3ee851dde543a39a1ee",
+    "woodland.csrecipe.json.library.json": "b7ed854064e98e5a5c0ef38fc4c184999f5ea69271903633b5ec8de1d1959d58",
+    "woodland.max": "0a66ce79146a515903cbe50bcb4a6f33b6a3a14a2517945ab013971ff0903ffc"
+  }
+}

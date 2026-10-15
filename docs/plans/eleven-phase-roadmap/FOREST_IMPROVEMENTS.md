@@ -1,5 +1,11 @@
 # Forest-informed Cyrus improvement plan
 
+**Execution update, 16 October 2026:** I01/I02 were delivered in 0.82.6.
+The [active user goal](../improvement-program/OBJECTIVE.md) authorizes I03–I18
+and resumes P06. I03 is implemented and scoped-tested as [0.82.6.1](../improvement-program/I03_08261.md); see the [current ledger](../improvement-program/PROGRESS.md).
+The plan's original pause and authorization statements below remain historical
+context, not the active execution boundary.
+
 15 October 2026. **Original plan; I01/I02 subsequently implemented as 0.82.6. Phase 6 remains paused.** See the [implementation and scoped qualification](../panel-performance-0826/PROGRESS.md); I03 onward remain planning only. No implementation, Max testing, build, version change, installation or Git publication is authorized by this document. The user requested a detailed comparison-based plan, ordered from easiest to hardest, with performance and testing for every step.
 
 This is a research supplement to the [existing eleven-phase roadmap](README.md), not a replacement execution program. Its **I01–I18 identifiers are difficulty ranks**, not product phases or versions. The existing [TODO](TODO.md) remains the phase execution ledger; [BACKLOG](../../BACKLOG.md) remains the defect/acceptance ledger. The step specifications below preserve the original proposal. **I01/I02 are now implemented in 0.82.6; I03-I18 remain proposed.** Starting one later requires an implementation scope; listing P06 here does not resume it.

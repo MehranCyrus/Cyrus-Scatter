@@ -1,7 +1,32 @@
 {
-  "reviewed": "2026-10-15",
+  "reviewed": "2026-10-16",
   "notes": "Entries are ordered by documented development chronology, not numeric label. Missing versions and unknown dates are not invented. Local evidence is stripped before publication. 0.79.2 and 0.79.5 are current uncommitted working-tree campaigns at this review, not new Git releases. Analyzer/MCP have independent version domains.",
   "entries": [
+    {
+      "version": "0.82.6.1",
+      "date": "2026-10-16",
+      "title": "Searchable recipes, stored thumbnails and four planting examples.",
+      "era": "recent",
+      "legacy": false,
+      "note": "Scoped Max 2027 qualification; MZP packaged without installation. Remaining roadmap resumed; final EXE remains pending.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Search, categories/tags, stored PNG thumbnails, clear layer/Paint/dependency summaries and owner-specific complete-save errors."
+        },
+        {
+          "kind": "Improved",
+          "text": "Bounded file-only scans, explicit refresh/cancellation and indexed search preserve idle scatter and upload counters."
+        },
+        {
+          "kind": "Added",
+          "text": "Four procedural meadow, woodland, mountain and painted-border examples with matching Max scenes and actual-result thumbnails; user recipes remain separate."
+        }
+      ],
+      "evidence": [
+        "docs/plans/improvement-program/I03_08261.md"
+      ]
+    },
     {
       "version": "0.82.6",
       "date": "2026-10-15",
@@ -730,7 +755,7 @@
       "changes": [
         {
           "kind": "Improved",
-          "text": "Established Layer → Surfaces → Models → Amount → Update scatter, optional Painting, and direct Layout controls."
+          "text": "Established Layer â†’ Surfaces â†’ Models â†’ Amount â†’ Update scatter, optional Painting, and direct Layout controls."
         },
         {
           "kind": "Fixed",

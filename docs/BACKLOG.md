@@ -11,6 +11,8 @@ records per-phase implementation, validation and Git checkpoints. Existing defec
 IDs and release gates below retain their independent status; creating the roadmap
 does not close them.
 
+The [active remaining-improvements ledger](plans/improvement-program/PROGRESS.md) now tracks the explicitly resumed P06–P11 and I03–I18 program. I03 is implemented and scoped-tested in [0.82.6.1](plans/improvement-program/I03_08261.md), with four initial examples. Next is I04 direction/normal blending, followed by variation policy and grids/paths; the eight-example collection and EXE remain open.
+
 ## Next engineering work
 
 | ID | Status and problem | Acceptance needed |

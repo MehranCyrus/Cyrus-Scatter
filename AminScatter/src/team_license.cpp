@@ -90,7 +90,9 @@ bool cyrusBoundaryCommit(OperationPermit& permit,const void* owner) noexcept {
 bool cyrusBoundaryAllows(const void* owner) noexcept {
     auto permit=cyrusBoundaryBegin(owner);return cyrusBoundaryCommit(permit,owner);
 }
+void cyrusRecipeLibraryShutdown();
 extern "C" __declspec(dllexport) int LibShutdown() {
+    cyrusRecipeLibraryShutdown();
     shutdown(nullptr,nullptr);UnRegisterNotification(shutdown,nullptr,NOTIFY_SYSTEM_SHUTDOWN);return TRUE;
 }
 def_visible_primitive(cyrusLicenseAllows,"cyrusLicenseAllows");

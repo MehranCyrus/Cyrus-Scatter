@@ -6,7 +6,13 @@ entire phase passed. Existing defect IDs stay in [BACKLOG](../../BACKLOG.md).
 
 ## Current action
 
-**0.82.6 I01/I02** implements lazy panels, retained controls/lists and bounded diagnostic stage timings/action correlation. See the [handoff, performance receipts and installer](../panel-performance-0826/PROGRESS.md). Phase 6 stays paused; P06-P09 provisionally plan 0.82.7-0.83.0 and P11 0.83.1. Later Forest improvements remain unstarted.
+**Active improvement program:** P06 is resumed by the [explicit goal](../improvement-program/OBJECTIVE.md).
+I03 presets/browser/thumbnails passed scoped checks as [0.82.6.1](../improvement-program/I03_08261.md), with four initial examples; remaining deliveries
+follow the dependency order and acceptance gates in the [execution ledger](../improvement-program/PROGRESS.md).
+Later features are not complete. The active version policy replaces all provisional
+future version assignments below; historical delivered labels remain unchanged.
+
+**Preceding delivered checkpoint, 0.82.6 I01/I02:** lazy panels, retained controls/lists and bounded diagnostic stage timings/action correlation. See the [handoff, performance receipts and installer](../panel-performance-0826/PROGRESS.md).
 
 Preceding delivery:
 
@@ -33,7 +39,7 @@ is packaged and hash-verified for manual installation; see the package section
 in the performance handoff. No installation, push or deployment was performed.
 
 
-**Paused after completed P05 (corrected label 0.82.2; original build 0.85.0), at the user's request for discussion.**
+**Historical checkpoint: paused after completed P05 (corrected label 0.82.2; original build 0.85.0), at the user's request for discussion.**
 P01 through P05 were committed and pushed under their original labels; the latest verified implementation
 checkpoint is `8985e040831813d02f61c863983fe1afc4b1f4b1`.
 P06 has had preliminary source inspection only; implementation has not started.

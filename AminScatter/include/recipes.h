@@ -23,5 +23,5 @@ std::string hex(const std::vector<unsigned char>& bytes);
 std::vector<unsigned char> unhex(const std::string& text);
 // New-file saves only. Payloads publish before the manifest; no overwrite on read.
 void writeNew(const std::filesystem::path& path, const Json& hydrated);
-Json read(const std::filesystem::path& path, bool hydrate=true);
+Json read(const std::filesystem::path& path, bool hydrate=true, std::string* manifestSHA256=nullptr);
 }

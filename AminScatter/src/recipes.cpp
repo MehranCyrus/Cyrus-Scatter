@@ -191,8 +191,10 @@ void writeNew(const std::filesystem::path& path,const Json& hydrated){
         std::filesystem::rename(temp,path);
     }catch(...){std::error_code ec;std::filesystem::remove(temp,ec);if(stagedCreated)std::filesystem::remove_all(folderPublished?finalFolder:staged,ec);throw;}
 }
-Json read(const std::filesystem::path& path,bool hydrate){
-    auto d=parse(loadText(path,maxManifestBytes));validate(d,false);if(!hydrate)return d;
+Json read(const std::filesystem::path& path,bool hydrate,std::string* manifestSHA256){
+    const auto input=loadText(path,maxManifestBytes);auto d=parse(input);validate(d,false);
+    if(manifestSHA256)*manifestSHA256=digest(std::vector<unsigned char>(input.begin(),input.end()));
+    if(!hydrate)return d;
     paints(d,[&](Json& p){const auto record=p["payload"];const auto file=checkedAttachment(path,record["file"].get<std::string>());const auto data=loadText(file,maxPaintBytes);const std::vector<unsigned char> bytes(data.begin(),data.end());require(bytes.size()==record["bytes"].get<std::size_t>()&&digest(bytes)==record["sha256"].get<std::string>(),"Paint attachment integrity mismatch");p["payload"]=hex(bytes);});validate(d,true);return d;
 }
 std::filesystem::path pathFromUTF8(const std::string& s){
