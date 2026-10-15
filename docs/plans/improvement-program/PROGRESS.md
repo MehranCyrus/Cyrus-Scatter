@@ -5,7 +5,7 @@ Baseline: `b23ed93f97af347b98b92b355660bdc3eeb0ef19`, branch `codex/workflow-0.7
 
 ## Current delivery
 
-**I03 / 0.82.6.1 — implemented, scoped qualification and package complete; Git checkpoint pending.** Search/categories/tags, stored thumbnails, cancellation, clear content/dependency summaries and owner-specific Save Everything failures preserve recipe fidelity, Paint bindings and passive browsing. Four procedural examples and their compatible scenes are included. See [delivery and acceptance](I03_08261.md), [exact qualification](QUALIFICATION_08261.json) and [package identity](PACKAGE_08261.json). Next: I04 direction controls and normal blending, after committing/pushing this checkpoint.
+**I03 / 0.82.6.1 — delivered. I04 / provisional 0.83.0 — contract/source investigation.** I03 commit `f030fb33ea6eaed1815cc3cd561877cd9aadff67` is pushed on `codex/workflow-0.75`; `git ls-remote` matches. Search/categories/tags, stored thumbnails, cancellation, clear content/dependency summaries and owner-specific Save Everything failures preserve recipe fidelity, Paint bindings and passive browsing. Four procedural examples and their compatible scenes are included. See [delivery and acceptance](I03_08261.md), [exact qualification](QUALIFICATION_08261.json) and [package identity](PACKAGE_08261.json). Next: define and implement I04 direction controls and normal blending.
 
 Contracts: F01, F04-F08, F09-F11. Native library scans operate on copied filesystem paths and metadata only, never Max scene objects. Explicit Refresh rereads content, even for same-size/same-time file replacement. Browsing never hydrates Paint. Search/page operations use the bounded in-memory index; no filesystem polling while idle. Thumbnail loading is explicit for the selected entry with byte/pixel bounds and resource disposal.
 
@@ -17,7 +17,7 @@ First version rationale: user-selected four-part development label 0.82.6.1 for 
 | --- | --- |
 | I03 browser/search/tags/thumbnails and clear preflight | Implemented and scoped Max 2027 qualification passed; see I03 handoff; physical artist acceptance remains |
 | At least eight usable presets and accurate thumbnails | Four qualified examples delivered: meadow, woodland, mountain, painted spline borders. Four or more remain for later features |
-| I04/P07 direction and normal blending | Pending; coordinate/transform/radius contract |
+| I04/P07 direction and normal blending | Started: inspect native basis construction, ownership/dependencies, final-radius acceptance and persisted recipe/settings inventory; no feature implementation yet |
 | I05 copy/import variation policy | Pending; ownership/random identity and Undo audit |
 | I06/P06 rectangular/staggered/hex grids | Resumed, pending; bounded domain and stable-cell oracle |
 | I07/P08 paths/sequences/references | Pending; arc-length and seam/identity contract |
@@ -44,7 +44,7 @@ Knowledge index remains stale; reuse direct current source evidence. Original 0.
 
 ## Resume here
 
-Read this ledger and actual Git state. I03 has its scoped receipt and package. Finish the documentation/Git checkpoint, then define and implement the I04 orientation contract using the original Forest-improvement specification. Do not mark later features complete from the preset delivery. Preserve the exact delivered script/native pair and historical receipts.
+Read this ledger and actual Git state. I03 is committed/pushed, with its scoped receipt and package. Define and implement the I04 orientation contract using the original Forest-improvement specification. Do not mark later features complete from the preset delivery. Preserve the exact delivered script/native pair and historical receipts.
 
 ## I03 implementation evidence — 16 October 2026, active candidate
 
@@ -74,4 +74,4 @@ The preceding next-action paragraph is superseded: final script passed fresh 100
 
 The exact 2,700,903-byte MZP is `dist/CyrusScatter-0.82.6.1-20261016/CyrusScatter-0.82.6.1-Max2027.mzp`, SHA-256 `5a53a468b324d4f5aaff0e5e9a807700846cfea85fbb72e1d0af7cd5282fee0a`. Installer syntax compiled in Max without invoking it; archive guards, inventory and payload hashes passed. No installation/restart of the artist host occurred. See the frozen I03 handoff for the complete scope and limits.
 
-Artist guide, installation/build instructions, architecture, current navigation/backlog and curated website content now describe I03. Website sources are local; no deployment is authorized. I04–I18/P06–P11, the remaining examples and final EXE remain incomplete. Git checkpoint and local website checks are the immediate remaining delivery steps.
+Artist guide, installation/build instructions, architecture, current navigation/backlog and curated website content now describe I03. Website docs:sync, docs:check and local build passed (existing large-chunk advisory retained); nothing was deployed. Commit `f030fb3` is pushed and verified. Final owned hosts 44208/49052 exited after guarded quitMAX; close markers exist. Their request waiters time out because process exit precedes a completion reply; observed exit, not timeout, establishes closure. Only artist PID 15780 and unrelated camera-task PID 42536 remained at verification. I04–I18/P06–P11, the remaining examples and final EXE remain incomplete.
