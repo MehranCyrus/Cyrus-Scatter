@@ -1,0 +1,9 @@
+{
+  "version": "0.82.5",
+  "local_links_checked": 9,
+  "source_and_package_hashes_match": true,
+  "website_static_verification": "passed, 281 controls / 36 families",
+  "website_local_production_build": "passed; existing large-chunk warning remains",
+  "website_deployed": false,
+  "phase6": "paused"
+}

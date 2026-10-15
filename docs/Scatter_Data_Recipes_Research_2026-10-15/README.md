@@ -1,5 +1,7 @@
 # Cyrus Scatter: evaluated mesh data, fields and portable planting recipes
 
+**Subsequent implementation:** the user later authorized 0.82.5. The [current implementation and qualification](../plans/recipes-0825/PROGRESS.md) deliver the supported static core, including native Paint, while Phase 6 remains paused. This document retains the earlier design baseline and broader follow-ups; its original receipts are historical. The illustrative example remains non-loadable. Actual wire data uses the explicitly allowlisted typed controller settings and native Paint sidecars, documented in the handoff.
+
 Research and architecture recommendation · 15 October 2026 · 3ds Max 2027
 
 **Keep Max responsible for evaluating scene objects and their modifier stacks. Keep Cyrus responsible for interpreting those evaluated inputs, generating stable candidates, applying planting rules and publishing complete results. Extend the existing preset system into a small, data-only recipe library inside Max. A separate application and a general-purpose node graph are unnecessary for the first useful delivery.**

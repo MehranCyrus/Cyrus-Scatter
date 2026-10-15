@@ -2298,5 +2298,14 @@
       "docs/plans/eleven-phase-roadmap/MESH_MASK_0824.md:1"
     ],
     "owner_context": "Selected layer and its receiving surfaces"
+  },
+  "general.manager.recipesButton": {
+    "label": "Recipes...",
+    "help": "Save selected layers as a complete static recipe, including Paint, or review scene bindings and import a saved recipe as new layers or a new setup. Browsing does not calculate plants. External assets remain scene roles; unsupported authored data blocks complete save.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/recipes.ms:81",
+      "AminScatter/tools/ui/templates/recipes.ms:200",
+      "AminScatter/tools/ui/templates/recipes.ms:291"
+    ]
   }
 }

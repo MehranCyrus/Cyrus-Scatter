@@ -70,6 +70,12 @@
         },
         {
           "component": "flow_layersUI",
+          "control": "recipesButton",
+          "presentation": "flow_layersUI_recipesButton",
+          "advanced": false
+        },
+        {
+          "component": "flow_layersUI",
           "control": "countInfo",
           "presentation": "flow_layersUI_countInfo",
           "advanced": false

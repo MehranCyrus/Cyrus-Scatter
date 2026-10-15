@@ -28,7 +28,8 @@
     "visibleCheck": "Hide display only. Hidden layers still calculate and affect spacing.",
     "enabledCheck": "Include this layer in calculation and final output.",
     "upButton": "Evaluate earlier; earlier layers occupy space first.",
-    "downButton": "Evaluate after the preceding layers."
+    "downButton": "Evaluate after the preceding layers.",
+    "recipesButton": "Save complete selected layers including Paint, or bind and import a saved multi-layer recipe. Browsing does not calculate scattering."
   },
   "diagnostics": {
     "startButton": "Record engineering events in this Max process. Off by default; at most ten minutes, 4,096 events and 4 MiB.",

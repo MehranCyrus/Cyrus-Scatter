@@ -6,11 +6,13 @@ entire phase passed. Existing defect IDs stay in [BACKLOG](../../BACKLOG.md).
 
 ## Current action
 
-**0.82.4 mesh channel density and Paint help** are implemented and qualified in
+**0.82.5 complete static recipes**, including Paint, are implemented in the [recipe handoff](../recipes-0825/PROGRESS.md). This separate delivery implements the current P10 core; it does not resume P06 or complete future layout/map extensions, asset packaging, search or thumbnails. P06-P09 now plan 0.82.6-0.82.9, P10 follow-ups are unassigned and P11 provisionally remains 0.83.0. No normal-profile installation is included.
+
+Preceding delivery: **0.82.4 mesh channel density and Paint help** are implemented and qualified in
 Max 2027, including an isolated copy of the user's mountain. See
 [MESH_MASK_0824](MESH_MASK_0824.md) for exact evidence, package and artist checks.
-No normal-profile installation is included. P06 remains paused; planned P06-P11
-now use 0.82.5-0.83.0. This is a separate delivery from the eleven phases.
+No normal-profile installation was included. At that delivery P06-P11
+planned 0.82.5-0.83.0; the later recipe core supersedes that schedule. This is a separate delivery from the eleven phases.
 
 Preceding delivery:
 
@@ -114,7 +116,7 @@ Preparatory [source/format research](P02_PREFLIGHT.md) is recorded. Implementati
 - [x] Qualify actual conversion controls and unchanged other layers.
 - [x] Update version/docs; commit, push and verify.
 
-## P06 — grid layouts (0.82.5)
+## P06 — grid layouts (0.82.6)
 
 - [ ] Freeze lattice frame/origin, spacing, stagger/hex rules and projected-hit policy.
 - [ ] Prove bounded collision-free stable cell identities in the chosen transport.
@@ -125,7 +127,7 @@ Preparatory [source/format research](P02_PREFLIGHT.md) is recorded. Implementati
 - [ ] Measure bounded large-grid preparation/cache reuse; run host lifecycle/regressions.
 - [ ] Update version/docs; commit, push and verify.
 
-## P07 — direction controls (0.82.6)
+## P07 — direction controls (0.82.7)
 
 - [ ] Freeze direction/target/up/roll and random-rotation composition semantics.
 - [ ] Implement fixed direction and Look At, including degenerate cases.
@@ -135,7 +137,7 @@ Preparatory [source/format research](P02_PREFLIGHT.md) is recorded. Implementati
 - [ ] Measure unrelated-animation reuse; run regressions.
 - [ ] Update version/docs; commit, push and verify.
 
-## P08 — paths, sequences and references (0.82.7)
+## P08 — paths, sequences and references (0.82.8)
 
 - [ ] Freeze spacing/endpoints/seams/jitter, 3D versus receiver projection and identity rules.
 - [ ] Implement bounded arc-length path sampling and P07 tangent orientation.
@@ -146,7 +148,7 @@ Preparatory [source/format research](P02_PREFLIGHT.md) is recorded. Implementati
 - [ ] Measure long-path preparation and reuse; run lifecycle and earlier layout regressions.
 - [ ] Update version/docs; commit, push and verify.
 
-## P09 — transform and assignment maps (0.82.8)
+## P09 — transform and assignment maps (0.82.9)
 
 - [ ] Freeze each map's remap/composition/neutral/missing-input behavior.
 - [ ] Implement sampled scale/rotation channels using P04's shared preparation.
@@ -156,12 +158,12 @@ Preparatory [source/format research](P02_PREFLIGHT.md) is recorded. Implementati
 - [ ] Measure shared-map reuse, animation dependencies and memory; run host/regressions.
 - [ ] Update version/docs; commit, push and verify.
 
-## P10 — recipes and browser (0.82.9)
+## P10 — recipes and browser (0.82.5 core; follow-up TBD)
 
-- [ ] Freeze complete authored recipe format and source/receiver/path/map role binding.
-- [ ] Implement validated single/multi-layer capture with no runtime caches or executable data.
-- [ ] Implement explicit role substitution, new identity mapping and all-or-nothing apply.
-- [ ] Add searchable local browser, bounded metadata/thumbnails and small demo recipes.
+- [x] Freeze the current static recipe core and explicit source/receiver/path/map role binding in 0.82.5. Future P06-P09 fields require a reviewed successor.
+- [x] Implement bounded single/multi-layer static capture, including native Paint and dormant settings, with no runtime caches or executable data. Unsupported authored data blocks complete save.
+- [x] Implement explicit role substitution, new identity mapping and transactional Add/new setup for the current static core. Compatible Paint binding is mandatory; orphan coverage remains unbound.
+- [ ] Add search, thumbnails and distributable demo recipes. 0.82.5 supplies a local 128-entry page and 512-entry metadata cache; no idle polling.
 - [ ] Test missing assets, duplicate names, units, internal references, cancellation and storage failures.
 - [ ] Qualify full production recipe save/apply/Undo/reopen and passive browser performance.
 - [ ] Update version/docs; commit, push and verify.

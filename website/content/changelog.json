@@ -3,6 +3,31 @@
   "notes": "Entries are ordered by documented development chronology, not numeric label. Missing versions and unknown dates are not invented. Local evidence is stripped before publication. 0.79.2 and 0.79.5 are current uncommitted working-tree campaigns at this review, not new Git releases. Analyzer/MCP have independent version domains.",
   "entries": [
     {
+      "version": "0.82.5",
+      "date": "2026-10-15",
+      "title": "Save and reuse complete static planting recipes, including Paint.",
+      "era": "recent",
+      "legacy": false,
+      "note": "Scoped Max 2027 qualification; manual installation and artist acceptance remain separate. Phase 6 stays paused.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Multi-layer Save Everything includes native Paint coverage, holes, disabled and empty areas, curves, Bands, source roles, seeds and spacing relationships."
+        },
+        {
+          "kind": "Added",
+          "text": "Reviewed scene-role substitution, fresh imported identities and transactional Add/new setup with one Undo. Compatible Paint terrain and saved units are required."
+        },
+        {
+          "kind": "Improved",
+          "text": "Bounded local recipe pages and metadata caching avoid placement work while browsing. Unsupported Edit/radius overrides or nonstatic controllers block complete save; asset packaging and arbitrary-terrain Paint projection remain future work."
+        }
+      ],
+      "evidence": [
+        "docs/plans/recipes-0825/PROGRESS.md"
+      ]
+    },
+    {
       "version": "0.82.4",
       "date": "2026-10-15",
       "title": "Plant from mesh channels and understand Paint controls.",
@@ -680,7 +705,7 @@
       "changes": [
         {
           "kind": "Improved",
-          "text": "Established Layer â†’ Surfaces â†’ Models â†’ Amount â†’ Update scatter, optional Painting, and direct Layout controls."
+          "text": "Established Layer \u00e2\u2020\u2019 Surfaces \u00e2\u2020\u2019 Models \u00e2\u2020\u2019 Amount \u00e2\u2020\u2019 Update scatter, optional Painting, and direct Layout controls."
         },
         {
           "kind": "Fixed",

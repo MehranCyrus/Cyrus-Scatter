@@ -145,3 +145,9 @@ metadata does not. The host resolves Off/Follow Density/Custom into one effectiv
 trace in the 15-field Band record (native interface 9). The immutable numeric field
 validates it and multiplies the separately keyed random scale after selecting its
 owner. Published transform/radius computation therefore consumes the factor once.
+
+## Static authored recipes (0.82.5)
+
+`recipes.cpp` implements a separate bounded, closed, data-only format (version 1); `recipe_fields.inc` accounts for 228 typed controller settings, while topology/identity/Paint/relationship fields have explicit handling. `recipes_bridge.cpp` validates JSON and exposes transport trees; `recipes.ms` captures authored state, proposes external bindings and stages fresh owners inside one native Undo hold. Complete save rejects unsupported Edit/radius overrides or nonstatic parameter controllers. No placement arrays, host handles or executable MAXScript are serialized.
+
+Canonical native Paint bytes are immutable sidecars with SHA-256/size checks. Brush export does not poll, prepare or commit; bound import validates system units, frame and geometry before commit. Orphan coverage retains exact bytes and a known frame, including an additive native scene chunk; unknown old frames are not invented. Import preserves Manual publication, delegates Live to existing invalidation/publication and disables imported field overlays. New-file saves publish attachments before the manifest; relative reads must remain within the package directory. The local browser uses 128-entry pages, a 512-entry metadata cache and explicit refresh, without idle polling. This is not scene-asset packaging or a new MCP write API. See [the qualification/limits](plans/recipes-0825/PROGRESS.md).

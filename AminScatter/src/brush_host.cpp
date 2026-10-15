@@ -1,3 +1,4 @@
+#include "recipes.h" // Parse JSON before MAXScript type-test macros.
 // Native procedural Brush document and Max Painter adapter for Cyrus Scatter.
 #include <max.h>
 #include <iparamb2.h>
@@ -67,6 +68,7 @@ public:
     b::Point lastPoint{};
     std::uint64_t fieldIndexRevision=0,maskApplications=0;
     Matrix3 objectTM{1};
+    bool receiverFrameKnown=false;
     IPainterInterface_V14* painter=nullptr;
     bool invalid=true,painting=false,gesture=false,ending=false,pathConnected=false;
     b::Document pending;
@@ -113,7 +115,7 @@ public:
         return REF_SUCCEED;
     }
     RefTargetHandle Clone(RemapDir& remap)override{
-        auto* copy=new PaintDocument;copy->document=document;copy->radius=radius;copy->capacity=capacity;copy->seed=seed;copy->erase=erase;
+        auto* copy=new PaintDocument;copy->document=document;copy->radius=radius;copy->capacity=capacity;copy->seed=seed;copy->erase=erase;copy->objectTM=objectTM;copy->receiverFrameKnown=receiverFrameKnown;
         // The surface is an external scene node. Copying a controller alone
         // keeps that reference; cloning both remaps it after all nodes exist.
         copy->ReplaceReference(0,target);remap.AddPostPatchProc(new TargetPatch(copy,target),true);
@@ -152,7 +154,7 @@ public:
             snapshotTime=t;targetValidity=nextValidity;invalid=false;error.clear();return;
         }
         auto nextDomain=b::domain(*next);
-        objectTM=nextTM;metric=b::Metric::fromBasis(vec(objectTM.GetRow(0)),vec(objectTM.GetRow(1)));snapshotTime=t;targetValidity=nextValidity;
+        objectTM=nextTM;receiverFrameKnown=true;metric=b::Metric::fromBasis(vec(objectTM.GetRow(0)),vec(objectTM.GetRow(1)));snapshotTime=t;targetValidity=nextValidity;
         if(std::abs(DotProd(objectTM.GetRow(0),CrossProd(objectTM.GetRow(1),objectTM.GetRow(2))))<1e-12)throw std::runtime_error("Singular target transform");
         ReplaceReference(0,node);snapshot=std::move(owned);surface=std::move(next);receiverDomain=std::move(nextDomain);document.surface=surface->fingerprint();invalid=false;error.clear();
         rebuildCandidates();changed();
@@ -320,7 +322,10 @@ public:
     }
     IOResult Save(ISave* save)override{
         try{auto bytes=b::encode(document);save->BeginChunk(0x7301);ULONG done=0;auto result=save->Write(bytes.data(),static_cast<ULONG>(bytes.size()),&done);save->EndChunk();if(result!=IO_OK||done!=bytes.size())return IO_ERROR;
-            save->BeginChunk(0x7302);double settings[]={radius,erase?1.:0.};result=save->Write(settings,sizeof(settings),&done);save->EndChunk();return result;
+            save->BeginChunk(0x7302);double settings[]={radius,erase?1.:0.};result=save->Write(settings,sizeof(settings),&done);save->EndChunk();if(result!=IO_OK||done!=sizeof(settings))return IO_ERROR;
+            // Retain the last known frame when the scene receiver is deleted.
+            // Older orphan documents have no frame; never invent one for them.
+            if(target||receiverFrameKnown){const auto tm=target?target->GetObjectTM(GetCOREInterface()->GetTime()):objectTM;double frame[12];for(int i=0;i<12;++i)frame[i]=tm.GetRow(i/3)[i%3];save->BeginChunk(0x7303);result=save->Write(frame,sizeof(frame),&done);save->EndChunk();if(result!=IO_OK||done!=sizeof(frame))return IO_ERROR;}return IO_OK;
         }catch(...){return IO_ERROR;}
     }
     IOResult Load(ILoad* load)override{
@@ -329,6 +334,7 @@ public:
             if(id==0x7302){double values[2];if(length!=sizeof(values)||load->Read(values,sizeof(values),&done)!=IO_OK||done!=sizeof(values))throw std::runtime_error("Brush settings read failed");for(double v:values)if(!std::isfinite(v))throw std::runtime_error("Non-finite Brush settings");
                 if(values[0]<=0.0001||values[0]>1.e7||(values[1]!=0&&values[1]!=1))throw std::runtime_error("Invalid saved vector brush settings");
                 radius=values[0];erase=values[1]!=0;}
+            if(id==0x7303){double frame[12];if(length!=sizeof(frame)||load->Read(frame,sizeof(frame),&done)!=IO_OK||done!=sizeof(frame))throw std::runtime_error("Brush receiver frame read failed");for(double value:frame)if(!std::isfinite(value)||std::abs(value)>std::numeric_limits<float>::max())throw std::runtime_error("Invalid saved Brush frame");for(int row=0;row<4;++row)objectTM.SetRow(row,Point3(float(frame[row*3]),float(frame[row*3+1]),float(frame[row*3+2])));receiverFrameKnown=true;}
             load->CloseChunk();}
         }catch(const std::exception& e){storageTrace+=std::string("ERROR ")+e.what()+"\n";return IO_ERROR;}storageTrace+="Load end "+std::to_string(result)+"\n";return result==IO_END?IO_OK:result;
     }
@@ -363,6 +369,32 @@ BOOL WINAPI DllMain(HINSTANCE module,DWORD reason,LPVOID){if(reason==DLL_PROCESS
 static_assert(MAX_PRODUCT_YEAR_NUMBER==CYRUS_MAX_YEAR,"Brush SDK mismatch");
 
 def_visible_primitive(cyrusBrushCreate,"cyrusBrushCreate");
+// Read only: no pollTarget, field preparation, brush commit or scene mutation.
+def_visible_primitive(cyrusBrushRecipeExport,"cyrusBrushRecipeExport");
+Value* cyrusBrushRecipeExport_cf(Value** a,int n){check_arg_count(cyrusBrushRecipeExport,1,n);return api([&]()->Value*{
+    auto* p=doc(a[0]);if(p->painting||p->gesture)throw std::runtime_error("Stop the brush before saving a recipe; pending gestures are preserved");
+    const auto bytes=b::encode(p->document);if(bytes.size()>cyrus::recipes::maxPaintBytes)throw std::runtime_error("Paint payload exceeds recipe bounds");
+    const auto packed=cyrus::recipes::hex(bytes);const std::wstring wide(packed.begin(),packed.end());
+    two_typed_value_locals(Array* result,Array* frame);vl.result=new Array(4);vl.result->append(new String(wide.c_str()));vl.result->append(Double::intern(p->radius));vl.result->append(p->erase?&true_value:&false_value);
+    if(p->target||p->receiverFrameKnown){const auto tm=p->target?p->target->GetObjectTM(GetCOREInterface()->GetTime()):p->objectTM;vl.frame=new Array(12);for(int row=0;row<4;++row)for(int component=0;component<3;++component)vl.frame->append(Double::intern(tm.GetRow(row)[component]));vl.result->append(vl.frame);}else vl.result->append(&undefined);
+    return_value(vl.result);
+});}
+def_visible_primitive(cyrusBrushRecipeImport,"cyrusBrushRecipeImport");
+Value* cyrusBrushRecipeImport_cf(Value** a,int n){check_arg_count(cyrusBrushRecipeImport,5,n);return api([&]()->Value*{
+    type_check(a[0],String,_T("Paint recipe bytes"));const auto* input=a[0]->to_string();const auto length=wcslen(input);if(length>cyrus::recipes::maxPaintBytes*2)throw std::runtime_error("Paint recipe payload exceeds bounds");
+    std::string packed;packed.reserve(length);for(std::size_t i=0;i<length;++i){if(input[i]>127)throw std::runtime_error("Invalid Paint hex");packed+=static_cast<char>(input[i]);}
+    auto original=b::decode(cyrus::recipes::unhex(packed));const double radius=a[2]->to_double();if(!std::isfinite(radius)||radius<=.0001||radius>1e7)throw std::runtime_error("Invalid recipe brush radius");if(a[3]!=&true_value&&a[3]!=&false_value)throw std::runtime_error("Invalid recipe brush mode");
+    auto* node=a[1]==&undefined?nullptr:a[1]->to_node();
+    if(node){
+        if(a[4]==&undefined)throw std::runtime_error("Paint receiver frame is unknown; original document must remain unbound");type_check(a[4],Array,_T("Paint receiver frame"));auto* frame=static_cast<Array*>(a[4]);if(frame->size!=12)throw std::runtime_error("Paint frame needs twelve values");
+        const auto current=node->GetObjectTM(GetCOREInterface()->GetTime());for(int i=0;i<12;++i){const double saved=frame->data[i]->to_double(),value=current.GetRow(i/3)[i%3];if(!std::isfinite(saved)||std::abs(saved-value)>1e-6*std::max({1.,std::abs(saved),std::abs(value)}))throw std::runtime_error("Paint receiver coordinate frame differs; original coverage is preserved. Bind a compatible receiver");}
+    }
+    std::unique_ptr<PaintDocument> p(static_cast<PaintDocument*>(GetCOREInterface()->CreateInstance(REF_TARGET_CLASS_ID,documentID)));if(!p)throw std::runtime_error("Brush storage class unavailable");p->requireAuthor();p->document=original;p->radius=radius;p->erase=a[3]==&true_value;
+    if(a[4]!=&undefined){type_check(a[4],Array,_T("Paint receiver frame"));auto* frame=static_cast<Array*>(a[4]);if(frame->size!=12)throw std::runtime_error("Paint frame needs twelve values");for(int row=0;row<4;++row){double values[3];for(int j=0;j<3;++j){values[j]=frame->data[row*3+j]->to_double();if(!std::isfinite(values[j])||std::abs(values[j])>std::numeric_limits<float>::max())throw std::runtime_error("Invalid recipe receiver frame");}p->objectTM.SetRow(row,Point3(float(values[0]),float(values[1]),float(values[2])));}p->receiverFrameKnown=true;}
+    if(node){p->prepare(node);if(original.surface!=p->surface->fingerprint())throw std::runtime_error("Paint receiver geometry differs, including empty coverage; original document is preserved");p->document=std::move(original);}
+    else{p->invalid=true;p->error="Recipe Paint receiver is unbound; original coverage is retained";}
+    return MAXRefTarg::intern(p.release());
+});}
 Value* cyrusBrushCreate_cf(Value** a,int n){check_arg_count(cyrusBrushCreate,1,n);return api([&]()->Value*{std::unique_ptr<PaintDocument> p(static_cast<PaintDocument*>(GetCOREInterface()->CreateInstance(REF_TARGET_CLASS_ID,documentID)));if(!p)throw std::runtime_error("Brush storage class unavailable. Load matching CyrusBrushStorage.dlh and CyrusBrush.dlx");p->requireAuthor();p->prepare(a[0]->to_node());return MAXRefTarg::intern(p.release());});}
 def_visible_primitive(cyrusBrushBind,"cyrusBrushBind");
 Value* cyrusBrushBind_cf(Value** a,int n){check_arg_count(cyrusBrushBind,1,n);return api([&]()->Value*{auto* p=doc(a[0]);p->prepare(p->target);return &ok;});}

@@ -1,5 +1,7 @@
 # Recipe implementation plan — documentation only
 
+**Subsequent implementation:** the user later authorized 0.82.5. The [current implementation and qualification](../plans/recipes-0825/PROGRESS.md) deliver the supported static core, including native Paint, while Phase 6 remains paused. This document retains the earlier design baseline and broader follow-ups; its original receipts are historical. The illustrative example remains non-loadable. Actual wire data uses the explicitly allowlisted typed controller settings and native Paint sidecars, documented in the handoff.
+
 15 October 2026. Planning baseline: Scatter **0.82.4**, scene schema **58**, `CyrusUnified1`, branch `codex/workflow-0.75`, HEAD `604e3aa3fd1c84c5ef128dc564f4abaf6f4978e4` plus existing dirty work. This plan implements the user's selected design: **Save Everything includes Paint**. It does not authorize coding, tests in Max, packaging, installation or Git publication now. **Phase 6 remains paused.** Work packages below are recipe planning units, not a renumbering or resumption of the eleven-phase program.
 
 Use the [preset contract](PRESET_CONTRACT.md) for normative behavior, [field map](FIELD_MAP.md) and [parameter inventory](PARAMETER_INVENTORY.csv) for source correspondence, and [validation plan](VALIDATION.md) for evidence. Required contracts: F01/F03 ownership and dependencies; F02 stable randomness; F04/F08 scheduling and reuse; F05–F07 bounds/publication/threading; F09–F11 geometry, units and persistence.

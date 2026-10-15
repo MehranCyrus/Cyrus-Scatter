@@ -1,5 +1,7 @@
 # Proposed recipe schema and import contract
 
+**Subsequent implementation:** the user later authorized 0.82.5. The [current implementation and qualification](../plans/recipes-0825/PROGRESS.md) deliver the supported static core, including native Paint, while Phase 6 remains paused. This document retains the earlier design baseline and broader follow-ups; its original receipts are historical. The illustrative example remains non-loadable. Actual wire data uses the explicitly allowlisted typed controller settings and native Paint sidecars, documented in the handoff.
+
 Revised 15 October 2026 following the user's decision: **Save Everything includes Paint.** This is a design contract, not implemented behavior. Phase 6 remains paused. No product/scene version changes accompany this document.
 
 Read with the [report](README.md), [field map](FIELD_MAP.md), [declaration inventory](PARAMETER_INVENTORY.csv), [implementation plan](IMPLEMENTATION_PLAN.md) and [validation matrix](VALIDATION.md). The [three-layer example](example-recipe.json) is illustrative JSON; it marks itself non-loadable and does not enumerate every field or contain a real native Paint export.

@@ -41,7 +41,7 @@ def build():
             for entry in entries:
                 previous=ownership.get((group,section,entry['name']),{})
                 caps=SECTION_CAPS[section] if section in ('spacingUI','separationUI','proceduralUI','properties') else previous.get('capabilities',SECTION_CAPS[section])
-                if entry['name']=='presetsButton':caps=['C35']
+                if entry['name'] in ('presetsButton','recipesButton'):caps=['C35']
                 if section=='distributionUI' and entry['name'].startswith('mesh'):caps=['C11']
                 if section=='areaUI' and entry['name'].startswith(('slope','altitude')):caps=['C36']
                 owner=previous.get('owner_context','Selected layer recipe' if group=='layer' else 'Local container view' if group=='container' else 'Controller / local view')
@@ -56,7 +56,7 @@ def build():
     return dict(schema='cyrus.feature-catalog/1.0',authority='Help only. Tool dispatch, closed schema and local approval determine authority.',
                 capability_source_sha256=hashlib.sha256(source.read_bytes()).hexdigest(),
                 control_inventory_sha256=hashlib.sha256(inventory_path.read_bytes()).hexdigest(),
-                development_version='0.82.4',mcp_version='0.73.0',calculation_model='CyrusUnified1',features=rows,controls=controls)
+                development_version='0.82.5',mcp_version='0.73.0',calculation_model='CyrusUnified1',features=rows,controls=controls)
 
 if __name__=='__main__':
     target=ROOT/'CyrusMCP/cyrus_mcp/feature-catalog.json'

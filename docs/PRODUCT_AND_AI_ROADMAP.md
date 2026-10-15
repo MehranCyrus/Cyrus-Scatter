@@ -1,12 +1,12 @@
 # Cyrus Scatter: product and AI direction
 
-Maintained public-facing summary, reviewed 12 October 2026 against Scatter development source 0.79.6, last packaged Scatter 0.79.5, Analyzer 0.14 and MCP package/plan 0.73.0/0.73. This is the source for the website's product status and roadmap. Update it alongside the [artist guide](ARTIST_GUIDE.md), [backlog](BACKLOG.md) and [MCP contract](../CyrusMCP/README.md). It does not replace engineering acceptance criteria or announce a release date.
+Maintained public-facing summary, reviewed 15 October 2026 against Scatter development/package 0.82.5, Analyzer 0.14 and MCP package/plan 0.73.0/0.73. This is the source for the website's product status and roadmap. Update it alongside the [artist guide](ARTIST_GUIDE.md), [backlog](BACKLOG.md) and [MCP contract](../CyrusMCP/README.md). It does not replace engineering acceptance criteria or announce a release date.
 
 ## The product today
 
 Cyrus Scatter is an artist-controlled scattering plugin for 3ds Max. Build a landscape from your own models, arrange planting in layers and refine it with ordinary controls. AI is optional; everyday use does not depend on an assistant, account connection or trained model.
 
-The current development source is **0.79.6 / schema 56**, adding failed-publication recovery and typed distance migration from schema 55. The [foundation correction handoff](Foundation_0.79.6_2026-10-12/README.md) records the matched Max 2026/2027 checks and their limits. The last packaged version remains **0.79.5 / schema 55**; its [terraced garden workflow report](Terrace_Workflow_0.79.5_2026-10-11/README.md) records the preceding Point, falloff, layer-navigation and preview-cache corrections. These source checks do not certify a new package. The offline team pilot implements activation, expiry status and supported authoring guards; existing saved scenes remain loadable/renderable after expiry. It is not commercial licensing certification. Physical input, high DPI, long sessions, heavy assets and the full renderer/material matrix still have acceptance work. Version 1.0 is reserved for publication readiness.
+The current development/package is **0.82.5 / schema 58**. It includes complete static multi-layer recipes with native Paint, explicit dependency roles and transactional import, alongside mesh/UV density, slope/altitude and retained preview behavior. Qualification and the manual Max 2027 installer are recorded in the [recipe handoff](plans/recipes-0825/PROGRESS.md). Phase 6 remains paused. Existing offline team licensing and independent Analyzer/MCP versions are unchanged. Physical input, high DPI, long sessions, heavy assets and wider renderer/material acceptance remain open. Version 1.0 stays reserved for publication readiness.
 
 | Feature | What the artist can do | Boundary to explain |
 | --- | --- | --- |
@@ -62,7 +62,7 @@ Expand supported procedural recipes and area/layout operations in bounded groups
 
 ### 3. Build a recipe library and artist review companion
 
-Let artists map plant roles to their own assets, save editable preferences, compare a small set of valid planting alternatives and revisit approved recipes. Keep selection, approval and application separate. Start with curated recipes and deterministic variations before requiring a trained model.
+Extend the current static recipe library with search, thumbnails, curated examples and an artist review companion. Explicit model/receiver/map roles and Save Everything including Paint are available locally; asset packaging and arbitrary-terrain Paint projection remain separate. Keep selection, approval and application separate. Start with curated recipes and deterministic variations before requiring a trained model.
 
 **Ready when:** artists can compare, choose and apply useful alternatives while retaining ordinary editable Cyrus layers and controls. Completed examples keep their scene, source and view provenance.
 

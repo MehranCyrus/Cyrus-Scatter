@@ -395,7 +395,7 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 meshMask:false = (
             local c=graph.curves[1];c.color=red
             graph.y_range=[0,(if isDensity then 100 else amax 200.0 ((amax values)*100))]
             -- Fit the full density domain before loading the authored curve.
-            -- Zoom extents on a constant curve hides almost all of 0–100%.
+            -- Zoom extents on a constant curve hides almost all of 0â€“100%.
             local densityZoom=undefined,densityScroll=undefined
             if ownerBandID>0 or isMeshMask do (
                 c.numPoints=2
@@ -2045,7 +2045,7 @@ initialRollupState:0x8
         -- Only a committed calculation epoch establishes its first result.
         CyrusLayerStatusData hasResult:(procEpoch>0 and cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
     )
-    fn uiVersion = "0.82.4"
+    fn uiVersion = "0.82.5"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified1")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -2227,7 +2227,7 @@ initialRollupState:0x8
         parent.markInputDirty();this.bindNativeUI();CyrusViewportRedraw();true
     )
     fn validatePaintConversion area = (
-        if cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 do throw "Paint/spline conversion requires the matching Cyrus native plugins. Restart Max with the complete pair."
+        if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=1 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 do throw "Paint/spline conversion requires the matching Cyrus native plugins. Restart Max with the complete pair."
         local parent=if area==undefined then undefined else this.logicalParent area
         if parent==undefined or findItem layerObjects parent==0 or findItem parent.paintAreas area==0 do throw "Select a Paint Area owned by this setup."
         if area.paintDocument==undefined or not isValidNode area.areaTarget or findItem (parent.validSurfaces()) area.areaTarget==0 do throw "Choose a valid receiving surface for this Paint Area."
@@ -3185,14 +3185,14 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.82.4 setup; earlier schemas are unsupported."
+        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.82.5 setup; earlier schemas are unsupported."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
     fn procValidate = (
         this.procAssertSchema()
-        if cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=1 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.82.4 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
+        if cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=1 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=1 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.82.5 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -3615,7 +3615,7 @@ initialRollupState:0x8
         if (CyrusContainerPanel this).controlsReady do (CyrusContainerPanel this).bind()
         true
     )
-    rollout mainUI "Cyrus Scatter 0.82.4" width:#cmdPanel height:30 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.82.5" width:#cmdPanel height:30 autoLayoutOnResize:true (
         local root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),owner=undefined,layerPagesVisible=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for this entire Scatter setup."
         button licenseButton "License / activation..." pos:[8,112] width:(mainUI.width-16) height:22 tooltip:"Import a team license or inspect its expiry. Existing scenes remain available after expiry."
@@ -3685,7 +3685,7 @@ initialRollupState:0x8
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.82.4 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.82.5 native plugin and restart Max."
             root.syncLayerIdentity()
             roots=#(root.flow_updateUI,root.flow_surfaceUI,root.flow_previewUI,root.flow_layersUI)
             root.updateUI=roots[1];root.surfaceUI=roots[2];root.previewUI=roots[3];root.layersUI=roots[4]
@@ -3908,8 +3908,10 @@ initialRollupState:0x8
         checkbox enabledCheck "Enabled in output" pos:[8,288] width:(flow_layersUI.width-16) tooltip:"Include this layer in calculation and final output."
         button upButton "Move up" pos:[8,318] width:((flow_layersUI.width-22)/2) tooltip:"Evaluate earlier; earlier layers occupy space first."
         button downButton "Move down" pos:[(flow_layersUI.width/2+3),318] width:((flow_layersUI.width-22)/2) tooltip:"Evaluate after the preceding layers."
+        button recipesButton "Recipes..." pos:[8,350] width:(flow_layersUI.width-16) tooltip:"Save complete selected layers including Paint, or bind and import a saved multi-layer recipe. Browsing does not calculate scattering."
         label countInfo "Select a layer." pos:[8,350] width:(flow_layersUI.width-16) height:46
         fn currentLayer = (local leaf=root.selectedLayer();if leaf==undefined then undefined else root.logicalParent leaf)
+        on recipesButton pressed do try(CyrusOpenRecipeLibrary root)catch(messageBox (getCurrentException()) title:"Cyrus recipes")
         fn refreshStats = (
             if not controlsReady do return false
             local rows=#(),selected=currentLayer(),selectedSummary=undefined
@@ -5082,11 +5084,11 @@ initialRollupState:0x8
             for control in #(pathsList,pickPath,cornerMode,arrangementMode) do control.visible=obj.diversityMode==3
             analyzerChannel.visible=analyzed;pickAnalyzer.visible=analyzed
             pickAnalyzer.text=if isValidNode obj.analyzerNode then obj.analyzerNode.name else "Pick Surface Analyzer"
-            removePath.text="×";removePath.tooltip=if analyzed then "Remove the linked Analyzer assignment." else "Remove the selected Path and its Bands; keep the scene spline."
+            removePath.text="Ã—";removePath.tooltip=if analyzed then "Remove the linked Analyzer assignment." else "Remove the selected Path and its Bands; keep the scene spline."
             pickPath.enabled=not analyzed
             strokeTitle.text=if analyzed then "Analyzer bands / rows" else "Spline bands"
-            addOutside.text="↗";addOutside.tooltip=if not analyzed then "Add Outside Band." else if analyzerChannel.selection==2 then "Add Centerline Band." else "Add Radius Band."
-            addInside.text="↙";addInside.tooltip=if analyzed and analyzerChannel.selection==3 then "Add Single anchor assignment." else "Add Inside Band."
+            addOutside.text="â†—";addOutside.tooltip=if not analyzed then "Add Outside Band." else if analyzerChannel.selection==2 then "Add Centerline Band." else "Add Radius Band."
+            addInside.text="â†™";addInside.tooltip=if analyzed and analyzerChannel.selection==3 then "Add Single anchor assignment." else "Add Inside Band."
             boundaryOnly=analyzed and (analyzerChannel.selection==1 or analyzerChannel.selection==4 or analyzerChannel.selection==5)
             addOutside.visible=(obj.diversityMode==3 or analyzed) and not boundaryOnly
             addInside.pos=[if boundaryOnly then 4 else selected_diversityUI.width/2+2,addOutside.pos.y]

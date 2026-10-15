@@ -45,8 +45,8 @@ Before choosing or changing a version, follow [the version policy](docs/Release_
 Use the user's small-step Scatter numbering: `0.81.8 → 0.81.9 → 0.82.0`,
 advancing PATCH through 9 before carrying into MINOR. Features do not automatically
 trigger a larger jump. Phase 5 is 0.82.2; the performance correction is 0.82.3,
-the mesh channel density delivery is 0.82.4, and the next planned phase is
-0.82.5 (paused until the user resumes it).
+the mesh channel density delivery is 0.82.4, and complete static recipes are
+0.82.5. Phase 6 remains paused; its next planned step is 0.82.6.
 Preserve original qualification labels/hashes when documenting corrected numbers.
 
 Each new Scatter version delivered for user testing must include a runnable

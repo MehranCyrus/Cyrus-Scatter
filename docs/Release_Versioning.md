@@ -2,8 +2,9 @@
 
 | Domain | Current value | Meaning |
 | --- | --- | --- |
-| Scatter UI | 0.82.4 | User-selected mesh channel mask and Paint help successor; Phase 6 remains paused |
-| Scatter native/package | 0.82.4 packaged for Max 2027; historical installation receipts preserved | Package hashes and scoped Max 2027 qualification are in the mesh mask handoff; manual installation is separate |
+| Scatter UI | 0.82.5 | User-selected complete static recipes, including Paint; Phase 6 remains paused |
+| Scatter native/package | 0.82.5 packaged for Max 2027; historical installation receipts preserved | Exact pair, package hashes and scoped Max 2027 qualification are in the recipe handoff; manual installation is separate |
+| Recipe format / native capability | 1 / 1 | Closed data-only static recipe, native Paint sidecars and explicit dependency roles |
 | Saved MAXScript schema | 58 | Independent saved Band scale profiles; current-only scenes, no earlier-schema migration |
 | Calculation model | CyrusUnified1 | Current procedural model |
 | Surface Analyzer | 0.14 | Independently versioned product |
@@ -41,13 +42,15 @@ When a bump is within the authorized task, align the Scatter UI template and gen
 
 ## Current and historical evidence
 
+The user selected **0.82.5** on 15 October for complete authored multi-layer recipes, including Paint, reviewed role substitution and one-Undo Add/new setup. This is a separate delivery of the current P10 core while Phase 6 remains paused. It retains scene schema 58, CyrusUnified1 and all registration identities. Native Paint gains an additive receiver-frame chunk; the canonical coverage codec is unchanged. Unknown frames in older orphan documents remain unknown. Recipe format/capability are 1. Analyzer, MCP and website package versions stay independent. See the [recipe handoff](plans/recipes-0825/PROGRESS.md). P06-P09 now plan 0.82.6-0.82.9; P10 follow-ups are unassigned, and P11 provisionally remains 0.83.0. No normal-profile installation is included.
+
 The user selected **0.82.4** on 15 October for mesh channel density and Paint
 tooltips. This is a separate feature delivery while Phase 6 stays paused. It adds
 neutral, layer-owned saved fields and native mesh-density capability 1, retaining
 schema 58, registration identities, Edit geometry bindings and independent product
 versions. See the [mask handoff](plans/eleven-phase-roadmap/MESH_MASK_0824.md) for
-exact inputs, Max 2027 tests and the runnable package. P06-P11 now plan
-0.82.5-0.83.0. No normal-profile installation is part of this task.
+exact inputs, Max 2027 tests and the runnable package. At that delivery P06-P11 planned
+0.82.5-0.83.0; the later recipe core supersedes that schedule. No normal-profile installation is part of this task.
 
 The user selected **0.82.3** on 14 October for the idle, interaction and panel
 performance correction. At that delivery, planned P06-P11 labels shifted to
@@ -72,11 +75,11 @@ feature scopes and schema 58 remain unchanged. See the mapping below and
 | P03 | 0.82.0 | Slope and altitude | 0.83.0; implemented |
 | P04 | 0.82.1 | Density map controls | 0.84.0; implemented |
 | P05 | 0.82.2 | Paint/spline conversion | 0.85.0; implemented |
-| P06 | 0.82.5 | Regular grids | Planned; implementation paused |
-| P07 | 0.82.6 | Direction controls | Planned |
-| P08 | 0.82.7 | Paths, sequences and references | Planned |
-| P09 | 0.82.8 | Transform and assignment maps | Planned |
-| P10 | 0.82.9 | Recipes and browser | Planned |
+| P06 | 0.82.6 | Regular grids | Planned; implementation paused |
+| P07 | 0.82.7 | Direction controls | Planned |
+| P08 | 0.82.8 | Paths, sequences and references | Planned |
+| P09 | 0.82.9 | Transform and assignment maps | Planned |
+| P10 | 0.82.5 core; follow-up TBD | Recipes and browser | Current static core implemented; wider phase follow-ups remain |
 | P11 | 0.83.0 | Adaptive viewport completion | Planned |
 
 Future labels are planned checkpoints, not completed releases. Record a revised

@@ -38,7 +38,7 @@
   "reviewedSourceHashes": {
     "CyrusMCP/README.md": "ade16c0ae74dbce660b58c8f6ef96c1cb5fcdc02c20e7f1a3896eb99b4b3bef0",
     "CyrusSurfaceAnalyzer/README.md": "899909b52cb6c0617dab1b5c4f46321202806018f659a69038658d4913708611",
-    "docs/ARTIST_GUIDE.md": "d2a5281172f39f6961dd2eea89f10f653bb98522cfff24ce3ca7094673072592",
+    "docs/ARTIST_GUIDE.md": "32041e4423d32cfd0b8e0a0122f22eb7540827823c03134723202991891cf9dc",
     "docs/Brush_Relax_Reset_2026-10-03/REPORT.md": "3f4c658fa35733f9a9c08503639454338e2dd87c322058661263d028942e8867",
     "docs/Brush_Responsiveness_0.78.2_2026-10-10/README.md": "7faa2a41f400952244834bf59034471fe7b0ae3487347edaca1c6598cb872928",
     "docs/Brush_Scaling_0.76_2026-10-10/README.md": "db05af1cf6230e88075be2d235adf916196a5e203f6c1b07d6a070e977306379",
@@ -61,7 +61,7 @@
     "docs/Layer_Width_2026-10-04/README.md": "9d00dcff612b7ab2220654dd1e450b80e3f90f9b4026c73398b0503122953107",
     "docs/Layers_First_2026-10-03/REPORT.md": "d5250597285c6fc2ca50fbf55531635e55cdc4546d7a3be2421f9d533ed052c8",
     "docs/Live_Runtime_2026-10-06/README.md": "46dff3cb1e995b062a1f93fc40eacab208fb03db6f3ab969de5ad7b6145c75dc",
-    "docs/PRODUCT_AND_AI_ROADMAP.md": "1dfbf4f12105ca929aadc3438a2a57365435420f5f6815af9ccf1f3eb002362f",
+    "docs/PRODUCT_AND_AI_ROADMAP.md": "0ef91c9db6d64eda11b709238e48ce845631504677129ca71e975ecddd0d094f",
     "docs/Paint_Feedback_0.77_2026-10-10/README.md": "7a007653a3534745b90571d52874cddc6fe89621dbf428232adce67148b578e8",
     "docs/Performance_Implementation_2026-10-01.md": "29035504928485d6c8018b20969c06ce87b4c6d3bbf87d3199c2a5781df15059",
     "docs/Planting_Groups_2026-10-03/REPORT.md": "518e7f9f9c747adca158919db40796f2c4af0d993733a291c8c9506c28ceac74",
@@ -70,7 +70,7 @@
     "docs/Procedural_Implementation_0.7_2026-10-04/README.md": "4285f5e0e2015068d491a6061ac09d4c6a9b9140ab7a9950296869cc10057fd0",
     "docs/Real_Scene_0.7.1_2026-10-05/README.md": "ec6af73ecce9bc1eaed82b41bbf7b0c3c5464ab376c72f82a715c661a17fab1d",
     "docs/Receiver_Stability_0.76_2026-10-10/README.md": "857f754b7e4b8ccdbd1ad7889fdaf56b41c7ec47f7d1e769b922380b9fef2594",
-    "docs/Release_Versioning.md": "21964b8c3925cc13c840ddef603d6ed3c475536c68dce9614fe3f84a873a6877",
+    "docs/Release_Versioning.md": "8e54278693c4cb3d85fa75eae99ff1864936d0abaae0251a9c9d43d9b9d3ee5b",
     "docs/Retained_Mesh_Preview_2026-10-02/README.md": "2bb5dee3a692a63bbd7aa2c59795e5b9f9fc9cf158a164c25b6da68f7a11c1df",
     "docs/Retained_Point_Preview_2026-10-02/README.md": "87044c6a35764de85806a4f8b158c036ca1c1374cf46e13a199c1a502989dc9b",
     "docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md": "c53d14bb1e0c0e41cc49b60b4c57054f4c8872e44ffd19db5827fd17dd799092",
@@ -90,7 +90,7 @@
     "docs/plans/terrace-0815/PROGRESS.md": "5b95e8a46c731176fd79b140cfa9ff38c4d30a9e2b02a91438325d1c8fb5a061",
     "docs/plans/terrace-0815/REPORT.md": "437d99aa51ff7e7c66d914c805f9dac3a6548b192e82228ccc61258130d94a60",
     "docs/Source_Containers_Performance_2026-10-13.md": "d051239e20545f4fe5f7ab3a0a9b87d63ebb1cb88ce461d7f908371da44c22ad",
-    "docs/ARCHITECTURE.md": "e61797dd654ca4452c176a3dea1da2d30150fbd7aa7f2ba9a608df7e376a4df6",
+    "docs/ARCHITECTURE.md": "c6a85b73a9c2fffdd3c5819d8e412626fc9fd62fff8770c3893663def2af19a9",
     "docs/plans/terrace-0815/VIEWPORT_0816.md": "d1e2997b1ebe688768b6ef4c0c35748b19b1a87f148e212e7cb644eef63fe18e",
     "docs/plans/terrace-0815/VIEWPORT_0817.md": "8877e014e4edb0ce88fd8375528e2b0921f4bb521f7672d709d6282274057c6a",
     "docs/plans/eleven-phase-roadmap/P01.md": "76bc7d66a54e8a0c346a3a7bc4c33337526944ddd2f16d7e223226b276636e13",
@@ -101,7 +101,8 @@
     "docs/plans/eleven-phase-roadmap/INSTALLATION_0822.md": "a29c5d67f0f39c4f243972a99c7cc5b6be89ee36ca3c0882060ca3628e231233",
     "docs/plans/eleven-phase-roadmap/ARTIST_ACCEPTANCE_0822.md": "68ca477fc367c7e0bf16acb6ec44d1b7614d90bdb40628037e5e321cddb93b57",
     "docs/plans/eleven-phase-roadmap/PERFORMANCE_0823.md": "dbc5d96925bd49fff201ba678718aab3b024ed0cd8703987c63ccb772632307d",
-    "docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md": "2c7a9af8f05abe27c387e0a57e7b0112dbdeff32f53f4bef237df3d9e2c49508",
-    "docs/plans/eleven-phase-roadmap/MESH_MASK_0824.md": "3c9f4db776c6274b757f7f697fb29433a01b8fce946e32dcd522559e8de4c257"
+    "docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md": "a7516f7a7341824f40b8f47e5f3c1cb954e439f57c7c48bb3c5492d652da73bf",
+    "docs/plans/eleven-phase-roadmap/MESH_MASK_0824.md": "3c9f4db776c6274b757f7f697fb29433a01b8fce946e32dcd522559e8de4c257",
+    "docs/plans/recipes-0825/PROGRESS.md": "06cd287272091985d30c50073d371bb79deffb50e56198a9d35ceaaedfa6731a"
   }
 }

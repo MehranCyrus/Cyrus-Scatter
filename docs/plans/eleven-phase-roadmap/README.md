@@ -50,9 +50,8 @@ fixes before a phase checkpoint. Do not invent a passing visual result.
 
 ## Documents and status
 
-- [0.82.4 mesh channel density and Paint help](MESH_MASK_0824.md): current source,
-  Max 2027 evidence and runnable installer. P06 remains paused; its next planned
-  version is 0.82.5.
+- [0.82.5 complete static recipes](../recipes-0825/PROGRESS.md): current P10 core, including native Paint, roles, transactional import and bounded browsing. P06 remains paused; its next planned step is 0.82.6. P10 search/thumbnails, asset packaging and future-layout fields remain separate work.
+- [0.82.4 mesh channel density and Paint help](MESH_MASK_0824.md): preceding source, Max 2027 evidence and runnable installer.
 - [0.82.3 performance correction](PERFORMANCE_0823.md): preceding idle, interaction
   and panel latency evidence, preserved with its original hashes.
 
@@ -79,11 +78,11 @@ fixes before a phase checkpoint. Do not invent a passing visual result.
 | P03 | 0.82.0 | Slope/altitude filters with soft transitions | Medium | P02; existing eligibility and units contracts | Implemented, qualified and pushed under original label |
 | P04 | 0.82.1 | Selectable UV channel and density-map resolution | Medium | P03; map dependency/coordinate contract | Implemented, qualified and pushed under original label |
 | P05 | 0.82.2 | Paint-to-spline export and spline-to-Paint import | Medium | P04; current vector regions and units | Implemented, qualified and pushed under original label; corrected 0.82.2 label compiled for Max 2027 |
-| P06 | 0.82.5 | Rectangular, staggered and hexagonal placement | Medium | P05; stable layout identities | Planned; paused before implementation |
-| P07 | 0.82.6 | Target/direction orientation controls | Medium | P06; final-transform and radius contracts | Planned |
-| P08 | 0.82.7 | True path spacing, sequences and reference placement | Medium–large | P07; shared candidate/transform services | Planned |
-| P09 | 0.82.8 | Transform maps and color-based source assignment | Medium–large | P04, P07, P08 | Planned |
-| P10 | 0.82.9 | Complete planting recipes, substitution and browser | Medium–large | P02 plus settled P03–P09 authored settings | Planned |
+| P06 | 0.82.6 | Rectangular, staggered and hexagonal placement | Medium | P05; stable layout identities | Planned; paused before implementation |
+| P07 | 0.82.7 | Target/direction orientation controls | Medium | P06; final-transform and radius contracts | Planned |
+| P08 | 0.82.8 | True path spacing, sequences and reference placement | Medium–large | P07; shared candidate/transform services | Planned |
+| P09 | 0.82.9 | Transform maps and color-based source assignment | Medium–large | P04, P07, P08 | Planned |
+| P10 | 0.82.5 core; follow-up TBD | Complete planting recipes, substitution and browser | Medium–large | P02 plus settled P03–P09 authored settings | Static core delivered separately; later layouts/maps and browser follow-ups remain |
 | P11 | 0.83.0 | Adaptive viewport completion and production performance | Medium–large | P01–P10; existing 0.81.6/0.81.7 viewport policy | Partial baseline; new acceptance pending |
 
 Execution is sequential. Performance and correctness work are continuous inside

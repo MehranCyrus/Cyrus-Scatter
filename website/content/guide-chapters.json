@@ -64,7 +64,7 @@
           "Spacing stores the effective rule and applies an explicit override in the chosen Within this layer or Between layers scope. It does not store peer identities or change Relax/cleanup. Reset inheritance remains a separate control.",
           "Curve presets preserve samples and editable handles while retaining enable flags, widths and scale ranges. Density and Paint scale use zero-to-one values; other scale curves support multipliers. Invalid or incompatible curves are rejected. One Undo/Redo restores Apply, and closing a graph after Undo does not reapply the preset.",
           "Manual waits for Update scatter; Live follows normal update callbacks. Browsing, saving and renaming do not calculate plants. Animated or expression-controlled targets are rejected. Static shared controllers are detached so another owner is preserved.",
-          "The local library is CyrusScatter/Presets inside the per-user Max PlugCFG directory. Share the .cspreset.json files. Limits are 512 files, 64 KiB per file and 80-character names. Rename changes the library name; Delete confirms removal of the selected file. Invalid files and failed writes report errors. Complete planting recipes and asset substitution are a later feature."
+          "The local library is CyrusScatter/Presets inside the per-user Max PlugCFG directory. Share the .cspreset.json files. Limits are 512 files, 64 KiB per file and 80-character names. Rename changes the library name; Delete confirms removal of the selected file. Invalid files and failed writes report errors. Complete static recipes and explicit role substitution are available through Layers > Recipes."
         ]
       },
       {
@@ -110,10 +110,18 @@
       {
         "title": "Final artist acceptance",
         "paragraphs": [
-          "Run the 0.82.4 Max 2027 installer through Scripting > Run Script, then restart Max so the script and native modules match. This delivery is tested in Max 2027 only. Renderer and physical-input coverage remains specific to the documented workflow.",
+          "Run the 0.82.5 Max 2027 installer through Scripting > Run Script, then restart Max so the script and native modules match. This delivery is tested in Max 2027 only. Renderer and physical-input coverage remains specific to the documented workflow.",
           "Team-pilot builds expose License / activation. Export an activation request and import the returned license. The pilot license lasts 30 days from issuance; expiry locks authoring while existing scenes remain loadable/renderable.",
-          "Development source 0.82.4 uses schema 58; earlier schemas are rejected without migration. Preserve earlier scenes with their matching build. Current settings use typed distances. Preserve originals and use saved units for receiver-bound Paint/Edit data. Test receivers, Points/models, Bands, painting, mesh-channel masks, Manual/Live, Undo/Redo, save/reopen and the intended renderer on a copy. Physical picker/DPI/tablet and long-session acceptance remain open.",
+          "Development source 0.82.5 uses schema 58; earlier schemas are rejected without migration. Preserve earlier scenes with their matching build. Current settings use typed distances. Preserve originals and use saved units for receiver-bound Paint/Edit data. Test receivers, Points/models, Bands, painting, mesh-channel masks, Manual/Live, Undo/Redo, save/reopen and the intended renderer on a copy. Physical picker/DPI/tablet and long-session acceptance remain open.",
           "[View the changelog](#/changelog) for additions and fixes, or use the [testing walkthrough](#/checklist) to record your own observations."
+        ]
+      },
+      {
+        "title": "Complete planting recipes",
+        "paragraphs": [
+          "Open Layers > Recipes, select layers and use Save Everything. It includes supported static settings, native Paint with holes and disabled/empty/orphan areas, curves, Bands, sources and spacing relationships. Manual pending edits save without calculating plants.",
+          "The default recipe folder is Documents/CyrusScatter/Library. Keep each .csrecipe.json and its paint-<id>.payload folder together. Models, maps, paths, Analyzers and receivers remain external scene roles. Review every binding before Add layers or Import as a new setup. Imports receive fresh scene identities and commit as one Undo.",
+          "Paint binding needs compatible geometry, frame and saved system units. Incompatible terrain rejects the import; orphan coverage stays unbound. Authored Edit deltas, per-instance radius overrides and nonstatic Scatter parameter controllers block complete save and preserve the scene. Manual waits for Update; Live follows relevant changes. Browsing does no scattering work. Search, thumbnails, asset packaging, blending and arbitrary-terrain Paint transfer remain future work."
         ]
       }
     ]
@@ -195,7 +203,7 @@
         "title": "The product today",
         "paragraphs": [
           "The main product is artist-controlled scattering in 3ds Max: layers, receivers, models and Points, optional vector Paint Areas, layouts, area limits, transforms, spacing, previews and exact output. AI is optional and separate.",
-          "Current development source is Scatter 0.79.6 / schema 56, with publication recovery and typed distance migration checked in Max 2026/2027. The last packaged delivery remains 0.79.5. Physical input, sustained heavy scenes, full renderer/platform coverage and commercial release readiness remain separate acceptance work."
+          "Current development/package is Scatter 0.82.5 / schema 58, with complete static recipes including native Paint, explicit scene roles and transactional import. Current qualification uses Max 2027 only; Phase 6 remains paused. Physical input, sustained heavy scenes, full renderer/platform coverage and commercial release readiness remain separate acceptance work."
         ]
       },
       {
@@ -232,7 +240,7 @@
       {
         "title": "3. Build a recipe library and artist review companion",
         "paragraphs": [
-          "Let artists map plant roles to their own assets, compare deterministic variations and save approved editable recipes. Begin with curated examples."
+          "Extend the current static recipe library with search/thumbnails, curated examples and an artist review companion. Models, maps and receivers bind explicitly; asset packaging and arbitrary-terrain Paint transfer remain separate."
         ]
       },
       {
