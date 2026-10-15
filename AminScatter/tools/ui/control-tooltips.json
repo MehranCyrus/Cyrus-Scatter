@@ -40,7 +40,8 @@
     "paintedCheck": "Restrict this layer to its painted areas. Turn off to scatter across all its surfaces.",
     "addButton": "Create a named area. Painting again edits the selected area.",
     "removeButton": "Remove the selected area. Undo restores it.",
-    "targetList": "Explicit target within this layer. An area with saved paint cannot be silently retargeted."
+    "targetList": "Explicit target within this layer. An area with saved paint cannot be silently retargeted.",
+    "enabledCheck": "Enable this Paint Area's contribution to the layer."
   },
   "sourceUI": {
     "sourceName": "Label inside Scatter only. Clear it to use the scene object's name.",
@@ -82,7 +83,16 @@
     "densityButton": "Use the selected receiver UV channel: white permits candidates; black excludes them. UVs clamp to 0..1.",
     "invertCheck": "Reverse the density map's white and black eligibility.",
     "uvChannelSpin": "Receiver texture coordinates, channels 1..99. Missing or invalid mapping retains the previous complete result.",
-    "resolutionList": "Sampled map detail. Higher resolutions cost more time and memory; tiny features may need more samples. Default: 128 x 128."
+    "resolutionList": "Sampled map detail. Higher resolutions cost more time and memory; tiny features may need more samples. Default: 128 x 128.",
+    "meshCheck": "Thin this layer using values stored on each receiving mesh. Combines with Paint, texture density and slope/altitude filters.",
+    "meshChannelSpin": "0 reads vertex colors; 1..99 read numbered mesh map channels. These are values, independent of density UV coordinates.",
+    "meshComponentList": "Read one component of the selected mesh channel. Match Data Channel's Vertex Output component.",
+    "meshMinSpin": "Channel value mapped to 0 before Invert and the Density curve. Must be less than Input max.",
+    "meshMaxSpin": "Channel value mapped to 1 before Invert and the Density curve. Values outside the range clamp.",
+    "meshInvertCheck": "Reverse the normalized channel values before applying the Density curve.",
+    "meshCurveButton": "Remap normalized mesh values into planting eligibility. Left is 0; right is 1.",
+    "meshPreviewButton": "Read a snapshot of the current mask as at most 2,048 grayscale face-centre markers. White permits plants; black excludes. Refresh after edits.",
+    "meshHideButton": "Hide the cached mesh mask markers without recalculating plants."
   },
   "populationPolicyUI": {
     "populationList": "Budget evaluates the generated candidates; target makes bounded replacement attempts.",
@@ -127,7 +137,23 @@
     "detailsToggle": "Show or hide these advanced controls; their saved settings are preserved."
   },
   "brushUI": {
+    "modeRadio": "Paint adds coverage and merges overlapping strokes. Erase removes coverage and cuts holes.",
     "radiusSpin": "Distance from the brush center to its edge. A 100 mm radius paints a 200 mm wide stroke.",
+    "beginButton": "Start painting or erasing on this Paint Area's receiving surface.",
+    "stopButton": "Finish the current brush session.",
+    "fillButton": "Cover the entire receiving surface with this Paint Area.",
+    "emptyButton": "Remove all painted coverage from this area.",
+    "densitySpin": "Control this area's planting density. 100% keeps its full density before other masks and filters.",
+    "overlayMode": "Show painted borders, bounded coverage samples, or hide the Paint overlay.",
+    "overlayColor": "Set this Paint Area's viewport overlay color.",
+    "insideSpin": "Distance inside the painted border for the density and size transition. Both fade distances at zero create a hard edge.",
+    "outsideSpin": "Extend the transition beyond the painted border, within the receiving surface. Both fade distances at zero create a hard edge.",
+    "densityFade": "Gradually thin plants across the fade region using the Density curve.",
+    "densityCurve": "Shape the density transition. Left is the outer end; right is the fully interior end.",
+    "scaleFade": "Vary plant size across the fade region using Edge scale, Inner scale and the Scale curve.",
+    "scaleMin": "Outer-end size multiplier with the default curve. 0.5 means half size; 1 means unchanged. Must not exceed Inner scale.",
+    "scaleMax": "Interior size multiplier with the default curve. 1 means unchanged; 2 means double size. Must be at least Edge scale.",
+    "scaleCurve": "Shape the size transition. Left is the outer end; right is the fully interior end.",
     "exportSpline": "Export this area's closed contours and holes as an independent editable spline on the receiver's local XY plane (local Z=0). Keeps the Paint Area; selects the snapshot. Stop the brush first.",
     "importMode": "Replace this area's coverage, or union imported coverage with it. Closed loops use even-odd fill and project along receiver-local Z. Source spline is preserved.",
     "splineTolerance": "Maximum projected curve approximation error in world units. Smaller values create more vertices; import is limited to 8,192 samples. The receiver's Paint precision also sets a minimum.",

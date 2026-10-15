@@ -1,0 +1,480 @@
+{
+  "checked_date": "2026-10-15",
+  "checked_utc": "2026-10-15T09:03:04.786876+00:00",
+  "scope": "Nine original GitHub references, installed native-analysis stack and associated research. Scoped checks, not a full disk/software inventory.",
+  "git": {
+    "branch": "codex/workflow-0.75",
+    "head": "604e3aa3fd1c84c5ef128dc564f4abaf6f4978e4",
+    "status": " M .agents/skills/cyrus-scatter-engineering/SKILL.md\n M AGENTS.md\n M AminScatter/CMakeLists.txt\n M AminScatter/scripts/AminScatterObject.ms\n M AminScatter/src/max_bridge.cpp\n M AminScatter/tools/ui/approved-layout-manifest.json\n M AminScatter/tools/ui/approved-layout-rows.cjs\n M AminScatter/tools/ui/approved-layout.cjs\n M AminScatter/tools/ui/control-tooltips.json\n M AminScatter/tools/ui/layers-control-inventory.json\n M AminScatter/tools/ui/templates/approved-main-ui.ms\n M AminScatter/tools/ui/templates/unified-core.ms\n M CyrusMCP/cyrus_mcp/feature-catalog.json\n M CyrusMCP/tests/test_feature_catalog.py\n M README.md\n M docs/AGENT_WORKFLOW.md\n M docs/ARTIST_GUIDE.md\n M docs/BACKLOG.md\n M docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md\n M docs/Max_2027_Installation.md\n M docs/README.md\n M docs/Release_Versioning.md\n M docs/plans/eleven-phase-roadmap/IMPLEMENTATION.md\n M docs/plans/eleven-phase-roadmap/P02.md\n M docs/plans/eleven-phase-roadmap/P03.md\n M docs/plans/eleven-phase-roadmap/P04.md\n M docs/plans/eleven-phase-roadmap/P05.md\n M docs/plans/eleven-phase-roadmap/README.md\n M docs/plans/eleven-phase-roadmap/TODO.md\n M docs/plans/eleven-phase-roadmap/VALIDATION.md\n M tools/build_max.py\n M tools/eleven_phases/README.md\n M tools/eleven_phases/phase03_saved_baseline.ms\n M tools/eleven_phases/phase04_edit_saved.ms\n M tools/procedural_lab/build_feature_catalog.py\n M tools/procedural_lab/check_generated.py\n M tools/spline_bands/palette_capture_host.py\n M website/content/changelog.json\n M website/content/control-explanations.json\n M website/content/guide-chapters.json\n M website/content/source-manifest.json\n M website/src/content/reference.json\n M website/verification/react-static-checks.json\n?? AminScatter/include/mesh_density.h\n?? AminScatter/src/mesh_density.cpp\n?? AminScatter/src/mesh_density_bridge.inc\n?? AminScatter/tests/mesh_density_tests.cpp\n?? LOGO.psd\n?? \"Landing Page Design/\"\n?? docs/GitHub_Tools_Inventory_2026-10-15/\n?? docs/How_Forest_Works/\n?? docs/plans/eleven-phase-roadmap/ARTIST_ACCEPTANCE_0822.md\n?? docs/plans/eleven-phase-roadmap/INSTALLATION_0822.md\n?? docs/plans/eleven-phase-roadmap/MESH_MASK_0824.md\n?? docs/plans/eleven-phase-roadmap/PERFORMANCE_0823.md\n?? tools/feature_demo_0824/\n?? tools/mesh_density_mask/\n?? tools/performance/live_idle/\n?? tools/rag/challenge-v4.json\n?? tools/rag/challenge-v5.json\n?? tools/rag/challenge-v6.json\n?? tools/rag/corpus-v4.json\n?? tools/rag/corpus-v5.json\n?? tools/rag/corpus-v6.json\n?? tools/rag/evaluation-original-v4.json\n?? tools/rag/evaluation-original-v5.json\n?? tools/rag/evaluation-original-v6.json\n?? tools/rag/evaluation-revised-v4.json\n?? tools/rag/evaluation-revised-v5.json\n?? tools/rag/evaluation-revised-v6.json\n?? tools/rag/review-v4.json\n?? tools/rag/review-v5.json\n?? tools/rag/review-v6-completion.json\n?? tools/rag/review-v6.json\n?? tools/rag/review-v7.json\n?? tools/terrace_0815/\n?? tools/viewport_0816/\n?? tools/viewport_0817/\n?? website/prototypes/\n"
+  },
+  "configured_versions": {
+    "ghidra": "12.1.4",
+    "java": "21",
+    "ghidra-mcp": "6.0.0"
+  },
+  "verified_ghidra_version": "12.1.4",
+  "verified_java_version": "21.0.12.1+1-LTS",
+  "files": [
+    {
+      "path": "C:/Users/Mehran/Documents/ChatGPT/Play/tyflow-analysis/tools.json",
+      "exists": true,
+      "kind": "file",
+      "bytes": 569,
+      "sha256": "d08a7d882abe10b3d76108a8035377105bd8caa3bee97910b6537fe3003ba7f0"
+    },
+    {
+      "path": "C:/Users/Mehran/Documents/ChatGPT/Play/tyflow-analysis/tools/ghidra/ghidra_12.1.4_PUBLIC",
+      "exists": true,
+      "kind": "directory"
+    },
+    {
+      "path": "C:/Users/Mehran/Documents/ChatGPT/Play/tyflow-analysis/tools/ghidra/ghidra_12.1.4_PUBLIC/ghidraRun.bat",
+      "exists": true,
+      "kind": "file",
+      "bytes": 1531,
+      "sha256": "9374c936fc8c2e4f59bd85760c7b32ca5498cad6852672dbd68162823cdb1357"
+    },
+    {
+      "path": "C:/Users/Mehran/Documents/ChatGPT/Play/tyflow-analysis/tools/ghidra/ghidra_12.1.4_PUBLIC/support/analyzeHeadless.bat",
+      "exists": true,
+      "kind": "file",
+      "bytes": 2930,
+      "sha256": "dd7b9d17d32ed70a71df82a43a21cdaed6c4ce67064e30f8642c149f81c2ae07"
+    },
+    {
+      "path": "C:/Users/Mehran/Documents/ChatGPT/Play/tyflow-analysis/tools/ghidra/ghidra_12.1.4_PUBLIC/GettingStarted.md",
+      "exists": true,
+      "kind": "file",
+      "bytes": 26090,
+      "sha256": "e3e9b10a30f5792617fcbb8c5d1a17cf36ae1cac399a50bd0fd2b90f19cf0f36"
+    },
+    {
+      "path": "C:/Users/Mehran/Documents/ChatGPT/Play/tyflow-analysis/tools/ghidra/ghidra_12.1.4_PUBLIC/GettingStarted.html",
+      "exists": true,
+      "kind": "file",
+      "bytes": 38438,
+      "sha256": "ca8f454f7eff432a6ec035653a2726a016719426693566ec2bb83cd9e1824a66"
+    },
+    {
+      "path": "C:/Users/Mehran/Documents/ChatGPT/Play/tyflow-analysis/tools/ghidra/ghidra_12.1.4_PUBLIC/docs/CheatSheet.html",
+      "exists": true,
+      "kind": "file",
+      "bytes": 22005,
+      "sha256": "d1018c292efdc7f3c8a19ad5537f80fe7d71bf2c41cc8b71039287aa259bf9af"
+    },
+    {
+      "path": "C:/Users/Mehran/Documents/ChatGPT/Play/tyflow-analysis/tools/ghidra/ghidra_12.1.4_PUBLIC/docs/GhidraAPI_javadoc.zip",
+      "exists": true,
+      "kind": "file",
+      "bytes": 53778237
+    },
+    {
+      "path": "C:/Users/Mehran/Documents/ChatGPT/Play/tyflow-analysis/tools/ghidra/ghidra_12.1.4_PUBLIC/docs/README_PDB.html",
+      "exists": true,
+      "kind": "file",
+      "bytes": 6102,
+      "sha256": "48729ddd81296e7ca699008dbe48ff5d314e429a71fe81cc48b410f2d48f04db"
+    },
+    {
+      "path": "C:/Users/Mehran/Documents/ChatGPT/Play/tyflow-analysis/tools/ghidra/ghidra_12.1.4_PUBLIC/Ghidra/application.properties",
+      "exists": true,
+      "kind": "file",
+      "bytes": 659,
+      "sha256": "e84c26b08545eee63d24a1a8a4dd7905e4209538e2e7192093877c435c64eb67"
+    },
+    {
+      "path": "C:/Users/Mehran/Documents/ChatGPT/Play/tyflow-analysis/tools/java/jdk-21.0.12.1+1",
+      "exists": true,
+      "kind": "directory"
+    },
+    {
+      "path": "C:/Users/Mehran/Documents/ChatGPT/Play/tyflow-analysis/tools/java/jdk-21.0.12.1+1/bin/java.exe",
+      "exists": true,
+      "kind": "file",
+      "bytes": 50304,
+      "sha256": "82051fdab26319d77d20cc0065045d05ec00b3e3d05f44935d7c06b96b621d55"
+    },
+    {
+      "path": "C:/Users/Mehran/Documents/ChatGPT/Play/tyflow-analysis/tools/java/jdk-21.0.12.1+1/release",
+      "exists": true,
+      "kind": "file",
+      "bytes": 1664,
+      "sha256": "07117c72ce033949c14878e07fbf2fe23f59a1f8c90a6d1351b5c89099847ce7"
+    },
+    {
+      "path": "C:/Users/Mehran/Documents/ChatGPT/Play/tyflow-analysis/tools/ghidra-mcp/GhidraMCP/lib/GhidraMCP-6.0.0.jar",
+      "exists": true,
+      "kind": "file",
+      "bytes": 739004,
+      "sha256": "b652a23b433786ac2e51e650fb6020cfdbb8743db6f58f16531fcac010d13522"
+    },
+    {
+      "path": "C:/Users/Mehran/Documents/ChatGPT/Play/tyflow-analysis/tools/ghidra-mcp/GhidraMCP/extension.properties",
+      "exists": true,
+      "kind": "file",
+      "bytes": 315,
+      "sha256": "6ae305b33671b98aec4c0a58900685d17910a7526a4b6e38e10d3f2e62e9234a"
+    },
+    {
+      "path": "C:/Users/Mehran/Documents/ChatGPT/Play/tyflow-analysis/tools/downloads/GhidraMCP-6.0.0.zip",
+      "exists": true,
+      "kind": "file",
+      "bytes": 728120,
+      "sha256": "867731de27d5143632a010943b907a6485dd54d0e19729e2f85ee9f692c99873"
+    },
+    {
+      "path": "C:/Users/Mehran/Documents/ChatGPT/Play/tyflow-analysis/tools/downloads/ghidra_mcp_bridge-6.0.0-py3-none-any.whl",
+      "exists": true,
+      "kind": "file",
+      "bytes": 67283,
+      "sha256": "71939a890009826664720166d8f786f3a2ea2460f7effcd83c73759ba4241334"
+    },
+    {
+      "path": "C:/Users/Mehran/Documents/ChatGPT/Play/tyflow-analysis/tools/downloads/ghidra.zip",
+      "exists": true,
+      "kind": "file",
+      "bytes": 569649598
+    },
+    {
+      "path": "C:/Users/Mehran/Documents/ChatGPT/Play/tyflow-analysis/tools/downloads/jdk21.zip",
+      "exists": true,
+      "kind": "file",
+      "bytes": 205073461
+    },
+    {
+      "path": "C:/Users/Mehran/Documents/ChatGPT/Play/tyflow-analysis/tools/reference-source",
+      "exists": true,
+      "kind": "directory"
+    },
+    {
+      "path": "C:/Users/Mehran/Documents/ChatGPT/Play/tyflow-analysis/start_headless.py",
+      "exists": true,
+      "kind": "file",
+      "bytes": 1806,
+      "sha256": "590faeced2658ed10a8d6e604635f25e615381b8763e924fa1121f88b3f2e0b7"
+    },
+    {
+      "path": "C:/Users/Mehran/Documents/ChatGPT/Play/tyflow-analysis/mcp_request.py",
+      "exists": true,
+      "kind": "file",
+      "bytes": 1795,
+      "sha256": "c739af83f5289241a758b2c067df9072dee1c4f14436c4c07fe9d6c419c121f0"
+    },
+    {
+      "path": "C:/Users/Mehran/Documents/ChatGPT/Play/tyflow-analysis/prepare_tools.py",
+      "exists": true,
+      "kind": "file",
+      "bytes": 3785,
+      "sha256": "6526022576600c6ed9d3f430396973e68b98948746cc9800f8a3e07f8cab3313"
+    },
+    {
+      "path": "C:/Users/Mehran/Documents/ChatGPT/Play/tyflow-analysis/inspect_pe.py",
+      "exists": true,
+      "kind": "file",
+      "bytes": 11056,
+      "sha256": "8ba8b607a7a4f47a431c7afaf7326651f463178fe2fb32eb030a9dbed3e32003"
+    },
+    {
+      "path": "C:/Users/Mehran/Documents/ChatGPT/Play/tyflow-analysis/FULL-HANDOFF-REPORT.txt",
+      "exists": true,
+      "kind": "file",
+      "bytes": 48585,
+      "sha256": "5cadd8400cdbeddd82b900973c172dfcd8cc5167617a4e091f84c0eb078873bf"
+    },
+    {
+      "path": "C:/Users/Mehran/Documents/ChatGPT/Play/tyflow-analysis/decompilation-findings.txt",
+      "exists": true,
+      "kind": "file",
+      "bytes": 7915,
+      "sha256": "febf8299f04ab534105f1021aefacf051e1ab683f8e95eb3822b4252adebbbcd"
+    },
+    {
+      "path": "C:/Users/Mehran/Documents/ChatGPT/Play/tyflow-analysis/mcp-schema.json",
+      "exists": true,
+      "kind": "file",
+      "bytes": 190351,
+      "sha256": "29b8cbfdd9e1f67c45eb95becf0b75e81557afb5e07b043f7fa4078a6daef9d1"
+    },
+    {
+      "path": "C:/Users/Mehran/Documents/ChatGPT/Play/tyflow-analysis/projects/tyFlowArchitecture.gpr",
+      "exists": true,
+      "kind": "file",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:/Users/Mehran/Documents/ChatGPT/Play/tyflow-analysis/projects/tyFlowArchitecture.rep",
+      "exists": true,
+      "kind": "directory"
+    },
+    {
+      "path": "C:/Users/Mehran/Documents/ChatGPT/Play/tyflow-analysis/decompiled",
+      "exists": true,
+      "kind": "directory"
+    },
+    {
+      "path": "C:/Users/Mehran/Documents/ChatGPT/Play/tyflow-analysis/inputs/tyFlow_2027.dlo",
+      "exists": true,
+      "kind": "file",
+      "bytes": 650320384
+    },
+    {
+      "path": "C:/Users/Mehran/Documents/ChatGPT/Play/tyflow-analysis/research-20261006",
+      "exists": true,
+      "kind": "directory"
+    },
+    {
+      "path": "C:/Users/Mehran/Documents/ChatGPT/Play/tyflow-analysis/research-072-rnd-20261006",
+      "exists": true,
+      "kind": "directory"
+    },
+    {
+      "path": "F:/Cursor/_Cyrus_Apps/CyrusScatter/docs/TyFlow_Architecture_Research_2026-10-06/README.md",
+      "exists": true,
+      "kind": "file",
+      "bytes": 5159,
+      "sha256": "e912709f9cbd79cd4d793de460b42b0605a2e0721fecb3b02672cba611d52d0e"
+    },
+    {
+      "path": "F:/Cursor/_Cyrus_Apps/CyrusScatter/docs/TyFlow_Architecture_Research_2026-10-06/CONTINUATION.md",
+      "exists": true,
+      "kind": "file",
+      "bytes": 4383,
+      "sha256": "74c40e36390ed4608776e54e92a48fa9cbc49abbcdd68d2516f04925f884eeca"
+    },
+    {
+      "path": "F:/Cursor/_Cyrus_Apps/CyrusScatter/docs/TyFlow_CyrusScatter_RnD_2026-10-06/README.md",
+      "exists": true,
+      "kind": "file",
+      "bytes": 6494,
+      "sha256": "9b1d0e4cb9ce9178035ccebfa0329cfc9b0e545e4d216c72ba6dab20e3927b63"
+    },
+    {
+      "path": "F:/Cursor/_Cyrus_Apps/CyrusScatter/docs/ForestPack_Research_2026-10-08/README.md",
+      "exists": true,
+      "kind": "file",
+      "bytes": 4859,
+      "sha256": "bff930934cb4b4bb2cbd17fd0ff52d1d85c995fe937bb1e14c7af337d6794ce5"
+    },
+    {
+      "path": "F:/Cursor/_Cyrus_Apps/CyrusScatter/docs/ForestPack_Research_2026-10-08/HANDOFF.md",
+      "exists": true,
+      "kind": "file",
+      "bytes": 5238,
+      "sha256": "776fa8cce76cdfc38469b28b2ad04dcd2004deef9446c04f165f09b862574fbd"
+    },
+    {
+      "path": "F:/Cursor/_Cyrus_Apps/CyrusScatter/docs/ForestPack_Research_2026-10-08/brush/README.md",
+      "exists": true,
+      "kind": "file",
+      "bytes": 6317,
+      "sha256": "b26dd0bce12983b60266d643e31c38f2e1b658a90197b8b13a1ead1aed094653"
+    },
+    {
+      "path": "F:/Cursor/_Cyrus_Apps/CyrusScatter/docs/Vendor_Surface_Paint_Research_2026-10-09/README.md",
+      "exists": true,
+      "kind": "file",
+      "bytes": 25593,
+      "sha256": "023b9139f838dede16dc556c9f6a6d0d6170ea6a9fd06b29418ebd977f763f24"
+    },
+    {
+      "path": "F:/Cursor/_Cyrus_Apps/CyrusScatter/docs/Vendor_Native_Deep_Research_2026-10-09/README.md",
+      "exists": true,
+      "kind": "file",
+      "bytes": 14360,
+      "sha256": "56dea07183f9b5d72288d96b068198c57e6ffbd497dece0266eafe67d5464430"
+    },
+    {
+      "path": "F:/Cursor/_Cyrus_Apps/CyrusScatter/docs/Vendor_Native_Deep_Research_2026-10-09/CODE_MAP.md",
+      "exists": true,
+      "kind": "file",
+      "bytes": 8227,
+      "sha256": "5b4cdbb9cea89f2e76a22bae12c20ec9dac2684ce5abc2ee4090cf4471f998bc"
+    },
+    {
+      "path": "F:/Cursor/_Cyrus_Apps/CyrusScatter/docs/Vendor_Native_Deep_Research_2026-10-09/reproduce/README.md",
+      "exists": true,
+      "kind": "file",
+      "bytes": 8049,
+      "sha256": "f72bb15f1e10eb2a3cc6e91c0dac66c8f4c4d884f15f6f608e3e73ecb0399f5d"
+    },
+    {
+      "path": "F:/Cursor/_Cyrus_Apps/CyrusScatter/docs/Vendor_Native_Deep_Research_2026-10-09/reproduce/prepare_projects.py",
+      "exists": true,
+      "kind": "file",
+      "bytes": 1937,
+      "sha256": "c663752b80679c8e7918fc036341bc8333701a46e397eacbac0a4b96c02db103"
+    },
+    {
+      "path": "F:/Cursor/_Cyrus_Apps/CyrusScatter/docs/ForestPack_Research_2026-10-08/reproduce/backend.py",
+      "exists": true,
+      "kind": "file",
+      "bytes": 3885,
+      "sha256": "54fda10cf14f4960a27ccee8a8c0421b972b77b4fb1c77dc0ef5648b876d212a"
+    },
+    {
+      "path": "F:/Cursor/_Cyrus_Apps/CyrusScatter/docs/ForestPack_Research_2026-10-08/reproduce/export_selected.py",
+      "exists": true,
+      "kind": "file",
+      "bytes": 5216,
+      "sha256": "c32c38cd772b18a0df767eb4ec8f3e5bb675e4e2a2f0f3057f90bf479ae967d1"
+    },
+    {
+      "path": "F:/Cursor/_Cyrus_Apps/CyrusScatter/docs/TyFlow_Architecture_Research_2026-10-06/reproduce/static_pe.py",
+      "exists": true,
+      "kind": "file",
+      "bytes": 12661,
+      "sha256": "9c5666534a25058159f73cdbb1d230499d0397c2e7fb021bb861ef81fdc061bd"
+    },
+    {
+      "path": "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/forestpack-research-20261008-01",
+      "exists": true,
+      "kind": "directory"
+    },
+    {
+      "path": "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/forest-brush-research-20261008-01",
+      "exists": true,
+      "kind": "directory"
+    },
+    {
+      "path": "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vendor-surface-paint-20261009-01",
+      "exists": true,
+      "kind": "directory"
+    },
+    {
+      "path": "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vendor-native-deep-20261009-01",
+      "exists": true,
+      "kind": "directory"
+    },
+    {
+      "path": "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vendor-native-deep-20261009-01/projects/ChaosOwnership.gpr",
+      "exists": true,
+      "kind": "file",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vendor-native-deep-20261009-01/projects/ChaosOwnership.rep",
+      "exists": true,
+      "kind": "directory"
+    },
+    {
+      "path": "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vendor-native-deep-20261009-01/projects/ReceivingSurfaceCore.gpr",
+      "exists": true,
+      "kind": "file",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vendor-native-deep-20261009-01/projects/ReceivingSurfaceCore.rep",
+      "exists": true,
+      "kind": "directory"
+    },
+    {
+      "path": "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vendor-native-deep-20261009-01/projects/ForestPack943.gpr",
+      "exists": true,
+      "kind": "file",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "F:/Cursor/_Cyrus_Apps/CyrusScatter/build/vendor-native-deep-20261009-01/projects/ForestPack943.rep",
+      "exists": true,
+      "kind": "directory"
+    }
+  ],
+  "path_commands": {
+    "ida.exe": null,
+    "ida64.exe": null,
+    "idat.exe": null,
+    "idat64.exe": null,
+    "ILSpy.exe": null,
+    "ilspycmd.exe": null,
+    "Cpp2IL.exe": null,
+    "Cpp2IL-Win.exe": null,
+    "rea.cmd": null,
+    "rea": null,
+    "um.exe": null,
+    "um.cmd": null,
+    "um": null
+  },
+  "checked_directory_roots": [
+    "C:/Program Files",
+    "C:/Program Files (x86)",
+    "C:/Users/Mehran/AppData/Local/Programs",
+    "C:/Users/Mehran/Downloads",
+    "C:/Users/Mehran/Documents/ChatGPT/Play",
+    "F:/Cursor/_Cyrus_Apps"
+  ],
+  "matching_top_level_directories": [],
+  "checked_candidate_commands": [
+    {
+      "path": "C:/Users/Mehran/AppData/Roaming/npm/rea.cmd",
+      "exists": false,
+      "kind": "file"
+    },
+    {
+      "path": "C:/Users/Mehran/AppData/Roaming/npm/um.cmd",
+      "exists": false,
+      "kind": "file"
+    },
+    {
+      "path": "C:/Users/Mehran/.dotnet/tools/ilspycmd.exe",
+      "exists": false,
+      "kind": "file"
+    },
+    {
+      "path": "C:/Users/Mehran/.dotnet/tools/Cpp2IL.exe",
+      "exists": false,
+      "kind": "file"
+    }
+  ],
+  "current_python_related_distributions": [],
+  "localhost_ports": {
+    "18089": {
+      "connectable": false
+    },
+    "18091": {
+      "connectable": false
+    }
+  },
+  "archive_metadata": {
+    "GhidraMCP-6.0.0.zip": {
+      "entries": [
+        "GhidraMCP/",
+        "GhidraMCP/lib/",
+        "GhidraMCP/extension.properties",
+        "GhidraMCP/Module.manifest",
+        "GhidraMCP/lib/GhidraMCP-6.0.0.jar"
+      ],
+      "integrity_error": null
+    },
+    "ghidra_mcp_bridge-6.0.0-py3-none-any.whl": {
+      "entries": [
+        "bridge_mcp_ghidra/__init__.py",
+        "bridge_mcp_ghidra/__main__.py",
+        "bridge_mcp_ghidra/cli.py",
+        "bridge_mcp_ghidra/config.py",
+        "bridge_mcp_ghidra/debugger.py",
+        "bridge_mcp_ghidra/discovery.py",
+        "bridge_mcp_ghidra/dispatch.py",
+        "bridge_mcp_ghidra/registry.py",
+        "bridge_mcp_ghidra/schema.py",
+        "bridge_mcp_ghidra/server.py",
+        "bridge_mcp_ghidra/state.py",
+        "bridge_mcp_ghidra/static_tools.py",
+        "bridge_mcp_ghidra/transport.py",
+        "bridge_mcp_ghidra/validation.py",
+        "ghidra_mcp_bridge-6.0.0.dist-info/METADATA",
+        "ghidra_mcp_bridge-6.0.0.dist-info/WHEEL",
+        "ghidra_mcp_bridge-6.0.0.dist-info/entry_points.txt",
+        "ghidra_mcp_bridge-6.0.0.dist-info/licenses/LICENSE",
+        "ghidra_mcp_bridge-6.0.0.dist-info/licenses/NOTICE",
+        "ghidra_mcp_bridge-6.0.0.dist-info/RECORD"
+      ],
+      "integrity_error": null
+    }
+  },
+  "runtime_limit": "No backend, Max host or vendor binary launched. Historical successful analysis is documented separately; presence is not a fresh runtime pass.",
+  "not_found_limit": "No other eight tool installations identified in checked locations/PATH. This does not prove absence from every disk, environment or application profile."
+}

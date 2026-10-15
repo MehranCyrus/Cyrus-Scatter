@@ -2,8 +2,8 @@
 
 | Domain | Current value | Meaning |
 | --- | --- | --- |
-| Scatter UI | 0.85.0 | Paint/spline conversion; qualification in P05 |
-| Scatter native/package | 0.85.0 native candidate / 0.81.6 installed | Matched private P05 builds; no new package or normal installation |
+| Scatter UI | 0.82.4 | User-selected mesh channel mask and Paint help successor; Phase 6 remains paused |
+| Scatter native/package | 0.82.4 packaged for Max 2027; historical installation receipts preserved | Package hashes and scoped Max 2027 qualification are in the mesh mask handoff; manual installation is separate |
 | Saved MAXScript schema | 58 | Independent saved Band scale profiles; current-only scenes, no earlier-schema migration |
 | Calculation model | CyrusUnified1 | Current procedural model |
 | Surface Analyzer | 0.14 | Independently versioned product |
@@ -13,17 +13,25 @@
 
 ## Choosing the next version
 
-Use three integer components, `MAJOR.MINOR.PATCH`, for new Scatter deliveries. Versions are ordered labels, not decimal numbers: `0.80.0` to `0.81.0` increments the minor component once; `0.80.0` to `0.90.0` skips nine minor labels. Assess the complete change since the last delivered build before selecting a version. Artist-visible capability, changed behavior contracts and saved-data requirements determine the choice; time spent, lines changed and file counts do not determine it alone.
+Use three integer components, `0.MINOR.PATCH`, with the user's **small-step
+development sequence**. Advance PATCH by one through 9; after PATCH 9, advance
+MINOR by one and reset PATCH to 0. Example: `0.81.8 → 0.81.9 → 0.82.0 → 0.82.1`.
+New features follow this same sequence. Do not jump to the next minor solely
+because a phase adds a feature. Larger jumps require an explicit user-selected
+milestone. This rule supersedes the earlier feature-based minor-bump policy.
 
-| Delivered change | Version decision | Example from 0.80.0 |
+| Delivered change | Version decision | Example |
 | --- | --- | --- |
-| Documentation, tests or internal refactoring with no delivered behavior or package change | No product bump | Remain 0.80.0 |
-| Bounded bug fix, UI correction or performance improvement preserving the intended behavior and saved-data contract | Next patch | 0.80.1 |
-| New coherent feature, substantial artist workflow, or intentional behavior/saved-data contract change | Next minor; reset patch to zero | 0.81.0 |
-| Larger named product milestone | Normally next minor; use a larger jump only when explicitly selected in the agreed roadmap, with a recorded reason | 0.90.0 only as a deliberate milestone |
+| Documentation/tests only, without a changed delivery | No product bump | Remain 0.82.2 |
+| Fix, performance improvement or new feature delivery | Next small step | 0.82.2 → 0.82.3 |
+| Last PATCH digit is 9 | Carry into the next MINOR | 0.82.9 → 0.83.0 |
+| Larger named product milestone | Explicit user-selected label and recorded reason | No automatic jump |
 | Publication readiness | 1.0.0 only after the release acceptance gates are met | Never inferred from work volume |
 
-For a mixed delivery, use the highest-impact applicable category. For example, Band/falloff capabilities and a changed saved schema justify a minor development milestone; a subsequent first-click or hover fix normally warrants a patch. These rules apply to future deliveries; do not rename the existing 0.80.0 packages or historical receipts.
+Assess and record the full delivery's behavior and saved-data impact separately
+from its version increment. Schema/native capability changes use their own
+identifiers. Preserve original package names, Git commits, hashes and test
+receipts when correcting development labels.
 
 Development versions before 1.0 do not promise compatibility with earlier scenes. Record deliberate current-only schema changes and their artist consequences; a version bump does not authorize migration shims or legacy paths. Schema/interface identifiers change only when their contracts change. Analyzer, MCP and the website's own package version remain independent of Scatter.
 
@@ -33,31 +41,54 @@ When a bump is within the authorized task, align the Scatter UI template and gen
 
 ## Current and historical evidence
 
-0.85.0 adds Paint-to-spline snapshots and closed-spline Replace/Add import. This
-new editing workflow warrants the next minor. Brush conversion capability 1
-requires the matching script/native pair; schema 58 and saved vector payloads
-are unchanged. Detached snapshot deletion no longer invalidates ordinary layers;
-published dependency handles preserve real deletion and failure behavior.
-See [P05](plans/eleven-phase-roadmap/P05.md).
+The user selected **0.82.4** on 15 October for mesh channel density and Paint
+tooltips. This is a separate feature delivery while Phase 6 stays paused. It adds
+neutral, layer-owned saved fields and native mesh-density capability 1, retaining
+schema 58, registration identities, Edit geometry bindings and independent product
+versions. See the [mask handoff](plans/eleven-phase-roadmap/MESH_MASK_0824.md) for
+exact inputs, Max 2027 tests and the runnable package. P06-P11 now plan
+0.82.5-0.83.0. No normal-profile installation is part of this task.
 
-0.84.0 adds selectable UV channels and density-map resolution with per-layer bake
-reuse. This new artist feature warrants a minor version. Schema 58 keeps channel 1
-and 128-square defaults. Density capability 1 and the twelve-field generation
-options require matching native/script bytes. See [P04](plans/eleven-phase-roadmap/P04.md).
+The user selected **0.82.3** on 14 October for the idle, interaction and panel
+performance correction. At that delivery, planned P06-P11 labels shifted to
+0.82.4-0.82.9; the later mask delivery supersedes that schedule. Saved schema 58, calculation policy and
+independently versioned products remain unchanged. See the
+[performance handoff](plans/eleven-phase-roadmap/PERFORMANCE_0823.md) for exact
+qualification and the subsequent verified installer. The 0.82.3 package is ready
+for the user to run; this task did not replace the normal 0.82.2 installation.
 
-0.82.0 is the next minor for named population, transform, spacing and curve
-presets. Format/codec 1 is new; schema 58 and the existing native interfaces are
-unchanged. Typed local files, physical-unit conversion and one-Undo Apply are
-covered by the [P02 record](plans/eleven-phase-roadmap/P02.md). This is a source
-checkpoint, with final artist acceptance pending and no new installation.
+The user confirmed on 14 October 2026 that Phase 1 starts at **0.81.8**, following
+the separately recorded 0.81.7 viewport correction. Phase 5 therefore becomes
+**0.82.2**. This correction changes labels and metadata; the five implemented
+feature scopes and schema 58 remain unchanged. See the mapping below and
+[P05](plans/eleven-phase-roadmap/P05.md) for the new compilation receipt.
 
+## Eleven-phase numbering
 
-0.81.8 is a patch for workflow and cached-result feedback. It distinguishes
-accepted placements from prepared display samples, identifies the named layer,
-and corrects the generated callback guard and first-result status. Placement
-policy, schema 58 and native interfaces remain unchanged. The [Phase 1 record](plans/eleven-phase-roadmap/P01.md)
-tracks exact iterations, passing evidence and remaining acceptance. This source
-version does not establish phase completion, a package or installation.
+| Phase | Corrected version | Feature | Original qualified label / status |
+| --- | --- | --- | --- |
+| P01 | 0.81.8 | Workflow and feedback | 0.81.8; implemented |
+| P02 | 0.81.9 | Settings and curve presets | 0.82.0; implemented |
+| P03 | 0.82.0 | Slope and altitude | 0.83.0; implemented |
+| P04 | 0.82.1 | Density map controls | 0.84.0; implemented |
+| P05 | 0.82.2 | Paint/spline conversion | 0.85.0; implemented |
+| P06 | 0.82.5 | Regular grids | Planned; implementation paused |
+| P07 | 0.82.6 | Direction controls | Planned |
+| P08 | 0.82.7 | Paths, sequences and references | Planned |
+| P09 | 0.82.8 | Transform and assignment maps | Planned |
+| P10 | 0.82.9 | Recipes and browser | Planned |
+| P11 | 0.83.0 | Adaptive viewport completion | Planned |
+
+Future labels are planned checkpoints, not completed releases. Record a revised
+schedule if an additional delivery consumes a step. Original qualified labels
+remain on their existing receipts, builds and commits; identify them by phase and
+hash because a corrected label can overlap an earlier phase's original label.
+The preceding 0.82.2 source was rebuilt, packaged and installed on disk for Max 2027
+only; see the [delivery record](plans/eleven-phase-roadmap/INSTALLATION_0822.md).
+Restart Max 2027 to load the complete new pair. Max 2026 retains 0.81.6, and
+independently versioned products are unchanged.
+
+## Earlier development evidence
 
 0.81.7 is a patch for zero-limit Point Cloud transitions and memory accumulation
 during repeated display-mode changes. Saved schema 58, placement policy, Band
@@ -126,7 +157,7 @@ Before delivery, regenerate UI, run appropriate offline/native/host checks, pack
 
 - **0.79.1**: Point identities and direct spline assignment, separate source-container section, accessible source/falloff controls and area-selection fixes. Retains schema 55 and the 0.79 team licensing authority; Analyzer 0.14 and MCP 0.73.0 are independently versioned. See the [focused qualification](Point_Workflow_0.79.1_2026-10-11/README.md).
 
-## P03 development decision — 14 October 2026
+## Original P03 development decision — superseded numbering, 14 October 2026
 
 0.82.0 to 0.83.0 adds per-layer slope/altitude eligibility and inside fades, with
 protected Edit behavior and independent random thinning. This coherent feature

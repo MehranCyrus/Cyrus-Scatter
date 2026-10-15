@@ -15,7 +15,10 @@ python tools/eleven_phases/launch.py foundation-roadmap-p01-max2027-03 --native 
 The launcher checks the native receipt against all current source inputs, checks
 the four native module hashes, and verifies loaded module paths. It does not
 install into the normal Max profile. Optional `--visible` is for a requested
-interactive/visual witness. Run Max 2026 with its own matching build/profile.
+interactive/visual witness. Current development and qualification use Max 2027
+only; Max 2026 work requires a new explicit user request. Historical dual-version
+receipts retain their original labels and identities. Corrected phase numbers are
+listed in the [version policy](../../docs/Release_Versioning.md#eleven-phase-numbering).
 
 Once the host is ready, submit each fixture separately and inspect its correlated
 completion before submitting another. A timeout does not cancel the request.

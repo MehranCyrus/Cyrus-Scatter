@@ -23,6 +23,12 @@ Prefer a causal fix over a stylistic rewrite. No repository-wide formatter/linte
 
 ## 3. Generate and test at the right level
 
+The user's current testing rule is **Max 2027 only**, including SDK builds,
+native tests, host automation, Computer Use and performance qualification. Max
+2026 work requires a new explicit user request. This supersedes older dual-version
+requirements in plans and historical campaigns. Preserve their original results;
+label new qualification with the actual Max 2027 environment.
+
 All paths below are relative to the repository root. Node, Python and the documented native toolchain must be available. The existing MCP test environment is local/ignored; consult [MCP setup](../CyrusMCP/README.md) if absent, rather than assuming a clean checkout includes it.
 
 For authoritative MAXScript/UI edits:
@@ -43,8 +49,8 @@ Use unused output directories (replace `agent-review` with a unique run name):
 ```powershell
 python tools/procedural_lab/check_generated.py --output build/agent-review/generated
 build/mcp-venv/Scripts/python.exe -m pytest CyrusMCP/tests tools/tests -q
-python tools/procedural_lab/offline_build.py --project scatter --output build/agent-review/scatter
-python tools/procedural_lab/offline_build.py --project analyzer --output build/agent-review/analyzer
+python tools/procedural_lab/offline_build.py --project scatter --year 2027 --output build/agent-review/scatter
+python tools/procedural_lab/offline_build.py --project analyzer --year 2027 --output build/agent-review/analyzer
 ```
 
 Focused examples: append `-k 'diagnostic'` to the pytest command; after a successful Scatter build, run `ctest --test-dir build/agent-review/scatter -R '^scatter_procedural$' --output-on-failure`. The offline builder currently expects MSVC 14.38.33130 and Windows SDK 10.0.19041.0 through the installed VS 2022 Community path. It does not launch Max or install files. Check prerequisites and [build guidance](Max_2027_Installation.md) before SDK work; `tools/build_max.py` also packages, so it is not a read-only check.

@@ -1,0 +1,180 @@
+{
+  "package": "Cyrus Scatter Rebuild Blueprint 1.0",
+  "files": [
+    {
+      "path": "00_READ_ME_FIRST.md",
+      "bytes": 9948,
+      "sha256": "78d32a150cb0a7c6879ca85474e95cbb934ef1d78b6e8da2e256a9b6ca2f221b"
+    },
+    {
+      "path": "01_PRODUCT_SCOPE_AND_BEHAVIOR.md",
+      "bytes": 9334,
+      "sha256": "8a435d828b0e83d5d60ef8021c5f808ddddccf5dbe35b540463017924838830c"
+    },
+    {
+      "path": "02_SYSTEM_ARCHITECTURE.md",
+      "bytes": 11122,
+      "sha256": "0d1435be84a25510b47efbfc148fd7006485af9ae470a5b2a7944e58e866e533"
+    },
+    {
+      "path": "03_DATA_IDENTITY_AND_RANDOMNESS.md",
+      "bytes": 10422,
+      "sha256": "87038b00c326b198647547b04f917bb18c54e829a5b93d992c11c5cb492f04a9"
+    },
+    {
+      "path": "04_EVALUATION_CACHING_AND_CONCURRENCY.md",
+      "bytes": 10829,
+      "sha256": "d7d63217278d50e0adb3141a344e5216306ed5315078032f37f0fcdefb0a86ee"
+    },
+    {
+      "path": "05_SURFACES_COORDINATES_AND_GEOMETRY.md",
+      "bytes": 10793,
+      "sha256": "d4f41e989bc1eae64d46faf0608165cd1dfaef2ce2d8ddc3a2cdc23df493f2a9"
+    },
+    {
+      "path": "06_FIELDS_MAPS_CURVES_AND_FALLOFFS.md",
+      "bytes": 9229,
+      "sha256": "6ce0b353e9a5fd13d3e423f8f5facd596a9c694c64e187b8299d114843a2647c"
+    },
+    {
+      "path": "07_DISTRIBUTION_AND_SPECIES_SELECTION.md",
+      "bytes": 12298,
+      "sha256": "9518c46c3c945b6f3103d55f3f510901973552654bd3cb5c96eda793062e647c"
+    },
+    {
+      "path": "08_ORDERED_AREAS_EXCLUSIONS_AND_BOUNDARIES.md",
+      "bytes": 10464,
+      "sha256": "dd3ea99e69d7edae30f70e6ca69a2703faf08d202838c338e0da83ea3e3065f9"
+    },
+    {
+      "path": "09_PAINTING_AUTHORING_UNDO_AND_INCREMENTAL_UPDATES.md",
+      "bytes": 14547,
+      "sha256": "f9b8ce1e3e99d62ef7c05adb69cd2cc708184916ec4c933d18985882bcb65c98"
+    },
+    {
+      "path": "10_SOURCES_TRANSFORMS_AND_GROUPS.md",
+      "bytes": 9567,
+      "sha256": "b4384680184ab3c08b86cb6778a76e3df81c0c44515838b93950968f96bdd9f4"
+    },
+    {
+      "path": "11_COLLISIONS_SPACING_AND_EXACT_INCREMENTAL_SOLVING.md",
+      "bytes": 10576,
+      "sha256": "c291d5a06f226c3dbca52030adf3788f8ba046f8f41c1123bcd9a45577ce4cec"
+    },
+    {
+      "path": "12_MANUAL_EDITING_AND_CS_EDIT.md",
+      "bytes": 7997,
+      "sha256": "2e83003b4d52c9d1ec75ee0888a59beb028da42ba4c8945c9e82e1ab7a2cebe1"
+    },
+    {
+      "path": "13_VIEWPORT_PICKING_CAMERA_AND_LOD.md",
+      "bytes": 7718,
+      "sha256": "5d68aa776f6df6cf5740da619f0289eb7ca28e4b8a21f0a1c8c5b585ba73df14"
+    },
+    {
+      "path": "14_RENDERER_AND_PARTICLE_FLOW_INTEGRATION.md",
+      "bytes": 8504,
+      "sha256": "2280bd32f6acde26c52c93a54975ae7f4e4ec92030cae454e945935aed304432"
+    },
+    {
+      "path": "15_MATERIALS_EDGE_TRIMMING_AND_ANIMATION.md",
+      "bytes": 8276,
+      "sha256": "e57f7c3a0e47afd3f91f7cbce285739cadad3720ce966bc41c76a3d9124b7d3e"
+    },
+    {
+      "path": "16_EFFECTS_AND_PROCEDURAL_EXTENSIBILITY.md",
+      "bytes": 6683,
+      "sha256": "21cc7051df7b7303de7d09fc08b4d8ca1797d4d911715aecc90695ae03a26368"
+    },
+    {
+      "path": "17_MAX_HOST_PERSISTENCE_COLLECTIONS_AND_ASSETS.md",
+      "bytes": 9453,
+      "sha256": "3a5e80d9ea335fd37f34bb92b5f41f3d107268b7393d2c32c9c3300bd53f4d73"
+    },
+    {
+      "path": "18_ARTIST_UI_COMMANDS_AND_AUTOMATION.md",
+      "bytes": 6238,
+      "sha256": "d125b7d07c14eac6dac2eca81d815e0488cd83ab1c753a7c1390f59fdadafbce"
+    },
+    {
+      "path": "19_EXISTING_CYRUS_INTEGRATION_AND_MIGRATION.md",
+      "bytes": 4816,
+      "sha256": "b1ec77c3fbed85c821ddabacb682c940a3e3f77352caab5e7008fb70d01c71fd"
+    },
+    {
+      "path": "20_VERIFICATION_FIXTURES_AND_BENCHMARKS.md",
+      "bytes": 11423,
+      "sha256": "ab5c58cf71d57ade2845d007d8b5d5404dba18a4d383de924ace87366a2d0776"
+    },
+    {
+      "path": "21_BUILD_ROADMAP_AND_ENGINEERING_HANDOFF.md",
+      "bytes": 8616,
+      "sha256": "91fecd4dff07dcd0a4f7a750ed894e08d388a8b78fae9e6df32ea37cc270303d"
+    },
+    {
+      "path": "22_CONTROL_CATALOG.md",
+      "bytes": 56265,
+      "sha256": "3e4dedcbbee6708d8a1de8621d5fe1eaa401488477abdf3f94d5b8a18a5de2f0"
+    },
+    {
+      "path": "23_DECISIONS_RISKS_AND_OPEN_QUESTIONS.md",
+      "bytes": 5805,
+      "sha256": "5cd8c1732cf41cb7d42c53d1d12f4d4f4c53653100bb40412c18f3f4e862f043"
+    },
+    {
+      "path": "24_WORKED_PRODUCTION_SCENARIO.md",
+      "bytes": 6968,
+      "sha256": "aa26034efd757c56ea0d6cf95210316c1e8c62dd795682e5c55c12e03f1aaa93"
+    },
+    {
+      "path": "25_SOURCES_AND_EVIDENCE.md",
+      "bytes": 16904,
+      "sha256": "9c6b905d47f29e09b947662b3fb879400f173530269cf385908734df934667a0"
+    },
+    {
+      "path": "26_COMPANION_FEATURES_AND_SCOPE_EXTENSIONS.md",
+      "bytes": 4748,
+      "sha256": "fd9218c97b3cc168ee1af119d5a5afea1859937184812c7d07cb0694963b174b"
+    },
+    {
+      "path": "PACKAGE_VALIDATION.json",
+      "bytes": 1067,
+      "sha256": "b4e0720ae38908a1c4e6922f03483668ed6b3ab48dfed75ab86c722930c61462"
+    },
+    {
+      "path": "VALIDATION.md",
+      "bytes": 1193,
+      "sha256": "74b239a4193074fe8e19c3c345c52367e8b118a3055db179ce23e4f522afe49d"
+    },
+    {
+      "path": "examples/README.md",
+      "bytes": 4450,
+      "sha256": "5eb5428691447b45717c3011f984bf6cc879c45eeb53d9639210d9acd52fef81"
+    },
+    {
+      "path": "examples/control_catalog.json",
+      "bytes": 116667,
+      "sha256": "5077c88078cb6f3c7bd78cb10c6d093ea28a5e7c99ce784b3c5708eec26d77d0"
+    },
+    {
+      "path": "examples/reference_oracle.py",
+      "bytes": 18497,
+      "sha256": "17cab7fefc65ae2dc49989e9a6a74358b197cf583dd53624315a59d8ad382d9a"
+    },
+    {
+      "path": "examples/reference_validation.json",
+      "bytes": 2834,
+      "sha256": "338a2e16e5308e63a36d815968786653f5eb8e63eab2fcb9e6137f0088424172"
+    },
+    {
+      "path": "examples/source_registry.json",
+      "bytes": 8800,
+      "sha256": "2825c5512e29670c8545ef53dcc6b4eaa6b5ec572f0fb670279b9b7bd5816ae4"
+    },
+    {
+      "path": "sources/Research Forest 2.md",
+      "bytes": 102053,
+      "sha256": "3c31c0e70ab6b8ed6fe4664516ad4a49c94b75a0b5a24f7ab2ea4582869ab013"
+    }
+  ]
+}

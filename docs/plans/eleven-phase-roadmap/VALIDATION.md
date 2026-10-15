@@ -3,6 +3,9 @@
 This matrix supplies the common acceptance process for all eleven phases. It
 does not assert universal correctness or turn old passing receipts into new ones.
 Read [implementation scope](IMPLEMENTATION.md) before selecting the tests.
+The separate [0.82.4 mesh mask campaign](MESH_MASK_0824.md) records current
+Max 2027 channels, Curvature, Paint composition, lifecycle and idle witnesses;
+P06 remains paused.
 
 ## Evidence levels
 
@@ -111,8 +114,11 @@ with different planting is not an equivalent performance improvement.
 
 Follow [the agent workflow](../../AGENT_WORKFLOW.md) for current commands and fresh
 run directories. Typical checks include generator reproducibility, approved UI
-layout, generated integration, native CTest and MCP/tools pytest. Compile with both
-supported SDK years when affected and validate real generated MAXScript in Max.
+layout, generated integration, native CTest and MCP/tools pytest. Under the user's
+14 October 2026 rule, compile with the **Max 2027 SDK only** and validate real
+generated MAXScript, physical interactions and performance in **Max 2027 only**.
+Max 2026 testing requires a new explicit user request. Preserve the completed
+P01–P05 dual-version receipts as historical evidence.
 
 Inspect each launcher before using it. Test in owned redirected profiles under
 ignored `build/`; hash/copy artist scenes; serialize mutations per host. After a

@@ -878,6 +878,66 @@
           "advanced": false
         },
         {
+          "component": "distributionUI",
+          "control": "meshCheck",
+          "presentation": "distributionUI_meshCheck",
+          "advanced": false
+        },
+        {
+          "component": "distributionUI",
+          "control": "meshChannelSpin",
+          "presentation": "distributionUI_meshChannelSpin",
+          "advanced": false
+        },
+        {
+          "component": "distributionUI",
+          "control": "meshComponentList",
+          "presentation": "distributionUI_meshComponentList",
+          "advanced": false
+        },
+        {
+          "component": "distributionUI",
+          "control": "meshMinSpin",
+          "presentation": "distributionUI_meshMinSpin",
+          "advanced": false
+        },
+        {
+          "component": "distributionUI",
+          "control": "meshMaxSpin",
+          "presentation": "distributionUI_meshMaxSpin",
+          "advanced": false
+        },
+        {
+          "component": "distributionUI",
+          "control": "meshInvertCheck",
+          "presentation": "distributionUI_meshInvertCheck",
+          "advanced": false
+        },
+        {
+          "component": "distributionUI",
+          "control": "meshCurveButton",
+          "presentation": "distributionUI_meshCurveButton",
+          "advanced": false
+        },
+        {
+          "component": "distributionUI",
+          "control": "meshPreviewButton",
+          "presentation": "distributionUI_meshPreviewButton",
+          "advanced": false
+        },
+        {
+          "component": "distributionUI",
+          "control": "meshHideButton",
+          "presentation": "distributionUI_meshHideButton",
+          "advanced": false
+        },
+        {
+          "component": "distributionUI",
+          "control": "meshHint",
+          "presentation": "distributionUI_meshHint",
+          "advanced": false
+        },
+        {
           "component": "populationPolicyUI",
           "control": "populationList",
           "presentation": "populationPolicyUI_populationList",

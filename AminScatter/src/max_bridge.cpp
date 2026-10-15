@@ -8,6 +8,7 @@
 #include <maxscript/maxwrapper/mxsobjects.h>
 #include "scatter.h"
 #include "surface_filter.h"
+#include "mesh_density.h"
 #include "spline_bands.h"
 #include "execution.h"
 #include "group_spacing.h"
@@ -342,6 +343,7 @@ Value* cyrusScatterAdvanced_cf(Value** args,int count){return scatterAdvanced(ar
 #include "procedural_bridge.inc"
 #include "receiver_bridge.inc"
 #include "surface_filter_bridge.inc"
+#include "mesh_density_bridge.inc"
 def_visible_primitive(cyrusDensityMapVersion,"cyrusDensityMapVersion");
 Value* cyrusDensityMapVersion_cf(Value** a,int n){check_arg_count(cyrusDensityMapVersion,0,n);return Integer::intern(1);}
 def_visible_primitive(cyrusProceduralSurfaceKey,"cyrusProceduralSurfaceKey");

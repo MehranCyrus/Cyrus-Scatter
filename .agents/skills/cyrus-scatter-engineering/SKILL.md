@@ -50,6 +50,10 @@ pre-commit rejection alone does not prove atomicity.
 
 Use the [workflow](../../../docs/AGENT_WORKFLOW.md) for test levels and host isolation.
 Before choosing a delivery version, apply the [version policy](../../../docs/Release_Versioning.md#choosing-the-next-version).
+Use the user's small-step development sequence: advance PATCH through 9, then
+carry into MINOR (`0.81.8 → 0.81.9 → 0.82.0`). New features use the same step;
+larger milestones require an explicit user-selected label. Preserve original
+build/qualification identities when correcting phase numbering.
 Assess the full change since the last delivery, record the proposed version and its
 impact-based reason, and keep version labels separate from qualification claims.
 Offline passes do not qualify Max callbacks, physical interaction, renderers or loaded

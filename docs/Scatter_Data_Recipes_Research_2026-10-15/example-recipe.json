@@ -1,0 +1,781 @@
+{
+  "format": "cyrus.planting-recipe",
+  "formatVersion": 1,
+  "metadata": {
+    "recipeId": "dry-hillside-example",
+    "name": "Dry hillside planting",
+    "description": "Three ordered layers with Paint coverage, external roles and explicit binding. Design illustration only; not a production export.",
+    "tags": [
+      "landscape",
+      "hillside",
+      "three-layers"
+    ],
+    "architectureExampleOnly": true,
+    "thumbnail": null,
+    "productionCompleteExport": false,
+    "illustrationNotes": [
+      "The proposed Save Everything mode preserves all authored fields; this compact illustration omits default fields listed in FIELD_MAP.md.",
+      "The contours below illustrate saved Paint with two islands and an Erase hole. Production files require the actual native payload, hash and receiver binding signature; none is fabricated here."
+    ]
+  },
+  "units": {
+    "distance": "metre",
+    "density": "instances-per-square-metre",
+    "angle": "degree",
+    "scale": "multiplier"
+  },
+  "compatibility": {
+    "host": "3ds Max",
+    "hostYear": 2027,
+    "referenceSceneSchema": 58,
+    "evaluationContract": "CyrusUnified1",
+    "requiresRecipeImporter": true,
+    "requiredCapabilities": [
+      "ordered-layers",
+      "receiver-bound-coverage",
+      "mesh-channel-density",
+      "spline-bands",
+      "lossless-paint-storage",
+      "compatible-paint-restore",
+      "retained-unresolved-bindings"
+    ]
+  },
+  "exportScope": {
+    "mode": "complete-setup",
+    "settings": "static-authored-values",
+    "geometry": "external-roles",
+    "paintCoverage": "included-receiver-bound-documents",
+    "externalLayerRelationships": "none",
+    "omissions": []
+  },
+  "bindings": {
+    "receivers": [
+      {
+        "id": "ground",
+        "label": "Planting terrain",
+        "required": true,
+        "kind": "evaluated-mesh",
+        "sceneNameHint": "Terrain",
+        "requiredFields": [
+          "ridge-mask"
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "id": "oak-a",
+        "label": "Canopy model A",
+        "required": true,
+        "kind": "scene-model",
+        "asset": null,
+        "expectedUpAxis": "+Z",
+        "expectedPivot": "base"
+      },
+      {
+        "id": "oak-b",
+        "label": "Canopy model B",
+        "required": true,
+        "kind": "scene-model",
+        "asset": null,
+        "expectedUpAxis": "+Z",
+        "expectedPivot": "base"
+      },
+      {
+        "id": "shrub-a",
+        "label": "Shrub model",
+        "required": true,
+        "kind": "scene-model",
+        "asset": null,
+        "expectedUpAxis": "+Z",
+        "expectedPivot": "base"
+      },
+      {
+        "id": "grass-a",
+        "label": "Groundcover model",
+        "required": true,
+        "kind": "scene-model",
+        "asset": null,
+        "expectedUpAxis": "+Z",
+        "expectedPivot": "base"
+      }
+    ],
+    "fields": [
+      {
+        "id": "ridge-mask",
+        "label": "Artist-authored ridge influence",
+        "required": true,
+        "receiverRole": "ground",
+        "kind": "mesh-channel-component",
+        "suggestedChannel": 2,
+        "suggestedComponent": "X",
+        "inputRange": [
+          0.0,
+          1.0
+        ],
+        "numericUnits": "authored-scalar",
+        "producerHint": "Data Channel Curvature -> remap -> Vertex Output"
+      }
+    ],
+    "paths": [
+      {
+        "id": "path-edge",
+        "label": "Groundcover edge path",
+        "required": true,
+        "kind": "spline",
+        "sceneNameHint": "PathEdge"
+      }
+    ],
+    "areas": [
+      {
+        "id": "courtyard",
+        "label": "Keep clear",
+        "required": true,
+        "kind": "closed-spline",
+        "sceneNameHint": "Courtyard"
+      }
+    ]
+  },
+  "curves": [
+    {
+      "id": "linear-density",
+      "domain": "unit",
+      "representation": "linear-samples",
+      "samples": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "id": "soft-density",
+      "domain": "unit",
+      "representation": "linear-samples",
+      "samples": [
+        0.0,
+        0.15625,
+        0.5,
+        0.84375,
+        1.0
+      ]
+    },
+    {
+      "id": "linear-scale-ramp",
+      "domain": "unit",
+      "representation": "linear-samples",
+      "samples": [
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "id": "groundcover-size",
+      "domain": "multiplier",
+      "representation": "linear-samples",
+      "samples": [
+        0.3,
+        0.7,
+        1.2
+      ]
+    }
+  ],
+  "layers": [
+    {
+      "id": "layer-canopy",
+      "name": "Canopy",
+      "enabled": true,
+      "receiverRoles": [
+        "ground"
+      ],
+      "seed": 4101,
+      "population": {
+        "mode": "density",
+        "perSquareMetre": 0.08,
+        "countSemantics": "candidate-budget",
+        "candidateCap": 30000,
+        "attemptFactor": 8,
+        "rounds": 8,
+        "repair": true
+      },
+      "assignment": {
+        "mode": "weighted",
+        "groups": [
+          {
+            "id": "group-canopy",
+            "label": "Canopy",
+            "sourceRows": [
+              "row-oak-a",
+              "row-oak-b"
+            ]
+          }
+        ]
+      },
+      "sourceRows": [
+        {
+          "id": "row-oak-a",
+          "sourceRole": "oak-a",
+          "weight": 0.7,
+          "scale": 1.0,
+          "lift": 0.0,
+          "forwardAxis": "+X",
+          "radius": {
+            "mode": "auto",
+            "savedManualRadius": 2.0,
+            "followScale": false,
+            "showRadius": false
+          },
+          "kind": "model"
+        },
+        {
+          "id": "row-oak-b",
+          "sourceRole": "oak-b",
+          "weight": 0.3,
+          "scale": 1.0,
+          "lift": 0.0,
+          "forwardAxis": "+X",
+          "radius": {
+            "mode": "auto",
+            "savedManualRadius": 2.0,
+            "followScale": false,
+            "showRadius": false
+          },
+          "kind": "model"
+        }
+      ],
+      "transforms": {
+        "alignment": "world-up",
+        "yaw": [
+          0.0,
+          360.0
+        ],
+        "uniformScale": [
+          0.85,
+          1.15
+        ],
+        "movement": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "keepOnSurface": true
+      },
+      "filters": {
+        "slope": {
+          "enabled": true,
+          "range": [
+            0.0,
+            40.0
+          ],
+          "insideFades": [
+            0.0,
+            8.0
+          ],
+          "normal": "world-geometric-oriented"
+        },
+        "altitude": {
+          "enabled": false,
+          "range": [
+            0.0,
+            500.0
+          ],
+          "insideFades": [
+            0.0,
+            0.0
+          ],
+          "datum": "world-zero"
+        },
+        "meshDensity": {
+          "enabled": false
+        },
+        "textureDensity": {
+          "enabled": false
+        }
+      },
+      "coverage": {
+        "mode": "whole-receiver",
+        "areas": [
+          {
+            "role": "courtyard",
+            "operation": "exclude"
+          }
+        ],
+        "paintAreas": [],
+        "paintEnabled": false,
+        "paintDensity": 1.0
+      },
+      "bands": [],
+      "selfSpacing": {
+        "enabled": true,
+        "metric": "XY",
+        "radiusMultiplier": 1.0,
+        "gap": 0.25
+      },
+      "relax": {
+        "enabled": false
+      },
+      "cleanup": {
+        "enabled": false
+      },
+      "visible": true,
+      "samplingSalt": 0,
+      "paths": []
+    },
+    {
+      "id": "layer-shrubs",
+      "name": "Shrubs",
+      "enabled": true,
+      "receiverRoles": [
+        "ground"
+      ],
+      "seed": 4102,
+      "population": {
+        "mode": "density",
+        "perSquareMetre": 1.2,
+        "countSemantics": "candidate-budget",
+        "candidateCap": 100000,
+        "attemptFactor": 8,
+        "rounds": 8,
+        "repair": true
+      },
+      "assignment": {
+        "mode": "weighted",
+        "groups": [
+          {
+            "id": "group-shrubs",
+            "label": "Shrubs",
+            "sourceRows": [
+              "row-shrub"
+            ]
+          }
+        ]
+      },
+      "sourceRows": [
+        {
+          "id": "row-shrub",
+          "sourceRole": "shrub-a",
+          "weight": 1.0,
+          "scale": 1.0,
+          "lift": 0.0,
+          "forwardAxis": "+X",
+          "radius": {
+            "mode": "auto",
+            "savedManualRadius": 0.35,
+            "followScale": false,
+            "showRadius": false
+          },
+          "kind": "model"
+        }
+      ],
+      "transforms": {
+        "alignment": "world-up",
+        "yaw": [
+          0.0,
+          360.0
+        ],
+        "uniformScale": [
+          0.7,
+          1.2
+        ],
+        "movement": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "keepOnSurface": true
+      },
+      "filters": {
+        "slope": {
+          "enabled": true,
+          "range": [
+            0.0,
+            55.0
+          ],
+          "insideFades": [
+            0.0,
+            10.0
+          ],
+          "normal": "world-geometric-oriented"
+        },
+        "altitude": {
+          "enabled": false,
+          "range": [
+            0.0,
+            500.0
+          ],
+          "insideFades": [
+            0.0,
+            0.0
+          ],
+          "datum": "world-zero"
+        },
+        "meshDensity": {
+          "enabled": true,
+          "fieldRole": "ridge-mask",
+          "invert": false,
+          "curve": "soft-density"
+        },
+        "textureDensity": {
+          "enabled": false
+        }
+      },
+      "coverage": {
+        "mode": "paint-coverage",
+        "areas": [
+          {
+            "role": "courtyard",
+            "operation": "exclude"
+          }
+        ],
+        "paintAreas": [
+          {
+            "id": "area-shrub-bed",
+            "name": "Custom shrub bed",
+            "enabled": true,
+            "receiverRole": "ground",
+            "coverage": {
+              "kind": "receiver-local-xy-contours-illustration",
+              "payloadVersion": 1,
+              "coordinateUnits": "metre",
+              "requiresNativePayloadForProduction": true,
+              "binding": {
+                "receiverRole": "ground",
+                "compatibility": "explicit-geometry-frame-units-validation",
+                "savedSceneUnitsPerMetre": 1.0,
+                "receiverLocalToWorld": [
+                  [
+                    1,
+                    0,
+                    0
+                  ],
+                  [
+                    0,
+                    1,
+                    0
+                  ],
+                  [
+                    0,
+                    0,
+                    1
+                  ],
+                  [
+                    0,
+                    0,
+                    0
+                  ]
+                ],
+                "actualSurfaceSignature": null,
+                "signatureStatus": "illustration-only-not-measured"
+              },
+              "loops": [
+                {
+                  "id": "bed-west",
+                  "kind": "outer",
+                  "points": [
+                    [
+                      -8,
+                      -4
+                    ],
+                    [
+                      -2,
+                      -4
+                    ],
+                    [
+                      -2,
+                      3
+                    ],
+                    [
+                      -8,
+                      3
+                    ]
+                  ]
+                },
+                {
+                  "id": "bed-west-hole",
+                  "kind": "hole",
+                  "parent": "bed-west",
+                  "points": [
+                    [
+                      -6,
+                      -1
+                    ],
+                    [
+                      -6,
+                      1
+                    ],
+                    [
+                      -4,
+                      1
+                    ],
+                    [
+                      -4,
+                      -1
+                    ]
+                  ]
+                },
+                {
+                  "id": "bed-east",
+                  "kind": "outer",
+                  "points": [
+                    [
+                      2,
+                      -3
+                    ],
+                    [
+                      7,
+                      -3
+                    ],
+                    [
+                      7,
+                      3
+                    ],
+                    [
+                      2,
+                      3
+                    ]
+                  ]
+                }
+              ]
+            },
+            "fade": {
+              "inside": 0.5,
+              "outside": 0.25,
+              "densityEnabled": true,
+              "densityCurve": "soft-density",
+              "scaleEnabled": true,
+              "scaleCurve": "linear-scale-ramp",
+              "edgeScale": 0.7,
+              "innerScale": 1.0,
+              "graphRepresentation": "sample-only-in-this-illustration"
+            },
+            "density": 0.8,
+            "preferences": {
+              "brushRadius": 0.5,
+              "brushMode": "paint",
+              "feedback": "vector-borders",
+              "feedbackColor": [
+                90,
+                200,
+                150
+              ]
+            }
+          }
+        ],
+        "paintEnabled": true,
+        "paintDensity": 1.0
+      },
+      "bands": [],
+      "selfSpacing": {
+        "enabled": true,
+        "metric": "XY",
+        "radiusMultiplier": 1.0,
+        "gap": 0.05
+      },
+      "relax": {
+        "enabled": false
+      },
+      "cleanup": {
+        "enabled": false
+      },
+      "visible": true,
+      "samplingSalt": 0,
+      "paths": []
+    },
+    {
+      "id": "layer-groundcover",
+      "name": "Groundcover",
+      "enabled": true,
+      "receiverRoles": [
+        "ground"
+      ],
+      "seed": 4103,
+      "population": {
+        "mode": "density",
+        "perSquareMetre": 25.0,
+        "countSemantics": "candidate-budget",
+        "candidateCap": 300000,
+        "attemptFactor": 8,
+        "rounds": 8,
+        "repair": true
+      },
+      "assignment": {
+        "mode": "spline-bands",
+        "groups": [
+          {
+            "id": "group-grass",
+            "label": "Groundcover",
+            "sourceRows": [
+              "row-grass"
+            ]
+          }
+        ],
+        "bandArrangement": "consecutive"
+      },
+      "sourceRows": [
+        {
+          "id": "row-grass",
+          "sourceRole": "grass-a",
+          "weight": 1.0,
+          "scale": 1.0,
+          "lift": 0.0,
+          "forwardAxis": "+X",
+          "radius": {
+            "mode": "manual",
+            "followScale": false,
+            "showRadius": false,
+            "savedManualRadius": 0.04
+          },
+          "kind": "model"
+        }
+      ],
+      "transforms": {
+        "alignment": "geometric-normal",
+        "yaw": [
+          0.0,
+          360.0
+        ],
+        "uniformScale": [
+          0.8,
+          1.1
+        ],
+        "movement": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "keepOnSurface": true
+      },
+      "filters": {
+        "slope": {
+          "enabled": true,
+          "range": [
+            0.0,
+            65.0
+          ],
+          "insideFades": [
+            0.0,
+            10.0
+          ],
+          "normal": "world-geometric-oriented"
+        },
+        "altitude": {
+          "enabled": false,
+          "range": [
+            0.0,
+            500.0
+          ],
+          "insideFades": [
+            0.0,
+            0.0
+          ],
+          "datum": "world-zero"
+        },
+        "meshDensity": {
+          "enabled": false
+        },
+        "textureDensity": {
+          "enabled": false
+        }
+      },
+      "coverage": {
+        "mode": "whole-receiver",
+        "areas": [
+          {
+            "role": "courtyard",
+            "operation": "exclude"
+          }
+        ],
+        "paintAreas": [],
+        "paintEnabled": false,
+        "paintDensity": 1.0
+      },
+      "bands": [
+        {
+          "id": "band-edge",
+          "sourceRows": [
+            "row-grass"
+          ],
+          "density": 0.8,
+          "densityCurve": "linear-density",
+          "pathId": "path-grass-edge",
+          "side": "outside",
+          "width": 2.0,
+          "savedIndependentRange": [
+            0.0,
+            2.0
+          ],
+          "membershipMode": "source-rows",
+          "densityCurveEnabled": true,
+          "scaleRange": [
+            0.7,
+            1.2
+          ],
+          "scaleProfile": {
+            "mode": "custom",
+            "curve": "groundcover-size",
+            "savedCustomCurve": "groundcover-size"
+          },
+          "identificationColor": [
+            120,
+            180,
+            100
+          ]
+        }
+      ],
+      "selfSpacing": {
+        "enabled": false,
+        "metric": "XY",
+        "radiusMultiplier": 1.0,
+        "gap": 0.0
+      },
+      "relax": {
+        "enabled": false
+      },
+      "cleanup": {
+        "enabled": false
+      },
+      "visible": true,
+      "samplingSalt": 0,
+      "paths": [
+        {
+          "id": "path-grass-edge",
+          "pathRole": "path-edge",
+          "cornerPolicy": "rounded"
+        }
+      ]
+    }
+  ],
+  "spacingRelationships": [
+    {
+      "id": "spacing-canopy-shrubs",
+      "layers": [
+        "layer-canopy",
+        "layer-shrubs"
+      ],
+      "enabled": true,
+      "metric": "XY",
+      "radiusMultiplier": 1.0,
+      "gap": 0.2
+    },
+    {
+      "id": "spacing-shrubs-grass",
+      "layers": [
+        "layer-shrubs",
+        "layer-groundcover"
+      ],
+      "enabled": true,
+      "metric": "XY",
+      "radiusMultiplier": 0.5,
+      "gap": 0.0
+    }
+  ],
+  "importPolicy": {
+    "defaultAction": "append-layers",
+    "identity": "new-scene-identities-remap-all-internal-references",
+    "missingRequiredBinding": "block-commit",
+    "nameCollision": "unique-display-suffix",
+    "sameNameBinding": "hint-only",
+    "updateMode": "preserve-destination-mode",
+    "undo": "single-authored-transaction",
+    "incompatiblePaint": "block-activation-or-explicitly-retain-layer-inactive",
+    "paintOmission": "forbidden-in-complete-setup",
+    "presentation": "capture-without-auto-starting-overlays-or-brush"
+  }
+}

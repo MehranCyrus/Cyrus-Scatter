@@ -18,12 +18,18 @@ Browsing, selection and unrelated animation must not rebuild static placements o
 
 ## Build, Test, and Development Commands
 
+**Use 3ds Max 2027 only** for development SDK builds, native tests, host validation,
+performance measurements and Computer Use. Do not build for, launch or test Max
+2026 unless the user explicitly requests it again. This rule supersedes older
+dual-version plans and checklists. Preserve historical Max 2026 receipts; new
+Max 2027 passes establish qualification for Max 2027 only.
+
 From the repository root:
 
 ```powershell
 python tools/procedural_lab/check_generated.py --output build/agent-review/generated
 build/mcp-venv/Scripts/python.exe -m pytest CyrusMCP/tests tools/tests -q
-python tools/procedural_lab/offline_build.py --project scatter --output build/agent-review/scatter
+python tools/procedural_lab/offline_build.py --project scatter --year 2027 --output build/agent-review/scatter
 ```
 
 These require the documented local toolchain. Choose fresh run directories and checks appropriate to the change; see the workflow for generation, focused tests, Analyzer and host qualification. Offline passes do not prove Max UI, rendering or presented FPS.
@@ -35,6 +41,21 @@ Use owned disposable profiles/scenes for tests. Preserve `Test Scene/`, artist p
 Keep current navigation and artist docs aligned with proven changes; preserve historical receipts. Do not restore retired unpublished compatibility or add abstraction/GPU work without a demonstrated need. Keep internal registration identities intact. Reserve 1.0 for publication readiness.
 
 Before choosing or changing a version, follow [the version policy](docs/Release_Versioning.md#choosing-the-next-version). Assess the full delivery's user-visible impact and contract changes, record the reason, and keep independently versioned products separate. Distinguish updated website sources from built or published content.
+
+Use the user's small-step Scatter numbering: `0.81.8 → 0.81.9 → 0.82.0`,
+advancing PATCH through 9 before carrying into MINOR. Features do not automatically
+trigger a larger jump. Phase 5 is 0.82.2; the performance correction is 0.82.3,
+the mesh channel density delivery is 0.82.4, and the next planned phase is
+0.82.5 (paused until the user resumes it).
+Preserve original qualification labels/hashes when documenting corrected numbers.
+
+Each new Scatter version delivered for user testing must include a runnable
+Max 2027 `.mzp` installer built from its exact qualified script/native pair.
+Verify archive integrity, version/host guards and payload hashes; provide the
+package path and **Scripting > Run Script**, then restart instructions. Packaging
+is part of this version-delivery workflow; do not leave only compiled binaries
+or a loose script. The user runs the installer and tests the result. Do not
+install it or restart their Max session unless they explicitly request that.
 
 Commit, push, package, install and deploy only within the user's authorized scope. Report what changed, exact evidence, limitations and next acceptance criteria. Git excludes ignored scenes, binaries and installers.
 

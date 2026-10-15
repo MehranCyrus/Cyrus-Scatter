@@ -1,0 +1,24 @@
+{
+  "checked_utc": "2026-10-15T12:31:53.137268+00:00",
+  "json_files_parsed": [
+    "DOCUMENT_CHECKS.json",
+    "example-recipe.json",
+    "KNOWLEDGE_SEARCH.json",
+    "KNOWLEDGE_STATUS.json",
+    "SOURCE_EVIDENCE.json"
+  ],
+  "example_recipe_checks": "syntax, duplicate keys, unique role/layer/row IDs, curve bounds, role/curve/group/Band/spacing/omission references, disabled omitted coverage",
+  "example_layers": 3,
+  "markdown_files_checked": 4,
+  "local_links_checked": 48,
+  "missing_local_paths": [],
+  "bad_anchors": [],
+  "unpaired_markdown_fences": [],
+  "inspected_source_file_hashes_verified": 20,
+  "inspected_source_files_changed": [],
+  "branch_and_head_unchanged": true,
+  "limitations": [
+    "No production JSON Schema or recipe importer exists for this example.",
+    "No product tests/build or Max host tests run in this task."
+  ]
+}

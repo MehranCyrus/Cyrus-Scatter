@@ -29,6 +29,17 @@
         ]
       },
       {
+        "title": "Mesh channel density",
+        "paragraphs": [
+          "In Amount, enable **Use mesh channel mask**. Channel 0 reads vertex colors; channels 1..99 read numbered mesh map channels from the evaluated receiver. Choose R/X, G/Y or B/Z to match the component written by Data Channel or VertexPaint. Every assigned receiver needs that channel.",
+          "For terrain curvature, place Data Channel above the deformation, add Curvature, then Vertex Output to an unused Map Channel and component X. Select the same channel and R/X in Scatter. The rainbow display colors are visualization; planting reads stored numeric values. Curvature describes bending, while slope describes steepness.",
+          "Input min/max map the chosen values into 0..1 and clamp outside values. Min must be below max. Invert reverses the normalized value before the Density curve: 0 excludes plants, 1 permits them, and gray values thin stable candidates. Triangle map-face interpolation respects channel seams. The mask has mesh detail rather than a sampled bitmap resolution.",
+          "The mask combines with texture density, slope/altitude and Paint without creating Paint strokes. It runs after candidate movement/Relax and before CS Edit. Masked base edits remain dormant until eligibility returns; existing explicitly moved or cloned protected edits follow the established replay rules. Channel-only changes preserve geometry bindings. Nonzero movement requires Keep on surface.",
+          "Preview mask reads current inputs into at most 2,048 grayscale face-centre markers across the layer. It shows only this mask and may differ from pending Manual plants. Relevant edits clear the snapshot; click Preview again to refresh, or Hide preview to clear it. Redraw uses cached markers without channel reads. Each receiver supports up to two million evaluated faces; VData, selection and negative map channels are outside this version.",
+          "Manual waits for Update scatter; Live follows relevant channel/modifier edits and animation. Missing or invalid channels identify the receiver and retain the previous complete result. The layer owns its mask and curve, and copied layers retain independent settings. Named presets for this new curve are not available in this version."
+        ]
+      },
+      {
         "title": "Band scale profiles",
         "paragraphs": [
           "In Layout, Scale sits directly below the density curve. Min/Max supplies random size variation. Scale profile selects Off, Follow Density or Custom. Custom enables Edit scale curve. X runs from Band Start to End; Y is size percent, where 100% preserves size.",
@@ -48,7 +59,7 @@
       {
         "title": "Named settings and curve presets",
         "paragraphs": [
-          "Use Presets... in Amount, Transforms or Spacing & cleanup. Curve presets are available from the existing density/scale graph. Save new captures a named item; selecting it is passive, and Apply changes the target shown in the dialog. Reopen the browser to target a different layer.",
+          "Use Presets... in Amount, Transforms or Spacing & cleanup. Curve presets are available from Paint, Analyzer and Band density/scale graphs. Save new captures a named item; selecting it is passive, and Apply changes the target shown in the dialog. Reopen the browser to target a different layer.",
           "Population includes amount, density, seed and retry policy. Transforms include the layer rotation, scale, movement, normal alignment and projection. Assets, surfaces, IDs, maps and layout remain linked to the scene. Physical distances convert across system units; density stays per square metre.",
           "Spacing stores the effective rule and applies an explicit override in the chosen Within this layer or Between layers scope. It does not store peer identities or change Relax/cleanup. Reset inheritance remains a separate control.",
           "Curve presets preserve samples and editable handles while retaining enable flags, widths and scale ranges. Density and Paint scale use zero-to-one values; other scale curves support multipliers. Invalid or incompatible curves are rejected. One Undo/Redo restores Apply, and closing a graph after Undo does not reapply the preset.",
@@ -62,6 +73,7 @@
           "Turn on **Use Paint Areas**, add a named area and choose one receiver from the layer. Select Paint or Erase, set Radius and press Start Brush. Paint joins circular footprints into a vector region; Erase cuts coverage and holes. Stop ends the session.",
           "Areas share the layer models and population. Overlap contributes coverage once per candidate. Turning Paint Areas off retains the areas and uses the full receiver. Fill and Clear operate on the selected area; keep a saved copy before major edits.",
           "Inward/outward feather widths and separate density/scale curves shape the edge. Density changes acceptance; scale multiplies model size. A 100 mm radius has a 200 mm diameter. Borders describe coverage, not guaranteed accepted plants.",
+          "Hover over Paint controls for short descriptions. Fade density changes plant acceptance; Fade scale changes size independently. Inside and Outside fade define the transition width. With the default curve, Edge scale is the outer-end size multiplier and Inner scale is the interior multiplier: 0.5 means half size, 1 unchanged and 2 double. Edge scale cannot exceed Inner scale. The graph shapes the transition between them.",
           "Vector painting supports planes and terrain single-valued in receiver-local XY, including transformed receivers. Closed, vertical, folded and overlapping projected receivers are rejected. General scattering on curved receivers is a separate supported workflow.",
           "The vector format introduced in 0.78 does not convert earlier stroke setups. Preserve older scenes with their matching build and create a new setup for the vector workflow."
         ]
@@ -98,9 +110,9 @@
       {
         "title": "Final artist acceptance",
         "paragraphs": [
-          "Use the installer for your Max year through Scripting > Run Script, then restart Max so the script and native modules match. Current development packages target Max 2026 and 2027; renderer and physical-input coverage varies by workflow.",
+          "Run the 0.82.4 Max 2027 installer through Scripting > Run Script, then restart Max so the script and native modules match. This delivery is tested in Max 2027 only. Renderer and physical-input coverage remains specific to the documented workflow.",
           "Team-pilot builds expose License / activation. Export an activation request and import the returned license. The pilot license lasts 30 days from issuance; expiry locks authoring while existing scenes remain loadable/renderable.",
-          "Development source 0.81.5 uses schema 58; earlier schemas are rejected without migration. Use the latest matched installer for Max 2026 or 2027; restart after installation. Preserve earlier scenes with their matching build. Current settings use typed distances. Preserve originals and use saved units for receiver-bound Paint/Edit data. Test receivers, Points/models, Bands, painting, Manual/Live, Undo/Redo, save/reopen and the intended renderer on a copy. Physical picker/DPI/tablet and long-session acceptance remain open.",
+          "Development source 0.82.4 uses schema 58; earlier schemas are rejected without migration. Preserve earlier scenes with their matching build. Current settings use typed distances. Preserve originals and use saved units for receiver-bound Paint/Edit data. Test receivers, Points/models, Bands, painting, mesh-channel masks, Manual/Live, Undo/Redo, save/reopen and the intended renderer on a copy. Physical picker/DPI/tablet and long-session acceptance remain open.",
           "[View the changelog](#/changelog) for additions and fixes, or use the [testing walkthrough](#/checklist) to record your own observations."
         ]
       }

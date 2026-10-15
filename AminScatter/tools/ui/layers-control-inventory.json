@@ -396,6 +396,42 @@
       {
         "kind": "dropdownlist",
         "name": "resolutionList"
+      },
+      {
+        "kind": "checkbox",
+        "name": "meshCheck"
+      },
+      {
+        "kind": "spinner",
+        "name": "meshChannelSpin"
+      },
+      {
+        "kind": "dropdownlist",
+        "name": "meshComponentList"
+      },
+      {
+        "kind": "spinner",
+        "name": "meshMinSpin"
+      },
+      {
+        "kind": "spinner",
+        "name": "meshMaxSpin"
+      },
+      {
+        "kind": "checkbox",
+        "name": "meshInvertCheck"
+      },
+      {
+        "kind": "button",
+        "name": "meshCurveButton"
+      },
+      {
+        "kind": "button",
+        "name": "meshPreviewButton"
+      },
+      {
+        "kind": "button",
+        "name": "meshHideButton"
       }
     ],
     "populationPolicyUI": [

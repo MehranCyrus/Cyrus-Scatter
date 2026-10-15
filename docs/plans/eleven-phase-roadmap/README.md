@@ -50,7 +50,16 @@ fixes before a phase checkpoint. Do not invent a passing visual result.
 
 ## Documents and status
 
-- [P01 implementation and evidence](P01.md): current **0.81.8** candidate;
+- [0.82.4 mesh channel density and Paint help](MESH_MASK_0824.md): current source,
+  Max 2027 evidence and runnable installer. P06 remains paused; its next planned
+  version is 0.82.5.
+- [0.82.3 performance correction](PERFORMANCE_0823.md): preceding idle, interaction
+  and panel latency evidence, preserved with its original hashes.
+
+- [0.82.2 Max 2027 installer and installation](INSTALLATION_0822.md) and
+  [artist acceptance checklist](ARTIST_ACCEPTANCE_0822.md): the first five phases
+  are delivered on disk; restart and user testing are pending. P06 stays paused.
+- [P01 implementation and evidence](P01.md): **0.81.8** phase checkpoint;
   runtime checks pass. The user deferred their visual acceptance until the end
   of the program; P01 was pushed as `50ea0a6037ea641298e8d9007931ee3bec2a5ed9`.
 - [Implementation specifications](IMPLEMENTATION.md): outcome, ownership, staged
@@ -63,19 +72,19 @@ fixes before a phase checkpoint. Do not invent a passing visual result.
   authority for those issues; this plan links them rather than closing them by
   implication.
 
-| Phase | Outcome | Effort | Entry dependencies | Current state |
-| --- | --- | --- | --- | --- |
-| P01 | Clear workflow, ownership, cached/pending state and useful feedback | Small–medium | Freeze current baseline and inspect actual generated UI | Committed and pushed; physical artist acceptance at program end |
-| P02 | Named settings and curve presets | Medium | P01; typed settings capture/apply | Committed and pushed; scoped qualification passed |
-| P03 | Slope/altitude filters with soft transitions | Medium | P02; existing eligibility and units contracts | Implemented candidate; Max qualification in progress |
-| P04 | Selectable UV channel and density-map resolution | Medium | P03; map dependency/coordinate contract | Planned |
-| P05 | Paint-to-spline export and spline-to-Paint import | Medium | P04; current vector regions and units | Planned |
-| P06 | Rectangular, staggered and hexagonal placement | Medium | P05; stable layout identities | Planned |
-| P07 | Target/direction orientation controls | Medium | P06; final-transform and radius contracts | Planned |
-| P08 | True path spacing, sequences and reference placement | Medium–large | P07; shared candidate/transform services | Planned |
-| P09 | Transform maps and color-based source assignment | Medium–large | P04, P07, P08 | Planned |
-| P10 | Complete planting recipes, substitution and browser | Medium–large | P02 plus settled P03–P09 authored settings | Planned |
-| P11 | Adaptive viewport completion and production performance | Medium–large | P01–P10; existing 0.81.6/0.81.7 viewport policy | Partial baseline; new acceptance pending |
+| Phase | Version | Outcome | Effort | Entry dependencies | Current state |
+| --- | --- | --- | --- | --- | --- |
+| P01 | 0.81.8 | Clear workflow, ownership, cached/pending state and useful feedback | Small–medium | Freeze current baseline and inspect actual generated UI | Implemented, qualified and pushed |
+| P02 | 0.81.9 | Named settings and curve presets | Medium | P01; typed settings capture/apply | Implemented, qualified and pushed under original label |
+| P03 | 0.82.0 | Slope/altitude filters with soft transitions | Medium | P02; existing eligibility and units contracts | Implemented, qualified and pushed under original label |
+| P04 | 0.82.1 | Selectable UV channel and density-map resolution | Medium | P03; map dependency/coordinate contract | Implemented, qualified and pushed under original label |
+| P05 | 0.82.2 | Paint-to-spline export and spline-to-Paint import | Medium | P04; current vector regions and units | Implemented, qualified and pushed under original label; corrected 0.82.2 label compiled for Max 2027 |
+| P06 | 0.82.5 | Rectangular, staggered and hexagonal placement | Medium | P05; stable layout identities | Planned; paused before implementation |
+| P07 | 0.82.6 | Target/direction orientation controls | Medium | P06; final-transform and radius contracts | Planned |
+| P08 | 0.82.7 | True path spacing, sequences and reference placement | Medium–large | P07; shared candidate/transform services | Planned |
+| P09 | 0.82.8 | Transform maps and color-based source assignment | Medium–large | P04, P07, P08 | Planned |
+| P10 | 0.82.9 | Complete planting recipes, substitution and browser | Medium–large | P02 plus settled P03–P09 authored settings | Planned |
+| P11 | 0.83.0 | Adaptive viewport completion and production performance | Medium–large | P01–P10; existing 0.81.6/0.81.7 viewport policy | Partial baseline; new acceptance pending |
 
 Execution is sequential. Performance and correctness work are continuous inside
 each phase. A necessary foundational fix can be a tracked subtask of the phase
@@ -109,13 +118,14 @@ need separately recorded local provenance.
 
 ## Version approach
 
-Use `0.MINOR.PATCH`, keeping schema and native capabilities independent. P01's
-bounded feedback/wording corrections are provisionally **0.81.8** from current
-0.81.7. Confirm this against concurrent changes before altering metadata.
-New coherent features normally take the next minor version, so P02 could become
-0.82.0 if that is still the next available feature version. Do not preassign all
-eleven versions or interpret 0.81.9 as a decimal before 0.82.0. Record any explicit
-user-selected override. Documentation/planning alone does not bump the product.
+The user confirmed the small-step sequence on 14 October 2026: Phase 1 starts at
+**0.81.8**, Phase 5 is **0.82.2**, and the remaining planned labels appear above.
+Advance PATCH through 9, then carry into MINOR. Feature phases use the same step.
+The [canonical mapping](../../Release_Versioning.md#eleven-phase-numbering)
+retains original qualification labels for P02–P05; historical hashes/receipts and
+Git commits remain unchanged. These are planned source checkpoints, not claims
+that future phases are complete. Schema and native capabilities remain separate.
+Development/testing use Max 2027 only. Phase implementation remains paused.
 
 ## Research discipline
 

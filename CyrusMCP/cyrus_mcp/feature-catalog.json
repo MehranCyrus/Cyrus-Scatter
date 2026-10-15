@@ -1,9 +1,9 @@
 {
   "schema": "cyrus.feature-catalog/1.0",
   "authority": "Help only. Tool dispatch, closed schema and local approval determine authority.",
-  "capability_source_sha256": "10d98dd2bec074bc140f304df950e5ea30d4657a1ff50e482413e6c6853ef409",
-  "control_inventory_sha256": "c395c41a1e71e226fb13e6f6a969f69532b0a8ded091933c8477519ee36d9a1b",
-  "development_version": "0.85.0",
+  "capability_source_sha256": "2c7a9af8f05abe27c387e0a57e7b0112dbdeff32f53f4bef237df3d9e2c49508",
+  "control_inventory_sha256": "b205c9ee02f94d5ecc1dbacd1b2ffa1cda3cb358179689faa8d8b1c959ef460d",
+  "development_version": "0.82.4",
   "mcp_version": "0.73.0",
   "calculation_model": "CyrusUnified1",
   "features": [
@@ -79,10 +79,10 @@
     },
     {
       "feature_id": "C11",
-      "title": "Density map / layer",
-      "native": "UV channels 1..99; 64/128/256/512 density samples; bounded map-only bake reuse, inversion and nested-map invalidation",
-      "mcp": "No map enrollment/write contract",
-      "qualification_or_extension": "Bounded enrolled map references and qualified evaluation"
+      "title": "Density masks / layer",
+      "native": "UV texture density with 64/128/256/512 sampled images; direct mesh channels 0..99 with component/range/invert/curve controls, stable eligibility and bounded explicit grayscale preview",
+      "mcp": "No map/channel enrollment or write contract",
+      "qualification_or_extension": "Mesh channel 0.82.4 qualification is tracked in its handoff; bounded references and evaluation remain required"
     },
     {
       "feature_id": "C12",
@@ -1009,7 +1009,7 @@
         "C04"
       ],
       "owner_context": "Selected layer / named Paint Area",
-      "help": null,
+      "help": "Enable this Paint Area's contribution to the layer.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -1592,6 +1592,123 @@
     },
     {
       "group": "layer",
+      "section": "distributionUI",
+      "kind": "checkbox",
+      "name": "meshCheck",
+      "capabilities": [
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Thin this layer using values stored on each receiving mesh. Combines with Paint, texture density and slope/altitude filters.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "spinner",
+      "name": "meshChannelSpin",
+      "capabilities": [
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "0 reads vertex colors; 1..99 read numbered mesh map channels. These are values, independent of density UV coordinates.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "dropdownlist",
+      "name": "meshComponentList",
+      "capabilities": [
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Read one component of the selected mesh channel. Match Data Channel's Vertex Output component.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "spinner",
+      "name": "meshMinSpin",
+      "capabilities": [
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Channel value mapped to 0 before Invert and the Density curve. Must be less than Input max.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "spinner",
+      "name": "meshMaxSpin",
+      "capabilities": [
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Channel value mapped to 1 before Invert and the Density curve. Values outside the range clamp.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "checkbox",
+      "name": "meshInvertCheck",
+      "capabilities": [
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Reverse the normalized channel values before applying the Density curve.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "button",
+      "name": "meshCurveButton",
+      "capabilities": [
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Remap normalized mesh values into planting eligibility. Left is 0; right is 1.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "button",
+      "name": "meshPreviewButton",
+      "capabilities": [
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Read a snapshot of the current mask as at most 2,048 grayscale face-centre markers. White permits plants; black excludes. Refresh after edits.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
+      "section": "distributionUI",
+      "kind": "button",
+      "name": "meshHideButton",
+      "capabilities": [
+        "C11"
+      ],
+      "owner_context": "Selected layer recipe",
+      "help": "Hide the cached mesh mask markers without recalculating plants.",
+      "view": "Modify selected layer and selected container",
+      "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
+    },
+    {
+      "group": "layer",
       "section": "populationPolicyUI",
       "kind": "dropdownlist",
       "name": "populationList",
@@ -2146,7 +2263,7 @@
         "C15"
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
-      "help": null,
+      "help": "Paint adds coverage and merges overlapping strokes. Erase removes coverage and cuts holes.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -2174,7 +2291,7 @@
         "C15"
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
-      "help": null,
+      "help": "Start painting or erasing on this Paint Area's receiving surface.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -2188,7 +2305,7 @@
         "C15"
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
-      "help": null,
+      "help": "Finish the current brush session.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -2202,7 +2319,7 @@
         "C15"
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
-      "help": null,
+      "help": "Cover the entire receiving surface with this Paint Area.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -2216,7 +2333,7 @@
         "C15"
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
-      "help": null,
+      "help": "Remove all painted coverage from this area.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -2230,7 +2347,7 @@
         "C15"
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
-      "help": null,
+      "help": "Control this area's planting density. 100% keeps its full density before other masks and filters.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -2244,7 +2361,7 @@
         "C15"
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
-      "help": null,
+      "help": "Show painted borders, bounded coverage samples, or hide the Paint overlay.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -2258,7 +2375,7 @@
         "C15"
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
-      "help": null,
+      "help": "Set this Paint Area's viewport overlay color.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -2272,7 +2389,7 @@
         "C15"
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
-      "help": null,
+      "help": "Distance inside the painted border for the density and size transition. Both fade distances at zero create a hard edge.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -2286,7 +2403,7 @@
         "C15"
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
-      "help": null,
+      "help": "Extend the transition beyond the painted border, within the receiving surface. Both fade distances at zero create a hard edge.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -2300,7 +2417,7 @@
         "C15"
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
-      "help": null,
+      "help": "Gradually thin plants across the fade region using the Density curve.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -2314,7 +2431,7 @@
         "C15"
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
-      "help": null,
+      "help": "Shape the density transition. Left is the outer end; right is the fully interior end.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -2328,7 +2445,7 @@
         "C15"
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
-      "help": null,
+      "help": "Vary plant size across the fade region using Edge scale, Inner scale and the Scale curve.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -2342,7 +2459,7 @@
         "C15"
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
-      "help": null,
+      "help": "Outer-end size multiplier with the default curve. 0.5 means half size; 1 means unchanged. Must not exceed Inner scale.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -2356,7 +2473,7 @@
         "C15"
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
-      "help": null,
+      "help": "Interior size multiplier with the default curve. 1 means unchanged; 2 means double size. Must be at least Edge scale.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },
@@ -2370,7 +2487,7 @@
         "C15"
       ],
       "owner_context": "Selected Paint Area and its receiver; shared layer models",
-      "help": null,
+      "help": "Shape the size transition. Left is the outer end; right is the fully interior end.",
       "view": "Modify selected layer and selected container",
       "remote_control": "No UI-control invocation; closed plan 0.73 and local approval define the supported authoring subset."
     },

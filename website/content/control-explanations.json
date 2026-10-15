@@ -954,8 +954,8 @@
     "label": "Brush",
     "help": "Paint unions a swept region into the selected area; Erase subtracts coverage and can cut holes. Repeated gestures edit the same vector document rather than adding a stroke-history stack.",
     "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:3711",
-      "AminScatter/tools/ui/templates/unified-core.ms:3778"
+      "AminScatter/tools/ui/templates/unified-core.ms:4616",
+      "docs/ARTIST_GUIDE.md:1"
     ]
   },
   "layer.brushUI.radiusSpin": {
@@ -970,120 +970,120 @@
     "label": "Start Brush",
     "help": "Start painting the selected area on its explicit receiver and enable painted coverage for the layer. The receiver must be linked to this layer and supported single-valued local-XY terrain; Manual planting still waits for Update.",
     "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:3713",
-      "AminScatter/tools/ui/templates/unified-core.ms:3770"
+      "AminScatter/tools/ui/templates/unified-core.ms:4618",
+      "docs/ARTIST_GUIDE.md:1"
     ]
   },
   "layer.brushUI.stopButton": {
     "label": "Stop",
     "help": "End the active brush session and keep completed vector edits. This stops authoring; it does not clear the area.",
     "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:3714",
-      "AminScatter/tools/ui/templates/unified-core.ms:3777"
+      "AminScatter/tools/ui/templates/unified-core.ms:4619",
+      "docs/ARTIST_GUIDE.md:1"
     ]
   },
   "layer.brushUI.fillButton": {
     "label": "Fill",
     "help": "Fill the selected area's supported receiver footprint. Layer masks, spacing and other acceptance constraints still apply to planting; Manual mode needs Update.",
     "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:3715",
-      "AminScatter/tools/ui/templates/unified-core.ms:3791"
+      "AminScatter/tools/ui/templates/unified-core.ms:4620",
+      "docs/ARTIST_GUIDE.md:1"
     ]
   },
   "layer.brushUI.emptyButton": {
     "label": "Clear",
     "help": "Clear the selected area's vector coverage while keeping the area, target and other settings. Other areas remain independent; Manual mode needs Update.",
     "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:3716",
-      "AminScatter/tools/ui/templates/unified-core.ms:3792"
+      "AminScatter/tools/ui/templates/unified-core.ms:4621",
+      "docs/ARTIST_GUIDE.md:1"
     ]
   },
   "layer.brushUI.densitySpin": {
     "label": "Area density %",
     "help": "Multiply this area's candidate eligibility by Area density percentage. It does not create a separate population; overlapping areas use the strongest effective density and admit a candidate only once.",
     "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:3718",
-      "AminScatter/tools/ui/templates/unified-core.ms:3788"
+      "AminScatter/tools/ui/templates/unified-core.ms:4623",
+      "docs/ARTIST_GUIDE.md:1"
     ]
   },
   "layer.brushUI.overlayMode": {
     "label": "Paint feedback",
     "help": "Choose cached Vector borders, bounded Coverage samples or Off for painting feedback. Feedback is a diagnostic/display choice and does not change the allowed planting region.",
     "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:3719",
-      "AminScatter/tools/ui/templates/unified-core.ms:3789"
+      "AminScatter/tools/ui/templates/unified-core.ms:4624",
+      "docs/ARTIST_GUIDE.md:1"
     ]
   },
   "layer.brushUI.overlayColor": {
     "label": "Paint feedback color",
     "help": "Choose the selected area's painting-feedback color. This is independent of source identification colors, grouping colors and render materials.",
     "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:3720",
-      "AminScatter/tools/ui/templates/unified-core.ms:3790"
+      "AminScatter/tools/ui/templates/unified-core.ms:4625",
+      "docs/ARTIST_GUIDE.md:1"
     ]
   },
   "layer.brushUI.insideSpin": {
     "label": "Inside fade",
     "help": "Set how far the feather transition extends inside the vector border. Combined with Outside fade it defines the transition span; both zero gives a hard edge. Widths use the transformed projection plane, not slope distance.",
     "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:3722",
-      "AminScatter/tools/ui/templates/unified-core.ms:3780"
+      "AminScatter/tools/ui/templates/unified-core.ms:4627",
+      "docs/ARTIST_GUIDE.md:1"
     ]
   },
   "layer.brushUI.outsideSpin": {
     "label": "Outside fade",
     "help": "Set how far the feather transition extends outside the vector border. It cannot plant beyond the receiver or defeat an Exclude mask; both fade widths zero gives a hard edge.",
     "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:3723",
-      "AminScatter/tools/ui/templates/unified-core.ms:3781"
+      "AminScatter/tools/ui/templates/unified-core.ms:4628",
+      "docs/ARTIST_GUIDE.md:1"
     ]
   },
   "layer.brushUI.densityFade": {
     "label": "Fade density",
     "help": "Apply the Density curve across the inside/outside feather transition to thin stable candidates. This can be enabled independently of Fade scale.",
     "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:3724",
-      "AminScatter/tools/ui/templates/unified-core.ms:3782"
+      "AminScatter/tools/ui/templates/unified-core.ms:4629",
+      "docs/ARTIST_GUIDE.md:1"
     ]
   },
   "layer.brushUI.densityCurve": {
     "label": "Density curve...",
     "help": "Edit the selected Paint Area's normalized feather-density curve. Left is the outer transition edge; right is fully interior. Graph edits save immediately; closing the graph is not Cancel.",
     "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:3725",
-      "AminScatter/tools/ui/templates/unified-core.ms:3786"
+      "AminScatter/tools/ui/templates/unified-core.ms:4630",
+      "docs/ARTIST_GUIDE.md:1"
     ]
   },
   "layer.brushUI.scaleFade": {
     "label": "Fade scale",
     "help": "Apply the Scale curve between Edge scale and Inner scale as a multiplier on existing instance scale. This can be enabled independently of Fade density.",
     "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:3726",
-      "AminScatter/tools/ui/templates/unified-core.ms:3783"
+      "AminScatter/tools/ui/templates/unified-core.ms:4631",
+      "docs/ARTIST_GUIDE.md:1"
     ]
   },
   "layer.brushUI.scaleMin": {
     "label": "Edge scale",
-    "help": "Set the instance-scale multiplier at the outer end of the feather transition. It combines with existing random/model scale when Fade scale is enabled; it is not a radius setting.",
+    "help": "With the default Scale curve, set the outer-end size multiplier. 0.5 means half size and 1 unchanged. It multiplies existing model/random scale when Fade scale is enabled and must not exceed Inner scale. A custom curve can change the endpoint response.",
     "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:3727",
-      "AminScatter/tools/ui/templates/unified-core.ms:3784"
+      "AminScatter/tools/ui/templates/unified-core.ms:4632",
+      "docs/ARTIST_GUIDE.md:1"
     ]
   },
   "layer.brushUI.scaleMax": {
     "label": "Inner scale",
-    "help": "Set the instance-scale multiplier at the interior end of the feather transition. With both fade widths zero, interior plants use the curve's right-end scale.",
+    "help": "With the default Scale curve, set the interior size multiplier. 1 means unchanged and 2 double size. It must be at least Edge scale. A custom curve controls the endpoint response; this is independent of density fading.",
     "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:3728",
-      "AminScatter/tools/ui/templates/unified-core.ms:3785"
+      "AminScatter/tools/ui/templates/unified-core.ms:4633",
+      "docs/ARTIST_GUIDE.md:1"
     ]
   },
   "layer.brushUI.scaleCurve": {
     "label": "Scale curve...",
     "help": "Edit the separate normalized curve that blends Edge scale to Inner scale across the feather transition. Graph edits commit as edited; it does not replace the Density curve.",
     "evidence": [
-      "AminScatter/tools/ui/templates/unified-core.ms:3729",
-      "AminScatter/tools/ui/templates/unified-core.ms:3787"
+      "AminScatter/tools/ui/templates/unified-core.ms:4634",
+      "docs/ARTIST_GUIDE.md:1"
     ]
   },
   "layer.randomUI.rotXMinSpin": {
@@ -2217,5 +2217,86 @@
       "AminScatter/tools/ui/templates/unified-core.ms:4542",
       "docs/plans/eleven-phase-roadmap/P05.md:1"
     ]
+  },
+  "layer.distributionUI.meshCheck": {
+    "label": "Use mesh channel mask",
+    "help": "Thin this layer using values stored on each receiving mesh. Combines with Paint, texture density and slope/altitude filters.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4301",
+      "docs/plans/eleven-phase-roadmap/MESH_MASK_0824.md:1"
+    ],
+    "owner_context": "Selected layer and its receiving surfaces"
+  },
+  "layer.distributionUI.meshChannelSpin": {
+    "label": "Channel",
+    "help": "0 reads vertex colors; 1..99 read numbered mesh map channels. These are values, independent of density UV coordinates.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4302",
+      "docs/plans/eleven-phase-roadmap/MESH_MASK_0824.md:1"
+    ],
+    "owner_context": "Selected layer and its receiving surfaces"
+  },
+  "layer.distributionUI.meshComponentList": {
+    "label": "Component",
+    "help": "Read one component of the selected mesh channel. Match Data Channel's Vertex Output component.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4303",
+      "docs/plans/eleven-phase-roadmap/MESH_MASK_0824.md:1"
+    ],
+    "owner_context": "Selected layer and its receiving surfaces"
+  },
+  "layer.distributionUI.meshMinSpin": {
+    "label": "Input min",
+    "help": "Channel value mapped to 0 before Invert and the Density curve. Must be less than Input max.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4304",
+      "docs/plans/eleven-phase-roadmap/MESH_MASK_0824.md:1"
+    ],
+    "owner_context": "Selected layer and its receiving surfaces"
+  },
+  "layer.distributionUI.meshMaxSpin": {
+    "label": "Input max",
+    "help": "Channel value mapped to 1 before Invert and the Density curve. Values outside the range clamp.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4305",
+      "docs/plans/eleven-phase-roadmap/MESH_MASK_0824.md:1"
+    ],
+    "owner_context": "Selected layer and its receiving surfaces"
+  },
+  "layer.distributionUI.meshInvertCheck": {
+    "label": "Invert mesh mask",
+    "help": "Reverse the normalized channel values before applying the Density curve.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4306",
+      "docs/plans/eleven-phase-roadmap/MESH_MASK_0824.md:1"
+    ],
+    "owner_context": "Selected layer and its receiving surfaces"
+  },
+  "layer.distributionUI.meshCurveButton": {
+    "label": "Density curve...",
+    "help": "Remap normalized mesh values into planting eligibility. Left is 0; right is 1.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4307",
+      "docs/plans/eleven-phase-roadmap/MESH_MASK_0824.md:1"
+    ],
+    "owner_context": "Selected layer and its receiving surfaces"
+  },
+  "layer.distributionUI.meshPreviewButton": {
+    "label": "Preview mask",
+    "help": "Read a snapshot of the current mask as at most 2,048 grayscale face-centre markers. White permits plants; black excludes. Refresh after edits.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4308",
+      "docs/plans/eleven-phase-roadmap/MESH_MASK_0824.md:1"
+    ],
+    "owner_context": "Selected layer and its receiving surfaces"
+  },
+  "layer.distributionUI.meshHideButton": {
+    "label": "Hide preview",
+    "help": "Hide the cached mesh mask markers without recalculating plants.",
+    "evidence": [
+      "AminScatter/tools/ui/templates/unified-core.ms:4309",
+      "docs/plans/eleven-phase-roadmap/MESH_MASK_0824.md:1"
+    ],
+    "owner_context": "Selected layer and its receiving surfaces"
   }
 }

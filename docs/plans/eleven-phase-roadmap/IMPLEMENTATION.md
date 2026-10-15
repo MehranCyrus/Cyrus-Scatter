@@ -6,7 +6,7 @@ record any material refinement before coding that phase. Existing contracts
 F01–F12 remain required. Every phase includes documentation, appropriate current
 schema save/copy/merge/Undo handling and its relevant regression checks.
 
-## P01 — Workflow, ownership and feedback
+## P01 — Workflow, ownership and feedback (0.81.8)
 
 **Artist outcome:** understand which layer is being edited, whether its displayed
 plants are current, why the result is empty/reduced, and which action is needed.
@@ -43,7 +43,7 @@ owner-switch cases. Repeated cached reads leave full placements, publication,
 preparation and upload counters unchanged. Existing layout remains usable at the
 tested panel width; physical/DPI coverage is recorded accurately. F01/F04/F05/F08.
 
-## P02 — Named settings and curve presets
+## P02 — Named settings and curve presets (0.81.9)
 
 The [source/format preflight](P02_PREFLIGHT.md) records current ownership,
 unit/curve constraints and unresolved implementation decisions. It is planning
@@ -75,7 +75,7 @@ trip; corrupt, oversized, unsupported or incomplete files make no partial change
 missing/unwritable storage reports an actionable error; Undo restores the exact
 prior settings; browsing adds no solves. F01/F04/F05/F06/F10/F11.
 
-## P03 — Slope and altitude filters
+## P03 — Slope and altitude filters (0.82.0)
 
 **Artist outcome:** vegetation avoids unsuitable slopes/elevations with a smooth
 transition, while other layouts and spacing continue to work.
@@ -109,7 +109,7 @@ with Paint, Bands, Texture Density, protected Edit, cleanup and bounded refill;
 unchanged results with filters disabled; cache/Manual/Live/save/Undo checks.
 F02/F03/F04/F05/F06/F09/F10/F11.
 
-## P04 — Density mapping controls
+## P04 — Density mapping controls (0.82.1)
 
 **Artist outcome:** choose the receiver's intended UV channel and enough sampled
 map detail for the scene with a clear quality/cost tradeoff.
@@ -134,7 +134,7 @@ animated maps only rebuild on relevant time changes; Manual preserves old plants
 filter/Band/Paint interactions; peak bake/preparation memory and cold/warm cost.
 F02/F04/F05/F06/F07/F09/F11. Higher resolution is not a speed promise.
 
-## P05 — Paint/spline conversion
+## P05 — Paint/spline conversion (0.82.2)
 
 **Artist outcome:** take an authored Paint Area into Max spline editing, then
 apply a valid edited boundary back to a selected receiver-bound Paint Area.
@@ -157,7 +157,7 @@ and excessive geometry. Export/import coverage agrees within the declared
 tolerance. Source ownership, Undo, save/reopen and failure retention remain correct.
 F01/F04/F05/F06/F09/F10/F11. General curved-surface painting is outside this phase.
 
-## P06 — Regular planting grids
+## P06 — Regular planting grids (0.82.5)
 
 **Artist outcome:** control row/column spacing, staggering, orientation, offset
 and bounded jitter for rectangular, running and hexagonal arrangements.
@@ -182,7 +182,7 @@ different units; border expansion preserving surviving cell IDs; translated
 origins; jitter stability; steep/curved/multiple receivers; Paint/Bands/filters,
 spacing, Points/Empty and quotas. F01/F02/F03/F05/F06/F09/F10/F11.
 
-## P07 — Orientation controls
+## P07 — Orientation controls (0.82.6)
 
 **Artist outcome:** face an explicit direction or target, with predictable surface
 alignment and retained random variation.
@@ -202,7 +202,7 @@ surface alignment and random rotation order, final-radius collision checks,
 target deletion, relevant/unrelated animation and save/copy/merge/Undo.
 F02/F03/F04/F05/F09/F10/F11.
 
-## P08 — Paths, sequences and references
+## P08 — Paths, sequences and references (0.82.7)
 
 **Artist outcome:** evenly spaced trees/lamps along open or closed splines,
 repeating named source sequences, and exact placement on reference markers.
@@ -227,7 +227,7 @@ deleted/animated references and receiver projection; no seam duplicates; compare
 arc positions against an independent high-accuracy oracle. Measure long-path
 preparation and cache reuse. F01–F07/F09–F11.
 
-## P09 — Transform maps and model assignment maps
+## P09 — Transform maps and model assignment maps (0.82.8)
 
 **Artist outcome:** drive size/rotation and plant-type regions with maps while
 retaining predictable collision and source selection.
@@ -253,7 +253,7 @@ zero weights, empty eligible subsets, Model/Point/Empty distinctions, missing
 sources, mirrored/nonuniform scale, final-radius collisions, every active layout,
 Manual/Live animation and map cache/memory measurements. F01–F11 as applicable.
 
-## P10 — Planting recipes and browser
+## P10 — Planting recipes and browser (0.82.9)
 
 **Artist outcome:** save and reuse a complete layer or multi-layer planting setup,
 substitute the artist's own models and understand any unresolved dependencies.
@@ -277,7 +277,7 @@ cross-scene units, collisions/Band memberships after ID remap, broken paths/maps
 unsupported format, excessive file sizes, cancelled apply, undo/redo, storage
 failures and browser responsiveness with many entries. F01/F03–F06/F10/F11.
 
-## P11 — Adaptive viewport completion
+## P11 — Adaptive viewport completion (0.83.0)
 
 **Artist outcome:** predictable interaction with dense/heavy planting and clear
 feedback about the displayed representation, while the accepted result stays
@@ -297,9 +297,10 @@ unchanged.
    still respects resource admission. Existing budgets remain configurable.
 5. Validate prolonged transitions, relevant source changes, failure/recovery and
    global resource contention. Avoid global garbage collection as a normal fix.
-6. Qualify Max 2026 with compatible assets; do not hide the existing missing-class
-   terrace limitation by silently substituting geometry. Record physical and
-   presented-FPS evidence separately from scripted redraw timings.
+6. Qualify supported assets and the production terrace in Max 2027 only, following
+   the user's current testing rule. Report missing asset classes explicitly.
+   Record physical and presented-FPS evidence separately from scripted redraw
+   timings.
 
 **Acceptance:** all new features retain IDs/full transforms and output selection
 across preview changes; static navigation/status reads cause no solves/uploads;

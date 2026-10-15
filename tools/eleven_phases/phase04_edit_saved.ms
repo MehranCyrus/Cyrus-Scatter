@@ -8,7 +8,7 @@
         if not doesFileExist scene do throw "Qualified owned P03 scene is unavailable"
         CyrusPerfHeadless=true;resetMaxFile #noPrompt;loadMaxFile scene quiet:true
         local node=getNodeByName "P03 lifecycle",root=node.baseObject,leaf=root.layerObjects[1]
-        verify (root.uiVersion()=="0.85.0" and leaf.densityUVChannel==1 and leaf.densityResolution==128) "Saved P03 scene receives neutral density controls" log
+        verify (root.uiVersion()=="0.82.4" and leaf.densityUVChannel==1 and leaf.densityResolution==128) "Saved P03 scene receives neutral density controls" log
         root.refreshAll()
         verify (leaf.generatedCount==70 and leaf.slopeEnabled and leaf.altitudeEnabled) "Saved P03 filter behavior remains intact" log
         resetMaxFile #noPrompt

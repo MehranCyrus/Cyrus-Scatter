@@ -1,6 +1,24 @@
 -- Only registered Scatter nodes participate in timeline notifications. This
 -- registry is rebuilt at scene boundaries, never by scanning every animation frame.
 global AminScatterObject,CyrusSourceContainer,CyrusContainerRefreshLabels
+global CyrusMeshMaskPreviewTarget=undefined,CyrusMeshMaskPreviewNode=undefined,CyrusMeshMaskPreviewRows=#()
+fn CyrusClearMeshMaskPreview target = (
+    if target==undefined or target==CyrusMeshMaskPreviewTarget do (
+        CyrusMeshMaskPreviewRows=#();CyrusMeshMaskPreviewTarget=undefined;CyrusMeshMaskPreviewNode=undefined
+    )
+)
+fn CyrusShowMeshMaskPreview target = (
+    if not target.meshMaskEnabled do throw "Enable the mesh channel density mask first."
+    local node=undefined
+    for candidate in refs.dependentNodes target where isValidNode candidate and classof candidate.baseObject==AminScatterObject do node=candidate
+    if node==undefined do throw "The mesh mask owner is no longer in this scene."
+    local targets=target.validSurfaces(),rows=#()
+    if targets.count==0 do throw "Add a receiving surface first."
+    local perReceiver=amax 1 ((2048/targets.count) as integer),cfg=target.meshMaskPayload()
+    for receiver in targets do join rows (cyrusMeshDensityPreview receiver cfg perReceiver)
+    CyrusMeshMaskPreviewTarget=target;CyrusMeshMaskPreviewNode=node;CyrusMeshMaskPreviewRows=rows
+    redrawViews();rows.count
+)
 global CyrusTimeOwners=#(),CyrusRegisterTimeOwner,CyrusResetTimeOwners,CyrusPruneTimeOwners
 fn CyrusRegisterTimeOwner node = (
     if isValidNode node and classof node.baseObject==AminScatterObject do appendIfUnique CyrusTimeOwners node
@@ -159,7 +177,7 @@ fn CyrusUIResultText root owner = (
 
 global CyrusPointOwner,CyrusPointSync,CyrusViewportRedraw,CyrusPointClear,CyrusPointAfterSave
 global CyrusPointOwners,CyrusPointEnabled=true,CyrusMeshEnabled=true,CyrusPointAvailable=false,CyrusPointBusy=false,CyrusPointPending=false,CyrusPointSuspended=false,CyrusPointLastError="",CyrusPointDetailStatus="",CyrusPointDeletedHandles=#()
-global CyrusViewportRecords=#(),CyrusViewportAnalyzers=#(),CyrusViewportRecordsDirty=true
+global CyrusViewportRecords=#(),CyrusViewportAnalyzers=#(),CyrusViewportRecordsDirty=true,CyrusPointPresentationPending=false
 global CyrusPointSceneOwners=#()
 try(CyrusPointClear())catch()
 CyrusPointOwners=#()
@@ -170,9 +188,9 @@ fn CyrusInteractionHeld = (try((dotNetClass "System.Windows.Forms.Control").Mous
 global CyrusFallPack,CyrusFallUnpack,CyrusOpenFalloffGraph
 fn CyrusFallPack values = (local s=stringStream "";for i=1 to values.count do format "% %" values[i] (if i<values.count then "," else "") to:s;s as string)
 fn CyrusFallUnpack data = (for v in filterString data "," collect (v as float))
-global CyrusFalloffGraph,CyrusFallGraphTarget,CyrusFallGraphArea,CyrusFallGraphDensity,CyrusFallGraphBandID=0
+global CyrusFalloffGraph,CyrusFallGraphTarget,CyrusFallGraphArea,CyrusFallGraphDensity,CyrusFallGraphBandID=0,CyrusFallGraphMeshMask=false
 global CyrusFallGraphOwnerRoot,CyrusFallGraphOwnerNode
-fn CyrusOpenFalloffGraph target areaNode density bandID:0 = (
+fn CyrusOpenFalloffGraph target areaNode density bandID:0 meshMask:false = (
     local bandRoot=undefined,bandNode=undefined
     if bandID>0 and findItem target.strokeIDs bandID==0 do throw "The selected Band no longer exists."
     for node in refs.dependentNodes target where isValidNode node and classof node.baseObject==AminScatterObject do (
@@ -185,7 +203,7 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 = (
     if bandRoot==undefined do throw "The curve controller is no longer in this scene."
     if CyrusFalloffGraph!=undefined do try(destroyDialog CyrusFalloffGraph)catch()
     rollout editor "Area Falloff - Edit Graph" width:760 height:505 (
-        local obj,area,isDensity=false,loading=true,ownerRoot=undefined,ownerNode=undefined,ownerLayerID="",ownerBandID=0,ownerPathID=0,invalidated=false,curveTimer=undefined,pendingCurve=false,lastGraphTrace="",lastPresetTrace="",presetStoredValues=undefined,presetStoredGraph=""
+        local obj,area,isDensity=false,isMeshMask=false,loading=true,ownerRoot=undefined,ownerNode=undefined,ownerLayerID="",ownerBandID=0,ownerPathID=0,invalidated=false,curveTimer=undefined,pendingCurve=false,lastGraphTrace="",lastPresetTrace="",presetStoredValues=undefined,presetStoredGraph=""
         curveControl graph "" pos:[8,8] width:744 height:396 numCurves:1 x_range:[0,1] y_range:[0,100] commandMode:#move_xy asPopup:false
         button presetsButton "Presets..." pos:[12,464] width:120
         button applyButton "Apply" pos:[538,424] width:100
@@ -230,6 +248,20 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 = (
                 local trace=curveTrace()
                 if trace==undefined do return false
                 local values=trace[1],packedValues=trace[2],packedGraph=trace[3],identity=trace[3]
+                if isMeshMask do (
+                    if not isValidNode ownerNode or ownerNode.baseObject!=ownerRoot or findItem ownerRoot.layerObjects obj==0 or obj.layerID!=ownerLayerID do (
+                        invalidated=true;applyButton.enabled=false;help.text="This mesh mask owner was removed. Close and reopen its graph.";return false
+                    )
+                    if identity==lastGraphTrace do return true
+                    local changed=(CyrusFallPack (obj.meshMaskCurve()))!=packedValues
+                    undo "Cyrus mesh density curve" on (
+                        if changed do obj.meshMaskSamples=values
+                        obj.meshMaskGraph=packedGraph
+                    )
+                    lastGraphTrace=identity
+                    if changed do CyrusViewportRedraw()
+                    return true
+                )
                 -- Compare the canonical saved representation, not rounded
                 -- control geometry, not the SDK's deferred sample cache.
                 -- A close after external Undo must not reapply an unchanged UI.
@@ -343,7 +375,7 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 = (
         )
         on presetsButton pressed do try(CyrusOpenPresets ownerRoot obj (if isDensity then "density_curve" else "scale_curve") editor:editor)catch(messageBox (getCurrentException()) title:"Cyrus presets")
         on editor open do (
-            obj=CyrusFallGraphTarget;area=CyrusFallGraphArea;isDensity=CyrusFallGraphDensity;ownerBandID=CyrusFallGraphBandID
+            obj=CyrusFallGraphTarget;area=CyrusFallGraphArea;isDensity=CyrusFallGraphDensity;ownerBandID=CyrusFallGraphBandID;isMeshMask=CyrusFallGraphMeshMask
             ownerRoot=CyrusFallGraphOwnerRoot;ownerNode=CyrusFallGraphOwnerNode;ownerLayerID=obj.layerID
             if ownerBandID>0 do (
                 local row=findItem obj.strokeIDs ownerBandID
@@ -351,16 +383,21 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 = (
                 ownerPathID=obj.strokePathIDs[row]
             )
             editor.title=(if isDensity then "Area Density Falloff" else "Area Scale Falloff")+" - "+(if area==undefined then (if obj.isPaintArea then obj.paintSetName+" / Vector Border" else "Analyzer Boundary") else area.name)
-            local row=bandTargetRow(),cfg=if ownerBandID>0 then undefined else obj.getFallConfig area
+            local row=bandTargetRow(),cfg=if ownerBandID>0 or isMeshMask then undefined else obj.getFallConfig area
             if ownerBandID>0 do (editor.title=(if isDensity then "Band Density - " else "Band Scale - ")+obj.bandName row;help.text="Band "+(ownerBandID as string)+". X: normalized Start to End. Y: "+(if isDensity then "density 0-100%." else "size percent; 100% = unchanged.")+" Drag applies on release.")
-            local packed=CyrusFallUnpack (if ownerBandID>0 then (bandGraphs())[row] else obj.getFallGraph area isDensity)
-            local values=if ownerBandID>0 then CyrusFallUnpack ((bandSamples())[row]) else cfg[if isDensity then 8 else 5]
+            local packed=CyrusFallUnpack (if isMeshMask then obj.meshMaskGraph else if ownerBandID>0 then (bandGraphs())[row] else obj.getFallGraph area isDensity)
+            local values=if isMeshMask then obj.meshMaskCurve() else if ownerBandID>0 then CyrusFallUnpack ((bandSamples())[row]) else cfg[if isDensity then 8 else 5]
+            if isMeshMask do (
+                editor.title="Mesh Channel Density - "+(ownerRoot.layerCaption obj)
+                help.text="X: remapped channel value (after Invert). Y: planting eligibility 0-100%. Apply or release to update."
+                presetsButton.enabled=false
+            )
             local c=graph.curves[1];c.color=red
             graph.y_range=[0,(if isDensity then 100 else amax 200.0 ((amax values)*100))]
             -- Fit the full density domain before loading the authored curve.
             -- Zoom extents on a constant curve hides almost all of 0–100%.
             local densityZoom=undefined,densityScroll=undefined
-            if ownerBandID>0 do (
+            if ownerBandID>0 or isMeshMask do (
                 c.numPoints=2
                 local low=c.points[1],high=c.points[2]
                 low.value=[0,0];high.value=[1,(if isDensity then 100 else amax 200.0 ((amax values)*100))]
@@ -382,8 +419,8 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 = (
                     local p=c.points[i];p.value=[(i-1.0)/(c.numPoints-1),values[i]*100];p.bezier=false;p.corner=true;p.lock_x=(i==1 or i==c.numPoints);c.points[i]=p
                 )
             )
-            if ownerBandID>0 then (graph.zoomValues=densityZoom;graph.scrollValues=densityScroll) else zoom graph #all
-            if ownerBandID>0 do (local trace=curveTrace();if trace!=undefined do lastGraphTrace=trace[3])
+            if ownerBandID>0 or isMeshMask then (graph.zoomValues=densityZoom;graph.scrollValues=densityScroll) else zoom graph #all
+            if ownerBandID>0 or isMeshMask do (local trace=curveTrace();if trace!=undefined do lastGraphTrace=trace[3])
             loading=false
         )
         fn flushCurve sender args = (
@@ -391,7 +428,7 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 = (
         )
         fn queueCurve = (
             if loading do return false
-            if ownerBandID==0 then storeCurve() else (
+            if ownerBandID==0 and not isMeshMask then storeCurve() else (
                 pendingCurve=true
                 if curveTimer==undefined do (curveTimer=dotNetObject "System.Windows.Forms.Timer";curveTimer.Interval=100;dotNet.addEventHandler curveTimer "Tick" flushCurve)
                 -- Point-change callbacks can precede the control's sampled
@@ -408,7 +445,7 @@ fn CyrusOpenFalloffGraph target areaNode density bandID:0 = (
         on doneButton pressed do (storeCurve();destroyDialog editor)
         on editor close do (if curveTimer!=undefined do (curveTimer.Stop();dotNet.removeEventHandler curveTimer "Tick" flushCurve;curveTimer.Dispose();curveTimer=undefined);pendingCurve=false;storeCurve();CyrusFalloffGraph=undefined)
     )
-    CyrusFallGraphTarget=target;CyrusFallGraphArea=areaNode;CyrusFallGraphDensity=density;CyrusFallGraphBandID=bandID
+    CyrusFallGraphTarget=target;CyrusFallGraphArea=areaNode;CyrusFallGraphDensity=density;CyrusFallGraphBandID=bandID;CyrusFallGraphMeshMask=meshMask
     CyrusFalloffGraph=editor
     CyrusFallGraphOwnerRoot=bandRoot;CyrusFallGraphOwnerNode=bandNode
     try(createDialog editor style:#(#style_titlebar,#style_sysmenu,#style_minimizebox) pos:[200,160])catch(
@@ -436,8 +473,9 @@ try(unRegisterRedrawViewsCallback AminScatterObjectDraw)catch()
 global AminScatterSurfaceFilterFields=#(#slopeEnabled,#slopeMinimum,#slopeMaximum,#slopeLowerFade,#slopeUpperFade,#altitudeEnabled,#altitudeMinimum,#altitudeMaximum,#altitudeLowerFade,#altitudeUpperFade)
 global AminScatterLayerFields, AminScatterLayerTabs
 global AminScatterCopyLayer, AminScatterRefreshLayerPanels
-AminScatterLayerFields=#(#slopeEnabled,#slopeMinimum,#slopeMaximum,#slopeLowerFade,#slopeUpperFade,#altitudeEnabled,#altitudeMinimum,#altitudeMaximum,#altitudeLowerFade,#altitudeUpperFade,#procOrder,#procSetOrder,#procSamplingSalt,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procRadiusBinding,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverID,#containerMode,#containerNodes,#logicalParentID,#paintSetName,#paintSetEnabled,#paintSetVisible,#paintView,#paintColor,#paintDocument,#paintEnabled,#paintDensity,#streetTrimStart,#streetTrimEnd,#centerStreetOffset,#areaAnalyzer,#areaUseLine,#areaLineWidth,#areaLineCaps,#areaUsePoints,#areaPointRadius,#wholeScaleMin,#wholeScaleMax,#fallScaleGraph,#fallDensityGraph,#areaFallConfigs,#areaFallDeleteWidths,#areaFallScaleWidths,#areaFallDensityWidths,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallAnalyzer,#fallDelete,#fallDeleteWidth,#fallScale,#fallScaleWidth,#fallScaleCurve,#fallDensity,#fallDensityWidth,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeKeepCorners,#edgeCornerAngle,#edgeCornerCount,#edgeFaceOut,#edgeCornerRadius,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#borderFaceOut,#streetFaceOut,#borderCornerRadius,#streetCornerRadius,#sourceForwardAxes,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius,#streetStraight,#sourcePoint,#sourceEmpty,#cleanupPlanar,#sourceZOffsetsWU,#sourceScales,#sourceWeights,#showCenters,#relaxEnabled,#relaxSpacing,#relaxIterations,#relaxStrength,#sources,#bakedNodes,#amount,#randomSeed,#scaleMinimum,#scaleMaximum,#tiltDegrees,#yawMinimum,#yawMaximum,#movementRange,#alignNormal,#showPoints,#pointsPerPlant,#updateMode,#populationMode,#plantsPerM2,#advancedAxes,#projectMove,#rotXMin,#rotXMax,#rotYMin,#rotYMax,#rotZMin,#rotZMax,#sclXMin,#sclXMax,#sclYMin,#sclYMax,#sclZMin,#sclZMax,#movXMinWU,#movXMaxWU,#movYMinWU,#movYMaxWU,#movZMinWU,#movZMaxWU,#distributionMode,#densityMap,#invertDensity,#densityUVChannel,#densityResolution,#diversityMode,#diversitySize,#diversitySeed,#roughness,#blurryEdge,#diversityNoise,#autoRender,#previewBudget,#pointColorMode,#solidPointColor,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths,#fieldFalloff,#fieldBoundaries,#fieldCombined,#fieldSamples,#fieldBandID)
-AminScatterLayerTabs=#(#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#containerNodes,#areaFallConfigs,#areaFallDeleteWidths,#areaFallScaleWidths,#areaFallDensityWidths,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallScaleCurve,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#sourceForwardAxes,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius,#sourcePoint,#sourceEmpty,#sourceZOffsetsWU,#sourceScales,#sourceWeights,#sources,#bakedNodes,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths)
+global AminScatterMeshMaskFields=#(#meshMaskEnabled,#meshMaskChannel,#meshMaskComponent,#meshMaskMinimum,#meshMaskMaximum,#meshMaskInvert,#meshMaskSamples,#meshMaskGraph)
+AminScatterLayerFields=#(#meshMaskEnabled,#meshMaskChannel,#meshMaskComponent,#meshMaskMinimum,#meshMaskMaximum,#meshMaskInvert,#meshMaskSamples,#meshMaskGraph,#slopeEnabled,#slopeMinimum,#slopeMaximum,#slopeLowerFade,#slopeUpperFade,#altitudeEnabled,#altitudeMinimum,#altitudeMaximum,#altitudeLowerFade,#altitudeUpperFade,#procOrder,#procSetOrder,#procSamplingSalt,#procPopulation,#procAttemptFactor,#procRounds,#procRepair,#procSelfOverride,#procSelfEnabled,#procSelfMultiplier,#procSelfGap,#procSelfPlanar,#procLayerSelfEnabled,#procLayerSelfMultiplier,#procLayerSelfGap,#procLayerSelfPlanar,#procSiblingEnabled,#procSiblingMultiplier,#procSiblingGap,#procSiblingPlanar,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procRadiusBinding,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#procReceiverID,#containerMode,#containerNodes,#logicalParentID,#paintSetName,#paintSetEnabled,#paintSetVisible,#paintView,#paintColor,#paintDocument,#paintEnabled,#paintDensity,#streetTrimStart,#streetTrimEnd,#centerStreetOffset,#areaAnalyzer,#areaUseLine,#areaLineWidth,#areaLineCaps,#areaUsePoints,#areaPointRadius,#wholeScaleMin,#wholeScaleMax,#fallScaleGraph,#fallDensityGraph,#areaFallConfigs,#areaFallDeleteWidths,#areaFallScaleWidths,#areaFallDensityWidths,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallAnalyzer,#fallDelete,#fallDeleteWidth,#fallScale,#fallScaleWidth,#fallScaleCurve,#fallDensity,#fallDensityWidth,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeKeepCorners,#edgeCornerAngle,#edgeCornerCount,#edgeFaceOut,#edgeCornerRadius,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#borderFaceOut,#streetFaceOut,#borderCornerRadius,#streetCornerRadius,#sourceForwardAxes,#finalCleanup,#finalNeighborRadius,#finalMinNeighbors,#finalMinIsland,#finalRelax,#finalStrength,#finalIterations,#finalMaxMove,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius,#streetStraight,#sourcePoint,#sourceEmpty,#cleanupPlanar,#sourceZOffsetsWU,#sourceScales,#sourceWeights,#showCenters,#relaxEnabled,#relaxSpacing,#relaxIterations,#relaxStrength,#sources,#bakedNodes,#amount,#randomSeed,#scaleMinimum,#scaleMaximum,#tiltDegrees,#yawMinimum,#yawMaximum,#movementRange,#alignNormal,#showPoints,#pointsPerPlant,#updateMode,#populationMode,#plantsPerM2,#advancedAxes,#projectMove,#rotXMin,#rotXMax,#rotYMin,#rotYMax,#rotZMin,#rotZMax,#sclXMin,#sclXMax,#sclYMin,#sclYMax,#sclZMin,#sclZMax,#movXMinWU,#movXMaxWU,#movYMinWU,#movYMaxWU,#movZMinWU,#movZMaxWU,#distributionMode,#densityMap,#invertDensity,#densityUVChannel,#densityResolution,#diversityMode,#diversitySize,#diversitySeed,#roughness,#blurryEdge,#diversityNoise,#autoRender,#previewBudget,#pointColorMode,#solidPointColor,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths,#fieldFalloff,#fieldBoundaries,#fieldCombined,#fieldSamples,#fieldBandID)
+AminScatterLayerTabs=#(#meshMaskSamples,#procRadiusIDs,#procRadiusModes,#procRadiusValues,#procRadiusDistances,#procSourceNodes,#procSourceIDs,#procSourceSlots,#procReceiverNodes,#procReceiverIDs,#containerNodes,#areaFallConfigs,#areaFallDeleteWidths,#areaFallScaleWidths,#areaFallDensityWidths,#areaFallScaleGraphs,#areaFallDensityGraphs,#fallScaleCurve,#fallDensityCurve,#edgeRotX,#edgeRotY,#edgeRotZ,#edgeOffsetsWU,#edgeAlongWU,#edgeAcrossWU,#sourceForwardAxes,#sourceRadiiWU,#sourceAutoRadius,#sourceFollowScale,#sourceShowRadius,#sourcePoint,#sourceEmpty,#sourceZOffsetsWU,#sourceScales,#sourceWeights,#sources,#bakedNodes,#areaNodes,#areaModes,#sourceColors,#patternLines,#patternWidths)
 fn AminScatterCopyLayer origin destination = (
     origin.procAssertSchema()
     destination.setLayerTransfer true
@@ -1130,6 +1168,26 @@ initialRollupState:0x8
         on densityMap set v do markInputDirty()
         on invertDensity set v do markInputDirty()
     )
+    parameters meshDensitySettings (
+        meshMaskEnabled type:#boolean default:false
+        meshMaskChannel type:#integer default:0
+        meshMaskComponent type:#integer default:1
+        meshMaskMinimum type:#float default:0
+        meshMaskMaximum type:#float default:1
+        meshMaskInvert type:#boolean default:false
+        meshMaskSamples type:#floatTab tabSize:0 tabSizeVariable:true
+        meshMaskGraph type:#string default:""
+        on meshMaskEnabled set v do this.meshMaskChanged()
+        on meshMaskChannel set v do this.meshMaskChanged()
+        on meshMaskComponent set v do this.meshMaskChanged()
+        on meshMaskMinimum set v do this.meshMaskChanged()
+        on meshMaskMaximum set v do this.meshMaskChanged()
+        on meshMaskInvert set v do this.meshMaskChanged()
+        on meshMaskSamples set v i do this.meshMaskChanged()
+    )
+    fn meshMaskCurve = (if meshMaskSamples.count==0 then #(0.0,1.0) else meshMaskSamples as array)
+    fn meshMaskPayload = (#(meshMaskEnabled,meshMaskChannel,meshMaskComponent,meshMaskMinimum,meshMaskMaximum,meshMaskInvert,this.meshMaskCurve()))
+    fn meshMaskChanged = (CyrusClearMeshMaskPreview this;markInputDirty())
     parameters diversitySettings (
         diversityMode type:#integer default:1
         diversitySize type:#worldUnits default:10
@@ -1917,7 +1975,7 @@ initialRollupState:0x8
         this.procAssertSchema()
         if not rawOnly and finalPass==undefined and overlapOwner!=undefined do return overlapOwner.groupPlacements this plants previewOnly
         if not cyrusEnabled or disabledAnalyzerInput() do return #()
-        if this.brushMaskActive() and not projectMove and (movXMinWU!=0 or movXMaxWU!=0 or movYMinWU!=0 or movYMaxWU!=0 or movZMinWU!=0 or movZMaxWU!=0 or movementRange!=0) do throw "Brush requires projected movement."
+        if (this.brushMaskActive() or meshMaskEnabled) and not projectMove and (movXMinWU!=0 or movXMaxWU!=0 or movYMinWU!=0 or movYMaxWU!=0 or movZMinWU!=0 or movZMaxWU!=0 or movementRange!=0) do throw "Paint and mesh density masks require Keep on surface for nonzero movement."
         local targets=this.validSurfaces(),seed=this.effectiveSeed(),sourceCount=amax 1 plants.count
         if targets.count==0 do return #()
         if plants.count==0 and not previewOnly do throw "Add a plant model."
@@ -1941,7 +1999,7 @@ initialRollupState:0x8
             for receiverIndex=1 to targets.count do (
                 local receiver=targets[receiverIndex],slot=findItem procReceiverNodes receiver,request=undefined,geometryKey=""
                 for entry in procReceiverPlanData[1] where entry[1]==slot do request=entry
-                for entry in procReceiverGeometry where entry[1]==slot do geometryKey=entry[2]
+                for entry in procReceiverGeometry where entry[1]==slot do geometryKey=entry[2]+"|MeshMask:"+entry[3]
                 if request==undefined do throw "Receiver allocation is missing."
                 local receiverCount=request[4],receiverRows=#()
                 local receiverKey=commonKey+"|"+procReceiverIDs[slot]+"|"+geometryKey+"|"+(receiverCount as string)
@@ -1956,6 +2014,7 @@ initialRollupState:0x8
                         receiverRows=cyrusScatterAdvanced #(receiver) receiverCount seed sourceCount [sclXMin,sclYMin,sclZMin] [sclXMax,sclYMax,sclZMax] [rotXMin,rotYMin,rotZMin] [rotXMax,rotYMax,rotZMax] [movXMinWU,movYMinWU,movZMinWU] [movXMaxWU,movYMaxWU,movZMaxWU] alignNormal projectMove (distributionMode-1) weights densityResolution groups (diversityMode==2) diversitySize diversitySeed (roughness/100.0) (blurryEdge/100.0) (diversityNoise/100.0) areas[1] areas[2] line #(relaxEnabled,relaxSpacing,relaxIterations,relaxStrength) shares relaxPass options
                     )
                     if wholeScaleMin!=1.0 or wholeScaleMax!=1.0 do receiverRows=cyrusWholeScale receiverRows wholeScaleMin wholeScaleMax seed
+                    if meshMaskEnabled do receiverRows=cyrusMeshDensityFilter receiverRows receiver (this.meshMaskPayload()) seed procReceiverIDs[slot]
                     receiverRows=this.applyAnalyzerArea receiverRows
                     receiverRows=this.applyFalloff receiverRows
                     procReceiverBuilds+=1
@@ -1986,7 +2045,7 @@ initialRollupState:0x8
         -- Only a committed calculation epoch establishes its first result.
         CyrusLayerStatusData hasResult:(procEpoch>0 and cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
     )
-    fn uiVersion = "0.85.0"
+    fn uiVersion = "0.82.4"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified1")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -2168,7 +2227,7 @@ initialRollupState:0x8
         parent.markInputDirty();this.bindNativeUI();CyrusViewportRedraw();true
     )
     fn validatePaintConversion area = (
-        if cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 do throw "Paint/spline conversion requires the matching Cyrus native plugins. Restart Max with the complete pair."
+        if cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 do throw "Paint/spline conversion requires the matching Cyrus native plugins. Restart Max with the complete pair."
         local parent=if area==undefined then undefined else this.logicalParent area
         if parent==undefined or findItem layerObjects parent==0 or findItem parent.paintAreas area==0 do throw "Select a Paint Area owned by this setup."
         if area.paintDocument==undefined or not isValidNode area.areaTarget or findItem (parent.validSurfaces()) area.areaTarget==0 do throw "Choose a valid receiving surface for this Paint Area."
@@ -2450,7 +2509,8 @@ initialRollupState:0x8
             format "EffectiveRelax:%|" (relaxEnabled and not this.layerPaintActive()) to:stream
             format "FinalRelax:%:%:%:%|" finalRelax finalStrength finalIterations finalMaxMove to:stream
             format "Texture:%|" (this.procWatchDensity()) to:stream
-            for key in AminScatterLayerFields where (distributionMode==3 or findItem #(#densityUVChannel,#densityResolution) key==0) and findItem AminScatterSurfaceFilterFields key==0 and findItem #(#paintDocument,#paintEnabled,#paintDensity,#bakedNodes,#showPoints,#pointsPerPlant,#updateMode,#autoRender,#previewBudget,#pointColorMode,#solidPointColor) key==0 and findItem post key==0 and findItem #(#paintView,#paintColor,#showCenters,#sourceShowRadius,#paintSetName,#paintSetVisible,#fieldFalloff,#fieldBoundaries,#fieldCombined,#fieldSamples,#fieldBandID) key==0 and (not receiverLocal or findItem #(#amount,#plantsPerM2,#populationMode) key==0) do format "%:%|" key (if key==#sources then this.containerSourceKey (sources as array) else getProperty this key) to:stream
+            format "MeshMask:%|" (if meshMaskEnabled then this.meshMaskPayload() else #(false)) to:stream
+            for key in AminScatterLayerFields where (distributionMode==3 or findItem #(#densityUVChannel,#densityResolution) key==0) and findItem AminScatterSurfaceFilterFields key==0 and findItem AminScatterMeshMaskFields key==0 and findItem #(#paintDocument,#paintEnabled,#paintDensity,#bakedNodes,#showPoints,#pointsPerPlant,#updateMode,#autoRender,#previewBudget,#pointColorMode,#solidPointColor) key==0 and findItem post key==0 and findItem #(#paintView,#paintColor,#showCenters,#sourceShowRadius,#paintSetName,#paintSetVisible,#fieldFalloff,#fieldBoundaries,#fieldCombined,#fieldSamples,#fieldBandID) key==0 and (not receiverLocal or findItem #(#amount,#plantsPerM2,#populationMode) key==0) do format "%:%|" key (if key==#sources then this.containerSourceKey (sources as array) else getProperty this key) to:stream
             for n in ((if receiverLocal then #() else this.validSurfaces())+(sources as array)+(areaNodes as array)+(patternLines as array)+#(analyzerNode,areaAnalyzer,fallAnalyzer)) where isValidNode n do (
                 local tm=n.objectTransform
                 if this.containerProvider()!=undefined and findItem sources n>0 do tm.row4=[0,0,0]
@@ -2505,7 +2565,7 @@ initialRollupState:0x8
                 local layer=layerObjects[i]
                 if layer.layerID=="" or layer.layerID=="dotNetObject:System.Guid" do layer.layerID=CyrusNewLayerID()
                 if layer.editLayerKey==0 do layer.editLayerKey=i
-                nextEditLayerKey=amax nextEditLayerKey (layer.editLayerKey+1)
+                if nextEditLayerKey<=layer.editLayerKey do nextEditLayerKey=layer.editLayerKey+1
             )
         )
     )
@@ -2818,7 +2878,7 @@ initialRollupState:0x8
         for node in this.validSurfaces() do (
             local slot=findItem procReceiverNodes node
             append inputs #(slot,procReceiverIDs[slot],(aminScatterSurfaceArea #(node)),requirements[slot])
-            append procReceiverGeometry #(slot,(cyrusProceduralSurfaceKey #(node) (distributionMode==3) densityUVChannel))
+            append procReceiverGeometry #(slot,(cyrusProceduralSurfaceKey #(node) (distributionMode==3) densityUVChannel),(if meshMaskEnabled then cyrusMeshDensityKey node (this.meshMaskPayload()) else "off"))
         )
         procReceiverPlanData=cyrusReceiverPlan inputs allocation[1] (if parent.populationMode==2 then allocation[2]/(meters*meters) else -1.0) (if parent.procPopulation==2 then parent.procAttemptFactor else 1) ((overlapOwner.populationAllocation this countOverride:1000000)[1])
         densityCapped=procReceiverPlanData[5]
@@ -3032,7 +3092,7 @@ initialRollupState:0x8
             if deletedHandles==undefined then affected=true
             else for handle in deletedHandles while not affected do if findItem procDependencyHandles handle>0 do affected=true
         )
-        if affected do (procGeometryRevision+=1;markInputDirty())
+        if affected do (CyrusClearMeshMaskPreview this;procGeometryRevision+=1;markInputDirty())
         CyrusDiagnosticEmit "input.classified" "host_callback" layerID procEpoch (if affected then "geometry_dependency" else "unrelated")
         affected
     )
@@ -3125,19 +3185,19 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.85.0 setup; earlier schemas are unsupported."
+        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.82.4 setup; earlier schemas are unsupported."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
     fn procValidate = (
         this.procAssertSchema()
-        if cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=1 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.85.0 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
+        if cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=1 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.82.4 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
             for leaf in this.layerSets parent where this.enabledLayer (findItem layerObjects leaf) do (
-                if cyrusEnabled do (leaf.requireCurrentAnalyzers();cyrusValidateSurfaceFilter (leaf.surfaceFilterPayload()))
+                if cyrusEnabled do (leaf.requireCurrentAnalyzers();cyrusValidateSurfaceFilter (leaf.surfaceFilterPayload());cyrusValidateMeshDensity (leaf.meshMaskPayload()))
                 if parent.procPopulation==2 and leaf.diversityMode==3 do (
                     leaf.syncStrokes()
                     if leaf.bandArrangement==2 do throw "Independent Bands require Candidate budget. Accepted target would refill their density."
@@ -3369,12 +3429,16 @@ initialRollupState:0x8
     fn procRefreshPreview = (
         local root=overlapOwner,displayPhase=false
         try (
-            if root.groupSnapshotKey=="" or (not root.groupDisplayOnly and (root.updateMode==2 or root.procExplicitUpdate)) do root.evaluateProcedural()
-            local pending=root.groupSnapshotKey!=root.procInputKey()
+            local evaluated=root.groupSnapshotKey=="" or (not root.groupDisplayOnly and (root.updateMode==2 or root.procExplicitUpdate))
+            if evaluated do root.evaluateProcedural()
+            -- A successful evaluation has just checked/published this complete
+            -- recipe. Only an unevaluated Manual recipe needs a pending check.
+            local pending=not evaluated and root.groupSnapshotKey!=root.procInputKey()
             displayPhase=true
             root.procEnsureDisplay pending:pending
             if root.procDisplayFailure do (for leaf in root.layerObjects do leaf.previewError="";root.procDisplayFailure=false)
-            dirty=pending;cachedPointCount
+            for leaf in root.layerObjects do leaf.dirty=pending
+            cachedPointCount
         ) catch (
             -- A failed successor cannot erase the preceding complete viewport.
             local failure=getCurrentException()
@@ -3551,7 +3615,7 @@ initialRollupState:0x8
         if (CyrusContainerPanel this).controlsReady do (CyrusContainerPanel this).bind()
         true
     )
-    rollout mainUI "Cyrus Scatter 0.85.0" width:#cmdPanel height:30 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.82.4" width:#cmdPanel height:30 autoLayoutOnResize:true (
         local root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),owner=undefined,layerPagesVisible=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for this entire Scatter setup."
         button licenseButton "License / activation..." pos:[8,112] width:(mainUI.width-16) height:22 tooltip:"Import a team license or inspect its expiry. Existing scenes remain available after expiry."
@@ -3621,7 +3685,7 @@ initialRollupState:0x8
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.85.0 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.82.4 native plugin and restart Max."
             root.syncLayerIdentity()
             roots=#(root.flow_updateUI,root.flow_surfaceUI,root.flow_previewUI,root.flow_layersUI)
             root.updateUI=roots[1];root.surfaceUI=roots[2];root.previewUI=roots[3];root.layersUI=roots[4]
@@ -3920,7 +3984,7 @@ initialRollupState:0x8
         button removeButton "Remove" pos:[68,86] width:60 tooltip:"Remove the selected area. Undo restores it."
         edittext nameEdit "Name:" pos:[4,116] width:(selected_setsUI.width-8)
         dropdownlist targetList "Surface" items:#() pos:[4,144] width:(selected_setsUI.width-8) tooltip:"Explicit target within this layer. An area with saved paint cannot be silently retargeted."
-        checkbox enabledCheck "Enable area" pos:[4,198] width:(selected_setsUI.width-8)
+        checkbox enabledCheck "Enable area" pos:[4,198] width:(selected_setsUI.width-8) tooltip:"Enable this Paint Area's contribution to the layer."
         label info "Areas use the layer's models. Overlaps combine coverage." pos:[4,226] width:(selected_setsUI.width-8) height:58
         fn currentSet = (root.selectedPaintArea owner)
         fn bind layer = (
@@ -4148,7 +4212,7 @@ initialRollupState:0x8
             binding=true;controlsReady=false
             if obj!=next do (plantList.selection=#{};)
             obj=next;parentView=(CyrusContainerPanel root)
-            for c in selected_sourceUI.controls do c.enabled=layer!=undefined
+            for c in selected_sourceUI.controls where c.enabled!=(layer!=undefined) do c.enabled=layer!=undefined
             try (undo off ((controlsReady=true;(updateList();showSelectedColor())))) catch(binding=false;controlsReady=true;throw())
             controlsReady=true;binding=false
         )
@@ -4234,6 +4298,16 @@ initialRollupState:0x8
         dropdownlist resolutionList "Map resolution" items:#("64 x 64","128 x 128","256 x 256","512 x 512") selection:2 width:(selected_distributionUI.width-8) tooltip:"Sampled map detail. Higher resolutions cost more time and memory; tiny features may need more samples. Default: 128 x 128."
         label uvHint "UVs clamp to 0..1" pos:[4,260] width:(selected_distributionUI.width-8)
         label mapHint "White: dense / Black: empty" pos:[4,282] width:(selected_distributionUI.width-8)
+        checkbox meshCheck "Use mesh channel mask" tooltip:"Thin this layer using values stored on each receiving mesh. Combines with Paint, texture density and slope/altitude filters."
+        spinner meshChannelSpin "Channel:" type:#integer range:[0,99,0] fieldWidth:82 width:(selected_distributionUI.width-8) tooltip:"0 reads vertex colors; 1..99 read numbered mesh map channels. These are values, independent of density UV coordinates."
+        dropdownlist meshComponentList "Component" items:#("R / X","G / Y","B / Z") selection:1 width:(selected_distributionUI.width-8) tooltip:"Read one component of the selected mesh channel. Match Data Channel's Vertex Output component."
+        spinner meshMinSpin "Input min:" range:[-1e9,1e9,0] fieldWidth:82 width:(selected_distributionUI.width-8) tooltip:"Channel value mapped to 0 before Invert and the Density curve. Must be less than Input max."
+        spinner meshMaxSpin "Input max:" range:[-1e9,1e9,1] fieldWidth:82 width:(selected_distributionUI.width-8) tooltip:"Channel value mapped to 1 before Invert and the Density curve. Values outside the range clamp."
+        checkbox meshInvertCheck "Invert mesh mask" tooltip:"Reverse the normalized channel values before applying the Density curve."
+        button meshCurveButton "Density curve..." width:(selected_distributionUI.width-8) tooltip:"Remap normalized mesh values into planting eligibility. Left is 0; right is 1."
+        button meshPreviewButton "Preview mask" width:82 tooltip:"Read a snapshot of the current mask as at most 2,048 grayscale face-centre markers. White permits plants; black excludes. Refresh after edits."
+        button meshHideButton "Hide preview" width:82 tooltip:"Hide the cached mesh mask markers without recalculating plants."
+        label meshHint "Data Channel / VertexPaint. White: permitted; black: excluded. Preview shows current inputs; Manual plants wait for Update." width:(selected_distributionUI.width-8) height:48
 
         fn arrangePopulation = (
             local textured=obj.distributionMode==3
@@ -4241,7 +4315,29 @@ initialRollupState:0x8
             for c in #(densityHeading,densityButton,invertCheck,uvChannelSpin,resolutionList,uvHint,mapHint) do c.visible=textured
             selected_distributionUI.height=if obj.sharedSpacing() then (if textured then 308 else 184) else (if textured then 340 else 208)
         )
-        fn syncControls = (populationRadio.state=obj.populationMode;densitySpin.value=obj.plantsPerM2;densityButton.map=obj.densityMap;invertCheck.checked=obj.invertDensity;uvChannelSpin.value=obj.densityUVChannel;resolutionList.selection=findItem #(64,128,256,512) obj.densityResolution;;arrangePopulation())
+        fn syncControls = (
+            populationRadio.state=obj.populationMode;densitySpin.value=obj.plantsPerM2;densityButton.map=obj.densityMap;invertCheck.checked=obj.invertDensity;uvChannelSpin.value=obj.densityUVChannel;resolutionList.selection=findItem #(64,128,256,512) obj.densityResolution
+            meshCheck.checked=obj.meshMaskEnabled;meshChannelSpin.value=obj.meshMaskChannel;meshComponentList.selection=obj.meshMaskComponent
+            meshMinSpin.value=obj.meshMaskMinimum;meshMaxSpin.value=obj.meshMaskMaximum;meshInvertCheck.checked=obj.meshMaskInvert
+            for c in #(meshChannelSpin,meshComponentList,meshMinSpin,meshMaxSpin,meshInvertCheck,meshCurveButton,meshPreviewButton) do c.enabled=obj.meshMaskEnabled
+            arrangePopulation()
+        )
+        fn setMeshMask key value = (
+            if controlsReady and not binding and obj!=undefined do (
+                local target=obj
+                undo "Cyrus mesh density mask" on setProperty target key value
+                syncControls();CyrusViewportRedraw()
+            )
+        )
+        on meshCheck changed value do setMeshMask #meshMaskEnabled value
+        on meshChannelSpin changed value do setMeshMask #meshMaskChannel value
+        on meshComponentList selected value do setMeshMask #meshMaskComponent value
+        on meshMinSpin changed value do setMeshMask #meshMaskMinimum value
+        on meshMaxSpin changed value do setMeshMask #meshMaskMaximum value
+        on meshInvertCheck changed value do setMeshMask #meshMaskInvert value
+        on meshCurveButton pressed do if controlsReady and not binding and obj!=undefined do CyrusOpenFalloffGraph obj undefined true meshMask:true
+        on meshPreviewButton pressed do if controlsReady and not binding and obj!=undefined do try(CyrusShowMeshMaskPreview obj)catch(messageBox (getCurrentException()) title:"Mesh density preview")
+        on meshHideButton pressed do (CyrusClearMeshMaskPreview undefined;redrawViews())
         on modeRadio changed v do if controlsReady and not binding and obj!=undefined do undo "Cyrus layer population" on (obj.distributionMode=if v==2 then 3 else 1;obj.markInputDirty();syncControls();CyrusViewportRedraw())
         on countSpin changed v do if controlsReady and not binding and obj!=undefined do undo "Cyrus layer population" on (obj.amount=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
         on seedSpin changed v do if controlsReady and not binding and obj!=undefined do undo "Cyrus layer population" on (obj.randomSeed=v;obj.markInputDirty();syncControls();CyrusViewportRedraw())
@@ -4268,11 +4364,11 @@ initialRollupState:0x8
             binding=true;controlsReady=false
             if obj!=next do ()
             obj=next;parentView=(CyrusContainerPanel root)
-            for c in selected_distributionUI.controls do c.enabled=layer!=undefined
+            for c in selected_distributionUI.controls where c.enabled!=(layer!=undefined) do c.enabled=layer!=undefined
             try (undo off ((populationRadio.state=obj.populationMode;densitySpin.value=obj.plantsPerM2;densityButton.map=obj.densityMap;invertCheck.checked=obj.invertDensity;uvChannelSpin.value=obj.densityUVChannel;resolutionList.selection=findItem #(64,128,256,512) obj.densityResolution;controlsReady=true;(countSpin.value=obj.amount;seedSpin.value=obj.randomSeed;modeRadio.state=if obj.distributionMode==3 then 2 else 1)))) catch(binding=false;controlsReady=true;throw())
             controlsReady=true;binding=false
         )
-        fn bind layer = (bindFeatures layer;arrangePopulation())
+        fn bind layer = (bindFeatures layer;binding=true;syncControls();binding=false)
         on presetsButton pressed do try(CyrusOpenPresets root owner "population")catch(messageBox (getCurrentException()) title:"Cyrus presets")
         on selected_distributionUI open do (root=this;controlsReady=false)
         on selected_distributionUI close do controlsReady=false
@@ -4499,7 +4595,7 @@ initialRollupState:0x8
             binding=true;controlsReady=false
             if obj!=next do (areaList.selection=#{};)
             obj=next;parentView=(CyrusContainerPanel root)
-            for c in selected_areaUI.controls do c.enabled=layer!=undefined
+            for c in selected_areaUI.controls where c.enabled!=(layer!=undefined) do c.enabled=layer!=undefined
             try (undo off ((syncAnalyzerArea();syncFalloff();syncSurfaceFilters();controlsReady=true;updateAreas()))) catch(binding=false;controlsReady=true;throw())
             controlsReady=true;binding=false
         )
@@ -4517,25 +4613,25 @@ initialRollupState:0x8
     rollout selected_brushUI "Vector Brush" width:#cmdPanel category:110 autoLayoutOnResize:true (
         local root=undefined,owner=undefined,panel=undefined,obj=undefined,controlsReady=false,binding=false,setSpecific=true
         label targetInfo "Add a Paint Area to begin." pos:[4,8] width:(selected_brushUI.width-8) height:36
-        radiobuttons modeRadio "Brush" labels:#("Paint","Erase") columns:2 pos:[4,48] width:(selected_brushUI.width-8)
+        radiobuttons modeRadio "Brush" labels:#("Paint","Erase") columns:2 pos:[4,48] width:(selected_brushUI.width-8) tooltip:"Paint adds coverage and merges overlapping strokes. Erase removes coverage and cuts holes."
         spinner radiusSpin "Radius:" type:#worldunits range:[0.001,1e7,20] pos:[4,94] width:(selected_brushUI.width-8) fieldWidth:82 tooltip:"Distance from the brush center to its edge. A 100 mm radius paints a 200 mm wide stroke."
-        button beginButton "Start Brush" pos:[4,178] width:80
-        button stopButton "Stop" pos:[88,178] width:80
-        button fillButton "Fill" pos:[4,208] width:80
-        button emptyButton "Clear" pos:[88,208] width:80
+        button beginButton "Start Brush" pos:[4,178] width:80 tooltip:"Start painting or erasing on this Paint Area's receiving surface."
+        button stopButton "Stop" pos:[88,178] width:80 tooltip:"Finish the current brush session."
+        button fillButton "Fill" pos:[4,208] width:80 tooltip:"Cover the entire receiving surface with this Paint Area."
+        button emptyButton "Clear" pos:[88,208] width:80 tooltip:"Remove all painted coverage from this area."
         label brushState "" pos:[4,238] width:(selected_brushUI.width-8) height:54
-        spinner densitySpin "Area density %:" range:[0,100,100] pos:[4,298] width:(selected_brushUI.width-8) fieldWidth:82
-        dropdownlist overlayMode "Paint feedback" items:#("Vector borders","Coverage samples","Off") pos:[4,326] width:(selected_brushUI.width-8)
-        colorpicker overlayColor "" color:(color 100 220 120) pos:[4,380] width:(selected_brushUI.width-8)
+        spinner densitySpin "Area density %:" range:[0,100,100] pos:[4,298] width:(selected_brushUI.width-8) fieldWidth:82 tooltip:"Control this area's planting density. 100% keeps its full density before other masks and filters."
+        dropdownlist overlayMode "Paint feedback" items:#("Vector borders","Coverage samples","Off") pos:[4,326] width:(selected_brushUI.width-8) tooltip:"Show painted borders, bounded coverage samples, or hide the Paint overlay."
+        colorpicker overlayColor "" color:(color 100 220 120) pos:[4,380] width:(selected_brushUI.width-8) tooltip:"Set this Paint Area's viewport overlay color."
         label brushHelp "Paint merges borders; Erase cuts holes. Zero fade = hard edge. Local XY terrain/planes only. Manual mode needs Update." pos:[4,412] width:(selected_brushUI.width-8) height:78
-        spinner insideSpin "Inside fade:" type:#worldunits range:[0,1e9,0] pos:[4,492] width:(selected_brushUI.width-8) fieldWidth:74
-        spinner outsideSpin "Outside fade:" type:#worldunits range:[0,1e9,0] pos:[4,522] width:(selected_brushUI.width-8) fieldWidth:74
-        checkbox densityFade "Fade density" checked:true pos:[4,552] width:(selected_brushUI.width-8)
-        button densityCurve "Density curve..." pos:[4,578] width:(selected_brushUI.width-8)
-        checkbox scaleFade "Fade scale" checked:false pos:[4,608] width:(selected_brushUI.width-8)
-        spinner scaleMin "Edge scale:" range:[0,1000,0] pos:[4,638] width:(selected_brushUI.width-8) fieldWidth:74
-        spinner scaleMax "Inner scale:" range:[0,1000,1] pos:[4,668] width:(selected_brushUI.width-8) fieldWidth:74
-        button scaleCurve "Scale curve..." pos:[4,698] width:(selected_brushUI.width-8)
+        spinner insideSpin "Inside fade:" type:#worldunits range:[0,1e9,0] pos:[4,492] width:(selected_brushUI.width-8) fieldWidth:74 tooltip:"Distance inside the painted border for the density and size transition. Both fade distances at zero create a hard edge."
+        spinner outsideSpin "Outside fade:" type:#worldunits range:[0,1e9,0] pos:[4,522] width:(selected_brushUI.width-8) fieldWidth:74 tooltip:"Extend the transition beyond the painted border, within the receiving surface. Both fade distances at zero create a hard edge."
+        checkbox densityFade "Fade density" checked:true pos:[4,552] width:(selected_brushUI.width-8) tooltip:"Gradually thin plants across the fade region using the Density curve."
+        button densityCurve "Density curve..." pos:[4,578] width:(selected_brushUI.width-8) tooltip:"Shape the density transition. Left is the outer end; right is the fully interior end."
+        checkbox scaleFade "Fade scale" checked:false pos:[4,608] width:(selected_brushUI.width-8) tooltip:"Vary plant size across the fade region using Edge scale, Inner scale and the Scale curve."
+        spinner scaleMin "Edge scale:" range:[0,1000,0] pos:[4,638] width:(selected_brushUI.width-8) fieldWidth:74 tooltip:"Outer-end size multiplier with the default curve. 0.5 means half size; 1 means unchanged. Must not exceed Inner scale."
+        spinner scaleMax "Inner scale:" range:[0,1000,1] pos:[4,668] width:(selected_brushUI.width-8) fieldWidth:74 tooltip:"Interior size multiplier with the default curve. 1 means unchanged; 2 means double size. Must be at least Edge scale."
+        button scaleCurve "Scale curve..." pos:[4,698] width:(selected_brushUI.width-8) tooltip:"Shape the size transition. Left is the outer end; right is the fully interior end."
         button exportSpline "Export spline" width:(selected_brushUI.width-8) tooltip:"Export this area's closed contours and holes as an independent editable spline on the receiver's local XY plane (local Z=0). Keeps the Paint Area; selects the snapshot. Stop the brush first."
         radiobuttons importMode "Spline import" labels:#("Replace","Add") columns:2 width:(selected_brushUI.width-8) tooltip:"Replace this area's coverage, or union imported coverage with it. Closed loops use even-odd fill and project along receiver-local Z. Source spline is preserved."
         spinner splineTolerance "Curve tolerance:" type:#worldunits range:[1e-9,1e9,0.1] fieldWidth:74 width:(selected_brushUI.width-8) tooltip:"Maximum projected curve approximation error in world units. Smaller values create more vertices; import is limited to 8,192 samples. The receiver's Paint precision also sets a minimum."
@@ -5515,7 +5611,13 @@ fn AminScatterObjectDraw = (
                 local failed=false
                 if isValidNode owner do try(failed=(cyrusRetainedStats owner)[12]==2)catch()
                 if failed do CyrusPointLastError="GPU preview unavailable; showing bounded centre markers. Refresh preview to retry."
-                if not failed do (CyrusPointPending=true;CyrusScheduleRelease())
+                -- Submission can be delayed indefinitely for a hidden native
+                -- helper. Give a new publication two presentation-only redraws,
+                -- then retain its fallback until a real event/explicit refresh.
+                -- Never turn missing GPU readiness into another scene sync.
+                if not failed and record[6]>0 do (
+                    record[6]-=1;CyrusPointPresentationPending=true;CyrusScheduleRelease()
+                )
             )
         )
     )
@@ -5742,12 +5844,16 @@ fn AminScatterLiveChanged event handles = (
         nodes=for n in nodes where not (isValidNode n and isProperty n #samplePoints and isProperty n #pathCounts) collect n
         if event!=#deleted and nodes.count==0 do return false
         local redraw=false
-        for n in objects where classof n.baseObject==AminScatterObject do (
+        for n in CyrusTimeOwners where isValidNode n and classof n.baseObject==AminScatterObject do (
             if n.baseObject.containerNote event nodes do redraw=true
-            for entry in (n.baseObject.layerEntries includeDisabled:true) do (
-                if entry[2].procExternalChanged event nodes deletedHandles:handles do redraw=true
+            -- Classify external events against the existing layer records.
+            -- layerEntries synchronizes settings and invalidates siblings; it
+            -- must not run merely because an unrelated scene node notified us.
+            for leaf in n.baseObject.layerObjects do (
+                if leaf.procExternalChanged event nodes deletedHandles:handles do redraw=true
             )
             if findItem nodes n>0 do (
+                n.baseObject.layerEntries includeDisabled:true
                 CyrusScheduleUI()
                 if n.baseObject.updateMode==2 and (for leaf in n.baseObject.layerObjects where leaf.dirty collect leaf).count>0 do redraw=true
             )
@@ -5818,7 +5924,9 @@ try(CyrusReleaseTimer.Stop();CyrusReleaseTimer.Dispose())catch()
 fn CyrusReleaseTick sender args = (
  CyrusReleaseTimer.Stop()
  if CyrusInteractionHeld() then (CyrusWasDragging=true;CyrusScheduleRelease())
- else if CyrusWasDragging or CyrusPointPending do (CyrusWasDragging=false;CyrusPointPending=false;CyrusViewportRedraw())
+ else if CyrusWasDragging or CyrusPointPending then (
+     CyrusWasDragging=false;CyrusPointPending=false;CyrusPointPresentationPending=false;CyrusViewportRedraw()
+ ) else if CyrusPointPresentationPending do (CyrusPointPresentationPending=false;redrawViews())
 )
 CyrusReleaseTimer=dotNetObject "System.Windows.Forms.Timer"
 CyrusReleaseTimer.Interval=200
@@ -5838,7 +5946,7 @@ fn CyrusPointDelete nodes = (
     )
 )
 fn CyrusPointClear = (
-    CyrusPointPending=false
+    CyrusPointPending=false;CyrusPointPresentationPending=false
     CyrusViewportRecords=#();CyrusViewportAnalyzers=#();CyrusViewportRecordsDirty=true
     local old=CyrusPointOwners;CyrusPointOwners=#()
     if old!=undefined do CyrusPointDelete (for pair in old collect pair[2])
@@ -5854,7 +5962,7 @@ fn CyrusPointSync = (
             else CyrusPointDelete #(pair[2])
         )
         CyrusPointOwners=surviving
-        for n in (for node in objects where classof node.baseObject==AminScatterObject collect node) do (
+        for n in CyrusTimeOwners where isValidNode n and classof n.baseObject==AminScatterObject do (
             local caches=#(),styles=#(),fallback=#()
             local limits=#(n.baseObject.previewBudget,n.baseObject.viewportNavigationPoints,n.baseObject.viewportInstances,n.baseObject.viewportNavigationInstances,n.baseObject.viewportFaces,n.baseObject.viewportNavigationFaces)
             local entries=if n.isHidden then #() else n.baseObject.viewportLayerEntries false,refreshLeaf=undefined
@@ -5897,7 +6005,7 @@ fn CyrusPointSync = (
                     else if detail[8]>0 do detailStatus="Mesh preview uses cached boxes to fit the triangle limit."
                 )
             )
-            append records #(n,owner,caches,styles,fallback)
+            append records #(n,owner,caches,styles,fallback,2)
         )
         CyrusViewportRecords=records
         CyrusViewportAnalyzers=for analyzer in analyzers collect #(analyzer,analyzer.getAnalysisRuns())
@@ -6040,3 +6148,18 @@ callbacks.addScript #sceneUndo "CyrusResetTimeOwners()" id:#CyrusInputTimeOwners
 callbacks.addScript #sceneRedo "CyrusResetTimeOwners()" id:#CyrusInputTimeOwners persistent:false
 callbacks.addScript #nodeCreated "CyrusRegisterTimeOwner (callbacks.notificationParam())" id:#CyrusInputTimeOwners persistent:false
 CyrusResetTimeOwners()
+
+-- Explicit mask-preview snapshots. Redraw only consumes cached numeric markers.
+try(unregisterRedrawViewsCallback CyrusMeshMaskViewportDraw)catch()
+fn CyrusMeshMaskViewportDraw = (
+    if CyrusMeshMaskPreviewRows.count>0 do (
+        local valid=isValidNode CyrusMeshMaskPreviewNode and not CyrusMeshMaskPreviewNode.isHidden
+        if valid do valid=findItem CyrusMeshMaskPreviewNode.baseObject.layerObjects CyrusMeshMaskPreviewTarget>0
+        if valid then (
+            gw.setTransform (matrix3 1)
+            for row in CyrusMeshMaskPreviewRows do (local v=row[2]*255.0;gw.marker row[1] #smallDiamond color:(color v v v))
+            gw.enlargeUpdateRect #whole
+        ) else CyrusClearMeshMaskPreview undefined
+    )
+)
+registerRedrawViewsCallback CyrusMeshMaskViewportDraw

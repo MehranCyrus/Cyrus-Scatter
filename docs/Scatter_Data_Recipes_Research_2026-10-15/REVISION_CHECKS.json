@@ -1,0 +1,87 @@
+{
+  "checked_utc": "2026-10-15T13:07:47.867701+00:00",
+  "scope": "Documentation revision only; Phase 6 remains paused",
+  "json_files_parsed": [
+    "DOCUMENT_CHECKS.json",
+    "KNOWLEDGE_SEARCH.json",
+    "KNOWLEDGE_STATUS.json",
+    "SOURCE_EVIDENCE.json",
+    "example-recipe.json"
+  ],
+  "markdown_files_checked": 6,
+  "local_links_checked": 98,
+  "receipt_link_pending_creation": [],
+  "errors": [],
+  "parameter_declarations": 268,
+  "inventory_rows": 268,
+  "unclassified_or_missing_fields": 0,
+  "example_checks": {
+    "layers": 3,
+    "paint_documents_illustrated": 1,
+    "contours": 3,
+    "holes": 1,
+    "production_payload_claimed": false,
+    "syntax_ids_references_domains_checked": true
+  },
+  "original_source_hashes_checked": 20,
+  "original_source_files_changed": [],
+  "protected_count": 994,
+  "protected_manifest_sha256": "a33bd75b19a14888636037d920b69203d7d0f8f08def99354433f917d9f05219",
+  "tracked_diff_sha256": "e4fc7780ddc2f151c15d7bbcde57872b2f86ebc66ed95040362366efaad3391c",
+  "branch": "codex/workflow-0.75",
+  "head": "604e3aa3fd1c84c5ef128dc564f4abaf6f4978e4",
+  "git_diff_check_exit_code": 0,
+  "unchecked_implementation_tasks": 53,
+  "document_hashes": {
+    "DOCUMENT_CHECKS.json": "502bee1fbc6659e3f48733a2a7f3b2cf024b7652f188659a311fbc29171ec4d9",
+    "example-recipe.json": "b1f31e76f2d7156f25cc9049200f9ab56301ea8a8f04eee1d1aedb00d88b49e0",
+    "FIELD_MAP.md": "2cb014e316bcebc9603d562b5a636df31675758048e6cf5c4d6fd1a943a4a7a2",
+    "IMPLEMENTATION_PLAN.md": "43466dbf64b378e4f373cf2bd80a9d3dfeb25047a725a737c2d8cd876e595175",
+    "KNOWLEDGE_SEARCH.json": "81a8a58920a79980475016e410d7380a47d6c45ed1586f0efb38963beb6cac22",
+    "KNOWLEDGE_STATUS.json": "0d255a2facae69ceb1f448bdfaa413ce498b1af5cb0bc981bee9b2e30e110f1e",
+    "PARAMETER_INVENTORY.csv": "ec2c05532d47ea2cc306b5a38b2d814fdead746def0b8fc526b492399f421042",
+    "PRESET_CONTRACT.md": "655f133a62fc844dc769b348af058ef154dee57daa28d542f6e0b1be331b457f",
+    "README.md": "2ff03b993a68fcab6baa5e13318c548f91fe24c935ef7b1d0355d61d6fc3cace",
+    "SOURCES.md": "c974242c48fc72687f29ffcd95806d7037d67e40cd1ae1242b2e9ddb2f8ca303",
+    "SOURCE_EVIDENCE.json": "4b77847d993d21e2cbe5054471403618a2b4dd5a95c86da6ee45afc36f1aa934",
+    "VALIDATION.md": "9d54b2366787ff17d5547e3be67368364c339c86beccc4905c9272a473f844bb"
+  },
+  "protected_files_unchanged": true,
+  "branch_and_head_unchanged": true,
+  "preexisting_tracked_diff_unchanged": true,
+  "historical_receipts_preserved": [
+    "DOCUMENT_CHECKS.json",
+    "SOURCE_EVIDENCE.json",
+    "KNOWLEDGE_STATUS.json",
+    "KNOWLEDGE_SEARCH.json"
+  ],
+  "changed_document_files": [
+    "example-recipe.json",
+    "PRESET_CONTRACT.md",
+    "README.md",
+    "SOURCES.md",
+    "VALIDATION.md"
+  ],
+  "added_document_files": [
+    "FIELD_MAP.md",
+    "IMPLEMENTATION_PLAN.md",
+    "PARAMETER_INVENTORY.csv",
+    "REVISION_CHECKS.json"
+  ],
+  "knowledge_check": {
+    "generation": "44bb57523e1286764c655754ce79ed3e4299bce12c0c71b7c49b212258dfa0d3",
+    "status": "stale_evidence",
+    "sources_verified": 16,
+    "sources_checked": 38,
+    "target_search": "F11 rejected changed docs/ARCHITECTURE.md",
+    "fallback": "direct source inspection",
+    "refresh_performed": false
+  },
+  "limitations": [
+    "Documentation checks only; no production JSON Schema or recipe importer executed.",
+    "The example illustrates Paint contours and does not contain a measured receiver signature or actual native export.",
+    "No product code, build, installer, installation or Max host changes; no host tests ran.",
+    "268 declarations have an explicit policy category; this is coverage accounting, not proof of serializer correctness.",
+    "Phase 6 remains paused; all 53 implementation tasks are unchecked."
+  ]
+}

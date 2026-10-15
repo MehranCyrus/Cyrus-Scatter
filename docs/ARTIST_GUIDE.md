@@ -1,14 +1,19 @@
-# Cyrus Scatter 0.85.0 — current source workflow
+# Cyrus Scatter 0.82.4 — current source workflow
 
 The [offline team license](licensing/TEAM_PILOT_0.79_2026-10-11.md) is independent of scene format. Open **License / activation** in Scatter Modify, save a request for Mehran, then import the returned license file. It expires 30 days after generation. Supported scenes remain loadable/renderable after expiry; creation/editing locks. See [activation and renewal instructions](../tools/licensing/README.md).
 
-Updated 14 October 2026. 0.85.0 adds Paint/spline snapshot conversion; [Phase 5 evidence](plans/eleven-phase-roadmap/P05.md) records current qualification. The preceding [Phase 4](plans/eleven-phase-roadmap/P04.md) added UV-channel and map-resolution controls with map-bake reuse. Earlier phases added cached feedback, named presets, and slope/altitude eligibility. Artist acceptance is at the end of the eleven-phase program. The preceding source corrects zero-limit Point Cloud preparation and reuses representations across mode switches; see the [0.81.7 record](plans/terrace-0815/VIEWPORT_0817.md). Earlier 0.81.6 source added independent navigating/idle viewport limits and a lightweight Mesh fallback. The [adaptive viewport record](plans/terrace-0815/VIEWPORT_0816.md) records exact test scope. Earlier changes include larger bounded populations, compact source-rectangle properties and consistent viewport/render source sizing. The [terrace implementation record](plans/terrace-0815/PROGRESS.md) distinguishes tested behavior from remaining acceptance. The [Bands record](plans/spline-bands/PROGRESS.md) preserves preceding feature evidence. Installed local package identities remain listed separately in the [installation guide](plans/spline-bands/INSTALLATION.md).
+Updated 15 October 2026. Source 0.82.4 adds direct mesh channel density and Paint hover help; see the [current evidence and test checklist](plans/eleven-phase-roadmap/MESH_MASK_0824.md). It retains the [0.82.3 performance correction](plans/eleven-phase-roadmap/PERFORMANCE_0823.md), the [first five phases](plans/eleven-phase-roadmap/ARTIST_ACCEPTANCE_0822.md), and the existing viewport limits/cache reuse. The exact pair is qualified in isolated Max 2027 profiles and packaged for the user to install. Normal-profile artist acceptance remains separate, and Phase 6 stays paused. Historical phase labels, builds and installation receipts remain unchanged.
 
 Panels show controls, counts and actionable status. Detailed explanations live in this guide, the website and control tooltips. For example, hover over Radius mode to see why Auto is unavailable for a selected source. Pending updates, Analyzer errors and brush status remain visible.
 
 ## Start with a layer
 
 Create a Scatter object, add a layer, add its receiving surfaces, and add its models. Set Amount, then press **Update scatter** in Manual mode. Live mode responds to relevant changes. Select another layer to edit a different planting recipe.
+
+0.82.4 adds **Amount > Mesh channel density** and short hover help for Paint
+controls. The [mesh mask handoff](plans/eleven-phase-roadmap/MESH_MASK_0824.md)
+records current implementation/testing and installer identity. Phase 6 remains
+paused; this is a separate delivery.
 
 In **Geometry > Cyrus > Cyrus Scatter**, click to place the controller, move to size its icon, then click to finish. Right-click to leave Create mode; another placement click starts another controller. The corrected 0.79.5 package draws the icon before any layer or plant cache exists; see the [creation fix](Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md).
 
@@ -76,6 +81,47 @@ Relax nonzero mask check retains its nearest-pixel behavior.
 Texture Density runs before CS Edit. A masked edited candidate keeps its saved
 edit dormant; restoring eligibility restores that edit. Resolution changes alone
 preserve Edit bindings.
+
+**Mesh channel density** reads numeric values directly from each receiving
+surface's evaluated modifier stack. It works with Random, Clusters, Spline Bands,
+Analyzer layouts, texture density and Paint Areas. Enable **Use mesh channel mask** in Amount. Choose **Channel 0** for vertex colors or **1..99** for
+a numbered map channel, then the component **R/X**, **G/Y** or **B/Z**. These are
+stored values; the separate Texture Density UV channel still selects texture
+coordinates. Each assigned receiver must contain the selected channel.
+
+For terrain curvature, put Data Channel above the terrain deformation. Add
+Curvature, adjust its convex/flat/concave response and output through Vertex
+Output to an unused Map Channel (for example 7) and component X. In Scatter,
+select channel 7 and R/X. VertexPaint can author or adjust the same channel.
+The rainbow Data Channel display is an optional visualization, not the planting
+mask's color interpretation. Slope controls steepness; curvature measures local
+bending, so they can be combined.
+
+**Input min/max** remap the selected value to 0..1 and clamp values outside the
+range. Min must be less than max. **Invert mesh mask** reverses that normalized
+value before **Density curve** maps it to planting eligibility: 0 excludes,
+1 permits, and intermediate values thin stable candidates. Values interpolate
+between each triangle's map-face corners, preserving intentional channel seams.
+Detail follows the mesh data rather than a bitmap resolution. The curve is saved
+with this layer; copying a layer copies its independent mask settings and curve.
+
+The mask runs after candidate movement/Relax and before CS Edit. Masked base
+candidates keep their saved edits dormant and recover them when eligibility
+returns. Nonzero random movement requires **Keep on surface** when this mask is
+enabled. Existing protected Edit placement rules continue to apply after replay.
+Channel-only changes retain geometry bindings. Manual mode retains plants until
+**Update scatter**; Live responds to relevant channel/modifier changes and
+animation. Missing/invalid channels retain the preceding complete result and
+identify the receiver/channel in the error.
+
+**Preview mask** explicitly reads the current inputs and displays at most 2,048
+grayscale face-centre markers across this layer's surfaces. White permits plants;
+black excludes them. It does not include the other Paint/texture/slope masks and
+can differ from pending Manual plants. It is a sparse snapshot, so tiny details
+can be missed. After a relevant edit, press Preview mask again; **Hide preview**
+clears the cached display. Navigation and redraw consume cached markers without
+channel reads. Direct channel sampling is limited to 2 million evaluated faces
+per receiver; VData, selection and negative map channels are outside this version.
 
 Map samples are reused while the map, its resolution and its evaluation interval
 remain valid. Receiver/UV changes can reuse the bake. Invert derives its own

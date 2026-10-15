@@ -1,0 +1,202 @@
+{
+  "checked_on": "2026-10-13",
+  "original_research_sha256": "3c31c0e70ab6b8ed6fe4664516ad4a49c94b75a0b5a24f7ab2ea4582869ab013",
+  "sources": [
+    {
+      "id": "S01",
+      "title": "ForestPack \u2014 Areas",
+      "url": "https://docs.itoosoft.com/forestpack/forest-plugin/areas",
+      "status": "Read",
+      "scope": "Area types, ordered behavior, exclusions, paint and falloff controls. Mixed-era XY/UV restrictions require target-build tests."
+    },
+    {
+      "id": "S02",
+      "title": "ForestPack \u2014 Image distribution",
+      "url": "https://docs.itoosoft.com/forestpack/forest-plugin/distribution/image-mode",
+      "status": "Read",
+      "scope": "Distribution image controls, selection modes, candidate limits and collision behavior. Not a disclosure of the exact random generator."
+    },
+    {
+      "id": "S03",
+      "title": "ForestPack \u2014 Surfaces",
+      "url": "https://docs.itoosoft.com/forestpack/forest-plugin/surfaces",
+      "status": "Read",
+      "scope": "Projection modes, normal/altitude/slope controls and prepared surface information."
+    },
+    {
+      "id": "S04",
+      "title": "ForestPack \u2014 Path distribution",
+      "url": "https://docs.itoosoft.com/forestpack/forest-plugin/distribution/path-mode",
+      "status": "Read",
+      "scope": "Path input, spacing, vertices, source sequence and tangent-related behavior."
+    },
+    {
+      "id": "S05",
+      "title": "ForestPack \u2014 Reference distribution",
+      "url": "https://docs.itoosoft.com/forestpack/forest-plugin/distribution/reference-mode",
+      "status": "Read",
+      "scope": "Reference-object and face inputs, transform inheritance and source matching."
+    },
+    {
+      "id": "S06",
+      "title": "ForestPack \u2014 Particle Flow distribution",
+      "url": "https://docs.itoosoft.com/forestpack/forest-plugin/distribution/particle-flow-mode",
+      "status": "Read",
+      "scope": "Particle Flow as a placement input. This does not establish the design of a Cyrus output transport."
+    },
+    {
+      "id": "S07",
+      "title": "ForestPack \u2014 Geometry",
+      "url": "https://docs.itoosoft.com/forestpack/forest-plugin/add-geometry",
+      "status": "Read",
+      "scope": "Source definitions, weights/empty outcomes, dimensions and group behavior."
+    },
+    {
+      "id": "S08",
+      "title": "ForestPack \u2014 Transform",
+      "url": "https://docs.itoosoft.com/forestpack/forest-plugin/transform",
+      "status": "Read",
+      "scope": "Transform controls, maps, probability controls and post-placement translation warning."
+    },
+    {
+      "id": "S09",
+      "title": "ForestPack \u2014 Items Editor",
+      "url": "https://docs.itoosoft.com/forestpack/forest-plugin/item-editor",
+      "status": "Read",
+      "scope": "Generate/Custom Edit controls. Does not establish persistent-override guarantees for arbitrary regeneration."
+    },
+    {
+      "id": "S10",
+      "title": "ForestPack \u2014 Display",
+      "url": "https://docs.itoosoft.com/forestpack/forest-plugin/display",
+      "status": "Read",
+      "scope": "Viewport and rendering representations, display limits and output distinctions."
+    },
+    {
+      "id": "S11",
+      "title": "ForestPack \u2014 Camera",
+      "url": "https://docs.itoosoft.com/forestpack/forest-plugin/camera",
+      "status": "Read",
+      "scope": "Camera-relative controls and their visible consequences. Not proof that primary-frustum removal is secondary-ray safe."
+    },
+    {
+      "id": "S12",
+      "title": "ForestPack \u2014 Forest LOD",
+      "url": "https://docs.itoosoft.com/forestpack/forest-plugin/forest-lod",
+      "status": "Read",
+      "scope": "Alternative-source selection by distance or screen size; not a general mesh-decimation algorithm."
+    },
+    {
+      "id": "S13",
+      "title": "ForestPack \u2014 Material",
+      "url": "https://docs.itoosoft.com/forestpack/forest-plugin/material",
+      "status": "Read",
+      "scope": "Tint controls and material integration responsibilities."
+    },
+    {
+      "id": "S14",
+      "title": "ForestPack \u2014 Forest Color",
+      "url": "https://docs.itoosoft.com/forestpack/forest-color",
+      "status": "Read",
+      "scope": "Whole-item and element-level material variation."
+    },
+    {
+      "id": "S15",
+      "title": "ForestPack \u2014 Forest Edge",
+      "url": "https://docs.itoosoft.com/forestpack/forest-edge-map",
+      "status": "Read",
+      "scope": "Element-based boundary behavior and renderer-dependent integration; not general polygon Boolean clipping."
+    },
+    {
+      "id": "S16",
+      "title": "ForestPack \u2014 Animation",
+      "url": "https://docs.itoosoft.com/forestpack/forest-plugin/animation",
+      "status": "Read",
+      "scope": "Source-time sampling modes and bounded geometry-sample caching."
+    },
+    {
+      "id": "S17",
+      "title": "ForestPack \u2014 Effects attributes",
+      "url": "https://docs.itoosoft.com/forestpack/forest-plugin/effects/creating-and-editing-effects/attributes",
+      "status": "Read",
+      "scope": "Published readable/writable attributes; does not reveal internal memory layout or full private stage order."
+    },
+    {
+      "id": "S18",
+      "title": "ForestPack \u2014 ForestSet",
+      "url": "https://docs.itoosoft.com/forestpack/forestset-plugin",
+      "status": "Read",
+      "scope": "Reusable collections and role-dependent input behavior."
+    },
+    {
+      "id": "S19",
+      "title": "Chaos \u2014 V-Ray for 3ds Max SDK documentation entry",
+      "url": "https://documentation.chaos.com/space/VMAX/113575055",
+      "status": "Located; body unavailable",
+      "scope": "An official entry was located, but its usable implementation content was not retrieved. No adapter ABI or capability is inferred from it."
+    },
+    {
+      "id": "S20",
+      "title": "Autodesk \u2014 3ds Max API portal",
+      "url": "https://aps.autodesk.com/developer/overview/3ds-max-api",
+      "status": "Read",
+      "scope": "Official SDK entry point. Not an API-by-API concurrency guarantee or renderer integration specification."
+    },
+    {
+      "id": "S21",
+      "title": "Autodesk Max 2024 \u2014 IPainterCanvasInterface_V5",
+      "url": "https://help.autodesk.com/cloudhelp/2024/ENU/Max-Developer-Help/cpp_ref/class_i_painter_canvas_interface___v5.html",
+      "status": "Read",
+      "scope": "Stroke lifecycle and hit data; effective radius/strength already include brush modifiers; evaluated-mesh binding warning."
+    },
+    {
+      "id": "S22",
+      "title": "Autodesk Max 2024 \u2014 Hold",
+      "url": "https://help.autodesk.com/cloudhelp/2024/ENU/Max-Developer-Help/cpp_ref/class_hold.html",
+      "status": "Read",
+      "scope": "Native Undo transaction interface. Integration still requires a real host test."
+    },
+    {
+      "id": "S23",
+      "title": "Autodesk Max 2026 \u2014 RestoreObj",
+      "url": "https://help.autodesk.com/cloudhelp/2026/ENU/MAXDEV-CPP-API-REF/class_restore_obj.html",
+      "status": "Read",
+      "scope": "Restore/Redo lifecycle and repeated-call requirements. Verify against the actual shipping SDK before compilation."
+    },
+    {
+      "id": "S24",
+      "title": "Autodesk Max 2024 \u2014 IObjectDisplay2",
+      "url": "https://help.autodesk.com/cloudhelp/2024/ENU/Max-Developer-Help/cpp_ref/class_max_s_d_k_1_1_graphics_1_1_i_object_display2.html",
+      "status": "Read",
+      "scope": "Modern viewport display interface and shared/per-node preparation boundaries."
+    },
+    {
+      "id": "S25",
+      "title": "Autodesk Max 2026 \u2014 MainThreadTaskManager",
+      "url": "https://help.autodesk.com/cloudhelp/2026/ENU/MAXDEV-CPP-API-REF/_main_thread_task_manager_8h.html",
+      "status": "Read",
+      "scope": "A documented route for posting tasks to the Max main thread in the cited SDK. Does not prove identical availability in Max 2024."
+    },
+    {
+      "id": "S26",
+      "title": "ForestPack \u2014 Rendering best practice",
+      "url": "https://docs.itoosoft.com/forestpack/rendering/rendering-best-practice",
+      "status": "Read",
+      "scope": "Renderer-oriented instancing and memory guidance. Not a measured Cyrus benchmark."
+    },
+    {
+      "id": "S27",
+      "title": "ForestPack \u2014 Effects syntax",
+      "url": "https://docs.itoosoft.com/forestpack/forest-plugin/effects/creating-and-editing-effects/effects-syntax",
+      "status": "Read",
+      "scope": "Published expression and parameter concepts. Cyrus DSL/schema details remain an independent design."
+    },
+    {
+      "id": "S28",
+      "title": "ForestPack \u2014 ForestIvy overview",
+      "url": "https://docs.itoosoft.com/forestpack/forest-ivy/forest-ivy-overview",
+      "status": "Read",
+      "scope": "Companion growth product scope only; not an exhaustive Ivy control audit."
+    }
+  ]
+}

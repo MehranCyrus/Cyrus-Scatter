@@ -9,7 +9,7 @@
         if not doesFileExist scene do throw "Qualified owned P02 scene is unavailable"
         CyrusPerfHeadless=true;resetMaxFile #noPrompt;loadMaxFile scene quiet:true
         local node=getNodeByName "P02 persisted presets",root=node.baseObject,leaf=root.layerObjects[1]
-        verify (root.uiVersion()=="0.85.0" and root.procSchemaValid) "Saved schema 58 uses the current definition" log
+        verify (root.uiVersion()=="0.82.4" and root.procSchemaValid) "Saved schema 58 uses the current definition" log
         verify (leaf.amount==55 and leaf.randomSeed==8765) "P02 population fields retain their meaning" log
         verify (not leaf.slopeEnabled and not leaf.altitudeEnabled) "New filters are neutral in a saved P02 scene" log
         verify (abs(leaf.movXMinWU-0.2*(units.decodeValue "1m"))<0.0001 and abs(leaf.wholeScaleMin-0.8)<0.0001) "P02 physical and dimensionless transforms survive new parameter fields" log

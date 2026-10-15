@@ -1,18 +1,50 @@
 # Execution TODO and progress
 
-Updated 14 October 2026. This is the checklist for the authorized eleven-phase
+Updated 15 October 2026. This is the checklist for the authorized eleven-phase
 program. A checked box means the named task has evidence; it does not imply the
 entire phase passed. Existing defect IDs stay in [BACKLOG](../../BACKLOG.md).
 
 ## Current action
 
-**Paused after completed P05 (0.85.0), at the user's request for discussion.**
-P01 through P05 were committed and pushed; the latest verified implementation
+**0.82.4 mesh channel density and Paint help** are implemented and qualified in
+Max 2027, including an isolated copy of the user's mountain. See
+[MESH_MASK_0824](MESH_MASK_0824.md) for exact evidence, package and artist checks.
+No normal-profile installation is included. P06 remains paused; planned P06-P11
+now use 0.82.5-0.83.0. This is a separate delivery from the eleven phases.
+
+Preceding delivery:
+
+**Implemented and scoped Max 2027 checks passed: the authorized 0.82.3 performance correction**, tracked in
+[PERFORMANCE_0823](PERFORMANCE_0823.md). This fixes the first five phases without
+resuming P06. At that delivery, P06-P11 planned 0.82.4-0.82.9; the later mask
+delivery supersedes that schedule.
+The candidate passed 31 native suites, 161 Python tests, 467 inherited host
+assertions, 440 heavy Point Cloud/Mesh assertions and 217 synthetic assertions.
+Physical panel clicks/navigation preserved work counters. Full controller opening
+still costs about two seconds in the terrace; B21 remains open. Normal installation
+was last verified as 0.82.2. The subsequent user-requested 0.82.3 Max 2027 MZP
+is packaged and hash-verified for manual installation; see the package section
+in the performance handoff. No installation, push or deployment was performed.
+
+
+**Paused after completed P05 (corrected label 0.82.2; original build 0.85.0), at the user's request for discussion.**
+P01 through P05 were committed and pushed under their original labels; the latest verified implementation
 checkpoint is `8985e040831813d02f61c863983fe1afc4b1f4b1`.
 P06 has had preliminary source inspection only; implementation has not started.
 Do not start another phase until the user resumes the program.
+When resumed, use **Max 2027 only** for development and testing, as requested on
+14 October 2026. Max 2026 testing requires a new explicit request; retain the
+completed dual-version receipts. See [the agent workflow](../../AGENT_WORKFLOW.md).
 The user's artist acceptance is at the end. Computer Use recovered during P05;
 physical conversion controls passed in both Max versions. See [P05](P05.md).
+
+The authorized numbering correction and fresh Max 2027 compilation are complete
+(31 native suites, 161 Python tests and generated integration passed).
+This metadata/build task does not resume P06. See the
+[corrected phase versions](../../Release_Versioning.md#eleven-phase-numbering).
+The authorized [0.82.2 Max 2027 installer and disk installation](INSTALLATION_0822.md)
+are complete. The running older host needs a restart; the user will perform
+[manual acceptance for Phases 1–5](ARTIST_ACCEPTANCE_0822.md). P06 remains paused.
 
 ## Enrollment / shared preparation
 
@@ -26,7 +58,7 @@ physical conversion controls passed in both Max versions. See [P05](P05.md).
 - [x] Establish coherent Git prerequisite scope for 0.81.7 without including unrelated assets/knowledge/site work; see P01 and its delivery inventory.
 - [x] Confirm current toolchain/owned-host paths and baseline checks needed for P01.
 
-## P01 — workflow and feedback
+## P01 — workflow and feedback (0.81.8)
 
 - [x] Inspect actual template, approved layout mapping and cached-status readers.
 - [x] Freeze displayed-state/count semantics and phase acceptance cases.
@@ -40,7 +72,7 @@ physical conversion controls passed in both Max versions. See [P05](P05.md).
 - [x] Select/record final version, update docs and review final diff; recheck identities before delivery.
 - [x] Commit coherent P01/prerequisite source; push and verify remote hash.
 
-## P02 — settings and curve presets
+## P02 — settings and curve presets (0.81.9)
 
 Preparatory [source/format research](P02_PREFLIGHT.md) is recorded. Implementation and scoped Max qualification passed; see the phase receipt.
 
@@ -50,9 +82,9 @@ Preparatory [source/format research](P02_PREFLIGHT.md) is recorded. Implementati
 - [x] Add a compact preset list and clear storage/error feedback.
 - [x] Test units, missing/corrupt/oversized/unwritable files and unchanged browsing.
 - [x] Validate host lifecycle and inherited P01 behavior.
-- [x] Commit/push qualified 0.82.0 and verify the remote hash (version/docs updated).
+- [x] Commit/push qualified P02 under its original 0.82.0 label and verify the remote hash; corrected phase label is 0.81.9.
 
-## P03 — slope and altitude
+## P03 — slope and altitude (0.82.0)
 
 - [x] Freeze coordinates, normal/up convention, endpoint and soft-transition functions.
 - [x] Implement settings, independent eligibility channel and receiver dependencies.
@@ -62,7 +94,7 @@ Preparatory [source/format research](P02_PREFLIGHT.md) is recorded. Implementati
 - [x] Measure disabled overhead and cold/warm reuse; run host lifecycle/regressions.
 - [x] Update version/docs; commit, push and verify.
 
-## P04 — map controls
+## P04 — map controls (0.82.1)
 
 - [x] Verify SDK UV-channel ranges and freeze addressing/interpolation/color semantics.
 - [x] Add saved UV-channel and 64/128/256/512 resolution choices with current defaults.
@@ -72,7 +104,7 @@ Preparatory [source/format research](P02_PREFLIGHT.md) is recorded. Implementati
 - [x] Measure map bake/receiver cache reuse and peak memory; run regressions.
 - [x] Update version/docs; commit, push and verify.
 
-## P05 — Paint/spline conversion
+## P05 — Paint/spline conversion (0.82.2)
 
 - [x] Freeze contour fill/nesting, sampling tolerance and projection rules.
 - [x] Implement non-destructive vector-to-spline snapshot export with holes/transforms.
@@ -82,7 +114,7 @@ Preparatory [source/format research](P02_PREFLIGHT.md) is recorded. Implementati
 - [x] Qualify actual conversion controls and unchanged other layers.
 - [x] Update version/docs; commit, push and verify.
 
-## P06 — grid layouts
+## P06 — grid layouts (0.82.5)
 
 - [ ] Freeze lattice frame/origin, spacing, stagger/hex rules and projected-hit policy.
 - [ ] Prove bounded collision-free stable cell identities in the chosen transport.
@@ -93,7 +125,7 @@ Preparatory [source/format research](P02_PREFLIGHT.md) is recorded. Implementati
 - [ ] Measure bounded large-grid preparation/cache reuse; run host lifecycle/regressions.
 - [ ] Update version/docs; commit, push and verify.
 
-## P07 — direction controls
+## P07 — direction controls (0.82.6)
 
 - [ ] Freeze direction/target/up/roll and random-rotation composition semantics.
 - [ ] Implement fixed direction and Look At, including degenerate cases.
@@ -103,7 +135,7 @@ Preparatory [source/format research](P02_PREFLIGHT.md) is recorded. Implementati
 - [ ] Measure unrelated-animation reuse; run regressions.
 - [ ] Update version/docs; commit, push and verify.
 
-## P08 — paths, sequences and references
+## P08 — paths, sequences and references (0.82.7)
 
 - [ ] Freeze spacing/endpoints/seams/jitter, 3D versus receiver projection and identity rules.
 - [ ] Implement bounded arc-length path sampling and P07 tangent orientation.
@@ -114,7 +146,7 @@ Preparatory [source/format research](P02_PREFLIGHT.md) is recorded. Implementati
 - [ ] Measure long-path preparation and reuse; run lifecycle and earlier layout regressions.
 - [ ] Update version/docs; commit, push and verify.
 
-## P09 — transform and assignment maps
+## P09 — transform and assignment maps (0.82.8)
 
 - [ ] Freeze each map's remap/composition/neutral/missing-input behavior.
 - [ ] Implement sampled scale/rotation channels using P04's shared preparation.
@@ -124,7 +156,7 @@ Preparatory [source/format research](P02_PREFLIGHT.md) is recorded. Implementati
 - [ ] Measure shared-map reuse, animation dependencies and memory; run host/regressions.
 - [ ] Update version/docs; commit, push and verify.
 
-## P10 — recipes and browser
+## P10 — recipes and browser (0.82.9)
 
 - [ ] Freeze complete authored recipe format and source/receiver/path/map role binding.
 - [ ] Implement validated single/multi-layer capture with no runtime caches or executable data.
@@ -134,14 +166,14 @@ Preparatory [source/format research](P02_PREFLIGHT.md) is recorded. Implementati
 - [ ] Qualify full production recipe save/apply/Undo/reopen and passive browser performance.
 - [ ] Update version/docs; commit, push and verify.
 
-## P11 — adaptive viewport completion
+## P11 — adaptive viewport completion (0.83.0)
 
 - [x] Identify existing 0.81.6/0.81.7 adaptive limits, fallback and mode-cache implementation.
 - [ ] Recheck original failure witnesses against the final P10 source.
 - [ ] Benchmark all new layouts/maps/recipes with simple and heavy supported sources.
 - [ ] Improve the measured bottleneck and preview-status clarity within the chosen scope.
 - [ ] Qualify idle/navigation, zero limits, repeated mode switches and bounded resource recovery.
-- [ ] Run compatible Max 2026 assets and the Max 2027 production terrace.
+- [ ] Run supported asset fixtures and the production terrace in Max 2027 only.
 - [ ] Record physical/presented-frame evidence or explicit measurement limitations.
 - [ ] Run the complete required eleven-phase interaction/lifecycle/output regression matrix.
 - [ ] Update version/docs; commit, push and verify final program checkpoint.

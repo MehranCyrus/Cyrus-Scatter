@@ -34,7 +34,7 @@ global CaptureRows=for i=1 to 3 collect #((transMatrix [(i-2)*45.,0,0]),1,(i as 
 global CapturePalette=#(1,3,#(white),#(#(17,red),#(25,blue)),false)
 global CaptureCache=cyrusBuildGeometryPreview CaptureRows #(CaptureSource) CapturePalette 4 10 1000
 global CaptureOwner=cyrusRetainedCreate()
-CyrusViewportRecords=#(#(CaptureController,CaptureOwner,#(CaptureCache),#(#(false,white)),#()))
+CyrusViewportRecords=#(#(CaptureController,CaptureOwner,#(CaptureCache),#(#(false,white)),#(),2))
 CyrusViewportRecordsDirty=false
 cyrusRetainedPublish CaptureOwner CaptureController #(CaptureCache) #(#(false,white))
 hideByCategory.helpers=false

@@ -1,0 +1,544 @@
+{
+  "schema": "cyrus.candidate-review/1",
+  "reviewer": "Codex agent within the delegated completion task; not human signoff",
+  "corpus": {
+    "old_sha256": "dffb8b8fef576fb2fcc1473cb3abe0f9c924033df7f7d782486eb8cd486fa5b2",
+    "new_sha256": "8120607d6945489c7135237649c266cf7254752087c0d69b4ad14e6ce29af03f",
+    "reason": "Add qualified foundation/correction evidence and current source without discarding original enrolled parents"
+  },
+  "enrollment": {
+    "added": [
+      "docs/ENGINEERING_FOUNDATION.md",
+      "docs/BACKLOG.md",
+      "docs/Foundation_0.79.6_2026-10-12/README.md",
+      "AminScatter/src/point_publication.inc",
+      "AminScatter/src/cyrus_edit_stack.inc",
+      "AminScatter/tests/publication_tests.cpp",
+      "tools/foundation_validation/publication.py",
+      "tools/foundation_validation/units.py",
+      "tools/foundation_validation/units_guards.py"
+    ],
+    "agent_reviewed": true,
+    "reason": "Explicit foundation, failure recovery, units and current acceptance scope"
+  },
+  "sources": [
+    {
+      "path": "AGENTS.md",
+      "old_sha256": "44e1536f33a6e269b51467eceecd8e750a7847dc50370a2eeb03a68069519abc",
+      "new_sha256": "c5d78e3cd9a4b4bcf8f8a706d77b9a063731cd859b62be3c2b60e30f79ae5382",
+      "field_reasons": {
+        "ranges": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence",
+        "sha256": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence"
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "unchanged_metadata_reviewed": false
+    },
+    {
+      "path": "README.md",
+      "old_sha256": "9194a108a0e6a6bc4989b4c2fc6bf234492cf1fb0d2d0faff374d5ccaadbb427",
+      "new_sha256": "36793268f113f04df1c47d0206711065037b156f915bd1f9024a72cf5be94a50",
+      "field_reasons": {
+        "sha256": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence"
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "unchanged_metadata_reviewed": false
+    },
+    {
+      "path": "docs/ARTIST_GUIDE.md",
+      "old_sha256": "b33e27f28fd3743497ba8346f7611e45e75e338df203b0c4531936247fbfb8dc",
+      "new_sha256": "a135777ffbf4ffc37d0ca33178654da16586ed3d91c1fa14e726508c563a12e2",
+      "field_reasons": {
+        "sha256": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence"
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "unchanged_metadata_reviewed": false
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "old_sha256": "f440d995bb9a49369cc2355e14966a7f9e442526c656e229c3fa58959dbd1715",
+      "new_sha256": "b258aea3b596038bbc75132d796a6dac3f28bfe0f67d10ad92f94a618df42ec0",
+      "field_reasons": {
+        "ranges": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence",
+        "sha256": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence"
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "unchanged_metadata_reviewed": false
+    },
+    {
+      "path": "docs/AGENT_WORKFLOW.md",
+      "old_sha256": "5931707672f529b79a2892e4032dfd34c9f57d173e0d5722620e63a55396b26a",
+      "new_sha256": "bee526d6a4a6267d371eecf7c6c4997266db840e9f056d77c913d90306bc82ce",
+      "field_reasons": {
+        "sha256": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence"
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "unchanged_metadata_reviewed": false
+    },
+    {
+      "path": "CyrusMCP/README.md",
+      "old_sha256": "9e980e1332e211ca60b5873b1b1dbb07ae5bb0cfcb738665aeb20e1399f376da",
+      "new_sha256": "ade16c0ae74dbce660b58c8f6ef96c1cb5fcdc02c20e7f1a3896eb99b4b3bef0",
+      "field_reasons": {
+        "sha256": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence"
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "unchanged_metadata_reviewed": false
+    },
+    {
+      "path": "website/content/source-manifest.json",
+      "old_sha256": "9e6bffd1a0dd63c1fa3dbced161eb8804e68f502a64a20ccd885439656203aeb",
+      "new_sha256": "e93261f03371f561df767208756dc086dbbd2512e73b28bd684a403a2e85bc05",
+      "field_reasons": {
+        "ranges": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence",
+        "sha256": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence"
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "unchanged_metadata_reviewed": false
+    },
+    {
+      "path": "docs/Layer_Navigation_0.79.2_2026-10-11/README.md",
+      "old_sha256": "f8f1b6b274bd18c41a8d3498f184eb7fb6953bba20796f504cfb5b51599b0e5a",
+      "new_sha256": "f8f1b6b274bd18c41a8d3498f184eb7fb6953bba20796f504cfb5b51599b0e5a",
+      "field_reasons": {
+        "current_reference_sources": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion"
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "unchanged_metadata_reviewed": true
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/unified-core.ms",
+      "old_sha256": "2bce94b320f0537b3b978e7def57cb21e2a67baa34624302a7828fca3dd8b887",
+      "new_sha256": "10da7f34c7bd74f719c527b90f993c30dbf5b5bab59a1611cfc4b02854b165a4",
+      "field_reasons": {
+        "ranges": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence",
+        "selection_reason": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence",
+        "sha256": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence"
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "unchanged_metadata_reviewed": false
+    },
+    {
+      "path": "AminScatter/scripts/AminScatterObject.ms",
+      "old_sha256": "cacf3e6b1af8796d96bca7ed2698cfb762d3baff7f90bc35a507b100ee0af4b4",
+      "new_sha256": "a197da0157ccb59827fb61d371b9811834044e9ba2ff063287f4d62bb65a5eb0",
+      "field_reasons": {
+        "ranges": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence",
+        "sha256": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence"
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "unchanged_metadata_reviewed": false
+    },
+    {
+      "path": "CyrusMCP/tests/test_feature_catalog.py",
+      "old_sha256": "8551cf425e2681e91de81fa3e3ae5636b13fc25c02f19495cab102f98e2f8df2",
+      "new_sha256": "fd5652f8d4df914e450174e63938e08d4af429fc14af405def4ed07646f8a1e2",
+      "field_reasons": {
+        "sha256": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence"
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "unchanged_metadata_reviewed": false
+    },
+    {
+      "path": "docs/ENGINEERING_FOUNDATION.md",
+      "old_sha256": null,
+      "new_sha256": "c8361b80a85083f873cb771449ecb5f9a4a699e2091f3238adbf3de0c2891b9b",
+      "field_reasons": {
+        "applicability": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "canonical": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "component": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "current_reference_sources": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "generated": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "knowledge_status": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "path": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "ranges": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence",
+        "referenced_by_current_docs": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "review_status": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "role": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "selection_reason": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence",
+        "sha256": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence",
+        "status_source": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion"
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "unchanged_metadata_reviewed": false
+    },
+    {
+      "path": "docs/BACKLOG.md",
+      "old_sha256": null,
+      "new_sha256": "2bb6fe5f0462b21ed53873d9c422205295f7c40cab83a9fe92c94bcb0e8b14fe",
+      "field_reasons": {
+        "applicability": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "canonical": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "component": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "current_reference_sources": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "generated": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "inventory_decision": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "inventory_reason": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "knowledge_status": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "path": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "ranges": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence",
+        "referenced_by_current_docs": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "review_status": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "role": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "selection_reason": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence",
+        "sha256": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence",
+        "status_source": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion"
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "unchanged_metadata_reviewed": false
+    },
+    {
+      "path": "docs/Foundation_0.79.6_2026-10-12/README.md",
+      "old_sha256": null,
+      "new_sha256": "9bbe9750e62c5d8e66c7812c84087478d840a0732116f61dc50f23d5ef59f140",
+      "field_reasons": {
+        "applicability": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "canonical": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "component": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "current_reference_sources": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "generated": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "knowledge_status": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "path": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "ranges": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence",
+        "referenced_by_current_docs": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "review_status": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "role": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "selection_reason": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence",
+        "sha256": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence",
+        "status_source": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion"
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "unchanged_metadata_reviewed": false
+    },
+    {
+      "path": "AminScatter/src/point_publication.inc",
+      "old_sha256": null,
+      "new_sha256": "93694232c2386804e1c1a8187e7e789aac125dff52b1165263948129ad0f6178",
+      "field_reasons": {
+        "applicability": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "canonical": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "component": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "current_reference_sources": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "generated": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "knowledge_status": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "path": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "ranges": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence",
+        "referenced_by_current_docs": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "review_status": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "role": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "selection_reason": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence",
+        "sha256": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence",
+        "status_source": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion"
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "unchanged_metadata_reviewed": false
+    },
+    {
+      "path": "AminScatter/src/cyrus_edit_stack.inc",
+      "old_sha256": null,
+      "new_sha256": "7af5e81b7a901f1c513fdc069ba1268df070ef1770d242e2fc55de3e7d566516",
+      "field_reasons": {
+        "applicability": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "canonical": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "component": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "current_reference_sources": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "generated": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "knowledge_status": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "path": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "ranges": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence",
+        "referenced_by_current_docs": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "review_status": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "role": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "selection_reason": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence",
+        "sha256": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence",
+        "status_source": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion"
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "unchanged_metadata_reviewed": false
+    },
+    {
+      "path": "AminScatter/tests/publication_tests.cpp",
+      "old_sha256": null,
+      "new_sha256": "b34495362c59a11403357c771b7338fc697dc361b087587a3588c017ef3fe215",
+      "field_reasons": {
+        "applicability": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "canonical": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "component": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "current_reference_sources": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "generated": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "knowledge_status": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "path": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "ranges": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence",
+        "referenced_by_current_docs": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "review_status": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "role": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "selection_reason": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence",
+        "sha256": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence",
+        "status_source": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion"
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "unchanged_metadata_reviewed": false
+    },
+    {
+      "path": "tools/foundation_validation/publication.py",
+      "old_sha256": null,
+      "new_sha256": "9abf398bd2e6d8688fdf78649ff340a00658d866f21f0135ed58880943296f1c",
+      "field_reasons": {
+        "applicability": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "canonical": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "component": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "current_reference_sources": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "generated": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "knowledge_status": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "path": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "ranges": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence",
+        "referenced_by_current_docs": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "review_status": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "role": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "selection_reason": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence",
+        "sha256": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence",
+        "status_source": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion"
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "unchanged_metadata_reviewed": false
+    },
+    {
+      "path": "tools/foundation_validation/units.py",
+      "old_sha256": null,
+      "new_sha256": "0fffd825c0de5bfc3a1b8a72f4d8500d9cbe6a3265d4e34a72809ecdbe5976ab",
+      "field_reasons": {
+        "applicability": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "canonical": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "component": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "current_reference_sources": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "generated": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "knowledge_status": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "path": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "ranges": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence",
+        "referenced_by_current_docs": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "review_status": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "role": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "selection_reason": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence",
+        "sha256": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence",
+        "status_source": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion"
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "unchanged_metadata_reviewed": false
+    },
+    {
+      "path": "tools/foundation_validation/units_guards.py",
+      "old_sha256": null,
+      "new_sha256": "6b6b85af346b50f70cf4b2345d1694b0b7e47a1277939b6b9bb494418007761e",
+      "field_reasons": {
+        "applicability": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "canonical": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "component": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "current_reference_sources": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "generated": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "knowledge_status": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "path": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "ranges": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence",
+        "referenced_by_current_docs": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "review_status": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "role": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion",
+        "selection_reason": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence",
+        "sha256": "Full-parent bytes and selected spans reviewed against 0.79.6 changes and qualified evidence",
+        "status_source": "Current audit provenance or explicitly qualified evidence metadata; no automatic authority promotion"
+      },
+      "diff_inspected": true,
+      "ranges_checked": true,
+      "context_checked": true,
+      "applicability_checked": true,
+      "authority_checked": true,
+      "generated_ownership_checked": true,
+      "canonical_checked": true,
+      "unchanged_metadata_reviewed": false
+    }
+  ],
+  "runtime": [
+    {
+      "name": "adapter.py",
+      "old_sha256": "ff1d074a2638e03c0eed5a98fd590c96fc98525d4cad6f0052a65d2ffcbe2331",
+      "new_sha256": "c2759568525b126040998d15b7e2e83b552a1e63aa63540019735ac51e8d1f70",
+      "reason": "Explicit maintained foundation rule; final pipeline validation must cover successor runtime",
+      "diff_inspected": true,
+      "tests_reviewed": true
+    },
+    {
+      "name": "config.toml",
+      "old_sha256": "6a077646fc4dcc4b03174ba5c5860737b57d946f75b9bc5ef76e349161c7db31",
+      "new_sha256": "e4fcabad1a92c518b077138911eb367abf4675e7deaa671f991fc8d2205fecae",
+      "reason": "Explicit maintained foundation rule; final pipeline validation must cover successor runtime",
+      "diff_inspected": true,
+      "tests_reviewed": true
+    }
+  ],
+  "evaluations": [
+    {
+      "old_sha256": "564211749e128b0ff03ff4dfdf433767993d1f3d3e33ef02ed03e87d47ca704f",
+      "new_sha256": "53a153bb2bacbabfa47ae187822e50e3ffdf4f99e60dd6a26b5788a927c3dd47",
+      "reason": "Same frozen questions, splits, languages, requirements and conclusions; explicit current-parent/line relocation, changed text separately inspected in location review"
+    },
+    {
+      "old_sha256": "094117eb1808e6c19bbbbfe65772eab74b41e2eaa773eafad52b6c23ccbc885f",
+      "new_sha256": "38fb0864fcf734a9c999888e1f8a0273e5efeb96c1a2c7a999719180e52c8783",
+      "reason": "Same frozen questions, splits, languages, requirements and conclusions; explicit current-parent/line relocation, changed text separately inspected in location review"
+    },
+    {
+      "old_sha256": "39fefb1b27045df13990890bf87fc1ed9c794dc147a6b5fed9fdd77f0a33ff30",
+      "new_sha256": "552e0bf7bb902d6f310830f3b4f29451bb6e70fa9c71679917cc22583c38edfb",
+      "reason": "Same frozen questions, splits, languages, requirements and conclusions; explicit current-parent/line relocation, changed text separately inspected in location review"
+    }
+  ],
+  "reference_conclusions": [
+    {
+      "old_evaluation_sha256": "564211749e128b0ff03ff4dfdf433767993d1f3d3e33ef02ed03e87d47ca704f",
+      "group": "base",
+      "id": "O08",
+      "old_value": "Generated first line declares payload fingerprint ca37c86a885481c5124cb783f4e3418adc7981bdbf151cd4da78147a0629cffe; this differs from whole-file SHA-256.",
+      "new_value": "Generated first line declares payload fingerprint 56b7b2b5875d5e6a67ff0113eecfac227179f63b8a085377d385f3ec3a6a1dae; this differs from whole-file SHA-256.",
+      "agent_reviewed": true,
+      "reason": "Current generated fingerprint or explicit immediately preceding schema scope inspected; question and scored evidence requirement remain unchanged"
+    },
+    {
+      "old_evaluation_sha256": "564211749e128b0ff03ff4dfdf433767993d1f3d3e33ef02ed03e87d47ca704f",
+      "group": "base",
+      "id": "H06",
+      "old_value": "Earlier development setups are rejected; preserve old scenes with matching old build.",
+      "new_value": "Schema-54 model-set/stroke setups remain rejected. The current schema-56 migration reads only schema 55; preserve original scenes with their matching build.",
+      "agent_reviewed": true,
+      "reason": "Current generated fingerprint or explicit immediately preceding schema scope inspected; question and scored evidence requirement remain unchanged"
+    },
+    {
+      "old_evaluation_sha256": "094117eb1808e6c19bbbbfe65772eab74b41e2eaa773eafad52b6c23ccbc885f",
+      "group": "base",
+      "id": "O08",
+      "old_value": "Generated first line declares payload fingerprint ca37c86a885481c5124cb783f4e3418adc7981bdbf151cd4da78147a0629cffe; this differs from whole-file SHA-256.",
+      "new_value": "Generated first line declares payload fingerprint 56b7b2b5875d5e6a67ff0113eecfac227179f63b8a085377d385f3ec3a6a1dae; this differs from whole-file SHA-256.",
+      "agent_reviewed": true,
+      "reason": "Current generated fingerprint or explicit immediately preceding schema scope inspected; question and scored evidence requirement remain unchanged"
+    },
+    {
+      "old_evaluation_sha256": "094117eb1808e6c19bbbbfe65772eab74b41e2eaa773eafad52b6c23ccbc885f",
+      "group": "base",
+      "id": "H06",
+      "old_value": "Earlier development setups are rejected; preserve old scenes with matching old build.",
+      "new_value": "Schema-54 model-set/stroke setups remain rejected. The current schema-56 migration reads only schema 55; preserve original scenes with their matching build.",
+      "agent_reviewed": true,
+      "reason": "Current generated fingerprint or explicit immediately preceding schema scope inspected; question and scored evidence requirement remain unchanged"
+    }
+  ]
+}

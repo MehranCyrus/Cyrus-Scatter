@@ -1,0 +1,109 @@
+{
+  "captured_utc": "2026-10-15T12:12:28.974413+00:00",
+  "scope": "Research and documentation only; no new host or binary tests",
+  "branch": "codex/workflow-0.75",
+  "head": "604e3aa3fd1c84c5ef128dc564f4abaf6f4978e4",
+  "starting_status": " M .agents/skills/cyrus-scatter-engineering/SKILL.md\n M AGENTS.md\n M AminScatter/CMakeLists.txt\n M AminScatter/scripts/AminScatterObject.ms\n M AminScatter/src/max_bridge.cpp\n M AminScatter/tools/ui/approved-layout-manifest.json\n M AminScatter/tools/ui/approved-layout-rows.cjs\n M AminScatter/tools/ui/approved-layout.cjs\n M AminScatter/tools/ui/control-tooltips.json\n M AminScatter/tools/ui/layers-control-inventory.json\n M AminScatter/tools/ui/templates/approved-main-ui.ms\n M AminScatter/tools/ui/templates/unified-core.ms\n M CyrusMCP/cyrus_mcp/feature-catalog.json\n M CyrusMCP/tests/test_feature_catalog.py\n M README.md\n M docs/AGENT_WORKFLOW.md\n M docs/ARTIST_GUIDE.md\n M docs/BACKLOG.md\n M docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md\n M docs/Max_2027_Installation.md\n M docs/README.md\n M docs/Release_Versioning.md\n M docs/plans/eleven-phase-roadmap/IMPLEMENTATION.md\n M docs/plans/eleven-phase-roadmap/P02.md\n M docs/plans/eleven-phase-roadmap/P03.md\n M docs/plans/eleven-phase-roadmap/P04.md\n M docs/plans/eleven-phase-roadmap/P05.md\n M docs/plans/eleven-phase-roadmap/README.md\n M docs/plans/eleven-phase-roadmap/TODO.md\n M docs/plans/eleven-phase-roadmap/VALIDATION.md\n M tools/build_max.py\n M tools/eleven_phases/README.md\n M tools/eleven_phases/phase03_saved_baseline.ms\n M tools/eleven_phases/phase04_edit_saved.ms\n M tools/procedural_lab/build_feature_catalog.py\n M tools/procedural_lab/check_generated.py\n M tools/spline_bands/palette_capture_host.py\n M website/content/changelog.json\n M website/content/control-explanations.json\n M website/content/guide-chapters.json\n M website/content/source-manifest.json\n M website/src/content/reference.json\n M website/verification/react-static-checks.json\n?? AminScatter/include/mesh_density.h\n?? AminScatter/src/mesh_density.cpp\n?? AminScatter/src/mesh_density_bridge.inc\n?? AminScatter/tests/mesh_density_tests.cpp\n?? LOGO.psd\n?? \"Landing Page Design/\"\n?? docs/GitHub_Tools_Inventory_2026-10-15/\n?? docs/How_Forest_Works/\n?? docs/plans/eleven-phase-roadmap/ARTIST_ACCEPTANCE_0822.md\n?? docs/plans/eleven-phase-roadmap/INSTALLATION_0822.md\n?? docs/plans/eleven-phase-roadmap/MESH_MASK_0824.md\n?? docs/plans/eleven-phase-roadmap/PERFORMANCE_0823.md\n?? tools/feature_demo_0824/\n?? tools/mesh_density_mask/\n?? tools/performance/live_idle/\n?? tools/rag/challenge-v4.json\n?? tools/rag/challenge-v5.json\n?? tools/rag/challenge-v6.json\n?? tools/rag/corpus-v4.json\n?? tools/rag/corpus-v5.json\n?? tools/rag/corpus-v6.json\n?? tools/rag/evaluation-original-v4.json\n?? tools/rag/evaluation-original-v5.json\n?? tools/rag/evaluation-original-v6.json\n?? tools/rag/evaluation-revised-v4.json\n?? tools/rag/evaluation-revised-v5.json\n?? tools/rag/evaluation-revised-v6.json\n?? tools/rag/review-v4.json\n?? tools/rag/review-v5.json\n?? tools/rag/review-v6-completion.json\n?? tools/rag/review-v6.json\n?? tools/rag/review-v7.json\n?? tools/terrace_0815/\n?? tools/viewport_0816/\n?? tools/viewport_0817/\n?? website/prototypes/\n",
+  "source_files": [
+    {
+      "path": "README.md",
+      "bytes": 7459,
+      "sha256": "ffed4eba3608381e69f97780e7d77f979e47e53291604501dd77fbe3c4ca3f0d"
+    },
+    {
+      "path": "docs/AGENT_WORKFLOW.md",
+      "bytes": 11905,
+      "sha256": "63260efc22dc698596426b41e71576a2df62e1cc24207f2faee888fd01a1e528"
+    },
+    {
+      "path": "docs/ENGINEERING_FOUNDATION.md",
+      "bytes": 19178,
+      "sha256": "c3b64ff874681597cb8c75711eca6a84c7d5ad43a381bda65c6365af5e36b004"
+    },
+    {
+      "path": "docs/ARCHITECTURE.md",
+      "bytes": 23427,
+      "sha256": "e61797dd654ca4452c176a3dea1da2d30150fbd7aa7f2ba9a608df7e376a4df6"
+    },
+    {
+      "path": "docs/BACKLOG.md",
+      "bytes": 17560,
+      "sha256": "29d931795fe348effb37a21cdbf71a2fe58a41fdc8920174281e273ec8383750"
+    },
+    {
+      "path": "docs/plans/eleven-phase-roadmap/MESH_MASK_0824.md",
+      "bytes": 13237,
+      "sha256": "3c9f4db776c6274b757f7f697fb29433a01b8fce946e32dcd522559e8de4c257"
+    },
+    {
+      "path": "docs/plans/eleven-phase-roadmap/P02.md",
+      "bytes": 6542,
+      "sha256": "81678beab90f3ea77d3078cc8c5fdfaf0a02709ca7b068cb25cf209bd2e03756"
+    },
+    {
+      "path": "docs/plans/eleven-phase-roadmap/IMPLEMENTATION.md",
+      "bytes": 19675,
+      "sha256": "ae7fb49d61a7deb1cec3d2ed45eceafe845a4cb9f23023d70020927512261933"
+    },
+    {
+      "path": "docs/Vendor_Surface_Paint_Research_2026-10-09/README.md",
+      "bytes": 25593,
+      "sha256": "023b9139f838dede16dc556c9f6a6d0d6170ea6a9fd06b29418ebd977f763f24"
+    },
+    {
+      "path": "docs/Vendor_Surface_Paint_Research_2026-10-09/EVIDENCE.json",
+      "bytes": 42117,
+      "sha256": "d873e7eac92873d7d741dc6eea9edbfc95629a79924568ccc597b8fb3d054184"
+    },
+    {
+      "path": "docs/Vendor_Native_Deep_Research_2026-10-09/README.md",
+      "bytes": 14360,
+      "sha256": "56dea07183f9b5d72288d96b068198c57e6ffbd497dece0266eafe67d5464430"
+    },
+    {
+      "path": "docs/Vendor_Native_Deep_Research_2026-10-09/EVIDENCE.json",
+      "bytes": 33868,
+      "sha256": "3171b585d412ee699c2e2be897be3ab6a867e03f2c6bc3108cf21b138a396ace"
+    },
+    {
+      "path": "AminScatter/src/max_bridge.cpp",
+      "bytes": 26689,
+      "sha256": "1db545cb8a89d37f488eca70ef8ab2fc283b4b1a69137fff5f9b16e087404587"
+    },
+    {
+      "path": "AminScatter/src/mesh_density.cpp",
+      "bytes": 1849,
+      "sha256": "5bbdeabbf0192c70fbe6a22c596f7cd25d71bbf2cba5d0fda1df833c1e3261fc"
+    },
+    {
+      "path": "AminScatter/src/mesh_density_bridge.inc",
+      "bytes": 8097,
+      "sha256": "a2174ffbde1b522a6248b7051d1c6d9c81628f8695fb13c08a17d767f768b53b"
+    },
+    {
+      "path": "AminScatter/src/input_validity.cpp",
+      "bytes": 8549,
+      "sha256": "a65514bdcee3e67d3296768063979ed1c670b020323bc62e757ac7a9c232605d"
+    },
+    {
+      "path": "AminScatter/src/presets.cpp",
+      "bytes": 8201,
+      "sha256": "d6664b2ef8f35e450c707c4bdbefe926d459bc86ab24194821528324721072df"
+    },
+    {
+      "path": "AminScatter/src/surface_filter.cpp",
+      "bytes": 2937,
+      "sha256": "008adf45b1a5edf06a17799ac7155c66545bf9b98c3b7ecb91700a3a56718e27"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/presets.ms",
+      "bytes": 12822,
+      "sha256": "61d86d9ac892ab8fae06590522035d2a7d0f72e40066c32a3556e08f2788db1e"
+    },
+    {
+      "path": "AminScatter/tools/ui/templates/unified-core.ms",
+      "bytes": 459355,
+      "sha256": "58cbc62b9e4f0dd4db0ffacc3d89109d5013811519b1c38dbd726e6f90101569"
+    }
+  ]
+}

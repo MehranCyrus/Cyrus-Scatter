@@ -60,7 +60,13 @@ function component(s,key){
   if(m){controls.push({kind:m[1],name:m[2],declaration:part.split('\n')[0]});continue;}
   if(/^        local\b/.test(part)){locals.push(part);continue;}
   if(new RegExp('^        on '+old+' (?:open|close|rolledUp)\\b').test(part))continue;
-  handlers.push(part);
+  // These old component functions only changed visibility/height. The composed
+  // page owns both through its row conditions. Running both layouts briefly
+  // shows hidden controls and forces avoidable native reflows on every bind.
+  const presentationOnly={flow_surfaceUI:'arrangeContainers',sourceUI:'arrangeDetails',
+   distributionUI:'arrangePopulation',areaUI:'arrangeDetails'}[key];
+  const method=/^        fn (\w+)\b/.exec(part)?.[1];
+  handlers.push(method && method===presentationOnly ? `        fn ${method} = true` : part);
  }
  const names=new Map(),declared=new Set();
  for(const c of controls)names.set(c.name.toLowerCase(),key+'_'+c.name);

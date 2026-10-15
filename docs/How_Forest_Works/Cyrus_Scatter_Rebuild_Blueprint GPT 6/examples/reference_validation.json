@@ -1,0 +1,114 @@
+{
+  "suite": "Cyrus mathematical reference v0.1",
+  "status": "pass",
+  "check_groups": 12,
+  "scope": "Pure Python mathematical checks only; no Max, C++, GPU, renderer, or production benchmark execution.",
+  "results": [
+    {
+      "name": "keyed_randomness_and_partition_invariance",
+      "status": "pass",
+      "elapsed_seconds": 0.006066,
+      "keys": 200,
+      "partition_orders": 4
+    },
+    {
+      "name": "stable_density_thinning_before_collisions",
+      "status": "pass",
+      "elapsed_seconds": 0.028862,
+      "samples": 10000,
+      "quarter_survivors": 2494,
+      "half_survivors": 5005
+    },
+    {
+      "name": "source_weights_empty_and_list_order",
+      "status": "pass",
+      "elapsed_seconds": 0.054402,
+      "samples": 10000,
+      "counts": {
+        "A": 4978,
+        "B": 2972,
+        "__EMPTY__": 2050
+      }
+    },
+    {
+      "name": "ordered_areas_and_independent_contributions",
+      "status": "pass",
+      "elapsed_seconds": 3.1e-05,
+      "accepted_contributions": 8,
+      "overlapping_include_records": 2
+    },
+    {
+      "name": "canonical_paint_composition_and_exact_snapshot_undo",
+      "status": "pass",
+      "elapsed_seconds": 3.6e-05,
+      "before": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "after_add": [
+        0,
+        16384,
+        32768,
+        65535
+      ],
+      "after_erase": [
+        0,
+        16384,
+        32768,
+        0
+      ]
+    },
+    {
+      "name": "piecewise_linear_pdf_inverse_cdf",
+      "status": "pass",
+      "elapsed_seconds": 0.001859,
+      "distributions": 3,
+      "samples_per_distribution": 1000
+    },
+    {
+      "name": "nonlocal_collision_chain_counterexample",
+      "status": "pass",
+      "elapsed_seconds": 0.001197,
+      "chain_length": 40,
+      "changed_acceptance_ids": 40,
+      "closure_size": 40
+    },
+    {
+      "name": "accelerated_grid_matches_naive_full",
+      "status": "pass",
+      "elapsed_seconds": 0.216221,
+      "random_fixtures": 60,
+      "grid_comparisons": 240
+    },
+    {
+      "name": "exact_union_closure_matches_full_after_edits",
+      "status": "pass",
+      "elapsed_seconds": 0.090519,
+      "edit_sequences": 100,
+      "full_incremental_comparisons": 600
+    },
+    {
+      "name": "pin_precedence_tangency_and_zero_radius",
+      "status": "pass",
+      "elapsed_seconds": 3.9e-05,
+      "pins_retained": 2,
+      "ordinary_blocked": 1,
+      "tangency_allowed": true
+    },
+    {
+      "name": "density_monotonicity_does_not_extend_through_collisions",
+      "status": "pass",
+      "elapsed_seconds": 1e-05,
+      "eligible_population_grows": true,
+      "accepted_population_not_necessarily_nested": true
+    },
+    {
+      "name": "invalid_input_guards",
+      "status": "pass",
+      "elapsed_seconds": 9.4e-05,
+      "invalid_inputs_rejected": 7
+    }
+  ]
+}

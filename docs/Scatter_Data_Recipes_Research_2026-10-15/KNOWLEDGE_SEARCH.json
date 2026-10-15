@@ -1,0 +1,15 @@
+{
+  "action": "Review changed definitions/evidence and build a fresh compatible generation; retain the prior generation.",
+  "error": "changed source docs/ENGINEERING_FOUNDATION.md: hash/identity mismatch; review evidence and rebuild",
+  "error_details": {
+    "path": "docs/ENGINEERING_FOUNDATION.md",
+    "source_status": "changed"
+  },
+  "error_type": "stale_evidence",
+  "exit_code": 3,
+  "ok": false,
+  "rebuild_required": true,
+  "results": [],
+  "schema": "cyrus.search-response/2",
+  "stale": true
+}

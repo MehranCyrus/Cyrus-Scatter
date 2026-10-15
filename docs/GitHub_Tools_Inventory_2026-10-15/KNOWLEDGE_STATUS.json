@@ -1,0 +1,274 @@
+{
+  "action": "Review source issues and publish a fresh compatible successor; retain this generation.",
+  "all_sources_verified": false,
+  "compatible": true,
+  "configuration_identities": {
+    "audit_manifest_sha256": "5c188df42d89f9da7eac7322737646d8bd03f4c31479d7095a9650417207236c",
+    "audit_run_sha256": "574b61e6501f78e923309f55eca730c6446f32946fd199227b7d8f0da3ee5dbe",
+    "audit_schema": "cyrus.file-catalog/2",
+    "build_receipt": {
+      "identities_sha256": "34b72f1ceba7d22a0c2afb6a4ae8b55713e48c22cb7839d6014837eccc6d516d",
+      "path": "logical.json",
+      "relative_to": "explicit_selected_index_directory",
+      "sha256": "44bb57523e1286764c655754ce79ed3e4299bce12c0c71b7c49b212258dfa0d3"
+    },
+    "corpus_path": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter\\tools\\rag\\corpus-v7.json",
+    "corpus_sha256": "1b721c8fba00a854da63257d33d7cf9a892d01aa032ee4feaf14769175c249d7",
+    "extraction_version": "bounded-lines/1",
+    "git_state": {
+      "branch": "codex/workflow-0.75",
+      "head": "15957a66de0480679dea6c533c7c5d09d9598d54",
+      "index_sha256": "5ffc9c7f56e3a60a96ce1973812ea5efdb65b188de7f7aba8c95688a96bd87a3"
+    },
+    "normalization_version": "unicode-persian/1",
+    "ranking": {
+      "bm25_weights": [
+        1,
+        1,
+        0.25
+      ],
+      "default_profile": "terminology",
+      "max_artifact_bytes": 67108864,
+      "max_response_bytes": 4194304,
+      "review_status": "Selected using development evidence; human terminology review pending",
+      "schema": "cyrus.lexical-config/1",
+      "version": "2.1.0"
+    },
+    "root": "F:\\Cursor\\_Cyrus_Apps\\CyrusScatter",
+    "runtime_sha256": {
+      "adapter-requirements.lock.txt": "2de014a74de456914d1395bf730b3bee84eab31a2b2ba962b4c7199e21cce2fb",
+      "adapter.py": "c2759568525b126040998d15b7e2e83b552a1e63aa63540019735ac51e8d1f70",
+      "adapter_process.py": "440d40d1a4ec2c2e4be20f34883f12136c83e443787adb236947e0bb1d6865ee",
+      "adapter_worker.py": "f4de5aa7b218a21daaaa748cdc8d9be7ee05907a9fc302c687d3935974c921c1",
+      "build_index.py": "ee3df98345ffab7e93abc6315bb59b0141ea1e0709cfc46e923ee0bb51502861",
+      "catalog.py": "625c449ccae22009ef8df0b38d64792b5e30ac7554284a3e9e9fd18bd39283df",
+      "config.toml": "e4fcabad1a92c518b077138911eb367abf4675e7deaa671f991fc8d2205fecae",
+      "contracts.py": "5a3d9583de9acccf2c167974a718de7852226c8b0157f7440adcb6102f0a9485",
+      "evaluate.py": "55b154581ea8cfce67a07aa2139c3e67a8faa69ac8252da54399d9f270891392",
+      "evaluation.py": "bb469101ebb75d277ca85316e6718621931a53f26fd0609988d265682908f997",
+      "extract.py": "2806b4b303cf6145a2414f8766e59461756137cdf8d2900924f3304b8310b717",
+      "glossary-v1.json": "4713e2f201caf5b805bdde3d8005a5aca6cd6b7bdb53c829663b7e4ac6f9f585",
+      "integrity.py": "df732b3692a55c151e588246cedebb1cc5d53c8d7fa9404aa9560b2fcdc1f2ab",
+      "lexical.py": "4b4784c3887a764401212bf5ed2be387720b121992d439b6e279b652428f9b4c",
+      "locations.py": "7cfc6fa69a8fde06410f999c70ba56e4af74e699cab7077e170596108cbb85be",
+      "provenance.py": "5131173086bd6f1e1a8e2fc15387db81724d625d871fafa310e2ead8df39fc17",
+      "ranking-v2.1.json": "f40a6d9e7fa66661be8805fb0eae4ae3b1b5a790079fa9dd74e535909a58cddd",
+      "retrieval.py": "278638750a7b3757e37a0a6b04d182995a0a749ac261a4ec5dc290b99c83f67c",
+      "retrieval.toml": "3683500dc37580e4df20e968c4243808fa16df4d1796cc68f6153cfdede0863f",
+      "rules.py": "0e7ff97b45bc8a67f32600b0cce37a89953a4829032eaffbf9322857619cbdcc",
+      "search.py": "2e18db2265b7aae5307779da4b145175dbeae829ed3a0257b44e830243d1f788",
+      "status.py": "5a70e875fcd5b9a4daeaee22a25fbdc89ead3d7860c88a171479a843c32057da",
+      "verify_indexes.py": "9830a6a58f08de693c750d38594524599275a7120cad611f023509408980fb43"
+    },
+    "settings": {
+      "max_chunk_chars": 1800,
+      "max_chunk_lines": 40,
+      "max_chunks": 20000,
+      "max_corpus_bytes": 33554432,
+      "max_query_chars": 1024,
+      "max_query_terms": 64,
+      "max_source_bytes": 16777216,
+      "max_sources": 64,
+      "max_top_k": 100,
+      "overlap_lines": 3,
+      "schema_version": 1
+    },
+    "tool_version": "0.3.0"
+  },
+  "corpus_scope": {
+    "chunk_count": 321,
+    "limits": "Explicit reviewed enrollment only; not the whole repository",
+    "paths": [
+      "AGENTS.md",
+      "README.md",
+      "docs/ARTIST_GUIDE.md",
+      "docs/ARCHITECTURE.md",
+      "docs/DOCUMENTATION.md",
+      "docs/LAYOUT_AND_FALLOFF.md",
+      "docs/AGENT_WORKFLOW.md",
+      "CyrusMCP/README.md",
+      "CyrusSurfaceAnalyzer/README.md",
+      "CyrusLicensing/README.md",
+      "docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md",
+      "docs/PRODUCT_AND_AI_ROADMAP.md",
+      "website/README.md",
+      "website/content/README.md",
+      "website/content/source-manifest.json",
+      "docs/System_Qualification_0.75_2026-10-09/README.md",
+      "docs/Point_Workflow_0.79.1_2026-10-11/README.md",
+      "docs/Layer_Navigation_0.79.2_2026-10-11/README.md",
+      "docs/Terrace_Workflow_0.79.5_2026-10-11/README.md",
+      "docs/Terrace_Workflow_0.79.5_2026-10-11/CREATION_FIX.md",
+      "docs/licensing/TEAM_PILOT_0.79_2026-10-11.md",
+      "AminScatter/tools/ui/generate.cjs",
+      "AminScatter/include/execution.h",
+      "AminScatter/include/receiver_plan.h",
+      "AminScatter/tools/ui/templates/unified-core.ms",
+      "AminScatter/scripts/AminScatterObject.ms",
+      "AminScatter/tests/receiver_tests.cpp",
+      "CyrusMCP/tests/test_publication.py",
+      "CyrusMCP/tests/test_feature_catalog.py",
+      "docs/ENGINEERING_FOUNDATION.md",
+      "docs/BACKLOG.md",
+      "docs/Foundation_0.79.6_2026-10-12/README.md",
+      "AminScatter/src/point_publication.inc",
+      "AminScatter/src/cyrus_edit_stack.inc",
+      "AminScatter/tests/publication_tests.cpp",
+      "tools/foundation_validation/publication.py",
+      "tools/foundation_validation/units.py",
+      "tools/foundation_validation/units_guards.py"
+    ],
+    "source_count": 38
+  },
+  "error_type": "stale_evidence",
+  "exit_code": 3,
+  "freshness_scope": "All enrolled parents individually rehashed; no filesystem transaction",
+  "index_generation": "44bb57523e1286764c655754ce79ed3e4299bce12c0c71b7c49b212258dfa0d3",
+  "index_schema": "cyrus.lexical-index/2",
+  "ok": false,
+  "rebuild_required": true,
+  "schema": "cyrus.index-status/2",
+  "source_issues": [
+    {
+      "error": "changed source AGENTS.md: hash/identity mismatch; review evidence and rebuild",
+      "path": "AGENTS.md",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source README.md: hash/identity mismatch; review evidence and rebuild",
+      "path": "README.md",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source docs/ARTIST_GUIDE.md: hash/identity mismatch; review evidence and rebuild",
+      "path": "docs/ARTIST_GUIDE.md",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source docs/ARCHITECTURE.md: hash/identity mismatch; review evidence and rebuild",
+      "path": "docs/ARCHITECTURE.md",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source docs/LAYOUT_AND_FALLOFF.md: hash/identity mismatch; review evidence and rebuild",
+      "path": "docs/LAYOUT_AND_FALLOFF.md",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source docs/AGENT_WORKFLOW.md: hash/identity mismatch; review evidence and rebuild",
+      "path": "docs/AGENT_WORKFLOW.md",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md: hash/identity mismatch; review evidence and rebuild",
+      "path": "docs/Current_System_2026-10-05/CAPABILITY_MATRIX.md",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source website/README.md: hash/identity mismatch; review evidence and rebuild",
+      "path": "website/README.md",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source website/content/source-manifest.json: hash/identity mismatch; review evidence and rebuild",
+      "path": "website/content/source-manifest.json",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source AminScatter/tools/ui/generate.cjs: hash/identity mismatch; review evidence and rebuild",
+      "path": "AminScatter/tools/ui/generate.cjs",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source AminScatter/include/receiver_plan.h: hash/identity mismatch; review evidence and rebuild",
+      "path": "AminScatter/include/receiver_plan.h",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source AminScatter/tools/ui/templates/unified-core.ms: hash/identity mismatch; review evidence and rebuild",
+      "path": "AminScatter/tools/ui/templates/unified-core.ms",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source AminScatter/scripts/AminScatterObject.ms: hash/identity mismatch; review evidence and rebuild",
+      "path": "AminScatter/scripts/AminScatterObject.ms",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source AminScatter/tests/receiver_tests.cpp: hash/identity mismatch; review evidence and rebuild",
+      "path": "AminScatter/tests/receiver_tests.cpp",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source CyrusMCP/tests/test_feature_catalog.py: hash/identity mismatch; review evidence and rebuild",
+      "path": "CyrusMCP/tests/test_feature_catalog.py",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source docs/ENGINEERING_FOUNDATION.md: hash/identity mismatch; review evidence and rebuild",
+      "path": "docs/ENGINEERING_FOUNDATION.md",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source docs/BACKLOG.md: hash/identity mismatch; review evidence and rebuild",
+      "path": "docs/BACKLOG.md",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source AminScatter/src/cyrus_edit_stack.inc: hash/identity mismatch; review evidence and rebuild",
+      "path": "AminScatter/src/cyrus_edit_stack.inc",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source AminScatter/tests/publication_tests.cpp: hash/identity mismatch; review evidence and rebuild",
+      "path": "AminScatter/tests/publication_tests.cpp",
+      "source_status": "changed"
+    },
+    {
+      "error": "changed source tools/foundation_validation/publication.py: hash/identity mismatch; review evidence and rebuild",
+      "path": "tools/foundation_validation/publication.py",
+      "source_status": "changed"
+    },
+    {
+      "error": "missing source tools/foundation_validation/units.py: [WinError 2] The system cannot find the file specified: 'F:\\\\Cursor\\\\_Cyrus_Apps\\\\CyrusScatter\\\\tools\\\\foundation_validation\\\\units.py'; review evidence and rebuild",
+      "path": "tools/foundation_validation/units.py",
+      "source_status": "missing"
+    },
+    {
+      "error": "missing source tools/foundation_validation/units_guards.py: [WinError 2] The system cannot find the file specified: 'F:\\\\Cursor\\\\_Cyrus_Apps\\\\CyrusScatter\\\\tools\\\\foundation_validation\\\\units_guards.py'; review evidence and rebuild",
+      "path": "tools/foundation_validation/units_guards.py",
+      "source_status": "missing"
+    }
+  ],
+  "source_verification_requested": true,
+  "sources_checked": 38,
+  "sources_verified": 16,
+  "stale": true,
+  "verification_checks": {
+    "all_artifact_fingerprints_and_chunk_export": true,
+    "all_searchable_rows_against_export": true,
+    "complete_generation_metadata": true,
+    "corpus_definition_identity": true,
+    "logical_generation_fingerprint": true,
+    "runtime_configuration_and_repository": true,
+    "sqlite_metadata_identity": true,
+    "sqlite_quick_check_and_counts": true
+  },
+  "selection": {
+    "mode": "project_registration",
+    "request_generation": "44bb57523e1286764c655754ce79ed3e4299bce12c0c71b7c49b212258dfa0d3"
+  },
+  "refresh": {
+    "configured": true,
+    "state": "stopped",
+    "process_running": false,
+    "issue": "missing",
+    "exit_code": 2,
+    "last_observation": {
+      "state": "stopped",
+      "issue": "missing",
+      "observed_utc": "2026-10-15T09:03:10.116192+00:00",
+      "watcher_running": false
+    }
+  }
+}
