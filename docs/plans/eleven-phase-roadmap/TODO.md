@@ -145,7 +145,7 @@ Preparatory [source/format research](P02_PREFLIGHT.md) is recorded. Implementati
 - [x] Add relevant target animation/deletion dependencies and UI.
 - [x] Test known axes, transformed sources, collisions, Manual/Live and persistence.
 - [x] Measure unrelated-animation reuse; run regressions.
-- [ ] Update version/docs; commit, push and verify. — docs/package complete; Git checkpoint pending.
+- [x] Update version/docs; commit, push and verify. — 0.83.0, implementation `a814513`, package and remote hash verified.
 
 ## P08 — paths, sequences and references (0.82.8)
 

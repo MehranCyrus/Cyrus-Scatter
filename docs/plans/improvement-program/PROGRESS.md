@@ -5,7 +5,7 @@ Baseline: `b23ed93f97af347b98b92b355660bdc3eeb0ef19`, branch `codex/workflow-0.7
 
 ## Current delivery
 
-**I03 / 0.82.6.1 — delivered. I04 / 0.83.0 — qualified and packaged; Git checkpoint pending.** I03 commit `f030fb33ea6eaed1815cc3cd561877cd9aadff67` is pushed on `codex/workflow-0.75`; `git ls-remote` matches. Search/categories/tags, stored thumbnails, cancellation, clear content/dependency summaries and owner-specific Save Everything failures preserve recipe fidelity, Paint bindings and passive browsing. Four procedural examples and their compatible scenes are included. See [delivery and acceptance](I03_08261.md), [exact qualification](QUALIFICATION_08261.json) and [package identity](PACKAGE_08261.json). I04 [handoff](I04_0830.md), [qualification](QUALIFICATION_0830.json) and [package](PACKAGE_0830.json) pin the successor. Next: commit/push the coherent I04 delivery, then I05 copy/import variation policy.
+**I03 / 0.82.6.1 — delivered. I04 / 0.83.0 — delivered and pushed.** I03 commit `f030fb33ea6eaed1815cc3cd561877cd9aadff67` is pushed on `codex/workflow-0.75`; `git ls-remote` matches. Search/categories/tags, stored thumbnails, cancellation, clear content/dependency summaries and owner-specific Save Everything failures preserve recipe fidelity, Paint bindings and passive browsing. Four procedural examples and their compatible scenes are included. See [delivery and acceptance](I03_08261.md), [exact qualification](QUALIFICATION_08261.json) and [package identity](PACKAGE_08261.json). I04 [handoff](I04_0830.md), [qualification](QUALIFICATION_0830.json) and [package](PACKAGE_0830.json) pin the successor. I04 implementation commit `a814513b3cb1d99640fe5b5c9886dcfc95c73a77` is pushed on `codex/workflow-0.75`; the remote hash matches. Current work: I05 copy/import variation policy audit and contract.
 
 Contracts: F01, F04-F08, F09-F11. Native library scans operate on copied filesystem paths and metadata only, never Max scene objects. Explicit Refresh rereads content, even for same-size/same-time file replacement. Browsing never hydrates Paint. Search/page operations use the bounded in-memory index; no filesystem polling while idle. Thumbnail loading is explicit for the selected entry with byte/pixel bounds and resource disposal.
 
@@ -17,8 +17,8 @@ First version rationale: user-selected four-part development label 0.82.6.1 for 
 | --- | --- |
 | I03 browser/search/tags/thumbnails and clear preflight | Implemented and scoped Max 2027 qualification passed; see I03 handoff; physical artist acceptance remains |
 | At least eight usable presets and accurate thumbnails | Four qualified examples delivered: meadow, woodland, mountain, painted spline borders. Four or more remain for later features |
-| I04/P07 direction and normal blending | Implemented and scoped Max 2027 qualification passed; 0.83.0 package ready, Git checkpoint pending; physical artist acceptance separate |
-| I05 copy/import variation policy | Pending; ownership/random identity and Undo audit |
+| I04/P07 direction and normal blending | Implemented and scoped Max 2027 qualification passed; 0.83.0 package ready and commit `a814513` pushed; physical artist acceptance separate |
+| I05 copy/import variation policy | Audit in progress; separate saved receiver random domains from fresh owner/source/receiver correspondence, then explicit copy/import choices |
 | I06/P06 rectangular/staggered/hex grids | Resumed, pending; bounded domain and stable-cell oracle |
 | I07/P08 paths/sequences/references | Pending; arc-length and seam/identity contract |
 | I08/P09 transform and assignment maps | Pending; shared samples and final-radius acceptance |
@@ -44,7 +44,7 @@ Knowledge index remains stale; reuse direct current source evidence. Original 0.
 
 ## Resume here
 
-Read this ledger and actual Git state. I03 is committed/pushed, with its scoped receipt and package. I04 qualification and MZP are complete; finish its Git checkpoint, then begin I05 from the current source. Do not replay I03 or I04 tests without a new change or concern. Do not mark later features complete from the preset delivery. Preserve the exact delivered script/native pair and historical receipts.
+Read this ledger and actual Git state. I03 is committed/pushed, with its scoped receipt and package. I04 qualification, MZP and pushed commit are complete. Continue I05 from the current source. Do not replay I03 or I04 tests without a new change or concern. Do not mark later features complete from the preset delivery. Preserve the exact delivered script/native pair and historical receipts.
 
 ## I03 implementation evidence — 16 October 2026, active candidate
 
@@ -98,3 +98,7 @@ Artist guide, installation/build instructions, architecture, current navigation/
 - MZP: `dist/CyrusScatter-0.83.0-20261016/CyrusScatter-0.83.0-Max2027.mzp`, 2,723,264 bytes, SHA-256 `8bc617ce27704aaed63e0299de4c7ca54de55f02bbbc55d04906899e8539e375`. Archive integrity, guard/payload/inventory hashes and actual Max compilation of an uncalled installer passed. It is not installed. Team licensing remains intact. Thirty-seven frozen evidence records are in QUALIFICATION_0830.json.
 - Current artist/architecture/version/roadmap/capability docs and curated website content were updated. Website docs:sync/docs:check/local build passed, with the existing large-chunk advisory. Nothing was published. The gallery's historical 0.78.3 workflow provenance is retained separately from development version 0.83.0.
 - Earlier owned orientation hosts 56292, 29796, 42840 and 45300 are closed. Guarded quit request waiters time out because exit precedes transport acknowledgement; process absence establishes closure. Artist PID 15780 and unrelated camera-task PID 42536 remain untouched.
+
+### I04 Git and host closure checkpoint
+
+Implementation `a814513b3cb1d99640fe5b5c9886dcfc95c73a77` is pushed and verified remotely. Final owned orientation PIDs 54944 and 25900 exited after guarded quit; closure markers exist and process absence was observed. Only artist PID 15780 and unrelated camera-task PID 42536 remained. The package/qualified pair is frozen. I05 source audit has started; no I05 product code or 0.84.0 package exists yet. The knowledge search for `procSamplingSalt` returned no hits in the old generation, so current original source is the evidence.
