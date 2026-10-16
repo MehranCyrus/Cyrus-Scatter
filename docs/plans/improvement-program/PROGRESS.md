@@ -5,7 +5,7 @@ Baseline: `b23ed93f97af347b98b92b355660bdc3eeb0ef19`, branch `codex/workflow-0.7
 
 ## Current delivery
 
-**I03 / 0.82.6.1 â€” delivered. I04 / 0.83.0 â€” delivered and pushed.** I03 commit `f030fb33ea6eaed1815cc3cd561877cd9aadff67` is pushed on `codex/workflow-0.75`; `git ls-remote` matches. Search/categories/tags, stored thumbnails, cancellation, clear content/dependency summaries and owner-specific Save Everything failures preserve recipe fidelity, Paint bindings and passive browsing. Four procedural examples and their compatible scenes are included. See [delivery and acceptance](I03_08261.md), [exact qualification](QUALIFICATION_08261.json) and [package identity](PACKAGE_08261.json). I04 [handoff](I04_0830.md), [qualification](QUALIFICATION_0830.json) and [package](PACKAGE_0830.json) pin the successor. I04 implementation commit `a814513b3cb1d99640fe5b5c9886dcfc95c73a77` is pushed on `codex/workflow-0.75`; the remote hash matches. Current work: I05 / 0.84.0 is scoped-qualified and packaged; documentation and Git checkpoint are closing. B26 remains open. I06 grids are next.
+**I03 / 0.82.6.1 â€” delivered. I04 / 0.83.0 â€” delivered and pushed.** I03 commit `f030fb33ea6eaed1815cc3cd561877cd9aadff67` is pushed on `codex/workflow-0.75`; `git ls-remote` matches. Search/categories/tags, stored thumbnails, cancellation, clear content/dependency summaries and owner-specific Save Everything failures preserve recipe fidelity, Paint bindings and passive browsing. Four procedural examples and their compatible scenes are included. See [delivery and acceptance](I03_08261.md), [exact qualification](QUALIFICATION_08261.json) and [package identity](PACKAGE_08261.json). I04 [handoff](I04_0830.md), [qualification](QUALIFICATION_0830.json) and [package](PACKAGE_0830.json) pin the successor. I04 implementation commit `a814513b3cb1d99640fe5b5c9886dcfc95c73a77` is pushed on `codex/workflow-0.75`; the remote hash matches. I05 implementation `f2bc8dd6bc831a71cc46b19a6cb91611d431928d` is pushed and verified remotely. Current work: [I06/P06 grid contract and native numeric foundation](I06_GRIDS.md). B26 remains open.
 
 Contracts: F01, F04-F08, F09-F11. Native library scans operate on copied filesystem paths and metadata only, never Max scene objects. Explicit Refresh rereads content, even for same-size/same-time file replacement. Browsing never hydrates Paint. Search/page operations use the bounded in-memory index; no filesystem polling while idle. Thumbnail loading is explicit for the selected entry with byte/pixel bounds and resource disposal.
 
@@ -18,8 +18,8 @@ First version rationale: user-selected four-part development label 0.82.6.1 for 
 | I03 browser/search/tags/thumbnails and clear preflight | Implemented and scoped Max 2027 qualification passed; see I03 handoff; physical artist acceptance remains |
 | At least eight usable presets and accurate thumbnails | Four qualified examples delivered: meadow, woodland, mountain, painted spline borders. Four or more remain for later features |
 | I04/P07 direction and normal blending | Implemented and scoped Max 2027 qualification passed; 0.83.0 package ready and commit `a814513` pushed; physical artist acceptance separate |
-| I05 copy/import variation policy | Scoped-qualified and MZP ready in [0.84.0](I05_0840.md); Git checkpoint pending; B26 heavy Undo remains open |
-| I06/P06 rectangular/staggered/hex grids | Resumed, pending; bounded domain and stable-cell oracle |
+| I05 copy/import variation policy | Scoped-qualified and MZP ready in [0.84.0](I05_0840.md); commit `f2bc8dd` pushed and remote verified; B26 heavy Undo remains open |
+| I06/P06 rectangular/staggered/hex grids | Resumed; [contract/source audit](I06_GRIDS.md) started, numeric foundation next; no grid feature delivered |
 | I07/P08 paths/sequences/references | Pending; arc-length and seam/identity contract |
 | I08/P09 transform and assignment maps | Pending; shared samples and final-radius acceptance |
 | I09 shared terrain snapshots | Pending profiling trigger; record decision and extraction/memory evidence |
@@ -44,7 +44,7 @@ Knowledge index remains stale; reuse direct current source evidence. Original 0.
 
 ## Resume here
 
-Read this ledger and actual Git state. I03 is committed/pushed, with its scoped receipt and package. I04 qualification, MZP and pushed commit are complete. Close the I05 Git checkpoint, then continue I06/P06 grids from the current source. Do not replay I03 or I04 tests without a new change or concern. Do not mark later features complete from the preset delivery. Preserve the exact delivered script/native pair and historical receipts.
+Read this ledger and actual Git state. I03 is committed/pushed, with its scoped receipt and package. I04 qualification, MZP and pushed commit are complete. Continue I06/P06 grids from the current source; the I05 implementation checkpoint is pushed. Do not replay I03 or I04 tests without a new change or concern. Do not mark later features complete from the preset delivery. Preserve the exact delivered script/native pair and historical receipts.
 
 ## I03 implementation evidence â€” 16 October 2026, active candidate
 
@@ -139,3 +139,7 @@ Implementation `a814513b3cb1d99640fe5b5c9886dcfc95c73a77` is pushed and verified
 - Current artist/architecture/version/product/roadmap docs and website source wording now explain variation, format 3 and B26. Website docs:sync/docs:check and local build pass (existing chunk-size advisory); nothing is published. Git checkpoint still needs completion. [I05 handoff](I05_0840.md), [qualification](QUALIFICATION_0840.json) and [package](PACKAGE_0840.json) pin the bounded delivery. B26 is not fixed by this phase; I10/I11 must address it before final program acceptance. I06 is next.
 
 Both final owned hosts (3920 and 9220) exited after guarded quit; closure markers and process absence were verified. Waiter timeouts reflect exit before transport acknowledgement, not a host failure. Artist and unrelated camera profiles remain untouched.
+
+### I05 pushed / I06 entry
+
+I05 implementation `f2bc8dd6bc831a71cc46b19a6cb91611d431928d` matches `origin/codex/workflow-0.75`. Only the unrelated landscape row and the preserved untracked design/presentation files remain outside that commit. I06 begins with a bounded lattice/projector and explicit signed-cell identities; the old million-limited ordinal encoding cannot safely represent moving grid bounds. See the new contract before integration.
