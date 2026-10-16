@@ -10,8 +10,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Reflection;
 
-[assembly: AssemblyVersion("0.85.1.0")]
-[assembly: AssemblyFileVersion("0.85.1.0")]
+[assembly: AssemblyVersion("0.85.2.0")]
+[assembly: AssemblyFileVersion("0.85.2.0")]
 namespace CyrusScatter.UI
 {
     // Layout and navigation only. The host owns catalog requests and all scene actions.
@@ -45,11 +45,13 @@ namespace CyrusScatter.UI
         public int ViewIndex {get=>viewIndex;set{viewIndex=Math.Clamp(value,0,1);view.Text=new[]{"Thumbnails","Compact list"}[viewIndex];Gallery.ListMode=viewIndex==1;Request("view");}}
         public int ZoomIndex {get=>zoomIndex;set{zoomIndex=Math.Clamp(value,0,2);zoom.Text=new[]{"Small tiles","Medium tiles","Large tiles"}[zoomIndex];Gallery.TileSize=new[]{128,176,224}[zoomIndex];Request("view");}}
         public double UserScale {get=>userScale;set{
-            userScale=Math.Clamp(value,.5,4);Gallery.UserScale=userScale;
+            // Max's default 0 means no custom scaling (1), not half size.
+            userScale=NormalizeUserScale(value);Gallery.UserScale=userScale;
             // Own a point-size font. Never dispose a Max/shared HFONT or a borrowed system font.
             var previousFont=ownedFont;ownedFont=new Font("Segoe UI",(float)(9*userScale),FontStyle.Regular,GraphicsUnit.Point);
             Font=ownedFont;previousFont?.Dispose();Arrange();
         }}
+        internal static double NormalizeUserScale(double value)=>Math.Clamp(value==0?1:value,.5,4);
         public int TreeNodeCount {get{int n=tree.Nodes.Count;foreach(TreeNode node in tree.Nodes)n+=node.Nodes.Count;return n;}}
         private void Request(string action){if(binding||IsDisposed)return;RequestedAction=action;ActionRequested?.Invoke(this,EventArgs.Empty);}
         private ToolStripButton Button(string text,string action){var b=new ToolStripButton(text);b.Click+=(_,_)=>Request(action);return b;}
@@ -112,6 +114,7 @@ namespace CyrusScatter.UI
             Gallery.SetBounds(x,top+gap+caption,w,Math.Max(1,detail.Top-top-caption-2*gap));
         }
         protected override void OnResize(EventArgs e){base.OnResize(e);Arrange();}
+        protected override void OnDpiChangedAfterParent(EventArgs e){base.OnDpiChangedAfterParent(e);Arrange();}
         protected override void OnFontChanged(EventArgs e)
         {
             base.OnFontChanged(e);
@@ -168,7 +171,7 @@ namespace CyrusScatter.UI
         }
         public bool ListMode { get => listMode; set { listMode = value; LayoutItems(); } }
         public int TileSize { get => tileSize; set { tileSize = Math.Clamp(value, 96, 256); LayoutItems(); } }
-        public double UserScale { get => userScale; set { userScale = Math.Clamp(value, 0.5, 4); LayoutItems(); } }
+        public double UserScale { get => userScale; set { userScale = LibraryPanel.NormalizeUserScale(value); LayoutItems(); } }
         public LibraryGallery()
         {
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer |
@@ -212,6 +215,7 @@ namespace CyrusScatter.UI
             Invalidate(); Schedule();
         }
         protected override void OnResize(EventArgs e) { base.OnResize(e); LayoutItems(); }
+        protected override void OnDpiChangedAfterParent(EventArgs e) { base.OnDpiChangedAfterParent(e); LayoutItems(); }
         protected override void OnScroll(ScrollEventArgs e) { base.OnScroll(e); Invalidate(); Schedule(); }
         protected override void OnMouseDown(MouseEventArgs e)
         {

@@ -1,5 +1,5 @@
 {
-  "version": "0.85.1",
+  "version": "0.85.2",
   "max_year": 2027,
   "source_host": "foundation-roadmap-library08261-final100-20261016-04",
   "source_script_sha256": "de6ca0f3097b15e3437c58b91ac9ee80fead0ae4d772bc7736ae234aa2275711",
@@ -108,7 +108,7 @@
     }
   ],
   "files": {
-    "README.md": "a4d9553fc3335f47508f93a8f7284b7023469e92bb1d5c6adf147aed514d0d77",
+    "README.md": "a6f4b1a8e1f73f77d49062aaa253d40be51ed2ee674b553a7cd0043b877a7154",
     "borders.csrecipe.json": "12c6c8927713f3b43de4dc37feb926bd15b1748924d324ca5836bfdd8b322750",
     "borders.csrecipe.json.library.json": "61217c04ea1832e7923d1ae7155b0d3180bd1f5637f6a15f8ab05feb2284dcd6",
     "borders.max": "bcd1d9d48288a4d5fa8f7ee020a0d0f53f6daf84f0f6a58cf7b649313d1dccab",
@@ -146,5 +146,5 @@
   },
   "qualification_host": "foundation-roadmap-gallery0851-admission-20261016-01",
   "qualification_script_sha256": "5dec8fbe27c4296ad8250efcb7013b157464c169a3a48bd74bb498e9372ebf83",
-  "previous_qualification_version": "0.85.0"
+  "previous_qualification_version": "0.85.1"
 }

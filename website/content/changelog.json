@@ -3,6 +3,32 @@
   "notes": "Entries are ordered by documented development chronology, not numeric label. Missing versions and unknown dates are not invented. Local evidence is stripped before publication. 0.79.2 and 0.79.5 are current uncommitted working-tree campaigns at this review, not new Git releases. Analyzer/MCP have independent version domains.",
   "entries": [
     {
+      "version": "0.85.2",
+      "date": "2026-10-16",
+      "title": "Modify navigation and normal library sizing.",
+      "era": "recent",
+      "legacy": false,
+      "note": "Max 2027 UI correction; configured scaling and native-message qualification remain distinct from physical monitor and production-scene acceptance.",
+      "changes": [
+        {
+          "kind": "Fixed",
+          "text": "Lazy Modify sections bind their existing background wheel and vertical drag handler; buttons, numeric controls and list resize grips retain their input."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Max default UI scale now produces normal-size library text and thumbnails; parent-DPI changes re-arrange the managed library."
+        },
+        {
+          "kind": "Improved",
+          "text": "Navigation checks measure real input movement and preserve pending Manual settings, Undo, placement and work/upload counters."
+        }
+      ],
+      "evidence": [
+        "docs/plans/preset-gallery-improvements/UI_CORRECTION_0852.md",
+        "docs/plans/preset-gallery-improvements/ARTIST_WORKFLOW.md"
+      ]
+    },
+    {
       "version": "0.85.1",
       "date": "2026-10-16",
       "title": "Collection gallery, portable recipes and installer.",

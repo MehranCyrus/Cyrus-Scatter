@@ -4,6 +4,8 @@
 
 16 October 2026. **0.85.1 is delivered for the explicitly bounded PG01–PG08 subset. PG09 is partial and PG10 remains gated.** Scope and difficulty are in the [plan](README.md); V01–V10 refer to the [validation matrix](VALIDATION.md). Project-wide execution status stays in [PROGRESS](../improvement-program/PROGRESS.md). PG IDs are independent of P phases, I difficulty ranks and release numbers.
 
+The separate [0.85.2 UI correction checklist](UI_CORRECTION_0852.md) tracks the reported Modify input and undersized library. It does not extend PG09/PG10 or start another feature.
+
 ## Baseline and preparation
 
 - [x] Inspect current recipe/browser/numeric apply source at `9f8cc15` / 0.85.0.

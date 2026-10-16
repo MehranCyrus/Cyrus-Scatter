@@ -1,4 +1,4 @@
-    rollout mainUI "Cyrus Scatter 0.85.1" width:#cmdPanel height:140 autoLayoutOnResize:true (
+    rollout mainUI "Cyrus Scatter 0.85.2" width:#cmdPanel height:140 autoLayoutOnResize:true (
         local view=undefined,root=undefined,controlsReady=false,binding=false,layerBinding=false,roots=#(),editors=#(),slots=#(),owner=undefined,layerPagesVisible=false,pagesArranged=false,resizing=false
         checkbox enabledCheck "Enable Cyrus Scatter" pos:[8,6] width:(mainUI.width-16) tooltip:"Enable calculation and output for the entire setup."
         radiobuttons updateRadio "Viewport update" labels:#("Manual","Live") columns:2 pos:[8,26] width:(mainUI.width-16) tooltip:"Manual waits for Update. Live calculates after relevant edits."
@@ -45,6 +45,7 @@
             local index=findItem editors section
             if index==0 do return false
             section.root=root;section.owner=owner;section.panel=mainUI
+            local mounted=false
             if slots[index].open then (
                 if not section.isDisplayed do (
                     local measurement=CyrusMeasureBegin 12
@@ -57,6 +58,7 @@
                         local slotRect=windows.getWindowPos slots[index].hwnd removeUIScaling:true
                         slots[index].headerInset=amax 0 (innerRect.y-slotRect.y)
                         slots[index].body.pos=[0,-slots[index].headerInset]
+                        mounted=true
                     )catch(CyrusMeasureEnd measurement root.layerID root.procEpoch (section.name as string) failed:true;throw())
                     CyrusMeasureEnd measurement root.layerID root.procEpoch (section.name as string)
                     -- addSubRollout initializes body locals. Bind owners only
@@ -67,6 +69,10 @@
                 )
                 resizeSection index
                 section.bind owner
+                -- Lazy bodies have their own native/Qt rollup containers. Route
+                -- their background navigation to this slot's owning column,
+                -- once after mounting; ordinary controls keep their own input.
+                if mounted do if cyrusBindRolloutScroll slots[index].hwnd==0 do throw "Cannot bind Cyrus panel navigation. Restart Max with the complete matching package."
             ) else section.controlsReady=false
             true
         )
@@ -115,7 +121,7 @@
         on mountTimer tick do (
             if not mainUI.isDisplayed do return false
             mountTimer.active=false
-            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.85.1 native plugin and restart Max."
+            if cyrusSetRolloutVisible==undefined do throw "Load the matching Cyrus 0.85.2 native plugin and restart Max."
             root=view
             view.managerUI=createmanagerUI();view.surfacesUI=createsurfacesUI();view.modelsUI=createmodelsUI();view.containersUI=createcontainersUI()
             view.layoutUI=createlayoutUI();view.populationUI=createpopulationUI();view.coverageUI=createcoverageUI();view.areasUI=createareasUI()
@@ -145,6 +151,7 @@
         )
         on mainUI close do (
             controlsReady=false;statusTimer.active=false;mountTimer.active=false
+            for slot in slots do cyrusReleaseRolloutScroll slot.hwnd
             for r in editors do (r.controlsReady=false;r.root=undefined;r.owner=undefined;r.obj=undefined)
             roots=#();editors=#();slots=#();owner=undefined;layerPagesVisible=false
             if root!=undefined do root.updateUI=root.surfaceUI=root.previewUI=root.layersUI=undefined

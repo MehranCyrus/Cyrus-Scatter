@@ -4,6 +4,8 @@
 
 16 October 2026. This plan originated as a documentation-only checkpoint. The subsequent user request authorizes its implementation as **0.85.1**. The [candidate ledger](PROGRESS_0851.md) records implementation and evidence separately; this plan is not release qualification. The [collection browser layout](BROWSER_LAYOUT.md) incorporates the user's later Forest screenshots.
 
+The subsequent [0.85.2 UI correction](UI_CORRECTION_0852.md) addresses Modify background navigation and default library scale without adding another roadmap feature. Original PG01–PG10 contracts and qualification limits remain.
+
 Baseline: Scatter **0.85.0**, scene schema 58, complete recipe format/capability 4, numeric settings format/capability 3, library presentation capability 1; branch `codex/workflow-0.75`, commit `9f8cc157279b6e257f1f4a0eb6280fc75b0ea58c`. That commit matches the remote branch. The [I06 handoff](../improvement-program/I06_0850.md) identifies the existing qualified package. Six procedural recipes, matching scenes and actual-result thumbnails exist; the larger program and EXE remain incomplete.
 
 This is a detailed supplement to [I03/I13/I14/I15](../eleven-phase-roadmap/FOREST_IMPROVEMENTS.md) and [P10](../eleven-phase-roadmap/TODO.md), not a replacement roadmap. **PG numbers rank this library work approximately from easiest to hardest; they are not product versions or the original P-phase numbers.** Dependencies take precedence over rank. The [execution ledger](../improvement-program/PROGRESS.md) remains the current project handoff. [TODO](TODO.md) tracks this plan; [validation](VALIDATION.md) defines the evidence required for each future delivery.

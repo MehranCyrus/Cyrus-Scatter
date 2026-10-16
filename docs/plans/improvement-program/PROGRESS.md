@@ -188,3 +188,7 @@ Documentation validation passed: nine Markdown documents checked, 283 local link
 ### 0.85.1 library delivery — 16 October 2026
 
 The [handoff](../preset-gallery-improvements/DELIVERY_0851.md), [qualification](../preset-gallery-improvements/QUALIFICATION_0851.json) and [package identity](../preset-gallery-improvements/PACKAGE_0851.json) pin the final pair. Native 39/39, Python 166, generated 296 controls, all eight examples, the complete supported functional suite, one-hour import/reuse and two 30-minute gallery soaks pass. The valid heavy gallery fixture is 20,000 rows/180,000 faces. A settled 60,000-row Update can be rejected by the new conservative Undo-preserving admission guard; it is not a successful heavy-editing qualification or closure of B26. No further Phase 6 work or artist installation was performed. XRefs/material variants, absent I13/I14 adapters and production renderer/input acceptance remain open.
+
+### 0.85.2 UI correction — 16 October 2026
+
+The [correction handoff](../preset-gallery-improvements/UI_CORRECTION_0852.md) tracks the user-reported main Modify wheel/background-drag failure and undersized default library. Bind the existing native navigation handler on lazy mount, release on close, and normalize Max default-zero scale to one. No further Phase 6 feature is included; I07 and all broader B26/adapter gates remain unchanged. Historical 0.85.1 receipts stay frozen.

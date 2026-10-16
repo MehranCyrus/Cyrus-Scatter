@@ -1,0 +1,678 @@
+{
+  "version": "0.85.2",
+  "status": "passed for the declared UI correction subset",
+  "baseline_commit": "4eed74777e23c4c1c1a6490c80e2e09ded436d37",
+  "branch": "codex/workflow-0.75",
+  "max_year": 2027,
+  "script_sha256": "b379eda5b00674292e72636e5ee52c7fe0795dca5e98c549a539f50c87a53d16",
+  "native_receipt": {
+    "path": "build/ui-0852-20261016-01/native-01/receipt.json",
+    "sha256": "05c3fcb02abe83de5064f0de99c22728ac8fbcfdc9658f195b73e1a386703c95"
+  },
+  "native_inputs_rehashed": 155,
+  "native_suites": 39,
+  "native_test_log": {
+    "path": "build/ui-0852-20261016-01/native-01/tests.log",
+    "sha256": "76bd88bdff945838b9f1426cc64cc94c303c7059529d5c7072cf02df7f158394"
+  },
+  "python_tests": 166,
+  "python_result": "166 passed, 25.96 s; terminal result observed in this campaign, raw log not retained",
+  "generated": {
+    "path": "build/ui-0852-20261016-01/generated-01/generated-check.json",
+    "sha256": "a2c76cc8f26bdec0dac966033d78a4c66ad658a22d9d6cce8b3d96ce306748cc"
+  },
+  "fixtures": {
+    "tools/ui_0852/diagnose.py": "190acc9eafc145c7a757619b3ca1c7a93785eded1205197419aa3c43b6c78e6c",
+    "tools/ui_0852/inspect.py": "b449e45e19b926d1efd273e3378cb838e3361a30b9af670a08bcb6150bdfa815",
+    "tools/ui_0852/installer_mzp.py": "de17268f6aec22a7438b2d02464877626591769a6bb3ec608ba75f2101512d87",
+    "tools/ui_0852/launch.py": "da5b5a7c99c1a65c1c50abf2cc428449286804bd5ece459b669dc247e48004e1",
+    "tools/ui_0852/layout.py": "464999148788a7c68b366b358c4e0e7472dc003ef771050e2ec6e695ec779ade",
+    "tools/ui_0852/library.py": "57bc63310178e960c0dd258d284c754381d3ddab50a38ceb513d2b8f45de5b29",
+    "tools/ui_0852/lifecycle.py": "adb68007141023b4b143360eedcf2570e8406bb1d7ef0a39073ff4d56aa631a2",
+    "tools/ui_0852/native_navigation.py": "34ae43a600551b4aed21041aee4f3e26d0d7e7502b6ea713413f2829a3f02973",
+    "tools/ui_0852/navigation.py": "c88102bb581f3cc71ad6cef9c25bcff8db9215c95209dec0b9e30d61efb37aca",
+    "tools/ui_0852/package.py": "fd037ac42dd62c99ddaf9a5d3ddccb0facb8480f2a005ccc8c1b375b3ad7410a",
+    "tools/ui_0852/prepare.py": "a1ef330389e0328e84132db6ce1d89d75969a3614f23b4fb4d08706dac40603a",
+    "tools/ui_0852/read_columns.py": "0127331607c260372dc31624f72381cda352c0541c03c85f06db359c4414d7ae",
+    "tools/ui_0852/recipient.py": "12220d0ebcb54f7e49ed87ff7c1625064dd63b56196c2ef891996fdcee2b31de",
+    "tools/ui_0852/run_checks.py": "b28290967b0d5fe0a6839ba678345ea64e062dc38877c1469671c1fb381b342f",
+    "tools/ui_0852/run_more.py": "9f3cf25a0d320f296ce50567d6776226cd0b2b6c1df64a687ca3cf2582f13f67",
+    "tools/ui_0852/seal.py": "dbede3edc25125d11d06bbe4d250950174557a3566bea73c99dabbe1c0ba05dd",
+    "tools/ui_0852/small_scroll.py": "012f2acac27993529a6988fa3293e3a01a222da769592d7137ad5b39c6a6c0f3",
+    "tools/ui_0852/small_scroll_raised.py": "5100610c001c82b40e8fcd641d32b64bf2619e5cfad6d823716ffbc61c1b6686",
+    "tools/ui_0852/status.py": "be311132283b53321e5711f35a633a2cc71159d47fd8be5589d8c6177dd16683"
+  },
+  "pre_raise_native_fixture": {
+    "path": "build/ui-0852-20261016-01/fixture-predecessors/navigation-native-occluded.py",
+    "sha256": "7a176c4fff49d784746ed7c0aeac185f813ed2d98149f7f49ff1e57d19ab3361"
+  },
+  "hosts": [
+    {
+      "profile": "foundation-ui0852-fixed-0-20261016-01",
+      "launch": {
+        "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/launch.json",
+        "sha256": "4b0c16aa61ba7ebfaaf725268adfef78d974420e4d20d821ddf222f6c916845a"
+      },
+      "panel_owner_layouts": 24,
+      "clipped": 0,
+      "overlap": 0,
+      "library": {
+        "raw_scale": 0.0,
+        "effective_scale": 1.0,
+        "normalized_scale": 1.0,
+        "font_points": 9.0,
+        "dpi": 96
+      },
+      "native_gestures": 40,
+      "remounts": 10,
+      "idle_seconds": {
+        "manual": 122.5054783821106,
+        "live": 122.49081110954285
+      },
+      "witnesses": [
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/launch.json",
+          "sha256": "4b0c16aa61ba7ebfaaf725268adfef78d974420e4d20d821ddf222f6c916845a"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/ready.json",
+          "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/ui-acceptance.json",
+          "sha256": "2e26a6dc51bc230c736b89f294eb938e584d9234538adf897397ecb9326f0a0f"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/layout-layout-0.json",
+          "sha256": "8808e530dc72f662c23fe531139cf6175a32e1f00a3052e4c09b4f31db0de105"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/layout-layout-1.json",
+          "sha256": "09375b5d10960ac7d44fa9c0e68674d2c29d3f1c0fac95d6a3cef3cc38cae3af"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/library-1000x680.json",
+          "sha256": "7e17ed790d511468a49a2bb9aae8d7a8a48db554205aca602a1dad47927c1be2"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/library-850x620.json",
+          "sha256": "e94215a49f0ff04f410956ad781c711084b72cd4f3cc2fd581b90e69f9cc86f8"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/library-1120x760.json",
+          "sha256": "d04d498f768ec2d8db9877fde3152b4120a4d11253fdb3cd1f9dbab5f68ad093"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/library-browse.json",
+          "sha256": "051237ebd0003f0405e6ed2d9dc595be4124e0ac4d991a08befafa2789cf82be"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/ui-lifecycle.json",
+          "sha256": "bd034a521ecc9a5eeee271f2ddc011e1c556d29ad7123996aba58ece63153595"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/visible-controls.json",
+          "sha256": "cdedc18b1d38bf8db6da219a2170f7623d11300931ac4fc84cc2a51f8eb21c5d"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/pending-9.json",
+          "sha256": "0e8c7ad7a23ef4dd97348283580826f5b02f29d9c439a037d1cada76b36a2244"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/manual.json",
+          "sha256": "e220fe3912e315b2fc60985ca4c11ebb9f11d11cf40769f77c245c39e26700b7"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/live.json",
+          "sha256": "144a5851b51cc455bc9bcb0ec935ae59bd5878b886f6f26e39c65e0b2da7526b"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-0-wheel-down.json",
+          "sha256": "0136142f8c89b18f02b82f49e988cd0d8a82b119b60cc5608bb88f8ca8141d40"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-0-wheel-up.json",
+          "sha256": "da5ac8ea2ec6c72167c408eccd11425a314351ff5726a43b556765fd68e98c8a"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-0-drag-down.json",
+          "sha256": "c8e58ebbf6f8251f204f60369a0fe3809ca46f3467a50178c0ad9b4ee9926087"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-0-drag-up.json",
+          "sha256": "052f717f68f6ef84ae2af40420995757a76856ee38aeed0e2c4ecdab62f16932"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-1-wheel-down.json",
+          "sha256": "37e54e8b0f8cb8ee18d7cd3095b3159eb914dea7ac21fc59840624314f50c687"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-1-wheel-up.json",
+          "sha256": "39a3763fbcbefa4028dfbf0a1f14eed0254dbcaf2185608f64c4b78db0a69d00"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-1-drag-down.json",
+          "sha256": "4d996d7eba69669437a06d007534e06ae3aa6bd1a24ad25086f6e7d625ed5ae4"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-1-drag-up.json",
+          "sha256": "3b761ef4e33dd242bc756d17d4e6b0b1055c44896664fea950215bbbfa2ce310"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-2-wheel-down.json",
+          "sha256": "ff84570a8d587aae30f37f7dbbf303f13fd539dbfe83c1e4cbabfefcacdc2f63"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-2-wheel-up.json",
+          "sha256": "9ba30385d91113ce0d913830342ffe737c4cc87d16b4ef671c01a2675c41f627"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-2-drag-down.json",
+          "sha256": "f2ae146dac63b6c6705c43e15a5ee3108692f1426b4266b9e1de3c1e685c7226"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-2-drag-up.json",
+          "sha256": "56d9f436ad74be98cd7f6b773c06a8c0e217bf758d83011ea935e3d87be032d5"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-3-wheel-down.json",
+          "sha256": "afb19059442489ff7d1be95bb6893f8090c2ca488e8136263e3e2c8981c5a682"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-3-wheel-up.json",
+          "sha256": "7a188192a1350500ee864b9036371df304b5a161dd3ba92b2f6c37d579e1bccc"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-3-drag-down.json",
+          "sha256": "202e2f0b5f1d26e6b26e093b20aa60585a191b93959d7dcde86c0f075a90ea7e"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-3-drag-up.json",
+          "sha256": "a90dbcff4bc8291feab67386375b528e8372d70fea6fd444040b4cf921f34335"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-4-wheel-down.json",
+          "sha256": "607538cd3bd9fef71e5d6e0316e190cc01d507643adf4d458725a05143e3099b"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-4-wheel-up.json",
+          "sha256": "ce1dc7cd7d93c2a8917284c1063ba552444393cf596d729588671e6a2dc7c2a7"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-4-drag-down.json",
+          "sha256": "4ee07088a0dec90d1eda069cafabcb4d1e96f6b1ccbf5993785964a549b2a90a"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-4-drag-up.json",
+          "sha256": "a4ccf05784babcca4cc28878084d23ca5cc0ad62eed565e5cc1be6cebe907c2d"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-5-wheel-down.json",
+          "sha256": "be6a3c21eeb8942d16169ec5a1494dcbe52a4cbe3e4c0fa0c8073ec3c75002e3"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-5-wheel-up.json",
+          "sha256": "893548c2b2d34522aebe40fb0dfad64d5441b051c8af8fdc28c40f5e6383b58a"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-5-drag-down.json",
+          "sha256": "f6b72ec922a48e3715a7ed5aa289898e12242031aae4507fea6817bcaba012ac"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-5-drag-up.json",
+          "sha256": "1e922c26bfdb66a7ac7a900f025712cb661d95d569c057e8a4c988a43f621b53"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-6-wheel-down.json",
+          "sha256": "f99f81fbcc54300748f2b5d09cc9abf230397677765a00f143354992bca486f9"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-6-wheel-up.json",
+          "sha256": "160548e5bcbb7398ce04784cc7bc28d44812bc6a2dd354e1441b62a0cdad4ba0"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-6-drag-down.json",
+          "sha256": "6bf963e0087dd67eb19c6e5cf6d0148449f037f38b7e726af9b6bfc28fce8606"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-6-drag-up.json",
+          "sha256": "ecbc4ca67be4ce8745015295db820b17da2dbfcff3213fe6de64609493a85a32"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-7-wheel-down.json",
+          "sha256": "18d2bd160aacbbc4f19af079a31404cc76518f5448c72967f1cc2c6ac752c90f"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-7-wheel-up.json",
+          "sha256": "a672c6fcc5998dbe96587295eecaa27db04b197393da6f49195118507434f656"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-7-drag-down.json",
+          "sha256": "c76f468422adf8a7f8dc1f6e4fc01f256fec74d609837dbddebed7e1d5c2badf"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-7-drag-up.json",
+          "sha256": "e85037f2d10246eb4affeba4910d322bdc2ad44667788e7321fd00b1746cec67"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-8-wheel-down.json",
+          "sha256": "ba830a027bdd08a314ae84fc391d2e53b26aad85d790f1821bb4fc2f07b320aa"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-8-wheel-up.json",
+          "sha256": "d065641af275b9860c920292fa21e8d8e014c94bd4e55b90c8b0e48b0cc099bb"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-8-drag-down.json",
+          "sha256": "60844b77ba0ac92d80afc17e0841842422aa98e3149312f5a2e3570e9c700a0b"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-8-drag-up.json",
+          "sha256": "150e4098c1433574608db448ddd139df42c32f7c698b5ac104d1ef1be17d0227"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-9-wheel-down.json",
+          "sha256": "a46b3c45725c64d99754a3540601fbfe60017c150a435b083749b704f192e72f"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-9-wheel-up.json",
+          "sha256": "fcd4dd538f8c7c4a23e153ff4211c4c4871b57569d08ebe8a77c25b6e995c4b4"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-9-drag-down.json",
+          "sha256": "dde412298960770e1dab8ce24b38b65eb23eb50e28339c0ecbf9d2320cf9ae84"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/cycle-9-drag-up.json",
+          "sha256": "336d6ec6de5ce28dd3bc962d7e87751ecd24003206a50fd2760ef5fd0d793ab1"
+        }
+      ],
+      "closed_marker": {
+        "path": "build/mcp-qualification/foundation-ui0852-fixed-0-20261016-01/closed-owned-session.txt",
+        "sha256": "c360e4ea11c0c140cd426b6819033fb689abd8e8c892b53c45038d3ceacbd2fc"
+      }
+    },
+    {
+      "profile": "foundation-ui0852-fixed-1-20261016-01",
+      "launch": {
+        "path": "build/mcp-qualification/foundation-ui0852-fixed-1-20261016-01/launch.json",
+        "sha256": "64aeceecd27d26fc2bc66c0eb709c38bda2182c47a1ce9f195948d8ed4233c11"
+      },
+      "panel_owner_layouts": 24,
+      "clipped": 0,
+      "overlap": 0,
+      "library": {
+        "raw_scale": 1.0,
+        "effective_scale": 1.0,
+        "normalized_scale": 1.0,
+        "font_points": 9.0,
+        "dpi": 96
+      },
+      "witnesses": [
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-1-20261016-01/launch.json",
+          "sha256": "64aeceecd27d26fc2bc66c0eb709c38bda2182c47a1ce9f195948d8ed4233c11"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-1-20261016-01/ready.json",
+          "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-1-20261016-01/ui-acceptance.json",
+          "sha256": "93482c2eddb784d59f9d07d751b9bb9e572a5e1c99d6dff247e03cea23217560"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-1-20261016-01/layout-layout-0.json",
+          "sha256": "e99ddf5fc361a8e9ac8e53a35c593f447960d002dc728c2ada29676727b7abde"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-1-20261016-01/layout-layout-1.json",
+          "sha256": "3bb78ab4819e29400e300ed5d2aca80e97e888c8124753fdf0ffefd5c0745018"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-1-20261016-01/library-1000x680.json",
+          "sha256": "d7aaa362bcdb100d3b3804755d486f36a7265070559a1c38a562fd609e9a7164"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-1-20261016-01/library-850x620.json",
+          "sha256": "7b17b87671f897f6ed6e3855edc18d765774385614574b0d00db61c862001eee"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-1-20261016-01/library-1120x760.json",
+          "sha256": "8be5eb7bb5931a64376e790e3792246ff388f98e6e969ef04d4442cd0455f201"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-1-20261016-01/library-browse.json",
+          "sha256": "051237ebd0003f0405e6ed2d9dc595be4124e0ac4d991a08befafa2789cf82be"
+        }
+      ],
+      "closed_marker": {
+        "path": "build/mcp-qualification/foundation-ui0852-fixed-1-20261016-01/closed-owned-session.txt",
+        "sha256": "0ddbe1533a8f596c771778d4be453c42aaaa717904445a449e93e43bffa9d5db"
+      }
+    },
+    {
+      "profile": "foundation-ui0852-fixed-15-20261016-01",
+      "launch": {
+        "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/launch.json",
+        "sha256": "9009da980e087733794e764e0b0af080dd09fd849c1cce7535aa2604760f8f46"
+      },
+      "panel_owner_layouts": 24,
+      "clipped": 0,
+      "overlap": 0,
+      "library": {
+        "raw_scale": 1.5,
+        "effective_scale": 1.5,
+        "normalized_scale": 1.5,
+        "font_points": 13.5,
+        "dpi": 96
+      },
+      "native_gestures": 40,
+      "remounts": 10,
+      "idle_seconds": {
+        "manual": 122.45893931388855,
+        "live": 122.46354174613953
+      },
+      "witnesses": [
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/launch.json",
+          "sha256": "9009da980e087733794e764e0b0af080dd09fd849c1cce7535aa2604760f8f46"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/ready.json",
+          "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/ui-acceptance.json",
+          "sha256": "7e936c344c0250107b959726844804c5c694efa809e60a7e8c056c6b3710fbb0"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/layout-layout-0.json",
+          "sha256": "3a7aac07ae76d8c46491a3379192a1f4f0059acde14038caa7f99ed4bd89e8a6"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/layout-layout-1.json",
+          "sha256": "8e71a2415a219cae295543e741c5fe09b07208fe63094baf1e35087c3803e69e"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/library-1000x680.json",
+          "sha256": "2ee3ffbae67225cf561f8595aca5206834a867928b077c9d2d1025b7c2c5b0fc"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/library-850x620.json",
+          "sha256": "b2f6fa3c746bfc1b70c3643ed6b6d09e60ad505f95274cd348f3b23cea2a428d"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/library-1120x760.json",
+          "sha256": "4bcc1bac3c9dffa6f426744fd708f5bccb626a6c125c2938f40d28cdb55900be"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/library-browse.json",
+          "sha256": "051237ebd0003f0405e6ed2d9dc595be4124e0ac4d991a08befafa2789cf82be"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/ui-lifecycle.json",
+          "sha256": "fd49ed110fc2ca39646d7dd63223f4e7f279abf9895bad4176472aaa1aa9b3ee"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/visible-controls.json",
+          "sha256": "cdedc18b1d38bf8db6da219a2170f7623d11300931ac4fc84cc2a51f8eb21c5d"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/pending-9.json",
+          "sha256": "da162d9b06765f33f7312a92f37d854e5a563665b4245e37c1c523d9d02cc57b"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/manual.json",
+          "sha256": "8151cc3df8dc2e2179cc6ca677b44a70987961e1ca8d93e7189d847b73bd059e"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/live.json",
+          "sha256": "3606d4352306d2a9e86f177461127ee8ea0196cb1fd1206aeda0f3f5d15b98b4"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-0-wheel-down.json",
+          "sha256": "d870add4c8e4c29423cb08f78eec6b618e7f4fc24fe83ac230e73505065493ef"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-0-wheel-up.json",
+          "sha256": "15dda007505a4d2dbe2aa41026781c292ccba0ff958565a30f441aeea07ed366"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-0-drag-down.json",
+          "sha256": "be3dca2ea6f1d2766f6cf3f12ab6bfa0904db2d338d95d5fad29c1dc7f2a2190"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-0-drag-up.json",
+          "sha256": "c593c937236e3d431ba4f38e151a13944892acaf3516a86321178ac33f18a9aa"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-1-wheel-down.json",
+          "sha256": "cb62a7154090f829866169210150ed49c7009a4e1621f31160aecfa0b1648548"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-1-wheel-up.json",
+          "sha256": "dfb8e97972e24af044c760588b5b7f92280fd93cf6319a6aed35624376a7c0f0"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-1-drag-down.json",
+          "sha256": "9912eec59750308fc1f94ddc148d6fcb6f1e2bf6ea82ff5c74a5c686f8c24155"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-1-drag-up.json",
+          "sha256": "403f3d33820ae36c3ffc3125fea43166d3d2bc2880873308aabcf18f820be6d5"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-2-wheel-down.json",
+          "sha256": "59f2c276669d2b00068dd51ec4cb40f1014059fadb0973d463edae99b6e0f5f3"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-2-wheel-up.json",
+          "sha256": "1b88ad16545882bcb5fa151d91c9a25c91704e82324c360b5d1c068b878a274a"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-2-drag-down.json",
+          "sha256": "f1f16949ea900f1f0070710793eaef8a297cab1e94e3ba2524245f58778e2ef9"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-2-drag-up.json",
+          "sha256": "1e55a521d2d21676d4e794f9205ea37ceb3400e0a627e527e5077627f178323b"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-3-wheel-down.json",
+          "sha256": "21257a28eb3218f6f1eb084257eec0d40116bcf41a450de73b7bbbc213df5bd5"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-3-wheel-up.json",
+          "sha256": "5696238b356a575323498e059116bb62270950dec5736e7bc2a83eec8bc1e7f3"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-3-drag-down.json",
+          "sha256": "4c2ac43ac1df963682bad61b3d35f246201170529bb824669266a957c27f9e8d"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-3-drag-up.json",
+          "sha256": "4b632277bf755ceb86b6da1a1fce4557a94e561b2fc1c66c8cf129a894a1d637"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-4-wheel-down.json",
+          "sha256": "82099349755eaca768b1faa89dcb428142beba9ce47997f0eec341f29f59a563"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-4-wheel-up.json",
+          "sha256": "0334ad274501bfd9551afc159e8225ce30db303a14d97ea224a1f0c82547d3fc"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-4-drag-down.json",
+          "sha256": "602aee9ba236f3cd9a9dc6f6bd6a9e469dd0b4a447fb81bc6f361cff6977cb66"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-4-drag-up.json",
+          "sha256": "da3b0844fcdbd8e4107e359eda6bd66faa120187b21462fe13bc7e8cf83fbfa0"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-5-wheel-down.json",
+          "sha256": "c5d740d001d8355c28e98fdf595204aae92002157f58d37e895a6b87a1cb4187"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-5-wheel-up.json",
+          "sha256": "3a9ff600b989d8dfccd69cb038cf1c70c6e2c0e6697f09e33a5f1631a3391538"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-5-drag-down.json",
+          "sha256": "e59dfe2eb03fe82d5e5f21c0c9c6385522ecd5c303cea5b3eef2ee662d1bbba5"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-5-drag-up.json",
+          "sha256": "2a640138b60941ee90ab098db6112f9b7fafeaff7ce02f897cb3339cc7a1ac5e"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-6-wheel-down.json",
+          "sha256": "1fec1d458af94579ea2cf95a019de61fef07aff992b2ae141b241b58cd3235f5"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-6-wheel-up.json",
+          "sha256": "55cb88d338d46a6bba0207366a3c8bc44027c4c92c741570a6e75d422399abe2"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-6-drag-down.json",
+          "sha256": "eb7e310b3982e98dfcb9a889b7a10b1164a5f522b2e5e1252b378d772571436d"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-6-drag-up.json",
+          "sha256": "0c28d0731b0e166a64159c015725135485bfeb0e64d1d5bd0c4ca03e5c67dcbe"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-7-wheel-down.json",
+          "sha256": "298dba1930a7260921c5498a04c54b775eaa2d1be11d0ae642bfa823f8716185"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-7-wheel-up.json",
+          "sha256": "92d9a5e1246fbeac9257fe480f2d94969ded9b692a11f6bada6173d109372e5e"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-7-drag-down.json",
+          "sha256": "5cf3c8f24ba6fbc01e486495f9145dc949c46c994557e14905a5ca8bbe8bc632"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-7-drag-up.json",
+          "sha256": "aed321f0119139064806913df36168218de21a4d28eab695666a3c27d5b7a77c"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-8-wheel-down.json",
+          "sha256": "f7394b7f98154de956f9f8e6992e03dd2875927707b2a5e2682c00f6f25b25f3"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-8-wheel-up.json",
+          "sha256": "16b779df931ad4eafeae43a5a63479b19c92489b14f4d2204d831ac915975879"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-8-drag-down.json",
+          "sha256": "ad4e8d3bed73c8dda8a39b0adaa172914108d0519aed2a66f6bef197bca62ebb"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-8-drag-up.json",
+          "sha256": "6bd4023f1af824f7e3f4b9bfa72581d53537b66e05465821ca74cd839aae405d"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-9-wheel-down.json",
+          "sha256": "f3ec019a33177df83ba3b716b3896a8eea96ed2244d40c69c22227a7a10b36a9"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-9-wheel-up.json",
+          "sha256": "27eb0e0427727b224c77ed11dcb8636b3e4fe9526274cd92b5894a1c84126776"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-9-drag-down.json",
+          "sha256": "dd3d4ff5f2cfbd533c7f7322a560572b261ba266c96bcdf1faa133f661d4c827"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/cycle-9-drag-up.json",
+          "sha256": "0b5a5fbdb1c3e8e070c892d56d2c260e00dbd210859b990d6d953dd93bc1efad"
+        }
+      ],
+      "closed_marker": {
+        "path": "build/mcp-qualification/foundation-ui0852-fixed-15-20261016-01/closed-owned-session.txt",
+        "sha256": "1e488b2de302a6628c86177b530bf978f6bf9e41e2ec15b08c8e15b1b9541780"
+      }
+    },
+    {
+      "profile": "foundation-ui0852-recipient-c25417d4",
+      "launch": {
+        "path": "build/mcp-qualification/foundation-ui0852-recipient-c25417d4/launch.json",
+        "sha256": "768723e8ff77a8aa4d402a020a41fb08cafb6d0a8cd016966c9978b33f5c506f"
+      },
+      "panel_owner_layouts": 24,
+      "clipped": 0,
+      "overlap": 0,
+      "library": {
+        "raw_scale": 0.0,
+        "effective_scale": 1.0,
+        "normalized_scale": 1.0,
+        "font_points": 9.0,
+        "dpi": 96
+      },
+      "witnesses": [
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-recipient-c25417d4/launch.json",
+          "sha256": "768723e8ff77a8aa4d402a020a41fb08cafb6d0a8cd016966c9978b33f5c506f"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-recipient-c25417d4/ready.json",
+          "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-recipient-c25417d4/ui-acceptance.json",
+          "sha256": "1c729091d805c572bf04395517e1d66cc8a44a48cef49f510396233b8e405fa6"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-recipient-c25417d4/layout-layout-0.json",
+          "sha256": "c32cdfb5c5f542afa4de38605e27431a568bea02a763bde3ea7b2eea8fdc2cca"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-recipient-c25417d4/layout-layout-1.json",
+          "sha256": "f51238410bcacaa64ae78c96c9f6620c3cd31794c2c29d13d15f2b092f381374"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-recipient-c25417d4/library-1000x680.json",
+          "sha256": "7e17ed790d511468a49a2bb9aae8d7a8a48db554205aca602a1dad47927c1be2"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-recipient-c25417d4/library-850x620.json",
+          "sha256": "e94215a49f0ff04f410956ad781c711084b72cd4f3cc2fd581b90e69f9cc86f8"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-recipient-c25417d4/library-1120x760.json",
+          "sha256": "d04d498f768ec2d8db9877fde3152b4120a4d11253fdb3cd1f9dbab5f68ad093"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-recipient-c25417d4/library-browse.json",
+          "sha256": "051237ebd0003f0405e6ed2d9dc595be4124e0ac4d991a08befafa2789cf82be"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-recipient-c25417d4/result.json",
+          "sha256": "6a8f6553bb6ea8961c09a1e1e30a0ad55a1e1c22cac67718e3d0ee59fce3f17e"
+        },
+        {
+          "path": "build/mcp-qualification/foundation-ui0852-recipient-c25417d4/installer-wrapper-30fcd1d1c6534edda4399b559d17dc42.json",
+          "sha256": "aa899ac215d21a1403a672ece91997ce972657a5f570c683293d50e1be3375f4"
+        }
+      ],
+      "closed_marker": {
+        "path": "build/mcp-qualification/foundation-ui0852-recipient-c25417d4/closed-owned-session.txt",
+        "sha256": "6506966b49d395fe8b7c2e6c55578f5c8b58af9b13dc3015e8dd3aa6204d8bb0"
+      }
+    }
+  ],
+  "failed_occluded_predecessor": {
+    "path": "build/ui-0852-20261016-01/fixture-predecessors/occluded-default/ui-lifecycle.json",
+    "sha256": "b03024b3ec80a64d64ea1f14c2d12ccb1a0d63213888c6a96d49967ee69026f9"
+  },
+  "limitations": [
+    "Actual native window messages; no desktop pointer motion or physical mouse/tablet qualification",
+    "Configured 0/default, 1/100%, 1.5/150% on DeviceDpi 96; physical 4K/mixed-monitor transitions unqualified",
+    "Native panel bounds are measured; black native software snapshots are not visual acceptance",
+    "Earlier 0.85.1 recipe/asset/renderer/heavy-memory gates remain historical and were not rerun by this UI patch",
+    "Artist profile not installed into or restarted; website build is not publication"
+  ]
+}

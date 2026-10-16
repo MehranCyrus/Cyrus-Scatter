@@ -15,6 +15,8 @@ The [remaining-improvements ledger](plans/improvement-program/PROGRESS.md) retai
 
 For B26, 0.85.1 adds conservative Undo-preserving admission, cached schema conversion, discarded-undone New Setup cache release and departed-scene cache release. These address measured library workflows; they do not establish general heavy-copy/Add Layers lifetime safety or close B26. See [the package contract](plans/preset-gallery-improvements/PACKAGE_CONTRACT.md) and exact-pair evidence.
 
+The [0.85.2 UI correction](plans/preset-gallery-improvements/UI_CORRECTION_0852.md) addresses the reported Modify background wheel/drag failure and half-size default library. Its native input, panel bounds and passive-work checks are distinct from physical monitor/artist acceptance; broader B26 and adapter gates stay open. No new roadmap phase is included.
+
 ## Next engineering work
 
 | ID | Status and problem | Acceptance needed |

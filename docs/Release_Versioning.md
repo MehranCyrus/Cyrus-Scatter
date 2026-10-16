@@ -2,8 +2,8 @@
 
 | Domain | Current value | Meaning |
 | --- | --- | --- |
-| Scatter UI | 0.85.1 | Collection gallery and bounded portable-asset delivery; scoped acceptance and open adapters |
-| Scatter native/package | 0.85.1 MZP/EXE for Max 2027; historical installation receipts preserved | Exact pair, hashes and scoped qualification are in the PG handoff; artist installation is separate |
+| Scatter UI | 0.85.2 | Modify background navigation and default library scaling correction; preceding gallery adapters retained |
+| Scatter native/package | 0.85.2 MZP/EXE for Max 2027; historical installation receipts preserved | Exact pair, hashes and scoped qualification are in the PG handoff; artist installation is separate |
 | Recipe / numeric-settings format and capability | 5 / 3 | Revisioned presentation/capture; 242 authored fields retained; strict earlier recipe reads |
 | Library / portable-package capability | 3 / 1 | Bounded collection pages and static mesh/Standard/PNG adapters |
 | Saved MAXScript schema | 58 | Appended orientation, variation and grid parameter blocks preserve existing parameter IDs; no earlier-schema migration |
@@ -14,6 +14,8 @@
 **Reserve 1.0 for publication readiness.** Earlier artifacts labeled 1.0.x, 1.1.x and 1.2.x were development checkpoints, later relabeled 0.7 onward. A larger-looking historical version is not a newer supported release.
 
 ## Choosing the next version
+
+**16 October 2026 UI correction:** **0.85.1 → 0.85.2** is a patch for native Modify scrolling/dragging and the default-zero library scale case. It preserves lazy construction, scene schema 58, recipe/numeric formats 5/3, library/package capabilities 3/1 and all independent product versions. See the [correction and exact-pair acceptance](plans/preset-gallery-improvements/UI_CORRECTION_0852.md). No further roadmap feature is included.
 
 **16 October 2026 delivery:** the user selected **0.85.1** for the [preset/gallery implementation](plans/preset-gallery-improvements/PROGRESS_0851.md). The MZP and unsigned EXE contain the same qualified payload; the artist profile was not installed into. [Format 5](plans/preset-gallery-improvements/FORMAT_5.md) adds logical revision and optional presentation/capture while retaining 242 authored fields and scene schema 58. Library capability 3 adds bounded collection summaries; portable capability 1 declares its closed adapter. Numeric settings remain format 3. These separate capability changes do not renumber Analyzer, MCP or licensing. Final package and acceptance follow the [handoff](plans/preset-gallery-improvements/DELIVERY_0851.md).
 

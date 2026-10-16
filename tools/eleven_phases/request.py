@@ -15,7 +15,7 @@ a = p.parse_args()
 folder = a.folder.resolve()
 fixture = a.fixture.resolve()
 assert folder.parent == ROOT / 'build/mcp-qualification'
-assert folder.name.startswith(('foundation-roadmap-', 'foundation-viewport0817-phase01-'))
+assert folder.name.startswith(('foundation-roadmap-', 'foundation-viewport0817-phase01-', 'foundation-ui0852-'))
 assert fixture.is_relative_to(ROOT / 'tools') and fixture.suffix in ('.py', '.ms')
 metadata = json.loads((folder / 'launch.json').read_text())
 assert Path(metadata['output']).resolve() == folder and metadata['development_transport']

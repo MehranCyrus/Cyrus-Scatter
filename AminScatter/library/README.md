@@ -1,6 +1,6 @@
 # Cyrus planting examples
 
-Eight editable procedural examples for Cyrus Scatter 0.85.1 and 3ds Max 2027. The format-5 reader accepts the earlier recipe formats with neutral defaults. The six earlier scene, recipe and image sets retain their original bytes. Replace their pyramids and simple flower shapes with your own models; no third-party vegetation library is required.
+Eight editable procedural examples for Cyrus Scatter 0.85.2 and 3ds Max 2027. The format-5 reader accepts the earlier recipe formats with neutral defaults. The six earlier scene, recipe and image sets retain their original bytes. Replace their pyramids and simple flower shapes with your own models; no third-party vegetation library is required.
 
 | Example | Demonstrates |
 | --- | --- |
@@ -25,7 +25,7 @@ Choose **Saved variation** to reproduce the saved arrangement with identical
 terrain, source order, quotas, masks and collision context; **New variation** is
 the default for a fresh arrangement. Both create independent layer ownership.
 Import is one Undo; Manual mode calculates when you press Update scatter.
-The candidate checks available MAXScript working space before importing or
+The plugin checks available MAXScript working space before importing or
 preparing a heavy Update. Rejected work preserves the last complete result.
 This conservative guard is not a guarantee against every host-memory failure.
 
@@ -60,3 +60,5 @@ does not change the plugin license or cover users' substituted third-party asset
 - **Valley moss and rocky crests:** channel 2 R/X density, an inverted rock mask, a density curve, normal blending and slope fading. The stored numeric field is authored in the demo terrain; it does not claim automatic curvature analysis.
 
 Each entry includes an editable Max 2027 scene and a rendered preview made from its exact published placements. Models are original procedural placeholders that you can substitute with your own assets. Recipes preserve settings and Paint; bind compatible terrain/models when loading them. The six earlier scene/recipe/image sets retain their original bytes.
+
+0.85.2 corrects library default scaling and native Modify-panel navigation. The eight example scene, recipe, Paint and thumbnail files retain their 0.85.1 bytes.

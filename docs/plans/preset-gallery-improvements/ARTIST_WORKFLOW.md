@@ -1,10 +1,10 @@
-# Cyrus Library — 0.85.1 workflow
+# Cyrus Library — 0.85.2 workflow
 
-This describes the delivered 0.85.1 controls. See the [exact package and test limits](DELIVERY_0851.md) and [artist checklist](USER_TESTING_0851.md).
+This retains the delivered 0.85.1 controls and adds the [0.85.2 default-scale correction](UI_CORRECTION_0852.md). See the [current package and test limits](UI_CORRECTION_0852.md) and [artist checklist](USER_TESTING_0851.md).
 
 ## Browse collections
 
-Open **Layers > Recipes**. The left tree chooses **My recipes**, **Bundled examples** or a **Custom library**. A library opens its collection tiles; open a tile or choose **All recipes** to see individual previews. Search, compact-list/thumbnail view and three tile sizes are in the toolbar. The window resizes. **Load selected**, double-click and Enter open a collection or a separate loading review.
+Open **Layers > Recipes**. The left tree chooses **My recipes**, **Bundled examples** or a **Custom library**. A library opens its collection tiles; open a tile or choose **All recipes** to see individual previews. Search, compact-list/thumbnail view and three tile sizes are in the toolbar. The window resizes. Max’s default scale uses normal-size text and tiles; configured 150% also scales the library. Choose Small, Medium or Large tiles in the toolbar. Physical monitor transitions remain separate acceptance. **Load selected**, double-click and Enter open a collection or a separate loading review.
 
 Browsing reads saved metadata and images. It does not calculate plants, capture previews, merge models or change the scene. **Refresh** explicitly discovers file changes; there is no idle folder scan. Missing images show placeholders. The gallery displays at most 128 items per page and keeps a bounded decoded-image cache.
 

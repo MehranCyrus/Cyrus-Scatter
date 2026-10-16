@@ -14,6 +14,8 @@
 
 Opening **Advanced**, selecting a row or closing a section does not itself enable or disable the planting feature. Changes to a recipe follow Manual/Live. Display controls and help can change what you see without changing where plants belong.
 
+Wheel scrolling and click-hold vertical dragging on empty Modify-panel background navigate the native rollup. Buttons, numeric fields, lists and resize grips retain their ordinary actions. Library text and tiles use normal size when Max keeps its default UI scale; choose tile size from the library toolbar. Configured 150% and physical mixed-monitor acceptance are distinct.
+
 ## Receiving surfaces — the whole setup
 
 | Control | What it means and when to use it |
