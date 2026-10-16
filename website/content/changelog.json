@@ -3,6 +3,32 @@
   "notes": "Entries are ordered by documented development chronology, not numeric label. Missing versions and unknown dates are not invented. Local evidence is stripped before publication. 0.79.2 and 0.79.5 are current uncommitted working-tree campaigns at this review, not new Git releases. Analyzer/MCP have independent version domains.",
   "entries": [
     {
+      "version": "0.85.1",
+      "date": "2026-10-16",
+      "title": "Collection gallery, portable recipes and installer.",
+      "era": "recent",
+      "legacy": false,
+      "note": "Max 2027 development delivery, qualified for its declared static-asset subset. Normal-profile installation, production renderer/input and general heavy-session acceptance remain separate.",
+      "changes": [
+        {
+          "kind": "Added",
+          "text": "Collection tree, large thumbnails, explicit viewport capture, revisioned saves and selective style apply."
+        },
+        {
+          "kind": "Added",
+          "text": "Bounded static mesh/Standard/PNG packages, explicit scene-model reuse, eight examples and companion MZP/Windows EXE packaging."
+        },
+        {
+          "kind": "Fixed",
+          "text": "Identical settings skip scene work; discarded imported setups and departed scenes release retained calculation caches."
+        }
+      ],
+      "evidence": [
+        "docs/plans/preset-gallery-improvements/PROGRESS_0851.md",
+        "docs/plans/preset-gallery-improvements/ARTIST_WORKFLOW.md"
+      ]
+    },
+    {
       "version": "0.85.0",
       "date": "2026-10-16",
       "title": "Regular planting grids and two more presets.",
@@ -62,7 +88,7 @@
       "changes": [
         {
           "kind": "Added",
-          "text": "World direction and Look at target modes, explicit source forward axes and 0–100% geometric-normal blending."
+          "text": "World direction and Look at target modes, explicit source forward axes and 0â€“100% geometric-normal blending."
         },
         {
           "kind": "Improved",
@@ -830,7 +856,7 @@
       "changes": [
         {
           "kind": "Improved",
-          "text": "Established Layer â†’ Surfaces â†’ Models â†’ Amount â†’ Update scatter, optional Painting, and direct Layout controls."
+          "text": "Established Layer Ã¢â€ â€™ Surfaces Ã¢â€ â€™ Models Ã¢â€ â€™ Amount Ã¢â€ â€™ Update scatter, optional Painting, and direct Layout controls."
         },
         {
           "kind": "Fixed",

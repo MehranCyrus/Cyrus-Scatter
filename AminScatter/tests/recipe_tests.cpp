@@ -38,14 +38,14 @@ int main(){std::filesystem::path temporary;try{
     validate(d);
     auto stripGrid=[](Json& settings){for(const auto* name:{"placementMode","gridColumnWU","gridRowWU","gridOriginXWU","gridOriginYWU","gridHeading","gridJitter"})settings.erase(name);};
     auto v3=d;v3["formatVersion"]=3;stripGrid(v3["rootSettings"]);stripGrid(v3["layers"][0]["settings"]);stripGrid(v3["layers"][0]["areas"][0]["settings"]);
-    validate(v3);check(currentDocument(v3)==d);check(v3["formatVersion"]==3);
+    validate(v3);check(currentDocument(v3)==currentDocument(d));check(v3["formatVersion"]==3);
     auto badGrid=v3;badGrid["rootSettings"]["placementMode"]=1;rejected([&]{validate(badGrid);});
     auto grid=d;grid["layers"][0]["settings"]["placementMode"]=4;grid["layers"][0]["settings"]["gridColumnWU"]=37.125;grid["layers"][0]["settings"]["gridHeading"]=-31.;validate(grid);check(parse(grid.dump())==grid);
     for(const auto* name:{"gridColumnWU","gridRowWU"}){auto invalid=defaults;invalid[name]=0.;rejected([&]{validateSettings(invalid);});}
     auto invalid=defaults;invalid["placementMode"]=5;rejected([&]{validateSettings(invalid);});invalid=defaults;invalid["gridJitter"]=101.;rejected([&]{validateSettings(invalid);});
     auto v2=v3;v2["formatVersion"]=2;
     v2["rootSettings"].erase("procReceiverVariationIDs");v2["layers"][0]["settings"].erase("procReceiverVariationIDs");v2["layers"][0]["areas"][0]["settings"].erase("procReceiverVariationIDs");
-    validate(v2);check(currentDocument(v2)==d);check(v2["formatVersion"]==2);
+    validate(v2);check(currentDocument(v2)==currentDocument(d));check(v2["formatVersion"]==2);
     auto receiverV2=v2;auto& receiverSettings=receiverV2["layers"][0]["settings"];
     receiverSettings["procReceiverNodes"]={nullptr,nullptr};receiverSettings["procReceiverIDs"]={"original-a","original-b"};
     validate(receiverV2);const auto receiverV3=currentDocument(receiverV2);
@@ -63,7 +63,7 @@ int main(){std::filesystem::path temporary;try{
     auto legacy=v3;legacy["formatVersion"]=1;
     auto strip=[](Json& settings){for(const auto& name:{"orientationMode","orientationBlend","orientationX","orientationY","orientationZ","orientationTarget","procReceiverVariationIDs"})settings.erase(name);};
     strip(legacy["rootSettings"]);strip(legacy["layers"][0]["settings"]);strip(legacy["layers"][0]["areas"][0]["settings"]);
-    validate(legacy);check(currentDocument(legacy)==d);check(legacy["formatVersion"]==1);
+    validate(legacy);check(currentDocument(legacy)==currentDocument(d));check(legacy["formatVersion"]==1);
     auto badLegacy=legacy;badLegacy["rootSettings"]["orientationMode"]=1;rejected([&]{validate(badLegacy);});
     badLegacy=legacy;badLegacy["rootSettings"].erase("amount");rejected([&]{validate(badLegacy);});
     auto direction=d;direction["layers"][0]["settings"]["orientationMode"]=2;direction["layers"][0]["settings"]["orientationY"]=0.;rejected([&]{validate(direction);});
@@ -83,12 +83,12 @@ int main(){std::filesystem::path temporary;try{
     std::string deep="0";for(int i=0;i<35;++i)deep="["+deep+"]";rejected([&]{parse(deep);});
     rejected([&]{parse("{\"bad\":NaN}");});rejected([&]{parse("{\"bad\":\"\xff\"}");});
     temporary=std::filesystem::temp_directory_path()/pathFromUTF8("cyrus-recipe-test-"+std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()));
-    std::filesystem::create_directory(temporary);const auto path=temporary/pathFromUTF8("hillside-\xc3\xa9.csrecipe.json");writeNew(path,d);check(read(path)==d);
-    const auto gridPath=temporary/"grid"/"recipe.json";writeNew(gridPath,grid);check(read(gridPath)==grid);
+    std::filesystem::create_directory(temporary);const auto path=temporary/pathFromUTF8("hillside-\xc3\xa9.csrecipe.json");writeNew(path,d);check(read(path)==currentDocument(d));
+    const auto gridPath=temporary/"grid"/"recipe.json";writeNew(gridPath,grid);check(read(gridPath)==currentDocument(grid));
     const auto old=file(path);rejected([&]{writeNew(path,d);});check(file(path)==old);
     const auto manifest=read(path,false);check(manifest["layers"][0]["areas"][0]["paint"]["payload"].is_object());
     const auto relative=manifest["layers"][0]["areas"][0]["paint"]["payload"]["file"].get<std::string>();check(file(path.parent_path()/pathFromUTF8(relative))==std::string(bytes.begin(),bytes.end()));
-    auto malformed=manifest;malformed["formatVersion"]=5;put(path,malformed.dump());rejected([&]{read(path);});put(path,old);
+    auto malformed=manifest;malformed["formatVersion"]=6;put(path,malformed.dump());rejected([&]{read(path);});put(path,old);
     malformed=manifest;malformed["layers"][0]["areas"][0]["paint"]["payload"]["file"]="../outside.cspaint";put(path,malformed.dump());rejected([&]{read(path);});put(path,old);
     put(path.parent_path()/pathFromUTF8(relative),"corrupt");rejected([&]{read(path);});
     // Metadata browsing never reads/hydrates Paint attachments.

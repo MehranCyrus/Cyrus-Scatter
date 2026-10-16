@@ -11,7 +11,9 @@ records per-phase implementation, validation and Git checkpoints. Existing defec
 IDs and release gates below retain their independent status; creating the roadmap
 does not close them.
 
-The [active remaining-improvements ledger](plans/improvement-program/PROGRESS.md) now tracks the explicitly resumed P06–P11 and I03–I18 program. I03 is implemented and scoped-tested in [0.82.6.1](plans/improvement-program/I03_08261.md), with four initial examples. [I04 direction/normal blending](plans/improvement-program/I04_0830.md) is delivered as 0.83.0. [I05 variation policy](plans/improvement-program/I05_0840.md) is scoped-qualified in 0.84.0; B26 remains open. [I06 grids](plans/improvement-program/I06_0850.md) are scoped-qualified in 0.85.0 with six examples. Paths, the remaining features, at least two more examples and the EXE remain open.
+The [remaining-improvements ledger](plans/improvement-program/PROGRESS.md) retains the previously authorized P06–P11 and I03–I18 program. I03–I06 have scoped historical deliveries through [0.85.0 grids](plans/improvement-program/I06_0850.md). The current [0.85.1 library work](plans/preset-gallery-improvements/PROGRESS_0851.md) adds the collection gallery, revision/capture/style tools, bounded static-asset packages, two examples (eight total), explicit scene-asset reuse and MZP/EXE distribution. The [0.85.1 handoff](plans/preset-gallery-improvements/DELIVERY_0851.md) records its exact qualified subset and remaining acceptance. No further Phase 6 or unrelated roadmap feature is started in this task. Paths, broader B26, XRefs/material variants and prerequisite-dependent Edit/effect adapters remain open.
+
+For B26, 0.85.1 adds conservative Undo-preserving admission, cached schema conversion, discarded-undone New Setup cache release and departed-scene cache release. These address measured library workflows; they do not establish general heavy-copy/Add Layers lifetime safety or close B26. See [the package contract](plans/preset-gallery-improvements/PACKAGE_CONTRACT.md) and exact-pair evidence.
 
 ## Next engineering work
 

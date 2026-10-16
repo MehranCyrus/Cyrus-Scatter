@@ -1,4 +1,5 @@
 #include "recipes.h"
+#include "recipe_store.h"
 #include "brush.h"
 #include "presets.h"
 #include "mesh_density.h"
@@ -150,9 +151,13 @@ void validateSettings(const Json& s){
 
 Json currentDocument(const Json& document){
     auto result=document;
-    if(!result.is_object()||!result.contains("formatVersion")||(result["formatVersion"]!=1&&result["formatVersion"]!=2&&result["formatVersion"]!=3))return result;
+    if(!result.is_object()||!result.contains("formatVersion")||(result["formatVersion"]!=1&&result["formatVersion"]!=2&&result["formatVersion"]!=3&&result["formatVersion"]!=4))return result;
     require(result["formatVersion"].is_number_integer(),"recipe version must be an integer");
     const int version=result["formatVersion"].get<int>();
+    if(version==4){
+        require(!result.contains("revision")&&!result.contains("presentation"),"revision/presentation require recipe format 5");
+        result["revision"]=1;result["presentation"]=nullptr;result["formatVersion"]=5;return result;
+    }
     const auto extend=[&](Json& s){
         require(s.is_object(),"invalid legacy settings");
         if(version<3){
@@ -172,13 +177,14 @@ Json currentDocument(const Json& document){
         extend(layer.at("settings"));require(layer.at("areas").is_array()&&layer.at("areas").size()<=128,"invalid Paint Areas");
         for(auto& area:layer.at("areas"))extend(area.at("settings"));
     }
-    result["formatVersion"]=4;return result;
+    result["formatVersion"]=4;return currentDocument(result);
 }
 
 void validate(const Json& d,bool hydrated){
-    if(d.is_object()&&d.contains("formatVersion")&&(d["formatVersion"]==1||d["formatVersion"]==2||d["formatVersion"]==3)){validate(currentDocument(d),hydrated);return;}
-    keys(d,{"format","formatVersion","evaluationContract","sceneSchema","hostYear","id","name","unitsPerMetre","exportScope","rootSettings","roles","layers","spacingRelationships"});
-    require(d["format"]=="cyrus.planting-recipe"&&d["formatVersion"].is_number_integer()&&d["formatVersion"]==4&&d["evaluationContract"]=="CyrusUnified1"&&d["sceneSchema"]==58&&d["hostYear"]==2027,"unsupported recipe version/engine/host");
+    if(d.is_object()&&d.contains("formatVersion")&&(d["formatVersion"]==1||d["formatVersion"]==2||d["formatVersion"]==3||d["formatVersion"]==4)){validate(currentDocument(d),hydrated);return;}
+    keys(d,{"format","formatVersion","evaluationContract","sceneSchema","hostYear","id","name","unitsPerMetre","exportScope","rootSettings","roles","layers","spacingRelationships","revision","presentation"});
+    require(d["format"]=="cyrus.planting-recipe"&&d["formatVersion"].is_number_integer()&&d["formatVersion"]==5&&d["evaluationContract"]=="CyrusUnified1"&&d["sceneSchema"]==58&&d["hostYear"]==2027,"unsupported recipe version/engine/host");
+    require(d["revision"].is_number_integer()&&number(d["revision"])>=1&&number(d["revision"])<=2147483647,"invalid recipe revision");validateEntryPresentation(d["presentation"]);
     id(d["id"]);const auto name=text(d["name"],320);require(!name.empty(),"empty name");require(number(d["unitsPerMetre"])>0,"invalid saved unit scale");require(d["exportScope"]=="complete-setup","only complete authored recipes are supported");validateSettings(d["rootSettings"]);
     require(d["roles"].is_array()&&d["roles"].size()<=4096,"too many roles");std::map<std::string,std::string> roles;
     for(const auto& r:d["roles"]){keys(r,{"id","kind","name","purposes","requirements"});const auto key=id(r["id"]),kind=text(r["kind"],16);require(kind=="node"||kind=="texture"||kind=="layer","unknown role kind");require(roles.emplace(key,kind).second,"duplicate role");text(r["name"],1024);require(r["purposes"].is_array()&&r["purposes"].size()<=256,"role purposes limit");for(const auto& purpose:r["purposes"])text(purpose,128);if(!r["requirements"].is_null()){const auto& q=r["requirements"];keys(q,{"width","length","collectEnabled","showLabel","savedSources"});require(kind=="node"&&number(q["width"])>0&&number(q["length"])>0&&q["collectEnabled"].is_boolean()&&q["showLabel"].is_boolean()&&q["savedSources"].is_array()&&q["savedSources"].size()<=1024,"invalid container requirements");}}
@@ -248,4 +254,5 @@ std::filesystem::path pathFromUTF8(const std::string& s){
     return std::filesystem::u8path(s);
 #endif
 }
+std::filesystem::path attachmentPath(const std::filesystem::path& manifest,const std::string& relative){return checkedAttachment(manifest,relative);}
 }

@@ -2,7 +2,7 @@ global CyrusFalloffGraph,CyrusPointSuspended,CyrusViewportRedraw,CyrusNewLayerID
 -- Named data presets. Scene bindings are captured here, never stored in files.
 global CyrusPresetBinding,CyrusPresetBrowser,CyrusPresetOpenBinding,CyrusOpenPresets
 global CyrusPresetMakeBinding,CyrusPresetCheckBinding,CyrusPresetCapture,CyrusPresetApply
-global CyrusPresetDirectory,CyrusPresetRead,CyrusPresetWrite,CyrusPresetEntries
+global CyrusPresetDirectory,CyrusPresetRead,CyrusPresetWrite,CyrusPresetEntries,CyrusPresetSameValues
 struct CyrusPresetBinding (root,node,owner,ownerID,category,peer=undefined,peerID="",editor=undefined)
 
 fn CyrusPresetMakeBinding root owner category peer:undefined editor:undefined = (
@@ -34,6 +34,18 @@ fn CyrusPresetCapture target = (
         values[3]/=meters;return values
     )
     for field in schema collect (local v=getProperty target.owner (field[1] as name);if field[3] then v/meters else v)
+)
+-- PB2 numeric fields and editable graph coordinates are stored as Max floats.
+-- Compare effective storage values, never formatted text or a broad epsilon.
+fn CyrusPresetSameValues a b = (
+    if classof a==Array then (
+        if classof b!=Array or a.count!=b.count do return false
+        for i=1 to a.count where not (CyrusPresetSameValues a[i] b[i]) do return false
+        true
+    ) else if classof a==Float or classof a==Double then (
+        if classof b!=Float and classof b!=Double do return false
+        (a as float)==(b as float)
+    ) else a==b
 )
 fn CyrusPresetApply target document seedPolicy:#saved = (
     if findItem #(#saved,#current,#new) seedPolicy==0 do throw "Choose Saved, Current or New seed."
@@ -72,6 +84,22 @@ fn CyrusPresetApply target document seedPolicy:#saved = (
             append controllers #(field,control)
         )
     )
+    -- A valid identical apply is passive. Inheritance/explicit relationship
+    -- ownership and a pending curve edit are authored differences too.
+    local unchanged=false
+    if target.editor!=undefined then (
+        unchanged=not target.editor.pendingCurve and CyrusPresetSameValues (target.editor.presetValues()) values
+    ) else if target.category=="spacing" then (
+        local prior=CyrusPresetCapture target
+        prior[3]*=meters
+        unchanged=CyrusPresetSameValues prior values
+        if target.peer==undefined then unchanged=unchanged and owner.procSelfOverride
+        else unchanged=unchanged and (target.root.procPair 2 owner target.peer)>0
+    ) else (
+        local prior=for field in fields collect (getProperty owner field)
+        unchanged=CyrusPresetSameValues prior values
+    )
+    if unchanged do return false
     -- Reconstruct and validate editor-only data before starting authored Undo.
     local curveRollback=if target.editor==undefined then undefined else target.editor.presetPrepare values
     local priorTransfer=owner.getLayerTransfer(),priorSuspended=CyrusPointSuspended
@@ -183,8 +211,8 @@ fn CyrusOpenPresets root owner category peer:undefined editor:undefined = (
         )catch(status.text=getCurrentException())
         on applyPreset pressed do try(
             local document=CyrusPresetRead (selectedPath())
-            CyrusPresetApply target document seedPolicy:(if target.category=="population" then #(#saved,#current,#new)[seedChoice.selection] else #saved)
-            status.text=if target.root.updateMode==1 then "Applied. Manual mode: use Update scatter." else "Applied. Live update follows the normal dependency rules."
+            local changed=CyrusPresetApply target document seedPolicy:(if target.category=="population" then #(#saved,#current,#new)[seedChoice.selection] else #saved)
+            status.text=if not changed then "Already applied. Scene and Undo are unchanged." else if target.root.updateMode==1 then "Applied. Manual mode: use Update scatter." else "Applied. Live update follows the normal dependency rules."
         )catch(status.text=getCurrentException())
         on renamePreset pressed do try(
             local path=selectedPath(),document=CyrusPresetRead path

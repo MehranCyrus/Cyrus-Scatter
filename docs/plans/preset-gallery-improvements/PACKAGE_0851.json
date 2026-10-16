@@ -1,0 +1,92 @@
+{
+  "version": "0.85.1",
+  "max_year": 2027,
+  "signed": false,
+  "artist_profile_installed": false,
+  "artifacts": [
+    {
+      "path": "dist/CyrusScatter-0.85.1-20261016/CyrusScatter-0.85.1-Max2027.mzp",
+      "sha256": "4ec70254dce2bce44a72b8db2ce1a984c76b16faf97563e2fbe8f30e5aee4b24",
+      "bytes": 5090432
+    },
+    {
+      "path": "dist/CyrusScatter-0.85.1-20261016/CyrusScatter-0.85.1-Max2027-Setup.exe",
+      "sha256": "172abbe59f4209949154367501a9be89879daa483de91c61153f1ad4411c9a34",
+      "bytes": 5126144
+    }
+  ],
+  "payload_manifest": {
+    "product": "Cyrus Scatter",
+    "version": "0.85.1",
+    "max_year": 2027,
+    "toolset": "14.38.33130",
+    "windows_sdk": "10.0.19041.0",
+    "configuration": "Release",
+    "native_id": "77c939bc074d",
+    "files": {
+      "AminScatter.dlx": "015a21c8b82d71a634754919aef1da20d703007402ee966ee278df06fbc03fc2",
+      "Clipper2-LICENSE.txt": "c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566",
+      "CyrusBrush.dlx": "06b133819e98a38fa4879fff39d40741198bd27e5e31a3894a6bbcd88fb82d38",
+      "CyrusBrushStorage.dlh": "ab08fff1846d2cb91e5b8ef4f06f83e0550fa1f46c8ec5b2516da8f7e63a9217",
+      "CyrusGallery.dll": "4dc4809b6b7b0e86dc69a2bcfb5d217a199b8567ec51f91e358c61610e2324f5",
+      "CyrusInstaller.dll": "6651533cf07f0e5035223274614528170693a2c150802859df296195eac82b4b",
+      "CyrusScatter.mcr": "2e450f820cc42aa6f74e884f5a0fc4a1eac1207dad85b8611a26effbd7af836b",
+      "CyrusScatter.ms": "f695bf51f2a335140ad9fe82fe6e86fa7246b0e1f7d563d24c59e4aabf2338bf",
+      "CyrusScatterEdit.dlm": "602f47cae01bb831604c7b7b1522f3ea13333f4de7cebc9a19a10912ae86376b",
+      "CyrusScatterStartup.ms": "eea8435810d7c2489c1b5062194459156500f7efc1bc4e36a315cc52151d3d06",
+      "INSTALL.txt": "07c490787248b766460910beb492fe3b54c26a5201060506c881f9a55c8252d8",
+      "InstallInventory.txt": "3c176fca936add77de3d7a1ff8b3a7228969128cf9ff14cd9697b418d2689c0b",
+      "Library/2b0a6ec1-2638-415c-a511-13b6037c5c5e.csrecipe.json": "f568088702390f14dd21dce92d714f0755059b9746757fb9b67476f14113dec2",
+      "Library/42f6a31c-1e9e-4a10-8bef-60667aca32e2.csrecipe.json": "2229831d947fc00de20a8a94eb55348b0daefe53d45747575d386fc6833161d8",
+      "Library/README.md": "a4d9553fc3335f47508f93a8f7284b7023469e92bb1d5c6adf147aed514d0d77",
+      "Library/borders.csrecipe.json": "12c6c8927713f3b43de4dc37feb926bd15b1748924d324ca5836bfdd8b322750",
+      "Library/borders.csrecipe.json.library.json": "61217c04ea1832e7923d1ae7155b0d3180bd1f5637f6a15f8ab05feb2284dcd6",
+      "Library/borders.max": "bcd1d9d48288a4d5fa8f7ee020a0d0f53f6daf84f0f6a58cf7b649313d1dccab",
+      "Library/formal/formal.max": "ab0393a3f270eee6a0405813bd98e7f4c88dbcef0c05d49e52dbdbfba88d83a0",
+      "Library/hexagonal.csrecipe.json": "1f5f1660cb4321def5eb17200ba489085839deea9d4afd7b993986bc6f220f70",
+      "Library/hexagonal.csrecipe.json.library.json": "b8003fda4af5d5192734e212a10092baff5d690dded54a2b8c104968424034b3",
+      "Library/hexagonal.max": "1d3bb178ef4b2646c48b7f6c8b66ef04fefd4aaf84633b2436926501a0a7e94f",
+      "Library/inventory.json": "3fe5a37fcadeab13e47def7a65cede684dba8061b77b2e822275e68b0d9545cd",
+      "Library/meadow.csrecipe.json": "813a51e5850e5366527a7985b79446a63e387c409532aa3cd633ab05525bd8f5",
+      "Library/meadow.csrecipe.json.library.json": "2ba09952910ac638a3fe1b17fb38c1eac252b2e4b18f8b5c00f3f58815a40d5c",
+      "Library/meadow.max": "2307155f5a9a55cc0967c6dd46d28f3d80e01836105edf9fd4d9b507f01288b9",
+      "Library/mountain.csrecipe.json": "180b2926700b1471b0d964ba732d2d581cc3933b9909f3d07095f6518c549ac8",
+      "Library/mountain.csrecipe.json.library.json": "00bfe79d25d11feaf3748bb6dbd39d39bcccd121b8852bf1b324bbfbf63ad918",
+      "Library/mountain.max": "3850e1587a89ddb11c8b61346595dc5c76240451c8c8644c46f1c1cfa614005a",
+      "Library/orchard.csrecipe.json": "54413bd44c298b26fc002a6558ecd43d550d337d939f440ca182352587e70c2b",
+      "Library/orchard.csrecipe.json.library.json": "2497156012614cca60b577b6f61b84f2c9f631e89f3bbaaa35483e944bf84971",
+      "Library/orchard.max": "c1a15f730c1e3fdf4b983b082bc269c690606b176b8eb4fe725ac3d101f76102",
+      "Library/paint-68e28fee-6e72-4dd7-9f0d-3aebe8110ff0.payload/paint-1.cspaint": "de23637359e59378389154387462da1bacc57ff2c5b39c66602d81257f1c931d",
+      "Library/recipe-data-7cf21b24163cde0fc8b592d1ad6c39de/paint-1.cspaint": "b4c463669fb02dfabcec551a2082aad7d27f504f4f6bf831105473dd86183f9e",
+      "Library/recipe-data-7cf21b24163cde0fc8b592d1ad6c39de/paint-2.cspaint": "1784eb7fc740585a33f844ae5a7e094c86940184914f919f09a3ac506b46c059",
+      "Library/recipe-data-7cf21b24163cde0fc8b592d1ad6c39de/paint-3.cspaint": "b05fd7ddb54f2f31d9ee48968c6db3a11d8952f67200518440f74e7e3562d912",
+      "Library/recipe-data-7cf21b24163cde0fc8b592d1ad6c39de/thumbnail.png": "eafa4693a7a46659c232d2b2abf7a10a535abf8f646b66b956fa384ca11b454e",
+      "Library/recipe-data-e1592409d58f330ffa85b138add62df4/thumbnail.png": "acbb719d07572cae1281feeecb77c2d3cbdbab4d65d921e5aa0368b7419230b5",
+      "Library/thumbnail-0832ad393a28115d93b65b6310b69b2592d38f04d882d3ee851dde543a39a1ee.png": "fbd845b0287aad49e73d4636b8e60b44fd1fd1417f0b8478a70372acd96a6524",
+      "Library/thumbnail-12c6c8927713f3b43de4dc37feb926bd15b1748924d324ca5836bfdd8b322750.png": "068824e24e5f93fc298520b6e231b17e7a09cf02f3775b96eea79c66927a41be",
+      "Library/thumbnail-180b2926700b1471b0d964ba732d2d581cc3933b9909f3d07095f6518c549ac8.png": "503569b06b3eed53fa8c2144e05f67c0c3b620ae5326d400a9eb887c784878d0",
+      "Library/thumbnail-1f5f1660cb4321def5eb17200ba489085839deea9d4afd7b993986bc6f220f70.png": "92274aaaf6d5c6e3cb2386f8848de7fd4da688c73c9252130b830bc922c86fd4",
+      "Library/thumbnail-54413bd44c298b26fc002a6558ecd43d550d337d939f440ca182352587e70c2b.png": "5ff6fd49bc2a8b6153ad73b6218c129747a6d5b4d59f30b1815409504ec7cee4",
+      "Library/thumbnail-813a51e5850e5366527a7985b79446a63e387c409532aa3cd633ab05525bd8f5.png": "60c8074b9424646b72a4448dfbe2a981e2fa17a83024d2128fd297db7844ecc9",
+      "Library/valley/valley.max": "77dc636b7fc2bd9d1427dd506580339a6652a6c1492e8f4cf810da6bdc3d89c1",
+      "Library/woodland.csrecipe.json": "0832ad393a28115d93b65b6310b69b2592d38f04d882d3ee851dde543a39a1ee",
+      "Library/woodland.csrecipe.json.library.json": "b7ed854064e98e5a5c0ef38fc4c184999f5ea69271903633b5ec8de1d1959d58",
+      "Library/woodland.max": "0a66ce79146a515903cbe50bcb4a6f33b6a3a14a2517945ab013971ff0903ffc",
+      "LibraryFiles.ms": "47c41b821424cfcc16de14d871937ca338f2e1b0ba75dcaf4f40b7bdc0f5d971",
+      "Uninstall.ms": "5629b64b841f52b215d0d76287b97f884f292c150e213605a52bf2350c8f1233",
+      "install.ms": "fd04f4625a74f08d638a18727246962915577e7c3faed0f9b7ae8a43505dde6c",
+      "mzp.run": "6329fe887aa7288ea8cc98889c671f3a7ab8adbe170ceab22d670353876caaae",
+      "nlohmann-json-LICENSE.txt": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603"
+    },
+    "licensing": {
+      "mode": "offline-team",
+      "key_id": "cyrus-team-a1b79a717a834e459d454a7768ffe205",
+      "term_days": 30
+    }
+  },
+  "exe_build": {
+    "path": "build/gallery-0851-20261016-01/setup-candidate-04/CyrusScatter-0.85.1-Max2027-Setup.build.json",
+    "sha256": "04a94f12ef0ee068f3ec4dafa955faba8cf8c04b0209f907cbc6ef7257dfdc64"
+  },
+  "scope": "Exact copied tested bytes; Max 2027, local NTFS, owned installer recipients only."
+}

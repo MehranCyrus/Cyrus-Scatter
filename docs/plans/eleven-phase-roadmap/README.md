@@ -1,5 +1,7 @@
 # Eleven-phase Cyrus Scatter implementation roadmap
 
+**Current request, 16 October 2026: documentation only.** The [preset/gallery improvement plan](../preset-gallery-improvements/README.md) expands I03/P10 and I13–I15 into PG01–PG10, with a [Max 2027/performance matrix](../preset-gallery-improvements/VALIDATION.md) and [checklist](../preset-gallery-improvements/TODO.md). It does not start implementation or select a new version. I06/P06 is committed/pushed at `9f8cc15` (0.85.0); the existing program next feature is I07 paths, while library follow-up priorities are proposals until selected.
+
 **Active execution update, 16 October 2026:** the [user's improvement goal](../improvement-program/OBJECTIVE.md)
 resumes P06 and authorizes the remaining P06–P11 and I03–I18 work. Presets are
 first, implemented and scoped-tested as [0.82.6.1](../improvement-program/I03_08261.md). Follow the [current execution ledger](../improvement-program/PROGRESS.md).

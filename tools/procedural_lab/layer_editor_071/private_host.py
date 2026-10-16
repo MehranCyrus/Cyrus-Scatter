@@ -19,7 +19,7 @@ def digest(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
-def launch(folder,script,native,extra='',transport=False,visible=False,extra_modules=(),max_year=2027,silent_startup=False,preview_fault_lab=False):
+def launch(folder,script,native,extra='',transport=False,visible=False,extra_modules=(),max_year=2027,silent_startup=False,preview_fault_lab=False,script_assets=()):
     if max_year not in (2026,2027):
         raise ValueError('Use a supported Max host year')
     folder=Path(folder).resolve();script=Path(script).resolve();native=Path(native).resolve()
@@ -46,6 +46,10 @@ def launch(folder,script,native,extra='',transport=False,visible=False,extra_mod
         destination=folder/'bin'/name;shutil.copy2(native/name,destination)
         modules[name]=digest(destination)
     copied=folder/'scripts/CyrusScatter.ms';shutil.copy2(script,copied)
+    assets={}
+    for name in script_assets:
+        if Path(name).name!=name:raise ValueError('Script assets must be filenames in the staged build directory')
+        destination=folder/'scripts'/name;shutil.copy2(native/name,destination);assets[name]=digest(destination)
     (folder/'plugins.ini').write_text(f'[Directories]\nAdditional MAX plug-ins=C:/Program Files/Autodesk/3ds Max {max_year}/PlugIns\nCyrusPrivate='+str(folder/'bin')+'\n[Help]\n')
     expected=','.join('#(@"'+name+'",@"'+str(folder/'bin'/name)+'")' for name in modules)
     bootstrap='global AminScatterObject,CyrusPerfHeadless=true,MCPFixtureDir=@"'+folder.as_posix()+'/"\n'
@@ -79,7 +83,7 @@ def launch(folder,script,native,extra='',transport=False,visible=False,extra_mod
     startup=subprocess.STARTUPINFO();startup.dwFlags|=subprocess.STARTF_USESHOWWINDOW;startup.wShowWindow=1 if visible else 0
     process=subprocess.Popen(command,cwd=folder,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,startupinfo=startup)
     metadata={'pid':process.pid,'max_year':max_year,'output':str(folder),'command':command,'binaries':modules,
-              'script_sha256':digest(copied),'normal_profile_modified':False,'development_transport':transport,'preview_fault_lab':preview_fault_lab,
+              'script_sha256':digest(copied),'script_assets':assets,'normal_profile_modified':False,'development_transport':transport,'preview_fault_lab':preview_fault_lab,
               'profile_template':str(profile),'profile_template_sha256':hashlib.sha256(profile_bytes).hexdigest()}
     (folder/'launch.json').write_text(json.dumps(metadata,indent=2)+'\n')
     return process,metadata

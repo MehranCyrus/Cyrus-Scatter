@@ -37,6 +37,8 @@ def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 for name, expected in metadata['binaries'].items():
     assert digest(folder / 'bin' / name) == digest(native / name) == expected
+for name, expected in metadata.get('script_assets', {}).items():
+    assert digest(folder / 'scripts' / name) == digest(native / name) == expected
 loaded = (folder / 'loaded.tsv').read_text(encoding='utf-8-sig')
 for name in metadata['binaries']:
     assert str(folder / 'bin' / name).lower() in loaded.lower()
@@ -54,6 +56,13 @@ receipt_path = folder / ('script-successor-' + token + '.json')
 receipt_path.write_text(json.dumps(manifest, indent=2) + '\n')
 request = folder / ('reload-' + token + '.ms')
 request.write_text('''if CyrusPresetBrowser!=undefined do try(destroyDialog CyrusPresetBrowser)catch()
+if CyrusRecipeBrowser!=undefined do try(destroyDialog CyrusRecipeBrowser)catch()
+if CyrusRecipeSaveEditor!=undefined do try(destroyDialog CyrusRecipeSaveEditor)catch()
+if CyrusRecipeLoadEditor!=undefined do try(destroyDialog CyrusRecipeLoadEditor)catch()
+if CyrusRecipeDetailEditor!=undefined do try(destroyDialog CyrusRecipeDetailEditor)catch()
+if CyrusStyleEditor!=undefined do try(destroyDialog CyrusStyleEditor)catch()
+if CyrusAssetExportEditor!=undefined do try(destroyDialog CyrusAssetExportEditor)catch()
+if CyrusAssetImportEditor!=undefined do try(destroyDialog CyrusAssetImportEditor)catch()
 if CyrusFalloffGraph!=undefined do try(destroyDialog CyrusFalloffGraph)catch()
 resetMaxFile #noPrompt
 fileIn @"''' + snapshot.as_posix() + '''"

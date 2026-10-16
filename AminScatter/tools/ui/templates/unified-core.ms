@@ -2184,7 +2184,7 @@ initialRollupState:0x8
         -- Only a committed calculation epoch establishes its first result.
         CyrusLayerStatusData hasResult:(procEpoch>0 and cachedPoints!=undefined) placements:generatedCount previewCount:cachedPointCount mode:uiPreviewMode buildMs:previewBuildMs needsUpdate:dirty errorText:previewError densityCapped:densityCapped inputOff:(disabledAnalyzerInput())
     )
-    fn uiVersion = "0.85.0"
+    fn uiVersion = "0.85.1"
     fn calculationModel = (this.procAssertSchema();"CyrusUnified1")
     fn placements plants previewOnly:false rawOnly:false finalPass:undefined = (
         local token=undefined
@@ -2412,7 +2412,7 @@ initialRollupState:0x8
         parent.markInputDirty();this.bindNativeUI();CyrusViewportRedraw();true
     )
     fn validatePaintConversion area = (
-        if cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=4 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 do throw "Paint/spline conversion requires the matching Cyrus native plugins. Restart Max with the complete pair."
+        if cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=5 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 do throw "Paint/spline conversion requires the matching Cyrus native plugins. Restart Max with the complete pair."
         local parent=if area==undefined then undefined else this.logicalParent area
         if parent==undefined or findItem layerObjects parent==0 or findItem parent.paintAreas area==0 do throw "Select a Paint Area owned by this setup."
         if area.paintDocument==undefined or not isValidNode area.areaTarget or findItem (parent.validSurfaces()) area.areaTarget==0 do throw "Choose a valid receiving surface for this Paint Area."
@@ -3397,8 +3397,11 @@ initialRollupState:0x8
         )
         (overlapOwner.populationAllocation this countOverride:budget)[1]
     )
+    fn procPreparationKey pool plants = (
+        (this.paintBaseInputKey plants true)+"|Texture:"+(this.procWatchDensity() as string)+"|Pool:"+(pool as string)+"|"+(this.procCoverageKey())+"|"+(overlapOwner.procEditKey())+"|Filter:"+(this.surfaceFilterKey())+"|"+(this.orientationKey())
+    )
     fn procPrepare pool plants = (
-        local key=(this.paintBaseInputKey plants true)+"|Texture:"+(this.procWatchDensity() as string)+"|Pool:"+(pool as string)+"|"+(this.procCoverageKey())+"|"+(overlapOwner.procEditKey())+"|Filter:"+(this.surfaceFilterKey())+"|"+(this.orientationKey())
+        local key=this.procPreparationKey pool plants
         if key==procPreparedKey do (CyrusDiagnosticEmit "prepare.reused" "engine" layerID procEpoch "key_match" correlation:diagnosticCauseID;procPreparedHits+=1;return procPreparedRows)
         CyrusDiagnosticEmit "prepare.started" "engine" layerID procEpoch "key_changed" correlation:diagnosticCauseID
         local rows
@@ -3417,14 +3420,14 @@ initialRollupState:0x8
         rows
     )
     fn procAssertSchema = (
-        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.85.0 setup; earlier schemas are unsupported."
+        local message="This development scene does not use the current schema 58. Create a new Cyrus 0.85.1 setup; earlier schemas are unsupported."
         if not procSchemaValid do throw message
         for leaf in layerObjects where not leaf.procSchemaValid do throw message
         true
     )
     fn procValidate = (
         this.procAssertSchema()
-        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=4 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.85.0 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
+        if cyrusGridVersion==undefined or cyrusGridVersion()!=1 or cyrusGridPrepare==undefined or cyrusOrientationKey==undefined or cyrusScatterCanonical==undefined or cyrusOrientationVersion==undefined or cyrusOrientationVersion()!=1 or cyrusCandidateInputValidity==undefined or cyrusOrientationInputValidity==undefined or cyrusDiagnosticBegin==undefined or cyrusDiagnosticEnd==undefined or cyrusRecipeVersion==undefined or cyrusRecipeVersion()!=5 or cyrusBrushRecipeExport==undefined or cyrusBrushRecipeImport==undefined or cyrusMeshDensityVersion==undefined or cyrusMeshDensityVersion()!=1 or cyrusBrushConversionVersion==undefined or cyrusBrushConversionVersion()!=1 or cyrusDensityMapVersion==undefined or cyrusDensityMapVersion()!=1 or cyrusSurfaceFilterVersion==undefined or cyrusSurfaceFilterVersion()!=1 or cyrusPresetVersion==undefined or cyrusPresetVersion()!=3 or cyrusSplineBandVersion==undefined or cyrusSplineBandVersion()!=10 or cyrusEvaluateProcedural==undefined or cyrusEditTransaction==undefined or cyrusProceduralPublicationVersion==undefined or cyrusProceduralPublicationVersion()!=2 or cyrusBuildInspectionPreview==undefined or cyrusBuildFieldPreview==undefined or cyrusFieldDependencyKey==undefined or cyrusRecolorPreview==undefined or cyrusPreviewPlacementsEqual==undefined or cyrusPreviewRadiiEqual==undefined or cyrusViewportPolicyVersion==undefined or cyrusViewportPolicyVersion()!=2 or cyrusViewportPointCapacity==undefined do throw "Cyrus 0.85.1 requires the matching native plugin binaries. Restart Max with the complete matching script/native pair."
         if layerObjects.count>10 do throw "A setup supports ten total populations."
         for parent in this.logicalLayers() do (
             if parent.procPopulation<1 or parent.procPopulation>2 or parent.procAttemptFactor<1 or parent.procAttemptFactor>32 or parent.procRounds<1 or parent.procRounds>16 do throw "Invalid procedural work limits."
@@ -3589,6 +3592,10 @@ initialRollupState:0x8
         cachedPoints=undefined;inspectionCache=undefined;cachedDisabledPreview=undefined
         procPreviewModes=#();procPreviewModesEpoch=-1
         procReceiverCache=#();procOrientationReceivers=#();paintBaseRows=#();paintBaseKey=""
+        procReceiverGeometry=#();procReceiverPlanData=#(#(),#(),0,0,false);procPreparedKey=""
+        procPublishedOwners=#();procPublishedSources=#();procPublishedFinalKeep=#();procPublishedRadii=#();procPublishedInfo=#();procPublishedMetadata=#()
+        groupSnapshotRows=#();groupSnapshotKey="";groupPrepareRows=#();groupPrepareKey=""
+        paintBaseFaceCounts=#();blockerCacheRows=#();blockerCacheKey="";procDensityCache=#();procGridCache=#()
         procSplineField=undefined;procPreparedRows=#();radiusPreview=#();procFieldCache=undefined;procFieldCacheKey="";procFieldStatus="Preview hidden.";procPreviewInspectionKey=""
         procPreviewDisplayKey="";procPreviewGeometryKey="";procPublishedDisplayKey=""
         true
@@ -3711,6 +3718,35 @@ initialRollupState:0x8
             requests[i]=#(quota,attempts,pool);admission+=if leaf.placementMode>1 then receiverPlan[6] else pool
         )
         if admission>1000000 do throw ("This Scatter requests "+(admission as string)+" candidates across its layers; the total limit is 1,000,000 including retries. Reduce Amount or retry limits. The previous result is retained.")
+        -- A placement publication must not force Max's full garbage collector
+        -- to discard the artist's Undo history. Account for the pending script
+        -- transport before Edit mutation; unchanged prepared rows stay shared.
+        -- These are admission allowances, not reported process-memory usage.
+        -- The 30k fixture measured ~43.5 MB preparation, 2.3 MB per radius pass
+        -- and 1.8 MB scheduling. Extra row-producing falloff passes add room.
+        if theHold.Holding() or (theHold.GetUndoNames()).count>0 or (theHold.GetRedoNames()).count>0 do (
+            local requiredHeap=8388608L
+            for i=1 to layerObjects.count where cyrusEnabled and this.enabledLayer i do (
+                local leaf=layerObjects[i],pool=requests[i][3] as integer64,plants=leaf.validSources()
+                requiredHeap+=pool*192L
+                if (leaf.procPreparationKey requests[i][3] plants)!=leaf.procPreparedKey do (
+                    local passes=0
+                    if leaf.finalRelax do passes+=1
+                    if leaf.wholeScaleMin!=1.0 or leaf.wholeScaleMax!=1.0 do passes+=1
+                    if leaf.fallDelete or leaf.fallScale or leaf.fallDensity do passes+=1
+                    -- Reserve every authored area without normalizing settings
+                    -- or hydrating its curves during admission.
+                    passes+=leaf.areaNodes.count+leaf.paintAreas.count
+                    if leaf.orientationMode==1 and leaf.diversityMode==4 do passes+=1
+                    requiredHeap+=pool*(2048L+passes*512L)
+                )
+            )
+            -- Light collection is documented to preserve Undo; never request a
+            -- full collection, delayed flush, or a heap preference change. It
+            -- runs only for an actual successor that fails initial admission.
+            if heapFree<requiredHeap do gc light:true
+            if heapFree<requiredHeap do throw ("Update needs "+(((ceil (requiredHeap/1048576.0)) as integer) as string)+" MB of free MAXScript working memory to preserve Undo. This session has "+(((floor (heapFree/1048576.0)) as integer) as string)+" MB. Reduce Amount or retry limits. The previous complete result and Undo history are retained.")
+        )
         for i=1 to layerObjects.count where cyrusEnabled and this.enabledLayer i do layerObjects[i].procRadiusGeometry (layerObjects[i].validSources())
         local publishedMetadata=for leaf in layerObjects collect undefined
         local transaction=false,previousBindings=for leaf in layerObjects collect leaf.procBindingKey
@@ -6341,17 +6377,24 @@ fn CyrusViewportRedraw = (
 fn CyrusPointBeforeSave = (CyrusPointSuspended=true;CyrusPointClear())
 fn CyrusPointAfterSave = (CyrusPointSuspended=false;(CyrusPointPending=true;CyrusScheduleRelease()))
 fn CyrusPointBeforeScene = (
-    for node in objects where classof node.baseObject==AminScatterObject do appendIfUnique CyrusPointSceneOwners node.baseObject
+    -- Capture owners before Max detaches the departed scene's reference graph.
+    -- Its root.layerObjects can already be empty in the post-open callback.
+    for node in objects where classof node.baseObject==AminScatterObject do (
+        local root=node.baseObject
+        appendIfUnique CyrusPointSceneOwners root
+        for leaf in root.layerObjects do (
+            appendIfUnique CyrusPointSceneOwners leaf
+            for area in leaf.paintAreas do appendIfUnique CyrusPointSceneOwners area
+        )
+        for owner in root.procPublishedOwners do appendIfUnique CyrusPointSceneOwners owner
+    )
     CyrusPointSuspended=true;CyrusPointClear()
 )
 fn CyrusPointAfterScene = (
     local retired=CyrusPointSceneOwners;CyrusPointSceneOwners=#()
-    for root in retired do (
-        local live=for node in refs.dependentNodes root where isValidNode node and node.baseObject==root collect node
-        if live.count==0 do (
-            for leaf in root.layerObjects do leaf.procReleaseRetiredDisplay()
-            root.procReleaseRetiredDisplay()
-        )
+    for owner in retired do (
+        local live=for node in refs.dependentNodes owner where isValidNode node collect node
+        if live.count==0 do owner.procReleaseRetiredDisplay()
     )
     CyrusPointSuspended=false;CyrusPointDeletedHandles=#();(CyrusPointPending=true;CyrusScheduleRelease())
 )

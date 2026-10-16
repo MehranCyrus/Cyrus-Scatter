@@ -2,9 +2,10 @@
 
 | Domain | Current value | Meaning |
 | --- | --- | --- |
-| Scatter UI | 0.85.0 | I06 regular grids; remaining program continues |
-| Scatter native/package | 0.85.0 packaged for Max 2027; historical installation receipts preserved | Exact pair, hashes and scoped Max 2027 qualification are in the I06 handoff; manual installation is separate |
-| Recipe / numeric-settings format and capability | 4 / 3 | Grid settings and unit-aware distances; strict earlier reads retain Surface random and original variation |
+| Scatter UI | 0.85.1 | Collection gallery and bounded portable-asset delivery; scoped acceptance and open adapters |
+| Scatter native/package | 0.85.1 MZP/EXE for Max 2027; historical installation receipts preserved | Exact pair, hashes and scoped qualification are in the PG handoff; artist installation is separate |
+| Recipe / numeric-settings format and capability | 5 / 3 | Revisioned presentation/capture; 242 authored fields retained; strict earlier recipe reads |
+| Library / portable-package capability | 3 / 1 | Bounded collection pages and static mesh/Standard/PNG adapters |
 | Saved MAXScript schema | 58 | Appended orientation, variation and grid parameter blocks preserve existing parameter IDs; no earlier-schema migration |
 | Calculation model | CyrusUnified1 | Current procedural model |
 | Surface Analyzer | 0.14 | Independently versioned product |
@@ -14,19 +15,21 @@
 
 ## Choosing the next version
 
+**16 October 2026 delivery:** the user selected **0.85.1** for the [preset/gallery implementation](plans/preset-gallery-improvements/PROGRESS_0851.md). The MZP and unsigned EXE contain the same qualified payload; the artist profile was not installed into. [Format 5](plans/preset-gallery-improvements/FORMAT_5.md) adds logical revision and optional presentation/capture while retaining 242 authored fields and scene schema 58. Library capability 3 adds bounded collection summaries; portable capability 1 declares its closed adapter. Numeric settings remain format 3. These separate capability changes do not renumber Analyzer, MCP or licensing. Final package and acceptance follow the [handoff](plans/preset-gallery-improvements/DELIVERY_0851.md).
+
 **Active program override, 15 October 2026:** the user explicitly authorizes
 0.82.6.1 for the preset/browser delivery, followed by substantial deliveries
 0.83.0, 0.84.0, etc., and smaller patch follow-ups. Three- and four-part labels
 are development delivery identifiers. This overrides the earlier small-step
 selection table below for the [active goal](plans/improvement-program/OBJECTIVE.md).
-Phase 6 is resumed within that goal; preset work is first. Current packaged
+Phase 6 is resumed within that goal; preset work is first. The preceding packaged
 delivery is [0.85.0](plans/improvement-program/I06_0850.md): a substantial placement generator with disjoint stable cell identities, independent source assignment and two additional presets. Scene schema 58 is retained with an appended grid block; complete recipes advance to 4 (242 fields), numeric settings to 3 and grid capability to 1. Strict earlier-format reads retain Surface random and original variation. The 0.84.0, 0.83.0 and 0.82.6.1 receipts remain frozen. Library presentation and native orientation retain independent capability 1. I07 paths is next; select its version from the complete bounded implementation contract before editing metadata.
 
 The preceding small-step policy is retained as historical context:
 
 Use three integer components, `0.MINOR.PATCH`, with the user's **small-step
 development sequence**. Advance PATCH by one through 9; after PATCH 9, advance
-MINOR by one and reset PATCH to 0. Example: `0.81.8 → 0.81.9 → 0.82.0 → 0.82.1`.
+MINOR by one and reset PATCH to 0. Example: `0.81.8 â†’ 0.81.9 â†’ 0.82.0 â†’ 0.82.1`.
 New features follow this same sequence. Do not jump to the next minor solely
 because a phase adds a feature. Larger jumps require an explicit user-selected
 milestone. This rule supersedes the earlier feature-based minor-bump policy.
@@ -34,8 +37,8 @@ milestone. This rule supersedes the earlier feature-based minor-bump policy.
 | Delivered change | Version decision | Example |
 | --- | --- | --- |
 | Documentation/tests only, without a changed delivery | No product bump | Remain 0.82.2 |
-| Fix, performance improvement or new feature delivery | Next small step | 0.82.2 → 0.82.3 |
-| Last PATCH digit is 9 | Carry into the next MINOR | 0.82.9 → 0.83.0 |
+| Fix, performance improvement or new feature delivery | Next small step | 0.82.2 â†’ 0.82.3 |
+| Last PATCH digit is 9 | Carry into the next MINOR | 0.82.9 â†’ 0.83.0 |
 | Larger named product milestone | Explicit user-selected label and recorded reason | No automatic jump |
 | Publication readiness | 1.0.0 only after the release acceptance gates are met | Never inferred from work volume |
 
@@ -154,7 +157,7 @@ Max years and their verified hashes. Restart normal Max sessions to load this pa
 fresh normal-profile and physical artist acceptance remain pending.
 
 
-The 0.80.0 → 0.81.0 development minor is selected for removal of the optional editing workflow and addition of model-to-Point conversion. Schema 57 and native interface contracts stay unchanged. See the [implementation record](plans/spline-bands/PROGRESS.md) for automated checks and remaining host acceptance. The subsequent authorized [local delivery](plans/spline-bands/INSTALLATION.md) installs this exact qualified pair on disk; fresh normal-profile acceptance remains pending.
+The 0.80.0 â†’ 0.81.0 development minor is selected for removal of the optional editing workflow and addition of model-to-Point conversion. Schema 57 and native interface contracts stay unchanged. See the [implementation record](plans/spline-bands/PROGRESS.md) for automated checks and remaining host acceptance. The subsequent authorized [local delivery](plans/spline-bands/INSTALLATION.md) installs this exact qualified pair on disk; fresh normal-profile acceptance remains pending.
 
 Historical 0.81.0 source and scoped Max 2026/2027 evidence are recorded in the [Bands implementation record](plans/spline-bands/PROGRESS.md). Schema 57 retains typed distances and removes old migration handlers and placement readers. Native Band interface 8 and procedural publication 2 require a matched script/native pair. The [0.81.0 local delivery](plans/spline-bands/INSTALLATION.md) records package and installed identities, backups and pending fresh-launch acceptance. The [0.79.6 foundation correction](Foundation_0.79.6_2026-10-12/README.md), older metadata-only and team-pilot notes below remain historical.
 
@@ -172,7 +175,7 @@ Before delivery, regenerate UI, run appropriate offline/native/host checks, pack
 
 - **0.79.1**: Point identities and direct spline assignment, separate source-container section, accessible source/falloff controls and area-selection fixes. Retains schema 55 and the 0.79 team licensing authority; Analyzer 0.14 and MCP 0.73.0 are independently versioned. See the [focused qualification](Point_Workflow_0.79.1_2026-10-11/README.md).
 
-## Original P03 development decision — superseded numbering, 14 October 2026
+## Original P03 development decision â€” superseded numbering, 14 October 2026
 
 0.82.0 to 0.83.0 adds per-layer slope/altitude eligibility and inside fades, with
 protected Edit behavior and independent random thinning. This coherent feature

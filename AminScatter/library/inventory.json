@@ -1,5 +1,5 @@
 {
-  "version": "0.85.0",
+  "version": "0.85.1",
   "max_year": 2027,
   "source_host": "foundation-roadmap-library08261-final100-20261016-04",
   "source_script_sha256": "de6ca0f3097b15e3437c58b91ac9ee80fead0ae4d772bc7736ae234aa2275711",
@@ -75,10 +75,40 @@
       ],
       "source_host": "foundation-roadmap-grid0850-final100-20261016-03",
       "source_script_sha256": "9fc30834f8340dff09399fe31e678406eeb6bc444fc5b4d4aae28af9c68a5cea"
+    },
+    {
+      "id": "formal",
+      "name": "Four garden rooms",
+      "recipe": "42f6a31c-1e9e-4a10-8bef-60667aca32e2.csrecipe.json",
+      "scene": "formal/formal.max",
+      "thumbnail": "recipe-data-7cf21b24163cde0fc8b592d1ad6c39de/thumbnail.png",
+      "counts": [
+        38,
+        579,
+        2239
+      ],
+      "source_host": "foundation-roadmap-gallery0851-admission-20261016-01",
+      "qualification_scope": "Actual format-5 Save/Load, full rows, Paint, Undo/Redo; exact-placement Scanline preview",
+      "source_script_sha256": "5dec8fbe27c4296ad8250efcb7013b157464c169a3a48bd74bb498e9372ebf83"
+    },
+    {
+      "id": "valley",
+      "name": "Valley moss and rocky crests",
+      "recipe": "2b0a6ec1-2638-415c-a511-13b6037c5c5e.csrecipe.json",
+      "scene": "valley/valley.max",
+      "thumbnail": "recipe-data-e1592409d58f330ffa85b138add62df4/thumbnail.png",
+      "counts": [
+        3320,
+        400,
+        362
+      ],
+      "source_host": "foundation-roadmap-gallery0851-admission-20261016-01",
+      "qualification_scope": "Actual format-5 Save/Load, full rows, Paint, Undo/Redo; exact-placement Scanline preview",
+      "source_script_sha256": "5dec8fbe27c4296ad8250efcb7013b157464c169a3a48bd74bb498e9372ebf83"
     }
   ],
   "files": {
-    "README.md": "382c8cfeba5bd4d653074e05eded0b06d4f78d8e518766bd6f998a87ec3e74c5",
+    "README.md": "a4d9553fc3335f47508f93a8f7284b7023469e92bb1d5c6adf147aed514d0d77",
     "borders.csrecipe.json": "12c6c8927713f3b43de4dc37feb926bd15b1748924d324ca5836bfdd8b322750",
     "borders.csrecipe.json.library.json": "61217c04ea1832e7923d1ae7155b0d3180bd1f5637f6a15f8ab05feb2284dcd6",
     "borders.max": "bcd1d9d48288a4d5fa8f7ee020a0d0f53f6daf84f0f6a58cf7b649313d1dccab",
@@ -103,8 +133,18 @@
     "hexagonal.csrecipe.json": "1f5f1660cb4321def5eb17200ba489085839deea9d4afd7b993986bc6f220f70",
     "hexagonal.max": "1d3bb178ef4b2646c48b7f6c8b66ef04fefd4aaf84633b2436926501a0a7e94f",
     "thumbnail-1f5f1660cb4321def5eb17200ba489085839deea9d4afd7b993986bc6f220f70.png": "92274aaaf6d5c6e3cb2386f8848de7fd4da688c73c9252130b830bc922c86fd4",
-    "hexagonal.csrecipe.json.library.json": "b8003fda4af5d5192734e212a10092baff5d690dded54a2b8c104968424034b3"
+    "hexagonal.csrecipe.json.library.json": "b8003fda4af5d5192734e212a10092baff5d690dded54a2b8c104968424034b3",
+    "formal/formal.max": "ab0393a3f270eee6a0405813bd98e7f4c88dbcef0c05d49e52dbdbfba88d83a0",
+    "valley/valley.max": "77dc636b7fc2bd9d1427dd506580339a6652a6c1492e8f4cf810da6bdc3d89c1",
+    "recipe-data-7cf21b24163cde0fc8b592d1ad6c39de/thumbnail.png": "eafa4693a7a46659c232d2b2abf7a10a535abf8f646b66b956fa384ca11b454e",
+    "recipe-data-e1592409d58f330ffa85b138add62df4/thumbnail.png": "acbb719d07572cae1281feeecb77c2d3cbdbab4d65d921e5aa0368b7419230b5",
+    "recipe-data-7cf21b24163cde0fc8b592d1ad6c39de/paint-3.cspaint": "b05fd7ddb54f2f31d9ee48968c6db3a11d8952f67200518440f74e7e3562d912",
+    "recipe-data-7cf21b24163cde0fc8b592d1ad6c39de/paint-1.cspaint": "b4c463669fb02dfabcec551a2082aad7d27f504f4f6bf831105473dd86183f9e",
+    "2b0a6ec1-2638-415c-a511-13b6037c5c5e.csrecipe.json": "f568088702390f14dd21dce92d714f0755059b9746757fb9b67476f14113dec2",
+    "42f6a31c-1e9e-4a10-8bef-60667aca32e2.csrecipe.json": "2229831d947fc00de20a8a94eb55348b0daefe53d45747575d386fc6833161d8",
+    "recipe-data-7cf21b24163cde0fc8b592d1ad6c39de/paint-2.cspaint": "1784eb7fc740585a33f844ae5a7e094c86940184914f919f09a3ac506b46c059"
   },
-  "qualification_host": "foundation-roadmap-grid0850-final100-20261016-03",
-  "qualification_script_sha256": "9fc30834f8340dff09399fe31e678406eeb6bc444fc5b4d4aae28af9c68a5cea"
+  "qualification_host": "foundation-roadmap-gallery0851-admission-20261016-01",
+  "qualification_script_sha256": "5dec8fbe27c4296ad8250efcb7013b157464c169a3a48bd74bb498e9372ebf83",
+  "previous_qualification_version": "0.85.0"
 }

@@ -11,6 +11,7 @@ import os
 import re
 import shutil
 import subprocess
+import sys
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -132,6 +133,12 @@ def package(project, name, version, native_names, script_name, args, build_dir):
             payload[path.name] = text.encode('utf-8')
     payload['CyrusScatter.ms' if project == 'AminScatter' else script_name] = (ROOT / project / 'scripts' / script_name).read_bytes()
     if project == 'AminScatter':
+        payload['CyrusGallery.dll'] = (build_dir / project / 'CyrusGallery.dll').read_bytes()
+        installer = build_dir / project / 'CyrusInstaller.dll'
+        installer_receipt = json.loads(installer.with_suffix('.build.json').read_text(encoding='utf-8'))
+        if installer_receipt['artifact_sha256'] != sha(installer.read_bytes()) or installer_receipt['source_sha256'] != sha((ROOT / project / 'setup/InstallEngine.cs').read_bytes()):
+            raise RuntimeError('Installer core source/artifact identity differs from its build receipt.')
+        payload['CyrusInstaller.dll'] = installer.read_bytes()
         payload['Clipper2-LICENSE.txt'] = (ROOT / project / 'third_party/clipper2/LICENSE').read_bytes()
         payload['nlohmann-json-LICENSE.txt'] = (ROOT / 'CyrusLicensing/third_party/nlohmann/LICENSE.MIT').read_bytes()
         payload.update(library_payload(Path(getattr(args, 'library_dir', None) or ROOT / project / 'library'), version))
@@ -215,6 +222,15 @@ def package(project, name, version, native_names, script_name, args, build_dir):
            'Full Brush/container/Edit authoring and ML are outside the closed plan. Old plan schemas are rejected.\n'
            if project == 'AminScatter' else '')
     ).encode('utf-8')
+    if project == 'AminScatter':
+        # Exclude the launching script and outer manifest from the inner inventory
+        # to avoid a self-referential digest. The outer ZIP hashes all files.
+        installed = {n: data for n, data in payload.items() if n not in ('install.ms', 'mzp.run')}
+        content_id = sha(''.join(n + ':' + sha(data) + '\n' for n, data in sorted(installed.items())).encode('utf-8'))[:12]
+        inventory = ('CyrusScatterInstall1\t' + version + '\t' + str(args.max_year) + '\t' + content_id + '\n' +
+                     ''.join(n + '\t' + sha(data) + '\t' + str(len(data)) + '\n' for n, data in sorted(installed.items()))).encode('utf-8')
+        payload['InstallInventory.txt'] = inventory
+        payload['install.ms'] = payload['install.ms'].replace(b'__INSTALL_HASH__', sha(inventory).encode('ascii'))
     manifest = dict(product=name, version=version, max_year=args.max_year,
                     toolset=args.tools_version, windows_sdk=args.windows_sdk,
                     configuration='Release', native_id=native_id,
@@ -269,6 +285,8 @@ def main():
              f'-DMAXSDK_ROOT={args.sdk_root.resolve()}'], env)
         run(['cmake', '--build', dest], env)
         run(['ctest', '--test-dir', dest, '--output-on-failure'], env)
+        if project == 'AminScatter':
+            run([sys.executable, ROOT / project / 'tools/build_installer.py', '--output', dest / 'CyrusInstaller.dll'], env)
     package('AminScatter', 'Cyrus Scatter', scatter_version(), ['AminScatter.dlx', 'CyrusScatterEdit.dlm', 'CyrusBrush.dlx', 'CyrusBrushStorage.dlh'],
             'AminScatterObject.ms', args, base)
     package('CyrusSurfaceAnalyzer', 'Cyrus Surface Analyzer', '0.14', ['CyrusSurfaceAnalyzer.dlx'],

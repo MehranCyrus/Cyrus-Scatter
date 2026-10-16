@@ -1,0 +1,593 @@
+{
+  "version": "0.85.1",
+  "status": "passed for the declared adapter and fixture subset",
+  "baseline_commit": "9f8cc157279b6e257f1f4a0eb6280fc75b0ea58c",
+  "branch": "codex/workflow-0.75",
+  "script_sha256": "f695bf51f2a335140ad9fe82fe6e86fa7246b0e1f7d563d24c59e4aabf2338bf",
+  "native_receipt": {
+    "path": "build/gallery-0851-20261016-01/native-lifetime-04/receipt.json",
+    "sha256": "5b08c73505d75534c30e403a4918025361b60030bb78bab6d1bb2402ee182033"
+  },
+  "native_inputs_rehashed": 154,
+  "native_suites": 39,
+  "python_tests": 166,
+  "python_log": {
+    "path": "build/gallery-0851-20261016-01/python-final.log",
+    "sha256": "8d7242d29dbc291df2a3d1021b78b69e4d0633638d145fd852b56b8a29faad6b"
+  },
+  "generated": {
+    "path": "build/gallery-0851-20261016-01/generated-reopen-02/generated-check.json",
+    "sha256": "c6f45fe9f64e8a04d229d6056f0585bc08430757df24a7796fc8d32b869914fa"
+  },
+  "fixture_python_parse_count": 34,
+  "fixtures": {
+    "tools/gallery_0851/all_examples.ms": "a265912a7be3573b7bf8bd1019a8744b56d752fffa27ffbf19e282c63927a7e1",
+    "tools/gallery_0851/all_examples_prepare.py": "8e4634a9223344fa98d7d19113cb646397d483bc2e452d5795690885a561dba8",
+    "tools/gallery_0851/asset_introspection.ms": "aece052bbbc416f3eb2d51aabb1846ad6f2c2a99b03ae1081a28bcef2d3ac5ab",
+    "tools/gallery_0851/bitmap_controller_probe.ms": "64004b33010efc1639085ac4863895f101ece7e7aa358669a2a879fab15af379",
+    "tools/gallery_0851/bitmap_probe.ms": "eb82e0ee212e37a601691955d04d7154b338bd626216f09dc449ed2f5a31dd2b",
+    "tools/gallery_0851/bitmap_uv_probe.ms": "87c97e79440e2214d6a96ba2bc9d837b642a5a07a5aa279468fdcd33a70fb493",
+    "tools/gallery_0851/browser.py": "d9513e4f29cc1cda28d6c26675af8ac0b89041ae1b9ecaeadc85c521c5529baa",
+    "tools/gallery_0851/capture_boundaries.py": "0e296cf2e942241549991f36bc666a8aaabc0f129d1e162fa9869349683fee07",
+    "tools/gallery_0851/capture_import.ms": "56643c3d95fadb758b2f561bc32875747d5015420308989fa4065684c774b8e4",
+    "tools/gallery_0851/capture_lifecycle.ms": "18a33a3c02bbdb621e302b0d91aa887ab8237b35b4a7baac55462d1dc793dfad",
+    "tools/gallery_0851/catalog_fixture.py": "7df2172b2158b4a9009e6c652fd3ef29c2538a4e1ba9a0ed14949936c874b898",
+    "tools/gallery_0851/close.ms": "5ea6e5adc57d9e363f5fb8c17a6c221f19f9fa5787579f634713e36002edc3f7",
+    "tools/gallery_0851/collections.py": "86fb82a9a96cfa70a3fc1adfff7dc244d01ac0c430825ffc032f81fdbde096aa",
+    "tools/gallery_0851/collections_performance.py": "9846ab938dbd92b9efa559e50296fb0d086ad0b8de848e22753c7aec1b973873",
+    "tools/gallery_0851/curve_presets.ms": "faac37fa8fac0d07fc35f77ccb23057df0684c3fc03ed8239fde977db423e5a4",
+    "tools/gallery_0851/diagnostic_build.py": "2d9de716e5740b6aaf0cba9e59a1b92a9940938f83980e8a09ca6f2c991d5201",
+    "tools/gallery_0851/dialog_layout.py": "eac252676021e0758e0f2accd8e54339ed807d15b01be7c4de1b5a400763ea0c",
+    "tools/gallery_0851/examples.py": "2f23a215fa61f82026a7c10ed4ba0bed60228f7ee53f82407f0d21215b498262",
+    "tools/gallery_0851/example_compare.py": "eedf3b220432e04e49b2a4e3f52cdd041320da36d49e98786dc5d08d88add693",
+    "tools/gallery_0851/example_prepare.py": "a1e23c48ffb916d2ed8a296c8ede8b294cb56b853534dd49e69a4d2071b75826",
+    "tools/gallery_0851/example_preview.py": "1d73c5ae1271420ad85ddb42906093ff8f1a9a8c2986402ca0916e83d85d3e93",
+    "tools/gallery_0851/example_validate.ms": "20fbb8c2e0628b0448560e119209a676ac629a9740a5e9a7c5c8275cbdb0c824",
+    "tools/gallery_0851/final_acceptance.py": "4d0901e1eb98bdb751c02b3e122c21087369be28dc3b4fa1a8c3cb4df4f8a16a",
+    "tools/gallery_0851/final_gallery.py": "ce18cf00756990a10c8418ddc6de2e188a17ab21d5540926ab291a2015989324",
+    "tools/gallery_0851/gallery_soak.py": "1ffec267c6c4929cb1847db8c871fdbb40ff5b49359e9f372f553f3c5b0d5c3c",
+    "tools/gallery_0851/heap_cached_stage.ms": "d25444668e1dcf5a32fcdbabafff06f570d6ad475cd0319b8eef0c5c43c1425c",
+    "tools/gallery_0851/heap_stages.ms": "ab5c23c0d95d1eda02251fe7a6c7afcd2cfdbbb3d1556f566fd71d03c3653608",
+    "tools/gallery_0851/heavy_prepare.py": "2f0f3476261cfd50236eb26b6128f41051308dd952619fa667af6c72e887a431",
+    "tools/gallery_0851/heavy_publish.ms": "27c25ff6fce3387b2f5eaeb5d45c7e489c2cbf9853433592295d644b10456c2b",
+    "tools/gallery_0851/heavy_setup.py": "14443ff2c4d2826db21a98101ec266536a27506aa240bd7db1b8c5ce809cae20",
+    "tools/gallery_0851/heavy_state_probe.ms": "f2a549b10c4349d1fa63f7462eb999f3630549be4b85625dc22947f56727bc4f",
+    "tools/gallery_0851/import_layout.py": "91d04d81c373ca2cf813589ff9438a622780e08c648afae24191842dafb891bd",
+    "tools/gallery_0851/import_soak.ms": "ec6429339afd2d483ab2f69f58a8b87517d81b2c8784f346f7d3fb63c854efc9",
+    "tools/gallery_0851/import_soak.py": "2b7d49cc33f0e837561fec49613c48689259074eef1c101d09a1801a6082da6f",
+    "tools/gallery_0851/installer_crash.py": "a7a413c25519152447699dc5b62ff91a513464200f15600535c005a63204d94c",
+    "tools/gallery_0851/installer_crash_child.ps1": "852b5c4d25837d19592c51f95308845839317cb9030b100156c2c37d3a6a851f",
+    "tools/gallery_0851/installer_exe.ps1": "404a1ff4f457d6dd3f3b879e368a7f2e5db12d90757cdf043c4b2036885f2c09",
+    "tools/gallery_0851/installer_filesystem.ps1": "e9ee4228fe028ccfe1fcf146e1f80c15521bd7269ad7a18d02b6975262dbd644",
+    "tools/gallery_0851/installer_filesystem.py": "a67467cc796ae828e62082b50f55b55924563df2429b0e296b8ec70040162c2d",
+    "tools/gallery_0851/installer_host.ms": "029c5dd25bf53c3485782fd907d03ec7e58aa73464f56adf16194289ceed4968",
+    "tools/gallery_0851/installer_mzp.ms": "40a23822bd30a406ac0c4ee099d3160d1a3a32d4614404674cf9a7aab43acc34",
+    "tools/gallery_0851/installer_mzp.py": "190c4b1210aa6a54206e4253c1c86188cd63b23c8b498c233e142e5e05727647",
+    "tools/gallery_0851/installer_recover.ps1": "263f2e652271620ef38d5fc7805233540911c6744d9a0bb7f92ba3d3a15068dd",
+    "tools/gallery_0851/launch.py": "4049b18025311fb93d42be0bc6603004920651d314b29e3ffb173d11e8a19ed7",
+    "tools/gallery_0851/lifecycle.py": "5f67e59a6cff980a38f685c7f9ff08238d7c6cbfc3e349d73ed077a85f31afb1",
+    "tools/gallery_0851/memory_probe.ms": "7415f8835939da1d3bd7684cd524568f6329871dc9ec9d1b24ab6ca7b31acbfb",
+    "tools/gallery_0851/owned_dialogs.ps1": "927edcf43b58432602c1733bdf54547d5a9eb77d70c521e010f7f1351a4e7032",
+    "tools/gallery_0851/package_bitmap_boundaries.ms": "5cb52622e41319cd101f246a5a2b1dc00a25de1dd46858f3df8eda1be7c5bd30",
+    "tools/gallery_0851/package_bitmap_export.ms": "e8daad6e0ca44233d237a7740fc16603ff907359ba589db25bcd0fa0a875dbb5",
+    "tools/gallery_0851/package_bitmap_import.ms": "0c3fcb4dca264606fe3c84b71212c08f996c9d606ce27d2efbd5ef2a1bc8cc18",
+    "tools/gallery_0851/package_bitmap_render.ms": "293ff0a80fd82092278bca41094f66bfb0d47a7593a027b1bdd4287623cf1581",
+    "tools/gallery_0851/package_export_start.ms": "40a866616c43597fd002a5f2bfeed4d2e40e8cd03b5542c9d5173f327914b35c",
+    "tools/gallery_0851/package_export_verify.ms": "897681c08703255cd07a4e6419ccd53c0311d712bde113262ac2533a7c860954",
+    "tools/gallery_0851/package_import.ms": "427610dcf5ea738baf86f4d393306d626b98f63b496e59a102f5e0e5900af619",
+    "tools/gallery_0851/package_import_boundaries.ms": "e34413e6060cf0c39e0c2917a145735307c19026e524054ab6aab9319fe518e7",
+    "tools/gallery_0851/package_mesh_fidelity.ms": "ec3db3bf9d0f86b3d224596a9838de434f027f83c848520754ac497024d039b8",
+    "tools/gallery_0851/package_pilot.py": "010e152960f9a97582992ae4088ce2e14fb89fac13125b3d58913905cfb841fb",
+    "tools/gallery_0851/package_preparation.ms": "a0346a297534a015ec1682a9fc50a3f756497e25f46c1738e3085a215382bb84",
+    "tools/gallery_0851/package_share.ms": "a7db69141fe43fc652067254a89f149196eae3ca79028acf10eda5e50367d61d",
+    "tools/gallery_0851/performance.py": "6b008ffd0d4d89eb948c25983577fd0a6a9ca527dd44a530ec8209d90f7ae60d",
+    "tools/gallery_0851/persistence.py": "59e615f99c671f2740edd298e8f7133808a9abe881f43b03859cafa4c4c0c4b9",
+    "tools/gallery_0851/preparation_key_probe.ms": "605fd6b63527d9024983e91288f2b46f7f60472a450917fdfefb2cee53218655",
+    "tools/gallery_0851/preset_noop.ms": "52fbbe792f125f6139fdb23361498c37ffe0ba938ffcc96e4153f809fdda006c",
+    "tools/gallery_0851/README.md": "2dfccf585c0685ce931fcc6ca87e793d757d370fd3a4973cb0ca9c0d6b8f83da",
+    "tools/gallery_0851/recipe_pressure.ms": "e4ee7a590778875764fa167e45048704f919372d15f122bae5ce13690d1d78ee",
+    "tools/gallery_0851/recipient.py": "9dcb29b6ae3012a098072195f519fff3cd7b85812aad3d368817e3db31c2e52d",
+    "tools/gallery_0851/render_example.ms": "c92111c569c199da779f105e09f22be16c6c4b1fa5f2f9d9b335c57bb7d72031",
+    "tools/gallery_0851/resource_probe.py": "bb205b411c8214009009f3700509d869cb3a858df50a65dae5df8d1e71451492",
+    "tools/gallery_0851/run_lifecycle.py": "e724cf51a3096ac01b05e0af268a2b6895aece76f0b8b4034a254112497e9f44",
+    "tools/gallery_0851/run_suite.py": "a23f63435be839f4e2ba9f4417d3a66ded82f958ed357f3ab7049791842015b8",
+    "tools/gallery_0851/search_probe.ms": "8ed957eeb172b1f15e67839c3c00522a960bf66c6dc9ee67df1ad417439da461",
+    "tools/gallery_0851/soak_probe.ms": "6055c26b0c423c69ddd4c57b8a34f701b2a2508e0544efde6f0c9fb0aa482947",
+    "tools/gallery_0851/soak_recover.ms": "3a3efaab2323333cc2d60736aab5d5ac9d174afc6506aabb8e89df44e1e66488",
+    "tools/gallery_0851/stage_examples.py": "f047c66c29c0fdcdc9e5e9d249f54fded0bacc636914dc2fd8d51cddf06cdb09",
+    "tools/gallery_0851/stage_managed.py": "640d0e36d59db7d4d743e58f819670fd0b89da8a726bf330bcaff66a21a21ae5",
+    "tools/gallery_0851/style.ms": "5939b61e3666d6666e293bf79adde35530aff487b0cb9918700ee44e09ac8900",
+    "tools/gallery_0851/style_boundaries.ms": "d2b48560244d02d9c067bbf1d15ebc61413dbfc1a148563fd96042f120f1f705",
+    "tools/gallery_0851/undo_pressure.ms": "d643d2d6a0ccad5a328201e99506c373409b539dd0eb1d5a50a9cc8ccfbe258a",
+    "tools/gallery_0851/undo_pressure_retained.ms": "9dd3b38894f93f7ff56dbf8ee8dddae79737a76aa8638d3e5efc2979cfec6dfa",
+    "tools/gallery_0851/visual_layout.py": "de4283f002ce40b37f47d6e11cd96f84c127e015731342d381e774b4ddc49e08"
+  },
+  "import_soak": {
+    "path": "build/mcp-qualification/foundation-roadmap-gallery0851-reopen-20261016-01/import-soak-ba095bbc01984a1db2a72957e6f8872b.json",
+    "sha256": "660a58c9503cef33dd56e95737f92735ccfa00ce908f3e6473d171e2d3e80baa",
+    "seconds": 3600.0469999999914,
+    "cycles": 60
+  },
+  "gallery_soaks": [
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-gallery0851-recipient-dbb3c981/gallery-soak-b04b776521b34f66a38ec0212e3051b0.json",
+      "sha256": "b72e6815ff041a5d31ee8d1a2328fa32fafc67dcdd2b47ef97dc342cb431a79d",
+      "seconds": 1800.0309999999881,
+      "cycles": 60,
+      "unchanged_full_rows_and_work": true,
+      "closed_owned_cache_zero_asserted_by_fixture": true,
+      "global_resources_first": {
+        "gdi": 1224,
+        "user": 1239
+      },
+      "global_resources_last": {
+        "gdi": 1291,
+        "user": 1242
+      },
+      "private_bytes_first": 3319316480,
+      "private_bytes_last": 3084759040
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-gallery0851-heavy-bounded-20261016-01/gallery-soak-8cb4e667005143ab9d38168e22f9310d.json",
+      "sha256": "43174b31fdb399239f6b3feeb1413ec73cb70f06db1e40d587825b95764a5b68",
+      "seconds": 1800.0620000000054,
+      "cycles": 60,
+      "unchanged_full_rows_and_work": true,
+      "closed_owned_cache_zero_asserted_by_fixture": true,
+      "global_resources_first": {
+        "gdi": 1398,
+        "user": 1436
+      },
+      "global_resources_last": {
+        "gdi": 1474,
+        "user": 1442
+      },
+      "private_bytes_first": 4929671168,
+      "private_bytes_last": 4982415360
+    }
+  ],
+  "host_receipts": [
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-gallery0851-reopen-20261016-01/launch.json",
+      "sha256": "d09db0e0fcc6d233866303ed514470470f9f8b7c9b607b1e72ed9d81c654d4d6"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-gallery0851-recipient-dbb3c981/launch.json",
+      "sha256": "1c48f81a7f6c99242a4d0acc89df66c71bd8bc38909e40897cae98784295f598"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-gallery0851-heavy-bounded-20261016-01/launch.json",
+      "sha256": "47f8ad01b72405eec855a5f59740172e7de23d7b9442aaded22fdc15a126c027"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-gallery0851-reopen-20261016-01/acceptance-suite-6cef472d07ff47cbb09b3f2d3491d6bf.json",
+      "sha256": "73a750abe4cd4ac95a738d6280b12e0be3a47ec5cc2e02f337c8d005d169dbf9"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-gallery0851-reopen-20261016-01/final-acceptance-9fe3deebebc2485b946dd77c76cdfeab.json",
+      "sha256": "028327edd60ddf52c051018ec0ff991c2e380300e816e2b1ae7b4d78dee70b03"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-gallery0851-recipient-dbb3c981/final-acceptance-709d9097417d4bff9de449e5d17f69e8.json",
+      "sha256": "19ec0dd9fb4fa998d8be30c7c4f8c43d87bb209e35690a08920fab1727a28320"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-gallery0851-recipient-dbb3c981/final-gallery-8c1e86d084dc439a9ac72b1a4c3dbe44.json",
+      "sha256": "f265e5f8b99c7bc6a0e7df26eb26a63ae0b0457e587b0cfa670cd7516660f3a7"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-gallery0851-heavy-bounded-20261016-01/final-gallery-9091167a76d9409dbc42f927762f2e76.json",
+      "sha256": "cf51744f53c95cf179ee0d662fec771b9edd3517e40a63edabb7f43e809bb3a6"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-gallery0851-reopen-20261016-01/import-soak-ba095bbc01984a1db2a72957e6f8872b.json",
+      "sha256": "660a58c9503cef33dd56e95737f92735ccfa00ce908f3e6473d171e2d3e80baa"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-gallery0851-recipient-dbb3c981/gallery-soak-b04b776521b34f66a38ec0212e3051b0.json",
+      "sha256": "b72e6815ff041a5d31ee8d1a2328fa32fafc67dcdd2b47ef97dc342cb431a79d"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-gallery0851-heavy-bounded-20261016-01/gallery-soak-8cb4e667005143ab9d38168e22f9310d.json",
+      "sha256": "43174b31fdb399239f6b3feeb1413ec73cb70f06db1e40d587825b95764a5b68"
+    },
+    {
+      "path": "build/mcp-qualification/foundation-roadmap-gallery0851-heavy-bounded-20261016-01/heavy-state-63185031.txt",
+      "sha256": "4120a72e0d77a83052ff07b9e617c51eaf526f59558cda5826b9955a83e31317"
+    },
+    {
+      "path": "build/gallery-0851-20261016-01/installer-crash-d225f09722b545158458c63b6ab8bc49/summary.json",
+      "sha256": "3e0fb5581ec8b6d1caee1e7675fd22b5d3b099db242a6978deb1be2674d4874f"
+    },
+    {
+      "path": "build/gallery-0851-20261016-01/installer-files-779c30c0aa6642658b471e6935bc6400/result.json",
+      "sha256": "ec96d13ca7a1e8ca5bd27709399ffb8633634e61f312207563d50fa7563d68ad"
+    }
+  ],
+  "performance": {
+    "foundation-roadmap-gallery0851-recipient-dbb3c981": {
+      "search": [
+        {
+          "path": "build\\mcp-qualification\\foundation-roadmap-gallery0851-recipient-dbb3c981\\performance-large_verify-580198361e844cfb80a23d60f06361a6.json",
+          "sha256": "78d6ff5bb20d0e151a05873694a921c348ba69ccefc2dd47c4c090b009eb6391",
+          "count": 2000,
+          "search_ms": {
+            "values": [
+              31.112500000745058,
+              28.745299990987405,
+              30.435799999395385,
+              26.400000002468005,
+              32.34330000123009,
+              19.970099994679913,
+              5.381299997679889,
+              37.728200026322156,
+              35.770899994531646,
+              28.970700019272044,
+              25.623499997891486,
+              56.54389999108389,
+              41.131500009214506,
+              5.6480000203009695,
+              29.46330001577735,
+              31.693900004029274,
+              26.85109997401014,
+              33.06239997618832,
+              30.008100002305582,
+              47.50009998679161,
+              50.48119998537004,
+              27.256400004262105,
+              3.3198999881278723,
+              5.026700004236773,
+              27.78579998994246,
+              25.592099991627038,
+              38.99709999677725,
+              34.770899976138026,
+              21.206999983405694,
+              1.872299995739013
+            ],
+            "median": 29.217000017524697,
+            "p95": 50.48119998537004,
+            "max": 56.54389999108389
+          },
+          "decoded_bytes": 1376256
+        },
+        {
+          "path": "build\\mcp-qualification\\foundation-roadmap-gallery0851-recipient-dbb3c981\\performance-large_verify-9521f0fe7a914bbb8de9b6904d202639.json",
+          "sha256": "9d8881a752cf526bfedede164b0bb66c392350bd4cc055e51762d96658cfed7c",
+          "count": 10000,
+          "search_ms": {
+            "values": [
+              29.058399988571182,
+              69.14589999360032,
+              23.32059998298064,
+              15.593599993735552,
+              39.9273999792058,
+              20.313599990913644,
+              37.790400005178526,
+              71.12479998613708,
+              37.535600014962256,
+              53.97310000262223,
+              64.35319999582134,
+              60.547799977939576,
+              45.465299976058304,
+              43.180500011658296,
+              25.157099997159094,
+              43.30610000761226,
+              18.46689998637885,
+              37.94969999580644,
+              45.82800000207499,
+              8.719700010260567,
+              47.05309998826124,
+              41.241200000513345,
+              43.49350000848062,
+              81.69130000169389,
+              55.73379999259487,
+              56.970100005855784,
+              50.047699973220006,
+              61.15959997987375,
+              67.35660001868382,
+              71.90239999908954
+            ],
+            "median": 44.479399992269464,
+            "p95": 71.90239999908954,
+            "max": 81.69130000169389
+          },
+          "decoded_bytes": 1376256
+        },
+        {
+          "path": "build\\mcp-qualification\\foundation-roadmap-gallery0851-recipient-dbb3c981\\performance-large_verify-f40fa7e4fe414d8bae3968fd9357c917.json",
+          "sha256": "c0d56f804006406b8d56adbc207fa7f1411fb5aa8b990fccb6e17f6cfa6bf6e9",
+          "count": 128,
+          "search_ms": {
+            "values": [
+              94.50419998029247,
+              147.8971000178717,
+              75.56930001010187,
+              54.427600000053644,
+              10.770299995783716,
+              24.51320001273416,
+              4.159199976129457,
+              2.846899995347485,
+              24.469900003168732,
+              6.663300009677187,
+              27.775099995778874,
+              43.18420001072809,
+              28.889499983051792,
+              68.79830002435483,
+              18.59849999891594,
+              2.258699998492375,
+              22.464800014859065,
+              8.322700014105067,
+              1.9595999910961837,
+              13.961899996502325,
+              5.9729999920818955,
+              3.2862999942153692,
+              2.4781999818515033,
+              14.416999998502433,
+              7.053100009215996,
+              8.925500005716458,
+              13.936700008343905,
+              5.5948999943211675,
+              15.74789997539483,
+              15.351799986092374
+            ],
+            "median": 14.18944999750238,
+            "p95": 94.50419998029247,
+            "max": 147.8971000178717
+          },
+          "decoded_bytes": 1376256
+        }
+      ],
+      "idle": [
+        {
+          "path": "build\\mcp-qualification\\foundation-roadmap-gallery0851-recipient-dbb3c981\\performance-idle_verify-00c1760682a047ada2009939c8ad1c97.json",
+          "sha256": "465cce6ab0bbf179f720c860990d1fe2f248ce2d89be1a6411ecf7ad197d7bb0",
+          "operation": "idle_verify",
+          "checks": [
+            {
+              "passed": true,
+              "assertion": "At least 120 seconds with event-loop processing"
+            },
+            {
+              "passed": true,
+              "assertion": "Idle preserves complete publication and all work counters"
+            },
+            {
+              "passed": true,
+              "assertion": "Catalog and image timers stopped after work"
+            }
+          ],
+          "status": "passed",
+          "elapsed_seconds": 122.25777959823608,
+          "mode": "live"
+        },
+        {
+          "path": "build\\mcp-qualification\\foundation-roadmap-gallery0851-recipient-dbb3c981\\performance-idle_verify-6453bd0e49ab4623a71d87d6117faf40.json",
+          "sha256": "3845b4fb2b626825f2b99587b016913d559bf96ad51748f1aa538b4edfc26ad7",
+          "operation": "idle_verify",
+          "checks": [
+            {
+              "passed": true,
+              "assertion": "At least 120 seconds with event-loop processing"
+            },
+            {
+              "passed": true,
+              "assertion": "Idle preserves complete publication and all work counters"
+            },
+            {
+              "passed": true,
+              "assertion": "Catalog and image timers stopped after work"
+            }
+          ],
+          "status": "passed",
+          "elapsed_seconds": 122.68711972236633,
+          "mode": "manual"
+        }
+      ]
+    },
+    "foundation-roadmap-gallery0851-heavy-bounded-20261016-01": {
+      "search": [
+        {
+          "path": "build\\mcp-qualification\\foundation-roadmap-gallery0851-heavy-bounded-20261016-01\\performance-large_verify-5d766a31699a4e3ebfbfeb9025fa7554.json",
+          "sha256": "8ab2404499a84e8cd314a4ef261da48527615bac134cf5bfffaf1398337c5b34",
+          "count": 10000,
+          "search_ms": {
+            "values": [
+              31.98909998172894,
+              43.505200010258704,
+              15.424299985170364,
+              29.702400002861395,
+              19.38549999613315,
+              26.550599985057488,
+              12.551000021630898,
+              28.377599985105917,
+              26.16639999905601,
+              25.97399998921901,
+              30.78609998920001,
+              33.20450001046993,
+              32.47410000767559,
+              9.89410001784563,
+              14.153399999486282,
+              19.185699988156557,
+              26.913100009551272,
+              9.583499981090426,
+              26.12690001842566,
+              22.44039997458458,
+              48.07710001477972,
+              26.167600008193403,
+              26.862099999561906,
+              27.67810001387261,
+              28.349700005492195,
+              38.31250002258457,
+              24.370200000703335,
+              10.985400003846735,
+              15.30649999040179,
+              27.6686999714002
+            ],
+            "median": 26.359099996625446,
+            "p95": 43.505200010258704,
+            "max": 48.07710001477972
+          },
+          "decoded_bytes": 1376256
+        },
+        {
+          "path": "build\\mcp-qualification\\foundation-roadmap-gallery0851-heavy-bounded-20261016-01\\performance-large_verify-6c197d6308394815a6d95061eaf49aea.json",
+          "sha256": "700e50ba1ad95f85c8005e97c3e9d0c3adbd773b4b4ce597e2bff03897be301f",
+          "count": 2000,
+          "search_ms": {
+            "values": [
+              48.078899999381974,
+              43.694699998013675,
+              18.308999977307394,
+              23.6923000193201,
+              11.206299997866154,
+              20.23739999276586,
+              34.901600010925904,
+              20.446899987291545,
+              15.249499992933124,
+              26.55350000713952,
+              33.427299989853054,
+              34.061399986967444,
+              33.271799999056384,
+              15.665200015064329,
+              37.42640002747066,
+              29.767100000754,
+              11.328799999319017,
+              25.608399999327958,
+              8.836900000460446,
+              30.303999985335395,
+              10.718599980464205,
+              2.0315000147093087,
+              11.982299998635426,
+              2.615299978060648,
+              2.9165000014472753,
+              19.050800008699298,
+              7.583700004033744,
+              1.753599994117394,
+              1.6266999882645905,
+              2.0611999789252877
+            ],
+            "median": 18.679899993003346,
+            "p95": 43.694699998013675,
+            "max": 48.078899999381974
+          },
+          "decoded_bytes": 1376256
+        },
+        {
+          "path": "build\\mcp-qualification\\foundation-roadmap-gallery0851-heavy-bounded-20261016-01\\performance-large_verify-bd3cf68721f64b50b8a0296518562596.json",
+          "sha256": "307a6247bf9af98d334410f9defc92cca4be4f7ad580481ac2e20f225c677b27",
+          "count": 128,
+          "search_ms": {
+            "values": [
+              32.40270001697354,
+              53.978800016921014,
+              41.93839998333715,
+              16.039600013755262,
+              26.20379999279976,
+              28.017899981932715,
+              47.729099984280765,
+              26.119799993466586,
+              2.8427999932318926,
+              2.162099990528077,
+              2.7589999954216182,
+              3.20909998845309,
+              10.393899981863797,
+              39.41270001814701,
+              2.9121999978087842,
+              1.884900004370138,
+              1.6961000219453126,
+              1.5715000045020133,
+              1.8119000014849007,
+              1.8162000051233917,
+              1.741299987770617,
+              19.458399998256937,
+              21.649900008924305,
+              2.2730999917257577,
+              2.03569998848252,
+              25.552499981131405,
+              19.80900001944974,
+              2.6129000179935247,
+              20.491599978413433,
+              26.841499988222495
+            ],
+            "median": 13.21674999780953,
+            "p95": 47.729099984280765,
+            "max": 53.978800016921014
+          },
+          "decoded_bytes": 1376256
+        }
+      ],
+      "idle": [
+        {
+          "path": "build\\mcp-qualification\\foundation-roadmap-gallery0851-heavy-bounded-20261016-01\\performance-idle_verify-116ffa3dc3be4c7e9f27badf646853b0.json",
+          "sha256": "aed1832ce71d16cafd724133d5fb4eece4a056b347ea6826788e7e4fdf20adb2",
+          "operation": "idle_verify",
+          "checks": [
+            {
+              "passed": true,
+              "assertion": "At least 120 seconds with event-loop processing"
+            },
+            {
+              "passed": true,
+              "assertion": "Idle preserves complete publication and all work counters"
+            },
+            {
+              "passed": true,
+              "assertion": "Catalog and image timers stopped after work"
+            }
+          ],
+          "status": "passed",
+          "elapsed_seconds": 122.57622027397156,
+          "mode": "live"
+        },
+        {
+          "path": "build\\mcp-qualification\\foundation-roadmap-gallery0851-heavy-bounded-20261016-01\\performance-idle_verify-b2b00af4a90f460d9f8116c28ae6e6a0.json",
+          "sha256": "b1a9006ca849a440da8f394fd2735bd30aad23120cbd998a57e4f530d42264f1",
+          "operation": "idle_verify",
+          "checks": [
+            {
+              "passed": true,
+              "assertion": "At least 120 seconds with event-loop processing"
+            },
+            {
+              "passed": true,
+              "assertion": "Idle preserves complete publication and all work counters"
+            },
+            {
+              "passed": true,
+              "assertion": "Catalog and image timers stopped after work"
+            }
+          ],
+          "status": "passed",
+          "elapsed_seconds": 122.58401536941528,
+          "mode": "manual"
+        }
+      ]
+    }
+  },
+  "limits": [
+    "20,000-row/180,000-face passive terrain fixture; not a successful 60,000-row editing qualification.",
+    "General B26 and Add Layers lifetime pressure remain open; unchanged 100-MiB MAXScript heap, no full GC or Undo flush.",
+    "PG09 XRefs/nested/material variants remain open; PG10 depends on absent I13/I14, expressions on I18.",
+    "Scanline/Standard witness only; physical 4K/mixed-monitor input, other renderer adapters and network filesystems unqualified.",
+    "Unsigned EXE; no artist install/restart; no additional Phase 6; no website publication."
+  ],
+  "documentation": {
+    "website_sync": "passed",
+    "website_check": "passed",
+    "website_production_build": "passed",
+    "deployed": false,
+    "build_advisory": "Vite chunk over 500 kB",
+    "library_documents": 12,
+    "valid_local_links": 81
+  },
+  "owned_host_cleanup": {
+    "closed_pids": [
+      37068,
+      43476,
+      53836
+    ],
+    "closure_markers_verified": true,
+    "process_absence_verified": true,
+    "artist_pid_26972_preserved": true
+  }
+}

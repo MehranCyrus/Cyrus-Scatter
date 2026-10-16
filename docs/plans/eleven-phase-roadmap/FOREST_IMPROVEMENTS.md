@@ -1,5 +1,7 @@
 # Forest-informed Cyrus improvement plan
 
+**Preset/gallery planning update, 16 October 2026:** [PG01–PG10](../preset-gallery-improvements/README.md) compares the current 0.85.0 recipe/browser implementation with the Forest library continuation, then orders the remaining work from easiest to hardest. It adds detailed performance, transaction, asset ownership and [Max 2027 acceptance](../preset-gallery-improvements/VALIDATION.md) gates. All PG implementation remains pending; the current request is documentation only. PG steps supplement the existing I/P roadmap rather than renumbering it.
+
 **Execution update, 16 October 2026:** I01/I02 were delivered in 0.82.6.
 The [active user goal](../improvement-program/OBJECTIVE.md) authorizes I03–I18
 and resumes P06. I03 is implemented and scoped-tested as [0.82.6.1](../improvement-program/I03_08261.md); see the [current ledger](../improvement-program/PROGRESS.md).
@@ -86,6 +88,8 @@ Recommended priorities after a future implementation authorization: establish I0
 **Exit:** measured latency reduction with unchanged authored state/publication and no stale-owner callbacks. Contracts F01/F04/F08. Scope stays in authoritative templates/generator and their existing binding paths.
 
 ## I03 — recipe browser and completeness feedback
+
+**Current status:** the original browser/search/thumbnail scope is delivered in 0.82.6.1, with six examples by 0.85.0. [PG01–PG04](../preset-gallery-improvements/README.md) plan no-op apply, visual tiles, capture and recipe maintenance; the original proposal below is historical.
 
 **Current gap and research:** 0.82.5 supplies paged browsing, explicit refresh and roles; search/tags/thumbnails and shared category navigation remain open. Forest has separate settings, effect and asset-library formats; presenting them as one interchangeable save operation would be misleading.
 
@@ -230,6 +234,8 @@ Recommended priorities after a future implementation authorization: establish I0
 **Exit:** a bounded effects service and clear UI work without an expression compiler. F01–F11. Separate authorization outside P01–P11; I18 is optional later language work.
 
 ## I15 — complete asset packages and library application
+
+**Detailed successor plan:** [PG05–PG09](../preset-gallery-improvements/README.md) separates selective style apply, dependency export, transactional merge, distribution and shared/XRef/material adapters. PG10 integrates I13/I14 only after those services exist. None is implemented by this planning update.
 
 **Current gap and research:** Cyrus recipes bind external assets. Forest's traced library path acquires scene assets through XRefs, optionally merges records, selectively assigns settings and then handles materials/hooks. Parameter transfer and asset ownership are separate graphs.
 

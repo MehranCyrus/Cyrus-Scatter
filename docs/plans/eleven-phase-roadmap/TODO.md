@@ -1,12 +1,14 @@
 # Execution TODO and progress
 
-Updated 15 October 2026. This is the checklist for the authorized eleven-phase
+Updated 16 October 2026. This is the checklist for the authorized eleven-phase
 program. A checked box means the named task has evidence; it does not imply the
 entire phase passed. Existing defect IDs stay in [BACKLOG](../../BACKLOG.md).
 
 ## Current action
 
-**Active improvement program:** P06 is resumed by the [explicit goal](../improvement-program/OBJECTIVE.md).
+**Current request: implement the preset/gallery plan as 0.85.1.** The [PG plan](../preset-gallery-improvements/README.md), [checklist](../preset-gallery-improvements/TODO.md) and [current handoff](../preset-gallery-improvements/DELIVERY_0851.md) expand P10/I03/I15. This replaces the preceding planning-only checkpoint. Remaining adapter prerequisites and acceptance limits stay explicit; no additional Phase 6 work is included in this library delivery.
+
+**Earlier improvement-program authorization:** P06 was resumed by the [explicit goal](../improvement-program/OBJECTIVE.md).
 I03 presets/browser/thumbnails passed scoped checks as [0.82.6.1](../improvement-program/I03_08261.md), with four initial examples; remaining deliveries
 follow the dependency order and acceptance gates in the [execution ledger](../improvement-program/PROGRESS.md).
 Later features are not complete. The active version policy replaces all provisional
@@ -135,7 +137,7 @@ Preparatory [source/format research](P02_PREFLIGHT.md) is recorded. Implementati
 - [x] Add mode-specific controls and unambiguous Count/Density interaction.
 - [x] Test analytic positions/counts, boundary edits, identity stability and all masks/filters.
 - [x] Measure bounded large-grid preparation/cache reuse; run host lifecycle/regressions.
-- [ ] Update version/docs; commit, push and verify. — docs and package complete; Git checkpoint pending.
+- [x] Update version/docs; commit, push and verify. — 0.85.0, implementation `9f8cc15`, package and remote hash verified.
 
 ## P07 — direction controls (delivered as I04 / 0.83.0)
 
@@ -168,15 +170,18 @@ Preparatory [source/format research](P02_PREFLIGHT.md) is recorded. Implementati
 - [ ] Measure shared-map reuse, animation dependencies and memory; run host/regressions.
 - [ ] Update version/docs; commit, push and verify.
 
-## P10 — recipes and browser (0.82.5 core; follow-up TBD)
+## P10 — recipes and browser (0.82.5 core; I03 browser and I04–I06 field extensions delivered)
 
 - [x] Freeze the current static recipe core and explicit source/receiver/path/map role binding in 0.82.5. Future P06-P09 fields require a reviewed successor.
 - [x] Implement bounded single/multi-layer static capture, including native Paint and dormant settings, with no runtime caches or executable data. Unsupported authored data blocks complete save.
 - [x] Implement explicit role substitution, new identity mapping and transactional Add/new setup for the current static core. Compatible Paint binding is mandatory; orphan coverage remains unbound.
-- [ ] Add search, thumbnails and distributable demo recipes. 0.82.5 supplies a local 128-entry page and 512-entry metadata cache; no idle polling.
-- [ ] Test missing assets, duplicate names, units, internal references, cancellation and storage failures.
-- [ ] Qualify full production recipe save/apply/Undo/reopen and passive browser performance.
-- [ ] Update version/docs; commit, push and verify.
+- [x] Add search, tags/categories, stored thumbnails and distributable procedural demos: I03 in 0.82.6.1; six examples by 0.85.0. The current catalog has bounded native indexing and 128-row pages; no idle polling.
+- [x] Run scoped missing/ambiguous binding, units, relationship, cancellation, storage-failure and current recipe Undo/reopen checks; see I03–I06 handoffs for exact limits. These do not qualify future asset import or arbitrary authored records.
+- [x] Deliver/document/package/push the current recipe/browser and field-extension slices through `9f8cc15` / 0.85.0.
+- [ ] Reach at least eight distinct examples with actual-result thumbnails; avenue depends on I07 paths.
+- [ ] Implement selected [PG01–PG10 library follow-ups](../preset-gallery-improvements/TODO.md), with each step's performance and Max 2027 acceptance. All remain pending.
+- [ ] Qualify full production recipe save/apply/Undo/reopen, long sessions and physical display/input; retain B26 and unsupported Edit/effect/asset gates.
+- [ ] Complete remaining P08/P09 field integration and final P10/EXE acceptance; existing scoped deliveries do not close the whole program.
 
 ## P11 — adaptive viewport completion (0.83.0)
 
@@ -226,4 +231,4 @@ For each subsequent entry record the exact change, evidence/receipt, failures,
 version decision, commit/remote hash and next action. Keep detailed raw outputs
 in the owned ignored run directory; link only evidence that actually exists.
 
-Current successor: [I06/P06 0.85.0 grids](../improvement-program/I06_0850.md), following [I05 variation](../improvement-program/I05_0840.md) and [I04/P07 direction](../improvement-program/I04_0830.md). Six examples are scoped-qualified. I07/P08 paths is next; B26 and the remaining program/EXE stay open. Historical version proposals do not select future delivery numbers.
+Current successor: [0.85.1 preset/gallery work](../preset-gallery-improvements/PROGRESS_0851.md), following [I06/P06 0.85.0 grids](../improvement-program/I06_0850.md), [I05 variation](../improvement-program/I05_0840.md) and [I04/P07 direction](../improvement-program/I04_0830.md). Eight examples and bounded static-asset/installer adapters have scoped current-pair witnesses; final delivery follows the linked ledger. PG09 is partial and PG10 requires I13/I14. No additional Phase 6 work is started in this task. I07/P08 paths and general B26 remain open; historical version proposals do not select future numbers.

@@ -30,6 +30,8 @@ int main(){std::filesystem::path folder;try{
     auto invalid=metadata;invalid["tags"]={"tree","tree"};rejected([&]{writePresentation(path,invalid,image);});
     writePresentation(path,metadata,image);check(load(path)==original);info=summary(path);check(info[4]=="Woodland"&&info[5]==metadata["tags"]&&info[11]&&info[12]=="");
     const auto thumb=thumbnail(path);check(!thumb.empty()&&load(thumb)==load(image));rejected([&]{writePresentation(path,metadata,image);});
+    check(info.size()==15&&info[13][1]==digest(bytes)&&info[13][2]==bytes.size());
+    check(std::filesystem::equivalent(pathFromUTF8(info[13][0].get<std::string>()),thumb));
     put(thumb,"damaged");check(summary(path)[11]);rejected([&]{thumbnail(path);});put(thumb,load(image));
     const auto sidecar=std::filesystem::path(path.wstring()+L".library.json");auto side=parse(load(sidecar));const auto sideOriginal=load(sidecar);side["thumbnail"]["file"]="../outside.png";put(sidecar,side.dump());
     check(summary(path)[12]!="");rejected([&]{thumbnail(path);});put(sidecar,sideOriginal);
@@ -39,8 +41,11 @@ int main(){std::filesystem::path folder;try{
     Library library;auto id=library.start({folder,folder});auto page=wait(library,id);
     check(page[0]=="complete"&&page[1]==302&&page[2]==301&&page[3]==1&&page[5]==""&&page[9].size()==128);
     check(library.page(id,"SLOPE","",1)[6]==1);check(library.page(id,"","Woodland",1)[6]==1);
+    check(page.size()==13&&page[10].size()==1&&page[10][0][0]=="Woodland"&&page[10][0][1]==1&&page[10][0][2]==info[13]);
+    check(page[11]==1&&page[12]==1);
     check(library.page(id,"meadow","",3)[9].size()==44);check(library.page(id,"unknown","",1)[9].empty());
     const auto stamp=std::filesystem::last_write_time(path);d["name"]="Canopy BB";const auto replacement=serialize(d);check(replacement.size()==original.size());put(path,replacement);std::filesystem::last_write_time(path,stamp);
+    library.update(id,path);check(library.page(id,"Canopy BB","",1)[6]==1&&library.page(id,"","",1)[12]==0);
     auto next=library.start({folder});rejected([&]{library.page(id,"","",1);});wait(library,next);
     check(library.page(next,"Canopy AA","",1)[6]==0&&library.page(next,"Canopy BB","",1)[6]==1);
     check(summary(path)[12]!=""); // Hash-bound metadata never silently labels replaced content.

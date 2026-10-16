@@ -14,6 +14,7 @@ def source_hashes(project):
     paths = [ROOT/project/"CMakeLists.txt", ROOT/project/"scripts"/script_name, ROOT/"cmake/CyrusMaxSDK.cmake"]
     if project == "AminScatter":
         paths += [ROOT/"CyrusLicensing/third_party/nlohmann/json.hpp", ROOT/"CyrusLicensing/third_party/nlohmann/LICENSE.MIT"]
+        paths += [ROOT/project/"ui/LibraryGallery.cs", ROOT/project/"tools/build_gallery.py"]
     if project == "CyrusSurfaceAnalyzer":
         paths.append(ROOT/"AminScatter/src/input_validity.cpp")
     for name in ("src", "include", "tests", "third_party"):
@@ -59,7 +60,7 @@ def main():
             print(result.stdout[-18000:], flush=True)
         if result.returncode:
             raise SystemExit(result.returncode)
-    binary_suffixes={".dlx",".dlm",".dlh",".dlu"}
+    binary_suffixes={".dlx",".dlm",".dlh",".dlu",".dll"}
     binaries={str(p.relative_to(ROOT)).replace("\\","/"):hashlib.sha256(p.read_bytes()).hexdigest()
               for p in folder.rglob("*") if p.is_file() and p.suffix.lower() in binary_suffixes}
     if source_hashes(project) != sources:

@@ -25,18 +25,24 @@ public:
     ~Library();
     std::uint64_t start(std::vector<std::filesystem::path> roots);
     void cancel(std::uint64_t token);
+    void update(std::uint64_t token,const std::filesystem::path& recipe);
     Json page(std::uint64_t token, const std::string& search,
               const std::string& category, std::size_t pageNumber) const;
 private:
-    struct Entry { std::string path, search, category; Json info; };
+    struct Entry { std::string path, search, category; Json info; std::size_t bytes=0; };
+    struct Collection { std::string name; std::size_t count=0, representative=0; };
     void scan(std::vector<std::filesystem::path> roots) noexcept;
     LibraryLimits limits_;
     mutable std::mutex mutex_;
     std::vector<Entry> entries_;
+    // Names/counts/entry indices only: bounded by entries_, no duplicated images or recipe JSON.
+    mutable std::vector<Collection> collections_;
+    mutable bool collectionsDirty_=true;
+    std::vector<std::filesystem::path> roots_;
     std::thread worker_;
     std::atomic<bool> stop_{false}, done_{true};
     std::uint64_t generation_=0;
-    std::size_t scanned_=0, invalid_=0;
+    std::size_t scanned_=0, invalid_=0, metadataBytes_=0;
     bool limited_=false;
     std::string error_;
 };
